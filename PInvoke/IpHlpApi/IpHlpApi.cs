@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -1170,11 +1171,6 @@ namespace Vanara.PInvoke
 			ScopeLevelGlobal = 14
 		}
 
-		public interface ILinkedListElement<T> where T : struct
-		{
-			T? GetNext();
-		}
-
 		/// <summary>
 		/// <para>The <c>AddIPAddress</c> function adds the specified IPv4 address to the specified adapter.</para>
 		/// </summary>
@@ -1504,7 +1500,7 @@ namespace Vanara.PInvoke
 		// pArpEntry );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "607f9aad-2046-4ab2-9a62-4092f87ffa66")]
-		public static extern Win32Error CreateIpNetEntry(ref MIB_IPNETROW pArpEntry);
+		public static extern Win32Error CreateIpNetEntry(in MIB_IPNETROW pArpEntry);
 
 		/// <summary>
 		/// The <c>CreatePersistentTcpPortReservation</c> function creates a persistent TCP port reservation for a consecutive block of TCP
@@ -2021,7 +2017,7 @@ namespace Vanara.PInvoke
 		// pArpEntry );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "0d338676-b66f-410c-8022-5576096954b4")]
-		public static extern Win32Error DeleteIpNetEntry(ref MIB_IPNETROW pArpEntry);
+		public static extern Win32Error DeleteIpNetEntry(in MIB_IPNETROW pArpEntry);
 
 		/// <summary>
 		/// The <c>DeletePersistentTcpPortReservation</c> function deletes a persistent TCP port reservation for a consecutive block of TCP
@@ -2326,7 +2322,7 @@ namespace Vanara.PInvoke
 		// *pHandle, OVERLAPPED *pOverLapped );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "ec845db8-d544-4291-8221-0fde82c2de27")]
-		public static extern unsafe Win32Error DisableMediaSense(ref HANDLE pHandle, System.Threading.NativeOverlapped* pOverLapped);
+		public static extern unsafe Win32Error DisableMediaSense(out HANDLE pHandle, [In] System.Threading.NativeOverlapped* pOverLapped);
 
 		/// <summary>
 		/// <para>
@@ -2372,7 +2368,7 @@ namespace Vanara.PInvoke
 		// OVERLAPPED *pOverlapped );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "779f5840-d58d-4194-baa7-2c6a7aeb7d79")]
-		public static extern unsafe Win32Error EnableRouter(ref HANDLE pHandle, System.Threading.NativeOverlapped* pOverlapped);
+		public static extern unsafe Win32Error EnableRouter(out HANDLE pHandle, System.Threading.NativeOverlapped* pOverlapped);
 
 		/// <summary>
 		/// The <c>FlushIpNetTable</c> function deletes all ARP entries for the specified interface from the ARP table on the local computer.
@@ -2690,33 +2686,18 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="Family">The address family of the addresses to retrieve.</param>
 		/// <returns>A list of IP_ADAPTER_ADDRESSES structures on successful return.</returns>
-		public static IEnumerable<IP_ADAPTER_ADDRESSES> GetAdaptersAddresses(GetAdaptersAddressesFlags Flags = 0, ADDRESS_FAMILY Family = ADDRESS_FAMILY.AF_UNSPEC)
-		{
-			uint len = 0;
-			var e = GetAdaptersAddresses((uint)Family, Flags, IntPtr.Zero, IntPtr.Zero, ref len);
-			if (e != Win32Error.ERROR_BUFFER_OVERFLOW)
-			{
-				e.ThrowIfFailed();
-			}
-
-			var mem = new SafeCoTaskMemHandle((int)len);
-			GetAdaptersAddresses((uint)Family, Flags, IntPtr.Zero, (IntPtr)mem, ref len).ThrowIfFailed();
-			return mem.DangerousGetHandle().LinkedListToIEnum<IP_ADAPTER_ADDRESSES>(t => t.Next);
-		}
+		public static IP_ADAPTER_ADDRESSES_RESULT GetAdaptersAddresses(GetAdaptersAddressesFlags Flags = 0, ADDRESS_FAMILY Family = ADDRESS_FAMILY.AF_UNSPEC) =>
+			GetTable((IntPtr p, ref uint l) => GetAdaptersAddresses((uint)Family, Flags, IntPtr.Zero, p, ref l), l => new IP_ADAPTER_ADDRESSES_RESULT(l), Win32Error.ERROR_BUFFER_OVERFLOW);
 
 		/// <summary>
 		/// <para>The <c>GetAdaptersInfo</c> function retrieves adapter information for the local computer.</para>
 		/// <para><c>On Windows XP and later:</c> Use the GetAdaptersAddresses function instead of <c>GetAdaptersInfo</c>.</para>
 		/// </summary>
-		/// <param name="AdapterInfo">
-		/// <para>A pointer to a buffer that receives a linked list of IP_ADAPTER_INFO structures.</para>
-		/// </param>
+		/// <param name="AdapterInfo">A pointer to a buffer that receives a linked list of IP_ADAPTER_INFO structures.</param>
 		/// <param name="SizePointer">
-		/// <para>
 		/// A pointer to a <c>ULONG</c> variable that specifies the size of the buffer pointed to by the pAdapterInfo parameter. If this size
 		/// is insufficient to hold the adapter information, <c>GetAdaptersInfo</c> fills in this variable with the required size, and
 		/// returns an error code of <c>ERROR_BUFFER_OVERFLOW</c>.
-		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is <c>ERROR_SUCCESS</c> (defined to the same value as <c>NO_ERROR</c>).</para>
@@ -2776,8 +2757,6 @@ namespace Vanara.PInvoke
 		/// generate a list of adapters that can both send and receive data, call GetUniDirectionalAdapterInfo, and exclude the returned
 		/// adapters from the list returned by <c>GetAdaptersInfo</c>.
 		/// </para>
-		/// <para>Examples</para>
-		/// <para>This example retrieves the adapter information and prints various properties of each adapter.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/iphlpapi/nf-iphlpapi-getadaptersinfo ULONG GetAdaptersInfo( PIP_ADAPTER_INFO
 		// AdapterInfo, PULONG SizePointer );
@@ -2785,6 +2764,33 @@ namespace Vanara.PInvoke
 		[PInvokeData("iphlpapi.h", MSDNShortId = "8cdecc84-6566-438b-86d0-3c55490a9a59")]
 		[Obsolete("On Windows XP and later: Use the GetAdaptersAddresses function instead of GetAdaptersInfo.")]
 		public static extern Win32Error GetAdaptersInfo(IntPtr AdapterInfo, ref uint SizePointer);
+
+		/// <summary>
+		/// <para>The <c>GetAdaptersInfo</c> function retrieves adapter information for the local computer.</para>
+		/// <para><c>On Windows XP and later:</c> Use the GetAdaptersAddresses function instead of <c>GetAdaptersInfo</c>.</para>
+		/// </summary>
+		/// <returns>A linked list of IP_ADAPTER_INFO structures.</returns>
+		/// <remarks>
+		/// <para>The <c>GetAdaptersInfo</c> function can retrieve information only for IPv4 addresses.</para>
+		/// <para>
+		/// In versions prior to Windows 10, the order in which adapters appear in the list returned by this function can be controlled from
+		/// the Network Connections folder: select the Advanced Settings menu item from the Advanced menu. Starting with Windows 10, the
+		/// order is unspecified.
+		/// </para>
+		/// <para>
+		/// The <c>GetAdaptersInfo</c> and GetInterfaceInfo functions do not return information about the IPv4 loopback interface.
+		/// Information on the loopback interface is returned by the GetIpAddrTable function.
+		/// </para>
+		/// <para>
+		/// <c>On Windows XP and later:</c> The list of adapters returned by <c>GetAdaptersInfo</c> includes unidirectional adapters. To
+		/// generate a list of adapters that can both send and receive data, call GetUniDirectionalAdapterInfo, and exclude the returned
+		/// adapters from the list returned by <c>GetAdaptersInfo</c>.
+		/// </para>
+		/// </remarks>
+		[PInvokeData("iphlpapi.h", MSDNShortId = "8cdecc84-6566-438b-86d0-3c55490a9a59")]
+		[Obsolete("On Windows XP and later: Use the GetAdaptersAddresses function instead of GetAdaptersInfo.")]
+		public static IEnumerable<IP_ADAPTER_INFO> GetAdaptersInfo() =>
+			GetTable((IntPtr p, ref uint l) => GetAdaptersInfo(p, ref l), l => new IP_ADAPTER_INFO_RESULT(l), Win32Error.ERROR_BUFFER_OVERFLOW);
 
 		/// <summary>
 		/// <para>
@@ -3519,7 +3525,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/iphlpapi/nf-iphlpapi-getifentry DWORD GetIfEntry( PMIB_IFROW pIfRow );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "bf16588d-3756-469e-afa2-e2e3dd537047")]
-		public static extern Win32Error GetIfEntry(out MIB_IFROW pIfRow);
+		public static extern Win32Error GetIfEntry(ref MIB_IFROW pIfRow);
 
 		/// <summary>
 		/// <para>The <c>GetIfTable</c> function retrieves the MIB-II interface table.</para>
@@ -4327,6 +4333,33 @@ namespace Vanara.PInvoke
 		public static extern Win32Error GetNumberOfInterfaces(out uint pdwNumIf);
 
 		/// <summary>
+		/// Gets the owner module from pid and information. (Undocumented)
+		/// </summary>
+		/// <param name="ulPid">The pid.</param>
+		/// <param name="pInfo">The information.</param>
+		/// <param name="Class">
+		/// <para>
+		/// A TCPIP_OWNER_MODULE_INFO_CLASS enumeration value that indicates the type of data to obtain regarding the owner module. The
+		/// <c>TCPIP_OWNER_MODULE_INFO_CLASS</c> enumeration is defined in the Iprtrmib.h header file.
+		/// </para>
+		/// <para>This parameter must be set to <c>TCPIP_OWNER_MODULE_INFO_BASIC</c>.</para>
+		/// </param>
+		/// <param name="pBuffer">
+		/// <para>
+		/// A pointer to a buffer that contains a TCPIP_OWNER_MODULE_BASIC_INFO structure with the owner module data. The type of data
+		/// returned in this buffer is indicated by the value of the Class parameter.
+		/// </para>
+		/// <para>The following structures are used for the data in Buffer when Class is set to the corresponding value.</para>
+		/// <param name="pdwSize">
+		/// The estimated size of the structure returned in Buffer, in bytes. If this value is set too small,
+		/// <c>ERROR_INSUFFICIENT_BUFFER</c> is returned by this function, and this field will contain the correct structure size.
+		/// </param>
+		/// <returns>Undocumented.</returns>
+		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("iphlpapi.h")]
+		public static extern Win32Error GetOwnerModuleFromPidAndInfo(uint ulPid, ulong[] pInfo, TCPIP_OWNER_MODULE_INFO_CLASS Class, [Out] IntPtr pBuffer, ref uint pdwSize);
+
+		/// <summary>
 		/// The <c>GetOwnerModuleFromTcp6Entry</c> function retrieves data about the module that issued the context bind for a specific IPv6
 		/// TCP endpoint in a MIB table row.
 		/// </summary>
@@ -4476,7 +4509,7 @@ namespace Vanara.PInvoke
 			var s = pTcpEntry;
 			return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
 				(IntPtr p, ref uint l) => GetOwnerModuleFromTcp6Entry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
-				null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>());
+				null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
 		}
 
 		/// <summary>
@@ -4707,7 +4740,7 @@ namespace Vanara.PInvoke
 			var s = pTcpEntry;
 			return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
 				(IntPtr p, ref uint l) => GetOwnerModuleFromTcpEntry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
-				null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>());
+				null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
 		}
 
 		/// <summary>
@@ -4804,7 +4837,7 @@ namespace Vanara.PInvoke
 			var s = pUdpEntry;
 			return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
 				(IntPtr p, ref uint l) => GetOwnerModuleFromUdp6Entry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
-				null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>());
+				null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
 		}
 
 		/// <summary>
@@ -4899,7 +4932,7 @@ namespace Vanara.PInvoke
 			var s = pUdpEntry;
 			return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
 				(IntPtr p, ref uint l) => GetOwnerModuleFromUdpEntry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
-				null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>());
+				null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
 		}
 
 		/// <summary>
@@ -5211,7 +5244,232 @@ namespace Vanara.PInvoke
 		// ULONG RosVersion, ULONG RosSize, PUCHAR Rod, ULONG RodVersion, ULONG RodSize );
 		[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "291aabe7-a4e7-4cc7-9cf3-4a4bc021e15e")]
-		public static extern Win32Error GetPerTcp6ConnectionEStats(in MIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, [Out, Optional] byte[] Rw, uint RwVersion, uint RwSize, [Out, Optional] byte[] Ros, uint RosVersion, uint RosSize, [Out, Optional] byte[] Rod, uint RodVersion, uint RodSize);
+		public static extern Win32Error GetPerTcp6ConnectionEStats(in MIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, [Out, Optional] IntPtr Rw, uint RwVersion, uint RwSize,
+			[Out, Optional] IntPtr Ros, uint RosVersion, uint RosSize, [Out, Optional] IntPtr Rod, uint RodVersion, uint RodSize);
+
+		/// <summary>
+		/// The <c>GetPerTcp6ConnectionEStats</c> function retrieves extended statistics for an IPv6 TCP connection.
+		/// </summary>
+		/// <param name="Row">A pointer to a MIB_TCP6ROW structure for an IPv6 TCP connection.</param>
+		/// <param name="EstatsType"><para>
+		/// The type of extended statistics for TCP requested. This parameter determines the data and format of information that is returned
+		/// in the Rw, Rod, and Ros parameters if the call is successful.
+		/// </para>
+		/// <para>This parameter can be one of the values from the TCP_ESTATS_TYPE enumeration type defined in the Tcpestats.h header file.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Value</term>
+		///     <term>Meaning</term>
+		///   </listheader>
+		///   <item>
+		///     <term>TcpConnectionEstatsSynOpts</term>
+		///     <term>
+		/// This value requests SYN exchange information for a TCP connection. Only read-only static information is available for this
+		/// enumeration value. If the Ros parameter was not NULL and the function succeeds, the buffer pointed to by the Ros parameter should
+		/// contain a TCP_ESTATS_SYN_OPTS_ROS_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsData</term>
+		///     <term>
+		/// This value requests extended data transfer information for a TCP connection. Only read-only dynamic information and read/write
+		/// information are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds, the buffer
+		/// pointed to by the Rw parameter should contain a TCP_ESTATS_DATA_RW_v0 structure. If extended data transfer information was
+		/// enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the buffer pointed to by the Rod
+		/// parameter should contain a TCP_ESTATS_DATA_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsSndCong</term>
+		///     <term>
+		/// This value requests sender congestion for a TCP connection. All three types of information (read-only static, read-only dynamic,
+		/// and read/write information) are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds,
+		/// the buffer pointed to by the Rw parameter should contain a TCP_ESTATS_SND_CONG_RW_v0 structure. If the Ros parameter was not NULL
+		/// and the function succeeds, the buffer pointed to by the Ros parameter should contain a TCP_ESTATS_SND_CONG_ROS_v0 structure. If
+		/// sender congestion information was enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the
+		/// buffer pointed to by the Rod parameter should contain a TCP_ESTATS_SND_CONG_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsPath</term>
+		///     <term>
+		/// This value requests extended path measurement information for a TCP connection. Only read-only dynamic information and read/write
+		/// information are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds, the buffer
+		/// pointed to by the Rw parameter should contain a TCP_ESTATS_PATH_RW_v0 structure. If extended path measurement information was
+		/// enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the buffer pointed to by the Rod
+		/// parameter should contain a TCP_ESTATS_PATH_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsSendBuff</term>
+		///     <term>
+		/// This value requests extended output-queuing information for a TCP connection. Only read-only dynamic information and read/write
+		/// information are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds, the buffer
+		/// pointed to by the Rw parameter should contain a TCP_ESTATS_SEND_BUFF_RW_v0 structure. If extended output-queuing information was
+		/// enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the buffer pointed to by the Rod
+		/// parameter should contain a TCP_ESTATS_SEND_BUFF_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsRec</term>
+		///     <term>
+		/// This value requests extended local-receiver information for a TCP connection. Only read-only dynamic information and read/write
+		/// information are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds, the buffer
+		/// pointed to by the Rw parameter should contain a TCP_ESTATS_REC_RW_v0 structure. If extended local-receiver information was
+		/// enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the buffer pointed to by the Rod
+		/// parameter should contain a TCP_ESTATS_REC_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsObsRec</term>
+		///     <term>
+		/// This value requests extended remote-receiver information for a TCP connection. Only read-only dynamic information and read/write
+		/// information are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds, the buffer
+		/// pointed to by the Rw parameter should contain a TCP_ESTATS_OBS_REC_RW_v0 structure. If extended remote-receiver information was
+		/// enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the buffer pointed to by the Rod
+		/// parameter should contain a TCP_ESTATS_OBS_REC_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsBandwidth</term>
+		///     <term>
+		/// This value requests bandwidth estimation statistics for a TCP connection on bandwidth. Only read-only dynamic information and
+		/// read/write information are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds, the
+		/// buffer pointed to by the Rw parameter should contain a TCP_ESTATS_BANDWIDTH_RW_v0 structure. If bandwidth estimation statistics
+		/// was enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the buffer pointed to by the Rod
+		/// parameter should contain a TCP_ESTATS_BANDWIDTH_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsFineRtt</term>
+		///     <term>
+		/// This value requests fine-grained round-trip time (RTT) estimation statistics for a TCP connection. Only read-only dynamic
+		/// information and read/write information are available for this enumeration value. If the Rw parameter was not NULL and the
+		/// function succeeds, the buffer pointed to by the Rw parameter should contain a TCP_ESTATS_FINE_RTT_RW_v0 structure. If
+		/// fine-grained RTT estimation statistics was enabled for this TCP connection, the Rod parameter was not NULL, and the function
+		/// succeeds, the buffer pointed to by the Rod parameter should contain a TCP_ESTATS_FINE_RTT_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		/// </list></param>
+		/// <param name="Rw">A pointer to a buffer to receive the read/write information. This parameter may be a <c>NULL</c> pointer if an application does
+		/// not want to retrieve read/write information for the TCP connection.</param>
+		/// <param name="Ros">A pointer to a buffer to receive read-only static information. This parameter may be a <c>NULL</c> pointer if an application does
+		/// not want to retrieve read-only static information for the TCP connection.</param>
+		/// <param name="Rod">A pointer to a buffer to receive read-only dynamic information. This parameter may be a <c>NULL</c> pointer if an application
+		/// does not want to retrieve read-only dynamic information for the TCP connection.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is NO_ERROR.</para>
+		/// <para>If the function fails, the return value is one of the following error codes.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Return code</term>
+		///     <term>Description</term>
+		///   </listheader>
+		///   <item>
+		///     <term>ERROR_INSUFFICIENT_BUFFER</term>
+		///     <term>
+		/// A buffer passed to a function is too small. This error is returned if the buffer pointed to by the Rw, Ros, or Rod parameters is
+		/// not large enough to receive the data. This error also returned if one of the given buffers pointed to by the Rw, Ros, or Rod
+		/// parameters is NULL, but a length was specified in the associated RwSize, RosSize, or RodSize. This error value is returned on
+		/// Windows Vista and Windows Server 2008.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ERROR_INVALID_PARAMETER</term>
+		///     <term>The parameter is incorrect. This error is returned if the Row parameter is a NULL pointer.</term>
+		///   </item>
+		///   <item>
+		///     <term>ERROR_INVALID_USER_BUFFER</term>
+		///     <term>
+		/// The supplied user buffer is not valid for the requested operation. This error is returned if one of the given buffers pointed to
+		/// by the Rw, Ros, or Rod parameters is NULL, but a length was specified in the associated RwSize, RosSize, or RodSize. As a result,
+		/// this error is returned if any of the following conditions are met: This error value is returned on Windows 7 and Windows Server
+		/// 2008 R2.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ERROR_NOT_FOUND</term>
+		///     <term>
+		/// This requested entry was not found. This error is returned if the TCP connection specified in the Row parameter could not be found.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ERROR_NOT_SUPPORTED</term>
+		///     <term>
+		/// The request is not supported. This error is returned if the RwVersion, RosVersion, or RodVersion parameter is not set to zero.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>Other</term>
+		///     <term>Use FormatMessage to obtain the message string for the returned error.</term>
+		///   </item>
+		/// </list></returns>
+		/// <remarks>
+		/// <para>The <c>GetPerTcp6ConnectionEStats</c> function is defined on Windows Vista and later.</para>
+		/// <para>
+		/// The <c>GetPerTcp6ConnectionEStats</c> function is designed to use TCP to diagnose performance problems in both the network and
+		/// the application. If a network based application is performing poorly, TCP can determine if the bottleneck is in the sender, the
+		/// receiver or the network itself. If the bottleneck is in the network, TCP can provide specific information about its nature.
+		/// </para>
+		/// <para>
+		/// The <c>GetPerTcp6ConnectionEStats</c> function retrieves extended statistics for the IPv6 TCP connection passed in the Row
+		/// parameter. The type of extended statistics that is retrieved is specified in the EstatsType parameter. Extended statistics on
+		/// this TCP connection must have previously been enabled by calls to the SetPerTcp6ConnectionEStats function for all TCP_ESTATS_TYPE
+		/// values except when <c>TcpConnectionEstatsSynOpts</c> is passed in the EstatsType parameter.
+		/// </para>
+		/// <para>
+		/// The GetTcp6Table function is used to retrieve the IPv6 TCP connection table on the local computer. This function returns a
+		/// MIB_TCP6TABLE structure that contain an array of MIB_TCP6ROW entries. The Row parameter passed to the
+		/// <c>GetPerTcp6ConnectionEStats</c> function must be an entry for an existing IPv6 TCP connection.
+		/// </para>
+		/// <para>
+		/// The only version of TCP connection statistics currently supported is version zero. So the RwVersion, RosVersion, and RodVersion
+		/// parameters passed to <c>GetPerTcp6ConnectionEStats</c> should be set to 0.
+		/// </para>
+		/// <para>
+		/// For information on extended TCP statistics on an IPv4 connection, see the GetPerTcpConnectionEStats and SetPerTcpConnectionEStats functions.
+		/// </para>
+		/// <para>
+		/// The SetPerTcp6ConnectionEStats function can only be called by a user logged on as a member of the Administrators group. If
+		/// <c>SetPerTcp6ConnectionEStats</c> is called by a user that is not a member of the Administrators group, the function call will
+		/// fail and <c>ERROR_ACCESS_DENIED</c> is returned. This function can also fail because of user account control (UAC) on Windows
+		/// Vista and later. If an application that contains this function is executed by a user logged on as a member of the Administrators
+		/// group other than the built-in Administrator, this call will fail unless the application has been marked in the manifest file with
+		/// a <c>requestedExecutionLevel</c> set to requireAdministrator. If the application lacks this manifest file, a user logged on as a
+		/// member of the Administrators group other than the built-in Administrator must then be executing the application in an enhanced
+		/// shell as the built-in Administrator (RunAs administrator) for this function to succeed.
+		/// </para>
+		/// <para>
+		/// An application that uses the <c>GetPerTcp6ConnectionEStats</c> function to retrieve extended statistics for an IPv6 TCP
+		/// connection must check that the previous call to the SetPerTcp6ConnectionEStats function to enabled extended statistics returned
+		/// with success. If the <c>SetPerTcp6ConnectionEStats</c> function to enable extended statistics failed, subsequent calls to the
+		/// <c>GetPerTcp6ConnectionEStats</c> will still return numbers in the returned structures. However the returned numbers are
+		/// meaningless random data and don't represent extended TCP statistics. This behavior can be observed by running the example below
+		/// as both an administrator and a normal user.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iphlpapi/nf-iphlpapi-getpertcp6connectionestats ULONG
+		// GetPerTcp6ConnectionEStats( PMIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, PUCHAR Rw, ULONG RwVersion, ULONG RwSize, PUCHAR Ros,
+		// ULONG RosVersion, ULONG RosSize, PUCHAR Rod, ULONG RodVersion, ULONG RodSize );
+		[PInvokeData("iphlpapi.h", MSDNShortId = "291aabe7-a4e7-4cc7-9cf3-4a4bc021e15e")]
+		public static Win32Error GetPerTcp6ConnectionEStats(in MIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, out object Rw, out object Ros, out object Rod)
+		{
+			var types = CorrespondingTypeAttribute.GetCorrespondingTypes(EstatsType);
+			var trw = types.FirstOrDefault(t => t.Name.Contains("_RW_"));
+			var tros = types.FirstOrDefault(t => t.Name.Contains("_ROS_"));
+			var trod = types.FirstOrDefault(t => t.Name.Contains("_ROD_"));
+			var srw = trw != null ? (uint)Marshal.SizeOf(trw) : 0;
+			var sros = tros != null ? (uint)Marshal.SizeOf(tros) : 0;
+			var srod = trod != null ? (uint)Marshal.SizeOf(trod) : 0;
+			var mrw = new SafeCoTaskMemHandle((int)srw);
+			var mros = new SafeCoTaskMemHandle((int)sros);
+			var mrod = new SafeCoTaskMemHandle((int)srod);
+			var ret = GetPerTcp6ConnectionEStats(Row, EstatsType, (IntPtr)mrw, 0, srw, (IntPtr)mros, 0, sros, (IntPtr)mrod, 0, srod);
+			Rw = ret.Failed || srw == 0 ? null : Marshal.PtrToStructure((IntPtr)mrw, trw);
+			Ros = ret.Failed || sros == 0 ? null : Marshal.PtrToStructure((IntPtr)mros, tros);
+			Rod = ret.Failed || srod == 0 ? null : Marshal.PtrToStructure((IntPtr)mrod, trod);
+			return ret;
+		}
 
 		/// <summary>The <c>GetPerTcpConnectionEStats</c> function retrieves extended statistics for an IPv4 TCP connection.</summary>
 		/// <param name="Row">A pointer to a MIB_TCPROW structure for an IPv4 TCP connection.</param>
@@ -5442,7 +5700,232 @@ namespace Vanara.PInvoke
 		// ULONG RosVersion, ULONG RosSize, PUCHAR Rod, ULONG RodVersion, ULONG RodSize );
 		[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "71b9d795-6050-4a1a-9949-2c970801f52c")]
-		public static extern Win32Error GetPerTcpConnectionEStats(in MIB_TCPROW Row, TCP_ESTATS_TYPE EstatsType, [Out, Optional] byte[] Rw, uint RwVersion, uint RwSize, [Out, Optional] byte[] Ros, uint RosVersion, uint RosSize, [Out, Optional] byte[] Rod, uint RodVersion, uint RodSize);
+		public static extern Win32Error GetPerTcpConnectionEStats(in MIB_TCPROW Row, TCP_ESTATS_TYPE EstatsType, [Out, Optional] IntPtr Rw, uint RwVersion, uint RwSize,
+			[Out, Optional] IntPtr Ros, uint RosVersion, uint RosSize, [Out, Optional] IntPtr Rod, uint RodVersion, uint RodSize);
+
+		/// <summary>
+		/// The <c>GetPerTcp6ConnectionEStats</c> function retrieves extended statistics for an IPv6 TCP connection.
+		/// </summary>
+		/// <param name="Row">A pointer to a MIB_TCP6ROW structure for an IPv6 TCP connection.</param>
+		/// <param name="EstatsType"><para>
+		/// The type of extended statistics for TCP requested. This parameter determines the data and format of information that is returned
+		/// in the Rw, Rod, and Ros parameters if the call is successful.
+		/// </para>
+		/// <para>This parameter can be one of the values from the TCP_ESTATS_TYPE enumeration type defined in the Tcpestats.h header file.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Value</term>
+		///     <term>Meaning</term>
+		///   </listheader>
+		///   <item>
+		///     <term>TcpConnectionEstatsSynOpts</term>
+		///     <term>
+		/// This value requests SYN exchange information for a TCP connection. Only read-only static information is available for this
+		/// enumeration value. If the Ros parameter was not NULL and the function succeeds, the buffer pointed to by the Ros parameter should
+		/// contain a TCP_ESTATS_SYN_OPTS_ROS_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsData</term>
+		///     <term>
+		/// This value requests extended data transfer information for a TCP connection. Only read-only dynamic information and read/write
+		/// information are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds, the buffer
+		/// pointed to by the Rw parameter should contain a TCP_ESTATS_DATA_RW_v0 structure. If extended data transfer information was
+		/// enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the buffer pointed to by the Rod
+		/// parameter should contain a TCP_ESTATS_DATA_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsSndCong</term>
+		///     <term>
+		/// This value requests sender congestion for a TCP connection. All three types of information (read-only static, read-only dynamic,
+		/// and read/write information) are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds,
+		/// the buffer pointed to by the Rw parameter should contain a TCP_ESTATS_SND_CONG_RW_v0 structure. If the Ros parameter was not NULL
+		/// and the function succeeds, the buffer pointed to by the Ros parameter should contain a TCP_ESTATS_SND_CONG_ROS_v0 structure. If
+		/// sender congestion information was enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the
+		/// buffer pointed to by the Rod parameter should contain a TCP_ESTATS_SND_CONG_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsPath</term>
+		///     <term>
+		/// This value requests extended path measurement information for a TCP connection. Only read-only dynamic information and read/write
+		/// information are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds, the buffer
+		/// pointed to by the Rw parameter should contain a TCP_ESTATS_PATH_RW_v0 structure. If extended path measurement information was
+		/// enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the buffer pointed to by the Rod
+		/// parameter should contain a TCP_ESTATS_PATH_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsSendBuff</term>
+		///     <term>
+		/// This value requests extended output-queuing information for a TCP connection. Only read-only dynamic information and read/write
+		/// information are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds, the buffer
+		/// pointed to by the Rw parameter should contain a TCP_ESTATS_SEND_BUFF_RW_v0 structure. If extended output-queuing information was
+		/// enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the buffer pointed to by the Rod
+		/// parameter should contain a TCP_ESTATS_SEND_BUFF_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsRec</term>
+		///     <term>
+		/// This value requests extended local-receiver information for a TCP connection. Only read-only dynamic information and read/write
+		/// information are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds, the buffer
+		/// pointed to by the Rw parameter should contain a TCP_ESTATS_REC_RW_v0 structure. If extended local-receiver information was
+		/// enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the buffer pointed to by the Rod
+		/// parameter should contain a TCP_ESTATS_REC_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsObsRec</term>
+		///     <term>
+		/// This value requests extended remote-receiver information for a TCP connection. Only read-only dynamic information and read/write
+		/// information are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds, the buffer
+		/// pointed to by the Rw parameter should contain a TCP_ESTATS_OBS_REC_RW_v0 structure. If extended remote-receiver information was
+		/// enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the buffer pointed to by the Rod
+		/// parameter should contain a TCP_ESTATS_OBS_REC_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsBandwidth</term>
+		///     <term>
+		/// This value requests bandwidth estimation statistics for a TCP connection on bandwidth. Only read-only dynamic information and
+		/// read/write information are available for this enumeration value. If the Rw parameter was not NULL and the function succeeds, the
+		/// buffer pointed to by the Rw parameter should contain a TCP_ESTATS_BANDWIDTH_RW_v0 structure. If bandwidth estimation statistics
+		/// was enabled for this TCP connection, the Rod parameter was not NULL, and the function succeeds, the buffer pointed to by the Rod
+		/// parameter should contain a TCP_ESTATS_BANDWIDTH_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>TcpConnectionEstatsFineRtt</term>
+		///     <term>
+		/// This value requests fine-grained round-trip time (RTT) estimation statistics for a TCP connection. Only read-only dynamic
+		/// information and read/write information are available for this enumeration value. If the Rw parameter was not NULL and the
+		/// function succeeds, the buffer pointed to by the Rw parameter should contain a TCP_ESTATS_FINE_RTT_RW_v0 structure. If
+		/// fine-grained RTT estimation statistics was enabled for this TCP connection, the Rod parameter was not NULL, and the function
+		/// succeeds, the buffer pointed to by the Rod parameter should contain a TCP_ESTATS_FINE_RTT_ROD_v0 structure.
+		/// </term>
+		///   </item>
+		/// </list></param>
+		/// <param name="Rw">A pointer to a buffer to receive the read/write information. This parameter may be a <c>NULL</c> pointer if an application does
+		/// not want to retrieve read/write information for the TCP connection.</param>
+		/// <param name="Ros">A pointer to a buffer to receive read-only static information. This parameter may be a <c>NULL</c> pointer if an application does
+		/// not want to retrieve read-only static information for the TCP connection.</param>
+		/// <param name="Rod">A pointer to a buffer to receive read-only dynamic information. This parameter may be a <c>NULL</c> pointer if an application
+		/// does not want to retrieve read-only dynamic information for the TCP connection.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is NO_ERROR.</para>
+		/// <para>If the function fails, the return value is one of the following error codes.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Return code</term>
+		///     <term>Description</term>
+		///   </listheader>
+		///   <item>
+		///     <term>ERROR_INSUFFICIENT_BUFFER</term>
+		///     <term>
+		/// A buffer passed to a function is too small. This error is returned if the buffer pointed to by the Rw, Ros, or Rod parameters is
+		/// not large enough to receive the data. This error also returned if one of the given buffers pointed to by the Rw, Ros, or Rod
+		/// parameters is NULL, but a length was specified in the associated RwSize, RosSize, or RodSize. This error value is returned on
+		/// Windows Vista and Windows Server 2008.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ERROR_INVALID_PARAMETER</term>
+		///     <term>The parameter is incorrect. This error is returned if the Row parameter is a NULL pointer.</term>
+		///   </item>
+		///   <item>
+		///     <term>ERROR_INVALID_USER_BUFFER</term>
+		///     <term>
+		/// The supplied user buffer is not valid for the requested operation. This error is returned if one of the given buffers pointed to
+		/// by the Rw, Ros, or Rod parameters is NULL, but a length was specified in the associated RwSize, RosSize, or RodSize. As a result,
+		/// this error is returned if any of the following conditions are met: This error value is returned on Windows 7 and Windows Server
+		/// 2008 R2.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ERROR_NOT_FOUND</term>
+		///     <term>
+		/// This requested entry was not found. This error is returned if the TCP connection specified in the Row parameter could not be found.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ERROR_NOT_SUPPORTED</term>
+		///     <term>
+		/// The request is not supported. This error is returned if the RwVersion, RosVersion, or RodVersion parameter is not set to zero.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>Other</term>
+		///     <term>Use FormatMessage to obtain the message string for the returned error.</term>
+		///   </item>
+		/// </list></returns>
+		/// <remarks>
+		/// <para>The <c>GetPerTcp6ConnectionEStats</c> function is defined on Windows Vista and later.</para>
+		/// <para>
+		/// The <c>GetPerTcp6ConnectionEStats</c> function is designed to use TCP to diagnose performance problems in both the network and
+		/// the application. If a network based application is performing poorly, TCP can determine if the bottleneck is in the sender, the
+		/// receiver or the network itself. If the bottleneck is in the network, TCP can provide specific information about its nature.
+		/// </para>
+		/// <para>
+		/// The <c>GetPerTcp6ConnectionEStats</c> function retrieves extended statistics for the IPv6 TCP connection passed in the Row
+		/// parameter. The type of extended statistics that is retrieved is specified in the EstatsType parameter. Extended statistics on
+		/// this TCP connection must have previously been enabled by calls to the SetPerTcp6ConnectionEStats function for all TCP_ESTATS_TYPE
+		/// values except when <c>TcpConnectionEstatsSynOpts</c> is passed in the EstatsType parameter.
+		/// </para>
+		/// <para>
+		/// The GetTcp6Table function is used to retrieve the IPv6 TCP connection table on the local computer. This function returns a
+		/// MIB_TCP6TABLE structure that contain an array of MIB_TCP6ROW entries. The Row parameter passed to the
+		/// <c>GetPerTcp6ConnectionEStats</c> function must be an entry for an existing IPv6 TCP connection.
+		/// </para>
+		/// <para>
+		/// The only version of TCP connection statistics currently supported is version zero. So the RwVersion, RosVersion, and RodVersion
+		/// parameters passed to <c>GetPerTcp6ConnectionEStats</c> should be set to 0.
+		/// </para>
+		/// <para>
+		/// For information on extended TCP statistics on an IPv4 connection, see the GetPerTcpConnectionEStats and SetPerTcpConnectionEStats functions.
+		/// </para>
+		/// <para>
+		/// The SetPerTcp6ConnectionEStats function can only be called by a user logged on as a member of the Administrators group. If
+		/// <c>SetPerTcp6ConnectionEStats</c> is called by a user that is not a member of the Administrators group, the function call will
+		/// fail and <c>ERROR_ACCESS_DENIED</c> is returned. This function can also fail because of user account control (UAC) on Windows
+		/// Vista and later. If an application that contains this function is executed by a user logged on as a member of the Administrators
+		/// group other than the built-in Administrator, this call will fail unless the application has been marked in the manifest file with
+		/// a <c>requestedExecutionLevel</c> set to requireAdministrator. If the application lacks this manifest file, a user logged on as a
+		/// member of the Administrators group other than the built-in Administrator must then be executing the application in an enhanced
+		/// shell as the built-in Administrator (RunAs administrator) for this function to succeed.
+		/// </para>
+		/// <para>
+		/// An application that uses the <c>GetPerTcp6ConnectionEStats</c> function to retrieve extended statistics for an IPv6 TCP
+		/// connection must check that the previous call to the SetPerTcp6ConnectionEStats function to enabled extended statistics returned
+		/// with success. If the <c>SetPerTcp6ConnectionEStats</c> function to enable extended statistics failed, subsequent calls to the
+		/// <c>GetPerTcp6ConnectionEStats</c> will still return numbers in the returned structures. However the returned numbers are
+		/// meaningless random data and don't represent extended TCP statistics. This behavior can be observed by running the example below
+		/// as both an administrator and a normal user.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iphlpapi/nf-iphlpapi-getpertcp6connectionestats ULONG
+		// GetPerTcp6ConnectionEStats( PMIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, PUCHAR Rw, ULONG RwVersion, ULONG RwSize, PUCHAR Ros,
+		// ULONG RosVersion, ULONG RosSize, PUCHAR Rod, ULONG RodVersion, ULONG RodSize );
+		[PInvokeData("iphlpapi.h", MSDNShortId = "291aabe7-a4e7-4cc7-9cf3-4a4bc021e15e")]
+		public static Win32Error GetPerTcpConnectionEStats(in MIB_TCPROW Row, TCP_ESTATS_TYPE EstatsType, out object Rw, out object Ros, out object Rod)
+		{
+			var types = CorrespondingTypeAttribute.GetCorrespondingTypes(EstatsType);
+			var trw = types.FirstOrDefault(t => t.Name.Contains("_RW_"));
+			var tros = types.FirstOrDefault(t => t.Name.Contains("_ROS_"));
+			var trod = types.FirstOrDefault(t => t.Name.Contains("_ROD_"));
+			var srw = trw != null ? (uint)Marshal.SizeOf(trw) : 0;
+			var sros = tros != null ? (uint)Marshal.SizeOf(tros) : 0;
+			var srod = trod != null ? (uint)Marshal.SizeOf(trod) : 0;
+			var mrw = new SafeCoTaskMemHandle((int)srw);
+			var mros = new SafeCoTaskMemHandle((int)sros);
+			var mrod = new SafeCoTaskMemHandle((int)srod);
+			var ret = GetPerTcpConnectionEStats(Row, EstatsType, (IntPtr)mrw, 0, srw, (IntPtr)mros, 0, sros, (IntPtr)mrod, 0, srod);
+			Rw = ret.Failed || srw == 0 ? null : Marshal.PtrToStructure((IntPtr)mrw, trw);
+			Ros = ret.Failed || sros == 0 ? null : Marshal.PtrToStructure((IntPtr)mros, tros);
+			Rod = ret.Failed || srod == 0 ? null : Marshal.PtrToStructure((IntPtr)mrod, trod);
+			return ret;
+		}
 
 		/// <summary>The <c>GetRTTAndHopCount</c> function determines the round-trip time (RTT) and hop count to the specified destination.</summary>
 		/// <param name="DestIpAddress">
@@ -7457,7 +7940,7 @@ namespace Vanara.PInvoke
 		// RestoreMediaSense( OVERLAPPED *pOverlapped, LPDWORD lpdwEnableCount );
 		[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "1a959da7-5fdb-4749-a4be-5d44e80ca2ea")]
-		public static extern unsafe Win32Error RestoreMediaSense(System.Threading.NativeOverlapped* pOverlapped, out uint lpdwEnableCount);
+		public static extern unsafe Win32Error RestoreMediaSense([In] System.Threading.NativeOverlapped* pOverlapped, out uint lpdwEnableCount);
 
 		/// <summary>
 		/// <para>
@@ -7954,7 +8437,7 @@ namespace Vanara.PInvoke
 		// pArpEntry );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "d985b749-5aa3-4b4a-ba8f-bc8edcf1b1f3")]
-		public static extern Win32Error SetIpNetEntry(ref MIB_IPNETROW pArpEntry);
+		public static extern Win32Error SetIpNetEntry(in MIB_IPNETROW pArpEntry);
 
 		/// <summary>
 		/// The <c>SetIpStatistics</c> function toggles IP forwarding on or off and sets the default time-to-live (TTL) value for the local computer.
@@ -8407,6 +8890,240 @@ namespace Vanara.PInvoke
 		public static extern Win32Error SetPerTcp6ConnectionEStats(in MIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, [In] byte[] Rw, uint RwVersion, uint RwSize, uint Offset);
 
 		/// <summary>
+		/// The <c>SetPerTcp6ConnectionEStats</c> function sets a value in the read/write information for an IPv6 TCP connection. This
+		/// function is used to enable or disable extended statistics for an IPv6 TCP connection.
+		/// </summary>
+		/// <param name="Row">A pointer to a MIB_TCP6ROW structure for an IPv6 TCP connection.</param>
+		/// <param name="EstatsType">
+		/// <para>
+		/// The type of extended statistics for TCP to set. This parameter determines the data and format of information that is expected in
+		/// the Rw parameter.
+		/// </para>
+		/// <para>This parameter can be one of the values from the TCP_ESTATS_TYPE enumeration type defined in the Tcpestats.h header file.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TcpConnectionEstatsData</term>
+		/// <term>
+		/// This value specifies extended data transfer information for a TCP connection. When this value is specified, the buffer pointed to
+		/// by the Rw parameter should point to a TCP_ESTATS_DATA_RW_v0 structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsSndCong</term>
+		/// <term>
+		/// This value specifies sender congestion for a TCP connection. When this value is specified, the buffer pointed to by the Rw
+		/// parameter should point to a TCP_ESTATS_SND_CONG_RW_v0 structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsPath</term>
+		/// <term>
+		/// This value specifies extended path measurement information for a TCP connection. When this value is specified, the buffer pointed
+		/// to by the Rw parameter should point to a TCP_ESTATS_PATH_RW_v0 structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsSendBuff</term>
+		/// <term>
+		/// This value specifies extended output-queuing information for a TCP connection. When this value is specified, the buffer pointed
+		/// to by the Rw parameter should point to a TCP_ESTATS_SEND_BUFF_RW_v0 structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsRec</term>
+		/// <term>
+		/// This value specifies extended local-receiver information for a TCP connection. When this value is specified, the buffer pointed
+		/// to by the Rw parameter should point to a TCP_ESTATS_REC_RW_v0 structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsObsRec</term>
+		/// <term>
+		/// This value specifies extended remote-receiver information for a TCP connection. When this value is specified, the buffer pointed
+		/// to by the Rw parameter should point to a TCP_ESTATS_OBS_REC_RW_v0 structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsBandwidth</term>
+		/// <term>
+		/// This value specifies bandwidth estimation statistics for a TCP connection on bandwidth. When this value is specified, the buffer
+		/// pointed to by the Rw parameter should point to a TCP_ESTATS_BANDWIDTH_RW_v0 structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsFineRtt</term>
+		/// <term>
+		/// This value specifies fine-grained round-trip time (RTT) estimation statistics for a TCP connection. When this value is specified,
+		/// the buffer pointed to by the Rw parameter should point to a TCP_ESTATS_FINE_RTT_RW_v0 structure.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="Rw">
+		/// A pointer to a buffer that contains the read/write information to set. The buffer should contain a value from the
+		/// TCP_BOOLEAN_OPTIONAL enumeration for each structure member that specifies how each member should be updated.
+		/// </param>
+		/// <param name="RwVersion">
+		/// The version of the read/write information to be set. This parameter should be set to zero for Windows Vista, Windows Server 2008,
+		/// and Windows 7.
+		/// </param>
+		/// <param name="RwSize">The size, in bytes, of the buffer pointed to by the Rw parameter.</param>
+		/// <param name="Offset">
+		/// The offset, in bytes, to the member in the structure pointed to by the Rw parameter to be set. This parameter is currently unused
+		/// and must be set to zero.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is NO_ERROR.</para>
+		/// <para>If the function fails, the return value is one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>
+		/// Access is denied. This error is returned under several conditions that include the following: the user lacks the required
+		/// administrative privileges on the local computer or the application is not running in an enhanced shell as the built-in
+		/// Administrator (RunAs administrator).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>The parameter is incorrect. This error is returned if the Row parameter is a NULL pointer.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_USER_BUFFER</term>
+		/// <term>
+		/// The supplied user buffer is not valid for the requested operation. This error is returned if the Row parameter is a NULL pointer
+		/// and the RwSize parameter is nonzero.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_FOUND</term>
+		/// <term>
+		/// This requested entry was not found. This error is returned if the TCP connection specified in the Row parameter could not be found.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_SUPPORTED</term>
+		/// <term>The request is not supported. This error is returned if the RwVersion or the Offset parameter is not set to 0.</term>
+		/// </item>
+		/// <item>
+		/// <term>Other</term>
+		/// <term>Use FormatMessage to obtain the message string for the returned error.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>SetPerTcp6ConnectionEStats</c> function is defined on Windows Vista and later.</para>
+		/// <para>
+		/// The <c>SetPerTcp6ConnectionEStats</c> function is used to enable or disable extended statistics for the IPv6 TCP connection
+		/// passed in the Row parameter. Extended statistics on a TCP connection are disabled by default.
+		/// </para>
+		/// <para>
+		/// The <c>SetPerTcp6ConnectionEStats</c> function is used to set the value of a member in the read/write information for extended
+		/// statistics for an IPv6 TCP connection. The type and format of the structure to be set is specified by the EstatsType parameter.
+		/// The Rw parameter contains a pointer to the structure being passed. The member to set in this structure is specified by the Offset
+		/// parameter. All members in the structure pointed to by Rw parameter must be specified.
+		/// </para>
+		/// <para>
+		/// The only version of TCP connection statistics currently supported is version zero. So the RwVersion parameter passed to
+		/// <c>SetPerTcp6ConnectionEStats</c> should be set to 0.
+		/// </para>
+		/// <para>
+		/// The structure pointed to by the Rw parameter passed this function depends on the enumeration value passed in the EstatsType
+		/// parameter. The following table below indicates the structure type that should be passed in the Rw parameter for each possible
+		/// EstatsType parameter type.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>EstatsType</term>
+		/// <term>Structure pointed to by Rw</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TcpConnectionEstatsData</term>
+		/// <term>TCP_ESTATS_DATA_RW_v0</term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsSndCong</term>
+		/// <term>TCP_ESTATS_SND_CONG_RW_v0</term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsPath</term>
+		/// <term>TCP_ESTATS_PATH_RW_v0</term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsSendBuff</term>
+		/// <term>TCP_ESTATS_SEND_BUFF_RW_v0</term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsRec</term>
+		/// <term>TCP_ESTATS_REC_RW_v0</term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsObsRec</term>
+		/// <term>TCP_ESTATS_OBS_REC_RW_v0</term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsBandwidth</term>
+		/// <term>TCP_ESTATS_BANDWIDTH_RW_v0</term>
+		/// </item>
+		/// <item>
+		/// <term>TcpConnectionEstatsFineRtt</term>
+		/// <term>TCP_ESTATS_FINE_RTT_RW_v0</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The Offset parameter is currently unused. The possible structures pointed to by the Rw parameter all have a single member except
+		/// for the TCP_ESTATS_BANDWIDTH_RW_v0 structure. When the EstatsType parameter is set to <c>TcpConnectionEstatsBandwidth</c>, the
+		/// <c>TCP_ESTATS_BANDWIDTH_RW_v0</c> structure pointed to by the Rw parameter must have both structure members set to the preferred
+		/// values in a single call to the <c>SetPerTcp6ConnectionEStats</c> function.
+		/// </para>
+		/// <para>
+		/// If the RwSize parameter is set to 0, the <c>SetPerTcp6ConnectionEStats</c> function returns NO_ERROR and makes no changes tothe
+		/// extended statistics status.
+		/// </para>
+		/// <para>
+		/// The GetTcp6Table function is used to retrieve the IPv6 TCP connection table on the local computer. This function returns a
+		/// MIB_TCP6TABLE structure that contain an array of MIB_TCP6ROW entries. The Row parameter passed to the
+		/// <c>SetPerTcp6ConnectionEStats</c> function must be an entry for an existing IPv6 TCP connection.
+		/// </para>
+		/// <para>
+		/// Once extended statistics are enabled on a TCP connection for IPv6, an application calls the GetPerTcp6ConnectionEStats function
+		/// to retrieve extended statistics on the TCP connection.
+		/// </para>
+		/// <para>
+		/// The GetPerTcp6ConnectionEStats function is designed to use TCP to diagnose performance problems in both the network and the
+		/// application. If a network based application is performing poorly, TCP can determine if the bottleneck is in the sender, the
+		/// receiver or the network itself. If the bottleneck is in the network, TCP can provide specific information about its nature.
+		/// </para>
+		/// <para>
+		/// For information on extended TCP statistics on an IPv4 connection, see the GetPerTcpConnectionEStats and SetPerTcpConnectionEStats functions.
+		/// </para>
+		/// <para>
+		/// The <c>SetPerTcp6ConnectionEStats</c> function can only be called by a user logged on as a member of the Administrators group. If
+		/// <c>SetPerTcp6ConnectionEStats</c> is called by a user that is not a member of the Administrators group, the function call will
+		/// fail and <c>ERROR_ACCESS_DENIED</c> is returned. This function can also fail because of user account control (UAC) on Windows
+		/// Vista and Windows Server 2008. If an application that contains this function is executed by a user logged on as a member of the
+		/// Administrators group other than the built-in Administrator, this call will fail unless the application has been marked in the
+		/// manifest file with a <c>requestedExecutionLevel</c> set to requireAdministrator. If the application on Windows Vista or Windows
+		/// Server 2008 lacks this manifest file, a user logged on as a member of the Administrators group other than the built-in
+		/// Administrator must then be executing the application in an enhanced shell as the built-in Administrator (RunAs administrator) for
+		/// this function to succeed.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iphlpapi/nf-iphlpapi-setpertcp6connectionestats ULONG
+		// SetPerTcp6ConnectionEStats( PMIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, PUCHAR Rw, ULONG RwVersion, ULONG RwSize, ULONG Offset );
+		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("iphlpapi.h", MSDNShortId = "89ace750-ec32-46cb-8526-233f847ba9f4")]
+		public static extern Win32Error SetPerTcp6ConnectionEStats(in MIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, [In] IntPtr Rw, uint RwVersion, uint RwSize, uint Offset);
+
+		/// <summary>
 		/// The <c>SetPerTcpConnectionEStats</c> function sets a value in the read/write information for an IPv4 TCP connection. This
 		/// function is used to enable or disable extended statistics for an IPv4 TCP connection.
 		/// </summary>
@@ -8855,20 +9572,11 @@ namespace Vanara.PInvoke
 		[PInvokeData("iphlpapi.h", MSDNShortId = "95f0387f-24e8-4382-b78e-e59bcec0f2ed")]
 		public static extern unsafe Win32Error UnenableRouter(System.Threading.NativeOverlapped* pOverlapped, out uint lpdwEnableCount);
 
-		private static IEnumerable<T> GetLinkedList<T>(this T start, Func<T, bool> includeFirst) where T : struct, ILinkedListElement<T>
-		{
-			if (includeFirst(start))
-				yield return start;
-			for (var cur = ((ILinkedListElement<T>)start).GetNext(); cur != null; cur = ((ILinkedListElement<T>)cur).GetNext())
-				yield return cur.Value;
-			yield break;
-		}
-
-		private static TRet GetTable<TRet>(FunctionHelper.PtrFunc<uint> func, Func<uint, TRet> make) where TRet : SafeHandle
+		private static TRet GetTable<TRet>(FunctionHelper.PtrFunc<uint> func, Func<uint, TRet> make, int memErr = Win32Error.ERROR_INSUFFICIENT_BUFFER) where TRet : SafeHandle
 		{
 			uint len = 0;
 			var e = func(IntPtr.Zero, ref len);
-			if (e != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			if (e != memErr)
 				e.ThrowIfFailed();
 
 			var mem = make(len);
@@ -8935,6 +9643,22 @@ namespace Vanara.PInvoke
 				/// <summary>The network port formatted as a NULL-terminated wide character string.</summary>
 				[FieldOffset(0), MarshalAs(UnmanagedType.ByValTStr, SizeConst = 6)]
 				public string Port;
+			}
+		}
+
+		/// <summary>Represents a linked list of IP_ADAPTER_ADDRESSES structures returned by <see cref="GetAdaptersAddresses(GetAdaptersAddressesFlags, ADDRESS_FAMILY)"/>.</summary>
+		public class IP_ADAPTER_ADDRESSES_RESULT : SafeNativeLinkedList<IP_ADAPTER_ADDRESSES, HGlobalMemoryMethods>
+		{
+			internal IP_ADAPTER_ADDRESSES_RESULT(uint byteCount) : base((int)byteCount, s => s.Next)
+			{
+			}
+		}
+
+		/// <summary>Represents a linked list of IP_ADAPTER_INFO structures returned by <see cref="GetAdaptersInfo()"/>.</summary>
+		public class IP_ADAPTER_INFO_RESULT : SafeNativeLinkedList<IP_ADAPTER_INFO, HGlobalMemoryMethods>
+		{
+			internal IP_ADAPTER_INFO_RESULT(uint byteCount) : base((int)byteCount, s => s.Next)
+			{
 			}
 		}
 	}

@@ -286,6 +286,16 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = MAXLEN_IFDESCR)]
 			public byte[] bDescr;
+
+			/// <summary>Initializes a new instance of the <see cref="MIB_IFROW"/> struct.</summary>
+			/// <param name="ifIndex">
+			/// The index that identifies the interface. This index value may change when a network adapter is disabled and then enabled, and
+			/// should not be considered persistent.
+			/// </param>
+			public MIB_IFROW(uint ifIndex) : this()
+			{
+				dwIndex = ifIndex;
+			}
 		}
 
 		/// <summary>

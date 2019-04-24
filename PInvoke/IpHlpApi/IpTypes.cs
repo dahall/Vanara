@@ -73,6 +73,23 @@ namespace Vanara.PInvoke
 			IP_ADAPTER_IPV6_MANAGE_ADDRESS_CONFIG = 0x00000200,
 		}
 
+		/// <summary>Identifies a class or structure that supports a linked-list model.</summary>
+		/// <typeparam name="T">The type of the element in the list.</typeparam>
+		public interface ILinkedListElement<T> where T : struct
+		{
+			/// <summary>Gets the next element in the list.</summary>
+			/// <returns>A nullable type. A <see langword="null"/> value indicates the end of the list.</returns>
+			T? GetNext();
+		}
+
+		private static IEnumerable<T> GetLinkedList<T>(this T start, Func<T, bool> includeFirst) where T : struct, ILinkedListElement<T>
+		{
+			if (includeFirst(start))
+				yield return start;
+			for (var cur = ((ILinkedListElement<T>)start).GetNext(); cur != null; cur = ((ILinkedListElement<T>)cur).GetNext())
+				yield return cur.Value;
+		}
+
 		/// <summary>
 		/// <para>The <c>FIXED_INFO</c> structure contains information that is the same across all the interfaces on a computer.</para>
 		/// </summary>
@@ -1509,8 +1526,9 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>The <c>IP_ADDR_STRING</c> structure represents a node in a linked-list of IPv4 addresses.</para>
+		/// The <c>IP_ADDR_STRING</c> structure represents a node in a linked-list of IPv4 addresses.
 		/// </summary>
+		/// <seealso cref="Vanara.PInvoke.IpHlpApi.ILinkedListElement{Vanara.PInvoke.IpHlpApi.IP_ADDR_STRING}" />
 		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_addr_string typedef struct _IP_ADDR_STRING { struct
 		// _IP_ADDR_STRING *Next; IP_ADDRESS_STRING IpAddress; IP_MASK_STRING IpMask; DWORD Context; } IP_ADDR_STRING, *PIP_ADDR_STRING;
 		[PInvokeData("iptypes.h", MSDNShortId = "783c383d-7fd3-45bc-90f6-2e8ce01db3c3")]
@@ -1518,39 +1536,229 @@ namespace Vanara.PInvoke
 		public struct IP_ADDR_STRING : ILinkedListElement<IP_ADDR_STRING>
 		{
 			/// <summary>
-			/// <para>A pointer to the next <c>IP_ADDR_STRING</c> structure in the list.</para>
+			/// A pointer to the next <c>IP_ADDR_STRING</c> structure in the list.
 			/// </summary>
 			public IntPtr Next;
 
 			/// <summary>
-			/// <para>
 			/// A value that specifies a structure type with a single member, <c>String</c>. The <c>String</c> member is a <c>char</c> array
 			/// of size 16. This array holds an IPv4 address in dotted decimal notation.
-			/// </para>
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
 			public string IpAddress;
 
 			/// <summary>
-			/// <para>
 			/// A value that specifies a structure type with a single member, <c>String</c>. The <c>String</c> member is a <c>char</c> array
 			/// of size 16. This array holds the IPv4 subnet mask in dotted decimal notation.
-			/// </para>
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
 			public string IpMask;
 
 			/// <summary>
-			/// <para>
 			/// A network table entry (NTE). This value corresponds to the NTEContext parameters in the AddIPAddress and DeleteIPAddress functions.
-			/// </para>
 			/// </summary>
 			public uint Context;
 
 			/// <summary>
-			/// <para>Gets a reference to the next <c>IP_ADDR_STRING</c> structure in the list.</para>
+			/// Gets a reference to the next <c>IP_ADDR_STRING</c> structure in the list.
 			/// </summary>
+			/// <returns>
+			/// A nullable type. A <see langword="null" /> value indicates the end of the list.
+			/// </returns>
 			public IP_ADDR_STRING? GetNext() => Next.ToNullableStructure<IP_ADDR_STRING>();
+		}
+
+		/// <summary>
+		/// The <c>IP_ADDRESS_STRING</c> structure stores an IPv4 address in dotted decimal notation. The <c>IP_ADDRESS_STRING</c> structure
+		/// definition is also the type definition for the <c>IP_MASK_STRING</c> structure.
+		/// </summary>
+		/// <remarks>The <c>IP_ADDRESS_STRING</c> structure is used as a parameter in the IP_ADDR_STRING structure.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-ip_address_string typedef struct { char *String[4 4]; }
+		// IP_ADDRESS_STRING, *PIP_ADDRESS_STRING, IP_MASK_STRING, *PIP_MASK_STRING;
+		[PInvokeData("iptypes.h", MSDNShortId = "f426b22f-66e4-43e4-8852-357359df6f88")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		public struct IP_ADDRESS_STRING
+		{
+			/// <summary>A character string that represents an IPv4 address or an IPv4 subnet mask in dotted decimal notation.</summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+			public string String;
+		}
+
+		/// <summary>The <c>IP_INTERFACE_NAME_INFO</c> structure contains information about an IPv4 interface on the local computer.</summary>
+		/// <remarks>
+		/// <para>
+		/// In the Microsoft Windows Software Development Kit (SDK), the version of the structure for use on Windows 2000 with Service Pack 1
+		/// (SP1) and later is defined as <c>IP_INTERFACE_NAME_INFO_W2KSP1</c>. When compiling an application if the target platform is
+		/// Windows 2000 with SP1 and later (, , or ), the <c>IP_INTERFACE_NAME_INFO_W2KSP1</c> structure is typedefed to the
+		/// <c>IP_INTERFACE_NAME_INFO</c> structure.
+		/// </para>
+		/// <para>
+		/// The <c>MediaType</c>, <c>ConnectionType</c>, and <c>AccessType</c> members, definitions and assigned values are available from
+		/// the Ipifcons.h header file.
+		/// </para>
+		/// <para>
+		/// The optional <c>InterfaceGuid</c> member is often set for dial-up interfaces, and can be used to distinguish multiple dial-up
+		/// interfaces that share the same device GUID.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-ip_interface_name_info_w2ksp1 typedef struct
+		// ip_interface_name_info_w2ksp1 { ULONG Index; ULONG MediaType; UCHAR ConnectionType; UCHAR AccessType; GUID DeviceGuid; GUID
+		// InterfaceGuid; } IP_INTERFACE_NAME_INFO_W2KSP1, *PIP_INTERFACE_NAME_INFO_W2KSP1;
+		[PInvokeData("iptypes.h", MSDNShortId = "c113e97d-6f41-490a-a872-20d662fd763b")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IP_INTERFACE_NAME_INFO
+		{
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>The index of the IP interface for the active instance.</para>
+			/// </summary>
+			public uint Index;
+
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>
+			/// The interface type as defined by the Internet Assigned Names Authority (IANA). Possible values for the interface type are
+			/// listed in the Ipifcons.h header file.
+			/// </para>
+			/// <para>The table below lists common values for the interface type; although, many other values are possible.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>IF_TYPE_OTHER 1</term>
+			/// <term>Some other type of network interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>IF_TYPE_ETHERNET_CSMACD 6</term>
+			/// <term>An Ethernet network interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>IF_TYPE_ISO88025_TOKENRING 9</term>
+			/// <term>A token ring network interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>IF_TYPE_PPP 23</term>
+			/// <term>A PPP network interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>IF_TYPE_SOFTWARE_LOOPBACK 24</term>
+			/// <term>A software loopback network interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>IF_TYPE_ATM 37</term>
+			/// <term>An ATM network interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>IF_TYPE_IEEE80211 71</term>
+			/// <term>
+			/// An IEEE 802.11 wireless network interface. On Windows Vista and later, wireless network cards are reported as
+			/// IF_TYPE_IEEE80211. Windows Server 2003, Windows 2000 Server with SP1 and Windows XP/2000: Wireless network cards are reported
+			/// as IF_TYPE_ETHERNET_CSMACD.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>IF_TYPE_TUNNEL 131</term>
+			/// <term>A tunnel type encapsulation network interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>IF_TYPE_IEEE1394 144</term>
+			/// <term>An IEEE 1394 (Firewire) high performance serial bus network interface.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public IFTYPE MediaType;
+
+			/// <summary>
+			/// <para>Type: <c>UCHAR</c></para>
+			/// <para>The interface connection type for the adapter.</para>
+			/// <para>The possible values for this member are defined in the Ipifcons.h header file.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>IF_CONNECTION_DEDICATED 1</term>
+			/// <term>
+			/// The connection type is dedicated. The connection comes up automatically when media sense is TRUE. For example, an Ethernet
+			/// connection is dedicated.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>IF_CONNECTION_PASSIVE 2</term>
+			/// <term>
+			/// The connection type is passive. The remote end must bring up the connection to the local station. For example, a RAS
+			/// interface is passive.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>IF_CONNECTION_DEMAND 3</term>
+			/// <term>
+			/// The connection type is demand-dial. A connection of this type comes up in response to a local action (sending a packet, for example).
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public NET_IF_CONNECTION_TYPE ConnectionType;
+
+			/// <summary>
+			/// <para>Type: <c>UCHAR</c></para>
+			/// <para>A value of the IF_ACCESS_TYPE enumeration that specifies the access type for the interface.</para>
+			/// <para>
+			/// <c>Windows Server 2003, Windows 2000 Server with SP1 and Windows XP/2000:</c> The possible values for this member are defined
+			/// in the Ipifcons.h header file.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>IF_ACCESS_LOOPBACK 1</term>
+			/// <term>The loopback access type. This value indicates that the interface loops back transmit data as receive data.</term>
+			/// </item>
+			/// <item>
+			/// <term>IF_ACCESS_BROADCAST 2</term>
+			/// <term>
+			/// The LAN access type which includes Ethernet. This value indicates that the interface provides native support for multicast or
+			/// broadcast services.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>IF_ACCESS_POINT_TO_POINT 3</term>
+			/// <term>
+			/// The point to point access type. This value indicates support for CoNDIS/WAN, except for non-broadcast multi-access (NBMA)
+			/// interfaces. Windows Server 2003, Windows 2000 Server with SP1 and Windows XP/2000: This value was defined as
+			/// IF_ACCESS_POINTTOPOINT in the Ipifcons.h header file.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>IF_ACCESS_POINT_TO_MULTI_POINT 4</term>
+			/// <term>
+			/// The point to multipoint access type. This value indicates support for non-broadcast multi-access media, including the RAS
+			/// internal interface and native ATM. Windows Server 2003, Windows 2000 Server with SP1 and Windows XP/2000: This value was
+			/// defined as IF_ACCESS_POINTTOMULTIPOINT in the Ipifcons.h header file.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public NET_IF_ACCESS_TYPE AccessType;
+
+			/// <summary>
+			/// <para>Type: <c>GUID</c></para>
+			/// <para>The GUID that identifies the underlying device for the interface. This member can be a zero GUID.</para>
+			/// </summary>
+			public Guid DeviceGuid;
+
+			/// <summary>
+			/// <para>Type: <c>GUID</c></para>
+			/// <para>The GUID that identifies the interface mapped to the device. Optional. This member can be a zero GUID.</para>
+			/// </summary>
+			public Guid InterfaceGuid;
 		}
 
 		/// <summary>

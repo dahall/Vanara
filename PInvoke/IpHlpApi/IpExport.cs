@@ -159,6 +159,8 @@ namespace Vanara.PInvoke
 		[DefaultProperty(nameof(AdapterOrder))]
 		public class IP_ADAPTER_ORDER_MAP : SafeElementArray<uint, uint, LocalMemoryMethods>
 		{
+			private IP_ADAPTER_ORDER_MAP() : base() { }
+
 			/// <summary>Initializes a new instance of the <see cref="IP_ADAPTER_ORDER_MAP"/> class.</summary>
 			/// <param name="byteSize">Size of the byte.</param>
 			public IP_ADAPTER_ORDER_MAP(uint byteSize) : base((int)byteSize, 0)

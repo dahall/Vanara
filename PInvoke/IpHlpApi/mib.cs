@@ -8,6 +8,9 @@ namespace Vanara.PInvoke
 {
 	public static partial class IpHlpApi
 	{
+		/// <summary>Set the value of MIB_IPSTATS.dwDefaultTTL to this value to keep the current value when calling SetIpStatistics.</summary>
+		public const uint MIB_USE_CURRENT_TTL = uint.MaxValue;
+
 		/// <summary>The address type or state for <see cref="MIB_IPADDRROW"/>.</summary>
 		[PInvokeData("ipmib.h", MSDNShortId = "ed1777bd-4c02-43e0-9bbb-6bb02702e1a4")]
 		[Flags]
@@ -598,6 +601,20 @@ namespace Vanara.PInvoke
 
 			/// <summary>The type of ARP entry. This type can be one of the following values.</summary>
 			public MIB_IPNET_TYPE dwType;
+
+			/// <summary>Initializes a new instance of the <see cref="MIB_IPNETROW"/> struct.</summary>
+			/// <param name="ipV4">The IPv4 address.</param>
+			/// <param name="ifIdx">The index of the adapter.</param>
+			/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
+			public MIB_IPNETROW(IN_ADDR ipV4, uint ifIdx, byte[] macAddr = null, MIB_IPNET_TYPE? type = null)
+			{
+				dwIndex = ifIdx;
+				dwAddr = ipV4;
+				dwPhysAddrLen = macAddr == null ? 0U : (uint)macAddr.Length;
+				bPhysAddr = new byte[8];
+				if (macAddr != null) Array.Copy(macAddr, bPhysAddr, 6);
+				dwType = type ?? MIB_IPNET_TYPE.MIB_IPNET_TYPE_OTHER;
+			}
 		}
 
 		/// <summary>The <c>MIB_IPSTATS</c> structure stores information about the IP protocol running on a particular computer.</summary>

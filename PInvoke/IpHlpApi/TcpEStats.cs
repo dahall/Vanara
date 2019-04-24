@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -62,45 +63,63 @@ namespace Vanara.PInvoke
 			/// This value specifies SYN exchange information for a TCP connection. Only read-only static information is available for this
 			/// enumeration value.
 			/// </summary>
+			[CorrespondingType(typeof(TCP_ESTATS_SYN_OPTS_ROS_v0))]
 			TcpConnectionEstatsSynOpts,
 
 			/// <summary>
 			/// This value specifies extended data transfer information for a TCP connection. Only read-only dynamic information and
 			/// read/write information are available for this enumeration value.
 			/// </summary>
+			[CorrespondingType(typeof(TCP_ESTATS_DATA_RW_v0))]
+			[CorrespondingType(typeof(TCP_ESTATS_DATA_ROD_v0))]
 			TcpConnectionEstatsData,
 
 			/// <summary>
 			/// This value specifies sender congestion for a TCP connection. All three types of information (read-only static, read-only
 			/// dynamic, and read/write information) are available for this enumeration value.
 			/// </summary>
+			[CorrespondingType(typeof(TCP_ESTATS_SND_CONG_RW_v0))]
+			[CorrespondingType(typeof(TCP_ESTATS_SND_CONG_ROS_v0))]
+			[CorrespondingType(typeof(TCP_ESTATS_SND_CONG_ROD_v0))]
 			TcpConnectionEstatsSndCong,
 
 			/// <summary>This value specifies extended path measurement information for a TCP connection. This information is used to infer segment reordering on the path from the local sender to the remote receiver. Only read-only dynamic information and read/write information are available for this enumeration value.</summary>
+			[CorrespondingType(typeof(TCP_ESTATS_PATH_RW_v0))]
+			[CorrespondingType(typeof(TCP_ESTATS_PATH_ROD_v0))]
 			TcpConnectionEstatsPath,
 
 			/// <summary>
 			/// This value specifies extended output-queuing information for a TCP connection. Only read-only dynamic information and
 			/// read/write information are available for this enumeration value.
 			/// </summary>
+			[CorrespondingType(typeof(TCP_ESTATS_SEND_BUFF_RW_v0))]
+			[CorrespondingType(typeof(TCP_ESTATS_SEND_BUFF_ROD_v0))]
 			TcpConnectionEstatsSendBuff,
 
 			/// <summary>This value specifies extended local-receiver information for a TCP connection. Only read-only dynamic information and read/write information are available for this enumeration value.</summary>
+			[CorrespondingType(typeof(TCP_ESTATS_REC_RW_v0))]
+			[CorrespondingType(typeof(TCP_ESTATS_REC_ROD_v0))]
 			TcpConnectionEstatsRec,
 
 			/// <summary>
 			/// This value specifies extended remote-receiver information for a TCP connection. Only read-only dynamic information and
 			/// read/write information are available for this enumeration value.
 			/// </summary>
+			[CorrespondingType(typeof(TCP_ESTATS_OBS_REC_RW_v0))]
+			[CorrespondingType(typeof(TCP_ESTATS_OBS_REC_ROD_v0))]
 			TcpConnectionEstatsObsRec,
 
 			/// <summary>This value specifies bandwidth estimation statistics for a TCP connection on bandwidth. Only read-only dynamic information and read/write information are available for this enumeration value.</summary>
+			[CorrespondingType(typeof(TCP_ESTATS_BANDWIDTH_RW_v0))]
+			[CorrespondingType(typeof(TCP_ESTATS_BANDWIDTH_ROD_v0))]
 			TcpConnectionEstatsBandwidth,
 
 			/// <summary>
 			/// This value specifies fine-grained round-trip time (RTT) estimation statistics for a TCP connection. Only read-only dynamic
 			/// information and read/write information are available for this enumeration value.
 			/// </summary>
+			[CorrespondingType(typeof(TCP_ESTATS_FINE_RTT_RW_v0))]
+			[CorrespondingType(typeof(TCP_ESTATS_FINE_RTT_ROD_v0))]
 			TcpConnectionEstatsFineRtt,
 		}
 

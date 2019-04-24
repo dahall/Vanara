@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Ws2_32;
+using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
@@ -320,8 +321,7 @@ namespace Vanara.PInvoke
 			/// can accept a connection on any interface.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] ucLocalAddr;
+			public IN6_ADDR ucLocalAddr;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -342,8 +342,7 @@ namespace Vanara.PInvoke
 			/// <c>MIB_TCP_STATE_LISTEN</c>, this value has no meaning.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] ucRemoteAddr;
+			public IN6_ADDR ucRemoteAddr;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -454,7 +453,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
 			/// <para>A SYSTEMTIME structure that indicates when the context bind operation that created this TCP connection occurred.</para>
 			/// </summary>
-			public SYSTEMTIME liCreateTimestamp;
+			public FILETIME liCreateTimestamp;
 
 			/// <summary>
 			/// <para>Type: <c>ULONGLONG[TCPIP_OWNING_MODULE_SIZE]</c></para>
@@ -519,8 +518,7 @@ namespace Vanara.PInvoke
 			/// can accept a connection on any interface.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] ucLocalAddr;
+			public IN6_ADDR ucLocalAddr;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -541,8 +539,7 @@ namespace Vanara.PInvoke
 			/// <c>MIB_TCP_STATE_LISTEN</c>, this value has no meaning.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] ucRemoteAddr;
+			public IN6_ADDR ucRemoteAddr;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -1145,7 +1142,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
 			/// <para>A SYSTEMTIME structure that indicates when the context bind operation that created this TCP link occurred.</para>
 			/// </summary>
-			public SYSTEMTIME liCreateTimestamp;
+			public FILETIME liCreateTimestamp;
 
 			/// <summary>
 			/// <para>Type: <c>ULONGLONG[TCPIP_OWNING_MODULE_SIZE]</c></para>
@@ -1828,7 +1825,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("tcpmib.h", MSDNShortId = "aa52531c-1d4e-44f9-8638-1528beb491f3")]
 		[CorrespondingType(typeof(MIB_TCP6ROW_OWNER_MODULE))]
 		[DefaultProperty(nameof(table))]
-		public class MIB_TCP6TABLE_OWNER_MODULE : SafeElementArray<MIB_TCP6ROW_OWNER_MODULE, uint, CoTaskMemoryMethods>
+		public class MIB_TCP6TABLE_OWNER_MODULE : SafeElementArray<MIB_TCP6ROW_OWNER_MODULE, ulong, CoTaskMemoryMethods>
 		{
 			/// <summary>Initializes a new instance of the <see cref="MIB_TCP6TABLE_OWNER_MODULE"/> class.</summary>
 			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
@@ -1839,7 +1836,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>The number of MIB_TCP6ROW_OWNER_MODULE elements in the <c>table</c>.</para>
 			/// </summary>
-			public uint dwNumEntries => Count;
+			public uint dwNumEntries => (uint)Count;
 
 			/// <summary>
 			/// <para>Array of MIB_TCP6ROW_OWNER_MODULE structures returned by a call to GetExtendedTcpTable.</para>
@@ -2028,7 +2025,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("tcpmib.h", MSDNShortId = "d44c9d82-906b-43ea-8edd-cf973864668d")]
 		[CorrespondingType(typeof(MIB_TCPROW_OWNER_MODULE))]
 		[DefaultProperty(nameof(table))]
-		public class MIB_TCPTABLE_OWNER_MODULE : SafeElementArray<MIB_TCPROW_OWNER_MODULE, uint, CoTaskMemoryMethods>
+		public class MIB_TCPTABLE_OWNER_MODULE : SafeElementArray<MIB_TCPROW_OWNER_MODULE, ulong, CoTaskMemoryMethods>
 		{
 			/// <summary>Initializes a new instance of the <see cref="MIB_TCPTABLE_OWNER_MODULE"/> class.</summary>
 			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
@@ -2039,7 +2036,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>The number of MIB_TCPROW_OWNER_MODULE elements in the <c>table</c>.</para>
 			/// </summary>
-			public uint dwNumEntries => Count;
+			public uint dwNumEntries => (uint)Count;
 
 			/// <summary>
 			/// <para>Array of MIB_TCPROW_OWNER_MODULE structures returned by a call to GetExtendedTcpTable.</para>

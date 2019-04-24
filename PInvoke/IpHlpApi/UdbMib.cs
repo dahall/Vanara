@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Ws2_32;
+using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
@@ -123,8 +124,7 @@ namespace Vanara.PInvoke
 			/// A value of zero indicates a UDP listener willing to accept datagrams for any IP interface associated with the local computer.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] ucLocalAddr;
+			public IN6_ADDR ucLocalAddr;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -151,7 +151,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
 			/// <para>A SYSTEMTIME structure that indicates when the context bind operation that created this endpoint occurred.</para>
 			/// </summary>
-			public SYSTEMTIME liCreateTimestamp;
+			public FILETIME liCreateTimestamp;
 
 			public int SpecificPortBind;
 
@@ -215,8 +215,7 @@ namespace Vanara.PInvoke
 			/// A value of zero indicates a UDP listener willing to accept datagrams for any IP interface associated with the local computer.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] ucLocalAddr;
+			public IN6_ADDR ucLocalAddr;
 
 			/// <summary>
 			/// <para>
@@ -367,7 +366,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
 			/// <para>A SYSTEMTIME structure that indicates when the call to the bind function for the UDP endpoint occurred.</para>
 			/// </summary>
-			public SYSTEMTIME liCreateTimestamp;
+			public FILETIME liCreateTimestamp;
 
 			/// <summary>Undocumented.</summary>
 			public int SpecificPortBind;
@@ -617,7 +616,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("udpmib.h", MSDNShortId = "11bf2d6d-b9bc-4a4d-b7b0-6f7d61eb3756")]
 		[CorrespondingType(typeof(MIB_UDP6ROW_OWNER_MODULE))]
 		[DefaultProperty(nameof(table))]
-		public class MIB_UDP6TABLE_OWNER_MODULE : SafeElementArray<MIB_UDP6ROW_OWNER_MODULE, uint, CoTaskMemoryMethods>
+		public class MIB_UDP6TABLE_OWNER_MODULE : SafeElementArray<MIB_UDP6ROW_OWNER_MODULE, ulong, CoTaskMemoryMethods>
 		{
 			/// <summary>Initializes a new instance of the <see cref="MIB_UDP6TABLE_OWNER_MODULE"/> class.</summary>
 			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
@@ -628,7 +627,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>The number of MIB_UDP6ROW_OWNER_MODULE elements in <c>table</c>.</para>
 			/// </summary>
-			public uint dwNumEntries => Count;
+			public uint dwNumEntries => (uint)Count;
 
 			/// <summary>
 			/// <para>An array of MIB_UDP6ROW_OWNER_MODULE structures returned by a call to GetExtendedUdpTable.</para>
@@ -815,7 +814,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("udpmib.h", MSDNShortId = "909749d7-a6be-4b3a-b432-79a5aa6e3f4c")]
 		[CorrespondingType(typeof(MIB_UDPROW_OWNER_MODULE))]
 		[DefaultProperty(nameof(table))]
-		public class MIB_UDPTABLE_OWNER_MODULE : SafeElementArray<MIB_UDPROW_OWNER_MODULE, uint, CoTaskMemoryMethods>
+		public class MIB_UDPTABLE_OWNER_MODULE : SafeElementArray<MIB_UDPROW_OWNER_MODULE, ulong, CoTaskMemoryMethods>
 		{
 			/// <summary>Initializes a new instance of the <see cref="MIB_UDPTABLE_OWNER_MODULE"/> class.</summary>
 			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
@@ -826,7 +825,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>The number of MIB_UDPROW_OWNER_MODULE elements in <c>table</c>.</para>
 			/// </summary>
-			public uint dwNumEntries => Count;
+			public uint dwNumEntries => (uint)Count;
 
 			/// <summary>
 			/// <para>An array of MIB_UDPROW_OWNER_MODULE structures returned by a call to GetExtendedUdpTable.</para>

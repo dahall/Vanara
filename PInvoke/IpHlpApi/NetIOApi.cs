@@ -1258,7 +1258,7 @@ namespace Vanara.PInvoke
 		// *SortedAddressPairCount );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "cdc90d63-15a4-4278-afc3-dbf9ad6ba698")]
-		public static extern Win32Error CreateSortedAddressPairs(IntPtr SourceAddressList, uint SourceAddressCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] SOCKADDR_IN6[] DestinationAddressList, uint DestinationAddressCount, uint AddressSortOptions, out SafeMibTableHandle SortedAddressPairList, out uint SortedAddressPairCount);
+		public static extern Win32Error CreateSortedAddressPairs([Optional] IntPtr SourceAddressList, uint SourceAddressCount, [In] SOCKADDR_IN6[] DestinationAddressList, uint DestinationAddressCount, uint AddressSortOptions, out SafeMibTableHandle SortedAddressPairList, out uint SortedAddressPairCount);
 
 		/// <summary>
 		/// The <c>CreateSortedAddressPairs</c> function takes a supplied list of potential IP destination addresses, pairs the destination
@@ -1270,10 +1270,10 @@ namespace Vanara.PInvoke
 		/// represented in the IPv4-mapped IPv6 address format which enables an IPv6 only application to communicate with an IPv4 node.
 		/// </param>
 		/// <returns>An array of SOCKADDR_IN6_PAIR structures that contain the sorted address pairs.</returns>
-		public static SOCKADDR_IN6_PAIR[] CreateSortedAddressPairs(SOCKADDR_IN6[] DestinationAddressList)
+		public static SOCKADDR_IN6_PAIR_NATIVE[] CreateSortedAddressPairs(SOCKADDR_IN6[] DestinationAddressList)
 		{
 			CreateSortedAddressPairs(IntPtr.Zero, 0, DestinationAddressList, (uint)DestinationAddressList.Length, 0, out var pairs, out var cnt).ThrowIfFailed();
-			return pairs.ToArray<SOCKADDR_IN6_PAIR>((int)cnt);
+			return Array.ConvertAll(pairs.ToArray<SOCKADDR_IN6_PAIR>((int)cnt), up => (SOCKADDR_IN6_PAIR_NATIVE)up);
 		}
 
 		/// <summary>
@@ -2313,7 +2313,7 @@ namespace Vanara.PInvoke
 		// *DestinationAddress, ULONG AddressSortOptions, PMIB_IPFORWARD_ROW2 BestRoute, SOCKADDR_INET *BestSourceAddress );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "7bc16824-c98f-4cd5-a589-e198b48b637c")]
-		public static extern Win32Error GetBestRoute2(ref NET_LUID InterfaceLuid, uint InterfaceIndex, ref SOCKADDR_INET SourceAddress, ref SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
+		public static extern Win32Error GetBestRoute2(in NET_LUID InterfaceLuid, uint InterfaceIndex, in SOCKADDR_INET SourceAddress, in SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
 
 		/// <summary>
 		/// <para>
@@ -2403,7 +2403,7 @@ namespace Vanara.PInvoke
 		// *DestinationAddress, ULONG AddressSortOptions, PMIB_IPFORWARD_ROW2 BestRoute, SOCKADDR_INET *BestSourceAddress );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "7bc16824-c98f-4cd5-a589-e198b48b637c")]
-		public static extern Win32Error GetBestRoute2(IntPtr InterfaceLuid, uint InterfaceIndex, ref SOCKADDR_INET SourceAddress, ref SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
+		public static extern Win32Error GetBestRoute2([Optional] IntPtr InterfaceLuid, uint InterfaceIndex, in SOCKADDR_INET SourceAddress, in SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
 
 		/// <summary>
 		/// <para>
@@ -2493,7 +2493,7 @@ namespace Vanara.PInvoke
 		// *DestinationAddress, ULONG AddressSortOptions, PMIB_IPFORWARD_ROW2 BestRoute, SOCKADDR_INET *BestSourceAddress );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "7bc16824-c98f-4cd5-a589-e198b48b637c")]
-		public static extern Win32Error GetBestRoute2(IntPtr InterfaceLuid, uint InterfaceIndex, IntPtr SourceAddress, ref SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
+		public static extern Win32Error GetBestRoute2([Optional] IntPtr InterfaceLuid, uint InterfaceIndex, [Optional] IntPtr SourceAddress, in SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
 
 		/// <summary>
 		/// <para>The <c>GetIfEntry2</c> function retrieves information for the specified interface on the local computer.</para>
@@ -5419,7 +5419,7 @@ namespace Vanara.PInvoke
 		// ResolveIpNetEntry2( PMIB_IPNET_ROW2 Row, CONST SOCKADDR_INET *SourceAddress );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "37f9dc58-362d-413e-a593-4dda52fb7d8b")]
-		public static extern Win32Error ResolveIpNetEntry2(ref MIB_IPNET_ROW2 Row, ref SOCKADDR_INET SourceAddress);
+		public static extern Win32Error ResolveIpNetEntry2(ref MIB_IPNET_ROW2 Row, in SOCKADDR_INET SourceAddress);
 
 		/// <summary>
 		/// <para>Reserved for future use. Do not use this function.</para>
@@ -5747,7 +5747,7 @@ namespace Vanara.PInvoke
 		// SetIpNetEntry2( PMIB_IPNET_ROW2 Row );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "4f423700-f721-44a9-ade3-ea5b5b86e394")]
-		public static extern Win32Error SetIpNetEntry2(ref MIB_IPNET_ROW2 Row);
+		public static extern Win32Error SetIpNetEntry2(in MIB_IPNET_ROW2 Row);
 
 		/// <summary>
 		/// <para>Reserved for future use. Do not use this function.</para>
