@@ -20,6 +20,7 @@ RegistryTypeExt | Extension methods for registry types.
 SafeElementArray<T> | A safe unmanaged array of structures allocated on the global heap with a prefix type (usually a uint or int) that determines the count of elements.
 SafeHANDLE | Base class for all native handles.
 SafeNativeArray<T> | A safe unmanaged array of structures allocated on the global heap. Array size determined by allocated memory size divided by size of structure.
+SafeNativeLinkedList<T> | A safe unmanaged linked list of structures allocated on the global heap.
 SafeResourceId | Represents a system resource name that can identify as a string, integer, or pointer.
 SBFunc<T> | Delegate that takes and StringBuilder and initial size and returns a result.
 SECURITY_ATTRIBUTES | The SECURITY_ATTRIBUTES structure contains the security descriptor for an object and specifies whether the handle retrieved by specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.

@@ -86,6 +86,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetMulticastIpAddressTable](http://msdn2.microsoft.com/en-us/library/0958e92e-12ed-42e0-aa04-b8c4544f6642) | iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.GetMulticastIpAddressTable  
 [GetNetworkParams](http://msdn2.microsoft.com/en-us/library/5f54a120-5db9-4b8d-a281-1112be0042d6) | iphlpapi.dll | iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetNetworkParams  
 [GetNumberOfInterfaces](http://msdn2.microsoft.com/en-us/library/655d63eb-455a-4a5e-97e2-7b7588eee4d9) | iphlpapi.dll | iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetNumberOfInterfaces  
+[GetOwnerModuleFromPidAndInfo](https://www.google.com/search?num=5&q=GetOwnerModuleFromPidAndInfo+site%3Amicrosoft.com) | Iphlpapi.dll | iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetOwnerModuleFromPidAndInfo  
 [GetOwnerModuleFromTcp6Entry](http://msdn2.microsoft.com/en-us/library/021679fc-91de-4e3b-956d-bb00b1856f20) | iphlpapi.dll | iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetOwnerModuleFromTcp6Entry  
 [GetOwnerModuleFromTcpEntry](http://msdn2.microsoft.com/en-us/library/12162f0a-56c1-4f81-a1f5-3cd5ad975d0d) | iphlpapi.dll | iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetOwnerModuleFromTcpEntry  
 [GetOwnerModuleFromUdp6Entry](http://msdn2.microsoft.com/en-us/library/01ed27b6-3ca6-4c9c-8910-a71a073c2ca2) | iphlpapi.dll | iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetOwnerModuleFromUdp6Entry  
@@ -176,6 +177,8 @@ Native Structure | Header | Managed Structure
 [IP_ADAPTER_WINS_SERVER_ADDRESS](http://msdn2.microsoft.com/en-us/library/AF9A40C4-63DB-4830-A689-1DFE4DC2CAB7) | iptypes.h | Vanara.PInvoke.IpHlpApi+IP_ADAPTER_WINS_SERVER_ADDRESS  
 [IP_ADDR_STRING](http://msdn2.microsoft.com/en-us/library/783c383d-7fd3-45bc-90f6-2e8ce01db3c3) | iptypes.h | Vanara.PInvoke.IpHlpApi+IP_ADDR_STRING  
 [IP_ADDRESS_PREFIX](http://msdn2.microsoft.com/en-us/library/3a6598d8-77e4-46f7-9397-124157508207) | netioapi.h | Vanara.PInvoke.IpHlpApi+IP_ADDRESS_PREFIX  
+[IP_ADDRESS_STRING](http://msdn2.microsoft.com/en-us/library/f426b22f-66e4-43e4-8852-357359df6f88) | iptypes.h | Vanara.PInvoke.IpHlpApi+IP_ADDRESS_STRING  
+[IP_INTERFACE_NAME_INFO](http://msdn2.microsoft.com/en-us/library/c113e97d-6f41-490a-a872-20d662fd763b) | iptypes.h | Vanara.PInvoke.IpHlpApi+IP_INTERFACE_NAME_INFO  
 [IP_OPTION_INFORMATION](http://msdn2.microsoft.com/en-us/library/4341d0a4-65d8-4677-b208-2cde5ff36f14) | ipexport.h | Vanara.PInvoke.IpHlpApi+IP_OPTION_INFORMATION  
 [IP_PER_ADAPTER_INFO](http://msdn2.microsoft.com/en-us/library/10cfdded-4184-4d34-9ccd-85446c13d497) | iptypes.h | Vanara.PInvoke.IpHlpApi+IP_PER_ADAPTER_INFO  
 [MIB_ANYCASTIPADDRESS_ROW](http://msdn2.microsoft.com/en-us/library/bdbe43b8-88aa-48af-aa6b-c88c4e8e404e) | netioapi.h | Vanara.PInvoke.IpHlpApi+MIB_ANYCASTIPADDRESS_ROW  
