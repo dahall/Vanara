@@ -162,7 +162,7 @@ namespace Vanara.InteropServices
 		{
 			if (startIndex < 0 || startIndex + count > Size) throw new ArgumentOutOfRangeException();
 			var ret = new byte[count];
-			Marshal.Copy(handle, ret, startIndex, count);
+			Marshal.Copy(handle.Offset(startIndex), ret, 0, count);
 			return ret;
 		}
 
