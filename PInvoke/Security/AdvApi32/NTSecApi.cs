@@ -342,6 +342,7 @@ namespace Vanara.PInvoke
 		/// more information, see LSA Policy Function Return Values. You can use the LsaNtStatusToWinError function to convert the NTSTATUS
 		/// code to a Windows error code.
 		/// </returns>
+		[PInvokeData("ntlsa.h")]
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 		public static extern uint LsaCreateAccount(LSA_HANDLE PolicyHandle, PSID AccountSid, LsaAccountAccessMask DesiredAccess, out SafeLSA_HANDLE AccountHandle);
 
@@ -501,6 +502,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <para>If the function succeeds, the function returns one of the following <c>NTSTATUS</c> values.</para>
 		/// </returns>
+		[PInvokeData("ntlsa.h")]
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 		public static extern uint LsaGetSystemAccessAccount(LSA_HANDLE AccountHandle, out int SystemAccess);
 
@@ -853,6 +855,7 @@ namespace Vanara.PInvoke
 		/// <param name="DesiredAccess">The desired access.</param>
 		/// <param name="AccountHandle">The account handle.</param>
 		/// <returns>NTSTATUS</returns>
+		[PInvokeData("ntlsa.h")]
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 		public static extern uint LsaOpenAccount(LSA_HANDLE PolicyHandle, PSID AccountSid, LsaAccountAccessMask DesiredAccess, out SafeLSA_HANDLE AccountHandle);
 
@@ -1087,6 +1090,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is STATUS_SUCCESS. If the function fails, the return value is an NTSTATUS code, which
 		/// can be one of the following values or one of the LSA Policy Function Return Values.
 		/// </returns>
+		[PInvokeData("ntlsa.h")]
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 		public static extern uint LsaSetSystemAccessAccount(LSA_HANDLE AccountHandle, int SystemAccess);
 
@@ -1238,6 +1242,83 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntsecapi.h", MSDNShortId = "e814ed68-07e7-4936-ba96-5411086f43f6")]
 		// public static extern _IRQL_requires_same_ NTSTATUS LsaFreeReturnBuffer(IntPtr Buffer);
 		private static extern uint LsaFreeReturnBuffer(IntPtr Buffer);
+
+		/// <summary>
+		/// <para>
+		/// The <c>DOMAIN_PASSWORD_INFORMATION</c> structure contains information about a domain's password policy, such as the minimum
+		/// length for passwords and how unique passwords must be.
+		/// </para>
+		/// <para>It is used in the MSV1_0_CHANGEPASSWORD_RESPONSE structure.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_domain_password_information typedef struct
+		// _DOMAIN_PASSWORD_INFORMATION { USHORT MinPasswordLength; USHORT PasswordHistoryLength; ULONG PasswordProperties; #if ...
+		// OLD_LARGE_INTEGER MaxPasswordAge; #if ... OLD_LARGE_INTEGER MinPasswordAge; #else LARGE_INTEGER MaxPasswordAge; #endif #else
+		// LARGE_INTEGER MinPasswordAge; #endif } DOMAIN_PASSWORD_INFORMATION, *PDOMAIN_PASSWORD_INFORMATION;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "7dceaf70-d8de-47c0-b940-f0d6a0cca101")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DOMAIN_PASSWORD_INFORMATION
+		{
+			/// <summary>Specifies the minimum length, in characters, of a valid password.</summary>
+			public ushort MinPasswordLength;
+
+			/// <summary>
+			/// Indicates the number of previous passwords saved in the history list. A user cannot reuse a password in the history list.
+			/// </summary>
+			public ushort PasswordHistoryLength;
+
+			/// <summary>
+			/// <para>Flags that describe the password properties. They can be one or more of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>DOMAIN_PASSWORD_COMPLEX 0x00000001L</term>
+			/// <term>The password must have a mix of at least two of the following types of characters:</term>
+			/// </item>
+			/// <item>
+			/// <term>DOMAIN_PASSWORD_NO_ANON_CHANGE 0x00000002L</term>
+			/// <term>
+			/// The password cannot be changed without logging on. Otherwise, if your password has expired, you can change your password and
+			/// then log on.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>DOMAIN_PASSWORD_NO_CLEAR_CHANGE 0x00000004L</term>
+			/// <term>Forces the client to use a protocol that does not allow the domain controller to get the plaintext password.</term>
+			/// </item>
+			/// <item>
+			/// <term>DOMAIN_LOCKOUT_ADMINS 0x00000008L</term>
+			/// <term>Allows the built-in administrator account to be locked out from network logons.</term>
+			/// </item>
+			/// <item>
+			/// <term>DOMAIN_PASSWORD_STORE_CLEARTEXT 0x00000010L</term>
+			/// <term>The directory service is storing a plaintext password for all users instead of a hash function of the password.</term>
+			/// </item>
+			/// <item>
+			/// <term>DOMAIN_REFUSE_PASSWORD_CHANGE 0x00000020L</term>
+			/// <term>
+			/// Removes the requirement that the machine account password be automatically changed every week. This value should not be used
+			/// as it can weaken security.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint PasswordProperties;
+
+			/// <summary>
+			/// A 64-bit value, with delta time syntax, indicating the policy setting for the maximum time allowed before a password reset or
+			/// change is required.
+			/// </summary>
+			public long MaxPasswordAge;
+
+			/// <summary>
+			/// A 64-bit value, with delta time syntax, indicating the policy setting for the minimum time allowed before a password change
+			/// operation is allowed.
+			/// </summary>
+			public long MinPasswordAge;
+		}
 
 		/// <summary>
 		/// <para>The <c>LSA_AUTH_INFORMATION</c> structure contains authentication information for a trusted domain.</para>

@@ -1,11 +1,3909 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
+using Vanara.InteropServices;
+using static Vanara.PInvoke.AdvApi32;
+using CredHandle = Vanara.PInvoke.Secur32.SecHandle;
+
+using CtxtHandle = Vanara.PInvoke.Secur32.SecHandle;
+
+using TimeStamp = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
 	/// <summary>Functions and definitions from Secur32.dll</summary>
 	public static partial class Secur32
 	{
+		/// <summary>Undocumented.</summary>
+		/// <param name="Arg">Argument passed in</param>
+		/// <param name="Principal">Principal ID</param>
+		/// <param name="KeyVer">Key Version</param>
+		/// <param name="Key">Returned ptr to key.</param>
+		/// <param name="Status">returned status.</param>
+		[PInvokeData("sspi.h")]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void SEC_GET_KEY_FN(IntPtr Arg, IntPtr Principal, uint KeyVer, out IntPtr Key, out int Status);
+
+		/// <summary>Bit flags that specify the attributes required by the server to establish the context.</summary>
+		[PInvokeData("sspi.h", MSDNShortId = "a53f733e-b646-4431-b021-a2c446308849")]
+		[Flags]
+		public enum ASC_REQ : uint
+		{
+			/// <summary>The server is allowed to impersonate the client. Ignore this flag for constrained delegation.</summary>
+			ASC_REQ_DELEGATE = 0x00000001,
+
+			/// <summary>The mutual authentication policy of the service will be satisfied.</summary>
+			ASC_REQ_MUTUAL_AUTH = 0x00000002,
+
+			/// <summary>Detect replayed packets.</summary>
+			ASC_REQ_REPLAY_DETECT = 0x00000004,
+
+			/// <summary>Detect messages received out of sequence.</summary>
+			ASC_REQ_SEQUENCE_DETECT = 0x00000008,
+
+			/// <summary>Encrypt messages by using the EncryptMessage function.</summary>
+			ASC_REQ_CONFIDENTIALITY = 0x00000010,
+
+			/// <summary>A new session key must be negotiated. This value is supported only by the Kerberos security package.</summary>
+			ASC_REQ_USE_SESSION_KEY = 0x00000020,
+
+			ASC_REQ_SESSION_TICKET = 0x00000040,
+
+			/// <summary>
+			/// Credential Security Support Provider (CredSSP) will allocate output buffers. When you have finished using the output buffers,
+			/// free them by calling the FreeContextBuffer function.
+			/// </summary>
+			ASC_REQ_ALLOCATE_MEMORY = 0x00000100,
+
+			ASC_REQ_USE_DCE_STYLE = 0x00000200,
+			ASC_REQ_DATAGRAM = 0x00000400,
+
+			/// <summary>The security context will not handle formatting messages.</summary>
+			ASC_REQ_CONNECTION = 0x00000800,
+
+			ASC_REQ_CALL_LEVEL = 0x00001000,
+			ASC_REQ_FRAGMENT_SUPPLIED = 0x00002000,
+
+			/// <summary>When errors occur, the remote party will be notified.</summary>
+			ASC_REQ_EXTENDED_ERROR = 0x00008000,
+
+			/// <summary>Support a stream-oriented connection.</summary>
+			ASC_REQ_STREAM = 0x00010000,
+
+			/// <summary>Sign messages and verify signatures by using the EncryptMessage and MakeSignature functions.</summary>
+			ASC_REQ_INTEGRITY = 0x00020000,
+
+			ASC_REQ_LICENSING = 0x00040000,
+			ASC_REQ_IDENTIFY = 0x00080000,
+			ASC_REQ_ALLOW_NULL_SESSION = 0x00100000,
+			ASC_REQ_ALLOW_NON_USER_LOGONS = 0x00200000,
+			ASC_REQ_ALLOW_CONTEXT_REPLAY = 0x00400000,
+			ASC_REQ_FRAGMENT_TO_FIT = 0x00800000,
+			ASC_REQ_NO_TOKEN = 0x01000000,
+			ASC_REQ_PROXY_BINDINGS = 0x04000000,
+			ASC_REQ_ALLOW_MISSING_BINDINGS = 0x10000000,
+		}
+
+		/// <summary>A set of bit flags that indicate the attributes of the established context.</summary>
+		[PInvokeData("sspi.h", MSDNShortId = "a53f733e-b646-4431-b021-a2c446308849")]
+		[Flags]
+		public enum ASC_RET : uint
+		{
+			/// <summary>
+			/// The server in the transport application can build new security contexts impersonating the client that will be accepted by
+			/// other servers as the client's contexts. Delegate works only if MUTUAL_AUTH is set. DELEGATE is currently supported only by
+			/// Kerberos. Further, Kerberos will delegate only to a server that has the flag TRUSTED_FOR_DELEGATION. Do not use this flag for
+			/// constrained delegation.
+			/// </summary>
+			ASC_RET_DELEGATE = 0x00000001,
+
+			/// <summary>
+			/// The communicating parties must authenticate their identities to each other. Without MUTUAL_AUTH, the client authenticates its
+			/// identity to the server. With MUTUAL_AUTH, the server also must authenticate its identity to the client.
+			/// <para>
+			/// When using the Schannel security package, the server sets the ASC_RET_MUTUAL_AUTH constant only in the last call to
+			/// AcceptSecurityContext(Negotiate), after certificate mapping has successfully completed.
+			/// </para>
+			/// </summary>
+			ASC_RET_MUTUAL_AUTH = 0x00000002,
+
+			/// <summary>
+			/// The security package detects replayed packets and notifies the caller if a packet has been replayed. The use of this flag
+			/// implies all of the conditions specified by the INTEGRITY flag.
+			/// </summary>
+			ASC_RET_REPLAY_DETECT = 0x00000004,
+
+			/// <summary>
+			/// The context must be allowed to detect out-of-order delivery of packets later through the message support functions. Use of
+			/// this flag implies all of the conditions specified by the INTEGRITY flag.
+			/// </summary>
+			ASC_RET_SEQUENCE_DETECT = 0x00000008,
+
+			/// <summary>
+			/// The context can protect data while in transit using the EncryptMessage (General) and DecryptMessage (General) functions. The
+			/// CONFIDENTIALITY flag does not work if the generated context is for the Guest account.
+			/// </summary>
+			ASC_RET_CONFIDENTIALITY = 0x00000010,
+
+			/// <summary>A new session key must be negotiated.</summary>
+			ASC_RET_USE_SESSION_KEY = 0x00000020,
+
+			/// <summary></summary>
+			ASC_RET_SESSION_TICKET = 0x00000040,
+
+			/// <summary>
+			/// The security package must allocate memory. The caller must eventually call the FreeContextBuffer function to free memory
+			/// allocated by the security package.
+			/// </summary>
+			ASC_RET_ALLOCATED_MEMORY = 0x00000100,
+
+			/// <summary>The caller expects a three-leg authentication transaction.</summary>
+			ASC_RET_USED_DCE_STYLE = 0x00000200,
+
+			/// <summary>Datagram semantics must be used. For more information, see Datagram Contexts.</summary>
+			ASC_RET_DATAGRAM = 0x00000400,
+
+			/// <summary>Connection semantics must be used. For more information, see Connection-Oriented Contexts.</summary>
+			ASC_RET_CONNECTION = 0x00000800,
+
+			/// <summary></summary>
+			ASC_RET_CALL_LEVEL = 0x00002000,
+
+			/// <summary></summary>
+			ASC_RET_THIRD_LEG_FAILED = 0x00004000,
+
+			/// <summary>Error reply messages for the peer must be generated if the context fails.</summary>
+			ASC_RET_EXTENDED_ERROR = 0x00008000,
+
+			/// <summary>Stream semantics must be used. For more information, see Stream Contexts.</summary>
+			ASC_RET_STREAM = 0x00010000,
+
+			/// <summary>Buffer integrity can be verified but no sequencing or reply detection is enabled.</summary>
+			ASC_RET_INTEGRITY = 0x00020000,
+
+			/// <summary></summary>
+			ASC_RET_LICENSING = 0x00040000,
+
+			/// <summary>
+			/// When a server impersonates a context that has this flag set, that impersonation yields extremely limited access.
+			/// Impersonation with IDENTIFY set is used to verify the client's identity.
+			/// </summary>
+			ASC_RET_IDENTIFY = 0x00080000,
+
+			/// <summary></summary>
+			ASC_RET_NULL_SESSION = 0x00100000,
+
+			/// <summary></summary>
+			ASC_RET_ALLOW_NON_USER_LOGONS = 0x00200000,
+
+			/// <summary></summary>
+			ASC_RET_ALLOW_CONTEXT_REPLAY = 0x00400000,
+
+			/// <summary></summary>
+			ASC_RET_FRAGMENT_ONLY = 0x00800000,
+
+			/// <summary></summary>
+			ASC_RET_NO_TOKEN = 0x01000000,
+
+			/// <summary></summary>
+			ASC_RET_NO_ADDITIONAL_TOKEN = 0x02000000,
+		}
+
+		/// <summary>The data representation, such as byte ordering, on the target.</summary>
+		[PInvokeData("sspi.h", MSDNShortId = "a53f733e-b646-4431-b021-a2c446308849")]
+		[Flags]
+		public enum DREP
+		{
+			/// <summary></summary>
+			SECURITY_NATIVE_DREP = 0x00000010,
+
+			/// <summary></summary>
+			SECURITY_NETWORK_DREP = 0x00000000
+		}
+
+		/// <summary>Property to return from the SASL context.</summary>
+		[PInvokeData("sspi.h", MSDNShortId = "c9c424d3-07e6-4ed0-9189-c932af0475d9")]
+		public enum SASL_OPTION
+		{
+			/// <summary>
+			/// Data type of buffer: ULONG
+			/// <para>
+			/// State of SASL processing of the Authz value provided by the SASL application. The valid states for processing are
+			/// Sasl_AuthZIDForbidden and Sasl_AuthZIDProcessed.
+			/// </para>
+			/// </summary>
+			SASL_OPTION_AUTHZ_PROCESSING = 4,
+
+			/// <summary>
+			/// Data type of buffer: Array of binary characters
+			/// <para>
+			/// String of characters passed from the SASL client to the server. If the AuthZ_Processing state is Sasl_AuthZIDForbidden, the
+			/// return value SEC_E_UNSUPPORTED_FUNCTION is returned.
+			/// </para>
+			/// </summary>
+			SASL_OPTION_AUTHZ_STRING = 3,
+
+			/// <summary>
+			/// Data type of buffer: ULONG
+			/// <para>Maximum size of the receiving buffer on the local computer.</para>
+			/// </summary>
+			SASL_OPTION_RECV_SIZE = 2,
+
+			/// <summary>
+			/// Data type of buffer: ULONG
+			/// <para>
+			/// Maximum message data size that can be transmitted. This value is the maximum buffer size that can be transmitted to the
+			/// remote SASL process minus the block size, the trailer size, and the maximum signature size.
+			/// </para>
+			/// </summary>
+			SASL_OPTION_SEND_SIZE = 1,
+		}
+
+		/// <summary>En/Decryption options.</summary>
+		[PInvokeData("sspi.h", MSDNShortId = "86598BAA-0E87-46A9-AA1A-BF04BF0CDAFA")]
+		public enum SEC_WINNT_AUTH_IDENTITY_ENCRYPT
+		{
+			/// <summary>
+			/// The encrypted structure can only be decrypted by a security context in the same logon session. This option is used to protect
+			/// an identity buffer that is being sent over a local RPC.
+			/// </summary>
+			SEC_WINNT_AUTH_IDENTITY_ENCRYPT_SAME_LOGON = 0x1,
+
+			/// <summary>
+			/// The encrypted structure can only be decrypted by the same process. Calling the function with this option is equivalent to
+			/// calling SspiEncryptAuthIdentity. This option is used to protect an identity buffer that is being persisted in a process's
+			/// private memory for an extended period.
+			/// </summary>
+			SEC_WINNT_AUTH_IDENTITY_ENCRYPT_SAME_PROCESS = 0x2
+		}
+
+		[Flags]
+		public enum SecBufferType : uint
+		{
+			/// <summary>The buffer contains an alert message.</summary>
+			SECBUFFER_ALERT = 0x11,
+
+			/// <summary>The buffer contains a bitmask for a SECBUFFER_READONLY_WITH_CHECKSUM buffer.</summary>
+			SECBUFFER_ATTRMASK = 0xF0000000,
+
+			/// <summary>The buffer contains channel binding information.</summary>
+			SECBUFFER_CHANNEL_BINDINGS = 0xE,
+
+			/// <summary>The buffer contains a DOMAIN_PASSWORD_INFORMATION structure.</summary>
+			//[CorrespondingType(typeof(DOMAIN_PASSWORD_INFORMATION))]
+			SECBUFFER_CHANGE_PASS_RESPONSE = 0xF,
+
+			/// <summary>
+			/// The buffer contains common data. The security package can read and write this data, for example, to encrypt some or all of it.
+			/// </summary>
+			SECBUFFER_DATA = 0x1,
+
+			/// <summary>
+			/// The buffer contains the setting for the maximum transmission unit (MTU) size for DTLS only. The default value is 1096 and the
+			/// valid configurable range is between 200 and 64*1024.
+			/// </summary>
+			SECBUFFER_DTLS_MTU = 0x18,
+
+			/// <summary>
+			/// This is a placeholder in the buffer array. The caller can supply several such entries in the array, and the security package
+			/// can return information in them. For more information, see SSPI Context Semantics.
+			/// </summary>
+			SECBUFFER_EMPTY = 0x0,
+
+			/// <summary>The security package uses this value to indicate the number of extra or unprocessed bytes in a message.</summary>
+			SECBUFFER_EXTRA = 0x5,
+
+			/// <summary>
+			/// The buffer contains a protocol-specific list of object identifiers (OIDs). It is not usually of interest to callers.
+			/// </summary>
+			SECBUFFER_MECHLIST = 0xB,
+
+			/// <summary>The buffer contains a signature of a SECBUFFER_MECHLIST buffer. It is not usually of interest to callers.</summary>
+			SECBUFFER_MECHLIST_SIGNATURE = 0xC,
+
+			/// <summary>
+			/// The security package uses this value to indicate the number of missing bytes in a particular message. The pvBuffer member is
+			/// ignored in this type.
+			/// </summary>
+			SECBUFFER_MISSING = 0x4,
+
+			/// <summary>
+			/// These are transport-to-package–specific parameters. For example, the NetWare redirector may supply the server object
+			/// identifier, while DCE RPC can supply an association UUID, and so on.
+			/// </summary>
+			SECBUFFER_PKG_PARAMS = 0x3,
+
+			/// <summary>The buffer contains the preshared key. The maximum allowed PSK buffer size is 256 bytes.</summary>
+			SECBUFFER_PRESHARED_KEY = 0x16,
+
+			/// <summary>The buffer contains the preshared key identity.</summary>
+			SECBUFFER_PRESHARED_KEY_IDENTITY = 0x17,
+
+			/// <summary>The buffer contains the SRTP master key identifier.</summary>
+			SECBUFFER_SRTP_MASTER_KEY_IDENTIFIER = 0x14,
+
+			/// <summary>The buffer contains the list of SRTP protection profiles, in descending order of preference.</summary>
+			SECBUFFER_SRTP_PROTECTION_PROFILES = 0x13,
+
+			/// <summary>The buffer contains a protocol-specific header for a particular record. It is not usually of interest to callers.</summary>
+			SECBUFFER_STREAM_HEADER = 0x7,
+
+			/// <summary>The buffer contains a protocol-specific trailer for a particular record. It is not usually of interest to callers.</summary>
+			SECBUFFER_STREAM_TRAILER = 0x6,
+
+			/// <summary>This flag is reserved. Do not use it.</summary>
+			SECBUFFER_TARGET = 0xD,
+
+			/// <summary>
+			/// The buffer specifies the service principal name (SPN) of the target.
+			/// <para>This value is supported by the Digest security package when used with channel bindings.</para>
+			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
+			/// </summary>
+			SECBUFFER_TARGET_HOST = 0x10,
+
+			/// <summary>
+			/// The buffer contains the security token portion of the message. This is read-only for input parameters or read/write for
+			/// output parameters.
+			/// </summary>
+			SECBUFFER_TOKEN = 0x2,
+
+			/// <summary>
+			/// The buffer contains the supported token binding protocol version and key parameters, in descending order of preference.
+			/// </summary>
+			SECBUFFER_TOKEN_BINDING = 0x15,
+
+			/// <summary>
+			/// The buffer contains a list of application protocol IDs, one list per application protocol negotiation extension type to be enabled.
+			/// </summary>
+			SECBUFFER_APPLICATION_PROTOCOLS = 18,
+
+			/// <summary>Undocumented.</summary>
+			SECBUFFER_NEGOTIATION_INFO = 8,
+
+			/// <summary>Undocumented.</summary>
+			SECBUFFER_PADDING = 9,
+
+			/// <summary>Undocumented.</summary>
+			SECBUFFER_READONLY = 0x80000000,
+
+			/// <summary>Undocumented.</summary>
+			SECBUFFER_READONLY_WITH_CHECKSUM = 0x10000000,
+
+			/// <summary>Undocumented.</summary>
+			SECBUFFER_RESERVED = 0x60000000,
+
+			/// <summary>Undocumented.</summary>
+			SECBUFFER_STREAM = 10,
+		}
+
+		/// <summary>Specifies the attribute of the context to be returned.</summary>
+		[PInvokeData("sspi.h", MSDNShortId = "FD91EE99-F94E-44CE-9331-933D0CAA5F75")]
+		public enum SECPKG_ATTR : uint
+		{
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_AccessToken structure.
+			/// <para>Returns a handle to the access token.</para>
+			/// </summary>
+			SECPKG_ATTR_ACCESS_TOKEN = 18,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_SessionAppData structure.
+			/// <para>Returns or specifies application data for the session.</para>
+			/// <para>This attribute is supported only by the Schannel security package.</para>
+			/// </summary>
+			SECPKG_ATTR_APP_DATA = 0x5e,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_Authority structure.
+			/// <para>Queries the name of the authenticating authority.</para>
+			/// </summary>
+			SECPKG_ATTR_AUTHORITY = 6,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_ClientSpecifiedTarget structure that represents the service
+			/// principal name (SPN) of the initial target supplied by the client.
+			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
+			/// </summary>
+			SECPKG_ATTR_CLIENT_SPECIFIED_TARGET = 27,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_ConnectionInfo structure.
+			/// <para>Returns detailed information on the established connection.</para>
+			/// <para>This attribute is supported only by the Schannel security package.</para>
+			/// </summary>
+			SECPKG_ATTR_CONNECTION_INFO = 0x5a,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_ClientCreds structure that specifies client credentials.
+			/// <para>If the client credential is user name and password, the buffer is a packed KERB_INTERACTIVE_LOGON structure.</para>
+			/// <para>If the client credential is user name and smart card PIN, the buffer is a packed KERB_CERTIFICATE_LOGON structure.</para>
+			/// <para>If the client credential is an online identity credential, the buffer is a marshaled SEC_WINNT_AUTH_IDENTITY_EX2 structure.</para>
+			/// <para>This attribute is supported only on the CredSSP server.</para>
+			/// <para>
+			/// Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.
+			/// </para>
+			/// </summary>
+			SECPKG_ATTR_CREDS_2 = 0x80000086,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_DceInfo structure.
+			/// <para>Queries for authorization data used by DCE services.</para>
+			/// </summary>
+			SECPKG_ATTR_DCE_INFO = 3,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_Bindings structure that specifies channel binding information.
+			/// <para>This attribute is supported only by the Schannel security package.</para>
+			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
+			/// </summary>
+			SECPKG_ATTR_ENDPOINT_BINDINGS = 26,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_EapKeyBlock structure.
+			/// <para>Queries for key data used by the EAP TLS protocol.</para>
+			/// <para>This attribute is supported only by the Schannel security package.</para>
+			/// </summary>
+			SECPKG_ATTR_EAP_KEY_BLOCK = 0x5b,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_Flags structure.
+			/// <para>Returns information about the negotiated context flags.</para>
+			/// </summary>
+			SECPKG_ATTR_FLAGS = 14,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_IssuerListInfoEx structure.
+			/// <para>Returns a list of certificate issuers that are accepted by the server.</para>
+			/// <para>This attribute is supported only by the Schannel security package.</para>
+			/// </summary>
+			SECPKG_ATTR_ISSUER_LIST_EX = 0x59,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_KeyInfo structure.
+			/// <para>Queries information about the keys used in a security context.</para>
+			/// </summary>
+			SECPKG_ATTR_KEY_INFO = 5,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_LastClientTokenStatus structure that specifies whether the token
+			/// from the most recent call to the InitializeSecurityContext function is the last token from the client.
+			/// <para>This value is supported only by the Negotiate, Kerberos, and NTLM security packages.</para>
+			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
+			/// </summary>
+			SECPKG_ATTR_LAST_CLIENT_TOKEN_STATUS = 30,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_Lifespan structure.
+			/// <para>Queries the life span of the context.</para>
+			/// </summary>
+			SECPKG_ATTR_LIFESPAN = 2,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a PCCERT_CONTEXTstructure.
+			/// <para>Finds a certificate context that contains a local end certificate.</para>
+			/// <para>This attribute is supported only by the Schannel security package.</para>
+			/// </summary>
+			SECPKG_ATTR_LOCAL_CERT_CONTEXT = 0x54,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_Names structure.
+			/// <para>Queries the name associated with the context.</para>
+			/// </summary>
+			SECPKG_ATTR_NAMES = 1,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_NativeNames structure.
+			/// <para>Returns the principal name (CNAME) from the outbound ticket.</para>
+			/// </summary>
+			SECPKG_ATTR_NATIVE_NAMES = 13,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_NegotiationInfo structure.
+			/// <para>
+			/// Returns information about the security package to be used with the negotiation process and the current state of the
+			/// negotiation for the use of that package.
+			/// </para>
+			/// </summary>
+			SECPKG_ATTR_NEGOTIATION_INFO = 12,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_PackageInfostructure.
+			/// <para>Returns information on the SSP in use.</para>
+			/// </summary>
+			SECPKG_ATTR_PACKAGE_INFO = 10,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_PasswordExpiry structure.
+			/// <para>Returns password expiration information.</para>
+			/// </summary>
+			SECPKG_ATTR_PASSWORD_EXPIRY = 8,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a PCCERT_CONTEXTstructure.
+			/// <para>Finds a certificate context that contains the end certificate supplied by the server.</para>
+			/// <para>This attribute is supported only by the Schannel security package.</para>
+			/// </summary>
+			SECPKG_ATTR_REMOTE_CERT_CONTEXT = 0x53,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a HCERTCONTEXT. Finds a certificate context that contains a certificate supplied
+			/// by the Root store.
+			/// </summary>
+			SECPKG_ATTR_ROOT_STORE = 0x55,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_SessionKey structure.
+			/// <para>Returns information about the session keys.</para>
+			/// </summary>
+			SECPKG_ATTR_SESSION_KEY = 9,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_SessionInfo structure.
+			/// <para>Returns information about the session.</para>
+			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
+			/// <para>This attribute is supported only by the Schannel security package.</para>
+			/// </summary>
+			SECPKG_ATTR_SESSION_INFO = 0x5d,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_Sizes structure.
+			/// <para>Queries the sizes of the structures used in the per-message functions.</para>
+			/// </summary>
+			SECPKG_ATTR_SIZES = 0,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_StreamSizes structure.
+			/// <para>Queries the sizes of the various parts of a stream used in the per-message functions.</para>
+			/// <para>This attribute is supported only by the Schannel security package.</para>
+			/// </summary>
+			SECPKG_ATTR_STREAM_SIZES = 4,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_SubjectAttributes structure.
+			/// <para>This value returns information about the security attributes for the connection.</para>
+			/// <para>This value is supported only on the CredSSP server.</para>
+			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
+			/// </summary>
+			SECPKG_ATTR_SUBJECT_SECURITY_ATTRIBUTES = 124,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_SupportedSignatures structure.
+			/// <para>This value returns information about the signature types that are supported for the connection.</para>
+			/// <para>This value is supported only by the Schannel security package.</para>
+			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
+			/// </summary>
+			SECPKG_ATTR_SUPPORTED_SIGNATURES = 0x66,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_TargetInformation structure.
+			/// <para>Returns information about the name of the remote server.</para>
+			/// </summary>
+			SECPKG_ATTR_TARGET_INFORMATION = 17,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_Bindings structure that specifies channel binding information.
+			/// <para>This value is supported only by the Schannel security package.</para>
+			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
+			/// </summary>
+			SECPKG_ATTR_UNIQUE_BINDINGS = 25,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_AccessToken structure that specifies the access token for the
+			/// current security context.
+			/// <para>This attribute is supported only on the server.</para>
+			/// </summary>
+			SECPKG_ATTR_C_ACCESS_TOKEN = 0x80000012,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_AccessToken structure that specifies the access token for the
+			/// current security context.
+			/// <para>This attribute is supported only on the server.</para>
+			/// </summary>
+			SECPKG_ATTR_C_FULL_ACCESS_TOKEN = 0x80000082,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a CERT_TRUST_STATUS structure that specifies trust information about the certificate.
+			/// <para>This attribute is supported only on the client.</para>
+			/// </summary>
+			SECPKG_ATTR_CERT_TRUST_STATUS = 0x80000084,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_ClientCreds structure that specifies client credentials.
+			/// <para>The client credentials can be either user name and password or user name and smart card PIN.</para>
+			/// <para>This attribute is supported only on the server.</para>
+			/// </summary>
+			SECPKG_ATTR_CREDS = 0x80000080,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_PackageInfo structure that specifies the name of the
+			/// authentication package negotiated by the Microsoft Negotiate provider.
+			/// </summary>
+			SECPKG_ATTR_NEGOTIATION_PACKAGE = 0x80000081,
+
+			/// <summary>
+			/// The pBuffer parameter contains a pointer to a SecPkgContext_Flags structure that specifies information about the flags in the
+			/// current security context.
+			/// <para>This attribute is supported only on the client.</para>
+			/// </summary>
+			SECPKG_ATTR_SERVER_AUTH_FLAGS = 0x80000083,
+		}
+
+		/// <summary>Flags for <c>ExportSecurityContext</c>.</summary>
+		[PInvokeData("sspi.h", MSDNShortId = "4ebc7f37-b948-4c78-973f-0a74e55c7ee2")]
+		[Flags]
+		public enum SECPKG_CONTEXT_EXPORT
+		{
+			/// <summary>The new security context is reset to its initial state.</summary>
+			SECPKG_CONTEXT_EXPORT_RESET_NEW = 1,
+
+			/// <summary>The old security context is deleted.</summary>
+			SECPKG_CONTEXT_EXPORT_DELETE_OLD = 2,
+
+			/// <summary>
+			/// This value is not supported.
+			/// <para>
+			/// Windows Server 2003 and Windows XP/2000: The security context is to be exported to the kernel.This value is supported only in
+			/// Schannel kernel mode.
+			/// </para>
+			/// </summary>
+			SECPKG_CONTEXT_EXPORT_TO_KERNEL = 4,
+		}
+
+		/// <summary>A flag that indicates how credentials will be used.</summary>
+		[PInvokeData("sspi.h", MSDNShortId = "3b73decf-75d4-4bc4-b7ca-5f16aaadff29")]
+		public enum SECPKG_CRED
+		{
+			/// <summary>Allow a local client credential to prepare an outgoing token.</summary>
+			SECPKG_CRED_OUTBOUND = 0x0,
+
+			/// <summary>
+			/// Validate an incoming server credential. Inbound credentials might be validated by using an authenticating authority when
+			/// InitializeSecurityContext (CredSSP) or AcceptSecurityContext (CredSSP) is called. If such an authority is not available, the
+			/// function will fail and return SEC_E_NO_AUTHENTICATING_AUTHORITY. Validation is package specific.
+			/// </summary>
+			SECPKG_CRED_INBOUND = 0x1,
+		}
+
+		/// <summary>Specifies the attribute to query.</summary>
+		[PInvokeData("sspi.h", MSDNShortId = "a8ba6f73-8469-431b-b185-183b45b2c533")]
+		public enum SECPKG_CRED_ATTR
+		{
+			/// <summary>
+			/// Returns the certificate thumbprint in a pbuffer of type SecPkgCredentials_Cert.
+			/// <para>This attribute is only supported by Kerberos.</para>
+			/// <para>
+			/// Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This attribute is
+			/// not available.
+			/// </para>
+			/// </summary>
+			SECPKG_CRED_ATTR_CERT = 4,
+
+			/// <summary>
+			/// Returns the name of a credential in a pbuffer of type SecPkgCredentials_Names.
+			/// <para>This attribute is not supported by Schannel in WOW64 mode.</para>
+			/// </summary>
+			SECPKG_CRED_ATTR_NAMES = 1,
+
+			/// <summary>
+			/// Returns the supported algorithms in a pbuffer of type SecPkgCred_SupportedAlgs. All supported algorithms are included,
+			/// regardless of whether they are supported by the provided certificate or enabled on the local computer.
+			/// <para>This attribute is supported only by Schannel.</para>
+			/// </summary>
+			SECPKG_ATTR_SUPPORTED_ALGS = 0x56,
+
+			/// <summary>
+			/// Returns the cipher strengths in a pbuffer of type SecPkgCred_CipherStrengths.
+			/// <para>This attribute is supported only by Schannel.</para>
+			/// </summary>
+			SECPKG_ATTR_CIPHER_STRENGTHS = 0x57,
+
+			/// <summary>
+			/// Returns the supported algorithms in a pbuffer of type SecPkgCred_SupportedProtocols. All supported protocols are included,
+			/// regardless of whether they are supported by the provided certificate or enabled on the local computer.
+			/// <para>This attribute is supported only by Schannel.</para>
+			/// </summary>
+			SECPKG_ATTR_SUPPORTED_PROTOCOLS = 0x58,
+		}
+
+		/// <summary>Bit flags that describe the capabilities of the security package.</summary>
+		[PInvokeData("sspi.h", MSDNShortId = "d0bff3d8-63f1-4a4e-851f-177040af6bd2")]
+		[Flags]
+		public enum SECPKG_FLAG
+		{
+			/// <summary>The security package supports the MakeSignature and VerifySignature functions.</summary>
+			SECPKG_FLAG_INTEGRITY = 0x1,
+
+			/// <summary>The security package supports the EncryptMessage (General) and DecryptMessage (General) functions.</summary>
+			SECPKG_FLAG_PRIVACY = 0x2,
+
+			/// <summary>
+			/// The package is interested only in the security-token portion of messages, and will ignore any other buffers. This is a
+			/// performance-related issue.
+			/// </summary>
+			SECPKG_FLAG_TOKEN_ONLY = 0x4,
+
+			/// <summary>
+			/// Supports datagram-style authentication. For more information, see SSPI Context Semantics.
+			/// <para>Important The Microsoft Kerberos package does not support datagram contexts in user-to-user mode.</para>
+			/// </summary>
+			SECPKG_FLAG_DATAGRAM = 0x8,
+
+			/// <summary>Supports connection-oriented style authentication. For more information, see SSPI Context Semantics.</summary>
+			SECPKG_FLAG_CONNECTION = 0x10,
+
+			/// <summary>Multiple legs are required for authentication.</summary>
+			SECPKG_FLAG_MULTI_REQUIRED = 0x20,
+
+			/// <summary>Server authentication support is not provided.</summary>
+			SECPKG_FLAG_CLIENT_ONLY = 0x40,
+
+			/// <summary>Supports extended error handling. For more information, see Extended Error Information.</summary>
+			SECPKG_FLAG_EXTENDED_ERROR = 0x80,
+
+			/// <summary>Supports Windows impersonation in server contexts.</summary>
+			SECPKG_FLAG_IMPERSONATION = 0x100,
+
+			/// <summary>Understands Windows principal and target names.</summary>
+			SECPKG_FLAG_ACCEPT_WIN32_NAME = 0x200,
+
+			/// <summary>Supports stream semantics. For more information, see SSPI Context Semantics.</summary>
+			SECPKG_FLAG_STREAM = 0x400,
+
+			/// <summary>Can be used by the Microsoft Negotiate security package.</summary>
+			SECPKG_FLAG_NEGOTIABLE = 0X800,
+
+			/// <summary>Supports GSS compatibility.</summary>
+			SECPKG_FLAG_GSS_COMPATIBLE = 0x1000,
+
+			/// <summary>Supports LsaLogonUser.</summary>
+			SECPKG_FLAG_LOGON = 0x2000,
+
+			/// <summary>Token buffers are in ASCII characters format.</summary>
+			SECPKG_FLAG_ASCII_BUFFERS = 0x4000,
+
+			/// <summary>
+			/// Supports separating large tokens into smaller buffers so that applications can make repeated calls to
+			/// InitializeSecurityContext (General) and AcceptSecurityContext (General) with the smaller buffers to complete authentication.
+			/// </summary>
+			SECPKG_FLAG_FRAGMENT = 0x8000,
+
+			/// <summary>Supports mutual authentication.</summary>
+			SECPKG_FLAG_MUTUAL_AUTH = 0x10000,
+
+			/// <summary>Supports delegation.</summary>
+			SECPKG_FLAG_DELEGATION = 0x20000,
+
+			/// <summary>
+			/// The security package supports using a checksum instead of in-place encryption when calling the EncryptMessage function.
+			/// </summary>
+			SECPKG_FLAG_READONLY_WITH_CHECKSUM = 0x40000,
+
+			/// <summary>Supports callers with restricted tokens.</summary>
+			SECPKG_FLAG_RESTRICTED_TOKENS = 0x80000,
+
+			/// <summary>
+			/// The security package extends the Microsoft Negotiate security package. There can be at most one package of this type.
+			/// </summary>
+			SECPKG_FLAG_NEGO_EXTENDER = 0x00100000,
+
+			/// <summary>This package is negotiated by the package of type SECPKG_FLAG_NEGO_EXTENDER.</summary>
+			SECPKG_FLAG_NEGOTIABLE2 = 0x00200000,
+
+			/// <summary>This package receives all calls from app container apps.</summary>
+			SECPKG_FLAG_APPCONTAINER_PASSTHROUGH = 0x00400000,
+
+			/// <summary>
+			/// This package receives calls from app container apps if one of the following checks succeeds.
+			/// <list type="bullet">
+			/// <item>
+			/// <term>Caller has default credentials capability.</term>
+			/// </item>
+			/// <item>
+			/// <term>The target is a proxy server.</term>
+			/// </item>
+			/// <item>
+			/// <term>The caller has supplied credentials.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			SECPKG_FLAG_APPCONTAINER_CHECKS = 0x00800000,
+
+			/// <summary>The caller is an app container.</summary>
+			SECPKG_CALLFLAGS_APPCONTAINER = 0x00000001,
+
+			/// <summary>The caller can use default credentials.</summary>
+			SECPKG_CALLFLAGS_AUTHCAPABLE = 0x00000002,
+
+			/// <summary>The caller can only use supplied credentials.</summary>
+			SECPKG_CALLFLAGS_FORCE_SUPPLIED = 0x00000004,
+		}
+
+		/// <summary>The type of security package.</summary>
+		[PInvokeData("sspi.h", MSDNShortId = "2e9f65ec-72a5-4d6f-aa63-f83369f0dd07")]
+		public enum SECPKG_OPTIONS_TYPE
+		{
+			/// <summary>The package type is not known.</summary>
+			SECPKG_OPTIONS_TYPE_UNKNOWN = 0,
+
+			/// <summary>The security package is an LSA authentication package.</summary>
+			SECPKG_OPTIONS_TYPE_LSA = 1,
+
+			/// <summary>The security package is a Security Support Provider Interface (SSPI) package.</summary>
+			SECPKG_OPTIONS_TYPE_SSPI = 2,
+		}
+
+		/// <summary>Package-specific flags that indicate the quality of protection.</summary>
+		[PInvokeData("Sspi.h", MSDNShortId = "aa375348")]
+		[Flags]
+		public enum SECQOP : uint
+		{
+			/// <summary>The message is not encrypted, but a header or trailer is present.</summary>
+			SECQOP_WRAP_NO_ENCRYPT = 0x80000001,
+
+			/// <summary>
+			/// Send an Schannel alert message. In this case, the pMessage parameter must contain a standard two-byte SSL/TLS event code.
+			/// This value is supported only by the Schannel SSP.
+			/// </summary>
+			SECQOP_WRAP_OOB_DATA = 0x40000000,
+		}
+
+		/// <summary>
+		/// The <c>AcceptSecurityContext (CredSSP)</c> function lets the server component of a transport application establish a security
+		/// context between the server and a remote client. The remote client calls the InitializeSecurityContext (CredSSP) function to start
+		/// the process of establishing a security context. The server can require one or more reply tokens from the remote client to
+		/// complete establishing the security context.
+		/// </summary>
+		/// <param name="phCredential">
+		/// A handle to the server credentials. To retrieve this handle, the server calls the AcquireCredentialsHandle (CredSSP) function
+		/// with either the SECPKG_CRED_INBOUND or SECPKG_CRED_BOTH flag set.
+		/// </param>
+		/// <param name="phContext">
+		/// A pointer to a CtxtHandle structure. On the first call to <c>AcceptSecurityContext (CredSSP)</c>, this pointer is <c>NULL</c>. On
+		/// subsequent calls, phContext specifies the partially formed context returned in the phNewContext parameter by the first call.
+		/// </param>
+		/// <param name="pInput">
+		/// <para>
+		/// A pointer to a SecBufferDesc structure generated by a client call to InitializeSecurityContext (CredSSP). The structure contains
+		/// the input buffer descriptor.
+		/// </para>
+		/// <para>
+		/// The first buffer must be of type <c>SECBUFFER_TOKEN</c> and contain the security token received from the client. The second
+		/// buffer should be of type <c>SECBUFFER_EMPTY</c>.
+		/// </para>
+		/// </param>
+		/// <param name="fContextReq">
+		/// <para>
+		/// -Bit flags that specify the attributes required by the server to establish the context. Bit flags can be combined by using
+		/// bitwise- <c>OR</c> operations. This parameter can be one or more of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ASC_REQ_ALLOCATE_MEMORY</term>
+		/// <term>
+		/// Credential Security Support Provider (CredSSP) will allocate output buffers. When you have finished using the output buffers,
+		/// free them by calling the FreeContextBuffer function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ASC_REQ_CONNECTION</term>
+		/// <term>The security context will not handle formatting messages.</term>
+		/// </item>
+		/// <item>
+		/// <term>ASC_REQ_DELEGATE</term>
+		/// <term>The server is allowed to impersonate the client. Ignore this flag for constrained delegation.</term>
+		/// </item>
+		/// <item>
+		/// <term>ASC_REQ_EXTENDED_ERROR</term>
+		/// <term>When errors occur, the remote party will be notified.</term>
+		/// </item>
+		/// <item>
+		/// <term>ASC_REQ_REPLAY_DETECT</term>
+		/// <term>Detect replayed packets.</term>
+		/// </item>
+		/// <item>
+		/// <term>ASC_REQ_SEQUENCE_DETECT</term>
+		/// <term>Detect messages received out of sequence.</term>
+		/// </item>
+		/// <item>
+		/// <term>ASC_REQ_STREAM</term>
+		/// <term>Support a stream-oriented connection.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// For possible attribute flags and their meanings, see Context Requirements. Flags used for this parameter are prefixed with
+		/// ASC_REQ, for example, ASC_REQ_DELEGATE.
+		/// </para>
+		/// <para>The requested attributes may not be supported by the client. For more information, see the pfContextAttr parameter.</para>
+		/// </param>
+		/// <param name="TargetDataRep">
+		/// The data representation, such as byte ordering, on the target. This parameter can be either <c>SECURITY_NATIVE_DREP</c> or <c>SECURITY_NETWORK_DREP</c>.
+		/// </param>
+		/// <param name="phNewContext">
+		/// A pointer to a CtxtHandle structure. On the first call to <c>AcceptSecurityContext (CredSSP)</c>, this pointer receives the new
+		/// context handle. On subsequent calls, phNewContext can be the same as the handle specified in the phContext parameter.
+		/// </param>
+		/// <param name="pOutput">
+		/// <para>
+		/// A pointer to a SecBufferDesc structure that contains the output buffer descriptor. This buffer is sent to the client for input
+		/// into additional calls to InitializeSecurityContext (CredSSP). An output buffer may be generated even if the function returns
+		/// SEC_E_OK. Any buffer generated must be sent back to the client application.
+		/// </para>
+		/// <para>
+		/// On output, this buffer receives a token for the security context. The token must be sent to the client. The function can also
+		/// return a buffer of type SECBUFFER_EXTRA.
+		/// </para>
+		/// </param>
+		/// <param name="pfContextAttr">
+		/// <para>
+		/// A pointer to a set of bit flags that indicate the attributes of the established context. For a description of the various
+		/// attributes, see Context Requirements. Flags used for this parameter are prefixed with ASC_RET, for example, ASC_RET_DELEGATE.
+		/// </para>
+		/// <para>
+		/// Do not check for security-related attributes until the final function call returns successfully. Attribute flags not related to
+		/// security, such as the ASC_RET_ALLOCATED_MEMORY flag, can be checked before the final return.
+		/// </para>
+		/// </param>
+		/// <param name="ptsTimeStamp">The PTS time stamp.</param>
+		/// <returns>
+		/// <para>This function returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INCOMPLETE_MESSAGE 0x80090318L</term>
+		/// <term>
+		/// The function succeeded. The data in the input buffer is incomplete. The application must read additional data from the client and
+		/// call AcceptSecurityContext (CredSSP) again.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY 0x80090300L</term>
+		/// <term>The function failed. There is not enough memory available to complete the requested action.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INTERNAL_ERROR 0x80090304L</term>
+		/// <term>The function failed. An error occurred that did not map to an SSPI error code.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE 0x80100003L</term>
+		/// <term>The function failed. The handle passed to the function is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_TOKEN 0x80090308L</term>
+		/// <term>The function failed. The token passed to the function is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_LOGON_DENIED 0x8009030CL</term>
+		/// <term>The logon failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NO_AUTHENTICATING_AUTHORITY 0x80090311L</term>
+		/// <term>The function failed. No authority could be contacted for authentication. This could be due to the following conditions:</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NO_CREDENTIALS 0x8009030EL</term>
+		/// <term>The function failed. The credentials handle specified in the phCredential parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_OK 0x00000000L</term>
+		/// <term>
+		/// The function succeeded. The security context received from the client was accepted. If the function generated an output token,
+		/// the token must be sent to the client process.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_UNSUPPORTED_FUNCTION 0x80090302L</term>
+		/// <term>
+		/// The function failed. The fContextReq parameter specified a context attribute flag (ASC_REQ_DELEGATE or ASC_REQ_PROMPT_FOR_CREDS)
+		/// that was not valid.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_I_COMPLETE_AND_CONTINUE 0x00090314L</term>
+		/// <term>
+		/// The function succeeded. The server must call CompleteAuthToken and pass the output token to the client. The server must then wait
+		/// for a return token from the client before making another call to AcceptSecurityContext (CredSSP).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_I_COMPLETE_NEEDED 0x00090313L</term>
+		/// <term>The function succeeded. The server must finish building the message from the client before calling CompleteAuthToken.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_I_CONTINUE_NEEDED 0x00090312L</term>
+		/// <term>
+		/// The function succeeded. The server must send the output token to the client and wait for a returned token. The returned token
+		/// should be passed in pInput for another call to AcceptSecurityContext (CredSSP).
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>AcceptSecurityContext (CredSSP)</c> function is the server counterpart to the InitializeSecurityContext (CredSSP) function.
+		/// </para>
+		/// <para>
+		/// When the server receives a request from a client, it uses the fContextReq parameter to specify what it requires of the session.
+		/// In this fashion, a server can require that clients be capable of using a confidential or integrity-checked session; it can reject
+		/// clients that cannot meet that demand. Alternatively, a server can require nothing; whatever the client requires or can provide is
+		/// returned in the pfContextAttr parameter.
+		/// </para>
+		/// <para>
+		/// The fContextReq and pfContextAttr parameters are bitmasks that represent various context attributes. For a description of the
+		/// various attributes, see Context Requirements.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> While the pfContextAttr parameter is valid on any successful return, you should examine the flags pertaining to
+		/// security aspects of the context only on the final successful return. Intermediate returns can set, for example, the
+		/// ISC_RET_ALLOCATED_MEMORY flag.
+		/// </para>
+		/// <para>
+		/// The caller is responsible for determining whether the final context attributes are sufficient. For example, if confidentiality
+		/// (encryption) was requested but could not be established, some applications may choose to shut down the connection immediately. If
+		/// the security context cannot be established, the server must free the partially created context by calling the
+		/// DeleteSecurityContext function. For information about when to call the <c>DeleteSecurityContext</c> function, see <c>DeleteSecurityContext</c>.\
+		/// </para>
+		/// <para>
+		/// After the security context has been established, the server application can use the QuerySecurityContextToken function to
+		/// retrieve a handle to the user account to which the client certificate was mapped. Also, the server can use the
+		/// ImpersonateSecurityContext function to impersonate the user.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-acceptsecuritycontext KSECDDDECLSPEC SECURITY_STATUS SEC_ENTRY
+		// AcceptSecurityContext( PCredHandle phCredential, PCtxtHandle phContext, PSecBufferDesc pInput, unsigned long fContextReq, unsigned
+		// long TargetDataRep, PCtxtHandle phNewContext, PSecBufferDesc pOutput, unsigned long *pfContextAttr, PTimeStamp ptsExpiry );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "a53f733e-b646-4431-b021-a2c446308849")]
+		public static unsafe extern HRESULT AcceptSecurityContext([Optional] CredHandle* phCredential, CtxtHandle* phContext, [In, Optional] SecBufferDesc* pInput, ASC_REQ fContextReq, DREP TargetDataRep,
+			out SafeCtxtHandle phNewContext, [Optional] SecBufferDesc* pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsTimeStamp);
+
+		/// <summary>
+		/// <para>
+		/// The <c>AcquireCredentialsHandle (CredSSP)</c> function acquires a handle to preexisting credentials of a security principal. This
+		/// handle is required by the InitializeSecurityContext (CredSSP) and AcceptSecurityContext (CredSSP) functions. These can be either
+		/// preexisting credentials, which are established through a system logon that is not described here, or the caller can provide
+		/// alternative credentials.
+		/// </para>
+		/// <para><c>Note</c> This is not a "log on to the network" and does not imply gathering of credentials.</para>
+		/// </summary>
+		/// <param name="pszPrincipal">
+		/// <para>A pointer to a null-terminated string that specifies the name of the principal whose credentials the handle will reference.</para>
+		/// <para>
+		/// <c>Note</c> If the process that requests the handle does not have access to the credentials, the function returns an error. A
+		/// null string indicates that the process requires a handle to the credentials of the user under whose security context it is executing.
+		/// </para>
+		/// </param>
+		/// <param name="pszPackage">
+		/// A pointer to a null-terminated string that specifies the name of the security package with which these credentials will be used.
+		/// This is a security package name returned in the <c>Name</c> member of a SecPkgInfo structure returned by the
+		/// EnumerateSecurityPackages function. After a context is established, QueryContextAttributes (CredSSP) can be called with
+		/// ulAttribute set to <c>SECPKG_ATTR_PACKAGE_INFO</c> to return information on the security package in use.
+		/// </param>
+		/// <param name="">The .</param>
+		/// <param name="fCredentialUse">
+		/// <para>A flag that indicates how these credentials will be used. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SECPKG_CRED_INBOUND 0x1</term>
+		/// <term>
+		/// Validate an incoming server credential. Inbound credentials might be validated by using an authenticating authority when
+		/// InitializeSecurityContext (CredSSP) or AcceptSecurityContext (CredSSP) is called. If such an authority is not available, the
+		/// function will fail and return SEC_E_NO_AUTHENTICATING_AUTHORITY. Validation is package specific.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_CRED_OUTBOUND 0x0</term>
+		/// <term>Allow a local client credential to prepare an outgoing token.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pvLogonId">
+		/// A pointer to a locally unique identifier (LUID) that identifies the user. This parameter is provided for file-system processes
+		/// such as network redirectors. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="pAuthData">
+		/// A pointer to a CREDSSP_CRED structure that specifies authentication data for both Schannel and Negotiate packages.
+		/// </param>
+		/// <param name="pGetKeyFn">Reserved. This parameter is not used and should be set to <c>NULL</c>.</param>
+		/// <param name="pvGetKeyArgument">Reserved. This parameter must be set to <c>NULL</c>.</param>
+		/// <param name="phCredential">A pointer to the CredHandle structure that will receive the credential handle.</param>
+		/// <param name="ptsExpiry">
+		/// A pointer to a TimeStamp structure that receives the time at which the returned credentials expire. The structure value received
+		/// depends on the security package, which must specify the value in local time.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>SEC_E_OK</c>.</para>
+		/// <para>If the function fails, it returns one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		/// <term>There is insufficient memory available to complete the requested action.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INTERNAL_ERROR</term>
+		/// <term>An error occurred that did not map to an SSPI error code.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NO_CREDENTIALS</term>
+		/// <term>No credentials are available in the security package.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NOT_OWNER</term>
+		/// <term>The caller of the function does not have the necessary credentials.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_SECPKG_NOT_FOUND</term>
+		/// <term>The requested security package does not exist.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_UNKNOWN_CREDENTIALS</term>
+		/// <term>The credentials supplied to the package were not recognized.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>AcquireCredentialsHandle (CredSSP)</c> function returns a handle to the credentials of a principal, such as a user or
+		/// client, as used by a specific security package. The function can return the handle to either preexisting credentials or newly
+		/// created credentials and return it. This handle can be used in subsequent calls to the AcceptSecurityContext (CredSSP) and
+		/// InitializeSecurityContext (CredSSP) functions.
+		/// </para>
+		/// <para>
+		/// In general, <c>AcquireCredentialsHandle (CredSSP)</c> does not provide the credentials of other users logged on to the same
+		/// computer. However, a caller with SE_TCB_NAME privilege can obtain the credentials of an existing logon session by specifying the
+		/// logon identifier (LUID) of that session. Typically, this is used by kernel-mode modules that must act on behalf of a logged-on user.
+		/// </para>
+		/// <para>
+		/// A package might call the function in pGetKeyFn provided by the RPC run-time transport. If the transport does not support the
+		/// notion of callback to retrieve credentials, this parameter must be <c>NULL</c>.
+		/// </para>
+		/// <para>For kernel mode callers, the following differences must be noted:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The two string parameters must be Unicode strings.</term>
+		/// </item>
+		/// <item>
+		/// <term>The buffer values must be allocated in process virtual memory, not from the pool.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// When you have finished using the returned credentials, free the memory used by the credentials by calling the
+		/// FreeCredentialsHandle function.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-acquirecredentialshandlea SECURITY_STATUS SEC_ENTRY
+		// AcquireCredentialsHandleA( LPSTR pszPrincipal, LPSTR pszPackage, unsigned long fCredentialUse, void *pvLogonId, void *pAuthData,
+		// SEC_GET_KEY_FN pGetKeyFn, void *pvGetKeyArgument, PCredHandle phCredential, PTimeStamp ptsExpiry );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "3b73decf-75d4-4bc4-b7ca-5f16aaadff29")]
+		public static extern HRESULT AcquireCredentialsHandle([Optional] string pszPrincipal, string pszPackage, SECPKG_CRED fCredentialUse, [In, Optional] IntPtr pvLogonId, [In, Optional] IntPtr pAuthData, [In, Optional] IntPtr pGetKeyFn,
+			[In, Optional] IntPtr pvGetKeyArgument, out SafeCredHandle phCredential, out TimeStamp ptsExpiry);
+
+		/// <summary>
+		/// <para>
+		/// The <c>AcquireCredentialsHandle (CredSSP)</c> function acquires a handle to preexisting credentials of a security principal. This
+		/// handle is required by the InitializeSecurityContext (CredSSP) and AcceptSecurityContext (CredSSP) functions. These can be either
+		/// preexisting credentials, which are established through a system logon that is not described here, or the caller can provide
+		/// alternative credentials.
+		/// </para>
+		/// <para><c>Note</c> This is not a "log on to the network" and does not imply gathering of credentials.</para>
+		/// </summary>
+		/// <param name="pszPrincipal">
+		/// <para>A pointer to a null-terminated string that specifies the name of the principal whose credentials the handle will reference.</para>
+		/// <para>
+		/// <c>Note</c> If the process that requests the handle does not have access to the credentials, the function returns an error. A
+		/// null string indicates that the process requires a handle to the credentials of the user under whose security context it is executing.
+		/// </para>
+		/// </param>
+		/// <param name="pszPackage">
+		/// A pointer to a null-terminated string that specifies the name of the security package with which these credentials will be used.
+		/// This is a security package name returned in the <c>Name</c> member of a SecPkgInfo structure returned by the
+		/// EnumerateSecurityPackages function. After a context is established, QueryContextAttributes (CredSSP) can be called with
+		/// ulAttribute set to <c>SECPKG_ATTR_PACKAGE_INFO</c> to return information on the security package in use.
+		/// </param>
+		/// <param name="">The .</param>
+		/// <param name="fCredentialUse">
+		/// <para>A flag that indicates how these credentials will be used. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SECPKG_CRED_INBOUND 0x1</term>
+		/// <term>
+		/// Validate an incoming server credential. Inbound credentials might be validated by using an authenticating authority when
+		/// InitializeSecurityContext (CredSSP) or AcceptSecurityContext (CredSSP) is called. If such an authority is not available, the
+		/// function will fail and return SEC_E_NO_AUTHENTICATING_AUTHORITY. Validation is package specific.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_CRED_OUTBOUND 0x0</term>
+		/// <term>Allow a local client credential to prepare an outgoing token.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pvLogonId">
+		/// A pointer to a locally unique identifier (LUID) that identifies the user. This parameter is provided for file-system processes
+		/// such as network redirectors. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="pAuthData">
+		/// A pointer to a CREDSSP_CRED structure that specifies authentication data for both Schannel and Negotiate packages.
+		/// </param>
+		/// <param name="pGetKeyFn">Reserved. This parameter is not used and should be set to <c>NULL</c>.</param>
+		/// <param name="pvGetKeyArgument">Reserved. This parameter must be set to <c>NULL</c>.</param>
+		/// <param name="phCredential">A pointer to the CredHandle structure that will receive the credential handle.</param>
+		/// <param name="ptsExpiry">
+		/// A pointer to a TimeStamp structure that receives the time at which the returned credentials expire. The structure value received
+		/// depends on the security package, which must specify the value in local time.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>SEC_E_OK</c>.</para>
+		/// <para>If the function fails, it returns one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		/// <term>There is insufficient memory available to complete the requested action.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INTERNAL_ERROR</term>
+		/// <term>An error occurred that did not map to an SSPI error code.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NO_CREDENTIALS</term>
+		/// <term>No credentials are available in the security package.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NOT_OWNER</term>
+		/// <term>The caller of the function does not have the necessary credentials.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_SECPKG_NOT_FOUND</term>
+		/// <term>The requested security package does not exist.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_UNKNOWN_CREDENTIALS</term>
+		/// <term>The credentials supplied to the package were not recognized.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>AcquireCredentialsHandle (CredSSP)</c> function returns a handle to the credentials of a principal, such as a user or
+		/// client, as used by a specific security package. The function can return the handle to either preexisting credentials or newly
+		/// created credentials and return it. This handle can be used in subsequent calls to the AcceptSecurityContext (CredSSP) and
+		/// InitializeSecurityContext (CredSSP) functions.
+		/// </para>
+		/// <para>
+		/// In general, <c>AcquireCredentialsHandle (CredSSP)</c> does not provide the credentials of other users logged on to the same
+		/// computer. However, a caller with SE_TCB_NAME privilege can obtain the credentials of an existing logon session by specifying the
+		/// logon identifier (LUID) of that session. Typically, this is used by kernel-mode modules that must act on behalf of a logged-on user.
+		/// </para>
+		/// <para>
+		/// A package might call the function in pGetKeyFn provided by the RPC run-time transport. If the transport does not support the
+		/// notion of callback to retrieve credentials, this parameter must be <c>NULL</c>.
+		/// </para>
+		/// <para>For kernel mode callers, the following differences must be noted:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The two string parameters must be Unicode strings.</term>
+		/// </item>
+		/// <item>
+		/// <term>The buffer values must be allocated in process virtual memory, not from the pool.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// When you have finished using the returned credentials, free the memory used by the credentials by calling the
+		/// FreeCredentialsHandle function.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-acquirecredentialshandlea SECURITY_STATUS SEC_ENTRY
+		// AcquireCredentialsHandleA( LPSTR pszPrincipal, LPSTR pszPackage, unsigned long fCredentialUse, void *pvLogonId, void *pAuthData,
+		// SEC_GET_KEY_FN pGetKeyFn, void *pvGetKeyArgument, PCredHandle phCredential, PTimeStamp ptsExpiry );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "3b73decf-75d4-4bc4-b7ca-5f16aaadff29")]
+		public static extern HRESULT AcquireCredentialsHandle([Optional] string pszPrincipal, string pszPackage, SECPKG_CRED fCredentialUse, in LUID pvLogonId, in CREDSSP_CRED pAuthData, [In, Optional] SEC_GET_KEY_FN pGetKeyFn,
+			[In, Optional] IntPtr pvGetKeyArgument, out SafeCredHandle phCredential, out TimeStamp ptsExpiry);
+
+		/// <summary>Adds a security support provider to the list of providers supported by Microsoft Negotiate.</summary>
+		/// <param name="pszPackageName">The name of the package to add.</param>
+		/// <param name="pOptions">
+		/// A pointer to a SECURITY_PACKAGE_OPTIONS structure that specifies additional information about the security package.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>SEC_E_OK</c>.</para>
+		/// <para>If the function fails, it returns a nonzero error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-addsecuritypackagea SECURITY_STATUS SEC_ENTRY
+		// AddSecurityPackageA( LPSTR pszPackageName, PSECURITY_PACKAGE_OPTIONS pOptions );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "35b993d2-87a0-46d0-991f-88358b0cc5e6")]
+		public static extern HRESULT AddSecurityPackage(string pszPackageName, in SECURITY_PACKAGE_OPTIONS pOptions);
+
+		/// <summary>Adds a security support provider to the list of providers supported by Microsoft Negotiate.</summary>
+		/// <param name="pszPackageName">The name of the package to add.</param>
+		/// <param name="pOptions">
+		/// A pointer to a SECURITY_PACKAGE_OPTIONS structure that specifies additional information about the security package.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>SEC_E_OK</c>.</para>
+		/// <para>If the function fails, it returns a nonzero error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-addsecuritypackagea SECURITY_STATUS SEC_ENTRY
+		// AddSecurityPackageA( LPSTR pszPackageName, PSECURITY_PACKAGE_OPTIONS pOptions );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "35b993d2-87a0-46d0-991f-88358b0cc5e6")]
+		public static extern HRESULT AddSecurityPackage(string pszPackageName, [Optional] IntPtr pOptions);
+
+		/// <summary>
+		/// <para>
+		/// The <c>ApplyControlToken</c> function provides a way to apply a control token to a security context. A token can be received when
+		/// the security context is being established by a call to the InitializeSecurityContext (Schannel) function or with a per-message
+		/// security service, such as verify or unseal.
+		/// </para>
+		/// <para>This function is supported only by the Schannel security support provider (SSP).</para>
+		/// <para>This function is not supported in kernel mode.</para>
+		/// <para>This function allows additional or replacement tokens to be applied to a context.</para>
+		/// </summary>
+		/// <param name="phContext">
+		/// <para>A handle to the context to which the token is applied.</para>
+		/// <para>
+		/// For information about the way the Schannel SSP notifies the remote party of the shutdown, see the Remarks section of
+		/// DecryptMessage (Schannel). For additional information on the use of this function, see Shutting Down an Schannel Connection.
+		/// </para>
+		/// </param>
+		/// <param name="pInput">
+		/// A pointer to a SecBufferDesc structure that contains a pointer to a SecBuffer structure that contains the input token to apply to
+		/// the context.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns SEC_E_OK.</para>
+		/// <para>
+		/// If the function fails, it returns a nonzero error code. The following error code is one of the possible error codes that can be returned.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_UNSUPPORTED_FUNCTION</term>
+		/// <term>This value is returned by Schannel kernel mode to indicate that this function is not supported.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>ApplyControlToken</c> function can modify the context based on this token. Among the tokens that this function can add to
+		/// the client context are SCHANNEL_ALERT_TOKEN and SCHANNEL_SESSION_TOKEN.
+		/// </para>
+		/// <para>
+		/// This function can be used to shut down the security context that underlies an existing Schannel connection. For information about
+		/// how to do this, see Shutting Down an Schannel Connection.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-applycontroltoken KSECDDDECLSPEC SECURITY_STATUS SEC_ENTRY
+		// ApplyControlToken( PCtxtHandle phContext, PSecBufferDesc pInput );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "5ce13a05-874c-4e1a-9be8-aed98609791e")]
+		public static extern HRESULT ApplyControlToken(in CtxtHandle phContext, in SecBufferDesc pInput);
+
+		/// <summary>
+		/// <para>
+		/// The <c>ChangeAccountPassword</c> function changes the password for a Windows domain account by using the specified Security
+		/// Support Provider.
+		/// </para>
+		/// <para>This function is supported only by the Microsoft Kerberos, Microsoft Negotiate, and Microsoft NTLM providers.</para>
+		/// </summary>
+		/// <param name="pszPackageName">
+		/// The name of the provider to use. The value of this parameter must be either "Kerberos", "Negotiate", or "NTLM".
+		/// </param>
+		/// <param name="pszDomainName">The domain of the account for which to change the password.</param>
+		/// <param name="pszAccountName">The user name of the account for which to change the password.</param>
+		/// <param name="pszOldPassword">The old password to be changed.</param>
+		/// <param name="pszNewPassword">The new password for the specified account.</param>
+		/// <param name="bImpersonating"><c>TRUE</c> if the calling process is running as the client; otherwise, <c>FALSE</c>.</param>
+		/// <param name="dwReserved">Reserved. Must be set to zero.</param>
+		/// <param name="pOutput">
+		/// On input, a pointer to a SecBufferDesc structure. The <c>SecBufferDesc</c> structure must contain a single buffer of type
+		/// <c>SECBUFFER_CHANGE_PASS_RESPONSE</c>. On output, the <c>pvBuffer</c> member of that structure points to a
+		/// DOMAIN_PASSWORD_INFORMATION structure.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns an error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-changeaccountpassworda SECURITY_STATUS SEC_ENTRY
+		// ChangeAccountPasswordA( SEC_CHAR *pszPackageName, SEC_CHAR *pszDomainName, SEC_CHAR *pszAccountName, SEC_CHAR *pszOldPassword,
+		// SEC_CHAR *pszNewPassword, BOOLEAN bImpersonating, unsigned long dwReserved, PSecBufferDesc pOutput );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "a1d1e315-d1a2-499a-b552-83180508271f")]
+		public static extern HRESULT ChangeAccountPassword(string pszPackageName, string pszDomainName, string pszAccountName, string pszOldPassword, string pszNewPassword, [MarshalAs(UnmanagedType.U1)] bool bImpersonating,
+			[Optional] uint dwReserved, ref SecBufferDesc pOutput);
+
+		/// <summary>
+		/// <para>
+		/// The <c>CompleteAuthToken</c> function completes an authentication token. This function is used by protocols, such as DCE, that
+		/// need to revise the security information after the transport application has updated some message parameters.
+		/// </para>
+		/// <para>This function is supported only by the Digest security support provider (SSP).</para>
+		/// <para><c>CompleteAuthToken</c> is used on the server side only.</para>
+		/// </summary>
+		/// <param name="phContext">A handle of the context that needs to be completed.</param>
+		/// <param name="pToken">A pointer to a SecBufferDesc structure that contains the buffer descriptor for the entire message.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The handle that was passed to the function is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_TOKEN</term>
+		/// <term>The token that was passed to the function is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_OUT_OF_SEQUENCE</term>
+		/// <term>
+		/// The client's security context was located, but the message number is incorrect. This return value is used with the Digest SSP.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_MESSAGE_ALTERED</term>
+		/// <term>
+		/// The client's security context was located, but the client's message has been tampered with. This return value is used with the
+		/// Digest SSP.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INTERNAL_ERROR</term>
+		/// <term>An error occurred that did not map to an SSPI error code.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The client of a transport application calls the <c>CompleteAuthToken</c> function to allow the security package to update a
+		/// checksum or similar operation after all the protocol headers have been updated by the transport application. The client calls
+		/// this function only if the InitializeSecurityContext (Digest) call returned SEC_I_COMPLETE_NEEDED or SEC_I_COMPLETE_AND_CONTINUE.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-completeauthtoken SECURITY_STATUS SEC_ENTRY CompleteAuthToken(
+		// PCtxtHandle phContext, PSecBufferDesc pToken );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "a404d0a3-d1ea-4708-87d7-2d216e9a5f5f")]
+		public static extern HRESULT CompleteAuthToken(in CtxtHandle phContext, in SecBufferDesc pToken);
+
+		/// <summary>
+		/// <para>
+		/// The <c>DecryptMessage (Digest)</c> function decrypts a message. Some packages do not encrypt and decrypt messages but rather
+		/// perform and check an integrity hash.
+		/// </para>
+		/// <para>
+		/// The Digest security support provider (SSP) provides encryption and decryption confidentiality for messages exchanged between
+		/// client and server as a SASL mechanism only.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> EncryptMessage (Digest) and <c>DecryptMessage (Digest)</c> can be called at the same time from two different threads
+		/// in a single Security Support Provider Interface (SSPI) context if one thread is encrypting and the other is decrypting. If more
+		/// than one thread is encrypting, or more than one thread is decrypting, each thread should obtain a unique context.
+		/// </para>
+		/// </summary>
+		/// <param name="phContext">A handle to the security context to be used to decrypt the message.</param>
+		/// <param name="pMessage">
+		/// <para>
+		/// A pointer to a SecBufferDesc structure. On input, the structure references one or more SecBuffer structures. At least one of
+		/// these must be of type SECBUFFER_DATA. That buffer contains the encrypted message. The encrypted message is decrypted in place,
+		/// overwriting the original contents of its buffer.
+		/// </para>
+		/// <para>
+		/// When using the Digest SSP, on input, the structure references one or more SecBuffer structures. One of these must be of type
+		/// SECBUFFER_DATA or SECBUFFER_STREAM, and it must contain the encrypted message.
+		/// </para>
+		/// </param>
+		/// <param name="MessageSeqNo">
+		/// <para>
+		/// The sequence number expected by the transport application, if any. If the transport application does not maintain sequence
+		/// numbers, this parameter must be set to zero.
+		/// </para>
+		/// <para>When using the Digest SSP, this parameter must be set to zero. The Digest SSP manages sequence numbering internally.</para>
+		/// </param>
+		/// <param name="pfQOP">
+		/// <para>A pointer to a variable of type <c>ULONG</c> that receives package-specific flags that indicate the quality of protection.</para>
+		/// <para>This parameter can be one of the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SECQOP_WRAP_NO_ENCRYPT</term>
+		/// <term>The message was not encrypted, but a header or trailer was produced.</term>
+		/// </item>
+		/// <item>
+		/// <term>SIGN_ONLY</term>
+		/// <term>
+		/// When using the Digest SSP, use this flag when the security context is set to verify the signature only. For more information, see
+		/// Quality of Protection.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function verifies that the message was received in the correct sequence, the function returns SEC_E_OK.</para>
+		/// <para>If the function fails to decrypt the message, it returns one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_BUFFER_TOO_SMALL</term>
+		/// <term>The message buffer is too small. Used with the Digest SSP.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_CRYPTO_SYSTEM_INVALID</term>
+		/// <term>The cipher chosen for the security context is not supported. Used with the Digest SSP.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INCOMPLETE_MESSAGE</term>
+		/// <term>
+		/// The data in the input buffer is incomplete. The application needs to read more data from the server and call DecryptMessage
+		/// (Digest) again.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>A context handle that is not valid was specified in the phContext parameter. Used with the Digest SSP.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_MESSAGE_ALTERED</term>
+		/// <term>The message has been altered. Used with the Digest SSP.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_OUT_OF_SEQUENCE</term>
+		/// <term>The message was not received in the correct sequence.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_QOP_NOT_SUPPORTED</term>
+		/// <term>Neither confidentiality nor integrity are supported by the security context. Used with the Digest SSP.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Sometimes an application will read data from the remote party, attempt to decrypt it by using <c>DecryptMessage (Digest)</c>, and
+		/// discover that <c>DecryptMessage (Digest)</c> succeeded but the output buffers are empty. This is normal behavior, and
+		/// applications must be able to deal with it.
+		/// </para>
+		/// <para>
+		/// <c>Windows XP:</c> This function was also known as <c>UnsealMessage</c>. Applications should now use <c>DecryptMessage
+		/// (Digest)</c> only.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-decryptmessage SECURITY_STATUS SEC_ENTRY DecryptMessage(
+		// PCtxtHandle phContext, PSecBufferDesc pMessage, unsigned long MessageSeqNo, unsigned long *pfQOP );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "46d45f59-33fa-434a-b329-20b6257c9a19")]
+		public static extern HRESULT DecryptMessage(in CtxtHandle phContext, ref SecBufferDesc pMessage, uint MessageSeqNo, out SECQOP pfQOP);
+
+		/// <summary>
+		/// The <c>DeleteSecurityContext</c> function deletes the local data structures associated with the specified security context
+		/// initiated by a previous call to the InitializeSecurityContext (General) function or the AcceptSecurityContext (General) function.
+		/// </summary>
+		/// <param name="phContext">Handle of the security context to delete.</param>
+		/// <returns>
+		/// <para>If the function succeeds or the handle has already been deleted, the return value is <c>SEC_E_OK</c>.</para>
+		/// <para>If the function fails, the return value can be the following error code.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The handle passed to the function is not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>DeleteSecurityContext</c> function terminates a security context and frees associated resources.</para>
+		/// <para>
+		/// The caller must call this function for a security context when that security context is no longer needed. This is true if the
+		/// security context is partial, incomplete, rejected, or failed. After the security context is successfully deleted, further use of
+		/// that security context is not permitted and the handle is no longer valid.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-deletesecuritycontext KSECDDDECLSPEC SECURITY_STATUS SEC_ENTRY
+		// DeleteSecurityContext( PCtxtHandle phContext );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "2a4dd697-ef90-4c37-ab74-0e5ab92794cd")]
+		public static extern HRESULT DeleteSecurityContext(in CtxtHandle phContext);
+
+		/// <summary>Deletes a security support provider from the list of providers supported by Microsoft Negotiate.</summary>
+		/// <param name="pszPackageName">The name of the security provider to delete.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>SEC_E_OK</c>.</para>
+		/// <para>If the function fails, it returns a nonzero error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-deletesecuritypackagea SECURITY_STATUS SEC_ENTRY
+		// DeleteSecurityPackageA( LPSTR pszPackageName );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "7a9a2c64-92a4-419b-8b20-d0f5cba64147")]
+		public static extern HRESULT DeleteSecurityPackage(string pszPackageName);
+
+		/// <summary>
+		/// <para>
+		/// The <c>EncryptMessage (Digest)</c> function encrypts a message to provide privacy. <c>EncryptMessage (Digest)</c> allows the
+		/// application to choose among cryptographic algorithms supported by the chosen mechanism. The <c>EncryptMessage (Digest)</c>
+		/// function uses the security context referenced by the context handle. Some packages do not have messages to be encrypted or
+		/// decrypted but rather provide an integrity hash that can be checked.
+		/// </para>
+		/// <para>This function is available as a SASL mechanism only.</para>
+		/// <para>
+		/// <c>Note</c><c>EncryptMessage (Digest)</c> and DecryptMessage (Digest) can be called at the same time from two different threads
+		/// in a single Security Support Provider Interface (SSPI) context if one thread is encrypting and the other is decrypting. If more
+		/// than one thread is encrypting, or more than one thread is decrypting, each thread should obtain a unique context.
+		/// </para>
+		/// </summary>
+		/// <param name="phContext">A handle to the security context to be used to encrypt the message.</param>
+		/// <param name="fQOP">
+		/// <para>
+		/// Package-specific flags that indicate the quality of protection. A security package can use this parameter to enable the selection
+		/// of cryptographic algorithms.
+		/// </para>
+		/// <para>When using the Digest SSP, this parameter must be set to zero.</para>
+		/// </param>
+		/// <param name="pMessage">
+		/// <para>
+		/// A pointer to a SecBufferDesc structure. On input, the structure references one or more SecBuffer structures that can be of type
+		/// SECBUFFER_DATA. That buffer contains the message to be encrypted. The message is encrypted in place, overwriting the original
+		/// contents of the structure.
+		/// </para>
+		/// <para>The function does not process buffers with the SECBUFFER_READONLY attribute.</para>
+		/// <para>
+		/// The length of the SecBuffer structure that contains the message must be no greater than <c>cbMaximumMessage</c>, which is
+		/// obtained from the QueryContextAttributes (Digest) (SECPKG_ATTR_STREAM_SIZES) function.
+		/// </para>
+		/// <para>
+		/// When using the Digest SSP, there must be a second buffer of type SECBUFFER_PADDING or SEC_BUFFER_DATA to hold signature
+		/// information. To get the size of the output buffer, call the QueryContextAttributes (Digest) function and specify
+		/// SECPKG_ATTR_SIZES. The function will return a SecPkgContext_Sizes structure. The size of the output buffer is the sum of the
+		/// values in the <c>cbMaxSignature</c> and <c>cbBlockSize</c> members.
+		/// </para>
+		/// <para>Applications that do not use SSL must supply a SecBuffer of type SECBUFFER_PADDING.</para>
+		/// </param>
+		/// <param name="MessageSeqNo">
+		/// <para>
+		/// The sequence number that the transport application assigned to the message. If the transport application does not maintain
+		/// sequence numbers, this parameter must be zero.
+		/// </para>
+		/// <para>When using the Digest SSP, this parameter must be set to zero. The Digest SSP manages sequence numbering internally.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_BUFFER_TOO_SMALL</term>
+		/// <term>The output buffer is too small. For more information, see Remarks.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_CONTEXT_EXPIRED</term>
+		/// <term>
+		/// The application is referencing a context that has already been closed. A properly written application should not receive this error.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_CRYPTO_SYSTEM_INVALID</term>
+		/// <term>The cipher chosen for the security context is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		/// <term>There is not enough memory available to complete the requested action.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>A context handle that is not valid was specified in the phContext parameter.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_TOKEN</term>
+		/// <term>No SECBUFFER_DATA type buffer was found.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_QOP_NOT_SUPPORTED</term>
+		/// <term>Neither confidentiality nor integrity are supported by the security context.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>EncryptMessage (Digest)</c> function encrypts a message based on the message and the session key from a security context.
+		/// </para>
+		/// <para>
+		/// If the transport application created the security context to support sequence detection and the caller provides a sequence
+		/// number, the function includes this information with the encrypted message. Including this information protects against replay,
+		/// insertion, and suppression of messages. The security package incorporates the sequence number passed down from the transport application.
+		/// </para>
+		/// <para>
+		/// When you use the Digest SSP, get the size of the output buffer by calling the QueryContextAttributes (Digest) function and
+		/// specifying SECPKG_ATTR_SIZES. The function will return a SecPkgContext_Sizes structure. The size of the output buffer is the sum
+		/// of the values in the <c>cbMaxSignature</c> and <c>cbBlockSize</c> members.
+		/// </para>
+		/// <para><c>Note</c> These buffers must be supplied in the order shown.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Buffer type</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SECBUFFER_STREAM_HEADER</term>
+		/// <term>Used internally. No initialization required.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECBUFFER_DATA</term>
+		/// <term>Contains the plaintext message to be encrypted.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECBUFFER_STREAM_TRAILER</term>
+		/// <term>Used internally. No initialization required.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECBUFFER_EMPTY</term>
+		/// <term>Used internally. No initialization required. Size can be zero.</term>
+		/// </item>
+		/// </list>
+		/// <para>For optimal performance, the pMessage structures should be allocated from contiguous memory.</para>
+		/// <para>
+		/// <c>Windows XP:</c> This function was also known as <c>SealMessage</c>. Applications should now use <c>EncryptMessage (Digest)</c> only.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-encryptmessage SECURITY_STATUS SEC_ENTRY EncryptMessage(
+		// PCtxtHandle phContext, unsigned long fQOP, PSecBufferDesc pMessage, unsigned long MessageSeqNo );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "0045e931-929b-40c4-a524-5664d2fc5170")]
+		public static extern HRESULT EncryptMessage(in CtxtHandle phContext, SECQOP fQOP, ref SecBufferDesc pMessage, uint MessageSeqNo);
+
+		/// <summary>
+		/// The <c>EnumerateSecurityPackages</c> function returns an array of SecPkgInfo structures that provide information about the
+		/// security packages available to the client.
+		/// </summary>
+		/// <param name="pcPackages">
+		/// A pointer to a <c>ULONG</c> variable that receives the number of packages available on the system. This includes packages that
+		/// are already loaded and packages available on demand.
+		/// </param>
+		/// <param name="ppPackageInfo">
+		/// <para>
+		/// A pointer to a variable that receives a pointer to an array of SecPkgInfo structures. Each structure contains information from
+		/// the security support provider (SSP) that describes the capabilities of the security package available within that SSP.
+		/// </para>
+		/// <para>When you have finished using the array, free the memory by calling the FreeContextBuffer function.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns <c>SEC_E_OK</c>.</para>
+		/// <para>
+		/// If the function fails, it returns a nonzero error code. Possible values include, but are not limited to, those in the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY 0x80090300L</term>
+		/// <term>There was not sufficient memory to allocate one or more of the buffers.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE 0x80090301L</term>
+		/// <term>An invalid handle was specified.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_SECPKG_NOT_FOUND 0x80090305L</term>
+		/// <term>The specified package was not found.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The caller can use the <c>Name</c> member of a SecPkgInfo structure to specify a security package in a call to the
+		/// AcquireCredentialsHandle (General) function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-enumeratesecuritypackagesa SECURITY_STATUS SEC_ENTRY
+		// EnumerateSecurityPackagesA( unsigned long *pcPackages, PSecPkgInfoA *ppPackageInfo );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "900790a6-111d-43f5-9316-e85aab03a3bc")]
+		public static extern HRESULT EnumerateSecurityPackages(out uint pcPackages, out SafeContextBuffer ppPackageInfo);
+
+		/// <summary>
+		/// The <c>ExportSecurityContext</c> function creates a serialized representation of a security context that can later be imported
+		/// into a different process by calling ImportSecurityContext. The process that imports the security context must be running on the
+		/// same computer as the process that called <c>ExportSecurityContext</c>.
+		/// </summary>
+		/// <param name="phContext">A handle of the security context to be exported.</param>
+		/// <param name="fFlags">
+		/// <para>This parameter can be a bitwise- <c>OR</c> combination of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SECPKG_CONTEXT_EXPORT_RESET_NEW 1 (0x1)</term>
+		/// <term>The new security context is reset to its initial state.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_CONTEXT_EXPORT_DELETE_OLD 2 (0x2)</term>
+		/// <term>The old security context is deleted.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_CONTEXT_EXPORT_TO_KERNEL 4 (0x4)</term>
+		/// <term>
+		/// This value is not supported. Windows Server 2003 and Windows XP/2000: The security context is to be exported to the kernel.This
+		/// value is supported only in Schannel kernel mode.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pPackedContext">
+		/// A pointer to a buffer of type <c>SECBUFFER_EMPTY</c> that receives the serialized security context. When you have finished using
+		/// this context, free it by calling the FreeContextBuffer function.
+		/// </param>
+		/// <param name="pToken">
+		/// <para>A pointer to receive the handle of the context's token.</para>
+		/// <para>When you have finished using the user token, release the handle by calling the CloseHandle function.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		/// <term>There is not enough memory available to complete the requested action.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The phContext parameter does not point to a valid handle.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NOT_SUPPORTED</term>
+		/// <term>Schannel kernel mode does not support this function.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-exportsecuritycontext KSECDDDECLSPEC SECURITY_STATUS SEC_ENTRY
+		// ExportSecurityContext( PCtxtHandle phContext, ULONG fFlags, PSecBuffer pPackedContext, void **pToken );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "4ebc7f37-b948-4c78-973f-0a74e55c7ee2")]
+		public static extern HRESULT ExportSecurityContext(in CtxtHandle phContext, SECPKG_CONTEXT_EXPORT fFlags, out SafeContextBuffer pPackedContext, out SafeHTOKEN pToken);
+
+		/// <summary>
+		/// The <c>FreeContextBuffer</c> function enables callers of security package functions to free memory buffers allocated by the
+		/// security package.
+		/// </summary>
+		/// <param name="pvContextBuffer">A pointer to memory to be freed.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns a nonzero error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Memory buffers are typically allocated by the InitializeSecurityContext (General) and AcceptSecurityContext (General) functions.
+		/// </para>
+		/// <para>The <c>FreeContextBuffer</c> function can free any memory allocated by a security package.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-freecontextbuffer SECURITY_STATUS SEC_ENTRY FreeContextBuffer(
+		// PVOID pvContextBuffer );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "3c3d27bb-4f9a-4979-b679-1e10fa1ff221")]
+		public static extern HRESULT FreeContextBuffer(IntPtr pvContextBuffer);
+
+		/// <summary>
+		/// <para>
+		/// The <c>FreeCredentialsHandle</c> function notifies the security system that the credentials are no longer needed. An application
+		/// calls this function to free the credential handle acquired in the call to the AcquireCredentialsHandle (General) function after
+		/// calling the DeleteSecurityContext function to free any context handles associated with the credential. When all references to
+		/// this credential set have been removed, the credentials themselves can be removed.
+		/// </para>
+		/// <para>Failure to free credentials handles will result in memory leaks.</para>
+		/// </summary>
+		/// <param name="phCredential">A pointer to the CredHandle handle obtained by using the AcquireCredentialsHandle (General) function.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns the following error code.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The handle passed to the function is not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-freecredentialshandle KSECDDDECLSPEC SECURITY_STATUS SEC_ENTRY
+		// FreeCredentialsHandle( PCredHandle phCredential );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "e089618c-8233-475a-9725-39265c6427ab")]
+		public static extern HRESULT FreeCredentialsHandle(in CredHandle phCredential);
+
+		/// <summary>
+		/// The <c>ImpersonateSecurityContext</c> function allows a server to impersonate a client by using a token previously obtained by a
+		/// call to AcceptSecurityContext (General) or QuerySecurityContextToken. This function allows the application server to act as the
+		/// client, and thus all necessary access controls are enforced.
+		/// </summary>
+		/// <param name="phContext">
+		/// The handle of the context to impersonate. This handle must have been obtained by a call to the AcceptSecurityContext (General) function.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns the following error code.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The handle passed to the function is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NO_IMPERSONATION</term>
+		/// <term>The client could not be impersonated.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_UNSUPPORTED_FUNCTION</term>
+		/// <term>This value is returned by Schannel kernel mode to indicate that this function is not supported.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The server application calls the <c>ImpersonateSecurityContext</c> function when it needs to impersonate the client. Before doing
+		/// so, the server must have obtained a valid context handle. To obtain the context handle, the server must call
+		/// AcceptSecurityContext (General) to submit the client's incoming security token to the security system. The server gets a context
+		/// handle if the inbound context is validated. The function creates an impersonation token and allows the thread or process to run
+		/// with the impersonation context.
+		/// </para>
+		/// <para>
+		/// When using the Schannel security support provider (SSP), the server application must pass the <c>ASC_REQ_MUTUAL_AUTH</c> flag
+		/// when calling AcceptSecurityContext (General). This ensures that the client is asked for a client certificate during the SSL/TLS
+		/// handshake. When a client certificate is received, the Schannel package verifies the client certificate and attempts to map it to
+		/// a user account. When this mapping is successful, then a client user token is created and this function succeeds.
+		/// </para>
+		/// <para>
+		/// The application server must call the RevertSecurityContext function when it finishes or when it needs to restore its own security context.
+		/// </para>
+		/// <para>
+		/// <c>ImpersonateSecurityContext</c> is not available with all security packages on all platforms. Typically, it is implemented only
+		/// on platforms and with security packages that support impersonation. To learn whether a security package supports impersonation,
+		/// call the QuerySecurityPackageInfo function.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> If the <c>ImpersonateSecurityContext</c> function fails, the client is not impersonated, and all subsequent client
+		/// requests are made in the security context of the process that called the function. If the calling process is running as a
+		/// privileged account, it can perform actions that the client would not be allowed to perform. To avoid security risks, the calling
+		/// process should always check the return value. If the return value indicates that the function call failed, no client requests
+		/// should be executed.
+		/// </para>
+		/// <para>
+		/// All impersonate functions, including <c>ImpersonateSecurityContext</c> allow the requested impersonation if one of the following
+		/// is true:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// The requested impersonation level of the token is less than <c>SecurityImpersonation</c>, such as <c>SecurityIdentification</c>
+		/// or <c>SecurityAnonymous</c>.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>The caller has the <c>SeImpersonatePrivilege</c> privilege.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// A process (or another process in the caller's logon session) created the token using explicit credentials through LogonUser or
+		/// LsaLogonUser function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>The authenticated identity is same as the caller.</term>
+		/// </item>
+		/// </list>
+		/// <para><c>Windows XP with SP1 and earlier:</c> The <c>SeImpersonatePrivilege</c> privilege is not supported.</para>
+		/// <para><c>Windows XP:</c> The SeImpersonatePrivilege privilege is not supported until Windows XP with Service Pack 2 (SP2).</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-impersonatesecuritycontext KSECDDDECLSPEC SECURITY_STATUS
+		// SEC_ENTRY ImpersonateSecurityContext( PCtxtHandle phContext );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "167eaf3b-b794-4587-946d-fa596f1f9411")]
+		public static extern HRESULT ImpersonateSecurityContext(in CtxtHandle phContext);
+
+		/// <summary>
+		/// The <c>ImportSecurityContext</c> function imports a security context. The security context must have been exported to the process
+		/// calling <c>ImportSecurityContext</c> by a previous call to ExportSecurityContext.
+		/// </summary>
+		/// <param name="pszPackage">A string that contains the name of the security package to which the security context was exported.</param>
+		/// <param name="pPackedContext">A pointer to a buffer that contains the serialized security context created by ExportSecurityContext.</param>
+		/// <param name="Token">A handle to the context's token.</param>
+		/// <param name="phContext">
+		/// A handle of the new security context created from pPackedContext. When you have finished using the context, delete it by calling
+		/// the DeleteSecurityContext function.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_UNKNOWN_CREDENTIALS</term>
+		/// <term>The credentials supplied to the package were not recognized.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NO_CREDENTIALS</term>
+		/// <term>No credentials are available in the security package.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NOT_OWNER</term>
+		/// <term>The caller of the function does not have the necessary credentials.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		/// <term>There is not enough memory available to complete the requested action.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INTERNAL_ERROR</term>
+		/// <term>An error occurred that did not map to an SSPI error code.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-importsecuritycontexta SECURITY_STATUS SEC_ENTRY
+		// ImportSecurityContextA( LPSTR pszPackage, PSecBuffer pPackedContext, VOID *Token, PCtxtHandle phContext );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "0f8e65d0-69cf-42ba-a903-1922d731e5ec")]
+		public static extern HRESULT ImportSecurityContext(string pszPackage, IntPtr pPackedContext, HTOKEN Token, out SafeCtxtHandle phContext);
+
+		/// <summary>
+		/// <para>
+		/// The <c>InitializeSecurityContext (General)</c> function initiates the client side, outbound security context from a credential
+		/// handle. The function is used to build a security context between the client application and a remote peer.
+		/// <c>InitializeSecurityContext (General)</c> returns a token that the client must pass to the remote peer, which the peer in turn
+		/// submits to the local security implementation through the AcceptSecurityContext (General) call. The token generated should be
+		/// considered opaque by all callers.
+		/// </para>
+		/// <para>
+		/// Typically, the <c>InitializeSecurityContext (General)</c> function is called in a loop until a sufficient security context is established.
+		/// </para>
+		/// <para>For information about using this function with a specific security support provider (SSP), see the following topics.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Topic</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>InitializeSecurityContext (CredSSP)</term>
+		/// <term>
+		/// Initiates the client side, outbound security context from a credential handle by using the Credential Security Support Provider (CredSSP).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>InitializeSecurityContext (Digest)</term>
+		/// <term>Initiates the client side, outbound security context from a credential handle by using the Digest security package.</term>
+		/// </item>
+		/// <item>
+		/// <term>InitializeSecurityContext (Kerberos)</term>
+		/// <term>Initiates the client side, outbound security context from a credential handle by using the Kerberos security package.</term>
+		/// </item>
+		/// <item>
+		/// <term>InitializeSecurityContext (Negotiate)</term>
+		/// <term>Initiates the client side, outbound security context from a credential handle by using the Negotiate security package.</term>
+		/// </item>
+		/// <item>
+		/// <term>InitializeSecurityContext (NTLM)</term>
+		/// <term>Initiates the client side, outbound security context from a credential handle by using the NTLM security package.</term>
+		/// </item>
+		/// <item>
+		/// <term>InitializeSecurityContext (Schannel)</term>
+		/// <term>Initiates the client side, outbound security context from a credential handle by using the Schannel security package.</term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		/// <param name="phCredential">
+		/// A handle to the credentials returned by AcquireCredentialsHandle (General). This handle is used to build the security context.
+		/// The <c>InitializeSecurityContext (General)</c> function requires at least OUTBOUND credentials.
+		/// </param>
+		/// <param name="phContext">
+		/// <para>
+		/// A pointer to a CtxtHandle structure. On the first call to <c>InitializeSecurityContext (General)</c>, this pointer is
+		/// <c>NULL</c>. On the second call, this parameter is a pointer to the handle to the partially formed context returned in the
+		/// phNewContext parameter by the first call.
+		/// </para>
+		/// <para>This parameter is optional with the Microsoft Digest SSP and can be set to <c>NULL</c>.</para>
+		/// <para>
+		/// When using the Schannel SSP, on the first call to <c>InitializeSecurityContext (General)</c>, specify <c>NULL</c>. On future
+		/// calls, specify the token received in the phNewContext parameter after the first call to this function.
+		/// </para>
+		/// </param>
+		/// <param name="pszTargetName">TBD</param>
+		/// <param name="fContextReq">
+		/// <para>
+		/// Bit flags that indicate requests for the context. Not all packages can support all requirements. Flags used for this parameter
+		/// are prefixed with ISC_REQ_, for example, ISC_REQ_DELEGATE. This parameter can be one or more of the following attributes flags.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ISC_REQ_ALLOCATE_MEMORY</term>
+		/// <term>
+		/// The security package allocates output buffers for you. When you have finished using the output buffers, free them by calling the
+		/// FreeContextBuffer function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_CONFIDENTIALITY</term>
+		/// <term>Encrypt messages by using the EncryptMessage function.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_CONNECTION</term>
+		/// <term>
+		/// The security context will not handle formatting messages. This value is the default for the Kerberos, Negotiate, and NTLM
+		/// security packages.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_DELEGATE</term>
+		/// <term>
+		/// The server can use the context to authenticate to other servers as the client. The ISC_REQ_MUTUAL_AUTH flag must be set for this
+		/// flag to work. Valid for Kerberos. Ignore this flag for constrained delegation.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_EXTENDED_ERROR</term>
+		/// <term>When errors occur, the remote party will be notified.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_HTTP</term>
+		/// <term>Use Digest for HTTP. Omit this flag to use Digest as a SASL mechanism.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_INTEGRITY</term>
+		/// <term>Sign messages and verify signatures by using the EncryptMessage and MakeSignature functions.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_MANUAL_CRED_VALIDATION</term>
+		/// <term>Schannel must not authenticate the server automatically.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_MUTUAL_AUTH</term>
+		/// <term>The mutual authentication policy of the service will be satisfied.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_NO_INTEGRITY</term>
+		/// <term>
+		/// If this flag is set, the ISC_REQ_INTEGRITY flag is ignored. This value is supported only by the Negotiate and Kerberos security packages.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_REPLAY_DETECT</term>
+		/// <term>Detect replayed messages that have been encoded by using the EncryptMessage or MakeSignature functions.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_SEQUENCE_DETECT</term>
+		/// <term>Detect messages received out of sequence.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_STREAM</term>
+		/// <term>Support a stream-oriented connection.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_USE_SESSION_KEY</term>
+		/// <term>A new session key must be negotiated. This value is supported only by the Kerberos security package.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_USE_SUPPLIED_CREDS</term>
+		/// <term>Schannel must not attempt to supply credentials for the client automatically.</term>
+		/// </item>
+		/// </list>
+		/// <para>The requested attributes may not be supported by the client. For more information, see the pfContextAttr parameter.</para>
+		/// <para>For further descriptions of the various attributes, see Context Requirements.</para>
+		/// </param>
+		/// <param name="Reserved1">This parameter is reserved and must be set to zero.</param>
+		/// <param name="TargetDataRep">
+		/// <para>The data representation, such as byte ordering, on the target. This parameter can be either SECURITY_NATIVE_DREP or SECURITY_NETWORK_DREP.</para>
+		/// <para>This parameter is not used with Digest or Schannel. Set it to zero.</para>
+		/// </param>
+		/// <param name="pInput">
+		/// A pointer to a SecBufferDesc structure that contains pointers to the buffers supplied as input to the package. Unless the client
+		/// context was initiated by the server, the value of this parameter must be <c>NULL</c> on the first call to the function. On
+		/// subsequent calls to the function or when the client context was initiated by the server, the value of this parameter is a pointer
+		/// to a buffer allocated with enough memory to hold the token returned by the remote computer.
+		/// </param>
+		/// <param name="Reserved2">This parameter is reserved and must be set to zero.</param>
+		/// <param name="phNewContext">
+		/// <para>
+		/// A pointer to a CtxtHandle structure. On the first call to <c>InitializeSecurityContext (General)</c>, this pointer receives the
+		/// new context handle. On the second call, phNewContext can be the same as the handle specified in the phContext parameter.
+		/// </para>
+		/// <para>
+		/// When using the Schannel SSP, on calls after the first call, pass the handle returned here as the phContext parameter and specify
+		/// <c>NULL</c> for phNewContext.
+		/// </para>
+		/// </param>
+		/// <param name="pOutput">
+		/// <para>
+		/// A pointer to a SecBufferDesc structure that contains pointers to the SecBuffer structure that receives the output data. If a
+		/// buffer was typed as SEC_READWRITE in the input, it will be there on output. The system will allocate a buffer for the security
+		/// token if requested (through ISC_REQ_ALLOCATE_MEMORY) and fill in the address in the buffer descriptor for the security token.
+		/// </para>
+		/// <para>When using the Microsoft Digest SSP, this parameter receives the challenge response that must be sent to the server.</para>
+		/// <para>
+		/// When using the Schannel SSP, if the ISC_REQ_ALLOCATE_MEMORY flag is specified, the Schannel SSP will allocate memory for the
+		/// buffer and put the appropriate information in the SecBufferDesc. In addition, the caller must pass in a buffer of type
+		/// <c>SECBUFFER_ALERT</c>. On output, if an alert is generated, this buffer contains information about that alert, and the function fails.
+		/// </para>
+		/// </param>
+		/// <param name="pfContextAttr">
+		/// <para>
+		/// A pointer to a variable to receive a set of bit flags that indicate the attributes of the established context. For a description
+		/// of the various attributes, see Context Requirements.
+		/// </para>
+		/// <para>Flags used for this parameter are prefixed with ISC_RET, such as ISC_RET_DELEGATE.</para>
+		/// <para>For a list of valid values, see the fContextReq parameter.</para>
+		/// <para>
+		/// Do not check for security-related attributes until the final function call returns successfully. Attribute flags that are not
+		/// related to security, such as the ASC_RET_ALLOCATED_MEMORY flag, can be checked before the final return.
+		/// </para>
+		/// <para><c>Note</c> Particular context attributes can change during negotiation with a remote peer.</para>
+		/// </param>
+		/// <param name="ptsExpiry">
+		/// <para>
+		/// A pointer to a TimeStamp structure that receives the expiration time of the context. It is recommended that the security package
+		/// always return this value in local time. This parameter is optional and <c>NULL</c> should be passed for short-lived clients.
+		/// </para>
+		/// <para>There is no expiration time for Microsoft Digest SSP security contexts or credentials.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns one of the following success codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_I_COMPLETE_AND_CONTINUE</term>
+		/// <term>
+		/// The client must call CompleteAuthToken and then pass the output to the server. The client then waits for a returned token and
+		/// passes it, in another call, to InitializeSecurityContext (General).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_I_COMPLETE_NEEDED</term>
+		/// <term>The client must finish building the message and then call the CompleteAuthToken function.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_I_CONTINUE_NEEDED</term>
+		/// <term>
+		/// The client must send the output token to the server and wait for a return token. The returned token is then passed in another
+		/// call to InitializeSecurityContext (General). The output token can be empty.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_I_INCOMPLETE_CREDENTIALS</term>
+		/// <term>
+		/// Use with Schannel. The server has requested client authentication, and the supplied credentials either do not include a
+		/// certificate or the certificate was not issued by a certification authority that is trusted by the server. For more information,
+		/// see Remarks.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INCOMPLETE_MESSAGE</term>
+		/// <term>
+		/// Use with Schannel. Data for the whole message was not read from the wire. When this value is returned, the pInput buffer contains
+		/// a SecBuffer structure with a BufferType member of SECBUFFER_MISSING. The cbBuffer member of SecBuffer contains a value that
+		/// indicates the number of additional bytes that the function must read from the client before this function succeeds. While this
+		/// number is not always accurate, using it can help improve performance by avoiding multiple calls to this function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_OK</term>
+		/// <term>
+		/// The security context was successfully initialized. There is no need for another InitializeSecurityContext (General) call. If the
+		/// function returns an output token, that is, if the SECBUFFER_TOKEN in pOutput is of nonzero length, that token must be sent to the server.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>If the function fails, the function returns one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		/// <term>There is not enough memory available to complete the requested action.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INTERNAL_ERROR</term>
+		/// <term>An error occurred that did not map to an SSPI error code.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The handle passed to the function is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_TOKEN</term>
+		/// <term>
+		/// The error is due to a malformed input token, such as a token corrupted in transit, a token of incorrect size, or a token passed
+		/// into the wrong security package. Passing a token to the wrong package can happen if the client and server did not negotiate the
+		/// proper security package.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_LOGON_DENIED</term>
+		/// <term>The logon failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NO_AUTHENTICATING_AUTHORITY</term>
+		/// <term>
+		/// No authority could be contacted for authentication. The domain name of the authenticating party could be wrong, the domain could
+		/// be unreachable, or there might have been a trust relationship failure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NO_CREDENTIALS</term>
+		/// <term>No credentials are available in the security package.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_TARGET_UNKNOWN</term>
+		/// <term>The target was not recognized.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_UNSUPPORTED_FUNCTION</term>
+		/// <term>
+		/// A context attribute flag that is not valid (ISC_REQ_DELEGATE or ISC_REQ_PROMPT_FOR_CREDS) was specified in the fContextReq parameter.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_WRONG_PRINCIPAL</term>
+		/// <term>
+		/// The principal that received the authentication request is not the same as the one passed into the pszTargetName parameter. This
+		/// indicates a failure in mutual authentication.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The caller is responsible for determining whether the final context attributes are sufficient. If, for example, confidentiality
+		/// was requested, but could not be established, some applications may choose to shut down the connection immediately.
+		/// </para>
+		/// <para>
+		/// If attributes of the security context are not sufficient, the client must free the partially created context by calling the
+		/// DeleteSecurityContext function.
+		/// </para>
+		/// <para>The <c>InitializeSecurityContext (General)</c> function is used by a client to initialize an outbound context.</para>
+		/// <para>For a two-leg security context, the calling sequence is as follows:</para>
+		/// <list type="number">
+		/// <item>
+		/// <term>The client calls the function with phContext set to <c>NULL</c> and fills in the buffer descriptor with the input message.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The security package examines the parameters and constructs an opaque token, placing it in the TOKEN element in the buffer array.
+		/// If the fContextReq parameter includes the ISC_REQ_ALLOCATE_MEMORY flag, the security package allocates the memory and returns the
+		/// pointer in the TOKEN element.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The client sends the token returned in the pOutput buffer to the target server. The server then passes the token as an input
+		/// argument in a call to the AcceptSecurityContext (General) function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// AcceptSecurityContext (General) may return a token, which the server sends to the client for a second call to
+		/// <c>InitializeSecurityContext (General)</c> if the first call returned SEC_I_CONTINUE_NEEDED.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>For multiple-leg security contexts, such as mutual authentication, the calling sequence is as follows:</para>
+		/// <list type="number">
+		/// <item>
+		/// <term>The client calls the function as described earlier, but the package returns the SEC_I_CONTINUE_NEEDED success code.</term>
+		/// </item>
+		/// <item>
+		/// <term>The client sends the output token to the server and waits for the server's reply.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Upon receipt of the server's response, the client calls <c>InitializeSecurityContext (General)</c> again, with phContext set to
+		/// the handle that was returned from the last call. The token received from the server is supplied in the pInput parameter.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>If the server has successfully responded, the security package returns SEC_E_OK and a secure session is established.</para>
+		/// <para>If the function returns one of the error responses, the server's response is not accepted, and the session is not established.</para>
+		/// <para>
+		/// If the function returns SEC_I_CONTINUE_NEEDED, SEC_I_COMPLETE_NEEDED, or SEC_I_COMPLETE_AND_CONTINUE, steps 2 and 3 are repeated.
+		/// </para>
+		/// <para>
+		/// To initialize a security context, more than one call to this function may be required, depending on the underlying authentication
+		/// mechanism as well as the choices specified in the fContextReq parameter.
+		/// </para>
+		/// <para>
+		/// The fContextReq and pfContextAttributes parameters are bitmasks that represent various context attributes. For a description of
+		/// the various attributes, see Context Requirements. The pfContextAttributes parameter is valid on any successful return, but only
+		/// on the final successful return should you examine the flags that pertain to security aspects of the context. Intermediate returns
+		/// can set, for example, the ISC_RET_ALLOCATED_MEMORY flag.
+		/// </para>
+		/// <para>
+		/// If the ISC_REQ_USE_SUPPLIED_CREDS flag is set, the security package must look for a SECBUFFER_PKG_PARAMS buffer type in the
+		/// pInput input buffer. This is not a generic solution, but it allows for a strong pairing of security package and application when appropriate.
+		/// </para>
+		/// <para>If ISC_REQ_ALLOCATE_MEMORY was specified, the caller must free the memory by calling the FreeContextBuffer function.</para>
+		/// <para>
+		/// For example, the input token could be the challenge from a LAN Manager. In this case, the output token would be the
+		/// NTLM-encrypted response to the challenge.
+		/// </para>
+		/// <para>
+		/// The action the client takes depends on the return code from this function. If the return code is SEC_E_OK, there will be no
+		/// second <c>InitializeSecurityContext (General)</c> call, and no response from the server is expected. If the return code is
+		/// SEC_I_CONTINUE_NEEDED, the client expects a token in response from the server and passes it in a second call to
+		/// <c>InitializeSecurityContext (General)</c>. The SEC_I_COMPLETE_NEEDED return code indicates that the client must finish building
+		/// the message and call the CompleteAuthToken function. The SEC_I_COMPLETE_AND_CONTINUE code incorporates both of these actions.
+		/// </para>
+		/// <para>
+		/// If <c>InitializeSecurityContext (General)</c> returns success on the first (or only) call, then the caller must eventually call
+		/// the DeleteSecurityContext function on the returned handle, even if the call fails on a later leg of the authentication exchange.
+		/// </para>
+		/// <para>
+		/// The client may call <c>InitializeSecurityContext (General)</c> again after it has completed successfully. This indicates to the
+		/// security package that a reauthentication is wanted.
+		/// </para>
+		/// <para>
+		/// Kernel mode callers have the following differences: the target name is a Unicode string that must be allocated in virtual memory
+		/// by using VirtualAlloc; it must not be allocated from the pool. Buffers passed and supplied in pInput and pOutput must be in
+		/// virtual memory, not in the pool.
+		/// </para>
+		/// <para>
+		/// When using the Schannel SSP, if the function returns SEC_I_INCOMPLETE_CREDENTIALS, check that you specified a valid and trusted
+		/// certificate in your credentials. The certificate is specified when calling the AcquireCredentialsHandle (General) function. The
+		/// certificate must be a client authentication certificate issued by a certification authority (CA) trusted by the server. To obtain
+		/// a list of the CAs trusted by the server, call the QueryContextAttributes (General) function and specify the
+		/// SECPKG_ATTR_ISSUER_LIST_EX attribute.
+		/// </para>
+		/// <para>
+		/// When using the Schannel SSP, after a client application receives an authentication certificate from a CA that is trusted by the
+		/// server, the application creates a new credential by calling the AcquireCredentialsHandle (General) function and then calling
+		/// <c>InitializeSecurityContext (General)</c> again, specifying the new credential in the phCredential parameter.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-initializesecuritycontexta SECURITY_STATUS SEC_ENTRY
+		// InitializeSecurityContextA( PCredHandle phCredential, PCtxtHandle phContext, SEC_CHAR *pszTargetName, unsigned long fContextReq,
+		// unsigned long Reserved1, unsigned long TargetDataRep, PSecBufferDesc pInput, unsigned long Reserved2, PCtxtHandle phNewContext,
+		// PSecBufferDesc pOutput, unsigned long *pfContextAttr, PTimeStamp ptsExpiry );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "21d965d4-3c03-4e29-a70d-4538c5c366b0")]
+		public static unsafe extern HRESULT InitializeSecurityContext([In, Optional] CredHandle* phCredential, [In, Optional] CtxtHandle* phContext, [Optional] string pszTargetName, ASC_REQ fContextReq, [Optional] uint Reserved1, DREP TargetDataRep,
+			[In, Optional] SecBufferDesc* pInput, [Optional] uint Reserved2, out SafeCtxtHandle phNewContext, [Optional] SecBufferDesc* pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry);
+
+		/// <summary>
+		/// The <c>InitSecurityInterface</c> function returns a pointer to an SSPI dispatch table. This function enables clients to use SSPI
+		/// without binding directly to an implementation of the interface.
+		/// </summary>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a pointer to a SecurityFunctionTable structure.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-initsecurityinterfacea PSecurityFunctionTableA SEC_ENTRY
+		// InitSecurityInterfaceA( );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "1026eeab-e2d6-45f2-9677-82d6cfbf4e12")]
+		public static unsafe extern SecurityFunctionTable* InitSecurityInterface();
+
+		/// <summary>
+		/// <para>
+		/// The <c>MakeSignature</c> function generates a cryptographic checksum of the message, and also includes sequencing information to
+		/// prevent message loss or insertion. <c>MakeSignature</c> allows the application to choose between several cryptographic
+		/// algorithms, if supported by the chosen mechanism. The <c>MakeSignature</c> function uses the security context referenced by the
+		/// context handle.
+		/// </para>
+		/// <para>This function is not supported by the Schannel security support provider (SSP).</para>
+		/// </summary>
+		/// <param name="phContext">A handle to the security context to use to sign the message.</param>
+		/// <param name="fQOP">
+		/// <para>
+		/// Package-specific flags that indicate the quality of protection. A security package can use this parameter to enable the selection
+		/// of cryptographic algorithms.
+		/// </para>
+		/// <para>When using the Digest SSP, this parameter must be set to zero.</para>
+		/// </param>
+		/// <param name="pMessage">
+		/// <para>
+		/// A pointer to a SecBufferDesc structure. On input, the structure references one or more SecBuffer structures that contain the
+		/// message to be signed. The function does not process buffers with the SECBUFFER_READONLY_WITH_CHECKSUM attribute.
+		/// </para>
+		/// <para>The SecBufferDesc structure also references a SecBuffer structure of type SECBUFFER_TOKEN that receives the signature.</para>
+		/// <para>When the Digest SSP is used as an HTTP authentication protocol, the buffers should be configured as follows.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Buffer #/buffer type</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0 SECBUFFER_TOKEN</term>
+		/// <term>Empty.</term>
+		/// </item>
+		/// <item>
+		/// <term>1 SECBUFFER_PKG_PARAMS</term>
+		/// <term>Method.</term>
+		/// </item>
+		/// <item>
+		/// <term>2 SECBUFFER_PKG_PARAMS</term>
+		/// <term>URL.</term>
+		/// </item>
+		/// <item>
+		/// <term>3 SECBUFFER_PKG_PARAMS</term>
+		/// <term>HEntity. For more information, see Input Buffers for the Digest Challenge Response.</term>
+		/// </item>
+		/// <item>
+		/// <term>4 SECBUFFER_PADDING</term>
+		/// <term>Empty. Receives the signature.</term>
+		/// </item>
+		/// </list>
+		/// <para>When the Digest SSP is used as an SASL mechanism, the buffers should be configured as follows.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Buffer #/buffer type</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0 SECBUFFER_TOKEN</term>
+		/// <term>
+		/// Empty. Receives the signature. This buffer must be large enough to hold the largest possible signature. Determine the size
+		/// required by calling the QueryContextAttributes (General) function and specifying SECPKG_ATTR_SIZES. Check the returned
+		/// SecPkgContext_Sizes structure member cbMaxSignature.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>1 SECBUFFER_DATA</term>
+		/// <term>Message to be signed.</term>
+		/// </item>
+		/// <item>
+		/// <term>2 SECBUFFER_PADDING</term>
+		/// <term>Empty.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="MessageSeqNo">
+		/// <para>
+		/// The sequence number that the transport application assigned to the message. If the transport application does not maintain
+		/// sequence numbers, this parameter is zero.
+		/// </para>
+		/// <para>When using the Digest SSP, this parameter must be set to zero. The Digest SSP manages sequence numbering internally.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_I_RENEGOTIATE</term>
+		/// <term>
+		/// The remote party requires a new handshake sequence or the application has just initiated a shutdown. Return to the negotiation
+		/// loop and call AcceptSecurityContext (General) or InitializeSecurityContext (General) again. An empty input buffer is passed in
+		/// the first call.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The context handle specified by phContext is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_TOKEN</term>
+		/// <term>pMessage did not contain a valid SECBUFFER_TOKEN buffer or contained too few buffers.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_OUT_OF_SEQUENCE</term>
+		/// <term>The nonce count is out of sequence.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_NO_AUTHENTICATING_AUTHORITY</term>
+		/// <term>The security context (phContext) must be revalidated.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>The nonce count is not numeric.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_QOP_NOT_SUPPORTED</term>
+		/// <term>The quality of protection negotiated between the client and server did not include integrity checking.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>MakeSignature</c> function generates a signature that is based on the message and the session key for the context.</para>
+		/// <para>The VerifySignature function verifies the messages signed by the <c>MakeSignature</c> function.</para>
+		/// <para>
+		/// If the transport application created the security context to support sequence detection and the caller provides a sequence
+		/// number, the function includes this information in the signature. This protects against reply, insertion, and suppression of
+		/// messages. The security package incorporates the sequence number passed down from the transport application.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-makesignature KSECDDDECLSPEC SECURITY_STATUS SEC_ENTRY
+		// MakeSignature( PCtxtHandle phContext, unsigned long fQOP, PSecBufferDesc pMessage, unsigned long MessageSeqNo );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "d17824b0-6121-48a3-b19b-d4fae3e1348e")]
+		public static extern HRESULT MakeSignature(in CtxtHandle phContext, SECQOP fQOP, ref SecBufferDesc pMessage, uint MessageSeqNo);
+
+		/// <summary>
+		/// The <c>QueryContextAttributes (CredSSP)</c> function lets a transport application query the Credential Security Support Provider
+		/// (CredSSP) security package for certain attributes of a security context.
+		/// </summary>
+		/// <param name="phContext">A handle to the security context to be queried.</param>
+		/// <param name="ulAttribute">
+		/// <para>
+		/// The attribute of the context to be returned. This parameter can be one of the following values. Unless otherwise specified, the
+		/// attributes are applicable to both client and server.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SECPKG_ATTR_C_ACCESS_TOKEN 0x80000012</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_AccessToken structure that specifies the access token for the current
+		/// security context. This attribute is supported only on the server.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_C_FULL_ACCESS_TOKEN 0x80000082</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_AccessToken structure that specifies the access token for the current
+		/// security context. This attribute is supported only on the server.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_CERT_TRUST_STATUS 0x80000084</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a CERT_TRUST_STATUS structure that specifies trust information about the certificate.
+		/// This attribute is supported only on the client.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_CREDS 0x80000080</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_ClientCreds structure that specifies client credentials. The client
+		/// credentials can be either user name and password or user name and smart card PIN. This attribute is supported only on the server.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_CREDS_2 0x80000086</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_ClientCreds structure that specifies client credentials. If the
+		/// client credential is user name and password, the buffer is a packed KERB_INTERACTIVE_LOGON structure. If the client credential is
+		/// user name and smart card PIN, the buffer is a packed KERB_CERTIFICATE_LOGON structure. If the client credential is an online
+		/// identity credential, the buffer is a marshaled SEC_WINNT_AUTH_IDENTITY_EX2 structure. This attribute is supported only on the
+		/// CredSSP server. Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This
+		/// value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_NEGOTIATION_PACKAGE 0x80000081</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_PackageInfo structure that specifies the name of the authentication
+		/// package negotiated by the Microsoft Negotiate provider.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_PACKAGE_INFO 10</term>
+		/// <term>The pBuffer parameter contains a pointer to a SecPkgContext_PackageInfostructure. Returns information on the SSP in use.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_SERVER_AUTH_FLAGS 0x80000083</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_Flags structure that specifies information about the flags in the
+		/// current security context. This attribute is supported only on the client.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_SIZES 0x0</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_Sizes structure. Queries the sizes of the structures used in the
+		/// per-message functions and authentication exchanges.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_SUBJECT_SECURITY_ATTRIBUTES 124</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_SubjectAttributes structure. This value returns information about the
+		/// security attributes for the connection. This value is supported only on the CredSSP server. Windows Server 2008, Windows Vista,
+		/// Windows Server 2003 and Windows XP: This value is not supported.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pBuffer">
+		/// A pointer to a structure that receives the attributes. The structure type depends on the value of the ulAttribute parameter.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns SEC_E_OK.</para>
+		/// <para>If the function fails, it can return the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE 0x80100003</term>
+		/// <term>The function failed. The phContext parameter specifies a handle to an incomplete context.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_UNSUPPORTED_FUNCTION 0x80090302</term>
+		/// <term>The function failed. The value of the ulAttribute parameter is not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>The structure pointed to by the pBuffer parameter varies depending on the attribute being queried.</para>
+		/// <para>
+		/// While the caller must allocate the pBuffer structure itself, the SSP allocates any memory required to hold variable-sized members
+		/// of the pBuffer structure. Memory allocated by the SSP must be freed by calling the FreeContextBuffer function.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-querycontextattributesw KSECDDDECLSPEC SECURITY_STATUS SEC_ENTRY
+		// QueryContextAttributesW( PCtxtHandle phContext, unsigned long ulAttribute, void *pBuffer );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "4956c4ab-b71e-4960-b750-f3a79b87baac")]
+		public static extern HRESULT QueryContextAttributes(in CtxtHandle phContext, SECPKG_ATTR ulAttribute, IntPtr pBuffer);
+
+		/// <summary>Enables a transport application to query a security package for certain attributes of a security context.</summary>
+		/// <param name="phContext">A handle to the security context to be queried.</param>
+		/// <param name="ulAttribute">
+		/// <para>Specifies the attribute of the context to be returned. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SECPKG_ATTR_ACCESS_TOKEN 18</term>
+		/// <term>The pBuffer parameter contains a pointer to a SecPkgContext_AccessToken structure. Returns a handle to the access token.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_APP_DATA 0x5e</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_SessionAppData structure. Returns or specifies application data for
+		/// the session. This attribute is supported only by the Schannel security package.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_AUTHORITY 6</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_Authority structure. Queries the name of the authenticating authority.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_CLIENT_SPECIFIED_TARGET 27</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_ClientSpecifiedTarget structure that represents the service principal
+		/// name (SPN) of the initial target supplied by the client. Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:
+		/// This value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_CONNECTION_INFO 0x5a</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_ConnectionInfo structure. Returns detailed information on the
+		/// established connection. This attribute is supported only by the Schannel security package.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_CREDS_2 0x80000086</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_ClientCreds structure that specifies client credentials. If the
+		/// client credential is user name and password, the buffer is a packed KERB_INTERACTIVE_LOGON structure. If the client credential is
+		/// user name and smart card PIN, the buffer is a packed KERB_CERTIFICATE_LOGON structure. If the client credential is an online
+		/// identity credential, the buffer is a marshaled SEC_WINNT_AUTH_IDENTITY_EX2 structure. This attribute is supported only on the
+		/// CredSSP server. Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This
+		/// value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_DCE_INFO 3</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_DceInfo structure. Queries for authorization data used by DCE services.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_ENDPOINT_BINDINGS 26</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_Bindings structure that specifies channel binding information. This
+		/// attribute is supported only by the Schannel security package. Windows Server 2008, Windows Vista, Windows Server 2003 and Windows
+		/// XP: This value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_EAP_KEY_BLOCK 0x5b</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_EapKeyBlock structure. Queries for key data used by the EAP TLS
+		/// protocol. This attribute is supported only by the Schannel security package.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_FLAGS 14</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_Flags structure. Returns information about the negotiated context flags.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_ISSUER_LIST_EX 0x59</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_IssuerListInfoEx structure. Returns a list of certificate issuers
+		/// that are accepted by the server. This attribute is supported only by the Schannel security package.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_KEY_INFO 5</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_KeyInfo structure. Queries information about the keys used in a
+		/// security context.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_LAST_CLIENT_TOKEN_STATUS 30</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_LastClientTokenStatus structure that specifies whether the token from
+		/// the most recent call to the InitializeSecurityContext function is the last token from the client. This value is supported only by
+		/// the Negotiate, Kerberos, and NTLM security packages. Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This
+		/// value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_LIFESPAN 2</term>
+		/// <term>The pBuffer parameter contains a pointer to a SecPkgContext_Lifespan structure. Queries the life span of the context.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_LOCAL_CERT_CONTEXT 0x54</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a PCCERT_CONTEXTstructure. Finds a certificate context that contains a local end
+		/// certificate. This attribute is supported only by the Schannel security package.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_LOCAL_CRED</term>
+		/// <term>The pBuffer parameter contains a pointer to a SecPkgContext_LocalCredentialInfo structure. (obsolete) Superseded by SECPKG_ATTR_LOCAL_CERT_CONTEXT.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_NAMES 1</term>
+		/// <term>The pBuffer parameter contains a pointer to a SecPkgContext_Names structure. Queries the name associated with the context.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_NATIVE_NAMES 13</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_NativeNames structure. Returns the principal name (CNAME) from the
+		/// outbound ticket.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_NEGOTIATION_INFO 12</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_NegotiationInfo structure. Returns information about the security
+		/// package to be used with the negotiation process and the current state of the negotiation for the use of that package.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_PACKAGE_INFO 10</term>
+		/// <term>The pBuffer parameter contains a pointer to a SecPkgContext_PackageInfostructure. Returns information on the SSP in use.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_PASSWORD_EXPIRY 8</term>
+		/// <term>The pBuffer parameter contains a pointer to a SecPkgContext_PasswordExpiry structure. Returns password expiration information.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_REMOTE_CERT_CONTEXT 0x53</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a PCCERT_CONTEXTstructure. Finds a certificate context that contains the end
+		/// certificate supplied by the server. This attribute is supported only by the Schannel security package.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_ROOT_STORE 0x55</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a HCERTCONTEXT. Finds a certificate context that contains a certificate supplied by
+		/// the Root store.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_SESSION_KEY 9</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_SessionKey structure. Returns information about the session keys.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_SESSION_INFO 0x5d</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_SessionInfo structure. Returns information about the session. Windows
+		/// Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported. This attribute is supported only by
+		/// the Schannel security package.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_SIZES 0</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_Sizes structure. Queries the sizes of the structures used in the
+		/// per-message functions.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_STREAM_SIZES 4</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_StreamSizes structure. Queries the sizes of the various parts of a
+		/// stream used in the per-message functions. This attribute is supported only by the Schannel security package.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_SUBJECT_SECURITY_ATTRIBUTES 124</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_SubjectAttributes structure. This value returns information about the
+		/// security attributes for the connection. This value is supported only on the CredSSP server. Windows Server 2008, Windows Vista,
+		/// Windows Server 2003 and Windows XP: This value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_SUPPORTED_SIGNATURES 0x66</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_SupportedSignatures structure. This value returns information about
+		/// the signature types that are supported for the connection. This value is supported only by the Schannel security package. Windows
+		/// Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_TARGET_INFORMATION 17</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_TargetInformation structure. Returns information about the name of
+		/// the remote server.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_UNIQUE_BINDINGS 25</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_Bindings structure that specifies channel binding information. This
+		/// value is supported only by the Schannel security package. Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:
+		/// This value is not supported.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pBuffer">
+		/// A pointer to a structure that receives the attributes. The type of structure pointed to depends on the value specified in the
+		/// ulAttribute parameter.
+		/// </param>
+		/// <param name="cbBuffer">The size, in bytes, of the pBuffer parameter.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is SEC_E_OK.</para>
+		/// <para>If the function fails, the return value is a nonzero error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-querycontextattributesexw SECURITY_STATUS SEC_ENTRY
+		// QueryContextAttributesExW( PCtxtHandle phContext, unsigned long ulAttribute, void *pBuffer, unsigned long cbBuffer );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "FD91EE99-F94E-44CE-9331-933D0CAA5F75")]
+		public static extern HRESULT QueryContextAttributesEx(in CtxtHandle phContext, SECPKG_ATTR ulAttribute, IntPtr pBuffer, uint cbBuffer);
+
+		/// <summary>
+		/// Retrieves the attributes of a credential, such as the name associated with the credential. The information is valid for any
+		/// security context created with the specified credential.
+		/// </summary>
+		/// <param name="phCredential">A handle of the credentials to be queried.</param>
+		/// <param name="ulAttribute">
+		/// <para>Specifies the attribute to query. This parameter can be any of the following attributes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SECPKG_CRED_ATTR_CERT</term>
+		/// <term>
+		/// Returns the certificate thumbprint in a pbuffer of type SecPkgCredentials_Cert. This attribute is only supported by Kerberos.
+		/// Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This attribute is not available.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_CRED_ATTR_NAMES</term>
+		/// <term>
+		/// Returns the name of a credential in a pbuffer of type SecPkgCredentials_Names. This attribute is not supported by Schannel in
+		/// WOW64 mode.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_SUPPORTED_ALGS</term>
+		/// <term>
+		/// Returns the supported algorithms in a pbuffer of type SecPkgCred_SupportedAlgs. All supported algorithms are included, regardless
+		/// of whether they are supported by the provided certificate or enabled on the local computer. This attribute is supported only by Schannel.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_CIPHER_STRENGTHS</term>
+		/// <term>Returns the cipher strengths in a pbuffer of type SecPkgCred_CipherStrengths. This attribute is supported only by Schannel.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_SUPPORTED_PROTOCOLS</term>
+		/// <term>
+		/// Returns the supported algorithms in a pbuffer of type SecPkgCred_SupportedProtocols. All supported protocols are included,
+		/// regardless of whether they are supported by the provided certificate or enabled on the local computer. This attribute is
+		/// supported only by Schannel.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pBuffer">
+		/// A pointer to a buffer that receives the requested attribute. The type of structure returned depends on the value of ulAttribute.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is SEC_E_OK.</para>
+		/// <para>If the function fails, the return value may be one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The handle passed to the function is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_UNSUPPORTED_FUNCTION</term>
+		/// <term>
+		/// The specified attribute is not supported by Schannel. This return value will only be returned when the Schannel SSP is being used.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		/// <term>The memory that is available is not sufficient to complete the request.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>QueryCredentialsAttributes</c> function allows an application to determine several characteristics of a credential,
+		/// including the name associated with the specified credentials.
+		/// </para>
+		/// <para>
+		/// Querying the SECPKG_ATTR_CIPHER_STRENGTHS attribute returns a SecPkgCred_CipherStrengths structure. The cipher strength in this
+		/// structure is the same as the cipher strength in the SCHANNEL_CRED structure used when a credential was created.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> An application can find the system default cipher strength by querying this attribute with a default credential. A
+		/// default credential is created by calling AcquireCredentialsHandle with a <c>NULL</c> pAuthData parameter.
+		/// </para>
+		/// <para>
+		/// Querying the SECPKG_ATTR_SUPPORTED_ALGS attribute returns a SecPkgCred_SupportedAlgs structure. The algorithms in this structure
+		/// are compatible with those indicated in the SCHANNEL_CRED structure used when a credential was created.
+		/// </para>
+		/// <para>
+		/// Querying the SECPKG_ATTR_SUPPORTED_PROTOCOLS attribute returns a SecPkgCred_SupportedProtocols structure that contains a bit
+		/// array compatible with the grbitEnabledProtocols field of the SCHANNEL_CRED structure.
+		/// </para>
+		/// <para>
+		/// The caller must allocate the structure pointed to by the pBuffer parameter. The security package allocates the buffer for any
+		/// pointer returned in the pBuffer structure. The caller can call the FreeContextBuffer function to free any pointers allocated by
+		/// the security package.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-querycredentialsattributesa SECURITY_STATUS SEC_ENTRY
+		// QueryCredentialsAttributesA( PCredHandle phCredential, unsigned long ulAttribute, void *pBuffer );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "a8ba6f73-8469-431b-b185-183b45b2c533")]
+		public static extern HRESULT QueryCredentialsAttributes(in CredHandle phCredential, SECPKG_CRED_ATTR ulAttribute, IntPtr pBuffer);
+
+		/// <summary>Obtains the access token for a client security context and uses it directly.</summary>
+		/// <param name="phContext">Handle of the context to query.</param>
+		/// <param name="Token">Returned handle to the access token.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns a nonzero error code. One possible error code return is SEC_E_INVALID_HANDLE.</para>
+		/// </returns>
+		/// <remarks>
+		/// This function is called by a server application to control impersonation outside the SSPI layer, such as when launching a child
+		/// process. The handle returned must be closed with CloseHandle when the handle is no longer needed.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-querysecuritycontexttoken KSECDDDECLSPEC SECURITY_STATUS
+		// SEC_ENTRY QuerySecurityContextToken( PCtxtHandle phContext, void **Token );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "5dc23608-9ce3-4fee-8161-2e409cef4063")]
+		public static extern HRESULT QuerySecurityContextToken(in CtxtHandle phContext, out SafeHTOKEN Token);
+
+		/// <summary>
+		/// Retrieves information about a specified security package. This information includes the bounds on sizes of authentication
+		/// information, credentials, and contexts.
+		/// </summary>
+		/// <param name="pszPackageName">Pointer to a null-terminated string that specifies the name of the security package.</param>
+		/// <param name="ppPackageInfo">
+		/// Pointer to a variable that receives a pointer to a SecPkgInfo structure containing information about the specified security package.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is SEC_E_OK.</para>
+		/// <para>If the function fails, the return value is a nonzero error code.</para>
+		/// </returns>
+		/// <remarks>The caller must call the FreeContextBuffer function to free the buffer returned in ppPackageInfo.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-querysecuritypackageinfoa SECURITY_STATUS SEC_ENTRY
+		// QuerySecurityPackageInfoA( LPSTR pszPackageName, PSecPkgInfoA *ppPackageInfo );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "130ef0fe-bb13-4a65-b476-cd25ed234da1")]
+		public static extern HRESULT QuerySecurityPackageInfo(string pszPackageName, out SafeContextBuffer ppPackageInfo);
+
+		/// <summary>Allows a security package to discontinue the impersonation of the caller and restore its own security context.</summary>
+		/// <param name="phContext">
+		/// Handle of the security context being impersonated. This handle must have been obtained in the call to the AcceptSecurityContext
+		/// (General) function and used in the call to the ImpersonateSecurityContext function.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is SEC_E_OK.</para>
+		/// <para>If the function fails, the return value can be one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The handle passed to the function is not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <c>RevertSecurityContext</c> is not available with all security packages on all platforms. Typically, it is implemented only on
+		/// platforms and with security packages for which a call to the QuerySecurityPackageInfo function indicates impersonation support.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-revertsecuritycontext KSECDDDECLSPEC SECURITY_STATUS SEC_ENTRY
+		// RevertSecurityContext( PCtxtHandle phContext );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "d4ed1fe9-2e0a-4648-a010-1eae49ba03ee")]
+		public static extern HRESULT RevertSecurityContext(in CtxtHandle phContext);
+
+		/// <summary>
+		/// The <c>SaslAcceptSecurityContext</c> function wraps a standard call to the Security Support Provider Interface
+		/// AcceptSecurityContext (General) function and includes creation of SASL server cookies.
+		/// </summary>
+		/// <param name="phCredential">
+		/// A handle to the server's credentials. The server calls the AcquireCredentialsHandle function with the INBOUND flag set to
+		/// retrieve this handle.
+		/// </param>
+		/// <param name="phContext">
+		/// Pointer to a CtxtHandle structure. On the first call to AcceptSecurityContext (General), this pointer is <c>NULL</c>. On
+		/// subsequent calls, phContext is the handle to the partially formed context that was returned in the phNewContext parameter by the
+		/// first call.
+		/// </param>
+		/// <param name="pInput">
+		/// <para>
+		/// Pointer to a SecBufferDesc structure generated by a client call to the InitializeSecurityContext (General) function that contains
+		/// the input buffer descriptor.
+		/// </para>
+		/// <para>
+		/// SASL requires a single buffer of type <c>SECBUFFER_TOKEN</c>. The buffer is empty for the first call to the AcceptSecurityContext
+		/// (General) function and contains the challenge response received from the client for the second call.
+		/// </para>
+		/// </param>
+		/// <param name="fContextReq">
+		/// <para>
+		/// Bit flags that specify the attributes required by the server to establish the context. Bit flags can be combined using bitwise-
+		/// <c>OR</c> operations. The following table shows the possible values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ASC_REQ_CONFIDENTIALITY</term>
+		/// <term>Encrypt and decrypt messages. Valid with the Digest SSP for SASL only.</term>
+		/// </item>
+		/// <item>
+		/// <term>ASC_REQ_HTTP</term>
+		/// <term>Use Digest for HTTP. Omit this flag to use Digest as an SASL mechanism.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="TargetDataRep">
+		/// Indicates the data representation, such as byte ordering, on the target. This value can be either SECURITY_NATIVE_DREP or SECURITY_NETWORK_DREP.
+		/// </param>
+		/// <param name="phNewContext">
+		/// Pointer to a CtxtHandle structure. On the first call to AcceptSecurityContext (General), this pointer receives the new context
+		/// handle. On subsequent calls, phNewContext can be the same as the handle specified in the phContext parameter.
+		/// </param>
+		/// <param name="pOutput">
+		/// Pointer to a SecBufferDesc structure that contains the output buffer descriptor. This buffer is sent to the client for input into
+		/// additional calls to InitializeSecurityContext (General). An output buffer may be generated even if the function returns SEC_E_OK.
+		/// Any buffer generated must be sent back to the client application.
+		/// </param>
+		/// <param name="pfContextAttr">
+		/// <para>
+		/// Pointer to a variable that receives a set of bit flags indicating the attributes of the established context. For a description of
+		/// the various attributes, see Context Requirements. Flags used for this parameter are prefixed with ASC_RET, such as ASC_RET_DELEGATE.
+		/// </para>
+		/// <para>
+		/// Do not check for security-related attributes until the final function call returns successfully. Attribute flags not related to
+		/// security, such as the ASC_RET_ALLOCATED_MEMORY flag, can be checked before the final return.
+		/// </para>
+		/// </param>
+		/// <param name="ptsExpiry">
+		/// <para>
+		/// Pointer to a <c>TimeStamp</c> structure that receives the expiration time of the context. It is recommended that the security
+		/// package always return this value in local time.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Until the last call of the authentication process, the expiration time for the context can be incorrect because more
+		/// information will be provided during later stages of the negotiation. Therefore, ptsTimeStamp must be <c>NULL</c> until the last
+		/// call to the function.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the call is completed successfully, this function returns SEC_E_OK. The following table shows some possible failure return values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_ALGORITHM_MISMATCH</term>
+		/// <term>Authz processing is not permitted.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		/// <term>Not enough memory is available to complete the request.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_TOKEN</term>
+		/// <term>No Token buffer is located in the pOutput parameter, or the message failed to decrypt.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The final call of the AcceptSecurityContext (General) function that returns SEC_E_OK is identified. If a return token is
+		/// produced, SASL processing is suspended for one round trip back to the client to allow the final token to be processed. After the
+		/// exchange is completed, SEC_E_CONTINUE_NEEDED is returned to the application with an additional SASL server cookie encrypted with
+		/// SSPI message functions. The initial server cookie indicates if INTEGRITY and PRIVACY are supported. This initial server cookie is
+		/// processed by the client, and the client returns a client cookie to indicate which services the client requests. The client cookie
+		/// is then decrypted by the server and the final services are determined for the following message traffic.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-saslacceptsecuritycontext SECURITY_STATUS SEC_ENTRY
+		// SaslAcceptSecurityContext( PCredHandle phCredential, PCtxtHandle phContext, PSecBufferDesc pInput, unsigned long fContextReq,
+		// unsigned long TargetDataRep, PCtxtHandle phNewContext, PSecBufferDesc pOutput, unsigned long *pfContextAttr, PTimeStamp ptsExpiry );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "39ef6522-ff70-4066-a34d-f2af2174f6ee")]
+		public static unsafe extern HRESULT SaslAcceptSecurityContext([In, Optional] CredHandle* phCredential, [In, Optional] CtxtHandle* phContext, [In, Optional] SecBufferDesc* pInput, ASC_REQ fContextReq, DREP TargetDataRep,
+			out SafeCtxtHandle phNewContext, [Optional] SecBufferDesc* pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry);
+
+		/// <summary>The <c>SaslEnumerateProfiles</c> function lists the packages that provide a SASL interface.</summary>
+		/// <param name="ProfileList">
+		/// Pointer to a list of Unicode or ANSI strings that contain the names of the packages with SASL wrapper support.
+		/// </param>
+		/// <param name="ProfileCount">
+		/// Pointer to an unsigned <c>LONG</c> value that contains the number of packages with SASL wrapper support.
+		/// </param>
+		/// <returns>
+		/// <para>If the call is completed successfully, this function returns SEC_E_OK.</para>
+		/// <para>If the function fails, the return value is a nonzero error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The current list is maintained in the registry under</para>
+		/// <para>A terminating <c>NULL</c> character is appended to the end of the list.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-saslenumerateprofilesa SECURITY_STATUS SEC_ENTRY
+		// SaslEnumerateProfilesA( LPSTR *ProfileList, ULONG *ProfileCount );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "0c11e0e3-2538-4703-bc32-31c73d65a498")]
+		public static extern HRESULT SaslEnumerateProfiles([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] out string[] ProfileList, out uint ProfileCount);
+
+		/// <summary>The <c>SaslGetContextOption</c> function retrieves the specified property of the specified SASL context.</summary>
+		/// <param name="ContextHandle">Handle of the SASL context.</param>
+		/// <param name="Option">
+		/// <para>Property to return from the SASL context. The following table lists the possible values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SASL_OPTION_AUTHZ_PROCESSING</term>
+		/// <term>
+		/// Data type of buffer: ULONG State of SASL processing of the Authz value provided by the SASL application. The valid states for
+		/// processing are Sasl_AuthZIDForbidden and Sasl_AuthZIDProcessed.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SASL_OPTION_AUTHZ_STRING</term>
+		/// <term>
+		/// Data type of buffer: Array of binary characters String of characters passed from the SASL client to the server. If the
+		/// AuthZ_Processing state is Sasl_AuthZIDForbidden, the return value SEC_E_UNSUPPORTED_FUNCTION is returned.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SASL_OPTION_RECV_SIZE</term>
+		/// <term>Data type of buffer: ULONG Maximum size of the receiving buffer on the local computer.</term>
+		/// </item>
+		/// <item>
+		/// <term>SASL_OPTION_SEND_SIZE</term>
+		/// <term>
+		/// Data type of buffer: ULONG Maximum message data size that can be transmitted. This value is the maximum buffer size that can be
+		/// transmitted to the remote SASL process minus the block size, the trailer size, and the maximum signature size.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="Value">
+		/// A pointer to a buffer that receives the requested property. For the data type of the buffer for each value of the Option
+		/// parameter, see the Option parameter.
+		/// </param>
+		/// <param name="Size">The size, in bytes, of the buffer specified by the Value parameter.</param>
+		/// <param name="Needed">
+		/// A pointer to an unsigned <c>LONG</c> value that returns the value if the buffer specified by the Value parameter is not large
+		/// enough to contain the data value of the property specified by the Option parameter.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the call is completed successfully, this function returns SEC_E_OK. The following table shows some possible error return values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_BUFFER_TOO_SMALL</term>
+		/// <term>
+		/// The buffer specified by the Value parameter is not large enough to contain the data value of the property specified by the Option parameter.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The SASL context handle specified by the ContextHandle parameter was not found in the SASL list.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_UNSUPPORTED_FUNCTION</term>
+		/// <term>The option specified in the Option parameter is not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-saslgetcontextoption SECURITY_STATUS SEC_ENTRY
+		// SaslGetContextOption( PCtxtHandle ContextHandle, ULONG Option, PVOID Value, ULONG Size, PULONG Needed );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "c9c424d3-07e6-4ed0-9189-c932af0475d9")]
+		public static extern HRESULT SaslGetContextOption(in CtxtHandle ContextHandle, SASL_OPTION Option, [Out] IntPtr Value, uint Size, out uint Needed);
+
+		/// <summary>The <c>SaslGetProfilePackage</c> function returns the package information for the specified package.</summary>
+		/// <param name="ProfileName">Unicode or ANSI string that contains the name of the SASL package.</param>
+		/// <param name="PackageInfo">
+		/// Pointer to a pointer to a SecPkgInfo structure that returns the package information for the package specified by the ProfileName parameter.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the call is completed successfully, this function returns SEC_E_OK. The following table shows some possible failure return values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_SECPKG_NOT_FOUND</term>
+		/// <term>The SASL profile specified by the ProfileName parameter could not be found.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		/// <term>Memory could not be allocated for the SecPkgInfo structure.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-saslgetprofilepackagew SECURITY_STATUS SEC_ENTRY
+		// SaslGetProfilePackageW( LPWSTR ProfileName, PSecPkgInfoW *PackageInfo );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "b7cecc5f-775f-40ba-abfc-27d51b3f5395")]
+		public static extern HRESULT SaslGetProfilePackageW(string ProfileName, out SafeContextBuffer PackageInfo);
+
+		/// <summary>
+		/// The <c>SaslIdentifyPackage</c> function returns the negotiate prefix that matches the specified SASL negotiation buffer.
+		/// </summary>
+		/// <param name="pInput">
+		/// Pointer to a SecBufferDesc structure that specifies the SASL negotiation buffer for which to find the negotiate prefix.
+		/// </param>
+		/// <param name="PackageInfo">
+		/// Pointer to a pointer to a SecPkgInfo structure that returns the negotiate prefix for the negotiation buffer specified by the
+		/// pInput parameter.
+		/// </param>
+		/// <returns>
+		/// <para>If the call is completed successfully, this function returns SEC_E_OK.</para>
+		/// <para>If the function fails, the return value is a nonzero error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-saslidentifypackagea SECURITY_STATUS SEC_ENTRY
+		// SaslIdentifyPackageA( PSecBufferDesc pInput, PSecPkgInfoA *PackageInfo );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "df6f4749-8f28-4ee5-8165-f7aeb3bea7ab")]
+		public static extern HRESULT SaslIdentifyPackage(ref SecBufferDesc pInput, out SafeContextBuffer PackageInfo);
+
+		/// <summary>
+		/// The <c>SaslInitializeSecurityContext</c> function wraps a standard call to the Security Support Provider Interface
+		/// InitializeSecurityContext (General) function and processes SASL server cookies from the server.
+		/// </summary>
+		/// <param name="phCredential">
+		/// A handle to the credentials returned by the AcquireCredentialsHandle function used to build the security context. Using the
+		/// <c>SaslInitializeSecurityContext</c> function requires at least OUTBOUND credentials.
+		/// </param>
+		/// <param name="phContext">
+		/// Pointer to a <c>CtxtHandle</c> structure. On the first call to the <c>SaslInitializeSecurityContext</c> function, this pointer is
+		/// <c>NULL</c>. On the second call, this parameter is a pointer to the handle to the partially formed context returned in the
+		/// phNewContext parameter by the first call.
+		/// </param>
+		/// <param name="pszTargetName">Pointer to a Unicode or ANSI string that indicates the target of the context.</param>
+		/// <param name="fContextReq">
+		/// <para>
+		/// Bit flags that indicate the requirements of the context. Flags used for this parameter are prefixed with ISC_REQ_; for example:
+		/// ISC_REQ_DELEGATE. Specify combinations of the following attributes flags.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ISC_REQ_REPLAY_DETECT</term>
+		/// <term>Detect replayed packets.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_SEQUENCE_DETECT</term>
+		/// <term>Detect messages received out of sequence.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_CONFIDENTIALITY</term>
+		/// <term>Encrypt messages.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_STREAM</term>
+		/// <term>Support a stream-oriented connection.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_EXTENDED_ERROR</term>
+		/// <term>When errors occur, the remote party will be notified.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_CONNECTION</term>
+		/// <term>The security context will not handle formatting messages.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_MUTUAL_AUTH</term>
+		/// <term>Client and server will be authenticated.</term>
+		/// </item>
+		/// <item>
+		/// <term>ISC_REQ_INTEGRITY</term>
+		/// <term>Sign messages and verify signatures.</term>
+		/// </item>
+		/// </list>
+		/// <para>For further descriptions of the various attributes, see Context Requirements.</para>
+		/// </param>
+		/// <param name="Reserved1">Reserved value; must be zero.</param>
+		/// <param name="TargetDataRep">
+		/// Indicates the data representation, such as byte ordering, on the target. Can be either SECURITY_NATIVE_DREP or SECURITY_NETWORK_DREP.
+		/// </param>
+		/// <param name="pInput">
+		/// <para>
+		/// Pointer to a SecBufferDesc structure that contains pointers to the buffers supplied as input to the package. The pointer must be
+		/// <c>NULL</c> on the first call to the function. On subsequent calls to the function, it is a pointer to a buffer allocated with
+		/// enough memory to hold the token returned by the remote peer.
+		/// </para>
+		/// <para>SASL requires a single buffer of type <c>SECBUFFER_TOKEN</c> that contains the challenge received from the server.</para>
+		/// </param>
+		/// <param name="Reserved2">Reserved value; must be zero.</param>
+		/// <param name="phNewContext">
+		/// Pointer to a CtxtHandle structure. On the first call to the <c>SaslInitializeSecurityContext</c> function, this pointer receives
+		/// the new context handle. On the second call, phNewContext can be the same as the handle specified in the phContext parameter.
+		/// </param>
+		/// <param name="pOutput">
+		/// Pointer to a SecBufferDesc structure that contains pointers to the SecBuffer structure that receives the output data. If a buffer
+		/// was typed as SEC_READWRITE in the input, it will be there on output. The system will allocate a buffer for the security token if
+		/// requested (through ISC_REQ_ALLOCATE_MEMORY) and fill in the address in the buffer descriptor for the security token.
+		/// </param>
+		/// <param name="pfContextAttr">
+		/// <para>
+		/// Pointer to a variable to receive a set of bit flags that indicate the attributes of the established context. For a description of
+		/// the various attributes, see Context Requirements.
+		/// </para>
+		/// <para>Flags used for this parameter are prefixed with ISC_RET_, such as ISC_RET_DELEGATE.</para>
+		/// <para>For a list of valid values, see the fContextReq parameter.</para>
+		/// <para>
+		/// Do not check for security-related attributes until the final function call returns successfully. Attribute flags not related to
+		/// security, such as the ASC_RET_ALLOCATED_MEMORY flag, can be checked before the final return.
+		/// </para>
+		/// <para><c>Note</c> Particular context attributes can change during a negotiation with a remote peer.</para>
+		/// </param>
+		/// <param name="ptsExpiry">
+		/// Pointer to a <c>TimeStamp</c> structure that receives the expiration time of the context. It is recommended that the security
+		/// package always return this value in local time. This parameter is optional and <c>NULL</c> should be passed for short-lived clients.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the call is completed successfully, this function returns SEC_E_OK. The following table shows some possible failure return values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_ALGORITHM_MISMATCH</term>
+		/// <term>Authz processing is not permitted.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		/// <term>Not enough memory is available to complete the request.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_TOKEN</term>
+		/// <term>No Token buffer is located in the pOutput parameter, or the message failed to decrypt.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-saslinitializesecuritycontextw SECURITY_STATUS SEC_ENTRY
+		// SaslInitializeSecurityContextW( PCredHandle phCredential, PCtxtHandle phContext, LPWSTR pszTargetName, unsigned long fContextReq,
+		// unsigned long Reserved1, unsigned long TargetDataRep, PSecBufferDesc pInput, unsigned long Reserved2, PCtxtHandle phNewContext,
+		// PSecBufferDesc pOutput, unsigned long *pfContextAttr, PTimeStamp ptsExpiry );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "9cc661b7-f1b0-4fb1-b799-5b318d87fd4d")]
+		public static unsafe extern HRESULT SaslInitializeSecurityContext([In, Optional] CredHandle* phCredential, [In, Optional] CtxtHandle* phContext, [Optional] string pszTargetName, ASC_REQ fContextReq, [Optional] uint Reserved1, DREP TargetDataRep,
+			[In, Optional] SecBufferDesc* pInput, [Optional] uint Reserved2, out SafeCtxtHandle phNewContext, [Optional] SecBufferDesc* pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry);
+
+		/// <summary>The <c>SaslSetContextOption</c> function sets the value of the specified property for the specified SASL context.</summary>
+		/// <param name="ContextHandle">Handle of the SASL context.</param>
+		/// <param name="Option">
+		/// <para>Property to set for the SASL context. The following table lists the possible values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SASL_OPTION_AUTHZ_PROCESSING</term>
+		/// <term>
+		/// Data type of buffer: ULONG State of SASL processing of the Authz value provided by the SASL application. The valid states for
+		/// processing are Sasl_AuthZIDForbidden and Sasl_AuthZIDProcessed. The default value is Sasl_AuthZIDProcessed.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SASL_OPTION_AUTHZ_STRING</term>
+		/// <term>
+		/// Data type of buffer: Array of binary characters String of characters passed from the SASL client to the server. If the
+		/// AuthZ_Processing state is Sasl_AuthZIDForbidden, the return value SEC_E_UNSUPPORTED_FUNCTION is returned.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SASL_OPTION_RECV_SIZE</term>
+		/// <term>Data type of buffer: ULONG Maximum size of the receiving buffer on the local computer. The default value is 0x0FFFF bytes.</term>
+		/// </item>
+		/// <item>
+		/// <term>SASL_OPTION_SEND_SIZE</term>
+		/// <term>
+		/// Data type of buffer: ULONG Maximum message data size that can be transmitted. This value is the maximum buffer size that can be
+		/// transmitted to the remote SASL process minus the block size, the trailer size, and the maximum signature size. The default value
+		/// is 0x0FFFF bytes.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="Value">
+		/// A pointer to a buffer that contains the value to set to the requested property. For the data type of the buffer for each value of
+		/// the Option parameter, see the Option parameter.
+		/// </param>
+		/// <param name="Size">The size, in bytes, of the buffer specified by the Value parameter.</param>
+		/// <returns>
+		/// <para>
+		/// If the call is completed successfully, this function returns SEC_E_OK. The following table shows some possible error return values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_BUFFER_TOO_SMALL</term>
+		/// <term>
+		/// The buffer specified by the Value parameter is not large enough to contain the data value of the property specified by the Option parameter.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The SASL context handle specified by the ContextHandle parameter was not found in the SASL list.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_UNSUPPORTED_FUNCTION</term>
+		/// <term>The option specified in the Option parameter is not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-saslsetcontextoption SECURITY_STATUS SEC_ENTRY
+		// SaslSetContextOption( PCtxtHandle ContextHandle, ULONG Option, PVOID Value, ULONG Size );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "3c3b1209-b0de-4100-8dfe-53ea314b790b")]
+		public static extern HRESULT SaslSetContextOption(in CtxtHandle ContextHandle, SASL_OPTION Option, string Value, uint Size);
+
+		/// <summary>The <c>SaslSetContextOption</c> function sets the value of the specified property for the specified SASL context.</summary>
+		/// <param name="ContextHandle">Handle of the SASL context.</param>
+		/// <param name="Option">
+		/// <para>Property to set for the SASL context. The following table lists the possible values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SASL_OPTION_AUTHZ_PROCESSING</term>
+		/// <term>
+		/// Data type of buffer: ULONG State of SASL processing of the Authz value provided by the SASL application. The valid states for
+		/// processing are Sasl_AuthZIDForbidden and Sasl_AuthZIDProcessed. The default value is Sasl_AuthZIDProcessed.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SASL_OPTION_AUTHZ_STRING</term>
+		/// <term>
+		/// Data type of buffer: Array of binary characters String of characters passed from the SASL client to the server. If the
+		/// AuthZ_Processing state is Sasl_AuthZIDForbidden, the return value SEC_E_UNSUPPORTED_FUNCTION is returned.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SASL_OPTION_RECV_SIZE</term>
+		/// <term>Data type of buffer: ULONG Maximum size of the receiving buffer on the local computer. The default value is 0x0FFFF bytes.</term>
+		/// </item>
+		/// <item>
+		/// <term>SASL_OPTION_SEND_SIZE</term>
+		/// <term>
+		/// Data type of buffer: ULONG Maximum message data size that can be transmitted. This value is the maximum buffer size that can be
+		/// transmitted to the remote SASL process minus the block size, the trailer size, and the maximum signature size. The default value
+		/// is 0x0FFFF bytes.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="Value">
+		/// A pointer to a buffer that contains the value to set to the requested property. For the data type of the buffer for each value of
+		/// the Option parameter, see the Option parameter.
+		/// </param>
+		/// <param name="Size">The size, in bytes, of the buffer specified by the Value parameter.</param>
+		/// <returns>
+		/// <para>
+		/// If the call is completed successfully, this function returns SEC_E_OK. The following table shows some possible error return values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_BUFFER_TOO_SMALL</term>
+		/// <term>
+		/// The buffer specified by the Value parameter is not large enough to contain the data value of the property specified by the Option parameter.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The SASL context handle specified by the ContextHandle parameter was not found in the SASL list.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_UNSUPPORTED_FUNCTION</term>
+		/// <term>The option specified in the Option parameter is not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-saslsetcontextoption SECURITY_STATUS SEC_ENTRY
+		// SaslSetContextOption( PCtxtHandle ContextHandle, ULONG Option, PVOID Value, ULONG Size );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "3c3b1209-b0de-4100-8dfe-53ea314b790b")]
+		public static extern HRESULT SaslSetContextOption(in CtxtHandle ContextHandle, SASL_OPTION Option, in uint Value, uint Size = 4);
+
+		/// <summary>
+		/// Enables a transport application to set attributes of a security context for a security package. This function is supported only
+		/// by the Schannel security package.
+		/// </summary>
+		/// <param name="phContext">A handle to the security context to be set.</param>
+		/// <param name="ulAttribute">
+		/// <para>The attribute of the context to be set. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SECPKG_ATTR_APP_DATA 94</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_SessionAppData structure. Sets application data for the session. This
+		/// attribute is supported only by the Schannel security package.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_EAP_PRF_INFO 101</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_EapPrfInfo structure. Sets the pseudo-random function (PRF) used by
+		/// the Extensible Authentication Protocol (EAP). This is the value that is returned by a call to the QueryContextAttributes
+		/// (Schannel) function when SECPKG_ATTR_EAP_KEY_BLOCK is passed as the value of the ulAttribute parameter. This attribute is
+		/// supported only by the Schannel security package.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_EARLY_START 105</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_EarlyStart structure. Sets the False Start feature. See the Building
+		/// a faster and more secure web blog post for information on this feature.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_DTLS_MTU 34</term>
+		/// <term>
+		/// Sets and retrieves the MTU (maximum transmission unit) value for use with DTLS. If DTLS is not enabled in a security context,
+		/// this attribute is not supported. Valid values are between 200 bytes and 64 kilobytes. The default DTLS MTU value in Schannel is
+		/// 1096 bytes.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_KEYING_MATERIAL_INFO 106</term>
+		/// <term>
+		/// The pBuffer parameter contains a pointer to a SecPkgContext_KeyingMaterialInfo structure. The keying material export feature
+		/// follows the RFC 5705 standard. This attribute is supported only by the Schannel security package in Windows 10 and Windows Server
+		/// 2016 or later versions.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pBuffer">
+		/// A pointer to a structure that contains values to set the attributes to. The type of structure pointed to depends on the value
+		/// specified in the ulAttribute parameter.
+		/// </param>
+		/// <param name="cbBuffer">The size, in bytes, of the pBuffer parameter.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns a nonzero error code. The following error code is one of the possible error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_UNSUPPORTED_FUNCTION</term>
+		/// <term>This value is returned by Schannel kernel mode to indicate that this function is not supported.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-setcontextattributesa SECURITY_STATUS SEC_ENTRY
+		// SetContextAttributesA( PCtxtHandle phContext, unsigned long ulAttribute, void *pBuffer, unsigned long cbBuffer );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "e3246c3e-3e8c-49fe-99d8-dfff1a10ab83")]
+		public static extern HRESULT SetContextAttributes(in CtxtHandle phContext, SECPKG_ATTR ulAttribute, IntPtr pBuffer, uint cbBuffer);
+
+		/// <summary>
+		/// Sets the attributes of a credential, such as the name associated with the credential. The information is valid for any security
+		/// context created with the specified credential.
+		/// </summary>
+		/// <param name="phCredential">A handle of the credentials to be set.</param>
+		/// <param name="ulAttribute">
+		/// <para>Specifies the attribute to set. This parameter can be any of the following attributes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SECPKG_CRED_ATTR_NAMES</term>
+		/// <term>
+		/// Sets the name of a credential in a pBuffer parameter of type SecPkgCredentials_Names. This attribute is not supported by Schannel
+		/// in WOW64 mode.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_CRED_ATTR_KDC_PROXY_SETTINGS</term>
+		/// <term>
+		/// Sets the Kerberos proxy setting in a pBuffer parameter of type SecPkgCredentials_KdcProxySettings. This attribute is only
+		/// supported by Kerberos.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_SUPPORTED_ALGS</term>
+		/// <term>
+		/// Sets the supported algorithms in a pBuffer parameter of type SecPkgCred_SupportedAlgs. All supported algorithms are included,
+		/// regardless of whether they are supported by the provided certificate or enabled on the local computer. This attribute is
+		/// supported only by Schannel.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_CIPHER_STRENGTHS</term>
+		/// <term>
+		/// Sets the cipher strengths in a pBuffer parameter of type SecPkgCred_CipherStrengths. This attribute is supported only by Schannel.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECPKG_ATTR_SUPPORTED_PROTOCOLS</term>
+		/// <term>
+		/// Sets the supported algorithms in a pBuffer parameter of type SecPkgCred_SupportedProtocols. All supported protocols are included,
+		/// regardless of whether they are supported by the provided certificate or enabled on the local computer. This attribute is
+		/// supported only by Schannel.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pBuffer">
+		/// A pointer to a buffer that contains the new attribute value. The type of structure returned depends on the value of ulAttribute.
+		/// </param>
+		/// <param name="cbBuffer">The size, in bytes, of the pBuffer buffer.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is SEC_E_OK.</para>
+		/// <para>If the function fails, the return value may be one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The handle passed to the function is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_UNSUPPORTED_FUNCTION</term>
+		/// <term>
+		/// The specified attribute is not supported by Schannel. This return value will only be returned when the Schannel SSP is being used.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		/// <term>Not enough memory is available to complete the request.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-setcredentialsattributesa SECURITY_STATUS SEC_ENTRY
+		// SetCredentialsAttributesA( PCredHandle phCredential, unsigned long ulAttribute, void *pBuffer, unsigned long cbBuffer );
+		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("sspi.h", MSDNShortId = "419fb4f0-3dd1-4473-aeb2-8024355e0c1c")]
+		public static extern HRESULT SetCredentialsAttributes(in CredHandle phCredential, SECPKG_CRED_ATTR ulAttribute, IntPtr pBuffer, uint cbBuffer);
+
 		/// <summary>
 		/// <para>Compares the two specified credentials.</para>
 		/// </summary>
@@ -75,6 +3973,45 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("sspi.h", MSDNShortId = "aef0206c-c376-4877-b1a6-5e86d2e35dea")]
 		public static extern Win32Error SspiDecryptAuthIdentity(PSEC_WINNT_AUTH_IDENTITY_OPAQUE EncryptedAuthData);
+
+		/// <summary>Decrypts a <c>SEC_WINNT_AUTH_IDENTITY_OPAQUE</c> structure.</summary>
+		/// <param name="Options">
+		/// <para>
+		/// Decryption options. This parameter should be the same value as the value passed to the SspiEncryptAuthIdentityEx function, which
+		/// can be one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_WINNT_AUTH_IDENTITY_ENCRYPT_SAME_LOGON</term>
+		/// <term>
+		/// The encrypted structure can only be decrypted by a security context in the same logon session. This option is used to protect an
+		/// identity buffer that is being sent over a local RPC.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_WINNT_AUTH_IDENTITY_ENCRYPT_SAME_PROCESS</term>
+		/// <term>
+		/// The encrypted structure can only be decrypted by the same process. Calling the function with this option is equivalent to calling
+		/// SspiEncryptAuthIdentity. This option is used to protect an identity buffer that is being persisted in a process's private memory
+		/// for an extended period.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="EncryptedAuthData">This buffer is the output of the SspiEncryptAuthIdentityEx function.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns a nonzero error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-sspidecryptauthidentityex SECURITY_STATUS SEC_ENTRY
+		// SspiDecryptAuthIdentityEx( ULONG Options, PSEC_WINNT_AUTH_IDENTITY_OPAQUE EncryptedAuthData );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "86598BAA-0E87-46A9-AA1A-BF04BF0CDAFA")]
+		public static extern HRESULT SspiDecryptAuthIdentityEx(SEC_WINNT_AUTH_IDENTITY_ENCRYPT Options, PSEC_WINNT_AUTH_IDENTITY_OPAQUE EncryptedAuthData);
 
 		/// <summary>
 		/// <para>Encodes the specified authentication identity as three strings.</para>
@@ -165,6 +4102,51 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("sspi.h", MSDNShortId = "4460f7ec-35fd-4ad1-8c20-dda9f4d3477a")]
 		public static extern Win32Error SspiEncryptAuthIdentity(PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthData);
+
+		/// <summary>Encrypts a <c>SEC_WINNT_AUTH_IDENTITY_OPAQUE</c> structure.</summary>
+		/// <param name="Options">
+		/// <para>Encryption options. This can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_WINNT_AUTH_IDENTITY_ENCRYPT_SAME_LOGON</term>
+		/// <term>
+		/// The encrypted structure can only be decrypted by a security context in the same logon session. This option is used to protect an
+		/// identity buffer that is being sent over a local RPC.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_WINNT_AUTH_IDENTITY_ENCRYPT_SAME_PROCESS</term>
+		/// <term>
+		/// The encrypted structure can only be decrypted by the same process. Calling the function with this option is equivalent to calling
+		/// SspiEncryptAuthIdentity. This option is used to protect an identity buffer that is being persisted in a process's private memory
+		/// for an extended period.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="AuthData">
+		/// On input, a pointer to an identity buffer to encrypt. This buffer must be prepared for encryption prior to the call to this
+		/// function. This can be done by calling the function SspiEncryptAuthIdentity. On output, the encrypted identity buffer.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns SEC_E_OK.</para>
+		/// <para>If the function fails, it returns a nonzero error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// To transfer credentials securely across processes, applications typically call this function with the
+		/// SEC_WINNT_AUTH_IDENTITY_ENCRYPT_SAME_LOGON option, followed by SspiMarshalAuthIdentity to obtain a marshaled authentication
+		/// buffer and its length. For example, Online Identity Credential Provider does this to return the authentication buffer from their
+		/// ICredentialProviderCredential::GetSerialization method.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-sspiencryptauthidentityex SECURITY_STATUS SEC_ENTRY
+		// SspiEncryptAuthIdentityEx( ULONG Options, PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthData );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "9290BEF8-24C9-47F0-B258-56ED7D67620B")]
+		public static extern HRESULT SspiEncryptAuthIdentityEx(SEC_WINNT_AUTH_IDENTITY_ENCRYPT Options, PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthData);
 
 		/// <summary>
 		/// <para>
@@ -408,6 +4390,68 @@ namespace Vanara.PInvoke
 		[PInvokeData("sspi.h", MSDNShortId = "50b1f24a-c802-4691-a450-316cb31bf44d")]
 		public static extern void SspiZeroAuthIdentity(PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthData);
 
+		/// <summary>
+		/// Verifies that a message signed by using the MakeSignature function was received in the correct sequence and has not been modified.
+		/// </summary>
+		/// <param name="phContext">A handle to the security context to use for the message.</param>
+		/// <param name="pMessage">
+		/// Pointer to a SecBufferDesc structure that references a set of SecBuffer structures that contain the message and signature to
+		/// verify. The signature is in a <c>SecBuffer</c> structure of type SECBUFFER_TOKEN.
+		/// </param>
+		/// <param name="MessageSeqNo">
+		/// Specifies the sequence number expected by the transport application, if any. If the transport application does not maintain
+		/// sequence numbers, this parameter is zero.
+		/// </param>
+		/// <param name="pfQOP">
+		/// <para>Pointer to a <c>ULONG</c> variable that receives package-specific flags that indicate the quality of protection.</para>
+		/// <para>Some security packages ignore this parameter.</para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function verifies that the message was received in the correct sequence and has not been modified, the return value is SEC_E_OK.
+		/// </para>
+		/// <para>
+		/// If the function determines that the message is not correct according to the information in the signature, the return value can be
+		/// one of the following error codes.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SEC_E_OUT_OF_SEQUENCE</term>
+		/// <term>The message was not received in the correct sequence.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_MESSAGE_ALTERED</term>
+		/// <term>The message has been altered.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_HANDLE</term>
+		/// <term>The context handle specified by phContext is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_INVALID_TOKEN</term>
+		/// <term>pMessage did not contain a valid SECBUFFER_TOKEN buffer, or contained too few buffers.</term>
+		/// </item>
+		/// <item>
+		/// <term>SEC_E_QOP_NOT_SUPPORTED</term>
+		/// <term>The quality of protection negotiated between the client and server did not include integrity checking.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <c>Warning</c> The <c>VerifySignature</c> function will fail if the message was signed using the RsaSignPssSha512 algorithm on a
+		/// different version of Windows. For example, a message that was signed by calling the MakeSignature function on Windows 8 will
+		/// cause the <c>VerifySignature</c> function on Windows 8.1 to fail.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-verifysignature KSECDDDECLSPEC SECURITY_STATUS SEC_ENTRY
+		// VerifySignature( PCtxtHandle phContext, PSecBufferDesc pMessage, unsigned long MessageSeqNo, unsigned long *pfQOP );
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sspi.h", MSDNShortId = "bebeef92-1d6e-4879-846f-12d706db0653")]
+		public static extern HRESULT VerifySignature(in CtxtHandle phContext, in SecBufferDesc pMessage, uint MessageSeqNo, out SECQOP pfQOP);
+
 		/// <summary>Provides a handle to a auth identity.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct PSEC_WINNT_AUTH_IDENTITY_OPAQUE : IHandle
@@ -418,9 +4462,7 @@ namespace Vanara.PInvoke
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public PSEC_WINNT_AUTH_IDENTITY_OPAQUE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
-			/// <summary>
-			/// Returns an invalid handle by instantiating a <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> object with <see cref="IntPtr.Zero"/>.
-			/// </summary>
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> object with <see cref="IntPtr.Zero"/>.</summary>
 			public static PSEC_WINNT_AUTH_IDENTITY_OPAQUE NULL => new PSEC_WINNT_AUTH_IDENTITY_OPAQUE(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
@@ -458,9 +4500,518 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>The SecBuffer structure describes a buffer allocated by a transport application to pass to a security package.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SecBuffer
+		{
+			/// <summary>Specifies the size, in bytes, of the buffer pointed to by the pvBuffer member.</summary>
+			public int cbBuffer;
+
+			/// <summary>Bit flags that indicate the type of buffer. Must be one of the values of the SecBufferType enumeration.</summary>
+			public SecBufferType BufferType;
+
+			/// <summary>A pointer to a buffer.</summary>
+			public IntPtr pvBuffer;
+		}
+
 		/// <summary>
-		/// Provides a <see cref="SafeHandle"/> for <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> that is disposed using <see cref="SspiFreeAuthIdentity"/>.
+		/// The <c>SecBufferDesc</c> structure describes an array of SecBuffer structures to pass from a transport application to a security package.
 		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/ns-sspi-_secbufferdesc typedef struct _SecBufferDesc { unsigned long
+		// ulVersion; unsigned long cBuffers; PSecBuffer pBuffers; } SecBufferDesc, *PSecBufferDesc;
+		[PInvokeData("sspi.h", MSDNShortId = "fc6ef09c-3ba9-4bcb-a3c2-07422af8eaa9")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SecBufferDesc
+		{
+			/// <summary>Current structure version.</summary>
+			public const uint SECBUFFER_VERSION = 0;
+
+			/// <summary>
+			/// <para>Specifies the version number of this structure. This member must be SECBUFFER_VERSION.</para>
+			/// </summary>
+			public uint ulVersion;
+
+			/// <summary>
+			/// <para>Indicates the number of SecBuffer structures in the <c>pBuffers</c> array.</para>
+			/// </summary>
+			public uint cBuffers;
+
+			/// <summary>
+			/// <para>Pointer to an array of SecBuffer structures.</para>
+			/// </summary>
+			public IntPtr pBuffers;
+		}
+
+		/// <summary>A security handle.</summary>
+		public struct SecHandle : IEquatable<SecHandle>
+		{
+			/// <summary>Represents the invalid handle value.</summary>
+			public static readonly SecHandle Invalid = new SecHandle() { dwLower = UIntPtr.Zero, dwUpper = MaxValue };
+
+			/// <summary>Represents a NULL handle value.</summary>
+			public static readonly SecHandle Null = new SecHandle();
+
+			/// <summary>Lower value.</summary>
+			public UIntPtr dwLower;
+
+			/// <summary>Upper value.</summary>
+			public UIntPtr dwUpper;
+
+			private static readonly UIntPtr MaxValue = UIntPtr.Size == 4 ? new UIntPtr(uint.MaxValue) : new UIntPtr(ulong.MaxValue);
+
+			/// <summary>Gets a value indicating whether this instance is invalid.</summary>
+			/// <value><c>true</c> if this instance is invalid; otherwise, <c>false</c>.</value>
+			public bool IsInvalid => dwLower == MaxValue || dwUpper == MaxValue;
+
+			/// <summary>Gets a value indicating whether this instance is NULL.</summary>
+			/// <value><c>true</c> if this instance is NULL; otherwise, <c>false</c>.</value>
+			public bool IsNull => dwLower == UIntPtr.Zero && dwUpper == UIntPtr.Zero;
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="value1">The left value.</param>
+			/// <param name="value2">The right value.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(SecHandle value1, SecHandle value2) => !value1.Equals(value2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="value1">The left value.</param>
+			/// <param name="value2">The right value.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(SecHandle value1, SecHandle value2) => value1.Equals(value2);
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+			public bool Equals(SecHandle other) => other.dwUpper == dwUpper && other.dwLower == dwLower;
+
+			/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+			/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+			/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+			public override bool Equals(object obj) => obj is SecHandle h ? Equals(h) : base.Equals(obj);
+
+			/// <summary>Returns a hash code for this instance.</summary>
+			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+			public override int GetHashCode() => base.GetHashCode();
+
+			/// <summary>Invalidates this instance.</summary>
+			public void Invalidate() { dwLower = UIntPtr.Zero; dwUpper = MaxValue; }
+		}
+
+		/// <summary>The <c>SecPkgInfo</c> structure provides general information about a security package, such as its name and capabilities.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/ns-sspi-_secpkginfoa typedef struct _SecPkgInfoA { unsigned long
+		// fCapabilities; unsigned short wVersion; unsigned short wRPCID; unsigned long cbMaxToken; SEC_CHAR *Name; SEC_CHAR *Comment; }
+		// SecPkgInfoA, *PSecPkgInfoA;
+		[PInvokeData("sspi.h", MSDNShortId = "d0bff3d8-63f1-4a4e-851f-177040af6bd2")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct SecPkgInfo
+		{
+			/// <summary>
+			/// <para>
+			/// Set of bit flags that describes the capabilities of the security package. This member can be a combination of the following flags.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>SECPKG_FLAG_INTEGRITY 0x1</term>
+			/// <term>The security package supports the MakeSignature and VerifySignature functions.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_PRIVACY 0x2</term>
+			/// <term>The security package supports the EncryptMessage (General) and DecryptMessage (General) functions.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_TOKEN_ONLY 0x4</term>
+			/// <term>
+			/// The package is interested only in the security-token portion of messages, and will ignore any other buffers. This is a
+			/// performance-related issue.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_DATAGRAM 0x8</term>
+			/// <term>Supports datagram-style authentication. For more information, see SSPI Context Semantics.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_CONNECTION 0x10</term>
+			/// <term>Supports connection-oriented style authentication. For more information, see SSPI Context Semantics.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_MULTI_REQUIRED 0x20</term>
+			/// <term>Multiple legs are required for authentication.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_CLIENT_ONLY 0x40</term>
+			/// <term>Server authentication support is not provided.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_EXTENDED_ERROR 0x80</term>
+			/// <term>Supports extended error handling. For more information, see Extended Error Information.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_IMPERSONATION 0x100</term>
+			/// <term>Supports Windows impersonation in server contexts.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_ACCEPT_WIN32_NAME 0x200</term>
+			/// <term>Understands Windows principal and target names.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_STREAM 0x400</term>
+			/// <term>Supports stream semantics. For more information, see SSPI Context Semantics.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_NEGOTIABLE 0X800</term>
+			/// <term>Can be used by the Microsoft Negotiate security package.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_GSS_COMPATIBLE 0x1000</term>
+			/// <term>Supports GSS compatibility.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_LOGON 0x2000</term>
+			/// <term>Supports LsaLogonUser.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_ASCII_BUFFERS 0x4000</term>
+			/// <term>Token buffers are in ASCII characters format.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_FRAGMENT 0x8000</term>
+			/// <term>
+			/// Supports separating large tokens into smaller buffers so that applications can make repeated calls to
+			/// InitializeSecurityContext (General) and AcceptSecurityContext (General) with the smaller buffers to complete authentication.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_MUTUAL_AUTH 0x10000</term>
+			/// <term>Supports mutual authentication.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_DELEGATION 0x20000</term>
+			/// <term>Supports delegation.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_READONLY_WITH_CHECKSUM 0x40000</term>
+			/// <term>The security package supports using a checksum instead of in-place encryption when calling the EncryptMessage function.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_RESTRICTED_TOKENS 0x80000</term>
+			/// <term>Supports callers with restricted tokens.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_NEGO_EXTENDER 0x00100000</term>
+			/// <term>The security package extends the Microsoft Negotiate security package. There can be at most one package of this type.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_NEGOTIABLE2 0x00200000</term>
+			/// <term>This package is negotiated by the package of type SECPKG_FLAG_NEGO_EXTENDER.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_APPCONTAINER_PASSTHROUGH 0x00400000</term>
+			/// <term>This package receives all calls from app container apps.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_FLAG_APPCONTAINER_CHECKS 0x00800000</term>
+			/// <term>This package receives calls from app container apps if one of the following checks succeeds.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_CALLFLAGS_APPCONTAINER 0x00000001</term>
+			/// <term>The caller is an app container.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_CALLFLAGS_AUTHCAPABLE 0x00000002</term>
+			/// <term>The caller can use default credentials.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_CALLFLAGS_FORCE_SUPPLIED 0x00000004</term>
+			/// <term>The caller can only use supplied credentials.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public SECPKG_FLAG fCapabilities;
+
+			/// <summary>Specifies the version of the package protocol. Must be 1.</summary>
+			public ushort wVersion;
+
+			/// <summary>
+			/// Specifies a DCE RPC identifier, if appropriate. If the package does not implement one of the DCE registered security systems,
+			/// the reserved value SECPKG_ID_NONE is used.
+			/// </summary>
+			public ushort wRPCID;
+
+			/// <summary>Specifies the maximum size, in bytes, of the token.</summary>
+			public uint cbMaxToken;
+
+			/// <summary>Pointer to a null-terminated string that contains the name of the security package.</summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string Name;
+
+			/// <summary>Pointer to a null-terminated string. This can be any additional string passed back by the package.</summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string Comment;
+		}
+
+		/// <summary>Specifies information about a security package. This structure is used by the AddSecurityPackage function.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/ns-sspi-security_package_options typedef struct
+		// _SECURITY_PACKAGE_OPTIONS { unsigned long Size; unsigned long Type; unsigned long Flags; unsigned long SignatureSize; void
+		// *Signature; } SECURITY_PACKAGE_OPTIONS, *PSECURITY_PACKAGE_OPTIONS;
+		[PInvokeData("sspi.h", MSDNShortId = "2e9f65ec-72a5-4d6f-aa63-f83369f0dd07")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct SECURITY_PACKAGE_OPTIONS
+		{
+			/// <summary>The size, in bytes, of this structure.</summary>
+			public uint Size;
+
+			/// <summary>
+			/// <para>The type of security package. This can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>SECPKG_OPTIONS_TYPE_UNKNOWN 0</term>
+			/// <term>The package type is not known.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_OPTIONS_TYPE_LSA 1</term>
+			/// <term>The security package is an LSA authentication package.</term>
+			/// </item>
+			/// <item>
+			/// <term>SECPKG_OPTIONS_TYPE_SSPI 2</term>
+			/// <term>The security package is a Security Support Provider Interface (SSPI) package.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public SECPKG_OPTIONS_TYPE Type;
+
+			/// <summary>This member is reserved. Do not use it.</summary>
+			public uint Flags;
+
+			/// <summary>The size, in bytes, of a digital signature for this security package.</summary>
+			public uint SignatureSize;
+
+			/// <summary>A digital signature for this security package.</summary>
+			public IntPtr Signature;
+		}
+
+		/// <summary>
+		/// The <c>SecurityFunctionTable</c> structure is a dispatch table that contains pointers to the functions defined in SSPI.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/ns-sspi-_security_function_table_w typedef struct
+		// _SECURITY_FUNCTION_TABLE_W { unsigned long dwVersion; ENUMERATE_SECURITY_PACKAGES_FN_W EnumerateSecurityPackagesW;
+		// QUERY_CREDENTIALS_ATTRIBUTES_FN_W QueryCredentialsAttributesW; ACQUIRE_CREDENTIALS_HANDLE_FN_W AcquireCredentialsHandleW;
+		// FREE_CREDENTIALS_HANDLE_FN FreeCredentialsHandle; void *Reserved2; INITIALIZE_SECURITY_CONTEXT_FN_W InitializeSecurityContextW;
+		// ACCEPT_SECURITY_CONTEXT_FN AcceptSecurityContext; COMPLETE_AUTH_TOKEN_FN CompleteAuthToken; DELETE_SECURITY_CONTEXT_FN
+		// DeleteSecurityContext; APPLY_CONTROL_TOKEN_FN ApplyControlToken; QUERY_CONTEXT_ATTRIBUTES_FN_W QueryContextAttributesW;
+		// IMPERSONATE_SECURITY_CONTEXT_FN ImpersonateSecurityContext; REVERT_SECURITY_CONTEXT_FN RevertSecurityContext; MAKE_SIGNATURE_FN
+		// MakeSignature; VERIFY_SIGNATURE_FN VerifySignature; FREE_CONTEXT_BUFFER_FN FreeContextBuffer; QUERY_SECURITY_PACKAGE_INFO_FN_W
+		// QuerySecurityPackageInfoW; void *Reserved3; void *Reserved4; EXPORT_SECURITY_CONTEXT_FN ExportSecurityContext;
+		// IMPORT_SECURITY_CONTEXT_FN_W ImportSecurityContextW; ADD_CREDENTIALS_FN_W AddCredentialsW; void *Reserved8;
+		// QUERY_SECURITY_CONTEXT_TOKEN_FN QuerySecurityContextToken; ENCRYPT_MESSAGE_FN EncryptMessage; DECRYPT_MESSAGE_FN DecryptMessage;
+		// SET_CONTEXT_ATTRIBUTES_FN_W SetContextAttributesW; SET_CREDENTIALS_ATTRIBUTES_FN_W SetCredentialsAttributesW; CHANGE_PASSWORD_FN_W
+		// ChangeAccountPasswordW; void *Reserved9; QUERY_CONTEXT_ATTRIBUTES_EX_FN_W QueryContextAttributesExW;
+		// QUERY_CREDENTIALS_ATTRIBUTES_EX_FN_W QueryCredentialsAttributesExW; } SecurityFunctionTableW, *PSecurityFunctionTableW;
+		[PInvokeData("sspi.h", MSDNShortId = "6315e8d6-b40a-4dd6-b6a6-598a965f93dc")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct SecurityFunctionTable
+		{
+			/// <summary>Version number of the table.</summary>
+			public uint dwVersion;
+
+			/// <summary>Pointer to the EnumerateSecurityPackages function.</summary>
+			public IntPtr EnumerateSecurityPackages;
+
+			/// <summary>Pointer to the QueryCredentialsAttributes function.</summary>
+			public IntPtr QueryCredentialsAttributes;
+
+			/// <summary>Pointer to the AcquireCredentialsHandle function.</summary>
+			public IntPtr AcquireCredentialsHandle;
+
+			/// <summary>Pointer to the FreeCredentialsHandle function.</summary>
+			public IntPtr FreeCredentialHandl;
+
+			/// <summary>Reserved for future use.</summary>
+			public IntPtr Reserved1;
+
+			/// <summary>Pointer to the InitializeSecurityContext (General) function.</summary>
+			public IntPtr InitializeSecurityContext;
+
+			/// <summary>Pointer to the AcceptSecurityContext (General) function.</summary>
+			public IntPtr AcceptSecurityContex;
+
+			/// <summary>Pointer to the CompleteAuthToken function.</summary>
+			public IntPtr CompleteAuthToke;
+
+			/// <summary>Pointer to the DeleteSecurityContext function.</summary>
+			public IntPtr DeleteSecurityContex;
+
+			/// <summary>Pointer to the ApplyControlToken function.</summary>
+			public IntPtr ApplyControlToke;
+
+			/// <summary>Pointer to the QueryContextAttributes (General) function.</summary>
+			public IntPtr QueryContextAttributes;
+
+			/// <summary>Pointer to the ImpersonateSecurityContext function.</summary>
+			public IntPtr ImpersonateSecurityContex;
+
+			/// <summary>Pointer to the RevertSecurityContext function.</summary>
+			public IntPtr RevertSecurityContex;
+
+			/// <summary>Pointer to the MakeSignature function.</summary>
+			public IntPtr MakeSignatur;
+
+			/// <summary>Pointer to the VerifySignature function.</summary>
+			public IntPtr VerifySignatur;
+
+			/// <summary>Pointer to the FreeContextBuffer function.</summary>
+			public IntPtr FreeContextBuffe;
+
+			/// <summary>Pointer to the QuerySecurityPackageInfo function.</summary>
+			public IntPtr QuerySecurityPackageInfo;
+
+			/// <summary>Reserved for future use.</summary>
+			public IntPtr Reserved2;
+
+			/// <summary>Reserved for future use.</summary>
+			public IntPtr Reserved3;
+
+			/// <summary>Pointer to the ExportSecurityContext function.</summary>
+			public IntPtr ExportSecurityContex;
+
+			/// <summary>Pointer to the ImportSecurityContext function.</summary>
+			public IntPtr ImportSecurityContext;
+
+			/// <summary>Pointer to the AddCredential function.</summary>
+			public IntPtr AddCredentials;
+
+			/// <summary>Reserved for future use.</summary>
+			public IntPtr Reserved4;
+
+			/// <summary>Pointer to the QuerySecurityContextToken function.</summary>
+			public IntPtr QuerySecurityContextToke;
+
+			/// <summary>Pointer to the EncryptMessage (General) function.</summary>
+			public IntPtr EncryptMessag;
+
+			/// <summary>Pointer to the DecryptMessage (General) function.</summary>
+			public IntPtr DecryptMessag;
+
+			/// <summary>Pointer to the SetContextAttributes function.</summary>
+			public IntPtr SetContextAttributes;
+
+			/// <summary>Pointer to the SetCredentialsAttributes function.</summary>
+			public IntPtr SetCredentialsAttributes;
+
+			/// <summary>Pointer to the ChangeAccountPassword function.</summary>
+			public IntPtr ChangeAccountPassword;
+
+			/// <summary>Pointer to the AddCredential function.</summary>
+			public IntPtr Reserved5;
+
+			/// <summary>Pointer to the QueryContextAttributesEx function.</summary>
+			public IntPtr QueryContextAttributesEx;
+
+			/// <summary>Pointer to the QueryCredentialsAttributesEx function.</summary>
+			public IntPtr QueryCredentialsAttributesEx;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for a context buffer that is disposed using <see cref="FreeContextBuffer"/>.</summary>
+		public class SafeContextBuffer : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeContextBuffer"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeContextBuffer(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeContextBuffer"/> class.</summary>
+			private SafeContextBuffer() : base() { }
+
+			/// <summary>
+			/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
+			/// call can cause memory exceptions if the pointer does not have sufficient allocated memory to retrieve all the structures.</note>
+			/// </summary>
+			/// <typeparam name="T">The type of the structures to retrieve.</typeparam>
+			/// <param name="count">The number of structures to retrieve.</param>
+			/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
+			/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
+			public T[] ToArray<T>(int count, int prefixBytes = 0)
+			{
+				if (IsInvalid) return null;
+				//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
+				//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
+				if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
+				return handle.ToArray<T>(count, prefixBytes);
+			}
+
+			/// <summary>
+			/// Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.
+			/// </summary>
+			/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
+			/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
+			public T ToStructure<T>()
+			{
+				if (IsInvalid) return default;
+				return handle.ToStructure<T>();
+			}
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => FreeContextBuffer(handle).Succeeded;
+		}
+
+		/// <summary>Provides a safe version of <see cref="CredHandle"/> that is disposed using <see cref="FreeCredentialsHandle"/>.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public class SafeCredHandle : IDisposable
+		{
+			private CredHandle handle;
+
+			/// <summary>Initializes a new instance of the <see cref="SafeCredHandle"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public SafeCredHandle(CredHandle preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Initializes a new instance of the <see cref="SafeCredHandle"/> class.</summary>
+			private SafeCredHandle() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeCredHandle"/> to <see cref="CredHandle"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator CredHandle(SafeCredHandle h) => h.handle;
+
+			void IDisposable.Dispose()
+			{
+				if (!handle.IsInvalid && !handle.IsNull) FreeCredentialsHandle(handle);
+			}
+		}
+
+		/// <summary>Provides a safe version of <see cref="CtxtHandle"/> that is disposed using <see cref="DeleteSecurityContext"/>.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public class SafeCtxtHandle : IDisposable
+		{
+			private CtxtHandle handle;
+
+			/// <summary>Initializes a new instance of the <see cref="SafeCtxtHandle"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public SafeCtxtHandle(CtxtHandle preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Initializes a new instance of the <see cref="SafeCtxtHandle"/> class.</summary>
+			private SafeCtxtHandle() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeCtxtHandle"/> to <see cref="CtxtHandle"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator CtxtHandle(SafeCtxtHandle h) => h.handle;
+
+			void IDisposable.Dispose()
+			{
+				if (!handle.IsInvalid && !handle.IsNull) DeleteSecurityContext(handle);
+			}
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> that is disposed using <see cref="SspiFreeAuthIdentity"/>.</summary>
 		public class SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE : SafeHANDLE
 		{
 			/// <summary>
@@ -508,100 +5059,131 @@ namespace Vanara.PInvoke
 			public object MarshalNativeToManaged(IntPtr pNativeData) => Marshal.PtrToStringAuto(pNativeData);
 		}
 
-		/*
-		_CREDUIWIN_MARSHALED_CONTEXT
-		_SEC_APPLICATION_PROTOCOL_NEGOTIATION_STATUS enumeration
-		_SEC_CHANNEL_BINDINGS
-		_SEC_WINNT_AUTH_BYTE_VECTOR
-		_SEC_WINNT_AUTH_CERTIFICATE_DATA
-		_SEC_WINNT_AUTH_DATA
-		_SEC_WINNT_AUTH_DATA_PASSWORD
-		_SEC_WINNT_AUTH_IDENTITY_EX2
-		_SEC_WINNT_AUTH_IDENTITY_EX
-		_SEC_WINNT_AUTH_IDENTITY_
-		_SEC_WINNT_AUTH_PACKED_CREDENTIALS
-		_SEC_WINNT_AUTH_PACKED_CREDENTIALS_EX
-		_SEC_WINNT_AUTH_SHORT_VECTOR
-		_SEC_WINNT_CREDUI_CONTEXT
-		_SEC_WINNT_CREDUI_CONTEXT_VECTOR
-		_SecBuffer
-		_SecBufferDesc
-		_SECPKG_ATTR_LCT_STATUS enumeration
-		_SECPKG_CRED_CLASS enumeration
-		_SecPkgContext_AccessToken
-		_SecPkgContext_Authority
-		_SecPkgContext_Bindings
-		_SecPkgContext_ClientSpecifiedTarget
-		_SecPkgContext_CredentialName
-		_SecPkgContext_CredInfo
-		_SecPkgContext_DceInfo
-		_SecPkgContext_Flags
-		_SecPkgContext_KeyInfo
-		_SecPkgContext_LastClientTokenStatus
-		_SecPkgContext_Lifespan
-		_SecPkgContext_Names
-		_SecPkgContext_NativeNames
-		_SecPkgContext_NegoStatus
-		_SecPkgContext_NegotiationInfo
-		_SecPkgContext_PackageInfo
-		_SecPkgContext_PasswordExpiry
-		_SecPkgContext_ProtoInfo
-		_SecPkgContext_SessionKey
-		_SecPkgContext_Sizes
-		_SecPkgContext_StreamSizes
-		_SecPkgContext_SubjectAttributes
-		_SecPkgContext_TargetInformation
-		_SecPkgCredentials_Cert
-		_SecPkgCredentials_KdcProxySettings
-		_SecPkgCredentials_Names
-		_SecPkgCredentials_SSIProvider
-		_SecPkgInfo
-		_SECURITY_FUNCTION_TABLE
-		_SECURITY_INTEGER
-		_SECURITY_PACKAGE_OPTIONS
-		_SECURITY_STRING
-		AcceptSecurityContext
-		AcquireCredentialsHandle
-		AddSecurityPackage
-		ApplyControlToken
-		ChangeAccountPassword
-		CompleteAuthToken
-		DecryptMessage
-		DeleteSecurityContext
-		DeleteSecurityPackage
-		EncryptMessage
-		EnumerateSecurityPackages
-		ExportSecurityContext
-		FreeContextBuffer
-		FreeCredentialsHandle
-		ImpersonateSecurityContext
-		ImportSecurityContext
-		InitializeSecurityContext
-		InitSecurityInterface
-		MakeSignature
-		QueryContextAttributesEx
-		QueryContextAttributes
-		QueryCredentialsAttributes
-		QuerySecurityContextToken
-		QuerySecurityPackageInfo
-		RevertSecurityContext
-		SaslAcceptSecurityContext
-		SaslEnumerateProfiles
-		SaslGetContextOption
-		SaslGetProfilePackage
-		SaslIdentifyPackage
-		SaslInitializeSecurityContext
-		SaslSetContextOption
-		SetContextAttributes
-		SetCredentialsAttributes
-		SspiDecryptAuthIdentityEx
-		SspiEncryptAuthIdentityEx
-		SspiGetCredUIContext
-		SspiIsPromptingNeeded
-		SspiPromptForCredentials
-		SspiUnmarshalCredUIContext
-		SspiUpdateCredentials
-		VerifySignature
-		*/
+		// TODO: Finish SecBufferDescManaged to simplify access. Need to be aware of calls with ISC_REQ_ALLOCATE_MEMORY and then needing to call FreeContextBuffer.
+		/// <summary>
+		/// The <c>SecBufferDesc</c> structure describes an array of SecBuffer structures to pass from a transport application to a security package.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/ns-sspi-_secbufferdesc typedef struct _SecBufferDesc { unsigned long
+		// ulVersion; unsigned long cBuffers; PSecBuffer pBuffers; } SecBufferDesc, *PSecBufferDesc;
+		[PInvokeData("sspi.h", MSDNShortId = "fc6ef09c-3ba9-4bcb-a3c2-07422af8eaa9")]
+		[StructLayout(LayoutKind.Sequential)]
+		private class SecBufferDescManaged : IDisposable, IList<(SecBufferType, object)>
+		{
+			private List<(SecBufferType, object)> items = new List<(SecBufferType, object)>();
+			private SafeHGlobalHandle mem = null;
+
+			/// <summary>Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
+			public int Count => ((IList<(SecBufferType, object)>)items).Count;
+
+			/// <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</summary>
+			bool ICollection<(SecBufferType, object)>.IsReadOnly => ((IList<(SecBufferType, object)>)items).IsReadOnly;
+
+			/// <summary>Gets or sets the value at the specified index.</summary>
+			/// <value>The value.</value>
+			/// <param name="index">The index.</param>
+			/// <returns></returns>
+			public (SecBufferType, object) this[int index] { get => ((IList<(SecBufferType, object)>)items)[index]; set => ((IList<(SecBufferType, object)>)items)[index] = value; }
+
+			/// <summary>Initializes a new instance of the <see cref="SecBufferDescManaged"/> class.</summary>
+			public SecBufferDescManaged() { }
+
+			/// <summary>
+			/// Performs an implicit conversion from <see cref="SecBufferDescManaged"/> to <see cref="SecBufferDesc"/>. This is a dangerous
+			/// resulting structure as it contains a pointer to memory managed by <see cref="SecBufferDescManaged"/> and is volatile. It is
+			/// recommended to only use this inline with functions calling for a <see cref="SecBufferDesc"/> parameter.
+			/// </summary>
+			/// <param name="mgd">The <see cref="SecBufferDescManaged"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SecBufferDesc(SecBufferDescManaged mgd)
+			{
+				mgd.mem?.Dispose();
+				mgd.mem = null;
+				if (mgd.Count > 0)
+				{
+					var sbsz = Marshal.SizeOf(typeof(SecBuffer));
+					mgd.mem = new SafeHGlobalHandle(mgd.Count * sbsz * 2);
+					using (var ns = new NativeMemoryStream(mgd.mem))
+					{
+						var items = new SecBuffer[mgd.Count];
+						ns.Position = mgd.Count * sbsz;
+						var lastPos = ns.Position;
+						for (var i = 0; i < mgd.Count; i++)
+						{
+							var bi = mgd[i];
+							items[i] = new SecBuffer { BufferType = bi.Item1, pvBuffer = ns.Pointer.Offset(ns.Position) };
+							ns.WriteObject(mgd[i].Item2);
+							items[i].cbBuffer = (int)(ns.Position - lastPos);
+							lastPos = ns.Position;
+						}
+						ns.Position = 0;
+						ns.Write(items);
+					}
+				}
+				return new SecBufferDesc { ulVersion = SecBufferDesc.SECBUFFER_VERSION, cBuffers = (uint)mgd.Count, pBuffers = mgd.mem?.DangerousGetHandle() ?? IntPtr.Zero };
+			}
+
+			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+			void IDisposable.Dispose()
+			{
+				if (mem is null) return;
+				mem.Dispose();
+				mem = null;
+			}
+
+			/// <summary>Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1"/>.</summary>
+			/// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+			/// <returns>The index of <paramref name="item"/> if found in the list; otherwise, -1.</returns>
+			public int IndexOf((SecBufferType, object) item) => ((IList<(SecBufferType, object)>)items).IndexOf(item);
+
+			/// <summary>Inserts an item to the <see cref="T:System.Collections.Generic.IList`1"/> at the specified index.</summary>
+			/// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
+			/// <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+			public void Insert(int index, (SecBufferType, object) item) => ((IList<(SecBufferType, object)>)items).Insert(index, item);
+
+			/// <summary>Removes the <see cref="T:System.Collections.Generic.IList`1"/> item at the specified index.</summary>
+			/// <param name="index">The zero-based index of the item to remove.</param>
+			public void RemoveAt(int index) => ((IList<(SecBufferType, object)>)items).RemoveAt(index);
+
+			/// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
+			/// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+			public void Add((SecBufferType, object) item) => ((IList<(SecBufferType, object)>)items).Add(item);
+
+			/// <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
+			public void Clear() => ((IList<(SecBufferType, object)>)items).Clear();
+
+			/// <summary>Determines whether this instance contains the object.</summary>
+			/// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+			/// <returns>
+			/// true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false.
+			/// </returns>
+			public bool Contains((SecBufferType, object) item) => ((IList<(SecBufferType, object)>)items).Contains(item);
+
+			/// <summary>
+			/// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an <see cref="T:System.Array"/>,
+			/// starting at a particular <see cref="T:System.Array"/> index.
+			/// </summary>
+			/// <param name="array">
+			/// The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from
+			/// <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.
+			/// </param>
+			/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+			public void CopyTo((SecBufferType, object)[] array, int arrayIndex) => ((IList<(SecBufferType, object)>)items).CopyTo(array, arrayIndex);
+
+			/// <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
+			/// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+			/// <returns>
+			/// true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"/>;
+			/// otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>.
+			/// </returns>
+			public bool Remove((SecBufferType, object) item) => ((IList<(SecBufferType, object)>)items).Remove(item);
+
+			/// <summary>Returns an enumerator that iterates through the collection.</summary>
+			/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
+			public IEnumerator<(SecBufferType, object)> GetEnumerator() => ((IList<(SecBufferType, object)>)items).GetEnumerator();
+
+			/// <summary>Returns an enumerator that iterates through a collection.</summary>
+			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+			IEnumerator IEnumerable.GetEnumerator() => ((IList<(SecBufferType, object)>)items).GetEnumerator();
+		}
 	}
 }
