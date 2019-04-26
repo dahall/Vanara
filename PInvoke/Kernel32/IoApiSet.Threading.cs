@@ -54,10 +54,11 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public static Task DeviceIoControlAsync(HFILE hDev, uint ioControlCode, byte[] inputBuffer, byte[] outputBuffer)
+		public static async Task DeviceIoControlAsync(HFILE hDev, uint ioControlCode, byte[] inputBuffer, byte[] outputBuffer)
 		{
 			var buf = Pack(inputBuffer, outputBuffer);
-			return Task.Factory.FromAsync(BeginDeviceIoControl, EndDeviceIoControl, hDev, ioControlCode, buf, null);
+			var outputBytes = await Task.Factory.FromAsync(BeginDeviceIoControl, EndDeviceIoControl, hDev, ioControlCode, buf, null);
+            outputBytes.CopyTo(outputBuffer, 0);
 		}
 
 		/// <summary>
