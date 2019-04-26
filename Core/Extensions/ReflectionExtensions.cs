@@ -9,6 +9,8 @@ namespace Vanara.Extensions
 	/// <summary>Extensions related to <c>System.Reflection</c></summary>
 	public static class ReflectionExtensions
 	{
+		private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
+
 		/// <summary>Gets all loaded types in the <see cref="AppDomain"/>.</summary>
 		/// <param name="appDomain">The application domain.</param>
 		/// <returns>All loaded types.</returns>
@@ -32,16 +34,53 @@ namespace Vanara.Extensions
 		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this Type type, bool inherit = false, Func<TAttr, bool> predicate = null) where TAttr : Attribute =>
 			type.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
 
+		/// <summary>Finds the type of the element of a type. Returns null if this type does not enumerate.</summary>
+		/// <param name="type">The type to check.</param>
+		/// <returns>The element type, if found; otherwise, <see langword="null"/>.</returns>
+		public static Type FindElementType(this Type type)
+		{
+			if (type.IsArray)
+				return type.GetElementType();
+
+			// type is IEnumerable<T>;
+			if (ImplIEnumT(type))
+				return type.GetGenericArguments().First();
+
+			// type implements/extends IEnumerable<T>;
+			var enumType = type.GetInterfaces().Where(ImplIEnumT).Select(t => t.GetGenericArguments().First()).FirstOrDefault();
+			if (enumType != null)
+				return enumType;
+
+			// type is IEnumerable
+			if (IsIEnum(type) || type.GetInterfaces().Any(IsIEnum))
+				return typeof(object);
+
+			return null;
+
+			bool IsIEnum(Type t) => t == typeof(System.Collections.IEnumerable);
+			bool ImplIEnumT(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
+		}
+
+		/// <summary>Gets a named property value from an object.</summary>
+		/// <typeparam name="T">The expected type of the property to be returned.</typeparam>
+		/// <param name="obj">The object from which to retrieve the property.</param>
+		/// <param name="propertyName">Name of the property.</param>
+		/// <returns>The property value.</returns>
+		public static T GetPropertyValue<T>(this object obj, string propertyName)
+		{
+			if (obj is null) throw new ArgumentNullException(nameof(obj));
+			return (T)obj.GetType().InvokeMember(propertyName, BindingFlags.GetProperty | bindingFlags, null, obj, null, null);
+		}
+
 		/// <summary>Gets a named property value from an object.</summary>
 		/// <typeparam name="T">The expected type of the property to be returned.</typeparam>
 		/// <param name="obj">The object from which to retrieve the property.</param>
 		/// <param name="propertyName">Name of the property.</param>
 		/// <param name="defaultValue">The default value to return in the instance that the property is not found.</param>
 		/// <returns>The property value, if found, or the <paramref name="defaultValue"/> if not.</returns>
-		public static T GetPropertyValue<T>(this object obj, string propertyName, T defaultValue = default)
+		public static T GetPropertyValue<T>(this object obj, string propertyName, T defaultValue)
 		{
-			if (obj is null || propertyName is null) return defaultValue;
-			try { return (T)Convert.ChangeType(obj.GetType().InvokeMember(propertyName, BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, obj, null, null), typeof(T)); }
+			try { return GetPropertyValue<T>(obj, propertyName); }
 			catch { return defaultValue; }
 		}
 
@@ -59,7 +98,7 @@ namespace Vanara.Extensions
 		/// <exception cref="ArgumentException">Method not found - methodName</exception>
 		public static object InvokeGenericMethod(this object obj, string methodName, Type[] typeArguments, Type[] argTypes, object[] args)
 		{
-			var mi = obj?.GetType().GetMethod(methodName, argTypes);
+			var mi = obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null);
 			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
 			var gmi = mi.MakeGenericMethod(typeArguments);
 			return gmi.Invoke(obj, args);
@@ -121,7 +160,7 @@ namespace Vanara.Extensions
 		/// <param name="args">The arguments to provide to the method invocation.</param>
 		public static void InvokeMethod(this object obj, string methodName, Type[] argTypes, object[] args)
 		{
-			var mi = obj?.GetType().GetMethod(methodName, argTypes);
+			var mi = obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null);
 			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
 			mi.Invoke(obj, args);
 		}
@@ -135,7 +174,7 @@ namespace Vanara.Extensions
 		/// <returns>The value returned from the method.</returns>
 		public static T InvokeMethod<T>(this object obj, string methodName, Type[] argTypes, object[] args)
 		{
-			var mi = obj?.GetType().GetMethod(methodName, argTypes);
+			var mi = obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null);
 			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
 			var tt = typeof(T);
 			if (tt != typeof(object) && mi.ReturnType != tt && !mi.ReturnType.IsSubclassOf(tt))
@@ -208,7 +247,7 @@ namespace Vanara.Extensions
 		/// <param name="value">The property value to set on the object.</param>
 		public static void SetPropertyValue<T>(this object obj, string propName, T value)
 		{
-			try { obj?.GetType().InvokeMember(propName, BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, obj, new object[] { value }, null); }
+			try { obj?.GetType().InvokeMember(propName, BindingFlags.SetProperty | bindingFlags, null, obj, new object[] { value }, null); }
 			catch { }
 		}
 

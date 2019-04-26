@@ -162,9 +162,6 @@ namespace Vanara.Extensions
 
 		/// <summary>Checks if <typeparamref name="T"/> represents an enumeration and throws an exception if not.</summary>
 		/// <typeparam name="T">The <see cref="Type"/> to validate.</typeparam>
-		/// <param name="checkHasFlags">
-		/// if set to <c>true</c> the check with also assert that the enumeration has the <see cref="FlagsAttribute"/> set and will throw an exception if not.
-		/// </param>
 		/// <exception cref="System.ArgumentException"></exception>
 		private static void CheckHasFlags<T>() where T : struct, System.Enum
 		{

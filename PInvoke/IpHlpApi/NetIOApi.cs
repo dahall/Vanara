@@ -88,6 +88,50 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		public delegate void PUNICAST_IPADDRESS_CHANGE_CALLBACK([In] IntPtr CallerContext, [In, Optional] IntPtr Row, [In] MIB_NOTIFICATION_TYPE NotificationType);
 
+		/// <summary>A set of flags that provide information about an interface.</summary>
+		[PInvokeData("netioapi.h")]
+		[Flags]
+		public enum InterfaceAndOperStatusFlags : byte
+		{
+			/// <summary>Set if the network interface is for hardware.</summary>
+			HardwareInterface = 1 << 0,
+
+			/// <summary>Set if the network interface is for a filter module.</summary>
+			FilterInterface = 1 << 1,
+
+			/// <summary>Set if a connector is present on the network interface. This value is set if there is a physical network adapter.</summary>
+			ConnectorPresent = 1 << 2,
+
+			/// <summary>
+			/// Set if the default port for the network interface is not authenticated. If a network interface is not authenticated by the
+			/// target, then the network interface is not in an operational mode. Although this applies to both wired and wireless network
+			/// connections, authentication is more common for wireless network connections.
+			/// </summary>
+			NotAuthenticated = 1 << 3,
+
+			/// <summary>
+			/// Set if the network interface is not in a media-connected state. If a network cable is unplugged for a wired network, this
+			/// would be set. For a wireless network, this is set for the network adapter that is not connected to a network.
+			/// </summary>
+			NotMediaConnected = 1 << 4,
+
+			/// <summary>
+			/// Set if the network stack for the network interface is in the paused or pausing state. This does not mean that the computer is
+			/// in a hibernated state.
+			/// </summary>
+			Paused = 1 << 5,
+
+			/// <summary>Set if the network interface is in a low power state.</summary>
+			LowPower = 1 << 6,
+
+			/// <summary>
+			/// Set if the network interface is an endpoint device and not a true network interface that connects to a network. This can be
+			/// set by devices such as smart phones which use networking infrastructure to communicate to the PC but do not provide
+			/// connectivity to an external network. It is mandatory for these types of devices to set this flag.
+			/// </summary>
+			EndPointInterface = 1 << 7
+		}
+
 		[PInvokeData("netioapi.h")]
 		public enum MIB_IF_ENTRY_LEVEL
 		{
@@ -385,7 +429,7 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <para>The <c>ConvertInterfaceAliasToLuid</c> function is available on Windows Vistaand later.</para>
+		/// <para>The <c>ConvertInterfaceAliasToLuid</c> function is available on Windows Vista and later.</para>
 		/// <para>
 		/// The <c>ConvertInterfaceAliasToLuid</c> function is protocol independent and works with network interfaces for both the IPv6 and
 		/// IPv4 protocol.
@@ -429,7 +473,7 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <para>The <c>ConvertInterfaceGuidToLuid</c> function is available on Windows Vistaand later.</para>
+		/// <para>The <c>ConvertInterfaceGuidToLuid</c> function is available on Windows Vista and later.</para>
 		/// <para>
 		/// The <c>ConvertInterfaceGuidToLuid</c> function is protocol independent and works with network interfaces for both the IPv6 and
 		/// IPv4 protocol.
@@ -480,7 +524,7 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <para>The <c>ConvertInterfaceIndexToLuid</c> function is available on Windows Vistaand later.</para>
+		/// <para>The <c>ConvertInterfaceIndexToLuid</c> function is available on Windows Vista and later.</para>
 		/// <para>
 		/// The <c>ConvertInterfaceIndexToLuid</c> function is protocol independent and works with network interfaces for both the IPv6 and
 		/// IPv4 protocol.
@@ -538,7 +582,7 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <para>The <c>ConvertInterfaceLuidToAlias</c> function is available on Windows Vistaand later.</para>
+		/// <para>The <c>ConvertInterfaceLuidToAlias</c> function is available on Windows Vista and later.</para>
 		/// <para>
 		/// The <c>ConvertInterfaceLuidToAlias</c> function is protocol independent and works with network interfaces for both the IPv6 and
 		/// IPv4 protocol.
@@ -589,7 +633,7 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <para>The <c>ConvertInterfaceLuidToGuid</c> function is available on Windows Vistaand later.</para>
+		/// <para>The <c>ConvertInterfaceLuidToGuid</c> function is available on Windows Vista and later.</para>
 		/// <para>
 		/// The <c>ConvertInterfaceLuidToGuid</c> function is protocol independent and works with network interfaces for both the IPv6 and
 		/// IPv4 protocol.
@@ -679,7 +723,7 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <para>The <c>ConvertInterfaceLuidToNameA</c> function is available on Windows Vistaand later.</para>
+		/// <para>The <c>ConvertInterfaceLuidToNameA</c> function is available on Windows Vista and later.</para>
 		/// <para>
 		/// The <c>ConvertInterfaceLuidToNameA</c> function is protocol independent and works with network interfaces for both the IPv6 and
 		/// IPv4 protocol. The <c>ConvertInterfaceLuidToNameA</c> converts a network interface LUID to an ANSI interface name.
@@ -737,7 +781,7 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <para>The <c>ConvertInterfaceNameToLuidA</c> function is available on Windows Vistaand later.</para>
+		/// <para>The <c>ConvertInterfaceNameToLuidA</c> function is available on Windows Vista and later.</para>
 		/// <para>
 		/// The <c>ConvertInterfaceNameToLuidA</c> function is protocol independent and works with network interfaces for both the IPv6 and
 		/// IPv4 protocol. The <c>ConvertInterfaceNameToLuidA</c> converts an ANSI interface name to a LUID.
@@ -779,7 +823,7 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <para>The <c>ConvertIpv4MaskToLength</c> function is available on Windows Vistaand later.</para>
+		/// <para>The <c>ConvertIpv4MaskToLength</c> function is available on Windows Vista and later.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/netioapi/nf-netioapi-convertipv4masktolength NETIOAPI_API
 		// ConvertIpv4MaskToLength( ULONG Mask, PUINT8 MaskLength );
@@ -813,7 +857,7 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <para>The <c>ConvertLengthToIpv4Mask</c> function is available on Windows Vistaand later.</para>
+		/// <para>The <c>ConvertLengthToIpv4Mask</c> function is available on Windows Vista and later.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/netioapi/nf-netioapi-convertlengthtoipv4mask NETIOAPI_API
 		// ConvertLengthToIpv4Mask( ULONG MaskLength, PULONG Mask );
@@ -1165,7 +1209,7 @@ namespace Vanara.PInvoke
 		/// <term>ERROR_INVALID_PARAMETER</term>
 		/// <term>
 		/// An invalid parameter was passed to the function. This error is returned if the DestinationAddressList, SortedAddressPairList, or
-		/// SortedAddressPairCount parameters NULL, or the DestinationAddressCount was greated than 500. This error is also returned if the
+		/// SortedAddressPairCount parameters NULL, or the DestinationAddressCount was greater than 500. This error is also returned if the
 		/// SourceAddressList is not NULL or the SourceAddressPairCount parameter is not zero.
 		/// </term>
 		/// </item>
@@ -1214,7 +1258,7 @@ namespace Vanara.PInvoke
 		// *SortedAddressPairCount );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "cdc90d63-15a4-4278-afc3-dbf9ad6ba698")]
-		public static extern Win32Error CreateSortedAddressPairs(IntPtr SourceAddressList, uint SourceAddressCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] SOCKADDR_IN6[] DestinationAddressList, uint DestinationAddressCount, uint AddressSortOptions, out SafeMibTableHandle SortedAddressPairList, out uint SortedAddressPairCount);
+		public static extern Win32Error CreateSortedAddressPairs([Optional] IntPtr SourceAddressList, uint SourceAddressCount, [In] SOCKADDR_IN6[] DestinationAddressList, uint DestinationAddressCount, uint AddressSortOptions, out SafeMibTableHandle SortedAddressPairList, out uint SortedAddressPairCount);
 
 		/// <summary>
 		/// The <c>CreateSortedAddressPairs</c> function takes a supplied list of potential IP destination addresses, pairs the destination
@@ -1226,10 +1270,10 @@ namespace Vanara.PInvoke
 		/// represented in the IPv4-mapped IPv6 address format which enables an IPv6 only application to communicate with an IPv4 node.
 		/// </param>
 		/// <returns>An array of SOCKADDR_IN6_PAIR structures that contain the sorted address pairs.</returns>
-		public static SOCKADDR_IN6_PAIR[] CreateSortedAddressPairs(SOCKADDR_IN6[] DestinationAddressList)
+		public static SOCKADDR_IN6_PAIR_NATIVE[] CreateSortedAddressPairs(SOCKADDR_IN6[] DestinationAddressList)
 		{
 			CreateSortedAddressPairs(IntPtr.Zero, 0, DestinationAddressList, (uint)DestinationAddressList.Length, 0, out var pairs, out var cnt).ThrowIfFailed();
-			return pairs.ToArray<SOCKADDR_IN6_PAIR>((int)cnt);
+			return Array.ConvertAll(pairs.ToArray<SOCKADDR_IN6_PAIR>((int)cnt), up => (SOCKADDR_IN6_PAIR_NATIVE)up);
 		}
 
 		/// <summary>
@@ -1261,7 +1305,7 @@ namespace Vanara.PInvoke
 		/// Address member of the MIB_UNICASTIPADDRESS_ROW pointed to by the Row parameter was not set to a valid unicast IPv4 or IPv6
 		/// address, or both the InterfaceLuid and InterfaceIndex members of the MIB_UNICASTIPADDRESS_ROW pointed to by the Row parameter
 		/// were unspecified. This error is also returned for other errors in the values set for members in the MIB_UNICASTIPADDRESS_ROW
-		/// structure. These errors include the following: if the ValidLifetime member is less than than the PreferredLifetime member, if the
+		/// structure. These errors include the following: if the ValidLifetime member is less than the PreferredLifetime member, if the
 		/// PrefixOrigin member is set to IpPrefixOriginUnchanged and the SuffixOrigin is the not set to IpSuffixOriginUnchanged, if the
 		/// PrefixOrigin member is not set to IpPrefixOriginUnchanged and the SuffixOrigin is set to IpSuffixOriginUnchanged, if the
 		/// PrefixOrigin member is not set to a value from the NL_PREFIX_ORIGIN enumeration, if the SuffixOrigin member is not set to a value
@@ -2269,7 +2313,7 @@ namespace Vanara.PInvoke
 		// *DestinationAddress, ULONG AddressSortOptions, PMIB_IPFORWARD_ROW2 BestRoute, SOCKADDR_INET *BestSourceAddress );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "7bc16824-c98f-4cd5-a589-e198b48b637c")]
-		public static extern Win32Error GetBestRoute2(ref NET_LUID InterfaceLuid, uint InterfaceIndex, ref SOCKADDR_INET SourceAddress, ref SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
+		public static extern Win32Error GetBestRoute2(in NET_LUID InterfaceLuid, uint InterfaceIndex, in SOCKADDR_INET SourceAddress, in SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
 
 		/// <summary>
 		/// <para>
@@ -2359,7 +2403,7 @@ namespace Vanara.PInvoke
 		// *DestinationAddress, ULONG AddressSortOptions, PMIB_IPFORWARD_ROW2 BestRoute, SOCKADDR_INET *BestSourceAddress );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "7bc16824-c98f-4cd5-a589-e198b48b637c")]
-		public static extern Win32Error GetBestRoute2(IntPtr InterfaceLuid, uint InterfaceIndex, ref SOCKADDR_INET SourceAddress, ref SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
+		public static extern Win32Error GetBestRoute2([Optional] IntPtr InterfaceLuid, uint InterfaceIndex, in SOCKADDR_INET SourceAddress, in SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
 
 		/// <summary>
 		/// <para>
@@ -2449,7 +2493,7 @@ namespace Vanara.PInvoke
 		// *DestinationAddress, ULONG AddressSortOptions, PMIB_IPFORWARD_ROW2 BestRoute, SOCKADDR_INET *BestSourceAddress );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "7bc16824-c98f-4cd5-a589-e198b48b637c")]
-		public static extern Win32Error GetBestRoute2(IntPtr InterfaceLuid, uint InterfaceIndex, IntPtr SourceAddress, ref SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
+		public static extern Win32Error GetBestRoute2([Optional] IntPtr InterfaceLuid, uint InterfaceIndex, [Optional] IntPtr SourceAddress, in SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
 
 		/// <summary>
 		/// <para>The <c>GetIfEntry2</c> function retrieves information for the specified interface on the local computer.</para>
@@ -4218,7 +4262,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		/// <remarks>
-		/// <para>The <c>if_indextoname</c> function is available on Windows Vistaand later.</para>
+		/// <para>The <c>if_indextoname</c> function is available on Windows Vista and later.</para>
 		/// <para>
 		/// The <c>if_indextoname</c> function maps an interface index into its corresponding name. This function is designed as part of
 		/// basic socket extensions for IPv6 as described by the IETF in RFC 2553. For more information, see http://www.ietf.org/rfc/rfc2553.txt.
@@ -4766,7 +4810,7 @@ namespace Vanara.PInvoke
 		/// <param name="CallerContext">
 		/// <para>
 		/// A user context passed to the callback function specified in the CallerCallback parameter when the stable unicast IP address table
-		/// si available.
+		/// is available.
 		/// </para>
 		/// </param>
 		/// <param name="NotificationHandle">
@@ -4864,7 +4908,7 @@ namespace Vanara.PInvoke
 		/// be loaded before calling the <c>NotifyStableUnicastIpAddressTable</c> function to register for change notifications.
 		/// </para>
 		/// <para>
-		/// The memory pointed to by the AddressTable parameter used in a callback indication is alocated by the operating system. An
+		/// The memory pointed to by the AddressTable parameter used in a callback indication is allocated by the operating system. An
 		/// application that receives a notification should free the memory pointed to by the AddressTable parameter using the FreeMibTable
 		/// function when the MIB_UNICASTIPADDRESS_TABLE information is no longer needed.
 		/// </para>
@@ -5375,7 +5419,7 @@ namespace Vanara.PInvoke
 		// ResolveIpNetEntry2( PMIB_IPNET_ROW2 Row, CONST SOCKADDR_INET *SourceAddress );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "37f9dc58-362d-413e-a593-4dda52fb7d8b")]
-		public static extern Win32Error ResolveIpNetEntry2(ref MIB_IPNET_ROW2 Row, ref SOCKADDR_INET SourceAddress);
+		public static extern Win32Error ResolveIpNetEntry2(ref MIB_IPNET_ROW2 Row, in SOCKADDR_INET SourceAddress);
 
 		/// <summary>
 		/// <para>Reserved for future use. Do not use this function.</para>
@@ -5703,7 +5747,7 @@ namespace Vanara.PInvoke
 		// SetIpNetEntry2( PMIB_IPNET_ROW2 Row );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "4f423700-f721-44a9-ade3-ea5b5b86e394")]
-		public static extern Win32Error SetIpNetEntry2(ref MIB_IPNET_ROW2 Row);
+		public static extern Win32Error SetIpNetEntry2(in MIB_IPNET_ROW2 Row);
 
 		/// <summary>
 		/// <para>Reserved for future use. Do not use this function.</para>
@@ -5773,7 +5817,7 @@ namespace Vanara.PInvoke
 		/// Address member of the MIB_UNICASTIPADDRESS_ROW pointed to by the Row parameter was not set to a valid unicast IPv4 or IPv6
 		/// address, or both the InterfaceLuid or InterfaceIndex members of the MIB_UNICASTIPADDRESS_ROW pointed to by the Row parameter were
 		/// unspecified. This error is also returned for other errors in the values set for members in the MIB_UNICASTIPADDRESS_ROW
-		/// structure. These errors include the following: if the ValidLifetime member is less than than the PreferredLifetime member, if the
+		/// structure. These errors include the following: if the ValidLifetime member is less than the PreferredLifetime member, if the
 		/// PrefixOrigin member is set to IpPrefixOriginUnchanged and the SuffixOrigin is the not set to IpSuffixOriginUnchanged, if the
 		/// PrefixOrigin member is not set to IpPrefixOriginUnchanged and the SuffixOrigin is set to IpSuffixOriginUnchanged, if the
 		/// PrefixOrigin member is not set to a value from the NL_PREFIX_ORIGIN enumeration, if the SuffixOrigin member is not set to a value
@@ -6322,7 +6366,7 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// For a remote route, the IP address of the next system or gateway en route. If the route is to a local loopback address or an
 			/// IP address on the local link, the next hop is unspecified (all zeros). For a local loopback route, this member should be an
-			/// IPv4 address of 0.0.0.0 for an IPv4 route entry or an IPv6 address address of 0::0 for an IPv6 route entry.
+			/// IPv4 address of 0.0.0.0 for an IPv4 route entry or an IPv6 address of 0::0 for an IPv6 route entry.
 			/// </para>
 			/// </summary>
 			public SOCKADDR_INET NextHop;
@@ -6478,7 +6522,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>Type: <c>BOOLEAN</c></para>
-			/// <para>A value that specifies if the IP address is autoconfigured.</para>
+			/// <para>A value that specifies if the IP address is auto-configured.</para>
 			/// </summary>
 			[MarshalAs(UnmanagedType.U1)] public bool AutoconfigureAddress;
 
@@ -6659,7 +6703,7 @@ namespace Vanara.PInvoke
 			/// unicast address. A value of zero indicates that duplicate address detection is not performed on tentative IP addresses. A
 			/// value of one indicates a single transmission with no follow up retransmissions. For IPv4, the default value for this member
 			/// is 3. For IPv6, the default value for this member is 1. For IPv6, these messages are sent as IPv6 Neighbor Solicitation (NS)
-			/// requests. This member is defined as DupAddrDetectTransmits in RFC 2462. For more information, see IPv6 "Stateless Address Autoconfiguration".
+			/// requests. This member is defined as DupAddrDetectTransmits in RFC 2462. For more information, see IPv6 "Stateless Address Auto-configuration".
 			/// </summary>
 			public uint DadTransmits;
 

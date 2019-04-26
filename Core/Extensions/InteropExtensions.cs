@@ -11,6 +11,18 @@ namespace Vanara.Extensions
 	/// <summary>Extension methods for System.Runtime.InteropServices.</summary>
 	public static partial class InteropExtensions
 	{
+		/// <summary>Copies the number of specified bytes from one unmanaged memory block to another.</summary>
+		/// <param name="ptr">The allocated memory pointer.</param>
+		/// <param name="dest">The allocated memory pointer to copy to.</param>
+		/// <param name="length">The number of bytes to copy from <paramref name="ptr"/> to <paramref name="dest"/>.</param>
+		public static unsafe void CopyTo(this IntPtr ptr, IntPtr dest, long length)
+		{
+			var psrc = (byte*)ptr;
+			var pdest = (byte*)dest;
+			for (var i = 0; i < length; i++, psrc++, pdest++)
+				*pdest = *psrc;
+		}
+
 		/// <summary>
 		/// Fills the memory with a particular byte value. <note type="warning">This is a very dangerous function that can cause memory
 		/// access errors if the provided <paramref name="length"/> is bigger than allocated memory of if the <paramref name="ptr"/> is not a
@@ -19,16 +31,16 @@ namespace Vanara.Extensions
 		/// <param name="ptr">The allocated memory pointer.</param>
 		/// <param name="value">The byte value with which to fill the memory.</param>
 		/// <param name="length">The number of bytes to fill with the value.</param>
-		public static void FillMemory(this IntPtr ptr, byte value, int length)
+		public static void FillMemory(this IntPtr ptr, byte value, long length)
 		{
 			if (ptr == IntPtr.Zero || length <= 0) return;
 			// Write multiples of 8 bytes first
-			var lval = value == 0 ? 0L : BitConverter.ToInt64(new byte[] { value, value, value, value, value, value, value, value }, 0);
-			for (var ofs = 0; ofs < length / 8; ofs++)
-				Marshal.WriteInt64(ptr, ofs * 8, lval);
+			var lval = value == 0 ? 0L : BitConverter.ToInt64(new[] { value, value, value, value, value, value, value, value }, 0);
+			for (var ofs = 0L; ofs < length / 8; ofs++)
+				Marshal.WriteInt64(ptr.Offset(ofs * 8), 0, lval);
 			// Write remaining bytes
 			for (var ofs = length - (length % 8); ofs < length; ofs++)
-				Marshal.WriteByte(ptr, length, value);
+				Marshal.WriteByte(ptr.Offset(ofs), 0, value);
 		}
 
 		/// <summary>
@@ -43,7 +55,8 @@ namespace Vanara.Extensions
 		{
 			if (lptr == IntPtr.Zero) return 0;
 			var c = 0;
-			while (Marshal.ReadIntPtr(lptr, IntPtr.Size * c++) != IntPtr.Zero) ;
+			while (Marshal.ReadIntPtr(lptr, IntPtr.Size * c++) != IntPtr.Zero) { }
+
 			return c - 1;
 		}
 
@@ -52,6 +65,8 @@ namespace Vanara.Extensions
 		/// <returns><c>true</c> if the specified type is blittable; otherwise, <c>false</c>.</returns>
 		public static bool IsBlittable(this Type T)
 		{
+			if (T is null) return false;
+
 			// if (T.IsArray && T.GetArrayRank() > 1) return false; // Need to find a way to exclude jagged arrays
 			while (T.IsArray)
 				T = T.GetElementType();
@@ -89,7 +104,6 @@ namespace Vanara.Extensions
 				yield return ret;
 				pCurrent = next(ret);
 			}
-			yield break;
 		}
 
 		/// <summary>Marshals data from a managed list of specified type to a pre-allocated unmanaged block of memory.</summary>
@@ -105,6 +119,7 @@ namespace Vanara.Extensions
 		/// <param name="prefixBytes">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
 		public static void MarshalToPtr<T>(this IEnumerable<T> items, IntPtr ptr, int prefixBytes = 0)
 		{
+			if (items is null) return;
 			var stSize = Marshal.SizeOf(typeof(T));
 			var i = 0;
 			foreach (var item in items)
@@ -131,7 +146,7 @@ namespace Vanara.Extensions
 			if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 
 			bytesAllocated = prefixBytes;
-			var count = (items as IList<T>)?.Count ?? (items as T[])?.Length ?? items?.Count() ?? 0;
+			var count = items?.Count() ?? 0;
 			if (count == 0) return memAlloc(bytesAllocated);
 
 			var sz = Marshal.SizeOf(typeof(T));
@@ -163,49 +178,89 @@ namespace Vanara.Extensions
 		/// </returns>
 		public static IntPtr MarshalToPtr(this IEnumerable<string> values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
 		{
-			// Convert to list to avoid multiple iterations
-			var list = values as IList<string> ?? (values != null ? new List<string>(values) : null);
-
-			// Look at count and bail early if 0
-			var count = values?.Count() ?? 0;
-			var chSz = StringHelper.GetCharSize(charSet);
-			bytesAllocated = prefixBytes + (packing == StringListPackMethod.Concatenated ? chSz : IntPtr.Size);
-			if (count == 0)
+			// Bail early if empty
+			if (values is null || !values.Any())
 			{
+				bytesAllocated = prefixBytes + (packing == StringListPackMethod.Concatenated ? StringHelper.GetCharSize(charSet) : IntPtr.Size);
 				var ret = memAlloc(bytesAllocated);
-				Marshal.Copy(new byte[bytesAllocated], 0, ret, bytesAllocated);
+				ret.FillMemory(0, bytesAllocated);
 				return ret;
 			}
 
-			// Check for empty and/or null strings
-			if (packing == StringListPackMethod.Concatenated && list.Any(s => string.IsNullOrEmpty(s)))
-				throw new ArgumentException("Concatenated string arrays cannot contain empty or null strings.");
-
-			// Get size of output
-			var sumStrLen = list.Sum(s => s == null ? 0 : s.Length + 1);
-			bytesAllocated += sumStrLen * chSz;
-			if (packing == StringListPackMethod.Packed) bytesAllocated += (IntPtr.Size * count);
-
-			using (var ms = new MarshalingStream(memAlloc(bytesAllocated), bytesAllocated) { Position = prefixBytes, CharSet = charSet })
+			// Write to memory stream
+			using (var ms = new NativeMemoryStream(1024, 1024) { CharSet = charSet })
 			{
+				ms.SetLength(ms.Position = prefixBytes);
 				if (packing == StringListPackMethod.Packed)
 				{
-					ms.Position += (count + 1) * IntPtr.Size;
-					for (var i = 0; i < list.Count; i++)
-					{
-						ms.Poke(list[i] == null ? IntPtr.Zero : ms.Pointer.Offset(ms.Position), prefixBytes + (i * IntPtr.Size));
-						ms.Write(list[i]);
-					}
-					ms.Poke(IntPtr.Zero, prefixBytes + (count * IntPtr.Size));
+					foreach (var s in values)
+						ms.WriteReference(s);
+					ms.WriteReference(null);
 				}
 				else
 				{
-					foreach (var s in list)
+					foreach (var s in values)
+					{
+						if (string.IsNullOrEmpty(s)) throw new ArgumentException("Concatenated string arrays cannot contain empty or null strings.");
 						ms.Write(s);
+					}
 					ms.Write("");
 				}
+				ms.Flush();
 
-				return ms.Pointer;
+				// Copy to newly allocated memory using memAlloc
+				bytesAllocated = (int)ms.Length;
+				var ret = memAlloc(bytesAllocated);
+				ms.Pointer.CopyTo(ret, bytesAllocated);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Marshals data from a managed list of objects to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.
+		/// </summary>
+		/// <param name="values">The enumerated list of objects to marshal.</param>
+		/// <param name="memAlloc">
+		/// The function that allocates the memory for the block of objects (typically <see cref="Marshal.AllocCoTaskMem(int)"/> or <see cref="Marshal.AllocHGlobal(int)"/>.
+		/// </param>
+		/// <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc"/> method.</param>
+		/// <param name="referencePointers">
+		/// if set to <see langword="true"/> the pointer will be processed by storing a reference to the value; if <see langword="false"/>,
+		/// the pointer value will be directly inserted into the array of pointers.
+		/// </param>
+		/// <param name="charSet">The character set to use for strings.</param>
+		/// <param name="prefixBytes">Number of bytes preceding the allocated objects.</param>
+		/// <returns>Pointer to the allocated native (unmanaged) array of objects stored using the character set defined by <paramref name="charSet"/>.</returns>
+		public static IntPtr MarshalObjectsToPtr(this IEnumerable<object> values, Func<int, IntPtr> memAlloc, out int bytesAllocated, bool referencePointers = false, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
+		{
+			// Bail early if empty
+			if (values is null || !values.Any())
+			{
+				bytesAllocated = prefixBytes + IntPtr.Size;
+				var ret = memAlloc(bytesAllocated);
+				ret.FillMemory(0, bytesAllocated);
+				return ret;
+			}
+
+			// Write to memory stream
+			using (var ms = new NativeMemoryStream(1024, 1024) { CharSet = charSet })
+			{
+				ms.SetLength(ms.Position = prefixBytes);
+				foreach (var o in values)
+				{
+					if (referencePointers)
+						ms.WriteReferenceObject(o);
+					else
+						ms.WriteObject(o);
+				}
+				if (referencePointers) ms.WriteReference(null);
+				ms.Flush();
+
+				// Copy to newly allocated memory using memAlloc
+				bytesAllocated = (int)ms.Length;
+				var ret = memAlloc(bytesAllocated);
+				ms.Pointer.CopyTo(ret, bytesAllocated);
+				return ret;
 			}
 		}
 
@@ -262,6 +317,23 @@ namespace Vanara.Extensions
 			return ret;
 		}
 
+		/// <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into a CLI array.</summary>
+		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+		/// <param name="type">Type of native structure used by the C-style array.</param>
+		/// <param name="count">The number of items in the native array.</param>
+		/// <param name="prefixBytes">Bytes to skip before reading the array.</param>
+		/// <returns>An array of type <paramref name="type"/> containing the elements of the native array.</returns>
+		public static object[] ToArray(this IntPtr ptr, Type type, int count, int prefixBytes = 0)
+		{
+			if (type is null) throw new ArgumentNullException(nameof(type));
+			if (ptr == IntPtr.Zero) return null;
+			var ret = new object[count];
+			var stSize = Marshal.SizeOf(type);
+			for (var i = 0; i < count; i++)
+				ret[i] = Marshal.PtrToStructure(ptr.Offset(prefixBytes + i * stSize), type);
+			return ret;
+		}
+
 		/// <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
 		/// <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
 		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
@@ -274,6 +346,21 @@ namespace Vanara.Extensions
 			var stSize = Marshal.SizeOf(typeof(T));
 			for (var i = 0; i < count; i++)
 				yield return ToStructure<T>(ptr.Offset(prefixBytes + i * stSize));
+		}
+
+		/// <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
+		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+		/// <param name="type">Type of native structure used by the C-style array.</param>
+		/// <param name="count">The number of items in the native array.</param>
+		/// <param name="prefixBytes">Bytes to skip before reading the array.</param>
+		/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
+		public static IEnumerable<object> ToIEnum(this IntPtr ptr, Type type, int count, int prefixBytes = 0)
+		{
+			if (type is null) throw new ArgumentNullException(nameof(type));
+			if (count == 0 || ptr == IntPtr.Zero) yield break;
+			var stSize = Marshal.SizeOf(type);
+			for (var i = 0; i < count; i++)
+				yield return Marshal.PtrToStructure(ptr.Offset(prefixBytes + i * stSize), type);
 		}
 
 		/// <summary>Converts a <see cref="SecureString"/> to a string.</summary>
@@ -362,10 +449,12 @@ namespace Vanara.Extensions
 		/// <param name="count">The count of expected strings.</param>
 		/// <param name="charSet">The character set of the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 		/// <returns>Enumeration of strings.</returns>
-		public static IEnumerable<string> ToStringEnum(this IntPtr ptr, int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
+		public static IEnumerable<string> ToStringEnum(this IntPtr ptr, int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0, int allocatedBytes = int.MaxValue)
 		{
 			if (ptr == IntPtr.Zero || count == 0) yield break;
+			if (count * IntPtr.Size + prefixBytes > allocatedBytes) throw new InsufficientMemoryException();
 			var lPtrVal = ptr.ToInt64();
 			for (var i = 0; i < count; i++)
 			{
@@ -382,18 +471,22 @@ namespace Vanara.Extensions
 		/// <param name="lptr">The <see cref="IntPtr"/> pointing to the native array.</param>
 		/// <param name="charSet">The character set of the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="lptr"/>.</param>
 		/// <returns>An enumerated list of strings.</returns>
-		public static IEnumerable<string> ToStringEnum(this IntPtr lptr, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
+		public static IEnumerable<string> ToStringEnum(this IntPtr lptr, CharSet charSet = CharSet.Auto, int prefixBytes = 0, int allocatedBytes = int.MaxValue)
 		{
 			if (lptr == IntPtr.Zero) yield break;
 			var charLength = StringHelper.GetCharSize(charSet);
 			int GetCh(IntPtr p) => charLength == 1 ? Marshal.ReadByte(p) : Marshal.ReadInt16(p);
-			for (var ptr = lptr.Offset(prefixBytes); GetCh(ptr) != 0;)
+			var i = prefixBytes;
+			for (var ptr = lptr.Offset(i); i + charLength <= allocatedBytes && GetCh(ptr) != 0; i += charLength, ptr = lptr.Offset(i))
 			{
-				var s = StringHelper.GetString(ptr, charSet);
-				yield return s;
-				ptr = ptr.Offset(((s?.Length ?? 0) + 1) * charLength);
+				for (var cptr = ptr; i + charLength <= allocatedBytes && GetCh(cptr) != 0; cptr = cptr.Offset(charLength), i += charLength) { }
+				if (i + charLength > allocatedBytes) throw new InsufficientMemoryException();
+				yield return StringHelper.GetString(ptr, charSet);
+				//ptr = ptr.Offset(((s?.Length ?? 0) + 1) * charLength);
 			}
+			if (i + charLength > allocatedBytes) throw new InsufficientMemoryException();
 		}
 
 		/// <summary>
@@ -401,9 +494,17 @@ namespace Vanara.Extensions
 		/// </summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 		/// <param name="ptr">A pointer to an unmanaged block of memory.</param>
-		/// <returns>A managed object that contains the data that the <paramref name="ptr"/> parameter points to.</returns>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		/// <returns>A managed object that contains the data that the <paramref name="ptr" /> parameter points to.</returns>
+		/// <exception cref="InsufficientMemoryException"></exception>
 		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public static T ToStructure<T>(this IntPtr ptr) => typeof(T) == typeof(IntPtr) ? (T)(object)ptr : ((T)Marshal.PtrToStructure(ptr, typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T)));
+		public static T ToStructure<T>(this IntPtr ptr, long allocatedBytes = -1)
+		{
+			var t = typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T);
+			if (allocatedBytes >= 0 && allocatedBytes < Marshal.SizeOf(t))
+				throw new InsufficientMemoryException();
+			return (T)Marshal.PtrToStructure(ptr, t);
+		}
 
 		/// <summary>Marshals data from an unmanaged block of memory to a managed object.</summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a formatted class.</typeparam>

@@ -144,7 +144,7 @@ namespace Vanara.Extensions.Tests
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				var chSz = 2;
 				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + ((rs.Length + 1) * IntPtr.Size) + i));
-				var ro = h.ToIEnum<IntPtr>(rs.Length, i).Select(p => Marshal.ReadIntPtr(p)).ToArray();
+				var ro = h.ToIEnum<IntPtr>(rs.Length, i).ToArray();
 				Assert.That(ro, Has.None.EqualTo(IntPtr.Zero));
 				for (var i = 0; i < ro.Length; i++)
 					Assert.That(StringHelper.GetString(ro[i], CharSet.Unicode), Is.EqualTo(rs[i]));
@@ -154,7 +154,7 @@ namespace Vanara.Extensions.Tests
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				chSz = 1;
 				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + ((rs.Length + 1) * IntPtr.Size) + i));
-				ro = h.ToIEnum<IntPtr>(rs.Length, i).Select(p => Marshal.ReadIntPtr(p)).ToArray();
+				ro = h.ToIEnum<IntPtr>(rs.Length, i).ToArray();
 				Assert.That(ro, Has.None.EqualTo(IntPtr.Zero));
 				for (var i = 0; i < ro.Length; i++)
 					Assert.That(StringHelper.GetString(ro[i], CharSet.Ansi), Is.EqualTo(rs[i]));
@@ -269,22 +269,28 @@ namespace Vanara.Extensions.Tests
 			{
 				var ptr = sa.DangerousGetHandle();
 				Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
-				var se = ptr.ToStringEnum(CharSet.Ansi, i);
+				var se = ptr.ToStringEnum(CharSet.Ansi, i, sa.Size);
 				Assert.That(se, Is.EquivalentTo(rs));
+				Assert.That(() => ptr.ToStringEnum(CharSet.Ansi, i, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+				Assert.That(() => ptr.ToStringEnum(CharSet.Ansi, i, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
 			}
 			using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Concatenated, CharSet.Unicode, i))
 			{
 				var ptr = sa.DangerousGetHandle();
 				Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
-				var se = ptr.ToStringEnum(CharSet.Unicode, i);
+				var se = ptr.ToStringEnum(CharSet.Unicode, i, sa.Size);
 				Assert.That(se, Is.EquivalentTo(rs));
+				Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, i, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+				Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, i, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
 			}
 			using (var sa = SafeHGlobalHandle.CreateFromStringList(null, StringListPackMethod.Concatenated, CharSet.Unicode, i))
 			{
 				var ptr = sa.DangerousGetHandle();
 				Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
-				var se = ptr.ToStringEnum(CharSet.Unicode, i);
+				var se = ptr.ToStringEnum(CharSet.Unicode, i, sa.Size);
 				Assert.That(se, Is.Empty);
+				Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, i, i).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+				Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, i, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
 			}
 			Assert.That(IntPtr.Zero.ToStringEnum(CharSet.Unicode, i), Is.Empty);
 		}

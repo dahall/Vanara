@@ -14,16 +14,30 @@ BackgroundCopyJobCredential | Represents a single BITS job credential.
 BackgroundCopyJobCredentials | The list of credentials for a job.
 BackgroundCopyJobEventArgs | Event argument for background copy job.
 BackgroundCopyManager | Use the BackgroundCopyManager to create transfer jobs, retrieve an enumerator object that contains the jobs in the queue, and to retrieve individual jobs from the queue.
+Computer | Represents a single connected (authenticated) computer.
 FileInfoExtension | Extension methods for `FileSystemInfo` and derived classes to facilitate retrieval of extended properties.
 NetworkConnection | Represents a single network connection. Wraps `INetworkConnection`.
 NetworkInterfaceExt | 
 NetworkListManager | Provides a set of methods to perform network list management functions.
 NetworkProfile | Represents a wireless network profile
+OpenFile | Represents an open file associated with a share.
 PathEx | Performs operations on String instances that contain file or directory path information. These operations are performed in a cross-platform manner.
+PoweredDevice | Represents a device on the system that has power requirements.
+PoweredDeviceCollection | Retrieves the list, optionally filtered, of the powered devices on the system.
+PowerManager | Provides access to information about a device's battery and power supply status and configuration. This extends the capabilities Windows.System.Power.PowerManager to include more detail, schemes and devices.
+PowerScheme | Represents a system power scheme (power plan).
+PowerSchemeCollection | Represents a collection of all the power schemes available on the system.
+PowerSchemeGroup | Represents a subgroup of a system power scheme (power plan).
+PowerSchemeGroupCollection | Represents a collection of all the subgroups available under a power scheme on the system.
+PowerSchemeSetting | Represents a setting on a subgroup.
+PowerSchemeSettingCollection | Represents a collection of all settings for a subgroup and power scheme on the system.
 ProcessExtension | Extension methods for `Process` for privilegs, status, elevation and relationships.
 RegistryEventArgs | Argument used in `RegistryEventMonitor` events.
 RegistryEventMonitor | Watches the Windows Registry for any changes.
 ServiceControllerExtension | Extension methods for `ServiceController`.
+ShareConnection | Represents a connection to a shared device.
+SharedDevice | Represents a shared device on a computer.
+SharedDevices | Represents all the shared devices on a computers.
 SystemShutdown | Provides access to system shutdown, restart, lock and notifications.
 VirtualDisk | Class that represents a virtual disk and allows for performing actions on it. This wraps most of the methods found in virtdisk.h.
 VirtualDiskMetadata | Supports getting and setting metadata on a virtual disk.
@@ -46,7 +60,9 @@ BackgroundCopyJobPriority | Defines the constant values that specify the priorit
 BackgroundCopyJobSecurity | HTTP security flags that indicate which errors to ignore when connecting to the server. | AllowSilentRedirect, CheckCRL, IgnoreInvalidCerts, IgnoreExpiredCerts, IgnoreUnknownCA, IgnoreWrongCertUsage, AllowReportedRedirect, DisallowRedirect, AllowHttpsToHttpRedirect
 BackgroundCopyJobState | Defines constant values for the different states of a job. | Queued, Connecting, Transferring, Suspended, Error, TransientError, Transferred, Acknowledged, Cancelled
 BackgroundCopyJobType | Defines constant values that specify the type of transfer job, such as download. | Download, Upload, UploadReply
+BatteryStatus | Indicates the status of the battery. | NotPresent, Discharging, Idle, Charging
 DeviceType | Represents the format of the virtual disk. | Unknown, Iso, Vhd, Vhdx, VhdSet
+EnergySaverStatus | Specifies the status of battery saver. | Disabled, Off, On
 NetworkInterfaceAccessType | The interface access type. | Loopback, Broadcast, PointToPoint, PointToMultiPoint
 NetworkInterfaceAdministrativeStatus | Specifies the NDIS network interface administrative status, as described in RFC 2863. | Up, Down, Testing
 NetworkInterfaceConnectionType | Specifies the NDIS network interface connection type. | Dedicated, Passive, Demand
@@ -54,5 +70,8 @@ NetworkInterfaceDirectionType | Specifies the NDIS network interface direction t
 NetworkInterfaceMediaType | The NDIS media type of a network interface. | Ethernet802_3, TokenRing, Fddi, Wan, LocalTalk, Dix, ArcnetRaw, Arcnet878_2, Atm, Wireless, IrDA, Broadcast, CoWAN, Ieee1394, InfiniBand, Tunnel, Native802_11, Loopback, WiMAX, IP
 NetworkInterfacePhysicalMedium | The NDIS physical medium type. | Unspecified, WirelessLan, CableModem, PhoneLine, PowerLine, DSL, FibreChannel, Ieee1394, WirelessWan, Native802_11, Bluetooth, InfiniBand, WiMAX, UWB, Ethernet802_3, TokenRing, IrDA, WiredWAN, WiredCoWAN, Other
 PathCharType |  | Invalid, LongFileName, ShortFileName, Wildcard, Separator
+PowerCapabilities |  | PowerButtonPresent, SleepButtonPresent, LidPresent, SystemS1, SystemS2, SystemS3, SystemS4, SystemS5, HiberFilePresent, FullWake, VideoDimPresent, ApmPresent, UpsPresent, ThermalControl, ProcessorThrottle, FastSystemS4, Hiberboot, WakeAlarmPresent, AoAc, DiskSpinDown, AoAcConnectivitySupported, SystemBatteriesPresent, BatteriesAreShortTerm
+PowerSupplyStatus | Represents the device's power supply status. | NotPresent, Inadequate, Adequate
 ProcessIntegrityLevel | Values which define a processes integrity level. | Untrusted, Undefined, Low, Medium, High, System
+ShareOfflineSettings | Offline settings for a shared folder. | OnlySpecified, All, AllOptimized, None
 Subtype | Represents the subtype of a virtual disk. | Fixed, Dynamic, Differencing

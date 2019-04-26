@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -573,6 +574,33 @@ namespace Vanara.PInvoke
 			SECURITY_INFORMATION SecurityInfo, [MarshalAs(UnmanagedType.Bool)] bool Container,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5, ArraySubType = UnmanagedType.LPStruct), Optional] Guid[] pObjectClassGuids,
 			uint GuidCount, [In] PACL pAcl, [In] IntPtr pfnArray, in GENERIC_MAPPING pGenericMapping, SafeInheritedFromArray pInheritArray);
+
+		/// <summary>
+		/// The GetInheritanceSource function returns information about the source of inherited access control entries (ACEs) in an access
+		/// control list (ACL).
+		/// </summary>
+		/// <param name="objectName">A pointer to the name of the object that uses the ACL to be checked.</param>
+		/// <param name="objectType">
+		/// The type of object indicated by pObjectName. The possible values are SE_FILE_OBJECT, SE_REGISTRY_KEY, SE_DS_OBJECT, and SE_DS_OBJECT_ALL.
+		/// </param>
+		/// <param name="securityInfo">The type of ACL used with the object. The possible values are DACL_SECURITY_INFORMATION or SACL_SECURITY_INFORMATION.</param>
+		/// <param name="container">
+		/// TRUE if the object is a container object or FALSE if the object is a leaf object. Note that the only leaf object is SE_FILE_OBJECT.
+		/// </param>
+		/// <param name="pAcl">The ACL for the object.</param>
+		/// <param name="pGenericMapping">The mapping of generic rights to specific rights for the object.</param>
+		/// <returns>An enumeration of INHERITED_FROM structures with the inheritance information.</returns>
+		public static IEnumerable<INHERITED_FROM> GetInheritanceSource(string objectName, System.Security.AccessControl.ResourceType objectType,
+			SECURITY_INFORMATION securityInfo, bool container, PACL pAcl, ref GENERIC_MAPPING pGenericMapping)
+		{
+			var objSize = Marshal.SizeOf(typeof(INHERITED_FROM));
+			var aceCount = pAcl.GetAclInformation<ACL_SIZE_INFORMATION>().AceCount;
+			using (var pInherit = new SafeInheritedFromArray((ushort)aceCount))
+			{
+				GetInheritanceSource(objectName, (SE_OBJECT_TYPE)objectType, securityInfo, container, null, 0, pAcl, IntPtr.Zero, pGenericMapping, pInherit).ThrowIfFailed();
+				return pInherit.Results;
+			}
+		}
 
 		/// <summary>The GetNamedSecurityInfo function retrieves a copy of the security descriptor for an object specified by name.</summary>
 		/// <param name="pObjectName">

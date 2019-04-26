@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 
@@ -412,7 +413,7 @@ namespace Vanara.PInvoke
 		// LPTSTR lpBuffer, _In_ DWORD nSize, _In_opt_ va_list *Arguments); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
-		public static extern int FormatMessage(FormatMessageFlags dwFlags, HINSTANCE lpSource, uint dwMessageId, uint dwLanguageId, ref IntPtr lpBuffer, uint nSize, string[] Arguments);
+		public static extern int FormatMessage(FormatMessageFlags dwFlags, HINSTANCE lpSource, uint dwMessageId, uint dwLanguageId, StringBuilder lpBuffer, uint nSize, IntPtr Arguments);
 
 		/// <summary>
 		/// Formats a message string. The function requires a message definition as input. The message definition can come from a buffer
@@ -597,168 +598,11 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
-		public static extern int FormatMessage(FormatMessageFlags dwFlags, IntPtr lpSource, uint dwMessageId, uint dwLanguageId, ref IntPtr lpBuffer, uint nSize, string[] Arguments);
-
-		/// <summary>
-		/// Formats a message string. The function requires a message definition as input. The message definition can come from a buffer
-		/// passed into the function. It can come from a message table resource in an already-loaded module. Or the caller can ask the
-		/// function to search the system's message table resource(s) for the message definition. The function finds the message definition
-		/// in a message table resource based on a message identifier and a language identifier. The function copies the formatted message
-		/// text to an output buffer, processing any embedded insert sequences if requested.
-		/// </summary>
-		/// <param name="dwFlags"><para>
-		/// The formatting options, and how to interpret the lpSource parameter. The low-order byte of dwFlags specifies how the function
-		/// handles line breaks in the output buffer. The low-order byte can also specify the maximum width of a formatted output line.
-		/// </para>
-		/// <para>This parameter can be one or more of the following values.</para>
-		/// <para>
-		///   <list type="table">
-		///     <listheader>
-		///       <term>Value</term>
-		///       <term>Meaning</term>
-		///     </listheader>
-		///     <item>
-		///       <term>FORMAT_MESSAGE_ALLOCATE_BUFFER0x00000100</term>
-		///       <term>
-		/// The function allocates a buffer large enough to hold the formatted message, and places a pointer to the allocated buffer at the
-		/// address specified by lpBuffer. The lpBuffer parameter is a pointer to an LPTSTR; you must cast the pointer to an LPTSTR (for
-		/// example, ). The nSize parameter specifies the minimum number of TCHARs to allocate for an output message buffer. The caller
-		/// should use the LocalFree function to free the buffer when it is no longer needed.If the length of the formatted message exceeds
-		/// 128K bytes, then FormatMessage will fail and a subsequent call to GetLastError will return ERROR_MORE_DATA.In previous versions
-		/// of Windows, this value was not available for use when compiling Windows Store apps. As of Windows 10 this value can be used.
-		/// Windows Server 2003 and Windows XP: If the length of the formatted message exceeds 128K bytes, then FormatMessage will not
-		/// automatically fail with an error of ERROR_MORE_DATA.Windows 10: LocalAlloc() has different options: LMEM_FIXED, and LMEM_MOVABLE.
-		/// FormatMessage() uses LMEM_FIXED, so HeapFree can be used. If LMEM_MOVABLE is used, HeapFree cannot be used.
-		/// </term>
-		///     </item>
-		///     <item>
-		///       <term>FORMAT_MESSAGE_ARGUMENT_ARRAY0x00002000</term>
-		///       <term>
-		/// The Arguments parameter is not a va_list structure, but is a pointer to an array of values that represent the arguments.This flag
-		/// cannot be used with 64-bit integer values. If you are using a 64-bit integer, you must use the va_list structure.
-		/// </term>
-		///     </item>
-		///     <item>
-		///       <term>FORMAT_MESSAGE_FROM_HMODULE0x00000800</term>
-		///       <term>
-		/// The lpSource parameter is a module handle containing the message-table resource(s) to search. If this lpSource handle is NULL,
-		/// the current process's application image file will be searched. This flag cannot be used with FORMAT_MESSAGE_FROM_STRING.If the
-		/// module has no message table resource, the function fails with ERROR_RESOURCE_TYPE_NOT_FOUND.
-		/// </term>
-		///     </item>
-		///     <item>
-		///       <term>FORMAT_MESSAGE_FROM_STRING0x00000400</term>
-		///       <term>
-		/// The lpSource parameter is a pointer to a null-terminated string that contains a message definition. The message definition may
-		/// contain insert sequences, just as the message text in a message table resource may. This flag cannot be used with
-		/// FORMAT_MESSAGE_FROM_HMODULE or FORMAT_MESSAGE_FROM_SYSTEM.
-		/// </term>
-		///     </item>
-		///     <item>
-		///       <term>FORMAT_MESSAGE_FROM_SYSTEM0x00001000</term>
-		///       <term>
-		/// The function should search the system message-table resource(s) for the requested message. If this flag is specified with
-		/// FORMAT_MESSAGE_FROM_HMODULE, the function searches the system message table if the message is not found in the module specified
-		/// by lpSource. This flag cannot be used with FORMAT_MESSAGE_FROM_STRING.If this flag is specified, an application can pass the
-		/// result of the GetLastError function to retrieve the message text for a system-defined error.
-		/// </term>
-		///     </item>
-		///     <item>
-		///       <term>FORMAT_MESSAGE_IGNORE_INSERTS0x00000200</term>
-		///       <term>
-		/// Insert sequences in the message definition are to be ignored and passed through to the output buffer unchanged. This flag is
-		/// useful for fetching a message for later formatting. If this flag is set, the Arguments parameter is ignored.
-		/// </term>
-		///     </item>
-		///   </list>
-		/// </para>
-		/// <para>
-		/// The low-order byte of dwFlags can specify the maximum width of a formatted output line. The following are possible values of the
-		/// low-order byte.
-		/// </para>
-		/// <para>
-		///   <list type="table">
-		///     <listheader>
-		///       <term>Value</term>
-		///       <term>Meaning</term>
-		///     </listheader>
-		///     <item>
-		///       <term>0</term>
-		///       <term>
-		/// There are no output line width restrictions. The function stores line breaks that are in the message definition text into the
-		/// output buffer.
-		/// </term>
-		///     </item>
-		///     <item>
-		///       <term>FORMAT_MESSAGE_MAX_WIDTH_MASK0x000000FF</term>
-		///       <term>
-		/// The function ignores regular line breaks in the message definition text. The function stores hard-coded line breaks in the
-		/// message definition text into the output buffer. The function generates no new line breaks.
-		/// </term>
-		///     </item>
-		///   </list>
-		/// </para>
-		/// <para>
-		/// If the low-order byte is a nonzero value other than <c>FORMAT_MESSAGE_MAX_WIDTH_MASK</c>, it specifies the maximum number of
-		/// characters in an output line. The function ignores regular line breaks in the message definition text. The function never splits
-		/// a string delimited by white space across a line break. The function stores hard-coded line breaks in the message definition text
-		/// into the output buffer. Hard-coded line breaks are coded with the %n escape sequence.
-		/// </para></param>
-		/// <param name="lpSource"><para>The location of the message definition. The type of this parameter depends upon the settings in the dwFlags parameter.</para>
-		/// <para>
-		///   <list type="table">
-		///     <listheader>
-		///       <term>dwFlags Setting</term>
-		///       <term>Meaning</term>
-		///     </listheader>
-		///     <item>
-		///       <term>FORMAT_MESSAGE_FROM_HMODULE0x00000800</term>
-		///       <term>A handle to the module that contains the message table to search.</term>
-		///     </item>
-		///     <item>
-		///       <term>FORMAT_MESSAGE_FROM_STRING0x00000400</term>
-		///       <term>Pointer to a string that consists of unformatted message text. It will be scanned for inserts and formatted accordingly.</term>
-		///     </item>
-		///   </list>
-		/// </para>
-		/// <para>If neither of these flags is set in dwFlags, then lpSource is ignored.</para></param>
-		/// <param name="dwMessageId">The message identifier for the requested message. This parameter is ignored if dwFlags includes <c>FORMAT_MESSAGE_FROM_STRING</c>.</param>
-		/// <param name="dwLanguageId"><para>The language identifier for the requested message. This parameter is ignored if dwFlags includes <c>FORMAT_MESSAGE_FROM_STRING</c>.</para>
-		/// <para>
-		/// If you pass a specific <c>LANGID</c> in this parameter, <c>FormatMessage</c> will return a message for that <c>LANGID</c> only.
-		/// If the function cannot find a message for that <c>LANGID</c>, it sets Last-Error to <c>ERROR_RESOURCE_LANG_NOT_FOUND</c>. If you
-		/// pass in zero, <c>FormatMessage</c> looks for a message for <c>LANGIDs</c> in the following order:
-		/// </para>
-		/// <para>
-		/// If <c>FormatMessage</c> does not locate a message for any of the preceding <c>LANGIDs</c>, it returns any language message string
-		/// that is present. If that fails, it returns <c>ERROR_RESOURCE_LANG_NOT_FOUND</c>.
-		/// </para></param>
-		/// <param name="lpBuffer"><para>
-		/// A pointer to a buffer that receives the null-terminated string that specifies the formatted message. If dwFlags includes
-		/// <c>FORMAT_MESSAGE_ALLOCATE_BUFFER</c>, the function allocates a buffer using the <c>LocalAlloc</c> function, and places the
-		/// pointer to the buffer at the address specified in lpBuffer.
-		/// </para>
-		/// <para>This buffer cannot be larger than 64K bytes.</para></param>
-		/// <param name="nSize"><para>
-		/// If the <c>FORMAT_MESSAGE_ALLOCATE_BUFFER</c> flag is not set, this parameter specifies the size of the output buffer, in
-		/// <c>TCHARs</c>. If <c>FORMAT_MESSAGE_ALLOCATE_BUFFER</c> is set, this parameter specifies the minimum number of <c>TCHARs</c> to
-		/// allocate for an output buffer.
-		/// </para>
-		/// <para>The output buffer cannot be larger than 64K bytes.</para></param>
-		/// <returns>
-		/// <para>
-		/// If the function succeeds, the return value is the number of <c>TCHARs</c> stored in the output buffer, excluding the terminating
-		/// null character.
-		/// </para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-		/// </returns>
 		// DWORD WINAPI FormatMessage( _In_ DWORD dwFlags, _In_opt_ LPCVOID lpSource, _In_ DWORD dwMessageId, _In_ DWORD dwLanguageId, _Out_
 		// LPTSTR lpBuffer, _In_ DWORD nSize, _In_opt_ va_list *Arguments); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, CharSet = CharSet.Auto, SetLastError = true, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
-		private static extern int FormatMessage(FormatMessageFlags dwFlags, IntPtr lpSource, uint dwMessageId, uint dwLanguageId, ref IntPtr lpBuffer, uint nSize, __arglist);
+		public static extern int FormatMessage(FormatMessageFlags dwFlags, string lpSource, uint dwMessageId, uint dwLanguageId, StringBuilder lpBuffer, uint nSize, IntPtr Arguments);
 
 		/// <summary>
 		/// Formats a message string. The function requires a message definition as input. The message definition can come from a message
@@ -790,16 +634,27 @@ namespace Vanara.PInvoke
 		/// call GetLastError.
 		/// </returns>
 		[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
-		public static string FormatMessage(uint id, string[] args = null, HINSTANCE hLib = default, FormatMessageFlags flags = 0, uint langId = 0)
+		public static string FormatMessage(uint id, object[] args = null, HINSTANCE hLib = default, FormatMessageFlags flags = 0, uint langId = 0)
 		{
 			flags &= ~FormatMessageFlags.FORMAT_MESSAGE_FROM_STRING;
-			flags |= FormatMessageFlags.FORMAT_MESSAGE_ALLOCATE_BUFFER | FormatMessageFlags.FORMAT_MESSAGE_FROM_SYSTEM;
+			flags |= FormatMessageFlags.FORMAT_MESSAGE_FROM_SYSTEM;
 			if (!hLib.IsNull) flags |= FormatMessageFlags.FORMAT_MESSAGE_FROM_HMODULE;
-			if (args != null && args.Length > 0 && !flags.IsFlagSet(FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS)) flags |= FormatMessageFlags.FORMAT_MESSAGE_ARGUMENT_ARRAY;
-			var ptr = IntPtr.Zero;
-			var ret = FormatMessage(flags, hLib, id, langId, ref ptr, 0, args);
-			if (ret == 0) Win32Error.ThrowLastError();
-			return new SafeLocalHandle(ptr, 0).ToString(-1);
+			if (args != null && args.Length > 0)
+			{
+				if (!flags.IsFlagSet(FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS)) flags |= FormatMessageFlags.FORMAT_MESSAGE_ARGUMENT_ARRAY;
+				args = Array.ConvertAll(args, o => o is int || o is uint ? (IntPtr)unchecked((int)o) : o);
+			}
+			Win32Error lastError;
+			var buf = new StringBuilder(1024);
+			using (var pargs = new SafeHGlobalHandle(args.MarshalObjectsToPtr(Marshal.AllocHGlobal, out var sz), sz, true))
+				do
+				{
+					if (0 != FormatMessage(flags, hLib, id, langId, buf, (uint)buf.Capacity, (IntPtr)pargs))
+						return buf.ToString();
+					else if (Win32Error.ERROR_INSUFFICIENT_BUFFER != (lastError = Marshal.GetLastWin32Error()))
+						lastError.ThrowIfFailed();
+					buf.Capacity = buf.Capacity * 2;
+				} while (true);
 		}
 
 		/// <summary>
@@ -825,16 +680,24 @@ namespace Vanara.PInvoke
 		/// call GetLastError.
 		/// </returns>
 		[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
-		public static string FormatMessage(string formatString, string[] args, FormatMessageFlags flags = 0)
+		public static string FormatMessage(string formatString, object[] args, FormatMessageFlags flags = 0)
 		{
 			if (string.IsNullOrEmpty(formatString) || args == null || args.Length == 0 || flags.IsFlagSet(FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS)) return formatString;
 			flags &= ~(FormatMessageFlags.FORMAT_MESSAGE_FROM_HMODULE | FormatMessageFlags.FORMAT_MESSAGE_FROM_SYSTEM);
-			flags |= FormatMessageFlags.FORMAT_MESSAGE_FROM_STRING | FormatMessageFlags.FORMAT_MESSAGE_ALLOCATE_BUFFER | FormatMessageFlags.FORMAT_MESSAGE_ARGUMENT_ARRAY;
-			var ptr = IntPtr.Zero;
-			var s = new SafeCoTaskMemString(formatString);
-			var ret = FormatMessage(flags, (IntPtr)s, 0U, 0U, ref ptr, 0U, args);
-			if (ret == 0) Win32Error.ThrowLastError();
-			return new SafeLocalHandle(ptr, 0).ToString(-1);
+			flags |= FormatMessageFlags.FORMAT_MESSAGE_FROM_STRING | FormatMessageFlags.FORMAT_MESSAGE_ARGUMENT_ARRAY;
+			if (args != null && args.Length > 0)
+				args = Array.ConvertAll(args, o => o is int || o is uint ? (IntPtr)unchecked((int)o) : o);
+			Win32Error lastError;
+			var buf = new StringBuilder(1024);
+			using (var pargs = new SafeHGlobalHandle(args.MarshalObjectsToPtr(Marshal.AllocHGlobal, out var sz), sz, true))
+				do
+				{
+					if (0 != FormatMessage(flags, formatString, 0, 0, buf, (uint)buf.Capacity, (IntPtr)pargs))
+						return buf.ToString();
+					else if (Win32Error.ERROR_INSUFFICIENT_BUFFER != (lastError = Marshal.GetLastWin32Error()))
+						lastError.ThrowIfFailed();
+					buf.Capacity = buf.Capacity * 2;
+				} while (true);
 		}
 
 		/// <summary>Retrieves the error mode for the current process.</summary>

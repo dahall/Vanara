@@ -70,12 +70,22 @@ namespace Vanara.Extensions
 		/// <param name="charSet">The character set.</param>
 		/// <param name="memAllocator">The method used to allocate the memory.</param>
 		/// <returns>The allocated memory block, or 0 if <paramref name="s"/> is null.</returns>
-		public static IntPtr AllocString(string s, CharSet charSet, Func<int, IntPtr> memAllocator)
+		public static IntPtr AllocString(string s, CharSet charSet, Func<int, IntPtr> memAllocator) => AllocString(s, charSet, memAllocator, out _);
+
+		/// <summary>
+		/// Copies the contents of a managed String to a block of memory allocated from a supplied allocation method.
+		/// </summary>
+		/// <param name="s">A managed string to be copied.</param>
+		/// <param name="charSet">The character set.</param>
+		/// <param name="memAllocator">The method used to allocate the memory.</param>
+		/// <param name="allocatedBytes">Returns the number of allocated bytes for the string.</param>
+		/// <returns>The allocated memory block, or 0 if <paramref name="s" /> is null.</returns>
+		public static IntPtr AllocString(string s, CharSet charSet, Func<int, IntPtr> memAllocator, out int allocatedBytes)
 		{
-			if (s == null) return IntPtr.Zero;
+			if (s == null) { allocatedBytes = 0; return IntPtr.Zero; }
 			var b = s.GetBytes(true, charSet);
 			var p = memAllocator(b.Length);
-			Marshal.Copy(b, 0, p, b.Length);
+			Marshal.Copy(b, 0, p, allocatedBytes = b.Length);
 			return p;
 		}
 
@@ -139,11 +149,36 @@ namespace Vanara.Extensions
 		/// <returns>The size of a standard character, in bytes, from <paramref name="charSet"/>.</returns>
 		public static int GetCharSize(CharSet charSet = CharSet.Auto) => charSet == CharSet.Auto ? Marshal.SystemDefaultCharSize : (charSet == CharSet.Unicode ? 2 : 1);
 
-		/// <summary>Allocates a managed String and copies all characters up to the first null character from a string stored in unmanaged memory into it.</summary>
+		/// <summary>
+		/// Allocates a managed String and copies all characters up to the first null character or the end of the allocated memory pool from a string stored in unmanaged memory into it.
+		/// </summary>
 		/// <param name="ptr">The address of the first character.</param>
 		/// <param name="charSet">The character set of the string.</param>
-		/// <returns>A managed string that holds a copy of the unmanaged string if the value of the <paramref name="ptr"/> parameter is not null; otherwise, this method returns null.</returns>
-		public static string GetString(IntPtr ptr, CharSet charSet = CharSet.Auto) => IsValue(ptr) ? null : (charSet == CharSet.Auto ? Marshal.PtrToStringAuto(ptr) : (charSet == CharSet.Unicode ? Marshal.PtrToStringUni(ptr) : Marshal.PtrToStringAnsi(ptr)));
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		/// <returns>
+		/// A managed string that holds a copy of the unmanaged string if the value of the <paramref name="ptr"/> parameter is not null;
+		/// otherwise, this method returns null.
+		/// </returns>
+		public static string GetString(IntPtr ptr, CharSet charSet = CharSet.Auto, long allocatedBytes = long.MaxValue)
+		{
+			if (IsValue(ptr)) return null;
+			var sb = new System.Text.StringBuilder();
+			unsafe
+			{
+				var chkLen = 0L;
+				if (GetCharSize(charSet) == 1)
+				{
+					for (var uptr = (byte*)ptr; chkLen < allocatedBytes && *uptr != 0; chkLen++, uptr++)
+						sb.Append((char)*uptr);
+				}
+				else
+				{
+					for (var uptr = (ushort*)ptr; chkLen + 2 <= allocatedBytes && *uptr != 0; chkLen += 2, uptr++)
+						sb.Append((char)*uptr);
+				}
+			}
+			return sb.ToString();
+		}
 
 		/// <summary>
 		/// Allocates a managed String and copies all characters up to the first null character or at most <paramref name="length"/> characters from a string stored in unmanaged memory into it.
@@ -155,8 +190,7 @@ namespace Vanara.Extensions
 		/// A managed string that holds a copy of the unmanaged string if the value of the <paramref name="ptr"/> parameter is not null;
 		/// otherwise, this method returns null.
 		/// </returns>
-		public static string GetString(IntPtr ptr, int length, CharSet charSet = CharSet.Auto) =>
-			IsValue(ptr) ? null : (charSet == CharSet.Auto ? Marshal.PtrToStringAuto(ptr, length) : (charSet == CharSet.Unicode ? Marshal.PtrToStringUni(ptr, length) : Marshal.PtrToStringAnsi(ptr, length)));
+		public static string GetString(IntPtr ptr, int length, CharSet charSet = CharSet.Auto) => GetString(ptr, charSet, length * GetCharSize(charSet));
 
 		/// <summary>Refreshes the memory block from the unmanaged COM task allocator and copies the contents of a new managed String.</summary>
 		/// <param name="ptr">The address of the first character.</param>

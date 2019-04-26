@@ -28,7 +28,7 @@ namespace Vanara.PInvoke
 	// typedef struct _OBJECT_TYPE_LIST { WORD Level; WORD Sbz; GUID *ObjectType; } OBJECT_TYPE_LIST, *POBJECT_TYPE_LIST;
 	[PInvokeData("winnt.h", MSDNShortId = "c729ff1a-65f3-4f6f-84dd-5700aead75ce")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2)]
-	public partial class OBJECT_TYPE_LIST : IDisposable
+	public unsafe struct OBJECT_TYPE_LIST
 	{
 		/// <summary>
 		/// Specifies the level of the object type in the hierarchy of an object and its subobjects. Level zero indicates the object itself.
@@ -41,39 +41,19 @@ namespace Vanara.PInvoke
 		public ushort Sbz;
 
 		/// <summary>A pointer to the GUID for the object or subobject.</summary>
-		public IntPtr guidObjectType;
+		public Guid* guidObjectType;
 
 		/// <summary>Initializes a new instance of the <see cref="OBJECT_TYPE_LIST"/> struct.</summary>
 		/// <param name="level">The level of the object type in the hierarchy of an object and its subobjects.</param>
 		/// <param name="objType">The object or subobject identifier.</param>
-		public OBJECT_TYPE_LIST(ObjectTypeListLevel level, Guid objType)
+		public OBJECT_TYPE_LIST(ObjectTypeListLevel level, Guid objType = default)
 		{
 			Sbz = 0;
 			this.level = level;
-			ObjectId = objType;
+			guidObjectType = objType == default ? null : &objType;
 		}
 
 		/// <summary>Represents an object that is itself.</summary>
-		public static readonly OBJECT_TYPE_LIST Self = new OBJECT_TYPE_LIST(0, Guid.Empty);
-
-		/// <summary>The GUID for the object or subobject</summary>
-		public Guid ObjectId
-		{
-			get => guidObjectType == IntPtr.Zero ? Guid.Empty : (Guid)Marshal.PtrToStructure(guidObjectType, typeof(Guid));
-			set
-			{
-				((IDisposable)this).Dispose();
-				guidObjectType = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(Guid)));
-				Marshal.StructureToPtr(value, guidObjectType, true);
-			}
-		}
-
-		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-		void IDisposable.Dispose()
-		{
-			if (guidObjectType != IntPtr.Zero)
-				Marshal.FreeCoTaskMem(guidObjectType);
-			guidObjectType = IntPtr.Zero;
-		}
+		public static readonly OBJECT_TYPE_LIST Self = new OBJECT_TYPE_LIST();
 	}
 }

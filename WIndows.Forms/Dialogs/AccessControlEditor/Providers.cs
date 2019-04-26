@@ -56,8 +56,9 @@ namespace Vanara.Security.AccessControl
 		/// <param name="serverName">Name of the server. This can be <c>null</c>.</param>
 		/// <param name="pSecurityDescriptor">A pointer to the security descriptor.</param>
 		/// <param name="objectTypeList">The object type list.</param>
+		/// <param name="grantedAccessList">An array of access masks.</param>
 		/// <returns>An array of access masks.</returns>
-		uint[] GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList);
+		HRESULT GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList, out uint[] grantedAccessList);
 
 		/// <summary>Gets the generic mapping for standard rights.</summary>
 		/// <param name="aceFlags">The ace flags.</param>
@@ -126,10 +127,7 @@ namespace Vanara.Security.AccessControl
 
 		/// <summary>Gets a default Security Descriptor for resetting the security of the object.</summary>
 		/// <returns>Pointer to a Security Descriptor.</returns>
-		public virtual IntPtr GetDefaultSecurity()
-		{
-			throw new NotImplementedException();
-		}
+		public virtual IntPtr GetDefaultSecurity() => IntPtr.Zero;
 
 		/// <summary>
 		/// Gets the effective permissions for the provided Sid within the Security Descriptor.
@@ -153,11 +151,14 @@ namespace Vanara.Security.AccessControl
 		/// <param name="serverName">Name of the server. This can be <c>null</c>.</param>
 		/// <param name="pSecurityDescriptor">A pointer to the security descriptor.</param>
 		/// <param name="objectTypeList">The object type list.</param>
-		/// <returns>An array of access masks.</returns>
+		/// <param name="grantedAccessList">An array of access masks.</param>
+		/// <returns></returns>
 		/// <exception cref="System.NotImplementedException"></exception>
-		public virtual uint[] GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList)
+		public virtual HRESULT GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList, out uint[] grantedAccessList)
 		{
-			throw new NotImplementedException();
+			objectTypeList = null;
+			grantedAccessList = null;
+			return HRESULT.E_NOTIMPL;
 		}
 
 		/// <summary>Gets the generic mapping for standard rights.</summary>
@@ -219,6 +220,10 @@ namespace Vanara.Security.AccessControl
 
 	internal class FileProvider : GenericProvider
 	{
+		private const string defaultSecuritySddl = "O:WDG:BAD:AI(A;CIIO;FA;;;WD)(A;;FA;;;BA)S:AI(AU;SAFACIIO;FA;;;WD)";
+
+		public static readonly SafeSecurityDescriptor defaultSd = ConvertStringSecurityDescriptorToSecurityDescriptor(defaultSecuritySddl);
+
 		public override ResourceType ResourceType => ResourceType.FileObject;
 
 		public override void GetAccessListInfo(SI_OBJECT_INFO_Flags flags, out SI_ACCESS[] rights, out uint defaultIndex)
@@ -252,6 +257,8 @@ namespace Vanara.Security.AccessControl
 			defaultIndex = 3;
 		}
 
+		public override IntPtr GetDefaultSecurity() => defaultSd.DangerousGetHandle();
+
 		public override GENERIC_MAPPING GetGenericMapping(sbyte aceFlags) =>
 			new GENERIC_MAPPING((uint)(FileSystemRights.Read | FileSystemRights.Synchronize),
 				(uint)(FileSystemRights.Write | FileSystemRights.Synchronize), 0x1200A0, (uint)FileSystemRights.FullControl);
@@ -270,6 +277,8 @@ namespace Vanara.Security.AccessControl
 	internal class KernelProvider : GenericProvider
 	{
 		public override ResourceType ResourceType => ResourceType.KernelObject;
+
+		//public override IntPtr GetDefaultSecurity() => IntPtr.Zero;
 	}
 
 	internal class RegistryProvider : GenericProvider
@@ -295,6 +304,8 @@ namespace Vanara.Security.AccessControl
 			};
 			defaultIndex = 11;
 		}
+
+		//public override IntPtr GetDefaultSecurity() => IntPtr.Zero;
 
 		public override GENERIC_MAPPING GetGenericMapping(sbyte aceFlags) => new GENERIC_MAPPING((uint)RegistryRights.ReadKey, (uint)RegistryRights.WriteKey, (uint)RegistryRights.ExecuteKey, (uint)RegistryRights.FullControl);
 
@@ -355,6 +366,8 @@ namespace Vanara.Security.AccessControl
 			defaultIndex = 3;
 		}
 
+		//public override IntPtr GetDefaultSecurity() => IntPtr.Zero;
+
 		public override GENERIC_MAPPING GetGenericMapping(sbyte aceFlags) => new GENERIC_MAPPING(0x120089, 0x120116, 0x1200A0, 0x1F01FF);
 
 		public override INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl)
@@ -373,7 +386,7 @@ namespace Vanara.Security.AccessControl
 			// var acl = RawAclFromPtr(pAcl);
 			// for (int i = 0; i < acl.Count; i++) { }
 
-			return new INHERITED_FROM[GetAceCount(pAcl)];
+			return new INHERITED_FROM[pAcl.GetAceCount()];
 		}
 	}
 }

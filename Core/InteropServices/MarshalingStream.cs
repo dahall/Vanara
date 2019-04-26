@@ -7,6 +7,7 @@ namespace Vanara.InteropServices
 {
 	/// <summary>A <see cref="Stream"/> derivative for working with unmanaged memory.</summary>
 	/// <seealso cref="System.IO.Stream"/>
+	[Obsolete("This class may not be available in future releases. Please replace uses with Vanara.InteropServices.NativeMemoryStream.")]
 	public class MarshalingStream : Stream
 	{
 		private readonly IntPtr ptr;
@@ -137,9 +138,9 @@ namespace Vanara.InteropServices
 		public void Write<T>(T value)
 		{
 			if (value == null) return;
-			if (typeof(T) == typeof(string))
+			if (value is string s)
 			{
-				var bytes = value.ToString().GetBytes(true, CharSet);
+				var bytes = s.GetBytes(true, CharSet);
 				Write(bytes, 0, bytes.Length);
 			}
 			else
@@ -157,7 +158,7 @@ namespace Vanara.InteropServices
 		public void Write<T>(T[] items)
 		{
 			if (items == null) return;
-			if (typeof(T) == typeof(string))
+			if (items.GetType().GetElementType() == typeof(string))
 			{
 				var hMem = SafeHGlobalHandle.CreateFromStringList(items as string[], StringListPackMethod.Packed, CharSet, 0);
 				var bytes = hMem.ToArray<byte>(hMem.Size);

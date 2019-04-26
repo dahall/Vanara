@@ -6,6 +6,7 @@ using System.Security;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
+using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
 {
@@ -36,14 +37,14 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Unicode)]
 		[SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool AuthzAccessCheckCallback(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, ref ACE_HEADER pAce, IntPtr pArgs, [MarshalAs(UnmanagedType.Bool)] ref bool pbAceApplicable);
+		public delegate bool AuthzAccessCheckCallback(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, PACE pAce, IntPtr pArgs, [MarshalAs(UnmanagedType.Bool)] ref bool pbAceApplicable);
 
 		/// <summary>
-		/// The AuthzComputeGroupsCallback function is an application-defined function that creates a list of security identifiers (SIDs)
-		/// that apply to a client. AuthzComputeGroupsCallback is a placeholder for the application-defined function name.
+		/// The <c>AuthzComputeGroupsCallback</c> function is an application-defined function that creates a list of security identifiers
+		/// (SIDs) that apply to a client. <c>AuthzComputeGroupsCallback</c> is a placeholder for the application-defined function name.
 		/// </summary>
 		/// <param name="hAuthzClientContext">A handle to a client context.</param>
-		/// <param name="Args">
+		/// <param name="pArgs">
 		/// Data passed in the DynamicGroupArgs parameter of a call to the AuthzInitializeContextFromAuthzContext,
 		/// AuthzInitializeContextFromSid, or AuthzInitializeContextFromToken function.
 		/// </param>
@@ -58,13 +59,42 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="pRestrictedSidCount">The number of structures in pSidRestrictedAttrArray.</param>
 		/// <returns>
-		/// If the function successfully returns a list of SIDs, the return value is TRUE.
-		/// <para>If the function fails, the return value is FALSE.</para>
+		/// <para>If the function successfully returns a list of SIDs, the return value is <c>TRUE</c>.</para>
+		/// <para>If the function fails, the return value is <c>FALSE</c>.</para>
 		/// </returns>
+		/// <remarks>
+		/// <para>Applications can also add SIDs to the client context by calling <c>AuthzAddSidsToContext</c>.</para>
+		/// <para>
+		/// Attribute variables must be in the form of an expression when used with logical operators; otherwise, they are evaluated as unknown.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/SecAuthZ/authzcomputegroupscallback BOOL CALLBACK AuthzComputeGroupsCallback(
+		// _In_ AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, _In_ PVOID Args, _Out_ PSID_AND_ATTRIBUTES *pSidAttrArray, _Out_ PDWORD
+		// pSidCount, _Out_ PSID_AND_ATTRIBUTES *pRestrictedSidAttrArray, _Out_ PDWORD pRestrictedSidCount );
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Unicode)]
-		[SuppressUnmanagedCodeSecurity]
+		[PInvokeData("authz.h", MSDNShortId = "c20a02a0-5303-4433-a484-5a89999b32b9")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool AuthzComputeGroupsCallback(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, IntPtr Args, ref SID_AND_ATTRIBUTES pSidAttrArray, out uint pSidCount, out SID_AND_ATTRIBUTES pRestrictedSidAttrArray, out uint pRestrictedSidCount);
+		public delegate bool AuthzComputeGroupsCallback(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, IntPtr pArgs, out IntPtr pSidAttrArray, out uint pSidCount, out IntPtr pRestrictedSidAttrArray, out uint pRestrictedSidCount);
+
+		/// <summary>
+		/// The AuthzFreeCentralAccessPolicyCallback function is an application-defined function that frees memory allocated by the
+		/// AuthzGetCentralAccessPolicyCallback function. AuthzFreeCentralAccessPolicyCallback is a placeholder for the application-defined
+		/// function name.
+		/// </summary>
+		/// <param name="pCentralAccessPolicy">Pointer to the central access policy to be freed.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+		/// <para>
+		/// If the function is unable to perform the evaluation, it returns <c>FALSE</c>. Use <c>SetLastError</c> to return an error to the
+		/// access check function.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/SecAuthZ/authzfreecentralaccesspolicycallback BOOL CALLBACK
+		// AuthzFreeCentralAccessPolicyCallback( _In_ PVOID pCentralAccessPolicy );
+		[PInvokeData("authz.h", MSDNShortId = "F0859A67-4D20-4189-8F35-A78034E41E6A")]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Unicode)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public delegate bool AuthzFreeCentralAccessPolicyCallback(IntPtr pCentralAccessPolicy);
 
 		/// <summary>
 		/// The AuthzFreeGroupsCallback function is an application-defined function that frees memory allocated by the
@@ -73,7 +103,51 @@ namespace Vanara.PInvoke
 		/// <param name="pSidAttrArray">A pointer to memory allocated by AuthzComputeGroupsCallback.</param>
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Unicode)]
 		[SuppressUnmanagedCodeSecurity]
-		public delegate void AuthzFreeGroupsCallback(ref SID_AND_ATTRIBUTES pSidAttrArray);
+		public delegate void AuthzFreeGroupsCallback(IntPtr pSidAttrArray);
+
+		/// <summary>
+		/// The AuthzGetCentralAccessPolicyCallback function is an application-defined function that retrieves the central access policy.
+		/// AuthzGetCentralAccessPolicyCallback is a placeholder for the application-defined function name.
+		/// </summary>
+		/// <param name="hAuthzClientContext">Handle to the client context.</param>
+		/// <param name="capid">ID of the central access policy to retrieve.</param>
+		/// <param name="pArgs">
+		/// Optional arguments that were passed to the AuthzAccessCheck function through the OptionalArguments member of the
+		/// AUTHZ_ACCESS_REQUEST structure.
+		/// </param>
+		/// <param name="pCentralAccessPolicyApplicable">
+		/// Pointer to a Boolean value that the resource manager uses to indicate whether a central access policy should be used during
+		/// access evaluation.
+		/// </param>
+		/// <param name="ppCentralAccessPolicy">
+		/// Pointer to the central access policy (CAP) to be used for evaluating access. If this value is NULL, the default CAP is applied.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+		/// <para>
+		/// If the function is unable to perform the evaluation, it returns <c>FALSE</c>. Use <c>SetLastError</c> to return an error to the
+		/// access check function.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/SecAuthZ/authzgetcentralaccesspolicycallback- BOOL CALLBACK
+		// AuthzGetCentralAccessPolicyCallback ( _In_ AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, _In_ PSID capid, _In_opt_ PVOID pArgs,
+		// _Out_ PBOOL pCentralAccessPolicyApplicable, _Out_ PVOID ppCentralAccessPolicy );
+		[PInvokeData("authz.h", MSDNShortId = "1D5831EF-ACA8-4EE9-A7C1-E1A3CB74CEC0")]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Unicode)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public delegate bool AuthzGetCentralAccessPolicyCallback([In] AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, [In] PSID capid, [In, Optional] IntPtr pArgs, [MarshalAs(UnmanagedType.Bool)] out bool pCentralAccessPolicyApplicable, out IntPtr ppCentralAccessPolicy);
+
+		/// <summary>Flags that specify the type of audit generated.</summary>
+		[PInvokeData("authz.h", MSDNShortId = "95d561ef-3233-433a-a1e7-b914df1dd211")]
+		[Flags]
+		public enum APF
+		{
+			/// <summary>Failure audits are generated.</summary>
+			APF_AuditFailure = 0x00000000,
+
+			/// <summary>Success audits are generated.</summary>
+			APF_AuditSuccess = 0x00000001,
+		}
 
 		/// <summary>
 		/// <para>
@@ -327,7 +401,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Flags used in the <see cref="AuthzAccessCheck(AuthzAccessCheckFlags, AUTHZ_CLIENT_CONTEXT_HANDLE, in AUTHZ_ACCESS_REQUEST, AUTHZ_AUDIT_EVENT_HANDLE, PSECURITY_DESCRIPTOR, SECURITY_DESCRIPTOR[], uint, AUTHZ_ACCESS_REPLY, IntPtr)"/> method.
+		/// Flags used in the
+		/// <see cref="AuthzAccessCheck(AuthzAccessCheckFlags, AUTHZ_CLIENT_CONTEXT_HANDLE, in AUTHZ_ACCESS_REQUEST, AUTHZ_AUDIT_EVENT_HANDLE, PSECURITY_DESCRIPTOR, SECURITY_DESCRIPTOR[], uint, AUTHZ_ACCESS_REPLY, IntPtr)"/> method.
 		/// </summary>
 		[PInvokeData("authz.h")]
 		[Flags]
@@ -430,6 +505,24 @@ namespace Vanara.PInvoke
 
 			/// <summary>The resource manager ignores CAP IDs and does not evaluate centralized access policies.</summary>
 			AUTHZ_RM_FLAG_NO_CENTRALIZED_ACCESS_POLICIES = 0x4
+		}
+
+		/// <summary>Flags that control the behavior of the operation.</summary>
+		[PInvokeData("authz.h", MSDNShortId = "8b4d6e14-fb9c-428a-bd94-34eba668edc6")]
+		[Flags]
+		public enum SOURCE_SCHEMA_REGISTRATION_FLAGS
+		{
+			/// <summary>
+			/// Allows registration of multiple sources with the same name. Use of this flag means that more than one source can call the
+			/// AuthzRegisterSecurityEventSource function with the same szEventSourceName at runtime.
+			/// </summary>
+			AUTHZ_ALLOW_MULTIPLE_SOURCE_INSTANCES = 0x1,
+
+			/// <summary>
+			/// The caller is a migrated publisher that has registered a manifest with WEvtUtil.exe. The GUID of the provider specified by
+			/// the pProviderGuid member is stored in the registry.
+			/// </summary>
+			AUTHZ_MIGRATED_LEGACY_PUBLISHER = 0x2,
 		}
 
 		/// <summary>
@@ -681,6 +774,169 @@ namespace Vanara.PInvoke
 			uint OptionalSecurityDescriptorCount, [In, Out] AUTHZ_ACCESS_REPLY pReply, [Optional] IntPtr phAccessCheckResults);
 
 		/// <summary>
+		/// The <c>AuthzAddSidsToContext</c> function creates a copy of an existing context and appends a given set of security identifiers
+		/// (SIDs) and restricted SIDs.
+		/// </summary>
+		/// <param name="hAuthzClientContext">An <c>AUTHZ_CLIENT_CONTEXT_HANDLE</c> structure to be copied as the basis for NewClientContext.</param>
+		/// <param name="Sids">
+		/// A pointer to a SID_AND_ATTRIBUTES structure containing the SIDs and attributes to be added to the unrestricted part of the client context.
+		/// </param>
+		/// <param name="SidCount">The number of SIDs to be added.</param>
+		/// <param name="RestrictedSids">
+		/// A pointer to a SID_AND_ATTRIBUTES structure containing the SIDs and attributes to be added to the restricted part of the client context.
+		/// </param>
+		/// <param name="RestrictedSidCount">Number of restricted SIDs to be added.</param>
+		/// <param name="phNewAuthzClientContext">
+		/// A pointer to the created <c>AUTHZ_CLIENT_CONTEXT_HANDLE</c> structure containing input values for expiration time, identifier,
+		/// flags, additional SIDs and restricted SIDs.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzaddsidstocontext AUTHZAPI BOOL AuthzAddSidsToContext(
+		// AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, PSID_AND_ATTRIBUTES Sids, DWORD SidCount, PSID_AND_ATTRIBUTES RestrictedSids,
+		// DWORD RestrictedSidCount, PAUTHZ_CLIENT_CONTEXT_HANDLE phNewAuthzClientContext );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "4744013b-7f2e-4ebb-8944-10ffcc6006d0")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzAddSidsToContext(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, in SID_AND_ATTRIBUTES Sids, uint SidCount, in SID_AND_ATTRIBUTES RestrictedSids, uint RestrictedSidCount, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE phNewAuthzClientContext);
+
+		/// <summary>
+		/// The <c>AuthzAddSidsToContext</c> function creates a copy of an existing context and appends a given set of security identifiers
+		/// (SIDs) and restricted SIDs.
+		/// </summary>
+		/// <param name="hAuthzClientContext">An <c>AUTHZ_CLIENT_CONTEXT_HANDLE</c> structure to be copied as the basis for NewClientContext.</param>
+		/// <param name="Sids">
+		/// A pointer to a SID_AND_ATTRIBUTES structure containing the SIDs and attributes to be added to the unrestricted part of the client context.
+		/// </param>
+		/// <param name="SidCount">The number of SIDs to be added.</param>
+		/// <param name="RestrictedSids">
+		/// A pointer to a SID_AND_ATTRIBUTES structure containing the SIDs and attributes to be added to the restricted part of the client context.
+		/// </param>
+		/// <param name="RestrictedSidCount">Number of restricted SIDs to be added.</param>
+		/// <param name="phNewAuthzClientContext">
+		/// A pointer to the created <c>AUTHZ_CLIENT_CONTEXT_HANDLE</c> structure containing input values for expiration time, identifier,
+		/// flags, additional SIDs and restricted SIDs.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzaddsidstocontext AUTHZAPI BOOL AuthzAddSidsToContext(
+		// AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, PSID_AND_ATTRIBUTES Sids, DWORD SidCount, PSID_AND_ATTRIBUTES RestrictedSids,
+		// DWORD RestrictedSidCount, PAUTHZ_CLIENT_CONTEXT_HANDLE phNewAuthzClientContext );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "4744013b-7f2e-4ebb-8944-10ffcc6006d0")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzAddSidsToContext(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, [Optional] IntPtr Sids, uint SidCount, [Optional] IntPtr RestrictedSids, uint RestrictedSidCount, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE phNewAuthzClientContext);
+
+		/// <summary>
+		/// The <c>AuthzCachedAccessCheck</c> function performs a fast access check based on a cached handle containing the static granted
+		/// bits from a previous AuthzAccessCheck call.
+		/// </summary>
+		/// <param name="Flags">Reserved for future use.</param>
+		/// <param name="hAccessCheckResults">A handle to the cached access check results.</param>
+		/// <param name="pRequest">
+		/// Access request handle specifying the desired access mask, principal self SID, and the object type list structure (if any).
+		/// </param>
+		/// <param name="hAuditEvent">
+		/// A structure that contains object-specific audit information. When the value of this parameter is not null, an audit is
+		/// automatically requested. Static audit information is read from the resource manager structure.
+		/// </param>
+		/// <param name="pReply">
+		/// A pointer to an AUTHZ_ACCESS_REPLY handle that returns the results of access check as an array of GrantedAccessMask/ErrorValue
+		/// pairs. The number of pairs returned is supplied by the caller in the <c>ResultListLength</c> member of the
+		/// <c>AUTHZ_ACCESS_REPLY</c> structure.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// <para>Expected values of the Error members of array elements returned are shown in the following table.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>
+		/// All the access bits, not including MAXIMUM_ALLOWED, are granted and the GrantedAccessMask member of the pReply parameter is not zero.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_PRIVILEGE_NOT_HELD</term>
+		/// <term>
+		/// The DesiredAccess member of the pRequest parameter includes ACCESS_SYSTEM_SECURITY, and the client does not have the
+		/// SeSecurityPrivilege privilege.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>One or more of the following is true:</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The client context pointer is stored in the AuthzHandle parameter. The structure of the client context must be exactly the same
+		/// as it was at the time AuthzHandle was created. This restriction is for the following fields:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>SIDs</term>
+		/// </item>
+		/// <item>
+		/// <term>RestrictedSids</term>
+		/// </item>
+		/// <item>
+		/// <term>Privileges</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Pointers to the primary security descriptor and the optional security descriptor array are stored in AuthzHandle at the time of
+		/// handle creation. These pointers must still be valid.
+		/// </para>
+		/// <para>
+		/// The <c>AuthzCachedAccessCheck</c> function maintains a cache as a result of evaluating Central Access Policies (CAP) on objects
+		/// unless CAPs are ignored, for example when the AUTHZ_RM_FLAG_NO_CENTRAL_ACCESS_POLICIES flag is used. The client may call the
+		/// AuthzFreeCentralAccessPolicyCache function to free up this cache. Note that this requires a subsequent call to
+		/// <c>AuthzCachedAccessCheck</c> to rebuild the cache if necessary.
+		/// </para>
+		/// <para>For more information, see the How AccessCheck Works and Centralized Authorization Policy overviews.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzcachedaccesscheck AUTHZAPI BOOL AuthzCachedAccessCheck(
+		// DWORD Flags, AUTHZ_ACCESS_CHECK_RESULTS_HANDLE hAccessCheckResults, PAUTHZ_ACCESS_REQUEST pRequest, AUTHZ_AUDIT_EVENT_HANDLE
+		// hAuditEvent, PAUTHZ_ACCESS_REPLY pReply );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "8b3bb69f-7bf9-4e4a-b870-081dd92c7ee4")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzCachedAccessCheck([Optional] uint Flags, AUTHZ_ACCESS_CHECK_RESULTS_HANDLE hAccessCheckResults, in AUTHZ_ACCESS_REQUEST pRequest, [Optional] AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, ref AUTHZ_ACCESS_REPLY pReply);
+
+		/// <summary>
+		/// The <c>AuthzEnumerateSecurityEventSources</c> function retrieves the registered security event sources that are not installed by default.
+		/// </summary>
+		/// <param name="dwFlags">Reserved for future use; set this parameter to zero.</param>
+		/// <param name="Buffer">
+		/// A pointer to an array of AUTHZ_SOURCE_SCHEMA_REGISTRATION structures that returns the registered security event sources.
+		/// </param>
+		/// <param name="pdwCount">A pointer to a variable that receives the number of event sources found.</param>
+		/// <param name="pdwLength">
+		/// A pointer to a variable that specifies the length of the Buffer parameter in bytes. On output, this parameter receives the number
+		/// of bytes used or required.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzenumeratesecurityeventsources AUTHZAPI BOOL
+		// AuthzEnumerateSecurityEventSources( DWORD dwFlags, PAUTHZ_SOURCE_SCHEMA_REGISTRATION Buffer, PDWORD pdwCount, PDWORD pdwLength );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "2a20ccc9-f2ac-41e4-9d86-745004775e67")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzEnumerateSecurityEventSources([Optional] uint dwFlags, IntPtr Buffer, out uint pdwCount, ref uint pdwLength);
+
+		/// <summary>
 		/// <para>The <c>AuthzFreeAuditEvent</c> function frees the structure allocated by the AuthzInitializeObjectAccessAuditEvent function.</para>
 		/// </summary>
 		/// <param name="hAuditEvent">
@@ -696,6 +952,22 @@ namespace Vanara.PInvoke
 		[PInvokeData("authz.h", MSDNShortId = "e2980ef7-45dd-47c7-ba4d-f36b52bbd7dc")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool AuthzFreeAuditEvent(AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent);
+
+		/// <summary>
+		/// The <c>AuthzFreeCentralAccessPolicyCache</c> function frees the cache maintained as a result of AuthzCachedAccessCheck evaluating
+		/// the Central Access Policies (CAP) that applies for the resource.
+		/// </summary>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>For more information, see the How AccessCheck Works and Centralized Authorization Policy overviews.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzfreecentralaccesspolicycache AUTHZAPI BOOL
+		// AuthzFreeCentralAccessPolicyCache( );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "0F972A95-3CD7-4C86-99DE-5B3D50CE9A34")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzFreeCentralAccessPolicyCache();
 
 		/// <summary>
 		/// <para>
@@ -817,6 +1089,78 @@ namespace Vanara.PInvoke
 		[PInvokeData("authz.h", MSDNShortId = "2EC9EE76-9A92-40DF-9884-547D96FF3E09")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool AuthzInitializeCompoundContext(AUTHZ_CLIENT_CONTEXT_HANDLE UserContext, AUTHZ_CLIENT_CONTEXT_HANDLE DeviceContext, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE phCompoundContext);
+
+		/// <summary>
+		/// <para>The <c>AuthzInitializeContextFromAuthzContext</c> function creates a new client context based on an existing client context.</para>
+		/// <para>
+		/// Starting with Windows Server 2012 and Windows 8, this function also duplicates device groups, user claims, and device claims.
+		/// </para>
+		/// </summary>
+		/// <param name="Flags">Reserved for future use.</param>
+		/// <param name="hAuthzClientContext">The handle to an existing client context.</param>
+		/// <param name="pExpirationTime">
+		/// Sets the time limit for how long the returned context structure is valid. If no value is passed, then the token never expires.
+		/// Expiration time is not currently enforced.
+		/// </param>
+		/// <param name="Identifier">The specific identifier for the resource manager.</param>
+		/// <param name="DynamicGroupArgs">
+		/// A pointer to parameters to be passed to the callback function that computes dynamic groups. If the value is <c>NULL</c>, then the
+		/// callback function is not called.
+		/// </param>
+		/// <param name="phNewAuthzClientContext">
+		/// A pointer to the duplicated AUTHZ_CLIENT_CONTEXT_HANDLE handle. When you have finished using the handle, release it by calling
+		/// the AuthzFreeContext function.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// This function calls the AuthzComputeGroupsCallback callback function to add security identifiers to the newly created context.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzinitializecontextfromauthzcontext AUTHZAPI BOOL
+		// AuthzInitializeContextFromAuthzContext( DWORD Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, PLARGE_INTEGER
+		// pExpirationTime, LUID Identifier, PVOID DynamicGroupArgs, PAUTHZ_CLIENT_CONTEXT_HANDLE phNewAuthzClientContext );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "dac5e354-ee31-45e3-9eb8-8f3263161ad2")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzInitializeContextFromAuthzContext([Optional] uint Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, in long pExpirationTime, LUID Identifier, IntPtr DynamicGroupArgs, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE phNewAuthzClientContext);
+
+		/// <summary>
+		/// <para>The <c>AuthzInitializeContextFromAuthzContext</c> function creates a new client context based on an existing client context.</para>
+		/// <para>
+		/// Starting with Windows Server 2012 and Windows 8, this function also duplicates device groups, user claims, and device claims.
+		/// </para>
+		/// </summary>
+		/// <param name="Flags">Reserved for future use.</param>
+		/// <param name="hAuthzClientContext">The handle to an existing client context.</param>
+		/// <param name="pExpirationTime">
+		/// Sets the time limit for how long the returned context structure is valid. If no value is passed, then the token never expires.
+		/// Expiration time is not currently enforced.
+		/// </param>
+		/// <param name="Identifier">The specific identifier for the resource manager.</param>
+		/// <param name="DynamicGroupArgs">
+		/// A pointer to parameters to be passed to the callback function that computes dynamic groups. If the value is <c>NULL</c>, then the
+		/// callback function is not called.
+		/// </param>
+		/// <param name="phNewAuthzClientContext">
+		/// A pointer to the duplicated AUTHZ_CLIENT_CONTEXT_HANDLE handle. When you have finished using the handle, release it by calling
+		/// the AuthzFreeContext function.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// This function calls the AuthzComputeGroupsCallback callback function to add security identifiers to the newly created context.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzinitializecontextfromauthzcontext AUTHZAPI BOOL
+		// AuthzInitializeContextFromAuthzContext( DWORD Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, PLARGE_INTEGER
+		// pExpirationTime, LUID Identifier, PVOID DynamicGroupArgs, PAUTHZ_CLIENT_CONTEXT_HANDLE phNewAuthzClientContext );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "dac5e354-ee31-45e3-9eb8-8f3263161ad2")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzInitializeContextFromAuthzContext([Optional] uint Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, [Optional] IntPtr pExpirationTime, LUID Identifier, IntPtr DynamicGroupArgs, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE phNewAuthzClientContext);
 
 		/// <summary>
 		/// <para>
@@ -1066,6 +1410,82 @@ namespace Vanara.PInvoke
 			string szOperationType, string szObjectType, string szObjectName, string szAdditionalInfo,
 			out SafeAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, uint dwAdditionalParameterCount = 0);
 
+		/// <summary>
+		/// The <c>AuthzInitializeObjectAccessAuditEvent2</c> function allocates and initializes an <c>AUTHZ_AUDIT_EVENT_HANDLE</c> handle
+		/// for use with the AuthzAccessCheck function.
+		/// </summary>
+		/// <param name="Flags">
+		/// <para>Flags that modify the behavior of the audit. The following table shows the possible values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>AUTHZ_NO_ALLOC_STRINGS</term>
+		/// <term>
+		/// Uses pointers to the passed strings instead of allocating memory and copying the strings. The calling application must ensure
+		/// that the passed memory remains valid during access checks.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUTHZ_NO_FAILURE_AUDIT</term>
+		/// <term>Disables generation of failure audits.</term>
+		/// </item>
+		/// <item>
+		/// <term>AUTHZ_NO_SUCCESS_AUDIT</term>
+		/// <term>Disables generation of success audits.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="hAuditEventType">Reserved. This parameter should be set to <c>NULL</c>.</param>
+		/// <param name="szOperationType">A pointer to a string that indicates the operation that is to be audited.</param>
+		/// <param name="szObjectType">A pointer to a string that indicates the type of object accessed.</param>
+		/// <param name="szObjectName">A pointer to a string that indicates the name of the object accessed.</param>
+		/// <param name="szAdditionalInfo">Pointer to a string defined by the Resource Manager that contains additional audit information.</param>
+		/// <param name="szAdditionalInfo2">Pointer to a string defined by the Resource Manager that contains additional audit information.</param>
+		/// <param name="phAuditEvent">A pointer to the returned <c>AUTHZ_AUDIT_EVENT_HANDLE</c> handle.</param>
+		/// <param name="dwAdditionalParameterCount">Must be set to zero.</param>
+		/// <param name="">The .</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzinitializeobjectaccessauditevent2 AUTHZAPI BOOL
+		// AuthzInitializeObjectAccessAuditEvent2( DWORD Flags, AUTHZ_AUDIT_EVENT_TYPE_HANDLE hAuditEventType, PWSTR szOperationType, PWSTR
+		// szObjectType, PWSTR szObjectName, PWSTR szAdditionalInfo, PWSTR szAdditionalInfo2, PAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, DWORD
+		// dwAdditionalParameterCount, ... );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("authz.h", MSDNShortId = "c65bb799-0158-496a-b428-0331c4474b74")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzInitializeObjectAccessAuditEvent2(AuthzAuditEventFlags Flags, [Optional] IntPtr hAuditEventType, string szOperationType, string szObjectType, string szObjectName, string szAdditionalInfo, string szAdditionalInfo2, out SafeAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, uint dwAdditionalParameterCount = 0, IntPtr additionalParameters = default);
+
+		/// <summary>
+		/// <para>
+		/// The <c>AuthzInitializeRemoteResourceManager</c> function allocates and initializes a remote resource manager. The caller can use
+		/// the resulting handle to make AuthZ calls over RPC to a remote instance of the resource manager configured on a server.
+		/// </para>
+		/// </summary>
+		/// <param name="pRpcInitInfo">
+		/// <para>Pointer to an AUTHZ_RPC_INIT_INFO_CLIENT structure containing the initial information needed to configure the connection.</para>
+		/// </param>
+		/// <param name="phAuthzResourceManager">
+		/// <para>
+		/// A handle to the resource manager. When you have finished using the handle, free it by calling the AuthzFreeResourceManager function.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzinitializeremoteresourcemanager AUTHZAPI BOOL
+		// AuthzInitializeRemoteResourceManager( PAUTHZ_RPC_INIT_INFO_CLIENT pRpcInitInfo, PAUTHZ_RESOURCE_MANAGER_HANDLE
+		// phAuthzResourceManager );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "C3B6C75B-13A5-49CC-BB01-DA1EEC292C20")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzInitializeRemoteResourceManager(in AUTHZ_RPC_INIT_INFO_CLIENT pRpcInitInfo, out SafeAUTHZ_RESOURCE_MANAGER_HANDLE phAuthzResourceManager);
+
 		/// <summary>The AuthzInitializeResourceManager function uses Authz to verify that clients have access to various resources.</summary>
 		/// <param name="flags">
 		/// A DWORD value that defines how the resource manager is initialized.
@@ -1106,6 +1526,139 @@ namespace Vanara.PInvoke
 			[Optional] AuthzFreeGroupsCallback pfnFreeDynamicGroups,
 			[Optional, MarshalAs(UnmanagedType.LPWStr)] string name,
 			out SafeAUTHZ_RESOURCE_MANAGER_HANDLE rm);
+
+		/// <summary>
+		/// The <c>AuthzInitializeResourceManagerEx</c> function initializes an Authz resource manager and returns a handle to it. Use this
+		/// function rather than AuthzInitializeResourceManager when you want the resource manager to manage Central Access Policies (CAPs).
+		/// </summary>
+		/// <param name="Flags">
+		/// <para>
+		/// A <c>DWORD</c> value that defines how the resource manager is initialized. This parameter can be one or more of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>
+		/// Default call to the function. The resource manager is initialized as the principal identified in the process token, and auditing
+		/// is in effect. Unless the AUTHZ_RM_FLAG_NO_AUDIT flag is set, SeAuditPrivilege must be enabled for the function to succeed.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUTHZ_RM_FLAG_NO_AUDIT 1</term>
+		/// <term>
+		/// Auditing is not in effect. If this flag is set, the caller does not need to have SeAuditPrivilege enabled to call this function.
+		/// Use this flag if the resource manager will never generate an audit for best performance.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUTHZ_RM_FLAG_INITIALIZE_UNDER_IMPERSONATION 2</term>
+		/// <term>
+		/// The resource manager is initialized as the identity of the thread token. If the current thread is impersonating, then use the
+		/// impersonation token as the identity of the resource manager.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUTHZ_RM_FLAG_NO_CENTRAL_ACCESS_POLICIES 4</term>
+		/// <term>The central access policy IDs are ignored. Do not evaluate central access policies.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pAuthzInitInfo">
+		/// A pointer to a AUTHZ_INIT_INFO structure that contains the authorization resource manager initialization information.
+		/// </param>
+		/// <param name="phAuthzResourceManager">
+		/// A pointer to the returned resource manager handle. When you have finished using the handle, free it by using the
+		/// AuthzFreeResourceManager function.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns a value of <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns a value of <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If the AUTHZ_RM_FLAG_NO_CENTRAL_ACCESS_POLICIES flag is specified, then AuthzAccessCheck and AuthzCachedAccessCheck ignore CAPID
+		/// (Central Access Policies ID) access control entriesSYSTEM_SCOPED_POLICY_ID_ACE and will not evaluate CAPs.
+		/// </para>
+		/// <para>
+		/// If the AUTHZ_RM_FLAG_NO_CENTRAL_ACCESS_POLICIES flag is not specified and pfnGetCentralAccessPolicy is <c>NULL</c>, then
+		/// AuthzAccessCheck and AuthzCachedAccessCheck will get CAPs from LSA. For more information, see LsaGetAppliedCAPIDs.
+		/// </para>
+		/// <para>
+		/// If the AUTHZ_RM_FLAG_NO_CENTRAL_ACCESS_POLICIES flag is not specified and a central access policy callback is provided by the
+		/// resource manager, then AuthzAccessCheck and AuthzCachedAccessCheck will get CAPs from the resource manager by invoking the callback.
+		/// </para>
+		/// <para>
+		/// The LSA and the central access policy callback can indicate that CAPs are not supported, in which case AuthzAccessCheck and
+		/// AuthzCachedAccessCheck ignore CAPID ACEs and will not evaluate CAPs.
+		/// </para>
+		/// <para>
+		/// The LSA and the central access policy callback may fail to return a CAP that corresponds to a particular CAPID, in which case
+		/// <c>AuthzAccessCheck</c> and <c>AuthzCachedAccessCheck</c> use the same default CAP as the kernel AccessCheck.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzinitializeresourcemanagerex AUTHZAPI BOOL
+		// AuthzInitializeResourceManagerEx( DWORD Flags, PAUTHZ_INIT_INFO pAuthzInitInfo, PAUTHZ_RESOURCE_MANAGER_HANDLE
+		// phAuthzResourceManager );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "CDB78606-1B53-4516-90E6-1FF096B3D7D9")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzInitializeResourceManagerEx(AuthzResourceManagerFlags Flags, in AUTHZ_INIT_INFO pAuthzInitInfo, out SafeAUTHZ_RESOURCE_MANAGER_HANDLE phAuthzResourceManager);
+
+		/// <summary>The <c>AuthzInstallSecurityEventSource</c> function installs the specified source as a security event source.</summary>
+		/// <param name="dwFlags">This parameter is reserved for future use and must be set to zero.</param>
+		/// <param name="pRegistration">
+		/// <para>
+		/// A pointer to an AUTHZ_SOURCE_SCHEMA_REGISTRATION structure that contains information about the security event source to be added.
+		/// </para>
+		/// <para>
+		/// The members of the AUTHZ_SOURCE_SCHEMA_REGISTRATION structure are used as follows to install the security event source in the
+		/// security log key:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The <c>szEventSourceName</c> member is added as a registry key under</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The <c>szEventMessageFile</c> member is added as the data in a REG_SZ value named <c>EventMessageFile</c> under the event source key.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The <c>szEventAccessStringsFile</c> member is added as the data in a REG_SZ value named <c>ParameterMessageFile</c> under the
+		/// event source key.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>If the registry path does not exist, it is created.</term>
+		/// </item>
+		/// </list>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// If the <c>szEventSourceXmlSchemaFile</c> member is not <c>NULL</c>, it is added as the data in a REG_SZ value named
+		/// <c>XmlSchemaFile</c> under the event source key. This value is not used.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>The <c>szExecutableImagePath</c> member may be set to <c>NULL</c>.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzinstallsecurityeventsource AUTHZAPI BOOL
+		// AuthzInstallSecurityEventSource( DWORD dwFlags, PAUTHZ_SOURCE_SCHEMA_REGISTRATION pRegistration );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "77cb5c6c-1634-4449-8d05-ce6357ad4e4b")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzInstallSecurityEventSource([Optional] uint dwFlags, in AUTHZ_SOURCE_SCHEMA_REGISTRATION pRegistration);
 
 		/// <summary>
 		/// <para>The <c>AuthzModifyClaims</c> function adds, deletes, or modifies user and device claims in the Authz client context.</para>
@@ -1222,6 +1775,259 @@ namespace Vanara.PInvoke
 		public static extern bool AuthzModifySids(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS SidClass,
 			AUTHZ_SID_OPERATION[] pSidOperations, in TOKEN_GROUPS pSids);
 
+		/// <summary>
+		/// The <c>AuthzOpenObjectAudit</c> function reads the system access control list (SACL) of the specified security descriptor and
+		/// generates any appropriate audits specified by that SACL.
+		/// </summary>
+		/// <param name="Flags">Reserved for future use.</param>
+		/// <param name="hAuthzClientContext">A handle to the client context of the object to open.</param>
+		/// <param name="pRequest">A pointer to an AUTHZ_ACCESS_REQUEST structure.</param>
+		/// <param name="hAuditEvent">A handle to the audit event to use.</param>
+		/// <param name="pSecurityDescriptor">A pointer to the SECURITY_DESCRIPTOR structure for the object.</param>
+		/// <param name="OptionalSecurityDescriptorArray">A pointer to an array of SECURITY_DESCRIPTOR structures.</param>
+		/// <param name="OptionalSecurityDescriptorCount">The number of elements in SecurityDescriptorArray.</param>
+		/// <param name="pReply">A pointer to an AUTHZ_ACCESS_REPLY structure.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns a nonzero value.</para>
+		/// <para>If the function fails, it returns a zero value. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzopenobjectaudit AUTHZAPI BOOL AuthzOpenObjectAudit( DWORD
+		// Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, PAUTHZ_ACCESS_REQUEST pRequest, AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent,
+		// PSECURITY_DESCRIPTOR pSecurityDescriptor, PSECURITY_DESCRIPTOR *OptionalSecurityDescriptorArray, DWORD
+		// OptionalSecurityDescriptorCount, PAUTHZ_ACCESS_REPLY pReply );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "39c6f0bc-72bf-4a82-b417-c0c5b2626344")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzOpenObjectAudit([Optional] uint Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, in AUTHZ_ACCESS_REQUEST pRequest, AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, [In] PSECURITY_DESCRIPTOR pSecurityDescriptor,
+			[In, Optional] PSECURITY_DESCRIPTOR[] OptionalSecurityDescriptorArray, uint OptionalSecurityDescriptorCount, in AUTHZ_ACCESS_REPLY pReply);
+
+		/// <summary>The <c>AuthzRegisterCapChangeNotification</c> function registers a CAP update notification callback.</summary>
+		/// <param name="phCapChangeSubscription">
+		/// Pointer to the CAP change notification subscription handle. When you have finished using the handle, unsubscribe by passing this
+		/// parameter to the AuthzUnregisterCapChangeNotification function.
+		/// </param>
+		/// <param name="pfnCapChangeCallback">The CAP change notification callback function.</param>
+		/// <param name="pCallbackContext">The context of the user to be passed to the callback function.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// This function is intended for applications that manually manage CAP usage to get notified of CAP changes in the system.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzregistercapchangenotification AUTHZAPI BOOL
+		// AuthzRegisterCapChangeNotification( PAUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE phCapChangeSubscription, LPTHREAD_START_ROUTINE
+		// pfnCapChangeCallback, PVOID pCallbackContext );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "B0675BB3-62FA-462E-8DFB-55C47576DFEC")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzRegisterCapChangeNotification(out SafeAUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE phCapChangeSubscription, PTHREAD_START_ROUTINE pfnCapChangeCallback, IntPtr pCallbackContext);
+
+		/// <summary>
+		/// The <c>AuthzRegisterSecurityEventSource</c> function registers a security event source with the Local Security Authority (LSA).
+		/// </summary>
+		/// <param name="dwFlags">This parameter is reserved for future use. Set this parameter to zero.</param>
+		/// <param name="szEventSourceName">A pointer to the name of the security event source to register.</param>
+		/// <param name="phEventProvider">A pointer to a handle to the registered security event source.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function validates the szEventSourceName parameter and sets up the appropriate structures and RPC connections to log events
+		/// with that source name. The validation is handled by an underlying call to an LSA API.
+		/// </para>
+		/// <para>The LSA API verifies the following:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The caller has the SeAuditPrivilege access right.</term>
+		/// </item>
+		/// <item>
+		/// <term>The event source is not already in use.</term>
+		/// </item>
+		/// <item>
+		/// <term>The event source is registered.</term>
+		/// </item>
+		/// <item>
+		/// <term>The calling application matches the executable image path in the event source registration, if one exists.</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzregistersecurityeventsource AUTHZAPI BOOL
+		// AuthzRegisterSecurityEventSource( DWORD dwFlags, PCWSTR szEventSourceName, PAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE phEventProvider );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "726e480d-1a34-4fd6-ac2d-876fa08f4eae")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzRegisterSecurityEventSource([Optional] uint dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string szEventSourceName, out SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE phEventProvider);
+
+		/// <summary>
+		/// <para>The <c>AuthzReportSecurityEvent</c> function generates a security audit for a registered security event source.</para>
+		/// <para>
+		/// Auditing for the object access event category must be enabled for the <c>AuthzReportSecurityEvent</c> function to generate a
+		/// security audit. The available audit types are defined in the AUDIT_PARAM_TYPE enumeration.
+		/// </para>
+		/// </summary>
+		/// <param name="dwFlags">
+		/// <para>Flags that specify the type of audit generated. The following table shows the possible values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>APF_AuditFailure 0x00000000</term>
+		/// <term>Failure audits are generated.</term>
+		/// </item>
+		/// <item>
+		/// <term>APF_AuditSuccess 0x00000001</term>
+		/// <term>Success audits are generated.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="hEventProvider">A handle to the registered security event source to use for the audit.</param>
+		/// <param name="dwAuditId">The identifier of the audit.</param>
+		/// <param name="pUserSid">
+		/// A pointer to the security identifier (SID) that will be listed as the source of the audit in the event log.
+		/// </param>
+		/// <param name="dwCount">
+		/// The number of AuditParamFlag type/value pairs that appear in the variable arguments section that follows this parameter.
+		/// </param>
+		/// <param name="arg6">A list of AuditParamFlag type/value pairs that provide additional information about the event.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzreportsecurityevent AUTHZAPI BOOL
+		// AuthzReportSecurityEvent( DWORD dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, DWORD dwAuditId, PSID pUserSid,
+		// DWORD dwCount, ... );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "95d561ef-3233-433a-a1e7-b914df1dd211")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzReportSecurityEvent(APF dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, uint dwAuditId, [Optional] PSID pUserSid, uint dwCount, IntPtr arg6);
+
+		/// <summary>
+		/// <para>
+		/// The <c>AuthzReportSecurityEventFromParams</c> function generates a security audit for a registered security event source by using
+		/// the specified array of audit parameters.
+		/// </para>
+		/// </summary>
+		/// <param name="dwFlags">
+		/// <para>Reserved for future use.</para>
+		/// </param>
+		/// <param name="hEventProvider">
+		/// <para>A handle to the registered security event source to use for the audit.</para>
+		/// </param>
+		/// <param name="dwAuditId">
+		/// <para>The identifier of the audit.</para>
+		/// </param>
+		/// <param name="pUserSid">
+		/// <para>A pointer to the security identifier (SID) that will be listed as the source of the audit in the event log.</para>
+		/// </param>
+		/// <param name="pParams">
+		/// <para>An array of audit parameters.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzreportsecurityeventfromparams AUTHZAPI BOOL
+		// AuthzReportSecurityEventFromParams( DWORD dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, DWORD dwAuditId, PSID
+		// pUserSid, PAUDIT_PARAMS pParams );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "ee5b598a-0a89-4b32-a9bc-e9c811573b08")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzReportSecurityEventFromParams([Optional] uint dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, uint dwAuditId, [Optional] PSID pUserSid, [In] AUDIT_PARAMS[] pParams);
+
+		/// <summary>
+		/// The <c>AuthzSetAppContainerInformation</c> function sets the app container and capability information in a current Authz context.
+		/// If the passed in context already has an app container security identifier (SID) set or if the passed in context is not a valid
+		/// app container SID, this function fails.
+		/// </summary>
+		/// <param name="hAuthzClientContext">
+		/// The handle to the client context to which the given app container SID and capability SIDs will be added.
+		/// </param>
+		/// <param name="pAppContainerSid">The app container SID.</param>
+		/// <param name="CapabilityCount">The number of capability SIDs to be added. This value can be zero if no capability is to be added.</param>
+		/// <param name="pCapabilitySids">
+		/// The capability SIDs to be added to the context. This value must be <c>NULL</c> when the CapabilityCount parameter is zero.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzsetappcontainerinformation AUTHZAPI BOOL
+		// AuthzSetAppContainerInformation( AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, PSID pAppContainerSid, DWORD CapabilityCount,
+		// PSID_AND_ATTRIBUTES pCapabilitySids );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "CD01C5E1-2367-4CC1-A495-A295E3C82B46")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzSetAppContainerInformation([In] AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, [In] PSID pAppContainerSid, uint CapabilityCount, [In] SID_AND_ATTRIBUTES[] pCapabilitySids);
+
+		/// <summary>
+		/// The <c>AuthzUninstallSecurityEventSource</c> function removes the specified source from the list of valid security event sources.
+		/// </summary>
+		/// <param name="dwFlags">Reserved for future use; set this parameter to zero.</param>
+		/// <param name="szEventSourceName">
+		/// <para>
+		/// Name of the source to remove from the list of valid security event sources. This corresponds to the <c>szEventSourceName</c>
+		/// member of the AUTHZ_SOURCE_SCHEMA_REGISTRATION structure that defines the source.
+		/// </para>
+		/// <para>
+		/// This function removes the source information from the registry. For more information about the registry keys and values affected,
+		/// see the AuthzInstallSecurityEventSource function.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzuninstallsecurityeventsource AUTHZAPI BOOL
+		// AuthzUninstallSecurityEventSource( DWORD dwFlags, PCWSTR szEventSourceName );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "495157da-d4ed-42ff-bcb4-5c07ab9ec0e6")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzUninstallSecurityEventSource([Optional] uint dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string szEventSourceName);
+
+		/// <summary>
+		/// The <c>AuthzUnregisterCapChangeNotification</c> function removes a previously registered CAP update notification callback.
+		/// </summary>
+		/// <param name="hCapChangeSubscription">Handle of the CAP change notification subscription to unregister.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// This function blocks operations until all callbacks are complete. Do not call this function from inside a callback function
+		/// because it will cause a deadlock.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzunregistercapchangenotification AUTHZAPI BOOL
+		// AuthzUnregisterCapChangeNotification( AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE hCapChangeSubscription );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "79374C66-CD50-4351-A16B-AF79A579AF74")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzUnregisterCapChangeNotification(AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE hCapChangeSubscription);
+
+		/// <summary>
+		/// The <c>AuthzUnregisterSecurityEventSource</c> function unregisters a security event source with the Local Security Authority (LSA).
+		/// </summary>
+		/// <param name="dwFlags">This parameter is reserved for future use. Set this parameter to zero.</param>
+		/// <param name="phEventProvider">A pointer to a handle to the security event source to unregister.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// This function deallocates any resources and closes any RPC connections associated with a previous call to the
+		/// AuthzRegisterSecurityEventSource function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzunregistersecurityeventsource AUTHZAPI BOOL
+		// AuthzUnregisterSecurityEventSource( DWORD dwFlags, PAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE phEventProvider );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("authz.h", MSDNShortId = "3ca3086b-f9c9-4305-aaf3-c41b5dba30ad")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzUnregisterSecurityEventSource([Optional] uint dwFlags, in AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE phEventProvider);
+
 		/// <summary>Provides a handle to an access check results.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct AUTHZ_ACCESS_CHECK_RESULTS_HANDLE : IHandle
@@ -1232,9 +2038,7 @@ namespace Vanara.PInvoke
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public AUTHZ_ACCESS_CHECK_RESULTS_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
-			/// <summary>
-			/// Returns an invalid handle by instantiating a <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> object with <see cref="IntPtr.Zero"/>.
-			/// </summary>
+			/// <summary>Returns an invalid handle by instantiating a <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
 			public static AUTHZ_ACCESS_CHECK_RESULTS_HANDLE NULL => new AUTHZ_ACCESS_CHECK_RESULTS_HANDLE(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
@@ -1360,6 +2164,56 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>Provides a handle to a CAP change notification subscription handle.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>
+			/// Returns an invalid handle by instantiating a <see cref="AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE"/> object with <see cref="IntPtr.Zero"/>.
+			/// </summary>
+			public static AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE NULL => new AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE(IntPtr h) => new AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE h1, AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE h1, AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
 		/// <summary>Provides a handle to a client context.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct AUTHZ_CLIENT_CONTEXT_HANDLE : IHandle
@@ -1408,6 +2262,85 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>The <c>AUTHZ_INIT_INFO</c> structure defines the initialization information for the resource manager.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-_authz_init_info typedef struct _AUTHZ_INIT_INFO { USHORT
+		// version; PCWSTR szResourceManagerName; PFN_AUTHZ_DYNAMIC_ACCESS_CHECK pfnDynamicAccessCheck; PFN_AUTHZ_COMPUTE_DYNAMIC_GROUPS
+		// pfnComputeDynamicGroups; PFN_AUTHZ_FREE_DYNAMIC_GROUPS pfnFreeDynamicGroups; PFN_AUTHZ_GET_CENTRAL_ACCESS_POLICY
+		// pfnGetCentralAccessPolicy; PFN_AUTHZ_FREE_CENTRAL_ACCESS_POLICY pfnFreeCentralAccessPolicy; } AUTHZ_INIT_INFO, *PAUTHZ_INIT_INFO;
+		[PInvokeData("authz.h", MSDNShortId = "30489BE7-5B95-413E-8134-039AD3220A50")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct AUTHZ_INIT_INFO
+		{
+			/// <summary>
+			/// The version of the authorization resource manager initialization information structure. This must be set to
+			/// AUTHZ_INIT_INFO_VERSION_V1 (1).
+			/// </summary>
+			public ushort version;
+
+			/// <summary>
+			/// Pointer to a Unicode string that identifies the resource manager. This parameter can be <c>NULL</c> if the resource manager
+			/// does not need a name.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string szResourceManagerName;
+
+			/// <summary>
+			/// Pointer to an AuthzAccessCheckCallback callback function that the resource manager calls each time it encounters a callback
+			/// access control entry (ACE) during access control list (ACL) evaluation in AuthzAccessCheck or AuthzCachedAccessCheck. This
+			/// parameter can be <c>NULL</c> if no access check callback function is used.
+			/// </summary>
+			[MarshalAs(UnmanagedType.FunctionPtr)]
+			public AuthzAccessCheckCallback pfnDynamicAccessCheck;
+
+			/// <summary>
+			/// Pointer to the AuthzComputeGroupsCallback callback function called by the resource manager during initialization of an
+			/// AuthzClientContext handle. This parameter can be <c>NULL</c> if no callback function is used to compute dynamic groups.
+			/// </summary>
+			[MarshalAs(UnmanagedType.FunctionPtr)]
+			public AuthzComputeGroupsCallback pfnComputeDynamicGroups;
+
+			/// <summary>
+			/// Pointer to the AuthzFreeGroupsCallback callback function called by the resource manager to free security identifier (SID)
+			/// attribute arrays allocated by the compute dynamic groups callback. This parameter can be <c>NULL</c> if no callback function
+			/// is used to compute dynamic groups.
+			/// </summary>
+			[MarshalAs(UnmanagedType.FunctionPtr)]
+			public AuthzFreeGroupsCallback pfnFreeDynamicGroups;
+
+			/// <summary>
+			/// Pointer to the AuthzGetCentralAccessPolicyCallback callback function to be called by the resource manager to resolve any
+			/// Central Access Policy ID ACE (SYSTEM_SCOPED_POLICY_ID_ACE) encountered by AuthzAccessCheck or AuthzCachedAccessCheck. If this
+			/// parameter is <c>NULL</c>, the <c>AuthzAccessCheck</c> function will fall back to LSA to resolve the Central Access Policy ID ACE.
+			/// </summary>
+			[MarshalAs(UnmanagedType.FunctionPtr)]
+			public AuthzGetCentralAccessPolicyCallback pfnGetCentralAccessPolicy;
+
+			/// <summary>
+			/// Pointer to the AuthzFreeCentralAccessPolicyCallback callback function called by the resource manager to free the Central
+			/// Access Policy allocated by the callback to get a central access policy. This parameter can be <c>NULL</c> if no callback
+			/// function is specified for pfnGetCentralAccessPolicy
+			/// </summary>
+			[MarshalAs(UnmanagedType.FunctionPtr)]
+			public AuthzFreeCentralAccessPolicyCallback pfnFreeCentralAccessPolicy;
+		}
+
+		/// <summary>
+		/// The <c>AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET</c> structure specifies the offset of a registration object type name.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-authz_registration_object_type_name_offset typedef struct
+		// _AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET { PWSTR szObjectTypeName; DWORD dwOffset; }
+		// AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET, *PAUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET;
+		[PInvokeData("authz.h", MSDNShortId = "2ec39edc-7819-41a5-8798-dc51c00ba85e")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET
+		{
+			/// <summary>A pointer to a wide character string that represents the name of the object type.</summary>
+			public StrPtrUni szObjectTypeName;
+
+			/// <summary>Offset of the object type name in an object types message DLL.</summary>
+			public uint dwOffset;
+		}
+
 		/// <summary>Provides a handle to a resource manager.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct AUTHZ_RESOURCE_MANAGER_HANDLE : IHandle
@@ -1454,6 +2387,70 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>The AUTHZ_RPC_INIT_INFO_CLIENT structure initializes a remote resource manager for a client.</summary>
+		[PInvokeData("authz.h", MSDNShortId = "6859A0CB-F88E-42BF-A350-293D28E908DD")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct AUTHZ_RPC_INIT_INFO_CLIENT
+		{
+			/// <summary>Version of the structure. The highest currently supported version is AUTHZ_RPC_INIT_INFO_CLIENT_VERSION_V1.</summary>
+			public ushort version;
+
+			/// <summary>
+			/// Null-terminated string representation of the resource manager UUID. Only the following values are valid.
+			/// <list type="bullet">
+			/// <item>
+			/// <description>
+			/// Use “5fc860e0-6f6e-4fc2-83cd-46324f25e90b” for remote effective access evaluation that ignores central policy.
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <description>
+			/// Use “9a81c2bd-a525-471d-a4ed-49907c0b23da” for remote effective access evaluation that takes central policy into account.
+			/// </description>
+			/// </item>
+			/// </list>
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string ObjectUuid;
+
+			/// <summary>
+			/// Null-terminated string representation of a protocol sequence. This can be the following value.
+			/// <list type="bullet">
+			/// <item>
+			/// <description>"ncacn_ip_tcp".</description>
+			/// </item>
+			/// </list>
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string ProtSeq;
+
+			/// <summary>
+			/// Null-terminated string representation of a network address. The network-address format is associated with the protocol sequence.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string NetworkAddr;
+
+			/// <summary>
+			/// Null-terminated string representation of an endpoint. The endpoint format and content are associated with the protocol
+			/// sequence. For example, the endpoint associated with the protocol sequence ncacn_np is a pipe name in the format \\Pipe\PipeName.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string Endpoint;
+
+			/// <summary>
+			/// Null-terminated string representation of network options. The option string is associated with the protocol sequence.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string Options;
+
+			/// <summary>
+			/// Server Principal Name (SPN) of the server. If this member is missing, it is constructed from NetworkAddr assuming "host"
+			/// service class.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string ServerSpn;
 		}
 
 		/// <summary>
@@ -1581,6 +2578,122 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		/// <summary>Provides a handle to the registered security event source.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>
+			/// Returns an invalid handle by instantiating a <see cref="AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE"/> object with <see cref="IntPtr.Zero"/>.
+			/// </summary>
+			public static AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE NULL => new AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE(IntPtr h) => new AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE h1, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE h1, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>The <c>AUTHZ_SOURCE_SCHEMA_REGISTRATION</c> structure specifies information about source schema registration.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-_authz_source_schema_registration typedef struct
+		// _AUTHZ_SOURCE_SCHEMA_REGISTRATION { DWORD dwFlags; PWSTR szEventSourceName; PWSTR szEventMessageFile; PWSTR
+		// szEventSourceXmlSchemaFile; PWSTR szEventAccessStringsFile; PWSTR szExecutableImagePath; union { PVOID pReserved; GUID
+		// *pProviderGuid; } DUMMYUNIONNAME; DWORD dwObjectTypeNameCount; AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET
+		// ObjectTypeNames[ANYSIZE_ARRAY]; } AUTHZ_SOURCE_SCHEMA_REGISTRATION, *PAUTHZ_SOURCE_SCHEMA_REGISTRATION;
+		[PInvokeData("authz.h", MSDNShortId = "8b4d6e14-fb9c-428a-bd94-34eba668edc6")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct AUTHZ_SOURCE_SCHEMA_REGISTRATION
+		{
+			/// <summary>
+			/// <para>Flags that control the behavior of the operation. The following table shows a possible value.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>AUTHZ_ALLOW_MULTIPLE_SOURCE_INSTANCES 0x1</term>
+			/// <term>
+			/// Allows registration of multiple sources with the same name. Use of this flag means that more than one source can call the
+			/// AuthzRegisterSecurityEventSource function with the same szEventSourceName at runtime.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>AUTHZ_MIGRATED_LEGACY_PUBLISHER 0x2</term>
+			/// <term>
+			/// The caller is a migrated publisher that has registered a manifest with WEvtUtil.exe. The GUID of the provider specified by
+			/// the pProviderGuid member is stored in the registry.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public SOURCE_SCHEMA_REGISTRATION_FLAGS dwFlags;
+
+			/// <summary>A pointer to a wide character string that represents the name of the event source.</summary>
+			public StrPtrUni szEventSourceName;
+
+			/// <summary>A pointer to a wide character string that represents the name of the resource that contains the event messages.</summary>
+			public StrPtrUni szEventMessageFile;
+
+			/// <summary>A pointer to a wide character string that represents the name of the XML schema file for the event source.</summary>
+			public StrPtrUni szEventSourceXmlSchemaFile;
+
+			/// <summary>
+			/// A pointer to a wide character string that represents the name of the resource that contains the event parameter strings.
+			/// </summary>
+			public StrPtrUni szEventAccessStringsFile;
+
+			/// <summary>This member is reserved and must be set to <c>NULL</c>.</summary>
+			public StrPtrUni szExecutableImagePath;
+
+			/// <summary>
+			/// The GUID of a migrated publisher. The value of this member is converted to a string and stored in the registry if the caller
+			/// is a migrated publisher.
+			/// </summary>
+			public IntPtr pProviderGuid;
+
+			/// <summary>The number of objects in the ObjectTypeNames array.</summary>
+			public uint dwObjectTypeNameCount;
+
+			/// <summary>An array of AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET structures that represents the object types for the events.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET[] ObjectTypeNames;
+		}
+
 		/// <summary>
 		/// <para>The <c>AUTHZ_ACCESS_REPLY</c> structure defines an access check reply.</para>
 		/// </summary>
@@ -1677,9 +2790,7 @@ namespace Vanara.PInvoke
 				}
 			}
 
-			/// <summary>
-			/// Gets or sets the results for each element of the array. The length of this array must match the value in <see cref="ResultListLength"/>.
-			/// </summary>
+			/// <summary>Gets or sets the results for each element of the array. The length of this array must match the value in <see cref="ResultListLength"/>.</summary>
 			/// <value>The results values.</value>
 			public uint[] ErrorValues
 			{
@@ -1798,6 +2909,32 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => AuthzFreeAuditEvent(this);
 		}
 
+		/// <summary>
+		/// Provides a <see cref="SafeHandle"/> for <see cref="AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE"/> that is disposed using <see cref="AuthzUnregisterCapChangeNotification"/>.
+		/// </summary>
+		public class SafeAUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE : SafeHANDLE
+		{
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SafeAUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE"/> class and assigns an existing handle.
+			/// </summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeAUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeAUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE"/> class.</summary>
+			private SafeAUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeAUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE"/> to <see cref="AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE(SafeAUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => AuthzUnregisterCapChangeNotification(this);
+		}
+
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="AUTHZ_CLIENT_CONTEXT_HANDLE"/> that is disposed using <see cref="AuthzFreeContext"/>.</summary>
 		public class SafeAUTHZ_CLIENT_CONTEXT_HANDLE : SafeHANDLE
 		{
@@ -1822,9 +2959,7 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => AuthzFreeContext(this);
 		}
 
-		/// <summary>
-		/// Provides a <see cref="SafeHandle"/> for <see cref="AUTHZ_RESOURCE_MANAGER_HANDLE"/> that is disposed using <see cref="AuthzFreeResourceManager"/>.
-		/// </summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="AUTHZ_RESOURCE_MANAGER_HANDLE"/> that is disposed using <see cref="AuthzFreeResourceManager"/>.</summary>
 		public class SafeAUTHZ_RESOURCE_MANAGER_HANDLE : SafeHANDLE
 		{
 			/// <summary>
@@ -1846,6 +2981,32 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => AuthzFreeResourceManager(this);
+		}
+
+		/// <summary>
+		/// Provides a <see cref="SafeHandle"/> for <see cref="AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE"/> that is disposed using <see cref="AuthzUnregisterSecurityEventSource"/>.
+		/// </summary>
+		public class SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE : SafeHANDLE
+		{
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE"/> class and assigns an existing handle.
+			/// </summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE"/> class.</summary>
+			private SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE"/> to <see cref="AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE(SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => AuthzUnregisterSecurityEventSource(0, this);
 		}
 
 		internal class AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler : ICustomMarshaler

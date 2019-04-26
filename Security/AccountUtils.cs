@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System;
+using System.Security.Principal;
 
 namespace Vanara.Security
 {
@@ -18,6 +19,35 @@ namespace Vanara.Security
 			}
 			catch { }
 			return false;
+		}
+
+		/// <summary>Runs the specified function as the impersonated Windows identity.</summary>
+		/// <param name="identity">The impersonated identity under which to run the function.</param>
+		/// <param name="func">The System.Func to run.</param>
+		public static void Run(this WindowsIdentity identity, Action func)
+		{
+			if (identity is null) func();
+#if NET20 || NET35 || NET40 || NET45
+			using (new Principal.WindowsImpersonatedIdentity(identity))
+				func();
+#else
+			WindowsIdentity.RunImpersonated(identity.AccessToken, func);
+#endif
+		}
+		/// <summary>Runs the specified function as the impersonated Windows identity.</summary>
+		/// <typeparam name="T">The type of object used by and returned by the function.</typeparam>
+		/// <param name="identity">The impersonated identity under which to run the function.</param>
+		/// <param name="func">The System.Func to run.</param>
+		/// <returns>The result of the function.</returns>
+		public static T Run<T>(this WindowsIdentity identity, Func<T> func)
+		{
+			if (identity is null) return func();
+#if NET20 || NET35 || NET40 || NET45
+			using (new Principal.WindowsImpersonatedIdentity(identity))
+				return func();
+#else
+			return WindowsIdentity.RunImpersonated(identity.AccessToken, func);
+#endif
 		}
 
 		public static string SidStringFromUserName(string userName)

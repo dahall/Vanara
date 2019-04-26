@@ -8,7 +8,8 @@ CommandVerbDictionary | A dictionary of Command Verbs defined in the Windows Reg
 ComObject | Base class for all COM objects which handles calling AddRef and Release for the assembly, connection to IClassFactory, implements IObjectWithSite, using an internal message loop, and a mechanism to issue a non-blocking call to itself. Once implemented, you only need to implement your own interfaces. The IClassFactory implementation can get any derived interfaces through casting for calls to its QueryInterface method. If you want more control, override the QueryInterface method in this class.
 ControlPanel | Provides a means to open Control Panel items and get their paths.
 IconLocation | Wraps the icon location string used by some Shell classes.
-IndirectString | Wraps the icon location string used by some Shell classes.
+IndirectResource | Wraps a resource reference used by some Shell classes.
+IndirectString | Wraps a string resource reference used by some Shell classes.
 MessageEventArgs | Holds a copy of the MSG instance retrieved by GetMessage.
 MessageLoop | <para> This class encapsulates the management of a message loop for an application. It supports queuing a callback to the application via the message loop to enable the app to return from a call and continue processing that call later. This behavior is needed when implementing a shell verb as verbs must not block the caller. </para> <note type="note">The ComObject derived class should call QueueNonBlockingCallback in its invoke function, for example IExecuteCommand::Execute() or IDropTarget::Drop() passing a method that will complete the initialization work.</note>
 ProgId | Represents a programmatic identifier in the registry for an application.

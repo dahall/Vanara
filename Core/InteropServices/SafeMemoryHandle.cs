@@ -132,8 +132,11 @@ namespace Vanara.InteropServices
 		/// <value>The size in bytes of the allocated memory block.</value>
 		public abstract int Size { get; set; }
 
-		/// <summary>Zero out all allocated memory.</summary>
-		public virtual void Zero() => Fill(0, Size);
+#if DEBUG
+		/// <summary>Dumps memory to byte string.</summary>
+		[ExcludeFromCodeCoverage]
+		public string Dump => Size == 0 ? "" : string.Join(" ", GetBytes(0, Size).Select(b => b.ToString("X2")).ToArray());
+#endif
 
 		/// <summary>Fills the allocated memory with a specific byte value.</summary>
 		/// <param name="value">The byte value.</param>
@@ -145,7 +148,44 @@ namespace Vanara.InteropServices
 		public virtual void Fill(byte value, int length)
 		{
 			if (length > Size) throw new ArgumentOutOfRangeException(nameof(length));
-			Vanara.Extensions.InteropExtensions.FillMemory(handle, value, length);
+			handle.FillMemory(value, length);
+		}
+
+		/// <summary>Zero out all allocated memory.</summary>
+		public virtual void Zero() => Fill(0, Size);
+
+		/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
+		/// <param name="startIndex">The start index.</param>
+		/// <param name="count">The number of bytes to retrieve.</param>
+		/// <returns>A byte array with the copied bytes.</returns>
+		protected byte[] GetBytes(int startIndex, int count)
+		{
+			if (startIndex < 0 || startIndex + count > Size) throw new ArgumentOutOfRangeException();
+			var ret = new byte[count];
+			Marshal.Copy(handle.Offset(startIndex), ret, 0, count);
+			return ret;
+		}
+
+		/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="SafeBuffer"/>.</summary>
+		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandle"/> instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator SafeBuffer(SafeAllocatedMemoryHandle hMem) => new SafeBufferImpl(hMem);
+
+		/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="byte"/> pointer.</summary>
+		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandle"/> instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static unsafe explicit operator byte* (SafeAllocatedMemoryHandle hMem) => (byte*)hMem.handle;
+
+		/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="System.IntPtr"/>.</summary>
+		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandle"/> instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(SafeAllocatedMemoryHandle hMem) => hMem.handle;
+
+		private class SafeBufferImpl : SafeBuffer
+		{
+			public SafeBufferImpl(SafeAllocatedMemoryHandle hMem) : base(false) => Initialize((ulong)hMem.Size);
+
+			protected override bool ReleaseHandle() => true;
 		}
 	}
 
@@ -169,6 +209,7 @@ namespace Vanara.InteropServices
 			if (size == 0) return;
 			RuntimeHelpers.PrepareConstrainedRegions();
 			SetHandle(mm.AllocMem(sz = size));
+			Zero();
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
@@ -198,28 +239,13 @@ namespace Vanara.InteropServices
 				}
 				else
 				{
+					if (value < 0) throw new ArgumentOutOfRangeException(nameof(value));
 					handle = IsInvalid ? mm.AllocMem(value) : mm.ReAllocMem(handle, value);
-					if (sz != 0) Marshal.Copy(new byte[value], 0, handle, value);
+					if (value > sz)
+						handle.Offset(sz).FillMemory(0, value - sz);
 					sz = value;
 				}
 			}
-		}
-
-		/// <summary>Returns the <see cref="SafeMemoryHandle{T}"/> as an <see cref="IntPtr"/>. This is a dangerous call as the value is mutable.</summary>
-		/// <param name="h">The <see cref="SafeMemoryHandle{T}"/> instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(SafeMemoryHandle<TMem> h) => h.DangerousGetHandle();
-
-		/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
-		/// <param name="startIndex">The start index.</param>
-		/// <param name="count">The number of bytes to retrieve.</param>
-		/// <returns>A byte array with the copied bytes.</returns>
-		protected byte[] GetBytes(int startIndex, int count)
-		{
-			if (startIndex < 0 || startIndex + count > Size) throw new ArgumentOutOfRangeException();
-			var ret = new byte[count];
-			Marshal.Copy(handle, ret, startIndex, count);
-			return ret;
 		}
 
 		/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
@@ -271,7 +297,7 @@ namespace Vanara.InteropServices
 		/// <param name="s">The string value.</param>
 		/// <param name="charSet">The character set of the string.</param>
 		/// <returns>SafeMemoryHandleExt object to an native (unmanaged) string</returns>
-		protected SafeMemoryHandleExt(string s, CharSet charSet = CharSet.Unicode) : base(IntPtr.Zero, StringHelper.GetByteCount(s, true, charSet), true)
+		protected SafeMemoryHandleExt(string s, CharSet charSet = CharSet.Unicode) : base(IntPtr.Zero, s.GetByteCount(true, charSet), true)
 		{
 			RuntimeHelpers.PrepareConstrainedRegions();
 			SetHandle(StringHelper.GetCharSize(charSet) == 2 ? mm.AllocStringUni(s) : mm.AllocStringAnsi(s));
@@ -334,7 +360,7 @@ namespace Vanara.InteropServices
 		/// <param name="charSet">The character set of the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 		/// <returns>Enumeration of strings.</returns>
-		public IEnumerable<string> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => IsInvalid ? new string[0] : InteropExtensions.ToStringEnum(handle, count, charSet, prefixBytes);
+		public IEnumerable<string> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => IsInvalid ? new string[0] : handle.ToStringEnum(count, charSet, prefixBytes);
 
 		/// <summary>
 		/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character and is terminated by
@@ -343,7 +369,7 @@ namespace Vanara.InteropServices
 		/// <param name="charSet">The character set of the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 		/// <returns>An enumerated list of strings.</returns>
-		public IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, int prefixBytes = 0) => IsInvalid ? new string[0] : InteropExtensions.ToStringEnum(handle, charSet, prefixBytes);
+		public IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, int prefixBytes = 0) => IsInvalid ? new string[0] : handle.ToStringEnum(charSet, prefixBytes);
 
 		/// <summary>Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.</summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
@@ -355,11 +381,6 @@ namespace Vanara.InteropServices
 			//	throw new InsufficientMemoryException("Requested structure is larger than the memory allocated.");
 			return handle.ToStructure<T>();
 		}
-
-#if DEBUG
-		[ExcludeFromCodeCoverage]
-		public string Dump => Size == 0 ? "" : string.Join(" ", ToEnumerable<byte>(Size).Select(b => b.ToString("X2")).ToArray());
-#endif
 
 		/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
 		/// <returns>

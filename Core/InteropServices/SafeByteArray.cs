@@ -207,7 +207,7 @@ namespace Vanara.InteropServices
 		/// <summary>Determines whether the <see cref="T:System.Collections.IList"/> contains a specific value.</summary>
 		/// <param name="value">The object to locate in the <see cref="T:System.Collections.IList"/>.</param>
 		/// <returns>true if the <see cref="T:System.Object"/> is found in the <see cref="T:System.Collections.IList"/>; otherwise, false.</returns>
-		bool IList.Contains(object value) => Contains((byte)value);
+		bool IList.Contains(object value) => value != null && Contains((byte)value);
 
 		/// <summary>
 		/// Copies the elements of the <see cref="T:System.Collections.ICollection"/> to an <see cref="T:System.Array"/>, starting at a

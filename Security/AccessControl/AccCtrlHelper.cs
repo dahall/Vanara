@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
@@ -57,24 +58,9 @@ namespace Vanara.Security.AccessControl
 	/// <summary>Helper methods for working with Access Control structures.</summary>
 	public static class AccessControlHelper
 	{
-		public static ACCESS_ALLOWED_ACE GetAce(PACL pAcl, int aceIndex)
-		{
-			if (AdvApi32.GetAce(pAcl, aceIndex, out var acePtr))
-				return (ACCESS_ALLOWED_ACE)Marshal.PtrToStructure((IntPtr)acePtr, typeof(ACCESS_ALLOWED_ACE));
-			throw new System.ComponentModel.Win32Exception();
-		}
+		public static uint GetAceCount(this PACL pAcl) => pAcl.GetAclInformation<ACL_SIZE_INFORMATION>().AceCount;
 
-		public static uint GetAceCount(PACL pAcl) => GetAclInfo(pAcl).AceCount;
-
-		public static ACL_SIZE_INFORMATION GetAclInfo(PACL pAcl)
-		{
-			var si = new ACL_SIZE_INFORMATION();
-			if (!GetAclInformation(pAcl, ref si, (uint)Marshal.SizeOf(si), ACL_INFORMATION_CLASS.AclSizeInformation))
-				throw new System.ComponentModel.Win32Exception();
-			return si;
-		}
-
-		public static uint GetAclSize(PACL pAcl) => GetAclInfo(pAcl).AclBytesInUse;
+		public static uint GetAclSize(PACL pAcl) => pAcl.GetAclInformation<ACL_SIZE_INFORMATION>().AclBytesInUse;
 
 		public static uint GetEffectiveRights(this PSID pSid, PSECURITY_DESCRIPTOR pSD)
 		{
@@ -94,34 +80,7 @@ namespace Vanara.Security.AccessControl
 			}
 		}
 
-		public static IEnumerable<INHERITED_FROM> GetInheritanceSource(string objectName, System.Security.AccessControl.ResourceType objectType,
-			SECURITY_INFORMATION securityInfo, bool container, PACL pAcl, ref GENERIC_MAPPING pGenericMapping)
-		{
-			var objSize = Marshal.SizeOf(typeof(INHERITED_FROM));
-			var aceCount = GetAceCount(pAcl);
-			using (var pInherit = new SafeInheritedFromArray((ushort)aceCount))
-			{
-				AdvApi32.GetInheritanceSource(objectName, (SE_OBJECT_TYPE)objectType, securityInfo, container, null, 0, pAcl, IntPtr.Zero, pGenericMapping, pInherit).ThrowIfFailed();
-				return pInherit.Results;
-			}
-		}
-
 		public static PSID GetPSID(this SecurityIdentifier sid) { using (var ps = new PinnedSid(sid)) return ps.PSID; }
-
-		public static SafeSecurityDescriptor GetPrivateObjectSecurity(this PSECURITY_DESCRIPTOR pSD, SECURITY_INFORMATION si)
-		{
-			var pResSD = SafeSecurityDescriptor.Null;
-			AdvApi32.GetPrivateObjectSecurity(pSD, si, pResSD, 0, out var ret);
-			if (ret > 0)
-			{
-				pResSD = new SafeSecurityDescriptor((int)ret);
-				if (!pResSD.IsInvalid && !AdvApi32.GetPrivateObjectSecurity(pSD, si, pResSD, ret, out ret))
-					Win32Error.GetLastError().ThrowIfFailed();
-			}
-			return pResSD;
-		}
-
-		public static SafeSecurityDescriptor GetPrivateObjectSecurity(this SafeSecurityDescriptor pSD, SECURITY_INFORMATION si) => GetPrivateObjectSecurity((PSECURITY_DESCRIPTOR)pSD, si);
 
 		public static RawAcl RawAclFromPtr(PACL pAcl)
 		{

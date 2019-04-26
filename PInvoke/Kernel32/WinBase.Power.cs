@@ -12,6 +12,8 @@ namespace Vanara.PInvoke
 			AC_OFFLINE = 0,
 			/// <summary>Online</summary>
 			AC_ONLINE = 1,
+			/// <summary>On backup power.</summary>
+			AC_LINE_BACKUP_POWER = 2,
 			/// <summary>Unknown status</summary>
 			AC_UNKNOWN = 255
 		}

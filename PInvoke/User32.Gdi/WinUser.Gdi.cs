@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Text;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 
@@ -150,6 +151,36 @@ namespace Vanara.PInvoke
 			/// <para>Using this function with both DCX_INTERSECTUPDATE and DCX_VALIDATE is identical to using the BeginPaint function.</para>
 			/// </summary>
 			DCX_VALIDATE = 0x00200000,
+		}
+
+		/// <summary>Flags for <see cref="GetGuiResources"/></summary>
+		[PInvokeData("winuser.h", MSDNShortId = "55fbb7e8-79b4-4011-b522-25ea5a928b86")]
+		[Flags]
+		public enum GR
+		{
+			/// <summary>Return the count of GDI objects.</summary>
+			GR_GDIOBJECTS = 0,
+
+			/// <summary>
+			/// Return the peak count of GDI objects.
+			/// <para>
+			/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported until Windows 7 and
+			/// Windows Server 2008 R2.
+			/// </para>
+			/// </summary>
+			GR_GDIOBJECTS_PEAK = 2,
+
+			/// <summary>Return the count of USER objects.</summary>
+			GR_USEROBJECTS = 1,
+
+			/// <summary>
+			/// Return the peak count of USER objects.
+			/// <para>
+			/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported until Windows 7 and
+			/// Windows Server 2008 R2.
+			/// </para>
+			/// </summary>
+			GR_USEROBJECTS_PEAK = 4,
 		}
 
 		/// <summary>Values to use a return codes when handling the WM_HCHITTEST message.</summary>
@@ -1490,6 +1521,135 @@ namespace Vanara.PInvoke
 		public static extern int ChangeDisplaySettingsEx([Optional] string lpszDeviceName, in DEVMODE lpDevMode, [Optional] HWND hwnd, [Optional] ChangeDisplaySettingsFlags dwflags, in VIDEOPARAMETERS lParam);
 
 		/// <summary>
+		/// Creates a new image (icon, cursor, or bitmap) and copies the attributes of the specified image to the new one. If necessary, the
+		/// function stretches the bits to fit the desired size of the new image.
+		/// </summary>
+		/// <param name="h">
+		/// <para>Type: <c>HANDLE</c></para>
+		/// <para>A handle to the image to be copied.</para>
+		/// </param>
+		/// <param name="type">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The type of image to be copied. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>IMAGE_BITMAP 0</term>
+		/// <term>Copies a bitmap.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_CURSOR 2</term>
+		/// <term>Copies a cursor.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_ICON 1</term>
+		/// <term>Copies an icon.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="cx">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The desired width, in pixels, of the image. If this is zero, then the returned image will have the same width as the original hImage.
+		/// </para>
+		/// </param>
+		/// <param name="cy">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The desired height, in pixels, of the image. If this is zero, then the returned image will have the same height as the original hImage.
+		/// </para>
+		/// </param>
+		/// <param name="flags">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>This parameter can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LR_COPYDELETEORG 0x00000008</term>
+		/// <term>Deletes the original image after creating the copy.</term>
+		/// </item>
+		/// <item>
+		/// <term>LR_COPYFROMRESOURCE 0x00004000</term>
+		/// <term>
+		/// Tries to reload an icon or cursor resource from the original resource file rather than simply copying the current image. This is
+		/// useful for creating a different-sized copy when the resource file contains multiple sizes of the resource. Without this flag,
+		/// CopyImage stretches the original image to the new size. If this flag is set, CopyImage uses the size in the resource file closest
+		/// to the desired size. This will succeed only if hImage was loaded by LoadIcon or LoadCursor, or by LoadImage with the LR_SHARED flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LR_COPYRETURNORG 0x00000004</term>
+		/// <term>
+		/// Returns the original hImage if it satisfies the criteria for the copy—that is, correct dimensions and color depth—in which case
+		/// the LR_COPYDELETEORG flag is ignored. If this flag is not specified, a new object is always created.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LR_CREATEDIBSECTION 0x00002000</term>
+		/// <term>
+		/// If this is set and a new bitmap is created, the bitmap is created as a DIB section. Otherwise, the bitmap image is created as a
+		/// device-dependent bitmap. This flag is only valid if uType is IMAGE_BITMAP.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LR_DEFAULTSIZE 0x00000040</term>
+		/// <term>
+		/// Uses the width or height specified by the system metric values for cursors or icons, if the cxDesired or cyDesired values are set
+		/// to zero. If this flag is not specified and cxDesired and cyDesired are set to zero, the function uses the actual resource size.
+		/// If the resource contains multiple images, the function uses the size of the first image.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LR_MONOCHROME 0x00000001</term>
+		/// <term>Creates a new monochrome image.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HANDLE</c></para>
+		/// <para>If the function succeeds, the return value is the handle to the newly created image.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When you are finished using the resource, you can release its associated memory by calling one of the functions in the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Resource</term>
+		/// <term>Release function</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Bitmap</term>
+		/// <term>DeleteObject</term>
+		/// </item>
+		/// <item>
+		/// <term>Cursor</term>
+		/// <term>DestroyCursor</term>
+		/// </item>
+		/// <item>
+		/// <term>Icon</term>
+		/// <term>DestroyIcon</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The system automatically deletes the resource when its process terminates, however, calling the appropriate function saves memory
+		/// and decreases the size of the process's working set.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-copyimage HANDLE CopyImage( HANDLE h, UINT type, int cx,
+		// int cy, UINT flags );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h")]
+		public static extern HANDLE CopyImage(HANDLE h, LoadImageType type, int cx, int cy, CopyImageOptions flags);
+
+		/// <summary>
 		/// The DrawText function draws formatted text in the specified rectangle. It formats the text according to the specified method
 		/// (expanding tabs, justifying characters, breaking lines, and so forth).
 		/// </summary>
@@ -1513,7 +1673,403 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("WinUser.h", MSDNShortId = "dd162498")]
 		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
-		public static extern int DrawText(HDC hDC, string lpchText, int nCount, ref RECT lpRect, DrawTextFlags uFormat);
+		public static extern int DrawText(HDC hDC, string lpchText, int nCount, in RECT lpRect, DrawTextFlags uFormat);
+
+		/// <summary>
+		/// The DrawText function draws formatted text in the specified rectangle. It formats the text according to the specified method
+		/// (expanding tabs, justifying characters, breaking lines, and so forth).
+		/// </summary>
+		/// <param name="hDC">A handle to the device context.</param>
+		/// <param name="lpchText">
+		/// A pointer to the string that specifies the text to be drawn. If the nCount parameter is -1, the string must be null-terminated.
+		/// If uFormat includes DT_MODIFYSTRING, the function could add up to four additional characters to this string. The buffer
+		/// containing the string should be large enough to accommodate these extra characters.
+		/// </param>
+		/// <param name="nCount">
+		/// The length, in characters, of the string. If nCount is -1, then the lpchText parameter is assumed to be a pointer to a
+		/// null-terminated string and DrawText computes the character count automatically.
+		/// </param>
+		/// <param name="lpRect">
+		/// A pointer to a RECT structure that contains the rectangle (in logical coordinates) in which the text is to be formatted.
+		/// </param>
+		/// <param name="uFormat">The method of formatting the text.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is the height of the text in logical units. If DT_VCENTER or DT_BOTTOM is specified,
+		/// the return value is the offset from lpRect-&gt;top to the bottom of the drawn text. If the function fails, the return value is zero.
+		/// </returns>
+		[PInvokeData("WinUser.h", MSDNShortId = "dd162498")]
+		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
+		public static extern int DrawText(HDC hDC, StringBuilder lpchText, int nCount, in RECT lpRect, DrawTextFlags uFormat);
+
+		/// <summary>The <c>DrawTextEx</c> function draws formatted text in the specified rectangle.</summary>
+		/// <param name="hdc">A handle to the device context in which to draw.</param>
+		/// <param name="lpchText">
+		/// <para>A pointer to the string that contains the text to draw. If the cchText parameter is -1, the string must be null-terminated.</para>
+		/// <para>
+		/// If dwDTFormat includes DT_MODIFYSTRING, the function could add up to four additional characters to this string. The buffer
+		/// containing the string should be large enough to accommodate these extra characters.
+		/// </para>
+		/// </param>
+		/// <param name="cchText">
+		/// The length of the string pointed to by lpchText. If cchText is -1, then the lpchText parameter is assumed to be a pointer to a
+		/// null-terminated string and <c>DrawTextEx</c> computes the character count automatically.
+		/// </param>
+		/// <param name="lprc">
+		/// A pointer to a RECT structure that contains the rectangle, in logical coordinates, in which the text is to be formatted.
+		/// </param>
+		/// <param name="format">
+		/// <para>The formatting options. This parameter can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DT_BOTTOM</term>
+		/// <term>Justifies the text to the bottom of the rectangle. This value is used only with the DT_SINGLELINE value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_CALCRECT</term>
+		/// <term>
+		/// Determines the width and height of the rectangle. If there are multiple lines of text, DrawTextEx uses the width of the rectangle
+		/// pointed to by the lprc parameter and extends the base of the rectangle to bound the last line of text. If there is only one line
+		/// of text, DrawTextEx modifies the right side of the rectangle so that it bounds the last character in the line. In either case,
+		/// DrawTextEx returns the height of the formatted text, but does not draw the text.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_CENTER</term>
+		/// <term>Centers text horizontally in the rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_EDITCONTROL</term>
+		/// <term>
+		/// Duplicates the text-displaying characteristics of a multiline edit control. Specifically, the average character width is
+		/// calculated in the same manner as for an edit control, and the function does not display a partially visible last line.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_END_ELLIPSIS</term>
+		/// <term>
+		/// For displayed text, replaces the end of a string with ellipses so that the result fits in the specified rectangle. Any word (not
+		/// at the end of the string) that goes beyond the limits of the rectangle is truncated without ellipses. The string is not modified
+		/// unless the DT_MODIFYSTRING flag is specified. Compare with DT_PATH_ELLIPSIS and DT_WORD_ELLIPSIS.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_EXPANDTABS</term>
+		/// <term>Expands tab characters. The default number of characters per tab is eight.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_EXTERNALLEADING</term>
+		/// <term>
+		/// Includes the font external leading in line height. Normally, external leading is not included in the height of a line of text.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_HIDEPREFIX</term>
+		/// <term>
+		/// Ignores the ampersand (&amp;) prefix character in the text. The letter that follows will not be underlined, but other
+		/// mnemonic-prefix characters are still processed. Example: input string: "A&amp;bc&amp;&amp;d" normal: "Ac&amp;d" DT_HIDEPREFIX:
+		/// "Abc&amp;d" Compare with DT_NOPREFIX and DT_PREFIXONLY.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_INTERNAL</term>
+		/// <term>Uses the system font to calculate text metrics.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_LEFT</term>
+		/// <term>Aligns text to the left.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_MODIFYSTRING</term>
+		/// <term>
+		/// Modifies the specified string to match the displayed text. This value has no effect unless DT_END_ELLIPSIS or DT_PATH_ELLIPSIS is specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_NOCLIP</term>
+		/// <term>Draws without clipping. DrawTextEx is somewhat faster when DT_NOCLIP is used.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_NOFULLWIDTHCHARBREAK</term>
+		/// <term>
+		/// Prevents a line break at a DBCS (double-wide character string), so that the line-breaking rule is equivalent to SBCS strings. For
+		/// example, this can be used in Korean windows, for more readability of icon labels. This value has no effect unless DT_WORDBREAK is specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_NOPREFIX</term>
+		/// <term>
+		/// Turns off processing of prefix characters. Normally, DrawTextEx interprets the ampersand (&amp;) mnemonic-prefix character as a
+		/// directive to underscore the character that follows, and the double-ampersand (&amp;&amp;) mnemonic-prefix characters as a
+		/// directive to print a single ampersand. By specifying DT_NOPREFIX, this processing is turned off. Compare with DT_HIDEPREFIX and DT_PREFIXONLY
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_PATH_ELLIPSIS</term>
+		/// <term>
+		/// For displayed text, replaces characters in the middle of the string with ellipses so that the result fits in the specified
+		/// rectangle. If the string contains backslash (\) characters, DT_PATH_ELLIPSIS preserves as much as possible of the text after the
+		/// last backslash. The string is not modified unless the DT_MODIFYSTRING flag is specified. Compare with DT_END_ELLIPSIS and DT_WORD_ELLIPSIS.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_PREFIXONLY</term>
+		/// <term>
+		/// Draws only an underline at the position of the character following the ampersand (&amp;) prefix character. Does not draw any
+		/// character in the string. Example: input string: "A&amp;bc&amp;&amp;d" normal: "Ac&amp;d" PREFIXONLY: " _ " Compare with
+		/// DT_NOPREFIX and DT_HIDEPREFIX.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_RIGHT</term>
+		/// <term>Aligns text to the right.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_RTLREADING</term>
+		/// <term>
+		/// Layout in right-to-left reading order for bidirectional text when the font selected into the hdc is a Hebrew or Arabic font. The
+		/// default reading order for all text is left-to-right.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_SINGLELINE</term>
+		/// <term>Displays text on a single line only. Carriage returns and line feeds do not break the line.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_TABSTOP</term>
+		/// <term>
+		/// Sets tab stops. The DRAWTEXTPARAMS structure pointed to by the lpDTParams parameter specifies the number of average character
+		/// widths per tab stop.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_TOP</term>
+		/// <term>Justifies the text to the top of the rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_VCENTER</term>
+		/// <term>Centers text vertically. This value is used only with the DT_SINGLELINE value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_WORDBREAK</term>
+		/// <term>
+		/// Breaks words. Lines are automatically broken between words if a word extends past the edge of the rectangle specified by the lprc
+		/// parameter. A carriage return-line feed sequence also breaks the line.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_WORD_ELLIPSIS</term>
+		/// <term>Truncates any word that does not fit in the rectangle and adds ellipses. Compare with DT_END_ELLIPSIS and DT_PATH_ELLIPSIS.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpdtp">
+		/// A pointer to a DRAWTEXTPARAMS structure that specifies additional formatting options. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is the text height in logical units. If DT_VCENTER or DT_BOTTOM is specified, the
+		/// return value is the offset from to the bottom of the drawn text
+		/// </para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>DrawTextEx</c> function supports only fonts whose escapement and orientation are both zero.</para>
+		/// <para>The text alignment mode for the device context must include the TA_LEFT, TA_TOP, and TA_NOUPDATECP flags.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-drawtextexa int DrawTextExA( HDC hdc, LPSTR lpchText, int
+		// cchText, LPRECT lprc, UINT format, LPDRAWTEXTPARAMS lpdtp );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "77b9973b-77f1-4508-a021-52d61d576c23")]
+		public static extern int DrawTextEx(HDC hdc, string lpchText, int cchText, in RECT lprc, DrawTextFlags format, [Optional] DRAWTEXTPARAMS lpdtp);
+
+		/// <summary>The <c>DrawTextEx</c> function draws formatted text in the specified rectangle.</summary>
+		/// <param name="hdc">A handle to the device context in which to draw.</param>
+		/// <param name="lpchText">
+		/// <para>A pointer to the string that contains the text to draw. If the cchText parameter is -1, the string must be null-terminated.</para>
+		/// <para>
+		/// If dwDTFormat includes DT_MODIFYSTRING, the function could add up to four additional characters to this string. The buffer
+		/// containing the string should be large enough to accommodate these extra characters.
+		/// </para>
+		/// </param>
+		/// <param name="cchText">
+		/// The length of the string pointed to by lpchText. If cchText is -1, then the lpchText parameter is assumed to be a pointer to a
+		/// null-terminated string and <c>DrawTextEx</c> computes the character count automatically.
+		/// </param>
+		/// <param name="lprc">
+		/// A pointer to a RECT structure that contains the rectangle, in logical coordinates, in which the text is to be formatted.
+		/// </param>
+		/// <param name="format">
+		/// <para>The formatting options. This parameter can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DT_BOTTOM</term>
+		/// <term>Justifies the text to the bottom of the rectangle. This value is used only with the DT_SINGLELINE value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_CALCRECT</term>
+		/// <term>
+		/// Determines the width and height of the rectangle. If there are multiple lines of text, DrawTextEx uses the width of the rectangle
+		/// pointed to by the lprc parameter and extends the base of the rectangle to bound the last line of text. If there is only one line
+		/// of text, DrawTextEx modifies the right side of the rectangle so that it bounds the last character in the line. In either case,
+		/// DrawTextEx returns the height of the formatted text, but does not draw the text.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_CENTER</term>
+		/// <term>Centers text horizontally in the rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_EDITCONTROL</term>
+		/// <term>
+		/// Duplicates the text-displaying characteristics of a multiline edit control. Specifically, the average character width is
+		/// calculated in the same manner as for an edit control, and the function does not display a partially visible last line.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_END_ELLIPSIS</term>
+		/// <term>
+		/// For displayed text, replaces the end of a string with ellipses so that the result fits in the specified rectangle. Any word (not
+		/// at the end of the string) that goes beyond the limits of the rectangle is truncated without ellipses. The string is not modified
+		/// unless the DT_MODIFYSTRING flag is specified. Compare with DT_PATH_ELLIPSIS and DT_WORD_ELLIPSIS.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_EXPANDTABS</term>
+		/// <term>Expands tab characters. The default number of characters per tab is eight.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_EXTERNALLEADING</term>
+		/// <term>
+		/// Includes the font external leading in line height. Normally, external leading is not included in the height of a line of text.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_HIDEPREFIX</term>
+		/// <term>
+		/// Ignores the ampersand (&amp;) prefix character in the text. The letter that follows will not be underlined, but other
+		/// mnemonic-prefix characters are still processed. Example: input string: "A&amp;bc&amp;&amp;d" normal: "Ac&amp;d" DT_HIDEPREFIX:
+		/// "Abc&amp;d" Compare with DT_NOPREFIX and DT_PREFIXONLY.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_INTERNAL</term>
+		/// <term>Uses the system font to calculate text metrics.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_LEFT</term>
+		/// <term>Aligns text to the left.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_MODIFYSTRING</term>
+		/// <term>
+		/// Modifies the specified string to match the displayed text. This value has no effect unless DT_END_ELLIPSIS or DT_PATH_ELLIPSIS is specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_NOCLIP</term>
+		/// <term>Draws without clipping. DrawTextEx is somewhat faster when DT_NOCLIP is used.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_NOFULLWIDTHCHARBREAK</term>
+		/// <term>
+		/// Prevents a line break at a DBCS (double-wide character string), so that the line-breaking rule is equivalent to SBCS strings. For
+		/// example, this can be used in Korean windows, for more readability of icon labels. This value has no effect unless DT_WORDBREAK is specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_NOPREFIX</term>
+		/// <term>
+		/// Turns off processing of prefix characters. Normally, DrawTextEx interprets the ampersand (&amp;) mnemonic-prefix character as a
+		/// directive to underscore the character that follows, and the double-ampersand (&amp;&amp;) mnemonic-prefix characters as a
+		/// directive to print a single ampersand. By specifying DT_NOPREFIX, this processing is turned off. Compare with DT_HIDEPREFIX and DT_PREFIXONLY
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_PATH_ELLIPSIS</term>
+		/// <term>
+		/// For displayed text, replaces characters in the middle of the string with ellipses so that the result fits in the specified
+		/// rectangle. If the string contains backslash (\) characters, DT_PATH_ELLIPSIS preserves as much as possible of the text after the
+		/// last backslash. The string is not modified unless the DT_MODIFYSTRING flag is specified. Compare with DT_END_ELLIPSIS and DT_WORD_ELLIPSIS.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_PREFIXONLY</term>
+		/// <term>
+		/// Draws only an underline at the position of the character following the ampersand (&amp;) prefix character. Does not draw any
+		/// character in the string. Example: input string: "A&amp;bc&amp;&amp;d" normal: "Ac&amp;d" PREFIXONLY: " _ " Compare with
+		/// DT_NOPREFIX and DT_HIDEPREFIX.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_RIGHT</term>
+		/// <term>Aligns text to the right.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_RTLREADING</term>
+		/// <term>
+		/// Layout in right-to-left reading order for bidirectional text when the font selected into the hdc is a Hebrew or Arabic font. The
+		/// default reading order for all text is left-to-right.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_SINGLELINE</term>
+		/// <term>Displays text on a single line only. Carriage returns and line feeds do not break the line.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_TABSTOP</term>
+		/// <term>
+		/// Sets tab stops. The DRAWTEXTPARAMS structure pointed to by the lpDTParams parameter specifies the number of average character
+		/// widths per tab stop.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_TOP</term>
+		/// <term>Justifies the text to the top of the rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_VCENTER</term>
+		/// <term>Centers text vertically. This value is used only with the DT_SINGLELINE value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DT_WORDBREAK</term>
+		/// <term>
+		/// Breaks words. Lines are automatically broken between words if a word extends past the edge of the rectangle specified by the lprc
+		/// parameter. A carriage return-line feed sequence also breaks the line.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DT_WORD_ELLIPSIS</term>
+		/// <term>Truncates any word that does not fit in the rectangle and adds ellipses. Compare with DT_END_ELLIPSIS and DT_PATH_ELLIPSIS.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpdtp">
+		/// A pointer to a DRAWTEXTPARAMS structure that specifies additional formatting options. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is the text height in logical units. If DT_VCENTER or DT_BOTTOM is specified, the
+		/// return value is the offset from to the bottom of the drawn text
+		/// </para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>DrawTextEx</c> function supports only fonts whose escapement and orientation are both zero.</para>
+		/// <para>The text alignment mode for the device context must include the TA_LEFT, TA_TOP, and TA_NOUPDATECP flags.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-drawtextexa int DrawTextExA( HDC hdc, LPSTR lpchText, int
+		// cchText, LPRECT lprc, UINT format, LPDRAWTEXTPARAMS lpdtp );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "77b9973b-77f1-4508-a021-52d61d576c23")]
+		public static extern int DrawTextEx(HDC hdc, StringBuilder lpchText, int cchText, in RECT lprc, DrawTextFlags format, [Optional] DRAWTEXTPARAMS lpdtp);
 
 		/// <summary>
 		/// The GetDC function retrieves a handle to a device context (DC) for the client area of a specified window or for the entire
@@ -1630,6 +2186,58 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "590cf928-0ad6-43f8-97e9-1dafbcfa9f49")]
 		public static extern HDC GetDCEx(HWND hWnd, HRGN hrgnClip, DCX flags);
+
+		/// <summary>Retrieves the count of handles to graphical user interface (GUI) objects in use by the specified process.</summary>
+		/// <param name="hProcess">
+		/// A handle to the process. The handle must have the <c>PROCESS_QUERY_INFORMATION</c> access right. For more information, see
+		/// Process Security and Access Rights.
+		/// </param>
+		/// <param name="uiFlags">
+		/// <para>The GUI object type. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>GR_GDIOBJECTS 0</term>
+		/// <term>Return the count of GDI objects.</term>
+		/// </item>
+		/// <item>
+		/// <term>GR_GDIOBJECTS_PEAK 2</term>
+		/// <term>
+		/// Return the peak count of GDI objects. Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not
+		/// supported until Windows 7 and Windows Server 2008 R2.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GR_USEROBJECTS 1</term>
+		/// <term>Return the count of USER objects.</term>
+		/// </item>
+		/// <item>
+		/// <term>GR_USEROBJECTS_PEAK 4</term>
+		/// <term>
+		/// Return the peak count of USER objects. Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not
+		/// supported until Windows 7 and Windows Server 2008 R2.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is the count of handles to GUI objects in use by the process. If no GUI objects are in
+		/// use, the return value is zero.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// A process without a graphical user interface does not use GUI resources, therefore, <c>GetGuiResources</c> will return zero.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getguiresources DWORD GetGuiResources( HANDLE hProcess,
+		// DWORD uiFlags );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "55fbb7e8-79b4-4011-b522-25ea5a928b86")]
+		public static extern uint GetGuiResources(HPROCESS hProcess, GR uiFlags);
 
 		/// <summary>
 		/// Retrieves the current color of the specified display element. Display elements are the parts of a window and the display that
@@ -1752,6 +2360,44 @@ namespace Vanara.PInvoke
 			var ret = GetTabbedTextExtent(hdc, lpString, lpString?.Length ?? 0, lpnTabStopPositions?.Length ?? 0, lpnTabStopPositions);
 			return new Size(Macros.LOWORD(ret), Macros.HIWORD(ret));
 		}
+
+		/// <summary>The <c>GetUserObjectSecurity</c> function retrieves security information for the specified user object.</summary>
+		/// <param name="hObj">A handle to the user object for which to return security information.</param>
+		/// <param name="pSIRequested">A pointer to a SECURITY_INFORMATION value that specifies the security information being requested.</param>
+		/// <param name="pSID">
+		/// A pointer to a SECURITY_DESCRIPTOR structure in self-relative format that contains the requested information when the function
+		/// returns. This buffer must be aligned on a 4-byte boundary.
+		/// </param>
+		/// <param name="nLength">The length, in bytes, of the buffer pointed to by the pSD parameter.</param>
+		/// <param name="lpnLengthNeeded">
+		/// A pointer to a variable to receive the number of bytes required to store the complete security descriptor. If this variable's
+		/// value is greater than the value of the nLength parameter when the function returns, the function returns <c>FALSE</c> and none of
+		/// the security descriptor is copied to the buffer. Otherwise, the entire security descriptor is copied.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero.</para>
+		/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To read the owner, group, or discretionary access control list (DACL) from the user object's security descriptor, the calling
+		/// process must have been granted READ_CONTROL access when the handle was opened.
+		/// </para>
+		/// <para>
+		/// To read the system access control list (SACL) from the security descriptor, the calling process must have been granted
+		/// ACCESS_SYSTEM_SECURITY access when the handle was opened. The correct way to get this access is to enable the SE_SECURITY_NAME
+		/// privilege in the caller's current token, open the handle for ACCESS_SYSTEM_SECURITY access, and then disable the privilege.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example that uses this function, see Starting an Interactive Client Process.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getuserobjectsecurity BOOL GetUserObjectSecurity( HANDLE
+		// hObj, PSECURITY_INFORMATION pSIRequested, PSECURITY_DESCRIPTOR pSID, DWORD nLength, LPDWORD lpnLengthNeeded );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "998c2520-7833-4efd-a794-b13b528f0485")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetUserObjectSecurity(HANDLE hObj, in SECURITY_INFORMATION pSIRequested, PSECURITY_DESCRIPTOR pSID,
+			uint nLength, out uint lpnLengthNeeded);
 
 		/// <summary>
 		/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra
@@ -2186,6 +2832,71 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// The <c>SetUserObjectSecurity</c> function sets the security of a user object. This can be, for example, a window or a DDE conversation.
+		/// </summary>
+		/// <param name="hObj">A handle to a user object for which security information is set.</param>
+		/// <param name="pSIRequested">
+		/// <para>
+		/// A pointer to a value that indicates the components of the security descriptor to set. This parameter can be a combination of the
+		/// following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DACL_SECURITY_INFORMATION</term>
+		/// <term>
+		/// Sets the discretionary access control list (DACL) of the object. The handle specified by hObj must have WRITE_DAC access, or the
+		/// calling process must be the owner of the object.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GROUP_SECURITY_INFORMATION</term>
+		/// <term>Sets the primary group security identifier (SID) of the object.</term>
+		/// </item>
+		/// <item>
+		/// <term>OWNER_SECURITY_INFORMATION</term>
+		/// <term>
+		/// Sets the SID of the owner of the object. The handle specified by hObj must have WRITE_OWNER access, or the calling process must
+		/// be the owner of the object or have the SE_TAKE_OWNERSHIP_NAME privilege enabled.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SACL_SECURITY_INFORMATION</term>
+		/// <term>
+		/// Sets the system access control list (SACL) of the object. The handle specified by hObj must have ACCESS_SYSTEM_SECURITY access.
+		/// To obtain ACCESS_SYSTEM_SECURITY access
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pSID">
+		/// <para>A pointer to a SECURITY_DESCRIPTOR structure that contains the new security information.</para>
+		/// <para>This buffer must be aligned on a 4-byte boundary.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero.</para>
+		/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>SetUserObjectSecurity</c> function applies changes specified in a security descriptor to the security descriptor assigned
+		/// to a user object. The security descriptor of the object must be in self-relative form. If necessary, this function allocates
+		/// additional memory to increase the size of the security descriptor.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example that uses this function, see Starting an Interactive Client Process.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setuserobjectsecurity BOOL SetUserObjectSecurity( HANDLE
+		// hObj, PSECURITY_INFORMATION pSIRequested, PSECURITY_DESCRIPTOR pSID );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "219e41b8-9ac7-4747-a585-b6b9df6a1c9c")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetUserObjectSecurity(HANDLE hObj, in SECURITY_INFORMATION pSIRequested, PSECURITY_DESCRIPTOR pSID);
+
+		/// <summary>
 		/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
 		/// </summary>
 		/// <param name="hWnd">
@@ -2237,6 +2948,40 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLongPtr")]
 		[SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist", Justification = "Entry point does exist on 64-bit Windows.")]
 		private static extern IntPtr SetWindowLongPtr64(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
+
+		/// <summary>
+		/// Grants or denies access to a handle to a User object to a job that has a user-interface restriction. When access is granted, all
+		/// processes associated with the job can subsequently recognize and use the handle. When access is denied, the processes can no
+		/// longer use the handle. For more information see User Objects.
+		/// </summary>
+		/// <param name="hUserHandle">A handle to the User object.</param>
+		/// <param name="hJob">
+		/// A handle to the job to be granted access to the User handle. The CreateJobObject or OpenJobObject function returns this handle.
+		/// </param>
+		/// <param name="bGrant">
+		/// If this parameter is TRUE, all processes associated with the job can recognize and use the handle. If the parameter is FALSE, the
+		/// processes cannot use the handle.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>UserHandleGrantAccess</c> function can be called only from a process not associated with the job specified by the hJob
+		/// parameter. The User handle must not be owned by a process or thread associated with the job.
+		/// </para>
+		/// <para>
+		/// To create user-interface restrictions, call the SetInformationJobObject function with the JobObjectBasicUIRestrictions job
+		/// information class.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-userhandlegrantaccess BOOL UserHandleGrantAccess( HANDLE
+		// hUserHandle, HANDLE hJob, BOOL bGrant );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "6e7a6cfc-f881-43cc-a5af-b97e0bf14bf4")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool UserHandleGrantAccess(HANDLE hUserHandle, HANDLE hJob, [MarshalAs(UnmanagedType.Bool)] bool bGrant);
 
 		/// <summary>Contains information about a window's maximized size and position and its minimum and maximum tracking size.</summary>
 		[StructLayout(LayoutKind.Sequential)]
@@ -2320,6 +3065,45 @@ namespace Vanara.PInvoke
 
 			/// <summary>Places the window above all non-topmost windows. The window maintains its topmost position even when it is deactivated.</summary>
 			public static HWND HWND_TOPMOST = new IntPtr(-1);
+		}
+
+		/// <summary>The <c>DRAWTEXTPARAMS</c> structure contains extended formatting options for the DrawTextEx function.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagdrawtextparams typedef struct tagDRAWTEXTPARAMS { UINT
+		// cbSize; int iTabLength; int iLeftMargin; int iRightMargin; UINT uiLengthDrawn; } DRAWTEXTPARAMS, *LPDRAWTEXTPARAMS;
+		[PInvokeData("winuser.h", MSDNShortId = "d3b89ce2-9a05-42af-b03e-24e1c4d6ef1d")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public class DRAWTEXTPARAMS
+		{
+			/// <summary>Initializes a new instance of the <see cref="DRAWTEXTPARAMS"/> class.</summary>
+			/// <param name="tabLength">The size of each tab stop, in units equal to the average character width.</param>
+			/// <param name="leftMargin">The left margin, in units equal to the average character width.</param>
+			/// <param name="rightMargin">The right margin, in units equal to the average character width.</param>
+			public DRAWTEXTPARAMS(int tabLength = 0, int leftMargin = 0, int rightMargin = 0)
+			{
+				cbSize = (uint)Marshal.SizeOf(typeof(DRAWTEXTPARAMS));
+				iTabLength = tabLength;
+				iLeftMargin = leftMargin;
+				iRightMargin = rightMargin;
+			}
+
+			/// <summary>The structure size, in bytes.</summary>
+			public uint cbSize;
+
+			/// <summary>The size of each tab stop, in units equal to the average character width.</summary>
+			public int iTabLength;
+
+			/// <summary>The left margin, in units equal to the average character width.</summary>
+			public int iLeftMargin;
+
+			/// <summary>The right margin, in units equal to the average character width.</summary>
+			public int iRightMargin;
+
+			/// <summary>
+			/// Receives the number of characters processed by DrawTextEx, including white-space characters. The number can be the length of
+			/// the string or the index of the first line that falls below the drawing area. Note that <c>DrawTextEx</c> always processes the
+			/// entire string if the DT_NOCLIP formatting flag is specified.
+			/// </summary>
+			public uint uiLengthDrawn;
 		}
 	}
 }

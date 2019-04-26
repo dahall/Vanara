@@ -3,6 +3,8 @@ using NUnit.Framework;
 using System;
 using System.Drawing;
 using static Vanara.Extensions.ReflectionExtensions;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Vanara.Extensions.Tests
 {
@@ -18,14 +20,81 @@ namespace Vanara.Extensions.Tests
 		public void GetPropertyValueTest()
 		{
 			var dt = DateTime.Today;
+			// Has public value
 			Assert.That(dt.GetPropertyValue("Ticks", 0L), Is.EqualTo(dt.Ticks));
-			Assert.That(dt.GetPropertyValue("InternalTicks", 0L), Is.EqualTo(dt.Ticks));
-			Assert.That(dt.GetPropertyValue<long?>("Tacks"), Is.Null);
-			Assert.That(dt.GetPropertyValue<string>("Ticks"), Is.Null);
-			Assert.That(dt.GetPropertyValue<ulong>("Ticks", 0), Is.EqualTo((ulong)0));
-			Assert.That(dt.GetPropertyValue<byte>("Ticks"), Is.EqualTo((byte)0));
+			Assert.That(dt.GetPropertyValue<long>("Ticks"), Is.EqualTo(dt.Ticks));
+			// Has private value
+			Assert.That(dt.GetPropertyValue<long>("InternalTicks"), Is.EqualTo(dt.Ticks));
+			// Bad propname
+			Assert.That(() => dt.GetPropertyValue<long?>("Tacks"), Throws.Exception);
+			Assert.That(() => dt.GetPropertyValue<long?>("Tacks", null), Is.Null);
+			// Diff ret type
+			Assert.That(() => dt.GetPropertyValue<string>("Ticks"), Throws.Exception);
+			Assert.That(dt.GetPropertyValue("Ticks", string.Empty), Is.EqualTo(string.Empty));
+			// Has null val
 			var x = new X();
-			Assert.That(x.GetPropertyValue<string>("Str", ""), Is.EqualTo(""));
+			Assert.That(x.GetPropertyValue("Str", ""), Is.Null);
+		}
+
+		[TestCase(typeof(string), typeof(char))]
+		[TestCase(typeof(IEnumerable), typeof(object))]
+		[TestCase(typeof(IEnumerable<Guid>), typeof(Guid))]
+		[TestCase(typeof(IEnumerable<string>), typeof(string))]
+		[TestCase(typeof(List<string>), typeof(string))]
+		[TestCase(typeof(IEnum), typeof(object))]
+		[TestCase(typeof(IGenEnum), typeof(int))]
+		[TestCase(typeof(DerIGenEnum), typeof(int))]
+		[TestCase(typeof(int), null)]
+		public void FindElementTypeTest(Type t, Type e)
+		{
+			Assert.That(t.FindElementType(), Is.EqualTo(e));
+		}
+
+		[Test]
+		public void FindElementTypeTest2()
+		{
+			Assert.That("Fred".GetType().FindElementType(), Is.EqualTo(typeof(char)));
+			Assert.That(new IEnum().GetType().FindElementType(), Is.EqualTo(typeof(object)));
+			Assert.That(new IGenEnum().GetType().FindElementType(), Is.EqualTo(typeof(int)));
+			Assert.That(new DerIGenEnum().GetType().FindElementType(), Is.EqualTo(typeof(int)));
+			Assert.That(new Guid[2].GetType().FindElementType(), Is.EqualTo(typeof(Guid)));
+			Assert.That(new string[2].GetType().FindElementType(), Is.EqualTo(typeof(string)));
+			Assert.That(new List<string>().GetType().FindElementType(), Is.EqualTo(typeof(string)));
+
+			Assert.That(3.GetType().FindElementType(), Is.Null);
+
+			var ie = GetEnum();
+			Assert.That(ie.GetType().FindElementType(), Is.EqualTo(typeof(object)));
+			var ige = GetGenEnum();
+			Assert.That(ige.GetType().FindElementType(), Is.EqualTo(typeof(int)));
+
+			IEnumerable GetEnum()
+			{
+				yield return 1;
+				yield return 2;
+			}
+
+			IEnumerable<int> GetGenEnum()
+			{
+				yield return 1;
+				yield return 2;
+			}
+		}
+
+		private class IEnum : IEnumerable
+		{
+			public IEnumerator GetEnumerator() => throw new NotImplementedException();
+		}
+
+		private class IGenEnum : IEnumerable<int>
+		{
+			public IEnumerator<int> GetEnumerator() => throw new NotImplementedException();
+			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		}
+
+		private class DerIGenEnum : IGenEnum
+		{
+
 		}
 
 		[Test()]

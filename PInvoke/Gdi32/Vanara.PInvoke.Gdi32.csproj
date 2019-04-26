@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>Methods, structures and constants imported from Gdi32.dll</Description>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Gdi32.dll</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.3.0</VersionPrefix>
+    <VersionPrefix>2.3.7</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Gdi32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -28,7 +28,7 @@ Functions
 BitBlt, CreateBrushIndirect, CreateCompatibleDC, CreateDIBPatternBrush, CreateDIBPatternBrushPt, CreateDIBSection, CreateEnhMetaFileA, CreateEnhMetaFileW, CreateHatchBrush, CreatePatternBrush, CreatePen, CreatePenIndirect, CreateSolidBrush, DeleteDC, DeleteEnhMetaFile, DeleteObject, ExtCreatePen, GdiAlphaBlend, GdiFlush, GdiTransparentBlt, GetBrushOrgEx, GetDeviceCaps, GetDIBits, GetEnhMetaFileA, GetEnhMetaFileW, GetObjectA, GetObjectW, GetSysColorBrush, LPtoDP, PatBlt, SelectObject, SetBkMode, SetBrushOrgEx, SetLayout
 
 Structures
-BITMAP, BITMAPINFO, BITMAPINFOHEADER, DIBSECTION, RGBQUAD, BLENDFUNCTION, LOGBRUSH, DISPLAY_DEVICE, DEVMODE, EXTLOGPEN, LOGPEN, TEXTMETRIC
+BITMAP, BITMAPINFO, BITMAPINFOHEADER, DIBSECTION, RGBQUAD, BLENDFUNCTION, LOGBRUSH, DISPLAY_DEVICE, DEVMODE, DISPLAYCONFIG_2DREGION, DISPLAYCONFIG_ADAPTER_NAME, DISPLAYCONFIG_DESKTOP_IMAGE_INFO, DISPLAYCONFIG_DEVICE_INFO_HEADER, DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO, DISPLAYCONFIG_MODE_INFO, DISPLAYCONFIG_PATH_INFO, DISPLAYCONFIG_PATH_SOURCE_INFO, DISPLAYCONFIG_PATH_TARGET_INFO, DISPLAYCONFIG_RATIONAL, DISPLAYCONFIG_SDR_WHITE_LEVEL, DISPLAYCONFIG_SET_ADVANCED_COLOR_STATE, DISPLAYCONFIG_SET_TARGET_PERSISTENCE, DISPLAYCONFIG_SOURCE_DEVICE_NAME, DISPLAYCONFIG_SOURCE_MODE, DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION, DISPLAYCONFIG_TARGET_BASE_TYPE, DISPLAYCONFIG_TARGET_DEVICE_NAME, DISPLAYCONFIG_TARGET_MODE, DISPLAYCONFIG_TARGET_PREFERRED_MODE, DISPLAYCONFIG_VIDEO_SIGNAL_INFO, EXTLOGPEN, LOGPEN, TEXTMETRIC, Union, Union
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>

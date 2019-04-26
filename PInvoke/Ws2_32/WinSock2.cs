@@ -356,6 +356,294 @@ namespace Vanara.PInvoke
 			SOCK_SEQPACKET = 5,
 		}
 
+		/// <summary>The <c>accept</c> function permits an incoming connection attempt on a socket.</summary>
+		/// <param name="s">
+		/// A descriptor that identifies a socket that has been placed in a listening state with the listen function. The connection is
+		/// actually made with the socket that is returned by <c>accept</c>.
+		/// </param>
+		/// <param name="addr">
+		/// An optional pointer to a buffer that receives the address of the connecting entity, as known to the communications layer. The
+		/// exact format of the addr parameter is determined by the address family that was established when the socket from the sockaddr
+		/// structure was created.
+		/// </param>
+		/// <param name="addrlen">An optional pointer to an integer that contains the length of structure pointed to by the addr parameter.</param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs, <c>accept</c> returns a value of type <c>SOCKET</c> that is a descriptor for the new socket. This returned
+		/// value is a handle for the socket on which the actual connection is made.
+		/// </para>
+		/// <para>Otherwise, a value of <c>INVALID_SOCKET</c> is returned, and a specific error code can be retrieved by calling WSAGetLastError.</para>
+		/// <para>
+		/// The integer referred to by addrlen initially contains the amount of space pointed to by addr. On return it will contain the
+		/// actual length in bytes of the address returned.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNRESET</term>
+		/// <term>An incoming connection was indicated, but was subsequently terminated by the remote peer prior to accepting the call.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>The addrlen parameter is too small or addr is not a valid part of the user address space.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>A blocking Windows Sockets 1.1 call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The listen function was not invoked prior to accept.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMFILE</term>
+		/// <term>The queue is nonempty upon entry to accept and there are no descriptors available.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOBUFS</term>
+		/// <term>No buffer space is available.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>The referenced socket is not a type that supports connection-oriented service.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>The socket is marked as nonblocking and no connections are present to be accepted.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>accept</c> function extracts the first connection on the queue of pending connections on socket s. It then creates and
+		/// returns a handle to the new socket. The newly created socket is the socket that will handle the actual connection; it has the
+		/// same properties as socket s, including the asynchronous events registered with the WSAAsyncSelect or WSAEventSelect functions.
+		/// </para>
+		/// <para>
+		/// The <c>accept</c> function can block the caller until a connection is present if no pending connections are present on the queue,
+		/// and the socket is marked as blocking. If the socket is marked as nonblocking and no pending connections are present on the queue,
+		/// <c>accept</c> returns an error as described in the following. After the successful completion of <c>accept</c> returns a new
+		/// socket handle, the accepted socket cannot be used to accept more connections. The original socket remains open and listens for
+		/// new connection requests.
+		/// </para>
+		/// <para>
+		/// The parameter addr is a result parameter that is filled in with the address of the connecting entity, as known to the
+		/// communications layer. The exact format of the addr parameter is determined by the address family in which the communication is
+		/// occurring. The addrlen is a value-result parameter; it should initially contain the amount of space pointed to by addr; on return
+		/// it will contain the actual length (in bytes) of the address returned.
+		/// </para>
+		/// <para>
+		/// The <c>accept</c> function is used with connection-oriented socket types such as SOCK_STREAM. If addr and/or addrlen are equal to
+		/// <c>NULL</c>, then no information about the remote address of the accepted socket is returned.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>accept</c>, Winsock may need to wait for a network event before the
+		/// call can complete. Winsock performs an alertable wait in this situation, which can be interrupted by an asynchronous procedure
+		/// call (APC) scheduled on the same thread. Issuing another blocking Winsock call inside an APC that interrupted an ongoing blocking
+		/// Winsock call on the same thread will lead to undefined behavior, and must never be attempted by Winsock clients.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following example demonstrates the use of the <c>accept</c> function.</para>
+		/// <para>For another example that uses the <c>accept</c> function, see Getting Started With Winsock.</para>
+		/// <para>Notes for ATM</para>
+		/// <para>
+		/// The following are important issues associated with connection setup, and must be considered when using Asynchronous Transfer Mode
+		/// (ATM) with Windows Sockets 2:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// The <c>accept</c> and WSAAccept functions do not necessarily set the remote address and address length parameters. Therefore,
+		/// when using ATM, the caller should use the <c>WSAAccept</c> function and place ATM_CALLING_PARTY_NUMBER_IE in the
+		/// <c>ProviderSpecific</c> member of the QoS structure, which itself is included in the lpSQOS parameter of the callback function
+		/// used in accordance with <c>WSAAccept</c>.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// When using the <c>accept</c> function, realize that the function may return before connection establishment has traversed the
+		/// entire distance between sender and receiver. This is because the <c>accept</c> function returns as soon as it receives a CONNECT
+		/// ACK message; in ATM, a CONNECT ACK message is returned by the next switch in the path as soon as a CONNECT message is processed
+		/// (rather than the CONNECT ACK being sent by the end node to which the connection is ultimately established). As such, applications
+		/// should realize that if data is sent immediately following receipt of a CONNECT ACK message, data loss is possible, since the
+		/// connection may not have been established all the way between sender and receiver.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-accept
+		// SOCKET WSAAPI accept( SOCKET s, sockaddr *addr, int *addrlen );
+		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "72246263-4806-4ab2-9b26-89a1782a954b")]
+		public static extern SOCKET accept(SOCKET s, SOCKADDR addr, ref int addrlen);
+
+		/// <summary>The <c>accept</c> function permits an incoming connection attempt on a socket.</summary>
+		/// <param name="s">
+		/// A descriptor that identifies a socket that has been placed in a listening state with the listen function. The connection is
+		/// actually made with the socket that is returned by <c>accept</c>.
+		/// </param>
+		/// <param name="addr">
+		/// An optional pointer to a buffer that receives the address of the connecting entity, as known to the communications layer. The
+		/// exact format of the addr parameter is determined by the address family that was established when the socket from the sockaddr
+		/// structure was created.
+		/// </param>
+		/// <param name="addrlen">An optional pointer to an integer that contains the length of structure pointed to by the addr parameter.</param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs, <c>accept</c> returns a value of type <c>SOCKET</c> that is a descriptor for the new socket. This returned
+		/// value is a handle for the socket on which the actual connection is made.
+		/// </para>
+		/// <para>Otherwise, a value of <c>INVALID_SOCKET</c> is returned, and a specific error code can be retrieved by calling WSAGetLastError.</para>
+		/// <para>
+		/// The integer referred to by addrlen initially contains the amount of space pointed to by addr. On return it will contain the
+		/// actual length in bytes of the address returned.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNRESET</term>
+		/// <term>An incoming connection was indicated, but was subsequently terminated by the remote peer prior to accepting the call.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>The addrlen parameter is too small or addr is not a valid part of the user address space.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>A blocking Windows Sockets 1.1 call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The listen function was not invoked prior to accept.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMFILE</term>
+		/// <term>The queue is nonempty upon entry to accept and there are no descriptors available.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOBUFS</term>
+		/// <term>No buffer space is available.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>The referenced socket is not a type that supports connection-oriented service.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>The socket is marked as nonblocking and no connections are present to be accepted.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>accept</c> function extracts the first connection on the queue of pending connections on socket s. It then creates and
+		/// returns a handle to the new socket. The newly created socket is the socket that will handle the actual connection; it has the
+		/// same properties as socket s, including the asynchronous events registered with the WSAAsyncSelect or WSAEventSelect functions.
+		/// </para>
+		/// <para>
+		/// The <c>accept</c> function can block the caller until a connection is present if no pending connections are present on the queue,
+		/// and the socket is marked as blocking. If the socket is marked as nonblocking and no pending connections are present on the queue,
+		/// <c>accept</c> returns an error as described in the following. After the successful completion of <c>accept</c> returns a new
+		/// socket handle, the accepted socket cannot be used to accept more connections. The original socket remains open and listens for
+		/// new connection requests.
+		/// </para>
+		/// <para>
+		/// The parameter addr is a result parameter that is filled in with the address of the connecting entity, as known to the
+		/// communications layer. The exact format of the addr parameter is determined by the address family in which the communication is
+		/// occurring. The addrlen is a value-result parameter; it should initially contain the amount of space pointed to by addr; on return
+		/// it will contain the actual length (in bytes) of the address returned.
+		/// </para>
+		/// <para>
+		/// The <c>accept</c> function is used with connection-oriented socket types such as SOCK_STREAM. If addr and/or addrlen are equal to
+		/// <c>NULL</c>, then no information about the remote address of the accepted socket is returned.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>accept</c>, Winsock may need to wait for a network event before the
+		/// call can complete. Winsock performs an alertable wait in this situation, which can be interrupted by an asynchronous procedure
+		/// call (APC) scheduled on the same thread. Issuing another blocking Winsock call inside an APC that interrupted an ongoing blocking
+		/// Winsock call on the same thread will lead to undefined behavior, and must never be attempted by Winsock clients.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following example demonstrates the use of the <c>accept</c> function.</para>
+		/// <para>For another example that uses the <c>accept</c> function, see Getting Started With Winsock.</para>
+		/// <para>Notes for ATM</para>
+		/// <para>
+		/// The following are important issues associated with connection setup, and must be considered when using Asynchronous Transfer Mode
+		/// (ATM) with Windows Sockets 2:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// The <c>accept</c> and WSAAccept functions do not necessarily set the remote address and address length parameters. Therefore,
+		/// when using ATM, the caller should use the <c>WSAAccept</c> function and place ATM_CALLING_PARTY_NUMBER_IE in the
+		/// <c>ProviderSpecific</c> member of the QoS structure, which itself is included in the lpSQOS parameter of the callback function
+		/// used in accordance with <c>WSAAccept</c>.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// When using the <c>accept</c> function, realize that the function may return before connection establishment has traversed the
+		/// entire distance between sender and receiver. This is because the <c>accept</c> function returns as soon as it receives a CONNECT
+		/// ACK message; in ATM, a CONNECT ACK message is returned by the next switch in the path as soon as a CONNECT message is processed
+		/// (rather than the CONNECT ACK being sent by the end node to which the connection is ultimately established). As such, applications
+		/// should realize that if data is sent immediately following receipt of a CONNECT ACK message, data loss is possible, since the
+		/// connection may not have been established all the way between sender and receiver.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-accept
+		// SOCKET WSAAPI accept( SOCKET s, sockaddr *addr, int *addrlen );
+		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "72246263-4806-4ab2-9b26-89a1782a954b")]
+		public static extern SOCKET accept(SOCKET s, [Optional] IntPtr addr, [Optional] IntPtr addrlen);
+
 		/// <summary>The <c>bind</c> function associates a local address with a socket.</summary>
 		/// <param name="s">A descriptor identifying an unbound socket.</param>
 		/// <param name="addr">TBD</param>
@@ -826,6 +1114,307 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "2f357aa8-389b-4c92-8a9f-289e048cc41c")]
 		public static extern int closesocket([In] SOCKET s);
+
+		/// <summary>The <c>connect</c> function establishes a connection to a specified socket.</summary>
+		/// <param name="s">A descriptor identifying an unconnected socket.</param>
+		/// <param name="name">A pointer to the sockaddr structure to which the connection should be established.</param>
+		/// <param name="namelen">The length, in bytes, of the sockaddr structure pointed to by the name parameter.</param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs, <c>connect</c> returns zero. Otherwise, it returns SOCKET_ERROR, and a specific error code can be retrieved
+		/// by calling WSAGetLastError.
+		/// </para>
+		/// <para>On a blocking socket, the return value indicates success or failure of the connection attempt.</para>
+		/// <para>
+		/// With a nonblocking socket, the connection attempt cannot be completed immediately. In this case, <c>connect</c> will return
+		/// SOCKET_ERROR, and WSAGetLastError will return WSAEWOULDBLOCK. In this case, there are three possible scenarios:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Use the select function to determine the completion of the connection request by checking to see if the socket is writeable.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If the application is using WSAAsyncSelect to indicate interest in connection events, then the application will receive an
+		/// FD_CONNECT notification indicating that the <c>connect</c> operation is complete (successfully or not).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If the application is using WSAEventSelect to indicate interest in connection events, then the associated event object will be
+		/// signaled indicating that the <c>connect</c> operation is complete (successfully or not).
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Until the connection attempt completes on a nonblocking socket, all subsequent calls to <c>connect</c> on the same socket will
+		/// fail with the error code WSAEALREADY, and WSAEISCONN when the connection completes successfully. Due to ambiguities in version
+		/// 1.1 of the Windows Sockets specification, error codes returned from <c>connect</c> while a connection is already pending may vary
+		/// among implementations. As a result, it is not recommended that applications use multiple calls to connect to detect connection
+		/// completion. If they do, they must be prepared to handle WSAEINVAL and WSAEWOULDBLOCK error values the same way that they handle
+		/// WSAEALREADY, to assure robust operation.
+		/// </para>
+		/// <para>
+		/// If the error code returned indicates the connection attempt failed (that is, WSAECONNREFUSED, WSAENETUNREACH, WSAETIMEDOUT) the
+		/// application can call <c>connect</c> again for the same socket.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEADDRINUSE</term>
+		/// <term>
+		/// The socket's local address is already in use and the socket was not marked to allow address reuse with SO_REUSEADDR. This error
+		/// usually occurs when executing bind, but could be delayed until the connect function if the bind was to a wildcard address
+		/// (INADDR_ANY or in6addr_any) for the local IP address. A specific address needs to be implicitly bound by the connect function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>The blocking Windows Socket 1.1 call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEALREADY</term>
+		/// <term>A nonblocking connect call is in progress on the specified socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEADDRNOTAVAIL</term>
+		/// <term>The remote address is not a valid address (such as INADDR_ANY or in6addr_any) .</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEAFNOSUPPORT</term>
+		/// <term>Addresses in the specified family cannot be used with this socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNREFUSED</term>
+		/// <term>The attempt to connect was forcefully rejected.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The sockaddr structure pointed to by the name contains incorrect address format for the associated address family or the namelen
+		/// parameter is too small. This error is also returned if the sockaddr structure pointed to by the name parameter with a length
+		/// specified in the namelen parameter is not in a valid part of the user address space.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The parameter s is a listening socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEISCONN</term>
+		/// <term>The socket is already connected (connection-oriented sockets only).</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETUNREACH</term>
+		/// <term>The network cannot be reached from this host at this time.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEHOSTUNREACH</term>
+		/// <term>A socket operation was attempted to an unreachable host.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOBUFS</term>
+		/// <term></term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor specified in the s parameter is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAETIMEDOUT</term>
+		/// <term>An attempt to connect timed out without establishing a connection.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>The socket is marked as nonblocking and the connection cannot be completed immediately.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEACCES</term>
+		/// <term>An attempt to connect a datagram socket to broadcast address failed because setsockopt option SO_BROADCAST is not enabled.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>connect</c> function is used to create a connection to the specified destination. If socket s, is unbound, unique values
+		/// are assigned to the local association by the system, and the socket is marked as bound.
+		/// </para>
+		/// <para>
+		/// For connection-oriented sockets (for example, type SOCK_STREAM), an active connection is initiated to the foreign host using name
+		/// (an address in the namespace of the socket; for a detailed description, see bind and sockaddr).
+		/// </para>
+		/// <para>
+		/// When the socket call completes successfully, the socket is ready to send and receive data. If the address member of the structure
+		/// specified by the name parameter is filled with zeros, <c>connect</c> will return the error WSAEADDRNOTAVAIL. Any attempt to
+		/// reconnect an active connection will fail with the error code WSAEISCONN.
+		/// </para>
+		/// <para>
+		/// For connection-oriented, nonblocking sockets, it is often not possible to complete the connection immediately. In such a case,
+		/// this function returns the error WSAEWOULDBLOCK. However, the operation proceeds.
+		/// </para>
+		/// <para>
+		/// When the success or failure outcome becomes known, it may be reported in one of two ways, depending on how the client registers
+		/// for notification.
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// If the client uses the select function, success is reported in the writefds set and failure is reported in the exceptfds set.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If the client uses the functions WSAAsyncSelect or WSAEventSelect, the notification is announced with FD_CONNECT and the error
+		/// code associated with the FD_CONNECT indicates either success or a specific reason for failure.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// For a connectionless socket (for example, type SOCK_DGRAM), the operation performed by <c>connect</c> is merely to establish a
+		/// default destination address that can be used on subsequent send/ WSASend and recv/ WSARecv calls. Any datagrams received from an
+		/// address other than the destination address specified will be discarded. If the address member of the structure specified by name
+		/// is filled with zeros, the socket will be disconnected. Then, the default remote address will be indeterminate, so send/ WSASend
+		/// and recv/ WSARecv calls will return the error code WSAENOTCONN. However, sendto/ WSASendTo and recvfrom/ WSARecvFrom can still be
+		/// used. The default destination can be changed by simply calling <c>connect</c> again, even if the socket is already connected. Any
+		/// datagrams queued for receipt are discarded if name is different from the previous <c>connect</c>.
+		/// </para>
+		/// <para>
+		/// For connectionless sockets, name can indicate any valid address, including a broadcast address. However, to connect to a
+		/// broadcast address, a socket must use setsockopt to enable the SO_BROADCAST option. Otherwise, <c>connect</c> will fail with the
+		/// error code WSAEACCES.
+		/// </para>
+		/// <para>
+		/// When a connection between sockets is broken, the socket that was connected should be discarded and new socket should be created.
+		/// When a problem develops on a connected socket, the application must discard the socket and create the socket again in order to
+		/// return to a stable point.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>connect</c>, Winsock may need to wait for a network event before the
+		/// call can complete. Winsock performs an alertable wait in this situation, which can be interrupted by an asynchronous procedure
+		/// call (APC) scheduled on the same thread. Issuing another blocking Winsock call inside an APC that interrupted an ongoing blocking
+		/// Winsock call on the same thread will lead to undefined behavior, and must never be attempted by Winsock clients.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following example demonstrates the use of the <c>connect</c> function.</para>
+		/// <para>For another example that uses the <c>connect</c> function, see Getting Started With Winsock.</para>
+		/// <para>Notes for IrDA Sockets</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The Af_irda.h header file must be explicitly included.</term>
+		/// </item>
+		/// <item>
+		/// <term>If an existing IrDA connection is detected at the media-access level, WSAENETDOWN is returned.</term>
+		/// </item>
+		/// <item>
+		/// <term>If active connections to a device with a different address exist, WSAEADDRINUSE is returned.</term>
+		/// </item>
+		/// <item>
+		/// <term>If the socket is already connected or an exclusive/multiplexed mode change failed, WSAEISCONN is returned.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If the socket was previously bound to a local service name to accept incoming connections using bind, WSAEINVAL is returned. Note
+		/// that once a socket is bound, it cannot be used for establishing an outbound connection.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// IrDA implements the connect function with addresses of the form sockaddr_irda. Typically, a client application will create a
+		/// socket with the socket function, scan the immediate vicinity for IrDA devices with the IRLMP_ENUMDEVICES socket option, choose a
+		/// device from the returned list, form an address, and then call <c>connect</c>. There is no difference between blocking and
+		/// nonblocking semantics.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-connect
+		// int WSAAPI connect( SOCKET s, const sockaddr *name, int namelen );
+		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "13468139-dc03-45bd-850c-7ac2dbcb6e60")]
+		public static extern int connect(SOCKET s, SOCKADDR name, int namelen);
+
+		/// <summary>The <c>getsockname</c> function retrieves the local name for a socket.</summary>
+		/// <param name="s">Descriptor identifying a socket.</param>
+		/// <param name="name">Pointer to a SOCKADDR structure that receives the address (name) of the socket.</param>
+		/// <param name="namelen">Size of the name buffer, in bytes.</param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs, <c>getsockname</c> returns zero. Otherwise, a value of SOCKET_ERROR is returned, and a specific error code
+		/// can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this API.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>The name or the namelen parameter is not a valid part of the user address space, or the namelen parameter is too small.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The socket has not been bound to an address with bind, or ADDR_ANY is specified in bind but connection has not yet occurred.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>getsockname</c> function retrieves the current name for the specified socket descriptor in name. It is used on the bound
+		/// or connected socket specified by the s parameter. The local association is returned. This call is especially useful when a
+		/// connect call has been made without doing a bind first; the <c>getsockname</c> function provides the only way to determine the
+		/// local association that has been set by the system.
+		/// </para>
+		/// <para>
+		/// On call, the namelen parameter contains the size of the name buffer, in bytes. On return, the namelen parameter contains the
+		/// actual size in bytes of the name parameter.
+		/// </para>
+		/// <para>
+		/// The <c>getsockname</c> function does not always return information about the host address when the socket has been bound to an
+		/// unspecified address, unless the socket has been connected with connect or accept (for example, using ADDR_ANY). A Windows Sockets
+		/// application must not assume that the address will be specified unless the socket is connected. The address that will be used for
+		/// the socket is unknown unless the socket is connected when used in a multihomed host. If the socket is using a connectionless
+		/// protocol, the address may not be available until I/O occurs on the socket.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock/nf-winsock-getsockname
+		// int getsockname( SOCKET s, sockaddr *name, int *namelen );
+		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsock.h", MSDNShortId = "be20a731-cdfc-48ae-90b2-43f2cf9ecf6d")]
+		public static extern int getsockname(SOCKET s, SOCKADDR name, ref int namelen);
 
 		/// <summary>
 		/// <para>
@@ -1377,7 +1966,377 @@ namespace Vanara.PInvoke
 		// protocol );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "6bf6e6c4-6268-479c-86a6-52e90cf317db")]
-		public static extern SOCKET socket([MarshalAs(UnmanagedType.I4)] ADDRESS_FAMILY af, SOCK type, IPPROTO protocol);
+		public static extern SafeSOCKET socket(uint af, SOCK type, IPPROTO protocol);
+
+		/// <summary>The <c>socket</c> function creates a socket that is bound to a specific transport service provider.</summary>
+		/// <param name="af">
+		/// <para>The address family specification. Possible values for the address family are defined in the Winsock2.h header file.</para>
+		/// <para>
+		/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed and the possible values for
+		/// the address family are defined in the Ws2def.h header file. Note that the Ws2def.h header file is automatically included in
+		/// Winsock2.h, and should never be used directly.
+		/// </para>
+		/// <para>
+		/// The values currently supported are AF_INET or AF_INET6, which are the Internet address family formats for IPv4 and IPv6. Other
+		/// options for address family (AF_NETBIOS for use with NetBIOS, for example) are supported if a Windows Sockets service provider for
+		/// the address family is installed. Note that the values for the AF_ address family and PF_ protocol family constants are identical
+		/// (for example, <c>AF_INET</c> and <c>PF_INET</c>), so either constant can be used.
+		/// </para>
+		/// <para>The table below lists common values for address family although many other values are possible.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Af</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>AF_UNSPEC 0</term>
+		/// <term>The address family is unspecified.</term>
+		/// </item>
+		/// <item>
+		/// <term>AF_INET 2</term>
+		/// <term>The Internet Protocol version 4 (IPv4) address family.</term>
+		/// </item>
+		/// <item>
+		/// <term>AF_IPX 6</term>
+		/// <term>
+		/// The IPX/SPX address family. This address family is only supported if the NWLink IPX/SPX NetBIOS Compatible Transport protocol is
+		/// installed. This address family is not supported on Windows Vista and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AF_APPLETALK 16</term>
+		/// <term>
+		/// The AppleTalk address family. This address family is only supported if the AppleTalk protocol is installed. This address family
+		/// is not supported on Windows Vista and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AF_NETBIOS 17</term>
+		/// <term>
+		/// The NetBIOS address family. This address family is only supported if the Windows Sockets provider for NetBIOS is installed. The
+		/// Windows Sockets provider for NetBIOS is supported on 32-bit versions of Windows. This provider is installed by default on 32-bit
+		/// versions of Windows. The Windows Sockets provider for NetBIOS is not supported on 64-bit versions of windows including Windows 7,
+		/// Windows Server 2008, Windows Vista, Windows Server 2003, or Windows XP. The Windows Sockets provider for NetBIOS only supports
+		/// sockets where the type parameter is set to SOCK_DGRAM. The Windows Sockets provider for NetBIOS is not directly related to the
+		/// NetBIOS programming interface. The NetBIOS programming interface is not supported on Windows Vista, Windows Server 2008, and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AF_INET6 23</term>
+		/// <term>The Internet Protocol version 6 (IPv6) address family.</term>
+		/// </item>
+		/// <item>
+		/// <term>AF_IRDA 26</term>
+		/// <term>
+		/// The Infrared Data Association (IrDA) address family. This address family is only supported if the computer has an infrared port
+		/// and driver installed.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AF_BTH 32</term>
+		/// <term>
+		/// The Bluetooth address family. This address family is supported on Windows XP with SP2 or later if the computer has a Bluetooth
+		/// adapter and driver installed.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="type">
+		/// <para>The type specification for the new socket.</para>
+		/// <para>Possible values for the socket type are defined in the Winsock2.h header file.</para>
+		/// <para>The following table lists the possible values for the type parameter supported for Windows Sockets 2:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Type</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SOCK_STREAM 1</term>
+		/// <term>
+		/// A socket type that provides sequenced, reliable, two-way, connection-based byte streams with an OOB data transmission mechanism.
+		/// This socket type uses the Transmission Control Protocol (TCP) for the Internet address family (AF_INET or AF_INET6).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SOCK_DGRAM 2</term>
+		/// <term>
+		/// A socket type that supports datagrams, which are connectionless, unreliable buffers of a fixed (typically small) maximum length.
+		/// This socket type uses the User Datagram Protocol (UDP) for the Internet address family (AF_INET or AF_INET6).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SOCK_RAW 3</term>
+		/// <term>
+		/// A socket type that provides a raw socket that allows an application to manipulate the next upper-layer protocol header. To
+		/// manipulate the IPv4 header, the IP_HDRINCL socket option must be set on the socket. To manipulate the IPv6 header, the
+		/// IPV6_HDRINCL socket option must be set on the socket.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SOCK_RDM 4</term>
+		/// <term>
+		/// A socket type that provides a reliable message datagram. An example of this type is the Pragmatic General Multicast (PGM)
+		/// multicast protocol implementation in Windows, often referred to as reliable multicast programming. This type value is only
+		/// supported if the Reliable Multicast Protocol is installed.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SOCK_SEQPACKET 5</term>
+		/// <term>A socket type that provides a pseudo-stream packet based on datagrams.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// In Windows Sockets 2, new socket types were introduced. An application can dynamically discover the attributes of each available
+		/// transport protocol through the WSAEnumProtocols function. So an application can determine the possible socket type and protocol
+		/// options for an address family and use this information when specifying this parameter. Socket type definitions in the Winsock2.h
+		/// and Ws2def.h header files will be periodically updated as new socket types, address families, and protocols are defined.
+		/// </para>
+		/// <para>In Windows Sockets 1.1, the only possible socket types are <c>SOCK_DGRAM</c> and <c>SOCK_STREAM</c>.</para>
+		/// </param>
+		/// <param name="protocol">
+		/// <para>
+		/// The protocol to be used. The possible options for the protocol parameter are specific to the address family and socket type
+		/// specified. Possible values for the protocol are defined in the Winsock2.h and Wsrm.h header files.
+		/// </para>
+		/// <para>
+		/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed and this parameter can be
+		/// one of the values from the <c>IPPROTO</c> enumeration type defined in the Ws2def.h header file. Note that the Ws2def.h header
+		/// file is automatically included in Winsock2.h, and should never be used directly.
+		/// </para>
+		/// <para>
+		/// If a value of 0 is specified, the caller does not wish to specify a protocol and the service provider will choose the protocol to use.
+		/// </para>
+		/// <para>
+		/// When the af parameter is AF_INET or AF_INET6 and the type is <c>SOCK_RAW</c>, the value specified for the protocol is set in the
+		/// protocol field of the IPv6 or IPv4 packet header.
+		/// </para>
+		/// <para>The table below lists common values for the protocol although many other values are possible.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>protocol</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>IPPROTO_ICMP 1</term>
+		/// <term>
+		/// The Internet Control Message Protocol (ICMP). This is a possible value when the af parameter is AF_UNSPEC, AF_INET, or AF_INET6
+		/// and the type parameter is SOCK_RAW or unspecified. This protocol value is supported on Windows XP and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IPPROTO_IGMP 2</term>
+		/// <term>
+		/// The Internet Group Management Protocol (IGMP). This is a possible value when the af parameter is AF_UNSPEC, AF_INET, or AF_INET6
+		/// and the type parameter is SOCK_RAW or unspecified. This protocol value is supported on Windows XP and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>BTHPROTO_RFCOMM 3</term>
+		/// <term>
+		/// The Bluetooth Radio Frequency Communications (Bluetooth RFCOMM) protocol. This is a possible value when the af parameter is
+		/// AF_BTH and the type parameter is SOCK_STREAM. This protocol value is supported on Windows XP with SP2 or later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IPPROTO_TCP 6</term>
+		/// <term>
+		/// The Transmission Control Protocol (TCP). This is a possible value when the af parameter is AF_INET or AF_INET6 and the type
+		/// parameter is SOCK_STREAM.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IPPROTO_UDP 17</term>
+		/// <term>
+		/// The User Datagram Protocol (UDP). This is a possible value when the af parameter is AF_INET or AF_INET6 and the type parameter is SOCK_DGRAM.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IPPROTO_ICMPV6 58</term>
+		/// <term>
+		/// The Internet Control Message Protocol Version 6 (ICMPv6). This is a possible value when the af parameter is AF_UNSPEC, AF_INET,
+		/// or AF_INET6 and the type parameter is SOCK_RAW or unspecified. This protocol value is supported on Windows XP and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IPPROTO_RM 113</term>
+		/// <term>
+		/// The PGM protocol for reliable multicast. This is a possible value when the af parameter is AF_INET and the type parameter is
+		/// SOCK_RDM. On the Windows SDK released for Windows Vista and later, this protocol is also called IPPROTO_PGM. This protocol value
+		/// is only supported if the Reliable Multicast Protocol is installed.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs, <c>socket</c> returns a descriptor referencing the new socket. Otherwise, a value of INVALID_SOCKET is
+		/// returned, and a specific error code can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem or the associated service provider has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEAFNOSUPPORT</term>
+		/// <term>
+		/// The specified address family is not supported. For example, an application tried to create a socket for the AF_IRDA address
+		/// family but an infrared adapter and device driver is not installed on the local computer.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMFILE</term>
+		/// <term>No more socket descriptors are available.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>
+		/// An invalid argument was supplied. This error is returned if the af parameter is set to AF_UNSPEC and the type and protocol
+		/// parameter are unspecified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVALIDPROVIDER</term>
+		/// <term>The service provider returned a version other than 2.2.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVALIDPROCTABLE</term>
+		/// <term>The service provider returned an invalid or incomplete procedure table to the WSPStartup.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOBUFS</term>
+		/// <term>No buffer space is available. The socket cannot be created.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEPROTONOSUPPORT</term>
+		/// <term>The specified protocol is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEPROTOTYPE</term>
+		/// <term>The specified protocol is the wrong type for this socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEPROVIDERFAILEDINIT</term>
+		/// <term>
+		/// The service provider failed to initialize. This error is returned if a layered service provider (LSP) or namespace provider was
+		/// improperly installed or the provider fails to operate correctly.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAESOCKTNOSUPPORT</term>
+		/// <term>The specified socket type is not supported in this address family.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>socket</c> function causes a socket descriptor and any related resources to be allocated and bound to a specific
+		/// transport-service provider. Winsock will utilize the first available service provider that supports the requested combination of
+		/// address family, socket type and protocol parameters. The socket that is created will have the overlapped attribute as a default.
+		/// For Windows, the Microsoft-specific socket option, SO_OPENTYPE, defined in Mswsock.h can affect this default. See
+		/// Microsoft-specific documentation for a detailed description of SO_OPENTYPE.
+		/// </para>
+		/// <para>
+		/// Sockets without the overlapped attribute can be created by using WSASocket. All functions that allow overlapped operation
+		/// (WSASend, WSARecv, WSASendTo, WSARecvFrom, and WSAIoctl) also support nonoverlapped usage on an overlapped socket if the values
+		/// for parameters related to overlapped operation are <c>NULL</c>.
+		/// </para>
+		/// <para>
+		/// When selecting a protocol and its supporting service provider this procedure will only choose a base protocol or a protocol
+		/// chain, not a protocol layer by itself. Unchained protocol layers are not considered to have partial matches on type or af either.
+		/// That is, they do not lead to an error code of WSAEAFNOSUPPORT or WSAEPROTONOSUPPORT if no suitable protocol is found.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The manifest constant <c>AF_UNSPEC</c> continues to be defined in the header file but its use is strongly
+		/// discouraged, as this can cause ambiguity in interpreting the value of the protocol parameter.
+		/// </para>
+		/// <para>
+		/// Applications are encouraged to use <c>AF_INET6</c> for the af parameter and create a dual-mode socket that can be used with both
+		/// IPv4 and IPv6.
+		/// </para>
+		/// <para>
+		/// Connection-oriented sockets such as <c>SOCK_STREAM</c> provide full-duplex connections, and must be in a connected state before
+		/// any data can be sent or received on it. A connection to another socket is created with a connect call. Once connected, data can
+		/// be transferred using send and recv calls. When a session has been completed, a closesocket must be performed.
+		/// </para>
+		/// <para>
+		/// The communications protocols used to implement a reliable, connection-oriented socket ensure that data is not lost or duplicated.
+		/// If data for which the peer protocol has buffer space cannot be successfully transmitted within a reasonable length of time, the
+		/// connection is considered broken and subsequent calls will fail with the error code set to WSAETIMEDOUT.
+		/// </para>
+		/// <para>
+		/// Connectionless, message-oriented sockets allow sending and receiving of datagrams to and from arbitrary peers using sendto and
+		/// recvfrom. If such a socket is connected to a specific peer, datagrams can be sent to that peer using send and can be received
+		/// only from this peer using recv.
+		/// </para>
+		/// <para>
+		/// IPv6 and IPv4 operate differently when receiving a socket with a type of <c>SOCK_RAW</c>. The IPv4 receive packet includes the
+		/// packet payload, the next upper-level header (for example, the IP header for a TCP or UDP packet), and the IPv4 packet header. The
+		/// IPv6 receive packet includes the packet payload and the next upper-level header. The IPv6 receive packet never includes the IPv6
+		/// packet header.
+		/// </para>
+		/// <para><c>Note</c> On Windows NT, raw socket support requires administrative privileges.</para>
+		/// <para>
+		/// A socket with a type parameter of <c>SOCK_SEQPACKET</c> is based on datagrams, but functions as a pseudo-stream protocol. For
+		/// both send and receive packets, separate datagrams are used. However, Windows Sockets can coalesce multiple receive packets into a
+		/// single packet. So an application can issue a receive call (for example, recv or WSARecvEx) and retrieve the data from several
+		/// coalesced multiple packets in single call. The AF_NETBIOS address family supports a type parameter of <c>SOCK_SEQPACKET</c>.
+		/// </para>
+		/// <para>
+		/// When the af parameter is <c>AF_NETBIOS</c> for NetBIOS over TCP/IP, the type parameter can be <c>SOCK_DGRAM</c> or
+		/// <c>SOCK_SEQPACKET</c>. For the <c>AF_NETBIOS</c> address family, the protocol parameter is the LAN adapter number represented as
+		/// a negative number.
+		/// </para>
+		/// <para>
+		/// On Windows XP and later, the following command can be used to list the Windows Sockets catalog to determine the service providers
+		/// installed and the address family, socket type, and protocols that are supported.
+		/// </para>
+		/// <para><c>netsh winsock show catalog</c></para>
+		/// <para>
+		/// Support for sockets with type <c>SOCK_RAW</c> is not required, but service providers are encouraged to support raw sockets as practicable.
+		/// </para>
+		/// <para>Notes for IrDA Sockets</para>
+		/// <para>Keep the following in mind:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The Af_irda.h header file must be explicitly included.</term>
+		/// </item>
+		/// <item>
+		/// <term>Only <c>SOCK_STREAM</c> is supported; the <c>SOCK_DGRAM</c> type is not supported by IrDA.</term>
+		/// </item>
+		/// <item>
+		/// <term>The protocol parameter is always set to 0 for IrDA.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// A socket for use with the AF_IRDA address family can only be created if the local computer has an infrared port and driver
+		/// installed. Otherwise, a call to the <c>socket</c> function with af parameter set to AF_IRDA will fail and WSAGetLastError returns WSAEPROTONOSUPPORT.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>
+		/// The following example demonstrates the use of the <c>socket</c> function to create a socket that is bound to a specific transport
+		/// service provider..
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		[PInvokeData("winsock2.h", MSDNShortId = "6bf6e6c4-6268-479c-86a6-52e90cf317db")]
+		public static SafeSOCKET socket(ADDRESS_FAMILY af, SOCK type, IPPROTO protocol) => socket((uint)af, type, protocol);
 
 		public static int SOMAXCONN_HINT(int b) => -b;
 
@@ -1940,6 +2899,291 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsock.h", MSDNShortId = "72b7cc3e-be34-41e7-acbf-61742149ec8b")]
 		public static extern int WSACleanup();
 
+		/// <summary>The <c>WSAGetLastError</c> function returns the error status for the last Windows Sockets operation that failed.</summary>
+		/// <returns>The return value indicates the error code for this thread's last Windows Sockets operation that failed.</returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSAGetLastError</c> function returns the last error that occurred for the calling thread. When a particular Windows
+		/// Sockets function indicates an error has occurred, this function should be called immediately to retrieve the extended error code
+		/// for the failing function call. This extended error code can be different from the error code obtained from getsockopt when called
+		/// with an optname parameter of <c>SO_ERROR</c>, which is socket-specific since <c>WSAGetLastError</c> is for all thread-specific sockets.
+		/// </para>
+		/// <para>
+		/// If a function call's return value indicates that error or other relevant data was returned in the error code,
+		/// <c>WSAGetLastError</c> should be called immediately. This is necessary because some functions may reset the last extended error
+		/// code to 0 if they succeed, overwriting the extended error code returned by a previously failed function. To specifically reset
+		/// the extended error code, use the WSASetLastError function call with the iError parameter set to zero. A getsockopt function when
+		/// called with an optname parameter of <c>SO_ERROR</c> also resets the extended error code to zero.
+		/// </para>
+		/// <para>
+		/// The <c>WSAGetLastError</c> function should not be used to check for an extended error value on receipt of an asynchronous
+		/// message. In this case, the extended error value is passed in the lParam parameter of the message, and this can differ from the
+		/// value returned by <c>WSAGetLastError</c>.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> An application can call the <c>WSAGetLastError</c> function to determine the extended error code for other Windows
+		/// sockets functions as is normally done in Windows Sockets even if the WSAStartup function fails or the <c>WSAStartup</c> function
+		/// was not called to properly initialize Windows Sockets before calling a Windows Sockets function. The <c>WSAGetLastError</c>
+		/// function is one of the only functions in the Winsock 2.2 DLL that can be called in the case of a <c>WSAStartup</c> failure.
+		/// </para>
+		/// <para>
+		/// The Windows Sockets extended error codes returned by this function and the text description of the error are listed under Windows
+		/// Sockets Error Codes. These error codes and a short text description associated with an error code are defined in the Winerror.h
+		/// header file. The FormatMessage function can be used to obtain the message string for the returned error.
+		/// </para>
+		/// <para>
+		/// For information on how to handle error codes when porting socket applications to Winsock, see Error Codes - errno, h_errno and WSAGetLastError.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock/nf-winsock-wsagetlasterror
+		// int WSAGetLastError( );
+		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsock.h", MSDNShortId = "39e41b66-44ed-46dc-bfc2-65228b669992")]
+		public static extern Win32Error WSAGetLastError();
+
+		/// <summary>The <c>WSAIoctl</c> function controls the mode of a socket.</summary>
+		/// <param name="s">A descriptor identifying a socket.</param>
+		/// <param name="dwIoControlCode">The control code of operation to perform.</param>
+		/// <param name="lpvInBuffer">A pointer to the input buffer.</param>
+		/// <param name="cbInBuffer">The size, in bytes, of the input buffer.</param>
+		/// <param name="lpvOutBuffer">A pointer to the output buffer.</param>
+		/// <param name="cbOutBuffer">The size, in bytes, of the output buffer.</param>
+		/// <param name="lpcbBytesReturned">A pointer to actual number of bytes of output.</param>
+		/// <param name="lpOverlapped">A pointer to a WSAOVERLAPPED structure (ignored for non-overlapped sockets).</param>
+		/// <param name="lpCompletionRoutine">
+		/// <c>Note</c> A pointer to the completion routine called when the operation has been completed (ignored for non-overlapped
+		/// sockets). See Remarks.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Upon successful completion, the <c>WSAIoctl</c> returns zero. Otherwise, a value of SOCKET_ERROR is returned, and a specific
+		/// error code can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSA_IO_PENDING</term>
+		/// <term>An overlapped operation was successfully initiated and completion will be indicated at a later time.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The lpvInBuffer, lpvOutBuffer, lpcbBytesReturned, lpOverlapped, or lpCompletionRoutine parameter is not totally contained in a
+		/// valid part of the user address space, or the cbInBuffer or cbOutBuffer parameter is too small.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>
+		/// The dwIoControlCode parameter is not a valid command, or a specified input parameter is not acceptable, or the command is not
+		/// applicable to the type of socket specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>The function is invoked when a callback is in progress.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor s is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>
+		/// The specified IOCTL command cannot be realized. (For example, the FLOWSPEC structures specified in SIO_SET_QOS or
+		/// SIO_SET_GROUP_QOS cannot be satisfied.)
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>The socket is marked as non-blocking and the requested operation would block.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOPROTOOPT</term>
+		/// <term>
+		/// The socket option is not supported on the specified protocol. For example, an attempt to use the SIO_GET_BROADCAST_ADDRESS IOCTL
+		/// was made on an IPv6 socket or an attempt to use the TCP SIO_KEEPALIVE_VALS IOCTL was made on a datagram socket.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSAIoctl</c> function is used to set or retrieve operating parameters associated with the socket, the transport protocol,
+		/// or the communications subsystem.
+		/// </para>
+		/// <para>
+		/// If both lpOverlapped and lpCompletionRoutine are <c>NULL</c>, the socket in this function will be treated as a non-overlapped
+		/// socket. For a non-overlapped socket, lpOverlapped and lpCompletionRoutine parameters are ignored, which causes the function to
+		/// behave like the standard ioctlsocket function except that the function can block if socket s is in blocking mode. If socket s is
+		/// in non-blocking mode, this function can return WSAEWOULDBLOCK when the specified operation cannot be finished immediately. In
+		/// this case, the application may change the socket to blocking mode and reissue the request or wait for the corresponding network
+		/// event (such as FD_ROUTING_INTERFACE_CHANGE or FD_ADDRESS_LIST_CHANGE in the case of <c>SIO_ROUTING_INTERFACE_CHANGE</c> or
+		/// <c>SIO_ADDRESS_LIST_CHANGE</c>) using a Windows message (using WSAAsyncSelect)-based or event (using WSAEventSelect)-based
+		/// notification mechanism.
+		/// </para>
+		/// <para>
+		/// For overlapped sockets, operations that cannot be completed immediately will be initiated, and completion will be indicated at a
+		/// later time. The <c>DWORD</c> value pointed to by the lpcbBytesReturned parameter that is returned may be ignored. The final
+		/// completion status and bytes returned can be retrieved when the appropriate completion method is signaled when the operation has completed.
+		/// </para>
+		/// <para>
+		/// Any IOCTL may block indefinitely, depending on the service provider's implementation. If the application cannot tolerate blocking
+		/// in a <c>WSAIoctl</c> call, overlapped I/O would be advised for IOCTLs that are especially likely to block including:
+		/// </para>
+		/// <para><c>SIO_ADDRESS_LIST_CHANGE</c></para>
+		/// <para><c>SIO_FINDROUTE</c></para>
+		/// <para><c>SIO_FLUSH</c></para>
+		/// <para><c>SIO_GET_QOS</c></para>
+		/// <para><c>SIO_GET_GROUP_QOS</c></para>
+		/// <para><c>SIO_ROUTING_INTERFACE_CHANGE</c></para>
+		/// <para><c>SIO_SET_QOS</c></para>
+		/// <para><c>SIO_SET_GROUP_QOS</c></para>
+		/// <para>
+		/// Some protocol-specific IOCTLs may also be especially likely to block. Check the relevant protocol-specific annex for any
+		/// available information.
+		/// </para>
+		/// <para>The prototype for the completion routine pointed to by the lpCompletionRoutine parameter is as follows:</para>
+		/// <para>
+		/// The CompletionRoutine is a placeholder for an application-supplied function name. The dwError parameter specifies the completion
+		/// status for the overlapped operation as indicated by lpOverlapped parameter. The cbTransferred parameter specifies the number of
+		/// bytes received. The dwFlags parameter is not used for this IOCTL. The completion routine does not return a value.
+		/// </para>
+		/// <para>
+		/// It is possible to adopt an encoding scheme that preserves the currently defined ioctlsocket opcodes while providing a convenient
+		/// way to partition the opcode identifier space in as much as the dwIoControlCode parameter is now a 32-bit entity. The
+		/// dwIoControlCode parameter is built to allow for protocol and vendor independence when adding new control codes while retaining
+		/// backward compatibility with the Windows Sockets 1.1 and Unix control codes. The dwIoControlCode parameter has the following form.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>I</term>
+		/// <term>O</term>
+		/// <term>V</term>
+		/// <term>T</term>
+		/// <term>Vendor/address family</term>
+		/// <term>Code</term>
+		/// </listheader>
+		/// <item>
+		/// <term>3</term>
+		/// <term>3</term>
+		/// <term>2</term>
+		/// <term>2 2</term>
+		/// <term>2 2 2 2 2 2 2 1 1 1 1</term>
+		/// <term>1 1 1 1 1 1</term>
+		/// </item>
+		/// <item>
+		/// <term>1</term>
+		/// <term>0</term>
+		/// <term>9</term>
+		/// <term>8 7</term>
+		/// <term>6 5 4 3 2 1 0 9 8 7 6</term>
+		/// <term>5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> The bits in dwIoControlCode parameter displayed in the table must be read vertically from top to bottom by column. So
+		/// the left-most bit is bit 31, the next bit is bit 30, and the right-most bit is bit 0.
+		/// </para>
+		/// <para>I is set if the input buffer is valid for the code, as with <c>IOC_IN</c>.</para>
+		/// <para>
+		/// O is set if the output buffer is valid for the code, as with <c>IOC_OUT</c>. Control codes using both input and output buffers
+		/// set both I and O.
+		/// </para>
+		/// <para>V is set if there are no parameters for the code, as with <c>IOC_VOID</c>.</para>
+		/// <para>T is a 2-bit quantity that defines the type of the IOCTL. The following values are defined:</para>
+		/// <para>0 The IOCTL is a standard Unix IOCTL code, as with <c>FIONREAD</c> and <c>FIONBIO</c>.</para>
+		/// <para>1 The IOCTL is a generic Windows Sockets 2 IOCTL code. New IOCTL codes defined for Windows Sockets 2 will have T == 1.</para>
+		/// <para>2 The IOCTL applies only to a specific address family.</para>
+		/// <para>
+		/// 3 The IOCTL applies only to a specific vendor's provider, as with <c>IOC_VENDOR</c>. This type allows companies to be assigned a
+		/// vendor number that appears in the <c>Vendor/Address family</c> parameter. Then, the vendor can define new IOCTLs specific to that
+		/// vendor without having to register the IOCTL with a clearinghouse, thereby providing vendor flexibility and privacy.
+		/// </para>
+		/// <para>
+		/// <c>Vendor/Address family</c> An 11-bit quantity that defines the vendor who owns the code (if T == 3) or that contains the
+		/// address family to which the code applies (if T == 2). If this is a Unix IOCTL code (T == 0) then this parameter has the same
+		/// value as the code on Unix. If this is a generic Windows Sockets 2 IOCTL (T == 1) then this parameter can be used as an extension
+		/// of the code parameter to provide additional code values.
+		/// </para>
+		/// <para><c>Code</c> The 16-bit quantity that contains the specific IOCTL code for the operation.</para>
+		/// <para>The following Unix IOCTL codes (commands) are supported.</para>
+		/// <para>The following Windows Sockets 2 commands are supported.</para>
+		/// <para>
+		/// If an overlapped operation completes immediately, <c>WSAIoctl</c> returns a value of zero and the lpcbBytesReturned parameter is
+		/// updated with the number of bytes in the output buffer. If the overlapped operation is successfully initiated and will complete
+		/// later, this function returns SOCKET_ERROR and indicates error code WSA_IO_PENDING. In this case, lpcbBytesReturned is not
+		/// updated. When the overlapped operation completes the amount of data in the output buffer is indicated either through the
+		/// cbTransferred parameter in the completion routine (if specified), or through the lpcbTransfer parameter in WSAGetOverlappedResult.
+		/// </para>
+		/// <para>
+		/// When called with an overlapped socket, the lpOverlapped parameter must be valid for the duration of the overlapped operation. The
+		/// lpOverlapped parameter contains the address of a WSAOVERLAPPED structure.
+		/// </para>
+		/// <para>
+		/// If the lpCompletionRoutine parameter is <c>NULL</c>, the hEvent parameter of lpOverlapped is signaled when the overlapped
+		/// operation completes if it contains a valid event object handle. An application can use WSAWaitForMultipleEvents or
+		/// WSAGetOverlappedResult to wait or poll on the event object.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> All I/O initiated by a given thread is canceled when that thread exits. For overlapped sockets, pending asynchronous
+		/// operations can fail if the thread is closed before the operations complete. See ExitThread for more information.
+		/// </para>
+		/// <para>
+		/// If lpCompletionRoutine is not <c>NULL</c>, the hEvent parameter is ignored and can be used by the application to pass context
+		/// information to the completion routine. A caller that passes a non- <c>NULL</c> lpCompletionRoutine and later calls
+		/// WSAGetOverlappedResult for the same overlapped I/O request may not set the fWait parameter for that invocation of
+		/// <c>WSAGetOverlappedResult</c> to <c>TRUE</c>. In this case, the usage of the hEvent parameter is undefined, and attempting to
+		/// wait on the hEvent parameter would produce unpredictable results.
+		/// </para>
+		/// <para>The prototype of the completion routine is as follows:</para>
+		/// <para>
+		/// This <c>CompletionRoutine</c> is a placeholder for an application-defined or library-defined function. The completion routine is
+		/// invoked only if the thread is in an alertable state. To put a thread into an alertable state, use the WSAWaitForMultipleEvents,
+		/// WaitForSingleObjectEx, or WaitForMultipleObjectsEx function with the fAlertable or bAlertable parameter set to <c>TRUE</c>.
+		/// </para>
+		/// <para>
+		/// The dwError parameter of <c>CompletionRoutine</c> specifies the completion status for the overlapped operation as indicated by
+		/// lpOverlapped. The cbTransferred parameter specifies the number of bytes returned. Currently, no flag values are defined and
+		/// dwFlags will be zero. The <c>CompletionRoutine</c> function does not return a value.
+		/// </para>
+		/// <para>
+		/// Returning from this function allows invocation of another pending completion routine for this socket. The completion routines can
+		/// be called in any order, not necessarily in the same order the overlapped operations are completed.
+		/// </para>
+		/// <para>Compatibility</para>
+		/// <para>
+		/// The IOCTL codes with T == 0 are a subset of the IOCTL codes used in Berkeley sockets. In particular, there is no command that is
+		/// equivalent to <c>FIOASYNC</c>.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Some IOCTL codes require additional header files. For example, use of the <c>SIO_RCVALL</c> IOCTL requires the
+		/// Mstcpip.h header file.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaioctl
+		// int WSAAPI WSAIoctl( SOCKET s, DWORD dwIoControlCode, LPVOID lpvInBuffer, DWORD cbInBuffer, LPVOID lpvOutBuffer, DWORD cbOutBuffer, LPDWORD lpcbBytesReturned, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
+		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "038aeca6-d7b7-4f74-ac69-4536c2e5118b")]
+		public static extern int WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [Optional] IntPtr lpOverlapped, [Optional] IntPtr lpCompletionRoutine);
+
 		/// <summary>The <c>WSAStartup</c> function initiates use of the Winsock DLL by a process.</summary>
 		/// <param name="wVersionRequired">TBD</param>
 		/// <param name="lpWSAData">A pointer to the WSADATA data structure that is to receive details of the Windows Sockets implementation.</param>
@@ -2272,7 +3516,7 @@ namespace Vanara.PInvoke
 		/// <summary>The IN_ADDR structure represents an IPv4 address.</summary>
 		[PInvokeData("winsock2.h")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct IN_ADDR
+		public struct IN_ADDR : IEquatable<IN_ADDR>
 		{
 			/// <summary>An IPv4 address formatted as a u_long.</summary>
 			public uint S_addr;
@@ -2301,6 +3545,10 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the address represented as four bytes.</summary>
 			/// <value>An IPv4 address formatted as four u_chars.</value>
 			public byte[] S_un_b => BitConverter.GetBytes(S_addr);
+
+			public static bool operator ==(IN_ADDR left, IN_ADDR right) => left.Equals(right);
+
+			public static bool operator !=(IN_ADDR left, IN_ADDR right) => !left.Equals(right);
 
 			/// <summary>Performs an implicit conversion from <see cref="IN_ADDR"/> to <see cref="System.UInt32"/>.</summary>
 			/// <param name="a">An IN_ADDR value.</param>
@@ -2334,6 +3582,8 @@ namespace Vanara.PInvoke
 				var b = S_un_b;
 				return $"{b[0]}.{b[1]}.{b[2]}.{b[3]}";
 			}
+
+			public bool Equals(IN_ADDR other) => S_addr == other.S_addr;
 		}
 
 		[PInvokeData("winsock2.h")]
@@ -2407,6 +3657,10 @@ namespace Vanara.PInvoke
 					}
 				}
 			}
+
+			public static bool operator ==(IN6_ADDR left, IN6_ADDR right) => left.Equals(right);
+
+			public static bool operator !=(IN6_ADDR left, IN6_ADDR right) => !left.Equals(right);
 
 			public static implicit operator IN6_ADDR(byte[] a) => new IN6_ADDR(a);
 
@@ -2504,14 +3758,13 @@ namespace Vanara.PInvoke
 
 			public static implicit operator SOCKADDR_IN6(IN6_ADDR addr) => new SOCKADDR_IN6(addr, 0);
 
+			/// <inheritdoc />
 			public override string ToString() => $"{sin6_addr}" + (sin6_scope_id == 0 ? "" : "%" + sin6_scope_id.ToString()) + $":{sin6_port}";
 		}
 
 		/// <summary>
-		/// <para>
 		/// The <c>SOCKADDR_IN6_PAIR</c> structure contains pointers to a pair of IP addresses that represent a source and destination
 		/// address pair.
-		/// </para>
 		/// </summary>
 		/// <remarks>
 		/// <para>The <c>SOCKADDR_IN6_PAIR</c> structure is defined on Windows Vista and later.</para>
@@ -2529,24 +3782,70 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct SOCKADDR_IN6_PAIR
 		{
+			/// <summary>The source address</summary>
 			private IntPtr _SourceAddress;
+			/// <summary>The destination address</summary>
 			private IntPtr _DestinationAddress;
 
 			/// <summary>
-			/// <para>
 			/// A pointer to an IP source address represented as a SOCKADDR_IN6 structure. The address family is in host byte order and the
 			/// IPv6 address, port, flow information, and zone ID are in network byte order.
-			/// </para>
 			/// </summary>
+			/// <value>The source address.</value>
 			public SOCKADDR_IN6 SourceAddress => _SourceAddress.ToStructure<SOCKADDR_IN6>();
 
 			/// <summary>
-			/// <para>
 			/// A pointer to an IP source address represented as a SOCKADDR_IN6 structure. The address family is in host byte order and the
 			/// IPv6 address, port, flow information, and zone ID are in network byte order.
-			/// </para>
 			/// </summary>
+			/// <value>The destination address.</value>
 			public SOCKADDR_IN6 DestinationAddress => _DestinationAddress.ToStructure<SOCKADDR_IN6>();
+
+			public static implicit operator SOCKADDR_IN6_PAIR_NATIVE(SOCKADDR_IN6_PAIR unmgd) =>
+				new SOCKADDR_IN6_PAIR_NATIVE { SourceAddress = unmgd.SourceAddress, DestinationAddress = unmgd.DestinationAddress };
+
+			/// <summary>Converts to string.</summary>
+			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			/// <inheritdoc/>
+			public override string ToString() => $"{SourceAddress} : {DestinationAddress}";
+		}
+
+		/// <summary>
+		/// The <c>SOCKADDR_IN6_PAIR</c> structure contains pointers to a pair of IP addresses that represent a source and destination
+		/// address pair.
+		/// </summary>
+		/// <remarks>
+		/// <para>The <c>SOCKADDR_IN6_PAIR</c> structure is defined on Windows Vista and later.</para>
+		/// <para>
+		/// Any IPv4 addresses in the <c>SOCKADDR_IN6_PAIR</c> structure must be represented in the IPv4-mapped IPv6 address format which
+		/// enables an IPv6 only application to communicate with an IPv4 node. For more information on the IPv4-mapped IPv6 address format,
+		/// see Dual-Stack Sockets.
+		/// </para>
+		/// <para>The <c>SOCKADDR_IN6_PAIR</c> structure is used by the CreateSortedAddressPairs function.</para>
+		/// <para>Note that the Ws2ipdef.h header file is automatically included in Ws2tcpip.h header file, and should never be used directly.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ws2ipdef/ns-ws2ipdef-_sockaddr_in6_pair typedef struct _sockaddr_in6_pair {
+		// PSOCKADDR_IN6 SourceAddress; PSOCKADDR_IN6 DestinationAddress; } SOCKADDR_IN6_PAIR, *PSOCKADDR_IN6_PAIR;
+		[PInvokeData("ws2ipdef.h", MSDNShortId = "0265f8e0-8b35-4d9d-bf22-e98e9ff36a17")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SOCKADDR_IN6_PAIR_NATIVE
+		{
+			/// <summary>
+			/// A pointer to an IP source address represented as a SOCKADDR_IN6 structure. The address family is in host byte order and the
+			/// IPv6 address, port, flow information, and zone ID are in network byte order.
+			/// </summary>
+			public SOCKADDR_IN6 SourceAddress;
+
+			/// <summary>
+			/// A pointer to an IP source address represented as a SOCKADDR_IN6 structure. The address family is in host byte order and the
+			/// IPv6 address, port, flow information, and zone ID are in network byte order.
+			/// </summary>
+			public SOCKADDR_IN6 DestinationAddress;
+
+			/// <summary>Converts to string.</summary>
+			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			/// <inheritdoc/>
+			public override string ToString() => $"{SourceAddress} : {DestinationAddress}";
 		}
 
 		[PInvokeData("winsock2.h")]
@@ -2596,6 +3895,10 @@ namespace Vanara.PInvoke
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public SOCKET(IntPtr preexistingHandle) => handle = preexistingHandle;
 
+			/// <summary>Represents an invalid socket which is different than a null socket.</summary>
+			/// <value>The invalid socket.</value>
+			public static SOCKET INVALID_SOCKET => new SOCKET(new IntPtr(-1));
+
 			/// <summary>Returns an invalid handle by instantiating a <see cref="SOCKET"/> object with <see cref="IntPtr.Zero"/>.</summary>
 			/// <value>Returns a <see cref="SOCKET"/> value.</value>
 			public static SOCKET NULL => new SOCKET(IntPtr.Zero);
@@ -2641,6 +3944,34 @@ namespace Vanara.PInvoke
 			/// <returns>An IntPtr representing the value of the handle field.</returns>
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="SOCKET"/> that is disposed using <see cref="closesocket/>.</summary>
+		public class SafeSOCKET : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeSOCKET"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeSOCKET(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeSOCKET"/> class.</summary>
+			private SafeSOCKET() : base() { }
+
+			/// <summary>Represents an invalid socket which is different than a null socket.</summary>
+			/// <value>The invalid socket.</value>
+			public static SafeSOCKET INVALID_SOCKET => new SafeSOCKET(new IntPtr(-1), false);
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="SafeSOCKET"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			/// <value>Returns a <see cref="SafeSOCKET"/> value.</value>
+			public static SafeSOCKET NULL => new SafeSOCKET(IntPtr.Zero, false);
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeSOCKET"/> to <see cref="SOCKET"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SOCKET(SafeSOCKET h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => closesocket(this) == 0;
 		}
 
 		[PInvokeData("winsock2.h")]
@@ -3342,6 +4673,8 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsock2.h")]
 		public class SOCKADDR : SafeMemoryHandle<CoTaskMemoryMethods>
 		{
+			public SOCKADDR(IntPtr handle, bool ownsHandle = false, int size = 0) : base(handle, size, ownsHandle) { }
+
 			public SOCKADDR(uint addr, ushort port = 0) : this(BitConverter.GetBytes(addr), port)
 			{
 			}
@@ -3363,8 +4696,23 @@ namespace Vanara.PInvoke
 					throw new ArgumentOutOfRangeException(nameof(addr));
 			}
 
+			public SOCKADDR(SOCKADDR_IN addr) : base(Marshal.SizeOf(typeof(SOCKADDR_IN))) => Marshal.StructureToPtr(addr, handle, false);
+
+			public SOCKADDR(SOCKADDR_IN6 addr) : base(Marshal.SizeOf(typeof(SOCKADDR_IN6))) => Marshal.StructureToPtr(addr, handle, false);
+
+			public static implicit operator SOCKADDR(SOCKADDR_IN addr) => new SOCKADDR(addr);
+
+			public static implicit operator SOCKADDR(SOCKADDR_IN6 addr) => new SOCKADDR(addr);
+
+			public static explicit operator SOCKADDR_IN(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET ? addr.handle.ToStructure<SOCKADDR_IN>() : throw new InvalidCastException();
+
+			public static explicit operator SOCKADDR_IN6(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET6 ? addr.handle.ToStructure<SOCKADDR_IN6>() : throw new InvalidCastException();
+
 			public byte[] sa_data => GetBytes(2, 14);
-			public ushort sa_family => handle.ToStructure<ushort>();
+
+			public ADDRESS_FAMILY sa_family => (ADDRESS_FAMILY)handle.ToStructure<ushort>();
+
+			public static SOCKADDR Empty => new SOCKADDR(new byte[Marshal.SizeOf(typeof(IN6_ADDR))]);
 		}
 	}
 }

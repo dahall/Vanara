@@ -4,7 +4,7 @@
     <Description>Classes for system related items derived from the Vanara PInvoke libraries. Includes a class for working with virtual disks (including async methods), classes for BITS, and extensions for Process (privileges and elavation), FileInfo (compression info), and ServiceController (SetStartType) that pull extended information through native API calls.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.3.0</VersionPrefix>
+    <VersionPrefix>2.3.7</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
     <AssemblyName>Vanara.SystemServices</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -23,22 +23,22 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-BackgroundCopyException, BackgroundCopyFileCollection, BackgroundCopyFileInfo, BackgroundCopyFileRange, BackgroundCopyFileRangesTransferredEventArgs, BackgroundCopyFileTransferredEventArgs, BackgroundCopyJob, BackgroundCopyJobCollection, BackgroundCopyJobCredential, BackgroundCopyJobCredentials, BackgroundCopyJobEventArgs, BackgroundCopyManager, FileInfoExtension, NetworkConnection, NetworkInterfaceExt, NetworkListManager, NetworkProfile, PathEx, ProcessExtension, RegistryEventArgs, RegistryEventMonitor, ServiceControllerExtension, SystemShutdown, VirtualDisk, VirtualDiskMetadata, Wow64Redirect
+BackgroundCopyException, BackgroundCopyFileCollection, BackgroundCopyFileInfo, BackgroundCopyFileRange, BackgroundCopyFileRangesTransferredEventArgs, BackgroundCopyFileTransferredEventArgs, BackgroundCopyJob, BackgroundCopyJobCollection, BackgroundCopyJobCredential, BackgroundCopyJobCredentials, BackgroundCopyJobEventArgs, BackgroundCopyManager, Computer, FileInfoExtension, NetworkConnection, NetworkInterfaceExt, NetworkListManager, NetworkProfile, OpenFile, PathEx, PoweredDevice, PoweredDeviceCollection, PowerManager, PowerScheme, PowerSchemeCollection, PowerSchemeGroup, PowerSchemeGroupCollection, PowerSchemeSetting, PowerSchemeSettingCollection, ProcessExtension, RegistryEventArgs, RegistryEventMonitor, ServiceControllerExtension, ShareConnection, SharedDevice, SharedDevices, SystemShutdown, VirtualDisk, VirtualDiskMetadata, Wow64Redirect
 
 Structures
 BackgroundCopyFileRange, BackgroundCopyJobProgress, BackgroundCopyJobReplyProgress
 
 Enumerations
-BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, BackgroundCopyJobCredentialScheme, BackgroundCopyJobCredentialTarget, BackgroundCopyJobPriority, BackgroundCopyJobSecurity, BackgroundCopyJobState, BackgroundCopyJobType, DeviceType, NetworkInterfaceAccessType, NetworkInterfaceAdministrativeStatus, NetworkInterfaceConnectionType, NetworkInterfaceDirectionType, NetworkInterfaceMediaType, NetworkInterfacePhysicalMedium, PathCharType, ProcessIntegrityLevel, Subtype
+BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, BackgroundCopyJobCredentialScheme, BackgroundCopyJobCredentialTarget, BackgroundCopyJobPriority, BackgroundCopyJobSecurity, BackgroundCopyJobState, BackgroundCopyJobType, BatteryStatus, DeviceType, EnergySaverStatus, NetworkInterfaceAccessType, NetworkInterfaceAdministrativeStatus, NetworkInterfaceConnectionType, NetworkInterfaceDirectionType, NetworkInterfaceMediaType, NetworkInterfacePhysicalMedium, PathCharType, PowerCapabilities, PowerSupplyStatus, ProcessIntegrityLevel, ShareOfflineSettings, Subtype
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Vanara.snk</AssemblyOriginatorKeyFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
     <Reference Include="System.Management" />
@@ -61,6 +61,16 @@ BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, Backgrou
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Computer\LocalGroup.cs" />
+    <Compile Remove="Computer\LocalUser.cs" />
+    <Compile Remove="Computer\~LocalGroup.cs" />
+    <Compile Remove="Computer\~LocalUser.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Computer\~LocalGroup.cs" />
+    <None Include="Computer\~LocalUser.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="4.5.0" Condition=" '$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netcoreapp2.0' Or '$(TargetFramework)' == 'netcoreapp2.1' " />
     <PackageReference Include="Theraot.Core" Version="3.0.2" Condition=" '$(TargetFramework)' == 'net20' Or '$(TargetFramework)' == 'net35' Or '$(TargetFramework)' == 'net40' " />
   </ItemGroup>
@@ -68,7 +78,10 @@ BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, Backgrou
     <ProjectReference Include="..\PInvoke\BITS\Vanara.PInvoke.BITS.csproj" />
     <ProjectReference Include="..\PInvoke\IpHlpApi\Vanara.PInvoke.IpHlpApi.csproj" />
     <ProjectReference Include="..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\PInvoke\Mpr\Vanara.PInvoke.Mpr.csproj" />
+    <ProjectReference Include="..\PInvoke\NetApi32\Vanara.PInvoke.NetApi32.csproj" />
     <ProjectReference Include="..\PInvoke\NetListMgr\Vanara.PInvoke.NetListMgr.csproj" />
+    <ProjectReference Include="..\PInvoke\PowrProf\Vanara.PInvoke.PowrProf.csproj" />
     <ProjectReference Include="..\PInvoke\ShlwApi\Vanara.PInvoke.ShlwApi.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
     <ProjectReference Include="..\PInvoke\VirtDisk\Vanara.PInvoke.VirtDisk.csproj" />

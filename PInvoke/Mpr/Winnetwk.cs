@@ -6,7 +6,7 @@ using Vanara.InteropServices;
 namespace Vanara.PInvoke
 {
 	/// <summary>Items from the mpr.dll</summary>
-	public static class Mpr
+	public static partial class Mpr
 	{
 		/// <summary>Flags used in the CONNECTDLGSTRUCT.</summary>
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa385332(v=vs.85).aspx
@@ -1282,7 +1282,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetCloseEnum( _In_ HANDLE hEnum); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385431(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385431")]
-		public static extern Win32Error WNetCloseEnum(SafeWNetEnumHandle hEnum);
+		public static extern Win32Error WNetCloseEnum(HANDLE hEnum);
 
 		/// <summary>
 		/// The <c>WNetConnectionDialog</c> function starts a general browsing dialog box for connecting to network resources. The function
@@ -2253,166 +2253,7 @@ namespace Vanara.PInvoke
 		// lphEnum); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385478(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385478")]
-		public static extern Win32Error WNetOpenEnum(NETRESOURCEScope dwScope, NETRESOURCEType dwType, NETRESOURCEUsage dwUsage, NETRESOURCE lpNetResource, out SafeWNetEnumHandle lphEnum);
-
-		/// <summary>
-		/// The <c>WNetOpenEnum</c> function starts an enumeration of network resources or existing connections. You can continue the
-		/// enumeration by calling the <c>WNetEnumResource</c> function.
-		/// </summary>
-		/// <param name="dwScope">
-		/// <para>Scope of the enumeration. This parameter can be one of the following values.</para>
-		/// <para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>RESOURCE_CONNECTED</term>
-		/// <term>
-		/// Enumerate all currently connected resources. The function ignores the dwUsage parameter. For more information, see the following
-		/// Remarks section.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCE_CONTEXT</term>
-		/// <term>
-		/// Enumerate only resources in the network context of the caller. Specify this value for a Network Neighborhood view. The function
-		/// ignores the dwUsage parameter.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCE_GLOBALNET</term>
-		/// <term>Enumerate all resources on the network.</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCE_REMEMBERED</term>
-		/// <term>Enumerate all remembered (persistent) connections. The function ignores the dwUsage parameter.</term>
-		/// </item>
-		/// </list>
-		/// </para>
-		/// </param>
-		/// <param name="dwType">
-		/// <para>Resource types to be enumerated. This parameter can be a combination of the following values.</para>
-		/// <para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>RESOURCETYPE_ANY</term>
-		/// <term>All resources. This value cannot be combined with RESOURCETYPE_DISK or RESOURCETYPE_PRINT.</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCETYPE_DISK</term>
-		/// <term>All disk resources.</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCETYPE_PRINT</term>
-		/// <term>All print resources.</term>
-		/// </item>
-		/// </list>
-		/// </para>
-		/// <para>If a network provider cannot distinguish between print and disk resources, it can enumerate all resources.</para>
-		/// </param>
-		/// <param name="dwUsage">
-		/// <para>Resource usage type to be enumerated. This parameter can be a combination of the following values.</para>
-		/// <para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>0</term>
-		/// <term>All resources.</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEUSAGE_CONNECTABLE</term>
-		/// <term>All connectable resources.</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEUSAGE_CONTAINER</term>
-		/// <term>All container resources.</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEUSAGE_ATTACHED</term>
-		/// <term>
-		/// Setting this value forces WNetOpenEnum to fail if the user is not authenticated. The function fails even if the network allows
-		/// enumeration without authentication.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEUSAGE_ALL</term>
-		/// <term>Setting this value is equivalent to setting RESOURCEUSAGE_CONNECTABLE, RESOURCEUSAGE_CONTAINER, and RESOURCEUSAGE_ATTACHED.</term>
-		/// </item>
-		/// </list>
-		/// </para>
-		/// <para>
-		/// This parameter is ignored unless the dwScope parameter is equal to RESOURCE_GLOBALNET. For more information, see the following
-		/// Remarks section.
-		/// </para>
-		/// </param>
-		/// <param name="lpNetResource">
-		/// <para>
-		/// Pointer to a <c>NETRESOURCE</c> structure that specifies the container to enumerate. If the dwScope parameter is not
-		/// RESOURCE_GLOBALNET, this parameter must be <c>NULL</c>.
-		/// </para>
-		/// <para>
-		/// If this parameter is <c>NULL</c>, the root of the network is assumed. (The system organizes a network as a hierarchy; the root is
-		/// the topmost container in the network.)
-		/// </para>
-		/// <para>
-		/// If this parameter is not <c>NULL</c>, it must point to a <c>NETRESOURCE</c> structure. This structure can be filled in by the
-		/// application or it can be returned by a call to the <c>WNetEnumResource</c> function. The <c>NETRESOURCE</c> structure must
-		/// specify a container resource; that is, the RESOURCEUSAGE_CONTAINER value must be specified in the dwUsage parameter.
-		/// </para>
-		/// <para>
-		/// To enumerate all network resources, an application can begin the enumeration by calling <c>WNetOpenEnum</c> with the
-		/// lpNetResource parameter set to <c>NULL</c>, and then use the returned handle to call <c>WNetEnumResource</c> to enumerate
-		/// resources. If one of the resources in the <c>NETRESOURCE</c> array returned by the <c>WNetEnumResource</c> function is a
-		/// container resource, you can call <c>WNetOpenEnum</c> to open the resource for further enumeration.
-		/// </para>
-		/// </param>
-		/// <param name="lphEnum">Pointer to an enumeration handle that can be used in a subsequent call to <c>WNetEnumResource</c>.</param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is NO_ERROR.</para>
-		/// <para>If the function fails, the return value is a system error code, such as one of the following values.</para>
-		/// <para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>ERROR_NOT_CONTAINER</term>
-		/// <term>The lpNetResource parameter does not point to a container.</term>
-		/// </item>
-		/// <item>
-		/// <term>ERROR_INVALID_PARAMETER</term>
-		/// <term>Either the dwScope or the dwType parameter is invalid, or there is an invalid combination of parameters.</term>
-		/// </item>
-		/// <item>
-		/// <term>ERROR_NO_NETWORK</term>
-		/// <term>The network is unavailable.</term>
-		/// </item>
-		/// <item>
-		/// <term>ERROR_EXTENDED_ERROR</term>
-		/// <term>A network-specific error occurred. To obtain a description of the error, call the WNetGetLastError function.</term>
-		/// </item>
-		/// <item>
-		/// <term>ERROR_INVALID_ADDRESS</term>
-		/// <term>A remote network resource name supplied in the NETRESOURCE structure resolved to an invalid network address.</term>
-		/// </item>
-		/// </list>
-		/// </para>
-		/// </returns>
-		// DWORD WNetOpenEnum( _In_ DWORD dwScope, _In_ DWORD dwType, _In_ DWORD dwUsage, _In_ LPNETRESOURCE lpNetResource, _Out_ LPHANDLE
-		// lphEnum); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385478(v=vs.85).aspx
-		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385478")]
-		public static extern Win32Error WNetOpenEnum(NETRESOURCEScope dwScope, NETRESOURCEType dwType, NETRESOURCEUsage dwUsage, IntPtr lpNetResource, out SafeWNetEnumHandle lphEnum);
+		public static extern Win32Error WNetOpenEnum(NETRESOURCEScope dwScope, NETRESOURCEType dwType, NETRESOURCEUsage dwUsage, [Optional] NETRESOURCE lpNetResource, out SafeWNetEnumHandle lphEnum);
 
 		/// <summary>
 		/// <para>Sets extended error information. Network providers should call this function instead of SetLastError.</para>
@@ -3267,7 +3108,7 @@ namespace Vanara.PInvoke
 			private SafeWNetEnumHandle() : base() { }
 
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => WNetCloseEnum(this).Succeeded;
+			protected override bool InternalReleaseHandle() => WNetCloseEnum(handle).Succeeded;
 		}
 	}
 }

@@ -89,7 +89,7 @@ namespace Vanara.Security.AccessControl
 				catch { }
 			}
 			if (ObjectSecurity == null)
-				throw new ArgumentException("Object must have a GetAccessControl member.");
+				throw new ArgumentException("Object must be valid and have a GetAccessControl member.");
 
 			// Get the object names
 			switch (knownObject.GetType().Name)

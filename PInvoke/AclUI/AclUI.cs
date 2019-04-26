@@ -310,7 +310,8 @@ namespace Vanara.PInvoke
 			/// <param name="pcGrantedAccessListLength">
 			/// A pointer to a ULONG variable that receives the count of granted access masks pointed to by the ppGrantedAccessList parameter.
 			/// </param>
-			void GetEffectivePermission(in Guid pguidObjectType, [In] PSID pUserSid,
+			[PreserveSig]
+			HRESULT GetEffectivePermission(in Guid pguidObjectType, [In] PSID pUserSid,
 				[In, MarshalAs(UnmanagedType.LPWStr)] string pszServerName, [In] PSECURITY_DESCRIPTOR pSD,
 				[MarshalAs(UnmanagedType.LPArray)] out OBJECT_TYPE_LIST[] ppObjectTypeList,
 				out uint pcObjectTypeListLength,
@@ -397,7 +398,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </param>
 			[PreserveSig]
-			uint ComputeEffectivePermissionWithSecondarySecurity(
+			HRESULT ComputeEffectivePermissionWithSecondarySecurity(
 				[In] PSID pSid,
 				[In, Optional] PSID pDeviceSid,
 				[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszServerName,
@@ -430,7 +431,8 @@ namespace Vanara.PInvoke
 			/// <param name="object_info">
 			/// A pointer to an SI_OBJECT_INFO structure. Your implementation must fill this structure to pass information back to the access control editor.
 			/// </param>
-			void GetObjectInformation(ref SI_OBJECT_INFO object_info);
+			[PreserveSig]
+			HRESULT GetObjectInformation(ref SI_OBJECT_INFO object_info);
 
 			/// <summary>
 			/// The GetSecurity method requests a security descriptor for the securable object whose security descriptor is being edited. The access control
@@ -455,7 +457,8 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>If this flag is FALSE, ppSecurityDescriptor should return the object's current security descriptor.</para>
 			/// </param>
-			void GetSecurity([In] SECURITY_INFORMATION RequestInformation, out PSECURITY_DESCRIPTOR SecurityDescriptor, [In, MarshalAs(UnmanagedType.Bool)] bool fDefault);
+			[PreserveSig]
+			HRESULT GetSecurity([In] SECURITY_INFORMATION RequestInformation, out PSECURITY_DESCRIPTOR SecurityDescriptor, [In, MarshalAs(UnmanagedType.Bool)] bool fDefault);
 
 			/// <summary>
 			/// The SetSecurity method provides a security descriptor containing the security information the user wants to apply to the securable object. The
@@ -466,7 +469,8 @@ namespace Vanara.PInvoke
 			/// A pointer to a security descriptor containing the new security information. Do not assume the security descriptor is in self-relative form; it
 			/// can be either absolute or self-relative.
 			/// </param>
-			void SetSecurity([In] SECURITY_INFORMATION RequestInformation, [In] PSECURITY_DESCRIPTOR SecurityDescriptor);
+			[PreserveSig]
+			HRESULT SetSecurity([In] SECURITY_INFORMATION RequestInformation, [In] PSECURITY_DESCRIPTOR SecurityDescriptor);
 
 			/// <summary>
 			/// The GetAccessRights method requests information about the access rights that can be controlled for a securable object. The access control editor
@@ -490,7 +494,8 @@ namespace Vanara.PInvoke
 			/// A pointer to ULONG that indicates the zero-based index of the array entry that contains the default access rights. The access control editor uses
 			/// this entry as the initial access rights in a new ACE.
 			/// </param>
-			void GetAccessRights(in Guid guidObject, [In] int dwFlags, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out SI_ACCESS[] access, ref uint access_count, out uint DefaultAccess);
+			[PreserveSig]
+			HRESULT GetAccessRights(in Guid guidObject, [In] int dwFlags, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out SI_ACCESS[] access, ref uint access_count, out uint DefaultAccess);
 
 			/// <summary>
 			/// The MapGeneric method requests that the generic access rights in an access mask be mapped to their corresponding standard and specific access
@@ -505,7 +510,8 @@ namespace Vanara.PInvoke
 			/// A pointer to an access mask that contains the generic access rights to map. Your implementation must map the generic access rights to the
 			/// corresponding standard and specific access rights for the specified object type.
 			/// </param>
-			void MapGeneric(in Guid guidObjectType, ref sbyte AceFlags, ref uint Mask);
+			[PreserveSig]
+			HRESULT MapGeneric(in Guid guidObjectType, ref sbyte AceFlags, ref uint Mask);
 
 			/// <summary>
 			/// The GetInheritTypes method requests information about how ACEs can be inherited by child objects. For more information, see ACE Inheritance.
@@ -515,7 +521,8 @@ namespace Vanara.PInvoke
 			/// combination of inheritance flags and child object type that you support.
 			/// </param>
 			/// <param name="InheritTypesCount">A pointer to a variable that you should set to indicate the number of entries in the ppInheritTypes array.</param>
-			void GetInheritTypes([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out SI_INHERIT_TYPE[] InheritType, out uint InheritTypesCount);
+			[PreserveSig]
+			HRESULT GetInheritTypes([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out SI_INHERIT_TYPE[] InheritType, out uint InheritTypesCount);
 
 			/// <summary>
 			/// The PropertySheetPageCallback method notifies an EditSecurity or CreateSecurityPage caller that an access control editor property page is being
@@ -526,7 +533,8 @@ namespace Vanara.PInvoke
 			/// <param name="uPage">
 			/// A value from the SI_PAGE_TYPE enumeration type that indicates the type of access control editor property page being created or destroyed.
 			/// </param>
-			void PropertySheetPageCallback([In] HWND hwnd, [In] PropertySheetCallbackMessage uMsg, [In] SI_PAGE_TYPE uPage);
+			[PreserveSig]
+			HRESULT PropertySheetPageCallback([In] HWND hwnd, [In] PropertySheetCallbackMessage uMsg, [In] SI_PAGE_TYPE uPage);
 		}
 
 		/// <summary>
@@ -557,7 +565,8 @@ namespace Vanara.PInvoke
 			/// A pointer to a pointer to a returned data transfer object that contains the common names of the SIDs. Optionally, this parameter also returns the
 			/// user principal name (UPN) of the SIDs in the rgpSids parameter. The data transfer object is a SID_INFO structure.
 			/// </param>
-			void LookupSids([In] uint cSids, [In, MarshalAs(UnmanagedType.LPArray)] PSID[] rgpSids, out IntPtr ppdo);
+			[PreserveSig]
+			HRESULT LookupSids([In] uint cSids, [In, MarshalAs(UnmanagedType.LPArray)] PSID[] rgpSids, out IntPtr ppdo);
 		}
 
 		/// <summary>
@@ -574,7 +583,8 @@ namespace Vanara.PInvoke
 			/// calling the OpenElevatedEditor method.
 			/// </summary>
 			/// <returns>The full path and file name of the object for which permissions are to be edited.</returns>
-			[return: MarshalAs(UnmanagedType.LPWStr)] string GetFullResourceName();
+			[PreserveSig]
+			HRESULT GetFullResourceName([MarshalAs(UnmanagedType.LPWStr)] out string ppszResourceName);
 
 			/// <summary>
 			/// The OpenElevatedEditor method opens an access control editor when a user clicks the Edit button on an access control editor page that displays an
@@ -583,7 +593,8 @@ namespace Vanara.PInvoke
 			/// </summary>
 			/// <param name="hWnd">The parent window of the access control editor.</param>
 			/// <param name="uPage">A value of the SI_PAGE_TYPE enumeration that indicates the page type on which to display the elevated access control editor.</param>
-			void OpenElevatedEditor([In] HWND hWnd, [In] SI_PAGE_TYPE uPage);
+			[PreserveSig]
+			HRESULT OpenElevatedEditor([In] HWND hWnd, [In] SI_PAGE_TYPE uPage);
 		}
 
 		/// <summary>
@@ -603,7 +614,8 @@ namespace Vanara.PInvoke
 			/// the EditSecurity function returns.
 			/// </param>
 			/// <param name="pSecurityObjectCount">The number of security objects in the pSecurityObjects parameter that are set on success.</param>
-			void GetSecondarySecurity([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out SECURITY_OBJECT[] pSecurityObjects, out uint pSecurityObjectCount);
+			[PreserveSig]
+			HRESULT GetSecondarySecurity([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out SECURITY_OBJECT[] pSecurityObjects, out uint pSecurityObjectCount);
 		}
 
 		/// <summary>
@@ -626,7 +638,8 @@ namespace Vanara.PInvoke
 			/// as the number of ACEs in the ACL referenced by pACL. Each INHERITED_FROM entry in ppInheritArray provides inheritance information for the
 			/// corresponding ACE entry in pACL.
 			/// </param>
-			void GetInheritSource([In] int si, [In] PACL pACL, [MarshalAs(UnmanagedType.LPArray)] out INHERITED_FROM[] ppInheritArray);
+			[PreserveSig]
+			HRESULT GetInheritSource([In] int si, [In] PACL pACL, [MarshalAs(UnmanagedType.LPArray)] out INHERITED_FROM[] ppInheritArray);
 		}
 
 		/// <summary>

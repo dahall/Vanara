@@ -1120,64 +1120,75 @@ namespace Vanara.PInvoke
 		/// <para>Examples</para>
 		/// <para>For an example, see Using Rectangles.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-fillrect
-		// int FillRect( HDC hDC, const RECT *lprc, HBRUSH hbr );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-fillrect int FillRect( HDC hDC, const RECT *lprc, HBRUSH
+		// hbr );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "98ab34da-ea07-4446-a62e-509c849d95f9")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FillRect(HDC hDC, in RECT lprc, HBRUSH hbr);
 
 		/// <summary>
-		/// The <c>FrameRect</c> function draws a border around the specified rectangle by using the specified brush. The width and height of the border are always one logical unit.
+		/// The <c>FrameRect</c> function draws a border around the specified rectangle by using the specified brush. The width and height of
+		/// the border are always one logical unit.
 		/// </summary>
 		/// <param name="hDC">A handle to the device context in which the border is drawn.</param>
-		/// <param name="lprc">A pointer to a RECT structure that contains the logical coordinates of the upper-left and lower-right corners of the rectangle.</param>
+		/// <param name="lprc">
+		/// A pointer to a RECT structure that contains the logical coordinates of the upper-left and lower-right corners of the rectangle.
+		/// </param>
 		/// <param name="hbr">A handle to the brush used to draw the border.</param>
 		/// <returns>
-		///   <para>If the function succeeds, the return value is nonzero.</para><para>If the function fails, the return value is zero.</para>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero.</para>
 		/// </returns>
 		/// <remarks>
-		///   <para>The brush identified by the hbr parameter must have been created by using the CreateHatchBrush, CreatePatternBrush, or CreateSolidBrush function, or retrieved by using the GetStockObject function.</para><para>If the <c>bottom</c> member of the RECT structure is less than the <c>top</c> member, or if the <c>right</c> member is less than the <c>left</c> member, the function does not draw the rectangle.</para>
+		/// <para>
+		/// The brush identified by the hbr parameter must have been created by using the CreateHatchBrush, CreatePatternBrush, or
+		/// CreateSolidBrush function, or retrieved by using the GetStockObject function.
+		/// </para>
+		/// <para>
+		/// If the <c>bottom</c> member of the RECT structure is less than the <c>top</c> member, or if the <c>right</c> member is less than
+		/// the <c>left</c> member, the function does not draw the rectangle.
+		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-framerect
-		// int FrameRect( HDC hDC, const RECT *lprc, HBRUSH hbr );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-framerect int FrameRect( HDC hDC, const RECT *lprc, HBRUSH
+		// hbr );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "a1083cb5-5e6c-4134-badf-9fc5142d1453")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FrameRect(HDC hDC, in RECT lprc, HBRUSH hbr);
 
-				/// <summary>
-				/// The <c>GetUpdateRect</c> function retrieves the coordinates of the smallest rectangle that completely encloses the update region
-				/// of the specified window. <c>GetUpdateRect</c> retrieves the rectangle in logical coordinates. If there is no update region,
-				/// <c>GetUpdateRect</c> retrieves an empty rectangle (sets all coordinates to zero).
-				/// </summary>
-				/// <param name="hWnd">Handle to the window whose update region is to be retrieved.</param>
-				/// <param name="lpRect">
-				/// <para>Pointer to the RECT structure that receives the coordinates, in device units, of the enclosing rectangle.</para>
-				/// <para>
-				/// An application can set this parameter to <c>NULL</c> to determine whether an update region exists for the window. If this
-				/// parameter is <c>NULL</c>, <c>GetUpdateRect</c> returns nonzero if an update region exists, and zero if one does not. This
-				/// provides a simple and efficient means of determining whether a <c>WM_PAINT</c> message resulted from an invalid area.
-				/// </para>
-				/// </param>
-				/// <param name="bErase">
-				/// Specifies whether the background in the update region is to be erased. If this parameter is <c>TRUE</c> and the update region is
-				/// not empty, <c>GetUpdateRect</c> sends a <c>WM_ERASEBKGND</c> message to the specified window to erase the background.
-				/// </param>
-				/// <returns>
-				/// <para>If the update region is not empty, the return value is nonzero.</para>
-				/// <para>If there is no update region, the return value is zero.</para>
-				/// </returns>
-				/// <remarks>
-				/// <para>The update rectangle retrieved by the BeginPaint function is identical to that retrieved by <c>GetUpdateRect</c>.</para>
-				/// <para>
-				/// BeginPaint automatically validates the update region, so any call to <c>GetUpdateRect</c> made immediately after the call to
-				/// <c>BeginPaint</c> retrieves an empty update region.
-				/// </para>
-				/// </remarks>
-				// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getupdaterect BOOL GetUpdateRect( HWND hWnd, LPRECT
-				// lpRect, BOOL bErase );
-				[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		/// <summary>
+		/// The <c>GetUpdateRect</c> function retrieves the coordinates of the smallest rectangle that completely encloses the update region
+		/// of the specified window. <c>GetUpdateRect</c> retrieves the rectangle in logical coordinates. If there is no update region,
+		/// <c>GetUpdateRect</c> retrieves an empty rectangle (sets all coordinates to zero).
+		/// </summary>
+		/// <param name="hWnd">Handle to the window whose update region is to be retrieved.</param>
+		/// <param name="lpRect">
+		/// <para>Pointer to the RECT structure that receives the coordinates, in device units, of the enclosing rectangle.</para>
+		/// <para>
+		/// An application can set this parameter to <c>NULL</c> to determine whether an update region exists for the window. If this
+		/// parameter is <c>NULL</c>, <c>GetUpdateRect</c> returns nonzero if an update region exists, and zero if one does not. This
+		/// provides a simple and efficient means of determining whether a <c>WM_PAINT</c> message resulted from an invalid area.
+		/// </para>
+		/// </param>
+		/// <param name="bErase">
+		/// Specifies whether the background in the update region is to be erased. If this parameter is <c>TRUE</c> and the update region is
+		/// not empty, <c>GetUpdateRect</c> sends a <c>WM_ERASEBKGND</c> message to the specified window to erase the background.
+		/// </param>
+		/// <returns>
+		/// <para>If the update region is not empty, the return value is nonzero.</para>
+		/// <para>If there is no update region, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The update rectangle retrieved by the BeginPaint function is identical to that retrieved by <c>GetUpdateRect</c>.</para>
+		/// <para>
+		/// BeginPaint automatically validates the update region, so any call to <c>GetUpdateRect</c> made immediately after the call to
+		/// <c>BeginPaint</c> retrieves an empty update region.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getupdaterect BOOL GetUpdateRect( HWND hWnd, LPRECT
+		// lpRect, BOOL bErase );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "e54483a1-8738-4b22-a24e-c0b31f6ca9d6")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetUpdateRect(HWND hWnd, PRECT lpRect, [MarshalAs(UnmanagedType.Bool)] bool bErase);

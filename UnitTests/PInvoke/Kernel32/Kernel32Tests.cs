@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
-using static Vanara.PInvoke.Macros;
-using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -18,6 +16,7 @@ namespace Vanara.PInvoke.Tests
 		internal const string badlibfn = @"C:\Windows\System32\ole3.dll";
 		internal const string libfn = @"ole32.dll";
 		internal const string tmpstr = @"Temporary";
+		internal const string fn = @"C:\Temp\help.ico";
 
 		public static string CreateTempFile(bool markAsTemp = true)
 		{
@@ -156,10 +155,7 @@ namespace Vanara.PInvoke.Tests
 				var l = EnumResourceNamesEx(hLib, ResourceType.RT_STRING);
 				Assert.That(l.Count, Is.GreaterThan(0));
 				foreach (var resourceName in l)
-				{
-					LoadString(hLib, resourceName, out var sptr, 0);
-					TestContext.WriteLine($"{resourceName} = {StringHelper.GetString(sptr)}");
-				}
+					Assert.That(resourceName.ToString(), Has.Length.GreaterThan(0));
 			}
 		}
 
@@ -203,25 +199,25 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void FormatMessageTest1()
 		{
-			var objs = new string[] {"Alan", "Bob", "Chuck", "Dave", "Ed", "Frank", "Gary", "Harry"}; // new object[] { 4, "Bob", 100UL, long.MaxValue, 'A', true, 5U, byte.MaxValue };
+			var objs = new string[] {"Alan", "Bob", "Chuck", "Dave", "Ed", "Frank", "Gary", "Harry"};
 			Assert.That(FormatMessage(null, objs), Is.Null);
 			Assert.That(FormatMessage("X", null), Is.EqualTo("X"));
 			Assert.That(FormatMessage("X", objs), Is.EqualTo("X"));
 			Assert.That(FormatMessage("X %1", new [] {"YZ"}), Is.EqualTo("X YZ"));
 			var s = FormatMessage("%1 %2 %3 %4 %5 %6 %7 %8", objs);
-			Assert.That(s, Is.EqualTo("Alan Bob Chuck Dave Ed Frank Gary Harry"));
-			//s = FormatMessage("%1 %2", new object[] { 4, "Alan" }, FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS);
-			//Assert.That(s, Is.EqualTo("%1 %2"));
-			//s = FormatMessage("%1 %2", new object[] { 4, 8 });
-			//Assert.That(s, Is.EqualTo("4 8"));
-			//s = FormatMessage("%1 %2 %3 %4 %5 %6 %7 %8", objs);
-			//Assert.That(s, Is.EqualTo("4 Bob 9223372036854775807 A 1 4294967295 255"));
+			Assert.That(s, Is.EqualTo(string.Join(" " , objs)));
+			s = FormatMessage("%1 %2", new object[] { 4, "Alan" }, FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS);
+			Assert.That(s, Is.EqualTo("%1 %2"));
+			s = FormatMessage("%1!*.*s! %4 %5!*s!", new object[] { 4, 2, "Bill", "Bob", 6, "Bill" });
+			Assert.That(s, Is.EqualTo("  Bi Bob   Bill"));
+			s = FormatMessage("%1 %2 %3 %4 %5 %6", new object[] { 4, 2, "Bill", "Bob", 6, "Bill" });
+			Assert.That(s, Is.EqualTo("4 2 Bill Bob 6 Bill"));
 		}
 
 		[Test]
 		public void GetCompressedFileSizeTest()
 		{
-			var err = GetCompressedFileSize(AdvApi32Tests.fn, out ulong sz);
+			var err = GetCompressedFileSize(fn, out ulong sz);
 			if (err.Failed)
 				TestContext.WriteLine(err);
 			Assert.That(sz, Is.GreaterThan(0));

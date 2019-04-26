@@ -11,6 +11,9 @@ namespace Vanara.InteropServices
 	/// A safe unmanaged array of structures allocated on the global heap with a prefix type (usually a uint or int) that determines the
 	/// count of elements.
 	/// </summary>
+	/// <typeparam name="TElem">The type of the array elements.</typeparam>
+	/// <typeparam name="TPrefix">The type of the value used to represent the number of elements in the array.</typeparam>
+	/// <typeparam name="TMem">The memory methods to use for allocation.</typeparam>
 	public class SafeElementArray<TElem, TPrefix, TMem> : SafeMemoryHandle<TMem>, IEnumerable<TElem> where TMem : IMemoryMethods, new() where TElem : struct where TPrefix : IConvertible
 	{
 		private static readonly int ElemSize = Marshal.SizeOf(typeof(TElem));
@@ -31,7 +34,11 @@ namespace Vanara.InteropServices
 		/// </summary>
 		/// <param name="array">The array of bytes to copy.</param>
 		/// <param name="getElemSize">Size of the get elem.</param>
-		protected SafeElementArray(TElem[] array, Func<TElem, int> getElemSize = null) : base(IntPtr.Zero, 0, true) { GetElemSize = getElemSize; Elements = array; }
+		protected SafeElementArray(TElem[] array, Func<TElem, int> getElemSize = null) : base(IntPtr.Zero, 0, true)
+		{
+			GetElemSize = getElemSize;
+			Elements = array;
+		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/> class.</summary>
 		/// <param name="byteSize">Size of the byte.</param>
@@ -62,6 +69,7 @@ namespace Vanara.InteropServices
 			set
 			{
 				Size = GetElemSize != null ? PrefixSize + value.Sum(GetElemSize) : GetRequiredSize(value.Length);
+				Zero();
 				InteropExtensions.MarshalToPtr(value, handle, PrefixSize);
 				IntCount = value.Length;
 			}

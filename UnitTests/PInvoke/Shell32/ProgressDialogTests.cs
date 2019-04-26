@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using static Vanara.PInvoke.Shell32;
 
@@ -56,9 +57,9 @@ namespace Vanara.PInvoke.Tests
 			idlg.SetOperation(SPACTION.SPACTION_FORMATTING);
 			idlg.SetMode(PDMODE.PDM_RUN);
 			idlg.UpdateProgress(0, 0, 0, 0, 0, 100);
-			var srcd = new Vanara.Windows.Shell.ShellFolder(KNOWNFOLDERID.FOLDERID_Documents);
-			var destd = new Vanara.Windows.Shell.ShellFolder(KNOWNFOLDERID.FOLDERID_Desktop);
-			idlg.UpdateLocations(srcd.IShellItem, destd.IShellItem);
+			var srcd = SHGetKnownFolderItem<IShellItem>(KNOWNFOLDERID.FOLDERID_Documents);
+			var destd = SHGetKnownFolderItem<IShellItem>(KNOWNFOLDERID.FOLDERID_Desktop);
+			idlg.UpdateLocations(srcd, destd);
 			var rnd = new Random();
 			for (uint i = 0; i < 100; i++)
 			{
@@ -67,6 +68,8 @@ namespace Vanara.PInvoke.Tests
 				Thread.Sleep(rnd.Next(50, 250));
 			}
 			idlg.StopProgressDialog();
+			Marshal.FinalReleaseComObject(srcd);
+			Marshal.FinalReleaseComObject(destd);
 		}
 	}
 }

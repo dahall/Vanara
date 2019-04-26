@@ -350,7 +350,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-defdlgprocw LRESULT LRESULT DefDlgProcW( HWND hDlg, UINT
 		// Msg, WPARAM wParam, LPARAM lParam );
-		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "defdlgproc")]
 		public static extern IntPtr DefDlgProc(HWND hDlg, uint Msg, IntPtr wParam, IntPtr lParam);
 
@@ -626,6 +626,58 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "dialogboxparam")]
 		public static extern IntPtr DialogBoxParam(HINSTANCE hInstance, string lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+
+		/// <summary>
+		/// Retrieves the current selection from a combo box filled by using the DlgDirListComboBox function. The selection is interpreted as
+		/// a drive letter, a file, or a directory name.
+		/// </summary>
+		/// <param name="hwndDlg">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the dialog box that contains the combo box.</para>
+		/// </param>
+		/// <param name="lpString">
+		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>A pointer to the buffer that receives the selected path.</para>
+		/// </param>
+		/// <param name="cchOut">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The length, in characters, of the buffer pointed to by the lpString parameter.</para>
+		/// </param>
+		/// <param name="idComboBox">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The integer identifier of the combo box control in the dialog box.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>If the current selection is a directory name, the return value is nonzero.</para>
+		/// <para>If the current selection is not a directory name, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If the current selection specifies a directory name or drive letter, the <c>DlgDirSelectComboBoxEx</c> function removes the
+		/// enclosing square brackets (and hyphens for drive letters) so the name or letter is ready to be inserted into a new path or file
+		/// name. If there is no selection, the contents of the buffer pointed to by lpString do not change.
+		/// </para>
+		/// <para>The <c>DlgDirSelectComboBoxEx</c> function does not allow more than one file name to be returned from a combo box.</para>
+		/// <para>If the string is as long or longer than the buffer, the buffer contains the truncated string with a terminating null character.</para>
+		/// <para><c>DlgDirSelectComboBoxEx</c> sends CB_GETCURSEL and CB_GETLBTEXT messages to the combo box.</para>
+		/// <para>You can use this function with all three types of combo boxes (CBS_SIMPLE, CBS_DROPDOWN, and CBS_DROPDOWNLIST).</para>
+		/// <para>
+		/// <c>Security Warning:</c> Improper use of this function can cause problems for your application. For instance, the nCount
+		/// parameter should be set properly for both ANSI and Unicode versions. Failure to do so could lead to a buffer overflow. You should
+		/// review Security Considerations: Microsoft Windows Controls before continuing.
+		/// </para>
+		/// <para>
+		/// <c>Windows 95 or later</c>: <c>DlgDirSelectComboBoxExW</c> is supported by the Microsoft Layer for Unicode (MSLU). To use this,
+		/// you must add certain files to your application, as outlined in Microsoft Layer for Unicode on Windows Me/98/95 Systems.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dlgdirselectcomboboxexa BOOL DlgDirSelectComboBoxExA( HWND
+		// hwndDlg, LPSTR lpString, int cchOut, int idComboBox );
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool DlgDirSelectComboBoxEx(HWND hwndDlg, StringBuilder lpString, int cchOut, int idComboBox);
 
 		/// <summary>
 		/// <para>Destroys a modal dialog box, causing the system to end any processing for the dialog box.</para>

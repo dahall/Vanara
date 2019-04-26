@@ -15,6 +15,9 @@
 		/// <summary>bcrypt.dll</summary>
 		public const string Bcrypt = "bcrypt.dll";
 
+		/// <summary>cabinet.dll</summary>
+		public const string Cabinet = "cabinet.dll";
+
 		/// <summary>The COM CTL32</summary>
 		public const string ComCtl32 = "comctl32.dll";
 
@@ -66,6 +69,9 @@
 		/// <summary>The OLE aut32</summary>
 		public const string OleAut32 = "oleaut32.dll";
 
+		/// <summary>The power profiling DLL.</summary>
+		public const string PowrProf = "powrprof.dll";
+
 		/// <summary>The property system</summary>
 		public const string PropSys = "propsys.dll";
 
@@ -78,6 +84,7 @@
 		/// <summary>The shlwapi</summary>
 		public const string Shlwapi = "Shlwapi.dll";
 
+		/// <summary>The tokenbinding</summary>
 		public const string Tokenbinding = "tokenbinding.dll";
 
 		/// <summary>The user32</summary>

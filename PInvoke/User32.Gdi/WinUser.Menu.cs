@@ -1149,6 +1149,21 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "getmenucheckmarkdimensions.htm")]
 		public static extern int GetMenuCheckMarkDimensions();
 
+		/// <summary>Retrieves the Help context identifier associated with the specified menu.</summary>
+		/// <param name="Arg1">
+		/// <para>Type: <c>HMENU</c></para>
+		/// <para>A handle to the menu for which the Help context identifier is to be retrieved.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Returns the Help context identifier if the menu has one, or zero otherwise.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getmenucontexthelpid DWORD GetMenuContextHelpId( HMENU
+		// Arg1 );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "2b8d3e94-6860-4a75-8373-38afb641eb3b")]
+		public static extern uint GetMenuContextHelpId(HMENU Arg1);
+
 		/// <summary>
 		/// <para>Determines the default menu item on the specified menu.</para>
 		/// </summary>
@@ -2702,6 +2717,28 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetMenu(HWND hWnd, HMENU hMenu);
 
+		/// <summary>Associates a Help context identifier with a menu.</summary>
+		/// <param name="arg1">
+		/// <para>Type: <c>HMENU</c></para>
+		/// <para>A handle to the menu with which to associate the Help context identifier.</para>
+		/// </param>
+		/// <param name="arg2">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The help context identifier.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns nonzero if successful, or zero otherwise.</para>
+		/// <para>To retrieve extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>All items in the menu share this identifier. Help context identifiers can't be attached to individual menu items.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setmenucontexthelpid
+		// BOOL SetMenuContextHelpId( HMENU , DWORD );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "55d944db-d889-468a-991a-b9779c90b44f")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetMenuContextHelpId(HMENU arg1, uint arg2);
+
 		/// <summary>
 		/// <para>Sets the default menu item for the specified menu.</para>
 		/// </summary>
@@ -4049,7 +4086,9 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHMENU"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
 			public SafeHMENU(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeHMENU"/> class.</summary>

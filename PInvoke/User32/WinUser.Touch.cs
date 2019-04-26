@@ -97,6 +97,34 @@ namespace Vanara.PInvoke
 			GID_ROLLOVER = GID_PRESSANDTAP,
 		}
 
+		/// <summary> Flags for <see cref="InitializeTouchInjection/>. </summary>
+		[PInvokeData("winuser.h", MSDNShortId = "79cc2a05-d8ee-4d87-9c7b-fa7d5354b04f")]
+		public enum TOUCH_FEEDBACK
+		{
+			/// <summary>Specifies default touch visualizations.</summary>
+			TOUCH_FEEDBACK_DEFAULT = 0x1,
+
+			/// <summary>Specifies indirect touch visualizations.</summary>
+			TOUCH_FEEDBACK_INDIRECT = 0x2,
+
+			/// <summary>Specifies no touch visualizations.</summary>
+			TOUCH_FEEDBACK_NONE = 0x3,
+		}
+
+		/// <summary>Flags for <see cref="RegisterTouchHitTestingWindow"/></summary>
+		[PInvokeData("winuser.h", MSDNShortId = "52e48cea-b5c7-405f-8df6-26052304b62c")]
+		public enum TOUCH_HIT_TESTING
+		{
+			/// <summary>The touch hit testing default</summary>
+			TOUCH_HIT_TESTING_DEFAULT = 0x0,
+
+			/// <summary>The touch hit testing client</summary>
+			TOUCH_HIT_TESTING_CLIENT = 0x1,
+
+			/// <summary>The touch hit testing none</summary>
+			TOUCH_HIT_TESTING_NONE = 0x2
+		}
+
 		/// <summary>Flags used by <see cref="TOUCHINPUT"/>.</summary>
 		[PInvokeData("winuser.h", MSDNShortId = "fc382759-3a1e-401e-a6a7-1bf209a5434b")]
 		[Flags]
@@ -211,6 +239,101 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "bdc8bb94-3126-4183-9dfd-ba4844d98f29")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CloseTouchInputHandle(HTOUCHINPUT hTouchInput);
+
+		/// <summary>
+		/// Returns the score of a polygon as the probable touch target (compared to all other polygons that intersect the touch contact
+		/// area) and an adjusted touch point within the polygon.
+		/// </summary>
+		/// <param name="numVertices">
+		/// <para>The number of vertices in the polygon. This value must be greater than or equal to 3.</para>
+		/// <para>This value indicates the size of the array, as specified by the controlPolygon parameter.</para>
+		/// </param>
+		/// <param name="controlPolygon">
+		/// <para>The array of x-y screen coordinates that define the shape of the UI element.</para>
+		/// <para>The numVertices parameter specifies the number of coordinates.</para>
+		/// </param>
+		/// <param name="pHitTestingInput">The TOUCH_HIT_TESTING_INPUT structure that holds the data for the touch contact area.</param>
+		/// <param name="pProximityEval">
+		/// The TOUCH_HIT_TESTING_PROXIMITY_EVALUATION structure that holds the score and adjusted touch-point data.
+		/// </param>
+		/// <returns>
+		/// <para>If this function succeeds, it returns TRUE.</para>
+		/// <para>Otherwise, it returns FALSE. To retrieve extended error information, call the GetLastError function.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>For consistency with Windows, frameworks that handle WM_TOUCHHITTESTING should use the following principles for targeting:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Inclusion: If the touch point is within the boundaries of a control, the touch point is not changed.</term>
+		/// </item>
+		/// <item>
+		/// <term>Intersection: Include only controls that intersect the contact geometry.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Z-order: If more than one control intersects the contact geometry, and the controls overlap, the control that's highest in the
+		/// z-order receives priority.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Ambiguity: If more than one control intersects the contact geometry, and the controls don't overlap, the control that's closest
+		/// to the original touch point receives priority.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-evaluateproximitytopolygon BOOL
+		// EvaluateProximityToPolygon( UINT32 numVertices, const POINT *controlPolygon, const TOUCH_HIT_TESTING_INPUT *pHitTestingInput,
+		// TOUCH_HIT_TESTING_PROXIMITY_EVALUATION *pProximityEval );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "443d12f2-9f26-4e1e-9bf3-cd97b4026399")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool EvaluateProximityToPolygon(uint numVertices, [In] System.Drawing.Point[] controlPolygon, in TOUCH_HIT_TESTING_INPUT pHitTestingInput, out TOUCH_HIT_TESTING_PROXIMITY_EVALUATION pProximityEval);
+
+		/// <summary>
+		/// Returns the score of a rectangle as the probable touch target, compared to all other rectangles that intersect the touch contact
+		/// area, and an adjusted touch point within the rectangle.
+		/// </summary>
+		/// <param name="controlBoundingBox">The RECT structure that defines the bounding box of the UI element.</param>
+		/// <param name="pHitTestingInput">The TOUCH_HIT_TESTING_INPUT structure that holds the data for the touch contact area.</param>
+		/// <param name="pProximityEval">
+		/// The TOUCH_HIT_TESTING_PROXIMITY_EVALUATION structure that holds the score and adjusted touch-point data.
+		/// </param>
+		/// <returns>
+		/// <para>If this function succeeds, it returns TRUE.</para>
+		/// <para>Otherwise, it returns FALSE. To retrieve extended error information, call the GetLastError function.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>For consistency with Windows, frameworks that handle WM_TOUCHHITTESTING should use the following principles for targeting:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Inclusion: If the touch point is within the boundaries of a control, the touch point is not changed.</term>
+		/// </item>
+		/// <item>
+		/// <term>Intersection: Include only controls that intersect the contact geometry.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Z-order: If more than one control intersects the contact geometry, and the controls overlap, the control that's highest in the
+		/// z-order receives priority.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Ambiguity: If more than one control intersects the contact geometry, and the controls don't overlap, the control that's closest
+		/// to the original touch point receives priority.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-evaluateproximitytorect BOOL EvaluateProximityToRect(
+		// const RECT *controlBoundingBox, const TOUCH_HIT_TESTING_INPUT *pHitTestingInput, TOUCH_HIT_TESTING_PROXIMITY_EVALUATION
+		// *pProximityEval );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "269ef4c1-9c9f-4bd7-9852-e82c4a707d3c")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool EvaluateProximityToRect(in RECT controlBoundingBox, in TOUCH_HIT_TESTING_INPUT pHitTestingInput, out TOUCH_HIT_TESTING_PROXIMITY_EVALUATION pProximityEval);
 
 		/// <summary>Retrieves the configuration for which Windows Touch gesture messages are sent from a window.</summary>
 		/// <param name="hwnd">A handle to the window to get the gesture configuration from.</param>
@@ -352,6 +475,152 @@ namespace Vanara.PInvoke
 		public static ushort GID_ROTATE_ANGLE_TO_ARGUMENT(double arg) => (ushort)((arg + 2.0 * Math.PI) / (4.0 * Math.PI) * ushort.MaxValue);
 
 		/// <summary>
+		/// Configures the touch injection context for the calling application and initializes the maximum number of simultaneous contacts
+		/// that the app can inject.
+		/// </summary>
+		/// <param name="maxCount">
+		/// <para>The maximum number of touch contacts.</para>
+		/// <para>The maxCount parameter must be greater than 0 and less than or equal to MAX_TOUCH_COUNT (256) as defined in winuser.h.</para>
+		/// </param>
+		/// <param name="dwMode">
+		/// <para>The contact visualization mode.</para>
+		/// <para>The dwMode parameter must be TOUCH_FEEDBACK_DEFAULT, <c>TOUCH_FEEDBACK_INDIRECT</c>, or <c>TOUCH_FEEDBACK_NONE</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is TRUE.</para>
+		/// <para>If the function fails, the return value is FALSE. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If TOUCH_FEEDBACK_DEFAULT is set, the injected touch feedback may get suppressed by the end-user settings in the <c>Pen and
+		/// Touch</c> control panel.
+		/// </para>
+		/// <para>
+		/// If TOUCH_FEEDBACK_INDIRECT is set, the injected touch feedback overrides the end-user settings in the <c>Pen and Touch</c>
+		/// control panel.
+		/// </para>
+		/// <para>
+		/// If TOUCH_FEEDBACK_INDIRECT or <c>TOUCH_FEEDBACK_NONE</c> are set, touch feedback provided by applications and controls may not be affected.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-initializetouchinjection BOOL InitializeTouchInjection(
+		// UINT32 maxCount, DWORD dwMode );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "79cc2a05-d8ee-4d87-9c7b-fa7d5354b04f")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool InitializeTouchInjection(uint maxCount, TOUCH_FEEDBACK dwMode);
+
+		/// <summary>Simulates touch input.</summary>
+		/// <param name="count">
+		/// <para>The size of the array in contacts.</para>
+		/// <para>The maximum value for count is specified by the maxCount parameter of the InitializeTouchInjection function.</para>
+		/// </param>
+		/// <param name="contacts">
+		/// Array of POINTER_TOUCH_INFO structures that represents all contacts on the desktop. The screen coordinates of each contact must
+		/// be within the bounds of the desktop.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is non-zero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The injected input is sent to the desktop of the session where the injection process is running.</para>
+		/// <para>
+		/// There are two input states for touch input injection (interactive and hover) that are indicated by the following combinations of
+		/// <c>pointerFlags</c> in contacts:
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>pointerFlags (POINTER_FLAG_*)</term>
+		/// <term>Status</term>
+		/// </listheader>
+		/// <item>
+		/// <term>INRANGE | UPDATE</term>
+		/// <term>Touch hover starts or moves</term>
+		/// </item>
+		/// <item>
+		/// <term>INRANGE | INCONTACT | DOWN</term>
+		/// <term>Touch contact down</term>
+		/// </item>
+		/// <item>
+		/// <term>INRANGE | INCONTACT | UPDATE</term>
+		/// <term>Touch contact moves</term>
+		/// </item>
+		/// <item>
+		/// <term>INRANGE | UP</term>
+		/// <term>Touch contact up and transition to hover</term>
+		/// </item>
+		/// <item>
+		/// <term>UPDATE</term>
+		/// <term>Touch hover ends</term>
+		/// </item>
+		/// <item>
+		/// <term>UP</term>
+		/// <term>Touch ends</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> Interactive state represents a touch contact that is on-screen and able to interact with any touch-capable app. Hover
+		/// state represents touch input that is not in contact with the screen and cannot interact with applications. Touch injection can
+		/// start in hover or interactive state, but the state can only transition through INRANGE | INCONTACT | DOWN for hover to
+		/// interactive state, or through INRANGE | UP for interactive to hover state.
+		/// </para>
+		/// <para>All touch injection sequences end with either UPDATE or UP.</para>
+		/// <para>
+		/// The following diagram demonstrates a touch injection sequence that starts with a hover state, transitions to interactive, and
+		/// concludes with hover.
+		/// </para>
+		/// <para>
+		/// For press and hold gestures, multiple frames must be sent to ensure input is not cancelled. For a press and hold at point (x,y),
+		/// send WM_POINTERDOWN at point (x,y) followed by WM_POINTERUPDATE messages at point(x,y).
+		/// </para>
+		/// <para>
+		/// Listen for WM_DISPLAYCHANGE to handle changes to display resolution and orientation and manage screen coordinate updates. All
+		/// active contacts are cancelled when a <c>WM_DISPLAYCHANGE</c> is received.
+		/// </para>
+		/// <para>
+		/// Cancel individual contacts by setting POINTER_FLAG_CANCELED with POINTER_FLAG_UP or POINTER_FLAG_UPDATE. Cancelling touch
+		/// injection without POINTER_FLAG_UP or POINTER_FLAG_UPDATE invalidates the injection.
+		/// </para>
+		/// <para>
+		/// When POINTER_FLAG_UP is set, ptPixelLocation of POINTER_INFO should be the same as the value of the previous touch injection
+		/// frame with POINTER_FLAG_UPDATE. Otherwise, the injection fails with ERROR_INVALID_PARAMETER and all active injection contacts are
+		/// cancelled. The system modifies the ptPixelLocation of the WM_POINTERUP event as it cancels the injection.
+		/// </para>
+		/// <para>
+		/// The input timestamp can be specified in either the dwTime or PerformanceCount field of POINTER_INFO. The value cannot be more
+		/// recent than the current tick count or QueryPerformanceCounter value of the injection thread. Once a frame is injected with a
+		/// timestamp, all subsequent frames must include a timestamp until all contacts in the frame go to the UP state. The custom
+		/// timestamp value must be provided for the first element in the contacts array. The timestamp values after the first element are
+		/// ignored. The custom timestamp value must increment in every injection frame.
+		/// </para>
+		/// <para>
+		/// When a PerformanceCount field is specified, the timestamp is converted into current time in .1 millisecond resolution upon actual
+		/// injection. If a custom PerformanceCount resulted in the same .1 millisecond window from previous injection, the API will return
+		/// an error (ERROR_NOT_READY) and will not inject the data. While injection is not immediately invalidated by the error, next
+		/// successful injection must have PerformanceCount value that is at least 0.1 milliseconds apart from the previously successful
+		/// injection. Similarly a custom dwTime value must be at least 1 millisecond apart if the field was used.
+		/// </para>
+		/// <para>
+		/// If both dwTime and PerformanceCount are specified in the injection parameter, InjectTouchInput fails with an Error Code
+		/// (ERROR_INVALID_PARAMETER). Once the injection application starts with either a dwTime or PerformanceCount parameter, the
+		/// timestamp field must be filled correctly. Injection cannot switch the custom timestamp field from one to another once the
+		/// injection sequence has started.
+		/// </para>
+		/// <para>
+		/// When neither dwTime or PerformanceCount values are specified, the InjectTouchInput allocates the timestamp based on the timing of
+		/// the API call. If the calls are less than 0.1 millisecond apart, the API may return an error (ERROR_NOT_READY). The error will not
+		/// invalidate the input immediately, but the injection application needs to retry the same frame again to ensure injection is successful.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-injecttouchinput BOOL InjectTouchInput( UINT32 count,
+		// const POINTER_TOUCH_INFO *contacts );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "c3c1425e-2af6-4ecb-a0b2-a456654f7a53")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool InjectTouchInput(uint count, [In] POINTER_TOUCH_INFO[] contacts);
+
+		/// <summary>
 		/// Checks whether a specified window is touch-capable and, optionally, retrieves the modifier flags set for the window's touch capability.
 		/// </summary>
 		/// <param name="hwnd">
@@ -392,6 +661,58 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "080b9d18-5975-4d38-ae3b-151f74120bb3")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool IsTouchWindow(HWND hwnd, out TWF pulFlags);
+
+		/// <summary>
+		/// Returns the proximity evaluation score and the adjusted touch-point coordinates as a packed value for the WM_TOUCHHITTESTING callback.
+		/// </summary>
+		/// <param name="pHitTestingInput">The TOUCH_HIT_TESTING_INPUT structure that holds the data for the touch contact area.</param>
+		/// <param name="pProximityEval">
+		/// The TOUCH_HIT_TESTING_PROXIMITY_EVALUATION structure that holds the score and adjusted touch-point data that the
+		/// EvaluateProximityToPolygon or EvaluateProximityToRect function returns.
+		/// </param>
+		/// <returns>
+		/// If this function succeeds, it returns the <c>score</c> and <c>adjustedPoint</c> values from
+		/// TOUCH_HIT_TESTING_PROXIMITY_EVALUATION as an LRESULT. To retrieve extended error information, call the GetLastError function.
+		/// </returns>
+		/// <remarks>Usually, this is the last function that's called in a WM_TOUCHHITTESTING handler.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-packtouchhittestingproximityevaluation LRESULT
+		// PackTouchHitTestingProximityEvaluation( const TOUCH_HIT_TESTING_INPUT *pHitTestingInput, const
+		// TOUCH_HIT_TESTING_PROXIMITY_EVALUATION *pProximityEval );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "c4061285-2d0f-4404-9b63-bda2ec61b764")]
+		public static extern IntPtr PackTouchHitTestingProximityEvaluation(in TOUCH_HIT_TESTING_INPUT pHitTestingInput, out TOUCH_HIT_TESTING_PROXIMITY_EVALUATION pProximityEval);
+
+		/// <summary>
+		/// <para>Registers a window to process the</para>
+		/// <para>WM_TOUCHHITTESTING notification.</para>
+		/// </summary>
+		/// <param name="hwnd">The window that receives the WM_TOUCHHITTESTING notification.</param>
+		/// <param name="value">
+		/// <para>One of the following values:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>TOUCH_HIT_TESTING_CLIENT: Send WM_TOUCHHITTESTING messages to the target window.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// TOUCH_HIT_TESTING_DEFAULT: Don't send WM_TOUCHHITTESTING messages to the target window but continue to send the messages to child windows.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>TOUCH_HIT_TESTING_NONE: Don't send WM_TOUCHHITTESTING messages to the target window or child windows.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If this function succeeds, it returns TRUE.</para>
+		/// <para>Otherwise, it returns FALSE. To retrieve extended error information, call the GetLastError function.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-registertouchhittestingwindow BOOL
+		// RegisterTouchHitTestingWindow( HWND hwnd, ULONG value );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "52e48cea-b5c7-405f-8df6-26052304b62c")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool RegisterTouchHitTestingWindow(HWND hwnd, TOUCH_HIT_TESTING value);
 
 		/// <summary>Registers a window as being touch-capable.</summary>
 		/// <param name="hwnd">
@@ -1100,6 +1421,58 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Contains information about the touch contact area reported by the touch digitizer.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-touch_hit_testing_input typedef struct
+		// tagTOUCH_HIT_TESTING_INPUT { UINT32 pointerId; POINT point; RECT boundingBox; RECT nonOccludedBoundingBox; UINT32 orientation; }
+		// TOUCH_HIT_TESTING_INPUT, *PTOUCH_HIT_TESTING_INPUT;
+		[PInvokeData("winuser.h", MSDNShortId = "d2103f6e-6aa9-4260-bef9-cfcbec35e675")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct TOUCH_HIT_TESTING_INPUT
+		{
+			/// <summary>
+			/// The ID of the pointer. You cannot pass this value to the input message process and retrieve additional pointer info through GetPointerInfo.
+			/// </summary>
+			public uint pointerId;
+
+			/// <summary>The screen coordinates of the touch point that the touch digitizer reports.</summary>
+			public System.Drawing.Point point;
+
+			/// <summary>
+			/// <para>
+			/// The bounding rectangle of the touch contact area. Valid touch targets are identified and scored based on this bounding box.
+			/// </para>
+			/// <para><c>Note</c> This bounding box may differ from the contact area that the digitizer reports when:</para>
+			/// </summary>
+			public RECT boundingBox;
+
+			/// <summary>
+			/// The touch contact area within a specific targeted window that's not occluded by other objects that are higher in the z-order.
+			/// Any area that's occluded by another object is an invalid target.
+			/// </summary>
+			public RECT nonOccludedBoundingBox;
+
+			/// <summary>The orientation of the touch contact area.</summary>
+			public uint orientation;
+		}
+
+		/// <summary>
+		/// Contains the hit test score that indicates whether the object is the likely target of the touch contact area, relative to other
+		/// objects that intersect the touch contact area.
+		/// </summary>
+		/// <remarks>The EvaluateProximityToRect or EvaluateProximityToPolygon function returns the values.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-touch_hit_testing_proximity_evaluation typedef struct
+		// tagTOUCH_HIT_TESTING_PROXIMITY_EVALUATION { UINT16 score; POINT adjustedPoint; } TOUCH_HIT_TESTING_PROXIMITY_EVALUATION, *PTOUCH_HIT_TESTING_PROXIMITY_EVALUATION;
+		[PInvokeData("winuser.h", MSDNShortId = "a26facc3-fe63-4657-9bd6-821dd89cb11d")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct TOUCH_HIT_TESTING_PROXIMITY_EVALUATION
+		{
+			/// <summary>The score, compared to the other objects that intersect the touch contact area.</summary>
+			public ushort score;
+
+			/// <summary>The adjusted touch point that hits the closest object that's identified by the value of Score.</summary>
+			public System.Drawing.Point adjustedPoint;
 		}
 
 		/// <summary>Encapsulates data for touch input.</summary>

@@ -21,6 +21,7 @@ namespace Vanara.PInvoke.Tests
 		[OneTimeSetUp]
 		public void FixtureSetup()
 		{
+			FixtureTeardown();
 			WNetAddConnection(remSh, null, ldev).ThrowIfFailed();
 		}
 
@@ -58,23 +59,17 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void WNetEnumResourceTest()
 		{
-			WNetOpenEnum(NETRESOURCEScope.RESOURCE_CONNECTED, NETRESOURCEType.RESOURCETYPE_ANY, NETRESOURCEUsage.RESOURCEUSAGE_ALL, IntPtr.Zero, out var h).ThrowIfFailed();
-			Assert.That(h.IsInvalid, Is.False);
+			var ne = WNetEnumResources(recurseContainers: true);
+			Assert.That(ne, Is.Not.Empty);
+			foreach (var net in ne)
+				TestContext.WriteLine($"Type:{net.dwDisplayType}; Prov:{net.lpProvider}; Loc:{net.lpLocalName}; Rem:{net.lpRemoteName}");
 
-			var count = -1;
-			uint sz = 1;
-			var ptr = new SafeCoTaskMemHandle((int)sz);
-			Assert.That(WNetEnumResource(h, ref count, (IntPtr)ptr, ref sz), Is.EqualTo(Win32Error.ERROR_MORE_DATA));
-
-			count = -1;
-			ptr.Size = (int)sz;
-			WNetEnumResource(h, ref count, (IntPtr)ptr, ref sz).ThrowIfFailed();
-			Assert.That(count, Is.GreaterThan(0));
-			NETRESOURCE[] nets = null;
-			Assert.That(() => nets = ptr.ToArray<NETRESOURCE>(count), Throws.Nothing);
-
-			for (var i = 0; i < count; i++)
-				TestContext.WriteLine(nets[i].lpProvider);
+			TestContext.WriteLine();
+			var nr = new NETRESOURCE(@"\\" + Environment.MachineName) { dwType = NETRESOURCEType.RESOURCETYPE_ANY, dwScope = NETRESOURCEScope.RESOURCE_GLOBALNET, dwUsage = NETRESOURCEUsage.RESOURCEUSAGE_CONTAINER };
+			ne = WNetEnumResources(nr, dwType: NETRESOURCEType.RESOURCETYPE_DISK);
+			Assert.That(ne, Is.Not.Empty);
+			foreach (var net in ne)
+				TestContext.WriteLine($"Type:{net.dwDisplayType}; Prov:{net.lpProvider}; Loc:{net.lpLocalName}; Rem:{net.lpRemoteName}");
 		}
 
 		[Test]

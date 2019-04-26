@@ -10,7 +10,7 @@ namespace Vanara.PInvoke
 	/// <summary>Represents a Win32 Error Code. This can be used in place of a return value.</summary>
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
 	[TypeConverter(typeof(Win32ErrorTypeConverter))]
-	public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<int>, IConvertible, IComparable<Win32Error>, IComparable
+	public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<int>, IConvertible, IComparable<Win32Error>, IComparable, IErrorProvider
 	{
 		internal readonly int value;
 
@@ -79,6 +79,23 @@ namespace Vanara.PInvoke
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => value.GetHashCode();
+
+		/// <summary>Tries to extract a Win32Error from an exception.</summary>
+		/// <param name="exception">The exception.</param>
+		/// <returns>The error. If undecipherable, ERROR_UNIDENTIFIED_ERROR is returned.</returns>
+		public static Win32Error FromException(Exception exception)
+		{
+			if (exception is Win32Exception we)
+				return we.NativeErrorCode;
+			if (exception.InnerException is Win32Exception iwe)
+				return iwe.NativeErrorCode;
+#if !(NET20 || NET35 || NET40)
+			var hr = (HRESULT)exception.HResult;
+			if (hr.Facility == HRESULT.FacilityCode.FACILITY_WIN32)
+				return hr.Code;
+#endif
+			return ERROR_UNIDENTIFIED_ERROR;
+		}
 
 		/// <summary>Gets the last error.</summary>
 		/// <returns></returns>

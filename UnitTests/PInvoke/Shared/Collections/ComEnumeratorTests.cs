@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using NUnit.Framework;
-using static Vanara.PInvoke.MSTask;
-using Vanara.PInvoke.NetListMgr;
-using static Vanara.PInvoke.Ole32;
-using static Vanara.PInvoke.PropSys;
-using static Vanara.PInvoke.Shell32;
+//using static Vanara.PInvoke.MSTask;
+//using Vanara.PInvoke.NetListMgr;
+//using static Vanara.PInvoke.Ole32;
+//using static Vanara.PInvoke.PropSys;
+//using static Vanara.PInvoke.Shell32;
 using Vanara.Extensions;
 using Vanara.PInvoke;
 using System.Runtime.InteropServices;
@@ -55,7 +55,7 @@ namespace Vanara.Collections.Tests
 			{
 				return collection.Next(celt, out pvalues, out pceltfetched);
 			}
-		}*/
+		}
 
 		[Test]
 		public void ComEnumeratorTest1()
@@ -88,18 +88,18 @@ namespace Vanara.Collections.Tests
 		[Test]
 		public void ComEnumeratorTest2()
 		{
-			/*// Test IEnumerable collection
-			var nlm = new INetworkListManager();
-			var en = nlm.GetNetworks(NLM_ENUM_NETWORK.NLM_ENUM_NETWORK_ALL);
-
-			// Test IEnumerable
-			var e = new IEnumFromNext<INetwork>((out INetwork p) => en.Next(1, out p, out var f).Succeeded && f == 1,
-				() => en.Reset());
-			foreach (var p in e)
-			{
-				Assert.IsInstanceOf<INetwork>(p);
-				TestContext.WriteLine(p.GetName());
-			}*/
+			//// Test IEnumerable collection
+			//var nlm = new INetworkListManager();
+			//var en = nlm.GetNetworks(NLM_ENUM_NETWORK.NLM_ENUM_NETWORK_ALL);
+			//
+			//// Test IEnumerable
+			//var e = new IEnumFromNext<INetwork>((out INetwork p) => en.Next(1, out p, out var f).Succeeded && f == 1,
+			//	() => en.Reset());
+			//foreach (var p in e)
+			//{
+			//	Assert.IsInstanceOf<INetwork>(p);
+			//	TestContext.WriteLine(p.GetName());
+			//}
 
 			// Test IEnumerable collection
 			var nlm = new INetworkListManager();
@@ -348,7 +348,7 @@ namespace Vanara.Collections.Tests
 			Assert.That(g.MoveNext(), Is.True);
 			g.Dispose();
 			Assert.That(g.MoveNext(), Is.False);
-		}
+		}*/
 
 		[Test]
 		public void ComEnumeratorTest10()

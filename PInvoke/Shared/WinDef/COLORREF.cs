@@ -78,5 +78,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>Static reference for CLR_DEFAULT representing the default color.</summary>
 		public static COLORREF Default = new COLORREF(0xFF000000);
-	}
+
+		/// <inheritdoc />
+        public override string ToString() => ((System.Drawing.Color)this).ToString();
+    }
 }

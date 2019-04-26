@@ -47,7 +47,7 @@ namespace Vanara.Security.AccessControl
 			get => pSD.ToArray(); set => pSD = new SafeByteArray(value);
 		}
 
-		void IEffectivePermission.GetEffectivePermission(in Guid pguidObjectType, PSID pUserSid, string pszServerName, PSECURITY_DESCRIPTOR pSecDesc, out OBJECT_TYPE_LIST[] ppObjectTypeList, out uint pcObjectTypeListLength, out uint[] ppGrantedAccessList, out uint pcGrantedAccessListLength)
+		HRESULT IEffectivePermission.GetEffectivePermission(in Guid pguidObjectType, PSID pUserSid, string pszServerName, PSECURITY_DESCRIPTOR pSecDesc, out OBJECT_TYPE_LIST[] ppObjectTypeList, out uint pcObjectTypeListLength, out uint[] ppGrantedAccessList, out uint pcGrantedAccessListLength)
 		{
 			System.Diagnostics.Debug.WriteLine($"GetEffectivePermission: {pguidObjectType}, {pszServerName}");
 			if (pguidObjectType == Guid.Empty)
@@ -59,36 +59,41 @@ namespace Vanara.Security.AccessControl
 			}
 			else
 			{
-				ppGrantedAccessList = prov.GetEffectivePermission(pguidObjectType, pUserSid, pszServerName, pSecDesc, out ppObjectTypeList);
-				pcGrantedAccessListLength = (uint)ppGrantedAccessList.Length;
-				pcObjectTypeListLength = (uint)ppObjectTypeList.Length;
+				var hr = prov.GetEffectivePermission(pguidObjectType, pUserSid, pszServerName, pSecDesc, out ppObjectTypeList, out ppGrantedAccessList);
+				pcGrantedAccessListLength = (uint)(ppGrantedAccessList?.Length ?? 0);
+				pcObjectTypeListLength = (uint)(ppObjectTypeList?.Length ?? 0);
+				if (hr.Failed) return hr;
 			}
+			return HRESULT.S_OK;
 		}
 
-		void ISecurityInformation.GetAccessRights(in Guid guidObject, int dwFlags, out SI_ACCESS[] access, ref uint accessCount, out uint defaultAccess)
+		HRESULT ISecurityInformation.GetAccessRights(in Guid guidObject, int dwFlags, out SI_ACCESS[] access, ref uint accessCount, out uint defaultAccess)
 		{
 			System.Diagnostics.Debug.WriteLine($"GetAccessRight: {guidObject}, {(SI_OBJECT_INFO_Flags)dwFlags}");
 			prov.GetAccessListInfo((SI_OBJECT_INFO_Flags)dwFlags, out var ari, out var defAcc);
 			defaultAccess = defAcc;
 			access = ari;
 			accessCount = (uint)access.Length;
+			return HRESULT.S_OK;
 		}
 
-		void ISecurityInformation.GetInheritTypes(out SI_INHERIT_TYPE[] inheritTypes, out uint inheritTypesCount)
+		HRESULT ISecurityInformation.GetInheritTypes(out SI_INHERIT_TYPE[] inheritTypes, out uint inheritTypesCount)
 		{
 			System.Diagnostics.Debug.WriteLine("GetInheritTypes");
 			inheritTypes = prov.GetInheritTypes();
 			inheritTypesCount = (uint)inheritTypes.Length;
+			return HRESULT.S_OK;
 		}
 
-		void ISecurityInformation.GetObjectInformation(ref SI_OBJECT_INFO objInfo)
+		HRESULT ISecurityInformation.GetObjectInformation(ref SI_OBJECT_INFO objInfo)
 		{
 			System.Diagnostics.Debug.WriteLine($"GetObjectInformation: {objInfo.dwFlags} {currentElevation}");
 			objInfo = objectInfo;
 			objInfo.dwFlags &= ~(currentElevation);
+			return HRESULT.S_OK;
 		}
 
-		void ISecurityInformation.GetSecurity(SECURITY_INFORMATION requestInformation, out PSECURITY_DESCRIPTOR ppSecurityDescriptor, bool fDefault)
+		HRESULT ISecurityInformation.GetSecurity(SECURITY_INFORMATION requestInformation, out PSECURITY_DESCRIPTOR ppSecurityDescriptor, bool fDefault)
 		{
 			System.Diagnostics.Debug.WriteLine($"GetSecurity: {requestInformation}{(fDefault ? " (Def)" : "")}");
 			var sd = new PSECURITY_DESCRIPTOR(fDefault ? prov.GetDefaultSecurity() : (IntPtr)pSD);
@@ -97,32 +102,40 @@ namespace Vanara.Security.AccessControl
 				$"GetSecurity={ret.ToSddl(requestInformation) ?? "null"} <- {sd.ToSddl(requestInformation) ?? "null"}");
 			ppSecurityDescriptor = ret.DangerousGetHandle();
 			ret.SetHandleAsInvalid();
+			return HRESULT.S_OK;
 		}
 
-		void ISecurityInformation.MapGeneric(in Guid guidObjectType, ref sbyte AceFlags, ref uint Mask)
+		HRESULT ISecurityInformation.MapGeneric(in Guid guidObjectType, ref sbyte AceFlags, ref uint Mask)
 		{
 			var stMask = Mask;
 			var gm = prov.GetGenericMapping(AceFlags);
-			MapGenericMask(ref Mask, ref gm);
+			MapGenericMask(ref Mask, gm);
 			//if (Mask != gm.GenericAll)
 			//	Mask &= ~(uint)FileSystemRights.Synchronize;
 			System.Diagnostics.Debug.WriteLine($"MapGeneric: {guidObjectType}, {(AceFlags)AceFlags}, 0x{stMask:X}->0x{Mask:X}");
+			return HRESULT.S_OK;
 		}
 
-		void ISecurityInformation.PropertySheetPageCallback(HWND hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage)
+		HRESULT ISecurityInformation.PropertySheetPageCallback(HWND hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage)
 		{
 			System.Diagnostics.Debug.WriteLine($"PropertySheetPageCallback: {hwnd}, {uMsg}, {uPage}");
 			prov.PropertySheetPageCallback(hwnd, uMsg, uPage);
+			return HRESULT.S_OK;
 		}
 
-		void ISecurityInformation.SetSecurity(SECURITY_INFORMATION requestInformation, PSECURITY_DESCRIPTOR sd)
+		HRESULT ISecurityInformation.SetSecurity(SECURITY_INFORMATION requestInformation, PSECURITY_DESCRIPTOR sd)
 		{
 			OnSetSecurity?.Invoke(this, new SecurityEventArg(new SafeSecurityDescriptor((IntPtr)sd, false), requestInformation));
+			return HRESULT.S_OK;
 		}
 
-		string ISecurityInformation3.GetFullResourceName() => fullObjectName;
+		HRESULT ISecurityInformation3.GetFullResourceName(out string name)
+		{
+			name = fullObjectName;
+			return HRESULT.S_OK;
+		}
 
-		void ISecurityInformation3.OpenElevatedEditor(HWND hWnd, SI_PAGE_TYPE uPage)
+		HRESULT ISecurityInformation3.OpenElevatedEditor(HWND hWnd, SI_PAGE_TYPE uPage)
 		{
 			var pgType = (SI_PAGE_TYPE)LOWORD((uint)uPage);
 			var pgActv = (SI_PAGE_ACTIVATED)HIWORD((uint)uPage);
@@ -160,31 +173,31 @@ namespace Vanara.Security.AccessControl
 			}
 			ShowDialog(hWnd, pgType, pgActv);
 			currentElevation = lastElev;
+			return HRESULT.S_OK;
 		}
 
-		public void GetSecondarySecurity(out SECURITY_OBJECT[] securityObjects, out uint securityObjectCount)
+		public HRESULT GetSecondarySecurity(out SECURITY_OBJECT[] securityObjects, out uint securityObjectCount)
 		{
 			System.Diagnostics.Debug.WriteLine("GetSecondarySecurity:");
 			securityObjects = new SECURITY_OBJECT[0];
 			securityObjectCount = 0;
+			return HRESULT.S_OK;
 		}
 
-		void ISecurityObjectTypeInfo.GetInheritSource(int si, PACL pAcl, out INHERITED_FROM[] ppInheritArray)
+		HRESULT ISecurityObjectTypeInfo.GetInheritSource(int si, PACL pAcl, out INHERITED_FROM[] ppInheritArray)
 		{
 			System.Diagnostics.Debug.WriteLine($"GetInheritSource: {(SECURITY_INFORMATION)si}");
 			ppInheritArray = prov.GetInheritSource(fullObjectName, objectInfo.pszServerName, objectInfo.IsContainer, (uint)si, pAcl);
+			return HRESULT.S_OK;
 		}
 
-		public void SetProvider(IAccessControlEditorDialogProvider provider)
-		{
-			prov = provider;
-		}
+		public void SetProvider(IAccessControlEditorDialogProvider provider) => prov = provider;
 
 		public RawSecurityDescriptor ShowDialog(HWND hWnd, SI_PAGE_TYPE pageType = SI_PAGE_TYPE.SI_PAGE_PERM, SI_PAGE_ACTIVATED pageAct = SI_PAGE_ACTIVATED.SI_SHOW_DEFAULT)
 		{
 			System.Diagnostics.Debug.WriteLine($"ShowDialog: {pageType} {pageAct}");
 			SecurityEventArg sd = null;
-			EventHandler<SecurityEventArg> fn = (o, e) => sd = e;
+			void fn(object o, SecurityEventArg e) => sd = e;
 			try
 			{
 				OnSetSecurity += fn;
@@ -215,7 +228,7 @@ namespace Vanara.Security.AccessControl
 			return null;
 		}
 
-		public uint ComputeEffectivePermissionWithSecondarySecurity(PSID pSid, PSID pDeviceSid, string pszServerName, SECURITY_OBJECT[] pSecurityObjects, uint dwSecurityObjectCount, in TOKEN_GROUPS pUserGroups, Authz.AUTHZ_SID_OPERATION[] pAuthzUserGroupsOperations, in TOKEN_GROUPS pDeviceGroups, Authz.AUTHZ_SID_OPERATION[] pAuthzDeviceGroupsOperations, in Authz.AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzUserClaims, Authz.AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzUserClaimsOperations, in Authz.AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzDeviceClaims, Authz.AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzDeviceClaimsOperations, EFFPERM_RESULT_LIST[] pEffpermResultLists)
+		public HRESULT ComputeEffectivePermissionWithSecondarySecurity(PSID pSid, PSID pDeviceSid, string pszServerName, SECURITY_OBJECT[] pSecurityObjects, uint dwSecurityObjectCount, in TOKEN_GROUPS pUserGroups, Authz.AUTHZ_SID_OPERATION[] pAuthzUserGroupsOperations, in TOKEN_GROUPS pDeviceGroups, Authz.AUTHZ_SID_OPERATION[] pAuthzDeviceGroupsOperations, in Authz.AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzUserClaims, Authz.AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzUserClaimsOperations, in Authz.AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzDeviceClaims, Authz.AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzDeviceClaimsOperations, EFFPERM_RESULT_LIST[] pEffpermResultLists)
 		{
 			System.Diagnostics.Debug.WriteLine($"ComputeEffectivePermissionWithSecondarySecurity({dwSecurityObjectCount}):{new SecurityIdentifier((IntPtr)pSid).Value};{new SecurityIdentifier((IntPtr)pDeviceSid).Value}");
 			if (dwSecurityObjectCount != 1)

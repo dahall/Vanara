@@ -6,23 +6,6 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
-		/// <summary>
-		/// <para>Closes the specified event log.</para>
-		/// </summary>
-		/// <param name="hEventLog">
-		/// <para>A handle to the event log. The RegisterEventSource function returns this handle.</para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
-		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-deregistereventsource BOOL DeregisterEventSource( HANDLE
-		// hEventLog );
-		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winbase.h", MSDNShortId = "f5d1f4b0-5320-4aec-a129-cafff6f1fed1")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeregisterEventSource(HEVENTLOG hEventLog);
-
 		/// <summary>The <c>ImpersonateNamedPipeClient</c> function impersonates a named-pipe client application.</summary>
 		/// <param name="hNamedPipe">A handle to a named pipe.</param>
 		/// <returns>
@@ -446,92 +429,102 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool LookupPrivilegeValue(string lpSystemName, string lpName, out LUID lpLuid);
 
-		/// <summary>
-		/// <para>Retrieves a registered handle to the specified event log.</para>
-		/// </summary>
-		/// <param name="lpUNCServerName">
-		/// <para>
-		/// The Universal Naming Convention (UNC) name of the remote server on which this operation is to be performed. If this parameter is
-		/// <c>NULL</c>, the local computer is used.
-		/// </para>
-		/// </param>
-		/// <param name="lpSourceName">
-		/// <para>
-		/// The name of the event source whose handle is to be retrieved. The source name must be a subkey of a log under the <c>Eventlog</c>
-		/// registry key. Note that the <c>Security</c> log is for system use only.
-		/// </para>
-		/// <para>
-		/// <c>Note</c> This string must not contain characters prohibited in XML Attributes, with the exception of XML Escape sequences such
-		/// as <c>&amp;lt &amp;gl</c>.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is a handle to the event log.</para>
-		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
-		/// <para>The function returns <c>ERROR_ACCESS_DENIED</c> if lpSourceName specifies the <c>Security</c> event log.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// If the source name cannot be found, the event logging service uses the <c>Application</c> log. Although events will be reported ,
-		/// the events will not include descriptions because there are no message and category message files for looking up descriptions
-		/// related to the event identifiers.
-		/// </para>
-		/// <para>To close the handle to the event log, use the DeregisterEventSource function.</para>
-		/// <para>Examples</para>
-		/// <para>For an example, see Reporting an Event.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-registereventsourcea HANDLE RegisterEventSourceA( LPCSTR
-		// lpUNCServerName, LPCSTR lpSourceName );
-		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("winbase.h", MSDNShortId = "53706f83-6bc9-45d6-981c-bd0680d7bc08")]
-		public static extern HEVENTLOG RegisterEventSource(string lpUNCServerName, string lpSourceName);
-
-		/// <summary>Provides a handle to an event log.</summary>
-		[StructLayout(LayoutKind.Sequential)]
-		public struct HEVENTLOG : IHandle
-		{
-			private IntPtr handle;
-
-			/// <summary>Initializes a new instance of the <see cref="HEVENTLOG"/> struct.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			public HEVENTLOG(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-			/// <summary>Returns an invalid handle by instantiating a <see cref="HEVENTLOG"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HEVENTLOG NULL => new HEVENTLOG(IntPtr.Zero);
-
-			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-			public bool IsNull => handle == IntPtr.Zero;
-
-			/// <summary>Performs an explicit conversion from <see cref="HEVENTLOG"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="h">The handle.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static explicit operator IntPtr(HEVENTLOG h) => h.handle;
-
-			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HEVENTLOG"/>.</summary>
-			/// <param name="h">The pointer to a handle.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HEVENTLOG(IntPtr h) => new HEVENTLOG(h);
-
-			/// <summary>Implements the operator !=.</summary>
-			/// <param name="h1">The first handle.</param>
-			/// <param name="h2">The second handle.</param>
-			/// <returns>The result of the operator.</returns>
-			public static bool operator !=(HEVENTLOG h1, HEVENTLOG h2) => !(h1 == h2);
-
-			/// <summary>Implements the operator ==.</summary>
-			/// <param name="h1">The first handle.</param>
-			/// <param name="h2">The second handle.</param>
-			/// <returns>The result of the operator.</returns>
-			public static bool operator ==(HEVENTLOG h1, HEVENTLOG h2) => h1.Equals(h2);
-
-			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HEVENTLOG h ? handle == h.handle : false;
-
-			/// <inheritdoc/>
-			public override int GetHashCode() => handle.GetHashCode();
-
-			/// <inheritdoc/>
-			public IntPtr DangerousGetHandle() => handle;
-		}
+		/*
+		AccessCheck
+		AccessCheckByType
+		AccessCheckByTypeResultList
+		AdjustTokenGroups
+		AdjustTokenPrivileges
+		AllocateAndInitializeSid
+		AllocateLocallyUniqueId
+		AuthzAccessCheck
+		AuthzAccessCheckCallback
+		AuthzAddSidsToContext
+		AuthzCachedAccessCheck
+		AuthzComputeGroupsCallback
+		AuthzEnumerateSecurityEventSources
+		AuthzFreeAuditEvent
+		AuthzFreeContext
+		AuthzFreeGroupsCallback
+		AuthzFreeHandle
+		AuthzFreeResourceManager
+		AuthzGetInformationFromContext
+		AuthzInitializeContextFromAuthzContext
+		AuthzInitializeContextFromSid
+		AuthzInitializeContextFromToken
+		AuthzInitializeObjectAccessAuditEvent
+		AuthzInitializeObjectAccessAuditEvent2
+		AuthzInitializeResourceManager
+		AuthzInstallSecurityEventSource
+		AuthzOpenObjectAudit
+		AuthzRegisterSecurityEventSource
+		AuthzReportSecurityEvent
+		AuthzReportSecurityEventFromParams
+		AuthzUninstallSecurityEventSource
+		AuthzUnregisterSecurityEventSource
+		BuildExplicitAccessWithName
+		BuildImpersonateExplicitAccessWithName
+		BuildImpersonateTrustee
+		BuildTrusteeWithName
+		BuildTrusteeWithObjectsAndName
+		BuildTrusteeWithObjectsAndSid
+		BuildTrusteeWithSid
+		CheckTokenMembership
+		ConvertSecurityDescriptorToStringSecurityDescriptor
+		ConvertSidToStringSid
+		ConvertStringSecurityDescriptorToSecurityDescriptor
+		ConvertStringSidToSid
+		CopySid
+		CreateRestrictedToken
+		CreateWellKnownSid
+		DuplicateToken
+		DuplicateTokenEx
+		EqualDomainSid
+		EqualPrefixSid
+		EqualSid
+		FreeSid
+		GetAuditedPermissionsFromAcl
+		GetEffectiveRightsFromAcl
+		GetExplicitEntriesFromAcl
+		GetLengthSid
+		GetMultipleTrustee
+		GetMultipleTrusteeOperation
+		GetNamedSecurityInfo
+		GetSecurityDescriptorControl
+		GetSecurityInfo
+		GetSidIdentifierAuthority
+		GetSidLengthRequired
+		GetSidSubAuthority
+		GetSidSubAuthorityCount
+		GetTokenInformation
+		GetTrusteeForm
+		GetTrusteeName
+		GetTrusteeType
+		GetWindowsAccountDomainSid
+		InitializeSid
+		IsTokenRestricted
+		IsValidSid
+		IsWellKnownSid
+		LookupAccountName
+		LookupAccountSid
+		LookupAccountSidLocal
+		LookupPrivilegeDisplayName
+		LookupPrivilegeName
+		LookupPrivilegeValue
+		NtCompareTokens
+		OpenProcessToken
+		OpenThreadToken
+		QuerySecurityAccessMask
+		RtlConvertSidToUnicodeString
+		SetEntriesInAcl
+		SetNamedSecurityInfo
+		SetSecurityAccessMask
+		SetSecurityDescriptorControl
+		SetSecurityInfo
+		SetThreadToken
+		SetTokenInformation
+		TreeResetNamedSecurityInfo
+		TreeSetNamedSecurityInfo
+		*/
 	}
 }

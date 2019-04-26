@@ -39,7 +39,7 @@ namespace Vanara.PInvoke
 	/// <seealso cref="System.IEquatable{HRESULT}"/>
 	[StructLayout(LayoutKind.Sequential)]
 	[TypeConverter(typeof(HRESULTTypeConverter))]
-	public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HRESULT>, IConvertible
+	public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HRESULT>, IConvertible, IErrorProvider
 	{
 		internal readonly uint _value;
 
@@ -363,6 +363,10 @@ namespace Vanara.PInvoke
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 		[System.Diagnostics.DebuggerStepThrough]
 		public static void ThrowIfFailed(int hresult, string message = null) => new HRESULT((uint)hresult).ThrowIfFailed(message);
+
+		/// <summary>Converts this error to an <see cref="T:Vanara.PInvoke.HRESULT" />.</summary>
+		/// <returns>An equivalent <see cref="T:Vanara.PInvoke.HRESULT" />.</returns>
+		HRESULT IErrorProvider.ToHRESULT() => this;
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>

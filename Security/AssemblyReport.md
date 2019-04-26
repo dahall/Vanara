@@ -3,6 +3,7 @@
 Class | Description
 ---- | ----
 AccessControlHelper | Helper methods for working with Access Control structures.
+AccessExtension | Extension methods for native and .NET access control objects.
 AccountPrivileges | Allows for the privileges of a user to be retrieved, enumerated and set.
 AccountUtils | Helper methods for working with `WindowsIdentity` and user names.
 ActiveDirectoryExtension | 
@@ -19,6 +20,7 @@ SystemAccountInfo | Contains a corresponding result for each name provided to th
 SystemSecurity | Provides access to the local security authority on a given server.
 UAC | Provides information about the state of User Access Control for the system.
 WindowsImpersonatedIdentity | Impersonation of a user. Allows to execute code under another user context. Please note that the account that instantiates this class needs to have the 'Act as part of operating system' privilege set.
+WindowsLoggedInIdentity | Impersonation of a user. Allows to execute code under another user context. Please note that the account that instantiates this class needs to have the 'Act as part of operating system' privilege set.
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

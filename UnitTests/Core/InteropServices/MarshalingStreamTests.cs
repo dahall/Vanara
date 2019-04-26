@@ -70,7 +70,7 @@ namespace Vanara.InteropServices.Tests
 				Assert.That(() => ms.Poke(ba, -1), Throws.TypeOf<ArgumentOutOfRangeException>());
 				ms.Poke(ba, 1);
 				Assert.That(ms.Read<int>(), Is.EqualTo(0x00000102));
-				Assert.That(() => ms.Read<Vanara.PInvoke.User32_Gdi.ICONINFO>(), Throws.TypeOf<ArgumentOutOfRangeException>());
+				Assert.That(() => ms.Read<ulong>(), Throws.TypeOf<ArgumentOutOfRangeException>());
 			}
 		}
 
@@ -125,11 +125,11 @@ namespace Vanara.InteropServices.Tests
 				Assert.That(() => ms.Write(bytes, -1, 8), Throws.TypeOf<ArgumentOutOfRangeException>());
 				Assert.That(() => ms.Write(bytes, 1, -8), Throws.TypeOf<ArgumentOutOfRangeException>());
 				Assert.That(() => ms.Write(new byte[22]), Throws.ArgumentException);
-				Assert.That(() => ms.Write(new Vanara.PInvoke.User32_Gdi.ICONINFO()), Throws.ArgumentException);
 				ms.Write((SafeHGlobalHandle) null);
 				Assert.That(ms.Position, Is.Zero);
 				ms.Write((string[]) null);
 				Assert.That(ms.Position, Is.Zero);
+				Assert.That(() => ms.Write(0L), Throws.Nothing);
 			}
 			using (var m = new SafeHGlobalHandle(100))
 			using (var ms = new MarshalingStream((IntPtr)m, m.Size))

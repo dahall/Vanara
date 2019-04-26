@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6F668E05-8141-48B8-9031-326C79745AF4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Vanara.PInvoke.Tests</RootNamespace>
+    <AssemblyName>UnitTest.PInvoke.Shared</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\ComEnumeratorTests.cs" />
+    <Compile Include="InteropServices\CoTaskMemStringMarshalerTests.cs" />
+    <Compile Include="InteropServices\SafeNativeArrayTests.cs" />
+    <Compile Include="OverlappedAsyncTests.cs" />
+    <Compile Include="ResourceIdTests.cs" />
+    <Compile Include="WinBase\SYSTEMTIMETests.cs" />
+    <Compile Include="WinDef\PRECTTests.cs" />
+    <Compile Include="WinDef\RECTTests.cs" />
+    <Compile Include="WinDef\SIZETests.cs" />
+    <Compile Include="WinError\HRESULTTests.cs" />
+    <Compile Include="WinError\NTStatusTests.cs" />
+    <Compile Include="WinError\Win32ErrorTests.cs" />
+    <Compile Include="WinNT\OBJECT_TYPE_LISTTests.cs" />
+    <Compile Include="WinUser\MacrosTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Vanara.Core.csproj">
+      <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
+      <Name>Vanara.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
+      <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
+      <Name>Vanara.PInvoke.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
