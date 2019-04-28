@@ -55,7 +55,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public override string ToString() => StringHelper.GetString(ptr);
+		public override string ToString() => StringHelper.GetString(ptr) ?? "null";
 	}
 
 	/// <summary>The StrPtr structure represents a LPWSTR.</summary>
@@ -105,7 +105,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public override string ToString() => StringHelper.GetString(ptr, CharSet.Unicode);
+		public override string ToString() => StringHelper.GetString(ptr, CharSet.Unicode) ?? "null";
 	}
 
 	/// <summary>The StrPtr structure represents a LPWSTR.</summary>
@@ -155,6 +155,6 @@ namespace Vanara.InteropServices
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public override string ToString() => StringHelper.GetString(ptr, CharSet.Ansi);
+		public override string ToString() => StringHelper.GetString(ptr, CharSet.Ansi) ?? "null";
 	}
 }
