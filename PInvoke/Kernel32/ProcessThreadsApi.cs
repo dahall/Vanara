@@ -3594,7 +3594,7 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI OpenProcess( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ DWORD dwProcessId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684320(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684320")]
-		public static extern SafeHPROCESS OpenProcess(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, uint dwProcessId);
+		public static extern SafeHPROCESS OpenProcess(ACCESS_MASK dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, uint dwProcessId);
 
 		/// <summary>Opens an existing thread object.</summary>
 		/// <param name="dwDesiredAccess">
@@ -3618,7 +3618,7 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI OpenThread( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ DWORD dwThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684335(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684335")]
-		public static extern SafeHTHREAD OpenThread(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, uint dwThreadId);
+		public static extern SafeHTHREAD OpenThread(ACCESS_MASK dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, uint dwThreadId);
 
 		/// <summary>Retrieves the Remote Desktop Services session associated with a specified process.</summary>
 		/// <param name="dwProcessId">
