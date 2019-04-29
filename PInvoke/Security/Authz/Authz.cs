@@ -911,7 +911,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "8b3bb69f-7bf9-4e4a-b870-081dd92c7ee4")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzCachedAccessCheck([Optional] uint Flags, AUTHZ_ACCESS_CHECK_RESULTS_HANDLE hAccessCheckResults, in AUTHZ_ACCESS_REQUEST pRequest, [Optional] AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, ref AUTHZ_ACCESS_REPLY pReply);
+		public static extern bool AuthzCachedAccessCheck([Optional] uint Flags, AUTHZ_ACCESS_CHECK_RESULTS_HANDLE hAccessCheckResults, in AUTHZ_ACCESS_REQUEST pRequest, [Optional] AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, AUTHZ_ACCESS_REPLY pReply);
 
 		/// <summary>
 		/// The <c>AuthzEnumerateSecurityEventSources</c> function retrieves the registered security event sources that are not installed by default.
@@ -1406,9 +1406,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("authz.h", MSDNShortId = "cf79a92f-31e0-47cf-8990-4dbd46056a90")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzInitializeObjectAccessAuditEvent(AuthzAuditEventFlags Flags, IntPtr hAuditEventType,
-			string szOperationType, string szObjectType, string szObjectName, string szAdditionalInfo,
-			out SafeAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, uint dwAdditionalParameterCount = 0);
+		public static extern bool AuthzInitializeObjectAccessAuditEvent(AuthzAuditEventFlags Flags, [Optional] IntPtr hAuditEventType, string szOperationType, string szObjectType, 
+			string szObjectName, string szAdditionalInfo, out SafeAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, uint dwAdditionalParameterCount = 0, IntPtr parameters = default);
 
 		/// <summary>
 		/// The <c>AuthzInitializeObjectAccessAuditEvent2</c> function allocates and initializes an <c>AUTHZ_AUDIT_EVENT_HANDLE</c> handle
@@ -1458,7 +1457,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("authz.h", MSDNShortId = "c65bb799-0158-496a-b428-0331c4474b74")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzInitializeObjectAccessAuditEvent2(AuthzAuditEventFlags Flags, [Optional] IntPtr hAuditEventType, string szOperationType, string szObjectType, string szObjectName, string szAdditionalInfo, string szAdditionalInfo2, out SafeAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, uint dwAdditionalParameterCount = 0, IntPtr additionalParameters = default);
+		public static extern bool AuthzInitializeObjectAccessAuditEvent2(AuthzAuditEventFlags Flags, [Optional] IntPtr hAuditEventType, string szOperationType, string szObjectType,
+			string szObjectName, string szAdditionalInfo, string szAdditionalInfo2, out SafeAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, uint dwAdditionalParameterCount = 0, IntPtr parameters = default);
 
 		/// <summary>
 		/// <para>
@@ -1658,7 +1658,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "77cb5c6c-1634-4449-8d05-ce6357ad4e4b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzInstallSecurityEventSource([Optional] uint dwFlags, in AUTHZ_SOURCE_SCHEMA_REGISTRATION pRegistration);
+		public static extern bool AuthzInstallSecurityEventSource([Optional] uint dwFlags, in AUTHZ_SOURCE_SCHEMA_REGISTRATION_IN pRegistration);
 
 		/// <summary>
 		/// <para>The <c>AuthzModifyClaims</c> function adds, deletes, or modifies user and device claims in the Authz client context.</para>
@@ -1904,7 +1904,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "95d561ef-3233-433a-a1e7-b914df1dd211")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzReportSecurityEvent(APF dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, uint dwAuditId, [Optional] PSID pUserSid, uint dwCount, IntPtr arg6);
+		public static extern bool AuthzReportSecurityEvent(APF dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, uint dwAuditId, [Optional] PSID pUserSid, uint dwCount, __arglist);
 
 		/// <summary>
 		/// <para>
@@ -1937,7 +1937,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "ee5b598a-0a89-4b32-a9bc-e9c811573b08")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzReportSecurityEventFromParams([Optional] uint dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, uint dwAuditId, [Optional] PSID pUserSid, [In] AUDIT_PARAMS[] pParams);
+		public static extern bool AuthzReportSecurityEventFromParams([Optional] uint dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, uint dwAuditId, [Optional] PSID pUserSid, in AUDIT_PARAMS pParams);
 
 		/// <summary>
 		/// The <c>AuthzSetAppContainerInformation</c> function sets the app container and capability information in a current Authz context.
@@ -2271,6 +2271,9 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct AUTHZ_INIT_INFO
 		{
+			/// <summary>Highest supported version for this structure.</summary>
+			public const ushort AUTHZ_INIT_INFO_VERSION_V1 = 1;
+
 			/// <summary>
 			/// The version of the authorization resource manager initialization information structure. This must be set to
 			/// AUTHZ_INIT_INFO_VERSION_V1 (1).
@@ -2394,6 +2397,9 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct AUTHZ_RPC_INIT_INFO_CLIENT
 		{
+			/// <summary>Highest supported version of the AUTHZ_RPC_INIT_INFO_CLIENT structure.</summary>
+			public const ushort AUTHZ_RPC_INIT_INFO_CLIENT_VERSION_V1 = 1;
+
 			/// <summary>Version of the structure. The highest currently supported version is AUTHZ_RPC_INIT_INFO_CLIENT_VERSION_V1.</summary>
 			public ushort version;
 
@@ -2679,6 +2685,77 @@ namespace Vanara.PInvoke
 
 			/// <summary>This member is reserved and must be set to <c>NULL</c>.</summary>
 			public StrPtrUni szExecutableImagePath;
+
+			/// <summary>
+			/// The GUID of a migrated publisher. The value of this member is converted to a string and stored in the registry if the caller
+			/// is a migrated publisher.
+			/// </summary>
+			public IntPtr pProviderGuid;
+
+			/// <summary>The number of objects in the ObjectTypeNames array.</summary>
+			public uint dwObjectTypeNameCount;
+
+			/// <summary>An array of AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET structures that represents the object types for the events.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET[] ObjectTypeNames;
+		}
+
+		/// <summary>The <c>AUTHZ_SOURCE_SCHEMA_REGISTRATION</c> structure specifies information about source schema registration.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-_authz_source_schema_registration typedef struct
+		// _AUTHZ_SOURCE_SCHEMA_REGISTRATION { DWORD dwFlags; PWSTR szEventSourceName; PWSTR szEventMessageFile; PWSTR
+		// szEventSourceXmlSchemaFile; PWSTR szEventAccessStringsFile; PWSTR szExecutableImagePath; union { PVOID pReserved; GUID
+		// *pProviderGuid; } DUMMYUNIONNAME; DWORD dwObjectTypeNameCount; AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET
+		// ObjectTypeNames[ANYSIZE_ARRAY]; } AUTHZ_SOURCE_SCHEMA_REGISTRATION, *PAUTHZ_SOURCE_SCHEMA_REGISTRATION;
+		[PInvokeData("authz.h", MSDNShortId = "8b4d6e14-fb9c-428a-bd94-34eba668edc6")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct AUTHZ_SOURCE_SCHEMA_REGISTRATION_IN
+		{
+			/// <summary>
+			/// <para>Flags that control the behavior of the operation. The following table shows a possible value.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>AUTHZ_ALLOW_MULTIPLE_SOURCE_INSTANCES 0x1</term>
+			/// <term>
+			/// Allows registration of multiple sources with the same name. Use of this flag means that more than one source can call the
+			/// AuthzRegisterSecurityEventSource function with the same szEventSourceName at runtime.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>AUTHZ_MIGRATED_LEGACY_PUBLISHER 0x2</term>
+			/// <term>
+			/// The caller is a migrated publisher that has registered a manifest with WEvtUtil.exe. The GUID of the provider specified by
+			/// the pProviderGuid member is stored in the registry.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public SOURCE_SCHEMA_REGISTRATION_FLAGS dwFlags;
+
+			/// <summary>A pointer to a wide character string that represents the name of the event source.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string szEventSourceName;
+
+			/// <summary>A pointer to a wide character string that represents the name of the resource that contains the event messages.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string szEventMessageFile;
+
+			/// <summary>A pointer to a wide character string that represents the name of the XML schema file for the event source.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string szEventSourceXmlSchemaFile;
+
+			/// <summary>
+			/// A pointer to a wide character string that represents the name of the resource that contains the event parameter strings.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string szEventAccessStringsFile;
+
+			/// <summary>This member is reserved and must be set to <c>NULL</c>.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string szExecutableImagePath;
 
 			/// <summary>
 			/// The GUID of a migrated publisher. The value of this member is converted to a string and stored in the registry if the caller
