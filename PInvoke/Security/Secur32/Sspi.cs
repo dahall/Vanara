@@ -4052,7 +4052,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-sspiencodeauthidentityasstrings SECURITY_STATUS SEC_ENTRY
 		// SspiEncodeAuthIdentityAsStrings( PSEC_WINNT_AUTH_IDENTITY_OPAQUE pAuthIdentity, PCWSTR *ppszUserName, PCWSTR *ppszDomainName,
 		// PCWSTR *ppszPackedCredentialsString );
-		[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("sspi.h", MSDNShortId = "0610a7b8-67e9-4c01-893f-da579eeea2f8")]
 		public static extern Win32Error SspiEncodeAuthIdentityAsStrings(PSEC_WINNT_AUTH_IDENTITY_OPAQUE pAuthIdentity,
 			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SspiStringMarshaler))] out string ppszUserName,

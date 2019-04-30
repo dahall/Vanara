@@ -13,6 +13,44 @@ namespace Vanara.PInvoke
 	/// <summary>Functions, enumerations and structures found in ADVAPI32.DLL.</summary>
 	public static partial class AdvApi32
 	{
+		/// <summary>Flags that provide more information about the collision.</summary>
+		[PInvokeData("ntsecapi.h", MSDNShortId = "9f9d2f57-0e7f-4222-be35-e3f026b60e93")]
+		[Flags]
+		public enum CollisionFlags
+		{
+			LSA_TLN_DISABLED_NEW = 0x00000001,
+			LSA_TLN_DISABLED_ADMIN = 0x00000002,
+			LSA_TLN_DISABLED_CONFLICT = 0x00000004,
+			LSA_SID_DISABLED_ADMIN = 0x00000001,
+			LSA_SID_DISABLED_CONFLICT = 0x00000002,
+			LSA_NB_DISABLED_ADMIN = 0x00000004,
+			LSA_NB_DISABLED_CONFLICT = 0x00000008,
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>LSA_FOREST_TRUST_COLLISION_RECORD_TYPE</c> enumeration defines the types of collision that can occur between Local
+		/// Security Authority forest trust records.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>This enumeration is used by the LSA_FOREST_TRUST_COLLISION_RECORD structure.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ne-ntsecapi-lsa_forest_trust_collision_record_type typedef enum {
+		// CollisionTdo, CollisionXref, CollisionOther } ;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "67c89d75-2c2d-4980-a1c9-32e7f64a7b49")]
+		public enum LSA_FOREST_TRUST_COLLISION_RECORD_TYPE
+		{
+			/// <summary>Collision between TrustedDomain objects. This indicates a collision with a namespace element of another forest.</summary>
+			CollisionTdo,
+
+			/// <summary>Collision between cross-references. This indicates a collision with a domain in the same forest.</summary>
+			CollisionXref,
+
+			/// <summary>Collision that is not a collision between TrustedDomain objects or cross-references.</summary>
+			CollisionOther,
+		}
+
 		/// <summary>
 		/// <para>The <c>LSA_FOREST_TRUST_RECORD_TYPE</c> enumeration defines the type of a Local Security Authority forest trust record.</para>
 		/// </summary>
@@ -167,6 +205,89 @@ namespace Vanara.PInvoke
 			POLICY_EXECUTE = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE |
 							 POLICY_VIEW_LOCAL_INFORMATION |
 							 POLICY_LOOKUP_NAMES,
+		}
+
+		/// <summary>The <c>POLICY_DOMAIN_INFORMATION_CLASS</c> enumeration defines the type of policy domain information.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ne-ntsecapi-_policy_domain_information_class typedef enum
+		// _POLICY_DOMAIN_INFORMATION_CLASS { PolicyDomainQualityOfServiceInformation, PolicyDomainEfsInformation,
+		// PolicyDomainKerberosTicketInformation } POLICY_DOMAIN_INFORMATION_CLASS, *PPOLICY_DOMAIN_INFORMATION_CLASS;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "b208c479-a262-4120-824f-677ead1ef61a")]
+		public enum POLICY_DOMAIN_INFORMATION_CLASS
+		{
+			/// <summary/>
+			PolicyDomainQualityOfServiceInformation = 1,
+
+			/// <summary>The information is for Encrypting File System.</summary>
+			PolicyDomainEfsInformation,
+
+			/// <summary>The information is for a Kerberos ticket.</summary>
+			PolicyDomainKerberosTicketInformation,
+		}
+
+		/// <summary>
+		/// The <c>POLICY_INFORMATION_CLASS</c> enumeration defines values that indicate the type of information to set or query in a Policy object.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ne-ntsecapi-_policy_information_class typedef enum
+		// _POLICY_INFORMATION_CLASS { PolicyAuditLogInformation, PolicyAuditEventsInformation, PolicyPrimaryDomainInformation,
+		// PolicyPdAccountInformation, PolicyAccountDomainInformation, PolicyLsaServerRoleInformation, PolicyReplicaSourceInformation,
+		// PolicyDefaultQuotaInformation, PolicyModificationInformation, PolicyAuditFullSetInformation, PolicyAuditFullQueryInformation,
+		// PolicyDnsDomainInformation, PolicyDnsDomainInformationInt, PolicyLocalAccountDomainInformation, PolicyMachineAccountInformation,
+		// PolicyLastEntry } POLICY_INFORMATION_CLASS, *PPOLICY_INFORMATION_CLASS;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "b734b5e8-1ee9-436b-b2a9-210ae79fbaf5")]
+		public enum POLICY_INFORMATION_CLASS
+		{
+			/// <summary>This value is obsolete.</summary>
+			PolicyAuditLogInformation = 1,
+
+			/// <summary>
+			/// Query or set the auditing rules of the system. You can enable or disable auditing and specify the types of events that are
+			/// audited. Use the POLICY_AUDIT_EVENTS_INFO structure.
+			/// </summary>
+			PolicyAuditEventsInformation,
+
+			/// <summary>This value is obsolete. Use the PolicyDnsDomainInformation value instead.</summary>
+			PolicyPrimaryDomainInformation,
+
+			/// <summary>This value is obsolete.</summary>
+			PolicyPdAccountInformation,
+
+			/// <summary>Query or set the name and SID of the account domain of the system. Use the POLICY_ACCOUNT_DOMAIN_INFO structure.</summary>
+			PolicyAccountDomainInformation,
+
+			/// <summary>Query or set the role of an LSA server. Use the POLICY_LSA_SERVER_ROLE_INFO structure.</summary>
+			PolicyLsaServerRoleInformation,
+
+			/// <summary>This value is obsolete.</summary>
+			PolicyReplicaSourceInformation,
+
+			/// <summary>This value is obsolete.</summary>
+			PolicyDefaultQuotaInformation,
+
+			/// <summary>
+			/// Query or set information about the creation time and last modification of the LSA database. Use the POLICY_MODIFICATION_INFO structure.
+			/// </summary>
+			PolicyModificationInformation,
+
+			/// <summary>This value is obsolete.</summary>
+			PolicyAuditFullSetInformation,
+
+			/// <summary>This value is obsolete.</summary>
+			PolicyAuditFullQueryInformation,
+
+			/// <summary>
+			/// Query or set Domain Name System (DNS) information about the account domain associated with a Policy object. Use the
+			/// POLICY_DNS_DOMAIN_INFO structure.
+			/// </summary>
+			PolicyDnsDomainInformation,
+
+			/// <summary/>
+			PolicyDnsDomainInformationInt,
+
+			/// <summary/>
+			PolicyLocalAccountDomainInformation,
+
+			/// <summary/>
+			PolicyMachineAccountInformation,
 		}
 
 		/// <summary>Indicates the attributes of a trust relationship.</summary>
@@ -346,6 +467,79 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 		public static extern uint LsaCreateAccount(LSA_HANDLE PolicyHandle, PSID AccountSid, LsaAccountAccessMask DesiredAccess, out SafeLSA_HANDLE AccountHandle);
 
+		/// <summary>The <c>LsaCreateTrustedDomainEx</c> function establishes a new trusted domain by creating a new TrustedDomain object.</summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. For the object to be created, the caller must have permission to create children on the
+		/// <c>System</c> container. For information about policy object handles, see Opening a Policy Object Handle.
+		/// </param>
+		/// <param name="TrustedDomainInformation">
+		/// Pointer to a TRUSTED_DOMAIN_INFORMATION_EX structure that contains the name and SID of the new trusted domain.
+		/// </param>
+		/// <param name="AuthenticationInformation">
+		/// Pointer to a TRUSTED_DOMAIN_AUTH_INFORMATION structure that contains authentication information for the new trusted domain.
+		/// </param>
+		/// <param name="DesiredAccess">An ACCESS_MASK structure that specifies the accesses to be granted for the new trusted domain.</param>
+		/// <param name="TrustedDomainHandle">
+		/// <para>
+		/// Receives the LSA policy handle of the remote trusted domain. You can pass this handle into LSA function calls to manage the LSA
+		/// policy of the trusted domain.
+		/// </para>
+		/// <para>When your application no longer needs this handle, it should call LsaClose to delete the handle.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, it returns an <c>NTSTATUS</c> code, which can be one of the following values or one of the LSA Policy
+		/// Function Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_DIRECTORY_SERVICE_REQUIRED</term>
+		/// <term>The target system (specified in the TrustedDomainInformation parameter) for the TrustedDomain object is not a domain controller.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_SID</term>
+		/// <term>The specified SID is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_UNSUCCESSFUL</term>
+		/// <term>Unable to determine whether the target system is a domain controller.</term>
+		/// </item>
+		/// </list>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the <c>NTSTATUS</c> code to a Windows error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <c>LsaCreateTrustedDomainEx</c> does not check whether the specified domain name matches the specified SID or whether the SID and
+		/// name represent an actual domain.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsacreatetrusteddomainex NTSTATUS
+		// LsaCreateTrustedDomainEx( LSA_HANDLE PolicyHandle, PTRUSTED_DOMAIN_INFORMATION_EX TrustedDomainInformation,
+		// PTRUSTED_DOMAIN_AUTH_INFORMATION AuthenticationInformation, ACCESS_MASK DesiredAccess, PLSA_HANDLE TrustedDomainHandle );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "2f458098-9498-4f08-bd13-ac572678d734")]
+		public static extern NTStatus LsaCreateTrustedDomainEx(LSA_HANDLE PolicyHandle, in TRUSTED_DOMAIN_INFORMATION_EX TrustedDomainInformation, in TRUSTED_DOMAIN_AUTH_INFORMATION AuthenticationInformation, ACCESS_MASK DesiredAccess, out SafeLSA_HANDLE TrustedDomainHandle);
+
+		/// <summary>
+		/// The <c>LsaDeleteTrustedDomain</c> function removes a trusted domain from the list of trusted domains for a system and deletes the
+		/// associated TrustedDomain object.
+		/// </summary>
+		/// <param name="PolicyHandle">A handle to a Policy object. For more information, see Opening a Policy Object Handle.</param>
+		/// <param name="TrustedDomainSid">Pointer to the SID of the trusted domain to be removed.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>If the function fails, the return value is an NTSTATUS code. For more information, see LSA Policy Function Return Values.</para>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the NTSTATUS code to a Windows error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsadeletetrusteddomain NTSTATUS LsaDeleteTrustedDomain(
+		// LSA_HANDLE PolicyHandle, PSID TrustedDomainSid );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "4a7afa28-1786-4a58-a955-d2d8b12e62e4")]
+		public static extern NTStatus LsaDeleteTrustedDomain(LSA_HANDLE PolicyHandle, PSID TrustedDomainSid);
+
 		/// <summary>
 		/// <para>The <c>LsaEnumerateAccountRights</c> function enumerates the privileges assigned to an account.</para>
 		/// </summary>
@@ -496,6 +690,229 @@ namespace Vanara.PInvoke
 			return mem.DangerousGetHandle().ToIEnum<LSA_ENUMERATION_INFORMATION>(cnt).Select(u => u.Sid);
 		}
 
+		/// <summary>
+		/// <para>
+		/// The <c>LsaEnumerateTrustedDomains</c> function retrieves the names and SIDs of domains trusted to authenticate logon credentials.
+		/// <c>LsaEnumerateTrustedDomains</c> is intended for use on systems running Windows NT 4.0 or earlier versions of Windows NT. Use
+		/// DsEnumerateDomainTrusts for any other trust enumeration purpose. Specifically, <c>LsaEnumerateTrustedDomains</c> can only be used
+		/// if one or more of the following is true:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The calling system is running Windows NT 4.0 or an earlier version of Windows NT.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The target system (specified using the PolicyHandle parameter), is a domain controller running Windows NT 4.0 or an earlier version.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The calling system is running Windows NT 4.0 or earlier version and is not a domain controller, and the target system is a domain
+		/// controller in the calling system's domain. The target system can be running any version of Windows NT, including Windows 2000 and
+		/// Windows XP.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. The handle must have the POLICY_VIEW_LOCAL_INFORMATION access right. For more information, see
+		/// Opening a Policy Object Handle.
+		/// </param>
+		/// <param name="EnumerationContext">
+		/// Pointer to an enumeration handle that enables you to make multiple calls to enumerate all the trusted domains. On the first call
+		/// to <c>LsaEnumerateTrustedDomains</c>, EnumerationContext must point to a variable that has been initialized to zero. On
+		/// subsequent calls to <c>LsaEnumerateTrustedDomains</c>, EnumerationContext must point to the enumeration handle returned by the
+		/// previous call.
+		/// </param>
+		/// <param name="Buffer">
+		/// <para>
+		/// Receives a pointer to an array of LSA_TRUST_INFORMATION structures that contain the names and SIDs of one or more trusted domains.
+		/// </para>
+		/// <para>When you no longer need the information, pass the returned pointer to LsaFreeMemory.</para>
+		/// </param>
+		/// <param name="PreferedMaximumLength">
+		/// Specifies the preferred maximum size, in bytes, of the returned buffer. This information is approximate; the actual number of
+		/// bytes returned may be greater than this value.
+		/// </param>
+		/// <param name="CountReturned">Pointer to a variable that receives the number of elements returned in the Buffer parameter.</param>
+		/// <returns>
+		/// <para>If the function is successful, the return value is one of the following NTSTATUS values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The enumeration has been successfully completed.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_MORE_ENTRIES</term>
+		/// <term>
+		/// The call was successful, but there are more trusted domains to be enumerated. Call LsaEnumerateTrustedDomains again, passing the
+		/// value returned in the EnumerationContext parameter.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NO_MORE_ENTRIES</term>
+		/// <term>There are no more trusted domains to enumerate.</term>
+		/// </item>
+		/// </list>
+		/// <para>If the function fails, the return value is an NTSTATUS code. For more information, see LSA Policy Function Return Values.</para>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the NTSTATUS code to a Windows error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// For domains with domain controllers running only Windows NT 4.0 or earlier versions of Windows NT,
+		/// <c>LsaEnumerateTrustedDomains</c> returns a list of all trusted domains. In releases of Windows NT up to and including release
+		/// 4.0, all trusted domains are directly trusted.
+		/// </para>
+		/// <para>
+		/// In Windows XP and Windows 2000 mixed-mode domains, domain controllers may be running Windows XP, Windows 2000, or Windows NT.
+		/// Therefore, in mixed-mode domains, some trusted domains are directly trusted and others are indirectly trusted. When enumerating
+		/// the trusted domains of a system in a mixed-mode domain, <c>LsaEnumerateTrustedDomains</c> returns only directly trusted domains.
+		/// </para>
+		/// <para>
+		/// In contrast, Windows XP and Windows 2000 native-mode domains contain only Windows 2000 domain controllers, even though there may
+		/// be members in the domain running Windows NT 4.0 or earlier versions. When enumerating the trusted domains of a system in a
+		/// native-mode Windows XP and Windows 2000 domain, <c>LsaEnumerateTrustedDomains</c> returns both directly trusted and indirectly
+		/// trusted domains.
+		/// </para>
+		/// <para>
+		/// Retrieving all trust information may require more than a single <c>LsaEnumerateTrustedDomains</c> call. You can use the
+		/// EnumerationContext parameter to make multiple calls, as follows: On the first call, set the variable pointed to by
+		/// EnumerationContext to zero. If <c>LsaEnumerateTrustedDomains</c> returns STATUS_SUCCESS or STATUS_MORE_ENTRIES, call the function
+		/// again, passing in the EnumerationContext value returned by the previous call. The enumeration is complete when the function
+		/// returns STATUS_NO_MORE_ENTRIES.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsaenumeratetrusteddomains NTSTATUS
+		// LsaEnumerateTrustedDomains( LSA_HANDLE PolicyHandle, PLSA_ENUMERATION_HANDLE EnumerationContext, PVOID *Buffer, ULONG
+		// PreferedMaximumLength, PULONG CountReturned );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "5c371d5a-26cf-4a99-a8e1-006b6b3cc91f")]
+		public static extern NTStatus LsaEnumerateTrustedDomains(LSA_HANDLE PolicyHandle, ref LSA_ENUMERATION_HANDLE EnumerationContext, out SafeLsaMemoryHandle Buffer, uint PreferedMaximumLength, out uint CountReturned);
+
+		/// <summary>
+		/// <para>
+		/// The <c>LsaEnumerateTrustedDomains</c> function retrieves the names and SIDs of domains trusted to authenticate logon credentials.
+		/// <c>LsaEnumerateTrustedDomains</c> is intended for use on systems running Windows NT 4.0 or earlier versions of Windows NT. Use
+		/// DsEnumerateDomainTrusts for any other trust enumeration purpose. Specifically, <c>LsaEnumerateTrustedDomains</c> can only be used
+		/// if one or more of the following is true:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The calling system is running Windows NT 4.0 or an earlier version of Windows NT.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The target system (specified using the PolicyHandle parameter), is a domain controller running Windows NT 4.0 or an earlier version.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The calling system is running Windows NT 4.0 or earlier version and is not a domain controller, and the target system is a domain
+		/// controller in the calling system's domain. The target system can be running any version of Windows NT, including Windows 2000 and
+		/// Windows XP.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. The handle must have the POLICY_VIEW_LOCAL_INFORMATION access right. For more information, see
+		/// Opening a Policy Object Handle.
+		/// </param>
+		/// <returns>An enumeration of LSA_TRUST_INFORMATION structures that contain the names and SIDs of one or more trusted domains.</returns>
+		[PInvokeData("ntsecapi.h", MSDNShortId = "5c371d5a-26cf-4a99-a8e1-006b6b3cc91f")]
+		public static IEnumerable<LSA_TRUST_INFORMATION> LsaEnumerateTrustedDomains(LSA_HANDLE PolicyHandle)
+		{
+			const uint maxBuf = 4096;
+			var hEnum = LSA_ENUMERATION_HANDLE.NULL;
+			NTStatus ret = NTStatus.STATUS_SUCCESS;
+			while ((ret = LsaEnumerateTrustedDomains(PolicyHandle, ref hEnum, out var buf, maxBuf, out var count)) == NTStatus.STATUS_MORE_ENTRIES)
+			{
+				foreach (var i in buf.ToArray<LSA_TRUST_INFORMATION>((int)count))
+					yield return i;
+			}
+			ret.ThrowIfFailed();
+		}
+
+		/// <summary>
+		/// The <c>LsaEnumerateTrustedDomainsEx</c> function returns information about the domains trusted by the local system.
+		/// <c>LsaEnumerateTrustedDomainsEx</c> returns information only on direct trusts. DsEnumerateDomainTrusts is recommended for more
+		/// complete trust enumeration purposes.
+		/// </summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. This call requires POLICY_VIEW_LOCAL_INFORMATION access to the <c>Policy</c> object. For more
+		/// information, see Opening a Policy Object Handle.
+		/// </param>
+		/// <param name="EnumerationContext">
+		/// A pointer to an LSA_ENUMERATION_HANDLE that you can use to make multiple calls to <c>LsaEnumerateTrustedDomainsEx</c> to retrieve
+		/// all of the trusted domain information. For more information, see Remarks.
+		/// </param>
+		/// <param name="Buffer">
+		/// <para>
+		/// Pointer to a buffer that receives a list of TRUSTED_DOMAIN_INFORMATION_EX structures that contain information about the
+		/// enumerated trusted domains.
+		/// </para>
+		/// <para>Your application should free this buffer when it is no longer needed by calling LsaFreeMemory.</para>
+		/// </param>
+		/// <param name="PreferedMaximumLength">
+		/// Preferred maximum length, in bytes, of returned data. This is not a hard upper limit, but serves as a guide. Due to data
+		/// conversion between systems with different natural data sizes, the actual amount of data returned may be greater than this value.
+		/// </param>
+		/// <param name="CountReturned">Pointer to a <c>LONG</c> that receives the number of trusted domain objects returned.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, it returns an <c>NTSTATUS</c> code, which can be one of the following values or one of the LSA Policy
+		/// Function Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_ACCESS_DENIED</term>
+		/// <term>Caller does not have the appropriate access to complete the operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NO_MORE_ENTRIES</term>
+		/// <term>
+		/// There are no more entries. This warning is returned if no objects have been enumerated because the EnumerationContext value is
+		/// too high.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the <c>NTSTATUS</c> code to a Windows error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Retrieving all trust information may require more than a single <c>LsaEnumerateTrustedDomainsEx</c> call.</para>
+		/// <para><c>To use the EnumerationContext parameter to make multiple calls</c></para>
+		/// <list type="number">
+		/// <item>
+		/// <term>Set the variable pointed to by EnumerationContext to zero.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If <c>LsaEnumerateTrustedDomainsEx</c> returns STATUS_SUCCESS or STATUS_MORE_ENTRIES, call the function again, passing in the
+		/// EnumerationContext value returned by the previous call.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>The enumeration is complete when the function returns STATUS_NO_MORE_ENTRIES.</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsaenumeratetrusteddomainsex NTSTATUS
+		// LsaEnumerateTrustedDomainsEx( LSA_HANDLE PolicyHandle, PLSA_ENUMERATION_HANDLE EnumerationContext, PVOID *Buffer, ULONG
+		// PreferedMaximumLength, PULONG CountReturned );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "4a203bff-c3e1-4d95-b556-617dc8c2e8c2")]
+		public static extern NTStatus LsaEnumerateTrustedDomainsEx(LSA_HANDLE PolicyHandle, ref LSA_ENUMERATION_HANDLE EnumerationContext, out SafeLsaMemoryHandle Buffer, uint PreferedMaximumLength, out uint CountReturned);
+
 		/// <summary>Gets system access for an account.</summary>
 		/// <param name="AccountHandle">The account handle.</param>
 		/// <param name="SystemAccess">The system access.</param>
@@ -505,6 +922,147 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntlsa.h")]
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 		public static extern uint LsaGetSystemAccessAccount(LSA_HANDLE AccountHandle, out int SystemAccess);
+
+		/// <summary>
+		/// <para>
+		/// The <c>LsaLookupNames</c> function retrieves the security identifiers (SIDs) that correspond to an array of user, group, or local
+		/// group names.
+		/// </para>
+		/// <para>
+		/// The <c>LsaLookupNames</c> function is superseded by the LsaLookupNames2 function. Applications should use the
+		/// <c>LsaLookupNames2</c> function to ensure future compatibility.
+		/// </para>
+		/// <para>The <c>LsaLookupNames</c> function can also retrieve computer accounts.</para>
+		/// </summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. The handle must have the POLICY_LOOKUP_NAMES access right. For more information, see Opening a
+		/// Policy Object Handle.
+		/// </param>
+		/// <param name="Count">
+		/// Specifies the number of names in the Names array. This is also the number of entries returned in the Sids array.
+		/// </param>
+		/// <param name="Names">
+		/// <para>
+		/// Pointer to an array of LSA_UNICODE_STRING structures that contain the names to look up. The strings in these structures can be
+		/// the names of user, group, or local group accounts, or the names of domains. Domain names can be DNS domain names or NetBIOS
+		/// domain names.
+		/// </para>
+		/// <para>For more information about the format of the name strings, see Remarks.</para>
+		/// </param>
+		/// <param name="ReferencedDomains">
+		/// <para>
+		/// Receives a pointer to an LSA_REFERENCED_DOMAIN_LIST structure. The <c>Domains</c> member of this structure is an array that
+		/// contains an entry for each domain in which a name was found. The <c>DomainIndex</c> member of each entry in the Sids array is the
+		/// index of the <c>Domains</c> array entry for the domain in which the name was found.
+		/// </para>
+		/// <para>
+		/// When you have finished using the returned pointer, free the memory by calling the LsaFreeMemory function. This memory must be
+		/// freed even when the function fails with the either of the error codes <c>STATUS_NONE_MAPPED</c> or <c>STATUS_SOME_NOT_MAPPED</c>
+		/// </para>
+		/// </param>
+		/// <param name="Sids">
+		/// <para>
+		/// Receives a pointer to an array of LSA_TRANSLATED_SID structures. Each entry in the Sids array contains the SID information for
+		/// the corresponding entry in the Names array.
+		/// </para>
+		/// <para>
+		/// When you have finished using the returned pointer, free the memory by calling the LsaFreeMemory function. This memory must be
+		/// freed even when the function fails with the either of the error codes <c>STATUS_NONE_MAPPED</c> or <c>STATUS_SOME_NOT_MAPPED</c>
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns one of the following <c>NTSTATUS</c> values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SOME_NOT_MAPPED</term>
+		/// <term>Some of the names could not be translated. This is an informational-level return value.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>All of the names were found and successfully translated.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If the function fails, the return value is the following <c>NTSTATUS</c> value or one of the LSA Policy Function Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_NONE_MAPPED</term>
+		/// <term>None of the names were translated.</term>
+		/// </item>
+		/// </list>
+		/// <para>Use the LsaNtStatusToWinError function to convert the <c>NTSTATUS</c> code to a Windows error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Use fully qualified account names (for example, domain_name\user_name) instead of isolated names (for example, user_name). Fully
+		/// qualified names are unambiguous and provide better performance when the lookup is performed. This function also supports fully
+		/// qualified DNS names (for example, example.example.com\user_name) and user principal names (UPN) (for example, someone@example.com).
+		/// </para>
+		/// <para>
+		/// Translation of isolated names introduces the possibility of name collisions because the same name may be used in multiple
+		/// domains. The <c>LsaLookupNames</c> function uses the following algorithm to translate isolated names
+		/// </para>
+		/// <para><c>To translate isolated names</c></para>
+		/// <list type="number">
+		/// <item>
+		/// <term>
+		/// If the name is a well-known name, such as Local or Interactive, the function returns the corresponding well-known security
+		/// identifier (SID).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>If the name is the name of the built-in domain, the function returns the SID of that domain.</term>
+		/// </item>
+		/// <item>
+		/// <term>If the name is the name of the account domain, the function returns the SID of that domain.</term>
+		/// </item>
+		/// <item>
+		/// <term>If the name is the name of the primary domain, the function returns the SID of that domain.</term>
+		/// </item>
+		/// <item>
+		/// <term>If the name is one of the names of the trusted domain, the function returns the SID of that domain.</term>
+		/// </item>
+		/// <item>
+		/// <term>If the name is a user, group, or local group account in the built-in domain, the function returns the SID of that account.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If the name is a user, group, or local group account in the account domain on the local system, the function returns the SID of
+		/// that account.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>If the name is a user, group, or a local group in the primary domain, the function returns the SID of that account.</term>
+		/// </item>
+		/// <item>
+		/// <term>After looking in the primary domain, the primary domain looks in each of its trusted domains.</term>
+		/// </item>
+		/// <item>
+		/// <term>Otherwise, the name is not translated.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// In addition to looking up local accounts, local domain accounts, and explicitly trusted domain accounts, <c>LsaLookupNames</c>
+		/// can look up the name of any account in any domain in the Windows forest.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example that calls this function, see Translating Between Names and SIDs.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsalookupnames NTSTATUS LsaLookupNames( LSA_HANDLE
+		// PolicyHandle, ULONG Count, PLSA_UNICODE_STRING Names, PLSA_REFERENCED_DOMAIN_LIST *ReferencedDomains, PLSA_TRANSLATED_SID *Sids );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "867604aa-7a39-4da7-b189-a9183461e9a0")]
+		public static extern NTStatus LsaLookupNames(LSA_HANDLE PolicyHandle, uint Count, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringArrayMarshaler))] string[] Names,
+			out SafeLsaMemoryHandle ReferencedDomains, out SafeLsaMemoryHandle Sids);
 
 		/// <summary>
 		/// <para>
@@ -669,6 +1227,120 @@ namespace Vanara.PInvoke
 			string[] Names,
 			out SafeLsaMemoryHandle ReferencedDomains,
 			out SafeLsaMemoryHandle Sids);
+
+		/// <summary>
+		/// <para>
+		/// [ <c>LsaLookupSids</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. Instead, use LsaLookupSids2.]
+		/// </para>
+		/// <para>
+		/// The <c>LsaLookupSids</c> function looks up the names that correspond to an array of security identifiers (SIDs). If
+		/// <c>LsaLookupSids</c> cannot find a name that corresponds to a SID, the function returns the SID in character form.
+		/// </para>
+		/// </summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. This handle must have the POLICY_LOOKUP_NAMES access right. For more information, see Opening a
+		/// Policy Object Handle.
+		/// </param>
+		/// <param name="Count">
+		/// Specifies the number of SIDs in the Sids array. This is also the number of entries returned in the Names array.
+		/// </param>
+		/// <param name="Sids">
+		/// Pointer to an array of SID pointers to look up. The SIDs can be well-known SIDs, user, group, or local group account SIDs, or
+		/// domain SIDs.
+		/// </param>
+		/// <param name="ReferencedDomains">
+		/// <para>
+		/// Receives a pointer to a pointer to a LSA_REFERENCED_DOMAIN_LIST structure. The <c>Domains</c> member of this structure is an
+		/// array that contains an entry for each domain in which a SID was found. The entry for each domain contains the SID and flat name
+		/// of the domain. For Windows domains, the flat name is the NetBIOS name. For links with non–Windows domains, the flat name is the
+		/// identifying name of that domain, or it is <c>NULL</c>.
+		/// </para>
+		/// <para>
+		/// When you no longer need the information, pass the returned pointer to LsaFreeMemory. This memory must be freed even when the
+		/// function fails with the either of the error codes <c>STATUS_NONE_MAPPED</c> or <c>STATUS_SOME_NOT_MAPPED</c>
+		/// </para>
+		/// </param>
+		/// <param name="Names">
+		/// <para>
+		/// Receives a pointer to an array of LSA_TRANSLATED_NAME structures. Each entry in the Names array contains the name information for
+		/// the corresponding entry in the Sids array. For account SIDs, the <c>Name</c> member of each structure contains the isolated name
+		/// of the account. For domain SIDs, the <c>Name</c> member is not valid.
+		/// </para>
+		/// <para>
+		/// The <c>DomainIndex</c> member of each entry in the Names array is the index of an entry in the <c>Domains</c> array returned in
+		/// the ReferencedDomains parameter. The index identifies the <c>Domains</c> array for the domain in which the SID was found.
+		/// </para>
+		/// <para>
+		/// When you no longer need the information, pass the returned pointer to LsaFreeMemory. This memory must be freed even when the
+		/// function fails with the either of the error codes <c>STATUS_NONE_MAPPED</c> or <c>STATUS_SOME_NOT_MAPPED</c>
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is one of the following <c>NTSTATUS</c> values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SOME_NOT_MAPPED</term>
+		/// <term>Some of the SIDs could not be translated. This is an informational-level return value.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>All of the SIDs were found and successfully translated.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If the function fails, the return value is an <c>NTSTATUS</c> code, which can be one of the following values or one of the LSA
+		/// Policy Function Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_NONE_MAPPED</term>
+		/// <term>None of the SIDs were translated. This is an error-level return value.</term>
+		/// </item>
+		/// </list>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the <c>NTSTATUS</c> code to a Windows error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// For account SIDs, the string returned in the <c>Name</c> member is the isolated name of the account (for example, user_name). If
+		/// you need the composite name of the account (for example, Acctg\user_name), get the domain name from the ReferencedDomains buffer
+		/// and append a backslash and the isolated name.
+		/// </para>
+		/// <para>If the <c>LsaLookupSids</c> function cannot translate a SID, the function uses the following algorithm:</para>
+		/// <list type="number">
+		/// <item>
+		/// <term>
+		/// If the SID's domain is known, the ReferencedDomains buffer contains an entry for the domain, and the string returned in the Names
+		/// parameter is a Unicode representation of the account's relative identifier (RID) from the SID.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If the SID's domain is not known, the string returned in the Names parameter is a Unicode representation of the entire SID, and
+		/// there is no domain record for this SID in the ReferencedDomains buffer.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// In addition to looking up SIDs for local accounts, local domain accounts, and explicitly trusted domain accounts,
+		/// <c>LsaLookupSids</c> can look up SIDs for any account in any domain in the Windows forest, including SIDs that appear only in the
+		/// <c>SIDhistory</c> field of an account in the forest. The <c>SIDhistory</c> field stores the former SIDs of an account that has
+		/// been moved from another domain. To perform these searches, the function queries the global catalog of the forest.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsalookupsids NTSTATUS LsaLookupSids( LSA_HANDLE
+		// PolicyHandle, ULONG Count, PSID *Sids, PLSA_REFERENCED_DOMAIN_LIST *ReferencedDomains, PLSA_TRANSLATED_NAME *Names );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "69051bad-91e7-469d-9010-48ac3d20f8af")]
+		public static extern NTStatus LsaLookupSids(LSA_HANDLE PolicyHandle, uint Count, [In] PSID[] Sids, out SafeLsaMemoryHandle ReferencedDomains, out SafeLsaMemoryHandle Names);
 
 		/// <summary>
 		/// <para>
@@ -934,6 +1606,235 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// The <c>LsaOpenTrustedDomainByName</c> function opens the LSA policy handle of a remote trusted domain. You can pass this handle
+		/// into LSA function calls in order to set or query the LSA policy of the remote machine.
+		/// </summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. This is the policy handle of the local machine. For more information, see Opening a Policy Object Handle.
+		/// </param>
+		/// <param name="TrustedDomainName">
+		/// Name of the trusted domain. This name can be either the flat name, or the Domain Name System (DNS) domain name.
+		/// </param>
+		/// <param name="DesiredAccess">
+		/// An ACCESS_MASK structure that specifies the access permissions requested on the remote trusted domain object.
+		/// </param>
+		/// <param name="TrustedDomainHandle">
+		/// <para>
+		/// Pointer that receives the address of the LSA policy handle of the remote trusted domain. You can pass this handle into LSA
+		/// function calls in order to query and manage the LSA policy of the remote machine.
+		/// </para>
+		/// <para>When your application no longer needs this handle, it should call LsaClose to delete the handle.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is an NTSTATUS code, which can be one of the following values or one of the LSA Policy
+		/// Function Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_ACCESS_DENIED</term>
+		/// <term>Caller does not have the appropriate access to complete the operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_OBJECT_NAME_NOT_FOUND</term>
+		/// <term>There is no Trusted Domain object in the target system's LSA Database having the specified name.</term>
+		/// </item>
+		/// </list>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the NTSTATUS code to a Windows error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsaopentrusteddomainbyname NTSTATUS
+		// LsaOpenTrustedDomainByName( LSA_HANDLE PolicyHandle, PLSA_UNICODE_STRING TrustedDomainName, ACCESS_MASK DesiredAccess, PLSA_HANDLE
+		// TrustedDomainHandle );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "6c55f8b4-d8a2-48e3-8074-b3ca22ce487a")]
+		public static extern NTStatus LsaOpenTrustedDomainByName(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string TrustedDomainName, ACCESS_MASK DesiredAccess, out SafeLSA_HANDLE TrustedDomainHandle);
+
+		/// <summary>The <c>LsaQueryDomainInformationPolicy</c> function retrieves domain information from the Policyobject.</summary>
+		/// <param name="PolicyHandle">A handle to the Policy object for the system.</param>
+		/// <param name="InformationClass">
+		/// <para>
+		/// POLICY_DOMAIN_INFORMATION_CLASS enumeration that specifies the information to be returned from the Policyobject. The following
+		/// table shows the possible values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PolicyDomainEfsInformation</term>
+		/// <term>The information is for Encrypting File System.</term>
+		/// </item>
+		/// <item>
+		/// <term>PolicyDomainKerberosTicketInformation</term>
+		/// <term>The information is for a Kerberos ticket.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="Buffer">Pointer to a buffer that receives the requested information.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is an NTSTATUS code, which can be the following value or one of the LSA Policy Function
+		/// Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_INTERNAL_DB_CORRUPTION</term>
+		/// <term>The policy database is corrupt. The returned policy information is not valid for the given class.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The POLICY_VIEW_LOCAL_INFORMATION access type is required to retrieve domain information from the Policyobject. For more
+		/// information, see Policy Object Access Rights.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsaquerydomaininformationpolicy NTSTATUS
+		// LsaQueryDomainInformationPolicy( LSA_HANDLE PolicyHandle, POLICY_DOMAIN_INFORMATION_CLASS InformationClass, PVOID *Buffer );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "39a511d7-46fc-4d12-ba43-771f6db2a33b")]
+		public static extern NTStatus LsaQueryDomainInformationPolicy(LSA_HANDLE PolicyHandle, POLICY_DOMAIN_INFORMATION_CLASS InformationClass, out IntPtr Buffer);
+
+		/// <summary>
+		/// The <c>LsaQueryForestTrustInformation</c> function retrieves forest trust information for the specified Local Security Authority
+		/// TrustedDomain object.
+		/// </summary>
+		/// <param name="PolicyHandle">A handle to the Policy object for the system.</param>
+		/// <param name="TrustedDomainName">
+		/// Pointer to an LSA_UNICODE_STRING structure that contains the name of the TrustedDomain object for which to retrieve forest trust information.
+		/// </param>
+		/// <param name="ForestTrustInfo">
+		/// Pointer to an LSA_FOREST_TRUST_INFORMATION structure that returns the forest trust information for the TrustedDomain object
+		/// specified by the TrustedDomainName parameter.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is an NTSTATUS code, which can be one of the following values or one of the LSA Policy
+		/// Function Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_INVALID_DOMAIN_ROLE</term>
+		/// <term>The operation is legal only on the primary domain controller.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_DOMAIN_STATE</term>
+		/// <term>The operation is legal only on domain controllers in the root domain.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NO_SUCH_DOMAIN</term>
+		/// <term>The specified TrustedDomain object does not exist.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NOT_FOUND</term>
+		/// <term>The specified TrustedDomain object does not contain forest trust information.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>Access to this function is protected by a securable object.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsaqueryforesttrustinformation NTSTATUS
+		// LsaQueryForestTrustInformation( LSA_HANDLE PolicyHandle, PLSA_UNICODE_STRING TrustedDomainName, PLSA_FOREST_TRUST_INFORMATION
+		// *ForestTrustInfo );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "38857f1f-e2c7-4ce5-a928-335bc3bd2176")]
+		public static extern NTStatus LsaQueryForestTrustInformation(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string TrustedDomainName,
+			out SafeLsaMemoryHandle ForestTrustInfo);
+
+		/// <summary>The <c>LsaQueryInformationPolicy</c> function retrieves information about a Policy object.</summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. The required access rights for this handle depend on the value of the InformationClass parameter.
+		/// For more information, see Opening a Policy Object Handle.
+		/// </param>
+		/// <param name="InformationClass">
+		/// <para>
+		/// Specifies one of the following values from the POLICY_INFORMATION_CLASS enumeration type. The value indicates the type of
+		/// information to retrieve.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PolicyAuditEventsInformation</term>
+		/// <term>
+		/// Retrieves the system's auditing rules. The handle passed in the PolicyHandle parameter must have the
+		/// POLICY_VIEW_AUDIT_INFORMATION access right. The Buffer parameter receives a pointer to a POLICY_AUDIT_EVENTS_INFO structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>PolicyPrimaryDomainInformation</term>
+		/// <term>
+		/// Retrieves the name and SID of the system's primary domain. The handle passed in the PolicyHandle parameter must have the
+		/// POLICY_VIEW_LOCAL_INFORMATION access right. The Buffer parameter receives a pointer to a POLICY_PRIMARY_DOMAIN_INFO structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>PolicyAccountDomainInformation</term>
+		/// <term>
+		/// Retrieves the name and SID of the system's account domain. The handle passed in the PolicyHandle parameter must have the
+		/// POLICY_VIEW_LOCAL_INFORMATION access right. The Buffer parameter receives a pointer to a POLICY_ACCOUNT_DOMAIN_INFO structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>PolicyLsaServerRoleInformation</term>
+		/// <term>
+		/// Retrieves the role of an LSA server. The handle passed in the PolicyHandle parameter must have the POLICY_VIEW_LOCAL_INFORMATION
+		/// access right. The Buffer parameter receives a pointer to a POLICY_LSA_SERVER_ROLE_INFO structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>PolicyModificationInformation</term>
+		/// <term>
+		/// Retrieves information about the creation time and last modification of the LSA database. The handle passed in the PolicyHandle
+		/// parameter must have the POLICY_VIEW_LOCAL_INFORMATION access right. The Buffer parameter receives a pointer to a
+		/// POLICY_MODIFICATION_INFO structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>PolicyDnsDomainInformation</term>
+		/// <term>
+		/// Retrieves the Domain Name System (DNS) information about the primary domain associated with the Policy object. The handle passed
+		/// in the PolicyHandle parameter must have the POLICY_VIEW_LOCAL_INFORMATION access right. The Buffer parameter receives a pointer
+		/// to a POLICY_DNS_DOMAIN_INFO structure.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="Buffer">
+		/// <para>
+		/// Pointer to a variable that receives a pointer to a structure containing the requested information. The type of structure depends
+		/// on the value of the InformationClass parameter.
+		/// </para>
+		/// <para>When you no longer need the information, pass the returned pointer to LsaFreeMemory.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the <c>LsaQueryInformationPolicy</c> function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>If the function fails, the return value is an NTSTATUS code. For more information, see LSA Policy Function Return Values.</para>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the NTSTATUS code to a Windows error code.</para>
+		/// </returns>
+		/// <remarks>For an example that demonstrates calling this function see Managing Policy Information.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsaqueryinformationpolicy NTSTATUS
+		// LsaQueryInformationPolicy( LSA_HANDLE PolicyHandle, POLICY_INFORMATION_CLASS InformationClass, PVOID *Buffer );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "2d543500-f639-4ef7-91f4-cdc5060dd567")]
+		public static extern NTStatus LsaQueryInformationPolicy(LSA_HANDLE PolicyHandle, POLICY_INFORMATION_CLASS InformationClass, out SafeLsaMemoryHandle Buffer);
+
+		/// <summary>
 		/// <para>The <c>LsaQueryTrustedDomainInfo</c> function retrieves information about a trusted domain.</para>
 		/// </summary>
 		/// <param name="PolicyHandle">
@@ -1016,6 +1917,87 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntsecapi.h", MSDNShortId = "62925515-a6f3-4b5f-bf97-edb968af19a3")]
 		public static extern NTStatus LsaQueryTrustedDomainInfo(LSA_HANDLE PolicyHandle, PSID TrustedDomainSid, TRUSTED_INFORMATION_CLASS InformationClass, out SafeLsaMemoryHandle Buffer);
 
+		/// <summary>The <c>LsaQueryTrustedDomainInfoByName</c> function returns information about a trusted domain.</summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. This handle must have the POLICY_VIEW_LOCAL_INFORMATION access right. For more information, see
+		/// Opening a Policy Object Handle.
+		/// </param>
+		/// <param name="TrustedDomainName">
+		/// String that contains the name of the trusted domain. This can either be the domain name or the flat name.
+		/// </param>
+		/// <param name="InformationClass">
+		/// <para>Specifies the type of information to retrieve. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TrustedDomainNameInformation</term>
+		/// <term>Name of the trusted domain.</term>
+		/// </item>
+		/// <item>
+		/// <term>TrustedPosixInformation</term>
+		/// <term>Posix offset of the trusted domain.</term>
+		/// </item>
+		/// <item>
+		/// <term>TrustedPasswordInformation</term>
+		/// <term>Returns the password on the outbound side of the trust.</term>
+		/// </item>
+		/// <item>
+		/// <term>TrustedDomainInformationBasic</term>
+		/// <term>This value is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>TrustedDomainInformationEx</term>
+		/// <term>Extended trust information, including the basic information and DNS domain name, and attributes about the trust.</term>
+		/// </item>
+		/// <item>
+		/// <term>TrustedDomainFullInformation</term>
+		/// <term>Full information, including the Posix offset and the authentication information.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="Buffer">
+		/// <para>
+		/// Receives a pointer to the returned buffer that contains the requested information. The format and content of this buffer depend
+		/// on the information class. For example, if InformationClass is set to TrustedDomainInformationEx, Buffer receives a pointer to a
+		/// TRUSTED_DOMAIN_INFORMATION_EX structure. For more information, see TRUSTED_INFORMATION_CLASS.
+		/// </para>
+		/// <para>When you have finished using the buffer, free it by calling the LsaFreeMemory function.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, it returns an <c>NTSTATUS</c> value, which can be one of the following values or one of the LSA Policy
+		/// Function Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_ACCESS_DENIED</term>
+		/// <term>
+		/// Caller does not have the appropriate access to complete the operation. For a list of the required access types, see the
+		/// description of the InformationClass parameter.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INSUFFICIENT_ RESOURCES</term>
+		/// <term>Insufficient system resources, such as memory, to complete the call.</term>
+		/// </item>
+		/// </list>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the <c>NTSTATUS</c> value to a Windows error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsaquerytrusteddomaininfobyname NTSTATUS
+		// LsaQueryTrustedDomainInfoByName( LSA_HANDLE PolicyHandle, PLSA_UNICODE_STRING TrustedDomainName, TRUSTED_INFORMATION_CLASS
+		// InformationClass, PVOID *Buffer );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "d33d6cee-bd8b-49f4-8e65-07cdc65bec7c")]
+		public static extern NTStatus LsaQueryTrustedDomainInfoByName(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string TrustedDomainName, TRUSTED_INFORMATION_CLASS InformationClass, out SafeLsaMemoryHandle Buffer);
+
 		/// <summary>
 		/// <para>
 		/// The <c>LsaRemoveAccountRights</c> function removes one or more privileges from an account. You can specify the privileges to be
@@ -1083,6 +2065,248 @@ namespace Vanara.PInvoke
 			string[] UserRights,
 			int CountOfRights);
 
+		/// <summary>Do not use the LSA private data functions. Instead, use the CryptProtectData and CryptUnprotectData functions.</summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. The handle must have the POLICY_GET_PRIVATE_INFORMATION access right. For more information, see
+		/// Opening a Policy Object Handle.
+		/// </param>
+		/// <param name="KeyName">
+		/// <para>Pointer to an LSA_UNICODE_STRING structure that contains the name of the key under which the private data is stored.</para>
+		/// <para>To create a specialized object, add one of the following prefixes to the key name.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Prefix</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>L$</term>
+		/// <term>For local objects.</term>
+		/// </item>
+		/// <item>
+		/// <term>G$</term>
+		/// <term>For global objects.</term>
+		/// </item>
+		/// <item>
+		/// <term>M$</term>
+		/// <term>For computer objects.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If you are not creating one of these specialized types, you do not need to specify a key name prefix. For more information, see
+		/// Private Data Object.
+		/// </para>
+		/// </param>
+		/// <param name="PrivateData">
+		/// <para>Pointer to a variable that receives a pointer to an LSA_UNICODE_STRING structure that contains the private data.</para>
+		/// <para>When you no longer need the information, pass the returned pointer to LsaFreeMemory.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, it returns an <c>NTSTATUS</c> value, which can be the following value or one of the LSA Policy Function
+		/// Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_OBJECT_NAME_NOT_FOUND</term>
+		/// <term>No private data is stored under the name specified by the KeyName parameter.</term>
+		/// </item>
+		/// </list>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the <c>NTSTATUS</c> value to a Windows error code.</para>
+		/// </returns>
+		/// <remarks>You must run this process "As Administrator" or the call fails with ERROR_ACCESS_DENIED.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsaretrieveprivatedata NTSTATUS LsaRetrievePrivateData(
+		// LSA_HANDLE PolicyHandle, PLSA_UNICODE_STRING KeyName, PLSA_UNICODE_STRING *PrivateData );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "005460db-0919-46eb-b057-37c5b6042243")]
+		public static extern NTStatus LsaRetrievePrivateData(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string KeyName, [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] out string PrivateData);
+
+		/// <summary>The <c>LsaSetDomainInformationPolicy</c> function sets domain information to the Policyobject.</summary>
+		/// <param name="PolicyHandle">A handle to the Policy object for the system.</param>
+		/// <param name="InformationClass">
+		/// <para>
+		/// POLICY_DOMAIN_INFORMATION_CLASS enumeration that specifies the information to be set to the Policyobject. The following table
+		/// shows the possible values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PolicyDomainEfsInformation</term>
+		/// <term>The information is for Encrypting File System.</term>
+		/// </item>
+		/// <item>
+		/// <term>PolicyDomainKerberosTicketInformation</term>
+		/// <term>The information is for a Kerberos ticket.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="Buffer">Pointer to a buffer that contains the information to set to the Policyobject.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is an NTSTATUS code, which can be the following value or one of the LSA Policy Function
+		/// Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_INTERNAL_DB_CORRUPTION</term>
+		/// <term>The policy database is corrupt. The returned policy information is not valid for the given class.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The POLICY_TRUST_ADMIN access type is required to set domain information to the Policyobject. For more information, see Policy
+		/// Object Access Rights.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsasetdomaininformationpolicy NTSTATUS
+		// LsaSetDomainInformationPolicy( LSA_HANDLE PolicyHandle, POLICY_DOMAIN_INFORMATION_CLASS InformationClass, PVOID Buffer );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "77af6fdc-a52e-476c-9de2-36ee48133a87")]
+		public static extern NTStatus LsaSetDomainInformationPolicy(LSA_HANDLE PolicyHandle, POLICY_DOMAIN_INFORMATION_CLASS InformationClass, IntPtr Buffer);
+
+		/// <summary>
+		/// <para>
+		/// The <c>LsaSetForestTrustInformation</c> function sets the forest trust information for a specified Local Security Authority
+		/// TrustedDomain object.
+		/// </para>
+		/// </summary>
+		/// <param name="PolicyHandle">
+		/// <para>A handle to the Policy object for the system.</para>
+		/// </param>
+		/// <param name="TrustedDomainName">
+		/// <para>
+		/// Pointer to an LSA_UNICODE_STRING structure that contains the name of the TrustedDomain object to which to set the forest trust
+		/// information specified by the ForestTrustInfo parameter.
+		/// </para>
+		/// </param>
+		/// <param name="ForestTrustInfo">
+		/// <para>
+		/// Pointer to an LSA_FOREST_TRUST_INFORMATION structure that contains the forest trust information to set to the TrustedDomain
+		/// object specified by the TrustedDomainName parameter.
+		/// </para>
+		/// </param>
+		/// <param name="CheckOnly">
+		/// <para>
+		/// Boolean value that specifies whether changes to the TrustedDomain object are persisted. If this value is <c>TRUE</c>, this
+		/// function will check for collisions with the specified parameters but will not set the forest trust information specified by the
+		/// ForestTrustInfo parameter to the <c>TrustedDomain</c> object specified by the TrustedDomainName parameter. If this value is
+		/// <c>FALSE</c>, the forest trust information will be set to the <c>TrustedDomain</c> object.
+		/// </para>
+		/// </param>
+		/// <param name="CollisionInfo">
+		/// <para>
+		/// Pointer to a pointer to an LSA_FOREST_TRUST_COLLISION_INFORMATION structure that returns information about any collisions that occurred.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is an NTSTATUS code, which can be one of the following values or one of the LSA Policy
+		/// Function Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_INVALID_DOMAIN_STATE</term>
+		/// <term>The operation is legal only on domain controllers in the root domain.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_DOMAIN_ROLE</term>
+		/// <term>The operation is legal only on the primary domain controller.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsasetforesttrustinformation NTSTATUS
+		// LsaSetForestTrustInformation( LSA_HANDLE PolicyHandle, PLSA_UNICODE_STRING TrustedDomainName, PLSA_FOREST_TRUST_INFORMATION
+		// ForestTrustInfo, BOOLEAN CheckOnly, PLSA_FOREST_TRUST_COLLISION_INFORMATION *CollisionInfo );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "8b0f90ed-7dd4-4803-97c6-31d191b6d2b3")]
+		public static extern NTStatus LsaSetForestTrustInformation(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string TrustedDomainName,
+			in LSA_FOREST_TRUST_INFORMATION ForestTrustInfo, [MarshalAs(UnmanagedType.U1)] bool CheckOnly, out SafeLsaMemoryHandle CollisionInfo);
+
+		/// <summary>The <c>LsaSetInformationPolicy</c> function modifies information in a Policy object.</summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. The required access rights for this handle depend on the value of the InformationClass parameter.
+		/// For more information, see Opening a Policy Object Handle.
+		/// </param>
+		/// <param name="InformationClass">
+		/// <para>
+		/// Specifies one of the following values from the POLICY_INFORMATION_CLASS enumeration type. The value indicates the type of
+		/// information to set.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PolicyAuditEventsInformation</term>
+		/// <term>
+		/// Sets the system's auditing rules. The handle passed in the PolicyHandle parameter must have the POLICY_SET_AUDIT_REQUIREMENTS
+		/// access right. The Buffer parameter must be a pointer to a POLICY_AUDIT_EVENTS_INFO structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>PolicyPrimaryDomainInformation</term>
+		/// <term>
+		/// Sets the name and SID of the system's primary domain. The handle passed in the PolicyHandle parameter must have the
+		/// POLICY_TRUST_ADMIN access right. The Buffer parameter must be a pointer to a POLICY_PRIMARY_DOMAIN_INFO structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>PolicyAccountDomainInformation</term>
+		/// <term>
+		/// Sets the name and SID of the system's account domain. The handle passed in the PolicyHandle parameter must have the
+		/// POLICY_TRUST_ADMIN access right. The Buffer parameter must be a pointer to a POLICY_ACCOUNT_DOMAIN_INFO structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>PolicyDnsDomainInformation</term>
+		/// <term>
+		/// Sets Domain Name System (DNS) information about the primary domain associated with the Policy object. The handle passed in the
+		/// PolicyHandle parameter must have the POLICY_TRUST_ADMIN access right. The Buffer parameter must be a pointer to a
+		/// POLICY_DNS_DOMAIN_INFO structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>PolicyLsaServerRoleInformation</term>
+		/// <term>
+		/// Sets the role of an LSA server. The handle passed in the PolicyHandle parameter must have the POLICY_SERVER_ADMIN access right.
+		/// The Buffer parameter must be a pointer to a POLICY_LSA_SERVER_ROLE_INFO structure. Changing a server's role from primary to
+		/// backup has no effect (although the function returns STATUS_SUCCESS). Changing a server's role from backup to primary requires
+		/// extensive network operations and may be slow.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="Buffer">
+		/// Pointer to a structure containing the information to set. The type of structure depends on the value of the InformationClass parameter.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>If the function fails, the return value is an NTSTATUS code. For more information, see LSA Policy Function Return Values.</para>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the NTSTATUS code to a Windows error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsasetinformationpolicy NTSTATUS
+		// LsaSetInformationPolicy( LSA_HANDLE PolicyHandle, POLICY_INFORMATION_CLASS InformationClass, PVOID Buffer );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "2aa3b09e-2cd9-4a09-bfd6-b37c97266dcb")]
+		public static extern NTStatus LsaSetInformationPolicy(LSA_HANDLE PolicyHandle, POLICY_INFORMATION_CLASS InformationClass, IntPtr Buffer);
+
 		/// <summary>Undocumented.</summary>
 		/// <param name="AccountHandle">The account handle.</param>
 		/// <param name="SystemAccess">The system access.</param>
@@ -1093,6 +2317,61 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntlsa.h")]
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 		public static extern uint LsaSetSystemAccessAccount(LSA_HANDLE AccountHandle, int SystemAccess);
+
+		/// <summary>The <c>LsaSetTrustedDomainInfoByName</c> function sets values for a TrustedDomain object.</summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. The security descriptor of the trusted domain object determines whether the caller's changes are
+		/// accepted. For information about policy object handles, see Opening a Policy Object Handle.
+		/// </param>
+		/// <param name="TrustedDomainName">
+		/// Name of the trusted domain to set values for. This can either be the domain name or the flat name.
+		/// </param>
+		/// <param name="InformationClass">
+		/// <para>Specifies the type of information to set. Specify one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TrustedPosixInformation</term>
+		/// <term>Posix offset of the trusted domain.</term>
+		/// </item>
+		/// <item>
+		/// <term>TrustedDomainInformationEx</term>
+		/// <term>Extended trust information, including the basic information and DNS domain name, and attributes about the trust.</term>
+		/// </item>
+		/// <item>
+		/// <term>TrustedDomainAuthInformation</term>
+		/// <term>
+		/// Authentication information for the trust, including authentication information for both the inbound and outbound side of the
+		/// trust (if it exists).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>TrustedDomainFullInformation</term>
+		/// <term>Full information, including the Posix offset and the authentication information.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="Buffer">
+		/// Pointer to a structure that contains the information to set. The type of structure depends on the value of the InformationClass parameter.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is an NTSTATUS code. For more information, see the "LSA Policy Function Return Values"
+		/// section of Security Management Return Values.
+		/// </para>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the NTSTATUS code to a Windows error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsasettrusteddomaininfobyname NTSTATUS
+		// LsaSetTrustedDomainInfoByName( LSA_HANDLE PolicyHandle, PLSA_UNICODE_STRING TrustedDomainName, TRUSTED_INFORMATION_CLASS
+		// InformationClass, PVOID Buffer );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "263e1025-1010-463d-8bc7-cdf916ce9872")]
+		public static extern NTStatus LsaSetTrustedDomainInfoByName(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string TrustedDomainName,
+			TRUSTED_INFORMATION_CLASS InformationClass, IntPtr Buffer);
 
 		/// <summary>
 		/// <para>The <c>LsaSetTrustedDomainInformation</c> function modifies a Policy object's information about a trusted domain.</para>
@@ -1162,6 +2441,58 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntsecapi.h", MSDNShortId = "a7b89ea7-af92-46ba-ac73-2fba1cc27680")]
 		public static extern NTStatus LsaSetTrustedDomainInformation(LSA_HANDLE PolicyHandle, PSID TrustedDomainSid, TRUSTED_INFORMATION_CLASS InformationClass, IntPtr Buffer);
 
+		/// <summary>Do not use the LSA private data functions. Instead, use the CryptProtectData and CryptUnprotectData functions.</summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. The handle must have the POLICY_CREATE_SECRET access right if this is the first time data is being
+		/// stored under the key specified by the KeyName parameter. For more information, see Opening a Policy Object Handle.
+		/// </param>
+		/// <param name="KeyName">
+		/// Pointer to an LSA_UNICODE_STRING structure containing the name of the key under which the private data is stored.
+		/// </param>
+		/// <param name="PrivateData">
+		/// <para>
+		/// Pointer to an LSA_UNICODE_STRING structure containing the private data to store. The function encrypts this data before storing it.
+		/// </para>
+		/// <para>
+		/// If this parameter is <c>NULL</c>, the function deletes any private data stored under the key and deletes the key. Subsequent
+		/// attempts to retrieve data from the key will return the STATUS_OBJECT_NAME_NOT_FOUND error code.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>If the function fails, the return value is an NTSTATUS code. For more information, see LSA Policy Function Return Values.</para>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the NTSTATUS code to a Windows error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>LsaStorePrivateData</c> function can be used by server applications to store client and machine passwords.</para>
+		/// <para>
+		/// As described in Private Data Object, private data objects include three specialized types: local, global, and machine.
+		/// Specialized objects are identified by a prefix in the key name: "L$" for local objects, "G$" for global objects, and "M$" for
+		/// machine objects. Local objects cannot be accessed remotely. Machine objects can be accessed only by the operating system.
+		/// </para>
+		/// <para>
+		/// In addition to these prefixes, the following values also indicate local or machine objects. These values are supported for
+		/// backward compatibility and should not be used when you create new local or machine objects. The key name of local private data
+		/// objects may also be "$machine.acc", "SAC", "SAI", "SANSC", or start with "RasDialParms" or "RasCredentials". The key name for
+		/// machine objects may also start with, "NL$" or "sc".
+		/// </para>
+		/// <para>
+		/// Private data objects which do not use any of the preceding key name conventions can be accessed remotely and are not replicated
+		/// to other domains.
+		/// </para>
+		/// <para>
+		/// The data stored by the <c>LsaStorePrivateData</c> function is not absolutely protected. However, the data is encrypted before
+		/// being stored, and the key has a DACL that allows only the creator and administrators to read the data.
+		/// </para>
+		/// <para>Use the LsaRetrievePrivateData function to retrieve the value stored by <c>LsaStorePrivateData</c>.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsastoreprivatedata NTSTATUS LsaStorePrivateData(
+		// LSA_HANDLE PolicyHandle, PLSA_UNICODE_STRING KeyName, PLSA_UNICODE_STRING PrivateData );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "95d6cf30-fd08-473e-b0b3-3f7ca5e85357")]
+		public static extern NTStatus LsaStorePrivateData(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string KeyName,
+			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string PrivateData);
+
 		/// <summary>
 		/// <para>The <c>LsaClose</c> function closes a handle to a Policy or TrustedDomain object.</para>
 		/// </summary>
@@ -1217,31 +2548,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntsecapi.h", MSDNShortId = "6eb3d18f-c54c-4e51-8a4b-b7a3f930cfa9")]
 		// public static extern NTSTATUS LsaFreeMemory(IntPtr Buffer);
 		private static extern uint LsaFreeMemory(IntPtr Buffer);
-
-		/// <summary>
-		/// <para>The <c>LsaFreeReturnBuffer</c> function frees the memory used by a buffer previously allocated by the LSA.</para>
-		/// </summary>
-		/// <param name="Buffer">
-		/// <para>Pointer to the buffer to be freed.</para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
-		/// <para>If the function fails, the return value is an NTSTATUS code. For more information, see LSA Policy Function Return Values.</para>
-		/// <para>The LsaNtStatusToWinError function converts an NTSTATUS code to a Windows error code.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// Some of the LSA authentication functions allocate memory buffers to hold returned information, for example, LsaLogonUser and
-		/// LsaCallAuthenticationPackage. Your application should call <c>LsaFreeReturnBuffer</c> to free these buffers when they are no
-		/// longer needed.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsafreereturnbuffer _IRQL_requires_same_ NTSTATUS
-		// LsaFreeReturnBuffer( PVOID Buffer );
-		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("ntsecapi.h", MSDNShortId = "e814ed68-07e7-4936-ba96-5411086f43f6")]
-		// public static extern _IRQL_requires_same_ NTSTATUS LsaFreeReturnBuffer(IntPtr Buffer);
-		private static extern uint LsaFreeReturnBuffer(IntPtr Buffer);
 
 		/// <summary>
 		/// <para>
@@ -1381,6 +2687,54 @@ namespace Vanara.PInvoke
 			public IntPtr AuthInfo;
 		}
 
+		/// <summary>Provides a handle to an LSA enumeration.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct LSA_ENUMERATION_HANDLE : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="LSA_ENUMERATION_HANDLE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public LSA_ENUMERATION_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="LSA_ENUMERATION_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static LSA_ENUMERATION_HANDLE NULL => new LSA_ENUMERATION_HANDLE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="LSA_ENUMERATION_HANDLE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(LSA_ENUMERATION_HANDLE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="LSA_ENUMERATION_HANDLE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator LSA_ENUMERATION_HANDLE(IntPtr h) => new LSA_ENUMERATION_HANDLE(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(LSA_ENUMERATION_HANDLE h1, LSA_ENUMERATION_HANDLE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(LSA_ENUMERATION_HANDLE h1, LSA_ENUMERATION_HANDLE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is LSA_ENUMERATION_HANDLE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
 		/// <summary>Used with the LsaEnumerateAccountsWithUserRight function to return a pointer to a SID.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_lsa_enumeration_information typedef struct
 		// _LSA_ENUMERATION_INFORMATION { PSID Sid; } LSA_ENUMERATION_INFORMATION, *PLSA_ENUMERATION_INFORMATION;
@@ -1409,6 +2763,85 @@ namespace Vanara.PInvoke
 			public IntPtr Buffer;
 		}
 
+		/// <summary>
+		/// The <c>LSA_FOREST_TRUST_COLLISION_INFORMATION</c> structure contains information about Local Security Authority forest trust collisions.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-lsa_forest_trust_collision_information typedef struct
+		// _LSA_FOREST_TRUST_COLLISION_INFORMATION { ULONG RecordCount; PLSA_FOREST_TRUST_COLLISION_RECORD *Entries; }
+		// LSA_FOREST_TRUST_COLLISION_INFORMATION, *PLSA_FOREST_TRUST_COLLISION_INFORMATION;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "a4a3b040-c074-4756-a30f-408d8bca87ba")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct LSA_FOREST_TRUST_COLLISION_INFORMATION
+		{
+			/// <summary>Number of LSA_FOREST_TRUST_COLLISION_RECORD structures in the array pointed to by the <c>Entries</c> member.</summary>
+			public uint RecordCount;
+
+			/// <summary>
+			/// Pointer to a pointer to an array of LSA_FOREST_TRUST_COLLISION_RECORD structures, each of which contains information about a
+			/// single collision.
+			/// </summary>
+			public IntPtr Entries;
+		}
+
+		/// <summary>
+		/// The <c>LSA_FOREST_TRUST_COLLISION_RECORD</c> structure contains information about a Local Security Authority forest trust collision.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-lsa_forest_trust_collision_record typedef struct
+		// _LSA_FOREST_TRUST_COLLISION_RECORD { ULONG Index; LSA_FOREST_TRUST_COLLISION_RECORD_TYPE Type; ULONG Flags; LSA_UNICODE_STRING
+		// Name; } LSA_FOREST_TRUST_COLLISION_RECORD, *PLSA_FOREST_TRUST_COLLISION_RECORD;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "9f9d2f57-0e7f-4222-be35-e3f026b60e93")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct LSA_FOREST_TRUST_COLLISION_RECORD
+		{
+			/// <summary>
+			/// Index of this collision record in the array of <c>LSA_FOREST_TRUST_COLLISION_RECORD</c> structures pointed to by the
+			/// <c>Entries</c> member of the LSA_FOREST_TRUST_COLLISION_INFORMATION structure.
+			/// </summary>
+			public uint Index;
+
+			/// <summary>
+			/// <para>Type of the collision. The following table shows the possible values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CollisionTdo</term>
+			/// <term>Collision between TrustedDomain objects.</term>
+			/// </item>
+			/// <item>
+			/// <term>CollisionXref</term>
+			/// <term>Collision between cross-references.</term>
+			/// </item>
+			/// <item>
+			/// <term>CollisionOther</term>
+			/// <term>Collision that is not a collision between TrustedDomain objects or cross-references.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public LSA_FOREST_TRUST_COLLISION_RECORD_TYPE Type;
+
+			/// <summary>
+			/// <para>
+			/// Flags that provide more information about the collision. The following table lists the possible values for this member when
+			/// the <c>Type</c> member is CollisionTdo.
+			/// </para>
+			/// <para>LSA_TLN_DISABLED_NEW (0x00000001)</para>
+			/// <para>LSA_TLN_DISABLED_ADMIN (0x00000002)</para>
+			/// <para>LSA_TLN_DISABLED_CONFLICT (0x00000004)</para>
+			/// <para>The following table lists the possible values for this member when the <c>Type</c> member is CollisionXref.</para>
+			/// <para>LSA_SID_DISABLED_ADMIN (0x00000001)</para>
+			/// <para>LSA_SID_DISABLED_CONFLICT (0x00000002)</para>
+			/// <para>LSA_NB_DISABLED_ADMIN (0x00000004)</para>
+			/// <para>LSA_NB_DISABLED_CONFLICT (0x00000008)</para>
+			/// </summary>
+			public CollisionFlags Flags;
+
+			/// <summary>LSA_UNICODE_STRING structure that contains the name of the collision record.</summary>
+			public LSA_UNICODE_STRING Name;
+		}
+
 		/// <summary>The <c>LSA_FOREST_TRUST_DOMAIN_INFO</c> structure contains identifying information for a domain.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_lsa_forest_trust_domain_info typedef struct
 		// _LSA_FOREST_TRUST_DOMAIN_INFO { #if ... PISID Sid; #else PSID Sid; #endif LSA_UNICODE_STRING DnsName; LSA_UNICODE_STRING
@@ -1427,9 +2860,7 @@ namespace Vanara.PInvoke
 			public LSA_UNICODE_STRING NetbiosName;
 		}
 
-		/// <summary>
-		/// The <c>LSA_FOREST_TRUST_INFORMATION</c> structure contains Local Security Authority forest trust information.
-		/// </summary>
+		/// <summary>The <c>LSA_FOREST_TRUST_INFORMATION</c> structure contains Local Security Authority forest trust information.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_lsa_forest_trust_information typedef struct
 		// _LSA_FOREST_TRUST_INFORMATION { #if ... ULONG RecordCount; #if ... PLSA_FOREST_TRUST_RECORD *Entries; #else ULONG RecordCount;
 		// #endif #else PLSA_FOREST_TRUST_RECORD *Entries; #endif } LSA_FOREST_TRUST_INFORMATION, *PLSA_FOREST_TRUST_INFORMATION;
@@ -1440,7 +2871,9 @@ namespace Vanara.PInvoke
 			/// <summary>A count of elements in the Entries array.</summary>
 			public uint RecordCount;
 
-			/// <summary>An array of LSA_FOREST_TRUST_RECORD structures. If the RecordCount field has a value other than 0, this field MUST NOT be NULL.</summary>
+			/// <summary>
+			/// An array of LSA_FOREST_TRUST_RECORD structures. If the RecordCount field has a value other than 0, this field MUST NOT be NULL.
+			/// </summary>
 			public IntPtr Entries;
 		}
 
@@ -1464,26 +2897,26 @@ namespace Vanara.PInvoke
 			/// LSA_FOREST_TRUST_RECORD_TYPE enumeration that indicates the type of the record. The following table shows the possible values.
 			/// </para>
 			/// <list type="table">
-			///   <listheader>
-			///     <term>Value</term>
-			///     <term>Meaning</term>
-			///   </listheader>
-			///   <item>
-			///     <term>ForestTrustTopLevelName</term>
-			///     <term>Record contains an included top-level name.</term>
-			///   </item>
-			///   <item>
-			///     <term>ForestTrustTopLevelNameEx</term>
-			///     <term>Record contains an excluded top-level name.</term>
-			///   </item>
-			///   <item>
-			///     <term>ForestTrustDomainInfo</term>
-			///     <term>Record contains an LSA_FOREST_TRUST_DOMAIN_INFO structure.</term>
-			///   </item>
-			///   <item>
-			///     <term>ForestTrustRecordTypeLast</term>
-			///     <term>Marks the end of an enumeration.</term>
-			///   </item>
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ForestTrustTopLevelName</term>
+			/// <term>Record contains an included top-level name.</term>
+			/// </item>
+			/// <item>
+			/// <term>ForestTrustTopLevelNameEx</term>
+			/// <term>Record contains an excluded top-level name.</term>
+			/// </item>
+			/// <item>
+			/// <term>ForestTrustDomainInfo</term>
+			/// <term>Record contains an LSA_FOREST_TRUST_DOMAIN_INFO structure.</term>
+			/// </item>
+			/// <item>
+			/// <term>ForestTrustRecordTypeLast</term>
+			/// <term>Marks the end of an enumeration.</term>
+			/// </item>
 			/// </list>
 			/// </summary>
 			public LSA_FOREST_TRUST_RECORD_TYPE ForestTrustType;
@@ -1491,10 +2924,16 @@ namespace Vanara.PInvoke
 			/// <summary>Time stamp of the record.</summary>
 			public FILETIME Time;
 
-			/// <summary>An LSA_UNICODE_STRING or LSA_FOREST_TRUST_DOMAIN_INFO structure, depending on the value ForestTrustType as specified in the structure definition for LSA_FOREST_TRUST_RECORD.</summary>
+			/// <summary>
+			/// An LSA_UNICODE_STRING or LSA_FOREST_TRUST_DOMAIN_INFO structure, depending on the value ForestTrustType as specified in the
+			/// structure definition for LSA_FOREST_TRUST_RECORD.
+			/// </summary>
 			public ForestTrustDataUnion ForestTrustData;
 
-			/// <summary>An LSA_UNICODE_STRING or LSA_FOREST_TRUST_DOMAIN_INFO structure, depending on the value ForestTrustType as specified in the structure definition for LSA_FOREST_TRUST_RECORD.</summary>
+			/// <summary>
+			/// An LSA_UNICODE_STRING or LSA_FOREST_TRUST_DOMAIN_INFO structure, depending on the value ForestTrustType as specified in the
+			/// structure definition for LSA_FOREST_TRUST_RECORD.
+			/// </summary>
 			[StructLayout(LayoutKind.Explicit)]
 			public struct ForestTrustDataUnion
 			{
@@ -1509,133 +2948,6 @@ namespace Vanara.PInvoke
 				/// <summary>Binary data. This member is used for unrecognized entries after ForestTrustRecordTypeLast.</summary>
 				[FieldOffset(0)]
 				public LSA_FOREST_TRUST_BINARY_DATA Data;
-			}
-		}
-
-		/// <summary>Smart wrapper for LSA_FOREST_TRUST_INFORMATION.</summary>
-		public class LsaForestTrustInformation : IDisposable
-		{
-			private SafeAllocatedMemoryHandle allocatedMemory;
-
-			/// <summary>A list of LsaForestTrustRecord entries that wrap LSA_FOREST_TRUST_RECORD.</summary>
-			/// <value>Returns a <see cref="List{LsaForestTrustRecord}"/> value.</value>
-			public List<LsaForestTrustRecord> Entries { get; } = new List<LsaForestTrustRecord>();
-
-			/// <summary>Creates a new instance from a memory pointer. This can fail if the memory is not allocated properly.</summary>
-			/// <param name="ptr">The memory pointer.</param>
-			/// <returns>A new instance of <see cref="LsaForestTrustInformation"/>.</returns>
-			public static LsaForestTrustInformation FromBuffer(IntPtr ptr)
-			{
-				var ret = new LsaForestTrustInformation();
-				var info = ptr.ToStructure<LSA_FOREST_TRUST_INFORMATION>();
-				foreach (var e in info.Entries.ToIEnum<LSA_FOREST_TRUST_RECORD>((int)info.RecordCount))
-				{
-					if (e.ForestTrustType == LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustRecordTypeLast) break;
-					LsaForestTrustRecord rec = null;
-					switch (e.ForestTrustType)
-					{
-						case LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelName:
-							rec = new LsaForestTrustTopLevelName(e.ForestTrustData.TopLevelName, false);
-							break;
-						case LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelNameEx:
-							rec = new LsaForestTrustTopLevelName(e.ForestTrustData.TopLevelName, true);
-							break;
-						case LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustDomainInfo:
-							rec = new LsaForestTrustDomainInfo { DnsName = e.ForestTrustData.DomainInfo.DnsName, NetbiosName = e.ForestTrustData.DomainInfo.NetbiosName, Sid = new PSID(e.ForestTrustData.DomainInfo.Sid) };
-							break;
-						default:
-							throw new ArgumentException("Unrecognized record type.", nameof(ptr));
-					}
-					rec.Flags = e.Flags;
-					rec.Time = e.Time.ToDateTime();
-					ret.Entries.Add(rec);
-				}
-				return ret;
-			}
-
-			/// <summary>
-			/// Returns an instance of <see cref="LSA_FOREST_TRUST_INFORMATION"/>. Warning! The memory allocated for the entries is tied to
-			/// this instance and will be disposed with it. Thus, if the returned structure is copied, the pointers within it may become
-			/// invalid if its scope outlives this instance's scope. Subsequent calls to this method will also invalidate the pointers within
-			/// any previous structures. In other words, just use this method to extract the structure for one time use and ensure this
-			/// instance does not go out of scope while the structure's being used.
-			/// </summary>
-			/// <returns>A <see cref="LSA_FOREST_TRUST_INFORMATION"/> instance matching the values of this instance.</returns>
-			public LSA_FOREST_TRUST_INFORMATION DangerousGetLSA_FOREST_TRUST_INFORMATION()
-			{
-				((IDisposable)this).Dispose();
-				allocatedMemory = SafeHGlobalHandle.CreateFromList(Entries.Select(e => e.Convert())); //.Concat(new[] { new LSA_FOREST_TRUST_RECORD { ForestTrustType = LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustRecordTypeLast } }));
-
-				return new LSA_FOREST_TRUST_INFORMATION { RecordCount = (uint)Entries.Count, Entries = allocatedMemory.DangerousGetHandle() };
-			}
-
-			/// <summary>Releases the unmanaged resources used by this object, and optionally releases the managed resources.</summary>
-			void IDisposable.Dispose() => allocatedMemory?.Dispose();
-
-			/// <summary>Represents a LSA_FOREST_TRUST_RECORD.</summary>
-			public abstract class LsaForestTrustRecord
-			{
-				/// <summary>Flags that control the behavior of the operation.</summary>
-				public LSA_TLN Flags { get; set; }
-
-				/// <summary>Time stamp of the record.</summary>
-				public DateTime Time { get; set; }
-
-				protected virtual internal LSA_FOREST_TRUST_RECORD Convert() =>
-					new LSA_FOREST_TRUST_RECORD { Flags = Flags, Time = Time.ToFileTimeStruct() };
-			}
-
-			/// <summary>
-			/// Represents a LSA_FOREST_TRUST_RECORD with the ForestTrustType value set to ForestTrustTopLevelNameEx if the
-			/// <see cref="Excluded"/> property is <see langword="true"/> and ForestTrustTopLevelName if the <see cref="Excluded"/> property
-			/// is <see langword="true"/>.
-			/// </summary>
-			public class LsaForestTrustTopLevelName : LsaForestTrustRecord
-			{
-				public LsaForestTrustTopLevelName(string name = null, bool exclude = false)
-				{
-					TopLevelName = name;
-					Excluded = exclude;
-				}
-
-				public string TopLevelName { get; set; }
-
-				public bool Excluded { get; set; }
-
-				public override string ToString() => $"TopName:{TopLevelName}, Excl:{Excluded}, Time:{Time:u}, Flg:{Flags}";
-
-				protected internal override LSA_FOREST_TRUST_RECORD Convert()
-				{
-					var ret = base.Convert();
-					ret.ForestTrustType = Excluded ? LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelNameEx : LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelName;
-					ret.ForestTrustData.TopLevelName = new LSA_UNICODE_STRING(TopLevelName);
-					return ret;
-				}
-			}
-
-			/// <summary>Represents a LSA_FOREST_TRUST_RECORD with the ForestTrustType value set to ForestTrustDomainInfo.</summary>
-			public class LsaForestTrustDomainInfo : LsaForestTrustRecord
-			{
-				/// <summary>Domain SID for the trusted domain.</summary>
-				public PSID Sid { get; set; }
-
-				/// <summary>The DNS name of the domain.</summary>
-				public string DnsName { get; set; }
-
-				/// <summary>The NetBIOS name of the domain.</summary>
-				public string NetbiosName { get; set; }
-
-				public override string ToString() => $"DnsName:{DnsName}, NB:{NetbiosName}, Time:{Time:u}, Flg:{Flags}";
-
-				protected internal override LSA_FOREST_TRUST_RECORD Convert()
-				{
-					var ret = base.Convert();
-					ret.ForestTrustType = LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustDomainInfo;
-					ret.ForestTrustData.DomainInfo.DnsName = new LSA_UNICODE_STRING(DnsName);
-					ret.ForestTrustData.DomainInfo.NetbiosName = new LSA_UNICODE_STRING(NetbiosName);
-					ret.ForestTrustData.DomainInfo.Sid = (IntPtr)Sid;
-					return ret;
-				}
 			}
 		}
 
@@ -1702,6 +3014,59 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the list of <see cref="LSA_TRUST_INFORMATION"/> structures from the <see cref="Domains"/> field.</summary>
 			public IEnumerable<LSA_TRUST_INFORMATION> DomainList => Domains.ToIEnum<LSA_TRUST_INFORMATION>((int)Entries);
+		}
+
+		/// <summary>
+		/// The <c>LSA_TRANSLATED_SID</c> structure is used with the LsaLookupNames function to return information about the SID that
+		/// identifies an account.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_lsa_translated_sid typedef struct _LSA_TRANSLATED_SID {
+		// SID_NAME_USE Use; ULONG RelativeId; LONG DomainIndex; } LSA_TRANSLATED_SID, *PLSA_TRANSLATED_SID;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "1fa8fb74-3e61-4982-aa6b-a0ffe979abd4")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct LSA_TRANSLATED_SID
+		{
+			/// <summary>
+			/// <para>A value from the SID_NAME_USE enumeration type that identifies the type of SID.</para>
+			/// <para>
+			/// If <c>Use</c> has one of the following values, one or both of the <c>RelativeId</c> or <c>DomainIndex</c> members of
+			/// <c>LSA_TRANSLATED_SID</c> is not valid. These members are valid if <c>Use</c> has any other value.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>SidTypeDomain</term>
+			/// <term>The DomainIndex member is valid, but the RelativeId member is not valid and must be ignored.</term>
+			/// </item>
+			/// <item>
+			/// <term>SidTypeInvalid</term>
+			/// <term>Both DomainIndex and RelativeId are not valid and must be ignored.</term>
+			/// </item>
+			/// <item>
+			/// <term>SidTypeUnknown</term>
+			/// <term>Both DomainIndex and RelativeId members are not valid and must be ignored.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public SID_NAME_USE Use;
+
+			/// <summary>
+			/// Specifies the relative identifier (RID) of the account's SID. The RID identifies the account relative to the domain
+			/// referenced by the <c>DomainIndex</c> member. The account's complete SID consists of the domain SID followed by the RID.
+			/// </summary>
+			public uint RelativeId;
+
+			/// <summary>
+			/// <para>
+			/// Specifies the zero-based index of an entry in the LSA_REFERENCED_DOMAIN_LIST structure returned by the LsaLookupNames
+			/// function. This entry contains the name and SID of the domain in which the account was found.
+			/// </para>
+			/// <para>If there is no corresponding domain for an account, this member contains a negative value.</para>
+			/// </summary>
+			public int DomainIndex;
 		}
 
 		/// <summary>
@@ -2097,6 +3462,135 @@ namespace Vanara.PInvoke
 			public uint Offset;
 		}
 
+		/// <summary>Smart wrapper for LSA_FOREST_TRUST_INFORMATION.</summary>
+		public class LsaForestTrustInformation : IDisposable
+		{
+			private SafeAllocatedMemoryHandle allocatedMemory;
+
+			/// <summary>A list of LsaForestTrustRecord entries that wrap LSA_FOREST_TRUST_RECORD.</summary>
+			/// <value>Returns a <see cref="List{LsaForestTrustRecord}"/> value.</value>
+			public List<LsaForestTrustRecord> Entries { get; } = new List<LsaForestTrustRecord>();
+
+			/// <summary>Creates a new instance from a memory pointer. This can fail if the memory is not allocated properly.</summary>
+			/// <param name="ptr">The memory pointer.</param>
+			/// <returns>A new instance of <see cref="LsaForestTrustInformation"/>.</returns>
+			public static LsaForestTrustInformation FromBuffer(IntPtr ptr)
+			{
+				var ret = new LsaForestTrustInformation();
+				var info = ptr.ToStructure<LSA_FOREST_TRUST_INFORMATION>();
+				foreach (var e in info.Entries.ToIEnum<LSA_FOREST_TRUST_RECORD>((int)info.RecordCount))
+				{
+					if (e.ForestTrustType == LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustRecordTypeLast) break;
+					LsaForestTrustRecord rec = null;
+					switch (e.ForestTrustType)
+					{
+						case LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelName:
+							rec = new LsaForestTrustTopLevelName(e.ForestTrustData.TopLevelName, false);
+							break;
+
+						case LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelNameEx:
+							rec = new LsaForestTrustTopLevelName(e.ForestTrustData.TopLevelName, true);
+							break;
+
+						case LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustDomainInfo:
+							rec = new LsaForestTrustDomainInfo { DnsName = e.ForestTrustData.DomainInfo.DnsName, NetbiosName = e.ForestTrustData.DomainInfo.NetbiosName, Sid = new PSID(e.ForestTrustData.DomainInfo.Sid) };
+							break;
+
+						default:
+							throw new ArgumentException("Unrecognized record type.", nameof(ptr));
+					}
+					rec.Flags = e.Flags;
+					rec.Time = e.Time.ToDateTime();
+					ret.Entries.Add(rec);
+				}
+				return ret;
+			}
+
+			/// <summary>
+			/// Returns an instance of <see cref="LSA_FOREST_TRUST_INFORMATION"/>. Warning! The memory allocated for the entries is tied to
+			/// this instance and will be disposed with it. Thus, if the returned structure is copied, the pointers within it may become
+			/// invalid if its scope outlives this instance's scope. Subsequent calls to this method will also invalidate the pointers within
+			/// any previous structures. In other words, just use this method to extract the structure for one time use and ensure this
+			/// instance does not go out of scope while the structure's being used.
+			/// </summary>
+			/// <returns>A <see cref="LSA_FOREST_TRUST_INFORMATION"/> instance matching the values of this instance.</returns>
+			public LSA_FOREST_TRUST_INFORMATION DangerousGetLSA_FOREST_TRUST_INFORMATION()
+			{
+				((IDisposable)this).Dispose();
+				allocatedMemory = SafeHGlobalHandle.CreateFromList(Entries.Select(e => e.Convert())); //.Concat(new[] { new LSA_FOREST_TRUST_RECORD { ForestTrustType = LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustRecordTypeLast } }));
+
+				return new LSA_FOREST_TRUST_INFORMATION { RecordCount = (uint)Entries.Count, Entries = allocatedMemory.DangerousGetHandle() };
+			}
+
+			/// <summary>Releases the unmanaged resources used by this object, and optionally releases the managed resources.</summary>
+			void IDisposable.Dispose() => allocatedMemory?.Dispose();
+
+			/// <summary>Represents a LSA_FOREST_TRUST_RECORD with the ForestTrustType value set to ForestTrustDomainInfo.</summary>
+			public class LsaForestTrustDomainInfo : LsaForestTrustRecord
+			{
+				/// <summary>The DNS name of the domain.</summary>
+				public string DnsName { get; set; }
+
+				/// <summary>The NetBIOS name of the domain.</summary>
+				public string NetbiosName { get; set; }
+
+				/// <summary>Domain SID for the trusted domain.</summary>
+				public PSID Sid { get; set; }
+
+				public override string ToString() => $"DnsName:{DnsName}, NB:{NetbiosName}, Time:{Time:u}, Flg:{Flags}";
+
+				protected internal override LSA_FOREST_TRUST_RECORD Convert()
+				{
+					var ret = base.Convert();
+					ret.ForestTrustType = LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustDomainInfo;
+					ret.ForestTrustData.DomainInfo.DnsName = new LSA_UNICODE_STRING(DnsName);
+					ret.ForestTrustData.DomainInfo.NetbiosName = new LSA_UNICODE_STRING(NetbiosName);
+					ret.ForestTrustData.DomainInfo.Sid = (IntPtr)Sid;
+					return ret;
+				}
+			}
+
+			/// <summary>Represents a LSA_FOREST_TRUST_RECORD.</summary>
+			public abstract class LsaForestTrustRecord
+			{
+				/// <summary>Flags that control the behavior of the operation.</summary>
+				public LSA_TLN Flags { get; set; }
+
+				/// <summary>Time stamp of the record.</summary>
+				public DateTime Time { get; set; }
+
+				protected internal virtual LSA_FOREST_TRUST_RECORD Convert() =>
+					new LSA_FOREST_TRUST_RECORD { Flags = Flags, Time = Time.ToFileTimeStruct() };
+			}
+
+			/// <summary>
+			/// Represents a LSA_FOREST_TRUST_RECORD with the ForestTrustType value set to ForestTrustTopLevelNameEx if the
+			/// <see cref="Excluded"/> property is <see langword="true"/> and ForestTrustTopLevelName if the <see cref="Excluded"/> property
+			/// is <see langword="true"/>.
+			/// </summary>
+			public class LsaForestTrustTopLevelName : LsaForestTrustRecord
+			{
+				public LsaForestTrustTopLevelName(string name = null, bool exclude = false)
+				{
+					TopLevelName = name;
+					Excluded = exclude;
+				}
+
+				public bool Excluded { get; set; }
+				public string TopLevelName { get; set; }
+
+				public override string ToString() => $"TopName:{TopLevelName}, Excl:{Excluded}, Time:{Time:u}, Flg:{Flags}";
+
+				protected internal override LSA_FOREST_TRUST_RECORD Convert()
+				{
+					var ret = base.Convert();
+					ret.ForestTrustType = Excluded ? LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelNameEx : LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelName;
+					ret.ForestTrustData.TopLevelName = new LSA_UNICODE_STRING(TopLevelName);
+					return ret;
+				}
+			}
+		}
+
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a LSA handle that releases a created LSA_HANDLE instance at disposal using LsaClose.
 		/// </summary>
@@ -2122,9 +3616,9 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Provides a <see cref="SafeHandle"/> to a LSA memory handle that releases a created LsaMemoryHandle instance at disposal using LsaFreeMemory.
+		/// Provides a <see cref="SafeHandle"/> to a LSA memory handle that releases a created LsaMemoryHandle instance at disposal using <see cref="LsaFreeMemory"/>.
 		/// </summary>
-		public class SafeLsaMemoryHandle : SafeHANDLE
+		public class SafeLsaMemoryHandle : SafeLsaMemoryHandleBase
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeLsaMemoryHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -2140,8 +3634,52 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => LsaFreeMemory(handle) == 0;
 		}
 
+		/// <summary>Base class for other LSA memory handles.</summary>
+		public abstract class SafeLsaMemoryHandleBase : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeLsaMemoryHandleBase"/> class.</summary>
+			protected SafeLsaMemoryHandleBase() : base()
+			{
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHANDLE"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			protected SafeLsaMemoryHandleBase(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => SetHandle(preexistingHandle);
+
+			/// <summary>
+			/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
+			/// call can cause memory exceptions if the pointer does not have sufficient allocated memory to retrieve all the structures.</note>
+			/// </summary>
+			/// <typeparam name="T">The type of the structures to retrieve.</typeparam>
+			/// <param name="count">The number of structures to retrieve.</param>
+			/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
+			/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
+			public T[] ToArray<T>(int count, int prefixBytes = 0)
+			{
+				if (IsInvalid) return null;
+				//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
+				//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
+				if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
+				return handle.ToArray<T>(count, prefixBytes);
+			}
+
+			/// <summary>
+			/// Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.
+			/// </summary>
+			/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
+			/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
+			public T ToStructure<T>()
+			{
+				if (IsInvalid) return default;
+				return handle.ToStructure<T>();
+			}
+		}
+
 		/// <summary>A <see cref="SafeHandle"/> for values that must be freed using the <see cref="LsaFreeReturnBuffer(IntPtr)"/> function.</summary>
-		public sealed class SafeLsaReturnBufferHandle : SafeHANDLE
+		public sealed class SafeLsaReturnBufferHandle : SafeLsaMemoryHandleBase
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeLsaReturnBufferHandle"/> class.</summary>
 			/// <param name="preexistingHandle">The pointer to the memory allocated by an Lsa function.</param>
@@ -2151,7 +3689,7 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafeLsaReturnBufferHandle"/> class.</summary>
 			private SafeLsaReturnBufferHandle() : base() { }
 
-			protected override bool InternalReleaseHandle() => LsaFreeReturnBuffer(handle) == 0;
+			protected override bool InternalReleaseHandle() => Secur32.LsaFreeReturnBuffer(handle) == 0;
 		}
 
 		/// <summary>A custom marshaler for functions using LSA_UNICODE_STRING arrays so that managed string arrays can be used.</summary>
