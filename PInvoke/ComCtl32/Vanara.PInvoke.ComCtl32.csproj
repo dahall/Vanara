@@ -4,7 +4,7 @@
     <Description>PInvoke API (methods, structures and constants) imported from Windows ComCtl32.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.3.7</VersionPrefix>
+    <VersionPrefix>2.3.8</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.ComCtl32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
