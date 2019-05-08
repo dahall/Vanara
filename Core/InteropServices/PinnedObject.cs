@@ -21,6 +21,13 @@ namespace Vanara.InteropServices
 			SetObject(obj);
 		}
 
+		/// <summary>Creates a pinned object from a nullable structure.</summary>
+		/// <typeparam name="T">The type of the structure.</typeparam>
+		/// <param name="obj">The value to pin.</param>
+		/// <param name="offset">The offset into the pinned bytes used to return a pointer.</param>
+		/// <returns>A new instance of <see cref="PinnedObject"/>.</returns>
+		public static PinnedObject FromNullable<T>(T? obj, int offset = 0) where T : struct => obj.HasValue ? new PinnedObject(obj.Value, offset) : new PinnedObject(null, offset);
+
 		/// <summary>Initializes a new instance of the <see cref="PinnedObject"/> class.</summary>
 		[ExcludeFromCodeCoverage]
 		protected PinnedObject() { }
@@ -32,7 +39,7 @@ namespace Vanara.InteropServices
 		/// <summary>Get a pointer ( <see cref="IntPtr"/>) to the pinned memory of the object with any preset offset.</summary>
 		/// <param name="ap">The <see cref="PinnedObject"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator IntPtr(PinnedObject ap) => ap.pinnedArray.IsAllocated ? ap.pinnedArray.AddrOfPinnedObject().Offset(ap.mOffset) : IntPtr.Zero;
+		public static implicit operator IntPtr(PinnedObject ap) => !ap.IsInvalid ? ap.pinnedArray.AddrOfPinnedObject().Offset(ap.mOffset) : IntPtr.Zero;
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose()
