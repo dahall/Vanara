@@ -237,6 +237,402 @@ namespace Vanara.PInvoke
 			object Resolve(in Guid riid);
 		}
 
+		/// <summary>
+		/// Provides access to a bind context, which is an object that stores information about a particular moniker binding operation.
+		/// </summary>
+		/// <remarks>
+		/// <para>A bind context includes the following information:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// A BIND_OPTS structure containing a set of parameters that do not change during the binding operation. When a composite moniker is
+		/// bound, each component uses the same bind context, so it acts as a mechanism for passing the same parameters to each component of
+		/// a composite moniker.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// A set of pointers to objects that the binding operation has activated. The bind context holds pointers to these bound objects,
+		/// keeping them loaded and thus eliminating redundant activations if the objects are needed again during subsequent binding operations.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// A pointer to the running object table (ROT) on the same computer as the process that started the bind operation. Moniker
+		/// implementations that need to access the ROT should use the IBindCtx::GetRunningObjectTable method rather than using the
+		/// GetRunningObjectTable function. This allows future enhancements to the system's <c>IBindCtx</c> implementation to modify binding behavior.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// A table of interface pointers, each associated with a string key. This capability enables moniker implementations to store
+		/// interface pointers under a well-known string so that they can later be retrieved from the bind context. For example, OLE defines
+		/// several string keys ("ExceededDeadline", "ConnectManually", and so on) that can be used to store a pointer to the object that
+		/// caused an error during a binding operation.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-ibindctx
+		[PInvokeData("objidl.h", MSDNShortId = "e4c8abb5-0c89-44dd-8d95-efbfcc999b46")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0000000e-0000-0000-C000-000000000046")]
+		public interface IBindCtxV
+		{
+			/// <summary>
+			/// Registers an object with the bind context to ensure that the object remains active until the bind context is released.
+			/// </summary>
+			/// <param name="punk">A pointer to the IUnknown interface on the object that is being registered as bound.</param>
+			/// <returns>This method can return the standard return values E_OUTOFMEMORY and S_OK.</returns>
+			/// <remarks>
+			/// <para>
+			/// Those writing a new moniker class (through an implementation of the IMoniker interface) should call this method whenever the
+			/// implementation activates an object. This happens most often in the course of binding a moniker, but it can also happen while
+			/// retrieving a moniker's display name, parsing a display name into a moniker, or retrieving the time that an object was last modified.
+			/// </para>
+			/// <para>
+			/// <c>RegisterObjectBound</c> calls AddRef to create an additional reference to the object. You must, however, still release
+			/// your own copy of the pointer. Calling this method twice for the same object creates two references to that object. You can
+			/// release a reference obtained through a call to this method by calling IBindCtx::RevokeObjectBound. All references held by the
+			/// bind context are released when the bind context itself is released.
+			/// </para>
+			/// <para>
+			/// Calling <c>RegisterObjectBound</c> to register an object with a bind context keeps the object active until the bind context
+			/// is released. Reusing a bind context in a subsequent binding operation (either for another piece of the same composite moniker
+			/// or for a different moniker) can make the subsequent binding operation more efficient because it doesn't have to reload that
+			/// object. This, however, improves performance only if the subsequent binding operation requires some of the same objects as the
+			/// original one, so you need to balance the possible performance improvement of reusing a bind context against the costs of
+			/// keeping objects activated unnecessarily.
+			/// </para>
+			/// <para>
+			/// IBindCtx does not provide a method to retrieve a pointer to an object registered using <c>RegisterObjectBound</c>. Assuming
+			/// the object has registered itself with the running object table, moniker implementations can call
+			/// IRunningObjectTable::GetObject to retrieve a pointer to the object.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ibindctx-registerobjectbound HRESULT
+			// RegisterObjectBound( IUnknown *punk );
+			[PInvokeData("objidl.h", MSDNShortId = "84d49231-5fdd-4a89-8e76-1f0e56bc553f")]
+			[PreserveSig]
+			HRESULT RegisterObjectBound([In, MarshalAs(UnmanagedType.Interface)] object punk);
+
+			/// <summary>Removes the object from the bind context, undoing a previous call to RegisterObjectBound.</summary>
+			/// <param name="punk">A pointer to the IUnknown interface on the object to be removed.</param>
+			/// <returns>
+			/// <para>This method can return the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>The object was released successfully.</term>
+			/// </item>
+			/// <item>
+			/// <term>MK_E_NOTBOUND</term>
+			/// <term>The object was not previously registered.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>You would rarely call this method. It is documented primarily for completeness.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ibindctx-revokeobjectbound HRESULT RevokeObjectBound(
+			// IUnknown *punk );
+			[PInvokeData("objidl.h", MSDNShortId = "c49421a3-1733-4f54-8e30-d23641f13c38")]
+			[PreserveSig]
+			HRESULT RevokeObjectBound([In, MarshalAs(UnmanagedType.Interface)] object punk);
+
+			/// <summary>Releases all pointers to all objects that were previously registered by calls to RegisterObjectBound.</summary>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			/// <remarks>
+			/// <para>
+			/// You rarely call this method directly. The system's IBindCtx implementation calls this method when the pointer to the
+			/// <c>IBindCtx</c> interface on the bind context is released (the bind context is released). If a bind context is not released,
+			/// all of the registered objects remain active.
+			/// </para>
+			/// <para>
+			/// If the same object has been registered more than once, this method calls the Release method on the object the number of times
+			/// it was registered.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ibindctx-releaseboundobjects HRESULT
+			// ReleaseBoundObjects( );
+			[PInvokeData("objidl.h", MSDNShortId = "12107633-6e7f-4d41-8e5c-5739cff98552")]
+			[PreserveSig]
+			HRESULT ReleaseBoundObjects();
+
+			/// <summary>Sets new values for the binding parameters stored in the bind context.</summary>
+			/// <param name="pbindopts">A pointer to a BIND_OPTS, BIND_OPTS2, or BIND_OPTS3 structure containing the binding parameters.</param>
+			/// <returns>This method can return the standard return values E_OUTOFMEMORY and S_OK.</returns>
+			/// <remarks>
+			/// <para>
+			/// A bind context contains a block of parameters that are common to most IMoniker operations. These parameters do not change as
+			/// the operation moves from piece to piece of a composite moniker.
+			/// </para>
+			/// <para>Subsequent binding operations can call IBindCtx::GetBindOptions to retrieve these parameters.</para>
+			/// <para>Notes to Callers</para>
+			/// <para>This method can be called by moniker clients (those who use monikers to acquire interface pointers to objects).</para>
+			/// <para>
+			/// When you first create a bind context by using the CreateBindCtx function, the fields of the BIND_OPTS structure are
+			/// initialized to the following values:
+			/// </para>
+			/// <para>
+			/// You can use the <c>IBindCtx::SetBindOptions</c> method to modify these values before using the bind context, if you want
+			/// values other than the defaults.
+			/// </para>
+			/// <para>
+			/// <c>SetBindOptions</c> copies the members of the specified structure, but not the COSERVERINFO structure and the pointers it
+			/// contains. Callers may not free these pointers until the bind context is released.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ibindctx-setbindoptions HRESULT SetBindOptions(
+			// BIND_OPTS *pbindopts );
+			[PInvokeData("objidl.h", MSDNShortId = "9dcce48e-567e-42b4-8df2-2bc861cb5fcb")]
+			[PreserveSig]
+			HRESULT SetBindOptions([In] BIND_OPTS_V pbindopts);
+
+			/// <summary>Retrieves the binding options stored in this bind context.</summary>
+			/// <param name="pbindopts">
+			/// A pointer to an initialized structure that receives the current binding parameters on return. See BIND_OPTS, BIND_OPTS2, and BIND_OPTS3.
+			/// </param>
+			/// <returns>This method can return the standard return values E_UNEXPECTED and S_OK.</returns>
+			/// <remarks>
+			/// <para>
+			/// A bind context contains a block of parameters that are common to most IMoniker operations and that do not change as the
+			/// operation moves from piece to piece of a composite moniker.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// You typically call this method if you are writing your own moniker class. (This requires that you implement the IMoniker
+			/// interface.) You call this method to retrieve the parameters specified by the moniker client.
+			/// </para>
+			/// <para>
+			/// You must initialize the structure that is filled in by this method. Before calling this method, you must initialize the
+			/// <c>cbStruct</c> member to the size of the structure.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ibindctx-getbindoptions HRESULT GetBindOptions(
+			// BIND_OPTS *pbindopts );
+			[PInvokeData("objidl.h", MSDNShortId = "ccb239ee-922f-4e66-8aca-7651c0243a2b")]
+			[PreserveSig]
+			HRESULT GetBindOptions([In, Out] BIND_OPTS_V pbindopts);
+
+			/// <summary>
+			/// Retrieves an interface pointer to the running object table (ROT) for the computer on which this bind context is running.
+			/// </summary>
+			/// <param name="pprot">
+			/// The address of a IRunningObjectTable* pointer variable that receives the interface pointer to the running object table. If an
+			/// error occurs, *pprot is set to <c>NULL</c>. If *pprot is non- <c>NULL</c>, the implementation calls AddRef on the running
+			/// table object; it is the caller's responsibility to call Release.
+			/// </param>
+			/// <returns>This method can return the standard return values E_OUTOFMEMORY, E_UNEXPECTED, and S_OK.</returns>
+			/// <remarks>
+			/// <para>
+			/// The running object table is a globally accessible table on each computer. It keeps track of all the objects that are
+			/// currently running on the computer.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Typically, those implementing a new moniker class (through an implementation of IMoniker interface) call
+			/// <c>GetRunningObjectTable</c>. It is useful to call this method in an implementation of IMoniker::BindToObject or
+			/// IMoniker::IsRunning to check whether an object is currently running. You can also call this method in the implementation of
+			/// IMoniker::GetTimeOfLastChange to learn when a running object was last modified.
+			/// </para>
+			/// <para>
+			/// Moniker implementations should call this method instead of using the <c>GetRunningObjectTable</c> function. This makes it
+			/// possible for future implementations of IBindCtx to modify binding behavior.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ibindctx-getrunningobjecttable HRESULT
+			// GetRunningObjectTable( IRunningObjectTable **pprot );
+			[PInvokeData("objidl.h", MSDNShortId = "26938d07-d772-4e72-a6aa-57dd2f2cece1")]
+			[PreserveSig]
+			HRESULT GetRunningObjectTable(out IRunningObjectTable pprot);
+
+			/// <summary>Associates an object with a string key in the bind context's string-keyed table of pointers.</summary>
+			/// <param name="pszKey">The bind context string key under which the object is being registered. Key string comparison is case-sensitive.</param>
+			/// <param name="punk">
+			/// <para>A pointer to the IUnknown interface on the object that is to be registered.</para>
+			/// <para>The method calls AddRef on the pointer.</para>
+			/// </param>
+			/// <returns>This method can return the standard return values E_OUTOFMEMORY and S_OK.</returns>
+			/// <remarks>
+			/// <para>
+			/// A bind context maintains a table of interface pointers, each associated with a string key. This enables communication between
+			/// a moniker implementation and the caller that initiated the binding operation. One party can store an interface pointer under
+			/// a string known to both parties so that the other party can later retrieve it from the bind context.
+			/// </para>
+			/// <para>Binding operations subsequent to the use of this method can use IBindCtx::GetObjectParam to retrieve the stored pointer.</para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// <c>RegisterObjectParam</c> is useful to those implementing a new moniker class (through an implementation of IMoniker) and to
+			/// moniker clients (those who use monikers to bind to objects).
+			/// </para>
+			/// <para>
+			/// In implementing a new moniker class, you call this method when an error occurs during moniker binding to inform the caller of
+			/// the cause of the error. The key that you would obtain with a call to this method would depend on the error condition.
+			/// Following is a list of common moniker binding errors, describing for each the keys that would be appropriate:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>
+			/// MK_E_EXCEEDEDDEADLINEâ€”If a binding operation exceeds its deadline because a given object is not running, you should
+			/// register the object's moniker using the first unused key from the list: "ExceededDeadline", "ExceededDeadline1",
+			/// "ExceededDeadline2", and so on. If the caller later finds the moniker in the running object table, the caller can retry the
+			/// binding operation.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// MK_E_CONNECTMANUALLYâ€”The "ConnectManually" key indicates a moniker whose binding requires assistance from the end user. To
+			/// request that the end user manually connect to the object, the caller can retry the binding operation after showing the
+			/// moniker's display name. Common reasons for this error are that a password is needed or that a floppy needs to be mounted.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// E_CLASSNOTFOUNDâ€”The "ClassNotFound" key indicates a moniker whose class could not be found. (The server for the object
+			/// identified by this moniker could not be located.) If this key is used for an OLE compound-document object, the caller can use
+			/// IMoniker::BindToStorage to bind to the object and then try to carry out a <c>Treat As...</c> or <c>Convert To...</c>
+			/// operation to associate the object with a different server. If this is successful, the caller can retry the binding operation.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// A moniker client with detailed knowledge of the implementation of the moniker can also call this method to pass private
+			/// information to that implementation.
+			/// </para>
+			/// <para>
+			/// You can define new strings as keys for storing pointers. By convention, you should use key names that begin with the string
+			/// form of the CLSID of the moniker class. (See the StringFromCLSID function.)
+			/// </para>
+			/// <para>
+			/// If the pszKey parameter matches the name of an existing key in the bind context's table, the new object replaces the existing
+			/// object in the table.
+			/// </para>
+			/// <para>When you register an object using this method, the object is not released until one of the following occurs:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>It is replaced in the table by another object with the same key.</term>
+			/// </item>
+			/// <item>
+			/// <term>It is removed from the table by a call to IBindCtx::RevokeObjectParam.</term>
+			/// </item>
+			/// <item>
+			/// <term>The bind context is released. All registered objects are released when the bind context is released.</term>
+			/// </item>
+			/// </list>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ibindctx-registerobjectparam HRESULT
+			// RegisterObjectParam( LPOLESTR pszKey, IUnknown *punk );
+			[PInvokeData("objidl.h", MSDNShortId = "7ee2b5b2-9b9c-41f1-8e58-7432ebc0f9ed")]
+			[PreserveSig]
+			HRESULT RegisterObjectParam([MarshalAs(UnmanagedType.LPWStr)] string pszKey, [In, MarshalAs(UnmanagedType.Interface)] object punk);
+
+			/// <summary>
+			/// Retrieves an interface pointer to the object associated with the specified key in the bind context's string-keyed table of pointers.
+			/// </summary>
+			/// <param name="pszKey">The bind context string key to be searched for. Key string comparison is case-sensitive.</param>
+			/// <param name="ppunk">
+			/// The address of an IUnknown* pointer variable that receives the interface pointer to the object associated with pszKey. When
+			/// successful, the implementation calls AddRef on *ppunk. It is the caller's responsibility to call Release. If an error occurs,
+			/// the implementation sets *ppunk to <c>NULL</c>.
+			/// </param>
+			/// <returns>If the method succeeds, the return value is S_OK. Otherwise, it is E_FAIL.</returns>
+			/// <remarks>
+			/// <para>
+			/// A bind context maintains a table of interface pointers, each associated with a string key. This enables communication between
+			/// a moniker implementation and the caller that initiated the binding operation. One party can store an interface pointer under
+			/// a string known to both parties so that the other party can later retrieve it from the bind context.
+			/// </para>
+			/// <para>
+			/// The pointer this method retrieves must have previously been inserted into the table using the IBindCtx::RegisterObjectParam method.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Objects using monikers to locate other objects can call this method when a binding operation fails to get specific
+			/// information about the error that occurred. Depending on the error, it may be possible to correct the situation and retry the
+			/// binding operation. See IBindCtx::RegisterObjectParam for more information.
+			/// </para>
+			/// <para>
+			/// Moniker implementations can call this method to handle situations where a caller initiates a binding operation and requests
+			/// specific information. By convention, the implementer should use key names that begin with the string form of the CLSID of a
+			/// moniker class. (See the StringFromCLSID function.)
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ibindctx-getobjectparam HRESULT GetObjectParam( LPOLESTR
+			// pszKey, IUnknown **ppunk );
+			[PInvokeData("objidl.h", MSDNShortId = "8f423495-7a34-4901-968e-1fe204680d8a")]
+			[PreserveSig]
+			HRESULT GetObjectParam([MarshalAs(UnmanagedType.LPWStr)] string pszKey, [MarshalAs(UnmanagedType.Interface)] out object ppunk);
+
+			/// <summary>
+			/// Retrieves a pointer to an interface that can be used to enumerate the keys of the bind context's string-keyed table of pointers.
+			/// </summary>
+			/// <param name="ppenum">
+			/// The address of an IEnumString* pointer variable that receives the interface pointer to the enumerator. If an error occurs,
+			/// *ppenum is set to <c>NULL</c>. If *ppenum is non- <c>NULL</c>, the implementation calls AddRef on *ppenum; it is the caller's
+			/// responsibility to call Release.
+			/// </param>
+			/// <returns>This method can return the standard return values E_OUTOFMEMORY and S_OK.</returns>
+			/// <remarks>
+			/// <para>The keys returned by the enumerator are the ones previously specified in calls to IBindCtx::RegisterObjectParam.</para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// A bind context maintains a table of interface pointers, each associated with a string key. This enables communication between
+			/// a moniker implementation and the caller that initiated the binding operation. One party can store an interface pointer under
+			/// a string known to both parties so that the other party can later retrieve it from the bind context.
+			/// </para>
+			/// <para>
+			/// In the system implementation of the IBindCtx interface, this method is not implemented. Therefore, calling this method
+			/// results in a return value of E_NOTIMPL.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ibindctx-enumobjectparam HRESULT EnumObjectParam(
+			// IEnumString **ppenum );
+			[PInvokeData("objidl.h", MSDNShortId = "9e799ce4-e9b3-4b31-98a0-2167a0c19848")]
+			[PreserveSig]
+			HRESULT EnumObjectParam(out IEnumString ppenum);
+
+			/// <summary>
+			/// Removes the specified key and its associated pointer from the bind context's string-keyed table of objects. The key must have
+			/// previously been inserted into the table with a call to RegisterObjectParam.
+			/// </summary>
+			/// <param name="pszKey">The bind context string key to be removed. Key string comparison is case-sensitive.</param>
+			/// <returns>
+			/// <para>This method can return the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>The specified key was removed successfully.</term>
+			/// </item>
+			/// <item>
+			/// <term>S_FALSE</term>
+			/// <term>The object was not previously registered.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// A bind context maintains a table of interface pointers, each associated with a string key. This enables communication between
+			/// a moniker implementation and the caller that initiated the binding operation. One party can store an interface pointer under
+			/// a string known to both parties so that the other party can later retrieve it from the bind context.
+			/// </para>
+			/// <para>
+			/// This method is used to remove an entry from the table. If the specified key is found, the bind context also releases its
+			/// reference to the object.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ibindctx-revokeobjectparam HRESULT RevokeObjectParam(
+			// LPOLESTR pszKey );
+			[PInvokeData("objidl.h", MSDNShortId = "e7dbf9c8-0ecf-4076-8bec-4da457c60cee")]
+			[PreserveSig]
+			HRESULT RevokeObjectParam([MarshalAs(UnmanagedType.LPWStr)] string pszKey);
+		}
+
 		/// <summary>Supports setting COM+ context properties.</summary>
 		/// <remarks>An instance of this interface for the current context can be obtained using CoGetObjectContext.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-icontext
@@ -1877,6 +2273,182 @@ namespace Vanara.PInvoke
 			/// When used in CoInitializeSecurity, set on return to indicate the status of the call to register the authentication services.
 			/// </summary>
 			public HRESULT hr;
+		}
+
+		/// <summary>
+		/// <para>Contains parameters used during a moniker-binding operation.</para>
+		/// <para>The BIND_OPTS2 or BIND_OPTS3 structure can be used in place of the <c>BIND_OPTS</c> structure.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// A <c>BIND_OPTS</c> structure is stored in a bind context; the same bind context is used by each component of a composite moniker
+		/// during binding, allowing the same parameters to be passed to all components of a composite moniker. See IBindCtx for more
+		/// information about bind contexts.
+		/// </para>
+		/// <para>
+		/// Moniker clients (use a moniker to acquire an interface pointer to an object) typically do not need to specify values for the
+		/// members of this structure. The CreateBindCtx function creates a bind context with the bind options set to default values that are
+		/// suitable for most situations; the BindMoniker function does the same thing when creating a bind context for use in binding a
+		/// moniker. If you want to modify the values of these bind options, you can do so by passing a <c>BIND_OPTS</c> structure to the
+		/// IBindCtx::SetBindOptions method. Moniker implementers can pass a <c>BIND_OPTS</c> structure to the IBindCtx::GetBindOptions
+		/// method to retrieve the values of these bind options.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ns-objidl-tagbind_opts typedef struct tagBIND_OPTS { DWORD cbStruct;
+		// DWORD grfFlags; DWORD grfMode; DWORD dwTickCountDeadline; } BIND_OPTS, *LPBIND_OPTS;
+		[PInvokeData("objidl.h", MSDNShortId = "764f09c9-ff20-4ae2-b94f-4b0a1e117e49")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public class BIND_OPTS_V
+		{
+			/// <summary>The size of this structure, in bytes.</summary>
+			public uint cbStruct;
+
+			/// <summary>
+			/// Flags that control aspects of moniker binding operations. This value is any combination of the bit flags in the BIND_FLAGS
+			/// enumeration. The CreateBindCtx function initializes this member to zero.
+			/// </summary>
+			public BIND_FLAGS grfFlags;
+
+			/// <summary>
+			/// Flags that should be used when opening the file that contains the object identified by the moniker. Possible values are the
+			/// STGM constants. The binding operation uses these flags in the call to IPersistFile::Load when loading the file. If the object
+			/// is already running, these flags are ignored by the binding operation. The CreateBindCtx function initializes this field to STGM_READWRITE.
+			/// </summary>
+			public STGM grfMode;
+
+			/// <summary>
+			/// <para>
+			/// The clock time by which the caller would like the binding operation to be completed, in milliseconds. This member lets the
+			/// caller limit the execution time of an operation when speed is of primary importance. A value of zero indicates that there is
+			/// no deadline. Callers most often use this capability when calling the IMoniker::GetTimeOfLastChange method, though it can be
+			/// usefully applied to other operations as well. The CreateBindCtx function initializes this field to zero.
+			/// </para>
+			/// <para>
+			/// Typical deadlines allow for a few hundred milliseconds of execution. This deadline is a recommendation, not a requirement;
+			/// however, operations that exceed their deadline by a large amount may cause delays for the end user. Each moniker
+			/// implementation should try to complete its operation by the deadline, or fail with the error MK_E_EXCEEDEDDEADLINE.
+			/// </para>
+			/// <para>
+			/// If a binding operation exceeds its deadline because one or more objects that it needs are not running, the moniker
+			/// implementation should register the objects responsible in the bind context using the IBindCtx::RegisterObjectParam. The
+			/// objects should be registered under the parameter names "ExceededDeadline", "ExceededDeadline1", "ExceededDeadline2", and so
+			/// on. If the caller later finds the object in the running object table, the caller can retry the binding operation.
+			/// </para>
+			/// <para>
+			/// The GetTickCount function indicates the number of milliseconds since system startup, and wraps back to zero after 2^31
+			/// milliseconds. Consequently, callers should be careful not to inadvertently pass a zero value (which indicates no deadline),
+			/// and moniker implementations should be aware of clock wrapping problems.
+			/// </para>
+			/// </summary>
+			public uint dwTickCountDeadline;
+
+			/// <summary>Initializes a new instance of the <see cref="BIND_OPTS_V"/> class.</summary>
+			public BIND_OPTS_V() => cbStruct = (uint)Marshal.SizeOf(typeof(BIND_OPTS_V));
+
+			/// <summary>Performs an implicit conversion from <see cref="BIND_OPTS_V"/> to <see cref="System.Runtime.InteropServices.ComTypes.BIND_OPTS"/>.</summary>
+			/// <param name="bo">The <see cref="BIND_OPTS_V"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator System.Runtime.InteropServices.ComTypes.BIND_OPTS(BIND_OPTS_V bo) =>
+				new System.Runtime.InteropServices.ComTypes.BIND_OPTS { cbStruct = (int)bo.cbStruct, grfFlags = (int)bo.grfFlags, grfMode = (int)bo.grfFlags, dwTickCountDeadline = (int)bo.dwTickCountDeadline };
+
+			/// <summary>Performs an implicit conversion from <see cref="System.Runtime.InteropServices.ComTypes.BIND_OPTS"/> to <see cref="BIND_OPTS_V"/>.</summary>
+			/// <param name="bo">The <see cref="BIND_OPTS"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator BIND_OPTS_V(System.Runtime.InteropServices.ComTypes.BIND_OPTS bo) =>
+				new BIND_OPTS_V() { grfFlags = (BIND_FLAGS)bo.grfFlags, grfMode = (STGM)bo.grfFlags, dwTickCountDeadline = (uint)bo.dwTickCountDeadline };
+		}
+
+		/// <summary>Contains parameters used during a moniker-binding operation.</summary>
+		/// <remarks>
+		/// <para>
+		/// A <c>BIND_OPTS2</c> structure is stored in a bind context; the same bind context is used by each component of a composite moniker
+		/// during binding, allowing the same parameters to be passed to all components of a composite moniker. See IBindCtx for more
+		/// information about bind contexts.
+		/// </para>
+		/// <para>
+		/// Moniker clients (use a moniker to acquire an interface pointer to an object) typically do not need to specify values for the
+		/// members of this structure. The CreateBindCtx function creates a bind context with the bind options set to default values that are
+		/// suitable for most situations; the BindMoniker function does the same thing when creating a bind context for use in binding a
+		/// moniker. If you want to modify the values of these bind options, you can do so by passing a <c>BIND_OPTS2</c> structure to the
+		/// IBindCtx::SetBindOptions method. Moniker implementers can pass a <c>BIND_OPTS2</c> structure to the IBindCtx::GetBindOptions
+		/// method to retrieve the values of these bind options.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ns-objidl-tagbind_opts2 typedef struct tagBIND_OPTS2 { DWORD
+		// dwTrackFlags; DWORD dwClassContext; LCID locale; COSERVERINFO *pServerInfo; base_class tagBIND_OPTS; } BIND_OPTS2, *LPBIND_OPTS2;
+		[PInvokeData("objidl.h", MSDNShortId = "fb2aa8c1-dddc-480e-b544-61a1074125ef")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public class BIND_OPTS2 : BIND_OPTS_V
+		{
+			/// <summary>
+			/// <para>
+			/// A moniker can use this value during link tracking. If the original persisted data that the moniker is referencing has been
+			/// moved, the moniker can attempt to reestablish the link by searching for the original data though some adequate mechanism.
+			/// This member provides additional information on how the link should be resolved. See the documentation of the fFlags parameter
+			/// in IShellLink::Resolve.
+			/// </para>
+			/// <para>COM's file moniker implementation uses the shell link mechanism to reestablish links and passes these flags to IShellLink::Resolve.</para>
+			/// </summary>
+			public uint dwTrackFlags;
+
+			/// <summary>
+			/// The class context, taken from the CLSCTX enumeration, that is to be used for instantiating the object. Monikers typically
+			/// pass this value to the dwClsContext parameter of CoCreateInstance.
+			/// </summary>
+			public CLSCTX dwClassContext;
+
+			/// <summary>
+			/// The LCID value indicating the client's preference for the locale to be used by the object to which they are binding. A
+			/// moniker passes this value to IClassActivator::GetClassObject.
+			/// </summary>
+			public uint locale;
+
+			/// <summary>
+			/// A pointer to a COSERVERINFO structure. This member allows clients calling IMoniker::BindToObject to specify server
+			/// information. Clients may pass a <c>BIND_OPTS2</c> structure to the IBindCtx::SetBindOptions method. If a server name is
+			/// specified in the <c>COSERVERINFO</c> structure, the moniker bind will be forwarded to the specified computer.
+			/// <c>SetBindOptions</c> only copies the struct members of <c>BIND_OPTS2</c>, not the <c>COSERVERINFO</c> structure and the
+			/// pointers it contains. Callers may not free any of these pointers until the bind context is released. COM's new class moniker
+			/// does not currently honor the <c>pServerInfo</c> flag.
+			/// </summary>
+			public IntPtr pServerInfo;
+
+			/// <summary>Initializes a new instance of the <see cref="BIND_OPTS2"/> class.</summary>
+			public BIND_OPTS2() => cbStruct = (uint)Marshal.SizeOf(typeof(BIND_OPTS2));
+		}
+
+		/// <summary>Contains parameters used during a moniker-binding operation.</summary>
+		/// <remarks>
+		/// <para>
+		/// A <c>BIND_OPTS3</c> structure is stored in a bind context; the same bind context is used by each component of a composite moniker
+		/// during binding, allowing the same parameters to be passed to all components of a composite moniker. See IBindCtx for more
+		/// information about bind contexts.
+		/// </para>
+		/// <para>
+		/// Moniker clients (use a moniker to acquire an interface pointer to an object) typically do not need to specify values for the
+		/// members of this structure. The CreateBindCtx function creates a bind context with the bind options set to default values that are
+		/// suitable for most situations; the BindMoniker function does the same thing when creating a bind context for use in binding a
+		/// moniker. If you want to modify the values of these bind options, you can do so by passing a <c>BIND_OPTS3</c> structure to the
+		/// IBindCtx::SetBindOptions method. Moniker implementers can pass a <c>BIND_OPTS3</c> structure to the IBindCtx::GetBindOptions
+		/// method to retrieve the values of these bind options.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ns-objidl-tagbind_opts3 typedef struct tagBIND_OPTS3 { HWND hwnd;
+		// base_class tagBIND_OPTS2; } BIND_OPTS3, *LPBIND_OPTS3;
+		[PInvokeData("objidl.h", MSDNShortId = "7e668313-229a-4d04-b8a2-d5072c87a5b5")]
+		[StructLayout(LayoutKind.Sequential)]
+		public class BIND_OPTS3 : BIND_OPTS2
+		{
+			/// <summary>
+			/// A handle to the window that becomes the owner of the elevation UI, if applicable. If <c>hwnd</c> is <c>NULL</c>, COM will
+			/// call the GetActiveWindow function to find a window handle associated with the current thread. This case might occur if the
+			/// client is a script, which cannot fill in a <c>BIND_OPTS3</c> structure. In this case, COM will try to use the window
+			/// associated with the script thread.
+			/// </summary>
+			public HWND hwnd;
+
+			/// <summary>Initializes a new instance of the <see cref="BIND_OPTS3"/> class.</summary>
+			public BIND_OPTS3() => cbStruct = (uint)Marshal.SizeOf(typeof(BIND_OPTS3));
 		}
 
 		/// <summary>
