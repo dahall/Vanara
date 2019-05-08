@@ -61,6 +61,29 @@ namespace Vanara.Extensions
 			bool ImplIEnumT(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
 		}
 
+		/// <summary>Gets a named field value from an object.</summary>
+		/// <typeparam name="T">The expected type of the field to be returned.</typeparam>
+		/// <param name="obj">The object from which to retrieve the field.</param>
+		/// <param name="fieldName">Name of the field.</param>
+		/// <returns>The field value.</returns>
+		public static T GetFieldValue<T>(this object obj, string fieldName)
+		{
+			if (obj is null) throw new ArgumentNullException(nameof(obj));
+			return (T)obj.GetType().InvokeMember(fieldName, BindingFlags.GetField | bindingFlags, null, obj, null, null);
+		}
+
+		/// <summary>Gets a named field value from an object.</summary>
+		/// <typeparam name="T">The expected type of the field to be returned.</typeparam>
+		/// <param name="obj">The object from which to retrieve the field.</param>
+		/// <param name="fieldName">Name of the field.</param>
+		/// <param name="defaultValue">The default value to return in the instance that the field is not found.</param>
+		/// <returns>The field value, if found, or the <paramref name="defaultValue"/> if not.</returns>
+		public static T GetFieldValue<T>(this object obj, string fieldName, T defaultValue)
+		{
+			try { return GetFieldValue<T>(obj, fieldName); }
+			catch { return defaultValue; }
+		}
+
 		/// <summary>Gets a named property value from an object.</summary>
 		/// <typeparam name="T">The expected type of the property to be returned.</typeparam>
 		/// <param name="obj">The object from which to retrieve the property.</param>
@@ -238,6 +261,17 @@ namespace Vanara.Extensions
 					if (TryGetType(asm2, typeName, out ret)) break;
 			}
 			return ret;
+		}
+
+		/// <summary>Sets a named field on an object.</summary>
+		/// <typeparam name="T">The type of the field to be set.</typeparam>
+		/// <param name="obj">The object on which to set the field.</param>
+		/// <param name="fieldName">Name of the field.</param>
+		/// <param name="value">The field value to set on the object.</param>
+		public static void SetFieldValue<T>(this object obj, string fieldName, T value)
+		{
+			try { obj?.GetType().InvokeMember(fieldName, BindingFlags.SetField | bindingFlags, null, obj, new object[] { value }, null); }
+			catch { }
 		}
 
 		/// <summary>Sets a named property on an object.</summary>
