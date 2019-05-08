@@ -3096,7 +3096,7 @@ namespace Vanara.PInvoke
 		/// The LSA_UNICODE_STRING structure is used by various Local Security Authority (LSA) functions to specify a Unicode string. Also an
 		/// example of unnecessary over-engineering and re-engineering.
 		/// </summary>
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Size = 8, Pack = 2)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 8)]
 		[PInvokeData("Ntsecapi.h", MSDNShortId = "ms721841")]
 		public struct LSA_UNICODE_STRING
 		{
@@ -3115,6 +3115,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Pointer to a wide character string. Note that the strings returned by the various LSA functions might not be null-terminated.
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string Buffer;
 
 			/// <summary>Initializes a new instance of the <see cref="LSA_UNICODE_STRING"/> struct from a string.</summary>
@@ -3144,7 +3145,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
-			public override string ToString() => Buffer.Substring(0, Length);
+			public override string ToString() => Buffer == null || Length == 0 ? "" : Buffer.Substring(0, Length);
 
 			/// <summary>Performs an implicit conversion from <see cref="LSA_UNICODE_STRING"/> to <see cref="string"/>.</summary>
 			/// <param name="value">The value.</param>
