@@ -14,7 +14,7 @@ namespace Vanara.Extensions
 		/// <exception cref="ArgumentNullException">iEnumString</exception>
 		public static IEnumerable<string> Enum(this IEnumString iEnumString)
 		{
-			if (iEnumString is null) throw new ArgumentNullException(nameof(iEnumString));
+			if (iEnumString is null) yield break;
 			var ret = 0;
 			var items = new string[1];
 			using (var pret = new PinnedObject(ret))
