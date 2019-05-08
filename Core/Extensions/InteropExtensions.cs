@@ -15,12 +15,23 @@ namespace Vanara.Extensions
 		/// <param name="ptr">The allocated memory pointer.</param>
 		/// <param name="dest">The allocated memory pointer to copy to.</param>
 		/// <param name="length">The number of bytes to copy from <paramref name="ptr"/> to <paramref name="dest"/>.</param>
-		public static unsafe void CopyTo(this IntPtr ptr, IntPtr dest, long length)
+		public static void CopyTo(this IntPtr ptr, IntPtr dest, long length) => CopyTo(ptr, 0L, dest, length);
+
+		/// <summary>Copies the number of specified bytes from one unmanaged memory block to another.</summary>
+		/// <param name="source">The allocated memory pointer.</param>
+		/// <param name="start">The offset from <paramref name="source"/> at which to start the copying.</param>
+		/// <param name="dest">The allocated memory pointer to copy to.</param>
+		/// <param name="length">The number of bytes to copy from <paramref name="source"/> to <paramref name="dest"/>.</param>
+		public static void CopyTo(this IntPtr source, long start, IntPtr dest, long length)
 		{
-			var psrc = (byte*)ptr;
-			var pdest = (byte*)dest;
-			for (var i = 0; i < length; i++, psrc++, pdest++)
-				*pdest = *psrc;
+			if (start < 0 || length < 0) throw new ArgumentOutOfRangeException();
+			if (source == IntPtr.Zero || dest == IntPtr.Zero) throw new ArgumentNullException();
+			unsafe
+			{
+				byte* psrc = (byte*)source + start, pdest = (byte*)dest;
+				for (long i = 0; i < length; i++, psrc++, pdest++)
+					*pdest = *psrc;
+			}
 		}
 
 		/// <summary>
