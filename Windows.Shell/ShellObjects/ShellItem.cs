@@ -14,6 +14,7 @@ using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 using static Vanara.PInvoke.Shell32;
+using static Vanara.PInvoke.ShlwApi;
 
 namespace Vanara.Windows.Shell
 {
@@ -469,15 +470,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the system bind context.</summary>
 		/// <value>The bind context.</value>
-		protected static IBindCtx BindContext
-		{
-			get
-			{
-				if (iBindCtx == null)
-					CreateBindCtx(0, out iBindCtx);
-				return iBindCtx;
-			}
-		}
+		protected static IBindCtx BindContext => iBindCtx ?? (iBindCtx = new BindContext(STGM.STGM_READWRITE | STGM.STGM_SHARE_DENY_NONE, TimeSpan.FromMilliseconds(500)));
 
 		/// <summary>Creates the most specialized derivative of ShellItem from an IShellItem object.</summary>
 		/// <param name="iItem">The IShellItem object.</param>
@@ -567,13 +560,21 @@ namespace Vanara.Windows.Shell
 		/// <typeparam name="TInterface">The interface of the handler to return.</typeparam>
 		/// <param name="handler">The bind handler to retrieve.</param>
 		/// <returns>The requested interface.</returns>
-		public TInterface GetHandler<TInterface>(BHID handler = 0) where TInterface : class
+		public TInterface GetHandler<TInterface>(BHID handler = 0) where TInterface : class => GetHandler<TInterface>(BindContext, handler);
+
+		/// <summary>Gets a handler interface.</summary>
+		/// <typeparam name="TInterface">The interface of the handler to return.</typeparam>
+		/// <param name="bindCtx">The bind context.</param>
+		/// <param name="handler">The bind handler to retrieve.</param>
+		/// <returns>The requested interface.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">handler</exception>
+		public TInterface GetHandler<TInterface>(IBindCtx bindCtx, BHID handler = 0) where TInterface : class
 		{
 			if (handler == 0)
 				handler = GetBHIDForInterface<TInterface>();
 			if (handler == 0)
 				throw new ArgumentOutOfRangeException(nameof(handler));
-			return iShellItem.BindToHandler(BindContext, handler.Guid(), typeof(TInterface).GUID) as TInterface;
+			return iShellItem.BindToHandler(bindCtx, handler.Guid(), typeof(TInterface).GUID) as TInterface;
 		}
 
 		/// <summary>Returns a hash code for this instance.</summary>
@@ -615,6 +616,15 @@ namespace Vanara.Windows.Shell
 		{
 			ThrowIfNoShellItem2();
 			return new PropertyDescriptionList(iShellItem2.GetPropertyDescriptionList(keyType, typeof(IPropertyDescriptionList).GUID));
+		}
+
+		/// <summary>Gets the stream of the file contents.</summary>
+		/// <param name="mode">Flags that should be used when opening the file.</param>
+		/// <returns>The file stream.</returns>
+		public ComStream GetStream(STGM mode = STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE)
+		{
+			using (var ctx = new BindContext(mode))
+				return new ComStream(GetHandler<IStream>(ctx));
 		}
 
 		/// <summary>Gets the formatted tool tip text associated with this item.</summary>
@@ -667,10 +677,10 @@ namespace Vanara.Windows.Shell
 			if (bhidLookup == null)
 				bhidLookup = new Dictionary<Type, BHID>
 				{
-					//{ typeof(??), BHID.BHID_SFObject },
+					//{ typeof(IShellFolder??, IStream??), BHID.BHID_SFObject },
 					{ typeof(IShellLinkW), BHID.BHID_SFUIObject },
 					//{ typeof(Others??), BHID.BHID_SFUIObject },
-					//{ typeof(??), BHID.BHID_SFViewObject },
+					//{ typeof(IShellItemResources??, IShellView??), BHID.BHID_SFViewObject },
 					{ typeof(IStorage), BHID.BHID_Storage },
 					{ typeof(IStream), BHID.BHID_Stream },
 					//{ typeof(IShellItem??), BHID.BHID_LinkTargetItem },
@@ -678,15 +688,15 @@ namespace Vanara.Windows.Shell
 					// TODO: { typeof(ITransferSource), BHID.BHID_Transfer },
 					// TODO: { typeof(ITransferDestination), BHID.BHID_Transfer },
 					{ typeof(IPropertyStore), BHID.BHID_PropertyStore },
-					// TODO: { typeof(IPropertyStoreFactory), BHID.BHID_PropertyStore },
+					{ typeof(IPropertyStoreFactory), BHID.BHID_PropertyStore },
 					{ typeof(IExtractImage), BHID.BHID_ThumbnailHandler },
 					{ typeof(IThumbnailProvider), BHID.BHID_ThumbnailHandler },
 					{ typeof(IEnumShellItems), BHID.BHID_EnumItems },
 					{ typeof(IDataObject), BHID.BHID_DataObject },
-					// TODO: { typeof(IQueryAssociations), BHID.BHID_AssociationArray },
-					// TODO: { typeof(IFilter), BHID.BHID_Filter },
-					// TODO: { typeof(IEnumAssocHandlers), BHID.BHID_EnumAssocHandlers },
-					// TODO: { typeof(IRandomAccessStream), BHID.BHID_RandomAccessStream },
+					{ typeof(IQueryAssociations), BHID.BHID_AssociationArray },
+					// IGNORE: Not supported { typeof(IFilter), BHID.BHID_Filter },
+					{ typeof(IEnumAssocHandlers), BHID.BHID_EnumAssocHandlers },
+					// TODO: Win8+ { typeof(IRandomAccessStream), BHID.BHID_RandomAccessStream },
 					//{ typeof(??), BHID.BHID_FilePlaceholder },
 				};
 			return bhidLookup.TryGetValue(typeof(TInterface), out var value) ? value : 0;
