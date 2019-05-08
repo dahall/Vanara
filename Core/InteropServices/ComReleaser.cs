@@ -3,7 +3,19 @@ using System.Runtime.InteropServices;
 
 namespace Vanara.InteropServices
 {
-	/// <summary>A safe variable to hold an instance of a COM class that automatically calls <see cref="Marshal.ReleaseComObject(object)"/> on disposal.</summary>
+	/// <summary>Factory for creating <see cref="ComReleaser{T}"/> objects.</summary>
+	public static class ComReleaserFactory
+	{
+		/// <summary>Factory method to create a <see cref="ComReleaser{TObj}"/> using type inference.</summary>
+		/// <typeparam name="TObj">The type of the object.</typeparam>
+		/// <param name="obj">The object.</param>
+		/// <returns>A <see cref="ComReleaser{TObj}"/> instance.</returns>
+		public static ComReleaser<TObj> Create<TObj>(TObj obj) where TObj : class => new ComReleaser<TObj>(obj);
+	}
+
+	/// <summary>
+	/// A safe variable to hold an instance of a COM class that automatically calls <see cref="Marshal.ReleaseComObject(object)"/> on disposal.
+	/// </summary>
 	/// <typeparam name="T">The type of the COM object.</typeparam>
 	/// <seealso cref="System.IDisposable"/>
 	public class ComReleaser<T> : IDisposable where T : class
@@ -34,6 +46,16 @@ namespace Vanara.InteropServices
 		/// <value>The COM object.</value>
 		public T Item { get; private set; }
 
+		/// <summary>Performs an implicit conversion from <typeparamref name="T"/> to <see cref="ComReleaser{T}"/>.</summary>
+		/// <param name="obj">The COM object.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator ComReleaser<T>(T obj) => new ComReleaser<T>(obj);
+
+		/// <summary>Performs an implicit conversion from <see cref="ComReleaser{T}"/> to <typeparamref name="T"/>.</summary>
+		/// <param name="co">The <see cref="ComReleaser{T}"/> instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator T(ComReleaser<T> co) => co.Item;
+
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose()
 		{
@@ -41,15 +63,5 @@ namespace Vanara.InteropServices
 			Marshal.FinalReleaseComObject(Item);
 			Item = null;
 		}
-
-		/// <summary>Performs an implicit conversion from <see cref="ComReleaser{T}"/> to <typeparamref name="T"/>.</summary>
-		/// <param name="co">The <see cref="ComReleaser{T}"/> instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator T(ComReleaser<T> co) => co.Item;
-
-		/// <summary>Performs an implicit conversion from <typeparamref name="T"/> to <see cref="ComReleaser{T}"/>.</summary>
-		/// <param name="obj">The COM object.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator ComReleaser<T>(T obj) => new ComReleaser<T>(obj);
 	}
 }
