@@ -336,7 +336,6 @@ namespace Vanara.Windows.Shell
 	{
 		internal static readonly bool IsMin7 = Environment.OSVersion.Version >= new Version(6, 1);
 		internal static readonly bool IsMinVista = Environment.OSVersion.Version.Major >= 6;
-		internal static IBindCtx iBindCtx;
 		internal IShellItem iShellItem;
 		internal IShellItem2 iShellItem2;
 		private static Dictionary<Type, BHID> bhidLookup;
@@ -470,7 +469,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the system bind context.</summary>
 		/// <value>The bind context.</value>
-		protected static IBindCtx BindContext => iBindCtx ?? (iBindCtx = new BindContext(STGM.STGM_READWRITE | STGM.STGM_SHARE_DENY_NONE, TimeSpan.FromMilliseconds(500)));
+		protected static IBindCtx BindContext => ShellUtil.CreateBindCtx();
 
 		/// <summary>Creates the most specialized derivative of ShellItem from an IShellItem object.</summary>
 		/// <param name="iItem">The IShellItem object.</param>
@@ -621,10 +620,11 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the stream of the file contents.</summary>
 		/// <param name="mode">Flags that should be used when opening the file.</param>
 		/// <returns>The file stream.</returns>
-		public ComStream GetStream(STGM mode = STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE)
+		public ComStream GetStream(STGM mode = STGM.STGM_READWRITE)
 		{
-			using (var ctx = new BindContext(mode))
-				return new ComStream(GetHandler<IStream>(ctx));
+			//using (var ctx = new BindContext(mode))
+			var ctx = ShellUtil.CreateBindCtx(mode);
+			return new ComStream(GetHandler<IStream>(ctx));
 		}
 
 		/// <summary>Gets the formatted tool tip text associated with this item.</summary>

@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using System.Text;
+using static Vanara.PInvoke.Ole32;
+using BIND_OPTS = System.Runtime.InteropServices.ComTypes.BIND_OPTS;
 
 namespace Vanara.PInvoke
 {
@@ -12,6 +14,25 @@ namespace Vanara.PInvoke
 		/// <remarks>Methods in this class will only work on Vista and above.</remarks>
 		public static class ShellUtil
 		{
+			/// <summary></summary>
+			/// <param name="openMode">
+			/// Represents flags that should be used when opening the file that contains the object identified by the moniker.
+			/// </param>
+			/// <param name="timeout">
+			/// Indicates the amount of time (clock time in milliseconds) that the caller specified to complete the binding operation.
+			/// </param>
+			/// <param name="bindFlags">Flags that control aspects of moniker binding operations.</param>
+			public static IBindCtx CreateBindCtx(STGM openMode = STGM.STGM_READWRITE, TimeSpan timeout = default, BIND_FLAGS bindFlags = 0)
+			{
+				Ole32.CreateBindCtx(0, out var ctx).ThrowIfFailed();
+				if (openMode != STGM.STGM_READWRITE || timeout != TimeSpan.Zero || bindFlags != 0)
+				{
+					var opts = new BIND_OPTS { cbStruct = Marshal.SizeOf(typeof(BIND_OPTS)), grfMode = (int)openMode, dwTickCountDeadline = (int)timeout.TotalMilliseconds, grfFlags = (int)bindFlags };
+					ctx.SetBindOptions(ref opts);
+				}
+				return ctx;
+			}
+
 			/// <summary>Gets the KNOWNFOLDERID enum from a KNOWNFOLDERID Guid.</summary>
 			/// <param name="knownFolder">The KNOWNFOLDERID Guid.</param>
 			/// <returns>The KNOWNFOLDERID enum.</returns>
