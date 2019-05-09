@@ -116,6 +116,92 @@ namespace Vanara.PInvoke
 			out SafeHTOKEN phObject, out PSID ppLogonSid, out SafeLsaReturnBufferHandle ppProfileBuffer, out uint pdwProfileLength, out QUOTA_LIMITS pQuotaLimits);
 
 		/// <summary>
+		/// <para>
+		/// The <c>LogonUserExExW</c> function attempts to log a user on to the local computer. The local computer is the computer from which
+		/// <c>LogonUserExExW</c> was called. You cannot use <c>LogonUserExExW</c> to log on to a remote computer. Specify the user by using
+		/// a user name and domain and authenticate the user by using a plaintext password. If the function succeeds, it receives a handle to
+		/// a token that represents the logged-on user. You can then use this token handle to impersonate the specified user or, in most
+		/// cases, to create a process that runs in the context of the specified user.
+		/// </para>
+		/// <para>
+		/// This function is similar to the <c>LogonUserEx</c> function, except that it takes the additional parameter, pTokenGroups, which
+		/// is a set of one or more security identifiers (SIDs) that are added to the token returned to the caller when the logon is successful.
+		/// </para>
+		/// <para>
+		/// This function is not declared in a public header and has no associated import library. You must use the <c>LoadLibrary</c> and
+		/// <c>GetProcAddress</c> functions to dynamically link to Advapi32.dll.
+		/// </para>
+		/// </summary>
+		/// <param name="lpszUserName">
+		/// A pointer to a null-terminated string that specifies the name of the user. This is the name of the user account to log on to. If
+		/// you use the user principal name (UPN) format, user@DNS_domain_name, the lpszDomain parameter must be NULL.
+		/// </param>
+		/// <param name="lpszDomain">
+		/// A pointer to a null-terminated string that specifies the name of the domain or server whose account database contains the
+		/// lpszUsername account. If this parameter is NULL, the user name must be specified in UPN format. If this parameter is ".", the
+		/// function validates the account by using only the local account database.
+		/// </param>
+		/// <param name="lpszPassword">
+		/// A pointer to a null-terminated string that specifies the plaintext password for the user account specified by lpszUsername. When
+		/// you have finished using the password, clear the password from memory by calling the SecureZeroMemory function. For more
+		/// information about protecting passwords, see Handling Passwords.
+		/// </param>
+		/// <param name="dwLogonType">The type of logon operation to perform.</param>
+		/// <param name="dwLogonProvider">The logon provider.</param>
+		/// <param name="pTokenGroups">A pointer to a TOKEN_GROUPS structure that specifies a list of group SIDs that are added to the token that this function receives upon successful logon. Any SIDs added to the token also effect group expansion. For example, if the added SIDs are members of local groups, those groups are also added to the received access token.
+		/// <para>If this parameter is not NULL, the caller of this function must have the SE_TCB_PRIVILEGE privilege granted and enabled.</para></param>
+		/// <param name="phToken">A pointer to a handle variable that receives a handle to a token that represents the specified user.
+		/// <para>You can use the returned handle in calls to the ImpersonateLoggedOnUser function.</para>
+		/// <para>In most cases, the returned handle is a primary token that you can use in calls to the CreateProcessAsUser function.However, if you specify the LOGON32_LOGON_NETWORK flag, LogonUserExExW returns an impersonation token that you cannot use in CreateProcessAsUser unless you call DuplicateTokenEx to convert the impersonation token to a primary token.</para>
+		/// <para>When you no longer need this handle, close it by calling the CloseHandle function.</para></param>
+		/// <param name="ppLogonSid">A pointer to a pointer to a SID that receives the SID of the user logged on.
+		/// <para>When you have finished using the SID, free it by calling the LocalFree function.</para></param>
+		/// <param name="ppProfileBuffer">A pointer to a pointer that receives the address of a buffer that contains the logged on user's profile.</param>
+		/// <param name="pdwProfileLength">A pointer to a DWORD that receives the length of the profile buffer.</param>
+		/// <param name="pQuotaLimits">A pointer to a QUOTA_LIMITS structure that receives information about the quotas for the logged on user.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero.</para>
+		/// <para>If the function fails, it returns zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>LOGON32_LOGON_NETWORK</c> logon type is fastest, but it has the following limitations:</para>
+		/// <list type="bullet">
+		///   <item>
+		///     <term>
+		/// The function returns an impersonation token, not a primary token. You cannot use this token directly in the
+		/// <c>CreateProcessAsUser</c> function. However, you can call the <c>DuplicateTokenEx</c> function to convert the token to a primary
+		/// token, and then use it in <c>CreateProcessAsUser</c>.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>
+		/// If you convert the token to a primary token and use it in <c>CreateProcessAsUser</c> to start a process, the new process cannot
+		/// access other network resources, such as remote servers or printers, through the redirector. An exception is that if the network
+		/// resource is not access controlled, then the new process will be able to access it.
+		/// </term>
+		///   </item>
+		/// </list>
+		/// <para>
+		/// The account specified by lpszUsername must have the necessary account rights. For example, to log on a user with the
+		/// <c>LOGON32_LOGON_INTERACTIVE</c> flag, the user (or a group to which the user belongs) must have the
+		/// <c>SE_INTERACTIVE_LOGON_NAME</c> account right. For a list of the account rights that affect the various logon operations, see
+		/// Account Object Access Rights.
+		/// </para>
+		/// <para>
+		/// A user is considered logged on if at least one token exists. If you call <c>CreateProcessAsUser</c> and then close the token, the
+		/// user is still logged on until the process (and all child processes) have ended.
+		/// </para>
+		/// <para>If the optional pTokenGroups parameter is supplied, LSA will not add either the local SID or the logon SID automatically.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/SecAuthN/logonuserexexw
+		// BOOL WINAPI LogonUserExExW( _In_ LPTSTR lpszUsername, _In_opt_ LPTSTR lpszDomain, _In_opt_ LPTSTR lpszPassword, _In_ DWORD dwLogonType, _In_ DWORD dwLogonProvider, _In_opt_ PTOKEN_GROUPS pTokenGroups, _Out_opt_ PHANDLE phToken, _Out_opt_ PSID *ppLogonSid, _Out_opt_ PVOID *ppProfileBuffer, _Out_opt_ LPDWORD pdwProfileLength, _Out_opt_ PQUOTA_LIMITS pQuotaLimits );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("", MSDNShortId = "d90db4c6-a711-4519-8b91-5069cee07738")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool LogonUserExExW(string lpszUsername, [Optional] string lpszDomain, [Optional] string lpszPassword, LogonUserType dwLogonType, LogonUserProvider dwLogonProvider,
+			[In, Optional] in TOKEN_GROUPS pTokenGroups, out SafeHTOKEN phToken, out SafePSID ppLogonSid, out IntPtr ppProfileBuffer, out uint pdwProfileLength, out QUOTA_LIMITS pQuotaLimits);
+
+		/// <summary>
 		/// The LookupAccountName function accepts the name of a system and an account as input. It retrieves a security identifier (SID) for
 		/// the account and the name of the domain on which the account was found.
 		/// </summary>
