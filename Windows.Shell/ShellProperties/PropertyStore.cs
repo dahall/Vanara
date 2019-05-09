@@ -15,21 +15,14 @@ namespace Vanara.Windows.Shell
 	/// <seealso cref="System.IDisposable"/>
 	public class PropertyStore : IDictionary<PROPERTYKEY, object>, IDisposable, INotifyPropertyChanged
 	{
-		/// <summary>The IPropertyStore instance. This can be null.</summary>
-		protected IPropertyStore iprops;
-
 		/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class.</summary>
 		protected PropertyStore() { }
-
-		/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class.</summary>
-		/// <param name="ps">The <see cref="IPropertyStore"/> instance.</param>
-		protected PropertyStore(IPropertyStore ps) => iprops = ps;
 
 		/// <summary>Occurs when a property value changes.</summary>
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		/// <summary>Gets the number of properties in the current property store.</summary>
-		public int Count => (int)(iprops?.GetCount() ?? 0);
+		public int Count => Run(ps => (int)(ps?.GetCount() ?? 0));
 
 		/// <summary>Gets or sets a value indicating whether this property store has uncommitted changes.</summary>
 		/// <value><c>true</c> if this instance is dirty; otherwise, <c>false</c>.</value>
@@ -39,10 +32,13 @@ namespace Vanara.Windows.Shell
 		public virtual bool IsReadOnly => false;
 
 		/// <summary>Gets an <see cref="ICollection{T}"/> containing the keys of the <see cref="IDictionary{PROPERTYKEY, Object}"/>.</summary>
-		public ICollection<PROPERTYKEY> Keys => GetKeyEnum().ToList();
+		public ICollection<PROPERTYKEY> Keys => Run(ps => GetKeyEnum(ps).ToList());
 
 		/// <summary>Gets an <see cref="ICollection{T}"/> containing the values in the <see cref="IDictionary{PROPERTYKEY, Object}"/>.</summary>
-		public ICollection<object> Values => GetKeyEnum().Select(k => TryGetValue(k, out object v) ? v : null).ToList();
+		public ICollection<object> Values => Run(ps => GetKeyEnum(ps).Select(k => TryGetValue(ps, k, out object v) ? v : null).ToList());
+
+		/// <summary>The IPropertyStore instance. This can be null.</summary>
+		protected virtual IPropertyStore IPropStoreInst { get; }
 
 		/// <summary>Gets or sets the value of the property with the specified known key.</summary>
 		/// <value>The value.</value>
@@ -62,18 +58,20 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (!TryGetValue(key, out object r))
+				if (!TryGetValue(key, out var r))
 					throw new ArgumentOutOfRangeException(nameof(key));
 				return r;
 			}
 			set
 			{
-				if (iprops is null)
-					throw new InvalidOperationException("Property store does not exist.");
-				if (IsReadOnly)
-					throw new InvalidOperationException("Property store is read-only.");
-				iprops.SetValue(key, new PROPVARIANT(value));
-				OnPropertyChanged(key.ToString());
+				Run(ps => {
+					if (ps is null)
+						throw new InvalidOperationException("Property store does not exist.");
+					if (IsReadOnly)
+						throw new InvalidOperationException("Property store is read-only.");
+					ps.SetValue(key, new PROPVARIANT(value));
+					OnPropertyChanged(key.ToString());
+				});
 			}
 		}
 
@@ -94,14 +92,22 @@ namespace Vanara.Windows.Shell
 		/// <param name="value">The value of the new property.</param>
 		public void Add(PROPERTYKEY key, object value)
 		{
-			if (iprops is null)
-				throw new InvalidOperationException("Property store does not exist.");
-			iprops.SetValue(key, new PROPVARIANT(value));
-			OnPropertyChanged(key.ToString());
+			Run(ps =>
+			{
+				if (ps is null)
+					throw new InvalidOperationException("Property store does not exist.");
+				ps.SetValue(key, new PROPVARIANT(value));
+				OnPropertyChanged(key.ToString());
+			});
 		}
 
 		/// <summary>Commits all changes to the property store.</summary>
-		public void Commit() { iprops?.Commit(); IsDirty = false; }
+		public void Commit()
+		{
+			if (!IsDirty) return;
+			Run(ps => ps?.Commit());
+			IsDirty = false;
+		}
 
 		/// <summary>Determines whether the <see cref="IDictionary{PROPERTYKEY, Object}"/> contains an element with the specified key.</summary>
 		/// <param name="key">The key to locate in the <see cref="IDictionary{PROPERTYKEY, Object}"/>.</param>
@@ -131,15 +137,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-		public virtual void Dispose()
-		{
-			if (iprops != null)
-			{
-				if (IsDirty) Commit();
-				Marshal.ReleaseComObject(iprops);
-				iprops = null;
-			}
-		}
+		public virtual void Dispose() => Commit();
 
 		/// <summary>Gets the property.</summary>
 		/// <typeparam name="TVal">The type of the value.</typeparam>
@@ -187,9 +185,13 @@ namespace Vanara.Windows.Shell
 		/// </returns>
 		public virtual bool TryGetValue<TVal>(PROPERTYKEY key, out TVal value)
 		{
-			var ret = TryGetValue(key, out PROPVARIANT val);
-			value = ret ? (TVal)val.Value : default;
-			return ret;
+			var result = Run(ps =>
+			{
+				var ret = TryGetValue<TVal>(ps, key, out var val);
+				return (ret, ret ? val : default);
+			});
+			value = result.Item2;
+			return result.ret;
 		}
 
 		/// <summary>Adds an item to the <see cref="ICollection{T}"/>.</summary>
@@ -203,11 +205,11 @@ namespace Vanara.Windows.Shell
 		/// <summary>Determines whether the <see cref="ICollection{T}"/> contains a specific value.</summary>
 		/// <param name="item">The object to locate in the <see cref="ICollection{T}"/>.</param>
 		/// <returns><see langword="true"/> if <paramref name="item"/> is found in the <see cref="ICollection{T}"/>; otherwise, <see langword="false"/>.</returns>
-		bool ICollection<KeyValuePair<PROPERTYKEY, object>>.Contains(KeyValuePair<PROPERTYKEY, object> item) => TryGetValue(item.Key, out object o) && Equals(o, item.Value);
+		bool ICollection<KeyValuePair<PROPERTYKEY, object>>.Contains(KeyValuePair<PROPERTYKEY, object> item) => Run(ps => TryGetValue(ps, item.Key, out object o) && Equals(o, item.Value));
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
-		IEnumerator<KeyValuePair<PROPERTYKEY, object>> IEnumerable<KeyValuePair<PROPERTYKEY, object>>.GetEnumerator() => GetKeyEnum().Select(k => new KeyValuePair<PROPERTYKEY, object>(k, this[k])).GetEnumerator();
+		IEnumerator<KeyValuePair<PROPERTYKEY, object>> IEnumerable<KeyValuePair<PROPERTYKEY, object>>.GetEnumerator() => Run(ps => GetKeyEnum(ps).Select(k => new KeyValuePair<PROPERTYKEY, object>(k, TryGetValue(ps, k, out object pv) ? pv : null)).GetEnumerator());
 
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
 		/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
@@ -233,10 +235,11 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets an enumeration of the keys in the property store.</summary>
 		/// <returns>Keys in the property store.</returns>
-		protected virtual IEnumerable<PROPERTYKEY> GetKeyEnum()
+		protected virtual IEnumerable<PROPERTYKEY> GetKeyEnum(IPropertyStore ps)
 		{
+			if (ps is null) yield break;
 			for (uint i = 0; i < Count; i++)
-				yield return iprops.GetAt(i);
+				yield return ps.GetAt(i);
 		}
 
 		/// <summary>Called when a property has changed.</summary>
@@ -246,25 +249,45 @@ namespace Vanara.Windows.Shell
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		/// <summary>Gets the value associated with the specified key.</summary>
+		/// <summary>
+		/// Gets the value associated with the specified key.
+		/// </summary>
+		/// <param name="ps">The IPropertyStore instance.</param>
 		/// <param name="key">The key whose value to get.</param>
-		/// <param name="value">
-		/// When this method returns, the value associated with the specified key, if the key is found; otherwise, an empty PROPVARIANT.
-		/// </param>
-		/// <returns><see langword="true"/> if the property store contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
-		protected virtual bool TryGetValue(PROPERTYKEY key, out PROPVARIANT value)
+		/// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, an empty PROPVARIANT.</param>
+		/// <returns>
+		///   <see langword="true" /> if the property store contains an element with the specified key; otherwise, <see langword="false" />.
+		/// </returns>
+		protected virtual bool TryGetValue<T>(IPropertyStore ps, PROPERTYKEY key, out T value)
 		{
-			value = new PROPVARIANT();
-			if (iprops != null)
+			value = default;
+			if (ps != null)
 			{
 				try
 				{
-					iprops.GetValue(key, value);
+					var pv = new PROPVARIANT();
+					ps.GetValue(key, pv);
+					value = (T)pv.Value;
+					pv.Clear();
 					return true;
 				}
 				catch { }
 			}
 			return false;
+		}
+
+		private void Run(Action<IPropertyStore> action)
+		{
+			var ps = IPropStoreInst;
+			try { action(ps); }
+			finally { Marshal.FinalReleaseComObject(ps); }
+		}
+
+		private T Run<T>(Func<IPropertyStore, T> action)
+		{
+			var ps = IPropStoreInst;
+			try { return action(ps); }
+			finally { Marshal.FinalReleaseComObject(ps); }
 		}
 	}
 }
