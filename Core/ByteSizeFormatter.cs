@@ -9,6 +9,9 @@ namespace Vanara
 	{
 		private static readonly string[] suffixes = { " B", " KB", " MB", " GB", " TB", " PB", " EB" };
 
+		/// <summary>A static instance of <see cref="ByteSizeFormatter"/>.</summary>
+		public static readonly ByteSizeFormatter Instance = new ByteSizeFormatter();
+
 		/// <summary>
 		/// Converts the value of a specified object to an equivalent string representation using specified format and culture-specific
 		/// formatting information.
@@ -22,7 +25,7 @@ namespace Vanara
 		/// </returns>
 		public override string Format(string format, object arg, IFormatProvider formatProvider)
 		{
-			long bytes = 0;
+			long bytes;
 			try { bytes = Convert.ToInt64(arg); }
 			catch { return HandleOtherFormats(format, arg); }
 			if (bytes == 0) return "0" + suffixes[0];
@@ -32,7 +35,7 @@ namespace Vanara
 			var place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
 			if (place >= suffixes.Length) place = suffixes.Length - 1;
 			var num = Math.Round(bytes / Math.Pow(1024, place), 1);
-			return $"{num.ToString("F" + prec)}{suffixes[place]}";
+			return $"{num.ToString("F" + prec).TrimEnd('0')}{suffixes[place]}";
 		}
 
 		/// <summary>
