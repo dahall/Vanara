@@ -75,6 +75,9 @@
 		/// <summary>The property system</summary>
 		public const string PropSys = "propsys.dll";
 
+		/// <summary>The Schannel</summary>
+		public const string Schannel = "Schannel.dll";
+
 		/// <summary>The secur32</summary>
 		public const string Secur32 = "secur32.dll";
 
@@ -83,6 +86,9 @@
 
 		/// <summary>The shlwapi</summary>
 		public const string Shlwapi = "Shlwapi.dll";
+
+		/// <summary>The sspi cli</summary>
+		public const string SspiCli = "SspiCli.dll";
 
 		/// <summary>The tokenbinding</summary>
 		public const string Tokenbinding = "tokenbinding.dll";
