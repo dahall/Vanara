@@ -5,6 +5,8 @@ using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
+using System.IO;
+using Vanara.InteropServices;
 
 namespace Vanara.Windows.Shell.Tests
 {
@@ -198,6 +200,19 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(ps, Is.Not.Null.And.InstanceOf<PropSys.IPropertyStore>());
 				System.Runtime.InteropServices.Marshal.ReleaseComObject(ps);
 				Assert.That(() => i.GetHandler<IExtractIcon>(), Throws.TypeOf<ArgumentOutOfRangeException>());
+			}
+		}
+
+		[Test]
+		public void GetHandlerTest2()
+		{
+			using (var shellItem = new ShellItem(@"C:\Temp\Holes.mp4"))
+			{
+				if (!shellItem.IsFolder)
+					TestContext.WriteLine(shellItem.Properties[PROPERTYKEY.System.MIMEType]);
+
+				using (var stream = shellItem.GetStream())
+					TestContext.WriteLine(((FormattableString)$"{shellItem.FileSystemPath} ({stream.Length:B3})").ToString(ByteSizeFormatter.Instance));
 			}
 		}
 
