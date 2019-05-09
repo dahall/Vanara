@@ -90,8 +90,10 @@ namespace Vanara.InteropServices
 			get => handle.ToArray<TElem>(Count, (int)HeaderSize);
 			set
 			{
-				Count = value.Length;
-				Size = GetRequiredSize(value.Length, HeaderSize);
+				var len = value?.Length ?? 0;
+				Count = len;
+				Size = GetRequiredSize(len, HeaderSize);
+				Zero();
 				value.MarshalToPtr(handle, (int)HeaderSize);
 				OnCountChanged();
 				OnUpdateHeader();
@@ -168,7 +170,7 @@ namespace Vanara.InteropServices
 			if (index > 0)
 				CopyTo(newPtr, 0, insertPt);
 			Marshal.StructureToPtr(item, newPtr.Offset(insertPt), false);
-			if (index < Count)
+			if (index < Count - 1)
 				CopyTo(newPtr, insertPt + ElemSize, newSz - insertPt);
 			mm.FreeMem(handle);
 			SetHandle(newPtr);
