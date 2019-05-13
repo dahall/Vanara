@@ -65,5 +65,24 @@ namespace Vanara.PInvoke
 
 			public CREDSSP_CRED Cred;
 		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>SecPkgContext_ClientCreds</c> structure specifies client credentials when calling the QueryContextAttributes (CredSSP) function.
+		/// </para>
+		/// <para>This structure is supported only on the server.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/credssp/ns-credssp-_secpkgcontext_clientcreds typedef struct
+		// _SecPkgContext_ClientCreds { ULONG AuthBufferLen; PUCHAR AuthBuffer; } SecPkgContext_ClientCreds, *PSecPkgContext_ClientCreds;
+		[PInvokeData("credssp.h", MSDNShortId = "85ab1bf7-a4d9-4b0e-b1e3-cb938c3183d3")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SecPkgContext_ClientCreds
+		{
+			/// <summary>The size, in characters, of the <c>AuthBuffer</c> buffer.</summary>
+			public uint AuthBufferLen;
+
+			/// <summary>A pointer to a buffer that represents the client credentials.</summary>
+			public IntPtr AuthBuffer;
+		}
 	}
 }

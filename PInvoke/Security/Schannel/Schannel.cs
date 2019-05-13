@@ -836,6 +836,96 @@ namespace Vanara.PInvoke
 			public IntPtr pSignatureAndHashAlgorithms;
 		}
 
+		/// <summary>
+		/// The <c>SecPkgCred_CipherStrengths</c> structure holds the minimum and maximum strength permitted for the cipher used by the
+		/// specified Schannel credential. This structure is used by the <c>QueryCredentialsAttributes</c> function.
+		/// </summary>
+		// typedef struct _SecPkgCred_CipherStrengths { DWORD dwMinimumCipherStrength; DWORD dwMaximumCipherStrength;}
+		// SecPkgCred_CipherStrengths, *PSecPkgCred_CipherStrengths; https://msdn.microsoft.com/en-us/library/windows/desktop/aa380101(v=vs.85).aspx
+		[PInvokeData("Schannel.h", MSDNShortId = "aa380101")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SecPkgCred_CipherStrengths
+		{
+			/// <summary>Minimum cipher strength allowed.</summary>
+			public uint dwMinimumCipherStrength;
+
+			/// <summary>Maximum cipher strength allowed.</summary>
+			public uint dwMaximumCipherStrength;
+		}
+
+		/// <summary>
+		/// The <c>SecPkgCred_SupportedAlgs</c> structure contains identifiers for algorithms permitted with a specified Schannel credential.
+		/// This structure is used by the <c>QueryCredentialsAttributes</c> function.
+		/// </summary>
+		// typedef struct _SecPkgCred_SupportedAlgs { DWORD cSupportedAlgs; ALG_ID *palgSupportedAlgs;} SecPkgCred_SupportedAlgs,
+		// *PSecPkgCred_SupportedAlgs; https://msdn.microsoft.com/en-us/library/windows/desktop/aa380102(v=vs.85).aspx
+		[PInvokeData("Schannel.h", MSDNShortId = "aa380102")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SecPkgCred_SupportedAlgs
+		{
+			/// <summary>Number of elements in the <c>palgSupportedAlgs</c> array.</summary>
+			public uint cSupportedAlgs;
+
+			/// <summary>Array of algorithm identifiers ( <c>ALG_ID</c>) allowed with a credential.</summary>
+			public IntPtr palgSupportedAlgs;
+		}
+
+		/// <summary>
+		/// The <c>SecPkgCred_SupportedProtocols</c> structure indicates the protocols permitted with a specified Schannel credential. This
+		/// structure is used by the <c>QueryCredentialsAttributes</c> function.
+		/// </summary>
+		// typedef struct _SecPkgCred_SupportedProtocols { DWORD grbitProtocol;} SecPkgCred_SupportedProtocols,
+		// *PSecPkgCred_SupportedProtocols; https://msdn.microsoft.com/en-us/library/windows/desktop/aa380103(v=vs.85).aspx
+		[PInvokeData("Schannel.h", MSDNShortId = "aa380103")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SecPkgCred_SupportedProtocols
+		{
+			/// <summary>
+			/// <para>Flags representing the protocols supported with this credential. The following table lists the valid values.</para>
+			/// <para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>SP_PROT_TLS1_CLIENT</term>
+			/// <term>Transport Layer Security 1.0 client-side.</term>
+			/// </item>
+			/// <item>
+			/// <term>SP_PROT_TLS1_SERVER</term>
+			/// <term>Transport Layer Security 1.0 server-side.</term>
+			/// </item>
+			/// <item>
+			/// <term>SP_PROT_SSL3_CLIENT</term>
+			/// <term>Secure Sockets Layer 3.0 client-side. Superseded by SP_PROT_TLS1_CLIENT.</term>
+			/// </item>
+			/// <item>
+			/// <term>SP_PROT_SSL3_SERVER</term>
+			/// <term>Secure Sockets Layer 3.0 server-side. Superseded by SP_PROT_TLS1_SERVER.</term>
+			/// </item>
+			/// <item>
+			/// <term>SS_PROT_PCT1_CLIENT</term>
+			/// <term>Private Communications Technology 1.0 client-side. Obsolete.</term>
+			/// </item>
+			/// <item>
+			/// <term>SP_PROT_PCT1_SERVER</term>
+			/// <term>Private Communications Technology 1.0 server-side. Obsolete.</term>
+			/// </item>
+			/// <item>
+			/// <term>SP_PROT_SSL2_CLIENT</term>
+			/// <term>Secure Sockets Layer 2.0 client-side. Superseded by SP_PROT_TLS1_CLIENT.</term>
+			/// </item>
+			/// <item>
+			/// <term>SP_PROT_SSL2_SERVER</term>
+			/// <term>Secure Sockets Layer 2.0 server-side. Superseded by SP_PROT_TLS1_SERVER.</term>
+			/// </item>
+			/// </list>
+			/// </para>
+			/// </summary>
+			public SP_PROT grbitProtocol;
+		}
+
 		/// <summary>The <c>X509Certificate</c> structure represents an X.509 certificate.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/schannel/ns-schannel-_x509certificate typedef struct _X509Certificate { DWORD
 		// Version; DWORD SerialNumber[4]; ALG_ID SignatureAlgorithm; FILETIME ValidFrom; FILETIME ValidUntil; PSTR pszIssuer; PSTR
