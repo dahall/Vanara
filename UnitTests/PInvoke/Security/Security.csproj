@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -38,12 +41,18 @@
     <Compile Include="AdvApi32\AdvApi32Tests.cs" />
     <Compile Include="AdvApi32\PSIDTests.cs" />
     <Compile Include="Authz\AuthzTests.cs" />
+    <Compile Include="Secur32\SaslTests.cs" />
+    <Compile Include="Secur32\SspiTests.cs" />
     <Compile Include="Secur32\Secur32Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Vanara.Core.csproj">
       <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
       <Name>Vanara.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\CredUI\Vanara.PInvoke.CredUI.csproj">
+      <Project>{1f0b972a-06da-4f6a-8b60-87d76fb1f2d9}</Project>
+      <Name>Vanara.PInvoke.CredUI</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
       <Project>{842d436f-598c-47d7-b5aa-12399f8ccfe9}</Project>

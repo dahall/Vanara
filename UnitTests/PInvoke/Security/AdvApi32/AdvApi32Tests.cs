@@ -20,6 +20,8 @@ namespace Vanara.PInvoke.Tests
 	{
 		internal const string fn = @"C:\Temp\help.ico";
 
+		internal static object[] GetAuthCasesFromFile(bool validUser, bool validCred) => AuthCasesFromFile.Where(objs => ((object[])objs)[0].Equals(validUser) && ((object[])objs)[1].Equals(validCred)).ToArray();
+
 		internal static object[] AuthCasesFromFile
 		{
 			get
