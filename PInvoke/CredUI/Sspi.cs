@@ -109,7 +109,7 @@ namespace Vanara.PInvoke
 		/// <returns>If the function succeeds, it returns SEC_E_OK. If the function fails, it returns a nonzero error code.</returns>
 		[DllImport(Lib.CredUI, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Sspi.h")]
-		public static extern Win32Error SspiPromptForCredentials(string pszTargetName, in CREDUI_INFO pUiInfo, uint dwAuthError, string pszPackage, PSEC_WINNT_AUTH_IDENTITY_OPAQUE pInputAuthIdentity, out PSEC_WINNT_AUTH_IDENTITY_OPAQUE ppAuthIdentity, ref bool pfSave, SSPIPFC dwFlags);
+		public static extern Win32Error SspiPromptForCredentials(string pszTargetName, in CREDUI_INFO pUiInfo, uint dwAuthError, string pszPackage, PSEC_WINNT_AUTH_IDENTITY_OPAQUE pInputAuthIdentity, out SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE ppAuthIdentity, ref bool pfSave, SSPIPFC dwFlags);
 
 		/// <summary>
 		/// Deserializes credential information obtained by a credential provider during a previous call to the
