@@ -3699,7 +3699,7 @@ namespace Vanara.PInvoke
 		{
 			private static readonly Dictionary<IntPtr, int> pastCallArraySizes = new Dictionary<IntPtr, int>();
 
-			public static ICustomMarshaler GetInstance(string cookie) => new LsaUnicodeStringArrayMarshaler();
+			public static ICustomMarshaler GetInstance(string _) => new LsaUnicodeStringArrayMarshaler();
 
 			public void CleanUpManagedData(object ManagedObj)
 			{
@@ -3716,7 +3716,6 @@ namespace Vanara.PInvoke
 					pastCallArraySizes.Remove(pNativeData);
 				}
 				Marshal.FreeCoTaskMem(pNativeData);
-				pNativeData = IntPtr.Zero;
 			}
 
 			public int GetNativeDataSize() => -1;
@@ -3751,7 +3750,7 @@ namespace Vanara.PInvoke
 		/// <seealso cref="ICustomMarshaler"/>
 		internal class LsaUnicodeStringMarshaler : ICustomMarshaler
 		{
-			public static ICustomMarshaler GetInstance(string cookie) => new LsaUnicodeStringMarshaler();
+			public static ICustomMarshaler GetInstance(string _) => new LsaUnicodeStringMarshaler();
 
 			public void CleanUpManagedData(object ManagedObj)
 			{
@@ -3761,20 +3760,11 @@ namespace Vanara.PInvoke
 			{
 				if (pNativeData == IntPtr.Zero) return;
 				Marshal.FreeCoTaskMem(pNativeData);
-				pNativeData = IntPtr.Zero;
 			}
 
 			public int GetNativeDataSize() => Marshal.SizeOf(typeof(LSA_UNICODE_STRING));
 
-			public IntPtr MarshalManagedToNative(object ManagedObj)
-			{
-				var s = ManagedObj as string;
-				if (s == null) return IntPtr.Zero;
-				var str = new LSA_UNICODE_STRING(s);
-				var ret = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(LSA_UNICODE_STRING)));
-				Marshal.StructureToPtr(str, ret, false);
-				return ret;
-			}
+			public IntPtr MarshalManagedToNative(object ManagedObj) => ManagedObj is string s ? new LSA_UNICODE_STRING(s).StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
 
 			public object MarshalNativeToManaged(IntPtr pNativeData)
 			{
