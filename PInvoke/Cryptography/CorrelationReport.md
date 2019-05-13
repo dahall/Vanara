@@ -371,6 +371,7 @@ Native Structure | Header | Managed Structure
 [CERT_EXTENSION](https://www.google.com/search?num=5&q=CERT_EXTENSION+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_EXTENSION  
 [CERT_INFO](https://www.google.com/search?num=5&q=CERT_INFO+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_INFO  
 [CERT_PUBLIC_KEY_INFO](https://www.google.com/search?num=5&q=CERT_PUBLIC_KEY_INFO+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_PUBLIC_KEY_INFO  
+[CERT_TRUST_STATUS](http://msdn2.microsoft.com/en-us/library/af1e1db2-7b53-4491-8317-4abf3568fb03) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_TRUST_STATUS  
 [CRYPT_ALGORITHM_IDENTIFIER](https://www.google.com/search?num=5&q=CRYPT_ALGORITHM_IDENTIFIER+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CRYPT_ALGORITHM_IDENTIFIER  
 [CRYPT_CONTEXT_CONFIG](http://msdn2.microsoft.com/en-us/library/3e07b7ae-84ef-4b77-bd49-d96906eaa4f8) | bcrypt.h | Vanara.PInvoke.BCrypt+CRYPT_CONTEXT_CONFIG  
 [CRYPT_CONTEXT_FUNCTION_CONFIG](http://msdn2.microsoft.com/en-us/library/53026095-c871-4027-ac7d-428f1cb4aafe) | bcrypt.h | Vanara.PInvoke.BCrypt+CRYPT_CONTEXT_FUNCTION_CONFIG  

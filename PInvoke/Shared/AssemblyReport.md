@@ -20,6 +20,7 @@ RegistryTypeExt | Extension methods for registry types.
 SafeElementArray<T> | A safe unmanaged array of structures allocated on the global heap with a prefix type (usually a uint or int) that determines the count of elements.
 SafeHANDLE | Base class for all native handles.
 SafeNativeArray<T> | A safe unmanaged array of structures allocated on the global heap. Array size determined by allocated memory size divided by size of structure.
+SafeNativeArrayBase<T> | A safe unmanaged array of structures. Array size determined by size of structure.
 SafeNativeLinkedList<T> | A safe unmanaged linked list of structures allocated on the global heap.
 SafeResourceId | Represents a system resource name that can identify as a string, integer, or pointer.
 SBFunc<T> | Delegate that takes and StringBuilder and initial size and returns a result.

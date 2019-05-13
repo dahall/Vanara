@@ -957,6 +957,9 @@ Native Method | Native DLL | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[BIND_OPTS_V](http://msdn2.microsoft.com/en-us/library/764f09c9-ff20-4ae2-b94f-4b0a1e117e49) | objidl.h | Vanara.PInvoke.Ole32+BIND_OPTS_V  
+[BIND_OPTS2](http://msdn2.microsoft.com/en-us/library/fb2aa8c1-dddc-480e-b544-61a1074125ef) | objidl.h | Vanara.PInvoke.Ole32+BIND_OPTS2  
+[BIND_OPTS3](http://msdn2.microsoft.com/en-us/library/7e668313-229a-4d04-b8a2-d5072c87a5b5) | objidl.h | Vanara.PInvoke.Ole32+BIND_OPTS3  
 [BLOB](https://www.google.com/search?num=5&q=BLOB+site%3Amicrosoft.com) |  | Vanara.PInvoke.Ole32+BLOB  
 [CLIPDATA](https://www.google.com/search?num=5&q=CLIPDATA+site%3Amicrosoft.com) |  | Vanara.PInvoke.Ole32+CLIPDATA  
 [CO_MTA_USAGE_COOKIE](https://www.google.com/search?num=5&q=CO_MTA_USAGE_COOKIE+site%3Amicrosoft.com) |  | Vanara.PInvoke.Ole32+CO_MTA_USAGE_COOKIE  
@@ -985,6 +988,7 @@ Native Interface | Native DLL | Header | Managed Interface
 [IActivationFilter](https://www.google.com/search?num=5&q=IActivationFilter+site%3Amicrosoft.com) |  | Vanara.PInvoke.Ole32+IActivationFilter  
 [IAgileObject](http://msdn2.microsoft.com/en-us/library/787A22DE-AEAB-4570-BB97-C49D656E5D40) | objidl.h | Vanara.PInvoke.Ole32+IAgileObject  
 [IAgileReference](http://msdn2.microsoft.com/en-us/library/51787A45-BCDE-4028-A338-1C16F2DE79AD) | objidl.h | Vanara.PInvoke.Ole32+IAgileReference  
+[IBindCtxV](http://msdn2.microsoft.com/en-us/library/e4c8abb5-0c89-44dd-8d95-efbfcc999b46) | objidl.h | Vanara.PInvoke.Ole32+IBindCtxV  
 [IClassFactory](http://msdn2.microsoft.com/en-us/library/f624f833-2b69-43bc-92cd-c4ecbe6051c5) | unknwnbase.h | Vanara.PInvoke.Ole32+IClassFactory  
 [IClassFactory2](http://msdn2.microsoft.com/en-us/library/c49c7612-3b1f-4535-baf3-8458b3f34f95) | ocidl.h | Vanara.PInvoke.Ole32+IClassFactory2  
 [IContext](http://msdn2.microsoft.com/en-us/library/89c41d9c-186c-4927-990d-92aa501f7d35) | objidl.h | Vanara.PInvoke.Ole32+IContext  

@@ -6,6 +6,9 @@ BitHelper | Static methods to help with bit manipulation.
 ByteSizeFormatter | A custom formatter for byte sizes (things like files, network bandwidth, etc.) that will automatically determine the best abbreviation.
 ComConnectionPoint | Helper class to create an advised COM sink. When this class is constructed, the source is queried for an `IConnectionPointContainer` reference.
 ComReleaser<T> | A safe variable to hold an instance of a COM class that automatically calls `Marshal.ReleaseComObject(System.Object)` on disposal.
+ComReleaserFactory | Factory for creating <see cref="T:Vanara.InteropServices.ComReleaser`1" /> objects.
+ComStream | Implements a .NET stream over a COM IStream instance.
+ComTypeExtensions | Extensions for types in System.Runtime.InteropServices.ComTypes.
 CorrespondingTypeAttribute | Attribute for enum values that provides information about corresponding types and related actions. Useful for Get/Set methods that use an enumeration value to determine the type to get or set.
 CoTaskMemoryMethods | Unmanaged memory methods for COM.
 EnumerableEqualityComparer<T> | Checks the linear equality of two enumerated lists. For lists to be equal, they must have the same number of elements and each index must hold the same value in each list.

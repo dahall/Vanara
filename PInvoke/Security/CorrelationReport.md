@@ -1,4 +1,4 @@
-## Correlation report for advapi32.dll, secur32.dll, authz.dll  
+## Correlation report for advapi32.dll, secur32.dll, authz.dll, sspicli.dll, schannel.dll  
 ### Methods (74% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
@@ -267,7 +267,7 @@ Native Method | Native DLL | Header | Managed Method
 [LockServiceDatabase](https://www.google.com/search?num=5&q=LockServiceDatabase+site%3Amicrosoft.com) | advapi32.dll |  |   
 [LogonUser](http://msdn2.microsoft.com/en-us/library/aa378184) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.LogonUser  
 [LogonUserEx](http://msdn2.microsoft.com/en-us/library/aa378189) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.LogonUserEx  
-[LogonUserExExW](https://www.google.com/search?num=5&q=LogonUserExExW+site%3Amicrosoft.com) | advapi32.dll |  |   
+[LogonUserExExW](http://msdn2.microsoft.com/en-us/library/d90db4c6-a711-4519-8b91-5069cee07738) | advapi32.dll |  | Vanara.PInvoke.AdvApi32.LogonUserExExW  
 [LookupAccountName](http://msdn2.microsoft.com/en-us/library/aa379159) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.LookupAccountName  
 [LookupAccountSid](http://msdn2.microsoft.com/en-us/library/aa379166) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.LookupAccountSid  
 [LookupPrivilegeDisplayName](http://msdn2.microsoft.com/en-us/library/1fbb26b6-615e-4883-9f4b-3a1d05d9feaa) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.LookupPrivilegeDisplayName  
@@ -290,7 +290,7 @@ Native Method | Native DLL | Header | Managed Method
 [LsaFreeMemory](http://msdn2.microsoft.com/en-us/library/6eb3d18f-c54c-4e51-8a4b-b7a3f930cfa9) | advapi32.dll | ntsecapi.h | Vanara.PInvoke.AdvApi32.LsaFreeMemory  
 [LsaFreeReturnBuffer](http://msdn2.microsoft.com/en-us/library/e814ed68-07e7-4936-ba96-5411086f43f6) | secur32.dll | ntsecapi.h | Vanara.PInvoke.Secur32.LsaFreeReturnBuffer  
 [LsaGetAppliedCAPIDs](http://msdn2.microsoft.com/en-us/library/hh846251) | advapi32.dll | ntlsa.h | Vanara.PInvoke.AdvApi32.LsaGetAppliedCAPIDs  
-[LsaGetLogonSessionData](http://msdn2.microsoft.com/en-us/library/b1478a7a-f508-4b98-8c7b-adeb2f07bb86) | secur32.dll | ntsecapi.h | Vanara.PInvoke.Secur32.LsaGetLogonSessionData  
+[LsaGetLogonSessionData](http://msdn2.microsoft.com/en-us/library/b1478a7a-f508-4b98-8c7b-adeb2f07bb86) | sspicli.dll | ntsecapi.h | Vanara.PInvoke.Secur32.LsaGetLogonSessionData  
 [LsaGetSystemAccessAccount](https://www.google.com/search?num=5&q=LsaGetSystemAccessAccount+site%3Amicrosoft.com) | advapi32.dll | ntlsa.h | Vanara.PInvoke.AdvApi32.LsaGetSystemAccessAccount  
 [LsaLogonUser](http://msdn2.microsoft.com/en-us/library/75968d53-5af2-4d77-9486-26403b73c954) | secur32.dll | ntsecapi.h | Vanara.PInvoke.Secur32.LsaLogonUser  
 [LsaLookupAuthenticationPackage](http://msdn2.microsoft.com/en-us/library/aa378297) | secur32.dll | Ntsecapi.h | Vanara.PInvoke.Secur32.LsaLookupAuthenticationPackage  
@@ -372,9 +372,9 @@ Native Method | Native DLL | Header | Managed Method
 [ProcessTrace](https://www.google.com/search?num=5&q=ProcessTrace+site%3Amicrosoft.com) | advapi32.dll |  |   
 [QueryAllTraces](https://www.google.com/search?num=5&q=QueryAllTracesA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [QueryContextAttributes](http://msdn2.microsoft.com/en-us/library/4956c4ab-b71e-4960-b750-f3a79b87baac) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.QueryContextAttributes  
-[QueryContextAttributesExA](http://msdn2.microsoft.com/en-us/library/FD91EE99-F94E-44CE-9331-933D0CAA5F75) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.QueryContextAttributesEx  
-[QueryContextAttributesExW](http://msdn2.microsoft.com/en-us/library/FD91EE99-F94E-44CE-9331-933D0CAA5F75) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.QueryContextAttributesEx  
+[QueryContextAttributesEx](http://msdn2.microsoft.com/en-us/library/FD91EE99-F94E-44CE-9331-933D0CAA5F75) | sspicli.dll | sspi.h | Vanara.PInvoke.Secur32.QueryContextAttributesEx  
 [QueryCredentialsAttributes](http://msdn2.microsoft.com/en-us/library/a8ba6f73-8469-431b-b185-183b45b2c533) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.QueryCredentialsAttributes  
+[QueryCredentialsAttributesEx](https://www.google.com/search?num=5&q=QueryCredentialsAttributesExA+site%3Amicrosoft.com) | sspicli.dll | sspi.h | Vanara.PInvoke.Secur32.QueryCredentialsAttributesEx  
 [QueryRecoveryAgentsOnEncryptedFile](https://www.google.com/search?num=5&q=QueryRecoveryAgentsOnEncryptedFile+site%3Amicrosoft.com) | advapi32.dll |  |   
 [QuerySecurityAccessMask](http://msdn2.microsoft.com/en-us/library/70379640-28b7-4503-9ba8-789786078d4a) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.QuerySecurityAccessMask  
 [QuerySecurityContextToken](http://msdn2.microsoft.com/en-us/library/5dc23608-9ce3-4fee-8161-2e409cef4063) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.QuerySecurityContextToken  
@@ -460,11 +460,12 @@ Native Method | Native DLL | Header | Managed Method
 [SaslAcceptSecurityContext](http://msdn2.microsoft.com/en-us/library/39ef6522-ff70-4066-a34d-f2af2174f6ee) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SaslAcceptSecurityContext  
 [SaslEnumerateProfiles](http://msdn2.microsoft.com/en-us/library/0c11e0e3-2538-4703-bc32-31c73d65a498) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SaslEnumerateProfiles  
 [SaslGetContextOption](http://msdn2.microsoft.com/en-us/library/c9c424d3-07e6-4ed0-9189-c932af0475d9) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SaslGetContextOption  
-[SaslGetProfilePackageWA](http://msdn2.microsoft.com/en-us/library/b7cecc5f-775f-40ba-abfc-27d51b3f5395) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SaslGetProfilePackageW  
-[SaslGetProfilePackageWW](http://msdn2.microsoft.com/en-us/library/b7cecc5f-775f-40ba-abfc-27d51b3f5395) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SaslGetProfilePackageW  
+[SaslGetProfilePackageA](http://msdn2.microsoft.com/en-us/library/b7cecc5f-775f-40ba-abfc-27d51b3f5395) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SaslGetProfilePackage  
+[SaslGetProfilePackageW](http://msdn2.microsoft.com/en-us/library/b7cecc5f-775f-40ba-abfc-27d51b3f5395) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SaslGetProfilePackage  
 [SaslIdentifyPackage](http://msdn2.microsoft.com/en-us/library/df6f4749-8f28-4ee5-8165-f7aeb3bea7ab) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SaslIdentifyPackage  
 [SaslInitializeSecurityContext](http://msdn2.microsoft.com/en-us/library/9cc661b7-f1b0-4fb1-b799-5b318d87fd4d) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SaslInitializeSecurityContext  
 [SaslSetContextOption](http://msdn2.microsoft.com/en-us/library/3c3b1209-b0de-4100-8dfe-53ea314b790b) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SaslSetContextOption  
+[SealMessage](https://www.google.com/search?num=5&q=SealMessage+site%3Amicrosoft.com) | schannel.dll |  |   
 [SetAclInformation](http://msdn2.microsoft.com/en-us/library/bb4dd7f9-2f15-4a27-89c9-1675f4fb8d92) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.SetAclInformation  
 [SetContextAttributes](http://msdn2.microsoft.com/en-us/library/e3246c3e-3e8c-49fe-99d8-dfff1a10ab83) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SetContextAttributes  
 [SetCredentialsAttributes](http://msdn2.microsoft.com/en-us/library/419fb4f0-3dd1-4473-aeb2-8024355e0c1c) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SetCredentialsAttributes  
@@ -489,14 +490,18 @@ Native Method | Native DLL | Header | Managed Method
 [SetTokenInformation](http://msdn2.microsoft.com/en-us/library/cdb8af74-540d-4059-ac64-6243f6aabaa6) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.SetTokenInformation  
 [SetTraceCallback](https://www.google.com/search?num=5&q=SetTraceCallback+site%3Amicrosoft.com) | advapi32.dll |  |   
 [SetUserFileEncryptionKey](https://www.google.com/search?num=5&q=SetUserFileEncryptionKey+site%3Amicrosoft.com) | advapi32.dll |  |   
+[SslCrackCertificate](http://msdn2.microsoft.com/en-us/library/e5ffeebb-0b09-4f0a-b2dc-75fb2a3af7ed) | schannel.dll | schannel.h | Vanara.PInvoke.Schannel.SslCrackCertificate  
+[SslEmptyCache](http://msdn2.microsoft.com/en-us/library/c914d4e3-657e-45ef-ace8-2cea900a8a76) | schannel.dll | schannel.h | Vanara.PInvoke.Schannel.SslEmptyCache  
+[SslFreeCertificate](http://msdn2.microsoft.com/en-us/library/bf643ece-fe79-4f6e-a216-108fce6757a4) | schannel.dll | schannel.h | Vanara.PInvoke.Schannel.SslFreeCertificate  
+[SslGetServerIdentity](http://msdn2.microsoft.com/en-us/library/5FA7A0F5-187F-4CE6-AD62-44B71A40568D) | schannel.dll | schannel.h | Vanara.PInvoke.Schannel.SslGetServerIdentity  
 [SspiCompareAuthIdentities](http://msdn2.microsoft.com/en-us/library/d2c4f363-3d86-48f0-bae1-4f9240d68bab) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiCompareAuthIdentities  
 [SspiCopyAuthIdentity](http://msdn2.microsoft.com/en-us/library/e53807bf-b5a1-4479-a73b-dd85c5da173e) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiCopyAuthIdentity  
 [SspiDecryptAuthIdentity](http://msdn2.microsoft.com/en-us/library/aef0206c-c376-4877-b1a6-5e86d2e35dea) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiDecryptAuthIdentity  
-[SspiDecryptAuthIdentityEx](http://msdn2.microsoft.com/en-us/library/86598BAA-0E87-46A9-AA1A-BF04BF0CDAFA) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiDecryptAuthIdentityEx  
+[SspiDecryptAuthIdentityEx](http://msdn2.microsoft.com/en-us/library/86598BAA-0E87-46A9-AA1A-BF04BF0CDAFA) | sspicli.dll | sspi.h | Vanara.PInvoke.Secur32.SspiDecryptAuthIdentityEx  
 [SspiEncodeAuthIdentityAsStrings](http://msdn2.microsoft.com/en-us/library/0610a7b8-67e9-4c01-893f-da579eeea2f8) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiEncodeAuthIdentityAsStrings  
 [SspiEncodeStringsAsAuthIdentity](http://msdn2.microsoft.com/en-us/library/0aea2f00-fcf1-4c4e-a22f-a669dd4fb294) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiEncodeStringsAsAuthIdentity  
 [SspiEncryptAuthIdentity](http://msdn2.microsoft.com/en-us/library/4460f7ec-35fd-4ad1-8c20-dda9f4d3477a) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiEncryptAuthIdentity  
-[SspiEncryptAuthIdentityEx](http://msdn2.microsoft.com/en-us/library/9290BEF8-24C9-47F0-B258-56ED7D67620B) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiEncryptAuthIdentityEx  
+[SspiEncryptAuthIdentityEx](http://msdn2.microsoft.com/en-us/library/9290BEF8-24C9-47F0-B258-56ED7D67620B) | sspicli.dll | sspi.h | Vanara.PInvoke.Secur32.SspiEncryptAuthIdentityEx  
 [SspiExcludePackage](http://msdn2.microsoft.com/en-us/library/2f85bb13-b72a-4c26-a328-9424a33a63b8) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiExcludePackage  
 [SspiFreeAuthIdentity](http://msdn2.microsoft.com/en-us/library/6199f66e-7adb-4bb9-8e77-a735e31dd5f6) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiFreeAuthIdentity  
 [SspiGetTargetHostName](http://msdn2.microsoft.com/en-us/library/84570dfc-1890-4b82-b411-1f9eaa75537b) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiGetTargetHostName  
@@ -524,6 +529,7 @@ Native Method | Native DLL | Header | Managed Method
 [UninstallApplication](https://www.google.com/search?num=5&q=UninstallApplication+site%3Amicrosoft.com) | advapi32.dll |  |   
 [UnlockServiceDatabase](https://www.google.com/search?num=5&q=UnlockServiceDatabase+site%3Amicrosoft.com) | advapi32.dll |  |   
 [UnregisterTraceGuids](https://www.google.com/search?num=5&q=UnregisterTraceGuids+site%3Amicrosoft.com) | advapi32.dll |  |   
+[UnsealMessage](https://www.google.com/search?num=5&q=UnsealMessage+site%3Amicrosoft.com) | schannel.dll |  |   
 [UpdateTrace](https://www.google.com/search?num=5&q=UpdateTraceA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [VerifySignature](http://msdn2.microsoft.com/en-us/library/bebeef92-1d6e-4879-846f-12d706db0653) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.VerifySignature  
 [WriteEncryptedFileRaw](https://www.google.com/search?num=5&q=WriteEncryptedFileRaw+site%3Amicrosoft.com) | advapi32.dll |  |   
@@ -567,8 +573,10 @@ Native Structure | Header | Managed Structure
 [CLAIM_SECURITY_ATTRIBUTES_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448481) | Winnt.h | Vanara.PInvoke.AdvApi32+CLAIM_SECURITY_ATTRIBUTES_INFORMATION  
 [CREDENTIAL](https://www.google.com/search?num=5&q=CREDENTIAL+site%3Amicrosoft.com) | wincred.h | Vanara.PInvoke.AdvApi32+CREDENTIAL  
 [CREDENTIAL_TARGET_INFORMATION](http://msdn2.microsoft.com/en-us/library/92180f2c-ef7c-4481-9b6f-19234c114afb) | wincred.h | Vanara.PInvoke.AdvApi32+CREDENTIAL_TARGET_INFORMATION  
+[CredHandle](https://www.google.com/search?num=5&q=CredHandle+site%3Amicrosoft.com) | sspi.h | Vanara.PInvoke.Secur32+CredHandle  
 [CREDSSP_CRED](http://msdn2.microsoft.com/en-us/library/b22bd22c-e6e1-4817-b5cf-ab49f574e75f) | credssp.h | Vanara.PInvoke.Secur32+CREDSSP_CRED  
 [CREDSSP_CRED_EX](https://www.google.com/search?num=5&q=CREDSSP_CRED_EX+site%3Amicrosoft.com) | credssp.h | Vanara.PInvoke.Secur32+CREDSSP_CRED_EX  
+[CtxtHandle](https://www.google.com/search?num=5&q=CtxtHandle+site%3Amicrosoft.com) | sspi.h | Vanara.PInvoke.Secur32+CtxtHandle  
 [CYPHER_BLOCK](http://msdn2.microsoft.com/en-us/library/eb0e38ed-8d12-4df2-be58-7ac18447121f) | mschapp.h | Vanara.PInvoke.AdvApi32+CYPHER_BLOCK  
 [DOMAIN_PASSWORD_INFORMATION](http://msdn2.microsoft.com/en-us/library/7dceaf70-d8de-47c0-b940-f0d6a0cca101) | ntsecapi.h | Vanara.PInvoke.AdvApi32+DOMAIN_PASSWORD_INFORMATION  
 [ENCRYPTED_LM_OWF_PASSWORD](http://msdn2.microsoft.com/en-us/library/83498d3f-0ac5-435c-804e-a4baa1ae855d) | mschapp.h | Vanara.PInvoke.AdvApi32+ENCRYPTED_LM_OWF_PASSWORD  
@@ -582,6 +590,12 @@ Native Structure | Header | Managed Structure
 [HPERFPROV](https://www.google.com/search?num=5&q=HPERFPROV+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+HPERFPROV  
 [HPERFQUERY](https://www.google.com/search?num=5&q=HPERFQUERY+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+HPERFQUERY  
 [INHERITED_FROM](http://msdn2.microsoft.com/en-us/library/aa378845) | AccCtrl.h | Vanara.PInvoke.AdvApi32+INHERITED_FROM  
+[KERB_CRYPTO_KEY](http://msdn2.microsoft.com/en-us/library/ac7ea61c-b1e0-4dc0-931e-81bb6fd74888) | ntsecapi.h | Vanara.PInvoke.Secur32+KERB_CRYPTO_KEY  
+[KERB_EXTERNAL_NAME](http://msdn2.microsoft.com/en-us/library/8ed37546-6443-4010-a078-4359dd1c2861) | ntsecapi.h | Vanara.PInvoke.Secur32+KERB_EXTERNAL_NAME  
+[KERB_EXTERNAL_TICKET](http://msdn2.microsoft.com/en-us/library/742e2795-ec74-4856-a680-7a1c233a2934) | ntsecapi.h | Vanara.PInvoke.Secur32+KERB_EXTERNAL_TICKET  
+[KERB_INTERACTIVE_LOGON](http://msdn2.microsoft.com/en-us/library/96aec0cc-b3e1-4b4b-aa0e-ecf05b9fabbe) | ntsecapi.h | Vanara.PInvoke.Secur32+KERB_INTERACTIVE_LOGON  
+[KERB_RETRIEVE_TKT_REQUEST](http://msdn2.microsoft.com/en-us/library/3b088c94-810b-44c7-887a-58e8dbd13603) | ntsecapi.h | Vanara.PInvoke.Secur32+KERB_RETRIEVE_TKT_REQUEST  
+[KERB_RETRIEVE_TKT_RESPONSE](http://msdn2.microsoft.com/en-us/library/682d4076-dc65-4291-8a82-981f207ae432) | ntsecapi.h | Vanara.PInvoke.Secur32+KERB_RETRIEVE_TKT_RESPONSE  
 [LM_OWF_PASSWORD](http://msdn2.microsoft.com/en-us/library/db155f34-fa57-4449-9319-d46561fd18c0) | mschapp.h | Vanara.PInvoke.AdvApi32+LM_OWF_PASSWORD  
 [LSA_AUTH_INFORMATION](http://msdn2.microsoft.com/en-us/library/61c17831-4a82-4766-b5af-e97a6d467462) | ntsecapi.h | Vanara.PInvoke.AdvApi32+LSA_AUTH_INFORMATION  
 [LSA_ENUMERATION_HANDLE](https://www.google.com/search?num=5&q=LSA_ENUMERATION_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+LSA_ENUMERATION_HANDLE  
@@ -592,6 +606,7 @@ Native Structure | Header | Managed Structure
 [LSA_FOREST_TRUST_DOMAIN_INFO](http://msdn2.microsoft.com/en-us/library/c0e06735-ca10-4bee-a45b-6db5b6666e31) | ntsecapi.h | Vanara.PInvoke.AdvApi32+LSA_FOREST_TRUST_DOMAIN_INFO  
 [LSA_FOREST_TRUST_INFORMATION](http://msdn2.microsoft.com/en-us/library/9e456462-59a9-4f18-ba47-92fc2350889b) | ntsecapi.h | Vanara.PInvoke.AdvApi32+LSA_FOREST_TRUST_INFORMATION  
 [LSA_HANDLE](https://www.google.com/search?num=5&q=LSA_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+LSA_HANDLE  
+[LSA_LAST_INTER_LOGON_INFO](http://msdn2.microsoft.com/en-us/library/FB935FED-571F-4298-8F83-0F805408179D) | ntsecapi.h | Vanara.PInvoke.Secur32+LSA_LAST_INTER_LOGON_INFO  
 [LSA_OBJECT_ATTRIBUTES](http://msdn2.microsoft.com/en-us/library/ad05cb52-8e58-46a9-b3e8-0c9c2a24a997) | lsalookup.h | Vanara.PInvoke.AdvApi32+LSA_OBJECT_ATTRIBUTES  
 [LSA_REFERENCED_DOMAIN_LIST](http://msdn2.microsoft.com/en-us/library/ms721834) | Ntsecapi.h | Vanara.PInvoke.AdvApi32+LSA_REFERENCED_DOMAIN_LIST  
 [LSA_STRING](http://msdn2.microsoft.com/en-us/library/aa378522) | LsaLookup.h | Vanara.PInvoke.AdvApi32+LSA_STRING  
@@ -603,6 +618,7 @@ Native Structure | Header | Managed Structure
 [LsaConnectionHandle](https://www.google.com/search?num=5&q=LsaConnectionHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.Secur32+LsaConnectionHandle  
 [LUID](https://www.google.com/search?num=5&q=LUID+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+LUID  
 [LUID_AND_ATTRIBUTES](https://www.google.com/search?num=5&q=LUID_AND_ATTRIBUTES+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+LUID_AND_ATTRIBUTES  
+[MSV1_0_INTERACTIVE_LOGON](http://msdn2.microsoft.com/en-us/library/f9b9a966-54b9-4f89-98cc-d92e3f74571d) | ntsecapi.h | Vanara.PInvoke.Secur32+MSV1_0_INTERACTIVE_LOGON  
 [OBJECTS_AND_NAME](http://msdn2.microsoft.com/en-us/library/ad91a302-f693-44e9-9655-ec4488ff78c4) | accctrl.h | Vanara.PInvoke.AdvApi32+OBJECTS_AND_NAME  
 [OBJECTS_AND_SID](http://msdn2.microsoft.com/en-us/library/77ba8a3c-01e5-4a3e-835f-c7b9ef60035a) | accctrl.h | Vanara.PInvoke.AdvApi32+OBJECTS_AND_SID  
 [PERF_COUNTER_DATA](http://msdn2.microsoft.com/en-us/library/19D65E98-182E-45CC-946F-F1924CB78029) | perflib.h | Vanara.PInvoke.AdvApi32+PERF_COUNTER_DATA  
@@ -632,11 +648,55 @@ Native Structure | Header | Managed Structure
 [SAMPR_ENCRYPTED_USER_PASSWORD](http://msdn2.microsoft.com/en-us/library/10137c59-db99-4d70-9716-6f05369084a0) | mschapp.h | Vanara.PInvoke.AdvApi32+SAMPR_ENCRYPTED_USER_PASSWORD  
 [SC_ACTION](http://msdn2.microsoft.com/en-us/library/e2c355a6-affe-46bf-a3e6-f8c420422d46) | winsvc.h | Vanara.PInvoke.AdvApi32+SC_ACTION  
 [SC_HANDLE](https://www.google.com/search?num=5&q=SC_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+SC_HANDLE  
+[SEC_WINNT_AUTH_IDENTITY](http://msdn2.microsoft.com/en-us/library/a9c9471b-2134-4173-af86-18b277627d2a) | sspi.h | Vanara.PInvoke.Secur32+SEC_WINNT_AUTH_IDENTITY  
+[SEC_WINNT_AUTH_IDENTITY_EX](http://msdn2.microsoft.com/en-us/library/6b95bce8-5613-4403-9bda-16262596bb1b) | sspi.h | Vanara.PInvoke.Secur32+SEC_WINNT_AUTH_IDENTITY_EX  
+[SEC_WINNT_AUTH_IDENTITY_EX2](http://msdn2.microsoft.com/en-us/library/a6083d76-1774-428c-85ca-fea817827d6a) | sspi.h | Vanara.PInvoke.Secur32+SEC_WINNT_AUTH_IDENTITY_EX2  
 [SecBuffer](https://www.google.com/search?num=5&q=SecBuffer+site%3Amicrosoft.com) |  | Vanara.PInvoke.Secur32+SecBuffer  
 [SecBufferDesc](http://msdn2.microsoft.com/en-us/library/fc6ef09c-3ba9-4bcb-a3c2-07422af8eaa9) | sspi.h | Vanara.PInvoke.Secur32+SecBufferDesc  
-[SecHandle](https://www.google.com/search?num=5&q=SecHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.Secur32+SecHandle  
+[SecPkgContext_AccessToken](http://msdn2.microsoft.com/en-us/library/4dc11cbd-7f28-4cb9-aaea-6e5a89ac91f0) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_AccessToken  
+[SecPkgContext_Authority](http://msdn2.microsoft.com/en-us/library/619bf16b-c439-48e7-b013-3622e2f3bbc4) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_Authority  
+[SecPkgContext_Bindings](http://msdn2.microsoft.com/en-us/library/6823cc31-acd3-4d67-92c6-65ff4d1c6aed) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_Bindings  
+[SecPkgContext_CipherInfo](http://msdn2.microsoft.com/en-us/library/204D3520-76B6-42C0-83A4-45769F66364A) | schannel.h | Vanara.PInvoke.Schannel+SecPkgContext_CipherInfo  
+[SecPkgContext_ClientCreds](http://msdn2.microsoft.com/en-us/library/85ab1bf7-a4d9-4b0e-b1e3-cb938c3183d3) | credssp.h | Vanara.PInvoke.Secur32+SecPkgContext_ClientCreds  
+[SecPkgContext_ClientSpecifiedTarget](http://msdn2.microsoft.com/en-us/library/67536f69-a1fc-4f26-84dc-872635bafa3b) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_ClientSpecifiedTarget  
+[SecPkgContext_ConnectionInfo](http://msdn2.microsoft.com/en-us/library/5380c03b-d2c5-4a0d-96a1-c39305b9c9ac) | schannel.h | Vanara.PInvoke.Schannel+SecPkgContext_ConnectionInfo  
+[SecPkgContext_CredInfo](http://msdn2.microsoft.com/en-us/library/5c2c6d01-5de3-4dd1-9fa2-cce9eadd6902) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_CredInfo  
+[SecPkgContext_DceInfo](http://msdn2.microsoft.com/en-us/library/490688d0-efdd-4a40-88b9-eb53ff592d2a) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_DceInfo  
+[SecPkgContext_EapKeyBlock](http://msdn2.microsoft.com/en-us/library/c1b1f1d1-20f9-4a16-a279-b9cc95ff4e64) | schannel.h | Vanara.PInvoke.Schannel+SecPkgContext_EapKeyBlock  
+[SecPkgContext_EapPrfInfo](http://msdn2.microsoft.com/en-us/library/2772b83b-d1d1-4a8e-83d5-1f3dec3d66ac) | schannel.h | Vanara.PInvoke.Schannel+SecPkgContext_EapPrfInfo  
+[SecPkgContext_EarlyStart](http://msdn2.microsoft.com/en-us/library/5DD5D0B9-CFFF-4743-94EC-A569D265D31F) | schannel.h | Vanara.PInvoke.Schannel+SecPkgContext_EarlyStart  
+[SecPkgContext_Flags](http://msdn2.microsoft.com/en-us/library/0be0e945-4048-4748-a9fd-15d08fb7ff3e) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_Flags  
+[SecPkgContext_IssuerListInfoEx](http://msdn2.microsoft.com/en-us/library/cf1ccd40-36bf-4597-b34f-d26cef63d800) | schannel.h | Vanara.PInvoke.Schannel+SecPkgContext_IssuerListInfoEx  
+[SecPkgContext_KeyInfo](http://msdn2.microsoft.com/en-us/library/ec146329-6789-460c-ae62-629a1765a4c1) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_KeyInfo  
+[SecPkgContext_KeyingMaterial](http://msdn2.microsoft.com/en-us/library/2F8C4316-FC03-473C-8A97-83665B3271AC) | schannel.h | Vanara.PInvoke.Schannel+SecPkgContext_KeyingMaterial  
+[SecPkgContext_KeyingMaterialInfo](http://msdn2.microsoft.com/en-us/library/2F8C4316-FC03-473C-8A97-83665B3271AC) | schannel.h | Vanara.PInvoke.Schannel+SecPkgContext_KeyingMaterialInfo  
+[SecPkgContext_LastClientTokenStatus](http://msdn2.microsoft.com/en-us/library/ccb2bb4e-3c65-4305-95ad-b9111f3936b5) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_LastClientTokenStatus  
+[SecPkgContext_Lifespan](http://msdn2.microsoft.com/en-us/library/7ef45795-f6af-4dac-a498-c6f8c915a168) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_Lifespan  
+[SecPkgContext_Names](http://msdn2.microsoft.com/en-us/library/9df0bf7c-ad5f-4cb8-8934-76062789735f) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_Names  
+[SecPkgContext_NativeNames](http://msdn2.microsoft.com/en-us/library/f935093f-5661-4ced-94f1-c4b21c3b9f69) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_NativeNames  
+[SecPkgContext_NegoStatus](http://msdn2.microsoft.com/en-us/library/09201338-4743-44a2-b84f-35b26116976d) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_NegoStatus  
+[SecPkgContext_NegotiationInfo](http://msdn2.microsoft.com/en-us/library/3af724b8-fbe5-4a75-b128-9efe65381f2f) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_NegotiationInfo  
+[SecPkgContext_PackageInfo](http://msdn2.microsoft.com/en-us/library/94c21f22-d974-4ae5-beef-d4567e6ea7e1) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_PackageInfo  
+[SecPkgContext_PasswordExpiry](http://msdn2.microsoft.com/en-us/library/f45dde88-1520-4e65-8fae-8407dfaa0850) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_PasswordExpiry  
+[SecPkgContext_ProtoInfo](http://msdn2.microsoft.com/en-us/library/c10eb1fc-b957-4853-86c1-070749488bb9) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_ProtoInfo  
+[SecPkgContext_SessionAppData](http://msdn2.microsoft.com/en-us/library/7bda791a-dd60-4651-bfe8-13333017d6a3) | schannel.h | Vanara.PInvoke.Schannel+SecPkgContext_SessionAppData  
+[SecPkgContext_SessionInfo](http://msdn2.microsoft.com/en-us/library/d7725803-1f4c-4d5d-8c53-81ec24d5a9d8) | schannel.h | Vanara.PInvoke.Schannel+SecPkgContext_SessionInfo  
+[SecPkgContext_SessionKey](http://msdn2.microsoft.com/en-us/library/88cf437e-3be0-4f12-9058-ad078deed6a1) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_SessionKey  
+[SecPkgContext_Sizes](http://msdn2.microsoft.com/en-us/library/46b6a155-8855-4aa0-a513-aa5b3760fcd4) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_Sizes  
+[SecPkgContext_StreamSizes](http://msdn2.microsoft.com/en-us/library/75e5fc96-56cc-4713-a34f-fca687798ad6) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_StreamSizes  
+[SecPkgContext_SubjectAttributes](http://msdn2.microsoft.com/en-us/library/548E972F-EB94-4BBD-94F2-FA38184D179A) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_SubjectAttributes  
+[SecPkgContext_SupportedSignatures](http://msdn2.microsoft.com/en-us/library/b4b58175-1367-4c91-8680-523a4b125c76) | schannel.h | Vanara.PInvoke.Schannel+SecPkgContext_SupportedSignatures  
+[SecPkgContext_TargetInformation](http://msdn2.microsoft.com/en-us/library/8a5a6bd6-8678-4544-a631-5ee4347bc685) | sspi.h | Vanara.PInvoke.Secur32+SecPkgContext_TargetInformation  
+[SecPkgCred_CipherStrengths](http://msdn2.microsoft.com/en-us/library/aa380101) | Schannel.h | Vanara.PInvoke.Schannel+SecPkgCred_CipherStrengths  
+[SecPkgCred_SupportedAlgs](http://msdn2.microsoft.com/en-us/library/aa380102) | Schannel.h | Vanara.PInvoke.Schannel+SecPkgCred_SupportedAlgs  
+[SecPkgCred_SupportedProtocols](http://msdn2.microsoft.com/en-us/library/aa380103) | Schannel.h | Vanara.PInvoke.Schannel+SecPkgCred_SupportedProtocols  
+[SecPkgCredentials_Cert](http://msdn2.microsoft.com/en-us/library/9EEE6E98-D45C-4929-9C9C-F344972D186F) | sspi.h | Vanara.PInvoke.Secur32+SecPkgCredentials_Cert  
+[SecPkgCredentials_KdcProxySettingsW](http://msdn2.microsoft.com/en-us/library/42BC75B8-6392-4FD4-95BC-266B3AFDDC62) | sspi.h | Vanara.PInvoke.Secur32+SecPkgCredentials_KdcProxySettingsW  
+[SecPkgCredentials_Names](http://msdn2.microsoft.com/en-us/library/38123a10-72a4-46eb-974b-3c01142dfc74) | sspi.h | Vanara.PInvoke.Secur32+SecPkgCredentials_Names  
+[SecPkgCredentials_SSIProvider](http://msdn2.microsoft.com/en-us/library/0C6D6217-3A97-40B5-A7FB-B9D49C5FBC7C) | sspi.h | Vanara.PInvoke.Secur32+SecPkgCredentials_SSIProvider  
 [SecPkgInfo](http://msdn2.microsoft.com/en-us/library/d0bff3d8-63f1-4a4e-851f-177040af6bd2) | sspi.h | Vanara.PInvoke.Secur32+SecPkgInfo  
 [SECURITY_DESCRIPTOR](http://msdn2.microsoft.com/en-us/library/aa379561) | Winnt.h | Vanara.PInvoke.AdvApi32+SECURITY_DESCRIPTOR  
+[SECURITY_LOGON_SESSION_DATA](http://msdn2.microsoft.com/en-us/library/284ddb9a-fd08-4f38-b1d0-242596c114a8) | ntsecapi.h | Vanara.PInvoke.Secur32+SECURITY_LOGON_SESSION_DATA  
 [SECURITY_PACKAGE_OPTIONS](http://msdn2.microsoft.com/en-us/library/2e9f65ec-72a5-4d6f-aa63-f83369f0dd07) | sspi.h | Vanara.PInvoke.Secur32+SECURITY_PACKAGE_OPTIONS  
 [SecurityFunctionTable](http://msdn2.microsoft.com/en-us/library/6315e8d6-b40a-4dd6-b6a6-598a965f93dc) | sspi.h | Vanara.PInvoke.Secur32+SecurityFunctionTable  
 [SERVICE_CONTROL_STATUS_REASON_PARAMS](http://msdn2.microsoft.com/en-us/library/f7213cbb-255f-4ce3-93c9-5537256e078f) | winsvc.h | Vanara.PInvoke.AdvApi32+SERVICE_CONTROL_STATUS_REASON_PARAMS  
@@ -681,3 +741,4 @@ Native Structure | Header | Managed Structure
 [TRUSTEE](http://msdn2.microsoft.com/en-us/library/aa379636) | AccCtrl.h | Vanara.PInvoke.AdvApi32+TRUSTEE  
 [USERNAME_TARGET_CREDENTIAL_INFO](http://msdn2.microsoft.com/en-us/library/1cb56a85-fafd-4471-b0e9-660ac0dc0219) | wincred.h | Vanara.PInvoke.AdvApi32+USERNAME_TARGET_CREDENTIAL_INFO  
 [VALENT](http://msdn2.microsoft.com/en-us/library/7881eea8-e4e3-48cf-ba8f-b5c23910ae7d) | winreg.h | Vanara.PInvoke.AdvApi32+VALENT  
+[X509Certificate](http://msdn2.microsoft.com/en-us/library/5a337f78-e5de-4ea2-9c15-1056d9e9e38c) | schannel.h | Vanara.PInvoke.Schannel+X509Certificate  
