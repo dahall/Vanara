@@ -14,12 +14,12 @@ namespace Vanara.PInvoke.Tests
 			var hStdin = GetStdHandle(StdHandleType.STD_INPUT_HANDLE);
 			if (hStdin.IsInvalid) Win32Error.ThrowLastError();
 
-			if (!GetConsoleMode(hStdin, out var fewSaveOldMode))
+			if (!GetConsoleMode(hStdin, out CONSOLE_INPUT_MODE fewSaveOldMode))
 				Win32Error.ThrowLastError();
 
 			try
 			{
-				if (!SetConsoleMode(hStdin, CONSOLE_MODE.ENABLE_WINDOW_INPUT | CONSOLE_MODE.ENABLE_MOUSE_INPUT))
+				if (!SetConsoleMode(hStdin, CONSOLE_INPUT_MODE.ENABLE_WINDOW_INPUT | CONSOLE_INPUT_MODE.ENABLE_MOUSE_INPUT))
 					Win32Error.ThrowLastError();
 
 				var counter = 0;
