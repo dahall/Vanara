@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -310,6 +312,9 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint dwProcessId;
 
+			// This is used to ensure the union structure EXCEPTION_INFO falls at offset 12 in 32-bit and 16 on 64-bit
+			private IntPtr padding3264hack;
+
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
 			/// <para>
@@ -317,7 +322,7 @@ namespace Vanara.PInvoke
 			/// per-thread structure. These values are not necessarily small integers that can be used as table indices.
 			/// </para>
 			/// </summary>
-			public uint dwThreadId;
+			public uint dwThreadId { get => (uint)padding3264hack.ToInt32(); set => padding3264hack = (IntPtr)dwThreadId; }
 
 			/// <summary>
 			/// Any additional information relating to the debugging event. This union takes on the type and value appropriate to the type of
@@ -342,328 +347,340 @@ namespace Vanara.PInvoke
 				/// </summary>
 				[FieldOffset(0)]
 				public CREATE_THREAD_DEBUG_INFO CreateThread;
-
+			
 				/// <summary>
 				/// If the dwDebugEventCode is CREATE_PROCESS_DEBUG_EVENT (3), u.CreateProcessInfo specifies an CREATE_PROCESS_DEBUG_INFO structure.
 				/// </summary>
 				[FieldOffset(0)]
 				public CREATE_PROCESS_DEBUG_INFO CreateProcessInfo;
-
+			
 				/// <summary>
 				/// If the dwDebugEventCode is EXIT_THREAD_DEBUG_EVENT (4), u.ExitThread specifies an EXIT_THREAD_DEBUG_INFO structure.
 				/// </summary>
 				[FieldOffset(0)]
 				public EXIT_THREAD_DEBUG_INFO ExitThread;
-
+			
 				/// <summary>
 				/// If the dwDebugEventCode is EXIT_PROCESS_DEBUG_EVENT (5), u.ExitProcess specifies an EXIT_PROCESS_DEBUG_INFO structure.
 				/// </summary>
 				[FieldOffset(0)]
 				public EXIT_PROCESS_DEBUG_INFO ExitProcess;
-
+			
 				/// <summary>If the dwDebugEventCode is LOAD_DLL_DEBUG_EVENT (6), u.LoadDll specifies an LOAD_DLL_DEBUG_INFO structure.</summary>
 				[FieldOffset(0)]
 				public LOAD_DLL_DEBUG_INFO LoadDll;
-
+			
 				/// <summary>If the dwDebugEventCode is UNLOAD_DLL_DEBUG_EVENT (7), u.UnloadDll specifies an UNLOAD_DLL_DEBUG_INFO structure.</summary>
 				[FieldOffset(0)]
 				public UNLOAD_DLL_DEBUG_INFO UnloadDll;
-
+			
 				/// <summary>
 				/// If the dwDebugEventCode is OUTPUT_DEBUG_STRING_EVENT (8), u.DebugString specifies an OUTPUT_DEBUG_STRING_INFO structure.
 				/// </summary>
 				[FieldOffset(0)]
 				public OUTPUT_DEBUG_STRING_INFO DebugString;
-
+			
 				/// <summary>If the dwDebugEventCode is RIP_EVENT (9), u.RipInfo specifies an RIP_INFO structure.</summary>
 				[FieldOffset(0)]
 				public RIP_INFO RipInfo;
-
-				/// <summary>Contains exception information that can be used by a debugger.</summary>
-				// typedef struct _EXCEPTION_DEBUG_INFO { EXCEPTION_RECORD ExceptionRecord; DWORD dwFirstChance;} EXCEPTION_DEBUG_INFO,
-				// *LPEXCEPTION_DEBUG_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms679326(v=vs.85).aspx
-				[PInvokeData("WinBase.h", MSDNShortId = "ms679326")]
-				[StructLayout(LayoutKind.Sequential)]
-				public struct EXCEPTION_DEBUG_INFO
-				{
-					/// <summary>
-					/// An <c>EXCEPTION_RECORD</c> structure with information specific to the exception. This includes the exception code,
-					/// flags, address, a pointer to a related exception, extra parameters, and so on.
-					/// </summary>
-					public EXCEPTION_RECORD ExceptionRecord;
-
-					/// <summary>
-					/// A value that indicates whether the debugger has previously encountered the exception specified by the
-					/// <c>ExceptionRecord</c> member. If the <c>dwFirstChance</c> member is nonzero, this is the first time the debugger has
-					/// encountered the exception. Debuggers typically handle breakpoint and single-step exceptions when they are first
-					/// encountered. If this member is zero, the debugger has previously encountered the exception. This occurs only if,
-					/// during the search for structured exception handlers, either no handler was found or the exception was continued.
-					/// </summary>
-					public uint dwFirstChance;
-				}
-
-				/// <summary>Contains thread-creation information that can be used by a debugger.</summary>
-				// typedef struct _CREATE_THREAD_DEBUG_INFO { HANDLE hThread; LPVOID lpThreadLocalBase; LPTHREAD_START_ROUTINE
-				// lpStartAddress;} CREATE_THREAD_DEBUG_INFO,
-				// *LPCREATE_THREAD_DEBUG_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms679287(v=vs.85).aspx
-				[PInvokeData("WinBase.h", MSDNShortId = "ms679287")]
-				[StructLayout(LayoutKind.Sequential)]
-				public struct CREATE_THREAD_DEBUG_INFO
-				{
-					/// <summary>
-					/// A handle to the thread whose creation caused the debugging event. If this member is <c>NULL</c>, the handle is not
-					/// valid. Otherwise, the debugger has THREAD_GET_CONTEXT, THREAD_SET_CONTEXT, and THREAD_SUSPEND_RESUME access to the
-					/// thread, allowing the debugger to read from and write to the registers of the thread and control execution of the thread.
-					/// </summary>
-					public HTHREAD hThread;
-
-					/// <summary>
-					/// A pointer to a block of data. At offset 0x2C into this block is another pointer, called ThreadLocalStoragePointer,
-					/// that points to an array of per-module thread local storage blocks. This gives a debugger access to per-thread data in
-					/// the threads of the process being debugged using the same algorithms that a compiler would use.
-					/// </summary>
-					public IntPtr lpThreadLocalBase;
-
-					/// <summary>
-					/// A pointer to the starting address of the thread. This value may only be an approximation of the thread's starting
-					/// address, because any application with appropriate access to the thread can change the thread's context by using the
-					/// <c>SetThreadContext</c> function.
-					/// </summary>
-					public PTHREAD_START_ROUTINE lpStartAddress;
-				}
-
-				/// <summary>Contains process creation information that can be used by a debugger.</summary>
-				// typedef struct _CREATE_PROCESS_DEBUG_INFO { HANDLE hFile; HANDLE hProcess; HANDLE hThread; LPVOID lpBaseOfImage; DWORD
-				// dwDebugInfoFileOffset; DWORD nDebugInfoSize; LPVOID lpThreadLocalBase; LPTHREAD_START_ROUTINE lpStartAddress; LPVOID
-				// lpImageName; WORD fUnicode;} CREATE_PROCESS_DEBUG_INFO, *LPCREATE_PROCESS_DEBUG_INFO;
-				[PInvokeData("WinBase.h", MSDNShortId = "ms679286")]
-				[StructLayout(LayoutKind.Sequential)]
-				public struct CREATE_PROCESS_DEBUG_INFO
-				{
-					/// <summary>
-					/// <para>
-					/// A handle to the process's image file. If this member is <c>NULL</c>, the handle is not valid. Otherwise, the debugger
-					/// can use the member to read from and write to the image file.
-					/// </para>
-					/// <para>When the debugger is finished with this file, it should close the handle using the <c>CloseHandle</c> function.</para>
-					/// </summary>
-					public HFILE hFile;
-
-					/// <summary>
-					/// A handle to the process. If this member is <c>NULL</c>, the handle is not valid. Otherwise, the debugger can use the
-					/// member to read from and write to the process's memory.
-					/// </summary>
-					public HPROCESS hProcess;
-
-					/// <summary>
-					/// A handle to the initial thread of the process identified by the <c>hProcess</c> member. If <c>hThread</c> param is
-					/// <c>NULL</c>, the handle is not valid. Otherwise, the debugger has <c>THREAD_GET_CONTEXT</c>,
-					/// <c>THREAD_SET_CONTEXT</c>, and <c>THREAD_SUSPEND_RESUME</c> access to the thread, allowing the debugger to read from
-					/// and write to the registers of the thread and to control execution of the thread.
-					/// </summary>
-					public HTHREAD hThread;
-
-					/// <summary>The base address of the executable image that the process is running.</summary>
-					public IntPtr lpBaseOfImage;
-
-					/// <summary>The offset to the debugging information in the file identified by the <c>hFile</c> member.</summary>
-					public uint dwDebugInfoFileOffset;
-
-					/// <summary>
-					/// The size of the debugging information in the file, in bytes. If this value is zero, there is no debugging information.
-					/// </summary>
-					public uint nDebugInfoSize;
-
-					/// <summary>
-					/// A pointer to a block of data. At offset 0x2C into this block is another pointer, called , that points to an array of
-					/// per-module thread local storage blocks. This gives a debugger access to per-thread data in the threads of the process
-					/// being debugged using the same algorithms that a compiler would use.
-					/// </summary>
-					public IntPtr lpThreadLocalBase;
-
-					/// <summary>
-					/// A pointer to the starting address of the thread. This value may only be an approximation of the thread's starting
-					/// address, because any application with appropriate access to the thread can change the thread's context by using the
-					/// <c>SetThreadContext</c> function.
-					/// </summary>
-					public PTHREAD_START_ROUTINE lpStartAddress;
-
-					/// <summary>
-					/// <para>
-					/// A pointer to the file name associated with the <c>hFile</c> member. This parameter may be <c>NULL</c>, or it may
-					/// contain the address of a string pointer in the address space of the process being debugged. That address may, in
-					/// turn, either be <c>NULL</c> or point to the actual filename. If <c>fUnicode</c> is a nonzero value, the name string
-					/// is Unicode; otherwise, it is ANSI.
-					/// </para>
-					/// <para>
-					/// This member is strictly optional. Debuggers must be prepared to handle the case where <c>lpImageName</c> is
-					/// <c>NULL</c> or * <c>lpImageName</c> (in the address space of the process being debugged) is <c>NULL</c>.
-					/// Specifically, the system does not provide an image name for a create process event, and will not likely pass an image
-					/// name for the first DLL event. The system also does not provide this information in the case of debug events that
-					/// originate from a call to the <c>DebugActiveProcess</c> function.
-					/// </para>
-					/// </summary>
-					public IntPtr lpImageName;
-
-					/// <summary>
-					/// A value that indicates whether a file name specified by the <c>lpImageName</c> member is Unicode or ANSI. A nonzero
-					/// value indicates Unicode; zero indicates ANSI.
-					/// </summary>
-					public ushort fUnicode;
-				}
-
-				/// <summary>Contains the exit code for a terminating process.</summary>
-				// typedef struct _EXIT_PROCESS_DEBUG_INFO { DWORD dwExitCode;} EXIT_PROCESS_DEBUG_INFO, *LPEXIT_PROCESS_DEBUG_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms679334(v=vs.85).aspx
-				[PInvokeData("WinBase.h", MSDNShortId = "ms679334")]
-				[StructLayout(LayoutKind.Sequential)]
-				public struct EXIT_PROCESS_DEBUG_INFO
-				{
-					/// <summary>The exit code for the process.</summary>
-					public uint dwExitCode;
-				}
-
-				/// <summary>Contains the exit code for a terminating thread.</summary>
-				// typedef struct _EXIT_THREAD_DEBUG_INFO { DWORD dwExitCode;} EXIT_THREAD_DEBUG_INFO, *LPEXIT_THREAD_DEBUG_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms679335(v=vs.85).aspx
-				[PInvokeData("WinBase.h", MSDNShortId = "ms679335")]
-				[StructLayout(LayoutKind.Sequential)]
-				public struct EXIT_THREAD_DEBUG_INFO
-				{
-					/// <summary>The exit code for the thread.</summary>
-					public uint dwExitCode;
-				}
-
-				/// <summary>Contains information about a dynamic-link library (DLL) that has just been loaded.</summary>
-				// typedef struct _LOAD_DLL_DEBUG_INFO { HANDLE hFile; LPVOID lpBaseOfDll; DWORD dwDebugInfoFileOffset; DWORD nDebugInfoSize;
-				// LPVOID lpImageName; WORD fUnicode;} LOAD_DLL_DEBUG_INFO, *LPLOAD_DLL_DEBUG_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms680351(v=vs.85).aspx
-				[PInvokeData("WinBase.h", MSDNShortId = "ms680351")]
-				[StructLayout(LayoutKind.Sequential)]
-				public struct LOAD_DLL_DEBUG_INFO
-				{
-					/// <summary>
-					/// <para>
-					/// A handle to the loaded DLL. If this member is <c>NULL</c>, the handle is not valid. Otherwise, the member is opened
-					/// for reading and read-sharing in the context of the debugger.
-					/// </para>
-					/// <para>When the debugger is finished with this file, it should close the handle using the <c>CloseHandle</c> function.</para>
-					/// </summary>
-					public HFILE hFile;
-
-					/// <summary>A pointer to the base address of the DLL in the address space of the process loading the DLL.</summary>
-					public IntPtr lpBaseOfDll;
-
-					/// <summary>
-					/// The offset to the debugging information in the file identified by the <c>hFile</c> member, in bytes. The system
-					/// expects the debugging information to be in CodeView 4.0 format. This format is currently a derivative of Common
-					/// Object File Format (COFF).
-					/// </summary>
-					public uint dwDebugInfoFileOffset;
-
-					/// <summary>
-					/// The size of the debugging information in the file, in bytes. If this member is zero, there is no debugging information.
-					/// </summary>
-					public uint nDebugInfoSize;
-
-					/// <summary>
-					/// <para>
-					/// A pointer to the file name associated with <c>hFile</c>. This member may be <c>NULL</c>, or it may contain the
-					/// address of a string pointer in the address space of the process being debugged. That address may, in turn, either be
-					/// <c>NULL</c> or point to the actual filename. If <c>fUnicode</c> is a nonzero value, the name string is Unicode;
-					/// otherwise, it is ANSI.
-					/// </para>
-					/// <para>
-					/// This member is strictly optional. Debuggers must be prepared to handle the case where <c>lpImageName</c> is
-					/// <c>NULL</c> or * <c>lpImageName</c> (in the address space of the process being debugged) is <c>NULL</c>.
-					/// Specifically, the system will never provide an image name for a create process event, and it will not likely pass an
-					/// image name for the first DLL event. The system will also never provide this information in the case of debugging
-					/// events that originate from a call to the <c>DebugActiveProcess</c> function.
-					/// </para>
-					/// </summary>
-					public IntPtr lpImageName;
-
-					/// <summary>
-					/// A value that indicates whether a filename specified by <c>lpImageName</c> is Unicode or ANSI. A nonzero value for
-					/// this member indicates Unicode; zero indicates ANSI.
-					/// </summary>
-					public ushort fUnicode;
-				}
-
-				/// <summary>Contains information about a dynamic-link library (DLL) that has just been unloaded.</summary>
-				// typedef struct _UNLOAD_DLL_DEBUG_INFO { LPVOID lpBaseOfDll;} UNLOAD_DLL_DEBUG_INFO, *LPUNLOAD_DLL_DEBUG_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms681403(v=vs.85).aspx
-				[PInvokeData("WinBase.h", MSDNShortId = "ms681403")]
-				[StructLayout(LayoutKind.Sequential)]
-				public struct UNLOAD_DLL_DEBUG_INFO
-				{
-					/// <summary>A pointer to the base address of the DLL in the address space of the process unloading the DLL.</summary>
-					public IntPtr lpBaseOfDll;
-				}
-
-				/// <summary>Contains the address, format, and length, in bytes, of a debugging string.</summary>
-				// typedef struct _OUTPUT_DEBUG_STRING_INFO { LPSTR lpDebugStringData; WORD fUnicode; WORD nDebugStringLength;} OUTPUT_DEBUG_STRING_INFO,
-				// *LPOUTPUT_DEBUG_STRING_INFO;// https://msdn.microsoft.com/en-us/library/windows/desktop/ms680545(v=vs.85).aspx
-				[PInvokeData("WinBase.h", MSDNShortId = "ms680545")]
-				[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-				public struct OUTPUT_DEBUG_STRING_INFO
-				{
-					/// <summary>
-					/// The debugging string in the calling process's address space. The debugger can use the <c>ReadProcessMemory</c>
-					/// function to retrieve the value of the string.
-					/// </summary>
-					public string lpDebugStringData;
-
-					/// <summary>
-					/// The format of the debugging string. If this member is zero, the debugging string is ANSI; if it is nonzero, the
-					/// string is Unicode.
-					/// </summary>
-					public ushort fUnicode;
-
-					/// <summary>The size of the debugging string, in characters. The length includes the string's terminating null character.</summary>
-					public ushort nDebugStringLength;
-				}
-
-				/// <summary>Contains the error that caused the RIP debug event.</summary>
-				// typedef struct _RIP_INFO { DWORD dwError; DWORD dwType;} RIP_INFO, *LPRIP_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms680587(v=vs.85).aspx
-				[PInvokeData("WinBase.h", MSDNShortId = "ms680587")]
-				[StructLayout(LayoutKind.Sequential)]
-				public struct RIP_INFO
-				{
-					/// <summary>The error that caused the RIP debug event. For more information, see Error Handling.</summary>
-					public uint dwError;
-
-					/// <summary>
-					/// <para>
-					/// Any additional information about the type of error that caused the RIP debug event. This member can be one of the
-					/// following values.
-					/// </para>
-					/// <para>
-					/// <list type="table">
-					/// <listheader>
-					/// <term>Value</term>
-					/// <term>Meaning</term>
-					/// </listheader>
-					/// <item>
-					/// <term>SLE_ERROR = 0x00000001</term>
-					/// <term>Indicates that invalid data was passed to the function that failed. This caused the application to fail.</term>
-					/// </item>
-					/// <item>
-					/// <term>SLE_MINORERROR = 0x00000002</term>
-					/// <term>
-					/// Indicates that invalid data was passed to the function, but the error probably will not cause the application to fail.
-					/// </term>
-					/// </item>
-					/// <item>
-					/// <term>SLE_WARNING = 0x00000003</term>
-					/// <term>Indicates that potentially invalid data was passed to the function, but the function completed processing.</term>
-					/// </item>
-					/// <item>
-					/// <term>0</term>
-					/// <term>Indicates that only dwError was set.</term>
-					/// </item>
-					/// </list>
-					/// </para>
-					/// </summary>
-					public uint dwType;
-				}
 			}
+
+			/// <summary>Contains exception information that can be used by a debugger.</summary>
+			// typedef struct _EXCEPTION_DEBUG_INFO { EXCEPTION_RECORD ExceptionRecord; DWORD dwFirstChance;} EXCEPTION_DEBUG_INFO,
+			// *LPEXCEPTION_DEBUG_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms679326(v=vs.85).aspx
+			[PInvokeData("WinBase.h", MSDNShortId = "ms679326")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct EXCEPTION_DEBUG_INFO
+			{
+				/// <summary>
+				/// An <c>EXCEPTION_RECORD</c> structure with information specific to the exception. This includes the exception code,
+				/// flags, address, a pointer to a related exception, extra parameters, and so on.
+				/// </summary>
+				public EXCEPTION_RECORD ExceptionRecord;
+
+				/// <summary>
+				/// A value that indicates whether the debugger has previously encountered the exception specified by the
+				/// <c>ExceptionRecord</c> member. If the <c>dwFirstChance</c> member is nonzero, this is the first time the debugger has
+				/// encountered the exception. Debuggers typically handle breakpoint and single-step exceptions when they are first
+				/// encountered. If this member is zero, the debugger has previously encountered the exception. This occurs only if,
+				/// during the search for structured exception handlers, either no handler was found or the exception was continued.
+				/// </summary>
+				public uint dwFirstChance;
+			}
+
+			/// <summary>Contains thread-creation information that can be used by a debugger.</summary>
+			// typedef struct _CREATE_THREAD_DEBUG_INFO { HANDLE hThread; LPVOID lpThreadLocalBase; LPTHREAD_START_ROUTINE
+			// lpStartAddress;} CREATE_THREAD_DEBUG_INFO,
+			// *LPCREATE_THREAD_DEBUG_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms679287(v=vs.85).aspx
+			[PInvokeData("WinBase.h", MSDNShortId = "ms679287")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct CREATE_THREAD_DEBUG_INFO
+			{
+				/// <summary>
+				/// A handle to the thread whose creation caused the debugging event. If this member is <c>NULL</c>, the handle is not
+				/// valid. Otherwise, the debugger has THREAD_GET_CONTEXT, THREAD_SET_CONTEXT, and THREAD_SUSPEND_RESUME access to the
+				/// thread, allowing the debugger to read from and write to the registers of the thread and control execution of the thread.
+				/// </summary>
+				public HTHREAD hThread;
+
+				/// <summary>
+				/// A pointer to a block of data. At offset 0x2C into this block is another pointer, called ThreadLocalStoragePointer,
+				/// that points to an array of per-module thread local storage blocks. This gives a debugger access to per-thread data in
+				/// the threads of the process being debugged using the same algorithms that a compiler would use.
+				/// </summary>
+				public IntPtr lpThreadLocalBase;
+
+				/// <summary>
+				/// A pointer to the starting address of the thread. This value may only be an approximation of the thread's starting
+				/// address, because any application with appropriate access to the thread can change the thread's context by using the
+				/// <c>SetThreadContext</c> function.
+				/// </summary>
+				//[MarshalAs(UnmanagedType.FunctionPtr)]
+				//public PTHREAD_START_ROUTINE lpStartAddress;
+				public IntPtr lpStartAddress;
+			}
+
+			/// <summary>Contains process creation information that can be used by a debugger.</summary>
+			// typedef struct _CREATE_PROCESS_DEBUG_INFO { HANDLE hFile; HANDLE hProcess; HANDLE hThread; LPVOID lpBaseOfImage; DWORD
+			// dwDebugInfoFileOffset; DWORD nDebugInfoSize; LPVOID lpThreadLocalBase; LPTHREAD_START_ROUTINE lpStartAddress; LPVOID
+			// lpImageName; WORD fUnicode;} CREATE_PROCESS_DEBUG_INFO, *LPCREATE_PROCESS_DEBUG_INFO;
+			[PInvokeData("WinBase.h", MSDNShortId = "ms679286")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct CREATE_PROCESS_DEBUG_INFO
+			{
+				/// <summary>
+				/// <para>
+				/// A handle to the process's image file. If this member is <c>NULL</c>, the handle is not valid. Otherwise, the debugger
+				/// can use the member to read from and write to the image file.
+				/// </para>
+				/// <para>When the debugger is finished with this file, it should close the handle using the <c>CloseHandle</c> function.</para>
+				/// </summary>
+				public HFILE hFile;
+
+				/// <summary>
+				/// A handle to the process. If this member is <c>NULL</c>, the handle is not valid. Otherwise, the debugger can use the
+				/// member to read from and write to the process's memory.
+				/// </summary>
+				public HPROCESS hProcess;
+
+				/// <summary>
+				/// A handle to the initial thread of the process identified by the <c>hProcess</c> member. If <c>hThread</c> param is
+				/// <c>NULL</c>, the handle is not valid. Otherwise, the debugger has <c>THREAD_GET_CONTEXT</c>,
+				/// <c>THREAD_SET_CONTEXT</c>, and <c>THREAD_SUSPEND_RESUME</c> access to the thread, allowing the debugger to read from
+				/// and write to the registers of the thread and to control execution of the thread.
+				/// </summary>
+				public HTHREAD hThread;
+
+				/// <summary>The base address of the executable image that the process is running.</summary>
+				public IntPtr lpBaseOfImage;
+
+				/// <summary>The offset to the debugging information in the file identified by the <c>hFile</c> member.</summary>
+				public uint dwDebugInfoFileOffset;
+
+				/// <summary>
+				/// The size of the debugging information in the file, in bytes. If this value is zero, there is no debugging information.
+				/// </summary>
+				public uint nDebugInfoSize;
+
+				/// <summary>
+				/// A pointer to a block of data. At offset 0x2C into this block is another pointer, called , that points to an array of
+				/// per-module thread local storage blocks. This gives a debugger access to per-thread data in the threads of the process
+				/// being debugged using the same algorithms that a compiler would use.
+				/// </summary>
+				public IntPtr lpThreadLocalBase;
+
+				/// <summary>
+				/// A pointer to the starting address of the thread. This value may only be an approximation of the thread's starting
+				/// address, because any application with appropriate access to the thread can change the thread's context by using the
+				/// <c>SetThreadContext</c> function.
+				/// </summary>
+				//[MarshalAs(UnmanagedType.FunctionPtr)]
+				//public PTHREAD_START_ROUTINE lpStartAddress;
+				public IntPtr lpStartAddress;
+
+				/// <summary>
+				/// <para>
+				/// A pointer to the file name associated with the <c>hFile</c> member. This parameter may be <c>NULL</c>, or it may
+				/// contain the address of a string pointer in the address space of the process being debugged. That address may, in
+				/// turn, either be <c>NULL</c> or point to the actual filename. If <c>fUnicode</c> is a nonzero value, the name string
+				/// is Unicode; otherwise, it is ANSI.
+				/// </para>
+				/// <para>
+				/// This member is strictly optional. Debuggers must be prepared to handle the case where <c>lpImageName</c> is
+				/// <c>NULL</c> or * <c>lpImageName</c> (in the address space of the process being debugged) is <c>NULL</c>.
+				/// Specifically, the system does not provide an image name for a create process event, and will not likely pass an image
+				/// name for the first DLL event. The system also does not provide this information in the case of debug events that
+				/// originate from a call to the <c>DebugActiveProcess</c> function.
+				/// </para>
+				/// </summary>
+				public IntPtr lpImageName;
+
+				/// <summary>
+				/// A value that indicates whether a file name specified by the <c>lpImageName</c> member is Unicode or ANSI. A nonzero
+				/// value indicates Unicode; zero indicates ANSI.
+				/// </summary>
+				public ushort fUnicode;
+			}
+
+			/// <summary>Contains the exit code for a terminating process.</summary>
+			// typedef struct _EXIT_PROCESS_DEBUG_INFO { DWORD dwExitCode;} EXIT_PROCESS_DEBUG_INFO, *LPEXIT_PROCESS_DEBUG_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms679334(v=vs.85).aspx
+			[PInvokeData("WinBase.h", MSDNShortId = "ms679334")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct EXIT_PROCESS_DEBUG_INFO
+			{
+				/// <summary>The exit code for the process.</summary>
+				public uint dwExitCode;
+			}
+
+			/// <summary>Contains the exit code for a terminating thread.</summary>
+			// typedef struct _EXIT_THREAD_DEBUG_INFO { DWORD dwExitCode;} EXIT_THREAD_DEBUG_INFO, *LPEXIT_THREAD_DEBUG_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms679335(v=vs.85).aspx
+			[PInvokeData("WinBase.h", MSDNShortId = "ms679335")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct EXIT_THREAD_DEBUG_INFO
+			{
+				/// <summary>The exit code for the thread.</summary>
+				public uint dwExitCode;
+			}
+
+			/// <summary>Contains information about a dynamic-link library (DLL) that has just been loaded.</summary>
+			// typedef struct _LOAD_DLL_DEBUG_INFO { HANDLE hFile; LPVOID lpBaseOfDll; DWORD dwDebugInfoFileOffset; DWORD nDebugInfoSize;
+			// LPVOID lpImageName; WORD fUnicode;} LOAD_DLL_DEBUG_INFO, *LPLOAD_DLL_DEBUG_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms680351(v=vs.85).aspx
+			[PInvokeData("WinBase.h", MSDNShortId = "ms680351")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct LOAD_DLL_DEBUG_INFO
+			{
+				/// <summary>
+				/// <para>
+				/// A handle to the loaded DLL. If this member is <c>NULL</c>, the handle is not valid. Otherwise, the member is opened
+				/// for reading and read-sharing in the context of the debugger.
+				/// </para>
+				/// <para>When the debugger is finished with this file, it should close the handle using the <c>CloseHandle</c> function.</para>
+				/// </summary>
+				public HFILE hFile;
+
+				/// <summary>A pointer to the base address of the DLL in the address space of the process loading the DLL.</summary>
+				public IntPtr lpBaseOfDll;
+
+				/// <summary>
+				/// The offset to the debugging information in the file identified by the <c>hFile</c> member, in bytes. The system
+				/// expects the debugging information to be in CodeView 4.0 format. This format is currently a derivative of Common
+				/// Object File Format (COFF).
+				/// </summary>
+				public uint dwDebugInfoFileOffset;
+
+				/// <summary>
+				/// The size of the debugging information in the file, in bytes. If this member is zero, there is no debugging information.
+				/// </summary>
+				public uint nDebugInfoSize;
+
+				/// <summary>
+				/// <para>
+				/// A pointer to the file name associated with <c>hFile</c>. This member may be <c>NULL</c>, or it may contain the
+				/// address of a string pointer in the address space of the process being debugged. That address may, in turn, either be
+				/// <c>NULL</c> or point to the actual filename. If <c>fUnicode</c> is a nonzero value, the name string is Unicode;
+				/// otherwise, it is ANSI.
+				/// </para>
+				/// <para>
+				/// This member is strictly optional. Debuggers must be prepared to handle the case where <c>lpImageName</c> is
+				/// <c>NULL</c> or * <c>lpImageName</c> (in the address space of the process being debugged) is <c>NULL</c>.
+				/// Specifically, the system will never provide an image name for a create process event, and it will not likely pass an
+				/// image name for the first DLL event. The system will also never provide this information in the case of debugging
+				/// events that originate from a call to the <c>DebugActiveProcess</c> function.
+				/// </para>
+				/// </summary>
+				public IntPtr lpImageName;
+
+				/// <summary>
+				/// A value that indicates whether a filename specified by <c>lpImageName</c> is Unicode or ANSI. A nonzero value for
+				/// this member indicates Unicode; zero indicates ANSI.
+				/// </summary>
+				public ushort fUnicode;
+			}
+
+			/// <summary>Contains information about a dynamic-link library (DLL) that has just been unloaded.</summary>
+			// typedef struct _UNLOAD_DLL_DEBUG_INFO { LPVOID lpBaseOfDll;} UNLOAD_DLL_DEBUG_INFO, *LPUNLOAD_DLL_DEBUG_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms681403(v=vs.85).aspx
+			[PInvokeData("WinBase.h", MSDNShortId = "ms681403")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct UNLOAD_DLL_DEBUG_INFO
+			{
+				/// <summary>A pointer to the base address of the DLL in the address space of the process unloading the DLL.</summary>
+				public IntPtr lpBaseOfDll;
+			}
+
+			/// <summary>Contains the address, format, and length, in bytes, of a debugging string.</summary>
+			// typedef struct _OUTPUT_DEBUG_STRING_INFO { LPSTR lpDebugStringData; WORD fUnicode; WORD nDebugStringLength;} OUTPUT_DEBUG_STRING_INFO,
+			// *LPOUTPUT_DEBUG_STRING_INFO;// https://msdn.microsoft.com/en-us/library/windows/desktop/ms680545(v=vs.85).aspx
+			[PInvokeData("WinBase.h", MSDNShortId = "ms680545")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct OUTPUT_DEBUG_STRING_INFO
+			{
+				/// <summary>
+				/// The debugging string in the calling process's address space. The debugger can use the <c>ReadProcessMemory</c>
+				/// function to retrieve the value of the string.
+				/// </summary>
+				public IntPtr lpDebugStringData;
+
+				/// <summary>
+				/// The format of the debugging string. If this member is zero, the debugging string is ANSI; if it is nonzero, the
+				/// string is Unicode.
+				/// </summary>
+				public ushort fUnicode;
+
+				/// <summary>The size of the debugging string, in characters. The length includes the string's terminating null character.</summary>
+				public ushort nDebugStringLength;
+
+				/// <summary>Gets the debugging string in the calling process's address space.</summary>
+				public string DebugString => ReadString(lpDebugStringData, fUnicode, nDebugStringLength);
+			}
+
+			/// <summary>Contains the error that caused the RIP debug event.</summary>
+			// typedef struct _RIP_INFO { DWORD dwError; DWORD dwType;} RIP_INFO, *LPRIP_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms680587(v=vs.85).aspx
+			[PInvokeData("WinBase.h", MSDNShortId = "ms680587")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct RIP_INFO
+			{
+				/// <summary>The error that caused the RIP debug event. For more information, see Error Handling.</summary>
+				public uint dwError;
+
+				/// <summary>
+				/// <para>
+				/// Any additional information about the type of error that caused the RIP debug event. This member can be one of the
+				/// following values.
+				/// </para>
+				/// <para>
+				/// <list type="table">
+				/// <listheader>
+				/// <term>Value</term>
+				/// <term>Meaning</term>
+				/// </listheader>
+				/// <item>
+				/// <term>SLE_ERROR = 0x00000001</term>
+				/// <term>Indicates that invalid data was passed to the function that failed. This caused the application to fail.</term>
+				/// </item>
+				/// <item>
+				/// <term>SLE_MINORERROR = 0x00000002</term>
+				/// <term>
+				/// Indicates that invalid data was passed to the function, but the error probably will not cause the application to fail.
+				/// </term>
+				/// </item>
+				/// <item>
+				/// <term>SLE_WARNING = 0x00000003</term>
+				/// <term>Indicates that potentially invalid data was passed to the function, but the function completed processing.</term>
+				/// </item>
+				/// <item>
+				/// <term>0</term>
+				/// <term>Indicates that only dwError was set.</term>
+				/// </item>
+				/// </list>
+				/// </para>
+				/// </summary>
+				public uint dwType;
+			}
+		}
+
+		private static string ReadString(IntPtr data, ushort fUni, ushort len)
+		{
+			return StringHelper.GetString(data, fUni != 0 ? CharSet.Unicode : CharSet.Ansi, len);
 		}
 	}
 }

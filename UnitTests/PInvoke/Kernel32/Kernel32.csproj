@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,6 +38,7 @@
     <Compile Include="InteropServices\SafeLocalHandleTests.cs" />
     <Compile Include="Kernel32Tests.cs" />
     <Compile Include="ConsoleTests.cs" />
+    <Compile Include="DebugApiTests.cs" />
     <Compile Include="SnapshotTests.cs" />
     <Compile Include="SysInfoTests.cs" />
   </ItemGroup>
@@ -56,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NUnit">
-      <Version>3.11.0</Version>
+      <Version>3.12.0</Version>
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter">
       <Version>3.13.0</Version>

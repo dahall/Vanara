@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -1126,6 +1127,26 @@ namespace Vanara.PInvoke
 			public IntPtr ContextRecord;
 		}
 
+		/// <summary>Common Exception codes</summary>
+		/// <remarks>
+		/// Users can define their own exception codes, so the code could be any value. The OS reserves bit 28 and may clear that for its own purposes
+		/// </remarks>
+		public enum ExceptionCode : uint
+		{
+			None = 0x0,
+			STATUS_BREAKPOINT = 0x80000003,
+			STATUS_SINGLESTEP = 0x80000004,
+
+			EXCEPTION_INT_DIVIDE_BY_ZERO = 0xC0000094,
+
+			/// <summary>Fired when debuggee gets a Control-C.</summary>
+			DBG_CONTROL_C = 0x40010005,
+
+			EXCEPTION_STACK_OVERFLOW = 0xC00000FD,
+			EXCEPTION_NONCONTINUABLE_EXCEPTION = 0xC0000025,
+			EXCEPTION_ACCESS_VIOLATION = 0xc0000005,
+		}
+
 		/// <summary>Describes an exception.</summary>
 		// typedef struct _EXCEPTION_RECORD { DWORD ExceptionCode; DWORD ExceptionFlags; struct _EXCEPTION_RECORD *ExceptionRecord; PVOID
 		// ExceptionAddress; DWORD NumberParameters; ULONG_PTR ExceptionInformation[EXCEPTION_MAXIMUM_PARAMETERS];} EXCEPTION_RECORD, *PEXCEPTION_RECORD;
@@ -1138,7 +1159,7 @@ namespace Vanara.PInvoke
 			/// indicating a noncontinuable exception. Any attempt to continue execution after a noncontinuable exception causes the
 			/// <c>EXCEPTION_NONCONTINUABLE_EXCEPTION</c> exception.
 			/// </summary>
-			public uint ExceptionCode;
+			public ExceptionCode ExceptionCode;
 			/// <summary>
 			/// The exception flags. This member can be either zero, indicating a continuable exception, or <c>EXCEPTION_NONCONTINUABLE</c>
 			/// indicating a noncontinuable exception. Any attempt to continue execution after a noncontinuable exception causes the
@@ -1157,6 +1178,32 @@ namespace Vanara.PInvoke
 			/// <c>ExceptionInformation</c> array.
 			/// </summary>
 			public uint NumberParameters;
+
+			// From code at https://github.com/SymbolSource/Microsoft.Samples.Debugging/blob/master/src/debugger/NativeDebugWrappers/NativeImports.cs, it provides a work-around the problem a ByValArray causes when marshaling regarding alignment. It creates separate entries for each item in the array.
+			//[MarshalAs(UnmanagedType.ByValArray, SizeConst = EXCEPTION_MAXIMUM_PARAMETERS)]
+			//public IntPtr[] ExceptionInformation;
+			private IntPtr ExceptionInformation0;
+			private IntPtr ExceptionInformation1;
+			private IntPtr ExceptionInformation2;
+			private IntPtr ExceptionInformation3;
+			private IntPtr ExceptionInformation4;
+			private IntPtr ExceptionInformation5;
+			private IntPtr ExceptionInformation6;
+			private IntPtr ExceptionInformation7;
+			private IntPtr ExceptionInformation8;
+			private IntPtr ExceptionInformation9;
+			private IntPtr ExceptionInformation10;
+			private IntPtr ExceptionInformation11;
+			private IntPtr ExceptionInformation12;
+			private IntPtr ExceptionInformation13;
+			private IntPtr ExceptionInformation14;
+
+			/// <summary>
+			/// An associated <c>EXCEPTION_RECORD</c> structure. Exception records can be chained together to provide additional
+			/// information when nested exceptions occur.
+			/// </summary>
+			public EXCEPTION_RECORD? ChainedRecord => ExceptionRecord.ToNullableStructure<EXCEPTION_RECORD>();
+
 			/// <summary>
 			/// <para>
 			/// An array of additional arguments that describe the exception. The <c>RaiseException</c> function can specify this array of
@@ -1189,8 +1236,17 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = EXCEPTION_MAXIMUM_PARAMETERS, ArraySubType = UnmanagedType.SysUInt)]
-			public UIntPtr[] ExceptionInformation;
+			public IntPtr[] ExceptionInformation
+			{
+				get => new[] { ExceptionInformation0, ExceptionInformation1, ExceptionInformation2, ExceptionInformation3, ExceptionInformation4, ExceptionInformation5, ExceptionInformation6, ExceptionInformation7, ExceptionInformation8, ExceptionInformation9, ExceptionInformation10, ExceptionInformation11, ExceptionInformation12, ExceptionInformation13, ExceptionInformation14 };
+				set
+				{
+					if (value is null || value.Length != EXCEPTION_MAXIMUM_PARAMETERS)
+						throw new ArgumentOutOfRangeException(nameof(value));
+					for (int i = 0; i < EXCEPTION_MAXIMUM_PARAMETERS; i++)
+						this.SetFieldValue($"ExceptionInformation{i}", value[i]);
+				}
+			}
 		}
 
 		/// <summary>A safe handle for continue handler handles.</summary>
