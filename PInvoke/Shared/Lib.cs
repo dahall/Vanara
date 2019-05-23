@@ -66,6 +66,9 @@
 		/// <summary>The ole32</summary>
 		public const string Ole32 = "ole32.dll";
 
+		/// <summary>The oleacc dll</summary>
+		public const string Oleacc = "oleacc.dll";
+
 		/// <summary>The OLE aut32</summary>
 		public const string OleAut32 = "oleaut32.dll";
 

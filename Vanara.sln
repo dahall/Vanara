@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.Core", "Core\Vanara.Core.csproj", "{241F73EE-9298-45C9-B869-A045DFF94C03}"
 EndProject
@@ -154,6 +154,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinINet", "UnitTests\PInvoke\WinINet\WinINet.csproj", "{A4BF5AA2-4D73-4BE7-ABB4-3DC089CFA77A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ws2_32", "UnitTests\PInvoke\Ws2_32\Ws2_32.csproj", "{15DC485D-B379-4087-97A7-981ADB4D48F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Accessibility", "PInvoke\Accessibility\Vanara.PInvoke.Accessibility.csproj", "{D5BD6ECE-B285-4CE8-ABFC-964AB1DEA464}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -427,6 +429,10 @@ Global
 		{15DC485D-B379-4087-97A7-981ADB4D48F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15DC485D-B379-4087-97A7-981ADB4D48F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15DC485D-B379-4087-97A7-981ADB4D48F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5BD6ECE-B285-4CE8-ABFC-964AB1DEA464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5BD6ECE-B285-4CE8-ABFC-964AB1DEA464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5BD6ECE-B285-4CE8-ABFC-964AB1DEA464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5BD6ECE-B285-4CE8-ABFC-964AB1DEA464}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -494,6 +500,7 @@ Global
 		{6947F255-E176-409C-9788-9C02A68C9D3B} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{A4BF5AA2-4D73-4BE7-ABB4-3DC089CFA77A} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{15DC485D-B379-4087-97A7-981ADB4D48F9} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
+		{D5BD6ECE-B285-4CE8-ABFC-964AB1DEA464} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}
