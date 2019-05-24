@@ -2,12 +2,57 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Vanara.PInvoke;
 
 namespace Vanara.Collections
 {
 	/// <summary>
-	/// Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support <see cref="IEnumerable"/> or <see
-	/// cref="IEnumerable{T}"/> like some COM objects.
+	/// Creates an enumerable class from a get next method in the form of HRESULT Next(uint, TItem[], out uint) and a reset method. Useful if
+	/// a class doesn't support <see cref="IEnumerable"/> or <see cref="IEnumerable{T}"/> like some COM objects.
+	/// </summary>
+	/// <typeparam name="TItem">The type of the item.</typeparam>
+	public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
+	{
+		private readonly ComTryGetNext cnext;
+
+		/// <summary>Initializes a new instance of the <see cref="IEnumFromNext{TItem}"/> class.</summary>
+		/// <param name="next">The method used to try to get the next item in the enumeration.</param>
+		/// <param name="reset">The method used to reset the enumeration to the first element.</param>
+		public IEnumFromCom(ComTryGetNext next, Action reset) : base()
+		{
+			if (next == null || reset == null) throw new ArgumentNullException();
+			cnext = next;
+			base.next = TryGet;
+			base.reset = reset;
+		}
+
+		/// <summary>
+		/// Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
+		/// </summary>
+		/// <param name="celt">The number of items requested.</param>
+		/// <param name="rgelt">An array of items to be returned.</param>
+		/// <param name="celtFetched">The number of items retrieved in the <paramref name="celt"/> parameter.</param>
+		/// <returns>
+		/// This method supports the following return values: S_OK = The number of items returned is equal to the number specified in the
+		/// <paramref name="celt"/> parameter. S_FALSE = The number of items returned is less than the number specified in the
+		/// <paramref name="celt"/> parameter.
+		/// </returns>
+		public delegate HRESULT ComTryGetNext(uint celt, TItem[] rgelt, out uint celtFetched);
+
+		private bool TryGet(out TItem item)
+		{
+			var res = new TItem[1];
+			item = default;
+			if (cnext(1, res, out var ret).Failed)
+				return false;
+			item = res[0];
+			return true;
+		}
+	}
+
+	/// <summary>
+	/// Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support <see cref="IEnumerable"/> or
+	/// <see cref="IEnumerable{T}"/> like some COM objects.
 	/// </summary>
 	/// <typeparam name="TItem">The type of the item.</typeparam>
 	public class IEnumFromIndexer<TItem> : IReadOnlyList<TItem>
@@ -80,8 +125,11 @@ namespace Vanara.Collections
 	/// <typeparam name="TItem">The type of the item.</typeparam>
 	public class IEnumFromNext<TItem> : IEnumerable<TItem>
 	{
-		private readonly TryGetNext next;
-		private readonly Action reset;
+		/// <summary>The next function delegate.</summary>
+		protected TryGetNext next;
+
+		/// <summary>The reset function delegate.</summary>
+		protected Action reset;
 
 		/// <summary>Initializes a new instance of the <see cref="IEnumFromNext{TItem}"/> class.</summary>
 		/// <param name="next">The method used to try to get the next item in the enumeration.</param>
@@ -92,6 +140,9 @@ namespace Vanara.Collections
 			this.next = next;
 			this.reset = reset;
 		}
+
+		/// <summary>Initializes a new instance of the <see cref="IEnumFromNext{TItem}"/> class.</summary>
+		protected IEnumFromNext() { }
 
 		/// <summary>
 		/// Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
