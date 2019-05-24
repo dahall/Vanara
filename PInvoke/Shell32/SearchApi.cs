@@ -1580,6 +1580,316 @@ namespace Vanara.PInvoke
 		[ComImport, Guid("7AC3286D-4D1D-4817-84FC-C1C85E3AF0D9"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		public interface ISearchCatalogManager2 : ISearchCatalogManager
 		{
+			/// <summary>Gets the name of the current catalog.</summary>
+			/// <value>
+			/// <para>Receives the name of the current catalog.</para>
+			/// </value>
+			/// <param name="pszName">Type: <c>LPCWSTR*</c></param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-get_name HRESULT get_Name(
+			// LPWSTR *pszName );
+			[PInvokeData("searchapi.h")]
+			[DispId(0x60010000)]
+			new string Name { [return: MarshalAs(UnmanagedType.LPWStr)]  get; }
+
+			/// <summary>Not implemented.</summary>
+			/// <param name="pszName">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>The name of the parameter to be retrieved.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>PROPVARIANT**</c></para>
+			/// <para>Receives a pointer to the value of the parameter.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-getparameter HRESULT
+			// GetParameter( LPCWSTR pszName, PROPVARIANT **ppValue );
+			[PInvokeData("searchapi.h")]
+			new PROPVARIANT GetParameter([In, MarshalAs(UnmanagedType.LPWStr)] string pszName);
+
+			/// <summary>Sets a name/value parameter for the catalog.</summary>
+			/// <param name="pszName">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>The name of the parameter to change.</para>
+			/// </param>
+			/// <param name="pValue">
+			/// <para>Type: <c>PROPVARIANT*</c></para>
+			/// <para>A pointer to the new value for the parameter.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-setparameter HRESULT
+			// SetParameter( LPCWSTR pszName, PROPVARIANT *pValue );
+			[PInvokeData("searchapi.h")]
+			new void SetParameter([In, MarshalAs(UnmanagedType.LPWStr)] string pszName, [In] PROPVARIANT pValue);
+
+			/// <summary>Gets the status of the catalog.</summary>
+			/// <param name="pStatus">
+			/// <para>Type: <c>CatalogStatus*</c></para>
+			/// <para>
+			/// Receives a pointer to a value from the CatalogStatus enumeration. If pStatus is CATALOG_STATUS_PAUSED, further information
+			/// can be obtained from the pPausedReason parameter.
+			/// </para>
+			/// </param>
+			/// <param name="pPausedReason">
+			/// <para>Type: <c>CatalogPausedReason*</c></para>
+			/// <para>
+			/// Receives a pointer to a value from the CatalogPausedReason enumeration describing why the catalog is paused. If the catalog
+			/// status is not CATALOG_STATUS_PAUSED, this parameter receives the value CATALOG_PAUSED_REASON_NONE.
+			/// </para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-getcatalogstatus HRESULT
+			// GetCatalogStatus( CatalogStatus *pStatus, CatalogPausedReason *pPausedReason );
+			[PInvokeData("searchapi.h")]
+			new void GetCatalogStatus(out CatalogStatus pStatus, out CatalogPausedReason pPausedReason);
+
+			/// <summary>Resets the underlying catalog by rebuilding the databases and performing a full indexing.</summary>
+			/// <remarks>Resetting can take a very long time, during which little or no information is available to be searched.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-reset HRESULT Reset( );
+			[PInvokeData("searchapi.h")]
+			new void Reset();
+
+			/// <summary>Re-indexes all URLs in the catalog.</summary>
+			/// <remarks>Old information remains in the catalog until replaced by new information during re-indexing.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-reindex HRESULT Reindex( );
+			[PInvokeData("searchapi.h")]
+			new void Reindex();
+
+			/// <summary>Reindexes all items that match the provided pattern. This method was not implemented prior to Windows 7.</summary>
+			/// <param name="pszPattern">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>
+			/// A pointer to the pattern to be matched for reindexing. The pattern can be a standard pattern such as or a pattern in the form
+			/// of a URL such as .
+			/// </para>
+			/// </param>
+			/// <remarks>This method is fully implemented for Windows 7.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-reindexmatchingurls HRESULT
+			// ReindexMatchingURLs( LPCWSTR pszPattern );
+			[PInvokeData("searchapi.h")]
+			new void ReindexMatchingURLs([In, MarshalAs(UnmanagedType.LPWStr)] string pszPattern);
+
+			/// <summary>Re-indexes all URLs from a specified root.</summary>
+			/// <param name="pszRootURL">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>
+			/// Pointer to a null-terminated, Unicode buffer that contains the URL on which the search is rooted. This URL must be a search
+			/// root previously registered with ISearchCrawlScopeManager::AddRoot.
+			/// </para>
+			/// </param>
+			/// <remarks>
+			/// <para>The indexer begins an incremental crawl of all start pages under pszRootURL upon successful return of method.</para>
+			/// <para>Old information remains in the catalog until replaced by new information during the re-indexing.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-reindexsearchroot HRESULT
+			// ReindexSearchRoot( LPCWSTR pszRootURL );
+			[PInvokeData("searchapi.h")]
+			new void ReindexSearchRoot([In, MarshalAs(UnmanagedType.LPWStr)] string pszRootURL);
+
+			/// <summary>Gets or sets the connection time-out value in the TIMEOUT_INFO structure, in seconds.</summary>
+			/// <value>
+			/// <para>The number of seconds to wait for a connection response.</para>
+			/// </value>
+			/// <remarks>
+			/// The indexer expects the first chunk of the document to be received within the connection time-out interval and any subsequent
+			/// chunks to be received within the data time-out interval. These time-out values help prevent filters and protocol handlers
+			/// from failing or causing performance issues.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-put_connecttimeout HRESULT
+			// put_ConnectTimeout( DWORD dwConnectTimeout );
+			[PInvokeData("searchapi.h")]
+			[DispId(0x60010008)]
+			new uint ConnectTimeout { get; [param: In]  set; }
+
+			/// <summary>
+			/// Sets the time-out value for data transactions between the indexer and the search filter host. This information is stored in
+			/// the TIMEOUT_INFO structure and is measured in seconds.
+			/// </summary>
+			/// <value>
+			/// <para>The number of seconds that the indexer will wait between chunks of data.</para>
+			/// </value>
+			/// <remarks>
+			/// The indexer expects the first chunk of the document to be received within the connection time-out interval and any subsequent
+			/// chunks to be received within the data time-out interval. These time-out values help prevent filters and protocol handlers
+			/// from failing or causing performance issues.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-put_datatimeout HRESULT
+			// put_DataTimeout( DWORD dwDataTimeout );
+			[PInvokeData("searchapi.h")]
+			[DispId(0x6001000a)]
+			new uint DataTimeout { get; [param: In]  set; }
+
+			/// <summary>Gets the number of items in the catalog.</summary>
+			/// <returns>
+			/// <para>The number of items in the catalog.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-numberofitems HRESULT
+			// NumberOfItems( LONG *plCount );
+			[PInvokeData("searchapi.h")]
+			new int NumberOfItems();
+
+			/// <summary>Gets the number of items to be indexed within the catalog.</summary>
+			/// <param name="plIncrementalCount">
+			/// <para>Type: <c>LONG*</c></para>
+			/// <para>Receives a pointer to the number of items to be indexed in the next incremental index.</para>
+			/// </param>
+			/// <param name="plNotificationQueue">
+			/// <para>Type: <c>LONG*</c></para>
+			/// <para>Receives a pointer to the number of items in the notification queue.</para>
+			/// </param>
+			/// <param name="plHighPriorityQueue">
+			/// <para>Type: <c>LONG*</c></para>
+			/// <para>
+			/// Receives a pointer to the number of items in the high-priority queue. Items in the plHighPriorityQueue are indexed first.
+			/// </para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-numberofitemstoindex HRESULT
+			// NumberOfItemsToIndex( LONG *plIncrementalCount, LONG *plNotificationQueue, LONG *plHighPriorityQueue );
+			[PInvokeData("searchapi.h")]
+			new void NumberOfItemsToIndex(out int plIncrementalCount, out int plNotificationQueue, out int plHighPriorityQueue);
+
+			/// <summary>Gets the URL that is currently being indexed. If no indexing is currently in process, pszUrl is set to <c>NULL</c>.</summary>
+			/// <returns>
+			/// <para>The URL that is currently being indexed.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-urlbeingindexed HRESULT
+			// URLBeingIndexed( LPWSTR *pszUrl );
+			[PInvokeData("searchapi.h")]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			new string URLBeingIndexed();
+
+			/// <summary>Not implemented.</summary>
+			/// <param name="pszUrl">The URL.</param>
+			/// <returns>The state.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-geturlindexingstate HRESULT
+			// GetURLIndexingState( LPCWSTR pszURL, DWORD *pdwState );
+			[PInvokeData("searchapi.h")]
+			[Obsolete]
+			new uint GetURLIndexingState([In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl);
+
+			/// <summary>
+			/// Gets the change notification event sink interface for a client. This method is used by client applications and protocol
+			/// handlers to notify the indexer of changes.
+			/// </summary>
+			/// <returns>
+			/// <para>Receives the address of a pointer to a new ISearchPersistentItemsChangedSink interface for this catalog.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-getpersistentitemschangedsink
+			// HRESULT GetPersistentItemsChangedSink( ISearchPersistentItemsChangedSink **ppISearchPersistentItemsChangedSink );
+			[PInvokeData("searchapi.h")]
+			new ISearchPersistentItemsChangedSink GetPersistentItemsChangedSink();
+
+			/// <summary>Not implemented.</summary>
+			/// <param name="pszView">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to the name of the view.</para>
+			/// </param>
+			/// <param name="pViewChangedSink">
+			/// <para>Type: <c>ISearchViewChangedSink*</c></para>
+			/// <para>Pointer to the ISearchViewChangedSink object to receive notifications.</para>
+			/// </param>
+			/// <param name="pdwCookie">Type: <c>DWORD*</c></param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-registerviewfornotification
+			// HRESULT RegisterViewForNotification( LPCWSTR pszView, ISearchViewChangedSink *pViewChangedSink, DWORD *pdwCookie );
+			[PInvokeData("searchapi.h")]
+			[Obsolete]
+			new void RegisterViewForNotification([In, MarshalAs(UnmanagedType.LPWStr)] string pszView, [In, MarshalAs(UnmanagedType.Interface)] ISearchViewChangedSink pViewChangedSink, out uint pdwCookie);
+
+			/// <summary>Gets the change notification sink interface.</summary>
+			/// <param name="pISearchNotifyInlineSite">
+			/// <para>Type: <c>ISearchNotifyInlineSite*</c></para>
+			/// <para>A pointer to your ISearchNotifyInlineSite interface.</para>
+			/// </param>
+			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>The UUID of the ISearchItemsChangedSink interface.</para>
+			/// </param>
+			/// <param name="ppv">
+			/// <para>Type: <c>void*</c></para>
+			/// <para>Receives a pointer to the ISearchItemsChangedSink interface.</para>
+			/// </param>
+			/// <param name="pGUIDCatalogResetSignature">
+			/// <para>Type: <c>GUID*</c></para>
+			/// <para>Receives a pointer to the GUID representing the catalog reset. If this GUID changes, all notifications must be resent.</para>
+			/// </param>
+			/// <param name="pGUIDCheckPointSignature">
+			/// <para>Type: <c>GUID*</c></para>
+			/// <para>Receives a pointer to the GUID representing a checkpoint.</para>
+			/// </param>
+			/// <param name="pdwLastCheckPointNumber">
+			/// <para>Type: <c>DWORD*</c></para>
+			/// <para>Receives a pointer to the number indicating the last checkpoint to be saved.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-getitemschangedsink HRESULT
+			// GetItemsChangedSink( ISearchNotifyInlineSite *pISearchNotifyInlineSite, REFIID riid, void **ppv, GUID
+			// *pGUIDCatalogResetSignature, GUID *pGUIDCheckPointSignature, DWORD *pdwLastCheckPointNumber );
+			[PInvokeData("searchapi.h")]
+			new void GetItemsChangedSink([In, MarshalAs(UnmanagedType.Interface)] ISearchNotifyInlineSite pISearchNotifyInlineSite, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv, out Guid pGUIDCatalogResetSignature, out Guid pGUIDCheckPointSignature, out uint pdwLastCheckPointNumber);
+
+			/// <summary>Not implemented.</summary>
+			/// <param name="dwCookie">Type: <c>DWORD</c></param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-unregisterviewfornotification
+			// HRESULT UnregisterViewForNotification( DWORD dwCookie );
+			[PInvokeData("searchapi.h")]
+			[Obsolete]
+			new void UnregisterViewForNotification([In] uint dwCookie);
+
+			/// <summary>Not implemented.</summary>
+			/// <param name="pszExtension">Type: <c>LPCWSTR</c></param>
+			/// <param name="fExclude">Type: <c>BOOL</c></param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-setextensionclusion HRESULT
+			// SetExtensionClusion( LPCWSTR pszExtension, BOOL fExclude );
+			[PInvokeData("searchapi.h")]
+			[Obsolete]
+			new void SetExtensionClusion([In, MarshalAs(UnmanagedType.LPWStr)] string pszExtension, [MarshalAs(UnmanagedType.Bool)] bool fExclude);
+
+			/// <summary>Not implemented.</summary>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-enumerateexcludedextensions
+			[PInvokeData("searchapi.h")]
+			[Obsolete]
+			new IEnumString EnumerateExcludedExtensions();
+
+			/// <summary>Gets the ISearchQueryHelper interface for the current catalog.</summary>
+			/// <returns>
+			/// <para>Type: <c>ISearchQueryHelper**</c></para>
+			/// <para>Receives the address of a pointer to a new instance of the ISearchQueryHelper interface with default settings.</para>
+			/// </returns>
+			/// <remarks>
+			/// After the ISearchQueryHelper interface is created, use the put... methods for this interface to change settings. Settings for
+			/// the <c>ISearchQueryHelper</c> object are relevant only until the settings are changed again or the item is released. When the
+			/// item is next created, settings are set to default values.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-getqueryhelper HRESULT
+			// GetQueryHelper( ISearchQueryHelper **ppSearchQueryHelper );
+			[PInvokeData("searchapi.h")]
+			new ISearchQueryHelper GetQueryHelper();
+
+			/// <summary>
+			/// Gets or sets a value that determines whether the catalog is sensitive to diacritics. A diacritic is a mark added to a letter
+			/// to indicate a special phonetic value or pronunciation.
+			/// </summary>
+			/// <value>
+			/// <para>
+			/// A Boolean value that determines whether the catalog is sensitive to diacritics. <c>TRUE</c> if the catalog is sensitive to
+			/// and recognizes diacritics; otherwise, <c>FALSE</c>.
+			/// </para>
+			/// </value>
+			/// <param name="fDiacriticSensitive">Type: <c>BOOL</c></param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-put_diacriticsensitivity
+			// HRESULT put_DiacriticSensitivity( BOOL fDiacriticSensitive );
+			[PInvokeData("searchapi.h")]
+			[DispId(0x60010017)]
+			new int DiacriticSensitivity { get; [param: In]  set; }
+
+			/// <summary>Gets an ISearchCrawlScopeManager interface for this search catalog.</summary>
+			/// <returns>
+			/// <para>Receives a pointer to a new ISearchCrawlScopeManager interface.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-getcrawlscopemanager HRESULT
+			// GetCrawlScopeManager( ISearchCrawlScopeManager **ppCrawlScopeManager );
+			[PInvokeData("searchapi.h")]
+			new ISearchCrawlScopeManager GetCrawlScopeManager();
+
 			/// <summary>
 			/// Instructs the indexer to give a higher priority to indexing items that have URLs that match a specified pattern. These items
 			/// will then have a higher priority than other indexing tasks.
