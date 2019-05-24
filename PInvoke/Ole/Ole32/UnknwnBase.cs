@@ -159,9 +159,6 @@ namespace Vanara.PInvoke
 			/// contains the requested interface pointer. If the object does not support the interface specified in riid, the implementation
 			/// must set *ppvObject to <c>NULL</c>.
 			/// </param>
-			/// <param name="LockServer">The lock server.</param>
-			/// <param name="">The .</param>
-			/// <param name="fLock">The f lock.</param>
 			/// <returns>
 			/// <para>
 			/// This method can return the standard return values E_INVALIDARG, E_OUTOFMEMORY, and E_UNEXPECTED, as well as the following values.

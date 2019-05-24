@@ -112,26 +112,18 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nn-propidl-ienumstatpropsetstg
-		[PInvokeData("propidl.h", MSDNShortId = "8d5e658f-312c-4c91-8794-808b2e8dd182")]
-		[ComImport, Guid("0000013B-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[PInvokeData("propidl.h", MSDNShortId = "0000013B-0000-0000-C000-000000000046")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0e6d4d92-6738-11cf-9608-00aa00680db4")]
 		public interface IEnumSTATPROPSETSTG
 		{
 			/// <summary>
-			/// <para>
 			/// The <c>Next</c> method retrieves a specified number of STATPROPSETSTG structures that follow subsequently in the enumeration
 			/// sequence. If fewer than the requested number of STATPROPSETSTG structures exist in the enumeration sequence, it retrieves the
 			/// remaining <c>STATPROPSETSTG</c> structures.
-			/// </para>
 			/// </summary>
-			/// <param name="celt">
-			/// <para>The number of STATPROPSETSTG structures requested.</para>
-			/// </param>
-			/// <param name="rgelt">
-			/// <para>An array of STATPROPSETSTG structures returned.</para>
-			/// </param>
-			/// <param name="pceltFetched">
-			/// <para>The number of STATPROPSETSTG structures retrieved in the parameter.</para>
-			/// </param>
+			/// <param name="celt">The number of STATPROPSETSTG structures requested.</param>
+			/// <param name="rgelt">An array of STATPROPSETSTG structures returned.</param>
+			/// <param name="pceltFetched">The number of STATPROPSETSTG structures retrieved in the rgelt parameter.</param>
 			/// <returns>
 			/// <para>This method supports the following return values:</para>
 			/// <list type="table">
@@ -141,87 +133,46 @@ namespace Vanara.PInvoke
 			/// </listheader>
 			/// <item>
 			/// <term>S_OK</term>
-			/// <term>The number of STATPROPSETSTG structures returned equals the number specified in the parameter.</term>
+			/// <term>The number of STATPROPSETSTG structures returned equals the number specified in the celt parameter.</term>
 			/// </item>
 			/// <item>
 			/// <term>S_FALSE</term>
-			/// <term>The number of STATPROPSETSTG structures returned is less than the number specified in the parameter.</term>
+			/// <term>The number of STATPROPSETSTG structures returned is less than the number specified in the celt parameter.</term>
 			/// </item>
 			/// </list>
 			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropsetstg-next
+			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropsetstg-next HRESULT Next( ULONG celt,
+			// STATPROPSETSTG *rgelt, ULONG *pceltFetched );
+			[PInvokeData("propidl.h", MSDNShortId = "3af3c518-3db4-4436-b1c1-86587ce8fbf3")]
 			[PreserveSig]
-			HRESULT Next(uint celt, IntPtr rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] STATPROPSETSTG[] rgelt, out uint pceltFetched);
 
-			/// <summary>
-			/// <para>The <c>Skip</c> method skips a specified number of STATPROPSETSTG structures in the enumeration sequence.</para>
-			/// </summary>
-			/// <param name="celt">
-			/// <para>The number of STATPROPSETSTG structures to skip.</para>
-			/// </param>
-			/// <returns>
-			/// <para>This method supports the following return values:</para>
-			/// </returns>
+			/// <summary>The <c>Skip</c> method skips a specified number of STATPROPSETSTG structures in the enumeration sequence.</summary>
+			/// <param name="celt">The number of STATPROPSETSTG structures to skip.</param>
+			/// <returns>This method supports the following return values:</returns>
 			/// <remarks>
-			/// <para>
-			/// A positive value for the parameter skips forward in the STATPROPSETSTG structure enumeration. A negative value for the
-			/// parameter skips backward in the <c>STATPROPSETSTG</c> structure enumeration.
-			/// </para>
+			/// A positive value for the celt parameter skips forward in the STATPROPSETSTG structure enumeration. A negative value for the
+			/// celt parameter skips backward in the <c>STATPROPSETSTG</c> structure enumeration.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropsetstg-skip
+			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropsetstg-skip HRESULT Skip( ULONG celt );
+			[PInvokeData("propidl.h", MSDNShortId = "48275ca5-f9d1-42cb-b218-f51488a91bf8")]
 			[PreserveSig]
 			HRESULT Skip(uint celt);
 
-			/// <summary>
-			/// <para>The <c>Reset</c> method resets the enumeration sequence to the beginning of the STATPROPSETSTG structure array.</para>
-			/// </summary>
-			/// <returns>
-			/// <para>This method supports the S_OK return value.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Return code</term>
-			/// <term>Description</term>
-			/// </listheader>
-			/// <item>
-			/// <term>S_OK</term>
-			/// <term>The enumeration sequence was successfully reset to the beginning of the enumeration.</term>
-			/// </item>
-			/// </list>
-			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropsetstg-reset
+			/// <summary>The <c>Reset</c> method resets the enumeration sequence to the beginning of the STATPROPSETSTG structure array.</summary>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropsetstg-reset HRESULT Reset( );
+			[PInvokeData("propidl.h", MSDNShortId = "41207be6-81ec-4dfc-a737-eb56792edb6d")]
 			void Reset();
 
 			/// <summary>
-			/// <para>
 			/// The <c>Clone</c> method creates an enumerator that contains the same enumeration state as the current STATPROPSETSTG
 			/// structure enumerator. Using this method, a client can record a particular point in the enumeration sequence and then return
 			/// to that point later. The new enumerator supports the same IEnumSTATPROPSETSTG interface.
-			/// </para>
 			/// </summary>
-			/// <returns>
-			/// <para>A pointer to the variable that receives the IEnumSTATPROPSETSTG interface pointer.</para>
-			/// <para>If the method does not succeed, the value of the parameter is undefined.</para>
-			/// <para>This method supports exceptions listed in the following table.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Return code</term>
-			/// <term>Description</term>
-			/// </listheader>
-			/// <item>
-			/// <term>E_INVALIDARG</term>
-			/// <term>The parameter is NULL.</term>
-			/// </item>
-			/// <item>
-			/// <term>E_OUTOFMEMORY</term>
-			/// <term>Insufficient memory.</term>
-			/// </item>
-			/// <item>
-			/// <term>E_UNEXPECTED</term>
-			/// <term>An unexpected exception occurred.</term>
-			/// </item>
-			/// </list>
-			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropsetstg-clone
+			/// <returns>The variable that receives the IEnumSTATPROPSETSTG interface pointer.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropsetstg-clone HRESULT Clone(
+			// IEnumSTATPROPSETSTG **ppenum );
+			[PInvokeData("propidl.h", MSDNShortId = "f875d5e9-fac0-4961-9570-342f55cf307e")]
 			IEnumSTATPROPSETSTG Clone();
 		}
 
@@ -246,27 +197,19 @@ namespace Vanara.PInvoke
 		/// is prohibitive during property enumeration.
 		/// </para>
 		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nn-propidl-ienumstatpropstg
-		[PInvokeData("propidl.h", MSDNShortId = "e625e52a-5628-4d18-9282-aa1c141c83af")]
-		[ComImport, Guid("00000139-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propidlbase/nn-propidlbase-ienumstatpropstg
+		[PInvokeData("propidlbase.h", MSDNShortId = "e625e52a-5628-4d18-9282-aa1c141c83af")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000139-0000-0000-C000-000000000046")]
 		public interface IEnumSTATPROPSTG
 		{
 			/// <summary>
-			/// <para>
 			/// The <c>Next</c> method retrieves a specified number of STATPROPSTG structures, that follow subsequently in the enumeration
 			/// sequence. If fewer than the requested number of STATPROPSTG structures exist in the enumeration sequence, it retrieves the
 			/// remaining <c>STATPROPSTG</c> structures.
-			/// </para>
 			/// </summary>
-			/// <param name="celt">
-			/// <para>The number of STATPROPSTG structures requested.</para>
-			/// </param>
-			/// <param name="rgelt">
-			/// <para>An array of STATPROPSTG structures returned.</para>
-			/// </param>
-			/// <param name="pceltFetched">
-			/// <para>The number of STATPROPSTG structures retrieved in the parameter.</para>
-			/// </param>
+			/// <param name="celt">The number of STATPROPSTG structures requested.</param>
+			/// <param name="rgelt">An array of STATPROPSTG structures returned.</param>
+			/// <param name="pceltFetched">The number of STATPROPSTG structures retrieved in the rgelt parameter.</param>
 			/// <returns>
 			/// <para>This method supports the following return values.</para>
 			/// <list type="table">
@@ -276,68 +219,66 @@ namespace Vanara.PInvoke
 			/// </listheader>
 			/// <item>
 			/// <term>S_OK</term>
-			/// <term>The number of STATPROPSTG structures returned is equal to the number specified in the parameter.</term>
+			/// <term>The number of STATPROPSTG structures returned is equal to the number specified in the celt parameter.</term>
 			/// </item>
 			/// <item>
 			/// <term>S_FALSE</term>
-			/// <term>The number of STATPROPSTG structures returned is less than the number specified in the parameter.</term>
+			/// <term>The number of STATPROPSTG structures returned is less than the number specified in the celt parameter.</term>
 			/// </item>
 			/// </list>
 			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropstg-next
+			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropstg-next HRESULT Next( ULONG celt,
+			// STATPROPSTG *rgelt, ULONG *pceltFetched );
+			[PInvokeData("propidl.h", MSDNShortId = "8e911da9-0056-4267-b9d0-c4ba929ddb94")]
 			[PreserveSig]
-			HRESULT Next(uint celt, IntPtr rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] STATPROPSTG[] rgelt, out uint pceltFetched);
 
-			/// <summary>
-			/// <para>The <c>Skip</c> method skips the specified number of STATPROPSTG structures in the enumeration sequence.</para>
-			/// </summary>
-			/// <param name="celt">
-			/// <para>The number of STATPROPSTG structures to skip.</para>
-			/// </param>
-			/// <returns>
-			/// <para>This method supports the following return values:</para>
-			/// </returns>
+			/// <summary>The <c>Skip</c> method skips the specified number of STATPROPSTG structures in the enumeration sequence.</summary>
+			/// <param name="celt">The number of STATPROPSTG structures to skip.</param>
+			/// <returns>This method supports the following return values:</returns>
 			/// <remarks>
-			/// <para>
-			/// A positive value for the parameter skips forward in the STATPROPSTG structure enumeration. A negative value for the parameter
-			/// skips backward in the <c>STATPROPSTG</c> structure enumeration.
-			/// </para>
+			/// A positive value for the celt parameter skips forward in the STATPROPSTG structure enumeration. A negative value for the celt
+			/// parameter skips backward in the <c>STATPROPSTG</c> structure enumeration.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropstg-skip
+			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropstg-skip HRESULT Skip( ULONG celt );
+			[PInvokeData("propidl.h", MSDNShortId = "e70e4668-d52c-4135-948b-c8f5d141e6a2")]
 			[PreserveSig]
 			HRESULT Skip(uint celt);
 
+			/// <summary>The <c>Reset</c> method resets the enumeration sequence to the beginning of the STATPROPSTG structure array.</summary>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropstg-reset HRESULT Reset( );
+			[PInvokeData("propidl.h", MSDNShortId = "e742e3ee-6261-4d6d-85ca-8df770aa58ad")]
+			void Reset();
+
 			/// <summary>
-			/// <para>The <c>Reset</c> method resets the enumeration sequence to the beginning of the STATPROPSTG structure array.</para>
+			/// The <c>Clone</c> method creates an enumerator that contains the same enumeration state as the current STATPROPSTG structure
+			/// enumerator. Using this method, a client can record a particular point in the enumeration sequence and then return to that
+			/// point later. The new enumerator supports the same IEnumSTATPROPSTG interface.
 			/// </summary>
 			/// <returns>
-			/// <para>This method supports the S_OK return value.</para>
+			/// <para>This method supports the following return values.</para>
 			/// <list type="table">
 			/// <listheader>
 			/// <term>Return code</term>
 			/// <term>Description</term>
 			/// </listheader>
 			/// <item>
-			/// <term>S_OK</term>
-			/// <term>The enumeration sequence was successfully reset to the beginning of the enumeration.</term>
+			/// <term>E_INVALIDARG</term>
+			/// <term>The ppenum parameter is NULL.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected exception occurred.</term>
 			/// </item>
 			/// </list>
 			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropstg-reset
-			void Reset();
-
-			/// <summary>
-			/// <para>
-			/// The <c>Clone</c> method creates an enumerator that contains the same enumeration state as the current STATPROPSTG structure
-			/// enumerator. Using this method, a client can record a particular point in the enumeration sequence and then return to that
-			/// point later. The new enumerator supports the same IEnumSTATPROPSTG interface.
-			/// </para>
-			/// </summary>
-			/// <returns>
-			/// <para>A pointer to the variable that receives the IEnumSTATPROPSTG interface pointer.</para>
-			/// <para>If the method is unsuccessful, the value of the parameter is undefined.</para>
-			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropstg-clone
+			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropstg-clone HRESULT Clone( IEnumSTATPROPSTG
+			// **ppenum );
+			[PInvokeData("propidl.h", MSDNShortId = "e06e109a-3f9d-4b08-bde9-888cb795287c")]
 			IEnumSTATPROPSTG Clone();
 		}
 

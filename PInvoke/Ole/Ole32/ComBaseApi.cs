@@ -2031,7 +2031,6 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </param>
-		/// <param name="">The .</param>
 		/// <param name="ppUnkInner">
 		/// On successful return, address of pointer to the IUnknown interface on the newly-created aggregated standard marshaler. If an
 		/// error occurs, this value is <c>NULL</c>.
@@ -2516,19 +2515,29 @@ namespace Vanara.PInvoke
 		[PInvokeData("combaseapi.h", MSDNShortId = "e9e7c5a3-70ec-4a68-ac21-1ab6774d140f")]
 		public static extern HRESULT CoQueryAuthenticationServices(out uint pcAuthSvc, out SafeCoTaskMemHandle asAuthSvc);
 
-		/// <summary> Retrieves a list of the authentication services registered when the process called CoInitializeSecurity. </summary>
-		/// <returns>An array of SOLE_AUTHENTICATION_SERVICE structures.</returns> <remarks> <c>CoQueryAuthenticationServices</c> retrieves a
-		/// list of the authentication services currently registered. If the process calls CoInitializeSecurity, these are the services
-		/// registered through that call. If the application does not call it, <c>CoInitializeSecurity</c> is called automatically by COM,
-		/// registering the default security package, the first time an interface is marshaled or unmarshaled.</para><para>This function
-		/// returns only the authentication services registered with CoInitializeSecurity. It does not return all of the authentication
-		/// services installed on the computer, but EnumerateSecurityPackages does. <c>CoQueryAuthenticationServices</c> is primarily useful
-		/// for custom marshalers, to determine which principal names an application can use.</para><para>Different authentication services
-		/// support different levels of security. For example, NTLMSSP does not support delegation or mutual authentication while Kerberos
-		/// does. The application is responsible only for registering authentication services that provide the features the application
-		/// needs. This function provides a way to find out which services have been registered with CoInitializeSecurity. </remarks>
+		/// <summary>Retrieves a list of the authentication services registered when the process called CoInitializeSecurity.</summary>
+		/// <returns>
+		/// An array of SOLE_AUTHENTICATION_SERVICE structures.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>CoQueryAuthenticationServices</c> retrieves a list of the authentication services currently registered. If the process calls
+		/// CoInitializeSecurity, these are the services registered through that call. If the application does not call it,
+		/// <c>CoInitializeSecurity</c> is called automatically by COM, registering the default security package, the first time an interface
+		/// is marshaled or unmarshaled.
+		/// </para>
+		/// <para>
+		/// This function returns only the authentication services registered with CoInitializeSecurity. It does not return all of the
+		/// authentication services installed on the computer, but EnumerateSecurityPackages does. <c>CoQueryAuthenticationServices</c> is
+		/// primarily useful for custom marshalers, to determine which principal names an application can use.
+		/// </para>
+		/// <para>
+		/// Different authentication services support different levels of security. For example, NTLMSSP does not support delegation or
+		/// mutual authentication while Kerberos does. The application is responsible only for registering authentication services that
+		/// provide the features the application needs. This function provides a way to find out which services have been registered with CoInitializeSecurity.
+		/// </para>
+		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-coqueryauthenticationservices HRESULT
-		// CoQueryAuthenticationServices( DWORD *pcAuthSvc, SOLE_AUTHENTICATION_SERVICE **asAuthSvc );
 		[PInvokeData("combaseapi.h", MSDNShortId = "e9e7c5a3-70ec-4a68-ac21-1ab6774d140f")]
 		public static SOLE_AUTHENTICATION_SERVICE[] CoQueryAuthenticationServices() { CoQueryAuthenticationServices(out var c, out var a).ThrowIfFailed(); return a.ToArray<SOLE_AUTHENTICATION_SERVICE>((int)c); }
 
@@ -2544,8 +2553,7 @@ namespace Vanara.PInvoke
 		/// A pointer to a variable that receives the current authorization service. This will be a single value taken from the authorization
 		/// constants. If the caller specifies <c>NULL</c>, the current authorization service is not retrieved.
 		/// </param>
-		/// <param name="StringBuilder">The string builder.</param>
-		/// <param name="">The .</param>
+		/// <param name="pServerPrincName">The string builder.</param>
 		/// <param name="pAuthnLevel">
 		/// A pointer to a variable that receives the current authentication level. This will be a single value taken from the authentication
 		/// level constants. If the caller specifies <c>NULL</c>, the current authentication level is not retrieved.
