@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Ole32;
 
@@ -1133,7 +1135,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iqueryparser-parse HRESULT Parse(
 			// LPCWSTR pszInputString, IEnumUnknown *pCustomProperties, IQuerySolution **ppSolution );
-			IQuerySolution Parse([In, MarshalAs(UnmanagedType.LPWStr)] string pszInputString, [In] IEnumUnknown pCustomProperties);
+			IQuerySolution Parse([In, MarshalAs(UnmanagedType.LPWStr)] string pszInputString, [In, Optional] IEnumUnknown pCustomProperties);
 
 			/// <summary>Sets a single option, such as a specified word-breaker, for parsing an input string.</summary>
 			/// <param name="option">
@@ -1930,7 +1932,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>The valid values for <paramref name="riid"/> are __uuidof(IEnumUnknown) and __uuidof(IEnumVARIANT).</para>
 		/// </remarks>
-		public static T GetErrors<T>(this IQuerySolution qs) where T : class => (T)qs.GetErrors(typeof(T).GUID);
+		public static IEnumerable<IRichChunk> GetErrors(this IQuerySolution qs) => ((IEnumUnknown)qs.GetErrors(typeof(IEnumUnknown).GUID)).Enumerate<IRichChunk>();
 
 		/// <summary>Retrieves an enumeration of IMetaData objects for this entity.</summary>
 		/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
@@ -1968,6 +1970,26 @@ namespace Vanara.PInvoke
 		/// <param name="e">The <see cref="IEntity"/> instance.</param>
 		/// <returns>Receives the address of a pointer to the enumeration of the IRelationship objects.</returns>
 		public static T Relationships<T>(this IEntity e) where T : class => (T)e.Relationships(typeof(T).GUID);
+
+		/// <summary>
+		/// Performs a variety of transformations on a condition tree, and thereby the resolved condition for evaluation. The returned
+		/// object supports ICondition and ICondition2.
+		/// </summary>
+		/// <typeparam name="T">The desired type of the result, either ICondition or ICondition2.</typeparam>
+		/// <param name="f2">The IConditionFactory2 instance.</param>
+		/// <param name="pc"><para>Type: <c>ICondition*</c></para>
+		/// <para>Pointer to an ICondition object to be resolved.</para></param>
+		/// <param name="sqro"><para>Type: <c>STRUCTURED_QUERY_RESOLVE_OPTION</c></para>
+		/// <para>
+		/// Specifies zero or more of the STRUCTURED_QUERY_RESOLVE_OPTION flags. The SQRO_NULL_VALUE_TYPE_FOR_PLAIN_VALUES flag is
+		/// automatically added to sqro.
+		/// </para></param>
+		/// <returns></returns>
+		public static T ResolveCondition<T>(this IConditionFactory2 f2, ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro = 0) where T : class
+		{
+			Kernel32.GetLocalTime(out var st);
+			return (T)f2.ResolveCondition(pc, sqro, st, typeof(T).GUID);
+		}
 
 		/// <summary>Class interface for ICondition</summary>
 		[ComImport, Guid("116F8D13-101E-4fa5-84D4-FF8279381935"), ClassInterface(ClassInterfaceType.None)]
