@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -12,13 +13,26 @@ namespace Vanara.PInvoke
 {
 	public static partial class Ole32
 	{
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("objidl.h")]
 		public enum ACTIVATIONTYPE
 		{
+			/// <summary>Undocumented.</summary>
 			ACTIVATIONTYPE_UNCATEGORIZED = 0x0,
+
+			/// <summary>Undocumented.</summary>
 			ACTIVATIONTYPE_FROM_MONIKER = 0x1,
+
+			/// <summary>Undocumented.</summary>
 			ACTIVATIONTYPE_FROM_DATA = 0x2,
+
+			/// <summary>Undocumented.</summary>
 			ACTIVATIONTYPE_FROM_STORAGE = 0x4,
+
+			/// <summary>Undocumented.</summary>
 			ACTIVATIONTYPE_FROM_STREAM = 0x8,
+
+			/// <summary>Undocumented.</summary>
 			ACTIVATIONTYPE_FROM_FILE = 0x10
 		}
 
@@ -177,6 +191,36 @@ namespace Vanara.PInvoke
 			EOAC_DISABLE_AAA = 0x1000,
 		}
 
+		/// <summary>
+		/// <para>
+		/// The <c>LOCKTYPE</c> enumeration values indicate the type of locking requested for the specified range of bytes. The values are
+		/// used in the ILockBytes::LockRegion and IStream::LockRegion methods.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ne-objidl-taglocktype typedef enum tagLOCKTYPE { LOCK_WRITE,
+		// LOCK_EXCLUSIVE, LOCK_ONLYONCE } LOCKTYPE;
+		[PInvokeData("objidl.h", MSDNShortId = "5d84fb08-aa4f-4918-a0de-550b02cb5287")]
+		[Flags]
+		public enum LOCKTYPE
+		{
+			/// <summary>
+			/// If this lock is granted, the specified range of bytes can be opened and read any number of times, but writing to the locked
+			/// range is prohibited except for the owner that was granted this lock.
+			/// </summary>
+			LOCK_WRITE = 1,
+
+			/// <summary>
+			/// If this lock is granted, writing to the specified range of bytes is prohibited except by the owner that was granted this lock.
+			/// </summary>
+			LOCK_EXCLUSIVE = 2,
+
+			/// <summary>
+			/// If this lock is granted, no other LOCK_ONLYONCE lock can be obtained on the range. Usually this lock type is an alias for
+			/// some other lock type. Thus, specific implementations can have additional behavior associated with this lock type.
+			/// </summary>
+			LOCK_ONLYONCE = 4,
+		}
+
 		/// <summary>Flags used by <see cref="IRunningObjectTable.Register"/></summary>
 		[PInvokeData("wtypes.h")]
 		[Flags]
@@ -192,10 +236,60 @@ namespace Vanara.PInvoke
 			ROTFLAGS_ALLOWANYCLIENT = 0x2,
 		}
 
+		/// <summary>
+		/// The <c>STGTY</c> enumeration values are used in the <c>type</c> member of the STATSTG structure to indicate the type of the
+		/// storage element. A storage element is a storage object, a stream object, or a byte-array object (LOCKBYTES).
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ne-objidl-stgty typedef enum tagSTGTY { STGTY_STORAGE, STGTY_STREAM,
+		// STGTY_LOCKBYTES, STGTY_PROPERTY } STGTY;
+		[PInvokeData("objidl.h", MSDNShortId = "67189e7a-b089-4a29-adf8-ad7c459c7974")]
+		public enum STGTY : uint
+		{
+			/// <summary>Indicates that the storage element is a storage object.</summary>
+			STGTY_STORAGE = 1,
+
+			/// <summary>Indicates that the storage element is a stream object.</summary>
+			STGTY_STREAM,
+
+			/// <summary>Indicates that the storage element is a byte-array object.</summary>
+			STGTY_LOCKBYTES,
+
+			/// <summary>Indicates that the storage element is a property storage object.</summary>
+			STGTY_PROPERTY,
+		}
+
+		/// <summary>Enumerates the values in a <see cref="IEnumContextProps"/> instance.</summary>
+		/// <param name="e">The <see cref="IEnumContextProps"/> instance.</param>
+		/// <returns>The enumerated values.</returns>
+		public static IEnumerable<ContextProperty> Enumerate(this IEnumContextProps e) => new Collections.IEnumFromCom<ContextProperty>(e.Next, e.Reset);
+
+		/// <summary>Enumerates the values in a <see cref="IEnumSTATSTG"/> instance.</summary>
+		/// <param name="e">The <see cref="IEnumSTATSTG"/> instance.</param>
+		/// <returns>The enumerated values.</returns>
+		public static IEnumerable<STATSTG> Enumerate(this IEnumSTATSTG e) => new Collections.IEnumFromCom<STATSTG>(e.Next, e.Reset);
+
+		/// <summary>Enumerates the values in a <see cref="IEnumUnknown"/> instance.</summary>
+		/// <param name="e">The <see cref="IEnumUnknown"/> instance.</param>
+		/// <returns>The enumerated values.</returns>
+		public static IEnumerable<IntPtr> Enumerate(this IEnumUnknown e) => new Collections.IEnumFromCom<IntPtr>(e.Next, e.Reset);
+
+		/// <summary>Enumerates the values in a <see cref="IEnumUnknown"/> instance.</summary>
+		/// <param name="e">The <see cref="IEnumUnknown"/> instance.</param>
+		/// <returns>The enumerated values.</returns>
+		public static IEnumerable<T> Enumerate<T>(this IEnumUnknown e) where T : class => new Collections.IEnumFromCom<IntPtr>(e.Next, e.Reset).Select(p => (T)Marshal.GetObjectForIUnknown(p));
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("objidl.h")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000017-0000-0000-C000-000000000046")]
 		public interface IActivationFilter
 		{
-			Guid HandleActivation(ACTIVATIONTYPE dwActivationType, in Guid rclsid);
+			/// <summary>Handles the activation.</summary>
+			/// <param name="dwActivationType">Type of the activation.</param>
+			/// <param name="rclsid">The CLSID.</param>
+			/// <param name="pReplacementClsId">The replacement CLSID.</param>
+			/// <returns>An appropriate error response.</returns>
+			[PreserveSig]
+			HRESULT HandleActivation(ACTIVATIONTYPE dwActivationType, in Guid rclsid, out Guid pReplacementClsId);
 		}
 
 		/// <summary>Marks an interface as agile across apartments.</summary>
@@ -672,6 +766,88 @@ namespace Vanara.PInvoke
 			IEnumContextProps EnumContextProps();
 		}
 
+		/// <summary>
+		/// The <c>IDirectWriterLock</c> interface enables a single writer to obtain exclusive write access to a root storage object opened
+		/// in direct mode while allowing concurrent access by multiple readers. This single-writer, multiple-reader mode does not require
+		/// the overhead of making a snapshot copy of the storage for the readers.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/Objidl/nn-objidl-idirectwriterlock
+		[PInvokeData("objidl.h", MSDNShortId = "cff56e4f-b8c5-4d87-9289-f8f2212d7c42")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0e6d4d92-6738-11cf-9608-00aa00680db4")]
+		public interface IDirectWriterLock
+		{
+			/// <summary>The <c>WaitForWriteAccess</c> method obtains exclusive write access to a storage object.</summary>
+			/// <param name="dwTimeout">
+			/// Specifies the time in milliseconds that this method blocks while waiting to obtain exclusive write access to the storage
+			/// object. If dwTimeout is zero, the method does not block waiting for exclusive access for writing. The INFINITE time-out
+			/// defined in the Platform SDK is allowed for dwTimeout.
+			/// </param>
+			/// <returns>
+			/// This method can return one of these values.
+			/// <list type="bullet">
+			/// <item>
+			/// <term>S_OK</term>
+			/// <description>The caller has successfully obtained exclusive write access to the storage.</description>
+			/// </item>
+			/// <item>
+			/// <term>S_FALSE</term>
+			/// <description>This method was called again without an intervening call to IDirectWriterLock::ReleaseWriteAccess.</description>
+			/// </item>
+			/// <item>
+			/// <term>STG_E_INUSE</term>
+			/// <description>The specified time-out expired without obtaining exclusive write access.</description>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// When a storage is opened in direct mode (STGM_DIRECT) with the STGM_READWRITE|STGM_SHARE_DENY_WRITE, you can call this method
+			/// to obtain exclusive write access to the storage.
+			/// </para>
+			/// <para>
+			/// This method returns immediately if no readers have the storage open. If the storage is still open for reading, this method
+			/// blocks for the specified dwTimeout or until the current readers close the storage.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-idirectwriterlock-waitforwriteaccess HRESULT
+			// WaitForWriteAccess( DWORD dwTimeout );
+			[PInvokeData("objidl.h", MSDNShortId = "e4505bed-325b-494e-93bd-7bf23b3a1215")]
+			[PreserveSig]
+			HRESULT WaitForWriteAccess(uint dwTimeout);
+
+			/// <summary>The <c>ReleaseWriteAccess</c> method releases the write lock previously obtained.</summary>
+			/// <remarks>
+			/// <para>The writer calls this method to release exclusive access to the storage object previously taken by calling IDirectWriterLock::WaitForWriteAccess.</para>
+			/// <para>
+			/// After the writer calls this method, it is safe to allow readers to reopen the storage again until the next call to IDirectWriterLock::WaitForWriteAccess.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-idirectwriterlock-releasewriteaccess HRESULT
+			// ReleaseWriteAccess( );
+			[PInvokeData("objidl.h", MSDNShortId = "849eeb79-60fd-4345-9e04-2ed7a7ede5ca")]
+			void ReleaseWriteAccess();
+
+			/// <summary>The <c>HaveWriteAccess</c> method indicates whether the write lock has been taken.</summary>
+			/// <returns>
+			/// This method can return one of these values.
+			/// <list type="bullet">
+			/// <item>
+			/// <term>S_OK</term>
+			/// <description>The storage object is currently locked for write access.</description>
+			/// </item>
+			/// <item>
+			/// <term>S_FALSE</term>
+			/// <description>The storage object is not currently locked for write access.</description>
+			/// </item>
+			/// </list>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-idirectwriterlock-havewriteaccess HRESULT
+			// HaveWriteAccess( );
+			[PInvokeData("objidl.h", MSDNShortId = "8366b6b5-73c3-4b05-be68-c24ecd2eab96")]
+			[PreserveSig]
+			HRESULT HaveWriteAccess();
+		}
+
 		/// <summary>Provides a mechanism for enumerating the context properties associated with a COM+ object context.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-ienumcontextprops
 		[PInvokeData("objidl.h", MSDNShortId = "64591e45-5478-4360-8c1f-08b09b5aef8e")]
@@ -816,7 +992,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumunknown-next HRESULT Next( ULONG celt, IUnknown
 			// **rgelt, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, ref IntPtr rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] rgelt, out uint pceltFetched);
 
 			/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
 			/// <param name="celt">The number of items to be skipped.</param>
@@ -844,6 +1020,372 @@ namespace Vanara.PInvoke
 			/// <returns>A pointer to the cloned enumerator object.</returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumunknown-clone HRESULT Clone( IEnumUnknown **ppenum );
 			IEnumUnknown Clone();
+		}
+
+		/// <summary>
+		/// The <c>IFillLockBytes</c> interface enables downloading code to write data asynchronously to a structured storage byte array.
+		/// When the downloading code has new data available, it calls IFillLockBytes::FillAppend or IFillLockBytes::FillAt to write the data
+		/// to the byte array. An application attempting to access this data, through calls to the ILockBytes interface, can do so even as
+		/// the downloader continues to make calls to <c>IFillLockBytes</c>. If the application attempts to access data that has not already
+		/// been downloaded through a call to <c>IFillLockBytes</c>, then <c>ILockBytes</c> returns a new error, E_PENDING.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/Objidl/nn-objidl-ifilllockbytes
+		[PInvokeData("objidl.h", MSDNShortId = "99caf010-415e-11cf-8814-00aa00b569f5")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0e6d4d92-6738-11cf-9608-00aa00680db4")]
+		public interface IFillLockBytes
+		{
+			/// <summary>The <c>FillAppend</c> method writes a new block of bytes to the end of a byte array.</summary>
+			/// <param name="pv">
+			/// Pointer to the data to be appended to the end of an existing byte array. This operation does not create a danger of a memory
+			/// leak or a buffer overrun.
+			/// </param>
+			/// <param name="cb">Size of pv in bytes.</param>
+			/// <param name="pcbWritten">Number of bytes that were successfully written.</param>
+			/// <remarks>
+			/// The <c>FillAppend</c> method is used for sequential downloading, where bytes are written to the end of the byte array in the
+			/// order in which they are received. This method obtains the current size of the byte array (for example, lockbytes object) and
+			/// writes a new block of data to the end of the array. As each block of data becomes available, the downloader calls this method
+			/// to write it to the byte array. Subsequent calls by the compound file implementation to ILockBytes::ReadAt return any
+			/// available data or return E_PENDING if data is currently unavailable.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ifilllockbytes-fillappend HRESULT FillAppend( const void
+			// *pv, ULONG cb, ULONG *pcbWritten );
+			[PInvokeData("objidl.h", MSDNShortId = "3f25c48f-85a4-4778-b262-ad0c52cb1ac9")]
+			void FillAppend(IntPtr pv, uint cb, out uint pcbWritten);
+
+			/// <summary>The <c>FillAt</c> method writes a new block of data to a specified location in the byte array.</summary>
+			/// <param name="ulOffset">The offset, expressed in number of bytes, from the first element of the byte array.</param>
+			/// <param name="pv">Pointer to the data to be written at the location specified by uIOffset.</param>
+			/// <param name="cb">Size of pv in bytes.</param>
+			/// <param name="pcbWritten">Number of bytes that were successfully written.</param>
+			/// <remarks>
+			/// <para>
+			/// The <c>FillAt</c> method is used for nonsequential downloading (for example, HTTP byte range requests). In nonsequential
+			/// downloading the caller specifies ranges in the byte array where various blocks of data are to be written. Subsequent calls by
+			/// the compound file implementation to ILockBytes::ReadAt are passed by the byte array wrapper object's own implementation of
+			/// ILockBytes to the underlying byte array. This method is not currently implemented and will return E_NOTIMPL.
+			/// </para>
+			/// <para><c>Note</c> The system-supplied IFillLockBytes implementation does not support <c>FillAt</c> and returns E_NOTIMPL.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ifilllockbytes-fillat HRESULT FillAt( ULARGE_INTEGER
+			// ulOffset, const void *pv, ULONG cb, ULONG *pcbWritten );
+			[PInvokeData("objidl.h", MSDNShortId = "d378d87b-e081-4950-b87b-9b1ad6dfb29d")]
+			void FillAt(ulong ulOffset, IntPtr pv, uint cb, out uint pcbWritten);
+
+			/// <summary>The <c>SetFillSize</c> method sets the expected size of the byte array.</summary>
+			/// <param name="ulSize">Size in bytes of the byte array object that is to be filled in subsequent calls to IFillLockBytes::FillAppend.</param>
+			/// <remarks>
+			/// If <c>SetFillSize</c> has not been called, any call to ILockBytes::ReadAt that attempts to access data that has not yet been
+			/// written using IFillLockBytes::FillAppend or IFillLockBytes::FillAt will return a new error message, E_PENDING. After
+			/// <c>SetFillSize</c> has been called, any call to <c>ReadAt</c> that attempts to access data beyond the current size, as set by
+			/// <c>SetFillSize</c>, returns E_FAIL instead of E_PENDING.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ifilllockbytes-setfillsize HRESULT SetFillSize(
+			// ULARGE_INTEGER ulSize );
+			[PInvokeData("objidl.h", MSDNShortId = "1336079e-02d2-4799-a58f-d097ec80c03b")]
+			void SetFillSize(ulong ulSize);
+
+			/// <summary>
+			/// The <c>Terminate</c> method informs the byte array that the download has been terminated, either successfully or unsuccessfully.
+			/// </summary>
+			/// <param name="bCanceled">
+			/// Download is complete. If <c>TRUE</c>, the download was terminated unsuccessfully. If <c>FALSE</c>, the download terminated successfully.
+			/// </param>
+			/// <remarks>After this method has been called, the byte array will no longer return E_PENDING.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ifilllockbytes-terminate HRESULT Terminate( BOOL
+			// bCanceled );
+			[PInvokeData("objidl.h", MSDNShortId = "21ea78c7-51f1-4418-915c-79db47c25715")]
+			void Terminate([MarshalAs(UnmanagedType.Bool)] bool bCanceled);
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>ILayoutStorage</c> interface enables an application to optimize the layout of its compound files for efficient downloading
+		/// across a slow link. The goal is to enable a browser or other application to download data in the order in which it will actually
+		/// be required.
+		/// </para>
+		/// <para>To optimize a compound file, an application calls CopyTo to layout a docfile, thus improving performance in most scenarios.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-ilayoutstorage
+		[PInvokeData("objidl.h", MSDNShortId = "72201600-4bbb-4346-a13f-927e8463b6ec")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0e6d4d90-6738-11cf-9608-00aa00680db4")]
+		public interface ILayoutStorage
+		{
+			/// <summary>
+			/// The <c>LayoutScript</c> method provides explicit directions for reordering the storages, streams, and controls in a compound
+			/// file to match the order in which they are accessed during the download.
+			/// </summary>
+			/// <param name="pStorageLayout">Pointer to an array of StorageLayout structures.</param>
+			/// <param name="nEntries">Number of entries in the array of StorageLayout structures.</param>
+			/// <param name="glfInterleavedFlag">Reserved for future use.</param>
+			/// <remarks>
+			/// <para>
+			/// To provide explicit layout instructions, the application calls <c>ILayoutStorage::LayoutScript</c>, passing an array of
+			/// StorageLayout structures. Each structure defines a single storage or stream data block and specifies where the block is to be
+			/// written in the ILockBytes byte array.
+			/// </para>
+			/// <para>An application can combine scripted layout with monitoring, as the structure of a particular compound file may dictate.</para>
+			/// <para>
+			/// When the optimal data-layout pattern of an entire compound file has been determined, the application calls
+			/// ILayoutStorage::ReLayoutDocfile to restructure the compound file to match the order in which its data sectors were accessed.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilayoutstorage-layoutscript HRESULT LayoutScript(
+			// StorageLayout *pStorageLayout, DWORD nEntries, DWORD glfInterleavedFlag );
+			[PInvokeData("objidl.h", MSDNShortId = "22ae3485-15d9-47e4-988e-fb760e67595b")]
+			void LayoutScript([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] StorageLayout[] pStorageLayout, uint nEntries, uint glfInterleavedFlag = 0);
+
+			/// <summary>
+			/// The <c>BeginMonitor</c> method is used to begin monitoring when a loading operation is started. When the operation is
+			/// complete, the application must call ILayoutStorage::EndMonitor.
+			/// </summary>
+			/// <remarks>
+			/// <para>
+			/// Normally an application calls <c>BeginMonitor</c> before the actual loading begins. Once this method has been called, the
+			/// compound file implementation regards any operation performed on the files storages and streams as part of the desired access
+			/// pattern. The result is a layout script like that created explicitly by calling ILayoutStorage::LayoutScript.
+			/// </para>
+			/// <para>
+			/// Applications will usually use monitoring to obtain the access pattern of embedded objects. Monitoring also makes possible
+			/// generic layout tools, that launch existing applications and monitor their access patterns.
+			/// </para>
+			/// <para>
+			/// A call to ILayoutStorage::EndMonitor ends monitoring. Multiple calls to <c>BeginMonitor</c> and <c>EndMonitor</c> are
+			/// permitted. Monitoring can also be mixed with calls to ILayoutStorage::LayoutScript.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilayoutstorage-beginmonitor HRESULT BeginMonitor( );
+			[PInvokeData("objidl.h", MSDNShortId = "16371d6c-adb9-43c2-80a4-377e94854bbb")]
+			void BeginMonitor();
+
+			/// <summary>The <c>EndMonitor</c> method ends monitoring of a compound file. Must be preceded by a call to ILayoutStorage::BeginMonitor.</summary>
+			/// <remarks>
+			/// A call to <c>EndMonitor</c> is generally followed by a call to ILayoutStorage::RelayoutDocfile, which uses the access pattern
+			/// detected by the monitoring to restructure the compound file.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilayoutstorage-endmonitor HRESULT EndMonitor( );
+			[PInvokeData("objidl.h", MSDNShortId = "83b9486b-78b6-473c-9a9a-33f470a4d70f")]
+			void EndMonitor();
+
+			/// <summary>
+			/// The <c>ReLayoutDocfile</c> method rewrites the compound file, using the layout script obtained through monitoring, or
+			/// provided through explicit layout scripting, to create a new compound file.
+			/// </summary>
+			/// <param name="pwcsNewDfName">
+			/// Pointer to the name of the compound file to be rewritten. This name must be a valid filename, distinct from the name of the
+			/// original compound file. The original compound file will be optimized and written to the new pwcsNewDfName.
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilayoutstorage-relayoutdocfile HRESULT ReLayoutDocfile(
+			// OLECHAR *pwcsNewDfName );
+			[PInvokeData("objidl.h", MSDNShortId = "5db3a26c-595a-4c9b-bb6d-b170eb9864df")]
+			void ReLayoutDocfile(string pwcsNewDfName);
+
+			/// <summary>
+			/// <para>Not supported.</para>
+			/// <para>The <c>ReLayoutDocfileOnILockBytes</c> method is not implemented. If called, it returns <c>STG_E_UNIMPLEMENTEDFUNCTION</c>.</para>
+			/// </summary>
+			/// <param name="pILockBytes">
+			/// A pointer to the ILockBytes interface on the underlying byte-array object where the compound file is to be rewritten.
+			/// </param>
+			/// <remarks>
+			/// If implemented, it would rewrite the compound file in the byte-array object specified by the caller. It would return
+			/// <c>S_OK</c> for success or one of the <c>STG_E_*</c> error codes for failure.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilayoutstorage-relayoutdocfileonilockbytes HRESULT
+			// ReLayoutDocfileOnILockBytes( ILockBytes *pILockBytes );
+			[PInvokeData("objidl.h", MSDNShortId = "4d62ea35-d9cb-4ec6-ad71-7b32096953f1")]
+			[Obsolete("Not implemented.")]
+			void ReLayoutDocfileOnILockBytes(ILockBytes pILockBytes);
+		}
+
+		/// <summary>
+		/// The <c>ILockBytes</c> interface is implemented on a byte array object that is backed by some physical storage, such as a disk
+		/// file, global memory, or a database. It is used by a COM compound file storage object to give its root storage access to the
+		/// physical device, while isolating the root storage from the details of accessing the physical storage.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-ilockbytes
+		[PInvokeData("objidl.h", MSDNShortId = "bb2c5d0d-8dc8-4844-9a20-ef8e4def5731")]
+		[ComImport, Guid("0000000a-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface ILockBytes
+		{
+			/// <summary>
+			/// The <c>ReadAt</c> method reads a specified number of bytes starting at a specified offset from the beginning of the byte
+			/// array object.
+			/// </summary>
+			/// <param name="ulOffset">Specifies the starting point from the beginning of the byte array for reading data.</param>
+			/// <param name="pv">Pointer to the buffer into which the byte array is read. The size of this buffer is contained in cb.</param>
+			/// <param name="cb">Specifies the number of bytes of data to attempt to read from the byte array.</param>
+			/// <param name="pcbRead">
+			/// Pointer to a <c>ULONG</c> where this method writes the actual number of bytes read from the byte array. You can set this
+			/// pointer to <c>NULL</c> to indicate that you are not interested in this value. In this case, this method does not provide the
+			/// actual number of bytes that were read.
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// <c>ILockBytes::ReadAt</c> reads bytes from the byte array object. It reports the number of bytes that were actually read.
+			/// This value may be less than the number of bytes requested if an error occurs or if the end of the byte array is reached
+			/// during the read.
+			/// </para>
+			/// <para>
+			/// It is not an error to read less than the specified number of bytes if the operation encounters the end of the byte array.
+			/// Note that this is the same end-of-file behavior as found in MS-DOS file allocation table (FAT) file system files.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilockbytes-readat HRESULT ReadAt( ULARGE_INTEGER
+			// ulOffset, void *pv, ULONG cb, ULONG *pcbRead );
+			[PInvokeData("objidl.h", MSDNShortId = "0478d6f0-65c4-445b-946a-692f2373e8f1")]
+			void ReadAt(ulong ulOffset, IntPtr pv, uint cb, out uint pcbRead);
+
+			/// <summary>
+			/// The <c>WriteAt</c> method writes the specified number of bytes starting at a specified offset from the beginning of the byte array.
+			/// </summary>
+			/// <param name="ulOffset">Specifies the starting point from the beginning of the byte array for the data to be written.</param>
+			/// <param name="pv">Pointer to the buffer containing the data to be written.</param>
+			/// <param name="cb">Specifies the number of bytes of data to attempt to write into the byte array.</param>
+			/// <param name="pcbWritten">
+			/// Pointer to a location where this method specifies the actual number of bytes written to the byte array. You can set this
+			/// pointer to <c>NULL</c> to indicate that you are not interested in this value. In this case, this method does not provide the
+			/// actual number of bytes written.
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// <c>ILockBytes::WriteAt</c> writes the specified data at the specified location in the byte array. The number of bytes
+			/// actually written must always be returned in pcbWritten, even if an error is returned. If the byte count is zero bytes, the
+			/// write operation has no effect.
+			/// </para>
+			/// <para>
+			/// If ulOffset is past the end of the byte array and cb is greater than zero, <c>ILockBytes::WriteAt</c> increases the size of
+			/// the byte array. The fill bytes written to the byte array are not initialized to any particular value.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilockbytes-writeat HRESULT WriteAt( ULARGE_INTEGER
+			// ulOffset, const void *pv, ULONG cb, ULONG *pcbWritten );
+			[PInvokeData("objidl.h", MSDNShortId = "a27af4e1-293d-438a-8068-87275a51fd48")]
+			void WriteAt(ulong ulOffset, IntPtr pv, uint cb, out uint pcbWritten);
+
+			/// <summary>
+			/// The <c>Flush</c> method ensures that any internal buffers maintained by the ILockBytes implementation are written out to the
+			/// underlying physical storage.
+			/// </summary>
+			/// <remarks>
+			/// <para><c>ILockBytes::Flush</c> flushes internal buffers to the underlying storage device.</para>
+			/// <para>
+			/// The COM-provided implementation of compound files calls this method during a transacted commit operation to provide a
+			/// two-phase commit process that protects against loss of data.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilockbytes-flush HRESULT Flush( );
+			[PInvokeData("objidl.h", MSDNShortId = "9396c44f-ad76-49f4-9796-d29570466a27")]
+			void Flush();
+
+			/// <summary>The <c>SetSize</c> method changes the size of the byte array.</summary>
+			/// <param name="cb">Specifies the new size of the byte array as a number of bytes.</param>
+			/// <remarks>
+			/// <para>
+			/// <c>ILockBytes::SetSize</c> changes the size of the byte array. If the cb parameter is larger than the current byte array, the
+			/// byte array is extended to the indicated size by filling the intervening space with bytes of undefined value, as does
+			/// ILockBytes::WriteAt, if the seek pointer is past the current end-of-stream.
+			/// </para>
+			/// <para>If the cb parameter is smaller than the current byte array, the byte array is truncated to the indicated size.</para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Callers cannot rely on STG_E_MEDIUMFULL being returned at the appropriate time because of cache buffering in the operating
+			/// system or network. However, callers must be able to deal with this return code because some ILockBytes implementations might
+			/// support it.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilockbytes-setsize HRESULT SetSize( ULARGE_INTEGER cb );
+			[PInvokeData("objidl.h", MSDNShortId = "13b3237b-d113-4505-b397-b06916368fef")]
+			void SetSize(ulong cb);
+
+			/// <summary>The <c>LockRegion</c> method restricts access to a specified range of bytes in the byte array.</summary>
+			/// <param name="libOffset">Specifies the byte offset for the beginning of the range.</param>
+			/// <param name="cb">Specifies, in bytes, the length of the range to be restricted.</param>
+			/// <param name="dwLockType">
+			/// Specifies the type of restrictions being requested on accessing the range. This parameter uses one of the values from the
+			/// LOCKTYPE enumeration.
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// <c>ILockBytes::LockRegion</c> restricts access to the specified range of bytes. Once a region is locked, attempts by others
+			/// to gain access to the restricted range must fail with the STG_E_ACCESSDENIED error.
+			/// </para>
+			/// <para>
+			/// The byte range can extend past the current end of the byte array. Locking beyond the end of an array is useful as a method of
+			/// communication between different instances of the byte array object without changing data that is actually part of the byte
+			/// array. For example, an implementation of ILockBytes for compound files could rely on locking past the current end of the
+			/// array as a means of access control, using specific locked regions to indicate permissions currently granted.
+			/// </para>
+			/// <para>
+			/// The dwLockType parameter specifies one of three types of locking, using values from the LOCKTYPE enumeration. The types are
+			/// as follows: locking to exclude other writers, locking to exclude other readers or writers, and locking that allows only one
+			/// requester to obtain a lock on the given range. This third type of locking is usually an alias for one of the other two lock
+			/// types, and permits an Implementer to add other behavior as well. A given byte array might support either of the first two
+			/// types, or both.
+			/// </para>
+			/// <para>
+			/// To determine the lock types supported by a particular ILockBytes implementation, you can examine the <c>grfLocksSupported</c>
+			/// member of the STATSTG structure returned by a call to ILockBytes::Stat.
+			/// </para>
+			/// <para>
+			/// Any region locked with <c>ILockBytes::LockRegion</c> must later be explicitly unlocked by calling ILockBytes::UnlockRegion
+			/// with exactly the same values for the libOffset, cb, and dwLockType parameters. The region must be unlocked before the stream
+			/// is released. Two adjacent regions cannot be locked separately and then unlocked with a single unlock call.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Since the type of locking supported is optional and can vary in different implementations of ILockBytes, you must provide
+			/// code to deal with the STG_E_INVALIDFUNCTION error.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Support for this method depends on how the storage object built on top of the ILockBytes implementation is used. If you know
+			/// that only one storage object at any given time can be opened on the storage device that underlies the byte array, then your
+			/// <c>ILockBytes</c> implementation does not need to support locking. However, if multiple simultaneous openings of a storage
+			/// object are possible, then region locking is needed to coordinate them.
+			/// </para>
+			/// <para>
+			/// A <c>LockRegion</c> implementation can choose to support all, some, or none of the lock types. For unsupported lock types,
+			/// the implementation should return STG_E_INVALIDFUNCTION.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilockbytes-lockregion HRESULT LockRegion( ULARGE_INTEGER
+			// libOffset, ULARGE_INTEGER cb, DWORD dwLockType );
+			[PInvokeData("objidl.h", MSDNShortId = "cea59e2a-99d8-472d-8e4f-2e2474789c20")]
+			void LockRegion(ulong libOffset, ulong cb, LOCKTYPE dwLockType);
+
+			/// <summary>The <c>UnlockRegion</c> method removes the access restriction on a previously locked range of bytes.</summary>
+			/// <param name="libOffset">Specifies the byte offset for the beginning of the range.</param>
+			/// <param name="cb">Specifies, in bytes, the length of the range that is restricted.</param>
+			/// <param name="dwLockType">
+			/// Specifies the type of access restrictions previously placed on the range. This parameter uses a value from the LOCKTYPE enumeration.
+			/// </param>
+			/// <remarks>
+			/// <c>ILockBytes::UnlockRegion</c> unlocks a region previously locked with a call to ILockBytes::LockRegion. Each region locked
+			/// must be explicitly unlocked, using the same values for the libOffset, cb, and dwLockType parameters as in the matching calls
+			/// to <c>ILockBytes::LockRegion</c>. Two adjacent regions cannot be locked separately and then unlocked with a single unlock call.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilockbytes-unlockregion HRESULT UnlockRegion(
+			// ULARGE_INTEGER libOffset, ULARGE_INTEGER cb, DWORD dwLockType );
+			[PInvokeData("objidl.h", MSDNShortId = "036ba242-8630-4013-860d-dd37919253be")]
+			void UnlockRegion(ulong libOffset, ulong cb, LOCKTYPE dwLockType);
+
+			/// <summary>The <c>Stat</c> method retrieves a STATSTG structure containing information for this byte array object.</summary>
+			/// <param name="pstatstg">
+			/// Pointer to a STATSTG structure in which this method places information about this byte array object. The pointer is
+			/// <c>NULL</c> if an error occurs.
+			/// </param>
+			/// <param name="grfStatFlag">
+			/// Specifies whether this method should supply the <c>pwcsName</c> member of the STATSTG structure through values taken from the
+			/// STATFLAG enumeration. If the STATFLAG_NONAME is specified, the <c>pwcsName</c> member of <c>STATSTG</c> is not supplied, thus
+			/// saving a memory-allocation operation. The other possible value, STATFLAG_DEFAULT, indicates that all members of the
+			/// <c>STATSTG</c> structure be supplied.
+			/// </param>
+			/// <remarks><c>ILockBytes::Stat</c> should supply information about the byte array object in a STATSTG structure.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilockbytes-stat HRESULT Stat( STATSTG *pstatstg, DWORD
+			// grfStatFlag );
+			[PInvokeData("objidl.h", MSDNShortId = "e7953f21-ac34-44e3-9b6f-b93ac89e2e32")]
+			void Stat(out STATSTG pstatstg, STATFLAG grfStatFlag);
 		}
 
 		/// <summary>Allocates, frees, and manages memory.</summary>
@@ -1230,7 +1772,6 @@ namespace Vanara.PInvoke
 			/// Indicates whether the data to be marshaled is to be transmitted back to the client processâ€”the typical caseâ€”or written to
 			/// a global table, where it can be retrieved by multiple clients. Possible values come from the MSHLFLAGS enumeration.
 			/// </param>
-			/// <param name="pSize">Size of the p.</param>
 			/// <returns>A pointer to a variable that receives the maximum size of the buffer.</returns>
 			/// <remarks>
 			/// <para>
@@ -1718,11 +2259,6 @@ namespace Vanara.PInvoke
 			/// Determines whether the object identified by the specified moniker is running, and if it is, retrieves a pointer to that object.
 			/// </summary>
 			/// <param name="pmkObjectName">A pointer to the IMoniker interface on the moniker.</param>
-			/// <param name="ppunkObject">
-			/// A pointer to an IUnknown pointer variable that receives the interface pointer to the running object. When successful, the
-			/// implementation calls AddRef on the object; it is the caller's responsibility to call Release. If the object is not running or
-			/// if an error occurs, the implementation sets *ppunkObject to <c>NULL</c>.
-			/// </param>
 			/// <returns>
 			/// <para>This method can return the following values.</para>
 			/// <list type="table">
@@ -1844,6 +2380,84 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-irunningobjecttable-enumrunning HRESULT EnumRunning(
 			// IEnumMoniker **ppenumMoniker );
 			IEnumMoniker EnumRunning();
+		}
+
+		/// <summary>
+		/// The <c>ISequentialStream</c> interface supports simplified sequential access to stream objects. The IStream interface inherits
+		/// its Read and Write methods from <c>ISequentialStream</c>.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-isequentialstream
+		[PInvokeData("objidl.h", MSDNShortId = "c1d33800-d2f1-4942-92fa-e115f524c23c")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0c733a30-2a1c-11ce-ade5-00aa0044773d")]
+		public interface ISequentialStream
+		{
+			/// <summary>
+			/// The <c>Read</c> method reads a specified number of bytes from the stream object into memory, starting at the current seek pointer.
+			/// </summary>
+			/// <param name="pv">A pointer to the buffer which the stream data is read into.</param>
+			/// <param name="cb">The number of bytes of data to read from the stream object.</param>
+			/// <param name="pcbRead">
+			/// <para>A pointer to a <c>ULONG</c> variable that receives the actual number of bytes read from the stream object.</para>
+			/// <para><c>Note</c> The number of bytes read may be zero.</para>
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// This method reads bytes from this stream object into memory. The stream object must be opened in <c>STGM_READ</c> mode. This
+			/// method adjusts the seek pointer by the actual number of bytes read.
+			/// </para>
+			/// <para>The number of bytes actually read is also returned in the pcbRead parameter.</para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// The actual number of bytes read can be less than the number of bytes requested if an error occurs or if the end of the stream
+			/// is reached during the read operation. The number of bytes returned should always be compared to the number of bytes
+			/// requested. If the number of bytes returned is less than the number of bytes requested, it usually means the <c>Read</c>
+			/// method attempted to read past the end of the stream.
+			/// </para>
+			/// <para>The application should handle both a returned error and <c>S_OK</c> return values on end-of-stream read operations.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-isequentialstream-read HRESULT Read( void *pv, ULONG cb,
+			// ULONG *pcbRead );
+			[PInvokeData("objidl.h", MSDNShortId = "934a90bb-5ed0-4d80-9906-352ad8586655")]
+			void Read(byte[] pv, uint cb, out uint pcbRead);
+
+			/// <summary>
+			/// The <c>Write</c> method writes a specified number of bytes into the stream object starting at the current seek pointer.
+			/// </summary>
+			/// <param name="pv">
+			/// A pointer to the buffer that contains the data that is to be written to the stream. A valid pointer must be provided for this
+			/// parameter even when cb is zero.
+			/// </param>
+			/// <param name="cb">The number of bytes of data to attempt to write into the stream. This value can be zero.</param>
+			/// <param name="pcbWritten">
+			/// A pointer to a <c>ULONG</c> variable where this method writes the actual number of bytes written to the stream object. The
+			/// caller can set this pointer to <c>NULL</c>, in which case this method does not provide the actual number of bytes written.
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// <c>ISequentialStream::Write</c> writes the specified data to a stream object. The seek pointer is adjusted for the number of
+			/// bytes actually written. The number of bytes actually written is returned in the pcbWritten parameter. If the byte count is
+			/// zero bytes, the write operation has no effect.
+			/// </para>
+			/// <para>
+			/// If the seek pointer is currently past the end of the stream and the byte count is nonzero, this method increases the size of
+			/// the stream to the seek pointer and writes the specified bytes starting at the seek pointer. The fill bytes written to the
+			/// stream are not initialized to any particular value. This is the same as the end-of-file behavior in the MS-DOS FAT file system.
+			/// </para>
+			/// <para>
+			/// With a zero byte count and a seek pointer past the end of the stream, this method does not create the fill bytes to increase
+			/// the stream to the seek pointer. In this case, you must call the IStream::SetSize method to increase the size of the stream
+			/// and write the fill bytes.
+			/// </para>
+			/// <para>The pcbWritten parameter can have a value even if an error occurs.</para>
+			/// <para>
+			/// In the COM-provided implementation, stream objects are not sparse. Any fill bytes are eventually allocated on the disk and
+			/// assigned to the stream.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-isequentialstream-write HRESULT Write( const void *pv,
+			// ULONG cb, ULONG *pcbWritten );
+			[PInvokeData("objidl.h", MSDNShortId = "f0323dda-6c31-4411-bf20-9650162109c0")]
+			void Write(byte[] pv, uint cb, out uint pcbWritten);
 		}
 
 		/// <summary>
@@ -2273,6 +2887,71 @@ namespace Vanara.PInvoke
 			/// When used in CoInitializeSecurity, set on return to indicate the status of the call to register the authentication services.
 			/// </summary>
 			public HRESULT hr;
+		}
+
+		/// <summary>
+		/// The <c>StorageLayout</c> structure describes a single block of data, including its name, location, and length. To optimize a
+		/// compound file, an application or layout tool passes an array of <c>StorageLayout</c> structures in a call to ILayoutStorage::LayoutScript.
+		/// </summary>
+		/// <remarks>
+		/// <para>An array of <c>StorageLayout</c> structures might appear as follows.</para>
+		/// <para>
+		/// <c>Note</c> The parameters cOffset and cBytes are <c>LARGE_INTEGER</c> structures, used to represent a 64-bit signed integer
+		/// value as a union of two 32-bit members. The two 32-bit members must be represented as a <c>LARGE_INTEGER</c> structure with
+		/// <c>DWORD</c> LowPart and <c>LONG</c> HighPart as the structure members. (LowPart specifies the low-order 32 bits and HighPart
+		/// specifies the high-order 32 bits.) If your compiler has built-in support for 64-bit integers, use the <c>QuadPart</c> member of
+		/// the <c>LARGE_INTEGER</c> structure to store the 64-bit integer.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ns-objidl-storagelayout typedef struct tagStorageLayout { DWORD
+		// LayoutType; OLECHAR *pwcsElementName; LARGE_INTEGER cOffset; LARGE_INTEGER cBytes; } StorageLayout;
+		[PInvokeData("objidl.h", MSDNShortId = "1e4fb36d-077b-44bd-ab6e-8c122ec95a46")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct StorageLayout
+		{
+			/// <summary>
+			/// The type of element to be written. Values are taken from the STGTY enumeration. <c>STGTY_STREAM</c> means read the block of
+			/// data named by <c>pwcsElementName</c>. <c>STGTY_STORAGE</c> means open the storage specified in <c>pwcsElementName</c>.
+			/// <c>STGTY_REPEAT</c> is used in multimedia applications to interface audio, video, text, and other elements. An opening
+			/// <c>STGTY_REPEAT</c> value means that the elements that follow are to be repeated a specified number of times. The closing
+			/// <c>STGTY_REPEAT</c> value marks the end of those elements that are to be repeated. Nested <c>STGTY_REPEAT</c> value pairs are permitted.
+			/// </summary>
+			public STGTY LayoutType;
+
+			/// <summary>
+			/// The null-terminated Unicode string name of the storage or stream. If the element is a substorage or embedded object, the
+			/// fully qualified storage path must be specified; for example, "RootStorageName\SubStorageName\Substream".
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string pwcsElementName;
+
+			/// <summary>
+			/// <para>
+			/// Where the value of the <c>LayoutType</c> member is <c>STGTY_STREAM</c>, this flag specifies the beginning offset into the
+			/// steam named in the <c>pwscElementName</c> member.
+			/// </para>
+			/// <para>Where <c>LayoutType</c> is <c>STGTY_STORAGE</c>, this flag should be set to zero.</para>
+			/// <para>Where <c>LayoutType</c> is <c>STGTY_REPEAT</c>, this flag should be set to zero.</para>
+			/// </summary>
+			public long cOffset;
+
+			/// <summary>
+			/// <para>Length, in bytes, of the data block named in <c>pwcsElementName</c>.</para>
+			/// <para>
+			/// Where <c>LayoutType</c> is <c>STGTY_STREAM</c>, <c>cBytes</c> specifies the number of bytes to read at <c>cOffset</c> from
+			/// the stream named in <c>pwcsElementName</c>.
+			/// </para>
+			/// <para>Where <c>LayoutType</c> is <c>STGTY_STORAGE</c>, this flag is ignored.</para>
+			/// <para>
+			/// Where <c>LayoutType</c> is <c>STGTY_REPEAT</c>, a positive <c>cBytes</c> specifies the beginning of a repeat block.
+			/// <c>STGTY_REPEAT</c> with zero <c>cBytes</c> marks the end of a repeat block.
+			/// </para>
+			/// <para>
+			/// A beginning block value of <c>STG_TOEND</c> specifies that elements in a following block are to be repeated after each stream
+			/// has been completely read.
+			/// </para>
+			/// </summary>
+			public long cBytes;
 		}
 
 		/// <summary>
