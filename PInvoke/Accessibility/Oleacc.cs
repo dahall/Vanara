@@ -717,6 +717,39 @@ namespace Vanara.PInvoke
 		[PInvokeData("oleacc.h", MSDNShortId = "96dcdb85-4f35-4274-ba57-2f565c3ebb5f")]
 		public static extern void GetOleaccVersionInfo(out uint pVer, out uint pBuild);
 
+		/// <summary>Retrieves a process handle from a window handle.</summary>
+		/// <returns>
+		/// <para>Type: <c><c>HANDLE</c></c></para>
+		/// <para>If successful, returns the handle of the process that owns the window.</para>
+		/// <para>If not successful, returns <c>NULL</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// In previous versions of the operating system, a process could open another process (to access its memory, for example) using
+		/// <c>OpenProcess</c>. This function succeeds if the caller has appropriate privileges; usually the caller and target process must
+		/// be the same user.
+		/// </para>
+		/// <para>
+		/// On Windows Vista, however, <c>OpenProcess</c> fails in the scenario where the caller has UIAccess, and the target process is
+		/// elevated. In this case, the owner of the target process is in the Administrators group, but the calling process is running with
+		/// the restricted token, so does not have membership in this group, and is denied access to the elevated process. If the caller has
+		/// UIAccess, however, they can use a windows hook to inject code into the target process, and from within the target process, send a
+		/// handle back to the caller.
+		/// </para>
+		/// <para>
+		/// <c>GetProcessHandleFromHwnd</c> is a convenience function that uses this technique to obtain the handle of the process that owns
+		/// the specified HWND. Note that it only succeeds in cases where the caller and target process are running as the same user. The
+		/// returned handle has the following privileges: PROCESS_DUP_HANDLE | PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE |
+		/// SYNCHRONIZE. If other privileges are required, it may be necessary to implement the hooking technique explicitly instead of using
+		/// this function.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/WinAuto/getprocesshandlefromhwnd HANDLE WINAPI GetProcessHandleFromHwnd( _In_
+		// HWND hwnd );
+		[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("", MSDNShortId = "173579d2-c930-402c-81c7-761b063b5b51")]
+		public static extern HPROCESS GetProcessHandleFromHwnd(HWND hwnd);
+
 		/// <summary>Retrieves the localized string that describes the object's role for the specified role value.</summary>
 		/// <param name="lRole">
 		/// <para>Type: <c>DWORD</c></para>
@@ -794,5 +827,161 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Oleacc, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("oleacc.h", MSDNShortId = "2a136883-870e-48c3-b182-1cdc64768894")]
 		public static extern uint GetStateText(AccessibilityState lStateBit, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszState, uint cchState);
+
+		/// <summary>Returns a reference, similar to a handle, to the specified object. Servers return this reference when handling WM_GETOBJECT.</summary>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>Reference identifier of the interface provided to the client. This parameter is IID_IAccessible.</para>
+		/// </param>
+		/// <param name="wParam">
+		/// <para>Type: <c>WPARAM</c></para>
+		/// <para>Value sent by the associated WM_GETOBJECT message in its wParam parameter.</para>
+		/// </param>
+		/// <param name="punk">
+		/// <para>Type: <c>LPUNKNOWN</c></para>
+		/// <para>Address of the IAccessible interface to the object that corresponds to the WM_GETOBJECT message.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LRESULT</c></para>
+		/// <para>If successful, returns a positive value that is a reference to the object.</para>
+		/// <para>If not successful, returns one of the values in the table that follows, or another standard COM error code.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One or more arguments are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_NOINTERFACE</term>
+		/// <term>The object specified in the pAcc parameter does not support the interface specified in the riid parameter.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to store the object reference.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_UNEXPECTED</term>
+		/// <term>An unexpected error occurred.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Servers call this function only when handling the WM_GETOBJECT message. For an overview of how <c>LresultFromObject</c> is
+		/// related to <c>WM_GETOBJECT</c>, see How WM_GETOBJECT Works.
+		/// </para>
+		/// <para>
+		/// <c>LresultFromObject</c> increments the object's reference count. If you are not storing the interface pointer passed to the
+		/// function (that is, you create a new interface pointer for the object each time WM_GETOBJECT is received), call the object's
+		/// Release method to decrement the reference count back to one. Then the client calls <c>Release</c> and the object is destroyed.
+		/// For more information, see How to Handle WM_GETOBJECT.
+		/// </para>
+		/// <para>
+		/// Each time a server processes WM_GETOBJECT for a specific object, it calls <c>LresultFromObject</c> to obtain a new reference to
+		/// the object. Servers do not save the reference returned from <c>LresultFromObject</c> from one instance of processing
+		/// <c>WM_GETOBJECT</c> to use as the message's return value when processing subsequent <c>WM_GETOBJECT</c> messages for the same
+		/// object. This causes the client to receive an error.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-lresultfromobject LRESULT LresultFromObject( REFIID riid,
+		// WPARAM wParam, LPUNKNOWN punk );
+		[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleacc.h", MSDNShortId = "c219a4cd-7a8f-4942-8975-b3d823b6497f")]
+		public static extern IntPtr LresultFromObject(in Guid riid, IntPtr wParam, [In, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object punk);
+
+		/// <summary>
+		/// <para>Retrieves a requested interface pointer for an accessible object based on a previously generated object reference.</para>
+		/// <para>
+		/// This function is designed for internal use by Microsoft Active Accessibility and is documented for informational purposes only.
+		/// Neither clients nor servers should call this function.
+		/// </para>
+		/// </summary>
+		/// <param name="lResult">
+		/// <para>Type: <c>LRESULT</c></para>
+		/// <para>A 32-bit value returned by a previous successful call to the LresultFromObject function.</para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>Reference identifier of the interface to be retrieved. This is IID_IAccessible.</para>
+		/// </param>
+		/// <param name="wParam">
+		/// <para>Type: <c>WPARAM</c></para>
+		/// <para>Value sent by the associated WM_GETOBJECT message in its wParam parameter.</para>
+		/// </param>
+		/// <param name="ppvObject">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>Receives the address of the IAccessible interface on the object that corresponds to the WM_GETOBJECT message.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>STDAPI</c></para>
+		/// <para>If successful, returns S_OK.</para>
+		/// <para>If not successful, returns one of the following standard COM error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>
+		/// One or more arguments are not valid. This occurs when the lResult parameter specified is not a value obtained by a call to
+		/// LresultFromObject, or when lResult is a value used on a previous call to ObjectFromLresult.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>E_NOINTERFACE</term>
+		/// <term>The object specified in the ppvObject parameter does not support the interface specified by the riid parameter.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to store the object reference.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_UNEXPECTED</term>
+		/// <term>An unexpected error occurred.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-objectfromlresult HRESULT ObjectFromLresult( LRESULT
+		// lResult, REFIID riid, WPARAM wParam, void **ppvObject );
+		[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleacc.h", MSDNShortId = "97e766fd-e142-40d1-aba7-408b45d33426")]
+		public static extern HRESULT ObjectFromLresult(IntPtr lResult, in Guid riid, IntPtr wParam, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvObject);
+
+		/// <summary>Retrieves the window handle that corresponds to a particular instance of an IAccessible interface.</summary>
+		/// <param name="arg1">
+		/// <para>Type: <c>IAccessible*</c></para>
+		/// <para>Pointer to the IAccessible interface whose corresponding window handle will be retrieved. This parameter must not be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="phwnd">
+		/// <para>Type: <c>HWND*</c></para>
+		/// <para>
+		/// Address of a variable that receives a handle to the window containing the object specified in pacc. If this value is <c>NULL</c>
+		/// after the call, the object is not contained within a window; for example, the mouse pointer is not contained within a window.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>STDAPI</c></para>
+		/// <para>If successful, returns S_OK.</para>
+		/// <para>If not successful, returns the following or another standard COM error code.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>An argument is not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-windowfromaccessibleobject HRESULT
+		// WindowFromAccessibleObject( IAccessible *, HWND *phwnd );
+		[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleacc.h", MSDNShortId = "b3a3d3dd-ef84-4323-ab6d-6331d8389f11")]
+		public static extern HRESULT WindowFromAccessibleObject([In] IAccessible arg1, out HWND phwnd);
 	}
 }
