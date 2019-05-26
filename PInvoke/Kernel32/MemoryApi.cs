@@ -1705,7 +1705,7 @@ namespace Vanara.PInvoke
 		// PVOID MapViewOfFile3( HANDLE FileMapping, HANDLE Process, PVOID BaseAddress, ULONG64 Offset, SIZE_T ViewSize, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER *ExtendedParameters, ULONG ParameterCount );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("memoryapi.h", MSDNShortId = "585D7BA1-688F-4F24-8D8D-46A2FC137193")]
-		public static extern IntPtr MapViewOfFile3([In] HFILE FileMapping, [In] HPROCESS Process, [In] IntPtr BaseAddress, ulong Offset, SizeT ViewSize, MEM_ALLOCATION_TYPE AllocationType, 
+		public static extern IntPtr MapViewOfFile3([In] HFILE FileMapping, [In] HPROCESS Process, [In] IntPtr BaseAddress, ulong Offset, SizeT ViewSize, MEM_ALLOCATION_TYPE AllocationType,
 			MEM_PROTECTION PageProtection, [In] MEM_EXTENDED_PARAMETER[] ExtendedParameters, uint ParameterCount);
 
 		/// <summary>
@@ -3913,6 +3913,37 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms681674")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool WriteProcessMemory([In] HPROCESS hProcess, [In] IntPtr lpBaseAddress, [In] IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesWritten);
+
+		/// <summary>
+		/// Writes data to an area of memory in a specified process. The entire area to be written to must be accessible or the operation fails.
+		/// </summary>
+		/// <param name="hProcess">
+		/// A handle to the process memory to be modified. The handle must have PROCESS_VM_WRITE and PROCESS_VM_OPERATION access to the process.
+		/// </param>
+		/// <param name="lpBaseAddress">
+		/// A pointer to the base address in the specified process to which data is written. Before data transfer occurs, the system verifies
+		/// that all data in the base address and memory of the specified size is accessible for write access, and if it is not accessible,
+		/// the function fails.
+		/// </param>
+		/// <param name="lpBuffer">A pointer to the buffer that contains data to be written in the address space of the specified process.</param>
+		/// <param name="nSize">The number of bytes to be written to the specified process.</param>
+		/// <param name="lpNumberOfBytesWritten">
+		/// A pointer to a variable that receives the number of bytes transferred into the specified process. This parameter is optional. If
+		/// lpNumberOfBytesWritten is <c>NULL</c>, the parameter is ignored.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>
+		/// If the function fails, the return value is 0 (zero). To get extended error information, call <c>GetLastError</c>. The function
+		/// fails if the requested write operation crosses into an area of the process that is inaccessible.
+		/// </para>
+		/// </returns>
+		// BOOL WINAPI WriteProcessMemory( _In_ HANDLE hProcess, _In_ LPVOID lpBaseAddress, _In_ LPCVOID lpBuffer, _In_ SIZE_T nSize, _Out_
+		// SIZE_T *lpNumberOfBytesWritten);
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms681674")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool WriteProcessMemory([In] HPROCESS hProcess, [In] IntPtr lpBaseAddress, [In] byte[] lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesWritten);
 
 		/// <summary>Represents information about call targets for Control Flow Guard (CFG).</summary>
 		// typedef struct _CFG_CALL_TARGET_INFO { ULONG_PTR Offset; ULONG_PTR Flags;} CFG_CALL_TARGET_INFO, *PCFG_CALL_TARGET_INFO;
