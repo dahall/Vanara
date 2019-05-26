@@ -93,6 +93,39 @@ namespace Vanara.PInvoke
 			CM_STATE_ALWAYSVISIBLE = 0x00000008,
 		}
 
+		/// <summary>
+		/// <para>Used by IFolderViewSettings::GetViewMode and ISearchFolderItemFactory::SetFolderLogicalViewMode to describe the view mode.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ne-shobjidl_core-folderlogicalviewmode typedef enum
+		// FOLDERLOGICALVIEWMODE { FLVM_UNSPECIFIED, FLVM_FIRST, FLVM_DETAILS, FLVM_TILES, FLVM_ICONS, FLVM_LIST, FLVM_CONTENT, FLVM_LAST } ;
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "4b30a335-ed80-4774-82d4-bc93c95ee80c")]
+		public enum FOLDERLOGICALVIEWMODE
+		{
+			/// <summary>The view is not specified.</summary>
+			FLVM_UNSPECIFIED,
+
+			/// <summary>The minimum valid enumeration value. Used for validation purposes only.</summary>
+			FLVM_FIRST,
+
+			/// <summary>Details view.</summary>
+			FLVM_DETAILS,
+
+			/// <summary>Tiles view.</summary>
+			FLVM_TILES,
+
+			/// <summary>Icons view.</summary>
+			FLVM_ICONS,
+
+			/// <summary>Windows 7 and later. List view.</summary>
+			FLVM_LIST,
+
+			/// <summary>Windows 7 and later. Content view.</summary>
+			FLVM_CONTENT,
+
+			/// <summary>The maximum valid enumeration value. Used for validation purposes only.</summary>
+			FLVM_LAST,
+		}
+
 		/// <summary>Flags for <see cref="IFolderView2.SetText(FVTEXTTYPE, string)"/>.</summary>
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "72528831-ec5d-417e-94dd-7345b5fd7de6")]
 		public enum FVTEXTTYPE
