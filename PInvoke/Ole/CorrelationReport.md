@@ -1,5 +1,5 @@
 ## Correlation report for ole32.dll, oleaut32.dll, propsys.dll  
-### Methods (27% complete)  
+### Methods (29% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindMoniker](https://www.google.com/search?num=5&q=BindMoniker+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -153,7 +153,7 @@ Native Method | Native DLL | Header | Managed Method
 [CreateErrorInfo](https://www.google.com/search?num=5&q=CreateErrorInfo+site%3Amicrosoft.com) | ole32.dll |  |   
 [CreateFileMoniker](http://msdn2.microsoft.com/en-us/library/d9677fa0-cda0-4b63-a21f-1fd0e27c8f3f) | ole32.dll | objbase.h | Vanara.PInvoke.Ole32.CreateFileMoniker  
 [CreateGenericComposite](https://www.google.com/search?num=5&q=CreateGenericComposite+site%3Amicrosoft.com) | ole32.dll |  |   
-[CreateILockBytesOnHGlobal](https://www.google.com/search?num=5&q=CreateILockBytesOnHGlobal+site%3Amicrosoft.com) | ole32.dll |  |   
+[CreateILockBytesOnHGlobal](http://msdn2.microsoft.com/en-us/library/e7963be7-ccd8-49fb-85bb-e22fbbb6dc5c) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.CreateILockBytesOnHGlobal  
 [CreateItemMoniker](https://www.google.com/search?num=5&q=CreateItemMoniker+site%3Amicrosoft.com) | ole32.dll |  |   
 [CreateObjrefMoniker](https://www.google.com/search?num=5&q=CreateObjrefMoniker+site%3Amicrosoft.com) | ole32.dll |  |   
 [CreateOleAdviseHolder](https://www.google.com/search?num=5&q=CreateOleAdviseHolder+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -193,16 +193,16 @@ Native Method | Native DLL | Header | Managed Method
 [DragDropSetFDT](https://www.google.com/search?num=5&q=DragDropSetFDT+site%3Amicrosoft.com) | ole32.dll |  |   
 [EnableHookObject](https://www.google.com/search?num=5&q=EnableHookObject+site%3Amicrosoft.com) | ole32.dll |  |   
 [FindExt](https://www.google.com/search?num=5&q=FindExt+site%3Amicrosoft.com) | ole32.dll |  |   
-[FmtIdToPropStgName](https://www.google.com/search?num=5&q=FmtIdToPropStgName+site%3Amicrosoft.com) | ole32.dll |  |   
+[FmtIdToPropStgName](http://msdn2.microsoft.com/en-us/library/044f8883-bbd2-4cd3-b9dc-739ecb711bdd) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.FmtIdToPropStgName  
 [FreePropVariantArray](https://www.google.com/search?num=5&q=FreePropVariantArray+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetActiveObject](https://www.google.com/search?num=5&q=GetActiveObject+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [GetActiveObjectExt](https://www.google.com/search?num=5&q=GetActiveObjectExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetAltMonthNames](https://www.google.com/search?num=5&q=GetAltMonthNames+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [GetClassFile](https://www.google.com/search?num=5&q=GetClassFile+site%3Amicrosoft.com) | ole32.dll |  |   
-[GetConvertStg](https://www.google.com/search?num=5&q=GetConvertStg+site%3Amicrosoft.com) | ole32.dll |  |   
+[GetConvertStg](http://msdn2.microsoft.com/en-us/library/748649a2-cf75-4ffa-ac1f-4a148b845d21) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.GetConvertStg  
 [GetDocumentBitStg](https://www.google.com/search?num=5&q=GetDocumentBitStg+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetErrorInfo](https://www.google.com/search?num=5&q=GetErrorInfo+site%3Amicrosoft.com) | ole32.dll |  |   
-[GetHGlobalFromILockBytes](https://www.google.com/search?num=5&q=GetHGlobalFromILockBytes+site%3Amicrosoft.com) | ole32.dll |  |   
+[GetHGlobalFromILockBytes](http://msdn2.microsoft.com/en-us/library/084fcd1d-5b85-448c-862a-378353e1e2e6) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.GetHGlobalFromILockBytes  
 [GetHGlobalFromStream](http://msdn2.microsoft.com/en-us/library/79e39345-7a20-4b0f-bceb-f62de13d3260) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.GetHGlobalFromStream  
 [GetHookInterface](https://www.google.com/search?num=5&q=GetHookInterface+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetObjectFromRotByPath](https://www.google.com/search?num=5&q=GetObjectFromRotByPath+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -365,7 +365,7 @@ Native Method | Native DLL | Header | Managed Method
 [OleUninitialize](http://msdn2.microsoft.com/en-us/library/ms691326) | ole32.dll | Ole2.h | Vanara.PInvoke.Ole32.OleUninitialize  
 [OpenOrCreateStream](https://www.google.com/search?num=5&q=OpenOrCreateStream+site%3Amicrosoft.com) | ole32.dll |  |   
 [ProgIDFromCLSID](http://msdn2.microsoft.com/en-us/library/a863cbc2-f8ab-468a-8254-b273077a6a2b) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.ProgIDFromCLSID  
-[PropStgNameToFmtId](https://www.google.com/search?num=5&q=PropStgNameToFmtId+site%3Amicrosoft.com) | ole32.dll |  |   
+[PropStgNameToFmtId](http://msdn2.microsoft.com/en-us/library/bbbaf5a3-df17-42fd-ba2b-ad5b572c8a3f) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.PropStgNameToFmtId  
 [PropSysAllocString](https://www.google.com/search?num=5&q=PropSysAllocString+site%3Amicrosoft.com) | ole32.dll |  |   
 [PropSysFreeString](https://www.google.com/search?num=5&q=PropSysFreeString+site%3Amicrosoft.com) | ole32.dll |  |   
 [PropVariantChangeType](http://msdn2.microsoft.com/en-us/library/bb776514) | ole32.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantChangeType  
@@ -495,8 +495,8 @@ Native Method | Native DLL | Header | Managed Method
 [PSStringFromPropertyKey](http://msdn2.microsoft.com/en-us/library/081f8e6d-9189-44f9-9b27-e85f4793da48) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSStringFromPropertyKey  
 [PSUnregisterPropertySchema](http://msdn2.microsoft.com/en-us/library/57df82a9-8954-4c2b-b794-82ac542149e2) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSUnregisterPropertySchema  
 [QueryPathOfRegTypeLib](https://www.google.com/search?num=5&q=QueryPathOfRegTypeLib+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[ReadClassStg](https://www.google.com/search?num=5&q=ReadClassStg+site%3Amicrosoft.com) | ole32.dll |  |   
-[ReadClassStm](https://www.google.com/search?num=5&q=ReadClassStm+site%3Amicrosoft.com) | ole32.dll |  |   
+[ReadClassStg](http://msdn2.microsoft.com/en-us/library/90256fcd-54ce-48e1-aa12-d8f91cd4dfb1) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.ReadClassStg  
+[ReadClassStm](http://msdn2.microsoft.com/en-us/library/bcf11c5b-e164-4a0f-b30f-ee9e76c4356d) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.ReadClassStm  
 [ReadFmtUserTypeStg](https://www.google.com/search?num=5&q=ReadFmtUserTypeStg+site%3Amicrosoft.com) | ole32.dll |  |   
 [ReadOleStg](https://www.google.com/search?num=5&q=ReadOleStg+site%3Amicrosoft.com) | ole32.dll |  |   
 [ReadStorageProperties](https://www.google.com/search?num=5&q=ReadStorageProperties+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -554,25 +554,25 @@ Native Method | Native DLL | Header | Managed Method
 [StdTypesRegisterServer](https://www.google.com/search?num=5&q=StdTypesRegisterServer+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgConvertPropertyToVariant](https://www.google.com/search?num=5&q=StgConvertPropertyToVariant+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgConvertVariantToProperty](https://www.google.com/search?num=5&q=StgConvertVariantToProperty+site%3Amicrosoft.com) | ole32.dll |  |   
-[StgCreateDocfile](https://www.google.com/search?num=5&q=StgCreateDocfile+site%3Amicrosoft.com) | ole32.dll |  |   
-[StgCreateDocfileOnILockBytes](https://www.google.com/search?num=5&q=StgCreateDocfileOnILockBytes+site%3Amicrosoft.com) | ole32.dll |  |   
-[StgCreatePropSetStg](https://www.google.com/search?num=5&q=StgCreatePropSetStg+site%3Amicrosoft.com) | ole32.dll |  |   
-[StgCreatePropStg](https://www.google.com/search?num=5&q=StgCreatePropStg+site%3Amicrosoft.com) | ole32.dll |  |   
-[StgCreateStorageEx](http://msdn2.microsoft.com/en-us/library/aa380328) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.StgCreateStorageEx  
+[StgCreateDocfile](http://msdn2.microsoft.com/en-us/library/3292484b-8eff-438d-b989-b58ae323872b) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgCreateDocfile  
+[StgCreateDocfileOnILockBytes](http://msdn2.microsoft.com/en-us/library/8af5098d-db04-4273-8f5f-6d1a1d9541de) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgCreateDocfileOnILockBytes  
+[StgCreatePropSetStg](http://msdn2.microsoft.com/en-us/library/0113b29d-23aa-4590-b8ac-33789a7a2ed4) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgCreatePropSetStg  
+[StgCreatePropStg](http://msdn2.microsoft.com/en-us/library/fc171888-3723-4894-a356-1b234352c4e8) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgCreatePropStg  
+[StgCreateStorageEx](http://msdn2.microsoft.com/en-us/library/6442977d-e980-419e-abe9-9d15dbb045c1) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgCreateStorageEx  
 [StgDeserializePropVariant](http://msdn2.microsoft.com/en-us/library/bb776578) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.StgDeserializePropVariant  
 [StgGetIFillLockBytesOnFile](https://www.google.com/search?num=5&q=StgGetIFillLockBytesOnFile+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgGetIFillLockBytesOnILockBytes](https://www.google.com/search?num=5&q=StgGetIFillLockBytesOnILockBytes+site%3Amicrosoft.com) | ole32.dll |  |   
-[StgIsStorageFile](http://msdn2.microsoft.com/en-us/library/aa380334) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.StgIsStorageFile  
-[StgIsStorageILockBytes](https://www.google.com/search?num=5&q=StgIsStorageILockBytes+site%3Amicrosoft.com) | ole32.dll |  |   
+[StgIsStorageFile](http://msdn2.microsoft.com/en-us/library/6a0d2da5-4d5c-4da7-9ea6-3b52cd6673fc) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgIsStorageFile  
+[StgIsStorageILockBytes](http://msdn2.microsoft.com/en-us/library/ce0e29fd-1b21-4064-8e37-1a5d5df8bb61) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgIsStorageILockBytes  
 [StgOpenAsyncDocfileOnIFillLockBytes](https://www.google.com/search?num=5&q=StgOpenAsyncDocfileOnIFillLockBytes+site%3Amicrosoft.com) | ole32.dll |  |   
-[StgOpenPropStg](https://www.google.com/search?num=5&q=StgOpenPropStg+site%3Amicrosoft.com) | ole32.dll |  |   
-[StgOpenStorage](http://msdn2.microsoft.com/en-us/library/aa380341) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.StgOpenStorage  
-[StgOpenStorageEx](http://msdn2.microsoft.com/en-us/library/aa380342) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.StgOpenStorageEx  
+[StgOpenPropStg](http://msdn2.microsoft.com/en-us/library/ecc78e49-f1c2-4c2d-8390-b2b6f1dc776e) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgOpenPropStg  
+[StgOpenStorage](http://msdn2.microsoft.com/en-us/library/5ff18dc8-b24f-42bb-8c32-efc4d3696687) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgOpenStorage  
+[StgOpenStorageEx](http://msdn2.microsoft.com/en-us/library/4f2138fb-1f80-4345-a3cb-9c11023457b1) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgOpenStorageEx  
 [StgOpenStorageOnHandle](https://www.google.com/search?num=5&q=StgOpenStorageOnHandle+site%3Amicrosoft.com) | ole32.dll |  |   
-[StgOpenStorageOnILockBytes](https://www.google.com/search?num=5&q=StgOpenStorageOnILockBytes+site%3Amicrosoft.com) | ole32.dll |  |   
+[StgOpenStorageOnILockBytes](http://msdn2.microsoft.com/en-us/library/7920bd46-0a8f-42e0-9988-59d85edb64e2) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgOpenStorageOnILockBytes  
 [StgPropertyLengthAsVariant](https://www.google.com/search?num=5&q=StgPropertyLengthAsVariant+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgSerializePropVariant](http://msdn2.microsoft.com/en-us/library/bb776579) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.StgSerializePropVariant  
-[StgSetTimes](https://www.google.com/search?num=5&q=StgSetTimes+site%3Amicrosoft.com) | ole32.dll |  |   
+[StgSetTimes](http://msdn2.microsoft.com/en-us/library/5ade3e7a-a22a-458f-b463-1680893edc15) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgSetTimes  
 [StringFromCLSID](https://www.google.com/search?num=5&q=StringFromCLSID+site%3Amicrosoft.com) | ole32.dll |  |   
 [StringFromGUID2](https://www.google.com/search?num=5&q=StringFromGUID2+site%3Amicrosoft.com) | ole32.dll |  |   
 [StringFromIID](https://www.google.com/search?num=5&q=StringFromIID+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -948,8 +948,8 @@ Native Method | Native DLL | Header | Managed Method
 [VarXor](https://www.google.com/search?num=5&q=VarXor+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VectorFromBstr](https://www.google.com/search?num=5&q=VectorFromBstr+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [WinRTPropertyValueToPropVariant](https://www.google.com/search?num=5&q=WinRTPropertyValueToPropVariant+site%3Amicrosoft.com) | propsys.dll |  |   
-[WriteClassStg](https://www.google.com/search?num=5&q=WriteClassStg+site%3Amicrosoft.com) | ole32.dll |  |   
-[WriteClassStm](https://www.google.com/search?num=5&q=WriteClassStm+site%3Amicrosoft.com) | ole32.dll |  |   
+[WriteClassStg](http://msdn2.microsoft.com/en-us/library/5f2f16d1-923f-4ba7-8d4b-7e8535f6f15e) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.WriteClassStg  
+[WriteClassStm](http://msdn2.microsoft.com/en-us/library/c08bfbc8-f7ac-4534-8c98-c732c6daa2f7) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.WriteClassStm  
 [WriteFmtUserTypeStg](https://www.google.com/search?num=5&q=WriteFmtUserTypeStg+site%3Amicrosoft.com) | ole32.dll |  |   
 [WriteOleStg](https://www.google.com/search?num=5&q=WriteOleStg+site%3Amicrosoft.com) | ole32.dll |  |   
 [WriteStorageProperties](https://www.google.com/search?num=5&q=WriteStorageProperties+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -982,10 +982,11 @@ Native Structure | Header | Managed Structure
 [STATPROPSETSTG](http://msdn2.microsoft.com/en-us/library/8e5cc502-9f96-4f4b-8729-cac4a1ffcd6f) | propidl.h | Vanara.PInvoke.Ole32+STATPROPSETSTG  
 [STATPROPSTG](http://msdn2.microsoft.com/en-us/library/3b8de6d3-18a3-4c0a-94d1-04bcec05d41a) | propidl.h | Vanara.PInvoke.Ole32+STATPROPSTG  
 [STGOPTIONS](http://msdn2.microsoft.com/en-us/library/aa380344) | Objbase.h | Vanara.PInvoke.Ole32+STGOPTIONS  
+[StorageLayout](http://msdn2.microsoft.com/en-us/library/1e4fb36d-077b-44bd-ab6e-8c122ec95a46) | objidl.h | Vanara.PInvoke.Ole32+StorageLayout  
 ### Interfaces  
 Native Interface | Native DLL | Header | Managed Interface  
 --- | --- | --- | ---  
-[IActivationFilter](https://www.google.com/search?num=5&q=IActivationFilter+site%3Amicrosoft.com) |  | Vanara.PInvoke.Ole32+IActivationFilter  
+[IActivationFilter](https://www.google.com/search?num=5&q=IActivationFilter+site%3Amicrosoft.com) | objidl.h | Vanara.PInvoke.Ole32+IActivationFilter  
 [IAgileObject](http://msdn2.microsoft.com/en-us/library/787A22DE-AEAB-4570-BB97-C49D656E5D40) | objidl.h | Vanara.PInvoke.Ole32+IAgileObject  
 [IAgileReference](http://msdn2.microsoft.com/en-us/library/51787A45-BCDE-4028-A338-1C16F2DE79AD) | objidl.h | Vanara.PInvoke.Ole32+IAgileReference  
 [IBindCtxV](http://msdn2.microsoft.com/en-us/library/e4c8abb5-0c89-44dd-8d95-efbfcc999b46) | objidl.h | Vanara.PInvoke.Ole32+IBindCtxV  
@@ -994,15 +995,19 @@ Native Interface | Native DLL | Header | Managed Interface
 [IContext](http://msdn2.microsoft.com/en-us/library/89c41d9c-186c-4927-990d-92aa501f7d35) | objidl.h | Vanara.PInvoke.Ole32+IContext  
 [ICreateObject](http://msdn2.microsoft.com/en-us/library/90502b4a-dc0a-4077-83d7-e9f5445ba69b) | propsys.h | Vanara.PInvoke.PropSys+ICreateObject  
 [IDelayedPropertyStoreFactory](http://msdn2.microsoft.com/en-us/library/855c9f10-9f40-4c60-a669-551fa51133f5) | propsys.h | Vanara.PInvoke.PropSys+IDelayedPropertyStoreFactory  
+[IDirectWriterLock](http://msdn2.microsoft.com/en-us/library/cff56e4f-b8c5-4d87-9289-f8f2212d7c42) | objidl.h | Vanara.PInvoke.Ole32+IDirectWriterLock  
 [IDropSource](http://msdn2.microsoft.com/en-us/library/963a36bc-4ad7-4591-bffc-a96b4310177d) | oleidl.h | Vanara.PInvoke.Ole32+IDropSource  
 [IDropTarget](http://msdn2.microsoft.com/en-us/library/13fbe834-1ef8-4944-b2e4-9f5c413c65c8) | oleidl.h | Vanara.PInvoke.Ole32+IDropTarget  
 [IEnumContextProps](http://msdn2.microsoft.com/en-us/library/64591e45-5478-4360-8c1f-08b09b5aef8e) | objidl.h | Vanara.PInvoke.Ole32+IEnumContextProps  
-[IEnumSTATPROPSETSTG](http://msdn2.microsoft.com/en-us/library/8d5e658f-312c-4c91-8794-808b2e8dd182) | propidl.h | Vanara.PInvoke.Ole32+IEnumSTATPROPSETSTG  
-[IEnumSTATPROPSTG](http://msdn2.microsoft.com/en-us/library/e625e52a-5628-4d18-9282-aa1c141c83af) | propidl.h | Vanara.PInvoke.Ole32+IEnumSTATPROPSTG  
+[IEnumSTATPROPSETSTG](http://msdn2.microsoft.com/en-us/library/0000013B-0000-0000-C000-000000000046) | propidl.h | Vanara.PInvoke.Ole32+IEnumSTATPROPSETSTG  
+[IEnumSTATPROPSTG](http://msdn2.microsoft.com/en-us/library/e625e52a-5628-4d18-9282-aa1c141c83af) | propidlbase.h | Vanara.PInvoke.Ole32+IEnumSTATPROPSTG  
 [IEnumSTATSTG](http://msdn2.microsoft.com/en-us/library/aa379217) | Objidl.h | Vanara.PInvoke.Ole32+IEnumSTATSTG  
 [IEnumUnknown](http://msdn2.microsoft.com/en-us/library/5aaed96f-39c1-4201-80d0-a2a8a177b65e) | objidl.h | Vanara.PInvoke.Ole32+IEnumUnknown  
 [IErrorLog](https://www.google.com/search?num=5&q=IErrorLog+site%3Amicrosoft.com) | OAIdl.h | Vanara.PInvoke.Ole32+IErrorLog  
+[IFillLockBytes](http://msdn2.microsoft.com/en-us/library/99caf010-415e-11cf-8814-00aa00b569f5) | objidl.h | Vanara.PInvoke.Ole32+IFillLockBytes  
 [IInitializeWithStream](http://msdn2.microsoft.com/en-us/library/bb761810) | Propsys.h | Vanara.PInvoke.PropSys+IInitializeWithStream  
+[ILayoutStorage](http://msdn2.microsoft.com/en-us/library/72201600-4bbb-4346-a13f-927e8463b6ec) | objidl.h | Vanara.PInvoke.Ole32+ILayoutStorage  
+[ILockBytes](http://msdn2.microsoft.com/en-us/library/bb2c5d0d-8dc8-4844-9a20-ef8e4def5731) | objidl.h | Vanara.PInvoke.Ole32+ILockBytes  
 [IMalloc](http://msdn2.microsoft.com/en-us/library/047f281e-2665-4d6d-9a0b-918cd3339447) | objidl.h | Vanara.PInvoke.Ole32+IMalloc  
 [IMarshal](http://msdn2.microsoft.com/en-us/library/e6f08949-f27d-4aba-adff-eaf9c356a928) | objidl.h | Vanara.PInvoke.Ole32+IMarshal  
 [INoMarshal](http://msdn2.microsoft.com/en-us/library/6C82B08D-C8AF-4FB6-988C-CD7F9BABEE92) | objidl.h | Vanara.PInvoke.Ole32+INoMarshal  
@@ -1028,5 +1033,6 @@ Native Interface | Native DLL | Header | Managed Interface
 [IPropertySystem](http://msdn2.microsoft.com/en-us/library/9ead94d9-4d4e-44c6-8c53-11c4c4ee2fb2) | propsys.h | Vanara.PInvoke.PropSys+IPropertySystem  
 [IRecordInfo](https://www.google.com/search?num=5&q=IRecordInfo+site%3Amicrosoft.com) | OAIdl.h | Vanara.PInvoke.Ole32+IRecordInfo  
 [IRunningObjectTable](http://msdn2.microsoft.com/en-us/library/ff89bcb5-df6d-4325-b0e8-613217a68f42) | objidl.h | Vanara.PInvoke.Ole32+IRunningObjectTable  
+[ISequentialStream](http://msdn2.microsoft.com/en-us/library/c1d33800-d2f1-4942-92fa-e115f524c23c) | objidl.h | Vanara.PInvoke.Ole32+ISequentialStream  
 [IStorage](http://msdn2.microsoft.com/en-us/library/aa380015) | Objidl.h | Vanara.PInvoke.Ole32+IStorage  
 [ISurrogate](http://msdn2.microsoft.com/en-us/library/fbed0514-3646-4744-aa7a-4a98f1a12cc0) | objidl.h | Vanara.PInvoke.Ole32+ISurrogate  

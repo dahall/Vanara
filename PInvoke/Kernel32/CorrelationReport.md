@@ -1133,12 +1133,13 @@ Native Structure | Header | Managed Structure
 [CPINFO](http://msdn2.microsoft.com/en-us/library/dd317780) | Winnls.h | Vanara.PInvoke.Kernel32+CPINFO  
 [CPINFOEX](http://msdn2.microsoft.com/en-us/library/dd317781) | Winnls.h | Vanara.PInvoke.Kernel32+CPINFOEX  
 [CPU_RATE_CONTROL_UNION](https://www.google.com/search?num=5&q=CPU_RATE_CONTROL_UNION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+JOBOBJECT_CPU_RATE_CONTROL_INFORMATION+CPU_RATE_CONTROL_UNION  
-[CREATE_PROCESS_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679286) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+CREATE_PROCESS_DEBUG_INFO  
-[CREATE_THREAD_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679287) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+CREATE_THREAD_DEBUG_INFO  
+[CREATE_PROCESS_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679286) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+CREATE_PROCESS_DEBUG_INFO  
+[CREATE_THREAD_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679287) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+CREATE_THREAD_DEBUG_INFO  
 [CREATEFILE2_EXTENDED_PARAMETERS](http://msdn2.microsoft.com/en-us/library/hh449426) | FileAPI.h | Vanara.PInvoke.Kernel32+CREATEFILE2_EXTENDED_PARAMETERS  
 [CRITICAL_SECTION](https://www.google.com/search?num=5&q=CRITICAL_SECTION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+CRITICAL_SECTION  
 [CURRENCYFMT](http://msdn2.microsoft.com/en-us/library/dd317784) | Winnls.h | Vanara.PInvoke.Kernel32+CURRENCYFMT  
 [DCB](http://msdn2.microsoft.com/en-us/library/aa363214) | Winbase.h | Vanara.PInvoke.Kernel32+DCB  
+[DEBUG_EVENT](http://msdn2.microsoft.com/en-us/library/ms679308) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT  
 [DETAIL](https://www.google.com/search?num=5&q=DETAIL+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+REASON_CONTEXT+DETAIL  
 [DUMMYSTRUCTNAME](https://www.google.com/search?num=5&q=DUMMYSTRUCTNAME+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PACKAGE_VERSION+DUMMYSTRUCTNAME  
 [DYNAMIC_TIME_ZONE_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms724253) | WinBase.h | Vanara.PInvoke.Kernel32+DYNAMIC_TIME_ZONE_INFORMATION  
@@ -1149,11 +1150,12 @@ Native Structure | Header | Managed Structure
 [ENUM_PAGE_FILE_INFORMATION](http://msdn2.microsoft.com/en-us/library/020f3be8-f624-4788-8079-0f7679c9bef0) | psapi.h | Vanara.PInvoke.Kernel32+ENUM_PAGE_FILE_INFORMATION  
 [Error](https://www.google.com/search?num=5&q=Error+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+COPYFILE2_MESSAGE+Error  
 [Event](https://www.google.com/search?num=5&q=Event+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+Event  
-[EXCEPTION_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679326) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+EXCEPTION_DEBUG_INFO  
+[EXCEPTION_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679326) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_DEBUG_INFO  
+[EXCEPTION_INFO](http://msdn2.microsoft.com/en-us/library/ms679308) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO  
 [EXCEPTION_POINTERS](http://msdn2.microsoft.com/en-us/library/ms679331) | WinNT.h | Vanara.PInvoke.Kernel32+EXCEPTION_POINTERS  
 [EXCEPTION_RECORD](http://msdn2.microsoft.com/en-us/library/aa363082) | WinNT.h | Vanara.PInvoke.Kernel32+EXCEPTION_RECORD  
-[EXIT_PROCESS_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679334) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+EXIT_PROCESS_DEBUG_INFO  
-[EXIT_THREAD_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679335) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+EXIT_THREAD_DEBUG_INFO  
+[EXIT_PROCESS_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679334) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXIT_PROCESS_DEBUG_INFO  
+[EXIT_THREAD_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679335) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXIT_THREAD_DEBUG_INFO  
 [FILE_ALIGNMENT_INFO](http://msdn2.microsoft.com/en-us/library/a6d3cba0-d59b-45c2-a763-ecdde5b36348) | winbase.h | Vanara.PInvoke.Kernel32+FILE_ALIGNMENT_INFO  
 [FILE_ALLOCATION_INFO](http://msdn2.microsoft.com/en-us/library/909f1747-0099-407e-89a7-bec6331887da) | winbase.h | Vanara.PInvoke.Kernel32+FILE_ALLOCATION_INFO  
 [FILE_ATTRIBUTE_TAG_INFO](http://msdn2.microsoft.com/en-us/library/4a2467a2-c22a-4ee6-a40e-5603ea381adc) | winbase.h | Vanara.PInvoke.Kernel32+FILE_ATTRIBUTE_TAG_INFO  
@@ -1219,7 +1221,7 @@ Native Structure | Header | Managed Structure
 [JOBOBJECT_SECURITY_LIMIT_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684159) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_SECURITY_LIMIT_INFORMATION  
 [KEY_EVENT_RECORD](http://msdn2.microsoft.com/en-us/library/b3fed86b-84ef-48e4-97e1-cb3d65f714a7) | Wincon.h | Vanara.PInvoke.Kernel32+KEY_EVENT_RECORD  
 [LDT_ENTRY](http://msdn2.microsoft.com/en-us/library/ms680348) | WinNT.h | Vanara.PInvoke.Kernel32+LDT_ENTRY  
-[LOAD_DLL_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms680351) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+LOAD_DLL_DEBUG_INFO  
+[LOAD_DLL_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms680351) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+LOAD_DLL_DEBUG_INFO  
 [M128A](https://www.google.com/search?num=5&q=M128A+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+CONTEXT64+M128A  
 [MEM_ADDRESS_REQUIREMENTS](http://msdn2.microsoft.com/en-us/library/1CAB4942-F0D2-4A60-9472-4EDF2FC9FA7A) | winnt.h | Vanara.PInvoke.Kernel32+MEM_ADDRESS_REQUIREMENTS  
 [MEM_EXTENDED_PARAMETER](http://msdn2.microsoft.com/en-us/library/8D189F7E-83E7-4AF3-9E25-928C66666887) | winnt.h | Vanara.PInvoke.Kernel32+MEM_EXTENDED_PARAMETER  
@@ -1239,7 +1241,7 @@ Native Structure | Header | Managed Structure
 [NUMBERFMT](http://msdn2.microsoft.com/en-us/library/dd319095) | Winnls.h | Vanara.PInvoke.Kernel32+NUMBERFMT  
 [OFSTRUCT](http://msdn2.microsoft.com/en-us/library/aa365282) | WinBase.h | Vanara.PInvoke.Kernel32+OFSTRUCT  
 [OSVERSIONINFOEX](http://msdn2.microsoft.com/en-us/library/ms724833) | Winnt.h | Vanara.PInvoke.Kernel32+OSVERSIONINFOEX  
-[OUTPUT_DEBUG_STRING_INFO](http://msdn2.microsoft.com/en-us/library/ms680545) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+OUTPUT_DEBUG_STRING_INFO  
+[OUTPUT_DEBUG_STRING_INFO](http://msdn2.microsoft.com/en-us/library/ms680545) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+OUTPUT_DEBUG_STRING_INFO  
 [PACKAGE_ID](http://msdn2.microsoft.com/en-us/library/4B15281A-2227-47B7-A750-0A01DB8543FC) | appmodel.h | Vanara.PInvoke.Kernel32+PACKAGE_ID  
 [PACKAGE_INFO_REFERENCE](https://www.google.com/search?num=5&q=PACKAGE_INFO_REFERENCE+site%3Amicrosoft.com) | appmodel.h | Vanara.PInvoke.Kernel32+PACKAGE_INFO_REFERENCE  
 [PACKAGE_VERSION](http://msdn2.microsoft.com/en-us/library/8543DF84-A908-4DF5-AEE6-169FECB2AA97) | appmodel.h | Vanara.PInvoke.Kernel32+PACKAGE_VERSION  
@@ -1297,7 +1299,7 @@ Native Structure | Header | Managed Structure
 [PTP_WORK](https://www.google.com/search?num=5&q=PTP_WORK+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PTP_WORK  
 [REASON_CONTEXT](http://msdn2.microsoft.com/en-us/library/dd405536) | MinWinBase.h | Vanara.PInvoke.Kernel32+REASON_CONTEXT  
 [REGION_DATA](https://www.google.com/search?num=5&q=REGION_DATA+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PROCESS_HEAP_ENTRY+BLOCK_REGION_UNION+REGION_DATA  
-[RIP_INFO](http://msdn2.microsoft.com/en-us/library/ms680587) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+RIP_INFO  
+[RIP_INFO](http://msdn2.microsoft.com/en-us/library/ms680587) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+RIP_INFO  
 [Section](https://www.google.com/search?num=5&q=Section+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+Section  
 [Semaphore](https://www.google.com/search?num=5&q=Semaphore+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+Semaphore  
 [Server](https://www.google.com/search?num=5&q=Server+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+FILE_REMOTE_PROTOCOL_INFO+Server  
@@ -1331,7 +1333,7 @@ Native Structure | Header | Managed Structure
 [UMS_SYSTEM_THREAD_INFORMATION](http://msdn2.microsoft.com/en-us/library/eecdc592-5046-47c3-a4c6-ecb10899db3c) | winbase.h | Vanara.PInvoke.Kernel32+UMS_SYSTEM_THREAD_INFORMATION  
 [Union](https://www.google.com/search?num=5&q=Union+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+COPYFILE2_MESSAGE+Union  
 [UNION](https://www.google.com/search?num=5&q=UNION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+UNION  
-[UNLOAD_DLL_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms681403) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+UNLOAD_DLL_DEBUG_INFO  
+[UNLOAD_DLL_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms681403) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+UNLOAD_DLL_DEBUG_INFO  
 [UpdateResourceHandle](https://www.google.com/search?num=5&q=UpdateResourceHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+UpdateResourceHandle  
 [WIN32_FILE_ATTRIBUTE_DATA](http://msdn2.microsoft.com/en-us/library/aa365739) | WinBase.h | Vanara.PInvoke.Kernel32+WIN32_FILE_ATTRIBUTE_DATA  
 [WIN32_FIND_STREAM_DATA](http://msdn2.microsoft.com/en-us/library/aa365741) | WinBase.h | Vanara.PInvoke.Kernel32+WIN32_FIND_STREAM_DATA  

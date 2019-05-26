@@ -3,8 +3,10 @@
 Class | Description
 ---- | ----
 AssociateAttribute | Associates a Guid with an element.
+ComTryGetNext | Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
 CoTaskMemStringMarshaler | Marshals strings that are allocated by native code and must be freed using CoTaskMemFree after use.
 FunctionHelper | Generic functions to help with standard function patterns like getting a string from a method.
+IEnumFromCom<T> | Creates an enumerable class from a get next method in the form of HRESULT Next(uint, TItem[], out uint) and a reset method. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
 IEnumFromIndexer<T> | Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
 IEnumFromNext<T> | Creates an enumerable class from a get next method and a reset method. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
 Lib | Holds string values for all used external API libraries.
