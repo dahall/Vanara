@@ -270,9 +270,6 @@ Native Interface | Native DLL | Header | Managed Interface
 [IColumnManager](http://msdn2.microsoft.com/en-us/library/d01cacd8-1867-4f44-bbc3-876bd727c0fe) | shobjidl_core.h | Vanara.PInvoke.Shell32+IColumnManager  
 [ICommDlgBrowser](http://msdn2.microsoft.com/en-us/library/bf89ac6e-6c2e-4944-885c-9ab62f58fe71) | Shobjidl.h | Vanara.PInvoke.Shell32+ICommDlgBrowser  
 [ICommDlgBrowser3](http://msdn2.microsoft.com/en-us/library/c9286061-8ac8-452b-9204-193bc6b571cb) | Shobjidl.h | Vanara.PInvoke.Shell32+ICommDlgBrowser3  
-[ICondition](https://www.google.com/search?num=5&q=ICondition+site%3Amicrosoft.com) | structuredquerycondition.h | Vanara.PInvoke.Shell32+ICondition  
-[IConditionFactory](https://www.google.com/search?num=5&q=IConditionFactory+site%3Amicrosoft.com) | structuredquery.h | Vanara.PInvoke.Shell32+IConditionFactory  
-[IConditionFactory2](https://www.google.com/search?num=5&q=IConditionFactory2+site%3Amicrosoft.com) | structuredquery.h | Vanara.PInvoke.Shell32+IConditionFactory2  
 [IContextMenu](http://msdn2.microsoft.com/en-us/library/bb776095) | Shobjidl.h | Vanara.PInvoke.Shell32+IContextMenu  
 [IContextMenu2](http://msdn2.microsoft.com/en-us/library/4e3331ad-4adc-4ea9-8a22-6aad15f618c8) | shobjidl_core.h | Vanara.PInvoke.Shell32+IContextMenu2  
 [IContextMenu3](http://msdn2.microsoft.com/en-us/library/c08e1b98-2b8b-41f6-93c5-3a5937bd3b2c) | shobjidl_core.h | Vanara.PInvoke.Shell32+IContextMenu3  
@@ -281,7 +278,6 @@ Native Interface | Native DLL | Header | Managed Interface
 [ICopyHookW](https://www.google.com/search?num=5&q=ICopyHookW+site%3Amicrosoft.com) | Shlobj.h | Vanara.PInvoke.Shell32+ICopyHookW  
 [ICustomDestinationList](http://msdn2.microsoft.com/en-us/library/dd378402) | Shobjidl.h | Vanara.PInvoke.Shell32+ICustomDestinationList  
 [IDefaultExtractIconInit](https://www.google.com/search?num=5&q=IDefaultExtractIconInit+site%3Amicrosoft.com) | Shobjidl.h | Vanara.PInvoke.Shell32+IDefaultExtractIconInit  
-[IEntity](https://www.google.com/search?num=5&q=IEntity+site%3Amicrosoft.com) | structuredquery.h | Vanara.PInvoke.Shell32+IEntity  
 [IEnumAssocHandlers](http://msdn2.microsoft.com/en-us/library/9e173cb3-bd73-437c-8853-c13c8b6f216f) | shobjidl_core.h | Vanara.PInvoke.Shell32+IEnumAssocHandlers  
 [IEnumExtraSearch](http://msdn2.microsoft.com/en-us/library/bb761992) | Shobjidl.h | Vanara.PInvoke.Shell32+IEnumExtraSearch  
 [IEnumIDList](http://msdn2.microsoft.com/en-us/library/bb761982) | Shobjidl.h | Vanara.PInvoke.Shell32+IEnumIDList  
@@ -319,7 +315,6 @@ Native Interface | Native DLL | Header | Managed Interface
 [IKnownFolder](http://msdn2.microsoft.com/en-us/library/bb762502) | Shobjidl.h | Vanara.PInvoke.Shell32+IKnownFolder  
 [IKnownFolderManager](http://msdn2.microsoft.com/en-us/library/bb761744) | Shobjidl.h | Vanara.PInvoke.Shell32+IKnownFolderManager  
 [IModalWindow](http://msdn2.microsoft.com/en-us/library/bb761686) | Shobjidl.h | Vanara.PInvoke.Shell32+IModalWindow  
-[INamedEntity](https://www.google.com/search?num=5&q=INamedEntity+site%3Amicrosoft.com) | structuredquery.h | Vanara.PInvoke.Shell32+INamedEntity  
 [INamespaceWalk](http://msdn2.microsoft.com/en-us/library/164732ae-1c72-465c-a16b-a8eeaa9cc185) | shobjidl_core.h | Vanara.PInvoke.Shell32+INamespaceWalk  
 [INamespaceWalkCB](http://msdn2.microsoft.com/en-us/library/15244d6e-6cd7-4dee-8e4e-2533d5a60ae7) | shobjidl_core.h | Vanara.PInvoke.Shell32+INamespaceWalkCB  
 [INamespaceWalkCB2](http://msdn2.microsoft.com/en-us/library/a748083b-a99e-4015-93da-112d2950f623) | shobjidl_core.h | Vanara.PInvoke.Shell32+INamespaceWalkCB2  
@@ -339,15 +334,7 @@ Native Interface | Native DLL | Header | Managed Interface
 [IPreviewHandlerVisuals](http://msdn2.microsoft.com/en-us/library/bb775299) | Shobjidl.h | Vanara.PInvoke.Shell32+IPreviewHandlerVisuals  
 [IProgressDialog](http://msdn2.microsoft.com/en-us/library/bb775248) | Shlobj_core.h | Vanara.PInvoke.Shell32+IProgressDialog  
 [IQueryInfo](http://msdn2.microsoft.com/en-us/library/bb761359) | Shobjidl.h | Vanara.PInvoke.Shell32+IQueryInfo  
-[IQueryParser](https://www.google.com/search?num=5&q=IQueryParser+site%3Amicrosoft.com) | structuredquery.h | Vanara.PInvoke.Shell32+IQueryParser  
-[IQueryParserManager](https://www.google.com/search?num=5&q=IQueryParserManager+site%3Amicrosoft.com) | structuredquery.h | Vanara.PInvoke.Shell32+IQueryParserManager  
-[IQuerySolution](https://www.google.com/search?num=5&q=IQuerySolution+site%3Amicrosoft.com) | structuredquery.h | Vanara.PInvoke.Shell32+IQuerySolution  
-[IRelationship](https://www.google.com/search?num=5&q=IRelationship+site%3Amicrosoft.com) | structuredquery.h | Vanara.PInvoke.Shell32+IRelationship  
 [IResultsFolder](http://msdn2.microsoft.com/en-us/library/db44052b-bd26-412f-9f2a-66a0c53b65ac) | shobjidl.h | Vanara.PInvoke.Shell32+IResultsFolder  
-[IRichChunk](https://www.google.com/search?num=5&q=IRichChunk+site%3Amicrosoft.com) | structuredquerycondition.h | Vanara.PInvoke.Shell32+IRichChunk  
-[ISchemaLocalizerSupport](https://www.google.com/search?num=5&q=ISchemaLocalizerSupport+site%3Amicrosoft.com) |  | Vanara.PInvoke.Shell32+ISchemaLocalizerSupport  
-[ISchemaProvider](https://www.google.com/search?num=5&q=ISchemaProvider+site%3Amicrosoft.com) | structuredquery.h | Vanara.PInvoke.Shell32+ISchemaProvider  
-[ISearchFolderItemFactory](http://msdn2.microsoft.com/en-us/library/a684b373-6de4-4b4a-bbae-85e1c5a7e04a) | shobjidl_core.h | Vanara.PInvoke.Shell32+ISearchFolderItemFactory  
 [IServiceProvider](https://www.google.com/search?num=5&q=IServiceProvider+site%3Amicrosoft.com) | servprov.h | Vanara.PInvoke.Shell32+IServiceProvider  
 [IShellBrowser](http://msdn2.microsoft.com/en-us/library/bb775123) | Shobjidl.h | Vanara.PInvoke.Shell32+IShellBrowser  
 [IShellDispatch](https://www.google.com/search?num=5&q=IShellDispatch+site%3Amicrosoft.com) | shell32.dll |  |   
@@ -383,6 +370,5 @@ Native Interface | Native DLL | Header | Managed Interface
 [ITaskbarList3](http://msdn2.microsoft.com/en-us/library/dd391692) | Shobjidl.h | Vanara.PInvoke.Shell32+ITaskbarList3  
 [ITaskbarList4](http://msdn2.microsoft.com/en-us/library/dd562040) | Shobjidl.h | Vanara.PInvoke.Shell32+ITaskbarList4  
 [IThumbnailProvider](http://msdn2.microsoft.com/en-us/library/55c4739a-4835-4f53-a435-804ddf06ffcf) | thumbcache.h | Vanara.PInvoke.Shell32+IThumbnailProvider  
-[ITokenCollection](https://www.google.com/search?num=5&q=ITokenCollection+site%3Amicrosoft.com) | structuredquery.h | Vanara.PInvoke.Shell32+ITokenCollection  
 [IWebWizardHost](https://www.google.com/search?num=5&q=IWebWizardHost+site%3Amicrosoft.com) | shell32.dll |  |   
 [IWebWizardHost2](https://www.google.com/search?num=5&q=IWebWizardHost2+site%3Amicrosoft.com) | shell32.dll |  |   
