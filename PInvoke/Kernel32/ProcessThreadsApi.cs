@@ -755,21 +755,21 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum ProcessAccess : uint
 		{
-			PROCESS_TERMINATE                  = 0x0001,
-			PROCESS_CREATE_THREAD              = 0x0002,
-			PROCESS_SET_SESSIONID              = 0x0004,
-			PROCESS_VM_OPERATION               = 0x0008,
-			PROCESS_VM_READ                    = 0x0010,
-			PROCESS_VM_WRITE                   = 0x0020,
-			PROCESS_DUP_HANDLE                 = 0x0040,
-			PROCESS_CREATE_PROCESS             = 0x0080,
-			PROCESS_SET_QUOTA                  = 0x0100,
-			PROCESS_SET_INFORMATION            = 0x0200,
-			PROCESS_QUERY_INFORMATION          = 0x0400,
-			PROCESS_SUSPEND_RESUME             = 0x0800,
-			PROCESS_QUERY_LIMITED_INFORMATION  = 0x1000,
-			PROCESS_SET_LIMITED_INFORMATION    = 0x2000,
-			PROCESS_ALL_ACCESS                 = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | ACCESS_MASK.SYNCHRONIZE | 0xFFFF,
+			PROCESS_TERMINATE = 0x0001,
+			PROCESS_CREATE_THREAD = 0x0002,
+			PROCESS_SET_SESSIONID = 0x0004,
+			PROCESS_VM_OPERATION = 0x0008,
+			PROCESS_VM_READ = 0x0010,
+			PROCESS_VM_WRITE = 0x0020,
+			PROCESS_DUP_HANDLE = 0x0040,
+			PROCESS_CREATE_PROCESS = 0x0080,
+			PROCESS_SET_QUOTA = 0x0100,
+			PROCESS_SET_INFORMATION = 0x0200,
+			PROCESS_QUERY_INFORMATION = 0x0400,
+			PROCESS_SUSPEND_RESUME = 0x0800,
+			PROCESS_QUERY_LIMITED_INFORMATION = 0x1000,
+			PROCESS_SET_LIMITED_INFORMATION = 0x2000,
+			PROCESS_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | ACCESS_MASK.SYNCHRONIZE | 0xFFFF,
 		}
 
 		/// <summary>The processor feature to be tested.</summary>
@@ -2030,6 +2030,87 @@ namespace Vanara.PInvoke
 			PTHREAD_START_ROUTINE lpStartAddress, [In] IntPtr lpParameter, CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
 		/// <summary>
+		/// <para>Creates a thread that runs in the virtual address space of another process.</para>
+		/// <para>
+		/// Use the <c>CreateRemoteThreadEx</c> function to create a thread that runs in the virtual address space of another process and
+		/// optionally specify extended attributes.
+		/// </para>
+		/// </summary>
+		/// <param name="hProcess">
+		/// A handle to the process in which the thread is to be created. The handle must have the <c>PROCESS_CREATE_THREAD</c>,
+		/// <c>PROCESS_QUERY_INFORMATION</c>, <c>PROCESS_VM_OPERATION</c>, <c>PROCESS_VM_WRITE</c>, and <c>PROCESS_VM_READ</c> access rights,
+		/// and may fail without these rights on certain platforms. For more information, see Process Security and Access Rights.
+		/// </param>
+		/// <param name="lpThreadAttributes">
+		/// <para>
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new thread and determines
+		/// whether child processes can inherit the returned handle. If lpThreadAttributes is NULL, the thread gets a default security
+		/// descriptor and the handle cannot be inherited. The access control lists (ACL) in the default security descriptor for a thread
+		/// come from the primary token of the creator.
+		/// </para>
+		/// <para>
+		/// <c>Windows XP:</c> The ACLs in the default security descriptor for a thread come from the primary or impersonation token of the
+		/// creator. This behavior changed with Windows XP with SP2 and Windows Server 2003.
+		/// </para>
+		/// </param>
+		/// <param name="dwStackSize">
+		/// The initial size of the stack, in bytes. The system rounds this value to the nearest page. If this parameter is 0 (zero), the new
+		/// thread uses the default size for the executable. For more information, see Thread Stack Size.
+		/// </param>
+		/// <param name="lpStartAddress">
+		/// A pointer to the application-defined function of type <c>LPTHREAD_START_ROUTINE</c> to be executed by the thread and represents
+		/// the starting address of the thread in the remote process. The function must exist in the remote process. For more information,
+		/// see <c>ThreadProc</c>.
+		/// </param>
+		/// <param name="lpParameter">A pointer to a variable to be passed to the thread function.</param>
+		/// <param name="dwCreationFlags">
+		/// <para>The flags that control the creation of the thread.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>The thread runs immediately after creation.</term>
+		/// </item>
+		/// <item>
+		/// <term>CREATE_SUSPENDED0x00000004</term>
+		/// <term>The thread is created in a suspended state, and does not run until the ResumeThread function is called.</term>
+		/// </item>
+		/// <item>
+		/// <term>STACK_SIZE_PARAM_IS_A_RESERVATION0x00010000</term>
+		/// <term>
+		/// The dwStackSize parameter specifies the initial reserve size of the stack. If this flag is not specified, dwStackSize specifies
+		/// the commit size.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpThreadId">
+		/// <para>A pointer to a variable that receives the thread identifier.</para>
+		/// <para>If this parameter is <c>NULL</c>, the thread identifier is not returned.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// Note that <c>CreateRemoteThread</c> may succeed even if lpStartAddress points to data, code, or is not accessible. If the start
+		/// address is invalid when the thread runs, an exception occurs, and the thread terminates. Thread termination due to a invalid
+		/// start address is handled as an error exit for the thread's process. This behavior is similar to the asynchronous nature of
+		/// <c>CreateProcess</c>, where the process is created even if it refers to invalid or missing dynamic-link libraries (DLL).
+		/// </para>
+		/// </returns>
+		// HANDLE WINAPI CreateRemoteThread( _In_ HANDLE hProcess, _In_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize,
+		// _In_ LPTHREAD_START_ROUTINE lpStartAddress, _In_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682437(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms682437")]
+		public static extern SafeHTHREAD CreateRemoteThread([In] HPROCESS hProcess, [In] SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize,
+			IntPtr lpStartAddress, [In] IntPtr lpParameter, CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
+
+		/// <summary>
 		/// Creates a thread that runs in the virtual address space of another process and optionally specifies extended attributes such as
 		/// processor group affinity.
 		/// </summary>
@@ -2102,6 +2183,81 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
 		public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In] SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize,
 			PTHREAD_START_ROUTINE lpStartAddress, [In] IntPtr lpParameter, CREATE_THREAD_FLAGS dwCreationFlags, IntPtr lpAttributeList,
+			out uint lpThreadId);
+
+		/// <summary>
+		/// Creates a thread that runs in the virtual address space of another process and optionally specifies extended attributes such as
+		/// processor group affinity.
+		/// </summary>
+		/// <param name="hProcess">
+		/// A handle to the process in which the thread is to be created. The handle must have the PROCESS_CREATE_THREAD,
+		/// PROCESS_QUERY_INFORMATION, PROCESS_VM_OPERATION, PROCESS_VM_WRITE, and PROCESS_VM_READ access rights. In Windows 10, version
+		/// 1607, your code must obtain these access rights for the new handle. However, starting in Windows 10, version 1703, if the new
+		/// handle is entitled to these access rights, the system obtains them for you. For more information, see Process Security and Access Rights.
+		/// </param>
+		/// <param name="lpThreadAttributes">
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new thread and determines
+		/// whether child processes can inherit the returned handle. If lpThreadAttributes is NULL, the thread gets a default security
+		/// descriptor and the handle cannot be inherited. The access control lists (ACL) in the default security descriptor for a thread
+		/// come from the primary token of the creator.
+		/// </param>
+		/// <param name="dwStackSize">
+		/// The initial size of the stack, in bytes. The system rounds this value to the nearest page. If this parameter is 0 (zero), the new
+		/// thread uses the default size for the executable. For more information, see Thread Stack Size.
+		/// </param>
+		/// <param name="lpStartAddress">
+		/// A pointer to the application-defined function of type <c>LPTHREAD_START_ROUTINE</c> to be executed by the thread and represents
+		/// the starting address of the thread in the remote process. The function must exist in the remote process. For more information,
+		/// see <c>ThreadProc</c>.
+		/// </param>
+		/// <param name="lpParameter">
+		/// A pointer to a variable to be passed to the thread function pointed to by lpStartAddress. This parameter can be NULL.
+		/// </param>
+		/// <param name="dwCreationFlags">
+		/// <para>The flags that control the creation of the thread.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>The thread runs immediately after creation.</term>
+		/// </item>
+		/// <item>
+		/// <term>CREATE_SUSPENDED0x00000004</term>
+		/// <term>The thread is created in a suspended state and does not run until the ResumeThread function is called.</term>
+		/// </item>
+		/// <item>
+		/// <term>STACK_SIZE_PARAM_IS_A_RESERVATION0x00010000</term>
+		/// <term>
+		/// The dwStackSize parameter specifies the initial reserve size of the stack. If this flag is not specified, dwStackSize specifies
+		/// the commit size.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpAttributeList">
+		/// An attribute list that contains additional parameters for the new thread. This list is created by the
+		/// <c>InitializeProcThreadAttributeList</c> function.
+		/// </param>
+		/// <param name="lpThreadId">
+		/// <para>A pointer to a variable that receives the thread identifier.</para>
+		/// <para>If this parameter is NULL, the thread identifier is not returned.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
+		/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize,
+		// _In_ LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _In_opt_
+		// LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
+		public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In] SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize,
+			IntPtr lpStartAddress, [In] IntPtr lpParameter, CREATE_THREAD_FLAGS dwCreationFlags, IntPtr lpAttributeList,
 			out uint lpThreadId);
 
 		/// <summary>
