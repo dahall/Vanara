@@ -200,6 +200,30 @@ namespace Vanara.PInvoke
 			CALG_TLS1PRF = 0x0000800a,
 		}
 
+		/// <summary>
+		/// A certificate encoding type.
+		/// </summary>
+		[PInvokeData("wincrypt.h")]
+		public enum CertEncodingType : uint
+		{
+			/// <summary>
+			/// The crypt asn encoding
+			/// </summary>
+			CRYPT_ASN_ENCODING = 0x00000001,
+			/// <summary>
+			/// The crypt NDR encoding
+			/// </summary>
+			CRYPT_NDR_ENCODING = 0x00000002,
+			/// <summary>
+			/// The X509 asn encoding
+			/// </summary>
+			X509_ASN_ENCODING = 0x00000001,
+			/// <summary>
+			/// The X509 NDR encoding
+			/// </summary>
+			X509_NDR_ENCODING = 0x00000002,
+		}
+
 		/// <summary>Private key pair type.</summary>
 		[PInvokeData("wincrypt.h")]
 		public enum PrivateKeyType
