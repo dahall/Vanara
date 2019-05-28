@@ -126,6 +126,23 @@ namespace Vanara.PInvoke
 				return newSid;
 			}
 
+			/// <summary>Creates a SID for predefined aliases.</summary>
+			/// <param name="WellKnownSidType">Member of the WELL_KNOWN_SID_TYPE enumeration that specifies what the SID will identify.</param>
+			/// <param name="DomainSid">
+			/// A pointer to a SID that identifies the domain to use when creating the SID. Pass <c>PSID.NULL</c> to use the local computer.
+			/// </param>
+			/// <returns>A <see cref="SafePSID"/> instance.</returns>
+			public static SafePSID CreateWellKnown(WELL_KNOWN_SID_TYPE sidType, PSID domainSid = default)
+			{
+				var sz = 0U;
+				var ret = CreateWellKnownSid(sidType, domainSid, Null, ref sz);
+				if (sz == 0) Win32Error.ThrowLastError();
+				var newSid = new SafePSID((int)sz);
+				if (!CreateWellKnownSid(sidType, domainSid, newSid, ref sz))
+					Win32Error.ThrowLastError();
+				return newSid;
+			}
+
 			/// <summary>Performs an explicit conversion from <see cref="SafePSID"/> to <see cref="IntPtr"/>.</summary>
 			/// <param name="psid">The SafePSID instance.</param>
 			/// <returns>The result of the conversion.</returns>
