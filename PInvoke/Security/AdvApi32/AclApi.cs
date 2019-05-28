@@ -999,7 +999,7 @@ namespace Vanara.PInvoke
 		// cCountOfExplicitEntries, PEXPLICIT_ACCESS_A pListOfExplicitEntries, PACL OldAcl, PACL *NewAcl );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("aclapi.h", MSDNShortId = "05960fc1-1ad2-4c19-a65c-62259af5e18c")]
-		public static extern Win32Error SetEntriesInAcl(uint cCountOfExplicitEntries, [MarshalAs(UnmanagedType.LPArray)] EXPLICIT_ACCESS[] pListOfExplicitEntries, PACL OldAcl, out PACL NewAcl);
+		public static extern Win32Error SetEntriesInAcl(uint cCountOfExplicitEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] EXPLICIT_ACCESS[] pListOfExplicitEntries, PACL OldAcl, out SafePACL NewAcl);
 
 		/// <summary>
 		/// The SetNamedSecurityInfo function sets specified security information in the security descriptor of a specified object. The
@@ -1456,6 +1456,26 @@ namespace Vanara.PInvoke
 				FreeInheritedFromArray(handle, AceCount, IntPtr.Zero);
 				return base.ReleaseHandle();
 			}
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PACL"/> that is disposed using <see cref="LocalFree"/>.</summary>
+		public class SafePACL : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafePACL(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class.</summary>
+			private SafePACL() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafePACL"/> to <see cref="PACL"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PACL(SafePACL h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { Kernel32.LocalFree(handle); return true; }
 		}
 	}
 }
