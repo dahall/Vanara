@@ -315,7 +315,7 @@ namespace Vanara.PInvoke
 				[In, MarshalAs(UnmanagedType.LPWStr)] string pszServerName, [In] PSECURITY_DESCRIPTOR pSD,
 				[MarshalAs(UnmanagedType.LPArray)] out OBJECT_TYPE_LIST[] ppObjectTypeList,
 				out uint pcObjectTypeListLength,
-				[MarshalAs(UnmanagedType.LPArray)] out uint[] ppGrantedAccessList,
+				[MarshalAs(UnmanagedType.LPArray)] out ACCESS_MASK[] ppGrantedAccessList,
 				out uint pcGrantedAccessListLength);
 		}
 
@@ -511,7 +511,7 @@ namespace Vanara.PInvoke
 			/// corresponding standard and specific access rights for the specified object type.
 			/// </param>
 			[PreserveSig]
-			HRESULT MapGeneric(in Guid guidObjectType, ref sbyte AceFlags, ref uint Mask);
+			HRESULT MapGeneric(in Guid guidObjectType, ref System.Security.AccessControl.AceFlags AceFlags, ref ACCESS_MASK Mask);
 
 			/// <summary>
 			/// The GetInheritTypes method requests information about how ACEs can be inherited by child objects. For more information, see ACE Inheritance.
@@ -656,7 +656,7 @@ namespace Vanara.PInvoke
 		/// <returns>If the function succeeds, the function returns a handle to a basic security property page. If the function fails, it returns NULL. To get extended error information, call GetLastError.</returns>
 		[DllImport(Lib.AclUI, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("aclui.h", Dll = "Aclui.dll", MSDNShortId = "aa446584")]
-		public static extern IntPtr CreateSecurityPage([In] ISecurityInformation psi );
+		public static extern IntPtr CreateSecurityPage([In] ISecurityInformation psi);
 
 		/// <summary>
 		/// The EditSecurity function displays a property sheet that contains a basic security property page. This property page enables the user to view and

@@ -605,7 +605,7 @@ namespace Vanara.PInvoke
 			/// trustee. The functions that use the <c>EXPLICIT_ACCESS</c> structure do not convert, interpret, or validate the bits in this mask.
 			/// </para>
 			/// </summary>
-			public uint grfAccessPermissions;
+			public ACCESS_MASK grfAccessPermissions;
 
 			/// <summary>
 			/// <para>
@@ -936,6 +936,11 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </summary>
 			public IntPtr ptstrName;
+
+			/// <summary>Initializes a new instance of the <see cref="TRUSTEE"/> struct.</summary>
+			/// <param name="pSid">The sid.</param>
+			/// <param name="type">The sid type.</param>
+			public TRUSTEE(PSID pSid, TRUSTEE_TYPE type = TRUSTEE_TYPE.TRUSTEE_IS_USER) : this() { ptstrName = (IntPtr)pSid; TrusteeForm = TRUSTEE_FORM.TRUSTEE_IS_SID; TrusteeType = type; }
 
 			/// <summary>Gets the name of the trustee.</summary>
 			/// <value>

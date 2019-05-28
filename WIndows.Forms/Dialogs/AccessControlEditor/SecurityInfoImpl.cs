@@ -47,14 +47,14 @@ namespace Vanara.Security.AccessControl
 			get => pSD.ToArray(); set => pSD = new SafeByteArray(value);
 		}
 
-		HRESULT IEffectivePermission.GetEffectivePermission(in Guid pguidObjectType, PSID pUserSid, string pszServerName, PSECURITY_DESCRIPTOR pSecDesc, out OBJECT_TYPE_LIST[] ppObjectTypeList, out uint pcObjectTypeListLength, out uint[] ppGrantedAccessList, out uint pcGrantedAccessListLength)
+		HRESULT IEffectivePermission.GetEffectivePermission(in Guid pguidObjectType, PSID pUserSid, string pszServerName, PSECURITY_DESCRIPTOR pSecDesc, out OBJECT_TYPE_LIST[] ppObjectTypeList, out uint pcObjectTypeListLength, out ACCESS_MASK[] ppGrantedAccessList, out uint pcGrantedAccessListLength)
 		{
 			System.Diagnostics.Debug.WriteLine($"GetEffectivePermission: {pguidObjectType}, {pszServerName}");
 			if (pguidObjectType == Guid.Empty)
 			{
 				ppGrantedAccessList = prov.GetEffectivePermission(pUserSid, pszServerName, pSecDesc);
 				pcGrantedAccessListLength = (uint)ppGrantedAccessList.Length;
-				ppObjectTypeList = new [] { OBJECT_TYPE_LIST.Self };
+				ppObjectTypeList = new[] { OBJECT_TYPE_LIST.Self };
 				pcObjectTypeListLength = (uint)ppObjectTypeList.Length;
 			}
 			else
@@ -105,7 +105,7 @@ namespace Vanara.Security.AccessControl
 			return HRESULT.S_OK;
 		}
 
-		HRESULT ISecurityInformation.MapGeneric(in Guid guidObjectType, ref sbyte AceFlags, ref uint Mask)
+		HRESULT ISecurityInformation.MapGeneric(in Guid guidObjectType, ref AceFlags AceFlags, ref ACCESS_MASK Mask)
 		{
 			var stMask = Mask;
 			var gm = prov.GetGenericMapping(AceFlags);
@@ -276,12 +276,12 @@ namespace Vanara.Security.AccessControl
 			var request = new AUTHZ_ACCESS_REQUEST((uint)ACCESS_MASK.MAXIMUM_ALLOWED);
 			var sd = new SafeSecurityDescriptor(pSecurityObjects[0].pData, false);
 			var reply = new AUTHZ_ACCESS_REPLY(1);
-			if (!AuthzAccessCheck(AuthzAccessCheckFlags.NONE, hAuthzCompoundContext, request, default, sd, null, 0, reply, out var phAccessCheckResults))
+			if (!AuthzAccessCheck(AuthzAccessCheckFlags.NONE, hAuthzCompoundContext, request, default, sd, null, 0, reply, out _))
 				return HRESULT.S_OK;
 
 			pEffpermResultLists[0].fEvaluated = true;
 			pEffpermResultLists[0].pGrantedAccessList = reply.GrantedAccessMaskValues;
-			pEffpermResultLists[0].pObjectTypeList = new[] {OBJECT_TYPE_LIST.Self};
+			pEffpermResultLists[0].pObjectTypeList = new[] { OBJECT_TYPE_LIST.Self };
 			pEffpermResultLists[0].cObjectTypeListLength = 1;
 
 			return HRESULT.S_OK;

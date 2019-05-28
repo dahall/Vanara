@@ -45,7 +45,7 @@ namespace Vanara.Security.AccessControl
 		/// <param name="serverName">Name of the server. This can be <c>null</c>.</param>
 		/// <param name="pSecurityDescriptor">A pointer to the security descriptor.</param>
 		/// <returns>An array of access masks.</returns>
-		uint[] GetEffectivePermission(PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor);
+		ACCESS_MASK[] GetEffectivePermission(PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor);
 
 		/// <summary>
 		/// Gets the effective permissions for the provided Sid within the Security Descriptor.
@@ -58,12 +58,12 @@ namespace Vanara.Security.AccessControl
 		/// <param name="objectTypeList">The object type list.</param>
 		/// <param name="grantedAccessList">An array of access masks.</param>
 		/// <returns>An array of access masks.</returns>
-		HRESULT GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList, out uint[] grantedAccessList);
+		HRESULT GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList, out ACCESS_MASK[] grantedAccessList);
 
 		/// <summary>Gets the generic mapping for standard rights.</summary>
 		/// <param name="aceFlags">The ace flags.</param>
 		/// <returns>A <see cref="GENERIC_MAPPING"/> structure for this object type.</returns>
-		GENERIC_MAPPING GetGenericMapping(sbyte aceFlags);
+		GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags);
 
 		/// <summary>
 		/// Determines the source of inherited access control entries (ACEs) in discretionary access
@@ -136,9 +136,9 @@ namespace Vanara.Security.AccessControl
 		/// <param name="serverName">Name of the server. This can be <c>null</c>.</param>
 		/// <param name="pSecurityDescriptor">A pointer to the security descriptor.</param>
 		/// <returns>An array of access masks.</returns>
-		public virtual uint[] GetEffectivePermission(PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor)
+		public virtual ACCESS_MASK[] GetEffectivePermission(PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor)
 		{
-			var mask = pUserSid.GetEffectiveRights(pSecurityDescriptor);
+			ACCESS_MASK mask = pUserSid.GetEffectiveRights(pSecurityDescriptor);
 			return new[] { mask };
 		}
 
@@ -154,7 +154,7 @@ namespace Vanara.Security.AccessControl
 		/// <param name="grantedAccessList">An array of access masks.</param>
 		/// <returns></returns>
 		/// <exception cref="System.NotImplementedException"></exception>
-		public virtual HRESULT GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList, out uint[] grantedAccessList)
+		public virtual HRESULT GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList, out ACCESS_MASK[] grantedAccessList)
 		{
 			objectTypeList = null;
 			grantedAccessList = null;
@@ -163,7 +163,7 @@ namespace Vanara.Security.AccessControl
 
 		/// <summary>Gets the generic mapping for standard rights.</summary>
 		/// <returns>A <see cref="GENERIC_MAPPING"/> structure for this object type.</returns>
-		public virtual GENERIC_MAPPING GetGenericMapping(sbyte aceFlags) => new GENERIC_MAPPING(0x80000000, 0x40000000, 0x20000000, 0x10000000);
+		public virtual GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) => new GENERIC_MAPPING(0x80000000, 0x40000000, 0x20000000, 0x10000000);
 
 		/// <summary>
 		/// Determines the source of inherited access control entries (ACEs) in discretionary access
@@ -259,7 +259,7 @@ namespace Vanara.Security.AccessControl
 
 		public override IntPtr GetDefaultSecurity() => defaultSd.DangerousGetHandle();
 
-		public override GENERIC_MAPPING GetGenericMapping(sbyte aceFlags) =>
+		public override GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) =>
 			new GENERIC_MAPPING((uint)(FileSystemRights.Read | FileSystemRights.Synchronize),
 				(uint)(FileSystemRights.Write | FileSystemRights.Synchronize), 0x1200A0, (uint)FileSystemRights.FullControl);
 
@@ -307,7 +307,7 @@ namespace Vanara.Security.AccessControl
 
 		//public override IntPtr GetDefaultSecurity() => IntPtr.Zero;
 
-		public override GENERIC_MAPPING GetGenericMapping(sbyte aceFlags) => new GENERIC_MAPPING((uint)RegistryRights.ReadKey, (uint)RegistryRights.WriteKey, (uint)RegistryRights.ExecuteKey, (uint)RegistryRights.FullControl);
+		public override GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) => new GENERIC_MAPPING((uint)RegistryRights.ReadKey, (uint)RegistryRights.WriteKey, (uint)RegistryRights.ExecuteKey, (uint)RegistryRights.FullControl);
 
 		public override INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl)
 		{
@@ -368,7 +368,7 @@ namespace Vanara.Security.AccessControl
 
 		//public override IntPtr GetDefaultSecurity() => IntPtr.Zero;
 
-		public override GENERIC_MAPPING GetGenericMapping(sbyte aceFlags) => new GENERIC_MAPPING(0x120089, 0x120116, 0x1200A0, 0x1F01FF);
+		public override GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) => new GENERIC_MAPPING(0x120089, 0x120116, 0x1200A0, 0x1F01FF);
 
 		public override INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl)
 		{

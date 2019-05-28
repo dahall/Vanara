@@ -152,7 +152,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "d9fd2e44-5782-40c9-a1cf-1788ca7afc50")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AccessCheck(PSECURITY_DESCRIPTOR pSecurityDescriptor, HTOKEN ClientToken, uint DesiredAccess, in GENERIC_MAPPING GenericMapping,
+		public static extern bool AccessCheck(PSECURITY_DESCRIPTOR pSecurityDescriptor, HTOKEN ClientToken, ACCESS_MASK DesiredAccess, in GENERIC_MAPPING GenericMapping,
 			[In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] ref PRIVILEGE_SET PrivilegeSet, ref uint PrivilegeSetLength,
 			out uint GrantedAccess, [MarshalAs(UnmanagedType.Bool)] out bool AccessStatus);
 
@@ -259,7 +259,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "50acfc17-459d-464c-9927-88b32dd424c7")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AccessCheckByType(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID PrincipalSelfSid, HTOKEN ClientToken, uint DesiredAccess, OBJECT_TYPE_LIST[] ObjectTypeList,
+		public static extern bool AccessCheckByType(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID PrincipalSelfSid, HTOKEN ClientToken, ACCESS_MASK DesiredAccess, OBJECT_TYPE_LIST[] ObjectTypeList,
 			uint ObjectTypeListLength, in GENERIC_MAPPING GenericMapping, [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET PrivilegeSet,
 			ref uint PrivilegeSetLength, out uint GrantedAccess, [MarshalAs(UnmanagedType.Bool)] out bool AccessStatus);
 
@@ -366,7 +366,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "ce713421-d4ff-48ed-b751-5e5c5397d820")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AccessCheckByTypeResultList(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID PrincipalSelfSid, HTOKEN ClientToken, uint DesiredAccess, [In] OBJECT_TYPE_LIST[] ObjectTypeList,
+		public static extern bool AccessCheckByTypeResultList(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID PrincipalSelfSid, HTOKEN ClientToken, ACCESS_MASK DesiredAccess, [In] OBJECT_TYPE_LIST[] ObjectTypeList,
 			uint ObjectTypeListLength, in GENERIC_MAPPING GenericMapping, [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET PrivilegeSet,
 			ref uint PrivilegeSetLength, out uint GrantedAccessList, out uint AccessStatusList);
 
@@ -439,7 +439,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "1004353a-f907-4452-9c0f-85eba0ece813")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddAccessAllowedAce(PACL pAcl, uint dwAceRevision, uint AccessMask, PSID pSid);
+		public static extern bool AddAccessAllowedAce(PACL pAcl, uint dwAceRevision, ACCESS_MASK AccessMask, PSID pSid);
 
 		/// <summary>
 		/// The <c>AddAccessAllowedAceEx</c> function adds an access-allowed access control entry (ACE) to the end of a discretionary access
@@ -540,7 +540,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "6ddec01f-237f-4b6a-8ea8-a126017b30c5")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddAccessAllowedAceEx(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, uint AccessMask, PSID pSid);
+		public static extern bool AddAccessAllowedAceEx(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid);
 
 		/// <summary>
 		/// The <c>AddAccessAllowedObjectAce</c> function adds an access-allowed access control entry (ACE) to the end of a discretionary
@@ -659,7 +659,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "ccf83e95-ba6f-49f5-a312-52eac90f209a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddAccessAllowedObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, uint AccessMask, in Guid ObjectTypeGuid, in Guid InheritedObjectTypeGuid, PSID pSid);
+		public static extern bool AddAccessAllowedObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, in Guid ObjectTypeGuid, in Guid InheritedObjectTypeGuid, PSID pSid);
 
 		/// <summary>
 		/// The <c>AddAccessAllowedObjectAce</c> function adds an access-allowed access control entry (ACE) to the end of a discretionary
@@ -778,7 +778,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "ccf83e95-ba6f-49f5-a312-52eac90f209a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddAccessAllowedObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, uint AccessMask, [Optional] IntPtr ObjectTypeGuid, [Optional] IntPtr InheritedObjectTypeGuid, PSID pSid);
+		public static extern bool AddAccessAllowedObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [Optional] IntPtr ObjectTypeGuid, [Optional] IntPtr InheritedObjectTypeGuid, PSID pSid);
 
 		/// <summary>
 		/// <para>
@@ -847,7 +847,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "5b4c4164-48f4-4cd5-b60e-554f2498d547")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddAccessDeniedAce(PACL pAcl, uint dwAceRevision, uint AccessMask, PSID pSid);
+		public static extern bool AddAccessDeniedAce(PACL pAcl, uint dwAceRevision, ACCESS_MASK AccessMask, PSID pSid);
 
 		/// <summary>
 		/// The <c>AddAccessDeniedAceEx</c> function adds an access-denied access control entry (ACE) to the end of a discretionary access
@@ -950,7 +950,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "e353c88c-f82e-40c0-b676-38f0060acc81")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddAccessDeniedAceEx(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, uint AccessMask, PSID pSid);
+		public static extern bool AddAccessDeniedAceEx(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid);
 
 		/// <summary>
 		/// The <c>AddAccessDeniedObjectAce</c> function adds an access-denied access control entry (ACE) to the end of a discretionary
@@ -1071,7 +1071,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "1427c908-92b6-46b2-9189-a2fd93c470b1")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddAccessDeniedObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, uint AccessMask, in Guid ObjectTypeGuid, in Guid InheritedObjectTypeGuid, PSID pSid);
+		public static extern bool AddAccessDeniedObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, in Guid ObjectTypeGuid, in Guid InheritedObjectTypeGuid, PSID pSid);
 
 		/// <summary>
 		/// The <c>AddAccessDeniedObjectAce</c> function adds an access-denied access control entry (ACE) to the end of a discretionary
@@ -1192,7 +1192,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "1427c908-92b6-46b2-9189-a2fd93c470b1")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddAccessDeniedObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, uint AccessMask, [Optional] IntPtr ObjectTypeGuid, [Optional] IntPtr InheritedObjectTypeGuid, PSID pSid);
+		public static extern bool AddAccessDeniedObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [Optional] IntPtr ObjectTypeGuid, [Optional] IntPtr InheritedObjectTypeGuid, PSID pSid);
 
 		/// <summary>The <c>AddAce</c> function adds one or more access control entries (ACEs) to a specified access control list (ACL).</summary>
 		/// <param name="pAcl">A pointer to an ACL. This function adds an ACE to this ACL.</param>
@@ -1318,7 +1318,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "34f22aea-9cde-411e-b2d5-bfcd3bfe325d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddAuditAccessAce(PACL pAcl, uint dwAceRevision, uint dwAccessMask, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
+		public static extern bool AddAuditAccessAce(PACL pAcl, uint dwAceRevision, ACCESS_MASK dwAccessMask, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
 
 		/// <summary>
 		/// The <c>AddAuditAccessAceEx</c> function adds a system-audit access control entry (ACE) to the end of a system access control list (SACL).
@@ -1440,7 +1440,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "ddd1d815-c4ce-4572-982c-139e17cda192")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddAuditAccessAceEx(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, uint dwAccessMask, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
+		public static extern bool AddAuditAccessAceEx(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK dwAccessMask, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
 
 		/// <summary>
 		/// The <c>AddAuditAccessObjectAce</c> function adds a system-audit access control entry (ACE) to the end of a system access control
@@ -1577,7 +1577,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "be852a0c-9d96-4b29-b5f9-d9c41d838c12")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddAuditAccessObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, uint AccessMask, in Guid ObjectTypeGuid, in Guid InheritedObjectTypeGuid, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
+		public static extern bool AddAuditAccessObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, in Guid ObjectTypeGuid, in Guid InheritedObjectTypeGuid, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
 
 		/// <summary>
 		/// The <c>AddAuditAccessObjectAce</c> function adds a system-audit access control entry (ACE) to the end of a system access control
@@ -1714,7 +1714,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "be852a0c-9d96-4b29-b5f9-d9c41d838c12")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddAuditAccessObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, uint AccessMask, [Optional] IntPtr ObjectTypeGuid, [Optional] IntPtr InheritedObjectTypeGuid, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
+		public static extern bool AddAuditAccessObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [Optional] IntPtr ObjectTypeGuid, [Optional] IntPtr InheritedObjectTypeGuid, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
 
 		/// <summary>
 		/// The <c>AddMandatoryAce</c> function adds a SYSTEM_MANDATORY_LABEL_ACE access control entry (ACE) to the specified system access
@@ -1903,7 +1903,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "AA2064E4-6F76-4D7B-8540-D55A91168825")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddResourceAttributeAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, uint AccessMask, PSID pSid, in CLAIM_SECURITY_ATTRIBUTES_INFORMATION pAttributeInfo, ref uint pReturnLength);
+		public static extern bool AddResourceAttributeAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid, in CLAIM_SECURITY_ATTRIBUTES_INFORMATION pAttributeInfo, ref uint pReturnLength);
 
 		/// <summary>
 		/// The <c>AddScopedPolicyIDAce</c> function adds a SYSTEM_SCOPED_POLICY_ID_ACE access control entry (ACE) to the end of a system
@@ -1969,7 +1969,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "30AA5730-566C-4B02-A904-5A38237EE8E3")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddScopedPolicyIDAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, uint AccessMask, PSID pSid);
+		public static extern bool AddScopedPolicyIDAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid);
 
 		/// <summary>
 		/// The <c>AdjustTokenGroups</c> function enables or disables groups already present in the specified access token. Access to
@@ -2250,7 +2250,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "91349693-8667-49dd-a813-657497b7d467")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AreAllAccessesGranted(uint GrantedAccess, uint DesiredAccess);
+		public static extern bool AreAllAccessesGranted(uint GrantedAccess, ACCESS_MASK DesiredAccess);
 
 		/// <summary>
 		/// The <c>AreAnyAccessesGranted</c> function tests whether any of a set of requested access rights has been granted. The access
@@ -2275,7 +2275,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "4bac6ebc-716a-4725-b9e6-a109b27dfc18")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AreAnyAccessesGranted(uint GrantedAccess, uint DesiredAccess);
+		public static extern bool AreAnyAccessesGranted(uint GrantedAccess, ACCESS_MASK DesiredAccess);
 
 		/// <summary>The <c>CheckTokenCapability</c> function checks the capabilities of a given token.</summary>
 		/// <param name="TokenHandle">
@@ -4506,7 +4506,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa379266")]
-		public static extern void MapGenericMask(ref uint AccessMask, in GENERIC_MAPPING GenericMapping);
+		public static extern void MapGenericMask(ref ACCESS_MASK AccessMask, in GENERIC_MAPPING GenericMapping);
 
 		/// <summary>
 		/// The PrivilegeCheck function determines whether a specified set of privileges are enabled in an access token. The PrivilegeCheck
@@ -4552,7 +4552,7 @@ namespace Vanara.PInvoke
 		// QuerySecurityAccessMask( SECURITY_INFORMATION SecurityInformation, LPDWORD DesiredAccess );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "70379640-28b7-4503-9ba8-789786078d4a")]
-		public static extern void QuerySecurityAccessMask(SECURITY_INFORMATION SecurityInformation, out uint DesiredAccess);
+		public static extern void QuerySecurityAccessMask(SECURITY_INFORMATION SecurityInformation, out ACCESS_MASK DesiredAccess);
 
 		/// <summary>The RevertToSelf function terminates the impersonation of a client application.</summary>
 		/// <returns>
@@ -4943,7 +4943,7 @@ namespace Vanara.PInvoke
 		// SetSecurityAccessMask( SECURITY_INFORMATION SecurityInformation, LPDWORD DesiredAccess );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "764a4e93-0865-49f8-9b3a-1a178073454d")]
-		public static extern void SetSecurityAccessMask(SECURITY_INFORMATION SecurityInformation, out uint DesiredAccess);
+		public static extern void SetSecurityAccessMask(SECURITY_INFORMATION SecurityInformation, out ACCESS_MASK DesiredAccess);
 
 		/// <summary>
 		/// The <c>SetSecurityDescriptorControl</c> function sets the control bits of a security descriptor. The function can set only the
