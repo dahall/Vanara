@@ -52,7 +52,7 @@ namespace Vanara.PInvoke.Tests
 				var ps = PRIVILEGE_SET.InitializeWithCapacity(10);
 				var psSz = ps.SizeInBytes;
 				var gm = GENERIC_MAPPING.GenericFileMapping;
-				var accessMask = (uint)Kernel32.FileAccess.GENERIC_READ;
+				ACCESS_MASK accessMask = ACCESS_MASK.GENERIC_READ;
 				MapGenericMask(ref accessMask, gm);
 				var b = AccessCheck(pSD, hTok, accessMask, gm, ref ps, ref psSz, out var access, out var status);
 				if (!b) TestContext.WriteLine($"AccessCheck failed: {Win32Error.GetLastError()}");

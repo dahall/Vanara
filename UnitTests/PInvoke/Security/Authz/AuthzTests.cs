@@ -331,30 +331,6 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		private class PrivBlock : IDisposable
-		{
-			SafeCoTaskMemHandle prevState;
-			SafeHTOKEN tok;
-
-			public PrivBlock(string priv)
-			{
-				tok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY);
-				var newPriv = new PTOKEN_PRIVILEGES(LUID.FromName(priv), PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
-				prevState = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
-				var retLen = (uint)prevState.Size;
-				if (!AdjustTokenPrivileges(tok, false, newPriv, newPriv.SizeInBytes, prevState, ref retLen))
-					Win32Error.ThrowLastError();
-			}
-
-			public void Dispose()
-			{
-				var retLen = 0U;
-				AdjustTokenPrivileges(tok, false, prevState, (uint)prevState.Size, SafeCoTaskMemHandle.Null, ref retLen);
-				prevState.Dispose();
-				tok.Dispose();
-			}
-		}
-
 		[Test]
 		public void AuthzSetAppContainerInformationTest()
 		{
@@ -365,6 +341,30 @@ namespace Vanara.PInvoke.Tests
 				var sids = new SID_AND_ATTRIBUTES { Sid = localSid, Attributes = (uint)GroupAttributes.SE_GROUP_ENABLED };
 				Assert.That(AuthzSetAppContainerInformation(hCtx, localSid, 1, new[] { sids }), Is.True);
 			}
+		}
+	}
+
+	internal class PrivBlock : IDisposable
+	{
+		SafeCoTaskMemHandle prevState;
+		SafeHTOKEN tok;
+
+		public PrivBlock(string priv)
+		{
+			tok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY);
+			var newPriv = new PTOKEN_PRIVILEGES(LUID.FromName(priv), PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
+			prevState = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
+			var retLen = (uint)prevState.Size;
+			if (!AdjustTokenPrivileges(tok, false, newPriv, newPriv.SizeInBytes, prevState, ref retLen))
+				Win32Error.ThrowLastError();
+		}
+
+		public void Dispose()
+		{
+			var retLen = 0U;
+			AdjustTokenPrivileges(tok, false, prevState, (uint)prevState.Size, SafeCoTaskMemHandle.Null, ref retLen);
+			prevState.Dispose();
+			tok.Dispose();
 		}
 	}
 }
