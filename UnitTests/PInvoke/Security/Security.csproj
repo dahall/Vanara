@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="AdvApi32\AdvApi32Tests.cs" />
     <Compile Include="AdvApi32\AuditTests.cs" />
+    <Compile Include="AdvApi32\ServiceTests.cs" />
     <Compile Include="AdvApi32\PSIDTests.cs" />
     <Compile Include="Authz\AuthzTests.cs" />
     <Compile Include="Secur32\SaslTests.cs" />

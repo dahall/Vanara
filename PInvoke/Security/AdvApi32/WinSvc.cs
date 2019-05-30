@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 
@@ -77,7 +78,76 @@ namespace Vanara.PInvoke
 		// void LphandlerFunction( DWORD dwControl ) {...}
 		[PInvokeData("winsvc.h", MSDNShortId = "e2d6d3a7-070e-4343-abd7-b4b9f8dd6fbc")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void LphandlerFunction(uint dwControl);
+		public delegate void Handler(ServiceControl dwControl);
+
+		/// <summary>Callback function used in <see cref="SERVICE_NOTIFY_2"/> to alert changes registered by <see cref="NotifyServiceStatusChange"/>.</summary>
+		/// <param name="pParameter">A pointer to the SERVICE_NOTIFY structure provided by the caller.</param>
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		[PInvokeData("winsvc.h", MSDNShortId = "52ede72e-eb50-48e2-b5c1-125816f6fe57")]
+		public delegate void PFN_SC_NOTIFY_CALLBACK(ref SERVICE_NOTIFY_2 pParameter);
+
+		/// <summary>
+		/// <para>The entry point for a service.</para>
+		/// <para>
+		/// The <c>LPSERVICE_MAIN_FUNCTION</c> type defines a pointer to this callback function. <c>ServiceMain</c> is a placeholder for an
+		/// application-defined function name.
+		/// </para>
+		/// </summary>
+		/// <param name="dwNumServicesArgs">Number of arguments in the <paramref name="lpServiceArgVectors"/> array.</param>
+		/// <param name="lpServiceArgVectors">
+		/// Array of strings. The first string is the name of the service and subsequent strings are passed by the process that called the
+		/// StartService function to start the service.
+		/// </param>
+		/// <returns>This function does not return a value.</returns>
+		/// <remarks>
+		/// <para>
+		/// A service program can start one or more services. A service process has a SERVICE_TABLE_ENTRY structure for each service that it
+		/// can start. The structure specifies the service name and a pointer to the <c>ServiceMain</c> function for that service.
+		/// </para>
+		/// <para>
+		/// When the service control manager receives a request to start a service, it starts the service process (if it is not already
+		/// running). The main thread of the service process calls the StartServiceCtrlDispatcher function with a pointer to an array of
+		/// SERVICE_TABLE_ENTRY structures. Then the service control manager sends a start request to the service control dispatcher for this
+		/// service process. The service control dispatcher creates a new thread to execute the <c>ServiceMain</c> function of the service
+		/// being started.
+		/// </para>
+		/// <para>
+		/// The <c>ServiceMain</c> function should immediately call the RegisterServiceCtrlHandlerEx function to specify a HandlerEx function
+		/// to handle control requests. Next, it should call the SetServiceStatus function to send status information to the service control
+		/// manager. After these calls, the function should complete the initialization of the service. Do not attempt to start another
+		/// service in the <c>ServiceMain</c> function.
+		/// </para>
+		/// <para>
+		/// The Service Control Manager (SCM) waits until the service reports a status of SERVICE_RUNNING. It is recommended that the service
+		/// reports this status as quickly as possible, as other components in the system that require interaction with SCM will be blocked
+		/// during this time. Some functions may require interaction with the SCM either directly or indirectly.
+		/// </para>
+		/// <para>
+		/// The SCM locks the service control database during initialization, so if a service attempts to call StartService during
+		/// initialization, the call will block. When the service reports to the SCM that it has successfully started, it can call
+		/// <c>StartService</c>. If the service requires another service to be running, the service should set the required dependencies.
+		/// </para>
+		/// <para>
+		/// Furthermore, you should not call any system functions during service initialization. The service code should call system
+		/// functions only after it reports a status of SERVICE_RUNNING.
+		/// </para>
+		/// <para>
+		/// The <c>ServiceMain</c> function should create a global event, call the RegisterWaitForSingleObject function on this event, and
+		/// exit. This will terminate the thread that is running the <c>ServiceMain</c> function, but will not terminate the service. When
+		/// the service is stopping, the service control handler should call SetServiceStatus with SERVICE_STOP_PENDING and signal this
+		/// event. A thread from the thread pool will execute the wait callback function; this function should perform clean-up tasks,
+		/// including closing the global event, and call <c>SetServiceStatus</c> with SERVICE_STOPPED. After the service has stopped, you
+		/// should not execute any additional service code because you can introduce a race condition if the service receives a start control
+		/// and <c>ServiceMain</c> is called again. Note that this problem is more likely to occur when multiple services share a process.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Writing a ServiceMain Function.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nc-winsvc-lpservice_main_functiona LPSERVICE_MAIN_FUNCTIONA
+		// LpserviceMainFunctiona; void LpserviceMainFunctiona( DWORD dwNumServicesArgs, LPSTR *lpServiceArgVectors ) {...}
+		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
+		[PInvokeData("winsvc.h", MSDNShortId = "d7f3235e-91bd-4107-a30c-4a8f9a6c731e")]
+		public delegate void ServiceMain(uint dwNumServicesArgs, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 0)] string[] lpServiceArgVectors);
 
 		/// <summary>Defines the action to be performed in a <see cref="SC_ACTION"/>.</summary>
 		[PInvokeData("winsvc.h", MSDNShortId = "e2c355a6-affe-46bf-a3e6-f8c420422d46")]
@@ -97,6 +167,16 @@ namespace Vanara.PInvoke
 
 			/// <summary>Undocumented.</summary>
 			SC_ACTION_OWN_RESTART = 4
+		}
+
+		/// <summary>The service attributes that are to be returned from <see cref="EnumServicesStatusEx"/>.</summary>
+		public enum SC_ENUM_TYPE
+		{
+			/// <summary>
+			/// Retrieve the name and service status information for each service in the database. The lpServices parameter is a pointer to a
+			/// buffer that receives an array of ENUM_SERVICE_STATUS_PROCESS structures.
+			/// </summary>
+			SC_ENUM_PROCESS_INFO = 0
 		}
 
 		/// <summary>Info levels for <see cref="QueryServiceStatusEx"/></summary>
@@ -144,6 +224,132 @@ namespace Vanara.PInvoke
 											  SC_MANAGER_LOCK |
 											  SC_MANAGER_QUERY_LOCK_STATUS |
 											  SC_MANAGER_MODIFY_BOOT_CONFIG
+		}
+
+		[Flags]
+		public enum ServiceAccessRights : uint
+		{
+			/// <summary>Includes STANDARD_RIGHTS_REQUIRED in addition to all access rights in this table.</summary>
+			SERVICE_ALL_ACCESS = 0xF01FF,
+			/// <summary>Required to call the ChangeServiceConfig or ChangeServiceConfig2 function to change the service configuration. Because this grants the caller the right to change the executable file that the system runs, it should be granted only to administrators.</summary>
+			SERVICE_CHANGE_CONFIG = 0x0002,
+			/// <summary>Required to call the EnumDependentServices function to enumerate all the services dependent on the service.</summary>
+			SERVICE_ENUMERATE_DEPENDENTS = 0x0008,
+			/// <summary>Required to call the ControlService function to ask the service to report its status immediately.</summary>
+			SERVICE_INTERROGATE = 0x0080,
+			/// <summary>Required to call the ControlService function to pause or continue the service.</summary>
+			SERVICE_PAUSE_CONTINUE = 0x0040,
+			/// <summary>Required to call the QueryServiceConfig and QueryServiceConfig2 functions to query the service configuration.</summary>
+			SERVICE_QUERY_CONFIG = 0x0001,
+			/// <summary>Required to call the QueryServiceStatus or QueryServiceStatusEx function to ask the service control manager about the status of the service.
+			/// <para>Required to call the NotifyServiceStatusChange function to receive notification when a service changes status.</para></summary>
+			SERVICE_QUERY_STATUS = 0x0004,
+			/// <summary>Required to call the StartService function to start the service.</summary>
+			SERVICE_START = 0x0010,
+			/// <summary>Required to call the ControlService function to stop the service.</summary>
+			SERVICE_STOP = 0x0020,
+			/// <summary>Required to call the ControlService function to specify a user-defined control code.</summary>
+			SERVICE_USER_DEFINED_CONTROL = 0x0100,
+
+			/// <summary>Required to call the QueryServiceObjectSecurity or SetServiceObjectSecurity function to access the SACL. The proper way to obtain this access is to enable the SE_SECURITY_NAMEprivilege in the caller's current access token, open the handle for ACCESS_SYSTEM_SECURITY access, and then disable the privilege.</summary>
+			ACCESS_SYSTEM_SECURITY = 0x01000000,
+			/// <summary>Required to call the DeleteService function to delete the service.</summary>
+			DELETE = ACCESS_MASK.DELETE,
+			/// <summary>Required to call the QueryServiceObjectSecurity function to query the security descriptor of the service object.</summary>
+			READ_CONTROL = ACCESS_MASK.READ_CONTROL,
+			/// <summary>Required to call the SetServiceObjectSecurity function to modify the Dacl member of the service object's security descriptor.</summary>
+			WRITE_DAC = ACCESS_MASK.WRITE_DAC,
+			/// <summary>Required to call the SetServiceObjectSecurity function to modify the Owner and Group members of the service object's security descriptor.</summary>
+			WRITE_OWNER = ACCESS_MASK.WRITE_OWNER,
+
+			GENERIC_READ = ACCESS_MASK.STANDARD_RIGHTS_READ | SERVICE_QUERY_CONFIG | SERVICE_QUERY_STATUS | SERVICE_INTERROGATE | SERVICE_ENUMERATE_DEPENDENTS,
+			GENERIC_WRITE = ACCESS_MASK.STANDARD_RIGHTS_WRITE | SERVICE_CHANGE_CONFIG,
+			GENERIC_EXECUTE = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE | SERVICE_START | SERVICE_STOP | SERVICE_PAUSE_CONTINUE | SERVICE_USER_DEFINED_CONTROL,
+		}
+
+		/// <summary>The type of status changes that should be reported.</summary>
+		[PInvokeData("winsvc.h", MSDNShortId = "e22b7f69-f096-486f-97fa-0465bef499cd")]
+		[Flags]
+		public enum SERVICE_NOTIFY_FLAGS
+		{
+			/// <summary>
+			/// Report when the service has been created.
+			/// <para>The hService parameter must be a handle to the SCM.</para>
+			/// </summary>
+			SERVICE_NOTIFY_CREATED = 0x00000080,
+
+			/// <summary>
+			/// Report when the service is about to continue.
+			/// <para>The hService parameter must be a handle to the service.</para>
+			/// </summary>
+			SERVICE_NOTIFY_CONTINUE_PENDING = 0x00000010,
+
+			/// <summary>
+			/// Report when an application has specified the service in a call to the DeleteService function. Your application should close
+			/// any handles to the service so it can be deleted.
+			/// <para>The hService parameter must be a handle to the service.</para>
+			/// </summary>
+			SERVICE_NOTIFY_DELETE_PENDING = 0x00000200,
+
+			/// <summary>
+			/// Report when the service has been deleted. An application cannot receive this notification if it has an open handle to the service.
+			/// <para>The hService parameter must be a handle to the SCM.</para>
+			/// </summary>
+			SERVICE_NOTIFY_DELETED = 0x00000100,
+
+			/// <summary>
+			/// Report when the service is pausing.
+			/// <para>The hService parameter must be a handle to the service.</para>
+			/// </summary>
+			SERVICE_NOTIFY_PAUSE_PENDING = 0x00000020,
+
+			/// <summary>
+			/// Report when the service has paused.
+			/// <para>The hService parameter must be a handle to the service.</para>
+			/// </summary>
+			SERVICE_NOTIFY_PAUSED = 0x00000040,
+
+			/// <summary>
+			/// Report when the service is running.
+			/// <para>The hService parameter must be a handle to the service.</para>
+			/// </summary>
+			SERVICE_NOTIFY_RUNNING = 0x00000008,
+
+			/// <summary>
+			/// Report when the service is starting.
+			/// <para>The hService parameter must be a handle to the service.</para>
+			/// </summary>
+			SERVICE_NOTIFY_START_PENDING = 0x00000002,
+
+			/// <summary>
+			/// Report when the service is stopping.
+			/// <para>The hService parameter must be a handle to the service.</para>
+			/// </summary>
+			SERVICE_NOTIFY_STOP_PENDING = 0x00000004,
+
+			/// <summary>
+			/// Report when the service has stopped.
+			/// <para>The hService parameter must be a handle to the service.</para>
+			/// </summary>
+			SERVICE_NOTIFY_STOPPED = 0x00000001,
+		}
+
+		/// <summary>The state of the services to be enumerated.</summary>
+		[PInvokeData("winsvc.h", MSDNShortId = "905d4453-96d4-4055-8a17-36714c547cdd")]
+		[Flags]
+		public enum SERVICE_STATE
+		{
+			/// <summary>
+			/// Enumerates services that are in the following states: SERVICE_START_PENDING, SERVICE_STOP_PENDING, SERVICE_RUNNING,
+			/// SERVICE_CONTINUE_PENDING, SERVICE_PAUSE_PENDING, and SERVICE_PAUSED.
+			/// </summary>
+			SERVICE_ACTIVE = 0x00000001,
+
+			/// <summary>Enumerates services that are in the SERVICE_STOPPED state.</summary>
+			SERVICE_INACTIVE = 0x00000002,
+
+			/// <summary>Combines the following states: SERVICE_ACTIVE and SERVICE_INACTIVE.</summary>
+			SERVICE_STATE_ALL = 0x00000003,
 		}
 
 		[Flags]
@@ -1829,6 +2035,623 @@ namespace Vanara.PInvoke
 		public static extern bool DeleteService(SC_HANDLE hService);
 
 		/// <summary>
+		/// Retrieves the name and status of each service that depends on the specified service; that is, the specified service must be
+		/// running before the dependent services can run.
+		/// </summary>
+		/// <param name="hService">
+		/// A handle to the service. This handle is returned by the OpenService or CreateService function, and it must have the
+		/// <c>SERVICE_ENUMERATE_DEPENDENTS</c> access right. For more information, see Service Security and Access Rights.
+		/// </param>
+		/// <param name="dwServiceState">The state of the services to be enumerated. This parameter can be one of the following values.</param>
+		/// <param name="lpServices">
+		/// <para>
+		/// A pointer to an array of ENUM_SERVICE_STATUS structures that receives the name and service status information for each dependent
+		/// service in the database. The buffer must be large enough to hold the structures, plus the strings to which their members point.
+		/// </para>
+		/// <para>
+		/// The order of the services in this array is the reverse of the start order of the services. In other words, the first service in
+		/// the array is the one that would be started last, and the last service in the array is the one that would be started first.
+		/// </para>
+		/// <para>
+		/// The maximum size of this array is 64,000 bytes. To determine the required size, specify <c>NULL</c> for this parameter and 0 for
+		/// the cbBufSize parameter. The function will fail and GetLastError will return <c>ERROR_MORE_DATA</c>. The pcbBytesNeeded parameter
+		/// will receive the required size.
+		/// </para>
+		/// </param>
+		/// <param name="cbBufSize">The size of the buffer pointed to by the lpServices parameter, in bytes.</param>
+		/// <param name="pcbBytesNeeded">
+		/// A pointer to a variable that receives the number of bytes needed to store the array of service entries. The variable only
+		/// receives this value if the buffer pointed to by lpServices is too small, indicated by function failure and the
+		/// <c>ERROR_MORE_DATA</c> error; otherwise, the contents of pcbBytesNeeded are undefined.
+		/// </param>
+		/// <param name="lpServicesReturned">A pointer to a variable that receives the number of service entries returned.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// The following error codes may be set by the service control manager. Other error codes may be set by the registry functions that
+		/// are called by the service control manager.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>The handle does not have the SERVICE_ENUMERATE_DEPENDENTS access right.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_HANDLE</term>
+		/// <term>The specified handle is invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>A parameter that was specified is invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_MORE_DATA</term>
+		/// <term>
+		/// The buffer pointed to by lpServices is not large enough. The function sets the variable pointed to by lpServicesReturned to the
+		/// actual number of service entries stored into the buffer. The function sets the variable pointed to by pcbBytesNeeded to the
+		/// number of bytes required to store all of the service entries.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The returned services entries are ordered in the reverse order of the start order, with group order taken into account. If you
+		/// need to stop the dependent services, you can use the order of entries written to the lpServices buffer to stop the dependent
+		/// services in the proper order.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Stopping a Service.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-enumdependentservicesa BOOL EnumDependentServicesA(
+		// SC_HANDLE hService, DWORD dwServiceState, LPENUM_SERVICE_STATUSA lpServices, DWORD cbBufSize, LPDWORD pcbBytesNeeded, LPDWORD
+		// lpServicesReturned );
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winsvc.h", MSDNShortId = "905d4453-96d4-4055-8a17-36714c547cdd")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool EnumDependentServices(SC_HANDLE hService, SERVICE_STATE dwServiceState, IntPtr lpServices, uint cbBufSize, out uint pcbBytesNeeded, out uint lpServicesReturned);
+
+		/// <summary>
+		/// Retrieves the name and status of each service that depends on the specified service; that is, the specified service must be
+		/// running before the dependent services can run.
+		/// </summary>
+		/// <param name="hService">
+		/// A handle to the service. This handle is returned by the OpenService or CreateService function, and it must have the
+		/// <c>SERVICE_ENUMERATE_DEPENDENTS</c> access right. For more information, see Service Security and Access Rights.
+		/// </param>
+		/// <param name="dwServiceState">The state of the services to be enumerated. This parameter can be one of the following values.</param>
+		/// <returns>
+		/// <para>
+		/// An array of ENUM_SERVICE_STATUS structures that receives the name and service status information for each dependent service in
+		/// the database.
+		/// </para>
+		/// <para>
+		/// The order of the services in this array is the reverse of the start order of the services. In other words, the first service in
+		/// the array is the one that would be started last, and the last service in the array is the one that would be started first.
+		/// </para>
+		/// </returns>
+		[PInvokeData("winsvc.h", MSDNShortId = "905d4453-96d4-4055-8a17-36714c547cdd")]
+		public static IEnumerable<ENUM_SERVICE_STATUS> EnumDependentServices(SC_HANDLE hService, SERVICE_STATE dwServiceState = SERVICE_STATE.SERVICE_STATE_ALL)
+		{
+			EnumDependentServices(hService, dwServiceState, IntPtr.Zero, 0, out var sz, out var cnt);
+			if (sz == 0) Win32Error.ThrowLastError();
+			var mem = new SafeHGlobalHandle((int)sz);
+			if (!EnumDependentServices(hService, dwServiceState, (IntPtr)mem, (uint)mem.Size, out sz, out cnt))
+				Win32Error.ThrowLastError();
+			return mem.ToEnumerable<ENUM_SERVICE_STATUS>((int)cnt);
+		}
+
+		/// <summary>
+		/// <para>Enumerates services in the specified service control manager database. The name and status of each service are provided.</para>
+		/// <para>
+		/// This function has been superseded by the EnumServicesStatusEx function. It returns the same information <c>EnumServicesStatus</c>
+		/// returns, plus the process identifier and additional information for the service. In addition, <c>EnumServicesStatusEx</c> enables
+		/// you to enumerate services that belong to a specified group.
+		/// </para>
+		/// </summary>
+		/// <param name="hSCManager">
+		/// A handle to the service control manager database. This handle is returned by the OpenSCManager function, and must have the
+		/// SC_MANAGER_ENUMERATE_SERVICE access right. For more information, see Service Security and Access Rights.
+		/// </param>
+		/// <param name="dwServiceType">The type of services to be enumerated. This parameter can be one or more of the following values.</param>
+		/// <param name="dwServiceState">The state of the services to be enumerated. This parameter can be one of the following values.</param>
+		/// <param name="lpServices">
+		/// <para>
+		/// A pointer to a buffer that contains an array of ENUM_SERVICE_STATUS structures that receive the name and service status
+		/// information for each service in the database. The buffer must be large enough to hold the structures, plus the strings to which
+		/// their members point.
+		/// </para>
+		/// <para>
+		/// The maximum size of this array is 256K bytes. To determine the required size, specify NULL for this parameter and 0 for the
+		/// cbBufSize parameter. The function will fail and GetLastError will return ERROR_INSUFFICIENT_BUFFER. The pcbBytesNeeded parameter
+		/// will receive the required size.
+		/// </para>
+		/// <para>
+		/// <c>Windows Server 2003 and Windows XP:</c> The maximum size of this array is 64K bytes. This limit was increased as of Windows
+		/// Server 2003 with SP1 and Windows XP with SP2.
+		/// </para>
+		/// </param>
+		/// <param name="cbBufSize">The size of the buffer pointed to by the lpServices parameter, in bytes.</param>
+		/// <param name="pcbBytesNeeded">
+		/// A pointer to a variable that receives the number of bytes needed to return the remaining service entries, if the buffer is too small.
+		/// </param>
+		/// <param name="lpServicesReturned">A pointer to a variable that receives the number of service entries returned.</param>
+		/// <param name="lpResumeHandle">
+		/// A pointer to a variable that, on input, specifies the starting point of enumeration. You must set this value to zero the first
+		/// time this function is called. On output, this value is zero if the function succeeds. However, if the function returns zero and
+		/// the GetLastError function returns ERROR_MORE_DATA, this value is used to indicate the next service entry to be read when the
+		/// function is called to retrieve the additional data.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// The following error codes can be set by the service control manager. Other error codes can be set by the registry functions that
+		/// are called by the service control manager.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>The handle does not have the SC_MANAGER_ENUMERATE_SERVICE access right.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_HANDLE</term>
+		/// <term>The specified handle is invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>A parameter that was specified is invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_MORE_DATA</term>
+		/// <term>
+		/// There are more service entries than would fit into the lpServices buffer. The actual number of service entries written to
+		/// lpServices is returned in the lpServicesReturned parameter. The number of bytes required to get the remaining entries is returned
+		/// in the pcbBytesNeeded parameter. The remaining services can be enumerated by additional calls to EnumServicesStatus with the
+		/// lpResumeHandle parameter indicating the next service to read.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-enumservicesstatusa BOOL EnumServicesStatusA( SC_HANDLE
+		// hSCManager, DWORD dwServiceType, DWORD dwServiceState, LPENUM_SERVICE_STATUSA lpServices, DWORD cbBufSize, LPDWORD pcbBytesNeeded,
+		// LPDWORD lpServicesReturned, LPDWORD lpResumeHandle );
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winsvc.h", MSDNShortId = "3a82ac0e-f3e8-4a5a-9b13-84e952712229")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool EnumServicesStatus(SC_HANDLE hSCManager, ServiceTypes dwServiceType, SERVICE_STATE dwServiceState, IntPtr lpServices, uint cbBufSize, out uint pcbBytesNeeded, out uint lpServicesReturned, ref uint lpResumeHandle);
+
+		/// <summary>
+		/// <para>Enumerates services in the specified service control manager database. The name and status of each service are provided.</para>
+		/// <para>
+		/// This function has been superseded by the EnumServicesStatusEx function. It returns the same information <c>EnumServicesStatus</c>
+		/// returns, plus the process identifier and additional information for the service. In addition, <c>EnumServicesStatusEx</c> enables
+		/// you to enumerate services that belong to a specified group.
+		/// </para>
+		/// </summary>
+		/// <param name="hSCManager">
+		/// A handle to the service control manager database. This handle is returned by the OpenSCManager function, and must have the
+		/// SC_MANAGER_ENUMERATE_SERVICE access right. For more information, see Service Security and Access Rights.
+		/// </param>
+		/// <param name="dwServiceType">The type of services to be enumerated. This parameter can be one or more of the following values.</param>
+		/// <param name="dwServiceState">The state of the services to be enumerated. This parameter can be one of the following values.</param>
+		/// <returns>A list of ENUM_SERVICE_STATUS structures with the name and service status information for each service in the database.</returns>
+		public static IEnumerable<ENUM_SERVICE_STATUS> EnumServicesStatus(SC_HANDLE hSCManager, ServiceTypes dwServiceType = ServiceTypes.SERVICE_TYPE_ALL, SERVICE_STATE dwServiceState = SERVICE_STATE.SERVICE_STATE_ALL)
+		{
+			var hRes = 0U;
+			Win32Error lastErr;
+			var res = EnumServicesStatus(hSCManager, dwServiceType, dwServiceState, default, 0, out var sz, out _, ref hRes);
+			if (!res && (lastErr = Win32Error.GetLastError()) != Win32Error.ERROR_MORE_DATA)
+				lastErr.ThrowIfFailed();
+			using (var mem = new SafeHGlobalHandle((int)sz))
+			{
+				do
+				{
+					res = EnumServicesStatus(hSCManager, dwServiceType, dwServiceState, (IntPtr)mem, sz, out sz, out var cnt, ref hRes);
+					if (!res && (lastErr = Win32Error.GetLastError()) != Win32Error.ERROR_MORE_DATA)
+						lastErr.ThrowIfFailed();
+					foreach (var i in mem.ToEnumerable<ENUM_SERVICE_STATUS>((int)cnt))
+						yield return i;
+				} while (!res);
+			}
+		}
+
+		/// <summary>
+		/// Enumerates services in the specified service control manager database. The name and status of each service are provided, along
+		/// with additional data based on the specified information level.
+		/// </summary>
+		/// <param name="hSCManager">
+		/// A handle to the service control manager database. This handle is returned by the OpenSCManager function, and must have the
+		/// <c>SC_MANAGER_ENUMERATE_SERVICE</c> access right. For more information, see Service Security and Access Rights.
+		/// </param>
+		/// <param name="InfoLevel">
+		/// <para>
+		/// The service attributes that are to be returned. Use <c>SC_ENUM_PROCESS_INFO</c> to retrieve the name and service status
+		/// information for each service in the database. The lpServices parameter is a pointer to a buffer that receives an array of
+		/// ENUM_SERVICE_STATUS_PROCESS structures. The buffer must be large enough to hold the structures as well as the strings to which
+		/// their members point.
+		/// </para>
+		/// <para>Currently, no other information levels are defined.</para>
+		/// </param>
+		/// <param name="dwServiceType">The type of services to be enumerated. This parameter can be one or more of the following values.</param>
+		/// <param name="dwServiceState">The state of the services to be enumerated. This parameter can be one of the following values.</param>
+		/// <param name="lpServices">
+		/// <para>
+		/// A pointer to the buffer that receives the status information. The format of this data depends on the value of the InfoLevel parameter.
+		/// </para>
+		/// <para>
+		/// The maximum size of this array is 256K bytes. To determine the required size, specify <c>NULL</c> for this parameter and 0 for
+		/// the cbBufSize parameter. The function will fail and GetLastError will return <c>ERROR_MORE_DATA</c>. The pcbBytesNeeded parameter
+		/// will receive the required size.
+		/// </para>
+		/// <para>
+		/// <c>Windows Server 2003 and Windows XP:</c> The maximum size of this array is 64K bytes. This limit was increased as of Windows
+		/// Server 2003 with SP1 and Windows XP with SP2.
+		/// </para>
+		/// </param>
+		/// <param name="cbBufSize">The size of the buffer pointed to by the lpServices parameter, in bytes.</param>
+		/// <param name="pcbBytesNeeded">
+		/// A pointer to a variable that receives the number of bytes needed to return the remaining service entries, if the buffer is too small.
+		/// </param>
+		/// <param name="lpServicesReturned">A pointer to a variable that receives the number of service entries returned.</param>
+		/// <param name="lpResumeHandle">
+		/// A pointer to a variable that, on input, specifies the starting point of enumeration. You must set this value to zero the first
+		/// time the <c>EnumServicesStatusEx</c> function is called. On output, this value is zero if the function succeeds. However, if the
+		/// function returns zero and the GetLastError function returns <c>ERROR_MORE_DATA</c>, this value indicates the next service entry
+		/// to be read when the <c>EnumServicesStatusEx</c> function is called to retrieve the additional data.
+		/// </param>
+		/// <param name="pszGroupName">
+		/// The load-order group name. If this parameter is a string, the only services enumerated are those that belong to the group that
+		/// has the name specified by the string. If this parameter is an empty string, only services that do not belong to any group are
+		/// enumerated. If this parameter is <c>NULL</c>, group membership is ignored and all services are enumerated.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>
+		/// If the function fails, the return value is zero. To get extended error information, call GetLastError. The following errors may
+		/// be returned.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>The handle does not have the SC_MANAGER_ENUMERATE_SERVICE access right.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_MORE_DATA</term>
+		/// <term>
+		/// The buffer is too small. Not all data in the active database could be returned. The pcbBytesNeeded parameter contains the number
+		/// of bytes required to receive the remaining entries.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>An illegal parameter value was used.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_HANDLE</term>
+		/// <term>The handle is invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_LEVEL</term>
+		/// <term>The InfoLevel parameter contains an unsupported value.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_SHUTDOWN_IN_PROGRESS</term>
+		/// <term>The system is shutting down; this function cannot be called.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// If the caller does not have the <c>SERVICE_QUERY_STATUS</c> access right to a service, the service is silently omitted from the
+		/// list of services returned to the client.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-enumservicesstatusexa BOOL EnumServicesStatusExA( SC_HANDLE
+		// hSCManager, SC_ENUM_TYPE InfoLevel, DWORD dwServiceType, DWORD dwServiceState, LPBYTE lpServices, DWORD cbBufSize, LPDWORD
+		// pcbBytesNeeded, LPDWORD lpServicesReturned, LPDWORD lpResumeHandle, LPCSTR pszGroupName );
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winsvc.h", MSDNShortId = "7d7940c3-b562-455f-9a21-6d5fb5953030")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool EnumServicesStatusEx(SC_HANDLE hSCManager, SC_ENUM_TYPE InfoLevel, ServiceTypes dwServiceType, SERVICE_STATE dwServiceState, IntPtr lpServices, uint cbBufSize, out uint pcbBytesNeeded,
+			out uint lpServicesReturned, ref uint lpResumeHandle, string pszGroupName);
+
+		/// <summary>
+		/// <para>Enumerates services in the specified service control manager database. The name and status of each service are provided.</para>
+		/// <para>
+		/// This function has been superseded by the EnumServicesStatusEx function. It returns the same information <c>EnumServicesStatus</c>
+		/// returns, plus the process identifier and additional information for the service. In addition, <c>EnumServicesStatusEx</c> enables
+		/// you to enumerate services that belong to a specified group.
+		/// </para>
+		/// </summary>
+		/// <param name="hSCManager">
+		/// A handle to the service control manager database. This handle is returned by the OpenSCManager function, and must have the
+		/// SC_MANAGER_ENUMERATE_SERVICE access right. For more information, see Service Security and Access Rights.
+		/// </param>
+		/// <param name="dwServiceType">The type of services to be enumerated. This parameter can be one or more of the following values.</param>
+		/// <param name="dwServiceState">The state of the services to be enumerated. This parameter can be one of the following values.</param>
+		/// <param name="pszGroupName">
+		/// The load-order group name. If this parameter is a string, the only services enumerated are those that belong to the group that
+		/// has the name specified by the string. If this parameter is an empty string, only services that do not belong to any group are
+		/// enumerated. If this parameter is <c>NULL</c>, group membership is ignored and all services are enumerated.
+		/// </param>
+		/// <returns>A list of ENUM_SERVICE_STATUS structures with the name and service status information for each service in the database.</returns>
+		public static IEnumerable<ENUM_SERVICE_STATUS_PROCESS> EnumServicesStatusEx(SC_HANDLE hSCManager, ServiceTypes dwServiceType = ServiceTypes.SERVICE_TYPE_ALL, SERVICE_STATE dwServiceState = SERVICE_STATE.SERVICE_STATE_ALL, string pszGroupName = null)
+		{
+			var hRes = 0U;
+			Win32Error lastErr;
+			var res = EnumServicesStatusEx(hSCManager, 0, dwServiceType, dwServiceState, default, 0, out var sz, out _, ref hRes, pszGroupName);
+			if (!res && (lastErr = Win32Error.GetLastError()) != Win32Error.ERROR_MORE_DATA)
+				lastErr.ThrowIfFailed();
+			using (var mem = new SafeHGlobalHandle((int)sz))
+			{
+				do
+				{
+					res = EnumServicesStatusEx(hSCManager, 0, dwServiceType, dwServiceState, (IntPtr)mem, sz, out sz, out var cnt, ref hRes, pszGroupName);
+					if (!res && (lastErr = Win32Error.GetLastError()) != Win32Error.ERROR_MORE_DATA)
+						lastErr.ThrowIfFailed();
+					foreach (var i in mem.ToEnumerable<ENUM_SERVICE_STATUS_PROCESS>((int)cnt))
+						yield return i;
+				} while (!res);
+			}
+		}
+
+		/// <summary>Retrieves the display name of the specified service.</summary>
+		/// <param name="hSCManager">A handle to the service control manager database, as returned by the OpenSCManager function.</param>
+		/// <param name="lpServiceName">
+		/// The service name. This name is the same as the service's registry key name. It is best to choose a name that is less than 256 characters.
+		/// </param>
+		/// <param name="lpDisplayName">
+		/// <para>
+		/// A pointer to a buffer that receives the service's display name. If the function fails, this buffer will contain an empty string.
+		/// </para>
+		/// <para>
+		/// The maximum size of this array is 4K bytes. To determine the required size, specify NULL for this parameter and 0 for the
+		/// lpcchBuffer parameter. The function will fail and GetLastError will return <c>ERROR_INSUFFICIENT_BUFFER</c>. The lpcchBuffer
+		/// parameter will receive the required size.
+		/// </para>
+		/// <para>This parameter can specify a localized string using the following format:</para>
+		/// <para>@[path]dllname,-strID</para>
+		/// <para>The string with identifier strID is loaded from dllname; the path is optional. For more information, see RegLoadMUIString.</para>
+		/// <para><c>Windows Server 2003 and Windows XP:</c> Localized strings are not supported until Windows Vista.</para>
+		/// </param>
+		/// <param name="lpcchBuffer">
+		/// <para>A pointer to a variable that specifies the size of the buffer pointed to by lpDisplayName, in <c>TCHARs</c>.</para>
+		/// <para>
+		/// On output, this variable receives the size of the service's display name, in characters, excluding the null-terminating character.
+		/// </para>
+		/// <para>
+		/// If the buffer pointed to by lpDisplayName is too small to contain the display name, the function does not store it. When the
+		/// function returns, lpcchBuffer contains the size of the service's display name, excluding the null-terminating character.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the functions succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// There are two names for a service: the service name and the display name. The service name is the name of the service's key in
+		/// the registry. The display name is a user-friendly name that appears in the Services control panel application, and is used with
+		/// the <c>NET START</c> command. To map the service name to the display name, use the <c>GetServiceDisplayName</c> function. To map
+		/// the display name to the service name, use the GetServiceKeyName function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-getservicedisplaynamea BOOL GetServiceDisplayNameA(
+		// SC_HANDLE hSCManager, LPCSTR lpServiceName, LPSTR lpDisplayName, LPDWORD lpcchBuffer );
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winsvc.h", MSDNShortId = "704812f3-134c-4161-b3b4-a955d87ff563")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetServiceDisplayName(SC_HANDLE hSCManager, string lpServiceName, StringBuilder lpDisplayName, ref uint lpcchBuffer);
+
+		/// <summary>Retrieves the service name of the specified service.</summary>
+		/// <param name="hSCManager">A handle to the computer's service control manager database, as returned by OpenSCManager.</param>
+		/// <param name="lpDisplayName">The service display name. This string has a maximum length of 256 characters.</param>
+		/// <param name="lpServiceName">
+		/// <para>A pointer to a buffer that receives the service name. If the function fails, this buffer will contain an empty string.</para>
+		/// <para>
+		/// The maximum size of this array is 4K bytes. To determine the required size, specify NULL for this parameter and 0 for the
+		/// lpcchBuffer parameter. The function will fail and GetLastError will return <c>ERROR_INSUFFICIENT_BUFFER</c>. The lpcchBuffer
+		/// parameter will receive the required size.
+		/// </para>
+		/// </param>
+		/// <param name="lpcchBuffer">
+		/// <para>
+		/// A pointer to variable that specifies the size of the buffer pointed to by the lpServiceName parameter, in <c>TCHARs</c>. When the
+		/// function returns, this parameter contains the size of the service name, in <c>TCHARs</c>, excluding the null-terminating character.
+		/// </para>
+		/// <para>
+		/// If the buffer pointed to by lpServiceName is too small to contain the service name, the function stores no data in it. When the
+		/// function returns, lpcchBuffer contains the size of the service name, excluding the NULL terminator.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the functions succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// There are two names for a service: the service name and the display name. The service name is the name of the service's key in
+		/// the registry. The display name is a user-friendly name that appears in the Services control panel application, and is used with
+		/// the <c>NET START</c> command. Both names are specified with the CreateService function and can be modified with the
+		/// ChangeServiceConfig function. Information specified for a service is stored in a key with the same name as the service name under
+		/// the <c>HKEY_LOCAL_MACHINE</c>&lt;b&gt;System&lt;b&gt;CurrentControlSet&lt;b&gt;Services&lt;i&gt;ServiceName registry key.
+		/// </para>
+		/// <para>
+		/// To map the service name to the display name, use the GetServiceDisplayName function. To map the display name to the service name,
+		/// use the <c>GetServiceKeyName</c> function.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-getservicekeynamea BOOL GetServiceKeyNameA( SC_HANDLE
+		// hSCManager, LPCSTR lpDisplayName, LPSTR lpServiceName, LPDWORD lpcchBuffer );
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winsvc.h", MSDNShortId = "d2421566-de4a-49e5-bb41-ea98c6f6d19d")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetServiceKeyName(SC_HANDLE hSCManager, string lpDisplayName, StringBuilder lpServiceName, ref uint lpcchBuffer);
+
+		/// <summary>
+		/// <para>[As of Windows Vista, this function is provided for application compatibility and has no effect on the database.]</para>
+		/// <para>
+		/// Requests ownership of the service control manager (SCM) database lock. Only one process can own the lock at any specified time.
+		/// </para>
+		/// </summary>
+		/// <param name="hSCManager">
+		/// A handle to the SCM database. This handle is returned by the OpenSCManager function, and must have the <c>SC_MANAGER_LOCK</c>
+		/// access right. For more information, see Service Security and Access Rights.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a lock to the specified SCM database.</para>
+		/// <para>If the function fails, the return value is NULL. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// The following error codes can be set by the SCM. Other error codes can be set by registry functions that are called by the SCM.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>The handle does not have the SC_MANAGER_LOCK access right.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_HANDLE</term>
+		/// <term>The specified handle is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_SERVICE_DATABASE_LOCKED</term>
+		/// <term>The database is locked.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A lock is a protocol used by setup and configuration programs and the SCM to serialize access to the service tree in the
+		/// registry. The only time the SCM requests ownership of the lock is when it is starting a service.
+		/// </para>
+		/// <para>
+		/// A program that acquires the SCM database lock and fails to release it prevents the SCM from starting other services. Because of
+		/// the severity of this issue, processes are no longer allowed to lock the database. For compatibility with older applications, the
+		/// <c>LockServiceDatabase</c> function returns a lock but has no other effect.
+		/// </para>
+		/// <para>
+		/// <c>Windows Server 2003 and Windows XP:</c> Acquiring the SCM database lock prevents the SCM from starting a service until the
+		/// lock is released. For example, a program that must configure several related services before any of them starts could call
+		/// <c>LockServiceDatabase</c> before configuring the first service. Alternatively, it could ensure that none of the services are
+		/// started until the configuration has been completed.
+		/// </para>
+		/// <para>
+		/// A call to the StartService function to start a service in a locked database fails. No other SCM functions are affected by a lock.
+		/// </para>
+		/// <para>
+		/// The lock is held until the <c>SC_LOCK</c> handle is specified in a subsequent call to the UnlockServiceDatabase function. If a
+		/// process that owns a lock terminates, the SCM automatically cleans up and releases ownership of the lock.
+		/// </para>
+		/// <para>Failing to release the lock can cause system problems. A process that acquires the lock should release it as soon as possible.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-lockservicedatabase SC_LOCK LockServiceDatabase( SC_HANDLE
+		// hSCManager );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsvc.h", MSDNShortId = "87861465-c966-479a-b906-27ae36cc83c8")]
+		public static extern SC_LOCK LockServiceDatabase(SC_HANDLE hSCManager);
+
+		/// <summary>
+		/// Enables an application to receive notification when the specified service is created or deleted or when its status changes.
+		/// </summary>
+		/// <param name="hService">
+		/// <para>
+		/// A handle to the service or the service control manager. Handles to services are returned by the OpenService or CreateService
+		/// function and must have the SERVICE_QUERY_STATUS access right. Handles to the service control manager are returned by the
+		/// OpenSCManager function and must have the SC_MANAGER_ENUMERATE_SERVICE access right. For more information, see Service Security
+		/// and Access Rights.
+		/// </para>
+		/// <para>There can only be one outstanding notification request per service.</para>
+		/// </param>
+		/// <param name="dwNotifyMask">
+		/// The type of status changes that should be reported. This parameter can be one or more of the following values.
+		/// </param>
+		/// <param name="pNotifyBuffer">
+		/// <para>
+		/// A pointer to a SERVICE_NOTIFY structure that contains notification information, such as a pointer to the callback function. This
+		/// structure must remain valid until the callback function is invoked or the calling thread cancels the notification request.
+		/// </para>
+		/// <para>
+		/// Do not make multiple calls to <c>NotifyServiceStatusChange</c> with the same buffer parameter until the callback function from
+		/// the first call has finished with the buffer or the first notification request has been canceled. Otherwise, there is no guarantee
+		/// which version of the buffer the callback function will receive.
+		/// </para>
+		/// <para>
+		/// <c>Windows Vista:</c> The address of the callback function must be within the address range of a loaded module. Therefore, the
+		/// callback function cannot be code that is generated at run time (such as managed code generated by the JIT compiler) or native
+		/// code that is decompressed at run time. This restriction was removed in Windows Server 2008 and Windows Vista with SP1.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is ERROR_SUCCESS. If the service has been marked for deletion, the return value is
+		/// ERROR_SERVICE_MARKED_FOR_DELETE and the handle to the service must be closed. If service notification is lagging too far behind
+		/// the system state, the function returns ERROR_SERVICE_NOTIFY_CLIENT_LAGGING. In this case, the client should close the handle to
+		/// the SCM, open a new handle, and call this function again.
+		/// </para>
+		/// <para>If the function fails, the return value is one of the system error codes.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>NotifyServiceStatusChange</c> function can be used to receive notifications about service applications. It cannot be used
+		/// to receive notifications about driver services.
+		/// </para>
+		/// <para>
+		/// When the service status changes, the system invokes the specified callback function as an asynchronous procedure call (APC)
+		/// queued to the calling thread. The calling thread must enter an alertable wait (for example, by calling the SleepEx function) to
+		/// receive notification. For more information, see Asynchronous Procedure Calls.
+		/// </para>
+		/// <para>
+		/// If the service is already in any of the requested states when <c>NotifyServiceStatusChange</c> is called, the callback function
+		/// is queued immediately. If the service state has not changed by the next time the function is called with the same service and
+		/// state, the callback function is not queued immediately; the callback function is queued the next time the service enters the
+		/// requested state.
+		/// </para>
+		/// <para>
+		/// The <c>NotifyServiceStatusChange</c> function calls the OpenThread function on the calling thread with the THREAD_SET_CONTEXT
+		/// access right. If the calling thread does not have this access right, <c>NotifyServiceStatusChange</c> fails. If the calling
+		/// thread is impersonating another user, it may not have sufficient permission to set context.
+		/// </para>
+		/// <para>
+		/// It is more efficient to call <c>NotifyServiceStatusChange</c> from a thread that performs a wait than to create an additional thread.
+		/// </para>
+		/// <para>
+		/// After the callback function is invoked, the caller must call <c>NotifyServiceStatusChange</c> to receive additional
+		/// notifications. Note that certain functions in the Windows API, including <c>NotifyServiceStatusChange</c> and other SCM
+		/// functions, use remote procedure calls (RPC); these functions might perform an alertable wait operation, so they are not safe to
+		/// call from within the callback function. Instead, the callback function should save the notification parameters and perform any
+		/// additional work outside the callback.
+		/// </para>
+		/// <para>
+		/// To cancel outstanding notifications, close the service handle using the CloseServiceHandle function. After
+		/// <c>CloseServiceHandle</c> succeeds, no more notification APCs will be queued. If the calling thread exits without closing the
+		/// service handle or waiting until the APC is generated, a memory leak can occur.
+		/// </para>
+		/// <para>
+		/// <c>Important</c> If the calling thread is in a DLL and the DLL is unloaded before the thread receives the notification or calls
+		/// CloseServiceHandle, the notification will cause unpredictable results and might cause the process to stop responding.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-notifyservicestatuschangea DWORD NotifyServiceStatusChangeA(
+		// SC_HANDLE hService, DWORD dwNotifyMask, PSERVICE_NOTIFYA pNotifyBuffer );
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winsvc.h", MSDNShortId = "e22b7f69-f096-486f-97fa-0465bef499cd")]
+		public static extern Win32Error NotifyServiceStatusChange(SC_HANDLE hService, SERVICE_NOTIFY_FLAGS dwNotifyMask, ref SERVICE_NOTIFY_2 pNotifyBuffer);
+
+		/// <summary>
 		/// <para>
 		/// Establishes a connection to the service control manager on the specified computer and opens the specified service control manager database.
 		/// </para>
@@ -2173,6 +2996,218 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		/// <summary>Retrieves dynamic information related to the current service start.</summary>
+		/// <param name="hServiceStatus">A service status handle provided by RegisterServiceCtrlHandlerEx</param>
+		/// <param name="dwInfoLevel">Indicates the information level.</param>
+		/// <param name="ppDynamicInfo">
+		/// A dynamic information buffer. If this parameter is valid, the callback function must free the buffer after use with the LocalFree function.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is TRUE.</para>
+		/// <para>
+		/// If the function fails, the return value is FALSE. When this happens the GetLastError function should be called to retrieve the
+		/// error code.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-queryservicedynamicinformation BOOL
+		// QueryServiceDynamicInformation( SERVICE_STATUS_HANDLE hServiceStatus, DWORD dwInfoLevel, PVOID *ppDynamicInfo );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsvc.h", MSDNShortId = "499b63fd-e77b-4b90-9ee7-ff4b7b12c431")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool QueryServiceDynamicInformation(SERVICE_STATUS_HANDLE hServiceStatus, uint dwInfoLevel, out SafeLocalHandle ppDynamicInfo);
+
+		/// <summary>
+		/// <para>[This function has no effect as of Windows Vista.]</para>
+		/// <para>Retrieves the lock status of the specified service control manager database.</para>
+		/// </summary>
+		/// <param name="hSCManager">
+		/// A handle to the service control manager database. The OpenSCManager function returns this handle, which must have the
+		/// SC_MANAGER_QUERY_LOCK_STATUS access right. For more information, see Service Security and Access Rights.
+		/// </param>
+		/// <param name="lpLockStatus">
+		/// A pointer to a QUERY_SERVICE_LOCK_STATUS structure that receives the lock status of the specified database is returned, plus the
+		/// strings to which its members point.
+		/// </param>
+		/// <param name="cbBufSize">The size of the buffer pointed to by the lpLockStatus parameter, in bytes.</param>
+		/// <param name="pcbBytesNeeded">
+		/// A pointer to a variable that receives the number of bytes needed to return all the lock status information, if the function fails.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// The following error codes can be set by the service control manager. Other error codes can be set by the registry functions that
+		/// are called by the service control manager.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>The handle does not have the SC_MANAGER_QUERY_LOCK_STATUS access right.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+		/// <term>
+		/// There is more lock status information than would fit into the lpLockStatus buffer. The number of bytes required to get all the
+		/// information is returned in the pcbBytesNeeded parameter. Nothing is written to lpLockStatus.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_HANDLE</term>
+		/// <term>The specified handle is invalid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>QueryServiceLockStatus</c> function returns a QUERY_SERVICE_LOCK_STATUS structure that indicates whether the specified
+		/// database is locked. If the database is locked, the structure provides the account name of the user that owns the lock and the
+		/// length of time that the lock has been held.
+		/// </para>
+		/// <para>
+		/// A process calls the LockServiceDatabase function to acquire ownership of a service control manager database lock and the
+		/// UnlockServiceDatabase function to release the lock.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-queryservicelockstatusa
+		// BOOL QueryServiceLockStatusA( SC_HANDLE hSCManager, LPQUERY_SERVICE_LOCK_STATUSA lpLockStatus, DWORD cbBufSize, LPDWORD pcbBytesNeeded );
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winsvc.h", MSDNShortId = "5139d31b-65f1-41ba-852a-91eab1dc366e")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool QueryServiceLockStatus(SC_HANDLE hSCManager, IntPtr lpLockStatus, uint cbBufSize, out uint pcbBytesNeeded);
+
+		/// <summary>
+		/// The <c>QueryServiceObjectSecurity</c> function retrieves a copy of the security descriptor associated with a service object. You
+		/// can also use the GetNamedSecurityInfo function to retrieve a security descriptor.
+		/// </summary>
+		/// <param name="hService">
+		/// A handle to the service control manager or the service. Handles to the service control manager are returned by the OpenSCManager
+		/// function, and handles to a service are returned by either the OpenService or CreateService function. The handle must have the
+		/// READ_CONTROL access right.
+		/// </param>
+		/// <param name="dwSecurityInformation">
+		/// A set of bit flags that indicate the type of security information to retrieve. This parameter can be a combination of the
+		/// SECURITY_INFORMATION bit flags, with the exception that this function does not support the <c>LABEL_SECURITY_INFORMATION</c> value.
+		/// </param>
+		/// <param name="lpSecurityDescriptor">
+		/// A pointer to a buffer that receives a copy of the security descriptor of the specified service object. The calling process must
+		/// have the appropriate access to view the specified aspects of the security descriptor of the object. The SECURITY_DESCRIPTOR
+		/// structure is returned in self-relative format.
+		/// </param>
+		/// <param name="cbBufSize">
+		/// The size of the buffer pointed to by the lpSecurityDescriptor parameter, in bytes. The largest size allowed is 8 kilobytes.
+		/// </param>
+		/// <param name="pcbBytesNeeded">
+		/// A pointer to a variable that receives the number of bytes needed to return the requested security descriptor information, if the
+		/// function fails.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// The following error codes may be set by the service control manager. Other error codes may be set by the registry functions that
+		/// are called by the service control manager.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>The specified handle was not opened with READ_CONTROL access, or the calling process is not the owner of the object.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_HANDLE</term>
+		/// <term>The specified handle is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+		/// <term>
+		/// The security descriptor information is too large for the lpSecurityDescriptor buffer. The number of bytes required to get all the
+		/// information is returned in the pcbBytesNeeded parameter. Nothing is written to the lpSecurityDescriptor buffer.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>The specified security information is not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When a service is created, the service control manager assigns a default security descriptor to the service object. To retrieve a
+		/// copy of the security descriptor for a service object, call the <c>QueryServiceObjectSecurity</c> function. To change the security
+		/// descriptor, call the SetServiceObjectSecurity function. For a description of the default security descriptor for a service
+		/// object, see Service Security and Access Rights.
+		/// </para>
+		/// <para>
+		/// To read the owner, group, or DACL from the security descriptor of the service object, the calling process must have been granted
+		/// READ_CONTROL access when the handle was opened. To get READ_CONTROL access, the caller must be the owner of the object or the
+		/// DACL of the object must grant the access.
+		/// </para>
+		/// <para>
+		/// To read the SACL from the security descriptor, the calling process must have been granted ACCESS_SYSTEM_SECURITY access when the
+		/// handle was opened. The correct way to get this access is to enable the SE_SECURITY_NAME privilege in the caller's current token,
+		/// open the handle for ACCESS_SYSTEM_SECURITY access, and then disable the privilege.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-queryserviceobjectsecurity BOOL QueryServiceObjectSecurity(
+		// SC_HANDLE hService, SECURITY_INFORMATION dwSecurityInformation, PSECURITY_DESCRIPTOR lpSecurityDescriptor, DWORD cbBufSize,
+		// LPDWORD pcbBytesNeeded );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsvc.h", MSDNShortId = "5d95945f-f11b-42af-b302-8d924917b9ab")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool QueryServiceObjectSecurity(SC_HANDLE hService, SECURITY_INFORMATION dwSecurityInformation, PSECURITY_DESCRIPTOR lpSecurityDescriptor, uint cbBufSize, out uint pcbBytesNeeded);
+
+		/// <summary>
+		/// <para>Retrieves the current status of the specified service.</para>
+		/// <para>
+		/// This function has been superseded by the QueryServiceStatusEx function. <c>QueryServiceStatusEx</c> returns the same information
+		/// <c>QueryServiceStatus</c> returns, with the addition of the process identifier and additional information for the service.
+		/// </para>
+		/// </summary>
+		/// <param name="hService">
+		/// A handle to the service. This handle is returned by the OpenService or the CreateService function, and it must have the
+		/// SERVICE_QUERY_STATUS access right. For more information, see Service Security and Access Rights.
+		/// </param>
+		/// <param name="lpServiceStatus">A pointer to a SERVICE_STATUS structure that receives the status information.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// The following error codes can be set by the service control manager. Other error codes can be set by the registry functions that
+		/// are called by the service control manager.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>The handle does not have the SERVICE_QUERY_STATUS access right.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_HANDLE</term>
+		/// <term>The handle is invalid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The <c>QueryServiceStatus</c> function returns the most recent service status information reported to the service control
+		/// manager. If the service just changed its status, it may not have updated the service control manager yet.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-queryservicestatus BOOL QueryServiceStatus( SC_HANDLE
+		// hService, LPSERVICE_STATUS lpServiceStatus );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsvc.h", MSDNShortId = "dcd2d8a1-10ef-4229-b873-b4fc3ec9293f")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool QueryServiceStatus(SC_HANDLE hService, out SERVICE_STATUS lpServiceStatus);
+
 		/// <summary>Retrieves the current status of the specified service based on the specified information level.</summary>
 		/// <param name="hService">
 		/// A handle to the service. This handle is returned by the CreateService or OpenService function, and it must have the
@@ -2274,7 +3309,7 @@ namespace Vanara.PInvoke
 		/// A variable that receives the service status information. The format of this data depends on the value of the dwInfoLevel parameter.
 		/// </returns>
 		/// <exception cref="System.ArgumentException">Type mismatch - T</exception>
-		public static T QueryServiceStatusEx<T>(SC_HANDLE hService, SC_STATUS_TYPE InfoLevel) where T : struct
+		public static T QueryServiceStatusEx<T>(SC_HANDLE hService, SC_STATUS_TYPE InfoLevel = SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO) where T : struct
 		{
 			if (!CorrespondingTypeAttribute.CanGet(InfoLevel, typeof(T))) throw new ArgumentException("Type mismatch", nameof(T));
 			var b = QueryServiceStatusEx(hService, InfoLevel, IntPtr.Zero, 0, out var size);
@@ -2354,7 +3389,7 @@ namespace Vanara.PInvoke
 		// RegisterServiceCtrlHandlerA( LPCSTR lpServiceName, LPHANDLER_FUNCTION lpHandlerProc );
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsvc.h", MSDNShortId = "31ec28fe-8774-48fc-91ba-6fa43108e2cc")]
-		public static extern SERVICE_STATUS_HANDLE RegisterServiceCtrlHandler(string lpServiceName, LphandlerFunction lpHandlerProc);
+		public static extern SERVICE_STATUS_HANDLE RegisterServiceCtrlHandler(string lpServiceName, Handler lpHandlerProc);
 
 		/// <summary>
 		/// <para>Registers a function to handle extended service control requests.</para>
@@ -2420,7 +3455,153 @@ namespace Vanara.PInvoke
 		// RegisterServiceCtrlHandlerExA( LPCSTR lpServiceName, LPHANDLER_FUNCTION_EX lpHandlerProc, LPVOID lpContext );
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsvc.h", MSDNShortId = "23eea346-9899-4214-88f4-9b7eb7ce1332")]
-		public static extern SERVICE_STATUS_HANDLE RegisterServiceCtrlHandlerEx(string lpServiceName, LphandlerFunction lpHandlerProc, IntPtr lpContext);
+		public static extern SERVICE_STATUS_HANDLE RegisterServiceCtrlHandlerEx(string lpServiceName, Handler lpHandlerProc, IntPtr lpContext);
+
+		/// <summary>
+		/// Registers a service type with the service control manager and the Server service. The Server service can then announce the
+		/// registered service type as one it currently supports. The NetServerGetInfo and NetServerEnum functions obtain a specified
+		/// machine's supported service types.
+		/// </summary>
+		/// <param name="hServiceStatus">
+		/// A handle to the status information structure for the service. A service obtains the handle by calling the
+		/// RegisterServiceCtrlHandlerEx function.
+		/// </param>
+		/// <param name="dwServiceBits">
+		/// <para>The service type.</para>
+		/// <para>
+		/// Certain bit flags (0xC00F3F7B) are reserved for use by Microsoft. The <c>SetServiceBits</c> function fails with the error
+		/// ERROR_INVALID_DATA if any of these bit flags are set in dwServiceBits. The following bit flags are reserved for use by Microsoft.
+		/// </para>
+		/// <para>SV_TYPE_WORKSTATION (0x00000001)</para>
+		/// <para>SV_TYPE_SERVER (0x00000002)</para>
+		/// <para>SV_TYPE_DOMAIN_CTRL (0x00000008)</para>
+		/// <para>SV_TYPE_DOMAIN_BAKCTRL (0x00000010)</para>
+		/// <para>SV_TYPE_TIME_SOURCE (0x00000020)</para>
+		/// <para>SV_TYPE_AFP (0x00000040)</para>
+		/// <para>SV_TYPE_DOMAIN_MEMBER (0x00000100)</para>
+		/// <para>SV_TYPE_PRINTQ_SERVER (0x00000200)</para>
+		/// <para>SV_TYPE_DIALIN_SERVER (0x00000400)</para>
+		/// <para>SV_TYPE_XENIX_SERVER (0x00000800)</para>
+		/// <para>SV_TYPE_SERVER_UNIX (0x00000800)</para>
+		/// <para>SV_TYPE_NT (0x00001000)</para>
+		/// <para>SV_TYPE_WFW (0x00002000)</para>
+		/// <para>SV_TYPE_POTENTIAL_BROWSER (0x00010000)</para>
+		/// <para>SV_TYPE_BACKUP_BROWSER (0x00020000)</para>
+		/// <para>SV_TYPE_MASTER_BROWSER (0x00040000)</para>
+		/// <para>SV_TYPE_DOMAIN_MASTER (0x00080000)</para>
+		/// <para>SV_TYPE_LOCAL_LIST_ONLY (0x40000000)</para>
+		/// <para>SV_TYPE_DOMAIN_ENUM (0x80000000)</para>
+		/// <para>
+		/// Certain bit flags (0x00300084) are defined by Microsoft, but are not specifically reserved for systems software. The following
+		/// are these bit flags.
+		/// </para>
+		/// <para>SV_TYPE_SV_TYPE_SQLSERVER (0x00000004)</para>
+		/// <para>SV_TYPE_NOVELL (0x00000080)</para>
+		/// <para>SV_TYPE_DOMAIN_CTRL (0x00100000)</para>
+		/// <para>SV_TYPE_DOMAIN_BAKCTRL (0x00200000)</para>
+		/// <para>
+		/// Certain bit flags (0x3FC0C000) are not defined by Microsoft, and their use is not coordinated by Microsoft. Developers of
+		/// applications that use these bits should be aware that other applications can also use them, thus creating a conflict. The
+		/// following are these bit flags.
+		/// </para>
+		/// <para>0x00004000</para>
+		/// <para>0x00008000</para>
+		/// <para>0x00400000</para>
+		/// <para>0x00800000</para>
+		/// <para>0x01000000</para>
+		/// <para>0x02000000</para>
+		/// <para>0x04000000</para>
+		/// <para>0x08000000</para>
+		/// <para>0x10000000</para>
+		/// <para>0x20000000</para>
+		/// </param>
+		/// <param name="bSetBitsOn">
+		/// If this value is TRUE, the bits in dwServiceBit are to be set. If this value is FALSE, the bits are to be cleared.
+		/// </param>
+		/// <param name="bUpdateImmediately">
+		/// If this value is TRUE, the Server service is to perform an immediate update. If this value is FALSE, the update is not be
+		/// performed immediately.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/lmserver/nf-lmserver-setservicebits BOOL NET_API_FUNCTION SetServiceBits( IN
+		// SERVICE_STATUS_HANDLE hServiceStatus, IN DWORD dwServiceBits, IN BOOL bSetBitsOn, IN BOOL bUpdateImmediately );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("lmserver.h", MSDNShortId = "91a985d4-d1af-4161-ae67-a8a9d6740838")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetServiceBits([In] SERVICE_STATUS_HANDLE hServiceStatus, uint dwServiceBits, [MarshalAs(UnmanagedType.Bool)] bool bSetBitsOn, [MarshalAs(UnmanagedType.Bool)] bool bUpdateImmediately);
+
+		/// <summary>
+		/// <para>
+		/// [ <c>SetServiceObjectSecurity</c> is available for use in the operating systems specified in the Requirements section. It may be
+		/// altered or unavailable in subsequent versions. Instead, use the SetNamedSecurityInfo function.]
+		/// </para>
+		/// <para>The <c>SetServiceObjectSecurity</c> function sets the security descriptor of a service object.</para>
+		/// </summary>
+		/// <param name="hService">
+		/// A handle to the service. This handle is returned by the OpenService or CreateService function. The access required for this
+		/// handle depends on the security information specified in the dwSecurityInformation parameter.
+		/// </param>
+		/// <param name="dwSecurityInformation">
+		/// Specifies the components of the security descriptor to set. This parameter can be a combination of the following values. Note
+		/// that flags not handled by <c>SetServiceObjectSecurity</c> will be silently ignored.
+		/// </param>
+		/// <param name="lpSecurityDescriptor">A pointer to a SECURITY_DESCRIPTOR structure that contains the new security information.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero.</para>
+		/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// The following error codes can be set by the service control manager. Other error codes can be set by the registry functions that
+		/// are called by the service control manager.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>The specified handle was not opened with the required access, or the calling process is not the owner of the object.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_HANDLE</term>
+		/// <term>The specified handle is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>The specified security information or security descriptor is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_SERVICE_MARKED_FOR_DELETE</term>
+		/// <term>The specified service has been marked for deletion.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>SetServiceObjectSecurity</c> function sets the specified portions of the security descriptor of the service object based
+		/// on the information specified in the lpSecurityDescriptor buffer. This function replaces any or all of the security information
+		/// associated with the service object, according to the flags set in the dwSecurityInformation parameter and subject to the access
+		/// rights of the calling process.
+		/// </para>
+		/// <para>
+		/// When a service is created, the service control manager assigns a default security descriptor to the service object. To retrieve a
+		/// copy of the security descriptor for a service object, call the QueryServiceObjectSecurity function. For a description of the
+		/// default security descriptor for a service object, see Service Security and Access Rights.
+		/// </para>
+		/// <para>
+		/// Note that granting certain access to untrusted users (such as SERVICE_CHANGE_CONFIG or SERVICE_STOP) can allow them to interfere
+		/// with the execution of your service and possibly allow them to run applications under the LocalSystem account.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-setserviceobjectsecurity BOOL SetServiceObjectSecurity(
+		// SC_HANDLE hService, SECURITY_INFORMATION dwSecurityInformation, PSECURITY_DESCRIPTOR lpSecurityDescriptor );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsvc.h", MSDNShortId = "39481d9a-79d5-4bbf-8480-4095a34dddb6")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetServiceObjectSecurity(SC_HANDLE hService, SECURITY_INFORMATION dwSecurityInformation, PSECURITY_DESCRIPTOR lpSecurityDescriptor);
 
 		/// <summary>
 		/// <para>Updates the service control manager's status information for the calling service.</para>
@@ -2656,6 +3837,81 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool StartService(SC_HANDLE hService, int dwNumServiceArgs = 0, string[] lpServiceArgVectors = null);
 
+		/// <summary>
+		/// Connects the main thread of a service process to the service control manager, which causes the thread to be the service control
+		/// dispatcher thread for the calling process.
+		/// </summary>
+		/// <param name="lpServiceStartTable">
+		/// A pointer to an array of SERVICE_TABLE_ENTRY structures containing one entry for each service that can execute in the calling
+		/// process. The members of the last entry in the table must have NULL values to designate the end of the table.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// The following error code can be set by the service control manager. Other error codes can be set by the registry functions that
+		/// are called by the service control manager.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_FAILED_SERVICE_CONTROLLER_CONNECT</term>
+		/// <term>
+		/// This error is returned if the program is being run as a console application rather than as a service. If the program will be run
+		/// as a console application for debugging purposes, structure it such that service-specific code is not called when this error is returned.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_DATA</term>
+		/// <term>The specified dispatch table contains entries that are not in the proper format.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_SERVICE_ALREADY_RUNNING</term>
+		/// <term>The process has already called StartServiceCtrlDispatcher. Each process can call StartServiceCtrlDispatcher only one time.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When the service control manager starts a service process, it waits for the process to call the <c>StartServiceCtrlDispatcher</c>
+		/// function. The main thread of a service process should make this call as soon as possible after it starts up (within 30 seconds).
+		/// If <c>StartServiceCtrlDispatcher</c> succeeds, it connects the calling thread to the service control manager and does not return
+		/// until all running services in the process have entered the SERVICE_STOPPED state. The service control manager uses this
+		/// connection to send control and service start requests to the main thread of the service process. The main thread acts as a
+		/// dispatcher by invoking the appropriate HandlerEx function to handle control requests, or by creating a new thread to execute the
+		/// appropriate ServiceMain function when a new service is started.
+		/// </para>
+		/// <para>
+		/// The lpServiceTable parameter contains an entry for each service that can run in the calling process. Each entry specifies the
+		/// ServiceMain function for that service. For SERVICE_WIN32_SHARE_PROCESS services, each entry must contain the name of a service.
+		/// This name is the service name that was specified by the CreateService function when the service was installed. For
+		/// SERVICE_WIN32_OWN_PROCESS services, the service name in the table entry is ignored.
+		/// </para>
+		/// <para>
+		/// If a service runs in its own process, the main thread of the service process should immediately call
+		/// <c>StartServiceCtrlDispatcher</c>. All initialization tasks are done in the service's ServiceMain function when the service is started.
+		/// </para>
+		/// <para>
+		/// If multiple services share a process and some common process-wide initialization needs to be done before any ServiceMain function
+		/// is called, the main thread can do the work before calling <c>StartServiceCtrlDispatcher</c>, as long as it takes less than 30
+		/// seconds. Otherwise, another thread must be created to do the process-wide initialization, while the main thread calls
+		/// <c>StartServiceCtrlDispatcher</c> and becomes the service control dispatcher. Any service-specific initialization should still be
+		/// done in the individual service main functions.
+		/// </para>
+		/// <para>Services should not attempt to display a user interface directly. For more information, see Interactive Services.</para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Writing a Service Program's Main Function.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-startservicectrldispatchera BOOL
+		// StartServiceCtrlDispatcherA( const SERVICE_TABLE_ENTRYA *lpServiceStartTable );
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winsvc.h", MSDNShortId = "8e275eb7-a8af-4bd7-bb39-0eac4f3735ad")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool StartServiceCtrlDispatcher([In, MarshalAs(UnmanagedType.LPArray)] SERVICE_TABLE_ENTRY[] lpServiceStartTable);
+
 		/// <summary>Stops a service using <see cref="ControlService"/> with <see cref="ServiceControl.SERVICE_CONTROL_STOP"/></summary>
 		/// <param name="hService">
 		/// A handle to the service. This handle is returned by the <see cref="OpenService"/> or <see cref="CreateService"/> function. The
@@ -2678,6 +3934,97 @@ namespace Vanara.PInvoke
 		/// <returns></returns>
 		public static bool StopService(SC_HANDLE hService, in SERVICE_CONTROL_STATUS_REASON_PARAMS reason) =>
 			ControlServiceEx(hService, ServiceControl.SERVICE_CONTROL_STOP, ServiceInfoLevels.SERVICE_CONTROL_STATUS_REASON_INFO, reason);
+
+		/// <summary>
+		/// <para>[This function has no effect as of Windows Vista.]</para>
+		/// <para>Unlocks a service control manager database by releasing the specified lock.</para>
+		/// </summary>
+		/// <param name="ScLock">The lock, which is obtained from a previous call to the LockServiceDatabase function.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// The following error codes can be set by the service control manager. Other error codes can be set by the registry functions that
+		/// are called by the service control manager.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_INVALID_SERVICE_LOCK</term>
+		/// <term>The specified lock is invalid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-unlockservicedatabase BOOL UnlockServiceDatabase( SC_LOCK
+		// ScLock );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsvc.h", MSDNShortId = "3277d175-ab0b-43ce-965f-f8087d0124e4")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool UnlockServiceDatabase(SC_LOCK ScLock);
+
+		/// <summary>
+		/// Contains the name of a service in a service control manager database and information about that service. It is used by the
+		/// EnumDependentServices and EnumServicesStatus functions.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-_enum_service_statusa typedef struct _ENUM_SERVICE_STATUSA {
+		// LPSTR lpServiceName; LPSTR lpDisplayName; SERVICE_STATUS ServiceStatus; } ENUM_SERVICE_STATUSA, *LPENUM_SERVICE_STATUSA;
+		[PInvokeData("winsvc.h", MSDNShortId = "b088bd94-5d25-44a7-93c0-80ce6588b811")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct ENUM_SERVICE_STATUS
+		{
+			/// <summary>
+			/// The name of a service in the service control manager database. The maximum string length is 256 characters. The service
+			/// control manager database preserves the case of the characters, but service name comparisons are always case insensitive. A
+			/// slash (/), backslash (), comma, and space are invalid service name characters.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string lpServiceName;
+
+			/// <summary>
+			/// A display name that can be used by service control programs, such as Services in Control Panel, to identify the service. This
+			/// string has a maximum length of 256 characters. The name is case-preserved in the service control manager. Display name
+			/// comparisons are always case-insensitive.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string lpDisplayName;
+
+			/// <summary>A SERVICE_STATUS structure that contains status information for the <c>lpServiceName</c> service.</summary>
+			public SERVICE_STATUS ServiceStatus;
+		}
+
+		/// <summary>
+		/// Contains the name of a service in a service control manager database and information about the service. It is used by the
+		/// EnumServicesStatusEx function.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-_enum_service_status_processa typedef struct
+		// _ENUM_SERVICE_STATUS_PROCESSA { LPSTR lpServiceName; LPSTR lpDisplayName; SERVICE_STATUS_PROCESS ServiceStatusProcess; }
+		// ENUM_SERVICE_STATUS_PROCESSA, *LPENUM_SERVICE_STATUS_PROCESSA;
+		[PInvokeData("winsvc.h", MSDNShortId = "6a683cc8-c2ac-4093-aed7-33e6bdd02d79")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct ENUM_SERVICE_STATUS_PROCESS
+		{
+			/// <summary>
+			/// The name of a service in the service control manager database. The maximum string length is 256 characters. The service
+			/// control manager database preserves the case of the characters, but service name comparisons are always case insensitive. A
+			/// slash (/), backslash (), comma, and space are invalid service name characters.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string lpServiceName;
+
+			/// <summary>
+			/// A display name that can be used by service control programs, such as Services in Control Panel, to identify the service. This
+			/// string has a maximum length of 256 characters. The case is preserved in the service control manager. Display name comparisons
+			/// are always case-insensitive.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string lpDisplayName;
+
+			/// <summary>A SERVICE_STATUS_PROCESS structure that contains status information for the <c>lpServiceName</c> service.</summary>
+			public SERVICE_STATUS_PROCESS ServiceStatusProcess;
+		}
 
 		/// <summary>Contains configuration information for an installed service. It is used by the QueryServiceConfig function.</summary>
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -2759,6 +4106,29 @@ namespace Vanara.PInvoke
 			public string lpDisplayName;
 
 			public IEnumerable<string> Dependencies => lpDependencies.ToStringEnum();
+		}
+
+		/// <summary>
+		/// Contains information about the lock status of a service control manager database. It is used by the QueryServiceLockStatus function.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-query_service_lock_statusw typedef struct
+		// _QUERY_SERVICE_LOCK_STATUSW { DWORD fIsLocked; LPWSTR lpLockOwner; DWORD dwLockDuration; } QUERY_SERVICE_LOCK_STATUSW, *LPQUERY_SERVICE_LOCK_STATUSW;
+		[PInvokeData("winsvc.h", MSDNShortId = "de9797b7-02b0-43cb-bed3-50b7e8676f36")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct QUERY_SERVICE_LOCK_STATUS
+		{
+			/// <summary>
+			/// The lock status of the database. If this member is nonzero, the database is locked. If it is zero, the database is unlocked.
+			/// </summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fIsLocked;
+
+			/// <summary>The name of the user who acquired the lock.</summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string lpLockOwner;
+
+			/// <summary>The time since the lock was first acquired, in seconds.</summary>
+			public uint dwLockDuration;
 		}
 
 		/// <summary>
@@ -2851,6 +4221,54 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public override bool Equals(object obj) => obj is SC_HANDLE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a handle to a service lock.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SC_LOCK : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="SC_LOCK"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public SC_LOCK(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="SC_LOCK"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static SC_LOCK NULL => new SC_LOCK(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="SC_LOCK"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(SC_LOCK h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SC_LOCK"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SC_LOCK(IntPtr h) => new SC_LOCK(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(SC_LOCK h1, SC_LOCK h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(SC_LOCK h1, SC_LOCK h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is SC_LOCK h ? handle == h.handle : false;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -3281,6 +4699,59 @@ namespace Vanara.PInvoke
 			public uint dwLaunchProtected;
 		}
 
+		/// <summary>Represents service status notification information. It is used by the NotifyServiceStatusChange function.</summary>
+		/// <remarks>
+		/// <para>The callback function is declared as follows:</para>
+		/// <para>The callback function receives a pointer to the <c>SERVICE_NOTIFY</c> structure provided by the caller.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-_service_notify_2a typedef struct _SERVICE_NOTIFY_2A { DWORD
+		// dwVersion; PFN_SC_NOTIFY_CALLBACK pfnNotifyCallback; PVOID pContext; DWORD dwNotificationStatus; SERVICE_STATUS_PROCESS
+		// ServiceStatus; DWORD dwNotificationTriggered; LPSTR pszServiceNames; } SERVICE_NOTIFY_2A, *PSERVICE_NOTIFY_2A;
+		[PInvokeData("winsvc.h", MSDNShortId = "52ede72e-eb50-48e2-b5c1-125816f6fe57")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct SERVICE_NOTIFY_2
+		{
+			/// <summary>The structure version. This member must be <c>SERVICE_NOTIFY_STATUS_CHANGE</c> (2).</summary>
+			public uint dwVersion;
+
+			/// <summary>A pointer to the callback function. For more information, see Remarks.</summary>
+			[MarshalAs(UnmanagedType.FunctionPtr)]
+			public PFN_SC_NOTIFY_CALLBACK pfnNotifyCallback;
+
+			/// <summary>Any user-defined data to be passed to the callback function.</summary>
+			public IntPtr pContext;
+
+			/// <summary>
+			/// A value that indicates the notification status. If this member is <c>ERROR_SUCCESS</c>, the notification has succeeded and
+			/// the <c>ServiceStatus</c> member contains valid information. If this member is <c>ERROR_SERVICE_MARKED_FOR_DELETE</c>, the
+			/// service has been marked for deletion and the service handle used by NotifyServiceStatusChange must be closed.
+			/// </summary>
+			public Win32Error dwNotificationStatus;
+
+			/// <summary>
+			/// A SERVICE_STATUS_PROCESS structure that contains the service status information. This member is only valid if
+			/// <c>dwNotificationStatus</c> is <c>ERROR_SUCCESS</c>.
+			/// </summary>
+			public SERVICE_STATUS_PROCESS ServiceStatus;
+
+			/// <summary>
+			/// If <c>dwNotificationStatus</c> is <c>ERROR_SUCCESS</c>, this member contains a bitmask of the notifications that triggered
+			/// this call to the callback function.
+			/// </summary>
+			public SERVICE_NOTIFY_FLAGS dwNotificationTriggered;
+
+			/// <summary>
+			/// <para>
+			/// If <c>dwNotificationStatus</c> is <c>ERROR_SUCCESS</c> and the notification is <c>SERVICE_NOTIFY_CREATED</c> or
+			/// <c>SERVICE_NOTIFY_DELETED</c>, this member is valid and it is a <c>MULTI_SZ</c> string that contains one or more service
+			/// names. The names of the created services will have a '/' prefix so you can distinguish them from the names of the deleted services.
+			/// </para>
+			/// <para>If this member is valid, the notification callback function must free the string using the LocalFree function.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string pszServiceNames;
+		}
+
 		/// <summary>
 		/// <para>Represents the preferred node on which to run a service.</para>
 		/// </summary>
@@ -3653,7 +5124,7 @@ namespace Vanara.PInvoke
 			/// is running and on normal termination.
 			/// </para>
 			/// </summary>
-			public uint dwWin32ExitCode;
+			public Win32Error dwWin32ExitCode;
 
 			/// <summary>
 			/// <para>
@@ -3661,7 +5132,7 @@ namespace Vanara.PInvoke
 			/// value is ignored unless the <c>dwWin32ExitCode</c> member is set to <c>ERROR_SERVICE_SPECIFIC_ERROR</c>.
 			/// </para>
 			/// </summary>
-			public uint dwServiceSpecificExitCode;
+			public Win32Error dwServiceSpecificExitCode;
 
 			/// <summary>
 			/// <para>
@@ -4005,6 +5476,35 @@ namespace Vanara.PInvoke
 			/// not running, dwProcessId is zero. 1 = SERVICE_RUNS_IN_SYSTEM_PROCESS The service runs in a system process that must always be running.
 			/// </summary>
 			public uint dwServiceFlags;
+		}
+
+		/// <summary>
+		/// Specifies the ServiceMain function for a service that can run in the calling process. It is used by the
+		/// StartServiceCtrlDispatcher function.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-_service_table_entrya typedef struct _SERVICE_TABLE_ENTRYA {
+		// LPSTR lpServiceName; LPSERVICE_MAIN_FUNCTIONA lpServiceProc; } SERVICE_TABLE_ENTRYA, *LPSERVICE_TABLE_ENTRYA;
+		[PInvokeData("winsvc.h", MSDNShortId = "dd40c4f0-cbbe-429f-91c0-3ba141dab702")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct SERVICE_TABLE_ENTRY
+		{
+			/// <summary>
+			/// <para>The name of a service to be run in this service process.</para>
+			/// <para>
+			/// If the service is installed with the SERVICE_WIN32_OWN_PROCESS service type, this member is ignored, but cannot be NULL. This
+			/// member can be an empty string ("").
+			/// </para>
+			/// <para>
+			/// If the service is installed with the SERVICE_WIN32_SHARE_PROCESS service type, this member specifies the name of the service
+			/// that uses the ServiceMain function pointed to by the <c>lpServiceProc</c> member.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string lpServiceName;
+
+			/// <summary>A pointer to a ServiceMain function.</summary>
+			[MarshalAs(UnmanagedType.FunctionPtr)]
+			public ServiceMain lpServiceProc;
 		}
 
 		/// <summary>
@@ -4398,37 +5898,5 @@ namespace Vanara.PInvoke
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => CloseServiceHandle(this);
 		}
-
-		/*LPHANDLER_FUNCTION_EX callback
-		LPSERVICE_MAIN_FUNCTIONA callback
-		LPSERVICE_MAIN_FUNCTIONW callback
-
-		ControlService
-		ControlServiceEx
-		DeleteService
-		EnumDependentServices
-		EnumServicesStatusEx
-		EnumServicesStatus
-		GetServiceDisplayName
-		GetServiceKeyName
-		LockServiceDatabase
-		NotifyBootConfigStatus
-		NotifyServiceStatusChange
-		QueryServiceDynamicInformation
-		QueryServiceLockStatus
-		QueryServiceObjectSecurity
-		QueryServiceStatus
-		SetServiceObjectSecurity
-		StartServiceCtrlDispatcher
-		StartService
-		UnlockServiceDatabase
-
-		ENUM_SERVICE_STATUS_PROCESS
-		ENUM_SERVICE_STATUS
-		QUERY_SERVICE_LOCK_STATUS
-		SERVICE_NOTIFY_2
-		SERVICE_TABLE_ENTRY
-		SERVICE_TIMECHANGE_INFO
-		SERVICE_TRIGGER_SPECIFIC_DATA_ITEM */
 	}
 }

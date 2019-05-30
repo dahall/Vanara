@@ -379,30 +379,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
-		public void OpenCloseSCManager()
-		{
-			using (var scm = AdvApi32.OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_CONNECT))
-			{
-				AssertHandleIsValid(scm);
-			}
-		}
-
-		[Test()]
-		public void OpenCloseService()
-		{
-			using (var scm = AdvApi32.OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_CONNECT))
-			{
-				AssertHandleIsValid(scm);
-
-				//opens task scheduler service
-				using (var service = AdvApi32.OpenService(scm, "Schedule", ServiceAccessTypes.SERVICE_QUERY_STATUS))
-				{
-					AssertHandleIsValid(service);
-				}
-			}
-		}
-
-		[Test()]
 		public void PrivilegeCheckTest()
 		{
 			using (var t = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
@@ -435,27 +411,6 @@ namespace Vanara.PInvoke.Tests
 					Assert.That(b, Is.True);
 					Assert.That(sd.lpDescription, Is.Not.Null);
 					TestContext.WriteLine(sd.lpDescription);
-				}
-			}
-		}
-
-		[Test()]
-		public void QueryServiceStatus()
-		{
-			using (var scm = AdvApi32.OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_CONNECT))
-			{
-				AssertHandleIsValid(scm);
-
-				//opens task scheduler service
-				using (var service = AdvApi32.OpenService(scm, "Schedule", ServiceAccessTypes.SERVICE_QUERY_STATUS))
-				{
-					AssertHandleIsValid(service);
-
-					//query service status
-					var status = AdvApi32.QueryServiceStatusEx<SERVICE_STATUS_PROCESS>(service, SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO);
-
-					Assert.That(status.dwServiceType, Is.EqualTo(ServiceTypes.SERVICE_WIN32).Or.EqualTo(ServiceTypes.SERVICE_WIN32_SHARE_PROCESS));
-					Assert.That(status.dwServiceFlags, Is.EqualTo(0));
 				}
 			}
 		}
@@ -498,48 +453,6 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		[Test()]
-		[PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
-		public void StartStopService()
-		{
-			using (var scm = AdvApi32.OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_CONNECT))
-			{
-				AssertHandleIsValid(scm);
-
-				var access = ServiceAccessTypes.SERVICE_START | ServiceAccessTypes.SERVICE_STOP | ServiceAccessTypes.SERVICE_QUERY_STATUS;
-
-				//opens print spooler service
-				using (var service = AdvApi32.OpenService(scm, "Spooler", access))
-				{
-					AssertHandleIsValid(service);
-
-					//query service status
-					var status = AdvApi32.QueryServiceStatusEx<SERVICE_STATUS_PROCESS>(service, SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO);
-
-					if (status.dwCurrentState == ServiceState.SERVICE_RUNNING)
-					{
-						var ret4 = AdvApi32.StopService(service, out var _);
-						if (!ret4) Win32Error.ThrowLastError();
-
-						WaitForServiceStatus(service, ServiceState.SERVICE_STOPPED);
-
-						var ret6 = AdvApi32.StartService(service);
-						if (!ret6) Win32Error.ThrowLastError();
-					}
-					else
-					{
-						var ret4 = AdvApi32.StartService(service);
-						if (!ret4) Win32Error.ThrowLastError();
-
-						WaitForServiceStatus(service, ServiceState.SERVICE_RUNNING);
-
-						var ret6 = AdvApi32.StopService(service, out var _);
-						if (!ret6) Win32Error.ThrowLastError();
-					}
-				}
-			}
-		}
-
 		[Test]
 		public void UserTest()
 		{
@@ -557,41 +470,13 @@ namespace Vanara.PInvoke.Tests
 				TestContext.WriteLine($"Ace{i}: {ace.GetHeader().AceType}={domain}\\{account}; {ace.GetMask()}");
 			}
 		}
+
 		internal static SafeSecurityDescriptor GetSD(string filename, SECURITY_INFORMATION si = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION)
 		{
 			var err = GetNamedSecurityInfo(filename, SE_OBJECT_TYPE.SE_FILE_OBJECT, si, out _, out _, out _, out _, out var pSD);
 			Assert.That(err, Is.EqualTo(0));
 			Assert.That(!pSD.IsInvalid);
 			return pSD;
-		}
-
-		private static void AssertHandleIsValid(SafeSC_HANDLE handle)
-		{
-			if (handle.IsInvalid)
-				Win32Error.ThrowLastError();
-
-			Assert.That(handle.IsNull, Is.False);
-			Assert.That(handle.IsClosed, Is.False);
-			Assert.That(handle.IsInvalid, Is.False);
-		}
-
-		private static void WaitForServiceStatus(SafeSC_HANDLE service, ServiceState status)
-		{
-			//query service status again to check that it changed
-			var tests = 0;
-
-			while (tests < 40)
-			{
-				var status2 = AdvApi32.QueryServiceStatusEx<SERVICE_STATUS_PROCESS>(service, SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO);
-				if (status2.dwCurrentState == status)
-					break;
-
-				Thread.Sleep(500);
-				tests++;
-			}
-
-			if (tests >= 40)
-				throw new TimeoutException($"Timed-out waiting for service status {status}");
 		}
 	}
 }
