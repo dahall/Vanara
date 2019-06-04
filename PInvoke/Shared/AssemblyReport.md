@@ -82,6 +82,7 @@ HTOKEN | Provides a handle to an access token .
 HWINSTA | Provides a handle to a windows station.
 HWND | Provides a handle to a window or dialog.
 Interrupt | 
+LCID | 
 LOGFONT | The LOGFONT structure defines the attributes of a font.
 Memory40 | 
 Memory48 | 

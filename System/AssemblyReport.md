@@ -34,7 +34,10 @@ PowerSchemeSettingCollection | Represents a collection of all settings for a sub
 ProcessExtension | Extension methods for `Process` for privilegs, status, elevation and relationships.
 RegistryEventArgs | Argument used in `RegistryEventMonitor` events.
 RegistryEventMonitor | Watches the Windows Registry for any changes.
+ServiceControllerAccessRule | Represents an abstraction of an access control entry (ACE) that defines an access rule for a service.
+ServiceControllerAuditRule | Represents an abstraction of an access control entry (ACE) that defines an audit rule for a service.
 ServiceControllerExtension | Extension methods for `ServiceController`.
+ServiceControllerSecurity | Represents the access control and audit security for a service.
 ShareConnection | Represents a connection to a shared device.
 SharedDevice | Represents a shared device on a computer.
 SharedDevices | Represents all the shared devices on a computers.
@@ -73,5 +76,6 @@ PathCharType |  | Invalid, LongFileName, ShortFileName, Wildcard, Separator
 PowerCapabilities |  | PowerButtonPresent, SleepButtonPresent, LidPresent, SystemS1, SystemS2, SystemS3, SystemS4, SystemS5, HiberFilePresent, FullWake, VideoDimPresent, ApmPresent, UpsPresent, ThermalControl, ProcessorThrottle, FastSystemS4, Hiberboot, WakeAlarmPresent, AoAc, DiskSpinDown, AoAcConnectivitySupported, SystemBatteriesPresent, BatteriesAreShortTerm
 PowerSupplyStatus | Represents the device's power supply status. | NotPresent, Inadequate, Adequate
 ProcessIntegrityLevel | Values which define a processes integrity level. | Untrusted, Undefined, Low, Medium, High, System
+ServiceControllerAccessRights | Defines the access rights to use when creating access and audit rules. | QueryConfig, ChangeConfig, QueryStatus, EnumerateDependents, Start, Stop, Continue, Interrogate, UserDefinedControl, Delete, ReadPermissions, Write, Read, Execute, ChangePermissions, TakeOwnership, AccessSystemSecurity, FullControl
 ShareOfflineSettings | Offline settings for a shared folder. | OnlySpecified, All, AllOptimized, None
 Subtype | Represents the subtype of a virtual disk. | Fixed, Dynamic, Differencing
