@@ -46,7 +46,7 @@ namespace Vanara.InteropServices
 		/// <summary>Performs an implicit conversion from <see cref="StrPtrAuto"/> to <see cref="System.String"/>.</summary>
 		/// <param name="p">The <see cref="StrPtrAuto"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator string(StrPtrAuto p) => p.ToString();
+		public static implicit operator string(StrPtrAuto p) => p.IsNull ? null : p.ToString();
 
 		/// <summary>Performs an explicit conversion from <see cref="StrPtrAuto"/> to <see cref="System.IntPtr"/>.</summary>
 		/// <param name="p">The <see cref="StrPtrAuto"/> instance.</param>
@@ -96,7 +96,7 @@ namespace Vanara.InteropServices
 		/// <summary>Performs an implicit conversion from <see cref="StrPtrUni"/> to <see cref="System.String"/>.</summary>
 		/// <param name="p">The <see cref="StrPtrUni"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator string(StrPtrUni p) => p.ToString();
+		public static implicit operator string(StrPtrUni p) => p.IsNull ? null : p.ToString();
 
 		/// <summary>Performs an explicit conversion from <see cref="StrPtrUni"/> to <see cref="System.IntPtr"/>.</summary>
 		/// <param name="p">The <see cref="StrPtrUni"/> instance.</param>
@@ -146,7 +146,7 @@ namespace Vanara.InteropServices
 		/// <summary>Performs an implicit conversion from <see cref="StrPtrAnsi"/> to <see cref="System.String"/>.</summary>
 		/// <param name="p">The <see cref="StrPtrAnsi"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator string(StrPtrAnsi p) => p.ToString();
+		public static implicit operator string(StrPtrAnsi p) => p.IsNull ? null : p.ToString();
 
 		/// <summary>Performs an explicit conversion from <see cref="StrPtrAnsi"/> to <see cref="System.IntPtr"/>.</summary>
 		/// <param name="p">The <see cref="StrPtrAnsi"/> instance.</param>
