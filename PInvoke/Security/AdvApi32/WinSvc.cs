@@ -2565,6 +2565,53 @@ namespace Vanara.PInvoke
 		public static extern SC_LOCK LockServiceDatabase(SC_HANDLE hSCManager);
 
 		/// <summary>
+		/// Reports the boot status to the service control manager. It is used by boot verification programs. This function can be called
+		/// only by a process running in the LocalSystem or Administrator's account.
+		/// </summary>
+		/// <param name="BootAcceptable">
+		/// If the value is TRUE, the system saves the configuration as the last-known good configuration. If the value is FALSE, the system
+		/// immediately reboots, using the previously saved last-known good configuration.
+		/// </param>
+		/// <returns>
+		/// <para>If the BootAcceptable parameter is FALSE, the function does not return.</para>
+		/// <para>If the last-known good configuration was successfully saved, the return value is nonzero.</para>
+		/// <para>If an error occurs, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// The following error codes may be set by the service control manager. Other error codes may be set by the registry functions that
+		/// are called by the service control manager to set parameters in the configuration registry.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>
+		/// The user does not have permission to perform this operation. Only the system and members of the Administrator's group can do so.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Saving the configuration of a running system with this function is an acceptable method for saving the last-known good
+		/// configuration. If the boot configuration is unacceptable, use this function to reboot the system using the existing last-known
+		/// good configuration.
+		/// </para>
+		/// <para>
+		/// This function call requires the caller's token to have permission to acquire the SC_MANAGER_MODIFY_BOOT_CONFIG access right. For
+		/// more information, see Service Security and Access Rights.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-notifybootconfigstatus
+		// BOOL NotifyBootConfigStatus( BOOL BootAcceptable );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsvc.h", MSDNShortId = "0b2b9cd0-f897-4681-9e99-5d0bed986112")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool NotifyBootConfigStatus([MarshalAs(UnmanagedType.Bool)] bool BootAcceptable);
+
+		/// <summary>
 		/// Enables an application to receive notification when the specified service is created or deleted or when its status changes.
 		/// </summary>
 		/// <param name="hService">
