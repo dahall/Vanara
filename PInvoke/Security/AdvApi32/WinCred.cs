@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -23,6 +24,46 @@ namespace Vanara.PInvoke
 			/// <para>Windows Server 2003 and Windows XP: This flag is not supported.</para>
 			/// </summary>
 			CRED_ENUMERATE_ALL_CREDENTIALS = 0x1,
+		}
+
+		/// <summary>A bit member that identifies characteristics of the credential.</summary>
+		[PInvokeData("wincred.h")]
+		[Flags]
+		public enum CRED_FLAGS
+		{
+			CRED_FLAGS_PASSWORD_FOR_CERT = 0x1,
+
+			/// <summary>
+			/// Bit set if the credential does not persist the CredentialBlob and the credential has not been written during this logon
+			/// session. This bit is ignored on input and is set automatically when queried.
+			/// <para>
+			/// If Type is CRED_TYPE_DOMAIN_CERTIFICATE, the CredentialBlob is not persisted across logon sessions because the PIN of a
+			/// certificate is very sensitive information. Indeed, when the credential is written to credential manager, the PIN is passed to
+			/// the CSP associated with the certificate. The CSP will enforce a PIN retention policy appropriate to the certificate.
+			/// </para>
+			/// <para>
+			/// If Type is CRED_TYPE_DOMAIN_PASSWORD or CRED_TYPE_DOMAIN_CERTIFICATE, an authentication package always fails an
+			/// authentication attempt when using credentials marked as CRED_FLAGS_PROMPT_NOW. The application (typically through the key
+			/// ring UI) prompts the user for the password. The application saves the credential and retries the authentication. Because the
+			/// credential has been recently written, the authentication package now gets a credential that is not marked as CRED_FLAGS_PROMPT_NOW.
+			/// </para>
+			/// </summary>
+			CRED_FLAGS_PROMPT_NOW = 0x2,
+
+			/// <summary>
+			/// Bit is set if this credential has a TargetName member set to the same value as the UserName member. Such a credential is one
+			/// designed to store the CredentialBlob for a specific user. For more information, see the CredMarshalCredential function.
+			/// <para>This bit can only be specified if Type is CRED_TYPE_DOMAIN_PASSWORD or CRED_TYPE_DOMAIN_CERTIFICATE.</para>
+			/// </summary>
+			CRED_FLAGS_USERNAME_TARGET = 0x4,
+
+			CRED_FLAGS_OWF_CRED_BLOB = 0x0008,
+			CRED_FLAGS_REQUIRE_CONFIRMATION = 0x0010,
+			CRED_FLAGS_WILDCARD_MATCH = 0x0020,
+			CRED_FLAGS_VSM_PROTECTED = 0x0040,
+			CRED_FLAGS_NGC_CERT = 0x0080,
+			CRED_FLAGS_VALID_FLAGS = 0xF0FF,
+			CRED_FLAGS_VALID_INPUT_FLAGS = 0xF09F,
 		}
 
 		/// <summary>
@@ -55,25 +96,38 @@ namespace Vanara.PInvoke
 
 		/// <summary>Specifies the maximum persistence supported by the corresponding credential type.</summary>
 		[PInvokeData("wincred.h", MSDNShortId = "70f8d5e0-235b-4330-8add-566b41c91c17")]
-		public enum CRED_PERSIST : uint
+		public enum CRED_PERSIST
 		{
 			/// <summary>
 			/// No credential can be stored. This value will be returned if the credential type is not supported or has been disabled by policy.
 			/// </summary>
 			CRED_PERSIST_NONE = 0,
 
-			/// <summary>Only a session-specific credential can be stored.</summary>
+			/// <summary>
+			/// The credential persists for the life of the logon session. It will not be visible to other logon sessions of this same user.
+			/// It will not exist after this user logs off and back on.
+			/// </summary>
 			CRED_PERSIST_SESSION = 1,
 
 			/// <summary>
-			/// Session-specific and computer-specific credentials can be stored. <note type="note">Windows XP: This credential cannot be
-			/// stored for sessions in which the profile is not loaded.</note>
+			/// The credential persists for all subsequent logon sessions on this same computer. It is visible to other logon sessions of
+			/// this same user on this same computer and not visible to logon sessions for this user on other computers.
+			/// <para>
+			/// Windows Vista Home Basic, Windows Vista Home Premium, Windows Vista Starter and Windows XP Home Edition: This value is not supported.
+			/// </para>
 			/// </summary>
 			CRED_PERSIST_LOCAL_MACHINE = 2,
 
 			/// <summary>
-			/// Any credential can be stored. <note type="note">Windows XP: This credential cannot be stored for sessions in which the
-			/// profile is not loaded.</note>
+			/// The credential persists for all subsequent logon sessions on this same computer. It is visible to other logon sessions of
+			/// this same user on this same computer and to logon sessions for this user on other computers.
+			/// <para>
+			/// This option can be implemented as locally persisted credential if the administrator or user configures the user account to
+			/// not have roam-able state. For instance, if the user has no roaming profile, the credential will only persist locally.
+			/// </para>
+			/// <para>
+			/// Windows Vista Home Basic, Windows Vista Home Premium, Windows Vista Starter and Windows XP Home Edition: This value is not supported.
+			/// </para>
 			/// </summary>
 			CRED_PERSIST_ENTERPRISE = 3,
 		}
@@ -305,31 +359,20 @@ namespace Vanara.PInvoke
 		/// associated with the logon session of the current token. The token must not have the user's SID disabled.
 		/// </summary>
 		/// <param name="filter">
+		/// <para>
 		/// A string that contains the filter for the returned credentials. Only credentials with a TargetName matching the filter will be
 		/// returned. The filter specifies a name prefix followed by an asterisk. For instance, the filter "FRED*" will return all
 		/// credentials with a TargetName beginning with the string "FRED".
-		/// </param>
-		/// <param name="Flags">
-		/// <para>The value of this parameter can be zero or more of the following values combined with a bitwise- <c>OR</c> operation.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>CRED_ENUMERATE_ALL_CREDENTIALS 0x1</term>
-		/// <term>
-		/// This function enumerates all of the credentials in the user's credential set. The target name of each credential is returned in
-		/// the "namespace:attribute=target" format. If this flag is set and the Filter parameter is not NULL, the function fails and returns
-		/// ERROR_INVALID_FLAGS. Windows Server 2003 and Windows XP: This flag is not supported.
-		/// </term>
-		/// </item>
-		/// </list>
+		/// </para>
+		/// <para>
+		/// If this value is <see langword="null"/>, this function enumerates all of the credentials in the user's credential set. The target
+		/// name of each credential is returned in the "namespace:attribute=target" format.
+		/// </para>
 		/// </param>
 		/// <returns>An array of credentials.</returns>
-		public static CREDENTIAL[] CredEnumerate(string filter, CRED_ENUM Flags = 0)
+		public static CREDENTIAL_MGD[] CredEnumerate(string filter = null)
 		{
-			if (!CredEnumerate(filter, 0, out var cnt, out var creds))
+			if (!CredEnumerate(filter, filter is null ? CRED_ENUM.CRED_ENUMERATE_ALL_CREDENTIALS : CRED_ENUM.NONE, out var cnt, out var creds))
 				Win32Error.ThrowLastError();
 			return creds.GetCredArray((int)cnt);
 		}
@@ -705,6 +748,53 @@ namespace Vanara.PInvoke
 		[PInvokeData("wincred.h", MSDNShortId = "3222de7b-5290-4e82-a382-b2db6afc78cc")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CredRead(string TargetName, CRED_TYPE Type, uint Flags, out SafeCredMemoryHandle Credential);
+
+		/// <summary>
+		/// <para>
+		/// The <c>CredRead</c> function reads a credential from the user's credential set. The credential set used is the one associated
+		/// with the logon session of the current token. The token must not have the user's SID disabled.
+		/// </para>
+		/// </summary>
+		/// <param name="TargetName">
+		/// <para>Pointer to a null-terminated string that contains the name of the credential to read.</para>
+		/// </param>
+		/// <param name="Type">
+		/// <para>Type of the credential to read. Type must be one of the CRED_TYPE_* defined types.</para>
+		/// </param>
+		/// <param name="Credential">
+		/// <para>The credential.</para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// The function returns <c>TRUE</c> on success and <c>FALSE</c> on failure. The GetLastError function can be called to get a more
+		/// specific status code. The following status codes can be returned:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>ERROR_NOT_FOUND</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NO_SUCH_LOGON_SESSION</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_FLAGS</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If the value of the <c>Type</c> member of the CREDENTIAL structure specified by the Credential parameter is
+		/// <c>CRED_TYPE_DOMAIN_EXTENDED</c>, a namespace must be specified in the target name. This function can return only one credential
+		/// of the specified type.
+		/// </para>
+		/// </remarks>
+		[PInvokeData("wincred.h", MSDNShortId = "3222de7b-5290-4e82-a382-b2db6afc78cc")]
+		public static bool CredRead(string TargetName, CRED_TYPE Type, out CREDENTIAL_MGD Credential)
+		{
+			var b = CredRead(TargetName, Type, 0, out var cred);
+			Credential = b ? new CREDENTIAL_MGD(cred.GetCred()) : default;
+			return b;
+		}
 
 		/// <summary>
 		/// <para>
@@ -1231,7 +1321,7 @@ namespace Vanara.PInvoke
 		public struct CREDENTIAL
 		{
 			/// <summary>The flags</summary>
-			public uint Flags;
+			public CRED_FLAGS Flags;
 
 			/// <summary>The type of the credential. This member cannot be changed after the credential is created.</summary>
 			public CRED_TYPE Type;
@@ -1277,12 +1367,12 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>This member is case-insensitive.</para>
 			/// </summary>
-			public string TargetName;
+			public StrPtrAuto TargetName;
 
 			/// <summary>
 			/// A string comment from the user that describes this credential. This member cannot be longer than CRED_MAX_STRING_LENGTH (256) characters.
 			/// </summary>
-			public string Comment;
+			public StrPtrAuto Comment;
 
 			/// <summary>
 			/// The time, in Coordinated Universal Time (Greenwich Mean Time), of the last modification of the credential. For write
@@ -1357,7 +1447,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint Persist;
+			public CRED_PERSIST Persist;
 
 			/// <summary>
 			/// The number of application-defined attributes to be associated with the credential. This member can be read and written. Its
@@ -1367,6 +1457,162 @@ namespace Vanara.PInvoke
 
 			/// <summary>Application-defined attributes that are associated with the credential. This member can be read and written.</summary>
 			public IntPtr Attributes;
+
+			/// <summary>
+			/// Alias for the TargetName member. This member can be read and written. It cannot be longer than CRED_MAX_STRING_LENGTH (256) characters.
+			/// <para>If the credential Type is CRED_TYPE_GENERIC, this member can be non-NULL, but the credential manager ignores the member.</para>
+			/// </summary>
+			public StrPtrAuto TargetAlias;
+
+			/// <summary>
+			/// The user name of the account used to connect to TargetName.
+			/// <para>If the credential Type is CRED_TYPE_DOMAIN_PASSWORD, this member can be either a DomainName\UserName or a UPN.</para>
+			/// <para>
+			/// If the credential Type is CRED_TYPE_DOMAIN_CERTIFICATE, this member must be a marshaled certificate reference created by
+			/// calling CredMarshalCredential with a CertCredential.
+			/// </para>
+			/// <para>If the credential Type is CRED_TYPE_GENERIC, this member can be non-NULL, but the credential manager ignores the member.</para>
+			/// <para>This member cannot be longer than CRED_MAX_USERNAME_LENGTH (513) characters.</para>
+			/// </summary>
+			public StrPtrAuto UserName;
+		}
+
+		/// <summary>The CREDENTIAL structure contains an individual credential.</summary>
+		[PInvokeData("wincred.h")]
+		public struct CREDENTIAL_MGD
+		{
+			/// <summary>The flags</summary>
+			public CRED_FLAGS Flags;
+
+			/// <summary>The type of the credential. This member cannot be changed after the credential is created.</summary>
+			public CRED_TYPE Type;
+
+			/// <summary>
+			/// The name of the credential. The TargetName and Type members uniquely identify the credential. This member cannot be changed
+			/// after the credential is created. Instead, the credential with the old name should be deleted and the credential with the new
+			/// name created.
+			/// <para>
+			/// If Type is CRED_TYPE_DOMAIN_PASSWORD or CRED_TYPE_DOMAIN_CERTIFICATE, this member identifies the server or servers that the
+			/// credential is to be used for. The member is either a NetBIOS or DNS server name, a DNS host name suffix that contains a
+			/// wildcard character, a NetBIOS or DNS domain name that contains a wildcard character sequence, or an asterisk.
+			/// </para>
+			/// <para>If TargetName is a DNS host name, the TargetAlias member can be the NetBIOS name of the host.</para>
+			/// <para>
+			/// If the TargetName is a DNS host name suffix that contains a wildcard character, the leftmost label of the DNS host name is an
+			/// asterisk (*), which denotes that the target name is any server whose name ends in the specified name, for example, *.microsoft.com.
+			/// </para>
+			/// <para>
+			/// If the TargetName is a domain name that contains a wildcard character sequence, the syntax is the domain name followed by a
+			/// backslash and asterisk (\*), which denotes that the target name is any server that is a member of the named domain (or realm).
+			/// </para>
+			/// <para>
+			/// If TargetName is a DNS domain name that contains a wildcard character sequence, the TargetAlias member can be a NetBIOS
+			/// domain name that uses a wildcard sequence for the same domain.
+			/// </para>
+			/// <para>
+			/// If TargetName specifies a DFS share, for example, DfsRoot\DfsShare, then this credential matches the specific DFS share and
+			/// any servers reached through that DFS share.
+			/// </para>
+			/// <para>If TargetName is a single asterisk (*), this credential matches any server name.</para>
+			/// <para>
+			/// If TargetName is CRED_SESSION_WILDCARD_NAME, this credential matches any server name. This credential matches before a single
+			/// asterisk and is only valid if Persist is CRED_PERSIST_SESSION. The credential can be set by applications that want to
+			/// temporarily override the default credential.
+			/// </para>
+			/// <para>This member cannot be longer than CRED_MAX_DOMAIN_TARGET_NAME_LENGTH (337) characters.</para>
+			/// <para>
+			/// If the Type is CRED_TYPE_GENERIC, this member should identify the service that uses the credential in addition to the actual
+			/// target. Microsoft suggests the name be prefixed by the name of the company implementing the service. Microsoft will use the
+			/// prefix "Microsoft". Services written by Microsoft should append their service name, for example Microsoft_RAS_TargetName.
+			/// This member cannot be longer than CRED_MAX_GENERIC_TARGET_NAME_LENGTH (32767) characters.
+			/// </para>
+			/// <para>This member is case-insensitive.</para>
+			/// </summary>
+			public string TargetName;
+
+			/// <summary>
+			/// A string comment from the user that describes this credential. This member cannot be longer than CRED_MAX_STRING_LENGTH (256) characters.
+			/// </summary>
+			public string Comment;
+
+			/// <summary>
+			/// The time, in Coordinated Universal Time (Greenwich Mean Time), of the last modification of the credential. For write
+			/// operations, the value of this member is ignored.
+			/// </summary>
+			public FILETIME LastWritten;
+
+			/// <summary>
+			/// Secret data for the credential. The CredentialBlob member can be both read and written.
+			/// <para>
+			/// If the Type member is CRED_TYPE_DOMAIN_PASSWORD, this member contains the plaintext Unicode password for UserName. The
+			/// CredentialBlob and CredentialBlobSize members do not include a trailing zero character. Also, for CRED_TYPE_DOMAIN_PASSWORD,
+			/// this member can only be read by the authentication packages.
+			/// </para>
+			/// <para>
+			/// If the Type member is CRED_TYPE_DOMAIN_CERTIFICATE, this member contains the clear test Unicode PIN for UserName. The
+			/// CredentialBlob and CredentialBlobSize members do not include a trailing zero character. Also, this member can only be read by
+			/// the authentication packages.
+			/// </para>
+			/// <para>If the Type member is CRED_TYPE_GENERIC, this member is defined by the application.</para>
+			/// <para>
+			/// Credentials are expected to be portable. Applications should ensure that the data in CredentialBlob is portable. The
+			/// application defines the byte-endian and alignment of the data in CredentialBlob.
+			/// </para>
+			/// </summary>
+			public byte[] CredentialBlob;
+
+			/// <summary>
+			/// Defines the persistence of this credential. This member can be read and written.
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CRED_PERSIST_SESSION (0x1)</term>
+			/// <description>
+			/// The credential persists for the life of the logon session. It will not be visible to other logon sessions of this same user.
+			/// It will not exist after this user logs off and back on.
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <term>CRED_PERSIST_LOCAL_MACHINE (0x2)</term>
+			/// <description>
+			/// The credential persists for all subsequent logon sessions on this same computer. It is visible to other logon sessions of
+			/// this same user on this same computer and not visible to logon sessions for this user on other computers.
+			/// <para>
+			/// <c>Windows Vista Home Basic, Windows Vista Home Premium, Windows Vista Starter and Windows XP Home Edition:</c> This value is
+			/// not supported.
+			/// </para>
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <term>CRED_PERSIST_ENTERPRISE (0x3)</term>
+			/// <description>
+			/// The credential persists for all subsequent logon sessions on this same computer. It is visible to other logon sessions of
+			/// this same user on this same computer and to logon sessions for this user on other computers.
+			/// <para>
+			/// This option can be implemented as locally persisted credential if the administrator or user configures the user account to
+			/// not have roam-able state. For instance, if the user has no roaming profile, the credential will only persist locally.
+			/// </para>
+			/// <para>
+			/// <c>Windows Vista Home Basic, Windows Vista Home Premium, Windows Vista Starter and Windows XP Home Edition:</c> This value is
+			/// not supported.
+			/// </para>
+			/// </description>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public CRED_PERSIST Persist;
+
+			/// <summary>
+			/// The number of application-defined attributes to be associated with the credential. This member can be read and written. Its
+			/// value cannot be greater than CRED_MAX_ATTRIBUTES (64).
+			/// </summary>
+			public uint AttributeCount;
+
+			/// <summary>Application-defined attributes that are associated with the credential. This member can be read and written.</summary>
+			public byte[] Attributes;
 
 			/// <summary>
 			/// Alias for the TargetName member. This member can be read and written. It cannot be longer than CRED_MAX_STRING_LENGTH (256) characters.
@@ -1385,6 +1631,25 @@ namespace Vanara.PInvoke
 			/// <para>This member cannot be longer than CRED_MAX_USERNAME_LENGTH (513) characters.</para>
 			/// </summary>
 			public string UserName;
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="CREDENTIAL_MGD"/> struct.
+			/// </summary>
+			/// <param name="c">The c.</param>
+			internal CREDENTIAL_MGD(in CREDENTIAL c)
+			{
+				Flags = c.Flags;
+				Type = c.Type;
+				TargetName = c.TargetName;
+				Comment = c.Comment;
+				LastWritten = c.LastWritten;
+				CredentialBlob = c.CredentialBlob.ToArray<byte>((int)c.CredentialBlobSize);
+				Persist = c.Persist;
+				AttributeCount = c.AttributeCount;
+				Attributes = c.Attributes.ToArray<byte>((int)c.AttributeCount);
+				TargetAlias = c.TargetAlias;
+				UserName = c.UserName;
+			}
 		}
 
 		/// <summary>
@@ -1514,7 +1779,7 @@ namespace Vanara.PInvoke
 
 			internal CREDENTIAL GetCred() => handle.ToStructure<CREDENTIAL>();
 
-			internal CREDENTIAL[] GetCredArray(int count) => handle.ToArray<CREDENTIAL>(count);
+			internal CREDENTIAL_MGD[] GetCredArray(int count) => handle.ToIEnum<IntPtr>(count).Select(p => new CREDENTIAL_MGD(p.ToStructure<CREDENTIAL>())).ToArray();
 
 			internal string GetString() => Marshal.PtrToStringAuto(handle);
 		}
