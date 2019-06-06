@@ -1008,8 +1008,13 @@ namespace Vanara.PInvoke
 					public IntPtr hMem;
 
 					/// <summary>Reserved; not used.</summary>
-					[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3, ArraySubType = UnmanagedType.U4)]
-					public uint[] dwReserved;
+					public uint dwReserved1;
+
+					/// <summary>Reserved; not used.</summary>
+					public uint dwReserved2;
+					
+					/// <summary>Reserved; not used.</summary>
+					public uint dwReserved3;
 				}
 
 				/// <summary>This structure is valid only if the <c>wFlags</c> member specifies <c>PROCESS_HEAP_REGION</c>.</summary>
