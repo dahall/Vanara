@@ -153,6 +153,11 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator PSID(SafePSID psid) => psid.DangerousGetHandle();
 
+			/// <summary>Performs an implicit conversion from <see cref="PSID"/> to <see cref="SafePSID"/>.</summary>
+			/// <param name="psid">The psid.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SafePSID(PSID psid) => new SafePSID(psid);
+
 			/// <summary>Initializes a new <see cref="SafePSID"/> instance from a SID authority and subauthorities.</summary>
 			/// <param name="sidAuthority">The SID authority.</param>
 			/// <param name="subAuth0">The first subauthority.</param>
