@@ -271,9 +271,9 @@ namespace Vanara.PInvoke.Tests
 			var kerb = new KERB_INTERACTIVE_LOGON
 			{
 				MessageType = KERB_LOGON_SUBMIT_TYPE.KerbInteractiveLogon,
-				LogonDomainName = new LSA_UNICODE_STRING(domain),
-				UserName = new LSA_UNICODE_STRING(user),
-				Password = new LSA_UNICODE_STRING(pwd)
+				LogonDomainName = new SafeLSA_UNICODE_STRING(domain),
+				UserName = new SafeLSA_UNICODE_STRING(user),
+				Password = new SafeLSA_UNICODE_STRING(pwd)
 			};
 			var mem = SafeHGlobalHandle.CreateFromStructure(kerb);
 			AllocateLocallyUniqueId(out var srcLuid);

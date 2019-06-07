@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -2863,11 +2864,25 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct FILE_ID_128
 		{
+			private ulong id0;
+			private ulong id1;
+
 			/// <summary>
 			/// <para>A byte array containing the 128 bit identifier.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] Identifier;
+			public byte[] Identifier
+			{
+				get
+				{
+					using (var pin = new PinnedObject(id0))
+						return ((IntPtr)pin).ToArray<byte>(16);
+				}
+				set
+				{
+					using (var pin = new PinnedObject(id0))
+						Marshal.Copy(value, 0, pin, 16);
+				}
+			}
 		}
 
 		/// <summary>
@@ -3495,8 +3510,7 @@ namespace Vanara.PInvoke
 				public Smb2 Smb2;
 
 				[FieldOffset(0)]
-				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-				public uint[] Reserved;
+				public Guid Reserved;
 			}
 
 			[StructLayout(LayoutKind.Sequential)]

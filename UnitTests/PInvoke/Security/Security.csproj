@@ -47,6 +47,7 @@
     <Compile Include="Secur32\SaslTests.cs" />
     <Compile Include="Secur32\SspiTests.cs" />
     <Compile Include="Secur32\Secur32Tests.cs" />
+    <Compile Include="SecurityTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Vanara.Core.csproj">

@@ -521,19 +521,15 @@ namespace Vanara.PInvoke
 			public StrPtrUni pszOwner;
 
 			/// <summary>This member is unused.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
 			public StrPtrUni pszCompany;
 
 			/// <summary>This member is unused.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
 			public StrPtrUni pszComments;
 
 			/// <summary>This member is unused.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
 			public StrPtrUni pszContact;
 
 			/// <summary>This member is unused.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
 			public StrPtrUni pszSupportUrl;
 
 			/// <summary>
