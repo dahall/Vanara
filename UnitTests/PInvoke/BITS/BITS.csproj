@@ -11,7 +11,7 @@
     <AssemblyName>UnitTest.PInvoke.BITS</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-<LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,7 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NUnit">
-      <Version>3.11.0</Version>
+      <Version>3.12.0</Version>
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter">
       <Version>3.13.0</Version>
