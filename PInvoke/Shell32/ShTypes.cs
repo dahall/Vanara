@@ -134,27 +134,27 @@ namespace Vanara.PInvoke
 		public struct STRRET
 		{
 			/// <summary>A value that specifies the desired format of the string.</summary>
-			[FieldOffset(0)] public STRRET_TYPE uType;
+			[FieldOffset(0)]
+			public STRRET_TYPE uType;
 
 			/// <summary>
 			/// A pointer to the string. This memory must be allocated with CoTaskMemAlloc. It is the calling application's responsibility to
 			/// free this memory with CoTaskMemFree when it is no longer needed.
 			/// </summary>
-			[FieldOffset(4), MarshalAs(UnmanagedType.BStr)]
+			[FieldOffset(4)]
 			public StrPtrUni pOleStr; // must be freed by caller of GetDisplayNameOf
 
 			/// <summary>The offset into the item identifier list.</summary>
-			[FieldOffset(4)] public uint uOffset; // Offset into SHITEMID
+			[FieldOffset(4)]
+			public uint uOffset; // Offset into SHITEMID
 
 			/// <summary>The buffer to receive the display name. CHAR[MAX_PATH]</summary>
-			[FieldOffset(4), MarshalAs(UnmanagedType.LPStr, SizeConst = Kernel32.MAX_PATH)]
-			public string cStr; // Buffer to fill in (ANSI)
+			[FieldOffset(4)]
+			public StrPtrAnsi cStr;
 
 			/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-			public override string ToString() => uType == STRRET_TYPE.STRRET_CSTR
-				? cStr
-				: (uType == STRRET_TYPE.STRRET_WSTR ? pOleStr.ToString() : string.Empty);
+			public override string ToString() => (uType == STRRET_TYPE.STRRET_CSTR ? cStr : (uType == STRRET_TYPE.STRRET_WSTR ? pOleStr : (string)null)) ?? string.Empty;
 		}
 
 		internal class STRRETMarshaler : ICustomMarshaler

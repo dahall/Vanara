@@ -727,6 +727,22 @@ namespace Vanara.PInvoke
 			FOLDERID_Windows,
 		}
 
+		/// <summary>Frees the allocated fields in the result from IKnownFolder::GetFolderDefinition.</summary>
+		/// <param name="pKFD">
+		/// <para>Type: <c>KNOWNFOLDER_DEFINITION*</c></para>
+		/// <para>A pointer to a KNOWNFOLDER_DEFINITION structure that contains information about the given known folder.</para>
+		/// </param>
+		/// <returns>This function does not return a value.</returns>
+		/// <remarks>This is an inline helper function that calls CoTaskMemFree on the fields in the structure that need to be freed. Its implementation can be seen in the header file.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-freeknownfolderdefinitionfields
+		// void FreeKnownFolderDefinitionFields( KNOWNFOLDER_DEFINITION *pKFD );
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "0ad17dd3-e612-403a-b8c3-e93d5f259c1f")]
+		public static void FreeKnownFolderDefinitionFields(in KNOWNFOLDER_DEFINITION pKFD)
+		{
+			foreach (var fi in pKFD.GetType().GetFields().Where(f => f.FieldType == typeof(StrPtrUni)))
+				Marshal.FreeCoTaskMem((IntPtr)fi.GetValue(pKFD));
+		}
+
 		/// <summary>
 		/// Exposes methods that allow an application to retrieve information about a known folder's category, type, GUID, pointer to an item
 		/// identifier list (PIDL) value, redirection capabilities, and definition. It provides a method for the retrieval of a known folder's
@@ -975,13 +991,13 @@ namespace Vanara.PInvoke
 			/// settings. This name is meant to be a unique, human-readable name. Third parties are recommended to follow the format
 			/// Company.Application.Name. The name given here should not be confused with the display name.
 			/// </summary>
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszName;
+			public StrPtrUni pszName;
 
 			/// <summary>
 			/// A pointer to a short description of the known folder, stored as a null-terminated Unicode string. This description should
 			/// include the folder's purpose and usage.
 			/// </summary>
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszDescription;
+			public StrPtrUni pszDescription;
 
 			/// <summary>
 			/// A KNOWNFOLDERID value that names another known folder to serve as the parent folder. Applies to common and per-user folders
@@ -995,13 +1011,13 @@ namespace Vanara.PInvoke
 			/// refers to the physical file system path, and is not localized. Applies to common and per-user folders only. See Remarks for
 			/// more details.
 			/// </summary>
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszRelativePath;
+			public StrPtrUni pszRelativePath;
 
 			/// <summary>
 			/// A pointer to the Shell namespace folder path of the folder, stored as a null-terminated Unicode string. Applies to virtual
 			/// folders only. For example, Control Panel has a parsing name of ::%CLSID_MyComputer%\::%CLSID_ControlPanel%.
 			/// </summary>
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszParsingName;
+			public StrPtrUni pszParsingName;
 
 			/// <summary>
 			/// Optional. A pointer to the default tooltip resource used for this known folder when it is created. This is a null-terminated
@@ -1013,7 +1029,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>This information is not required for virtual folders.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszTooltip;
+			public StrPtrUni pszTooltip;
 
 			/// <summary>
 			/// Optional. A pointer to the default localized name resource used when the folder is created. This is a null-terminated Unicode
@@ -1025,7 +1041,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>This information is not required for virtual folders.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszLocalizedName;
+			public StrPtrUni pszLocalizedName;
 
 			/// <summary>
 			/// Optional. A pointer to the default icon resource used when the folder is created. This is a null-terminated Unicode string in
@@ -1037,7 +1053,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>This information is not required for virtual folders.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszIcon;
+			public StrPtrUni pszIcon;
 
 			/// <summary>
 			/// Optional. A pointer to a Security Descriptor Definition Language format string. This is a null-terminated Unicode string that
@@ -1045,7 +1061,7 @@ namespace Vanara.PInvoke
 			/// folder inherits the security descriptor of its parent. This is particularly useful for common folders that are accessed by
 			/// all users.
 			/// </summary>
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszSecurity;
+			public StrPtrUni pszSecurity;
 
 			/// <summary>
 			/// Optional. Default file system attributes given to the folder when it is created. For example, the file could be hidden and
