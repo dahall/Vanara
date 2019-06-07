@@ -393,12 +393,12 @@ namespace Vanara.PInvoke
 			/// application deployed to the user with this file name extension.
 			/// </para>
 			/// </summary>
-			[FieldOffset(0), MarshalAs(UnmanagedType.LPWStr)]
-			public string FileExt;
+			[FieldOffset(0)]
+			public StrPtrUni FileExt;
 
 			/// <summary/>
-			[FieldOffset(0), MarshalAs(UnmanagedType.LPWStr)]
-			public string ProgId;
+			[FieldOffset(0)]
+			public StrPtrUni ProgId;
 
 			/// <summary/>
 			[FieldOffset(0)]
@@ -412,8 +412,7 @@ namespace Vanara.PInvoke
 				/// The user-friendly name of the application as it appears in <c>Add or Remove Programs</c> and the Group Policy Object
 				/// Editor. You can obtain the name by calling GetManagedApplications.
 				/// </summary>
-				[MarshalAs(UnmanagedType.LPWStr)]
-				public string Name;
+				public StrPtrUni Name;
 
 				/// <summary>
 				/// The <c>GUID</c> for the group policy object in which the application exists. You can obtain the group policy object
