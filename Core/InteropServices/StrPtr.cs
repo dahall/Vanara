@@ -53,6 +53,11 @@ namespace Vanara.InteropServices
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator IntPtr(StrPtrAuto p) => p.ptr;
 
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="StrPtrAuto"/>.</summary>
+		/// <param name="p">The pointer.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator StrPtrAuto(IntPtr p) => new StrPtrAuto { ptr = p };
+
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public override string ToString() => StringHelper.GetString(ptr) ?? "null";
@@ -103,6 +108,11 @@ namespace Vanara.InteropServices
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator IntPtr(StrPtrUni p) => p.ptr;
 
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="StrPtrUni"/>.</summary>
+		/// <param name="p">The pointer.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator StrPtrUni(IntPtr p) => new StrPtrUni { ptr = p };
+
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public override string ToString() => StringHelper.GetString(ptr, CharSet.Unicode) ?? "null";
@@ -152,6 +162,11 @@ namespace Vanara.InteropServices
 		/// <param name="p">The <see cref="StrPtrAnsi"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator IntPtr(StrPtrAnsi p) => p.ptr;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="StrPtrAnsi"/>.</summary>
+		/// <param name="p">The pointer.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator StrPtrAnsi(IntPtr p) => new StrPtrAnsi { ptr = p };
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
