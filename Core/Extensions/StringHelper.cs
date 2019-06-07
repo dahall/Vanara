@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using Vanara.InteropServices;
 
 namespace Vanara.Extensions
 {
@@ -127,7 +128,7 @@ namespace Vanara.Extensions
 			var ret = new byte[enc.GetByteCount(value) + (nullTerm ? chSz : 0)];
 			enc.GetBytes(value, 0, value.Length, ret, 0);
 			if (nullTerm)
-				enc.GetBytes(new[] {'\0'}, 0, 1, ret, ret.Length - chSz);
+				enc.GetBytes(new[] { '\0' }, 0, 1, ret, ret.Length - chSz);
 			return ret;
 		}
 
@@ -204,6 +205,28 @@ namespace Vanara.Extensions
 			ptr = AllocString(s, charSet);
 			charLen = s == null ? 0U : (uint)s.Length + 1;
 			return s != null;
+		}
+
+		/// <summary>Writes the specified string to a pointer to allocated memory.</summary>
+		/// <param name="value">The string value.</param>
+		/// <param name="ptr">The pointer to the allocated memory.</param>
+		/// <param name="byteCnt">The resulting number of bytes written.</param>
+		/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the count if <paramref name="value"/> does not equal <c>null</c>.</param>
+		/// <param name="charSet">The character set of the string.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		public static void Write(string value, IntPtr ptr, out int byteCnt, bool nullTerm = true, CharSet charSet = CharSet.Auto, long allocatedBytes = long.MaxValue)
+		{
+			if (value is null)
+			{
+				byteCnt = 0;
+				return;
+			}
+			if (ptr == IntPtr.Zero) throw new ArgumentNullException(nameof(ptr));
+			var bytes = GetBytes(value, nullTerm, charSet);
+			if (bytes.Length > allocatedBytes)
+				throw new ArgumentOutOfRangeException(nameof(allocatedBytes));
+			byteCnt = bytes.Length;
+			Marshal.Copy(bytes, 0, ptr, byteCnt);
 		}
 
 		private static bool IsValue(IntPtr ptr) => ptr.ToInt64() >> 16 == 0;
