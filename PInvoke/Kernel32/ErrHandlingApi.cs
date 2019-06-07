@@ -100,7 +100,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Flags passed to the <see cref="FormatMessage(uint, string[], HINSTANCE, FormatMessageFlags, uint)"/> method.
+		/// Flags passed to the <see cref="FormatMessage(FormatMessageFlags, HINSTANCE, uint, uint, StringBuilder, uint, IntPtr)"/> method.
 		/// </summary>
 		[PInvokeData("winbase.h")]
 		[Flags]

@@ -146,7 +146,7 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => NetApiBufferFree(handle) == 0;
 		}
 
-		/// <summary>A custom marshaler for functions using LSA_UNICODE_STRING so that managed strings can be used.</summary>
+		/// <summary>A custom marshaler for functions using NetApiBuffer so that managed strings can be used.</summary>
 		/// <seealso cref="ICustomMarshaler"/>
 		internal class NetApiBufferUnicodeStringMarshaler : ICustomMarshaler
 		{
