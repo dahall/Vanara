@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -80,35 +81,35 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum LSA_TLN
 		{
-			/// <summary>The top-level name trust record is disabled during initial creation.<note type="note>This flag MUST be used only
+			/// <summary>The top-level name trust record is disabled during initial creation.<note type="note">This flag MUST be used only
 			/// with forest trust record types of ForestTrustTopLevelName and ForestTrustTopLevelNameEx.</note></summary>
 			LSA_TLN_DISABLED_NEW = 0x00000001,
 
-			/// <summary>The top-level name trust record is disabled by the domain administrator.<note type="note>This flag MUST be used only
+			/// <summary>The top-level name trust record is disabled by the domain administrator.<note type="note">This flag MUST be used only
 			/// with forest trust record types of ForestTrustTopLevelName and ForestTrustTopLevelNameEx.</note></summary>
 			LSA_TLN_DISABLED_ADMIN = 0x00000002,
 
-			/// <summary>The top-level name trust record is disabled due to a conflict.<note type="note>This flag MUST be used only with
+			/// <summary>The top-level name trust record is disabled due to a conflict.<note type="note">This flag MUST be used only with
 			/// forest trust record types of ForestTrustTopLevelName and ForestTrustTopLevelNameEx.</note></summary>
 			LSA_TLN_DISABLED_CONFLICT = 0x00000004,
 
-			/// <summary>The domain information trust record is disabled by the domain administrator.<note type="note>This flag MUST be used
+			/// <summary>The domain information trust record is disabled by the domain administrator.<note type="note">This flag MUST be used
 			/// only with a forest trust record type of ForestTrustDomainInfo.</note></summary>
 			LSA_SID_DISABLED_ADMIN = 0x00000001,
 
-			/// <summary>The domain information trust record is disabled due to a conflict.<note type="note>This flag MUST be used only with
+			/// <summary>The domain information trust record is disabled due to a conflict.<note type="note">This flag MUST be used only with
 			/// a forest trust record type of ForestTrustDomainInfo.</note></summary>
 			LSA_SID_DISABLED_CONFLICT = 0x00000002,
 
-			/// <summary>The domain information trust record is disabled by the domain administrator.<note type="note>This flag MUST be used
+			/// <summary>The domain information trust record is disabled by the domain administrator.<note type="note">This flag MUST be used
 			/// only with a forest trust record type of ForestTrustDomainInfo.</note></summary>
 			LSA_NB_DISABLED_ADMIN = 0x00000004,
 
-			/// <summary>The domain information trust record is disabled due to a conflict.<note type="note>This flag MUST be used only with
+			/// <summary>The domain information trust record is disabled due to a conflict.<note type="note">This flag MUST be used only with
 			/// a forest trust record type of ForestTrustDomainInfo.</note></summary>
 			LSA_NB_DISABLED_CONFLICT = 0x00000008,
 
-			/// <summary>The domain information trust record is disabled.<note type="note>This set of flags is reserved; for current and
+			/// <summary>The domain information trust record is disabled.<note type="note">This set of flags is reserved; for current and
 			/// future reasons, the trust is disabled.</note></summary>
 			LSA_FTRECORD_DISABLED_REASONS = 0x0000FFFF,
 		}
@@ -2494,7 +2495,7 @@ namespace Vanara.PInvoke
 		public struct LSA_FOREST_TRUST_DOMAIN_INFO
 		{
 			/// <summary>Domain SID for the trusted domain.</summary>
-			public IntPtr Sid;
+			public PSID Sid;
 
 			/// <summary>LSA_UNICODE_STRING structure that contains the DNS name of the domain.</summary>
 			public LSA_UNICODE_STRING DnsName;
@@ -2758,9 +2759,10 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Pointer to a wide character string. Note that the strings returned by the various LSA functions might not be null-terminated.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string Buffer;
+			public StrPtrUni Buffer;
 
+			/* REMOVED TO AVOID MEMORY LEAK
+			 * 
 			/// <summary>Initializes a new instance of the <see cref="LSA_UNICODE_STRING"/> struct from a string.</summary>
 			/// <param name="s">The string value.</param>
 			/// <exception cref="System.ArgumentException">String exceeds 32Kb of data.</exception>
@@ -2769,7 +2771,7 @@ namespace Vanara.PInvoke
 				if (s == null)
 				{
 					length = MaximumLength = 0;
-					Buffer = null;
+					Buffer = IntPtr.Zero;
 				}
 				else
 				{
@@ -2782,18 +2784,19 @@ namespace Vanara.PInvoke
 					MaximumLength = (ushort)(l + UnicodeEncoding.CharSize);
 				}
 			}
+			*/
 
 			/// <summary>Gets the number of characters in the string.</summary>
 			public int Length => length / UnicodeEncoding.CharSize;
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
-			public override string ToString() => Buffer == null || Length == 0 ? "" : Buffer.Substring(0, Length);
+			public override string ToString() => (string)Buffer ?? string.Empty;
 
 			/// <summary>Performs an implicit conversion from <see cref="LSA_UNICODE_STRING"/> to <see cref="string"/>.</summary>
 			/// <param name="value">The value.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator string(LSA_UNICODE_STRING value) => value.ToString();
+			public static implicit operator string(LSA_UNICODE_STRING value) => (string)value.Buffer;
 		}
 
 		/// <summary>Smart wrapper for LSA_FOREST_TRUST_INFORMATION.</summary>
@@ -2827,7 +2830,7 @@ namespace Vanara.PInvoke
 							break;
 
 						case LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustDomainInfo:
-							rec = new LsaForestTrustDomainInfo { DnsName = e.ForestTrustData.DomainInfo.DnsName, NetbiosName = e.ForestTrustData.DomainInfo.NetbiosName, Sid = new PSID(e.ForestTrustData.DomainInfo.Sid) };
+							rec = new LsaForestTrustDomainInfo { DnsName = e.ForestTrustData.DomainInfo.DnsName, NetbiosName = e.ForestTrustData.DomainInfo.NetbiosName, Sid = e.ForestTrustData.DomainInfo.Sid };
 							break;
 
 						default:
@@ -2860,26 +2863,30 @@ namespace Vanara.PInvoke
 			void IDisposable.Dispose() => allocatedMemory?.Dispose();
 
 			/// <summary>Represents a LSA_FOREST_TRUST_RECORD with the ForestTrustType value set to ForestTrustDomainInfo.</summary>
+			[DebuggerDisplay("DnsName:{DnsName}, NB:{NetbiosName}, Time:{Time:u}, Flg:{Flags}")]
 			public class LsaForestTrustDomainInfo : LsaForestTrustRecord
 			{
+				private SafeLSA_UNICODE_STRING dnsName = new SafeLSA_UNICODE_STRING(null);
+				private SafeLSA_UNICODE_STRING netbiosName = new SafeLSA_UNICODE_STRING(null);
+
 				/// <summary>The DNS name of the domain.</summary>
-				public string DnsName { get; set; }
+				public string DnsName { get => dnsName; set => dnsName = value; }
 
 				/// <summary>The NetBIOS name of the domain.</summary>
-				public string NetbiosName { get; set; }
+				public string NetbiosName { get => netbiosName; set => netbiosName = value; }
 
 				/// <summary>Domain SID for the trusted domain.</summary>
-				public PSID Sid { get; set; }
+				public SafePSID Sid { get; set; }
 
-				public override string ToString() => $"DnsName:{DnsName}, NB:{NetbiosName}, Time:{Time:u}, Flg:{Flags}";
-
+				/// <summary>Converts this instance.</summary>
+				/// <returns>A <c>LSA_FOREST_TRUST_RECORD</c> instance.</returns>
 				protected internal override LSA_FOREST_TRUST_RECORD Convert()
 				{
 					var ret = base.Convert();
 					ret.ForestTrustType = LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustDomainInfo;
-					ret.ForestTrustData.DomainInfo.DnsName = new LSA_UNICODE_STRING(DnsName);
-					ret.ForestTrustData.DomainInfo.NetbiosName = new LSA_UNICODE_STRING(NetbiosName);
-					ret.ForestTrustData.DomainInfo.Sid = (IntPtr)Sid;
+					ret.ForestTrustData.DomainInfo.DnsName = dnsName;
+					ret.ForestTrustData.DomainInfo.NetbiosName = netbiosName;
+					ret.ForestTrustData.DomainInfo.Sid = Sid;
 					return ret;
 				}
 			}
@@ -2893,6 +2900,8 @@ namespace Vanara.PInvoke
 				/// <summary>Time stamp of the record.</summary>
 				public DateTime Time { get; set; }
 
+				/// <summary>Converts this instance.</summary>
+				/// <returns>A <c>LSA_FOREST_TRUST_RECORD</c> instance.</returns>
 				protected internal virtual LSA_FOREST_TRUST_RECORD Convert() =>
 					new LSA_FOREST_TRUST_RECORD { Flags = Flags, Time = Time.ToFileTimeStruct() };
 			}
@@ -2902,24 +2911,34 @@ namespace Vanara.PInvoke
 			/// <see cref="Excluded"/> property is <see langword="true"/> and ForestTrustTopLevelName if the <see cref="Excluded"/> property
 			/// is <see langword="true"/>.
 			/// </summary>
+			[DebuggerDisplay("TopName:{TopLevelName}, Excl:{Excluded}, Time:{Time:u}, Flg:{Flags}")]
 			public class LsaForestTrustTopLevelName : LsaForestTrustRecord
 			{
+				private SafeLSA_UNICODE_STRING topLevelName = new SafeLSA_UNICODE_STRING(null);
+
+				/// <summary>Initializes a new instance of the <see cref="LsaForestTrustTopLevelName"/> class.</summary>
+				/// <param name="name">The name.</param>
+				/// <param name="exclude">if set to <c>true</c> [exclude].</param>
 				public LsaForestTrustTopLevelName(string name = null, bool exclude = false)
 				{
 					TopLevelName = name;
 					Excluded = exclude;
 				}
 
+				/// <summary>Gets or sets a value indicating whether this <see cref="LsaForestTrustTopLevelName"/> contains an excluded top-level name..</summary>
+				/// <value><c>true</c> if excluded; otherwise, <c>false</c> to include.</value>
 				public bool Excluded { get; set; }
-				public string TopLevelName { get; set; }
 
-				public override string ToString() => $"TopName:{TopLevelName}, Excl:{Excluded}, Time:{Time:u}, Flg:{Flags}";
+				/// <summary>Top-level name. This member is used only if the ForestTrustType member is ForestTrustTopLevelName or ForestTrustTopLevelNameEx.</summary>
+				public string TopLevelName { get => topLevelName; set => topLevelName = value; }
 
+				/// <summary>Converts this instance.</summary>
+				/// <returns>A <c>LSA_FOREST_TRUST_RECORD</c> instance.</returns>
 				protected internal override LSA_FOREST_TRUST_RECORD Convert()
 				{
 					var ret = base.Convert();
 					ret.ForestTrustType = Excluded ? LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelNameEx : LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelName;
-					ret.ForestTrustData.TopLevelName = new LSA_UNICODE_STRING(TopLevelName);
+					ret.ForestTrustData.TopLevelName = topLevelName;
 					return ret;
 				}
 			}
@@ -2947,6 +2966,73 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => LsaClose(this) == 0;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="LSA_UNICODE_STRING"/> that manages its own memory allocations.</summary>
+		public class SafeLSA_UNICODE_STRING : SafeHANDLE
+		{
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SafeLSA_UNICODE_STRING"/> class.
+			/// </summary>
+			/// <param name="value">The value of the string to assign.</param>
+			public SafeLSA_UNICODE_STRING(string value) : base(IntPtr.Zero, true)
+			{
+				Buffer = value;
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="SafeLSA_UNICODE_STRING"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeLSA_UNICODE_STRING(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeLSA_UNICODE_STRING"/> class.</summary>
+			private SafeLSA_UNICODE_STRING() : base() { }
+
+			/// <summary>
+			/// Specifies the length, in bytes, of the string pointed to by the Buffer member, not including the terminating null character,
+			/// if any.
+			/// </summary>
+			public short length => IsInvalid ? (short)0 : Marshal.ReadInt16(handle);
+
+			/// <summary>
+			/// Specifies the total size, in bytes, of the memory allocated for Buffer. Up to MaximumLength bytes can be written into the
+			/// buffer without trampling memory.
+			/// </summary>
+			public short MaximumLength => IsInvalid ? (short)0 : Marshal.ReadInt16(handle, 2);
+
+			/// <summary>The string value.</summary>
+			public string Buffer
+			{
+				get => LsaUnicodeStringMarshaler.MarshalPtr(handle);
+				set
+				{
+					Close();
+					SetHandle(LsaUnicodeStringMarshaler.MarshalValue(value));
+				}
+			}
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeLSA_UNICODE_STRING"/> to <see cref="LSA_UNICODE_STRING"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator LSA_UNICODE_STRING(SafeLSA_UNICODE_STRING h) => h.handle.ToStructure<LSA_UNICODE_STRING>();
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeLSA_UNICODE_STRING"/> to <see cref="System.String"/>.</summary>
+			/// <param name="h">The <see cref="SafeLSA_UNICODE_STRING"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator string(SafeLSA_UNICODE_STRING h) => h.Buffer;
+
+			/// <summary>Performs an implicit conversion from <see cref="System.String"/> to <see cref="SafeLSA_UNICODE_STRING"/>.</summary>
+			/// <param name="val">The string value.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SafeLSA_UNICODE_STRING(string val) => new SafeLSA_UNICODE_STRING(val);
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle()
+			{
+				if (handle != IntPtr.Zero)
+					Marshal.FreeCoTaskMem(handle);
+				return true;
+			}
 		}
 
 		/// <summary>
@@ -3012,7 +3098,7 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		/// <summary>A <see cref="SafeHandle"/> for values that must be freed using the <see cref="LsaFreeReturnBuffer(IntPtr)"/> function.</summary>
+		/// <summary>A <see cref="SafeHandle"/> for values that must be freed using the <see cref="Secur32.LsaFreeReturnBuffer(IntPtr)"/> function.</summary>
 		public sealed class SafeLsaReturnBufferHandle : SafeLsaMemoryHandleBase
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeLsaReturnBufferHandle"/> class.</summary>
@@ -3031,8 +3117,6 @@ namespace Vanara.PInvoke
 		/// <seealso cref="ICustomMarshaler"/>
 		internal class LsaUnicodeStringArrayMarshaler : ICustomMarshaler
 		{
-			private static readonly Dictionary<IntPtr, int> pastCallArraySizes = new Dictionary<IntPtr, int>();
-
 			public static ICustomMarshaler GetInstance(string _) => new LsaUnicodeStringArrayMarshaler();
 
 			public void CleanUpManagedData(object ManagedObj)
@@ -3042,13 +3126,6 @@ namespace Vanara.PInvoke
 			public void CleanUpNativeData(IntPtr pNativeData)
 			{
 				if (pNativeData == IntPtr.Zero) return;
-				if (pastCallArraySizes.TryGetValue(pNativeData, out var length))
-				{
-					var sz = Marshal.SizeOf(typeof(LSA_UNICODE_STRING));
-					for (var i = 0; i < length; i++)
-						Marshal.DestroyStructure(pNativeData.Offset(sz * i), typeof(LSA_UNICODE_STRING));
-					pastCallArraySizes.Remove(pNativeData);
-				}
 				Marshal.FreeCoTaskMem(pNativeData);
 			}
 
@@ -3058,15 +3135,18 @@ namespace Vanara.PInvoke
 			{
 				if (ManagedObj is string[] a)
 				{
-					var uma = Array.ConvertAll(a, p => new LSA_UNICODE_STRING(p));
+					var uma = Array.ConvertAll(a, p => new LSA_UNICODE_STRING { length = (ushort)StringHelper.GetByteCount(p, false, CharSet.Unicode) });
 					var sz = Marshal.SizeOf(typeof(LSA_UNICODE_STRING));
-					var result = Marshal.AllocCoTaskMem(sz * a.Length);
-					pastCallArraySizes.Add(result, a.Length);
-					var ptr = result;
-					foreach (var value in uma)
+					var strSz = uma.Sum(s => s.length + 2);
+					var result = Marshal.AllocCoTaskMem(sz * a.Length + strSz);
+					var strPtr = result.Offset(sz * a.Length);
+					for (int i = 0; i < uma.Length; i++)
 					{
-						Marshal.StructureToPtr(value, ptr, false);
-						ptr = ptr.Offset(sz);
+						uma[i].Buffer = strPtr;
+						StringHelper.Write(a[i], (IntPtr)uma[i].Buffer, out var byteCnt, true, CharSet.Unicode);
+						uma[i].MaximumLength = (ushort)byteCnt;
+						strPtr = strPtr.Offset(byteCnt);
+						Marshal.StructureToPtr(uma[i], result.Offset(i * sz), false);
 					}
 					return result;
 				}
@@ -3098,16 +3178,34 @@ namespace Vanara.PInvoke
 
 			public int GetNativeDataSize() => Marshal.SizeOf(typeof(LSA_UNICODE_STRING));
 
-			public IntPtr MarshalManagedToNative(object ManagedObj) => ManagedObj is string s ? new LSA_UNICODE_STRING(s).StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+			public IntPtr MarshalManagedToNative(object ManagedObj) => ManagedObj is string s ? MarshalValue(s) : IntPtr.Zero;
 
 			public object MarshalNativeToManaged(IntPtr pNativeData)
 			{
-				if (pNativeData == IntPtr.Zero) return null;
-				var ret = pNativeData.ToStructure<LSA_UNICODE_STRING>();
-				var s = (string)ret.ToString().Clone();
+				var s = MarshalPtr(pNativeData);
 				LsaFreeMemory(pNativeData);
 				return s;
 			}
+
+			internal static IntPtr MarshalValue(string value)
+			{
+				if (value is null) return IntPtr.Zero;
+				var length = (short)StringHelper.GetByteCount(value, false, CharSet.Unicode);
+				var chSz = StringHelper.GetCharSize(CharSet.Unicode);
+				var maxLength = (short)(length + chSz);
+				var sz = 4 + IntPtr.Size + length + chSz;
+				var mem = Marshal.AllocCoTaskMem(sz);
+				using (var s = new NativeMemoryStream(mem, sz, System.IO.FileAccess.Write) { CharSet = CharSet.Unicode })
+				{
+					s.Write(length);
+					s.Write(maxLength);
+					s.WriteReference(value);
+					s.Flush();
+				}
+				return mem;
+			}
+
+			internal static string MarshalPtr(IntPtr ptr) => ptr == IntPtr.Zero ? null : StringHelper.GetString(ptr.Offset(4), CharSet.Unicode, Marshal.ReadInt16(ptr));
 		}
 	}
 }
