@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -338,18 +340,51 @@ namespace Vanara.PInvoke
 			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 			public struct LOCKOBJECT
 			{
-				/// <summary>
-				/// The name of the object. Object names are only available for certain object, such as mutexes. If the object does not have
-				/// a name, this member is an empty string.
-				/// </summary>
-				[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-				public string ObjectName;
+				private long on0;
+				private long on1;
+				private long on2;
+				private long on3;
+				private long on4;
+				private long on5;
+				private long on6;
+				private long on7;
+				private long on8;
+				private long on9;
+				private long onA;
+				private long onB;
+				private long onC;
+				private long onD;
+				private long onE;
+				private long onF;
 
 				/// <summary>This member is reserved for future use.</summary>
 				public int Timeout;
 
 				/// <summary>This member is reserved for future use.</summary>
-				[MarshalAs(UnmanagedType.Bool)] public bool Alertable;
+				[MarshalAs(UnmanagedType.Bool)]
+				public bool Alertable;
+
+				/// <summary>
+				/// The name of the object. Object names are only available for certain object, such as mutexes. If the object does not have
+				/// a name, this member is an empty string.
+				/// </summary>
+				public string ObjectName
+				{
+					get
+					{
+						using (var pin = new PinnedObject(on0))
+						{
+							return StringHelper.GetString(pin, CharSet.Unicode, 128);
+						}
+					}
+					set
+					{
+						using (var pin = new PinnedObject(on0))
+						{
+							StringHelper.Write(value, pin, out _, true, CharSet.Unicode, 128);
+						}
+					}
+				}
 			}
 
 			/// <summary/>
