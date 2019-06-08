@@ -200,27 +200,20 @@ namespace Vanara.PInvoke
 			CALG_TLS1PRF = 0x0000800a,
 		}
 
-		/// <summary>
-		/// A certificate encoding type.
-		/// </summary>
+		/// <summary>A certificate encoding type.</summary>
 		[PInvokeData("wincrypt.h")]
 		public enum CertEncodingType : uint
 		{
-			/// <summary>
-			/// The crypt asn encoding
-			/// </summary>
+			/// <summary>The crypt asn encoding</summary>
 			CRYPT_ASN_ENCODING = 0x00000001,
-			/// <summary>
-			/// The crypt NDR encoding
-			/// </summary>
+
+			/// <summary>The crypt NDR encoding</summary>
 			CRYPT_NDR_ENCODING = 0x00000002,
-			/// <summary>
-			/// The X509 asn encoding
-			/// </summary>
+
+			/// <summary>The X509 asn encoding</summary>
 			X509_ASN_ENCODING = 0x00000001,
-			/// <summary>
-			/// The X509 NDR encoding
-			/// </summary>
+
+			/// <summary>The X509 NDR encoding</summary>
 			X509_NDR_ENCODING = 0x00000002,
 		}
 
@@ -616,6 +609,25 @@ namespace Vanara.PInvoke
 			/// setting the cbData member of the Parameters BLOB to zero.
 			/// </summary>
 			public CRYPTOAPI_BLOB Parameters;
+		}
+
+		/// <summary>
+		/// The <c>CRYPT_ATTRIBUTE_TYPE_VALUE</c> structure contains a single attribute value. The <c>Value</c> member's CRYPT_OBJID_BLOB is encoded.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/wincrypt/ns-wincrypt-_crypt_attribute_type_value typedef struct
+		// _CRYPT_ATTRIBUTE_TYPE_VALUE { LPSTR pszObjId; CRYPT_OBJID_BLOB Value; } CRYPT_ATTRIBUTE_TYPE_VALUE, *PCRYPT_ATTRIBUTE_TYPE_VALUE;
+		[PInvokeData("wincrypt.h", MSDNShortId = "84057581-d0a9-464a-9399-ba806e37516f")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CRYPT_ATTRIBUTE_TYPE_VALUE
+		{
+			/// <summary>Object identifier (OID) that specifies the attribute type data contained in the <c>Value</c> BLOB.</summary>
+			public StrPtrAuto pszObjId;
+
+			/// <summary>
+			/// A CRYPT_OBJID_BLOB that contains the encoded attribute. The <c>cbData</c> member of the <c>CRYPT_OBJID_BLOB</c> structure
+			/// indicates the length of the <c>pbData</c> member. The <c>pbData</c> member contains the attribute information.
+			/// </summary>
+			public CRYPTOAPI_BLOB Value;
 		}
 
 		/// <summary>
