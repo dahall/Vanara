@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Crypt32;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
@@ -1016,7 +1017,7 @@ namespace Vanara.PInvoke
 		// GUID *pgActionID, WINTRUST_DATA *pWinTrustData );
 		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wintrust.h", MSDNShortId = "209c9953-a4a5-4ff0-961f-92e97ccce23d")]
-		public static extern HRESULT WinVerifyTrustEx(HWND hwnd, in Guid pgActionID, in WINTRUST_DATA pWinTrustData);
+		public static extern HRESULT WinVerifyTrustEx(HWND hwnd, in Guid pgActionID, [In] WINTRUST_DATA pWinTrustData);
 
 		/// <summary>
 		/// <para>
@@ -2021,65 +2022,6 @@ namespace Vanara.PInvoke
 			public IntPtr psftVerifyAsOf;
 		}
 
-		/// <summary>
-		/// [The WINTRUST_DATA structure is available for use in the operating systems specified in the Requirements section. It may be
-		/// altered or unavailable in subsequent versions.]
-		/// <para>The WINTRUST_DATA structure is used when calling WinVerifyTrust to pass necessary information into the trust providers.</para>
-		/// </summary>
-		[PInvokeData("wintrust.h", MSDNShortId = "8fb68f44-6f69-4eac-90de-02689e3e86cf")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct WINTRUST_DATA
-		{
-			/// <summary>The size, in bytes, of this structure.</summary>
-			public uint cbStruct;
-
-			/// <summary>A pointer to a data buffer used to pass policy-specific data to a policy provider. This member can be NULL.</summary>
-			public IntPtr pPolicyCallbackData;
-
-			/// <summary>
-			/// A pointer to a data buffer used to pass subject interface package (SIP)-specific data to a SIP provider. This member can be NULL.
-			/// </summary>
-			public IntPtr pSIPCallbackData;
-
-			/// <summary>Specifies the kind of user interface (UI) to be used.</summary>
-			public WTD_UI dwUIChoice;
-
-			/// <summary>
-			/// Certificate revocation check options. This member can be set to add revocation checking to that done by the selected policy provider.
-			/// </summary>
-			public WTD_REVOKE fdwRevocationChecks;
-
-			/// <summary>Specifies the union member to be used and, thus, the type of object for which trust will be verified.</summary>
-			public WTD_CHOICE dwUnionChoice;
-
-			/// <summary>Pointer to the structure specified by <see cref="dwUnionChoice"/>.</summary>
-			public IntPtr pInfoStruct;
-
-			/// <summary>Specifies the action to be taken.</summary>
-			public WTD_STATEACTION dwStateAction;
-
-			/// <summary>A handle to the state data. The contents of this member depends on the value of the dwStateAction member.</summary>
-			public HANDLE hWVTStateData;
-
-			/// <summary>Reserved for future use. Set to NULL.</summary>
-			public StrPtrUni pwszURLReference;
-
-			/// <summary>DWORD value that specifies trust provider settings.</summary>
-			public WTD_TRUST dwProvFlags;
-
-			/// <summary>
-			/// A DWORD value that specifies the user interface context for the WinVerifyTrust function. This causes the text in the
-			/// Authenticode dialog box to match the action taken on the file.
-			/// </summary>
-			public WTD_UICONTEXT dwUIContext;
-
-			/// <summary>
-			/// Pointer to a WINTRUST_SIGNATURE_SETTINGS structure.
-			/// <para>Windows 8 and Windows Server 2012: Support for this member begins.</para>
-			/// </summary>
-			public IntPtr pSignatureSettings;
-		}
-
 		/// <summary>The <c>WINTRUST_FILE_INFO</c> structure is used when calling WinVerifyTrust to verify an individual file.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-wintrust_file_info_ typedef struct WINTRUST_FILE_INFO_ {
 		// DWORD cbStruct; LPCWSTR pcwszFilePath; HANDLE hFile; GUID *pgKnownSubject; } WINTRUST_FILE_INFO, *PWINTRUST_FILE_INFO;
@@ -2179,6 +2121,165 @@ namespace Vanara.PInvoke
 			/// Pointer to a CERT_STRONG_SIGN_PARA structure that contains the policy that a signature must pass to be considered valid.
 			/// </summary>
 			public IntPtr pCryptoPolicy;
+		}
+
+		/// <summary>
+		/// [The WINTRUST_DATA structure is available for use in the operating systems specified in the Requirements section. It may be
+		/// altered or unavailable in subsequent versions.]
+		/// <para>The WINTRUST_DATA structure is used when calling WinVerifyTrust to pass necessary information into the trust providers.</para>
+		/// </summary>
+		[PInvokeData("wintrust.h", MSDNShortId = "8fb68f44-6f69-4eac-90de-02689e3e86cf")]
+		[StructLayout(LayoutKind.Sequential)]
+		public class WINTRUST_DATA : IDisposable
+		{
+			/// <summary>The size, in bytes, of this structure.</summary>
+			private int _cbStruct;
+
+			/// <summary>A pointer to a data buffer used to pass policy-specific data to a policy provider. This member can be NULL.</summary>
+			public IntPtr pPolicyCallbackData;
+
+			/// <summary>
+			/// A pointer to a data buffer used to pass subject interface package (SIP)-specific data to a SIP provider. This member can be NULL.
+			/// </summary>
+			public IntPtr pSIPCallbackData;
+
+			/// <summary>Specifies the kind of user interface (UI) to be used.</summary>
+			public WTD_UI dwUIChoice;
+
+			/// <summary>
+			/// Certificate revocation check options. This member can be set to add revocation checking to that done by the selected policy provider.
+			/// </summary>
+			public WTD_REVOKE fdwRevocationChecks;
+
+			/// <summary>Specifies the union member to be used and, thus, the type of object for which trust will be verified.</summary>
+			private WTD_CHOICE _dwUnionChoice;
+
+			/// <summary>Pointer to the structure specified by <see cref="dwUnionChoice"/>.</summary>
+			private IntPtr _pInfoStruct;
+
+			/// <summary>Specifies the action to be taken.</summary>
+			public WTD_STATEACTION dwStateAction;
+
+			/// <summary>A handle to the state data. The contents of this member depends on the value of the dwStateAction member.</summary>
+			public HANDLE hWVTStateData;
+
+			/// <summary>Reserved for future use. Set to NULL.</summary>
+			private StrPtrUni pwszURLReference;
+
+			/// <summary>DWORD value that specifies trust provider settings.</summary>
+			public WTD_TRUST dwProvFlags;
+
+			/// <summary>
+			/// A DWORD value that specifies the user interface context for the WinVerifyTrust function. This causes the text in the
+			/// Authenticode dialog box to match the action taken on the file.
+			/// </summary>
+			public WTD_UICONTEXT dwUIContext;
+
+			/// <summary>
+			/// Pointer to a WINTRUST_SIGNATURE_SETTINGS structure.
+			/// <para>Windows 8 and Windows Server 2012: Support for this member begins.</para>
+			/// </summary>
+			private IntPtr _pSignatureSettings;
+
+			/// <summary>Initializes a new instance of the <see cref="WINTRUST_DATA"/> class.</summary>
+			public WINTRUST_DATA()
+			{
+				_cbStruct = Marshal.SizeOf(typeof(WINTRUST_DATA));
+				if (Environment.OSVersion.Version < new Version(6, 2))
+					_cbStruct -= IntPtr.Size;
+			}
+
+			/// <summary>The size, in bytes, of this structure.</summary>
+			public int cbStruct => _cbStruct;
+
+			/// <summary>
+			/// An optional WINTRUST_SIGNATURE_SETTINGS structure.
+			/// <para>Windows 8 and Windows Server 2012: Support for this member begins.</para>
+			/// </summary>
+			public WINTRUST_SIGNATURE_SETTINGS? pSignatureSettings
+			{
+				get => _pSignatureSettings.ToNullableStructure<WINTRUST_SIGNATURE_SETTINGS>();
+				set
+				{
+					if (Environment.OSVersion.Version < new Version(6, 2))
+						throw new NotSupportedException();
+					if (_pSignatureSettings != IntPtr.Zero)
+						Marshal.FreeCoTaskMem(_pSignatureSettings);
+					_pSignatureSettings = value.HasValue ? value.Value.StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+				}
+			}
+
+			/// <summary>Gets or sets the optional file information.</summary>
+			public WINTRUST_FILE_INFO? pFile
+			{
+				get => _dwUnionChoice == WTD_CHOICE.WTD_CHOICE_FILE ? _pInfoStruct.ToNullableStructure<WINTRUST_FILE_INFO>() : null;
+				set
+				{
+					_dwUnionChoice = WTD_CHOICE.WTD_CHOICE_FILE;
+					if (_pInfoStruct != IntPtr.Zero)
+						Marshal.FreeCoTaskMem(_pInfoStruct);
+					_pInfoStruct = value.HasValue ? value.Value.StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+				}
+			}
+
+			/// <summary>Gets or sets the optional catalog information.</summary>
+			public WINTRUST_CATALOG_INFO? pCatalog
+			{
+				get => _dwUnionChoice == WTD_CHOICE.WTD_CHOICE_CATALOG ? _pInfoStruct.ToNullableStructure<WINTRUST_CATALOG_INFO>() : null;
+				set
+				{
+					_dwUnionChoice = WTD_CHOICE.WTD_CHOICE_CATALOG;
+					if (_pInfoStruct != IntPtr.Zero)
+						Marshal.FreeCoTaskMem(_pInfoStruct);
+					_pInfoStruct = value.HasValue ? value.Value.StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+				}
+			}
+
+			/// <summary>Gets or sets the optional blob information.</summary>
+			public WINTRUST_BLOB_INFO? pBlob
+			{
+				get => _dwUnionChoice == WTD_CHOICE.WTD_CHOICE_BLOB ? _pInfoStruct.ToNullableStructure<WINTRUST_BLOB_INFO>() : null;
+				set
+				{
+					_dwUnionChoice = WTD_CHOICE.WTD_CHOICE_BLOB;
+					if (_pInfoStruct != IntPtr.Zero)
+						Marshal.FreeCoTaskMem(_pInfoStruct);
+					_pInfoStruct = value.HasValue ? value.Value.StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+				}
+			}
+
+			/// <summary>Gets or sets the optional signature information.</summary>
+			public WINTRUST_SGNR_INFO? pSgnr
+			{
+				get => _dwUnionChoice == WTD_CHOICE.WTD_CHOICE_SIGNER ? _pInfoStruct.ToNullableStructure<WINTRUST_SGNR_INFO>() : null;
+				set
+				{
+					_dwUnionChoice = WTD_CHOICE.WTD_CHOICE_SIGNER;
+					if (_pInfoStruct != IntPtr.Zero)
+						Marshal.FreeCoTaskMem(_pInfoStruct);
+					_pInfoStruct = value.HasValue ? value.Value.StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+				}
+			}
+
+			/// <summary>Gets or sets the optional certificate information.</summary>
+			public WINTRUST_CERT_INFO? pCert
+			{
+				get => _dwUnionChoice == WTD_CHOICE.WTD_CHOICE_CERT ? _pInfoStruct.ToNullableStructure<WINTRUST_CERT_INFO>() : null;
+				set
+				{
+					_dwUnionChoice = WTD_CHOICE.WTD_CHOICE_CERT;
+					if (_pInfoStruct != IntPtr.Zero)
+						Marshal.FreeCoTaskMem(_pInfoStruct);
+					_pInfoStruct = value.HasValue ? value.Value.StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+				}
+			}
+
+			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+			void IDisposable.Dispose()
+			{
+				if (_pInfoStruct != IntPtr.Zero)
+					Marshal.FreeCoTaskMem(_pInfoStruct);
+			}
 		}
 	}
 }
