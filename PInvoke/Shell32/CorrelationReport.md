@@ -233,6 +233,7 @@ Native Structure | Header | Managed Structure
 [SHChangeNotifyEntry](http://msdn2.microsoft.com/en-us/library/cb11435a-86f0-4b06-bfc6-e0417f2897a1) | shlobj_core.h | Vanara.PInvoke.Shell32+SHChangeNotifyEntry  
 [SHDESCRIPTIONID](http://msdn2.microsoft.com/en-us/library/bb759775) | Shlobj.h | Vanara.PInvoke.Shell32+SHDESCRIPTIONID  
 [SHDRAGIMAGE](http://msdn2.microsoft.com/en-us/library/e0dd76b2-fd5c-41e8-b540-db90a2f0dcec) | shobjidl_core.h | Vanara.PInvoke.Shell32+SHDRAGIMAGE  
+[SHELLDETAILS](http://msdn2.microsoft.com/en-us/library/bb759781) | Shtypes.h | Vanara.PInvoke.Shell32+SHELLDETAILS  
 [SHELLEXECUTEINFO](http://msdn2.microsoft.com/en-us/library/bb759784) | Shellapi.h | Vanara.PInvoke.Shell32+SHELLEXECUTEINFO  
 [SHELLFLAGSTATE](http://msdn2.microsoft.com/en-us/library/9968c7c9-79d9-4fb1-bda2-d6a2504cd3a3) | shlobj_core.h | Vanara.PInvoke.Shell32+SHELLFLAGSTATE  
 [SHELLSTATE](http://msdn2.microsoft.com/en-us/library/bb759788) | Shlobj.h | Vanara.PInvoke.Shell32+SHELLSTATE  
@@ -243,6 +244,7 @@ Native Structure | Header | Managed Structure
 [SHQUERYRBINFO](http://msdn2.microsoft.com/en-us/library/7e9bc7e9-5712-45e7-a424-0afb62f26450) | shellapi.h | Vanara.PInvoke.Shell32+SHQUERYRBINFO  
 [SHSTOCKICONINFO](http://msdn2.microsoft.com/en-us/library/4d32826a-bb40-4805-9826-801c142b8d28) | shellapi.h | Vanara.PInvoke.Shell32+SHSTOCKICONINFO  
 [SORTCOLUMN](http://msdn2.microsoft.com/en-us/library/3ca4c318-6462-4e22-813c-ef7b3ef03230) | shobjidl_core.h | Vanara.PInvoke.Shell32+SORTCOLUMN  
+[STRRET](http://msdn2.microsoft.com/en-us/library/bb759820) | Shtypes.h | Vanara.PInvoke.Shell32+STRRET  
 [SV2CVW2_PARAMS](http://msdn2.microsoft.com/en-us/library/7e165654-74ea-4d8b-81b7-11257f87af53) | shobjidl_core.h | Vanara.PInvoke.Shell32+SV2CVW2_PARAMS  
 [THUMBBUTTON](http://msdn2.microsoft.com/en-us/library/dd391559) | Shobjidl.h | Vanara.PInvoke.Shell32+THUMBBUTTON  
 ### Interfaces  

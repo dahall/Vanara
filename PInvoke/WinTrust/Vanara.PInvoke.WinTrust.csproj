@@ -4,7 +4,7 @@
     <Description>PInvoke API (methods, structures and constants imported from Windows WinTrust.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.3.10</VersionPrefix>
+    <VersionPrefix>2.3.11</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.WinTrust</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -22,7 +22,15 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+OpenPersonalTrustDBDialog, OpenPersonalTrustDBDialogEx, WintrustAddActionID, WintrustAddDefaultForUsage, WintrustGetDefaultForUsage, WintrustGetRegPolicyFlags, WintrustLoadFunctionPointers, WintrustRemoveActionID, WintrustSetDefaultIncludePEPageHashes, WintrustSetRegPolicyFlags, WinVerifyTrust, WinVerifyTrustEx, WTHelperCertCheckValidSignature, WTHelperCertIsSelfSigned, WTHelperGetProvCertFromChain, WTHelperGetProvPrivateDataFromChain
+
+Structures
+CRYPT_PROVIDER_CERT, CRYPT_PROVIDER_DATA, CRYPT_PROVIDER_DEFUSAGE, CRYPT_PROVIDER_FUNCTIONS, CRYPT_PROVIDER_PRIVDATA, CRYPT_PROVIDER_REGDEFUSAGE, CRYPT_PROVIDER_SGNR, CRYPT_PROVIDER_SIGSTATE, CRYPT_PROVUI_DATA, CRYPT_PROVUI_FUNCS, CRYPT_REGISTER_ACTIONID, CRYPT_TRUST_REG_ENTRY, HCATADMIN, HCRYPTMSG, SPC_INDIRECT_DATA_CONTENT, WIN_CERTIFICATE, WINTRUST_BLOB_INFO, WINTRUST_CATALOG_INFO, WINTRUST_CERT_INFO, WINTRUST_FILE_INFO, WINTRUST_SGNR_INFO, WINTRUST_SIGNATURE_SETTINGS, WINTRUST_DATA
+
+</PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>

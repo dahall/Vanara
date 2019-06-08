@@ -572,6 +572,7 @@ Native Structure | Header | Managed Structure
 [CLAIM_SECURITY_ATTRIBUTES_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448481) | Winnt.h | Vanara.PInvoke.AdvApi32+CLAIM_SECURITY_ATTRIBUTES_INFORMATION  
 [COMCLASS](https://www.google.com/search?num=5&q=COMCLASS+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+INSTALLSPEC+COMCLASS  
 [CREDENTIAL](https://www.google.com/search?num=5&q=CREDENTIAL+site%3Amicrosoft.com) | wincred.h | Vanara.PInvoke.AdvApi32+CREDENTIAL  
+[CREDENTIAL_MGD](https://www.google.com/search?num=5&q=CREDENTIAL_MGD+site%3Amicrosoft.com) | wincred.h | Vanara.PInvoke.AdvApi32+CREDENTIAL_MGD  
 [CREDENTIAL_TARGET_INFORMATION](http://msdn2.microsoft.com/en-us/library/92180f2c-ef7c-4481-9b6f-19234c114afb) | wincred.h | Vanara.PInvoke.AdvApi32+CREDENTIAL_TARGET_INFORMATION  
 [CredHandle](https://www.google.com/search?num=5&q=CredHandle+site%3Amicrosoft.com) | sspi.h | Vanara.PInvoke.Secur32+CredHandle  
 [CREDSSP_CRED](http://msdn2.microsoft.com/en-us/library/b22bd22c-e6e1-4817-b5cf-ab49f574e75f) | credssp.h | Vanara.PInvoke.Secur32+CREDSSP_CRED  
@@ -607,6 +608,7 @@ Native Structure | Header | Managed Structure
 [EVENTLOGHEADER](http://msdn2.microsoft.com/en-us/library/bb309024) | Winnt.h | Vanara.PInvoke.AdvApi32+EVENTLOGHEADER  
 [EVENTLOGRECORD](http://msdn2.microsoft.com/en-us/library/669b182a-bc81-4386-9815-6ffa09e2e743) | winnt.h | Vanara.PInvoke.AdvApi32+EVENTLOGRECORD  
 [EXPLICIT_ACCESS](http://msdn2.microsoft.com/en-us/library/6fe09542-10dd-439c-adf8-a4e06943ddb2) | accctrl.h | Vanara.PInvoke.AdvApi32+EXPLICIT_ACCESS  
+[ForestTrustDataUnion](https://www.google.com/search?num=5&q=ForestTrustDataUnion+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+LSA_FOREST_TRUST_RECORD+ForestTrustDataUnion  
 [GENERIC_MAPPING](http://msdn2.microsoft.com/en-us/library/aa446633) | Winnt.h | Vanara.PInvoke.AdvApi32+GENERIC_MAPPING  
 [HEVENTLOG](https://www.google.com/search?num=5&q=HEVENTLOG+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+HEVENTLOG  
 [HPERFPROV](https://www.google.com/search?num=5&q=HPERFPROV+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+HPERFPROV  
@@ -614,6 +616,8 @@ Native Structure | Header | Managed Structure
 [HW_PROFILE_INFO](http://msdn2.microsoft.com/en-us/library/b1c8eb4c-8c62-4e3e-a7d2-0888512b3d4c) | winbase.h | Vanara.PInvoke.AdvApi32+HW_PROFILE_INFO  
 [HWCT](https://www.google.com/search?num=5&q=HWCT+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+HWCT  
 [INHERITED_FROM](http://msdn2.microsoft.com/en-us/library/aa378845) | AccCtrl.h | Vanara.PInvoke.AdvApi32+INHERITED_FROM  
+[INSTALLDATA](http://msdn2.microsoft.com/en-us/library/0c0570c6-f8f5-41e1-a1d2-d4e8c450f73c) | appmgmt.h | Vanara.PInvoke.AdvApi32+INSTALLDATA  
+[INSTALLSPEC](http://msdn2.microsoft.com/en-us/library/e9c1b943-9cb0-480f-8ab7-0f439087216a) | appmgmt.h | Vanara.PInvoke.AdvApi32+INSTALLSPEC  
 [KERB_CRYPTO_KEY](http://msdn2.microsoft.com/en-us/library/ac7ea61c-b1e0-4dc0-931e-81bb6fd74888) | ntsecapi.h | Vanara.PInvoke.Secur32+KERB_CRYPTO_KEY  
 [KERB_EXTERNAL_NAME](http://msdn2.microsoft.com/en-us/library/8ed37546-6443-4010-a078-4359dd1c2861) | ntsecapi.h | Vanara.PInvoke.Secur32+KERB_EXTERNAL_NAME  
 [KERB_EXTERNAL_TICKET](http://msdn2.microsoft.com/en-us/library/742e2795-ec74-4856-a680-7a1c233a2934) | ntsecapi.h | Vanara.PInvoke.Secur32+KERB_EXTERNAL_TICKET  
@@ -631,6 +635,7 @@ Native Structure | Header | Managed Structure
 [LSA_FOREST_TRUST_COLLISION_RECORD](http://msdn2.microsoft.com/en-us/library/9f9d2f57-0e7f-4222-be35-e3f026b60e93) | ntsecapi.h | Vanara.PInvoke.AdvApi32+LSA_FOREST_TRUST_COLLISION_RECORD  
 [LSA_FOREST_TRUST_DOMAIN_INFO](http://msdn2.microsoft.com/en-us/library/c0e06735-ca10-4bee-a45b-6db5b6666e31) | ntsecapi.h | Vanara.PInvoke.AdvApi32+LSA_FOREST_TRUST_DOMAIN_INFO  
 [LSA_FOREST_TRUST_INFORMATION](http://msdn2.microsoft.com/en-us/library/9e456462-59a9-4f18-ba47-92fc2350889b) | ntsecapi.h | Vanara.PInvoke.AdvApi32+LSA_FOREST_TRUST_INFORMATION  
+[LSA_FOREST_TRUST_RECORD](http://msdn2.microsoft.com/en-us/library/19b4ee56-664f-4f37-bfc9-129032ebeb22) | ntsecapi.h | Vanara.PInvoke.AdvApi32+LSA_FOREST_TRUST_RECORD  
 [LSA_HANDLE](https://www.google.com/search?num=5&q=LSA_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+LSA_HANDLE  
 [LSA_LAST_INTER_LOGON_INFO](http://msdn2.microsoft.com/en-us/library/FB935FED-571F-4298-8F83-0F805408179D) | ntsecapi.h | Vanara.PInvoke.Secur32+LSA_LAST_INTER_LOGON_INFO  
 [LSA_OBJECT_ATTRIBUTES](http://msdn2.microsoft.com/en-us/library/ad05cb52-8e58-46a9-b3e8-0c9c2a24a997) | lsalookup.h | Vanara.PInvoke.AdvApi32+LSA_OBJECT_ATTRIBUTES  
@@ -785,5 +790,6 @@ Native Structure | Header | Managed Structure
 [USERNAME_TARGET_CREDENTIAL_INFO](http://msdn2.microsoft.com/en-us/library/1cb56a85-fafd-4471-b0e9-660ac0dc0219) | wincred.h | Vanara.PInvoke.AdvApi32+USERNAME_TARGET_CREDENTIAL_INFO  
 [VALENT](http://msdn2.microsoft.com/en-us/library/7881eea8-e4e3-48cf-ba8f-b5c23910ae7d) | winreg.h | Vanara.PInvoke.AdvApi32+VALENT  
 [VERSIONDETAIL](https://www.google.com/search?num=5&q=VERSIONDETAIL+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+TRACE_LOGFILE_HEADER+VERSIONDETAIL  
+[WAITCHAIN_NODE_INFO](http://msdn2.microsoft.com/en-us/library/7a333924-79a3-4522-aa5a-4fc60690667d) | wct.h | Vanara.PInvoke.AdvApi32+WAITCHAIN_NODE_INFO  
 [WNODE_HEADER](http://msdn2.microsoft.com/en-us/library/862a8f46-a326-48c6-92b7-8bb667837bb7) | evntrace.h | Vanara.PInvoke.AdvApi32+WNODE_HEADER  
 [X509Certificate](http://msdn2.microsoft.com/en-us/library/5a337f78-e5de-4ea2-9c15-1056d9e9e38c) | schannel.h | Vanara.PInvoke.Schannel+X509Certificate  
