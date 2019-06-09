@@ -824,7 +824,7 @@ namespace Vanara.PInvoke
 			{
 				var ve = (VarEnum)((int)vt & 0x0FFF);
 				if (ve == VarEnum.VT_LPSTR)
-					return _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize).Select(p => GetString(ve, Marshal.ReadIntPtr(p)));
+					return _blob.pBlobData.ToStringEnum((int)_blob.cbSize, CharSet.Ansi);
 				PropVariantToStringVectorAlloc(this, out var mem, out var cnt).ThrowIfFailed();
 				return mem.ToStringEnum((int)cnt, CharSet.Unicode);
 			}
