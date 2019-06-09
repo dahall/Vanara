@@ -645,9 +645,11 @@ namespace Vanara.PInvoke
 				if (!flags.IsFlagSet(FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS)) flags |= FormatMessageFlags.FORMAT_MESSAGE_ARGUMENT_ARRAY;
 				args = Array.ConvertAll(args, o => o is int || o is uint ? (IntPtr)unchecked((int)o) : o);
 			}
+			else
+				flags |= FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS;
 			Win32Error lastError;
 			var buf = new StringBuilder(1024);
-			using (var pargs = new SafeHGlobalHandle(args.MarshalObjectsToPtr(Marshal.AllocHGlobal, out var sz), sz, true))
+			using (var pargs = new SafeHGlobalHandle(args.MarshalObjectsToPtr(Marshal.AllocHGlobal, out var sz, true), sz, true))
 				do
 				{
 					if (0 != FormatMessage(flags, hLib, id, langId, buf, (uint)buf.Capacity, (IntPtr)pargs))
@@ -688,9 +690,11 @@ namespace Vanara.PInvoke
 			flags |= FormatMessageFlags.FORMAT_MESSAGE_FROM_STRING | FormatMessageFlags.FORMAT_MESSAGE_ARGUMENT_ARRAY;
 			if (args != null && args.Length > 0)
 				args = Array.ConvertAll(args, o => o is int || o is uint ? (IntPtr)unchecked((int)o) : o);
+			else
+				flags |= FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS;
 			Win32Error lastError;
 			var buf = new StringBuilder(1024);
-			using (var pargs = new SafeHGlobalHandle(args.MarshalObjectsToPtr(Marshal.AllocHGlobal, out var sz), sz, true))
+			using (var pargs = new SafeHGlobalHandle(args.MarshalObjectsToPtr(Marshal.AllocHGlobal, out var sz, true), sz, true))
 				do
 				{
 					if (0 != FormatMessage(flags, formatString, 0, 0, buf, (uint)buf.Capacity, (IntPtr)pargs))
