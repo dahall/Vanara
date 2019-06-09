@@ -85,6 +85,28 @@ namespace Vanara.PInvoke
 			return ar;
 		}
 
+		/// <summary>Setups the class that holds the overlapped call details. Use at the start of the 'Begin' method.</summary>
+		/// <param name="fileStream">The file to bind to.</param>
+		/// <param name="userCallback">The user callback method.</param>
+		/// <param name="userState">
+		/// A variable that is passed to all receiving methods in the asynchronous methods. Can be use to hold any user defined object.
+		/// </param>
+		/// <returns>An <see cref="OverlappedAsyncResult"/> instance for the asynchronous calls.</returns>
+		public static unsafe OverlappedAsyncResult SetupOverlappedFunction(System.IO.FileStream fileStream, AsyncCallback userCallback, object userState)
+		{
+			var ar = new OverlappedAsyncResult(userState, userCallback, fileStream.SafeFileHandle.DangerousGetHandle());
+			var o = new Overlapped(0, 0, IntPtr.Zero, ar);
+			ar.Overlapped = o.Pack((code, bytes, pOverlapped) =>
+			{
+				var asyncResult = (OverlappedAsyncResult)Overlapped.Unpack(pOverlapped).AsyncResult;
+				if (asyncResult.IsCompleted) return;
+				asyncResult.FreeOverlapped();
+				if (code == 0x217) code = 0;
+				asyncResult.Complete(true, (int)code);
+			}, userState);
+			return ar;
+		}
+
 		private static void BindHandle(HFILE hDevice)
 		{
 			if (boundHandles.Add(hDevice))
