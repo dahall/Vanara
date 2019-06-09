@@ -163,15 +163,14 @@ namespace Vanara.InteropServices
 		public virtual void Insert(int index, TElem item)
 		{
 			if (index < 0 || index > Count) throw new ArgumentOutOfRangeException(nameof(index));
-			Count++;
-			var newSz = GetRequiredSize(Count, HeaderSize);
+			var newSz = GetRequiredSize(++Count, HeaderSize);
 			var newPtr = mm.AllocMem(newSz);
 			var insertPt = ElemOffset(index);
 			if (index > 0)
 				CopyTo(newPtr, 0, insertPt);
 			Marshal.StructureToPtr(item, newPtr.Offset(insertPt), false);
 			if (index < Count - 1)
-				CopyTo(newPtr, insertPt + ElemSize, newSz - insertPt);
+				CopyTo(newPtr.Offset(insertPt + ElemSize), insertPt, Size - insertPt);
 			mm.FreeMem(handle);
 			SetHandle(newPtr);
 			sz = newSz;
