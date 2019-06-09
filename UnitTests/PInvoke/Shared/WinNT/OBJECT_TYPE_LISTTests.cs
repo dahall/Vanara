@@ -11,8 +11,11 @@ namespace Vanara.PInvoke.Tests
 		{
 			var guid = Guid.NewGuid();
 			var otl = new OBJECT_TYPE_LIST(ObjectTypeListLevel.ACCESS_PROPERTY_SET_GUID, guid);
-			Assert.That(otl.ObjectType == guid);
-			Assert.That(otl.Level == ObjectTypeListLevel.ACCESS_PROPERTY_SET_GUID);
+			unsafe
+			{
+				Assert.That(*otl.guidObjectType, Is.EqualTo(guid));
+			}
+			Assert.That(otl.level, Is.EqualTo(ObjectTypeListLevel.ACCESS_PROPERTY_SET_GUID));
 		}
 	}
 }

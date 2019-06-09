@@ -44,12 +44,12 @@ namespace Vanara.PInvoke.Tests
 			{
 				var bytes = GetBigBytes(sz, 1);
 				Assert.That(bytes[1024], Is.EqualTo(1));
-				new TaskFactory().FromAsync<HFILE, byte[], uint>(BeginWriteFile, EndWriteFile, hFile, bytes, (uint) bytes.Length, 1).Wait();
+				new TaskFactory().FromAsync<HFILE, byte[], uint>(BeginWriteFile, EndWriteFile, hFile, bytes, (uint)bytes.Length, 1).Wait();
 			}
 			var fi = new FileInfo(fn);
 			Assert.That(fi.Exists);
 			Assert.That(fi.Length, Is.EqualTo(sz));
-			using (var hFile = CreateFile(fn, Kernel32.FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, 
+			using (var hFile = CreateFile(fn, Kernel32.FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open,
 				FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED | FileFlagsAndAttributes.FILE_FLAG_DELETE_ON_CLOSE, IntPtr.Zero))
 			{
 				var bytes = GetBigBytes(sz);
@@ -182,36 +182,48 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void FormatMessageTest()
+		public void FormatMessageStringTest()
+		{
+			var objs = new string[] { "Alan", "Bob", "Chuck", "Dave", "Ed", "Frank", "Gary", "Harry" };
+			Assert.That(FormatMessage(null, objs), Is.Null);
+			Assert.That(FormatMessage("X", null), Is.EqualTo("X"));
+			Assert.That(FormatMessage("X", objs), Is.EqualTo("X"));
+			Assert.That(FormatMessage("X %1", new[] { "YZ" }), Is.EqualTo("X YZ"));
+			var s = FormatMessage("%1 %2 %3 %4 %5 %6 %7 %8", objs);
+			Assert.That(s, Is.EqualTo(string.Join(" ", objs)));
+			s = FormatMessage("%1 %2", new object[] { 4, "Alan" }, FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS);
+			Assert.That(s, Is.EqualTo("%1 %2"));
+			//s = FormatMessage("%1!*.*s! %4 %5!*s!", new object[] { 4, 2, "Bill", "Bob", 6, "Bill" });
+			//Assert.That(s, Is.EqualTo("  Bi Bob   Bill"));
+			s = FormatMessage("%1 %2 %3 %4 %5 %6", new object[] { 4, 2, "Bill", "Bob", 6, "Bill" });
+			Assert.That(s, Is.EqualTo("\u0004 \u0002 Bill Bob \u0006 Bill"));
+		}
+
+		[Test]
+		public void FormatMessageWinErrTest()
 		{
 			var s = FormatMessage(Win32Error.ERROR_INVALID_PARAMETER);
 			Assert.That(s, Is.Not.Null);
 			TestContext.WriteLine(s);
-
-			using (var hLib = LoadLibraryEx(@"wininet.dll", IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
-			{
-				s = FormatMessage(12175, new[] {"Fred", "Alice"}, hLib);
-				Assert.That(s, Is.Not.Null);
-				TestContext.WriteLine(s);
-			}
 		}
 
 		[Test]
-		public void FormatMessageTest1()
+		public void FormatMessageWinErrTest2()
 		{
-			var objs = new string[] {"Alan", "Bob", "Chuck", "Dave", "Ed", "Frank", "Gary", "Harry"};
-			Assert.That(FormatMessage(null, objs), Is.Null);
-			Assert.That(FormatMessage("X", null), Is.EqualTo("X"));
-			Assert.That(FormatMessage("X", objs), Is.EqualTo("X"));
-			Assert.That(FormatMessage("X %1", new [] {"YZ"}), Is.EqualTo("X YZ"));
-			var s = FormatMessage("%1 %2 %3 %4 %5 %6 %7 %8", objs);
-			Assert.That(s, Is.EqualTo(string.Join(" " , objs)));
-			s = FormatMessage("%1 %2", new object[] { 4, "Alan" }, FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS);
-			Assert.That(s, Is.EqualTo("%1 %2"));
-			s = FormatMessage("%1!*.*s! %4 %5!*s!", new object[] { 4, 2, "Bill", "Bob", 6, "Bill" });
-			Assert.That(s, Is.EqualTo("  Bi Bob   Bill"));
-			s = FormatMessage("%1 %2 %3 %4 %5 %6", new object[] { 4, 2, "Bill", "Bob", 6, "Bill" });
-			Assert.That(s, Is.EqualTo("4 2 Bill Bob 6 Bill"));
+			var s = FormatMessage(Win32Error.ERROR_BAD_EXE_FORMAT, new object[] { "Test.exe" });
+			Assert.That(s, Contains.Substring("Test.exe"));
+			TestContext.WriteLine(s);
+		}
+
+		[Test]
+		public void FormatMessageLibStrTest()
+		{
+			using (var hLib = LoadLibraryEx(@"aadWamExtension.dll", dwFlags: LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
+			{
+				var s = FormatMessage(0xb00003f7, new[] { "Fred", "Alice" }, hLib);
+				Assert.That(s, Contains.Substring("Alice"));
+				TestContext.WriteLine(s);
+			}
 		}
 
 		[Test]
@@ -385,7 +397,7 @@ namespace Vanara.PInvoke.Tests
 		public void HeapTest()
 		{
 			var ph = new SafeHeapBlock(512);
-			var fw = new WIN32_FIND_DATA {ftCreationTime = DateTime.Today.ToFileTimeStruct(), cFileName = "test.txt", dwFileAttributes = FileAttributes.Normal};
+			var fw = new WIN32_FIND_DATA { ftCreationTime = DateTime.Today.ToFileTimeStruct(), cFileName = "test.txt", dwFileAttributes = FileAttributes.Normal };
 			Marshal.StructureToPtr(fw, ph.DangerousGetHandle(), false);
 			Assert.That(Marshal.ReadInt32(ph.DangerousGetHandle()), Is.EqualTo((int)FileAttributes.Normal));
 			Assert.That(ph.Size, Is.EqualTo(512));
@@ -394,7 +406,7 @@ namespace Vanara.PInvoke.Tests
 			{
 				var hb = hh.GetBlock(512);
 				Marshal.StructureToPtr(fw, hb.DangerousGetHandle(), false);
-				Assert.That(Marshal.ReadInt32(hb.DangerousGetHandle()), Is.EqualTo((int) FileAttributes.Normal));
+				Assert.That(Marshal.ReadInt32(hb.DangerousGetHandle()), Is.EqualTo((int)FileAttributes.Normal));
 				Assert.That(hb.Size, Is.EqualTo(512));
 			}
 		}

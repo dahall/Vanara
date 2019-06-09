@@ -111,7 +111,7 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
-		[PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
+		[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
 		public void ChangeAndQueryServiceConfigTest()
 		{
 			using (var sc = new System.ServiceProcess.ServiceController("Netlogon"))
@@ -414,7 +414,7 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
-		[PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
+		[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
 		public void QueryServiceConfig2Test()
 		{
 			using (var sc = new System.ServiceProcess.ServiceController("Netlogon"))
@@ -450,7 +450,7 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
-		[PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
+		[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
 		public void SetNamedSecurityInfoTest()
 		{
 			using (var pSD = GetSD(fn))

@@ -82,7 +82,9 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void AuditQuerySetGlobalSaclTest()
 		{
-			Assert.That(AuditQueryGlobalSacl("Key", out var orig), Is.True);
+			var b = AuditQueryGlobalSacl("Key", out var orig);
+			if (!b) TestContext.WriteLine($"AuditQueryGlobalSacl:{Win32Error.GetLastError()}");
+			Assert.That(b, Is.True);
 
 			var psid = SafePSID.CreateWellKnown(WELL_KNOWN_SID_TYPE.WinWorldSid);
 			var explAcc = new EXPLICIT_ACCESS

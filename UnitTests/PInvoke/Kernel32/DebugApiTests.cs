@@ -8,7 +8,8 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture]
 	public class DebugApiTests
 	{
-		[Test]
+		// TODO: Figure out how WaitForDebugEvent works
+		// [Test]
 		public void TestMethod()
 		{
 			TestContext.WriteLine($"EXCEPTION_RECORD: {Marshal.SizeOf(typeof(EXCEPTION_RECORD))}");

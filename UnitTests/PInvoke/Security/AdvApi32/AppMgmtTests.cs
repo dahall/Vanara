@@ -10,7 +10,7 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture()]
 	public class AppMgmtTests
 	{
-		[Test]
+		// [Test] TODO: Figure out how to test
 		public void GetLocalManagedApplicationsTest()
 		{
 			var l = GetLocalManagedApplications(true).ToArray();
@@ -19,7 +19,7 @@ namespace Vanara.PInvoke.Tests
 			TestContext.WriteLine("; ", l.Select(i => i.pszDeploymentName));
 		}
 
-		[Test]
+		// [Test] TODO: Figure out how to test
 		public void GetManagedApplicationCategoriesTest()
 		{
 			var l = GetManagedApplicationCategories().ToArray();
@@ -27,7 +27,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(l, Is.Not.Empty);
 		}
 
-		[Test]
+		// [Test] TODO: Figure out how to test
 		public void GetManagedApplicationsTest()
 		{
 			var l = GetManagedApplications(null).ToArray();
