@@ -46,11 +46,22 @@ namespace Vanara.PInvoke
 		/// <summary>Initializes a new instance of the <see cref="OBJECT_TYPE_LIST"/> struct.</summary>
 		/// <param name="level">The level of the object type in the hierarchy of an object and its subobjects.</param>
 		/// <param name="objType">The object or subobject identifier.</param>
-		public OBJECT_TYPE_LIST(ObjectTypeListLevel level, Guid objType = default)
+		public OBJECT_TYPE_LIST(ObjectTypeListLevel level, in Guid objType = default)
 		{
 			Sbz = 0;
 			this.level = level;
-			guidObjectType = objType == default ? null : &objType;
+			if (objType == default)
+				guidObjectType = null;
+			else
+			{
+				unsafe
+				{
+					fixed (Guid* pGuid = &objType)
+					{
+						guidObjectType = pGuid;
+					}
+				}
+			}
 		}
 
 		/// <summary>Represents an object that is itself.</summary>
