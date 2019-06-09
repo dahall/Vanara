@@ -2045,6 +2045,15 @@ namespace Vanara.PInvoke
 			/// the SID.
 			/// </summary>
 			public uint Attributes;
+
+			/// <summary>Initializes a new instance of the <see cref="SID_AND_ATTRIBUTES"/> struct.</summary>
+			/// <param name="sid">The SID.</param>
+			/// <param name="attributes">The attributes of the SID.</param>
+			public SID_AND_ATTRIBUTES(PSID sid, uint attributes)
+			{
+				Sid = sid;
+				Attributes = attributes;
+			}
 		}
 
 		/// <summary>The SID_IDENTIFIER_AUTHORITY structure represents the top-level authority of a security identifier (SID).</summary>
