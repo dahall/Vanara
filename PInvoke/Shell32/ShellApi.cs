@@ -1248,7 +1248,6 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-commandlinetoargvw
 		// LPWSTR * CommandLineToArgvW( LPCWSTR lpCmdLine, int *pNumArgs );
-		[DllImport(Lib.Shell32, SetLastError = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("shellapi.h", MSDNShortId = "9889a016-b7a5-402b-8305-6f7c199d41b3")]
 		public static string[] CommandLineToArgvW(string lpCmdLine) =>
 			CommandLineToArgvW(lpCmdLine, out var pNumArgs).ToStringEnum(pNumArgs, CharSet.Unicode).ToArray();
@@ -1381,38 +1380,62 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>HICON</c></para>
 		/// <para>If successful, the function returns the handle to the new icon that was created; otherwise, <c>NULL</c>.</para>
 		/// </returns>
-		// HICON DuplicateIcon( _Reserved_ HINSTANCE hInst, _In_ HICON hIcon); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776411(v=vs.85).aspx
+		/// <remarks>When it is no longer needed, the caller is responsible for freeing the icon handle returned by <c>DuplicateIcon</c> by calling the DestroyIcon function.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-duplicateicon
+		// HICON DuplicateIcon( HINSTANCE hInst, HICON hIcon );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("Shellapi.h", MSDNShortId = "bb776411")]
-		public static extern SafeHICON DuplicateIcon(HINSTANCE hInst, HICON hIcon);
+		[PInvokeData("shellapi.h", MSDNShortId = "488a24e1-f6f0-4bbd-9487-2b4c650f4879")]
+		public static extern SafeHICON DuplicateIcon([Optional] HINSTANCE hInst, HICON hIcon);
 
 		/// <summary>Gets a handle to an icon stored as a resource in a file or an icon stored in a file's associated executable file.</summary>
-		/// <param name="hInst">A handle to the instance of the calling application.</param>
-		/// <param name="lpIconPath">
+		/// <param name="hInst">
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>A handle to the instance of the calling application.</para>
+		/// </param>
+		/// <param name="pszIconPath">
+		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>
 		/// Pointer to a string that, on entry, specifies the full path and file name of the file that contains the icon. The function
 		/// extracts the icon handle from that file, or from an executable file associated with that file.
+		/// </para>
 		/// <para>
 		/// When this function returns, if the icon handle was obtained from an executable file (either an executable file pointed to by
 		/// lpIconPath or an associated executable file) the function stores the full path and file name of that executable in the buffer
 		/// pointed to by this parameter.
 		/// </para>
 		/// </param>
-		/// <param name="lpiIcon">
-		/// Pointer to a WORD value that, on entry, specifies the index of the icon whose handle is to be obtained.
+		/// <param name="piIcon">
+		/// <para>Type: <c>LPWORD</c></para>
+		/// <para>Pointer to a <c>WORD</c> value that, on entry, specifies the index of the icon whose handle is to be obtained.</para>
 		/// <para>
-		/// When the function returns, if the icon handle was obtained from an executable file(either an executable file pointed to by
+		/// When the function returns, if the icon handle was obtained from an executable file (either an executable file pointed to by
 		/// lpIconPath or an associated executable file), this value points to the icon's index in that file.
 		/// </para>
 		/// </param>
 		/// <returns>
+		/// <para>Type: <c>HICON</c></para>
+		/// <para>
 		/// If the function succeeds, the return value is an icon handle. If the icon is extracted from an associated executable file, the
 		/// function stores the full path and file name of the executable file in the string pointed to by lpIconPath, and stores the icon's
-		/// identifier in the WORD pointed to by lpiIcon.
-		/// <para>If the function fails, the return value is NULL.</para>
+		/// identifier in the <c>WORD</c> pointed to by lpiIcon.
+		/// </para>
+		/// <para>If the function fails, the return value is <c>NULL</c>.</para>
 		/// </returns>
-		// public static Icon ExtractAssociatedIcon( string filePath ) https://msdn.microsoft.com/en-us/library/system.drawing.icon.extractassociatedicon(v=vs.110).aspx
+		/// <remarks>
+		/// <para>
+		/// When it is no longer needed, the caller is responsible for freeing the icon handle returned by <c>ExtractAssociatedIcon</c> by
+		/// calling the DestroyIcon function.
+		/// </para>
+		/// <para>
+		/// The <c>ExtractAssociatedIcon</c> function first looks for the indexed icon in the file specified by lpIconPath. If the function
+		/// cannot obtain the icon handle from that file, and the file has an associated executable file, it looks in that executable file
+		/// for an icon. Associations with executable files are based on file name extensions and are stored in the per-user part of the registry.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extractassociatedicona
+		// HICON ExtractAssociatedIconA( HINSTANCE hInst, LPSTR pszIconPath, WORD *piIcon );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("Shellapi.h", MSDNShortId = "bb776414")]
+		[PInvokeData("shellapi.h", MSDNShortId = "157ce603-9988-4cae-a2cd-51db290268c3")]
 		public static extern SafeHICON ExtractAssociatedIcon(HINSTANCE hInst, StringBuilder lpIconPath, ref ushort lpiIcon);
 
 		/// <summary>
@@ -1449,82 +1472,115 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>Gets a handle to an icon from the specified executable file, DLL, or icon file.</para>
-		/// <para>To retrieve an array of handles to large or small icons, use the <c>ExtractIconEx</c> function.</para>
+		/// <para>To retrieve an array of handles to large or small icons, use the ExtractIconEx function.</para>
 		/// </summary>
 		/// <param name="hInst">
 		/// <para>Type: <c>HINSTANCE</c></para>
 		/// <para>Handle to the instance of the application that calls the function.</para>
 		/// </param>
-		/// <param name="lpszExeFileName">
+		/// <param name="pszExeFileName">
 		/// <para>Type: <c>LPCTSTR</c></para>
 		/// <para>Pointer to a null-terminated string that specifies the name of an executable file, DLL, or icon file.</para>
 		/// </param>
 		/// <param name="nIconIndex">
 		/// <para>Type: <c>UINT</c></para>
-		/// <para>
-		/// Specifies the zero-based index of the icon to retrieve. For example, if this value is 0, the function returns a handle to the
-		/// first icon in the specified file.
-		/// </para>
-		/// <para>
-		/// If this value is -1, the function returns the total number of icons in the specified file. If the file is an executable file or
-		/// DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ICO file, the return value is 1.
-		/// </para>
-		/// <para>
-		/// If this value is a negative number not equal to –1, the function returns a handle to the icon in the specified file whose
-		/// resource identifier is equal to the absolute value of nIconIndex. For example, you should use –3 to extract the icon whose
-		/// resource identifier is 3. To extract the icon whose resource identifier is 1, use the <c>ExtractIconEx</c> function.
-		/// </para>
+		/// <para>Specifies the zero-based index of the icon to retrieve. For example, if this value is 0, the function returns a handle to the first icon in the specified file.</para>
+		/// <para>If this value is -1, the function returns the total number of icons in the specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ICO file, the return value is 1.</para>
+		/// <para>If this value is a negative number not equal to –1, the function returns a handle to the icon in the specified file whose resource identifier is equal to the absolute value of nIconIndex. For example, you should use –3 to extract the icon whose resource identifier is 3. To extract the icon whose resource identifier is 1, use the ExtractIconEx function.</para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HICON</c></para>
-		/// <para>
-		/// The return value is a handle to an icon. If the file specified was not an executable file, DLL, or icon file, the return is 1. If
-		/// no icons were found in the file, the return value is <c>NULL</c>.
-		/// </para>
+		/// <para>The return value is a handle to an icon. If the file specified was not an executable file, DLL, or icon file, the return is 1. If no icons were found in the file, the return value is <c>NULL</c>.</para>
 		/// </returns>
-		// HICON ExtractIcon( _Reserved_ HINSTANCE hInst, _In_ LPCTSTR lpszExeFileName, UINT nIconIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776416(v=vs.85).aspx
+		/// <remarks>When it is no longer needed, you must destroy the icon handle returned by <c>ExtractIcon</c> by calling the DestroyIcon function.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extracticona
+		// HICON ExtractIconA( HINSTANCE hInst, LPCSTR pszExeFileName, UINT nIconIndex );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("Shellapi.h", MSDNShortId = "bb776416")]
-		public static extern SafeHICON ExtractIcon(HINSTANCE hInst, string lpszExeFileName, uint nIconIndex);
+		[PInvokeData("shellapi.h", MSDNShortId = "a0314423-79d6-416e-8be0-be946477da3e")]
+		public static extern SafeHICON ExtractIcon(HINSTANCE hInst, string lpszExeFileName, int nIconIndex);
 
-		/// <summary>
-		/// The ExtractIconEx function creates an array of handles to large or small icons extracted from the specified executable file, DLL,
-		/// or icon file.
-		/// </summary>
-		/// <param name="lpszFile">String that specifies the name of an executable file, DLL, or icon file from which icons will be extracted.</param>
+		/// <summary>The <c>ExtractIconEx</c> function creates an array of handles to large or small icons extracted from the specified executable file, DLL, or icon file.</summary>
+		/// <param name="lpszFile">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>Pointer to a null-terminated string that specifies the name of an executable file, DLL, or icon file from which icons will be extracted.</para>
+		/// </param>
 		/// <param name="nIconIndex">
-		/// Specifies the zero-based index of the first icon to extract. For example, if this value is zero, the function extracts the first
-		/// icon in the specified file.
-		/// <para>
-		/// If this value is –1 and phiconLarge and phiconSmall are both NULL, the function returns the total number of icons in the
-		/// specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources. If the file
-		/// is an .ico file, the return value is 1.
-		/// </para>
-		/// <para>
-		/// If this value is a negative number and either phiconLarge or phiconSmall is not NULL, the function begins by extracting the icon
-		/// whose resource identifier is equal to the absolute value of nIconIndex. For example, use -3 to extract the icon whose resource
-		/// identifier is 3.
-		/// </para>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Specifies the zero-based index of the first icon to extract. For example, if this value is zero, the function extracts the first icon in the specified file.</para>
+		/// <para>If this value is –1 and phiconLarge and phiconSmall are both <c>NULL</c>, the function returns the total number of icons in the specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ico file, the return value is 1.</para>
+		/// <para>If this value is a negative number and either phiconLarge or phiconSmall is not <c>NULL</c>, the function begins by extracting the icon whose resource identifier is equal to the absolute value of nIconIndex. For example, use -3 to extract the icon whose resource identifier is 3.</para>
 		/// </param>
-		/// <param name="phIconLarge">
-		/// An array of icon handles that receives handles to the large icons extracted from the file. If this parameter is NULL, no large
-		/// icons are extracted from the file.
+		/// <param name="phiconLarge">
+		/// <para>Type: <c>HICON*</c></para>
+		/// <para>Pointer to an array of icon handles that receives handles to the large icons extracted from the file. If this parameter is <c>NULL</c>, no large icons are extracted from the file.</para>
 		/// </param>
-		/// <param name="phIconSmall">
-		/// Array of icon handles that receives handles to the small icons extracted from the file. If this parameter is NULL, no small icons
-		/// are extracted from the file.
+		/// <param name="phiconSmall">
+		/// <para>Type: <c>HICON*</c></para>
+		/// <para>Pointer to an array of icon handles that receives handles to the small icons extracted from the file. If this parameter is <c>NULL</c>, no small icons are extracted from the file.</para>
 		/// </param>
-		/// <param name="nIcons">The number of icons to extract from the file.</param>
+		/// <param name="nIcons">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of icons to extract from the file.</para>
+		/// </param>
 		/// <returns>
-		/// If the nIconIndex parameter is -1, the phiconLarge parameter is NULL, and the phiconSmall parameter is NULL, then the return
-		/// value is the number of icons contained in the specified file. Otherwise, the return value is the number of icons successfully
-		/// extracted from the file.
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>If the nIconIndex parameter is -1, the phiconLarge parameter is <c>NULL</c>, and the phiconSmall parameter is <c>NULL</c>, then the return value is the number of icons contained in the specified file. Otherwise, the return value is the number of icons successfully extracted from the file.</para>
 		/// </returns>
-		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
-		[PInvokeData("Shellapi.h", MSDNShortId = "ms648069")]
-		public static extern int ExtractIconEx([MarshalAs(UnmanagedType.LPTStr)] string lpszFile, int nIconIndex,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] SafeHICON[] phIconLarge,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] SafeHICON[] phIconSmall, int nIcons);
+		/// <remarks>
+		/// <para>When they are no longer needed, you must destroy all icons extracted by <c>ExtractIconEx</c> by calling the DestroyIcon function.</para>
+		/// <para>To retrieve the dimensions of the large and small icons, use this function with the SM_CXICON, SM_CYICON, SM_CXSMICON, and SM_CYSMICON flags.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extracticonexa
+		// UINT ExtractIconExA( LPCSTR lpszFile, int nIconIndex, HICON *phiconLarge, HICON *phiconSmall, UINT nIcons );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shellapi.h", MSDNShortId = "1c4d760a-79b5-4646-9cf2-6cd32c5d05ee")]
+		//  public static extern uint ExtractIconEx([MarshalAs(UnmanagedType.LPTStr)] string lpszFile, int nIconIndex, ref HICON phiconLarge, ref HICON phiconSmall, uint nIcons);
+		public static extern uint ExtractIconEx(string lpszFile, int nIconIndex,
+			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phIconLarge,
+			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phIconSmall, uint nIcons);
+
+		/// <summary>The <c>ExtractIconEx</c> function creates an array of handles to large or small icons extracted from the specified executable file, DLL, or icon file.</summary>
+		/// <param name="lpszFile">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>Pointer to a null-terminated string that specifies the name of an executable file, DLL, or icon file from which icons will be extracted.</para>
+		/// </param>
+		/// <param name="nIconIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Specifies the zero-based index of the first icon to extract. For example, if this value is zero, the function extracts the first icon in the specified file.</para>
+		/// <para>If this value is –1 and phiconLarge and phiconSmall are both <c>NULL</c>, the function returns the total number of icons in the specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ico file, the return value is 1.</para>
+		/// <para>If this value is a negative number and either phiconLarge or phiconSmall is not <c>NULL</c>, the function begins by extracting the icon whose resource identifier is equal to the absolute value of nIconIndex. For example, use -3 to extract the icon whose resource identifier is 3.</para>
+		/// </param>
+		/// <param name="nIcons">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of icons to extract from the file.</para>
+		/// </param>
+		/// <param name="phiconLarge">
+		/// <para>Type: <c>SafeHICON[]</c></para>
+		/// <para>An array of icon handles that receives handles to the large icons extracted from the file. If this parameter is <c>NULL</c>, no large icons were extracted from the file.</para>
+		/// </param>
+		/// <param name="phiconSmall">
+		/// <para>Type: <c>SafeHICON[]</c></para>
+		/// <para>An array of icon handles that receives handles to the small icons extracted from the file. If this parameter is <c>NULL</c>, no small icons were extracted from the file.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>If the nIconIndex parameter is -1, the phiconLarge parameter is <c>NULL</c>, and the phiconSmall parameter is <c>NULL</c>, then the return value is the number of icons contained in the specified file. Otherwise, the return value is the number of icons successfully extracted from the file.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>To retrieve the dimensions of the large and small icons, use this function with the SM_CXICON, SM_CYICON, SM_CXSMICON, and SM_CYSMICON flags.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extracticonexa
+		// UINT ExtractIconExA( LPCSTR lpszFile, int nIconIndex, HICON *phiconLarge, HICON *phiconSmall, UINT nIcons );
+		[PInvokeData("shellapi.h", MSDNShortId = "1c4d760a-79b5-4646-9cf2-6cd32c5d05ee")]
+		public static uint ExtractIconEx(string lpszFile, int nIconIndex, uint nIcons, out SafeHICON[] phIconLarge, out SafeHICON[] phIconSmall)
+		{
+			HICON[] sm = nIcons > 0 ? new HICON[nIcons] : null, lg = nIcons > 0 ? new HICON[nIcons] : null;
+			var ret = ExtractIconEx(lpszFile, nIconIndex, lg, sm, nIcons);
+			var conv = nIconIndex != -1 && ret > 0;
+			phIconLarge = conv ? Array.ConvertAll(lg, h => new SafeHICON((IntPtr)h)) : null;
+			phIconSmall = conv ? Array.ConvertAll(sm, h => new SafeHICON((IntPtr)h)) : null;
+			return ret;
+		}
 
 		/// <summary>
 		/// <para>Retrieves the name of and handle to the executable (.exe) file associated with a specific document file.</para>
@@ -2842,7 +2898,7 @@ namespace Vanara.PInvoke
 		// SHSTOCKICONID siid, UINT uFlags, SHSTOCKICONINFO *psii );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "c08b1a53-e67c-4ed0-a9c6-d000c448e182")]
-		public static extern HRESULT SHGetStockIconInfo(SHSTOCKICONID siid, uint uFlags, ref SHSTOCKICONINFO psii);
+		public static extern HRESULT SHGetStockIconInfo(SHSTOCKICONID siid, SHGSI uFlags, ref SHSTOCKICONINFO psii);
 
 		/// <summary>
 		/// <para>Retrieves a specified user's unread message count for any or all email accounts.</para>
