@@ -32,10 +32,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExplorerTests.cs" />
     <Compile Include="KnownFolderIdExtTests.cs" />
+    <Compile Include="IconTests.cs" />
     <Compile Include="Methods.cs" />
     <Compile Include="ProgressDialogTests.cs" />
     <Compile Include="BlitTests.cs" />
@@ -45,6 +47,10 @@
       <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
       <Name>Vanara.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
+      <Project>{842D436F-598C-47D7-B5AA-12399F8CCFE9}</Project>
+      <Name>Vanara.PInvoke.Kernel32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
       <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
       <Name>Vanara.PInvoke.Shared</Name>
@@ -52,6 +58,10 @@
     <ProjectReference Include="..\..\..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj">
       <Project>{3226020f-4c9d-41b3-ac8a-2bc9fd064cd8}</Project>
       <Name>Vanara.PInvoke.Shell32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj">
+      <Project>{FC7B25B5-3BB9-44F5-93D9-9AB7193B1BE9}</Project>
+      <Name>Vanara.PInvoke.User32.Gdi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
