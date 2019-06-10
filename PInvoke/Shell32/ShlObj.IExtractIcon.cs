@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.PInvoke
 {
@@ -102,7 +103,7 @@ namespace Vanara.PInvoke
 			/// flag is set in uFlags, the method can return E_PENDING to indicate that icon extraction will be time-consuming.
 			/// </returns>
 			[PreserveSig]
-			HRESULT GetIconLocation(GetIconLocationFlags uFlags, StringBuilder szIconFile, int cchMax, out int piIndex, out GetIconLocationResultFlags pwFlags);
+			HRESULT GetIconLocation(GetIconLocationFlags uFlags, [MarshalAs(UnmanagedType.LPWStr, SizeParamIndex = 2)] StringBuilder szIconFile, int cchMax, out int piIndex, out GetIconLocationResultFlags pwFlags);
 
 			/// <summary>Extracts an icon image from the specified location.</summary>
 			/// <param name="pszFile">A pointer to a null-terminated string that specifies the icon location.</param>
@@ -118,8 +119,8 @@ namespace Vanara.PInvoke
 			/// size of the small icon. The size specified can be the width or height. The width of an icon always equals its height.
 			/// </param>
 			/// <returns>Returns S_OK if the function extracted the icon, or S_FALSE if the calling application should extract the icon.</returns>
-			void Extract([MarshalAs(UnmanagedType.LPTStr)] string pszFile, uint nIconIndex, out IntPtr phiconLarge,
-				out IntPtr phiconSmall, uint nIconSize);
+			[PreserveSig]
+			HRESULT Extract([MarshalAs(UnmanagedType.LPWStr)] string pszFile, uint nIconIndex, out SafeHICON phiconLarge, out SafeHICON phiconSmall, uint nIconSize);
 		}
 	}
 }
