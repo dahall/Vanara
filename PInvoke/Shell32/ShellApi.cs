@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
@@ -1215,8 +1216,42 @@ namespace Vanara.PInvoke
 		// lpCmdLine, int *pNumArgs );
 		[DllImport(Lib.Shell32, SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "9889a016-b7a5-402b-8305-6f7c199d41b3")]
-		[return: MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)]
-		public static extern string[] CommandLineToArgvW(string lpCmdLine, out int pNumArgs);
+		public static extern SafeLocalHandle CommandLineToArgvW(string lpCmdLine, out int pNumArgs);
+
+		/// <summary>Parses a Unicode command line string and returns an array of pointers to the command line arguments, along with a count of such arguments, in a way that is similar to the standard C run-time argv and argc values.</summary>
+		/// <param name="lpCmdLine">
+		/// <para>Type: <c>LPCWSTR</c></para>
+		/// <para>Pointer to a <c>null</c>-terminated Unicode string that contains the full command line. If this parameter is an empty string the function returns the path to the current executable file.</para>
+		/// </param>
+		/// <returns>
+		/// <para>An array of <c>LPWSTR</c> values, similar to argv.</para>
+		/// <para>If the function fails, the return value is an empty array. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>For more information about the argv and argc argument convention, see Argument Definitions and Parsing C++ Command-Line Arguments.</para>
+		/// <para>The GetCommandLineW function can be used to get a command line string that is suitable for use as the lpCmdLine parameter.</para>
+		/// <para>This function accepts command lines that contain a program name; the program name can be enclosed in quotation marks or not.</para>
+		/// <para><c>CommandLineToArgvW</c> has a special interpretation of backslash characters when they are followed by a quotation mark character ("). This interpretation assumes that any preceding argument is a valid file system path, or else it may behave unpredictably.</para>
+		/// <para>This special interpretation controls the "in quotes" mode tracked by the parser. When this mode is off, whitespace terminates the current argument. When on, whitespace is added to the argument like all other characters.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>2n backslashes followed by a quotation mark produce n backslashes followed by begin/end quote. This does not become part of the parsed argument, but toggles the "in quotes" mode.</term>
+		/// </item>
+		/// <item>
+		/// <term>(2n) + 1 backslashes followed by a quotation mark again produce n backslashes followed by a quotation mark literal ("). This does not toggle the "in quotes" mode.</term>
+		/// </item>
+		/// <item>
+		/// <term>n backslashes not followed by a quotation mark simply produce n backslashes.</term>
+		/// </item>
+		/// </list>
+		/// <para><c>Important</c> <c>CommandLineToArgvW</c> treats whitespace outside of quotation marks as argument delimiters. However, if lpCmdLine starts with any amount of whitespace, <c>CommandLineToArgvW</c> will consider the first argument to be an empty string. Excess whitespace at the end of lpCmdLine is ignored.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-commandlinetoargvw
+		// LPWSTR * CommandLineToArgvW( LPCWSTR lpCmdLine, int *pNumArgs );
+		[DllImport(Lib.Shell32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("shellapi.h", MSDNShortId = "9889a016-b7a5-402b-8305-6f7c199d41b3")]
+		public static string[] CommandLineToArgvW(string lpCmdLine) =>
+			CommandLineToArgvW(lpCmdLine, out var pNumArgs).ToStringEnum(pNumArgs, CharSet.Unicode).ToArray();
 
 		/// <summary>
 		/// <para>Registers whether a window accepts dropped files.</para>
