@@ -19,6 +19,20 @@ namespace Vanara.PInvoke
 		// Defined in wingdi.h
 		private const int LF_FACESIZE = 32;
 
+		/// <summary>The overlay icon that indicates a shared folder.</summary>
+		public const int IDO_SHGIOI_SHARE = 0x0FFFFFFF;
+
+		/// <summary>The overlay icon that indicates a linked folder or file.</summary>
+		public const int IDO_SHGIOI_LINK = 0x0FFFFFFE;
+
+		/// <summary>The overlay icon that indicates a slow file.</summary>
+		public const int IDO_SHGIOI_SLOWFILE = 0x0FFFFFFD;
+
+		/// <summary>
+		/// <c>Windows 7 and later.</c> The overlay icon that indicates that the item is the default in a set. One example is the default printer.
+		/// </summary>
+		public const int IDO_SHGIOI_DEFAULT = 0x0FFFFFFC;
+
 		/// <summary>
 		/// <para>
 		/// [ <c>LPFNDFMCALLBACK</c> is available for use in the operating systems specified in the Requirements section. It may be altered
@@ -2759,7 +2773,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [PickIconDlg is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// [ <c>PickIconDlg</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
 		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>
@@ -2782,7 +2796,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="cchIconPath">
 		/// <para>Type: <c>UINT</c></para>
-		/// <para>The number of characters in , including the terminating <c>NULL</c> character.</para>
+		/// <para>The number of characters in pszIconPath, including the terminating <c>NULL</c> character.</para>
 		/// </param>
 		/// <param name="piIconIndex">
 		/// <para>Type: <c>int*</c></para>
@@ -2792,15 +2806,15 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>int</c></para>
-		/// <para>Returns 1 if successful; otherwise, 0.</para>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <see langword="true"/> if successful; otherwise, <see langword="false"/>.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pickicondlg int PickIconDlg( HWND hwnd, PWSTR
-		// pszIconPath, UINT cchIconPath, int *piIconIndex );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pickicondlg
+		// int PickIconDlg( HWND hwnd, PWSTR pszIconPath, UINT cchIconPath, int *piIconIndex );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "3dfcda10-26d8-495d-8c92-7ff16da098c1")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PickIconDlg(HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszIconPath, uint cchIconPath, ref int piIconIndex);
+		public static extern bool PickIconDlg([Optional] HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszIconPath, uint cchIconPath, ref int piIconIndex);
 
 		/// <summary>
 		/// [PifMgr_CloseProperties is available for use in the operating systems specified in the Requirements section.It may be altered or
@@ -4195,30 +4209,78 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides a default handler to extract an icon from a file.</summary>
 		/// <param name="pszIconFile">
-		/// A pointer to a null-terminated buffer that contains the path and name of the file from which the icon is extracted.
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>A pointer to a null-terminated buffer that contains the path and name of the file from which the icon is extracted.</para>
 		/// </param>
 		/// <param name="iIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
 		/// The location of the icon within the file named in pszIconFile. If this is a positive number, it refers to the zero-based position
 		/// of the icon in the file. For instance, 0 refers to the 1st icon in the resource file and 2 refers to the 3rd. If this is a
 		/// negative number, it refers to the icon's resource ID.
+		/// </para>
 		/// </param>
-		/// <param name="uFlags">A flag that controls the icon extraction.</param>
+		/// <param name="uFlags">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>A flag that controls the icon extraction.</para>
+		/// <para>GIL_SIMULATEDOC</para>
+		/// <para>
+		/// Overlays the extracted icon on the default document icon to create the final icon. This icon can be used when no more appropriate
+		/// icon can be found or retrieved.
+		/// </para>
+		/// </param>
 		/// <param name="phiconLarge">
+		/// <para>Type: <c>HICON*</c></para>
+		/// <para>
 		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the large version of the icon
-		/// specified in the LOWORD of nIconSize. This value can be NULL.
+		/// specified in the LOWORD of nIconSize. This value can be <c>NULL</c>.
+		/// </para>
 		/// </param>
 		/// <param name="phiconSmall">
+		/// <para>Type: <c>HICON*</c></para>
+		/// <para>
 		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the small version of the icon
 		/// specified in the HIWORD of nIconSize.
+		/// </para>
 		/// </param>
 		/// <param name="nIconSize">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
 		/// A value that contains the large icon size in its LOWORD and the small icon size in its HIWORD. Size is measured in pixels. Pass 0
 		/// to specify default large and small sizes.
+		/// </para>
 		/// </param>
-		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
-		[PInvokeData("Shlobj.h", MSDNShortId = "bb762149")]
-		public static extern HRESULT SHDefExtractIcon(string pszIconFile, int iIndex, uint uFlags, out SafeHICON phiconLarge,
-			out SafeHICON phiconSmall, uint nIconSize);
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>S_FALSE</term>
+		/// <term>The requested icon is not present.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>The file cannot be accessed, or is being accessed through a slow link.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// It is the responsibility of the caller to free the icon resources created through this function when they are no longer needed.
+		/// This can be done through the DestroyIcon function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shdefextracticona
+		// SHSTDAPI SHDefExtractIconA( LPCSTR pszIconFile, int iIndex, UINT uFlags, HICON *phiconLarge, HICON *phiconSmall, UINT nIconSize );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "fbaa600a-5e5c-4948-81fb-d2c3993dcd47")]
+		public static extern HRESULT SHDefExtractIcon(string pszIconFile, int iIndex, GetIconLocationResultFlags uFlags, out SafeHICON phiconLarge, out SafeHICON phiconSmall, uint nIconSize);
 
 		/// <summary>Provides a default handler to extract an icon from a file.</summary>
 		/// <param name="pszIconFile">
