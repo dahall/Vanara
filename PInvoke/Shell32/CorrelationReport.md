@@ -10,11 +10,11 @@ Native Method | Native DLL | Header | Managed Method
 [DragFinish](http://msdn2.microsoft.com/en-us/library/9b15e8a5-de68-4dcb-8e1a-0ee0393aa9db) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.DragFinish  
 [DragQueryFile](https://www.google.com/search?num=5&q=DragQueryFile+site%3Amicrosoft.com) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.DragQueryFile  
 [DragQueryPoint](http://msdn2.microsoft.com/en-us/library/87794ab0-a075-4a1f-869f-5998bdc57a1d) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.DragQueryPoint  
-[DuplicateIcon](http://msdn2.microsoft.com/en-us/library/bb776411) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.DuplicateIcon  
-[ExtractAssociatedIcon](http://msdn2.microsoft.com/en-us/library/bb776414) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.ExtractAssociatedIcon  
+[DuplicateIcon](http://msdn2.microsoft.com/en-us/library/488a24e1-f6f0-4bbd-9487-2b4c650f4879) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.DuplicateIcon  
+[ExtractAssociatedIcon](http://msdn2.microsoft.com/en-us/library/157ce603-9988-4cae-a2cd-51db290268c3) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.ExtractAssociatedIcon  
 [ExtractAssociatedIconEx](http://msdn2.microsoft.com/en-us/library/f32260b0-917b-4406-aeee-34f71a7c7309) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.ExtractAssociatedIconEx  
-[ExtractIcon](http://msdn2.microsoft.com/en-us/library/bb776416) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.ExtractIcon  
-[ExtractIconEx](https://www.google.com/search?num=5&q=ExtractIconEx+site%3Amicrosoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.ExtractIconEx  
+[ExtractIcon](http://msdn2.microsoft.com/en-us/library/a0314423-79d6-416e-8be0-be946477da3e) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.ExtractIcon  
+[ExtractIconEx](https://www.google.com/search?num=5&q=ExtractIconEx+site%3Amicrosoft.com) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.ExtractIconEx  
 [FindExecutable](http://msdn2.microsoft.com/en-us/library/969edbd9-164e-457f-ab0a-dc4d069bf16b) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.FindExecutable  
 [GetCurrentProcessExplicitAppUserModelID](http://msdn2.microsoft.com/en-us/library/dd378419) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.GetCurrentProcessExplicitAppUserModelID  
 [GetFileNameFromBrowse](http://msdn2.microsoft.com/en-us/library/1f075051-18c8-4ec2-b010-f983ba2d3303) | shell32.dll | shlobj.h | Vanara.PInvoke.Shell32.GetFileNameFromBrowse  
@@ -94,7 +94,7 @@ Native Method | Native DLL | Header | Managed Method
 [SHCreateShellItemArrayFromIDLists](http://msdn2.microsoft.com/en-us/library/bb762146) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.SHCreateShellItemArrayFromIDLists  
 [SHCreateShellItemArrayFromShellItem](http://msdn2.microsoft.com/en-us/library/93401708-6f11-474d-8009-24554f316e79) | shell32.dll | shobjidl_core.h | Vanara.PInvoke.Shell32.SHCreateShellItemArrayFromShellItem  
 [SHCreateStdEnumFmtEtc](http://msdn2.microsoft.com/en-us/library/c391c8c8-6062-4e70-9a1f-de0eb610250d) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHCreateStdEnumFmtEtc  
-[SHDefExtractIcon](http://msdn2.microsoft.com/en-us/library/bb762149) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHDefExtractIcon  
+[SHDefExtractIcon](http://msdn2.microsoft.com/en-us/library/fbaa600a-5e5c-4948-81fb-d2c3993dcd47) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHDefExtractIcon  
 [SHDestroyPropSheetExtArray](http://msdn2.microsoft.com/en-us/library/beb3c1b1-deef-440d-8cf7-f76b3f396efa) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHDestroyPropSheetExtArray  
 [SHDoDragDrop](http://msdn2.microsoft.com/en-us/library/76c98516-ede9-47de-b4ad-257a162775b9) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHDoDragDrop  
 [Shell_GetCachedImageIndex](https://www.google.com/search?num=5&q=Shell_GetCachedImageIndex+site%3Amicrosoft.com) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.Shell_GetCachedImageIndex  

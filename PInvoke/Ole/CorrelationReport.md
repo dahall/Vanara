@@ -1,5 +1,5 @@
 ## Correlation report for ole32.dll, oleaut32.dll, propsys.dll  
-### Methods (29% complete)  
+### Methods (38% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindMoniker](https://www.google.com/search?num=5&q=BindMoniker+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -13,28 +13,36 @@ Native Method | Native DLL | Header | Managed Method
 [BSTR_UserUnmarshal64](https://www.google.com/search?num=5&q=BSTR_UserUnmarshal64+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [BstrFromVector](https://www.google.com/search?num=5&q=BstrFromVector+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [CheckInitDde](https://www.google.com/search?num=5&q=CheckInitDde+site%3Amicrosoft.com) | ole32.dll |  |   
+[CleanROTForApartment](https://www.google.com/search?num=5&q=CleanROTForApartment+site%3Amicrosoft.com) | ole32.dll |  |   
 [ClearCustData](https://www.google.com/search?num=5&q=ClearCustData+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [ClearPropVariantArray](http://msdn2.microsoft.com/en-us/library/e8d7f951-8a9e-441b-9fa7-bf21cf08c8ac) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.ClearPropVariantArray  
 [ClearVariantArray](https://www.google.com/search?num=5&q=ClearVariantArray+site%3Amicrosoft.com) | propsys.dll |  |   
 [ClipboardProcessUninitialize](https://www.google.com/search?num=5&q=ClipboardProcessUninitialize+site%3Amicrosoft.com) | ole32.dll |  |   
+[CLIPFORMAT_UserFree](https://www.google.com/search?num=5&q=CLIPFORMAT_UserFree+site%3Amicrosoft.com) | ole32.dll |  |   
+[CLIPFORMAT_UserFree64](https://www.google.com/search?num=5&q=CLIPFORMAT_UserFree64+site%3Amicrosoft.com) | ole32.dll |  |   
+[CLIPFORMAT_UserFreeExt](https://www.google.com/search?num=5&q=CLIPFORMAT_UserFreeExt+site%3Amicrosoft.com) | ole32.dll |  |   
+[CLIPFORMAT_UserMarshal](https://www.google.com/search?num=5&q=CLIPFORMAT_UserMarshal+site%3Amicrosoft.com) | ole32.dll |  |   
+[CLIPFORMAT_UserMarshal64](https://www.google.com/search?num=5&q=CLIPFORMAT_UserMarshal64+site%3Amicrosoft.com) | ole32.dll |  |   
+[CLIPFORMAT_UserMarshalExt](https://www.google.com/search?num=5&q=CLIPFORMAT_UserMarshalExt+site%3Amicrosoft.com) | ole32.dll |  |   
+[CLIPFORMAT_UserSize](https://www.google.com/search?num=5&q=CLIPFORMAT_UserSize+site%3Amicrosoft.com) | ole32.dll |  |   
+[CLIPFORMAT_UserSize64](https://www.google.com/search?num=5&q=CLIPFORMAT_UserSize64+site%3Amicrosoft.com) | ole32.dll |  |   
+[CLIPFORMAT_UserSizeExt](https://www.google.com/search?num=5&q=CLIPFORMAT_UserSizeExt+site%3Amicrosoft.com) | ole32.dll |  |   
+[CLIPFORMAT_UserUnmarshal](https://www.google.com/search?num=5&q=CLIPFORMAT_UserUnmarshal+site%3Amicrosoft.com) | ole32.dll |  |   
+[CLIPFORMAT_UserUnmarshal64](https://www.google.com/search?num=5&q=CLIPFORMAT_UserUnmarshal64+site%3Amicrosoft.com) | ole32.dll |  |   
+[CLIPFORMAT_UserUnmarshalExt](https://www.google.com/search?num=5&q=CLIPFORMAT_UserUnmarshalExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [CLSIDFromProgID](http://msdn2.microsoft.com/en-us/library/89fb20af-65bf-4ed4-9f71-eb707ee8eb09) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CLSIDFromProgID  
 [CLSIDFromProgIDEx](http://msdn2.microsoft.com/en-us/library/2f937ac1-b214-482a-af4b-8cc8c0c585c3) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CLSIDFromProgIDEx  
 [CLSIDFromString](https://www.google.com/search?num=5&q=CLSIDFromString+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoAddRefServerProcess](http://msdn2.microsoft.com/en-us/library/79887f9d-cad1-492a-b406-d1753ffaf82b) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoAddRefServerProcess  
-[CoAicGetTokenForCOM](https://www.google.com/search?num=5&q=CoAicGetTokenForCOM+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoAllowSetForegroundWindow](https://www.google.com/search?num=5&q=CoAllowSetForegroundWindow+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoAllowUnmarshalerCLSID](http://msdn2.microsoft.com/en-us/library/4655C6B6-02CE-42B2-A157-0C0325D1BE52) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoAllowUnmarshalerCLSID  
-[CoBuildVersion](https://www.google.com/search?num=5&q=CoBuildVersion+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoCancelCall](http://msdn2.microsoft.com/en-us/library/1707261c-2d8d-4f35-865d-61c8870c0624) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoCancelCall  
-[CoCheckElevationEnabled](https://www.google.com/search?num=5&q=CoCheckElevationEnabled+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoCopyProxy](http://msdn2.microsoft.com/en-us/library/26de7bac-8745-40c0-be0a-dcec88a3ecaf) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoCopyProxy  
 [CoCreateFreeThreadedMarshaler](http://msdn2.microsoft.com/en-us/library/f97a2a39-7291-4a1d-b770-0a34f7f5b60f) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoCreateFreeThreadedMarshaler  
 [CoCreateGuid](https://www.google.com/search?num=5&q=CoCreateGuid+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoCreateInstance](http://msdn2.microsoft.com/en-us/library/7295a55b-12c7-4ed0-a7a4-9ecee16afdec) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoCreateInstance  
 [CoCreateInstanceEx](http://msdn2.microsoft.com/en-us/library/3b414b95-e8d2-42e8-b4f2-5cc5189a3d08) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoCreateInstanceEx  
 [CoCreateInstanceFromApp](http://msdn2.microsoft.com/en-us/library/1C773D78-5B33-44FE-A09B-AB8087F678A1) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoCreateInstanceFromApp  
-[CoCreateObjectInContext](https://www.google.com/search?num=5&q=CoCreateObjectInContext+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoDeactivateObject](https://www.google.com/search?num=5&q=CoDeactivateObject+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoDecodeProxy](http://msdn2.microsoft.com/en-us/library/C61C68B1-78CA-4052-9E24-629AB4083B86) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoDecodeProxy  
 [CoDecrementMTAUsage](http://msdn2.microsoft.com/en-us/library/66AA2783-7F24-41BB-911B-D452DF54C003) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoDecrementMTAUsage  
 [CoDisableCallCancellation](http://msdn2.microsoft.com/en-us/library/33d99eab-a0bf-4e4d-93a4-5c03c41cebbb) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoDisableCallCancellation  
@@ -48,16 +56,11 @@ Native Method | Native DLL | Header | Managed Method
 [CoFreeLibrary](https://www.google.com/search?num=5&q=CoFreeLibrary+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoFreeUnusedLibraries](http://msdn2.microsoft.com/en-us/library/188e9a3b-39cc-454e-af65-4ac797e275d4) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoFreeUnusedLibraries  
 [CoFreeUnusedLibrariesEx](http://msdn2.microsoft.com/en-us/library/01660e9d-d8f2-40ef-a6d6-b80f0140ab5f) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoFreeUnusedLibrariesEx  
-[CoGetActivationState](https://www.google.com/search?num=5&q=CoGetActivationState+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoGetApartmentID](https://www.google.com/search?num=5&q=CoGetApartmentID+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetApartmentType](http://msdn2.microsoft.com/en-us/library/ab0b6008-397f-4210-ba26-1a041b709722) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetApartmentType  
 [CoGetCallContext](http://msdn2.microsoft.com/en-us/library/b82e32c0-840d-402e-90d5-ff678c51faf1) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetCallContext  
 [CoGetCallerTID](http://msdn2.microsoft.com/en-us/library/3a34001b-6286-4103-ae9f-700ea101dc17) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetCallerTID  
-[CoGetCallState](https://www.google.com/search?num=5&q=CoGetCallState+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetCancelObject](http://msdn2.microsoft.com/en-us/library/d38161af-d662-4430-99b7-6563efda6f4e) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetCancelObject  
 [CoGetClassObject](http://msdn2.microsoft.com/en-us/library/65e758ce-50a4-49e8-b3b2-0cd148d2781a) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetClassObject  
-[CoGetClassVersion](https://www.google.com/search?num=5&q=CoGetClassVersion+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoGetComCatalog](https://www.google.com/search?num=5&q=CoGetComCatalog+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetContextToken](http://msdn2.microsoft.com/en-us/library/1218d928-ca3f-4bdc-9a00-ea4c214175a9) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetContextToken  
 [CoGetCurrentLogicalThreadId](http://msdn2.microsoft.com/en-us/library/eced2f1e-9f2b-476c-bea8-945fb4804a89) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetCurrentLogicalThreadId  
 [CoGetCurrentProcess](http://msdn2.microsoft.com/en-us/library/46b0448f-f1c5-4da7-8489-bbd6d0fab79e) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetCurrentProcess  
@@ -65,20 +68,15 @@ Native Method | Native DLL | Header | Managed Method
 [CoGetInstanceFromFile](https://www.google.com/search?num=5&q=CoGetInstanceFromFile+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetInstanceFromIStorage](https://www.google.com/search?num=5&q=CoGetInstanceFromIStorage+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetInterceptor](https://www.google.com/search?num=5&q=CoGetInterceptor+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoGetInterceptorForOle32](https://www.google.com/search?num=5&q=CoGetInterceptorForOle32+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoGetInterceptorFromTypeInfo](https://www.google.com/search?num=5&q=CoGetInterceptorFromTypeInfo+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetInterfaceAndReleaseStream](http://msdn2.microsoft.com/en-us/library/b529f65f-3208-4594-a772-d1cad3727dc1) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetInterfaceAndReleaseStream  
 [CoGetMalloc](http://msdn2.microsoft.com/en-us/library/d1d09fbe-ca5c-4480-b807-3afcc043ccb9) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetMalloc  
 [CoGetMarshalSizeMax](http://msdn2.microsoft.com/en-us/library/c04c736c-8efe-438b-9d21-8b6ad53d36e7) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetMarshalSizeMax  
-[CoGetModuleType](https://www.google.com/search?num=5&q=CoGetModuleType+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetObject](https://www.google.com/search?num=5&q=CoGetObject+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetObjectContext](http://msdn2.microsoft.com/en-us/library/97a0c6c3-a011-44dc-b428-aabdad7d4364) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetObjectContext  
-[CoGetProcessIdentifier](https://www.google.com/search?num=5&q=CoGetProcessIdentifier+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetPSClsid](http://msdn2.microsoft.com/en-us/library/dfe6b514-a80a-4adb-bf43-d9a7d0e5f4a3) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetPSClsid  
 [CoGetStandardMarshal](http://msdn2.microsoft.com/en-us/library/0cb74adc-e192-4ae5-9267-02c79e301681) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetStandardMarshal  
 [CoGetStdMarshalEx](http://msdn2.microsoft.com/en-us/library/405c5ff3-8702-48b3-9be9-df4a9461696e) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetStdMarshalEx  
 [CoGetSystemSecurityPermissions](https://www.google.com/search?num=5&q=CoGetSystemSecurityPermissions+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoGetSystemWow64DirectoryW](https://www.google.com/search?num=5&q=CoGetSystemWow64DirectoryW+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetTreatAsClass](http://msdn2.microsoft.com/en-us/library/f95fefe6-dc37-45f4-93be-87c996990ab9) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetTreatAsClass  
 [CoHandlePriorityEventsFromMessagePump](https://www.google.com/search?num=5&q=CoHandlePriorityEventsFromMessagePump+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoImpersonateClient](http://msdn2.microsoft.com/en-us/library/a3cbfbbc-fc6f-4d1b-8460-1e3351cd32d7) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoImpersonateClient  
@@ -86,7 +84,6 @@ Native Method | Native DLL | Header | Managed Method
 [CoInitialize](https://www.google.com/search?num=5&q=CoInitialize+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoInitializeEx](http://msdn2.microsoft.com/en-us/library/ms695279) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.CoInitializeEx  
 [CoInitializeSecurity](http://msdn2.microsoft.com/en-us/library/ms693736) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.CoInitializeSecurity  
-[CoInitializeWOW](https://www.google.com/search?num=5&q=CoInitializeWOW+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoInstall](https://www.google.com/search?num=5&q=CoInstall+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoInvalidateRemoteMachineBindings](http://msdn2.microsoft.com/en-us/library/6d0fa512-a9e9-44ff-929d-00b9c826da99) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoInvalidateRemoteMachineBindings  
 [CoIsHandlerConnected](http://msdn2.microsoft.com/en-us/library/f58bdec6-3709-439d-9867-0022a069c53d) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoIsHandlerConnected  
@@ -96,17 +93,10 @@ Native Method | Native DLL | Header | Managed Method
 [CoMarshalHresult](http://msdn2.microsoft.com/en-us/library/37aaf404-49ca-4881-a369-44c5288abf1d) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoMarshalHresult  
 [CoMarshalInterface](http://msdn2.microsoft.com/en-us/library/04ca1217-eac1-43e2-b736-8d7522ce8592) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoMarshalInterface  
 [CoMarshalInterThreadInterfaceInStream](http://msdn2.microsoft.com/en-us/library/c9ab8713-8604-4f0b-a11b-bdfb7d595d95) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoMarshalInterThreadInterfaceInStream  
-[ComPs_NdrDllCanUnloadNow](https://www.google.com/search?num=5&q=ComPs_NdrDllCanUnloadNow+site%3Amicrosoft.com) | ole32.dll |  |   
-[ComPs_NdrDllGetClassObject](https://www.google.com/search?num=5&q=ComPs_NdrDllGetClassObject+site%3Amicrosoft.com) | ole32.dll |  |   
-[ComPs_NdrDllRegisterProxy](https://www.google.com/search?num=5&q=ComPs_NdrDllRegisterProxy+site%3Amicrosoft.com) | ole32.dll |  |   
-[ComPs_NdrDllUnregisterProxy](https://www.google.com/search?num=5&q=ComPs_NdrDllUnregisterProxy+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoPopServiceDomain](https://www.google.com/search?num=5&q=CoPopServiceDomain+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoPushServiceDomain](https://www.google.com/search?num=5&q=CoPushServiceDomain+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoQueryAuthenticationServices](http://msdn2.microsoft.com/en-us/library/e9e7c5a3-70ec-4a68-ac21-1ab6774d140f) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoQueryAuthenticationServices  
 [CoQueryClientBlanket](http://msdn2.microsoft.com/en-us/library/58a2c121-c324-4c33-aaca-490b5a09738c) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoQueryClientBlanket  
 [CoQueryProxyBlanket](http://msdn2.microsoft.com/en-us/library/e613e06a-0900-413e-bde2-39ce1612fed1) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoQueryProxyBlanket  
-[CoQueryReleaseObject](https://www.google.com/search?num=5&q=CoQueryReleaseObject+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoReactivateObject](https://www.google.com/search?num=5&q=CoReactivateObject+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoRegisterActivationFilter](http://msdn2.microsoft.com/en-us/library/4189633F-9B14-4EAD-84BD-F74355376164) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoRegisterActivationFilter  
 [CoRegisterChannelHook](https://www.google.com/search?num=5&q=CoRegisterChannelHook+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoRegisterClassObject](http://msdn2.microsoft.com/en-us/library/d27bfa6c-194a-41f1-8fcf-76c4dff14a8a) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoRegisterClassObject  
@@ -115,11 +105,9 @@ Native Method | Native DLL | Header | Managed Method
 [CoRegisterMessageFilter](https://www.google.com/search?num=5&q=CoRegisterMessageFilter+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoRegisterPSClsid](http://msdn2.microsoft.com/en-us/library/a73dbd6d-d3f2-48d7-b053-b62f2f18f2d6) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoRegisterPSClsid  
 [CoRegisterSurrogate](http://msdn2.microsoft.com/en-us/library/4d1c6ca6-ab21-429c-9433-7c95d9e757b5) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoRegisterSurrogate  
-[CoRegisterSurrogateEx](https://www.google.com/search?num=5&q=CoRegisterSurrogateEx+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoReleaseMarshalData](http://msdn2.microsoft.com/en-us/library/a642a20f-3a3c-46bc-b833-e424dab3a16d) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoReleaseMarshalData  
 [CoReleaseServerProcess](http://msdn2.microsoft.com/en-us/library/b28d41e2-4144-413d-9963-14f2d4dc8876) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoReleaseServerProcess  
 [CoResumeClassObjects](http://msdn2.microsoft.com/en-us/library/c2b6e8d8-99a1-4af3-9881-bfe6932e4a76) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoResumeClassObjects  
-[CoRetireServer](https://www.google.com/search?num=5&q=CoRetireServer+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoRevertToSelf](http://msdn2.microsoft.com/en-us/library/8061ddbe-ed21-47f7-9ac4-b3ec910ff89d) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoRevertToSelf  
 [CoRevokeClassObject](http://msdn2.microsoft.com/en-us/library/90b9b9ca-b5b2-48f5-8c2a-b478b6daa7ec) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoRevokeClassObject  
 [CoRevokeInitializeSpy](https://www.google.com/search?num=5&q=CoRevokeInitializeSpy+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -127,7 +115,6 @@ Native Method | Native DLL | Header | Managed Method
 [CoSetCancelObject](http://msdn2.microsoft.com/en-us/library/0978e252-2206-4597-abf2-fe0dac32efc4) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoSetCancelObject  
 [CoSetMessageDispatcher](https://www.google.com/search?num=5&q=CoSetMessageDispatcher+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoSetProxyBlanket](http://msdn2.microsoft.com/en-us/library/c2e5e681-8fa5-4b02-b59d-ba796eb0dccf) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoSetProxyBlanket  
-[CoSetState](https://www.google.com/search?num=5&q=CoSetState+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoSuspendClassObjects](http://msdn2.microsoft.com/en-us/library/a9e526f8-b7c1-47ec-a6ab-91690d93119e) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoSuspendClassObjects  
 [CoSwitchCallContext](http://msdn2.microsoft.com/en-us/library/146855a2-97ec-4e71-88dc-316eaa1a24a0) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoSwitchCallContext  
 [CoTaskMemAlloc](https://www.google.com/search?num=5&q=CoTaskMemAlloc+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -136,12 +123,8 @@ Native Method | Native DLL | Header | Managed Method
 [CoTestCancel](http://msdn2.microsoft.com/en-us/library/9432621a-be31-4b8b-83b6-069539ba06b4) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoTestCancel  
 [CoTreatAsClass](https://www.google.com/search?num=5&q=CoTreatAsClass+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoUninitialize](http://msdn2.microsoft.com/en-us/library/ms688715) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.CoUninitialize  
-[CoUnloadingWOW](https://www.google.com/search?num=5&q=CoUnloadingWOW+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoUnmarshalHresult](http://msdn2.microsoft.com/en-us/library/a45ef72c-d385-4012-9683-7d2cc6d68b6d) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoUnmarshalHresult  
 [CoUnmarshalInterface](http://msdn2.microsoft.com/en-us/library/d0eac0da-2f41-40c4-b756-31bc22752c17) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoUnmarshalInterface  
-[CoVrfCheckThreadState](https://www.google.com/search?num=5&q=CoVrfCheckThreadState+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoVrfGetThreadState](https://www.google.com/search?num=5&q=CoVrfGetThreadState+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoVrfReleaseThreadState](https://www.google.com/search?num=5&q=CoVrfReleaseThreadState+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoWaitForMultipleHandles](http://msdn2.microsoft.com/en-us/library/3eeecd34-aa94-4a48-8b41-167a71b52860) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoWaitForMultipleHandles  
 [CoWaitForMultipleObjects](http://msdn2.microsoft.com/en-us/library/7A14E4F4-20F0-43FF-8D64-9AAC34B8D56F) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoWaitForMultipleObjects  
 [CreateAntiMoniker](https://www.google.com/search?num=5&q=CreateAntiMoniker+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -159,7 +142,6 @@ Native Method | Native DLL | Header | Managed Method
 [CreateOleAdviseHolder](https://www.google.com/search?num=5&q=CreateOleAdviseHolder+site%3Amicrosoft.com) | ole32.dll |  |   
 [CreatePointerMoniker](https://www.google.com/search?num=5&q=CreatePointerMoniker+site%3Amicrosoft.com) | ole32.dll |  |   
 [CreateStdDispatch](https://www.google.com/search?num=5&q=CreateStdDispatch+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[CreateStdProgressIndicator](https://www.google.com/search?num=5&q=CreateStdProgressIndicator+site%3Amicrosoft.com) | ole32.dll |  |   
 [CreateStreamOnHGlobal](http://msdn2.microsoft.com/en-us/library/413c107b-a943-4c02-9c00-aea708e876d7) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CreateStreamOnHGlobal  
 [CreateTypeLib](https://www.google.com/search?num=5&q=CreateTypeLib+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [CreateTypeLib2](https://www.google.com/search?num=5&q=CreateTypeLib2+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -176,10 +158,6 @@ Native Method | Native DLL | Header | Managed Method
 [CStdStubBuffer2_CountRefs](https://www.google.com/search?num=5&q=CStdStubBuffer2_CountRefs+site%3Amicrosoft.com) | ole32.dll |  |   
 [CStdStubBuffer2_Disconnect](https://www.google.com/search?num=5&q=CStdStubBuffer2_Disconnect+site%3Amicrosoft.com) | ole32.dll |  |   
 [CStdStubBuffer2_QueryInterface](https://www.google.com/search?num=5&q=CStdStubBuffer2_QueryInterface+site%3Amicrosoft.com) | ole32.dll |  |   
-[DcomChannelSetHResult](https://www.google.com/search?num=5&q=DcomChannelSetHResult+site%3Amicrosoft.com) | ole32.dll |  |   
-[DdeBindToObject](https://www.google.com/search?num=5&q=DdeBindToObject+site%3Amicrosoft.com) | ole32.dll |  |   
-[DeletePatternAndExtensionTables](https://www.google.com/search?num=5&q=DeletePatternAndExtensionTables+site%3Amicrosoft.com) | ole32.dll |  |   
-[DestroyRunningObjectTable](https://www.google.com/search?num=5&q=DestroyRunningObjectTable+site%3Amicrosoft.com) | ole32.dll |  |   
 [DispCallFunc](https://www.google.com/search?num=5&q=DispCallFunc+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [DispGetIDsOfNames](https://www.google.com/search?num=5&q=DispGetIDsOfNames+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [DispGetParam](https://www.google.com/search?num=5&q=DispGetParam+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -187,37 +165,20 @@ Native Method | Native DLL | Header | Managed Method
 [DllCanUnloadNow](http://msdn2.microsoft.com/en-us/library/a47df9eb-97cb-4875-a121-1dabe7bc9db6) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.DllCanUnloadNow  
 [DllDebugObjectRPCHook](https://www.google.com/search?num=5&q=DllDebugObjectRPCHook+site%3Amicrosoft.com) | ole32.dll |  |   
 [DllGetClassObject](http://msdn2.microsoft.com/en-us/library/42c08149-c251-47f7-a81f-383975d7081c) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.DllGetClassObject  
-[DllGetClassObjectWOW](https://www.google.com/search?num=5&q=DllGetClassObjectWOW+site%3Amicrosoft.com) | ole32.dll |  |   
 [DoDragDrop](https://www.google.com/search?num=5&q=DoDragDrop+site%3Amicrosoft.com) | ole32.dll |  |   
 [DosDateTimeToVariantTime](https://www.google.com/search?num=5&q=DosDateTimeToVariantTime+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[DragDropSetFDT](https://www.google.com/search?num=5&q=DragDropSetFDT+site%3Amicrosoft.com) | ole32.dll |  |   
-[EnableHookObject](https://www.google.com/search?num=5&q=EnableHookObject+site%3Amicrosoft.com) | ole32.dll |  |   
-[FindExt](https://www.google.com/search?num=5&q=FindExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [FmtIdToPropStgName](http://msdn2.microsoft.com/en-us/library/044f8883-bbd2-4cd3-b9dc-739ecb711bdd) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.FmtIdToPropStgName  
 [FreePropVariantArray](https://www.google.com/search?num=5&q=FreePropVariantArray+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetActiveObject](https://www.google.com/search?num=5&q=GetActiveObject+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[GetActiveObjectExt](https://www.google.com/search?num=5&q=GetActiveObjectExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetAltMonthNames](https://www.google.com/search?num=5&q=GetAltMonthNames+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [GetClassFile](https://www.google.com/search?num=5&q=GetClassFile+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetConvertStg](http://msdn2.microsoft.com/en-us/library/748649a2-cf75-4ffa-ac1f-4a148b845d21) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.GetConvertStg  
-[GetDocumentBitStg](https://www.google.com/search?num=5&q=GetDocumentBitStg+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetErrorInfo](https://www.google.com/search?num=5&q=GetErrorInfo+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetHGlobalFromILockBytes](http://msdn2.microsoft.com/en-us/library/084fcd1d-5b85-448c-862a-378353e1e2e6) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.GetHGlobalFromILockBytes  
 [GetHGlobalFromStream](http://msdn2.microsoft.com/en-us/library/79e39345-7a20-4b0f-bceb-f62de13d3260) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.GetHGlobalFromStream  
-[GetHookInterface](https://www.google.com/search?num=5&q=GetHookInterface+site%3Amicrosoft.com) | ole32.dll |  |   
-[GetObjectFromRotByPath](https://www.google.com/search?num=5&q=GetObjectFromRotByPath+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetRecordInfoFromGuids](https://www.google.com/search?num=5&q=GetRecordInfoFromGuids+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [GetRecordInfoFromTypeInfo](https://www.google.com/search?num=5&q=GetRecordInfoFromTypeInfo+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [GetRunningObjectTable](http://msdn2.microsoft.com/en-us/library/65d9cf7d-cc8a-4199-9a4a-7fd67ef8872d) | ole32.dll | objbase.h | Vanara.PInvoke.Ole32.GetRunningObjectTable  
-[GetVarConversionLocaleSetting](https://www.google.com/search?num=5&q=GetVarConversionLocaleSetting+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[HWND_UserFree](https://www.google.com/search?num=5&q=HWND_UserFree+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[HWND_UserFree64](https://www.google.com/search?num=5&q=HWND_UserFree64+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[HWND_UserMarshal](https://www.google.com/search?num=5&q=HWND_UserMarshal+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[HWND_UserMarshal64](https://www.google.com/search?num=5&q=HWND_UserMarshal64+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[HWND_UserSize](https://www.google.com/search?num=5&q=HWND_UserSize+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[HWND_UserSize64](https://www.google.com/search?num=5&q=HWND_UserSize64+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[HWND_UserUnmarshal](https://www.google.com/search?num=5&q=HWND_UserUnmarshal+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[HWND_UserUnmarshal64](https://www.google.com/search?num=5&q=HWND_UserUnmarshal64+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [IIDFromString](https://www.google.com/search?num=5&q=IIDFromString+site%3Amicrosoft.com) | ole32.dll |  |   
 [InitPropVariantFromBooleanVector](http://msdn2.microsoft.com/en-us/library/bb762288) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromBooleanVector  
 [InitPropVariantFromBuffer](http://msdn2.microsoft.com/en-us/library/bb762289) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromBuffer  
@@ -256,18 +217,10 @@ Native Method | Native DLL | Header | Managed Method
 [InitVariantFromVariantArrayElem](https://www.google.com/search?num=5&q=InitVariantFromVariantArrayElem+site%3Amicrosoft.com) | propsys.dll |  |   
 [IsAccelerator](https://www.google.com/search?num=5&q=IsAccelerator+site%3Amicrosoft.com) | ole32.dll |  |   
 [IsEqualGUID](https://www.google.com/search?num=5&q=IsEqualGUID+site%3Amicrosoft.com) | ole32.dll |  |   
-[IsRoInitializeASTAAllowedInDesktop](https://www.google.com/search?num=5&q=IsRoInitializeASTAAllowedInDesktop+site%3Amicrosoft.com) | ole32.dll |  |   
-[IsValidIid](https://www.google.com/search?num=5&q=IsValidIid+site%3Amicrosoft.com) | ole32.dll |  |   
-[IsValidInterface](https://www.google.com/search?num=5&q=IsValidInterface+site%3Amicrosoft.com) | ole32.dll |  |   
-[IsValidPtrIn](https://www.google.com/search?num=5&q=IsValidPtrIn+site%3Amicrosoft.com) | ole32.dll |  |   
-[IsValidPtrOut](https://www.google.com/search?num=5&q=IsValidPtrOut+site%3Amicrosoft.com) | ole32.dll |  |   
 [LHashValOfNameSys](https://www.google.com/search?num=5&q=LHashValOfNameSys+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [LoadRegTypeLib](https://www.google.com/search?num=5&q=LoadRegTypeLib+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [LoadTypeLib](https://www.google.com/search?num=5&q=LoadTypeLib+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [LoadTypeLibEx](https://www.google.com/search?num=5&q=LoadTypeLibEx+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[LPSAFEARRAY_Marshal](https://www.google.com/search?num=5&q=LPSAFEARRAY_Marshal+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[LPSAFEARRAY_Size](https://www.google.com/search?num=5&q=LPSAFEARRAY_Size+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[LPSAFEARRAY_Unmarshal](https://www.google.com/search?num=5&q=LPSAFEARRAY_Unmarshal+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [LPSAFEARRAY_UserFree](https://www.google.com/search?num=5&q=LPSAFEARRAY_UserFree+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [LPSAFEARRAY_UserFree64](https://www.google.com/search?num=5&q=LPSAFEARRAY_UserFree64+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [LPSAFEARRAY_UserMarshal](https://www.google.com/search?num=5&q=LPSAFEARRAY_UserMarshal+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -278,13 +231,9 @@ Native Method | Native DLL | Header | Managed Method
 [LPSAFEARRAY_UserUnmarshal64](https://www.google.com/search?num=5&q=LPSAFEARRAY_UserUnmarshal64+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [MkParseDisplayName](https://www.google.com/search?num=5&q=MkParseDisplayName+site%3Amicrosoft.com) | ole32.dll |  |   
 [MonikerCommonPrefixWith](https://www.google.com/search?num=5&q=MonikerCommonPrefixWith+site%3Amicrosoft.com) | ole32.dll |  |   
-[MonikerLoadTypeLib](https://www.google.com/search?num=5&q=MonikerLoadTypeLib+site%3Amicrosoft.com) | ole32.dll |  |   
 [MonikerRelativePathTo](https://www.google.com/search?num=5&q=MonikerRelativePathTo+site%3Amicrosoft.com) | ole32.dll |  |   
 [OaBuildVersion](https://www.google.com/search?num=5&q=OaBuildVersion+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OACleanup](https://www.google.com/search?num=5&q=OACleanup+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OACreateTypeLib2](https://www.google.com/search?num=5&q=OACreateTypeLib2+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [OaEnablePerUserTLibRegistration](https://www.google.com/search?num=5&q=OaEnablePerUserTLibRegistration+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[Ole32DllGetClassObject](https://www.google.com/search?num=5&q=Ole32DllGetClassObject+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleBuildVersion](https://www.google.com/search?num=5&q=OleBuildVersion+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleConvertIStorageToOLESTREAM](https://www.google.com/search?num=5&q=OleConvertIStorageToOLESTREAM+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleConvertIStorageToOLESTREAMEx](https://www.google.com/search?num=5&q=OleConvertIStorageToOLESTREAMEx+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -295,7 +244,6 @@ Native Method | Native DLL | Header | Managed Method
 [OleCreateEmbeddingHelper](https://www.google.com/search?num=5&q=OleCreateEmbeddingHelper+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleCreateEx](https://www.google.com/search?num=5&q=OleCreateEx+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleCreateFontIndirect](https://www.google.com/search?num=5&q=OleCreateFontIndirect+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleCreateFontIndirectExt](https://www.google.com/search?num=5&q=OleCreateFontIndirectExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleCreateFromData](https://www.google.com/search?num=5&q=OleCreateFromData+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleCreateFromDataEx](https://www.google.com/search?num=5&q=OleCreateFromDataEx+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleCreateFromFile](https://www.google.com/search?num=5&q=OleCreateFromFile+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -308,10 +256,8 @@ Native Method | Native DLL | Header | Managed Method
 [OleCreateLinkToFileEx](https://www.google.com/search?num=5&q=OleCreateLinkToFileEx+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleCreateMenuDescriptor](https://www.google.com/search?num=5&q=OleCreateMenuDescriptor+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleCreatePictureIndirect](https://www.google.com/search?num=5&q=OleCreatePictureIndirect+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleCreatePictureIndirectExt](https://www.google.com/search?num=5&q=OleCreatePictureIndirectExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleCreatePropertyFrame](https://www.google.com/search?num=5&q=OleCreatePropertyFrame+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [OleCreatePropertyFrameIndirect](https://www.google.com/search?num=5&q=OleCreatePropertyFrameIndirect+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleCreatePropertyFrameIndirectExt](https://www.google.com/search?num=5&q=OleCreatePropertyFrameIndirectExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleCreateStaticFromData](https://www.google.com/search?num=5&q=OleCreateStaticFromData+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleDestroyMenuDescriptor](https://www.google.com/search?num=5&q=OleDestroyMenuDescriptor+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleDoAutoConvert](https://www.google.com/search?num=5&q=OleDoAutoConvert+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -323,23 +269,17 @@ Native Method | Native DLL | Header | Managed Method
 [OleGetClipboardWithEnterpriseInfo](https://www.google.com/search?num=5&q=OleGetClipboardWithEnterpriseInfo+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleGetIconOfClass](https://www.google.com/search?num=5&q=OleGetIconOfClass+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleGetIconOfFile](https://www.google.com/search?num=5&q=OleGetIconOfFile+site%3Amicrosoft.com) | ole32.dll |  |   
-[OleGetPackageClipboardOwner](https://www.google.com/search?num=5&q=OleGetPackageClipboardOwner+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleIconToCursor](https://www.google.com/search?num=5&q=OleIconToCursor+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleIconToCursorExt](https://www.google.com/search?num=5&q=OleIconToCursorExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleInitialize](http://msdn2.microsoft.com/en-us/library/ms690134) | ole32.dll | Ole2.h | Vanara.PInvoke.Ole32.OleInitialize  
-[OleInitializeWOW](https://www.google.com/search?num=5&q=OleInitializeWOW+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleIsCurrentClipboard](https://www.google.com/search?num=5&q=OleIsCurrentClipboard+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleIsRunning](https://www.google.com/search?num=5&q=OleIsRunning+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleLoad](https://www.google.com/search?num=5&q=OleLoad+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleLoadFromStream](https://www.google.com/search?num=5&q=OleLoadFromStream+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleLoadPicture](https://www.google.com/search?num=5&q=OleLoadPicture+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [OleLoadPictureEx](https://www.google.com/search?num=5&q=OleLoadPictureEx+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleLoadPictureExt](https://www.google.com/search?num=5&q=OleLoadPictureExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleLoadPictureFile](https://www.google.com/search?num=5&q=OleLoadPictureFile+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [OleLoadPictureFileEx](https://www.google.com/search?num=5&q=OleLoadPictureFileEx+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleLoadPictureFileExt](https://www.google.com/search?num=5&q=OleLoadPictureFileExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleLoadPicturePath](https://www.google.com/search?num=5&q=OleLoadPicturePath+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleLoadPicturePathExt](https://www.google.com/search?num=5&q=OleLoadPicturePathExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleLockRunning](https://www.google.com/search?num=5&q=OleLockRunning+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleMetafilePictFromIconAndLabel](https://www.google.com/search?num=5&q=OleMetafilePictFromIconAndLabel+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleNoteObjectVisible](https://www.google.com/search?num=5&q=OleNoteObjectVisible+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -349,11 +289,9 @@ Native Method | Native DLL | Header | Managed Method
 [OleRegEnumVerbs](https://www.google.com/search?num=5&q=OleRegEnumVerbs+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleRegGetMiscStatus](https://www.google.com/search?num=5&q=OleRegGetMiscStatus+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleRegGetUserType](https://www.google.com/search?num=5&q=OleRegGetUserType+site%3Amicrosoft.com) | ole32.dll |  |   
-[OleReleaseEnumVerbCache](https://www.google.com/search?num=5&q=OleReleaseEnumVerbCache+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleRun](https://www.google.com/search?num=5&q=OleRun+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleSave](https://www.google.com/search?num=5&q=OleSave+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleSavePictureFile](https://www.google.com/search?num=5&q=OleSavePictureFile+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleSavePictureFileExt](https://www.google.com/search?num=5&q=OleSavePictureFileExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleSaveToStream](https://www.google.com/search?num=5&q=OleSaveToStream+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleSetAutoConvert](https://www.google.com/search?num=5&q=OleSetAutoConvert+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleSetClipboard](https://www.google.com/search?num=5&q=OleSetClipboard+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -361,13 +299,9 @@ Native Method | Native DLL | Header | Managed Method
 [OleSetMenuDescriptor](https://www.google.com/search?num=5&q=OleSetMenuDescriptor+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleTranslateAccelerator](https://www.google.com/search?num=5&q=OleTranslateAccelerator+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleTranslateColor](https://www.google.com/search?num=5&q=OleTranslateColor+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleTranslateColorExt](https://www.google.com/search?num=5&q=OleTranslateColorExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [OleUninitialize](http://msdn2.microsoft.com/en-us/library/ms691326) | ole32.dll | Ole2.h | Vanara.PInvoke.Ole32.OleUninitialize  
-[OpenOrCreateStream](https://www.google.com/search?num=5&q=OpenOrCreateStream+site%3Amicrosoft.com) | ole32.dll |  |   
 [ProgIDFromCLSID](http://msdn2.microsoft.com/en-us/library/a863cbc2-f8ab-468a-8254-b273077a6a2b) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.ProgIDFromCLSID  
 [PropStgNameToFmtId](http://msdn2.microsoft.com/en-us/library/bbbaf5a3-df17-42fd-ba2b-ad5b572c8a3f) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.PropStgNameToFmtId  
-[PropSysAllocString](https://www.google.com/search?num=5&q=PropSysAllocString+site%3Amicrosoft.com) | ole32.dll |  |   
-[PropSysFreeString](https://www.google.com/search?num=5&q=PropSysFreeString+site%3Amicrosoft.com) | ole32.dll |  |   
 [PropVariantChangeType](http://msdn2.microsoft.com/en-us/library/bb776514) | ole32.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantChangeType  
 [PropVariantClear](http://msdn2.microsoft.com/en-us/library/aa380073) | ole32.dll | Propidl.h | Vanara.PInvoke.Ole32.PropVariantClear  
 [PropVariantCompareEx](http://msdn2.microsoft.com/en-us/library/bb776517) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantCompareEx  
@@ -498,17 +432,12 @@ Native Method | Native DLL | Header | Managed Method
 [ReadClassStg](http://msdn2.microsoft.com/en-us/library/90256fcd-54ce-48e1-aa12-d8f91cd4dfb1) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.ReadClassStg  
 [ReadClassStm](http://msdn2.microsoft.com/en-us/library/bcf11c5b-e164-4a0f-b30f-ee9e76c4356d) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.ReadClassStm  
 [ReadFmtUserTypeStg](https://www.google.com/search?num=5&q=ReadFmtUserTypeStg+site%3Amicrosoft.com) | ole32.dll |  |   
-[ReadOleStg](https://www.google.com/search?num=5&q=ReadOleStg+site%3Amicrosoft.com) | ole32.dll |  |   
-[ReadStorageProperties](https://www.google.com/search?num=5&q=ReadStorageProperties+site%3Amicrosoft.com) | ole32.dll |  |   
-[ReadStringStream](https://www.google.com/search?num=5&q=ReadStringStream+site%3Amicrosoft.com) | ole32.dll |  |   
 [RegisterActiveObject](https://www.google.com/search?num=5&q=RegisterActiveObject+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[RegisterActiveObjectExt](https://www.google.com/search?num=5&q=RegisterActiveObjectExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [RegisterDragDrop](https://www.google.com/search?num=5&q=RegisterDragDrop+site%3Amicrosoft.com) | ole32.dll |  |   
 [RegisterTypeLib](https://www.google.com/search?num=5&q=RegisterTypeLib+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [RegisterTypeLibForUser](https://www.google.com/search?num=5&q=RegisterTypeLibForUser+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [ReleaseStgMedium](http://msdn2.microsoft.com/en-us/library/ms693491) | ole32.dll | Ole2.h | Vanara.PInvoke.Ole32.ReleaseStgMedium  
 [RevokeActiveObject](https://www.google.com/search?num=5&q=RevokeActiveObject+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[RevokeActiveObjectExt](https://www.google.com/search?num=5&q=RevokeActiveObjectExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [RevokeDragDrop](https://www.google.com/search?num=5&q=RevokeDragDrop+site%3Amicrosoft.com) | ole32.dll |  |   
 [RoGetAgileReference](http://msdn2.microsoft.com/en-us/library/D16224C7-1BB7-46F5-B66C-54D0B9679006) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.RoGetAgileReference  
 [SafeArrayAccessData](http://msdn2.microsoft.com/en-us/library/ded2112e-f6cd-4982-bacb-b95370e80187) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayAccessData  
@@ -544,14 +473,7 @@ Native Method | Native DLL | Header | Managed Method
 [SafeArrayUnaccessData](http://msdn2.microsoft.com/en-us/library/61b482cb-f0a3-4efb-9a68-f373f241e89a) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayUnaccessData  
 [SafeArrayUnlock](http://msdn2.microsoft.com/en-us/library/654995ab-1959-44dc-9e26-11c34e489c14) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayUnlock  
 [SetConvertStg](https://www.google.com/search?num=5&q=SetConvertStg+site%3Amicrosoft.com) | ole32.dll |  |   
-[SetDocumentBitStg](https://www.google.com/search?num=5&q=SetDocumentBitStg+site%3Amicrosoft.com) | ole32.dll |  |   
 [SetErrorInfo](https://www.google.com/search?num=5&q=SetErrorInfo+site%3Amicrosoft.com) | ole32.dll |  |   
-[SetOaNoCache](https://www.google.com/search?num=5&q=SetOaNoCache+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SetOleautModule](https://www.google.com/search?num=5&q=SetOleautModule+site%3Amicrosoft.com) | ole32.dll |  |   
-[SetVarConversionLocaleSetting](https://www.google.com/search?num=5&q=SetVarConversionLocaleSetting+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SetWOWThunkGlobalPtr](https://www.google.com/search?num=5&q=SetWOWThunkGlobalPtr+site%3Amicrosoft.com) | ole32.dll |  |   
-[StdTypesGetClassObject](https://www.google.com/search?num=5&q=StdTypesGetClassObject+site%3Amicrosoft.com) | ole32.dll |  |   
-[StdTypesRegisterServer](https://www.google.com/search?num=5&q=StdTypesRegisterServer+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgConvertPropertyToVariant](https://www.google.com/search?num=5&q=StgConvertPropertyToVariant+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgConvertVariantToProperty](https://www.google.com/search?num=5&q=StgConvertVariantToProperty+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgCreateDocfile](http://msdn2.microsoft.com/en-us/library/3292484b-8eff-438d-b989-b58ae323872b) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgCreateDocfile  
@@ -568,7 +490,6 @@ Native Method | Native DLL | Header | Managed Method
 [StgOpenPropStg](http://msdn2.microsoft.com/en-us/library/ecc78e49-f1c2-4c2d-8390-b2b6f1dc776e) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgOpenPropStg  
 [StgOpenStorage](http://msdn2.microsoft.com/en-us/library/5ff18dc8-b24f-42bb-8c32-efc4d3696687) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgOpenStorage  
 [StgOpenStorageEx](http://msdn2.microsoft.com/en-us/library/4f2138fb-1f80-4345-a3cb-9c11023457b1) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgOpenStorageEx  
-[StgOpenStorageOnHandle](https://www.google.com/search?num=5&q=StgOpenStorageOnHandle+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgOpenStorageOnILockBytes](http://msdn2.microsoft.com/en-us/library/7920bd46-0a8f-42e0-9988-59d85edb64e2) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.StgOpenStorageOnILockBytes  
 [StgPropertyLengthAsVariant](https://www.google.com/search?num=5&q=StgPropertyLengthAsVariant+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgSerializePropVariant](http://msdn2.microsoft.com/en-us/library/bb776579) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.StgSerializePropVariant  
@@ -589,30 +510,17 @@ Native Method | Native DLL | Header | Managed Method
 [SystemTimeToVariantTime](https://www.google.com/search?num=5&q=SystemTimeToVariantTime+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [UnRegisterTypeLib](https://www.google.com/search?num=5&q=UnRegisterTypeLib+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [UnRegisterTypeLibForUser](https://www.google.com/search?num=5&q=UnRegisterTypeLibForUser+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[UpdateDCOMSettings](https://www.google.com/search?num=5&q=UpdateDCOMSettings+site%3Amicrosoft.com) | ole32.dll |  |   
-[UpdateProcessTracing](https://www.google.com/search?num=5&q=UpdateProcessTracing+site%3Amicrosoft.com) | ole32.dll |  |   
 [VarAbs](https://www.google.com/search?num=5&q=VarAbs+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarAdd](https://www.google.com/search?num=5&q=VarAdd+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarAnd](https://www.google.com/search?num=5&q=VarAnd+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBoolFromCy](https://www.google.com/search?num=5&q=VarBoolFromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBoolFromDate](https://www.google.com/search?num=5&q=VarBoolFromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBoolFromDec](https://www.google.com/search?num=5&q=VarBoolFromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBoolFromDisp](https://www.google.com/search?num=5&q=VarBoolFromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBoolFromI1](https://www.google.com/search?num=5&q=VarBoolFromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBoolFromI2](https://www.google.com/search?num=5&q=VarBoolFromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBoolFromI4](https://www.google.com/search?num=5&q=VarBoolFromI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBoolFromI8](https://www.google.com/search?num=5&q=VarBoolFromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBoolFromR4](https://www.google.com/search?num=5&q=VarBoolFromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBoolFromR8](https://www.google.com/search?num=5&q=VarBoolFromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBoolFromStr](https://www.google.com/search?num=5&q=VarBoolFromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBoolFromUI1](https://www.google.com/search?num=5&q=VarBoolFromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBoolFromUI2](https://www.google.com/search?num=5&q=VarBoolFromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBoolFromUI4](https://www.google.com/search?num=5&q=VarBoolFromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBoolFromUI8](https://www.google.com/search?num=5&q=VarBoolFromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBstrCat](https://www.google.com/search?num=5&q=VarBstrCat+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBstrCmp](https://www.google.com/search?num=5&q=VarBstrCmp+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBstrFromBool](https://www.google.com/search?num=5&q=VarBstrFromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBstrFromCy](https://www.google.com/search?num=5&q=VarBstrFromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBstrFromDate](https://www.google.com/search?num=5&q=VarBstrFromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBstrFromDec](https://www.google.com/search?num=5&q=VarBstrFromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBstrFromDisp](https://www.google.com/search?num=5&q=VarBstrFromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -620,11 +528,7 @@ Native Method | Native DLL | Header | Managed Method
 [VarBstrFromI2](https://www.google.com/search?num=5&q=VarBstrFromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBstrFromI4](https://www.google.com/search?num=5&q=VarBstrFromI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBstrFromI8](https://www.google.com/search?num=5&q=VarBstrFromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBstrFromR4](https://www.google.com/search?num=5&q=VarBstrFromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBstrFromR8](https://www.google.com/search?num=5&q=VarBstrFromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBstrFromUI1](https://www.google.com/search?num=5&q=VarBstrFromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBstrFromUI2](https://www.google.com/search?num=5&q=VarBstrFromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarBstrFromUI4](https://www.google.com/search?num=5&q=VarBstrFromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarBstrFromUI8](https://www.google.com/search?num=5&q=VarBstrFromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCat](https://www.google.com/search?num=5&q=VarCat+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCmp](https://www.google.com/search?num=5&q=VarCmp+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -633,19 +537,13 @@ Native Method | Native DLL | Header | Managed Method
 [VarCyCmp](https://www.google.com/search?num=5&q=VarCyCmp+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyCmpR8](https://www.google.com/search?num=5&q=VarCyCmpR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyFix](https://www.google.com/search?num=5&q=VarCyFix+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarCyFromBool](https://www.google.com/search?num=5&q=VarCyFromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarCyFromDate](https://www.google.com/search?num=5&q=VarCyFromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarCyFromDec](https://www.google.com/search?num=5&q=VarCyFromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyFromDisp](https://www.google.com/search?num=5&q=VarCyFromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyFromI1](https://www.google.com/search?num=5&q=VarCyFromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyFromI2](https://www.google.com/search?num=5&q=VarCyFromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarCyFromI4](https://www.google.com/search?num=5&q=VarCyFromI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyFromI8](https://www.google.com/search?num=5&q=VarCyFromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarCyFromR4](https://www.google.com/search?num=5&q=VarCyFromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyFromR8](https://www.google.com/search?num=5&q=VarCyFromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyFromStr](https://www.google.com/search?num=5&q=VarCyFromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyFromUI1](https://www.google.com/search?num=5&q=VarCyFromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarCyFromUI2](https://www.google.com/search?num=5&q=VarCyFromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyFromUI4](https://www.google.com/search?num=5&q=VarCyFromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyFromUI8](https://www.google.com/search?num=5&q=VarCyFromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyInt](https://www.google.com/search?num=5&q=VarCyInt+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -655,22 +553,14 @@ Native Method | Native DLL | Header | Managed Method
 [VarCyNeg](https://www.google.com/search?num=5&q=VarCyNeg+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCyRound](https://www.google.com/search?num=5&q=VarCyRound+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarCySub](https://www.google.com/search?num=5&q=VarCySub+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDateFromBool](https://www.google.com/search?num=5&q=VarDateFromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDateFromCy](https://www.google.com/search?num=5&q=VarDateFromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDateFromDec](https://www.google.com/search?num=5&q=VarDateFromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDateFromDisp](https://www.google.com/search?num=5&q=VarDateFromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDateFromI1](https://www.google.com/search?num=5&q=VarDateFromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDateFromI2](https://www.google.com/search?num=5&q=VarDateFromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDateFromI4](https://www.google.com/search?num=5&q=VarDateFromI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDateFromI8](https://www.google.com/search?num=5&q=VarDateFromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDateFromR4](https://www.google.com/search?num=5&q=VarDateFromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDateFromR8](https://www.google.com/search?num=5&q=VarDateFromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDateFromStr](https://www.google.com/search?num=5&q=VarDateFromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDateFromUdate](https://www.google.com/search?num=5&q=VarDateFromUdate+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDateFromUdateEx](https://www.google.com/search?num=5&q=VarDateFromUdateEx+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDateFromUI1](https://www.google.com/search?num=5&q=VarDateFromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDateFromUI2](https://www.google.com/search?num=5&q=VarDateFromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDateFromUI4](https://www.google.com/search?num=5&q=VarDateFromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDateFromUI8](https://www.google.com/search?num=5&q=VarDateFromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDecAbs](https://www.google.com/search?num=5&q=VarDecAbs+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDecAdd](https://www.google.com/search?num=5&q=VarDecAdd+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -678,18 +568,9 @@ Native Method | Native DLL | Header | Managed Method
 [VarDecCmpR8](https://www.google.com/search?num=5&q=VarDecCmpR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDecDiv](https://www.google.com/search?num=5&q=VarDecDiv+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDecFix](https://www.google.com/search?num=5&q=VarDecFix+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDecFromBool](https://www.google.com/search?num=5&q=VarDecFromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDecFromCy](https://www.google.com/search?num=5&q=VarDecFromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDecFromDate](https://www.google.com/search?num=5&q=VarDecFromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDecFromDisp](https://www.google.com/search?num=5&q=VarDecFromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDecFromI1](https://www.google.com/search?num=5&q=VarDecFromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDecFromI2](https://www.google.com/search?num=5&q=VarDecFromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDecFromI4](https://www.google.com/search?num=5&q=VarDecFromI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDecFromI8](https://www.google.com/search?num=5&q=VarDecFromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDecFromR4](https://www.google.com/search?num=5&q=VarDecFromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDecFromR8](https://www.google.com/search?num=5&q=VarDecFromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDecFromStr](https://www.google.com/search?num=5&q=VarDecFromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarDecFromUI1](https://www.google.com/search?num=5&q=VarDecFromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDecFromUI2](https://www.google.com/search?num=5&q=VarDecFromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDecFromUI4](https://www.google.com/search?num=5&q=VarDecFromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarDecFromUI8](https://www.google.com/search?num=5&q=VarDecFromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -707,65 +588,25 @@ Native Method | Native DLL | Header | Managed Method
 [VarFormatFromTokens](https://www.google.com/search?num=5&q=VarFormatFromTokens+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarFormatNumber](https://www.google.com/search?num=5&q=VarFormatNumber+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarFormatPercent](https://www.google.com/search?num=5&q=VarFormatPercent+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI1FromBool](https://www.google.com/search?num=5&q=VarI1FromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI1FromCy](https://www.google.com/search?num=5&q=VarI1FromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI1FromDate](https://www.google.com/search?num=5&q=VarI1FromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI1FromDec](https://www.google.com/search?num=5&q=VarI1FromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI1FromDisp](https://www.google.com/search?num=5&q=VarI1FromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI1FromI2](https://www.google.com/search?num=5&q=VarI1FromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI1FromI4](https://www.google.com/search?num=5&q=VarI1FromI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI1FromI8](https://www.google.com/search?num=5&q=VarI1FromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI1FromR4](https://www.google.com/search?num=5&q=VarI1FromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI1FromR8](https://www.google.com/search?num=5&q=VarI1FromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI1FromStr](https://www.google.com/search?num=5&q=VarI1FromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI1FromUI1](https://www.google.com/search?num=5&q=VarI1FromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI1FromUI2](https://www.google.com/search?num=5&q=VarI1FromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI1FromUI4](https://www.google.com/search?num=5&q=VarI1FromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI1FromUI8](https://www.google.com/search?num=5&q=VarI1FromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI2FromBool](https://www.google.com/search?num=5&q=VarI2FromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI2FromCy](https://www.google.com/search?num=5&q=VarI2FromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI2FromDate](https://www.google.com/search?num=5&q=VarI2FromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI2FromDec](https://www.google.com/search?num=5&q=VarI2FromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI2FromDisp](https://www.google.com/search?num=5&q=VarI2FromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI2FromI1](https://www.google.com/search?num=5&q=VarI2FromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI2FromI4](https://www.google.com/search?num=5&q=VarI2FromI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI2FromI8](https://www.google.com/search?num=5&q=VarI2FromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI2FromR4](https://www.google.com/search?num=5&q=VarI2FromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI2FromR8](https://www.google.com/search?num=5&q=VarI2FromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI2FromStr](https://www.google.com/search?num=5&q=VarI2FromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI2FromUI1](https://www.google.com/search?num=5&q=VarI2FromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI2FromUI2](https://www.google.com/search?num=5&q=VarI2FromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI2FromUI4](https://www.google.com/search?num=5&q=VarI2FromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI2FromUI8](https://www.google.com/search?num=5&q=VarI2FromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI4FromBool](https://www.google.com/search?num=5&q=VarI4FromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI4FromCy](https://www.google.com/search?num=5&q=VarI4FromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI4FromDate](https://www.google.com/search?num=5&q=VarI4FromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI4FromDec](https://www.google.com/search?num=5&q=VarI4FromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI4FromDisp](https://www.google.com/search?num=5&q=VarI4FromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI4FromI1](https://www.google.com/search?num=5&q=VarI4FromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI4FromI2](https://www.google.com/search?num=5&q=VarI4FromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI4FromI8](https://www.google.com/search?num=5&q=VarI4FromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI4FromR4](https://www.google.com/search?num=5&q=VarI4FromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI4FromR8](https://www.google.com/search?num=5&q=VarI4FromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI4FromStr](https://www.google.com/search?num=5&q=VarI4FromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI4FromUI1](https://www.google.com/search?num=5&q=VarI4FromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI4FromUI2](https://www.google.com/search?num=5&q=VarI4FromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI4FromUI4](https://www.google.com/search?num=5&q=VarI4FromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI4FromUI8](https://www.google.com/search?num=5&q=VarI4FromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI8FromBool](https://www.google.com/search?num=5&q=VarI8FromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI8FromCy](https://www.google.com/search?num=5&q=VarI8FromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI8FromDate](https://www.google.com/search?num=5&q=VarI8FromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI8FromDec](https://www.google.com/search?num=5&q=VarI8FromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI8FromDisp](https://www.google.com/search?num=5&q=VarI8FromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarI8FromI1](https://www.google.com/search?num=5&q=VarI8FromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI8FromI2](https://www.google.com/search?num=5&q=VarI8FromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI8FromR4](https://www.google.com/search?num=5&q=VarI8FromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI8FromR8](https://www.google.com/search?num=5&q=VarI8FromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI8FromStr](https://www.google.com/search?num=5&q=VarI8FromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI8FromUI1](https://www.google.com/search?num=5&q=VarI8FromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI8FromUI2](https://www.google.com/search?num=5&q=VarI8FromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI8FromUI4](https://www.google.com/search?num=5&q=VarI8FromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarI8FromUI8](https://www.google.com/search?num=5&q=VarI8FromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VARIANT_UserFree](https://www.google.com/search?num=5&q=VARIANT_UserFree+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VARIANT_UserFree64](https://www.google.com/search?num=5&q=VARIANT_UserFree64+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VARIANT_UserMarshal](https://www.google.com/search?num=5&q=VARIANT_UserMarshal+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -849,85 +690,33 @@ Native Method | Native DLL | Header | Managed Method
 [VarParseNumFromStr](https://www.google.com/search?num=5&q=VarParseNumFromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarPow](https://www.google.com/search?num=5&q=VarPow+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarR4CmpR8](https://www.google.com/search?num=5&q=VarR4CmpR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromBool](https://www.google.com/search?num=5&q=VarR4FromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromCy](https://www.google.com/search?num=5&q=VarR4FromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromDate](https://www.google.com/search?num=5&q=VarR4FromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromDec](https://www.google.com/search?num=5&q=VarR4FromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromDisp](https://www.google.com/search?num=5&q=VarR4FromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromI1](https://www.google.com/search?num=5&q=VarR4FromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromI2](https://www.google.com/search?num=5&q=VarR4FromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromI4](https://www.google.com/search?num=5&q=VarR4FromI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromI8](https://www.google.com/search?num=5&q=VarR4FromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromR8](https://www.google.com/search?num=5&q=VarR4FromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarR4FromStr](https://www.google.com/search?num=5&q=VarR4FromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromUI1](https://www.google.com/search?num=5&q=VarR4FromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromUI2](https://www.google.com/search?num=5&q=VarR4FromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarR4FromUI4](https://www.google.com/search?num=5&q=VarR4FromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR4FromUI8](https://www.google.com/search?num=5&q=VarR4FromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarR8FromBool](https://www.google.com/search?num=5&q=VarR8FromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarR8FromCy](https://www.google.com/search?num=5&q=VarR8FromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR8FromDate](https://www.google.com/search?num=5&q=VarR8FromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR8FromDec](https://www.google.com/search?num=5&q=VarR8FromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR8FromDisp](https://www.google.com/search?num=5&q=VarR8FromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR8FromI1](https://www.google.com/search?num=5&q=VarR8FromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR8FromI2](https://www.google.com/search?num=5&q=VarR8FromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarR8FromI4](https://www.google.com/search?num=5&q=VarR8FromI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarR8FromI8](https://www.google.com/search?num=5&q=VarR8FromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR8FromR4](https://www.google.com/search?num=5&q=VarR8FromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarR8FromStr](https://www.google.com/search?num=5&q=VarR8FromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR8FromUI1](https://www.google.com/search?num=5&q=VarR8FromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarR8FromUI2](https://www.google.com/search?num=5&q=VarR8FromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarR8FromUI4](https://www.google.com/search?num=5&q=VarR8FromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarR8FromUI8](https://www.google.com/search?num=5&q=VarR8FromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarR8Pow](https://www.google.com/search?num=5&q=VarR8Pow+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarR8Round](https://www.google.com/search?num=5&q=VarR8Round+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarRound](https://www.google.com/search?num=5&q=VarRound+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarSub](https://www.google.com/search?num=5&q=VarSub+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarTokenizeFormatString](https://www.google.com/search?num=5&q=VarTokenizeFormatString+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUdateFromDate](https://www.google.com/search?num=5&q=VarUdateFromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI1FromBool](https://www.google.com/search?num=5&q=VarUI1FromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI1FromCy](https://www.google.com/search?num=5&q=VarUI1FromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI1FromDate](https://www.google.com/search?num=5&q=VarUI1FromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI1FromDec](https://www.google.com/search?num=5&q=VarUI1FromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI1FromDisp](https://www.google.com/search?num=5&q=VarUI1FromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI1FromI1](https://www.google.com/search?num=5&q=VarUI1FromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI1FromI2](https://www.google.com/search?num=5&q=VarUI1FromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI1FromI4](https://www.google.com/search?num=5&q=VarUI1FromI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI1FromI8](https://www.google.com/search?num=5&q=VarUI1FromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI1FromR4](https://www.google.com/search?num=5&q=VarUI1FromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI1FromR8](https://www.google.com/search?num=5&q=VarUI1FromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI1FromStr](https://www.google.com/search?num=5&q=VarUI1FromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI1FromUI2](https://www.google.com/search?num=5&q=VarUI1FromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI1FromUI4](https://www.google.com/search?num=5&q=VarUI1FromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI1FromUI8](https://www.google.com/search?num=5&q=VarUI1FromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI2FromBool](https://www.google.com/search?num=5&q=VarUI2FromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI2FromCy](https://www.google.com/search?num=5&q=VarUI2FromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI2FromDate](https://www.google.com/search?num=5&q=VarUI2FromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI2FromDec](https://www.google.com/search?num=5&q=VarUI2FromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI2FromDisp](https://www.google.com/search?num=5&q=VarUI2FromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI2FromI1](https://www.google.com/search?num=5&q=VarUI2FromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI2FromI2](https://www.google.com/search?num=5&q=VarUI2FromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI2FromI4](https://www.google.com/search?num=5&q=VarUI2FromI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI2FromI8](https://www.google.com/search?num=5&q=VarUI2FromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI2FromR4](https://www.google.com/search?num=5&q=VarUI2FromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI2FromR8](https://www.google.com/search?num=5&q=VarUI2FromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI2FromStr](https://www.google.com/search?num=5&q=VarUI2FromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI2FromUI1](https://www.google.com/search?num=5&q=VarUI2FromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI2FromUI4](https://www.google.com/search?num=5&q=VarUI2FromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI2FromUI8](https://www.google.com/search?num=5&q=VarUI2FromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI4FromBool](https://www.google.com/search?num=5&q=VarUI4FromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI4FromCy](https://www.google.com/search?num=5&q=VarUI4FromCy+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI4FromDate](https://www.google.com/search?num=5&q=VarUI4FromDate+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI4FromDec](https://www.google.com/search?num=5&q=VarUI4FromDec+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI4FromDisp](https://www.google.com/search?num=5&q=VarUI4FromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI4FromI1](https://www.google.com/search?num=5&q=VarUI4FromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI4FromI2](https://www.google.com/search?num=5&q=VarUI4FromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI4FromI4](https://www.google.com/search?num=5&q=VarUI4FromI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI4FromI8](https://www.google.com/search?num=5&q=VarUI4FromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI4FromR4](https://www.google.com/search?num=5&q=VarUI4FromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI4FromR8](https://www.google.com/search?num=5&q=VarUI4FromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI4FromStr](https://www.google.com/search?num=5&q=VarUI4FromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI4FromUI1](https://www.google.com/search?num=5&q=VarUI4FromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI4FromUI2](https://www.google.com/search?num=5&q=VarUI4FromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI4FromUI8](https://www.google.com/search?num=5&q=VarUI4FromUI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI8FromBool](https://www.google.com/search?num=5&q=VarUI8FromBool+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -937,23 +726,12 @@ Native Method | Native DLL | Header | Managed Method
 [VarUI8FromDisp](https://www.google.com/search?num=5&q=VarUI8FromDisp+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI8FromI1](https://www.google.com/search?num=5&q=VarUI8FromI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarUI8FromI2](https://www.google.com/search?num=5&q=VarUI8FromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI8FromI8](https://www.google.com/search?num=5&q=VarUI8FromI8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI8FromR4](https://www.google.com/search?num=5&q=VarUI8FromR4+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI8FromR8](https://www.google.com/search?num=5&q=VarUI8FromR8+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI8FromStr](https://www.google.com/search?num=5&q=VarUI8FromStr+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI8FromUI1](https://www.google.com/search?num=5&q=VarUI8FromUI1+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI8FromUI2](https://www.google.com/search?num=5&q=VarUI8FromUI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarUI8FromUI4](https://www.google.com/search?num=5&q=VarUI8FromUI4+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarWeekdayName](https://www.google.com/search?num=5&q=VarWeekdayName+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VarXor](https://www.google.com/search?num=5&q=VarXor+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VectorFromBstr](https://www.google.com/search?num=5&q=VectorFromBstr+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [WinRTPropertyValueToPropVariant](https://www.google.com/search?num=5&q=WinRTPropertyValueToPropVariant+site%3Amicrosoft.com) | propsys.dll |  |   
 [WriteClassStg](http://msdn2.microsoft.com/en-us/library/5f2f16d1-923f-4ba7-8d4b-7e8535f6f15e) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.WriteClassStg  
 [WriteClassStm](http://msdn2.microsoft.com/en-us/library/c08bfbc8-f7ac-4534-8c98-c732c6daa2f7) | ole32.dll | coml2api.h | Vanara.PInvoke.Ole32.WriteClassStm  
 [WriteFmtUserTypeStg](https://www.google.com/search?num=5&q=WriteFmtUserTypeStg+site%3Amicrosoft.com) | ole32.dll |  |   
-[WriteOleStg](https://www.google.com/search?num=5&q=WriteOleStg+site%3Amicrosoft.com) | ole32.dll |  |   
-[WriteStorageProperties](https://www.google.com/search?num=5&q=WriteStorageProperties+site%3Amicrosoft.com) | ole32.dll |  |   
-[WriteStringStream](https://www.google.com/search?num=5&q=WriteStringStream+site%3Amicrosoft.com) | ole32.dll |  |   
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
