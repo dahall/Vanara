@@ -1,5 +1,5 @@
 ## Correlation report for gdi32.dll  
-### Methods (5% complete)  
+### Methods (11% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortDoc](https://www.google.com/search?num=5&q=AbortDoc+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -8,7 +8,7 @@ Native Method | Native DLL | Header | Managed Method
 [AddFontResource](https://www.google.com/search?num=5&q=AddFontResourceA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [AddFontResourceEx](https://www.google.com/search?num=5&q=AddFontResourceExA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [AngleArc](https://www.google.com/search?num=5&q=AngleArc+site%3Amicrosoft.com) | gdi32.dll |  |   
-[AnimatePalette](https://www.google.com/search?num=5&q=AnimatePalette+site%3Amicrosoft.com) | gdi32.dll |  |   
+[AnimatePalette](http://msdn2.microsoft.com/en-us/library/65dd45e2-39a4-4a94-bd14-b0c8e4a609a3) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.AnimatePalette  
 [Arc](https://www.google.com/search?num=5&q=Arc+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ArcTo](https://www.google.com/search?num=5&q=ArcTo+site%3Amicrosoft.com) | gdi32.dll |  |   
 [BeginPath](https://www.google.com/search?num=5&q=BeginPath+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -19,7 +19,7 @@ Native Method | Native DLL | Header | Managed Method
 [BRUSHOBJ_ulGetBrushColor](https://www.google.com/search?num=5&q=BRUSHOBJ_ulGetBrushColor+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CancelDC](https://www.google.com/search?num=5&q=CancelDC+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CheckColorsInGamut](https://www.google.com/search?num=5&q=CheckColorsInGamut+site%3Amicrosoft.com) | gdi32.dll |  |   
-[ChoosePixelFormat](https://www.google.com/search?num=5&q=ChoosePixelFormat+site%3Amicrosoft.com) | gdi32.dll |  |   
+[ChoosePixelFormat](http://msdn2.microsoft.com/en-us/library/17bd0a2c-5257-4ae3-80f4-a5ad536169fb) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.ChoosePixelFormat  
 [Chord](https://www.google.com/search?num=5&q=Chord+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CLIPOBJ_bEnum](https://www.google.com/search?num=5&q=CLIPOBJ_bEnum+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CLIPOBJ_cEnumStart](https://www.google.com/search?num=5&q=CLIPOBJ_cEnumStart+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -29,7 +29,7 @@ Native Method | Native DLL | Header | Managed Method
 [CloseMetaFile](https://www.google.com/search?num=5&q=CloseMetaFile+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ColorCorrectPalette](https://www.google.com/search?num=5&q=ColorCorrectPalette+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ColorMatchToTarget](https://www.google.com/search?num=5&q=ColorMatchToTarget+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CombineRgn](https://www.google.com/search?num=5&q=CombineRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
+[CombineRgn](http://msdn2.microsoft.com/en-us/library/ef9fc4f3-737e-4c10-a80b-8ae2097c17d1) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CombineRgn  
 [CombineTransform](https://www.google.com/search?num=5&q=CombineTransform+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ConfigureOPMProtectedOutput](https://www.google.com/search?num=5&q=ConfigureOPMProtectedOutput+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CopyEnhMetaFile](https://www.google.com/search?num=5&q=CopyEnhMetaFileA+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -46,26 +46,26 @@ Native Method | Native DLL | Header | Managed Method
 [CreateDIBPatternBrushPt](http://msdn2.microsoft.com/en-us/library/0e34d108-fd35-4512-9eb3-c7710af36e95) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateDIBPatternBrushPt  
 [CreateDIBSection](http://msdn2.microsoft.com/en-us/library/dd183494) | gdi32.dll | Wingdi.h | Vanara.PInvoke.Gdi32.CreateDIBSection  
 [CreateDiscardableBitmap](https://www.google.com/search?num=5&q=CreateDiscardableBitmap+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreateEllipticRgn](https://www.google.com/search?num=5&q=CreateEllipticRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreateEllipticRgnIndirect](https://www.google.com/search?num=5&q=CreateEllipticRgnIndirect+site%3Amicrosoft.com) | gdi32.dll |  |   
+[CreateEllipticRgn](http://msdn2.microsoft.com/en-us/library/b4e9b210-8e22-42db-bb6e-65f1fb870eff) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateEllipticRgn  
+[CreateEllipticRgnIndirect](http://msdn2.microsoft.com/en-us/library/bd30516e-1e05-4b7d-a6bf-7512cf3ef30f) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateEllipticRgnIndirect  
 [CreateEnhMetaFile](http://msdn2.microsoft.com/en-us/library/647f83ca-dca3-44af-a594-5f9ba2bd7607) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateEnhMetaFile  
 [CreateFont](https://www.google.com/search?num=5&q=CreateFontA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateFontIndirect](https://www.google.com/search?num=5&q=CreateFontIndirectA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateFontIndirectEx](https://www.google.com/search?num=5&q=CreateFontIndirectExA+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreateHalftonePalette](https://www.google.com/search?num=5&q=CreateHalftonePalette+site%3Amicrosoft.com) | gdi32.dll |  |   
+[CreateHalftonePalette](http://msdn2.microsoft.com/en-us/library/ba9dfa0c-98df-4922-acba-d00e9b4b0fb0) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateHalftonePalette  
 [CreateHatchBrush](http://msdn2.microsoft.com/en-us/library/0b5849d6-1e22-4ac5-980c-2f2a73b16adb) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateHatchBrush  
 [CreateIC](https://www.google.com/search?num=5&q=CreateICA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateMetaFile](https://www.google.com/search?num=5&q=CreateMetaFileA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateOPMProtectedOutputs](https://www.google.com/search?num=5&q=CreateOPMProtectedOutputs+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreatePalette](https://www.google.com/search?num=5&q=CreatePalette+site%3Amicrosoft.com) | gdi32.dll |  |   
+[CreatePalette](http://msdn2.microsoft.com/en-us/library/f3462198-9360-4b77-ac62-9fe21ec666be) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreatePalette  
 [CreatePatternBrush](http://msdn2.microsoft.com/en-us/library/a3cf347e-9803-4bb0-bdb3-98929ef859ab) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreatePatternBrush  
 [CreatePen](http://msdn2.microsoft.com/en-us/library/882facd2-7e06-48f6-82e4-f20e4d5adc92) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreatePen  
 [CreatePenIndirect](http://msdn2.microsoft.com/en-us/library/638c0294-9a8f-44ed-a791-1be152cd92dd) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreatePenIndirect  
-[CreatePolygonRgn](https://www.google.com/search?num=5&q=CreatePolygonRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreatePolyPolygonRgn](https://www.google.com/search?num=5&q=CreatePolyPolygonRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreateRectRgn](https://www.google.com/search?num=5&q=CreateRectRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreateRectRgnIndirect](https://www.google.com/search?num=5&q=CreateRectRgnIndirect+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreateRoundRectRgn](https://www.google.com/search?num=5&q=CreateRoundRectRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
+[CreatePolygonRgn](http://msdn2.microsoft.com/en-us/library/dd7ad6de-c5f2-46e4-8d28-24caaa48ba3a) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreatePolygonRgn  
+[CreatePolyPolygonRgn](http://msdn2.microsoft.com/en-us/library/1113d3dc-8e3f-436c-a5a8-191785bc7fcc) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreatePolyPolygonRgn  
+[CreateRectRgn](http://msdn2.microsoft.com/en-us/library/17456440-c655-48ab-8d1e-ee770330f164) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateRectRgn  
+[CreateRectRgnIndirect](http://msdn2.microsoft.com/en-us/library/f32e0b94-ce9c-4098-81fe-b239a9544621) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateRectRgnIndirect  
+[CreateRoundRectRgn](http://msdn2.microsoft.com/en-us/library/16f387e1-b00c-4755-8b21-1ee0f25bc46b) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateRoundRectRgn  
 [CreateScalableFontResource](https://www.google.com/search?num=5&q=CreateScalableFontResourceA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateSolidBrush](http://msdn2.microsoft.com/en-us/library/e39b5f77-97d8-4ea6-8277-7da12b3367f3) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateSolidBrush  
 [D3DKMTAbandonSwapChain](https://www.google.com/search?num=5&q=D3DKMTAbandonSwapChain+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -254,7 +254,7 @@ Native Method | Native DLL | Header | Managed Method
 [DeleteEnhMetaFile](http://msdn2.microsoft.com/en-us/library/d3b93b3b-fa0b-4480-8348-19919c9e904d) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.DeleteEnhMetaFile  
 [DeleteMetaFile](https://www.google.com/search?num=5&q=DeleteMetaFile+site%3Amicrosoft.com) | gdi32.dll |  |   
 [DeleteObject](http://msdn2.microsoft.com/en-us/library/dd183539) | gdi32.dll | Wingdi.h | Vanara.PInvoke.Gdi32.DeleteObject  
-[DescribePixelFormat](https://www.google.com/search?num=5&q=DescribePixelFormat+site%3Amicrosoft.com) | gdi32.dll |  |   
+[DescribePixelFormat](http://msdn2.microsoft.com/en-us/library/9692a30d-c7d4-40c7-a265-72c4ebabd5f2) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.DescribePixelFormat  
 [DestroyOPMProtectedOutput](https://www.google.com/search?num=5&q=DestroyOPMProtectedOutput+site%3Amicrosoft.com) | gdi32.dll |  |   
 [DestroyPhysicalMonitorInternal](https://www.google.com/search?num=5&q=DestroyPhysicalMonitorInternal+site%3Amicrosoft.com) | gdi32.dll |  |   
 [DPtoLP](https://www.google.com/search?num=5&q=DPtoLP+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -316,17 +316,17 @@ Native Method | Native DLL | Header | Managed Method
 [EnumICMProfiles](https://www.google.com/search?num=5&q=EnumICMProfilesA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [EnumMetaFile](https://www.google.com/search?num=5&q=EnumMetaFile+site%3Amicrosoft.com) | gdi32.dll |  |   
 [EnumObjects](https://www.google.com/search?num=5&q=EnumObjects+site%3Amicrosoft.com) | gdi32.dll |  |   
-[EqualRgn](https://www.google.com/search?num=5&q=EqualRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
+[EqualRgn](http://msdn2.microsoft.com/en-us/library/c7829998-78f4-4334-bf34-92aad12555f5) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.EqualRgn  
 [Escape](https://www.google.com/search?num=5&q=Escape+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ExcludeClipRect](https://www.google.com/search?num=5&q=ExcludeClipRect+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ExtCreatePen](http://msdn2.microsoft.com/en-us/library/a1e81314-4fe6-481f-af96-24ebf56332cf) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.ExtCreatePen  
-[ExtCreateRegion](https://www.google.com/search?num=5&q=ExtCreateRegion+site%3Amicrosoft.com) | gdi32.dll |  |   
+[ExtCreateRegion](http://msdn2.microsoft.com/en-us/library/4dcff824-eb1d-425c-b246-db4ace2c6518) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.ExtCreateRegion  
 [ExtEscape](https://www.google.com/search?num=5&q=ExtEscape+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ExtFloodFill](https://www.google.com/search?num=5&q=ExtFloodFill+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ExtSelectClipRgn](https://www.google.com/search?num=5&q=ExtSelectClipRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ExtTextOut](https://www.google.com/search?num=5&q=ExtTextOutA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [FillPath](https://www.google.com/search?num=5&q=FillPath+site%3Amicrosoft.com) | gdi32.dll |  |   
-[FillRgn](https://www.google.com/search?num=5&q=FillRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
+[FillRgn](http://msdn2.microsoft.com/en-us/library/c4e0eca5-442b-462b-a4f2-0c628b6d3d38) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.FillRgn  
 [FlattenPath](https://www.google.com/search?num=5&q=FlattenPath+site%3Amicrosoft.com) | gdi32.dll |  |   
 [FloodFill](https://www.google.com/search?num=5&q=FloodFill+site%3Amicrosoft.com) | gdi32.dll |  |   
 [FONTOBJ_cGetAllGlyphHandles](https://www.google.com/search?num=5&q=FONTOBJ_cGetAllGlyphHandles+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -337,7 +337,7 @@ Native Method | Native DLL | Header | Managed Method
 [FONTOBJ_pvTrueTypeFontFile](https://www.google.com/search?num=5&q=FONTOBJ_pvTrueTypeFontFile+site%3Amicrosoft.com) | gdi32.dll |  |   
 [FONTOBJ_pxoGetXform](https://www.google.com/search?num=5&q=FONTOBJ_pxoGetXform+site%3Amicrosoft.com) | gdi32.dll |  |   
 [FONTOBJ_vGetInfo](https://www.google.com/search?num=5&q=FONTOBJ_vGetInfo+site%3Amicrosoft.com) | gdi32.dll |  |   
-[FrameRgn](https://www.google.com/search?num=5&q=FrameRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
+[FrameRgn](http://msdn2.microsoft.com/en-us/library/d2c95392-7950-4963-8f10-2387daf23e93) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.FrameRgn  
 [GdiAlphaBlend](http://msdn2.microsoft.com/en-us/library/dd183351) | gdi32.dll | Wingdi.h | Vanara.PInvoke.Gdi32.AlphaBlend  
 [GdiComment](https://www.google.com/search?num=5&q=GdiComment+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GdiDeleteSpoolFileHandle](https://www.google.com/search?num=5&q=GdiDeleteSpoolFileHandle+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -377,7 +377,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetCharWidthI](https://www.google.com/search?num=5&q=GetCharWidthI+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetClipBox](https://www.google.com/search?num=5&q=GetClipBox+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetClipRgn](https://www.google.com/search?num=5&q=GetClipRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
-[GetColorAdjustment](https://www.google.com/search?num=5&q=GetColorAdjustment+site%3Amicrosoft.com) | gdi32.dll |  |   
+[GetColorAdjustment](http://msdn2.microsoft.com/en-us/library/405c0d0d-9433-4f4a-9957-5c42a0fb3a07) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.GetColorAdjustment  
 [GetCOPPCompatibleOPMInformation](https://www.google.com/search?num=5&q=GetCOPPCompatibleOPMInformation+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetCurrentObject](https://www.google.com/search?num=5&q=GetCurrentObject+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetCurrentPositionEx](https://www.google.com/search?num=5&q=GetCurrentPositionEx+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -393,7 +393,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetEnhMetaFileDescription](https://www.google.com/search?num=5&q=GetEnhMetaFileDescriptionA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetEnhMetaFileHeader](https://www.google.com/search?num=5&q=GetEnhMetaFileHeader+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetEnhMetaFilePaletteEntries](https://www.google.com/search?num=5&q=GetEnhMetaFilePaletteEntries+site%3Amicrosoft.com) | gdi32.dll |  |   
-[GetEnhMetaFilePixelFormat](https://www.google.com/search?num=5&q=GetEnhMetaFilePixelFormat+site%3Amicrosoft.com) | gdi32.dll |  |   
+[GetEnhMetaFilePixelFormat](http://msdn2.microsoft.com/en-us/library/80209210-5caa-44a9-a791-991b257d8d28) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.GetEnhMetaFilePixelFormat  
 [GetFontData](https://www.google.com/search?num=5&q=GetFontData+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetFontLanguageInfo](https://www.google.com/search?num=5&q=GetFontLanguageInfo+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetFontUnicodeRanges](https://www.google.com/search?num=5&q=GetFontUnicodeRanges+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -408,31 +408,32 @@ Native Method | Native DLL | Header | Managed Method
 [GetMetaFileBitsEx](https://www.google.com/search?num=5&q=GetMetaFileBitsEx+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetMetaRgn](https://www.google.com/search?num=5&q=GetMetaRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetMiterLimit](https://www.google.com/search?num=5&q=GetMiterLimit+site%3Amicrosoft.com) | gdi32.dll |  |   
-[GetNearestColor](https://www.google.com/search?num=5&q=GetNearestColor+site%3Amicrosoft.com) | gdi32.dll |  |   
+[GetNearestColor](http://msdn2.microsoft.com/en-us/library/89e4e19b-47be-442e-8eb4-c867bb78f36a) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.GetNearestColor  
+[GetNearestPaletteIndex](https://www.google.com/search?num=5&q=GetNearestPaletteIndex+site%3Amicrosoft.com) | gdi32.dll | Wingdi.h | Vanara.PInvoke.Gdi32.GetNearestPaletteIndex  
 [GetNumberOfPhysicalMonitors](https://www.google.com/search?num=5&q=GetNumberOfPhysicalMonitors+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetObject](http://msdn2.microsoft.com/en-us/library/dd144904) | gdi32.dll | Wingdi.h | Vanara.PInvoke.Gdi32.GetObject  
 [GetObjectType](https://www.google.com/search?num=5&q=GetObjectType+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetOPMInformation](https://www.google.com/search?num=5&q=GetOPMInformation+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetOPMRandomNumber](https://www.google.com/search?num=5&q=GetOPMRandomNumber+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetOutlineTextMetrics](https://www.google.com/search?num=5&q=GetOutlineTextMetricsA+site%3Amicrosoft.com) | gdi32.dll |  |   
-[GetPaletteEntries](https://www.google.com/search?num=5&q=GetPaletteEntries+site%3Amicrosoft.com) | gdi32.dll |  |   
+[GetPaletteEntries](http://msdn2.microsoft.com/en-us/library/5e72e881-32e1-458e-a09e-91fa13abe178) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.GetPaletteEntries  
 [GetPath](https://www.google.com/search?num=5&q=GetPath+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetPhysicalMonitorDescription](https://www.google.com/search?num=5&q=GetPhysicalMonitorDescription+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetPhysicalMonitors](https://www.google.com/search?num=5&q=GetPhysicalMonitors+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetPixel](https://www.google.com/search?num=5&q=GetPixel+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetPixelFormat](https://www.google.com/search?num=5&q=GetPixelFormat+site%3Amicrosoft.com) | gdi32.dll |  |   
-[GetPolyFillMode](https://www.google.com/search?num=5&q=GetPolyFillMode+site%3Amicrosoft.com) | gdi32.dll |  |   
+[GetPolyFillMode](http://msdn2.microsoft.com/en-us/library/febf96fb-bf2e-4eb2-ab5f-89741a1decad) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.GetPolyFillMode  
 [GetRandomRgn](https://www.google.com/search?num=5&q=GetRandomRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetRasterizerCaps](https://www.google.com/search?num=5&q=GetRasterizerCaps+site%3Amicrosoft.com) | gdi32.dll |  |   
-[GetRegionData](https://www.google.com/search?num=5&q=GetRegionData+site%3Amicrosoft.com) | gdi32.dll |  |   
-[GetRgnBox](https://www.google.com/search?num=5&q=GetRgnBox+site%3Amicrosoft.com) | gdi32.dll |  |   
+[GetRegionData](http://msdn2.microsoft.com/en-us/library/e0d4862d-a405-4c00-b7b0-af4dd60407c0) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.GetRegionData  
+[GetRgnBox](http://msdn2.microsoft.com/en-us/library/42d06f7f-1bf3-418f-a3b9-c009cf2de10b) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.GetRgnBox  
 [GetROP2](https://www.google.com/search?num=5&q=GetROP2+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetStockObject](https://www.google.com/search?num=5&q=GetStockObject+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetStretchBltMode](https://www.google.com/search?num=5&q=GetStretchBltMode+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetSuggestedOPMProtectedOutputArraySize](https://www.google.com/search?num=5&q=GetSuggestedOPMProtectedOutputArraySize+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetSysColorBrush](http://msdn2.microsoft.com/en-us/library/07a1d8e3-eae8-40ab-9d0f-4efa9fac0117) | user32.dll | winuser.h | Vanara.PInvoke.Gdi32.GetSysColorBrush  
-[GetSystemPaletteEntries](https://www.google.com/search?num=5&q=GetSystemPaletteEntries+site%3Amicrosoft.com) | gdi32.dll |  |   
-[GetSystemPaletteUse](https://www.google.com/search?num=5&q=GetSystemPaletteUse+site%3Amicrosoft.com) | gdi32.dll |  |   
+[GetSystemPaletteEntries](http://msdn2.microsoft.com/en-us/library/67bb0adf-ae7f-48d5-bc62-82ece45aeee6) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.GetSystemPaletteEntries  
+[GetSystemPaletteUse](http://msdn2.microsoft.com/en-us/library/0a9e7906-2f81-4fda-b03d-86feb0755327) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.GetSystemPaletteUse  
 [GetTextAlign](https://www.google.com/search?num=5&q=GetTextAlign+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetTextCharacterExtra](https://www.google.com/search?num=5&q=GetTextCharacterExtra+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetTextCharset](https://www.google.com/search?num=5&q=GetTextCharset+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -455,7 +456,7 @@ Native Method | Native DLL | Header | Managed Method
 [HT_Get8BPPFormatPalette](https://www.google.com/search?num=5&q=HT_Get8BPPFormatPalette+site%3Amicrosoft.com) | gdi32.dll |  |   
 [HT_Get8BPPMaskPalette](https://www.google.com/search?num=5&q=HT_Get8BPPMaskPalette+site%3Amicrosoft.com) | gdi32.dll |  |   
 [IntersectClipRect](https://www.google.com/search?num=5&q=IntersectClipRect+site%3Amicrosoft.com) | gdi32.dll |  |   
-[InvertRgn](https://www.google.com/search?num=5&q=InvertRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
+[InvertRgn](http://msdn2.microsoft.com/en-us/library/94704c44-796a-4ca7-97f3-6676d7f94078) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.InvertRgn  
 [LineDDA](https://www.google.com/search?num=5&q=LineDDA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [LineTo](https://www.google.com/search?num=5&q=LineTo+site%3Amicrosoft.com) | gdi32.dll |  |   
 [LPtoDP](http://msdn2.microsoft.com/en-us/library/670a16fb-842e-4250-9ad7-dc08e849c2ba) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.LPtoDP  
@@ -463,10 +464,10 @@ Native Method | Native DLL | Header | Managed Method
 [ModifyWorldTransform](https://www.google.com/search?num=5&q=ModifyWorldTransform+site%3Amicrosoft.com) | gdi32.dll |  |   
 [MoveToEx](https://www.google.com/search?num=5&q=MoveToEx+site%3Amicrosoft.com) | gdi32.dll |  |   
 [OffsetClipRgn](https://www.google.com/search?num=5&q=OffsetClipRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
-[OffsetRgn](https://www.google.com/search?num=5&q=OffsetRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
+[OffsetRgn](http://msdn2.microsoft.com/en-us/library/5228c614-3278-4852-a867-7eed57359aef) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.OffsetRgn  
 [OffsetViewportOrgEx](https://www.google.com/search?num=5&q=OffsetViewportOrgEx+site%3Amicrosoft.com) | gdi32.dll |  |   
 [OffsetWindowOrgEx](https://www.google.com/search?num=5&q=OffsetWindowOrgEx+site%3Amicrosoft.com) | gdi32.dll |  |   
-[PaintRgn](https://www.google.com/search?num=5&q=PaintRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
+[PaintRgn](http://msdn2.microsoft.com/en-us/library/7656fb67-d865-459e-b379-4f2e44c76fd0) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.PaintRgn  
 [PatBlt](http://msdn2.microsoft.com/en-us/library/6deea8ef-b55d-4086-a54e-3f89bb17c6cd) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.PatBlt  
 [PATHOBJ_bEnum](https://www.google.com/search?num=5&q=PATHOBJ_bEnum+site%3Amicrosoft.com) | gdi32.dll |  |   
 [PATHOBJ_bEnumClipLines](https://www.google.com/search?num=5&q=PATHOBJ_bEnumClipLines+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -489,17 +490,17 @@ Native Method | Native DLL | Header | Managed Method
 [PolyPolygon](https://www.google.com/search?num=5&q=PolyPolygon+site%3Amicrosoft.com) | gdi32.dll |  |   
 [PolyPolyline](https://www.google.com/search?num=5&q=PolyPolyline+site%3Amicrosoft.com) | gdi32.dll |  |   
 [PolyTextOut](https://www.google.com/search?num=5&q=PolyTextOutA+site%3Amicrosoft.com) | gdi32.dll |  |   
-[PtInRegion](https://www.google.com/search?num=5&q=PtInRegion+site%3Amicrosoft.com) | gdi32.dll |  |   
+[PtInRegion](http://msdn2.microsoft.com/en-us/library/6fab6126-4672-49d6-825b-66a7927a7e99) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.PtInRegion  
 [PtVisible](https://www.google.com/search?num=5&q=PtVisible+site%3Amicrosoft.com) | gdi32.dll |  |   
-[RealizePalette](https://www.google.com/search?num=5&q=RealizePalette+site%3Amicrosoft.com) | gdi32.dll |  |   
+[RealizePalette](http://msdn2.microsoft.com/en-us/library/1c744ad2-09bc-455f-bc3c-9a2583b57a30) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.RealizePalette  
 [Rectangle](https://www.google.com/search?num=5&q=Rectangle+site%3Amicrosoft.com) | gdi32.dll |  |   
-[RectInRegion](https://www.google.com/search?num=5&q=RectInRegion+site%3Amicrosoft.com) | gdi32.dll |  |   
+[RectInRegion](http://msdn2.microsoft.com/en-us/library/198a02f1-120c-4f65-aa7c-a41f2e5e81a9) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.RectInRegion  
 [RectVisible](https://www.google.com/search?num=5&q=RectVisible+site%3Amicrosoft.com) | gdi32.dll |  |   
 [RemoveFontMemResourceEx](https://www.google.com/search?num=5&q=RemoveFontMemResourceEx+site%3Amicrosoft.com) | gdi32.dll |  |   
 [RemoveFontResource](https://www.google.com/search?num=5&q=RemoveFontResourceA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [RemoveFontResourceEx](https://www.google.com/search?num=5&q=RemoveFontResourceExA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ResetDC](https://www.google.com/search?num=5&q=ResetDCA+site%3Amicrosoft.com) | gdi32.dll |  |   
-[ResizePalette](https://www.google.com/search?num=5&q=ResizePalette+site%3Amicrosoft.com) | gdi32.dll |  |   
+[ResizePalette](http://msdn2.microsoft.com/en-us/library/77178869-cbfb-4b91-a5b0-7d0404e7534f) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.ResizePalette  
 [RestoreDC](https://www.google.com/search?num=5&q=RestoreDC+site%3Amicrosoft.com) | gdi32.dll |  |   
 [RoundRect](https://www.google.com/search?num=5&q=RoundRect+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SaveDC](https://www.google.com/search?num=5&q=SaveDC+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -548,7 +549,7 @@ Native Method | Native DLL | Header | Managed Method
 [SelectClipPath](https://www.google.com/search?num=5&q=SelectClipPath+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SelectClipRgn](https://www.google.com/search?num=5&q=SelectClipRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SelectObject](http://msdn2.microsoft.com/en-us/library/dd162957) | gdi32.dll | Wingdi.h | Vanara.PInvoke.Gdi32.SelectObject  
-[SelectPalette](https://www.google.com/search?num=5&q=SelectPalette+site%3Amicrosoft.com) | gdi32.dll |  |   
+[SelectPalette](http://msdn2.microsoft.com/en-us/library/1fc3356f-6fa3-444f-b224-b953acd2394b) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.SelectPalette  
 [SetAbortProc](https://www.google.com/search?num=5&q=SetAbortProc+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetArcDirection](https://www.google.com/search?num=5&q=SetArcDirection+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetBitmapBits](https://www.google.com/search?num=5&q=SetBitmapBits+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -557,7 +558,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetBkMode](http://msdn2.microsoft.com/en-us/library/dd162965) | gdi32.dll | Wingdi.h | Vanara.PInvoke.Gdi32.SetBkMode  
 [SetBoundsRect](https://www.google.com/search?num=5&q=SetBoundsRect+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetBrushOrgEx](http://msdn2.microsoft.com/en-us/library/dcc7575a-49fd-4306-8baa-57e9e0d5ed1f) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.SetBrushOrgEx  
-[SetColorAdjustment](https://www.google.com/search?num=5&q=SetColorAdjustment+site%3Amicrosoft.com) | gdi32.dll |  |   
+[SetColorAdjustment](http://msdn2.microsoft.com/en-us/library/292d6cdc-cafa-438a-9392-a9c22e7d44a5) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.SetColorAdjustment  
 [SetColorSpace](https://www.google.com/search?num=5&q=SetColorSpace+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetDCBrushColor](https://www.google.com/search?num=5&q=SetDCBrushColor+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetDCPenColor](https://www.google.com/search?num=5&q=SetDCPenColor+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -576,15 +577,15 @@ Native Method | Native DLL | Header | Managed Method
 [SetMetaRgn](https://www.google.com/search?num=5&q=SetMetaRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetMiterLimit](https://www.google.com/search?num=5&q=SetMiterLimit+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetOPMSigningKeyAndSequenceNumbers](https://www.google.com/search?num=5&q=SetOPMSigningKeyAndSequenceNumbers+site%3Amicrosoft.com) | gdi32.dll |  |   
-[SetPaletteEntries](https://www.google.com/search?num=5&q=SetPaletteEntries+site%3Amicrosoft.com) | gdi32.dll |  |   
+[SetPaletteEntries](http://msdn2.microsoft.com/en-us/library/df38f482-75ba-4800-8b26-92204c63255e) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.SetPaletteEntries  
 [SetPixel](https://www.google.com/search?num=5&q=SetPixel+site%3Amicrosoft.com) | gdi32.dll |  |   
-[SetPixelFormat](https://www.google.com/search?num=5&q=SetPixelFormat+site%3Amicrosoft.com) | gdi32.dll |  |   
+[SetPixelFormat](http://msdn2.microsoft.com/en-us/library/f8d74078-a7e7-4d95-857a-f51d5d70598e) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.SetPixelFormat  
 [SetPixelV](https://www.google.com/search?num=5&q=SetPixelV+site%3Amicrosoft.com) | gdi32.dll |  |   
-[SetPolyFillMode](https://www.google.com/search?num=5&q=SetPolyFillMode+site%3Amicrosoft.com) | gdi32.dll |  |   
+[SetPolyFillMode](http://msdn2.microsoft.com/en-us/library/233926c4-2658-405d-89b6-05ece844623d) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.SetPolyFillMode  
 [SetRectRgn](https://www.google.com/search?num=5&q=SetRectRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetROP2](https://www.google.com/search?num=5&q=SetROP2+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetStretchBltMode](https://www.google.com/search?num=5&q=SetStretchBltMode+site%3Amicrosoft.com) | gdi32.dll |  |   
-[SetSystemPaletteUse](https://www.google.com/search?num=5&q=SetSystemPaletteUse+site%3Amicrosoft.com) | gdi32.dll |  |   
+[SetSystemPaletteUse](http://msdn2.microsoft.com/en-us/library/6ff245d3-1bcc-4778-a595-c1eb16531ad3) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.SetSystemPaletteUse  
 [SetTextAlign](https://www.google.com/search?num=5&q=SetTextAlign+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetTextCharacterExtra](https://www.google.com/search?num=5&q=SetTextCharacterExtra+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetTextColor](https://www.google.com/search?num=5&q=SetTextColor+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -606,11 +607,11 @@ Native Method | Native DLL | Header | Managed Method
 [STROBJ_vEnumStart](https://www.google.com/search?num=5&q=STROBJ_vEnumStart+site%3Amicrosoft.com) | gdi32.dll |  |   
 [StrokeAndFillPath](https://www.google.com/search?num=5&q=StrokeAndFillPath+site%3Amicrosoft.com) | gdi32.dll |  |   
 [StrokePath](https://www.google.com/search?num=5&q=StrokePath+site%3Amicrosoft.com) | gdi32.dll |  |   
-[SwapBuffers](https://www.google.com/search?num=5&q=SwapBuffers+site%3Amicrosoft.com) | gdi32.dll |  |   
+[SwapBuffers](http://msdn2.microsoft.com/en-us/library/2c9728e4-c5be-4b14-a6f7-2899c792ec3d) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.SwapBuffers  
 [TextOut](https://www.google.com/search?num=5&q=TextOutA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [TranslateCharsetInfo](https://www.google.com/search?num=5&q=TranslateCharsetInfo+site%3Amicrosoft.com) | gdi32.dll |  |   
-[UnrealizeObject](https://www.google.com/search?num=5&q=UnrealizeObject+site%3Amicrosoft.com) | gdi32.dll |  |   
-[UpdateColors](https://www.google.com/search?num=5&q=UpdateColors+site%3Amicrosoft.com) | gdi32.dll |  |   
+[UnrealizeObject](http://msdn2.microsoft.com/en-us/library/b84cd0b3-fdf1-4f12-bc45-308032d6d698) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.UnrealizeObject  
+[UpdateColors](http://msdn2.microsoft.com/en-us/library/61dfd579-3fc9-4e0a-bfd9-d04c6f918fd8) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.UpdateColors  
 [UpdateICMRegKey](https://www.google.com/search?num=5&q=UpdateICMRegKeyA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [WidenPath](https://www.google.com/search?num=5&q=WidenPath+site%3Amicrosoft.com) | gdi32.dll |  |   
 [XFORMOBJ_bApplyXform](https://www.google.com/search?num=5&q=XFORMOBJ_bApplyXform+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -626,6 +627,7 @@ Native Structure | Header | Managed Structure
 [BITMAPINFO](http://msdn2.microsoft.com/en-us/library/dd183375) | Wingdi.h | Vanara.PInvoke.Gdi32+BITMAPINFO  
 [BITMAPINFOHEADER](http://msdn2.microsoft.com/en-us/library/dd183376) | Wingdi.h | Vanara.PInvoke.Gdi32+BITMAPINFOHEADER  
 [BLENDFUNCTION](http://msdn2.microsoft.com/en-us/library/dd183393) | Wingdi.h | Vanara.PInvoke.Gdi32+BLENDFUNCTION  
+[COLORADJUSTMENT](http://msdn2.microsoft.com/en-us/library/9a080f60-0bce-46b6-b8a8-f534ff83a0a8) | wingdi.h | Vanara.PInvoke.Gdi32+COLORADJUSTMENT  
 [DEVMODE](http://msdn2.microsoft.com/en-us/library/85741025-9393-42ab-8a6d-27f1ae2c0f1b) | wingdi.h | Vanara.PInvoke.Gdi32+DEVMODE  
 [DIBSECTION](http://msdn2.microsoft.com/en-us/library/dd183567) | Wingdi.h | Vanara.PInvoke.Gdi32+DIBSECTION  
 [DISPLAY_DEVICE](http://msdn2.microsoft.com/en-us/library/9a7813fe-358a-44eb-99da-c63f98d055c3) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAY_DEVICE  
@@ -652,8 +654,14 @@ Native Structure | Header | Managed Structure
 [DISPLAYCONFIG_VIDEO_SIGNAL_INFO](http://msdn2.microsoft.com/en-us/library/960089fe-dbb7-41a1-af73-0002cfce6da2) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_VIDEO_SIGNAL_INFO  
 [EXTLOGPEN](http://msdn2.microsoft.com/en-us/library/34ffa71d-e94d-425e-9f9d-21e3df4990b7) | wingdi.h | Vanara.PInvoke.Gdi32+EXTLOGPEN  
 [LOGBRUSH](http://msdn2.microsoft.com/en-us/library/ded2c7a4-2248-4d01-95c6-ab4050719094) | wingdi.h | Vanara.PInvoke.Gdi32+LOGBRUSH  
+[LOGPALETTE](http://msdn2.microsoft.com/en-us/library/99d70a0e-ac61-4a88-a500-66443e7882ad) | wingdi.h | Vanara.PInvoke.Gdi32+LOGPALETTE  
 [LOGPEN](http://msdn2.microsoft.com/en-us/library/0e098b5a-e249-43ad-a6d8-2509b6562453) | wingdi.h | Vanara.PInvoke.Gdi32+LOGPEN  
+[PALETTEENTRY](https://www.google.com/search?num=5&q=PALETTEENTRY+site%3Amicrosoft.com) | wingdi.h | Vanara.PInvoke.Gdi32+PALETTEENTRY  
+[PIXELFORMATDESCRIPTOR](http://msdn2.microsoft.com/en-us/library/1480dea3-ae74-4e8b-b4de-fca8de5d8395) | wingdi.h | Vanara.PInvoke.Gdi32+PIXELFORMATDESCRIPTOR  
 [RGBQUAD](http://msdn2.microsoft.com/en-us/library/dd162938) | Wingdi.h | Vanara.PInvoke.Gdi32+RGBQUAD  
+[RGNDATA](http://msdn2.microsoft.com/en-us/library/3eac0b23-3138-4b34-9c16-6cc185e4de22) | wingdi.h | Vanara.PInvoke.Gdi32+RGNDATA  
+[RGNDATAHEADER](http://msdn2.microsoft.com/en-us/library/15990903-8a48-4c47-b527-269d775255a5) | wingdi.h | Vanara.PInvoke.Gdi32+RGNDATAHEADER  
 [TEXTMETRIC](http://msdn2.microsoft.com/en-us/library/0a46da58-5d0f-4db4-bba6-9e1b6c1f892c) | wingdi.h | Vanara.PInvoke.Gdi32+TEXTMETRIC  
 [Union](https://www.google.com/search?num=5&q=Union+site%3Amicrosoft.com) |  | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_PATH_SOURCE_INFO+Union  
 [Union](https://www.google.com/search?num=5&q=Union+site%3Amicrosoft.com) |  | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_PATH_TARGET_INFO+Union  
+[XFORM](http://msdn2.microsoft.com/en-us/library/49f0d7ee-77fa-415e-af00-b8930253a3a9) | wingdi.h | Vanara.PInvoke.Gdi32+XFORM  
