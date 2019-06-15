@@ -33,11 +33,7 @@ namespace Vanara.Extensions
 		/// <summary>Creates a <see cref="FILETIME"/> from a 64-bit value.</summary>
 		/// <param name="ul">The value to be converted.</param>
 		/// <returns>The return value is a <see cref="FILETIME"/> created from the supplied 64-bit value.</returns>
-		public static FILETIME MakeFILETIME(ulong ul) => new FILETIME
-		{
-			dwHighDateTime = (int)(ul >> 32),
-			dwLowDateTime = (int)(ul & 0xFFFFFFFF)
-		};
+		public static FILETIME MakeFILETIME(ulong ul) => new FILETIME { dwHighDateTime = (int)(ul >> 32), dwLowDateTime = (int)(ul & 0xFFFFFFFF) };
 
 		/// <summary>Converts a <see cref="FILETIME"/> structure to a <see cref="DateTime"/> structure.</summary>
 		/// <param name="ft">The <see cref="FILETIME"/> value to convert.</param>
@@ -47,24 +43,15 @@ namespace Vanara.Extensions
 		{
 			unchecked
 			{
-				var hFT2 = ((long)ft.dwHighDateTime << 32) | (uint)ft.dwLowDateTime;
-				return kind == DateTimeKind.Utc ? DateTime.FromFileTimeUtc(hFT2) : DateTime.FromFileTime(hFT2);
+				var hFT2 = ft.ToUInt64();
+				return kind == DateTimeKind.Utc ? DateTime.FromFileTimeUtc((long)hFT2) : DateTime.FromFileTime((long)hFT2);
 			}
 		}
 
 		/// <summary>Converts a <see cref="DateTime"/> structure to a <see cref="FILETIME"/> structure using the local time.</summary>
 		/// <param name="dt">The <see cref="DateTime"/> value to convert.</param>
 		/// <returns>The resulting <see cref="FILETIME"/> structure as the local time.</returns>
-		public static FILETIME ToFileTimeStruct(this DateTime dt)
-		{
-			if (dt.Kind == DateTimeKind.Utc) dt = dt.ToLocalTime();
-			var l = dt.ToFileTime();
-			return new FILETIME
-			{
-				dwHighDateTime = (int)(l >> 32),
-				dwLowDateTime = (int)(l & 0xFFFFFFFF)
-			};
-		}
+		public static FILETIME ToFileTimeStruct(this DateTime dt) => MakeFILETIME(unchecked((ulong)dt.ToFileTimeUtc()));
 
 		/// <summary>Returns a <see cref="string"/> that represents the <see cref="FILETIME"/> instance.</summary>
 		/// <param name="ft">The <see cref="FILETIME"/> to convert.</param>
