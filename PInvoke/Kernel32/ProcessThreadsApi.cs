@@ -1335,11 +1335,11 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
 		public static bool CreateProcess(string lpApplicationName, StringBuilder lpCommandLine, [In] SECURITY_ATTRIBUTES lpProcessAttributes,
 			[In] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In] IntPtr lpEnvironment,
-			string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation)
+			string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
 		{
 			var ret = CreateProcess(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment,
-				lpCurrentDirectory, lpStartupInfo, out INTERNAL_PROCESS_INFORMATION pi);
-			lpProcessInformation = ret ? new PROCESS_INFORMATION(pi) : null;
+				lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
+			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
 			return ret;
 		}
 
@@ -1522,11 +1522,11 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
 		public static bool CreateProcess(string lpApplicationName, StringBuilder lpCommandLine, [In] SECURITY_ATTRIBUTES lpProcessAttributes,
 			[In] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In] IntPtr lpEnvironment,
-			string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation)
+			string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
 		{
 			var ret = CreateProcess(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment,
-				lpCurrentDirectory, lpStartupInfo, out INTERNAL_PROCESS_INFORMATION pi);
-			lpProcessInformation = ret ? new PROCESS_INFORMATION(pi) : null;
+				lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
+			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
 			return ret;
 		}
 
@@ -1731,11 +1731,11 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682429")]
 		public static bool CreateProcessAsUser(HTOKEN hToken, string lpApplicationName, StringBuilder lpCommandLine,
 			SECURITY_ATTRIBUTES lpProcessAttributes, SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
-			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation)
+			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
 		{
 			var ret = CreateProcessAsUser(hToken, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles,
-				dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, out INTERNAL_PROCESS_INFORMATION pi);
-			lpProcessInformation = ret ? new PROCESS_INFORMATION(pi) : null;
+				dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
+			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
 			return ret;
 		}
 
@@ -1940,11 +1940,11 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682429")]
 		public static bool CreateProcessAsUser(HTOKEN hToken, string lpApplicationName, StringBuilder lpCommandLine,
 			SECURITY_ATTRIBUTES lpProcessAttributes, SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
-			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation)
+			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
 		{
 			var ret = CreateProcessAsUser(hToken, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles,
-				dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, out INTERNAL_PROCESS_INFORMATION pi);
-			lpProcessInformation = ret ? new PROCESS_INFORMATION(pi) : null;
+				dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
+			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
 			return ret;
 		}
 
@@ -5147,7 +5147,7 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool CreateProcess(string lpApplicationName, StringBuilder lpCommandLine, [In] SECURITY_ATTRIBUTES lpProcessAttributes,
 			[In] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In] IntPtr lpEnvironment,
-			string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out INTERNAL_PROCESS_INFORMATION lpProcessInformation);
+			string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
 		/// <summary>
 		/// <para>Creates a new process and its primary thread. The new process runs in the security context of the calling process.</para>
@@ -5330,7 +5330,7 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool CreateProcess(string lpApplicationName, StringBuilder lpCommandLine, [In] SECURITY_ATTRIBUTES lpProcessAttributes,
 			[In] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In] IntPtr lpEnvironment,
-			string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out INTERNAL_PROCESS_INFORMATION lpProcessInformation);
+			string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
 		/// <summary>
 		/// <para>
@@ -5535,7 +5535,7 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool CreateProcessAsUser(HTOKEN hToken, string lpApplicationName, StringBuilder lpCommandLine,
 			SECURITY_ATTRIBUTES lpProcessAttributes, SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
-			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out INTERNAL_PROCESS_INFORMATION lpProcessInformation);
+			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
 		/// <summary>
 		/// <para>
@@ -5740,7 +5740,7 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool CreateProcessAsUser(HTOKEN hToken, string lpApplicationName, StringBuilder lpCommandLine,
 			SECURITY_ATTRIBUTES lpProcessAttributes, SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
-			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out INTERNAL_PROCESS_INFORMATION lpProcessInformation);
+			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
 		// Attribute may be used with thread creation Attribute is input only Attribute may be "accumulated," e.g. bitmasks, counters, etc.
 		private static UIntPtr ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM Number, bool Thread, bool Input, bool Additive) =>
@@ -5970,6 +5970,41 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public MEMORY_PRIORITY MemoryPriority;
+		}
+
+		/// <summary>
+		/// Contains information about a newly created process and its primary thread. It is used with the <c>CreateProcess</c>,
+		/// <c>CreateProcessAsUser</c>, <c>CreateProcessWithLogonW</c>, or <c>CreateProcessWithTokenW</c> function.
+		/// </summary>
+		// typedef struct _PROCESS_INFORMATION { HANDLE hProcess; HANDLE hThread; DWORD dwProcessId; DWORD dwThreadId;} PROCESS_INFORMATION,
+		// *LPPROCESS_INFORMATION; https://msdn.microsoft.com/en-us/library/windows/desktop/ms684873(v=vs.85).aspx
+		[PInvokeData("WinBase.h", MSDNShortId = "ms684873")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PROCESS_INFORMATION
+		{
+			/// <summary>
+			/// A handle to the newly created process. The handle is used to specify the process in all functions that perform operations on
+			/// the process object.
+			/// </summary>
+			public HPROCESS hProcess;
+
+			/// <summary>
+			/// A handle to the primary thread of the newly created process. The handle is used to specify the thread in all functions that
+			/// perform operations on the thread object.
+			/// </summary>
+			public HTHREAD hThread;
+
+			/// <summary>
+			/// A value that can be used to identify a process. The value is valid from the time the process is created until all handles to
+			/// the process are closed and the process object is freed; at this point, the identifier may be reused.
+			/// </summary>
+			public uint dwProcessId;
+
+			/// <summary>
+			/// A value that can be used to identify a thread. The value is valid from the time the thread is created until all handles to
+			/// the thread are closed and the thread object is freed; at this point, the identifier may be reused.
+			/// </summary>
+			public uint dwThreadId;
 		}
 
 		/// <summary>
@@ -6805,30 +6840,77 @@ namespace Vanara.PInvoke
 			public uint StateMask;
 		}
 
-		[StructLayout(LayoutKind.Sequential)]
-		internal struct INTERNAL_PROCESS_INFORMATION
+		/// <summary>Provides a <see cref="SafeHandle"/> to a process that releases a created HPROCESS instance at disposal using CloseHandle.</summary>
+		public class SafeHPROCESS : SafeSyncHandle
 		{
-			public IntPtr hProc;
-			public IntPtr hThr;
-			public uint pId;
-			public uint tId;
+			/// <summary>Initializes a new instance of the <see cref="HPROCESS"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHPROCESS(HPROCESS preexistingHandle, bool ownsHandle = true) : base((IntPtr)preexistingHandle, ownsHandle) { }
+
+			private SafeHPROCESS() : base() { }
+
+			/// <summary>Gets a handle to the current process that can be used across processes.</summary>
+			/// <value>The current process handle.</value>
+			public static SafeHPROCESS Current => new SafeHPROCESS(GetCurrentProcess().Duplicate());
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPROCESS"/> to <see cref="HPROCESS"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPROCESS(SafeHPROCESS h) => h.handle;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> to a thread that releases a created HTHREAD instance at disposal using CloseHandle.</summary>
+		public class SafeHTHREAD : SafeSyncHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="HTHREAD"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHTHREAD(HTHREAD preexistingHandle, bool ownsHandle = true) : base((IntPtr)preexistingHandle, ownsHandle) { }
+
+			private SafeHTHREAD() : base() { }
+
+			/// <summary>Gets a handle to the current thread that can be used across processes.</summary>
+			/// <value>The current thread handle.</value>
+			public static SafeHTHREAD Current => new SafeHTHREAD(GetCurrentThread().Duplicate());
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHTHREAD"/> to <see cref="HTHREAD"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HTHREAD(SafeHTHREAD h) => h.handle;
 		}
 
 		/// <summary>
 		/// Contains information about a newly created process and its primary thread. It is used with the <c>CreateProcess</c>,
-		/// <c>CreateProcessAsUser</c>, <c>CreateProcessWithLogonW</c>, or <c>CreateProcessWithTokenW</c> function.
+		/// <c>CreateProcessAsUser</c>, <c>CreateProcessWithLogonW</c>, or <c>CreateProcessWithTokenW</c> function. This class will close the
+		/// process and thread handles at disposal.
 		/// </summary>
 		// typedef struct _PROCESS_INFORMATION { HANDLE hProcess; HANDLE hThread; DWORD dwProcessId; DWORD dwThreadId;} PROCESS_INFORMATION,
 		// *LPPROCESS_INFORMATION; https://msdn.microsoft.com/en-us/library/windows/desktop/ms684873(v=vs.85).aspx
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684873")]
-		public sealed class PROCESS_INFORMATION : IDisposable
+		public sealed class SafePROCESS_INFORMATION : IDisposable
 		{
-			internal PROCESS_INFORMATION(in INTERNAL_PROCESS_INFORMATION pi)
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SafePROCESS_INFORMATION"/> class.
+			/// </summary>
+			/// <param name="pi">The pi.</param>
+			public SafePROCESS_INFORMATION(in PROCESS_INFORMATION pi)
 			{
-				hProcess = new SafeHPROCESS(pi.hProc);
-				hThread = new SafeHTHREAD(pi.hThr);
-				dwProcessId = pi.pId;
-				dwThreadId = pi.tId;
+				hProcess = new SafeHPROCESS(pi.hProcess);
+				hThread = new SafeHTHREAD(pi.hThread);
+				dwProcessId = pi.dwProcessId;
+				dwThreadId = pi.dwThreadId;
+			}
+
+			/// <summary>Initializes an empty instance of the <see cref="SafePROCESS_INFORMATION"/> class.</summary>
+			public SafePROCESS_INFORMATION()
+			{
+				hProcess = new SafeHPROCESS(IntPtr.Zero);
+				hThread = new SafeHTHREAD(IntPtr.Zero);
 			}
 
 			/// <summary>
@@ -6855,55 +6937,12 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public SafeHTHREAD hThread { get; private set; }
 
+			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			void IDisposable.Dispose()
 			{
 				hProcess.Dispose();
 				hThread.Dispose();
 			}
-		}
-
-		/// <summary>Provides a <see cref="SafeHandle"/> to a process that releases a created HPROCESS instance at disposal using CloseHandle.</summary>
-		public class SafeHPROCESS : SafeSyncHandle
-		{
-			/// <summary>Initializes a new instance of the <see cref="HPROCESS"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeHPROCESS(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			private SafeHPROCESS() : base() { }
-
-			/// <summary>Performs an implicit conversion from <see cref="SafeHPROCESS"/> to <see cref="HPROCESS"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HPROCESS(SafeHPROCESS h) => h.handle;
-
-			/// <summary>Gets a handle to the current process that can be used across processes.</summary>
-			/// <value>The current process handle.</value>
-			public static SafeHPROCESS Current => new SafeHPROCESS(GetCurrentProcess().Duplicate());
-		}
-
-		/// <summary>Provides a <see cref="SafeHandle"/> to a thread that releases a created HTHREAD instance at disposal using CloseHandle.</summary>
-		public class SafeHTHREAD : SafeSyncHandle
-		{
-			/// <summary>Initializes a new instance of the <see cref="HTHREAD"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeHTHREAD(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			private SafeHTHREAD() : base() { }
-
-			/// <summary>Performs an implicit conversion from <see cref="SafeHTHREAD"/> to <see cref="HTHREAD"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HTHREAD(SafeHTHREAD h) => h.handle;
-
-			/// <summary>Gets a handle to the current thread that can be used across processes.</summary>
-			/// <value>The current thread handle.</value>
-			public static SafeHTHREAD Current => new SafeHTHREAD(GetCurrentThread().Duplicate());
 		}
 	}
 }

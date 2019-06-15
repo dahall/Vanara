@@ -157,6 +157,19 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void CreateProcessWithTokenWTest()
+		{
+			using (var pTok = SafeHTOKEN.FromProcess(GetCurrentProcess()))
+			using (var hTok = pTok.DuplicateImpersonate())
+			{
+				var b = CreateProcessWithTokenW(hTok, 0, "notepad.exe", null, 0, default, default, STARTUPINFO.Default, out var pi);
+				if (!b) TestContext.WriteLine($"CreateProcessWithTokenW:{Win32Error.GetLastError()}");
+				Assert.That(b, Is.True);
+				Assert.That((int)WaitForSingleObject(pi.hProcess, INFINITE), Is.Zero);
+			}
+		}
+
+		[Test]
 		public void CredEnumerateTest()
 		{
 			var a = CredEnumerate();
