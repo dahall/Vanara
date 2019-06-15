@@ -44,12 +44,34 @@ namespace Vanara.PInvoke
 		/// the local system date.
 		/// </summary>
 		/// <param name="Locale">
-		/// Locale identifier that specifies the locale this function formats the date string for. You can use the <c>MAKELCID</c> macro to
-		/// create a locale identifier or use one of the following predefined values.
+		/// <para>
+		/// Locale identifier that specifies the locale this function formats the date string for. You can use the MAKELCID macro to create a
+		/// locale identifier or use one of the following predefined values.
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>LOCALE_CUSTOM_DEFAULT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_CUSTOM_UI_DEFAULT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_CUSTOM_UNSPECIFIED</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_INVARIANT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_SYSTEM_DEFAULT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_USER_DEFAULT</term>
+		/// </item>
+		/// </list>
 		/// </param>
-		/// <param name="dwFlags">Flags specifying date format options. For detailed definitions, see the dwFlags parameter of <c>GetDateFormatEx</c>.</param>
+		/// <param name="dwFlags">Flags specifying date format options. For detailed definitions, see the dwFlags parameter of GetDateFormatEx.</param>
 		/// <param name="lpDate">
-		/// Pointer to a <c>SYSTEMTIME</c> structure that contains the date information to format. The application sets this parameter to
+		/// Pointer to a SYSTEMTIME structure that contains the date information to format. The application sets this parameter to
 		/// <c>NULL</c> if the function is to use the current local system date.
 		/// </param>
 		/// <param name="lpFormat">
@@ -74,26 +96,72 @@ namespace Vanara.PInvoke
 		/// function returns the number of characters required to hold the formatted date string, including the terminating null character.
 		/// </para>
 		/// <para>
-		/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
-		/// which can return one of the following error codes:
+		/// The function returns 0 if it does not succeed. To get extended error information, the application can call GetLastError, which
+		/// can return one of the following error codes:
 		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER. A supplied buffer size was not large enough, or it was incorrectly set to <c>NULL</c>.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_FLAGS. The values supplied for flags were not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER. Any of the parameter values was invalid.</term>
+		/// </item>
+		/// </list>
 		/// </returns>
-		// int GetDateFormat( _In_ LCID Locale, _In_ DWORD dwFlags, _In_opt_ const SYSTEMTIME *lpDate, _In_opt_ LPCTSTR lpFormat, _Out_opt_
-		// LPTSTR lpDateStr, _In_ int cchDate); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318086(v=vs.85).aspx
+		/// <remarks>
+		/// <para>
+		/// <c>Note</c> This API is being updated to support the May 2019 Japanese era change. If your application supports the Japanese
+		/// calendar, you should validate that it properly handles the new era. See Prepare your application for the Japanese era change for
+		/// more information.
+		/// </para>
+		/// <para>See Remarks for GetDateFormatEx.</para>
+		/// <para>
+		/// When the ANSI version of this function is used with a Unicode-only locale identifier, the function can succeed because the
+		/// operating system uses the system code page. However, characters that are undefined in the system code page appear in the string
+		/// as a question mark ("?").
+		/// </para>
+		/// <para>
+		/// <c>Starting with Windows 8:</c><c>GetDateFormat</c> is declared in Datetimeapi.h. Before Windows 8, it was declared in Winnls.h.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/datetimeapi/nf-datetimeapi-getdateformata int GetDateFormatA( LCID Locale,
+		// DWORD dwFlags, const SYSTEMTIME *lpDate, LPCSTR lpFormat, LPSTR lpDateStr, int cchDate );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("Datetimeapi.h", MSDNShortId = "dd318086")]
-		public static extern int GetDateFormat(uint Locale, DATE_FORMAT dwFlags, in SYSTEMTIME lpDate, string lpFormat, StringBuilder lpDateStr, int cchDate);
+		[PInvokeData("datetimeapi.h", MSDNShortId = "546cede1-1702-403a-bba3-b5cd3b35a1bf")]
+		public static extern int GetDateFormat(LCID Locale, DATE_FORMAT dwFlags, in SYSTEMTIME lpDate, [Optional] string lpFormat, StringBuilder lpDateStr, int cchDate);
 
 		/// <summary>
+		/// <para>
 		/// Formats a date as a date string for a locale specified by name. The function formats either a specified date or the local system date.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> This function can format data that changes between releases, for example, due to a custom locale. If your application
+		/// must persist or transmit data, see Using Persistent Locale Data.
+		/// </para>
 		/// </summary>
-		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
+		/// <param name="lpLocaleName">
+		/// <para>Pointer to a locale name, or one of the following predefined values.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>LOCALE_NAME_INVARIANT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_NAME_SYSTEM_DEFAULT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_NAME_USER_DEFAULT</term>
+		/// </item>
+		/// </list>
+		/// </param>
 		/// <param name="dwFlags">
 		/// <para>
 		/// Flags specifying various function options that can be set if lpFormat is set to <c>NULL</c>. The application can specify a
 		/// combination of the following values and LOCALE_USE_CP_ACP or LOCALE_NOUSEROVERRIDE.
 		/// </para>
-		/// <para>
+		/// <para><c>Caution</c> Use of LOCALE_NOUSEROVERRIDE is strongly discouraged as it disables user preferences.</para>
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Value</term>
@@ -143,14 +211,13 @@ namespace Vanara.PInvoke
 		/// </term>
 		/// </item>
 		/// </list>
-		/// </para>
 		/// <para>
 		/// If the application does not specify DATE_YEARMONTH, DATE_MONTHDAY, DATE_SHORTDATE, or DATE_LONGDATE, and lpFormat is set to
 		/// <c>NULL</c>, DATE_SHORTDATE is the default.
 		/// </para>
 		/// </param>
 		/// <param name="lpDate">
-		/// Pointer to a <c>SYSTEMTIME</c> structure that contains the date information to format. The application can set this parameter to
+		/// Pointer to a SYSTEMTIME structure that contains the date information to format. The application can set this parameter to
 		/// <c>NULL</c> if the function is to use the current local system date.
 		/// </param>
 		/// <param name="lpFormat">
@@ -177,27 +244,150 @@ namespace Vanara.PInvoke
 		/// function returns the number of characters required to hold the formatted date string, including the terminating null character.
 		/// </para>
 		/// <para>
-		/// This function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
-		/// which can return one of the following error codes:
+		/// This function returns 0 if it does not succeed. To get extended error information, the application can call GetLastError, which
+		/// can return one of the following error codes:
 		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER. A supplied buffer size was not large enough, or it was incorrectly set to <c>NULL</c>.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_FLAGS. The values supplied for flags were not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER. Any of the parameter values was invalid.</term>
+		/// </item>
+		/// </list>
 		/// </returns>
-		// int GetDateFormatEx( _In_opt_ LPCWSTR lpLocaleName, _In_ DWORD dwFlags, _In_opt_ const SYSTEMTIME *lpDate, _In_opt_ LPCWSTR
-		// lpFormat, _Out_opt_ LPWSTR lpDateStr, _In_ int cchDate, _In_opt_ LPCWSTR lpCalendar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318088(v=vs.85).aspx
+		/// <remarks>
+		/// <para>
+		/// <c>Note</c> This API is being updated to support the May 2019 Japanese era change. If your application supports the Japanese
+		/// calendar, you should validate that it properly handles the new era. See Prepare your application for the Japanese era change for
+		/// more information.
+		/// </para>
+		/// <para>The earliest date supported by this function is January 1, 1601.</para>
+		/// <para>The day name, abbreviated day name, month name, and abbreviated month name are all localized based on the locale identifier.</para>
+		/// <para>
+		/// The date values in the structure indicated by lpDate must be valid. The function checks each of the date values: year, month,
+		/// day, and day of week. If the day of the week is incorrect, the function uses the correct value, and returns no error. If any of
+		/// the other date values are outside the correct range, the function fails, and sets the last error to ERROR_INVALID_PARAMETER.
+		/// </para>
+		/// <para>
+		/// The function ignores the time members of the SYSTEMTIME structure indicated by lpDate. These include <c>wHour</c>,
+		/// <c>wMinute</c>, <c>wSecond</c>, and <c>wMilliseconds</c>.
+		/// </para>
+		/// <para>
+		/// If the lpFormat parameter contains a bad format string, the function returns no errors, but just forms the best possible date
+		/// string. For example, the only year pictures that are valid are L"yyyy" and L"yy", where the "L" indicates a Unicode (16-bit
+		/// characters) string. If L"y" is passed in, the function assumes L"yy". If L"yyy" is passed in, the function assumes L"yyyy". If
+		/// more than four date (L"dddd") or four month (L"MMMM") pictures are passed in, the function defaults to L"dddd" or L"MMMM".
+		/// </para>
+		/// <para>
+		/// The application should enclose any text that should remain in its exact form in the date string within single quotation marks in
+		/// the date format picture. The single quotation mark can also be used as an escape character to allow the single quotation mark
+		/// itself to be displayed in the date string. However, the escape sequence must be enclosed within two single quotation marks. For
+		/// example, to display the date as "May '93", the format string is: L"MMMM ''''yy". The first and last single quotation marks are
+		/// the enclosing quotation marks. The second and third single quotation marks are the escape sequence to allow the single quotation
+		/// mark to be displayed before the century.
+		/// </para>
+		/// <para>
+		/// When the date picture contains both a numeric form of the day (either d or dd) and the full month name (MMMM), the genitive form
+		/// of the month name is retrieved in the date string.
+		/// </para>
+		/// <para>
+		/// To obtain the default short and long date format without performing any actual formatting, the application should use
+		/// GetLocaleInfoEx with the LOCALE_SSHORTDATE or LOCALE_SLONGDATE constant. To get the date format for an alternate calendar, the
+		/// application uses GetLocaleInfoEx with the LOCALE_IOPTIONALCALENDAR constant. To get the date format for a particular calendar,
+		/// the application uses GetCalendarInfoEx, passing the appropriate Calendar Identifier. It can call EnumCalendarInfoEx or
+		/// EnumDateFormatsEx to retrieve date formats for a particular calendar.
+		/// </para>
+		/// <para>
+		/// This function can retrieve data from custom locales. Data is not guaranteed to be the same from computer to computer or between
+		/// runs of an application. If your application must persist or transmit data, see Using Persistent Locale Data.
+		/// </para>
+		/// <para>
+		/// The DATE_LONGDATE format includes two kinds of date patterns: patterns that include the day of the week and patterns that do not
+		/// include the day of the week. For example, "Tuesday, October 18, 2016" or "October 18, 2016". If your application needs to ensure
+		/// that dates use one of these kinds of patterns and not the other kind, your application should perform the following actions:
+		/// </para>
+		/// <list type="number">
+		/// <item>
+		/// <term>Call the EnumDateFormatsExEx function to get all of the date formats for the DATE_LONGDATE format.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Look for the first date format passed to the callback function that you specified for EnumDateFormatsExEx that matches your
+		/// requested calendar identifier and has a date format string that matches the requirements of your application. For example, look
+		/// for the first date format that includes "dddd" if your application requires that the date include the full name of the day of the
+		/// week, or look for the first date format that includes neither "ddd" nor "dddd" if your application requires that the date
+		/// includes nether the abbreviated name nor the full name of the day of the week.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Call the <c>GetDateFormatEx</c> function with the lpFormat parameter set to the date format string that you identified as the
+		/// appropriate format in the callback function.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If the presence or absence of the day of the week in the long date format does not matter to your application, your application
+		/// can call <c>GetDateFormatEx</c> directly without first enumerating all of the long date formats by calling EnumDateFormatsExEx.
+		/// </para>
+		/// <para>
+		/// <c>Beginning in Windows 8:</c> If your app passes language tags to this function from the Windows.Globalization namespace, it
+		/// must first convert the tags by calling ResolveLocaleName.
+		/// </para>
+		/// <para>
+		/// <c>Beginning in Windows 8:</c><c>GetDateFormatEx</c> is declared in Datetimeapi.h. Before Windows 8, it was declared in Winnls.h.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/datetimeapi/nf-datetimeapi-getdateformatex int GetDateFormatEx( LPCWSTR
+		// lpLocaleName, DWORD dwFlags, const SYSTEMTIME *lpDate, LPCWSTR lpFormat, LPWSTR lpDateStr, int cchDate, LPCWSTR lpCalendar );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
-		[PInvokeData("Datetimeapi.h", MSDNShortId = "dd318088")]
+		[PInvokeData("datetimeapi.h", MSDNShortId = "791fb386-3cc5-410e-bfce-52598fdb10c9")]
 		public static extern int GetDateFormatEx(string lpLocaleName, DATE_FORMAT dwFlags, in SYSTEMTIME lpDate, string lpFormat, StringBuilder lpDateStr, int cchDate, [Optional] string lpCalendar);
 
 		/// <summary>
+		/// <para>
 		/// Formats time as a time string for a locale specified by identifier. The function formats either a specified time or the local
 		/// system time.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> For interoperability reasons, the application should prefer the GetTimeFormatEx function to <c>GetTimeFormat</c>
+		/// because Microsoft is migrating toward the use of locale names instead of locale identifiers for new locales. Any application that
+		/// will be run only on Windows Vista and later should use GetTimeFormatEx.
+		/// </para>
 		/// </summary>
 		/// <param name="Locale">
-		/// Locale identifier that specifies the locale. You can use the <c>MAKELCID</c> macro to create a locale identifier or use one of
-		/// the following predefined values.
+		/// <para>
+		/// Locale identifier that specifies the locale. You can use the MAKELCID macro to create a locale identifier or use one of the
+		/// following predefined values.
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>LOCALE_CUSTOM_DEFAULT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_CUSTOM_UI_DEFAULT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_CUSTOM_UNSPECIFIED</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_INVARIANT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_SYSTEM_DEFAULT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_USER_DEFAULT</term>
+		/// </item>
+		/// </list>
 		/// </param>
-		/// <param name="dwFlags">Flags specifying time format options. For detailed definitions see the dwFlags parameter of <c>GetTimeFormatEx</c>.</param>
+		/// <param name="dwFlags">Flags specifying time format options. For detailed definitions see the dwFlags parameter of GetTimeFormatEx.</param>
 		/// <param name="lpTime">
-		/// Pointer to a <c>SYSTEMTIME</c> structure that contains the time information to format. The application can set this parameter to
+		/// Pointer to a SYSTEMTIME structure that contains the time information to format. The application can set this parameter to
 		/// <c>NULL</c> if the function is to use the current local system time.
 		/// </param>
 		/// <param name="lpFormat">
@@ -217,25 +407,69 @@ namespace Vanara.PInvoke
 		/// function returns the size of the buffer required to hold the formatted time string, including a terminating null character.
 		/// </para>
 		/// <para>
-		/// This function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
-		/// which can return one of the following error codes:
+		/// This function returns 0 if it does not succeed. To get extended error information, the application can call GetLastError, which
+		/// can return one of the following error codes:
 		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER. A supplied buffer size was not large enough, or it was incorrectly set to <c>NULL</c>.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_FLAGS. The values supplied for flags were not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER. Any of the parameter values was invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_OUTOFMEMORY. Not enough storage was available to complete this operation.</term>
+		/// </item>
+		/// </list>
 		/// </returns>
-		// int GetTimeFormat( _In_ LCID Locale, _In_ DWORD dwFlags, _In_opt_ const SYSTEMTIME *lpTime, _In_opt_ LPCTSTR lpFormat, _Out_opt_
-		// LPTSTR lpTimeStr, _In_ int cchTime); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318130(v=vs.85).aspx
+		/// <remarks>
+		/// <para>See Remarks for GetTimeFormatEx.</para>
+		/// <para>
+		/// When the ANSI version of this function is used with a Unicode-only locale identifier, the function can succeed because the
+		/// operating system uses the system code page. However, characters that are undefined in the system code page appear in the string
+		/// as a question mark (?).
+		/// </para>
+		/// <para>
+		/// <c>Starting with Windows 8:</c><c>GetTimeFormat</c> is declared in Datetimeapi.h. Before Windows 8, it was declared in Winnls.h.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/datetimeapi/nf-datetimeapi-gettimeformata int GetTimeFormatA( LCID Locale,
+		// DWORD dwFlags, const SYSTEMTIME *lpTime, LPCSTR lpFormat, LPSTR lpTimeStr, int cchTime );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("Datetimeapi.h", MSDNShortId = "dd318130")]
-		public static extern int GetTimeFormat(uint Locale, TIME_FORMAT dwFlags, in SYSTEMTIME lpTime, string lpFormat, StringBuilder lpTimeStr, int cchTime);
+		[PInvokeData("datetimeapi.h", MSDNShortId = "3db91d29-df97-4660-b3cd-0db5b42cfd01")]
+		public static extern int GetTimeFormat(LCID Locale, TIME_FORMAT dwFlags, in SYSTEMTIME lpTime, [Optional] string lpFormat, StringBuilder lpTimeStr, int cchTime);
 
 		/// <summary>
+		/// <para>
 		/// Formats time as a time string for a locale specified by name. The function formats either a specified time or the local system time.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> This function can format data that changes between releases, for example, due to a custom locale. If your application
+		/// must persist or transmit data, see Using Persistent Locale Data.
+		/// </para>
 		/// </summary>
-		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
+		/// <param name="lpLocaleName">
+		/// <para>Pointer to a locale name, or one of the following predefined values.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>LOCALE_NAME_INVARIANT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_NAME_SYSTEM_DEFAULT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_NAME_USER_DEFAULT</term>
+		/// </item>
+		/// </list>
+		/// </param>
 		/// <param name="dwFlags">
 		/// <para>
 		/// Flags specifying time format options. The application can specify a combination of the following values and LOCALE_USE_CP_ACP or LOCALE_NOUSEROVERRIDE.
 		/// </para>
-		/// <para>
+		/// <para><c>Caution</c> Use of LOCALE_NOUSEROVERRIDE is strongly discouraged as it disables user preferences.</para>
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Value</term>
@@ -258,10 +492,9 @@ namespace Vanara.PInvoke
 		/// <term>Always use a 24-hour time format.</term>
 		/// </item>
 		/// </list>
-		/// </para>
 		/// </param>
 		/// <param name="lpTime">
-		/// Pointer to a <c>SYSTEMTIME</c> structure that contains the time information to format. The application can set this parameter to
+		/// Pointer to a SYSTEMTIME structure that contains the time information to format. The application can set this parameter to
 		/// <c>NULL</c> if the function is to use the current local system time.
 		/// </param>
 		/// <param name="lpFormat">
@@ -281,14 +514,126 @@ namespace Vanara.PInvoke
 		/// function returns the size of the buffer required to hold the formatted time string, including a terminating null character.
 		/// </para>
 		/// <para>
-		/// This function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
-		/// which can return one of the following error codes:
+		/// This function returns 0 if it does not succeed. To get extended error information, the application can call GetLastError, which
+		/// can return one of the following error codes:
 		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER. A supplied buffer size was not large enough, or it was incorrectly set to <c>NULL</c>.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_FLAGS. The values supplied for flags were not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER. Any of the parameter values was invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_OUTOFMEMORY. Not enough storage was available to complete this operation.</term>
+		/// </item>
+		/// </list>
 		/// </returns>
-		// int GetTimeFormatEx( _In_opt_ LPCWSTR lpLocaleName, _In_ DWORD dwFlags, _In_opt_ const SYSTEMTIME *lpTime, _In_opt_ LPCWSTR
-		// lpFormat, _Out_opt_ LPWSTR lpTimeStr, _In_ int cchTime); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318131(v=vs.85).aspx
+		/// <remarks>
+		/// <para>
+		/// If a time marker exists and the TIME_NOTIMEMARKER flag is not set, the function localizes the time marker based on the specified
+		/// locale identifier. Examples of time markers are "AM" and "PM" for English (United States).
+		/// </para>
+		/// <para>
+		/// The time values in the structure indicated by lpTime must be valid. The function checks each of the time values to determine that
+		/// it is within the appropriate range of values. If any of the time values are outside the correct range, the function fails, and
+		/// sets the last error to ERROR_INVALID_PARAMETER.
+		/// </para>
+		/// <para>
+		/// The function ignores the date members of the SYSTEMTIME structure. These include: <c>wYear</c>, <c>wMonth</c>, <c>wDayOfWeek</c>,
+		/// and <c>wDay</c>.
+		/// </para>
+		/// <para>
+		/// If TIME_NOMINUTESORSECONDS or TIME_NOSECONDS is specified, the function removes the separators preceding the minutes and/or
+		/// seconds members.
+		/// </para>
+		/// <para>If TIME_NOTIMEMARKER is specified, the function removes the separators preceding and following the time marker.</para>
+		/// <para>
+		/// If TIME_FORCE24HOURFORMAT is specified, the function displays any existing time marker, unless the TIME_NOTIMEMARKER flag is also set.
+		/// </para>
+		/// <para>The function does not include milliseconds as part of the formatted time string.</para>
+		/// <para>
+		/// The function returns no errors for a bad format string, but just forms the best possible time string. If more than two hour,
+		/// minute, second, or time marker format pictures are passed in, the function defaults to two. For example, the only time marker
+		/// pictures that are valid are "t" and "tt". If "ttt" is passed in, the function assumes "tt".
+		/// </para>
+		/// <para>
+		/// To obtain the time format without performing any actual formatting, the application should use the GetLocaleInfoEx function,
+		/// specifying LOCALE_STIMEFORMAT.
+		/// </para>
+		/// <para>
+		/// The application can use the following elements to construct a format picture string. If spaces are used to separate the elements
+		/// in the format string, these spaces appear in the same location in the output string. The letters must be in uppercase or
+		/// lowercase as shown, for example, "ss", not "SS". Characters in the format string that are enclosed in single quotation marks
+		/// appear in the same location and unchanged in the output string.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Picture</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>h</term>
+		/// <term>Hours with no leading zero for single-digit hours; 12-hour clock</term>
+		/// </item>
+		/// <item>
+		/// <term>hh</term>
+		/// <term>Hours with leading zero for single-digit hours; 12-hour clock</term>
+		/// </item>
+		/// <item>
+		/// <term>H</term>
+		/// <term>Hours with no leading zero for single-digit hours; 24-hour clock</term>
+		/// </item>
+		/// <item>
+		/// <term>HH</term>
+		/// <term>Hours with leading zero for single-digit hours; 24-hour clock</term>
+		/// </item>
+		/// <item>
+		/// <term>m</term>
+		/// <term>Minutes with no leading zero for single-digit minutes</term>
+		/// </item>
+		/// <item>
+		/// <term>mm</term>
+		/// <term>Minutes with leading zero for single-digit minutes</term>
+		/// </item>
+		/// <item>
+		/// <term>s</term>
+		/// <term>Seconds with no leading zero for single-digit seconds</term>
+		/// </item>
+		/// <item>
+		/// <term>ss</term>
+		/// <term>Seconds with leading zero for single-digit seconds</term>
+		/// </item>
+		/// <item>
+		/// <term>t</term>
+		/// <term>One character time marker string, such as A or P</term>
+		/// </item>
+		/// <item>
+		/// <term>tt</term>
+		/// <term>Multi-character time marker string, such as AM or PM</term>
+		/// </item>
+		/// </list>
+		/// <para>For example, to get the time string</para>
+		/// <para>the application should use the picture string</para>
+		/// <para>
+		/// This function can retrieve data from custom locales. Data is not guaranteed to be the same from computer to computer or between
+		/// runs of an application. If your application must persist or transmit data, see Using Persistent Locale Data.
+		/// </para>
+		/// <para>
+		/// <c>Beginning in Windows 8:</c> If your app passes language tags to this function from the Windows.Globalization namespace, it
+		/// must first convert the tags by calling ResolveLocaleName.
+		/// </para>
+		/// <para>
+		/// <c>Beginning in Windows 8:</c><c>GetTimeFormatEx</c> is declared in Datetimeapi.h. Before Windows 8, it was declared in Winnls.h.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/datetimeapi/nf-datetimeapi-gettimeformatex int GetTimeFormatEx( LPCWSTR
+		// lpLocaleName, DWORD dwFlags, const SYSTEMTIME *lpTime, LPCWSTR lpFormat, LPWSTR lpTimeStr, int cchTime );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
-		[PInvokeData("Datetimeapi.h", MSDNShortId = "dd318131")]
-		public static extern int GetTimeFormatEx(string lpLocaleName, TIME_FORMAT dwFlags, in SYSTEMTIME lpTime, string lpFormat, StringBuilder lpTimeStr, int cchTime);
+		[PInvokeData("datetimeapi.h", MSDNShortId = "4d63888e-4496-4315-ac87-bf60c54daa37")]
+		public static extern int GetTimeFormatEx(string lpLocaleName, TIME_FORMAT dwFlags, in SYSTEMTIME lpTime, [Optional] string lpFormat, StringBuilder lpTimeStr, int cchTime);
 	}
 }
