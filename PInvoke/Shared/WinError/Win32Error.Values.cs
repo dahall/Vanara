@@ -8223,5 +8223,458 @@ namespace Vanara.PInvoke
 		public const int ERROR_HTTP_HEADER_ALREADY_EXISTS = 12155;
 		/// <summary>The redirection failed because either the scheme changed (for example, HTTP to FTP) or all attempts made to redirect failed (default is five attempts).</summary>
 		public const int ERROR_HTTP_REDIRECT_FAILED = 12156;
+
+		/// <summary>Attempted to create a numeric type that is outside of its valid range.</summary>
+		public const int ERROR_EVT_FILTER_OUT_OF_RANGE = 15038;
+
+		/// <summary>When forwarding events from local machine to itself, the query of the subscription can't contain target log of the subscription.</summary>
+		public const int ERROR_EC_CIRCULAR_FORWARDING = 15082;
+
+		/// <summary>The credential store that is used to save credentials is full.</summary>
+		public const int ERROR_EC_CREDSTORE_FULL = 15083;
+
+		/// <summary>The credential used by this subscription can't be found in credential store.</summary>
+		public const int ERROR_EC_CRED_NOT_FOUND = 15084;
+
+		/// <summary>No active channel is found for the query.</summary>
+		public const int ERROR_EC_NO_ACTIVE_CHANNEL = 15085;
+
+		/// <summary>A resource does not have default or neutral value.</summary>
+		public const int ERROR_MRM_RUNTIME_NO_DEFAULT_OR_NEUTRAL_RESOURCE = 15110;
+
+		/// <summary>Invalid PRI config file.</summary>
+		public const int ERROR_MRM_INVALID_PRICONFIG = 15111;
+
+		/// <summary>Invalid file type.</summary>
+		public const int ERROR_MRM_INVALID_FILE_TYPE = 15112;
+
+		/// <summary>Unknown qualifier.</summary>
+		public const int ERROR_MRM_UNKNOWN_QUALIFIER = 15113;
+
+		/// <summary>Invalid qualifier value.</summary>
+		public const int ERROR_MRM_INVALID_QUALIFIER_VALUE = 15114;
+
+		/// <summary>No Candidate found.</summary>
+		public const int ERROR_MRM_NO_CANDIDATE = 15115;
+
+		/// <summary>The ResourceMap or NamedResource has an item that does not have default or neutral resource..</summary>
+		public const int ERROR_MRM_NO_MATCH_OR_DEFAULT_CANDIDATE = 15116;
+
+		/// <summary>Invalid ResourceCandidate type.</summary>
+		public const int ERROR_MRM_RESOURCE_TYPE_MISMATCH = 15117;
+
+		/// <summary>Duplicate Resource Map.</summary>
+		public const int ERROR_MRM_DUPLICATE_MAP_NAME = 15118;
+
+		/// <summary>Duplicate Entry.</summary>
+		public const int ERROR_MRM_DUPLICATE_ENTRY = 15119;
+
+		/// <summary>Invalid Resource Identifier.</summary>
+		public const int ERROR_MRM_INVALID_RESOURCE_IDENTIFIER = 15120;
+
+		/// <summary>Filepath too long.</summary>
+		public const int ERROR_MRM_FILEPATH_TOO_LONG = 15121;
+
+		/// <summary>Unsupported directory type.</summary>
+		public const int ERROR_MRM_UNSUPPORTED_DIRECTORY_TYPE = 15122;
+
+		/// <summary>Invalid PRI File.</summary>
+		public const int ERROR_MRM_INVALID_PRI_FILE = 15126;
+
+		/// <summary>NamedResource Not Found.</summary>
+		public const int ERROR_MRM_NAMED_RESOURCE_NOT_FOUND = 15127;
+
+		/// <summary>ResourceMap Not Found.</summary>
+		public const int ERROR_MRM_MAP_NOT_FOUND = 15135;
+
+		/// <summary>Unsupported MRT profile type.</summary>
+		public const int ERROR_MRM_UNSUPPORTED_PROFILE_TYPE = 15136;
+
+		/// <summary>Invalid qualifier operator.</summary>
+		public const int ERROR_MRM_INVALID_QUALIFIER_OPERATOR = 15137;
+
+		/// <summary>Unable to determine qualifier value or qualifier value has not been set.</summary>
+		public const int ERROR_MRM_INDETERMINATE_QUALIFIER_VALUE = 15138;
+
+		/// <summary>Automerge is enabled in the PRI file.</summary>
+		public const int ERROR_MRM_AUTOMERGE_ENABLED = 15139;
+
+		/// <summary>Too many resources defined for package.</summary>
+		public const int ERROR_MRM_TOO_MANY_RESOURCES = 15140;
+
+		/// <summary>Resource File can not be used for merge operation.</summary>
+		public const int ERROR_MRM_UNSUPPORTED_FILE_TYPE_FOR_MERGE = 15141;
+
+		/// <summary>Load/UnloadPriFiles cannot be used with resource packages.</summary>
+		public const int ERROR_MRM_UNSUPPORTED_FILE_TYPE_FOR_LOAD_UNLOAD_PRI_FILE = 15142;
+
+		/// <summary>Resource Contexts may not be created on threads that do not have a CoreWindow.</summary>
+		public const int ERROR_MRM_NO_CURRENT_VIEW_ON_THREAD = 15143;
+
+		/// <summary>The singleton Resource Manager with different profile is already created.</summary>
+		public const int ERROR_DIFFERENT_PROFILE_RESOURCE_MANAGER_EXIST = 15144;
+
+		/// <summary>The system component cannot operate given API operation</summary>
+		public const int ERROR_OPERATION_NOT_ALLOWED_FROM_SYSTEM_COMPONENT = 15145;
+
+		/// <summary>The resource is a direct reference to a non-default resource candidate.</summary>
+		public const int ERROR_MRM_DIRECT_REF_TO_NON_DEFAULT_RESOURCE = 15146;
+
+		/// <summary>Resource Map has been re-generated and the query string is not valid anymore.</summary>
+		public const int ERROR_MRM_GENERATION_COUNT_MISMATCH = 15147;
+
+		/// <summary>The PRI files to be merged have incompatible versions.</summary>
+		public const int ERROR_PRI_MERGE_VERSION_MISMATCH = 15148;
+
+		/// <summary>The primary PRI files to be merged does not contain a schema.</summary>
+		public const int ERROR_PRI_MERGE_MISSING_SCHEMA = 15149;
+
+		/// <summary>Unable to load one of the PRI files to be merged.</summary>
+		public const int ERROR_PRI_MERGE_LOAD_FILE_FAILED = 15150;
+
+		/// <summary>Unable to add one of the PRI files to the merged file.</summary>
+		public const int ERROR_PRI_MERGE_ADD_FILE_FAILED = 15151;
+
+		/// <summary>Unable to create the merged PRI file.</summary>
+		public const int ERROR_PRI_MERGE_WRITE_FILE_FAILED = 15152;
+
+		/// <summary>Packages for a PRI file merge must all be from the same package family.</summary>
+		public const int ERROR_PRI_MERGE_MULTIPLE_PACKAGE_FAMILIES_NOT_ALLOWED = 15153;
+
+		/// <summary>Packages for a PRI file merge must not include multiple main packages.</summary>
+		public const int ERROR_PRI_MERGE_MULTIPLE_MAIN_PACKAGES_NOT_ALLOWED = 15154;
+
+		/// <summary>Packages for a PRI file merge must not include bundle packages.</summary>
+		public const int ERROR_PRI_MERGE_BUNDLE_PACKAGES_NOT_ALLOWED = 15155;
+
+		/// <summary>Packages for a PRI file merge must include one main package.</summary>
+		public const int ERROR_PRI_MERGE_MAIN_PACKAGE_REQUIRED = 15156;
+
+		/// <summary>Packages for a PRI file merge must include at least one resource package.</summary>
+		public const int ERROR_PRI_MERGE_RESOURCE_PACKAGE_REQUIRED = 15157;
+
+		/// <summary>Invalid name supplied for a canonical merged PRI file.</summary>
+		public const int ERROR_PRI_MERGE_INVALID_FILE_NAME = 15158;
+
+		/// <summary>Unable to find the specified package.</summary>
+		public const int ERROR_MRM_PACKAGE_NOT_FOUND = 15159;
+
+		/// <summary>No default value for language was specified.</summary>
+		public const int ERROR_MRM_MISSING_DEFAULT_LANGUAGE = 15160;
+
+		/// <summary>Hash generation for the specified hash version and hash type is not enabled on the server.</summary>
+		public const int ERROR_HASH_NOT_SUPPORTED = 15300;
+
+		/// <summary>The hash requested from the server is not available or no longer valid.</summary>
+		public const int ERROR_HASH_NOT_PRESENT = 15301;
+
+		/// <summary>The secondary interrupt controller instance that manages the specified interrupt is not registered.</summary>
+		public const int ERROR_SECONDARY_IC_PROVIDER_NOT_REGISTERED = 15321;
+
+		/// <summary>The information supplied by the GPIO client driver is invalid.</summary>
+		public const int ERROR_GPIO_CLIENT_INFORMATION_INVALID = 15322;
+
+		/// <summary>The version specified by the GPIO client driver is not supported.</summary>
+		public const int ERROR_GPIO_VERSION_NOT_SUPPORTED = 15323;
+
+		/// <summary>The registration packet supplied by the GPIO client driver is not valid.</summary>
+		public const int ERROR_GPIO_INVALID_REGISTRATION_PACKET = 15324;
+
+		/// <summary>The requested operation is not supported for the specified handle.</summary>
+		public const int ERROR_GPIO_OPERATION_DENIED = 15325;
+
+		/// <summary>The requested connect mode conflicts with an existing mode on one or more of the specified pins.</summary>
+		public const int ERROR_GPIO_INCOMPATIBLE_CONNECT_MODE = 15326;
+
+		/// <summary>The interrupt requested to be unmasked is not masked.</summary>
+		public const int ERROR_GPIO_INTERRUPT_ALREADY_UNMASKED = 15327;
+
+		/// <summary>The requested run level switch cannot be completed successfully.</summary>
+		public const int ERROR_CANNOT_SWITCH_RUNLEVEL = 15400;
+
+		/// <summary>The service has an invalid run level setting. The run level for a service must not be higher than the run level of its dependent services.</summary>
+		public const int ERROR_INVALID_RUNLEVEL_SETTING = 15401;
+
+		/// <summary>The requested run level switch cannot be completed successfully since one or more services will not stop or restart within the specified timeout.</summary>
+		public const int ERROR_RUNLEVEL_SWITCH_TIMEOUT = 15402;
+
+		/// <summary>A run level switch agent did not respond within the specified timeout.</summary>
+		public const int ERROR_RUNLEVEL_SWITCH_AGENT_TIMEOUT = 15403;
+
+		/// <summary>A run level switch is currently in progress.</summary>
+		public const int ERROR_RUNLEVEL_SWITCH_IN_PROGRESS = 15404;
+
+		/// <summary>One or more services failed to start during the service startup phase of a run level switch.</summary>
+		public const int ERROR_SERVICES_FAILED_AUTOSTART = 15405;
+
+		/// <summary>The task stop request cannot be completed immediately since task needs more time to shutdown.</summary>
+		public const int ERROR_COM_TASK_STOP_PENDING = 15501;
+
+		/// <summary>Package could not be opened.</summary>
+		public const int ERROR_INSTALL_OPEN_PACKAGE_FAILED = 15600;
+
+		/// <summary>Package was not found.</summary>
+		public const int ERROR_INSTALL_PACKAGE_NOT_FOUND = 15601;
+
+		/// <summary>Package data is invalid.</summary>
+		public const int ERROR_INSTALL_INVALID_PACKAGE = 15602;
+
+		/// <summary>Package failed updates, dependency or conflict validation.</summary>
+		public const int ERROR_INSTALL_RESOLVE_DEPENDENCY_FAILED = 15603;
+
+		/// <summary>There is not enough disk space on your computer. Please free up some space and try again.</summary>
+		public const int ERROR_INSTALL_OUT_OF_DISK_SPACE = 15604;
+
+		/// <summary>There was a problem downloading your product.</summary>
+		public const int ERROR_INSTALL_NETWORK_FAILURE = 15605;
+
+		/// <summary>Package could not be registered.</summary>
+		public const int ERROR_INSTALL_REGISTRATION_FAILURE = 15606;
+
+		/// <summary>Package could not be unregistered.</summary>
+		public const int ERROR_INSTALL_DEREGISTRATION_FAILURE = 15607;
+
+		/// <summary>User cancelled the install request.</summary>
+		public const int ERROR_INSTALL_CANCEL = 15608;
+
+		/// <summary>Install failed. Please contact your software vendor.</summary>
+		public const int ERROR_INSTALL_FAILED = 15609;
+
+		/// <summary>Removal failed. Please contact your software vendor.</summary>
+		public const int ERROR_REMOVE_FAILED = 15610;
+
+		/// <summary>The provided package is already installed, and reinstallation of the package was blocked. Check the AppXDeployment-Server event log for details.</summary>
+		public const int ERROR_PACKAGE_ALREADY_EXISTS = 15611;
+
+		/// <summary>The application cannot be started. Try reinstalling the application to fix the problem.</summary>
+		public const int ERROR_NEEDS_REMEDIATION = 15612;
+
+		/// <summary>A Prerequisite for an install could not be satisfied.</summary>
+		public const int ERROR_INSTALL_PREREQUISITE_FAILED = 15613;
+
+		/// <summary>The package repository is corrupted.</summary>
+		public const int ERROR_PACKAGE_REPOSITORY_CORRUPTED = 15614;
+
+		/// <summary>To install this application you need either a Windows developer license or a sideloading-enabled system.</summary>
+		public const int ERROR_INSTALL_POLICY_FAILURE = 15615;
+
+		/// <summary>The application cannot be started because it is currently updating.</summary>
+		public const int ERROR_PACKAGE_UPDATING = 15616;
+
+		/// <summary>The package deployment operation is blocked by policy. Please contact your system administrator.</summary>
+		public const int ERROR_DEPLOYMENT_BLOCKED_BY_POLICY = 15617;
+
+		/// <summary>The package could not be installed because resources it modifies are currently in use.</summary>
+		public const int ERROR_PACKAGES_IN_USE = 15618;
+
+		/// <summary>The package could not be recovered because necessary data for recovery have been corrupted.</summary>
+		public const int ERROR_RECOVERY_FILE_CORRUPT = 15619;
+
+		/// <summary>The signature is invalid. To register in developer mode, AppxSignature.p7x and AppxBlockMap.xml must be valid or should not be present.</summary>
+		public const int ERROR_INVALID_STAGED_SIGNATURE = 15620;
+
+		/// <summary>An error occurred while deleting the package's previously existing application data.</summary>
+		public const int ERROR_DELETING_EXISTING_APPLICATIONDATA_STORE_FAILED = 15621;
+
+		/// <summary>The package could not be installed because a higher version of this package is already installed.</summary>
+		public const int ERROR_INSTALL_PACKAGE_DOWNGRADE = 15622;
+
+		/// <summary>An error in a system binary was detected. Try refreshing the PC to fix the problem.</summary>
+		public const int ERROR_SYSTEM_NEEDS_REMEDIATION = 15623;
+
+		/// <summary>A corrupted CLR NGEN binary was detected on the system.</summary>
+		public const int ERROR_APPX_INTEGRITY_FAILURE_CLR_NGEN = 15624;
+
+		/// <summary>The operation could not be resumed because necessary data for recovery have been corrupted.</summary>
+		public const int ERROR_RESILIENCY_FILE_CORRUPT = 15625;
+
+		/// <summary>The package could not be installed because the Windows Firewall service is not running. Enable the Windows Firewall service and try again.</summary>
+		public const int ERROR_INSTALL_FIREWALL_SERVICE_NOT_RUNNING = 15626;
+
+		/// <summary>Package move failed.</summary>
+		public const int ERROR_PACKAGE_MOVE_FAILED = 15627;
+
+		/// <summary>The deployment operation failed because the volume is not empty.</summary>
+		public const int ERROR_INSTALL_VOLUME_NOT_EMPTY = 15628;
+
+		/// <summary>The deployment operation failed because the volume is offline.</summary>
+		public const int ERROR_INSTALL_VOLUME_OFFLINE = 15629;
+
+		/// <summary>The deployment operation failed because the specified volume is corrupt.</summary>
+		public const int ERROR_INSTALL_VOLUME_CORRUPT = 15630;
+
+		/// <summary>The deployment operation failed because the specified application needs to be registered first.</summary>
+		public const int ERROR_NEEDS_REGISTRATION = 15631;
+
+		/// <summary>The deployment operation failed because the package targets the wrong processor architecture.</summary>
+		public const int ERROR_INSTALL_WRONG_PROCESSOR_ARCHITECTURE = 15632;
+
+		/// <summary>You have reached the maximum number of developer sideloaded packages allowed on this device. Please uninstall a sideloaded package and try again.</summary>
+		public const int ERROR_DEV_SIDELOAD_LIMIT_EXCEEDED = 15633;
+
+		/// <summary>A main app package is required to install this optional package.  Install the main package first and try again.</summary>
+		public const int ERROR_INSTALL_OPTIONAL_PACKAGE_REQUIRES_MAIN_PACKAGE = 15634;
+
+		/// <summary>This app package type is not supported on this filesystem</summary>
+		public const int ERROR_PACKAGE_NOT_SUPPORTED_ON_FILESYSTEM = 15635;
+
+		/// <summary>Package move operation is blocked until the application has finished streaming</summary>
+		public const int ERROR_PACKAGE_MOVE_BLOCKED_BY_STREAMING = 15636;
+
+		/// <summary>A main or another optional app package has the same application ID as this optional package.  Change the application ID for the optional package to avoid conflicts.</summary>
+		public const int ERROR_INSTALL_OPTIONAL_PACKAGE_APPLICATIONID_NOT_UNIQUE = 15637;
+
+		/// <summary>This staging session has been held to allow another staging operation to be prioritized.</summary>
+		public const int ERROR_PACKAGE_STAGING_ONHOLD = 15638;
+
+		/// <summary>A related set cannot be updated because the updated set is invalid. All packages in the related set must be updated at the same time.</summary>
+		public const int ERROR_INSTALL_INVALID_RELATED_SET_UPDATE = 15639;
+
+		/// <summary>An optional package with a FullTrust entry point requires the main package to have the runFullTrust capability.</summary>
+		public const int ERROR_INSTALL_OPTIONAL_PACKAGE_REQUIRES_MAIN_PACKAGE_FULLTRUST_CAPABILITY = 15640;
+
+		/// <summary>An error occurred because a user was logged off.</summary>
+		public const int ERROR_DEPLOYMENT_BLOCKED_BY_USER_LOG_OFF = 15641;
+
+		/// <summary>An optional package provision requires the dependency main package to also be provisioned.</summary>
+		public const int ERROR_PROVISION_OPTIONAL_PACKAGE_REQUIRES_MAIN_PACKAGE_PROVISIONED = 15642;
+
+		/// <summary>The packages failed the SmartScreen reputation check.</summary>
+		public const int ERROR_PACKAGES_REPUTATION_CHECK_FAILED = 15643;
+
+		/// <summary>The SmartScreen reputation check operation timed out.</summary>
+		public const int ERROR_PACKAGES_REPUTATION_CHECK_TIMEDOUT = 15644;
+
+		/// <summary>The current deployment option is not supported.</summary>
+		public const int ERROR_DEPLOYMENT_OPTION_NOT_SUPPORTED = 15645;
+
+		/// <summary>Activation is blocked due to the .appinstaller update settings for this app.</summary>
+		public const int ERROR_APPINSTALLER_ACTIVATION_BLOCKED = 15646;
+
+		/// <summary>Remote drives are not supported; use \\server\share to register a remote package.</summary>
+		public const int ERROR_REGISTRATION_FROM_REMOTE_DRIVE_NOT_SUPPORTED = 15647;
+
+		/// <summary>Failed to process and write downloaded APPX package data to disk.</summary>
+		public const int ERROR_APPX_RAW_DATA_WRITE_FAILED = 15648;
+
+		/// <summary>The deployment operation was blocked due to a per-package-family policy restricting deployments on a non-system volume. Per policy, this app must be installed to the system drive, but that's not set as the default. In Storage Settings, make the system drive the default location to save new content, then retry the install.</summary>
+		public const int ERROR_DEPLOYMENT_BLOCKED_BY_VOLUME_POLICY_PACKAGE = 15649;
+
+		/// <summary>The deployment operation was blocked due to a machine-wide policy restricting deployments on a non-system volume. Per policy, this app must be installed to the system drive, but that's not set as the default. In Storage Settings, make the system drive the default location to save new content, then retry the install.</summary>
+		public const int ERROR_DEPLOYMENT_BLOCKED_BY_VOLUME_POLICY_MACHINE = 15650;
+
+		/// <summary>The deployment operation was blocked because Special profile deployment is not allowed. Please try logging into an account that is not a Special profile. You can try logging out and logging back into the current account, or try logging into a different account.</summary>
+		public const int ERROR_DEPLOYMENT_BLOCKED_BY_PROFILE_POLICY = 15651;
+
+		/// <summary>The deployment operation failed due to a conflicting package's mutable package directory. To install this package remove the existing package with the conflicting mutable package directory.</summary>
+		public const int ERROR_DEPLOYMENT_FAILED_CONFLICTING_MUTABLE_PACKAGE_DIRECTORY = 15652;
+
+		/// <summary>The package installation failed because a singleton resource was specified and another user with that package installed is logged in. Please make sure that all active users with the package installed are logged out and retry installation.</summary>
+		public const int ERROR_SINGLETON_RESOURCE_INSTALLED_IN_ACTIVE_USER = 15653;
+
+		/// <summary>The package installation failed because a different version of the service is installed. Try installing a newer version of the package.</summary>
+		public const int ERROR_DIFFERENT_VERSION_OF_PACKAGED_SERVICE_INSTALLED = 15654;
+
+		/// <summary>The package installation failed because a version of the service exists outside of APPX packaging. Please contact your software vendor.</summary>
+		public const int ERROR_SERVICE_EXISTS_AS_NON_PACKAGED_SERVICE = 15655;
+
+		/// <summary>The package installation failed because administrator privileges are required. Please contact an administrator to install this package.</summary>
+		public const int ERROR_PACKAGED_SERVICE_REQUIRES_ADMIN_PRIVILEGES = 15656;
+
+		/// <summary>The process has no package identity.</summary>
+		public const int APPMODEL_ERROR_NO_PACKAGE = 15700;
+
+		/// <summary>The package runtime information is corrupted.</summary>
+		public const int APPMODEL_ERROR_PACKAGE_RUNTIME_CORRUPT = 15701;
+
+		/// <summary>The package identity is corrupted.</summary>
+		public const int APPMODEL_ERROR_PACKAGE_IDENTITY_CORRUPT = 15702;
+
+		/// <summary>The process has no application identity.</summary>
+		public const int APPMODEL_ERROR_NO_APPLICATION = 15703;
+
+		/// <summary>One or more AppModel Runtime group policy values could not be read. Please contact your system administrator with the contents of your AppModel Runtime event log.</summary>
+		public const int APPMODEL_ERROR_DYNAMIC_PROPERTY_READ_FAILED = 15704;
+
+		/// <summary>One or more AppModel Runtime group policy values are invalid. Please contact your system administrator with the contents of your AppModel Runtime event log.</summary>
+		public const int APPMODEL_ERROR_DYNAMIC_PROPERTY_INVALID = 15705;
+
+		/// <summary>The package is currently not available.</summary>
+		public const int APPMODEL_ERROR_PACKAGE_NOT_AVAILABLE = 15706;
+
+		/// <summary>The package does not have a mutable directory.</summary>
+		public const int APPMODEL_ERROR_NO_MUTABLE_DIRECTORY = 15707;
+
+		/// <summary>Loading the state store failed.</summary>
+		public const int ERROR_STATE_LOAD_STORE_FAILED = 15800;
+
+		/// <summary>Retrieving the state version for the application failed.</summary>
+		public const int ERROR_STATE_GET_VERSION_FAILED = 15801;
+
+		/// <summary>Setting the state version for the application failed.</summary>
+		public const int ERROR_STATE_SET_VERSION_FAILED = 15802;
+
+		/// <summary>Resetting the structured state of the application failed.</summary>
+		public const int ERROR_STATE_STRUCTURED_RESET_FAILED = 15803;
+
+		/// <summary>State Manager failed to open the container.</summary>
+		public const int ERROR_STATE_OPEN_CONTAINER_FAILED = 15804;
+
+		/// <summary>State Manager failed to create the container.</summary>
+		public const int ERROR_STATE_CREATE_CONTAINER_FAILED = 15805;
+
+		/// <summary>State Manager failed to delete the container.</summary>
+		public const int ERROR_STATE_DELETE_CONTAINER_FAILED = 15806;
+
+		/// <summary>State Manager failed to read the setting.</summary>
+		public const int ERROR_STATE_READ_SETTING_FAILED = 15807;
+
+		/// <summary>State Manager failed to write the setting.</summary>
+		public const int ERROR_STATE_WRITE_SETTING_FAILED = 15808;
+
+		/// <summary>State Manager failed to delete the setting.</summary>
+		public const int ERROR_STATE_DELETE_SETTING_FAILED = 15809;
+
+		/// <summary>State Manager failed to query the setting.</summary>
+		public const int ERROR_STATE_QUERY_SETTING_FAILED = 15810;
+
+		/// <summary>State Manager failed to read the composite setting.</summary>
+		public const int ERROR_STATE_READ_COMPOSITE_SETTING_FAILED = 15811;
+
+		/// <summary>State Manager failed to write the composite setting.</summary>
+		public const int ERROR_STATE_WRITE_COMPOSITE_SETTING_FAILED = 15812;
+
+		/// <summary>State Manager failed to enumerate the containers.</summary>
+		public const int ERROR_STATE_ENUMERATE_CONTAINER_FAILED = 15813;
+
+		/// <summary>State Manager failed to enumerate the settings.</summary>
+		public const int ERROR_STATE_ENUMERATE_SETTINGS_FAILED = 15814;
+
+		/// <summary>The size of the state manager composite setting value has exceeded the limit.</summary>
+		public const int ERROR_STATE_COMPOSITE_SETTING_VALUE_SIZE_LIMIT_EXCEEDED = 15815;
+
+		/// <summary>The size of the state manager setting value has exceeded the limit.</summary>
+		public const int ERROR_STATE_SETTING_VALUE_SIZE_LIMIT_EXCEEDED = 15816;
+
+		/// <summary>The length of the state manager setting name has exceeded the limit.</summary>
+		public const int ERROR_STATE_SETTING_NAME_SIZE_LIMIT_EXCEEDED = 15817;
+
+		/// <summary>The length of the state manager container name has exceeded the limit.</summary>
+		public const int ERROR_STATE_CONTAINER_NAME_SIZE_LIMIT_EXCEEDED = 15818;
+
+		/// <summary>This API cannot be used in the context of the caller's application type.</summary>
+		public const int ERROR_API_UNAVAILABLE = 15841;
+
+		/// <summary>This PC does not have a valid license for the application or product.</summary>
+		public const int STORE_ERROR_UNLICENSED = 15861;
+
+		/// <summary>The authenticated user does not have a valid license for the application or product.</summary>
+		public const int STORE_ERROR_UNLICENSED_USER = 15862;
+
+		/// <summary>The commerce transaction associated with this license is still pending verification.</summary>
+		public const int STORE_ERROR_PENDING_COM_TRANSACTION = 15863;
+
+		/// <summary>The license has been revoked for this user.</summary>
+		public const int STORE_ERROR_LICENSE_REVOKED = 15864;
 	}
 }
