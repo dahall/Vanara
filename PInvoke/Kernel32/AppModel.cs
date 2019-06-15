@@ -518,7 +518,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getapplicationusermodelidfromtoken LONG
 		// GetApplicationUserModelIdFromToken( HANDLE token, UINT32 *applicationUserModelIdLength, PWSTR applicationUserModelId );
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("appmodel.h", MSDNShortId = "80036518-927E-4CD0-B499-8EA472AB7E5A")]
 		public static extern Win32Error GetApplicationUserModelIdFromToken(HTOKEN token, ref uint applicationUserModelIdLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder applicationUserModelId);
 
@@ -922,7 +922,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getpackagefamilynamefromtoken LONG
 		// GetPackageFamilyNameFromToken( HANDLE token, UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "C4FAF5DE-DF1F-4AFA-813B-5D80C786031B")]
 		public static extern Win32Error GetPackageFamilyNameFromToken(HTOKEN token, ref uint packageFamilyNameLength, StringBuilder packageFamilyName);
 
@@ -967,7 +967,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getpackagefullnamefromtoken LONG
 		// GetPackageFullNameFromToken( HANDLE token, UINT32 *packageFullNameLength, PWSTR packageFullName );
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "7B0D574E-A2F5-4D08-AEFB-9E040BBC729F")]
 		public static extern Win32Error GetPackageFullNameFromToken(HTOKEN token, ref uint packageFullNameLength, StringBuilder packageFullName);
 
