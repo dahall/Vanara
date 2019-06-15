@@ -38,13 +38,13 @@ namespace Vanara.PInvoke
 
 		public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
 		public static readonly ushort LANG_USER_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT);
-		public static readonly uint LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
-		public static readonly uint LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
-		public static readonly uint LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
-		public static readonly uint LOCALE_INVARIANT = MAKELCID(MAKELANGID(LANG_INVARIANT, SUBLANG_NEUTRAL), SORT_DEFAULT);
-		public static readonly uint LOCALE_NEUTRAL = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), SORT_DEFAULT);
-		public static readonly uint LOCALE_SYSTEM_DEFAULT = MAKELCID(LANG_SYSTEM_DEFAULT, SORT_DEFAULT);
-		public static readonly uint LOCALE_USER_DEFAULT = MAKELCID(LANG_USER_DEFAULT, SORT_DEFAULT);
+		public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
+		public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
+		public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
+		public static readonly LCID LOCALE_INVARIANT = MAKELCID(MAKELANGID(LANG_INVARIANT, SUBLANG_NEUTRAL), SORT_DEFAULT);
+		public static readonly LCID LOCALE_NEUTRAL = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), SORT_DEFAULT);
+		public static readonly LCID LOCALE_SYSTEM_DEFAULT = MAKELCID(LANG_SYSTEM_DEFAULT, SORT_DEFAULT);
+		public static readonly LCID LOCALE_USER_DEFAULT = MAKELCID(LANG_USER_DEFAULT, SORT_DEFAULT);
 
 		/// <summary>
 		/// An application-defined callback function that processes enumerated calendar information provided by the <c>EnumCalendarInfo</c>
@@ -4652,7 +4652,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the locale identifier.</returns>
 		// DWORD MAKELCID( WORD wLanguageID, WORD wSortID); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319052(v=vs.85).aspx
 		[PInvokeData("Winnt.h", MSDNShortId = "dd319052")]
-		public static uint MAKELCID(ushort wLanguageID, ushort wSortID) => Macros.MAKELONG((ushort)(wSortID & 0xf), wLanguageID);
+		public static uint MAKELCID(ushort wLanguageID, ushort wSortID) => Macros.MAKELONG(wLanguageID, (ushort)(wSortID & 0xf));
 
 		/// <summary>Constructs a locale identifier (LCID) from a language identifier, a sort order identifier, and the sort version.</summary>
 		/// <param name="wLanguageID">
