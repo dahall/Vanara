@@ -136,7 +136,89 @@ namespace Vanara.PInvoke
 		// _In_ DWORD flEnclaveType, _In_ LPCVOID lpEnclaveInformation, _In_ DWORD dwInfoLength, _Out_opt_ LPDWORD lpEnclaveError); https://msdn.microsoft.com/en-us/library/windows/desktop/mt592866(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592866")]
-		public static extern void CreateEnclave(HPROCESS hProcess, IntPtr lpAddress, SizeT dwSize, SizeT dwInitialCommittment, EnclaveType flEnclaveType, IntPtr lpEnclaveInformation, uint dwInfoLength, out uint lpEnclaveError);
+		public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, IntPtr lpAddress, SizeT dwSize, SizeT dwInitialCommittment, EnclaveType flEnclaveType, in ENCLAVE_CREATE_INFO_SGX lpEnclaveInformation, uint dwInfoLength, out uint lpEnclaveError);
+
+		/// <summary>
+		/// Creates a new uninitialized enclave. An enclave is an isolated region of code and data within the address space for an
+		/// application. Only code that runs within the enclave can access data within the same enclave.
+		/// </summary>
+		/// <param name="hProcess">A handle to the process for which you want to create an enclave.</param>
+		/// <param name="lpAddress">
+		/// The preferred base address of the enclave. Specify <c>NULL</c> to have the operating system assign the base address.
+		/// </param>
+		/// <param name="dwSize">
+		/// The size of the enclave that you want to create, including the size of the code that you will load into the enclave, in bytes.
+		/// </param>
+		/// <param name="dwInitialCommittment">
+		/// <para>The amount of memory to commit for the enclave, in bytes.</para>
+		/// <para>
+		/// If the amount of enclave memory available is not sufficient to commit this number of bytes, enclave creation fails. Any memory
+		/// that remains unused when you initialize the enclave by calling <c>InitializeEnclave</c> is returned to the list of free pages.
+		/// </para>
+		/// <para>The value of the dwInitialCommittment parameter must not exceed the value of the dwSize parameter.</para>
+		/// <para>This parameter is not used for virtualization-based security (VBS) enclaves.</para>
+		/// </param>
+		/// <param name="flEnclaveType">
+		/// <para>The architecture type of the enclave that you want to create. To verify that an enclave type is supported, call <c>IsEnclaveTypeSupported</c>.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ENCLAVE_TYPE_SGX0x00000001</term>
+		/// <term>An enclave for the Intel Software Guard Extensions (SGX) architecture extension.</term>
+		/// </item>
+		/// <item>
+		/// <term>ENCLAVE_TYPE_VBS0x00000010</term>
+		/// <term>A VBS enclave.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpEnclaveInformation">
+		/// <para>A pointer to the architecture-specific information to use to create the enclave.</para>
+		/// <para>For the <c>ENCLAVE_TYPE_SGX</c> enclave type, you must specify a pointer to an <c>ENCLAVE_CREATE_INFO_SGX</c> structure.</para>
+		/// <para>For the <c>ENCLAVE_TYPE_VBS</c> enclave type, you must specify a pointer to an <c>ENCLAVE_CREATE_INFO_VBS</c> structure.</para>
+		/// </param>
+		/// <param name="dwInfoLength">
+		/// The length of the structure that the lpEnclaveInformation parameter points to, in bytes. For the <c>ENCLAVE_TYPE_SGX</c> enclave
+		/// type, this value must be 4096. For the <c>ENCLAVE_TYPE_VBS</c> enclave type, this value must be , which is 36 bytes.
+		/// </param>
+		/// <param name="lpEnclaveError">
+		/// An optional pointer to a variable that receives an enclave error code that is architecture-specific. For the
+		/// <c>ENCLAVE_TYPE_SGX</c> and <c>ENCLAVE_TYPE_VBS</c> enclave types, the lpEnclaveError parameter is not used.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is the base address of the created enclave.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>For a list of common error codes, see System Error Codes. The following error codes also apply for this function.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_NOT_SUPPORTED</term>
+		/// <term>An unsupported enclave type was specified.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_BAD_LENGTH</term>
+		/// <term>
+		/// The value of the dwInfoLength parameter did not match the value expected based on the value specified for the
+		/// lpEnclaveInformation parameter.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// PVOID WINAPI CreateEnclave( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ SIZE_T dwInitialCommittment,
+		// _In_ DWORD flEnclaveType, _In_ LPCVOID lpEnclaveInformation, _In_ DWORD dwInfoLength, _Out_opt_ LPDWORD lpEnclaveError); https://msdn.microsoft.com/en-us/library/windows/desktop/mt592866(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592866")]
+		public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, IntPtr lpAddress, SizeT dwSize, SizeT dwInitialCommittment, EnclaveType flEnclaveType, in ENCLAVE_CREATE_INFO_VBS lpEnclaveInformation, uint dwInfoLength, out uint lpEnclaveError);
 
 		/// <summary>Deletes the specified enclave.</summary>
 		/// <param name="lpAddress">The base address of the enclave that you want to delete.</param>
@@ -224,7 +306,68 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592869")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool InitializeEnclave(HPROCESS hProcess, IntPtr lpAddress, IntPtr lpEnclaveInformation, uint dwInfoLength, ref uint lpEnclaveError);
+		public static extern bool InitializeEnclave(HPROCESS hProcess, IntPtr lpAddress, in ENCLAVE_INIT_INFO_SGX lpEnclaveInformation, uint dwInfoLength, ref uint lpEnclaveError);
+
+		/// <summary>Initializes an enclave that you created and loaded with data.</summary>
+		/// <param name="hProcess">A handle to the process for which the enclave was created.</param>
+		/// <param name="lpAddress">Any address within the enclave.</param>
+		/// <param name="lpEnclaveInformation">
+		/// <para>A pointer to architecture-specific information to use to initialize the enclave.</para>
+		/// <para>For the <c>ENCLAVE_TYPE_SGX</c> enclave type, specify a pointer to an <c>ENCLAVE_INIT_INFO_SGX</c> structure.</para>
+		/// <para>For the <c>ENCLAVE_TYPE_VBS</c> enclave type, specify a pointer to an <c>ENCLAVE_INIT_INFO_VBS</c> structure.</para>
+		/// </param>
+		/// <param name="dwInfoLength">
+		/// The length of the structure that the lpEnclaveInformation parameter points to, in bytes. For the <c>ENCLAVE_TYPE_SGX</c> enclave
+		/// type, this value must be 4096. For the <c>ENCLAVE_TYPE_VBS</c> enclave type, this value must be , which is 8 bytes.
+		/// </param>
+		/// <param name="lpEnclaveError">
+		/// <para>An optional pointer to a variable that receives an enclave error code that is architecture-specific.</para>
+		/// <para>
+		/// For the <c>ENCLAVE_TYPE_SGX</c> enclave type, the lpEnclaveError parameter contains the error that the EINIT instruction
+		/// generated if the function fails and . <c>GetLastError</c> returns <c>ERROR_ENCLAVE_FAILURE</c>.
+		/// </para>
+		/// <para>For the <c>ENCLAVE_TYPE_VBS</c> enclave type, the lpEnclaveError parameter is not used.</para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero. To get extended error
+		/// information, call <c>GetLastError</c>.
+		/// </para>
+		/// <para>For a list of common error codes, see System Error Codes. The following error codes also apply for this function.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ENCLAVE_FAILURE</term>
+		/// <term>
+		/// An failure specific to the underlying enclave architecture occurred. The value for the lpEnclaveError parameter contains the
+		/// architecture-specific error. For the ENCLAVE_TYPE_SGX enclave type, the EINIT instruction that the ENCLAVE_INIT_INFO_SGX
+		/// structure specified generated an error. The value of the lpEnclaveError parameter contains the error that the instruction generated.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_BAD_LENGTH</term>
+		/// <term>
+		/// The value of the dwInfoLength parameter did not match the value expected based on the value specified for the
+		/// lpEnclaveInformation parameter.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_RETRY</term>
+		/// <term>The processor was not able to initialize the enclave in a timely fashion. Try to initialize the enclave again.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// BOOL WINAPI InitializeEnclave( _In_ HANDLE hProcess, _In_ LPVOID lpAddress, _In_ LPVOID lpEnclaveInformation, _In_ DWORD
+		// dwInfoLength, _In_ LPDWORD lpEnclaveError); https://msdn.microsoft.com/en-us/library/windows/desktop/mt592869(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592869")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool InitializeEnclave(HPROCESS hProcess, IntPtr lpAddress, in ENCLAVE_INIT_INFO_VBS lpEnclaveInformation, uint dwInfoLength, ref uint lpEnclaveError);
 
 		/// <summary>Retrieves whether the specified type of enclave is supported.</summary>
 		/// <param name="flEnclaveType">
@@ -468,6 +611,23 @@ namespace Vanara.PInvoke
 			/// successful return from <c>InitializeEnclave</c>, contains the number of threads the function actually created.
 			/// </summary>
 			public uint ThreadCount;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for an enclave handle that is disposed using <see cref="DeleteEnclave(IntPtr)"/>.</summary>
+		public class SafeEnclaveHandle : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeEnclaveHandle"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeEnclaveHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeEnclaveHandle"/> class.</summary>
+			private SafeEnclaveHandle() : base() { }
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DeleteEnclave(handle);
 		}
 	}
 }
