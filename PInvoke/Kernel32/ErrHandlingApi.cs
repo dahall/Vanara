@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -53,24 +52,28 @@ namespace Vanara.PInvoke
 		/// handler search, return EXCEPTION_CONTINUE_SEARCH (0x0).
 		/// </returns>
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
-		public delegate int PVECTORED_EXCEPTION_HANDLER(ref EXCEPTION_POINTERS ExceptionInfo);
+		public delegate uint PVECTORED_EXCEPTION_HANDLER(ref EXCEPTION_POINTERS ExceptionInfo);
 
 		/// <summary>Exception flags</summary>
 		public enum EXCEPTION_FLAG : uint
 		{
 			/// <summary>Indicates a continuable exception.</summary>
 			EXCEPTION_CONTINUABLE = 0,
+
 			/// <summary>
 			/// Proceed with normal execution of UnhandledExceptionFilter. That means obeying the SetErrorMode flags, or invoking the
 			/// Application Error pop-up message box.
 			/// </summary>
 			EXCEPTION_CONTINUE_SEARCH = 0x0000,
+
 			/// <summary>Indicates a noncontinuable exception.</summary>
 			EXCEPTION_NONCONTINUABLE = 0x0001,
+
 			/// <summary>
 			/// Return from UnhandledExceptionFilter and execute the associated exception handler. This usually results in process termination.
 			/// </summary>
 			EXCEPTION_EXECUTE_HANDLER = 0x0001,
+
 			EXCEPTION_UNWINDING = 0x0002,
 			EXCEPTION_EXIT_UNWIND = 0x0004,
 			EXCEPTION_STACK_INVALID = 0x0008,
@@ -78,12 +81,34 @@ namespace Vanara.PInvoke
 			EXCEPTION_TARGET_UNWIND = 0x0020,
 			EXCEPTION_COLLIDED_UNWIND = 0x0040,
 			EXCEPTION_UNWIND = 0x0066,
+
 			/// <summary>
 			/// Return from UnhandledExceptionFilter and continue execution from the point of the exception. Note that the filter function is
 			/// free to modify the continuation state by modifying the exception information supplied through its LPEXCEPTION_POINTERS parameter.
 			/// </summary>
 			EXCEPTION_CONTINUE_EXECUTION = 0xFFFFFFFF,
+
 			EXCEPTION_CHAIN_END = 0xFFFFFFFF,
+		}
+
+		/// <summary>Common Exception codes</summary>
+		/// <remarks>
+		/// Users can define their own exception codes, so the code could be any value. The OS reserves bit 28 and may clear that for its own purposes
+		/// </remarks>
+		public enum ExceptionCode : uint
+		{
+			None = 0x0,
+			STATUS_BREAKPOINT = 0x80000003,
+			STATUS_SINGLESTEP = 0x80000004,
+
+			EXCEPTION_INT_DIVIDE_BY_ZERO = 0xC0000094,
+
+			/// <summary>Fired when debuggee gets a Control-C.</summary>
+			DBG_CONTROL_C = 0x40010005,
+
+			EXCEPTION_STACK_OVERFLOW = 0xC00000FD,
+			EXCEPTION_NONCONTINUABLE_EXCEPTION = 0xC0000025,
+			EXCEPTION_ACCESS_VIOLATION = 0xc0000005,
 		}
 
 		/// <summary>Flags that control the behavior of <see cref="RaiseFailFastException"/>.</summary>
@@ -91,6 +116,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>None.</summary>
 			NONE = 0,
+
 			/// <summary>
 			/// Causes RaiseFailFastException to set the ExceptionAddress of EXCEPTION_RECORD to the return address of this function (the
 			/// next instruction in the caller after the call to RaiseFailFastException). This function will set the exception address only
@@ -128,7 +154,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>
 			/// Important: LocalAlloc() has different options: LMEM_FIXED, and LMEM_MOVABLE. FormatMessage() uses LMEM_FIXED, so HeapFree can
-			///            be used. If LMEM_MOVABLE is used, HeapFree cannot be used.
+			/// be used. If LMEM_MOVABLE is used, HeapFree cannot be used.
 			/// </para>
 			/// </summary>
 			FORMAT_MESSAGE_ALLOCATE_BUFFER = 0x100,
@@ -148,8 +174,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// The lpSource parameter is a pointer to a null-terminated string that contains a message definition. The message definition
-			/// may contain insert sequences, just as the message text in a message table resource may. This flag cannot be used with <see
-			/// cref="FORMAT_MESSAGE_FROM_HMODULE"/> or <see cref="FORMAT_MESSAGE_FROM_SYSTEM"/>.
+			/// may contain insert sequences, just as the message text in a message table resource may. This flag cannot be used with
+			/// <see cref="FORMAT_MESSAGE_FROM_HMODULE"/> or <see cref="FORMAT_MESSAGE_FROM_SYSTEM"/>.
 			/// </summary>
 			FORMAT_MESSAGE_FROM_STRING = 0x400,
 
@@ -182,6 +208,21 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			FORMAT_MESSAGE_MAX_WIDTH_MASK = 0xff
+		}
+
+		/// <summary>System error modes.</summary>
+		[PInvokeData("WinBase.h", MSDNShortId = "ms679355")]
+		[Flags]
+		public enum SEM : uint
+		{
+			/// <summary>The system does not display the critical-error-handler message box. Instead, the system sends the error to the calling process.</summary>
+			SEM_FAILCRITICALERRORS = 0x0001,
+			/// <summary>The system automatically fixes memory alignment faults and makes them invisible to the application. It does this for the calling process and any descendant processes. This feature is only supported by certain processor architectures. For more information, see SetErrorMode.</summary>
+			SEM_NOALIGNMENTFAULTEXCEPT = 0x0004,
+			/// <summary>The system does not display the Windows Error Reporting dialog.</summary>
+			SEM_NOGPFAULTERRORBOX = 0x0002,
+			/// <summary>The system does not display a message box when it fails to find a file. Instead, the error is returned to the calling process.</summary>
+			SEM_NOOPENFILEERRORBOX = 0x8000,
 		}
 
 		/// <summary>Registers a vectored continue handler.</summary>
@@ -744,7 +785,7 @@ namespace Vanara.PInvoke
 		// UINT WINAPI GetErrorMode(void); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679355(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms679355")]
-		public static extern uint GetErrorMode();
+		public static extern SEM GetErrorMode();
 
 		/// <summary>
 		/// <para>
@@ -771,35 +812,38 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the error mode for the calling thread.</summary>
 		/// <returns>
 		/// <para>The process error mode. This function returns one of the following values.</para>
-		/// <para>
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Return code/value</term>
 		/// <term>Description</term>
 		/// </listheader>
 		/// <item>
-		/// <term>SEM_FAILCRITICALERRORS = 0x0001</term>
+		/// <term>SEM_FAILCRITICALERRORS 0x0001</term>
 		/// <term>
-		/// The system does not display the critical-error-handler message box. Instead, the system sends the error to the calling process.
+		/// The system does not display the critical-error-handler message box. Instead, the system sends the error to the calling thread.
 		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>SEM_NOGPFAULTERRORBOX = 0x0002</term>
+		/// <term>SEM_NOGPFAULTERRORBOX 0x0002</term>
 		/// <term>The system does not display the Windows Error Reporting dialog.</term>
 		/// </item>
 		/// <item>
-		/// <term>SEM_NOOPENFILEERRORBOX = 0x8000</term>
+		/// <term>SEM_NOOPENFILEERRORBOX 0x8000</term>
 		/// <term>
-		/// The system does not display a message box when it fails to find a file. Instead, the error is returned to the calling process.
+		/// The system does not display a message box when it fails to find a file. Instead, the error is returned to the calling thread.
 		/// </term>
 		/// </item>
 		/// </list>
-		/// </para>
 		/// </returns>
+		/// <remarks>
+		/// A thread inherits the error mode of the process in which it is running. To change the error mode for the thread, use the
+		/// SetThreadErrorMode function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/errhandlingapi/nf-errhandlingapi-getthreaderrormode
+		// DWORD GetThreadErrorMode( );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "dd553629")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetThreadErrorMode(uint dwNewMode, out uint lpOldMode);
+		[PInvokeData("errhandlingapi.h", MSDNShortId = "246d838a-ba16-4ba4-8cd3-f25dfc7d2f23")]
+		public static extern SEM GetThreadErrorMode();
 
 		/// <summary>Raises an exception in the calling thread.</summary>
 		/// <param name="dwExceptionCode">
@@ -960,7 +1004,7 @@ namespace Vanara.PInvoke
 		// UINT WINAPI SetErrorMode( _In_ UINT uMode); https://msdn.microsoft.com/en-us/library/windows/desktop/ms680621(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms680621")]
-		public static extern uint SetErrorMode(uint uMode);
+		public static extern SEM SetErrorMode(SEM uMode);
 
 		/// <summary>Sets the last-error code for the calling thread.</summary>
 		/// <param name="dwErrCode">The last-error code for the thread.</param>
@@ -1016,7 +1060,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "dd553630")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetThreadErrorMode(uint dwNewMode, out uint lpOldMode);
+		public static extern bool SetThreadErrorMode(SEM dwNewMode, out SEM lpOldMode);
 
 		/// <summary>
 		/// <para>Enables an application to supersede the top-level exception handler of each thread of a process.</para>
@@ -1124,31 +1168,12 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>A pointer to an <c>EXCEPTION_RECORD</c> structure that contains a machine-independent description of the exception.</summary>
 			public IntPtr ExceptionRecord;
+
 			/// <summary>
 			/// A pointer to a <c>CONTEXT</c> structure that contains a processor-specific description of the state of the processor at the
 			/// time of the exception.
 			/// </summary>
 			public IntPtr ContextRecord;
-		}
-
-		/// <summary>Common Exception codes</summary>
-		/// <remarks>
-		/// Users can define their own exception codes, so the code could be any value. The OS reserves bit 28 and may clear that for its own purposes
-		/// </remarks>
-		public enum ExceptionCode : uint
-		{
-			None = 0x0,
-			STATUS_BREAKPOINT = 0x80000003,
-			STATUS_SINGLESTEP = 0x80000004,
-
-			EXCEPTION_INT_DIVIDE_BY_ZERO = 0xC0000094,
-
-			/// <summary>Fired when debuggee gets a Control-C.</summary>
-			DBG_CONTROL_C = 0x40010005,
-
-			EXCEPTION_STACK_OVERFLOW = 0xC00000FD,
-			EXCEPTION_NONCONTINUABLE_EXCEPTION = 0xC0000025,
-			EXCEPTION_ACCESS_VIOLATION = 0xc0000005,
 		}
 
 		/// <summary>Describes an exception.</summary>
@@ -1164,19 +1189,23 @@ namespace Vanara.PInvoke
 			/// <c>EXCEPTION_NONCONTINUABLE_EXCEPTION</c> exception.
 			/// </summary>
 			public ExceptionCode ExceptionCode;
+
 			/// <summary>
 			/// The exception flags. This member can be either zero, indicating a continuable exception, or <c>EXCEPTION_NONCONTINUABLE</c>
 			/// indicating a noncontinuable exception. Any attempt to continue execution after a noncontinuable exception causes the
 			/// <c>EXCEPTION_NONCONTINUABLE_EXCEPTION</c> exception.
 			/// </summary>
 			public EXCEPTION_FLAG ExceptionFlags;
+
 			/// <summary>
 			/// A pointer to an associated <c>EXCEPTION_RECORD</c> structure. Exception records can be chained together to provide additional
 			/// information when nested exceptions occur.
 			/// </summary>
 			public IntPtr ExceptionRecord;
+
 			/// <summary>The address where the exception occurred.</summary>
 			public IntPtr ExceptionAddress;
+
 			/// <summary>
 			/// The number of parameters associated with the exception. This is the number of defined elements in the
 			/// <c>ExceptionInformation</c> array.
@@ -1187,6 +1216,7 @@ namespace Vanara.PInvoke
 			//[MarshalAs(UnmanagedType.ByValArray, SizeConst = EXCEPTION_MAXIMUM_PARAMETERS)]
 			//public IntPtr[] ExceptionInformation;
 			private IntPtr ExceptionInformation0;
+
 			private IntPtr ExceptionInformation1;
 			private IntPtr ExceptionInformation2;
 			private IntPtr ExceptionInformation3;
@@ -1203,8 +1233,8 @@ namespace Vanara.PInvoke
 			private IntPtr ExceptionInformation14;
 
 			/// <summary>
-			/// An associated <c>EXCEPTION_RECORD</c> structure. Exception records can be chained together to provide additional
-			/// information when nested exceptions occur.
+			/// An associated <c>EXCEPTION_RECORD</c> structure. Exception records can be chained together to provide additional information
+			/// when nested exceptions occur.
 			/// </summary>
 			public EXCEPTION_RECORD? ChainedRecord => ExceptionRecord.ToNullableStructure<EXCEPTION_RECORD>();
 
