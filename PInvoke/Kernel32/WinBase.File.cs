@@ -2514,6 +2514,49 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetFileShortName([In] HFILE hFile, string lpShortName);
 
+		/// <summary>Sets the label of a file system volume.</summary>
+		/// <param name="lpRootPathName">
+		/// A pointer to a string that contains the volume's drive letter (for example, X:\) or the path of a mounted folder that is
+		/// associated with the volume (for example, Y:\MountX\). The string must end with a trailing backslash ('\'). If this parameter is
+		/// <c>NULL</c>, the root of the current directory is used.
+		/// </param>
+		/// <param name="lpVolumeName">
+		/// A pointer to a string that contains the new label for the volume. If this parameter is <c>NULL</c>, the function deletes any
+		/// existing label from the specified volume and does not assign a new label.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI SetVolumeLabel( _In_opt_ LPCTSTR lpRootPathName, _In_opt_ LPCTSTR lpVolumeName); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365560(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("WinBase.h", MSDNShortId = "aa365560")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetVolumeLabel(string lpRootPathName, string lpVolumeName);
+
+		/// <summary>Associates a volume with a drive letter or a directory on another volume.</summary>
+		/// <param name="lpszVolumeMountPoint">
+		/// The user-mode path to be associated with the volume. This may be a drive letter (for example, "X:\") or a directory on another
+		/// volume (for example, "Y:\MountX\"). The string must end with a trailing backslash ('\').
+		/// </param>
+		/// <param name="lpszVolumeName">
+		/// A volume <c>GUID</c> path for the volume. This string must be of the form "\\?\Volume{GUID}\" where GUID is a <c>GUID</c> that
+		/// identifies the volume. The "\\?\" turns off path parsing and is ignored as part of the path, as discussed in Naming a Volume.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// If the lpszVolumeMountPoint parameter contains a path to a mounted folder, <c>GetLastError</c> returns
+		/// <c>ERROR_DIR_NOT_EMPTY</c>, even if the directory is empty.
+		/// </para>
+		/// </returns>
+		// BOOL WINAPI SetVolumeMountPoint( _In_ LPCTSTR lpszVolumeMountPoint, _In_ LPCTSTR lpszVolumeName); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365561(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("WinBase.h", MSDNShortId = "aa365561")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetVolumeMountPoint(string lpszVolumeMountPoint, string lpszVolumeName);
+
 		/// <summary>Template method for using FindXX methods to get a list of strings.</summary>
 		/// <typeparam name="THandle">The type of the handle returned by the <paramref name="first"/> method.</typeparam>
 		/// <param name="first">The method that gets the first value.</param>

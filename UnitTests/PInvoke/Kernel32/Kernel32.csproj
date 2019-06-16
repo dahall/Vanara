@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,11 +31,18 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileApiTests.cs" />
+    <Compile Include="FibersApiTests.cs" />
+    <Compile Include="ErrHandlingApiTests.cs" />
+    <Compile Include="EnclaveApiTests.cs" />
+    <Compile Include="DateTimeApiTests.cs" />
+    <Compile Include="AppModelTests.cs" />
     <Compile Include="InteropServices\SafeLocalHandleTests.cs" />
     <Compile Include="Kernel32Tests.cs" />
     <Compile Include="ConsoleTests.cs" />
@@ -50,6 +58,10 @@
     <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
       <Project>{842d436f-598c-47d7-b5aa-12399f8ccfe9}</Project>
       <Name>Vanara.PInvoke.Kernel32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Security\Vanara.PInvoke.Security.csproj">
+      <Project>{392a14b0-1e10-4e88-9c13-0d965665ffb5}</Project>
+      <Name>Vanara.PInvoke.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
       <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>

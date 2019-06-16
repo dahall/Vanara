@@ -35,31 +35,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void AsyncReadWriteTest()
-		{
-			var fn = Path.GetTempFileName();
-			uint sz = 1024 * 1024 * 128;
-			using (var hFile = CreateFile(fn, Kernel32.FileAccess.GENERIC_WRITE, FileShare.Write, null, FileMode.OpenOrCreate,
-				FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED, IntPtr.Zero))
-			{
-				var bytes = GetBigBytes(sz, 1);
-				Assert.That(bytes[1024], Is.EqualTo(1));
-				new TaskFactory().FromAsync<HFILE, byte[], uint>(BeginWriteFile, EndWriteFile, hFile, bytes, (uint)bytes.Length, 1).Wait();
-			}
-			var fi = new FileInfo(fn);
-			Assert.That(fi.Exists);
-			Assert.That(fi.Length, Is.EqualTo(sz));
-			using (var hFile = CreateFile(fn, Kernel32.FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open,
-				FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED | FileFlagsAndAttributes.FILE_FLAG_DELETE_ON_CLOSE, IntPtr.Zero))
-			{
-				var bytes = GetBigBytes(sz);
-				Assert.That(bytes[1024], Is.EqualTo(0));
-				new TaskFactory().FromAsync<HFILE, byte[], uint>(BeginReadFile, EndReadFile, hFile, bytes, (uint)bytes.Length, 1).Wait();
-				Assert.That(bytes[1024], Is.EqualTo(1));
-			}
-		}
-
-		[Test]
 		public void CreateProcessTest()
 		{
 			var res = CreateProcess(null, new StringBuilder("notepad.exe"), default, default, false, 0, default, null, STARTUPINFO.Default, out var pi);
@@ -68,53 +43,6 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(pi.hThread.IsInvalid, Is.False);
 			Assert.That(pi.dwProcessId, Is.GreaterThan(0));
 			Assert.That(pi.dwThreadId, Is.GreaterThan(0));
-		}
-
-		[Test]
-		public void CreateReadFileTest()
-		{
-			var rofn = CreateTempFile();
-			using (var f = CreateFile(rofn, Kernel32.FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL, IntPtr.Zero))
-			{
-				var sb = new SafeCoTaskMemString(100, CharSet.Ansi);
-				var b = ReadFile(f, (IntPtr)sb, (uint)sb.Capacity, out var read, IntPtr.Zero);
-				if (!b) TestContext.WriteLine($"ReadFile:{Win32Error.GetLastError()}");
-				Assert.That(b);
-				if (read < sb.Capacity) Marshal.WriteInt16((IntPtr)sb, (int)read, '\0');
-				Assert.That(read, Is.Not.Zero.And.LessThanOrEqualTo(sb.Capacity));
-				Assert.That((string)sb, Is.EqualTo(tmpstr));
-
-				b = SetFilePointerEx(f, 0, out var pos, SeekOrigin.Begin);
-				if (!b) TestContext.WriteLine($"SetFilePointerEx:{Win32Error.GetLastError()}");
-				Assert.That(b);
-				Assert.That(pos, Is.Zero);
-
-				var bytes = new byte[100];
-				b = ReadFile(f, bytes, (uint)bytes.Length, out read, IntPtr.Zero);
-				if (!b) TestContext.WriteLine($"ReadFile:{Win32Error.GetLastError()}");
-				Assert.That(b);
-				Assert.That(read, Is.Not.Zero.And.LessThanOrEqualTo(bytes.Length));
-				Assert.That(Encoding.ASCII.GetString(bytes, 0, (int)read), Is.EqualTo(tmpstr));
-			}
-		}
-
-		[Test]
-		public void CreateWriteFileTest()
-		{
-			using (var f = CreateFile(Path.GetTempFileName(), Kernel32.FileAccess.GENERIC_WRITE, FileShare.Write, null, FileMode.OpenOrCreate, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL, IntPtr.Zero))
-			{
-				var txt = "Some text to push.";
-				var bytes = txt.GetBytes(false);
-				var b = WriteFile(f, bytes, (uint)bytes.Length, out var written, IntPtr.Zero);
-				if (!b) TestContext.WriteLine($"WriteFile:{Win32Error.GetLastError()}");
-				Assert.That(b);
-				Assert.That(written, Is.EqualTo(bytes.Length));
-				var ptr = new SafeCoTaskMemString(" More text to push.");
-				b = WriteFile(f, (IntPtr)ptr, (uint)ptr.Capacity, out written, IntPtr.Zero);
-				if (!b) TestContext.WriteLine($"WriteFile:{Win32Error.GetLastError()}");
-				Assert.That(b);
-				Assert.That(written, Is.EqualTo(ptr.Capacity));
-			}
 		}
 
 		[Test]
@@ -182,51 +110,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void FormatMessageStringTest()
-		{
-			var objs = new string[] { "Alan", "Bob", "Chuck", "Dave", "Ed", "Frank", "Gary", "Harry" };
-			Assert.That(FormatMessage(null, objs), Is.Null);
-			Assert.That(FormatMessage("X", null), Is.EqualTo("X"));
-			Assert.That(FormatMessage("X", objs), Is.EqualTo("X"));
-			Assert.That(FormatMessage("X %1", new[] { "YZ" }), Is.EqualTo("X YZ"));
-			var s = FormatMessage("%1 %2 %3 %4 %5 %6 %7 %8", objs);
-			Assert.That(s, Is.EqualTo(string.Join(" ", objs)));
-			s = FormatMessage("%1 %2", new object[] { 4, "Alan" }, FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS);
-			Assert.That(s, Is.EqualTo("%1 %2"));
-			//s = FormatMessage("%1!*.*s! %4 %5!*s!", new object[] { 4, 2, "Bill", "Bob", 6, "Bill" });
-			//Assert.That(s, Is.EqualTo("  Bi Bob   Bill"));
-			s = FormatMessage("%1 %2 %3 %4 %5 %6", new object[] { 4, 2, "Bill", "Bob", 6, "Bill" });
-			Assert.That(s, Is.EqualTo("\u0004 \u0002 Bill Bob \u0006 Bill"));
-		}
-
-		[Test]
-		public void FormatMessageWinErrTest()
-		{
-			var s = FormatMessage(Win32Error.ERROR_INVALID_PARAMETER);
-			Assert.That(s, Is.Not.Null);
-			TestContext.WriteLine(s);
-		}
-
-		[Test]
-		public void FormatMessageWinErrTest2()
-		{
-			var s = FormatMessage(Win32Error.ERROR_BAD_EXE_FORMAT, new object[] { "Test.exe" });
-			Assert.That(s, Contains.Substring("Test.exe"));
-			TestContext.WriteLine(s);
-		}
-
-		[Test]
-		public void FormatMessageLibStrTest()
-		{
-			using (var hLib = LoadLibraryEx(@"aadWamExtension.dll", dwFlags: LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
-			{
-				var s = FormatMessage(0xb00003f7, new[] { "Fred", "Alice" }, hLib);
-				Assert.That(s, Contains.Substring("Alice"));
-				TestContext.WriteLine(s);
-			}
-		}
-
-		[Test]
 		public void GetCompressedFileSizeTest()
 		{
 			var err = GetCompressedFileSize(fn, out ulong sz);
@@ -261,31 +144,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void GetDiskFreeSpaceTest()
-		{
-			var b = GetDiskFreeSpace(null, out var spc, out var bps, out var fc, out var cc);
-			Assert.That(b, Is.True);
-			Assert.That(spc, Is.Not.EqualTo(0));
-			Assert.That(bps, Is.Not.EqualTo(0));
-			Assert.That(fc, Is.Not.EqualTo(0));
-			Assert.That(cc, Is.Not.EqualTo(0));
-			b = GetDiskFreeSpace("Q", out spc, out bps, out fc, out cc);
-			Assert.That(b, Is.False);
-		}
-
-		[Test]
-		public void GetDiskFreeSpaceExTest()
-		{
-			var b = GetDiskFreeSpaceEx(null, out var fba, out var tb, out var tfb);
-			Assert.That(b, Is.True);
-			Assert.That(fba, Is.Not.EqualTo(0));
-			Assert.That(tb, Is.Not.EqualTo(0));
-			Assert.That(tfb, Is.Not.EqualTo(0));
-			b = GetDiskFreeSpaceEx("Q", out fba, out tb, out tfb);
-			Assert.That(b, Is.False);
-		}
-
-		[Test]
 		public void GetModuleFileNameTest()
 		{
 			const string fn = @"C:\Windows\System32\tzres.dll";
@@ -305,18 +163,6 @@ namespace Vanara.PInvoke.Tests
 				var a = GetProcAddress(hLib, "GetNativeSystemInfo");
 				Assert.That(a, Is.Not.EqualTo(IntPtr.Zero));
 			}
-		}
-
-		[Test]
-		public void GetVolumeInformationTest()
-		{
-			var b = GetVolumeInformation(null, out var vn, out var vsn, out var mcl, out var fsf, out var fsn);
-			Assert.That(b, Is.True);
-			Assert.That(vn, Is.Not.Null.And.Not.Empty);
-			Assert.That(vsn, Is.Not.EqualTo(0));
-			Assert.That(mcl, Is.Not.EqualTo(0));
-			Assert.That(fsf, Is.Not.EqualTo(0));
-			Assert.That(fsn, Is.Not.Null.And.Not.Empty);
 		}
 
 		[Test]

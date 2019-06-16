@@ -342,7 +342,7 @@ namespace Vanara.Windows.Shell
 		public override string ToString() =>
 			$"{(Properties.GetProperty<string>(PROPERTYKEY.System.Title) ?? "").ToUpperInvariant()} {FullPath.ToUpperInvariant()} {Arguments}";*/
 
-		private string GetPath(SLGP value) => GetStringValue((sb, l) => link.GetPath(sb, l, null, value));
+		private string GetPath(SLGP value) => GetStringValue((sb, l) => link.GetPath(sb, l, out _, value));
 
 		private void LoadAndResolve(string linkFile, SLR_FLAGS resolveFlags, HWND hWin = default, ushort timeOut = 0)
 		{

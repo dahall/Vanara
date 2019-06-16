@@ -6,8 +6,8 @@ using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 namespace Vanara.PInvoke
 {
 	/// <summary>Contains information about the file that is found by the FindFirstFile, FindFirstFileEx, or FindNextFile function.</summary>
-	[Serializable, StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto), BestFitMapping(false)]
-	public class WIN32_FIND_DATA
+	[Serializable, StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	public struct WIN32_FIND_DATA
 	{
 		/// <summary>
 		/// The file attributes of a file.

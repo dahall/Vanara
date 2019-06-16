@@ -275,7 +275,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="fFlags">Flags that specify the type of path information to retrieve.</param>
 			void GetPath([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszFile, int cchMaxPath,
-				[In, Out] WIN32_FIND_DATA pfd, SLGP fFlags);
+				out WIN32_FIND_DATA pfd, SLGP fFlags);
 
 			/// <summary>Gets the list of item identifiers for the target of a Shell link object.</summary>
 			/// <returns>When this method returns, contains the address of a PIDL.</returns>
