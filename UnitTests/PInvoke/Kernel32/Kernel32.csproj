@@ -37,6 +37,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HeapApiTests.cs" />
     <Compile Include="FileApiTests.cs" />
     <Compile Include="FibersApiTests.cs" />
     <Compile Include="ErrHandlingApiTests.cs" />

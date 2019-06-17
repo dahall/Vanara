@@ -144,6 +144,13 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void GetGamingDeviceModelInformationTest()
+		{
+			Assert.That(GetGamingDeviceModelInformation(out var i), Is.EqualTo((HRESULT)0));
+			Assert.That(i.deviceId == GAMING_DEVICE_DEVICE_ID.GAMING_DEVICE_DEVICE_ID_NONE);
+		}
+
+		[Test]
 		public void GetModuleFileNameTest()
 		{
 			const string fn = @"C:\Windows\System32\tzres.dll";
@@ -237,24 +244,6 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(cch, Is.Not.Zero);
 			Assert.That(sb.Length, Is.GreaterThan(0));
 			TestContext.WriteLine(sb);
-		}
-
-		[Test]
-		public void HeapTest()
-		{
-			var ph = new SafeHeapBlock(512);
-			var fw = new WIN32_FIND_DATA { ftCreationTime = DateTime.Today.ToFileTimeStruct(), cFileName = "test.txt", dwFileAttributes = FileAttributes.Normal };
-			Marshal.StructureToPtr(fw, ph.DangerousGetHandle(), false);
-			Assert.That(Marshal.ReadInt32(ph.DangerousGetHandle()), Is.EqualTo((int)FileAttributes.Normal));
-			Assert.That(ph.Size, Is.EqualTo(512));
-
-			using (var hh = HeapCreate(0, 0, 0))
-			{
-				var hb = hh.GetBlock(512);
-				Marshal.StructureToPtr(fw, hb.DangerousGetHandle(), false);
-				Assert.That(Marshal.ReadInt32(hb.DangerousGetHandle()), Is.EqualTo((int)FileAttributes.Normal));
-				Assert.That(hb.Size, Is.EqualTo(512));
-			}
 		}
 
 		[Test]
