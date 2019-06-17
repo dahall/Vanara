@@ -306,9 +306,10 @@ namespace Vanara.Extensions
 		/// <returns>A pointer to the memory allocated by <paramref name="memAlloc"/>.</returns>
 		public static IntPtr StructureToPtr<T>(this T value, Func<int, IntPtr> memAlloc, out int bytesAllocated)
 		{
-			bytesAllocated = Marshal.SizeOf(value);
+			var ttype = typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T);
+			bytesAllocated = Marshal.SizeOf(ttype);
 			var ret = memAlloc(bytesAllocated);
-			Marshal.StructureToPtr(value, ret, false);
+			Marshal.StructureToPtr(Convert.ChangeType(value, ttype), ret, false);
 			return ret;
 		}
 
