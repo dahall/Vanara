@@ -1282,10 +1282,10 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="lpEnvironment">
 		/// <para>
-		/// A pointer to the environment block for the new process. If this parameter is <c>NULL</c>, the new process uses the environment of
+		/// An array of the environment items for the new process. If this parameter is <c>NULL</c>, the new process uses the environment of
 		/// the calling process.
 		/// </para>
-		/// <para>An environment block consists of a null-terminated block of null-terminated strings. Each string is in the following form:</para>
+		/// <para>An environment item is in the following form:</para>
 		/// <para>name=value\0</para>
 		/// <para>Because the equal sign is used as a separator, it must not be used in the name of an environment variable.</para>
 		/// <para>
@@ -1296,10 +1296,6 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// The ANSI version of this function, <c>CreateProcessA</c> fails if the total size of the environment block for the process exceeds
 		/// 32,767 characters.
-		/// </para>
-		/// <para>
-		/// Note that an ANSI environment block is terminated by two zero bytes: one for the last string, one more to terminate the block. A
-		/// Unicode environment block is terminated by four zero bytes: two for the last string, two more to terminate the block.
 		/// </para>
 		/// </param>
 		/// <param name="lpCurrentDirectory">
@@ -1333,14 +1329,53 @@ namespace Vanara.PInvoke
 		// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 		// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
-		public static bool CreateProcess(string lpApplicationName, StringBuilder lpCommandLine, [In] SECURITY_ATTRIBUTES lpProcessAttributes,
-			[In] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In] IntPtr lpEnvironment,
-			string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
+		public static bool CreateProcess([Optional] string lpApplicationName, [Optional] StringBuilder lpCommandLine, [In, Optional] SECURITY_ATTRIBUTES lpProcessAttributes,
+			[In, Optional] SECURITY_ATTRIBUTES lpThreadAttributes, [Optional] bool bInheritHandles, [Optional] CREATE_PROCESS dwCreationFlags, [In, Optional] string[] lpEnvironment,
+			[Optional] string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
 		{
-			var ret = CreateProcess(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment,
-				lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
-			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
-			return ret;
+			using (var mEnv = lpEnvironment is null ? SafeHGlobalHandle.Null : SafeHGlobalHandle.CreateFromStringList(lpEnvironment))
+			{
+				var ret = CreateProcess(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, (IntPtr)mEnv,
+					lpCurrentDirectory, lpStartupInfo, out var pi);
+				lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// <para>Creates a new process and its primary thread. The new process runs in the security context of the calling process.</para>
+		/// <para>
+		/// If the calling process is impersonating another user, the new process uses the token for the calling process, not the
+		/// impersonation token. To run the new process in the security context of the user represented by the impersonation token, use the
+		/// <c>CreateProcessAsUser</c> or <c>CreateProcessWithLogonW</c> function.
+		/// </para>
+		/// </summary>
+		/// <param name="lpCommandLine">
+		/// <para>
+		/// The command line to be executed. The maximum length of this string is 32,768 characters, including the Unicode terminating null
+		/// character. The module name portion of lpCommandLine is limited to <c>MAX_PATH</c> characters.
+		/// </para>
+		/// <para>
+		/// The first white space–delimited token of the command line specifies the module name. If you are
+		/// using a long file name that contains a space, use quoted strings to indicate where the file name ends and the arguments begin
+		/// (see the explanation for the lpApplicationName parameter). If the file name does not contain an extension, .exe is appended.
+		/// Therefore, if the file name extension is .com, this parameter must include the .com extension. If the file name ends in a period
+		/// (.) with no extension, or if the file name contains a path, .exe is not appended. If the file name does not contain a directory
+		/// path, the system searches for the executable file in the following sequence:
+		/// </para>
+		/// </param>
+		/// <returns>A handle to the created process.</returns>
+		[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
+		public static SafeHPROCESS CreateProcess(string lpCommandLine)
+		{
+			if (CreateProcess(null, new StringBuilder(lpCommandLine ?? throw new ArgumentNullException(nameof(lpCommandLine))), lpStartupInfo: STARTUPINFO.Default, lpProcessInformation: out var pi))
+			{
+				var hProc = new SafeHPROCESS(pi.hProcess.DangerousGetHandle());
+				pi.hProcess.SetHandleAsInvalid();
+				((IDisposable)pi).Dispose();
+				return hProc;
+			}
+			return SafeHPROCESS.Null;
 		}
 
 		/// <summary>
@@ -1469,10 +1504,10 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="lpEnvironment">
 		/// <para>
-		/// A pointer to the environment block for the new process. If this parameter is <c>NULL</c>, the new process uses the environment of
+		/// An array of the environment items for the new process. If this parameter is <c>NULL</c>, the new process uses the environment of
 		/// the calling process.
 		/// </para>
-		/// <para>An environment block consists of a null-terminated block of null-terminated strings. Each string is in the following form:</para>
+		/// <para>An environment item is in the following form:</para>
 		/// <para>name=value\0</para>
 		/// <para>Because the equal sign is used as a separator, it must not be used in the name of an environment variable.</para>
 		/// <para>
@@ -1483,10 +1518,6 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// The ANSI version of this function, <c>CreateProcessA</c> fails if the total size of the environment block for the process exceeds
 		/// 32,767 characters.
-		/// </para>
-		/// <para>
-		/// Note that an ANSI environment block is terminated by two zero bytes: one for the last string, one more to terminate the block. A
-		/// Unicode environment block is terminated by four zero bytes: two for the last string, two more to terminate the block.
 		/// </para>
 		/// </param>
 		/// <param name="lpCurrentDirectory">
@@ -1520,14 +1551,17 @@ namespace Vanara.PInvoke
 		// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 		// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
-		public static bool CreateProcess(string lpApplicationName, StringBuilder lpCommandLine, [In] SECURITY_ATTRIBUTES lpProcessAttributes,
-			[In] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In] IntPtr lpEnvironment,
-			string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
+		public static bool CreateProcess([Optional] string lpApplicationName, [Optional] StringBuilder lpCommandLine, [In, Optional] SECURITY_ATTRIBUTES lpProcessAttributes,
+			[In, Optional] SECURITY_ATTRIBUTES lpThreadAttributes, bool bInheritHandles, [Optional] CREATE_PROCESS dwCreationFlags, [In, Optional] string[] lpEnvironment,
+			[Optional] string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
 		{
-			var ret = CreateProcess(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment,
-				lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
-			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
-			return ret;
+			using (var mEnv = lpEnvironment is null ? SafeHGlobalHandle.Null : SafeHGlobalHandle.CreateFromStringList(lpEnvironment))
+			{
+				var ret = CreateProcess(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, (IntPtr)mEnv,
+					lpCurrentDirectory, lpStartupInfo, out var pi);
+				lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
+				return ret;
+			}
 		}
 
 		/// <summary>
@@ -6855,6 +6889,9 @@ namespace Vanara.PInvoke
 			/// <summary>Gets a handle to the current process that can be used across processes.</summary>
 			/// <value>The current process handle.</value>
 			public static SafeHPROCESS Current => new SafeHPROCESS(GetCurrentProcess().Duplicate());
+
+			/// <summary>Represents a <see langword="null"/> or invalid process.</summary>
+			public static SafeHPROCESS Null => new SafeHPROCESS();
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHPROCESS"/> to <see cref="HPROCESS"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
