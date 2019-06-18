@@ -86,7 +86,7 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void GetErrorModeTest()
+		public void GetSetErrorModeTest()
 		{
 			SEM sem = 0;
 			Assert.That(() => sem = GetErrorMode(), Throws.Nothing);
@@ -104,7 +104,7 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void GetThreadErrorModeTest()
+		public void GetSetThreadErrorModeTest()
 		{
 			SEM sem = 0;
 			Assert.That(() => sem = GetThreadErrorMode(), Throws.Nothing);
