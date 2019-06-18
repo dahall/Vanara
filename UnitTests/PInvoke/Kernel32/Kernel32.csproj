@@ -44,7 +44,9 @@
     <Compile Include="EnclaveApiTests.cs" />
     <Compile Include="DateTimeApiTests.cs" />
     <Compile Include="AppModelTests.cs" />
+    <Compile Include="InterlockedApiTests.cs" />
     <Compile Include="InteropServices\SafeLocalHandleTests.cs" />
+    <Compile Include="IoApiSetTests.cs" />
     <Compile Include="Kernel32Tests.cs" />
     <Compile Include="ConsoleTests.cs" />
     <Compile Include="DebugApiTests.cs" />

@@ -298,15 +298,117 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is the handle to an I/O completion port:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term/>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// </item>
+		/// </list>
 		/// <para>
 		/// If the function fails, the return value is <c>NULL</c>. To get extended error information, call the <c>GetLastError</c> function.
 		/// </para>
 		/// </returns>
-		// HANDLE WINAPI CreateIoCompletionPort( _In_ HANDLE FileHandle, _In_opt_ HANDLE ExistingCompletionPort, _In_ ULONG_PTR
-		// CompletionKey, _In_ DWORD NumberOfConcurrentThreads); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363862(v=vs.85).aspx
+		/// <remarks>
+		/// <para>
+		/// The I/O system can be instructed to send I/O completion notification packets to I/O completion ports, where they are queued. The
+		/// <c>CreateIoCompletionPort</c> function provides this functionality.
+		/// </para>
+		/// <para>
+		/// An I/O completion port and its handle are associated with the process that created it and is not sharable between processes.
+		/// However, a single handle is sharable between threads in the same process.
+		/// </para>
+		/// <para><c>CreateIoCompletionPort</c> can be used in three distinct modes:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Create only an I/O completion port without associating it with a file handle.</term>
+		/// </item>
+		/// <item>
+		/// <term>Associate an existing I/O completion port with a file handle.</term>
+		/// </item>
+		/// <item>
+		/// <term>Perform both creation and association in a single call.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// To create an I/O completion port without associating it, set the FileHandle parameter to <c>INVALID_HANDLE_VALUE</c>, the
+		/// ExistingCompletionPort parameter to <c>NULL</c>, and the CompletionKey parameter to zero (which is ignored in this case). Set the
+		/// NumberOfConcurrentThreads parameter to the desired concurrency value for the new I/O completion port, or zero for the default
+		/// (the number of processors in the system).
+		/// </para>
+		/// <para>
+		/// The handle passed in the FileHandle parameter can be any handle that supports overlapped I/O. Most commonly, this is a handle
+		/// opened by the <c>CreateFile</c> function using the <c>FILE_FLAG_OVERLAPPED</c> flag (for example, files, mail slots, and pipes).
+		/// Objects created by other functions such as <c>socket</c> can also be associated with an I/O completion port. For an example using
+		/// sockets, see <c>AcceptEx</c>. A handle can be associated with only one I/O completion port, and after the association is made,
+		/// the handle remains associated with that I/O completion port until it is closed.
+		/// </para>
+		/// <para>For more information on I/O completion port theory, usage, and associated functions, see I/O Completion Ports.</para>
+		/// <para>
+		/// Multiple file handles can be associated with a single I/O completion port by calling <c>CreateIoCompletionPort</c> multiple times
+		/// with the same I/O completion port handle in the ExistingCompletionPort parameter and a different file handle in the FileHandle
+		/// parameter each time.
+		/// </para>
+		/// <para>
+		/// Use the CompletionKey parameter to help your application track which I/O operations have completed. This value is not used by
+		/// <c>CreateIoCompletionPort</c> for functional control; rather, it is attached to the file handle specified in the FileHandle
+		/// parameter at the time of association with an I/O completion port. This completion key should be unique for each file handle, and
+		/// it accompanies the file handle throughout the internal completion queuing process. It is returned in the
+		/// <c>GetQueuedCompletionStatus</c> function call when a completion packet arrives. The CompletionKey parameter is also used by the
+		/// <c>PostQueuedCompletionStatus</c> function to queue your own special-purpose completion packets.
+		/// </para>
+		/// <para>
+		/// After an instance of an open handle is associated with an I/O completion port, it cannot be used in the <c>ReadFileEx</c> or
+		/// <c>WriteFileEx</c> function because these functions have their own asynchronous I/O mechanisms.
+		/// </para>
+		/// <para>
+		/// It is best not to share a file handle associated with an I/O completion port by using either handle inheritance or a call to the
+		/// <c>DuplicateHandle</c> function. Operations performed with such duplicate handles generate completion notifications. Careful
+		/// consideration is advised.
+		/// </para>
+		/// <para>
+		/// The I/O completion port handle and every file handle associated with that particular I/O completion port are known as references
+		/// to the I/O completion port. The I/O completion port is released when there are no more references to it. Therefore, all of these
+		/// handles must be properly closed to release the I/O completion port and its associated system resources. After these conditions
+		/// are satisfied, close the I/O completion port handle by calling the <c>CloseHandle</c> function.
+		/// </para>
+		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/FileIO/createiocompletionport
+		// HANDLE WINAPI CreateIoCompletionPort( _In_ HANDLE FileHandle, _In_opt_ HANDLE ExistingCompletionPort, _In_ ULONG_PTR CompletionKey, _In_ DWORD NumberOfConcurrentThreads );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("IoAPI.h", MSDNShortId = "aa363862")]
-		public static extern IntPtr CreateIoCompletionPort([In] HFILE FileHandle, [In] IntPtr ExistingCompletionPort, UIntPtr CompletionKey, uint NumberOfConcurrentThreads);
+		[PInvokeData("IoAPI.h", MSDNShortId = "40cb47fc-7b15-47f6-bee2-2611d4686053")]
+		public static extern HANDLE CreateIoCompletionPort([In] HANDLE FileHandle, [In, Optional] HANDLE ExistingCompletionPort, UIntPtr CompletionKey, uint NumberOfConcurrentThreads);
 
 		/// <summary>This macro is used to create a unique system I/O control code (IOCTL).</summary>
 		/// <param name="deviceType">
@@ -842,7 +944,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa364986")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool GetQueuedCompletionStatus([In] IntPtr CompletionPort, out uint lpNumberOfBytes, out uint lpCompletionKey, NativeOverlapped** lpOverlapped, uint dwMilliseconds);
+		public static extern unsafe bool GetQueuedCompletionStatus([In] HANDLE CompletionPort, out uint lpNumberOfBytes, out uint lpCompletionKey, NativeOverlapped** lpOverlapped, uint dwMilliseconds);
 
 		/// <summary>
 		/// <para>
@@ -892,7 +994,7 @@ namespace Vanara.PInvoke
 		// ulCount, _Out_ PULONG ulNumEntriesRemoved, _In_ DWORD dwMilliseconds, _In_ BOOL fAlertable); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364988(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa364988")]
-		public static extern void GetQueuedCompletionStatusEx(IntPtr CompletionPort, IntPtr lpCompletionPortEntries, uint ulCount, out uint ulNumEntriesRemoved, uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool fAlertable);
+		public static extern void GetQueuedCompletionStatusEx(HANDLE CompletionPort, IntPtr lpCompletionPortEntries, uint ulCount, out uint ulNumEntriesRemoved, uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool fAlertable);
 
 		/// <summary>Posts an I/O completion packet to an I/O completion port.</summary>
 		/// <param name="CompletionPort">A handle to an I/O completion port to which the I/O completion packet is to be posted.</param>
@@ -914,7 +1016,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa365458")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool PostQueuedCompletionStatus([In] IntPtr CompletionPort, uint dwNumberOfBytesTransferred, UIntPtr dwCompletionKey, NativeOverlapped* lpOverlapped);
+		public static extern unsafe bool PostQueuedCompletionStatus([In] HANDLE CompletionPort, uint dwNumberOfBytesTransferred, UIntPtr dwCompletionKey, NativeOverlapped* lpOverlapped);
 
 		private static unsafe IAsyncResult BeginDeviceIoControl<TIn, TOut>(HFILE hDevice, uint dwIoControlCode, byte[] buffer, AsyncCallback userCallback, object userState) where TIn : struct where TOut : struct =>
 			BeginDeviceIoControl(hDevice, dwIoControlCode, buffer, userCallback, userState);

@@ -58,7 +58,7 @@ namespace Vanara.PInvoke
 		{
 			var buf = Pack(inputBuffer, outputBuffer);
 			var outputBytes = await Task.Factory.FromAsync(BeginDeviceIoControl, EndDeviceIoControl, hDev, ioControlCode, buf, null);
-            outputBytes.CopyTo(outputBuffer, 0);
+			outputBytes.CopyTo(outputBuffer, 0);
 		}
 
 		/// <summary>
