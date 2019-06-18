@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 
 namespace Vanara.PInvoke
 {
@@ -32,7 +33,7 @@ namespace Vanara.PInvoke
 		// InitializeSListHead( PSLIST_HEADER ListHead );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("interlockedapi.h", MSDNShortId = "4e34f947-1687-4ea9-aaa1-8d8dc11dad70")]
-		public static extern void InitializeSListHead(IntPtr ListHead);
+		public static extern void InitializeSListHead(out SLIST_HEADER ListHead);
 
 		/// <summary>
 		/// <para>Removes all items from a singly linked list. Access to the list is synchronized on a multiprocessor system.</para>
@@ -57,7 +58,7 @@ namespace Vanara.PInvoke
 		// InterlockedFlushSList( PSLIST_HEADER ListHead );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("interlockedapi.h", MSDNShortId = "3fde3377-8a98-4976-a350-2c173b209e8c")]
-		public static extern IntPtr InterlockedFlushSList(IntPtr ListHead);
+		public static extern IntPtr InterlockedFlushSList(in SLIST_HEADER ListHead);
 
 		/// <summary>
 		/// <para>Removes an item from the front of a singly linked list. Access to the list is synchronized on a multiprocessor system.</para>
@@ -80,7 +81,7 @@ namespace Vanara.PInvoke
 		// InterlockedPopEntrySList( PSLIST_HEADER ListHead );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("interlockedapi.h", MSDNShortId = "10760fd4-5973-4ab0-991c-7a5951c798a4")]
-		public static extern IntPtr InterlockedPopEntrySList(IntPtr ListHead);
+		public static extern IntPtr InterlockedPopEntrySList(in SLIST_HEADER ListHead);
 
 		/// <summary>
 		/// <para>Inserts an item at the front of a singly linked list. Access to the list is synchronized on a multiprocessor system.</para>
@@ -106,7 +107,7 @@ namespace Vanara.PInvoke
 		// InterlockedPushEntrySList( PSLIST_HEADER ListHead, __drv_aliasesMem PSLIST_ENTRY ListEntry );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("interlockedapi.h", MSDNShortId = "60e3b6f7-f556-4699-be90-db7330cfb8ca")]
-		public static extern IntPtr InterlockedPushEntrySList(IntPtr ListHead, ref SLIST_ENTRY ListEntry);
+		public static extern IntPtr InterlockedPushEntrySList(in SLIST_HEADER ListHead, IntPtr ListEntry);
 
 		/// <summary>
 		/// Inserts a singly-linked list at the front of another singly linked list. Access to the lists is synchronized on a multiprocessor system.
@@ -126,7 +127,7 @@ namespace Vanara.PInvoke
 		// ListEnd, _In_ ULONG Count); https://msdn.microsoft.com/en-us/library/windows/desktop/hh448545(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "hh448545")]
-		public static extern IntPtr InterlockedPushListSList(IntPtr ListHead, ref SLIST_ENTRY List, ref SLIST_ENTRY ListEnd, uint Count);
+		public static extern IntPtr InterlockedPushListSList(in SLIST_HEADER ListHead, IntPtr List, IntPtr ListEnd, uint Count);
 
 		/// <summary>
 		/// <para>
@@ -165,7 +166,7 @@ namespace Vanara.PInvoke
 		// InterlockedPushListSListEx( PSLIST_HEADER ListHead, PSLIST_ENTRY List, PSLIST_ENTRY ListEnd, ULONG Count );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("interlockedapi.h", MSDNShortId = "f4f334c6-fda8-4c5f-9177-b672c8aed6b3")]
-		public static extern IntPtr InterlockedPushListSListEx(IntPtr ListHead, ref SLIST_ENTRY List, ref SLIST_ENTRY ListEnd, uint Count);
+		public static extern IntPtr InterlockedPushListSListEx(in SLIST_HEADER ListHead, IntPtr List, IntPtr ListEnd, uint Count);
 
 		/// <summary>
 		/// <para>Retrieves the number of entries in the specified singly linked list.</para>
@@ -195,16 +196,34 @@ namespace Vanara.PInvoke
 		// PSLIST_HEADER ListHead );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("interlockedapi.h", MSDNShortId = "3f9b4481-647f-457f-bdfb-62e6ae4198e5")]
-		public static extern ushort QueryDepthSList(IntPtr ListHead);
+		public static extern ushort QueryDepthSList(in SLIST_HEADER ListHead);
 
 		/// <summary>An <c>SLIST_ENTRY</c> structure describes an entry in a sequenced singly linked list.</summary>
 		// typedef struct _SLIST_ENTRY { struct _SLIST_ENTRY *Next;} SLIST_ENTRY, *PSLIST_ENTRY; https://msdn.microsoft.com/en-us/library/windows/hardware/ff563805(v=vs.85).aspx
-		[PInvokeData("Wdm.h", MSDNShortId = "ff563805")]
-		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("winnt.h")]
+		[StructLayout(LayoutKind.Sequential, Size = 16)]
 		public struct SLIST_ENTRY
 		{
 			/// <summary>Pointer to the next entry in the list, or <c>NULL</c> if there is no next entry in the list.</summary>
 			public IntPtr Next;
+
+			/// <summary>The next entry in the list, or <see langword="null"/> if there is no next entry in the list.</summary>
+			public SLIST_ENTRY? NextEntry => Next.ToNullableStructure<SLIST_ENTRY>();
+		}
+
+		/// <summary>
+		/// <para>
+		/// An <c>SLIST_HEADER</c> structure is an opaque structure that serves as the header for a sequenced singly linked list. For more
+		/// information, see Singly and Doubly Linked Lists.
+		/// </para>
+		/// <para>On 64-bit platforms, <c>SLIST_HEADER</c> structures must be 16-byte aligned.</para>
+		/// </summary>
+		[PInvokeData("winnt.h")]
+		[StructLayout(LayoutKind.Sequential, Size = 16)]
+		public struct SLIST_HEADER
+		{
+			public ulong Alignment;
+			public ulong Region;
 		}
 	}
 }
