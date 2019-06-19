@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -353,38 +354,39 @@ namespace Vanara.PInvoke
 		public enum JOBOBJECTINFOCLASS
 		{
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_ACCOUNTING_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_BASIC_ACCOUNTING_INFORMATION))]
+			[CorrespondingType(typeof(JOBOBJECT_BASIC_ACCOUNTING_INFORMATION), CorrepsondingAction.Get)]
 			JobObjectBasicAccountingInformation = 1,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_LIMIT_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_BASIC_LIMIT_INFORMATION))]
+			[CorrespondingType(typeof(JOBOBJECT_BASIC_LIMIT_INFORMATION), CorrepsondingAction.GetSet)]
 			JobObjectBasicLimitInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_PROCESS_ID_LIST structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_BASIC_PROCESS_ID_LIST))]
+			[CorrespondingType(typeof(JOBOBJECT_BASIC_PROCESS_ID_LIST), CorrepsondingAction.Get)]
 			JobObjectBasicProcessIdList,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_UI_RESTRICTIONS structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_BASIC_UI_RESTRICTIONS))]
+			[CorrespondingType(typeof(JOBOBJECT_BASIC_UI_RESTRICTIONS), CorrepsondingAction.GetSet)]
 			JobObjectBasicUIRestrictions,
 
 			/// <summary>This flag is not supported. Applications must set security limits individually for each process.</summary>
+			[CorrespondingType(typeof(JOBOBJECT_SECURITY_LIMIT_INFORMATION), CorrepsondingAction.GetSet)]
 			JobObjectSecurityLimitInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_END_OF_JOB_TIME_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_END_OF_JOB_TIME_INFORMATION))]
+			[CorrespondingType(typeof(JOBOBJECT_END_OF_JOB_TIME_INFORMATION), CorrepsondingAction.GetSet)]
 			JobObjectEndOfJobTimeInformation,
 
 			/// <summary>The job object associate completion port information</summary>
-			[CorrespondingType(typeof(JOBOBJECT_ASSOCIATE_COMPLETION_PORT))]
+			[CorrespondingType(typeof(JOBOBJECT_ASSOCIATE_COMPLETION_PORT), CorrepsondingAction.Set)]
 			JobObjectAssociateCompletionPortInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION))]
+			[CorrespondingType(typeof(JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION), CorrepsondingAction.Get)]
 			JobObjectBasicAndIoAccountingInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_EXTENDED_LIMIT_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION))]
+			[CorrespondingType(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION), CorrepsondingAction.GetSet)]
 			JobObjectExtendedLimitInformation,
 
 			/// <summary>Undocumented.</summary>
@@ -395,14 +397,15 @@ namespace Vanara.PInvoke
 			/// currently assigned. The variable pointed to by the lpReturnLength parameter is set to the size of the group data. Divide this
 			/// value by sizeof(USHORT) to determine the number of groups.
 			/// </summary>
+			[CorrespondingType(typeof(ushort), CorrepsondingAction.GetSet)]
 			JobObjectGroupInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION))]
+			[CorrespondingType(typeof(JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION), CorrepsondingAction.GetSet)]
 			JobObjectNotificationLimitInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_LIMIT_VIOLATION_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_LIMIT_VIOLATION_INFORMATION))]
+			[CorrespondingType(typeof(JOBOBJECT_LIMIT_VIOLATION_INFORMATION), CorrepsondingAction.Get)]
 			JobObjectLimitViolationInformation,
 
 			/// <summary>
@@ -411,10 +414,11 @@ namespace Vanara.PInvoke
 			/// lpReturnLength parameter is set to the size of the group affinity data. Divide this value by sizeof(GROUP_AFFINITY) to
 			/// determine the number of groups.
 			/// </summary>
+			[CorrespondingType(typeof(GROUP_AFFINITY[]), CorrepsondingAction.GetSet)]
 			JobObjectGroupInformationEx,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_CPU_RATE_CONTROL_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_CPU_RATE_CONTROL_INFORMATION))]
+			[CorrespondingType(typeof(JOBOBJECT_CPU_RATE_CONTROL_INFORMATION), CorrepsondingAction.Set)]
 			JobObjectCpuRateControlInformation,
 
 			/// <summary>Undocumented.</summary>
@@ -466,15 +470,15 @@ namespace Vanara.PInvoke
 			JobObjectReserved14Information = 31,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NET_RATE_CONTROL_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_NET_RATE_CONTROL_INFORMATION))]
+			[CorrespondingType(typeof(JOBOBJECT_NET_RATE_CONTROL_INFORMATION), CorrepsondingAction.GetSet)]
 			JobObjectNetRateControlInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2 structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2))]
-			JobObjectNotificationLimitInformation2,
+			[CorrespondingType(typeof(JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2), CorrepsondingAction.GetSet)]
+			JobObjectNotificationLimitInformation2 = 34,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2 structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2))]
+			[CorrespondingType(typeof(JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2), CorrepsondingAction.GetSet)]
 			JobObjectLimitViolationInformation2,
 
 			/// <summary>Undocumented.</summary>
@@ -608,7 +612,7 @@ namespace Vanara.PInvoke
 		// LPSECURITY_ATTRIBUTES lpJobAttributes, LPCSTR lpName );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "ca6a044f-67ed-4a9c-9aeb-69dd77652854")]
-		public static extern SafeHJOB CreateJobObject([In] SECURITY_ATTRIBUTES lpJobAttributes, string lpName);
+		public static extern SafeHJOB CreateJobObject([In, Optional] SECURITY_ATTRIBUTES lpJobAttributes, [In, Optional] string lpName);
 
 		/// <summary>
 		/// Frees memory that a function related to job objects allocated. Functions related to job objects that allocate memory include <c>QueryIoRateControlInformationJobObject</c>.
@@ -813,50 +817,19 @@ namespace Vanara.PInvoke
 		public static extern bool QueryInformationJobObject([In] HJOB hJob, JOBOBJECTINFOCLASS JobObjectInfoClass, IntPtr lpJobObjectInfo,
 			uint cbJobObjectInfoLength, out uint lpReturnLength);
 
-		/// <summary>Gets information about the control of the I/O rate for a job object.</summary>
+		/// <summary>Retrieves limit and job state information from the job object.</summary>
 		/// <param name="hJob">
 		/// <para>
-		/// A handle to the job to query for information. Get this handle from the <c>CreateJobObject</c> or <c>OpenJobObject</c> function.
-		/// The handle must have the <c>JOB_OBJECT_QUERY</c> access right. For more information about access rights, see Job Object Security
-		/// and Access Rights.
+		/// A handle to the job whose information is being queried. The <c>CreateJobObject</c> or <c>OpenJobObject</c> function returns this
+		/// handle. The handle must have the <c>JOB_OBJECT_QUERY</c> access right. For more information, see Job Object Security and Access Rights.
 		/// </para>
 		/// <para>
-		/// If this value is NULL and the process that calls <c>QueryIoRateControlInformationJobObject</c> is associated with a job, the
-		/// function uses job that is associated with the process. If the job is nested within another job, the function uses the immediate
-		/// job for the process.
+		/// If this value is NULL and the calling process is associated with a job, the job associated with the calling process is used. If
+		/// the job is nested, the immediate job of the calling process is used.
 		/// </para>
 		/// </param>
-		/// <param name="VolumeName">
-		/// The name of the volume to query. If this value is NULL, the function gets the information about I/O rate control for the job for
-		/// all of the volumes for the system.
-		/// </param>
-		/// <param name="InfoBlocks">
-		/// A pointer to array of <c>JOBOBJECT_IO_RATE_CONTROL_INFORMATION</c> structures that contain the information about I/O rate control
-		/// for the job. Your code must free the memory for this array by calling the <c>FreeMemoryJobObject</c> function with the address of
-		/// the array.
-		/// </param>
-		/// <param name="InfoBlockCount">
-		/// The number of <c>JOBOBJECT_IO_RATE_CONTROL_INFORMATION</c> structures that the function allocated in the array to which the
-		/// InfoBlocks parameter points.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-		/// </returns>
-		// DWORD WINAPI QueryIoRateControlInformationJobObject( _In_opt_ HANDLE hJob, _In_opt_ PCWSTR VolumeName, _Out_
-		// JOBOBJECT_IO_RATE_CONTROL_INFORMATION **InfoBlocks, _Out_ ULONG *InfoBlockCount); https://msdn.microsoft.com/en-us/library/windows/desktop/mt280127(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("Jobapi2.h", MSDNShortId = "mt280127")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryIoRateControlInformationJobObject(HJOB hJob, string VolumeName, out IntPtr InfoBlocks, out uint InfoBlockCount);
-
-		/// <summary>Sets limits for a job object.</summary>
-		/// <param name="hJob">
-		/// A handle to the job whose limits are being set. The <c>CreateJobObject</c> or <c>OpenJobObject</c> function returns this handle.
-		/// The handle must have the <c>JOB_OBJECT_SET_ATTRIBUTES</c> access right. For more information, see Job Object Security and Access Rights.
-		/// </param>
-		/// <param name="JobObjectInfoClass">
-		/// <para>The information class for the limits to be set. This parameter can be one of the following values.</para>
+		/// <param name="jobObjectInfoClass">
+		/// <para>The information class for the limits to be queried. This parameter can be one of the following values.</para>
 		/// <para>
 		/// <list type="table">
 		/// <listheader>
@@ -864,12 +837,20 @@ namespace Vanara.PInvoke
 		/// <term>Meaning</term>
 		/// </listheader>
 		/// <item>
-		/// <term>JobObjectAssociateCompletionPortInformation7</term>
-		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_ASSOCIATE_COMPLETION_PORT structure.</term>
+		/// <term>JobObjectBasicAccountingInformation1</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_ACCOUNTING_INFORMATION structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectBasicAndIoAccountingInformation8</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION structure.</term>
 		/// </item>
 		/// <item>
 		/// <term>JobObjectBasicLimitInformation2</term>
 		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_LIMIT_INFORMATION structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectBasicProcessIdList3</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_PROCESS_ID_LIST structure.</term>
 		/// </item>
 		/// <item>
 		/// <term>JobObjectBasicUIRestrictions4</term>
@@ -893,17 +874,24 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>JobObjectGroupInformation11</term>
 		/// <term>
-		/// The lpJobObjectInfo parameter is a pointer to a USHORT value that specifies the list of processor groups to assign the job to.
-		/// The cbJobObjectInfoLength parameter is set to the size of the group data. Divide this value by to determine the number of groups.
-		/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// The lpJobObjectInfo parameter is a pointer to a buffer that receives the list of processor groups to which the job is currently
+		/// assigned. The variable pointed to by the lpReturnLength parameter is set to the size of the group data. Divide this value by to
+		/// determine the number of groups.Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>JobObjectGroupInformationEx14</term>
 		/// <term>
-		/// The lpJobObjectInfo parameter is a pointer to a buffer that contains an array of GROUP_AFFINITY structures that specify the
-		/// affinity of the job for the processor groups to which the job is currently assigned. The cbJobObjectInfoLength parameter is set
-		/// to the size of the group affinity data. Divide this value by to determine the number of groups. Windows 7, Windows Server 2008
+		/// The lpJobObjectInfo parameter is a pointer to a buffer that receives an array of GROUP_AFFINITY structures that indicate the
+		/// affinity of the job in the processor groups to which the job is currently assigned. The variable pointed to by the lpReturnLength
+		/// parameter is set to the size of the group affinity data. Divide this value by to determine the number of groups.Windows 7,
+		/// Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectLimitViolationInformation13</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_LIMIT_VIOLATION_INFORMATION structure. Windows 7, Windows Server 2008
 		/// R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
 		/// </term>
 		/// </item>
@@ -941,28 +929,338 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>JobObjectSecurityLimitInformation5</term>
 		/// <term>
+		/// This flag is not supported. Applications must set security limits individually for each process. Windows Server 2003 and Windows
+		/// XP: The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_SECURITY_LIMIT_INFORMATION structure.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// The limit or job state information. The format of this data depends on the value of the JobObjectInfoClass parameter.
+		/// </returns>
+		public static T QueryInformationJobObject<T>([In] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanGet(jobObjectInfoClass, typeof(T))) throw new ArgumentException("Type mismatch.", nameof(jobObjectInfoClass));
+			using (var mem = SafeHGlobalHandle.CreateFromStructure<T>())
+			{
+				if (!QueryInformationJobObject(hJob, jobObjectInfoClass, (IntPtr)mem, (uint)mem.Size, out _))
+					Win32Error.ThrowLastError();
+				return mem.ToStructure<T>();
+			}
+		}
+
+		/// <summary>Gets information about the control of the I/O rate for a job object.</summary>
+		/// <param name="hJob">
+		/// <para>
+		/// A handle to the job to query for information. Get this handle from the <c>CreateJobObject</c> or <c>OpenJobObject</c> function.
+		/// The handle must have the <c>JOB_OBJECT_QUERY</c> access right. For more information about access rights, see Job Object Security
+		/// and Access Rights.
+		/// </para>
+		/// <para>
+		/// If this value is NULL and the process that calls <c>QueryIoRateControlInformationJobObject</c> is associated with a job, the
+		/// function uses job that is associated with the process. If the job is nested within another job, the function uses the immediate
+		/// job for the process.
+		/// </para>
+		/// </param>
+		/// <param name="VolumeName">
+		/// The name of the volume to query. If this value is NULL, the function gets the information about I/O rate control for the job for
+		/// all of the volumes for the system.
+		/// </param>
+		/// <param name="InfoBlocks">
+		/// A pointer to array of <c>JOBOBJECT_IO_RATE_CONTROL_INFORMATION</c> structures that contain the information about I/O rate control
+		/// for the job. Your code must free the memory for this array by calling the <c>FreeMemoryJobObject</c> function with the address of
+		/// the array.
+		/// </param>
+		/// <param name="InfoBlockCount">
+		/// The number of <c>JOBOBJECT_IO_RATE_CONTROL_INFORMATION</c> structures that the function allocated in the array to which the
+		/// InfoBlocks parameter points.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// DWORD WINAPI QueryIoRateControlInformationJobObject( _In_opt_ HANDLE hJob, _In_opt_ PCWSTR VolumeName, _Out_
+		// JOBOBJECT_IO_RATE_CONTROL_INFORMATION **InfoBlocks, _Out_ ULONG *InfoBlockCount); https://msdn.microsoft.com/en-us/library/windows/desktop/mt280127(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Jobapi2.h", MSDNShortId = "mt280127")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool QueryIoRateControlInformationJobObject(HJOB hJob, [MarshalAs(UnmanagedType.LPWStr)] string VolumeName, out IntPtr InfoBlocks, out uint InfoBlockCount);
+
+		/// <summary>Gets information about the control of the I/O rate for a job object.</summary>
+		/// <param name="hJob">
+		/// <para>
+		/// A handle to the job to query for information. Get this handle from the <c>CreateJobObject</c> or <c>OpenJobObject</c> function.
+		/// The handle must have the <c>JOB_OBJECT_QUERY</c> access right. For more information about access rights, see Job Object Security
+		/// and Access Rights.
+		/// </para>
+		/// <para>
+		/// If this value is NULL and the process that calls <c>QueryIoRateControlInformationJobObject</c> is associated with a job, the
+		/// function uses job that is associated with the process. If the job is nested within another job, the function uses the immediate
+		/// job for the process.
+		/// </para>
+		/// </param>
+		/// <param name="VolumeName">
+		/// The name of the volume to query. If this value is NULL, the function gets the information about I/O rate control for the job for
+		/// all of the volumes for the system.
+		/// </param>
+		/// <returns>
+		/// An array of <c>JOBOBJECT_IO_RATE_CONTROL_INFORMATION</c> structures that contain the information about I/O rate control for the
+		/// job. Your code must free the memory for this array by calling the <c>FreeMemoryJobObject</c> function with the address of the array.
+		/// </returns>
+		[PInvokeData("Jobapi2.h", MSDNShortId = "mt280127")]
+		public static JOBOBJECT_IO_RATE_CONTROL_INFORMATION[] QueryIoRateControlInformationJobObject(HJOB hJob, string VolumeName = null)
+		{
+			if (!QueryIoRateControlInformationJobObject(hJob, VolumeName, out var ib, out var ibc))
+				Win32Error.ThrowLastError();
+			try
+			{
+				return ib.ToArray<JOBOBJECT_IO_RATE_CONTROL_INFORMATION>((int)ibc);
+			}
+			finally
+			{
+				FreeMemoryJobObject(ib);
+			}
+		}
+
+		/// <summary>Sets limits for a job object.</summary>
+		/// <param name="hJob">
+		/// A handle to the job whose limits are being set. The CreateJobObject or OpenJobObject function returns this handle. The handle
+		/// must have the <c>JOB_OBJECT_SET_ATTRIBUTES</c> access right. For more information, see Job Object Security and Access Rights.
+		/// </param>
+		/// <param name="JobObjectInformationClass">
+		/// <para>The information class for the limits to be set. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>JobObjectAssociateCompletionPortInformation 7</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_ASSOCIATE_COMPLETION_PORT structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectBasicLimitInformation 2</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_LIMIT_INFORMATION structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectBasicUIRestrictions 4</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_UI_RESTRICTIONS structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectCpuRateControlInformation 15</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_CPU_RATE_CONTROL_INFORMATION structure. Windows 7, Windows Server 2008
+		/// R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectEndOfJobTimeInformation 6</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_END_OF_JOB_TIME_INFORMATION structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectExtendedLimitInformation 9</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_EXTENDED_LIMIT_INFORMATION structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectGroupInformation 11</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a USHORT value that specifies the list of processor groups to assign the job to.
+		/// The cbJobObjectInfoLength parameter is set to the size of the group data. Divide this value by to determine the number of groups.
+		/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectGroupInformationEx 14</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a buffer that contains an array of GROUP_AFFINITY structures that specify the
+		/// affinity of the job for the processor groups to which the job is currently assigned. The cbJobObjectInfoLength parameter is set
+		/// to the size of the group affinity data. Divide this value by to determine the number of groups. Windows 7, Windows Server 2008
+		/// R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectLimitViolationInformation2 35</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2 structure. Windows 8.1, Windows Server
+		/// 2012 R2, Windows 8, Windows Server 2012, Windows 7, Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server
+		/// 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectNetRateControlInformation 32</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NET_RATE_CONTROL_INFORMATION structure. Windows 8.1, Windows Server
+		/// 2012 R2, Windows 8, Windows Server 2012, Windows 7, Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server
+		/// 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectNotificationLimitInformation 12</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION structure. Windows 7, Windows Server
+		/// 2008 R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectNotificationLimitInformation2 34</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2 structure. Windows 8.1, Windows Server
+		/// 2012 R2, Windows 8, Windows Server 2012, Windows 7, Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server
+		/// 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectSecurityLimitInformation 5</term>
+		/// <term>
 		/// This flag is not supported. Applications must set security limitations individually for each process. Windows Server 2003 and
 		/// Windows XP: The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_SECURITY_LIMIT_INFORMATION structure. The hJob handle must
 		/// have the JOB_OBJECT_SET_SECURITY_ATTRIBUTES access right associated with it.
 		/// </term>
 		/// </item>
 		/// </list>
-		/// </para>
 		/// </param>
-		/// <param name="lpJobObjectInfo">
+		/// <param name="lpJobObjectInformation">
 		/// The limits or job state to be set for the job. The format of this data depends on the value of JobObjectInfoClass.
 		/// </param>
-		/// <param name="cbJobObjectInfoLength">The size of the job information being set, in bytes.</param>
+		/// <param name="cbJobObjectInformationLength">The size of the job information being set, in bytes.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		// BOOL WINAPI SetInformationJobObject( _In_ HANDLE hJob, _In_ JOBOBJECTINFOCLASS JobObjectInfoClass, _In_ LPVOID lpJobObjectInfo,
-		// _In_ DWORD cbJobObjectInfoLength); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686216(v=vs.85).aspx
+		/// <remarks>
+		/// <para>
+		/// Use the <c>SetInformationJobObject</c> function to set several limits in a single call. To establish the limits one at a time or
+		/// change a subset of the limits, call the QueryInformationJobObject function to obtain the current limits, modify these limits, and
+		/// then call <c>SetInformationJobObject</c>.
+		/// </para>
+		/// <para>
+		/// You must set security limits individually for each process associated with a job object, rather than setting them for the job
+		/// object itself. For information, see Process Security and Access Rights.
+		/// </para>
+		/// <para>
+		/// <c>Windows Server 2003 and Windows XP:</c> Use the <c>SetInformationJobObject</c> function to set security limits for the job object.
+		/// </para>
+		/// <para>
+		/// To compile an application that uses this function, define _WIN32_WINNT as 0x0500 or later. For more information, see Using the
+		/// Windows Headers.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/jobapi2/nf-jobapi2-setinformationjobobject
+		// BOOL SetInformationJobObject( HANDLE hJob, JOBOBJECTINFOCLASS JobObjectInformationClass, LPVOID lpJobObjectInformation, DWORD cbJobObjectInformationLength );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms686216")]
+		[PInvokeData("jobapi2.h", MSDNShortId = "46f7c579-e8d3-4434-a6ce-56573cd84387")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetInformationJobObject([In] HJOB hJob, JOBOBJECTINFOCLASS JobObjectInfoClass, [In] IntPtr lpJobObjectInfo, uint cbJobObjectInfoLength);
+
+		/// <summary>Sets limits for a job object.</summary>
+		/// <param name="hJob">
+		/// A handle to the job whose limits are being set. The CreateJobObject or OpenJobObject function returns this handle. The handle
+		/// must have the <c>JOB_OBJECT_SET_ATTRIBUTES</c> access right. For more information, see Job Object Security and Access Rights.
+		/// </param>
+		/// <param name="jobObjectInfoClass">
+		/// <para>The information class for the limits to be set. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>JobObjectAssociateCompletionPortInformation 7</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_ASSOCIATE_COMPLETION_PORT structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectBasicLimitInformation 2</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_LIMIT_INFORMATION structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectBasicUIRestrictions 4</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_UI_RESTRICTIONS structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectCpuRateControlInformation 15</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_CPU_RATE_CONTROL_INFORMATION structure. Windows 7, Windows Server 2008
+		/// R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectEndOfJobTimeInformation 6</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_END_OF_JOB_TIME_INFORMATION structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectExtendedLimitInformation 9</term>
+		/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_EXTENDED_LIMIT_INFORMATION structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectGroupInformation 11</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a USHORT value that specifies the list of processor groups to assign the job to.
+		/// The cbJobObjectInfoLength parameter is set to the size of the group data. Divide this value by to determine the number of groups.
+		/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectGroupInformationEx 14</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a buffer that contains an array of GROUP_AFFINITY structures that specify the
+		/// affinity of the job for the processor groups to which the job is currently assigned. The cbJobObjectInfoLength parameter is set
+		/// to the size of the group affinity data. Divide this value by to determine the number of groups. Windows 7, Windows Server 2008
+		/// R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectLimitViolationInformation2 35</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2 structure. Windows 8.1, Windows Server
+		/// 2012 R2, Windows 8, Windows Server 2012, Windows 7, Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server
+		/// 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectNetRateControlInformation 32</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NET_RATE_CONTROL_INFORMATION structure. Windows 8.1, Windows Server
+		/// 2012 R2, Windows 8, Windows Server 2012, Windows 7, Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server
+		/// 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectNotificationLimitInformation 12</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION structure. Windows 7, Windows Server
+		/// 2008 R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectNotificationLimitInformation2 34</term>
+		/// <term>
+		/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2 structure. Windows 8.1, Windows Server
+		/// 2012 R2, Windows 8, Windows Server 2012, Windows 7, Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server
+		/// 2003 and Windows XP: This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JobObjectSecurityLimitInformation 5</term>
+		/// <term>
+		/// This flag is not supported. Applications must set security limitations individually for each process. Windows Server 2003 and
+		/// Windows XP: The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_SECURITY_LIMIT_INFORMATION structure. The hJob handle must
+		/// have the JOB_OBJECT_SET_SECURITY_ATTRIBUTES access right associated with it.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="jobObjectInfo">
+		/// The limits or job state to be set for the job. The format of this data depends on the value of JobObjectInfoClass.
+		/// </param>
+		[PInvokeData("jobapi2.h", MSDNShortId = "46f7c579-e8d3-4434-a6ce-56573cd84387")]
+		public static void SetInformationJobObject<T>([In] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass, in T jobObjectInfo) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanSet(jobObjectInfoClass, typeof(T))) throw new ArgumentException("Type mismatch.", nameof(jobObjectInfoClass));
+			using (var mem = SafeHGlobalHandle.CreateFromStructure(jobObjectInfo))
+				if (!SetInformationJobObject(hJob, jobObjectInfoClass, (IntPtr)mem, (uint)mem.Size))
+					Win32Error.ThrowLastError();
+		}
 
 		/// <summary>Sets I/O limits on a job object.</summary>
 		/// <param name="hJob">
@@ -982,7 +1280,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Jobapi2.h", MSDNShortId = "mt280128")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetIoRateControlInformationJobObject(HJOB hJob, ref JOBOBJECT_IO_RATE_CONTROL_INFORMATION IoRateControlInfo);
+		public static extern bool SetIoRateControlInformationJobObject(HJOB hJob, in JOBOBJECT_IO_RATE_CONTROL_INFORMATION IoRateControlInfo);
 
 		/// <summary>
 		/// Terminates all processes currently associated with the job. If the job is nested, this function terminates all processes
@@ -1052,11 +1350,11 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "6e7a6cfc-f881-43cc-a5af-b97e0bf14bf4")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UserHandleGrantAccess(IntPtr hUserHandle, HJOB hJob, [MarshalAs(UnmanagedType.Bool)] bool bGrant);
+		public static extern bool UserHandleGrantAccess(HANDLE hUserHandle, HJOB hJob, [MarshalAs(UnmanagedType.Bool)] bool bGrant);
 
 		/// <summary>Provides a handle to a job object.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct HJOB
+		public struct HJOB : ISyncHandle
 		{
 			private IntPtr handle;
 
@@ -1097,6 +1395,9 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
 		}
 
 		/// <summary>
@@ -1793,6 +2094,7 @@ namespace Vanara.PInvoke
 			/// volume is set to 100 IOPS, instead of setting an aggregate limit for the I/O rate across all volumes of 100 IOPS.
 			/// </para>
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string VolumeName;
 
 			/// <summary>
@@ -1830,7 +2132,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public int ControlFlags;
+			public JOB_OBJECT_IO_RATE_CONTROL_FLAGS ControlFlags;
 		}
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -1839,6 +2141,7 @@ namespace Vanara.PInvoke
 			public long MaxIops;
 			public long MaxBandwidth;
 			public long ReservationIops;
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string VolumeName;
 			public uint BaseIoSize;
 			public JOB_OBJECT_IO_RATE_CONTROL_FLAGS ControlFlags;
@@ -3064,6 +3367,8 @@ namespace Vanara.PInvoke
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
 			public SafeHJOB(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeHJOB() : base() { }
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHJOB"/> to <see cref="HJOB"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
