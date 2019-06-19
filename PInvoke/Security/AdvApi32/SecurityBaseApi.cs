@@ -2106,33 +2106,63 @@ namespace Vanara.PInvoke
 		public static extern bool AdjustTokenGroups(HTOKEN TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool ResetToDefault, in TOKEN_GROUPS NewState, uint BufferLength, IntPtr PreviousState, out uint ReturnLength);
 
 		/// <summary>
-		/// The AdjustTokenPrivileges function enables or disables privileges in the specified access token. Enabling or disabling privileges
-		/// in an access token requires TOKEN_ADJUST_PRIVILEGES access.
+		/// The <c>AdjustTokenPrivileges</c> function enables or disables privileges in the specified access token. Enabling or disabling
+		/// privileges in an access token requires TOKEN_ADJUST_PRIVILEGES access.
 		/// </summary>
-		/// <param name="objectHandle">
+		/// <param name="TokenHandle">
 		/// A handle to the access token that contains the privileges to be modified. The handle must have TOKEN_ADJUST_PRIVILEGES access to
-		/// the token. If the PreviousState parameter is not NULL, the handle must also have TOKEN_QUERY access.
+		/// the token. If the PreviousState parameter is not <c>NULL</c>, the handle must also have TOKEN_QUERY access.
 		/// </param>
 		/// <param name="DisableAllPrivileges">
-		/// Specifies whether the function disables all of the token's privileges. If this value is TRUE, the function disables all
-		/// privileges and ignores the NewState parameter. If it is FALSE, the function modifies privileges based on the information pointed
-		/// to by the NewState parameter.
+		/// Specifies whether the function disables all of the token's privileges. If this value is <c>TRUE</c>, the function disables all
+		/// privileges and ignores the NewState parameter. If it is <c>FALSE</c>, the function modifies privileges based on the information
+		/// pointed to by the NewState parameter.
 		/// </param>
 		/// <param name="NewState">
-		/// A pointer to a TOKEN_PRIVILEGES structure that specifies an array of privileges and their attributes. If DisableAllPrivileges is
-		/// TRUE, the function ignores this parameter. If the DisableAllPrivileges parameter is FALSE, the AdjustTokenPrivileges function
-		/// enables, disables, or removes these privileges for the token. The following table describes the action taken by the
-		/// AdjustTokenPrivileges function, based on the privilege attribute.
+		/// <para>
+		/// A pointer to a TOKEN_PRIVILEGES structure that specifies an array of privileges and their attributes. If the DisableAllPrivileges
+		/// parameter is <c>FALSE</c>, the <c>AdjustTokenPrivileges</c> function enables, disables, or removes these privileges for the
+		/// token. The following table describes the action taken by the <c>AdjustTokenPrivileges</c> function, based on the privilege attribute.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SE_PRIVILEGE_ENABLED</term>
+		/// <term>The function enables the privilege.</term>
+		/// </item>
+		/// <item>
+		/// <term>SE_PRIVILEGE_REMOVED</term>
+		/// <term>
+		/// The privilege is removed from the list of privileges in the token. The other privileges in the list are reordered to remain
+		/// contiguous. SE_PRIVILEGE_REMOVED supersedes SE_PRIVILEGE_ENABLED. Because the privilege has been removed from the token, attempts
+		/// to reenable the privilege result in the warning ERROR_NOT_ALL_ASSIGNED as if the privilege had never existed. Attempting to
+		/// remove a privilege that does not exist in the token results in ERROR_NOT_ALL_ASSIGNED being returned. Privilege checks for
+		/// removed privileges result in STATUS_PRIVILEGE_NOT_HELD. Failed privilege check auditing occurs as normal. The removal of the
+		/// privilege is irreversible, so the name of the removed privilege is not included in the PreviousState parameter after a call to
+		/// AdjustTokenPrivileges. Windows XP with SP1: The function cannot remove privileges. This value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>None</term>
+		/// <term>The function disables the privilege.</term>
+		/// </item>
+		/// </list>
+		/// <para>If DisableAllPrivileges is <c>TRUE</c>, the function ignores this parameter.</para>
 		/// </param>
 		/// <param name="BufferLength">
 		/// Specifies the size, in bytes, of the buffer pointed to by the PreviousState parameter. This parameter can be zero if the
-		/// PreviousState parameter is NULL.
+		/// PreviousState parameter is <c>NULL</c>.
 		/// </param>
 		/// <param name="PreviousState">
+		/// <para>
 		/// A pointer to a buffer that the function fills with a TOKEN_PRIVILEGES structure that contains the previous state of any
 		/// privileges that the function modifies. That is, if a privilege has been modified by this function, the privilege and its previous
-		/// state are contained in the TOKEN_PRIVILEGES structure referenced by PreviousState. If the PrivilegeCount member of
-		/// TOKEN_PRIVILEGES is zero, then no privileges have been changed by this function. This parameter can be NULL.
+		/// state are contained in the <c>TOKEN_PRIVILEGES</c> structure referenced by PreviousState. If the <c>PrivilegeCount</c> member of
+		/// <c>TOKEN_PRIVILEGES</c> is zero, then no privileges have been changed by this function. This parameter can be <c>NULL</c>.
+		/// </para>
 		/// <para>
 		/// If you specify a buffer that is too small to receive the complete list of modified privileges, the function fails and does not
 		/// adjust any privileges. In this case, the function sets the variable pointed to by the ReturnLength parameter to the number of
@@ -2141,55 +2171,121 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="ReturnLength">
 		/// A pointer to a variable that receives the required size, in bytes, of the buffer pointed to by the PreviousState parameter. This
-		/// parameter can be NULL if PreviousState is NULL.
+		/// parameter can be <c>NULL</c> if PreviousState is <c>NULL</c>.
 		/// </param>
 		/// <returns>
+		/// <para>
 		/// If the function succeeds, the return value is nonzero. To determine whether the function adjusted all of the specified
-		/// privileges, call GetLastError, which returns either ERROR_SUCCESS, indicating that the function adjusted all specified
-		/// privileges, or ERROR_NOT_ALL_ASSIGNED, indicating that the token does not have one or more of the privileges specified in the
-		/// NewState parameter. The function may succeed with this error value even if no privileges were adjusted. The PreviousState
-		/// parameter indicates the privileges that were adjusted.
+		/// privileges, call GetLastError, which returns one of the following values when the function succeeds:
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>The function adjusted all specified privileges.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_ALL_ASSIGNED</term>
+		/// <term>
+		/// The token does not have one or more of the privileges specified in the NewState parameter. The function may succeed with this
+		/// error value even if no privileges were adjusted. The PreviousState parameter indicates the privileges that were adjusted.
+		/// </term>
+		/// </item>
+		/// </list>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail), DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
+		/// <remarks>
+		/// <para>
+		/// The <c>AdjustTokenPrivileges</c> function cannot add new privileges to the access token. It can only enable or disable the
+		/// token's existing privileges. To determine the token's privileges, call the GetTokenInformation function.
+		/// </para>
+		/// <para>
+		/// The NewState parameter can specify privileges that the token does not have, without causing the function to fail. In this case,
+		/// the function adjusts the privileges that the token does have and ignores the other privileges so that the function succeeds. Call
+		/// the GetLastError function to determine whether the function adjusted all of the specified privileges. The PreviousState parameter
+		/// indicates the privileges that were adjusted.
+		/// </para>
+		/// <para>
+		/// The PreviousState parameter retrieves a TOKEN_PRIVILEGES structure that contains the original state of the adjusted privileges.
+		/// To restore the original state, pass the PreviousState pointer as the NewState parameter in a subsequent call to the
+		/// <c>AdjustTokenPrivileges</c> function.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example that uses this function, see Enabling and Disabling Privileges.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-adjusttokenprivileges
+		// BOOL AdjustTokenPrivileges( HANDLE TokenHandle, BOOL DisableAllPrivileges, PTOKEN_PRIVILEGES NewState, DWORD BufferLength, PTOKEN_PRIVILEGES PreviousState, PDWORD ReturnLength );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "8e3f70cd-814e-4aab-8f48-0ca482beef2e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa375202")]
 		public static extern bool AdjustTokenPrivileges([In] HTOKEN objectHandle,
 			[In, MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges,
 			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PTOKEN_PRIVILEGES.Marshaler))] PTOKEN_PRIVILEGES NewState,
 			[In] uint BufferLength,
-			[In, Out] SafeCoTaskMemHandle PreviousState,
-			//[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PTOKEN_PRIVILEGES.Marshaler), MarshalCookie = "Out")] PTOKEN_PRIVILEGES PreviousState,
-			[In, Out] ref uint ReturnLength);
+			[In, Out] SafeAllocatedMemoryHandle PreviousState,
+			out uint ReturnLength);
 
 		/// <summary>
-		/// The AdjustTokenPrivileges function enables or disables privileges in the specified access token. Enabling or disabling privileges
-		/// in an access token requires TOKEN_ADJUST_PRIVILEGES access.
+		/// The <c>AdjustTokenPrivileges</c> function enables or disables privileges in the specified access token. Enabling or disabling
+		/// privileges in an access token requires TOKEN_ADJUST_PRIVILEGES access.
 		/// </summary>
-		/// <param name="objectHandle">
+		/// <param name="TokenHandle">
 		/// A handle to the access token that contains the privileges to be modified. The handle must have TOKEN_ADJUST_PRIVILEGES access to
-		/// the token. If the PreviousState parameter is not NULL, the handle must also have TOKEN_QUERY access.
+		/// the token. If the PreviousState parameter is not <c>NULL</c>, the handle must also have TOKEN_QUERY access.
 		/// </param>
 		/// <param name="DisableAllPrivileges">
-		/// Specifies whether the function disables all of the token's privileges. If this value is TRUE, the function disables all
-		/// privileges and ignores the NewState parameter. If it is FALSE, the function modifies privileges based on the information pointed
-		/// to by the NewState parameter.
+		/// Specifies whether the function disables all of the token's privileges. If this value is <c>TRUE</c>, the function disables all
+		/// privileges and ignores the NewState parameter. If it is <c>FALSE</c>, the function modifies privileges based on the information
+		/// pointed to by the NewState parameter.
 		/// </param>
 		/// <param name="NewState">
-		/// A pointer to a TOKEN_PRIVILEGES structure that specifies an array of privileges and their attributes. If DisableAllPrivileges is
-		/// TRUE, the function ignores this parameter. If the DisableAllPrivileges parameter is FALSE, the AdjustTokenPrivileges function
-		/// enables, disables, or removes these privileges for the token. The following table describes the action taken by the
-		/// AdjustTokenPrivileges function, based on the privilege attribute.
+		/// <para>
+		/// A pointer to a TOKEN_PRIVILEGES structure that specifies an array of privileges and their attributes. If the DisableAllPrivileges
+		/// parameter is <c>FALSE</c>, the <c>AdjustTokenPrivileges</c> function enables, disables, or removes these privileges for the
+		/// token. The following table describes the action taken by the <c>AdjustTokenPrivileges</c> function, based on the privilege attribute.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SE_PRIVILEGE_ENABLED</term>
+		/// <term>The function enables the privilege.</term>
+		/// </item>
+		/// <item>
+		/// <term>SE_PRIVILEGE_REMOVED</term>
+		/// <term>
+		/// The privilege is removed from the list of privileges in the token. The other privileges in the list are reordered to remain
+		/// contiguous. SE_PRIVILEGE_REMOVED supersedes SE_PRIVILEGE_ENABLED. Because the privilege has been removed from the token, attempts
+		/// to reenable the privilege result in the warning ERROR_NOT_ALL_ASSIGNED as if the privilege had never existed. Attempting to
+		/// remove a privilege that does not exist in the token results in ERROR_NOT_ALL_ASSIGNED being returned. Privilege checks for
+		/// removed privileges result in STATUS_PRIVILEGE_NOT_HELD. Failed privilege check auditing occurs as normal. The removal of the
+		/// privilege is irreversible, so the name of the removed privilege is not included in the PreviousState parameter after a call to
+		/// AdjustTokenPrivileges. Windows XP with SP1: The function cannot remove privileges. This value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>None</term>
+		/// <term>The function disables the privilege.</term>
+		/// </item>
+		/// </list>
+		/// <para>If DisableAllPrivileges is <c>TRUE</c>, the function ignores this parameter.</para>
 		/// </param>
 		/// <param name="BufferLength">
 		/// Specifies the size, in bytes, of the buffer pointed to by the PreviousState parameter. This parameter can be zero if the
-		/// PreviousState parameter is NULL.
+		/// PreviousState parameter is <c>NULL</c>.
 		/// </param>
 		/// <param name="PreviousState">
+		/// <para>
 		/// A pointer to a buffer that the function fills with a TOKEN_PRIVILEGES structure that contains the previous state of any
 		/// privileges that the function modifies. That is, if a privilege has been modified by this function, the privilege and its previous
-		/// state are contained in the TOKEN_PRIVILEGES structure referenced by PreviousState. If the PrivilegeCount member of
-		/// TOKEN_PRIVILEGES is zero, then no privileges have been changed by this function. This parameter can be NULL.
+		/// state are contained in the <c>TOKEN_PRIVILEGES</c> structure referenced by PreviousState. If the <c>PrivilegeCount</c> member of
+		/// <c>TOKEN_PRIVILEGES</c> is zero, then no privileges have been changed by this function. This parameter can be <c>NULL</c>.
+		/// </para>
 		/// <para>
 		/// If you specify a buffer that is too small to receive the complete list of modified privileges, the function fails and does not
 		/// adjust any privileges. In this case, the function sets the variable pointed to by the ReturnLength parameter to the number of
@@ -2198,22 +2294,59 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="ReturnLength">
 		/// A pointer to a variable that receives the required size, in bytes, of the buffer pointed to by the PreviousState parameter. This
-		/// parameter can be NULL if PreviousState is NULL.
+		/// parameter can be <c>NULL</c> if PreviousState is <c>NULL</c>.
 		/// </param>
 		/// <returns>
+		/// <para>
 		/// If the function succeeds, the return value is nonzero. To determine whether the function adjusted all of the specified
-		/// privileges, call GetLastError, which returns either ERROR_SUCCESS, indicating that the function adjusted all specified
-		/// privileges, or ERROR_NOT_ALL_ASSIGNED, indicating that the token does not have one or more of the privileges specified in the
-		/// NewState parameter. The function may succeed with this error value even if no privileges were adjusted. The PreviousState
-		/// parameter indicates the privileges that were adjusted.
+		/// privileges, call GetLastError, which returns one of the following values when the function succeeds:
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>The function adjusted all specified privileges.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_ALL_ASSIGNED</term>
+		/// <term>
+		/// The token does not have one or more of the privileges specified in the NewState parameter. The function may succeed with this
+		/// error value even if no privileges were adjusted. The PreviousState parameter indicates the privileges that were adjusted.
+		/// </term>
+		/// </item>
+		/// </list>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail), DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
+		/// <remarks>
+		/// <para>
+		/// The <c>AdjustTokenPrivileges</c> function cannot add new privileges to the access token. It can only enable or disable the
+		/// token's existing privileges. To determine the token's privileges, call the GetTokenInformation function.
+		/// </para>
+		/// <para>
+		/// The NewState parameter can specify privileges that the token does not have, without causing the function to fail. In this case,
+		/// the function adjusts the privileges that the token does have and ignores the other privileges so that the function succeeds. Call
+		/// the GetLastError function to determine whether the function adjusted all of the specified privileges. The PreviousState parameter
+		/// indicates the privileges that were adjusted.
+		/// </para>
+		/// <para>
+		/// The PreviousState parameter retrieves a TOKEN_PRIVILEGES structure that contains the original state of the adjusted privileges.
+		/// To restore the original state, pass the PreviousState pointer as the NewState parameter in a subsequent call to the
+		/// <c>AdjustTokenPrivileges</c> function.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example that uses this function, see Enabling and Disabling Privileges.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-adjusttokenprivileges
+		// BOOL AdjustTokenPrivileges( HANDLE TokenHandle, BOOL DisableAllPrivileges, PTOKEN_PRIVILEGES NewState, DWORD BufferLength, PTOKEN_PRIVILEGES PreviousState, PDWORD ReturnLength );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "8e3f70cd-814e-4aab-8f48-0ca482beef2e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa375202")]
 		public static extern bool AdjustTokenPrivileges([In] HTOKEN objectHandle,
-			[In, MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges, [In] SafeCoTaskMemHandle NewState,
-			[In] uint BufferLength, [In, Out] SafeCoTaskMemHandle PreviousState, [In, Out] ref uint ReturnLength);
+			[In, MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges, [In] SafeAllocatedMemoryHandle NewState,
+			[In] uint BufferLength = 0, IntPtr PreviousState = default, IntPtr ReturnLength = default);
 
 		/// <summary>The <c>AllocateLocallyUniqueId</c> function allocates a locally unique identifier (LUID).</summary>
 		/// <param name="Luid">A pointer to a <c>LUID</c> structure that receives the allocated LUID.</param>

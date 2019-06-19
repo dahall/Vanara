@@ -69,11 +69,9 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(LookupPrivilegeValue(null, "SeShutdownPrivilege", out var luid));
 				var ptp = new PTOKEN_PRIVILEGES(luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
 				var old = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
-				var rLen = (uint)old.Size;
-				Assert.That(AdjustTokenPrivileges(t, false, ptp, ptp.SizeInBytes, old, ref rLen));
+				Assert.That(AdjustTokenPrivileges(t, false, ptp, (uint)old.Size, old, out var rLen));
 
-				rLen = 0U;
-				Assert.That(AdjustTokenPrivileges(t, false, ptp, ptp.SizeInBytes, SafeCoTaskMemHandle.Null, ref rLen));
+				Assert.That(AdjustTokenPrivileges(t, false, ptp));
 			}
 		}
 

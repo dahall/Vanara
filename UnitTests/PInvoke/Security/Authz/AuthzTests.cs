@@ -360,15 +360,14 @@ namespace Vanara.PInvoke.Tests
 			tok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY);
 			var newPriv = new PTOKEN_PRIVILEGES(LUID.FromName(priv), PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
 			prevState = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
-			var retLen = (uint)prevState.Size;
-			if (!AdjustTokenPrivileges(tok, false, newPriv, newPriv.SizeInBytes, prevState, ref retLen))
+			if (!AdjustTokenPrivileges(tok, false, newPriv, (uint)prevState.Size, prevState, out var retLen))
 				Win32Error.ThrowLastError();
 		}
 
 		public void Dispose()
 		{
 			var retLen = 0U;
-			AdjustTokenPrivileges(tok, false, prevState, (uint)prevState.Size, SafeCoTaskMemHandle.Null, ref retLen);
+			AdjustTokenPrivileges(tok, false, prevState, 0, SafeCoTaskMemHandle.Null, out _);
 			prevState.Dispose();
 			tok.Dispose();
 		}

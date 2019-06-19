@@ -158,8 +158,7 @@ namespace Vanara.Security.AccessControl
 		{
 			var newState = new PTOKEN_PRIVILEGES(priv.GetLUID(), attr);
 			var prevState = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
-			var retLen = (uint)prevState.Size;
-			if (!AdjustTokenPrivileges(hObj, false, newState, newState.SizeInBytes, prevState, ref retLen))
+			if (!AdjustTokenPrivileges(hObj, false, newState, (uint)prevState.Size, prevState, out var retLen))
 				throw new Win32Exception();
 			prevState.Size = (int)retLen;
 			return prevState;
@@ -170,8 +169,7 @@ namespace Vanara.Security.AccessControl
 			if (privileges == null || privileges.Length == 0) return SafeCoTaskMemHandle.Null;
 			var newState = new PTOKEN_PRIVILEGES(privileges.Select(pa => new LUID_AND_ATTRIBUTES(pa.Privilege.GetLUID(), pa.Attributes)).ToArray());
 			var prevState = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
-			var retLen = (uint)prevState.Size;
-			if (!AdjustTokenPrivileges(hObj, false, newState, newState.SizeInBytes, prevState, ref retLen))
+			if (!AdjustTokenPrivileges(hObj, false, newState, (uint)prevState.Size, prevState, out var retLen))
 				throw new Win32Exception();
 			prevState.Size = (int)retLen;
 			return prevState;
@@ -180,16 +178,14 @@ namespace Vanara.Security.AccessControl
 		public static void AdjustPrivileges(this SafeHTOKEN hObj, PTOKEN_PRIVILEGES privileges)
 		{
 			if (privileges == null) return;
-			uint retLen = 0;
-			if (!AdjustTokenPrivileges(hObj, false, privileges, (uint)privileges.SizeInBytes, null, ref retLen))
+			if (!AdjustTokenPrivileges(hObj, false, privileges))
 				throw new Win32Exception();
 		}
 
-		public static void AdjustPrivileges(this SafeHTOKEN hObj, SafeCoTaskMemHandle privileges)
+		public static void AdjustPrivileges(this SafeHTOKEN hObj, SafeAllocatedMemoryHandle privileges)
 		{
 			if (privileges == null || privileges.IsInvalid) return;
-			uint retLen = 0;
-			if (!AdjustTokenPrivileges(hObj, false, privileges, (uint)privileges.Size, SafeCoTaskMemHandle.Null, ref retLen))
+			if (!AdjustTokenPrivileges(hObj, false, privileges))
 				throw new Win32Exception();
 		}
 
