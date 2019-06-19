@@ -13,8 +13,6 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture]
 	public class Kernel32Tests
 	{
-		internal const string badlibfn = @"C:\Windows\System32\ole3.dll";
-		internal const string libfn = @"ole32.dll";
 		internal const string tmpstr = @"Temporary";
 		internal const string fn = @"C:\Temp\help.ico";
 
@@ -76,18 +74,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void EnumResourceNamesTest()
-		{
-			using (var hLib = LoadLibraryEx(@"C:\Windows\System32\en-US\aclui.dll.mui", IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
-			{
-				var l = EnumResourceNamesEx(hLib, ResourceType.RT_STRING);
-				Assert.That(l.Count, Is.GreaterThan(0));
-				foreach (var resourceName in l)
-					Assert.That(resourceName.ToString(), Has.Length.GreaterThan(0));
-			}
-		}
-
-		[Test]
 		public void FileTimeToSystemTimeTest()
 		{
 			var dt = DateTime.Today;
@@ -97,16 +83,6 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(b);
 			Assert.That(dt.Year, Is.EqualTo(st.wYear));
 			Assert.That(dt.Day, Is.EqualTo(st.wDay));
-		}
-
-		[Test]
-		public void FindResourceTest()
-		{
-			using (var hLib = LoadLibraryEx(@"comctl32.dll", IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
-			{
-				var ptr = FindResource(hLib, 65, ResourceType.RT_STRING);
-				Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
-			}
 		}
 
 		[Test]
@@ -151,28 +127,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void GetModuleFileNameTest()
-		{
-			const string fn = @"C:\Windows\System32\tzres.dll";
-			using (var hLib = LoadLibrary(fn))
-			{
-				var f = GetModuleFileName(hLib);
-				Assert.That(f, Is.SamePath(fn));
-			}
-		}
-
-		[Test]
-		public void GetProcAddressTest()
-		{
-			const string fn = @"C:\Windows\System32\kernel32.dll";
-			using (var hLib = LoadLibrary(fn))
-			{
-				var a = GetProcAddress(hLib, "GetNativeSystemInfo");
-				Assert.That(a, Is.Not.EqualTo(IntPtr.Zero));
-			}
-		}
-
-		[Test]
 		public void GlobalLockTest()
 		{
 			var bp = GlobalLock(new IntPtr(1));
@@ -185,44 +139,6 @@ namespace Vanara.PInvoke.Tests
 				var ptr = GlobalLock(hMem.DangerousGetHandle());
 				Assert.That(ptr, Is.EqualTo(hMem.DangerousGetHandle()));
 				GlobalUnlock(hMem.DangerousGetHandle());
-			}
-		}
-
-		[Test]
-		public void LoadLibraryTest()
-		{
-			var hlib = LoadLibrary(badlibfn);
-			Assert.That((HINSTANCE)hlib, Is.EqualTo(HINSTANCE.NULL));
-			Assert.That(Marshal.GetLastWin32Error(), Is.Not.Zero);
-
-			hlib = LoadLibrary(libfn);
-			Assert.That((HINSTANCE)hlib, Is.Not.EqualTo(HINSTANCE.NULL));
-		}
-
-		[Test]
-		public void LoadLibraryExTest()
-		{
-			var hlib = LoadLibraryEx(badlibfn, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
-			Assert.That((HINSTANCE)hlib, Is.EqualTo(HINSTANCE.NULL));
-			Assert.That(Marshal.GetLastWin32Error(), Is.Not.Zero);
-
-			hlib = LoadLibraryEx(libfn, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
-			Assert.That((HINSTANCE)hlib, Is.Not.EqualTo(HINSTANCE.NULL));
-		}
-
-		[Test]
-		public void LoadResourceTest()
-		{
-			using (var hlib = LoadLibraryEx("ole32.dll", IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
-			{
-				var hres = FindResource(hlib, 4, ResourceType.RT_CURSOR);
-				Assert.That(hres, Is.Not.EqualTo(IntPtr.Zero));
-				var sz = SizeofResource(hlib, hres);
-				Assert.That(sz, Is.GreaterThan(0));
-				var pres = LoadResource(hlib, hres);
-				Assert.That(pres, Is.Not.EqualTo(IntPtr.Zero));
-				var pmem = LockResource(pres);
-				Assert.That(pmem, Is.Not.EqualTo(IntPtr.Zero));
 			}
 		}
 

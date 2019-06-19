@@ -1176,7 +1176,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648044")]
 		[Obsolete]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FreeResource([In] SafeResourceDataHandle hglbResource);
+		public static extern bool FreeResource([In] HRSRCDATA hglbResource);
 
 		/// <summary>
 		/// <para>
@@ -1250,7 +1250,7 @@ namespace Vanara.PInvoke
 		public static string GetModuleFileName(HINSTANCE hModule)
 		{
 			var buffer = new StringBuilder(MAX_PATH);
-			Label_000B:
+		Label_000B:
 			var num1 = GetModuleFileName(hModule, buffer, (uint)buffer.Capacity);
 			if (num1 == 0)
 				throw new Win32Exception();
@@ -1324,7 +1324,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683200")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG dwFlags, [Optional] string lpModuleName, out IntPtr phModule);
+		public static extern bool GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG dwFlags, [Optional] string lpModuleName, out HINSTANCE phModule);
 
 		/// <summary>Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).</summary>
 		/// <param name="hModule">
@@ -1743,7 +1743,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648046")]
 		[SuppressUnmanagedCodeSecurity]
-		public static extern SafeResourceDataHandle LoadResource(HINSTANCE hModule, HRSRC hResInfo);
+		public static extern HRSRCDATA LoadResource(HINSTANCE hModule, HRSRC hResInfo);
 
 		/// <summary>Retrieves a pointer to the specified resource in memory.</summary>
 		/// <param name="hResData">
@@ -1764,16 +1764,12 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648047")]
 		[SuppressUnmanagedCodeSecurity]
-		public static extern IntPtr LockResource(SafeResourceDataHandle hResData);
+		public static extern IntPtr LockResource(HRSRCDATA hResData);
 
-		/// <summary>
-		/// <para>Determines whether the specified function in a delay-loaded DLL is available on the system.</para>
-		/// </summary>
+		/// <summary>Determines whether the specified function in a delay-loaded DLL is available on the system.</summary>
 		/// <param name="hParentModule">
-		/// <para>
 		/// A handle to the calling module. Desktop applications can use the GetModuleHandle or GetModuleHandleEx function to get this
-		/// handle. Windows Store apps should set this parameter to .
-		/// </para>
+		/// handle. Windows Store apps should set this parameter to <c>static_cast&lt;HMODULE&gt;(&amp;__ImageBase)</c>.
 		/// </param>
 		/// <param name="lpDllName">
 		/// <para>The file name of the delay-loaded DLL that exports the specified function. This parameter is case-insensitive.</para>
@@ -1782,17 +1778,11 @@ namespace Vanara.PInvoke
 		/// than kernel32.dll.
 		/// </para>
 		/// </param>
-		/// <param name="lpProcName">
-		/// <para>The name of the function to query. This parameter is case-sensitive.</para>
-		/// </param>
-		/// <param name="Reserved">
-		/// <para>This parameter is reserved and must be zero (0).</para>
-		/// </param>
+		/// <param name="lpProcName">The name of the function to query. This parameter is case-sensitive.</param>
+		/// <param name="Reserved">This parameter is reserved and must be zero (0).</param>
 		/// <returns>
-		/// <para>
 		/// TRUE if the specified function is available on the system. If the specified function is not available on the system, this
 		/// function returns FALSE. To get extended error information, call GetLastError.
-		/// </para>
 		/// </returns>
 		/// <remarks>
 		/// <para>
@@ -1822,12 +1812,12 @@ namespace Vanara.PInvoke
 		/// available on the system.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/libloaderapi2/nf-libloaderapi2-queryoptionaldelayloadedapi BOOL
-		// QueryOptionalDelayLoadedAPI( HMODULE hParentModule, LPCSTR lpDllName, LPCSTR lpProcName, DWORD Reserved );
-		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		// https://docs.microsoft.com/en-us/windows/desktop/api/libloaderapi2/nf-libloaderapi2-queryoptionaldelayloadedapi
+		// BOOL QueryOptionalDelayLoadedAPI( HMODULE hParentModule, LPCSTR lpDllName, LPCSTR lpProcName, DWORD Reserved );
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("libloaderapi2.h", MSDNShortId = "43690689-4372-48ae-ac6d-230250f05f7c")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryOptionalDelayLoadedAPI(HINSTANCE hParentModule, string lpDllName, string lpProcName, uint Reserved = 0);
+		public static extern bool QueryOptionalDelayLoadedAPI(HINSTANCE hParentModule, [MarshalAs(UnmanagedType.LPStr)] string lpDllName, [MarshalAs(UnmanagedType.LPStr)] string lpProcName, uint Reserved = 0);
 
 		/// <summary>Removes a directory that was added to the process DLL search path by using <c>AddDllDirectory</c>.</summary>
 		/// <param name="Cookie">The cookie returned by <c>AddDllDirectory</c> when the directory was added to the search path.</param>
@@ -1956,6 +1946,54 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>Provides a handle to resource data.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HRSRCDATA : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HRSRCDATA"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HRSRCDATA(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HRSRCDATA"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HRSRCDATA NULL => new HRSRCDATA(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HRSRCDATA"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HRSRCDATA h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HRSRCDATA"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HRSRCDATA(IntPtr h) => new HRSRCDATA(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HRSRCDATA h1, HRSRCDATA h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HRSRCDATA h1, HRSRCDATA h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HRSRCDATA h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
 		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HINSTANCE instance at disposal using FreeLibrary.</summary>
 		[PInvokeData("LibLoaderAPI.h")]
 		public class SafeHINSTANCE : SafeHANDLE
@@ -1992,26 +2030,6 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => FreeLibrary(this);
-		}
-
-		/// <summary>Represents a loaded resource handle.</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeResourceDataHandle : SafeHANDLE
-		{
-			private IntPtr bptr;
-
-			/// <summary>Initializes a new instance of the <see cref="SafeResourceDataHandle"/> class.</summary>
-			public SafeResourceDataHandle() : base() { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeResourceDataHandle"/> class.</summary>
-			/// <param name="handle">The handle.</param>
-			public SafeResourceDataHandle(IntPtr handle) : base(handle, false) { }
-
-			/// <summary>Gets the pointer to the memory of the resource.</summary>
-			public IntPtr LockedPtr => bptr != null ? bptr : (bptr = LockResource(this));
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => throw new NotImplementedException();
 		}
 	}
 }
