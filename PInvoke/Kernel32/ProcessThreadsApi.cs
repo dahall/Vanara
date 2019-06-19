@@ -1368,12 +1368,10 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
 		public static SafeHPROCESS CreateProcess(string lpCommandLine)
 		{
-			if (CreateProcess(null, new StringBuilder(lpCommandLine ?? throw new ArgumentNullException(nameof(lpCommandLine))), lpStartupInfo: STARTUPINFO.Default, lpProcessInformation: out var pi))
+			if (CreateProcess(null, new StringBuilder(lpCommandLine ?? throw new ArgumentNullException(nameof(lpCommandLine))), null, null, false, 0, IntPtr.Zero, null, STARTUPINFO.Default, out var pi))
 			{
-				var hProc = new SafeHPROCESS(pi.hProcess.DangerousGetHandle());
-				pi.hProcess.SetHandleAsInvalid();
-				((IDisposable)pi).Dispose();
-				return hProc;
+				CloseHandle((IntPtr)pi.hThread);
+				return new SafeHPROCESS(pi.hProcess);
 			}
 			return SafeHPROCESS.Null;
 		}
