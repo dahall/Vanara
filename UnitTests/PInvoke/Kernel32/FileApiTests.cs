@@ -453,28 +453,28 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(b, Is.True);
 			}
 		}
+	}
 
-		internal class TempFile : IDisposable
+	internal class TempFile : IDisposable
+	{
+		public const string tmpstr = @"Temporary";
+
+		public TempFile(Kernel32.FileAccess dwDesiredAccess, FileShare dwShareMode, FileMode dwCreationDisposition = FileMode.OpenOrCreate, FileFlagsAndAttributes dwFlagsAndAttributes = FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL) : this()
 		{
-			public const string tmpstr = @"Temporary";
+			hFile = CreateFile(FullName, dwDesiredAccess, dwShareMode, null, dwCreationDisposition, dwFlagsAndAttributes, IntPtr.Zero);
+		}
 
-			public TempFile(Kernel32.FileAccess dwDesiredAccess, FileShare dwShareMode, FileMode dwCreationDisposition = FileMode.OpenOrCreate, FileFlagsAndAttributes dwFlagsAndAttributes = FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL) : this()
-			{
-				hFile = CreateFile(FullName, dwDesiredAccess, dwShareMode, null, dwCreationDisposition, dwFlagsAndAttributes, IntPtr.Zero);
-			}
+		public TempFile(string contents = tmpstr)
+		{
+			FullName = Path.GetTempFileName(); File.WriteAllText(FullName, contents);
+		}
 
-			public TempFile(string contents = tmpstr)
-			{
-				FullName = Path.GetTempFileName(); File.WriteAllText(FullName, contents);
-			}
+		public string FullName { get; }
+		public SafeHFILE hFile { get; }
 
-			public string FullName { get; }
-			public SafeHFILE hFile { get; }
-
-			void IDisposable.Dispose()
-			{
-				hFile?.Dispose(); File.Delete(FullName);
-			}
+		void IDisposable.Dispose()
+		{
+			hFile?.Dispose(); File.Delete(FullName);
 		}
 	}
 }
