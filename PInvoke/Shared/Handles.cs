@@ -656,6 +656,11 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator HFILE(IntPtr h) => new HFILE(h);
 
+		/// <summary>Performs an implicit conversion from <see cref="SafeFileHandle"/> to <see cref="HFILE"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HFILE(SafeFileHandle h) => new HFILE(h?.DangerousGetHandle() ?? IntPtr.Zero);
+
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
