@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -566,7 +567,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366528")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AllocateUserPhysicalPages([In] HPROCESS hProcess, ref SizeT NumberOfPages, out IntPtr UserPfnArray);
+		public static extern bool AllocateUserPhysicalPages([In] HPROCESS hProcess, ref SizeT NumberOfPages, [Out] IntPtr[] UserPfnArray);
 
 		/// <summary>
 		/// Allocates physical memory pages to be mapped and unmapped within any Address Windowing Extensions (AWE) region of a specified
@@ -609,7 +610,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366529")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AllocateUserPhysicalPagesNuma([In] HPROCESS hProcess, ref SizeT NumberOfPages, out IntPtr PageArray, uint nndPreferred);
+		public static extern bool AllocateUserPhysicalPagesNuma([In] HPROCESS hProcess, ref SizeT NumberOfPages, [Out] IntPtr[] PageArray, uint nndPreferred);
 
 		/// <summary>
 		/// <para>Creates or opens a named or unnamed file mapping object for a specified file.</para>
@@ -1333,7 +1334,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366566")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FreeUserPhysicalPages([In] HPROCESS hProcess, ref SizeT NumberOfPages, [In] IntPtr UserPfnArray);
+		public static extern bool FreeUserPhysicalPages([In] HPROCESS hProcess, ref SizeT NumberOfPages, [In] IntPtr[] UserPfnArray);
 
 		/// <summary>Retrieves the minimum size of a large page.</summary>
 		/// <returns>
@@ -1524,7 +1525,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366753")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool MapUserPhysicalPages([In] IntPtr lpAddress, ref SizeT NumberOfPages, [In] IntPtr UserPfnArray);
+		public static extern bool MapUserPhysicalPages([In] IntPtr lpAddress, SizeT NumberOfPages, [In] IntPtr[] UserPfnArray);
 
 		/// <summary>
 		/// <para>Maps a view of a file mapping into the address space of a calling process.</para>
