@@ -3654,7 +3654,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-		public static extern bool ReadFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, IntPtr lpOverlapped);
+		public static extern bool ReadFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped);
 
 		/// <summary>
 		/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
@@ -3736,7 +3736,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-		public static extern bool ReadFile(HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, IntPtr lpOverlapped);
+		public static extern bool ReadFile(HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped);
 
 		/// <summary>
 		/// <para>
@@ -4619,7 +4619,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
-		public static extern bool WriteFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, IntPtr lpOverlapped);
+		public static extern bool WriteFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [Optional] IntPtr lpOverlapped);
 
 		/// <summary>
 		/// Writes data to the specified file or input/output (I/O) device.
@@ -4761,7 +4761,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
-		public static extern bool WriteFile(HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, IntPtr lpOverlapped);
+		public static extern bool WriteFile(HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [Optional] IntPtr lpOverlapped);
 
 		/// <summary>
 		/// <para>
@@ -5370,6 +5370,11 @@ namespace Vanara.PInvoke
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HFILE(SafeHFILE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="Microsoft.Win32.SafeHandles.SafeFileHandle"/> to <see cref="SafeHFILE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator SafeHFILE(Microsoft.Win32.SafeHandles.SafeFileHandle h) => new SafeHFILE(h.DangerousGetHandle(), false);
 		}
 
 		/// <summary>
