@@ -5,7 +5,7 @@ namespace Vanara.PInvoke
 {
 	/// <summary>Managed instance of the SIZE_T type.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible
+	public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComparable
 	{
 		private UIntPtr val;
 
@@ -78,6 +78,9 @@ namespace Vanara.PInvoke
 
 		/// <inheritdoc/>
 		public string ToString(IFormatProvider provider) => Value.ToString(provider);
+
+		/// <inheritdoc/>
+		int IComparable.CompareTo(object obj) => Value.CompareTo(Convert.ChangeType(obj, typeof(ulong)));
 
 		/// <inheritdoc/>
 		bool IConvertible.ToBoolean(IFormatProvider provider) => ((IConvertible)Value).ToBoolean(provider);
