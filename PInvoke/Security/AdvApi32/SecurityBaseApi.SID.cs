@@ -192,7 +192,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446631")]
-		public static extern PSID FreeSid(SafeAllocatedSID pSid);
+		public static extern PSID FreeSid(PSID pSid);
 
 		/// <summary>The GetLengthSid function returns the length, in bytes, of a valid security identifier (SID).</summary>
 		/// <param name="pSid">A pointer to the SID structure whose length is returned. The structure is assumed to be valid.</param>
