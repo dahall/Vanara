@@ -2447,6 +2447,31 @@ namespace Vanara.PInvoke
 			public const int SECURITY_WORLD_RID = 0x00000000;
 		}
 
+		/// <summary>The following RIDs are used to specify mandatory integrity level.</summary>
+		public static class MandatoryIntegrityLevelSIDRelativeID
+		{
+			/// <summary>Untrusted.</summary>
+			public const int SECURITY_MANDATORY_UNTRUSTED_RID = 0x00000000;
+
+			/// <summary>Low integrity.</summary>
+			public const int SECURITY_MANDATORY_LOW_RID = 0x00001000;
+
+			/// <summary>Medium integrity.</summary>
+			public const int SECURITY_MANDATORY_MEDIUM_RID = 0x00002000;
+
+			/// <summary>Medium-high integrity.</summary>
+			public const int SECURITY_MANDATORY_MEDIUM_PLUS_RID = SECURITY_MANDATORY_MEDIUM_RID + 0x100;
+
+			/// <summary>High integrity.</summary>
+			public const int SECURITY_MANDATORY_HIGH_RID = 0x00003000;
+
+			/// <summary>System integrity.</summary>
+			public const int SECURITY_MANDATORY_SYSTEM_RID = 0x00004000;
+
+			/// <summary>Protected process.</summary>
+			public const int SECURITY_MANDATORY_PROTECTED_PROCESS_RID = 0x00005000;
+		}
+
 		/// <summary>
 		/// The PRIVILEGE_SET structure specifies a set of privileges. It is also used to indicate which, if any, privileges are held by a
 		/// user or group requesting access to an object.
