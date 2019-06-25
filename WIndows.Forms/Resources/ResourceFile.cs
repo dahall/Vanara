@@ -85,7 +85,7 @@ namespace Vanara.Resources
 				throw new Win32Exception();
 
 			var hResData = LoadResource(hLib, hResInfo);
-			if (hResData.IsInvalid)
+			if (hResData.IsNull)
 				throw new Win32Exception();
 
 			var hGlobal = LockResource(hResData);
