@@ -33,6 +33,9 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => LocalFree(handle) == HLOCAL.NULL;
 		}
 
+		/// <summary>Provides an array of SID pointers whose memory is disposed after use.</summary>
+		/// <seealso cref="Vanara.PInvoke.SafeHANDLE"/>
+		/// <seealso cref="System.Collections.Generic.IEnumerable{Vanara.PInvoke.PSID}"/>
 		public class SafeLocalPSIDArray : SafeHANDLE, IEnumerable<PSID>
 		{
 			private List<SafeLocalPSID> items;
@@ -111,6 +114,19 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>
+			/// Initializes a new instance of the <see cref="SafePSID"/> class from a
+			/// <see cref="System.Security.Principal.SecurityIdentifier"/> instance.
+			/// </summary>
+			/// <param name="si">The <see cref="System.Security.Principal.SecurityIdentifier"/> instance.</param>
+			public SafePSID(System.Security.Principal.SecurityIdentifier si) : this(GetBytes(si))
+			{
+			}
+
+			/// <summary>Gets the SID for the current user</summary>
+			/// <value>The current user's SID.</value>
+			public static SafePSID Current => new SafePSID(System.Security.Principal.WindowsIdentity.GetCurrent().User);
+
+			/// <summary>
 			/// Verifies that the revision number is within a known range, and that the number of subauthorities is less than the maximum.
 			/// </summary>
 			/// <value><c>true</c> if this instance is a valid SID; otherwise, <c>false</c>.</value>
@@ -135,7 +151,7 @@ namespace Vanara.PInvoke
 			public static SafePSID CreateWellKnown(WELL_KNOWN_SID_TYPE sidType, PSID domainSid = default)
 			{
 				var sz = 0U;
-				var ret = CreateWellKnownSid(sidType, domainSid, Null, ref sz);
+				CreateWellKnownSid(sidType, domainSid, Null, ref sz);
 				if (sz == 0) Win32Error.ThrowLastError();
 				var newSid = new SafePSID((int)sz);
 				if (!CreateWellKnownSid(sidType, domainSid, newSid, ref sz))
@@ -250,6 +266,13 @@ namespace Vanara.PInvoke
 			/// <summary>Creates a new object that is a copy of the current instance.</summary>
 			/// <returns>A new object that is a copy of this instance.</returns>
 			object ICloneable.Clone() => Clone();
+
+			private static byte[] GetBytes(System.Security.Principal.SecurityIdentifier si)
+			{
+				var b = new byte[si.BinaryLength];
+				si.GetBinaryForm(b, 0);
+				return b;
+			}
 		}
 	}
 }
