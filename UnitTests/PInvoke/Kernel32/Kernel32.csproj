@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Vanara.PInvoke.Tests</RootNamespace>
     <AssemblyName>UnitTest.PInvoke.Kernel32</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <LangVersion>latest</LangVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,6 +48,9 @@
     <Compile Include="AppModelTests.cs" />
     <Compile Include="InterlockedApiTests.cs" />
     <Compile Include="InteropServices\SafeLocalHandleTests.cs" />
+    <Compile Include="PathCchTests.cs" />
+    <Compile Include="ProcessEnvTests.cs" />
+    <Compile Include="NameSpaceApiTests.cs" />
     <Compile Include="NamedPipeApiTests.cs" />
     <Compile Include="MemoryApiTests.cs" />
     <Compile Include="LibLoaderApiTests.cs" />
@@ -74,6 +78,10 @@
     <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
       <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
       <Name>Vanara.PInvoke.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CSharpRunner\CSharpRunner.csproj">
+      <Project>{a96cff10-0967-429a-8700-4a86c97c5603}</Project>
+      <Name>CSharpRunner</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -366,8 +366,7 @@ namespace Vanara.PInvoke.Tests
 
 		public void Dispose()
 		{
-			var retLen = 0U;
-			AdjustTokenPrivileges(tok, false, prevState, 0, SafeCoTaskMemHandle.Null, out _);
+			AdjustTokenPrivileges(tok, false, prevState);
 			prevState.Dispose();
 			tok.Dispose();
 		}

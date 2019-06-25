@@ -20,19 +20,16 @@ namespace Vanara.InteropServices.Tests
 			var cs = new string('x', sz);
 
 			var s = new SafeCoTaskMemString(cs);
-			Assert.That(s.Capacity, Is.EqualTo((sz + 1) * 2));
-			Assert.That(s.CharCapacity, Is.EqualTo(sz + 1));
+			Assert.That(s.Capacity, Is.EqualTo(sz + 1));
 			Assert.That((string)s, Is.EqualTo(cs));
 			Assert.That((IntPtr)s, Is.Not.EqualTo(IntPtr.Zero));
 
 			s = new SafeCoTaskMemString(cs, System.Runtime.InteropServices.CharSet.Ansi);
 			Assert.That(s.Capacity, Is.EqualTo(sz + 1));
-			Assert.That(s.CharCapacity, Is.EqualTo(sz + 1));
 			Assert.That((string)s, Is.EqualTo(cs));
 
 			s = new SafeCoTaskMemString((string)null);
 			Assert.That(s.Capacity, Is.EqualTo(0));
-			Assert.That(s.CharCapacity, Is.EqualTo(0));
 			Assert.That((string)s, Is.Null);
 			Assert.That((IntPtr)s, Is.EqualTo(IntPtr.Zero));
 		}
@@ -42,12 +39,10 @@ namespace Vanara.InteropServices.Tests
 		{
 			const int sz = 100;
 			var s = new SafeCoTaskMemString(sz);
-			Assert.That(s.CharCapacity, Is.EqualTo(sz));
-			Assert.That(s.Capacity, Is.EqualTo(sz * 2));
+			Assert.That(s.Capacity, Is.EqualTo(sz));
 			Assert.That((string)s, Is.EqualTo(string.Empty));
 
 			s = new SafeCoTaskMemString(sz, System.Runtime.InteropServices.CharSet.Ansi);
-			Assert.That(s.CharCapacity, Is.EqualTo(sz));
 			Assert.That(s.Capacity, Is.EqualTo(sz));
 			Assert.That((string)s, Is.EqualTo(string.Empty));
 		}
@@ -60,15 +55,13 @@ namespace Vanara.InteropServices.Tests
 			foreach (var c in new string('x', sz)) ss.AppendChar(c);
 
 			var s = new SafeCoTaskMemString(ss);
-			Assert.That(s.CharCapacity, Is.EqualTo(sz + 1));
-			Assert.That(s.Capacity, Is.EqualTo((sz + 1) * 2));
+			Assert.That(s.Capacity, Is.EqualTo(sz + 1));
 			Assert.That((string)s, Is.EqualTo(new string('x', sz)));
 
 			ss = null;
 			s = new SafeCoTaskMemString(ss, CharSet.Ansi);
 			Assert.That((string)s, Is.Null);
 			Assert.That(s.Capacity, Is.Zero);
-			Assert.That(s.CharCapacity, Is.Zero);
 		}
 
 		[Test()]
