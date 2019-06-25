@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace Vanara.PInvoke
 {
@@ -50,7 +52,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "6b56e664-7795-4e30-8bca-1e4df2764606")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddIntegrityLabelToBoundaryDescriptor(ref BoundaryDescriptorHandle BoundaryDescriptor, IntPtr IntegrityLabel);
+		public static extern bool AddIntegrityLabelToBoundaryDescriptor(ref BoundaryDescriptorHandle BoundaryDescriptor, PSID IntegrityLabel);
 
 		/// <summary>Adds a security identifier (SID) to the specified boundary descriptor.</summary>
 		/// <param name="BoundaryDescriptor">
@@ -65,18 +67,20 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms681937")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddSIDToBoundaryDescriptor(ref BoundaryDescriptorHandle BoundaryDescriptor, IntPtr RequiredSid);
+		public static extern bool AddSIDToBoundaryDescriptor(ref BoundaryDescriptorHandle BoundaryDescriptor, PSID RequiredSid);
 
 		/// <summary>Closes an open namespace handle.</summary>
-		/// <param name="Handle">The namespace handle. This handle is created by <c>CreatePrivateNamespace</c> or <c>OpenPrivateNamespace</c>.</param>
+		/// <param name="Handle">The namespace handle. This handle is created by CreatePrivateNamespace or OpenPrivateNamespace.</param>
 		/// <param name="Flags">If this parameter is <c>PRIVATE_NAMESPACE_FLAG_DESTROY</c> (0x00000001), the namespace is destroyed.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		// BOOLEAN WINAPI ClosePrivateNamespace( _In_ HANDLE Handle, _In_ ULONG Flags); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682026(v=vs.85).aspx
+		/// <remarks>To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0600 or later.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/namespaceapi/nf-namespaceapi-closeprivatenamespace
+		// BOOLEAN ClosePrivateNamespace( HANDLE Handle, ULONG Flags );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms682026")]
+		[PInvokeData("namespaceapi.h", MSDNShortId = "b9b74cf2-bf13-4ceb-9242-bc6a884ac6f1")]
 		[return: MarshalAs(UnmanagedType.U1)]
 		public static extern bool ClosePrivateNamespace(NamespaceHandle Handle, uint Flags);
 
@@ -112,16 +116,17 @@ namespace Vanara.PInvoke
 		// lpBoundaryDescriptor, _In_ LPCTSTR lpAliasPrefix); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682419(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682419")]
-		public static extern SafeNamespaceHandle CreatePrivateNamespace(SECURITY_ATTRIBUTES lpPrivateNamespaceAttributes, BoundaryDescriptorHandle lpBoundaryDescriptor, string lpAliasPrefix);
+		public static extern SafeNamespaceHandle CreatePrivateNamespace([In, Optional] SECURITY_ATTRIBUTES lpPrivateNamespaceAttributes, BoundaryDescriptorHandle lpBoundaryDescriptor, string lpAliasPrefix);
 
 		/// <summary>Deletes the specified boundary descriptor.</summary>
-		/// <param name="BoundaryDescriptor">
-		/// A handle to the boundary descriptor. The <c>CreateBoundaryDescriptor</c> function returns this handle.
-		/// </param>
+		/// <param name="BoundaryDescriptor">A handle to the boundary descriptor. The CreateBoundaryDescriptor function returns this handle.</param>
 		/// <returns>This function does not return a value.</returns>
-		// VOID WINAPI DeleteBoundaryDescriptor( _In_ HANDLE BoundaryDescriptor); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682549(v=vs.85).aspx
+		/// <remarks>To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0600 or later.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/namespaceapi/nf-namespaceapi-deleteboundarydescriptor
+		// void DeleteBoundaryDescriptor( HANDLE BoundaryDescriptor );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms682549")]
+		[SecurityCritical, SuppressUnmanagedCodeSecurity]
+		[PInvokeData("namespaceapi.h", MSDNShortId = "759d9cd9-9ef2-4bbe-9e99-8aec87f5ba4a")]
 		public static extern void DeleteBoundaryDescriptor(BoundaryDescriptorHandle BoundaryDescriptor);
 
 		/// <summary>Opens a private namespace.</summary>
@@ -133,9 +138,25 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>The function returns the handle to the existing namespace.</returns>
 		// HANDLE WINAPI OpenPrivateNamespace( _In_ LPVOID lpBoundaryDescriptor, _In_ LPCTSTR lpAliasPrefix); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684318(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684318")]
-		public static extern NamespaceHandle OpenPrivateNamespace(BoundaryDescriptorHandle lpBoundaryDescriptor, string lpAliasPrefix);
+		public static SafeNamespaceHandle OpenPrivateNamespace(BoundaryDescriptorHandle lpBoundaryDescriptor, string lpAliasPrefix)
+		{
+			var h = OpenPrivateNamespaceInternal(lpBoundaryDescriptor, lpAliasPrefix);
+			h.flag = 0;
+			return h;
+		}
+
+		/// <summary>Opens a private namespace.</summary>
+		/// <param name="lpBoundaryDescriptor">
+		/// A descriptor that defines how the namespace is to be isolated. The <c>CreateBoundaryDescriptor</c> function creates a boundary descriptor.
+		/// </param>
+		/// <param name="lpAliasPrefix">
+		/// The prefix for the namespace. To create an object in this namespace, specify the object name as prefix\objectname.
+		/// </param>
+		/// <returns>The function returns the handle to the existing namespace.</returns>
+		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto, EntryPoint = "OpenPrivateNamespace")]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms684318")]
+		private static extern SafeNamespaceHandle OpenPrivateNamespaceInternal(BoundaryDescriptorHandle lpBoundaryDescriptor, string lpAliasPrefix);
 
 		/// <summary>Provides a handle to a boundary descriptor.</summary>
 		[StructLayout(LayoutKind.Sequential)]
@@ -187,7 +208,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides a handle to a private namespace.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct NamespaceHandle
+		public struct NamespaceHandle : IHandle
 		{
 			private IntPtr handle;
 
@@ -228,6 +249,9 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
 		}
 
 		/// <summary>
@@ -251,13 +275,35 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator BoundaryDescriptorHandle(SafeBoundaryDescriptorHandle h) => h.handle;
 
+			/// <summary>Adds a security identifier (SID) to the boundary descriptor.</summary>
+			/// <param name="pSid">A pointer to a <c>SID</c> structure.</param>
+			/// <returns>
+			/// <para>If the function succeeds, the return value is nonzero.</para>
+			/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+			/// </returns>
+			public bool AddSid(PSID pSid)
+			{
+				BoundaryDescriptorHandle h = handle;
+				if (Marshal.ReadByte(pSid.DangerousGetHandle(), 7) == 16)
+					return AddIntegrityLabelToBoundaryDescriptor(ref h, pSid);
+				return AddSIDToBoundaryDescriptor(ref h, pSid);
+			}
+
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() { DeleteBoundaryDescriptor(this); return true; }
+			[MethodImpl(MethodImplOptions.NoOptimization | MethodImplOptions.NoInlining)]
+			protected override bool InternalReleaseHandle()
+			{
+				BoundaryDescriptorHandle h = handle;
+				DeleteBoundaryDescriptor(h);
+				return true;
+			}
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created NamespaceHandle instance at disposal using CloseHandle.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created NamespaceHandle instance at disposal using ClosePrivateNamespace.</summary>
 		public class SafeNamespaceHandle : SafeHANDLE
 		{
+			internal uint flag = PRIVATE_NAMESPACE_FLAG_DESTROY;
+
 			/// <summary>Initializes a new instance of the <see cref="NamespaceHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
@@ -275,7 +321,7 @@ namespace Vanara.PInvoke
 			public static implicit operator NamespaceHandle(SafeNamespaceHandle h) => h.handle;
 
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => ClosePrivateNamespace(this, 1);
+			protected override bool InternalReleaseHandle() => ClosePrivateNamespace(handle, flag);
 		}
 	}
 }
