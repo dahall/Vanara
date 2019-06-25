@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -2013,6 +2014,7 @@ namespace Vanara.PInvoke
 		protected abstract bool InternalReleaseHandle();
 
 		/// <inheritdoc/>
+		[MethodImpl(MethodImplOptions.NoOptimization | MethodImplOptions.NoInlining)]
 		protected override bool ReleaseHandle()
 		{
 			if (IsInvalid) return true;
