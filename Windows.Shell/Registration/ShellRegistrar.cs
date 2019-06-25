@@ -194,16 +194,9 @@ namespace Vanara.Windows.Shell
 		/// <param name="progId">The ProgID.</param>
 		/// <param name="perceivedType">Type of the perceived.</param>
 		/// <param name="contentType">Type of the content.</param>
-		/// <exception cref="ArgumentNullException">
-		/// ext
-		/// or
-		/// progId
-		/// </exception>
-		/// <exception cref="ArgumentException">
-		/// Extension must start with a '.' - ext
-		/// or
-		/// Undefined ProgId value. - progId
-		/// </exception>
+		/// <param name="systemWide">if set to <c>true</c> register system wide.</param>
+		/// <exception cref="ArgumentNullException">ext or progId</exception>
+		/// <exception cref="ArgumentException">Extension must start with a '.' - ext or Undefined ProgId value. - progId</exception>
 		/// <exception cref="InvalidOperationException">Unable to create association key in the registry.</exception>
 		public static void RegisterFileAssociation(string ext, string progId, PERCEIVED perceivedType = PERCEIVED.PERCEIVED_TYPE_UNSPECIFIED, string contentType = null, bool systemWide = false)
 		{
@@ -257,16 +250,17 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		/// <summary>Registers the ProgID.</summary>
+		/// <summary>
+		/// Registers the ProgID.
+		/// </summary>
 		/// <param name="progId">The ProgID.</param>
 		/// <param name="typeName">Name of the type.</param>
+		/// <param name="systemWide">if set to <c>true</c> register system wide.</param>
 		/// <returns></returns>
 		/// <exception cref="ArgumentNullException">progId</exception>
-		/// <exception cref="ArgumentException">
-		/// A ProgID may not have more then 39 characters, must start with a letter, and may only contain letters, numbers and periods.
+		/// <exception cref="ArgumentException">A ProgID may not have more then 39 characters, must start with a letter, and may only contain letters, numbers and periods.
 		/// or
-		/// ProgID already exists - progId
-		/// </exception>
+		/// ProgID already exists - progId</exception>
 		public static ProgId RegisterProgID(string progId, string typeName, bool systemWide = false)
 		{
 			if (progId == null) throw new ArgumentNullException(nameof(progId));
@@ -276,10 +270,13 @@ namespace Vanara.Windows.Shell
 			return new ProgId(progId, GetRoot(systemWide, true).CreateSubKey(progId, typeName), false);
 		}
 
-		/// <summary>Unregisters the file association.</summary>
+		/// <summary>
+		/// Unregisters the file association.
+		/// </summary>
 		/// <param name="ext">The ext.</param>
 		/// <param name="progId">The ProgID.</param>
 		/// <param name="throwOnMissing">if set to <see langword="true" /> [throw on missing].</param>
+		/// <param name="systemWide">if set to <c>true</c> set system wide.</param>
 		/// <exception cref="InvalidOperationException">Unable to find association key in the registry.</exception>
 		public static void UnregisterFileAssociation(string ext, string progId, bool throwOnMissing = true, bool systemWide = false)
 		{
@@ -317,6 +314,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Unregisters the ProgID.</summary>
 		/// <param name="progId">The ProgID.</param>
 		/// <param name="fileExtensions">The file extensions.</param>
+		/// <param name="systemWide">if set to <c>true</c> unregister system wide.</param>
 		public static void UnregisterProgID(string progId, IEnumerable<string> fileExtensions = null, bool systemWide = false)
 		{
 			try

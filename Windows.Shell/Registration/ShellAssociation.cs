@@ -16,7 +16,7 @@ namespace Vanara.Windows.Shell
 		private ShellAssociation(string ext) => Extension = ext;
 
 		/// <summary>Gets all the file associations defined for the system.</summary>
-		/// <value>Returns a <see cref="IReadOnlyDictionary{string, ShellAssociation}"/> value.</value>
+		/// <value>Returns a <see cref="IReadOnlyDictionary{TKey, TValue}"/> value.</value>
 		public static IReadOnlyDictionary<string, ShellAssociation> FileAssociations { get; } = new ShellAssociationDictionary(true);
 
 		/// <summary>
@@ -74,7 +74,7 @@ namespace Vanara.Windows.Shell
 		public Guid? SupportedUriProtocols { get { try { return new Guid(GetString(ASSOCSTR.ASSOCSTR_SUPPORTED_URI_PROTOCOLS)); } catch { return null; } } }
 
 		/// <summary>Gets the command verbs for this file association.</summary>
-		/// <value>Returns a <see cref="IReadOnlyDictionary{string, CommandVerb}"/> value.</value>
+		/// <value>Returns a <see cref="IReadOnlyDictionary{TKey, TValue}"/> value.</value>
 		public IReadOnlyDictionary<string, CommandVerb> Verbs => throw new NotImplementedException(); // TODO
 
 		#region AllPropLists // TODO: Enhance

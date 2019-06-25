@@ -15,6 +15,8 @@ namespace Vanara.Windows.Shell
 		/// <param name="autoLoadVersioned">
 		/// if set to <c>true</c> automatically load a referenced versioned ProgId instead of the specified ProgId.
 		/// </param>
+		/// <param name="systemWide">if set to <c>true</c> get the system wide value.</param>
+		/// <exception cref="ArgumentException">Unable to load specified ProgId - progId</exception>
 		public ProgId(string progId, bool readOnly = true, bool autoLoadVersioned = true, bool systemWide = false) :
 			base(ShellRegistrar.GetRoot(systemWide, !readOnly, progId ?? throw new ArgumentNullException(nameof(progId))), readOnly)
 		{

@@ -41,14 +41,11 @@ namespace Vanara.Windows.Shell
 		/// <c>NULL</c>, this parameter is generally the IID of the initializing interface; if pUnkOuter is non- <c>NULL</c>, <paramref name="riid"/>
 		/// must be IID_IUnknown.
 		/// </param>
-		/// <param name="ppvObject">
+		/// <param name="ppv">
 		/// The address of pointer variable that receives the interface pointer requested in <paramref name="riid"/>. Upon successful return, *ppvObject
 		/// contains the requested interface pointer. If the object does not support the interface specified in <paramref name="riid"/>, the implementation must
 		/// set *ppvObject to <c>NULL</c>.
 		/// </param>
-		/// <param name="LockServer">The lock server.</param>
-		/// <param name="">The .</param>
-		/// <param name="fLock">The f lock.</param>
 		/// <returns>
 		/// <para>
 		/// This method can return the standard return values E_INVALIDARG, E_OUTOFMEMORY, and E_UNEXPECTED, as well as the following values.
@@ -72,11 +69,11 @@ namespace Vanara.Windows.Shell
 		/// </item>
 		/// </list>
 		/// </returns>
-		HRESULT IClassFactory.CreateInstance(object punkOuter, in Guid riid, out object ppv)
+		HRESULT IClassFactory.CreateInstance(object pUnkOuter, in Guid riid, out object ppv)
 		{
 			System.Diagnostics.Debug.WriteLine($"IClassFactory.CreateInstance: riid={riid:B}");
 			ppv = null;
-			if (!(punkOuter is null)) return HRESULT.CLASS_E_NOAGGREGATION;
+			if (!(pUnkOuter is null)) return HRESULT.CLASS_E_NOAGGREGATION;
 			try
 			{
 				ppv = comObj.QueryInterface(riid);

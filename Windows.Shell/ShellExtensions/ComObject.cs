@@ -29,7 +29,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Runs the message loop.</summary>
 		/// <param name="timeout">
 		/// The time span after which the message loop will be terminated. If this value equals TimeSpan.Zero or is not specified, the
-		/// message loop will run until the <see cref="Quit"/> method is called or the message loop receives a quit message.
+		/// message loop will run until the <see cref="QuitMessageLoop"/> method is called or the message loop receives a quit message.
 		/// </param>
 		void Run(TimeSpan timeout = default);
 	}
@@ -101,7 +101,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Runs the message loop.</summary>
 		/// <param name="timeout">
 		/// The time span after which the message loop will be terminated. If this value equals TimeSpan.Zero or is not specified, the
-		/// message loop will run until the <see cref="Quit"/> method is called or the message loop receives a quit message.
+		/// message loop will run until the <see cref="QuitMessageLoop"/> method is called or the message loop receives a quit message.
 		/// </param>
 		public void Run(TimeSpan timeout = default)
 		{

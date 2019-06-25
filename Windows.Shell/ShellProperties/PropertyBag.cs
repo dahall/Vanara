@@ -9,7 +9,7 @@ namespace Vanara.Windows.Shell
 		protected readonly IPropertyBag ibag;
 
 		/// <summary>Initializes a new instance of the <see cref="PropertyBag"/> class.</summary>
-		/// <param name="ps">The ps.</param>
+		/// <param name="ppb">The property bag.</param>
 		public PropertyBag(IPropertyBag ppb) => ibag = ppb;
 
 		/// <summary>Gets or sets the <see cref="System.Object"/> with the specified property name.</summary>

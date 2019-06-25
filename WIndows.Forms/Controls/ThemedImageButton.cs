@@ -151,7 +151,6 @@ namespace Vanara.Windows.Forms
 		/// <summary>Sets the theme using theme class information.</summary>
 		/// <param name="className">Name of the theme class.</param>
 		/// <param name="part">The theme part.</param>
-		/// <param name="state">The theme state.</param>
 		public void SetTheme(string className, int part)
 		{
 			styleClass = className;

@@ -7,7 +7,7 @@ using Vanara.Collections;
 namespace Vanara.Windows.Shell
 {
 	/// <summary>A dictionary of Command Verbs defined in the Windows Registry.</summary>
-	/// <seealso cref="Vanara.Windows.Shell.RegistryBasedVirtualDictionary{Vanara.Windows.Shell.CommandVerb}"/>
+	/// <seealso cref="Vanara.Windows.Shell.RegistryBasedVirtualDictionary{T}"/>
 	public class CommandVerbDictionary : RegistryBasedVirtualDictionary<CommandVerb>
 	{
 		private const string rootKeyName = "shell";
@@ -109,7 +109,7 @@ namespace Vanara.Windows.Shell
 
 	/// <summary>A virtual dictionary that is based on values in the Windows Registry.</summary>
 	/// <typeparam name="T">Type used to capture multiple values within the registry.</typeparam>
-	/// <seealso cref="Vanara.Collections.VirtualReadOnlyDictionary{string, T}"/>
+	/// <seealso cref="Vanara.Collections.VirtualReadOnlyDictionary{TKey, TValue}"/>
 	public abstract class RegistryBasedVirtualDictionary<T> : VirtualReadOnlyDictionary<string, T>
 	{
 		/// <summary>Read-only flag.</summary>

@@ -70,7 +70,6 @@ namespace Vanara.Windows.Shell
 	///      ShellRegistrar.UnregisterLocalServer&lt;MyExecCmd&gt;(false);
 	///   }
 	///}</code></remarks>
-	/// <seealso cref="TestDropTarget.ShellCommand" />
 	/// <seealso cref="Vanara.PInvoke.Shell32.IExecuteCommand" />
 	/// <seealso cref="Vanara.PInvoke.Shell32.IObjectWithSelection" />
 	public abstract class ShellExecuteCommand : ShellCommand, IExecuteCommand, IObjectWithSelection

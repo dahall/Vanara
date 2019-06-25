@@ -374,7 +374,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Selects a portion of a window's client area to display as that window's thumbnail in the taskbar.</summary>
-		/// <param name="parent">The window represented in the taskbar.</param>
+		/// <param name="hwnd">The window represented in the taskbar.</param>
 		/// <param name="windowClipRect">
 		/// A <see cref="Rectangle"/> that specifies a selection within the window's client area, relative to the upper-left corner of that
 		/// client area. To clear a clip that is already in place and return to the default display of the thumbnail, set this parameter to NULL.
