@@ -69,9 +69,9 @@ namespace Vanara.Security
 			var pUserName = new SafeCoTaskMemString(CRED_MAX_USERNAME_LENGTH);
 			var pDomainName = new SafeCoTaskMemString(CRED_MAX_USERNAME_LENGTH);
 			var pPassword = new SafeCoTaskMemString(CREDUI_MAX_PASSWORD_LENGTH);
-			var userNameSize = pUserName.CharCapacity;
-			var domainNameSize = pDomainName.CharCapacity;
-			var passwordSize = pPassword.CharCapacity;
+			var userNameSize = pUserName.Capacity;
+			var domainNameSize = pDomainName.Capacity;
+			var passwordSize = pPassword.Capacity;
 
 			if (!CredUnPackAuthenticationBuffer(decryptProtectedCredentials ? CredPackFlags.CRED_PACK_PROTECTED_CREDENTIALS : 0x0, DangerousHandle, Size,
 				(IntPtr)pUserName, ref userNameSize, (IntPtr)pDomainName, ref domainNameSize, (IntPtr)pPassword, ref passwordSize))

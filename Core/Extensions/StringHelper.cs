@@ -11,13 +11,14 @@ namespace Vanara.Extensions
 	{
 		/// <summary>Allocates a block of memory allocated from the unmanaged COM task allocator sufficient to hold the number of specified characters.</summary>
 		/// <param name="count">The number of characters, inclusive of the null terminator.</param>
+		/// <param name="memAllocator">The method used to allocate the memory.</param>
 		/// <param name="charSet">The character set.</param>
 		/// <returns>The address of the block of memory allocated.</returns>
-		public static IntPtr AllocChars(uint count, CharSet charSet = CharSet.Auto)
+		public static IntPtr AllocChars(uint count, Func<int, IntPtr> memAllocator, CharSet charSet = CharSet.Auto)
 		{
 			if (count == 0) return IntPtr.Zero;
 			var sz = GetCharSize(charSet);
-			var ptr = Marshal.AllocCoTaskMem((int)count * sz);
+			var ptr = memAllocator((int)count * sz);
 			if (count > 0)
 			{
 				if (sz == 1)
@@ -27,6 +28,12 @@ namespace Vanara.Extensions
 			}
 			return ptr;
 		}
+
+		/// <summary>Allocates a block of memory allocated from the unmanaged COM task allocator sufficient to hold the number of specified characters.</summary>
+		/// <param name="count">The number of characters, inclusive of the null terminator.</param>
+		/// <param name="charSet">The character set.</param>
+		/// <returns>The address of the block of memory allocated.</returns>
+		public static IntPtr AllocChars(uint count, CharSet charSet = CharSet.Auto) => AllocChars(count, Marshal.AllocCoTaskMem, charSet);
 
 		/// <summary>Copies the contents of a managed <see cref="SecureString"/> object to a block of memory allocated from the unmanaged COM task allocator.</summary>
 		/// <param name="s">The managed object to copy.</param>
@@ -45,10 +52,19 @@ namespace Vanara.Extensions
 		/// <param name="charSet">The character set.</param>
 		/// <param name="memAllocator">The method used to allocate the memory.</param>
 		/// <returns>The address, in unmanaged memory, where the <paramref name="s"/> parameter was copied to, or 0 if a null object was supplied.</returns>
-		public static IntPtr AllocSecureString(SecureString s, CharSet charSet, Func<int, IntPtr> memAllocator)
+		public static IntPtr AllocSecureString(SecureString s, CharSet charSet, Func<int, IntPtr> memAllocator) => AllocSecureString(s, charSet, memAllocator, out _);
+
+		/// <summary>Copies the contents of a managed <see cref="SecureString"/> object to a block of memory allocated from a supplied allocation method.</summary>
+		/// <param name="s">The managed object to copy.</param>
+		/// <param name="charSet">The character set.</param>
+		/// <param name="memAllocator">The method used to allocate the memory.</param>
+		/// <param name="allocatedBytes">Returns the number of allocated bytes for the string.</param>
+		/// <returns>The address, in unmanaged memory, where the <paramref name="s"/> parameter was copied to, or 0 if a null object was supplied.</returns>
+		public static IntPtr AllocSecureString(SecureString s, CharSet charSet, Func<int, IntPtr> memAllocator, out int allocatedBytes)
 		{
+			allocatedBytes = 0;
 			if (s == null) return IntPtr.Zero;
-			var chSz = StringHelper.GetCharSize(charSet);
+			var chSz = GetCharSize(charSet);
 			var encoding = chSz == 2 ? System.Text.Encoding.Unicode : System.Text.Encoding.ASCII;
 			var hMem = AllocSecureString(s, charSet);
 			var str = chSz == 2 ? Marshal.PtrToStringUni(hMem) : Marshal.PtrToStringAnsi(hMem);
@@ -57,6 +73,7 @@ namespace Vanara.Extensions
 			var b = encoding.GetBytes(str);
 			var p = memAllocator(b.Length);
 			Marshal.Copy(b, 0, p, b.Length);
+			allocatedBytes = b.Length;
 			return p;
 		}
 

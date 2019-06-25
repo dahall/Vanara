@@ -849,12 +849,12 @@ namespace Vanara.Windows.Shell
 					var result = new StringBuilder(512);
 					if (!SHGetPathFromIDList(PIDL, result))
 						throw new ArgumentException();
-					return new SafeCoTaskMemString(result.ToString(), CharSet.Unicode, false);
+					return new SafeCoTaskMemString(result.ToString(), CharSet.Unicode);
 				}
 
 				var parentFolder = InternalGetParent().GetIShellFolder();
 				var child = PIDL.LastId;
-				return new SafeCoTaskMemString(parentFolder.GetDisplayNameOf(child, (SHGDNF)((int)sigdnName & 0xffff)), CharSet.Unicode, false);
+				return new SafeCoTaskMemString(parentFolder.GetDisplayNameOf(child, (SHGDNF)((int)sigdnName & 0xffff)), CharSet.Unicode);
 			}
 
 			public IShellItem GetParent()
