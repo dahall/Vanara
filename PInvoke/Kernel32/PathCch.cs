@@ -333,6 +333,54 @@ namespace Vanara.PInvoke
 		public static extern HRESULT PathCchAddBackslashEx(StringBuilder pszPath, SizeT cchPath, out IntPtr ppszEnd, out SizeT pcchRemaining);
 
 		/// <summary>
+		/// <para>
+		/// Adds a backslash to the end of a string to create the correct syntax for a path. If the source path already has a trailing
+		/// backslash, no backslash will be added.
+		/// </para>
+		/// <para>
+		/// This function differs from PathCchAddBackslash in that it can return a pointer to the new end of the string and report the number
+		/// of unused characters remaining in the buffer.
+		/// </para>
+		/// <para>This function differs from PathAddBackslash in that it accepts paths with "\", "\?" and "\?\UNC" prefixes.</para>
+		/// <para>
+		/// <c>Note</c> This function, or <c>PathCchAddBackslashEx</c>, should be used in place of PathAddBackslash to prevent the
+		/// possibility of a buffer overrun.
+		/// </para>
+		/// </summary>
+		/// <param name="pszPath">
+		/// <para>
+		/// A pointer to the path string. When this function returns successfully, the buffer contains the string with the appended
+		/// backslash. This value should not be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="cchPath">
+		/// <para>The size of the buffer pointed to by pszPath, in characters.</para>
+		/// </param>
+		/// <param name="ppszEnd">
+		/// <para>
+		/// A value that, when this function returns successfully, receives the address of a pointer to the terminating null character at the
+		/// end of the string.
+		/// </para>
+		/// </param>
+		/// <param name="pcchRemaining">
+		/// <para>
+		/// A pointer to a value that, when this function returns successfully, is set to the number of unused characters in the destination
+		/// buffer, including the terminating null character.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// This function returns S_OK if the function was successful, S_FALSE if the path string already ends in a backslash, or an error
+		/// code otherwise.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchaddbackslashex HRESULT PathCchAddBackslashEx( PWSTR
+		// pszPath, SizeT cchPath, PWSTR *ppszEnd, SizeT *pcchRemaining );
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("pathcch.h", MSDNShortId = "89adf45f-f16d-49d1-9e76-b57b73b4d4c3")]
+		public static extern HRESULT PathCchAddBackslashEx(IntPtr pszPath, SizeT cchPath, out IntPtr ppszEnd, out SizeT pcchRemaining);
+
+		/// <summary>
 		/// <para>Adds a file name extension to a path string.</para>
 		/// <para>This function differs from PathAddExtension in that it accepts paths with "\", "\?" and "\?\UNC" prefixes.</para>
 		/// <para><c>Note</c> This function should be used in place of PathAddExtension to prevent the possibility of a buffer overrun.</para>
@@ -1029,6 +1077,35 @@ namespace Vanara.PInvoke
 		public static extern HRESULT PathCchFindExtension(string pszPath, SizeT cchPath, out IntPtr ppszExt);
 
 		/// <summary>
+		/// <para>
+		/// Searches a path to find its file name extension, such as ".exe" or ".ini". This function does not search for a specific
+		/// extension; it searches for the presence of any extension.
+		/// </para>
+		/// <para>This function differs from PathFindExtension in that it accepts paths with "\", "\?" and "\?\UNC" prefixes.</para>
+		/// <para><c>Note</c> This function should be used in place of PathFindExtension to prevent the possibility of a buffer overrun.</para>
+		/// </summary>
+		/// <param name="pszPath">
+		/// <para>A pointer to the path to search.</para>
+		/// </param>
+		/// <param name="cchPath">
+		/// <para>The size of the buffer pointed to by pszPath, in characters.</para>
+		/// </param>
+		/// <param name="ppszExt">
+		/// <para>
+		/// The address of a pointer that, when this function returns successfully, points to the "." character that precedes the extension
+		/// within pszPath. If no extension is found, it points to the string's terminating null character.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchfindextension HRESULT PathCchFindExtension( PCWSTR
+		// pszPath, SizeT cchPath, PCWSTR *ppszExt );
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("pathcch.h", MSDNShortId = "dac6cf02-7b53-449c-b788-4a7b6d1622ed")]
+		public static extern HRESULT PathCchFindExtension(IntPtr pszPath, SizeT cchPath, out IntPtr ppszExt);
+
+		/// <summary>
 		/// <para>Determines whether a path string refers to the root of a volume.</para>
 		/// <para>This function differs from PathIsRoot in that it accepts paths with "\", "\?" and "\?\UNC" prefixes.</para>
 		/// </summary>
@@ -1239,6 +1316,55 @@ namespace Vanara.PInvoke
 		public static extern HRESULT PathCchRemoveBackslashEx(StringBuilder pszPath, SizeT cchPath, out IntPtr ppszEnd, out SizeT pcchRemaining);
 
 		/// <summary>
+		/// <para>Removes the trailing backslash from the end of a path string.</para>
+		/// <para>
+		/// This function differs from PathCchRemoveBackslash in that it can return a pointer to the new end of the string and report the
+		/// number of unused characters remaining in the buffer.
+		/// </para>
+		/// <para>This function differs from PathRemoveBackslash in that it accepts paths with "\", "\?" and "\?\UNC" prefixes.</para>
+		/// <para>
+		/// <c>Note</c> This function, or PathCchRemoveBackslash, should be used in place of PathRemoveBackslash to prevent the possibility
+		/// of a buffer overrun.
+		/// </para>
+		/// </summary>
+		/// <param name="pszPath">
+		/// <para>
+		/// A pointer to the path string. When this function returns successfully, the string contains the path with any trailing backslash
+		/// removed. If no trailing backslash was found, the string is unchanged.
+		/// </para>
+		/// </param>
+		/// <param name="cchPath">
+		/// <para>The size of the buffer pointed to by pszPath, in characters.</para>
+		/// </param>
+		/// <param name="ppszEnd">
+		/// <para>
+		/// A value that, when this function returns successfully, receives the address of a pointer to end of the new string. If the string
+		/// is a root path such as "C:", the pointer points to the backslash; otherwise the pointer points to the string's terminating null character.
+		/// </para>
+		/// </param>
+		/// <param name="pcchRemaining">
+		/// <para>
+		/// A pointer to a value that, when this function returns successfully, receives the number of unused characters in the destination
+		/// buffer, including the terminating null character. If the string is a root path such as "C:", this count includes the backslash in
+		/// that string.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// This function returns S_OK if the function was successful, S_FALSE if the string was a root path or if no backslash was found, or
+		/// an error code otherwise.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>This function will not remove the backslash from a root path string, such as "C:".</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchremovebackslashex HRESULT PathCchRemoveBackslashEx(
+		// PWSTR pszPath, SizeT cchPath, PWSTR *ppszEnd, SizeT *pcchRemaining );
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("pathcch.h", MSDNShortId = "250c2faa-94bb-42c1-97d4-37f8f59dbde6")]
+		public static extern HRESULT PathCchRemoveBackslashEx(IntPtr pszPath, SizeT cchPath, out IntPtr ppszEnd, out SizeT pcchRemaining);
+
+		/// <summary>
 		/// <para>Removes the file name extension from a path, if one is present.</para>
 		/// <para>This function differs from PathRemoveExtension in that it accepts paths with "\", "\?" and "\?\UNC" prefixes.</para>
 		/// <para><c>Note</c> This function, should be used in place of PathRemoveExtension to prevent the possibility of a buffer overrun.</para>
@@ -1376,6 +1502,32 @@ namespace Vanara.PInvoke
 		public static extern HRESULT PathCchSkipRoot(string pszPath, out IntPtr ppszRootEnd);
 
 		/// <summary>
+		/// <para>
+		/// Retrieves a pointer to the first character in a path following the drive letter or Universal Naming Convention (UNC) server/share
+		/// path elements.
+		/// </para>
+		/// <para>This function differs from PathSkipRoot in that it accepts paths with "\", "\?" and "\?\UNC" prefixes.</para>
+		/// </summary>
+		/// <param name="pszPath">
+		/// <para>A pointer to the path string.</para>
+		/// </param>
+		/// <param name="ppszRootEnd">
+		/// <para>
+		/// The address of a pointer that, when this function returns successfully, points to the first character in a path following the
+		/// drive letter or UNC server/share path elements. If the path consists of only a root, this value will point to the string's
+		/// terminating null character.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchskiproot HRESULT PathCchSkipRoot( PCWSTR pszPath,
+		// PCWSTR *ppszRootEnd );
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("pathcch.h", MSDNShortId = "187bc49e-c5ae-42b8-acbd-a765f871d73b")]
+		public static extern HRESULT PathCchSkipRoot(IntPtr pszPath, out IntPtr ppszRootEnd);
+
+		/// <summary>
 		/// <para>Removes the "\?" prefix, if present, from a file path.</para>
 		/// </summary>
 		/// <param name="pszPath">
@@ -1465,6 +1617,29 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("pathcch.h", MSDNShortId = "3b2a4158-63ec-49eb-a031-7493d02f2caa")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PathIsUNCEx(string pszPath, ref StringBuilder ppszServer);
+		public static extern bool PathIsUNCEx(string pszPath, out IntPtr ppszServer);
+
+		/// <summary>
+		/// <para>Determines if a path string is a valid Universal Naming Convention (UNC) path, as opposed to a path based on a drive letter.</para>
+		/// <para>This function differs from PathIsUNC in that it also allows you to extract the name of the server from the path.</para>
+		/// </summary>
+		/// <param name="pszPath">
+		/// <para>A pointer to the path string.</para>
+		/// </param>
+		/// <param name="ppszServer">
+		/// <para>
+		/// A pointer to a string that, when this function returns successfully, receives the server portion of the UNC path. This value can
+		/// be <c>NULL</c> if you don't need this information.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Returns <c>TRUE</c> if the string is a valid UNC path; otherwise, <c>FALSE</c>.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathisuncex BOOL PathIsUNCEx( PCWSTR pszPath, PCWSTR
+		// *ppszServer );
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("pathcch.h", MSDNShortId = "3b2a4158-63ec-49eb-a031-7493d02f2caa")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool PathIsUNCEx(IntPtr pszPath, out IntPtr ppszServer);
 	}
 }
