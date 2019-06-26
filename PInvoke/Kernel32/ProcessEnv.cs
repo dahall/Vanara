@@ -81,9 +81,8 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the command-line string for the current process.</summary>
 		/// <returns>The return value is a pointer to the command-line string for the current process.</returns>
 		// LPTSTR WINAPI GetCommandLine(void); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683156(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683156")]
-		public static extern string GetCommandLine();
+		public static string GetCommandLine() => Marshal.PtrToStringAuto(GetCommandLineInternal());
 
 		/// <summary>Retrieves the current directory for the current process.</summary>
 		/// <param name="nBufferLength">
@@ -270,17 +269,17 @@ namespace Vanara.PInvoke
 		public static extern bool SetCurrentDirectory(string lpPathName);
 
 		/// <summary>Sets the environment strings.</summary>
-		/// <param name="NewEnvironment">
-		/// The new environment strings. List of unicode null terminated strings with a double null termination at the end.
-		/// </param>
+		/// <param name="NewEnvironment">The new environment strings as a list of strings.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("ProcessEnv.h", MSDNShortId = "")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetEnvironmentStringsW(string NewEnvironment);
+		public static bool SetEnvironmentStrings(IEnumerable<string> NewEnvironment)
+		{
+			using (var mem = SafeHGlobalHandle.CreateFromStringList(NewEnvironment, StringListPackMethod.Concatenated, CharSet.Unicode))
+				return SetEnvironmentStringsW(mem.DangerousGetHandle());
+		}
 
 		/// <summary>Sets the contents of the specified environment variable for the current process.</summary>
 		/// <param name="lpName">
@@ -354,6 +353,22 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetStdHandleEx(StdHandleType nStdHandle, HFILE hHandle, out HFILE phPrevValue);
+
+		[DllImport(Lib.Kernel32, SetLastError = false, EntryPoint = "GetCommandLine", CharSet = CharSet.Auto)]
+		private static extern IntPtr GetCommandLineInternal();
+
+		/// <summary>Sets the environment strings.</summary>
+		/// <param name="NewEnvironment">
+		/// The new environment strings. List of unicode null terminated strings with a double null termination at the end.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		[PInvokeData("ProcessEnv.h", MSDNShortId = "")]
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		private static extern bool SetEnvironmentStringsW(IntPtr NewEnvironment);
 
 		/// <summary>Represents a block of environment strings obtained by <see cref="GetEnvironmentStrings"/> and freed by <see cref="FreeEnvironmentStrings"/>.</summary>
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
