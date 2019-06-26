@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
@@ -240,29 +242,37 @@ namespace Vanara.PInvoke
 		public enum PSS_QUERY_INFORMATION_CLASS
 		{
 			/// <summary>Returns a PSS_PROCESS_INFORMATION structure, with information about the original process.</summary>
+			[CorrespondingType(typeof(PSS_PROCESS_INFORMATION), CorrepsondingAction.Get)]
 			PSS_QUERY_PROCESS_INFORMATION,
 
 			/// <summary>Returns a PSS_VA_CLONE_INFORMATION structure, with a handle to the VA clone.</summary>
+			[CorrespondingType(typeof(PSS_VA_CLONE_INFORMATION), CorrepsondingAction.Get)]
 			PSS_QUERY_VA_CLONE_INFORMATION,
 
 			/// <summary>Returns a PSS_AUXILIARY_PAGES_INFORMATION structure, which contains the count of auxiliary pages captured.</summary>
+			[CorrespondingType(typeof(PSS_AUXILIARY_PAGES_INFORMATION), CorrepsondingAction.Get)]
 			PSS_QUERY_AUXILIARY_PAGES_INFORMATION,
 
 			/// <summary>Returns a PSS_VA_SPACE_INFORMATION structure, which contains the count of regions captured.</summary>
+			[CorrespondingType(typeof(PSS_VA_SPACE_INFORMATION), CorrepsondingAction.Get)]
 			PSS_QUERY_VA_SPACE_INFORMATION,
 
 			/// <summary>Returns a PSS_HANDLE_INFORMATION structure, which contains the count of handles captured.</summary>
+			[CorrespondingType(typeof(PSS_HANDLE_INFORMATION), CorrepsondingAction.Get)]
 			PSS_QUERY_HANDLE_INFORMATION,
 
 			/// <summary>Returns a PSS_THREAD_INFORMATION structure, which contains the count of threads captured.</summary>
+			[CorrespondingType(typeof(PSS_THREAD_INFORMATION), CorrepsondingAction.Get)]
 			PSS_QUERY_THREAD_INFORMATION,
 
 			/// <summary>
 			/// Returns a PSS_HANDLE_TRACE_INFORMATION structure, which contains a handle to the handle trace section, and its size.
 			/// </summary>
+			[CorrespondingType(typeof(PSS_HANDLE_TRACE_INFORMATION), CorrepsondingAction.Get)]
 			PSS_QUERY_HANDLE_TRACE_INFORMATION,
 
 			/// <summary>Returns a PSS_PERFORMANCE_COUNTERS structure, which contains various performance counters.</summary>
+			[CorrespondingType(typeof(PSS_PERFORMANCE_COUNTERS), CorrepsondingAction.Get)]
 			PSS_QUERY_PERFORMANCE_COUNTERS,
 		}
 
@@ -296,23 +306,27 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Returns a PSS_AUXILIARY_PAGE_ENTRY structure, which contains the address, page attributes and contents of an auxiliary copied page.
 			/// </summary>
+			[CorrespondingType(typeof(PSS_AUXILIARY_PAGE_ENTRY), CorrepsondingAction.Get)]
 			PSS_WALK_AUXILIARY_PAGES,
 
 			/// <summary>
 			/// Returns a PSS_VA_SPACE_ENTRY structure, which contains the MEMORY_BASIC_INFORMATION structure for every distinct VA region.
 			/// </summary>
+			[CorrespondingType(typeof(PSS_VA_SPACE_ENTRY), CorrepsondingAction.Get)]
 			PSS_WALK_VA_SPACE,
 
 			/// <summary>
 			/// Returns a PSS_HANDLE_ENTRY structure, with information specifying the handle value, its type name, object name (if captured),
 			/// basic information (if captured), and type-specific information (if captured).
 			/// </summary>
+			[CorrespondingType(typeof(PSS_HANDLE_ENTRY), CorrepsondingAction.Get)]
 			PSS_WALK_HANDLES,
 
 			/// <summary>
 			/// Returns a PSS_THREAD_ENTRY structure, with basic information about the thread, as well as its termination state, suspend
 			/// count and Win32 start address.
 			/// </summary>
+			[CorrespondingType(typeof(PSS_THREAD_ENTRY), CorrepsondingAction.Get)]
 			PSS_WALK_THREADS,
 		}
 
@@ -340,9 +354,13 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/processsnapshot/nf-processsnapshot-psscapturesnapshot DWORD
 		// PssCaptureSnapshot( HANDLE ProcessHandle, PSS_CAPTURE_FLAGS CaptureFlags, DWORD ThreadContextFlags, HPSS *SnapshotHandle );
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "44F2CB48-A9F6-4131-B21C-9F27A27CECD5")]
-		public static extern Win32Error PssCaptureSnapshot(HPROCESS ProcessHandle, PSS_CAPTURE_FLAGS CaptureFlags, uint ThreadContextFlags, out IntPtr SnapshotHandle);
+		public static Win32Error PssCaptureSnapshot(HPROCESS ProcessHandle, PSS_CAPTURE_FLAGS CaptureFlags, uint ThreadContextFlags, out SafeHPSS SnapshotHandle)
+		{
+			var err = PssCaptureSnapshotInternal(ProcessHandle, CaptureFlags, ThreadContextFlags, out SnapshotHandle);
+			SnapshotHandle.ProcessHandle = ProcessHandle;
+			return err;
+		}
 
 		/// <summary>
 		/// <para>Duplicates a snapshot handle from one process to another.</para>
@@ -388,9 +406,13 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/processsnapshot/nf-processsnapshot-pssduplicatesnapshot
 		// DWORD PssDuplicateSnapshot( HANDLE SourceProcessHandle, HPSS SnapshotHandle, HANDLE TargetProcessHandle, HPSS
 		// *TargetSnapshotHandle, PSS_DUPLICATE_FLAGS Flags );
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "5D2751F3-E7E1-4917-8060-E2BC8A7A3DEA")]
-		public static extern Win32Error PssDuplicateSnapshot(HPROCESS SourceProcessHandle, IntPtr SnapshotHandle, HPROCESS TargetProcessHandle, out IntPtr TargetSnapshotHandle, PSS_DUPLICATE_FLAGS Flags);
+		public static Win32Error PssDuplicateSnapshot(HPROCESS SourceProcessHandle, HPSS SnapshotHandle, HPROCESS TargetProcessHandle, out SafeHPSS TargetSnapshotHandle, PSS_DUPLICATE_FLAGS Flags)
+		{
+			var err = PssDuplicateSnapshot(SourceProcessHandle, SnapshotHandle, TargetProcessHandle, out TargetSnapshotHandle, Flags);
+			TargetSnapshotHandle.ProcessHandle = TargetProcessHandle;
+			return err;
+		}
 
 		/// <summary>
 		/// <para>Frees a snapshot.</para>
@@ -444,23 +466,13 @@ namespace Vanara.PInvoke
 		// PssFreeSnapshot( HANDLE ProcessHandle, HPSS SnapshotHandle );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "5D062AE6-2F7C-4121-AB6E-9BFA06AB36C6")]
-		public static extern Win32Error PssFreeSnapshot(HPROCESS ProcessHandle, IntPtr SnapshotHandle);
+		public static extern Win32Error PssFreeSnapshot(HPROCESS ProcessHandle, HPSS SnapshotHandle);
 
-		/// <summary>
-		/// <para>Queries the snapshot.</para>
-		/// </summary>
-		/// <param name="SnapshotHandle">
-		/// <para>A handle to the snapshot to query.</para>
-		/// </param>
-		/// <param name="InformationClass">
-		/// <para>An enumerator member that selects what information to query. For more information, see PSS_QUERY_INFORMATION_CLASS.</para>
-		/// </param>
-		/// <param name="Buffer">
-		/// <para>The information that this function provides.</para>
-		/// </param>
-		/// <param name="BufferLength">
-		/// <para>The size of Buffer, in bytes.</para>
-		/// </param>
+		/// <summary>Queries the snapshot.</summary>
+		/// <param name="SnapshotHandle">A handle to the snapshot to query.</param>
+		/// <param name="InformationClass">An enumerator member that selects what information to query. For more information, see PSS_QUERY_INFORMATION_CLASS.</param>
+		/// <param name="Buffer">The information that this function provides.</param>
+		/// <param name="BufferLength">The size of Buffer, in bytes.</param>
 		/// <returns>
 		/// <para>This function returns <c>ERROR_SUCCESS</c> on success or one of the following error codes.</para>
 		/// <list type="table">
@@ -490,11 +502,27 @@ namespace Vanara.PInvoke
 		/// an error code.
 		/// </para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/processsnapshot/nf-processsnapshot-pssquerysnapshot DWORD
-		// PssQuerySnapshot( HPSS SnapshotHandle, PSS_QUERY_INFORMATION_CLASS InformationClass, void *Buffer, DWORD BufferLength );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/processsnapshot/nf-processsnapshot-pssquerysnapshot DWORD PssQuerySnapshot(
+		// HPSS SnapshotHandle, PSS_QUERY_INFORMATION_CLASS InformationClass, void *Buffer, DWORD BufferLength );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "D9580147-28ED-4FF5-B7DB-844ACB19769F")]
-		public static extern Win32Error PssQuerySnapshot(IntPtr SnapshotHandle, PSS_QUERY_INFORMATION_CLASS InformationClass, IntPtr Buffer, uint BufferLength);
+		public static extern Win32Error PssQuerySnapshot(HPSS SnapshotHandle, PSS_QUERY_INFORMATION_CLASS InformationClass, IntPtr Buffer, uint BufferLength);
+
+		/// <summary>Queries the snapshot.</summary>
+		/// <typeparam name="T">The type of the information to retrieve specified by <paramref name="InformationClass"/>.</typeparam>
+		/// <param name="SnapshotHandle">A handle to the snapshot to query.</param>
+		/// <param name="InformationClass">An enumerator member that selects what information to query. For more information, see PSS_QUERY_INFORMATION_CLASS.</param>
+		/// <returns>The information that this function provides.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">InformationClass</exception>
+		public static T PssQuerySnapshot<T>(HPSS SnapshotHandle, PSS_QUERY_INFORMATION_CLASS InformationClass) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanGet(InformationClass, typeof(T))) throw new ArgumentOutOfRangeException(nameof(InformationClass));
+			using (var mem = SafeCoTaskMemHandle.CreateFromStructure<T>())
+			{
+				PssQuerySnapshot(SnapshotHandle, InformationClass, (IntPtr)mem, (uint)mem.Size).ThrowIfFailed();
+				return mem.ToStructure<T>();
+			}
+		}
 
 		/// <summary>
 		/// <para>Creates a walk marker.</para>
@@ -538,7 +566,51 @@ namespace Vanara.PInvoke
 		// DWORD PssWalkMarkerCreate( PSS_ALLOCATOR const *Allocator, HPSSWALK *WalkMarkerHandle );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "58E2FBAF-661C-45BE-A25A-A096AF52ED3E")]
-		public static extern Win32Error PssWalkMarkerCreate(ref PSS_ALLOCATOR Allocator, out IntPtr WalkMarkerHandle);
+		public static extern Win32Error PssWalkMarkerCreate(in PSS_ALLOCATOR Allocator, out SafeHPSSWALK WalkMarkerHandle);
+
+		/// <summary>
+		/// <para>Creates a walk marker.</para>
+		/// </summary>
+		/// <param name="Allocator">
+		/// <para>
+		/// A structure that provides functions to allocate and free memory. If you provide the structure, <c>PssWalkMarkerCreate</c> uses
+		/// the functions to allocate the internal walk marker structures. Otherwise it uses the default process heap. For more information,
+		/// see PSS_ALLOCATOR.
+		/// </para>
+		/// </param>
+		/// <param name="WalkMarkerHandle">
+		/// <para>A handle to the walk marker that this function creates.</para>
+		/// </param>
+		/// <returns>
+		/// <para>This function returns <c>ERROR_SUCCESS</c> on success or the following error code.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_NOT_ENOUGH_MEMORY</term>
+		/// <term>Could not allocate memory for the walk marker.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// All error codes are defined in winerror.h. Use FormatMessage with the <c>FORMAT_MESSAGE_FROM_SYSTEM</c> flag to get a message for
+		/// an error code.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The walk marker maintains the state of a walk, and can be used to reposition or rewind the walk.</para>
+		/// <para>
+		/// The Allocator structure that provides the custom functions should remain valid for the lifetime of the walk marker. The custom
+		/// functions are called from <c>PssWalkMarkerCreate</c>, PssWalkMarkerFree and PssWalkSnapshot using the same thread that calls
+		/// <c>PssWalkMarkerCreate</c>, <c>PssWalkMarkerFree</c> and <c>PssWalkSnapshot</c>. Therefore the custom functions need not be multi-threaded.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/processsnapshot/nf-processsnapshot-psswalkmarkercreate
+		// DWORD PssWalkMarkerCreate( PSS_ALLOCATOR const *Allocator, HPSSWALK *WalkMarkerHandle );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("processsnapshot.h", MSDNShortId = "58E2FBAF-661C-45BE-A25A-A096AF52ED3E")]
+		public static extern Win32Error PssWalkMarkerCreate([Optional] IntPtr Allocator, out SafeHPSSWALK WalkMarkerHandle);
 
 		/// <summary>
 		/// <para>Frees a walk marker created by PssWalkMarkerCreate.</para>
@@ -563,7 +635,7 @@ namespace Vanara.PInvoke
 		// PssWalkMarkerFree( HPSSWALK WalkMarkerHandle );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "74158846-6A5F-4F81-B4D7-46DED1EE017C")]
-		public static extern Win32Error PssWalkMarkerFree(IntPtr WalkMarkerHandle);
+		public static extern Win32Error PssWalkMarkerFree(HPSSWALK WalkMarkerHandle);
 
 		/// <summary>
 		/// <para>Returns the current position of a walk marker.</para>
@@ -591,7 +663,7 @@ namespace Vanara.PInvoke
 		// DWORD PssWalkMarkerGetPosition( HPSSWALK WalkMarkerHandle, ULONG_PTR *Position );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "A2058E81-2B01-4436-ACC6-2A3E58BC4E27")]
-		public static extern Win32Error PssWalkMarkerGetPosition(IntPtr WalkMarkerHandle, out UIntPtr Position);
+		public static extern Win32Error PssWalkMarkerGetPosition(HPSSWALK WalkMarkerHandle, out UIntPtr Position);
 
 		/// <summary>
 		/// <para>Rewinds a walk marker back to the beginning.</para>
@@ -610,7 +682,7 @@ namespace Vanara.PInvoke
 		// DWORD PssWalkMarkerSeekToBeginning( HPSSWALK WalkMarkerHandle );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "BE0FA122-3966-4827-9DA3-A98A162EF270")]
-		public static extern Win32Error PssWalkMarkerSeekToBeginning(IntPtr WalkMarkerHandle);
+		public static extern Win32Error PssWalkMarkerSeekToBeginning(HPSSWALK WalkMarkerHandle);
 
 		/// <summary>
 		/// <para>Sets the position of a walk marker.</para>
@@ -632,7 +704,7 @@ namespace Vanara.PInvoke
 		// DWORD PssWalkMarkerSetPosition( HPSSWALK WalkMarkerHandle, ULONG_PTR Position );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "D89EA4DB-D8C6-43D1-B292-D24F1EAB2E43")]
-		public static extern Win32Error PssWalkMarkerSetPosition(IntPtr WalkMarkerHandle, UIntPtr Position);
+		public static extern Win32Error PssWalkMarkerSetPosition(HPSSWALK WalkMarkerHandle, UIntPtr Position);
 
 		/// <summary>
 		/// <para>Returns information from the current walk position and advanced the walk marker to the next position.</para>
@@ -703,7 +775,143 @@ namespace Vanara.PInvoke
 		// BufferLength );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "C6AC38B5-0A1C-44D7-A1F6-8196AE9B8FB0")]
-		public static extern Win32Error PssWalkSnapshot(IntPtr SnapshotHandle, PSS_WALK_INFORMATION_CLASS InformationClass, IntPtr WalkMarkerHandle, IntPtr Buffer, uint BufferLength);
+		public static extern Win32Error PssWalkSnapshot(HPSS SnapshotHandle, PSS_WALK_INFORMATION_CLASS InformationClass, HPSSWALK WalkMarkerHandle, IntPtr Buffer, uint BufferLength);
+
+		/// <summary>Returns information from the current walk position and advanced the walk marker to the next position.</summary>
+		/// <param name="SnapshotHandle">A handle to the snapshot.</param>
+		/// <param name="InformationClass">The type of information to return. For more information, see PSS_WALK_INFORMATION_CLASS.</param>
+		/// <param name="WalkMarkerHandle">
+		/// An optional handle to a walk marker. The walk marker indicates the walk position from which data is to be returned. <c>PssWalkSnapshot</c>
+		/// advances the walk marker to the next walk position in time order before returning to the caller.
+		/// <para>If this value is <c>NULL</c>, then a new walk marker will be temporarily created.</para>
+		/// </param>
+		/// <returns>The list of snapshot information that this function returns.</returns>
+		[PInvokeData("processsnapshot.h", MSDNShortId = "C6AC38B5-0A1C-44D7-A1F6-8196AE9B8FB0")]
+		public static IEnumerable<T> PssWalkSnapshot<T>(HPSS SnapshotHandle, PSS_WALK_INFORMATION_CLASS InformationClass, HPSSWALK WalkMarkerHandle = default) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanGet(InformationClass, typeof(T))) throw new ArgumentOutOfRangeException(nameof(InformationClass));
+			if (SnapshotHandle.IsNull) throw new ArgumentNullException(nameof(SnapshotHandle));
+			SafeHPSSWALK hWalk;
+			if (WalkMarkerHandle.IsNull)
+				PssWalkMarkerCreate(IntPtr.Zero, out hWalk).ThrowIfFailed();
+			else
+				hWalk = new SafeHPSSWALK(WalkMarkerHandle.DangerousGetHandle(), false);
+			using (hWalk)
+			using (var mem = SafeCoTaskMemHandle.CreateFromStructure<T>())
+			{
+				do
+				{
+					var err = PssWalkSnapshot(SnapshotHandle, InformationClass, hWalk, (IntPtr)mem, (uint)mem.Size);
+					if (err == Win32Error.ERROR_NO_MORE_ITEMS)
+						break;
+					else
+						err.ThrowIfFailed();
+					yield return mem.ToStructure<T>();
+				} while (true);
+			}
+		}
+
+		[DllImport(Lib.Kernel32, SetLastError = false, EntryPoint = "PssCaptureSnapshot", ExactSpelling = true)]
+		private static extern Win32Error PssCaptureSnapshotInternal(HPROCESS ProcessHandle, PSS_CAPTURE_FLAGS CaptureFlags, uint ThreadContextFlags, out SafeHPSS SnapshotHandle);
+
+		[DllImport(Lib.Kernel32, SetLastError = false, EntryPoint = "PssDuplicateSnapshot", ExactSpelling = true)]
+		private static extern Win32Error PssDuplicateSnapshotInternal(HPROCESS SourceProcessHandle, HPSS SnapshotHandle, HPROCESS TargetProcessHandle, out SafeHPSS TargetSnapshotHandle, PSS_DUPLICATE_FLAGS Flags);
+
+		/// <summary>Provides a handle to a target snapshot.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HPSS : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HPSS"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HPSS(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HPSS"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HPSS NULL => new HPSS(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HPSS"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HPSS h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPSS"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPSS(IntPtr h) => new HPSS(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HPSS h1, HPSS h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HPSS h1, HPSS h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HPSS h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a handle to a wall marker.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HPSSWALK : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HPSSWALK"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HPSSWALK(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HPSSWALK"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HPSSWALK NULL => new HPSSWALK(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HPSSWALK"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HPSSWALK h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPSSWALK"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPSSWALK(IntPtr h) => new HPSSWALK(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HPSSWALK h1, HPSSWALK h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HPSSWALK h1, HPSSWALK h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HPSSWALK h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
 
 		/// <summary>
 		/// <para>
@@ -929,14 +1137,10 @@ namespace Vanara.PInvoke
 			public uint PageSize;
 		}
 
-		/// <summary>
-		/// <para>Holds auxiliary pages information returned by PssQuerySnapshot.</para>
-		/// </summary>
+		/// <summary>Holds auxiliary pages information returned by PssQuerySnapshot.</summary>
 		/// <remarks>
-		/// <para>
 		/// PssQuerySnapshot returns a <c>PSS_AUXILIARY_PAGES_INFORMATION</c> structure when the PSS_QUERY_INFORMATION_CLASS member that the
 		/// caller provides it is <c>PSS_QUERY_AUXILIARY_PAGES_INFORMATION</c>.
-		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/processsnapshot/ns-processsnapshot-pss_auxiliary_pages_information
 		// typedef struct PSS_AUXILIARY_PAGES_INFORMATION { DWORD AuxPagesCaptured; };
@@ -1270,29 +1474,21 @@ namespace Vanara.PInvoke
 			public uint HandlesCaptured;
 		}
 
-		/// <summary>
-		/// <para>Holds handle trace information returned by PssQuerySnapshot.</para>
-		/// </summary>
+		/// <summary>Holds handle trace information returned by PssQuerySnapshot.</summary>
 		/// <remarks>
-		/// <para>
 		/// PssQuerySnapshot returns a <c>PSS_HANDLE_TRACE_INFORMATION</c> structure when the PSS_QUERY_INFORMATION_CLASS member that the
 		/// caller provides it is <c>PSS_QUERY_HANDLE_TRACE_INFORMATION</c>.
-		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/processsnapshot/ns-processsnapshot-pss_handle_trace_information
-		// typedef struct PSS_HANDLE_TRACE_INFORMATION { HANDLE SectionHandle; DWORD Size; };
+		// https://docs.microsoft.com/en-us/windows/desktop/api/processsnapshot/ns-processsnapshot-pss_handle_trace_information typedef
+		// struct { HANDLE SectionHandle; DWORD Size; } PSS_HANDLE_TRACE_INFORMATION;
 		[PInvokeData("processsnapshot.h", MSDNShortId = "0877DF1F-044C-48F2-9BCC-938EBD6D46EE")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct PSS_HANDLE_TRACE_INFORMATION
 		{
-			/// <summary>
-			/// <para>A handle to a section containing the handle trace information.</para>
-			/// </summary>
-			public IntPtr SectionHandle;
+			/// <summary>A handle to a section containing the handle trace information.</summary>
+			public HANDLE SectionHandle;
 
-			/// <summary>
-			/// <para>The size of the handle trace section, in bytes.</para>
-			/// </summary>
+			/// <summary>The size of the handle trace section, in bytes.</summary>
 			public uint Size;
 		}
 
@@ -1811,6 +2007,52 @@ namespace Vanara.PInvoke
 			/// <para>The count of VA regions captured.</para>
 			/// </summary>
 			public uint RegionCount;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPSS"/> that is disposed using <see cref="PssFreeSnapshot"/>.</summary>
+		public class SafeHPSS : SafeHANDLE
+		{
+			internal HPROCESS ProcessHandle;
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHPSS"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHPSS(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHPSS"/> class.</summary>
+			private SafeHPSS() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPSS"/> to <see cref="HPSS"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPSS(SafeHPSS h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => PssFreeSnapshot(ProcessHandle, handle).Succeeded;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPSSWALK"/> that is disposed using <see cref="PssWalkMarkerFree"/>.</summary>
+		public class SafeHPSSWALK : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHPSSWALK"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHPSSWALK(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHPSSWALK"/> class.</summary>
+			private SafeHPSSWALK() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPSSWALK"/> to <see cref="HPSSWALK"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPSSWALK(SafeHPSSWALK h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => PssWalkMarkerFree(handle).Succeeded;
 		}
 	}
 }
