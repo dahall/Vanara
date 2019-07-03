@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Authz;
@@ -80,13 +82,21 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void AuthzEnumerateSecurityEventSourcesTest()
 		{
-			var mem = new SafeNativeArray<AUTHZ_SOURCE_SCHEMA_REGISTRATION>(200);
-			var sz = (uint)mem.Size;
-			var b = AuthzEnumerateSecurityEventSources(0, (IntPtr)mem, out var len, ref sz);
-			Assert.That(b, Is.True);
-			Assert.That(sz, Is.LessThanOrEqualTo(mem.Size));
-			Assert.That(len, Is.GreaterThan(0));
-			Assert.That(() => TestContext.WriteLine(mem[0].szEventSourceName), Throws.Nothing);
+			using (var mem = new SafeNativeArray<AUTHZ_SOURCE_SCHEMA_REGISTRATION>(200))
+			{
+				var sz = (uint)mem.Size;
+				var b = AuthzEnumerateSecurityEventSources(0, (IntPtr)mem, out var len, ref sz);
+				Assert.That(b, Is.True);
+				Assert.That(sz, Is.LessThanOrEqualTo(mem.Size));
+				Assert.That(len, Is.GreaterThan(0));
+				Assert.That(() => TestContext.WriteLine(string.Join("\n", mem.Take((int)len).Select(r => r.szEventSourceName.ToString()))), Throws.Nothing);
+			}
+		}
+
+		[Test]
+		public void AuthzEnumerateSecurityEventSourcesTest2()
+		{
+			Assert.That(AuthzEnumerateSecurityEventSources(), Is.Not.Empty);
 		}
 
 		[Test]
@@ -297,13 +307,37 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void SafeAUTHZ_SOURCE_SCHEMA_REGISTRATIONTest()
+		{
+			const string eventSource = "TestEventSource";
+			var guid = Guid.NewGuid();
+			using (var srcReg = new SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION { szEventSourceName = eventSource, szEventAccessStringsFile = @"%SystemRoot%\System32\MsObjs.dll", szObjectTypeName = "Obj1" , pProviderGuid = guid })
+			{
+				var nSrc = (AUTHZ_SOURCE_SCHEMA_REGISTRATION)srcReg;
+				Assert.That(nSrc.szEventSourceName.ToString(), Is.EqualTo(eventSource));
+				Assert.That(nSrc.pProviderGuid, Is.Not.EqualTo(IntPtr.Zero));
+				Assert.That(nSrc.dwObjectTypeNameCount, Is.EqualTo(1U));
+				Assert.That(nSrc.ObjectTypeNames.szObjectTypeName.ToString(), Is.EqualTo("Obj1"));
+				Assert.That(null, Is.EqualTo((string)nSrc.szEventMessageFile));
+				using (var srcReg2 = new SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION(nSrc))
+				{
+					Assert.That(srcReg2.szEventSourceName, Is.EqualTo(eventSource));
+					Assert.That(srcReg2.pProviderGuid.HasValue, Is.True);
+					Assert.That(srcReg2.pProviderGuid.Value, Is.EqualTo(guid));
+					Assert.That(srcReg2.szObjectTypeName, Is.EqualTo("Obj1"));
+					Assert.That(srcReg2.szEventMessageFile, Is.Null);
+				}
+			}
+		}
+
+		[Test]
 		public void AuthzRegisterSecurityEventSourceTest()
 		{
 			const string eventSource = "TestEventSource";
 
 			using (new PrivBlock("SeAuditPrivilege"))
 			{
-				var srcReg = new AUTHZ_SOURCE_SCHEMA_REGISTRATION_IN { szEventSourceName = eventSource, szEventAccessStringsFile = @"%SystemRoot%\System32\MsObjs.dll" };
+				var srcReg = new SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION { szEventSourceName = eventSource, szEventAccessStringsFile = @"%SystemRoot%\System32\MsObjs.dll", szObjectTypeName = "Obj1", pProviderGuid = Guid.NewGuid() };
 				Assert.That(AuthzInstallSecurityEventSource(0, srcReg), Is.True);
 				var b = AuthzRegisterSecurityEventSource(0, eventSource, out var hEvtProv);
 				if (!b) TestContext.WriteLine($"AuthzRegisterSecurityEventSource:{Win32Error.GetLastError()}");

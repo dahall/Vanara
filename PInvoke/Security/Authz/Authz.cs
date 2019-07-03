@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -937,6 +938,25 @@ namespace Vanara.PInvoke
 		public static extern bool AuthzEnumerateSecurityEventSources([Optional] uint dwFlags, IntPtr Buffer, out uint pdwCount, ref uint pdwLength);
 
 		/// <summary>
+		/// The <c>AuthzEnumerateSecurityEventSources</c> function retrieves the registered security event sources that are not installed by default.
+		/// </summary>
+		/// <returns>An array of AUTHZ_SOURCE_SCHEMA_REGISTRATION structures that returns the registered security event sources.</returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzenumeratesecurityeventsources AUTHZAPI BOOL
+		[PInvokeData("authz.h", MSDNShortId = "2a20ccc9-f2ac-41e4-9d86-745004775e67")]
+		public static IEnumerable<SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION> AuthzEnumerateSecurityEventSources()
+		{
+			var len = 0U;
+			if (!AuthzEnumerateSecurityEventSources(0, IntPtr.Zero, out _, ref len) && len == 0)
+				Win32Error.ThrowLastError();
+			using (var mem = new SafeHGlobalHandle((int)len))
+			{
+				if (!AuthzEnumerateSecurityEventSources(0, (IntPtr)mem, out var cnt, ref len))
+					Win32Error.ThrowLastError();
+				return mem.ToEnumerable<AUTHZ_SOURCE_SCHEMA_REGISTRATION>((int)cnt).Select(r => new SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION(r)).ToArray();
+			}
+		}
+
+		/// <summary>
 		/// <para>The <c>AuthzFreeAuditEvent</c> function frees the structure allocated by the AuthzInitializeObjectAccessAuditEvent function.</para>
 		/// </summary>
 		/// <param name="hAuditEvent">
@@ -1406,7 +1426,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("authz.h", MSDNShortId = "cf79a92f-31e0-47cf-8990-4dbd46056a90")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzInitializeObjectAccessAuditEvent(AuthzAuditEventFlags Flags, [Optional] IntPtr hAuditEventType, string szOperationType, string szObjectType, 
+		public static extern bool AuthzInitializeObjectAccessAuditEvent(AuthzAuditEventFlags Flags, [Optional] IntPtr hAuditEventType, string szOperationType, string szObjectType,
 			string szObjectName, string szAdditionalInfo, out SafeAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, uint dwAdditionalParameterCount = 0, IntPtr parameters = default);
 
 		/// <summary>
@@ -1658,7 +1678,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "77cb5c6c-1634-4449-8d05-ce6357ad4e4b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzInstallSecurityEventSource([Optional] uint dwFlags, in AUTHZ_SOURCE_SCHEMA_REGISTRATION_IN pRegistration);
+		public static extern bool AuthzInstallSecurityEventSource([Optional] uint dwFlags, in AUTHZ_SOURCE_SCHEMA_REGISTRATION pRegistration);
 
 		/// <summary>
 		/// <para>The <c>AuthzModifyClaims</c> function adds, deletes, or modifies user and device claims in the Authz client context.</para>
@@ -2690,26 +2710,19 @@ namespace Vanara.PInvoke
 			/// The GUID of a migrated publisher. The value of this member is converted to a string and stored in the registry if the caller
 			/// is a migrated publisher.
 			/// </summary>
-			public IntPtr pProviderGuid;
+			public GuidPtr pProviderGuid;
 
 			/// <summary>The number of objects in the ObjectTypeNames array.</summary>
 			public uint dwObjectTypeNameCount;
 
 			/// <summary>An array of AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET structures that represents the object types for the events.</summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-			public AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET[] ObjectTypeNames;
+			public AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET ObjectTypeNames;
 		}
 
-		/// <summary>The <c>AUTHZ_SOURCE_SCHEMA_REGISTRATION</c> structure specifies information about source schema registration.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-_authz_source_schema_registration typedef struct
-		// _AUTHZ_SOURCE_SCHEMA_REGISTRATION { DWORD dwFlags; PWSTR szEventSourceName; PWSTR szEventMessageFile; PWSTR
-		// szEventSourceXmlSchemaFile; PWSTR szEventAccessStringsFile; PWSTR szExecutableImagePath; union { PVOID pReserved; GUID
-		// *pProviderGuid; } DUMMYUNIONNAME; DWORD dwObjectTypeNameCount; AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET
-		// ObjectTypeNames[ANYSIZE_ARRAY]; } AUTHZ_SOURCE_SCHEMA_REGISTRATION, *PAUTHZ_SOURCE_SCHEMA_REGISTRATION;
-		[PInvokeData("authz.h", MSDNShortId = "8b4d6e14-fb9c-428a-bd94-34eba668edc6")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct AUTHZ_SOURCE_SCHEMA_REGISTRATION_IN
+		public class SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION : IDisposable
 		{
+			private List<SafeHGlobalHandle> mem = new List<SafeHGlobalHandle>(7);
+
 			/// <summary>
 			/// <para>Flags that control the behavior of the operation. The following table shows a possible value.</para>
 			/// <list type="table">
@@ -2733,42 +2746,91 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public SOURCE_SCHEMA_REGISTRATION_FLAGS dwFlags;
+			public SOURCE_SCHEMA_REGISTRATION_FLAGS dwFlags { get; set; }
 
-			/// <summary>A pointer to a wide character string that represents the name of the event source.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string szEventSourceName;
+			/// <summary>A string that represents the name of the event source.</summary>
+			public string szEventSourceName { get; set; }
 
-			/// <summary>A pointer to a wide character string that represents the name of the resource that contains the event messages.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string szEventMessageFile;
+			/// <summary>A string that represents the name of the resource that contains the event messages.</summary>
+			public string szEventMessageFile { get; set; }
 
-			/// <summary>A pointer to a wide character string that represents the name of the XML schema file for the event source.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string szEventSourceXmlSchemaFile;
+			/// <summary>A string that represents the name of the XML schema file for the event source.</summary>
+			public string szEventSourceXmlSchemaFile { get; set; }
 
 			/// <summary>
 			/// A pointer to a wide character string that represents the name of the resource that contains the event parameter strings.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string szEventAccessStringsFile;
+			public string szEventAccessStringsFile { get; set; }
 
-			/// <summary>This member is reserved and must be set to <c>NULL</c>.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string szExecutableImagePath;
+			/// <summary>This member is reserved and must be set to <see langword="null"/>.</summary>
+			public string szExecutableImagePath { get; set; }
 
 			/// <summary>
 			/// The GUID of a migrated publisher. The value of this member is converted to a string and stored in the registry if the caller
 			/// is a migrated publisher.
 			/// </summary>
-			public IntPtr pProviderGuid;
+			public Guid? pProviderGuid { get; set; }
 
-			/// <summary>The number of objects in the ObjectTypeNames array.</summary>
-			public uint dwObjectTypeNameCount;
+			/// <summary>A pointer to a wide character string that represents the name of the object type.</summary>
+			public string szObjectTypeName { get; set; }
 
-			/// <summary>An array of AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET structures that represents the object types for the events.</summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-			public AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET[] ObjectTypeNames;
+			/// <summary>Offset of the object type name in an object types message DLL.</summary>
+			public uint dwOffset { get; set; }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION"/> class.</summary>
+			public SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION() { }
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION"/> class from its unmanaged equivalent.
+			/// </summary>
+			/// <param name="outValue">The native <see cref="AUTHZ_SOURCE_SCHEMA_REGISTRATION"/> instance.</param>
+			public SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION(AUTHZ_SOURCE_SCHEMA_REGISTRATION outValue)
+			{
+				dwFlags = outValue.dwFlags;
+				szEventSourceName = outValue.szEventSourceName;
+				szEventMessageFile = outValue.szEventMessageFile;
+				szEventSourceXmlSchemaFile = outValue.szEventSourceXmlSchemaFile;
+				szEventAccessStringsFile = outValue.szEventAccessStringsFile;
+				szExecutableImagePath = outValue.szExecutableImagePath;
+				pProviderGuid = outValue.pProviderGuid;
+				szObjectTypeName = outValue.ObjectTypeNames.szObjectTypeName;
+				dwOffset = outValue.ObjectTypeNames.dwOffset;
+			}
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION"/> to <see cref="AUTHZ_SOURCE_SCHEMA_REGISTRATION"/>.</summary>
+			/// <param name="mgd">The managed equivalent.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_SOURCE_SCHEMA_REGISTRATION(SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION mgd)
+			{
+				// Write all pointer instances to memory stream so they will be kept in memory
+				var ret = new AUTHZ_SOURCE_SCHEMA_REGISTRATION { dwFlags = mgd.dwFlags };
+				ret.szEventSourceName = SetPtr(mgd.szEventSourceName);
+				ret.szEventMessageFile = SetPtr(mgd.szEventMessageFile);
+				ret.szEventSourceXmlSchemaFile = SetPtr(mgd.szEventSourceXmlSchemaFile);
+				ret.szEventAccessStringsFile = SetPtr(mgd.szEventAccessStringsFile);
+				ret.szExecutableImagePath = SetPtr(mgd.szExecutableImagePath);
+				if (mgd.pProviderGuid.HasValue)
+				{
+					var ptr = SafeHGlobalHandle.CreateFromStructure(mgd.pProviderGuid.Value);
+					mgd.mem.Add(ptr);
+					ret.pProviderGuid = ptr.DangerousGetHandle();
+				}
+				ret.dwObjectTypeNameCount = mgd.szObjectTypeName is null ? 0 : 1U;
+				ret.ObjectTypeNames.szObjectTypeName = SetPtr(mgd.szObjectTypeName);
+				ret.ObjectTypeNames.dwOffset = mgd.dwOffset;
+
+				return ret;
+
+				IntPtr SetPtr(string value)
+				{
+					if (value is null) return IntPtr.Zero;
+					var ptr = new SafeHGlobalHandle(value);
+					mgd.mem.Add(ptr);
+					return ptr.DangerousGetHandle();
+				}
+			}
+
+			public void Dispose() { foreach (var m in mem) m.Dispose(); mem.Clear(); }
 		}
 
 		/// <summary>

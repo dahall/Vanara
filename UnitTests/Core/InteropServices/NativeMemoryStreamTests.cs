@@ -136,6 +136,43 @@ namespace Vanara.InteropServices.Tests
 		}
 
 		[Test]
+		public void MixedReadWriteTest()
+		{
+			using (var m = new SafeHGlobalHandle(512))
+			{
+				var str = "Test1";
+				var guid = Guid.NewGuid();
+				var lVal = 1208L;
+				byte b = 18;
+				using (var ms = new NativeMemoryStream(m) { CharSet = CharSet.Unicode })
+				{
+					Assert.That(() => ms.WriteReference(str), Throws.Nothing);
+					Assert.That(() => ms.Write(str), Throws.Nothing);
+					Assert.That(() => ms.WriteReference(guid), Throws.Nothing);
+					Assert.That(() => ms.Write(guid), Throws.Nothing);
+					Assert.That(() => ms.WriteReference(lVal), Throws.Nothing);
+					Assert.That(() => ms.Write(lVal), Throws.Nothing);
+					Assert.That(() => ms.WriteReference(b), Throws.Nothing);
+					Assert.That(() => ms.Write(b), Throws.Nothing);
+					Assert.That(() => ms.WriteReference(str), Throws.Nothing);
+
+					ms.Flush();
+					ms.Position = 0;
+
+					Assert.That(ms.ReadReference<string>(CharSet.Unicode), Is.EqualTo(str));
+					Assert.That(ms.Read<string>(CharSet.Unicode), Is.EqualTo(str));
+					Assert.That(ms.ReadReference<Guid>(), Is.EqualTo(guid));
+					Assert.That(ms.Read<Guid>(), Is.EqualTo(guid));
+					Assert.That(ms.ReadReference<long>(), Is.EqualTo(lVal));
+					Assert.That(ms.Read<long>(), Is.EqualTo(lVal));
+					Assert.That(ms.ReadReference<byte>(), Is.EqualTo(b));
+					Assert.That(ms.Read<byte>(), Is.EqualTo(b));
+					Assert.That(ms.ReadReference<string>(CharSet.Unicode), Is.EqualTo(str));
+				}
+			}
+		}
+
+		[Test]
 		public void PropTest()
 		{
 			using (var m = new SafeHGlobalHandle(1000))
