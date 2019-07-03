@@ -30,6 +30,22 @@ namespace Vanara.InteropServices
 		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
 		public SafeNativeArray(IntPtr ptr, int size, bool ownsHandle) : base(ptr, (uint)size, ownsHandle) { }
 
+		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
+		/// <param name="ptr">The handle.</param>
+		/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
+		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+		/// <param name="headerSize">
+		/// The number of bytes allocated in front of the array allocation.
+		/// </param>
+		/// <param name="elementCount">Sets the exact number of elements in the array.</param>
+		/// <param name="readOnly">
+		/// If set to <c>true</c> the array is read-only and will throw an exception if an attempt is made to add, insert or remove elements.
+		/// </param>
+		public SafeNativeArray(IntPtr ptr, uint size, bool ownsHandle, uint headerSize, int elementCount, bool readOnly) :
+			base(ptr, size, ownsHandle, headerSize, elementCount, readOnly)
+		{
+		}
+
 		/// <summary>Creates a new instance of the <see cref="SafeNativeArray{TElem}"/> class using a byte count.</summary>
 		/// <param name="byteCount">The number of bytes to allocate for this new array.</param>
 		public static SafeNativeArray<TElem> FromByteCount(int byteCount)
@@ -47,7 +63,7 @@ namespace Vanara.InteropServices
 		/// <summary>Gets the size of the element.</summary>
 		protected static readonly int ElemSize = Marshal.SizeOf(typeof(TElem));
 
-		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class from a copy of a managed TElem array.</summary>
+		/// <summary>Initializes a new instance of the <see cref="SafeNativeArrayBase{TElem, TMem}"/> class from a copy of a managed TElem array.</summary>
 		/// <param name="array">The array of <typeparamref name="TElem"/> with which to initialize the <see cref="SafeNativeArrayBase{TElem, TMem}"/>.</param>
 		/// <param name="headerSize">
 		/// The number of bytes to allocate in front of the array allocation. This may be used to write the element count or other values
@@ -55,7 +71,7 @@ namespace Vanara.InteropServices
 		/// </param>
 		public SafeNativeArrayBase(TElem[] array, uint headerSize = 0) : this((uint)GetRequiredSize(array?.Length ?? 0, headerSize), headerSize) => Elements = array;
 
-		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
+		/// <summary>Initializes a new instance of the <see cref="SafeNativeArrayBase{TElem, TMem}"/> class.</summary>
 		/// <param name="ptr">The handle.</param>
 		/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
@@ -64,6 +80,27 @@ namespace Vanara.InteropServices
 		/// using the <see cref="OnUpdateHeader"/> event.
 		/// </param>
 		public SafeNativeArrayBase(IntPtr ptr, uint size, bool ownsHandle = true, uint headerSize = 0) : base(ptr, (int)size, ownsHandle) { HeaderSize = headerSize; Count = GetElemCountFromBytes(size, headerSize); OnUpdateHeader(); }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeNativeArrayBase{TElem, TMem}"/> class.</summary>
+		/// <param name="ptr">The handle.</param>
+		/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
+		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+		/// <param name="headerSize">
+		/// The number of bytes to allocate in front of the array allocation. This may be used to write the element count or other values
+		/// using the <see cref="OnUpdateHeader"/> event.
+		/// </param>
+		/// <param name="elementCount">Sets the exact number of elements in the array.</param>
+		/// <param name="readOnly">
+		/// If set to <c>true</c> the array is read-only and will throw an exception if an attempt is made to add, insert or remove elements.
+		/// </param>
+		public SafeNativeArrayBase(IntPtr ptr, uint size, bool ownsHandle, uint headerSize, int elementCount, bool readOnly) :
+			base(ptr, (int)size, ownsHandle)
+		{
+			HeaderSize = headerSize;
+			Count = elementCount;
+			IsReadOnly = readOnly;
+			OnUpdateHeader();
+		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
 		/// <param name="byteCount">The number of bytes to allocate for this new array.</param>
@@ -81,7 +118,7 @@ namespace Vanara.InteropServices
 		public uint HeaderSize { get; }
 
 		/// <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</summary>
-		public bool IsReadOnly => false;
+		public bool IsReadOnly { get; } = false;
 
 		/// <summary>Gets or sets the elements.</summary>
 		/// <value>The elements of the array.</value>
@@ -90,6 +127,7 @@ namespace Vanara.InteropServices
 			get => handle.ToArray<TElem>(Count, (int)HeaderSize);
 			set
 			{
+				if (IsReadOnly) throw new InvalidOperationException("Array is read-only.");
 				var len = value?.Length ?? 0;
 				Count = len;
 				Size = GetRequiredSize(len, HeaderSize);
@@ -114,7 +152,12 @@ namespace Vanara.InteropServices
 		public TElem this[int index]
 		{
 			get => PtrOfElem(index).ToStructure<TElem>();
-			set => Marshal.StructureToPtr(value, PtrOfElem(index), false);
+			set
+			{
+				if (IsReadOnly)
+					throw new InvalidOperationException("Array is read-only.");
+				Marshal.StructureToPtr(value, PtrOfElem(index), false);
+			}
 		}
 
 		/// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
@@ -124,6 +167,8 @@ namespace Vanara.InteropServices
 		/// <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
 		public virtual void Clear()
 		{
+			if (IsReadOnly)
+				throw new InvalidOperationException("Array is read-only.");
 			Size = (int)HeaderSize;
 			Count = 0;
 			OnCountChanged();
@@ -163,6 +208,7 @@ namespace Vanara.InteropServices
 		public virtual void Insert(int index, TElem item)
 		{
 			if (index < 0 || index > Count) throw new ArgumentOutOfRangeException(nameof(index));
+			if (IsReadOnly) throw new InvalidOperationException("Array is read-only.");
 			var newSz = GetRequiredSize(++Count, HeaderSize);
 			var newPtr = mm.AllocMem(newSz);
 			var insertPt = ElemOffset(index);
@@ -196,6 +242,7 @@ namespace Vanara.InteropServices
 		/// <exception cref="ArgumentOutOfRangeException">index</exception>
 		public virtual void RemoveAt(int index)
 		{
+			if (IsReadOnly) throw new InvalidOperationException("Array is read-only.");
 			var rmvPt = ElemOffset(index);
 			Count--;
 			var newSz = GetRequiredSize(Count, HeaderSize);
