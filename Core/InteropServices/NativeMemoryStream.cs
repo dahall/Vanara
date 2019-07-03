@@ -264,6 +264,19 @@ namespace Vanara.InteropServices
 		/// <returns>An object of type <typeparamref name="T"/>.</returns>
 		public T ReadReference<T>(CharSet charSet = CharSet.Auto) => Read<IntPtr>().Convert<T>(uint.MaxValue, charSet == CharSet.Auto ? CharSet : charSet);
 
+		/// <summary>
+		/// Reads a blittable type from the current stream and advances the position within the stream by the number of bytes read.
+		/// </summary>
+		/// <typeparam name="T">The type of the object to read.</typeparam>
+		/// <returns>An object of type <typeparamref name="T"/>.</returns>
+		/// <exception cref="ArgumentException">Type to be read must be blittable. - T</exception>
+		/// <exception cref="ArgumentOutOfRangeException"/>
+		public T? ReadNullableReference<T>() where T : struct
+		{
+			var p = Read<IntPtr>();
+			return p != IntPtr.Zero ? (T?)(T)p.Convert((uint)Capacity - (uint)Position, typeof(T), CharSet.Auto) : null;
+		}
+
 		/// <summary>Sets the position within the current stream.</summary>
 		/// <param name="offset">A byte offset relative to the <paramref name="origin"/> parameter.</param>
 		/// <param name="origin">
@@ -385,9 +398,10 @@ namespace Vanara.InteropServices
 				Write(s);
 			else
 			{
+				ThrowIfDisposed();
 				var stSize = GetSize(value);
 				EnsureCapacity(stSize + Position);
-				ResetIfFlushed();
+				//ResetIfFlushed();
 				if (value is IntPtr p)
 					Marshal.WriteIntPtr(PositionPtr, p);
 				else
@@ -405,6 +419,13 @@ namespace Vanara.InteropServices
 		public void WriteReference<T>(T value) where T : unmanaged => WriteReferenceObject(value);
 
 		/// <summary>
+		/// Writes a reference to the object (memory address as IntPtr) into the stream and then appends the object to the stream when closed
+		/// or flushed.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		public void WriteReference<T>(T? value) where T : unmanaged => WriteReferenceObject(value.HasValue ? (object)value.Value : null);
+
+		/// <summary>
 		/// Writes a reference to the string (memory address as IntPtr) into the stream and then appends the string to the stream when closed
 		/// or flushed.
 		/// </summary>
@@ -417,14 +438,12 @@ namespace Vanara.InteropServices
 		{
 			if (access == FileAccess.Read) throw new NotSupportedException();
 			var sz = GetSize(value);
-			if (sz == 0)
+			if (sz > 0)
 			{
-				WriteObject(IntPtr.Zero);
-				return;
+				EnsureCapacity(sz + IntPtr.Size + Length);
+				length += sz;
+				references.Add(new Reference(Position, value));
 			}
-			EnsureCapacity(sz + IntPtr.Size + Length);
-			length += sz;
-			references.Add(new Reference(Position, value));
 			WriteObject(IntPtr.Zero);
 		}
 
