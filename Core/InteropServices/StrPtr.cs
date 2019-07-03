@@ -58,6 +58,26 @@ namespace Vanara.InteropServices
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator StrPtrAuto(IntPtr p) => new StrPtrAuto { ptr = p };
 
+		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		public override bool Equals(object obj)
+		{
+			switch (obj)
+			{
+				case string s:
+					return s.Equals(StringHelper.GetString(ptr, CharSet.Auto));
+				case IntPtr p:
+					return ptr.Equals(p);
+				default:
+					return base.Equals(obj);
+			}
+		}
+
+		/// <summary>Returns a hash code for this instance.</summary>
+		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+		public override int GetHashCode() => ptr.GetHashCode();
+
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public override string ToString() => StringHelper.GetString(ptr) ?? "null";
@@ -112,6 +132,26 @@ namespace Vanara.InteropServices
 		/// <param name="p">The pointer.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator StrPtrUni(IntPtr p) => new StrPtrUni { ptr = p };
+
+		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		public override bool Equals(object obj)
+		{
+			switch (obj)
+			{
+				case string s:
+					return s.Equals(StringHelper.GetString(ptr, CharSet.Unicode));
+				case IntPtr p:
+					return ptr.Equals(p);
+				default:
+					return base.Equals(obj);
+			}
+		}
+
+		/// <summary>Returns a hash code for this instance.</summary>
+		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+		public override int GetHashCode() => ptr.GetHashCode();
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
@@ -168,8 +208,106 @@ namespace Vanara.InteropServices
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator StrPtrAnsi(IntPtr p) => new StrPtrAnsi { ptr = p };
 
+		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		public override bool Equals(object obj)
+		{
+			switch (obj)
+			{
+				case string s:
+					return s.Equals(StringHelper.GetString(ptr, CharSet.Ansi));
+				case IntPtr p:
+					return ptr.Equals(p);
+				default:
+					return base.Equals(obj);
+			}
+		}
+
+		/// <summary>Returns a hash code for this instance.</summary>
+		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+		public override int GetHashCode() => ptr.GetHashCode();
+
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public override string ToString() => StringHelper.GetString(ptr, CharSet.Ansi) ?? "null";
+	}
+
+	/// <summary>The GuidPtr structure represents a LPGUID.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct GuidPtr
+	{
+		private IntPtr ptr;
+
+		/// <summary>Initializes a new instance of the <see cref="GuidPtr"/> struct by allocating memory with <see cref="Marshal.AllocCoTaskMem(int)"/>.</summary>
+		/// <param name="g">The guid value.</param>
+		public GuidPtr(Guid g) => ptr = g.StructureToPtr(Marshal.AllocCoTaskMem, out _);
+
+		/// <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
+		/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
+		public bool IsNull => ptr == IntPtr.Zero;
+
+		/// <summary>Gets the value of the Guid.</summary>
+		/// <value>The value pointed to by this pointer.</value>
+		public Guid? Value => IsNull ? (Guid?)null : ptr.ToStructure<Guid>();
+
+		/// <summary>Assigns a new Guid value to the pointer.</summary>
+		/// <param name="g">The guid value.</param>
+		public void Assign(Guid g)
+		{
+			if (IsNull)
+				ptr = g.StructureToPtr(Marshal.AllocCoTaskMem, out _);
+			else
+				Marshal.StructureToPtr(g, ptr, true);
+		}
+
+		/// <summary>Frees the unmanaged memory.</summary>
+		public void Free() { Marshal.FreeCoTaskMem(ptr); ptr = IntPtr.Zero; }
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="GuidPtr"/> to <see cref="System.Nullable{Guid}"/>.
+		/// </summary>
+		/// <param name="g">The pointer to a Guid.</param>
+		/// <returns>
+		/// The result of the conversion.
+		/// </returns>
+		public static implicit operator Guid?(GuidPtr g) => g.Value;
+
+		/// <summary>
+		/// Performs an explicit conversion from <see cref="GuidPtr"/> to <see cref="IntPtr"/>.
+		/// </summary>
+		/// <param name="g">The pointer to a Guid.</param>
+		/// <returns>
+		/// The result of the conversion.
+		/// </returns>
+		public static explicit operator IntPtr(GuidPtr g) => g.ptr;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="GuidPtr"/>.</summary>
+		/// <param name="p">The pointer.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator GuidPtr(IntPtr p) => new GuidPtr { ptr = p };
+
+		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		public override bool Equals(object obj)
+		{
+			switch (obj)
+			{
+				case Guid g:
+					return IsNull ? false : g.Equals(Value.Value);
+				case IntPtr p:
+					return ptr.Equals(p);
+				default:
+					return base.Equals(obj);
+			}
+		}
+
+		/// <summary>Returns a hash code for this instance.</summary>
+		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+		public override int GetHashCode() => ptr.GetHashCode();
+
+		/// <inheritdoc/>
+		public override string ToString() => Value?.ToString("B") ?? "";
 	}
 }
