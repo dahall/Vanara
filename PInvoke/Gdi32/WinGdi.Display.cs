@@ -587,23 +587,34 @@ namespace Vanara.PInvoke
 			/// <summary>The identifier of the adapter that this source or target mode information relates to.</summary>
 			public ulong adapterId;
 
-			/// <summary>
-			/// A valid DISPLAYCONFIG_TARGET_MODE structure that describes the specified target only when <c>infoType</c> is DISPLAYCONFIG_MODE_INFO_TYPE_TARGET.
-			/// </summary>
-			public DISPLAYCONFIG_TARGET_MODE targetMode;
+			/// <summary>A union.</summary>
+			public Union union;
 
-			/// <summary>
-			/// A valid DISPLAYCONFIG_SOURCE_MODE structure that describes the specified source only when <c>infoType</c> is DISPLAYCONFIG_MODE_INFO_TYPE_SOURCE.
-			/// </summary>
-			public DISPLAYCONFIG_SOURCE_MODE sourceMode;
+			/// <summary>A union.</summary>
+			[StructLayout(LayoutKind.Explicit)]
+			public struct Union
+			{
+				/// <summary>
+				/// A valid DISPLAYCONFIG_TARGET_MODE structure that describes the specified target only when <c>infoType</c> is DISPLAYCONFIG_MODE_INFO_TYPE_TARGET.
+				/// </summary>
+				[FieldOffset(0)]
+				public DISPLAYCONFIG_TARGET_MODE targetMode;
 
-			/// <summary>
-			/// <para>
-			/// A DISPLAYCONFIG_DESKTOP_IMAGE_INFO structure that describes information about the desktop image only when <c>infoType</c> is DISPLAYCONFIG_MODE_INFO_TYPE_.
-			/// </para>
-			/// <para>Supported starting in Windows 10.</para>
-			/// </summary>
-			public DISPLAYCONFIG_DESKTOP_IMAGE_INFO desktopImageInfo;
+				/// <summary>
+				/// A valid DISPLAYCONFIG_SOURCE_MODE structure that describes the specified source only when <c>infoType</c> is DISPLAYCONFIG_MODE_INFO_TYPE_SOURCE.
+				/// </summary>
+				[FieldOffset(0)]
+				public DISPLAYCONFIG_SOURCE_MODE sourceMode;
+
+				/// <summary>
+				/// <para>
+				/// A DISPLAYCONFIG_DESKTOP_IMAGE_INFO structure that describes information about the desktop image only when <c>infoType</c> is DISPLAYCONFIG_MODE_INFO_TYPE_.
+				/// </para>
+				/// <para>Supported starting in Windows 10.</para>
+				/// </summary>
+				[FieldOffset(0)]
+				public DISPLAYCONFIG_DESKTOP_IMAGE_INFO desktopImageInfo;
+			}
 		}
 
 		/// <summary>The DISPLAYCONFIG_PATH_INFO structure is used to describe a single path from a target to a source.</summary>
