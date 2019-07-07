@@ -569,7 +569,7 @@ namespace Vanara.PInvoke
 		// DISPLAYCONFIG_MODE_INFO { DISPLAYCONFIG_MODE_INFO_TYPE infoType; UINT32 id; LUID adapterId; union { DISPLAYCONFIG_TARGET_MODE
 		// targetMode; DISPLAYCONFIG_SOURCE_MODE sourceMode; DISPLAYCONFIG_DESKTOP_IMAGE_INFO desktopImageInfo; } DUMMYUNIONNAME; } DISPLAYCONFIG_MODE_INFO;
 		[PInvokeData("wingdi.h", MSDNShortId = "39ffe49b-96d3-4d8b-94a7-01c388448b82")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 4)]
+		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Auto, Pack = 4)]
 		public struct DISPLAYCONFIG_MODE_INFO
 		{
 			/// <summary>
@@ -579,22 +579,27 @@ namespace Vanara.PInvoke
 			/// DISPLAYCONFIG_MODE_INFO_TYPE_SOURCE, the sourceMode parameter value contains a valid DISPLAYCONFIG_SOURCE_MODE structure
 			/// describing the specified source.
 			/// </summary>
+			[FieldOffset(0)]
 			public DISPLAYCONFIG_MODE_INFO_TYPE infoType;
 
 			/// <summary>The source or target identifier on the specified adapter that this path relates to.</summary>
+			[FieldOffset(4)]
 			public uint id;
 
 			/// <summary>The identifier of the adapter that this source or target mode information relates to.</summary>
+			[FieldOffset(8)]
 			public ulong adapterId;
 
 			/// <summary>
 			/// A valid DISPLAYCONFIG_TARGET_MODE structure that describes the specified target only when <c>infoType</c> is DISPLAYCONFIG_MODE_INFO_TYPE_TARGET.
 			/// </summary>
+			[FieldOffset(16)]
 			public DISPLAYCONFIG_TARGET_MODE targetMode;
 
 			/// <summary>
 			/// A valid DISPLAYCONFIG_SOURCE_MODE structure that describes the specified source only when <c>infoType</c> is DISPLAYCONFIG_MODE_INFO_TYPE_SOURCE.
 			/// </summary>
+			[FieldOffset(16)]
 			public DISPLAYCONFIG_SOURCE_MODE sourceMode;
 
 			/// <summary>
@@ -603,6 +608,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>Supported starting in Windows 10.</para>
 			/// </summary>
+			[FieldOffset(16)]
 			public DISPLAYCONFIG_DESKTOP_IMAGE_INFO desktopImageInfo;
 		}
 
