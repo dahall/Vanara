@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 
 namespace Vanara.InteropServices
 {
 	/// <summary>The StrPtr structure represents a LPTSTR.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
 	public struct StrPtrAuto
 	{
 		private IntPtr ptr;
@@ -84,7 +85,7 @@ namespace Vanara.InteropServices
 	}
 
 	/// <summary>The StrPtr structure represents a LPWSTR.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
 	public struct StrPtrUni
 	{
 		private IntPtr ptr;
@@ -159,7 +160,7 @@ namespace Vanara.InteropServices
 	}
 
 	/// <summary>The StrPtr structure represents a LPWSTR.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
 	public struct StrPtrAnsi
 	{
 		private IntPtr ptr;
@@ -234,7 +235,7 @@ namespace Vanara.InteropServices
 	}
 
 	/// <summary>The GuidPtr structure represents a LPGUID.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
 	public struct GuidPtr
 	{
 		private IntPtr ptr;
