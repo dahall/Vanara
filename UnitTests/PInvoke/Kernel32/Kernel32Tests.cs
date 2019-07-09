@@ -33,17 +33,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void CreateProcessTest()
-		{
-			var res = CreateProcess(null, new StringBuilder("notepad.exe"), default, default, false, 0, default, null, STARTUPINFO.Default, out var pi);
-			if (!res) TestContext.WriteLine(Win32Error.GetLastError());
-			Assert.That(pi.hProcess.IsInvalid, Is.False);
-			Assert.That(pi.hThread.IsInvalid, Is.False);
-			Assert.That(pi.dwProcessId, Is.GreaterThan(0));
-			Assert.That(pi.dwThreadId, Is.GreaterThan(0));
-		}
-
-		[Test]
 		public void CreateHardLinkTest()
 		{
 			var link = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
@@ -96,27 +85,6 @@ namespace Vanara.PInvoke.Tests
 			sz = 0;
 			err = GetCompressedFileSize(@"C:\NoFile.txt", out sz);
 			Assert.That(err == Win32Error.ERROR_FILE_NOT_FOUND);
-		}
-
-		[Test]
-		public void GetCurrentProcessTest()
-		{
-			var h = GetCurrentProcess();
-			Assert.That(h, Is.EqualTo((HPROCESS)new IntPtr(-1)));
-		}
-
-		[Test]
-		public void GetCurrentThreadTest()
-		{
-			var h = GetCurrentThread();
-			Assert.That(h, Is.EqualTo((HTHREAD)new IntPtr(-2)));
-		}
-
-		[Test]
-		public void GetCurrentThreadIdTest()
-		{
-			var i = GetCurrentThreadId();
-			Assert.That(i, Is.Not.EqualTo(0));
 		}
 
 		[Test]

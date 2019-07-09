@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -13,102 +15,7 @@ namespace Vanara.PInvoke
 		public const uint TLS_OUT_OF_INDEXES = 0xFFFFFFFF;
 
 		/// <summary>The maximum processors.</summary>
-		public static readonly uint MAXIMUM_PROCESSORS = (uint)IntPtr.Size * 8U;
-
-		/// <summary>Undocumented.</summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_ALL_APPLICATION_PACKAGES_POLICY = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeAllApplicationPackagesPolicy, false, true, false);
-
-		/// <summary>
-		/// The lpValue parameter is a pointer to a DWORD or DWORD64 value that specifies the child process policy. THe policy specifies
-		/// whether to allow a child process to be created.For information on the possible values for the DWORD or DWORD64 to which lpValue
-		/// points, see Remarks.
-		/// </summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_CHILD_PROCESS_POLICY = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeChildProcessPolicy, false, true, false);
-
-		/// <summary>
-		/// This attribute is relevant only to win32 applications that have been converted to UWP packages by using the Desktop Bridge. The
-		/// lpValue parameter is a pointer to a DWORD value that specifies the desktop app policy. The policy specifies whether descendant
-		/// processes should continue to run in the desktop environment.For information about the possible values for the DWORD to which
-		/// lpValue points, see Remarks.
-		/// </summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_DESKTOP_APP_POLICY = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeDesktopAppPolicy, false, true, false);
-
-		/// <summary>
-		/// The lpValue parameter is a pointer to a GROUP_AFFINITY structure that specifies the processor group affinity for the new
-		/// thread.Windows Server 2008 and Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.
-		/// </summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_GROUP_AFFINITY = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeGroupAffinity, true, true, false);
-
-		/// <summary>
-		/// The lpValue parameter is a pointer to a list of handles to be inherited by the child process.These handles must be created as
-		/// inheritable handles and must not include pseudo handles such as those returned by the GetCurrentProcess or GetCurrentThread function.
-		/// </summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_HANDLE_LIST = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeHandleList, false, true, false);
-
-		/// <summary>
-		/// The lpValue parameter is a pointer to a PROCESSOR_NUMBER structure that specifies the ideal processor for the new thread.Windows
-		/// Server 2008 and Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.
-		/// </summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_IDEAL_PROCESSOR = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeIdealProcessor, true, true, false);
-
-		/// <summary>Undocumented.</summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_JOB_LIST = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeJobList, false, true, false);
-
-		/// <summary>
-		/// The lpValue parameter is a pointer to a DWORD or DWORD64 that specifies the exploit mitigation policy for the child process.
-		/// Starting in Windows 10, version 1703, this parameter can also be a pointer to a two-element DWORD64 array.The specified policy
-		/// overrides the policies set for the application and the system and cannot be changed after the child process starts running.
-		/// Windows Server 2008 and Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.The DWORD or
-		/// DWORD64 pointed to by lpValue can be one or more of the values listed in the remarks.
-		/// </summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeMitigationPolicy, false, true, false);
-
-		/// <summary>
-		/// The lpValue parameter is a pointer to a handle to a process to use instead of the calling process as the parent for the process
-		/// being created. The process to use must have the PROCESS_CREATE_PROCESS access right.Attributes inherited from the specified
-		/// process include handles, the device map, processor affinity, priority, quotas, the process token, and job object. (Note that some
-		/// attributes such as the debug port will come from the creating process, not the process specified by this handle.)
-		/// </summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_PARENT_PROCESS = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeParentProcess, false, true, false);
-
-		/// <summary>
-		/// The lpValue parameter is a pointer to the node number of the preferred NUMA node for the new process.Windows Server 2008 and
-		/// Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.
-		/// </summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_PREFERRED_NODE = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributePreferredNode, false, true, false);
-
-		/// <summary>
-		/// The lpValue parameter is a pointer to a DWORD value of PROTECTION_LEVEL_SAME. This specifies the protection level of the child
-		/// process to be the same as the protection level of its parent process.
-		/// </summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_PROTECTION_LEVEL = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeProtectionLevel, false, true, false);
-
-		/// <summary>
-		/// The lpValue parameter is a pointer to a SECURITY_CAPABILITIES structure that defines the security capabilities of an app
-		/// container. If this attribute is set the new process will be created as an AppContainer process.Windows 7, Windows Server 2008 R2,
-		/// Windows Server 2008 and Windows Vista: This value is not supported until Windows 8 and Windows Server 2012.
-		/// </summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeSecurityCapabilities, false, true, false);
-
-		/// <summary>
-		/// The lpValue parameter is a pointer to a UMS_CREATE_THREAD_ATTRIBUTES structure that specifies a user-mode scheduling (UMS) thread
-		/// context and a UMS completion list to associate with the thread. After the UMS thread is created, the system queues it to the
-		/// specified completion list. The UMS thread runs only when an application's UMS scheduler retrieves the UMS thread from the
-		/// completion list and selects it to run. For more information, see User-Mode Scheduling.Windows Server 2008 and Windows Vista: This
-		/// value is not supported until Windows 7 and Windows Server 2008 R2.
-		/// </summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_UMS_THREAD = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeUmsThread, true, true, false);
-
-		/// <summary>Undocumented.</summary>
-		public static readonly UIntPtr PROC_THREAD_ATTRIBUTE_WIN32K_FILTER = ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM.ProcThreadAttributeWin32kFilter, false, true, false);
-
-		private const uint PROC_THREAD_ATTRIBUTE_ADDITIVE = 0x00040000;
-
-		private const uint PROC_THREAD_ATTRIBUTE_INPUT = 0x00020000;
-
-		private const uint PROC_THREAD_ATTRIBUTE_NUMBER = 0x0000FFFF;
-
-		private const uint PROC_THREAD_ATTRIBUTE_THREAD = 0x00010000;
+		public static readonly uint MAXIMUM_PROCESSORS = Is64bitOS() ? 64U : 32U;
 
 		/// <summary>
 		/// An application-defined completion routine. Specify this address when calling the QueueUserAPC function. The PAPCFUNC type defines
@@ -116,7 +23,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <param name="dwParam">The data passed to the function using the dwData parameter of the QueueUserAPC function.</param>
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
-		public delegate void PAPCFUNC(UIntPtr dwParam);
+		public delegate void PAPCFUNC(IntPtr dwParam);
 
 		/// <summary>Represents the type of information in the <c>SYSTEM_CPU_SET_INFORMATION</c> structure.</summary>
 		// typedef enum _CPU_SET_INFORMATION_TYPE { CpuSetInformation} CPU_SET_INFORMATION_TYPE, *PCPU_SET_INFORMATION_TYPE; https://msdn.microsoft.com/en-us/library/windows/desktop/mt186423(v=vs.85).aspx
@@ -695,6 +602,7 @@ namespace Vanara.PInvoke
 			/// without querying the operating system for mitigation options by combining bitwise with the mask to exclude all non-supported
 			/// bits at once.
 			/// </summary>
+			[CorrespondingType(typeof(ulong[]))]
 			ProcessMitigationOptionsMask,
 
 			/// <summary>
@@ -750,6 +658,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>Undocumented.</summary>
 			AuditDisallowWin32kSystemCalls = 1 << 1,
+		}
+
+		/// <summary>Enables the caller to take control of the power throttling mechanism.</summary>
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "394B6509-849C-4B4C-9A46-AF5011A03585")]
+		[Flags]
+		public enum PROCESS_POWER_THROTTLING_MASK
+		{
+			/// <summary>Manages the execution speed of the process.</summary>
+			PROCESS_POWER_THROTTLING_EXECUTION_SPEED = 1
 		}
 
 		[Flags]
@@ -1064,6 +981,7 @@ namespace Vanara.PInvoke
 		public enum THREAD_INFORMATION_CLASS
 		{
 			/// <summary>The thread memory priority</summary>
+			[CorrespondingType(typeof(MEMORY_PRIORITY_INFORMATION), CorrepsondingAction.GetSet)]
 			ThreadMemoryPriority,
 
 			/// <summary>The thread absolute cpu priority</summary>
@@ -1073,10 +991,8 @@ namespace Vanara.PInvoke
 			ThreadDynamicCodePolicy,
 
 			/// <summary>The thread power throttling</summary>
+			[CorrespondingType(typeof(THREAD_POWER_THROTTLING_STATE), CorrepsondingAction.Set)] // TODO: Figure out why Get doesn't work
 			ThreadPowerThrottling,
-
-			/// <summary>The thread information class maximum</summary>
-			ThreadInformationClassMax
 		}
 
 		/// <summary>The thread's priority level.</summary>
@@ -1135,25 +1051,6 @@ namespace Vanara.PInvoke
 			THREAD_QUERY_LIMITED_INFORMATION = 0x0800,
 			THREAD_RESUME = 0x1000,
 			THREAD_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | ACCESS_MASK.SYNCHRONIZE | 0xFFFF
-		}
-
-		private enum PROC_THREAD_ATTRIBUTE_NUM : uint
-		{
-			ProcThreadAttributeParentProcess = 0,
-			ProcThreadAttributeHandleList = 2,
-			ProcThreadAttributeGroupAffinity = 3,
-			ProcThreadAttributePreferredNode = 4,
-			ProcThreadAttributeIdealProcessor = 5,
-			ProcThreadAttributeUmsThread = 6,
-			ProcThreadAttributeMitigationPolicy = 7,
-			ProcThreadAttributeSecurityCapabilities = 9,
-			ProcThreadAttributeProtectionLevel = 11,
-			ProcThreadAttributeJobList = 13,
-			ProcThreadAttributeChildProcessPolicy = 14,
-			ProcThreadAttributeAllApplicationPackagesPolicy = 15,
-			ProcThreadAttributeWin32kFilter = 16,
-			ProcThreadAttributeSafeOpenPromptOriginClaim = 17,
-			ProcThreadAttributeDesktopAppPolicy = 18,
 		}
 
 		/// <summary>
@@ -1335,6 +1232,8 @@ namespace Vanara.PInvoke
 		{
 			using (var mEnv = lpEnvironment is null ? SafeHGlobalHandle.Null : SafeHGlobalHandle.CreateFromStringList(lpEnvironment))
 			{
+				if (lpEnvironment != null && StringHelper.GetCharSize() == 2)
+					dwCreationFlags |= CREATE_PROCESS.CREATE_UNICODE_ENVIRONMENT;
 				var ret = CreateProcess(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, (IntPtr)mEnv,
 					lpCurrentDirectory, lpStartupInfo, out var pi);
 				lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
@@ -1356,12 +1255,12 @@ namespace Vanara.PInvoke
 		/// character. The module name portion of lpCommandLine is limited to <c>MAX_PATH</c> characters.
 		/// </para>
 		/// <para>
-		/// The first white space–delimited token of the command line specifies the module name. If you are
-		/// using a long file name that contains a space, use quoted strings to indicate where the file name ends and the arguments begin
-		/// (see the explanation for the lpApplicationName parameter). If the file name does not contain an extension, .exe is appended.
-		/// Therefore, if the file name extension is .com, this parameter must include the .com extension. If the file name ends in a period
-		/// (.) with no extension, or if the file name contains a path, .exe is not appended. If the file name does not contain a directory
-		/// path, the system searches for the executable file in the following sequence:
+		/// The first white space–delimited token of the command line specifies the module name. If you are using a long file name that
+		/// contains a space, use quoted strings to indicate where the file name ends and the arguments begin (see the explanation for the
+		/// lpApplicationName parameter). If the file name does not contain an extension, .exe is appended. Therefore, if the file name
+		/// extension is .com, this parameter must include the .com extension. If the file name ends in a period (.) with no extension, or if
+		/// the file name contains a path, .exe is not appended. If the file name does not contain a directory path, the system searches for
+		/// the executable file in the following sequence:
 		/// </para>
 		/// </param>
 		/// <returns>A handle to the created process.</returns>
@@ -1555,6 +1454,8 @@ namespace Vanara.PInvoke
 		{
 			using (var mEnv = lpEnvironment is null ? SafeHGlobalHandle.Null : SafeHGlobalHandle.CreateFromStringList(lpEnvironment))
 			{
+				if (lpEnvironment != null && StringHelper.GetCharSize() == 2)
+					dwCreationFlags |= CREATE_PROCESS.CREATE_UNICODE_ENVIRONMENT;
 				var ret = CreateProcess(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, (IntPtr)mEnv,
 					lpCurrentDirectory, lpStartupInfo, out var pi);
 				lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
@@ -1563,422 +1464,85 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// <para>Creates a thread that runs in the virtual address space of another process.</para>
 		/// <para>
-		/// Creates a new process and its primary thread. The new process runs in the security context of the user represented by the
-		/// specified token.
-		/// </para>
-		/// <para>
-		/// Typically, the process that calls the <c>CreateProcessAsUser</c> function must have the <c>SE_INCREASE_QUOTA_NAME</c> privilege
-		/// and may require the <c>SE_ASSIGNPRIMARYTOKEN_NAME</c> privilege if the token is not assignable. If this function fails with
-		/// <c>ERROR_PRIVILEGE_NOT_HELD</c> (1314), use the <c>CreateProcessWithLogonW</c> function instead. <c>CreateProcessWithLogonW</c>
-		/// requires no special privileges, but the specified user account must be allowed to log on interactively. Generally, it is best to
-		/// use <c>CreateProcessWithLogonW</c> to create a process with alternate credentials.
+		/// Use the <c>CreateRemoteThreadEx</c> function to create a thread that runs in the virtual address space of another process and
+		/// optionally specify extended attributes.
 		/// </para>
 		/// </summary>
-		/// <param name="hToken">
-		/// <para>
-		/// A handle to the primary token that represents a user. The handle must have the <c>TOKEN_QUERY</c>, <c>TOKEN_DUPLICATE</c>, and
-		/// <c>TOKEN_ASSIGN_PRIMARY</c> access rights. For more information, see <c>Access Rights for Access-Token Objects</c>. The user
-		/// represented by the token must have read and execute access to the application specified by the lpApplicationName or the
-		/// lpCommandLine parameter.
-		/// </para>
-		/// <para>
-		/// To get a primary token that represents the specified user, call the <c>LogonUser</c> function. Alternatively, you can call the
-		/// <c>DuplicateTokenEx</c> function to convert an impersonation token into a primary token. This allows a server application that is
-		/// impersonating a client to create a process that has the security context of the client.
-		/// </para>
-		/// <para>
-		/// If hToken is a restricted version of the caller's primary token, the <c>SE_ASSIGNPRIMARYTOKEN_NAME</c> privilege is not required.
-		/// If the necessary privileges are not already enabled, <c>CreateProcessAsUser</c> enables them for the duration of the call. For
-		/// more information, see Running with Special Privileges.
-		/// </para>
-		/// <para>
-		/// <c>Terminal Services:</c> The process is run in the session specified in the token. By default, this is the same session that
-		/// called <c>LogonUser</c>. To change the session, use the <c>SetTokenInformation</c> function.
-		/// </para>
-		/// </param>
-		/// <param name="lpApplicationName">
-		/// <para>
-		/// The name of the module to be executed. This module can be a Windows-based application. It can be some other type of module (for
-		/// example, MS-DOS or OS/2) if the appropriate subsystem is available on the local computer.
-		/// </para>
-		/// <para>
-		/// The string can specify the full path and file name of the module to execute or it can specify a partial name. In the case of a
-		/// partial name, the function uses the current drive and current directory to complete the specification. The function will not use
-		/// the search path. This parameter must include the file name extension; no default extension is assumed.
-		/// </para>
-		/// <para>
-		/// The lpApplicationName parameter can be <c>NULL</c>. In that case, the module name must be the first white space–delimited token
-		/// in the lpCommandLine string. If you are using a long file name that contains a space, use quoted strings to indicate where the
-		/// file name ends and the arguments begin; otherwise, the file name is ambiguous. For example, consider the string "c:\program
-		/// files\sub dir\program name". This string can be interpreted in a number of ways. The system tries to interpret the possibilities
-		/// in the following order:
-		/// </para>
-		/// <para>
-		/// If the executable module is a 16-bit application, lpApplicationName should be <c>NULL</c>, and the string pointed to by
-		/// lpCommandLine should specify the executable module as well as its arguments. By default, all 16-bit Windows-based applications
-		/// created by <c>CreateProcessAsUser</c> are run in a separate VDM (equivalent to <c>CREATE_SEPARATE_WOW_VDM</c> in <c>CreateProcess</c>).
-		/// </para>
-		/// </param>
-		/// <param name="lpCommandLine">
-		/// <para>
-		/// The command line to be executed. The maximum length of this string is 32K characters. If lpApplicationName is <c>NULL</c>, the
-		/// module name portion of lpCommandLine is limited to <c>MAX_PATH</c> characters.
-		/// </para>
-		/// <para>
-		/// The Unicode version of this function, <c>CreateProcessAsUserW</c>, can modify the contents of this string. Therefore, this
-		/// parameter cannot be a pointer to read-only memory (such as a <c>const</c> variable or a literal string). If this parameter is a
-		/// constant string, the function may cause an access violation.
-		/// </para>
-		/// <para>
-		/// The lpCommandLine parameter can be <c>NULL</c>. In that case, the function uses the string pointed to by lpApplicationName as the
-		/// command line.
-		/// </para>
-		/// <para>
-		/// If both lpApplicationName and lpCommandLine are non- <c>NULL</c>, *lpApplicationName specifies the module to execute, and
-		/// *lpCommandLine specifies the command line. The new process can use <c>GetCommandLine</c> to retrieve the entire command line.
-		/// Console processes written in C can use the argc and argv arguments to parse the command line. Because argv[0] is the module name,
-		/// C programmers generally repeat the module name as the first token in the command line.
-		/// </para>
-		/// <para>
-		/// If lpApplicationName is <c>NULL</c>, the first white space–delimited token of the command line specifies the module name. If you
-		/// are using a long file name that contains a space, use quoted strings to indicate where the file name ends and the arguments begin
-		/// (see the explanation for the lpApplicationName parameter). If the file name does not contain an extension, .exe is appended.
-		/// Therefore, if the file name extension is .com, this parameter must include the .com extension. If the file name ends in a period
-		/// (.) with no extension, or if the file name contains a path, .exe is not appended. If the file name does not contain a directory
-		/// path, the system searches for the executable file in the following sequence:
-		/// </para>
-		/// <para>
-		/// The system adds a null character to the command line string to separate the file name from the arguments. This divides the
-		/// original string into two strings for internal processing.
-		/// </para>
-		/// </param>
-		/// <param name="lpProcessAttributes">
-		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new process object and
-		/// determines whether child processes can inherit the returned handle to the process. If lpProcessAttributes is <c>NULL</c> or
-		/// <c>lpSecurityDescriptor</c> is <c>NULL</c>, the process gets a default security descriptor and the handle cannot be inherited.
-		/// The default security descriptor is that of the user referenced in the hToken parameter. This security descriptor may not allow
-		/// access for the caller, in which case the process may not be opened again after it is run. The process handle is valid and will
-		/// continue to have full access rights.
+		/// <param name="hProcess">
+		/// A handle to the process in which the thread is to be created. The handle must have the <c>PROCESS_CREATE_THREAD</c>,
+		/// <c>PROCESS_QUERY_INFORMATION</c>, <c>PROCESS_VM_OPERATION</c>, <c>PROCESS_VM_WRITE</c>, and <c>PROCESS_VM_READ</c> access rights,
+		/// and may fail without these rights on certain platforms. For more information, see Process Security and Access Rights.
 		/// </param>
 		/// <param name="lpThreadAttributes">
-		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new thread object and determines
-		/// whether child processes can inherit the returned handle to the thread. If lpThreadAttributes is <c>NULL</c> or
-		/// <c>lpSecurityDescriptor</c> is <c>NULL</c>, the thread gets a default security descriptor and the handle cannot be inherited. The
-		/// default security descriptor is that of the user referenced in the hToken parameter. This security descriptor may not allow access
-		/// for the caller.
-		/// </param>
-		/// <param name="bInheritHandles">
 		/// <para>
-		/// If this parameter is <c>TRUE</c>, each inheritable handle in the calling process is inherited by the new process. If the
-		/// parameter is <c>FALSE</c>, the handles are not inherited. Note that inherited handles have the same value and access rights as
-		/// the original handles.
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new thread and determines
+		/// whether child processes can inherit the returned handle. If lpThreadAttributes is NULL, the thread gets a default security
+		/// descriptor and the handle cannot be inherited. The access control lists (ACL) in the default security descriptor for a thread
+		/// come from the primary token of the creator.
 		/// </para>
 		/// <para>
-		/// <c>Terminal Services:</c> You cannot inherit handles across sessions. Additionally, if this parameter is <c>TRUE</c>, you must
-		/// create the process in the same session as the caller.
-		/// </para>
-		/// <para>
-		/// <c>Protected Process Light (PPL) processes:</c> The generic handle inheritance is blocked when a PPL process creates a non-PPL
-		/// process since PROCESS_DUP_HANDLE is not allowed from a non-PPL process to a PPL process. See Process Security and Access Rights
+		/// <c>Windows XP:</c> The ACLs in the default security descriptor for a thread come from the primary or impersonation token of the
+		/// creator. This behavior changed with Windows XP with SP2 and Windows Server 2003.
 		/// </para>
 		/// </param>
+		/// <param name="dwStackSize">
+		/// The initial size of the stack, in bytes. The system rounds this value to the nearest page. If this parameter is 0 (zero), the new
+		/// thread uses the default size for the executable. For more information, see Thread Stack Size.
+		/// </param>
+		/// <param name="lpStartAddress">
+		/// A pointer to the application-defined function of type <c>LPTHREAD_START_ROUTINE</c> to be executed by the thread and represents
+		/// the starting address of the thread in the remote process. The function must exist in the remote process. For more information,
+		/// see <c>ThreadProc</c>.
+		/// </param>
+		/// <param name="lpParameter">A pointer to a variable to be passed to the thread function.</param>
 		/// <param name="dwCreationFlags">
+		/// <para>The flags that control the creation of the thread.</para>
 		/// <para>
-		/// The flags that control the priority class and the creation of the process. For a list of values, see Process Creation Flags.
-		/// </para>
-		/// <para>
-		/// This parameter also controls the new process's priority class, which is used to determine the scheduling priorities of the
-		/// process's threads. For a list of values, see <c>GetPriorityClass</c>. If none of the priority class flags is specified, the
-		/// priority class defaults to <c>NORMAL_PRIORITY_CLASS</c> unless the priority class of the creating process is
-		/// <c>IDLE_PRIORITY_CLASS</c> or <c>BELOW_NORMAL_PRIORITY_CLASS</c>. In this case, the child process receives the default priority
-		/// class of the calling process.
-		/// </para>
-		/// </param>
-		/// <param name="lpEnvironment">
-		/// <para>
-		/// A pointer to an environment block for the new process. If this parameter is <c>NULL</c>, the new process uses the environment of
-		/// the calling process.
-		/// </para>
-		/// <para>An environment block consists of a null-terminated block of null-terminated strings. Each string is in the following form:</para>
-		/// <para>name=value\0</para>
-		/// <para>Because the equal sign is used as a separator, it must not be used in the name of an environment variable.</para>
-		/// <para>
-		/// An environment block can contain either Unicode or ANSI characters. If the environment block pointed to by lpEnvironment contains
-		/// Unicode characters, be sure that dwCreationFlags includes <c>CREATE_UNICODE_ENVIRONMENT</c>. If this parameter is <c>NULL</c> and
-		/// the environment block of the parent process contains Unicode characters, you must also ensure that dwCreationFlags includes <c>CREATE_UNICODE_ENVIRONMENT</c>.
-		/// </para>
-		/// <para>
-		/// The ANSI version of this function, <c>CreateProcessAsUserA</c> fails if the total size of the environment block for the process
-		/// exceeds 32,767 characters.
-		/// </para>
-		/// <para>
-		/// Note that an ANSI environment block is terminated by two zero bytes: one for the last string, one more to terminate the block. A
-		/// Unicode environment block is terminated by four zero bytes: two for the last string, two more to terminate the block.
-		/// </para>
-		/// <para>
-		/// <c>Windows Server 2003 and Windows XP:</c> If the size of the combined user and system environment variable exceeds 8192 bytes,
-		/// the process created by <c>CreateProcessAsUser</c> no longer runs with the environment block passed to the function by the parent
-		/// process. Instead, the child process runs with the environment block returned by the <c>CreateEnvironmentBlock</c> function.
-		/// </para>
-		/// <para>To retrieve a copy of the environment block for a given user, use the <c>CreateEnvironmentBlock</c> function.</para>
-		/// </param>
-		/// <param name="lpCurrentDirectory">
-		/// <para>The full path to the current directory for the process. The string can also specify a UNC path.</para>
-		/// <para>
-		/// If this parameter is NULL, the new process will have the same current drive and directory as the calling process. (This feature
-		/// is provided primarily for shells that need to start an application and specify its initial drive and working directory.)
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>The thread runs immediately after creation.</term>
+		/// </item>
+		/// <item>
+		/// <term>CREATE_SUSPENDED0x00000004</term>
+		/// <term>The thread is created in a suspended state, and does not run until the ResumeThread function is called.</term>
+		/// </item>
+		/// <item>
+		/// <term>STACK_SIZE_PARAM_IS_A_RESERVATION0x00010000</term>
+		/// <term>
+		/// The dwStackSize parameter specifies the initial reserve size of the stack. If this flag is not specified, dwStackSize specifies
+		/// the commit size.
+		/// </term>
+		/// </item>
+		/// </list>
 		/// </para>
 		/// </param>
-		/// <param name="lpStartupInfo">
-		/// <para>A pointer to a <c>STARTUPINFO</c> or <c>STARTUPINFOEX</c> structure.</para>
-		/// <para>
-		/// The user must have full access to both the specified window station and desktop. If you want the process to be interactive,
-		/// specify winsta0\default. If the <c>lpDesktop</c> member is NULL, the new process inherits the desktop and window station of its
-		/// parent process. If this member is an empty string, "", the new process connects to a window station using the rules described in
-		/// Process Connection to a Window Station.
-		/// </para>
-		/// <para>
-		/// To set extended attributes, use a <c>STARTUPINFOEX</c> structure and specify <c>EXTENDED_STARTUPINFO_PRESENT</c> in the
-		/// dwCreationFlags parameter.
-		/// </para>
-		/// <para>Handles in <c>STARTUPINFO</c> or <c>STARTUPINFOEX</c> must be closed with <c>CloseHandle</c> when they are no longer needed.</para>
-		/// </param>
-		/// <param name="lpProcessInformation">
-		/// <para>A pointer to a <c>PROCESS_INFORMATION</c> structure that receives identification information about the new process.</para>
-		/// <para>Handles in <c>PROCESS_INFORMATION</c> must be closed with <c>CloseHandle</c> when they are no longer needed.</para>
+		/// <param name="lpThreadId">
+		/// <para>A pointer to a variable that receives the thread identifier.</para>
+		/// <para>If this parameter is <c>NULL</c>, the thread identifier is not returned.</para>
 		/// </param>
 		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// <para>
-		/// Note that the function returns before the process has finished initialization. If a required DLL cannot be located or fails to
-		/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
+		/// Note that <c>CreateRemoteThread</c> may succeed even if lpStartAddress points to data, code, or is not accessible. If the start
+		/// address is invalid when the thread runs, an exception occurs, and the thread terminates. Thread termination due to a invalid
+		/// start address is handled as an error exit for the thread's process. This behavior is similar to the asynchronous nature of
+		/// <c>CreateProcess</c>, where the process is created even if it refers to invalid or missing dynamic-link libraries (DLL).
 		/// </para>
 		/// </returns>
-		// BOOL WINAPI CreateProcessAsUser( _In_opt_ HANDLE hToken, _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine,
-		// _In_opt_ LPSECURITY_ATTRIBUTES lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles,
-		// _In_ DWORD dwCreationFlags, _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo,
-		// _Out_ LPPROCESS_INFORMATION lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682429(v=vs.85).aspx
-		[PInvokeData("WinBase.h", MSDNShortId = "ms682429")]
-		public static bool CreateProcessAsUser(HTOKEN hToken, string lpApplicationName, StringBuilder lpCommandLine,
-			SECURITY_ATTRIBUTES lpProcessAttributes, SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
-			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
-		{
-			var ret = CreateProcessAsUser(hToken, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles,
-				dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
-			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
-			return ret;
-		}
-
-		/// <summary>
-		/// <para>
-		/// Creates a new process and its primary thread. The new process runs in the security context of the user represented by the
-		/// specified token.
-		/// </para>
-		/// <para>
-		/// Typically, the process that calls the <c>CreateProcessAsUser</c> function must have the <c>SE_INCREASE_QUOTA_NAME</c> privilege
-		/// and may require the <c>SE_ASSIGNPRIMARYTOKEN_NAME</c> privilege if the token is not assignable. If this function fails with
-		/// <c>ERROR_PRIVILEGE_NOT_HELD</c> (1314), use the <c>CreateProcessWithLogonW</c> function instead. <c>CreateProcessWithLogonW</c>
-		/// requires no special privileges, but the specified user account must be allowed to log on interactively. Generally, it is best to
-		/// use <c>CreateProcessWithLogonW</c> to create a process with alternate credentials.
-		/// </para>
-		/// </summary>
-		/// <param name="hToken">
-		/// <para>
-		/// A handle to the primary token that represents a user. The handle must have the <c>TOKEN_QUERY</c>, <c>TOKEN_DUPLICATE</c>, and
-		/// <c>TOKEN_ASSIGN_PRIMARY</c> access rights. For more information, see <c>Access Rights for Access-Token Objects</c>. The user
-		/// represented by the token must have read and execute access to the application specified by the lpApplicationName or the
-		/// lpCommandLine parameter.
-		/// </para>
-		/// <para>
-		/// To get a primary token that represents the specified user, call the <c>LogonUser</c> function. Alternatively, you can call the
-		/// <c>DuplicateTokenEx</c> function to convert an impersonation token into a primary token. This allows a server application that is
-		/// impersonating a client to create a process that has the security context of the client.
-		/// </para>
-		/// <para>
-		/// If hToken is a restricted version of the caller's primary token, the <c>SE_ASSIGNPRIMARYTOKEN_NAME</c> privilege is not required.
-		/// If the necessary privileges are not already enabled, <c>CreateProcessAsUser</c> enables them for the duration of the call. For
-		/// more information, see Running with Special Privileges.
-		/// </para>
-		/// <para>
-		/// <c>Terminal Services:</c> The process is run in the session specified in the token. By default, this is the same session that
-		/// called <c>LogonUser</c>. To change the session, use the <c>SetTokenInformation</c> function.
-		/// </para>
-		/// </param>
-		/// <param name="lpApplicationName">
-		/// <para>
-		/// The name of the module to be executed. This module can be a Windows-based application. It can be some other type of module (for
-		/// example, MS-DOS or OS/2) if the appropriate subsystem is available on the local computer.
-		/// </para>
-		/// <para>
-		/// The string can specify the full path and file name of the module to execute or it can specify a partial name. In the case of a
-		/// partial name, the function uses the current drive and current directory to complete the specification. The function will not use
-		/// the search path. This parameter must include the file name extension; no default extension is assumed.
-		/// </para>
-		/// <para>
-		/// The lpApplicationName parameter can be <c>NULL</c>. In that case, the module name must be the first white space–delimited token
-		/// in the lpCommandLine string. If you are using a long file name that contains a space, use quoted strings to indicate where the
-		/// file name ends and the arguments begin; otherwise, the file name is ambiguous. For example, consider the string "c:\program
-		/// files\sub dir\program name". This string can be interpreted in a number of ways. The system tries to interpret the possibilities
-		/// in the following order:
-		/// </para>
-		/// <para>
-		/// If the executable module is a 16-bit application, lpApplicationName should be <c>NULL</c>, and the string pointed to by
-		/// lpCommandLine should specify the executable module as well as its arguments. By default, all 16-bit Windows-based applications
-		/// created by <c>CreateProcessAsUser</c> are run in a separate VDM (equivalent to <c>CREATE_SEPARATE_WOW_VDM</c> in <c>CreateProcess</c>).
-		/// </para>
-		/// </param>
-		/// <param name="lpCommandLine">
-		/// <para>
-		/// The command line to be executed. The maximum length of this string is 32K characters. If lpApplicationName is <c>NULL</c>, the
-		/// module name portion of lpCommandLine is limited to <c>MAX_PATH</c> characters.
-		/// </para>
-		/// <para>
-		/// The Unicode version of this function, <c>CreateProcessAsUserW</c>, can modify the contents of this string. Therefore, this
-		/// parameter cannot be a pointer to read-only memory (such as a <c>const</c> variable or a literal string). If this parameter is a
-		/// constant string, the function may cause an access violation.
-		/// </para>
-		/// <para>
-		/// The lpCommandLine parameter can be <c>NULL</c>. In that case, the function uses the string pointed to by lpApplicationName as the
-		/// command line.
-		/// </para>
-		/// <para>
-		/// If both lpApplicationName and lpCommandLine are non- <c>NULL</c>, *lpApplicationName specifies the module to execute, and
-		/// *lpCommandLine specifies the command line. The new process can use <c>GetCommandLine</c> to retrieve the entire command line.
-		/// Console processes written in C can use the argc and argv arguments to parse the command line. Because argv[0] is the module name,
-		/// C programmers generally repeat the module name as the first token in the command line.
-		/// </para>
-		/// <para>
-		/// If lpApplicationName is <c>NULL</c>, the first white space–delimited token of the command line specifies the module name. If you
-		/// are using a long file name that contains a space, use quoted strings to indicate where the file name ends and the arguments begin
-		/// (see the explanation for the lpApplicationName parameter). If the file name does not contain an extension, .exe is appended.
-		/// Therefore, if the file name extension is .com, this parameter must include the .com extension. If the file name ends in a period
-		/// (.) with no extension, or if the file name contains a path, .exe is not appended. If the file name does not contain a directory
-		/// path, the system searches for the executable file in the following sequence:
-		/// </para>
-		/// <para>
-		/// The system adds a null character to the command line string to separate the file name from the arguments. This divides the
-		/// original string into two strings for internal processing.
-		/// </para>
-		/// </param>
-		/// <param name="lpProcessAttributes">
-		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new process object and
-		/// determines whether child processes can inherit the returned handle to the process. If lpProcessAttributes is <c>NULL</c> or
-		/// <c>lpSecurityDescriptor</c> is <c>NULL</c>, the process gets a default security descriptor and the handle cannot be inherited.
-		/// The default security descriptor is that of the user referenced in the hToken parameter. This security descriptor may not allow
-		/// access for the caller, in which case the process may not be opened again after it is run. The process handle is valid and will
-		/// continue to have full access rights.
-		/// </param>
-		/// <param name="lpThreadAttributes">
-		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new thread object and determines
-		/// whether child processes can inherit the returned handle to the thread. If lpThreadAttributes is <c>NULL</c> or
-		/// <c>lpSecurityDescriptor</c> is <c>NULL</c>, the thread gets a default security descriptor and the handle cannot be inherited. The
-		/// default security descriptor is that of the user referenced in the hToken parameter. This security descriptor may not allow access
-		/// for the caller.
-		/// </param>
-		/// <param name="bInheritHandles">
-		/// <para>
-		/// If this parameter is <c>TRUE</c>, each inheritable handle in the calling process is inherited by the new process. If the
-		/// parameter is <c>FALSE</c>, the handles are not inherited. Note that inherited handles have the same value and access rights as
-		/// the original handles.
-		/// </para>
-		/// <para>
-		/// <c>Terminal Services:</c> You cannot inherit handles across sessions. Additionally, if this parameter is <c>TRUE</c>, you must
-		/// create the process in the same session as the caller.
-		/// </para>
-		/// <para>
-		/// <c>Protected Process Light (PPL) processes:</c> The generic handle inheritance is blocked when a PPL process creates a non-PPL
-		/// process since PROCESS_DUP_HANDLE is not allowed from a non-PPL process to a PPL process. See Process Security and Access Rights
-		/// </para>
-		/// </param>
-		/// <param name="dwCreationFlags">
-		/// <para>
-		/// The flags that control the priority class and the creation of the process. For a list of values, see Process Creation Flags.
-		/// </para>
-		/// <para>
-		/// This parameter also controls the new process's priority class, which is used to determine the scheduling priorities of the
-		/// process's threads. For a list of values, see <c>GetPriorityClass</c>. If none of the priority class flags is specified, the
-		/// priority class defaults to <c>NORMAL_PRIORITY_CLASS</c> unless the priority class of the creating process is
-		/// <c>IDLE_PRIORITY_CLASS</c> or <c>BELOW_NORMAL_PRIORITY_CLASS</c>. In this case, the child process receives the default priority
-		/// class of the calling process.
-		/// </para>
-		/// </param>
-		/// <param name="lpEnvironment">
-		/// <para>
-		/// A pointer to an environment block for the new process. If this parameter is <c>NULL</c>, the new process uses the environment of
-		/// the calling process.
-		/// </para>
-		/// <para>An environment block consists of a null-terminated block of null-terminated strings. Each string is in the following form:</para>
-		/// <para>name=value\0</para>
-		/// <para>Because the equal sign is used as a separator, it must not be used in the name of an environment variable.</para>
-		/// <para>
-		/// An environment block can contain either Unicode or ANSI characters. If the environment block pointed to by lpEnvironment contains
-		/// Unicode characters, be sure that dwCreationFlags includes <c>CREATE_UNICODE_ENVIRONMENT</c>. If this parameter is <c>NULL</c> and
-		/// the environment block of the parent process contains Unicode characters, you must also ensure that dwCreationFlags includes <c>CREATE_UNICODE_ENVIRONMENT</c>.
-		/// </para>
-		/// <para>
-		/// The ANSI version of this function, <c>CreateProcessAsUserA</c> fails if the total size of the environment block for the process
-		/// exceeds 32,767 characters.
-		/// </para>
-		/// <para>
-		/// Note that an ANSI environment block is terminated by two zero bytes: one for the last string, one more to terminate the block. A
-		/// Unicode environment block is terminated by four zero bytes: two for the last string, two more to terminate the block.
-		/// </para>
-		/// <para>
-		/// <c>Windows Server 2003 and Windows XP:</c> If the size of the combined user and system environment variable exceeds 8192 bytes,
-		/// the process created by <c>CreateProcessAsUser</c> no longer runs with the environment block passed to the function by the parent
-		/// process. Instead, the child process runs with the environment block returned by the <c>CreateEnvironmentBlock</c> function.
-		/// </para>
-		/// <para>To retrieve a copy of the environment block for a given user, use the <c>CreateEnvironmentBlock</c> function.</para>
-		/// </param>
-		/// <param name="lpCurrentDirectory">
-		/// <para>The full path to the current directory for the process. The string can also specify a UNC path.</para>
-		/// <para>
-		/// If this parameter is NULL, the new process will have the same current drive and directory as the calling process. (This feature
-		/// is provided primarily for shells that need to start an application and specify its initial drive and working directory.)
-		/// </para>
-		/// </param>
-		/// <param name="lpStartupInfo">
-		/// <para>A pointer to a <c>STARTUPINFO</c> or <c>STARTUPINFOEX</c> structure.</para>
-		/// <para>
-		/// The user must have full access to both the specified window station and desktop. If you want the process to be interactive,
-		/// specify winsta0\default. If the <c>lpDesktop</c> member is NULL, the new process inherits the desktop and window station of its
-		/// parent process. If this member is an empty string, "", the new process connects to a window station using the rules described in
-		/// Process Connection to a Window Station.
-		/// </para>
-		/// <para>
-		/// To set extended attributes, use a <c>STARTUPINFOEX</c> structure and specify <c>EXTENDED_STARTUPINFO_PRESENT</c> in the
-		/// dwCreationFlags parameter.
-		/// </para>
-		/// <para>Handles in <c>STARTUPINFO</c> or <c>STARTUPINFOEX</c> must be closed with <c>CloseHandle</c> when they are no longer needed.</para>
-		/// </param>
-		/// <param name="lpProcessInformation">
-		/// <para>A pointer to a <c>PROCESS_INFORMATION</c> structure that receives identification information about the new process.</para>
-		/// <para>Handles in <c>PROCESS_INFORMATION</c> must be closed with <c>CloseHandle</c> when they are no longer needed.</para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-		/// <para>
-		/// Note that the function returns before the process has finished initialization. If a required DLL cannot be located or fails to
-		/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
-		/// </para>
-		/// </returns>
-		// BOOL WINAPI CreateProcessAsUser( _In_opt_ HANDLE hToken, _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine,
-		// _In_opt_ LPSECURITY_ATTRIBUTES lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles,
-		// _In_ DWORD dwCreationFlags, _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo,
-		// _Out_ LPPROCESS_INFORMATION lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682429(v=vs.85).aspx
-		[PInvokeData("WinBase.h", MSDNShortId = "ms682429")]
-		public static bool CreateProcessAsUser(HTOKEN hToken, string lpApplicationName, StringBuilder lpCommandLine,
-			SECURITY_ATTRIBUTES lpProcessAttributes, SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
-			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
-		{
-			var ret = CreateProcessAsUser(hToken, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles,
-				dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
-			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
-			return ret;
-		}
+		// HANDLE WINAPI CreateRemoteThread( _In_ HANDLE hProcess, _In_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize,
+		// _In_ LPTHREAD_START_ROUTINE lpStartAddress, _In_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682437(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms682437")]
+		public static extern SafeHTHREAD CreateRemoteThread([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES lpThreadAttributes, [Optional] SizeT dwStackSize,
+			PTHREAD_START_ROUTINE lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
 		/// <summary>
 		/// <para>Creates a thread that runs in the virtual address space of another process.</para>
@@ -2058,89 +1622,8 @@ namespace Vanara.PInvoke
 		// _In_ LPTHREAD_START_ROUTINE lpStartAddress, _In_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682437(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682437")]
-		public static extern SafeHTHREAD CreateRemoteThread([In] HPROCESS hProcess, [In] SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize,
-			PTHREAD_START_ROUTINE lpStartAddress, [In] IntPtr lpParameter, CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
-
-		/// <summary>
-		/// <para>Creates a thread that runs in the virtual address space of another process.</para>
-		/// <para>
-		/// Use the <c>CreateRemoteThreadEx</c> function to create a thread that runs in the virtual address space of another process and
-		/// optionally specify extended attributes.
-		/// </para>
-		/// </summary>
-		/// <param name="hProcess">
-		/// A handle to the process in which the thread is to be created. The handle must have the <c>PROCESS_CREATE_THREAD</c>,
-		/// <c>PROCESS_QUERY_INFORMATION</c>, <c>PROCESS_VM_OPERATION</c>, <c>PROCESS_VM_WRITE</c>, and <c>PROCESS_VM_READ</c> access rights,
-		/// and may fail without these rights on certain platforms. For more information, see Process Security and Access Rights.
-		/// </param>
-		/// <param name="lpThreadAttributes">
-		/// <para>
-		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new thread and determines
-		/// whether child processes can inherit the returned handle. If lpThreadAttributes is NULL, the thread gets a default security
-		/// descriptor and the handle cannot be inherited. The access control lists (ACL) in the default security descriptor for a thread
-		/// come from the primary token of the creator.
-		/// </para>
-		/// <para>
-		/// <c>Windows XP:</c> The ACLs in the default security descriptor for a thread come from the primary or impersonation token of the
-		/// creator. This behavior changed with Windows XP with SP2 and Windows Server 2003.
-		/// </para>
-		/// </param>
-		/// <param name="dwStackSize">
-		/// The initial size of the stack, in bytes. The system rounds this value to the nearest page. If this parameter is 0 (zero), the new
-		/// thread uses the default size for the executable. For more information, see Thread Stack Size.
-		/// </param>
-		/// <param name="lpStartAddress">
-		/// A pointer to the application-defined function of type <c>LPTHREAD_START_ROUTINE</c> to be executed by the thread and represents
-		/// the starting address of the thread in the remote process. The function must exist in the remote process. For more information,
-		/// see <c>ThreadProc</c>.
-		/// </param>
-		/// <param name="lpParameter">A pointer to a variable to be passed to the thread function.</param>
-		/// <param name="dwCreationFlags">
-		/// <para>The flags that control the creation of the thread.</para>
-		/// <para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>0</term>
-		/// <term>The thread runs immediately after creation.</term>
-		/// </item>
-		/// <item>
-		/// <term>CREATE_SUSPENDED0x00000004</term>
-		/// <term>The thread is created in a suspended state, and does not run until the ResumeThread function is called.</term>
-		/// </item>
-		/// <item>
-		/// <term>STACK_SIZE_PARAM_IS_A_RESERVATION0x00010000</term>
-		/// <term>
-		/// The dwStackSize parameter specifies the initial reserve size of the stack. If this flag is not specified, dwStackSize specifies
-		/// the commit size.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// </para>
-		/// </param>
-		/// <param name="lpThreadId">
-		/// <para>A pointer to a variable that receives the thread identifier.</para>
-		/// <para>If this parameter is <c>NULL</c>, the thread identifier is not returned.</para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
-		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
-		/// <para>
-		/// Note that <c>CreateRemoteThread</c> may succeed even if lpStartAddress points to data, code, or is not accessible. If the start
-		/// address is invalid when the thread runs, an exception occurs, and the thread terminates. Thread termination due to a invalid
-		/// start address is handled as an error exit for the thread's process. This behavior is similar to the asynchronous nature of
-		/// <c>CreateProcess</c>, where the process is created even if it refers to invalid or missing dynamic-link libraries (DLL).
-		/// </para>
-		/// </returns>
-		// HANDLE WINAPI CreateRemoteThread( _In_ HANDLE hProcess, _In_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize,
-		// _In_ LPTHREAD_START_ROUTINE lpStartAddress, _In_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682437(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms682437")]
-		public static extern SafeHTHREAD CreateRemoteThread([In] HPROCESS hProcess, [In] SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize,
-			IntPtr lpStartAddress, [In] IntPtr lpParameter, CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
+		public static extern SafeHTHREAD CreateRemoteThread([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES lpThreadAttributes, [Optional] SizeT dwStackSize,
+			IntPtr lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
 		/// <summary>
 		/// Creates a thread that runs in the virtual address space of another process and optionally specifies extended attributes such as
@@ -2213,8 +1696,8 @@ namespace Vanara.PInvoke
 		// LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
-		public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In] SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize,
-			PTHREAD_START_ROUTINE lpStartAddress, [In] IntPtr lpParameter, CREATE_THREAD_FLAGS dwCreationFlags, IntPtr lpAttributeList,
+		public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES lpThreadAttributes, [Optional] SizeT dwStackSize,
+			PTHREAD_START_ROUTINE lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, SafeProcThreadAttributeList lpAttributeList,
 			out uint lpThreadId);
 
 		/// <summary>
@@ -2288,8 +1771,158 @@ namespace Vanara.PInvoke
 		// LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
-		public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In] SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize,
-			IntPtr lpStartAddress, [In] IntPtr lpParameter, CREATE_THREAD_FLAGS dwCreationFlags, IntPtr lpAttributeList,
+		public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES lpThreadAttributes, [Optional] SizeT dwStackSize,
+			PTHREAD_START_ROUTINE lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, [Optional] IntPtr lpAttributeList,
+			out uint lpThreadId);
+
+		/// <summary>
+		/// Creates a thread that runs in the virtual address space of another process and optionally specifies extended attributes such as
+		/// processor group affinity.
+		/// </summary>
+		/// <param name="hProcess">
+		/// A handle to the process in which the thread is to be created. The handle must have the PROCESS_CREATE_THREAD,
+		/// PROCESS_QUERY_INFORMATION, PROCESS_VM_OPERATION, PROCESS_VM_WRITE, and PROCESS_VM_READ access rights. In Windows 10, version
+		/// 1607, your code must obtain these access rights for the new handle. However, starting in Windows 10, version 1703, if the new
+		/// handle is entitled to these access rights, the system obtains them for you. For more information, see Process Security and Access Rights.
+		/// </param>
+		/// <param name="lpThreadAttributes">
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new thread and determines
+		/// whether child processes can inherit the returned handle. If lpThreadAttributes is NULL, the thread gets a default security
+		/// descriptor and the handle cannot be inherited. The access control lists (ACL) in the default security descriptor for a thread
+		/// come from the primary token of the creator.
+		/// </param>
+		/// <param name="dwStackSize">
+		/// The initial size of the stack, in bytes. The system rounds this value to the nearest page. If this parameter is 0 (zero), the new
+		/// thread uses the default size for the executable. For more information, see Thread Stack Size.
+		/// </param>
+		/// <param name="lpStartAddress">
+		/// A pointer to the application-defined function of type <c>LPTHREAD_START_ROUTINE</c> to be executed by the thread and represents
+		/// the starting address of the thread in the remote process. The function must exist in the remote process. For more information,
+		/// see <c>ThreadProc</c>.
+		/// </param>
+		/// <param name="lpParameter">
+		/// A pointer to a variable to be passed to the thread function pointed to by lpStartAddress. This parameter can be NULL.
+		/// </param>
+		/// <param name="dwCreationFlags">
+		/// <para>The flags that control the creation of the thread.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>The thread runs immediately after creation.</term>
+		/// </item>
+		/// <item>
+		/// <term>CREATE_SUSPENDED0x00000004</term>
+		/// <term>The thread is created in a suspended state and does not run until the ResumeThread function is called.</term>
+		/// </item>
+		/// <item>
+		/// <term>STACK_SIZE_PARAM_IS_A_RESERVATION0x00010000</term>
+		/// <term>
+		/// The dwStackSize parameter specifies the initial reserve size of the stack. If this flag is not specified, dwStackSize specifies
+		/// the commit size.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpAttributeList">
+		/// An attribute list that contains additional parameters for the new thread. This list is created by the
+		/// <c>InitializeProcThreadAttributeList</c> function.
+		/// </param>
+		/// <param name="lpThreadId">
+		/// <para>A pointer to a variable that receives the thread identifier.</para>
+		/// <para>If this parameter is NULL, the thread identifier is not returned.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
+		/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize,
+		// _In_ LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _In_opt_
+		// LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
+		public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES lpThreadAttributes, [Optional] SizeT dwStackSize,
+			IntPtr lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, SafeProcThreadAttributeList lpAttributeList,
+			out uint lpThreadId);
+
+		/// <summary>
+		/// Creates a thread that runs in the virtual address space of another process and optionally specifies extended attributes such as
+		/// processor group affinity.
+		/// </summary>
+		/// <param name="hProcess">
+		/// A handle to the process in which the thread is to be created. The handle must have the PROCESS_CREATE_THREAD,
+		/// PROCESS_QUERY_INFORMATION, PROCESS_VM_OPERATION, PROCESS_VM_WRITE, and PROCESS_VM_READ access rights. In Windows 10, version
+		/// 1607, your code must obtain these access rights for the new handle. However, starting in Windows 10, version 1703, if the new
+		/// handle is entitled to these access rights, the system obtains them for you. For more information, see Process Security and Access Rights.
+		/// </param>
+		/// <param name="lpThreadAttributes">
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new thread and determines
+		/// whether child processes can inherit the returned handle. If lpThreadAttributes is NULL, the thread gets a default security
+		/// descriptor and the handle cannot be inherited. The access control lists (ACL) in the default security descriptor for a thread
+		/// come from the primary token of the creator.
+		/// </param>
+		/// <param name="dwStackSize">
+		/// The initial size of the stack, in bytes. The system rounds this value to the nearest page. If this parameter is 0 (zero), the new
+		/// thread uses the default size for the executable. For more information, see Thread Stack Size.
+		/// </param>
+		/// <param name="lpStartAddress">
+		/// A pointer to the application-defined function of type <c>LPTHREAD_START_ROUTINE</c> to be executed by the thread and represents
+		/// the starting address of the thread in the remote process. The function must exist in the remote process. For more information,
+		/// see <c>ThreadProc</c>.
+		/// </param>
+		/// <param name="lpParameter">
+		/// A pointer to a variable to be passed to the thread function pointed to by lpStartAddress. This parameter can be NULL.
+		/// </param>
+		/// <param name="dwCreationFlags">
+		/// <para>The flags that control the creation of the thread.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>The thread runs immediately after creation.</term>
+		/// </item>
+		/// <item>
+		/// <term>CREATE_SUSPENDED0x00000004</term>
+		/// <term>The thread is created in a suspended state and does not run until the ResumeThread function is called.</term>
+		/// </item>
+		/// <item>
+		/// <term>STACK_SIZE_PARAM_IS_A_RESERVATION0x00010000</term>
+		/// <term>
+		/// The dwStackSize parameter specifies the initial reserve size of the stack. If this flag is not specified, dwStackSize specifies
+		/// the commit size.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpAttributeList">
+		/// An attribute list that contains additional parameters for the new thread. This list is created by the
+		/// <c>InitializeProcThreadAttributeList</c> function.
+		/// </param>
+		/// <param name="lpThreadId">
+		/// <para>A pointer to a variable that receives the thread identifier.</para>
+		/// <para>If this parameter is NULL, the thread identifier is not returned.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
+		/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize,
+		// _In_ LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _In_opt_
+		// LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
+		public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES lpThreadAttributes, [Optional] SizeT dwStackSize,
+			IntPtr lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, [Optional] IntPtr lpAttributeList,
 			out uint lpThreadId);
 
 		/// <summary>
@@ -2359,11 +1992,11 @@ namespace Vanara.PInvoke
 		// LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682453(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682453")]
-		public static extern SafeHTHREAD CreateThread([In] SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize, PTHREAD_START_ROUTINE lpStartAddress,
-			[In] IntPtr lpParameter, CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
+		public static extern SafeHTHREAD CreateThread([In, Optional] SECURITY_ATTRIBUTES lpThreadAttributes, [Optional] SizeT dwStackSize, PTHREAD_START_ROUTINE lpStartAddress,
+			[In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
 		/// <summary>Deletes the specified list of attributes for process and thread creation.</summary>
-		/// <param name="lpAttributeList">The attribute list. This list is created by the <c>InitializeProcThreadAttributeList</c> function.</param>
+		/// <param name="lpAttributeList">The attribute list. This list is created by the <see cref="InitializeProcThreadAttributeList"/>.</param>
 		/// <returns>This function does not return a value.</returns>
 		// VOID WINAPI DeleteProcThreadAttributeList( _Inout_ LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682559(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
@@ -2398,7 +2031,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms679350")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FlushInstructionCache([In] HPROCESS hProcess, [In] IntPtr lpBaseAddress, SizeT dwSize);
+		public static extern bool FlushInstructionCache([In] HPROCESS hProcess, [In, Optional] IntPtr lpBaseAddress, [Optional] SizeT dwSize);
 
 		/// <summary>Flushes the write queue of each processor that is running a thread of the current process.</summary>
 		/// <returns>This function does not return a value.</returns>
@@ -2666,12 +2299,7 @@ namespace Vanara.PInvoke
 		/// <returns>The list of CPU Set identifiers.</returns>
 		public static uint[] GetProcessDefaultCpuSets(HPROCESS Process)
 		{
-			var res = GetProcessDefaultCpuSets(Process, IntPtr.Zero, 0, out var cnt);
-			if (!res)
-			{
-				var err = Win32Error.GetLastError();
-				if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER) err.ThrowIfFailed();
-			}
+			var cnt = (uint)Environment.ProcessorCount;
 			if (cnt == 0) return new uint[0];
 			var iptr = new SafeCoTaskMemHandle((int)cnt * Marshal.SizeOf(typeof(uint)));
 			if (!GetProcessDefaultCpuSets(Process, (IntPtr)iptr, cnt, out cnt)) Win32Error.ThrowLastError();
@@ -2773,6 +2401,27 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetProcessInformation(HPROCESS hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass,
 			IntPtr ProcessInformation, uint ProcessInformationSize);
+
+		/// <summary>Retrieves information about the specified process.</summary>
+		/// <typeparam name="T">The type of information associated with <paramref name="ProcessInformationClass"/>.</typeparam>
+		/// <param name="hProcess">
+		/// A handle to the process. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more information, see Process
+		/// Security and Access Rights.
+		/// </param>
+		/// <param name="ProcessInformationClass">The kind of information to retrieve. The only supported value is <c>ProcessMemoryPriority</c></param>
+		/// <returns>An object containing the type of information specified by the ProcessInformationClass parameter.</returns>
+		/// <exception cref="ArgumentException">Type mismatch.</exception>
+		[PInvokeData("WinBase.h", MSDNShortId = "hh448381")]
+		public static T GetProcessInformation<T>(HPROCESS hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanGet(ProcessInformationClass, typeof(T))) throw new ArgumentException("Type mismatch.");
+			using (var mem = SafeHGlobalHandle.CreateFromStructure<T>())
+			{
+				if (!GetProcessInformation(hProcess, ProcessInformationClass, (IntPtr)mem, (uint)mem.Size))
+					Win32Error.ThrowLastError();
+				return mem.ToStructure<T>();
+			}
+		}
 
 		/// <summary>Retrieves mitigation policy settings for the calling process.</summary>
 		/// <param name="hProcess">
@@ -3042,13 +2691,26 @@ namespace Vanara.PInvoke
 			var sz = isMask ? 16 : Marshal.SizeOf(typeof(T));
 			using (var ptr = new SafeCoTaskMemHandle(sz))
 			{
-				if (GetProcessMitigationPolicy(hProcess, MitigationPolicy, (IntPtr)ptr, (uint)ptr.Size))
+				if (!isMask)
 				{
-					if (isMask && typeof(T).Equals(typeof(ulong[])))
-						value = (T)(object)ptr.ToArray<ulong>(2);
-					else
+					if (GetProcessMitigationPolicy(hProcess, MitigationPolicy, (IntPtr)ptr, (uint)ptr.Size))
+					{
 						value = ptr.ToStructure<T>();
-					return true;
+						return true;
+					}
+				}
+				else
+				{
+					if (GetProcessMitigationPolicy(hProcess, MitigationPolicy, (IntPtr)ptr, (uint)ptr.Size))
+					{
+						value = (T)(object)ptr.ToArray<ulong>(2);
+						return true;
+					}
+					else if (GetProcessMitigationPolicy(hProcess, MitigationPolicy, (IntPtr)ptr, 8))
+					{
+						value = (T)(object)ptr.ToArray<ulong>(1);
+						return true;
+					}
 				}
 			}
 			value = default;
@@ -3195,7 +2857,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetProcessVersion( _In_ DWORD ProcessId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683224(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683224")]
-		public static extern uint GetProcessVersion(uint ProcessId);
+		public static extern uint GetProcessVersion(uint ProcessId = 0);
 
 		/// <summary>Retrieves the contents of the <c>STARTUPINFO</c> structure that was specified when the calling process was created.</summary>
 		/// <param name="lpStartupInfo">A pointer to a <c>STARTUPINFO</c> structure that receives the startup information.</param>
@@ -3207,9 +2869,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		// VOID WINAPI GetStartupInfo( _Out_ LPSTARTUPINFO lpStartupInfo); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683230(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683230")]
-		public static extern void GetStartupInfo(out STARTUPINFO lpStartupInfo);
+		public static void GetStartupInfo(out STARTUPINFO lpStartupInfo) { GetStartupInfo(out STARTUPINFO_OUT sio); lpStartupInfo = sio; }
 
 		/// <summary>Allows an application to query the available CPU Sets on the system, and their current state.</summary>
 		/// <param name="Information">
@@ -3247,22 +2908,27 @@ namespace Vanara.PInvoke
 		/// clear. This handle must have the PROCESS_QUERY_LIMITED_INFORMATION access right. The value returned by <c>GetCurrentProcess</c>
 		/// may also be specified here.
 		/// </param>
-		/// <returns>A <c>SYSTEM_CPU_SET_INFORMATION1</c> structure that receives the CPU Set data.</returns>
-		public static SYSTEM_CPU_SET_INFORMATION1 GetSystemCpuSetInformation([Optional] HPROCESS Process)
+		/// <returns>A list of <c>SYSTEM_CPU_SET_INFORMATION</c> structures with CPU Set data.</returns>
+		public static IEnumerable<SYSTEM_CPU_SET_INFORMATION> GetSystemCpuSetInformation([Optional] HPROCESS Process)
 		{
-			var success = false;
-			SafeCoTaskMemHandle ptr = null;
-			for (var sz = (uint)Marshal.SizeOf(typeof(SYSTEM_CPU_SET_INFORMATION)); !success;)
+			if (!GetSystemCpuSetInformation(IntPtr.Zero, 0, out var sz, Process) || sz == 0)
 			{
-				ptr = new SafeCoTaskMemHandle((int)sz);
-				success = GetSystemCpuSetInformation((IntPtr)ptr, sz, out sz, Process);
-				if (!success)
+				var err = Win32Error.GetLastError();
+				if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER) throw err.GetException();
+			}
+			using (var ptr = new SafeCoTaskMemHandle((int)sz))
+			{
+				if (!GetSystemCpuSetInformation((IntPtr)ptr, sz, out sz, Process))
+					Win32Error.ThrowLastError();
+				var offset = 0;
+				while (offset < sz)
 				{
-					var err = Win32Error.GetLastError();
-					if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER) err.ThrowIfFailed();
+					var sptr = ptr.DangerousGetHandle().Offset(offset);
+					var structSize = Marshal.ReadInt32(sptr);
+					yield return sptr.ToStructure<SYSTEM_CPU_SET_INFORMATION>(sz - offset);
+					offset += structSize;
 				}
 			}
-			return ptr.ToStructure<SYSTEM_CPU_SET_INFORMATION>().Union.CpuSet;
 		}
 
 		/// <summary>
@@ -3315,21 +2981,29 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms679362")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetThreadContext([In] HTHREAD hThread, IntPtr lpContext);
+		public static extern bool GetThreadContext([In] HTHREAD hThread, ref CONTEXT lpContext);
 
-		/// <summary>Retrieves the description that was assigned to a thread by calling <c>SetThreadDescription</c>.</summary>
+		/// <summary>Retrieves the description that was assigned to a thread by calling SetThreadDescription.</summary>
 		/// <param name="hThread">
 		/// A handle to the thread for which to retrieve the description. The handle must have THREAD_QUERY_LIMITED_INFORMATION access.
 		/// </param>
-		/// <param name="threadDescription">A Unicode string that contains the description of the thread.</param>
+		/// <param name="ppszThreadDescription">A Unicode string that contains the description of the thread.</param>
 		/// <returns>
-		/// If the function succeeds, the return value is the <c>HRESULT</c> that denotes a successful operation.If the function fails, the
+		/// If the function succeeds, the return value is the <c>HRESULT</c> that denotes a successful operation. If the function fails, the
 		/// return value is an <c>HRESULT</c> that denotes the error.
 		/// </returns>
-		// HRESULT WINAPI GetThreadDescription( _In_ HANDLE hThread, _Out_ PWSTR *threadDescription); https://msdn.microsoft.com/en-us/library/windows/desktop/mt774972(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
-		[PInvokeData("ProcessThreadsApi.h", MSDNShortId = "mt774972")]
-		public static extern HRESULT GetThreadDescription(HTHREAD hThread, out string threadDescription);
+		/// <remarks>
+		/// <para>
+		/// The description for a thread can change at any time. For example, a different thread can change the description of a thread of
+		/// interest while you try to retrieve that description.
+		/// </para>
+		/// <para>Thread descriptions do not need to be unique.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getthreaddescription HRESULT
+		// GetThreadDescription( HANDLE hThread, PWSTR *ppszThreadDescription );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "9CFF0A2D-2196-4AE0-8F77-229A8AB7A3E8")]
+		public static extern HRESULT GetThreadDescription(HTHREAD hThread, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LocalStringMarshaler))] out string threadDescription);
 
 		/// <summary>Retrieves the thread identifier of the specified thread.</summary>
 		/// <param name="Thread">
@@ -3343,7 +3017,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetThreadId( _In_ HANDLE Thread); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683233(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683233")]
-		public static extern uint GetThreadId(IntPtr Thread);
+		public static extern uint GetThreadId(HTHREAD Thread);
 
 		/// <summary>Retrieves the processor number of the ideal processor for the specified thread.</summary>
 		/// <param name="hThread">
@@ -3395,6 +3069,37 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "hh448382")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetThreadInformation(HTHREAD hThread, THREAD_INFORMATION_CLASS ThreadInformationClass, IntPtr ThreadInformation, uint ThreadInformationSize);
+
+		/// <summary>Retrieves information about the specified thread.</summary>
+		/// <param name="hThread">
+		/// A handle to the thread. The handle must have THREAD_QUERY_INFORMATION access rights. For more information, see Thread Security
+		/// and Access Rights.
+		/// </param>
+		/// <param name="ThreadInformationClass">
+		/// The class of information to retrieve. The only supported values are <c>ThreadMemoryPriority</c> and <c>ThreadPowerThrottling</c>.
+		/// </param>
+		/// <returns>
+		/// <para>A structure that receives the type of information specified by the ThreadInformationClass parameter.</para>
+		/// <para>
+		/// If the ThreadInformationClass parameter is <c>ThreadMemoryPriority</c>, this parameter must point to a
+		/// <c>MEMORY_PRIORITY_INFORMATION</c> structure.
+		/// </para>
+		/// <para>
+		/// If the ThreadInformationClass parameter is <c>ThreadPowerThrottling</c>, this parameter must point to a
+		/// <c>THREAD_POWER_THROTTLING_STATE</c> structure.
+		/// </para>
+		/// </returns>
+		[PInvokeData("WinBase.h", MSDNShortId = "hh448382")]
+		public static T GetThreadInformation<T>(HTHREAD hThread, THREAD_INFORMATION_CLASS ThreadInformationClass) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanGet(ThreadInformationClass, typeof(T))) throw new ArgumentException($"{ThreadInformationClass} cannot be used to get values of type {typeof(T)}.");
+			using (var mem = SafeHGlobalHandle.CreateFromStructure(ReflectionExtensions.CreateOrDefault<T>()))
+			{
+				if (!GetThreadInformation(hThread, ThreadInformationClass, (IntPtr)mem, (uint)mem.Size))
+					Win32Error.ThrowLastError();
+				return mem.ToStructure<T>();
+			}
+		}
 
 		/// <summary>Determines whether a specified thread has any I/O requests pending.</summary>
 		/// <param name="hThread">
@@ -3537,6 +3242,26 @@ namespace Vanara.PInvoke
 		[PInvokeData("Processthreadapi.h", MSDNShortId = "mt186426")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetThreadSelectedCpuSets(HTHREAD Thread, IntPtr CpuSetIds, uint CpuSetIdCount, out uint RequiredIdCount);
+
+		/// <summary>
+		/// Returns the explicit CPU Set assignment of the specified thread, if any assignment was set using the
+		/// <c>SetThreadSelectedCpuSets</c> API. If no explicit assignment is set, <c>RequiredIdCount</c> is set to 0 and the function
+		/// returns TRUE.
+		/// </summary>
+		/// <param name="Thread">
+		/// Specifies the thread for which to query the selected CPU Sets. This handle must have the THREAD_QUERY_LIMITED_INFORMATION access
+		/// right. The value returned by <c>GetCurrentThread</c> can also be specified here.
+		/// </param>
+		/// <returns>The list of CPU Set identifiers.</returns>
+		[PInvokeData("Processthreadapi.h", MSDNShortId = "mt186426")]
+		public static uint[] GetThreadSelectedCpuSets(HTHREAD Thread)
+		{
+			var cnt = (uint)Environment.ProcessorCount;
+			if (cnt == 0) return new uint[0];
+			var iptr = new SafeCoTaskMemHandle((int)cnt * Marshal.SizeOf(typeof(uint)));
+			if (!GetThreadSelectedCpuSets(Thread, (IntPtr)iptr, cnt, out cnt)) Win32Error.ThrowLastError();
+			return iptr.ToArray<uint>((int)cnt);
+		}
 
 		/// <summary>Retrieves timing information for the specified thread.</summary>
 		/// <param name="hThread">
@@ -3868,12 +3593,12 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "dn893591")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryProtectedPolicy(in Guid PolicyGuid, out UIntPtr PolicyValue);
+		public static extern bool QueryProtectedPolicy(in Guid PolicyGuid, out IntPtr PolicyValue);
 
 		/// <summary>Adds a user-mode asynchronous procedure call (APC) object to the APC queue of the specified thread.</summary>
 		/// <param name="pfnAPC">
 		/// A pointer to the application-supplied APC function to be called when the specified thread performs an alertable wait operation.
-		/// For more information, see <c>APCProc</c>.
+		/// For more information, see APCProc.
 		/// </param>
 		/// <param name="hThread">
 		/// A handle to the thread. The handle must have the <c>THREAD_SET_CONTEXT</c> access right. For more information, see
@@ -3882,16 +3607,63 @@ namespace Vanara.PInvoke
 		/// <param name="dwData">A single value that is passed to the APC function pointed to by the pfnAPC parameter.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// <para>
-		/// <c>Windows Server 2003 and Windows XP:</c> There are no error values defined for this function that can be retrieved by calling <c>GetLastError</c>.
+		/// If the function fails, the return value is zero. To get extended error information, call GetLastError. <c>Windows Server 2003 and
+		/// Windows XP:</c> There are no error values defined for this function that can be retrieved by calling GetLastError.
 		/// </para>
 		/// </returns>
-		// DWORD WINAPI QueueUserAPC( _In_ PAPCFUNC pfnAPC, _In_ HANDLE hThread, _In_ ULONG_PTR dwData); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684954(v=vs.85).aspx
+		/// <remarks>
+		/// <para>
+		/// The APC support provided in the operating system allows an application to queue an APC object to a thread. To ensure successful
+		/// execution of functions used by the APC, APCs should be queued only to threads in the caller's process.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Queuing APCs to threads outside the caller's process is not recommended for a number of reasons. DLL rebasing can
+		/// cause the addresses of functions used by the APC to be incorrect when the functions are executed outside the caller's process.
+		/// Similarly, if a 64-bit process queues an APC to a 32-bit process or vice versa, addresses will be incorrect and the application
+		/// will crash. Other factors can prevent successful function execution, even if the address is known.
+		/// </para>
+		/// <para>
+		/// Each thread has its own APC queue. The queuing of an APC is a request for the thread to call the APC function. The operating
+		/// system issues a software interrupt to direct the thread to call the APC function.
+		/// </para>
+		/// <para>
+		/// When a user-mode APC is queued, the thread is not directed to call the APC function unless it is in an alertable state. After the
+		/// thread is in an alertable state, the thread handles all pending APCs in first in, first out (FIFO) order, and the wait operation
+		/// returns <c>WAIT_IO_COMPLETION</c>. A thread enters an alertable state by using SleepEx, SignalObjectAndWait,
+		/// WaitForSingleObjectEx, WaitForMultipleObjectsEx, or MsgWaitForMultipleObjectsEx to perform an alertable wait operation.
+		/// </para>
+		/// <para>
+		/// If an application queues an APC before the thread begins running, the thread begins by calling the APC function. After the thread
+		/// calls an APC function, it calls the APC functions for all APCs in its APC queue.
+		/// </para>
+		/// <para>
+		/// It is possible to sleep or wait for an object within the APC. If you perform an alertable wait inside an APC, it will recursively
+		/// dispatch the APCs. This can cause a stack overflow.
+		/// </para>
+		/// <para>
+		/// When the thread is terminated using the ExitThread or TerminateThread function, the APCs in its APC queue are lost. The APC
+		/// functions are not called.
+		/// </para>
+		/// <para>
+		/// When the thread is in the process of being terminated, calling QueueUserAPC to add to the thread's APC queue will fail with
+		/// <c>(31) ERROR_GEN_FAILURE</c>.
+		/// </para>
+		/// <para>
+		/// Note that the ReadFileEx, SetWaitableTimer, and WriteFileEx functions are implemented using an APC as the completion notification
+		/// callback mechanism.
+		/// </para>
+		/// <para>
+		/// To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0400 or later. For more information, see Using
+		/// the Windows Headers.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-queueuserapc DWORD QueueUserAPC(
+		// PAPCFUNC pfnAPC, HANDLE hThread, ULONG_PTR dwData );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms684954")]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "5b141372-7c95-4eb2-987b-64fdf7d0783d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueueUserAPC(PAPCFUNC pfnAPC, [In] HTHREAD hThread, UIntPtr dwData);
+		public static extern bool QueueUserAPC(PAPCFUNC pfnAPC, [In] HTHREAD hThread, IntPtr dwData);
 
 		/// <summary>
 		/// Decrements a thread's suspend count. When the suspend count is decremented to zero, the execution of the thread is resumed.
@@ -4081,6 +3853,37 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "hh448389")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetProcessInformation([In] HPROCESS hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, IntPtr ProcessInformation, uint ProcessInformationSize);
+
+		/// <summary>Sets information for the specified process.</summary>
+		/// <param name="hProcess">
+		/// A handle to the process. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more information, see Process
+		/// Security and Access Rights.
+		/// </param>
+		/// <param name="ProcessInformationClass">
+		/// The class of information to set. The only supported values are <c>ProcessMemoryPriority</c> and <c>ProcessPowerThrottling</c>.
+		/// </param>
+		/// <param name="ProcessInformation">
+		/// <para>Pointer to an object that contains the type of information specified by the ProcessInformationClass parameter.</para>
+		/// <para>
+		/// If the ProcessInformationClass parameter is <c>ProcessMemoryPriority</c>, this parameter must point to a
+		/// <c>MEMORY_PRIORITY_INFORMATION</c> structure.
+		/// </para>
+		/// <para>
+		/// If the ProcessInformationClass parameter is <c>ProcessPowerThrottling</c>, this parameter must point to a
+		/// <c>PROCESS_POWER_THROTTLING_STATE</c> structure.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		[PInvokeData("WinBase.h", MSDNShortId = "hh448389")]
+		public static bool SetProcessInformation<T>([In] HPROCESS hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, in T ProcessInformation) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanSet(ProcessInformationClass, typeof(T))) throw new ArgumentException($"{ProcessInformationClass} cannot be used to set values of type {typeof(T)}.");
+			using (var mem = SafeHGlobalHandle.CreateFromStructure(ProcessInformation))
+				return SetProcessInformation(hProcess, ProcessInformationClass, (IntPtr)mem, (uint)mem.Size);
+		}
 
 		/// <summary>
 		/// Sets a mitigation policy for the calling process. Mitigation policies enable a process to harden itself against various types of attacks.
@@ -4338,7 +4141,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, it returns <c>TRUE</c>. If the function fails, it returns <c>FALSE</c>. To retrieve error values
 		/// defined for this function, call <c>GetLastError</c>.
 		/// </returns>
-		public static bool SetProcessMitigationPolicy<T>(PROCESS_MITIGATION_POLICY MitigationPolicy, T value)
+		public static bool SetProcessMitigationPolicy<T>(PROCESS_MITIGATION_POLICY MitigationPolicy, in T value)
 		{
 			if (MitigationPolicy == PROCESS_MITIGATION_POLICY.ProcessMitigationOptionsMask)
 			{
@@ -4446,7 +4249,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "dn893592")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetProtectedPolicy(in Guid PolicyGuid, UIntPtr PolicyValue, out UIntPtr OldPolicyValue);
+		public static extern bool SetProtectedPolicy(in Guid PolicyGuid, IntPtr PolicyValue, out IntPtr OldPolicyValue);
 
 		/// <summary>
 		/// <para>Sets the context for the specified thread.</para>
@@ -4471,7 +4274,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms680632")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetThreadContext([In] HTHREAD hThread, [In] IntPtr lpContext);
+		public static extern bool SetThreadContext([In] HTHREAD hThread, in CONTEXT lpContext);
 
 		/// <summary>Assigns a description to a thread.</summary>
 		/// <param name="hThread">
@@ -4483,9 +4286,9 @@ namespace Vanara.PInvoke
 		/// return value is an <c>HRESULT</c> that denotes the error.
 		/// </returns>
 		// HRESULT WINAPI SetThreadDescription( _In_ HANDLE hThread, _In_ PCWSTR lpThreadDescription); https://msdn.microsoft.com/en-us/library/windows/desktop/mt774976(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ProcessThreadsApi.h", MSDNShortId = "mt774976")]
-		public static extern HRESULT SetThreadDescription(HTHREAD hThread, string lpThreadDescription);
+		public static extern HRESULT SetThreadDescription(HTHREAD hThread, [MarshalAs(UnmanagedType.LPWStr)] string lpThreadDescription);
 
 		/// <summary>
 		/// <para>Sets a preferred processor for a thread. The system schedules threads on their preferred processors whenever possible.</para>
@@ -4560,14 +4363,98 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		// BOOL SetThreadInformation( _In_ HANDLE hThread, _In_ THREAD_INFORMATION_CLASS ThreadInformationClass, _In_reads_bytes_
-		// ThreadInformation, _In_ DWORD ThreadInformationSize); https://msdn.microsoft.com/en-us/library/windows/desktop/hh448390(v=vs.85).aspx
+		/// <remarks>
+		/// <para>
+		/// To help improve system performance, applications should use the <c>SetThreadInformation</c> function with
+		/// <c>ThreadMemoryPriority</c> to lower the memory priority of threads that perform background operations or access files and data
+		/// that are not expected to be accessed again soon. For example, an anti-malware application might lower the priority of threads
+		/// involved in scanning files.
+		/// </para>
+		/// <para>
+		/// Memory priority helps to determine how long pages remain in the working set of a process before they are trimmed. A thread's
+		/// memory priority determines the minimum priority of the physical pages that are added to the process working set by that thread.
+		/// When the memory manager trims the working set, it trims lower priority pages before higher priority pages. This improves overall
+		/// system performance because higher priority pages are less likely to be trimmed from the working set and then trigger a page fault
+		/// when they are accessed again.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example shows how to call <c>SetThreadInformation</c> with <c>ThreadMemoryPriority</c> to set low memory priority
+		/// on the current thread.
+		/// </para>
+		/// <para>
+		/// The following example shows how to call <c>SetThreadInformation</c> with <c>ThreadPowerThrottling</c> to enable throttling
+		/// policies on a thread.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setthreadinformation BOOL
+		// SetThreadInformation( HANDLE hThread, THREAD_INFORMATION_CLASS ThreadInformationClass, LPVOID ThreadInformation, DWORD
+		// ThreadInformationSize );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "hh448390")]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "c0159bea-870a-46b7-a350-91fe52efae49")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetThreadInformation(HTHREAD hThread, THREAD_INFORMATION_CLASS ThreadInformationClass, IntPtr ThreadInformation, uint ThreadInformationSize);
+
+		/// <summary>Sets information for the specified thread.</summary>
+		/// <typeparam name="T">
+		/// The type of the structure that contains the type of information specified by the ThreadInformationClass parameter.
+		/// </typeparam>
+		/// <param name="hThread">
+		/// A handle to the thread. The handle must have THREAD_QUERY_INFORMATION access right. For more information, see Thread Security and
+		/// Access Rights.
+		/// </param>
+		/// <param name="ThreadInformationClass">
+		/// The class of information to set. The only supported values are <c>ThreadMemoryPriority</c> and <c>ThreadPowerThrottling</c>.
+		/// </param>
+		/// <param name="ThreadInformation">
+		/// <para>The structure that contains the type of information specified by the ThreadInformationClass parameter.</para>
+		/// <para>
+		/// If the ThreadInformationClass parameter is <c>ThreadMemoryPriority</c>, this parameter must point to a
+		/// <c>MEMORY_PRIORITY_INFORMATION</c> structure.
+		/// </para>
+		/// <para>
+		/// If the ThreadInformationClass parameter is <c>ThreadPowerThrottling</c>, this parameter must point to a
+		/// <c>THREAD_POWER_THROTTLING_STATE</c> structure.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <exception cref="ArgumentException"></exception>
+		/// <remarks>
+		/// <para>
+		/// To help improve system performance, applications should use the <c>SetThreadInformation</c> function with
+		/// <c>ThreadMemoryPriority</c> to lower the memory priority of threads that perform background operations or access files and data
+		/// that are not expected to be accessed again soon. For example, an anti-malware application might lower the priority of threads
+		/// involved in scanning files.
+		/// </para>
+		/// <para>
+		/// Memory priority helps to determine how long pages remain in the working set of a process before they are trimmed. A thread's
+		/// memory priority determines the minimum priority of the physical pages that are added to the process working set by that thread.
+		/// When the memory manager trims the working set, it trims lower priority pages before higher priority pages. This improves overall
+		/// system performance because higher priority pages are less likely to be trimmed from the working set and then trigger a page fault
+		/// when they are accessed again.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example shows how to call <c>SetThreadInformation</c> with <c>ThreadMemoryPriority</c> to set low memory priority
+		/// on the current thread.
+		/// </para>
+		/// <para>
+		/// The following example shows how to call <c>SetThreadInformation</c> with <c>ThreadPowerThrottling</c> to enable throttling
+		/// policies on a thread.
+		/// </para>
+		/// </remarks>
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "c0159bea-870a-46b7-a350-91fe52efae49")]
+		public static bool SetThreadInformation<T>(HTHREAD hThread, THREAD_INFORMATION_CLASS ThreadInformationClass, in T ThreadInformation)
+		{
+			if (!CorrespondingTypeAttribute.CanSet(ThreadInformationClass, typeof(T))) throw new ArgumentException($"{ThreadInformationClass} cannot be used to set values of type {typeof(T)}.");
+			using (var mem = SafeHGlobalHandle.CreateFromStructure(ThreadInformation))
+				return SetThreadInformation(hThread, ThreadInformationClass, (IntPtr)mem, (uint)mem.Size);
+		}
 
 		/// <summary>
 		/// Sets the priority value for the specified thread. This value, together with the priority class of the thread's process,
@@ -4812,22 +4699,76 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is a TLS index. The slots for the index are initialized to zero.</para>
-		/// <para>If the function fails, the return value is <c>TLS_OUT_OF_INDEXES</c>. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is <c>TLS_OUT_OF_INDEXES</c>. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		// DWORD WINAPI TlsAlloc(void); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686801(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms686801")]
+		/// <remarks>
+		/// <para>
+		/// <c>Windows Phone 8.1:</c> This function is supported for Windows Phone Store apps on Windows Phone 8.1 and later. When a Windows
+		/// Phone Store app calls this function, it is replaced with an inline call to <c>FlsAlloc</c>. Refer to FlsAlloc for function documentation.
+		/// </para>
+		/// <para>
+		/// <c>Windows 8.1</c>, <c>Windows Server 2012 R2</c>, and <c>Windows 10, version 1507</c>: This function is supported for Windows
+		/// Store apps on Windows 8.1, Windows Server 2012 R2, and Windows 10, version 1507. When a Windows Store app calls this function, it
+		/// is replaced with an inline call to <c>FlsAlloc</c>. Refer to FlsAlloc for function documentation.
+		/// </para>
+		/// <para>
+		/// <c>Windows 10, version 1511</c> and <c>Windows 10, version 1607</c>: This function is fully supported for Universal Windows
+		/// Platform (UWP) apps, and is no longer replaced with an inline call to <c>FlsAlloc</c>.
+		/// </para>
+		/// <para>
+		/// The threads of the process can use the TLS index in subsequent calls to the TlsFree, TlsSetValue, or TlsGetValue functions. The
+		/// value of the TLS index should be treated as an opaque value; do not assume that it is an index into a zero-based array.
+		/// </para>
+		/// <para>
+		/// TLS indexes are typically allocated during process or dynamic-link library (DLL) initialization. When a TLS index is allocated,
+		/// its storage slots are initialized to <c>NULL</c>. After a TLS index has been allocated, each thread of the process can use it to
+		/// access its own TLS storage slot. To store a value in its TLS slot, a thread specifies the index in a call to TlsSetValue. The
+		/// thread specifies the same index in a subsequent call to TlsGetValue, to retrieve the stored value.
+		/// </para>
+		/// <para>
+		/// TLS indexes are not valid across process boundaries. A DLL cannot assume that an index assigned in one process is valid in
+		/// another process.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Using Thread Local Storage or Using Thread Local Storage in a Dynamic-Link Library.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlsalloc DWORD TlsAlloc( );
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "cbb3d832-cd92-4875-8366-6b69be7a536f")]
 		public static extern uint TlsAlloc();
 
 		/// <summary>Releases a thread local storage (TLS) index, making it available for reuse.</summary>
-		/// <param name="dwTlsIndex">The TLS index that was allocated by the <c>TlsAlloc</c> function.</param>
+		/// <param name="dwTlsIndex">The TLS index that was allocated by the TlsAlloc function.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		// BOOL WINAPI TlsFree( _In_ DWORD dwTlsIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686804(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms686804")]
+		/// <remarks>
+		/// <para>
+		/// <c>Windows Phone 8.1:</c> This function is supported for Windows Phone Store apps on Windows Phone 8.1 and later. When a Windows
+		/// Phone Store app calls this function, it is replaced with an inline call to <c>FlsFree</c>. Refer to FlsFree for function documentation.
+		/// </para>
+		/// <para>
+		/// <c>Windows 8.1</c>, <c>Windows Server 2012 R2</c>, and <c>Windows 10, version 1507</c>: This function is supported for Windows
+		/// Store apps on Windows 8.1, Windows Server 2012 R2, and Windows 10, version 1507. When a Windows Store app calls this function, it
+		/// is replaced with an inline call to <c>FlsFree</c>. Refer to FlsFree for function documentation.
+		/// </para>
+		/// <para>
+		/// <c>Windows 10, version 1511</c> and <c>Windows 10, version 1607</c>: This function is fully supported for Universal Windows
+		/// Platform (UWP) apps, and is no longer replaced with an inline call to <c>FlsFree</c>.
+		/// </para>
+		/// <para>
+		/// If the threads of the process have allocated memory and stored a pointer to the memory in a TLS slot, they should free the memory
+		/// before calling <c>TlsFree</c>. The <c>TlsFree</c> function does not free memory blocks whose addresses have been stored in the
+		/// TLS slots associated with the TLS index. It is expected that DLLs call this function (if at all) only during <c>DLL_PROCESS_DETACH</c>.
+		/// </para>
+		/// <para>For more information, see Thread Local Storage.</para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Using Thread Local Storage or Using Thread Local Storage in a Dynamic-Link Library.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlsfree BOOL TlsFree( DWORD dwTlsIndex );
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "f5b1e8fc-02eb-4a06-b606-2b647944029b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool TlsFree(uint dwTlsIndex);
 
@@ -4835,45 +4776,101 @@ namespace Vanara.PInvoke
 		/// Retrieves the value in the calling thread's thread local storage (TLS) slot for the specified TLS index. Each thread of a process
 		/// has its own slot for each TLS index.
 		/// </summary>
-		/// <param name="dwTlsIndex">The TLS index that was allocated by the <c>TlsAlloc</c> function.</param>
+		/// <param name="dwTlsIndex">The TLS index that was allocated by the TlsAlloc function.</param>
 		/// <returns>
 		/// <para>
 		/// If the function succeeds, the return value is the value stored in the calling thread's TLS slot associated with the specified
-		/// index. If dwTlsIndex is a valid index allocated by a successful call to <c>TlsAlloc</c>, this function always succeeds.
+		/// index. If dwTlsIndex is a valid index allocated by a successful call to TlsAlloc, this function always succeeds.
 		/// </para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// <para>
 		/// The data stored in a TLS slot can have a value of 0 because it still has its initial value or because the thread called the
-		/// <c>TlsSetValue</c> function with 0. Therefore, if the return value is 0, you must check whether <c>GetLastError</c> returns
+		/// TlsSetValue function with 0. Therefore, if the return value is 0, you must check whether GetLastError returns
 		/// <c>ERROR_SUCCESS</c> before determining that the function has failed. If <c>GetLastError</c> returns <c>ERROR_SUCCESS</c>, then
-		/// the function has succeeded and the data stored in the TLS slot is
-		/// 0. Otherwise, the function has failed.
+		/// the function has succeeded and the data stored in the TLS slot is 0. Otherwise, the function has failed.
 		/// </para>
 		/// <para>
-		/// Functions that return indications of failure call <c>SetLastError</c> when they fail. They generally do not call
-		/// <c>SetLastError</c> when they succeed. The <c>TlsGetValue</c> function is an exception to this general rule. The
-		/// <c>TlsGetValue</c> function calls <c>SetLastError</c> to clear a thread's last error when it succeeds. That allows checking for
-		/// the error-free retrieval of zero values.
+		/// Functions that return indications of failure call SetLastErrorwhen they fail. They generally do not call <c>SetLastError</c> when
+		/// they succeed. The <c>TlsGetValue</c> function is an exception to this general rule. The <c>TlsGetValue</c> function calls
+		/// <c>SetLastError</c> to clear a thread's last error when it succeeds. That allows checking for the error-free retrieval of zero values.
 		/// </para>
 		/// </returns>
-		// LPVOID WINAPI TlsGetValue( _In_ DWORD dwTlsIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686812(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms686812")]
+		/// <remarks>
+		/// <para>
+		/// <c>Windows Phone 8.1:</c> This function is supported for Windows Phone Store apps on Windows Phone 8.1 and later. When a Windows
+		/// Phone Store app calls this function, it is replaced with an inline call to <c>FlsGetValue</c>. Refer to FlsGetValue for function documentation.
+		/// </para>
+		/// <para>
+		/// <c>Windows 8.1</c>, <c>Windows Server 2012 R2</c>, and <c>Windows 10, version 1507</c>: This function is supported for Windows
+		/// Store apps on Windows 8.1, Windows Server 2012 R2, and Windows 10, version 1507. When a Windows Store app calls this function, it
+		/// is replaced with an inline call to <c>FlsGetValue</c>. Refer to FlsGetValue for function documentation.
+		/// </para>
+		/// <para>
+		/// <c>Windows 10, version 1511</c> and <c>Windows 10, version 1607</c>: This function is fully supported for Universal Windows
+		/// Platform (UWP) apps, and is no longer replaced with an inline call to <c>FlsGetValue</c>.
+		/// </para>
+		/// <para>
+		/// TLS indexes are typically allocated by the TlsAlloc function during process or DLL initialization. After a TLS index is
+		/// allocated, each thread of the process can use it to access its own TLS slot for that index. A thread specifies a TLS index in a
+		/// call to TlsSetValue to store a value in its slot. The thread specifies the same index in a subsequent call to <c>TlsGetValue</c>
+		/// to retrieve the stored value.
+		/// </para>
+		/// <para>
+		/// <c>TlsGetValue</c> was implemented with speed as the primary goal. The function performs minimal parameter validation and error
+		/// checking. In particular, it succeeds if dwTlsIndex is in the range 0 through ( <c>TLS_MINIMUM_AVAILABLE</c>– 1). It is up to the
+		/// programmer to ensure that the index is valid and that the thread calls TlsSetValue before calling <c>TlsGetValue</c>.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Using Thread Local Storage or Using Thread Local Storage in a Dynamic-Link Library.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlsgetvalue LPVOID TlsGetValue( DWORD
+		// dwTlsIndex );
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "82bd5ff6-ff0b-42b7-9ece-e9e8531eb5fb")]
 		public static extern IntPtr TlsGetValue(uint dwTlsIndex);
 
 		/// <summary>
 		/// Stores a value in the calling thread's thread local storage (TLS) slot for the specified TLS index. Each thread of a process has
 		/// its own slot for each TLS index.
 		/// </summary>
-		/// <param name="dwTlsIndex">The TLS index that was allocated by the <c>TlsAlloc</c> function.</param>
+		/// <param name="dwTlsIndex">The TLS index that was allocated by the TlsAlloc function.</param>
 		/// <param name="lpTlsValue">The value to be stored in the calling thread's TLS slot for the index.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		// BOOL WINAPI TlsSetValue( _In_ DWORD dwTlsIndex, _In_opt_ LPVOID lpTlsValue); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686818(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms686818")]
+		/// <remarks>
+		/// <para>
+		/// <c>Windows Phone 8.1:</c> This function is supported for Windows Phone Store apps on Windows Phone 8.1 and later. When a Windows
+		/// Phone Store app calls this function, it is replaced with an inline call to <c>FlsSetValue</c>. Refer to FlsSetValue for function documentation.
+		/// </para>
+		/// <para>
+		/// <c>Windows 8.1</c>, <c>Windows Server 2012 R2</c>, and <c>Windows 10, version 1507</c>: This function is supported for Windows
+		/// Store apps on Windows 8.1, Windows Server 2012 R2, and Windows 10, version 1507. When a Windows Store app calls this function, it
+		/// is replaced with an inline call to <c>FlsSetValue</c>. Refer to FlsSetValue for function documentation.
+		/// </para>
+		/// <para>
+		/// <c>Windows 10, version 1511</c> and <c>Windows 10, version 1607</c>: This function is fully supported for Universal Windows
+		/// Platform (UWP) apps, and is no longer replaced with an inline call to <c>FlsSetValue</c>.
+		/// </para>
+		/// <para>
+		/// TLS indexes are typically allocated by the TlsAlloc function during process or DLL initialization. When a TLS index is allocated,
+		/// its storage slots are initialized to NULL. After a TLS index is allocated, each thread of the process can use it to access its
+		/// own TLS slot for that index. A thread specifies a TLS index in a call to <c>TlsSetValue</c>, to store a value in its slot. The
+		/// thread specifies the same index in a subsequent call to TlsGetValue, to retrieve the stored value.
+		/// </para>
+		/// <para>
+		/// <c>TlsSetValue</c> was implemented with speed as the primary goal. The function performs minimal parameter validation and error
+		/// checking. In particular, it succeeds if dwTlsIndex is in the range 0 through ( <c>TLS_MINIMUM_AVAILABLE</c>– 1). It is up to the
+		/// programmer to ensure that the index is valid before calling TlsGetValue.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Using Thread Local Storage or Using Thread Local Storage in a Dynamic-Link Library.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlssetvalue BOOL TlsSetValue( DWORD
+		// dwTlsIndex, LPVOID lpTlsValue );
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "531b4a4a-a251-4ab4-b00a-754783a51283")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool TlsSetValue(uint dwTlsIndex, [In] IntPtr lpTlsValue);
 
@@ -4996,7 +4993,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686880")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UpdateProcThreadAttribute(IntPtr lpAttributeList, uint dwFlags, UIntPtr Attribute, IntPtr lpValue, SizeT cbSize, IntPtr lpPreviousValue = default, IntPtr lpReturnSize = default);
+		public static extern bool UpdateProcThreadAttribute(IntPtr lpAttributeList, [Optional] uint dwFlags, PROC_THREAD_ATTRIBUTE Attribute, IntPtr lpValue, SizeT cbSize, [Optional] IntPtr lpPreviousValue, [Optional] IntPtr lpReturnSize);
 
 		/// <summary>
 		/// <para>Creates a new process and its primary thread. The new process runs in the security context of the calling process.</para>
@@ -5364,420 +5361,21 @@ namespace Vanara.PInvoke
 			[In] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In] IntPtr lpEnvironment,
 			string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
-		/// <summary>
-		/// <para>
-		/// Creates a new process and its primary thread. The new process runs in the security context of the user represented by the
-		/// specified token.
-		/// </para>
-		/// <para>
-		/// Typically, the process that calls the <c>CreateProcessAsUser</c> function must have the <c>SE_INCREASE_QUOTA_NAME</c> privilege
-		/// and may require the <c>SE_ASSIGNPRIMARYTOKEN_NAME</c> privilege if the token is not assignable. If this function fails with
-		/// <c>ERROR_PRIVILEGE_NOT_HELD</c> (1314), use the <c>CreateProcessWithLogonW</c> function instead. <c>CreateProcessWithLogonW</c>
-		/// requires no special privileges, but the specified user account must be allowed to log on interactively. Generally, it is best to
-		/// use <c>CreateProcessWithLogonW</c> to create a process with alternate credentials.
-		/// </para>
-		/// </summary>
-		/// <param name="hToken">
-		/// <para>
-		/// A handle to the primary token that represents a user. The handle must have the <c>TOKEN_QUERY</c>, <c>TOKEN_DUPLICATE</c>, and
-		/// <c>TOKEN_ASSIGN_PRIMARY</c> access rights. For more information, see <c>Access Rights for Access-Token Objects</c>. The user
-		/// represented by the token must have read and execute access to the application specified by the lpApplicationName or the
-		/// lpCommandLine parameter.
-		/// </para>
-		/// <para>
-		/// To get a primary token that represents the specified user, call the <c>LogonUser</c> function. Alternatively, you can call the
-		/// <c>DuplicateTokenEx</c> function to convert an impersonation token into a primary token. This allows a server application that is
-		/// impersonating a client to create a process that has the security context of the client.
-		/// </para>
-		/// <para>
-		/// If hToken is a restricted version of the caller's primary token, the <c>SE_ASSIGNPRIMARYTOKEN_NAME</c> privilege is not required.
-		/// If the necessary privileges are not already enabled, <c>CreateProcessAsUser</c> enables them for the duration of the call. For
-		/// more information, see Running with Special Privileges.
-		/// </para>
-		/// <para>
-		/// <c>Terminal Services:</c> The process is run in the session specified in the token. By default, this is the same session that
-		/// called <c>LogonUser</c>. To change the session, use the <c>SetTokenInformation</c> function.
-		/// </para>
-		/// </param>
-		/// <param name="lpApplicationName">
-		/// <para>
-		/// The name of the module to be executed. This module can be a Windows-based application. It can be some other type of module (for
-		/// example, MS-DOS or OS/2) if the appropriate subsystem is available on the local computer.
-		/// </para>
-		/// <para>
-		/// The string can specify the full path and file name of the module to execute or it can specify a partial name. In the case of a
-		/// partial name, the function uses the current drive and current directory to complete the specification. The function will not use
-		/// the search path. This parameter must include the file name extension; no default extension is assumed.
-		/// </para>
-		/// <para>
-		/// The lpApplicationName parameter can be <c>NULL</c>. In that case, the module name must be the first white space–delimited token
-		/// in the lpCommandLine string. If you are using a long file name that contains a space, use quoted strings to indicate where the
-		/// file name ends and the arguments begin; otherwise, the file name is ambiguous. For example, consider the string "c:\program
-		/// files\sub dir\program name". This string can be interpreted in a number of ways. The system tries to interpret the possibilities
-		/// in the following order:
-		/// </para>
-		/// <para>
-		/// If the executable module is a 16-bit application, lpApplicationName should be <c>NULL</c>, and the string pointed to by
-		/// lpCommandLine should specify the executable module as well as its arguments. By default, all 16-bit Windows-based applications
-		/// created by <c>CreateProcessAsUser</c> are run in a separate VDM (equivalent to <c>CREATE_SEPARATE_WOW_VDM</c> in <c>CreateProcess</c>).
-		/// </para>
-		/// </param>
-		/// <param name="lpCommandLine">
-		/// <para>
-		/// The command line to be executed. The maximum length of this string is 32K characters. If lpApplicationName is <c>NULL</c>, the
-		/// module name portion of lpCommandLine is limited to <c>MAX_PATH</c> characters.
-		/// </para>
-		/// <para>
-		/// The Unicode version of this function, <c>CreateProcessAsUserW</c>, can modify the contents of this string. Therefore, this
-		/// parameter cannot be a pointer to read-only memory (such as a <c>const</c> variable or a literal string). If this parameter is a
-		/// constant string, the function may cause an access violation.
-		/// </para>
-		/// <para>
-		/// The lpCommandLine parameter can be <c>NULL</c>. In that case, the function uses the string pointed to by lpApplicationName as the
-		/// command line.
-		/// </para>
-		/// <para>
-		/// If both lpApplicationName and lpCommandLine are non- <c>NULL</c>, *lpApplicationName specifies the module to execute, and
-		/// *lpCommandLine specifies the command line. The new process can use <c>GetCommandLine</c> to retrieve the entire command line.
-		/// Console processes written in C can use the argc and argv arguments to parse the command line. Because argv[0] is the module name,
-		/// C programmers generally repeat the module name as the first token in the command line.
-		/// </para>
-		/// <para>
-		/// If lpApplicationName is <c>NULL</c>, the first white space–delimited token of the command line specifies the module name. If you
-		/// are using a long file name that contains a space, use quoted strings to indicate where the file name ends and the arguments begin
-		/// (see the explanation for the lpApplicationName parameter). If the file name does not contain an extension, .exe is appended.
-		/// Therefore, if the file name extension is .com, this parameter must include the .com extension. If the file name ends in a period
-		/// (.) with no extension, or if the file name contains a path, .exe is not appended. If the file name does not contain a directory
-		/// path, the system searches for the executable file in the following sequence:
-		/// </para>
-		/// <para>
-		/// The system adds a null character to the command line string to separate the file name from the arguments. This divides the
-		/// original string into two strings for internal processing.
-		/// </para>
-		/// </param>
-		/// <param name="lpProcessAttributes">
-		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new process object and
-		/// determines whether child processes can inherit the returned handle to the process. If lpProcessAttributes is <c>NULL</c> or
-		/// <c>lpSecurityDescriptor</c> is <c>NULL</c>, the process gets a default security descriptor and the handle cannot be inherited.
-		/// The default security descriptor is that of the user referenced in the hToken parameter. This security descriptor may not allow
-		/// access for the caller, in which case the process may not be opened again after it is run. The process handle is valid and will
-		/// continue to have full access rights.
-		/// </param>
-		/// <param name="lpThreadAttributes">
-		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new thread object and determines
-		/// whether child processes can inherit the returned handle to the thread. If lpThreadAttributes is <c>NULL</c> or
-		/// <c>lpSecurityDescriptor</c> is <c>NULL</c>, the thread gets a default security descriptor and the handle cannot be inherited. The
-		/// default security descriptor is that of the user referenced in the hToken parameter. This security descriptor may not allow access
-		/// for the caller.
-		/// </param>
-		/// <param name="bInheritHandles">
-		/// <para>
-		/// If this parameter is <c>TRUE</c>, each inheritable handle in the calling process is inherited by the new process. If the
-		/// parameter is <c>FALSE</c>, the handles are not inherited. Note that inherited handles have the same value and access rights as
-		/// the original handles.
-		/// </para>
-		/// <para>
-		/// <c>Terminal Services:</c> You cannot inherit handles across sessions. Additionally, if this parameter is <c>TRUE</c>, you must
-		/// create the process in the same session as the caller.
-		/// </para>
-		/// <para>
-		/// <c>Protected Process Light (PPL) processes:</c> The generic handle inheritance is blocked when a PPL process creates a non-PPL
-		/// process since PROCESS_DUP_HANDLE is not allowed from a non-PPL process to a PPL process. See Process Security and Access Rights
-		/// </para>
-		/// </param>
-		/// <param name="dwCreationFlags">
-		/// <para>
-		/// The flags that control the priority class and the creation of the process. For a list of values, see Process Creation Flags.
-		/// </para>
-		/// <para>
-		/// This parameter also controls the new process's priority class, which is used to determine the scheduling priorities of the
-		/// process's threads. For a list of values, see <c>GetPriorityClass</c>. If none of the priority class flags is specified, the
-		/// priority class defaults to <c>NORMAL_PRIORITY_CLASS</c> unless the priority class of the creating process is
-		/// <c>IDLE_PRIORITY_CLASS</c> or <c>BELOW_NORMAL_PRIORITY_CLASS</c>. In this case, the child process receives the default priority
-		/// class of the calling process.
-		/// </para>
-		/// </param>
-		/// <param name="lpEnvironment">
-		/// <para>
-		/// A pointer to an environment block for the new process. If this parameter is <c>NULL</c>, the new process uses the environment of
-		/// the calling process.
-		/// </para>
-		/// <para>An environment block consists of a null-terminated block of null-terminated strings. Each string is in the following form:</para>
-		/// <para>name=value\0</para>
-		/// <para>Because the equal sign is used as a separator, it must not be used in the name of an environment variable.</para>
-		/// <para>
-		/// An environment block can contain either Unicode or ANSI characters. If the environment block pointed to by lpEnvironment contains
-		/// Unicode characters, be sure that dwCreationFlags includes <c>CREATE_UNICODE_ENVIRONMENT</c>. If this parameter is <c>NULL</c> and
-		/// the environment block of the parent process contains Unicode characters, you must also ensure that dwCreationFlags includes <c>CREATE_UNICODE_ENVIRONMENT</c>.
-		/// </para>
-		/// <para>
-		/// The ANSI version of this function, <c>CreateProcessAsUserA</c> fails if the total size of the environment block for the process
-		/// exceeds 32,767 characters.
-		/// </para>
-		/// <para>
-		/// Note that an ANSI environment block is terminated by two zero bytes: one for the last string, one more to terminate the block. A
-		/// Unicode environment block is terminated by four zero bytes: two for the last string, two more to terminate the block.
-		/// </para>
-		/// <para>
-		/// <c>Windows Server 2003 and Windows XP:</c> If the size of the combined user and system environment variable exceeds 8192 bytes,
-		/// the process created by <c>CreateProcessAsUser</c> no longer runs with the environment block passed to the function by the parent
-		/// process. Instead, the child process runs with the environment block returned by the <c>CreateEnvironmentBlock</c> function.
-		/// </para>
-		/// <para>To retrieve a copy of the environment block for a given user, use the <c>CreateEnvironmentBlock</c> function.</para>
-		/// </param>
-		/// <param name="lpCurrentDirectory">
-		/// <para>The full path to the current directory for the process. The string can also specify a UNC path.</para>
-		/// <para>
-		/// If this parameter is NULL, the new process will have the same current drive and directory as the calling process. (This feature
-		/// is provided primarily for shells that need to start an application and specify its initial drive and working directory.)
-		/// </para>
-		/// </param>
-		/// <param name="lpStartupInfo">
-		/// <para>A pointer to a <c>STARTUPINFO</c> or <c>STARTUPINFOEX</c> structure.</para>
-		/// <para>
-		/// The user must have full access to both the specified window station and desktop. If you want the process to be interactive,
-		/// specify winsta0\default. If the <c>lpDesktop</c> member is NULL, the new process inherits the desktop and window station of its
-		/// parent process. If this member is an empty string, "", the new process connects to a window station using the rules described in
-		/// Process Connection to a Window Station.
-		/// </para>
-		/// <para>
-		/// To set extended attributes, use a <c>STARTUPINFOEX</c> structure and specify <c>EXTENDED_STARTUPINFO_PRESENT</c> in the
-		/// dwCreationFlags parameter.
-		/// </para>
-		/// <para>Handles in <c>STARTUPINFO</c> or <c>STARTUPINFOEX</c> must be closed with <c>CloseHandle</c> when they are no longer needed.</para>
-		/// </param>
-		/// <param name="lpProcessInformation">
-		/// <para>A pointer to a <c>PROCESS_INFORMATION</c> structure that receives identification information about the new process.</para>
-		/// <para>Handles in <c>PROCESS_INFORMATION</c> must be closed with <c>CloseHandle</c> when they are no longer needed.</para>
-		/// </param>
+		/// <summary>Retrieves the contents of the <c>STARTUPINFO</c> structure that was specified when the calling process was created.</summary>
+		/// <param name="lpStartupInfo">A pointer to a <c>STARTUPINFO</c> structure that receives the startup information.</param>
 		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>This function does not return a value.</para>
 		/// <para>
-		/// Note that the function returns before the process has finished initialization. If a required DLL cannot be located or fails to
-		/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
+		/// If an error occurs, the ANSI version of this function ( <c>GetStartupInfoA</c>) can raise an exception. The Unicode version (
+		/// <c>GetStartupInfoW</c>) does not fail.
 		/// </para>
 		/// </returns>
-		// BOOL WINAPI CreateProcessAsUser( _In_opt_ HANDLE hToken, _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine,
-		// _In_opt_ LPSECURITY_ATTRIBUTES lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles,
-		// _In_ DWORD dwCreationFlags, _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo,
-		// _Out_ LPPROCESS_INFORMATION lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682429(v=vs.85).aspx
-		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms682429")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool CreateProcessAsUser(HTOKEN hToken, string lpApplicationName, StringBuilder lpCommandLine,
-			SECURITY_ATTRIBUTES lpProcessAttributes, SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
-			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
+		// VOID WINAPI GetStartupInfo( _Out_ LPSTARTUPINFO lpStartupInfo); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683230(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms683230")]
+		private static extern void GetStartupInfo(out STARTUPINFO_OUT lpStartupInfo);
 
-		/// <summary>
-		/// <para>
-		/// Creates a new process and its primary thread. The new process runs in the security context of the user represented by the
-		/// specified token.
-		/// </para>
-		/// <para>
-		/// Typically, the process that calls the <c>CreateProcessAsUser</c> function must have the <c>SE_INCREASE_QUOTA_NAME</c> privilege
-		/// and may require the <c>SE_ASSIGNPRIMARYTOKEN_NAME</c> privilege if the token is not assignable. If this function fails with
-		/// <c>ERROR_PRIVILEGE_NOT_HELD</c> (1314), use the <c>CreateProcessWithLogonW</c> function instead. <c>CreateProcessWithLogonW</c>
-		/// requires no special privileges, but the specified user account must be allowed to log on interactively. Generally, it is best to
-		/// use <c>CreateProcessWithLogonW</c> to create a process with alternate credentials.
-		/// </para>
-		/// </summary>
-		/// <param name="hToken">
-		/// <para>
-		/// A handle to the primary token that represents a user. The handle must have the <c>TOKEN_QUERY</c>, <c>TOKEN_DUPLICATE</c>, and
-		/// <c>TOKEN_ASSIGN_PRIMARY</c> access rights. For more information, see <c>Access Rights for Access-Token Objects</c>. The user
-		/// represented by the token must have read and execute access to the application specified by the lpApplicationName or the
-		/// lpCommandLine parameter.
-		/// </para>
-		/// <para>
-		/// To get a primary token that represents the specified user, call the <c>LogonUser</c> function. Alternatively, you can call the
-		/// <c>DuplicateTokenEx</c> function to convert an impersonation token into a primary token. This allows a server application that is
-		/// impersonating a client to create a process that has the security context of the client.
-		/// </para>
-		/// <para>
-		/// If hToken is a restricted version of the caller's primary token, the <c>SE_ASSIGNPRIMARYTOKEN_NAME</c> privilege is not required.
-		/// If the necessary privileges are not already enabled, <c>CreateProcessAsUser</c> enables them for the duration of the call. For
-		/// more information, see Running with Special Privileges.
-		/// </para>
-		/// <para>
-		/// <c>Terminal Services:</c> The process is run in the session specified in the token. By default, this is the same session that
-		/// called <c>LogonUser</c>. To change the session, use the <c>SetTokenInformation</c> function.
-		/// </para>
-		/// </param>
-		/// <param name="lpApplicationName">
-		/// <para>
-		/// The name of the module to be executed. This module can be a Windows-based application. It can be some other type of module (for
-		/// example, MS-DOS or OS/2) if the appropriate subsystem is available on the local computer.
-		/// </para>
-		/// <para>
-		/// The string can specify the full path and file name of the module to execute or it can specify a partial name. In the case of a
-		/// partial name, the function uses the current drive and current directory to complete the specification. The function will not use
-		/// the search path. This parameter must include the file name extension; no default extension is assumed.
-		/// </para>
-		/// <para>
-		/// The lpApplicationName parameter can be <c>NULL</c>. In that case, the module name must be the first white space–delimited token
-		/// in the lpCommandLine string. If you are using a long file name that contains a space, use quoted strings to indicate where the
-		/// file name ends and the arguments begin; otherwise, the file name is ambiguous. For example, consider the string "c:\program
-		/// files\sub dir\program name". This string can be interpreted in a number of ways. The system tries to interpret the possibilities
-		/// in the following order:
-		/// </para>
-		/// <para>
-		/// If the executable module is a 16-bit application, lpApplicationName should be <c>NULL</c>, and the string pointed to by
-		/// lpCommandLine should specify the executable module as well as its arguments. By default, all 16-bit Windows-based applications
-		/// created by <c>CreateProcessAsUser</c> are run in a separate VDM (equivalent to <c>CREATE_SEPARATE_WOW_VDM</c> in <c>CreateProcess</c>).
-		/// </para>
-		/// </param>
-		/// <param name="lpCommandLine">
-		/// <para>
-		/// The command line to be executed. The maximum length of this string is 32K characters. If lpApplicationName is <c>NULL</c>, the
-		/// module name portion of lpCommandLine is limited to <c>MAX_PATH</c> characters.
-		/// </para>
-		/// <para>
-		/// The Unicode version of this function, <c>CreateProcessAsUserW</c>, can modify the contents of this string. Therefore, this
-		/// parameter cannot be a pointer to read-only memory (such as a <c>const</c> variable or a literal string). If this parameter is a
-		/// constant string, the function may cause an access violation.
-		/// </para>
-		/// <para>
-		/// The lpCommandLine parameter can be <c>NULL</c>. In that case, the function uses the string pointed to by lpApplicationName as the
-		/// command line.
-		/// </para>
-		/// <para>
-		/// If both lpApplicationName and lpCommandLine are non- <c>NULL</c>, *lpApplicationName specifies the module to execute, and
-		/// *lpCommandLine specifies the command line. The new process can use <c>GetCommandLine</c> to retrieve the entire command line.
-		/// Console processes written in C can use the argc and argv arguments to parse the command line. Because argv[0] is the module name,
-		/// C programmers generally repeat the module name as the first token in the command line.
-		/// </para>
-		/// <para>
-		/// If lpApplicationName is <c>NULL</c>, the first white space–delimited token of the command line specifies the module name. If you
-		/// are using a long file name that contains a space, use quoted strings to indicate where the file name ends and the arguments begin
-		/// (see the explanation for the lpApplicationName parameter). If the file name does not contain an extension, .exe is appended.
-		/// Therefore, if the file name extension is .com, this parameter must include the .com extension. If the file name ends in a period
-		/// (.) with no extension, or if the file name contains a path, .exe is not appended. If the file name does not contain a directory
-		/// path, the system searches for the executable file in the following sequence:
-		/// </para>
-		/// <para>
-		/// The system adds a null character to the command line string to separate the file name from the arguments. This divides the
-		/// original string into two strings for internal processing.
-		/// </para>
-		/// </param>
-		/// <param name="lpProcessAttributes">
-		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new process object and
-		/// determines whether child processes can inherit the returned handle to the process. If lpProcessAttributes is <c>NULL</c> or
-		/// <c>lpSecurityDescriptor</c> is <c>NULL</c>, the process gets a default security descriptor and the handle cannot be inherited.
-		/// The default security descriptor is that of the user referenced in the hToken parameter. This security descriptor may not allow
-		/// access for the caller, in which case the process may not be opened again after it is run. The process handle is valid and will
-		/// continue to have full access rights.
-		/// </param>
-		/// <param name="lpThreadAttributes">
-		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new thread object and determines
-		/// whether child processes can inherit the returned handle to the thread. If lpThreadAttributes is <c>NULL</c> or
-		/// <c>lpSecurityDescriptor</c> is <c>NULL</c>, the thread gets a default security descriptor and the handle cannot be inherited. The
-		/// default security descriptor is that of the user referenced in the hToken parameter. This security descriptor may not allow access
-		/// for the caller.
-		/// </param>
-		/// <param name="bInheritHandles">
-		/// <para>
-		/// If this parameter is <c>TRUE</c>, each inheritable handle in the calling process is inherited by the new process. If the
-		/// parameter is <c>FALSE</c>, the handles are not inherited. Note that inherited handles have the same value and access rights as
-		/// the original handles.
-		/// </para>
-		/// <para>
-		/// <c>Terminal Services:</c> You cannot inherit handles across sessions. Additionally, if this parameter is <c>TRUE</c>, you must
-		/// create the process in the same session as the caller.
-		/// </para>
-		/// <para>
-		/// <c>Protected Process Light (PPL) processes:</c> The generic handle inheritance is blocked when a PPL process creates a non-PPL
-		/// process since PROCESS_DUP_HANDLE is not allowed from a non-PPL process to a PPL process. See Process Security and Access Rights
-		/// </para>
-		/// </param>
-		/// <param name="dwCreationFlags">
-		/// <para>
-		/// The flags that control the priority class and the creation of the process. For a list of values, see Process Creation Flags.
-		/// </para>
-		/// <para>
-		/// This parameter also controls the new process's priority class, which is used to determine the scheduling priorities of the
-		/// process's threads. For a list of values, see <c>GetPriorityClass</c>. If none of the priority class flags is specified, the
-		/// priority class defaults to <c>NORMAL_PRIORITY_CLASS</c> unless the priority class of the creating process is
-		/// <c>IDLE_PRIORITY_CLASS</c> or <c>BELOW_NORMAL_PRIORITY_CLASS</c>. In this case, the child process receives the default priority
-		/// class of the calling process.
-		/// </para>
-		/// </param>
-		/// <param name="lpEnvironment">
-		/// <para>
-		/// A pointer to an environment block for the new process. If this parameter is <c>NULL</c>, the new process uses the environment of
-		/// the calling process.
-		/// </para>
-		/// <para>An environment block consists of a null-terminated block of null-terminated strings. Each string is in the following form:</para>
-		/// <para>name=value\0</para>
-		/// <para>Because the equal sign is used as a separator, it must not be used in the name of an environment variable.</para>
-		/// <para>
-		/// An environment block can contain either Unicode or ANSI characters. If the environment block pointed to by lpEnvironment contains
-		/// Unicode characters, be sure that dwCreationFlags includes <c>CREATE_UNICODE_ENVIRONMENT</c>. If this parameter is <c>NULL</c> and
-		/// the environment block of the parent process contains Unicode characters, you must also ensure that dwCreationFlags includes <c>CREATE_UNICODE_ENVIRONMENT</c>.
-		/// </para>
-		/// <para>
-		/// The ANSI version of this function, <c>CreateProcessAsUserA</c> fails if the total size of the environment block for the process
-		/// exceeds 32,767 characters.
-		/// </para>
-		/// <para>
-		/// Note that an ANSI environment block is terminated by two zero bytes: one for the last string, one more to terminate the block. A
-		/// Unicode environment block is terminated by four zero bytes: two for the last string, two more to terminate the block.
-		/// </para>
-		/// <para>
-		/// <c>Windows Server 2003 and Windows XP:</c> If the size of the combined user and system environment variable exceeds 8192 bytes,
-		/// the process created by <c>CreateProcessAsUser</c> no longer runs with the environment block passed to the function by the parent
-		/// process. Instead, the child process runs with the environment block returned by the <c>CreateEnvironmentBlock</c> function.
-		/// </para>
-		/// <para>To retrieve a copy of the environment block for a given user, use the <c>CreateEnvironmentBlock</c> function.</para>
-		/// </param>
-		/// <param name="lpCurrentDirectory">
-		/// <para>The full path to the current directory for the process. The string can also specify a UNC path.</para>
-		/// <para>
-		/// If this parameter is NULL, the new process will have the same current drive and directory as the calling process. (This feature
-		/// is provided primarily for shells that need to start an application and specify its initial drive and working directory.)
-		/// </para>
-		/// </param>
-		/// <param name="lpStartupInfo">
-		/// <para>A pointer to a <c>STARTUPINFO</c> or <c>STARTUPINFOEX</c> structure.</para>
-		/// <para>
-		/// The user must have full access to both the specified window station and desktop. If you want the process to be interactive,
-		/// specify winsta0\default. If the <c>lpDesktop</c> member is NULL, the new process inherits the desktop and window station of its
-		/// parent process. If this member is an empty string, "", the new process connects to a window station using the rules described in
-		/// Process Connection to a Window Station.
-		/// </para>
-		/// <para>
-		/// To set extended attributes, use a <c>STARTUPINFOEX</c> structure and specify <c>EXTENDED_STARTUPINFO_PRESENT</c> in the
-		/// dwCreationFlags parameter.
-		/// </para>
-		/// <para>Handles in <c>STARTUPINFO</c> or <c>STARTUPINFOEX</c> must be closed with <c>CloseHandle</c> when they are no longer needed.</para>
-		/// </param>
-		/// <param name="lpProcessInformation">
-		/// <para>A pointer to a <c>PROCESS_INFORMATION</c> structure that receives identification information about the new process.</para>
-		/// <para>Handles in <c>PROCESS_INFORMATION</c> must be closed with <c>CloseHandle</c> when they are no longer needed.</para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-		/// <para>
-		/// Note that the function returns before the process has finished initialization. If a required DLL cannot be located or fails to
-		/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
-		/// </para>
-		/// </returns>
-		// BOOL WINAPI CreateProcessAsUser( _In_opt_ HANDLE hToken, _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine,
-		// _In_opt_ LPSECURITY_ATTRIBUTES lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles,
-		// _In_ DWORD dwCreationFlags, _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo,
-		// _Out_ LPPROCESS_INFORMATION lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682429(v=vs.85).aspx
-		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms682429")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool CreateProcessAsUser(HTOKEN hToken, string lpApplicationName, StringBuilder lpCommandLine,
-			SECURITY_ATTRIBUTES lpProcessAttributes, SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
-			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
-
-		// Attribute may be used with thread creation Attribute is input only Attribute may be "accumulated," e.g. bitmasks, counters, etc.
-		private static UIntPtr ProcThreadAttributeValue(PROC_THREAD_ATTRIBUTE_NUM Number, bool Thread, bool Input, bool Additive) =>
-			(UIntPtr)(((uint)Number & PROC_THREAD_ATTRIBUTE_NUMBER) | (Thread ? PROC_THREAD_ATTRIBUTE_THREAD : 0) |
-			(Input ? PROC_THREAD_ATTRIBUTE_INPUT : 0) | (Additive ? PROC_THREAD_ATTRIBUTE_ADDITIVE : 0));
+		private static bool Is64bitOS() => !(0 == GetSystemWow64Directory(null, 0) && Win32Error.GetLastError() == Win32Error.ERROR_CALL_NOT_IMPLEMENTED);
 
 		/// <summary>
 		/// Represents app memory usage at a single point in time. This structure is used by the <c>PROCESS_INFORMATION_CLASS</c> class.
@@ -5865,6 +5463,10 @@ namespace Vanara.PInvoke
 				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)] public byte[] RegisterArea;
 				public int Cr0NpxState;
 			}
+
+			/// <summary>Initializes a new instance of the <see cref="CONTEXT"/> struct.</summary>
+			/// <param name="flags">The context flags.</param>
+			public CONTEXT(uint flags) : this() { ContextFlags = flags; }
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 16)]
@@ -6002,6 +5604,214 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public MEMORY_PRIORITY MemoryPriority;
+
+			/// <summary>Initializes a new instance of the <see cref="MEMORY_PRIORITY_INFORMATION"/> struct.</summary>
+			/// <param name="memoryPriority">The memory priority for the thread or process.</param>
+			public MEMORY_PRIORITY_INFORMATION(MEMORY_PRIORITY memoryPriority)
+			{
+				MemoryPriority = memoryPriority;
+			}
+		}
+
+		/// <summary>Represents a process or thread attribute identifier.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PROC_THREAD_ATTRIBUTE : IEquatable<PROC_THREAD_ATTRIBUTE>, IEquatable<UIntPtr>
+		{
+			private UIntPtr value;
+
+			private const uint PROC_THREAD_ATTRIBUTE_NUMBER = 0x0000FFFF;
+			private const uint PROC_THREAD_ATTRIBUTE_THREAD = 0x00010000;
+			private const uint PROC_THREAD_ATTRIBUTE_INPUT = 0x00020000;
+			private const uint PROC_THREAD_ATTRIBUTE_ADDITIVE = 0x00040000;
+
+			private static Dictionary<uint, Type> typeLookup = new Dictionary<uint, Type>();
+
+			static PROC_THREAD_ATTRIBUTE()
+			{
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_ALL_APPLICATION_PACKAGES_POLICY, null);
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_CHILD_PROCESS_POLICY, typeof(ulong));
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_DESKTOP_APP_POLICY, typeof(uint));
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_GROUP_AFFINITY, typeof(GROUP_AFFINITY));
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_HANDLE_LIST, typeof(HANDLE[]));
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_IDEAL_PROCESSOR, typeof(PROCESSOR_NUMBER));
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_JOB_LIST, null);
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY, typeof(ulong));
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_PARENT_PROCESS, typeof(HPROCESS));
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_PREFERRED_NODE, typeof(uint));
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_PROTECTION_LEVEL, typeof(uint));
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES, typeof(SECURITY_CAPABILITIES));
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_UMS_THREAD, typeof(UMS_CREATE_THREAD_ATTRIBUTES));
+				typeLookup.Add(PROC_THREAD_ATTRIBUTE_WIN32K_FILTER, null);
+			}
+
+			/// <summary>Determines equality.</summary>
+			/// <param name="attr">The attribute to compare.</param>
+			/// <returns><see langword="true"/> if the value is equal to this instance.</returns>
+			public bool Equals(PROC_THREAD_ATTRIBUTE attr) => value.Equals(attr.value);
+
+			/// <summary>Determines equality.</summary>
+			/// <param name="puint">The <see cref="UIntPtr"/> value.</param>
+			/// <returns><see langword="true"/> if the value is equal to this instance.</returns>
+			public bool Equals(UIntPtr puint) => value.Equals(puint);
+
+			/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+			/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+			/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+			public override bool Equals(object obj)
+			{
+				switch (obj)
+				{
+					case PROC_THREAD_ATTRIBUTE pta:
+						return Equals(pta);
+
+					case UIntPtr up:
+						return Equals(up);
+
+					case uint ui:
+						return ui.Equals(this);
+
+					default:
+						return base.Equals(obj);
+				}
+			}
+
+			/// <summary>Returns a hash code for this instance.</summary>
+			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+			public override int GetHashCode() => unchecked((int)value.ToUInt32());
+
+			/// <summary>Performs an implicit conversion from <see cref="PROC_THREAD_ATTRIBUTE"/> to <see cref="System.UInt32"/>.</summary>
+			/// <param name="pta">The PROC_THREAD_ATTRIBUTE.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator uint(PROC_THREAD_ATTRIBUTE pta) => pta.value.ToUInt32();
+
+			/// <summary>A type specifier for an attribute.</summary>
+			public enum AttrType : uint
+			{
+				ProcThreadAttributeParentProcess = 0,
+				ProcThreadAttributeHandleList = 2,
+				ProcThreadAttributeGroupAffinity = 3,
+				ProcThreadAttributePreferredNode = 4,
+				ProcThreadAttributeIdealProcessor = 5,
+				ProcThreadAttributeUmsThread = 6,
+				ProcThreadAttributeMitigationPolicy = 7,
+				ProcThreadAttributeSecurityCapabilities = 9,
+				ProcThreadAttributeProtectionLevel = 11,
+				ProcThreadAttributeJobList = 13,
+				ProcThreadAttributeChildProcessPolicy = 14,
+				ProcThreadAttributeAllApplicationPackagesPolicy = 15,
+				ProcThreadAttributeWin32kFilter = 16,
+				ProcThreadAttributeSafeOpenPromptOriginClaim = 17,
+				ProcThreadAttributeDesktopAppPolicy = 18,
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="PROC_THREAD_ATTRIBUTE"/> struct.</summary>
+			/// <param name="Number">The attribute type.</param>
+			/// <param name="Thread">if set to <c>true</c> this is thread specific.</param>
+			/// <param name="Input">if set to <c>true</c> this is an input attribute.</param>
+			/// <param name="Additive">if set to <c>true</c> this is additive.</param>
+			public PROC_THREAD_ATTRIBUTE(AttrType type, bool Thread, bool Input, bool Additive) =>
+				value = (UIntPtr)(((uint)type & PROC_THREAD_ATTRIBUTE_NUMBER) | (Thread ? PROC_THREAD_ATTRIBUTE_THREAD : 0) |
+				(Input ? PROC_THREAD_ATTRIBUTE_INPUT : 0) | (Additive ? PROC_THREAD_ATTRIBUTE_ADDITIVE : 0));
+
+			/// <summary>Gets the type associated with this attribute.</summary>
+			public Type ValidType => LookupType(this);
+
+			/// <summary>Performs an implicit conversion from <see cref="PROC_THREAD_ATTRIBUTE"/> to <see cref="UIntPtr"/>.</summary>
+			/// <param name="attr">The attribute.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator UIntPtr(PROC_THREAD_ATTRIBUTE attr) => attr.value;
+
+			/// <summary>Lookups the type associated with an attribute.</summary>
+			/// <param name="attr">The attribute.</param>
+			/// <returns>The associated type, or <see langword="null"/> if not found.</returns>
+			public static Type LookupType(PROC_THREAD_ATTRIBUTE attr) => typeLookup.TryGetValue(attr, out var type) ? type : null;
+
+			/// <summary>Undocumented.</summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_ALL_APPLICATION_PACKAGES_POLICY = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeAllApplicationPackagesPolicy, false, true, false);
+
+			/// <summary>
+			/// The lpValue parameter is a pointer to a DWORD or DWORD64 value that specifies the child process policy. THe policy specifies
+			/// whether to allow a child process to be created.For information on the possible values for the DWORD or DWORD64 to which
+			/// lpValue points, see Remarks.
+			/// </summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_CHILD_PROCESS_POLICY = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeChildProcessPolicy, false, true, false);
+
+			/// <summary>
+			/// This attribute is relevant only to win32 applications that have been converted to UWP packages by using the Desktop Bridge.
+			/// The lpValue parameter is a pointer to a DWORD value that specifies the desktop app policy. The policy specifies whether
+			/// descendant processes should continue to run in the desktop environment.For information about the possible values for the
+			/// DWORD to which lpValue points, see Remarks.
+			/// </summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_DESKTOP_APP_POLICY = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeDesktopAppPolicy, false, true, false);
+
+			/// <summary>
+			/// The lpValue parameter is a pointer to a GROUP_AFFINITY structure that specifies the processor group affinity for the new
+			/// thread.Windows Server 2008 and Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.
+			/// </summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_GROUP_AFFINITY = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeGroupAffinity, true, true, false);
+
+			/// <summary>
+			/// The lpValue parameter is a pointer to a list of handles to be inherited by the child process.These handles must be created as
+			/// inheritable handles and must not include pseudo handles such as those returned by the GetCurrentProcess or GetCurrentThread function.
+			/// </summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_HANDLE_LIST = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeHandleList, false, true, false);
+
+			/// <summary>
+			/// The lpValue parameter is a pointer to a PROCESSOR_NUMBER structure that specifies the ideal processor for the new
+			/// thread.Windows Server 2008 and Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.
+			/// </summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_IDEAL_PROCESSOR = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeIdealProcessor, true, true, false);
+
+			/// <summary>Undocumented.</summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_JOB_LIST = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeJobList, false, true, false);
+
+			/// <summary>
+			/// The lpValue parameter is a pointer to a DWORD or DWORD64 that specifies the exploit mitigation policy for the child process.
+			/// Starting in Windows 10, version 1703, this parameter can also be a pointer to a two-element DWORD64 array.The specified
+			/// policy overrides the policies set for the application and the system and cannot be changed after the child process starts
+			/// running. Windows Server 2008 and Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.The
+			/// DWORD or DWORD64 pointed to by lpValue can be one or more of the values listed in the remarks.
+			/// </summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeMitigationPolicy, false, true, false);
+
+			/// <summary>
+			/// The lpValue parameter is a pointer to a handle to a process to use instead of the calling process as the parent for the
+			/// process being created. The process to use must have the PROCESS_CREATE_PROCESS access right.Attributes inherited from the
+			/// specified process include handles, the device map, processor affinity, priority, quotas, the process token, and job object.
+			/// (Note that some attributes such as the debug port will come from the creating process, not the process specified by this handle.)
+			/// </summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_PARENT_PROCESS = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeParentProcess, false, true, false);
+
+			/// <summary>
+			/// The lpValue parameter is a pointer to the node number of the preferred NUMA node for the new process.Windows Server 2008 and
+			/// Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.
+			/// </summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_PREFERRED_NODE = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributePreferredNode, false, true, false);
+
+			/// <summary>
+			/// The lpValue parameter is a pointer to a DWORD value of PROTECTION_LEVEL_SAME. This specifies the protection level of the
+			/// child process to be the same as the protection level of its parent process.
+			/// </summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_PROTECTION_LEVEL = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeProtectionLevel, false, true, false);
+
+			/// <summary>
+			/// The lpValue parameter is a pointer to a SECURITY_CAPABILITIES structure that defines the security capabilities of an app
+			/// container. If this attribute is set the new process will be created as an AppContainer process.Windows 7, Windows Server 2008
+			/// R2, Windows Server 2008 and Windows Vista: This value is not supported until Windows 8 and Windows Server 2012.
+			/// </summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeSecurityCapabilities, false, true, false);
+
+			/// <summary>
+			/// The lpValue parameter is a pointer to a UMS_CREATE_THREAD_ATTRIBUTES structure that specifies a user-mode scheduling (UMS)
+			/// thread context and a UMS completion list to associate with the thread. After the UMS thread is created, the system queues it
+			/// to the specified completion list. The UMS thread runs only when an application's UMS scheduler retrieves the UMS thread from
+			/// the completion list and selects it to run. For more information, see User-Mode Scheduling.Windows Server 2008 and Windows
+			/// Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.
+			/// </summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_UMS_THREAD = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeUmsThread, true, true, false);
+
+			/// <summary>Undocumented.</summary>
+			public static readonly PROC_THREAD_ATTRIBUTE PROC_THREAD_ATTRIBUTE_WIN32K_FILTER = new PROC_THREAD_ATTRIBUTE(AttrType.ProcThreadAttributeWin32kFilter, false, true, false);
 		}
 
 		/// <summary>
@@ -6142,14 +5952,15 @@ namespace Vanara.PInvoke
 		// typedef struct _PROCESS_MITIGATION_DEP_POLICY { union { DWORD Flags; struct { DWORD Enable : 1; DWORD DisableAtlThunkEmulation :
 		// 1; DWORD ReservedFlags : 30; }; }; BOOLEAN Permanent;} PROCESS_MITIGATION_DEP_POLICY, *PPROCESS_MITIGATION_DEP_POLICY; https://msdn.microsoft.com/en-us/library/windows/desktop/hh769087(v=vs.85).aspx
 		[PInvokeData("WinNT.h", MSDNShortId = "hh769087")]
-		[StructLayout(LayoutKind.Sequential, Pack = 1)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct PROCESS_MITIGATION_DEP_POLICY
 		{
 			/// <summary>The flags</summary>
 			public PROCESS_MITIGATION_DEP_POLICY_FLAGS Flags;
 
 			/// <summary>DEP is permanently enabled and cannot be disabled if this field is set to TRUE.</summary>
-			public byte Permanent;
+			[MarshalAs(UnmanagedType.U1)]
+			public bool Permanent;
 		}
 
 		/// <summary>Contains process mitigation policy settings for restricting dynamic code generation and modification.</summary>
@@ -6249,12 +6060,14 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Specifies the throttling policies and how to apply them to a target process when that process is subject to power management.
 		/// </summary>
-		// typedef struct _PROCESS_POWER_THROTTLING_STATE { ULONG Version; ULONG ControlMask; ULONG StateMask;} PROCESS_POWER_THROTTLING_STATE,
-		// *PPROCESS_POWER_THROTTLING_STATE;// https://msdn.microsoft.com/en-us/library/windows/desktop/mt804324(v=vs.85).aspx
-		[PInvokeData("Processthreadsapi.h", MSDNShortId = "mt804324")]
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-process_power_throttling_state typedef
+		// struct _PROCESS_POWER_THROTTLING_STATE { ULONG Version; ULONG ControlMask; ULONG StateMask; } PROCESS_POWER_THROTTLING_STATE, *PPROCESS_POWER_THROTTLING_STATE;
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "394B6509-849C-4B4C-9A46-AF5011A03585")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct PROCESS_POWER_THROTTLING_STATE
 		{
+			public const uint PROCESS_POWER_THROTTLING_CURRENT_VERSION = 1;
+
 			/// <summary>
 			/// <para>The version of the <c>PROCESS_POWER_THROTTLING_STATE</c> structure.</para>
 			/// <para>
@@ -6287,7 +6100,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public uint ControlMask;
+			public PROCESS_POWER_THROTTLING_MASK ControlMask;
 
 			/// <summary>
 			/// <para>Manages the power throttling mechanism on/off state.</para>
@@ -6304,7 +6117,17 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public uint StateMask;
+			public PROCESS_POWER_THROTTLING_MASK StateMask;
+
+			/// <summary>Initializes a new instance of the <see cref="PROCESS_POWER_THROTTLING_STATE"/> struct.</summary>
+			/// <param name="controlMask">The control mask.</param>
+			/// <param name="stateMask">The state mask.</param>
+			public PROCESS_POWER_THROTTLING_STATE(PROCESS_POWER_THROTTLING_MASK controlMask, PROCESS_POWER_THROTTLING_MASK stateMask)
+			{
+				Version = PROCESS_POWER_THROTTLING_CURRENT_VERSION;
+				ControlMask = controlMask;
+				StateMask = stateMask;
+			}
 		}
 
 		/// <summary>Specifies whether Protected Process Light (PPL) is enabled.</summary>
@@ -6381,15 +6204,57 @@ namespace Vanara.PInvoke
 
 			/// <summary>This parameter is reserved.</summary>
 			public byte Reserved;
+
+			/// <summary>Initializes a new instance of the <see cref="PROCESSOR_NUMBER"/> struct.</summary>
+			/// <param name="processorGroup">The processor group to which the logical processor is assigned.</param>
+			/// <param name="logicalProcessor">The number of the logical processor relative to the group.</param>
+			public PROCESSOR_NUMBER(ushort processorGroup, byte logicalProcessor)
+			{
+				Group = processorGroup;
+				Number = logicalProcessor;
+				Reserved = 0;
+			}
 		}
 
 		/// <summary>
 		/// Specifies the window station, desktop, standard handles, and appearance of the main window for a process at creation time.
 		/// </summary>
-		// typedef struct _STARTUPINFO { DWORD cb; LPTSTR lpReserved; LPTSTR lpDesktop; LPTSTR lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize;
-		// DWORD dwYSize; DWORD dwXCountChars; DWORD dwYCountChars; DWORD dwFillAttribute; DWORD dwFlags; WORD wShowWindow; WORD cbReserved2;
-		// LPBYTE lpReserved2; HANDLE hStdInput; HANDLE hStdOutput; HANDLE hStdError;} STARTUPINFO, *LPSTARTUPINFO; https://msdn.microsoft.com/en-us/library/windows/desktop/ms686331(v=vs.85).aspx
-		[PInvokeData("WinBase.h", MSDNShortId = "ms686331")]
+		/// <remarks>
+		/// <para>
+		/// For graphical user interface (GUI) processes, this information affects the first window created by the CreateWindow function and
+		/// shown by the ShowWindow function. For console processes, this information affects the console window if a new console is created
+		/// for the process. A process can use the GetStartupInfo function to retrieve the <c>STARTUPINFO</c> structure specified when the
+		/// process was created.
+		/// </para>
+		/// <para>
+		/// If a GUI process is being started and neither STARTF_FORCEONFEEDBACK or STARTF_FORCEOFFFEEDBACK is specified, the process
+		/// feedback cursor is used. A GUI process is one whose subsystem is specified as "windows."
+		/// </para>
+		/// <para>
+		/// If a process is launched from the taskbar or jump list, the system sets <c>hStdOutput</c> to a handle to the monitor that
+		/// contains the taskbar or jump list used to launch the process. To retrieve this handle, use GetStartupInfo to retrieve the
+		/// <c>STARTUPINFO</c> structure and check that <c>hStdOutput</c> is set. If so, use GetMonitorInfo to check whether
+		/// <c>hStdOutput</c> is a valid monitor handle (HMONITOR). The process can then use the handle to position its windows.
+		/// </para>
+		/// <para>
+		/// If the <c>STARTF_UNTRUSTEDSOURCE</c> flag is set in the in the <c>STARTUPINFO</c> structure returned by the GetStartupInfo
+		/// function, then applications should be aware that the command line is untrusted. If this flag is set, applications should disable
+		/// potentially dangerous features such as macros, downloaded content, and automatic printing. This flag is optional. Applications
+		/// that call CreateProcess are encouraged to set this flag when launching a program with a untrusted command line so that the
+		/// created process can apply appropriate policy.
+		/// </para>
+		/// <para>
+		/// The <c>STARTF_UNTRUSTEDSOURCE</c> flag is supported starting in Windows Vista, but it is not defined in the SDK header files
+		/// prior to the Windows 10 SDK. To use the flag in versions prior to Windows 10, you can define it manually in your program.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Creating Processes.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-_startupinfoa typedef struct
+		// _STARTUPINFOA { DWORD cb; LPSTR lpReserved; LPSTR lpDesktop; LPSTR lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize;
+		// DWORD dwXCountChars; DWORD dwYCountChars; DWORD dwFillAttribute; DWORD dwFlags; WORD wShowWindow; WORD cbReserved2; LPBYTE
+		// lpReserved2; HANDLE hStdInput; HANDLE hStdOutput; HANDLE hStdError; } STARTUPINFOA, *LPSTARTUPINFOA;
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "cf4b795c-52c1-4573-8328-99ee13f68bb3")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct STARTUPINFO
 		{
@@ -6401,9 +6266,12 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// The name of the desktop, or the name of both the desktop and window station for this process. A backslash in the string
-			/// indicates that the string includes both the desktop and window station names. For more information, see Thread Connection to
-			/// a Desktop.
+			/// indicates that the string includes both the desktop and window station names.
+			/// <para>
+			/// For more information, see <a href="https://msdn.microsoft.com/45016619-ed11-4b0c-84e3-f8662553c64d">Thread Connection to a Desktop</a>.
+			/// </para>
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
 			public string lpDesktop;
 
 			/// <summary>
@@ -6411,6 +6279,7 @@ namespace Vanara.PInvoke
 			/// the executable file is used as the window title instead. This parameter must be NULL for GUI or console processes that do not
 			/// create a new console window.
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
 			public string lpTitle;
 
 			/// <summary>
@@ -6420,7 +6289,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>
 			/// The offset is from the upper left corner of the screen. For GUI processes, the specified position is used the first time the
-			/// new process calls <c>CreateWindow</c> to create an overlapped window if the x parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
+			/// new process calls CreateWindow to create an overlapped window if the x parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
 			/// </para>
 			/// </summary>
 			public uint dwX;
@@ -6432,7 +6301,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>
 			/// The offset is from the upper left corner of the screen. For GUI processes, the specified position is used the first time the
-			/// new process calls <c>CreateWindow</c> to create an overlapped window if the y parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
+			/// new process calls CreateWindow to create an overlapped window if the y parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
 			/// </para>
 			/// </summary>
 			public uint dwY;
@@ -6443,8 +6312,8 @@ namespace Vanara.PInvoke
 			/// Otherwise, this member is ignored.
 			/// </para>
 			/// <para>
-			/// For GUI processes, this is used only the first time the new process calls <c>CreateWindow</c> to create an overlapped window
-			/// if the nWidth parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
+			/// For GUI processes, this is used only the first time the new process calls CreateWindow to create an overlapped window if the
+			/// nWidth parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
 			/// </para>
 			/// </summary>
 			public uint dwXSize;
@@ -6455,8 +6324,8 @@ namespace Vanara.PInvoke
 			/// Otherwise, this member is ignored.
 			/// </para>
 			/// <para>
-			/// For GUI processes, this is used only the first time the new process calls <c>CreateWindow</c> to create an overlapped window
-			/// if the nHeight parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
+			/// For GUI processes, this is used only the first time the new process calls CreateWindow to create an overlapped window if the
+			/// nHeight parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
 			/// </para>
 			/// </summary>
 			public uint dwYSize;
@@ -6483,68 +6352,68 @@ namespace Vanara.PInvoke
 			/// FOREGROUND_INTENSITY, BACKGROUND_BLUE, BACKGROUND_GREEN, BACKGROUND_RED, and BACKGROUND_INTENSITY. For example, the following
 			/// combination of values produces red text on a white background:
 			/// </para>
+			/// <para><c>FOREGROUND_RED | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE</c></para>
 			/// </summary>
-			public CHARACTER_ATTRIBUTE dwFillAttribute;
+			public uint dwFillAttribute; // CHARACTER_ATTRIBUTE
 
 			/// <summary>
 			/// <para>
 			/// A bitfield that determines whether certain <c>STARTUPINFO</c> members are used when the process creates a window. This member
 			/// can be one or more of the following values.
 			/// </para>
-			/// <para>
 			/// <list type="table">
 			/// <listheader>
 			/// <term>Value</term>
 			/// <term>Meaning</term>
 			/// </listheader>
 			/// <item>
-			/// <term>STARTF_FORCEONFEEDBACK0x00000040</term>
+			/// <term>STARTF_FORCEONFEEDBACK 0x00000040</term>
 			/// <term>
 			/// Indicates that the cursor is in feedback mode for two seconds after CreateProcess is called. The Working in Background cursor
 			/// is displayed (see the Pointers tab in the Mouse control panel utility). If during those two seconds the process makes the
 			/// first GUI call, the system gives five more seconds to the process. If during those five seconds the process shows a window,
-			/// the system gives five more seconds to the process to finish drawing the window.The system turns the feedback cursor off after
-			/// the first call to GetMessage, regardless of whether the process is drawing.
+			/// the system gives five more seconds to the process to finish drawing the window. The system turns the feedback cursor off
+			/// after the first call to GetMessage, regardless of whether the process is drawing.
 			/// </term>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_FORCEOFFFEEDBACK0x00000080</term>
+			/// <term>STARTF_FORCEOFFFEEDBACK 0x00000080</term>
 			/// <term>Indicates that the feedback cursor is forced off while the process is starting. The Normal Select cursor is displayed.</term>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_PREVENTPINNING0x00002000</term>
+			/// <term>STARTF_PREVENTPINNING 0x00002000</term>
 			/// <term>
-			/// Indicates that any windows created by the process cannot be pinned on the taskbar.This flag must be combined with STARTF_TITLEISAPPID.
+			/// Indicates that any windows created by the process cannot be pinned on the taskbar. This flag must be combined with STARTF_TITLEISAPPID.
 			/// </term>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_RUNFULLSCREEN0x00000020</term>
+			/// <term>STARTF_RUNFULLSCREEN 0x00000020</term>
 			/// <term>
 			/// Indicates that the process should be run in full-screen mode, rather than in windowed mode. This flag is only valid for
 			/// console applications running on an x86 computer.
 			/// </term>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_TITLEISAPPID0x00001000</term>
+			/// <term>STARTF_TITLEISAPPID 0x00001000</term>
 			/// <term>
 			/// The lpTitle member contains an AppUserModelID. This identifier controls how the taskbar and Start menu present the
 			/// application, and enables it to be associated with the correct shortcuts and Jump Lists. Generally, applications will use the
 			/// SetCurrentProcessExplicitAppUserModelID and GetCurrentProcessExplicitAppUserModelID functions instead of setting this flag.
-			/// For more information, see Application User Model IDs.If STARTF_PREVENTPINNING is used, application windows cannot be pinned
+			/// For more information, see Application User Model IDs. If STARTF_PREVENTPINNING is used, application windows cannot be pinned
 			/// on the taskbar. The use of any AppUserModelID-related window properties by the application overrides this setting for that
-			/// window only.This flag cannot be used with STARTF_TITLEISLINKNAME.
+			/// window only. This flag cannot be used with STARTF_TITLEISLINKNAME.
 			/// </term>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_TITLEISLINKNAME0x00000800</term>
+			/// <term>STARTF_TITLEISLINKNAME 0x00000800</term>
 			/// <term>
 			/// The lpTitle member contains the path of the shortcut file (.lnk) that the user invoked to start this process. This is
 			/// typically set by the shell when a .lnk file pointing to the launched application is invoked. Most applications will not need
-			/// to set this value.This flag cannot be used with STARTF_TITLEISAPPID.
+			/// to set this value. This flag cannot be used with STARTF_TITLEISAPPID.
 			/// </term>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_UNTRUSTEDSOURCE0x00008000</term>
+			/// <term>STARTF_UNTRUSTEDSOURCE 0x00008000</term>
 			/// <term>The command line came from an untrusted source. For more information, see Remarks.</term>
 			/// </item>
 			/// <item>
@@ -6552,57 +6421,55 @@ namespace Vanara.PInvoke
 			/// <term/>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_USECOUNTCHARS0x00000008</term>
+			/// <term>STARTF_USECOUNTCHARS 0x00000008</term>
 			/// <term>The dwXCountChars and dwYCountChars members contain additional information.</term>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_USEFILLATTRIBUTE0x00000010</term>
+			/// <term>STARTF_USEFILLATTRIBUTE 0x00000010</term>
 			/// <term>The dwFillAttribute member contains additional information.</term>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_USEHOTKEY0x00000200</term>
+			/// <term>STARTF_USEHOTKEY 0x00000200</term>
 			/// <term>The hStdInput member contains additional information. This flag cannot be used with STARTF_USESTDHANDLES.</term>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_USEPOSITION0x00000004</term>
+			/// <term>STARTF_USEPOSITION 0x00000004</term>
 			/// <term>The dwX and dwY members contain additional information.</term>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_USESHOWWINDOW0x00000001</term>
+			/// <term>STARTF_USESHOWWINDOW 0x00000001</term>
 			/// <term>The wShowWindow member contains additional information.</term>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_USESIZE0x00000002</term>
+			/// <term>STARTF_USESIZE 0x00000002</term>
 			/// <term>The dwXSize and dwYSize members contain additional information.</term>
 			/// </item>
 			/// <item>
-			/// <term>STARTF_USESTDHANDLES0x00000100</term>
+			/// <term>STARTF_USESTDHANDLES 0x00000100</term>
 			/// <term>
 			/// The hStdInput, hStdOutput, and hStdError members contain additional information. If this flag is specified when calling one
 			/// of the process creation functions, the handles must be inheritable and the function's bInheritHandles parameter must be set
-			/// to TRUE. For more information, see Handle Inheritance.If this flag is specified when calling the GetStartupInfo function,
-			/// these members are either the handle value specified during process creation or INVALID_HANDLE_VALUE.Handles must be closed
-			/// with CloseHandle when they are no longer needed.This flag cannot be used with STARTF_USEHOTKEY.
+			/// to TRUE. For more information, see Handle Inheritance. If this flag is specified when calling the GetStartupInfo function,
+			/// these members are either the handle value specified during process creation or INVALID_HANDLE_VALUE. Handles must be closed
+			/// with CloseHandle when they are no longer needed. This flag cannot be used with STARTF_USEHOTKEY.
 			/// </term>
 			/// </item>
 			/// </list>
-			/// </para>
 			/// </summary>
 			public STARTF dwFlags;
 
 			/// <summary>
 			/// <para>
 			/// If <c>dwFlags</c> specifies STARTF_USESHOWWINDOW, this member can be any of the values that can be specified in the nCmdShow
-			/// parameter for the <c>ShowWindow</c> function, except for SW_SHOWDEFAULT. Otherwise, this member is ignored.
+			/// parameter for the ShowWindow function, except for SW_SHOWDEFAULT. Otherwise, this member is ignored.
 			/// </para>
 			/// <para>
-			/// For GUI processes, the first time <c>ShowWindow</c> is called, its nCmdShow parameter is ignored <c>wShowWindow</c> specifies
-			/// the default value. In subsequent calls to <c>ShowWindow</c>, the <c>wShowWindow</c> member is used if the nCmdShow parameter
-			/// of <c>ShowWindow</c> is set to SW_SHOWDEFAULT.
+			/// For GUI processes, the first time ShowWindow is called, its nCmdShow parameter is ignored <c>wShowWindow</c> specifies the
+			/// default value. In subsequent calls to ShowWindow, the <c>wShowWindow</c> member is used if the nCmdShow parameter of
+			/// <c>ShowWindow</c> is set to SW_SHOWDEFAULT.
 			/// </para>
 			/// </summary>
-			//[MarshalAs(UnmanagedType.U2)]
-			public ushort wShowWindow; // ShowWindowCommand
+			public ushort wShowWindow;
 
 			/// <summary>Reserved for use by the C Run-time; must be zero.</summary>
 			public ushort cbReserved2;
@@ -6623,7 +6490,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>Otherwise, this member is ignored.</para>
 			/// </summary>
-			public IntPtr hStdInput;
+			public HANDLE hStdInput;
 
 			/// <summary>
 			/// <para>
@@ -6632,29 +6499,32 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>
 			/// If a process is launched from the taskbar or jump list, the system sets <c>hStdOutput</c> to a handle to the monitor that
-			/// contains the taskbar or jump list used to launch the process. For more information, see Remarks.
-			/// </para>
-			/// <para>
-			/// <c>Windows 7, Windows Server 2008 R2, Windows Vista, Windows Server 2008, Windows XP and Windows Server 2003:</c> This
-			/// behavior was introduced in Windows 8 and Windows Server 2012.
+			/// contains the taskbar or jump list used to launch the process. For more information, see Remarks. <c>Windows 7, Windows Server
+			/// 2008 R2, Windows Vista, Windows Server 2008, Windows XP and Windows Server 2003:</c> This behavior was introduced in Windows
+			/// 8 and Windows Server 2012.
 			/// </para>
 			/// </summary>
-			public IntPtr hStdOutput;
+			public HANDLE hStdOutput;
 
 			/// <summary>
 			/// If <c>dwFlags</c> specifies STARTF_USESTDHANDLES, this member is the standard error handle for the process. Otherwise, this
 			/// member is ignored and the default for standard error is the console window's buffer.
 			/// </summary>
-			public IntPtr hStdError;
+			public HANDLE hStdError;
 
 			/// <summary>
-			/// <para>The x and y offset of the upper left corner of a window if a new window is created, in pixels.</para>
 			/// <para>
-			/// The offset is from the upper left corner of the screen. For GUI processes, the specified position is used the first time the
-			/// new process calls <c>CreateWindow</c> to create an overlapped window if the x or y parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
+			/// If <c>dwFlags</c> specifies STARTF_USEFILLATTRIBUTE, this member is the initial text and background colors if a new console
+			/// window is created in a console application. Otherwise, this member is ignored.
 			/// </para>
+			/// <para>
+			/// This value can be any combination of the following values: FOREGROUND_BLUE, FOREGROUND_GREEN, FOREGROUND_RED,
+			/// FOREGROUND_INTENSITY, BACKGROUND_BLUE, BACKGROUND_GREEN, BACKGROUND_RED, and BACKGROUND_INTENSITY. For example, the following
+			/// combination of values produces red text on a white background:
+			/// </para>
+			/// <para><c>FOREGROUND_RED | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE</c></para>
 			/// </summary>
-			public System.Drawing.Point WindowPosition { get => new System.Drawing.Point((int)dwX, (int)dwY); set { dwX = (uint)value.X; dwY = (uint)value.Y; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USEPOSITION, value != System.Drawing.Point.Empty); } }
+			public CHARACTER_ATTRIBUTE FillAttribute { get => (CHARACTER_ATTRIBUTE)dwFillAttribute; set { dwFillAttribute = (uint)value; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USEFILLATTRIBUTE, value != 0); } }
 
 			/// <summary>
 			/// <para>
@@ -6668,6 +6538,15 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public ShowWindowCommand ShowWindowCommand { get => (ShowWindowCommand)wShowWindow; set { wShowWindow = (ushort)value; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USESHOWWINDOW, value != 0); } }
+
+			/// <summary>
+			/// <para>The x and y offset of the upper left corner of a window if a new window is created, in pixels.</para>
+			/// <para>
+			/// The offset is from the upper left corner of the screen. For GUI processes, the specified position is used the first time the
+			/// new process calls <c>CreateWindow</c> to create an overlapped window if the x or y parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
+			/// </para>
+			/// </summary>
+			public System.Drawing.Point WindowPosition { get => new System.Drawing.Point((int)dwX, (int)dwY); set { dwX = (uint)value.X; dwY = (uint)value.Y; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USEPOSITION, value != System.Drawing.Point.Empty); } }
 
 			/// <summary>
 			/// <para>The height of the window if a new window is created, in pixels.</para>
@@ -6726,89 +6605,83 @@ namespace Vanara.PInvoke
 		// Parked : 1; BOOLEAN Allocated : 1; BOOLEAN AllocatedToTargetProcess : 1; BOOLEAN RealTime : 1; BYTE ReservedFlags : 4; }; DWORD
 		// Reserved; DWORD64 AllocationTag; } CpuSet; };} SYSTEM_CPU_SET_INFORMATION, *PSYSTEM_CPU_SET_INFORMATION;// https://msdn.microsoft.com/en-us/library/windows/desktop/mt186429(v=vs.85).aspx
 		[PInvokeData("Winnt.h", MSDNShortId = "mt186429")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Explicit)]
 		public struct SYSTEM_CPU_SET_INFORMATION
 		{
 			/// <summary>This is the size, in bytes, of this information structure.</summary>
+			[FieldOffset(0)]
 			public uint Size;
 
 			/// <summary>
 			/// This is the type of information in the structure. Applications should skip any structures with unrecognized types.
 			/// </summary>
+			[FieldOffset(4)]
 			public CPU_SET_INFORMATION_TYPE Type;
 
-			/// <summary>Union of structures that can be specified by Type.</summary>
-			public SYSTEM_CPU_UNION Union;
+			/// <summary>Value used when Type is CpuSetInformation.</summary>
+			[FieldOffset(8)]
+			public CPU_SET CpuSet;
 
-			/// <summary>Defines structures that can be specified by Type.</summary>
-			[StructLayout(LayoutKind.Explicit)]
-			public struct SYSTEM_CPU_UNION
+			/// <summary>Defines values used when Type is CpuSetInformation.</summary>
+			[StructLayout(LayoutKind.Sequential)]
+			public struct CPU_SET
 			{
-				/// <summary>Value used when Type is CpuSetInformation.</summary>
-				[FieldOffset(0)]
-				public SYSTEM_CPU_SET_INFORMATION1 CpuSet;
+				/// <summary>
+				/// The ID of the specified CPU Set. This identifier can be used with SetProcessDefaultCpuSets or SetThreadSelectedCpuSets
+				/// when specifying a list of CPU Sets to affinitize to.
+				/// </summary>
+				public uint Id;
+
+				/// <summary>
+				/// Specifies the Processor Group of the CPU Set. All other values in the CpuSet structure are relative to the processor group.
+				/// </summary>
+				public ushort Group;
+
+				/// <summary>
+				/// Specifies the group-relative index of the home processor of the CPU Set. Unless the CPU Set is parked for thermal or
+				/// power management reasons or assigned for exclusive use to another application, threads will run on the home processor of
+				/// one of their CPU Sets. The Group and LogicalProcessorIndex fields are the same as the ones found in the PROCESSOR_NUMBER
+				/// structure and they correspond to the Group field and Mask field of the GROUP_AFFINITY structure.
+				/// </summary>
+				public byte LogicalProcessorIndex;
+
+				/// <summary>
+				/// A group-relative value indicating which "Core" has the home processor of the CPU Set. This number is the same for all CPU
+				/// Sets in the same group that share significant execution resources with each other, such as different hardware threads on
+				/// a single core that supports simultaneous multi-threading.
+				/// </summary>
+				public byte CoreIndex;
+
+				/// <summary>
+				/// A group-relative value indicating which CPU Sets share at least one level of cache with each other. This value is the
+				/// same for all CPU Sets in a group that are on processors that share cache with each other.
+				/// </summary>
+				public byte LastLevelCacheIndex;
+
+				/// <summary>
+				/// A group-relative value indicating which NUMA node a CPU Set is on. All CPU Sets in a given group that are on the same
+				/// NUMA node will have the same value for this field.
+				/// </summary>
+				public byte NumaNodeIndex;
+
+				/// <summary>
+				/// A value indicating the intrinsic energy efficiency of a processor for systems that support heterogeneous processors (such
+				/// as ARM big.LITTLE systems). CPU Sets with higher numerical values of this field have home processors that are faster but
+				/// less power-efficient than ones with lower values.
+				/// </summary>
+				public byte EfficiencyClass;
+
+				/// <summary>All flags</summary>
+				public SYSTEM_CPU_SET_FLAGS AllFlags;
+
+				/// <summary>Reserved</summary>
+				private readonly uint Reserved;
+
+				/// <summary>
+				/// Specifies a tag used by Core Allocation to communicate a given allocated CPU Set between threads in different components.
+				/// </summary>
+				public ulong AllocationTag;
 			}
-		}
-
-		/// <summary>Defines values used when Type is CpuSetInformation.</summary>
-		[StructLayout(LayoutKind.Sequential)]
-		public struct SYSTEM_CPU_SET_INFORMATION1
-		{
-			/// <summary>
-			/// The ID of the specified CPU Set. This identifier can be used with SetProcessDefaultCpuSets or SetThreadSelectedCpuSets when
-			/// specifying a list of CPU Sets to affinitize to.
-			/// </summary>
-			public uint Id;
-
-			/// <summary>
-			/// Specifies the Processor Group of the CPU Set. All other values in the CpuSet structure are relative to the processor group.
-			/// </summary>
-			public ushort Group;
-
-			/// <summary>
-			/// Specifies the group-relative index of the home processor of the CPU Set. Unless the CPU Set is parked for thermal or power
-			/// management reasons or assigned for exclusive use to another application, threads will run on the home processor of one of
-			/// their CPU Sets. The Group and LogicalProcessorIndex fields are the same as the ones found in the PROCESSOR_NUMBER structure
-			/// and they correspond to the Group field and Mask field of the GROUP_AFFINITY structure.
-			/// </summary>
-			public byte LogicalProcessorIndex;
-
-			/// <summary>
-			/// A group-relative value indicating which "Core" has the home processor of the CPU Set. This number is the same for all CPU
-			/// Sets in the same group that share significant execution resources with each other, such as different hardware threads on a
-			/// single core that supports simultaneous multi-threading.
-			/// </summary>
-			public byte CoreIndex;
-
-			/// <summary>
-			/// A group-relative value indicating which CPU Sets share at least one level of cache with each other. This value is the same
-			/// for all CPU Sets in a group that are on processors that share cache with each other.
-			/// </summary>
-			public byte LastLevelCacheIndex;
-
-			/// <summary>
-			/// A group-relative value indicating which NUMA node a CPU Set is on. All CPU Sets in a given group that are on the same NUMA
-			/// node will have the same value for this field.
-			/// </summary>
-			public byte NumaNodeIndex;
-
-			/// <summary>
-			/// A value indicating the intrinsic energy efficiency of a processor for systems that support heterogeneous processors (such as
-			/// ARM big.LITTLE systems). CPU Sets with higher numerical values of this field have home processors that are faster but less
-			/// power-efficient than ones with lower values.
-			/// </summary>
-			public byte EfficiencyClass;
-
-			/// <summary>All flags</summary>
-			public SYSTEM_CPU_SET_FLAGS AllFlags;
-
-			/// <summary>Reserved</summary>
-			private readonly uint Reserved;
-
-			/// <summary>
-			/// Specifies a tag used by Core Allocation to communicate a given allocated CPU Set between threads in different components.
-			/// </summary>
-			public ulong AllocationTag;
 		}
 
 		/// <summary>
@@ -6820,6 +6693,9 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct THREAD_POWER_THROTTLING_STATE
 		{
+			public const uint THREAD_POWER_THROTTLING_CURRENT_VERSION = 1;
+			public const uint THREAD_POWER_THROTTLING_EXECUTION_SPEED = 0x1;
+
 			/// <summary>
 			/// <para>The version of the <c>THREAD_POWER_THROTTLING_STATE</c> structure.</para>
 			/// <para>
@@ -6870,6 +6746,337 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public uint StateMask;
+
+			/// <summary>Creates an initialized instance of THREAD_POWER_THROTTLING_STATE.</summary>
+			public static THREAD_POWER_THROTTLING_STATE Create() => new THREAD_POWER_THROTTLING_STATE
+			{ Version = THREAD_POWER_THROTTLING_CURRENT_VERSION, ControlMask = THREAD_POWER_THROTTLING_EXECUTION_SPEED };
+		}
+
+		/// <summary>
+		/// Specifies the window station, desktop, standard handles, and appearance of the main window for a process at creation time.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// For graphical user interface (GUI) processes, this information affects the first window created by the CreateWindow function and
+		/// shown by the ShowWindow function. For console processes, this information affects the console window if a new console is created
+		/// for the process. A process can use the GetStartupInfo function to retrieve the <c>STARTUPINFO</c> structure specified when the
+		/// process was created.
+		/// </para>
+		/// <para>
+		/// If a GUI process is being started and neither STARTF_FORCEONFEEDBACK or STARTF_FORCEOFFFEEDBACK is specified, the process
+		/// feedback cursor is used. A GUI process is one whose subsystem is specified as "windows."
+		/// </para>
+		/// <para>
+		/// If a process is launched from the taskbar or jump list, the system sets <c>hStdOutput</c> to a handle to the monitor that
+		/// contains the taskbar or jump list used to launch the process. To retrieve this handle, use GetStartupInfo to retrieve the
+		/// <c>STARTUPINFO</c> structure and check that <c>hStdOutput</c> is set. If so, use GetMonitorInfo to check whether
+		/// <c>hStdOutput</c> is a valid monitor handle (HMONITOR). The process can then use the handle to position its windows.
+		/// </para>
+		/// <para>
+		/// If the <c>STARTF_UNTRUSTEDSOURCE</c> flag is set in the in the <c>STARTUPINFO</c> structure returned by the GetStartupInfo
+		/// function, then applications should be aware that the command line is untrusted. If this flag is set, applications should disable
+		/// potentially dangerous features such as macros, downloaded content, and automatic printing. This flag is optional. Applications
+		/// that call CreateProcess are encouraged to set this flag when launching a program with a untrusted command line so that the
+		/// created process can apply appropriate policy.
+		/// </para>
+		/// <para>
+		/// The <c>STARTF_UNTRUSTEDSOURCE</c> flag is supported starting in Windows Vista, but it is not defined in the SDK header files
+		/// prior to the Windows 10 SDK. To use the flag in versions prior to Windows 10, you can define it manually in your program.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Creating Processes.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-_startupinfoa typedef struct
+		// _STARTUPINFOA { DWORD cb; LPSTR lpReserved; LPSTR lpDesktop; LPSTR lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize;
+		// DWORD dwXCountChars; DWORD dwYCountChars; DWORD dwFillAttribute; DWORD dwFlags; WORD wShowWindow; WORD cbReserved2; LPBYTE
+		// lpReserved2; HANDLE hStdInput; HANDLE hStdOutput; HANDLE hStdError; } STARTUPINFOA, *LPSTARTUPINFOA;
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "cf4b795c-52c1-4573-8328-99ee13f68bb3")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		private struct STARTUPINFO_OUT
+		{
+			/// <summary>The size of the structure, in bytes.</summary>
+			public uint cb;
+
+			/// <summary>Reserved; must be NULL.</summary>
+			public IntPtr lpReserved;
+
+			/// <summary>
+			/// The name of the desktop, or the name of both the desktop and window station for this process. A backslash in the string
+			/// indicates that the string includes both the desktop and window station names.
+			/// <para>
+			/// For more information, see <a href="https://msdn.microsoft.com/45016619-ed11-4b0c-84e3-f8662553c64d">Thread Connection to a Desktop</a>.
+			/// </para>
+			/// </summary>
+			//[MarshalAs(UnmanagedType.LPTStr)]
+			//public string lpDesktop;
+			public StrPtrAuto lpDesktop;
+
+			/// <summary>
+			/// For console processes, this is the title displayed in the title bar if a new console window is created. If NULL, the name of
+			/// the executable file is used as the window title instead. This parameter must be NULL for GUI or console processes that do not
+			/// create a new console window.
+			/// </summary>
+			//[MarshalAs(UnmanagedType.LPTStr)]
+			//public string lpTitle;
+			public StrPtrAuto lpTitle;
+
+			/// <summary>
+			/// <para>
+			/// If <c>dwFlags</c> specifies STARTF_USEPOSITION, this member is the x offset of the upper left corner of a window if a new
+			/// window is created, in pixels. Otherwise, this member is ignored.
+			/// </para>
+			/// <para>
+			/// The offset is from the upper left corner of the screen. For GUI processes, the specified position is used the first time the
+			/// new process calls CreateWindow to create an overlapped window if the x parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
+			/// </para>
+			/// </summary>
+			public uint dwX;
+
+			/// <summary>
+			/// <para>
+			/// If <c>dwFlags</c> specifies STARTF_USEPOSITION, this member is the y offset of the upper left corner of a window if a new
+			/// window is created, in pixels. Otherwise, this member is ignored.
+			/// </para>
+			/// <para>
+			/// The offset is from the upper left corner of the screen. For GUI processes, the specified position is used the first time the
+			/// new process calls CreateWindow to create an overlapped window if the y parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
+			/// </para>
+			/// </summary>
+			public uint dwY;
+
+			/// <summary>
+			/// <para>
+			/// If <c>dwFlags</c> specifies STARTF_USESIZE, this member is the width of the window if a new window is created, in pixels.
+			/// Otherwise, this member is ignored.
+			/// </para>
+			/// <para>
+			/// For GUI processes, this is used only the first time the new process calls CreateWindow to create an overlapped window if the
+			/// nWidth parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
+			/// </para>
+			/// </summary>
+			public uint dwXSize;
+
+			/// <summary>
+			/// <para>
+			/// If <c>dwFlags</c> specifies STARTF_USESIZE, this member is the height of the window if a new window is created, in pixels.
+			/// Otherwise, this member is ignored.
+			/// </para>
+			/// <para>
+			/// For GUI processes, this is used only the first time the new process calls CreateWindow to create an overlapped window if the
+			/// nHeight parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
+			/// </para>
+			/// </summary>
+			public uint dwYSize;
+
+			/// <summary>
+			/// If <c>dwFlags</c> specifies STARTF_USECOUNTCHARS, if a new console window is created in a console process, this member
+			/// specifies the screen buffer width, in character columns. Otherwise, this member is ignored.
+			/// </summary>
+			public uint dwXCountChars;
+
+			/// <summary>
+			/// If <c>dwFlags</c> specifies STARTF_USECOUNTCHARS, if a new console window is created in a console process, this member
+			/// specifies the screen buffer height, in character rows. Otherwise, this member is ignored.
+			/// </summary>
+			public uint dwYCountChars;
+
+			/// <summary>
+			/// <para>
+			/// If <c>dwFlags</c> specifies STARTF_USEFILLATTRIBUTE, this member is the initial text and background colors if a new console
+			/// window is created in a console application. Otherwise, this member is ignored.
+			/// </para>
+			/// <para>
+			/// This value can be any combination of the following values: FOREGROUND_BLUE, FOREGROUND_GREEN, FOREGROUND_RED,
+			/// FOREGROUND_INTENSITY, BACKGROUND_BLUE, BACKGROUND_GREEN, BACKGROUND_RED, and BACKGROUND_INTENSITY. For example, the following
+			/// combination of values produces red text on a white background:
+			/// </para>
+			/// <para><c>FOREGROUND_RED | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE</c></para>
+			/// </summary>
+			public uint dwFillAttribute; // CHARACTER_ATTRIBUTE
+
+			/// <summary>
+			/// <para>
+			/// A bitfield that determines whether certain <c>STARTUPINFO</c> members are used when the process creates a window. This member
+			/// can be one or more of the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>STARTF_FORCEONFEEDBACK 0x00000040</term>
+			/// <term>
+			/// Indicates that the cursor is in feedback mode for two seconds after CreateProcess is called. The Working in Background cursor
+			/// is displayed (see the Pointers tab in the Mouse control panel utility). If during those two seconds the process makes the
+			/// first GUI call, the system gives five more seconds to the process. If during those five seconds the process shows a window,
+			/// the system gives five more seconds to the process to finish drawing the window. The system turns the feedback cursor off
+			/// after the first call to GetMessage, regardless of whether the process is drawing.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_FORCEOFFFEEDBACK 0x00000080</term>
+			/// <term>Indicates that the feedback cursor is forced off while the process is starting. The Normal Select cursor is displayed.</term>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_PREVENTPINNING 0x00002000</term>
+			/// <term>
+			/// Indicates that any windows created by the process cannot be pinned on the taskbar. This flag must be combined with STARTF_TITLEISAPPID.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_RUNFULLSCREEN 0x00000020</term>
+			/// <term>
+			/// Indicates that the process should be run in full-screen mode, rather than in windowed mode. This flag is only valid for
+			/// console applications running on an x86 computer.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_TITLEISAPPID 0x00001000</term>
+			/// <term>
+			/// The lpTitle member contains an AppUserModelID. This identifier controls how the taskbar and Start menu present the
+			/// application, and enables it to be associated with the correct shortcuts and Jump Lists. Generally, applications will use the
+			/// SetCurrentProcessExplicitAppUserModelID and GetCurrentProcessExplicitAppUserModelID functions instead of setting this flag.
+			/// For more information, see Application User Model IDs. If STARTF_PREVENTPINNING is used, application windows cannot be pinned
+			/// on the taskbar. The use of any AppUserModelID-related window properties by the application overrides this setting for that
+			/// window only. This flag cannot be used with STARTF_TITLEISLINKNAME.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_TITLEISLINKNAME 0x00000800</term>
+			/// <term>
+			/// The lpTitle member contains the path of the shortcut file (.lnk) that the user invoked to start this process. This is
+			/// typically set by the shell when a .lnk file pointing to the launched application is invoked. Most applications will not need
+			/// to set this value. This flag cannot be used with STARTF_TITLEISAPPID.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_UNTRUSTEDSOURCE 0x00008000</term>
+			/// <term>The command line came from an untrusted source. For more information, see Remarks.</term>
+			/// </item>
+			/// <item>
+			/// <term/>
+			/// <term/>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_USECOUNTCHARS 0x00000008</term>
+			/// <term>The dwXCountChars and dwYCountChars members contain additional information.</term>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_USEFILLATTRIBUTE 0x00000010</term>
+			/// <term>The dwFillAttribute member contains additional information.</term>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_USEHOTKEY 0x00000200</term>
+			/// <term>The hStdInput member contains additional information. This flag cannot be used with STARTF_USESTDHANDLES.</term>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_USEPOSITION 0x00000004</term>
+			/// <term>The dwX and dwY members contain additional information.</term>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_USESHOWWINDOW 0x00000001</term>
+			/// <term>The wShowWindow member contains additional information.</term>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_USESIZE 0x00000002</term>
+			/// <term>The dwXSize and dwYSize members contain additional information.</term>
+			/// </item>
+			/// <item>
+			/// <term>STARTF_USESTDHANDLES 0x00000100</term>
+			/// <term>
+			/// The hStdInput, hStdOutput, and hStdError members contain additional information. If this flag is specified when calling one
+			/// of the process creation functions, the handles must be inheritable and the function's bInheritHandles parameter must be set
+			/// to TRUE. For more information, see Handle Inheritance. If this flag is specified when calling the GetStartupInfo function,
+			/// these members are either the handle value specified during process creation or INVALID_HANDLE_VALUE. Handles must be closed
+			/// with CloseHandle when they are no longer needed. This flag cannot be used with STARTF_USEHOTKEY.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public STARTF dwFlags;
+
+			/// <summary>
+			/// <para>
+			/// If <c>dwFlags</c> specifies STARTF_USESHOWWINDOW, this member can be any of the values that can be specified in the nCmdShow
+			/// parameter for the ShowWindow function, except for SW_SHOWDEFAULT. Otherwise, this member is ignored.
+			/// </para>
+			/// <para>
+			/// For GUI processes, the first time ShowWindow is called, its nCmdShow parameter is ignored <c>wShowWindow</c> specifies the
+			/// default value. In subsequent calls to ShowWindow, the <c>wShowWindow</c> member is used if the nCmdShow parameter of
+			/// <c>ShowWindow</c> is set to SW_SHOWDEFAULT.
+			/// </para>
+			/// </summary>
+			public ushort wShowWindow;
+
+			/// <summary>Reserved for use by the C Run-time; must be zero.</summary>
+			public ushort cbReserved2;
+
+			/// <summary>Reserved for use by the C Run-time; must be NULL.</summary>
+			public IntPtr lpReserved2;
+
+			/// <summary>
+			/// <para>
+			/// If <c>dwFlags</c> specifies STARTF_USESTDHANDLES, this member is the standard input handle for the process. If
+			/// STARTF_USESTDHANDLES is not specified, the default for standard input is the keyboard buffer.
+			/// </para>
+			/// <para>
+			/// If <c>dwFlags</c> specifies STARTF_USEHOTKEY, this member specifies a hotkey value that is sent as the wParam parameter of a
+			/// WM_SETHOTKEY message to the first eligible top-level window created by the application that owns the process. If the window
+			/// is created with the WS_POPUP window style, it is not eligible unless the WS_EX_APPWINDOW extended window style is also set.
+			/// For more information, see CreateWindowEx.
+			/// </para>
+			/// <para>Otherwise, this member is ignored.</para>
+			/// </summary>
+			public HANDLE hStdInput;
+
+			/// <summary>
+			/// <para>
+			/// If <c>dwFlags</c> specifies STARTF_USESTDHANDLES, this member is the standard output handle for the process. Otherwise, this
+			/// member is ignored and the default for standard output is the console window's buffer.
+			/// </para>
+			/// <para>
+			/// If a process is launched from the taskbar or jump list, the system sets <c>hStdOutput</c> to a handle to the monitor that
+			/// contains the taskbar or jump list used to launch the process. For more information, see Remarks. <c>Windows 7, Windows Server
+			/// 2008 R2, Windows Vista, Windows Server 2008, Windows XP and Windows Server 2003:</c> This behavior was introduced in Windows
+			/// 8 and Windows Server 2012.
+			/// </para>
+			/// </summary>
+			public HANDLE hStdOutput;
+
+			/// <summary>
+			/// If <c>dwFlags</c> specifies STARTF_USESTDHANDLES, this member is the standard error handle for the process. Otherwise, this
+			/// member is ignored and the default for standard error is the console window's buffer.
+			/// </summary>
+			public HANDLE hStdError;
+
+			/// <summary>Performs an implicit conversion from <see cref="STARTUPINFO_OUT"/> to <see cref="STARTUPINFO"/>.</summary>
+			/// <param name="sio">The STARTUPINFO_OUT instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator STARTUPINFO(STARTUPINFO_OUT sio)
+			{
+				return new STARTUPINFO
+				{
+					cb = sio.cb,
+					lpReserved = sio.lpReserved,
+					lpDesktop = sio.lpDesktop,
+					lpTitle = sio.lpTitle,
+					dwX = sio.dwX,
+					dwY = sio.dwY,
+					dwXSize = sio.dwXSize,
+					dwYSize = sio.dwYSize,
+					dwXCountChars = sio.dwXCountChars,
+					dwYCountChars = sio.dwYCountChars,
+					dwFillAttribute = sio.dwFillAttribute,
+					dwFlags = sio.dwFlags,
+					wShowWindow = sio.wShowWindow,
+					cbReserved2 = sio.cbReserved2,
+					lpReserved2 = sio.lpReserved2,
+					hStdInput = sio.hStdInput,
+					hStdOutput = sio.hStdOutput,
+					hStdError = sio.hStdError,
+				};
+			}
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a process that releases a created HPROCESS instance at disposal using CloseHandle.</summary>
@@ -6882,7 +7089,9 @@ namespace Vanara.PInvoke
 			/// </param>
 			public SafeHPROCESS(HPROCESS preexistingHandle, bool ownsHandle = true) : base((IntPtr)preexistingHandle, ownsHandle) { }
 
-			private SafeHPROCESS() : base() { }
+			private SafeHPROCESS() : base()
+			{
+			}
 
 			/// <summary>Gets a handle to the current process that can be used across processes.</summary>
 			/// <value>The current process handle.</value>
@@ -6907,7 +7116,9 @@ namespace Vanara.PInvoke
 			/// </param>
 			public SafeHTHREAD(HTHREAD preexistingHandle, bool ownsHandle = true) : base((IntPtr)preexistingHandle, ownsHandle) { }
 
-			private SafeHTHREAD() : base() { }
+			private SafeHTHREAD() : base()
+			{
+			}
 
 			/// <summary>Gets a handle to the current thread that can be used across processes.</summary>
 			/// <value>The current thread handle.</value>
@@ -6929,9 +7140,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684873")]
 		public sealed class SafePROCESS_INFORMATION : IDisposable
 		{
-			/// <summary>
-			/// Initializes a new instance of the <see cref="SafePROCESS_INFORMATION"/> class.
-			/// </summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePROCESS_INFORMATION"/> class.</summary>
 			/// <param name="pi">The pi.</param>
 			public SafePROCESS_INFORMATION(in PROCESS_INFORMATION pi)
 			{
@@ -6977,6 +7186,58 @@ namespace Vanara.PInvoke
 			{
 				hProcess.Dispose();
 				hThread.Dispose();
+			}
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="ProcThreadAttributeList"/> that is disposed using <see cref="DeleteProcThreadAttributeList"/>.</summary>
+		public class SafeProcThreadAttributeList : SafeHANDLE
+		{
+			private List<PinnedObject> values = new List<PinnedObject>();
+
+			/// <summary>Initializes a new instance of the <see cref="SafeProcThreadAttributeList"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeProcThreadAttributeList(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeProcThreadAttributeList"/> class.</summary>
+			private SafeProcThreadAttributeList() : base() { }
+
+			public static SafeProcThreadAttributeList Create(IDictionary<PROC_THREAD_ATTRIBUTE, object> attributes)
+			{
+				if (attributes is null) throw new ArgumentNullException(nameof(attributes));
+				foreach (var kv in attributes)
+					if (!IsValid(kv.Key, kv.Value)) throw new ArgumentException($"The attribute {kv.Key} does not support a value of type {kv.Value.GetType().Name}.");
+
+				SizeT sz = 0;
+				InitializeProcThreadAttributeList(IntPtr.Zero, (uint)attributes.Count, 0, ref sz);
+				if (sz == 0) Win32Error.ThrowLastError();
+				RuntimeHelpers.PrepareConstrainedRegions();
+				var ptr = Marshal.AllocHGlobal(sz);
+				if (!InitializeProcThreadAttributeList(ptr, (uint)attributes.Count, 0, ref sz))
+				{
+					Marshal.FreeHGlobal(ptr);
+					Win32Error.ThrowLastError();
+				}
+
+				var hAttr = new SafeProcThreadAttributeList(ptr);
+				foreach (var kv in attributes)
+					hAttr.Add(kv.Key, kv.Value);
+				return hAttr;
+			}
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { values.Clear(); DeleteProcThreadAttributeList(handle); Marshal.FreeHGlobal(handle); return true; }
+
+			private static bool IsValid(PROC_THREAD_ATTRIBUTE attr, object value) => !(value is null) && value.GetType().Equals(attr.ValidType);
+
+			private void Add(PROC_THREAD_ATTRIBUTE attr, object value)
+			{
+				var pVal = new PinnedObject(value);
+				values.Add(pVal);
+				if (!UpdateProcThreadAttribute(handle, 0, attr, pVal, Marshal.SizeOf(value)))
+					Win32Error.ThrowLastError();
 			}
 		}
 	}
