@@ -224,6 +224,15 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void GetProcessGroupAffinityTest()
+		{
+			ushort cnt = 0;
+			Assert.That(GetProcessGroupAffinity(GetCurrentProcess(), ref cnt, null), Is.False);
+			var groups = new ushort[cnt];
+			Assert.That(GetProcessGroupAffinity(GetCurrentProcess(), ref cnt, groups), Is.True);
+		}
+
+		[Test]
 		public void GetProcessHandleCountTest()
 		{
 			Assert.That(GetProcessHandleCount(GetCurrentProcess(), out var cnt), Is.True);
@@ -327,6 +336,13 @@ namespace Vanara.PInvoke.Tests
 			var hThread = GetCurrentThread();
 			Assert.That(SetThreadDescription(hThread, cDesc).Succeeded, Is.True);
 			Assert.That(GetThreadDescription(hThread, out var desc).Succeeded, Is.True);
+		}
+
+		[Test]
+		public void GetSetThreadGroupAffinityTest()
+		{
+			Assert.That(GetThreadGroupAffinity(GetCurrentThread(), out var aff), Is.True);
+			Assert.That(SetThreadGroupAffinity(GetCurrentThread(), aff, out _), Is.True);
 		}
 
 		[Test]

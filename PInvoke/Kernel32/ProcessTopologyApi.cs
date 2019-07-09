@@ -23,14 +23,18 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, use <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, use GetLastError.</para>
 		/// <para>
 		/// If the error value is ERROR_INSUFFICIENT_BUFFER, the GroupCount parameter contains the required buffer size in number of elements.
 		/// </para>
 		/// </returns>
-		// BOOL GetProcessGroupAffinity( _In_ HANDLE hProcess, _Inout_ PUSHORT GroupCount, _Out_ PUSHORT GroupArray); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405496(v=vs.85).aspx
+		/// <remarks>
+		/// To compile an application that uses this function, set _WIN32_WINNT &gt;= 0x0601. For more information, see Using the Windows Headers.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processtopologyapi/nf-processtopologyapi-getprocessgroupaffinity BOOL
+		// GetProcessGroupAffinity( HANDLE hProcess, PUSHORT GroupCount, PUSHORT GroupArray );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "dd405496")]
+		[PInvokeData("processtopologyapi.h", MSDNShortId = "e22a4910-45dd-4eb6-9ed5-a8e0bcdfad7b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetProcessGroupAffinity(HPROCESS hProcess, ref ushort GroupCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] GroupArray);
 
@@ -45,11 +49,15 @@ namespace Vanara.PInvoke
 		/// <param name="GroupAffinity">A pointer to a GROUP_AFFINITY structure to receive the group affinity of the thread.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, use <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, use GetLastError.</para>
 		/// </returns>
-		// BOOL GetThreadGroupAffinity( _In_ HANDLE hThread, _Out_ PGROUP_AFFINITY GroupAffinity); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405498(v=vs.85).aspx
+		/// <remarks>
+		/// To compile an application that uses this function, set _WIN32_WINNT &gt;= 0x0601. For more information, see Using the Windows Headers.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processtopologyapi/nf-processtopologyapi-getthreadgroupaffinity BOOL
+		// GetThreadGroupAffinity( HANDLE hThread, PGROUP_AFFINITY GroupAffinity );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "dd405498")]
+		[PInvokeData("processtopologyapi.h", MSDNShortId = "effc75be-60da-43cc-bfb3-5fb905e1404d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetThreadGroupAffinity(HTHREAD hThread, out GROUP_AFFINITY GroupAffinity);
 
@@ -59,19 +67,22 @@ namespace Vanara.PInvoke
 		/// <para>The handle must have the THREAD_SET_INFORMATION access right. For more information, see Thread Security and Access Rights.</para>
 		/// </param>
 		/// <param name="GroupAffinity">
-		/// A <c>GROUP_AFFINITY</c> structure that specifies the processor group affinity to be used for the specified thread.
+		/// A GROUP_AFFINITY structure that specifies the processor group affinity to be used for the specified thread.
 		/// </param>
 		/// <param name="PreviousGroupAffinity">
-		/// A pointer to a <c>GROUP_AFFINITY</c> structure to receive the thread's previous group affinity. This parameter can be NULL.
+		/// A pointer to a GROUP_AFFINITY structure to receive the thread's previous group affinity. This parameter can be NULL.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, use <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, use GetLastError.</para>
 		/// </returns>
-		// BOOL SetThreadGroupAffinity( _In_ HANDLE hThread, _In_ const GROUP_AFFINITY *GroupAffinity, _Out_opt_ PGROUP_AFFINITY
-		// PreviousGroupAffinity); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405516(v=vs.85).aspx
+		/// <remarks>
+		/// To compile an application that uses this function, set _WIN32_WINNT &gt;= 0x0601. For more information, see Using the Windows Headers.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processtopologyapi/nf-processtopologyapi-setthreadgroupaffinity BOOL
+		// SetThreadGroupAffinity( HANDLE hThread, const GROUP_AFFINITY *GroupAffinity, PGROUP_AFFINITY PreviousGroupAffinity );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "dd405516")]
+		[PInvokeData("processtopologyapi.h", MSDNShortId = "9f24f1bf-a63d-4318-af2a-eb3553f2b0f9")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetThreadGroupAffinity(HTHREAD hThread, in GROUP_AFFINITY GroupAffinity, out GROUP_AFFINITY PreviousGroupAffinity);
 	}
