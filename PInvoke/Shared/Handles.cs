@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -32,7 +33,7 @@ namespace Vanara.PInvoke
 	public interface IUserHandle : IHandle { }
 
 	/// <summary>Provides a handle to an accelerator table.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HACCEL : IHandle
 	{
 		private IntPtr handle;
@@ -80,7 +81,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a generic handle.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HANDLE : IHandle
 	{
 		private IntPtr handle;
@@ -133,7 +134,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a bitmap.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HBITMAP : IGraphicsObjectHandle
 	{
 		private IntPtr handle;
@@ -186,7 +187,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a drawing brush.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HBRUSH : IGraphicsObjectHandle
 	{
 		private IntPtr handle;
@@ -239,7 +240,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a Windows cursor.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HCURSOR : IGraphicsObjectHandle
 	{
 		private IntPtr handle;
@@ -287,7 +288,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a graphic device context.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HDC : IHandle
 	{
 		private IntPtr handle;
@@ -335,7 +336,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a desktop.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HDESK : IKernelHandle
 	{
 		private IntPtr handle;
@@ -383,7 +384,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a DPA.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HDPA : IKernelHandle
 	{
 		private IntPtr handle;
@@ -431,7 +432,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a Windows drop operation.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HDROP : IShellHandle
 	{
 		private IntPtr handle;
@@ -479,7 +480,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a DSA.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HDSA : IKernelHandle
 	{
 		private IntPtr handle;
@@ -530,7 +531,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a deferred windows position.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HDWP : IUserHandle
 	{
 		private IntPtr handle;
@@ -578,7 +579,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to an enhanced metafile.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HENHMETAFILE : IHandle
 	{
 		private IntPtr handle;
@@ -626,7 +627,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a file.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HFILE : IKernelHandle
 	{
 		/// <summary>Represents an invalid handle.</summary>
@@ -685,7 +686,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a font.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HFONT : IGraphicsObjectHandle
 	{
 		private IntPtr handle;
@@ -738,7 +739,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a graphic device object.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HGDIOBJ : IGraphicsObjectHandle
 	{
 		private IntPtr handle;
@@ -816,7 +817,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a Windows icon.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HICON : IUserHandle
 	{
 		private IntPtr handle;
@@ -864,7 +865,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a Windows image list.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HIMAGELIST : IShellHandle
 	{
 		private IntPtr handle;
@@ -912,7 +913,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a module or library instance.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HINSTANCE : IKernelHandle
 	{
 		private IntPtr handle;
@@ -960,7 +961,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a Windows registry key.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HKEY : IKernelHandle
 	{
 		private IntPtr handle;
@@ -1060,7 +1061,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a menu.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HMENU : IUserHandle
 	{
 		private IntPtr handle;
@@ -1108,7 +1109,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a metafile.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HMETAFILE : IHandle
 	{
 		private IntPtr handle;
@@ -1156,7 +1157,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a monitor.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HMONITOR : IKernelHandle
 	{
 		private IntPtr handle;
@@ -1204,7 +1205,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a palette.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HPALETTE : IGraphicsObjectHandle
 	{
 		private IntPtr handle;
@@ -1257,7 +1258,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a drawing pen.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HPEN : IGraphicsObjectHandle
 	{
 		private IntPtr handle;
@@ -1310,7 +1311,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a process.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HPROCESS : ISyncHandle
 	{
 		private IntPtr handle;
@@ -1335,6 +1336,11 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator HPROCESS(IntPtr h) => new HPROCESS(h);
 
+		/// <summary>Performs an implicit conversion from <see cref="Process"/> to <see cref="HPROCESS"/>.</summary>
+		/// <param name="p">The Process instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HPROCESS(Process p) => new HPROCESS(p.Handle);
+
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
@@ -1358,7 +1364,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a Windows property sheet.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HPROPSHEET : IUserHandle
 	{
 		private IntPtr handle;
@@ -1406,7 +1412,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a property sheet page.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HPROPSHEETPAGE : IUserHandle
 	{
 		private IntPtr handle;
@@ -1454,7 +1460,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a drawing region.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HRGN : IGraphicsObjectHandle
 	{
 		private IntPtr handle;
@@ -1507,7 +1513,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a Windows theme.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HTHEME : IHandle
 	{
 		private IntPtr handle;
@@ -1555,7 +1561,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a thread.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HTHREAD : ISyncHandle
 	{
 		private IntPtr handle;
@@ -1603,7 +1609,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a Windows thumbnail.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HTHUMBNAIL : IShellHandle
 	{
 		private IntPtr handle;
@@ -1651,7 +1657,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to an access token .</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HTOKEN : IKernelHandle
 	{
 		private IntPtr handle;
@@ -1699,7 +1705,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a windows station.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HWINSTA : IKernelHandle
 	{
 		private IntPtr handle;
@@ -1747,7 +1753,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a handle to a window or dialog.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HWND : IUserHandle
 	{
 		private IntPtr handle;
@@ -1795,7 +1801,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a pointer to an access control entry.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct PACE : ISecurityObject
 	{
 		private IntPtr handle;
@@ -1831,7 +1837,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a pointer to an access control list.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct PACL : ISecurityObject
 	{
 		private IntPtr handle;
@@ -1867,7 +1873,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a pointer to a security descriptor.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct PSECURITY_DESCRIPTOR : ISecurityObject
 	{
 		private IntPtr handle;
@@ -1903,7 +1909,7 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Provides a pointer to a security identifier.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct PSID : ISecurityObject
 	{
 		private IntPtr handle;
@@ -1942,6 +1948,7 @@ namespace Vanara.PInvoke
 	/// <seealso cref="Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid"/>
 	/// <seealso cref="System.IEquatable{T}"/>
 	/// <seealso cref="Vanara.PInvoke.IHandle"/>
+	[DebuggerDisplay("{handle}")]
 	public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<SafeHANDLE>, IHandle
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeHANDLE"/> class.</summary>
