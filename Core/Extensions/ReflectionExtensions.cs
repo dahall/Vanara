@@ -11,6 +11,15 @@ namespace Vanara.Extensions
 	{
 		private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
 
+		/// <summary>For a structure, gets either the result of the static Create method or the default.</summary>
+		/// <typeparam name="T">The structure's type.</typeparam>
+		/// <returns>The result of the static Create method or the default.</returns>
+		public static T CreateOrDefault<T>() where T : struct
+		{
+			var mi = typeof(T).GetMethod("Create", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static, null, Type.EmptyTypes, null);
+			return mi == null ? (default) : (T)mi.Invoke(null, null);
+		}
+
 		/// <summary>Gets all loaded types in the <see cref="AppDomain"/>.</summary>
 		/// <param name="appDomain">The application domain.</param>
 		/// <returns>All loaded types.</returns>
@@ -205,6 +214,20 @@ namespace Vanara.Extensions
 			return (T)mi.Invoke(obj, args);
 		}
 
+		/// <summary>Invokes a named static method of a type with parameters.</summary>
+		/// <typeparam name="T">The expected type of the method's return value.</typeparam>
+		/// <param name="type">The type containing the static method.</param>
+		/// <param name="methodName">Name of the method.</param>
+		/// <param name="args">The arguments to provide to the method invocation.</param>
+		/// <returns>The value returned from the method.</returns>
+		public static T InvokeStaticMethod<T>(this Type type, string methodName, params object[] args)
+		{
+			var argTypes = args == null || args.Length == 0 ? Type.EmptyTypes : Array.ConvertAll(args, o => o?.GetType() ?? typeof(object));
+			var mi = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase | BindingFlags.Static, null, argTypes, null);
+			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
+			return (T)mi.Invoke(null, args);
+		}
+
 #if !(NETSTANDARD2_0)
 		/// <summary>Invokes a method from a derived base class.</summary>
 		/// <param name="methodInfo">The <see cref="MethodInfo"/> instance from the derived class for the method to invoke.</param>
@@ -222,7 +245,7 @@ namespace Vanara.Extensions
 				returnType = methodInfo.ReturnType;
 
 			var type = targetObject.GetType();
-			var dynamicMethod = new DynamicMethod("", returnType, new [] { type, typeof(object) }, type);
+			var dynamicMethod = new DynamicMethod("", returnType, new[] { type, typeof(object) }, type);
 			var iLGenerator = dynamicMethod.GetILGenerator();
 			iLGenerator.Emit(OpCodes.Ldarg_0); // this
 
@@ -243,7 +266,7 @@ namespace Vanara.Extensions
 			iLGenerator.Emit(OpCodes.Call, methodInfo);
 			iLGenerator.Emit(OpCodes.Ret);
 
-			return dynamicMethod.Invoke(null, new [] { targetObject, arguments });
+			return dynamicMethod.Invoke(null, new[] { targetObject, arguments });
 		}
 #endif
 
