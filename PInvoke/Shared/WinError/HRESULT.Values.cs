@@ -503,6 +503,66 @@ namespace Vanara.PInvoke
 		/// <summary>The data necessary to complete this operation is not yet available.</summary>
 		public const uint E_PENDING = 0x8000000A;
 
+		/// <summary>The operation attempted to access data outside the valid range</summary>
+		public const uint E_BOUNDS = 0x8000000B;
+
+		/// <summary>A concurrent or interleaved operation changed the state of the object, invalidating this operation.</summary>
+		public const uint E_CHANGED_STATE = 0x8000000C;
+
+		/// <summary>An illegal state change was requested.</summary>
+		public const uint E_ILLEGAL_STATE_CHANGE = 0x8000000D;
+
+		/// <summary>A method was called at an unexpected time.</summary>
+		public const uint E_ILLEGAL_METHOD_CALL = 0x8000000E;
+
+		/// <summary>Typename or Namespace was not found in metadata file.</summary>
+		public const uint RO_E_METADATA_NAME_NOT_FOUND = 0x8000000F;
+
+		/// <summary>Name is an existing namespace rather than a typename.</summary>
+		public const uint RO_E_METADATA_NAME_IS_NAMESPACE = 0x80000010;
+
+		/// <summary>Typename has an invalid format.</summary>
+		public const uint RO_E_METADATA_INVALID_TYPE_FORMAT = 0x80000011;
+
+		/// <summary>Metadata file is invalid or corrupted.</summary>
+		public const uint RO_E_INVALID_METADATA_FILE = 0x80000012;
+
+		/// <summary>The object has been closed.</summary>
+		public const uint RO_E_CLOSED = 0x80000013;
+
+		/// <summary>Only one thread may access the object during a write operation.</summary>
+		public const uint RO_E_EXCLUSIVE_WRITE = 0x80000014;
+
+		/// <summary>Operation is prohibited during change notification.</summary>
+		public const uint RO_E_CHANGE_NOTIFICATION_IN_PROGRESS = 0x80000015;
+		
+		/// <summary>The text associated with this error code could not be found.</summary>
+		public const uint RO_E_ERROR_STRING_NOT_FOUND = 0x80000016;
+		
+		/// <summary>String not null terminated.</summary>
+		public const uint E_STRING_NOT_NULL_TERMINATED = 0x80000017;
+		
+		/// <summary>A delegate was assigned when not allowed.</summary>
+		public const uint E_ILLEGAL_DELEGATE_ASSIGNMENT = 0x80000018;
+		
+		/// <summary>An async operation was not properly started.</summary>
+		public const uint E_ASYNC_OPERATION_NOT_STARTED = 0x80000019;
+		
+		/// <summary>The application is exiting and cannot service this request.</summary>
+		public const uint E_APPLICATION_EXITING = 0x8000001A;
+		
+		/// <summary>The application view is exiting and cannot service this request.</summary>
+		public const uint E_APPLICATION_VIEW_EXITING = 0x8000001B;
+		
+		/// <summary>The object must support the IAgileObject interface.</summary>
+		public const uint RO_E_MUST_BE_AGILE = 0x8000001C;
+		
+		/// <summary>Activating a single-threaded class from MTA is not supported.</summary>
+		public const uint RO_E_UNSUPPORTED_FROM_MTA = 0x8000001D;
+		
+		/// <summary>The object has been committed.</summary>
+		public const uint RO_E_COMMITTED = 0x8000001E;
+
 		/// <summary>Not implemented.</summary>
 		public const uint E_NOTIMPL = 0x80004001;
 
