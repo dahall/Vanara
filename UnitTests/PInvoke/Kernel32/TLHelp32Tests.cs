@@ -5,7 +5,7 @@ using static Vanara.PInvoke.Kernel32;
 namespace Vanara.PInvoke.Tests
 {
 	[TestFixture]
-	public class SnapshotTests
+	public class TLHelp32Tests
 	{
 		[Test]
 		public void TestMethod()
