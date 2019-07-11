@@ -1942,6 +1942,8 @@ namespace Vanara.PInvoke
 			/// <summary>The number of entries in the <c>WorkingSetInfo</c> array.</summary>
 			public UIntPtr NumberOfEntries;
 
+			private PSAPI_WORKING_SET_BLOCK padding;
+
 			/// <summary>An array of PSAPI_WORKING_SET_BLOCK elements, one for each page in the process working set.</summary>
 			public PSAPI_WORKING_SET_BLOCK[] WorkingSetInfo
 			{
