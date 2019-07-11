@@ -6,6 +6,20 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		public const string OUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK_EXPORT_NAME = "OutOfProcessFunctionTableCallback";
+
+		/// <summary>Retrieves the function table entries for the functions in the specified region of memory.</summary>
+		/// <param name="ControlPc">The control address.</param>
+		/// <param name="Context">A pointer to the user-defined data to be passed from the function call.</param>
+		/// <returns>Pointer to a <see cref="IMAGE_RUNTIME_FUNCTION_ENTRY"/> structure.</returns>
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		[PInvokeData("WinNT.h")]
+		public delegate IntPtr PGET_RUNTIME_FUNCTION_CALLBACK(IntPtr ControlPc, IntPtr Context);
+
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		[PInvokeData("WinNT.h")]
+		public delegate uint POUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK(HPROCESS Process, IntPtr TableAddress, out uint Entries, [Out] IMAGE_RUNTIME_FUNCTION_ENTRY[] Functions);
+
 		/// <summary>
 		/// <para>
 		/// An application-defined function previously registered with the AddSecureMemoryCacheCallback function that is called when a
@@ -322,6 +336,44 @@ namespace Vanara.PInvoke
 			VER_PRODUCT_TYPE = 0x0000080,
 		}
 
+		/// <summary>
+		/// Copies the contents of a source memory block to a destination memory block, and supports overlapping source and destination
+		/// memory blocks.
+		/// </summary>
+		/// <param name="Destination">A pointer to the destination memory block to copy the bytes to.</param>
+		/// <param name="Source">A pointer to the source memory block to copy the bytes from.</param>
+		/// <param name="Length">The number of bytes to copy from the source to the destination.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>
+		/// The source memory block, which is defined by Source and Length, can overlap the destination memory block, which is defined by
+		/// Destination and Length.
+		/// </para>
+		/// <para>
+		/// The <c>RtlCopyMemory</c> routine runs faster than <c>RtlMoveMemory</c>, but <c>RtlCopyMemory</c> requires that the source and
+		/// destination memory blocks do not overlap.
+		/// </para>
+		/// <para>
+		/// Callers of <c>RtlMoveMemory</c> can be running at any IRQL if the source and destination memory blocks are in nonpaged system
+		/// memory. Otherwise, the caller must be running at IRQL &lt;= APC_LEVEL.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/devnotes/rtlmovememory VOID RtlMoveMemory( _Out_ VOID UNALIGNED *Destination, _In_
+		// const VOID UNALIGNED *Source, _In_ SIZE_T Length );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winnt.h", MSDNShortId = "D374F14D-24C7-4771-AD40-3AC37E7A2D2F")]
+		public static extern void RtlMoveMemory([In] IntPtr Destination, [In] IntPtr Source, [In] SizeT Length);
+
+		/// <summary>
+		/// The RtlZeroMemory routine fills a block of memory with zeros, given a pointer to the block and the length, in bytes, to be filled.
+		/// </summary>
+		/// <param name="Destination">A pointer to the memory block to be filled with zeros.</param>
+		/// <param name="Length">The number of bytes to fill with zeros.</param>
+		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-rtlzeromemory
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winnt.h")]
+		public static extern void RtlZeroMemory(IntPtr Destination, SizeT Length);
+
 		/// <summary>Contains the hardware counter value.</summary>
 		// typedef struct _HARDWARE_COUNTER_DATA { HARDWARE_COUNTER_TYPE Type; DWORD Reserved; DWORD64 Value;} HARDWARE_COUNTER_DATA,
 		// *PHARDWARE_COUNTER_DATA; https://msdn.microsoft.com/en-us/library/windows/desktop/dd796394(v=vs.85).aspx
@@ -339,6 +391,23 @@ namespace Vanara.PInvoke
 			/// The counter index. Each hardware counter in a processor's performance monitoring unit (PMU) is identified by an index.
 			/// </summary>
 			public ulong Value;
+		}
+
+		/// <summary>Represents an entry in the function table on 64-bit Windows.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-runtime_function
+		// typedef struct _IMAGE_RUNTIME_FUNCTION_ENTRY { DWORD BeginAddress; DWORD EndAddress; union { DWORD UnwindInfoAddress; DWORD UnwindData; } DUMMYUNIONNAME; } RUNTIME_FUNCTION, *PRUNTIME_FUNCTION, _IMAGE_RUNTIME_FUNCTION_ENTRY, *_PIMAGE_RUNTIME_FUNCTION_ENTRY;
+		[PInvokeData("winnt.h", MSDNShortId = "9ed16f9a-3403-4ba9-9968-f51f6788a1f8")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IMAGE_RUNTIME_FUNCTION_ENTRY
+		{
+			/// <summary>The address of the start of the function.</summary>
+			public uint BeginAddress;
+
+			/// <summary>The address of the end of the function.</summary>
+			public uint EndAddress;
+
+			/// <summary>The address of the unwind information for the function.</summary>
+			public uint UnwindInfoAddress;
 		}
 
 		/// <summary>Contains the thread profiling and hardware counter data that you requested.</summary>
@@ -435,6 +504,29 @@ namespace Vanara.PInvoke
 			/// worker thread is queued to the specified completion list.
 			/// </summary>
 			public IntPtr UmsCompletionList;
+		}
+
+		[PInvokeData("winnt.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct UNWIND_HISTORY_TABLE_ENTRY
+		{
+			public ulong ImageBase;
+			public IMAGE_RUNTIME_FUNCTION_ENTRY FunctionEntry;
+		}
+
+		[PInvokeData("winnt.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct UNWIND_HISTORY_TABLE
+		{
+			public uint Count;
+			public byte LocalHint;
+			public byte GlobalHint;
+			public byte Search;
+			public byte Once;
+			public ulong LowAddress;
+			public ulong HighAddress;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 12)]
+			public UNWIND_HISTORY_TABLE_ENTRY[] Entry;
 		}
 
 		/// <summary>
