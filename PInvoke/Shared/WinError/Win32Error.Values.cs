@@ -8676,5 +8676,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>The license has been revoked for this user.</summary>
 		public const int STORE_ERROR_LICENSE_REVOKED = 15864;
+
+		/// <summary>This operation is only valid in the context of an app container.</summary>
+		public const int NOT_APPCONTAINER = 4250;
 	}
 }

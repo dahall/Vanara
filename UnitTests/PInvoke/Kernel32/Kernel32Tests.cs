@@ -16,6 +16,13 @@ namespace Vanara.PInvoke.Tests
 		internal const string tmpstr = @"Temporary";
 		internal const string fn = @"C:\Temp\help.ico";
 
+		[Test]
+		public void GetAppContainerNamedObjectPathTest()
+		{
+			var sb = new StringBuilder(1024);
+			Assert.That(GetAppContainerNamedObjectPath(default, default, (uint)sb.Length, sb, out var len), ResultIs.Failure);
+		}
+
 		public static string CreateTempFile(bool markAsTemp = true)
 		{
 			var fn = Path.GetTempFileName();
