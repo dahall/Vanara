@@ -93,6 +93,9 @@ namespace Vanara.PInvoke
 			/// <summary>Equivalent to a NULL pointer to a SID.</summary>
 			public static readonly SafePSID Null = new SafePSID(0);
 
+			/// <summary>A SID representing the Everyone Group (S-1-1-0).</summary>
+			public static readonly SafePSID Everyone = CreateWellKnown(WELL_KNOWN_SID_TYPE.WinWorldSid);
+
 			/// <summary>Initializes a new instance of the <see cref="SafePSID"/> class.</summary>
 			/// <param name="psid">The existing <see cref="SafePSID"/> instance to duplicate.</param>
 			public SafePSID(PSID psid) : base(GetLengthSid(psid)) => CopySid(Size, handle, psid);
