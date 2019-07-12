@@ -6,6 +6,8 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		public const uint ACL_REVISION = 2;
+		public const uint ACL_REVISION_DS = 4;
 		public const string OUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK_EXPORT_NAME = "OutOfProcessFunctionTableCallback";
 
 		/// <summary>Retrieves the function table entries for the functions in the specified region of memory.</summary>
