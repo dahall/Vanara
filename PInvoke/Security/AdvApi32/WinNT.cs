@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
@@ -34,6 +35,67 @@ namespace Vanara.PInvoke
 			/// <summary>Indicates ACL size information.</summary>
 			[CorrespondingType(typeof(ACL_SIZE_INFORMATION))]
 			AclSizeInformation
+		}
+
+		/// <summary>
+		/// The attribute flags that are a 32-bitmask. Bits 16 through 31 may be set to any value. Bits 0 through 15 must be zero or a
+		/// combination of one or more of the following mask values.
+		/// </summary>
+		[PInvokeData("winnt.h", MSDNShortId = "FDBB9B00-01C3-474A-81FF-97C5CBA3261B")]
+		[Flags]
+		public enum CLAIM_SECURITY_ATTRIBUTE_FLAG : uint
+		{
+			/// <summary>This attribute is ignored by the operating system. This claim security attribute is not inherited across processes.</summary>
+			CLAIM_SECURITY_ATTRIBUTE_NON_INHERITABLE = 0x0001,
+
+			/// <summary>
+			/// The value of the claim security attribute is case sensitive. This flag is valid for values that contain string types.
+			/// </summary>
+			CLAIM_SECURITY_ATTRIBUTE_VALUE_CASE_SENSITIVE = 0x0002,
+
+			/// <summary>The claim security attribute is considered only for deny access control entries (ACEs).</summary>
+			CLAIM_SECURITY_ATTRIBUTE_USE_FOR_DENY_ONLY = 0x0004,
+
+			/// <summary>The claim security attribute is disabled by default.</summary>
+			CLAIM_SECURITY_ATTRIBUTE_DISABLED_BY_DEFAULT = 0x0008,
+
+			/// <summary>The claim security attribute is disabled and will not be applied by the AccessCheck function.</summary>
+			CLAIM_SECURITY_ATTRIBUTE_DISABLED = 0x0010,
+
+			/// <summary>The claim security attribute is mandatory.</summary>
+			CLAIM_SECURITY_ATTRIBUTE_MANDATORY = 0x0020,
+		}
+
+		/// <summary>A union tag value that indicates the type of information contained in the <c>Values</c> member.</summary>
+		[PInvokeData("winnt.h", MSDNShortId = "FDBB9B00-01C3-474A-81FF-97C5CBA3261B")]
+		public enum CLAIM_SECURITY_ATTRIBUTE_TYPE : ushort
+		{
+			/// <summary>The Values member refers to an array of LONG64 values.</summary>
+			CLAIM_SECURITY_ATTRIBUTE_TYPE_INT64 = 0x0001,
+
+			/// <summary>The Values member refers to an array of ULONG64 values.</summary>
+			CLAIM_SECURITY_ATTRIBUTE_TYPE_UINT64 = 0x0002,
+
+			/// <summary>The Values member refers to an array of pointers to Unicode string values.</summary>
+			CLAIM_SECURITY_ATTRIBUTE_TYPE_STRING = 0x0003,
+
+			/// <summary>The Values member refers to an array of CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE values.</summary>
+			CLAIM_SECURITY_ATTRIBUTE_TYPE_FQBN = 0x0004,
+
+			/// <summary>
+			/// The Values member refers to an array of CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE values where the pValue member of each
+			/// CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE is a PSID.
+			/// </summary>
+			CLAIM_SECURITY_ATTRIBUTE_TYPE_SID = 0x0005,
+
+			/// <summary>
+			/// The Values member refers to an array of ULONG64 values where each element indicates a Boolean value. The value 1 indicates
+			/// TRUE and the value 0 indicates FALSE.
+			/// </summary>
+			CLAIM_SECURITY_ATTRIBUTE_TYPE_BOOLEAN = 0x0006,
+
+			/// <summary>The Values member refers to an array of CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE values.</summary>
+			CLAIM_SECURITY_ATTRIBUTE_TYPE_OCTET_STRING = 0x0010,
 		}
 
 		/// <summary>Flags that affect the behavior of <see cref="CheckTokenMembershipEx"/>.</summary>
@@ -1491,14 +1553,180 @@ namespace Vanara.PInvoke
 			public uint AclBytesFree;
 		}
 
-		/// <summary>The actual attribute.</summary>
-		[StructLayout(LayoutKind.Explicit)]
-		[PInvokeData("Winnt.h", MSDNShortId = "hh448481")]
-		public struct CLAIM_SECURITY_ATTRIBUTE_INFORMATION_V1
+		/// <summary>The <c>CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE</c> structure specifies the fully qualified binary name.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_claim_security_attribute_fqbn_value typedef struct
+		// _CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE { DWORD64 Version; PWSTR Name; } CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE, *PCLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE;
+		[PInvokeData("winnt.h", MSDNShortId = "1FD9A519-40EA-4780-90F5-C9DF4ADAE72C")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE
 		{
-			/// <summary>Pointer to an array that contains the AttributeCount member of the CLAIM_SECURITY_ATTRIBUTE_V1 structure.</summary>
-			[FieldOffset(0)]
-			public IntPtr pAttributeV1;
+			/// <summary>The version of the fully qualified binary name value.</summary>
+			public ulong Version;
+
+			/// <summary>A fully qualified binary name.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string Name;
+		}
+
+		/// <summary>
+		/// The <c>CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE</c> structure specifies the <c>OCTET_STRING</c> value type of the claim
+		/// security attribute.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-claim_security_attribute_octet_string_value typedef struct
+		// _CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE { PVOID pValue; DWORD ValueLength; } CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE, *PCLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE;
+		[PInvokeData("winnt.h", MSDNShortId = "6647CC4F-1A84-43B2-A80E-7B6BF3A2D7AD")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE
+		{
+			/// <summary>
+			/// A pointer buffer that contains the <c>OCTET_STRING</c> value. The value is a series of bytes of the length indicated in the
+			/// <c>ValueLength</c> member.
+			/// </summary>
+			public IntPtr pValue;
+
+			/// <summary>The length, in bytes, of the <c>OCTET_STRING</c> value.</summary>
+			public uint ValueLength;
+		}
+
+		/// <summary>
+		/// The <c>CLAIM_SECURITY_ATTRIBUTE_V1</c> structure defines a security attribute that can be associated with a token or
+		/// authorization context.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_claim_security_attribute_v1 typedef struct
+		// _CLAIM_SECURITY_ATTRIBUTE_V1 { PWSTR Name; WORD ValueType; WORD Reserved; DWORD Flags; DWORD ValueCount; union { PLONG64 pInt64;
+		// PDWORD64 pUint64; PWSTR *ppString; PCLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE pFqbn; PCLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE
+		// pOctetString; } Values; } CLAIM_SECURITY_ATTRIBUTE_V1, *PCLAIM_SECURITY_ATTRIBUTE_V1;
+		[PInvokeData("winnt.h", MSDNShortId = "FDBB9B00-01C3-474A-81FF-97C5CBA3261B")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct CLAIM_SECURITY_ATTRIBUTE_V1
+		{
+			/// <summary>
+			/// A pointer to a string of Unicode characters that contains the name of the security attribute. This string must be at least 4
+			/// bytes in length.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string Name;
+
+			/// <summary>
+			/// <para>
+			/// A union tag value that indicates the type of information contained in the <c>Values</c> member. The <c>ValueType</c> member
+			/// must be one of the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_TYPE_INT64 0x0001</term>
+			/// <term>The Values member refers to an array of LONG64 values.</term>
+			/// </item>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_TYPE_UINT64 0x0002</term>
+			/// <term>The Values member refers to an array of ULONG64 values.</term>
+			/// </item>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_TYPE_STRING 0x0003</term>
+			/// <term>The Values member refers to an array of pointers to Unicode string values.</term>
+			/// </item>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_TYPE_FQBN 0x0004</term>
+			/// <term>The Values member refers to an array of CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE values.</term>
+			/// </item>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_TYPE_SID 0x0005</term>
+			/// <term>
+			/// The Values member refers to an array of CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE values where the pValue member of each
+			/// CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE is a PSID.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_TYPE_BOOLEAN 0x0006</term>
+			/// <term>
+			/// The Values member refers to an array of ULONG64 values where each element indicates a Boolean value. The value 1 indicates
+			/// TRUE and the value 0 indicates FALSE.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_TYPE_OCTET_STRING 0x0010</term>
+			/// <term>The Values member refers to an array of CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE values.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public CLAIM_SECURITY_ATTRIBUTE_TYPE ValueType;
+
+			/// <summary>This member is reserved and must be set to zero when sent and must be ignored when received.</summary>
+			public ushort Reserved;
+
+			/// <summary>
+			/// <para>
+			/// The attribute flags that are a 32-bitmask. Bits 16 through 31 may be set to any value. Bits 0 through 15 must be zero or a
+			/// combination of one or more of the following mask values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_NON_INHERITABLE 0x0001</term>
+			/// <term>This attribute is ignored by the operating system. This claim security attribute is not inherited across processes.</term>
+			/// </item>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_VALUE_CASE_SENSITIVE 0x0002</term>
+			/// <term>The value of the claim security attribute is case sensitive. This flag is valid for values that contain string types.</term>
+			/// </item>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_USE_FOR_DENY_ONLY 0x0004</term>
+			/// <term>The claim security attribute is considered only for deny access control entries (ACEs).</term>
+			/// </item>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_DISABLED_BY_DEFAULT 0x0008</term>
+			/// <term>The claim security attribute is disabled by default.</term>
+			/// </item>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_DISABLED 0x0010</term>
+			/// <term>The claim security attribute is disabled and will not be applied by the AccessCheck function.</term>
+			/// </item>
+			/// <item>
+			/// <term>CLAIM_SECURITY_ATTRIBUTE_MANDATORY 0x0020</term>
+			/// <term>The claim security attribute is mandatory.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public CLAIM_SECURITY_ATTRIBUTE_FLAG Flags;
+
+			/// <summary>The number of values specified in the <c>Values</c> member.</summary>
+			public uint ValueCount;
+
+			/// <summary>An array of security attribute values of the type specified in the <c>ValueType</c> member.</summary>
+			public VALUESUNION Values;
+
+			[StructLayout(LayoutKind.Explicit)]
+			public struct VALUESUNION
+			{
+				/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>LONG64</c> of type CLAIM_SECURITY_ATTRIBUTE_TYPE_INT64.</summary>
+				[FieldOffset(0)]
+				public IntPtr pInt64;
+
+				/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>ULONG64</c> of type CLAIM_SECURITY_ATTRIBUTE_TYPE_UINT64.</summary>
+				[FieldOffset(0)]
+				public IntPtr pUint64;
+
+				/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>PWSTR</c> of type CLAIM_SECURITY_ATTRIBUTE_TYPE_STRING.</summary>
+				[FieldOffset(0)]
+				public IntPtr ppString;
+
+				/// <summary>
+				/// Pointer to an array of <c>ValueCount</c> members where each member is a fully qualified binary name value of type CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE.
+				/// </summary>
+				[FieldOffset(0)]
+				public IntPtr pFqbn;
+
+				/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is an octet string of type CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE.</summary>
+				[FieldOffset(0)]
+				public IntPtr pOctetString;
+			}
 		}
 
 		/// <summary>The CLAIM_SECURITY_ATTRIBUTES_INFORMATION structure defines the security attributes for the claim.</summary>
@@ -1506,6 +1734,9 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winnt.h", MSDNShortId = "hh448481")]
 		public struct CLAIM_SECURITY_ATTRIBUTES_INFORMATION
 		{
+			/// <summary>A default instance which sets the <see cref="Version"/> field.</summary>
+			public static readonly CLAIM_SECURITY_ATTRIBUTES_INFORMATION Default = new CLAIM_SECURITY_ATTRIBUTES_INFORMATION { Version = 1 };
+
 			/// <summary>The version of the security attribute. This must be 1.</summary>
 			public ushort Version;
 
@@ -1518,7 +1749,17 @@ namespace Vanara.PInvoke
 			public uint AttributeCount;
 
 			/// <summary>The actual attribute.</summary>
-			public CLAIM_SECURITY_ATTRIBUTE_INFORMATION_V1 Attribute;
+			public ATTRUNION Attribute;
+
+			/// <summary>The actual attribute.</summary>
+			[StructLayout(LayoutKind.Explicit)]
+			[PInvokeData("Winnt.h", MSDNShortId = "hh448481")]
+			public struct ATTRUNION
+			{
+				/// <summary>Pointer to an array that contains the AttributeCount member of the CLAIM_SECURITY_ATTRIBUTE_V1 structure.</summary>
+				[FieldOffset(0)]
+				public IntPtr pAttributeV1;
+			}
 		}
 
 		/// <summary>
@@ -2450,26 +2691,26 @@ namespace Vanara.PInvoke
 		/// <summary>The following RIDs are used to specify mandatory integrity level.</summary>
 		public static class MandatoryIntegrityLevelSIDRelativeID
 		{
-			/// <summary>Untrusted.</summary>
-			public const int SECURITY_MANDATORY_UNTRUSTED_RID = 0x00000000;
+			/// <summary>High integrity.</summary>
+			public const int SECURITY_MANDATORY_HIGH_RID = 0x00003000;
 
 			/// <summary>Low integrity.</summary>
 			public const int SECURITY_MANDATORY_LOW_RID = 0x00001000;
 
-			/// <summary>Medium integrity.</summary>
-			public const int SECURITY_MANDATORY_MEDIUM_RID = 0x00002000;
-
 			/// <summary>Medium-high integrity.</summary>
 			public const int SECURITY_MANDATORY_MEDIUM_PLUS_RID = SECURITY_MANDATORY_MEDIUM_RID + 0x100;
 
-			/// <summary>High integrity.</summary>
-			public const int SECURITY_MANDATORY_HIGH_RID = 0x00003000;
+			/// <summary>Medium integrity.</summary>
+			public const int SECURITY_MANDATORY_MEDIUM_RID = 0x00002000;
+
+			/// <summary>Protected process.</summary>
+			public const int SECURITY_MANDATORY_PROTECTED_PROCESS_RID = 0x00005000;
 
 			/// <summary>System integrity.</summary>
 			public const int SECURITY_MANDATORY_SYSTEM_RID = 0x00004000;
 
-			/// <summary>Protected process.</summary>
-			public const int SECURITY_MANDATORY_PROTECTED_PROCESS_RID = 0x00005000;
+			/// <summary>Untrusted.</summary>
+			public const int SECURITY_MANDATORY_UNTRUSTED_RID = 0x00000000;
 		}
 
 		/// <summary>
@@ -2774,6 +3015,88 @@ namespace Vanara.PInvoke
 
 				internal static uint GetSize(int privCount) => (uint)Marshal.SizeOf(typeof(uint)) + (uint)(Marshal.SizeOf(typeof(LUID_AND_ATTRIBUTES)) * (privCount == 0 ? 1 : Math.Abs(privCount)));
 			}
+		}
+
+		/// <summary>A SafeHandle for access control lists. If owned, will call LocalFree on the pointer when disposed.</summary>
+		[DebuggerDisplay("{DebugString}")]
+		public class SafePACL : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject
+		{
+			/// <summary>The null value for a SafePACL.</summary>
+			public static readonly SafePACL Null = new SafePACL();
+
+			private const SECURITY_INFORMATION defSecInfo = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.SACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION;
+
+			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class.</summary>
+			public SafePACL() : base(IntPtr.Zero, 0, false) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class from an existing pointer, copying its content if owning.</summary>
+			/// <param name="pAcl">The access control list pointer.</param>
+			/// <param name="own">if set to <c>true</c> indicates that this pointer should be freed when disposed.</param>
+			public SafePACL(PACL pAcl, bool own = true) : base(IntPtr.Zero, 0, own)
+			{
+				if (own && IsValidAcl(pAcl))
+				{
+					SetHandle(mm.AllocMem((int)GetAclLength(pAcl)));
+					((IntPtr)pAcl).CopyTo(handle, sz);
+				}
+				else
+				{
+					SetHandle((IntPtr)pAcl);
+					sz = (int)GetAclTotalLength(pAcl);
+				}
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class to an empty memory buffer.</summary>
+			/// <param name="size">The size of the uninitialized access control list.</param>
+			public SafePACL(int size, uint revision = ACL_REVISION) : base(size)
+			{
+				if (size % 4 != 0) throw new ArgumentOutOfRangeException(nameof(size), "ACL structures must be DWORD aligned. This value must be a multiple of 4.");
+				InitializeAcl(handle, (uint)size, revision);
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class.</summary>
+			/// <param name="bytes">An array of bytes that contain an existing access control list.</param>
+			public SafePACL(byte[] bytes) : this(bytes?.Length ?? 0)
+			{
+				if (bytes is null) return;
+				Marshal.Copy(bytes, 0, handle, bytes.Length);
+			}
+
+			/// <summary>Determines whether the components of this access control list are valid.</summary>
+			public bool IsValidAcl => IsValidAcl(handle);
+
+			/// <summary>
+			/// Gets the length, in bytes, of a structurally valid access control list. The length includes the length of all associated structures.
+			/// </summary>
+			public uint Length => GetAclLength(handle);
+
+			/// <summary>Gets the revision number for the ACL.</summary>
+			/// <value>The revision.</value>
+			public uint Revision => IsValidAcl ? 0U : GetAclInformation(handle, out ACL_REVISION_INFORMATION ri) ? ri.AclRevision : 0;
+
+			/// <inheritdoc/>
+			public override int Size
+			{
+				get => base.Size;
+				set
+				{
+					base.Size = value;
+					InitializeAcl(handle, (uint)value, Revision);
+				}
+			}
+
+			internal string DebugString => IsInvalid ? "NULL" : $"Aces:{GetAceCount(handle)}, Size:{GetAclLength(handle)}";
+
+			/// <summary>Performs an explicit conversion from <see cref="SafePACL"/> to <see cref="PACL"/>.</summary>
+			/// <param name="sd">The safe access control list.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PACL(SafePACL sd) => sd.DangerousGetHandle();
+
+			private static uint GetAceCount(PACL pACL) => IsValidAcl(pACL) && GetAclInformation(pACL, out ACL_SIZE_INFORMATION si) ? si.AceCount : 0;
+
+			private static uint GetAclLength(PACL pACL) => IsValidAcl(pACL) && GetAclInformation(pACL, out ACL_SIZE_INFORMATION si) ? si.AclBytesInUse : 0;
+
+			private static uint GetAclTotalLength(PACL pACL) => IsValidAcl(pACL) && GetAclInformation(pACL, out ACL_SIZE_INFORMATION si) ? si.AclBytesFree + si.AclBytesInUse : 0;
 		}
 
 		/// <summary>A SafeHandle for security descriptors. If owned, will call LocalFree on the pointer when disposed.</summary>
