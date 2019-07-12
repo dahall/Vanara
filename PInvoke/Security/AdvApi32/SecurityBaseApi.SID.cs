@@ -74,32 +74,6 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CreateWellKnownSid(WELL_KNOWN_SID_TYPE WellKnownSidType, PSID DomainSid, SafePSID pSid, ref uint cbSid);
 
-		/// <summary>
-		/// This function constructs two arrays of SIDs out of a capability name. One is an array group SID with NT Authority, and the other
-		/// is an array of capability SIDs with AppAuthority.
-		/// </summary>
-		/// <param name="CapName">Name of the capability in string form.</param>
-		/// <param name="CapabilityGroupSids">The GroupSids with NTAuthority.</param>
-		/// <param name="CapabilityGroupSidCount">The count of GroupSids in the array.</param>
-		/// <param name="CapabilitySids">CapabilitySids with AppAuthority.</param>
-		/// <param name="CapabilitySidCount">The count of CapabilitySid with AppAuthority.</param>
-		/// <returns>
-		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
-		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// Before using <paramref name="CapabilityGroupSids"/> or <paramref name="CapabilitySids"/>, the caller must set their <c>Length</c>
-		/// property to the values of <paramref name="CapabilityGroupSidCount"/> and <paramref name="CapabilitySidCount"/> respectively. This
-		/// will ensure all memory is released at the end of use.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-derivecapabilitysidsfromname BOOL
-		// DeriveCapabilitySidsFromName( LPCWSTR CapName, PSID **CapabilityGroupSids, DWORD *CapabilityGroupSidCount, PSID **CapabilitySids,
-		// DWORD *CapabilitySidCount );
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("securitybaseapi.h", MSDNShortId = "1A911FCC-6D11-4185-B532-20FE6C7C4B0B")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeriveCapabilitySidsFromName([MarshalAs(UnmanagedType.LPWStr)] string CapName, out SafeLocalPSIDArray CapabilityGroupSids, out uint CapabilityGroupSidCount, out SafeLocalPSIDArray CapabilitySids, out uint CapabilitySidCount);
-
 		/// <summary>The <c>EqualDomainSid</c> function determines whether two SIDs are from the same domain.</summary>
 		/// <param name="pSid1">
 		/// A pointer to one of the two SIDs to compare. This SID must be either an account domain SID or a BUILTIN SID.

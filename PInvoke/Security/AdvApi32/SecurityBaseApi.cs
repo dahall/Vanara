@@ -3836,6 +3836,30 @@ namespace Vanara.PInvoke
 		public static extern bool DeleteAce(PACL pAcl, uint dwAceIndex);
 
 		/// <summary>
+		/// This function constructs two arrays of SIDs out of a capability name. One is an array group SID with NT Authority, and the other
+		/// is an array of capability SIDs with AppAuthority.
+		/// </summary>
+		/// <param name="CapName">Name of the capability in string form.</param>
+		/// <param name="CapabilityGroupSids">The GroupSids with NTAuthority.</param>
+		/// <param name="CapabilityGroupSidCount">The count of GroupSids in the array.</param>
+		/// <param name="CapabilitySids">CapabilitySids with AppAuthority.</param>
+		/// <param name="CapabilitySidCount">The count of CapabilitySid with AppAuthority.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// The caller is expected to free the individual SIDs returned in each array by calling LocalFree. as well as memory allocated for
+		/// the array itself.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-derivecapabilitysidsfromname
+		// BOOL DeriveCapabilitySidsFromName( LPCWSTR CapName, PSID **CapabilityGroupSids, DWORD *CapabilityGroupSidCount, PSID **CapabilitySids, DWORD *CapabilitySidCount );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "1A911FCC-6D11-4185-B532-20FE6C7C4B0B")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool DeriveCapabilitySidsFromName([MarshalAs(UnmanagedType.LPWStr)] string CapName, out SafeLocalPSIDArray CapabilityGroupSids, out int CapabilityGroupSidCount, out SafeLocalPSIDArray CapabilitySids, out int CapabilitySidCount);
+
+		/// <summary>
 		/// The <c>DestroyPrivateObjectSecurity</c> function deletes a private object's security descriptor. For background information, see
 		/// the Security Descriptors for Private Objects topic.
 		/// </summary>
