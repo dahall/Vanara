@@ -2817,7 +2817,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "eaaa5509-eff5-461d-843b-7ebbbe0dd58f")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ConvertToAutoInheritPrivateObjectSecurity([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In] PSECURITY_DESCRIPTOR CurrentSecurityDescriptor,
-			out SafeSECURITY_DESCRIPTOR NewSecurityDescriptor, in Guid ObjectType, [MarshalAs(UnmanagedType.U1)] bool IsDirectoryObject, in GENERIC_MAPPING GenericMapping);
+			out SafePrivateObjectSecurity NewSecurityDescriptor, in Guid ObjectType, [MarshalAs(UnmanagedType.U1)] bool IsDirectoryObject, in GENERIC_MAPPING GenericMapping);
 
 		/// <summary>
 		/// The <c>ConvertToAutoInheritPrivateObjectSecurity</c> function converts a security descriptor and its access control lists (ACLs)
@@ -2891,7 +2891,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "eaaa5509-eff5-461d-843b-7ebbbe0dd58f")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ConvertToAutoInheritPrivateObjectSecurity([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In] PSECURITY_DESCRIPTOR CurrentSecurityDescriptor,
-			out SafeSECURITY_DESCRIPTOR NewSecurityDescriptor, [In, Optional] IntPtr ObjectType, [MarshalAs(UnmanagedType.U1)] bool IsDirectoryObject, in GENERIC_MAPPING GenericMapping);
+			out SafePrivateObjectSecurity NewSecurityDescriptor, [In, Optional] IntPtr ObjectType, [MarshalAs(UnmanagedType.U1)] bool IsDirectoryObject, in GENERIC_MAPPING GenericMapping);
 
 		/// <summary>
 		/// <para>
@@ -2965,7 +2965,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "5f4832b6-5cf5-4050-9e20-56674f2e2cb1")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreatePrivateObjectSecurity([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In, Optional] PSECURITY_DESCRIPTOR CreatorDescriptor, out SafeSECURITY_DESCRIPTOR NewDescriptor,
+		public static extern bool CreatePrivateObjectSecurity([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In, Optional] PSECURITY_DESCRIPTOR CreatorDescriptor, out SafePrivateObjectSecurity NewDescriptor,
 			[MarshalAs(UnmanagedType.Bool)] bool IsDirectoryObject, [In, Optional] HTOKEN Token, in GENERIC_MAPPING GenericMapping);
 
 		/// <summary>
@@ -3149,7 +3149,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446581")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreatePrivateObjectSecurityEx([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In, Optional] PSECURITY_DESCRIPTOR CreatorDescriptor, out SafeSECURITY_DESCRIPTOR NewDescriptor,
+		public static extern bool CreatePrivateObjectSecurityEx([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In, Optional] PSECURITY_DESCRIPTOR CreatorDescriptor, out SafePrivateObjectSecurity NewDescriptor,
 			in Guid ObjectType, [MarshalAs(UnmanagedType.Bool)] bool IsContainerObject, uint AutoInheritFlags, [In, Optional] HTOKEN Token, in GENERIC_MAPPING GenericMapping);
 
 		/// <summary>
@@ -3333,7 +3333,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446581")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreatePrivateObjectSecurityEx([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In, Optional] PSECURITY_DESCRIPTOR CreatorDescriptor, out SafeSECURITY_DESCRIPTOR NewDescriptor,
+		public static extern bool CreatePrivateObjectSecurityEx([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In, Optional] PSECURITY_DESCRIPTOR CreatorDescriptor, out SafePrivateObjectSecurity NewDescriptor,
 			[In, Optional] IntPtr ObjectType, [MarshalAs(UnmanagedType.Bool)] bool IsContainerObject, uint AutoInheritFlags, [In, Optional] HTOKEN Token, in GENERIC_MAPPING GenericMapping);
 
 		/// <summary>
@@ -3606,7 +3606,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "8c5a2ac2-612c-4625-8c68-27d99d4ba9d5")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreatePrivateObjectSecurityWithMultipleInheritance([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In, Optional] PSECURITY_DESCRIPTOR CreatorDescriptor, out SafeSECURITY_DESCRIPTOR NewDescriptor,
+		public static extern bool CreatePrivateObjectSecurityWithMultipleInheritance([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In, Optional] PSECURITY_DESCRIPTOR CreatorDescriptor, out SafePrivateObjectSecurity NewDescriptor,
 			[In, MarshalAs(UnmanagedType.LPArray), Optional] Guid[] ObjectTypes, uint GuidCount, [MarshalAs(UnmanagedType.Bool)] bool IsContainerObject, SEF AutoInheritFlags, HTOKEN Token, in GENERIC_MAPPING GenericMapping);
 
 		/// <summary>
@@ -4161,7 +4161,7 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446646")]
 		public static extern bool GetPrivateObjectSecurity(PSECURITY_DESCRIPTOR ObjectDescriptor, SECURITY_INFORMATION SecurityInformation,
-			SafeSecurityDescriptor ResultantDescriptor, uint DescriptorLength, out uint ReturnLength);
+			SafePSECURITY_DESCRIPTOR ResultantDescriptor, uint DescriptorLength, out uint ReturnLength);
 
 		/// <summary>The GetPrivateObjectSecurity function retrieves information from a private object's security descriptor.</summary>
 		/// <param name="ObjectDescriptor">A pointer to a SECURITY_DESCRIPTOR structure. This is the security descriptor to be queried.</param>
@@ -4172,13 +4172,13 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// The requested information from the specified security descriptor. The SECURITY_DESCRIPTOR structure is returned in self-relative format.
 		/// </returns>
-		public static SafeSecurityDescriptor GetPrivateObjectSecurity(this PSECURITY_DESCRIPTOR ObjectDescriptor, SECURITY_INFORMATION SecurityInformation)
+		public static SafePSECURITY_DESCRIPTOR GetPrivateObjectSecurity(this PSECURITY_DESCRIPTOR ObjectDescriptor, SECURITY_INFORMATION SecurityInformation)
 		{
-			var pResSD = SafeSecurityDescriptor.Null;
+			var pResSD = SafePSECURITY_DESCRIPTOR.Null;
 			GetPrivateObjectSecurity(ObjectDescriptor, SecurityInformation, pResSD, 0, out var ret);
 			if (ret > 0)
 			{
-				pResSD = new SafeSecurityDescriptor((int)ret);
+				pResSD = new SafePSECURITY_DESCRIPTOR((int)ret);
 				if (!pResSD.IsInvalid && !GetPrivateObjectSecurity(ObjectDescriptor, SecurityInformation, pResSD, ret, out _))
 					Win32Error.GetLastError().ThrowIfFailed();
 			}
@@ -4194,7 +4194,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// The requested information from the specified security descriptor. The SECURITY_DESCRIPTOR structure is returned in self-relative format.
 		/// </returns>
-		public static SafeSecurityDescriptor GetPrivateObjectSecurity(this SafeSecurityDescriptor ObjectDescriptor, SECURITY_INFORMATION SecurityInformation) =>
+		public static SafePSECURITY_DESCRIPTOR GetPrivateObjectSecurity(this SafePSECURITY_DESCRIPTOR ObjectDescriptor, SECURITY_INFORMATION SecurityInformation) =>
 			GetPrivateObjectSecurity((PSECURITY_DESCRIPTOR)ObjectDescriptor, SecurityInformation);
 
 		/// <summary>
@@ -4805,7 +4805,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "47c75071-f10d-43cf-a841-2dd49fc39afa")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool MakeAbsoluteSD([In] PSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor, [In, Out] SafeSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, ref uint lpdwAbsoluteSecurityDescriptorSize,
+		public static extern bool MakeAbsoluteSD([In] PSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor, [In, Out] SafePSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, ref uint lpdwAbsoluteSecurityDescriptorSize,
 			SafeAllocatedMemoryHandle pDacl, ref uint lpdwDaclSize, SafeAllocatedMemoryHandle pSacl, ref uint lpdwSaclSize, SafePSID pOwner, ref uint lpdwOwnerSize, SafePSID pPrimaryGroup, ref uint lpdwPrimaryGroupSize);
 
 		/// <summary>
@@ -4861,7 +4861,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "497c7e2f-75b7-41b9-9693-37e041b7af58")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool MakeSelfRelativeSD(PSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, SafeSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor, ref uint lpdwBufferLength);
+		public static extern bool MakeSelfRelativeSD(PSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, SafePSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor, ref uint lpdwBufferLength);
 
 		/// <summary>
 		/// The MapGenericMask function maps the generic access rights in an access mask to specific and standard access rights. The function
@@ -5927,22 +5927,22 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="SECURITY_DESCRIPTOR"/> that is disposed using <see cref="DestroyPrivateObjectSecurity"/>.</summary>
-		public class SafeSECURITY_DESCRIPTOR : SafeHANDLE
+		public class SafePrivateObjectSecurity : SafeHANDLE
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeSECURITY_DESCRIPTOR"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePrivateObjectSecurity"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
-			public SafeSECURITY_DESCRIPTOR(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+			public SafePrivateObjectSecurity(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeSECURITY_DESCRIPTOR"/> class.</summary>
-			private SafeSECURITY_DESCRIPTOR() : base() { }
+			/// <summary>Initializes a new instance of the <see cref="SafePrivateObjectSecurity"/> class.</summary>
+			private SafePrivateObjectSecurity() : base() { }
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeSECURITY_DESCRIPTOR"/> to <see cref="SECURITY_DESCRIPTOR"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="SafePrivateObjectSecurity"/> to <see cref="SECURITY_DESCRIPTOR"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator PSECURITY_DESCRIPTOR(SafeSECURITY_DESCRIPTOR h) => h.handle;
+			public static implicit operator PSECURITY_DESCRIPTOR(SafePrivateObjectSecurity h) => h.handle;
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => DestroyPrivateObjectSecurity(this);

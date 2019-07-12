@@ -527,7 +527,7 @@ namespace Vanara.PInvoke
 			TokenGroupsAndPrivileges,
 
 			/// <summary>Reserved.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			TokenSessionReference,
 
 			/// <summary>The buffer receives a DWORD value that is nonzero if the token includes the SANDBOX_INERT flag.</summary>
@@ -535,7 +535,7 @@ namespace Vanara.PInvoke
 			TokenSandBoxInert,
 
 			/// <summary>Reserved.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			TokenAuditPolicy,
 
 			/// <summary>
@@ -640,11 +640,11 @@ namespace Vanara.PInvoke
 			TokenDeviceClaimAttributes,
 
 			/// <summary>This value is reserved.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			TokenRestrictedUserClaimAttributes,
 
 			/// <summary>This value is reserved.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			TokenRestrictedDeviceClaimAttributes,
 
 			/// <summary>The buffer receives a TOKEN_GROUPS structure that contains the device groups that are associated with the token.</summary>
@@ -658,11 +658,11 @@ namespace Vanara.PInvoke
 			TokenRestrictedDeviceGroups,
 
 			/// <summary>This value is reserved.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			TokenSecurityAttributes,
 
 			/// <summary>This value is reserved.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			TokenIsRestricted
 		}
 
@@ -2777,38 +2777,38 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>A SafeHandle for security descriptors. If owned, will call LocalFree on the pointer when disposed.</summary>
-		public class SafeSecurityDescriptor : SafeMemoryHandle<LocalMemoryMethods>, IEquatable<SafeSecurityDescriptor>, IEquatable<PSECURITY_DESCRIPTOR>, IEquatable<IntPtr>, ISecurityObject
+		public class SafePSECURITY_DESCRIPTOR : SafeMemoryHandle<LocalMemoryMethods>, IEquatable<SafePSECURITY_DESCRIPTOR>, IEquatable<PSECURITY_DESCRIPTOR>, IEquatable<IntPtr>, ISecurityObject
 		{
 			/// <summary>The null value for a SafeSecurityDescriptor.</summary>
-			public static readonly SafeSecurityDescriptor Null = new SafeSecurityDescriptor();
+			public static readonly SafePSECURITY_DESCRIPTOR Null = new SafePSECURITY_DESCRIPTOR();
 
 			private const SECURITY_INFORMATION defSecInfo = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.SACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION;
 
-			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class.</summary>
-			public SafeSecurityDescriptor() : base(IntPtr.Zero, 0, false) { }
+			/// <summary>Initializes a new instance of the <see cref="SafePSECURITY_DESCRIPTOR"/> class.</summary>
+			public SafePSECURITY_DESCRIPTOR() : base(IntPtr.Zero, 0, false) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class from an existing pointer.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePSECURITY_DESCRIPTOR"/> class from an existing pointer.</summary>
 			/// <param name="pSecurityDescriptor">The security descriptor pointer.</param>
 			/// <param name="own">if set to <c>true</c> indicates that this pointer should be freed when disposed.</param>
-			public SafeSecurityDescriptor(PSECURITY_DESCRIPTOR pSecurityDescriptor, bool own = true) :
+			public SafePSECURITY_DESCRIPTOR(PSECURITY_DESCRIPTOR pSecurityDescriptor, bool own = true) :
 				base((IntPtr)pSecurityDescriptor, (int)GetSecurityDescriptorLength(pSecurityDescriptor), own)
 			{ }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class to an empty memory buffer.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePSECURITY_DESCRIPTOR"/> class to an empty memory buffer.</summary>
 			/// <param name="size">The size of the uninitialized security descriptor.</param>
-			public SafeSecurityDescriptor(int size) : base(size) { }
+			public SafePSECURITY_DESCRIPTOR(int size) : base(size) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePSECURITY_DESCRIPTOR"/> class.</summary>
 			/// <param name="bytes">An array of bytes that contain an existing security descriptor.</param>
-			public SafeSecurityDescriptor(byte[] bytes) : this(bytes?.Length ?? 0)
+			public SafePSECURITY_DESCRIPTOR(byte[] bytes) : this(bytes?.Length ?? 0)
 			{
 				if (bytes is null) return;
 				Marshal.Copy(bytes, 0, handle, bytes.Length);
 			}
 
-			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class with an SDDL string.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePSECURITY_DESCRIPTOR"/> class with an SDDL string.</summary>
 			/// <param name="sddl">An SDDL value representing the security descriptor.</param>
-			public SafeSecurityDescriptor(string sddl)
+			public SafePSECURITY_DESCRIPTOR(string sddl)
 			{
 				if (!ConvertStringSecurityDescriptorToSecurityDescriptor(sddl, SDDL_REVISION.SDDL_REVISION_1, out var sd, out var sdsz))
 					Win32Error.ThrowLastError();
@@ -2825,22 +2825,22 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint Length => GetSecurityDescriptorLength(handle);
 
-			/// <summary>Performs an explicit conversion from <see cref="SafeSecurityDescriptor"/> to <see cref="PSECURITY_DESCRIPTOR"/>.</summary>
+			/// <summary>Performs an explicit conversion from <see cref="SafePSECURITY_DESCRIPTOR"/> to <see cref="PSECURITY_DESCRIPTOR"/>.</summary>
 			/// <param name="sd">The safe security descriptor.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator PSECURITY_DESCRIPTOR(SafeSecurityDescriptor sd) => sd.DangerousGetHandle();
+			public static implicit operator PSECURITY_DESCRIPTOR(SafePSECURITY_DESCRIPTOR sd) => sd.DangerousGetHandle();
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="psd1">The first value.</param>
 			/// <param name="psd2">The second value.</param>
 			/// <returns>The result of the operator.</returns>
-			public static bool operator !=(SafeSecurityDescriptor psd1, SafeSecurityDescriptor psd2) => !(psd1 == psd2);
+			public static bool operator !=(SafePSECURITY_DESCRIPTOR psd1, SafePSECURITY_DESCRIPTOR psd2) => !(psd1 == psd2);
 
 			/// <summary>Implements the operator ==.</summary>
 			/// <param name="psd1">The first value.</param>
 			/// <param name="psd2">The second value.</param>
 			/// <returns>The result of the operator.</returns>
-			public static bool operator ==(SafeSecurityDescriptor psd1, SafeSecurityDescriptor psd2)
+			public static bool operator ==(SafePSECURITY_DESCRIPTOR psd1, SafePSECURITY_DESCRIPTOR psd2)
 			{
 				if (ReferenceEquals(psd1, psd2)) return true;
 				if (Equals(null, psd1) || Equals(null, psd2)) return false;
@@ -2850,7 +2850,7 @@ namespace Vanara.PInvoke
 			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 			/// <param name="other">An object to compare with this object.</param>
 			/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-			public bool Equals(SafeSecurityDescriptor other) => Equals(other.DangerousGetHandle());
+			public bool Equals(SafePSECURITY_DESCRIPTOR other) => Equals(other.DangerousGetHandle());
 
 			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 			/// <param name="other">An object to compare with this object.</param>
@@ -2875,7 +2875,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			public override bool Equals(object obj)
 			{
-				if (obj is SafeSecurityDescriptor psid2)
+				if (obj is SafePSECURITY_DESCRIPTOR psid2)
 					return Equals(psid2);
 				if (obj is PSECURITY_DESCRIPTOR psidh)
 					return Equals(psidh);

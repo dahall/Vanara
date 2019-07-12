@@ -1566,7 +1566,36 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "4043b76b-76b9-4111-8a29-a808b2412be0")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetFileSecurity(string lpFileName, SECURITY_INFORMATION RequestedInformation, SafeSECURITY_DESCRIPTOR pSecurityDescriptor, uint nLength, out uint lpnLengthNeeded);
+		public static extern bool GetFileSecurity(string lpFileName, SECURITY_INFORMATION RequestedInformation, SafePSECURITY_DESCRIPTOR pSecurityDescriptor, uint nLength, out uint lpnLengthNeeded);
+
+		/// <summary>
+		/// <para>
+		/// The <c>GetFileSecurity</c> function obtains specified information about the security of a file or directory. The information
+		/// obtained is constrained by the caller's access rights and privileges.
+		/// </para>
+		/// <para>
+		/// The GetNamedSecurityInfo function provides functionality similar to <c>GetFileSecurity</c> for files as well as other types of objects.
+		/// </para>
+		/// </summary>
+		/// <param name="lpFileName">
+		/// A pointer to a null-terminated string that specifies the file or directory for which security information is retrieved.
+		/// </param>
+		/// <param name="RequestedInformation">A SECURITY_INFORMATION value that identifies the security information being requested.</param>
+		/// <returns>
+		/// The security descriptor of the object specified by the lpFileName parameter. The calling process must have permission to view the
+		/// specified aspects of the object's security status. The SECURITY_DESCRIPTOR structure is returned in self-relative security
+		/// descriptor format.
+		/// </returns>
+		[PInvokeData("winbase.h", MSDNShortId = "4043b76b-76b9-4111-8a29-a808b2412be0")]
+		public static SafePSECURITY_DESCRIPTOR GetFileSecurity(string lpFileName, SECURITY_INFORMATION RequestedInformation = SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION | SECURITY_INFORMATION.DACL_SECURITY_INFORMATION)
+		{
+			if (!GetFileSecurity(lpFileName, RequestedInformation, SafePSECURITY_DESCRIPTOR.Null, 0, out var sz) && sz == 0)
+				Win32Error.ThrowLastError();
+			var sd = new SafePSECURITY_DESCRIPTOR((int)sz);
+			if (!GetFileSecurity(lpFileName, RequestedInformation, sd, (uint)sd.Size, out sz))
+				Win32Error.ThrowLastError();
+			return sd;
+		}
 
 		/// <summary>
 		/// <para>Retrieves the name of the user associated with the current thread.</para>

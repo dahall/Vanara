@@ -739,10 +739,10 @@ namespace Vanara.IO
 			void ReportProgress(int percent) { progress.Report(new Tuple<int, string>(percent, $"Compacting VHD volume \"{loc}\"")); }
 		}*/
 
-		private static SafeSecurityDescriptor FileSecToSd(FileSecurity sec)
+		private static SafePSECURITY_DESCRIPTOR FileSecToSd(FileSecurity sec)
 		{
 			return sec == null
-				? SafeSecurityDescriptor.Null
+				? SafePSECURITY_DESCRIPTOR.Null
 				: ConvertStringSecurityDescriptorToSecurityDescriptor(sec.GetSecurityDescriptorSddlForm(AccessControlSections.All));
 		}
 

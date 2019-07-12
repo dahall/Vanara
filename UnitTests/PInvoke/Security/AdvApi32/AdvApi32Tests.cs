@@ -498,7 +498,7 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		internal static SafeSecurityDescriptor GetSD(string filename, SECURITY_INFORMATION si = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION)
+		internal static SafePSECURITY_DESCRIPTOR GetSD(string filename, SECURITY_INFORMATION si = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION)
 		{
 			var err = GetNamedSecurityInfo(filename, SE_OBJECT_TYPE.SE_FILE_OBJECT, si, out _, out _, out _, out _, out var pSD);
 			Assert.That(err, Is.EqualTo(0));

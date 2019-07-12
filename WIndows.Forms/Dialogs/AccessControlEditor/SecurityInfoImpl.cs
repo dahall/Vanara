@@ -14,7 +14,7 @@ namespace Vanara.Security.AccessControl
 {
 	internal class SecurityEventArg : EventArgs
 	{
-		public SecurityEventArg(SafeSecurityDescriptor sd, SECURITY_INFORMATION parts)
+		public SecurityEventArg(SafePSECURITY_DESCRIPTOR sd, SECURITY_INFORMATION parts)
 		{
 			Parts = parts;
 			SecurityDesciptor = sd;
@@ -22,7 +22,7 @@ namespace Vanara.Security.AccessControl
 
 		public SECURITY_INFORMATION Parts { get; }
 
-		public SafeSecurityDescriptor SecurityDesciptor { get; }
+		public SafePSECURITY_DESCRIPTOR SecurityDesciptor { get; }
 	}
 
 	internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, ISecurityObjectTypeInfo, IEffectivePermission, ISecurityInformation4, IEffectivePermission2
@@ -125,7 +125,7 @@ namespace Vanara.Security.AccessControl
 
 		HRESULT ISecurityInformation.SetSecurity(SECURITY_INFORMATION requestInformation, PSECURITY_DESCRIPTOR sd)
 		{
-			OnSetSecurity?.Invoke(this, new SecurityEventArg(new SafeSecurityDescriptor((IntPtr)sd, false), requestInformation));
+			OnSetSecurity?.Invoke(this, new SecurityEventArg(new SafePSECURITY_DESCRIPTOR((IntPtr)sd, false), requestInformation));
 			return HRESULT.S_OK;
 		}
 
@@ -274,7 +274,7 @@ namespace Vanara.Security.AccessControl
 					return HRESULT.S_OK;
 
 			var request = new AUTHZ_ACCESS_REQUEST((uint)ACCESS_MASK.MAXIMUM_ALLOWED);
-			var sd = new SafeSecurityDescriptor(pSecurityObjects[0].pData, false);
+			var sd = new SafePSECURITY_DESCRIPTOR(pSecurityObjects[0].pData, false);
 			var reply = new AUTHZ_ACCESS_REPLY(1);
 			if (!AuthzAccessCheck(AuthzAccessCheckFlags.NONE, hAuthzCompoundContext, request, default, sd, null, 0, reply, out _))
 				return HRESULT.S_OK;

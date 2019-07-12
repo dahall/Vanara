@@ -900,10 +900,10 @@ namespace Vanara.PInvoke
 		/// the domain specified in the DomainName parameter.
 		/// </remarks>
 		[PInvokeData("lmdfs.h", MSDNShortId = "88e988db-1418-49d5-8cac-1ea6144474a5")]
-		public static AdvApi32.SafeSecurityDescriptor NetDfsGetFtContainerSecurity(string DomainName, SECURITY_INFORMATION SecurityInformation)
+		public static AdvApi32.SafePSECURITY_DESCRIPTOR NetDfsGetFtContainerSecurity(string DomainName, SECURITY_INFORMATION SecurityInformation)
 		{
 			NetDfsGetFtContainerSecurity(DomainName, SecurityInformation, out var buf, out var len).ThrowIfFailed();
-			return new AdvApi32.SafeSecurityDescriptor(buf.ToIEnum<byte>((int)len).ToArray());
+			return new AdvApi32.SafePSECURITY_DESCRIPTOR(buf.ToIEnum<byte>((int)len).ToArray());
 		}
 
 		/// <summary>Retrieves information about a specified Distributed File System (DFS) root or link in a DFS namespace.</summary>
@@ -1033,10 +1033,10 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		[PInvokeData("lmdfs.h", MSDNShortId = "a6db7c82-c2ec-464a-8c05-2360622880b4")]
-		public static AdvApi32.SafeSecurityDescriptor NetDfsGetSecurity(string DfsEntryPath, SECURITY_INFORMATION SecurityInformation)
+		public static AdvApi32.SafePSECURITY_DESCRIPTOR NetDfsGetSecurity(string DfsEntryPath, SECURITY_INFORMATION SecurityInformation)
 		{
 			NetDfsGetSecurity(DfsEntryPath, SecurityInformation, out var buf, out var len).ThrowIfFailed();
-			return new AdvApi32.SafeSecurityDescriptor(buf.ToIEnum<byte>((int)len).ToArray());
+			return new AdvApi32.SafePSECURITY_DESCRIPTOR(buf.ToIEnum<byte>((int)len).ToArray());
 		}
 
 		/// <summary>Retrieves the security descriptor for the container object of the specified stand-alone DFS namespace.</summary>
@@ -1052,10 +1052,10 @@ namespace Vanara.PInvoke
 		/// MachineName parameter.
 		/// </remarks>
 		[PInvokeData("lmdfs.h", MSDNShortId = "63ad610e-c66f-4fad-b3b6-2ee15e90a723")]
-		public static AdvApi32.SafeSecurityDescriptor NetDfsGetStdContainerSecurity<T>(string MachineName, SECURITY_INFORMATION SecurityInformation)
+		public static AdvApi32.SafePSECURITY_DESCRIPTOR NetDfsGetStdContainerSecurity<T>(string MachineName, SECURITY_INFORMATION SecurityInformation)
 		{
 			NetDfsGetStdContainerSecurity(MachineName, SecurityInformation, out var buf, out var len).ThrowIfFailed();
-			return new AdvApi32.SafeSecurityDescriptor(buf.ToIEnum<byte>((int)len).ToArray());
+			return new AdvApi32.SafePSECURITY_DESCRIPTOR(buf.ToIEnum<byte>((int)len).ToArray());
 		}
 
 		/// <summary>Modifies information about a Distributed File System (DFS) root or link in the cache maintained by the DFS client.</summary>

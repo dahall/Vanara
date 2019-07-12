@@ -248,11 +248,11 @@ namespace Vanara.PInvoke
 		// PSECURITY_DESCRIPTOR *SecurityDescriptor, PULONG SecurityDescriptorSize );
 		[PInvokeData("sddl.h", MSDNShortId = "c5654148-fb4c-436d-9378-a1168fc82607")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static SafeSecurityDescriptor ConvertStringSecurityDescriptorToSecurityDescriptor(string StringSecurityDescriptor)
+		public static SafePSECURITY_DESCRIPTOR ConvertStringSecurityDescriptorToSecurityDescriptor(string StringSecurityDescriptor)
 		{
 			if (!ConvertStringSecurityDescriptorToSecurityDescriptor(StringSecurityDescriptor, SDDL_REVISION.SDDL_REVISION_1, out var sd, out var sz))
 				throw new Win32Exception();
-			return new SafeSecurityDescriptor(sd.ToArray<byte>((int)sz));
+			return new SafePSECURITY_DESCRIPTOR(sd.ToArray<byte>((int)sz));
 		}
 
 		/// <summary>

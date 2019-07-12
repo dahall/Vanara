@@ -92,6 +92,6 @@ namespace Vanara.Security.AccessControl
 
 		public static string ToSddl(this PSECURITY_DESCRIPTOR pSD, SECURITY_INFORMATION si) => ConvertSecurityDescriptorToStringSecurityDescriptor(pSD, si);
 
-		public static string ToSddl(this SafeSecurityDescriptor pSD, SECURITY_INFORMATION si) => ConvertSecurityDescriptorToStringSecurityDescriptor(pSD, si);
+		public static string ToSddl(this SafePSECURITY_DESCRIPTOR pSD, SECURITY_INFORMATION si) => ConvertSecurityDescriptorToStringSecurityDescriptor(pSD, si);
 	}
 }

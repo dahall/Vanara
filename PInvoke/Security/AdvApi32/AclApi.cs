@@ -234,7 +234,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("aclapi.h", MSDNShortId = "becc1218-5bc3-4ab2-86f8-3ebd10e16966")]
 		public static extern uint BuildSecurityDescriptor(in TRUSTEE pOwner, in TRUSTEE pGroup, uint cCountOfAccessEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] EXPLICIT_ACCESS[] pListOfAccessEntries,
-			uint cCountOfAuditEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EXPLICIT_ACCESS[] pListOfAuditEntries, [In] PSECURITY_DESCRIPTOR pOldSD, out uint pSizeNewSD, out SafeSecurityDescriptor pNewSD);
+			uint cCountOfAuditEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EXPLICIT_ACCESS[] pListOfAuditEntries, [In] PSECURITY_DESCRIPTOR pOldSD, out uint pSizeNewSD, out SafePSECURITY_DESCRIPTOR pNewSD);
 
 		/// <summary>
 		/// <para>
@@ -646,7 +646,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true)]
 		[PInvokeData("Aclapi.h", MSDNShortId = "aa446645")]
 		public static extern Win32Error GetNamedSecurityInfo(string pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, out PSID ppsidOwner,
-			out PSID ppsidGroup, out PACL ppDacl, out PACL ppSacl, out SafeSecurityDescriptor ppSecurityDescriptor);
+			out PSID ppsidGroup, out PACL ppDacl, out PACL ppSacl, out SafePSECURITY_DESCRIPTOR ppSecurityDescriptor);
 
 		/// <summary>
 		/// <para>The <c>GetSecurityInfo</c> function retrieves a copy of the security descriptor for an object specified by a handle.</para>
@@ -763,7 +763,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("aclapi.h", MSDNShortId = "64767a6b-cd79-4e02-881a-706a078ff446")]
 		public static extern Win32Error GetSecurityInfo(IntPtr handle, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, out PSID ppsidOwner, out PSID ppsidGroup,
-			out PACL ppDacl, out PACL ppSacl, out SafeSecurityDescriptor ppSecurityDescriptor);
+			out PACL ppDacl, out PACL ppSacl, out SafePSECURITY_DESCRIPTOR ppSecurityDescriptor);
 
 		/// <summary>
 		/// <para>

@@ -222,7 +222,7 @@ namespace Vanara.Security.AccessControl
 	{
 		private const string defaultSecuritySddl = "O:WDG:BAD:AI(A;CIIO;FA;;;WD)(A;;FA;;;BA)S:AI(AU;SAFACIIO;FA;;;WD)";
 
-		public static readonly SafeSecurityDescriptor defaultSd = ConvertStringSecurityDescriptorToSecurityDescriptor(defaultSecuritySddl);
+		public static readonly SafePSECURITY_DESCRIPTOR defaultSd = ConvertStringSecurityDescriptorToSecurityDescriptor(defaultSecuritySddl);
 
 		public override ResourceType ResourceType => ResourceType.FileObject;
 

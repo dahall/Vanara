@@ -28,7 +28,7 @@ namespace Vanara.Extensions
 		/// <summary>Converts a RawSecurityDescriptor to a native safe handle.</summary>
 		/// <param name="rawSD">The RawSecurityDescriptor.</param>
 		/// <returns>A native safe handle for PSECURITY_DESCRIPTOR.</returns>
-		public static SafeSecurityDescriptor ToNative(this RawSecurityDescriptor rawSD) => new SafeSecurityDescriptor(rawSD.ToByteArray());
+		public static SafePSECURITY_DESCRIPTOR ToNative(this RawSecurityDescriptor rawSD) => new SafePSECURITY_DESCRIPTOR(rawSD.ToByteArray());
 
 		/// <summary>Converts a RawSecurityDescriptor to a byte array.</summary>
 		/// <param name="rawSD">The RawSecurityDescriptor.</param>
