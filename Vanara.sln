@@ -161,7 +161,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.SearchApi", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WinTrust", "PInvoke\WinTrust\Vanara.PInvoke.WinTrust.csproj", "{3EDE955E-50DE-4E1D-97E8-31E4E6A83E7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpRunner", "UnitTests\CSharpRunner\CSharpRunner.csproj", "{A96CFF10-0967-429A-8700-4A86C97C5603}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "UnitTests\CSharpRunner\Shared.csproj", "{A96CFF10-0967-429A-8700-4A86C97C5603}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

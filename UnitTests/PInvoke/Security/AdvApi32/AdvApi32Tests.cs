@@ -220,12 +220,10 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(daclPresent, Is.True);
 			Assert.That(pAcl, Is.Not.EqualTo(IntPtr.Zero));
 			var hardAcl = ((IntPtr)pAcl).ToStructure<ACL>();
-			var ari = new ACL_REVISION_INFORMATION();
-			b = GetAclInformation(pAcl, ref ari, (uint)Marshal.SizeOf(typeof(ACL_REVISION_INFORMATION)), ACL_INFORMATION_CLASS.AclRevisionInformation);
+			b = GetAclInformation(pAcl, out ACL_REVISION_INFORMATION ari, (uint)Marshal.SizeOf(typeof(ACL_REVISION_INFORMATION)), ACL_INFORMATION_CLASS.AclRevisionInformation);
 			Assert.That(b, Is.True);
 			Assert.That(ari.AclRevision, Is.EqualTo(hardAcl.AclRevision));
-			var asi = new ACL_SIZE_INFORMATION();
-			b = GetAclInformation(pAcl, ref asi, (uint)Marshal.SizeOf(typeof(ACL_SIZE_INFORMATION)), ACL_INFORMATION_CLASS.AclSizeInformation);
+			b = GetAclInformation(pAcl, out ACL_SIZE_INFORMATION asi, (uint)Marshal.SizeOf(typeof(ACL_SIZE_INFORMATION)), ACL_INFORMATION_CLASS.AclSizeInformation);
 			Assert.That(b, Is.True);
 			Assert.That(asi.AceCount, Is.EqualTo(hardAcl.AceCount));
 			for (var i = 0U; i < asi.AceCount; i++)
