@@ -233,8 +233,106 @@ namespace Vanara.PInvoke
 		// *pNewSD );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("aclapi.h", MSDNShortId = "becc1218-5bc3-4ab2-86f8-3ebd10e16966")]
-		public static extern uint BuildSecurityDescriptor(in TRUSTEE pOwner, in TRUSTEE pGroup, uint cCountOfAccessEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] EXPLICIT_ACCESS[] pListOfAccessEntries,
-			uint cCountOfAuditEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EXPLICIT_ACCESS[] pListOfAuditEntries, [In] PSECURITY_DESCRIPTOR pOldSD, out uint pSizeNewSD, out SafePSECURITY_DESCRIPTOR pNewSD);
+		public static extern uint BuildSecurityDescriptor(in TRUSTEE pOwner, in TRUSTEE pGroup, [In, Optional] uint cCountOfAccessEntries, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] EXPLICIT_ACCESS[] pListOfAccessEntries,
+			[In, Optional] uint cCountOfAuditEntries, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EXPLICIT_ACCESS[] pListOfAuditEntries, [In, Optional] PSECURITY_DESCRIPTOR pOldSD, out uint pSizeNewSD, out SafePSECURITY_DESCRIPTOR pNewSD);
+
+		/// <summary>
+		/// <para>
+		/// The <c>BuildSecurityDescriptor</c> function allocates and initializes a new security descriptor. This function can initialize the
+		/// new security descriptor by merging specified security information with the information in an existing security descriptor. If you
+		/// do not specify an existing security descriptor, the function initializes a new security descriptor based on the specified
+		/// security information.
+		/// </para>
+		/// <para>
+		/// The <c>BuildSecurityDescriptor</c> function creates a self-relative security descriptor. The self-relative format makes the
+		/// security descriptor suitable for storing in a stream.
+		/// </para>
+		/// </summary>
+		/// <param name="pOwner">
+		/// <para>
+		/// A pointer to a TRUSTEE structure that identifies the owner for the new security descriptor. If the structure uses the
+		/// TRUSTEE_IS_NAME form, <c>BuildSecurityDescriptor</c> looks up the security identifier (SID) associated with the specified trustee name.
+		/// </para>
+		/// <para>
+		/// If this parameter is <c>NULL</c>, the function uses the owner SID from the original security descriptor pointed to by pOldSD. If
+		/// pOldSD is <c>NULL</c>, or if the owner SID in pOldSD is <c>NULL</c>, the owner SID is <c>NULL</c> in the new security descriptor.
+		/// </para>
+		/// </param>
+		/// <param name="pGroup">
+		/// <para>
+		/// A pointer to a TRUSTEE structure that identifies the primary group SID for the new security descriptor. If the structure uses the
+		/// TRUSTEE_IS_NAME form, <c>BuildSecurityDescriptor</c> looks up the SID associated with the specified trustee name.
+		/// </para>
+		/// <para>
+		/// If this parameter is <c>NULL</c>, the function uses the group SID from the original security descriptor pointed to by pOldSD. If
+		/// pOldSD is <c>NULL</c>, or if the group SID in pOldSD is <c>NULL</c>, the group SID is <c>NULL</c> in the new security descriptor.
+		/// </para>
+		/// </param>
+		/// <param name="cCountOfAccessEntries">
+		/// <para>The number of EXPLICIT_ACCESS structures in the pListOfAccessEntries array.</para>
+		/// </param>
+		/// <param name="pListOfAccessEntries">
+		/// <para>
+		/// A pointer to an array of EXPLICIT_ACCESS structures that describe access control information for the discretionary access control
+		/// list (DACL) of the new security descriptor. The function creates the new DACL by merging the information in the array with the
+		/// DACL in pOldSD, if any. If pOldSD is <c>NULL</c>, or if the DACL in pOldSD is <c>NULL</c>, the function creates a new DACL based
+		/// solely on the information in the array. For a description of the rules for creating an ACL from an array of
+		/// <c>EXPLICIT_ACCESS</c> structures, see the SetEntriesInAcl function.
+		/// </para>
+		/// <para>
+		/// If pListOfAccessEntries is <c>NULL</c>, the new security descriptor gets the DACL from pOldSD. In this case, if pOldSD is
+		/// <c>NULL</c>, or if the DACL in pOldSD is <c>NULL</c>, the new DACL is <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="cCountOfAuditEntries">
+		/// <para>The number of EXPLICIT_ACCESS structures in the pListOfAuditEntries array.</para>
+		/// </param>
+		/// <param name="pListOfAuditEntries">
+		/// <para>
+		/// A pointer to an array of EXPLICIT_ACCESS structures that describe audit control information for the SACL of the new security
+		/// descriptor. The function creates the new SACL by merging the information in the array with the SACL in pOldSD, if any. If pOldSD
+		/// is <c>NULL</c>, or the SACL in pOldSD is <c>NULL</c>, the function creates a new SACL based solely on the information in the array.
+		/// </para>
+		/// <para>
+		/// If pListOfAuditEntries is <c>NULL</c>, the new security descriptor gets the SACL from pOldSD. In this case, if pOldSD is
+		/// <c>NULL</c>, or the SACL in pOldSD is <c>NULL</c>, the new SACL is <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="pOldSD">
+		/// <para>
+		/// A pointer to an existing self-relative SECURITY_DESCRIPTOR structure and its associated security information. The function builds
+		/// the new security descriptor by merging the specified owner, group, access control, and audit-control information with the
+		/// information in this security descriptor. This parameter can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="pSizeNewSD">
+		/// <para>A pointer to a variable that receives the size, in bytes, of the security descriptor.</para>
+		/// </param>
+		/// <param name="pNewSD">
+		/// <para>
+		/// A pointer to a variable that receives a pointer to the new security descriptor. The function allocates memory for the new
+		/// security descriptor. You must call the LocalFree function to free the returned buffer.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns ERROR_SUCCESS.</para>
+		/// <para>If the function fails, it returns a nonzero error code defined in WinError.h.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>BuildSecurityDescriptor</c> function is intended for trusted servers that implement or expose security on their own
+		/// objects. The function uses self-relative security descriptors suitable for serializing into a stream and storing to disk, as a
+		/// trusted server might require.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/aclapi/nf-aclapi-buildsecuritydescriptora DWORD BuildSecurityDescriptorA(
+		// PTRUSTEE_A pOwner, PTRUSTEE_A pGroup, ULONG cCountOfAccessEntries, PEXPLICIT_ACCESS_A pListOfAccessEntries, ULONG
+		// cCountOfAuditEntries, PEXPLICIT_ACCESS_A pListOfAuditEntries, PSECURITY_DESCRIPTOR pOldSD, PULONG pSizeNewSD, PSECURITY_DESCRIPTOR
+		// *pNewSD );
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("aclapi.h", MSDNShortId = "becc1218-5bc3-4ab2-86f8-3ebd10e16966")]
+		public static extern uint BuildSecurityDescriptor([In, Optional] IntPtr pOwner, [In, Optional] IntPtr pGroup, [In, Optional] uint cCountOfAccessEntries, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] EXPLICIT_ACCESS[] pListOfAccessEntries,
+			[In, Optional] uint cCountOfAuditEntries, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EXPLICIT_ACCESS[] pListOfAuditEntries, [In, Optional] PSECURITY_DESCRIPTOR pOldSD, out uint pSizeNewSD, out SafePSECURITY_DESCRIPTOR pNewSD);
 
 		/// <summary>
 		/// <para>
@@ -1456,26 +1554,6 @@ namespace Vanara.PInvoke
 				FreeInheritedFromArray(handle, AceCount, IntPtr.Zero);
 				return base.ReleaseHandle();
 			}
-		}
-
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PACL"/> that is disposed using <see cref="LocalFree"/>.</summary>
-		public class SafePACL : SafeHANDLE
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
-			public SafePACL(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class.</summary>
-			private SafePACL() : base() { }
-
-			/// <summary>Performs an implicit conversion from <see cref="SafePACL"/> to <see cref="PACL"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator PACL(SafePACL h) => h.handle;
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() { Kernel32.LocalFree(handle); return true; }
 		}
 	}
 }
