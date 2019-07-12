@@ -4044,7 +4044,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446635")]
-		public static extern bool GetAclInformation(PACL pAcl, ref ACL_REVISION_INFORMATION pAclInformation, uint nAclInformationLength = 4, ACL_INFORMATION_CLASS dwAclInformationClass = ACL_INFORMATION_CLASS.AclRevisionInformation);
+		public static extern bool GetAclInformation(PACL pAcl, out ACL_REVISION_INFORMATION pAclInformation, uint nAclInformationLength = 4, ACL_INFORMATION_CLASS dwAclInformationClass = ACL_INFORMATION_CLASS.AclRevisionInformation);
 
 		/// <summary>The GetAclInformation function retrieves information about an access control list (ACL).</summary>
 		/// <param name="pAcl">
@@ -4078,7 +4078,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446635")]
-		public static extern bool GetAclInformation(PACL pAcl, ref ACL_SIZE_INFORMATION pAclInformation, uint nAclInformationLength = 12, ACL_INFORMATION_CLASS dwAclInformationClass = ACL_INFORMATION_CLASS.AclSizeInformation);
+		public static extern bool GetAclInformation(PACL pAcl, out ACL_SIZE_INFORMATION pAclInformation, uint nAclInformationLength = 12, ACL_INFORMATION_CLASS dwAclInformationClass = ACL_INFORMATION_CLASS.AclSizeInformation);
 
 		/// <summary>The GetAclInformation function retrieves information about an access control list (ACL).</summary>
 		/// <param name="pAcl">
