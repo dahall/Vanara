@@ -1764,7 +1764,7 @@ namespace Vanara.PInvoke
 		public enum SHGetDataFormat
 		{
 			/// <summary>Format used for file system objects. The pv parameter is the address of a WIN32_FIND_DATA structure.</summary>
-			[CorrespondingType(typeof(WIN32_FIND_DATA), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(WIN32_FIND_DATA), CorrespondingAction.Get)]
 			SHGDFIL_FINDDATA = 1,
 
 			/// <summary>Format used for network resources. The pv parameter is the address of a NETRESOURCE structure.</summary>
@@ -1773,7 +1773,7 @@ namespace Vanara.PInvoke
 			SHGDFIL_NETRESOURCE = 2,
 
 			/// <summary>Version 4.71. Format used for network resources. The pv parameter is the address of an SHDESCRIPTIONID structure.</summary>
-			[CorrespondingType(typeof(SHDESCRIPTIONID), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SHDESCRIPTIONID), CorrespondingAction.Get)]
 			SHGDFIL_DESCRIPTIONID = 3
 		}
 

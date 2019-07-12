@@ -1489,7 +1489,7 @@ namespace Vanara.PInvoke
 		// Guid, PSECURITY_DESCRIPTOR Buffer, PULONG BufferSize );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("evntcons.h", MSDNShortId = "21c87137-0e8f-43d1-9dad-9f2b4fc591a3")]
-		public static extern Win32Error EventAccessQuery(in Guid Guid, SafeSECURITY_DESCRIPTOR Buffer, ref uint BufferSize);
+		public static extern Win32Error EventAccessQuery(in Guid Guid, SafePSECURITY_DESCRIPTOR Buffer, ref uint BufferSize);
 
 		/// <summary>Removes the permissions defined in the registry for the specified provider or session.</summary>
 		/// <param name="Guid">GUID that uniquely identifies the provider or session whose permissions you want to remove from the registry.</param>

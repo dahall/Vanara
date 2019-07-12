@@ -198,11 +198,11 @@ namespace Vanara.PInvoke
 			TrustedDomainInformationBasic,
 
 			/// <summary>Query extended information for a trusted domain. Use the TRUSTED_DOMAIN_INFORMATION_EX structure.</summary>
-			[CorrespondingType(typeof(TRUSTED_DOMAIN_INFORMATION_EX), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(TRUSTED_DOMAIN_INFORMATION_EX), CorrespondingAction.Get)]
 			TrustedDomainInformationEx,
 
 			/// <summary>Query authentication information for a trusted domain. Use the TRUSTED_DOMAIN_AUTH_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(TRUSTED_DOMAIN_AUTH_INFORMATION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(TRUSTED_DOMAIN_AUTH_INFORMATION), CorrespondingAction.Get)]
 			TrustedDomainAuthInformation,
 
 			/// <summary>
@@ -210,7 +210,7 @@ namespace Vanara.PInvoke
 			/// information, and the extended information returned for the TrustedDomainInformationEx value. Use the
 			/// TRUSTED_DOMAIN_FULL_INFORMATION structure.
 			/// </summary>
-			[CorrespondingType(typeof(TRUSTED_DOMAIN_FULL_INFORMATION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(TRUSTED_DOMAIN_FULL_INFORMATION), CorrespondingAction.Get)]
 			TrustedDomainFullInformation,
 		}
 

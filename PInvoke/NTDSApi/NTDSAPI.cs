@@ -208,81 +208,81 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Requests replication state data for naming context and source server pairs. Returns a pointer to a DS_REPL_NEIGHBORS structure.
 			/// </summary>
-			[CorrespondingType(typeof(DS_REPL_NEIGHBORS), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DS_REPL_NEIGHBORS), CorrespondingAction.Get)]
 			DS_REPL_INFO_NEIGHBORS,
 
 			/// <summary>
 			/// Requests replication state data with respect to all replicas of a given naming context. Returns a pointer to a
 			/// DS_REPL_CURSORS structure.
 			/// </summary>
-			[CorrespondingType(typeof(DS_REPL_CURSORS), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DS_REPL_CURSORS), CorrespondingAction.Get)]
 			DS_REPL_INFO_CURSORS_FOR_NC,
 
 			/// <summary>
 			/// Requests replication state data for the attributes for the given object. Returns a pointer to a DS_REPL_OBJ_META_DATA structure.
 			/// </summary>
-			[CorrespondingType(typeof(DS_REPL_OBJ_META_DATA), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DS_REPL_OBJ_META_DATA), CorrespondingAction.Get)]
 			DS_REPL_INFO_METADATA_FOR_OBJ,
 
 			/// <summary>
 			/// Requests replication state data with respect to connection failures between inbound replication partners. Returns a pointer
 			/// to a DS_REPL_KCC_DSA_FAILURES structure.
 			/// </summary>
-			[CorrespondingType(typeof(DS_REPL_KCC_DSA_FAILURESW), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DS_REPL_KCC_DSA_FAILURESW), CorrespondingAction.Get)]
 			DS_REPL_INFO_KCC_DSA_CONNECT_FAILURES,
 
 			/// <summary>
 			/// Requests replication state data with respect to link failures between inbound replication partners. Returns a pointer to a
 			/// DS_REPL_KCC_DSA_FAILURES structure.
 			/// </summary>
-			[CorrespondingType(typeof(DS_REPL_KCC_DSA_FAILURESW), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DS_REPL_KCC_DSA_FAILURESW), CorrespondingAction.Get)]
 			DS_REPL_INFO_KCC_DSA_LINK_FAILURES,
 
 			/// <summary>
 			/// Requests the replication tasks currently executing or queued to execute. Returns a pointer to a DS_REPL_PENDING_OPS structure.
 			/// </summary>
-			[CorrespondingType(typeof(DS_REPL_PENDING_OPSW), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DS_REPL_PENDING_OPSW), CorrespondingAction.Get)]
 			DS_REPL_INFO_PENDING_OPS,
 
 			/// <summary>
 			/// Requests replication state data for a specific attribute for the given object. Returns a pointer to a
 			/// DS_REPL_ATTR_VALUE_META_DATA structure.
 			/// </summary>
-			[CorrespondingType(typeof(DS_REPL_ATTR_VALUE_META_DATA), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DS_REPL_ATTR_VALUE_META_DATA), CorrespondingAction.Get)]
 			DS_REPL_INFO_METADATA_FOR_ATTR_VALUE,
 
 			/// <summary>
 			/// Requests replication state data with respect to all replicas of a given naming context. Returns a pointer to a
 			/// DS_REPL_CURSORS_2 structure.
 			/// </summary>
-			[CorrespondingType(typeof(DS_REPL_CURSORS_2), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DS_REPL_CURSORS_2), CorrespondingAction.Get)]
 			DS_REPL_INFO_CURSORS_2_FOR_NC,
 
 			/// <summary>
 			/// Requests replication state data with respect to all replicas of a given naming context. Returns a pointer to a
 			/// DS_REPL_CURSORS_3 structure.
 			/// </summary>
-			[CorrespondingType(typeof(DS_REPL_CURSORS_3W), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DS_REPL_CURSORS_3W), CorrespondingAction.Get)]
 			DS_REPL_INFO_CURSORS_3_FOR_NC,
 
 			/// <summary>
 			/// Requests replication state data for the attributes for the given object. Returns a pointer to a DS_REPL_OBJ_META_DATA_2 structure.
 			/// </summary>
-			[CorrespondingType(typeof(DS_REPL_OBJ_META_DATA_2), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DS_REPL_OBJ_META_DATA_2), CorrespondingAction.Get)]
 			DS_REPL_INFO_METADATA_2_FOR_OBJ,
 
 			/// <summary>
 			/// Requests replication state data for a specific attribute for the given object. Returns a pointer to a
 			/// DS_REPL_ATTR_VALUE_META_DATA_2 structure.
 			/// </summary>
-			[CorrespondingType(typeof(DS_REPL_ATTR_VALUE_META_DATA_2), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DS_REPL_ATTR_VALUE_META_DATA_2), CorrespondingAction.Get)]
 			DS_REPL_INFO_METADATA_2_FOR_ATTR_VALUE,
 
 			/// <summary>
 			/// Requests replication state data for a specific attribute for the given object. Returns a pointer to a
 			/// DS_REPL_ATTR_VALUE_META_DATA_EXT structure.
 			/// </summary>
-			[CorrespondingType(typeof(DS_REPL_ATTR_VALUE_META_DATA_EXT), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DS_REPL_ATTR_VALUE_META_DATA_EXT), CorrespondingAction.Get)]
 			DS_REPL_INFO_METADATA_EXT_FOR_ATTR_VALUE,
 		}
 

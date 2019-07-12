@@ -47,35 +47,35 @@ namespace Vanara.PInvoke
 			/// Specifies the source name of the display device. If the DisplayConfigGetDeviceInfo function is successful,
 			/// DisplayConfigGetDeviceInfo returns the source name in the DISPLAYCONFIG_SOURCE_DEVICE_NAME structure.
 			/// </summary>
-			[CorrespondingType(typeof(DISPLAYCONFIG_SOURCE_DEVICE_NAME), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DISPLAYCONFIG_SOURCE_DEVICE_NAME), CorrespondingAction.Get)]
 			DISPLAYCONFIG_DEVICE_INFO_GET_SOURCE_NAME = 1,
 
 			/// <summary>
 			/// Specifies information about the monitor. If the DisplayConfigGetDeviceInfo function is successful, DisplayConfigGetDeviceInfo
 			/// returns info about the monitor in the DISPLAYCONFIG_TARGET_DEVICE_NAME structure.
 			/// </summary>
-			[CorrespondingType(typeof(DISPLAYCONFIG_TARGET_DEVICE_NAME), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DISPLAYCONFIG_TARGET_DEVICE_NAME), CorrespondingAction.Get)]
 			DISPLAYCONFIG_DEVICE_INFO_GET_TARGET_NAME,
 
 			/// <summary>
 			/// Specifies information about the preferred mode of a monitor. If the DisplayConfigGetDeviceInfo function is successful,
 			/// DisplayConfigGetDeviceInfo returns info about the preferred mode of a monitor in the DISPLAYCONFIG_TARGET_PREFERRED_MODE structure.
 			/// </summary>
-			[CorrespondingType(typeof(DISPLAYCONFIG_TARGET_PREFERRED_MODE), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DISPLAYCONFIG_TARGET_PREFERRED_MODE), CorrespondingAction.Get)]
 			DISPLAYCONFIG_DEVICE_INFO_GET_TARGET_PREFERRED_MODE,
 
 			/// <summary>
 			/// Specifies the graphics adapter name. If the DisplayConfigGetDeviceInfo function is successful, DisplayConfigGetDeviceInfo
 			/// returns the adapter name in the DISPLAYCONFIG_ADAPTER_NAME structure.
 			/// </summary>
-			[CorrespondingType(typeof(DISPLAYCONFIG_ADAPTER_NAME), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DISPLAYCONFIG_ADAPTER_NAME), CorrespondingAction.Get)]
 			DISPLAYCONFIG_DEVICE_INFO_GET_ADAPTER_NAME,
 
 			/// <summary>
 			/// Specifies how to set the monitor. If the DisplayConfigSetDeviceInfo function is successful, DisplayConfigSetDeviceInfo uses
 			/// info in the DISPLAYCONFIG_SET_TARGET_PERSISTENCE structure to force the output in a boot-persistent manner.
 			/// </summary>
-			[CorrespondingType(typeof(DISPLAYCONFIG_SET_TARGET_PERSISTENCE), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(DISPLAYCONFIG_SET_TARGET_PERSISTENCE), CorrespondingAction.Set)]
 			DISPLAYCONFIG_DEVICE_INFO_SET_TARGET_PERSISTENCE,
 
 			/// <summary>
@@ -83,7 +83,7 @@ namespace Vanara.PInvoke
 			/// successful, DisplayConfigGetDeviceInfo returns base output technology info in the DISPLAYCONFIG_TARGET_BASE_TYPE structure.
 			/// Supported by WDDM 1.3 and later user-mode display drivers running on Windows 8.1 and later.
 			/// </summary>
-			[CorrespondingType(typeof(DISPLAYCONFIG_TARGET_BASE_TYPE), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DISPLAYCONFIG_TARGET_BASE_TYPE), CorrespondingAction.Get)]
 			DISPLAYCONFIG_DEVICE_INFO_GET_TARGET_BASE_TYPE,
 
 			/// <summary>
@@ -91,7 +91,7 @@ namespace Vanara.PInvoke
 			/// DisplayConfigGetDeviceInfo returns virtual mode support information in the DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION
 			/// structure. Supported starting in Windows 10.
 			/// </summary>
-			[CorrespondingType(typeof(DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION), CorrespondingAction.Get)]
 			DISPLAYCONFIG_DEVICE_INFO_GET_SUPPORT_VIRTUAL_RESOLUTION,
 
 			/// <summary>
@@ -99,19 +99,19 @@ namespace Vanara.PInvoke
 			/// DisplayConfigGetDeviceInfo uses info in the DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION structure to change the state of virtual
 			/// mode support. Supported starting in Windows 10.
 			/// </summary>
-			[CorrespondingType(typeof(DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION), CorrespondingAction.Set)]
 			DISPLAYCONFIG_DEVICE_INFO_SET_SUPPORT_VIRTUAL_RESOLUTION,
 
 			/// <summary/>
-			[CorrespondingType(typeof(DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO), CorrespondingAction.Get)]
 			DISPLAYCONFIG_DEVICE_INFO_GET_ADVANCED_COLOR_INFO,
 
 			/// <summary/>
-			[CorrespondingType(typeof(DISPLAYCONFIG_SET_ADVANCED_COLOR_STATE), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(DISPLAYCONFIG_SET_ADVANCED_COLOR_STATE), CorrespondingAction.Set)]
 			DISPLAYCONFIG_DEVICE_INFO_SET_ADVANCED_COLOR_STATE,
 
 			/// <summary/>
-			[CorrespondingType(typeof(DISPLAYCONFIG_SDR_WHITE_LEVEL), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DISPLAYCONFIG_SDR_WHITE_LEVEL), CorrespondingAction.Get)]
 			DISPLAYCONFIG_DEVICE_INFO_GET_SDR_WHITE_LEVEL,
 		}
 

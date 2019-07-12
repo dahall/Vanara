@@ -78,67 +78,67 @@ namespace Vanara.PInvoke
 		public enum SAFER_OBJECT_INFO_CLASS
 		{
 			/// <summary>Queries for the LEVELID constant.</summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SaferObjectLevelId = 1,
 
 			/// <summary>Queries for the user or machine scope.</summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SaferObjectScopeId,
 
 			/// <summary>Queries for the display name.</summary>
-			[CorrespondingType(typeof(string), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(string), CorrespondingAction.GetSet)]
 			SaferObjectFriendlyName,
 
 			/// <summary>Queries for the description.</summary>
-			[CorrespondingType(typeof(string), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(string), CorrespondingAction.GetSet)]
 			SaferObjectDescription,
 
 			/// <summary/>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SaferObjectBuiltin,
 
 			/// <summary/>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SaferObjectDisallowed,
 
 			/// <summary/>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SaferObjectDisableMaxPrivilege,
 
 			/// <summary/>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SaferObjectInvertDeletedPrivileges,
 
 			/// <summary/>
-			[CorrespondingType(typeof(PTOKEN_PRIVILEGES), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PTOKEN_PRIVILEGES), CorrespondingAction.Get)]
 			SaferObjectDeletedPrivileges,
 
 			/// <summary/>
-			[CorrespondingType(typeof(TOKEN_OWNER), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(TOKEN_OWNER), CorrespondingAction.Get)]
 			SaferObjectDefaultOwner,
 
 			/// <summary/>
-			[CorrespondingType(typeof(TOKEN_GROUPS), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(TOKEN_GROUPS), CorrespondingAction.Get)]
 			SaferObjectSidsToDisable,
 
 			/// <summary/>
-			[CorrespondingType(typeof(TOKEN_GROUPS), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(TOKEN_GROUPS), CorrespondingAction.Get)]
 			SaferObjectRestrictedSidsInverted,
 
 			/// <summary/>
-			[CorrespondingType(typeof(TOKEN_GROUPS), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(TOKEN_GROUPS), CorrespondingAction.Get)]
 			SaferObjectRestrictedSidsAdded,
 
 			/// <summary>Queries for all levels.</summary>
-			[CorrespondingType(typeof(IntPtr), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(IntPtr), CorrespondingAction.Get)]
 			SaferObjectAllIdentificationGuids,
 
 			/// <summary>Queries for a single additional rule.</summary>
-			[CorrespondingType(typeof(IntPtr), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(IntPtr), CorrespondingAction.GetSet)]
 			SaferObjectSingleIdentification,
 
 			/// <summary>Queries for additional error codes set during rule processing.</summary>
-			[CorrespondingType(typeof(Win32Error), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(Win32Error), CorrespondingAction.Get)]
 			SaferObjectExtendedError,
 		}
 
@@ -151,31 +151,31 @@ namespace Vanara.PInvoke
 		public enum SAFER_POLICY_INFO_CLASS
 		{
 			/// <summary>Queries for the list of all levels defined in a policy.</summary>
-			[CorrespondingType(typeof(IntPtr), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(IntPtr), CorrespondingAction.Get)]
 			SaferPolicyLevelList = 1,
 
 			/// <summary>Queries for the policy value to determine whether DLL checking is enabled.</summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SaferPolicyEnableTransparentEnforcement,
 
 			/// <summary>Queries for the default policy level.</summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SaferPolicyDefaultLevel,
 
 			/// <summary>Queries to determine whether user scope rules should be consulted during policy evaluation.</summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SaferPolicyEvaluateUserScope,
 
 			/// <summary>Queries to determine whether the policy is to skip members of the local administrators group.</summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SaferPolicyScopeFlags,
 
 			/// <summary/>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SaferPolicyDefaultLevelFlags,
 
 			/// <summary/>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SaferPolicyAuthenticodeEnabled,
 		}
 

@@ -393,19 +393,19 @@ namespace Vanara.PInvoke
 		public enum InternetOptionFlags : uint
 		{
 			/// <summary>Not implemented</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_ALTER_IDENTITY = 80,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_ASYNC = 30,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_ASYNC_ID = 15,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_ASYNC_PRIORITY = 16,
 
 			/// <summary>
@@ -419,14 +419,14 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_BYPASS_EDITED_ENTRY = 64,
 
 			/// <summary>No longer supported.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_CACHE_STREAM_HANDLE = 27,
 
 			/// <summary>
 			/// Retrieves an INTERNET_CACHE_TIMESTAMPS structure that contains the LastModified time and Expires time from the resource
 			/// stored in the Internet cache. This value is used by InternetQueryOption.
 			/// </summary>
-			[CorrespondingType(typeof(INTERNET_CACHE_TIMESTAMPS), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(INTERNET_CACHE_TIMESTAMPS), CorrespondingAction.Get)]
 			INTERNET_OPTION_CACHE_TIMESTAMPS = 69,
 
 			/// <summary>
@@ -437,7 +437,7 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_CALLBACK = 1,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_CALLBACK_FILTER = 54,
 
 			/// <summary>
@@ -446,18 +446,18 @@ namespace Vanara.PInvoke
 			/// InternetErrorDlg or use InternetSetOption to supply a certificate before retrying the request.
 			/// CertDuplicateCertificateContext is then called so that the certificate context passed can be independently released by the application.
 			/// </summary>
-			[CorrespondingType(typeof(IntPtr), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(IntPtr), CorrespondingAction.Set)]
 			INTERNET_OPTION_CLIENT_CERT_CONTEXT = 84,
 
 			/// <summary>
 			/// For a request where WinInet decompressed the server’s supplied Content-Encoding, retrieves the server-reported Content-Length
 			/// of the response body as a ULONGLONG. Supported in Windows 10, version 1507 and later.
 			/// </summary>
-			[CorrespondingType(typeof(ulong), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(ulong), CorrespondingAction.Get)]
 			INTERNET_OPTION_COMPRESSED_CONTENT_LENGTH = 147,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_CONNECT_BACKOFF = 4,
 
 			/// <summary>
@@ -474,7 +474,7 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_CONNECT_RETRIES = 3,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_CONNECT_TIME = 55,
 
 			/// <summary>
@@ -505,36 +505,36 @@ namespace Vanara.PInvoke
 			/// Retrieves a string value that contains the name of the file backing a downloaded entity. This flag is valid after
 			/// InternetOpenUrl, FtpOpenFile, GopherOpenFile, or HttpOpenRequest has completed. This option can only be queried by InternetQueryOption.
 			/// </summary>
-			[CorrespondingType(typeof(string), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(string), CorrespondingAction.Get)]
 			INTERNET_OPTION_DATAFILE_NAME = 33,
 
 			/// <summary>
 			/// Sets a string value that contains the extension of the file backing a downloaded entity. This flag should be set before
 			/// calling InternetOpenUrl, FtpOpenFile, GopherOpenFile, or HttpOpenRequest. This option can only be set by InternetSetOption.
 			/// </summary>
-			[CorrespondingType(typeof(string), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(string), CorrespondingAction.Set)]
 			INTERNET_OPTION_DATAFILE_EXT = 96,
 
 			/// <summary>
 			/// Causes the system to log off the Digest authentication SSPI package, purging all of the credentials created for the process.
 			/// No buffer is required for this option. It is used by InternetSetOption.
 			/// </summary>
-			[CorrespondingType(null, CorrepsondingAction.Set)]
+			[CorrespondingType(null, CorrespondingAction.Set)]
 			INTERNET_OPTION_DIGEST_AUTH_UNLOAD = 76,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_DISABLE_AUTODIAL = 70,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_DISCONNECTED_TIMEOUT = 49,
 
 			/// <summary>
 			/// On a request handle, sets a Boolean controlling whether redirects will be returned from the WinInet cache for a given
 			/// request. The default is FALSE. Supported in Windows 8 and later.
 			/// </summary>
-			[CorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			INTERNET_OPTION_ENABLE_REDIRECT_CACHE_READ = 122,
 
 			/// <summary>
@@ -548,11 +548,11 @@ namespace Vanara.PInvoke
 			/// Flushes entries not in use from the password cache on the hard disk drive. Also resets the cache time used when the
 			/// synchronization mode is once-per-session. No buffer is required for this option. This is used by InternetSetOption.
 			/// </summary>
-			[CorrespondingType(null, CorrepsondingAction.Set)]
+			[CorrespondingType(null, CorrespondingAction.Set)]
 			INTERNET_OPTION_END_BROWSER_SESSION = 42,
 
 			/// <summary>Sets an unsigned long integer value that contains the error masks that can be handled by the client application.</summary>
-			[CorrespondingType(typeof(InternetErrorMask), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(InternetErrorMask), CorrespondingAction.Set)]
 			INTERNET_OPTION_ERROR_MASK = 62,
 
 			/// <summary>
@@ -560,14 +560,14 @@ namespace Vanara.PInvoke
 			/// https://msdn.microsoft.com/en-us/library/windows/desktop/mt759320(v=vs.85).aspx) which applies to the request. Supported in
 			/// Windows 10, version 1507 and later.
 			/// </summary>
-			[CorrespondingType(typeof(InternetErrorMask), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(InternetErrorMask), CorrespondingAction.Set)]
 			INTERNET_OPTION_ENTERPRISE_CONTEXT = 159,
 
 			/// <summary>
 			/// Retrieves an unsigned long integer value that contains a Winsock error code mapped to the ERROR_INTERNET_ error messages last
 			/// returned in this thread context. This option is used on a NULLHINTERNET handle by InternetQueryOption.
 			/// </summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			INTERNET_OPTION_EXTENDED_ERROR = 24,
 
 			/// <summary>
@@ -583,7 +583,7 @@ namespace Vanara.PInvoke
 			/// Retrieves an unsigned long integer value that contains the type of the HINTERNET handles passed in. This is used by
 			/// InternetQueryOption on any HINTERNET handle. Returns a InternetOptionHandleType value.
 			/// </summary>
-			[CorrespondingType(typeof(InternetOptionHandleType), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(InternetOptionHandleType), CorrespondingAction.Get)]
 			INTERNET_OPTION_HANDLE_TYPE = 9,
 
 			/// <summary>
@@ -597,15 +597,15 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Enables WinINet to perform decoding for the gzip and deflate encoding schemes. For more information, see Content Encoding.
 			/// </summary>
-			[CorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			INTERNET_OPTION_HTTP_DECODING = 65,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_IDENTITY = 78,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_IDLE_STATE = 51,
 
 			/// <summary>
@@ -617,11 +617,11 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_IGNORE_OFFLINE = 77,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_KEEP_CONNECTION = 22,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_LISTEN_TIMEOUT = 11,
 
 			/// <summary>
@@ -639,11 +639,11 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_MAX_CONNS_PER_SERVER = 73,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_OFFLINE_MODE = 26,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_OFFLINE_SEMANTICS = 52,
 
 			/// <summary>
@@ -654,7 +654,7 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_OPT_IN_WEAK_SIGNATURE = 176,
 
 			/// <summary>Retrieves the parent handle to this handle. This option can be used on any HINTERNET handle by InternetQueryOption.</summary>
-			[CorrespondingType(typeof(IntPtr), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(IntPtr), CorrespondingAction.Get)]
 			INTERNET_OPTION_PARENT_HANDLE = 21,
 
 			/// <summary>
@@ -665,7 +665,7 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_PASSWORD = 29,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_POLICY = 48,
 
 			/// <summary>
@@ -680,7 +680,7 @@ namespace Vanara.PInvoke
 			/// alert all available WinInet instances, set the Buffer parameter of InternetSetOption to NULL and BufferLength to 0 when
 			/// passing this option. This option can be set on the handle returned by InternetConnect or HttpOpenRequest.
 			/// </summary>
-			[CorrespondingType(null, CorrepsondingAction.Set)]
+			[CorrespondingType(null, CorrespondingAction.Set)]
 			INTERNET_OPTION_PROXY_SETTINGS_CHANGED = 95,
 
 			/// <summary>
@@ -699,25 +699,25 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_READ_BUFFER_SIZE = 12,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_RECEIVE_THROUGHPUT = 57,
 
 			/// <summary>
 			/// Causes the proxy data to be reread from the registry for a handle. No buffer is required. This option can be used on the
 			/// HINTERNET handle returned by InternetOpen. It is used by InternetSetOption.
 			/// </summary>
-			[CorrespondingType(null, CorrepsondingAction.Set)]
+			[CorrespondingType(null, CorrespondingAction.Set)]
 			INTERNET_OPTION_REFRESH = 37,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_REMOVE_IDENTITY = 79,
 
 			/// <summary>
 			/// Retrieves an unsigned long integer value that contains the special status flags that indicate the status of the download in
 			/// progress. This is used by InternetQueryOption.
 			/// </summary>
-			[CorrespondingType(typeof(InternetOptionRequestFlags), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(InternetOptionRequestFlags), CorrespondingAction.Get)]
 			INTERNET_OPTION_REQUEST_FLAGS = 23,
 
 			/// <summary>
@@ -731,7 +731,7 @@ namespace Vanara.PInvoke
 			/// Starts a new cache session for the process. No buffer is required. This is used by InternetSetOption. This option is reserved
 			/// for internal use only.
 			/// </summary>
-			[CorrespondingType(null, CorrepsondingAction.Set)]
+			[CorrespondingType(null, CorrespondingAction.Set)]
 			INTERNET_OPTION_RESET_URLCACHE_SESSION = 60,
 
 			/// <summary>
@@ -745,20 +745,20 @@ namespace Vanara.PInvoke
 			/// Retrieves the certificate for an SSL/PCT (Secure Sockets Layer/Private Communications Technology) server into a formatted
 			/// string. This is used by InternetQueryOption.
 			/// </summary>
-			[CorrespondingType(typeof(string), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(string), CorrespondingAction.Get)]
 			INTERNET_OPTION_SECURITY_CERTIFICATE = 35,
 
 			/// <summary>
 			/// Retrieves the certificate for an SSL/PCT server into the INTERNET_CERTIFICATE_INFO structure. This is used by InternetQueryOption.
 			/// </summary>
-			[CorrespondingType(typeof(INTERNET_CERTIFICATE_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(INTERNET_CERTIFICATE_INFO), CorrespondingAction.Get)]
 			INTERNET_OPTION_SECURITY_CERTIFICATE_STRUCT = 32,
 
 			/// <summary>
 			/// Retrieves an unsigned long integer value that contains the security flags for a handle. This option is used by
 			/// InternetQueryOption. It can be a combination of the following values.
 			/// </summary>
-			[CorrespondingType(typeof(InternetOptionSecurityFlags), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(InternetOptionSecurityFlags), CorrespondingAction.Get)]
 			INTERNET_OPTION_SECURITY_FLAGS = 31,
 
 			/// <summary>
@@ -766,18 +766,18 @@ namespace Vanara.PInvoke
 			/// the encryption strength used. This is used by InternetQueryOption. Be aware that the data retrieved this way relates to a
 			/// transaction that has already occurred, whose security level can no longer be changed.
 			/// </summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			INTERNET_OPTION_SECURITY_KEY_BITNESS = 36,
 
 			/// <summary>Not implemented.</summary>
-			[CorrespondingType(CorrepsondingAction.Exception)]
+			[CorrespondingType(CorrespondingAction.Exception)]
 			INTERNET_OPTION_SEND_THROUGHPUT = 56,
 
 			/// <summary>
 			/// Notifies the system that the registry settings have been changed so that it verifies the settings on the next call to
 			/// InternetConnect. This is used by InternetSetOption.
 			/// </summary>
-			[CorrespondingType(null, CorrepsondingAction.Set)]
+			[CorrespondingType(null, CorrespondingAction.Set)]
 			INTERNET_OPTION_SETTINGS_CHANGED = 39,
 
 			/// <summary>
@@ -785,7 +785,7 @@ namespace Vanara.PInvoke
 			/// must be a pointer to a DWORD containing the specific behavior to suppress. This option cannot be queried with
 			/// InternetQueryOption. The permitted values are:
 			/// </summary>
-			[CorrespondingType(typeof(InternetOptionSupressBehavior), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(InternetOptionSupressBehavior), CorrespondingAction.Set)]
 			INTERNET_OPTION_SUPPRESS_BEHAVIOR = 81,
 
 			/// <summary>
@@ -793,7 +793,7 @@ namespace Vanara.PInvoke
 			/// such as search strings or anchors, or if the call was redirected, the URL returned differs from the original. This option is
 			/// valid on HINTERNET handles returned by InternetOpenUrl, FtpOpenFile, GopherOpenFile, or HttpOpenRequest. It is used by InternetQueryOption.
 			/// </summary>
-			[CorrespondingType(typeof(string), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(string), CorrespondingAction.Get)]
 			INTERNET_OPTION_URL = 34,
 
 			/// <summary>
@@ -815,7 +815,7 @@ namespace Vanara.PInvoke
 			/// Retrieves an INTERNET_VERSION_INFO structure that contains the version number of Wininet.dll. This option can be used on a
 			/// NULLHINTERNET handle by InternetQueryOption.
 			/// </summary>
-			[CorrespondingType(typeof(INTERNET_VERSION_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(INTERNET_VERSION_INFO), CorrespondingAction.Get)]
 			INTERNET_OPTION_VERSION = 40,
 
 			/// <summary>
@@ -835,7 +835,7 @@ namespace Vanara.PInvoke
 			/// <para><c>Windows XP with SP2 and Windows Server 2003 with SP1:</c> This flag is not supported.</para>
 			/// <para><c>Version:</c> Requires Internet Explorer 7.0.</para>
 			/// </summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			INTERNET_OPTION_CODEPAGE = 68,
 
 			/// <summary>
@@ -846,7 +846,7 @@ namespace Vanara.PInvoke
 			/// <para><c>Windows XP with SP2 and Windows Server 2003 with SP1:</c> This flag is not supported.</para>
 			/// <para><c>Version:</c> Requires Internet Explorer 7.0.</para>
 			/// </summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			INTERNET_OPTION_CODEPAGE_PATH = 100,
 
 			/// <summary>
@@ -857,7 +857,7 @@ namespace Vanara.PInvoke
 			/// <para><c>Windows XP with SP2 and Windows Server 2003 with SP1:</c> This flag is not supported.</para>
 			/// <para><c>Version:</c> Requires Internet Explorer 7.0.</para>
 			/// </summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			INTERNET_OPTION_CODEPAGE_EXTRA = 101,
 
 			/// <summary>
@@ -892,7 +892,7 @@ namespace Vanara.PInvoke
 			/// Retrieves an INTERNET_DIAGNOSTIC_SOCKET_INFO structure that contains data about a specified HTTP Request. This flag is used
 			/// by InternetQueryOption. <c>Windows 7:</c> This option is no longer supported.
 			/// </summary>
-			[CorrespondingType(typeof(INTERNET_DIAGNOSTIC_SOCKET_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(INTERNET_DIAGNOSTIC_SOCKET_INFO), CorrespondingAction.Get)]
 			INTERNET_OPTION_DIAGNOSTIC_SOCKET_INFO = 67,
 
 			/// <summary>
@@ -900,7 +900,7 @@ namespace Vanara.PInvoke
 			/// HTTP_PROTOCOL_FLAG_HTTP2 (0x2). Supported on Windows 10, version 1507 and later. Legacy versions of HTTP (1.1 and prior)
 			/// cannot be disabled using this option. The default is 0x0. Supported in Windows 10, version 1507 and later.
 			/// </summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			INTERNET_OPTION_ENABLE_HTTP_PROTOCOL = 148,
 
 			/// <summary>
@@ -909,7 +909,7 @@ namespace Vanara.PInvoke
 			/// INTERNET_OPTION_HTTP_VERSION if more precision is needed about which legacy version was used. Supported on Windows 10,
 			/// version 1507 and later.
 			/// </summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			INTERNET_OPTION_HTTP_PROTOCOL_USED = 149,
 
 			/// <summary>
@@ -933,7 +933,7 @@ namespace Vanara.PInvoke
 			/// SP2 and Windows Server 2003 with SP1: This flag is not supported.
 			/// Version:  Requires Internet Explorer 7.0.
 			/// </summary>
-			[CorrespondingType(typeof(InternetOptionIDNFlags), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(InternetOptionIDNFlags), CorrespondingAction.Set)]
 			INTERNET_OPTION_IDN = 102,
 
 			/// <summary>
@@ -983,7 +983,7 @@ namespace Vanara.PInvoke
 			/// The bit size used in the encryption is unknown. This is only returned in a call to InternetQueryOption. Be aware that the
 			/// data retrieved this way relates to a transaction that has occurred, whose security level can no longer be changed.
 			/// </summary>
-			[CorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SECURITY_FLAG_UNKNOWNBIT = 0x80000000,
 
 			/// <summary>
@@ -1000,7 +1000,7 @@ namespace Vanara.PInvoke
 			/// to any Crypto API function which takes a PCCERT_CHAIN_CONTEXT. You must call CertFreeCertificateChain on the returned
 			/// PCCERT_CHAIN_CONTEXT when you are done with the certificate-chain context. <c>Version:</c> Requires Internet Explorer 8.0.
 			/// </summary>
-			[CorrespondingType(typeof(IntPtr), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(IntPtr), CorrespondingAction.Get)]
 			INTERNET_OPTION_SERVER_CERT_CHAIN_CONTEXT = 105,
 
 			/// <summary>
@@ -1016,7 +1016,7 @@ namespace Vanara.PInvoke
 			/// this option. This is used by InternetSetOption on handles returned by HttpOpenRequest only.
 			/// Version:  Requires Internet Explorer 8.0 or later.
 			/// </summary>
-			[CorrespondingType(null, CorrepsondingAction.Set)]
+			[CorrespondingType(null, CorrespondingAction.Set)]
 			INTERNET_OPTION_SUPPRESS_SERVER_AUTH = 104,
 		}
 

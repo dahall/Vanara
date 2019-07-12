@@ -28,63 +28,63 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// A MIB_TCPTABLE table that contains all listening (receiving only) TCP endpoints on the local computer is returned to the caller.
 			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCPTABLE), CorrespondingAction.Get)]
 			TCP_TABLE_BASIC_LISTENER,
 
 			/// <summary>A MIB_TCPTABLE table that contains all connected TCP endpoints on the local computer is returned to the caller.</summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCPTABLE), CorrespondingAction.Get)]
 			TCP_TABLE_BASIC_CONNECTIONS,
 
 			/// <summary>A MIB_TCPTABLE table that contains all TCP endpoints on the local computer is returned to the caller.</summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCPTABLE), CorrespondingAction.Get)]
 			TCP_TABLE_BASIC_ALL,
 
 			/// <summary>
 			/// A MIB_TCPTABLE_OWNER_PID or MIB_TCP6TABLE_OWNER_PID that contains all listening (receiving only) TCP endpoints on the local
 			/// computer is returned to the caller.
 			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_PID), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_PID), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_PID), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_PID), CorrespondingAction.Get)]
 			TCP_TABLE_OWNER_PID_LISTENER,
 
 			/// <summary>
 			/// A MIB_TCPTABLE_OWNER_PID or MIB_TCP6TABLE_OWNER_PID that structure that contains all connected TCP endpoints on the local
 			/// computer is returned to the caller.
 			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_PID), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_PID), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_PID), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_PID), CorrespondingAction.Get)]
 			TCP_TABLE_OWNER_PID_CONNECTIONS,
 
 			/// <summary>
 			/// A MIB_TCPTABLE_OWNER_PID or MIB_TCP6TABLE_OWNER_PID structure that contains all TCP endpoints on the local computer is
 			/// returned to the caller.
 			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_PID), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_PID), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_PID), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_PID), CorrespondingAction.Get)]
 			TCP_TABLE_OWNER_PID_ALL,
 
 			/// <summary>
 			/// A MIB_TCPTABLE_OWNER_MODULE or MIB_TCP6TABLE_OWNER_MODULE structure that contains all listening (receiving only) TCP
 			/// endpoints on the local computer is returned to the caller.
 			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_MODULE), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_MODULE), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_MODULE), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_MODULE), CorrespondingAction.Get)]
 			TCP_TABLE_OWNER_MODULE_LISTENER,
 
 			/// <summary>
 			/// A MIB_TCPTABLE_OWNER_MODULE or MIB_TCP6TABLE_OWNER_MODULE structure that contains all connected TCP endpoints on the local
 			/// computer is returned to the caller.
 			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_MODULE), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_MODULE), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_MODULE), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_MODULE), CorrespondingAction.Get)]
 			TCP_TABLE_OWNER_MODULE_CONNECTIONS,
 
 			/// <summary>
 			/// A MIB_TCPTABLE_OWNER_MODULE or MIB_TCP6TABLE_OWNER_MODULE structure that contains all TCP endpoints on the local computer is
 			/// returned to the caller.
 			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_MODULE), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_MODULE), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_MODULE), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_MODULE), CorrespondingAction.Get)]
 			TCP_TABLE_OWNER_MODULE_ALL
 		}
 
@@ -121,23 +121,23 @@ namespace Vanara.PInvoke
 		public enum UDP_TABLE_CLASS
 		{
 			/// <summary>A MIB_UDPTABLE structure that contains all UDP endpoints on the local computer is returned to the caller.</summary>
-			[CorrespondingType(typeof(MIB_UDPTABLE), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(MIB_UDPTABLE), CorrespondingAction.Get)]
 			UDP_TABLE_BASIC,
 
 			/// <summary>
 			/// A MIB_UDPTABLE_OWNER_PID or MIB_UDP6TABLE_OWNER_PID structure that contains all UDP endpoints on the local computer is
 			/// returned to the caller.
 			/// </summary>
-			[CorrespondingType(typeof(MIB_UDPTABLE_OWNER_PID), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_UDP6TABLE_OWNER_PID), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(MIB_UDPTABLE_OWNER_PID), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(MIB_UDP6TABLE_OWNER_PID), CorrespondingAction.Get)]
 			UDP_TABLE_OWNER_PID,
 
 			/// <summary>
 			/// A MIB_UDPTABLE_OWNER_MODULE or MIB_UDP6TABLE_OWNER_MODULE structure that contains all UDP endpoints on the local computer is
 			/// returned to the caller.
 			/// </summary>
-			[CorrespondingType(typeof(MIB_UDPTABLE_OWNER_MODULE), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_UDP6TABLE_OWNER_MODULE), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(MIB_UDPTABLE_OWNER_MODULE), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(MIB_UDP6TABLE_OWNER_MODULE), CorrespondingAction.Get)]
 			UDP_TABLE_OWNER_MODULE,
 		}
 

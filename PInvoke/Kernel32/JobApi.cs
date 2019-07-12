@@ -354,39 +354,39 @@ namespace Vanara.PInvoke
 		public enum JOBOBJECTINFOCLASS
 		{
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_ACCOUNTING_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_BASIC_ACCOUNTING_INFORMATION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(JOBOBJECT_BASIC_ACCOUNTING_INFORMATION), CorrespondingAction.Get)]
 			JobObjectBasicAccountingInformation = 1,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_LIMIT_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_BASIC_LIMIT_INFORMATION), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(JOBOBJECT_BASIC_LIMIT_INFORMATION), CorrespondingAction.GetSet)]
 			JobObjectBasicLimitInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_PROCESS_ID_LIST structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_BASIC_PROCESS_ID_LIST), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(JOBOBJECT_BASIC_PROCESS_ID_LIST), CorrespondingAction.Get)]
 			JobObjectBasicProcessIdList,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_UI_RESTRICTIONS structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_BASIC_UI_RESTRICTIONS), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(JOBOBJECT_BASIC_UI_RESTRICTIONS), CorrespondingAction.GetSet)]
 			JobObjectBasicUIRestrictions,
 
 			/// <summary>This flag is not supported. Applications must set security limits individually for each process.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_SECURITY_LIMIT_INFORMATION), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(JOBOBJECT_SECURITY_LIMIT_INFORMATION), CorrespondingAction.GetSet)]
 			JobObjectSecurityLimitInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_END_OF_JOB_TIME_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_END_OF_JOB_TIME_INFORMATION), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(JOBOBJECT_END_OF_JOB_TIME_INFORMATION), CorrespondingAction.GetSet)]
 			JobObjectEndOfJobTimeInformation,
 
 			/// <summary>The job object associate completion port information</summary>
-			[CorrespondingType(typeof(JOBOBJECT_ASSOCIATE_COMPLETION_PORT), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(JOBOBJECT_ASSOCIATE_COMPLETION_PORT), CorrespondingAction.Set)]
 			JobObjectAssociateCompletionPortInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION), CorrespondingAction.Get)]
 			JobObjectBasicAndIoAccountingInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_EXTENDED_LIMIT_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION), CorrespondingAction.GetSet)]
 			JobObjectExtendedLimitInformation,
 
 			/// <summary>Undocumented.</summary>
@@ -397,15 +397,15 @@ namespace Vanara.PInvoke
 			/// currently assigned. The variable pointed to by the lpReturnLength parameter is set to the size of the group data. Divide this
 			/// value by sizeof(USHORT) to determine the number of groups.
 			/// </summary>
-			[CorrespondingType(typeof(ushort), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(ushort), CorrespondingAction.GetSet)]
 			JobObjectGroupInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION), CorrespondingAction.GetSet)]
 			JobObjectNotificationLimitInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_LIMIT_VIOLATION_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_LIMIT_VIOLATION_INFORMATION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(JOBOBJECT_LIMIT_VIOLATION_INFORMATION), CorrespondingAction.Get)]
 			JobObjectLimitViolationInformation,
 
 			/// <summary>
@@ -414,11 +414,11 @@ namespace Vanara.PInvoke
 			/// lpReturnLength parameter is set to the size of the group affinity data. Divide this value by sizeof(GROUP_AFFINITY) to
 			/// determine the number of groups.
 			/// </summary>
-			[CorrespondingType(typeof(GROUP_AFFINITY[]), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(GROUP_AFFINITY[]), CorrespondingAction.GetSet)]
 			JobObjectGroupInformationEx,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_CPU_RATE_CONTROL_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_CPU_RATE_CONTROL_INFORMATION), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(JOBOBJECT_CPU_RATE_CONTROL_INFORMATION), CorrespondingAction.Set)]
 			JobObjectCpuRateControlInformation,
 
 			/// <summary>Undocumented.</summary>
@@ -470,15 +470,15 @@ namespace Vanara.PInvoke
 			JobObjectReserved14Information = 31,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NET_RATE_CONTROL_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_NET_RATE_CONTROL_INFORMATION), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(JOBOBJECT_NET_RATE_CONTROL_INFORMATION), CorrespondingAction.GetSet)]
 			JobObjectNetRateControlInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2 structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2), CorrespondingAction.GetSet)]
 			JobObjectNotificationLimitInformation2 = 34,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2 structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2), CorrespondingAction.GetSet)]
 			JobObjectLimitViolationInformation2,
 
 			/// <summary>Undocumented.</summary>

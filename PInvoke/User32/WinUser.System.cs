@@ -677,33 +677,33 @@ namespace Vanara.PInvoke
 			/// Determines whether the warning beeper is on. The pvParam parameter must point to a BOOL variable that receives TRUE if the
 			/// beeper is on, or FALSE if it is off.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get, false)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get, false)]
 			SPI_GETBEEP = 0x0001,
 
 			/// <summary>Turns the warning beeper on or off. The uiParam parameter specifies TRUE for on, or FALSE for off.</summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETBEEP = 0x0002,
 
 			/// <summary>Retrieves the two mouse threshold values and the mouse speed.</summary>
-			[SPCorrespondingType(typeof(int[]), CorrepsondingAction.Get, false)]
+			[SPCorrespondingType(typeof(int[]), CorrespondingAction.Get, false)]
 			SPI_GETMOUSE = 0x0003,
 
 			/// <summary>Sets the two mouse threshold values and the mouse speed.</summary>
-			[SPCorrespondingType(typeof(int[]), CorrepsondingAction.Set, false)]
+			[SPCorrespondingType(typeof(int[]), CorrespondingAction.Set, false)]
 			SPI_SETMOUSE = 0x0004,
 
 			/// <summary>
 			/// Retrieves the border multiplier factor that determines the width of a window's sizing border. The pvParam parameter must
 			/// point to an integer variable that receives this value.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Get, false)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Get, false)]
 			SPI_GETBORDER = 0x0005,
 
 			/// <summary>
 			/// Sets the border multiplier factor that determines the width of a window's sizing border. The uiParam parameter specifies the
 			/// new value.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Set, true)]
 			SPI_SETBORDER = 0x0006,
 
 			/// <summary>
@@ -711,7 +711,7 @@ namespace Vanara.PInvoke
 			/// through 31 (approximately 30 repetitions per second). The actual repeat rates are hardware-dependent and may vary from a
 			/// linear scale by as much as 20%. The pvParam parameter must point to a DWORD variable that receives the setting
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get, false)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get, false)]
 			SPI_GETKEYBOARDSPEED = 0x000A,
 
 			/// <summary>
@@ -719,7 +719,7 @@ namespace Vanara.PInvoke
 			/// repetitions per second) through 31 (approximately 30 repetitions per second). The actual repeat rates are hardware-dependent
 			/// and may vary from a linear scale by as much as 20%. If uiParam is greater than 31, the parameter is set to 31.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETKEYBOARDSPEED = 0x000B,
 
 			/// <summary>Not implemented.</summary>
@@ -730,45 +730,45 @@ namespace Vanara.PInvoke
 			/// To set this value, set uiParam to the new value and set pvParam to null. You cannot set this value to less than SM_CXICON. To
 			/// retrieve this value, pvParam must point to an integer that receives the current value.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Set, false)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Set, false)]
 			SPI_ICONHORIZONTALSPACING = 0x000D,
 
 			/// <summary>
 			/// Retrieves the screen saver time-out value, in seconds. The pvParam parameter must point to an integer variable that receives
 			/// the value.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Get, false)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Get, false)]
 			SPI_GETSCREENSAVETIMEOUT = 0x000E,
 
 			/// <summary>
 			/// Sets the screen saver time-out value to the value of the uiParam parameter. This value is the amount of time, in seconds,
 			/// that the system must be idle before the screen saver activates.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Set, true)]
 			SPI_SETSCREENSAVETIMEOUT = 0x000F,
 
 			/// <summary>
 			/// Determines whether screen saving is enabled. The pvParam parameter must point to a bool variable that receives TRUE if screen
 			/// saving is enabled, or FALSE otherwise.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get, false)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get, false)]
 			SPI_GETSCREENSAVEACTIVE = 0x0010,
 
 			/// <summary>
 			/// Sets the state of the screen saver. The uiParam parameter specifies TRUE to activate screen saving, or FALSE to deactivate it.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETSCREENSAVEACTIVE = 0x0011,
 
 			/// <summary>
 			/// Retrieves the current granularity value of the desktop sizing grid. The pvParam parameter must point to an integer variable
 			/// that receives the granularity.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Get, false)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Get, false)]
 			SPI_GETGRIDGRANULARITY = 0x0012,
 
 			/// <summary>Sets the granularity of the desktop sizing grid to the value of the uiParam parameter.</summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Set, true)]
 			SPI_SETGRIDGRANULARITY = 0x0013,
 
 			/// <summary>
@@ -776,11 +776,11 @@ namespace Vanara.PInvoke
 			/// set pvParam to point to a null-terminated string containing the name of a bitmap file. Setting pvParam to "" removes the
 			/// wallpaper. Setting pvParam to SETWALLPAPER_DEFAULT or null reverts to the default wallpaper.
 			/// </summary>
-			[SPCorrespondingType(typeof(string), CorrepsondingAction.Set, false)]
+			[SPCorrespondingType(typeof(string), CorrespondingAction.Set, false)]
 			SPI_SETDESKWALLPAPER = 0x0014,
 
 			/// <summary>Sets the current desktop pattern by causing Windows to read the Pattern= setting from the WIN.INI file.</summary>
-			[SPCorrespondingType(typeof(string), CorrepsondingAction.Set, false)]
+			[SPCorrespondingType(typeof(string), CorrespondingAction.Set, false)]
 			SPI_SETDESKPATTERN = 0x0015,
 
 			/// <summary>
@@ -788,7 +788,7 @@ namespace Vanara.PInvoke
 			/// (approximately 1 second delay). The actual delay associated with each value may vary depending on the hardware. The pvParam
 			/// parameter must point to an integer variable that receives the setting.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Get, false)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Get, false)]
 			SPI_GETKEYBOARDDELAY = 0x0016,
 
 			/// <summary>
@@ -797,7 +797,7 @@ namespace Vanara.PInvoke
 			/// ms) and 3 sets the longest delay (approximately 1 second). The actual delay associated with each value may vary depending on
 			/// the hardware.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Set, true)]
 			SPI_SETKEYBOARDDELAY = 0x0017,
 
 			/// <summary>
@@ -805,31 +805,31 @@ namespace Vanara.PInvoke
 			/// null. You cannot set this value to less than SM_CYICON. To retrieve this value, pvParam must point to an integer that
 			/// receives the current value.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Set, false)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Set, false)]
 			SPI_ICONVERTICALSPACING = 0x0018,
 
 			/// <summary>
 			/// Determines whether icon-title wrapping is enabled. The pvParam parameter must point to a bool variable that receives TRUE if
 			/// enabled, or FALSE otherwise.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETICONTITLEWRAP = 0x0019,
 
 			/// <summary>Turns icon-title wrapping on or off. The uiParam parameter specifies TRUE for on, or FALSE for off.</summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETICONTITLEWRAP = 0x001A,
 
 			/// <summary>
 			/// Determines whether pop-up menus are left-aligned or right-aligned, relative to the corresponding menu-bar item. The pvParam
 			/// parameter must point to a bool variable that receives TRUE if left-aligned, or FALSE otherwise.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETMENUDROPALIGNMENT = 0x001B,
 
 			/// <summary>
 			/// Sets the alignment value of pop-up menus. The uiParam parameter specifies TRUE for right alignment, or FALSE for left alignment.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETMENUDROPALIGNMENT = 0x001C,
 
 			/// <summary>
@@ -837,7 +837,7 @@ namespace Vanara.PInvoke
 			/// rectangle within which the second click of a double-click must fall for it to be registered as a double-click. To retrieve
 			/// the width of the double-click rectangle, call GetSystemMetrics with the SM_CXDOUBLECLK flag.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Set, true)]
 			SPI_SETDOUBLECLKWIDTH = 0x001D,
 
 			/// <summary>
@@ -845,14 +845,14 @@ namespace Vanara.PInvoke
 			/// rectangle within which the second click of a double-click must fall for it to be registered as a double-click. To retrieve
 			/// the height of the double-click rectangle, call GetSystemMetrics with the SM_CYDOUBLECLK flag.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Set, true)]
 			SPI_SETDOUBLECLKHEIGHT = 0x001E,
 
 			/// <summary>
 			/// Retrieves the logical font information for the current icon-title font. The uiParam parameter specifies the size of a LOGFONT
 			/// structure, and the pvParam parameter must point to the LOGFONT structure to fill in.
 			/// </summary>
-			[SPCorrespondingType(typeof(LOGFONT), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(LOGFONT), CorrespondingAction.Get)]
 			SPI_GETICONTITLELOGFONT = 0x001F,
 
 			/// <summary>
@@ -860,49 +860,49 @@ namespace Vanara.PInvoke
 			/// of milliseconds that can occur between the first and second clicks of a double-click. You can also call the
 			/// SetDoubleClickTime function to set the double-click time. To get the current double-click time, call the GetDoubleClickTime function.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETDOUBLECLICKTIME = 0x0020,
 
 			/// <summary>
 			/// Swaps or restores the meaning of the left and right mouse buttons. The uiParam parameter specifies TRUE to swap the meanings
 			/// of the buttons, or FALSE to restore their original meanings.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETMOUSEBUTTONSWAP = 0x0021,
 
 			/// <summary>
 			/// Sets the font that is used for icon titles. The uiParam parameter specifies the size of a LOGFONT structure, and the pvParam
 			/// parameter must point to a LOGFONT structure.
 			/// </summary>
-			[SPCorrespondingType(typeof(LOGFONT), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(LOGFONT), CorrespondingAction.Set)]
 			SPI_SETICONTITLELOGFONT = 0x0022,
 
 			/// <summary>
 			/// This flag is obsolete. Previous versions of the system use this flag to determine whether ALT+TAB fast task switching is
 			/// enabled. For Windows 95, Windows 98, and Windows NT version 4.0 and later, fast task switching is always enabled.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get), Obsolete]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get), Obsolete]
 			SPI_GETFASTTASKSWITCH = 0x0023,
 
 			/// <summary>
 			/// This flag is obsolete. Previous versions of the system use this flag to enable or disable ALT+TAB fast task switching. For
 			/// Windows 95, Windows 98, and Windows NT version 4.0 and later, fast task switching is always enabled.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set), Obsolete]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set), Obsolete]
 			SPI_SETFASTTASKSWITCH = 0x0024,
 
 			/// <summary>
 			/// Sets dragging of full windows either on or off. The uiParam parameter specifies TRUE for on, or FALSE for off. Windows 95:
 			/// This flag is supported only if Windows Plus! is installed. See SPI_GETWINDOWSEXTENSION.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETDRAGFULLWINDOWS = 0x0025,
 
 			/// <summary>
 			/// Determines whether dragging of full windows is enabled. The pvParam parameter must point to a BOOL variable that receives
 			/// TRUE if enabled, or FALSE otherwise. Windows 95: This flag is supported only if Windows Plus! is installed. See SPI_GETWINDOWSEXTENSION.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETDRAGFULLWINDOWS = 0x0026,
 
 			/// <summary>
@@ -910,7 +910,7 @@ namespace Vanara.PInvoke
 			/// NONCLIENTMETRICS structure that receives the information. Set the cbSize member of this structure and the uiParam parameter
 			/// to sizeof(NONCLIENTMETRICS).
 			/// </summary>
-			[SPCorrespondingType(typeof(NONCLIENTMETRICS), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(NONCLIENTMETRICS), CorrespondingAction.Get)]
 			SPI_GETNONCLIENTMETRICS = 0x0029,
 
 			/// <summary>
@@ -918,35 +918,35 @@ namespace Vanara.PInvoke
 			/// NONCLIENTMETRICS structure that contains the new parameters. Set the cbSize member of this structure and the uiParam
 			/// parameter to sizeof(NONCLIENTMETRICS). Also, the lfHeight member of the LOGFONT structure must be a negative value.
 			/// </summary>
-			[SPCorrespondingType(typeof(NONCLIENTMETRICS), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(NONCLIENTMETRICS), CorrespondingAction.Set)]
 			SPI_SETNONCLIENTMETRICS = 0x002A,
 
 			/// <summary>
 			/// Retrieves the metrics associated with minimized windows. The pvParam parameter must point to a MINIMIZEDMETRICS structure
 			/// that receives the information. Set the cbSize member of this structure and the uiParam parameter to sizeof(MINIMIZEDMETRICS).
 			/// </summary>
-			[SPCorrespondingType(typeof(MINIMIZEDMETRICS), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(MINIMIZEDMETRICS), CorrespondingAction.Get)]
 			SPI_GETMINIMIZEDMETRICS = 0x002B,
 
 			/// <summary>
 			/// Sets the metrics associated with minimized windows. The pvParam parameter must point to a MINIMIZEDMETRICS structure that
 			/// contains the new parameters. Set the cbSize member of this structure and the uiParam parameter to sizeof(MINIMIZEDMETRICS).
 			/// </summary>
-			[SPCorrespondingType(typeof(MINIMIZEDMETRICS), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(MINIMIZEDMETRICS), CorrespondingAction.Set)]
 			SPI_SETMINIMIZEDMETRICS = 0x002C,
 
 			/// <summary>
 			/// Retrieves the metrics associated with icons. The pvParam parameter must point to an ICONMETRICS structure that receives the
 			/// information. Set the cbSize member of this structure and the uiParam parameter to sizeof(ICONMETRICS).
 			/// </summary>
-			[SPCorrespondingType(typeof(ICONMETRICS), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(ICONMETRICS), CorrespondingAction.Get)]
 			SPI_GETICONMETRICS = 0x002D,
 
 			/// <summary>
 			/// Sets the metrics associated with icons. The pvParam parameter must point to an ICONMETRICS structure that contains the new
 			/// parameters. Set the cbSize member of this structure and the uiParam parameter to sizeof(ICONMETRICS).
 			/// </summary>
-			[SPCorrespondingType(typeof(ICONMETRICS), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(ICONMETRICS), CorrespondingAction.Set)]
 			SPI_SETICONMETRICS = 0x002E,
 
 			/// <summary>
@@ -955,7 +955,7 @@ namespace Vanara.PInvoke
 			/// rectangle, expressed in virtual screen coordinates. In a system with multiple display monitors, the function sets the work
 			/// area of the monitor that contains the specified rectangle.
 			/// </summary>
-			[SPCorrespondingType(typeof(RECT), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(RECT), CorrespondingAction.Set)]
 			SPI_SETWORKAREA = 0x002F,
 
 			/// <summary>
@@ -964,14 +964,14 @@ namespace Vanara.PInvoke
 			/// the coordinates of the work area, expressed in virtual screen coordinates. To get the work area of a monitor other than the
 			/// primary display monitor, call the GetMonitorInfo function.
 			/// </summary>
-			[SPCorrespondingType(typeof(RECT), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(RECT), CorrespondingAction.Get)]
 			SPI_GETWORKAREA = 0x0030,
 
 			/// <summary>
 			/// Windows Me/98/95: Pen windows is being loaded or unloaded. The uiParam parameter is TRUE when loading and FALSE when
 			/// unloading pen windows. The pvParam parameter is null.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETPENWINDOWS = 0x0031,
 
 			/// <summary>
@@ -987,7 +987,7 @@ namespace Vanara.PInvoke
 			/// scheme (using the Accessibility Options in the control panel). For more information, see HIGHCONTRAST on MSDN. For more
 			/// information on general accessibility features, see Accessibility on MSDN.
 			/// </remarks>
-			[SPCorrespondingType(typeof(HIGHCONTRAST), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(HIGHCONTRAST), CorrespondingAction.Get)]
 			SPI_GETHIGHCONTRAST = 0x0042,
 
 			/// <summary>
@@ -995,7 +995,7 @@ namespace Vanara.PInvoke
 			/// that contains the new parameters. Set the cbSize member of this structure and the uiParam parameter to sizeof(HIGHCONTRAST).
 			/// Windows NT: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(HIGHCONTRAST), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(HIGHCONTRAST), CorrespondingAction.Set)]
 			SPI_SETHIGHCONTRAST = 0x0043,
 
 			/// <summary>
@@ -1003,7 +1003,7 @@ namespace Vanara.PInvoke
 			/// interfaces that would otherwise be hidden. The pvParam parameter must point to a BOOL variable that receives TRUE if the user
 			/// relies on the keyboard; or FALSE otherwise. Windows NT: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETKEYBOARDPREF = 0x0044,
 
 			/// <summary>
@@ -1011,7 +1011,7 @@ namespace Vanara.PInvoke
 			/// and wants applications to display keyboard interfaces that would otherwise be hidden; uiParam is FALSE otherwise. Windows NT:
 			/// This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETKEYBOARDPREF = 0x0045,
 
 			/// <summary>
@@ -1020,28 +1020,28 @@ namespace Vanara.PInvoke
 			/// information in situations where it would otherwise present the information graphically. The pvParam parameter is a pointer to
 			/// a BOOL variable that receives TRUE if a screen reviewer utility is running, or FALSE otherwise. Windows NT: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETSCREENREADER = 0x0046,
 
 			/// <summary>
 			/// Determines whether a screen review utility is running. The uiParam parameter specifies TRUE for on, or FALSE for off. Windows
 			/// NT: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETSCREENREADER = 0x0047,
 
 			/// <summary>
 			/// Retrieves the animation effects associated with user actions. The pvParam parameter must point to an ANIMATIONINFO structure
 			/// that receives the information. Set the cbSize member of this structure and the uiParam parameter to sizeof(ANIMATIONINFO).
 			/// </summary>
-			[SPCorrespondingType(typeof(ANIMATIONINFO), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(ANIMATIONINFO), CorrespondingAction.Get)]
 			SPI_GETANIMATION = 0x0048,
 
 			/// <summary>
 			/// Sets the animation effects associated with user actions. The pvParam parameter must point to an ANIMATIONINFO structure that
 			/// contains the new parameters. Set the cbSize member of this structure and the uiParam parameter to sizeof(ANIMATIONINFO).
 			/// </summary>
-			[SPCorrespondingType(typeof(ANIMATIONINFO), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(ANIMATIONINFO), CorrespondingAction.Set)]
 			SPI_SETANIMATION = 0x0049,
 
 			/// <summary>
@@ -1049,7 +1049,7 @@ namespace Vanara.PInvoke
 			/// smoother by painting pixels at different gray levels. The pvParam parameter must point to a BOOL variable that receives TRUE
 			/// if the feature is enabled, or FALSE if it is not. Windows 95: This flag is supported only if Windows Plus! is installed. See SPI_GETWINDOWSEXTENSION.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETFONTSMOOTHING = 0x004A,
 
 			/// <summary>
@@ -1057,25 +1057,25 @@ namespace Vanara.PInvoke
 			/// pixels at different gray levels. To enable the feature, set the uiParam parameter to TRUE. To disable the feature, set
 			/// uiParam to FALSE. Windows 95: This flag is supported only if Windows Plus! is installed. See SPI_GETWINDOWSEXTENSION.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETFONTSMOOTHING = 0x004B,
 
 			/// <summary>
 			/// Sets the width, in pixels, of the rectangle used to detect the start of a drag operation. Set uiParam to the new value. To
 			/// retrieve the drag width, call GetSystemMetrics with the SM_CXDRAG flag.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETDRAGWIDTH = 0x004C,
 
 			/// <summary>
 			/// Sets the height, in pixels, of the rectangle used to detect the start of a drag operation. Set uiParam to the new value. To
 			/// retrieve the drag height, call GetSystemMetrics with the SM_CYDRAG flag.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETDRAGHEIGHT = 0x004D,
 
 			/// <summary>Used internally; applications should not use this value.</summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETHANDHELD = 0x004E,
 
 			/// <summary>
@@ -1083,7 +1083,7 @@ namespace Vanara.PInvoke
 			/// variable that receives the value. This flag is supported for 32-bit applications only. Windows NT, Windows Me/98: This flag
 			/// is supported for 16-bit and 32-bit applications. Windows 95: This flag is supported for 16-bit applications only.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Get)]
 			SPI_GETLOWPOWERTIMEOUT = 0x004F,
 
 			/// <summary>
@@ -1091,7 +1091,7 @@ namespace Vanara.PInvoke
 			/// variable that receives the value. This flag is supported for 32-bit applications only. Windows NT, Windows Me/98: This flag
 			/// is supported for 16-bit and 32-bit applications. Windows 95: This flag is supported for 16-bit applications only.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Get)]
 			SPI_GETPOWEROFFTIMEOUT = 0x0050,
 
 			/// <summary>
@@ -1099,7 +1099,7 @@ namespace Vanara.PInvoke
 			/// The pvParam parameter must be null. This flag is supported for 32-bit applications only. Windows NT, Windows Me/98: This flag
 			/// is supported for 16-bit and 32-bit applications. Windows 95: This flag is supported for 16-bit applications only.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETLOWPOWERTIMEOUT = 0x0051,
 
 			/// <summary>
@@ -1107,7 +1107,7 @@ namespace Vanara.PInvoke
 			/// The pvParam parameter must be null. This flag is supported for 32-bit applications only. Windows NT, Windows Me/98: This flag
 			/// is supported for 16-bit and 32-bit applications. Windows 95: This flag is supported for 16-bit applications only.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETPOWEROFFTIMEOUT = 0x0052,
 
 			/// <summary>
@@ -1115,7 +1115,7 @@ namespace Vanara.PInvoke
 			/// receives TRUE if enabled, or FALSE if disabled. This flag is supported for 32-bit applications only. Windows NT, Windows
 			/// Me/98: This flag is supported for 16-bit and 32-bit applications. Windows 95: This flag is supported for 16-bit applications only.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETLOWPOWERACTIVE = 0x0053,
 
 			/// <summary>
@@ -1123,7 +1123,7 @@ namespace Vanara.PInvoke
 			/// receives TRUE if enabled, or FALSE if disabled. This flag is supported for 32-bit applications only. Windows NT, Windows
 			/// Me/98: This flag is supported for 16-bit and 32-bit applications. Windows 95: This flag is supported for 16-bit applications only.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETPOWEROFFACTIVE = 0x0054,
 
 			/// <summary>
@@ -1131,7 +1131,7 @@ namespace Vanara.PInvoke
 			/// pvParam parameter must be null. This flag is supported for 32-bit applications only. Windows NT, Windows Me/98: This flag is
 			/// supported for 16-bit and 32-bit applications. Windows 95: This flag is supported for 16-bit applications only.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETLOWPOWERACTIVE = 0x0055,
 
 			/// <summary>
@@ -1139,22 +1139,22 @@ namespace Vanara.PInvoke
 			/// pvParam parameter must be null. This flag is supported for 32-bit applications only. Windows NT, Windows Me/98: This flag is
 			/// supported for 16-bit and 32-bit applications. Windows 95: This flag is supported for 16-bit applications only.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETPOWEROFFACTIVE = 0x0056,
 
 			/// <summary>Reloads the system cursors. Set the uiParam parameter to zero and the pvParam parameter to null.</summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETCURSORS = 0x0057,
 
 			/// <summary>Reloads the system icons. Set the uiParam parameter to zero and the pvParam parameter to null.</summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETICONS = 0x0058,
 
 			/// <summary>
 			/// Retrieves the input locale identifier for the system default input language. The pvParam parameter must point to an HKL
 			/// variable that receives this value. For more information, see Languages, Locales, and Keyboard Layouts on MSDN.
 			/// </summary>
-			[SPCorrespondingType(typeof(IntPtr), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(IntPtr), CorrespondingAction.Get)]
 			SPI_GETDEFAULTINPUTLANG = 0x0059,
 
 			/// <summary>
@@ -1162,7 +1162,7 @@ namespace Vanara.PInvoke
 			/// current system character set. The pvParam parameter must point to an HKL variable that contains the input locale identifier
 			/// for the default language. For more information, see Languages, Locales, and Keyboard Layouts on MSDN.
 			/// </summary>
-			[SPCorrespondingType(typeof(IntPtr), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(IntPtr), CorrespondingAction.Set)]
 			SPI_SETDEFAULTINPUTLANG = 0x005A,
 
 			/// <summary>
@@ -1171,14 +1171,14 @@ namespace Vanara.PInvoke
 			/// used. the path in the registry is \HKEY_CURRENT_USER\keyboard layout\toggle. Valid values are "1" = ALT+SHIFT, "2" =
 			/// CTRL+SHIFT, and "3" = none.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETLANGTOGGLE = 0x005B,
 
 			/// <summary>
 			/// Windows 95: Determines whether the Windows extension, Windows Plus!, is installed. Set the uiParam parameter to 1. The
 			/// pvParam parameter is not used. The function returns TRUE if the extension is installed, or FALSE if it is not.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETWINDOWSEXTENSION = 0x005C,
 
 			/// <summary>
@@ -1187,7 +1187,7 @@ namespace Vanara.PInvoke
 			/// feature, set uiParam to a value greater than 1 to indicate the number of cursors drawn in the trail. Windows 2000/NT: This
 			/// value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETMOUSETRAILS = 0x005D,
 
 			/// <summary>
@@ -1197,57 +1197,57 @@ namespace Vanara.PInvoke
 			/// and the value indicates the number of cursors drawn in the trail. The uiParam parameter is not used. Windows 2000/NT: This
 			/// value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETMOUSETRAILS = 0x005E,
 
 			/// <summary>Windows Me/98: Used internally; applications should not use this flag.</summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETSCREENSAVERRUNNING = 0x0061,
 
 			/// <summary>Same as SPI_SETSCREENSAVERRUNNING.</summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SCREENSAVERRUNNING = SPI_SETSCREENSAVERRUNNING,
 
 			/// <summary>
 			/// Retrieves information about the FilterKeys accessibility feature. The pvParam parameter must point to a FILTERKEYS structure
 			/// that receives the information. Set the cbSize member of this structure and the uiParam parameter to sizeof(FILTERKEYS).
 			/// </summary>
-			[SPCorrespondingType(typeof(FILTERKEYS), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(FILTERKEYS), CorrespondingAction.Get)]
 			SPI_GETFILTERKEYS = 0x0032,
 
 			/// <summary>
 			/// Sets the parameters of the FilterKeys accessibility feature. The pvParam parameter must point to a FILTERKEYS structure that
 			/// contains the new parameters. Set the cbSize member of this structure and the uiParam parameter to sizeof(FILTERKEYS).
 			/// </summary>
-			[SPCorrespondingType(typeof(FILTERKEYS), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(FILTERKEYS), CorrespondingAction.Set)]
 			SPI_SETFILTERKEYS = 0x0033,
 
 			/// <summary>
 			/// Retrieves information about the ToggleKeys accessibility feature. The pvParam parameter must point to a TOGGLEKEYS structure
 			/// that receives the information. Set the cbSize member of this structure and the uiParam parameter to sizeof(TOGGLEKEYS).
 			/// </summary>
-			[SPCorrespondingType(typeof(TOGGLEKEYS), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(TOGGLEKEYS), CorrespondingAction.Get)]
 			SPI_GETTOGGLEKEYS = 0x0034,
 
 			/// <summary>
 			/// Sets the parameters of the ToggleKeys accessibility feature. The pvParam parameter must point to a TOGGLEKEYS structure that
 			/// contains the new parameters. Set the cbSize member of this structure and the uiParam parameter to sizeof(TOGGLEKEYS).
 			/// </summary>
-			[SPCorrespondingType(typeof(TOGGLEKEYS), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(TOGGLEKEYS), CorrespondingAction.Set)]
 			SPI_SETTOGGLEKEYS = 0x0035,
 
 			/// <summary>
 			/// Retrieves information about the MouseKeys accessibility feature. The pvParam parameter must point to a MOUSEKEYS structure
 			/// that receives the information. Set the cbSize member of this structure and the uiParam parameter to sizeof(MOUSEKEYS).
 			/// </summary>
-			[SPCorrespondingType(typeof(MOUSEKEYS), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(MOUSEKEYS), CorrespondingAction.Get)]
 			SPI_GETMOUSEKEYS = 0x0036,
 
 			/// <summary>
 			/// Sets the parameters of the MouseKeys accessibility feature. The pvParam parameter must point to a MOUSEKEYS structure that
 			/// contains the new parameters. Set the cbSize member of this structure and the uiParam parameter to sizeof(MOUSEKEYS).
 			/// </summary>
-			[SPCorrespondingType(typeof(MOUSEKEYS), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(MOUSEKEYS), CorrespondingAction.Set)]
 			SPI_SETMOUSEKEYS = 0x0037,
 
 			/// <summary>
@@ -1256,28 +1256,28 @@ namespace Vanara.PInvoke
 			/// parameter must point to a BOOL variable that receives TRUE if the feature is on, or FALSE if it is off. Using this value is
 			/// equivalent to calling GetSystemMetrics (SM_SHOWSOUNDS). That is the recommended call.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETSHOWSOUNDS = 0x0038,
 
 			/// <summary>
 			/// Sets the parameters of the SoundSentry accessibility feature. The pvParam parameter must point to a SOUNDSENTRY structure
 			/// that contains the new parameters. Set the cbSize member of this structure and the uiParam parameter to sizeof(SOUNDSENTRY).
 			/// </summary>
-			[SPCorrespondingType(typeof(SOUNDSENTRY), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(SOUNDSENTRY), CorrespondingAction.Set)]
 			SPI_SETSHOWSOUNDS = 0x0039,
 
 			/// <summary>
 			/// Retrieves information about the StickyKeys accessibility feature. The pvParam parameter must point to a STICKYKEYS structure
 			/// that receives the information. Set the cbSize member of this structure and the uiParam parameter to sizeof(STICKYKEYS).
 			/// </summary>
-			[SPCorrespondingType(typeof(STICKYKEYS), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(STICKYKEYS), CorrespondingAction.Get)]
 			SPI_GETSTICKYKEYS = 0x003A,
 
 			/// <summary>
 			/// Sets the parameters of the StickyKeys accessibility feature. The pvParam parameter must point to a STICKYKEYS structure that
 			/// contains the new parameters. Set the cbSize member of this structure and the uiParam parameter to sizeof(STICKYKEYS).
 			/// </summary>
-			[SPCorrespondingType(typeof(STICKYKEYS), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(STICKYKEYS), CorrespondingAction.Set)]
 			SPI_SETSTICKYKEYS = 0x003B,
 
 			/// <summary>
@@ -1285,14 +1285,14 @@ namespace Vanara.PInvoke
 			/// to an ACCESSTIMEOUT structure that receives the information. Set the cbSize member of this structure and the uiParam
 			/// parameter to sizeof(ACCESSTIMEOUT).
 			/// </summary>
-			[SPCorrespondingType(typeof(ACCESSTIMEOUT), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(ACCESSTIMEOUT), CorrespondingAction.Get)]
 			SPI_GETACCESSTIMEOUT = 0x003C,
 
 			/// <summary>
 			/// Sets the time-out period associated with the accessibility features. The pvParam parameter must point to an ACCESSTIMEOUT
 			/// structure that contains the new parameters. Set the cbSize member of this structure and the uiParam parameter to sizeof(ACCESSTIMEOUT).
 			/// </summary>
-			[SPCorrespondingType(typeof(ACCESSTIMEOUT), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(ACCESSTIMEOUT), CorrespondingAction.Set)]
 			SPI_SETACCESSTIMEOUT = 0x003D,
 
 			//#if(WINVER >= 0x0400)
@@ -1302,7 +1302,7 @@ namespace Vanara.PInvoke
 			/// sizeof(SERIALKEYS). Windows Server 2003, Windows XP/2000/NT: Not supported. The user controls this feature through the
 			/// control panel.
 			/// </summary>
-			[SPCorrespondingType(typeof(SERIALKEYS), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(SERIALKEYS), CorrespondingAction.Get)]
 			SPI_GETSERIALKEYS = 0x003E,
 
 			/// <summary>
@@ -1311,21 +1311,21 @@ namespace Vanara.PInvoke
 			/// sizeof(SERIALKEYS). Windows Server 2003, Windows XP/2000/NT: Not supported. The user controls this feature through the
 			/// control panel.
 			/// </summary>
-			[SPCorrespondingType(typeof(SERIALKEYS), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(SERIALKEYS), CorrespondingAction.Set)]
 			SPI_SETSERIALKEYS = 0x003F,
 
 			/// <summary>
 			/// Retrieves information about the SoundSentry accessibility feature. The pvParam parameter must point to a SOUNDSENTRY
 			/// structure that receives the information. Set the cbSize member of this structure and the uiParam parameter to sizeof(SOUNDSENTRY).
 			/// </summary>
-			[SPCorrespondingType(typeof(SOUNDSENTRY), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(SOUNDSENTRY), CorrespondingAction.Get)]
 			SPI_GETSOUNDSENTRY = 0x0040,
 
 			/// <summary>
 			/// Sets the parameters of the SoundSentry accessibility feature. The pvParam parameter must point to a SOUNDSENTRY structure
 			/// that contains the new parameters. Set the cbSize member of this structure and the uiParam parameter to sizeof(SOUNDSENTRY).
 			/// </summary>
-			[SPCorrespondingType(typeof(SOUNDSENTRY), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(SOUNDSENTRY), CorrespondingAction.Set)]
 			SPI_SETSOUNDSENTRY = 0x0041,
 
 			/// <summary>
@@ -1333,7 +1333,7 @@ namespace Vanara.PInvoke
 			/// default button, such as OK or Apply, of a dialog box. The pvParam parameter must point to a BOOL variable that receives TRUE
 			/// if the feature is on, or FALSE if it is off. Windows 95: Not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETSNAPTODEFBUTTON = 0x005F,
 
 			/// <summary>
@@ -1342,42 +1342,42 @@ namespace Vanara.PInvoke
 			/// it. Applications should use the ShowWindow function when displaying a dialog box so the dialog manager can position the mouse
 			/// cursor. Windows 95: Not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETSNAPTODEFBUTTON = 0x0060,
 
 			/// <summary>
 			/// Retrieves the width, in pixels, of the rectangle within which the mouse pointer has to stay for TrackMouseEvent to generate a
 			/// WM_MOUSEHOVER message. The pvParam parameter must point to a UINT variable that receives the width. Windows 95: Not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETMOUSEHOVERWIDTH = 0x0062,
 
 			/// <summary>
 			/// Retrieves the width, in pixels, of the rectangle within which the mouse pointer has to stay for TrackMouseEvent to generate a
 			/// WM_MOUSEHOVER message. The pvParam parameter must point to a UINT variable that receives the width. Windows 95: Not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETMOUSEHOVERWIDTH = 0x0063,
 
 			/// <summary>
 			/// Retrieves the height, in pixels, of the rectangle within which the mouse pointer has to stay for TrackMouseEvent to generate
 			/// a WM_MOUSEHOVER message. The pvParam parameter must point to a UINT variable that receives the height. Windows 95: Not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETMOUSEHOVERHEIGHT = 0x0064,
 
 			/// <summary>
 			/// Sets the height, in pixels, of the rectangle within which the mouse pointer has to stay for TrackMouseEvent to generate a
 			/// WM_MOUSEHOVER message. Set the uiParam parameter to the new height. Windows 95: Not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETMOUSEHOVERHEIGHT = 0x0065,
 
 			/// <summary>
 			/// Retrieves the time, in milliseconds, that the mouse pointer has to stay in the hover rectangle for TrackMouseEvent to
 			/// generate a WM_MOUSEHOVER message. The pvParam parameter must point to a UINT variable that receives the time. Windows 95: Not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETMOUSEHOVERTIME = 0x0066,
 
 			/// <summary>
@@ -1385,14 +1385,14 @@ namespace Vanara.PInvoke
 			/// WM_MOUSEHOVER message. This is used only if you pass HOVER_DEFAULT in the dwHoverTime parameter in the call to
 			/// TrackMouseEvent. Set the uiParam parameter to the new time. Windows 95: Not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETMOUSEHOVERTIME = 0x0067,
 
 			/// <summary>
 			/// Retrieves the number of lines to scroll when the mouse wheel is rotated. The pvParam parameter must point to a UINT variable
 			/// that receives the number of lines. The default value is 3. Windows 95: Not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETWHEELSCROLLLINES = 0x0068,
 
 			/// <summary>
@@ -1402,35 +1402,35 @@ namespace Vanara.PInvoke
 			/// viewable, and in particular if it is WHEEL_PAGESCROLL (#defined as UINT_MAX), the scroll operation should be interpreted as
 			/// clicking once in the page down or page up regions of the scroll bar. Windows 95: Not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETWHEELSCROLLLINES = 0x0069,
 
 			/// <summary>
 			/// Retrieves the time, in milliseconds, that the system waits before displaying a shortcut menu when the mouse cursor is over a
 			/// submenu item. The pvParam parameter must point to a DWORD variable that receives the time of the delay. Windows 95: Not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETMENUSHOWDELAY = 0x006A,
 
 			/// <summary>
 			/// Sets uiParam to the time, in milliseconds, that the system waits before displaying a shortcut menu when the mouse cursor is
 			/// over a submenu item. Windows 95: Not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETMENUSHOWDELAY = 0x006B,
 
 			/// <summary>
 			/// Determines whether the IME status window is visible (on a per-user basis). The pvParam parameter must point to a BOOL
 			/// variable that receives TRUE if the status window is visible, or FALSE if it is not. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETSHOWIMEUI = 0x006E,
 
 			/// <summary>
 			/// Sets whether the IME status window is visible or not on a per-user basis. The uiParam parameter specifies TRUE for on or
 			/// FALSE for off. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETSHOWIMEUI = 0x006F,
 
 			/// <summary>
@@ -1439,14 +1439,14 @@ namespace Vanara.PInvoke
 			/// (fastest). A value of 10 is the default. The value can be set by an end user using the mouse control panel application or by
 			/// an application using SPI_SETMOUSESPEED. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETMOUSESPEED = 0x0070,
 
 			/// <summary>
 			/// Sets the current mouse speed. The pvParam parameter is an integer between 1 (slowest) and 20 (fastest). A value of 10 is the
 			/// default. This value is typically set using the mouse control panel application. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETMOUSESPEED = 0x0071,
 
 			/// <summary>
@@ -1454,7 +1454,7 @@ namespace Vanara.PInvoke
 			/// must point to a BOOL variable that receives TRUE if a screen saver is currently running, or FALSE otherwise. Note that only
 			/// the interactive window station, "WinSta0", can have a screen saver running. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETSCREENSAVERRUNNING = 0x0072,
 
 			/// <summary>
@@ -1463,7 +1463,7 @@ namespace Vanara.PInvoke
 			/// returned string will not exceed MAX_PATH characters. If there is no desktop wallpaper, the returned string is empty. Windows
 			/// NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(string), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(string), CorrespondingAction.Get)]
 			SPI_GETDESKWALLPAPER = 0x0073,
 
 			/// <summary>
@@ -1476,7 +1476,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>Windows Server 2003 and Windows XP/2000: This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(AUDIODESCRIPTION), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(AUDIODESCRIPTION), CorrespondingAction.Get)]
 			SPI_GETAUDIODESCRIPTION = 0x0074,
 
 			/// <summary>
@@ -1489,7 +1489,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>Windows Server 2003 and Windows XP/2000: This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(AUDIODESCRIPTION), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(AUDIODESCRIPTION), CorrespondingAction.Set)]
 			SPI_SETAUDIODESCRIPTION = 0x0075,
 
 			/// <summary>
@@ -1497,7 +1497,7 @@ namespace Vanara.PInvoke
 			/// BOOL variable that receives TRUE if the screen saver requires a password, or FALSE otherwise. The uiParam parameter is
 			/// ignored. Windows Server 2003 and Windows XP/2000: This parameter is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETSCREENSAVESECURE = 0x0076,
 
 			/// <summary>
@@ -1506,7 +1506,7 @@ namespace Vanara.PInvoke
 			/// <para>If the machine has entered power saving mode or system lock state, an ERROR_OPERATION_IN_PROGRESS exception occurs.</para>
 			/// <para>Windows Server 2003 and Windows XP/2000: This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETSCREENSAVESECURE = 0x0077,
 
 			/// <summary>
@@ -1514,7 +1514,7 @@ namespace Vanara.PInvoke
 			/// unresponsive. The pvParam parameter must point to an integer variable that receives the value.
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETHUNGAPPTIMEOUT = 0x0078,
 
 			/// <summary>
@@ -1522,7 +1522,7 @@ namespace Vanara.PInvoke
 			/// thread can go without dispatching a message before the system considers it unresponsive.
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETHUNGAPPTIMEOUT = 0x0079,
 
 			/// <summary>
@@ -1530,7 +1530,7 @@ namespace Vanara.PInvoke
 			/// shutdown request. The pvParam parameter must point to an integer variable that receives the value.
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETWAITTOKILLTIMEOUT = 0x007A,
 
 			/// <summary>
@@ -1538,7 +1538,7 @@ namespace Vanara.PInvoke
 			/// milliseconds that the system waits before terminating an application that does not respond to a shutdown request.
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETWAITTOKILLTIMEOUT = 0x007B,
 
 			/// <summary>
@@ -1546,7 +1546,7 @@ namespace Vanara.PInvoke
 			/// respond to a shutdown request. The pvParam parameter must point to an integer variable that receives the value.
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETWAITTOKILLSERVICETIMEOUT = 0x007C,
 
 			/// <summary>
@@ -1554,7 +1554,7 @@ namespace Vanara.PInvoke
 			/// that the system waits before terminating a service that does not respond to a shutdown request.
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, true)]
 			SPI_SETWAITTOKILLSERVICETIMEOUT = 0x007D,
 
 			/// <summary>
@@ -1563,7 +1563,7 @@ namespace Vanara.PInvoke
 			/// <para>Use SPI_GETWINARRANGING to determine whether this behavior is enabled.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETMOUSEDOCKTHRESHOLD = 0x007E,
 
 			/// <summary>
@@ -1572,7 +1572,7 @@ namespace Vanara.PInvoke
 			/// <para>SPI_GETWINARRANGING must be TRUE to enable this behavior.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETMOUSEDOCKTHRESHOLD = 0x007F,
 
 			/// <summary>
@@ -1581,7 +1581,7 @@ namespace Vanara.PInvoke
 			/// <para>Use <c>SPI_GETWINARRANGING</c> to determine whether this behavior is enabled.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETPENDOCKTHRESHOLD = 0x0080,
 
 			/// <summary>
@@ -1590,7 +1590,7 @@ namespace Vanara.PInvoke
 			/// <para><c>SPI_GETWINARRANGING</c> must be TRUE to enable this behavior.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETPENDOCKTHRESHOLD = 0x0081,
 
 			/// <summary>
@@ -1629,7 +1629,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000: This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETWINARRANGING = 0x0082,
 
 			/// <summary>
@@ -1667,7 +1667,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000: This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETWINARRANGING = 0x0083,
 
 			/// <summary>
@@ -1676,7 +1676,7 @@ namespace Vanara.PInvoke
 			/// <para>Use <c>SPI_GETWINARRANGING</c> to determine whether this behavior is enabled.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETMOUSEDRAGOUTTHRESHOLD = 0x0084,
 
 			/// <summary>
@@ -1686,7 +1686,7 @@ namespace Vanara.PInvoke
 			/// <para><c>SPI_GETWINARRANGING</c> must be TRUE to enable this behavior.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETMOUSEDRAGOUTTHRESHOLD = 0x0085,
 
 			/// <summary>
@@ -1695,7 +1695,7 @@ namespace Vanara.PInvoke
 			/// <para>Use <c>SPI_GETWINARRANGING</c> to determine whether this behavior is enabled.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETPENDRAGOUTTHRESHOLD = 0x0086,
 
 			/// <summary>
@@ -1705,7 +1705,7 @@ namespace Vanara.PInvoke
 			/// <para><c>SPI_GETWINARRANGING</c> must be TRUE to enable this behavior.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETPENDRAGOUTTHRESHOLD = 0x0087,
 
 			/// <summary>
@@ -1714,7 +1714,7 @@ namespace Vanara.PInvoke
 			/// <para>Use <c>SPI_GETWINARRANGING</c> to determine whether this behavior is enabled.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETMOUSESIDEMOVETHRESHOLD = 0x0088,
 
 			/// <summary>
@@ -1723,7 +1723,7 @@ namespace Vanara.PInvoke
 			/// <para><c>SPI_GETWINARRANGING</c> must be TRUE to enable this behavior.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETMOUSESIDEMOVETHRESHOLD = 0x0089,
 
 			/// <summary>
@@ -1732,7 +1732,7 @@ namespace Vanara.PInvoke
 			/// <para>Use <c>SPI_GETWINARRANGING</c> to determine whether this behavior is enabled.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETPENSIDEMOVETHRESHOLD = 0x008A,
 
 			/// <summary>
@@ -1741,7 +1741,7 @@ namespace Vanara.PInvoke
 			/// <para><c>SPI_GETWINARRANGING</c> must be TRUE to enable this behavior.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETPENSIDEMOVETHRESHOLD = 0x008B,
 
 			/// <summary>
@@ -1750,7 +1750,7 @@ namespace Vanara.PInvoke
 			/// <para>Use <c>SPI_GETWINARRANGING</c> to determine whether this behavior is enabled.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETDRAGFROMMAXIMIZE = 0x008C,
 
 			/// <summary>
@@ -1758,7 +1758,7 @@ namespace Vanara.PInvoke
 			/// <para><c>SPI_GETWINARRANGING</c> must be TRUE to enable this behavior.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETDRAGFROMMAXIMIZE = 0x008D,
 
 			/// <summary>
@@ -1767,7 +1767,7 @@ namespace Vanara.PInvoke
 			/// <para>Use <c>SPI_GETWINARRANGING</c> to determine whether this behavior is enabled.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETSNAPSIZING = 0x008E,
 
 			/// <summary>
@@ -1776,7 +1776,7 @@ namespace Vanara.PInvoke
 			/// <para><c>SPI_GETWINARRANGING</c> must be TRUE to enable this behavior.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETSNAPSIZING = 0x008F,
 
 			/// <summary>
@@ -1785,7 +1785,7 @@ namespace Vanara.PInvoke
 			/// <para>Use <c>SPI_GETWINARRANGING</c> to determine whether this behavior is enabled.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETDOCKMOVING = 0x0090,
 
 			/// <summary>
@@ -1794,7 +1794,7 @@ namespace Vanara.PInvoke
 			/// <para><c>SPI_GETWINARRANGING</c> must be TRUE to enable this behavior.</para>
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETDOCKMOVING = 0x0091,
 
 			/// <summary>Undocumented</summary>
@@ -1821,11 +1821,11 @@ namespace Vanara.PInvoke
 			/// factor.Desktop applications should use desktop logical DPI rather than scale factor.Desktop logical DPI can be retrieved
 			/// through the GetDeviceCaps function.</note>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETLOGICALDPIOVERRIDE = 0x009E,
 
 			/// <summary>Do not use.</summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETLOGICALDPIOVERRIDE = 0x009F,
 
 			/// <summary>Undocumented</summary>
@@ -1838,14 +1838,14 @@ namespace Vanara.PInvoke
 			/// Determines whether active window tracking (activating the window the mouse is on) is on or off. The pvParam parameter must
 			/// point to a BOOL variable that receives TRUE for on, or FALSE for off. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETACTIVEWINDOWTRACKING = 0x1000,
 
 			/// <summary>
 			/// Sets active window tracking (activating the window the mouse is on) either on or off. Set pvParam to TRUE for on or FALSE for
 			/// off. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETACTIVEWINDOWTRACKING = 0x1001,
 
 			/// <summary>
@@ -1854,7 +1854,7 @@ namespace Vanara.PInvoke
 			/// animation is enabled, SPI_GETMENUFADE indicates whether menus use fade or slide animation. Windows NT, Windows 95: This value
 			/// is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETMENUANIMATION = 0x1002,
 
 			/// <summary>
@@ -1862,35 +1862,35 @@ namespace Vanara.PInvoke
 			/// BOOL variable; set pvParam to TRUE to enable animation and FALSE to disable animation. If animation is enabled,
 			/// SPI_GETMENUFADE indicates whether menus use fade or slide animation. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETMENUANIMATION = 0x1003,
 
 			/// <summary>
 			/// Determines whether the slide-open effect for combo boxes is enabled. The pvParam parameter must point to a BOOL variable that
 			/// receives TRUE for enabled, or FALSE for disabled. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETCOMBOBOXANIMATION = 0x1004,
 
 			/// <summary>
 			/// Enables or disables the slide-open effect for combo boxes. Set the pvParam parameter to TRUE to enable the gradient effect,
 			/// or FALSE to disable it. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETCOMBOBOXANIMATION = 0x1005,
 
 			/// <summary>
 			/// Determines whether the smooth-scrolling effect for list boxes is enabled. The pvParam parameter must point to a BOOL variable
 			/// that receives TRUE for enabled, or FALSE for disabled. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETLISTBOXSMOOTHSCROLLING = 0x1006,
 
 			/// <summary>
 			/// Enables or disables the smooth-scrolling effect for list boxes. Set the pvParam parameter to TRUE to enable the
 			/// smooth-scrolling effect, or FALSE to disable it. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETLISTBOXSMOOTHSCROLLING = 0x1007,
 
 			/// <summary>
@@ -1898,7 +1898,7 @@ namespace Vanara.PInvoke
 			/// that receives TRUE for enabled, or FALSE for disabled. For more information about the gradient effect, see the GetSysColor
 			/// function. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETGRADIENTCAPTIONS = 0x1008,
 
 			/// <summary>
@@ -1906,7 +1906,7 @@ namespace Vanara.PInvoke
 			/// disable it. The gradient effect is possible only if the system has a color depth of more than 256 colors. For more
 			/// information about the gradient effect, see the GetSysColor function. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETGRADIENTCAPTIONS = 0x1009,
 
 			/// <summary>
@@ -1914,7 +1914,7 @@ namespace Vanara.PInvoke
 			/// TRUE if menu access keys are always underlined, and FALSE if they are underlined only when the menu is activated by the
 			/// keyboard. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETKEYBOARDCUES = 0x100A,
 
 			/// <summary>
@@ -1922,29 +1922,29 @@ namespace Vanara.PInvoke
 			/// underline menu access keys, or FALSE to underline menu access keys only when the menu is activated from the keyboard. Windows
 			/// NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETKEYBOARDCUES = 0x100B,
 
 			/// <summary>Same as SPI_GETKEYBOARDCUES.</summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETMENUUNDERLINES = SPI_GETKEYBOARDCUES,
 
 			/// <summary>Same as SPI_SETKEYBOARDCUES.</summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETMENUUNDERLINES = SPI_SETKEYBOARDCUES,
 
 			/// <summary>
 			/// Determines whether windows activated through active window tracking will be brought to the top. The pvParam parameter must
 			/// point to a BOOL variable that receives TRUE for on, or FALSE for off. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETACTIVEWNDTRKZORDER = 0x100C,
 
 			/// <summary>
 			/// Determines whether or not windows activated through active window tracking should be brought to the top. Set pvParam to TRUE
 			/// for on or FALSE for off. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETACTIVEWNDTRKZORDER = 0x100D,
 
 			/// <summary>
@@ -1953,7 +1953,7 @@ namespace Vanara.PInvoke
 			/// the cursor moves over an item, it is highlighted but not selected. You can query this value to decide whether to use hot
 			/// tracking in the user interface of your application. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETHOTTRACKING = 0x100E,
 
 			/// <summary>
@@ -1961,7 +1961,7 @@ namespace Vanara.PInvoke
 			/// TRUE to enable it, or FALSE to disable it. Hot-tracking means that when the cursor moves over an item, it is highlighted but
 			/// not selected. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETHOTTRACKING = 0x100F,
 
 			/// <summary>
@@ -1970,7 +1970,7 @@ namespace Vanara.PInvoke
 			/// flag is ignored unless menu animation is enabled, which you can do using the SPI_SETMENUANIMATION flag. For more information,
 			/// see AnimateWindow. Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETMENUFADE = 0x1012,
 
 			/// <summary>
@@ -1979,7 +1979,7 @@ namespace Vanara.PInvoke
 			/// more than 256 colors. This flag is ignored unless SPI_MENUANIMATION is also set. For more information, see AnimateWindow.
 			/// Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETMENUFADE = 0x1013,
 
 			/// <summary>
@@ -1987,7 +1987,7 @@ namespace Vanara.PInvoke
 			/// TRUE if enabled or FALSE if disabled. The selection fade effect causes the menu item selected by the user to remain on the
 			/// screen briefly while fading out after the menu is dismissed. Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETSELECTIONFADE = 0x1014,
 
 			/// <summary>
@@ -1996,7 +1996,7 @@ namespace Vanara.PInvoke
 			/// effect is possible only if the system has a color depth of more than 256 colors. Windows NT, Windows Me/98/95: This value is
 			/// not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETSELECTIONFADE = 0x1015,
 
 			/// <summary>
@@ -2004,14 +2004,14 @@ namespace Vanara.PInvoke
 			/// enabled or FALSE if disabled. If ToolTip animation is enabled, SPI_GETTOOLTIPFADE indicates whether ToolTips use fade or
 			/// slide animation. Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETTOOLTIPANIMATION = 0x1016,
 
 			/// <summary>
 			/// Set pvParam to TRUE to enable ToolTip animation or FALSE to disable it. If enabled, you can use SPI_SETTOOLTIPFADE to specify
 			/// fade or slide animation. Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETTOOLTIPANIMATION = 0x1017,
 
 			/// <summary>
@@ -2019,7 +2019,7 @@ namespace Vanara.PInvoke
 			/// effect. The pvParam parameter must point to a BOOL variable that receives TRUE for fade animation or FALSE for slide
 			/// animation. For more information on slide and fade effects, see AnimateWindow. Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETTOOLTIPFADE = 0x1018,
 
 			/// <summary>
@@ -2028,7 +2028,7 @@ namespace Vanara.PInvoke
 			/// possible only if the system has a color depth of more than 256 colors. For more information on the slide and fade effects,
 			/// see the AnimateWindow function. Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETTOOLTIPFADE = 0x1019,
 
 			/// <summary>
@@ -2036,7 +2036,7 @@ namespace Vanara.PInvoke
 			/// if the shadow is enabled, FALSE if it is disabled. This effect appears only if the system has a color depth of more than 256
 			/// colors. Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETCURSORSHADOW = 0x101A,
 
 			/// <summary>
@@ -2044,7 +2044,7 @@ namespace Vanara.PInvoke
 			/// shadow or FALSE to disable the shadow. This effect appears only if the system has a color depth of more than 256 colors.
 			/// Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETCURSORSHADOW = 0x101B,
 
 			/// <summary>
@@ -2052,7 +2052,7 @@ namespace Vanara.PInvoke
 			/// enabled or FALSE otherwise. For more information, see About Mouse Input on MSDN. Windows 2000/NT, Windows 98/95: This value
 			/// is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETMOUSESONAR = 0x101C,
 
 			/// <summary>
@@ -2060,14 +2060,14 @@ namespace Vanara.PInvoke
 			/// pointer when the user presses and releases the CTRL key. The pvParam parameter specifies TRUE for on and FALSE for off. The
 			/// default is off. For more information, see About Mouse Input. Windows 2000/NT, Windows 98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETMOUSESONAR = 0x101D,
 
 			/// <summary>
 			/// Retrieves the state of the Mouse ClickLock feature. The pvParam parameter must point to a BOOL variable that receives TRUE if
 			/// enabled, or FALSE otherwise. For more information, see About Mouse Input. Windows 2000/NT, Windows 98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETMOUSECLICKLOCK = 0x101E,
 
 			/// <summary>
@@ -2076,7 +2076,7 @@ namespace Vanara.PInvoke
 			/// TRUE for on, or FALSE for off. The default is off. For more information, see Remarks and About Mouse Input on MSDN. Windows
 			/// 2000/NT, Windows 98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETMOUSECLICKLOCK = 0x101F,
 
 			/// <summary>
@@ -2084,7 +2084,7 @@ namespace Vanara.PInvoke
 			/// enabled or FALSE otherwise. For more information, see About Mouse Input on MSDN. Windows 2000/NT, Windows 98/95: This value
 			/// is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETMOUSEVANISH = 0x1020,
 
 			/// <summary>
@@ -2092,14 +2092,14 @@ namespace Vanara.PInvoke
 			/// user moves the mouse. The pvParam parameter specifies TRUE for on and FALSE for off. The default is off. For more
 			/// information, see About Mouse Input on MSDN. Windows 2000/NT, Windows 98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETMOUSEVANISH = 0x1021,
 
 			/// <summary>
 			/// Determines whether native User menus have flat menu appearance. The pvParam parameter must point to a BOOL variable that
 			/// returns TRUE if the flat menu appearance is set, or FALSE otherwise. Windows 2000/NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETFLATMENU = 0x1022,
 
 			/// <summary>
@@ -2109,21 +2109,21 @@ namespace Vanara.PInvoke
 			/// menu selection. If disabled, menus are drawn using the same metrics and colors as in Windows 2000 and earlier. Windows
 			/// 2000/NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETFLATMENU = 0x1023,
 
 			/// <summary>
 			/// Determines whether the drop shadow effect is enabled. The pvParam parameter must point to a BOOL variable that returns TRUE
 			/// if enabled or FALSE if disabled. Windows 2000/NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETDROPSHADOW = 0x1024,
 
 			/// <summary>
 			/// Enables or disables the drop shadow effect. Set pvParam to TRUE to enable the drop shadow effect or FALSE to disable it. You
 			/// must also have CS_DROPSHADOW in the window class style. Windows 2000/NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETDROPSHADOW = 0x1025,
 
 			/// <summary>
@@ -2131,7 +2131,7 @@ namespace Vanara.PInvoke
 			/// simulate keyboard or mouse input. The pvParam parameter must point to a BOOL variable that receives TRUE if the simulated
 			/// input will be blocked, or FALSE otherwise.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETBLOCKSENDINPUTRESETS = 0x1026,
 
 			/// <summary>
@@ -2139,21 +2139,21 @@ namespace Vanara.PInvoke
 			/// mouse input. The uiParam parameter specifies TRUE if the screensaver will not be deactivated by simulated input, or FALSE if
 			/// the screensaver will be deactivated by simulated input.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETBLOCKSENDINPUTRESETS = 0x1027,
 
 			/// <summary>
 			/// Determines whether UI effects are enabled or disabled. The pvParam parameter must point to a BOOL variable that receives TRUE
 			/// if all UI effects are enabled, or FALSE if they are disabled. Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETUIEFFECTS = 0x103E,
 
 			/// <summary>
 			/// Enables or disables UI effects. Set the pvParam parameter to TRUE to enable all UI effects or FALSE to disable all UI
 			/// effects. Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETUIEFFECTS = 0x103F,
 
 			/// <summary>
@@ -2166,7 +2166,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><c>Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETDISABLEOVERLAPPEDCONTENT = 0x1040,
 
 			/// <summary>
@@ -2179,7 +2179,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><c>Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETDISABLEOVERLAPPEDCONTENT = 0x1041,
 
 			/// <summary>
@@ -2191,7 +2191,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><c>Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETCLIENTAREAANIMATION = 0x1042,
 
 			/// <summary>
@@ -2203,7 +2203,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><c>Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETCLIENTAREAANIMATION = 0x1043,
 
 			/// <summary>
@@ -2212,7 +2212,7 @@ namespace Vanara.PInvoke
 			/// <para>ClearType is a software technology that improves the readability of text on liquid crystal display (LCD) monitors.</para>
 			/// <para><c>Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETCLEARTYPE = 0x1048,
 
 			/// <summary>
@@ -2221,7 +2221,7 @@ namespace Vanara.PInvoke
 			/// <para>ClearType is a software technology that improves the readability of text on liquid crystal display (LCD) monitors.</para>
 			/// <para><c>Windows Server 2003 and Windows XP/2000:</c> This parameter is not supported.</para>
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETCLEARTYPE = 0x1049,
 
 			/// <summary>Undocumented</summary>
@@ -2240,21 +2240,21 @@ namespace Vanara.PInvoke
 			/// <c>Starting with Windows 8:</c> Determines whether the active input settings have Local (per-thread, TRUE) or Global
 			/// (session, FALSE) scope. The pvParam parameter must point to a BOOL variable.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETTHREADLOCALINPUTSETTINGS = 0x104E,
 
 			/// <summary>
 			/// <c>Starting with Windows 8:</c> Determines whether the active input settings have Local (per-thread, TRUE) or Global
 			/// (session, FALSE) scope. The pvParam parameter must point to a BOOL variable, casted by PVOID.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_SETTHREADLOCALINPUTSETTINGS = 0x104F,
 
 			/// <summary>
 			/// <c>Starting with Windows 8:</c> Determines whether the system language bar is enabled or disabled. The pvParam parameter must
 			/// point to a BOOL variable that receives TRUE if the language bar is enabled, or FALSE otherwise.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETSYSTEMLANGUAGEBAR = 0x1050,
 
 			/// <summary>
@@ -2263,7 +2263,7 @@ namespace Vanara.PInvoke
 			/// where the legacy language bar is replaced by Input Switcher and therefore turned off by default. Turning the legacy language
 			/// bar on is provided for compatibility reasons and has no effect on the Input Switcher.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			SPI_SETSYSTEMLANGUAGEBAR = 0x1051,
 
 			/// <summary>
@@ -2271,7 +2271,7 @@ namespace Vanara.PInvoke
 			/// force themselves into the foreground. The pvParam parameter must point to a DWORD variable that receives the time. Windows
 			/// NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETFOREGROUNDLOCKTIMEOUT = 0x2000,
 
 			/// <summary>
@@ -2279,49 +2279,49 @@ namespace Vanara.PInvoke
 			/// themselves into the foreground. Set pvParam to the new timeout value. The calling thread must be able to change the
 			/// foreground window, otherwise the call fails. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETFOREGROUNDLOCKTIMEOUT = 0x2001,
 
 			/// <summary>
 			/// Retrieves the active window tracking delay, in milliseconds. The pvParam parameter must point to a DWORD variable that
 			/// receives the time. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETACTIVEWNDTRKTIMEOUT = 0x2002,
 
 			/// <summary>
 			/// Sets the active window tracking delay. Set pvParam to the number of milliseconds to delay before activating the window under
 			/// the mouse pointer. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETACTIVEWNDTRKTIMEOUT = 0x2003,
 
 			/// <summary>
 			/// Retrieves the number of times SetForegroundWindow will flash the taskbar button when rejecting a foreground switch request.
 			/// The pvParam parameter must point to a DWORD variable that receives the value. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETFOREGROUNDFLASHCOUNT = 0x2004,
 
 			/// <summary>
 			/// Sets the number of times SetForegroundWindow will flash the taskbar button when rejecting a foreground switch request. Set
 			/// pvParam to the number of times to flash. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETFOREGROUNDFLASHCOUNT = 0x2005,
 
 			/// <summary>
 			/// Retrieves the caret width in edit controls, in pixels. The pvParam parameter must point to a DWORD that receives this value.
 			/// Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETCARETWIDTH = 0x2006,
 
 			/// <summary>
 			/// Sets the caret width in edit controls. Set pvParam to the desired width, in pixels. The default and minimum value is 1.
 			/// Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETCARETWIDTH = 0x2007,
 
 			/// <summary>
@@ -2329,7 +2329,7 @@ namespace Vanara.PInvoke
 			/// the time delay. This is only enabled if SPI_SETMOUSECLICKLOCK is set to TRUE. For more information, see About Mouse Input on
 			/// MSDN. Windows 2000/NT, Windows 98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETMOUSECLICKLOCKTIME = 0x2008,
 
 			/// <summary>
@@ -2338,14 +2338,14 @@ namespace Vanara.PInvoke
 			/// TRUE for on, or FALSE for off. The default is off. For more information, see Remarks and About Mouse Input on MSDN. Windows
 			/// 2000/NT, Windows 98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrepsondingAction.Set, true)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, true)]
 			SPI_SETMOUSECLICKLOCKTIME = 0x2009,
 
 			/// <summary>
 			/// Retrieves the type of font smoothing. The pvParam parameter must point to a UINT that receives the information. Windows
 			/// 2000/NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETFONTSMOOTHINGTYPE = 0x200A,
 
 			/// <summary>
@@ -2354,14 +2354,14 @@ namespace Vanara.PInvoke
 			/// When using this option, the fWinIni parameter must be set to SPIF_SENDWININICHANGE | SPIF_UPDATEINIFILE; otherwise,
 			/// SystemParametersInfo fails.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETFONTSMOOTHINGTYPE = 0x200B,
 
 			/// <summary>
 			/// Retrieves a contrast value that is used in ClearType™ smoothing. The pvParam parameter must point to a UINT that receives the
 			/// information. Windows 2000/NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETFONTSMOOTHINGCONTRAST = 0x200C,
 
 			/// <summary>
@@ -2370,35 +2370,35 @@ namespace Vanara.PInvoke
 			/// set to SPIF_SENDWININICHANGE | SPIF_UPDATEINIFILE; otherwise, SystemParametersInfo fails. SPI_SETFONTSMOOTHINGTYPE must also
 			/// be set to FE_FONTSMOOTHINGCLEARTYPE. Windows 2000/NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETFONTSMOOTHINGCONTRAST = 0x200D,
 
 			/// <summary>
 			/// Retrieves the width, in pixels, of the left and right edges of the focus rectangle drawn with DrawFocusRect. The pvParam
 			/// parameter must point to a UINT. Windows 2000/NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETFOCUSBORDERWIDTH = 0x200E,
 
 			/// <summary>
 			/// Sets the height of the left and right edges of the focus rectangle drawn with DrawFocusRect to the value of the pvParam
 			/// parameter. Windows 2000/NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETFOCUSBORDERWIDTH = 0x200F,
 
 			/// <summary>
 			/// Retrieves the height, in pixels, of the top and bottom edges of the focus rectangle drawn with DrawFocusRect. The pvParam
 			/// parameter must point to a UINT. Windows 2000/NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETFOCUSBORDERHEIGHT = 0x2010,
 
 			/// <summary>
 			/// Sets the height of the top and bottom edges of the focus rectangle drawn with DrawFocusRect to the value of the pvParam
 			/// parameter. Windows 2000/NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETFOCUSBORDERHEIGHT = 0x2011,
 
 			/// <summary>
@@ -2406,14 +2406,14 @@ namespace Vanara.PInvoke
 			/// possible values are FE_FONTSMOOTHINGORIENTATIONBGR (blue-green-red) and FE_FONTSMOOTHINGORIENTATIONRGB (red-green-blue).
 			/// Windows XP/2000: This parameter is not supported until Windows XP with SP2.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETFONTSMOOTHINGORIENTATION = 0x2012,
 
 			/// <summary>
 			/// Sets the font smoothing orientation. The pvParam parameter is either FE_FONTSMOOTHINGORIENTATIONBGR (blue-green-red) or
 			/// FE_FONTSMOOTHINGORIENTATIONRGB (red-green-blue). Windows XP/2000: This parameter is not supported until Windows XP with SP2.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETFONTSMOOTHINGORIENTATION = 0x2013,
 
 			/// <summary>Undocumented</summary>
@@ -2428,7 +2428,7 @@ namespace Vanara.PInvoke
 			/// need a longer time to read the text in notification messages. This flag enables you to retrieve the message duration. Windows
 			/// Server 2003 and Windows XP/2000: This parameter is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETMESSAGEDURATION = 0x2016,
 
 			/// <summary>
@@ -2437,35 +2437,35 @@ namespace Vanara.PInvoke
 			/// the text in notification messages. This flag enables you to set the message duration. Windows Server 2003 and Windows
 			/// XP/2000: This parameter is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			SPI_SETMESSAGEDURATION = 0x2017,
 
 			/// <summary>
 			/// Retrieves the current contact visualization setting. The pvParam parameter must point to a ULONG variable that receives the
 			/// setting. For more information, see Contact Visualization.
 			/// </summary>
-			[SPCorrespondingType(typeof(ContactVisualization), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(ContactVisualization), CorrespondingAction.Get)]
 			SPI_GETCONTACTVISUALIZATION = 0x2018,
 
 			/// <summary>
 			/// Sets the current contact visualization setting. The pvParam parameter must point to a ULONG variable that identifies the
 			/// setting. For more information, see Contact Visualization.
 			/// </summary>
-			[SPCorrespondingType(typeof(ContactVisualization), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(ContactVisualization), CorrespondingAction.Set)]
 			SPI_SETCONTACTVISUALIZATION = 0x2019,
 
 			/// <summary>
 			/// Retrieves the current gesture visualization setting. The pvParam parameter must point to a ULONG variable that receives the
 			/// setting. For more information, see Gesture Visualization.
 			/// </summary>
-			[SPCorrespondingType(typeof(GestureVisualization), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(GestureVisualization), CorrespondingAction.Get)]
 			SPI_GETGESTUREVISUALIZATION = 0x201A,
 
 			/// <summary>
 			/// Sets the current gesture visualization setting. The pvParam parameter must point to a ULONG variable that identifies the
 			/// setting. For more information, see Gesture Visualization.
 			/// </summary>
-			[SPCorrespondingType(typeof(GestureVisualization), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(GestureVisualization), CorrespondingAction.Set)]
 			SPI_SETGESTUREVISUALIZATION = 0x201B,
 
 			/// <summary>
@@ -2475,7 +2475,7 @@ namespace Vanara.PInvoke
 			/// focus. If the value is 1 or MOUSEWHEEL_ROUTING_HYBRID (default), mouse wheel input is delivered to the app with focus(desktop
 			/// apps) or the app under the mouse cursor(Windows Store apps). The uiParam parameter is not used.
 			/// </summary>
-			[SPCorrespondingType(typeof(MouseWheelRouting), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(MouseWheelRouting), CorrespondingAction.Get)]
 			SPI_GETMOUSEWHEELROUTING = 0x201C,
 
 			/// <summary>
@@ -2485,29 +2485,29 @@ namespace Vanara.PInvoke
 			/// If the value is 1 or MOUSEWHEEL_ROUTING_HYBRID (default), mouse wheel input is delivered to the app with focus(desktop apps)
 			/// or the app under the mouse cursor(Windows Store apps). Set the uiParam parameter to zero.
 			/// </summary>
-			[SPCorrespondingType(typeof(MouseWheelRouting), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(MouseWheelRouting), CorrespondingAction.Set)]
 			SPI_SETMOUSEWHEELROUTING = 0x201D,
 
 			/// <summary>
 			/// Retrieves the current pen gesture visualization setting. The pvParam parameter must point to a ULONG variable that receives
 			/// the setting. For more information, see Pen Visualization.
 			/// </summary>
-			[SPCorrespondingType(typeof(PenVisualization), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(PenVisualization), CorrespondingAction.Get)]
 			SPI_GETPENVISUALIZATION = 0x201E,
 
 			/// <summary>
 			/// Sets the current pen gesture visualization setting. The pvParam parameter must point to a ULONG variable that identifies the
 			/// setting. For more information, see Pen Visualization.
 			/// </summary>
-			[SPCorrespondingType(typeof(PenVisualization), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(PenVisualization), CorrespondingAction.Set)]
 			SPI_SETPENVISUALIZATION = 0x201F,
 
 			/// <summary>Undocumented</summary>
-			[SPCorrespondingType(typeof(PenArbitrationType), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(PenArbitrationType), CorrespondingAction.Get)]
 			SPI_GETPENARBITRATIONTYPE = 0x2020,
 
 			/// <summary>Undocumented</summary>
-			[SPCorrespondingType(typeof(PenArbitrationType), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(PenArbitrationType), CorrespondingAction.Set)]
 			SPI_SETPENARBITRATIONTYPE = 0x2021,
 
 			/// <summary>Undocumented</summary>
@@ -2517,11 +2517,11 @@ namespace Vanara.PInvoke
 			SPI_SETCARETTIMEOUT = 0x2023,
 
 			/// <summary>Undocumented</summary>
-			[SPCorrespondingType(typeof(HANDEDNESS), CorrepsondingAction.Get)]
+			[SPCorrespondingType(typeof(HANDEDNESS), CorrespondingAction.Get)]
 			SPI_GETHANDEDNESS = 0x2024,
 
 			/// <summary>Undocumented</summary>
-			[SPCorrespondingType(typeof(HANDEDNESS), CorrepsondingAction.Set)]
+			[SPCorrespondingType(typeof(HANDEDNESS), CorrespondingAction.Set)]
 			SPI_SETHANDEDNESS = 0x2025,
 		}
 
@@ -5072,7 +5072,7 @@ namespace Vanara.PInvoke
 
 		internal class SPCorrespondingTypeAttribute : CorrespondingTypeAttribute
 		{
-			public SPCorrespondingTypeAttribute(Type typeRef, CorrepsondingAction action, bool useUiParam = false) : base(typeRef, action) => UseUiParam = useUiParam;
+			public SPCorrespondingTypeAttribute(Type typeRef, CorrespondingAction action, bool useUiParam = false) : base(typeRef, action) => UseUiParam = useUiParam;
 
 			public bool UseUiParam { get; }
 

@@ -10,7 +10,7 @@ namespace Vanara.InteropServices
 {
 	/// <summary>Actions that can be taken with a corresponding type.</summary>
 	[Flags]
-	public enum CorrepsondingAction
+	public enum CorrespondingAction
 	{
 		/// <summary>No actions may be taken.</summary>
 		None = 0,
@@ -39,7 +39,7 @@ namespace Vanara.InteropServices
 		/// <summary>Initializes a new instance of the <see cref="CorrespondingTypeAttribute"/> class.</summary>
 		/// <param name="typeRef">The type that corresponds to this enumeration value.</param>
 		/// <param name="action">The actions allowed for the type.</param>
-		public CorrespondingTypeAttribute(Type typeRef, CorrepsondingAction action = CorrepsondingAction.GetSet)
+		public CorrespondingTypeAttribute(Type typeRef, CorrespondingAction action = CorrespondingAction.GetSet)
 		{
 			TypeRef = typeRef;
 			Action = action;
@@ -47,11 +47,11 @@ namespace Vanara.InteropServices
 
 		/// <summary>Initializes a new instance of the <see cref="CorrespondingTypeAttribute"/> class.</summary>
 		/// <param name="action">The actions allowed for the type.</param>
-		public CorrespondingTypeAttribute(CorrepsondingAction action) => Action = action;
+		public CorrespondingTypeAttribute(CorrespondingAction action) => Action = action;
 
 		/// <summary>Gets the action allowed for the type.</summary>
 		/// <value>The action allowed for the type.</value>
-		public CorrepsondingAction Action { get; }
+		public CorrespondingAction Action { get; }
 
 		/// <summary>Gets the type that corresponds to this enumeration value.</summary>
 		/// <value>The type that corresponds to this enumeration value.</value>
@@ -61,19 +61,19 @@ namespace Vanara.InteropServices
 		/// <param name="value">The enumeration value or class instance.</param>
 		/// <param name="typeRef">The type supplied by the user to validate.</param>
 		/// <returns><c>true</c> if this instance can get the specified type; otherwise, <c>false</c>.</returns>
-		public static bool CanGet(object value, Type typeRef) => GetAttrForObj(value).Any(a => a.Action.IsFlagSet(CorrepsondingAction.Get) && a.TypeRef == typeRef);
+		public static bool CanGet(object value, Type typeRef) => GetAttrForObj(value).Any(a => a.Action.IsFlagSet(CorrespondingAction.Get) && a.TypeRef == typeRef);
 
 		/// <summary>Determines whether this instance can get the type for the specified enum type.</summary>
 		/// <param name="value">The enumeration type.</param>
 		/// <param name="typeRef">The type supplied by the user to validate.</param>
 		/// <returns><c>true</c> if this instance can get the specified type; otherwise, <c>false</c>.</returns>
-		public static bool CanGet<TEnum>(TEnum value, Type typeRef) where TEnum : System.Enum => GetAttrForEnum(value).Any(a => a.Action.IsFlagSet(CorrepsondingAction.Get) && a.TypeRef == typeRef);
+		public static bool CanGet<TEnum>(TEnum value, Type typeRef) where TEnum : System.Enum => GetAttrForEnum(value).Any(a => a.Action.IsFlagSet(CorrespondingAction.Get) && a.TypeRef == typeRef);
 
 		/// <summary>Determines whether this type can get the specified reference type.</summary>
 		/// <param name="type">The class type.</param>
 		/// <param name="typeRef">The type supplied by the user to validate.</param>
 		/// <returns><c>true</c> if this type can get the specified reference type; otherwise, <c>false</c>.</returns>
-		public static bool CanGet(Type type, Type typeRef) => GetAttrForType(type).Any(a => a.Action.IsFlagSet(CorrepsondingAction.Get) && a.TypeRef == typeRef);
+		public static bool CanGet(Type type, Type typeRef) => GetAttrForType(type).Any(a => a.Action.IsFlagSet(CorrespondingAction.Get) && a.TypeRef == typeRef);
 
 		/// <summary>Determines whether an enum value exists that supports a corresponding type of <typeparamref name="T"/>.</summary>
 		/// <typeparam name="T">The corresponding type to look for.</typeparam>
@@ -100,19 +100,19 @@ namespace Vanara.InteropServices
 		/// <param name="value">The enumeration value or class instance.</param>
 		/// <param name="typeRef">The type supplied by the user to validate.</param>
 		/// <returns><c>true</c> if this instance can set the specified type; otherwise, <c>false</c>.</returns>
-		public static bool CanSet(object value, Type typeRef) => GetAttrForObj(value).Any(a => a.Action.IsFlagSet(CorrepsondingAction.Set) && a.TypeRef == typeRef);
+		public static bool CanSet(object value, Type typeRef) => GetAttrForObj(value).Any(a => a.Action.IsFlagSet(CorrespondingAction.Set) && a.TypeRef == typeRef);
 
 		/// <summary>Determines whether this instance can set the type for the specified enum value or class.</summary>
 		/// <param name="value">The enumeration value or class instance.</param>
 		/// <param name="typeRef">The type supplied by the user to validate.</param>
 		/// <returns><c>true</c> if this instance can set the specified type; otherwise, <c>false</c>.</returns>
-		public static bool CanSet<TEnum>(TEnum value, Type typeRef) where TEnum : System.Enum => GetAttrForEnum(value).Any(a => a.Action.IsFlagSet(CorrepsondingAction.Set) && a.TypeRef == typeRef);
+		public static bool CanSet<TEnum>(TEnum value, Type typeRef) where TEnum : System.Enum => GetAttrForEnum(value).Any(a => a.Action.IsFlagSet(CorrespondingAction.Set) && a.TypeRef == typeRef);
 
 		/// <summary>Determines whether this type can set the specified reference type.</summary>
 		/// <param name="type">The class type.</param>
 		/// <param name="typeRef">The type supplied by the user to validate.</param>
 		/// <returns><c>true</c> if this type can set the specified reference type; otherwise, <c>false</c>.</returns>
-		public static bool CanSet(Type type, Type typeRef) => GetAttrForType(type).Any(a => a.Action.IsFlagSet(CorrepsondingAction.Set) && a.TypeRef == typeRef);
+		public static bool CanSet(Type type, Type typeRef) => GetAttrForType(type).Any(a => a.Action.IsFlagSet(CorrespondingAction.Set) && a.TypeRef == typeRef);
 
 		/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
 		/// <param name="enumValue">The enumeration value or class.</param>
@@ -132,7 +132,7 @@ namespace Vanara.InteropServices
 			var valueType = value.GetType();
 			var attr = valueType.GetField(value.ToString()).GetCustomAttributes<CorrespondingTypeAttribute>();
 			if (!attr.Any()) return new CorrespondingTypeAttribute[0];
-			if (attr.Any(a => a.Action == CorrepsondingAction.Exception)) throw new Exception();
+			if (attr.Any(a => a.Action == CorrespondingAction.Exception)) throw new Exception();
 			return attr;
 		}
 
@@ -146,7 +146,7 @@ namespace Vanara.InteropServices
 			if (!valueType.IsEnum && !valueType.IsClass) throw new ArgumentException("Value must be an enumeration or class value.", nameof(value));
 			var attr = (valueType.IsEnum ? valueType.GetField(value.ToString()).GetCustomAttributes<CorrespondingTypeAttribute>() : valueType.GetCustomAttributes<CorrespondingTypeAttribute>());
 			if (!attr.Any()) return new CorrespondingTypeAttribute[0];
-			if (attr.Any(a => a.Action == CorrepsondingAction.Exception)) throw new Exception();
+			if (attr.Any(a => a.Action == CorrespondingAction.Exception)) throw new Exception();
 			return attr;
 		}
 
@@ -158,7 +158,7 @@ namespace Vanara.InteropServices
 			if (type == null) throw new ArgumentNullException(nameof(type));
 			var attr = type.GetCustomAttributes<CorrespondingTypeAttribute>();
 			if (!attr.Any()) return new CorrespondingTypeAttribute[0];
-			if (attr.Any(a => a.Action == CorrepsondingAction.Exception)) throw new Exception();
+			if (attr.Any(a => a.Action == CorrespondingAction.Exception)) throw new Exception();
 			return attr;
 		}
 	}

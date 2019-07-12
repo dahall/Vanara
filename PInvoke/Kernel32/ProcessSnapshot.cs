@@ -242,37 +242,37 @@ namespace Vanara.PInvoke
 		public enum PSS_QUERY_INFORMATION_CLASS
 		{
 			/// <summary>Returns a PSS_PROCESS_INFORMATION structure, with information about the original process.</summary>
-			[CorrespondingType(typeof(PSS_PROCESS_INFORMATION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PSS_PROCESS_INFORMATION), CorrespondingAction.Get)]
 			PSS_QUERY_PROCESS_INFORMATION,
 
 			/// <summary>Returns a PSS_VA_CLONE_INFORMATION structure, with a handle to the VA clone.</summary>
-			[CorrespondingType(typeof(PSS_VA_CLONE_INFORMATION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PSS_VA_CLONE_INFORMATION), CorrespondingAction.Get)]
 			PSS_QUERY_VA_CLONE_INFORMATION,
 
 			/// <summary>Returns a PSS_AUXILIARY_PAGES_INFORMATION structure, which contains the count of auxiliary pages captured.</summary>
-			[CorrespondingType(typeof(PSS_AUXILIARY_PAGES_INFORMATION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PSS_AUXILIARY_PAGES_INFORMATION), CorrespondingAction.Get)]
 			PSS_QUERY_AUXILIARY_PAGES_INFORMATION,
 
 			/// <summary>Returns a PSS_VA_SPACE_INFORMATION structure, which contains the count of regions captured.</summary>
-			[CorrespondingType(typeof(PSS_VA_SPACE_INFORMATION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PSS_VA_SPACE_INFORMATION), CorrespondingAction.Get)]
 			PSS_QUERY_VA_SPACE_INFORMATION,
 
 			/// <summary>Returns a PSS_HANDLE_INFORMATION structure, which contains the count of handles captured.</summary>
-			[CorrespondingType(typeof(PSS_HANDLE_INFORMATION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PSS_HANDLE_INFORMATION), CorrespondingAction.Get)]
 			PSS_QUERY_HANDLE_INFORMATION,
 
 			/// <summary>Returns a PSS_THREAD_INFORMATION structure, which contains the count of threads captured.</summary>
-			[CorrespondingType(typeof(PSS_THREAD_INFORMATION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PSS_THREAD_INFORMATION), CorrespondingAction.Get)]
 			PSS_QUERY_THREAD_INFORMATION,
 
 			/// <summary>
 			/// Returns a PSS_HANDLE_TRACE_INFORMATION structure, which contains a handle to the handle trace section, and its size.
 			/// </summary>
-			[CorrespondingType(typeof(PSS_HANDLE_TRACE_INFORMATION), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PSS_HANDLE_TRACE_INFORMATION), CorrespondingAction.Get)]
 			PSS_QUERY_HANDLE_TRACE_INFORMATION,
 
 			/// <summary>Returns a PSS_PERFORMANCE_COUNTERS structure, which contains various performance counters.</summary>
-			[CorrespondingType(typeof(PSS_PERFORMANCE_COUNTERS), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PSS_PERFORMANCE_COUNTERS), CorrespondingAction.Get)]
 			PSS_QUERY_PERFORMANCE_COUNTERS,
 		}
 
@@ -306,27 +306,27 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Returns a PSS_AUXILIARY_PAGE_ENTRY structure, which contains the address, page attributes and contents of an auxiliary copied page.
 			/// </summary>
-			[CorrespondingType(typeof(PSS_AUXILIARY_PAGE_ENTRY), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PSS_AUXILIARY_PAGE_ENTRY), CorrespondingAction.Get)]
 			PSS_WALK_AUXILIARY_PAGES,
 
 			/// <summary>
 			/// Returns a PSS_VA_SPACE_ENTRY structure, which contains the MEMORY_BASIC_INFORMATION structure for every distinct VA region.
 			/// </summary>
-			[CorrespondingType(typeof(PSS_VA_SPACE_ENTRY), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PSS_VA_SPACE_ENTRY), CorrespondingAction.Get)]
 			PSS_WALK_VA_SPACE,
 
 			/// <summary>
 			/// Returns a PSS_HANDLE_ENTRY structure, with information specifying the handle value, its type name, object name (if captured),
 			/// basic information (if captured), and type-specific information (if captured).
 			/// </summary>
-			[CorrespondingType(typeof(PSS_HANDLE_ENTRY), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PSS_HANDLE_ENTRY), CorrespondingAction.Get)]
 			PSS_WALK_HANDLES,
 
 			/// <summary>
 			/// Returns a PSS_THREAD_ENTRY structure, with basic information about the thread, as well as its termination state, suspend
 			/// count and Win32 start address.
 			/// </summary>
-			[CorrespondingType(typeof(PSS_THREAD_ENTRY), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(PSS_THREAD_ENTRY), CorrespondingAction.Get)]
 			PSS_WALK_THREADS,
 		}
 

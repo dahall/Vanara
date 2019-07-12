@@ -658,7 +658,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ntsecapi.h", MSDNShortId = "496c9659-0c03-42c9-93c4-eb4d97e950e2")]
 		[return: MarshalAs(UnmanagedType.U1)]
-		public static extern bool AuditQuerySecurity(SECURITY_INFORMATION SecurityInformation, out SafeSECURITY_DESCRIPTOR ppSecurityDescriptor);
+		public static extern bool AuditQuerySecurity(SECURITY_INFORMATION SecurityInformation, out PSECURITY_DESCRIPTOR ppSecurityDescriptor);
 
 		/// <summary>The <c>AuditQuerySystemPolicy</c> function retrieves system audit policy for one or more audit-policy subcategories.</summary>
 		/// <param name="pSubCategoryGuids">

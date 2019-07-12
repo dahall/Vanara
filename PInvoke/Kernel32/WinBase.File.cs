@@ -194,7 +194,7 @@ namespace Vanara.PInvoke
 			/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_STANDARD_INFO</c>.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_STANDARD_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_STANDARD_INFO), CorrespondingAction.Get)]
 			FileStandardInfo,
 
 			/// <summary>
@@ -202,7 +202,7 @@ namespace Vanara.PInvoke
 			/// The file name should be retrieved. Used for any handles. Use only when calling <c>GetFileInformationByHandleEx</c>. See <c>FILE_NAME_INFO</c>.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_NAME_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_NAME_INFO), CorrespondingAction.Get)]
 			FileNameInfo,
 
 			/// <summary>
@@ -210,13 +210,13 @@ namespace Vanara.PInvoke
 			/// The file name should be changed. Used for file handles. Use only when calling <c>SetFileInformationByHandle</c>. See <c>FILE_RENAME_INFO</c>.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_RENAME_INFO), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(FILE_RENAME_INFO), CorrespondingAction.Set)]
 			FileRenameInfo,
 
 			/// <summary>
 			/// <para>The file should be deleted. Used for any handles. Use only when calling <c>SetFileInformationByHandle</c>. See <c>FILE_DISPOSITION_INFO</c>.</para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_DISPOSITION_INFO), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(FILE_DISPOSITION_INFO), CorrespondingAction.Set)]
 			FileDispositionInfo,
 
 			/// <summary>
@@ -225,13 +225,13 @@ namespace Vanara.PInvoke
 			/// <c>SetFileInformationByHandle</c>. See <c>FILE ALLOCATION INFO</c>.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_ALLOCATION_INFO), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(FILE_ALLOCATION_INFO), CorrespondingAction.Set)]
 			FileAllocationInfo,
 
 			/// <summary>
 			/// <para>The end of the file should be set. Use only when calling <c>SetFileInformationByHandle</c>. See <c>FILE_END_OF_FILE_INFO</c>.</para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_END_OF_FILE_INFO), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(FILE_END_OF_FILE_INFO), CorrespondingAction.Set)]
 			FileEndOfFileInfo,
 
 			/// <summary>
@@ -240,7 +240,7 @@ namespace Vanara.PInvoke
 			/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_STREAM_INFO</c>.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_STREAM_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_STREAM_INFO), CorrespondingAction.Get)]
 			FileStreamInfo,
 
 			/// <summary>
@@ -249,7 +249,7 @@ namespace Vanara.PInvoke
 			/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_COMPRESSION_INFO</c>.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_COMPRESSION_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_COMPRESSION_INFO), CorrespondingAction.Get)]
 			FileCompressionInfo,
 
 			/// <summary>
@@ -258,7 +258,7 @@ namespace Vanara.PInvoke
 			/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_ATTRIBUTE_TAG_INFO</c>.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_ATTRIBUTE_TAG_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_ATTRIBUTE_TAG_INFO), CorrespondingAction.Get)]
 			FileAttributeTagInfo,
 
 			/// <summary>
@@ -269,7 +269,7 @@ namespace Vanara.PInvoke
 			/// on the same handle will resume the enumeration operation after the last file is returned. See <c>FILE_ID_BOTH_DIR_INFO</c>.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_ID_BOTH_DIR_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_ID_BOTH_DIR_INFO), CorrespondingAction.Get)]
 			FileIdBothDirectoryInfo,
 
 			/// <summary>
@@ -277,13 +277,13 @@ namespace Vanara.PInvoke
 			/// Identical to <c>FileIdBothDirectoryInfo</c>, but forces the enumeration operation to start again from the beginning. See <c>FILE_ID_BOTH_DIR_INFO</c>.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_ID_BOTH_DIR_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_ID_BOTH_DIR_INFO), CorrespondingAction.Get)]
 			FileIdBothDirectoryRestartInfo,
 
 			/// <summary>
 			/// <para>Priority hint information should be set. Use only when calling <c>SetFileInformationByHandle</c>. See <c>FILE_IO_PRIORITY_HINT_INFO</c>.</para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_IO_PRIORITY_HINT_INFO), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(FILE_IO_PRIORITY_HINT_INFO), CorrespondingAction.Set)]
 			FileIoPriorityHintInfo,
 
 			/// <summary>
@@ -292,7 +292,7 @@ namespace Vanara.PInvoke
 			/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_REMOTE_PROTOCOL_INFO</c>.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_REMOTE_PROTOCOL_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_REMOTE_PROTOCOL_INFO), CorrespondingAction.Get)]
 			FileRemoteProtocolInfo,
 
 			/// <summary>
@@ -305,7 +305,7 @@ namespace Vanara.PInvoke
 			/// is not supported before Windows 8 and Windows Server 2012
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_FULL_DIR_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_FULL_DIR_INFO), CorrespondingAction.Get)]
 			FileFullDirectoryInfo,
 
 			/// <summary>
@@ -318,7 +318,7 @@ namespace Vanara.PInvoke
 			/// is not supported before Windows 8 and Windows Server 2012
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_FULL_DIR_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_FULL_DIR_INFO), CorrespondingAction.Get)]
 			FileFullDirectoryRestartInfo,
 
 			/// <summary>
@@ -331,7 +331,7 @@ namespace Vanara.PInvoke
 			/// is not supported before Windows 8 and Windows Server 2012
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_STORAGE_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_STORAGE_INFO), CorrespondingAction.Get)]
 			FileStorageInfo,
 
 			/// <summary>
@@ -344,7 +344,7 @@ namespace Vanara.PInvoke
 			/// is not supported before Windows 8 and Windows Server 2012
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_ALIGNMENT_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_ALIGNMENT_INFO), CorrespondingAction.Get)]
 			FileAlignmentInfo,
 
 			/// <summary>
@@ -356,7 +356,7 @@ namespace Vanara.PInvoke
 			/// is not supported before Windows 8 and Windows Server 2012
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_ID_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_ID_INFO), CorrespondingAction.Get)]
 			FileIdInfo,
 
 			/// <summary>
@@ -369,7 +369,7 @@ namespace Vanara.PInvoke
 			/// is not supported before Windows 8 and Windows Server 2012
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_ID_EXTD_DIR_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_ID_EXTD_DIR_INFO), CorrespondingAction.Get)]
 			FileIdExtdDirectoryInfo,
 
 			/// <summary>
@@ -382,7 +382,7 @@ namespace Vanara.PInvoke
 			/// is not supported before Windows 8 and Windows Server 2012
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(FILE_ID_EXTD_DIR_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(FILE_ID_EXTD_DIR_INFO), CorrespondingAction.Get)]
 			FileIdExtdDirectoryRestartInfo,
 
 			/// <summary>

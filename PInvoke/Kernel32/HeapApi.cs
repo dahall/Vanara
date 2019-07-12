@@ -27,7 +27,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>For more information about look-aside lists, see the Remarks section.</para>
 			/// </summary>
-			[CorrespondingType(typeof(HeapCompatibility), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(HeapCompatibility), CorrespondingAction.GetSet)]
 			HeapCompatibilityInformation = 0,
 
 			/// <summary>
@@ -46,7 +46,7 @@ namespace Vanara.PInvoke
 			/// <para>Note that the HEAP_OPTIMIZE_RESOURCES_INFORMATION structure passed in HeapInformation must be properly initialized.</para>
 			/// <para>Note This value was added in Windows 8.1.</para>
 			/// </summary>
-			[CorrespondingType(typeof(HEAP_OPTIMIZE_RESOURCES_INFORMATION), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(HEAP_OPTIMIZE_RESOURCES_INFORMATION), CorrespondingAction.Set)]
 			HeapOptimizeResources = 3
 		}
 

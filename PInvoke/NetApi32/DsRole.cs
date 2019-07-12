@@ -103,15 +103,15 @@ namespace Vanara.PInvoke
 		public enum DSROLE_PRIMARY_DOMAIN_INFO_LEVEL
 		{
 			/// <summary>The DsRoleGetPrimaryDomainInformation function retrieves data from a DSROLE_PRIMARY_DOMAIN_INFO_BASIC structure.</summary>
-			[CorrespondingType(typeof(DSROLE_PRIMARY_DOMAIN_INFO_BASIC), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DSROLE_PRIMARY_DOMAIN_INFO_BASIC), CorrespondingAction.Get)]
 			DsRolePrimaryDomainInfoBasic = 1,
 
 			/// <summary>The DsRoleGetPrimaryDomainInformation function retrieves from a DSROLE_UPGRADE_STATUS_INFO structure.</summary>
-			[CorrespondingType(typeof(DSROLE_UPGRADE_STATUS_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DSROLE_UPGRADE_STATUS_INFO), CorrespondingAction.Get)]
 			DsRoleUpgradeStatus,
 
 			/// <summary>The DsRoleGetPrimaryDomainInformation function retrieves data from a DSROLE_OPERATION_STATE_INFO structure.</summary>
-			[CorrespondingType(typeof(DSROLE_OPERATION_STATE_INFO), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DSROLE_OPERATION_STATE_INFO), CorrespondingAction.Get)]
 			DsRoleOperationState,
 		}
 

@@ -453,7 +453,7 @@ namespace Vanara.PInvoke
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_AccessToken structure.
 			/// <para>Returns a handle to the access token.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_AccessToken), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_AccessToken), CorrespondingAction.Get)]
 			SECPKG_ATTR_ACCESS_TOKEN = 18,
 
 			/// <summary>
@@ -461,14 +461,14 @@ namespace Vanara.PInvoke
 			/// <para>Returns or specifies application data for the session.</para>
 			/// <para>This attribute is supported only by the Schannel security package.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_SessionAppData), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(SecPkgContext_SessionAppData), CorrespondingAction.GetSet)]
 			SECPKG_ATTR_APP_DATA = 0x5e,
 
 			/// <summary>
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_Authority structure.
 			/// <para>Queries the name of the authenticating authority.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_Authority), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_Authority), CorrespondingAction.Get)]
 			SECPKG_ATTR_AUTHORITY = 6,
 
 			/// <summary>
@@ -476,7 +476,7 @@ namespace Vanara.PInvoke
 			/// principal name (SPN) of the initial target supplied by the client.
 			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_ClientSpecifiedTarget), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_ClientSpecifiedTarget), CorrespondingAction.Get)]
 			SECPKG_ATTR_CLIENT_SPECIFIED_TARGET = 27,
 
 			/// <summary>
@@ -484,7 +484,7 @@ namespace Vanara.PInvoke
 			/// <para>Returns detailed information on the established connection.</para>
 			/// <para>This attribute is supported only by the Schannel security package.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_ConnectionInfo), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_ConnectionInfo), CorrespondingAction.Get)]
 			SECPKG_ATTR_CONNECTION_INFO = 0x5a,
 
 			/// <summary>
@@ -497,14 +497,14 @@ namespace Vanara.PInvoke
 			/// Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_ClientCreds), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_ClientCreds), CorrespondingAction.Get)]
 			SECPKG_ATTR_CREDS_2 = 0x80000086,
 
 			/// <summary>
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_DceInfo structure.
 			/// <para>Queries for authorization data used by DCE services.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_DceInfo), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_DceInfo), CorrespondingAction.Get)]
 			SECPKG_ATTR_DCE_INFO = 3,
 
 			/// <summary>
@@ -512,7 +512,7 @@ namespace Vanara.PInvoke
 			/// <para>This attribute is supported only by the Schannel security package.</para>
 			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_Bindings), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_Bindings), CorrespondingAction.Get)]
 			SECPKG_ATTR_ENDPOINT_BINDINGS = 26,
 
 			/// <summary>
@@ -520,14 +520,14 @@ namespace Vanara.PInvoke
 			/// <para>Queries for key data used by the EAP TLS protocol.</para>
 			/// <para>This attribute is supported only by the Schannel security package.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_EapKeyBlock), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_EapKeyBlock), CorrespondingAction.Get)]
 			SECPKG_ATTR_EAP_KEY_BLOCK = 0x5b,
 
 			/// <summary>
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_Flags structure.
 			/// <para>Returns information about the negotiated context flags.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_Flags), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_Flags), CorrespondingAction.Get)]
 			SECPKG_ATTR_FLAGS = 14,
 
 			/// <summary>
@@ -535,14 +535,14 @@ namespace Vanara.PInvoke
 			/// <para>Returns a list of certificate issuers that are accepted by the server.</para>
 			/// <para>This attribute is supported only by the Schannel security package.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_IssuerListInfoEx), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_IssuerListInfoEx), CorrespondingAction.Get)]
 			SECPKG_ATTR_ISSUER_LIST_EX = 0x59,
 
 			/// <summary>
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_KeyInfo structure.
 			/// <para>Queries information about the keys used in a security context.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_KeyInfo), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_KeyInfo), CorrespondingAction.Get)]
 			SECPKG_ATTR_KEY_INFO = 5,
 
 			/// <summary>
@@ -551,14 +551,14 @@ namespace Vanara.PInvoke
 			/// <para>This value is supported only by the Negotiate, Kerberos, and NTLM security packages.</para>
 			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_LastClientTokenStatus), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_LastClientTokenStatus), CorrespondingAction.Get)]
 			SECPKG_ATTR_LAST_CLIENT_TOKEN_STATUS = 30,
 
 			/// <summary>
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_Lifespan structure.
 			/// <para>Queries the life span of the context.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_Lifespan), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_Lifespan), CorrespondingAction.Get)]
 			SECPKG_ATTR_LIFESPAN = 2,
 
 			/// <summary>
@@ -572,14 +572,14 @@ namespace Vanara.PInvoke
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_Names structure.
 			/// <para>Queries the name associated with the context.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_Names), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_Names), CorrespondingAction.Get)]
 			SECPKG_ATTR_NAMES = 1,
 
 			/// <summary>
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_NativeNames structure.
 			/// <para>Returns the principal name (CNAME) from the outbound ticket.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_NativeNames), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_NativeNames), CorrespondingAction.Get)]
 			SECPKG_ATTR_NATIVE_NAMES = 13,
 
 			/// <summary>
@@ -589,21 +589,21 @@ namespace Vanara.PInvoke
 			/// negotiation for the use of that package.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_NegotiationInfo), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_NegotiationInfo), CorrespondingAction.Get)]
 			SECPKG_ATTR_NEGOTIATION_INFO = 12,
 
 			/// <summary>
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_PackageInfostructure.
 			/// <para>Returns information on the SSP in use.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_PackageInfo), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_PackageInfo), CorrespondingAction.Get)]
 			SECPKG_ATTR_PACKAGE_INFO = 10,
 
 			/// <summary>
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_PasswordExpiry structure.
 			/// <para>Returns password expiration information.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_PasswordExpiry), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_PasswordExpiry), CorrespondingAction.Get)]
 			SECPKG_ATTR_PASSWORD_EXPIRY = 8,
 
 			/// <summary>
@@ -611,7 +611,7 @@ namespace Vanara.PInvoke
 			/// <para>Finds a certificate context that contains the end certificate supplied by the server.</para>
 			/// <para>This attribute is supported only by the Schannel security package.</para>
 			/// </summary>
-			[CorrespondingType(typeof(CERT_CONTEXT), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(CERT_CONTEXT), CorrespondingAction.Get)]
 			SECPKG_ATTR_REMOTE_CERT_CONTEXT = 0x53,
 
 			/// <summary>
@@ -624,7 +624,7 @@ namespace Vanara.PInvoke
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_SessionKey structure.
 			/// <para>Returns information about the session keys.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_SessionKey), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_SessionKey), CorrespondingAction.Get)]
 			SECPKG_ATTR_SESSION_KEY = 9,
 
 			/// <summary>
@@ -633,7 +633,7 @@ namespace Vanara.PInvoke
 			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
 			/// <para>This attribute is supported only by the Schannel security package.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_SessionInfo), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_SessionInfo), CorrespondingAction.Get)]
 			SECPKG_ATTR_SESSION_INFO = 0x5d,
 
 			/// <summary>
@@ -648,7 +648,7 @@ namespace Vanara.PInvoke
 			/// <para>Queries the sizes of the various parts of a stream used in the per-message functions.</para>
 			/// <para>This attribute is supported only by the Schannel security package.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_StreamSizes), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_StreamSizes), CorrespondingAction.Get)]
 			SECPKG_ATTR_STREAM_SIZES = 4,
 
 			/// <summary>
@@ -657,7 +657,7 @@ namespace Vanara.PInvoke
 			/// <para>This value is supported only on the CredSSP server.</para>
 			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_SubjectAttributes), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_SubjectAttributes), CorrespondingAction.Get)]
 			SECPKG_ATTR_SUBJECT_SECURITY_ATTRIBUTES = 124,
 
 			/// <summary>
@@ -666,14 +666,14 @@ namespace Vanara.PInvoke
 			/// <para>This value is supported only by the Schannel security package.</para>
 			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_SupportedSignatures), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_SupportedSignatures), CorrespondingAction.Get)]
 			SECPKG_ATTR_SUPPORTED_SIGNATURES = 0x66,
 
 			/// <summary>
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_TargetInformation structure.
 			/// <para>Returns information about the name of the remote server.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_TargetInformation), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_TargetInformation), CorrespondingAction.Get)]
 			SECPKG_ATTR_TARGET_INFORMATION = 17,
 
 			/// <summary>
@@ -681,7 +681,7 @@ namespace Vanara.PInvoke
 			/// <para>This value is supported only by the Schannel security package.</para>
 			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_Bindings), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_Bindings), CorrespondingAction.Get)]
 			SECPKG_ATTR_UNIQUE_BINDINGS = 25,
 
 			/// <summary>
@@ -689,7 +689,7 @@ namespace Vanara.PInvoke
 			/// current security context.
 			/// <para>This attribute is supported only on the server.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_AccessToken), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_AccessToken), CorrespondingAction.Get)]
 			SECPKG_ATTR_C_ACCESS_TOKEN = 0x80000012,
 
 			/// <summary>
@@ -697,14 +697,14 @@ namespace Vanara.PInvoke
 			/// current security context.
 			/// <para>This attribute is supported only on the server.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_AccessToken), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_AccessToken), CorrespondingAction.Get)]
 			SECPKG_ATTR_C_FULL_ACCESS_TOKEN = 0x80000082,
 
 			/// <summary>
 			/// The pBuffer parameter contains a pointer to a CERT_TRUST_STATUS structure that specifies trust information about the certificate.
 			/// <para>This attribute is supported only on the client.</para>
 			/// </summary>
-			[CorrespondingType(typeof(CERT_TRUST_STATUS), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(CERT_TRUST_STATUS), CorrespondingAction.Get)]
 			SECPKG_ATTR_CERT_TRUST_STATUS = 0x80000084,
 
 			/// <summary>
@@ -712,14 +712,14 @@ namespace Vanara.PInvoke
 			/// <para>The client credentials can be either user name and password or user name and smart card PIN.</para>
 			/// <para>This attribute is supported only on the server.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_ClientCreds), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_ClientCreds), CorrespondingAction.Get)]
 			SECPKG_ATTR_CREDS = 0x80000080,
 
 			/// <summary>
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_PackageInfo structure that specifies the name of the
 			/// authentication package negotiated by the Microsoft Negotiate provider.
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_PackageInfo), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_PackageInfo), CorrespondingAction.Get)]
 			SECPKG_ATTR_NEGOTIATION_PACKAGE = 0x80000081,
 
 			/// <summary>
@@ -727,7 +727,7 @@ namespace Vanara.PInvoke
 			/// current security context.
 			/// <para>This attribute is supported only on the client.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_Flags), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgContext_Flags), CorrespondingAction.Get)]
 			SECPKG_ATTR_SERVER_AUTH_FLAGS = 0x80000083,
 
 			/// <summary>
@@ -739,14 +739,14 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>This attribute is supported only by the Schannel security package.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_EapPrfInfo), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(SecPkgContext_EapPrfInfo), CorrespondingAction.Set)]
 			SECPKG_ATTR_EAP_PRF_INFO = 101,
 
 			/// <summary>
 			/// The pBuffer parameter contains a pointer to a SecPkgContext_EarlyStart structure.
 			/// <para>Sets the False Start feature. See the Building a faster and more secure web blog post for information on this feature.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_EarlyStart), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(SecPkgContext_EarlyStart), CorrespondingAction.Set)]
 			SECPKG_ATTR_EARLY_START = 105,
 
 			/// <summary>
@@ -754,7 +754,7 @@ namespace Vanara.PInvoke
 			/// this attribute is not supported.
 			/// <para>Valid values are between 200 bytes and 64 kilobytes. The default DTLS MTU value in Schannel is 1096 bytes.</para>
 			/// </summary>
-			[CorrespondingType(typeof(ushort), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(ushort), CorrespondingAction.Set)]
 			SECPKG_ATTR_DTLS_MTU = 34,
 
 			/// <summary>
@@ -762,7 +762,7 @@ namespace Vanara.PInvoke
 			/// follows the RFC 5705 standard.
 			/// <para>This attribute is supported only by the Schannel security package in Windows 10 and Windows Server 2016 or later versions.</para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgContext_KeyingMaterialInfo), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(SecPkgContext_KeyingMaterialInfo), CorrespondingAction.Set)]
 			SECPKG_ATTR_KEYING_MATERIAL_INFO = 106,
 		}
 
@@ -859,7 +859,7 @@ namespace Vanara.PInvoke
 			/// not available.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(SecPkgCredentials_Cert), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(SecPkgCredentials_Cert), CorrespondingAction.Get)]
 			SECPKG_CRED_ATTR_CERT = 4,
 
 			/// <summary>

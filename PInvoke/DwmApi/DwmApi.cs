@@ -215,21 +215,21 @@ namespace Vanara.PInvoke
 			/// Use with DwmGetWindowAttribute. Discovers whether non-client rendering is enabled. The retrieved value is of type BOOL. TRUE
 			/// if non-client rendering is enabled; otherwise, FALSE.
 			/// </summary>
-			[CorrespondingType(typeof(bool), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			DWMWA_NCRENDERING_ENABLED = 1,
 
 			/// <summary>
 			/// Use with DwmSetWindowAttribute. Sets the non-client rendering policy. The pvAttribute parameter points to a value from the
 			/// DWMNCRENDERINGPOLICY enumeration.
 			/// </summary>
-			[CorrespondingType(typeof(DWMNCRENDERINGPOLICY), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(DWMNCRENDERINGPOLICY), CorrespondingAction.Set)]
 			DWMWA_NCRENDERING_POLICY,
 
 			/// <summary>
 			/// Use with DwmSetWindowAttribute. Enables or forcibly disables DWM transitions. The pvAttribute parameter points to a value of
 			/// TRUE to disable transitions or FALSE to enable transitions.
 			/// </summary>
-			[CorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			DWMWA_TRANSITIONS_FORCEDISABLED,
 
 			/// <summary>
@@ -237,21 +237,21 @@ namespace Vanara.PInvoke
 			/// pvAttribute parameter points to a value of TRUE to enable content rendered in the non-client area to be visible on the frame;
 			/// otherwise, it points to FALSE.
 			/// </summary>
-			[CorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			DWMWA_ALLOW_NCPAINT,
 
 			/// <summary>
 			/// Use with DwmGetWindowAttribute. Retrieves the bounds of the caption button area in the window-relative space. The retrieved
 			/// value is of type RECT.
 			/// </summary>
-			[CorrespondingType(typeof(RECT), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(RECT), CorrespondingAction.Get)]
 			DWMWA_CAPTION_BUTTON_BOUNDS,
 
 			/// <summary>
 			/// Use with DwmSetWindowAttribute. Specifies whether non-client content is right-to-left (RTL) mirrored. The pvAttribute
 			/// parameter points to a value of TRUE if the non-client content is right-to-left (RTL) mirrored; otherwise, it points to FALSE.
 			/// </summary>
-			[CorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			DWMWA_NONCLIENT_RTL_LAYOUT,
 
 			/// <summary>
@@ -260,20 +260,20 @@ namespace Vanara.PInvoke
 			/// and not changed throughout the window's lifetime. Some scenarios, however, might require the value to change over time. The
 			/// pvAttribute parameter points to a value of TRUE to require a iconic thumbnail or peek representation; otherwise, it points to FALSE.
 			/// </summary>
-			[CorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			DWMWA_FORCE_ICONIC_REPRESENTATION,
 
 			/// <summary>
 			/// Use with DwmSetWindowAttribute. Sets how Flip3D treats the window. The pvAttribute parameter points to a value from the
 			/// DWMFLIP3DWINDOWPOLICY enumeration.
 			/// </summary>
-			[CorrespondingType(typeof(DWMFLIP3DWINDOWPOLICY), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(DWMFLIP3DWINDOWPOLICY), CorrespondingAction.Set)]
 			DWMWA_FLIP3D_POLICY,
 
 			/// <summary>
 			/// Use with DwmGetWindowAttribute. Retrieves the extended frame bounds rectangle in screen space. The retrieved value is of type RECT.
 			/// </summary>
-			[CorrespondingType(typeof(RECT), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(RECT), CorrespondingAction.Get)]
 			DWMWA_EXTENDED_FRAME_BOUNDS,
 
 			/// <summary>
@@ -284,7 +284,7 @@ namespace Vanara.PInvoke
 			/// inform DWM that the window will provide an iconic thumbnail or peek representation; otherwise, it points to FALSE.
 			/// <para><c>Windows Vista and earlier:</c> This value is not supported.</para>
 			/// </summary>
-			[CorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			DWMWA_HAS_ICONIC_BITMAP,
 
 			/// <summary>
@@ -294,7 +294,7 @@ namespace Vanara.PInvoke
 			/// parameter points to a value of TRUE to prevent peek functionality or FALSE to allow it.
 			/// <para><c>Windows Vista and earlier:</c> This value is not supported.</para>
 			/// </summary>
-			[CorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			DWMWA_DISALLOW_PEEK,
 
 			/// <summary>
@@ -302,7 +302,7 @@ namespace Vanara.PInvoke
 			/// parameter points to a value of TRUE to prevent the window from fading during another window's peek or FALSE for normal behavior.
 			/// <para><c>Windows Vista and earlier:</c> This value is not supported.</para>
 			/// </summary>
-			[CorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			DWMWA_EXCLUDED_FROM_PEEK,
 
 			/// <summary>
@@ -314,7 +314,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><c>Windows 7 and earlier:</c> This value is not supported.</para>
 			/// </summary>
-			[CorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			DWMWA_CLOAK,
 
 			/// <summary>
@@ -339,7 +339,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><c>Windows 7 and earlier:</c> This value is not supported.</para>
 			/// </summary>
-			[CorrespondingType(typeof(DWM_CLOAKED), CorrepsondingAction.Get)]
+			[CorrespondingType(typeof(DWM_CLOAKED), CorrespondingAction.Get)]
 			DWMWA_CLOAKED,
 
 			/// <summary>
@@ -347,7 +347,7 @@ namespace Vanara.PInvoke
 			/// the thumbnail image to match the window's contents.
 			/// <para><c>Windows 7 and earlier:</c> This value is not supported.</para>
 			/// </summary>
-			[CorrespondingType(typeof(bool), CorrepsondingAction.Set)]
+			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			DWMWA_FREEZE_REPRESENTATION,
 		}
 

@@ -981,7 +981,7 @@ namespace Vanara.PInvoke
 		public enum THREAD_INFORMATION_CLASS
 		{
 			/// <summary>The thread memory priority</summary>
-			[CorrespondingType(typeof(MEMORY_PRIORITY_INFORMATION), CorrepsondingAction.GetSet)]
+			[CorrespondingType(typeof(MEMORY_PRIORITY_INFORMATION), CorrespondingAction.GetSet)]
 			ThreadMemoryPriority,
 
 			/// <summary>The thread absolute cpu priority</summary>
@@ -991,7 +991,7 @@ namespace Vanara.PInvoke
 			ThreadDynamicCodePolicy,
 
 			/// <summary>The thread power throttling</summary>
-			[CorrespondingType(typeof(THREAD_POWER_THROTTLING_STATE), CorrepsondingAction.Set)] // TODO: Figure out why Get doesn't work
+			[CorrespondingType(typeof(THREAD_POWER_THROTTLING_STATE), CorrespondingAction.Set)] // TODO: Figure out why Get doesn't work
 			ThreadPowerThrottling,
 		}
 
