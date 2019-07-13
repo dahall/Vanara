@@ -56,11 +56,9 @@ PACKAGE_ID, PACKAGE_INFO_REFERENCE, PACKAGE_VERSION, DEBUG_EVENT, ENCLAVE_CREATE
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="LzExpand.cs" />
-    <Compile Remove="SecurityBaseApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LzExpand.cs" />
-    <None Include="SecurityBaseApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

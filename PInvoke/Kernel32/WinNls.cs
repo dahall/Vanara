@@ -507,6 +507,23 @@ namespace Vanara.PInvoke
 			CAL_SENGLISHABBREVERANAME = 0x0000003c,
 		}
 
+		/// <summary>Flags specifying the character type information to retrieve.</summary>
+		[PInvokeData("Winnls.h")]
+		public enum CHAR_TYPE_INFO
+		{
+			/// <summary>Retrieve character type information.</summary>
+			[CorrespondingType(typeof(Ctype1))]
+			CT_CTYPE1 = 1,
+
+			/// <summary>Retrieve bidirectional layout information.</summary>
+			[CorrespondingType(typeof(Ctype2))]
+			CT_CTYPE2 = 2,
+
+			/// <summary>Retrieve text processing information.</summary>
+			[CorrespondingType(typeof(Ctype3))]
+			CT_CTYPE3 = 4,
+		}
+
 		/// <summary>Flag specifying the code pages to enumerate.</summary>
 		public enum CP_FLAGS
 		{
@@ -515,6 +532,150 @@ namespace Vanara.PInvoke
 
 			/// <summary>Enumerate all supported code pages.</summary>
 			CP_SUPPORTED = 2
+		}
+
+		/// <summary>
+		/// These types support ANSI C and POSIX (LC_CTYPE) character typing functions. A bitwise-OR of these values is retrieved in the
+		/// array in the output buffer when dwInfoType is set to CT_CTYPE1. For DBCS locales, the type attributes apply to both narrow
+		/// characters and wide characters. The Japanese hiragana and katakana characters, and the kanji ideograph characters all have the
+		/// C1_ALPHA attribute.
+		/// </summary>
+		[PInvokeData("Winnls.h")]
+		[Flags]
+		public enum Ctype1 : ushort
+		{
+			/// <summary>Uppercase</summary>
+			C1_UPPER = 0x0001,
+
+			/// <summary>Lowercase</summary>
+			C1_LOWER = 0x0002,
+
+			/// <summary>Decimal digits</summary>
+			C1_DIGIT = 0x0004,
+
+			/// <summary>Space characters</summary>
+			C1_SPACE = 0x0008,
+
+			/// <summary>Punctuation</summary>
+			C1_PUNCT = 0x0010,
+
+			/// <summary>Control characters</summary>
+			C1_CNTRL = 0x0020,
+
+			/// <summary>Blank characters</summary>
+			C1_BLANK = 0x0040,
+
+			/// <summary>Hexadecimal digits</summary>
+			C1_XDIGIT = 0x0080,
+
+			/// <summary>Any linguistic character: alphabetical, syllabary, or ideographic</summary>
+			C1_ALPHA = 0x0100,
+
+			/// <summary>A defined character, but not one of the other C1_* types</summary>
+			C1_DEFINED = 0x0200,
+		}
+
+		/// <summary>
+		/// These types support proper layout of Unicode text. For DBCS locales, the character type applies to both narrow and wide
+		/// characters. The direction attributes are assigned so that the bidirectional layout algorithm standardized by Unicode produces
+		/// accurate results. These types are mutually exclusive.
+		/// </summary>
+		[PInvokeData("Winnls.h")]
+		public enum Ctype2 : ushort
+		{
+			/// <summary>No implicit directionality (for example, control codes)</summary>
+			C2_NOTAPPLICABLE = 0x0000,
+
+			/// <summary>Left to right</summary>
+			C2_LEFTTORIGHT = 0x0001,
+
+			/// <summary>Right to left</summary>
+			C2_RIGHTTOLEFT = 0x0002,
+
+			/// <summary>European number, European digit</summary>
+			C2_EUROPENUMBER = 0x0003,
+
+			/// <summary>European numeric separator</summary>
+			C2_EUROPESEPARATOR = 0x0004,
+
+			/// <summary>European numeric terminator</summary>
+			C2_EUROPETERMINATOR = 0x0005,
+
+			/// <summary>Arabic number</summary>
+			C2_ARABICNUMBER = 0x0006,
+
+			/// <summary>Common numeric separator</summary>
+			C2_COMMONSEPARATOR = 0x0007,
+
+			/// <summary>Block separator</summary>
+			C2_BLOCKSEPARATOR = 0x0008,
+
+			/// <summary>Segment separator</summary>
+			C2_SEGMENTSEPARATOR = 0x0009,
+
+			/// <summary>White space</summary>
+			C2_WHITESPACE = 0x000A,
+
+			/// <summary>Other neutrals</summary>
+			C2_OTHERNEUTRAL = 0x000B,
+		}
+
+		/// <summary>
+		/// These types are intended to be placeholders for extensions to the POSIX types required for general text processing or for the
+		/// standard C library functions. A bitwise-OR of these values is retrieved when dwInfoType is set to CT_CTYPE3. For DBCS locales,
+		/// the Ctype 3 attributes apply to both narrow characters and wide characters. The Japanese hiragana and katakana characters, and
+		/// the kanji ideograph characters all have the C3_ALPHA attribute.
+		/// </summary>
+		[PInvokeData("Winnls.h")]
+		[Flags]
+		public enum Ctype3 : ushort
+		{
+			/// <summary>Not applicable</summary>
+			C3_NOTAPPLICABLE = 0x0000,
+
+			/// <summary>Nonspacing mark</summary>
+			C3_NONSPACING = 0x0001,
+
+			/// <summary>Diacritic nonspacing mark</summary>
+			C3_DIACRITIC = 0x0002,
+
+			/// <summary>Vowel nonspacing mark</summary>
+			C3_VOWELMARK = 0x0004,
+
+			/// <summary>Symbol</summary>
+			C3_SYMBOL = 0x0008,
+
+			/// <summary>Katakana character</summary>
+			C3_KATAKANA = 0x0010,
+
+			/// <summary>Hiragana character</summary>
+			C3_HIRAGANA = 0x0020,
+
+			/// <summary>Half-width (narrow) character</summary>
+			C3_HALFWIDTH = 0x0040,
+
+			/// <summary>Full-width (wide) character</summary>
+			C3_FULLWIDTH = 0x0080,
+
+			/// <summary>Ideographic character</summary>
+			C3_IDEOGRAPH = 0x0100,
+
+			/// <summary>Arabic kashida character</summary>
+			C3_KASHIDA = 0x0200,
+
+			/// <summary>
+			/// Punctuation which is counted as part of the word (kashida, hyphen, feminine/masculine ordinal indicators, equal sign, and so forth)
+			/// </summary>
+			C3_LEXICAL = 0x0400,
+
+			/// <summary>Windows Vista: High surrogate code unit</summary>
+			C3_HIGHSURROGATE = 0x0800,
+
+			/// <summary>Windows Vista: Low surrogate code unit</summary>
+			C3_LOWSURROGATE = 0x1000,
+
+			/// <summary>All linguistic characters (alphabetical, syllabary, and ideographic)</summary>
+			C3_ALPHA = 0x8000,
 		}
 
 		/// <summary>Flag specifying date formats.</summary>
@@ -5208,37 +5369,72 @@ namespace Vanara.PInvoke
 
 		/// <summary>Contains information about a code page. This structure is used by the GetCPInfoEx function.</summary>
 		/// <remarks>
-		/// <para>Lead bytes are unique to DBCS code pages that allow for more than 256 characters. A lead byte is the first byte of a 2-byte character in a DBCS. On each DBCS code page, the lead bytes occupy a specific range of byte values. This range is different for different code pages.</para>
-		/// <para>The lead byte information is not very helpful for most code pages, and is not even provided for many multi-byte encodings, for example, UTF-8 and GB18030. Your applications are discouraged from using this information to predict what the MultiByteToWideChar or WideCharToMultiByte function will do. The function might end up using a default character or performing other default behavior if the bytes following the lead byte are not as expected.</para>
+		/// <para>
+		/// Lead bytes are unique to DBCS code pages that allow for more than 256 characters. A lead byte is the first byte of a 2-byte
+		/// character in a DBCS. On each DBCS code page, the lead bytes occupy a specific range of byte values. This range is different for
+		/// different code pages.
+		/// </para>
+		/// <para>
+		/// The lead byte information is not very helpful for most code pages, and is not even provided for many multi-byte encodings, for
+		/// example, UTF-8 and GB18030. Your applications are discouraged from using this information to predict what the MultiByteToWideChar
+		/// or WideCharToMultiByte function will do. The function might end up using a default character or performing other default behavior
+		/// if the bytes following the lead byte are not as expected.
+		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winnls/ns-winnls-_cpinfoexa
-		// typedef struct _cpinfoexA { UINT MaxCharSize; BYTE DefaultChar[MAX_DEFAULTCHAR]; BYTE LeadByte[MAX_LEADBYTES]; WCHAR UnicodeDefaultChar; UINT CodePage; CHAR CodePageName[MAX_PATH]; } CPINFOEXA, *LPCPINFOEXA;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winnls/ns-winnls-_cpinfoexa typedef struct _cpinfoexA { UINT MaxCharSize;
+		// BYTE DefaultChar[MAX_DEFAULTCHAR]; BYTE LeadByte[MAX_LEADBYTES]; WCHAR UnicodeDefaultChar; UINT CodePage; CHAR
+		// CodePageName[MAX_PATH]; } CPINFOEXA, *LPCPINFOEXA;
 		[PInvokeData("winnls.h", MSDNShortId = "9639bb11-477e-45ee-b9fb-d5d099925e00")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CPINFOEX
 		{
-			/// <summary>Maximum length, in bytes, of a character in the code page. The length can be 1 for a single-byte character set (SBCS), 2 for a double-byte character set (DBCS), or a value larger than 2 for other character set types. The function cannot use the size to distinguish an SBCS or a DBCS from other character sets because of other factors, for example, the use of ISCII or ISO-2022-xx code pages.</summary>
+			/// <summary>
+			/// Maximum length, in bytes, of a character in the code page. The length can be 1 for a single-byte character set (SBCS), 2 for
+			/// a double-byte character set (DBCS), or a value larger than 2 for other character set types. The function cannot use the size
+			/// to distinguish an SBCS or a DBCS from other character sets because of other factors, for example, the use of ISCII or
+			/// ISO-2022-xx code pages.
+			/// </summary>
 			public uint MaxCharSize;
 
-			/// <summary>Default character used when translating character strings to the specific code page. This character is used by the WideCharToMultiByte function if an explicit default character is not specified. The default is usually the "?" character for the code page.</summary>
+			/// <summary>
+			/// Default character used when translating character strings to the specific code page. This character is used by the
+			/// WideCharToMultiByte function if an explicit default character is not specified. The default is usually the "?" character for
+			/// the code page.
+			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
 			public byte[] DefaultChar;
 
 			/// <summary>
-			///   <para>A fixed-length array of lead byte ranges, for which the number of lead byte ranges is variable. If the code page has no lead bytes, every element of the array is set to <c>NULL</c>. If the code page has lead bytes, the array specifies a starting value and an ending value for each range. Ranges are inclusive, and the maximum number of ranges for any code page is five. The array uses two bytes to describe each range, with two null bytes as a terminator after the last range.</para>
-			///   <para>
-			///     <c>Note</c> Some code pages use lead bytes and a combination of other encoding mechanisms. This member is usually only populated for a subset of the code pages that use lead bytes in some form. For more information, see the Remarks section.</para>
+			/// <para>
+			/// A fixed-length array of lead byte ranges, for which the number of lead byte ranges is variable. If the code page has no lead
+			/// bytes, every element of the array is set to <c>NULL</c>. If the code page has lead bytes, the array specifies a starting
+			/// value and an ending value for each range. Ranges are inclusive, and the maximum number of ranges for any code page is five.
+			/// The array uses two bytes to describe each range, with two null bytes as a terminator after the last range.
+			/// </para>
+			/// <para>
+			/// <c>Note</c> Some code pages use lead bytes and a combination of other encoding mechanisms. This member is usually only
+			/// populated for a subset of the code pages that use lead bytes in some form. For more information, see the Remarks section.
+			/// </para>
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 12)]
 			public byte[] LeadByte;
 
-			/// <summary>Unicode default character used in translations from the specific code page. The default is usually the "?" character or the katakana middle dot character. The Unicode default character is used by the MultiByteToWideChar function.</summary>
+			/// <summary>
+			/// Unicode default character used in translations from the specific code page. The default is usually the "?" character or the
+			/// katakana middle dot character. The Unicode default character is used by the MultiByteToWideChar function.
+			/// </summary>
 			public ushort UnicodeDefaultChar;
 
-			/// <summary>Code page value. This value reflects the code page passed to the GetCPInfoEx function. See Code Page Identifiers for a list of ANSI and other code pages.</summary>
+			/// <summary>
+			/// Code page value. This value reflects the code page passed to the GetCPInfoEx function. See Code Page Identifiers for a list
+			/// of ANSI and other code pages.
+			/// </summary>
 			public uint CodePage;
 
-			/// <summary>Full name of the code page. Note that this name is localized and is not guaranteed for uniqueness or consistency between operating system versions or computers.</summary>
+			/// <summary>
+			/// Full name of the code page. Note that this name is localized and is not guaranteed for uniqueness or consistency between
+			/// operating system versions or computers.
+			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
 			public string CodePageName;
 		}
