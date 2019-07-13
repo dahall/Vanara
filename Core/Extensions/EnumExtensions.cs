@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 
 namespace Vanara.Extensions
@@ -159,6 +158,72 @@ namespace Vanara.Extensions
 			SetFlags(ref ret, flag, set);
 			return ret;
 		}
+
+		/// <summary>Converts an enumerated value to another fixed type.</summary>
+		/// <typeparam name="TEnum">The enumerated type.</typeparam>
+		/// <typeparam name="TResult">The type of the result.</typeparam>
+		/// <param name="value">The value to convert.</param>
+		/// <returns>The converted value.</returns>
+		/// <exception cref="System.ArgumentException">The size of TResult cannot be smaller than the size of TEnum.</exception>
+		public static TResult To<TEnum, TResult>(this TEnum value) where TEnum : unmanaged, System.Enum where TResult : unmanaged, IConvertible
+		{
+			unsafe
+			{
+				if (sizeof(TResult) < sizeof(TEnum)) throw new ArgumentException("The size of TResult cannot be smaller than the size of TEnum.");
+				return *(TResult*)(void*)&value;
+			}
+		}
+
+		/// <summary>Converts a fixed type to an enumerated value.</summary>
+		/// <typeparam name="TValue">The type of the value to convert.</typeparam>
+		/// <typeparam name="TEnum">The enumerated type.</typeparam>
+		/// <param name="value">The value to convert.</param>
+		/// <returns>The converted value.</returns>
+		/// <exception cref="System.ArgumentException">The size of TEnum cannot be smaller than the size of TValue.</exception>
+		public static TEnum ToEnum<TValue, TEnum>(this TValue value) where TEnum : unmanaged, System.Enum where TValue : unmanaged, IConvertible
+		{
+			unsafe
+			{
+				if (sizeof(TEnum) < sizeof(TValue)) throw new ArgumentException("The size of TEnum cannot be smaller than the size of TValue.");
+				return *(TEnum*)(void*)&value;
+			}
+		}
+
+		/// <summary>Converts a fixed type to an enumerated value.</summary>
+		/// <typeparam name="TEnum">The enumerated type.</typeparam>
+		/// <param name="value">The value to convert.</param>
+		/// <returns>The converted value.</returns>
+		public static TEnum ToEnum<TEnum>(this byte value) where TEnum : unmanaged, System.Enum => ToEnum<byte, TEnum>(value);
+
+		/// <summary>Converts a fixed type to an enumerated value.</summary>
+		/// <typeparam name="TEnum">The enumerated type.</typeparam>
+		/// <param name="value">The value to convert.</param>
+		/// <returns>The converted value.</returns>
+		public static TEnum ToEnum<TEnum>(this sbyte value) where TEnum : unmanaged, System.Enum => ToEnum<sbyte, TEnum>(value);
+
+		/// <summary>Converts a fixed type to an enumerated value.</summary>
+		/// <typeparam name="TEnum">The enumerated type.</typeparam>
+		/// <param name="value">The value to convert.</param>
+		/// <returns>The converted value.</returns>
+		public static TEnum ToEnum<TEnum>(this ushort value) where TEnum : unmanaged, System.Enum => ToEnum<ushort, TEnum>(value);
+
+		/// <summary>Converts a fixed type to an enumerated value.</summary>
+		/// <typeparam name="TEnum">The enumerated type.</typeparam>
+		/// <param name="value">The value to convert.</param>
+		/// <returns>The converted value.</returns>
+		public static TEnum ToEnum<TEnum>(this short value) where TEnum : unmanaged, System.Enum => ToEnum<short, TEnum>(value);
+
+		/// <summary>Converts a fixed type to an enumerated value.</summary>
+		/// <typeparam name="TEnum">The enumerated type.</typeparam>
+		/// <param name="value">The value to convert.</param>
+		/// <returns>The converted value.</returns>
+		public static TEnum ToEnum<TEnum>(this uint value) where TEnum : unmanaged, System.Enum => ToEnum<uint, TEnum>(value);
+
+		/// <summary>Converts a fixed type to an enumerated value.</summary>
+		/// <typeparam name="TEnum">The enumerated type.</typeparam>
+		/// <param name="value">The value to convert.</param>
+		/// <returns>The converted value.</returns>
+		public static TEnum ToEnum<TEnum>(this int value) where TEnum : unmanaged, System.Enum => ToEnum<int, TEnum>(value);
 
 		/// <summary>Checks if <typeparamref name="T"/> represents an enumeration and throws an exception if not.</summary>
 		/// <typeparam name="T">The <see cref="Type"/> to validate.</typeparam>
