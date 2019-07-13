@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Newtonsoft.Json;
+using NUnit.Framework;
 using System;
 using System.Linq;
 using Vanara.InteropServices;
@@ -35,7 +36,8 @@ namespace Vanara.PInvoke.Tests
 
 		public static void WriteValues(this object value)
 		{
-			TestContext.WriteLine(ObjectDumper.ObjectDumperExtensions.DumpToString(value, value.ToString()));
+			var json = JsonConvert.SerializeObject(value, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
+			TestContext.WriteLine(json);
 		}
 	}
 }
