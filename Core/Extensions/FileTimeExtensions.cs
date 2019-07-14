@@ -41,17 +41,24 @@ namespace Vanara.Extensions
 		/// <returns>The resulting <see cref="DateTime"/> structure.</returns>
 		public static DateTime ToDateTime(this FILETIME ft, DateTimeKind kind = DateTimeKind.Local)
 		{
-			unchecked
-			{
-				var hFT2 = ft.ToUInt64();
-				return kind == DateTimeKind.Utc ? DateTime.FromFileTimeUtc((long)hFT2) : DateTime.FromFileTime((long)hFT2);
-			}
+			var hFT2 = ft.ToInt64();
+			return kind == DateTimeKind.Utc ? DateTime.FromFileTimeUtc(hFT2) : DateTime.FromFileTime(hFT2);
 		}
 
 		/// <summary>Converts a <see cref="DateTime"/> structure to a <see cref="FILETIME"/> structure using the local time.</summary>
 		/// <param name="dt">The <see cref="DateTime"/> value to convert.</param>
 		/// <returns>The resulting <see cref="FILETIME"/> structure as the local time.</returns>
 		public static FILETIME ToFileTimeStruct(this DateTime dt) => MakeFILETIME(unchecked((ulong)dt.ToFileTimeUtc()));
+
+		/// <summary>Converts a <see cref="TimeSpan"/> structure to a <see cref="FILETIME"/> structure.</summary>
+		/// <param name="ts">The <see cref="TimeSpan"/> value to convert.</param>
+		/// <returns>The resulting <see cref="FILETIME"/> structure as a time span.</returns>
+		public static FILETIME ToFileTimeStruct(this TimeSpan ts) => MakeFILETIME(unchecked((ulong)-ts.Ticks));
+
+		/// <summary>Converts a <see cref="FILETIME"/> structure to its signed 64-bit representation.</summary>
+		/// <param name="ft">The value to be converted.</param>
+		/// <returns>The return value is a signed 64-bit value that represented the <see cref="FILETIME"/>.</returns>
+		public static long ToInt64(this FILETIME ft) => ((long)ft.dwHighDateTime << 32) | (uint)ft.dwLowDateTime;
 
 		/// <summary>Returns a <see cref="string"/> that represents the <see cref="FILETIME"/> instance.</summary>
 		/// <param name="ft">The <see cref="FILETIME"/> to convert.</param>
@@ -60,7 +67,13 @@ namespace Vanara.Extensions
 		/// <returns>
 		/// A string representation of value of the current <see cref="FILETIME"/> object as specified by <paramref name="format"/> and <paramref name="provider"/>.
 		/// </returns>
-		public static string ToString(this FILETIME ft, string format, IFormatProvider provider = null) => ft.ToDateTime().ToString(format, provider);
+		public static string ToString(this FILETIME ft, string format, IFormatProvider provider = null) =>
+			ft.ToInt64() < 0 ? ft.ToTimeSpan().ToString() : ft.ToDateTime().ToString(format, provider);
+
+		/// <summary>Converts a <see cref="FILETIME"/> structure to a <see cref="TimeSpan"/> structure.</summary>
+		/// <param name="ft">The <see cref="FILETIME"/> value to convert.</param>
+		/// <returns>The resulting <see cref="DateTime"/> structure.</returns>
+		public static TimeSpan ToTimeSpan(this FILETIME ft) => new TimeSpan(ft.ToInt64());
 
 		/// <summary>Converts a <see cref="FILETIME"/> structure to its 64-bit representation.</summary>
 		/// <param name="ft">The value to be converted.</param>
