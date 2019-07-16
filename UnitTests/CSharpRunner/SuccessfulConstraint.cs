@@ -138,9 +138,9 @@ namespace Vanara.PInvoke.Tests
 
 		public override ConstraintResult ApplyTo<TActual>(TActual actual)
 		{
-			if (Expected?.Equals(actual) ?? ReferenceEquals(actual, Expected))
+			if (!(Expected?.Equals(actual) ?? actual == null))
 			{
-				Description = nameof(Win32Error.ERROR_SUCCESS);
+				Description = $"{Expected}, {Win32Error.ERROR_SUCCESS}";
 				return new ConstraintResult(this, (actual, Win32Error.GetLastError()), false);
 			}
 			return new ConstraintResult(this, actual, true);
