@@ -4,8 +4,9 @@ namespace Vanara.PInvoke.Tests
 {
 	public static class ResultIs
 	{
-		public static SuccessfulConstraint Successful => new SuccessfulConstraint();
 		public static FailureConstraint Failure => new FailureConstraint();
+		public static SuccessfulConstraint Successful => new SuccessfulConstraint();
+		public static ValueConstraint Value(object value) => new ValueConstraint(value);
 	}
 
 	public class FailureConstraint : Constraint
@@ -123,6 +124,26 @@ namespace Vanara.PInvoke.Tests
 					break;
 			}
 			return new ConstraintResult(this, updActual, success);
+		}
+	}
+
+	public class ValueConstraint : Constraint
+	{
+		public object Expected { get; }
+
+		public ValueConstraint(object expected)
+		{
+			Expected = expected;
+		}
+
+		public override ConstraintResult ApplyTo<TActual>(TActual actual)
+		{
+			if (Expected?.Equals(actual) ?? ReferenceEquals(actual, Expected))
+			{
+				Description = nameof(Win32Error.ERROR_SUCCESS);
+				return new ConstraintResult(this, (actual, Win32Error.GetLastError()), false);
+			}
+			return new ConstraintResult(this, actual, true);
 		}
 	}
 }
