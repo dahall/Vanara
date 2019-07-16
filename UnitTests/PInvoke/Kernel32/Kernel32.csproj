@@ -48,6 +48,7 @@
     <Compile Include="AppModelTests.cs" />
     <Compile Include="InterlockedApiTests.cs" />
     <Compile Include="InteropServices\SafeLocalHandleTests.cs" />
+    <Compile Include="SynchApiTests.cs" />
     <Compile Include="StringApiSetTests.cs" />
     <Compile Include="RtlSupportApiTests.cs" />
     <Compile Include="RealtimeApiSetTests.cs" />

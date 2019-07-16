@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -9,6 +11,8 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		public const int INIT_ONCE_CTX_RESERVED_BITS = 2;
+
 		// PINIT_ONCE_FN PTIMERAPCROUTINE
 
 		/// <summary>
@@ -28,9 +32,9 @@ namespace Vanara.PInvoke
 		/// additional error information, call SetLastError before returning FALSE.
 		/// </para>
 		/// </returns>
-		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool PINIT_ONCE_FN(ref INIT_ONCE InitOnce, IntPtr Parameter, out IntPtr Context);
+		public delegate bool InitOnceCallback(ref INIT_ONCE InitOnce, IntPtr Parameter, out IntPtr Context);
 
 		/// <summary>
 		/// An application-defined timer completion routine. Specify this address when calling the SetWaitableTimer function. The
@@ -47,8 +51,8 @@ namespace Vanara.PInvoke
 		/// The high-order portion of the UTC-based time at which the timer was signaled. This value corresponds to the dwHighDateTime member
 		/// of the FILETIME structure.
 		/// </param>
-		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
-		public delegate void PTIMERAPCROUTINE([In] IntPtr lpArgToCompletionRoutine, uint dwTimerLowValue, uint dwTimerHighValue);
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void TimerAPCProc([In] IntPtr lpArgToCompletionRoutine, uint dwTimerLowValue, uint dwTimerHighValue);
 
 		/// <summary>Used by <see cref="SleepConditionVariableSRW"/>.</summary>
 		[Flags]
@@ -171,6 +175,54 @@ namespace Vanara.PInvoke
 			SYNCHRONIZATION_BARRIER_FLAGS_NO_DELETE = 0x04,
 		}
 
+		/// <summary>Synchronization object access flags.</summary>
+		[PInvokeData("synchapi.h")]
+		[Flags]
+		public enum SynchronizationObjectAccess : uint
+		{
+			/// <summary>Modify state access, which is required for the SetEvent, ResetEvent and PulseEvent functions.</summary>
+			EVENT_MODIFY_STATE = 0x0002,
+
+			/// <summary>
+			/// All possible access rights for an event object. Use this right only if your application requires access beyond that granted
+			/// by the standard access rights and EVENT_MODIFY_STATE. Using this access right increases the possibility that your application
+			/// must be run by an Administrator.
+			/// </summary>
+			EVENT_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | ACCESS_MASK.SYNCHRONIZE | 0x3,
+
+			/// <summary>Reserved for future use.</summary>
+			MUTEX_QUERY_STATE = 0x0001,
+
+			/// <summary>
+			/// All possible access rights for a mutex object. Use this right only if your application requires access beyond that granted by
+			/// the standard access rights. Using this access right increases the possibility that your application must be run by an Administrator.
+			/// </summary>
+			MUTEX_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | ACCESS_MASK.SYNCHRONIZE | MUTEX_QUERY_STATE,
+
+			/// <summary>Modify state access, which is required for the ReleaseSemaphore function.</summary>
+			SEMAPHORE_MODIFY_STATE = 0x0002,
+
+			/// <summary>
+			/// All possible access rights for a semaphore object. Use this right only if your application requires access beyond that
+			/// granted by the standard access rights and SEMAPHORE_MODIFY_STATE. Using this access right increases the possibility that your
+			/// application must be run by an Administrator.
+			/// </summary>
+			SEMAPHORE_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | ACCESS_MASK.SYNCHRONIZE | 0x3,
+
+			/// <summary>Reserved for future use.</summary>
+			TIMER_QUERY_STATE = 0x0001,
+
+			/// <summary>Modify state access, which is required for the SetWaitableTimer and CancelWaitableTimer functions.</summary>
+			TIMER_MODIFY_STATE = 0x0002,
+
+			/// <summary>
+			/// All possible access rights for a waitable timer object. Use this right only if your application requires access beyond that
+			/// granted by the standard access rights and TIMER_MODIFY_STATE. Using this access right increases the possibility that your
+			/// application must be run by an Administrator.
+			/// </summary>
+			TIMER_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | ACCESS_MASK.SYNCHRONIZE | TIMER_QUERY_STATE | TIMER_MODIFY_STATE,
+		}
+
 		/// <summary>Values returned by <see cref="SignalObjectAndWait(IntPtr, IntPtr, uint, bool)"/>.</summary>
 		public enum WAIT_STATUS : uint
 		{
@@ -200,7 +252,7 @@ namespace Vanara.PInvoke
 		// VOID WINAPI AcquireSRWLockExclusive( _Inout_ PSRWLOCK SRWLock); https://msdn.microsoft.com/en-us/library/windows/desktop/ms681930(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms681930")]
-		public static extern void AcquireSRWLockExclusive(out SRWLOCK SRWLock);
+		public static extern void AcquireSRWLockExclusive(ref SRWLOCK SRWLock);
 
 		/// <summary>Acquires a slim reader/writer (SRW) lock in shared mode.</summary>
 		/// <param name="SRWLock">A pointer to the SRW lock.</param>
@@ -208,7 +260,7 @@ namespace Vanara.PInvoke
 		// VOID WINAPI AcquireSRWLockShared( _Inout_ PSRWLOCK SRWLock); https://msdn.microsoft.com/en-us/library/windows/desktop/ms681934(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms681934")]
-		public static extern void AcquireSRWLockShared(out SRWLOCK SRWLock);
+		public static extern void AcquireSRWLockShared(ref SRWLOCK SRWLock);
 
 		/// <summary>Sets the specified waitable timer to the inactive state.</summary>
 		/// <param name="hTimer">
@@ -348,7 +400,7 @@ namespace Vanara.PInvoke
 		// DWORD dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682400(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682400")]
-		public static extern SafeEventHandle CreateEventEx([In, Optional] SECURITY_ATTRIBUTES lpEventAttributes, [In, Optional] string lpName, CREATE_EVENT_FLAGS dwFlags, uint dwDesiredAccess);
+		public static extern SafeEventHandle CreateEventEx([In, Optional] SECURITY_ATTRIBUTES lpEventAttributes, [In, Optional] string lpName, CREATE_EVENT_FLAGS dwFlags, ACCESS_MASK dwDesiredAccess);
 
 		/// <summary>
 		/// <para>Creates or opens a named or unnamed mutex object.</para>
@@ -464,7 +516,7 @@ namespace Vanara.PInvoke
 		// DWORD dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682418(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682418")]
-		public static extern SafeMutexHandle CreateMutexEx([In, Optional] SECURITY_ATTRIBUTES lpMutexAttributes, [In, Optional] string lpName, CREATE_MUTEX_FLAGS dwFlags, uint dwDesiredAccess);
+		public static extern SafeMutexHandle CreateMutexEx([In, Optional] SECURITY_ATTRIBUTES lpMutexAttributes, [In, Optional] string lpName, CREATE_MUTEX_FLAGS dwFlags, ACCESS_MASK dwDesiredAccess);
 
 		/// <summary>
 		/// <para>Creates or opens a named or unnamed semaphore object.</para>
@@ -578,7 +630,7 @@ namespace Vanara.PInvoke
 		// lMaximumCount, _In_opt_ LPCTSTR lpName, _Reserved_ DWORD dwFlags, _In_ DWORD dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682446(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682446")]
-		public static extern SafeSemaphoreHandle CreateSemaphoreEx([In, Optional] SECURITY_ATTRIBUTES lpSemaphoreAttributes, int lInitialCount, int lMaximumCount, [In, Optional] string lpName, [Optional] uint dwFlags, uint dwDesiredAccess);
+		public static extern SafeSemaphoreHandle CreateSemaphoreEx([In, Optional] SECURITY_ATTRIBUTES lpSemaphoreAttributes, int lInitialCount, int lMaximumCount, [In, Optional] string lpName, [Optional] uint dwFlags, ACCESS_MASK dwDesiredAccess);
 
 		/// <summary>
 		/// <para>Creates or opens a waitable timer object.</para>
@@ -682,7 +734,7 @@ namespace Vanara.PInvoke
 		// dwFlags, _In_ DWORD dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682494(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682494")]
-		public static extern SafeWaitableTimerHandle CreateWaitableTimerEx([In, Optional] SECURITY_ATTRIBUTES lpTimerAttributes, [In, Optional] string lpTimerName, CREATE_WAITABLE_TIMER_FLAG dwFlags, uint dwDesiredAccess);
+		public static extern SafeWaitableTimerHandle CreateWaitableTimerEx([In, Optional] SECURITY_ATTRIBUTES lpTimerAttributes, [In, Optional] string lpTimerName, CREATE_WAITABLE_TIMER_FLAG dwFlags, ACCESS_MASK dwDesiredAccess);
 
 		/// <summary>Releases all resources used by an unowned critical section object.</summary>
 		/// <param name="lpCriticalSection">
@@ -844,7 +896,6 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="Flags">
 		/// <para>This parameter can be 0 or the following value.</para>
-		/// <para>
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Value</term>
@@ -855,15 +906,53 @@ namespace Vanara.PInvoke
 		/// <term>The critical section is created without debug information.</term>
 		/// </item>
 		/// </list>
-		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero (0). To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero (0). To get extended error information, call GetLastError.</para>
 		/// </returns>
-		// BOOL WINAPI InitializeCriticalSectionEx( _Out_ LPCRITICAL_SECTION lpCriticalSection, _In_ DWORD dwSpinCount, _In_ DWORD Flags); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683477(v=vs.85).aspx
+		/// <remarks>
+		/// <para>
+		/// The threads of a single process can use a critical section object for mutual-exclusion synchronization. There is no guarantee
+		/// about the order that threads obtain ownership of the critical section, however, the system is fair to all threads.
+		/// </para>
+		/// <para>
+		/// The process is responsible for allocating the memory used by a critical section object, which it can do by declaring a variable
+		/// of type <c>CRITICAL_SECTION</c>. Before using a critical section, some thread of the process must initialize the object. You can
+		/// subsequently modify the spin count by calling the SetCriticalSectionSpinCount function.
+		/// </para>
+		/// <para>
+		/// After a critical section object is initialized, the threads of the process can specify the object in the EnterCriticalSection,
+		/// TryEnterCriticalSection, or LeaveCriticalSection function to provide mutually exclusive access to a shared resource. For similar
+		/// synchronization between the threads of different processes, use a mutex object.
+		/// </para>
+		/// <para>
+		/// A critical section object cannot be moved or copied. The process must also not modify the object, but must treat it as logically
+		/// opaque. Use only the critical section functions to manage critical section objects. When you have finished using the critical
+		/// section, call the DeleteCriticalSection function.
+		/// </para>
+		/// <para>
+		/// A critical section object must be deleted before it can be reinitialized. Initializing a critical section that is already
+		/// initialized results in undefined behavior.
+		/// </para>
+		/// <para>
+		/// The spin count is useful for critical sections of short duration that can experience high levels of contention. Consider a
+		/// worst-case scenario, in which an application on an SMP system has two or three threads constantly allocating and releasing memory
+		/// from the heap. The application serializes the heap with a critical section. In the worst-case scenario, contention for the
+		/// critical section is constant, and each thread makes an processing-intensive call to the WaitForSingleObject function. However, if
+		/// the spin count is set properly, the calling thread does not immediately call <c>WaitForSingleObject</c> when contention occurs.
+		/// Instead, the calling thread can acquire ownership of the critical section if it is released during the spin operation.
+		/// </para>
+		/// <para>
+		/// You can improve performance significantly by choosing a small spin count for a critical section of short duration. The heap
+		/// manager uses a spin count of roughly 4000 for its per-heap critical sections. This gives great performance and scalability in
+		/// almost all worst-case scenarios.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-initializecriticalsectionex
+		// BOOL InitializeCriticalSectionEx( LPCRITICAL_SECTION lpCriticalSection, DWORD dwSpinCount, DWORD Flags );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms683477")]
+		[PInvokeData("synchapi.h", MSDNShortId = "da84b187-0eb7-4363-8e68-8a525586d7d9")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool InitializeCriticalSectionEx(out CRITICAL_SECTION lpCriticalSection, uint dwSpinCount, CRITICAL_SECTION_FLAGS Flags);
 
@@ -1020,7 +1109,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683493")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool InitOnceExecuteOnce(ref INIT_ONCE InitOnce, PINIT_ONCE_FN InitFn, IntPtr Parameter, out IntPtr Context);
+		public static extern bool InitOnceExecuteOnce(ref INIT_ONCE InitOnce, InitOnceCallback InitFn, [Optional] IntPtr Parameter, out IntPtr Context);
 
 		/// <summary>Initializes a one-time initialization structure.</summary>
 		/// <param name="InitOnce">A pointer to the one-time initialization structure.</param>
@@ -1046,9 +1135,8 @@ namespace Vanara.PInvoke
 		/// <param name="Comparand">The value to compare to Destination.</param>
 		/// <returns>The function returns the initial value of the Destination parameter.</returns>
 		// LONG __cdecl InterlockedCompareExchange( _Inout_ LONG volatile *Destination, _In_ LONG Exchange, _In_ LONG Comparand); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683560(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683560")]
-		public static extern int InterlockedCompareExchange(ref int Destination, int Exchange, int Comparand);
+		public static int InterlockedCompareExchange(ref int Destination, int Exchange, int Comparand) => System.Threading.Interlocked.CompareExchange(ref Destination, Exchange, Comparand);
 
 		/// <summary>
 		/// <para>Decrements (decreases by one) the value of the specified 32-bit variable as an atomic operation.</para>
@@ -1057,9 +1145,8 @@ namespace Vanara.PInvoke
 		/// <param name="Addend">A pointer to the variable to be decremented.</param>
 		/// <returns>The function returns the resulting decremented value.</returns>
 		// LONG __cdecl InterlockedDecrement( _Inout_ LONG volatile *Addend); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683580(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683580")]
-		public static extern int InterlockedDecrement(ref int Addend);
+		public static int InterlockedDecrement(ref int Addend) => System.Threading.Interlocked.Decrement(ref Addend);
 
 		/// <summary>
 		/// <para>Sets a 32-bit variable to the specified value as an atomic operation.</para>
@@ -1073,9 +1160,8 @@ namespace Vanara.PInvoke
 		/// <param name="Value">The value to be exchanged with the value pointed to by Target.</param>
 		/// <returns>The function returns the initial value of the Target parameter.</returns>
 		// LONG __cdecl InterlockedExchange( _Inout_ LONG volatile *Target, _In_ LONG Value); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683590(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683590")]
-		public static extern int InterlockedExchange(ref int Target, int Value);
+		public static int InterlockedExchange(ref int Target, int Value) => System.Threading.Interlocked.Exchange(ref Target, Value);
 
 		/// <summary>
 		/// <para>Performs an atomic addition of two 32-bit values.</para>
@@ -1085,9 +1171,8 @@ namespace Vanara.PInvoke
 		/// <param name="Value">The value to be added to the variable pointed to by the Addend parameter.</param>
 		/// <returns>The function returns the initial value of the Addend parameter.</returns>
 		// LONG __cdecl InterlockedExchangeAdd( _Inout_ LONG volatile *Addend, _In_ LONG Value); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683597(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683597")]
-		public static extern int InterlockedExchangeAdd(ref int Addend, int Value);
+		public static int InterlockedExchangeAdd(ref int Addend, int Value) => throw new NotImplementedException("Machine level export not found in Kernel32.dll or .NET assemblies.");
 
 		/// <summary>
 		/// <para>Increments (increases by one) the value of the specified 32-bit variable as an atomic operation.</para>
@@ -1096,9 +1181,8 @@ namespace Vanara.PInvoke
 		/// <param name="Addend">A pointer to the variable to be incremented.</param>
 		/// <returns>The function returns the resulting incremented value.</returns>
 		// LONG __cdecl InterlockedIncrement( _Inout_ LONG volatile *Addend); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683614(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683614")]
-		public static extern int InterlockedIncrement(ref int Addend);
+		public static int InterlockedIncrement(ref int Addend) => System.Threading.Interlocked.Increment(ref Addend);
 
 		/// <summary>Releases ownership of the specified critical section object.</summary>
 		/// <param name="lpCriticalSection">A pointer to the critical section object.</param>
@@ -1407,8 +1491,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686289")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetWaitableTimer([In] SafeWaitableTimerHandle hTimer, in FILETIME pDueTime, int lPeriod, PTIMERAPCROUTINE pfnCompletionRoutine,
-			[In] IntPtr lpArgToCompletionRoutine, [MarshalAs(UnmanagedType.Bool)] bool fResume);
+		public static extern bool SetWaitableTimer([In] SafeWaitableTimerHandle hTimer, in FILETIME pDueTime, [Optional] int lPeriod, [Optional] TimerAPCProc pfnCompletionRoutine,
+			[In, Optional] IntPtr lpArgToCompletionRoutine, [MarshalAs(UnmanagedType.Bool)] bool fResume = false);
 
 		/// <summary>
 		/// Activates the specified waitable timer and provides context information for the timer. When the due time arrives, the timer is
@@ -1449,8 +1533,50 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "dd405521")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetWaitableTimerEx([In] SafeWaitableTimerHandle hTimer, in FILETIME lpDueTime, int lPeriod, PTIMERAPCROUTINE pfnCompletionRoutine,
-			[In] IntPtr lpArgToCompletionRoutine, in REASON_CONTEXT WakeContext, uint TolerableDelay);
+		public static extern bool SetWaitableTimerEx([In] SafeWaitableTimerHandle hTimer, in FILETIME lpDueTime, [Optional] int lPeriod, [Optional] TimerAPCProc pfnCompletionRoutine,
+			[In, Optional] IntPtr lpArgToCompletionRoutine, [In] REASON_CONTEXT WakeContext, uint TolerableDelay);
+
+		/// <summary>
+		/// Activates the specified waitable timer and provides context information for the timer. When the due time arrives, the timer is
+		/// signaled and the thread that set the timer calls the optional completion routine.
+		/// </summary>
+		/// <param name="hTimer">
+		/// <para>A handle to the timer object. The <c>CreateWaitableTimer</c> or <c>OpenWaitableTimer</c> function returns this handle.</para>
+		/// <para>
+		/// The handle must have the <c>TIMER_MODIFY_STATE</c> access right. For more information, see Synchronization Object Security and
+		/// Access Rights.
+		/// </para>
+		/// </param>
+		/// <param name="lpDueTime">
+		/// The time after which the state of the timer is to be set to signaled, in 100 nanosecond intervals. Use the format described by
+		/// the <c>FILETIME</c> structure. Positive values indicate absolute time. Be sure to use a UTC-based absolute time, as the system
+		/// uses UTC-based time internally. Negative values indicate relative time. The actual timer accuracy depends on the capability of
+		/// your hardware. For more information about UTC-based time, see System Time.
+		/// </param>
+		/// <param name="lPeriod">
+		/// The period of the timer, in milliseconds. If lPeriod is zero, the timer is signaled once. If lPeriod is greater than zero, the
+		/// timer is periodic. A periodic timer automatically reactivates each time the period elapses, until the timer is canceled using the
+		/// <c>CancelWaitableTimer</c> function or reset using <c>SetWaitableTimerEx</c>. If lPeriod is less than zero, the function fails.
+		/// </param>
+		/// <param name="pfnCompletionRoutine">
+		/// A pointer to an optional completion routine. The completion routine is application-defined function of type
+		/// <c>PTIMERAPCROUTINE</c> to be executed when the timer is signaled. For more information on the timer callback function, see
+		/// <c>TimerAPCProc</c>. For more information about APCs and thread pool threads, see Remarks.
+		/// </param>
+		/// <param name="lpArgToCompletionRoutine">A pointer to a structure that is passed to the completion routine.</param>
+		/// <param name="WakeContext">Pointer to a <c>REASON_CONTEXT</c> structure that contains context information for the timer.</param>
+		/// <param name="TolerableDelay">The tolerable delay for expiration time, in milliseconds.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI SetWaitableTimerEx( _In_ HANDLE hTimer, _In_ const LARGE_INTEGER *lpDueTime, _In_ LONG lPeriod, _In_ PTIMERAPCROUTINE
+		// pfnCompletionRoutine, _In_ LPVOID lpArgToCompletionRoutine, _In_ PREASON_CONTEXT WakeContext, _In_ ULONG TolerableDelay); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405521(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "dd405521")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetWaitableTimerEx([In] SafeWaitableTimerHandle hTimer, in FILETIME lpDueTime, [Optional] int lPeriod, [Optional] TimerAPCProc pfnCompletionRoutine,
+			[In, Optional] IntPtr lpArgToCompletionRoutine, [Optional] IntPtr WakeContext, uint TolerableDelay);
 
 		/// <summary>Signals one object and waits on another object as a single operation.</summary>
 		/// <param name="hObjectToSignal">
@@ -1641,7 +1767,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI SleepEx( _In_ DWORD dwMilliseconds, _In_ BOOL bAlertable); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686307(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686307")]
-		public static extern WAIT_STATUS SleepEx(uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool bAlertable);
+		public static extern uint SleepEx(uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool bAlertable);
 
 		/// <summary>
 		/// Attempts to acquire a slim reader/writer (SRW) lock in exclusive mode. If the call is successful, the calling thread takes
@@ -1691,7 +1817,7 @@ namespace Vanara.PInvoke
 		public static extern bool TryEnterCriticalSection(ref CRITICAL_SECTION lpCriticalSection);
 
 		/// <summary>
-		/// <para>Cancels a registered wait operation issued by the <c>RegisterWaitForSingleObject</c> function.</para>
+		/// <para>Cancels a registered wait operation issued by the <see cref="RegisterWaitForSingleObject"/> function.</para>
 		/// <para>To use a completion event, call the <c>UnregisterWaitEx</c> function.</para>
 		/// </summary>
 		/// <param name="WaitHandle">The wait handle. This handle is returned by the <c>RegisterWaitForSingleObject</c> function.</param>
@@ -1771,8 +1897,11 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI WaitForMultipleObjects( _In_ DWORD nCount, _In_ const HANDLE *lpHandles, _In_ BOOL bWaitAll, _In_ DWORD
 		// dwMilliseconds); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85).aspx
 		[PInvokeData("WinBase.h", MSDNShortId = "ms687025")]
-		public static WAIT_STATUS WaitForMultipleObjects(ISyncHandle[] lpHandles, bool bWaitAll, uint dwMilliseconds) =>
-			WaitForMultipleObjects((uint)(lpHandles?.Length ?? 0), lpHandles == null ? null : Array.ConvertAll(lpHandles, i => i.DangerousGetHandle()), bWaitAll, dwMilliseconds);
+		public static WAIT_STATUS WaitForMultipleObjects<T>(IEnumerable<T> lpHandles, bool bWaitAll, uint dwMilliseconds) where T : ISyncHandle
+		{
+			var h = lpHandles?.Select(i => i.DangerousGetHandle()).ToArray();
+			return WaitForMultipleObjects((uint)(h?.Length ?? 0), h, bWaitAll, dwMilliseconds);
+		}
 
 		/// <summary>
 		/// Waits until one or all of the specified objects are in the signaled state, an I/O completion routine or asynchronous procedure
@@ -1860,8 +1989,11 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI WaitForMultipleObjectsEx( _In_ DWORD nCount, _In_ const HANDLE *lpHandles, _In_ BOOL bWaitAll, _In_ DWORD
 		// dwMilliseconds, _In_ BOOL bAlertable); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687028(v=vs.85).aspx
 		[PInvokeData("WinBase.h", MSDNShortId = "ms687028")]
-		public static WAIT_STATUS WaitForMultipleObjectsEx(ISyncHandle[] lpHandles, bool bWaitAll, uint dwMilliseconds, bool bAlertable) =>
-			WaitForMultipleObjectsEx((uint)(lpHandles?.Length ?? 0), lpHandles == null ? null : Array.ConvertAll(lpHandles, i => i.DangerousGetHandle()), bWaitAll, dwMilliseconds, bAlertable);
+		public static WAIT_STATUS WaitForMultipleObjectsEx<T>(IEnumerable<T> lpHandles, bool bWaitAll, uint dwMilliseconds, bool bAlertable) where T : ISyncHandle
+		{
+			var h = lpHandles?.Select(i => i.DangerousGetHandle()).ToArray();
+			return WaitForMultipleObjectsEx((uint)(h?.Length ?? 0), h, bWaitAll, dwMilliseconds, bAlertable);
+		}
 
 		/// <summary>
 		/// <para>Waits until the specified object is in the signaled state or the time-out interval elapses.</para>
@@ -2017,16 +2149,16 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// BOOL WINAPI WaitOnAddress( _In_ VOID volatile *Address, _In_ PVOID CompareAddress, _In_ SIZE_T AddressSize, _In_opt_ DWORD
 		// dwMilliseconds); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706898(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("SynchAPI.h", MSDNShortId = "hh706898")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool WaitOnAddress(IntPtr Address, IntPtr CompareAddress, SizeT AddressSize, uint dwMilliseconds);
+		public static extern unsafe bool WaitOnAddress(void* Address, void* CompareAddress, SizeT AddressSize, uint dwMilliseconds);
 
 		/// <summary>Wake all threads waiting on the specified condition variable.</summary>
 		/// <param name="ConditionVariable">A pointer to the condition variable.</param>
 		/// <returns>This function does not return a value.</returns>
 		// VOID WINAPI WakeAllConditionVariable( _Inout_ PCONDITION_VARIABLE ConditionVariable); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687076(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms687076")]
 		public static extern void WakeAllConditionVariable(ref CONDITION_VARIABLE ConditionVariable);
 
@@ -2037,9 +2169,9 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>This function does not return a value.</returns>
 		// VOID WINAPI WakeByAddressAll( _In_ PVOID Address); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706899(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("SynchAPI.h", MSDNShortId = "hh706899")]
-		public static extern void WakeByAddressAll(IntPtr Address);
+		public static extern unsafe void WakeByAddressAll(void* Address);
 
 		/// <summary>Wakes one thread that is waiting for the value of an address to change.</summary>
 		/// <param name="Address">
@@ -2048,15 +2180,15 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>This function does not return a value.</returns>
 		// VOID WINAPI WakeByAddressSingle( _In_ PVOID Address); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706900(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("SynchAPI.h", MSDNShortId = "hh706900")]
-		public static extern void WakeByAddressSingle(IntPtr Address);
+		public static extern unsafe void WakeByAddressSingle(void* Address);
 
 		/// <summary>Wake a single thread waiting on the specified condition variable.</summary>
 		/// <param name="ConditionVariable">A pointer to the condition variable.</param>
 		/// <returns>This function does not return a value.</returns>
 		// VOID WINAPI WakeConditionVariable( _Inout_ PCONDITION_VARIABLE ConditionVariable); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687080(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms687080")]
 		public static extern void WakeConditionVariable(ref CONDITION_VARIABLE ConditionVariable);
 
@@ -2112,7 +2244,7 @@ namespace Vanara.PInvoke
 		// LocalizedReasonId; ULONG ReasonStringCount; LPWSTR *ReasonStrings; } Detailed; LPWSTR SimpleReasonString; } Reason;}
 		// REASON_CONTEXT, *PREASON_CONTEXT; https://msdn.microsoft.com/en-us/library/windows/desktop/dd405536(v=vs.85).aspx
 		[PInvokeData("MinWinBase.h", MSDNShortId = "dd405536")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public class REASON_CONTEXT : IDisposable
 		{
 			/// <summary>The version number of the structure. This parameter must be set to <c>DIAGNOSTIC_REASON_VERSION</c>.</summary>
@@ -2144,7 +2276,7 @@ namespace Vanara.PInvoke
 			private DETAIL _reason;
 
 			/// <summary>A structure that identifies a localizable string resource to describe the reason for the power request.</summary>
-			[StructLayout(LayoutKind.Sequential)]
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 			public struct DETAIL
 			{
 				/// <summary>The module that contains the string resource.</summary>
@@ -2164,7 +2296,7 @@ namespace Vanara.PInvoke
 			{
 				Version = DIAGNOSTIC_REASON_VERSION.DIAGNOSTIC_REASON_VERSION;
 				Flags = DIAGNOSTIC_REASON.DIAGNOSTIC_REASON_SIMPLE_STRING;
-				_reason.LocalizedReasonModule = Marshal.StringToHGlobalAuto(reason);
+				_reason.LocalizedReasonModule = Marshal.StringToHGlobalUni(reason);
 			}
 
 			public REASON_CONTEXT(HINSTANCE localizedReasonModule, uint reasonId, string[] substituionValues = null)
@@ -2174,7 +2306,7 @@ namespace Vanara.PInvoke
 				_reason.LocalizedReasonModule = (IntPtr)localizedReasonModule;
 				_reason.LocalizedReasonId = reasonId;
 				_reason.ReasonStringCount = (uint)(substituionValues?.Length ?? 0);
-				_reason.ReasonStrings = substituionValues?.MarshalToPtr(Marshal.AllocHGlobal, out var _) ?? IntPtr.Zero;
+				_reason.ReasonStrings = substituionValues?.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out var _, CharSet.Unicode) ?? IntPtr.Zero;
 			}
 
 			void IDisposable.Dispose()
@@ -2197,7 +2329,12 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct SYNCHRONIZATION_BARRIER
 		{
-			private readonly IntPtr ptr;
+			private uint Reserved1;
+			private uint Reserved2;
+			private IntPtr Reserved3_1;
+			private IntPtr Reserved3_2;
+			private uint Reserved4;
+			private uint Reserved5;
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to an event that is automatically disposed using CloseHandle.</summary>
