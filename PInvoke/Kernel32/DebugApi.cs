@@ -11,8 +11,15 @@ namespace Vanara.PInvoke
 		/// <param name="lpThreadParameter">
 		/// A pointer to a variable to be passed as the lpParameter parameter to the function pointed to by the lpCallbackAddress parameter.
 		/// </param>
-		/// <returns>Zero if successfull. Otherwise, returns an error code.</returns>
-		public delegate uint PTHREAD_START_ROUTINE(IntPtr lpThreadParameter);
+		/// <returns>Zero if successful. Otherwise, returns an error code.</returns>
+		public delegate uint ThreadProc(IntPtr lpThreadParameter);
+
+		/// <summary>A pointer to the starting address of the thread.</summary>
+		/// <param name="lpThreadParameter">
+		/// A pointer to a variable to be passed as the lpParameter parameter to the function pointed to by the lpCallbackAddress parameter.
+		/// </param>
+		/// <returns>Zero if successful. Otherwise, returns an error code.</returns>
+		public unsafe delegate uint ThreadProcUnsafe(void* lpThreadParameter);
 
 		/// <summary>The options to continue the thread that reported the debugging event.</summary>
 		public enum DEBUG_CONTINUE : uint
@@ -347,39 +354,39 @@ namespace Vanara.PInvoke
 				/// </summary>
 				[FieldOffset(0)]
 				public CREATE_THREAD_DEBUG_INFO CreateThread;
-			
+
 				/// <summary>
 				/// If the dwDebugEventCode is CREATE_PROCESS_DEBUG_EVENT (3), u.CreateProcessInfo specifies an CREATE_PROCESS_DEBUG_INFO structure.
 				/// </summary>
 				[FieldOffset(0)]
 				public CREATE_PROCESS_DEBUG_INFO CreateProcessInfo;
-			
+
 				/// <summary>
 				/// If the dwDebugEventCode is EXIT_THREAD_DEBUG_EVENT (4), u.ExitThread specifies an EXIT_THREAD_DEBUG_INFO structure.
 				/// </summary>
 				[FieldOffset(0)]
 				public EXIT_THREAD_DEBUG_INFO ExitThread;
-			
+
 				/// <summary>
 				/// If the dwDebugEventCode is EXIT_PROCESS_DEBUG_EVENT (5), u.ExitProcess specifies an EXIT_PROCESS_DEBUG_INFO structure.
 				/// </summary>
 				[FieldOffset(0)]
 				public EXIT_PROCESS_DEBUG_INFO ExitProcess;
-			
+
 				/// <summary>If the dwDebugEventCode is LOAD_DLL_DEBUG_EVENT (6), u.LoadDll specifies an LOAD_DLL_DEBUG_INFO structure.</summary>
 				[FieldOffset(0)]
 				public LOAD_DLL_DEBUG_INFO LoadDll;
-			
+
 				/// <summary>If the dwDebugEventCode is UNLOAD_DLL_DEBUG_EVENT (7), u.UnloadDll specifies an UNLOAD_DLL_DEBUG_INFO structure.</summary>
 				[FieldOffset(0)]
 				public UNLOAD_DLL_DEBUG_INFO UnloadDll;
-			
+
 				/// <summary>
 				/// If the dwDebugEventCode is OUTPUT_DEBUG_STRING_EVENT (8), u.DebugString specifies an OUTPUT_DEBUG_STRING_INFO structure.
 				/// </summary>
 				[FieldOffset(0)]
 				public OUTPUT_DEBUG_STRING_INFO DebugString;
-			
+
 				/// <summary>If the dwDebugEventCode is RIP_EVENT (9), u.RipInfo specifies an RIP_INFO structure.</summary>
 				[FieldOffset(0)]
 				public RIP_INFO RipInfo;

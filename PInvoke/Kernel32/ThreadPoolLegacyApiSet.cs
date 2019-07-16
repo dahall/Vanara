@@ -331,7 +331,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684957")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueueUserWorkItem(PTHREAD_START_ROUTINE Function, [In] IntPtr Context, WT Flags);
+		public static extern bool QueueUserWorkItem(ThreadProc Function, [In] IntPtr Context, WT Flags);
 
 		/// <summary>
 		/// Directs a wait thread in the thread pool to wait on the object. The wait thread queues the specified callback function to the

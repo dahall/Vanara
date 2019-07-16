@@ -1841,7 +1841,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "B0675BB3-62FA-462E-8DFB-55C47576DFEC")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzRegisterCapChangeNotification(out SafeAUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE phCapChangeSubscription, PTHREAD_START_ROUTINE pfnCapChangeCallback, IntPtr pCallbackContext);
+		public static extern bool AuthzRegisterCapChangeNotification(out SafeAUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE phCapChangeSubscription, ThreadProc pfnCapChangeCallback, IntPtr pCallbackContext);
 
 		/// <summary>
 		/// The <c>AuthzRegisterSecurityEventSource</c> function registers a security event source with the Local Security Authority (LSA).
