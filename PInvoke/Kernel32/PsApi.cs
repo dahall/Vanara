@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-using Vanara.Extensions;
 using Vanara.InteropServices;
+using static Vanara.Extensions.BitHelper;
 
 namespace Vanara.PInvoke
 {
@@ -1617,10 +1617,10 @@ namespace Vanara.PInvoke
 			public UIntPtr Flags;
 
 			/// <summary>If <see langword="true"/>, the page is sharable; otherwise, the page is not sharable.</summary>
-			public bool Shared => Flags.ToUInt32().GetBit(9);
+			public bool Shared => GetBit(Flags.ToUInt32(), 9);
 
 			/// <summary>The number of processes that share this page. The maximum value of this member is 7.</summary>
-			public uint ShareCount => Flags.ToUInt32().GetBits(5, 3);
+			public uint ShareCount => GetBits(Flags.ToUInt32(), 5, 3);
 
 			/// <summary>
 			///   <para>The protection attributes of the page. This member can be one of the following values.</para>
@@ -1759,7 +1759,7 @@ namespace Vanara.PInvoke
 			///     </item>
 			///   </list>
 			/// </summary>
-			public uint Protection => Flags.ToUInt32().GetBits(0, 5);
+			public uint Protection => GetBits(Flags.ToUInt32(), 0, 5);
 
 			public IntPtr VirtualPage => new IntPtr((long)Flags.ToUInt64() & ~0xFFFL);
 		}
@@ -1775,19 +1775,19 @@ namespace Vanara.PInvoke
 			public UIntPtr Flags;
 
 			/// <summary>If <see langword="true"/>, the page is valid; otherwise, the page is not valid.</summary>
-			public bool Valid => Flags.ToUInt32().GetBit(0);
+			public bool Valid => GetBit(Flags.ToUInt32(), 0);
 
-			public bool Locked => Valid ? Flags.ToUInt32().GetBit(22) : false;
+			public bool Locked => Valid ? GetBit(Flags.ToUInt32(), 22) : false;
 
-			public bool LargePage => Valid ? Flags.ToUInt32().GetBit(23) : false;
+			public bool LargePage => Valid ? GetBit(Flags.ToUInt32(), 23) : false;
 
-			public bool Bad => Flags.ToUInt32().GetBit(31);
+			public bool Bad => GetBit(Flags.ToUInt32(), 31);
 
 			/// <summary>If <see langword="true"/>, the page is sharable; otherwise, the page is not sharable.</summary>
-			public bool Shared => Flags.ToUInt32().GetBit(15);
+			public bool Shared => GetBit(Flags.ToUInt32(), 15);
 
 			/// <summary>The number of processes that share this page. The maximum value of this member is 7.</summary>
-			public uint ShareCount => Valid ? Flags.ToUInt32().GetBits(1, 3) : 0U;
+			public uint ShareCount => Valid ? GetBits(Flags.ToUInt32(), 1, 3) : 0U;
 
 			/// <summary>
 			///   <para>The protection attributes of the page. This member can be one of the following values.</para>
@@ -1926,9 +1926,9 @@ namespace Vanara.PInvoke
 			///     </item>
 			///   </list>
 			/// </summary>
-			public uint Protection => Valid ? Flags.ToUInt32().GetBits(4, 11) : 0U;
+			public uint Protection => Valid ? GetBits(Flags.ToUInt32(), 4, 11) : 0U;
 
-			public uint Node => Valid ? Flags.ToUInt32().GetBits(0, 5) : 0U;
+			public uint Node => Valid ? GetBits(Flags.ToUInt32(), 0, 5) : 0U;
 		}
 
 		/// <summary>Contains working set information for a process.</summary>

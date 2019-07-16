@@ -12,7 +12,7 @@ namespace Vanara.Extensions
 		/// <param name="bits">The bit vector.</param>
 		/// <param name="idx">The zero-based index of the bit to get.</param>
 		/// <returns><see langword="true"/> if the bit is set (1); <see langword="false"/> otherwise.</returns>
-		public static bool GetBit<T>(this T bits, byte idx) where T : struct, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable =>
+		public static bool GetBit<T>(T bits, byte idx) where T : struct, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable =>
 			(idx < (Marshal.SizeOf(typeof(T)) * 8)) ? (bits.ToInt64(null) & 1 << idx) != 0 : throw new ArgumentOutOfRangeException(nameof(idx));
 
 		/// <summary>Gets the bit array value from the specified range in a bit vector.</summary>
@@ -21,7 +21,7 @@ namespace Vanara.Extensions
 		/// <param name="startIdx">The zero-based start index of the bit range to get.</param>
 		/// <param name="count">The number of sequential bits to fetch starting at <paramref name="startIdx"/>.</param>
 		/// <returns>The value of the requested bit range.</returns>
-		public static T GetBits<T>(this T bits, byte startIdx, byte count) where T : struct, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable
+		public static T GetBits<T>(T bits, byte startIdx, byte count) where T : struct, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable
 		{
 			if (startIdx >= (Marshal.SizeOf(typeof(T)) * 8)) throw new ArgumentOutOfRangeException(nameof(startIdx));
 			if (count + startIdx > (Marshal.SizeOf(typeof(T)) * 8)) throw new ArgumentOutOfRangeException(nameof(count));

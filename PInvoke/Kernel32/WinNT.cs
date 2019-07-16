@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using static Vanara.Extensions.BitHelper;
 
 namespace Vanara.PInvoke
 {
@@ -732,36 +733,36 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>The type of segment. This member can be one of the following values:</para>
 			/// </summary>
-			public byte Type { get => (byte)Flags.GetBits(0, 5); set => BitHelper.SetBits(ref Flags, 0, 5, value); }
+			public byte Type { get => GetBits((byte)Flags, 0, 5); set => SetBits(ref Flags, 0, 5, value); }
 
 			/// <summary>
 			/// <para>
 			/// The privilege level of the descriptor. This member is an integer value in the range 0 (most privileged) through 3 (least privileged).
 			/// </para>
 			/// </summary>
-			public byte Dpl { get => (byte)Flags.GetBits(5, 2); set => BitHelper.SetBits(ref Flags, 5, 2, value); }
+			public byte Dpl { get => GetBits((byte)Flags, 5, 2); set => SetBits(ref Flags, 5, 2, value); }
 
 			/// <summary>
 			/// <para>The present flag. This member is 1 if the segment is present in physical memory or 0 if it is not.</para>
 			/// </summary>
-			public bool Pres { get => Flags.GetBit(7); set => BitHelper.SetBit(ref Flags, 7, value); }
+			public bool Pres { get => GetBit(Flags, 7); set => SetBit(ref Flags, 7, value); }
 
 			/// <summary>
 			/// <para>The high bits (16â€“19) of the address of the last byte in the segment.</para>
 			/// </summary>
-			public byte LimitHi { get => (byte)Flags.GetBits(8, 4); set => BitHelper.SetBits(ref Flags, 8, 4, value); }
+			public byte LimitHi { get => GetBits((byte)Flags, 8, 4); set => SetBits(ref Flags, 8, 4, value); }
 
 			/// <summary>
 			/// <para>
 			/// The space that is available to system programmers. This member might be used for marking segments in some system-specific way.
 			/// </para>
 			/// </summary>
-			public bool Sys { get => Flags.GetBit(12); set => BitHelper.SetBit(ref Flags, 12, value); }
+			public bool Sys { get => GetBit(Flags, 12); set => SetBit(ref Flags, 12, value); }
 
 			/// <summary>
 			/// <para>Reserved.</para>
 			/// </summary>
-			public bool Reserved_0 { get => Flags.GetBit(13); set => BitHelper.SetBit(ref Flags, 13, value); }
+			public bool Reserved_0 { get => GetBit(Flags, 13); set => SetBit(ref Flags, 13, value); }
 
 			/// <summary>
 			/// <para>
@@ -772,12 +773,12 @@ namespace Vanara.PInvoke
 			/// If the segment is a code segment, this member contains 1. The segment runs with the default (native mode) instruction set.
 			/// </para>
 			/// </summary>
-			public bool Default_Big { get => Flags.GetBit(14); set => BitHelper.SetBit(ref Flags, 14, value); }
+			public bool Default_Big { get => GetBit(Flags, 14); set => SetBit(ref Flags, 14, value); }
 
 			/// <summary>
 			/// <para>The granularity. This member contains 0 if the segment is byte granular, 1 if the segment is page granular.</para>
 			/// </summary>
-			public bool Granularity { get => Flags.GetBit(15); set => BitHelper.SetBit(ref Flags, 15, value); }
+			public bool Granularity { get => GetBit(Flags, 15); set => SetBit(ref Flags, 15, value); }
 		}
 
 		/// <summary>Used by thread context functions.</summary>
