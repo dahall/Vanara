@@ -182,11 +182,7 @@ namespace Vanara.IO
 		/// </summary>
 		/// <param name="path">The UNC path.</param>
 		/// <returns>On success, the server portion of the UNC path. On failure, <see langword="null"/> is returned.</returns>
-		public static string GetUNCServer(string path)
-		{
-			var sb = new StringBuilder(MAX_PATH, MAX_PATH);
-			return PathIsUNCEx(path, ref sb) ? sb.ToString() : null;
-		}
+		public static string GetUNCServer(string path) => PathIsUNCEx(path, out var ptr) ? StringHelper.GetString(ptr, System.Runtime.InteropServices.CharSet.Unicode, path.Length) : null;
 
 		/// <summary>
 		/// Searches a path to determine if it contains a valid prefix of the type passed by <paramref name="prefix"/>. A prefix is one of
