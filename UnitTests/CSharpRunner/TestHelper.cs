@@ -36,8 +36,15 @@ namespace Vanara.PInvoke.Tests
 
 		public static void WriteValues(this object value)
 		{
-			var json = JsonConvert.SerializeObject(value, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
+			var json = JsonConvert.SerializeObject(value, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter());
 			TestContext.WriteLine(json);
+		}
+
+		private class SizeTConverter : JsonConverter<SizeT>
+		{
+			public override void WriteJson(JsonWriter writer, SizeT value, JsonSerializer serializer) => writer.WriteValue(value.Value);
+
+			public override SizeT ReadJson(JsonReader reader, Type objectType, SizeT existingValue, bool hasExistingValue, JsonSerializer serializer) => reader.Value is ulong ul ? new SizeT(ul) : new SizeT(0);
 		}
 	}
 }

@@ -7,6 +7,7 @@ namespace Vanara.PInvoke.Tests
 		public static FailureConstraint Failure => new FailureConstraint();
 		public static SuccessfulConstraint Successful => new SuccessfulConstraint();
 		public static ValueConstraint Value(object value) => new ValueConstraint(value);
+		public static ValidHandleConstraint ValidHandle => new ValidHandleConstraint();
 	}
 
 	public class FailureConstraint : Constraint
@@ -146,4 +147,35 @@ namespace Vanara.PInvoke.Tests
 			return new ConstraintResult(this, actual, true);
 		}
 	}
+
+	public class ValidHandleConstraint : Constraint
+	{
+		public ValidHandleConstraint()
+		{
+		}
+
+		public override ConstraintResult ApplyTo<TActual>(TActual actual)
+		{
+			var success = true;
+			switch (actual)
+			{
+				case System.Runtime.InteropServices.SafeHandle h:
+					success = !h.IsInvalid;
+					break;
+				case IHandle ih:
+					var l = ih.DangerousGetHandle().ToInt64();
+					success = l != 0 && l != -1;
+					break;
+				case System.IntPtr p:
+					l = p.ToInt64();
+					success = l != 0 && l != -1;
+					break;
+				default:
+					break;
+			}
+			Description = $"Valid handle";
+			return new ConstraintResult(this, success ? "Valid handle" : $"Invalid handle (Err: {Win32Error.GetLastError()})", success);
+		}
+	}
+
 }

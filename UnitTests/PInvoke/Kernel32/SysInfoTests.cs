@@ -218,7 +218,7 @@ namespace Vanara.PInvoke.Tests
 			var status = MEMORYSTATUS.Default;
 			GlobalMemoryStatus(ref status);
 			Assert.That(status.dwAvailVirtual, Is.Not.Zero);
-			//status.WriteValues();
+			status.WriteValues();
 		}
 
 		[Test]
