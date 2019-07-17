@@ -65,8 +65,9 @@ namespace Vanara.PInvoke
 				result = null;
 				return ret0;
 			}
-			var len = sz.ToInt32(null);
+			var len = sz.ToInt32(null) + 1;
 			var sb = new StringBuilder(len, len);
+			sz = (TSize)Convert.ChangeType(len, typeof(TSize));
 			var ret = method(sb, ref sz);
 			result = sb.ToString();
 			return ret;
@@ -83,7 +84,7 @@ namespace Vanara.PInvoke
 		/// <returns>The return value of <paramref name="method"/>.</returns>
 		public static TRet CallMethodWithStrBuf<TSize, TRet>(Func<StringBuilder, TSize, TRet> method, TSize bufSz, out string result) where TSize : IConvertible
 		{
-			var len = bufSz.ToInt32(null);
+			var len = bufSz.ToInt32(null) + 1;
 			var sb = new StringBuilder(len, len);
 			var ret = method(sb, bufSz);
 			result = sb.ToString();
