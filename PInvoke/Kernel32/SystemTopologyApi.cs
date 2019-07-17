@@ -21,8 +21,8 @@ namespace Vanara.PInvoke
 		/// <param name="Node">The node number.</param>
 		/// <param name="ProcessorMask">
 		/// <para>
-		/// A pointer to a <c>GROUP_AFFINITY</c> structure that receives the processor mask for the specified node. A processor mask is a bit vector in which
-		/// each bit represents a processor and whether it is in the node.
+		/// A pointer to a <c>GROUP_AFFINITY</c> structure that receives the processor mask for the specified node. A processor mask is a bit
+		/// vector in which each bit represents a processor and whether it is in the node.
 		/// </para>
 		/// <para>If the specified node has no processors configured, the <c>Mask</c> member is zero and the <c>Group</c> member is undefined.</para>
 		/// </param>
@@ -50,20 +50,23 @@ namespace Vanara.PInvoke
 		public static extern bool GetNumaProximityNodeEx(uint ProximityId, out ushort NodeNumber);
 
 		/// <summary>Represents a processor group-specific affinity, such as the affinity of a thread.</summary>
-		// typedef struct _GROUP_AFFINITY { KAFFINITY Mask; WORD Group; WORD Reserved[3];} GROUP_AFFINITY, *PGROUP_AFFINITY;
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/dd405500(v=vs.85).aspx
+		// typedef struct _GROUP_AFFINITY { KAFFINITY Mask; WORD Group; WORD Reserved[3];} GROUP_AFFINITY, *PGROUP_AFFINITY; https://msdn.microsoft.com/en-us/library/windows/desktop/dd405500(v=vs.85).aspx
 		[PInvokeData("WinNT.h", MSDNShortId = "dd405500")]
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct GROUP_AFFINITY
 		{
 			/// <summary>A bitmap that specifies the affinity for zero or more processors within the specified group.</summary>
 			public UIntPtr Mask;
+
 			/// <summary>The processor group number.</summary>
 			public ushort Group;
+
 			/// <summary>This member is reserved.</summary>
 			private ushort Reserved1;
+
 			/// <summary>This member is reserved.</summary>
 			private ushort Reserved2;
+
 			/// <summary>This member is reserved.</summary>
 			private ushort Reserved3;
 		}
