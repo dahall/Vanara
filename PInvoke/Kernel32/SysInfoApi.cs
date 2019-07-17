@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Security.Permissions;
 using System.Text;
 using Vanara.Extensions;
 using static Vanara.PInvoke.FunctionHelper;
@@ -437,6 +436,13 @@ namespace Vanara.PInvoke
 			PRODUCT_WEB_SERVER_CORE = 0x0000001D,
 		}
 
+		/// <summary>Flags for <c>SetComputerNameEx2</c>.</summary>
+		public enum SCEX2
+		{
+			/// <summary>Undocumented.</summary>
+			SCEX2_ALT_NETBIOS_NAME = 0x00000001,
+		}
+
 		/// <summary>Converts a DNS-style host name to a NetBIOS-style computer name.</summary>
 		/// <param name="Hostname">
 		/// The DNS name. If the DNS name is not a valid, translatable name, the function fails. For more information, see Computer Names.
@@ -451,17 +457,16 @@ namespace Vanara.PInvoke
 		/// destination buffer, not including the terminating null character.
 		/// </para>
 		/// <para>
-		/// If the buffer is too small, the function fails, <c>GetLastError</c> returns ERROR_MORE_DATA, and nSize receives the required
-		/// buffer size, not including the terminating null character.
+		/// If the buffer is too small, the function fails, GetLastError returns ERROR_MORE_DATA, and nSize receives the required buffer
+		/// size, not including the terminating null character.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is a nonzero value.</para>
 		/// <para>
-		/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. Possible values
-		/// include the following.
+		/// If the function fails, the return value is zero. To get extended error information, call GetLastError. Possible values include
+		/// the following.
 		/// </para>
-		/// <para>
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Return code</term>
@@ -472,41 +477,36 @@ namespace Vanara.PInvoke
 		/// <term>The ComputerName buffer is too small. The nSize parameter contains the number of bytes required to receive the name.</term>
 		/// </item>
 		/// </list>
-		/// </para>
 		/// </returns>
-		// BOOL WINAPI DnsHostnameToComputerName( _In_ LPCTSTR Hostname, _Out_ LPTSTR ComputerName, _Inout_ LPDWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724244(v=vs.85).aspx
+		/// <remarks>
+		/// <para>
+		/// This function performs a textual mapping of the name. This convention limits the names of computers to be the common subset of
+		/// the names. (Specifically, the leftmost label of the DNS name is truncated to 15-bytes of OEM characters.) Therefore, do not use
+		/// this function to convert a DNS domain name to a NetBIOS domain name. There is no textual mapping for domain names.
+		/// </para>
+		/// <para>
+		/// To compile an application that uses this function, define _WIN32_WINNT as 0x0500 or later. For more information, see Using the
+		/// Windows Headers.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-dnshostnametocomputernamea BOOL DnsHostnameToComputerNameA(
+		// LPCSTR Hostname, LPSTR ComputerName, LPDWORD nSize );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("Winbase.h", MSDNShortId = "ms724244")]
+		[PInvokeData("winbase.h", MSDNShortId = "d5646fe6-9112-42cd-ace9-00dd1b590ecb")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DnsHostnameToComputerName(string Hostname, StringBuilder ComputerName, ref uint nSize);
 
-		public static bool DnsHostnameToComputerName(string Hostname, out string ComputerName) => CallMethodWithStrBuf((StringBuilder sb, ref uint sz) => DnsHostnameToComputerName(Hostname, sb, ref sz), out ComputerName);
-
 		/// <summary>Converts a DNS-style host name to a NetBIOS-style computer name.</summary>
 		/// <param name="Hostname">
 		/// The DNS name. If the DNS name is not a valid, translatable name, the function fails. For more information, see Computer Names.
 		/// </param>
-		/// <param name="ComputerName">
-		/// A pointer to a buffer that receives the computer name. The buffer size should be large enough to contain MAX_COMPUTERNAME_LENGTH
-		/// + 1 characters.
-		/// </param>
-		/// <param name="nSize">
-		/// <para>
-		/// On input, specifies the size of the buffer, in <c>TCHARs</c>. On output, receives the number of <c>TCHARs</c> copied to the
-		/// destination buffer, not including the terminating null character.
-		/// </para>
-		/// <para>
-		/// If the buffer is too small, the function fails, <c>GetLastError</c> returns ERROR_MORE_DATA, and nSize receives the required
-		/// buffer size, not including the terminating null character.
-		/// </para>
-		/// </param>
+		/// <param name="ComputerName">Receives the computer name.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is a nonzero value.</para>
 		/// <para>
-		/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. Possible values
-		/// include the following.
+		/// If the function fails, the return value is zero. To get extended error information, call GetLastError. Possible values include
+		/// the following.
 		/// </para>
-		/// <para>
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Return code</term>
@@ -517,15 +517,15 @@ namespace Vanara.PInvoke
 		/// <term>The ComputerName buffer is too small. The nSize parameter contains the number of bytes required to receive the name.</term>
 		/// </item>
 		/// </list>
-		/// </para>
 		/// </returns>
-		// BOOL WINAPI DnsHostnameToComputerName( _In_ LPCTSTR Hostname, _Out_ LPTSTR ComputerName, _Inout_ LPDWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724244(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "DnsHostnameToComputerNameExW", CharSet = CharSet.Unicode)]
-		[PInvokeData("Winbase.h", MSDNShortId = "ms724244")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DnsHostnameToComputerNameEx(string Hostname, StringBuilder ComputerName, ref uint nSize);
-
-		public static bool DnsHostnameToComputerNameEx(string Hostname, out string ComputerName) => CallMethodWithStrBuf((StringBuilder sb, ref uint sz) => DnsHostnameToComputerNameEx(Hostname, sb, ref sz), out ComputerName);
+		/// <remarks>
+		/// <para>
+		/// This function performs a textual mapping of the name. This convention limits the names of computers to be the common subset of
+		/// the names. (Specifically, the leftmost label of the DNS name is truncated to 15-bytes of OEM characters.) Therefore, do not use
+		/// this function to convert a DNS domain name to a NetBIOS domain name. There is no textual mapping for domain names.
+		/// </para>
+		/// </remarks>
+		public static bool DnsHostnameToComputerName(string Hostname, out string ComputerName) => CallMethodWithStrBuf((StringBuilder sb, ref uint sz) => DnsHostnameToComputerName(Hostname, sb, ref sz), out ComputerName);
 
 		/// <summary>Enumerates all system firmware tables of the specified type.</summary>
 		/// <param name="FirmwareTableProviderSignature">
@@ -578,6 +578,47 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724259")]
 		public static extern uint EnumSystemFirmwareTables(FirmwareTableProviderId FirmwareTableProviderSignature, IntPtr pFirmwareTableBuffer, uint BufferSize);
 
+		/// <summary>Enumerates all system firmware tables of the specified type.</summary>
+		/// <param name="FirmwareTableProviderSignature">
+		/// <para>
+		/// The identifier of the firmware table provider to which the query is to be directed. This parameter can be one of the following values.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>'ACPI'</term>
+		/// <term>The ACPI firmware table provider.</term>
+		/// </item>
+		/// <item>
+		/// <term>'FIRM'</term>
+		/// <term>The raw firmware table provider. Not supported for UEFI systems; use 'RSMB' instead.</term>
+		/// </item>
+		/// <item>
+		/// <term>'RSMB'</term>
+		/// <term>The raw SMBIOS firmware table provider.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="tableIdentifiers">
+		/// <para>A list of firmware tables.</para>
+		/// <para>For more information on the contents of this buffer, see the Remarks section.</para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is the number of bytes written to the buffer. This value will always be less than or
+		/// equal to BufferSize.
+		/// </para>
+		/// <para>
+		/// If the function fails because the buffer is not large enough, the return value is the required buffer size, in bytes. This value
+		/// is always greater than BufferSize.
+		/// </para>
+		/// <para>If the function fails for any other reason, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
 		public static Win32Error EnumSystemFirmwareTables(FirmwareTableProviderId FirmwareTableProviderSignature, out uint[] tableIdentifiers)
 		{
 			return CallMethodWithTypedBuf(
@@ -625,6 +666,25 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetComputerName(StringBuilder lpBuffer, ref uint lpnSize);
 
+		/// <summary>
+		/// <para>
+		/// Retrieves the NetBIOS name of the local computer. This name is established at system startup, when the system reads it from the registry.
+		/// </para>
+		/// <para>
+		/// <c>GetComputerName</c> retrieves only the NetBIOS name of the local computer. To retrieve the DNS host name, DNS domain name, or
+		/// the fully qualified DNS name, call the <c>GetComputerNameEx</c> function. Additional information is provided by the
+		/// <c>IADsADSystemInfo</c> interface.
+		/// </para>
+		/// <para>
+		/// The behavior of this function can be affected if the local computer is a node in a cluster. For more information, see
+		/// <c>ResUtilGetEnvironmentWithNetName</c> and <c>UseNetworkName</c>.
+		/// </para>
+		/// </summary>
+		/// <param name="name">The computer name or the cluster virtual server name.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
 		public static bool GetComputerName(out string name) => CallMethodWithStrBuf((StringBuilder sb, ref uint sz) => GetComputerName(sb, ref sz), out name);
 
 		/// <summary>
@@ -746,6 +806,102 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetComputerNameEx(COMPUTER_NAME_FORMAT NameType, StringBuilder lpBuffer, ref uint lpnSize);
 
+		/// <summary>
+		/// Retrieves a NetBIOS or DNS name associated with the local computer. The names are established at system startup, when the system
+		/// reads them from the registry.
+		/// </summary>
+		/// <param name="NameType">
+		/// <para>
+		/// The type of name to be retrieved. This parameter is a value from the <c>COMPUTER_NAME_FORMAT</c> enumeration type. The following
+		/// table provides additional information.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ComputerNameDnsDomain</term>
+		/// <term>
+		/// The name of the DNS domain assigned to the local computer. If the local computer is a node in a cluster, lpBuffer receives the
+		/// DNS domain name of the cluster virtual server.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ComputerNameDnsFullyQualified</term>
+		/// <term>
+		/// The fully qualified DNS name that uniquely identifies the local computer. This name is a combination of the DNS host name and the
+		/// DNS domain name, using the form HostName.DomainName. If the local computer is a node in a cluster, lpBuffer receives the fully
+		/// qualified DNS name of the cluster virtual server.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ComputerNameDnsHostname</term>
+		/// <term>
+		/// The DNS host name of the local computer. If the local computer is a node in a cluster, lpBuffer receives the DNS host name of the
+		/// cluster virtual server.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ComputerNameNetBIOS</term>
+		/// <term>
+		/// The NetBIOS name of the local computer. If the local computer is a node in a cluster, lpBuffer receives the NetBIOS name of the
+		/// cluster virtual server.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ComputerNamePhysicalDnsDomain</term>
+		/// <term>
+		/// The name of the DNS domain assigned to the local computer. If the local computer is a node in a cluster, lpBuffer receives the
+		/// DNS domain name of the local computer, not the name of the cluster virtual server.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ComputerNamePhysicalDnsFullyQualified</term>
+		/// <term>
+		/// The fully qualified DNS name that uniquely identifies the computer. If the local computer is a node in a cluster, lpBuffer
+		/// receives the fully qualified DNS name of the local computer, not the name of the cluster virtual server. The fully qualified DNS
+		/// name is a combination of the DNS host name and the DNS domain name, using the form HostName.DomainName.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ComputerNamePhysicalDnsHostname</term>
+		/// <term>
+		/// The DNS host name of the local computer. If the local computer is a node in a cluster, lpBuffer receives the DNS host name of the
+		/// local computer, not the name of the cluster virtual server.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ComputerNamePhysicalNetBIOS</term>
+		/// <term>
+		/// The NetBIOS name of the local computer. If the local computer is a node in a cluster, lpBuffer receives the NetBIOS name of the
+		/// local computer, not the name of the cluster virtual server.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="name">The computer name or the cluster virtual server name.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>
+		/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. Possible values
+		/// include the following.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_MORE_DATA</term>
+		/// <term>The lpBuffer buffer is too small. The lpnSize parameter contains the number of bytes required to receive the name.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
 		public static bool GetComputerNameEx(COMPUTER_NAME_FORMAT NameType, out string name) => CallMethodWithStrBuf((StringBuilder sb, ref uint sz) => GetComputerNameEx(NameType, sb, ref sz), out name);
 
 		/// <summary>Retrieves the value of the specified firmware environment variable.</summary>
@@ -774,7 +930,7 @@ namespace Vanara.PInvoke
 		/// <param name="sizeInInches">The best estimate of the diagonal size of the built-in screen, in inches.</param>
 		/// <returns>The result code indicating if the function succeeded or failed.</returns>
 		// WINAPI GetIntegratedDisplaySize( _Out_ double *sizeInInches); https://msdn.microsoft.com/en-us/library/windows/desktop/dn904185(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "dn904185")]
 		public static extern HRESULT GetIntegratedDisplaySize(out double sizeInInches);
 
@@ -820,6 +976,23 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetLogicalProcessorInformation(IntPtr Buffer, ref uint ReturnLength);
 
+		/// <summary>
+		/// <para>Retrieves information about logical processors and related hardware.</para>
+		/// <para>
+		/// To retrieve information about logical processors and related hardware, including processor groups, use the
+		/// <c>GetLogicalProcessorInformationEx</c> function.
+		/// </para>
+		/// </summary>
+		/// <param name="info">
+		/// An array of <c>SYSTEM_LOGICAL_PROCESSOR_INFORMATION</c> structures. If the function fails, the contents of this buffer are undefined.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is ERROR_SUCCESS and at least one <c>SYSTEM_LOGICAL_PROCESSOR_INFORMATION</c>
+		/// structure is written to the output buffer.
+		/// </para>
+		/// <para>If the function fails, the return value has error information.</para>
+		/// </returns>
 		public static Win32Error GetLogicalProcessorInformation(out SYSTEM_LOGICAL_PROCESSOR_INFORMATION[] info)
 		{
 			return CallMethodWithTypedBuf(
@@ -895,6 +1068,57 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType, IntPtr Buffer, ref uint ReturnedLength);
 
+		/// <summary>Retrieves information about the relationships of logical processors and related hardware.</summary>
+		/// <param name="RelationshipType">
+		/// <para>
+		/// The type of relationship to retrieve. This parameter can be one of the following <c>LOGICAL_PROCESSOR_RELATIONSHIP</c> values.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>RelationCache2</term>
+		/// <term>Retrieves information about logical processors that share a cache.</term>
+		/// </item>
+		/// <item>
+		/// <term>RelationNumaNode1</term>
+		/// <term>Retrieves information about logical processors that are part of the same NUMA node.</term>
+		/// </item>
+		/// <item>
+		/// <term>RelationProcessorCore0</term>
+		/// <term>Retrieves information about logical processors that share a single processor core.</term>
+		/// </item>
+		/// <item>
+		/// <term>RelationProcessorPackage3</term>
+		/// <term>Retrieves information about logical processors that share a physical package.</term>
+		/// </item>
+		/// <item>
+		/// <term>RelationGroup4</term>
+		/// <term>Retrieves information about logical processors that share a processor group.</term>
+		/// </item>
+		/// <item>
+		/// <term>RelationAll0xffff</term>
+		/// <term>
+		/// Retrieves information about logical processors for all relationship types (cache, NUMA node, processor core, physical package,
+		/// and processor group).
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="info">
+		/// An array of <c>SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX</c> structures. If the function fails, the contents of this buffer are undefined.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is ERROR_SUCCESS and at least one <c>SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX</c>
+		/// structure is written to the output buffer.
+		/// </para>
+		/// <para>If the function fails, the return value has error information.</para>
+		/// </returns>
 		public static Win32Error GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType, out SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX[] info)
 		{
 			return CallMethodWithTypedBuf(
@@ -921,7 +1145,7 @@ namespace Vanara.PInvoke
 		/// <para>If the function succeeds, the return value is a nonzero value.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetOsManufacturingMode([MarshalAs(UnmanagedType.Bool)] out bool pbEnabled);
@@ -932,7 +1156,7 @@ namespace Vanara.PInvoke
 		/// <para>If the function succeeds, the return value is a nonzero value.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetOsSafeBootMode(out uint Flags);
@@ -994,6 +1218,20 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetProcessorSystemCycleTime(ushort Group, IntPtr Buffer, ref uint ReturnedLength);
 
+		/// <summary>
+		/// Retrieves the cycle time each processor in the specified processor group spent executing deferred procedure calls (DPCs) and
+		/// interrupt service routines (ISRs) since the processor became active.
+		/// </summary>
+		/// <param name="Group">The number of the processor group for which to retrieve the cycle time.</param>
+		/// <param name="cycleTimes">
+		/// A SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION structure for each processor in the group. On output, the DWORD64 <c>CycleTime</c>
+		/// member of this structure is set to the cycle time for one processor.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, use <c>GetLastError</c>.</para>
+		/// <para>If the error value is ERROR_INSUFFICIENT_BUFFER, the ReturnedLength parameter contains the required buffer size.</para>
+		/// </returns>
 		public static Win32Error GetProcessorSystemCycleTime(ushort Group, out SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION[] cycleTimes)
 		{
 			return CallMethodWithTypedBuf(
@@ -1456,6 +1694,19 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724373")]
 		public static extern uint GetSystemDirectory(StringBuilder lpBuffer, uint uSize);
 
+		/// <summary>
+		/// <para>
+		/// Retrieves the path of the system directory. The system directory contains system files such as dynamic-link libraries and drivers.
+		/// </para>
+		/// <para>
+		/// This function is provided primarily for compatibility. Applications should store code in the Program Files folder and persistent
+		/// data in the Application Data folder in the user's profile. For more information, see <c>ShGetFolderPath</c>.
+		/// </para>
+		/// </summary>
+		/// <returns>
+		/// Receives the path. This path does not end with a backslash unless the system directory is the root directory. For example, if the
+		/// system directory is named Windows\System32 on drive C, the path of the system directory retrieved by this function is C:\Windows\System32.
+		/// </returns>
 		public static string GetSystemDirectory() => CallMethodWithStrBuf((sb, sz) => GetSystemDirectory(sb, sz), (uint)MAX_PATH, out var sysDir) != 0 ? sysDir : throw Win32Error.GetLastError().GetException();
 
 		/// <summary>Retrieves the specified firmware table from the firmware table provider.</summary>
@@ -1638,8 +1889,8 @@ namespace Vanara.PInvoke
 		/// values, see SetSystemTimeAdjustmentPrecise.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/sysinfoapi/nf-sysinfoapi-getsystemtimeadjustmentprecise
-		// BOOL GetSystemTimeAdjustmentPrecise( PDWORD64 lpTimeAdjustment, PDWORD64 lpTimeIncrement, PBOOL lpTimeAdjustmentDisabled );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sysinfoapi/nf-sysinfoapi-getsystemtimeadjustmentprecise BOOL
+		// GetSystemTimeAdjustmentPrecise( PDWORD64 lpTimeAdjustment, PDWORD64 lpTimeIncrement, PBOOL lpTimeAdjustmentDisabled );
 		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("sysinfoapi.h", MSDNShortId = "95EEE23D-01D8-49E1-BA64-49C07E8B1619")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -1697,6 +1948,18 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724403")]
 		public static extern uint GetSystemWindowsDirectory(StringBuilder lpBuffer, uint uSize);
 
+		/// <summary>
+		/// <para>Retrieves the path of the shared Windows directory on a multi-user system.</para>
+		/// <para>
+		/// This function is provided primarily for compatibility. Applications should store code in the Program Files folder and persistent
+		/// data in the Application Data folder in the user's profile. For more information, see <c>ShGetFolderPath</c>.
+		/// </para>
+		/// </summary>
+		/// <returns>
+		/// A pointer to the buffer to receive the path. This path does not end with a backslash unless the Windows directory is the root
+		/// directory. For example, if the Windows directory is named Windows on drive C, the path of the Windows directory retrieved by this
+		/// function is C:\Windows. If the system was installed in the root directory of drive C, the path retrieved is C:\.
+		/// </returns>
 		public static string GetSystemWindowsDirectory() => CallMethodWithStrBuf((sb, sz) => GetSystemWindowsDirectory(sb, sz), (uint)MAX_PATH, out var sysDir) != 0 ? sysDir : throw Win32Error.GetLastError().GetException();
 
 		/// <summary>Retrieves the number of milliseconds that have elapsed since the system was started, up to 49.7 days.</summary>
@@ -1773,7 +2036,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724451")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetVersionEx(out OSVERSIONINFOEX lpVersionInfo);
+		public static extern bool GetVersionEx(ref OSVERSIONINFOEX lpVersionInfo);
 
 		/// <summary>
 		/// <para>Retrieves the path of the Windows directory.</para>
@@ -1805,6 +2068,18 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724454")]
 		public static extern uint GetWindowsDirectory(StringBuilder lpBuffer, uint uSize);
 
+		/// <summary>
+		/// <para>Retrieves the path of the Windows directory.</para>
+		/// <para>
+		/// This function is provided primarily for compatibility with legacy applications. New applications should store code in the Program
+		/// Files folder and persistent data in the Application Data folder in the user's profile. For more information, see <c>ShGetFolderPath</c>.
+		/// </para>
+		/// </summary>
+		/// <returns>
+		/// Receives the path. This path does not end with a backslash unless the Windows directory is the root
+		/// directory. For example, if the Windows directory is named Windows on drive C, the path of the Windows directory retrieved by this
+		/// function is C:\Windows. If the system was installed in the root directory of drive C, the path retrieved is C:\.
+		/// </returns>
 		public static string GetWindowsDirectory() => CallMethodWithStrBuf((sb, sz) => GetWindowsDirectory(sb, sz), (uint)MAX_PATH, out var sysDir) != 0 ? sysDir : throw Win32Error.GetLastError().GetException();
 
 		/// <summary>
@@ -1819,7 +2094,7 @@ namespace Vanara.PInvoke
 		// void WINAPI GlobalMemoryStatus( _Out_ LPMEMORYSTATUS lpBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366586(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366586")]
-		public static extern void GlobalMemoryStatus(out MEMORYSTATUS lpBuffer);
+		public static extern void GlobalMemoryStatus(ref MEMORYSTATUS lpBuffer);
 
 		/// <summary>Retrieves information about the system's current usage of both physical and virtual memory.</summary>
 		/// <param name="lpBuffer">A pointer to a <c>MEMORYSTATUSEX</c> structure that receives information about current memory availability.</param>
@@ -1831,7 +2106,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366589")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GlobalMemoryStatusEx(out MEMORYSTATUSEX lpBuffer);
+		public static extern bool GlobalMemoryStatusEx(ref MEMORYSTATUSEX lpBuffer);
 
 		/// <summary>
 		/// Installs the certificate information specified in the resource file, which is linked into the ELAM driver at build time. This API
@@ -1934,13 +2209,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724931")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetComputerNameEx(COMPUTER_NAME_FORMAT NameType, string lpBuffer);
-
-		/// <summary>Flags for <c>SetComputerNameEx2</c>.</summary>
-		public enum SCEX2
-		{
-			/// <summary>Undocumented.</summary>
-			SCEX2_ALT_NETBIOS_NAME = 0x00000001,
-		}
 
 		/// <summary>
 		/// Sets a new NetBIOS or DNS name for the local computer. Name changes made by <c>SetComputerNameEx</c> do not take effect until the
@@ -2116,8 +2384,8 @@ namespace Vanara.PInvoke
 		/// <c>SetSystemTimeAdjustmentPrecise</c>, and how to neatly print the current system-time adjustments.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/sysinfoapi/nf-sysinfoapi-setsystemtimeadjustmentprecise
-		// BOOL SetSystemTimeAdjustmentPrecise( DWORD64 dwTimeAdjustment, BOOL bTimeAdjustmentDisabled );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sysinfoapi/nf-sysinfoapi-setsystemtimeadjustmentprecise BOOL
+		// SetSystemTimeAdjustmentPrecise( DWORD64 dwTimeAdjustment, BOOL bTimeAdjustmentDisabled );
 		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("sysinfoapi.h", MSDNShortId = "8B429BFC-9781-4434-9A2F-9E50E2BF299A")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -2459,6 +2727,7 @@ namespace Vanara.PInvoke
 			/// <para>This member is reserved.</para>
 			/// </summary>
 			private readonly uint Reserved1;
+
 			private readonly uint Reserved2;
 			private readonly uint Reserved3;
 			private readonly uint Reserved4;
@@ -2533,6 +2802,9 @@ namespace Vanara.PInvoke
 			/// calling process, in bytes.
 			/// </summary>
 			public SizeT dwAvailVirtual;
+
+			/// <summary>Gets a default instance with the size pre-set.</summary>
+			public static readonly MEMORYSTATUS Default = new MEMORYSTATUS { dwLength = (uint)Marshal.SizeOf(typeof(MEMORYSTATUS)) };
 		}
 
 		/// <summary>
@@ -2594,6 +2866,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>Reserved. This value is always 0.</summary>
 			public ulong ullAvailExtendedVirtual;
+
+			/// <summary>Gets a default instance with the size pre-set.</summary>
+			public static readonly MEMORYSTATUSEX Default = new MEMORYSTATUSEX { dwLength = (uint)Marshal.SizeOf(typeof(MEMORYSTATUSEX)) };
 		}
 
 		/// <summary>
@@ -2616,6 +2891,7 @@ namespace Vanara.PInvoke
 			/// <para>This member is reserved.</para>
 			/// </summary>
 			private readonly uint Reserved1;
+
 			private readonly uint Reserved2;
 			private readonly uint Reserved3;
 			private readonly uint Reserved4;
@@ -2625,6 +2901,53 @@ namespace Vanara.PInvoke
 			/// <para>A GROUP_AFFINITY structure that specifies a group number and processor affinity within the group.</para>
 			/// </summary>
 			public GROUP_AFFINITY GroupMask;
+		}
+
+		/// <summary>A bit mask that identifies the product suites available on the system.</summary>
+		[PInvokeData("Winnt.h", MSDNShortId = "ms724833")]
+		[Flags]
+		public enum SuiteMask : ushort
+		{
+			/// <summary>Microsoft BackOffice components are installed.</summary>
+			VER_SUITE_BACKOFFICE = 0x00000004,
+			/// <summary>Windows Server 2003, Web Edition is installed.</summary>
+			VER_SUITE_BLADE = 0x00000400,
+			/// <summary>Windows Server 2003, Compute Cluster Edition is installed.</summary>
+			VER_SUITE_COMPUTE_SERVER = 0x00004000,
+			/// <summary>Windows Server 2008 Datacenter, Windows Server 2003, Datacenter Edition, or Windows 2000 Datacenter Server is installed.</summary>
+			VER_SUITE_DATACENTER = 0x00000080,
+			/// <summary>Windows Server 2008 Enterprise, Windows Server 2003, Enterprise Edition, or Windows 2000 Advanced Server is installed. Refer to the Remarks section for more information about this bit flag.</summary>
+			VER_SUITE_ENTERPRISE = 0x00000002,
+			/// <summary>Windows XP Embedded is installed.</summary>
+			VER_SUITE_EMBEDDEDNT = 0x00000040,
+			/// <summary>Windows Vista Home Premium, Windows Vista Home Basic, or Windows XP Home Edition is installed.</summary>
+			VER_SUITE_PERSONAL = 0x00000200,
+			/// <summary>Remote Desktop is supported, but only one interactive session is supported. This value is set unless the system is running in application server mode.</summary>
+			VER_SUITE_SINGLEUSERTS = 0x00000100,
+			/// <summary>Microsoft Small Business Server was once installed on the system, but may have been upgraded to another version of Windows. Refer to the Remarks section for more information about this bit flag.</summary>
+			VER_SUITE_SMALLBUSINESS = 0x00000001,
+			/// <summary>Microsoft Small Business Server is installed with the restrictive client license in force. Refer to the Remarks section for more information about this bit flag.</summary>
+			VER_SUITE_SMALLBUSINESS_RESTRICTED = 0x00000020,
+			/// <summary>Windows Storage Server 2003 R2 or Windows Storage Server 2003is installed.</summary>
+			VER_SUITE_STORAGE_SERVER = 0x00002000,
+			/// <summary>Terminal Services is installed. This value is always set.
+			/// <para>If VER_SUITE_TERMINAL is set but VER_SUITE_SINGLEUSERTS is not set, the system is running in application server mode.</para></summary>
+			VER_SUITE_TERMINAL = 0x00000010,
+			/// <summary>Windows Home Server is installed.</summary>
+			VER_SUITE_WH_SERVER = 0x00008000,
+		}
+
+		/// <summary>Any additional information about the system.</summary>
+		[PInvokeData("Winnt.h", MSDNShortId = "ms724833")]
+		public enum ProductType : byte
+		{
+			/// <summary>The system is a domain controller and the operating system is Windows Server 2012 , Windows Server 2008 R2, Windows Server 2008, Windows Server 2003, or Windows 2000 Server.</summary>
+			VER_NT_DOMAIN_CONTROLLER = 0x0000002,
+			/// <summary>The operating system is Windows Server 2012, Windows Server 2008 R2, Windows Server 2008, Windows Server 2003, or Windows 2000 Server.
+			/// <para>Note that a server that is also a domain controller is reported as VER_NT_DOMAIN_CONTROLLER, not VER_NT_SERVER.</para></summary>
+			VER_NT_SERVER = 0x0000003,
+			/// <summary>The operating system is Windows 8, Windows 7, Windows Vista, Windows XP Professional, Windows XP Home Edition, or Windows 2000 Professional.</summary>
+			VER_NT_WORKSTATION = 0x0000001,
 		}
 
 		/// <summary>
@@ -2653,7 +2976,7 @@ namespace Vanara.PInvoke
 			public uint dwBuildNumber;
 
 			/// <summary>The operating system platform. This member can be <c>VER_PLATFORM_WIN32_NT</c> (2).</summary>
-			public uint dwPlatformId;
+			public PlatformID dwPlatformId;
 
 			/// <summary>
 			/// A null-terminated string, such as "Service Pack 3", that indicates the latest Service Pack installed on the system. If no
@@ -2758,7 +3081,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public ushort wSuiteMask;
+			public SuiteMask wSuiteMask;
 
 			/// <summary>
 			/// <para>Any additional information about the system. This member can be one of the following values.</para>
@@ -2792,10 +3115,13 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public byte wProductType;
+			public ProductType wProductType;
 
 			/// <summary>Reserved for future use.</summary>
 			public byte wReserved;
+
+			/// <summary>Gets a default instance with the size pre-set.</summary>
+			public static readonly OSVERSIONINFOEX Default = new OSVERSIONINFOEX { dwOSVersionInfoSize = (uint)Marshal.SizeOf(typeof(OSVERSIONINFOEX)) };
 		}
 
 		/// <summary>
