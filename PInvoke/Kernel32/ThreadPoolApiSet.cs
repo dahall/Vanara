@@ -13,40 +13,7 @@ namespace Vanara.PInvoke
 		/// <param name="ObjectContext">Optional application-defined data specified during creation of the object.</param>
 		/// <param name="CleanupContext">Optional application-defined data specified using CloseThreadpoolCleanupGroupMembers.</param>
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void PTP_CLEANUP_GROUP_CANCEL_CALLBACK(IntPtr ObjectContext, IntPtr CleanupContext);
-
-		/// <summary>Applications implement this callback if they call the TrySubmitThreadpoolCallback function to start a worker thread.</summary>
-		/// <param name="Instance">
-		/// A TP_CALLBACK_INSTANCE structure that defines the callback instance. Applications do not modify the members of this structure.
-		/// </param>
-		/// <param name="Context">The application-defined data.</param>
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void PTP_SIMPLE_CALLBACK(PTP_CALLBACK_INSTANCE Instance, IntPtr Context);
-
-		/// <summary>
-		/// Applications implement this callback if they call the SetThreadpoolTimer function to start a worker thread for the timer object.
-		/// </summary>
-		/// <param name="Instance">
-		/// A TP_CALLBACK_INSTANCE structure that defines the callback instance. Applications do not modify the members of this structure.
-		/// </param>
-		/// <param name="Context">The application-defined data.</param>
-		/// <param name="Timer">A TP_TIMER structure that defines the timer object that generated the callback.</param>
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void PTP_TIMER_CALLBACK(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, PTP_TIMER Timer);
-
-		/// <summary>
-		/// Applications implement this callback if they call the SetThreadpoolWait function to start a worker thread for the wait object.
-		/// </summary>
-		/// <param name="Instance">
-		/// A TP_CALLBACK_INSTANCE structure that defines the callback instance. Applications do not modify the members of this structure.
-		/// </param>
-		/// <param name="Context">The application-defined data.</param>
-		/// <param name="Wait">A TP_WAIT structure that defines the wait object that generated the callback.</param>
-		/// <param name="WaitResult">
-		/// The result of the wait operation. This parameter can be one of the following values from WaitForMultipleObjects: WAIT_OBJECT_0, WAIT_TIMEOUT
-		/// </param>
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void PTP_WAIT_CALLBACK(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, PTP_WAIT Wait, uint WaitResult);
+		public delegate void CleanupGroupCancelCallback(IntPtr ObjectContext, IntPtr CleanupContext);
 
 		/// <summary>
 		/// Applications implement this callback if they call the StartThreadpoolIo function to start a worker thread for the I/O completion object.
@@ -66,8 +33,41 @@ namespace Vanara.PInvoke
 		/// <param name="NumberOfBytesTransferred">The number of bytes transferred during the I/O operation that has completed.</param>
 		/// <param name="Io">A TP_IO structure that defines the I/O completion object that generated the callback.</param>
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void PTP_WIN32_IO_CALLBACK(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, IntPtr Overlapped, uint IoResult,
+		public delegate void IoCompletionCallback(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, IntPtr Overlapped, uint IoResult,
 			UIntPtr NumberOfBytesTransferred, PTP_IO Io);
+
+		/// <summary>Applications implement this callback if they call the TrySubmitThreadpoolCallback function to start a worker thread.</summary>
+		/// <param name="Instance">
+		/// A TP_CALLBACK_INSTANCE structure that defines the callback instance. Applications do not modify the members of this structure.
+		/// </param>
+		/// <param name="Context">The application-defined data.</param>
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void SimpleCallback(PTP_CALLBACK_INSTANCE Instance, IntPtr Context);
+
+		/// <summary>
+		/// Applications implement this callback if they call the SetThreadpoolTimer function to start a worker thread for the timer object.
+		/// </summary>
+		/// <param name="Instance">
+		/// A TP_CALLBACK_INSTANCE structure that defines the callback instance. Applications do not modify the members of this structure.
+		/// </param>
+		/// <param name="Context">The application-defined data.</param>
+		/// <param name="Timer">A TP_TIMER structure that defines the timer object that generated the callback.</param>
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void TimerCallback(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, PTP_TIMER Timer);
+
+		/// <summary>
+		/// Applications implement this callback if they call the SetThreadpoolWait function to start a worker thread for the wait object.
+		/// </summary>
+		/// <param name="Instance">
+		/// A TP_CALLBACK_INSTANCE structure that defines the callback instance. Applications do not modify the members of this structure.
+		/// </param>
+		/// <param name="Context">The application-defined data.</param>
+		/// <param name="Wait">A TP_WAIT structure that defines the wait object that generated the callback.</param>
+		/// <param name="WaitResult">
+		/// The result of the wait operation. This parameter can be one of the following values from WaitForMultipleObjects: WAIT_OBJECT_0, WAIT_TIMEOUT
+		/// </param>
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void WaitCallback(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, PTP_WAIT Wait, uint WaitResult);
 
 		/// <summary>
 		/// Applications implement this callback if they call the SubmitThreadpoolWork function to start a worker thread for the work object.
@@ -78,7 +78,7 @@ namespace Vanara.PInvoke
 		/// <param name="Context">The application-defined data.</param>
 		/// <param name="Work">A TP_WORK structure that defines the work object that generated the callback.</param>
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void PTP_WORK_CALLBACK(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, PTP_WORK Work);
+		public delegate void WorkCallback(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, PTP_WORK Work);
 
 		[Flags]
 		public enum TP_CALLBACK_ENV_FLAGS
@@ -175,7 +175,7 @@ namespace Vanara.PInvoke
 		// PVOID pvCleanupContext); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682036(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682036")]
-		public static extern void CloseThreadpoolCleanupGroupMembers(PTP_CLEANUP_GROUP ptpcg, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks, IntPtr pvCleanupContext);
+		public static extern void CloseThreadpoolCleanupGroupMembers(PTP_CLEANUP_GROUP ptpcg, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks, [Optional] IntPtr pvCleanupContext);
 
 		/// <summary>Releases the specified I/O completion object.</summary>
 		/// <param name="pio">
@@ -224,12 +224,28 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, it returns a <c>TP_POOL</c> structure representing the newly allocated thread pool. Applications do not
 		/// modify the members of this structure.
 		/// </para>
-		/// <para>If function fails, it returns NULL. To retrieve extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If function fails, it returns NULL. To retrieve extended error information, call GetLastError.</para>
 		/// </returns>
-		// PTP_POOL WINAPI CreateThreadpool( _Reserved_ PVOID reserved); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682456(v=vs.85).aspx
+		/// <remarks>
+		/// <para>
+		/// After creating the new thread pool, you should call SetThreadpoolThreadMaximum to specify the maximum number of threads that the
+		/// pool can allocate and SetThreadpoolThreadMinimum to specify the minimum number of threads available in the pool.
+		/// </para>
+		/// <para>
+		/// To use the pool, you must associate the pool with a callback environment. To create the callback environment, call
+		/// InitializeThreadpoolEnvironment. Then, call SetThreadpoolCallbackPool to associate the pool with the callback environment.
+		/// </para>
+		/// <para>To release the thread pool, call CloseThreadpool.</para>
+		/// <para>To compile an application that uses this function, define _WIN32_WINNT as 0x0600 or higher.</para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Using the Thread Pool Functions.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/threadpoolapiset/nf-threadpoolapiset-createthreadpool PTP_POOL
+		// CreateThreadpool( PVOID reserved );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms682456")]
-		public static extern PTP_POOL CreateThreadpool(IntPtr reserved = default);
+		[PInvokeData("threadpoolapiset.h", MSDNShortId = "cc00d7bf-ac52-44ff-a6a8-76c8eaace5e6")]
+		// public static extern PTP_POOL CreateThreadpool(IntPtr reserved);
+		public static extern SafePTP_POOL CreateThreadpool(IntPtr reserved = default);
 
 		/// <summary>Creates a cleanup group that applications can use to track one or more thread pool callbacks.</summary>
 		/// <returns>
@@ -242,7 +258,7 @@ namespace Vanara.PInvoke
 		// PTP_CLEANUP_GROUP WINAPI CreateThreadpoolCleanupGroup(void); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682462(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682462")]
-		public static extern PTP_CLEANUP_GROUP CreateThreadpoolCleanupGroup();
+		public static extern SafePTP_CLEANUP_GROUP CreateThreadpoolCleanupGroup();
 
 		/// <summary>Creates a new I/O completion object.</summary>
 		/// <param name="fl">The file handle to bind to this I/O completion object.</param>
@@ -264,11 +280,11 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If the function fails, it returns NULL. To retrieve extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// PTP_IO WINAPI CreateThreadpoolIo( _In_ HANDLE fl, _In_ PTP_WIN32_IO_CALLBACK pfnio, _Inout_opt_ PVOID pv, _In_opt_
+		// PTP_IO WINAPI CreateThreadpoolIo( _In_ HANDLE fl, _In_ IoCompletionCallback pfnio, _Inout_opt_ PVOID pv, _In_opt_
 		// PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682464(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682464")]
-		public static extern PTP_IO CreateThreadpoolIo(HFILE fl, PTP_WIN32_IO_CALLBACK pfnio, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
+		public static extern SafePTP_IO CreateThreadpoolIo(HFILE fl, IoCompletionCallback pfnio, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
 
 		/// <summary>Creates a new timer object.</summary>
 		/// <param name="pfnti">The callback function to call each time the timer object expires. For details, see <c>TimerCallback</c>.</param>
@@ -287,10 +303,10 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If the function fails, it returns NULL. To retrieve extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// PTP_TIMER WINAPI CreateThreadpoolTimer( _In_ PTP_TIMER_CALLBACK pfnti, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682466(v=vs.85).aspx
+		// PTP_TIMER WINAPI CreateThreadpoolTimer( _In_ TimerCallback pfnti, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682466(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682466")]
-		public static extern PTP_TIMER CreateThreadpoolTimer(PTP_TIMER_CALLBACK pfnti, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
+		public static extern SafePTP_TIMER CreateThreadpoolTimer(TimerCallback pfnti, [Optional] IntPtr pv, [Optional] PTP_CALLBACK_ENVIRON pcbe);
 
 		/// <summary>Creates a new wait object.</summary>
 		/// <param name="pfnwa">The callback function to call when the wait completes or times out. For details, see <c>WaitCallback</c>.</param>
@@ -309,10 +325,10 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If the function fails, it returns NULL. To retrieve extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// PTP_WAIT WINAPI CreateThreadpoolWait( _In_ PTP_WAIT_CALLBACK pfnwa, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682474(v=vs.85).aspx
+		// PTP_WAIT WINAPI CreateThreadpoolWait( _In_ WaitCallback pfnwa, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682474(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682474")]
-		public static extern PTP_WAIT CreateThreadpoolWait(PTP_WAIT_CALLBACK pfnwa, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
+		public static extern SafePTP_WAIT CreateThreadpoolWait(WaitCallback pfnwa, [Optional] IntPtr pv, [Optional] PTP_CALLBACK_ENVIRON pcbe);
 
 		/// <summary>Creates a new work object.</summary>
 		/// <param name="pfnwk">
@@ -334,10 +350,10 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If the function fails, it returns NULL. To retrieve extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// PTP_WORK WINAPI CreateThreadpoolWork( _In_ PTP_WORK_CALLBACK pfnwk, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682478(v=vs.85).aspx
+		// PTP_WORK WINAPI CreateThreadpoolWork( _In_ WorkCallback pfnwk, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682478(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682478")]
-		public static extern PTP_WORK CreateThreadpoolWork(PTP_WORK_CALLBACK pfnwk, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
+		public static extern SafePTP_WORK CreateThreadpoolWork(WorkCallback pfnwk, [Optional] IntPtr pv, [Optional] PTP_CALLBACK_ENVIRON pcbe);
 
 		/// <summary>
 		/// Removes the association between the currently executing callback function and the object that initiated the callback. The current
@@ -457,7 +473,7 @@ namespace Vanara.PInvoke
 		// VOID SetThreadpoolCallbackCleanupGroup( _Inout_ PTP_CALLBACK_ENVIRON pcbe, _In_ PTP_CLEANUP_GROUP ptpcg, _In_opt_
 		// PTP_CLEANUP_GROUP_CANCEL_CALLBACK pfng); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686255(v=vs.85).aspx
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686255")]
-		public static void SetThreadpoolCallbackCleanupGroup(this PTP_CALLBACK_ENVIRON pcbe, PTP_CLEANUP_GROUP ptpcg, PTP_CLEANUP_GROUP_CANCEL_CALLBACK pfng)
+		public static void SetThreadpoolCallbackCleanupGroup(this PTP_CALLBACK_ENVIRON pcbe, PTP_CLEANUP_GROUP ptpcg, [Optional] CleanupGroupCancelCallback pfng)
 		{
 			pcbe.CleanupGroup = ptpcg;
 			pcbe.CleanupGroupCancelCallback = pfng;
@@ -621,7 +637,7 @@ namespace Vanara.PInvoke
 		// msWindowLength); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686271(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686271")]
-		public static extern void SetThreadpoolTimer(PTP_TIMER pti, in FILETIME pftDueTime, uint msPeriod, uint msWindowLength);
+		public static extern void SetThreadpoolTimer(PTP_TIMER pti, in FILETIME pftDueTime, [Optional] uint msPeriod, [Optional] uint msWindowLength);
 
 		/// <summary>
 		/// Sets the timer object—, replacing the previous timer, if any. A worker thread calls the timer object's callback after the
@@ -659,7 +675,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Threadpoolapiset.h", MSDNShortId = "dn894018")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetThreadpoolTimerEx(PTP_TIMER pti, in FILETIME pftDueTime, uint msPeriod, uint msWindowLength);
+		public static extern bool SetThreadpoolTimerEx(PTP_TIMER pti, in FILETIME pftDueTime, [Optional] uint msPeriod, [Optional] uint msWindowLength);
 
 		/// <summary>
 		/// Sets the wait object—replacing the previous wait object, if any. A worker thread calls the wait object's callback function after
@@ -693,6 +709,72 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686273")]
 		public static extern void SetThreadpoolWait(PTP_WAIT pwa, SafeEventHandle h, in FILETIME pftTimeout);
+
+		/// <summary>
+		/// Sets the wait object—replacing the previous wait object, if any. A worker thread calls the wait object's callback function after
+		/// the handle becomes signaled or after the specified timeout expires.
+		/// </summary>
+		/// <param name="pwa">
+		/// A pointer to a <c>TP_WAIT</c> structure that defines the wait object. The <c>CreateThreadpoolWait</c> function returns this structure.
+		/// </param>
+		/// <param name="h">
+		/// <para>A handle.</para>
+		/// <para>
+		/// If this parameter is NULL, the wait object will cease to queue new callbacks (but callbacks already queued will still occur).
+		/// </para>
+		/// <para>If this parameter is not NULL, it must refer to a valid waitable object.</para>
+		/// <para>
+		/// If this handle is closed while the wait is still pending, the function's behavior is undefined. If the wait is still pending and
+		/// the handle must be closed, use <c>CloseThreadpoolWait</c> to cancel the wait and then close the handle.
+		/// </para>
+		/// </param>
+		/// <param name="pftTimeout">
+		/// <para>
+		/// A pointer to a <c>FILETIME</c> structure that specifies the absolute or relative time at which the wait operation should time
+		/// out. If this parameter points to a positive value, it indicates the absolute time since January 1, 1601 (UTC), in 100-nanosecond
+		/// intervals. If this parameter points to a negative value, it indicates the amount of time to wait relative to the current time.
+		/// For more information about time values, see File Times.
+		/// </para>
+		/// <para>If this parameter points to 0, the wait times out immediately. If this parameter is NULL, the wait will not time out.</para>
+		/// </param>
+		/// <returns>This function does not return a value.</returns>
+		// VOID WINAPI SetThreadpoolWait( _Inout_ PTP_WAIT pwa, _In_opt_ HANDLE h, _In_opt_ PFILETIME pftTimeout); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686273(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms686273")]
+		public static extern void SetThreadpoolWait(PTP_WAIT pwa, SafeEventHandle h, [Optional] IntPtr pftTimeout);
+
+		/// <summary>
+		/// Sets the wait object—replacing the previous wait object, if any. A worker thread calls the wait object's callback function after
+		/// the handle becomes signaled or after the specified timeout expires.
+		/// </summary>
+		/// <param name="pwa">
+		/// A pointer to a <c>TP_WAIT</c> structure that defines the wait object. The <c>CreateThreadpoolWait</c> function returns this structure.
+		/// </param>
+		/// <param name="h">
+		/// <para>A handle.</para>
+		/// <para>
+		/// If this parameter is NULL, the wait object will cease to queue new callbacks (but callbacks already queued will still occur).
+		/// </para>
+		/// <para>If this parameter is not NULL, it must refer to a valid waitable object.</para>
+		/// <para>
+		/// If this handle is closed while the wait is still pending, the function's behavior is undefined. If the wait is still pending and
+		/// the handle must be closed, use <c>CloseThreadpoolWait</c> to cancel the wait and then close the handle.
+		/// </para>
+		/// </param>
+		/// <param name="pftTimeout">
+		/// <para>
+		/// A pointer to a <c>FILETIME</c> structure that specifies the absolute or relative time at which the wait operation should time
+		/// out. If this parameter points to a positive value, it indicates the absolute time since January 1, 1601 (UTC), in 100-nanosecond
+		/// intervals. If this parameter points to a negative value, it indicates the amount of time to wait relative to the current time.
+		/// For more information about time values, see File Times.
+		/// </para>
+		/// <para>If this parameter points to 0, the wait times out immediately. If this parameter is NULL, the wait will not time out.</para>
+		/// </param>
+		/// <returns>This function does not return a value.</returns>
+		// VOID WINAPI SetThreadpoolWait( _Inout_ PTP_WAIT pwa, _In_opt_ HANDLE h, _In_opt_ PFILETIME pftTimeout); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686273(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms686273")]
+		public static extern void SetThreadpoolWait(PTP_WAIT pwa, [Optional] IntPtr h, [Optional] IntPtr pftTimeout);
 
 		/// <summary>
 		/// Sets the wait object—replacing the previous wait object, if any. A worker thread calls the wait object's callback function after
@@ -770,11 +852,11 @@ namespace Vanara.PInvoke
 		/// <para>If the function succeeds, it returns TRUE.</para>
 		/// <para>If the function fails, it returns FALSE. To retrieve extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// BOOL WINAPI TrySubmitThreadpoolCallback( _In_ PTP_SIMPLE_CALLBACK pfns, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686862(v=vs.85).aspx
+		// BOOL WINAPI TrySubmitThreadpoolCallback( _In_ SimpleCallback pfns, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686862(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686862")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool TrySubmitThreadpoolCallback(PTP_SIMPLE_CALLBACK pfns, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
+		public static extern bool TrySubmitThreadpoolCallback(SimpleCallback pfns, [Optional] IntPtr pv, [Optional] PTP_CALLBACK_ENVIRON pcbe);
 
 		/// <summary>
 		/// Waits for outstanding I/O completion callbacks to complete and optionally cancels pending callbacks that have not yet started to execute.
@@ -828,46 +910,367 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms687053")]
 		public static extern void WaitForThreadpoolWorkCallbacks(PTP_WORK pwk, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks);
 
+		/// <summary>Creates a new timer object.</summary>
+		/// <param name="pfnti">The callback function to call each time the timer object expires. For details, see <c>TimerCallback</c>.</param>
+		/// <param name="pv">Optional application-defined data to pass to the callback function.</param>
+		/// <param name="pcbe">
+		/// <para>
+		/// A <c>TP_CALLBACK_ENVIRON</c> structure that defines the environment in which to execute the callback. The
+		/// <c>InitializeThreadpoolEnvironment</c> function returns this structure.
+		/// </para>
+		/// <para>If this parameter is NULL, the callback executes in the default callback environment. For more information, see <c>InitializeThreadpoolEnvironment</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, it returns a <c>TP_TIMER</c> structure that defines the timer object. Applications do not modify the
+		/// members of this structure.
+		/// </para>
+		/// <para>If the function fails, it returns NULL. To retrieve extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// PTP_TIMER WINAPI CreateThreadpoolTimer( _In_ TimerCallback pfnti, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682466(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "CreateThreadpoolTimer")]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms682466")]
+		internal static extern PTP_TIMER InternalCreateThreadpoolTimer(TimerCallback pfnti, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
+
+		/// <summary>Creates a new wait object.</summary>
+		/// <param name="pfnwa">The callback function to call when the wait completes or times out. For details, see <c>WaitCallback</c>.</param>
+		/// <param name="pv">Optional application-defined data to pass to the callback function.</param>
+		/// <param name="pcbe">
+		/// <para>
+		/// A <c>TP_CALLBACK_ENVIRON</c> structure that defines the environment in which to execute the callback. The
+		/// <c>InitializeThreadpoolEnvironment</c> function returns this structure.
+		/// </para>
+		/// <para>If this parameter is NULL, the callback executes in the default callback environment. For more information, see <c>InitializeThreadpoolEnvironment</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, it returns a <c>TP_WAIT</c> structure that defines the wait object. Applications do not modify the
+		/// members of this structure.
+		/// </para>
+		/// <para>If the function fails, it returns NULL. To retrieve extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// PTP_WAIT WINAPI CreateThreadpoolWait( _In_ WaitCallback pfnwa, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682474(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "CreateThreadpoolWait")]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms682474")]
+		internal static extern PTP_WAIT InternalCreateThreadpoolWait(WaitCallback pfnwa, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
+
+		/// <summary>Creates a new work object.</summary>
+		/// <param name="pfnwk">
+		/// The callback function. A worker thread calls this callback each time you call <c>SubmitThreadpoolWork</c> to post the work
+		/// object. For details, see <c>WorkCallback</c>.
+		/// </param>
+		/// <param name="pv">Optional application-defined data to pass to the callback function.</param>
+		/// <param name="pcbe">
+		/// <para>
+		/// A <c>TP_CALLBACK_ENVIRON</c> structure that defines the environment in which to execute the callback. The
+		/// <c>InitializeThreadpoolEnvironment</c> function returns this structure.
+		/// </para>
+		/// <para>If this parameter is NULL, the callback executes in the default callback environment. For more information, see <c>InitializeThreadpoolEnvironment</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, it returns a <c>TP_WORK</c> structure that defines the work object. Applications do not modify the
+		/// members of this structure.
+		/// </para>
+		/// <para>If the function fails, it returns NULL. To retrieve extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// PTP_WORK WINAPI CreateThreadpoolWork( _In_ WorkCallback pfnwk, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682478(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "CreateThreadpoolWork")]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms682478")]
+		internal static extern PTP_WORK InternalCreateThreadpoolWork(WorkCallback pfnwk, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
+
 		[StructLayout(LayoutKind.Sequential)]
 		public struct PTP_CALLBACK_INSTANCE
 		{
 			private readonly IntPtr handle;
 		}
 
+		/// <summary>Provides a handle to a pool cleanup group.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct PTP_CLEANUP_GROUP
+		public struct PTP_CLEANUP_GROUP : IHandle
 		{
-			private readonly IntPtr handle;
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="PTP_CLEANUP_GROUP"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public PTP_CLEANUP_GROUP(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PTP_CLEANUP_GROUP"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static PTP_CLEANUP_GROUP NULL => new PTP_CLEANUP_GROUP(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="PTP_CLEANUP_GROUP"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(PTP_CLEANUP_GROUP h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PTP_CLEANUP_GROUP"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PTP_CLEANUP_GROUP(IntPtr h) => new PTP_CLEANUP_GROUP(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PTP_CLEANUP_GROUP h1, PTP_CLEANUP_GROUP h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PTP_CLEANUP_GROUP h1, PTP_CLEANUP_GROUP h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PTP_CLEANUP_GROUP h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>Provides a handle to a threadpool IO.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct PTP_IO
+		public struct PTP_IO : IHandle
 		{
-			private readonly IntPtr handle;
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="PTP_IO"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public PTP_IO(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PTP_IO"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static PTP_IO NULL => new PTP_IO(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="PTP_IO"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(PTP_IO h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PTP_IO"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PTP_IO(IntPtr h) => new PTP_IO(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PTP_IO h1, PTP_IO h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PTP_IO h1, PTP_IO h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PTP_IO h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>Provides a handle to a thread pool.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct PTP_POOL
+		public struct PTP_POOL : IHandle
 		{
-			private readonly IntPtr handle;
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="PTP_POOL"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public PTP_POOL(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PTP_POOL"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static PTP_POOL NULL => new PTP_POOL(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="PTP_POOL"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(PTP_POOL h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PTP_POOL"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PTP_POOL(IntPtr h) => new PTP_POOL(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PTP_POOL h1, PTP_POOL h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PTP_POOL h1, PTP_POOL h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PTP_POOL h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>Provides a handle to a threadpool timer.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct PTP_TIMER
+		public struct PTP_TIMER : IHandle
 		{
-			private readonly IntPtr handle;
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="PTP_TIMER"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public PTP_TIMER(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PTP_TIMER"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static PTP_TIMER NULL => new PTP_TIMER(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="PTP_TIMER"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(PTP_TIMER h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PTP_TIMER"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PTP_TIMER(IntPtr h) => new PTP_TIMER(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PTP_TIMER h1, PTP_TIMER h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PTP_TIMER h1, PTP_TIMER h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PTP_TIMER h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>Provides a handle to a threadpool wait.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct PTP_WAIT
+		public struct PTP_WAIT : IHandle
 		{
-			private readonly IntPtr handle;
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="PTP_WAIT"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public PTP_WAIT(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PTP_WAIT"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static PTP_WAIT NULL => new PTP_WAIT(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="PTP_WAIT"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(PTP_WAIT h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PTP_WAIT"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PTP_WAIT(IntPtr h) => new PTP_WAIT(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PTP_WAIT h1, PTP_WAIT h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PTP_WAIT h1, PTP_WAIT h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PTP_WAIT h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>Provides a handle to a threadpool work.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct PTP_WORK
+		public struct PTP_WORK : IHandle
 		{
-			private readonly IntPtr handle;
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="PTP_WORK"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public PTP_WORK(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PTP_WORK"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static PTP_WORK NULL => new PTP_WORK(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="PTP_WORK"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(PTP_WORK h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PTP_WORK"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PTP_WORK(IntPtr h) => new PTP_WORK(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PTP_WORK h1, PTP_WORK h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PTP_WORK h1, PTP_WORK h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PTP_WORK h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
 		}
 
 		/// <summary>Used to set the stack reserve and commit sizes for new threads in a thread pool.</summary>
@@ -882,7 +1285,8 @@ namespace Vanara.PInvoke
 			public SizeT StackCommit;
 		}
 
-		/// <summary>Defines a callback environment.</summary>`
+		/// <summary>Defines a callback environment.</summary>
+		/// `
 		[PInvokeData("threadpoolapiset.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public class PTP_CALLBACK_ENVIRON
@@ -890,10 +1294,10 @@ namespace Vanara.PInvoke
 			internal uint Version;
 			internal PTP_POOL Pool;
 			internal PTP_CLEANUP_GROUP CleanupGroup;
-			internal PTP_CLEANUP_GROUP_CANCEL_CALLBACK CleanupGroupCancelCallback;
+			internal CleanupGroupCancelCallback CleanupGroupCancelCallback;
 			internal HINSTANCE RaceDll;
 			internal HACTCTX _ActivationContext;
-			internal PTP_SIMPLE_CALLBACK _FinalizationCallback;
+			internal SimpleCallback _FinalizationCallback;
 			internal TP_CALLBACK_ENV_FLAGS Flags;
 			internal TP_CALLBACK_PRIORITY CallbackPriority;
 			internal uint Size;
@@ -911,11 +1315,221 @@ namespace Vanara.PInvoke
 
 			/// <summary>Indicates a function to call when the callback environment is finalized.</summary>
 			/// <value>Pointer to a TP_SIMPLE_CALLBACK structure indicating a function to call when the callback environment is finalized.</value>
-			public PTP_SIMPLE_CALLBACK FinalizationCallback { set => _FinalizationCallback = value; }
+			public SimpleCallback FinalizationCallback { set => _FinalizationCallback = value; }
 
 			/// <summary>Assigns an activation context to the callback environment.</summary>
 			/// <value>Pointer to an _ACTIVATION_CONTEXT structure.</value>
 			public HACTCTX ActivationContext { set => _ActivationContext = value; }
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PTP_CLEANUP_GROUP"/> that is disposed using <see cref="CloseThreadpoolCleanupGroup"/>.</summary>
+		public class SafePTP_CLEANUP_GROUP : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafePTP_CLEANUP_GROUP"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafePTP_CLEANUP_GROUP(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafePTP_CLEANUP_GROUP"/> class.</summary>
+			private SafePTP_CLEANUP_GROUP() : base() { }
+
+			/// <summary>Gets or sets a value indicating whether to call CloseThreadpoolCleanupGroupMembers on disposal.</summary>
+			public bool AutoCloseMembers { get; set; }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafePTP_CLEANUP_GROUP"/> to <see cref="PTP_CLEANUP_GROUP"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PTP_CLEANUP_GROUP(SafePTP_CLEANUP_GROUP h) => h.handle;
+
+			/// <summary>
+			/// Releases the members of this cleanup group, waits for all callback functions to complete, and optionally cancels any
+			/// outstanding callback functions.
+			/// </summary>
+			/// <param name="fCancelPendingCallbacks">
+			/// If this parameter is TRUE, the function cancels outstanding callbacks that have not yet started. If this parameter is FALSE,
+			/// the function waits for outstanding callback functions to complete.
+			/// </param>
+			/// <param name="pvCleanupContext">
+			/// The application-defined data to pass to the application's cleanup group callback function. You can specify the callback
+			/// function when you call <c>SetThreadpoolCallbackCleanupGroup</c>.
+			/// </param>
+			/// <returns>This function does not return a value.</returns>
+			public void CloseMembers(bool fCancelPendingCallbacks, [Optional] IntPtr pvCleanupContext) => CloseThreadpoolCleanupGroupMembers(handle, fCancelPendingCallbacks, pvCleanupContext);
+
+			/// <summary>Creates a new timer object.</summary>
+			/// <param name="pfnti">The callback function to call each time the timer object expires. For details, see <c>TimerCallback</c>.</param>
+			/// <param name="pv">Optional application-defined data to pass to the callback function.</param>
+			/// <param name="pcbe">
+			/// <para>
+			/// A <c>TP_CALLBACK_ENVIRON</c> structure that defines the environment in which to execute the callback. The
+			/// <c>InitializeThreadpoolEnvironment</c> function returns this structure.
+			/// </para>
+			/// <para>If this parameter is NULL, the callback executes in the default callback environment. For more information, see <c>InitializeThreadpoolEnvironment</c>.</para>
+			/// </param>
+			/// <returns>
+			/// <para>
+			/// If the function succeeds, it returns a <c>TP_TIMER</c> structure that defines the timer object. Applications do not modify
+			/// the members of this structure.
+			/// </para>
+			/// <para>If the function fails, it returns NULL. To retrieve extended error information, call <c>GetLastError</c>.</para>
+			/// </returns>
+			public PTP_TIMER CreateTimer(TimerCallback pfnti, IntPtr pv = default, PTP_CALLBACK_ENVIRON pcbe = null) => InternalCreateThreadpoolTimer(pfnti, pv, pcbe);
+
+			/// <summary>Creates a new wait object.</summary>
+			/// <param name="pfnwa">The callback function to call when the wait completes or times out. For details, see <c>WaitCallback</c>.</param>
+			/// <param name="pv">Optional application-defined data to pass to the callback function.</param>
+			/// <param name="pcbe">
+			/// <para>
+			/// A <c>TP_CALLBACK_ENVIRON</c> structure that defines the environment in which to execute the callback. The
+			/// <c>InitializeThreadpoolEnvironment</c> function returns this structure.
+			/// </para>
+			/// <para>If this parameter is NULL, the callback executes in the default callback environment. For more information, see <c>InitializeThreadpoolEnvironment</c>.</para>
+			/// </param>
+			/// <returns>
+			/// <para>
+			/// If the function succeeds, it returns a <c>TP_WAIT</c> structure that defines the wait object. Applications do not modify the
+			/// members of this structure.
+			/// </para>
+			/// <para>If the function fails, it returns NULL. To retrieve extended error information, call <c>GetLastError</c>.</para>
+			/// </returns>
+			public PTP_WAIT CreateWait(WaitCallback pfnwa, IntPtr pv = default, PTP_CALLBACK_ENVIRON pcbe = null) => InternalCreateThreadpoolWait(pfnwa, pv, pcbe);
+
+			/// <summary>Creates a new work object.</summary>
+			/// <param name="pfnwk">
+			/// The callback function. A worker thread calls this callback each time you call <c>SubmitThreadpoolWork</c> to post the work
+			/// object. For details, see <c>WorkCallback</c>.
+			/// </param>
+			/// <param name="pv">Optional application-defined data to pass to the callback function.</param>
+			/// <param name="pcbe">
+			/// <para>
+			/// A <c>TP_CALLBACK_ENVIRON</c> structure that defines the environment in which to execute the callback. The
+			/// <c>InitializeThreadpoolEnvironment</c> function returns this structure.
+			/// </para>
+			/// <para>If this parameter is NULL, the callback executes in the default callback environment. For more information, see <c>InitializeThreadpoolEnvironment</c>.</para>
+			/// </param>
+			/// <returns>
+			/// <para>
+			/// If the function succeeds, it returns a <c>TP_WORK</c> structure that defines the work object. Applications do not modify the
+			/// members of this structure.
+			/// </para>
+			/// <para>If the function fails, it returns NULL. To retrieve extended error information, call <c>GetLastError</c>.</para>
+			/// </returns>
+			public PTP_WORK CreateWork(WorkCallback pfnwk, IntPtr pv = default, PTP_CALLBACK_ENVIRON pcbe = null) => InternalCreateThreadpoolWork(pfnwk, pv, pcbe);
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { if (AutoCloseMembers) CloseMembers(false); CloseThreadpoolCleanupGroup(handle); return true; }
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PTP_IO"/> that is disposed using <see cref="CloseThreadpoolIo"/>.</summary>
+		public class SafePTP_IO : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafePTP_IO"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafePTP_IO(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafePTP_IO"/> class.</summary>
+			private SafePTP_IO() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafePTP_IO"/> to <see cref="PTP_IO"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PTP_IO(SafePTP_IO h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { CloseThreadpoolIo(handle); return true; }
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PTP_POOL"/> that is disposed using <see cref="CloseThreadpool"/>.</summary>
+		public class SafePTP_POOL : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafePTP_POOL"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafePTP_POOL(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafePTP_POOL"/> class.</summary>
+			private SafePTP_POOL() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafePTP_POOL"/> to <see cref="PTP_POOL"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PTP_POOL(SafePTP_POOL h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { CloseThreadpool(handle); return true; }
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PTP_TIMER"/> that is disposed using <see cref="CloseThreadpoolTimer"/>.</summary>
+		public class SafePTP_TIMER : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafePTP_TIMER"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafePTP_TIMER(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafePTP_TIMER"/> class.</summary>
+			private SafePTP_TIMER() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafePTP_TIMER"/> to <see cref="PTP_TIMER"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PTP_TIMER(SafePTP_TIMER h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { CloseThreadpoolTimer(handle); return true; }
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PTP_WAIT"/> that is disposed using <see cref="CloseThreadpoolWait"/>.</summary>
+		public class SafePTP_WAIT : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafePTP_WAIT"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafePTP_WAIT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafePTP_WAIT"/> class.</summary>
+			private SafePTP_WAIT() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafePTP_WAIT"/> to <see cref="PTP_WAIT"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PTP_WAIT(SafePTP_WAIT h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { CloseThreadpoolWait(handle); return true; }
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PTP_WORK"/> that is disposed using <see cref="CloseThreadpoolWork"/>.</summary>
+		public class SafePTP_WORK : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafePTP_WORK"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafePTP_WORK(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafePTP_WORK"/> class.</summary>
+			private SafePTP_WORK() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafePTP_WORK"/> to <see cref="PTP_WORK"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PTP_WORK(SafePTP_WORK h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { CloseThreadpoolWork(handle); return true; }
 		}
 	}
 }
