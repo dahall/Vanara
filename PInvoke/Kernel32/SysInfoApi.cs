@@ -436,11 +436,97 @@ namespace Vanara.PInvoke
 			PRODUCT_WEB_SERVER_CORE = 0x0000001D,
 		}
 
+		/// <summary>Any additional information about the system.</summary>
+		[PInvokeData("Winnt.h", MSDNShortId = "ms724833")]
+		public enum ProductType : byte
+		{
+			/// <summary>
+			/// The system is a domain controller and the operating system is Windows Server 2012 , Windows Server 2008 R2, Windows Server
+			/// 2008, Windows Server 2003, or Windows 2000 Server.
+			/// </summary>
+			VER_NT_DOMAIN_CONTROLLER = 0x0000002,
+
+			/// <summary>
+			/// The operating system is Windows Server 2012, Windows Server 2008 R2, Windows Server 2008, Windows Server 2003, or Windows
+			/// 2000 Server.
+			/// <para>Note that a server that is also a domain controller is reported as VER_NT_DOMAIN_CONTROLLER, not VER_NT_SERVER.</para>
+			/// </summary>
+			VER_NT_SERVER = 0x0000003,
+
+			/// <summary>
+			/// The operating system is Windows 8, Windows 7, Windows Vista, Windows XP Professional, Windows XP Home Edition, or Windows
+			/// 2000 Professional.
+			/// </summary>
+			VER_NT_WORKSTATION = 0x0000001,
+		}
+
 		/// <summary>Flags for <c>SetComputerNameEx2</c>.</summary>
 		public enum SCEX2
 		{
 			/// <summary>Undocumented.</summary>
 			SCEX2_ALT_NETBIOS_NAME = 0x00000001,
+		}
+
+		/// <summary>A bit mask that identifies the product suites available on the system.</summary>
+		[PInvokeData("Winnt.h", MSDNShortId = "ms724833")]
+		[Flags]
+		public enum SuiteMask : ushort
+		{
+			/// <summary>Microsoft BackOffice components are installed.</summary>
+			VER_SUITE_BACKOFFICE = 0x00000004,
+
+			/// <summary>Windows Server 2003, Web Edition is installed.</summary>
+			VER_SUITE_BLADE = 0x00000400,
+
+			/// <summary>Windows Server 2003, Compute Cluster Edition is installed.</summary>
+			VER_SUITE_COMPUTE_SERVER = 0x00004000,
+
+			/// <summary>
+			/// Windows Server 2008 Datacenter, Windows Server 2003, Datacenter Edition, or Windows 2000 Datacenter Server is installed.
+			/// </summary>
+			VER_SUITE_DATACENTER = 0x00000080,
+
+			/// <summary>
+			/// Windows Server 2008 Enterprise, Windows Server 2003, Enterprise Edition, or Windows 2000 Advanced Server is installed. Refer
+			/// to the Remarks section for more information about this bit flag.
+			/// </summary>
+			VER_SUITE_ENTERPRISE = 0x00000002,
+
+			/// <summary>Windows XP Embedded is installed.</summary>
+			VER_SUITE_EMBEDDEDNT = 0x00000040,
+
+			/// <summary>Windows Vista Home Premium, Windows Vista Home Basic, or Windows XP Home Edition is installed.</summary>
+			VER_SUITE_PERSONAL = 0x00000200,
+
+			/// <summary>
+			/// Remote Desktop is supported, but only one interactive session is supported. This value is set unless the system is running in
+			/// application server mode.
+			/// </summary>
+			VER_SUITE_SINGLEUSERTS = 0x00000100,
+
+			/// <summary>
+			/// Microsoft Small Business Server was once installed on the system, but may have been upgraded to another version of Windows.
+			/// Refer to the Remarks section for more information about this bit flag.
+			/// </summary>
+			VER_SUITE_SMALLBUSINESS = 0x00000001,
+
+			/// <summary>
+			/// Microsoft Small Business Server is installed with the restrictive client license in force. Refer to the Remarks section for
+			/// more information about this bit flag.
+			/// </summary>
+			VER_SUITE_SMALLBUSINESS_RESTRICTED = 0x00000020,
+
+			/// <summary>Windows Storage Server 2003 R2 or Windows Storage Server 2003is installed.</summary>
+			VER_SUITE_STORAGE_SERVER = 0x00002000,
+
+			/// <summary>
+			/// Terminal Services is installed. This value is always set.
+			/// <para>If VER_SUITE_TERMINAL is set but VER_SUITE_SINGLEUSERTS is not set, the system is running in application server mode.</para>
+			/// </summary>
+			VER_SUITE_TERMINAL = 0x00000010,
+
+			/// <summary>Windows Home Server is installed.</summary>
+			VER_SUITE_WH_SERVER = 0x00008000,
 		}
 
 		/// <summary>Converts a DNS-style host name to a NetBIOS-style computer name.</summary>
@@ -2076,9 +2162,9 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </summary>
 		/// <returns>
-		/// Receives the path. This path does not end with a backslash unless the Windows directory is the root
-		/// directory. For example, if the Windows directory is named Windows on drive C, the path of the Windows directory retrieved by this
-		/// function is C:\Windows. If the system was installed in the root directory of drive C, the path retrieved is C:\.
+		/// Receives the path. This path does not end with a backslash unless the Windows directory is the root directory. For example, if
+		/// the Windows directory is named Windows on drive C, the path of the Windows directory retrieved by this function is C:\Windows. If
+		/// the system was installed in the root directory of drive C, the path retrieved is C:\.
 		/// </returns>
 		public static string GetWindowsDirectory() => CallMethodWithStrBuf((sb, sz) => GetWindowsDirectory(sb, sz), (uint)MAX_PATH, out var sysDir) != 0 ? sysDir : throw Win32Error.GetLastError().GetException();
 
@@ -2901,53 +2987,6 @@ namespace Vanara.PInvoke
 			/// <para>A GROUP_AFFINITY structure that specifies a group number and processor affinity within the group.</para>
 			/// </summary>
 			public GROUP_AFFINITY GroupMask;
-		}
-
-		/// <summary>A bit mask that identifies the product suites available on the system.</summary>
-		[PInvokeData("Winnt.h", MSDNShortId = "ms724833")]
-		[Flags]
-		public enum SuiteMask : ushort
-		{
-			/// <summary>Microsoft BackOffice components are installed.</summary>
-			VER_SUITE_BACKOFFICE = 0x00000004,
-			/// <summary>Windows Server 2003, Web Edition is installed.</summary>
-			VER_SUITE_BLADE = 0x00000400,
-			/// <summary>Windows Server 2003, Compute Cluster Edition is installed.</summary>
-			VER_SUITE_COMPUTE_SERVER = 0x00004000,
-			/// <summary>Windows Server 2008 Datacenter, Windows Server 2003, Datacenter Edition, or Windows 2000 Datacenter Server is installed.</summary>
-			VER_SUITE_DATACENTER = 0x00000080,
-			/// <summary>Windows Server 2008 Enterprise, Windows Server 2003, Enterprise Edition, or Windows 2000 Advanced Server is installed. Refer to the Remarks section for more information about this bit flag.</summary>
-			VER_SUITE_ENTERPRISE = 0x00000002,
-			/// <summary>Windows XP Embedded is installed.</summary>
-			VER_SUITE_EMBEDDEDNT = 0x00000040,
-			/// <summary>Windows Vista Home Premium, Windows Vista Home Basic, or Windows XP Home Edition is installed.</summary>
-			VER_SUITE_PERSONAL = 0x00000200,
-			/// <summary>Remote Desktop is supported, but only one interactive session is supported. This value is set unless the system is running in application server mode.</summary>
-			VER_SUITE_SINGLEUSERTS = 0x00000100,
-			/// <summary>Microsoft Small Business Server was once installed on the system, but may have been upgraded to another version of Windows. Refer to the Remarks section for more information about this bit flag.</summary>
-			VER_SUITE_SMALLBUSINESS = 0x00000001,
-			/// <summary>Microsoft Small Business Server is installed with the restrictive client license in force. Refer to the Remarks section for more information about this bit flag.</summary>
-			VER_SUITE_SMALLBUSINESS_RESTRICTED = 0x00000020,
-			/// <summary>Windows Storage Server 2003 R2 or Windows Storage Server 2003is installed.</summary>
-			VER_SUITE_STORAGE_SERVER = 0x00002000,
-			/// <summary>Terminal Services is installed. This value is always set.
-			/// <para>If VER_SUITE_TERMINAL is set but VER_SUITE_SINGLEUSERTS is not set, the system is running in application server mode.</para></summary>
-			VER_SUITE_TERMINAL = 0x00000010,
-			/// <summary>Windows Home Server is installed.</summary>
-			VER_SUITE_WH_SERVER = 0x00008000,
-		}
-
-		/// <summary>Any additional information about the system.</summary>
-		[PInvokeData("Winnt.h", MSDNShortId = "ms724833")]
-		public enum ProductType : byte
-		{
-			/// <summary>The system is a domain controller and the operating system is Windows Server 2012 , Windows Server 2008 R2, Windows Server 2008, Windows Server 2003, or Windows 2000 Server.</summary>
-			VER_NT_DOMAIN_CONTROLLER = 0x0000002,
-			/// <summary>The operating system is Windows Server 2012, Windows Server 2008 R2, Windows Server 2008, Windows Server 2003, or Windows 2000 Server.
-			/// <para>Note that a server that is also a domain controller is reported as VER_NT_DOMAIN_CONTROLLER, not VER_NT_SERVER.</para></summary>
-			VER_NT_SERVER = 0x0000003,
-			/// <summary>The operating system is Windows 8, Windows 7, Windows Vista, Windows XP Professional, Windows XP Home Edition, or Windows 2000 Professional.</summary>
-			VER_NT_WORKSTATION = 0x0000001,
 		}
 
 		/// <summary>
