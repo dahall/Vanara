@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace Vanara.PInvoke
 {
 	/// <summary>Managed instance of the SIZE_T type.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential), Serializable]
 	public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComparable
 	{
 		private UIntPtr val;
@@ -19,7 +20,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets the value.</summary>
 		/// <value>The value.</value>
-		public ulong Value => val.ToUInt64();
+		public ulong Value { get => val.ToUInt64(); private set => val = new UIntPtr(value); }
 
 		/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="SizeT"/>.</summary>
 		/// <param name="value">The value.</param>
