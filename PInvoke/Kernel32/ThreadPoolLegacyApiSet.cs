@@ -92,6 +92,14 @@ namespace Vanara.PInvoke
 			/// <para>Windows XP: This flag is not supported until Windows XP SP2 and Windows Server 2003.</para>
 			/// </summary>
 			WT_TRANSFER_IMPERSONATION = 0x00000100,
+
+			/// <summary>
+			/// The callback function can perform a long wait. This flag helps the system to decide if it should create a new thread.
+			/// </summary>
+			WT_EXECUTEINLONGTHREAD = 0x00000010,
+
+			/// <summary>The timer will be set to the signaled state only once. If this flag is set, the Period parameter must be zero.</summary>
+			WT_EXECUTEDELETEWAIT = 0x00000008,
 		}
 
 		/// <summary>
@@ -248,12 +256,9 @@ namespace Vanara.PInvoke
 		// BOOL WINAPI CreateTimerQueueTimer( _Out_ PHANDLE phNewTimer, _In_opt_ HANDLE TimerQueue, _In_ WAITORTIMERCALLBACK Callback,
 		// _In_opt_ PVOID Parameter, _In_ DWORD DueTime, _In_ DWORD Period, _In_ ULONG Flags); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682485(v=vs.85).aspx
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682485")]
-		public static bool CreateTimerQueueTimer(out SafeTimerQueueTimerHandle phNewTimer, [In] SafeTimerQueueHandle TimerQueue, WaitOrTimerCallback Callback, [In] IntPtr Parameter, uint DueTime, uint Period, WT Flags)
-		{
-			var b = _CreateTimerQueueTimer(out phNewTimer, TimerQueue, Callback, Parameter, DueTime, Period, Flags);
-			if (b) phNewTimer.TimerQueue = TimerQueue;
-			return b;
-		}
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CreateTimerQueueTimer(out TimerQueueTimerHandle phNewTimer, [In] TimerQueueHandle TimerQueue, WaitOrTimerCallback Callback, [In, Optional] IntPtr Parameter, uint DueTime, [Optional] uint Period, [Optional] WT Flags);
 
 		/// <summary>Deletes a timer queue. Any pending timers in the queue are canceled and deleted.</summary>
 		/// <param name="TimerQueue">A handle to the timer queue. This handle is returned by the <c>CreateTimerQueue</c> function.</param>
@@ -334,99 +339,173 @@ namespace Vanara.PInvoke
 		public static extern bool QueueUserWorkItem(ThreadProc Function, [In] IntPtr Context, WT Flags);
 
 		/// <summary>
+		/// <para>
 		/// Directs a wait thread in the thread pool to wait on the object. The wait thread queues the specified callback function to the
 		/// thread pool when one of the following occurs:
-		/// </summary>
-		/// <param name="phNewWaitObject">
-		/// A pointer to a variable that receives a wait handle on return. Note that a wait handle cannot be used in functions that require
-		/// an object handle, such as <c>CloseHandle</c>.
-		/// </param>
-		/// <param name="hObject">
-		/// <para>A handle to the object. For a list of the object types whose handles can be specified, see the following Remarks section.</para>
-		/// <para>If this handle is closed while the wait is still pending, the function's behavior is undefined.</para>
-		/// <para>The handles must have the <c>SYNCHRONIZE</c> access right. For more information, see Standard Access Rights.</para>
-		/// </param>
-		/// <param name="Callback">
-		/// A pointer to the application-defined function of type <c>WAITORTIMERCALLBACK</c> to be executed when hObject is in the signaled
-		/// state, or dwMilliseconds elapses. For more information, see <c>WaitOrTimerCallback</c>.
-		/// </param>
-		/// <param name="Context">A single value that is passed to the callback function.</param>
-		/// <param name="dwMilliseconds">
-		/// The time-out interval, in milliseconds. The function returns if the interval elapses, even if the object's state is nonsignaled.
-		/// If dwMilliseconds is zero, the function tests the object's state and returns immediately. If dwMilliseconds is <c>INFINITE</c>,
-		/// the function's time-out interval never elapses.
-		/// </param>
-		/// <param name="dwFlags">
-		/// <para>
-		/// This parameter can be one or more of the following values. For information about using these values with objects that remain
-		/// signaled, see the Remarks section.
 		/// </para>
-		/// <para>
+		/// <list type="bullet">
+		///   <item>
+		///     <term>The specified object is in the signaled state.</term>
+		///   </item>
+		///   <item>
+		///     <term>The time-out interval elapses.</term>
+		///   </item>
+		/// </list>
+		/// </summary>
+		/// <param name="phNewWaitObject">A pointer to a variable that receives a wait handle on return. Note that a wait handle cannot be used in functions that require
+		/// an object handle, such as CloseHandle.</param>
+		/// <param name="hObject"><para>A handle to the object. For a list of the object types whose handles can be specified, see the following Remarks section.</para>
+		/// <para>If this handle is closed while the wait is still pending, the function's behavior is undefined.</para>
+		/// <para>The handles must have the <c>SYNCHRONIZE</c> access right. For more information, see Standard Access Rights.</para></param>
+		/// <param name="Callback">A pointer to the application-defined function of type <c>WAITORTIMERCALLBACK</c> to be executed when hObject is in the signaled
+		/// state, or dwMilliseconds elapses. For more information, see WaitOrTimerCallback.</param>
+		/// <param name="Context">A single value that is passed to the callback function.</param>
+		/// <param name="dwMilliseconds">The time-out interval, in milliseconds. The function returns if the interval elapses, even if the object's state is nonsignaled.
+		/// If dwMilliseconds is zero, the function tests the object's state and returns immediately. If dwMilliseconds is <c>INFINITE</c>,
+		/// the function's time-out interval never elapses.</param>
+		/// <param name="dwFlags"><para>This parameter can be one or more of the following values.</para>
+		/// <para>For information about using these values with objects that remain signaled, see the Remarks section.</para>
 		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>WT_EXECUTEDEFAULT0x00000000</term>
-		/// <term>By default, the callback function is queued to a non-I/O worker thread.</term>
-		/// </item>
-		/// <item>
-		/// <term>WT_EXECUTEINIOTHREAD0x00000001</term>
-		/// <term>
-		/// This flag is not used.Windows Server 2003 and Windows XP: The callback function is queued to an I/O worker thread. This flag
+		///   <listheader>
+		///     <term>Value</term>
+		///     <term>Meaning</term>
+		///   </listheader>
+		///   <item>
+		///     <term>WT_EXECUTEDEFAULT 0x00000000</term>
+		///     <term>By default, the callback function is queued to a non-I/O worker thread.</term>
+		///   </item>
+		///   <item>
+		///     <term>WT_EXECUTEINIOTHREAD 0x00000001</term>
+		///     <term>
+		/// This flag is not used. Windows Server 2003 and Windows XP: The callback function is queued to an I/O worker thread. This flag
 		/// should be used if the function should be executed in a thread that waits in an alertable state. I/O worker threads were removed
 		/// starting with Windows Vista and Windows Server 2008.
 		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>WT_EXECUTEINPERSISTENTTHREAD0x00000080</term>
-		/// <term>
+		///   </item>
+		///   <item>
+		///     <term>WT_EXECUTEINPERSISTENTTHREAD 0x00000080</term>
+		///     <term>
 		/// The callback function is queued to a thread that never terminates. It does not guarantee that the same thread is used each time.
 		/// This flag should be used only for short tasks or it could affect other wait operations. This flag must be set if the thread calls
-		/// functions that use APCs. For more information, see Asynchronous Procedure Calls.Note that currently no worker thread is truly
+		/// functions that use APCs. For more information, see Asynchronous Procedure Calls. Note that currently no worker thread is truly
 		/// persistent, although no worker thread will terminate if there are any pending I/O requests.
 		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>WT_EXECUTEINWAITTHREAD0x00000004</term>
-		/// <term>
+		///   </item>
+		///   <item>
+		///     <term>WT_EXECUTEINWAITTHREAD 0x00000004</term>
+		///     <term>
 		/// The callback function is invoked by the wait thread itself. This flag should be used only for short tasks or it could affect
 		/// other wait operations. Deadlocks can occur if some other thread acquires an exclusive lock and calls the UnregisterWait or
 		/// UnregisterWaitEx function while the callback function is trying to acquire the same lock.
 		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>WT_EXECUTELONGFUNCTION0x00000010</term>
-		/// <term>The callback function can perform a long wait. This flag helps the system to decide if it should create a new thread.</term>
-		/// </item>
-		/// <item>
-		/// <term>WT_EXECUTEONLYONCE0x00000008</term>
-		/// <term>
+		///   </item>
+		///   <item>
+		///     <term>WT_EXECUTELONGFUNCTION 0x00000010</term>
+		///     <term>The callback function can perform a long wait. This flag helps the system to decide if it should create a new thread.</term>
+		///   </item>
+		///   <item>
+		///     <term>WT_EXECUTEONLYONCE 0x00000008</term>
+		///     <term>
 		/// The thread will no longer wait on the handle after the callback function has been called once. Otherwise, the timer is reset
 		/// every time the wait operation completes until the wait operation is canceled.
 		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>WT_TRANSFER_IMPERSONATION0x00000100</term>
-		/// <term>
+		///   </item>
+		///   <item>
+		///     <term>WT_TRANSFER_IMPERSONATION 0x00000100</term>
+		///     <term>
 		/// Callback functions will use the current access token, whether it is a process or impersonation token. If this flag is not
-		/// specified, callback functions execute only with the process token.Windows XP: This flag is not supported until Windows XP with
+		/// specified, callback functions execute only with the process token. Windows XP: This flag is not supported until Windows XP with
 		/// SP2 and Windows Server 2003.
 		/// </term>
-		/// </item>
-		/// </list>
-		/// </para>
-		/// </param>
+		///   </item>
+		/// </list></param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		// BOOL WINAPI RegisterWaitForSingleObject( _Out_ PHANDLE phNewWaitObject, _In_ HANDLE hObject, _In_ WAITORTIMERCALLBACK Callback,
-		// _In_opt_ PVOID Context, _In_ ULONG dwMilliseconds, _In_ ULONG dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/ms685061(v=vs.85).aspx
-		[PInvokeData("WinBase.h", MSDNShortId = "ms685061")]
+		/// <remarks>
+		/// <para>
+		/// New wait threads are created automatically when required. The wait operation is performed by a wait thread from the thread pool.
+		/// The callback routine is executed by a worker thread when the object's state becomes signaled or the time-out interval elapses. If
+		/// dwFlags is not <c>WT_EXECUTEONLYONCE</c>, the timer is reset every time the event is signaled or the time-out interval elapses.
+		/// </para>
+		/// <para>
+		/// When the wait is completed, you must call the UnregisterWait or UnregisterWaitEx function to cancel the wait operation. (Even
+		/// wait operations that use <c>WT_EXECUTEONLYONCE</c> must be canceled.) Do not make a blocking call to either of these functions
+		/// from within the callback function.
+		/// </para>
+		/// <para>
+		/// Note that you should not pulse an event object passed to <c>RegisterWaitForSingleObject</c>, because the wait thread might not
+		/// detect that the event is signaled before it is reset. You should not register an object that remains signaled (such as a manual
+		/// reset event or terminated process) unless you set the <c>WT_EXECUTEONLYONCE</c> or <c>WT_EXECUTEINWAITTHREAD</c> flag. For other
+		/// flags, the callback function might be called too many times before the event is reset.
+		/// </para>
+		/// <para>
+		/// The function modifies the state of some types of synchronization objects. Modification occurs only for the object whose signaled
+		/// state caused the wait condition to be satisfied. For example, the count of a semaphore object is decreased by one.
+		/// </para>
+		/// <para>The <c>RegisterWaitForSingleObject</c> function can wait for the following objects:</para>
+		/// <list type="bullet">
+		///   <item>
+		///     <term>Change notification</term>
+		///   </item>
+		///   <item>
+		///     <term>Console input</term>
+		///   </item>
+		///   <item>
+		///     <term>Event</term>
+		///   </item>
+		///   <item>
+		///     <term>Memory resource notification</term>
+		///   </item>
+		///   <item>
+		///     <term>Mutex</term>
+		///   </item>
+		///   <item>
+		///     <term>Process</term>
+		///   </item>
+		///   <item>
+		///     <term>Semaphore</term>
+		///   </item>
+		///   <item>
+		///     <term>Thread</term>
+		///   </item>
+		///   <item>
+		///     <term>Waitable timer</term>
+		///   </item>
+		/// </list>
+		/// <para>For more information, see Synchronization Objects.</para>
+		/// <para>
+		/// By default, the thread pool has a maximum of 500 threads. To raise this limit, use the <c>WT_SET_MAX_THREADPOOL_THREAD</c> macro
+		/// defined in WinNT.h.
+		/// </para>
+		/// <para>
+		/// Use this macro when specifying the dwFlags parameter. The macro parameters are the desired flags and the new limit (up to
+		/// (2&lt;&lt;16)-1 threads). However, note that your application can improve its performance by keeping the number of worker threads low.
+		/// </para>
+		/// <para>
+		/// The work item and all functions it calls must be thread-pool safe. Therefore, you cannot call an asynchronous call that requires
+		/// a persistent thread, such as the RegNotifyChangeKeyValue function, from the default callback environment. Instead, set the thread
+		/// pool maximum equal to the thread pool minimum using the SetThreadpoolThreadMaximum and SetThreadpoolThreadMinimum functions, or
+		/// create your own thread using the CreateThread function. (For the original thread pool API, specify
+		/// <c>WT_EXECUTEINPERSISTENTTHREAD</c> using the QueueUserWorkItem function.)
+		/// </para>
+		/// <para>
+		/// To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0500 or later. For more information, see Using
+		/// the Windows Headers.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-registerwaitforsingleobject
+		// BOOL RegisterWaitForSingleObject( PHANDLE phNewWaitObject, HANDLE hObject, WAITORTIMERCALLBACK Callback, PVOID Context, ULONG dwMilliseconds, ULONG dwFlags );
+		[PInvokeData("winbase.h", MSDNShortId = "d0cd8b28-6e20-449a-94dd-cca2be46b812")]
 		public static bool RegisterWaitForSingleObject(out SafeRegisteredWaitHandle phNewWaitObject, ISyncHandle hObject, WaitOrTimerCallback Callback, IntPtr Context, uint dwMilliseconds, WT dwFlags) =>
 			RegisterWaitForSingleObject(out phNewWaitObject, hObject?.DangerousGetHandle() ?? IntPtr.Zero, Callback, Context, dwMilliseconds, dwFlags);
+
+		/// <summary>Gets a value that combines <see cref="WT"/> flags values with a new maximum threadpool thread count limit.</summary>
+		/// <param name="Flags">The desired flags.</param>
+		/// <param name="Limit">The threadpool thread count limit. The default is 500.</param>
+		/// <returns>A <see cref="WT"/> value that has been augmented with the limit.</returns>
+		public static WT WT_SET_MAX_THREADPOOL_THREADS(WT Flags, ushort Limit) => Flags | (WT)((uint)Limit << 16);
 
 		/// <summary>Cancels a registered wait operation issued by the <c>RegisterWaitForSingleObject</c> function.</summary>
 		/// <param name="WaitHandle">The wait handle. This handle is returned by the <c>RegisterWaitForSingleObject</c> function.</param>
@@ -450,11 +529,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("LibLoaderAPI.h", MSDNShortId = "ms686876")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UnregisterWaitEx([In] SafeRegisteredWaitHandle WaitHandle, [In] SafeEventHandle CompletionEvent);
-
-		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "CreateTimerQueueTimer")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool _CreateTimerQueueTimer(out SafeTimerQueueTimerHandle phNewTimer, [In] TimerQueueHandle TimerQueue, WaitOrTimerCallback Callback, [In] IntPtr Parameter, uint DueTime, uint Period, WT Flags);
+		public static extern bool UnregisterWaitEx([In] IntPtr WaitHandle, [In] SafeEventHandle CompletionEvent);
 
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -570,39 +645,29 @@ namespace Vanara.PInvoke
 
 			private SafeTimerQueueHandle() : base() { }
 
+			/// <summary>Gets or sets the completion event associated with the disposal or closure of this timer queue.</summary>
+			/// <value>
+			/// <para>
+			/// A handle to the event object to be signaled when the function is successful and all callback functions have completed. This
+			/// parameter can be <see langword="null"/>.
+			/// </para>
+			/// <para>
+			/// If this parameter is <see cref="SafeEventHandle.Invalid"/>, the function waits for all callback functions to complete before returning.
+			/// </para>
+			/// <para>
+			/// If this parameter is <see langword="null"/>, the function marks the timer for deletion and returns immediately. However, most
+			/// callers should wait for the callback function to complete so they can perform any needed cleanup.
+			/// </para>
+			/// </value>
+			public SafeEventHandle CompletionEvent { get; set; }
+
 			/// <summary>Performs an implicit conversion from <see cref="SafeTimerQueueHandle"/> to <see cref="TimerQueueHandle"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator TimerQueueHandle(SafeTimerQueueHandle h) => h.handle;
 
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => DeleteTimerQueueEx(this, new SafeEventHandle(new IntPtr(-1), false));
-		}
-
-		/// <summary>
-		/// Provides a <see cref="SafeHandle"/> to a timer queue timer that releases a created TimerQueueTimerHandle instance at disposal
-		/// using DeleteTimerQueueTimer.
-		/// </summary>
-		public class SafeTimerQueueTimerHandle : SafeHANDLE
-		{
-			/// <summary>Initializes a new instance of the <see cref="TimerQueueTimerHandle"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeTimerQueueTimerHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			private SafeTimerQueueTimerHandle() : base() { }
-
-			public SafeTimerQueueHandle TimerQueue { get; internal set; }
-
-			/// <summary>Performs an implicit conversion from <see cref="SafeTimerQueueTimerHandle"/> to <see cref="TimerQueueTimerHandle"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator TimerQueueTimerHandle(SafeTimerQueueTimerHandle h) => h.handle;
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => DeleteTimerQueueTimer(TimerQueue, this, new SafeEventHandle(new IntPtr(-1), false));
+			protected override bool InternalReleaseHandle() => DeleteTimerQueueEx(this, CompletionEvent ?? SafeEventHandle.Null);
 		}
 	}
 }

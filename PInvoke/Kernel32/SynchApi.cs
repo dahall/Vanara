@@ -2349,10 +2349,30 @@ namespace Vanara.PInvoke
 
 			private SafeEventHandle() : base() { }
 
+			/// <summary>Sets this event object to the nonsignaled state.</summary>
+			/// <returns>
+			/// <para>If the function succeeds, the return value is nonzero.</para>
+			/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+			/// </returns>
+			public bool Reset() => ResetEvent(this);
+
+			/// <summary>Sets this event object to the signaled state.</summary>
+			/// <returns>
+			/// <para>If the function succeeds, the return value is nonzero.</para>
+			/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+			/// </returns>
+			public bool Set() => SetEvent(this);
+
 			/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
 			/// <param name="h">The SafeSyncHandle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator SafeEventHandle(SafeWaitHandle h) => new SafeEventHandle(h.DangerousGetHandle(), false);
+
+			/// <summary>Gets an invalid event handle.</summary>
+			public static SafeEventHandle InvalidHandle => new SafeEventHandle(new IntPtr(-1), false);
+
+			/// <summary>Gets a null event handle.</summary>
+			public static SafeEventHandle Null => new SafeEventHandle(IntPtr.Zero, false);
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a mutex that is automatically disposed using CloseHandle.</summary>
@@ -2378,10 +2398,6 @@ namespace Vanara.PInvoke
 		/// </summary>
 		public class SafeRegisteredWaitHandle : SafeHANDLE
 		{
-			private static readonly SafeEventHandle invalidEvent = new SafeEventHandle(new IntPtr(-1), false);
-
-			private static readonly SafeEventHandle nullEvent = new SafeEventHandle(IntPtr.Zero, false);
-
 			/// <summary>Initializes a new instance of the <see cref="SafeRegisteredWaitHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
@@ -2401,14 +2417,19 @@ namespace Vanara.PInvoke
 			/// <value><c>true</c> if disposal wait for all functions to complete; otherwise, <c>false</c>.</value>
 			public bool WaitForAllFunctions { get; set; }
 
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SafeRegisteredWaitHandle"/>.</summary>
+			/// <param name="p">The handle pointer.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SafeRegisteredWaitHandle(IntPtr p) => new SafeRegisteredWaitHandle(p, false);
+
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle()
 			{
-				if (UnregisterWaitEx(this, CompletionEvent ?? (WaitForAllFunctions ? invalidEvent : nullEvent)))
+				if (UnregisterWaitEx(handle, CompletionEvent ?? (WaitForAllFunctions ? SafeEventHandle.InvalidHandle : SafeEventHandle.Null)))
 					return true;
-				if (CompletionEvent != null && Win32Error.GetLastError() == Win32Error.ERROR_IO_PENDING)
-					return WaitForSingleObject(CompletionEvent, INFINITE) == WAIT_STATUS.WAIT_OBJECT_0;
-				return false;
+				return CompletionEvent == null || Win32Error.GetLastError() != Win32Error.ERROR_IO_PENDING
+					? false
+					: WaitForSingleObject(CompletionEvent, INFINITE) == WAIT_STATUS.WAIT_OBJECT_0;
 			}
 		}
 
