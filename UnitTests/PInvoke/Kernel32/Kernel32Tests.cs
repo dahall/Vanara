@@ -70,18 +70,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void FileTimeToSystemTimeTest()
-		{
-			var dt = DateTime.Today;
-			var ft = dt.ToFileTimeStruct();
-			var b = FileTimeToSystemTime(ft, out var st);
-			if (!b) TestContext.WriteLine($"FileTimeToSystemTime:{Win32Error.GetLastError()}");
-			Assert.That(b);
-			Assert.That(dt.Year, Is.EqualTo(st.wYear));
-			Assert.That(dt.Day, Is.EqualTo(st.wDay));
-		}
-
-		[Test]
 		public void GetCompressedFileSizeTest()
 		{
 			var err = GetCompressedFileSize(fn, out ulong sz);
@@ -154,17 +142,6 @@ namespace Vanara.PInvoke.Tests
 			Assert.That((int)Win32Error.GetLastError(), Is.EqualTo(0));
 			SetLastError(Win32Error.ERROR_AUDIT_FAILED);
 			Assert.That((int)Win32Error.GetLastError(), Is.EqualTo(Win32Error.ERROR_AUDIT_FAILED));
-		}
-
-		[Test]
-		public void SystemTimeToFileTimeTest()
-		{
-			var dt = new DateTime(2000, 1, 1, 4, 4, 4, 444, DateTimeKind.Utc);
-			var st = new SYSTEMTIME(dt, DateTimeKind.Utc);
-			Assert.That(st.ToString(DateTimeKind.Utc, null, null), Is.EqualTo(dt.ToString()));
-			var b = SystemTimeToFileTime(st, out var ft);
-			Assert.That(b, Is.True);
-			Assert.That(FileTimeExtensions.Equals(ft, dt.ToFileTimeStruct()));
 		}
 	}
 }
