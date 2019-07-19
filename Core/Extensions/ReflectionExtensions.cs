@@ -10,6 +10,7 @@ namespace Vanara.Extensions
 	public static class ReflectionExtensions
 	{
 		private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
+		private const BindingFlags staticBindingFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
 
 		/// <summary>For a structure, gets either the result of the static Create method or the default.</summary>
 		/// <typeparam name="T">The structure's type.</typeparam>
@@ -78,7 +79,19 @@ namespace Vanara.Extensions
 		public static T GetFieldValue<T>(this object obj, string fieldName)
 		{
 			if (obj is null) throw new ArgumentNullException(nameof(obj));
+			if (string.IsNullOrEmpty(fieldName)) throw new ArgumentNullException(nameof(fieldName));
 			return (T)obj.GetType().InvokeMember(fieldName, BindingFlags.GetField | bindingFlags, null, obj, null, null);
+		}
+
+		/// <summary>Gets a named field value from an object.</summary>
+		/// <typeparam name="T">The expected type of the field to be returned.</typeparam>
+		/// <param name="obj">The object from which to retrieve the field.</param>
+		/// <param name="fieldName">Name of the field.</param>
+		/// <returns>The field value.</returns>
+		public static T GetStaticFieldValue<T>(string fieldName)
+		{
+			if (string.IsNullOrEmpty(fieldName)) throw new ArgumentNullException(nameof(fieldName));
+			return (T)typeof(T).InvokeMember(fieldName, BindingFlags.GetField | staticBindingFlags, null, null, null);
 		}
 
 		/// <summary>Gets a named field value from an object.</summary>
@@ -223,7 +236,7 @@ namespace Vanara.Extensions
 		public static T InvokeStaticMethod<T>(this Type type, string methodName, params object[] args)
 		{
 			var argTypes = args == null || args.Length == 0 ? Type.EmptyTypes : Array.ConvertAll(args, o => o?.GetType() ?? typeof(object));
-			var mi = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase | BindingFlags.Static, null, argTypes, null);
+			var mi = type.GetMethod(methodName, staticBindingFlags, null, argTypes, null);
 			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
 			return (T)mi.Invoke(null, args);
 		}
