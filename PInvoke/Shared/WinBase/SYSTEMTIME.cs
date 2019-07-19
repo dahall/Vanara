@@ -216,7 +216,7 @@ namespace Vanara.PInvoke
 		public SYSTEMTIME(ushort year, ushort month, ushort day, ushort hour = 0, ushort minute = 0, ushort second = 0,
 			ushort millisecond = 0)
 		{
-			if (year < 1601) throw new ArgumentOutOfRangeException(nameof(year), @"year value must be 1601 through 30827");
+			if (year < 1601 && year != 0) throw new ArgumentOutOfRangeException(nameof(year), @"year value must be 1601 through 30827 or 0");
 			wYear = year;
 			if (month < 1 || month > 12)
 				throw new ArgumentOutOfRangeException(nameof(month), @"month value must be 1 through 12");
@@ -250,6 +250,7 @@ namespace Vanara.PInvoke
 		{
 			get
 			{
+				if (ToUInt64 == 0) return 0;
 				var days = IsLeapYear(wYear) ? DaysToMonth366 : DaysToMonth365;
 				var y = wYear - 1;
 				var n = y * 365 + y / 4 - y / 100 + y / 400 + days[wMonth - 1] + wDay - 1;
