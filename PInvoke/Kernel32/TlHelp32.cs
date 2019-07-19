@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -40,6 +42,7 @@ namespace Vanara.PInvoke
 			TH32CS_INHERIT = 0x80000000,
 
 			/// <summary>Includes all heaps of the process specified in th32ProcessID in the snapshot. To enumerate the heaps, see Heap32ListFirst.</summary>
+			[CorrespondingType(typeof(HEAPLIST32))]
 			TH32CS_SNAPHEAPLIST = 0x00000001,
 
 			/// <summary>
@@ -51,6 +54,7 @@ namespace Vanara.PInvoke
 			/// th32ProcessID from a 64-bit process, use the TH32CS_SNAPMODULE32 flag.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(MODULEENTRY32))]
 			TH32CS_SNAPMODULE = 0x00000008,
 
 			/// <summary>
@@ -58,9 +62,11 @@ namespace Vanara.PInvoke
 			/// flag can be combined with TH32CS_SNAPMODULE or TH32CS_SNAPALL. If the function fails with ERROR_BAD_LENGTH, retry the
 			/// function until it succeeds.
 			/// </summary>
+			[CorrespondingType(typeof(MODULEENTRY32))]
 			TH32CS_SNAPMODULE32 = 0x00000010,
 
 			/// <summary>Includes all processes in the system in the snapshot. To enumerate the processes, see Process32First.</summary>
+			[CorrespondingType(typeof(PROCESSENTRY32))]
 			TH32CS_SNAPPROCESS = 0x00000002,
 
 			/// <summary>
@@ -70,6 +76,7 @@ namespace Vanara.PInvoke
 			/// the THREADENTRY32 structure when enumerating the threads.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(THREADENTRY32))]
 			TH32CS_SNAPTHREAD = 0x00000004,
 
 			/// <summary>
@@ -77,7 +84,7 @@ namespace Vanara.PInvoke
 			/// Equivalent to specifying the TH32CS_SNAPHEAPLIST, TH32CS_SNAPMODULE, TH32CS_SNAPPROCESS, and TH32CS_SNAPTHREAD values
 			/// combined using an OR operation ('|').
 			/// </summary>
-			TH32CS_SNAPALL = (TH32CS_SNAPHEAPLIST | TH32CS_SNAPPROCESS | TH32CS_SNAPTHREAD | TH32CS_SNAPMODULE),
+			TH32CS_SNAPALL = TH32CS_SNAPHEAPLIST | TH32CS_SNAPPROCESS | TH32CS_SNAPTHREAD | TH32CS_SNAPMODULE,
 		}
 
 		/// <summary>
@@ -193,7 +200,7 @@ namespace Vanara.PInvoke
 		// CreateToolhelp32Snapshot( DWORD dwFlags, DWORD th32ProcessID );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("tlhelp32.h", MSDNShortId = "df643c25-7558-424c-b187-b3f86ba51358")]
-		public static extern SafeHSNAPSHOT CreateToolhelp32Snapshot(TH32CS dwFlags, uint th32ProcessID);
+		public static extern SafeHSNAPSHOT CreateToolhelp32Snapshot(TH32CS dwFlags, [Optional] uint th32ProcessID);
 
 		/// <summary>
 		/// <para>Retrieves information about the first block of a heap that has been allocated by a process.</para>
@@ -348,7 +355,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("tlhelp32.h", MSDNShortId = "bb41cab9-13a1-469d-bf76-68c172e982f6")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Module32First(HSNAPSHOT hSnapshot, out MODULEENTRY32 lpme);
+		public static extern bool Module32First(HSNAPSHOT hSnapshot, ref MODULEENTRY32 lpme);
 
 		/// <summary>
 		/// <para>Retrieves information about the next module associated with a process or thread.</para>
@@ -375,7 +382,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("tlhelp32.h", MSDNShortId = "88ec1af4-bae7-4cd7-b830-97a98fb337f4")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Module32Next(HSNAPSHOT hSnapshot, out MODULEENTRY32 lpme);
+		public static extern bool Module32Next(HSNAPSHOT hSnapshot, ref MODULEENTRY32 lpme);
 
 		/// <summary>
 		/// <para>Retrieves information about the first process encountered in a system snapshot.</para>
@@ -609,6 +616,9 @@ namespace Vanara.PInvoke
 			/// <para>The heap identifier. This is not a handle, and has meaning only to the tool help functions.</para>
 			/// </summary>
 			public UIntPtr th32HeapID;
+
+			/// <summary>Gets an empty instance with the size value set.</summary>
+			public static readonly HEAPENTRY32 Default = new HEAPENTRY32 { dwSize = (uint)Marshal.SizeOf(typeof(HEAPENTRY32)) };
 		}
 
 		/// <summary>
@@ -652,6 +662,22 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </summary>
 			public HEAPLIST32_FLAGS dwFlags;
+
+			/// <summary>Gets an empty instance with the size value set.</summary>
+			public static readonly HEAPLIST32 Default = new HEAPLIST32 { dwSize = (uint)Marshal.SizeOf(typeof(HEAPLIST32)) };
+
+			/// <summary>Retrieves information about the blocks of a heap that have been allocated by a process.</summary>
+			/// <returns>A enumeration of <see cref="HEAPENTRY32"/> structures.</returns>
+			public IEnumerable<HEAPENTRY32> EnumHeapEntries()
+			{
+				var pe = HEAPENTRY32.Default;
+				if (!Heap32First(ref pe, th32ProcessID, th32HeapID))
+					throw Win32Error.GetLastError().GetException();
+				do { yield return pe; } while (Heap32Next(ref pe));
+				var err = Win32Error.GetLastError();
+				if (err != Win32Error.ERROR_NO_MORE_FILES)
+					throw err.GetException();
+			}
 		}
 
 		/// <summary>Provides a handle to a snapshot.</summary>
@@ -773,6 +799,9 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
 			public string szExePath;
+
+			/// <summary>Gets an empty instance with the size value set.</summary>
+			public static readonly MODULEENTRY32 Default = new MODULEENTRY32 { dwSize = (uint)Marshal.SizeOf(typeof(MODULEENTRY32)) };
 		}
 
 		/// <summary>
@@ -843,6 +872,9 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
 			public string szExeFile;
+
+			/// <summary>Gets an empty instance with the size value set.</summary>
+			public static readonly PROCESSENTRY32 Default = new PROCESSENTRY32 { dwSize = (uint)Marshal.SizeOf(typeof(PROCESSENTRY32)) };
 		}
 
 		/// <summary>
@@ -894,6 +926,9 @@ namespace Vanara.PInvoke
 			/// <para>This member is no longer used and is always set to zero.</para>
 			/// </summary>
 			public uint dwFlags;
+
+			/// <summary>Gets an empty instance with the size value set.</summary>
+			public static readonly THREADENTRY32 Default = new THREADENTRY32 { dwSize = (uint)Marshal.SizeOf(typeof(THREADENTRY32)) };
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a snapshot that releases a created HSNAPSHOT instance at disposal using CloseHandle.</summary>
@@ -906,12 +941,43 @@ namespace Vanara.PInvoke
 			/// </param>
 			public SafeHSNAPSHOT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			private SafeHSNAPSHOT() : base() { }
+			private SafeHSNAPSHOT() : base()
+			{
+			}
+
+			private delegate bool FirstNext<TStruct>(HSNAPSHOT h, ref TStruct str) where TStruct : struct;
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHSNAPSHOT"/> to <see cref="HSNAPSHOT"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HSNAPSHOT(SafeHSNAPSHOT h) => h.handle;
+
+			/// <summary>Retrieves information about the heaps that have been allocated by a specified process.</summary>
+			/// <returns>A enumeration of <see cref="HEAPLIST32"/> structures.</returns>
+			public IEnumerable<HEAPLIST32> EnumHeap32List() => EnumSnap<HEAPLIST32>(Heap32ListFirst, Heap32ListNext);
+
+			/// <summary>Retrieves information about the modules that are associated with a process.</summary>
+			/// <returns>A enumeration of <see cref="MODULEENTRY32"/> structures.</returns>
+			public IEnumerable<MODULEENTRY32> EnumModule32() => EnumSnap<MODULEENTRY32>(Module32First, Module32Next);
+
+			/// <summary>Retrieves information about the processes encountered in a system snapshot.</summary>
+			/// <returns>A enumeration of <see cref="PROCESSENTRY32"/> structures.</returns>
+			public IEnumerable<PROCESSENTRY32> EnumProcess32() => EnumSnap<PROCESSENTRY32>(Process32First, Process32Next);
+
+			/// <summary>Retrieves information about the threads of any process encountered in a system snapshot.</summary>
+			/// <returns>A enumeration of <see cref="THREADENTRY32"/> structures.</returns>
+			public IEnumerable<THREADENTRY32> EnumThread32() => EnumSnap<THREADENTRY32>(Thread32First, Thread32Next);
+
+			private IEnumerable<TStruct> EnumSnap<TStruct>(FirstNext<TStruct> first, FirstNext<TStruct> next) where TStruct : struct
+			{
+				var pe = Vanara.Extensions.ReflectionExtensions.GetStaticFieldValue<TStruct>("Default");
+				if (!first(handle, ref pe))
+					throw Win32Error.GetLastError().GetException();
+				do { yield return pe; } while (next(handle, ref pe));
+				var err = Win32Error.GetLastError();
+				if (err != Win32Error.ERROR_NO_MORE_FILES)
+					throw err.GetException();
+			}
 		}
 	}
 }

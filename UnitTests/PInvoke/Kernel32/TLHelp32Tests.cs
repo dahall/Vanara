@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
-using System.Runtime.InteropServices;
+using System.Linq;
+using Vanara.Extensions;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke.Tests
@@ -7,36 +8,52 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture]
 	public class TLHelp32Tests
 	{
+		private static readonly SafeHSNAPSHOT hsnap = CreateToolhelp32Snapshot(TH32CS.TH32CS_SNAPALL | TH32CS.TH32CS_SNAPMODULE32);
+
 		[Test]
-		public void TestMethod()
+		public void Heap32ListFirstTest()
 		{
-			using (var hsnap = CreateToolhelp32Snapshot(TH32CS.TH32CS_SNAPPROCESS, 0))
+			Assert.That(() =>
 			{
-				if (hsnap.IsInvalid) Assert.Fail(Win32Error.GetLastError().ToString());
-				var pe = new PROCESSENTRY32 { dwSize = (uint)Marshal.SizeOf(typeof(PROCESSENTRY32)) };
-				if (!Process32First(hsnap, ref pe)) Assert.Fail(Win32Error.GetLastError().ToString());
-				do
-				{
-					TestContext.WriteLine("=======================================");
-					TestContext.WriteLine($"PROCESS NAME: {pe.szExeFile}");
-					TestContext.WriteLine("---------------------------------------");
+				var heaplists = hsnap.EnumHeap32List().ToArray();
+				Assert.That(heaplists, Is.Not.Empty);
+				foreach (var h in heaplists)
+					Assert.That(h.EnumHeapEntries().ToArray(), Is.Not.Empty);
+			}, Throws.Nothing);
+		}
 
-					CREATE_PROCESS pClass = 0;
-					using (var hproc = OpenProcess((uint)ProcessAccess.PROCESS_ALL_ACCESS, false, pe.th32ProcessID))
-					{
-						if (!hproc.IsInvalid)
-							pClass = GetPriorityClass(hproc);
-					}
+		[Test]
+		public void Module32FirstTest()
+		{
+			Assert.That(() =>
+			{
+				Assert.That(hsnap.EnumModule32().ToArray(), Is.Not.Empty);
+			}, Throws.Nothing);
+		}
 
-					TestContext.WriteLine($"Process ID:        {pe.th32ProcessID}");
-					TestContext.WriteLine($"Thread count:      {pe.cntThreads}");
-					TestContext.WriteLine($"Parent process ID: {pe.th32ParentProcessID}");
-					TestContext.WriteLine($"Priority base:     {pe.pcPriClassBase}");
-					TestContext.WriteLine($"Priority class:    {pClass}");
-					TestContext.WriteLine();
+		[Test]
+		public void Process32FirstTest()
+		{
+			Assert.That(() =>
+			{
+				Assert.That(hsnap.EnumProcess32().ToArray(), Is.Not.Empty);
+			}, Throws.Nothing);
+		}
 
-				} while (Process32Next(hsnap, ref pe));
-			}
+		[Test]
+		public void Thread32FirstTest()
+		{
+			Assert.That(() =>
+			{
+				Assert.That(hsnap.EnumThread32().ToArray(), Is.Not.Empty);
+			}, Throws.Nothing);
+		}
+
+		[Test]
+		public void Toolhelp32ReadProcessMemoryTest()
+		{
+			throw new System.NotImplementedException("No documentation on how.");
+			//Assert.That(Toolhelp32ReadProcessMemory(), Is.True);
 		}
 	}
 }
