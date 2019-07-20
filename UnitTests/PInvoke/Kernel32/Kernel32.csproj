@@ -48,6 +48,7 @@
     <Compile Include="AppModelTests.cs" />
     <Compile Include="InterlockedApiTests.cs" />
     <Compile Include="InteropServices\SafeLocalHandleTests.cs" />
+    <Compile Include="UtilApiSetTests.cs" />
     <Compile Include="TimeZoneApiTests.cs" />
     <Compile Include="ThreadPoolLegacyApiSetTests.cs" />
     <Compile Include="ThreadPoolApiSetTests.cs" />
