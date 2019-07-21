@@ -163,6 +163,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WinTrust", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "UnitTests\CSharpRunner\Shared.csproj", "{A96CFF10-0967-429A-8700-4A86C97C5603}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Wer", "PInvoke\Wer\Vanara.PInvoke.Wer.csproj", "{FA58DCE9-60A6-4321-982C-37C0DACC371D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -451,6 +453,10 @@ Global
 		{A96CFF10-0967-429A-8700-4A86C97C5603}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A96CFF10-0967-429A-8700-4A86C97C5603}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A96CFF10-0967-429A-8700-4A86C97C5603}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA58DCE9-60A6-4321-982C-37C0DACC371D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA58DCE9-60A6-4321-982C-37C0DACC371D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA58DCE9-60A6-4321-982C-37C0DACC371D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA58DCE9-60A6-4321-982C-37C0DACC371D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -522,6 +528,7 @@ Global
 		{07CD630D-A4BD-45CB-BF1B-90E981F4DE81} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{3EDE955E-50DE-4E1D-97E8-31E4E6A83E7D} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{A96CFF10-0967-429A-8700-4A86C97C5603} = {3EC6B40D-71D3-4E59-A0E0-544EC605FE11}
+		{FA58DCE9-60A6-4321-982C-37C0DACC371D} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

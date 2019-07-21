@@ -108,6 +108,9 @@
 		/// <summary>The virt disk</summary>
 		public const string VirtDisk = "virtdisk.dll";
 
+		/// <summary>The dll for Windows Error Reporting.</summary>
+		public const string Wer = "wer.dll";
+
 		/// <summary>The win inet</summary>
 		public const string WinInet = "wininet.dll";
 
