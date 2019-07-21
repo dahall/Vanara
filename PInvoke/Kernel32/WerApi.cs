@@ -58,6 +58,21 @@ namespace Vanara.PInvoke
 			WerFileTypeMax
 		}
 
+		/// <summary>Flag values for <see cref="WerRegisterFile"/>.</summary>
+		[PInvokeData("werapi.h", MSDNShortId = "4b4bb1bb-6782-447a-901f-75702256d907")]
+		[Flags]
+		public enum WER_REGISTER_FILE_FLAGS
+		{
+			/// <summary>Automatically deletes the file after it is added to the report.</summary>
+			WER_FILE_DELETE_WHEN_DONE = 1,
+
+			/// <summary>The file does not contain personal information that could be used to identify or contact the user.</summary>
+			WER_FILE_ANONYMOUS_DATA = 2,
+
+			/// <summary>This file has been compressed using SQS.</summary>
+			WER_FILE_COMPRESSED = 4,
+		}
+
 		/// <summary>The file type.</summary>
 		[PInvokeData("werapi.h", MSDNShortId = "4b4bb1bb-6782-447a-901f-75702256d907")]
 		public enum WER_REGISTER_FILE_TYPE
@@ -430,7 +445,7 @@ namespace Vanara.PInvoke
 		// WER_REGISTER_FILE_TYPE regFileType, DWORD dwFlags );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("werapi.h", MSDNShortId = "4b4bb1bb-6782-447a-901f-75702256d907")]
-		public static extern HRESULT WerRegisterFile([MarshalAs(UnmanagedType.LPWStr)] string pwzFile, WER_REGISTER_FILE_TYPE regFileType, uint dwFlags);
+		public static extern HRESULT WerRegisterFile([MarshalAs(UnmanagedType.LPWStr)] string pwzFile, WER_REGISTER_FILE_TYPE regFileType, WER_REGISTER_FILE_FLAGS dwFlags);
 
 		/// <summary>
 		/// <para>Registers a memory block to be collected when WER creates an error report.</para>
