@@ -11,6 +11,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Erases the tape from the current position to the end of the current partition.</summary>
 			TAPE_ERASE_LONG = 1,
+
 			/// <summary>Writes an erase gap or end-of-data marker at the current position.</summary>
 			TAPE_ERASE_SHORT = 0,
 		}
@@ -58,10 +59,14 @@ namespace Vanara.PInvoke
 			/// <summary>The device supports immediate rewind operation.</summary>
 			TAPE_DRIVE_REWIND_IMMEDIATE = 0x80000008,
 
-			/// <summary>The device moves the tape forward (or backward) to the first occurrence of a specified number of consecutive filemarks.</summary>
+			/// <summary>
+			/// The device moves the tape forward (or backward) to the first occurrence of a specified number of consecutive filemarks.
+			/// </summary>
 			TAPE_DRIVE_SEQUENTIAL_FMKS = 0x80080000,
 
-			/// <summary>The device moves the tape forward (or backward) to the first occurrence of a specified number of consecutive setmarks.</summary>
+			/// <summary>
+			/// The device moves the tape forward (or backward) to the first occurrence of a specified number of consecutive setmarks.
+			/// </summary>
 			TAPE_DRIVE_SEQUENTIAL_SMKS = 0x80200000,
 
 			/// <summary>The device supports setting the size of a fixed-length logical block or setting the variable-length block mode.</summary>
@@ -184,12 +189,15 @@ namespace Vanara.PInvoke
 			/// <summary>Retrieves information about the tape in the tape device.</summary>
 			[CorrespondingType(typeof(TAPE_GET_MEDIA_PARAMETERS))]
 			GET_TAPE_MEDIA_INFORMATION = 0,
+
 			/// <summary>Retrieves information about the tape device.</summary>
 			[CorrespondingType(typeof(TAPE_GET_DRIVE_PARAMETERS))]
 			GET_TAPE_DRIVE_INFORMATION = 1,
+
 			/// <summary>Sets the tape-specific information specified by the lpTapeInformation parameter.</summary>
 			[CorrespondingType(typeof(TAPE_GET_MEDIA_PARAMETERS))]
 			SET_TAPE_MEDIA_INFORMATION = 0,
+
 			/// <summary>Sets the device-specific information specified by lpTapeInformation.</summary>
 			[CorrespondingType(typeof(TAPE_GET_DRIVE_PARAMETERS))]
 			SET_TAPE_DRIVE_INFORMATION = 1
@@ -198,16 +206,21 @@ namespace Vanara.PInvoke
 		/// <summary>Type of partition to create.</summary>
 		public enum TAPE_PARTITION_METHOD
 		{
-			/// <summary>Partitions the tape based on the device's default definition of partitions. The dwCount and dwSize parameters are ignored.</summary>
-			TAPE_FIXED_PARTITIONS = 0,
 			/// <summary>
-			/// Partitions the tape into the number and size of partitions specified by dwCount and dwSize, respectively, except for the last partition. The size
-			/// of the last partition is the remainder of the tape.
+			/// Partitions the tape based on the device's default definition of partitions. The dwCount and dwSize parameters are ignored.
+			/// </summary>
+			TAPE_FIXED_PARTITIONS = 0,
+
+			/// <summary>
+			/// Partitions the tape into the number and size of partitions specified by dwCount and dwSize, respectively, except for the last
+			/// partition. The size of the last partition is the remainder of the tape.
 			/// </summary>
 			TAPE_INITIATOR_PARTITIONS = 2,
+
 			/// <summary>
-			/// Partitions the tape into the number of partitions specified by dwCount. The dwSize parameter is ignored. The size of the partitions is determined
-			/// by the device's default partition size. For more specific information, see the documentation for your tape device.
+			/// Partitions the tape into the number of partitions specified by dwCount. The dwSize parameter is ignored. The size of the
+			/// partitions is determined by the device's default partition size. For more specific information, see the documentation for
+			/// your tape device.
 			/// </summary>
 			TAPE_SELECT_PARTITIONS = 1
 		}
@@ -216,38 +229,51 @@ namespace Vanara.PInvoke
 		public enum TAPE_POS_METHOD
 		{
 			/// <summary>
-			/// Moves the tape to the device-specific block address specified by the dwOffsetLow and dwOffsetHigh parameters. The dwPartition parameter is ignored.
+			/// Moves the tape to the device-specific block address specified by the dwOffsetLow and dwOffsetHigh parameters. The dwPartition
+			/// parameter is ignored.
 			/// </summary>
 			TAPE_ABSOLUTE_BLOCK = 1,
-			/// <summary>Moves the tape to the block address specified by dwOffsetLow and dwOffsetHigh in the partition specified by dwPartition.</summary>
+
+			/// <summary>
+			/// Moves the tape to the block address specified by dwOffsetLow and dwOffsetHigh in the partition specified by dwPartition.
+			/// </summary>
 			TAPE_LOGICAL_BLOCK = 2,
-			/// <summary>Moves the tape to the beginning of the current partition. The dwPartition, dwOffsetLow, and dwOffsetHigh parameters are ignored.</summary>
+
+			/// <summary>
+			/// Moves the tape to the beginning of the current partition. The dwPartition, dwOffsetLow, and dwOffsetHigh parameters are ignored.
+			/// </summary>
 			TAPE_REWIND = 0,
+
 			/// <summary>Moves the tape to the end of the data on the partition specified by dwPartition.</summary>
 			TAPE_SPACE_END_OF_DATA = 4,
+
 			/// <summary>
-			/// Moves the tape forward (or backward) the number of filemarks specified by dwOffsetLow and dwOffsetHigh in the current partition. The dwPartition
-			/// parameter is ignored.
+			/// Moves the tape forward (or backward) the number of filemarks specified by dwOffsetLow and dwOffsetHigh in the current
+			/// partition. The dwPartition parameter is ignored.
 			/// </summary>
 			TAPE_SPACE_FILEMARKS = 6,
+
 			/// <summary>
-			/// Moves the tape forward (or backward) the number of blocks specified by dwOffsetLow and dwOffsetHigh in the current partition. The dwPartition
-			/// parameter is ignored.
+			/// Moves the tape forward (or backward) the number of blocks specified by dwOffsetLow and dwOffsetHigh in the current partition.
+			/// The dwPartition parameter is ignored.
 			/// </summary>
 			TAPE_SPACE_RELATIVE_BLOCKS = 5,
+
 			/// <summary>
-			/// Moves the tape forward (or backward) to the first occurrence of n filemarks in the current partition, where n is the number specified by
-			/// dwOffsetLow and dwOffsetHigh. The dwPartition parameter is ignored.
+			/// Moves the tape forward (or backward) to the first occurrence of n filemarks in the current partition, where n is the number
+			/// specified by dwOffsetLow and dwOffsetHigh. The dwPartition parameter is ignored.
 			/// </summary>
 			TAPE_SPACE_SEQUENTIAL_FMKS = 7,
+
 			/// <summary>
-			/// Moves the tape forward (or backward) to the first occurrence of n setmarks in the current partition, where n is the number specified by
-			/// dwOffsetLow and dwOffsetHigh. The dwPartition parameter is ignored.
+			/// Moves the tape forward (or backward) to the first occurrence of n setmarks in the current partition, where n is the number
+			/// specified by dwOffsetLow and dwOffsetHigh. The dwPartition parameter is ignored.
 			/// </summary>
 			TAPE_SPACE_SEQUENTIAL_SMKS = 9,
+
 			/// <summary>
-			/// Moves the tape forward (or backward) the number of setmarks specified by dwOffsetLow and dwOffsetHigh in the current partition. The dwPartition
-			/// parameter is ignored.
+			/// Moves the tape forward (or backward) the number of setmarks specified by dwOffsetLow and dwOffsetHigh in the current
+			/// partition. The dwPartition parameter is ignored.
 			/// </summary>
 			TAPE_SPACE_SETMARKS = 8,
 		}
@@ -255,10 +281,14 @@ namespace Vanara.PInvoke
 		/// <summary>Type of address to obtain.</summary>
 		public enum TAPE_POS_TYPE
 		{
-			/// <summary>The lpdwOffsetLow and lpdwOffsetHigh parameters receive the device-specific block address. The dwPartition parameter receives zero.</summary>
-			TAPE_ABSOLUTE_POSITION = 0,
 			/// <summary>
-			/// The lpdwOffsetLow and lpdwOffsetHigh parameters receive the logical block address. The dwPartition parameter receives the logical tape partition.
+			/// The lpdwOffsetLow and lpdwOffsetHigh parameters receive the device-specific block address. The dwPartition parameter receives zero.
+			/// </summary>
+			TAPE_ABSOLUTE_POSITION = 0,
+
+			/// <summary>
+			/// The lpdwOffsetLow and lpdwOffsetHigh parameters receive the logical block address. The dwPartition parameter receives the
+			/// logical tape partition.
 			/// </summary>
 			TAPE_LOGICAL_POSITION = 1
 		}
@@ -268,20 +298,25 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Performs a low-level format of the tape. Currently, only the QIC117 device supports this feature.</summary>
 			TAPE_FORMAT = 5,
+
 			/// <summary>Loads the tape and moves the tape to the beginning.</summary>
 			TAPE_LOAD = 0,
+
 			/// <summary>Locks the tape ejection mechanism so that the tape is not ejected accidentally.</summary>
 			TAPE_LOCK = 3,
+
 			/// <summary>
-			/// Adjusts the tension by moving the tape to the end of the tape and back to the beginning. This option is not supported by all devices. This value
-			/// is ignored if it is not supported.
+			/// Adjusts the tension by moving the tape to the end of the tape and back to the beginning. This option is not supported by all
+			/// devices. This value is ignored if it is not supported.
 			/// </summary>
 			TAPE_TENSION = 2,
+
 			/// <summary>
-			/// Moves the tape to the beginning for removal from the device. After a successful unload operation, the device returns errors to applications that
-			/// attempt to access the tape, until the tape is loaded again.
+			/// Moves the tape to the beginning for removal from the device. After a successful unload operation, the device returns errors
+			/// to applications that attempt to access the tape, until the tape is loaded again.
 			/// </summary>
 			TAPE_UNLOAD = 1,
+
 			/// <summary>Unlocks the tape ejection mechanism.</summary>
 			TAPE_UNLOCK = 4,
 		}
@@ -291,46 +326,55 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Writes the number of filemarks specified by the dwTapemarkCount parameter.</summary>
 			TAPE_FILEMARKS = 1,
+
 			/// <summary>Writes the number of long filemarks specified by dwTapemarkCount.</summary>
 			TAPE_LONG_FILEMARKS = 3,
+
 			/// <summary>Writes the number of setmarks specified by dwTapemarkCount.</summary>
 			TAPE_SETMARKS = 0,
+
 			/// <summary>Writes the number of short filemarks specified by dwTapemarkCount.</summary>
 			TAPE_SHORT_FILEMARKS = 2,
 		}
 
 		/// <summary>
-		/// The <c>BackupRead</c> function can be used to back up a file or directory, including the security information. The function reads data associated
-		/// with a specified file or directory into a buffer, which can then be written to the backup medium using the <c>WriteFile</c> function.
+		/// The <c>BackupRead</c> function can be used to back up a file or directory, including the security information. The function reads
+		/// data associated with a specified file or directory into a buffer, which can then be written to the backup medium using the
+		/// <c>WriteFile</c> function.
 		/// </summary>
 		/// <param name="hFile">
 		/// <para>
-		/// Handle to the file or directory to be backed up. To obtain the handle, call the <c>CreateFile</c> function. The SACLs are not read unless the file
-		/// handle was created with the <c>ACCESS_SYSTEM_SECURITY</c> access right. For more information, see File Security and Access Rights.
+		/// Handle to the file or directory to be backed up. To obtain the handle, call the <c>CreateFile</c> function. The SACLs are not
+		/// read unless the file handle was created with the <c>ACCESS_SYSTEM_SECURITY</c> access right. For more information, see File
+		/// Security and Access Rights.
 		/// </para>
 		/// <para>
-		/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when <c>CreateFile</c> is called. This
-		/// function does not validate that the handle it receives is synchronous, so it does not return an error code for a synchronous handle, but calling it
-		/// with an asynchronous (overlapped) handle can result in subtle errors that are very difficult to debug.
+		/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when
+		/// <c>CreateFile</c> is called. This function does not validate that the handle it receives is synchronous, so it does not return an
+		/// error code for a synchronous handle, but calling it with an asynchronous (overlapped) handle can result in subtle errors that are
+		/// very difficult to debug.
 		/// </para>
 		/// <para>
-		/// The <c>BackupRead</c> function may fail if <c>CreateFile</c> was called with the flag <c>FILE_FLAG_NO_BUFFERING</c>. In this case, the
-		/// <c>GetLastError</c> function returns the value <c>ERROR_INVALID_PARAMETER</c>.
+		/// The <c>BackupRead</c> function may fail if <c>CreateFile</c> was called with the flag <c>FILE_FLAG_NO_BUFFERING</c>. In this
+		/// case, the <c>GetLastError</c> function returns the value <c>ERROR_INVALID_PARAMETER</c>.
 		/// </para>
 		/// </param>
 		/// <param name="lpBuffer">Pointer to a buffer that receives the data.</param>
-		/// <param name="nNumberOfBytesToRead">Length of the buffer, in bytes. The buffer size must be greater than the size of a <c>WIN32_STREAM_ID</c> structure.</param>
+		/// <param name="nNumberOfBytesToRead">
+		/// Length of the buffer, in bytes. The buffer size must be greater than the size of a <c>WIN32_STREAM_ID</c> structure.
+		/// </param>
 		/// <param name="lpNumberOfBytesRead">
 		/// <para>Pointer to a variable that receives the number of bytes read.</para>
 		/// <para>
-		/// If the function returns a nonzero value, and the variable pointed to by lpNumberOfBytesRead is zero, then all the data associated with the file
-		/// handle has been read.
+		/// If the function returns a nonzero value, and the variable pointed to by lpNumberOfBytesRead is zero, then all the data associated
+		/// with the file handle has been read.
 		/// </para>
 		/// </param>
 		/// <param name="bAbort">
-		/// Indicates whether you have finished using <c>BackupRead</c> on the handle. While you are backing up the file, specify this parameter as <c>FALSE</c>.
-		/// Once you are done using <c>BackupRead</c>, you must call <c>BackupRead</c> one more time specifying <c>TRUE</c> for this parameter and passing the
-		/// appropriate lpContext. lpContext must be passed when bAbort is <c>TRUE</c>; all other parameters are ignored.
+		/// Indicates whether you have finished using <c>BackupRead</c> on the handle. While you are backing up the file, specify this
+		/// parameter as <c>FALSE</c>. Once you are done using <c>BackupRead</c>, you must call <c>BackupRead</c> one more time specifying
+		/// <c>TRUE</c> for this parameter and passing the appropriate lpContext. lpContext must be passed when bAbort is <c>TRUE</c>; all
+		/// other parameters are ignored.
 		/// </param>
 		/// <param name="bProcessSecurity">
 		/// <para>Indicates whether the function will restore the access-control list (ACL) data for the file or directory.</para>
@@ -338,125 +382,149 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="lpContext">
 		/// <para>
-		/// Pointer to a variable that receives a pointer to an internal data structure used by <c>BackupRead</c> to maintain context information during a backup operation.
+		/// Pointer to a variable that receives a pointer to an internal data structure used by <c>BackupRead</c> to maintain context
+		/// information during a backup operation.
 		/// </para>
 		/// <para>
-		/// You must set the variable pointed to by lpContext to <c>NULL</c> before the first call to <c>BackupRead</c> for the specified file or directory. The
-		/// function allocates memory for the data structure, and then sets the variable to point to that structure. You must not change lpContext or the
-		/// variable that it points to between calls to <c>BackupRead</c>.
+		/// You must set the variable pointed to by lpContext to <c>NULL</c> before the first call to <c>BackupRead</c> for the specified
+		/// file or directory. The function allocates memory for the data structure, and then sets the variable to point to that structure.
+		/// You must not change lpContext or the variable that it points to between calls to <c>BackupRead</c>.
 		/// </para>
 		/// <para>
-		/// To release the memory used by the data structure, call <c>BackupRead</c> with the bAbort parameter set to <c>TRUE</c> when the backup operation is complete.
+		/// To release the memory used by the data structure, call <c>BackupRead</c> with the bAbort parameter set to <c>TRUE</c> when the
+		/// backup operation is complete.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero, indicating that an I/O error occurred. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// If the function fails, the return value is zero, indicating that an I/O error occurred. To get extended error information, call <c>GetLastError</c>.
+		/// </para>
 		/// </returns>
-		// BOOL BackupRead( _In_ HANDLE hFile, _Out_ LPBYTE lpBuffer, _In_ DWORD nNumberOfBytesToRead, _Out_ LPDWORD lpNumberOfBytesRead, _In_ BOOL bAbort, _In_
-		// BOOL bProcessSecurity, _Out_ LPVOID *lpContext); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362509(v=vs.85).aspx
+		// BOOL BackupRead( _In_ HANDLE hFile, _Out_ LPBYTE lpBuffer, _In_ DWORD nNumberOfBytesToRead, _Out_ LPDWORD lpNumberOfBytesRead,
+		// _In_ BOOL bAbort, _In_ BOOL bProcessSecurity, _Out_ LPVOID *lpContext); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362509(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362509")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool BackupRead([In] HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [MarshalAs(UnmanagedType.Bool)] bool bAbort, [MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, out IntPtr lpContext);
 
 		/// <summary>
-		/// The <c>BackupSeek</c> function seeks forward in a data stream initially accessed by using the <c>BackupRead</c> or <c>BackupWrite</c> function.
+		/// The <c>BackupSeek</c> function seeks forward in a data stream initially accessed by using the <c>BackupRead</c> or
+		/// <c>BackupWrite</c> function.
 		/// </summary>
 		/// <param name="hFile">
 		/// <para>Handle to the file or directory. This handle is created by using the <c>CreateFile</c> function.</para>
 		/// <para>
-		/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when <c>CreateFile</c> is called. This
-		/// function does not validate that the handle it receives is synchronous, so it does not return an error code for a synchronous handle, but calling it
-		/// with an asynchronous (overlapped) handle can result in subtle errors that are very difficult to debug.
+		/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when
+		/// <c>CreateFile</c> is called. This function does not validate that the handle it receives is synchronous, so it does not return an
+		/// error code for a synchronous handle, but calling it with an asynchronous (overlapped) handle can result in subtle errors that are
+		/// very difficult to debug.
 		/// </para>
 		/// </param>
 		/// <param name="dwLowBytesToSeek">Low-order part of the number of bytes to seek.</param>
 		/// <param name="dwHighBytesToSeek">High-order part of the number of bytes to seek.</param>
-		/// <param name="lpdwLowByteSeeked">Pointer to a variable that receives the low-order bits of the number of bytes the function actually seeks.</param>
-		/// <param name="lpdwHighByteSeeked">Pointer to a variable that receives the high-order bits of the number of bytes the function actually seeks.</param>
+		/// <param name="lpdwLowByteSeeked">
+		/// Pointer to a variable that receives the low-order bits of the number of bytes the function actually seeks.
+		/// </param>
+		/// <param name="lpdwHighByteSeeked">
+		/// Pointer to a variable that receives the high-order bits of the number of bytes the function actually seeks.
+		/// </param>
 		/// <param name="lpContext">
-		/// Pointer to an internal data structure used by the function. This structure must be the same structure that was initialized by the <c>BackupRead</c>
-		/// or <c>BackupWrite</c> function. An application must not touch the contents of this structure.
+		/// Pointer to an internal data structure used by the function. This structure must be the same structure that was initialized by the
+		/// <c>BackupRead</c> or <c>BackupWrite</c> function. An application must not touch the contents of this structure.
 		/// </param>
 		/// <returns>
 		/// <para>If the function could seek the requested amount, the function returns a nonzero value.</para>
-		/// <para>If the function could not seek the requested amount, the function returns zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// If the function could not seek the requested amount, the function returns zero. To get extended error information, call <c>GetLastError</c>.
+		/// </para>
 		/// </returns>
-		// BOOL BackupSeek( _In_ HANDLE hFile, _In_ DWORD dwLowBytesToSeek, _In_ DWORD dwHighBytesToSeek, _Out_ LPDWORD lpdwLowByteSeeked, _Out_ LPDWORD
-		// lpdwHighByteSeeked, _In_ LPVOID *lpContext); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362510(v=vs.85).aspx
+		// BOOL BackupSeek( _In_ HANDLE hFile, _In_ DWORD dwLowBytesToSeek, _In_ DWORD dwHighBytesToSeek, _Out_ LPDWORD lpdwLowByteSeeked,
+		// _Out_ LPDWORD lpdwHighByteSeeked, _In_ LPVOID *lpContext); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362510(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362510")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool BackupSeek([In] HFILE hFile, uint dwLowBytesToSeek, uint dwHighBytesToSeek, out uint lpdwLowByteSeeked, out uint lpdwHighByteSeeked, ref IntPtr lpContext);
 
 		/// <summary>
-		/// The <c>BackupWrite</c> function can be used to restore a file or directory that was backed up using <c>BackupRead</c>. Use the <c>ReadFile</c>
-		/// function to get a stream of data from the backup medium, then use <c>BackupWrite</c> to write the data to the specified file or directory.
+		/// The <c>BackupWrite</c> function can be used to restore a file or directory that was backed up using <c>BackupRead</c>. Use the
+		/// <c>ReadFile</c> function to get a stream of data from the backup medium, then use <c>BackupWrite</c> to write the data to the
+		/// specified file or directory.
 		/// </summary>
 		/// <param name="hFile">
 		/// <para>
-		/// Handle to the file or directory to be restored. To obtain the handle, call the <c>CreateFile</c> function. The SACLs are not restored unless the file
-		/// handle was created with the <c>ACCESS_SYSTEM_SECURITY</c> access right. To ensure that the integrity ACEs are restored correctly, the file handle
-		/// must also have been created with the WRITE_OWNER access right. For more information, see File Security and Access Rights.
+		/// Handle to the file or directory to be restored. To obtain the handle, call the <c>CreateFile</c> function. The SACLs are not
+		/// restored unless the file handle was created with the <c>ACCESS_SYSTEM_SECURITY</c> access right. To ensure that the integrity
+		/// ACEs are restored correctly, the file handle must also have been created with the WRITE_OWNER access right. For more information,
+		/// see File Security and Access Rights.
 		/// </para>
 		/// <para><c>Windows Server 2003 and Windows XP:</c> The WRITE_OWNER access right is not required.</para>
 		/// <para>
-		/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when <c>CreateFile</c> is called. This
-		/// function does not validate that the handle it receives is synchronous, so it does not return an error code for a synchronous handle, but calling it
-		/// with an asynchronous (overlapped) handle can result in subtle errors that are very difficult to debug.
+		/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when
+		/// <c>CreateFile</c> is called. This function does not validate that the handle it receives is synchronous, so it does not return an
+		/// error code for a synchronous handle, but calling it with an asynchronous (overlapped) handle can result in subtle errors that are
+		/// very difficult to debug.
 		/// </para>
 		/// <para>
-		/// The <c>BackupWrite</c> function may fail if <c>CreateFile</c> was called with the flag <c>FILE_FLAG_NO_BUFFERING</c>. In this case, the
-		/// <c>GetLastError</c> function returns the value <c>ERROR_INVALID_PARAMETER</c>.
+		/// The <c>BackupWrite</c> function may fail if <c>CreateFile</c> was called with the flag <c>FILE_FLAG_NO_BUFFERING</c>. In this
+		/// case, the <c>GetLastError</c> function returns the value <c>ERROR_INVALID_PARAMETER</c>.
 		/// </para>
 		/// </param>
 		/// <param name="lpBuffer">Pointer to a buffer that the function writes data from.</param>
-		/// <param name="nNumberOfBytesToWrite">Size of the buffer, in bytes. The buffer size must be greater than the size of a <c>WIN32_STREAM_ID</c> structure.</param>
+		/// <param name="nNumberOfBytesToWrite">
+		/// Size of the buffer, in bytes. The buffer size must be greater than the size of a <c>WIN32_STREAM_ID</c> structure.
+		/// </param>
 		/// <param name="lpNumberOfBytesWritten">Pointer to a variable that receives the number of bytes written.</param>
 		/// <param name="bAbort">
-		/// Indicates whether you have finished using <c>BackupWrite</c> on the handle. While you are restoring the file, specify this parameter as <c>FALSE</c>.
-		/// After you are done using <c>BackupWrite</c>, you must call <c>BackupWrite</c> one more time specifying <c>TRUE</c> for this parameter and passing the
-		/// appropriate lpContext. lpContext must be passed when bAbort is <c>TRUE</c>; all other parameters are ignored.
+		/// Indicates whether you have finished using <c>BackupWrite</c> on the handle. While you are restoring the file, specify this
+		/// parameter as <c>FALSE</c>. After you are done using <c>BackupWrite</c>, you must call <c>BackupWrite</c> one more time specifying
+		/// <c>TRUE</c> for this parameter and passing the appropriate lpContext. lpContext must be passed when bAbort is <c>TRUE</c>; all
+		/// other parameters are ignored.
 		/// </param>
 		/// <param name="bProcessSecurity">
 		/// <para>Specifies whether the function will restore the access-control list (ACL) data for the file or directory.</para>
 		/// <para>
-		/// If bProcessSecurity is <c>TRUE</c>, you need to specify <c>WRITE_OWNER</c> and <c>WRITE_DAC</c> access when opening the file or directory handle. If
-		/// the handle does not have those access rights, the operating system denies access to the ACL data, and ACL data restoration will not occur.
+		/// If bProcessSecurity is <c>TRUE</c>, you need to specify <c>WRITE_OWNER</c> and <c>WRITE_DAC</c> access when opening the file or
+		/// directory handle. If the handle does not have those access rights, the operating system denies access to the ACL data, and ACL
+		/// data restoration will not occur.
 		/// </para>
 		/// </param>
 		/// <param name="lpContext">
 		/// <para>
-		/// Pointer to a variable that receives a pointer to an internal data structure used by <c>BackupWrite</c> to maintain context information during a
-		/// restore operation.
+		/// Pointer to a variable that receives a pointer to an internal data structure used by <c>BackupWrite</c> to maintain context
+		/// information during a restore operation.
 		/// </para>
 		/// <para>
-		/// You must set the variable pointed to by lpContext to <c>NULL</c> before the first call to <c>BackupWrite</c> for the specified file or directory. The
-		/// function allocates memory for the data structure, and then sets the variable to point to that structure. You must not change lpContext or the
-		/// variable that it points to between calls to <c>BackupWrite</c>.
+		/// You must set the variable pointed to by lpContext to <c>NULL</c> before the first call to <c>BackupWrite</c> for the specified
+		/// file or directory. The function allocates memory for the data structure, and then sets the variable to point to that structure.
+		/// You must not change lpContext or the variable that it points to between calls to <c>BackupWrite</c>.
 		/// </para>
 		/// <para>
-		/// To release the memory used by the data structure, call <c>BackupWrite</c> with the bAbort parameter set to <c>TRUE</c> when the restore operation is complete.
+		/// To release the memory used by the data structure, call <c>BackupWrite</c> with the bAbort parameter set to <c>TRUE</c> when the
+		/// restore operation is complete.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero, indicating that an I/O error occurred. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// If the function fails, the return value is zero, indicating that an I/O error occurred. To get extended error information, call <c>GetLastError</c>.
+		/// </para>
 		/// </returns>
-		// BOOL BackupWrite( _In_ HANDLE hFile, _In_ LPBYTE lpBuffer, _In_ DWORD nNumberOfBytesToWrite, _Out_ LPDWORD lpNumberOfBytesWritten, _In_ BOOL bAbort,
-		// _In_ BOOL bProcessSecurity, _Out_ LPVOID *lpContext); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362511(v=vs.85).aspx
+		// BOOL BackupWrite( _In_ HANDLE hFile, _In_ LPBYTE lpBuffer, _In_ DWORD nNumberOfBytesToWrite, _Out_ LPDWORD lpNumberOfBytesWritten,
+		// _In_ BOOL bAbort, _In_ BOOL bProcessSecurity, _Out_ LPVOID *lpContext); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362511(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362511")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool BackupWrite([In] HFILE hFile, [In] IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [MarshalAs(UnmanagedType.Bool)] bool bAbort, [MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, out IntPtr lpContext);
 
 		/// <summary>The <c>CreateTapePartition</c> function reformats a tape.</summary>
-		/// <param name="hDevice">Handle to the device where the new partition is to be created. This handle is created by using the <c>CreateFile</c> function.</param>
+		/// <param name="hDevice">
+		/// Handle to the device where the new partition is to be created. This handle is created by using the <c>CreateFile</c> function.
+		/// </param>
 		/// <param name="dwPartitionMethod">
 		/// <para>
-		/// Type of partition to create. To determine what type of partitions your device supports, see the documentation for your hardware. This parameter can
-		/// have one of the following values.
+		/// Type of partition to create. To determine what type of partitions your device supports, see the documentation for your hardware.
+		/// This parameter can have one of the following values.
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -471,15 +539,16 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>TAPE_INITIATOR_PARTITIONS2L</term>
 		/// <term>
-		/// Partitions the tape into the number and size of partitions specified by dwCount and dwSize, respectively, except for the last partition. The size of
-		/// the last partition is the remainder of the tape.
+		/// Partitions the tape into the number and size of partitions specified by dwCount and dwSize, respectively, except for the last
+		/// partition. The size of the last partition is the remainder of the tape.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>TAPE_SELECT_PARTITIONS1L</term>
 		/// <term>
-		/// Partitions the tape into the number of partitions specified by dwCount. The dwSize parameter is ignored. The size of the partitions is determined by
-		/// the device's default partition size. For more specific information, see the documentation for your tape device.
+		/// Partitions the tape into the number of partitions specified by dwCount. The dwSize parameter is ignored. The size of the
+		/// partitions is determined by the device's default partition size. For more specific information, see the documentation for your
+		/// tape device.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -572,7 +641,9 @@ namespace Vanara.PInvoke
 		public static extern Win32Error EraseTape([In] HFILE hDevice, TAPE_ERASE_TYPE dwEraseType, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
 
 		/// <summary>The <c>GetTapeParameters</c> function retrieves information that describes the tape or the tape drive.</summary>
-		/// <param name="hDevice">Handle to the device about which information is sought. This handle is created by using the <c>CreateFile</c> function.</param>
+		/// <param name="hDevice">
+		/// Handle to the device about which information is sought. This handle is created by using the <c>CreateFile</c> function.
+		/// </param>
 		/// <param name="dwOperation">
 		/// <para>Type of information requested. This parameter must be one of the following values.</para>
 		/// <para>
@@ -593,13 +664,13 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </param>
 		/// <param name="lpdwSize">
-		/// Pointer to a variable that receives the size, in bytes, of the buffer specified by the lpTapeInformation parameter. If the buffer is too small, this
-		/// parameter receives the required size.
+		/// Pointer to a variable that receives the size, in bytes, of the buffer specified by the lpTapeInformation parameter. If the buffer
+		/// is too small, this parameter receives the required size.
 		/// </param>
 		/// <param name="lpTapeInformation">
 		/// <para>
-		/// Pointer to a structure that contains the requested information. If the dwOperation parameter is GET_TAPE_MEDIA_INFORMATION, lpTapeInformation points
-		/// to a <c>TAPE_GET_MEDIA_PARAMETERS</c> structure.
+		/// Pointer to a structure that contains the requested information. If the dwOperation parameter is GET_TAPE_MEDIA_INFORMATION,
+		/// lpTapeInformation points to a <c>TAPE_GET_MEDIA_PARAMETERS</c> structure.
 		/// </para>
 		/// <para>If dwOperation is GET_TAPE_DRIVE_INFORMATION, lpTapeInformation points to a <c>TAPE_GET_DRIVE_PARAMETERS</c> structure.</para>
 		/// </param>
@@ -692,24 +763,29 @@ namespace Vanara.PInvoke
 		/// </listheader>
 		/// <item>
 		/// <term>TAPE_ABSOLUTE_POSITION0L</term>
-		/// <term>The lpdwOffsetLow and lpdwOffsetHigh parameters receive the device-specific block address. The dwPartition parameter receives zero.</term>
+		/// <term>
+		/// The lpdwOffsetLow and lpdwOffsetHigh parameters receive the device-specific block address. The dwPartition parameter receives zero.
+		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>TAPE_LOGICAL_POSITION1L</term>
-		/// <term>The lpdwOffsetLow and lpdwOffsetHigh parameters receive the logical block address. The dwPartition parameter receives the logical tape partition.</term>
+		/// <term>
+		/// The lpdwOffsetLow and lpdwOffsetHigh parameters receive the logical block address. The dwPartition parameter receives the logical
+		/// tape partition.
+		/// </term>
 		/// </item>
 		/// </list>
 		/// </para>
 		/// </param>
 		/// <param name="lpdwPartition">
-		/// Pointer to a variable that receives the number of the current tape partition. Partitions are numbered logically from 1 through n, where 1 is the
-		/// first partition on the tape and n is the last. When a device-specific block address is retrieved, or if the device supports only one partition, this
-		/// parameter receives zero.
+		/// Pointer to a variable that receives the number of the current tape partition. Partitions are numbered logically from 1 through n,
+		/// where 1 is the first partition on the tape and n is the last. When a device-specific block address is retrieved, or if the device
+		/// supports only one partition, this parameter receives zero.
 		/// </param>
 		/// <param name="lpdwOffsetLow">Pointer to a variable that receives the low-order bits of the current tape position.</param>
 		/// <param name="lpdwOffsetHigh">
-		/// Pointer to a variable that receives the high-order bits of the current tape position. This parameter can be <c>NULL</c> if the high-order bits are
-		/// not required.
+		/// Pointer to a variable that receives the high-order bits of the current tape position. This parameter can be <c>NULL</c> if the
+		/// high-order bits are not required.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is NO_ERROR.</para>
@@ -783,14 +859,16 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </para>
 		/// </returns>
-		// DWORD GetTapePosition( _In_ HANDLE hDevice, _In_ DWORD dwPositionType, _Out_ LPDWORD lpdwPartition, _Out_ LPDWORD lpdwOffsetLow, _Out_ LPDWORD
-		// lpdwOffsetHigh); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362528(v=vs.85).aspx
+		// DWORD GetTapePosition( _In_ HANDLE hDevice, _In_ DWORD dwPositionType, _Out_ LPDWORD lpdwPartition, _Out_ LPDWORD lpdwOffsetLow,
+		// _Out_ LPDWORD lpdwOffsetHigh); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362528(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362528")]
 		public static extern Win32Error GetTapePosition([In] HFILE hDevice, TAPE_POS_TYPE dwPositionType, out uint lpdwPartition, out uint lpdwOffsetLow, out uint lpdwOffsetHigh);
 
 		/// <summary>The <c>GetTapeStatus</c> function determines whether the tape device is ready to process tape commands.</summary>
-		/// <param name="hDevice">Handle to the device for which to get the device status. This handle is created by using the <c>CreateFile</c> function.</param>
+		/// <param name="hDevice">
+		/// Handle to the device for which to get the device status. This handle is created by using the <c>CreateFile</c> function.
+		/// </param>
 		/// <returns>
 		/// <para>If the tape device is ready to accept appropriate tape-access commands without returning errors, the return value is NO_ERROR.</para>
 		/// <para>If the function fails, it can return one of the following error codes.</para>
@@ -897,15 +975,15 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>TAPE_TENSION2L</term>
 		/// <term>
-		/// Adjusts the tension by moving the tape to the end of the tape and back to the beginning. This option is not supported by all devices. This value is
-		/// ignored if it is not supported.
+		/// Adjusts the tension by moving the tape to the end of the tape and back to the beginning. This option is not supported by all
+		/// devices. This value is ignored if it is not supported.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>TAPE_UNLOAD1L</term>
 		/// <term>
-		/// Moves the tape to the beginning for removal from the device. After a successful unload operation, the device returns errors to applications that
-		/// attempt to access the tape, until the tape is loaded again.
+		/// Moves the tape to the beginning for removal from the device. After a successful unload operation, the device returns errors to
+		/// applications that attempt to access the tape, until the tape is loaded again.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -916,7 +994,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </param>
 		/// <param name="bImmediate">
-		/// If this parameter is <c>TRUE</c>, the function returns immediately. If it is <c>FALSE</c>, the function does not return until the operation has been completed.
+		/// If this parameter is <c>TRUE</c>, the function returns immediately. If it is <c>FALSE</c>, the function does not return until the
+		/// operation has been completed.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is NO_ERROR.</para>
@@ -996,7 +1075,9 @@ namespace Vanara.PInvoke
 		public static extern Win32Error PrepareTape([In] HFILE hDevice, TAPE_PREP_OP dwOperation, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
 
 		/// <summary>The <c>SetTapeParameters</c> function either specifies the block size of a tape or configures the tape device.</summary>
-		/// <param name="hDevice">Handle to the device for which to set configuration information. This handle is created by using the <c>CreateFile</c> function.</param>
+		/// <param name="hDevice">
+		/// Handle to the device for which to set configuration information. This handle is created by using the <c>CreateFile</c> function.
+		/// </param>
 		/// <param name="dwOperation">
 		/// <para>Type of information to set. This parameter must be one of the following values.</para>
 		/// <para>
@@ -1018,8 +1099,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="lpTapeInformation">
 		/// <para>
-		/// Pointer to a structure that contains the information to set. If the dwOperation parameter is SET_TAPE_MEDIA_INFORMATION, lpTapeInformation points to
-		/// a <c>TAPE_SET_MEDIA_PARAMETERS</c> structure.
+		/// Pointer to a structure that contains the information to set. If the dwOperation parameter is SET_TAPE_MEDIA_INFORMATION,
+		/// lpTapeInformation points to a <c>TAPE_SET_MEDIA_PARAMETERS</c> structure.
 		/// </para>
 		/// <para>If dwOperation is SET_TAPE_DRIVE_INFORMATION, lpTapeInformation points to a <c>TAPE_SET_DRIVE_PARAMETERS</c> structure.</para>
 		/// </param>
@@ -1101,7 +1182,9 @@ namespace Vanara.PInvoke
 		public static extern Win32Error SetTapeParameters([In] HFILE hDevice, TAPE_PARAM_OP dwOperation, [In] IntPtr lpTapeInformation);
 
 		/// <summary>The <c>SetTapePosition</c> function sets the tape position on the specified device.</summary>
-		/// <param name="hDevice">Handle to the device on which to set the tape position. This handle is created by using the <c>CreateFile</c> function.</param>
+		/// <param name="hDevice">
+		/// Handle to the device on which to set the tape position. This handle is created by using the <c>CreateFile</c> function.
+		/// </param>
 		/// <param name="dwPositionMethod">
 		/// <para>Type of positioning to perform. This parameter must be one of the following values.</para>
 		/// <para>
@@ -1113,7 +1196,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>TAPE_ABSOLUTE_BLOCK1L</term>
 		/// <term>
-		/// Moves the tape to the device-specific block address specified by the dwOffsetLow and dwOffsetHigh parameters. The dwPartition parameter is ignored.
+		/// Moves the tape to the device-specific block address specified by the dwOffsetLow and dwOffsetHigh parameters. The dwPartition
+		/// parameter is ignored.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1122,7 +1206,9 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>TAPE_REWIND0L</term>
-		/// <term>Moves the tape to the beginning of the current partition. The dwPartition, dwOffsetLow, and dwOffsetHigh parameters are ignored.</term>
+		/// <term>
+		/// Moves the tape to the beginning of the current partition. The dwPartition, dwOffsetLow, and dwOffsetHigh parameters are ignored.
+		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>TAPE_SPACE_END_OF_DATA4L</term>
@@ -1131,53 +1217,55 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>TAPE_SPACE_FILEMARKS6L</term>
 		/// <term>
-		/// Moves the tape forward (or backward) the number of filemarks specified by dwOffsetLow and dwOffsetHigh in the current partition. The dwPartition
-		/// parameter is ignored.
+		/// Moves the tape forward (or backward) the number of filemarks specified by dwOffsetLow and dwOffsetHigh in the current partition.
+		/// The dwPartition parameter is ignored.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>TAPE_SPACE_RELATIVE_BLOCKS5L</term>
 		/// <term>
-		/// Moves the tape forward (or backward) the number of blocks specified by dwOffsetLow and dwOffsetHigh in the current partition. The dwPartition
-		/// parameter is ignored.
+		/// Moves the tape forward (or backward) the number of blocks specified by dwOffsetLow and dwOffsetHigh in the current partition. The
+		/// dwPartition parameter is ignored.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>TAPE_SPACE_SEQUENTIAL_FMKS7L</term>
 		/// <term>
-		/// Moves the tape forward (or backward) to the first occurrence of n filemarks in the current partition, where n is the number specified by dwOffsetLow
-		/// and dwOffsetHigh. The dwPartition parameter is ignored.
+		/// Moves the tape forward (or backward) to the first occurrence of n filemarks in the current partition, where n is the number
+		/// specified by dwOffsetLow and dwOffsetHigh. The dwPartition parameter is ignored.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>TAPE_SPACE_SEQUENTIAL_SMKS9L</term>
 		/// <term>
-		/// Moves the tape forward (or backward) to the first occurrence of n setmarks in the current partition, where n is the number specified by dwOffsetLow
-		/// and dwOffsetHigh. The dwPartition parameter is ignored.
+		/// Moves the tape forward (or backward) to the first occurrence of n setmarks in the current partition, where n is the number
+		/// specified by dwOffsetLow and dwOffsetHigh. The dwPartition parameter is ignored.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>TAPE_SPACE_SETMARKS8L</term>
 		/// <term>
-		/// Moves the tape forward (or backward) the number of setmarks specified by dwOffsetLow and dwOffsetHigh in the current partition. The dwPartition
-		/// parameter is ignored.
+		/// Moves the tape forward (or backward) the number of setmarks specified by dwOffsetLow and dwOffsetHigh in the current partition.
+		/// The dwPartition parameter is ignored.
 		/// </term>
 		/// </item>
 		/// </list>
 		/// </para>
 		/// </param>
 		/// <param name="dwPartition">
-		/// Partition to position within. If dwPartition is zero, the current partition is used. Partitions are numbered logically from 1 through n, where 1 is
-		/// the first partition on the tape and n is the last.
+		/// Partition to position within. If dwPartition is zero, the current partition is used. Partitions are numbered logically from 1
+		/// through n, where 1 is the first partition on the tape and n is the last.
 		/// </param>
-		/// <param name="dwOffsetLow">Low-order bits of the block address or count for the position operation specified by the dwPositionMethod parameter.</param>
+		/// <param name="dwOffsetLow">
+		/// Low-order bits of the block address or count for the position operation specified by the dwPositionMethod parameter.
+		/// </param>
 		/// <param name="dwOffsetHigh">
-		/// High-order bits of the block address or count for the position operation specified by the dwPositionMethod parameter. If the high-order bits are not
-		/// required, this parameter should be zero.
+		/// High-order bits of the block address or count for the position operation specified by the dwPositionMethod parameter. If the
+		/// high-order bits are not required, this parameter should be zero.
 		/// </param>
 		/// <param name="bImmediate">
-		/// Indicates whether to return as soon as the move operation begins. If this parameter is <c>TRUE</c>, the function returns immediately; if
-		/// <c>FALSE</c>, the function does not return until the move operation has been completed.
+		/// Indicates whether to return as soon as the move operation begins. If this parameter is <c>TRUE</c>, the function returns
+		/// immediately; if <c>FALSE</c>, the function does not return until the move operation has been completed.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is NO_ERROR.</para>
@@ -1251,17 +1339,19 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </para>
 		/// </returns>
-		// DWORD SetTapePosition( _In_ HANDLE hDevice, _In_ DWORD dwPositionMethod, _In_ DWORD dwPartition, _In_ DWORD dwOffsetLow, _In_ DWORD dwOffsetHigh, _In_
-		// BOOL bImmediate); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362536(v=vs.85).aspx
+		// DWORD SetTapePosition( _In_ HANDLE hDevice, _In_ DWORD dwPositionMethod, _In_ DWORD dwPartition, _In_ DWORD dwOffsetLow, _In_
+		// DWORD dwOffsetHigh, _In_ BOOL bImmediate); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362536(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362536")]
 		public static extern Win32Error SetTapePosition([In] HFILE hDevice, TAPE_POS_METHOD dwPositionMethod, uint dwPartition, uint dwOffsetLow, uint dwOffsetHigh, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
 
 		/// <summary>
-		/// The <c>WriteTapemark</c> function writes a specified number of filemarks, setmarks, short filemarks, or long filemarks to a tape device. These
-		/// tapemarks divide a tape partition into smaller areas.
+		/// The <c>WriteTapemark</c> function writes a specified number of filemarks, setmarks, short filemarks, or long filemarks to a tape
+		/// device. These tapemarks divide a tape partition into smaller areas.
 		/// </summary>
-		/// <param name="hDevice">Handle to the device on which to write tapemarks. This handle is created by using the <c>CreateFile</c> function.</param>
+		/// <param name="hDevice">
+		/// Handle to the device on which to write tapemarks. This handle is created by using the <c>CreateFile</c> function.
+		/// </param>
 		/// <param name="dwTapemarkType">
 		/// <para>Type of tapemarks to write. This parameter can be one of the following values.</para>
 		/// <para>
@@ -1291,7 +1381,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="dwTapemarkCount">Number of tapemarks to write.</param>
 		/// <param name="bImmediate">
-		/// If this parameter is <c>TRUE</c>, the function returns immediately; if it is <c>FALSE</c>, the function does not return until the operation has been completed.
+		/// If this parameter is <c>TRUE</c>, the function returns immediately; if it is <c>FALSE</c>, the function does not return until the
+		/// operation has been completed.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is NO_ERROR.</para>
@@ -1378,44 +1469,61 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>If this member is TRUE, the device supports hardware error correction. Otherwise, it does not.</summary>
 			[MarshalAs(UnmanagedType.U1)] public bool ECC;
+
 			/// <summary>If this member is TRUE, hardware data compression is enabled. Otherwise, it is disabled.</summary>
 			[MarshalAs(UnmanagedType.U1)] public bool Compression;
+
 			/// <summary>
-			/// If this member is TRUE, data padding is enabled. Otherwise, it is disabled. Data padding keeps the tape streaming at a constant speed.
+			/// If this member is TRUE, data padding is enabled. Otherwise, it is disabled. Data padding keeps the tape streaming at a
+			/// constant speed.
 			/// </summary>
 			[MarshalAs(UnmanagedType.U1)] public bool DataPadding;
+
 			/// <summary>If this member is TRUE, setmark reporting is enabled. Otherwise, it is disabled.</summary>
 			[MarshalAs(UnmanagedType.U1)] public bool ReportSetmarks;
+
 			/// <summary>Device's default fixed block size, in bytes.</summary>
 			public uint DefaultBlockSize;
+
 			/// <summary>Device's maximum block size, in bytes.</summary>
 			public uint MaximumBlockSize;
+
 			/// <summary>Device's minimum block size, in bytes.</summary>
 			public uint MinimumBlockSize;
+
 			/// <summary>Maximum number of partitions that can be created on the device.</summary>
 			public uint MaximumPartitionCount;
+
 			/// <summary>Low-order bits of the device features flag.</summary>
 			public TAPE_FEATURES_LOW FeaturesLow;
+
 			/// <summary>High-order bits of the device features flag.</summary>
 			public TAPE_FEATURES_HIGH FeaturesHigh;
+
 			/// <summary>Indicates the number of bytes between the end-of-tape warning and the physical end of the tape.</summary>
 			public uint EOTWarningZoneSize;
 		}
 
-		/// <summary>The TAPE_GET_MEDIA_PARAMETERS structure describes the tape in the tape drive. It is used by the GetTapeParameters function.</summary>
+		/// <summary>
+		/// The TAPE_GET_MEDIA_PARAMETERS structure describes the tape in the tape drive. It is used by the GetTapeParameters function.
+		/// </summary>
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa362564(v=vs.85).aspx
 		[PInvokeData("Winnt.h", MSDNShortId = "aa362564")]
-		[StructLayout(LayoutKind.Sequential, Pack = 1)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct TAPE_GET_MEDIA_PARAMETERS
 		{
 			/// <summary>Total number of bytes on the current tape partition.</summary>
 			public long Capacity;
+
 			/// <summary>Number of bytes between the current position and the end of the current tape partition.</summary>
 			public long Remaining;
+
 			/// <summary>Number of bytes per block.</summary>
 			public uint BlockSize;
+
 			/// <summary>Number of partitions on the tape.</summary>
 			public uint PartitionCount;
+
 			/// <summary>If this member is TRUE, the tape is write-protected. Otherwise, it is not.</summary>
 			[MarshalAs(UnmanagedType.U1)] public bool WriteProtected;
 		}
