@@ -31,17 +31,8 @@ namespace Vanara.Extensions
 		/// <exception cref="InvalidEnumArgumentException"></exception>
 		public static void CheckHasValue<T>(T value, string argName = null) where T : struct, System.Enum
 		{
-			if (IsFlags<T>())
-			{
-				var allFlags = 0L;
-				foreach (T flag in Enum.GetValues(typeof(T)))
-					allFlags |= Convert.ToInt64(flag);
-				if ((allFlags & Convert.ToInt64(value)) != 0L)
-					return;
-			}
-			else if (Enum.IsDefined(typeof(T), value))
-				return;
-			throw new InvalidEnumArgumentException(argName ?? "value", Convert.ToInt32(value), typeof(T));
+			if (!IsValid(value))
+				throw new InvalidEnumArgumentException(argName ?? "value", Convert.ToInt32(value), typeof(T));
 		}
 
 		/// <summary>Clears the specified flags from an enumerated value and returns the new value.</summary>
