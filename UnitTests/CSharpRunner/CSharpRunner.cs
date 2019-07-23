@@ -26,7 +26,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			if (mainType.GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) is null)
 				throw new ArgumentException("Supplied type must include a static Main method.");
-			var exe = Path.ChangeExtension(Path.GetTempFileName(), "exe");
+			var exe = Path.Combine(Path.GetDirectoryName(mainType.Assembly.Location), "tmp" + Guid.NewGuid().ToString("N") + ".exe");
 			CompileExe(exe, Decompile(mainType), mainType.GetReferencedAssemblyNames(), mainType.FullName);
 			return CreateProcess(exe, args, Path.GetDirectoryName(mainType.Assembly.Location));
 		}
