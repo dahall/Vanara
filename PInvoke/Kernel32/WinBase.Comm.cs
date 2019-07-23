@@ -7,32 +7,85 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary>110 bps</summary>
+		public const uint BR_110 = 110;
+
+		/// <summary>115200 bps</summary>
+		public const uint CBR_115200 = 115200;
+
+		/// <summary>1200 bps</summary>
+		public const uint CBR_1200 = 1200;
+
+		/// <summary>128000 bps</summary>
+		public const uint CBR_128000 = 128000;
+
+		/// <summary>14400 bps</summary>
+		public const uint CBR_14400 = 14400;
+
+		/// <summary>19200 bps</summary>
+		public const uint CBR_19200 = 19200;
+
+		/// <summary>2400 bps</summary>
+		public const uint CBR_2400 = 2400;
+
+		/// <summary>256000 bps</summary>
+		public const uint CBR_256000 = 256000;
+
+		/// <summary>300 bps</summary>
+		public const uint CBR_300 = 300;
+
+		/// <summary>38400 bps</summary>
+		public const uint CBR_38400 = 38400;
+
+		/// <summary>4800 bps</summary>
+		public const uint CBR_4800 = 4800;
+
+		/// <summary>57600 bps</summary>
+		public const uint CBR_57600 = 57600;
+
+		/// <summary>600 bps</summary>
+		public const uint CBR_600 = 600;
+
+		/// <summary>9600 bps</summary>
+		public const uint CBR_9600 = 9600;
+
 		/// <summary>A mask indicating the type of error.</summary>
 		[Flags]
 		public enum COMM_ERRS : uint
 		{
 			/// <summary>The hardware detected a break condition.</summary>
 			CE_BREAK = 0x0010,
+
 			/// <summary>The hardware detected a framing error.</summary>
 			CE_FRAME = 0x0008,
+
 			/// <summary>A character-buffer overrun has occurred. The next character is lost.</summary>
 			CE_OVERRUN = 0x0002,
+
 			/// <summary>
-			/// An input buffer overflow has occurred. There is either no room in the input buffer, or a character was received after the end-of-file (EOF) character.
+			/// An input buffer overflow has occurred. There is either no room in the input buffer, or a character was received after the
+			/// end-of-file (EOF) character.
 			/// </summary>
 			CE_RXOVER = 0x0001,
+
 			/// <summary>The hardware detected a parity error.</summary>
 			CE_RXPARITY = 0x0004,
+
 			/// <summary>Undocumented.</summary>
 			CE_TXFULL = 0x0100,
+
 			/// <summary>Undocumented.</summary>
 			CE_PTO = 0x0200,
+
 			/// <summary>Undocumented.</summary>
 			CE_IOE = 0x0400,
+
 			/// <summary>Undocumented.</summary>
 			CE_DNS = 0x0800,
+
 			/// <summary>Undocumented.</summary>
 			CE_OOP = 0x1000,
+
 			/// <summary>Undocumented.</summary>
 			CE_MODE = 0x8000,
 		}
@@ -41,26 +94,33 @@ namespace Vanara.PInvoke
 		public enum COMM_ESC_FUNC
 		{
 			/// <summary>
-			/// Restores character transmission and places the transmission line in a nonbreak state. The CLRBREAK extended function code is identical to the
-			/// ClearCommBreak function.
+			/// Restores character transmission and places the transmission line in a nonbreak state. The CLRBREAK extended function code is
+			/// identical to the ClearCommBreak function.
 			/// </summary>
 			CLRBREAK = 9,
+
 			/// <summary>Clears the DTR (data-terminal-ready) signal.</summary>
 			CLRDTR = 6,
+
 			/// <summary>Clears the RTS (request-to-send) signal.</summary>
 			CLRRTS = 4,
+
 			/// <summary>
-			/// Suspends character transmission and places the transmission line in a break state until the ClearCommBreak function is called (or
-			/// EscapeCommFunction is called with the CLRBREAK extended function code). The SETBREAK extended function code is identical to the SetCommBreak
-			/// function. Note that this extended function does not flush data that has not been transmitted.
+			/// Suspends character transmission and places the transmission line in a break state until the ClearCommBreak function is called
+			/// (or EscapeCommFunction is called with the CLRBREAK extended function code). The SETBREAK extended function code is identical
+			/// to the SetCommBreak function. Note that this extended function does not flush data that has not been transmitted.
 			/// </summary>
 			SETBREAK = 8,
+
 			/// <summary>Sends the DTR (data-terminal-ready) signal.</summary>
 			SETDTR = 5,
+
 			/// <summary>Sends the RTS (request-to-send) signal.</summary>
 			SETRTS = 3,
+
 			/// <summary>Causes transmission to act as if an XOFF character has been received.</summary>
 			SETXOFF = 1,
+
 			/// <summary>Causes transmission to act as if an XON character has been received.</summary>
 			SETXON = 2,
 		}
@@ -103,8 +163,8 @@ namespace Vanara.PInvoke
 			EV_RXCHAR = 0x0001,
 
 			/// <summary>
-			/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB structure, which is applied
-			/// to a serial port by using the SetCommState function.
+			/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB
+			/// structure, which is applied to a serial port by using the SetCommState function.
 			/// </summary>
 			EV_RXFLAG = 0x0002,
 
@@ -118,10 +178,13 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The CTS (clear-to-send) signal is on.</summary>
 			MS_CTS_ON = 0x0010,
+
 			/// <summary>The DSR (data-set-ready) signal is on.</summary>
 			MS_DSR_ON = 0x0020,
+
 			/// <summary>The ring indicator signal is on.</summary>
 			MS_RING_ON = 0x0040,
+
 			/// <summary>The RLSD (receive-line-signal-detect) signal is on.</summary>
 			MS_RLSD_ON = 0x0080,
 		}
@@ -130,12 +193,19 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum COMM_PURGE
 		{
-			/// <summary>Terminates all outstanding overlapped read operations and returns immediately, even if the read operations have not been completed.</summary>
+			/// <summary>
+			/// Terminates all outstanding overlapped read operations and returns immediately, even if the read operations have not been completed.
+			/// </summary>
 			PURGE_RXABORT = 0x0002,
+
 			/// <summary>Clears the input buffer (if the device driver has one).</summary>
 			PURGE_RXCLEAR = 0x0008,
-			/// <summary>Terminates all outstanding overlapped write operations and returns immediately, even if the write operations have not been completed.</summary>
+
+			/// <summary>
+			/// Terminates all outstanding overlapped write operations and returns immediately, even if the write operations have not been completed.
+			/// </summary>
 			PURGE_TXABORT = 0x0001,
+
 			/// <summary>Clears the output buffer (if the device driver has one).</summary>
 			PURGE_TXCLEAR = 0x0004,
 		}
@@ -145,14 +215,19 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>5 data bits</summary>
 			DATABITS_5 = 0x0001,
+
 			/// <summary>6 data bits</summary>
 			DATABITS_6 = 0x0002,
+
 			/// <summary>7 data bits</summary>
 			DATABITS_7 = 0x0004,
+
 			/// <summary>8 data bits</summary>
 			DATABITS_8 = 0x0008,
+
 			/// <summary>16 data bits</summary>
 			DATABITS_16 = 0x0010,
+
 			/// <summary>Special wide path through serial hardware lines</summary>
 			DATABITS_16X = 0x0020,
 		}
@@ -162,16 +237,22 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Baud rate</summary>
 			SP_BAUD = 0x0002,
+
 			/// <summary>Data bits</summary>
 			SP_DATABITS = 0x0004,
+
 			/// <summary>Handshaking (flow control)</summary>
 			SP_HANDSHAKING = 0x0010,
+
 			/// <summary>Parity</summary>
 			SP_PARITY = 0x0001,
+
 			/// <summary>Parity checking</summary>
 			SP_PARITY_CHECK = 0x0020,
+
 			/// <summary>RLSD (receive-line-signal-detect)</summary>
 			SP_RLSD = 0x0040,
+
 			/// <summary>Stop bits</summary>
 			SP_STOPBITS = 0x0008,
 		}
@@ -181,18 +262,25 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>1 stop bit</summary>
 			STOPBITS_10 = 0x0001,
+
 			/// <summary>1.5 stop bits</summary>
 			STOPBITS_15 = 0x0002,
+
 			/// <summary>2 stop bits</summary>
 			STOPBITS_20 = 0x0004,
+
 			/// <summary>No parity</summary>
 			PARITY_NONE = 0x0100,
+
 			/// <summary>Odd parity</summary>
 			PARITY_ODD = 0x0200,
+
 			/// <summary>Even parity</summary>
 			PARITY_EVEN = 0x0400,
+
 			/// <summary>Mark parity</summary>
 			PARITY_MARK = 0x0800,
+
 			/// <summary>Space parity</summary>
 			PARITY_SPACE = 0x1000,
 		}
@@ -202,12 +290,34 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Disables the DTR line when the device is opened and leaves it disabled.</summary>
 			DTR_CONTROL_DISABLE = 0x00,
+
 			/// <summary>Enables the DTR line when the device is opened and leaves it on.</summary>
 			DTR_CONTROL_ENABLE = 0x01,
+
 			/// <summary>
-			/// Enables DTR handshaking. If handshaking is enabled, it is an error for the application to adjust the line by using the EscapeCommFunction function.
+			/// Enables DTR handshaking. If handshaking is enabled, it is an error for the application to adjust the line by using the
+			/// EscapeCommFunction function.
 			/// </summary>
 			DTR_CONTROL_HANDSHAKE = 0x02,
+		}
+
+		/// <summary>Parity scheme for comm settings.</summary>
+		public enum Parity : byte
+		{
+			/// <summary>Even parity.</summary>
+			EVENPARITY = 2,
+
+			/// <summary>Mark parity.</summary>
+			MARKPARITY = 3,
+
+			/// <summary>No parity.</summary>
+			NOPARITY = 0,
+
+			/// <summary>Odd parity.</summary>
+			ODDPARITY = 1,
+
+			/// <summary>Space parity.</summary>
+			SPACEPARITY = 4,
 		}
 
 		/// <summary>A bitmask indicating the capabilities offered by the provider.</summary>
@@ -216,22 +326,31 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Special 16-bit mode supported</summary>
 			PCF_16BITMODE = 0x0200,
+
 			/// <summary>DTR (data-terminal-ready)/DSR (data-set-ready) supported</summary>
 			PCF_DTRDSR = 0x0001,
+
 			/// <summary>Interval time-outs supported</summary>
 			PCF_INTTIMEOUTS = 0x0080,
+
 			/// <summary>Parity checking supported</summary>
 			PCF_PARITY_CHECK = 0x0008,
+
 			/// <summary>RLSD (receive-line-signal-detect) supported</summary>
 			PCF_RLSD = 0x0004,
+
 			/// <summary>RTS (request-to-send)/CTS (clear-to-send) supported</summary>
 			PCF_RTSCTS = 0x0002,
+
 			/// <summary>Settable XON/XOFF supported</summary>
 			PCF_SETXCHAR = 0x0020,
+
 			/// <summary>Special character support provided</summary>
 			PCF_SPECIALCHARS = 0x0100,
+
 			/// <summary>The total (elapsed) time-outs supported</summary>
 			PCF_TOTALTIMEOUTS = 0x0040,
+
 			/// <summary>XON/XOFF flow control supported</summary>
 			PCF_XONXOFF = 0x0010,
 		}
@@ -241,28 +360,40 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>FAX device</summary>
 			PST_FAX = 0x00000021,
+
 			/// <summary>LAT protocol</summary>
 			PST_LAT = 0x00000101,
+
 			/// <summary>Modem device</summary>
 			PST_MODEM = 0x00000006,
+
 			/// <summary>Unspecified network bridge</summary>
 			PST_NETWORK_BRIDGE = 0x00000100,
+
 			/// <summary>Parallel port</summary>
 			PST_PARALLELPORT = 0x00000002,
+
 			/// <summary>RS-232 serial port</summary>
 			PST_RS232 = 0x00000001,
+
 			/// <summary>RS-422 port</summary>
 			PST_RS422 = 0x00000003,
+
 			/// <summary>RS-423 port</summary>
 			PST_RS423 = 0x00000004,
+
 			/// <summary>RS-449 port</summary>
 			PST_RS449 = 0x00000005,
+
 			/// <summary>Scanner device</summary>
 			PST_SCANNER = 0x00000022,
+
 			/// <summary>TCP/IP Telnet protocol</summary>
 			PST_TCPIP_TELNET = 0x00000102,
+
 			/// <summary>Unspecified</summary>
 			PST_UNSPECIFIED = 0x00000000,
+
 			/// <summary>X.25 standards</summary>
 			PST_X25 = 0x00000103,
 		}
@@ -272,26 +403,45 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Disables the RTS line when the device is opened and leaves it disabled.</summary>
 			RTS_CONTROL_DISABLE = 0x00,
+
 			/// <summary>Enables the RTS line when the device is opened and leaves it on.</summary>
 			RTS_CONTROL_ENABLE = 0x01,
+
 			/// <summary>
-			/// Enables RTS handshaking. The driver raises the RTS line when the "type-ahead" (input) buffer is less than one-half full and lowers the RTS line
-			/// when the buffer is more than three-quarters full. If handshaking is enabled, it is an error for the application to adjust the line by using the
-			/// EscapeCommFunction function.
+			/// Enables RTS handshaking. The driver raises the RTS line when the "type-ahead" (input) buffer is less than one-half full and
+			/// lowers the RTS line when the buffer is more than three-quarters full. If handshaking is enabled, it is an error for the
+			/// application to adjust the line by using the EscapeCommFunction function.
 			/// </summary>
 			RTS_CONTROL_HANDSHAKE = 0x02,
+
 			/// <summary>
-			/// Specifies that the RTS line will be high if bytes are available for transmission. After all buffered bytes have been sent, the RTS line will be low.
+			/// Specifies that the RTS line will be high if bytes are available for transmission. After all buffered bytes have been sent,
+			/// the RTS line will be low.
 			/// </summary>
 			RTS_CONTROL_TOGGLE = 0x03,
 		}
 
+		/// <summary>Stop bits for comm settings.</summary>
+		public enum StopBits : byte
+		{
+			/// <summary>1 stop bit.</summary>
+			ONESTOPBIT = 0,
+
+			/// <summary>1.5 stop bits.</summary>
+			ONE5STOPBITS = 1,
+
+			/// <summary>2 stop bits.</summary>
+			TWOSTOPBITS = 2,
+		}
+
 		/// <summary>
-		/// Fills a specified <c>DCB</c> structure with values specified in a device-control string. The device-control string uses the syntax of the <c>mode</c> command.
+		/// Fills a specified <c>DCB</c> structure with values specified in a device-control string. The device-control string uses the
+		/// syntax of the <c>mode</c> command.
 		/// </summary>
 		/// <param name="lpDef">
 		/// <para>
-		/// The device-control information. The function takes this string, parses it, and then sets appropriate values in the <c>DCB</c> structure pointed to by lpDCB.
+		/// The device-control information. The function takes this string, parses it, and then sets appropriate values in the <c>DCB</c>
+		/// structure pointed to by lpDCB.
 		/// </para>
 		/// <para>The string must have the same form as the <c>mode</c> command's command-line arguments:</para>
 		/// <para>COMx[:][baud=b][parity=p][data=d][stop=s][to={on|off}][xon={on|off}][odsr={on|off}][octs={on|off}][dtr={on|off|hs}][rts={on|off|hs|tg}][idsr={on|off}]</para>
@@ -310,35 +460,38 @@ namespace Vanara.PInvoke
 		public static extern bool BuildCommDCB(string lpDef, out DCB lpDCB);
 
 		/// <summary>
-		/// Translates a device-definition string into appropriate device-control block codes and places them into a device control block. The function can also
-		/// set up time-out values, including the possibility of no time-outs, for a device; the function's behavior in this regard depends on the contents of
-		/// the device-definition string.
+		/// Translates a device-definition string into appropriate device-control block codes and places them into a device control block.
+		/// The function can also set up time-out values, including the possibility of no time-outs, for a device; the function's behavior in
+		/// this regard depends on the contents of the device-definition string.
 		/// </summary>
 		/// <param name="lpDef">
 		/// <para>
-		/// The device-control information. The function takes this string, parses it, and then sets appropriate values in the <c>DCB</c> structure pointed to by lpDCB.
+		/// The device-control information. The function takes this string, parses it, and then sets appropriate values in the <c>DCB</c>
+		/// structure pointed to by lpDCB.
 		/// </para>
 		/// <para>The string must have the same form as the <c>mode</c> command's command-line arguments:</para>
 		/// <para>
-		/// <c>COM</c> x[ <c>:</c>][ <c>baud=</c>{ <c>11</c>| <c>110</c>| <c>15</c>| <c>150</c>| <c>30</c>| <c>300</c>| <c>60</c>| <c>600</c>| <c>12</c>|
-		/// <c>1200</c>| <c>24</c>| <c>2400</c>| <c>48</c>| <c>4800</c>| <c>96</c>| <c>9600</c>| <c>19</c>| <c>19200</c>}][ <c>parity=</c>{ <c>n</c>| <c>e</c>|
-		/// <c>o</c>| <c>m</c>| <c>s</c>}][ <c>data=</c>{ <c>5</c>| <c>6</c>| <c>7</c>| <c>8</c>}][ <c>stop=</c>{ <c>1</c>| <c>1.5</c>| <c>2</c>}][ <c>to=</c>{
-		/// <c>on</c>| <c>off</c>}][ <c>xon=</c>{ <c>on</c>| <c>off</c>}][ <c>odsr=</c>{ <c>on</c>| <c>off</c>}][ <c>octs=</c>{ <c>on</c>| <c>off</c>}][
-		/// <c>dtr=</c>{ <c>on</c>| <c>off</c>| <c>hs</c>}][ <c>rts=</c>{ <c>on</c>| <c>off</c>| <c>hs</c>| <c>tg</c>}][ <c>idsr=</c>{ <c>on</c>| <c>off</c>}]
+		/// <c>COM</c> x[ <c>:</c>][ <c>baud=</c>{ <c>11</c>| <c>110</c>| <c>15</c>| <c>150</c>| <c>30</c>| <c>300</c>| <c>60</c>|
+		/// <c>600</c>| <c>12</c>| <c>1200</c>| <c>24</c>| <c>2400</c>| <c>48</c>| <c>4800</c>| <c>96</c>| <c>9600</c>| <c>19</c>|
+		/// <c>19200</c>}][ <c>parity=</c>{ <c>n</c>| <c>e</c>| <c>o</c>| <c>m</c>| <c>s</c>}][ <c>data=</c>{ <c>5</c>| <c>6</c>| <c>7</c>|
+		/// <c>8</c>}][ <c>stop=</c>{ <c>1</c>| <c>1.5</c>| <c>2</c>}][ <c>to=</c>{ <c>on</c>| <c>off</c>}][ <c>xon=</c>{ <c>on</c>|
+		/// <c>off</c>}][ <c>odsr=</c>{ <c>on</c>| <c>off</c>}][ <c>octs=</c>{ <c>on</c>| <c>off</c>}][ <c>dtr=</c>{ <c>on</c>| <c>off</c>|
+		/// <c>hs</c>}][ <c>rts=</c>{ <c>on</c>| <c>off</c>| <c>hs</c>| <c>tg</c>}][ <c>idsr=</c>{ <c>on</c>| <c>off</c>}]
 		/// </para>
 		/// <para>
-		/// The "baud" substring can be any of the values listed, which are in pairs. The two-digit values are the first two digits of the associated values that
-		/// they represent. For example, 11 represents 110 baud, 19 represents 19,200 baud.
+		/// The "baud" substring can be any of the values listed, which are in pairs. The two-digit values are the first two digits of the
+		/// associated values that they represent. For example, 11 represents 110 baud, 19 represents 19,200 baud.
 		/// </para>
 		/// <para>
-		/// The "parity" substring indicates how the parity bit is used to detect transmission errors. The values represent "none", "even", "odd", "mark", and "space".
+		/// The "parity" substring indicates how the parity bit is used to detect transmission errors. The values represent "none", "even",
+		/// "odd", "mark", and "space".
 		/// </para>
 		/// <para>For more information, see the Mode command reference in TechNet.</para>
 		/// <para>For example, the following string specifies a baud rate of 1200, no parity, 8 data bits, and 1 stop bit:</para>
 		/// </param>
 		/// <param name="lpDCB">
-		/// A pointer to a <c>DCB</c> structure that receives information from the device-control information string pointed to by lpDef. This <c>DCB</c>
-		/// structure defines the control settings for a communications device.
+		/// A pointer to a <c>DCB</c> structure that receives information from the device-control information string pointed to by lpDef.
+		/// This <c>DCB</c> structure defines the control settings for a communications device.
 		/// </param>
 		/// <param name="lpCommTimeouts">A pointer to a <c>COMMTIMEOUTS</c> structure that receives time-out information.</param>
 		/// <returns>
@@ -351,7 +504,9 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool BuildCommDCBAndTimeouts(string lpDef, out DCB lpDCB, out COMMTIMEOUTS lpCommTimeouts);
 
-		/// <summary>Restores character transmission for a specified communications device and places the transmission line in a nonbreak state.</summary>
+		/// <summary>
+		/// Restores character transmission for a specified communications device and places the transmission line in a nonbreak state.
+		/// </summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -364,12 +519,14 @@ namespace Vanara.PInvoke
 		public static extern bool ClearCommBreak([In] HFILE hFile);
 
 		/// <summary>
-		/// Retrieves information about a communications error and reports the current status of a communications device. The function is called when a
-		/// communications error occurs, and it clears the device's error flag to enable additional input and output (I/O) operations.
+		/// Retrieves information about a communications error and reports the current status of a communications device. The function is
+		/// called when a communications error occurs, and it clears the device's error flag to enable additional input and output (I/O) operations.
 		/// </summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
 		/// <param name="lpErrors">
-		/// <para>A pointer to a variable that receives a mask indicating the type of error. This parameter can be one or more of the following values.</para>
+		/// <para>
+		/// A pointer to a variable that receives a mask indicating the type of error. This parameter can be one or more of the following values.
+		/// </para>
 		/// <para>
 		/// <list type="table">
 		/// <listheader>
@@ -391,7 +548,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CE_RXOVER0x0001</term>
 		/// <term>
-		/// An input buffer overflow has occurred. There is either no room in the input buffer, or a character was received after the end-of-file (EOF) character.
+		/// An input buffer overflow has occurred. There is either no room in the input buffer, or a character was received after the
+		/// end-of-file (EOF) character.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -403,8 +561,8 @@ namespace Vanara.PInvoke
 		/// <para>The following values are not supported:</para>
 		/// </param>
 		/// <param name="lpStat">
-		/// A pointer to a <c>COMSTAT</c> structure in which the device's status information is returned. If this parameter is <c>NULL</c>, no status information
-		/// is returned.
+		/// A pointer to a <c>COMSTAT</c> structure in which the device's status information is returned. If this parameter is <c>NULL</c>,
+		/// no status information is returned.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -418,14 +576,16 @@ namespace Vanara.PInvoke
 
 		/// <summary>Displays a driver-supplied configuration dialog box.</summary>
 		/// <param name="lpszName">
-		/// The name of the device for which a dialog box should be displayed. For example, COM1 through COM9 are serial ports and LPT1 through LPT9 are parallel ports.
+		/// The name of the device for which a dialog box should be displayed. For example, COM1 through COM9 are serial ports and LPT1
+		/// through LPT9 are parallel ports.
 		/// </param>
 		/// <param name="hWnd">
-		/// A handle to the window that owns the dialog box. This parameter can be any valid window handle, or it should be <c>NULL</c> if the dialog box is to
-		/// have no owner.
+		/// A handle to the window that owns the dialog box. This parameter can be any valid window handle, or it should be <c>NULL</c> if
+		/// the dialog box is to have no owner.
 		/// </param>
 		/// <param name="lpCC">
-		/// A pointer to a <c>COMMCONFIG</c> structure. This structure contains initial settings for the dialog box before the call, and changed values after the call.
+		/// A pointer to a <c>COMMCONFIG</c> structure. This structure contains initial settings for the dialog box before the call, and
+		/// changed values after the call.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -450,8 +610,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CLRBREAK9</term>
 		/// <term>
-		/// Restores character transmission and places the transmission line in a nonbreak state. The CLRBREAK extended function code is identical to the
-		/// ClearCommBreak function.
+		/// Restores character transmission and places the transmission line in a nonbreak state. The CLRBREAK extended function code is
+		/// identical to the ClearCommBreak function.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -465,9 +625,9 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>SETBREAK8</term>
 		/// <term>
-		/// Suspends character transmission and places the transmission line in a break state until the ClearCommBreak function is called (or EscapeCommFunction
-		/// is called with the CLRBREAK extended function code). The SETBREAK extended function code is identical to the SetCommBreak function. Note that this
-		/// extended function does not flush data that has not been transmitted.
+		/// Suspends character transmission and places the transmission line in a break state until the ClearCommBreak function is called (or
+		/// EscapeCommFunction is called with the CLRBREAK extended function code). The SETBREAK extended function code is identical to the
+		/// SetCommBreak function. Note that this extended function does not flush data that has not been transmitted.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -506,8 +666,8 @@ namespace Vanara.PInvoke
 		/// <param name="hCommDev">A handle to the open communications device. The <c>CreateFile</c> function returns this handle.</param>
 		/// <param name="lpCC">A pointer to a buffer that receives a <c>COMMCONFIG</c> structure.</param>
 		/// <param name="lpdwSize">
-		/// The size, in bytes, of the buffer pointed to by lpCC. When the function returns, the variable contains the number of bytes copied if the function
-		/// succeeds, or the number of bytes required if the buffer was too small.
+		/// The size, in bytes, of the buffer pointed to by lpCC. When the function returns, the variable contains the number of bytes copied
+		/// if the function succeeds, or the number of bytes required if the buffer was too small.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -517,12 +677,15 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363256")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCommConfig([In] HFILE hCommDev, out COMMCONFIG lpCC, ref uint lpdwSize);
+		public static extern bool GetCommConfig([In] HFILE hCommDev, SafeAllocatedMemoryHandle lpCC, ref uint lpdwSize);
 
 		/// <summary>Retrieves the value of the event mask for a specified communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
 		/// <param name="lpEvtMask">
-		/// <para>A pointer to the variable that receives a mask of events that are currently enabled. This parameter can be one or more of the following values.</para>
+		/// <para>
+		/// A pointer to the variable that receives a mask of events that are currently enabled. This parameter can be one or more of the
+		/// following values.
+		/// </para>
 		/// <para>
 		/// <list type="table">
 		/// <listheader>
@@ -576,8 +739,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>EV_RXFLAG0x0002</term>
 		/// <term>
-		/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB structure, which is
-		/// applied to a serial port by using the SetCommState function.
+		/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB structure,
+		/// which is applied to a serial port by using the SetCommState function.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -601,7 +764,8 @@ namespace Vanara.PInvoke
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
 		/// <param name="lpModemStat">
 		/// <para>
-		/// A pointer to a variable that receives the current state of the modem control-register values. This parameter can be one or more of the following values.
+		/// A pointer to a variable that receives the current state of the modem control-register values. This parameter can be one or more
+		/// of the following values.
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -675,17 +839,38 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getcommports
-		// ULONG GetCommPorts( PULONG lpPortNumbers, ULONG uPortNumbersCount, PULONG puPortNumbersFound );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getcommports ULONG GetCommPorts( PULONG lpPortNumbers,
+		// ULONG uPortNumbersCount, PULONG puPortNumbersFound );
 		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "8E57FB62-D7A0-4B47-942B-E33E0B7A37B1", MinClient = PInvokeClient.Windows10)]
 		public static extern Win32Error GetCommPorts([In, Out] uint[] lpPortNumbers, uint uPortNumbersCount, out uint puPortNumbersFound);
 
+		/// <summary>
+		/// <para>Gets an array that contains the well-formed COM ports.</para>
+		/// <para>
+		/// This function obtains the COM port numbers from the <c>HKLM\Hardware\DeviceMap\SERIALCOMM</c> registry key and then writes them
+		/// to a caller-supplied array.
+		/// </para>
+		/// <para><c>Note</c> If new entries are added to the registry key, the necessary size can change between API calls.</para>
+		/// </summary>
+		/// <returns>An array of port numbers.</returns>
+		[PInvokeData("winbase.h", MSDNShortId = "8E57FB62-D7A0-4B47-942B-E33E0B7A37B1", MinClient = PInvokeClient.Windows10)]
+		public static uint[] GetCommPorts()
+		{
+			Win32Error err;
+			if ((err = GetCommPorts(null, 0, out var c)).Failed && err != Win32Error.ERROR_MORE_DATA)
+				throw err.GetException();
+			var ports = new uint[c];
+			GetCommPorts(ports, c, out _).ThrowIfFailed();
+			return ports;
+		}
+
 		/// <summary>Retrieves information about the communications properties for a specified communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
 		/// <param name="lpCommProp">
-		/// A pointer to a <c>COMMPROP</c> structure in which the communications properties information is returned. This information can be used in subsequent
-		/// calls to the <c>SetCommState</c>, <c>SetCommTimeouts</c>, or <c>SetupComm</c> function to configure the communications device.
+		/// A pointer to a <c>COMMPROP</c> structure in which the communications properties information is returned. This information can be
+		/// used in subsequent calls to the <c>SetCommState</c>, <c>SetCommTimeouts</c>, or <c>SetupComm</c> function to configure the
+		/// communications device.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -724,11 +909,13 @@ namespace Vanara.PInvoke
 		public static extern bool GetCommTimeouts([In] HFILE hFile, out COMMTIMEOUTS lpCommTimeouts);
 
 		/// <summary>Retrieves the default configuration for the specified communications device.</summary>
-		/// <param name="lpszName">The name of the device. For example, COM1 through COM9 are serial ports and LPT1 through LPT9 are parallel ports.</param>
+		/// <param name="lpszName">
+		/// The name of the device. For example, COM1 through COM9 are serial ports and LPT1 through LPT9 are parallel ports.
+		/// </param>
 		/// <param name="lpCC">A pointer to a buffer that receives a <c>COMMCONFIG</c> structure.</param>
 		/// <param name="lpdwSize">
-		/// A pointer to a variable that specifies the size of the buffer pointed to by lpCC, in bytes. Upon return, the variable contains the number of bytes
-		/// copied if the function succeeds, or the number of bytes required if the buffer was too small.
+		/// A pointer to a variable that specifies the size of the buffer pointed to by lpCC, in bytes. Upon return, the variable contains
+		/// the number of bytes copied if the function succeeds, or the number of bytes required if the buffer was too small.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -774,15 +961,15 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>To support UWP, link against WindowsApp.lib.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-opencommport
-		// HANDLE OpenCommPort( ULONG uPortNumber, DWORD dwDesiredAccess, DWORD dwFlagsAndAttributes );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-opencommport HANDLE OpenCommPort( ULONG uPortNumber, DWORD
+		// dwDesiredAccess, DWORD dwFlagsAndAttributes );
 		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "D96D3F6D-2158-4E6A-84A8-DC3BAE9624FA")]
 		public static extern SafeHFILE OpenCommPort(uint uPortNumber, FileAccess dwDesiredAccess, uint dwFlagsAndAttributes);
 
 		/// <summary>
-		/// Discards all characters from the output or input buffer of a specified communications resource. It can also terminate pending read or write
-		/// operations on the resource.
+		/// Discards all characters from the output or input buffer of a specified communications resource. It can also terminate pending
+		/// read or write operations on the resource.
 		/// </summary>
 		/// <param name="hFile">A handle to the communications resource. The <c>CreateFile</c> function returns this handle.</param>
 		/// <param name="dwFlags">
@@ -795,7 +982,9 @@ namespace Vanara.PInvoke
 		/// </listheader>
 		/// <item>
 		/// <term>PURGE_RXABORT0x0002</term>
-		/// <term>Terminates all outstanding overlapped read operations and returns immediately, even if the read operations have not been completed.</term>
+		/// <term>
+		/// Terminates all outstanding overlapped read operations and returns immediately, even if the read operations have not been completed.
+		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>PURGE_RXCLEAR0x0008</term>
@@ -803,7 +992,9 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>PURGE_TXABORT0x0001</term>
-		/// <term>Terminates all outstanding overlapped write operations and returns immediately, even if the write operations have not been completed.</term>
+		/// <term>
+		/// Terminates all outstanding overlapped write operations and returns immediately, even if the write operations have not been completed.
+		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>PURGE_TXCLEAR0x0004</term>
@@ -892,8 +1083,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>EV_RXFLAG0x0002</term>
 		/// <term>
-		/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB structure, which is
-		/// applied to a serial port by using the SetCommState function.
+		/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB structure,
+		/// which is applied to a serial port by using the SetCommState function.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -914,11 +1105,13 @@ namespace Vanara.PInvoke
 		public static extern bool SetCommMask([In] HFILE hFile, COMM_EVT_MASK dwEvtMask);
 
 		/// <summary>
-		/// Configures a communications device according to the specifications in a device-control block (a <c>DCB</c> structure). The function reinitializes all
-		/// hardware and control settings, but it does not empty output or input queues.
+		/// Configures a communications device according to the specifications in a device-control block (a <c>DCB</c> structure). The
+		/// function reinitializes all hardware and control settings, but it does not empty output or input queues.
 		/// </summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
-		/// <param name="lpDCB">A pointer to a <c>DCB</c> structure that contains the configuration information for the specified communications device.</param>
+		/// <param name="lpDCB">
+		/// A pointer to a <c>DCB</c> structure that contains the configuration information for the specified communications device.
+		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
@@ -943,7 +1136,9 @@ namespace Vanara.PInvoke
 		public static extern bool SetCommTimeouts([In] HFILE hFile, in COMMTIMEOUTS lpCommTimeouts);
 
 		/// <summary>Sets the default configuration for a communications device.</summary>
-		/// <param name="lpszName">The name of the device. For example, COM1 through COM9 are serial ports and LPT1 through LPT9 are parallel ports.</param>
+		/// <param name="lpszName">
+		/// The name of the device. For example, COM1 through COM9 are serial ports and LPT1 through LPT9 are parallel ports.
+		/// </param>
 		/// <param name="lpCC">A pointer to a <c>COMMCONFIG</c> structure.</param>
 		/// <param name="dwSize">The size of the structure pointed to by lpCC, in bytes.</param>
 		/// <returns>
@@ -984,14 +1179,14 @@ namespace Vanara.PInvoke
 		public static extern bool TransmitCommChar([In] HFILE hFile, byte cChar);
 
 		/// <summary>
-		/// Waits for an event to occur for a specified communications device. The set of events that are monitored by this function is contained in the event
-		/// mask associated with the device handle.
+		/// Waits for an event to occur for a specified communications device. The set of events that are monitored by this function is
+		/// contained in the event mask associated with the device handle.
 		/// </summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
 		/// <param name="lpEvtMask">
 		/// <para>
-		/// A pointer to a variable that receives a mask indicating the type of event that occurred. If an error occurs, the value is zero; otherwise, it is one
-		/// of the following values.
+		/// A pointer to a variable that receives a mask indicating the type of event that occurred. If an error occurs, the value is zero;
+		/// otherwise, it is one of the following values.
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -1030,8 +1225,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>EV_RXFLAG0x0002</term>
 		/// <term>
-		/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB structure, which is
-		/// applied to a serial port by using the SetCommState function.
+		/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB structure,
+		/// which is applied to a serial port by using the SetCommState function.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1044,17 +1239,18 @@ namespace Vanara.PInvoke
 		/// <param name="lpOverlapped">
 		/// <para>A pointer to an <c>OVERLAPPED</c> structure. This structure is required if hFile was opened with <c>FILE_FLAG_OVERLAPPED</c>.</para>
 		/// <para>
-		/// If hFile was opened with <c>FILE_FLAG_OVERLAPPED</c>, the lpOverlapped parameter must not be <c>NULL</c>. It must point to a valid <c>OVERLAPPED</c>
-		/// structure. If hFile was opened with <c>FILE_FLAG_OVERLAPPED</c> and lpOverlapped is <c>NULL</c>, the function can incorrectly report that the
-		/// operation is complete.
+		/// If hFile was opened with <c>FILE_FLAG_OVERLAPPED</c>, the lpOverlapped parameter must not be <c>NULL</c>. It must point to a
+		/// valid <c>OVERLAPPED</c> structure. If hFile was opened with <c>FILE_FLAG_OVERLAPPED</c> and lpOverlapped is <c>NULL</c>, the
+		/// function can incorrectly report that the operation is complete.
 		/// </para>
 		/// <para>
-		/// If hFile was opened with <c>FILE_FLAG_OVERLAPPED</c> and lpOverlapped is not <c>NULL</c>, <c>WaitCommEvent</c> is performed as an overlapped
-		/// operation. In this case, the <c>OVERLAPPED</c> structure must contain a handle to a manual-reset event object (created by using the
-		/// <c>CreateEvent</c> function).
+		/// If hFile was opened with <c>FILE_FLAG_OVERLAPPED</c> and lpOverlapped is not <c>NULL</c>, <c>WaitCommEvent</c> is performed as an
+		/// overlapped operation. In this case, the <c>OVERLAPPED</c> structure must contain a handle to a manual-reset event object (created
+		/// by using the <c>CreateEvent</c> function).
 		/// </para>
 		/// <para>
-		/// If hFile was not opened with <c>FILE_FLAG_OVERLAPPED</c>, <c>WaitCommEvent</c> does not return until one of the specified events or an error occurs.
+		/// If hFile was not opened with <c>FILE_FLAG_OVERLAPPED</c>, <c>WaitCommEvent</c> does not return until one of the specified events
+		/// or an error occurs.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -1065,13 +1261,13 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363479")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static unsafe extern bool WaitCommEvent([In] HFILE hFile, ref COMM_EVT_MASK lpEvtMask, NativeOverlapped* lpOverlapped);
+		public static unsafe extern bool WaitCommEvent([In] HFILE hFile, out COMM_EVT_MASK lpEvtMask, NativeOverlapped* lpOverlapped);
 
 		/// <summary>
 		/// <para>Contains information about the configuration state of a communications device.</para>
 		/// </summary>
-		// typedef struct _COMM_CONFIG { DWORD dwSize; WORD wVersion; WORD wReserved; DCB dcb; DWORD dwProviderSubType; DWORD dwProviderOffset; DWORD
-		// dwProviderSize; WCHAR wcProviderData[1];} COMMCONFIG, *LPCOMMCONFIG;
+		// typedef struct _COMM_CONFIG { DWORD dwSize; WORD wVersion; WORD wReserved; DCB dcb; DWORD dwProviderSubType; DWORD
+		// dwProviderOffset; DWORD dwProviderSize; WCHAR wcProviderData[1];} COMMCONFIG, *LPCOMMCONFIG;
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363188")]
 		public struct COMMCONFIG
@@ -1083,8 +1279,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>
-			/// The version number of the structure. This parameter can be 1. The version of the provider-specific structure should be included in the
-			/// <c>wcProviderData</c> member.
+			/// The version number of the structure. This parameter can be 1. The version of the provider-specific structure should be
+			/// included in the <c>wcProviderData</c> member.
 			/// </para>
 			/// </summary>
 			public ushort wVersion;
@@ -1096,24 +1292,24 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>
-			/// The device-control block ( <c>DCB</c>) structure for RS-232 serial devices. A <c>DCB</c> structure is always present regardless of the port
-			/// driver subtype specified in the device's <c>COMMPROP</c> structure.
+			/// The device-control block ( <c>DCB</c>) structure for RS-232 serial devices. A <c>DCB</c> structure is always present
+			/// regardless of the port driver subtype specified in the device's <c>COMMPROP</c> structure.
 			/// </para>
 			/// </summary>
 			public DCB dcb;
 
 			/// <summary>
 			/// <para>
-			/// The type of communications provider, and thus the format of the provider-specific data. For a list of communications provider types, see the
-			/// description of the <c>COMMPROP</c> structure.
+			/// The type of communications provider, and thus the format of the provider-specific data. For a list of communications provider
+			/// types, see the description of the <c>COMMPROP</c> structure.
 			/// </para>
 			/// </summary>
 			public PROV_SUB_TYPE dwProviderSubType;
 
 			/// <summary>
 			/// <para>
-			/// The offset of the provider-specific data relative to the beginning of the structure, in bytes. This member is zero if there is no
-			/// provider-specific data.
+			/// The offset of the provider-specific data relative to the beginning of the structure, in bytes. This member is zero if there
+			/// is no provider-specific data.
 			/// </para>
 			/// </summary>
 			public uint dwProviderOffset;
@@ -1125,17 +1321,21 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>
-			/// Optional provider-specific data. This member can be of any size or can be omitted. Because the <c>COMMCONFIG</c> structure may be expanded in the
-			/// future, applications should use the <c>dwProviderOffset</c> member to determine the location of this member.
+			/// Optional provider-specific data. This member can be of any size or can be omitted. Because the <c>COMMCONFIG</c> structure
+			/// may be expanded in the future, applications should use the <c>dwProviderOffset</c> member to determine the location of this member.
 			/// </para>
 			/// </summary>
 			public IntPtr wcProviderData;
+
+			/// <summary>Gets a default instance with the size field set.</summary>
+			public static readonly COMMCONFIG Default = new COMMCONFIG { dwSize = (uint)Marshal.SizeOf(typeof(COMMCONFIG)), wVersion = 1, dcb = DCB.Default };
 		}
 
 		/// <summary>Contains information about a communications driver.</summary>
-		// typedef struct _COMMPROP { WORD wPacketLength; WORD wPacketVersion; DWORD dwServiceMask; DWORD dwReserved1; DWORD dwMaxTxQueue; DWORD dwMaxRxQueue;
-		// DWORD dwMaxBaud; DWORD dwProvSubType; DWORD dwProvCapabilities; DWORD dwSettableParams; DWORD dwSettableBaud; WORD wSettableData; WORD
-		// wSettableStopParity; DWORD dwCurrentTxQueue; DWORD dwCurrentRxQueue; DWORD dwProvSpec1; DWORD dwProvSpec2; WCHAR wcProvChar[1];} COMMPROP,
+		// typedef struct _COMMPROP { WORD wPacketLength; WORD wPacketVersion; DWORD dwServiceMask; DWORD dwReserved1; DWORD dwMaxTxQueue;
+		// DWORD dwMaxRxQueue; DWORD dwMaxBaud; DWORD dwProvSubType; DWORD dwProvCapabilities; DWORD dwSettableParams; DWORD dwSettableBaud;
+		// WORD wSettableData; WORD wSettableStopParity; DWORD dwCurrentTxQueue; DWORD dwCurrentRxQueue; DWORD dwProvSpec1; DWORD
+		// dwProvSpec2; WCHAR wcProvChar[1];} COMMPROP,
 		// *LPCOMMPROP; https://msdn.microsoft.com/en-us/library/windows/desktop/aa363189(v=vs.85).aspx
 		[PInvokeData("WinBase.h", MSDNShortId = "aa363189")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2)]
@@ -1143,23 +1343,31 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The size of the entire data packet, regardless of the amount of data requested, in bytes.</summary>
 			public ushort wPacketLength;
+
 			/// <summary>The version of the structure.</summary>
 			public ushort wPacketVersion;
+
 			/// <summary>
-			/// A bitmask indicating which services are implemented by this provider. The <c>SP_SERIALCOMM</c> value is always specified for communications
-			/// providers, including modem providers.
+			/// A bitmask indicating which services are implemented by this provider. The <c>SP_SERIALCOMM</c> value is always specified for
+			/// communications providers, including modem providers.
 			/// </summary>
 			public uint dwServiceMask;
+
 			/// <summary>Reserved; do not use.</summary>
 			public uint dwReserved1;
+
 			/// <summary>
-			/// The maximum size of the driver's internal output buffer, in bytes. A value of zero indicates that no maximum value is imposed by the serial provider.
+			/// The maximum size of the driver's internal output buffer, in bytes. A value of zero indicates that no maximum value is imposed
+			/// by the serial provider.
 			/// </summary>
 			public uint dwMaxTxQueue;
+
 			/// <summary>
-			/// The maximum size of the driver's internal input buffer, in bytes. A value of zero indicates that no maximum value is imposed by the serial provider.
+			/// The maximum size of the driver's internal input buffer, in bytes. A value of zero indicates that no maximum value is imposed
+			/// by the serial provider.
 			/// </summary>
 			public uint dwMaxRxQueue;
+
 			/// <summary>
 			/// <para>The maximum allowable baud rate, in bits per second (bps). This member can be one of the following values.</para>
 			/// <para>
@@ -1252,6 +1460,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public uint dwMaxBaud;
+
 			/// <summary>
 			/// <para>The communications-provider type.</para>
 			/// <para>
@@ -1316,6 +1525,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public PROV_SUB_TYPE dwProvSubType;
+
 			/// <summary>
 			/// <para>A bitmask indicating the capabilities offered by the provider. This member can be a combination of the following values.</para>
 			/// <para>
@@ -1368,8 +1578,11 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public PROV_CAPABILITIES dwProvCapabilities;
+
 			/// <summary>
-			/// <para>A bitmask indicating the communications parameters that can be changed. This member can be a combination of the following values.</para>
+			/// <para>
+			/// A bitmask indicating the communications parameters that can be changed. This member can be a combination of the following values.
+			/// </para>
 			/// <para>
 			/// <list type="table">
 			/// <listheader>
@@ -1408,8 +1621,10 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public COMM_SET_PARAMS dwSettableParams;
+
 			/// <summary>The baud rates that can be used. For values, see the <c>dwMaxBaud</c> member.</summary>
 			public uint dwSettableBaud;
+
 			/// <summary>
 			/// <para>A bitmask indicating the number of data bits that can be set. This member can be a combination of the following values.</para>
 			/// <para>
@@ -1446,8 +1661,11 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public COMM_SET_DATA wSettableData;
+
 			/// <summary>
-			/// <para>A bitmask indicating the stop bit and parity settings that can be selected. This member can be a combination of the following values.</para>
+			/// <para>
+			/// A bitmask indicating the stop bit and parity settings that can be selected. This member can be a combination of the following values.
+			/// </para>
 			/// <para>
 			/// <list type="table">
 			/// <listheader>
@@ -1490,36 +1708,41 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public COMM_STOP_PARITY wSettableStopParity;
+
 			/// <summary>The size of the driver's internal output buffer, in bytes. A value of zero indicates that the value is unavailable.</summary>
 			public uint dwCurrentTxQueue;
+
 			/// <summary>The size of the driver's internal input buffer, in bytes. A value of zero indicates that the value is unavailable.</summary>
 			public uint dwCurrentRxQueue;
+
 			/// <summary>
 			/// <para>
-			/// Any provider-specific data. Applications should ignore this member unless they have detailed information about the format of the data required by
-			/// the provider.
+			/// Any provider-specific data. Applications should ignore this member unless they have detailed information about the format of
+			/// the data required by the provider.
 			/// </para>
 			/// <para>
-			/// Set this member to <c>COMMPROP_INITIALIZED</c> before calling the <c>GetCommProperties</c> function to indicate that the <c>wPacketLength</c>
-			/// member is already valid.
+			/// Set this member to <c>COMMPROP_INITIALIZED</c> before calling the <c>GetCommProperties</c> function to indicate that the
+			/// <c>wPacketLength</c> member is already valid.
 			/// </para>
 			/// </summary>
 			public uint dwProvSpec1;
+
 			/// <summary>
-			/// Any provider-specific data. Applications should ignore this member unless they have detailed information about the format of the data required by
-			/// the provider.
+			/// Any provider-specific data. Applications should ignore this member unless they have detailed information about the format of
+			/// the data required by the provider.
 			/// </summary>
 			public uint dwProvSpec2;
+
 			/// <summary>
-			/// Any provider-specific data. Applications should ignore this member unless they have detailed information about the format of the data required by
-			/// the provider.
+			/// Any provider-specific data. Applications should ignore this member unless they have detailed information about the format of
+			/// the data required by the provider.
 			/// </summary>
 			public IntPtr wcProvChar;
 		}
 
 		/// <summary>
-		/// Contains the time-out parameters for a communications device. The parameters determine the behavior of <c>ReadFile</c>, <c>WriteFile</c>,
-		/// <c>ReadFileEx</c>, and <c>WriteFileEx</c> operations on the device.
+		/// Contains the time-out parameters for a communications device. The parameters determine the behavior of <c>ReadFile</c>,
+		/// <c>WriteFile</c>, <c>ReadFileEx</c>, and <c>WriteFileEx</c> operations on the device.
 		/// </summary>
 		// typedef struct _COMMTIMEOUTS { DWORD ReadIntervalTimeout; DWORD ReadTotalTimeoutMultiplier; DWORD ReadTotalTimeoutConstant; DWORD
 		// WriteTotalTimeoutMultiplier; DWORD WriteTotalTimeoutConstant;} COMMTIMEOUTS, *LPCOMMTIMEOUTS; https://msdn.microsoft.com/en-us/library/windows/desktop/aa363190(v=vs.85).aspx
@@ -1529,62 +1752,70 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>
 			/// <para>
-			/// The maximum time allowed to elapse before the arrival of the next byte on the communications line, in milliseconds. If the interval between the
-			/// arrival of any two bytes exceeds this amount, the <c>ReadFile</c> operation is completed and any buffered data is returned. A value of zero
-			/// indicates that interval time-outs are not used.
+			/// The maximum time allowed to elapse before the arrival of the next byte on the communications line, in milliseconds. If the
+			/// interval between the arrival of any two bytes exceeds this amount, the <c>ReadFile</c> operation is completed and any
+			/// buffered data is returned. A value of zero indicates that interval time-outs are not used.
 			/// </para>
 			/// <para>
-			/// A value of <c>MAXDWORD</c>, combined with zero values for both the <c>ReadTotalTimeoutConstant</c> and <c>ReadTotalTimeoutMultiplier</c> members,
-			/// specifies that the read operation is to return immediately with the bytes that have already been received, even if no bytes have been received.
+			/// A value of <c>MAXDWORD</c>, combined with zero values for both the <c>ReadTotalTimeoutConstant</c> and
+			/// <c>ReadTotalTimeoutMultiplier</c> members, specifies that the read operation is to return immediately with the bytes that
+			/// have already been received, even if no bytes have been received.
 			/// </para>
 			/// </summary>
 			public uint ReadIntervalTimeout;
+
 			/// <summary>
-			/// The multiplier used to calculate the total time-out period for read operations, in milliseconds. For each read operation, this value is
-			/// multiplied by the requested number of bytes to be read.
+			/// The multiplier used to calculate the total time-out period for read operations, in milliseconds. For each read operation,
+			/// this value is multiplied by the requested number of bytes to be read.
 			/// </summary>
 			public uint ReadTotalTimeoutMultiplier;
+
 			/// <summary>
 			/// <para>
-			/// A constant used to calculate the total time-out period for read operations, in milliseconds. For each read operation, this value is added to the
-			/// product of the <c>ReadTotalTimeoutMultiplier</c> member and the requested number of bytes.
+			/// A constant used to calculate the total time-out period for read operations, in milliseconds. For each read operation, this
+			/// value is added to the product of the <c>ReadTotalTimeoutMultiplier</c> member and the requested number of bytes.
 			/// </para>
 			/// <para>
-			/// A value of zero for both the <c>ReadTotalTimeoutMultiplier</c> and <c>ReadTotalTimeoutConstant</c> members indicates that total time-outs are not
-			/// used for read operations.
+			/// A value of zero for both the <c>ReadTotalTimeoutMultiplier</c> and <c>ReadTotalTimeoutConstant</c> members indicates that
+			/// total time-outs are not used for read operations.
 			/// </para>
 			/// </summary>
 			public uint ReadTotalTimeoutConstant;
+
 			/// <summary>
-			/// The multiplier used to calculate the total time-out period for write operations, in milliseconds. For each write operation, this value is
-			/// multiplied by the number of bytes to be written.
+			/// The multiplier used to calculate the total time-out period for write operations, in milliseconds. For each write operation,
+			/// this value is multiplied by the number of bytes to be written.
 			/// </summary>
 			public uint WriteTotalTimeoutMultiplier;
+
 			/// <summary>
 			/// <para>
-			/// A constant used to calculate the total time-out period for write operations, in milliseconds. For each write operation, this value is added to
-			/// the product of the <c>WriteTotalTimeoutMultiplier</c> member and the number of bytes to be written.
+			/// A constant used to calculate the total time-out period for write operations, in milliseconds. For each write operation, this
+			/// value is added to the product of the <c>WriteTotalTimeoutMultiplier</c> member and the number of bytes to be written.
 			/// </para>
 			/// <para>
-			/// A value of zero for both the <c>WriteTotalTimeoutMultiplier</c> and <c>WriteTotalTimeoutConstant</c> members indicates that total time-outs are
-			/// not used for write operations.
+			/// A value of zero for both the <c>WriteTotalTimeoutMultiplier</c> and <c>WriteTotalTimeoutConstant</c> members indicates that
+			/// total time-outs are not used for write operations.
 			/// </para>
 			/// </summary>
 			public uint WriteTotalTimeoutConstant;
 		}
 
 		/// <summary>Contains information about a communications device. This structure is filled by the <c>ClearCommError</c> function.</summary>
-		// typedef struct _COMSTAT { DWORD fCtsHold :1; DWORD fDsrHold :1; DWORD fRlsdHold :1; DWORD fXoffHold :1; DWORD fXoffSent :1; DWORD fEof :1; DWORD fTxim
-		// :1; DWORD fReserved :25; DWORD cbInQue; DWORD cbOutQue;} COMSTAT, *LPCOMSTAT; https://msdn.microsoft.com/en-us/library/windows/desktop/aa363200(v=vs.85).aspx
+		// typedef struct _COMSTAT { DWORD fCtsHold :1; DWORD fDsrHold :1; DWORD fRlsdHold :1; DWORD fXoffHold :1; DWORD fXoffSent :1; DWORD
+		// fEof :1; DWORD fTxim :1; DWORD fReserved :25; DWORD cbInQue; DWORD cbOutQue;} COMSTAT, *LPCOMSTAT; https://msdn.microsoft.com/en-us/library/windows/desktop/aa363200(v=vs.85).aspx
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363200")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct COMSTAT
 		{
 			private uint bitvector1;
+
 			/// <summary>The number of bytes received by the serial provider but not yet read by a <c>ReadFile</c> operation.</summary>
 			public uint cbInQue;
+
 			/// <summary>
-			/// The number of bytes of user data remaining to be transmitted for all write operations. This value will be zero for a nonoverlapped write.
+			/// The number of bytes of user data remaining to be transmitted for all write operations. This value will be zero for a
+			/// nonoverlapped write.
 			/// </summary>
 			public uint cbOutQue;
 
@@ -1594,15 +1825,17 @@ namespace Vanara.PInvoke
 			/// <summary>If this member is <c>TRUE</c>, transmission is waiting for the DSR (data-set-ready) signal to be sent.</summary>
 			public bool fDsrHold { get => GetFlag(0x0002); set => SetFlag(0x0002, value); }
 
-			/// <summary>If this member is <c>TRUE</c>, transmission is waiting for the RLSD (receive-line-signal-detect) signal to be sent.</summary>
+			/// <summary>
+			/// If this member is <c>TRUE</c>, transmission is waiting for the RLSD (receive-line-signal-detect) signal to be sent.
+			/// </summary>
 			public bool fRlsdHold { get => GetFlag(0x0004); set => SetFlag(0x0004, value); }
 
 			/// <summary>If this member is <c>TRUE</c>, transmission is waiting because the XOFF character was received.</summary>
 			public bool fXoffHold { get => GetFlag(0x0008); set => SetFlag(0x0008, value); }
 
 			/// <summary>
-			/// If this member is <c>TRUE</c>, transmission is waiting because the XOFF character was transmitted. (Transmission halts when the XOFF character is
-			/// transmitted to a system that takes the next character as XON, regardless of the actual character.)
+			/// If this member is <c>TRUE</c>, transmission is waiting because the XOFF character was transmitted. (Transmission halts when
+			/// the XOFF character is transmitted to a system that takes the next character as XON, regardless of the actual character.)
 			/// </summary>
 			public bool fXoffSent { get => GetFlag(0x0010); set => SetFlag(0x0010, value); }
 
@@ -1610,29 +1843,38 @@ namespace Vanara.PInvoke
 			public bool fEof { get => GetFlag(0x0020); set => SetFlag(0x0020, value); }
 
 			/// <summary>
-			/// If this member is <c>TRUE</c>, there is a character queued for transmission that has come to the communications device by way of the
-			/// <c>TransmitCommChar</c> function. The communications device transmits such a character ahead of other characters in the device's output buffer.
+			/// If this member is <c>TRUE</c>, there is a character queued for transmission that has come to the communications device by way
+			/// of the <c>TransmitCommChar</c> function. The communications device transmits such a character ahead of other characters in
+			/// the device's output buffer.
 			/// </summary>
 			public bool fTxim { get => GetFlag(0x0040); set => SetFlag(0x0040, value); }
 
 			private bool GetFlag(uint mask) => (bitvector1 & mask) != 0;
 
-			private void SetFlag(uint mask, bool value) { if (value) bitvector1 |= mask; else bitvector1 &= ~mask; }
+			private void SetFlag(uint mask, bool value)
+			{
+				if (value) bitvector1 |= mask; else bitvector1 &= ~mask;
+			}
 		}
 
 		/// <summary>Defines the control setting for a serial communications device.</summary>
-		// typedef struct _DCB { DWORD DCBlength; DWORD BaudRate; DWORD fBinary :1; DWORD fParity :1; DWORD fOutxCtsFlow :1; DWORD fOutxDsrFlow :1; DWORD
-		// fDtrControl :2; DWORD fDsrSensitivity :1; DWORD fTXContinueOnXoff :1; DWORD fOutX :1; DWORD fInX :1; DWORD fErrorChar :1; DWORD fNull :1; DWORD
-		// fRtsControl :2; DWORD fAbortOnError :1; DWORD fDummy2 :17; WORD wReserved; WORD XonLim; WORD XoffLim; BYTE ByteSize; BYTE Parity; BYTE StopBits; char
-		// XonChar; char XoffChar; char ErrorChar; char EofChar; char EvtChar; WORD wReserved1;} DCB, *LPDCB; https://msdn.microsoft.com/en-us/library/windows/desktop/aa363214(v=vs.85).aspx
+		// typedef struct _DCB { DWORD DCBlength; DWORD BaudRate; DWORD fBinary :1; DWORD fParity :1; DWORD fOutxCtsFlow :1; DWORD
+		// fOutxDsrFlow :1; DWORD fDtrControl :2; DWORD fDsrSensitivity :1; DWORD fTXContinueOnXoff :1; DWORD fOutX :1; DWORD fInX :1; DWORD
+		// fErrorChar :1; DWORD fNull :1; DWORD fRtsControl :2; DWORD fAbortOnError :1; DWORD fDummy2 :17; WORD wReserved; WORD XonLim; WORD
+		// XoffLim; BYTE ByteSize; BYTE Parity; BYTE StopBits; char XonChar; char XoffChar; char ErrorChar; char EofChar; char EvtChar; WORD
+		// wReserved1;} DCB, *LPDCB; https://msdn.microsoft.com/en-us/library/windows/desktop/aa363214(v=vs.85).aspx
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363214")]
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		public struct DCB
 		{
 			/// <summary>The length of the structure, in bytes. The caller must set this member to .</summary>
 			public uint DCBlength;
+
 			/// <summary>
-			/// <para>The baud rate at which the communications device operates. This member can be an actual baud rate value, or one of the following indexes.</para>
+			/// <para>
+			/// The baud rate at which the communications device operates. This member can be an actual baud rate value, or one of the
+			/// following indexes.
+			/// </para>
 			/// <para>
 			/// <list type="table">
 			/// <listheader>
@@ -1699,23 +1941,31 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public uint BaudRate;
+
 			private uint flags;
+
 			/// <summary>Reserved; must be zero.</summary>
 			public ushort wReserved;
+
 			/// <summary>
-			/// The minimum number of bytes in use allowed in the input buffer before flow control is activated to allow transmission by the sender. This assumes
-			/// that either XON/XOFF, RTS, or DTR input flow control is specified in the <c>fInX</c>, <c>fRtsControl</c>, or <c>fDtrControl</c> members.
+			/// The minimum number of bytes in use allowed in the input buffer before flow control is activated to allow transmission by the
+			/// sender. This assumes that either XON/XOFF, RTS, or DTR input flow control is specified in the <c>fInX</c>,
+			/// <c>fRtsControl</c>, or <c>fDtrControl</c> members.
 			/// </summary>
 			public ushort XonLim;
+
 			/// <summary>
-			/// The minimum number of free bytes allowed in the input buffer before flow control is activated to inhibit the sender. Note that the sender may
-			/// transmit characters after the flow control signal has been activated, so this value should never be zero. This assumes that either XON/XOFF, RTS,
-			/// or DTR input flow control is specified in the <c>fInX</c>, <c>fRtsControl</c>, or <c>fDtrControl</c> members. The maximum number of bytes in use
-			/// allowed is calculated by subtracting this value from the size, in bytes, of the input buffer.
+			/// The minimum number of free bytes allowed in the input buffer before flow control is activated to inhibit the sender. Note
+			/// that the sender may transmit characters after the flow control signal has been activated, so this value should never be zero.
+			/// This assumes that either XON/XOFF, RTS, or DTR input flow control is specified in the <c>fInX</c>, <c>fRtsControl</c>, or
+			/// <c>fDtrControl</c> members. The maximum number of bytes in use allowed is calculated by subtracting this value from the size,
+			/// in bytes, of the input buffer.
 			/// </summary>
 			public ushort XoffLim;
+
 			/// <summary>The number of bits in the bytes transmitted and received.</summary>
 			public byte ByteSize;
+
 			/// <summary>
 			/// <para>The parity scheme to be used. This member can be one of the following values.</para>
 			/// <para>
@@ -1747,7 +1997,8 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public byte Parity;
+			public Parity Parity;
+
 			/// <summary>
 			/// <para>The number of stop bits to be used. This member can be one of the following values.</para>
 			/// <para>
@@ -1771,22 +2022,29 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public byte StopBits;
+			public StopBits StopBits;
+
 			/// <summary>The value of the XON character for both transmission and reception.</summary>
 			public sbyte XonChar;
+
 			/// <summary>The value of the XOFF character for both transmission and reception.</summary>
 			public sbyte XoffChar;
+
 			/// <summary>The value of the character used to replace bytes received with a parity error.</summary>
 			public sbyte ErrorChar;
+
 			/// <summary>The value of the character used to signal the end of data.</summary>
 			public sbyte EofChar;
+
 			/// <summary>The value of the character used to signal an event.</summary>
 			public sbyte EvtChar;
+
 			/// <summary>Reserved; do not use.</summary>
 			public ushort wReserved1;
 
 			/// <summary>
-			/// If this member is <c>TRUE</c>, binary mode is enabled. Windows does not support nonbinary mode transfers, so this member must be <c>TRUE</c>.
+			/// If this member is <c>TRUE</c>, binary mode is enabled. Windows does not support nonbinary mode transfers, so this member must
+			/// be <c>TRUE</c>.
 			/// </summary>
 			public bool fBinary { get => GetFlag(0x01); set => SetFlag(0x01, value); }
 
@@ -1794,14 +2052,14 @@ namespace Vanara.PInvoke
 			public bool fParity { get => GetFlag(0x02); set => SetFlag(0x02, value); }
 
 			/// <summary>
-			/// If this member is <c>TRUE</c>, the CTS (clear-to-send) signal is monitored for output flow control. If this member is <c>TRUE</c> and CTS is
-			/// turned off, output is suspended until CTS is sent again.
+			/// If this member is <c>TRUE</c>, the CTS (clear-to-send) signal is monitored for output flow control. If this member is
+			/// <c>TRUE</c> and CTS is turned off, output is suspended until CTS is sent again.
 			/// </summary>
 			public bool fOutxCtsFlow { get => GetFlag(0x04); set => SetFlag(0x04, value); }
 
 			/// <summary>
-			/// If this member is <c>TRUE</c>, the DSR (data-set-ready) signal is monitored for output flow control. If this member is <c>TRUE</c> and DSR is
-			/// turned off, output is suspended until DSR is sent again.
+			/// If this member is <c>TRUE</c>, the DSR (data-set-ready) signal is monitored for output flow control. If this member is
+			/// <c>TRUE</c> and DSR is turned off, output is suspended until DSR is sent again.
 			/// </summary>
 			public bool fOutxDsrFlow { get => GetFlag(0x08); set => SetFlag(0x08, value); }
 
@@ -1824,7 +2082,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>DTR_CONTROL_HANDSHAKE0x02</term>
 			/// <term>
-			/// Enables DTR handshaking. If handshaking is enabled, it is an error for the application to adjust the line by using the EscapeCommFunction function.
+			/// Enables DTR handshaking. If handshaking is enabled, it is an error for the application to adjust the line by using the
+			/// EscapeCommFunction function.
 			/// </term>
 			/// </item>
 			/// </list>
@@ -1833,34 +2092,35 @@ namespace Vanara.PInvoke
 			public DTR_CONTROL fDtrControl { get => (DTR_CONTROL)((flags & 0x30) >> 4); set { flags = (flags & ~0x30U) | (((uint)value) << 4); } }
 
 			/// <summary>
-			/// If this member is <c>TRUE</c>, the communications driver is sensitive to the state of the DSR signal. The driver ignores any bytes received,
-			/// unless the DSR modem input line is high.
+			/// If this member is <c>TRUE</c>, the communications driver is sensitive to the state of the DSR signal. The driver ignores any
+			/// bytes received, unless the DSR modem input line is high.
 			/// </summary>
 			public bool fDsrSensitivity { get => GetFlag(0x40); set => SetFlag(0x40, value); }
 
 			/// <summary>
-			/// If this member is <c>TRUE</c>, transmission continues after the input buffer has come within <c>XoffLim</c> bytes of being full and the driver
-			/// has transmitted the <c>XoffChar</c> character to stop receiving bytes. If this member is <c>FALSE</c>, transmission does not continue until the
-			/// input buffer is within <c>XonLim</c> bytes of being empty and the driver has transmitted the <c>XonChar</c> character to resume reception.
+			/// If this member is <c>TRUE</c>, transmission continues after the input buffer has come within <c>XoffLim</c> bytes of being
+			/// full and the driver has transmitted the <c>XoffChar</c> character to stop receiving bytes. If this member is <c>FALSE</c>,
+			/// transmission does not continue until the input buffer is within <c>XonLim</c> bytes of being empty and the driver has
+			/// transmitted the <c>XonChar</c> character to resume reception.
 			/// </summary>
 			public bool fTXContinueOnXoff { get => GetFlag(0x80); set => SetFlag(0x80, value); }
 
 			/// <summary>
-			/// Indicates whether XON/XOFF flow control is used during transmission. If this member is <c>TRUE</c>, transmission stops when the <c>XoffChar</c>
-			/// character is received and starts again when the <c>XonChar</c> character is received.
+			/// Indicates whether XON/XOFF flow control is used during transmission. If this member is <c>TRUE</c>, transmission stops when
+			/// the <c>XoffChar</c> character is received and starts again when the <c>XonChar</c> character is received.
 			/// </summary>
 			public bool fOutX { get => GetFlag(0x100); set => SetFlag(0x100, value); }
 
 			/// <summary>
-			/// Indicates whether XON/XOFF flow control is used during reception. If this member is <c>TRUE</c>, the <c>XoffChar</c> character is sent when the
-			/// input buffer comes within <c>XoffLim</c> bytes of being full, and the <c>XonChar</c> character is sent when the input buffer comes within
-			/// <c>XonLim</c> bytes of being empty.
+			/// Indicates whether XON/XOFF flow control is used during reception. If this member is <c>TRUE</c>, the <c>XoffChar</c>
+			/// character is sent when the input buffer comes within <c>XoffLim</c> bytes of being full, and the <c>XonChar</c> character is
+			/// sent when the input buffer comes within <c>XonLim</c> bytes of being empty.
 			/// </summary>
 			public bool fInX { get => GetFlag(0x200); set => SetFlag(0x200, value); }
 
 			/// <summary>
-			/// Indicates whether bytes received with parity errors are replaced with the character specified by the <c>ErrorChar</c> member. If this member is
-			/// <c>TRUE</c> and the <c>fParity</c> member is <c>TRUE</c>, replacement occurs.
+			/// Indicates whether bytes received with parity errors are replaced with the character specified by the <c>ErrorChar</c> member.
+			/// If this member is <c>TRUE</c> and the <c>fParity</c> member is <c>TRUE</c>, replacement occurs.
 			/// </summary>
 			public bool fErrorChar { get => GetFlag(0x400); set => SetFlag(0x400, value); }
 
@@ -1886,15 +2146,16 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>RTS_CONTROL_HANDSHAKE0x02</term>
 			/// <term>
-			/// Enables RTS handshaking. The driver raises the RTS line when the &amp;quot;type-ahead&amp;quot; (input) buffer is less than one-half full and
-			/// lowers the RTS line when the buffer is more than three-quarters full. If handshaking is enabled, it is an error for the application to adjust the
-			/// line by using the EscapeCommFunction function.
+			/// Enables RTS handshaking. The driver raises the RTS line when the &amp;quot;type-ahead&amp;quot; (input) buffer is less than
+			/// one-half full and lowers the RTS line when the buffer is more than three-quarters full. If handshaking is enabled, it is an
+			/// error for the application to adjust the line by using the EscapeCommFunction function.
 			/// </term>
 			/// </item>
 			/// <item>
 			/// <term>RTS_CONTROL_TOGGLE0x03</term>
 			/// <term>
-			/// Specifies that the RTS line will be high if bytes are available for transmission. After all buffered bytes have been sent, the RTS line will be low.
+			/// Specifies that the RTS line will be high if bytes are available for transmission. After all buffered bytes have been sent,
+			/// the RTS line will be low.
 			/// </term>
 			/// </item>
 			/// </list>
@@ -1903,14 +2164,21 @@ namespace Vanara.PInvoke
 			public RTS_CONTROL fRtsControl { get => (RTS_CONTROL)((flags & 0x3000) >> 12); set { flags = (flags & ~0x3000U) | (((uint)value) << 12); } }
 
 			/// <summary>
-			/// If this member is <c>TRUE</c>, the driver terminates all read and write operations with an error status if an error occurs. The driver will not
-			/// accept any further communications operations until the application has acknowledged the error by calling the <c>ClearCommError</c> function.
+			/// If this member is <c>TRUE</c>, the driver terminates all read and write operations with an error status if an error occurs.
+			/// The driver will not accept any further communications operations until the application has acknowledged the error by calling
+			/// the <c>ClearCommError</c> function.
 			/// </summary>
 			public bool fAbortOnError { get => GetFlag(0x4000); set => SetFlag(0x4000, value); }
 
 			private bool GetFlag(uint mask) => (flags & mask) != 0;
 
-			private void SetFlag(uint mask, bool value) { if (value) flags |= mask; else flags &= ~mask; }
+			private void SetFlag(uint mask, bool value)
+			{
+				if (value) flags |= mask; else flags &= ~mask;
+			}
+
+			/// <summary>Gets a default instance with the size field set.</summary>
+			public static readonly DCB Default = new DCB { DCBlength = (uint)Marshal.SizeOf(typeof(DCB)) };
 		}
 	}
 }
