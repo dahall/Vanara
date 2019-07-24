@@ -141,7 +141,7 @@ namespace Vanara.InteropServices
 		/// <param name="action">The action to filter for.</param>
 		/// <returns>An enumeration of all associated CorrespondingTypeAttribute instances.</returns>
 		protected static IEnumerable<CorrespondingTypeAttribute> GetAttrForEnum<TEnum>(TEnum value, CorrespondingAction action) where TEnum : System.Enum =>
-			GetAttrForEnum(value).Where(a => a.Action == action);
+			GetAttrForEnum(value).Where(a => a.Action.HasFlag(action));
 
 		/// <summary>Gets the CorrespondingTypeAttribute instances associated with an enum value.</summary>
 		/// <param name="value">The enum value.</param>
