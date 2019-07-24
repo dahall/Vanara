@@ -1656,7 +1656,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa378618")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ImpersonateNamedPipeClient(HFILE hNamedPipe);
+		public static extern bool ImpersonateNamedPipeClient(HPIPE hNamedPipe);
 
 		/// <summary>Determines if a buffer is likely to contain a form of Unicode text.</summary>
 		/// <param name="lpv">Pointer to the input buffer to examine.</param>

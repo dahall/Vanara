@@ -186,7 +186,7 @@ namespace Vanara.PInvoke
 		// BOOL WINAPI CallNamedPipe( _In_ LPCTSTR lpNamedPipeName, _In_ LPVOID lpInBuffer, _In_ DWORD nInBufferSize, _Out_ LPVOID
 		// lpOutBuffer, _In_ DWORD nOutBufferSize, _Out_ LPDWORD lpBytesRead, _In_ DWORD nTimeOut); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365144(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa365144")]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365144")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CallNamedPipe(string lpNamedPipeName, [In] IntPtr lpInBuffer, uint nInBufferSize, IntPtr lpOutBuffer, uint nOutBufferSize,
 			[Out] out uint lpBytesRead, uint nTimeOut);
@@ -235,9 +235,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// BOOL WINAPI ConnectNamedPipe( _In_ HANDLE hNamedPipe, _Inout_opt_ LPOVERLAPPED lpOverlapped); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365146(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa365146")]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365146")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool ConnectNamedPipe([In] HFILE hNamedPipe, [Optional] NativeOverlapped* lpOverlapped);
+		public static extern unsafe bool ConnectNamedPipe([In] HPIPE hNamedPipe, [Optional] NativeOverlapped* lpOverlapped);
 
 		/// <summary>
 		/// Creates an instance of a named pipe and returns a handle for subsequent pipe operations. A named pipe server process uses this
@@ -488,8 +488,8 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI CreateNamedPipe( _In_ LPCTSTR lpName, _In_ DWORD dwOpenMode, _In_ DWORD dwPipeMode, _In_ DWORD nMaxInstances, _In_
 		// DWORD nOutBufferSize, _In_ DWORD nInBufferSize, _In_ DWORD nDefaultTimeOut, _In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365150(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa365150")]
-		public static extern SafeHFILE CreateNamedPipe(string lpName, PIPE_ACCESS dwOpenMode, PIPE_TYPE dwPipeMode, uint nMaxInstances, uint nOutBufferSize, uint nInBufferSize,
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365150")]
+		public static extern SafeHPIPE CreateNamedPipe(string lpName, PIPE_ACCESS dwOpenMode, PIPE_TYPE dwPipeMode, uint nMaxInstances, uint nOutBufferSize, uint nInBufferSize,
 			uint nDefaultTimeOut, [In, Optional] SECURITY_ATTRIBUTES lpSecurityAttributes);
 
 		/// <summary>Creates an anonymous pipe, and returns handles to the read and write ends of the pipe.</summary>
@@ -517,9 +517,9 @@ namespace Vanara.PInvoke
 		// BOOL WINAPI CreatePipe( _Out_ PHANDLE hReadPipe, _Out_ PHANDLE hWritePipe, _In_opt_ LPSECURITY_ATTRIBUTES lpPipeAttributes, _In_
 		// DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365152(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa365152")]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365152")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreatePipe(out SafeHFILE hReadPipe, out SafeHFILE hWritePipe, [In, Optional] SECURITY_ATTRIBUTES lpPipeAttributes, [In, Optional] uint nSize);
+		public static extern bool CreatePipe(out SafeHPIPE hReadPipe, out SafeHPIPE hWritePipe, [In, Optional] SECURITY_ATTRIBUTES lpPipeAttributes, [In, Optional] uint nSize);
 
 		/// <summary>Disconnects the server end of a named pipe instance from a client process.</summary>
 		/// <param name="hNamedPipe">
@@ -531,9 +531,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// BOOL WINAPI DisconnectNamedPipe( _In_ HANDLE hNamedPipe); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365166(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa365166")]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365166")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DisconnectNamedPipe([In] HFILE hNamedPipe);
+		public static extern bool DisconnectNamedPipe([In] HPIPE hNamedPipe);
 
 		/// <summary>Retrieves the client computer name for the specified named pipe.</summary>
 		/// <param name="Pipe">A handle to an instance of a named pipe. This handle must be created by the <c>CreateNamedPipe</c> function.</param>
@@ -546,9 +546,61 @@ namespace Vanara.PInvoke
 		// BOOL WINAPI GetNamedPipeClientComputerName( _In_ HANDLE Pipe, _Out_ LPTSTR ClientComputerName, _In_ ULONG
 		// ClientComputerNameLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365437(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa365437")]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365437")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNamedPipeClientComputerName(HFILE Pipe, StringBuilder ClientComputerName, uint ClientComputerNameLength);
+		public static extern bool GetNamedPipeClientComputerName(HPIPE Pipe, StringBuilder ClientComputerName, uint ClientComputerNameLength);
+
+		/// <summary>
+		/// <para>Retrieves the client process identifier for the specified named pipe.</para>
+		/// </summary>
+		/// <param name="Pipe">
+		/// <para>A handle to an instance of a named pipe. This handle must be created by the CreateNamedPipe function.</para>
+		/// </param>
+		/// <param name="ClientProcessId">
+		/// <para>The process identifier.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call the GetLastError function.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>Windows 10, version 1709:</c> Pipes are only supported within an app-container; ie, from one UWP process to another UWP
+		/// process that's part of the same app. Also, named pipes must use the syntax "\.\pipe\LOCAL" for the pipe name.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getnamedpipeclientprocessid BOOL
+		// GetNamedPipeClientProcessId( HANDLE Pipe, PULONG ClientProcessId );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "7001eb89-3d91-44e3-b245-b19e8ab5f9fe")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetNamedPipeClientProcessId(HPIPE Pipe, out uint ClientProcessId);
+
+		/// <summary>
+		/// <para>Retrieves the client session identifier for the specified named pipe.</para>
+		/// </summary>
+		/// <param name="Pipe">
+		/// <para>A handle to an instance of a named pipe. This handle must be created by the CreateNamedPipe function.</para>
+		/// </param>
+		/// <param name="ClientSessionId">
+		/// <para>The session identifier.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call the GetLastError function.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>Windows 10, version 1709:</c> Pipes are only supported within an app-container; ie, from one UWP process to another UWP
+		/// process that's part of the same app. Also, named pipes must use the syntax "\.\pipe\LOCAL" for the pipe name.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getnamedpipeclientsessionid BOOL
+		// GetNamedPipeClientSessionId( HANDLE Pipe, PULONG ClientSessionId );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "b3ea0b7f-fead-4369-b87a-2f522a2a1984")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetNamedPipeClientSessionId(HPIPE Pipe, out uint ClientSessionId);
 
 		/// <summary>
 		/// Retrieves information about a specified named pipe. The information returned can vary during the lifetime of an instance of the
@@ -620,7 +672,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365443")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNamedPipeHandleState([In] HFILE hNamedPipe, out PIPE_TYPE lpState, out uint lpCurInstances, [Optional] IntPtr lpMaxCollectionCount,
+		public static extern bool GetNamedPipeHandleState([In] HPIPE hNamedPipe, out PIPE_TYPE lpState, out uint lpCurInstances, [Optional] IntPtr lpMaxCollectionCount,
 			[Optional] IntPtr lpCollectDataTimeout, [Optional] StringBuilder lpUserName, [Optional] uint nMaxUserNameSize);
 
 		/// <summary>
@@ -691,9 +743,9 @@ namespace Vanara.PInvoke
 		// _Out_opt_ LPDWORD lpMaxCollectionCount, _Out_opt_ LPDWORD lpCollectDataTimeout, _Out_opt_ LPTSTR lpUserName, _In_ DWORD
 		// nMaxUserNameSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365443(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa365443")]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365443")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNamedPipeHandleState([In] HFILE hNamedPipe, out PIPE_TYPE lpState, out uint lpCurInstances, out uint lpMaxCollectionCount, out uint lpCollectDataTimeout,
+		public static extern bool GetNamedPipeHandleState([In] HPIPE hNamedPipe, out PIPE_TYPE lpState, out uint lpCurInstances, out uint lpMaxCollectionCount, out uint lpCollectDataTimeout,
 			[Optional] StringBuilder lpUserName, [Optional] uint nMaxUserNameSize);
 
 		/// <summary>Retrieves information about the specified named pipe.</summary>
@@ -757,9 +809,61 @@ namespace Vanara.PInvoke
 		// BOOL WINAPI GetNamedPipeInfo( _In_ HANDLE hNamedPipe, _Out_opt_ LPDWORD lpFlags, _Out_opt_ LPDWORD lpOutBufferSize, _Out_opt_
 		// LPDWORD lpInBufferSize, _Out_opt_ LPDWORD lpMaxInstances); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365445(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa365445")]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365445")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNamedPipeInfo([In] HFILE hNamedPipe, out PIPE_TYPE lpFlags, out uint lpOutBufferSize, out uint lpInBufferSize, out uint lpMaxInstances);
+		public static extern bool GetNamedPipeInfo([In] HPIPE hNamedPipe, out PIPE_TYPE lpFlags, out uint lpOutBufferSize, out uint lpInBufferSize, out uint lpMaxInstances);
+
+		/// <summary>
+		/// <para>Retrieves the server process identifier for the specified named pipe.</para>
+		/// </summary>
+		/// <param name="Pipe">
+		/// <para>A handle to an instance of a named pipe. This handle must be created by the CreateNamedPipe function.</para>
+		/// </param>
+		/// <param name="ServerProcessId">
+		/// <para>The process identifier.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call the GetLastError function.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>Windows 10, version 1709:</c> Pipes are only supported within an app-container; ie, from one UWP process to another UWP
+		/// process that's part of the same app. Also, named pipes must use the syntax "\.\pipe\LOCAL" for the pipe name.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getnamedpipeserverprocessid BOOL
+		// GetNamedPipeServerProcessId( HANDLE Pipe, PULONG ServerProcessId );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "1ee33a66-a71c-4c34-b907-aab7860294c4")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetNamedPipeServerProcessId(HPIPE Pipe, out uint ServerProcessId);
+
+		/// <summary>
+		/// <para>Retrieves the server session identifier for the specified named pipe.</para>
+		/// </summary>
+		/// <param name="Pipe">
+		/// <para>A handle to an instance of a named pipe. This handle must be created by the CreateNamedPipe function.</para>
+		/// </param>
+		/// <param name="ServerSessionId">
+		/// <para>The session identifier.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call the GetLastError function.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>Windows 10, version 1709:</c> Pipes are only supported within an app-container; ie, from one UWP process to another UWP
+		/// process that's part of the same app. Also, named pipes must use the syntax "\.\pipe\LOCAL" for the pipe name.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getnamedpipeserversessionid BOOL
+		// GetNamedPipeServerSessionId( HANDLE Pipe, PULONG ServerSessionId );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "cd628d6d-aa13-4762-893b-42f6cf7a2ba6")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetNamedPipeServerSessionId(HPIPE Pipe, out uint ServerSessionId);
 
 		/// <summary>
 		/// Copies data from a named or anonymous pipe into a buffer without removing it from the pipe. It also returns information about
@@ -795,9 +899,47 @@ namespace Vanara.PInvoke
 		// BOOL WINAPI PeekNamedPipe( _In_ HANDLE hNamedPipe, _Out_opt_ LPVOID lpBuffer, _In_ DWORD nBufferSize, _Out_opt_ LPDWORD
 		// lpBytesRead, _Out_opt_ LPDWORD lpTotalBytesAvail, _Out_opt_ LPDWORD lpBytesLeftThisMessage); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365779(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa365779")]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365779")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PeekNamedPipe([In] HFILE hNamedPipe, IntPtr lpBuffer, uint nBufferSize, out uint lpBytesRead, out uint lpTotalBytesAvail, out uint lpBytesLeftThisMessage);
+		public static extern bool PeekNamedPipe([In] HPIPE hNamedPipe, IntPtr lpBuffer, uint nBufferSize, out uint lpBytesRead, out uint lpTotalBytesAvail, out uint lpBytesLeftThisMessage);
+
+		/// <summary>
+		/// Copies data from a named or anonymous pipe into a buffer without removing it from the pipe. It also returns information about
+		/// data in the pipe.
+		/// </summary>
+		/// <param name="hNamedPipe">
+		/// A handle to the pipe. This parameter can be a handle to a named pipe instance, as returned by the <c>CreateNamedPipe</c> or
+		/// <c>CreateFile</c> function, or it can be a handle to the read end of an anonymous pipe, as returned by the <c>CreatePipe</c>
+		/// function. The handle must have GENERIC_READ access to the pipe.
+		/// </param>
+		/// <param name="lpBuffer">
+		/// A pointer to a buffer that receives data read from the pipe. This parameter can be <c>NULL</c> if no data is to be read.
+		/// </param>
+		/// <param name="nBufferSize">
+		/// The size of the buffer specified by the lpBuffer parameter, in bytes. This parameter is ignored if lpBuffer is <c>NULL</c>.
+		/// </param>
+		/// <param name="lpBytesRead">
+		/// A pointer to a variable that receives the number of bytes read from the pipe. This parameter can be <c>NULL</c> if no data is to
+		/// be read.
+		/// </param>
+		/// <param name="lpTotalBytesAvail">
+		/// A pointer to a variable that receives the total number of bytes available to be read from the pipe. This parameter can be
+		/// <c>NULL</c> if no data is to be read.
+		/// </param>
+		/// <param name="lpBytesLeftThisMessage">
+		/// A pointer to a variable that receives the number of bytes remaining in this message. This parameter will be zero for byte-type
+		/// named pipes or for anonymous pipes. This parameter can be <c>NULL</c> if no data is to be read.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI PeekNamedPipe( _In_ HANDLE hNamedPipe, _Out_opt_ LPVOID lpBuffer, _In_ DWORD nBufferSize, _Out_opt_ LPDWORD
+		// lpBytesRead, _Out_opt_ LPDWORD lpTotalBytesAvail, _Out_opt_ LPDWORD lpBytesLeftThisMessage); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365779(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365779")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool PeekNamedPipe([In] HPIPE hNamedPipe, byte[] lpBuffer, uint nBufferSize, out uint lpBytesRead, out uint lpTotalBytesAvail, out uint lpBytesLeftThisMessage);
 
 		/// <summary>
 		/// Sets the read mode and the blocking mode of the specified named pipe. If the specified handle is to the client end of a named
@@ -879,9 +1021,9 @@ namespace Vanara.PInvoke
 		// BOOL WINAPI SetNamedPipeHandleState( _In_ HANDLE hNamedPipe, _In_opt_ LPDWORD lpMode, _In_opt_ LPDWORD lpMaxCollectionCount,
 		// _In_opt_ LPDWORD lpCollectDataTimeout); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365787(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa365787")]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365787")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetNamedPipeHandleState([In] HFILE hNamedPipe, [In] in uint lpMode, [In] in uint lpMaxCollectionCount, [In] in uint lpCollectDataTimeout);
+		public static extern bool SetNamedPipeHandleState([In] HPIPE hNamedPipe, [In] in uint lpMode, [In] in uint lpMaxCollectionCount, [In] in uint lpCollectDataTimeout);
 
 		/// <summary>
 		/// Sets the read mode and the blocking mode of the specified named pipe. If the specified handle is to the client end of a named
@@ -963,9 +1105,9 @@ namespace Vanara.PInvoke
 		// BOOL WINAPI SetNamedPipeHandleState( _In_ HANDLE hNamedPipe, _In_opt_ LPDWORD lpMode, _In_opt_ LPDWORD lpMaxCollectionCount,
 		// _In_opt_ LPDWORD lpCollectDataTimeout); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365787(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa365787")]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365787")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetNamedPipeHandleState([In] HFILE hNamedPipe, [In, Optional] IntPtr lpMode, [In, Optional] IntPtr lpMaxCollectionCount, [In, Optional] IntPtr lpCollectDataTimeout);
+		public static extern bool SetNamedPipeHandleState([In] HPIPE hNamedPipe, [In, Optional] IntPtr lpMode, [In, Optional] IntPtr lpMaxCollectionCount, [In, Optional] IntPtr lpCollectDataTimeout);
 
 		/// <summary>
 		/// Combines the functions that write a message to and read a message from the specified named pipe into a single network operation.
@@ -1023,7 +1165,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365790")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool TransactNamedPipe([In] HFILE hNamedPipe, [In] IntPtr lpInBuffer, uint nInBufferSize, IntPtr lpOutBuffer, uint nOutBufferSize, [Out] out uint lpBytesRead,
+		public static extern unsafe bool TransactNamedPipe([In] HPIPE hNamedPipe, [In] IntPtr lpInBuffer, uint nInBufferSize, IntPtr lpOutBuffer, uint nOutBufferSize, [Out] out uint lpBytesRead,
 			[Optional] NativeOverlapped* lpOverlapped);
 
 		/// <summary>
@@ -1068,8 +1210,83 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// BOOL WINAPI WaitNamedPipe( _In_ LPCTSTR lpNamedPipeName, _In_ DWORD nTimeOut); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365800(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa365800")]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365800")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool WaitNamedPipe(string lpNamedPipeName, uint nTimeOut);
+
+		/// <summary>Provides a handle to a pipe.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HPIPE : IKernelHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HPIPE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HPIPE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HPIPE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HPIPE NULL => new HPIPE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HPIPE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HPIPE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPIPE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPIPE(IntPtr h) => new HPIPE(h);
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPIPE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HFILE(HPIPE h) => h.handle;
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HPIPE h1, HPIPE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HPIPE h1, HPIPE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HPIPE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPIPE"/> that is disposed using <see cref="CloseHandle"/>.</summary>
+		public class SafeHPIPE : SafeHFILE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHPIPE"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHPIPE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHPIPE"/> class.</summary>
+			private SafeHPIPE() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPIPE"/> to <see cref="HPIPE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPIPE(SafeHPIPE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPIPE"/> to <see cref="HPIPE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HFILE(SafeHPIPE h) => h.handle;
+		}
 	}
 }
