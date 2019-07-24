@@ -8,13 +8,16 @@ namespace Vanara.PInvoke.Tests
 {
 	public static class TestHelper
 	{
-		public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, object, object[]> action = null, Action<Exception> error = null) where TEnum : Enum
+		public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, object, object[]> action = null, Action<Exception> error = null) where TEnum : Enum =>
+			RunForEach(lib, name, makeParam, (e, ex) => error?.Invoke(ex), action);
+
+		public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, Exception> error = null, Action<TEnum, object, object[]> action = null, CorrespondingAction? filter = null) where TEnum : Enum
 		{
 			var mi = lib.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Where(m => m.IsGenericMethod && m.Name == name).First();
 			if (mi is null) throw new ArgumentException("Unable to find method.");
 			foreach (var e in Enum.GetValues(typeof(TEnum)).Cast<TEnum>())
 			{
-				var type = CorrespondingTypeAttribute.GetCorrespondingTypes(e).FirstOrDefault();
+				var type = (filter.HasValue ? CorrespondingTypeAttribute.GetCorrespondingTypes(e, filter.Value) : CorrespondingTypeAttribute.GetCorrespondingTypes(e)).FirstOrDefault();
 				if (type is null)
 				{
 					TestContext.WriteLine($"No corresponding type found for {e}.");
@@ -29,7 +32,7 @@ namespace Vanara.PInvoke.Tests
 				}
 				catch (Exception ex)
 				{
-					error?.Invoke(ex);
+					error?.Invoke(e, ex.InnerException);
 				}
 			}
 		}
@@ -37,6 +40,7 @@ namespace Vanara.PInvoke.Tests
 		public static void WriteValues(this object value)
 		{
 			var json = JsonConvert.SerializeObject(value, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter());
+			TestContext.WriteLine(value.GetType().Name);
 			TestContext.WriteLine(json);
 		}
 
