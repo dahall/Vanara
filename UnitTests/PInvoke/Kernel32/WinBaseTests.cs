@@ -87,6 +87,17 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void GetMaximumProcessorCountTest()
+		{
+			var gc = GetMaximumProcessorGroupCount();
+			if (gc == 0)
+				Assert.Fail(Win32Error.GetLastError().ToString());
+			var pc = GetMaximumProcessorCount(--gc);
+			if (pc == 0)
+				Assert.Fail(Win32Error.GetLastError().ToString());
+		}
+
+		[Test]
 		public void GetSetFirmwareEnvironmentVariableExTest()
 		{
 			var val = 256U;
@@ -101,28 +112,11 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void GetMaximumProcessorCountTest()
-		{
-			var gc = GetMaximumProcessorGroupCount();
-			if (gc == 0)
-				Assert.Fail(Win32Error.GetLastError().ToString());
-			var pc = GetMaximumProcessorCount(--gc);
-			if (pc == 0)
-				Assert.Fail(Win32Error.GetLastError().ToString());
-		}
-
-		[Test]
 		public void GetSetProcessDEPPolicyTest()
 		{
 			Assert.That(GetProcessDEPPolicy(GetCurrentProcess(), out var dep, out var perm), ResultIs.Successful);
 			Assert.That(dep.IsValid(), Is.True);
 			Assert.That(SetProcessDEPPolicy(dep), ResultIs.Failure);
-		}
-
-		[Test]
-		public void GetSystemDEPPolicyTest()
-		{
-			Assert.That(GetSystemDEPPolicy().IsValid(), Is.True);
 		}
 
 		[Test]
@@ -136,24 +130,16 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void GetSystemDEPPolicyTest()
+		{
+			Assert.That(GetSystemDEPPolicy().IsValid(), Is.True);
+		}
+
+		[Test]
 		public void IsNativeVhdBootTest()
 		{
 			Assert.That(IsNativeVhdBoot(out var native), ResultIs.Successful);
 			Assert.That(native, Is.False);
-		}
-
-		[Test]
-		public void PowerRequestTest()
-		{
-			using (var h = PowerCreateRequest(new REASON_CONTEXT("Just because")))
-			{
-				Assert.That(h, ResultIs.ValidHandle);
-				Assert.That(PowerSetRequest(h, POWER_REQUEST_TYPE.PowerRequestSystemRequired), ResultIs.Successful);
-				Assert.That(PowerClearRequest(h, POWER_REQUEST_TYPE.PowerRequestSystemRequired), ResultIs.Successful);
-			}
-			using (var l = LoadLibraryEx("user32.dll", LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
-			using (var h1 = PowerCreateRequest(new REASON_CONTEXT(l, 800)))
-				Assert.That(h1, ResultIs.ValidHandle);
 		}
 
 		[Test]
@@ -170,17 +156,17 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void lstrcmpTest()
-		{
-			Assert.That(lstrcmp("XX", "XX"), Is.Zero);
-			Assert.That(lstrcmp(null, "XX"), Is.Not.Zero);
-		}
-
-		[Test]
 		public void lstrcmpiTest()
 		{
 			Assert.That(lstrcmpi("xx", "XX"), Is.Zero);
 			Assert.That(lstrcmpi(null, "XX"), Is.Not.Zero);
+		}
+
+		[Test]
+		public void lstrcmpTest()
+		{
+			Assert.That(lstrcmp("XX", "XX"), Is.Zero);
+			Assert.That(lstrcmp(null, "XX"), Is.Not.Zero);
 		}
 
 		[Test]
@@ -202,6 +188,20 @@ namespace Vanara.PInvoke.Tests
 		public void MulDivTest()
 		{
 			Assert.That(MulDiv(0x60000000, 0x60000000, 0x7FFFFFFF), Is.EqualTo(1207959553));
+		}
+
+		[Test]
+		public void PowerRequestTest()
+		{
+			using (var h = PowerCreateRequest(new REASON_CONTEXT("Just because")))
+			{
+				Assert.That(h, ResultIs.ValidHandle);
+				Assert.That(PowerSetRequest(h, POWER_REQUEST_TYPE.PowerRequestSystemRequired), ResultIs.Successful);
+				Assert.That(PowerClearRequest(h, POWER_REQUEST_TYPE.PowerRequestSystemRequired), ResultIs.Successful);
+			}
+			using (var l = LoadLibraryEx("user32.dll", LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
+			using (var h1 = PowerCreateRequest(new REASON_CONTEXT(l, 800)))
+				Assert.That(h1, ResultIs.ValidHandle);
 		}
 
 		[Test]
