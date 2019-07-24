@@ -115,14 +115,33 @@ namespace Vanara.InteropServices
 		public static bool CanSet(Type type, Type typeRef) => GetAttrForType(type).Any(a => a.Action.IsFlagSet(CorrespondingAction.Set) && a.TypeRef == typeRef);
 
 		/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
-		/// <param name="enumValue">The enumeration value or class.</param>
+		/// <param name="enumValue">The class or structure instance.</param>
 		/// <returns>The types defined by the attribute.</returns>
 		public static IEnumerable<Type> GetCorrespondingTypes(object enumValue) => GetAttrForObj(enumValue).Select(a => a.TypeRef);
 
 		/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
-		/// <param name="type">The enumeration value or class.</param>
+		/// <param name="enumValue">The enumeration value.</param>
+		/// <returns>The types defined by the attribute.</returns>
+		public static IEnumerable<Type> GetCorrespondingTypes<TEnum>(TEnum enumValue) where TEnum : System.Enum => GetAttrForEnum(enumValue).Select(a => a.TypeRef);
+
+		/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
+		/// <param name="enumValue">The enumeration value.</param>
+		/// <param name="action">The action to filter for.</param>
+		/// <returns>The types defined by the attribute.</returns>
+		public static IEnumerable<Type> GetCorrespondingTypes<TEnum>(TEnum enumValue, CorrespondingAction action) where TEnum : System.Enum => GetAttrForEnum(enumValue, action).Select(a => a.TypeRef);
+
+		/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
+		/// <param name="type">The class type.</param>
 		/// <returns>The types defined by the attribute.</returns>
 		public static IEnumerable<Type> GetCorrespondingTypes(Type type) => GetAttrForType(type).Select(a => a.TypeRef);
+
+		/// <summary>Gets the CorrespondingTypeAttribute instances associated with an enum value.</summary>
+		/// <typeparam name="TEnum">The type of the enum.</typeparam>
+		/// <param name="value">The enum value.</param>
+		/// <param name="action">The action to filter for.</param>
+		/// <returns>An enumeration of all associated CorrespondingTypeAttribute instances.</returns>
+		protected static IEnumerable<CorrespondingTypeAttribute> GetAttrForEnum<TEnum>(TEnum value, CorrespondingAction action) where TEnum : System.Enum =>
+			GetAttrForEnum(value).Where(a => a.Action == action);
 
 		/// <summary>Gets the CorrespondingTypeAttribute instances associated with an enum value.</summary>
 		/// <param name="value">The enum value.</param>
@@ -136,15 +155,15 @@ namespace Vanara.InteropServices
 			return attr;
 		}
 
-		/// <summary>Gets the CorrespondingTypeAttribute instances associated with an enum value.</summary>
-		/// <param name="value">The enum value.</param>
+		/// <summary>Gets the CorrespondingTypeAttribute instances associated with an enum value or class instance.</summary>
+		/// <param name="value">The enum value or class instance.</param>
 		/// <returns>An enumeration of all associated CorrespondingTypeAttribute instances.</returns>
 		protected static IEnumerable<CorrespondingTypeAttribute> GetAttrForObj(object value)
 		{
 			if (value is null) throw new ArgumentNullException(nameof(value));
 			var valueType = value.GetType();
 			if (!valueType.IsEnum && !valueType.IsClass) throw new ArgumentException("Value must be an enumeration or class value.", nameof(value));
-			var attr = (valueType.IsEnum ? valueType.GetField(value.ToString()).GetCustomAttributes<CorrespondingTypeAttribute>() : valueType.GetCustomAttributes<CorrespondingTypeAttribute>());
+			var attr = valueType.IsEnum ? valueType.GetField(value.ToString()).GetCustomAttributes<CorrespondingTypeAttribute>() : valueType.GetCustomAttributes<CorrespondingTypeAttribute>();
 			if (!attr.Any()) return new CorrespondingTypeAttribute[0];
 			if (attr.Any(a => a.Action == CorrespondingAction.Exception)) throw new Exception();
 			return attr;
