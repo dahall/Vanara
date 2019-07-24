@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -694,6 +695,125 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>Copies an existing file to a new file, notifying the application of its progress through a callback function.</para>
+		/// </summary>
+		/// <param name="pwszExistingFileName">
+		/// <para>The name of an existing file.</para>
+		/// <para>
+		/// To extend this limit to 32,767 wide characters, prepend "\?" to the path. For more information, see Naming Files, Paths, and Namespaces.
+		/// </para>
+		/// <para>
+		/// <c>Tip</c> Starting in Windows 10, version 1607, you can opt-in to remove the <c>MAX_PATH</c> character limitation without
+		/// prepending "\\?\". See the "Maximum Path Limitation" section of Naming Files, Paths, and Namespaces for details.
+		/// </para>
+		/// <para>If</para>
+		/// <para>lpExistingFileName</para>
+		/// <para>does not exist, the</para>
+		/// <para>CopyFile2</para>
+		/// <para>function fails returns</para>
+		/// <para>HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND)</para>
+		/// <para>.</para>
+		/// </param>
+		/// <param name="pwszNewFileName">
+		/// <para>The name of the new file.</para>
+		/// <para>
+		/// To extend this limit to 32,767 wide characters, prepend "\?" to the path. For more information, see Naming Files, Paths, and Namespaces.
+		/// </para>
+		/// <para>
+		/// <c>Tip</c> Starting in Windows 10, version 1607, you can opt-in to remove the <c>MAX_PATH</c> character limitation without
+		/// prepending "\\?\". See the "Maximum Path Limitation" section of Naming Files, Paths, and Namespaces for details.
+		/// </para>
+		/// </param>
+		/// <param name="pExtendedParameters">
+		/// <para>Optional address of a COPYFILE2_EXTENDED_PARAMETERS structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value will return <c>TRUE</c> when passed to the SUCCEEDED macro.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The copy operation completed successfully.</term>
+		/// </item>
+		/// <item>
+		/// <term>HRESULT_FROM_WIN32(ERROR_REQUEST_PAUSED)</term>
+		/// <term>The copy operation was paused by a COPYFILE2_PROGRESS_PAUSE return from the CopyFile2ProgressRoutine callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>HRESULT_FROM_WIN32(ERROR_REQUEST_ABORTED)</term>
+		/// <term>
+		/// The copy operation was paused by a COPYFILE2_PROGRESS_CANCEL or COPYFILE2_PROGRESS_STOP return from the CopyFile2ProgressRoutine
+		/// callback function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>HRESULT_FROM_WIN32(ERROR_ALREADY_EXISTS)</term>
+		/// <term>
+		/// The dwCopyFlags member of the COPYFILE2_EXTENDED_PARAMETERS structure passed through the parameter contains the
+		/// COPY_FILE_FAIL_IF_EXISTS flag and a conflicting name existed.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>HRESULT_FROM_WIN32(ERROR_FILE_EXISTS)</term>
+		/// <term>
+		/// The dwCopyFlags member of the COPYFILE2_EXTENDED_PARAMETERS structure passed through the parameter contains the
+		/// COPY_FILE_FAIL_IF_EXISTS flag and a conflicting name existed.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function preserves extended attributes, OLE structured storage, NTFS file system alternate data streams, and file
+		/// attributes. Security attributes for the existing file are not copied to the new file. To copy security attributes, use the
+		/// SHFileOperation function.
+		/// </para>
+		/// <para>
+		/// This function fails with if the destination file already exists and has the <c>FILE_ATTRIBUTE_HIDDEN</c> or
+		/// <c>FILE_ATTRIBUTE_READONLY</c> attribute set.
+		/// </para>
+		/// <para>
+		/// To compile an application that uses this function, define the <c>_WIN32_WINNT</c> macro as <c>_WIN32_WINNT_WIN8</c> or later. For
+		/// more information, see Using the Windows Headers.
+		/// </para>
+		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-copyfile2 HRESULT CopyFile2( PCWSTR pwszExistingFileName,
+		// PCWSTR pwszNewFileName, COPYFILE2_EXTENDED_PARAMETERS *pExtendedParameters );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("winbase.h", MSDNShortId = "aa2df686-4b61-4d90-ba0b-c78c5a0d2d59")]
+		public static extern HRESULT CopyFile2(string pwszExistingFileName, string pwszNewFileName, ref COPYFILE2_EXTENDED_PARAMETERS pExtendedParameters);
+
+		/// <summary>
+		/// <para>Copies an existing file to a new file, notifying the application of its progress through a callback function.</para>
 		/// <para>To perform this operation as a transacted operation, use the <c>CopyFileTransacted</c> function.</para>
 		/// </summary>
 		/// <param name="lpExistingFileName">
@@ -1255,106 +1375,6 @@ namespace Vanara.PInvoke
 			fileSize = Macros.MAKELONG64(low, high);
 			return Win32Error.ERROR_SUCCESS;
 		}
-
-		/// <summary>
-		/// <para>
-		/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF
-		/// was developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in
-		/// future versions of Microsoft Windows. For more information, and alternatives to TxF, please see Alternatives to using
-		/// Transactional NTFS.]
-		/// </para>
-		/// <para>Retrieves file system attributes for a specified file or directory as a transacted operation.</para>
-		/// </summary>
-		/// <param name="lpFileName">
-		/// <para>The name of the file or directory.</para>
-		/// <para>
-		/// In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To extend this limit to 32,767 wide
-		/// characters, call the Unicode version of the function and prepend "\?" to the path. For more information, see Naming a File.
-		/// </para>
-		/// <para>
-		/// The file or directory must reside on the local computer; otherwise, the function fails and the last error code is set to <c>ERROR_TRANSACTIONS_UNSUPPORTED_REMOTE</c>.
-		/// </para>
-		/// </param>
-		/// <param name="fInfoLevelId">
-		/// <para>The level of attribute information to retrieve.</para>
-		/// <para>This parameter can be the following value from the GET_FILEEX_INFO_LEVELS enumeration.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>GetFileExInfoStandard</term>
-		/// <term>The lpFileInformation parameter is a WIN32_FILE_ATTRIBUTE_DATA structure.</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="lpFileInformation">
-		/// <para>A pointer to a buffer that receives the attribute information.</para>
-		/// <para>
-		/// The type of attribute information that is stored into this buffer is determined by the value of fInfoLevelId. If the fInfoLevelId
-		/// parameter is <c>GetFileExInfoStandard</c> then this parameter points to a WIN32_FILE_ATTRIBUTE_DATA structure
-		/// </para>
-		/// </param>
-		/// <param name="hTransaction">
-		/// <para>A handle to the transaction. This handle is returned by the CreateTransaction function.</para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero (0). To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// When <c>GetFileAttributesTransacted</c> is called on a directory that is a mounted folder, it returns the attributes of the
-		/// directory, not those of the root directory in the volume that the mounted folder associates with the directory. To obtain the
-		/// file attributes of the associated volume, call GetVolumeNameForVolumeMountPoint to obtain the name of the associated volume. Then
-		/// use the resulting name in a call to <c>GetFileAttributesTransacted</c>. The results are the attributes of the root directory on
-		/// the associated volume.
-		/// </para>
-		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Technology</term>
-		/// <term>Supported</term>
-		/// </listheader>
-		/// <item>
-		/// <term>Server Message Block (SMB) 3.0 protocol</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>Cluster Shared Volume File System (CsvFS)</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>Resilient File System (ReFS)</term>
-		/// <term>No</term>
-		/// </item>
-		/// </list>
-		/// <para>SMB 3.0 does not support TxF.</para>
-		/// <para><c>Symbolic links:</c> If the path points to a symbolic link, the function returns attributes for the symbolic link.</para>
-		/// <para>Transacted Operations</para>
-		/// <para>
-		/// If a file is open for modification in a transaction, no other thread can open the file for modification until the transaction is
-		/// committed. Conversely, if a file is open for modification outside of a transaction, no transacted thread can open the file for
-		/// modification until the non-transacted handle is closed. If a non-transacted thread has a handle opened to modify a file, a call
-		/// to <c>GetFileAttributesTransacted</c> for that file will fail with an <c>ERROR_TRANSACTIONAL_CONFLICT</c> error.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getfileattributestransacteda BOOL
-		// GetFileAttributesTransactedA( LPCSTR lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId, LPVOID lpFileInformation, HANDLE
-		// hTransaction );
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("winbase.h", MSDNShortId = "dd1435da-93e5-440a-913a-9e40e39b4a01")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetFileAttributesTransacted(string lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId, ref WIN32_FILE_ATTRIBUTE_DATA lpFileInformation, IntPtr hTransaction);
 
 		/// <summary>
 		/// <para>Retrieves the bandwidth reservation properties of the volume on which the specified file resides.</para>
@@ -2299,6 +2319,109 @@ namespace Vanara.PInvoke
 			NativeOverlapped* lpOverlapped, FileIOCompletionRoutine lpCompletionRoutine, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS ReadDirectoryNotifyInformationClass);
 
 		/// <summary>
+		/// <para>Reopens the specified file system object with different access rights, sharing mode, and flags.</para>
+		/// </summary>
+		/// <param name="hOriginalFile">
+		/// <para>A handle to the object to be reopened. The object must have been created by the CreateFile function.</para>
+		/// </param>
+		/// <param name="dwDesiredAccess">
+		/// <para>
+		/// The required access to the object. For a list of values, see File Security and Access Rights. You cannot request an access mode
+		/// that conflicts with the sharing mode specified in a previous open request whose handle is still open.
+		/// </para>
+		/// <para>
+		/// If this parameter is zero (0), the application can query device attributes without accessing the device. This is useful if an
+		/// application wants to determine the size of a floppy disk drive and the formats it supports without requiring a floppy in the drive.
+		/// </para>
+		/// </param>
+		/// <param name="dwShareMode">
+		/// <para>
+		/// The sharing mode of the object. You cannot request a sharing mode that conflicts with the access mode specified in a previous
+		/// open request whose handle is still open.
+		/// </para>
+		/// <para>
+		/// If this parameter is zero (0) and CreateFile succeeds, the object cannot be shared and cannot be opened again until the handle is closed.
+		/// </para>
+		/// <para>
+		/// To enable other processes to share the object while your process has it open, use a combination of one or more of the following
+		/// values to specify the type of access they can request when they open the object. These sharing options remain in effect until you
+		/// close the handle to the object.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILE_SHARE_DELETE 0x00000004</term>
+		/// <term>
+		/// Enables subsequent open operations on the object to request delete access. Otherwise, other processes cannot open the object if
+		/// they request delete access. If the object has already been opened with delete access, the sharing mode must include this flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_SHARE_READ 0x00000001</term>
+		/// <term>
+		/// Enables subsequent open operations on the object to request read access. Otherwise, other processes cannot open the object if
+		/// they request read access. If the object has already been opened with read access, the sharing mode must include this flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_SHARE_WRITE 0x00000002</term>
+		/// <term>
+		/// Enables subsequent open operations on the object to request write access. Otherwise, other processes cannot open the object if
+		/// they request write access. If the object has already been opened with write access, the sharing mode must include this flag.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwFlagsAndAttributes">
+		/// <para>TBD</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is an open handle to the specified file.</para>
+		/// <para>If the function fails, the return value is <c>INVALID_HANDLE_VALUE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The dwFlags parameter cannot contain any of the file attribute flags ( <c>FILE_ATTRIBUTE_*</c>). These can only be specified when
+		/// the file is created.
+		/// </para>
+		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-reopenfile HANDLE ReOpenFile( HANDLE hOriginalFile, DWORD
+		// dwDesiredAccess, DWORD dwShareMode, DWORD dwFlagsAndAttributes );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "56d8a4b1-e3b5-4134-8d21-bf40761e9dcc")]
+		public static extern SafeHFILE ReOpenFile(HFILE hOriginalFile, FileAccess dwDesiredAccess, FileShare dwShareMode, FileFlagsAndAttributes dwFlagsAndAttributes);
+
+		/// <summary>
 		/// Replaces one file with another file, with the option of creating a backup copy of the original file. The replacement file assumes
 		/// the name of the replaced file and its identity.
 		/// </summary>
@@ -2441,6 +2564,185 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa365534")]
 		public static extern void SetFileApisToOEM();
+
+		/// <summary>
+		/// <para>
+		/// Requests that bandwidth for the specified file stream be reserved. The reservation is specified as a number of bytes in a period
+		/// of milliseconds for I/O requests on the specified file handle.
+		/// </para>
+		/// </summary>
+		/// <param name="hFile">
+		/// <para>A handle to the file.</para>
+		/// </param>
+		/// <param name="nPeriodMilliseconds">
+		/// <para>
+		/// The period of the reservation, in milliseconds. The period is the time from which the I/O is issued to the kernel until the time
+		/// the I/O should be completed. The minimum supported value for the file stream can be determined by looking at the value returned
+		/// through the lpPeriodMilliseconds parameter to the GetFileBandwidthReservation function, on a handle that has not had a bandwidth
+		/// reservation set.
+		/// </para>
+		/// </param>
+		/// <param name="nBytesPerPeriod">
+		/// <para>
+		/// The bandwidth to reserve, in bytes per period. The maximum supported value for the file stream can be determined by looking at
+		/// the value returned through the lpBytesPerPeriod parameter to the GetFileBandwidthReservation function, on a handle that has not
+		/// had a bandwidth reservation set.
+		/// </para>
+		/// </param>
+		/// <param name="bDiscardable">
+		/// <para>
+		/// Indicates whether I/O should be completed with an error if a driver is unable to satisfy an I/O operation before the period
+		/// expires. If one of the drivers for the specified file stream does not support this functionality, this function may return
+		/// success and ignore the flag. To verify whether the setting will be honored, call the GetFileBandwidthReservation function using
+		/// the same hFile handle and examine the *pDiscardable return value.
+		/// </para>
+		/// </param>
+		/// <param name="lpTransferSize">
+		/// <para>
+		/// A pointer to a variable that receives the minimum size of any individual I/O request that may be issued by the application. All
+		/// I/O requests should be multiples of TransferSize.
+		/// </para>
+		/// </param>
+		/// <param name="lpNumOutstandingRequests">
+		/// <para>
+		/// A pointer to a variable that receives the number of TransferSize chunks the application should allow to be outstanding with the
+		/// operating system. This allows the storage stack to keep the device busy and allows maximum throughput.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Returns nonzero if successful or zero otherwise.</para>
+		/// <para>
+		/// A reservation can fail if there is not enough bandwidth available on the volume because of existing reservations; in this case
+		/// <c>ERROR_NO_SYSTEM_RESOURCES</c> is returned.
+		/// </para>
+		/// <para>To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The requested bandwidth reservation must be greater than or equal to one packet per period. The minimum period, in milliseconds,
+		/// maximum bytes per period, and minimum transfer size, in bytes, for a specific volume are returned through the
+		/// lpPeriodMilliseconds, lpBytesPerPeriod, and lpTransferSize parameters to GetFileBandwidthReservation on a handle that has not
+		/// been used in a call to <c>SetFileBandwidthReservation</c>. In other words:
+		/// </para>
+		/// <para>1 ≤ (nBytesPerPeriod)×(lpPeriodMilliseconds)/(lpTransferSize)/(nPeriodMilliseconds)</para>
+		/// <para>IIn Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setfilebandwidthreservation BOOL
+		// SetFileBandwidthReservation( HANDLE hFile, DWORD nPeriodMilliseconds, DWORD nBytesPerPeriod, BOOL bDiscardable, LPDWORD
+		// lpTransferSize, LPDWORD lpNumOutstandingRequests );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "a22bd8f3-4fbf-4f77-b8b6-7e786942615a")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetFileBandwidthReservation(HFILE hFile, uint nPeriodMilliseconds, uint nBytesPerPeriod, [MarshalAs(UnmanagedType.Bool)] bool bDiscardable, out uint lpTransferSize, out uint lpNumOutstandingRequests);
+
+		/// <summary>
+		/// <para>
+		/// Sets the notification modes for a file handle, allowing you to specify how completion notifications work for the specified file.
+		/// </para>
+		/// </summary>
+		/// <param name="FileHandle">
+		/// <para>A handle to the file.</para>
+		/// </param>
+		/// <param name="Flags">
+		/// <para>
+		/// The modes to be set. One or more modes can be set at the same time; however, after a mode has been set for a file handle, it
+		/// cannot be removed.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILE_SKIP_COMPLETION_PORT_ON_SUCCESS 0x1</term>
+		/// <term>
+		/// If the following three conditions are true, the I/O Manager does not queue a completion entry to the port, when it would
+		/// ordinarily do so. The conditions are: When the FileHandle parameter is a socket, this mode is only compatible with Layered
+		/// Service Providers (LSP) that return Installable File Systems (IFS) handles. To detect whether a non-IFS LSP is installed, use the
+		/// WSAEnumProtocols function and examine the dwServiceFlag1 member in each returned WSAPROTOCOL_INFO structure. If the
+		/// XP1_IFS_HANDLES (0x20000) bit is cleared then the specified LSP is not an IFS LSP. Vendors that have non-IFS LSPs are encouraged
+		/// to migrate to the Windows Filtering Platform (WFP).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_SKIP_SET_EVENT_ON_HANDLE 0x2</term>
+		/// <term>
+		/// The I/O Manager does not set the event for the file object if a request returns with a success code, or the error returned is
+		/// ERROR_PENDING and the function that is called is not a synchronous function. If an explicit event is provided for the request, it
+		/// is still signaled.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Returns nonzero if successful or zero otherwise.</para>
+		/// <para>To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To compile an application that uses this function, define the <c>_WIN32_WINNT</c> macro as 0x0600 or later. For more information,
+		/// see Using the Windows Headers.
+		/// </para>
+		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setfilecompletionnotificationmodes BOOL
+		// SetFileCompletionNotificationModes( HANDLE FileHandle, UCHAR Flags );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "23796484-ee47-4f80-856d-5a5d5635547c")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetFileCompletionNotificationModes(HFILE FileHandle, FILE_NOTIFICATION_MODE Flags);
 
 		/// <summary>
 		/// <para>
@@ -2595,6 +2897,538 @@ namespace Vanara.PInvoke
 			} while (true);
 
 			void AddCap() => sb.Capacity = strSz <= sb.Capacity ? (int)(strSz *= 2) : (int)++strSz;
+		}
+
+		/// <summary>
+		/// <para>Contains extended parameters for the CopyFile2 function.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// To compile an application that uses this structure, define the <c>_WIN32_WINNT</c> macro as <c>_WIN32_WINNT_WIN8</c> or later.
+		/// For more information, see Using the Windows Headers.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-copyfile2_extended_parameters typedef struct
+		// COPYFILE2_EXTENDED_PARAMETERS { DWORD dwSize; DWORD dwCopyFlags; BOOL *pfCancel; PCOPYFILE2_PROGRESS_ROUTINE pProgressRoutine;
+		// PVOID pvCallbackContext; };
+		[PInvokeData("winbase.h", MSDNShortId = "a8da62e5-bc49-4aff-afaa-e774393b7120")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct COPYFILE2_EXTENDED_PARAMETERS
+		{
+			/// <summary>
+			/// <para>Contains the size of this structure, .</para>
+			/// </summary>
+			public uint dwSize;
+
+			/// <summary>
+			/// <para>Contains a combination of zero or more of these flag values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>COPY_FILE_ALLOW_DECRYPTED_DESTINATION 0x00000008</term>
+			/// <term>The copy will be attempted even if the destination file cannot be encrypted.</term>
+			/// </item>
+			/// <item>
+			/// <term>COPY_FILE_COPY_SYMLINK 0x00000800</term>
+			/// <term>
+			/// If the source file is a symbolic link, the destination file is also a symbolic link pointing to the same file as the source
+			/// symbolic link.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>COPY_FILE_FAIL_IF_EXISTS 0x00000001</term>
+			/// <term>
+			/// If the destination file exists the copy operation fails immediately. If a file or directory exists with the destination name
+			/// then the CopyFile2 function call will fail with either or . If COPY_FILE_RESUME_FROM_PAUSE is also specified then a failure
+			/// is only triggered if the destination file does not have a valid restart header.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>COPY_FILE_NO_BUFFERING 0x00001000</term>
+			/// <term>
+			/// The copy is performed using unbuffered I/O, bypassing the system cache resources. This flag is recommended for very large
+			/// file copies. It is not recommended to pause copies that are using this flag.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>COPY_FILE_NO_OFFLOAD 0x00040000</term>
+			/// <term>Do not attempt to use the Windows Copy Offload mechanism. This is not generally recommended.</term>
+			/// </item>
+			/// <item>
+			/// <term>COPY_FILE_OPEN_SOURCE_FOR_WRITE 0x00000004</term>
+			/// <term>The file is copied and the source file is opened for write access.</term>
+			/// </item>
+			/// <item>
+			/// <term>COPY_FILE_RESTARTABLE 0x00000002</term>
+			/// <term>
+			/// The file is copied in a manner that can be restarted if the same source and destination filenames are used again. This is slower.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>COPY_FILE_REQUEST_SECURITY_PRIVILEGES 0x00002000</term>
+			/// <term>
+			/// The copy is attempted, specifying for the source file and for the destination file. If these requests are denied the access
+			/// request will be reduced to the highest privilege level for which access is granted. For more information see SACL Access
+			/// Right. This can be used to allow the CopyFile2ProgressRoutine callback to perform operations requiring higher privileges,
+			/// such as copying the security attributes for the file.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>COPY_FILE_RESUME_FROM_PAUSE 0x00004000</term>
+			/// <term>
+			/// The destination file is examined to see if it was copied using COPY_FILE_RESTARTABLE. If so the copy is resumed. If not the
+			/// file will be fully copied.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public COPY_FILE dwCopyFlags;
+
+			/// <summary>
+			/// <para>If this flag is set to <c>TRUE</c> during the copy operation then the copy operation is canceled.</para>
+			/// </summary>
+			public IntPtr pfCancel;
+
+			/// <summary>
+			/// The optional address of a callback function of type <c>PCOPYFILE2_PROGRESS_ROUTINE</c> that is called each time another
+			/// portion of the file has been copied. This parameter can be <c>NULL</c>. For more information on the progress callback
+			/// function, see the CopyFile2ProgressRoutine callback function.
+			/// </summary>
+			[MarshalAs(UnmanagedType.FunctionPtr)]
+			public Pcopyfile2ProgressRoutine pProgressRoutine;
+
+			/// <summary>
+			/// <para>A pointer to application-specific context information to be passed to the CopyFile2ProgressRoutine.</para>
+			/// </summary>
+			public IntPtr pvCallbackContext;
+		}
+
+		/// <summary>
+		/// <para>Passed to the CopyFile2ProgressRoutine callback function with information about a pending copy operation.</para>
+		/// </summary>
+		/// <remarks>
+		/// To compile an application that uses the <c>COPYFILE2_MESSAGE</c> structure, define the <c>_WIN32_WINNT</c> macro as 0x0601 or
+		/// later. For more information, see Using the Windows Headers.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-copyfile2_message
+		[PInvokeData("winbase.h", MSDNShortId = "ab841bee-90a0-4beb-99d3-764e608c3872")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct COPYFILE2_MESSAGE
+		{
+			/// <summary>
+			/// <para>Value from the COPYFILE2_MESSAGE_TYPE enumeration used as a discriminant for the <c>Info</c> union within this structure.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>COPYFILE2_CALLBACK_CHUNK_STARTED 1</term>
+			/// <term>
+			/// Indicates a single chunk of a stream has started to be copied. Information is in the ChunkStarted structure within the Info union.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>COPYFILE2_CALLBACK_CHUNK_FINISHED 2</term>
+			/// <term>
+			/// Indicates the copy of a single chunk of a stream has completed. Information is in the ChunkFinished structure within the Info union.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>COPYFILE2_CALLBACK_STREAM_STARTED 3</term>
+			/// <term>
+			/// Indicates both source and destination handles for a stream have been opened and the copy of the stream is about to be
+			/// started. Information is in the StreamStarted structure within the Info union. This does not indicate that the copy has
+			/// started for that stream.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>COPYFILE2_CALLBACK_STREAM_FINISHED 4</term>
+			/// <term>
+			/// Indicates the copy operation for a stream have started to be completed, either successfully or due to a
+			/// COPYFILE2_PROGRESS_STOP return from CopyFile2ProgressRoutine. Information is in the StreamFinished structure within the Info union.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>COPYFILE2_CALLBACK_POLL_CONTINUE 5</term>
+			/// <term>May be sent periodically. Information is in the PollContinue structure within the Info union.</term>
+			/// </item>
+			/// <item>
+			/// <term>COPYFILE2_CALLBACK_ERROR 6</term>
+			/// <term>An error was encountered during the copy operation. Information is in the Error structure within the Info union.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public COPYFILE2_MESSAGE_TYPE Type;
+
+			private readonly uint dwPadding;
+
+			/// <summary>Union</summary>
+			public Union Info;
+
+			/// <summary>Undocumented.</summary>
+			[StructLayout(LayoutKind.Explicit)]
+			public struct Union
+			{
+				/// <summary>Undocumented.</summary>
+				[FieldOffset(0)]
+				public ChunkStarted ChunkStarted;
+
+				/// <summary>Undocumented.</summary>
+				[FieldOffset(0)]
+				public ChunkFinished ChunkFinished;
+
+				/// <summary>Undocumented.</summary>
+				[FieldOffset(0)]
+				public StreamStarted StreamStarted;
+
+				/// <summary>Undocumented.</summary>
+				[FieldOffset(0)]
+				public StreamFinished StreamFinished;
+
+				/// <summary>Undocumented.</summary>
+				[FieldOffset(0)]
+				public PollContinue PollContinue;
+
+				/// <summary>Undocumented.</summary>
+				[FieldOffset(0)]
+				public Error Error;
+			}
+
+			/// <summary>Undocumented.</summary>
+			[StructLayout(LayoutKind.Sequential)]
+			public struct ChunkStarted
+			{
+				/// <summary>
+				/// <para>
+				/// Indicates which stream within the file is about to be copied. The value used for identifying a stream within a file will
+				/// start at one (1) and will always be higher than any previous stream for that file.
+				/// </para>
+				/// </summary>
+				public uint dwStreamNumber;
+
+				/// <summary>
+				/// <para>This member is reserved for internal use.</para>
+				/// </summary>
+				public uint dwReserved;
+
+				/// <summary>
+				/// <para>Handle to the source stream.</para>
+				/// </summary>
+				public IntPtr hSourceFile;
+
+				/// <summary>
+				/// <para>Handle to the destination stream.</para>
+				/// </summary>
+				public IntPtr hDestinationFile;
+
+				/// <summary>
+				/// <para>
+				/// Indicates which chunk within the current stream is about to be copied. The value used for a chunk will start at zero (0)
+				/// and will always be higher than that of any previous chunk for the current stream.
+				/// </para>
+				/// </summary>
+				public ulong uliChunkNumber;
+
+				/// <summary>
+				/// <para>Size of the copied chunk, in bytes.</para>
+				/// </summary>
+				public ulong uliChunkSize;
+
+				/// <summary>
+				/// <para>Size of the current stream, in bytes.</para>
+				/// </summary>
+				public ulong uliStreamSize;
+
+				/// <summary>
+				/// <para>Size of all streams for this file, in bytes.</para>
+				/// </summary>
+				public ulong uliTotalFileSize;
+			}
+
+			/// <summary>Undocumented.</summary>
+			[StructLayout(LayoutKind.Sequential)]
+			public struct ChunkFinished
+			{
+				/// <summary>
+				/// <para>
+				/// Indicates which stream within the file is about to be copied. The value used for identifying a stream within a file will
+				/// start at one (1) and will always be higher than any previous stream for that file.
+				/// </para>
+				/// </summary>
+				public uint dwStreamNumber;
+
+				/// <summary>
+				/// <para>This member is reserved for internal use.</para>
+				/// </summary>
+				public uint dwFlags;
+
+				/// <summary>
+				/// <para>Handle to the source stream.</para>
+				/// </summary>
+				public IntPtr hSourceFile;
+
+				/// <summary>
+				/// <para>Handle to the destination stream.</para>
+				/// </summary>
+				public IntPtr hDestinationFile;
+
+				/// <summary>
+				/// <para>
+				/// Indicates which chunk within the current stream is in process. The value used for a chunk will start at zero (0) and will
+				/// always be higher than that of any previous chunk for the current stream.
+				/// </para>
+				/// </summary>
+				public ulong uliChunkNumber;
+
+				/// <summary>
+				/// <para>Size of the copied chunk, in bytes.</para>
+				/// </summary>
+				public ulong uliChunkSize;
+
+				/// <summary>
+				/// <para>Size of the current stream, in bytes.</para>
+				/// </summary>
+				public ulong uliStreamSize;
+
+				/// <summary>
+				/// <para>Total bytes copied for this stream so far.</para>
+				/// </summary>
+				public ulong uliStreamBytesTransferred;
+
+				/// <summary>
+				/// <para>Size of all streams for this file, in bytes.</para>
+				/// </summary>
+				public ulong uliTotalFileSize;
+
+				/// <summary>
+				/// <para>Total bytes copied for this file so far.</para>
+				/// </summary>
+				public ulong uliTotalBytesTransferred;
+			}
+
+			/// <summary>Undocumented.</summary>
+			[StructLayout(LayoutKind.Sequential)]
+			public struct StreamStarted
+			{
+				/// <summary>
+				/// <para>
+				/// Indicates which stream within the file is about to be copied. The value used for identifying a stream within a file will
+				/// start at one (1) and will always be higher than any previous stream for that file.
+				/// </para>
+				/// </summary>
+				public uint dwStreamNumber;
+
+				/// <summary>
+				/// <para>This member is reserved for internal use.</para>
+				/// </summary>
+				public uint dwReserved;
+
+				/// <summary>
+				/// <para>Handle to the source stream.</para>
+				/// </summary>
+				public IntPtr hSourceFile;
+
+				/// <summary>
+				/// <para>Handle to the destination stream.</para>
+				/// </summary>
+				public IntPtr hDestinationFile;
+
+				/// <summary>
+				/// <para>Size of the current stream, in bytes.</para>
+				/// </summary>
+				public ulong uliStreamSize;
+
+				/// <summary>
+				/// <para>Size of all streams for this file, in bytes.</para>
+				/// </summary>
+				public ulong uliTotalFileSize;
+			}
+
+			/// <summary>Undocumented.</summary>
+			[StructLayout(LayoutKind.Sequential)]
+			public struct StreamFinished
+			{
+				/// <summary>
+				/// <para>
+				/// Indicates which stream within the file is about to be copied. The value used for identifying a stream within a file will
+				/// start at one (1) and will always be higher than any previous stream for that file.
+				/// </para>
+				/// </summary>
+				public uint dwStreamNumber;
+
+				/// <summary>
+				/// <para>This member is reserved for internal use.</para>
+				/// </summary>
+				public uint dwReserved;
+
+				/// <summary>
+				/// <para>Handle to the source stream.</para>
+				/// </summary>
+				public IntPtr hSourceFile;
+
+				/// <summary>
+				/// <para>Handle to the destination stream.</para>
+				/// </summary>
+				public IntPtr hDestinationFile;
+
+				/// <summary>
+				/// <para>Size of the current stream, in bytes.</para>
+				/// </summary>
+				public ulong uliStreamSize;
+
+				/// <summary>
+				/// <para>Total bytes copied for this stream so far.</para>
+				/// </summary>
+				public ulong uliStreamBytesTransferred;
+
+				/// <summary>
+				/// <para>Size of all streams for this file, in bytes.</para>
+				/// </summary>
+				public ulong uliTotalFileSize;
+
+				/// <summary>
+				/// <para>Total bytes copied for this file so far.</para>
+				/// </summary>
+				public ulong uliTotalBytesTransferred;
+			}
+
+			/// <summary>Undocumented.</summary>
+			[StructLayout(LayoutKind.Sequential)]
+			public struct PollContinue
+			{
+				/// <summary>
+				/// <para>This member is reserved for internal use.</para>
+				/// </summary>
+				public uint dwReserved;
+			}
+
+			/// <summary>Undocumented.</summary>
+			[StructLayout(LayoutKind.Sequential)]
+			public struct Error
+			{
+				/// <summary>
+				/// <para>Value from the COPYFILE2_COPY_PHASE enumeration indicating the current phase of the copy at the time of the error.</para>
+				/// </summary>
+				public COPYFILE2_COPY_PHASE CopyPhase;
+
+				/// <summary>
+				/// <para>The number of the stream that was being processed at the time of the error.</para>
+				/// </summary>
+				public uint dwStreamNumber;
+
+				/// <summary>
+				/// <para>Value indicating the problem.</para>
+				/// </summary>
+				public HRESULT hrFailure;
+
+				/// <summary>
+				/// <para>This member is reserved for internal use.</para>
+				/// </summary>
+				public uint dwReserved;
+
+				/// <summary>
+				/// <para>
+				/// Indicates which chunk within the current stream was being processed at the time of the error. The value used for a chunk
+				/// will start at zero (0) and will always be higher than that of any previous chunk for the current stream.
+				/// </para>
+				/// </summary>
+				public ulong uliChunkNumber;
+
+				/// <summary>
+				/// <para>Size, in bytes, of the stream being processed.</para>
+				/// </summary>
+				public ulong uliStreamSize;
+
+				/// <summary>
+				/// <para>Number of bytes that had been successfully transferred for the stream being processed.</para>
+				/// </summary>
+				public ulong uliStreamBytesTransferred;
+
+				/// <summary>
+				/// <para>Size, in bytes, of the total file being processed.</para>
+				/// </summary>
+				public ulong uliTotalFileSize;
+
+				/// <summary>
+				/// <para>Number of bytes that had been successfully transferred for the entire copy operation.</para>
+				/// </summary>
+				public ulong uliTotalBytesTransferred;
+			}
+		}
+
+		/// <summary>
+		/// <para>Specifies the type of ID that is being used.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-file_id_descriptor typedef struct FILE_ID_DESCRIPTOR {
+		// DWORD dwSize; FILE_ID_TYPE Type; union { LARGE_INTEGER FileId; GUID ObjectId; FILE_ID_128 ExtendedFileId; } DUMMYUNIONNAME; } *LPFILE_ID_DESCRIPTOR;
+		[PInvokeData("winbase.h", MSDNShortId = "9092a701-3b47-4c4c-8221-54fa3220d322")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct FILE_ID_DESCRIPTOR
+		{
+			/// <summary>
+			/// <para>The size of this <c>FILE_ID_DESCRIPTOR</c> structure.</para>
+			/// </summary>
+			public uint dwSize;
+
+			/// <summary>
+			/// <para>The discriminator for the union indicating the type of identifier that is being passed.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>FileIdType 0</term>
+			/// <term>Use the FileId member of the union.</term>
+			/// </item>
+			/// <item>
+			/// <term>ObjectIdType 1</term>
+			/// <term>Use the ObjectId member of the union.</term>
+			/// </item>
+			/// <item>
+			/// <term>ExtendedFileIdType 2</term>
+			/// <term>
+			/// Use the ExtendedFileId member of the union. Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7
+			/// and Windows Server 2008 R2: This value is not supported before Windows 8 and Windows Server 2012.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public FILE_ID_TYPE Type;
+
+			/// <summary>Undocumented.</summary>
+			public DUMMYUNIONNAME Id;
+
+			/// <summary>Undocumented.</summary>
+			[StructLayout(LayoutKind.Explicit)]
+			public struct DUMMYUNIONNAME
+			{
+				/// <summary>
+				/// <para>The ID of the file to open.</para>
+				/// </summary>
+				[FieldOffset(0)]
+				public long FileId;
+
+				/// <summary>
+				/// <para>The ID of the object to open.</para>
+				/// </summary>
+				[FieldOffset(0)]
+				public Guid ObjectId;
+
+				/// <summary>
+				/// <para>A FILE_ID_128 structure containing the 128-bit file ID of the file. This is used on ReFS file systems.</para>
+				/// <para>
+				/// <c>Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7 and Windows Server 2008 R2:</c> This
+				/// member is not supported before Windows 8 and Windows Server 2012.
+				/// </para>
+				/// </summary>
+				[FieldOffset(0)]
+				public FILE_ID_128 ExtendedFileId;
+			}
 		}
 
 		/// <summary>

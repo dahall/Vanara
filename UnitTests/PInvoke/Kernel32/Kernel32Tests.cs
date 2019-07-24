@@ -3,8 +3,6 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
-using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 
@@ -13,15 +11,8 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture]
 	public class Kernel32Tests
 	{
-		internal const string tmpstr = @"Temporary";
 		internal const string fn = @"C:\Temp\help.ico";
-
-		[Test]
-		public void GetAppContainerNamedObjectPathTest()
-		{
-			var sb = new StringBuilder(1024);
-			Assert.That(GetAppContainerNamedObjectPath(default, default, (uint)sb.Length, sb, out var len), ResultIs.Failure);
-		}
+		internal const string tmpstr = @"Temporary";
 
 		public static string CreateTempFile(bool markAsTemp = true)
 		{
@@ -67,6 +58,13 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(File.Exists(link));
 			File.Delete(link);
 			File.Delete(fn);
+		}
+
+		[Test]
+		public void GetAppContainerNamedObjectPathTest()
+		{
+			var sb = new StringBuilder(1024);
+			Assert.That(GetAppContainerNamedObjectPath(default, default, (uint)sb.Length, sb, out var len), ResultIs.Failure);
 		}
 
 		[Test]
@@ -123,16 +121,6 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(cch, Is.Not.Zero);
 			Assert.That(sb.Length, Is.GreaterThan(0));
 			TestContext.WriteLine(sb);
-		}
-
-		[Test]
-		public void PowerRequestTest()
-		{
-			using (var h = PowerCreateRequest(new REASON_CONTEXT("Just because")))
-				Assert.That(h.IsInvalid, Is.False);
-			using (var l = LoadLibraryEx("user32.dll", LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
-			using (var h1 = PowerCreateRequest(new REASON_CONTEXT(l, 800)))
-				Assert.That(h1.IsInvalid, Is.False);
 		}
 
 		[Test]

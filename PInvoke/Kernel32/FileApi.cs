@@ -5362,7 +5362,8 @@ namespace Vanara.PInvoke
 			/// </param>
 			public SafeHFILE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			private SafeHFILE() : base()
+			/// <summary>Initializes a new instance of the <see cref="SafeHFILE"/> class.</summary>
+			protected SafeHFILE() : base()
 			{
 			}
 

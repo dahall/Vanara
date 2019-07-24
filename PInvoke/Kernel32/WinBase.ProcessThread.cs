@@ -206,6 +206,74 @@ namespace Vanara.PInvoke
 		public static extern bool GetNumaAvailableMemoryNode(byte Node, out ulong AvailableBytes);
 
 		/// <summary>
+		/// <para>Retrieves the amount of memory that is available in a node specified as a <c>USHORT</c> value.</para>
+		/// </summary>
+		/// <param name="Node">
+		/// <para>The number of the node.</para>
+		/// </param>
+		/// <param name="AvailableBytes">
+		/// <para>The amount of available memory for the node, in bytes.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>GetNumaAvailableMemoryNodeEx</c> function returns the amount of memory consumed by free and zeroed pages on the specified
+		/// node. On systems with more than one node, this memory does not include standby pages. Therefore, the sum of the available memory
+		/// values for all nodes in the system is equal to the value of the Free &amp; Zero Page List Bytes memory performance counter. On
+		/// systems with only one node, the value returned by GetNumaAvailableMemoryNode includes standby pages and is equal to the value of
+		/// the Available Bytes memory performance counter. For more information about performance counters, see Memory Performance Information.
+		/// </para>
+		/// <para>
+		/// The only difference between the <c>GetNumaAvailableMemoryNodeEx</c> function and the GetNumaAvailableMemoryNode function is the
+		/// data type of the Node parameter.
+		/// </para>
+		/// <para>
+		/// To compile an application that uses this function, set _WIN32_WINNT &gt;= 0x0601. For more information, see Using the Windows Headers.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getnumaavailablememorynodeex BOOL
+		// GetNumaAvailableMemoryNodeEx( USHORT Node, PULONGLONG AvailableBytes );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "59382114-f3da-45e0-843e-51c0fd52a164")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetNumaAvailableMemoryNodeEx(ushort Node, out ulong AvailableBytes);
+
+		/// <summary>
+		/// <para>Retrieves the NUMA node associated with the file or I/O device represented by the specified file handle.</para>
+		/// </summary>
+		/// <param name="hFile">
+		/// <para>
+		/// A handle to a file or I/O device. Examples of I/O devices include files, file streams, volumes, physical disks, and sockets. For
+		/// more information, see the CreateFile function.
+		/// </para>
+		/// </param>
+		/// <param name="NodeNumber">
+		/// <para>A pointer to a variable to receive the number of the NUMA node associated with the specified file handle.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, use GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If the specified handle does not have a node associated with it, the function returns FALSE. The value of the NodeNumber
+		/// parameter is undetermined and should not be used.
+		/// </para>
+		/// <para>
+		/// To compile an application that uses this function, set _WIN32_WINNT &gt;= 0x0601. For more information, see Using the Windows Headers.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getnumanodenumberfromhandle BOOL
+		// GetNumaNodeNumberFromHandle( HANDLE hFile, PUSHORT NodeNumber );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "7622f7c9-2dfc-4ab7-b3e9-48d483c6cc0e")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetNumaNodeNumberFromHandle(HFILE hFile, out ushort NodeNumber);
+
+		/// <summary>
 		/// <para>Retrieves the processor mask for the specified node.</para>
 		/// <para>Use the <c>GetNumaNodeProcessorMaskEx</c> function to retrieve the processor mask for a node in any processor group.</para>
 		/// </summary>
@@ -249,6 +317,70 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683205")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetNumaProcessorNode(byte Processor, out byte NodeNumber);
+
+		/// <summary>
+		/// <para>Retrieves the node number as a <c>USHORT</c> value for the specified logical processor.</para>
+		/// </summary>
+		/// <param name="Processor">
+		/// <para>
+		/// A pointer to a PROCESSOR_NUMBER structure that represents the logical processor and the processor group to which it is assigned.
+		/// </para>
+		/// </param>
+		/// <param name="NodeNumber">
+		/// <para>
+		/// A pointer to a variable to receive the node number. If the specified processor does not exist, this parameter is set to MAXUSHORT.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To compile an application that uses this function, set _WIN32_WINNT &gt;= 0x0601. For more information, see Using the Windows Headers.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getnumaprocessornodeex BOOL GetNumaProcessorNodeEx(
+		// PPROCESSOR_NUMBER Processor, PUSHORT NodeNumber );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "6b843cd8-eeb5-4aa1-aad4-ce98916346b1")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetNumaProcessorNodeEx(ref PROCESSOR_NUMBER Processor, out ushort NodeNumber);
+
+		/// <summary>
+		/// <para>Retrieves the NUMA node number that corresponds to the specified proximity domain identifier.</para>
+		/// <para>Use the GetNumaProximityNodeEx function to retrieve the node number as a <c>USHORT</c> value.</para>
+		/// </summary>
+		/// <param name="ProximityId">
+		/// <para>The proximity domain identifier of the node.</para>
+		/// </param>
+		/// <param name="NodeNumber">
+		/// <para>The node number. If the processor does not exist, this parameter is 0xFF.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A proximity domain identifier is an index to a NUMA node on a NUMA system. Proximity domain identifiers are found in the ACPI
+		/// System Resource Affinity Table (SRAT), where they are used to associate processors and memory regions with a particular NUMA
+		/// node. Proximity domain identifiers are also found in the ACPI namespace, where they are used to associate a device with a
+		/// particular NUMA node. Proximity domain identifiers are typically used only by management applications provided by system
+		/// manufacturers. Windows does not use proximity domain identifiers to identify NUMA nodes; instead, it assigns a unique number to
+		/// each NUMA node in the system.
+		/// </para>
+		/// <para>
+		/// The relative distance between nodes on a system is stored in the ACPI System Locality Distance Information Table (SLIT), which is
+		/// not exposed by any Windows functions. For more information about ACPI tables, see the ACPI specifications.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getnumaproximitynode BOOL GetNumaProximityNode( ULONG
+		// ProximityId, PUCHAR NodeNumber );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "9a2dbfe3-13e7-442d-a5f6-b2632878f618")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetNumaProximityNode(uint ProximityId, out byte NodeNumber);
 
 		/// <summary>Retrieves the process affinity mask for the specified process and the system affinity mask for the system.</summary>
 		/// <param name="hProcess">
@@ -327,6 +459,211 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetProcessWorkingSetSize([In] HPROCESS hProcess, [Out] out SizeT lpMinimumWorkingSetSize, [Out] out SizeT lpMaximumWorkingSetSize);
 
+		/// <summary>
+		/// <para>
+		/// Maps a view of a file mapping into the address space of a calling process and specifies the NUMA node for the physical memory.
+		/// </para>
+		/// </summary>
+		/// <param name="hFileMappingObject">
+		/// <para>A handle to a file mapping object. The CreateFileMappingNuma and OpenFileMapping functions return this handle.</para>
+		/// </param>
+		/// <param name="dwDesiredAccess">
+		/// <para>
+		/// The type of access to a file mapping object, which determines the page protection of the pages. This parameter can be one of the
+		/// following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILE_MAP_ALL_ACCESS</term>
+		/// <term>
+		/// A read/write view of the file is mapped. The file mapping object must have been created with PAGE_READWRITE or
+		/// PAGE_EXECUTE_READWRITE protection. When used with the MapViewOfFileExNuma function, FILE_MAP_ALL_ACCESS is equivalent to FILE_MAP_WRITE.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_MAP_COPY</term>
+		/// <term>
+		/// A copy-on-write view of the file is mapped. The file mapping object must have been created with PAGE_READONLY, PAGE_READ_EXECUTE,
+		/// PAGE_WRITECOPY, PAGE_EXECUTE_WRITECOPY, PAGE_READWRITE, or PAGE_EXECUTE_READWRITE protection. When a process writes to a
+		/// copy-on-write page, the system copies the original page to a new page that is private to the process. The new page is backed by
+		/// the paging file. The protection of the new page changes from copy-on-write to read/write. When copy-on-write access is specified,
+		/// the system and process commit charge taken is for the entire view because the calling process can potentially write to every page
+		/// in the view, making all pages private. The contents of the new page are never written back to the original file and are lost when
+		/// the view is unmapped.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_MAP_READ</term>
+		/// <term>
+		/// A read-only view of the file is mapped. An attempt to write to the file view results in an access violation. The file mapping
+		/// object must have been created with PAGE_READONLY, PAGE_READWRITE, PAGE_EXECUTE_READ, or PAGE_EXECUTE_READWRITE protection.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_MAP_WRITE</term>
+		/// <term>
+		/// A read/write view of the file is mapped. The file mapping object must have been created with PAGE_READWRITE or
+		/// PAGE_EXECUTE_READWRITE protection. When used with MapViewOfFileExNuma, and FILE_MAP_ALL_ACCESS are equivalent to FILE_MAP_WRITE.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>Each of the preceding values can be combined with the following value.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILE_MAP_EXECUTE</term>
+		/// <term>
+		/// An executable view of the file is mapped (mapped memory can be run as code). The file mapping object must have been created with
+		/// PAGE_EXECUTE_READ, PAGE_EXECUTE_WRITECOPY, or PAGE_EXECUTE_READWRITE protection.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// For file mapping objects created with the <c>SEC_IMAGE</c> attribute, the dwDesiredAccess parameter has no effect and should be
+		/// set to any valid value such as <c>FILE_MAP_READ</c>.
+		/// </para>
+		/// <para>For more information about access to file mapping objects, see File Mapping Security and Access Rights.</para>
+		/// </param>
+		/// <param name="dwFileOffsetHigh">
+		/// <para>The high-order <c>DWORD</c> of the file offset where the view is to begin.</para>
+		/// </param>
+		/// <param name="dwFileOffsetLow">
+		/// <para>
+		/// The low-order <c>DWORD</c> of the file offset where the view is to begin. The combination of the high and low offsets must
+		/// specify an offset within the file mapping. They must also match the memory allocation granularity of the system. That is, the
+		/// offset must be a multiple of the allocation granularity. To obtain the memory allocation granularity of the system, use the
+		/// GetSystemInfo function, which fills in the members of a SYSTEM_INFO structure.
+		/// </para>
+		/// </param>
+		/// <param name="dwNumberOfBytesToMap">
+		/// <para>
+		/// The number of bytes of a file mapping to map to a view. All bytes must be within the maximum size specified by CreateFileMapping.
+		/// If this parameter is 0 (zero), the mapping extends from the specified offset to the end of the file mapping.
+		/// </para>
+		/// </param>
+		/// <param name="lpBaseAddress">
+		/// <para>
+		/// A pointer to the memory address in the calling process address space where mapping begins. This must be a multiple of the
+		/// system's memory allocation granularity, or the function fails. To determine the memory allocation granularity of the system, use
+		/// the GetSystemInfo function. If there is not enough address space at the specified address, the function fails.
+		/// </para>
+		/// <para>If the lpBaseAddress parameter is <c>NULL</c>, the operating system chooses the mapping address.</para>
+		/// <para>
+		/// While it is possible to specify an address that is safe now (not used by the operating system), there is no guarantee that the
+		/// address will remain safe over time. Therefore, it is better to let the operating system choose the address. In this case, you
+		/// would not store pointers in the memory mapped file; you would store offsets from the base of the file mapping so that the mapping
+		/// can be used at any address.
+		/// </para>
+		/// </param>
+		/// <param name="nndPreferred">
+		/// <para>The NUMA node where the physical memory should reside.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>NUMA_NO_PREFERRED_NODE 0xffffffff</term>
+		/// <term>No NUMA node is preferred. This is the same as calling the MapViewOfFileEx function.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is the starting address of the mapped view.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call the GetLastError function.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Mapping a file makes the specified portion of the file visible in the address space of the calling process.</para>
+		/// <para>
+		/// For files that are larger than the address space, you can map only a small portion of the file data at one time. When the first
+		/// view is complete, then you unmap it and map a new view.
+		/// </para>
+		/// <para>To obtain the size of a view, use the VirtualQueryEx function.</para>
+		/// <para>The initial contents of the pages in a file mapping object backed by the page file are 0 (zero).</para>
+		/// <para>
+		/// If a suggested mapping address is supplied, the file is mapped at the specified address (rounded down to the nearest 64-KB
+		/// boundary) if there is enough address space at the specified address. If there is not enough address space, the function fails.
+		/// </para>
+		/// <para>
+		/// Typically, the suggested address is used to specify that a file should be mapped at the same address in multiple processes. This
+		/// requires the region of address space to be available in all involved processes. No other memory allocation can take place in the
+		/// region that is used for mapping, including the use of the VirtualAllocExNuma function to reserve memory.
+		/// </para>
+		/// <para>
+		/// If the lpBaseAddress parameter specifies a base offset, the function succeeds if the specified memory region is not already in
+		/// use by the calling process. The system does not ensure that the same memory region is available for the memory mapped file in
+		/// other 32-bit processes.
+		/// </para>
+		/// <para>
+		/// Multiple views of a file (or a file mapping object and its mapped file) are coherent if they contain identical data at a
+		/// specified time. This occurs if the file views are derived from the same file mapping object. A process can duplicate a file
+		/// mapping object handle into another process by using the DuplicateHandle function, or another process can open a file mapping
+		/// object by name by using the OpenFileMapping function.
+		/// </para>
+		/// <para>
+		/// With one important exception, file views derived from any file mapping object that is backed by the same file are coherent or
+		/// identical at a specific time. Coherency is guaranteed for views within a process and for views that are mapped by different processes.
+		/// </para>
+		/// <para>
+		/// The exception is related to remote files. Although <c>MapViewOfFileExNuma</c> works with remote files, it does not keep them
+		/// coherent. For example, if two computers both map a file as writable, and both change the same page, each computer only sees its
+		/// own writes to the page. When the data gets updated on the disk, it is not merged.
+		/// </para>
+		/// <para>A mapped view of a file is not guaranteed to be coherent with a file being accessed by the ReadFile or WriteFile function.</para>
+		/// <para>
+		/// To guard against <c>EXCEPTION_IN_PAGE_ERROR</c> exceptions, use structured exception handling to protect any code that writes to
+		/// or reads from a memory mapped view of a file other than the page file. For more information, see Reading and Writing From a File View.
+		/// </para>
+		/// <para>
+		/// When modifying a file through a mapped view, the last modification timestamp may not be updated automatically. If required, the
+		/// caller should use SetFileTime to set the timestamp.
+		/// </para>
+		/// <para>
+		/// To have a file with executable permissions, an application must call the CreateFileMappingNuma function with either
+		/// <c>PAGE_EXECUTE_READWRITE</c> or <c>PAGE_EXECUTE_READ</c> and then call the <c>MapViewOfFileExNuma</c> function with
+		/// <c>FILE_MAP_EXECUTE</c> | <c>FILE_MAP_WRITE</c> or <c>FILE_MAP_EXECUTE</c> | <c>FILE_MAP_READ</c>.
+		/// </para>
+		/// <para>In Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-mapviewoffileexnuma LPVOID MapViewOfFileExNuma( HANDLE
+		// hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh, DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap, LPVOID
+		// lpBaseAddress, DWORD nndPreferred );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "1e28c8db-112d-481d-b470-8ca618e125ce")]
+		public static extern IntPtr MapViewOfFileExNuma(HFILE hFileMappingObject, FileAccess dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, SizeT dwNumberOfBytesToMap, IntPtr lpBaseAddress, uint nndPreferred);
 		/// <summary>Sets a processor affinity mask for the threads of the specified process.</summary>
 		/// <param name="hProcess">
 		/// A handle to the process whose affinity mask is to be set. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more

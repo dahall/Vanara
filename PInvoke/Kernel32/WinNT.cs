@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.Extensions.BitHelper;
 
 namespace Vanara.PInvoke
@@ -10,6 +11,7 @@ namespace Vanara.PInvoke
 		public const uint ACL_REVISION = 2;
 		public const uint ACL_REVISION_DS = 4;
 		public const string OUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK_EXPORT_NAME = "OutOfProcessFunctionTableCallback";
+		public const byte PERFORMANCE_DATA_VERSION = 1;
 
 		/// <summary>Retrieves the function table entries for the functions in the specified region of memory.</summary>
 		/// <param name="ControlPc">The control address.</param>
@@ -22,58 +24,6 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("WinNT.h")]
 		public delegate uint POUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK(HPROCESS Process, IntPtr TableAddress, out uint Entries, [Out] IMAGE_RUNTIME_FUNCTION_ENTRY[] Functions);
-
-		/// <summary>
-		/// <para>
-		/// An application-defined function previously registered with the AddSecureMemoryCacheCallback function that is called when a
-		/// secured memory range is freed or its protections are changed.
-		/// </para>
-		/// <para>
-		/// The <c>PSECURE_MEMORY_CACHE_CALLBACK</c> type defines a pointer to this callback function. is a placeholder for the
-		/// application-defined function name.
-		/// </para>
-		/// </summary>
-		/// <param name="Addr">
-		/// <para>The starting address of the memory range.</para>
-		/// </param>
-		/// <param name="Range">
-		/// <para>The size of the memory range, in bytes.</para>
-		/// </param>
-		/// <returns>
-		/// <para>The return value indicates the success or failure of this function.</para>
-		/// <para>If the caller has secured the specified memory range, this function should unsecure the memory and return <c>TRUE</c>.</para>
-		/// <para>If the caller has not secured the specified memory range, this function should return <c>FALSE</c>.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// After the callback function is registered, it is called after any attempt to free the specified memory range or change its
-		/// protections. If the application has secured any part of the specified memory range, the callback function must invalidate all of
-		/// the application's cached memory mappings for the secured memory range, unsecure the secured parts of the memory range, and return
-		/// <c>TRUE</c>. Otherwise it must return <c>FALSE</c>.
-		/// </para>
-		/// <para>
-		/// The application secures and unsecures a memory range by sending requests to a device driver, which uses the MmSecureVirtualMemory
-		/// and MmUnsecureVirtualMemory functions to actually secure and unsecure the range. Operations on other types of secured or locked
-		/// memory do not trigger this callback.
-		/// </para>
-		/// <para>
-		/// Examples of function calls that trigger the callback function include calls to the VirtualFree, VirtualFreeEx, VirtualProtect,
-		/// VirtualProtectEx, and UnmapViewOfFile functions.
-		/// </para>
-		/// <para>
-		/// The callback function can also be triggered by a heap operation. In this case, the function must not perform any further
-		/// operations on the heap that triggered the callback. This includes calling heap functions on a private heap or the process's
-		/// default heap, or calling standard library functions such as <c>malloc</c> and <c>free</c>, which implicitly use the process's
-		/// default heap.
-		/// </para>
-		/// <para>To unregister the callback function, use the RemoveSecureMemoryCacheCallback function.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/nc-winnt-psecure_memory_cache_callback BOOLEAN
-		// PsecureMemoryCacheCallback( PVOID Addr, SIZE_T Range ) {...}
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		[PInvokeData("winnt.h", MSDNShortId = "abde4b6f-7cd8-4a4b-9b00-f035b2c29054")]
-		[return: MarshalAs(UnmanagedType.U1)]
-		public delegate bool PsecureMemoryCacheCallback(IntPtr Addr, SizeT Range);
 
 		/// <summary>
 		/// <para>The application-defined user-mode scheduling (UMS) scheduler entry point function associated with a UMS completion list.</para>
@@ -177,6 +127,58 @@ namespace Vanara.PInvoke
 		[PInvokeData("winnt.h", MSDNShortId = "10de1c48-255d-45c3-acf0-25f8a564b585")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		public delegate void RtlUmsSchedulerEntryPoint(RTL_UMS_SCHEDULER_REASON Reason, IntPtr ActivationPayload, IntPtr SchedulerParam);
+
+		/// <summary>
+		/// <para>
+		/// An application-defined function previously registered with the AddSecureMemoryCacheCallback function that is called when a
+		/// secured memory range is freed or its protections are changed.
+		/// </para>
+		/// <para>
+		/// The <c>PSECURE_MEMORY_CACHE_CALLBACK</c> type defines a pointer to this callback function. is a placeholder for the
+		/// application-defined function name.
+		/// </para>
+		/// </summary>
+		/// <param name="Addr">
+		/// <para>The starting address of the memory range.</para>
+		/// </param>
+		/// <param name="Range">
+		/// <para>The size of the memory range, in bytes.</para>
+		/// </param>
+		/// <returns>
+		/// <para>The return value indicates the success or failure of this function.</para>
+		/// <para>If the caller has secured the specified memory range, this function should unsecure the memory and return <c>TRUE</c>.</para>
+		/// <para>If the caller has not secured the specified memory range, this function should return <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// After the callback function is registered, it is called after any attempt to free the specified memory range or change its
+		/// protections. If the application has secured any part of the specified memory range, the callback function must invalidate all of
+		/// the application's cached memory mappings for the secured memory range, unsecure the secured parts of the memory range, and return
+		/// <c>TRUE</c>. Otherwise it must return <c>FALSE</c>.
+		/// </para>
+		/// <para>
+		/// The application secures and unsecures a memory range by sending requests to a device driver, which uses the MmSecureVirtualMemory
+		/// and MmUnsecureVirtualMemory functions to actually secure and unsecure the range. Operations on other types of secured or locked
+		/// memory do not trigger this callback.
+		/// </para>
+		/// <para>
+		/// Examples of function calls that trigger the callback function include calls to the VirtualFree, VirtualFreeEx, VirtualProtect,
+		/// VirtualProtectEx, and UnmapViewOfFile functions.
+		/// </para>
+		/// <para>
+		/// The callback function can also be triggered by a heap operation. In this case, the function must not perform any further
+		/// operations on the heap that triggered the callback. This includes calling heap functions on a private heap or the process's
+		/// default heap, or calling standard library functions such as <c>malloc</c> and <c>free</c>, which implicitly use the process's
+		/// default heap.
+		/// </para>
+		/// <para>To unregister the callback function, use the RemoveSecureMemoryCacheCallback function.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/nc-winnt-psecure_memory_cache_callback BOOLEAN
+		// PsecureMemoryCacheCallback( PVOID Addr, SIZE_T Range ) {...}
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		[PInvokeData("winnt.h", MSDNShortId = "abde4b6f-7cd8-4a4b-9b00-f035b2c29054")]
+		[return: MarshalAs(UnmanagedType.U1)]
+		public delegate bool SecureMemoryCacheCallback(IntPtr Addr, SizeT Range);
 
 		/// <summary>The flags that control the enforcement of the minimum and maximum working set sizes.</summary>
 		[PInvokeData("winnt.h")]
@@ -357,7 +359,7 @@ namespace Vanara.PInvoke
 		/// destination memory blocks do not overlap.
 		/// </para>
 		/// <para>
-		/// Callers of <c>RtlMoveMemory</c> can be running at any IRQL if the source and destination memory blocks are in nonpaged system
+		/// Callers of <c>RtlMoveMemory</c> can be running at any IRQL if the source and destination memory blocks are in non-paged system
 		/// memory. Otherwise, the caller must be running at IRQL &lt;= APC_LEVEL.
 		/// </para>
 		/// </remarks>
@@ -376,6 +378,170 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winnt.h")]
 		public static extern void RtlZeroMemory(IntPtr Destination, SizeT Length);
+
+		/// <summary>
+		/// Contains processor-specific register data. The system uses CONTEXT structures to perform various internal operations. Refer to
+		/// the header file WinNT.h for definitions of this structure for each processor architecture.
+		/// </summary>
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms679284(v=vs.85).aspx
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CONTEXT
+		{
+			public uint ContextFlags;
+			public uint Dr0;
+			public uint Dr1;
+			public uint Dr2;
+			public uint Dr3;
+			public uint Dr6;
+			public uint Dr7;
+
+			// Retrieved by CONTEXT_FLOATING_POINT
+			public FLOATING_SAVE_AREA FloatSave;
+
+			// Retrieved by CONTEXT_SEGMENTS
+			public uint SegGs;
+
+			public uint SegFs;
+			public uint SegEs;
+			public uint SegDs;
+
+			// Retrieved by CONTEXT_INTEGER
+			public uint Edi;
+
+			public uint Esi;
+			public uint Ebx;
+			public uint Edx;
+			public uint Ecx;
+			public uint Eax;
+
+			// Retrieved by CONTEXT_CONTROL
+			public uint Ebp;
+
+			public uint Eip;
+			public uint SegCs;
+			public uint EFlags;
+			public uint Esp;
+			public uint SegSs;
+
+			// Retrieved by CONTEXT_EXTENDED_REGISTERS
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 512)]
+			public byte[] ExtendedRegisters;
+
+			/// <summary>Represents the 80387 save area on WOW64. Refer to the header file WinNT.h for the definition of this structure.</summary>
+			// https://msdn.microsoft.com/en-us/library/windows/desktop/ms681671(v=vs.85).aspx
+			[PInvokeData("WinNT.h", MSDNShortId = "ms681671")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct FLOATING_SAVE_AREA
+			{
+				public int ControlWord;
+				public int StatusWord;
+				public int TagWord;
+				public int ErrorOffset;
+				public int ErrorSelector;
+				public int DataOffset;
+				public int DataSelector;
+				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)] public byte[] RegisterArea;
+				public int Cr0NpxState;
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="CONTEXT"/> struct.</summary>
+			/// <param name="flags">The context flags.</param>
+			public CONTEXT(uint flags) : this() { ContextFlags = flags; }
+		}
+
+		[StructLayout(LayoutKind.Sequential, Pack = 16)]
+		public struct CONTEXT64
+		{
+			public ulong P1Home;
+			public ulong P2Home;
+			public ulong P3Home;
+			public ulong P4Home;
+			public ulong P5Home;
+			public ulong P6Home;
+
+			public uint ContextFlags;
+			public uint MxCsr;
+
+			public ushort SegCs;
+			public ushort SegDs;
+			public ushort SegEs;
+			public ushort SegFs;
+			public ushort SegGs;
+			public ushort SegSs;
+			public uint EFlags;
+
+			public ulong Dr0;
+			public ulong Dr1;
+			public ulong Dr2;
+			public ulong Dr3;
+			public ulong Dr6;
+			public ulong Dr7;
+
+			public ulong Rax;
+			public ulong Rcx;
+			public ulong Rdx;
+			public ulong Rbx;
+			public ulong Rsp;
+			public ulong Rbp;
+			public ulong Rsi;
+			public ulong Rdi;
+			public ulong R8;
+			public ulong R9;
+			public ulong R10;
+			public ulong R11;
+			public ulong R12;
+			public ulong R13;
+			public ulong R14;
+			public ulong R15;
+			public ulong Rip;
+
+			public XSAVE_FORMAT64 DUMMYUNIONNAME;
+
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 26)]
+			public M128A[] VectorRegister;
+
+			public ulong VectorControl;
+
+			public ulong DebugControl;
+			public ulong LastBranchToRip;
+			public ulong LastBranchFromRip;
+			public ulong LastExceptionToRip;
+			public ulong LastExceptionFromRip;
+
+			[StructLayout(LayoutKind.Sequential)]
+			public struct M128A
+			{
+				public ulong High;
+				public long Low;
+			}
+
+			[StructLayout(LayoutKind.Sequential, Pack = 16)]
+			public struct XSAVE_FORMAT64
+			{
+				public ushort ControlWord;
+				public ushort StatusWord;
+				public byte TagWord;
+				public byte Reserved1;
+				public ushort ErrorOpcode;
+				public uint ErrorOffset;
+				public ushort ErrorSelector;
+				public ushort Reserved2;
+				public uint DataOffset;
+				public ushort DataSelector;
+				public ushort Reserved3;
+				public uint MxCsr;
+				public uint MxCsr_Mask;
+
+				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+				public M128A[] FloatRegisters;
+
+				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+				public M128A[] XmmRegisters;
+
+				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 96)]
+				public byte[] Reserved4;
+			}
+		}
 
 		/// <summary>Contains the hardware counter value.</summary>
 		// typedef struct _HARDWARE_COUNTER_DATA { HARDWARE_COUNTER_TYPE Type; DWORD Reserved; DWORD64 Value;} HARDWARE_COUNTER_DATA,
@@ -397,8 +563,9 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Represents an entry in the function table on 64-bit Windows.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-runtime_function
-		// typedef struct _IMAGE_RUNTIME_FUNCTION_ENTRY { DWORD BeginAddress; DWORD EndAddress; union { DWORD UnwindInfoAddress; DWORD UnwindData; } DUMMYUNIONNAME; } RUNTIME_FUNCTION, *PRUNTIME_FUNCTION, _IMAGE_RUNTIME_FUNCTION_ENTRY, *_PIMAGE_RUNTIME_FUNCTION_ENTRY;
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-runtime_function typedef struct _IMAGE_RUNTIME_FUNCTION_ENTRY {
+		// DWORD BeginAddress; DWORD EndAddress; union { DWORD UnwindInfoAddress; DWORD UnwindData; } DUMMYUNIONNAME; } RUNTIME_FUNCTION,
+		// *PRUNTIME_FUNCTION, _IMAGE_RUNTIME_FUNCTION_ENTRY, *_PIMAGE_RUNTIME_FUNCTION_ENTRY;
 		[PInvokeData("winnt.h", MSDNShortId = "9ed16f9a-3403-4ba9-9968-f51f6788a1f8")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct IMAGE_RUNTIME_FUNCTION_ENTRY
@@ -461,6 +628,9 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = MAX_HW_COUNTERS)]
 			public HARDWARE_COUNTER_DATA[] HwCounters;
+
+			/// <summary>Gets a default instance with the size pre-set.</summary>
+			public static readonly PERFORMANCE_DATA Default = new PERFORMANCE_DATA { Size = (ushort)Marshal.SizeOf(typeof(PERFORMANCE_DATA)), Version = PERFORMANCE_DATA_VERSION };
 		}
 
 		/// <summary>The <c>SECURITY_CAPABILITIES</c> structure defines the security capabilities of the app container.</summary>
@@ -511,14 +681,6 @@ namespace Vanara.PInvoke
 
 		[PInvokeData("winnt.h")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct UNWIND_HISTORY_TABLE_ENTRY
-		{
-			public ulong ImageBase;
-			public IMAGE_RUNTIME_FUNCTION_ENTRY FunctionEntry;
-		}
-
-		[PInvokeData("winnt.h")]
-		[StructLayout(LayoutKind.Sequential)]
 		public struct UNWIND_HISTORY_TABLE
 		{
 			public uint Count;
@@ -528,8 +690,17 @@ namespace Vanara.PInvoke
 			public byte Once;
 			public ulong LowAddress;
 			public ulong HighAddress;
+
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 12)]
 			public UNWIND_HISTORY_TABLE_ENTRY[] Entry;
+		}
+
+		[PInvokeData("winnt.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct UNWIND_HISTORY_TABLE_ENTRY
+		{
+			public ulong ImageBase;
+			public IMAGE_RUNTIME_FUNCTION_ENTRY FunctionEntry;
 		}
 
 		/// <summary>
@@ -859,6 +1030,77 @@ namespace Vanara.PInvoke
 
 			/// <summary>Undocumented.</summary>
 			public static uint CONTEXT_XSTATE => systemContext | 0x00000040;
+		}
+
+		/// <summary>
+		/// Contains processor-specific register data. The system uses <c>CONTEXT</c> structures to perform various internal operations.
+		/// Refer to the header file WinNT.h for definitions of this structure for each processor architecture.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_arm64_nt_context typedef struct _ARM64_NT_CONTEXT { DWORD
+		// ContextFlags; DWORD Cpsr; union { struct { DWORD64 X0; DWORD64 X1; DWORD64 X2; DWORD64 X3; DWORD64 X4; DWORD64 X5; DWORD64 X6;
+		// DWORD64 X7; DWORD64 X8; DWORD64 X9; DWORD64 X10; DWORD64 X11; DWORD64 X12; DWORD64 X13; DWORD64 X14; DWORD64 X15; DWORD64 X16;
+		// DWORD64 X17; DWORD64 X18; DWORD64 X19; DWORD64 X20; DWORD64 X21; DWORD64 X22; DWORD64 X23; DWORD64 X24; DWORD64 X25; DWORD64 X26;
+		// DWORD64 X27; DWORD64 X28; DWORD64 Fp; DWORD64 Lr; } DUMMYSTRUCTNAME; DWORD64 X[31]; } DUMMYUNIONNAME; DWORD64 Sp; DWORD64 Pc;
+		// ARM64_NT_NEON128 V[32]; DWORD Fpcr; DWORD Fpsr; DWORD Bcr[ARM64_MAX_BREAKPOINTS]; DWORD64 Bvr[ARM64_MAX_BREAKPOINTS]; DWORD
+		// Wcr[ARM64_MAX_WATCHPOINTS]; DWORD64 Wvr[ARM64_MAX_WATCHPOINTS]; } ARM64_NT_CONTEXT, *PARM64_NT_CONTEXT;
+		[PInvokeData("winnt.h", MSDNShortId = "a6c201b3-4402-4de4-89c7-e6e2fbcd27f7")]
+		public class SafeCONTEXT : SafeHandle
+		{
+			private SafeHGlobalHandle buffer;
+
+			/// <summary>Initializes a new instance of the <see cref="SafeCONTEXT"/> class.</summary>
+			/// <param name="contextFlags">The context flags.</param>
+			public SafeCONTEXT(uint contextFlags) : base(IntPtr.Zero, true)
+			{
+				uint len = 0;
+				InitializeContext(IntPtr.Zero, contextFlags, out _, ref len);
+				buffer = new SafeHGlobalHandle((int)len);
+				if (!InitializeContext(buffer.DangerousGetHandle(), contextFlags, out var ptr, ref len))
+					Win32Error.ThrowLastError();
+				SetHandle(ptr);
+			}
+
+			/// <inheritdoc/>
+			public override bool IsInvalid => handle == IntPtr.Zero;
+
+			/// <summary>Clones this instance.</summary>
+			/// <param name="contextFlags">The context flags.</param>
+			/// <returns>A full copy of this instance.</returns>
+			public SafeCONTEXT Clone(uint contextFlags)
+			{
+				var output = new SafeCONTEXT(contextFlags);
+				if (!CopyContext(output, contextFlags, handle))
+					Win32Error.ThrowLastError();
+				return output;
+			}
+
+			/// <summary>Converts to a <c>CONTEXT</c> structure.</summary>
+			/// <typeparam name="TContext">The type of the context structure to which to convert.</typeparam>
+			/// <returns>The context structure.</returns>
+			public TContext ToContextStruct<TContext>() where TContext : struct =>
+				handle.ToStructure<TContext>(buffer.Size - handle.ToInt32() + buffer.DangerousGetHandle().ToInt32());
+
+			/// <inheritdoc/>
+			protected override bool ReleaseHandle()
+			{
+				buffer.Dispose();
+				SetHandle(IntPtr.Zero);
+				return true;
+			}
+
+			/// <summary>Creates a new instance by copying from a <c>CONTEXT</c> structure.</summary>
+			/// <typeparam name="TContext">The type of the context to copy from.</typeparam>
+			/// <param name="context">The context value.</param>
+			/// <param name="contextFlags">The context flags.</param>
+			/// <returns>A new instance.</returns>
+			public static SafeCONTEXT FromContextStruct<TContext>(in TContext context, uint contextFlags) where TContext : struct
+			{
+				var output = new SafeCONTEXT(contextFlags);
+				var pCtx = new PinnedObject(context);
+				if (!CopyContext(output, contextFlags, pCtx))
+					Win32Error.ThrowLastError();
+				return output;
+			}
 		}
 	}
 }

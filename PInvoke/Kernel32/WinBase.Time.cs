@@ -120,5 +120,43 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724274")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FileTimeToDosDateTime(in FILETIME lpFileTime, out ushort lpFatDate, out ushort lpFatTime);
+
+		/// <summary>
+		/// Gets a range, expressed in years, for which a <c>DYNAMIC_TIME_ZONE_INFORMATION</c> has valid entries. Use the returned value to
+		/// identify the specific years to request when calling <c>GetTimeZoneInformationForYear</c> to retrieve time zone information for a
+		/// time zone that experiences annual boundary changes due to daylight saving time adjustments.
+		/// </summary>
+		/// <param name="lpTimeZoneInformation">Specifies settings for a time zone and dynamic daylight saving time.</param>
+		/// <param name="FirstYear">The year that marks the beginning of the range to pass to <c>GetTimeZoneInformationForYear</c>.</param>
+		/// <param name="LastYear">The year that marks the end of the range to pass to <c>GetTimeZoneInformationForYear</c>.</param>
+		/// <returns>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>The operation succeeded.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_FILE_NOT_FOUND</term>
+		/// <term>The system cannot find the effective years.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>One of the parameter values is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>Any other value</term>
+		/// <term>The operation failed.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// DWORD WINAPI GetDynamicTimeZoneInformationEffectiveYears( _In_ const PDYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation, _Out_
+		// LPDWORD FirstYear, _Out_ LPDWORD LastYear); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706894(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Winbase.h", MSDNShortId = "hh706894")]
+		public static extern Win32Error GetDynamicTimeZoneInformationEffectiveYears(in DYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation, out uint FirstYear, out uint LastYear);
 	}
 }

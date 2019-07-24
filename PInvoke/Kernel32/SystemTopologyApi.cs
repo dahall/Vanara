@@ -13,7 +13,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// BOOL WINAPI GetNumaHighestNodeNumber( _Out_ PULONG HighestNodeNumber); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683203(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "ms683203")]
+		[PInvokeData("systemtopology.h", MSDNShortId = "ms683203")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetNumaHighestNodeNumber(out uint HighestNodeNumber);
 
@@ -32,7 +32,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// BOOL GetNumaNodeProcessorMaskEx( _In_ USHORT Node, _Out_ PGROUP_AFFINITY ProcessorMask); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405493(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "dd405493")]
+		[PInvokeData("systemtopology.h", MSDNShortId = "dd405493")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetNumaNodeProcessorMaskEx(ushort Node, out GROUP_AFFINITY ProcessorMask);
 
@@ -45,7 +45,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// BOOL GetNumaProximityNodeEx( _In_ ULONG ProximityId, _Out_ PUSHORT NodeNumber); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405495(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "dd405495")]
+		[PInvokeData("systemtopology.h", MSDNShortId = "dd405495")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetNumaProximityNodeEx(uint ProximityId, out ushort NodeNumber);
 
