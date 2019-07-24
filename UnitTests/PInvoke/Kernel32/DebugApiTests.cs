@@ -8,19 +8,45 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture]
 	public class DebugApiTests
 	{
+		[Test]
+		public void CheckRemoteDebuggerPresentTest()
+		{
+			Assert.That(CheckRemoteDebuggerPresent(GetCurrentProcess(), out var present), ResultIs.Successful);
+			Assert.That(present, Is.False);
+		}
+
+		[Test]
+		public void IsDebuggerPresentTest()
+		{
+			Assert.That(IsDebuggerPresent(), Is.False);
+		}
+
+		[Test]
+		public void OutputDebugStringTest()
+		{
+			OutputDebugString("Hello");
+		}
+
 		// TODO: Figure out how WaitForDebugEvent works
 		// [Test]
 		public void TestMethod()
 		{
-			TestContext.WriteLine($"EXCEPTION_RECORD: {Marshal.SizeOf(typeof(EXCEPTION_RECORD))}");
-			TestContext.WriteLine($"DEBUG_EVENT.EXCEPTION_DEBUG_INFO: {Marshal.SizeOf(typeof(DEBUG_EVENT.EXCEPTION_DEBUG_INFO))}");
-			TestContext.WriteLine($"DEBUG_EVENT.EXCEPTION_INFO: {Marshal.SizeOf(typeof(DEBUG_EVENT.EXCEPTION_INFO))}");
-			var pid = GetCurrentProcessId();
-			DebugActiveProcess(pid);
-			{
-				Assert.That(WaitForDebugEvent(out var evt, 2000));
-				DebugActiveProcessStop(pid);
-			}
+			var p = CSharpRunner.RunProcess(typeof(DebugProcess));
+			var pid = (uint)p.Id;
+			Assert.That(DebugActiveProcess(pid), ResultIs.Successful);
+			//Assert.That(ContinueDebugEvent(pid, ))
+			Assert.That(WaitForDebugEvent(out var evt, 2000));
+			DebugActiveProcessStop(pid);
+		}
+	}
+
+	public static class DebugProcess
+	{
+		public static int Main()
+		{
+			Sleep(2000);
+			DebugBreak();
+			return 0;
 		}
 	}
 }
