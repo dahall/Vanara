@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework.Constraints;
+using System;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -8,13 +9,32 @@ namespace Vanara.PInvoke.Tests
 		public static SuccessfulConstraint Successful => new SuccessfulConstraint();
 		public static ValueConstraint Value(object value) => new ValueConstraint(value);
 		public static ValidHandleConstraint ValidHandle => new ValidHandleConstraint();
+		public static FailureConstraint FailureCode(object expectedError) => new FailureConstraint(expectedError);
 	}
 
 	public class FailureConstraint : Constraint
 	{
-		public FailureConstraint()
+		public FailureConstraint(object expected = null)
 		{
+			switch (expected)
+			{
+				case null:
+					break;
+				case int i:
+					Expected = new Win32Error(i);
+					break;
+				case uint i:
+					Expected = new HRESULT(i);
+					break;
+				case IErrorProvider iep:
+					Expected = iep;
+					break;
+				default:
+					throw new ArgumentException();
+			}
 		}
+
+		public object Expected { get; }
 
 		public override ConstraintResult ApplyTo<TActual>(TActual actual)
 		{
@@ -28,38 +48,39 @@ namespace Vanara.PInvoke.Tests
 					if (!b)
 					{
 						var le = Win32Error.GetLastError();
-						success = le.Failed;
+						if (Expected != null) Description = Expected.ToString();
+						success = Expected is null ? le.Failed : le.Failed && ((IErrorProvider)Expected).ToHRESULT().Equals(le.ToHRESULT());
 						updActual = le;
 					}
 					break;
 
 				case HRESULT hr:
-					success = hr.Failed;
-					Description = nameof(HRESULT.S_OK);
+					success = Expected is null ? hr.Failed : hr.Failed && ((IErrorProvider)Expected).ToHRESULT().Equals(hr);
+					Description = Expected?.ToString() ?? nameof(HRESULT.S_OK);
 					break;
 
 				case Win32Error err:
-					success = err.Failed;
-					Description = nameof(Win32Error.ERROR_SUCCESS);
+					success = Expected is null ? err.Failed : err.Failed && ((IErrorProvider)Expected).ToHRESULT().Equals(err.ToHRESULT());
+					Description = Expected?.ToString() ?? nameof(Win32Error.ERROR_SUCCESS);
 					break;
 
 				case NTStatus st:
-					success = st.Failed;
-					Description = nameof(NTStatus.STATUS_SUCCESS);
+					success = Expected is null ? st.Failed : st.Failed && ((IErrorProvider)Expected).ToHRESULT().Equals(((IErrorProvider)st).ToHRESULT());
+					Description = Expected?.ToString() ?? nameof(NTStatus.STATUS_SUCCESS);
 					break;
 
 				case int i:
 					var e = new Win32Error(i);
-					success = e.Failed;
+					success = Expected is null ? e.Failed : e.Failed && ((IErrorProvider)Expected).ToHRESULT().Equals(e.ToHRESULT());
 					updActual = e;
-					Description = nameof(Win32Error.ERROR_SUCCESS);
+					Description = Expected?.ToString() ?? nameof(Win32Error.ERROR_SUCCESS);
 					break;
 
 				case uint ui:
 					var h = new HRESULT(ui);
-					success = h.Failed;
+					success = Expected is null ? h.Failed : h.Failed && ((IErrorProvider)Expected).ToHRESULT().Equals(h);
 					updActual = h;
-					Description = nameof(HRESULT.S_OK);
+					Description = Expected?.ToString() ?? nameof(HRESULT.S_OK);
 					break;
 
 				default:
