@@ -22,7 +22,9 @@ namespace Vanara.PInvoke.Tests
 		public static object Run(MethodInfo methodInfo, params object[] args) =>
 			Invoke(CompileLib(Decompile(methodInfo.DeclaringType), methodInfo.DeclaringType.GetReferencedAssemblyNames()), methodInfo.DeclaringType.FullName, methodInfo.Name, args);
 
-		public static System.Diagnostics.Process RunProcess(Type mainType, string args = null)
+		public static Process RunProcess<T>(string args = null) where T : class => RunProcess(typeof(T), args);
+
+		public static Process RunProcess(Type mainType, string args = null)
 		{
 			if (mainType.GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) is null)
 				throw new ArgumentException("Supplied type must include a static Main method.");
@@ -31,9 +33,9 @@ namespace Vanara.PInvoke.Tests
 			return CreateProcess(exe, args, Path.GetDirectoryName(mainType.Assembly.Location));
 		}
 
-		public static System.Diagnostics.Process RunProcess(string snippet, string workingDir, IEnumerable<string> references = null, string typeName = null, string args = null)
+		public static Process RunProcess(string snippet, string workingDir, IEnumerable<string> references = null, string typeName = null, string args = null)
 		{
-			var exe = Path.ChangeExtension(Path.GetTempFileName(), "exe");
+			var exe = Path.Combine(workingDir, "tmp" + Guid.NewGuid().ToString("N") + ".exe");
 			CompileExe(exe, Parse(snippet), references, typeName);
 			return CreateProcess(exe, args, workingDir);
 		}
