@@ -174,12 +174,12 @@ namespace Vanara.InteropServices
 		/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="byte"/> pointer.</summary>
 		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandle"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static unsafe explicit operator byte* (SafeAllocatedMemoryHandle hMem) => (byte*)hMem.handle;
+		public static unsafe explicit operator byte*(SafeAllocatedMemoryHandle hMem) => (byte*)hMem.handle;
 
-		/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="System.IntPtr"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="System.IntPtr"/>.</summary>
 		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandle"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(SafeAllocatedMemoryHandle hMem) => hMem.handle;
+		public static implicit operator IntPtr(SafeAllocatedMemoryHandle hMem) => hMem.handle;
 
 		private class SafeBufferImpl : SafeBuffer
 		{
