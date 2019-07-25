@@ -21,60 +21,47 @@ namespace Vanara.PInvoke.Tests
 			TestContext.Write("This computer has page size {0}.\n", sSysInfo.dwPageSize);
 
 			// Calculate the number of pages of memory to request.
-
 			SizeT NumberOfPages = MEMORY_REQUESTED / sSysInfo.dwPageSize;
 			TestContext.Write("Requesting {0} pages of memory.\n", NumberOfPages);
 
 			// Enable the privilege.
-
 			using (var hProc = SafeHPROCESS.Current)
 			using (new PrivBlock("SeLockMemoryPrivilege", hProc))
 			{
 				// Allocate the physical memory.
-
 				var aPFNs = new IntPtr[NumberOfPages];
 
 				var NumberOfPagesInitial = NumberOfPages;
 
-				if (!AllocateUserPhysicalPages(hProc, ref NumberOfPages, aPFNs))
-					FailLastErr("Cannot allocate physical pages ({0})");
+				Assert.That(AllocateUserPhysicalPages(hProc, ref NumberOfPages, aPFNs), ResultIs.Successful);
 
 				Assert.That(NumberOfPagesInitial, Is.EqualTo(NumberOfPages));
 
 				// Reserve the virtual memory.
-
-				var lpMemReserved = VirtualAlloc(IntPtr.Zero, MEMORY_REQUESTED, MEM_ALLOCATION_TYPE.MEM_RESERVE | MEM_ALLOCATION_TYPE.MEM_PHYSICAL, MEM_PROTECTION.PAGE_READWRITE);
-				if (lpMemReserved == IntPtr.Zero)
-					FailLastErr("Cannot reserve memory.");
+				IntPtr lpMemReserved;
+				Assert.That(lpMemReserved = VirtualAlloc(IntPtr.Zero, MEMORY_REQUESTED, MEM_ALLOCATION_TYPE.MEM_RESERVE | MEM_ALLOCATION_TYPE.MEM_PHYSICAL, MEM_PROTECTION.PAGE_READWRITE), ResultIs.ValidHandle);
 
 				try
 				{
 					// Map the physical memory into the window.
-
-					if (!MapUserPhysicalPages(lpMemReserved, NumberOfPages, aPFNs))
-						FailLastErr("MapUserPhysicalPages failed ({0})");
+					Assert.That(MapUserPhysicalPages(lpMemReserved, NumberOfPages, aPFNs), ResultIs.Successful);
 
 					// unmap
+					Assert.That(MapUserPhysicalPages(lpMemReserved, NumberOfPages, null), ResultIs.Successful);
 
-					if (!MapUserPhysicalPages(lpMemReserved, NumberOfPages, null))
-						FailLastErr("MapUserPhysicalPages failed ({0})");
+					// Map the physical memory into the window scattered.
+					Assert.That(MapUserPhysicalPagesScatter(lpMemReserved, NumberOfPages, aPFNs), ResultIs.Successful);
+
+					// unmap
+					Assert.That(MapUserPhysicalPagesScatter(lpMemReserved, NumberOfPages, null), ResultIs.Successful);
 
 					// Free the physical pages.
-
-					if (!FreeUserPhysicalPages(hProc, ref NumberOfPages, aPFNs))
-						FailLastErr("Cannot free physical pages, error {0}.");
+					Assert.That(FreeUserPhysicalPages(hProc, ref NumberOfPages, aPFNs), ResultIs.Successful);
 				}
 				finally
 				{
 					// Free virtual memory.
-
-					if (!VirtualFree(lpMemReserved, 0, MEM_ALLOCATION_TYPE.MEM_RELEASE))
-						FailLastErr("Call to VirtualFree has failed ({0})");
-				}
-
-				void FailLastErr(string fmt)
-				{
-					Assert.Fail(fmt, Win32Error.GetLastError());
+					Assert.That(VirtualFree(lpMemReserved, 0, MEM_ALLOCATION_TYPE.MEM_RELEASE), ResultIs.Successful);
 				}
 			}
 		}

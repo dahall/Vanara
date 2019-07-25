@@ -1528,6 +1528,47 @@ namespace Vanara.PInvoke
 		public static extern bool MapUserPhysicalPages([In] IntPtr lpAddress, SizeT NumberOfPages, [In] IntPtr[] UserPfnArray);
 
 		/// <summary>
+		/// <para>Maps previously allocated physical memory pages at a specified address in an Address Windowing Extensions (AWE) region.</para>
+		/// <para>
+		/// <c>64-bit Windows on Itanium-based systems:</c> Due to the difference in page sizes, <c>MapUserPhysicalPagesScatter</c> is not
+		/// supported for 32-bit applications.
+		/// </para>
+		/// </summary>
+		/// <param name="VirtualAddresses">
+		/// <para>A pointer to an array of starting addresses of the regions of memory to remap.</para>
+		/// <para>
+		/// Each entry in VirtualAddresses must be within the address range that the <c>VirtualAlloc</c> function returns when the Address
+		/// Windowing Extensions (AWE) region is allocated. The value in NumberOfPages indicates the size of the array. Entries can be from
+		/// multiple Address Windowing Extensions (AWE) regions.
+		/// </para>
+		/// </param>
+		/// <param name="NumberOfPages">
+		/// <para>The size of the physical memory and virtual address space for which to establish translations, in pages.</para>
+		/// <para>The array at VirtualAddresses specifies the virtual address range.</para>
+		/// </param>
+		/// <param name="PageArray">
+		/// <para>A pointer to an array of values that indicates how each corresponding page in VirtualAddresses should be treated.</para>
+		/// <para>
+		/// A 0 (zero) indicates that the corresponding entry in VirtualAddresses should be unmapped, and any nonzero value that it has
+		/// should be mapped.
+		/// </para>
+		/// <para>If this parameter is <c>NULL</c>, then every address in the VirtualAddresses array is unmapped.</para>
+		/// <para>The value in NumberOfPages indicates the size of the array.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+		/// <para>
+		/// If the function fails, the return value is <c>FALSE</c>, and the function does not map or unmap—partial or otherwise. To get
+		/// extended error information, call <c>GetLastError</c>.
+		/// </para>
+		/// </returns>
+		// BOOL WINAPI MapUserPhysicalPagesScatter( _In_ PVOID *VirtualAddresses, _In_ ULONG_PTR NumberOfPages, _In_ PULONG_PTR PageArray); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366755(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "aa366755")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool MapUserPhysicalPagesScatter([In] IntPtr VirtualAddresses, SizeT NumberOfPages, [In] IntPtr[] PageArray);
+
+		/// <summary>
 		/// <para>Maps a view of a file mapping into the address space of a calling process.</para>
 		/// <para>
 		/// To specify a suggested base address for the view, use the <c>MapViewOfFileEx</c> function. However, this practice is not recommended.
