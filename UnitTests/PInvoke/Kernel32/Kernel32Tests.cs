@@ -68,19 +68,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void GetCompressedFileSizeTest()
-		{
-			var err = GetCompressedFileSize(fn, out ulong sz);
-			if (err.Failed)
-				TestContext.WriteLine(err);
-			Assert.That(sz, Is.GreaterThan(0));
-
-			sz = 0;
-			err = GetCompressedFileSize(@"C:\NoFile.txt", out sz);
-			Assert.That(err == Win32Error.ERROR_FILE_NOT_FOUND);
-		}
-
-		[Test]
 		public void GetGamingDeviceModelInformationTest()
 		{
 			Assert.That(GetGamingDeviceModelInformation(out var i), Is.EqualTo((HRESULT)0));

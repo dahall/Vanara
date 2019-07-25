@@ -55,95 +55,6 @@ namespace Vanara.PInvoke
 		public const uint INFINITE = 0xffffffff;
 
 		/// <summary>
-		/// An application-defined callback function used with the CopyFileEx, MoveFileTransacted, and MoveFileWithProgress functions. It is
-		/// called when a portion of a copy or move operation is completed. The <c>LPPROGRESS_ROUTINE</c> type defines a pointer to this
-		/// callback function. <c>CopyProgressRoutine</c> is a placeholder for the application-defined function name.
-		/// </summary>
-		/// <param name="TotalFileSize">
-		/// <para>The total size of the file, in bytes.</para>
-		/// </param>
-		/// <param name="TotalBytesTransferred">
-		/// <para>The total number of bytes transferred from the source file to the destination file since the copy operation began.</para>
-		/// </param>
-		/// <param name="StreamSize">
-		/// <para>The total size of the current file stream, in bytes.</para>
-		/// </param>
-		/// <param name="StreamBytesTransferred">
-		/// <para>
-		/// The total number of bytes in the current stream that have been transferred from the source file to the destination file since the
-		/// copy operation began.
-		/// </para>
-		/// </param>
-		/// <param name="dwStreamNumber">
-		/// <para>A handle to the current stream. The first time <c>CopyProgressRoutine</c> is called, the stream number is 1.</para>
-		/// </param>
-		/// <param name="dwCallbackReason">
-		/// <para>The reason that <c>CopyProgressRoutine</c> was called. This parameter can be one of the following values.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>CALLBACK_CHUNK_FINISHED 0x00000000</term>
-		/// <term>Another part of the data file was copied.</term>
-		/// </item>
-		/// <item>
-		/// <term>CALLBACK_STREAM_SWITCH 0x00000001</term>
-		/// <term>
-		/// Another stream was created and is about to be copied. This is the callback reason given when the callback routine is first invoked.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="hSourceFile">
-		/// <para>A handle to the source file.</para>
-		/// </param>
-		/// <param name="hDestinationFile">
-		/// <para>A handle to the destination file</para>
-		/// </param>
-		/// <param name="lpData">
-		/// <para>Argument passed to <c>CopyProgressRoutine</c> by CopyFileEx, MoveFileTransacted, or MoveFileWithProgress.</para>
-		/// </param>
-		/// <returns>
-		/// <para>The <c>CopyProgressRoutine</c> function should return one of the following values.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code/value</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>PROGRESS_CANCEL 1</term>
-		/// <term>Cancel the copy operation and delete the destination file.</term>
-		/// </item>
-		/// <item>
-		/// <term>PROGRESS_CONTINUE 0</term>
-		/// <term>Continue the copy operation.</term>
-		/// </item>
-		/// <item>
-		/// <term>PROGRESS_QUIET 3</term>
-		/// <term>Continue the copy operation, but stop invoking CopyProgressRoutine to report progress.</term>
-		/// </item>
-		/// <item>
-		/// <term>PROGRESS_STOP 2</term>
-		/// <term>Stop the copy operation. It can be restarted at a later time.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// An application can use this information to display a progress bar that shows the total number of bytes copied as a percent of the
-		/// total file size.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nc-winbase-lpprogress_routine LPPROGRESS_ROUTINE LpprogressRoutine;
-		// DWORD LpprogressRoutine( LARGE_INTEGER TotalFileSize, LARGE_INTEGER TotalBytesTransferred, LARGE_INTEGER StreamSize, LARGE_INTEGER
-		// StreamBytesTransferred, DWORD dwStreamNumber, DWORD dwCallbackReason, HANDLE hSourceFile, HANDLE hDestinationFile, LPVOID lpData ) {...}
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
-		[PInvokeData("winbase.h", MSDNShortId = "2c02b212-d4ac-4b01-8955-2561d8c42b1b")]
-		public delegate COPYFILE_CALLBACK_RESULT LpprogressRoutine(long TotalFileSize, long TotalBytesTransferred, long StreamSize, long StreamBytesTransferred, uint dwStreamNumber, COPYFILE_CALLBACK dwCallbackReason, IntPtr hSourceFile, IntPtr hDestinationFile, IntPtr lpData);
-
-		/// <summary>
 		/// <para>
 		/// An application-defined callback function used with the CopyFile2 function. It is called when a portion of a copy or move
 		/// operation is completed. The <c>PCOPYFILE2_PROGRESS_ROUTINE</c> type defines a pointer to this callback function.
@@ -235,7 +146,96 @@ namespace Vanara.PInvoke
 		// pvCallbackContext ) {...}
 		[PInvokeData("winbase.h", MSDNShortId = "d14b5f5b-c353-49e8-82bb-a695a3ec76fd")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate COPYFILE2_MESSAGE_ACTION Pcopyfile2ProgressRoutine(ref COPYFILE2_MESSAGE pMessage, IntPtr pvCallbackContext);
+		public delegate COPYFILE2_MESSAGE_ACTION CopyFile2ProgressRoutine(ref COPYFILE2_MESSAGE pMessage, IntPtr pvCallbackContext);
+
+		/// <summary>
+		/// An application-defined callback function used with the CopyFileEx, MoveFileTransacted, and MoveFileWithProgress functions. It is
+		/// called when a portion of a copy or move operation is completed. The <c>LPPROGRESS_ROUTINE</c> type defines a pointer to this
+		/// callback function. <c>CopyProgressRoutine</c> is a placeholder for the application-defined function name.
+		/// </summary>
+		/// <param name="TotalFileSize">
+		/// <para>The total size of the file, in bytes.</para>
+		/// </param>
+		/// <param name="TotalBytesTransferred">
+		/// <para>The total number of bytes transferred from the source file to the destination file since the copy operation began.</para>
+		/// </param>
+		/// <param name="StreamSize">
+		/// <para>The total size of the current file stream, in bytes.</para>
+		/// </param>
+		/// <param name="StreamBytesTransferred">
+		/// <para>
+		/// The total number of bytes in the current stream that have been transferred from the source file to the destination file since the
+		/// copy operation began.
+		/// </para>
+		/// </param>
+		/// <param name="dwStreamNumber">
+		/// <para>A handle to the current stream. The first time <c>CopyProgressRoutine</c> is called, the stream number is 1.</para>
+		/// </param>
+		/// <param name="dwCallbackReason">
+		/// <para>The reason that <c>CopyProgressRoutine</c> was called. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CALLBACK_CHUNK_FINISHED 0x00000000</term>
+		/// <term>Another part of the data file was copied.</term>
+		/// </item>
+		/// <item>
+		/// <term>CALLBACK_STREAM_SWITCH 0x00000001</term>
+		/// <term>
+		/// Another stream was created and is about to be copied. This is the callback reason given when the callback routine is first invoked.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="hSourceFile">
+		/// <para>A handle to the source file.</para>
+		/// </param>
+		/// <param name="hDestinationFile">
+		/// <para>A handle to the destination file</para>
+		/// </param>
+		/// <param name="lpData">
+		/// <para>Argument passed to <c>CopyProgressRoutine</c> by CopyFileEx, MoveFileTransacted, or MoveFileWithProgress.</para>
+		/// </param>
+		/// <returns>
+		/// <para>The <c>CopyProgressRoutine</c> function should return one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PROGRESS_CANCEL 1</term>
+		/// <term>Cancel the copy operation and delete the destination file.</term>
+		/// </item>
+		/// <item>
+		/// <term>PROGRESS_CONTINUE 0</term>
+		/// <term>Continue the copy operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>PROGRESS_QUIET 3</term>
+		/// <term>Continue the copy operation, but stop invoking CopyProgressRoutine to report progress.</term>
+		/// </item>
+		/// <item>
+		/// <term>PROGRESS_STOP 2</term>
+		/// <term>Stop the copy operation. It can be restarted at a later time.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// An application can use this information to display a progress bar that shows the total number of bytes copied as a percent of the
+		/// total file size.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nc-winbase-lpprogress_routine LPPROGRESS_ROUTINE LpprogressRoutine;
+		// DWORD LpprogressRoutine( LARGE_INTEGER TotalFileSize, LARGE_INTEGER TotalBytesTransferred, LARGE_INTEGER StreamSize, LARGE_INTEGER
+		// StreamBytesTransferred, DWORD dwStreamNumber, DWORD dwCallbackReason, HANDLE hSourceFile, HANDLE hDestinationFile, LPVOID lpData ) {...}
+		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
+		[PInvokeData("winbase.h", MSDNShortId = "2c02b212-d4ac-4b01-8955-2561d8c42b1b")]
+		public delegate COPYFILE_CALLBACK_RESULT LpprogressRoutine(long TotalFileSize, long TotalBytesTransferred, long StreamSize, long StreamBytesTransferred, uint dwStreamNumber, COPYFILE_CALLBACK dwCallbackReason, IntPtr hSourceFile, IntPtr hDestinationFile, IntPtr lpData);
 
 		/// <summary>Flags for SetSearchPathMode.</summary>
 		[PInvokeData("winbase.h", MSDNShortId = "1874933d-92c3-4945-a3e4-e6dede232d5e")]
@@ -1695,8 +1695,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>Review Security Considerations: Windows User Interface before continuing.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-lstrcpyna
-		// LPSTR lstrcpynA( LPSTR lpString1, LPCSTR lpString2, int iMaxLength );
+		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-lstrcpyna LPSTR lstrcpynA( LPSTR lpString1, LPCSTR
+		// lpString2, int iMaxLength );
 		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h")]
 		public static extern IntPtr lstrcpyn(StringBuilder lpString1, string lpString2, int iMaxLength);

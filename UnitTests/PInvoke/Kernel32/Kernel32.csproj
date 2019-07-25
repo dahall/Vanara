@@ -48,6 +48,7 @@
     <Compile Include="AppModelTests.cs" />
     <Compile Include="InterlockedApiTests.cs" />
     <Compile Include="InteropServices\SafeLocalHandleTests.cs" />
+    <Compile Include="WinBase.FileTests.cs" />
     <Compile Include="WinBaseTests.cs" />
     <Compile Include="WinBase.CommTests.cs" />
     <Compile Include="WinBase.BackupTests.cs" />

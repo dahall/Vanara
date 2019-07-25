@@ -89,7 +89,7 @@ namespace Vanara.PInvoke
 		// lpData); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363854(v=vs.85).aspx
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa363854")]
-		public delegate uint CopyProgressRoutine(long TotalFileSize, long TotalBytesTransferred, long StreamSize, long StreamBytesTransferred, uint dwStreamNumber, COPY_CALLBACK_REASON dwCallbackReason, [In] IntPtr hSourceFile, [In] IntPtr hDestinationFile, [In] IntPtr lpData);
+		public delegate CopyProgressResult CopyProgressRoutine(long TotalFileSize, long TotalBytesTransferred, long StreamSize, long StreamBytesTransferred, uint dwStreamNumber, COPY_CALLBACK_REASON dwCallbackReason, [In] IntPtr hSourceFile, [In] IntPtr hDestinationFile, [In] IntPtr lpData);
 
 		private delegate THandle FindFirstDelegate<THandle>(StringBuilder sb, ref uint sz) where THandle : SafeHandle;
 
@@ -168,10 +168,47 @@ namespace Vanara.PInvoke
 			COPY_FILE_IGNORE_SOURCE_ENCRYPTION = 0x00800000,
 		}
 
+		/// <summary>Return values for the <see cref="CopyProgressRoutine"/> delegate.</summary>
+		[PInvokeData("WinBase.h", MSDNShortId = "aa363854")]
+		public enum CopyProgressResult : uint
+		{
+			/// <summary>Continue the copy operation.</summary>
+			PROGRESS_CONTINUE = 0,
+
+			/// <summary>Cancel the copy operation and delete the destination file.</summary>
+			PROGRESS_CANCEL = 1,
+
+			/// <summary>Stop the copy operation. It can be restarted at a later time.</summary>
+			PROGRESS_STOP = 2,
+
+			/// <summary>Continue the copy operation, but stop invoking CopyProgressRoutine to report progress.</summary>
+			PROGRESS_QUIET = 3
+		}
+
+		/// <summary>Actions used in <see cref="FILE_NOTIFY_INFORMATION"/>.</summary>
+		[PInvokeData("winnt.h", MSDNShortId = "cb95352f-8a15-48d8-9150-e4bc395e0122")]
+		public enum FILE_ACTION : uint
+		{
+			/// <summary>The file was added to the directory.</summary>
+			FILE_ACTION_ADDED = 0x00000001,
+
+			/// <summary>The file was removed from the directory.</summary>
+			FILE_ACTION_REMOVED = 0x00000002,
+
+			/// <summary>The file was modified. This can be a change in the time stamp or attributes.</summary>
+			FILE_ACTION_MODIFIED = 0x00000003,
+
+			/// <summary>The file was renamed and this is the old name.</summary>
+			FILE_ACTION_RENAMED_OLD_NAME = 0x00000004,
+
+			/// <summary>The file was renamed and this is the new name.</summary>
+			FILE_ACTION_RENAMED_NEW_NAME = 0x00000005,
+		}
+
 		/// <summary>
 		/// <para>
-		/// Identifies the type of file information that <see cref="GetFileInformationByHandleEx"/> should retrieve or <see
-		/// cref="SetFileInformationByHandle"/> should set.
+		/// Identifies the type of file information that <see cref="GetFileInformationByHandleEx"/> should retrieve or
+		/// <see cref="SetFileInformationByHandle"/> should set.
 		/// </para>
 		/// </summary>
 		// typedef enum _FILE_INFO_BY_HANDLE_CLASS { FileBasicInfo = 0, FileStandardInfo = 1, FileNameInfo = 2, FileRenameInfo = 3,
@@ -462,6 +499,108 @@ namespace Vanara.PInvoke
 			MOVEFILE_FAIL_IF_NOT_TRACKABLE = 0x00000020
 		}
 
+		/// <summary>Style flags for <see cref="OpenFile"/>.</summary>
+		[PInvokeData("WinBase.h", MSDNShortId = "aa365430")]
+		[Flags]
+		public enum OpenFileAction : uint
+		{
+			/// <summary>
+			/// Ignored.
+			/// <para>To produce a dialog box containing a Cancel button, use OF_PROMPT.</para>
+			/// </summary>
+			OF_CANCEL = 0x00000800,
+
+			/// <summary>
+			/// Creates a new file.
+			/// <para>If the file exists, it is truncated to zero (0) length.</para>
+			/// </summary>
+			OF_CREATE = 0x00001000,
+
+			/// <summary>Deletes a file.</summary>
+			OF_DELETE = 0x00000200,
+
+			/// <summary>
+			/// Opens a file and then closes it.
+			/// <para>Use this to test for the existence of a file.</para>
+			/// </summary>
+			OF_EXIST = 0x00004000,
+
+			/// <summary>Fills the OFSTRUCT structure, but does not do anything else.</summary>
+			OF_PARSE = 0x00000100,
+
+			/// <summary>
+			/// Displays a dialog box if a requested file does not exist.
+			/// <para>
+			/// A dialog box informs a user that the system cannot find a file, and it contains Retry and Cancel buttons. The Cancel button
+			/// directs OpenFile to return a file-not-found error message.
+			/// </para>
+			/// </summary>
+			OF_PROMPT = 0x00002000,
+
+			/// <summary>Opens a file for reading only.</summary>
+			OF_READ = 0x00000000,
+
+			/// <summary>Opens a file with read/write permissions.</summary>
+			OF_READWRITE = 0x00000002,
+
+			/// <summary>Opens a file by using information in the reopen buffer.</summary>
+			OF_REOPEN = 0x00008000,
+
+			/// <summary>
+			/// For MS-DOS–based file systems, opens a file with compatibility mode, allows any process on a specified computer to open the
+			/// file any number of times.
+			/// <para>
+			/// Other efforts to open a file with other sharing modes fail. This flag is mapped to the FILE_SHARE_READ|FILE_SHARE_WRITE flags
+			/// of the CreateFile function.
+			/// </para>
+			/// </summary>
+			OF_SHARE_COMPAT = 0x00000000,
+
+			/// <summary>
+			/// Opens a file without denying read or write access to other processes.
+			/// <para>
+			/// On MS-DOS-based file systems, if the file has been opened in compatibility mode by any other process, the function fails.
+			/// </para>
+			/// <para>This flag is mapped to the FILE_SHARE_READ|FILE_SHARE_WRITE flags of the CreateFile function.</para>
+			/// </summary>
+			OF_SHARE_DENY_NONE = 0x00000040,
+
+			/// <summary>
+			/// Opens a file and denies read access to other processes.
+			/// <para>
+			/// On MS-DOS-based file systems, if the file has been opened in compatibility mode, or for read access by any other process, the
+			/// function fails.
+			/// </para>
+			/// <para>This flag is mapped to the FILE_SHARE_WRITE flag of the CreateFile function.</para>
+			/// </summary>
+			OF_SHARE_DENY_READ = 0x00000030,
+
+			/// <summary>
+			/// Opens a file and denies write access to other processes.
+			/// <para>
+			/// On MS-DOS-based file systems, if a file has been opened in compatibility mode, or for write access by any other process, the
+			/// function fails.
+			/// </para>
+			/// <para>This flag is mapped to the FILE_SHARE_READ flag of the CreateFile function.</para>
+			/// </summary>
+			OF_SHARE_DENY_WRITE = 0x00000020,
+
+			/// <summary>
+			/// Opens a file with exclusive mode, and denies both read/write access to other processes. If a file has been opened in any
+			/// other mode for read/write access, even by the current process, the function fails.
+			/// </summary>
+			OF_SHARE_EXCLUSIVE = 0x00000010,
+
+			/// <summary>
+			/// Verifies that the date and time of a file are the same as when it was opened previously.
+			/// <para>This is useful as an extra check for read-only files.</para>
+			/// </summary>
+			OF_VERIFY = 0x00000400,
+
+			/// <summary>Opens a file for write access only.</summary>
+			OF_WRITE = 0x00000001,
+		}
+
 		/// <summary>
 		/// <para>The <c>IO_PRIORITY_HINT</c> enumeration type specifies the priority hint for an IRP.</para>
 		/// </summary>
@@ -654,7 +793,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa363807")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CheckNameLegalDOS8Dot3(string lpName, [MarshalAs(UnmanagedType.LPStr)] StringBuilder lpOemName, uint OemNameSize, [MarshalAs(UnmanagedType.Bool)] out bool pbNameContainsSpaces, [MarshalAs(UnmanagedType.Bool)] out bool pbNameLegal);
+		public static extern bool CheckNameLegalDOS8Dot3(string lpName, [Optional, MarshalAs(UnmanagedType.LPStr)] StringBuilder lpOemName, [Optional] uint OemNameSize, [MarshalAs(UnmanagedType.Bool)] out bool pbNameContainsSpaces, [MarshalAs(UnmanagedType.Bool)] out bool pbNameLegal);
 
 		/// <summary>
 		/// <para>Copies an existing file to a new file.</para>
@@ -905,7 +1044,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa363852")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CopyFileEx(string lpExistingFileName, string lpNewFileName, CopyProgressRoutine lpProgressRoutine, [In] IntPtr lpData, [MarshalAs(UnmanagedType.Bool)] in bool pbCancel, COPY_FILE dwCopyFlags);
+		public static extern bool CopyFileEx(string lpExistingFileName, string lpNewFileName, [Optional] CopyProgressRoutine lpProgressRoutine, [In, Optional] IntPtr lpData, [MarshalAs(UnmanagedType.Bool)] in bool pbCancel, COPY_FILE dwCopyFlags);
 
 		/// <summary>
 		/// <para>
@@ -974,7 +1113,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa363856")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreateDirectoryEx(string lpTemplateDirectory, string lpNewDirectory, [In] SECURITY_ATTRIBUTES lpSecurityAttributes);
+		public static extern bool CreateDirectoryEx(string lpTemplateDirectory, string lpNewDirectory, [In, Optional] SECURITY_ATTRIBUTES lpSecurityAttributes);
 
 		/// <summary>
 		/// Establishes a hard link between an existing file and a new file. This function is only supported on the NTFS file system, and
@@ -1007,7 +1146,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, CharSet = CharSet.Auto, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa363860")]
-		public static extern bool CreateHardLink(string lpFileName, string lpExistingFileName, [Optional] SECURITY_ATTRIBUTES lpSecurityAttributes);
+		public static extern bool CreateHardLink(string lpFileName, string lpExistingFileName, [In, Optional] SECURITY_ATTRIBUTES lpSecurityAttributes);
 
 		/// <summary>Creates a symbolic link.</summary>
 		/// <param name="lpSymlinkFileName">
@@ -1046,11 +1185,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "aa363866")]
 		public static extern bool CreateSymbolicLink(string lpSymlinkFileName, string lpTargetFileName, SymbolicLinkType dwFlags);
 
-		/// <summary>Creates an enumeration of all the hard links to the specified file.</summary>
-		/// <param name="fileName">The name of the file.</param>
-		/// <returns>An enumeration of all the hard links to the specified file.</returns>
-		public static IEnumerable<string> EnumFileLinks(string fileName) => EnumFindMethods((StringBuilder sb, ref uint sz) => FindFirstFileName(fileName, 0, ref sz, sb), (SafeSearchHandle h, StringBuilder sb, ref uint sz) => FindNextFileName(h, ref sz, sb));
-
 		/// <summary>Enumerates the streams in the specified file or directory.</summary>
 		/// <param name="fileName">The fully qualified file name.</param>
 		/// <returns>The streams in the specified file or directory.</returns>
@@ -1072,10 +1206,15 @@ namespace Vanara.PInvoke
 				err2.ThrowIfFailed();
 		}
 
+		/// <summary>Creates an enumeration of all the hard links to the specified file.</summary>
+		/// <param name="fileName">The name of the file.</param>
+		/// <returns>An enumeration of all the hard links to the specified file.</returns>
+		public static IEnumerable<string> EnumHardLinks(string fileName) => EnumFindMethods((StringBuilder sb, ref uint sz) => FindFirstFileName(fileName, 0, ref sz, sb), (SafeSearchHandle h, StringBuilder sb, ref uint sz) => FindNextFileName(h, ref sz, sb));
+
 		/// <summary>Retrieves the names of all mounted folders on the specified volume.</summary>
 		/// <param name="volumeGuidPath">A volume GUID path for the volume to scan for mounted folders. A trailing backslash is required.</param>
 		/// <returns>The names of the mounted folders that are found.</returns>
-		public static IEnumerable<string> EnumVolumeMountPoints(string volumeGuidPath) => EnumFindMethods((StringBuilder sb, ref uint sz) => FindFirstVolumeMountPoint(volumeGuidPath, sb, sz), (SafeVolumeMountPointHandle h, StringBuilder sb, ref uint sz) => FindNextVolumeMountPoint(h, sb, sz));
+		public static IEnumerable<string> EnumVolumeMountPoints(string volumeGuidPath) => EnumFindMethods((StringBuilder sb, ref uint sz) => FindFirstVolumeMountPoint(volumeGuidPath, sb, sz), (SafeVolumeMountPointHandle h, StringBuilder sb, ref uint sz) => FindNextVolumeMountPoint(h, sb, sz), done: Win32Error.ERROR_NO_MORE_FILES);
 
 		/// <summary>
 		/// <para>
@@ -1315,9 +1454,9 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		/// <remarks>
-		/// An application can determine whether a volume is compressed by calling <see cref="GetVolumeInformation(string, out string, out
-		/// uint, out uint, out FileSystemFlags, out string)"/>, then checking the status of the FS_VOL_IS_COMPRESSED flag in the DWORD value
-		/// pointed to by that function's lpFileSystemFlags parameter.
+		/// An application can determine whether a volume is compressed by calling
+		/// <see cref="GetVolumeInformation(string, out string, out uint, out uint, out FileSystemFlags, out string)"/>, then checking the
+		/// status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed to by that function's lpFileSystemFlags parameter.
 		/// <para>
 		/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse
 		/// file, the value obtained is the actual file size, the same as the value returned by a call to GetFileSize.
@@ -1355,9 +1494,9 @@ namespace Vanara.PInvoke
 		/// <param name="fileSize">The compressed file size.</param>
 		/// <returns>If the function succeeds, the return value is ERROR_SUCCESS, otherwise it is the failure code.</returns>
 		/// <remarks>
-		/// An application can determine whether a volume is compressed by calling <see cref="GetVolumeInformation(string, out string, out
-		/// uint, out uint, out FileSystemFlags, out string)"/>, then checking the status of the FS_VOL_IS_COMPRESSED flag in the DWORD value
-		/// pointed to by that function's lpFileSystemFlags parameter.
+		/// An application can determine whether a volume is compressed by calling
+		/// <see cref="GetVolumeInformation(string, out string, out uint, out uint, out FileSystemFlags, out string)"/>, then checking the
+		/// status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed to by that function's lpFileSystemFlags parameter.
 		/// <para>
 		/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse
 		/// file, the value obtained is the actual file size, the same as the value returned by a call to GetFileSize.
@@ -1375,6 +1514,43 @@ namespace Vanara.PInvoke
 			fileSize = Macros.MAKELONG64(low, high);
 			return Win32Error.ERROR_SUCCESS;
 		}
+
+		/// <summary>
+		/// Retrieves the actual number of bytes of disk storage used to store a specified file. If the file is located on a volume that
+		/// supports compression and the file is compressed, the value obtained is the compressed size of the specified file. If the file is
+		/// located on a volume that supports sparse files and the file is a sparse file, the value obtained is the sparse size of the
+		/// specified file.
+		/// </summary>
+		/// <param name="lpFileName">
+		/// The name of the file.
+		/// <para>
+		/// Do not specify the name of a file on a nonseeking device, such as a pipe or a communications device, as its file size has no meaning.
+		/// </para>
+		/// <para>
+		/// This parameter may include the path. In the ANSI version of this function, the name is limited to <see cref="MAX_PATH"/>
+		/// characters. To extend this limit to 32,767 wide characters, call the Unicode version of the function and prepend "\\?\" to the
+		/// path. For more information, see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming
+		/// a File</a>.
+		/// </para>
+		/// <para>
+		/// <c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>GetCompressedFileSizeW</c>), you
+		/// can opt-in to remove the <see cref="MAX_PATH"/> limitation without prepending "\\?\". See the "Maximum Path Length Limitation"
+		/// section of <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming Files, Paths, and
+		/// Namespaces</a> for details.
+		/// </para>
+		/// </param>
+		/// <returns>The compressed file size.</returns>
+		/// <remarks>
+		/// An application can determine whether a volume is compressed by calling
+		/// <see cref="GetVolumeInformation(string, out string, out uint, out uint, out FileSystemFlags, out string)"/>, then checking the
+		/// status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed to by that function's lpFileSystemFlags parameter.
+		/// <para>
+		/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse
+		/// file, the value obtained is the actual file size, the same as the value returned by a call to GetFileSize.
+		/// </para>
+		/// <para>Symbolic link behavior—If the path points to a symbolic link, the function returns the file size of the target.</para>
+		/// </remarks>
+		public static ulong GetCompressedFileSize(string lpFileName) { GetCompressedFileSize(lpFileName, out ulong sz).ThrowIfFailed(); return sz; }
 
 		/// <summary>
 		/// <para>Retrieves the bandwidth reservation properties of the volume on which the specified file resides.</para>
@@ -1621,9 +1797,27 @@ namespace Vanara.PInvoke
 		public static T GetFileInformationByHandleEx<T>(HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass) where T : struct
 		{
 			if (!CorrespondingTypeAttribute.CanGet(FileInformationClass, typeof(T))) throw new InvalidOperationException("Type mismatch.");
-			var mem = SafeHGlobalHandle.CreateFromStructure<T>();
-			if (!GetFileInformationByHandleEx(hFile, FileInformationClass, mem, (uint)mem.Size)) Win32Error.ThrowLastError();
-			return mem.ToStructure<T>();
+			SafeHGlobalHandle mem;
+			if (typeof(T) == typeof(FILE_ID_BOTH_DIR_INFO) || typeof(T) == typeof(FILE_FULL_DIR_INFO) || typeof(T) == typeof(FILE_ID_EXTD_DIR_INFO))
+				mem = new SafeHGlobalHandle(Marshal.SizeOf(typeof(T)) + MAX_PATH * 2);
+			else if (typeof(T) == typeof(FILE_REMOTE_PROTOCOL_INFO))
+				mem = SafeHGlobalHandle.CreateFromStructure(FILE_REMOTE_PROTOCOL_INFO.Default);
+			else
+				mem = SafeHGlobalHandle.CreateFromStructure<T>();
+			using (mem)
+			{
+				while (!GetFileInformationByHandleEx(hFile, FileInformationClass, mem, (uint)mem.Size))
+				{
+					var err = Win32Error.GetLastError();
+					if (err == Win32Error.ERROR_MORE_DATA)
+						mem.Size *= 2;
+					else if (err == Win32Error.ERROR_NO_MORE_FILES)
+						break;
+					else
+						throw err.GetException();
+				}
+				return mem.ToStructure<T>();
+			}
 		}
 
 		/// <summary>
@@ -1874,7 +2068,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa365242")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool MoveFileWithProgress(string lpExistingFileName, string lpNewFileName, CopyProgressRoutine lpProgressRoutine, [In] IntPtr lpData, MOVEFILE dwFlags);
+		public static extern bool MoveFileWithProgress(string lpExistingFileName, string lpNewFileName, [Optional] CopyProgressRoutine lpProgressRoutine, [In, Optional] IntPtr lpData, MOVEFILE dwFlags);
 
 		/// <summary>Creates, opens, reopens, or deletes a file.</summary>
 		/// <param name="lpFileName">
@@ -2004,7 +2198,7 @@ namespace Vanara.PInvoke
 		// HFILE WINAPI OpenFile( _In_ LPCSTR lpFileName, _Out_ LPOFSTRUCT lpReOpenBuff, _In_ UINT uStyle); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365430(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa365430")]
-		public static extern SafeHFILE OpenFile([In] [MarshalAs(UnmanagedType.LPStr)] string lpFileName, ref OFSTRUCT lpReOpenBuff, uint uStyle);
+		public static extern SafeHFILE OpenFile([In] [MarshalAs(UnmanagedType.LPStr)] string lpFileName, ref OFSTRUCT lpReOpenBuff, OpenFileAction uStyle);
 
 		/// <summary>
 		/// <para>
@@ -2119,7 +2313,122 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "aa365465")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern unsafe bool ReadDirectoryChanges([In] HFILE hDirectory, IntPtr lpBuffer, uint nBufferLength, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter,
-			out uint lpBytesReturned, NativeOverlapped* lpOverlapped, FileIOCompletionRoutine lpCompletionRoutine);
+			[Out, Optional] uint* lpBytesReturned, [Optional] NativeOverlapped* lpOverlapped, [Optional] FileIOCompletionRoutineUnsafe lpCompletionRoutine);
+
+		/// <summary>
+		/// <para>
+		/// Retrieves information that describes the changes within the specified directory. The function does not report changes to the
+		/// specified directory itself.
+		/// </para>
+		/// <para>To track changes on a volume, see change journals.</para>
+		/// </summary>
+		/// <param name="hDirectory">
+		/// A handle to the directory to be monitored. This directory must be opened with the <c>FILE_LIST_DIRECTORY</c> access right, or an
+		/// access right such as <c>GENERIC_READ</c> that includes the <c>FILE_LIST_DIRECTORY</c> access right.
+		/// </param>
+		/// <param name="lpBuffer">
+		/// A pointer to the <c>DWORD</c>-aligned formatted buffer in which the read results are to be returned. The structure of this buffer
+		/// is defined by the <c>FILE_NOTIFY_INFORMATION</c> structure. This buffer is filled either synchronously or asynchronously,
+		/// depending on how the directory is opened and what value is given to the lpOverlapped parameter. For more information, see the
+		/// Remarks section.
+		/// </param>
+		/// <param name="nBufferLength">The size of the buffer that is pointed to by the lpBuffer parameter, in bytes.</param>
+		/// <param name="bWatchSubtree">
+		/// If this parameter is <c>TRUE</c>, the function monitors the directory tree rooted at the specified directory. If this parameter
+		/// is <c>FALSE</c>, the function monitors only the directory specified by the hDirectory parameter.
+		/// </param>
+		/// <param name="dwNotifyFilter">
+		/// <para>
+		/// The filter criteria that the function checks to determine if the wait operation has completed. This parameter can be one or more
+		/// of the following values.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILE_NOTIFY_CHANGE_FILE_NAME0x00000001</term>
+		/// <term>
+		/// Any file name change in the watched directory or subtree causes a change notification wait operation to return. Changes include
+		/// renaming, creating, or deleting a file.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_NOTIFY_CHANGE_DIR_NAME0x00000002</term>
+		/// <term>
+		/// Any directory-name change in the watched directory or subtree causes a change notification wait operation to return. Changes
+		/// include creating or deleting a directory.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_NOTIFY_CHANGE_ATTRIBUTES0x00000004</term>
+		/// <term>Any attribute change in the watched directory or subtree causes a change notification wait operation to return.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_NOTIFY_CHANGE_SIZE0x00000008</term>
+		/// <term>
+		/// Any file-size change in the watched directory or subtree causes a change notification wait operation to return. The operating
+		/// system detects a change in file size only when the file is written to the disk. For operating systems that use extensive caching,
+		/// detection occurs only when the cache is sufficiently flushed.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_NOTIFY_CHANGE_LAST_WRITE0x00000010</term>
+		/// <term>
+		/// Any change to the last write-time of files in the watched directory or subtree causes a change notification wait operation to
+		/// return. The operating system detects a change to the last write-time only when the file is written to the disk. For operating
+		/// systems that use extensive caching, detection occurs only when the cache is sufficiently flushed.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_NOTIFY_CHANGE_LAST_ACCESS0x00000020</term>
+		/// <term>
+		/// Any change to the last access time of files in the watched directory or subtree causes a change notification wait operation to return.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_NOTIFY_CHANGE_CREATION0x00000040</term>
+		/// <term>
+		/// Any change to the creation time of files in the watched directory or subtree causes a change notification wait operation to return.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_NOTIFY_CHANGE_SECURITY0x00000100</term>
+		/// <term>Any security-descriptor change in the watched directory or subtree causes a change notification wait operation to return.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpBytesReturned">
+		/// For synchronous calls, this parameter receives the number of bytes transferred into the lpBuffer parameter. For asynchronous
+		/// calls, this parameter is undefined. You must use an asynchronous notification technique to retrieve the number of bytes transferred.
+		/// </param>
+		/// <param name="lpOverlapped">
+		/// A pointer to an <c>OVERLAPPED</c> structure that supplies data to be used during asynchronous operation. Otherwise, this value is
+		/// <c>NULL</c>. The <c>Offset</c> and <c>OffsetHigh</c> members of this structure are not used.
+		/// </param>
+		/// <param name="lpCompletionRoutine">
+		/// A pointer to a completion routine to be called when the operation has been completed or canceled and the calling thread is in an
+		/// alertable wait state. For more information about this completion routine, see <c>FileIOCompletionRoutine</c>.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is nonzero. For synchronous calls, this means that the operation succeeded. For
+		/// asynchronous calls, this indicates that the operation was successfully queued.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the network redirector or the target file system does not support this operation, the function fails with <c>ERROR_INVALID_FUNCTION</c>.</para>
+		/// </returns>
+		// BOOL WINAPI ReadDirectoryChangesW( _In_ HANDLE hDirectory, _Out_ LPVOID lpBuffer, _In_ DWORD nBufferLength, _In_ BOOL
+		// bWatchSubtree, _In_ DWORD dwNotifyFilter, _Out_opt_ LPDWORD lpBytesReturned, _Inout_opt_ LPOVERLAPPED lpOverlapped, _In_opt_
+		// LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365465(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "ReadDirectoryChangesW", CharSet = CharSet.Unicode)]
+		[PInvokeData("WinBase.h", MSDNShortId = "aa365465")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ReadDirectoryChanges([In] HFILE hDirectory, IntPtr lpBuffer, uint nBufferLength, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter,
+			out uint lpBytesReturned, [Optional] IntPtr lpOverlapped, [Optional] FileIOCompletionRoutine lpCompletionRoutine);
 
 		/// <summary>
 		/// <para>
@@ -2316,7 +2625,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("winbase.h", MSDNShortId = "90C2F258-094C-4A0E-80E7-3FA241D288EA")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static unsafe extern bool ReadDirectoryChangesExW(HFILE hDirectory, IntPtr lpBuffer, uint nBufferLength, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned,
-			NativeOverlapped* lpOverlapped, FileIOCompletionRoutine lpCompletionRoutine, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS ReadDirectoryNotifyInformationClass);
+			[Optional] NativeOverlapped* lpOverlapped, [Optional] FileIOCompletionRoutineUnsafe lpCompletionRoutine, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS ReadDirectoryNotifyInformationClass);
 
 		/// <summary>
 		/// <para>Reopens the specified file system object with different access rights, sharing mode, and flags.</para>
@@ -2535,7 +2844,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa365512")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ReplaceFile(string lpReplacedFileName, string lpReplacementFileName, string lpBackupFileName, REPLACEFILE dwReplaceFlags, [Optional] IntPtr lpExclude, [Optional] IntPtr lpReserved);
+		public static extern bool ReplaceFile(string lpReplacedFileName, string lpReplacementFileName, [Optional] string lpBackupFileName, [Optional] REPLACEFILE dwReplaceFlags, [Optional] IntPtr lpExclude, [Optional] IntPtr lpReserved);
 
 		/// <summary>
 		/// <para>
@@ -2869,7 +3178,7 @@ namespace Vanara.PInvoke
 		private static IEnumerable<string> EnumFindMethods<THandle>(FindFirstDelegate<THandle> first, FindNextDelegate<THandle> next, uint strSz = MAX_PATH + 1, int done = Win32Error.ERROR_HANDLE_EOF) where THandle : SafeHandle
 		{
 			var sb = new StringBuilder((int)strSz, (int)strSz);
-			THandle h = default;
+			THandle h;
 			while ((h = first(sb, ref strSz)).IsInvalid)
 			{
 				var err = Win32Error.GetLastError();
@@ -2878,23 +3187,26 @@ namespace Vanara.PInvoke
 				else
 					throw err.GetException();
 			}
-			yield return sb.ToString();
-			do
+			using (h)
 			{
-				sb.Length = 0;
-				if (!next(h, sb, ref strSz))
+				yield return sb.ToString();
+				do
 				{
-					var err = Win32Error.GetLastError();
-					if (err == Win32Error.ERROR_MORE_DATA)
-						AddCap();
-					else if (err == done)
-						break;
+					sb.Clear();
+					if (!next(h, sb, ref strSz))
+					{
+						var err = Win32Error.GetLastError();
+						if (err == Win32Error.ERROR_MORE_DATA)
+							AddCap();
+						else if (err == done)
+							break;
+						else
+							throw err.GetException();
+					}
 					else
-						throw err.GetException();
-				}
-				else
-					yield return sb.ToString();
-			} while (true);
+						yield return sb.ToString();
+				} while (true);
+			}
 
 			void AddCap() => sb.Capacity = strSz <= sb.Capacity ? (int)(strSz *= 2) : (int)++strSz;
 		}
@@ -2998,12 +3310,15 @@ namespace Vanara.PInvoke
 			/// function, see the CopyFile2ProgressRoutine callback function.
 			/// </summary>
 			[MarshalAs(UnmanagedType.FunctionPtr)]
-			public Pcopyfile2ProgressRoutine pProgressRoutine;
+			public CopyFile2ProgressRoutine pProgressRoutine;
 
 			/// <summary>
 			/// <para>A pointer to application-specific context information to be passed to the CopyFile2ProgressRoutine.</para>
 			/// </summary>
 			public IntPtr pvCallbackContext;
+
+			/// <summary>Provides a default instance with size field set.</summary>
+			public static readonly COPYFILE2_EXTENDED_PARAMETERS Default = new COPYFILE2_EXTENDED_PARAMETERS { dwSize = (uint)Marshal.SizeOf(typeof(COPYFILE2_EXTENDED_PARAMETERS)) };
 		}
 
 		/// <summary>
@@ -3361,77 +3676,6 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>Specifies the type of ID that is being used.</para>
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-file_id_descriptor typedef struct FILE_ID_DESCRIPTOR {
-		// DWORD dwSize; FILE_ID_TYPE Type; union { LARGE_INTEGER FileId; GUID ObjectId; FILE_ID_128 ExtendedFileId; } DUMMYUNIONNAME; } *LPFILE_ID_DESCRIPTOR;
-		[PInvokeData("winbase.h", MSDNShortId = "9092a701-3b47-4c4c-8221-54fa3220d322")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct FILE_ID_DESCRIPTOR
-		{
-			/// <summary>
-			/// <para>The size of this <c>FILE_ID_DESCRIPTOR</c> structure.</para>
-			/// </summary>
-			public uint dwSize;
-
-			/// <summary>
-			/// <para>The discriminator for the union indicating the type of identifier that is being passed.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>FileIdType 0</term>
-			/// <term>Use the FileId member of the union.</term>
-			/// </item>
-			/// <item>
-			/// <term>ObjectIdType 1</term>
-			/// <term>Use the ObjectId member of the union.</term>
-			/// </item>
-			/// <item>
-			/// <term>ExtendedFileIdType 2</term>
-			/// <term>
-			/// Use the ExtendedFileId member of the union. Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7
-			/// and Windows Server 2008 R2: This value is not supported before Windows 8 and Windows Server 2012.
-			/// </term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public FILE_ID_TYPE Type;
-
-			/// <summary>Undocumented.</summary>
-			public DUMMYUNIONNAME Id;
-
-			/// <summary>Undocumented.</summary>
-			[StructLayout(LayoutKind.Explicit)]
-			public struct DUMMYUNIONNAME
-			{
-				/// <summary>
-				/// <para>The ID of the file to open.</para>
-				/// </summary>
-				[FieldOffset(0)]
-				public long FileId;
-
-				/// <summary>
-				/// <para>The ID of the object to open.</para>
-				/// </summary>
-				[FieldOffset(0)]
-				public Guid ObjectId;
-
-				/// <summary>
-				/// <para>A FILE_ID_128 structure containing the 128-bit file ID of the file. This is used on ReFS file systems.</para>
-				/// <para>
-				/// <c>Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7 and Windows Server 2008 R2:</c> This
-				/// member is not supported before Windows 8 and Windows Server 2012.
-				/// </para>
-				/// </summary>
-				[FieldOffset(0)]
-				public FILE_ID_128 ExtendedFileId;
-			}
-		}
-
-		/// <summary>
 		/// <para>
 		/// Contains alignment information for a file. This structure is returned from the GetFileInformationByHandleEx function when
 		/// <c>FileAlignmentInfo</c> is passed in the FileInformationClass parameter.
@@ -3476,23 +3720,17 @@ namespace Vanara.PInvoke
 			public long AllocationSize;
 		}
 
-		/// <summary>
-		/// <para>Receives the requested file attribute information. Used for any handles. Use only when calling GetFileInformationByHandleEx.</para>
-		/// </summary>
+		/// <summary>Receives the requested file attribute information. Used for any handles. Use only when calling GetFileInformationByHandleEx.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_attribute_tag_info typedef struct
 		// _FILE_ATTRIBUTE_TAG_INFO { DWORD FileAttributes; DWORD ReparseTag; } FILE_ATTRIBUTE_TAG_INFO, *PFILE_ATTRIBUTE_TAG_INFO;
 		[PInvokeData("winbase.h", MSDNShortId = "4a2467a2-c22a-4ee6-a40e-5603ea381adc")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct FILE_ATTRIBUTE_TAG_INFO
 		{
-			/// <summary>
-			/// <para>The file attribute information.</para>
-			/// </summary>
-			public uint FileAttributes;
+			/// <summary>The file attribute information.</summary>
+			public FileFlagsAndAttributes FileAttributes;
 
-			/// <summary>
-			/// <para>The reparse tag.</para>
-			/// </summary>
+			/// <summary>The reparse tag.</summary>
 			public uint ReparseTag;
 		}
 
@@ -3503,7 +3741,7 @@ namespace Vanara.PInvoke
 		// LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER LastWriteTime; LARGE_INTEGER ChangeTime; DWORD
 		// FileAttributes; } FILE_BASIC_INFO, *PFILE_BASIC_INFO;
 		[PInvokeData("winbase.h", MSDNShortId = "7765e430-cf6b-4ccf-b5e7-9fb6e15ca6d6")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Size = 40)]
 		public struct FILE_BASIC_INFO
 		{
 			/// <summary>
@@ -3728,7 +3966,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>The first character of the file name string. This is followed in memory by the remainder of the string.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 			public string FileName;
 		}
 
@@ -3891,8 +4129,82 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>The first character of the file name string. This is followed in memory by the remainder of the string.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 			public string FileName;
+		}
+
+		/// <summary>
+		/// <para>Specifies the type of ID that is being used.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-file_id_descriptor typedef struct FILE_ID_DESCRIPTOR {
+		// DWORD dwSize; FILE_ID_TYPE Type; union { LARGE_INTEGER FileId; GUID ObjectId; FILE_ID_128 ExtendedFileId; } DUMMYUNIONNAME; } *LPFILE_ID_DESCRIPTOR;
+		[PInvokeData("winbase.h", MSDNShortId = "9092a701-3b47-4c4c-8221-54fa3220d322")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct FILE_ID_DESCRIPTOR
+		{
+			/// <summary>
+			/// <para>The size of this <c>FILE_ID_DESCRIPTOR</c> structure.</para>
+			/// </summary>
+			public uint dwSize;
+
+			/// <summary>
+			/// <para>The discriminator for the union indicating the type of identifier that is being passed.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>FileIdType 0</term>
+			/// <term>Use the FileId member of the union.</term>
+			/// </item>
+			/// <item>
+			/// <term>ObjectIdType 1</term>
+			/// <term>Use the ObjectId member of the union.</term>
+			/// </item>
+			/// <item>
+			/// <term>ExtendedFileIdType 2</term>
+			/// <term>
+			/// Use the ExtendedFileId member of the union. Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7
+			/// and Windows Server 2008 R2: This value is not supported before Windows 8 and Windows Server 2012.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public FILE_ID_TYPE Type;
+
+			/// <summary>Undocumented.</summary>
+			public DUMMYUNIONNAME Id;
+
+			/// <summary>Undocumented.</summary>
+			[StructLayout(LayoutKind.Explicit)]
+			public struct DUMMYUNIONNAME
+			{
+				/// <summary>
+				/// <para>The ID of the file to open.</para>
+				/// </summary>
+				[FieldOffset(0)]
+				public long FileId;
+
+				/// <summary>
+				/// <para>The ID of the object to open.</para>
+				/// </summary>
+				[FieldOffset(0)]
+				public Guid ObjectId;
+
+				/// <summary>
+				/// <para>A FILE_ID_128 structure containing the 128-bit file ID of the file. This is used on ReFS file systems.</para>
+				/// <para>
+				/// <c>Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7 and Windows Server 2008 R2:</c> This
+				/// member is not supported before Windows 8 and Windows Server 2012.
+				/// </para>
+				/// </summary>
+				[FieldOffset(0)]
+				public FILE_ID_128 ExtendedFileId;
+			}
+
+			/// <summary>Provides a default instance with size field set.</summary>
+			public static readonly FILE_ID_DESCRIPTOR Default = new FILE_ID_DESCRIPTOR { dwSize = (uint)Marshal.SizeOf(typeof(FILE_ID_DESCRIPTOR)) };
 		}
 
 		/// <summary>
@@ -4094,7 +4406,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>The first character of the file name string. This is followed in memory by the remainder of the string.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 			public string FileName;
 		}
 
@@ -4168,6 +4480,159 @@ namespace Vanara.PInvoke
 			/// <para>The file name that is returned.</para>
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH + 1)]
+			public string FileName;
+		}
+
+		/// <summary>Describes the changes found by the ReadDirectoryChangesExW function.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_file_notify_extended_information typedef struct
+		// _FILE_NOTIFY_EXTENDED_INFORMATION { DWORD NextEntryOffset; DWORD Action; LARGE_INTEGER CreationTime; LARGE_INTEGER
+		// LastModificationTime; LARGE_INTEGER LastChangeTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER AllocatedLength; LARGE_INTEGER
+		// FileSize; DWORD FileAttributes; DWORD ReparsePointTag; LARGE_INTEGER FileId; LARGE_INTEGER ParentFileId; DWORD FileNameLength;
+		// WCHAR FileName[1]; } FILE_NOTIFY_EXTENDED_INFORMATION, *PFILE_NOTIFY_EXTENDED_INFORMATION;
+		[PInvokeData("winnt.h", MSDNShortId = "4558F2E8-F515-4202-9CAA-FDAF20160F61")]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
+		public struct FILE_NOTIFY_EXTENDED_INFORMATION
+		{
+			/// <summary>
+			/// The number of bytes that must be skipped to get to the next record. A value of zero indicates that this is the last record.
+			/// </summary>
+			public uint NextEntryOffset;
+
+			/// <summary>
+			/// <para>The type of change that has occurred. This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>FILE_ACTION_ADDED 0x00000001</term>
+			/// <term>The file was added to the directory.</term>
+			/// </item>
+			/// <item>
+			/// <term>FILE_ACTION_REMOVED 0x00000002</term>
+			/// <term>The file was removed from the directory.</term>
+			/// </item>
+			/// <item>
+			/// <term>FILE_ACTION_MODIFIED 0x00000003</term>
+			/// <term>The file was modified. This can be a change in the time stamp or attributes.</term>
+			/// </item>
+			/// <item>
+			/// <term>FILE_ACTION_RENAMED_OLD_NAME 0x00000004</term>
+			/// <term>The file was renamed and this is the old name.</term>
+			/// </item>
+			/// <item>
+			/// <term>FILE_ACTION_RENAMED_NEW_NAME 0x00000005</term>
+			/// <term>The file was renamed and this is the new name.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public FILE_ACTION Action;
+
+			/// <summary>The date and time that the directory or file was created and added to the file system.</summary>
+			public FILETIME CreationTime;
+
+			/// <summary>The date and time that the content of the directory or file was last modified in the file system.</summary>
+			public FILETIME LastModificationTime;
+
+			/// <summary>The date and time that the metadata or content of the directory or file was last changed in the file system.</summary>
+			public FILETIME LastChangeTime;
+
+			/// <summary>The date and time the directory or file was last accessed in the file system.</summary>
+			public FILETIME LastAccessTime;
+
+			/// <summary>The allocated size of the file, in bytes.</summary>
+			public long AllocatedLength;
+
+			/// <summary>The new size of the directory or file in bytes, or the old size if the size is unchanged.</summary>
+			public long FileSize;
+
+			/// <summary>The attributes of the directory or file.</summary>
+			public FileFlagsAndAttributes FileAttributes;
+
+			/// <summary>The identifier tag of a reparse point for the directory or file.</summary>
+			public uint ReparsePointTag;
+
+			/// <summary>The identifier of the directory or file.</summary>
+			public int FileId;
+
+			/// <summary>The identifier of the parent directory for the file.</summary>
+			public int ParentFileId;
+
+			/// <summary>The size of the file name portion of the record, in bytes. This value does not include a terminating null character.</summary>
+			public uint FileNameLength;
+
+			/// <summary>
+			/// <para>
+			/// A variable-length field that contains the file name relative to the directory handle. The file name is in the Unicode
+			/// character format and is not null-terminated.
+			/// </para>
+			/// <para>
+			/// If there is both a short and long name for the file, the function will return one of these names, but it is unspecified which one.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+			public string FileName;
+		}
+
+		/// <summary>Describes the changes found by the ReadDirectoryChangesW function.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_file_notify_information typedef struct _FILE_NOTIFY_INFORMATION
+		// { DWORD NextEntryOffset; DWORD Action; DWORD FileNameLength; WCHAR FileName[1]; } FILE_NOTIFY_INFORMATION, *PFILE_NOTIFY_INFORMATION;
+		[PInvokeData("winnt.h", MSDNShortId = "cb95352f-8a15-48d8-9150-e4bc395e0122")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct FILE_NOTIFY_INFORMATION
+		{
+			/// <summary>
+			/// The number of bytes that must be skipped to get to the next record. A value of zero indicates that this is the last record.
+			/// </summary>
+			public uint NextEntryOffset;
+
+			/// <summary>
+			/// <para>The type of change that has occurred. This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>FILE_ACTION_ADDED 0x00000001</term>
+			/// <term>The file was added to the directory.</term>
+			/// </item>
+			/// <item>
+			/// <term>FILE_ACTION_REMOVED 0x00000002</term>
+			/// <term>The file was removed from the directory.</term>
+			/// </item>
+			/// <item>
+			/// <term>FILE_ACTION_MODIFIED 0x00000003</term>
+			/// <term>The file was modified. This can be a change in the time stamp or attributes.</term>
+			/// </item>
+			/// <item>
+			/// <term>FILE_ACTION_RENAMED_OLD_NAME 0x00000004</term>
+			/// <term>The file was renamed and this is the old name.</term>
+			/// </item>
+			/// <item>
+			/// <term>FILE_ACTION_RENAMED_NEW_NAME 0x00000005</term>
+			/// <term>The file was renamed and this is the new name.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public FILE_ACTION Action;
+
+			/// <summary>
+			/// The size of the file name portion of the record, in bytes. Note that this value does not include the terminating null character.
+			/// </summary>
+			public uint FileNameLength;
+
+			/// <summary>
+			/// <para>
+			/// A variable-length field that contains the file name relative to the directory handle. The file name is in the Unicode
+			/// character format and is not null-terminated.
+			/// </para>
+			/// <para>
+			/// If there is both a short and long name for the file, the function will return one of these names, but it is unspecified which one.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 			public string FileName;
 		}
 
@@ -4347,11 +4812,6 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public GenericReserved_ GenericReserved;
 
-			/// <summary>
-			/// <para>Protocol-specific information structure.</para>
-			/// </summary>
-			public ProtocolSpecificReserved_ ProtocolSpecificReserved;
-
 			public ProtocolSpecific_ ProtocolSpecific;
 
 			/// <summary>
@@ -4367,27 +4827,10 @@ namespace Vanara.PInvoke
 				public uint[] Reserved;
 			}
 
-			/// <summary>
-			/// <para>Protocol-specific information structure.</para>
-			/// </summary>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct ProtocolSpecificReserved_
-			{
-				/// <summary>
-				/// <para>Should be set to zero. Do not use this member.</para>
-				/// </summary>
-				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-				public uint[] Reserved;
-			}
-
-			[StructLayout(LayoutKind.Explicit)]
+			[StructLayout(LayoutKind.Sequential, Size = 64)]
 			public struct ProtocolSpecific_
 			{
-				[FieldOffset(0)]
 				public Smb2 Smb2;
-
-				[FieldOffset(0)]
-				public Guid Reserved;
 			}
 
 			[StructLayout(LayoutKind.Sequential)]
@@ -4409,6 +4852,9 @@ namespace Vanara.PInvoke
 				public uint Capabilities;
 				public uint CachingFlags;
 			}
+
+			/// <summary>The default instance with size and version set.</summary>
+			public static readonly FILE_REMOTE_PROTOCOL_INFO Default = new FILE_REMOTE_PROTOCOL_INFO { StructureSize = (ushort)Marshal.SizeOf(typeof(FILE_REMOTE_PROTOCOL_INFO)), StructureVersion = 2 };
 		}
 
 		/// <summary>
@@ -4637,6 +5083,9 @@ namespace Vanara.PInvoke
 			/// <summary>The path and file name of the file.</summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
 			public string szPathName;
+
+			/// <summary>Provides a default instance with size field set.</summary>
+			public static readonly OFSTRUCT Default = new OFSTRUCT { cBytes = (byte)Marshal.SizeOf(typeof(OFSTRUCT)) };
 		}
 
 		/// <summary>Contains attribute information for a file or directory. The GetFileAttributesEx function uses this structure.</summary>

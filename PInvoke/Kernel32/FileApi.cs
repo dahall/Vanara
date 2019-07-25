@@ -53,7 +53,23 @@ namespace Vanara.PInvoke
 		/// the memory used by the overlapped structure.
 		/// </para>
 		/// </param>
-		public unsafe delegate void FileIOCompletionRoutine(uint dwErrorCode, uint dwNumberOfBytesTransfered, NativeOverlapped* lpOverlapped);
+		public delegate void FileIOCompletionRoutine(uint dwErrorCode, uint dwNumberOfBytesTransfered, IntPtr lpOverlapped);
+
+		/// <summary>
+		/// An application-defined callback function used with the ReadFileEx and WriteFileEx functions. It is called when the asynchronous
+		/// input and output (I/O) operation is completed or canceled and the calling thread is in an alertable state (by using the SleepEx,
+		/// MsgWaitForMultipleObjectsEx, WaitForSingleObjectEx, or WaitForMultipleObjectsEx function with the fAlertable parameter set to TRUE).
+		/// </summary>
+		/// <param name="dwErrorCode">The I/O completion status. This parameter can be one of the system error codes.</param>
+		/// <param name="dwNumberOfBytesTransfered">The number of bytes transferred. If an error occurs, this parameter is zero.</param>
+		/// <param name="lpOverlapped">
+		/// A pointer to the OVERLAPPED structure specified by the asynchronous I/O function.
+		/// <para>
+		/// The system does not use the OVERLAPPED structure after the completion routine is called, so the completion routine can deallocate
+		/// the memory used by the overlapped structure.
+		/// </para>
+		/// </param>
+		public unsafe delegate void FileIOCompletionRoutineUnsafe(uint dwErrorCode, uint dwNumberOfBytesTransfered, NativeOverlapped* lpOverlapped);
 
 		/// <summary>The controllable aspects of the DefineDosDevice function.</summary>
 		[Flags]
@@ -359,7 +375,7 @@ namespace Vanara.PInvoke
 			var ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 			fixed (byte* pIn = buffer)
 			{
-				var ret = WriteFile(hFile, pIn, numberOfBytesToWrite, IntPtr.Zero, ar.Overlapped);
+				var ret = WriteFile(hFile, pIn, numberOfBytesToWrite, null, ar.Overlapped);
 				return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
 			}
 		}
@@ -2899,8 +2915,8 @@ namespace Vanara.PInvoke
 		/// <para>Examples</para>
 		/// <para>For an example, see Creating and Using a Temporary File.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-gettempfilenamea
-		// UINT GetTempFileNameA( LPCSTR lpPathName, LPCSTR lpPrefixString, UINT uUnique, LPSTR lpTempFileName );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-gettempfilenamea UINT GetTempFileNameA( LPCSTR lpPathName,
+		// LPCSTR lpPrefixString, UINT uUnique, LPSTR lpTempFileName );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("fileapi.h", MSDNShortId = "0a30055f-a3b9-439f-9304-40ee8a07b967")]
 		public static extern uint GetTempFileName(string lpPathName, string lpPrefixString, uint uUnique, [Out] StringBuilder lpTempFileName);
@@ -3453,8 +3469,8 @@ namespace Vanara.PInvoke
 		/// <para>Examples</para>
 		/// <para>For an example, see Appending One File to Another File.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-lockfile
-		// BOOL LockFile( HANDLE hFile, DWORD dwFileOffsetLow, DWORD dwFileOffsetHigh, DWORD nNumberOfBytesToLockLow, DWORD nNumberOfBytesToLockHigh );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-lockfile BOOL LockFile( HANDLE hFile, DWORD
+		// dwFileOffsetLow, DWORD dwFileOffsetHigh, DWORD nNumberOfBytesToLockLow, DWORD nNumberOfBytesToLockHigh );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("fileapi.h", MSDNShortId = "c88e7b6c-c339-443b-adf9-0325807203dc")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -3822,7 +3838,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365468")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool ReadFileEx([In] HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToRead, NativeOverlapped* lpOverlapped, FileIOCompletionRoutine lpCompletionRoutine);
+		public static extern unsafe bool ReadFileEx([In] HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToRead, NativeOverlapped* lpOverlapped, FileIOCompletionRoutineUnsafe lpCompletionRoutine);
 
 		/// <summary>
 		/// <para>Reads data from a file and stores it in an array of buffers.</para>
@@ -4474,8 +4490,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-setfilevaliddata
-		// BOOL SetFileValidData( HANDLE hFile, LONGLONG ValidDataLength );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-setfilevaliddata BOOL SetFileValidData( HANDLE hFile,
+		// LONGLONG ValidDataLength );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("fileapi.h", MSDNShortId = "c6ded2d7-270a-4b75-b2d4-1007a92fe831")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -4690,7 +4706,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
-		public static extern unsafe bool WriteFile(HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToWrite, IntPtr lpNumberOfBytesWritten, NativeOverlapped* lpOverlapped);
+		public static extern unsafe bool WriteFile(HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToWrite, [Optional] uint* lpNumberOfBytesWritten, [Optional] NativeOverlapped* lpOverlapped);
 
 		/// <summary>
 		/// Writes data to the specified file or input/output (I/O) device.
@@ -4856,7 +4872,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365748")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool WriteFileEx([In] HFILE hFile, [In] byte* lpBuffer, uint nNumberOfBytesToWrite, NativeOverlapped* lpOverlapped, FileIOCompletionRoutine lpCompletionRoutine);
+		public static extern unsafe bool WriteFileEx([In] HFILE hFile, [In] byte* lpBuffer, uint nNumberOfBytesToWrite, NativeOverlapped* lpOverlapped, FileIOCompletionRoutineUnsafe lpCompletionRoutine);
 
 		/// <summary>
 		/// <para>Retrieves data from an array of buffers and writes the data to a file.</para>
@@ -5367,15 +5383,15 @@ namespace Vanara.PInvoke
 			{
 			}
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeHFILE"/> to <see cref="HFILE"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HFILE(SafeHFILE h) => h.handle;
-
 			/// <summary>Performs an implicit conversion from <see cref="Microsoft.Win32.SafeHandles.SafeFileHandle"/> to <see cref="SafeHFILE"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static explicit operator SafeHFILE(Microsoft.Win32.SafeHandles.SafeFileHandle h) => new SafeHFILE(h.DangerousGetHandle(), false);
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHFILE"/> to <see cref="HFILE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HFILE(SafeHFILE h) => h.handle;
 		}
 
 		/// <summary>
