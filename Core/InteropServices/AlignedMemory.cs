@@ -23,17 +23,18 @@ namespace Vanara.InteropServices
 		/// <param name="sizeInBytes">The number of aligned bytes to allocate.</param>
 		/// <param name="alignmentBoundary">The memory offset to which the memory is aligned.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// sizeInBytes - The value of this argument must be non-negative or alignmentBoundary - Alignment must be at least 2.
+		/// sizeInBytes - The value of this argument must be non-negative or alignmentBoundary - Alignment must be a power of 2.
 		/// </exception>
 		public AlignedMemory(int sizeInBytes, int alignmentBoundary) : base(IntPtr.Zero, true)
 		{
 			if (sizeInBytes < 0)
 				throw new ArgumentOutOfRangeException(nameof(sizeInBytes), "The value of this argument must be non-negative");
-			if (alignmentBoundary < 2)
-				throw new ArgumentOutOfRangeException(nameof(alignmentBoundary), "Alignment must be at least 2.");
+			if (!IsPowerOfTwo(alignmentBoundary))
+				throw new ArgumentOutOfRangeException(nameof(alignmentBoundary), "Alignment must be a power of 2.");
 			if (sizeInBytes == 0) return;
 			RuntimeHelpers.PrepareConstrainedRegions();
 			alignment = alignmentBoundary;
+			// TODO: Look at optimizing allocation by checking to see if first one is already aligned.
 			rawMemPtr = mm.AllocMem(sz = GetBufSz(sizeInBytes));
 			SetHandle(rawMemPtr.Offset(GetOffset()));
 			Zero();
@@ -85,6 +86,8 @@ namespace Vanara.InteropServices
 			handle = IntPtr.Zero;
 			return true;
 		}
+
+		private bool IsPowerOfTwo(int x) => x != 0 && (x & (x - 1)) == 0;
 
 		private int GetBufSz(int value) => value + alignment - 1;
 
