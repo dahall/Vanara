@@ -27,6 +27,12 @@ namespace Vanara.PInvoke
 
 			/// <summary>Combines GMEM_FIXED and GMEM_ZEROINIT.</summary>
 			GPTR = 0x0040,
+
+			/// <summary>
+			/// The function modifies the attributes of the memory object only (the dwBytes parameter is ignored). This value can only be
+			/// used with <see cref="GlobalReAlloc"/>.
+			/// </summary>
+			GMEM_MODIFY = 0x0080,
 		}
 
 		/// <summary>The memory allocation attributes.</summary>
@@ -72,16 +78,16 @@ namespace Vanara.PInvoke
 			LMEM_INVALID_HANDLE = 0x8000,
 
 			/// <summary>Combines LMEM_MOVEABLE and LMEM_ZEROINIT.</summary>
-			LHND = (LMEM_MOVEABLE | LMEM_ZEROINIT),
+			LHND = LMEM_MOVEABLE | LMEM_ZEROINIT,
 
 			/// <summary>Combines LMEM_FIXED and LMEM_ZEROINIT.</summary>
-			LPTR = (LMEM_FIXED | LMEM_ZEROINIT),
+			LPTR = LMEM_FIXED | LMEM_ZEROINIT,
 
 			/// <summary>Same as LMEM_MOVEABLE.</summary>
-			NONZEROLHND = (LMEM_MOVEABLE),
+			NONZEROLHND = LMEM_MOVEABLE,
 
 			/// <summary>Same as LMEM_FIXED.</summary>
-			NONZEROLPTR = (LMEM_FIXED)
+			NONZEROLPTR = LMEM_FIXED
 		}
 
 		/// <summary>Allocates the specified number of bytes from the heap.</summary>
@@ -711,87 +717,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366747")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool LocalUnlock([In] HLOCAL hMem);
-
-		/// <summary>
-		/// <para>Maps previously allocated physical memory pages at a specified address in an Address Windowing Extensions (AWE) region.</para>
-		/// <para>
-		/// <c>64-bit Windows on Itanium-based systems:</c> Due to the difference in page sizes, <c>MapUserPhysicalPagesScatter</c> is not
-		/// supported for 32-bit applications.
-		/// </para>
-		/// </summary>
-		/// <param name="VirtualAddresses">
-		/// <para>A pointer to an array of starting addresses of the regions of memory to remap.</para>
-		/// <para>
-		/// Each entry in VirtualAddresses must be within the address range that the <c>VirtualAlloc</c> function returns when the Address
-		/// Windowing Extensions (AWE) region is allocated. The value in NumberOfPages indicates the size of the array. Entries can be from
-		/// multiple Address Windowing Extensions (AWE) regions.
-		/// </para>
-		/// </param>
-		/// <param name="NumberOfPages">
-		/// <para>The size of the physical memory and virtual address space for which to establish translations, in pages.</para>
-		/// <para>The array at VirtualAddresses specifies the virtual address range.</para>
-		/// </param>
-		/// <param name="PageArray">
-		/// <para>A pointer to an array of values that indicates how each corresponding page in VirtualAddresses should be treated.</para>
-		/// <para>
-		/// A 0 (zero) indicates that the corresponding entry in VirtualAddresses should be unmapped, and any nonzero value that it has
-		/// should be mapped.
-		/// </para>
-		/// <para>If this parameter is <c>NULL</c>, then every address in the VirtualAddresses array is unmapped.</para>
-		/// <para>The value in NumberOfPages indicates the size of the array.</para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
-		/// <para>
-		/// If the function fails, the return value is <c>FALSE</c>, and the function does not map or unmap—partial or otherwise. To get
-		/// extended error information, call <c>GetLastError</c>.
-		/// </para>
-		/// </returns>
-		// BOOL WINAPI MapUserPhysicalPagesScatter( _In_ PVOID *VirtualAddresses, _In_ ULONG_PTR NumberOfPages, _In_ PULONG_PTR PageArray); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366755(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "aa366755")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool MapUserPhysicalPagesScatter(IntPtr VirtualAddresses, SizeT NumberOfPages, [In] IntPtr PageArray);
-
-		/// <summary>Changes the protection on a region of committed pages in the virtual address space of a specified process.</summary>
-		/// <param name="hProcess">
-		/// A handle to the process whose memory protection is to be changed. The handle must have the <c>PROCESS_VM_OPERATION</c> access
-		/// right. For more information, see Process Security and Access Rights.
-		/// </param>
-		/// <param name="lpAddress">
-		/// <para>A pointer to the base address of the region of pages whose access protection attributes are to be changed.</para>
-		/// <para>
-		/// All pages in the specified region must be within the same reserved region allocated when calling the <c>VirtualAlloc</c> or
-		/// <c>VirtualAllocEx</c> function using <c>MEM_RESERVE</c>. The pages cannot span adjacent reserved regions that were allocated by
-		/// separate calls to <c>VirtualAlloc</c> or <c>VirtualAllocEx</c> using <c>MEM_RESERVE</c>.
-		/// </para>
-		/// </param>
-		/// <param name="dwSize">
-		/// The size of the region whose access protection attributes are changed, in bytes. The region of affected pages includes all pages
-		/// containing one or more bytes in the range from the lpAddress parameter to . This means that a 2-byte range straddling a page
-		/// boundary causes the protection attributes of both pages to be changed.
-		/// </param>
-		/// <param name="flNewProtect">
-		/// <para>The memory protection option. This parameter can be one of the memory protection constants.</para>
-		/// <para>
-		/// For mapped views, this value must be compatible with the access protection specified when the view was mapped (see
-		/// <c>MapViewOfFile</c>, <c>MapViewOfFileEx</c>, and <c>MapViewOfFileExNuma</c>).
-		/// </para>
-		/// </param>
-		/// <param name="lpflOldProtect">
-		/// A pointer to a variable that receives the previous access protection of the first page in the specified region of pages. If this
-		/// parameter is <c>NULL</c> or does not point to a valid variable, the function fails.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-		/// </returns>
-		// BOOL WINAPI VirtualProtectEx( _In_ HANDLE hProcess, _In_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ DWORD flNewProtect, _Out_
-		// PDWORD lpflOldProtect); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366899(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "aa366899")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool VirtualProtectEx([In] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, uint flNewProtect, out uint lpflOldProtect);
 
 		/// <summary>Provides a handle to heap allocated memory.</summary>
 		[StructLayout(LayoutKind.Sequential)]
