@@ -62,7 +62,7 @@ namespace Vanara.PInvoke
 		// LPSECURITY_ATTRIBUTES lpSecurityAttributes); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365147(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365147")]
-		public static extern SafeMailslotHandle CreateMailslot(string lpName, uint nMaxMessageSize, uint lReadTimeout, [In] SECURITY_ATTRIBUTES lpSecurityAttributes);
+		public static extern SafeMailslotHandle CreateMailslot(string lpName, uint nMaxMessageSize, uint lReadTimeout, [In, Optional] SECURITY_ATTRIBUTES lpSecurityAttributes);
 
 		/// <summary>Retrieves information about the specified mailslot.</summary>
 		/// <param name="hMailslot">A handle to a mailslot. The <c>CreateMailslot</c> function must create this handle.</param>
