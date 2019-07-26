@@ -380,7 +380,7 @@ namespace Vanara.IO
 		}
 
 		/// <summary>Retrieve the identity of the job's owner.</summary>
-		public System.Security.Principal.SecurityIdentifier Owner => RunAction(() => new System.Security.Principal.SecurityIdentifier(m_ijob.GetOwner()));
+		public System.Security.Principal.SecurityIdentifier Owner => RunAction(() => new System.Security.Principal.SecurityIdentifier((string)m_ijob.GetOwner()));
 
 		/// <summary>Gets the integrity level of the token of the owner that created or took ownership of the job.</summary>
 		/// <value>Integrity level of the token of the owner that created or took ownership of the job.</value>
