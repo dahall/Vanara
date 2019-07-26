@@ -786,7 +786,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-queryactctxw
 		// BOOL QueryActCtxW( DWORD dwFlags, HANDLE hActCtx, PVOID pvSubInstance, ULONG ulInfoClass, PVOID pvBuffer, SIZE_T cbBuffer, SIZE_T *pcbWrittenOrRequired );
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("winbase.h", MSDNShortId = "7d45f63f-0baf-4236-b245-d36f9eb32e8c")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool QueryActCtxW(QueryActCtxFlag dwFlags, [In] HACTCTX hActCtx, [In, Optional] IntPtr pvSubInstance, ACTIVATION_CONTEXT_INFO_CLASS ulInfoClass, IntPtr pvBuffer, SizeT cbBuffer, out SizeT pcbWrittenOrRequired);
