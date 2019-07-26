@@ -3,13 +3,28 @@ using System;
 
 namespace Vanara.PInvoke.Tests
 {
-	public static class ResultIs
+	public abstract class ResultIs // : NUnit.Framework.Is
 	{
 		public static FailureConstraint Failure => new FailureConstraint();
+		public static MyConstraintExpression Not => MyConstraintExpression.Not;
 		public static SuccessfulConstraint Successful => new SuccessfulConstraint();
-		public static ValueConstraint Value(object value) => new ValueConstraint(value);
 		public static ValidHandleConstraint ValidHandle => new ValidHandleConstraint();
+
 		public static FailureConstraint FailureCode(object expectedError) => new FailureConstraint(expectedError);
+		public static ValueConstraint Value(object value) => new ValueConstraint(value);
+	}
+
+	public class MyConstraintExpression
+	{
+		private OpConstraint.Op op;
+
+		private MyConstraintExpression(OpConstraint.Op _op) => op = _op;
+
+		public static MyConstraintExpression Not => new MyConstraintExpression(OpConstraint.Op.Not);
+
+		public ValidHandleConstraint ValidHandle => new ValidHandleConstraint(op);
+
+		public ValueConstraint Value(object value) => new ValueConstraint(value, op);
 	}
 
 	public class FailureConstraint : Constraint
@@ -20,15 +35,19 @@ namespace Vanara.PInvoke.Tests
 			{
 				case null:
 					break;
+
 				case int i:
 					Expected = new Win32Error(i);
 					break;
+
 				case uint i:
 					Expected = new HRESULT(i);
 					break;
+
 				case IErrorProvider iep:
 					Expected = iep;
 					break;
+
 				default:
 					throw new ArgumentException();
 			}
@@ -149,54 +168,104 @@ namespace Vanara.PInvoke.Tests
 		}
 	}
 
-	public class ValueConstraint : Constraint
+	public abstract class OpConstraint : Constraint
+	{
+		public enum Op
+		{
+			None = 0,
+			Not = 1
+		}
+
+		protected Op AppliedOp { get; }
+
+		protected OpConstraint(Op op) => AppliedOp = op;
+
+		protected string Prefix
+		{
+			get
+			{
+				switch (AppliedOp)
+				{
+					case Op.Not:
+						return "Not ";
+					default:
+						return "";
+				}
+			}
+		}
+	}
+
+	public class ValidHandleConstraint : OpConstraint
+	{
+		public ValidHandleConstraint(OpConstraint.Op op = OpConstraint.Op.None) : base(op)
+		{
+		}
+
+		public override ConstraintResult ApplyTo<TActual>(TActual actual)
+		{
+			IntPtr val;
+			bool success;
+			switch (actual)
+			{
+				case System.Runtime.InteropServices.SafeHandle h:
+					success = !h.IsInvalid;
+					val = h.DangerousGetHandle();
+					break;
+
+				case IHandle ih:
+					val = ih.DangerousGetHandle();
+					var l = val.ToInt64();
+					success = l != 0 && l != -1;
+					break;
+
+				case System.IntPtr p:
+					val = p;
+					l = val.ToInt64();
+					success = l != 0 && l != -1;
+					break;
+
+				default:
+					throw new InvalidCastException("Cannot get a handle from value.");
+			}
+			Description = $"Valid handle";
+			if (AppliedOp == Op.Not)
+			{
+				success = !success;
+				Description = $"Invalid handle";
+			}
+			return new ErrConstraintResult(this, string.Format("0x{0:X" + IntPtr.Size + "}", val.ToInt64()), success);
+		}
+	}
+
+	public class ValueConstraint : OpConstraint
 	{
 		public object Expected { get; }
 
-		public ValueConstraint(object expected)
+		public ValueConstraint(object expected, OpConstraint.Op op = OpConstraint.Op.None) : base(op)
 		{
 			Expected = expected;
 		}
 
 		public override ConstraintResult ApplyTo<TActual>(TActual actual)
 		{
-			if (!(Expected?.Equals(actual) ?? actual == null))
-			{
-				Description = $"{Expected}, {Win32Error.ERROR_SUCCESS}";
-				return new ConstraintResult(this, (actual, Win32Error.GetLastError()), false);
-			}
-			return new ConstraintResult(this, actual, true);
+			var eq = new EqualConstraint(Expected);
+			Description = Prefix + eq.Description;
+			var success = eq.ApplyTo(actual).IsSuccess;
+			if (AppliedOp == Op.Not)
+				success = !success;
+			return new ErrConstraintResult(this, actual, success);
 		}
 	}
 
-	public class ValidHandleConstraint : Constraint
+	public class ErrConstraintResult : ConstraintResult
 	{
-		public ValidHandleConstraint()
+		private readonly Win32Error lastErr;
+
+		public ErrConstraintResult(IConstraint constraint, object actualValue, bool isSuccessful) : base(constraint, actualValue, isSuccessful)
 		{
+			lastErr = Win32Error.GetLastError();
 		}
 
-		public override ConstraintResult ApplyTo<TActual>(TActual actual)
-		{
-			var success = true;
-			switch (actual)
-			{
-				case System.Runtime.InteropServices.SafeHandle h:
-					success = !h.IsInvalid;
-					break;
-				case IHandle ih:
-					var l = ih.DangerousGetHandle().ToInt64();
-					success = l != 0 && l != -1;
-					break;
-				case System.IntPtr p:
-					l = p.ToInt64();
-					success = l != 0 && l != -1;
-					break;
-				default:
-					break;
-			}
-			Description = $"Valid handle";
-			return new ConstraintResult(this, success ? "Valid handle" : $"Invalid handle (Err: {Win32Error.GetLastError()})", success);
-		}
+		public override void WriteAdditionalLinesTo(MessageWriter writer) => writer.Write($" (Err: {lastErr})");
 	}
-
 }
