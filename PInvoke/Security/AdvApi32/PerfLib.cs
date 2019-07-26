@@ -96,7 +96,7 @@ namespace Vanara.PInvoke
 		// Perflibrequest( IN ULONG RequestCode, IN PVOID Buffer, IN ULONG BufferSize ) {...}
 		[PInvokeData("perflib.h", MSDNShortId = "0f771ab7-af42-481b-b2da-20dcdf49b82b")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate NTStatus Perflibrequest([In] uint RequestCode, [In] IntPtr Buffer, [In] uint BufferSize);
+		public delegate NTStatus ControlCallback([In] uint RequestCode, [In] IntPtr Buffer, [In] uint BufferSize);
 
 		/// <summary>
 		/// <para>
@@ -122,7 +122,7 @@ namespace Vanara.PInvoke
 		// PerfMemAlloc( IN SIZE_T AllocSize, IN LPVOID pContext ) {...}
 		[PInvokeData("perflib.h", MSDNShortId = "09af7e56-2174-4a82-b45b-59f4180e4aab")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate IntPtr PerfMemAlloc([In] SizeT AllocSize, [In] IntPtr pContext);
+		public delegate IntPtr AllocateMemory([In] SizeT AllocSize, [In] IntPtr pContext);
 
 		/// <summary>
 		/// <para>
@@ -147,7 +147,7 @@ namespace Vanara.PInvoke
 		// IN LPVOID pBuffer, IN LPVOID pContext ) {...}
 		[PInvokeData("perflib.h", MSDNShortId = "3b2f9f68-131a-4e17-8b43-6c3a20871dad")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void PerfMemFree([In] IntPtr pBuffer, [In] IntPtr pContext);
+		public delegate void FreeMemory([In] IntPtr pBuffer, [In] IntPtr pContext);
 
 		/// <summary>
 		/// Indicates the content type of a PERF_COUNTER_HEADER block that the PerfQueryCounterData function includes as part of the
@@ -1285,7 +1285,7 @@ namespace Vanara.PInvoke
 		// ProviderGuid, PERFLIBREQUEST ControlCallback, HANDLE *phProvider );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("perflib.h", MSDNShortId = "b417b19b-adbc-40e3-aca1-c2cd94a79232")]
-		public static extern NTStatus PerfStartProvider(in Guid ProviderGuid, Perflibrequest ControlCallback, out SafeHPERFPROV phProvider);
+		public static extern NTStatus PerfStartProvider(in Guid ProviderGuid, ControlCallback ControlCallback, out SafeHPERFPROV phProvider);
 
 		/// <summary>Registers the provider.</summary>
 		/// <param name="ProviderGuid">
@@ -2346,21 +2346,21 @@ namespace Vanara.PInvoke
 			/// used the <c>-NotificationCallback</c> argument when calling CTRPP. Otherwise, <c>NULL</c>.
 			/// </summary>
 			[MarshalAs(UnmanagedType.FunctionPtr)]
-			public Perflibrequest ControlCallback;
+			public ControlCallback ControlCallback;
 
 			/// <summary>
 			/// The name of the AllocateMemory function that PERFLIB calls to allocate memory. Set this member if you used the
 			/// <c>-MemoryRoutines</c> argument when calling CTRPP. Otherwise, <c>NULL</c>.
 			/// </summary>
 			[MarshalAs(UnmanagedType.FunctionPtr)]
-			public PerfMemAlloc MemAllocRoutine;
+			public AllocateMemory MemAllocRoutine;
 
 			/// <summary>
 			/// The name of the FreeMemory function that PERFLIB calls to free memory allocated by the AllocateMemory function. Must be
 			/// <c>NULL</c> if <c>MemAllocRoutine</c> is <c>NULL</c>.
 			/// </summary>
 			[MarshalAs(UnmanagedType.FunctionPtr)]
-			public PerfMemFree MemFreeRoutine;
+			public FreeMemory MemFreeRoutine;
 
 			/// <summary>Context information passed to the memory allocation and free routines. Can be <c>NULL</c>.</summary>
 			public IntPtr pMemContext;

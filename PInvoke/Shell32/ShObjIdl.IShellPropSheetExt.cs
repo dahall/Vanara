@@ -14,7 +14,7 @@ namespace Vanara.PInvoke
 		/// <returns></returns>
 		[PInvokeData("Shobjidl.h")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate bool LPFNSVADDPROPSHEETPAGE(IntPtr hPropSheetPage, IntPtr lParam);
+		public delegate bool LPFNSVADDPROPSHEETPAGE(HPROPSHEETPAGE hPropSheetPage, IntPtr lParam);
 
 		/// <summary>Used by IShellPropSheetExt::ReplacePage.</summary>
 		[PInvokeData("Shobjidl.h")]

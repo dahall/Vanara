@@ -520,7 +520,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "b399ff19-e2e5-4509-8bb5-9647734881b3")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumDesktopWindows(HDESK hDesktop, WNDENUMPROC lpfn, IntPtr lParam);
+		public static extern bool EnumDesktopWindows(HDESK hDesktop, EnumWindowsProc lpfn, IntPtr lParam);
 
 		/// <summary>
 		/// <para>

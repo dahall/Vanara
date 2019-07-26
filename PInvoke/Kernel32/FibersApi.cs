@@ -14,7 +14,7 @@ namespace Vanara.PInvoke
 		/// this callback function. FlsCallback is a placeholder for the application-defined function name.
 		/// </summary>
 		/// <param name="lpFlsData">The value stored in the FLS slot for the calling fiber.</param>
-		public delegate void PFLS_CALLBACK_FUNCTION(IntPtr lpFlsData);
+		public delegate void FlsCallback(IntPtr lpFlsData);
 
 		/// <summary>
 		/// Allocates a fiber local storage (FLS) index. Any fiber in the process can subsequently use this index to store and retrieve
@@ -31,7 +31,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI FlsAlloc( _In_ PFLS_CALLBACK_FUNCTION lpCallback); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682664(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682664")]
-		public static extern uint FlsAlloc(PFLS_CALLBACK_FUNCTION lpCallback);
+		public static extern uint FlsAlloc(FlsCallback lpCallback);
 
 		/// <summary>Releases a fiber local storage (FLS) index, making it available for reuse.</summary>
 		/// <param name="dwFlsIndex">The FLS index that was allocated by the <c>FlsAlloc</c> function.</param>

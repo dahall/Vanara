@@ -24,7 +24,7 @@ namespace Vanara.PInvoke
 		/// list of handlers for this process is used.
 		/// </returns>
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool PHANDLER_ROUTINE(CTRL_EVENT CtrlType);
+		public delegate bool HandlerRoutine(CTRL_EVENT CtrlType);
 
 		/// <summary>
 		/// Character attributes can be divided into two classes: color and DBCS. The following attributes are defined in the Wincon.h header file.
@@ -1851,7 +1851,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetConsoleCtrlHandler(PHANDLER_ROUTINE HandlerRoutine, [MarshalAs(UnmanagedType.Bool)] bool Add);
+		public static extern bool SetConsoleCtrlHandler(HandlerRoutine HandlerRoutine, [MarshalAs(UnmanagedType.Bool)] bool Add);
 
 		/// <summary>Sets the size and visibility of the cursor for the specified console screen buffer.</summary>
 		/// <param name="hConsoleOutput">

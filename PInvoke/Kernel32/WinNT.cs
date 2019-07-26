@@ -19,11 +19,11 @@ namespace Vanara.PInvoke
 		/// <returns>Pointer to a <see cref="IMAGE_RUNTIME_FUNCTION_ENTRY"/> structure.</returns>
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("WinNT.h")]
-		public delegate IntPtr PGET_RUNTIME_FUNCTION_CALLBACK(IntPtr ControlPc, IntPtr Context);
+		public delegate IntPtr GetRuntimeFunctionCallback(IntPtr ControlPc, IntPtr Context);
 
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("WinNT.h")]
-		public delegate uint POUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK(HPROCESS Process, IntPtr TableAddress, out uint Entries, [Out] IMAGE_RUNTIME_FUNCTION_ENTRY[] Functions);
+		public delegate uint OutOfProcessFunctionTableCallback(HPROCESS Process, IntPtr TableAddress, out uint Entries, [Out] IMAGE_RUNTIME_FUNCTION_ENTRY[] Functions);
 
 		/// <summary>
 		/// <para>The application-defined user-mode scheduling (UMS) scheduler entry point function associated with a UMS completion list.</para>

@@ -75,7 +75,7 @@ namespace Vanara.PInvoke
 		// HWINEVENTHOOK hWinEventHook, DWORD event, HWND hwnd, LONG idObject, LONG idChild, DWORD idEventThread, DWORD dwmsEventTime ) {...}
 		[PInvokeData("winuser.h", MSDNShortId = "5fe3cacc-4563-43da-960d-729d3fe4ff70")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void WINEVENTPROC(HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime);
+		public delegate void WinEventProc(HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime);
 
 		/// <summary>The type of hook procedure to be installed.</summary>
 		[PInvokeData("WinUser.h", MSDNShortId = "ms644990")]
@@ -762,7 +762,7 @@ namespace Vanara.PInvoke
 		// eventMin, DWORD eventMax, HMODULE hmodWinEventProc, WINEVENTPROC pfnWinEventProc, DWORD idProcess, DWORD idThread, DWORD dwFlags );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "090bda1b-0635-4aa3-ae33-3987b36e30b8")]
-		public static extern HWINEVENTHOOK SetWinEventHook(uint eventMin, uint eventMax, HINSTANCE hmodWinEventProc, WINEVENTPROC pfnWinEventProc, uint idProcess, uint idThread, WINEVENT dwFlags);
+		public static extern HWINEVENTHOOK SetWinEventHook(uint eventMin, uint eventMax, HINSTANCE hmodWinEventProc, WinEventProc pfnWinEventProc, uint idProcess, uint idThread, WINEVENT dwFlags);
 
 		/// <summary>
 		/// <para>Removes a hook procedure installed in a hook chain by the SetWindowsHookEx function.</para>

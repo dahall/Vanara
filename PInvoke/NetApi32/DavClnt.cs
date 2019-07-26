@@ -77,8 +77,8 @@ namespace Vanara.PInvoke
 		// pCallbackCred, AUTHNEXTSTEP *NextStep, PFNDAVAUTHCALLBACK_FREECRED *pFreeCred ) {...}
 		[PInvokeData("davclnt.h", MSDNShortId = "6ac191ac-e63f-431f-893b-92c69320db58")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
-		public delegate Win32Error PFNDAVAUTHCALLBACK(string lpwzServerName, string lpwzRemoteName, DAV_AUTHN_SCHEME dwAuthScheme, uint dwFlags,
-			ref DAV_CALLBACK_CRED pCallbackCred, ref AUTHNEXTSTEP NextStep, out PFNDAVAUTHCALLBACK_FREECRED pFreeCred);
+		public delegate Win32Error DavAuthCallback(string lpwzServerName, string lpwzRemoteName, DAV_AUTHN_SCHEME dwAuthScheme, uint dwFlags,
+			ref DAV_CALLBACK_CRED pCallbackCred, ref AUTHNEXTSTEP NextStep, out DavFreeCredCallback pFreeCred);
 
 		/// <summary>
 		/// <para>
@@ -108,7 +108,7 @@ namespace Vanara.PInvoke
 		// PfndavauthcallbackFreecred; DWORD PfndavauthcallbackFreecred( PVOID pbuffer ) {...}
 		[PInvokeData("davclnt.h", MSDNShortId = "96bacda5-8f24-4119-b0ae-82ff8aff54b4")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
-		public delegate Win32Error PFNDAVAUTHCALLBACK_FREECRED(IntPtr pbuffer);
+		public delegate Win32Error DavFreeCredCallback(IntPtr pbuffer);
 
 		/// <summary>
 		/// <para>Specifies the next action that the WebDAV client should take after a successful call to the DavAuthCallback callback function.</para>
@@ -576,7 +576,7 @@ namespace Vanara.PInvoke
 		// DavRegisterAuthCallback( PFNDAVAUTHCALLBACK CallBack, ULONG Version );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("davclnt.h", MSDNShortId = "7b381929-174f-4b7b-aa22-dc7a2c3e3b4d")]
-		public static extern uint DavRegisterAuthCallback(PFNDAVAUTHCALLBACK CallBack, uint Version);
+		public static extern uint DavRegisterAuthCallback(DavAuthCallback CallBack, uint Version);
 
 		/// <summary>Unregisters a registered callback function that the WebDAV client uses to prompt the user for credentials.</summary>
 		/// <param name="hCallback">The opaque handle that was returned by the DavRegisterAuthCallback function.</param>

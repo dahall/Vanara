@@ -136,7 +136,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("rtlsupportapi.h", MSDNShortId = "63b35b17-0b0e-46ed-9dbf-98290ab08bd1")]
 		[return: MarshalAs(UnmanagedType.U1)]
-		public static extern bool RtlInstallFunctionTableCallback(ulong TableIdentifier, ulong BaseAddress, uint Length, PGET_RUNTIME_FUNCTION_CALLBACK Callback, IntPtr Context = default, [MarshalAs(UnmanagedType.LPWStr)] string OutOfProcessCallbackDll = null);
+		public static extern bool RtlInstallFunctionTableCallback(ulong TableIdentifier, ulong BaseAddress, uint Length, GetRuntimeFunctionCallback Callback, IntPtr Context = default, [MarshalAs(UnmanagedType.LPWStr)] string OutOfProcessCallbackDll = null);
 
 		/// <summary>Searches the active function tables for an entry that corresponds to the specified PC value.</summary>
 		/// <param name="ControlPc">The virtual address of an instruction bundle within the function.</param>

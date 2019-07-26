@@ -78,7 +78,7 @@ namespace Vanara.PInvoke
 		/// <returns></returns>
 		[PInvokeData("winsock2.h", MSDNShortId = "f385f63f-49b2-4eb7-8717-ad4cca1a2252")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
-		public delegate CF LPCONDITIONPROC(in WSABUF lpCallerId, in WSABUF lpCallerData, IntPtr lpSQOS, IntPtr lpGQOS, in WSABUF lpCalleeId, in WSABUF lpCalleeData, out GROUP g, IntPtr dwCallbackData);
+		public delegate CF ConditionFunc(in WSABUF lpCallerId, in WSABUF lpCallerData, IntPtr lpSQOS, IntPtr lpGQOS, in WSABUF lpCalleeId, in WSABUF lpCalleeData, out GROUP g, IntPtr dwCallbackData);
 
 		[PInvokeData("winsock2.h")]
 		public enum ADDRESS_FAMILY : ushort
@@ -2607,7 +2607,7 @@ namespace Vanara.PInvoke
 		// *addr, LPINT addrlen, LPCONDITIONPROC lpfnCondition, DWORD_PTR dwCallbackData );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "f385f63f-49b2-4eb7-8717-ad4cca1a2252")]
-		public static extern SOCKET WSAAccept(SOCKET s, SOCKADDR addr, ref int addrlen, [In, Out, Optional] LPCONDITIONPROC lpfnCondition, [In, Out, Optional] IntPtr dwCallbackData);
+		public static extern SOCKET WSAAccept(SOCKET s, SOCKADDR addr, ref int addrlen, [In, Out, Optional] ConditionFunc lpfnCondition, [In, Out, Optional] IntPtr dwCallbackData);
 
 		/// <summary>
 		/// <para>

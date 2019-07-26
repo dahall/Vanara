@@ -11,7 +11,7 @@ namespace Vanara.PInvoke
 		/// memory pages are detected.
 		/// </summary>
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
-		public delegate void PBAD_MEMORY_CALLBACK_ROUTINE();
+		public delegate void BadMemoryCallbackRoutine();
 
 		/// <summary>Flags that indicate which of the file cache limits are enabled.</summary>
 		[PInvokeData("MemoryApi.h")]
@@ -2296,7 +2296,7 @@ namespace Vanara.PInvoke
 		// PVOID WINAPI RegisterBadMemoryNotification( _In_ PBAD_MEMORY_CALLBACK_ROUTINE Callback);
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "hh691013")]
-		public static extern IntPtr RegisterBadMemoryNotification(PBAD_MEMORY_CALLBACK_ROUTINE Callback);
+		public static extern IntPtr RegisterBadMemoryNotification(BadMemoryCallbackRoutine Callback);
 
 		/// <summary>
 		/// <para>

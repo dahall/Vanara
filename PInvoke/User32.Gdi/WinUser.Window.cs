@@ -11,6 +11,53 @@ namespace Vanara.PInvoke
 		public const int CCHILDREN_TITLEBAR = 5;
 
 		/// <summary>
+		/// An application-defined callback function used with the <c>EnumChildWindows</c> function. It receives the child window handles.
+		/// The <c>WNDENUMPROC</c> type defines a pointer to this callback function. EnumChildProc is a placeholder for the
+		/// application-defined function name.
+		/// </summary>
+		/// <param name="hwnd">A handle to a child window of the parent window specified in <c>EnumChildWindows</c>.</param>
+		/// <param name="lParam">The application-defined value given in <c>EnumChildWindows</c>.</param>
+		/// <returns>To continue enumeration, the callback function must return <c>TRUE</c>; to stop enumeration, it must return <c>FALSE</c>.</returns>
+		// BOOL CALLBACK EnumChildProc( _In_ HWND hwnd, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633493(v=vs.85).aspx
+		[PInvokeData("Winuser.h", MSDNShortId = "ms633493")]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public delegate bool EnumWindowsProc([In] HWND hwnd, [In] IntPtr lParam);
+
+		/// <summary>
+		/// <para>
+		/// An application-defined function that processes messages sent to a window. The <c>WNDPROC</c> type defines a pointer to this
+		/// callback function.
+		/// </para>
+		/// <para>WindowProc is a placeholder for the application-defined function name.</para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window.</para>
+		/// </param>
+		/// <param name="uMsg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The message.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
+		/// <param name="wParam">
+		/// <para>Type: <c>WPARAM</c></para>
+		/// <para>Additional message information. The contents of this parameter depend on the value of the uMsg parameter.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Additional message information. The contents of this parameter depend on the value of the uMsg parameter.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type:</para>
+		/// <para>The return value is the result of the message processing and depends on the message sent.</para>
+		/// </returns>
+		// LRESULT CALLBACK WindowProc( _In_ HWND hwnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633573(v=vs.85).aspx
+		[PInvokeData("Winuser.h", MSDNShortId = "ms633573")]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate IntPtr WindowProc([In] HWND hwnd, [In] uint uMsg, [In] IntPtr wParam, [In] IntPtr lParam);
+
+		/// <summary>
 		/// <para>The user-provided entry point for a graphical Windows-based application.</para>
 		/// <para><c>WinMain</c> is the conventional name used for the application entry point. For more information, see Remarks.</para>
 		/// </summary>
@@ -112,53 +159,6 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms633559")]
 		public delegate int WinMain([In] HINSTANCE hInstance, [In] HINSTANCE hPrevInstance, [In] [MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
-
-		/// <summary>
-		/// An application-defined callback function used with the <c>EnumChildWindows</c> function. It receives the child window handles.
-		/// The <c>WNDENUMPROC</c> type defines a pointer to this callback function. EnumChildProc is a placeholder for the
-		/// application-defined function name.
-		/// </summary>
-		/// <param name="hwnd">A handle to a child window of the parent window specified in <c>EnumChildWindows</c>.</param>
-		/// <param name="lParam">The application-defined value given in <c>EnumChildWindows</c>.</param>
-		/// <returns>To continue enumeration, the callback function must return <c>TRUE</c>; to stop enumeration, it must return <c>FALSE</c>.</returns>
-		// BOOL CALLBACK EnumChildProc( _In_ HWND hwnd, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633493(v=vs.85).aspx
-		[PInvokeData("Winuser.h", MSDNShortId = "ms633493")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool WNDENUMPROC([In] HWND hwnd, [In] IntPtr lParam);
-
-		/// <summary>
-		/// <para>
-		/// An application-defined function that processes messages sent to a window. The <c>WNDPROC</c> type defines a pointer to this
-		/// callback function.
-		/// </para>
-		/// <para>WindowProc is a placeholder for the application-defined function name.</para>
-		/// </summary>
-		/// <param name="hwnd">
-		/// <para>Type: <c>HWND</c></para>
-		/// <para>A handle to the window.</para>
-		/// </param>
-		/// <param name="uMsg">
-		/// <para>Type: <c>UINT</c></para>
-		/// <para>The message.</para>
-		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
-		/// </param>
-		/// <param name="wParam">
-		/// <para>Type: <c>WPARAM</c></para>
-		/// <para>Additional message information. The contents of this parameter depend on the value of the uMsg parameter.</para>
-		/// </param>
-		/// <param name="lParam">
-		/// <para>Type: <c>LPARAM</c></para>
-		/// <para>Additional message information. The contents of this parameter depend on the value of the uMsg parameter.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type:</para>
-		/// <para>The return value is the result of the message processing and depends on the message sent.</para>
-		/// </returns>
-		// LRESULT CALLBACK WindowProc( _In_ HWND hwnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633573(v=vs.85).aspx
-		[PInvokeData("Winuser.h", MSDNShortId = "ms633573")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate IntPtr WNDPROC([In] HWND hwnd, [In] uint uMsg, [In] IntPtr wParam, [In] IntPtr lParam);
 
 		/// <summary>
 		/// The type of animation. Note that, by default, these flags take effect when showing a window. To take effect when hiding a window,
@@ -1589,7 +1589,7 @@ namespace Vanara.PInvoke
 		// lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam );
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "")]
-		public static extern IntPtr CallWindowProc(WNDPROC lpPrevWndFunc, HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+		public static extern IntPtr CallWindowProc(WindowProc lpPrevWndFunc, HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
 		/// <summary>
 		/// <para>Cascades the specified child windows of the specified parent window.</para>
@@ -2825,7 +2825,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "enumchildwindows")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumChildWindows(HWND hWndParent, WNDENUMPROC lpEnumFunc, IntPtr lParam);
+		public static extern bool EnumChildWindows(HWND hWndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -2859,7 +2859,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "enumthreadwindows")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumThreadWindows(uint dwThreadId, WNDENUMPROC lpfn, IntPtr lParam);
+		public static extern bool EnumThreadWindows(uint dwThreadId, EnumWindowsProc lpfn, IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -2900,7 +2900,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "enumwindows")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumWindows(WNDENUMPROC lpEnumFunc, IntPtr lParam);
+		public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -8209,7 +8209,7 @@ namespace Vanara.PInvoke
 			/// information, see WindowProc.
 			/// </para>
 			/// </summary>
-			public WNDPROC lpfnWndProc;
+			public WindowProc lpfnWndProc;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
@@ -8392,7 +8392,7 @@ namespace Vanara.PInvoke
 			/// information, see WindowProc.
 			/// </para>
 			/// </summary>
-			public WNDPROC lpfnWndProc;
+			public WindowProc lpfnWndProc;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>

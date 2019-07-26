@@ -13,20 +13,6 @@ namespace Vanara.PInvoke
 	public static partial class ShlwApi
 	{
 		/// <summary>
-		/// <para>Points to a function that notifies the host that a thread has started to execute.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The function to which <c>LPTHREAD_START_ROUTINE</c> points is a callback function and must be implemented by the writer of the
-		/// hosting application.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-3.5/aa964928(v=vs.90)
-		[PInvokeData("Processthreadsapi.h")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate uint LPTHREAD_START_ROUTINE([In] IntPtr lpParameter);
-
-		/// <summary>
 		/// <para>Used by IQueryAssociations::GetData to define the type of data that is to be returned.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/ne-shlwapi-assocdata
@@ -2675,7 +2661,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shlwapi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "2140e396-29cd-4665-b684-337170570b73")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHCreateThread(LPTHREAD_START_ROUTINE pfnThreadProc, IntPtr pData, SHCT_FLAGS flags, LPTHREAD_START_ROUTINE pfnCallback);
+		public static extern bool SHCreateThread(ThreadProc pfnThreadProc, IntPtr pData, SHCT_FLAGS flags, ThreadProc pfnCallback);
 
 		/// <summary>
 		/// <para>Creates a per-thread reference to a Component Object Model (COM) object.</para>
@@ -2770,7 +2756,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shlwapi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "22a3a97a-857f-46b8-a2e0-8f3a14f40322")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHCreateThreadWithHandle(LPTHREAD_START_ROUTINE pfnThreadProc, IntPtr pData, SHCT_FLAGS flags, LPTHREAD_START_ROUTINE pfnCallback, out SafeHFILE pHandle);
+		public static extern bool SHCreateThreadWithHandle(ThreadProc pfnThreadProc, IntPtr pData, SHCT_FLAGS flags, ThreadProc pfnCallback, out SafeHFILE pHandle);
 
 		/// <summary>
 		/// <para>Deletes an empty key.</para>

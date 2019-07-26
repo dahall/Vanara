@@ -278,7 +278,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "118392de-166b-413e-99c9-b3deb756de0e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CopyFileTransacted(string lpExistingFileName, string lpNewFileName, LpprogressRoutine lpProgressRoutine, IntPtr lpData, [MarshalAs(UnmanagedType.Bool)] ref bool pbCancel, COPY_FILE dwCopyFlags, IntPtr hTransaction);
+		public static extern bool CopyFileTransacted(string lpExistingFileName, string lpNewFileName, CopyProgressRoutine lpProgressRoutine, IntPtr lpData, [MarshalAs(UnmanagedType.Bool)] ref bool pbCancel, COPY_FILE dwCopyFlags, IntPtr hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -2573,7 +2573,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "466d733b-30d2-4297-a0e6-77038f1a21d5")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool MoveFileTransacted(string lpExistingFileName, string lpNewFileName, LpprogressRoutine lpProgressRoutine, IntPtr lpData, MOVEFILE dwFlags, IntPtr hTransaction);
+		public static extern bool MoveFileTransacted(string lpExistingFileName, string lpNewFileName, CopyProgressRoutine lpProgressRoutine, IntPtr lpData, MOVEFILE dwFlags, IntPtr hTransaction);
 
 		/// <summary>
 		/// <para>

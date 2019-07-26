@@ -35,7 +35,7 @@ namespace Vanara.PInvoke
 		/// DWORD that contains one or more of the <see cref="InternetState"/> flags.
 		/// </param>
 		/// <param name="dwStatusInformationLength">The size, in bytes, of the data pointed to by lpvStatusInformation.</param>
-		public delegate void INTERNET_STATUS_CALLBACK([In] IntPtr hInternet, [In, Optional] IntPtr dwContext, [In] InternetStatus dwInternetStatus, [In, Optional] IntPtr lpvStatusInformation, [In] uint dwStatusInformationLength);
+		public delegate void InternetStatusCallback([In] IntPtr hInternet, [In, Optional] IntPtr dwContext, [In] InternetStatus dwInternetStatus, [In, Optional] IntPtr lpvStatusInformation, [In] uint dwStatusInformationLength);
 
 		/// <summary>Flags used by <see cref="INTERNET_DIAGNOSTIC_SOCKET_INFO"/>.</summary>
 		[Flags]
@@ -433,7 +433,7 @@ namespace Vanara.PInvoke
 			/// Sets or retrieves the address of the callback function defined for this handle. This option can be used on all HINTERNET
 			/// handles. Used by InternetQueryOption and InternetSetOption.
 			/// </summary>
-			[CorrespondingType(typeof(INTERNET_STATUS_CALLBACK))]
+			[CorrespondingType(typeof(InternetStatusCallback))]
 			INTERNET_OPTION_CALLBACK = 1,
 
 			/// <summary>Not implemented.</summary>
@@ -1258,7 +1258,7 @@ namespace Vanara.PInvoke
 			INTERNET_SERVICE_HTTP = 3
 		}
 
-		/// <summary>Values passed using the <see cref="INTERNET_STATUS_CALLBACK"/> delegate.</summary>
+		/// <summary>Values passed using the <see cref="InternetStatusCallback"/> delegate.</summary>
 		[Flags]
 		public enum InternetState
 		{
@@ -1278,7 +1278,7 @@ namespace Vanara.PInvoke
 			INTERNET_STATE_BUSY = 0x200,
 		}
 
-		/// <summary>Values passed using the <see cref="INTERNET_STATUS_CALLBACK"/> delegate.</summary>
+		/// <summary>Values passed using the <see cref="InternetStatusCallback"/> delegate.</summary>
 		public enum InternetStatus
 		{
 			/// <summary>Closing the connection to the server. The lpvStatusInformation parameter is NULL.</summary>
@@ -1568,7 +1568,7 @@ namespace Vanara.PInvoke
 		/// function, or INTERNET_INVALID_STATUS_CALLBACK if the callback function is not valid.
 		/// </returns>
 		[DllImport(Lib.WinInet, ExactSpelling = true, SetLastError = true)]
-		public static extern IntPtr InternetSetStatusCallback(SafeInternetHandle hInternet, INTERNET_STATUS_CALLBACK lpfnInternetCallback);
+		public static extern IntPtr InternetSetStatusCallback(SafeInternetHandle hInternet, InternetStatusCallback lpfnInternetCallback);
 
 		[DllImport("inetcpl.cpl", SetLastError = true)]
 		private static extern int LaunchInternetControlPanel(HWND hWnd);
