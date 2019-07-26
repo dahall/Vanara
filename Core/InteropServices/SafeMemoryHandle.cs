@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
 using Vanara.Extensions;
+using Vanara.PInvoke;
 
 namespace Vanara.InteropServices
 {
@@ -58,7 +59,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Gets the size of the allocated memory block.</summary>
 		/// <value>The size of the allocated memory block.</value>
-		int Size { get; set; }
+		SizeT Size { get; set; }
 
 		/// <summary>
 		/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that such objects being
@@ -130,7 +131,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
 		/// <value>The size in bytes of the allocated memory block.</value>
-		public abstract int Size { get; set; }
+		public abstract SizeT Size { get; set; }
 
 #if DEBUG
 		/// <summary>Dumps memory to byte string.</summary>
@@ -197,7 +198,7 @@ namespace Vanara.InteropServices
 		protected TMem mm = new TMem();
 
 		/// <summary>The number of bytes currently allocated.</summary>
-		protected int sz;
+		protected SizeT sz;
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
@@ -228,7 +229,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
 		/// <value>The size in bytes of the allocated memory block.</value>
-		public override int Size
+		public override SizeT Size
 		{
 			get => sz;
 			set

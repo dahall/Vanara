@@ -2055,7 +2055,7 @@ namespace Vanara.PInvoke
 		{
 			var sb = new StringBuilder(1024);
 			sid = new SafePSID(256);
-			var sidSz = sid.Size;
+			int sidSz = sid.Size;
 			var sbSz = sb.Capacity;
 			var ret = LookupAccountName(systemName, accountName, sid, ref sidSz, sb, ref sbSz, out snu);
 			domainName = sb.ToString();

@@ -659,7 +659,7 @@ namespace Vanara.PInvoke.Tests
 			}
 
 			var serverSockName = SOCKADDR.Empty;
-			var nameLen = serverSockName.Size;
+			int nameLen = serverSockName.Size;
 			status = getsockname(serviceSocket, serverSockName, ref nameLen);
 			if (status.Failed)
 				goto bail;

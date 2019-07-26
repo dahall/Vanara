@@ -494,11 +494,12 @@ namespace Vanara.IO
 		private IBackgroundCopyJob3 IJob3 => GetDerived<IBackgroundCopyJob3>();
 		private IBackgroundCopyJob4 IJob4 => GetDerived<IBackgroundCopyJob4>();
 		private IBackgroundCopyJob5 IJob5 => GetDerived<IBackgroundCopyJob5>();
-		
+
 		private BG_NOTIFY NotifyFlags
 		{
 			get => RunAction(() => m_ijob.GetNotifyFlags(), (BG_NOTIFY)0);
-			set => RunAction(() => {
+			set => RunAction(() =>
+			{
 				BackgroundCopyJobState st = State;
 				if (st != BackgroundCopyJobState.Acknowledged && st != BackgroundCopyJobState.Cancelled)
 					m_ijob.SetNotifyFlags(value);

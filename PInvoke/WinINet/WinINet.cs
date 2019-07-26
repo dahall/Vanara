@@ -1551,7 +1551,7 @@ namespace Vanara.PInvoke
 		{
 			if (!CorrespondingTypeAttribute.CanSet(option, typeof(T))) throw new ArgumentException($"{option} cannot be used to set values of type {typeof(T)}.");
 			var hMem = typeof(T) == typeof(string) ? new SafeCoTaskMemHandle(value?.ToString()) : (typeof(T) == typeof(bool) ? SafeCoTaskMemHandle.CreateFromStructure(Convert.ToUInt32(value)) : SafeCoTaskMemHandle.CreateFromStructure(value));
-			var res = InternetSetOption(hInternet, option, (IntPtr)hMem, typeof(T) == typeof(string) ? value?.ToString().Length + 1 ?? 0 : hMem.Size);
+			var res = InternetSetOption(hInternet, option, (IntPtr)hMem, typeof(T) == typeof(string) ? value?.ToString().Length + 1 ?? 0 : (int)hMem.Size);
 			if (!res) Win32Error.ThrowLastError();
 		}
 

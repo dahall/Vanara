@@ -3075,7 +3075,7 @@ namespace Vanara.PInvoke
 			public uint Revision => IsValidAcl ? 0U : GetAclInformation(handle, out ACL_REVISION_INFORMATION ri) ? ri.AclRevision : 0;
 
 			/// <inheritdoc/>
-			public override int Size
+			public override SizeT Size
 			{
 				get => base.Size;
 				set

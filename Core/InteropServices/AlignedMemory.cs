@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using Vanara.PInvoke;
 
 namespace Vanara.InteropServices
 {
@@ -14,7 +15,7 @@ namespace Vanara.InteropServices
 		protected TMem mm = new TMem();
 
 		/// <summary>The number of bytes currently allocated.</summary>
-		protected int sz;
+		protected SizeT sz;
 
 		private int alignment;
 		private IntPtr rawMemPtr;
@@ -52,7 +53,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
 		/// <value>The size in bytes of the allocated memory block.</value>
-		public override int Size
+		public override SizeT Size
 		{
 			get => IsInvalid ? 0 : sz + 1 - alignment;
 			set
