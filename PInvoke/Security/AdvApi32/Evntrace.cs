@@ -83,7 +83,7 @@ namespace Vanara.PInvoke
 		// RequestCode, _In_ PVOID Context, _In_ ULONG *Reserved, _In_ PVOID Buffer );
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("evntrace.h", MSDNShortId = "e9f70ae6-906f-4e55-bca7-4355f1ca6091")]
-		public delegate Win32Error ControlCallback(WMIDPREQUESTCODE RequestCode, IntPtr Context, in uint Reserved, IntPtr Buffer);
+		public delegate Win32Error TraceControlCallback(WMIDPREQUESTCODE RequestCode, IntPtr Context, in uint Reserved, IntPtr Buffer);
 
 		/// <summary>
 		/// <para>[Do not implement this function; it may be unavailable in subsequent versions.]</para>
@@ -2155,7 +2155,7 @@ namespace Vanara.PInvoke
 		// TraceGuidReg, _In_ LPCTSTR MofImagePath, _In_ LPCTSTR MofResourceName, _Out_ PTRACEHANDLE RegistrationHandle );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("evntrace.h", MSDNShortId = "c9158292-281b-4a02-b280-956e340d225c")]
-		public static extern Win32Error RegisterTraceGuids([MarshalAs(UnmanagedType.FunctionPtr)] ControlCallback RequestAddress, IntPtr RequestContext, in Guid ControlGuid, uint GuidCount, ref TRACE_GUID_REGISTRATION TraceGuidReg, string MofImagePath, string MofResourceName, out TRACEHANDLE RegistrationHandle);
+		public static extern Win32Error RegisterTraceGuids([MarshalAs(UnmanagedType.FunctionPtr)] ControlCallback TraceRequestAddress, IntPtr RequestContext, in Guid ControlGuid, uint GuidCount, ref TRACE_GUID_REGISTRATION TraceGuidReg, string MofImagePath, string MofResourceName, out TRACEHANDLE RegistrationHandle);
 
 		/// <summary>
 		/// <para>[Do not use this function; it may be unavailable in subsequent versions.]</para>
