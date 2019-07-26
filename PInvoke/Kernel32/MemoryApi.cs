@@ -1225,7 +1225,7 @@ namespace Vanara.PInvoke
 		// flProtect, _In_ DWORD dwMaximumSizeHigh, _In_ DWORD dwMaximumSizeLow, _In_opt_ LPCTSTR lpName, _In_ DWORD nndPreferred);
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366539")]
-		public static extern SafeHFILE CreateFileMappingNuma([In] HFILE hFile, [In] SECURITY_ATTRIBUTES lpFileMappingAttributes, MEM_PROTECTION flProtect,
+		public static extern SafeHFILE CreateFileMappingNuma([In] HFILE hFile, [In, Optional] SECURITY_ATTRIBUTES lpFileMappingAttributes, MEM_PROTECTION flProtect,
 			uint dwMaximumSizeHigh, uint dwMaximumSizeLow, string lpName, uint nndPreferred);
 
 		/// <summary>
