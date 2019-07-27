@@ -16,112 +16,6 @@ namespace Vanara.PInvoke
 		/// <para>Alternatives to using Transactional NTFS</para>
 		/// <para>.]</para>
 		/// <para>
-		/// Establishes a hard link between an existing file and a new file as a transacted operation. This function is only supported on the
-		/// NTFS file system, and only for files, not directories.
-		/// </para>
-		/// </summary>
-		/// <param name="lpFileName">
-		/// <para>The name of the new file.</para>
-		/// <para>This parameter cannot specify the name of a directory.</para>
-		/// </param>
-		/// <param name="lpExistingFileName">
-		/// <para>The name of the existing file.</para>
-		/// <para>This parameter cannot specify the name of a directory.</para>
-		/// </param>
-		/// <param name="lpSecurityAttributes">
-		/// <para>Reserved; must be <c>NULL</c>.</para>
-		/// </param>
-		/// <param name="hTransaction">
-		/// <para>A handle to the transaction. This handle is returned by the CreateTransaction function.</para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero (0). To get extended error information, call GetLastError.</para>
-		/// <para>
-		/// The maximum number of hard links that can be created with this function is 1023 per file. If more than 1023 links are created for
-		/// a file, an error results.
-		/// </para>
-		/// <para>The files must reside on the local computer; otherwise, the function fails and the last error code is set to <c>ERROR_TRANSACTIONS_UNSUPPORTED_REMOTE</c>.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// Any directory entry for a file that is created with CreateFileTransacted or <c>CreateHardLinkTransacted</c> is a hard link to an
-		/// associated file. An additional hard link that is created with the <c>CreateHardLinkTransacted</c> function allows you to have
-		/// multiple directory entries for a file, that is, multiple hard links to the same file, which can be different names in the same
-		/// directory, or the same or different names in different directories. However, all hard links to a file must be on the same volume.
-		/// </para>
-		/// <para>
-		/// Because hard links are only directory entries for a file, when an application modifies a file through any hard link, all
-		/// applications that use any other hard link to the file see the changes. Also, all of the directory entries are updated if the file
-		/// changes. For example, if a file size changes, all of the hard links to the file show the new file size.
-		/// </para>
-		/// <para>
-		/// The security descriptor belongs to the file to which a hard link points. The link itself is only a directory entry, and does not
-		/// have a security descriptor. Therefore, when you change the security descriptor of a hard link, you a change the security
-		/// descriptor of the underlying file, and all hard links that point to the file allow the newly specified access. You cannot give a
-		/// file different security descriptors on a per-hard-link basis.
-		/// </para>
-		/// <para>
-		/// This function does not modify the security descriptor of the file to be linked to, even if security descriptor information is
-		/// passed in the parameter.
-		/// </para>
-		/// <para>
-		/// Use DeleteFileTransacted to delete hard links. You can delete them in any order regardless of the order in which they are created.
-		/// </para>
-		/// <para>
-		/// Flags, attributes, access, and sharing that are specified in CreateFileTransacted operate on a per-file basis. That is, if you
-		/// open a file that does not allow sharing, another application cannot share the file by creating a new hard link to the file.
-		/// </para>
-		/// <para>
-		/// When you create a hard link on the NTFS file system, the file attribute information in the directory entry is refreshed only when
-		/// the file is opened, or when GetFileInformationByHandle is called with the handle of a specific file.
-		/// </para>
-		/// <para><c>Symbolic links:</c> If the path points to a symbolic link, the function creates a hard link to the target.</para>
-		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Technology</term>
-		/// <term>Supported</term>
-		/// </listheader>
-		/// <item>
-		/// <term>Server Message Block (SMB) 3.0 protocol</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>Cluster Shared Volume File System (CsvFS)</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>Resilient File System (ReFS)</term>
-		/// <term>No</term>
-		/// </item>
-		/// </list>
-		/// <para>Note that SMB 3.0 does not support TxF.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-createhardlinktransacteda BOOL CreateHardLinkTransactedA(
-		// LPCSTR lpFileName, LPCSTR lpExistingFileName, LPSECURITY_ATTRIBUTES lpSecurityAttributes, HANDLE hTransaction );
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("winbase.h", MSDNShortId = "27dd5b0a-08ef-4757-8f51-03d9918028c8")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreateHardLinkTransacted(string lpFileName, string lpExistingFileName, SECURITY_ATTRIBUTES lpSecurityAttributes, IntPtr hTransaction);
-
-		/// <summary>
-		/// <para>
-		/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF
-		/// was developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in
-		/// future versions of Microsoft Windows. For more information, and alternatives to TxF, please see
-		/// </para>
-		/// <para>Alternatives to using Transactional NTFS</para>
-		/// <para>.]</para>
-		/// <para>
 		/// Copies an existing file to a new file as a transacted operation, notifying the application of its progress through a callback function.
 		/// </para>
 		/// </summary>
@@ -278,7 +172,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "118392de-166b-413e-99c9-b3deb756de0e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CopyFileTransacted(string lpExistingFileName, string lpNewFileName, CopyProgressRoutine lpProgressRoutine, IntPtr lpData, [MarshalAs(UnmanagedType.Bool)] ref bool pbCancel, COPY_FILE dwCopyFlags, IntPtr hTransaction);
+		public static extern bool CopyFileTransacted(string lpExistingFileName, string lpNewFileName, CopyProgressRoutine lpProgressRoutine, [Optional] IntPtr lpData, [MarshalAs(UnmanagedType.Bool)] ref bool pbCancel, COPY_FILE dwCopyFlags, HTRXN hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -404,7 +298,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "75663b30-5bd9-4de7-8e4f-dc58016c2c40")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreateDirectoryTransacted(string lpTemplateDirectory, string lpNewDirectory, SECURITY_ATTRIBUTES lpSecurityAttributes, IntPtr hTransaction);
+		public static extern bool CreateDirectoryTransacted(string lpTemplateDirectory, string lpNewDirectory, SECURITY_ATTRIBUTES lpSecurityAttributes, HTRXN hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -1016,8 +910,8 @@ namespace Vanara.PInvoke
 		// DWORD dwFlagsAndAttributes, HANDLE hTemplateFile, HANDLE hTransaction, PUSHORT pusMiniVersion, PVOID lpExtendedParameter );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "0cbc081d-8787-409b-84bc-a6a28d8f83a0")]
-		public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
-			IntPtr hTemplateFile, IntPtr hTransaction, in ushort pusMiniVersion, [Optional] IntPtr lpExtendedParameter);
+		public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, [Optional] SECURITY_ATTRIBUTES lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
+			HFILE hTemplateFile, HTRXN hTransaction, in ushort pusMiniVersion, [Optional] IntPtr lpExtendedParameter);
 
 		/// <summary>
 		/// <para>
@@ -1629,8 +1523,114 @@ namespace Vanara.PInvoke
 		// DWORD dwFlagsAndAttributes, HANDLE hTemplateFile, HANDLE hTransaction, PUSHORT pusMiniVersion, PVOID lpExtendedParameter );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "0cbc081d-8787-409b-84bc-a6a28d8f83a0")]
-		public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
-			IntPtr hTemplateFile, IntPtr hTransaction, [Optional] IntPtr pusMiniVersion, [Optional] IntPtr lpExtendedParameter);
+		public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, [Optional] SECURITY_ATTRIBUTES lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
+			HFILE hTemplateFile, HTRXN hTransaction, [Optional] IntPtr pusMiniVersion, [Optional] IntPtr lpExtendedParameter);
+
+		/// <summary>
+		/// <para>
+		/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF
+		/// was developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in
+		/// future versions of Microsoft Windows. For more information, and alternatives to TxF, please see
+		/// </para>
+		/// <para>Alternatives to using Transactional NTFS</para>
+		/// <para>.]</para>
+		/// <para>
+		/// Establishes a hard link between an existing file and a new file as a transacted operation. This function is only supported on the
+		/// NTFS file system, and only for files, not directories.
+		/// </para>
+		/// </summary>
+		/// <param name="lpFileName">
+		/// <para>The name of the new file.</para>
+		/// <para>This parameter cannot specify the name of a directory.</para>
+		/// </param>
+		/// <param name="lpExistingFileName">
+		/// <para>The name of the existing file.</para>
+		/// <para>This parameter cannot specify the name of a directory.</para>
+		/// </param>
+		/// <param name="lpSecurityAttributes">
+		/// <para>Reserved; must be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="hTransaction">
+		/// <para>A handle to the transaction. This handle is returned by the CreateTransaction function.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero (0). To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// The maximum number of hard links that can be created with this function is 1023 per file. If more than 1023 links are created for
+		/// a file, an error results.
+		/// </para>
+		/// <para>The files must reside on the local computer; otherwise, the function fails and the last error code is set to <c>ERROR_TRANSACTIONS_UNSUPPORTED_REMOTE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Any directory entry for a file that is created with CreateFileTransacted or <c>CreateHardLinkTransacted</c> is a hard link to an
+		/// associated file. An additional hard link that is created with the <c>CreateHardLinkTransacted</c> function allows you to have
+		/// multiple directory entries for a file, that is, multiple hard links to the same file, which can be different names in the same
+		/// directory, or the same or different names in different directories. However, all hard links to a file must be on the same volume.
+		/// </para>
+		/// <para>
+		/// Because hard links are only directory entries for a file, when an application modifies a file through any hard link, all
+		/// applications that use any other hard link to the file see the changes. Also, all of the directory entries are updated if the file
+		/// changes. For example, if a file size changes, all of the hard links to the file show the new file size.
+		/// </para>
+		/// <para>
+		/// The security descriptor belongs to the file to which a hard link points. The link itself is only a directory entry, and does not
+		/// have a security descriptor. Therefore, when you change the security descriptor of a hard link, you a change the security
+		/// descriptor of the underlying file, and all hard links that point to the file allow the newly specified access. You cannot give a
+		/// file different security descriptors on a per-hard-link basis.
+		/// </para>
+		/// <para>
+		/// This function does not modify the security descriptor of the file to be linked to, even if security descriptor information is
+		/// passed in the parameter.
+		/// </para>
+		/// <para>
+		/// Use DeleteFileTransacted to delete hard links. You can delete them in any order regardless of the order in which they are created.
+		/// </para>
+		/// <para>
+		/// Flags, attributes, access, and sharing that are specified in CreateFileTransacted operate on a per-file basis. That is, if you
+		/// open a file that does not allow sharing, another application cannot share the file by creating a new hard link to the file.
+		/// </para>
+		/// <para>
+		/// When you create a hard link on the NTFS file system, the file attribute information in the directory entry is refreshed only when
+		/// the file is opened, or when GetFileInformationByHandle is called with the handle of a specific file.
+		/// </para>
+		/// <para><c>Symbolic links:</c> If the path points to a symbolic link, the function creates a hard link to the target.</para>
+		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>No</term>
+		/// </item>
+		/// </list>
+		/// <para>Note that SMB 3.0 does not support TxF.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-createhardlinktransacteda BOOL CreateHardLinkTransactedA(
+		// LPCSTR lpFileName, LPCSTR lpExistingFileName, LPSECURITY_ATTRIBUTES lpSecurityAttributes, HANDLE hTransaction );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winbase.h", MSDNShortId = "27dd5b0a-08ef-4757-8f51-03d9918028c8")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CreateHardLinkTransacted(string lpFileName, string lpExistingFileName, [Optional] SECURITY_ATTRIBUTES lpSecurityAttributes, HTRXN hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -1737,7 +1737,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "e0a6230b-2da1-4746-95fe-80f7b6bae41f")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeleteFileTransacted(string lpFileName, IntPtr hTransaction);
+		public static extern bool DeleteFileTransacted(string lpFileName, HTRXN hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -1818,7 +1818,7 @@ namespace Vanara.PInvoke
 		// FindFirstFileNameTransactedW( LPCWSTR lpFileName, DWORD dwFlags, LPDWORD StringLength, PWSTR LinkName, HANDLE hTransaction );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("winbase.h", MSDNShortId = "79c7d32d-3cb7-4e27-9db1-f24282bf606a")]
-		public static extern IntPtr FindFirstFileNameTransactedW(string lpFileName, uint dwFlags, ref uint StringLength, StringBuilder LinkName, IntPtr hTransaction);
+		public static extern SafeSearchHandle FindFirstFileNameTransactedW(string lpFileName, uint dwFlags, ref uint StringLength, StringBuilder LinkName, HTRXN hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -2003,7 +2003,7 @@ namespace Vanara.PInvoke
 		// DWORD dwAdditionalFlags, HANDLE hTransaction );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "d94bf32b-f14b-44b4-824b-ed453d0424ef")]
-		public static extern IntPtr FindFirstFileTransacted(string lpFileName, FINDEX_INFO_LEVELS fInfoLevelId, out WIN32_FIND_DATA lpFindFileData, FINDEX_SEARCH_OPS fSearchOp, [Optional] IntPtr lpSearchFilter, FIND_FIRST dwAdditionalFlags, IntPtr hTransaction);
+		public static extern SafeSearchHandle FindFirstFileTransacted(string lpFileName, FINDEX_INFO_LEVELS fInfoLevelId, out WIN32_FIND_DATA lpFindFileData, FINDEX_SEARCH_OPS fSearchOp, [Optional] IntPtr lpSearchFilter, FIND_FIRST dwAdditionalFlags, HTRXN hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -2096,7 +2096,7 @@ namespace Vanara.PInvoke
 		// hTransaction );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("winbase.h", MSDNShortId = "76c64aa9-0501-457d-b774-c209fbac4ccc")]
-		public static extern IntPtr FindFirstStreamTransactedW(string lpFileName, STREAM_INFO_LEVELS InfoLevel, out WIN32_FIND_STREAM_DATA lpFindStreamData, [Optional] uint dwFlags, IntPtr hTransaction);
+		public static extern SafeSearchHandle FindFirstStreamTransactedW(string lpFileName, STREAM_INFO_LEVELS InfoLevel, out WIN32_FIND_STREAM_DATA lpFindStreamData, [Optional] uint dwFlags, HTRXN hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -2196,7 +2196,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "dd1435da-93e5-440a-913a-9e40e39b4a01")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetFileAttributesTransacted(string lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId, ref WIN32_FILE_ATTRIBUTE_DATA lpFileInformation, IntPtr hTransaction);
+		public static extern bool GetFileAttributesTransacted(string lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId, ref WIN32_FILE_ATTRIBUTE_DATA lpFileInformation, HTRXN hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -2309,7 +2309,7 @@ namespace Vanara.PInvoke
 		// GetFullPathNameTransactedA( LPCSTR lpFileName, DWORD nBufferLength, LPSTR lpBuffer, LPSTR *lpFilePart, HANDLE hTransaction );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "63cbcec6-e9f0-4db3-bf2f-03a987000af1")]
-		public static extern uint GetFullPathNameTransacted(string lpFileName, uint nBufferLength, StringBuilder lpBuffer, ref IntPtr lpFilePart, IntPtr hTransaction);
+		public static extern uint GetFullPathNameTransacted(string lpFileName, uint nBufferLength, StringBuilder lpBuffer, out IntPtr lpFilePart, HTRXN hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -2408,7 +2408,7 @@ namespace Vanara.PInvoke
 		// GetLongPathNameTransactedA( LPCSTR lpszShortPath, LPSTR lpszLongPath, DWORD cchBuffer, HANDLE hTransaction );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "8523cde9-f0dd-4832-8d9d-9e68bac89344")]
-		public static extern uint GetLongPathNameTransacted(string lpszShortPath, StringBuilder lpszLongPath, uint cchBuffer, IntPtr hTransaction);
+		public static extern uint GetLongPathNameTransacted(string lpszShortPath, StringBuilder lpszLongPath, uint cchBuffer, HTRXN hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -2573,7 +2573,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "466d733b-30d2-4297-a0e6-77038f1a21d5")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool MoveFileTransacted(string lpExistingFileName, string lpNewFileName, CopyProgressRoutine lpProgressRoutine, IntPtr lpData, MOVEFILE dwFlags, IntPtr hTransaction);
+		public static extern bool MoveFileTransacted(string lpExistingFileName, string lpNewFileName, CopyProgressRoutine lpProgressRoutine, [Optional] IntPtr lpData, MOVEFILE dwFlags, HTRXN hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -2645,7 +2645,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "e8600166-62dc-4398-9e16-43b07f7f0b89")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool RemoveDirectoryTransacted(string lpPathName, IntPtr hTransaction);
+		public static extern bool RemoveDirectoryTransacted(string lpPathName, HTRXN hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -2778,6 +2778,54 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "e25e77b2-a6ad-4ce4-8589-d7ff6c4074f6")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetFileAttributesTransacted(string lpFileName, FileFlagsAndAttributes dwFileAttributes, IntPtr hTransaction);
+		public static extern bool SetFileAttributesTransacted(string lpFileName, FileFlagsAndAttributes dwFileAttributes, HTRXN hTransaction);
+
+		/// <summary>Provides a handle to a transaction.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HTRXN : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HTRXN"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HTRXN(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HTRXN"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HTRXN NULL => new HTRXN(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HTRXN"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HTRXN h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HTRXN"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HTRXN(IntPtr h) => new HTRXN(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HTRXN h1, HTRXN h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HTRXN h1, HTRXN h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HTRXN h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
 	}
 }
