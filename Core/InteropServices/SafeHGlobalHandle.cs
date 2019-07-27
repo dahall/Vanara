@@ -81,7 +81,7 @@ namespace Vanara.InteropServices
 		/// <typeparam name="T">Native type</typeparam>
 		/// <param name="value">The value.</param>
 		/// <returns><see cref="SafeHGlobalHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
-		public static SafeHGlobalHandle CreateFromStructure<T>(T value = default) => new SafeHGlobalHandle(InteropExtensions.StructureToPtr(value, new HGlobalMemoryMethods().AllocMem, out int s), s);
+		public static SafeHGlobalHandle CreateFromStructure<T>(in T value = default) => new SafeHGlobalHandle(InteropExtensions.StructureToPtr(value, new HGlobalMemoryMethods().AllocMem, out int s), s);
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure elements. It is the

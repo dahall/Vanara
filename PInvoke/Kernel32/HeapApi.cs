@@ -1527,7 +1527,7 @@ namespace Vanara.PInvoke
 			/// <typeparam name="T">Native type</typeparam>
 			/// <param name="value">The value.</param>
 			/// <returns><see cref="SafeHeapBlock"/> object to an native (unmanaged) memory block the size of T.</returns>
-			public static SafeHeapBlock CreateFromStructure<T>(T value = default) => new SafeHeapBlock(InteropExtensions.StructureToPtr(value, new CoTaskMemoryMethods().AllocMem, out int s), s);
+			public static SafeHeapBlock CreateFromStructure<T>(in T value = default) => new SafeHeapBlock(InteropExtensions.StructureToPtr(value, new CoTaskMemoryMethods().AllocMem, out int s), s);
 
 			/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeHeapBlock"/> where it owns the reference.</summary>
 			/// <param name="ptr">The <see cref="IntPtr"/>.</param>

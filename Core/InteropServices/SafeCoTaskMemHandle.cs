@@ -82,7 +82,7 @@ namespace Vanara.InteropServices
 		/// <typeparam name="T">Native type</typeparam>
 		/// <param name="value">The value.</param>
 		/// <returns><see cref="SafeCoTaskMemHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
-		public static SafeCoTaskMemHandle CreateFromStructure<T>(T value = default) => new SafeCoTaskMemHandle(InteropExtensions.StructureToPtr(value, new CoTaskMemoryMethods().AllocMem, out int s), s);
+		public static SafeCoTaskMemHandle CreateFromStructure<T>(in T value = default) => new SafeCoTaskMemHandle(InteropExtensions.StructureToPtr(value, new CoTaskMemoryMethods().AllocMem, out int s), s);
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure elements. It is the
