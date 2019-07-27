@@ -64,7 +64,9 @@ namespace Vanara.PInvoke
 		public static extern bool DosDateTimeToFileTime(ushort wFatDate, ushort wFatTime, out FILETIME lpFileTime);
 
 		/// <summary>Converts a file time to MS-DOS date and time values.</summary>
-		/// <param name="lpFileTime">A pointer to a <c>FILETIME</c> structure containing the file time to convert to MS-DOS date and time format.</param>
+		/// <param name="lpFileTime">
+		/// A pointer to a <c>FILETIME</c> structure containing the file time to convert to MS-DOS date and time format.
+		/// </param>
 		/// <param name="lpFatDate">
 		/// <para>A pointer to a variable to receive the MS-DOS date. The date is a packed value with the following format.</para>
 		/// <para>
@@ -155,7 +157,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// DWORD WINAPI GetDynamicTimeZoneInformationEffectiveYears( _In_ const PDYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation, _Out_
 		// LPDWORD FirstYear, _Out_ LPDWORD LastYear); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706894(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "hh706894")]
 		public static extern Win32Error GetDynamicTimeZoneInformationEffectiveYears(in DYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation, out uint FirstYear, out uint LastYear);
 	}
