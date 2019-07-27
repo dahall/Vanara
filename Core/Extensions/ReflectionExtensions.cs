@@ -85,7 +85,6 @@ namespace Vanara.Extensions
 
 		/// <summary>Gets a named field value from an object.</summary>
 		/// <typeparam name="T">The expected type of the field to be returned.</typeparam>
-		/// <param name="obj">The object from which to retrieve the field.</param>
 		/// <param name="fieldName">Name of the field.</param>
 		/// <returns>The field value.</returns>
 		public static T GetStaticFieldValue<T>(string fieldName)
