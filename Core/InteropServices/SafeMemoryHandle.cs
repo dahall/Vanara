@@ -203,7 +203,7 @@ namespace Vanara.InteropServices
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
 		/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-		protected SafeMemoryHandle(int size = 0) : base(IntPtr.Zero, true)
+		protected SafeMemoryHandle(SizeT size = default) : base(IntPtr.Zero, true)
 		{
 			if (size < 0)
 				throw new ArgumentOutOfRangeException(nameof(size), "The value of this argument must be non-negative");
@@ -217,7 +217,7 @@ namespace Vanara.InteropServices
 		/// <param name="handle">The handle.</param>
 		/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-		protected SafeMemoryHandle(IntPtr handle, int size, bool ownsHandle) : base(handle, ownsHandle) => sz = size;
+		protected SafeMemoryHandle(IntPtr handle, SizeT size, bool ownsHandle) : base(handle, ownsHandle) => sz = size;
 
 		/// <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
 		/// <param name="bytes">Array of unmanaged pointers</param>
@@ -276,13 +276,13 @@ namespace Vanara.InteropServices
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
 		/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-		protected SafeMemoryHandleExt(int size) : base(size) { }
+		protected SafeMemoryHandleExt(SizeT size) : base(size) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class.</summary>
 		/// <param name="handle">The handle.</param>
 		/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-		protected SafeMemoryHandleExt(IntPtr handle, int size, bool ownsHandle) : base(handle, size, ownsHandle) { }
+		protected SafeMemoryHandleExt(IntPtr handle, SizeT size, bool ownsHandle) : base(handle, size, ownsHandle) { }
 
 		/// <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
 		/// <param name="bytes">Array of unmanaged pointers</param>

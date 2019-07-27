@@ -1401,7 +1401,7 @@ namespace Vanara.PInvoke
 			/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>
 			/// <param name="ownsHandle">if set to <c>true</c> this safe handle disposes the handle when done.</param>
 			/// <param name="size">The size, in bytes, of the allocated heap memory, if known.</param>
-			public SafeHeapBlock(IntPtr ptr, int size, bool ownsHandle = true) : base(ptr, size, ownsHandle)
+			public SafeHeapBlock(IntPtr ptr, SizeT size, bool ownsHandle = true) : base(ptr, size, ownsHandle)
 			{
 			}
 
@@ -1410,7 +1410,7 @@ namespace Vanara.PInvoke
 			/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>
 			/// <param name="ownsHandle">if set to <c>true</c> this safe handle disposes the handle when done.</param>
 			/// <param name="size">The size, in bytes, of the allocated heap memory, if known.</param>
-			public SafeHeapBlock(HHEAP hHeap, IntPtr ptr, int size, bool ownsHandle = true) : base(ptr, size, ownsHandle)
+			public SafeHeapBlock(HHEAP hHeap, IntPtr ptr, SizeT size, bool ownsHandle = true) : base(ptr, size, ownsHandle)
 			{
 				if (hHeap.IsNull) throw new ArgumentNullException(nameof(hHeap));
 				mm.HeapHandle = hHeap;
@@ -1419,7 +1419,7 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 			/// <param name="size">The size of memory to allocate, in bytes.</param>
 			/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-			public SafeHeapBlock(int size) : base(size)
+			public SafeHeapBlock(SizeT size) : base(size)
 			{
 			}
 
@@ -1461,7 +1461,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </param>
 			/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-			public SafeHeapBlock(HHEAP hHeap, int size = 0, HeapFlags flags = 0) : this(hHeap, IntPtr.Zero, 0)
+			public SafeHeapBlock(HHEAP hHeap, SizeT size = default, HeapFlags flags = 0) : this(hHeap, IntPtr.Zero, 0)
 			{
 				if (size < 0)
 					throw new ArgumentOutOfRangeException(nameof(size), "The value of this argument must be non-negative");

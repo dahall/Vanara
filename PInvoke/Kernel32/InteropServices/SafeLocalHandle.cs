@@ -51,12 +51,12 @@ namespace Vanara.InteropServices
 		/// <param name="handle">The handle.</param>
 		/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-		public SafeLocalHandle(HLOCAL handle, int size, bool ownsHandle = true) : base((IntPtr)handle, size, ownsHandle) { }
+		public SafeLocalHandle(HLOCAL handle, SizeT size, bool ownsHandle = true) : base((IntPtr)handle, size, ownsHandle) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeLocalHandle"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
 		/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-		public SafeLocalHandle(int size) : base(size) { }
+		public SafeLocalHandle(SizeT size) : base(size) { }
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native

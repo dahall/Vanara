@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security;
 using Vanara.Extensions;
+using Vanara.PInvoke;
 
 namespace Vanara.InteropServices
 {
@@ -43,12 +44,12 @@ namespace Vanara.InteropServices
 		/// <param name="handle">The handle.</param>
 		/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-		public SafeCoTaskMemHandle(IntPtr handle, int size, bool ownsHandle = true) : base(handle, size, ownsHandle) { }
+		public SafeCoTaskMemHandle(IntPtr handle, SizeT size, bool ownsHandle = true) : base(handle, size, ownsHandle) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemHandle"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
 		/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-		public SafeCoTaskMemHandle(int size) : base(size) { }
+		public SafeCoTaskMemHandle(SizeT size) : base(size) { }
 
 		/// <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
 		/// <param name="bytes">Array of unmanaged pointers</param>
