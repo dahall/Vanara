@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		public const uint UMS_VERSION = 0x0100;
+
 		/// <summary>Flags used by UMS_SYSTEM_THREAD_INFORMATION.</summary>
 		[PInvokeData("winbase.h", MSDNShortId = "eecdc592-5046-47c3-a4c6-ecb10899db3c")]
 		public enum ThreadUmsFlags : uint
@@ -22,43 +25,6 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			IsUmsWorkerThread = 0x2,
-		}
-
-		/// <summary>
-		/// <para>Represents classes of information about user-mode scheduling (UMS) threads.</para>
-		/// <para>This enumeration is used by the <c>QueryUmsThreadInformation</c> and <c>SetUmsThreadInformation</c> functions.</para>
-		/// </summary>
-		// typedef enum _UMS_THREAD_INFO_CLASS { UmsThreadInvalidInfoClass = 0, UmsThreadUserContext = 1, UmsThreadPriority = 2,
-		// UmsThreadAffinity = 3, UmsThreadTeb = 4, UmsThreadIsSuspended = 5, UmsThreadIsTerminated = 6, UmsThreadMaxInfoClass = 7}
-		// UMS_THREAD_INFO_CLASS, *PUMS_THREAD_INFO_CLASS; https://msdn.microsoft.com/en-us/library/windows/desktop/dd627186(v=vs.85).aspx
-		[PInvokeData("WinBase.h", MSDNShortId = "dd627186")]
-		public enum UMS_THREAD_INFO_CLASS
-		{
-			/// <summary>Reserved.</summary>
-			UmsThreadInvalidInfoClass,
-
-			/// <summary>Application-defined information stored in a UMS thread context.</summary>
-			UmsThreadUserContext,
-
-			/// <summary>Reserved.</summary>
-			UmsThreadPriority,
-
-			/// <summary>Reserved.</summary>
-			UmsThreadAffinity,
-
-			/// <summary>
-			/// The thread execution block ( <c>TEB</c>) for a UMS thread. This information class can only be queried; it cannot be set.
-			/// </summary>
-			UmsThreadTeb,
-
-			/// <summary>The suspension status of the thread. This information can only be queried; it cannot be set.</summary>
-			UmsThreadIsSuspended,
-
-			/// <summary>The termination status of the thread. This information can only be queried; it cannot be set.</summary>
-			UmsThreadIsTerminated,
-
-			/// <summary>Reserved.</summary>
-			UmsThreadMaxInfoClass,
 		}
 
 		/// <summary>
@@ -176,7 +142,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "98124359-ddd1-468c-9f99-74dd3f631fa1")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeleteUmsCompletionList(SafePUMS_COMPLETION_LIST UmsCompletionList);
+		public static extern bool DeleteUmsCompletionList(PUMS_COMPLETION_LIST UmsCompletionList);
 
 		/// <summary>
 		/// <para>Deletes the specified user-mode scheduling (UMS) thread context. The thread must be terminated.</para>
@@ -206,7 +172,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "cdd118fc-f664-44ce-958d-857216ceb9a7")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeleteUmsThreadContext(SafePUMS_CONTEXT UmsThread);
+		public static extern bool DeleteUmsThreadContext(PUMS_CONTEXT UmsThread);
 
 		/// <summary>
 		/// <para>Retrieves user-mode scheduling (UMS) worker threads from the specified UMS completion list.</para>
@@ -273,7 +239,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "91499eb9-9fc5-4135-95f6-1bced78f1e07")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DequeueUmsCompletionListItems(SafePUMS_COMPLETION_LIST UmsCompletionList, uint WaitTimeOut, out SafePUMS_CONTEXT UmsThreadList);
+		public static extern bool DequeueUmsCompletionListItems(PUMS_COMPLETION_LIST UmsCompletionList, uint WaitTimeOut, out PUMS_CONTEXT UmsThreadList);
 
 		/// <summary>
 		/// <para>Converts the calling thread into a user-mode scheduling (UMS) scheduler thread.</para>
@@ -366,7 +332,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "e4265351-e8e9-4878-bd42-93258b4cd1a0")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ExecuteUmsThread(SafePUMS_CONTEXT UmsThread);
+		public static extern bool ExecuteUmsThread(PUMS_CONTEXT UmsThread);
 
 		/// <summary>
 		/// <para>Returns the user-mode scheduling (UMS) thread context of the calling UMS thread.</para>
@@ -381,7 +347,24 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getcurrentumsthread PUMS_CONTEXT GetCurrentUmsThread( );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "f2e20816-919a-443d-96d3-94e98afc28f2")]
-		public static extern SafePUMS_CONTEXT GetCurrentUmsThread();
+		public static extern PUMS_CONTEXT GetCurrentUmsThread();
+
+		/// <summary>Returns the next user-mode scheduling (UMS) thread context in a list of thread contexts.</summary>
+		/// <param name="UmsContext">
+		/// A pointer to a UMS context in a list of thread contexts. This list is retrieved by the DequeueUmsCompletionListItems function.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns a pointer to the next thread context in the list.</para>
+		/// <para>
+		/// If there is no thread context after the context specified by the UmsContext parameter, the function returns NULL. To get extended
+		/// error information, call GetLastError.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getnextumslistitem PUMS_CONTEXT GetNextUmsListItem(
+		// PUMS_CONTEXT UmsContext );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "fb2c8420-12f4-4bd7-ac00-b53bab760db0")]
+		public static extern PUMS_CONTEXT GetNextUmsListItem(PUMS_CONTEXT UmsContext);
 
 		/// <summary>
 		/// <para>Retrieves a handle to the event associated with the specified user-mode scheduling (UMS) completion list.</para>
@@ -416,7 +399,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "393f6e0a-fbea-4aa0-9c18-f96da18e61e9")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetUmsCompletionListEvent(SafePUMS_COMPLETION_LIST UmsCompletionList, out SafeEventHandle UmsCompletionEvent);
+		public static extern bool GetUmsCompletionListEvent(PUMS_COMPLETION_LIST UmsCompletionList, out SafeEventHandle UmsCompletionEvent);
 
 		/// <summary>
 		/// <para>Queries whether the specified thread is a UMS scheduler thread, a UMS worker thread, or a non-UMS thread.</para>
@@ -453,15 +436,9 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetUmsSystemThreadInformation(HTHREAD ThreadHandle, ref UMS_SYSTEM_THREAD_INFORMATION SystemThreadInfo);
 
-		/// <summary>
-		/// <para>Retrieves information about the specified user-mode scheduling (UMS) worker thread.</para>
-		/// </summary>
-		/// <param name="UmsThread">
-		/// <para>A pointer to a UMS thread context.</para>
-		/// </param>
-		/// <param name="UmsThreadInfoClass">
-		/// <para>A UMS_THREAD_INFO_CLASS value that specifies the kind of information to retrieve.</para>
-		/// </param>
+		/// <summary>Retrieves information about the specified user-mode scheduling (UMS) worker thread.</summary>
+		/// <param name="UmsThread">A pointer to a UMS thread context.</param>
+		/// <param name="UmsThreadInfoClass">A UMS_THREAD_INFO_CLASS value that specifies the kind of information to retrieve.</param>
 		/// <param name="UmsThreadInformation">
 		/// <para>
 		/// A pointer to a buffer to receive the specified information. The required size of this buffer depends on the specified information class.
@@ -469,13 +446,9 @@ namespace Vanara.PInvoke
 		/// <para>If the information class is <c>UmsThreadContext</c> or <c>UmsThreadTeb</c>, the buffer must be .</para>
 		/// <para>If the information class is <c>UmsThreadIsSuspended</c> or <c>UmsThreadIsTerminated</c>, the buffer must be .</para>
 		/// </param>
-		/// <param name="UmsThreadInformationLength">
-		/// <para>The size of the UmsThreadInformation buffer, in bytes.</para>
-		/// </param>
+		/// <param name="UmsThreadInformationLength">The size of the UmsThreadInformation buffer, in bytes.</param>
 		/// <param name="ReturnLength">
-		/// <para>
 		/// A pointer to a ULONG variable. On output, this parameter receives the number of bytes written to the UmsThreadInformation buffer.
-		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, it returns a nonzero value.</para>
@@ -514,23 +487,43 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "5f694edf-ba5e-45a2-a938-5013edddcae2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryUmsThreadInformation(SafePUMS_CONTEXT UmsThread, RTL_UMS_THREAD_INFO_CLASS UmsThreadInfoClass, IntPtr UmsThreadInformation, uint UmsThreadInformationLength, out uint ReturnLength);
+		public static extern bool QueryUmsThreadInformation(PUMS_CONTEXT UmsThread, RTL_UMS_THREAD_INFO_CLASS UmsThreadInfoClass, IntPtr UmsThreadInformation, uint UmsThreadInformationLength, out uint ReturnLength);
 
-		/// <summary>
-		/// <para>Sets application-specific context information for the specified user-mode scheduling (UMS) worker thread.</para>
-		/// </summary>
-		/// <param name="UmsThread">
-		/// <para>A pointer to a UMS thread context.</para>
-		/// </param>
+		/// <summary>Retrieves information about the specified user-mode scheduling (UMS) worker thread.</summary>
+		/// <typeparam name="T">The return type being requested.</typeparam>
+		/// <param name="UmsThread">A pointer to a UMS thread context.</param>
+		/// <param name="UmsThreadInfoClass">A UMS_THREAD_INFO_CLASS value that specifies the kind of information to retrieve.</param>
+		/// <returns>The specified information of type <typeparamref name="T"/>.</returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>QueryUmsThreadInformation</c> function retrieves information about the specified UMS worker thread such as its
+		/// application-defined context, its thread execution block (TEB), and whether the thread is suspended or terminated.
+		/// </para>
+		/// <para>
+		/// The underlying structures for UMS worker threads are managed by the system. Information that is not exposed through
+		/// <c>QueryUmsThreadInformation</c> should be considered reserved.
+		/// </para>
+		/// </remarks>
+		public static T QueryUmsThreadInformation<T>(PUMS_CONTEXT UmsThread, RTL_UMS_THREAD_INFO_CLASS UmsThreadInfoClass) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanGet(UmsThreadInfoClass, typeof(T))) throw new ArgumentException($"Cannot use {UmsThreadInfoClass} to retrieve a value of {typeof(T).Name}.");
+			if (!QueryUmsThreadInformation(UmsThread, UmsThreadInfoClass, IntPtr.Zero, 0, out var sz) && sz == 0)
+				Win32Error.ThrowLastError();
+			using (var mem = new SafeHGlobalHandle(sz))
+			{
+				if (!QueryUmsThreadInformation(UmsThread, UmsThreadInfoClass, mem, mem.Size, out sz))
+					Win32Error.ThrowLastError();
+				return typeof(T) == typeof(bool) ? (T)(object)(mem.ToStructure<uint>() != 0) : mem.ToStructure<T>();
+			}
+		}
+
+		/// <summary>Sets application-specific context information for the specified user-mode scheduling (UMS) worker thread.</summary>
+		/// <param name="UmsThread">A pointer to a UMS thread context.</param>
 		/// <param name="UmsThreadInfoClass">
-		/// <para>A UMS_THREAD_INFO_CLASS value that specifies the kind of information to set. This parameter must be <c>UmsThreadUserContext</c>.</para>
+		/// A UMS_THREAD_INFO_CLASS value that specifies the kind of information to set. This parameter must be <c>UmsThreadUserContext</c>.
 		/// </param>
-		/// <param name="UmsThreadInformation">
-		/// <para>A pointer to a buffer that contains the information to set.</para>
-		/// </param>
-		/// <param name="UmsThreadInformationLength">
-		/// <para>The size of the UmsThreadInformation buffer, in bytes.</para>
-		/// </param>
+		/// <param name="UmsThreadInformation">A pointer to a buffer that contains the information to set.</param>
+		/// <param name="UmsThreadInformationLength">The size of the UmsThreadInformation buffer, in bytes.</param>
 		/// <returns>
 		/// <para>If the function succeeds, it returns a nonzero value.</para>
 		/// <para>
@@ -569,7 +562,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "19f190fd-1f78-4bb6-93eb-73a5c522b44d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetUmsThreadInformation(SafePUMS_CONTEXT UmsThread, UMS_THREAD_INFO_CLASS UmsThreadInfoClass, IntPtr UmsThreadInformation, uint UmsThreadInformationLength);
+		public static extern bool SetUmsThreadInformation(PUMS_CONTEXT UmsThread, RTL_UMS_THREAD_INFO_CLASS UmsThreadInfoClass, IntPtr UmsThreadInformation, uint UmsThreadInformationLength);
 
 		/// <summary>
 		/// <para>Yields control to the user-mode scheduling (UMS) scheduler thread on which the calling UMS worker thread is running.</para>
@@ -599,6 +592,110 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool UmsThreadYield(IntPtr SchedulerParam);
 
+		/// <summary>Provides a handle to a completion list.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PUMS_COMPLETION_LIST : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="PUMS_COMPLETION_LIST"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public PUMS_COMPLETION_LIST(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PUMS_COMPLETION_LIST"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static PUMS_COMPLETION_LIST NULL => new PUMS_COMPLETION_LIST(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="PUMS_COMPLETION_LIST"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(PUMS_COMPLETION_LIST h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PUMS_COMPLETION_LIST"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PUMS_COMPLETION_LIST(IntPtr h) => new PUMS_COMPLETION_LIST(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PUMS_COMPLETION_LIST h1, PUMS_COMPLETION_LIST h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PUMS_COMPLETION_LIST h1, PUMS_COMPLETION_LIST h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PUMS_COMPLETION_LIST h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a handle to a UMS context.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PUMS_CONTEXT : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="PUMS_CONTEXT"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public PUMS_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PUMS_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static PUMS_CONTEXT NULL => new PUMS_CONTEXT(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Gets a value indicating whether this instance is suspended.</summary>
+			/// <value><c>true</c> if this instance is suspended; otherwise, <c>false</c>.</value>
+			public bool IsSuspended => QueryUmsThreadInformation<bool>(this, RTL_UMS_THREAD_INFO_CLASS.UmsThreadIsSuspended);
+
+			/// <summary>Gets a value indicating whether this instance is terminated.</summary>
+			/// <value><c>true</c> if this instance is terminated; otherwise, <c>false</c>.</value>
+			public bool IsTerminated => QueryUmsThreadInformation<bool>(this, RTL_UMS_THREAD_INFO_CLASS.UmsThreadIsTerminated);
+
+			/// <summary>Performs an explicit conversion from <see cref="PUMS_CONTEXT"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(PUMS_CONTEXT h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PUMS_CONTEXT"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PUMS_CONTEXT(IntPtr h) => new PUMS_CONTEXT(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PUMS_CONTEXT h1, PUMS_CONTEXT h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PUMS_CONTEXT h1, PUMS_CONTEXT h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PUMS_CONTEXT h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
 		/// <summary>
 		/// Specifies attributes for a user-mode scheduling (UMS) scheduler thread. The EnterUmsSchedulingMode function uses this structure.
 		/// </summary>
@@ -609,29 +706,33 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct UMS_SCHEDULER_STARTUP_INFO
 		{
-			/// <summary>
-			/// <para>The UMS version for which the application was built. This parameter must be <c>UMS_VERSION (0x0100)</c>.</para>
-			/// </summary>
+			/// <summary>The UMS version for which the application was built. This parameter must be <c>UMS_VERSION (0x0100)</c>.</summary>
 			public uint UmsVersion;
 
-			/// <summary>
-			/// <para>A pointer to a UMS completion list to associate with the calling thread.</para>
-			/// </summary>
-			public IntPtr CompletionList;
+			/// <summary>A pointer to a UMS completion list to associate with the calling thread.</summary>
+			public PUMS_COMPLETION_LIST CompletionList;
 
 			/// <summary>
-			/// <para>
 			/// A pointer to an application-defined UmsSchedulerProc entry point function. The system calls this function when the calling
 			/// thread has been converted to UMS and is ready to run UMS worker threads. Subsequently, it calls this function when a UMS
 			/// worker thread running on the calling thread yields or blocks.
-			/// </para>
 			/// </summary>
 			public RtlUmsSchedulerEntryPoint SchedulerProc;
 
-			/// <summary>
-			/// <para>An application-defined parameter to pass to the specified UmsSchedulerProc function.</para>
-			/// </summary>
+			/// <summary>An application-defined parameter to pass to the specified UmsSchedulerProc function.</summary>
 			public IntPtr SchedulerParam;
+
+			/// <summary>Initializes a new instance of the <see cref="UMS_SCHEDULER_STARTUP_INFO"/> struct.</summary>
+			/// <param name="schedulerProc">A pointer to an application-defined UmsSchedulerProc entry point function.</param>
+			/// <param name="param">An application-defined parameter to pass to the specified UmsSchedulerProc function.</param>
+			/// <param name="completionList">A pointer to a UMS completion list to associate with the calling thread.</param>
+			public UMS_SCHEDULER_STARTUP_INFO(RtlUmsSchedulerEntryPoint schedulerProc, [Optional] IntPtr param, [Optional] PUMS_COMPLETION_LIST completionList)
+			{
+				UmsVersion = UMS_VERSION;
+				CompletionList = completionList;
+				SchedulerProc = schedulerProc;
+				SchedulerParam = param;
+			}
 		}
 
 		/// <summary>
@@ -654,8 +755,10 @@ namespace Vanara.PInvoke
 
 			/// <summary>A bitfield that specifies a UMS thread type.</summary>
 			public ThreadUmsFlags ThreadUmsFlags;
-		}
 
+			/// <summary>Gets a default instance of this structure with the fields pre-set to default values.</summary>
+			public static readonly UMS_SYSTEM_THREAD_INFORMATION Default = new UMS_SYSTEM_THREAD_INFORMATION { UmsVersion = UMS_VERSION };
+		}
 
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a UMS completion list that releases a created UmsCompletionList instance at disposal using DeleteUmsCompletionList.
@@ -672,8 +775,12 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafePUMS_COMPLETION_LIST"/> class.</summary>
 			private SafePUMS_COMPLETION_LIST() : base() { }
 
+			/// <summary>Converts to PUMS_COMPLETION_LIST.</summary>
+			/// <param name="l">Safe list.</param>
+			public static implicit operator PUMS_COMPLETION_LIST(SafePUMS_COMPLETION_LIST l) => l.handle;
+
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => DeleteUmsCompletionList(this);
+			protected override bool InternalReleaseHandle() => DeleteUmsCompletionList(handle);
 		}
 
 		/// <summary>
@@ -691,8 +798,12 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafePUMS_CONTEXT"/> class.</summary>
 			private SafePUMS_CONTEXT() : base() { }
 
+			/// <summary>Converts to PUMS_CONTEXT.</summary>
+			/// <param name="c">Safe context.</param>
+			public static implicit operator PUMS_CONTEXT(SafePUMS_CONTEXT c) => c.handle;
+
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => DeleteUmsThreadContext(this);
+			protected override bool InternalReleaseHandle() => DeleteUmsThreadContext(handle);
 		}
 	}
 }

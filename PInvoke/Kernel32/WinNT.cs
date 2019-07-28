@@ -231,6 +231,7 @@ namespace Vanara.PInvoke
 			UmsThreadInvalidInfoClass,
 
 			/// <summary>Application-defined information stored in a UMS thread context.</summary>
+			[CorrespondingType(typeof(IntPtr))]
 			UmsThreadUserContext,
 
 			/// <summary>Reserved.</summary>
@@ -242,12 +243,15 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// The thread execution block (TEB) for a UMS thread. This information class can only be queried; it cannot be set.
 			/// </summary>
+			[CorrespondingType(typeof(IntPtr), CorrespondingAction.Get)]
 			UmsThreadTeb,
 
 			/// <summary>The suspension status of the thread. This information can only be queried; it cannot be set.</summary>
+			[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			UmsThreadIsSuspended,
 
 			/// <summary>The termination status of the thread. This information can only be queried; it cannot be set.</summary>
+			[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			UmsThreadIsTerminated,
 
 			/// <summary>Reserved.</summary>
@@ -670,13 +674,28 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// A pointer to a UMS thread context for the worker thread to be created. This pointer is provided by the CreateUmsThreadContext function.
 			/// </summary>
-			public IntPtr UmsContext;
+			public PUMS_CONTEXT UmsContext;
 
 			/// <summary>
 			/// A pointer to a UMS completion list. This pointer is provided by the CreateUmsCompletionList function. The newly created
 			/// worker thread is queued to the specified completion list.
 			/// </summary>
-			public IntPtr UmsCompletionList;
+			public PUMS_COMPLETION_LIST UmsCompletionList;
+
+			/// <summary>Initializes a new instance of the <see cref="UMS_CREATE_THREAD_ATTRIBUTES"/> struct.</summary>
+			/// <param name="ctx">
+			/// A UMS thread context for the worker thread to be created. This pointer is provided by the CreateUmsThreadContext function.
+			/// </param>
+			/// <param name="completionList">
+			/// A UMS completion list. This pointer is provided by the CreateUmsCompletionList function. The newly created worker thread is
+			/// queued to the specified completion list.
+			/// </param>
+			public UMS_CREATE_THREAD_ATTRIBUTES(PUMS_CONTEXT ctx, PUMS_COMPLETION_LIST completionList)
+			{
+				UmsVersion = UMS_VERSION;
+				UmsContext = ctx;
+				UmsCompletionList = completionList;
+			}
 		}
 
 		[PInvokeData("winnt.h")]

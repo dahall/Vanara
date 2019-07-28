@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -7098,7 +7099,7 @@ namespace Vanara.PInvoke
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="ProcThreadAttributeList"/> that is disposed using <see cref="DeleteProcThreadAttributeList"/>.</summary>
 		public class SafeProcThreadAttributeList : SafeHANDLE
 		{
-			private List<PinnedObject> values = new List<PinnedObject>();
+			private List<(PROC_THREAD_ATTRIBUTE attr, object obj, PinnedObject ptr)> values = new List<(PROC_THREAD_ATTRIBUTE attr, object obj, PinnedObject ptr)>();
 
 			/// <summary>Initializes a new instance of the <see cref="SafeProcThreadAttributeList"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -7110,6 +7111,16 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafeProcThreadAttributeList"/> class.</summary>
 			private SafeProcThreadAttributeList() : base() { }
 
+			/// <summary>Creates an instance of a SafeProcThreadAttributeList with a single attribute and value added.</summary>
+			/// <param name="attribute">The attribute.</param>
+			/// <param name="value">The value.</param>
+			/// <returns>A <see cref="SafeProcThreadAttributeList"/> instance with the attribute/value pair added.</returns>
+			public static SafeProcThreadAttributeList Create(PROC_THREAD_ATTRIBUTE attribute, object value) =>
+				Create(new Dictionary<PROC_THREAD_ATTRIBUTE, object> { { attribute, value } });
+
+			/// <summary>Creates an instance of a SafeProcThreadAttributeList with a list of attributes/value pairs added.</summary>
+			/// <param name="attributes">A dictionary of attribute/value pairs to add.</param>
+			/// <returns>A <see cref="SafeProcThreadAttributeList"/> instance with the supplied attribute/value pairs added.</returns>
 			public static SafeProcThreadAttributeList Create(IDictionary<PROC_THREAD_ATTRIBUTE, object> attributes)
 			{
 				if (attributes is null) throw new ArgumentNullException(nameof(attributes));
@@ -7133,15 +7144,32 @@ namespace Vanara.PInvoke
 				return hAttr;
 			}
 
+			/// <summary>Clones this instance.</summary>
+			/// <returns>A new instance of the list with all attributes and objects duplicated.</returns>
+			public SafeProcThreadAttributeList Clone()
+			{
+				var d = new Dictionary<PROC_THREAD_ATTRIBUTE, object>();
+				foreach (var v in values) d.Add(v.attr, v.obj);
+				return Create(d);
+			}
+
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() { values.Clear(); DeleteProcThreadAttributeList(handle); Marshal.FreeHGlobal(handle); return true; }
+			protected override bool InternalReleaseHandle()
+			{
+				foreach (var (_, _, ptr) in values)
+					ptr.Dispose();
+				values.Clear();
+				DeleteProcThreadAttributeList(handle);
+				Marshal.FreeHGlobal(handle);
+				return true;
+			}
 
 			private static bool IsValid(PROC_THREAD_ATTRIBUTE attr, object value) => !(value is null) && value.GetType().Equals(attr.ValidType);
 
 			private void Add(PROC_THREAD_ATTRIBUTE attr, object value)
 			{
 				var pVal = new PinnedObject(value);
-				values.Add(pVal);
+				values.Add((attr, value, pVal));
 				if (!UpdateProcThreadAttribute(handle, 0, attr, pVal, Marshal.SizeOf(value)))
 					Win32Error.ThrowLastError();
 			}
