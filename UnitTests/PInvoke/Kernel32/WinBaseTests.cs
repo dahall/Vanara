@@ -104,7 +104,7 @@ namespace Vanara.PInvoke.Tests
 			var pval = new PinnedObject(val);
 			VARIABLE_ATTRIBUTE attr = 0U;
 			var guid = Guid.Empty;
-			using (new PrivBlock("SeSystemEnvironmentPrivilege"))
+			using (new ElevPriv("SeSystemEnvironmentPrivilege"))
 			{
 				Assert.That(GetFirmwareEnvironmentVariableEx("Test", guid.ToString("B"), pval, 4, out attr), ResultIs.Successful);
 				Assert.That(SetFirmwareEnvironmentVariableEx("Test", guid.ToString("B"), pval, 4, attr), ResultIs.Failure);

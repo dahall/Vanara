@@ -290,7 +290,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SetFileIoOverlappedRangeTest()
 		{
-			using (var priv = new PrivBlock("SeLockMemoryPrivilege"))
+			using (var priv = new ElevPriv("SeLockMemoryPrivilege"))
 			using (var tmp = new TempFile(FileAccess.FILE_READ_ATTRIBUTES | FileAccess.GENERIC_READ, FileShare.Read, FileMode.Create, FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED | FileFlagsAndAttributes.FILE_FLAG_NO_BUFFERING))
 			using (var mem = new AlignedMemory<HGlobalMemoryMethods>(1024, 1024))
 				Assert.That(SetFileIoOverlappedRange(tmp.hFile, mem, (uint)mem.Size), ResultIs.Failure); // Not sure why I'm having permissions problems.
@@ -299,7 +299,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SetFileShortNameTest()
 		{
-			using (new PrivBlock("SeRestorePrivilege"))
+			using (new ElevPriv("SeRestorePrivilege"))
 			using (var tmp = new TempFile(FileAccess.GENERIC_ALL, FileShare.ReadWrite, dwFlagsAndAttributes: FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS))
 				Assert.That(SetFileShortName(tmp.hFile, "SN.TXT"), ResultIs.Successful);
 		}

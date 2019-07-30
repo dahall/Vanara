@@ -38,7 +38,7 @@ namespace Vanara.PInvoke.Tests
 		// [Test] This works but suspends the PC
 		public void SetSystemPowerStateTest()
 		{
-			using (new PrivBlock("SeShutdownPrivilege"))
+			using (new ElevPriv("SeShutdownPrivilege"))
 				Assert.That(SetSystemPowerState(true), ResultIs.Successful);
 		}
 	}

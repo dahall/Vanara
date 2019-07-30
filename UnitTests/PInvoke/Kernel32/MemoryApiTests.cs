@@ -26,7 +26,7 @@ namespace Vanara.PInvoke.Tests
 
 			// Enable the privilege.
 			using (var hProc = SafeHPROCESS.Current)
-			using (new PrivBlock("SeLockMemoryPrivilege", hProc))
+			using (new ElevPriv("SeLockMemoryPrivilege", hProc))
 			{
 				// Allocate the physical memory.
 				var aPFNs = new IntPtr[NumberOfPages];

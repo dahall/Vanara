@@ -40,7 +40,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(GetDynamicTimeZoneInformation(out var tz), Is.Not.EqualTo(TZID.TIME_ZONE_ID_INVALID));
 			Assert.That(tz.StandardName, Is.Not.Null.Or.Empty);
 
-			using (new PrivBlock("SeTimeZonePrivilege"))
+			using (new ElevPriv("SeTimeZonePrivilege"))
 			{
 				// Set to random
 				Assert.That(SetDynamicTimeZoneInformation(dtz), ResultIs.Successful);
@@ -56,7 +56,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(GetTimeZoneInformation(out var tziOld), Is.Not.EqualTo(TZID.TIME_ZONE_ID_INVALID));
 			Assert.That(tziOld.StandardName, Is.Not.Null.Or.Empty);
 
-			using (new PrivBlock("SeTimeZonePrivilege"))
+			using (new ElevPriv("SeTimeZonePrivilege"))
 			{
 				// Build new test tz
 				var tziNew = new TIME_ZONE_INFORMATION

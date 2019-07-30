@@ -5,12 +5,12 @@ using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke.Tests
 {
-	public class PrivBlock : IDisposable
+	public class ElevPriv : IDisposable
 	{
 		SafeCoTaskMemHandle prevState;
 		SafeHTOKEN tok;
 
-		public PrivBlock(string priv, HPROCESS hProc = default, TokenAccess access = TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY)
+		public ElevPriv(string priv, HPROCESS hProc = default, TokenAccess access = TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY)
 		{
 			if (hProc.IsNull) hProc = GetCurrentProcess();
 			tok = SafeHTOKEN.FromProcess(hProc, access);
