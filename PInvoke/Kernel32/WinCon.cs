@@ -1307,28 +1307,22 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetConsoleProcessList( _Out_ LPDWORD lpdwProcessList, _In_ DWORD dwProcessCount );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
-		public static extern uint GetConsoleProcessList(SafeHeapBlock lpdwProcessList, uint dwProcessCount);
+		public static extern uint GetConsoleProcessList([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] lpdwProcessList, uint dwProcessCount);
 
 		/// <summary>Retrieves a list of the processes attached to the current console.</summary>
 		/// <returns>An array of process identifiers upon success.</returns>
 		public static uint[] GetConsoleProcessList()
 		{
-			var cnt = 8U;
-			using (var h = new SafeHeapBlock(Bytes()))
+			uint c = 8U, cnt;
+			uint[] output;
+			do
 			{
-				var c = GetConsoleProcessList(h, cnt);
-				while (c > cnt)
-				{
-					cnt = c;
-					h.Size = Bytes();
-					c = GetConsoleProcessList(h, cnt);
-				}
-				if (c == 0)
-					Win32Error.ThrowLastError();
-				return h.ToArray<uint>((int)c);
-			}
-
-			int Bytes() => Marshal.SizeOf(typeof(uint)) * (int)cnt;
+				cnt = c;
+				output = new uint[cnt];
+				c = GetConsoleProcessList(output, cnt);
+			} while (c > cnt);
+			Array.Resize(ref output, (int)c);
+			return output;
 		}
 
 		/// <summary>Retrieves information about the specified console screen buffer.</summary>
@@ -2775,7 +2769,7 @@ namespace Vanara.PInvoke
 			public string FaceName;
 
 			/// <summary>Gets an empty structure value with the <see cref="cbSize"/> field initialized to the correct value.</summary>
-			public static readonly CONSOLE_FONT_INFOEX InitializedValue = new CONSOLE_FONT_INFOEX { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_FONT_INFOEX)) };
+			public static readonly CONSOLE_FONT_INFOEX Default = new CONSOLE_FONT_INFOEX { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_FONT_INFOEX)) };
 		}
 
 		/// <summary>Contains information about the console history.</summary>
@@ -2798,7 +2792,7 @@ namespace Vanara.PInvoke
 			public uint dwFlags;
 
 			/// <summary>Gets an empty structure value with the <see cref="cbSize"/> field initialized to the correct value.</summary>
-			public static readonly CONSOLE_HISTORY_INFO InitializedValue = new CONSOLE_HISTORY_INFO { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_HISTORY_INFO)) };
+			public static readonly CONSOLE_HISTORY_INFO Default = new CONSOLE_HISTORY_INFO { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_HISTORY_INFO)) };
 		}
 
 		/// <summary>Contains information for a console read operation.</summary>
@@ -2824,7 +2818,7 @@ namespace Vanara.PInvoke
 			public CONTROL_KEY_STATE dwControlKeyState;
 
 			/// <summary>Gets an empty structure value with the <see cref="nLength"/> field initialized to the correct value.</summary>
-			public static readonly CONSOLE_READCONSOLE_CONTROL InitializedValue = new CONSOLE_READCONSOLE_CONTROL { nLength = (uint)Marshal.SizeOf(typeof(CONSOLE_READCONSOLE_CONTROL)) };
+			public static readonly CONSOLE_READCONSOLE_CONTROL Default = new CONSOLE_READCONSOLE_CONTROL { nLength = (uint)Marshal.SizeOf(typeof(CONSOLE_READCONSOLE_CONTROL)) };
 		}
 
 		/// <summary>Contains information about a console screen buffer.</summary>
@@ -2906,7 +2900,7 @@ namespace Vanara.PInvoke
 			public COLORREF[] ColorTable;
 
 			/// <summary>Gets an empty structure value with the <see cref="cbSize"/> field initialized to the correct value.</summary>
-			public static readonly CONSOLE_SCREEN_BUFFER_INFOEX InitializedValue = new CONSOLE_SCREEN_BUFFER_INFOEX { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_SCREEN_BUFFER_INFOEX)) };
+			public static readonly CONSOLE_SCREEN_BUFFER_INFOEX Default = new CONSOLE_SCREEN_BUFFER_INFOEX { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_SCREEN_BUFFER_INFOEX)) };
 		}
 
 		/// <summary>Contains information for a console selection.</summary>
@@ -2973,15 +2967,18 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="COORD"/> struct.</summary>
 			/// <param name="x">The horizontal coordinate or column value.</param>
 			/// <param name="y">The vertical coordinate or row value.</param>
-			public COORD(short x, short y)
+			public COORD(int x, int y)
 			{
-				X = x;
-				Y = y;
+				X = (short)x;
+				Y = (short)y;
 			}
 
 			/// <summary>Converts to string.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString() => $"X={X},Y={Y}";
+
+			/// <summary>Represents an empty instance of COORD with both X and Y values set to 0.</summary>
+			public static readonly COORD Empty = default(COORD);
 		}
 
 		/// <summary>
