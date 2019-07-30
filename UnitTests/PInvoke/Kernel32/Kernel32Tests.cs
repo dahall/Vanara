@@ -31,6 +31,12 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void CeipIsOptedInTest()
+		{
+			Assert.That(() => CeipIsOptedIn(), Throws.Nothing);
+		}
+
+		[Test]
 		public void CreateHardLinkTest()
 		{
 			var link = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
