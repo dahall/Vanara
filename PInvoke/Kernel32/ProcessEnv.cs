@@ -270,13 +270,17 @@ namespace Vanara.PInvoke
 		public static extern bool SetCurrentDirectory(string lpPathName);
 
 		/// <summary>Sets the environment strings.</summary>
-		/// <param name="NewEnvironment">The new environment strings as a list of strings.</param>
+		/// <param name="NewEnvironment">
+		/// The new environment strings. List of unicode null terminated strings with a double null termination at the end.
+		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
 		[PInvokeData("ProcessEnv.h", MSDNShortId = "")]
-		public static bool SetEnvironmentStrings(IEnumerable<string> NewEnvironment) => SetEnvironmentStringsW(NewEnvironment.ToArray());
+		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "SetEnvironmentStringsW", CharSet = CharSet.Unicode)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetEnvironmentStrings([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Unicode")] string[] NewEnvironment);
 
 		/// <summary>Sets the contents of the specified environment variable for the current process.</summary>
 		/// <param name="lpName">
@@ -353,19 +357,6 @@ namespace Vanara.PInvoke
 
 		[DllImport(Lib.Kernel32, SetLastError = false, EntryPoint = "GetCommandLine", CharSet = CharSet.Auto)]
 		private static extern IntPtr GetCommandLineInternal();
-
-		/// <summary>Sets the environment strings.</summary>
-		/// <param name="NewEnvironment">
-		/// The new environment strings. List of unicode null terminated strings with a double null termination at the end.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-		/// </returns>
-		[PInvokeData("ProcessEnv.h", MSDNShortId = "")]
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool SetEnvironmentStringsW([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Unicode")] string[] NewEnvironment);
 
 		/// <summary>Represents a block of environment strings obtained by <see cref="GetEnvironmentStrings"/> and freed by <see cref="FreeEnvironmentStrings"/>.</summary>
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
