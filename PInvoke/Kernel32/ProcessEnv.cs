@@ -119,9 +119,13 @@ namespace Vanara.PInvoke
 		/// <para>If the function fails, the return value is NULL.</para>
 		/// </returns>
 		// LPTCH WINAPI GetEnvironmentStrings(void); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683187(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683187")]
-		public static extern EnvironmentStrings GetEnvironmentStrings();
+		public static string[] GetEnvironmentStrings()
+		{
+			var ptr = InternalGetEnvironmentStrings();
+			try { return ptr.ToStringEnum().ToArray(); }
+			finally { FreeEnvironmentStrings(ptr); }
+		}
 
 		/// <summary>Retrieves the contents of the specified variable from the environment block of the calling process.</summary>
 		/// <param name="lpName">The name of the environment variable.</param>
@@ -358,29 +362,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, EntryPoint = "GetCommandLine", CharSet = CharSet.Auto)]
 		private static extern IntPtr GetCommandLineInternal();
 
-		/// <summary>Represents a block of environment strings obtained by <see cref="GetEnvironmentStrings"/> and freed by <see cref="FreeEnvironmentStrings"/>.</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		/// <seealso cref="System.Collections.Generic.IEnumerable{T}"/>
-		public sealed class EnvironmentStrings : GenericSafeHandle, IEnumerable<string>
-		{
-			/// <summary>Initializes a new instance of the <see cref="EnvironmentStrings"/> class.</summary>
-			public EnvironmentStrings() : this(IntPtr.Zero) { }
-
-			/// <summary>Initializes a new instance of the <see cref="EnvironmentStrings"/> class.</summary>
-			/// <param name="handle">The handle.</param>
-			public EnvironmentStrings(IntPtr handle) : base(handle, FreeEnvironmentStrings) { }
-
-			/// <summary>Gets the value.</summary>
-			/// <value>The value.</value>
-			public IEnumerable<string> Value => handle.ToStringEnum();
-
-			/// <summary>Returns an enumerator that iterates through the collection.</summary>
-			/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
-			public IEnumerator<string> GetEnumerator() => Value.GetEnumerator();
-
-			/// <summary>Returns an enumerator that iterates through a collection.</summary>
-			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
-			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-		}
+		[DllImport(Lib.Kernel32, SetLastError = false, EntryPoint = "GetEnvironmentStrings", CharSet = CharSet.Auto)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms683187")]
+		private static extern IntPtr InternalGetEnvironmentStrings();
 	}
 }

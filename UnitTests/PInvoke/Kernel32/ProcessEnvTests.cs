@@ -24,12 +24,12 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void GetEnvironmentStringsTest()
+		public void GetSetEnvironmentStringsTest()
 		{
 			var es = GetEnvironmentStrings();
-			Assert.That(es.IsInvalid, Is.False);
-			Assert.That(es.Value, Is.Not.Empty);
+			Assert.That(es, Is.Not.Empty);
 			TestContext.WriteLine(string.Join("\r\n", es));
+			Assert.That(SetEnvironmentStrings(es), ResultIs.Successful);
 		}
 
 		[Test]
