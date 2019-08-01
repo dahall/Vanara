@@ -1231,15 +1231,12 @@ namespace Vanara.PInvoke
 			[In, Optional] SECURITY_ATTRIBUTES lpThreadAttributes, [Optional] bool bInheritHandles, [Optional] CREATE_PROCESS dwCreationFlags, [In, Optional] string[] lpEnvironment,
 			[Optional] string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
 		{
-			using (var mEnv = lpEnvironment is null ? SafeHGlobalHandle.Null : SafeHGlobalHandle.CreateFromStringList(lpEnvironment))
-			{
-				if (lpEnvironment != null && StringHelper.GetCharSize() == 2)
-					dwCreationFlags |= CREATE_PROCESS.CREATE_UNICODE_ENVIRONMENT;
-				var ret = CreateProcess(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, (IntPtr)mEnv,
-					lpCurrentDirectory, lpStartupInfo, out var pi);
-				lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
-				return ret;
-			}
+			if (lpEnvironment != null && StringHelper.GetCharSize() == 2)
+				dwCreationFlags |= CREATE_PROCESS.CREATE_UNICODE_ENVIRONMENT;
+			var ret = CreateProcess(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment,
+				lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
+			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
+			return ret;
 		}
 
 		/// <summary>
@@ -1268,7 +1265,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
 		public static SafeHPROCESS CreateProcess(string lpCommandLine)
 		{
-			if (CreateProcess(null, new StringBuilder(lpCommandLine ?? throw new ArgumentNullException(nameof(lpCommandLine))), null, null, false, 0, IntPtr.Zero, null, STARTUPINFO.Default, out var pi))
+			if (CreateProcess(null, new StringBuilder(lpCommandLine ?? throw new ArgumentNullException(nameof(lpCommandLine))), null, null, false, 0, null, null, STARTUPINFO.Default, out PROCESS_INFORMATION pi))
 			{
 				CloseHandle((IntPtr)pi.hThread);
 				return new SafeHPROCESS(pi.hProcess);
@@ -1453,15 +1450,12 @@ namespace Vanara.PInvoke
 			[In, Optional] SECURITY_ATTRIBUTES lpThreadAttributes, bool bInheritHandles, [Optional] CREATE_PROCESS dwCreationFlags, [In, Optional] string[] lpEnvironment,
 			[Optional] string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
 		{
-			using (var mEnv = lpEnvironment is null ? SafeHGlobalHandle.Null : SafeHGlobalHandle.CreateFromStringList(lpEnvironment))
-			{
-				if (lpEnvironment != null && StringHelper.GetCharSize() == 2)
-					dwCreationFlags |= CREATE_PROCESS.CREATE_UNICODE_ENVIRONMENT;
-				var ret = CreateProcess(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, (IntPtr)mEnv,
-					lpCurrentDirectory, lpStartupInfo, out var pi);
-				lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
-				return ret;
-			}
+			if (lpEnvironment != null && StringHelper.GetCharSize() == 2)
+				dwCreationFlags |= CREATE_PROCESS.CREATE_UNICODE_ENVIRONMENT;
+			var ret = CreateProcess(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment,
+				lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
+			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
+			return ret;
 		}
 
 		/// <summary>
@@ -5246,7 +5240,8 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool CreateProcess(string lpApplicationName, StringBuilder lpCommandLine, [In] SECURITY_ATTRIBUTES lpProcessAttributes,
-			[In] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In] IntPtr lpEnvironment,
+			[In] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] lpEnvironment,
 			string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
 		/// <summary>
@@ -5429,7 +5424,8 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool CreateProcess(string lpApplicationName, StringBuilder lpCommandLine, [In] SECURITY_ATTRIBUTES lpProcessAttributes,
-			[In] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In] IntPtr lpEnvironment,
+			[In] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] lpEnvironment,
 			string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
 		/// <summary>Retrieves the contents of the <c>STARTUPINFO</c> structure that was specified when the calling process was created.</summary>

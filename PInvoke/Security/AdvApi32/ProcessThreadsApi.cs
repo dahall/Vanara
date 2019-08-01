@@ -320,13 +320,10 @@ namespace Vanara.PInvoke
 			[Optional] SECURITY_ATTRIBUTES lpThreadAttributes, bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In, Optional] string[] lpEnvironment, [Optional] string lpCurrentDirectory,
 			in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
 		{
-			using (var mEnv = lpEnvironment is null ? SafeHGlobalHandle.Null : SafeHGlobalHandle.CreateFromStringList(lpEnvironment))
-			{
-				var ret = CreateProcessAsUser(hToken, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, (IntPtr)mEnv,
-					lpCurrentDirectory, lpStartupInfo, out var pi);
-				lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
-				return ret;
-			}
+			var ret = CreateProcessAsUser(hToken, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment,
+				lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
+			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
+			return ret;
 		}
 
 		/// <summary>
@@ -641,13 +638,10 @@ namespace Vanara.PInvoke
 			[Optional] SECURITY_ATTRIBUTES lpThreadAttributes, bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In, Optional] string[] lpEnvironment, [Optional] string lpCurrentDirectory,
 			in STARTUPINFOEX lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
 		{
-			using (var mEnv = lpEnvironment is null ? SafeHGlobalHandle.Null : SafeHGlobalHandle.CreateFromStringList(lpEnvironment))
-			{
-				var ret = CreateProcessAsUser(hToken, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, (IntPtr)mEnv,
-					lpCurrentDirectory, lpStartupInfo, out var pi);
-				lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
-				return ret;
-			}
+			var ret = CreateProcessAsUser(hToken, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment,
+				lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
+			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
+			return ret;
 		}
 
 		/// <summary>The OpenProcessToken function opens the access token associated with a process.</summary>
@@ -1066,7 +1060,8 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool CreateProcessAsUser(HTOKEN hToken, [Optional] string lpApplicationName, [Optional] StringBuilder lpCommandLine,
 			[Optional] SECURITY_ATTRIBUTES lpProcessAttributes, [Optional] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
-			CREATE_PROCESS dwCreationFlags, [Optional] IntPtr lpEnvironment, [Optional] string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
+			CREATE_PROCESS dwCreationFlags, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] lpEnvironment,
+			[Optional] string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
 		/// <summary>
 		/// <para>
@@ -1380,6 +1375,7 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool CreateProcessAsUser(HTOKEN hToken, [Optional] string lpApplicationName, [Optional] StringBuilder lpCommandLine,
 			[Optional] SECURITY_ATTRIBUTES lpProcessAttributes, [Optional] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
-			CREATE_PROCESS dwCreationFlags, [Optional] IntPtr lpEnvironment, [Optional] string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
+			CREATE_PROCESS dwCreationFlags, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] lpEnvironment,
+			[Optional] string lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 	}
 }

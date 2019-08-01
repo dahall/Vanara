@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -275,11 +276,7 @@ namespace Vanara.PInvoke
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
 		[PInvokeData("ProcessEnv.h", MSDNShortId = "")]
-		public static bool SetEnvironmentStrings(IEnumerable<string> NewEnvironment)
-		{
-			using (var mem = SafeHGlobalHandle.CreateFromStringList(NewEnvironment, StringListPackMethod.Concatenated, CharSet.Unicode))
-				return SetEnvironmentStringsW(mem.DangerousGetHandle());
-		}
+		public static bool SetEnvironmentStrings(IEnumerable<string> NewEnvironment) => SetEnvironmentStringsW(NewEnvironment.ToArray());
 
 		/// <summary>Sets the contents of the specified environment variable for the current process.</summary>
 		/// <param name="lpName">
@@ -368,7 +365,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("ProcessEnv.h", MSDNShortId = "")]
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool SetEnvironmentStringsW(IntPtr NewEnvironment);
+		private static extern bool SetEnvironmentStringsW([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Unicode")] string[] NewEnvironment);
 
 		/// <summary>Represents a block of environment strings obtained by <see cref="GetEnvironmentStrings"/> and freed by <see cref="FreeEnvironmentStrings"/>.</summary>
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
