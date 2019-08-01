@@ -1,13 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary>Enumerate all calendars.</summary>
+		public const CALID ENUM_ALL_CALENDARS = (CALID)0xffffffff;
+
+		/// <summary>Indicates that no geographical location identifier has been set for the user.</summary>
+		public const int GEOID_NOT_AVAILABLE = -1;
+
 		public const ushort LANG_INVARIANT = 0x7f;
 		public const ushort LANG_NEUTRAL = 0;
 
@@ -77,7 +85,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317807")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumCalendarInfoProcEx(string lpCalendarInfoString, uint Calendar);
+		public delegate bool EnumCalendarInfoProcEx(string lpCalendarInfoString, CALID Calendar);
 
 		/// <summary>
 		/// An application-defined callback function that processes enumerated calendar information provided by the
@@ -100,7 +108,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317808")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumCalendarInfoProcExEx(string lpCalendarInfoString, uint Calendar, string lpReserved, IntPtr lParam);
+		public delegate bool EnumCalendarInfoProcExEx(string lpCalendarInfoString, CALID Calendar, string lpReserved, IntPtr lParam);
 
 		/// <summary>
 		/// An application-defined callback function that processes enumerated code page information provided by the
@@ -146,7 +154,7 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317814")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumDateFormatsProcEx(string lpDateFormatString, uint CalendarID);
+		public delegate bool EnumDateFormatsProcEx(string lpDateFormatString, CALID CalendarID);
 
 		/// <summary>
 		/// An application-defined function that processes enumerated date format information provided by the <c>EnumDateFormatsExEx</c>
@@ -167,7 +175,7 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317815")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumDateFormatsProcExEx(string lpDateFormatString, uint CalendarID, IntPtr lParam);
+		public delegate bool EnumDateFormatsProcExEx(string lpDateFormatString, CALID CalendarID, IntPtr lParam);
 
 		/// <summary>
 		/// An application-defined callback function that processes enumerated geographical location information provided by the
@@ -205,7 +213,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317820")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumLanguageGroupLocalesProc(LGRPID LanguageGroup, uint Locale, string lpLocaleString, IntPtr lParam);
+		public delegate bool EnumLanguageGroupLocalesProc(LGRPID LanguageGroup, LCID Locale, string lpLocaleString, IntPtr lParam);
 
 		/// <summary>
 		/// An application-defined callback function that processes enumerated language group information provided by the
@@ -351,6 +359,8 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public delegate bool Geo_EnumNameProc(string GeoName, IntPtr data);
 
+		private delegate bool GetLangFunc<TEnum>(TEnum dwFlags, out uint pulNumLanguages, IntPtr pwszLanguagesBuffer, ref uint pcchLanguagesBuffer) where TEnum : Enum;
+
 		/// <summary>
 		/// <para>Deprecated. Specifies the date units for adjusting the <c>CALDATETIME</c> structure.</para>
 		/// </summary>
@@ -392,7 +402,7 @@ namespace Vanara.PInvoke
 		/// identifiers when using the following NLS functions and callback functions, which have parameters that take the CALID data type.
 		/// </summary>
 		[PInvokeData("", MSDNShortId = "ba2e841e-e24e-476a-851e-a29b3af4f04d")]
-		public enum CALID
+		public enum CALID : uint
 		{
 			/// <summary>Gregorian (localized)</summary>
 			CAL_GREGORIAN = 1,
@@ -441,58 +451,181 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum CALTYPE : uint
 		{
+			/// <summary>Windows Me/98, Windows 2000: Use the system default instead of the user's choice.</summary>
 			CAL_NOUSEROVERRIDE = LCTYPE.LOCALE_NOUSEROVERRIDE,
+
+			/// <summary>
+			/// Windows Me/98, Windows 2000: Use the system ANSI code page (ACP) instead of the locale code page for string translation. This
+			/// is only relevant for ANSI versions of functions, for example, EnumCalendarInfoA.
+			/// </summary>
 			CAL_USE_CP_ACP = LCTYPE.LOCALE_USE_CP_ACP,
+
+			/// <summary>
+			/// Windows Me/98, Windows 2000: Retrieve the result from GetCalendarInfo as a number instead of a string. This is only valid for
+			/// values beginning with CAL_I.
+			/// </summary>
 			CAL_RETURN_NUMBER = LCTYPE.LOCALE_RETURN_NUMBER,
+
+			/// <summary>
+			/// Windows 7 and later: Retrieve the result from GetCalendarInfo in the form of genitive names of months, which are the names
+			/// used when the month names are combined with other items. For example, in Ukrainian the equivalent of January is written
+			/// "Січень" when the month is named alone. However, when the month name is used in combination, for example, in a date such as
+			/// January 5th, 2003, the genitive form of the name is used. For the Ukrainian example, the genitive month name is displayed as
+			/// "5 січня 2003". For more information, see LOCALE_RETURN_GENITIVE_NAMES.
+			/// </summary>
 			CAL_RETURN_GENITIVE_NAMES = LCTYPE.LOCALE_RETURN_GENITIVE_NAMES,
+
+			/// <summary>An integer value indicating the calendar type of the alternate calendar.</summary>
 			CAL_ICALINTVALUE = 0x00000001,
+
+			/// <summary>Native name of the alternate calendar.</summary>
 			CAL_SCALNAME = 0x00000002,
+
+			/// <summary>
+			/// One or more null-terminated strings that specify the year offsets for each of the era ranges. The last string has an extra
+			/// terminating null character. This value varies in format depending on the type of optional calendar.
+			/// </summary>
 			CAL_IYEAROFFSETRANGE = 0x00000003,
+
+			/// <summary>
+			/// One or more null-terminated strings that specify each of the Unicode code points specifying the era associated with
+			/// CAL_IYEAROFFSETRANGE. The last string has an extra terminating null character. This value varies in format depending on the
+			/// type of optional calendar.
+			/// </summary>
 			CAL_SERASTRING = 0x00000004,
+
+			/// <summary>Short date formats for the calendar type.</summary>
 			CAL_SSHORTDATE = 0x00000005,
+
+			/// <summary>Long date formats for the calendar type.</summary>
 			CAL_SLONGDATE = 0x00000006,
+
+			/// <summary>Native name of the first day of the week.</summary>
 			CAL_SDAYNAME1 = 0x00000007,
+
+			/// <summary>Native name of the second day of the week.</summary>
 			CAL_SDAYNAME2 = 0x00000008,
+
+			/// <summary>Native name of the third day of the week.</summary>
 			CAL_SDAYNAME3 = 0x00000009,
+
+			/// <summary>Native name of the fourth day of the week.</summary>
 			CAL_SDAYNAME4 = 0x0000000a,
+
+			/// <summary>Native name of the fifth day of the week.</summary>
 			CAL_SDAYNAME5 = 0x0000000b,
+
+			/// <summary>Native name of the sixth day of the week.</summary>
 			CAL_SDAYNAME6 = 0x0000000c,
+
+			/// <summary>Native name of the seventh day of the week.</summary>
 			CAL_SDAYNAME7 = 0x0000000d,
+
+			/// <summary>Abbreviated native name of the first day of the week.</summary>
 			CAL_SABBREVDAYNAME1 = 0x0000000e,
+
+			/// <summary>Abbreviated native name of the second day of the week.</summary>
 			CAL_SABBREVDAYNAME2 = 0x0000000f,
+
+			/// <summary>Abbreviated native name of the third day of the week.</summary>
 			CAL_SABBREVDAYNAME3 = 0x00000010,
+
+			/// <summary>Abbreviated native name of the fourth day of the week.</summary>
 			CAL_SABBREVDAYNAME4 = 0x00000011,
+
+			/// <summary>Abbreviated native name of the fifth day of the week.</summary>
 			CAL_SABBREVDAYNAME5 = 0x00000012,
+
+			/// <summary>Abbreviated native name of the sixth day of the week.</summary>
 			CAL_SABBREVDAYNAME6 = 0x00000013,
+
+			/// <summary>Abbreviated native name of the seventh day of the week.</summary>
 			CAL_SABBREVDAYNAME7 = 0x00000014,
+
+			/// <summary>Native name of the first month of the year.</summary>
 			CAL_SMONTHNAME1 = 0x00000015,
+
+			/// <summary>Native name of the second month of the year.</summary>
 			CAL_SMONTHNAME2 = 0x00000016,
+
+			/// <summary>Native name of the third month of the year.</summary>
 			CAL_SMONTHNAME3 = 0x00000017,
+
+			/// <summary>Native name of the fourth month of the year.</summary>
 			CAL_SMONTHNAME4 = 0x00000018,
+
+			/// <summary>Native name of the fifth month of the year.</summary>
 			CAL_SMONTHNAME5 = 0x00000019,
+
+			/// <summary>Native name of the sixth month of the year.</summary>
 			CAL_SMONTHNAME6 = 0x0000001a,
+
+			/// <summary>Native name of the seventh month of the year.</summary>
 			CAL_SMONTHNAME7 = 0x0000001b,
+
+			/// <summary>Native name of the eighth month of the year.</summary>
 			CAL_SMONTHNAME8 = 0x0000001c,
+
+			/// <summary>Native name of the ninth month of the year.</summary>
 			CAL_SMONTHNAME9 = 0x0000001d,
+
+			/// <summary>Native name of the tenth month of the year.</summary>
 			CAL_SMONTHNAME10 = 0x0000001e,
+
+			/// <summary>Native name of the eleventh month of the year.</summary>
 			CAL_SMONTHNAME11 = 0x0000001f,
+
+			/// <summary>Native name of the twelfth month of the year.</summary>
 			CAL_SMONTHNAME12 = 0x00000020,
+
+			/// <summary>Native name of the thirteenth month of the year, if it exists.</summary>
 			CAL_SMONTHNAME13 = 0x00000021,
+
+			/// <summary>Abbreviated native name of the first month of the year.</summary>
 			CAL_SABBREVMONTHNAME1 = 0x00000022,
+
+			/// <summary>Abbreviated native name of the second month of the year.</summary>
 			CAL_SABBREVMONTHNAME2 = 0x00000023,
+
+			/// <summary>Abbreviated native name of the third month of the year.</summary>
 			CAL_SABBREVMONTHNAME3 = 0x00000024,
+
+			/// <summary>Abbreviated native name of the fourth month of the year.</summary>
 			CAL_SABBREVMONTHNAME4 = 0x00000025,
+
+			/// <summary>Abbreviated native name of the fifth month of the year.</summary>
 			CAL_SABBREVMONTHNAME5 = 0x00000026,
+
+			/// <summary>Abbreviated native name of the sixth month of the year.</summary>
 			CAL_SABBREVMONTHNAME6 = 0x00000027,
+
+			/// <summary>Abbreviated native name of the seventh month of the year.</summary>
 			CAL_SABBREVMONTHNAME7 = 0x00000028,
+
+			/// <summary>Abbreviated native name of the eighth month of the year.</summary>
 			CAL_SABBREVMONTHNAME8 = 0x00000029,
+
+			/// <summary>Abbreviated native name of the ninth month of the year.</summary>
 			CAL_SABBREVMONTHNAME9 = 0x0000002a,
+
+			/// <summary>Abbreviated native name of the tenth month of the year.</summary>
 			CAL_SABBREVMONTHNAME10 = 0x0000002b,
+
+			/// <summary>Abbreviated native name of the eleventh month of the year.</summary>
 			CAL_SABBREVMONTHNAME11 = 0x0000002c,
+
+			/// <summary>Abbreviated native name of the twelfth month of the year.</summary>
 			CAL_SABBREVMONTHNAME12 = 0x0000002d,
+
+			/// <summary>Abbreviated native name of the thirteenth month of the year, if it exists.</summary>
 			CAL_SABBREVMONTHNAME13 = 0x0000002e,
+
+			/// <summary>Windows Me/98, Windows 2000: The year/month formats for the specified calendars.</summary>
 			CAL_SYEARMONTH = 0x0000002f,
+
+			/// <summary>Windows Me/98, Windows 2000: An integer value indicating the upper boundary of the two-digit year range.</summary>
 			CAL_ITWODIGITYEARMAX = 0x00000030,
+
 			CAL_SSHORTESTDAYNAME1 = 0x00000031,
 			CAL_SSHORTESTDAYNAME2 = 0x00000032,
 			CAL_SSHORTESTDAYNAME3 = 0x00000033,
@@ -500,10 +633,25 @@ namespace Vanara.PInvoke
 			CAL_SSHORTESTDAYNAME5 = 0x00000035,
 			CAL_SSHORTESTDAYNAME6 = 0x00000036,
 			CAL_SSHORTESTDAYNAME7 = 0x00000037,
+
+			/// <summary>
+			/// Windows 7 and later: Format of the month and day for the calendar type. The formatting is similar to that for CAL_SLONGDATE.
+			/// For example, if the Month/Day pattern is the full month name followed by the day number with leading zeros, for example,
+			/// "September 03", the format is "MMMM dd". Single quotation marks can be used to insert non-format characters, for example,
+			/// 'de' in Spanish.
+			/// </summary>
 			CAL_SMONTHDAY = 0x00000038,
+
+			/// <summary>Windows 7 and later: Abbreviated native name of an era. The full era is represented by the CAL_SERASTRING constant.</summary>
 			CAL_SABBREVERASTRING = 0x00000039,
+
+			/// <summary/>
 			CAL_SRELATIVELONGDATE = 0x0000003a,
+
+			/// <summary/>
 			CAL_SENGLISHERANAME = 0x0000003b,
+
+			/// <summary/>
 			CAL_SENGLISHABBREVERANAME = 0x0000003c,
 		}
 
@@ -844,166 +992,1568 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum LCTYPE : uint
 		{
+			/// <summary>
+			/// No user override. In several functions, for example, <c>GetLocaleInfo</c> and <c>GetLocaleInfoEx</c>, this constant causes
+			/// the function to bypass any user override and use the system default value for any other constant specified in the function
+			/// call. The information is retrieved from the locale database, even if the identifier indicates the current locale and the user
+			/// has changed some of the values using the Control Panel, or if an application has changed these values by using
+			/// <c>SetLocaleInfo</c>. If this constant is not specified, any values that the user has configured from the Control Panel or
+			/// that an application has configured using <c>SetLocaleInfo</c> take precedence over the database settings for the current
+			/// system default locale.
+			/// </summary>
 			LOCALE_NOUSEROVERRIDE = 0x80000000,
+
+			/// <summary>
+			/// <c>Windows Me/98, Windows 2000:</c> System default Windows ANSI code page (ACP) instead of the locale code page used for
+			/// string translation. See Code Page Identifiers for a list of ANSI and other code pages.
+			/// </summary>
 			LOCALE_USE_CP_ACP = 0x40000000,
+
+			/// <summary>
+			/// Windows Me/98, Windows NT 4.0 and later: Retrieve a number. This constant causes GetLocaleInfo or GetLocaleInfoEx to retrieve
+			/// a value as a number instead of as a string. The buffer that receives the value must be at least the length of a DWORD value.
+			/// This constant can be combined with any other constant having a name that begins with "LOCALE_I".
+			/// </summary>
 			LOCALE_RETURN_NUMBER = 0x20000000,
+
+			/// <summary>
+			/// Windows 7 and later: Retrieve the genitive names of months, which are the names used when the month names are combined with
+			/// other items. For example, in Ukrainian the equivalent of January is written "Січень" when the month is named alone. However,
+			/// when the month name is used in combination, for example, in a date such as January 5th, 2003, the genitive form of the name
+			/// is used. For the Ukrainian example, the genitive month name is displayed as "5 січня 2003". The list of genitive month names
+			/// begins with January and is semicolon-delimited. If there is no 13th month, use a semicolon in its place at the end of the list.
+			/// </summary>
 			LOCALE_RETURN_GENITIVE_NAMES = 0x10000000,
+
+			/// <summary>
+			/// <c>Windows 7 and later:</c> Allow the return of neutral names or LCIDs when converting between locale names and locale identifiers.
+			/// </summary>
 			LOCALE_ALLOW_NEUTRAL_NAMES = 0x08000000,
+
+			/// <summary>
+			/// Windows 7 and later: Full localized name of the locale for the user interface language, for example, Deutsch (Deutschland)
+			/// for German (Germany)" There is no limit on the number of characters allowed for this string. Since this name is based on the
+			/// localization of the product, it changes for each localized version.
+			/// </summary>
 			LOCALE_SLOCALIZEDDISPLAYNAME = 0x00000002,
+
+			/// <summary>
+			/// Windows 7 and later: Display name of the locale in English. Usually the display name consists of the language and the
+			/// country/region, for example, German (Germany) for Deutsch (Deutschland).
+			/// </summary>
 			LOCALE_SENGLISHDISPLAYNAME = 0x00000072,
-			LOCALE_SNATIVEDISPLAYNAME = 0x00000073,
+
+			/// <summary>
+			/// Windows Vista: Full localized primary name of the user interface language included in a localized display name, for example,
+			/// Deutsch representing German. Since this name is based on the localization of the product, it changes for each localized version.
+			/// </summary>
 			LOCALE_SLOCALIZEDLANGUAGENAME = 0x0000006f,
+
+			/// <summary>
+			/// Windows 7 and later: English name of the language in English, for example, German for Deutsch, from International ISO
+			/// Standard 639. This name is always restricted to characters that can be mapped into the ASCII 127-character subset.
+			/// </summary>
 			LOCALE_SENGLISHLANGUAGENAME = 0x00001001,
-			LOCALE_SNATIVELANGUAGENAME = 0x00000004,
+
+			/// <summary>
+			/// Windows 7 and later: Full localized name of the country/region, for example, Deutschland for Germany. The maximum number of
+			/// characters allowed for this string is 80, including a terminating null character. Since this name is based on the
+			/// localization of the product, it changes for each localized version.
+			/// </summary>
 			LOCALE_SLOCALIZEDCOUNTRYNAME = 0x00000006,
+
+			/// <summary>
+			/// Windows 7 and later: English name of the country/region, for example, Germany for Deutschland. This name is always restricted
+			/// to characters that can be mapped into the ASCII 127-character subset.
+			/// </summary>
 			LOCALE_SENGLISHCOUNTRYNAME = 0x00001002,
-			LOCALE_SNATIVECOUNTRYNAME = 0x00000008,
-			LOCALE_IDIALINGCODE = 0x00000005,
-			LOCALE_SLIST = 0x0000000C,
-			LOCALE_IMEASURE = 0x0000000D,
-			LOCALE_SDECIMAL = 0x0000000E,
-			LOCALE_STHOUSAND = 0x0000000F,
-			LOCALE_SGROUPING = 0x00000010,
-			LOCALE_IDIGITS = 0x00000011,
-			LOCALE_ILZERO = 0x00000012,
-			LOCALE_INEGNUMBER = 0x00001010,
-			LOCALE_SNATIVEDIGITS = 0x00000013,
-			LOCALE_SCURRENCY = 0x00000014,
-			LOCALE_SINTLSYMBOL = 0x00000015,
-			LOCALE_SMONDECIMALSEP = 0x00000016,
-			LOCALE_SMONTHOUSANDSEP = 0x00000017,
-			LOCALE_SMONGROUPING = 0x00000018,
-			LOCALE_ICURRDIGITS = 0x00000019,
-			LOCALE_ICURRENCY = 0x0000001B,
-			LOCALE_INEGCURR = 0x0000001C,
-			LOCALE_SSHORTDATE = 0x0000001F,
-			LOCALE_SLONGDATE = 0x00000020,
-			LOCALE_STIMEFORMAT = 0x00001003,
-			LOCALE_SAM = 0x00000028,
-			LOCALE_SPM = 0x00000029,
-			LOCALE_ICALENDARTYPE = 0x00001009,
-			LOCALE_IOPTIONALCALENDAR = 0x0000100B,
-			LOCALE_IFIRSTDAYOFWEEK = 0x0000100C,
-			LOCALE_IFIRSTWEEKOFYEAR = 0x0000100D,
-			LOCALE_SDAYNAME1 = 0x0000002A,
-			LOCALE_SDAYNAME2 = 0x0000002B,
-			LOCALE_SDAYNAME3 = 0x0000002C,
-			LOCALE_SDAYNAME4 = 0x0000002D,
-			LOCALE_SDAYNAME5 = 0x0000002E,
-			LOCALE_SDAYNAME6 = 0x0000002F,
-			LOCALE_SDAYNAME7 = 0x00000030,
-			LOCALE_SABBREVDAYNAME1 = 0x00000031,
-			LOCALE_SABBREVDAYNAME2 = 0x00000032,
-			LOCALE_SABBREVDAYNAME3 = 0x00000033,
-			LOCALE_SABBREVDAYNAME4 = 0x00000034,
-			LOCALE_SABBREVDAYNAME5 = 0x00000035,
-			LOCALE_SABBREVDAYNAME6 = 0x00000036,
-			LOCALE_SABBREVDAYNAME7 = 0x00000037,
-			LOCALE_SMONTHNAME1 = 0x00000038,
-			LOCALE_SMONTHNAME2 = 0x00000039,
-			LOCALE_SMONTHNAME3 = 0x0000003A,
-			LOCALE_SMONTHNAME4 = 0x0000003B,
-			LOCALE_SMONTHNAME5 = 0x0000003C,
-			LOCALE_SMONTHNAME6 = 0x0000003D,
-			LOCALE_SMONTHNAME7 = 0x0000003E,
-			LOCALE_SMONTHNAME8 = 0x0000003F,
-			LOCALE_SMONTHNAME9 = 0x00000040,
-			LOCALE_SMONTHNAME10 = 0x00000041,
-			LOCALE_SMONTHNAME11 = 0x00000042,
-			LOCALE_SMONTHNAME12 = 0x00000043,
-			LOCALE_SMONTHNAME13 = 0x0000100E,
-			LOCALE_SABBREVMONTHNAME1 = 0x00000044,
-			LOCALE_SABBREVMONTHNAME2 = 0x00000045,
-			LOCALE_SABBREVMONTHNAME3 = 0x00000046,
-			LOCALE_SABBREVMONTHNAME4 = 0x00000047,
-			LOCALE_SABBREVMONTHNAME5 = 0x00000048,
-			LOCALE_SABBREVMONTHNAME6 = 0x00000049,
-			LOCALE_SABBREVMONTHNAME7 = 0x0000004A,
-			LOCALE_SABBREVMONTHNAME8 = 0x0000004B,
-			LOCALE_SABBREVMONTHNAME9 = 0x0000004C,
-			LOCALE_SABBREVMONTHNAME10 = 0x0000004D,
-			LOCALE_SABBREVMONTHNAME11 = 0x0000004E,
-			LOCALE_SABBREVMONTHNAME12 = 0x0000004F,
-			LOCALE_SABBREVMONTHNAME13 = 0x0000100F,
-			LOCALE_SPOSITIVESIGN = 0x00000050,
-			LOCALE_SNEGATIVESIGN = 0x00000051,
-			LOCALE_IPOSSIGNPOSN = 0x00000052,
-			LOCALE_INEGSIGNPOSN = 0x00000053,
-			LOCALE_IPOSSYMPRECEDES = 0x00000054,
-			LOCALE_IPOSSEPBYSPACE = 0x00000055,
-			LOCALE_INEGSYMPRECEDES = 0x00000056,
-			LOCALE_INEGSEPBYSPACE = 0x00000057,
+
+			/// <summary>
+			/// <c>Windows Me/98/95, Windows NT 4.0:</c> A specific bit pattern that determines the relationship between the character
+			/// coverage needed to support the locale and the font contents. Note that LOCALE_FONTSIGNATURE data takes a different form from
+			/// all other locale information. All other locale information can be expressed in a string form or as a number.
+			/// LOCALE_FONTSIGNATURE data is retrieved in a LOCALESIGNATURE structure.
+			/// </summary>
 			LOCALE_FONTSIGNATURE = 0x00000058,
-			LOCALE_SISO639LANGNAME = 0x00000059,
-			LOCALE_SISO3166CTRYNAME = 0x0000005A,
-			LOCALE_IPAPERSIZE = 0x0000100A,
-			LOCALE_SENGCURRNAME = 0x00001007,
-			LOCALE_SNATIVECURRNAME = 0x00001008,
-			LOCALE_SYEARMONTH = 0x00001006,
-			LOCALE_SSORTNAME = 0x00001013,
-			LOCALE_IDIGITSUBSTITUTION = 0x00001014,
-			LOCALE_SNAME = 0x0000005c,
-			LOCALE_SDURATION = 0x0000005d,
-			LOCALE_SSHORTESTDAYNAME1 = 0x00000060,
-			LOCALE_SSHORTESTDAYNAME2 = 0x00000061,
-			LOCALE_SSHORTESTDAYNAME3 = 0x00000062,
-			LOCALE_SSHORTESTDAYNAME4 = 0x00000063,
-			LOCALE_SSHORTESTDAYNAME5 = 0x00000064,
-			LOCALE_SSHORTESTDAYNAME6 = 0x00000065,
-			LOCALE_SSHORTESTDAYNAME7 = 0x00000066,
-			LOCALE_SISO639LANGNAME2 = 0x00000067,
-			LOCALE_SISO3166CTRYNAME2 = 0x00000068,
-			LOCALE_SNAN = 0x00000069,
-			LOCALE_SPOSINFINITY = 0x0000006a,
-			LOCALE_SNEGINFINITY = 0x0000006b,
-			LOCALE_SSCRIPTS = 0x0000006c,
-			LOCALE_SPARENT = 0x0000006d,
-			LOCALE_SCONSOLEFALLBACKNAME = 0x0000006e,
-			LOCALE_IREADINGLAYOUT = 0x00000070,
-			LOCALE_INEUTRAL = 0x00000071,
-			LOCALE_INEGATIVEPERCENT = 0x00000074,
-			LOCALE_IPOSITIVEPERCENT = 0x00000075,
-			LOCALE_SPERCENT = 0x00000076,
-			LOCALE_SPERMILLE = 0x00000077,
-			LOCALE_SMONTHDAY = 0x00000078,
-			LOCALE_SSHORTTIME = 0x00000079,
-			LOCALE_SOPENTYPELANGUAGETAG = 0x0000007a,
-			LOCALE_SSORTLOCALE = 0x0000007b,
-			LOCALE_SRELATIVELONGDATE = 0x0000007c,
-			LOCALE_SSHORTESTAM = 0x0000007e,
-			LOCALE_SSHORTESTPM = 0x0000007f,
-			LOCALE_IDEFAULTCODEPAGE = 0x0000000B,
-			LOCALE_IDEFAULTANSICODEPAGE = 0x00001004,
-			LOCALE_IDEFAULTMACCODEPAGE = 0x00001011,
-			LOCALE_IDEFAULTEBCDICCODEPAGE = 0x00001012,
-			LOCALE_ILANGUAGE = 0x00000001,
-			LOCALE_SABBREVLANGNAME = 0x00000003,
-			LOCALE_SABBREVCTRYNAME = 0x00000007,
-			LOCALE_IGEOID = 0x0000005B,
-			LOCALE_IDEFAULTLANGUAGE = 0x00000009,
-			LOCALE_IDEFAULTCOUNTRY = 0x0000000A,
-			LOCALE_IINTLCURRDIGITS = 0x0000001A,
-			LOCALE_SDATE = 0x0000001D,
-			LOCALE_STIME = 0x0000001E,
-			LOCALE_IDATE = 0x00000021,
-			LOCALE_ILDATE = 0x00000022,
-			LOCALE_ITIME = 0x00000023,
-			LOCALE_ITIMEMARKPOSN = 0x00001005,
+
+			/// <summary>
+			/// <para>
+			/// A 2-digit or 4-digit century for the short date only. The century can have one of the following values. It is preferred for
+			/// your application to use LOCALE_SSHORTDATE instead of LOCALE_ICENTURY.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Abbreviated 2-digit century</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Full 4-digit century</term>
+			/// </item>
+			/// </list>
+			/// </summary>
 			LOCALE_ICENTURY = 0x00000024,
-			LOCALE_ITLZERO = 0x00000025,
-			LOCALE_IDAYLZERO = 0x00000026,
-			LOCALE_IMONLZERO = 0x00000027,
-			LOCALE_SKEYBOARDSTOINSTALL = 0x0000005e,
-			LOCALE_SLANGUAGE = LOCALE_SLOCALIZEDDISPLAYNAME,
-			LOCALE_SLANGDISPLAYNAME = LOCALE_SLOCALIZEDLANGUAGENAME,
-			LOCALE_SENGLANGUAGE = LOCALE_SENGLISHLANGUAGENAME,
-			LOCALE_SNATIVELANGNAME = LOCALE_SNATIVELANGUAGENAME,
-			LOCALE_SCOUNTRY = LOCALE_SLOCALIZEDCOUNTRYNAME,
-			LOCALE_SENGCOUNTRY = LOCALE_SENGLISHCOUNTRYNAME,
-			LOCALE_SNATIVECTRYNAME = LOCALE_SNATIVECOUNTRYNAME,
+
+			/// <summary>
+			/// <para>
+			/// Country/region code, based on international phone codes, also referred to as IBM country/region codes. The maximum number of
+			/// characters allowed for this string is six, including a terminating null character.
+			/// </para>
+			/// <para>
+			/// Windows 10 added LOCALE_IDIALINGCODE as a more accurately-named synonym for LOCALE_ICOUNTRY. We encourage you to use the new
+			/// name in order to improve code readability.
+			/// </para>
+			/// </summary>
 			LOCALE_ICOUNTRY = LOCALE_IDIALINGCODE,
+
+			/// <summary>
+			/// Number of fractional digits for the local monetary format. The maximum number of characters allowed for this string is two,
+			/// including the values 0-9 and a terminating null character. For example, 200.00 has a value of 2 because there are two
+			/// fractional digits, while 200 has a value of 0 because there are no fractional digits displayed.
+			/// </summary>
+			LOCALE_ICURRDIGITS = 0x00000019,
+
+			/// <summary>
+			/// <para>Position of the monetary symbol in the positive currency mode.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Prefix, no separation, for example, $1.1</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Suffix, no separation, for example, 1.1$</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>Prefix, 1-character separation, for example, $ 1.1</term>
+			/// </item>
+			/// <item>
+			/// <term>3</term>
+			/// <term>Suffix, 1-character separation, for example, 1.1 $</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_ICURRENCY = 0x0000001B,
+
+			/// <summary>
+			/// <para>
+			/// Short date format-ordering specifier. The specifier must be one of the following values. No user-specified values are
+			/// allowed. It is preferred for your application to use LOCALE_SSHORTDATE instead of LOCALE_IDATE.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Month-Day-Year</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Day-Month-Year</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>Year-Month-Day</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_IDATE = 0x00000021,
+
+			/// <summary>
+			/// <para>
+			/// Specifier for leading zeros in day fields for a short date only. The maximum number of characters allowed for this string is
+			/// two, including a terminating null character. It is preferred for your application to use the LOCALE_SSHORTDATE constant
+			/// instead of LOCALE_IDAYLZERO.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>No leading zeros for days</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Leading zeros for days</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_IDAYLZERO = 0x00000026,
+
+			/// <summary>
+			/// The ANSI code page used by a locale for applications that do not support Unicode. The maximum number of characters allowed
+			/// for this string is six, including a terminating null character. If no ANSI code page is available, only Unicode can be used
+			/// for the locale. In this case, the value is CP_ACP (0). Such a locale cannot be set as the system locale. Applications that do
+			/// not support Unicode do not work correctly with locales marked as "Unicode only". For a list of ANSI and other code pages, see
+			/// Code Page Identifiers.
+			/// </summary>
+			LOCALE_IDEFAULTANSICODEPAGE = 0x00001004,
+
+			/// <summary>
+			/// Original equipment manufacturer (OEM) code page associated with the country/region. The OEM code page is used for conversion
+			/// from MS-DOS-based, text-mode applications. If the locale does not use an OEM code page, the value is CP_OEMCP (1). The
+			/// maximum number of characters allowed for this string is six, including a terminating null character. For a list of OEM and
+			/// other code pages, see Code Page Identifiers.
+			/// </summary>
+			LOCALE_IDEFAULTCODEPAGE = 0x0000000B,
+
+			/// <summary>
+			/// Obsolete. Do not use. This value was provided so that partially specified locales could be completed with default values.
+			/// Partially specified locales are now deprecated.
+			/// </summary>
+			LOCALE_IDEFAULTCOUNTRY = 0x0000000A,
+
+			/// <summary>
+			/// Windows 2000: Default Extended Binary Coded Decimal Interchange Code (EBCDIC) code page associated with the locale. The
+			/// maximum number of characters allowed for this string is six, including a terminating null character. For a list of EBCDIC and
+			/// other code pages, see Code Page Identifiers.
+			/// </summary>
+			LOCALE_IDEFAULTEBCDICCODEPAGE = 0x00001012,
+
+			/// <summary>
+			/// Obsolete. Do not use. This value was provided so that partially specified locales could be completed with default values.
+			/// Partially specified locales are now deprecated.
+			/// </summary>
+			LOCALE_IDEFAULTLANGUAGE = 0x00000009,
+
+			/// <summary>
+			/// Default Macintosh code page associated with the locale. The maximum number of characters allowed for this string is six,
+			/// including a terminating null character. If the locale does not use a Macintosh code page, the value is CP_MACCP (2). For a
+			/// list of Macintosh (MAC) and other code pages, see Code Page Identifiers.
+			/// </summary>
+			LOCALE_IDEFAULTMACCODEPAGE = 0x00001011,
+
+			/// <summary>
+			/// <para>
+			/// Country/region code, based on international phone codes, also referred to as IBM country/region codes. The maximum number of
+			/// characters allowed for this string is six, including a terminating null character.
+			/// </para>
+			/// <para>
+			/// Windows 10 added LOCALE_IDIALINGCODE as a more accurately-named synonym for LOCALE_ICOUNTRY. We encourage you to use the new
+			/// name in order to improve code readability.
+			/// </para>
+			/// </summary>
+			LOCALE_IDIALINGCODE = 0x00000005,
+
+			/// <summary>
+			/// Number of fractional digits placed after the decimal separator. The maximum number of characters allowed for this string is
+			/// two, including a terminating null character. For example, 2 for 5.00, 1 for 5.0.
+			/// </summary>
+			LOCALE_IDIGITS = 0x00000011,
+
+			/// <summary>
+			/// <para>
+			/// <c>Windows 2000:</c> The shape of digits. For example, Arabic, Thai, and Indic digits have classical shapes different from
+			/// European digits. For locales with LOCALE_SNATIVEDIGITS specified as values other than ASCII 0-9, this value specifies whether
+			/// preference should be given to those other digits for display purposes. For example, if a value of 2 is chosen, the digits
+			/// specified by LOCALE_SNATIVEDIGITS are always used. If a 1 is chosen, the ASCII 0-9 digits are always used. If a 0 is chosen,
+			/// ASCII is used in some circumstances and the digits specified by LOCALE_SNATIVEDIGITS are used in others, depending on the context.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>
+			/// Context-based substitution. Digits are displayed based on the previous text in the same output. European digits follow Latin
+			/// scripts, Arabic-Indic digits follow Arabic text, and other national digits follow text written in various other scripts. When
+			/// there is no preceding text, the locale and the displayed reading order determine digit substitution, as shown in the
+			/// following table.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>No substitution used. Full Unicode compatibility.</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>Native digit substitution. National shapes are displayed according to LOCALE_SNATIVEDIGITS.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_IDIGITSUBSTITUTION = 0x00001014,
+
+			/// <summary>
+			/// <para>The first day of the calendar week.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>LOCALE_SDAYNAME1 (Monday)</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>LOCALE_SDAYNAME2 (Tuesday)</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>LOCALE_SDAYNAME3 (Wednesday)</term>
+			/// </item>
+			/// <item>
+			/// <term>3</term>
+			/// <term>LOCALE_SDAYNAME4 (Thursday)</term>
+			/// </item>
+			/// <item>
+			/// <term>4</term>
+			/// <term>LOCALE_SDAYNAME5 (Friday)</term>
+			/// </item>
+			/// <item>
+			/// <term>5</term>
+			/// <term>LOCALE_SDAYNAME6 (Saturday)</term>
+			/// </item>
+			/// <item>
+			/// <term>6</term>
+			/// <term>LOCALE_SDAYNAME7 (Sunday)</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_IFIRSTDAYOFWEEK = 0x0000100C,
+
+			/// <summary>
+			/// <para>The first week of the year.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>
+			/// Week containing 1/1 is the first week of the year. Note that this can be a single day, if 1/1 falls on the last day of the week.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>First full week following 1/1 is the first week of the year.</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>First week containing at least four days is the first week of the year.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_IFIRSTWEEKOFYEAR = 0x0000100D,
+
+			/// <summary>
+			/// A 32-bit signed number that uniquely identifies a geographical location. The application uses this constant to provide
+			/// locale-specific services to customers. For example, it can be used as a key to access a database record that contains
+			/// specific information about a country/region.
+			/// </summary>
+			LOCALE_IGEOID = 0x0000005B,
+
+			/// <summary>
+			/// <para>[LOCALE_IINTLCURRDIGITS is not supported and may be altered or unavailable in the future. Instead, use LOCALE_ICURRDIGITS.]</para>
+			/// <para>
+			/// Number of fractional digits for the international monetary format. The maximum number of characters allowed for this string
+			/// is three, including a terminating null character. For example, the number of fractional digits for the international monetary
+			/// format of US Dollars is 2, as in $345.25.
+			/// </para>
+			/// </summary>
+			LOCALE_IINTLCURRDIGITS = 0x0000001A,
+
+			/// <summary>
+			/// <para>
+			/// Language identifier with a hexadecimal value. For example, English (United States) has the value 0409, which indicates 0x0409
+			/// hexadecimal, and is equivalent to 1033 decimal. The maximum number of characters allowed for this string is five, including a
+			/// terminating null character.
+			/// </para>
+			/// <para>
+			/// <c>Windows Vista and later:</c> Use of this constant can cause <c>GetLocaleInfo</c> to return an invalid locale identifier.
+			/// Your application should use the LOCALE_SNAME constant when calling this function.
+			/// </para>
+			/// </summary>
+			LOCALE_ILANGUAGE = 0x00000001,
+
+			/// <summary>
+			/// <para>
+			/// Long date format-ordering specifier. It is preferred for your application to use the LOCALE_SLONGDATE constant instead of LOCALE_ILDATE.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Month-Day-Year</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Day-Month-Year</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>Year-Month-Day</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_ILDATE = 0x00000022,
+
+			/// <summary>
+			/// <para>Specifier for leading zeros in decimal fields.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>No leading zeros</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Leading zeros</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_ILZERO = 0x00000012,
+
+			/// <summary>
+			/// System of measurement. The maximum number of characters allowed for this string is two, including a terminating null
+			/// character. This value is 0 if the metric system (Systéme International d'Units, or S.I.) is used, and 1 if the United States
+			/// system is used.
+			/// </summary>
+			LOCALE_IMEASURE = 0x0000000D,
+
+			/// <summary>
+			/// <para>
+			/// Specifier for leading zeros in month fields for a short date only. It is preferred for your application to use the
+			/// LOCALE_SSHORTDATE constant instead of LOCALE_IMONLZERO.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>No leading zeros for months</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Leading zeros for months</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_IMONLZERO = 0x00000027,
+
+			/// <summary>
+			/// <para>
+			/// <c>Windows 7 and later:</c> Negative percentage formatting pattern for the locale. Only one pattern can be indicated. If more
+			/// than one format is used for the locale, choose the preferred option. For example, if a negative percentage is displayed "-9
+			/// %" for "negative nine percent", the appropriate choice for this constant is 0.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Format</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Negative sign, number, space, percent; for example, -# %</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Negative sign, number, percent; for example, -#%</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>Negative sign, percent, number; for example, -%#</term>
+			/// </item>
+			/// <item>
+			/// <term>3</term>
+			/// <term>Percent, negative sign, number; for example, %-#</term>
+			/// </item>
+			/// <item>
+			/// <term>4</term>
+			/// <term>Percent, number, negative sign; for example, %#-</term>
+			/// </item>
+			/// <item>
+			/// <term>5</term>
+			/// <term>Number, negative sign, percent; for example, #-%</term>
+			/// </item>
+			/// <item>
+			/// <term>6</term>
+			/// <term>Number, percent, negative sign; for example, #%-</term>
+			/// </item>
+			/// <item>
+			/// <term>7</term>
+			/// <term>Negative sign, percent, space, number; for example, -% #</term>
+			/// </item>
+			/// <item>
+			/// <term>8</term>
+			/// <term>Number, space, percent, negative sign; for example, # %-</term>
+			/// </item>
+			/// <item>
+			/// <term>9</term>
+			/// <term>Percent, space, number, negative sign; for example, % #-</term>
+			/// </item>
+			/// <item>
+			/// <term>10</term>
+			/// <term>Percent, space, negative sign, number; for example, % -#</term>
+			/// </item>
+			/// <item>
+			/// <term>11</term>
+			/// <term>Number, negative sign, space, percent; for example, #- %</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_INEGATIVEPERCENT = 0x00000074,
+
+			/// <summary>Negative currency mode.</summary>
+			LOCALE_INEGCURR = 0x0000001C,
+
+			/// <summary>Negative number mode, that is, the format for a negative number.</summary>
+			LOCALE_INEGNUMBER = 0x00001010,
+
+			/// <summary>
+			/// Separation of the negative sign in a monetary value. This value is 1 if the monetary symbol is separated by a space from the
+			/// negative amount, or 0 if it is not.
+			/// </summary>
+			LOCALE_INEGSEPBYSPACE = 0x00000057,
+
+			/// <summary>Formatting index for the negative sign in currency values.</summary>
+			LOCALE_INEGSIGNPOSN = 0x00000053,
+
+			/// <summary>
+			/// Position of the monetary symbol in a negative monetary value. This value is 1 if the monetary symbol precedes the negative
+			/// amount, or 0 if the symbol follows the amount.
+			/// </summary>
+			LOCALE_INEGSYMPRECEDES = 0x00000056,
+
+			/// <summary>
+			/// <c>Windows 7 and later:</c> Locale type. Set this constant to 0 for a specific locale, or to 1 for a neutral locale.
+			/// </summary>
+			LOCALE_INEUTRAL = 0x00000071,
+
+			/// <summary>
+			/// <para>
+			/// An optional calendar type that is available for a locale. The calendar type can only represent an optional calendar that is
+			/// available for the corresponding locale. To retrieve all optional calendars available for a locale, the application can use
+			/// the following NLS functions:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>EnumCalendarInfo</term>
+			/// </item>
+			/// <item>
+			/// <term>EnumCalendarInfoEx</term>
+			/// </item>
+			/// <item>
+			/// <term>EnumCalendarInfoExEx</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_IOPTIONALCALENDAR = 0x0000100B,
+
+			/// <summary>
+			/// <para>
+			/// <c>Windows 2000:</c> Default paper size associated with the locale. The size typically has one of the following values,
+			/// although it can be set to any of the defined paper sizes that are understood by the spooler.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>1</term>
+			/// <term>US Letter</term>
+			/// </item>
+			/// <item>
+			/// <term>5</term>
+			/// <term>US legal</term>
+			/// </item>
+			/// <item>
+			/// <term>8</term>
+			/// <term>A3</term>
+			/// </item>
+			/// <item>
+			/// <term>9</term>
+			/// <term>A4</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_IPAPERSIZE = 0x0000100A,
+
+			/// <summary>
+			/// <para><c>Windows 7 and later:</c> Positive percentage formatting pattern for the locale. Only one pattern can be indicated.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Format</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Number, space, percent; for example, # %</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Number, percent; for example, #%</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>Percent, number; for example, %#</term>
+			/// </item>
+			/// <item>
+			/// <term>3</term>
+			/// <term>Percent, space, number; for example, % #</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_IPOSITIVEPERCENT = 0x00000075,
+
+			/// <summary>
+			/// Separation of monetary symbol in a positive monetary value. This value is 1 if the monetary symbol is separated by a space
+			/// from a positive amount, 0 if it is not.
+			/// </summary>
+			LOCALE_IPOSSEPBYSPACE = 0x00000055,
+
+			/// <summary>
+			/// Formatting index for positive values. The index uses the same values as LOCALE_INEGSIGNPOSN, except that it does not use the
+			/// zero index.
+			/// </summary>
+			LOCALE_IPOSSIGNPOSN = 0x00000052,
+
+			/// <summary>
+			/// Position of the monetary symbol in a positive monetary value. This value is 1 if the monetary symbol precedes the positive
+			/// amount, or 0 if the symbol follows the amount.
+			/// </summary>
+			LOCALE_IPOSSYMPRECEDES = 0x00000054,
+
+			/// <summary>
+			/// <para><c>Windows 7 and later:</c> The reading layout for text. Possible values are defined in the following table.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Read from left to right, as for the English (United States) locale.</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Read from right to left, as for Arabic locales.</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>
+			/// Either read vertically from top to bottom with columns going from right to left, or read in horizontal rows from left to
+			/// right, as for the Japanese (Japan) locale.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>3</term>
+			/// <term>Read vertically from top to bottom with columns going from left to right, as for the Mongolian (Mongolian) locale.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_IREADINGLAYOUT = 0x00000070,
+
+			/// <summary>
+			/// <para>
+			/// Time format specification. The specification is one of the following values. It is preferred for your application to use the
+			/// LOCALE_STIMEFORMAT constant instead of LOCALE_ITIME.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>AM/PM 12-hour format</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>24-hour format</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_ITIME = 0x00000023,
+
+			/// <summary>
+			/// <para>
+			/// Specifier indicating whether the time marker string (AM or PM) precedes or follows the time string. The registry value is
+			/// iTimePrefix for compatibility with previous Asian versions of Windows. The specifier must have one of the following values.
+			/// No user-specified values are allowed. It is preferred for your application to use the LOCALE_STIMEFORMAT constant instead of LOCALE_ITIMEMARKPOSN.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Use as suffix.</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Use as prefix.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_ITIMEMARKPOSN = 0x00001005,
+
+			/// <summary>
+			/// <para>
+			/// Specifier for leading zeros in time fields. It is preferred for your application to use the LOCALE_STIMEFORMAT constant
+			/// instead of LOCALE_ITLZERO.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>No leading zeros for hours</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Leading zeros for hours</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_ITLZERO = 0x00000025,
+
+			/// <summary>
+			/// <para>
+			/// String for the AM designator (first 12 hours of the day). The maximum number of characters allowed for this string, including
+			/// a terminating null character, is different for different releases of Windows.
+			/// </para>
+			/// <para>
+			/// <c>Windows XP:</c> Thirteen including a terminating null character for <c>SetLocaleInfo</c>. Fifteen including a terminating
+			/// null character for <c>GetLocaleInfo</c>.
+			/// </para>
+			/// <para><c>Windows Me/98/95, Windows NT 4.0, Windows 2000:</c> Nine including a terminating null character.</para>
+			/// <para><c>Windows Server 2003 and later:</c> Fifteen including a terminating null character.</para>
+			/// <para>Windows 10 added the value <c>LOCALE_SAM</c> as a more readable synonym for <c>LOCALE_S1159</c>.</para>
+			/// </summary>
 			LOCALE_S1159 = LOCALE_SAM,
+
+			/// <summary>
+			/// <para>
+			/// String for the PM designator (second 12 hours of the day). The maximum number of characters allowed for this string is
+			/// different for different releases of Windows.
+			/// </para>
+			/// <para>
+			/// <c>Windows XP:</c> Thirteen including a terminating null character for <c>SetLocaleInfo</c>. Fifteen including a terminating
+			/// null character for <c>GetLocaleInfo</c>.
+			/// </para>
+			/// <para><c>Windows Me/98/95, Windows NT 4.0, Windows 2000:</c> Nine including a terminating null character.</para>
+			/// <para><c>Windows Server 2003 and later:</c> Fifteen including a terminating null character.</para>
+			/// <para>Windows 10 added the value <c>LOCALE_SPM</c> as a more readable synonym for <c>LOCALE_S2359</c>.</para>
+			/// </summary>
 			LOCALE_S2359 = LOCALE_SPM,
+
+			/// <summary>
+			/// Abbreviated name of the country/region, mostly based on the ISO Standard 3166. The maximum number of characters allowed for
+			/// this string is nine, including a terminating null character.
+			/// </summary>
+			LOCALE_SABBREVCTRYNAME = 0x00000007,
+
+			/// <summary>
+			/// Native abbreviated name for Monday. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVDAYNAME1 = 0x00000031,
+
+			/// <summary>
+			/// Native abbreviated name for Tuesday. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVDAYNAME2 = 0x00000032,
+
+			/// <summary>
+			/// Native abbreviated name for Wednesday. The maximum number of characters allowed for this string is 80, including a
+			/// terminating null character.
+			/// </summary>
+			LOCALE_SABBREVDAYNAME3 = 0x00000033,
+
+			/// <summary>
+			/// Native abbreviated name for Thursday. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVDAYNAME4 = 0x00000034,
+
+			/// <summary>
+			/// Native abbreviated name for Friday. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVDAYNAME5 = 0x00000035,
+
+			/// <summary>
+			/// Native abbreviated name for Saturday. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVDAYNAME6 = 0x00000036,
+
+			/// <summary>
+			/// Native abbreviated name for Sunday. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVDAYNAME7 = 0x00000037,
+
+			/// <summary>
+			/// Abbreviated name of the language. In most cases, the name is created by taking the two-letter language abbreviation from ISO
+			/// Standard 639 and adding a third letter, as appropriate, to indicate the sublanguage. For example, the abbreviated name for
+			/// the language corresponding to the English (United States) locale is ENU.
+			/// </summary>
+			LOCALE_SABBREVLANGNAME = 0x00000003,
+
+			/// <summary>
+			/// Native abbreviated name for January. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME1 = 0x00000044,
+
+			/// <summary>
+			/// Native abbreviated name for February. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME2 = 0x00000045,
+
+			/// <summary>
+			/// Native abbreviated name for March. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME3 = 0x00000046,
+
+			/// <summary>
+			/// Native abbreviated name for April. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME4 = 0x00000047,
+
+			/// <summary>
+			/// Native abbreviated name for May. The maximum number of characters allowed for this string is 80, including a terminating null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME5 = 0x00000048,
+
+			/// <summary>
+			/// Native abbreviated name for June. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME6 = 0x00000049,
+
+			/// <summary>
+			/// Native abbreviated name for July. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME7 = 0x0000004A,
+
+			/// <summary>
+			/// Native abbreviated name for August. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME8 = 0x0000004B,
+
+			/// <summary>
+			/// Native abbreviated name for September. The maximum number of characters allowed for this string is 80, including a
+			/// terminating null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME9 = 0x0000004C,
+
+			/// <summary>
+			/// Native abbreviated name for October. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME10 = 0x0000004D,
+
+			/// <summary>
+			/// Native abbreviated name for November. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME11 = 0x0000004E,
+
+			/// <summary>
+			/// Native abbreviated name for December. The maximum number of characters allowed for this string is 80, including a terminating
+			/// null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME12 = 0x0000004F,
+
+			/// <summary>
+			/// Native abbreviated name for a 13th month, if it exists. The maximum number of characters allowed for this string is 80,
+			/// including a terminating null character.
+			/// </summary>
+			LOCALE_SABBREVMONTHNAME13 = 0x0000100F,
+
+			/// <summary>
+			/// <para>
+			/// String for the AM designator (first 12 hours of the day). The maximum number of characters allowed for this string, including
+			/// a terminating null character, is different for different releases of Windows.
+			/// </para>
+			/// <para>
+			/// <c>Windows XP:</c> Thirteen including a terminating null character for <c>SetLocaleInfo</c>. Fifteen including a terminating
+			/// null character for <c>GetLocaleInfo</c>.
+			/// </para>
+			/// <para><c>Windows Me/98/95, Windows NT 4.0, Windows 2000:</c> Nine including a terminating null character.</para>
+			/// <para><c>Windows Server 2003 and later:</c> Fifteen including a terminating null character.</para>
+			/// <para>Windows 10 added the value <c>LOCALE_SAM</c> as a more readable synonym for <c>LOCALE_S1159</c>.</para>
+			/// </summary>
+			LOCALE_SAM = 0x00000028,
+
+			/// <summary>
+			/// <para>
+			/// <c>Windows Vista and later:</c> Preferred locale to use for console display. The maximum number of characters allowed for
+			/// this string is 85, including a terminating null character.
+			/// </para>
+			/// <para>
+			/// If the language corresponding to this locale is supported in the console, the value is the same as that for LOCALE_SNAME,
+			/// that is, the locale itself can be used for console display. However, the console cannot display languages that can be
+			/// rendered only with Uniscribe. For example, the console cannot display Arabic or the various Indic languages. Therefore, the
+			/// LOCALE_SCONSOLEFALLBACKNAME value for locales corresponding to these languages is different from the value for LOCALE_SNAME.
+			/// </para>
+			/// <para>
+			/// For predefined locales, if the fallback value is different from the value for the locale itself, the value for the neutral
+			/// locale is used. A specific locale is associated with both a language and a country/region, while a neutral locale is
+			/// associated with a language but is not associated with any country/region. For example, ar-SA falls back to "en", not to
+			/// "en-US". This policy of using neutral locales is implemented consistently for predefined locales and is strongly recommended
+			/// for custom locales. However, the policy is not enforced. For a custom locale, your application can use a specific locale
+			/// instead of a neutral locale as a fallback.
+			/// </para>
+			/// </summary>
+			LOCALE_SCONSOLEFALLBACKNAME = 0x0000006e,
+
+			/// <summary>Deprecated for Windows 7 and later. Full localized name of the country/region. See LOCALE_SLOCALIZEDCOUNTRYNAME.</summary>
+			LOCALE_SCOUNTRY = LOCALE_SLOCALIZEDCOUNTRYNAME,
+
+			/// <summary>
+			/// String used as the local monetary symbol. The maximum number of characters allowed for this string is 13, including a
+			/// terminating null character. For example, in the United States, this symbol is "$".
+			/// </summary>
+			LOCALE_SCURRENCY = 0x00000014,
+
+			/// <summary>
+			/// <para>
+			/// Character(s) for the date separator. The maximum number of characters allowed for this string is four, including a
+			/// terminating null character.
+			/// </para>
+			/// <para>
+			/// <c>Windows Vista and later:</c> This constant is deprecated. Use LOCALE_SSHORTDATE instead. A custom locale might not have a
+			/// single, uniform separator character. For example, a format such as "12/31, 2006" is valid.
+			/// </para>
+			/// </summary>
+			LOCALE_SDATE = 0x0000001D,
+
+			/// <summary>
+			/// Native long name for Monday. The maximum number of characters allowed for this string is 80, including a terminating null character.
+			/// </summary>
+			LOCALE_SDAYNAME1 = 0x0000002A,
+
+			/// <summary>
+			/// Native long name for Tuesday. The maximum number of characters allowed for this string is 80, including a terminating null character.
+			/// </summary>
+			LOCALE_SDAYNAME2 = 0x0000002B,
+
+			/// <summary>
+			/// Native long name for Wednesday. The maximum number of characters allowed for this string is 80, including a terminating null character.
+			/// </summary>
+			LOCALE_SDAYNAME3 = 0x0000002C,
+
+			/// <summary>
+			/// Native long name for Thursday. The maximum number of characters allowed for this string is 80, including a terminating null character.
+			/// </summary>
+			LOCALE_SDAYNAME4 = 0x0000002D,
+
+			/// <summary>
+			/// Native long name for Friday. The maximum number of characters allowed for this string is 80, including a terminating null character.
+			/// </summary>
+			LOCALE_SDAYNAME5 = 0x0000002E,
+
+			/// <summary>
+			/// Native long name for Saturday. The maximum number of characters allowed for this string is 80, including a terminating null character.
+			/// </summary>
+			LOCALE_SDAYNAME6 = 0x0000002F,
+
+			/// <summary>
+			/// Native long name for Sunday. The maximum number of characters allowed for this string is 80, including a terminating null character.
+			/// </summary>
+			LOCALE_SDAYNAME7 = 0x00000030,
+
+			/// <summary>
+			/// Character(s) used for the decimal separator, for example, "." in "3.14" or "," in "3,14". The maximum number of characters
+			/// allowed for this string is four, including a terminating null character.
+			/// </summary>
+			LOCALE_SDECIMAL = 0x0000000E,
+
+			/// <summary>
+			/// <para>
+			/// <c>Windows Vista and later:</c> Time duration format composed of format pictures listed in the following table. The format is
+			/// similar to the format for LOCALE_STIMEFORMAT. As for LOCALE_STIMEFORMAT, this format can also include any string of
+			/// characters enclosed in single quotes. Formats can include, for example, "h:mm:ss", or "d'd 'h'h 'm'm 's.fff's'". In
+			/// comparison with LOCALE_STIMEFORMAT, there are additional format pictures for fractions of a second. Because this format is
+			/// for duration, not time, it does not specify a 12- or 24-hour clock system, or include an AM/PM indicator. This constant might
+			/// be used, for example, for a multi-media application that displays file time or a sporting event application that displays
+			/// finish times.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>h</term>
+			/// <term>Hours without leading zeros for single-digit hours</term>
+			/// </item>
+			/// <item>
+			/// <term>hh</term>
+			/// <term>Hours with leading zeros for single-digit hours</term>
+			/// </item>
+			/// <item>
+			/// <term>m</term>
+			/// <term>Minutes without leading zeros for single-digit minutes</term>
+			/// </item>
+			/// <item>
+			/// <term>mm</term>
+			/// <term>Minutes with leading zeros for single-digit minutes</term>
+			/// </item>
+			/// <item>
+			/// <term>s</term>
+			/// <term>Seconds without leading zeros for single-digit seconds</term>
+			/// </item>
+			/// <item>
+			/// <term>ss</term>
+			/// <term>Seconds with leading zeros for single-digit seconds</term>
+			/// </item>
+			/// <item>
+			/// <term>f</term>
+			/// <term>Tenths of a second</term>
+			/// </item>
+			/// <item>
+			/// <term>ff</term>
+			/// <term>Hundredths of a second</term>
+			/// </item>
+			/// <item>
+			/// <term>fff</term>
+			/// <term>
+			/// Thousandths of a second; character "f" can occur up to nine consecutive times (fffffffff), although support for frequency
+			/// timers is limited to 100 nanoseconds; if nine characters are present, the last two digits are always zero
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_SDURATION = 0x0000005d,
+
+			/// <summary>Deprecated for Windows 7 and later. Full English name of the country/region. See LOCALE_SENGLISHCOUNTRYNAME.</summary>
+			LOCALE_SENGCOUNTRY = LOCALE_SENGLISHCOUNTRYNAME,
+
+			/// <summary>
+			/// Windows Me/98, Windows 2000: The full English name of the currency associated with the locale. There is no limit on the
+			/// number of characters allowed for this string.
+			/// </summary>
+			LOCALE_SENGCURRNAME = 0x00001007,
+
+			/// <summary>Deprecated for Windows 7 and later. Full English name of the language from ISO Standard 639. See LOCALE_SENGLISHLANGUAGENAME.</summary>
+			LOCALE_SENGLANGUAGE = LOCALE_SENGLISHLANGUAGENAME,
+
+			/// <summary>
+			/// <para>
+			/// Sizes for each group of digits to the left of the decimal. The maximum number of characters allowed for this string is ten,
+			/// including a terminating null character. An explicit size is needed for each group, and sizes are separated by semicolons. If
+			/// the last value is 0, the preceding value is repeated. For example, to group thousands, specify 3;0. Indic locales group the
+			/// first thousand and then group by hundreds. For example, 12,34,56,789 is represented by 3;2;0.
+			/// </para>
+			/// <para>Further examples:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Specification</term>
+			/// <term>Resulting string</term>
+			/// </listheader>
+			/// <item>
+			/// <term>3;0</term>
+			/// <term>3,000,000,000,000</term>
+			/// </item>
+			/// <item>
+			/// <term>3;2;0</term>
+			/// <term>30,00,00,00,00,000</term>
+			/// </item>
+			/// <item>
+			/// <term>3</term>
+			/// <term>3000000000,000</term>
+			/// </item>
+			/// <item>
+			/// <term>3;2</term>
+			/// <term>30000000,00,000</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			LOCALE_SGROUPING = 0x00000010,
+
+			/// <summary>
+			/// Three characters of the international monetary symbol specified in ISO 4217, followed by the character separating this string
+			/// from the amount. The maximum number of characters allowed for this string is nine, including a terminating null character.
+			/// </summary>
+			LOCALE_SINTLSYMBOL = 0x00000015,
+
+			/// <summary>
+			/// Windows Me/98, Windows NT 4.0: Country/region name, based on ISO Standard 3166, such as "US" for the United States. This can
+			/// also return a number, such as "029" for Caribbean. The maximum number of characters allowed for this string is nine,
+			/// including a terminating null character.
+			/// </summary>
+			LOCALE_SISO3166CTRYNAME = 0x0000005A,
+
+			/// <summary>
+			/// Windows Vista and later: Three-letter ISO region name (ISO 3166 three-letter code for the country/region), such as "USA" for
+			/// the United States. This can also return a number, such as "029" for Caribbean. The maximum number of characters allowed for
+			/// this string is nine, including a terminating null character.
+			/// </summary>
+			LOCALE_SISO3166CTRYNAME2 = 0x00000068,
+
+			/// <summary>
+			/// Windows Me/98, Windows NT 4.0: The abbreviated name of the language based entirely on the ISO Standard 639 values, in
+			/// lowercase form, such as "en" for English. This can be a 3-letter code for languages that don't have a 2-letter code, such as
+			/// "haw" for Hawaiian. The maximum number of characters allowed for this string is nine, including a terminating null character.
+			/// </summary>
+			LOCALE_SISO639LANGNAME = 0x00000059,
+
+			/// <summary>
+			/// Windows Vista and later: Three-letter ISO language name, in lowercase form (ISO 639-2 three-letter code for the language),
+			/// such as "eng" for English. The maximum number of characters allowed for this string is nine, including a terminating null character.
+			/// </summary>
+			LOCALE_SISO639LANGNAME2 = 0x00000067,
+
+			/// <summary>
+			/// <c>Windows Vista and later:</c> A semicolon-delimited list of keyboards to potentially install for the locale and to be used
+			/// internally by Windows. There is no limit on the number of characters allowed for this string. To retrieve the name of the
+			/// active input locale identifier (formerly called the keyboard layout), your application can call the
+			/// <c>GetKeyboardLayoutName</c> function.
+			/// </summary>
+			LOCALE_SKEYBOARDSTOINSTALL = 0x0000005e,
+
+			/// <summary>Deprecated for Windows 7 and later. Primary language name included in a localized display name. See LOCALE_SLOCALIZEDDISPLAYNAME.</summary>
+			LOCALE_SLANGDISPLAYNAME = LOCALE_SLOCALIZEDLANGUAGENAME,
+
+			/// <summary>Deprecated for Windows 7 and later. Full localized name of the language. See LOCALE_SLOCALIZEDLANGUAGENAME.</summary>
+			LOCALE_SLANGUAGE = LOCALE_SLOCALIZEDDISPLAYNAME,
+
+			/// <summary>
+			/// Character(s) used to separate list items, for example, a comma is used in many locales. The maximum number of characters
+			/// allowed for this string is four, including a terminating null character.
+			/// </summary>
+			LOCALE_SLIST = 0x0000000C,
+
+			/// <summary>
+			/// <para>
+			/// Long date formatting string for the locale. The maximum number of characters allowed for this string is 80, including a
+			/// terminating null character. The string can consist of a combination of day, month, year, and era format pictures and any
+			/// string of characters enclosed in single quotes. Characters in single quotes remain as specified. For example, the Spanish
+			/// (Spain) long date is "dddd, dd' de 'MMMM' de 'yyyy". Locales can define multiple long date formats.
+			/// </para>
+			/// <para>To get all of the long date formats for a locale, use EnumDateFormats, EnumDateFormatsEx, or EnumDateFormatsExEx.</para>
+			/// </summary>
+			LOCALE_SLONGDATE = 0x00000020,
+
+			/// <summary>
+			/// Character(s) used as the monetary decimal separator. The maximum number of characters allowed for this string is four,
+			/// including a terminating null character. For example, if a monetary amount is displayed as "$3.40", just as "three dollars and
+			/// forty cents" is displayed in the United States, then the monetary decimal separator is ".".
+			/// </summary>
+			LOCALE_SMONDECIMALSEP = 0x00000016,
+
+			/// <summary>
+			/// Sizes for each group of monetary digits to the left of the decimal. The maximum number of characters allowed for this string
+			/// is ten, including a terminating null character. An explicit size is needed for each group, and sizes are separated by
+			/// semicolons. If the last value is 0, the preceding value is repeated. For example, to group thousands, specify 3;0. Indic
+			/// languages group the first thousand and then group by hundreds. For example 12,34,56,789 is represented by 3;2;0.
+			/// </summary>
+			LOCALE_SMONGROUPING = 0x00000018,
+
+			/// <summary>
+			/// Character(s) used as the monetary separator between groups of digits to the left of the decimal. The maximum number of
+			/// characters allowed for this string is four, including a terminating null character. Typically, the groups represent
+			/// thousands. However, depending on the value specified for LOCALE_SMONGROUPING, they can represent something else.
+			/// </summary>
+			LOCALE_SMONTHOUSANDSEP = 0x00000017,
+
+			/// <summary>
+			/// <c>Windows 7 and later:</c> Format string for displaying only the month and the day. The formatting is similar to that
+			/// defined for LOCALE_SLONGDATE. For example, if the month/day pattern is the full month name followed by the day number with
+			/// leading zeros, as in "September 03", the format string is "MMMM dd". The string can consist of a combination of day and month
+			/// format pictures and any string of characters enclosed in single quotes. Characters in single quotes remain as specified, for
+			/// example, 'de' for Spanish (Spain). A locale can specify only one month/day format.
+			/// </summary>
+			LOCALE_SMONTHDAY = 0x00000078,
+
+			/// <summary>
+			/// Native long name for January. The maximum number of characters allowed for this string is 80, including a terminating null character.
+			/// </summary>
+			LOCALE_SMONTHNAME1 = 0x00000038,
+
+			/// <summary>
+			/// Native long name for February. The maximum number of characters allowed for this string is 80, including a terminating null
+			/// character. See note for LOCALE_SMONTHNAME1.
+			/// </summary>
+			LOCALE_SMONTHNAME2 = 0x00000039,
+
+			/// <summary>
+			/// Native long name for March. The maximum number of characters allowed for this string is 80, including a terminating null
+			/// character. See note for LOCALE_SMONTHNAME1.
+			/// </summary>
+			LOCALE_SMONTHNAME3 = 0x0000003A,
+
+			/// <summary>
+			/// Native long name for April. The maximum number of characters allowed for this string is 80, including a terminating null
+			/// character. See note for LOCALE_SMONTHNAME1.
+			/// </summary>
+			LOCALE_SMONTHNAME4 = 0x0000003B,
+
+			/// <summary>
+			/// Native long name for May. The maximum number of characters allowed for this string is 80, including a terminating null
+			/// character. See note for LOCALE_SMONTHNAME1.
+			/// </summary>
+			LOCALE_SMONTHNAME5 = 0x0000003C,
+
+			/// <summary>
+			/// Native long name for June. The maximum number of characters allowed for this string is 80, including a terminating null
+			/// character. See note for LOCALE_SMONTHNAME1.
+			/// </summary>
+			LOCALE_SMONTHNAME6 = 0x0000003D,
+
+			/// <summary>
+			/// Native long name for July. The maximum number of characters allowed for this string is 80, including a terminating null
+			/// character. See note for LOCALE_SMONTHNAME1.
+			/// </summary>
+			LOCALE_SMONTHNAME7 = 0x0000003E,
+
+			/// <summary>
+			/// Native long name for August. The maximum number of characters allowed for this string is 80, including a terminating null
+			/// character. See note for LOCALE_SMONTHNAME1.
+			/// </summary>
+			LOCALE_SMONTHNAME8 = 0x0000003F,
+
+			/// <summary>
+			/// Native long name for September. The maximum number of characters allowed for this string is 80, including a terminating null
+			/// character. See note for LOCALE_SMONTHNAME1.
+			/// </summary>
+			LOCALE_SMONTHNAME9 = 0x00000040,
+
+			/// <summary>
+			/// Native long name for October. The maximum number of characters allowed for this string is 80, including a terminating null
+			/// character. See note for LOCALE_SMONTHNAME1.
+			/// </summary>
+			LOCALE_SMONTHNAME10 = 0x00000041,
+
+			/// <summary>
+			/// Native long name for November. The maximum number of characters allowed for this string is 80, including a terminating null
+			/// character. See note for LOCALE_SMONTHNAME1.
+			/// </summary>
+			LOCALE_SMONTHNAME11 = 0x00000042,
+
+			/// <summary>
+			/// Native long name for December. The maximum number of characters allowed for this string is 80, including a terminating null
+			/// character. See note for LOCALE_SMONTHNAME1.
+			/// </summary>
+			LOCALE_SMONTHNAME12 = 0x00000043,
+
+			/// <summary>
+			/// Native name for a 13th month, if it exists. The maximum number of characters allowed for this string is 80, including a
+			/// terminating null character. See note for LOCALE_SMONTHNAME1.
+			/// </summary>
+			LOCALE_SMONTHNAME13 = 0x0000100E,
+
+			/// <summary>
+			/// <c>Windows Vista and later:</c> Locale name, a multi-part tag to uniquely identify the locale. The maximum number of
+			/// characters allowed for this string is 85, including a terminating null character. The tag is based on the language tagging
+			/// conventions of RFC 4646. The pattern to use is described in Locale Names.
+			/// </summary>
+			LOCALE_SNAME = 0x0000005c,
+
+			/// <summary>
+			/// <c>Windows Vista and later:</c> String value for "Not a number", for example, "Nan" for the English (United States) locale.
+			/// There is no limit on the number of characters allowed for this string.
+			/// </summary>
+			LOCALE_SNAN = 0x00000069,
+
+			/// <summary>
+			/// Windows 7 and later: Native name of the country/region, for example, España for Spain. The maximum number of characters
+			/// allowed for this string is 80, including a terminating null character.
+			/// </summary>
+			LOCALE_SNATIVECOUNTRYNAME = 0x00000008,
+
+			/// <summary>Deprecated for Windows 7 and later. Native name of the country/region. See LOCALE_SNATIVECOUNTRYNAME.</summary>
+			LOCALE_SNATIVECTRYNAME = LOCALE_SNATIVECOUNTRYNAME,
+
+			/// <summary>
+			/// Windows Me/98, Windows 2000: The native name of the currency associated with the locale, in the native language of the
+			/// locale. There is no limit on the number of characters allowed for this string.
+			/// </summary>
+			LOCALE_SNATIVECURRNAME = 0x00001008,
+
+			/// <summary>
+			/// Native equivalents of ASCII 0 through 9. The maximum number of characters allowed for this string is eleven, including a
+			/// terminating null character. For example, Arabic uses "٠١٢٣٤٥ ٦٧٨٩". See also LOCALE_IDIGITSUBSTITUTION.
+			/// </summary>
+			LOCALE_SNATIVEDIGITS = 0x00000013,
+
+			/// <summary>
+			/// Windows 7 and later: Display name of the locale in its native language, for example, Deutsch (Deutschland) for the locale
+			/// German (Germany).
+			/// </summary>
+			LOCALE_SNATIVEDISPLAYNAME = 0x00000073,
+
+			/// <summary>Deprecated for Windows 7 and later. Native name of the language. See LOCALE_SNATIVELANGUAGENAME.</summary>
+			LOCALE_SNATIVELANGNAME = LOCALE_SNATIVELANGUAGENAME,
+
+			/// <summary>
+			/// Windows 7 and later: Native name of the language, for example, Հայերեն for Armenian (Armenia). The maximum number of
+			/// characters allowed for this string is 80, including a terminating null character.
+			/// </summary>
+			LOCALE_SNATIVELANGUAGENAME = 0x00000004,
+
+			/// <summary>
+			/// String value for the negative sign, for example, "-" for the English (United States) locale. The maximum number of characters
+			/// allowed for this string is five, including a terminating null character.
+			/// </summary>
+			LOCALE_SNEGATIVESIGN = 0x00000051,
+
+			/// <summary>
+			/// <c>Windows Vista and later:</c> String value for "negative infinity", for example, "-Infinity" for the English (United
+			/// States) locale. There is no limit on the number of characters allowed for this string.
+			/// </summary>
+			LOCALE_SNEGINFINITY = 0x0000006b,
+
+			/// <summary>
+			/// <c>Windows 7 and later:</c> OpenType language tag used to retrieve culturally appropriate typographic features from a font.
+			/// For more information, see <c>OPENTYPE_TAG</c>.
+			/// </summary>
+			LOCALE_SOPENTYPELANGUAGETAG = 0x0000007a,
+
+			/// <summary>
+			/// <para>
+			/// <c>Windows Vista and later:</c> Fallback locale, used by the resource loader. The maximum number of characters allowed for
+			/// this string is 85, including a terminating null character.
+			/// </para>
+			/// <para>
+			/// Locales have a hierarchy in which the parent of a specific locale is a neutral locale. A specific locale is associated with
+			/// both a language and a country/region, while a neutral locale is associated with a language but is not associated with any
+			/// country/region. The parent locale is used to decide the first fallback to be tried when a resource for a specific locale is
+			/// not available. For example, the parent locale for "en-US" (0x0409) is "en" (0x0009). When a resource is not available for the
+			/// specific "en-US" locale, the resource loader falls back to use the resource that is available for the neutral "en" locale.
+			/// See User Interface Language Management for further details of the resource loader fallback strategy.
+			/// </para>
+			/// <para>
+			/// This pattern is consistent for predefined locales. However, the parent locale is not determined by any manipulation of the
+			/// locale name. That is, <c>GetLocaleInfo</c> and <c>GetLocaleInfoEx</c> do not parse a string such as "en-US" to get the value
+			/// "en". Instead, they look at the stored locale data. For predefined locales, the value follows the expected pattern, in which
+			/// the parent of a specific locale is the corresponding neutral locale and the parent of a neutral locale is the invariant
+			/// locale. While it is recommended that custom locales follow a similar strategy in terms of defining their parent locale, this
+			/// is not enforced. The application implementing a custom locale can specify a less obviously appropriate parent.
+			/// </para>
+			/// </summary>
+			LOCALE_SPARENT = 0x0000006d,
+
+			/// <summary>
+			/// <c>Windows 7 and later:</c> Symbol used to indicate percentage, for example, "%". The value is a single string of 0 to 3 characters.
+			/// </summary>
+			LOCALE_SPERCENT = 0x00000076,
+
+			/// <summary><c>Windows 7 and later:</c> Symbol used to indicate the permille (U+2030) symbol, that is, ‰.</summary>
+			LOCALE_SPERMILLE = 0x00000077,
+
+			/// <summary>
+			/// <para>
+			/// String for the PM designator (second 12 hours of the day). The maximum number of characters allowed for this string is
+			/// different for different releases of Windows.
+			/// </para>
+			/// <para>
+			/// <c>Windows XP:</c> Thirteen including a terminating null character for <c>SetLocaleInfo</c>. Fifteen including a terminating
+			/// null character for <c>GetLocaleInfo</c>.
+			/// </para>
+			/// <para><c>Windows Me/98/95, Windows NT 4.0, Windows 2000:</c> Nine including a terminating null character.</para>
+			/// <para><c>Windows Server 2003 and later:</c> Fifteen including a terminating null character.</para>
+			/// <para>Windows 10 added the value <c>LOCALE_SPM</c> as a more readable synonym for <c>LOCALE_S2359</c>.</para>
+			/// </summary>
+			LOCALE_SPM = 0x00000029,
+
+			/// <summary>
+			/// <c>Windows Vista and later:</c> String value for "positive infinity", for example, "Infinity" for the English (United States)
+			/// locale. There is no limit on the number of characters allowed for the string.
+			/// </summary>
+			LOCALE_SPOSINFINITY = 0x0000006a,
+
+			/// <summary>
+			/// Localized string value for the positive sign for the locale. For example, <c>LOCALE_SPOSITIVESIGN</c> is considered to be "+"
+			/// for the English (United States) locale. Note that the presence of data for this string does not mean that a positive sign is
+			/// necessarily used when formatting a number. If this the data is blank/empty then a "+" is assumed to be used. The maximum
+			/// number of characters allowed for this string is five, including a terminating null character.
+			/// </summary>
+			LOCALE_SPOSITIVESIGN = 0x00000050,
+
+			/// <summary/>
+			LOCALE_SRELATIVELONGDATE = 0x0000007c,
+
+			/// <summary>
+			/// <para>
+			/// <c>Windows Vista and later:</c> A string representing a list of scripts, using the 4-character notation used in ISO 15924.
+			/// Each script name consists of four Latin characters and the list is arranged in alphabetical order with each name, including
+			/// the last, followed by a semicolon.
+			/// </para>
+			/// <para>
+			/// <c>GetLocaleInfo</c> or <c>GetLocaleInfoEx</c> can be called with LCType set to LOCALE_SSCRIPTS as part of a strategy to
+			/// mitigate security issues related to Internationalized Domain Names (IDNs). Here are some example values:
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Locale</term>
+			/// <term>Locale/language name</term>
+			/// <term>Value</term>
+			/// </listheader>
+			/// <item>
+			/// <term>English (United States)</term>
+			/// <term>en-US</term>
+			/// <term>Latn;</term>
+			/// </item>
+			/// <item>
+			/// <term>Hindi (India)</term>
+			/// <term>hi-IN</term>
+			/// <term>Deva;</term>
+			/// </item>
+			/// <item>
+			/// <term>Japanese (Japan)</term>
+			/// <term>ja-JP</term>
+			/// <term>Windows 7 and later: Hani;Hira;Jpan;Kana; Windows Vista: Hani;Hira;Kana;</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// A compound script value does not include the Latin script unless it is an essential part of the writing system used for the
+			/// particular locale. Latin characters are often used in the context of locales for which they are not native, for example, for
+			/// a foreign business name. In the example above for Hindi in India, the only script value is "Deva" (for "Devanagari"),
+			/// although Latin characters can also appear in Hindi text. The VerifyScripts function has a special flag to address this case.
+			/// </para>
+			/// </summary>
+			LOCALE_SSCRIPTS = 0x0000006c,
+
+			/// <summary>
+			/// <para>
+			/// Short date formatting string for the locale. The maximum number of characters allowed for this string is 80, including a
+			/// terminating null character. The string can consist of a combination of day, month, year, and era format pictures. For
+			/// example, "M/d/yyyy" indicates that September 3, 2004 is written 9/3/2004.
+			/// </para>
+			/// <para>
+			/// Locales can define multiple short date formats. To get all of the short date formats for this locale, use EnumDateFormats,
+			/// EnumDateFormatsEx, or EnumDateFormatsExEx.
+			/// </para>
+			/// </summary>
+			LOCALE_SSHORTDATE = 0x0000001F,
+
+			/// <summary>
+			/// String for the shortest possible AM indicator for a locale. For English that could be as short as "a"; however other
+			/// languages could have more codepoints.
+			/// </summary>
+			LOCALE_SSHORTESTAM = 0x0000007e,
+
+			/// <summary>
+			/// Windows Vista and later: Short native name of the first day of the week. This name is often shorter than
+			/// LOCALE_SABBREVDAYNAME1, and it is useful for calendar titles.
+			/// </summary>
+			LOCALE_SSHORTESTDAYNAME1 = 0x00000060,
+
+			/// <summary>
+			/// Windows Vista and later: Short native name of the second day of the week. This name is often shorter than
+			/// LOCALE_SABBREVDAYNAME2, and it is useful for calendar titles.
+			/// </summary>
+			LOCALE_SSHORTESTDAYNAME2 = 0x00000061,
+
+			/// <summary>
+			/// Windows Vista and later: Short native name of the third day of the week. This name is often shorter than
+			/// LOCALE_SABBREVDAYNAME3, and it is useful for calendar titles.
+			/// </summary>
+			LOCALE_SSHORTESTDAYNAME3 = 0x00000062,
+
+			/// <summary>
+			/// Windows Vista and later: Short native name of the fourth day of the week. This name is often shorter than
+			/// LOCALE_SABBREVDAYNAME4, and it is useful for calendar titles.
+			/// </summary>
+			LOCALE_SSHORTESTDAYNAME4 = 0x00000063,
+
+			/// <summary>
+			/// Windows Vista and later: Short native name of the fifth day of the week. This name is often shorter than
+			/// LOCALE_SABBREVDAYNAME5, and it is useful for calendar titles.
+			/// </summary>
+			LOCALE_SSHORTESTDAYNAME5 = 0x00000064,
+
+			/// <summary>
+			/// Windows Vista and later: Short native name of the sixth day of the week. This name is often shorter than
+			/// LOCALE_SABBREVDAYNAME6, and it is useful for calendar titles.
+			/// </summary>
+			LOCALE_SSHORTESTDAYNAME6 = 0x00000065,
+
+			/// <summary>
+			/// Windows Vista and later: Short native name of the seventh day of the week. This name is often shorter than
+			/// LOCALE_SABBREVDAYNAME7, and it is useful for calendar titles.
+			/// </summary>
+			LOCALE_SSHORTESTDAYNAME7 = 0x00000066,
+
+			/// <summary>
+			/// String for the shortest possible PM indicator for a locale. For English that could be as short as "p"; however other
+			/// languages could have more codepoints.
+			/// </summary>
+			LOCALE_SSHORTESTPM = 0x0000007f,
+
+			/// <summary>
+			/// <c>Windows 7 and later:</c> Short time formatting string for the locale. Patterns are typically derived by removing the "ss"
+			/// (seconds) value from the long time format pattern. For example, if the long time format is "h:mm:ss tt", the short time
+			/// format is most likely "h:mm tt". This constant can specify multiple formats in a semicolon-delimited list. However, the
+			/// preferred short time format should be the first value listed.
+			/// </summary>
+			LOCALE_SSHORTTIME = 0x00000079,
+
+			/// <summary>Windows 7 and later: Name of the locale to use for sorting or casing behavior.</summary>
+			LOCALE_SSORTLOCALE = 0x0000007b,
+
+			/// <summary>
+			/// Windows Me/98, Windows 2000: The full localized name of the sort for the specified locale identifier, dependent on the
+			/// language of the shell. This constant is used to determine casing and sorting behavior.
+			/// </summary>
+			LOCALE_SSORTNAME = 0x00001013,
+
+			/// <summary>
+			/// Characters that are used to separate groups of digits to the left of the decimal. The maximum number of characters allowed
+			/// for this string is four, including a terminating null character. Typically, these groups represent thousands. However,
+			/// depending on the value specified for LOCALE_SGROUPING, they can represent something else.
+			/// </summary>
+			LOCALE_STHOUSAND = 0x0000000F,
+
+			/// <summary>
+			/// Character(s) for the time separator. The maximum number of characters allowed for this string is four, including a
+			/// terminating null character. Windows Vista and later: This constant is deprecated. Use LOCALE_STIMEFORMAT instead. A custom
+			/// locale might not have a single, uniform separator character. For example, a format such as "03:56'23" is valid.
+			/// </summary>
+			LOCALE_STIME = 0x0000001E,
+
+			/// <summary>
+			/// Time formatting strings for the locale. The maximum number of characters allowed for this string is 80, including a
+			/// terminating null character. The string can consist of a combination of hour, minute, and second format pictures.
+			/// </summary>
+			LOCALE_STIMEFORMAT = 0x00001003,
+
+			/// <summary>
+			/// <c>Windows Me/98, Windows 2000:</c> The year-month formatting string for the locale. The maximum number of characters allowed
+			/// for this string is 80, including a terminating null character. This string shows the proper format for a date string that
+			/// contains only the year and the month, using format pictures as defined in Day, Month, Year, and Era Format Pictures.
+			/// </summary>
+			LOCALE_SYEARMONTH = 0x00001006,
 		}
 
 		/// <summary>Language Group Identifier.</summary>
@@ -1118,6 +2668,24 @@ namespace Vanara.PInvoke
 			LOCALE_NOUSEROVERRIDE = 0x80000000
 		}
 
+		/// <summary>The MUI file type flags.</summary>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318039")]
+		[Flags]
+		public enum MUI_FILETYPE : uint
+		{
+			/// <summary>
+			/// The input file does not have resource configuration data. This file type is typical for older executable files. If this file
+			/// type is specified, the other file types will not provide useful information.
+			/// </summary>
+			MUI_FILETYPE_NOT_LANGUAGE_NEUTRAL = 0x001,
+
+			/// <summary>The input file is an LN file.</summary>
+			MUI_FILETYPE_LANGUAGE_NEUTRAL_MAIN = 0x002,
+
+			/// <summary>The input file is a language-specific resource file.</summary>
+			MUI_FILETYPE_LANGUAGE_NEUTRAL_MUI = 0x004,
+		}
+
 		/// <summary>Flags indicating attributes of the input language list.</summary>
 		[Flags]
 		public enum MUI_LANGUAGE
@@ -1140,13 +2708,128 @@ namespace Vanara.PInvoke
 
 		/// <summary>Flags identifying language format and filtering.</summary>
 		[Flags]
-		public enum MUI_LANGUAGE_ENUM
+		public enum MUI_LANGUAGE_ENUM : uint
 		{
 			/// <summary>Pass the language identifier in the language string to the callback function.</summary>
 			MUI_LANGUAGE_ID = 4,
 
 			/// <summary>Pass the language name in the language string to the callback function.</summary>
 			MUI_LANGUAGE_NAME = 8
+		}
+
+		/// <summary>Flags identifying language format and filtering.</summary>
+		[Flags]
+		public enum MUI_LANGUAGE_FILTER : uint
+		{
+			/// <summary>Pass the language identifier in the language string to the callback function.</summary>
+			MUI_LANGUAGE_ID = MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID,
+
+			/// <summary>Pass the language name in the language string to the callback function.</summary>
+			MUI_LANGUAGE_NAME = MUI_LANGUAGE_ENUM.MUI_LANGUAGE_NAME,
+
+			/// <summary>
+			/// Use the system fallback to retrieve a list that corresponds exactly to the language list used by the resource loader. This
+			/// flag can be used only in combination with MUI_MERGE_USER_FALLBACK. Using the flags in combination alters the usual effect of
+			/// MUI_MERGE_USER_FALLBACK by including fallback and neutral languages in the list.
+			/// </summary>
+			MUI_MERGE_SYSTEM_FALLBACK = 0x10,
+
+			/// <summary>
+			/// Retrieve a composite list consisting of the thread preferred UI languages, followed by process preferred UI languages,
+			/// followed by any user preferred UI languages that are distinct from these, followed by the system default UI language, if it
+			/// is not already in the list. If the user preferred UI languages list is empty, the function retrieves the system preferred UI
+			/// languages. This flag cannot be combined with MUI_THREAD_LANGUAGES.
+			/// </summary>
+			MUI_MERGE_USER_FALLBACK = 0x20,
+
+			/// <summary>
+			/// Retrieve a complete thread preferred UI languages list along with associated fallback and neutral languages. Use of this flag
+			/// is equivalent to combining MUI_MERGE_SYSTEM_FALLBACK and MUI_MERGE_USER_FALLBACK. (Applicable only for Windows 7 and later).
+			/// </summary>
+			MUI_UI_FALLBACK = MUI_MERGE_SYSTEM_FALLBACK | MUI_MERGE_USER_FALLBACK,
+
+			/// <summary>
+			/// Retrieve a composite list consisting of the thread preferred UI languages, followed by process preferred UI languages,
+			/// followed by any user preferred UI languages that are distinct from these, followed by the system default UI language, if it
+			/// is not already in the list. If the user preferred UI languages list is empty, the function retrieves the system preferred UI
+			/// languages. This flag cannot be combined with MUI_THREAD_LANGUAGES.
+			/// </summary>
+			MUI_THREAD_LANGUAGES = 0x40,
+		}
+
+		/// <summary>Flags identifying language format and filtering.</summary>
+		[Flags]
+		public enum MUI_LANGUAGE_FLAGS : uint
+		{
+			/// <summary>Pass the language identifier in the language string to the callback function.</summary>
+			MUI_LANGUAGE_ID = MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID,
+
+			/// <summary>Pass the language name in the language string to the callback function.</summary>
+			MUI_LANGUAGE_NAME = MUI_LANGUAGE_ENUM.MUI_LANGUAGE_NAME,
+
+			/// <summary>
+			/// GetThreadPreferredUILanguages should replace with the appropriate fallback all languages that cannot display properly in a
+			/// console window with the current operating system settings. When this flag is specified, NULL must be passed for all other parameters.
+			/// </summary>
+			MUI_CONSOLE_FILTER = 0x100,
+
+			/// <summary>
+			/// GetThreadPreferredUILanguages should replace with the appropriate fallback all languages having complex scripts. When this
+			/// flag is specified, NULL must be passed for all other parameters.
+			/// </summary>
+			MUI_COMPLEX_SCRIPT_FILTER = 0x200,
+
+			/// <summary>
+			/// Reset the filtering for the language list by removing any other filter settings. When this flag is specified, NULL must be
+			/// passed for all other parameters. After setting this flag, the application can call GetThreadPreferredUILanguages to retrieve
+			/// the complete unfiltered list.
+			/// </summary>
+			MUI_RESET_FILTERS = 0x001,
+		}
+
+		/// <summary>Flags identifying language format and filtering.</summary>
+		[Flags]
+		public enum MUI_LANGUAGE_PATH : uint
+		{
+			/// <summary>Pass the language identifier in the language string to the callback function.</summary>
+			MUI_LANGUAGE_ID = MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID,
+
+			/// <summary>Pass the language name in the language string to the callback function.</summary>
+			MUI_LANGUAGE_NAME = MUI_LANGUAGE_ENUM.MUI_LANGUAGE_NAME,
+
+			/// <summary>
+			/// Retrieve only the files that implement languages in the fallback list. Successive calls enumerate the successive fallbacks,
+			/// in the appropriate order. The first file indicated by the output value of pcchFileMUIPath should be the best fit. This flag
+			/// is relevant only if the application supplies a null string for pwszLanguage.
+			/// </summary>
+			MUI_USER_PREFERRED_UI_LANGUAGES = 0x10,
+
+			/// <summary>
+			/// Retrieve only the files for the languages installed on the computer. This flag is relevant only if the application supplies a
+			/// null string for pwszLanguage.
+			/// </summary>
+			MUI_USE_INSTALLED_LANGUAGES = 0x20,
+
+			/// <summary>
+			/// Retrieve all language-specific resource files for the path indicated by pcwszFilePath, without considering file licensing.
+			/// This flag is relevant only if the application supplies a null string for pwszLanguage.
+			/// </summary>
+			MUI_USE_SEARCH_ALL_LANGUAGES = 0x40,
+
+			/// <summary>
+			/// Do not verify the file passed in pcwszFilePath and append &amp;quot;.mui&amp;quot; to the file name before processing. For
+			/// example, change Abc.exe to Abc.exe.mui.
+			/// </summary>
+			MUI_LANG_NEUTRAL_PE_FILE = 0x100,
+
+			/// <summary>
+			/// Do not verify the file passed in pcwszFilePath and do not append &amp;quot;.mui&amp;quot; to the file name before processing.
+			/// For example, use Abc.txt or Abc.chm.
+			/// </summary>
+			MUI_NON_LANG_NEUTRAL_FILE = 0x200,
+
+			/// <summary/>
+			MUI_MACHINE_LANGUAGE_SETTINGS = 0x400,
 		}
 
 		/// <summary>Flags specifying the information to retrieve in <c>GetFileMUIInfo</c>.</summary>
@@ -1393,30 +3076,35 @@ namespace Vanara.PInvoke
 			VS_ALLOW_LATIN
 		}
 
-		/// <summary>
-		/// <para>Deprecated. Adjusts a date by a specified number of years, months, weeks, or days.</para>
-		/// </summary>
+		/// <summary>Deprecated. Adjusts a date by a specified number of years, months, weeks, or days.</summary>
+		/// <param name="lpCalDateTime">Pointer to a <c>CALDATETIME</c> structure that contains the date and calendar information to adjust.</param>
+		/// <param name="calUnit">The <c>CALDATETIME_DATEUNIT</c> enumeration value indicating the date unit, for example, DayUnit.</param>
+		/// <param name="amount">The amount by which to adjust the specified date.</param>
 		/// <returns>
 		/// <para>
 		/// Returns <c>TRUE</c> if successful or <c>FALSE</c> otherwise. To get extended error information, the application can call
 		/// <c>GetLastError</c>, which can return one of the following error codes:
 		/// </para>
 		/// <list type="bullet">
-		/// <item>ERROR_DATE_OUT_OF_RANGE. The specified date was out of range.</item>
-		/// <item>ERROR_INVALID_PARAMETER. Any of the parameter values was invalid.</item>
+		/// <item>
+		/// <term>ERROR_DATE_OUT_OF_RANGE. The specified date was out of range.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER. Any of the parameter values was invalid.</term>
+		/// </item>
 		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <para>
 		/// This function does not have an associated header file or library file. The application can call <c>LoadLibrary</c> with the DLL
 		/// name (Kernel32.dll) to obtain a module handle. It can then call <c>GetProcAddress</c> with the module handle and the name of this
 		/// function to get the function address.
-		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/Intl/adjustcalendardate BOOL AdjustCalendarDate( _Inout_ LPCALDATETIME
+		// https://docs.microsoft.com/en-us/windows/win32/intl/adjustcalendardate BOOL AdjustCalendarDate( _Inout_ LPCALDATETIME
 		// lpCalDateTime, _In_ CALDATETIME_DATEUNIT calUnit, _Out_ INT amount );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("", MSDNShortId = "be8d61fd-efa3-4386-969f-30216c282ebc")]
+		// [return: MarshalAs(UnmanagedType.Bool)] public static extern bool AdjustCalendarDate(Inout_ LPCALDATETIME lpCalDateTime, In_
+		// CALDATETIME_DATEUNIT calUnit, Out_ int amount);
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool AdjustCalendarDate(ref CALDATETIME lpCalDateTime, CALDATETIME_DATEUNIT calUnit, int amount);
 
@@ -1445,7 +3133,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("", MSDNShortId = "0c3f602d-62de-4c27-95d9-d35738f3279d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ConvertCalDateTimeToSystemTime(ref CALDATETIME lpCalDateTime, out SYSTEMTIME lpSysTime);
+		public static extern bool ConvertCalDateTimeToSystemTime(in CALDATETIME lpCalDateTime, out SYSTEMTIME lpSysTime);
 
 		/// <summary>Converts a default locale value to an actual locale identifier.</summary>
 		/// <param name="Locale">
@@ -1465,7 +3153,7 @@ namespace Vanara.PInvoke
 		// LCID ConvertDefaultLocale( _In_ LCID Locale); https://msdn.microsoft.com/en-us/library/windows/desktop/dd317768(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317768")]
-		public static extern uint ConvertDefaultLocale(uint Locale);
+		public static extern LCID ConvertDefaultLocale(LCID Locale);
 
 		/// <summary>
 		/// <para>Deprecated. Converts a specified <c>SYSTEMTIME</c> structure to a <c>CALDATETIME</c> structure.</para>
@@ -1516,7 +3204,30 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317803")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumCalendarInfo(EnumCalendarInfoProc pCalInfoEnumProc, uint Locale, uint Calendar, CALTYPE CalType);
+		public static extern bool EnumCalendarInfo(EnumCalendarInfoProc pCalInfoEnumProc, LCID Locale, CALID Calendar, CALTYPE CalType);
+
+		/// <summary>Enumerates calendar information for a specified locale.</summary>
+		/// <param name="Locale">
+		/// Locale identifier that specifies the locale for which to retrieve calendar information. You can use the <c>MAKELCID</c> macro to
+		/// create a locale identifier or use one of the following predefined values.
+		/// </param>
+		/// <param name="Calendar">
+		/// <c>Calendar identifier</c> that specifies the calendar for which information is requested. Note that this identifier can be
+		/// ENUM_ALL_CALENDARS, to enumerate all calendars that are associated with the locale.
+		/// </param>
+		/// <param name="CalType">
+		/// Type of calendar information. For more information, see Calendar Type Information. Only one calendar type can be specified per
+		/// call to this function, except where noted.
+		/// </param>
+		/// <returns>The requested list of calendar information.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd317803")]
+		public static IEnumerable<string> EnumCalendarInfo(LCID Locale, CALID Calendar, CALTYPE CalType)
+		{
+			var l = new List<string>();
+			if (!EnumCalendarInfo(s => { l.Add(s); return true; }, Locale, Calendar, CalType))
+				Win32Error.ThrowLastError();
+			return l;
+		}
 
 		/// <summary>Enumerates calendar information for a locale specified by identifier.</summary>
 		/// <param name="pCalInfoEnumProcEx">Pointer to an application-defined callback function. For more information, see <c>EnumCalendarInfoProcEx</c>.</param>
@@ -1543,7 +3254,33 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317804")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumCalendarInfoEx(EnumCalendarInfoProcEx pCalInfoEnumProcEx, uint Locale, uint Calendar, CALTYPE CalType);
+		public static extern bool EnumCalendarInfoEx(EnumCalendarInfoProcEx pCalInfoEnumProcEx, LCID Locale, CALID Calendar, CALTYPE CalType);
+
+		/// <summary>Enumerates calendar information for a locale specified by identifier.</summary>
+		/// <param name="Locale">
+		/// <para>
+		/// Locale identifier that specifies the locale for which to retrieve calendar information. You can use the <c>MAKELCID</c> macro to
+		/// create an identifier or use one of the following predefined values.
+		/// </para>
+		/// <para><c>Windows Vista and later:</c> The following custom locale identifiers are also supported.</para>
+		/// </param>
+		/// <param name="Calendar">
+		/// <c>Calendar identifier</c> that specifies the calendar for which information is requested. Note that this identifier can be
+		/// ENUM_ALL_CALENDARS, to enumerate all calendars that are associated with the locale.
+		/// </param>
+		/// <param name="CalType">
+		/// Type of calendar information. For more information, see Calendar Type Information. Only one calendar type can be specified per
+		/// call to this function, except where noted.
+		/// </param>
+		/// <returns>The requested list of calendar information.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd317804")]
+		public static IEnumerable<(CALID, string)> EnumCalendarInfoEx(LCID Locale, CALID Calendar, CALTYPE CalType)
+		{
+			var l = new List<(CALID, string)>();
+			if (!EnumCalendarInfoEx((s, c) => { l.Add((c, s)); return true; }, Locale, Calendar, CalType))
+				Win32Error.ThrowLastError();
+			return l;
+		}
 
 		/// <summary>Enumerates calendar information for a locale specified by name.</summary>
 		/// <param name="pCalInfoEnumProcExEx">Pointer to an application-defined callback function. For more information, see <c>EnumCalendarInfoProcExEx</c>.</param>
@@ -1569,7 +3306,27 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317805")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumCalendarInfoExEx(EnumCalendarInfoProcExEx pCalInfoEnumProcExEx, string lpLocaleName, uint Calendar, string lpReserved, CALTYPE CalType, IntPtr lParam);
+		public static extern bool EnumCalendarInfoExEx(EnumCalendarInfoProcExEx pCalInfoEnumProcExEx, string lpLocaleName, CALID Calendar, [Optional] string lpReserved, CALTYPE CalType, [Optional] IntPtr lParam);
+
+		/// <summary>Enumerates calendar information for a locale specified by name.</summary>
+		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
+		/// <param name="Calendar">
+		/// <c>Calendar identifier</c> that specifies the calendar for which information is requested. Note that this identifier can be
+		/// ENUM_ALL_CALENDARS, to enumerate all calendars that are associated with the locale.
+		/// </param>
+		/// <param name="CalType">
+		/// Type of calendar information. For more information, see Calendar Type Information. Only one calendar type can be specified per
+		/// call to this function, except where noted.
+		/// </param>
+		/// <returns>The requested list of calendar information.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd317805")]
+		public static IEnumerable<(CALID, string)> EnumCalendarInfoExEx(string lpLocaleName, CALID Calendar, CALTYPE CalType)
+		{
+			var l = new List<(CALID, string)>();
+			if (!EnumCalendarInfoExEx((s, c, i, p) => { l.Add((c, s)); return true; }, lpLocaleName, Calendar, null, CalType))
+				Win32Error.ThrowLastError();
+			return l;
+		}
 
 		/// <summary>Enumerates the long date, short date, or year/month formats that are available for a specified locale.</summary>
 		/// <param name="lpDateFmtEnumProc">Pointer to an application-defined callback function. For more information, see <c>EnumDateFormatsProc</c>.</param>
@@ -1586,7 +3343,23 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317810")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumDateFormats(EnumDateFormatsProc lpDateFmtEnumProc, uint Locale, DATE_FORMAT dwFlags);
+		public static extern bool EnumDateFormats(EnumDateFormatsProc lpDateFmtEnumProc, LCID Locale, DATE_FORMAT dwFlags);
+
+		/// <summary>Enumerates the long date, short date, or year/month formats that are available for a specified locale.</summary>
+		/// <param name="Locale">
+		/// Locale identifier that specifies the locale for which to retrieve date format information. You can use the <c>MAKELCID</c> macro
+		/// to create an identifier or use one of the following predefined values.
+		/// </param>
+		/// <param name="dwFlags">Flag specifying date formats. For detailed definitions, see the dwFlags parameter of <c>EnumDateFormatsExEx</c>.</param>
+		/// <returns>Returns the list of requested formats.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd317810")]
+		public static IEnumerable<string> EnumDateFormats(LCID Locale, DATE_FORMAT dwFlags)
+		{
+			var l = new List<string>();
+			if (!EnumDateFormats(s => { l.Add(s); return true; }, Locale, dwFlags))
+				Win32Error.ThrowLastError();
+			return l;
+		}
 
 		/// <summary>Enumerates the long date, short date, or year/month formats that are available for a specified locale.</summary>
 		/// <param name="lpDateFmtEnumProcEx">Pointer to an application-defined callback function. For more information, see <c>EnumDateFormatsProcEx</c>.</param>
@@ -1606,7 +3379,26 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317811")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumDateFormatsEx(EnumDateFormatsProcEx lpDateFmtEnumProcEx, uint Locale, DATE_FORMAT dwFlags);
+		public static extern bool EnumDateFormatsEx(EnumDateFormatsProcEx lpDateFmtEnumProcEx, LCID Locale, DATE_FORMAT dwFlags);
+
+		/// <summary>Enumerates the long date, short date, or year/month formats that are available for a specified locale.</summary>
+		/// <param name="Locale">
+		/// <para>
+		/// Locale identifier that specifies the locale for which to retrieve date format information. You can use the <c>MAKELCID</c> macro
+		/// to create an identifier or use one of the following predefined values.
+		/// </para>
+		/// <para><c>Windows Vista and later:</c> The following custom locale identifiers are also supported.</para>
+		/// </param>
+		/// <param name="dwFlags">Flag specifying date formats. For detailed definitions, see the dwFlags parameter of <c>EnumDateFormatsExEx</c>.</param>
+		/// <returns>Returns the list of requested formats.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd317811")]
+		public static IEnumerable<(CALID, string)> EnumDateFormatsEx(LCID Locale, DATE_FORMAT dwFlags)
+		{
+			var l = new List<(CALID, string)>();
+			if (!EnumDateFormatsEx((s, c) => { l.Add((c, s)); return true; }, Locale, dwFlags))
+				Win32Error.ThrowLastError();
+			return l;
+		}
 
 		/// <summary>Enumerates the long date, short date, or year/month formats that are available for a locale specified by name.</summary>
 		/// <param name="lpDateFmtEnumProcExEx">Pointer to an application-defined callback function. For more information, see <c>EnumDateFormatsProcExEx</c>.</param>
@@ -1650,7 +3442,45 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317812")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumDateFormatsExEx(EnumDateFormatsProcExEx lpDateFmtEnumProcExEx, string lpLocaleName, DATE_FORMAT dwFlags, IntPtr lParam);
+		public static extern bool EnumDateFormatsExEx(EnumDateFormatsProcExEx lpDateFmtEnumProcExEx, string lpLocaleName, DATE_FORMAT dwFlags, [Optional] IntPtr lParam);
+
+		/// <summary>Enumerates the long date, short date, or year/month formats that are available for a locale specified by name.</summary>
+		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
+		/// <param name="dwFlags">
+		/// <para>Flag specifying date formats. The application can supply one of the following values or the LOCALE_USE_CP_ACP constant.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DATE_SHORTDATE</term>
+		/// <term>Use short date formats. This value cannot be used with any of the other flag values.</term>
+		/// </item>
+		/// <item>
+		/// <term>DATE_LONGDATE</term>
+		/// <term>Use long date formats. This value cannot be used with any of the other flag values.</term>
+		/// </item>
+		/// <item>
+		/// <term>DATE_YEARMONTH</term>
+		/// <term>Use year/month formats. This value cannot be used with any of the other flag values.</term>
+		/// </item>
+		/// <item>
+		/// <term>DATE_MONTHDAY</term>
+		/// <term>Use month/day formats. This value cannot be used with any of the other flag values.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>Returns the list of requested formats.</returns>
+		public static IEnumerable<(CALID, string)> EnumDateFormatsExEx(string lpLocaleName, DATE_FORMAT dwFlags)
+		{
+			var l = new List<(CALID, string)>();
+			if (!EnumDateFormatsExEx((s, c, p) => { l.Add((c, s)); return true; }, lpLocaleName, dwFlags))
+				Win32Error.ThrowLastError();
+			return l;
+		}
 
 		/// <summary>Enumerates the locales in a specified language group.</summary>
 		/// <param name="lpLangGroupLocaleEnumProc">Pointer to an application-defined callback function. For more information, see <c>EnumLanguageGroupLocalesProc</c>.</param>
@@ -1672,6 +3502,20 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317819")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool EnumLanguageGroupLocales(EnumLanguageGroupLocalesProc lpLangGroupLocaleEnumProc, LGRPID LanguageGroup, [Optional] uint dwFlags, [Optional] IntPtr lParam);
+
+		/// <summary>Enumerates the locales in a specified language group.</summary>
+		/// <param name="LanguageGroup">
+		/// Identifier of the language group for which to enumerate locales. This parameter can have one of the following values:
+		/// </param>
+		/// <returns>Returns the list of requested group locales.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd317819")]
+		public static IEnumerable<(LGRPID, LCID, string)> EnumLanguageGroupLocales(LGRPID LanguageGroup)
+		{
+			var list = new List<(LGRPID, LCID, string)>();
+			if (!EnumLanguageGroupLocales((g, l, s, p) => { list.Add((g, l, s)); return true; }, LanguageGroup))
+				Win32Error.ThrowLastError();
+			return list;
+		}
 
 		/// <summary>Enumerates the code pages that are either installed on or supported by an operating system.</summary>
 		/// <param name="lpCodePageEnumProc">
@@ -1707,6 +3551,36 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool EnumSystemCodePages(EnumCodePagesProc lpCodePageEnumProc, CP_FLAGS dwFlags);
 
+		/// <summary>Enumerates the code pages that are either installed on or supported by an operating system.</summary>
+		/// <param name="dwFlags">
+		/// <para>Flag specifying the code pages to enumerate. This parameter can have one of the following values, which are mutually exclusive.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CP_INSTALLED</term>
+		/// <term>Enumerate only installed code pages.</term>
+		/// </item>
+		/// <item>
+		/// <term>CP_SUPPORTED</term>
+		/// <term>Enumerate all supported code pages.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>List of code pages.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd317825")]
+		public static IEnumerable<string> EnumSystemCodePages(CP_FLAGS dwFlags)
+		{
+			var list = new List<string>();
+			if (!EnumSystemCodePages(s => { list.Add(s); return true; }, dwFlags))
+				Win32Error.ThrowLastError();
+			return list;
+		}
+
 		/// <summary>
 		/// <para>
 		/// [ <c>EnumSystemGeoID</c> is available for use in the operating systems specified in the Requirements section. It may be altered
@@ -1732,6 +3606,27 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317826")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool EnumSystemGeoID(SYSGEOCLASS GeoClass, [Optional] int ParentGeoId, EnumGeoInfoProc lpGeoEnumProc);
+
+		/// <summary>
+		/// <para>
+		/// [ <c>EnumSystemGeoID</c> is available for use in the operating systems specified in the Requirements section. It may be altered
+		/// or unavailable in subsequent versions. Instead, use <c>EnumSystemGeoNames</c>.]
+		/// </para>
+		/// <para>Enumerates the geographical location identifiers (type GEOID) that are available on the operating system.</para>
+		/// </summary>
+		/// <param name="GeoClass">
+		/// Geographical location class for which to enumerate the identifiers. At present, only GEOCLASS_NATION is supported. This type
+		/// causes the function to enumerate all geographical identifiers for nations on the operating system.
+		/// </param>
+		/// <returns>List of geographical location identifiers.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd317826")]
+		public static IEnumerable<int> EnumSystemGeoID(SYSGEOCLASS GeoClass = 0)
+		{
+			var list = new List<int>();
+			if (!EnumSystemGeoID(GeoClass, 0, i => { list.Add(i); return true; }))
+				Win32Error.ThrowLastError();
+			return list;
+		}
 
 		/// <summary>
 		/// Enumerates the two-letter International Organization for Standardization (ISO) 3166-1 codes or numeric United Nations (UN) Series
@@ -1772,7 +3667,27 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "mt826465")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumSystemGeoNames(SYSGEOCLASS geoClass, Geo_EnumNameProc geoEnumProc, IntPtr data);
+		public static extern bool EnumSystemGeoNames(SYSGEOCLASS geoClass, Geo_EnumNameProc geoEnumProc, [Optional] IntPtr data);
+
+		/// <summary>
+		/// Enumerates the two-letter International Organization for Standardization (ISO) 3166-1 codes or numeric United Nations (UN) Series
+		/// M, Number 49 (M.49) codes for geographical locations that are available on the operating system.
+		/// </summary>
+		/// <param name="geoClass">
+		/// The geographical location class for which to enumerate the available two-letter ISO 3166-1 or numeric UN M.49 codes.
+		/// </param>
+		/// <returns>
+		/// List of the two-letter International Organization for Standardization (ISO) 3166-1 codes or numeric United Nations (UN) Series M,
+		/// Number 49 (M.49) codes for geographical locations
+		/// </returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "mt826465")]
+		public static IEnumerable<string> EnumSystemGeoNames(SYSGEOCLASS geoClass = 0)
+		{
+			var list = new List<string>();
+			if (!EnumSystemGeoNames(geoClass, (s, p) => { list.Add(s); return true; }))
+				Win32Error.ThrowLastError();
+			return list;
+		}
 
 		/// <summary>Enumerates the language groups that are either installed on or supported by an operating system.</summary>
 		/// <param name="lpLanguageGroupEnumProc">Pointer to an application-defined callback function. For more information, see <c>EnumLanguageGroupsProc</c>.</param>
@@ -1807,7 +3722,40 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317827")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumSystemLanguageGroups(EnumLanguageGroupsProc lpLanguageGroupEnumProc, LGRPID_FLAGS dwFlags, IntPtr lParam);
+		public static extern bool EnumSystemLanguageGroups(EnumLanguageGroupsProc lpLanguageGroupEnumProc, LGRPID_FLAGS dwFlags, [Optional] IntPtr lParam);
+
+		/// <summary>Enumerates the language groups that are either installed on or supported by an operating system.</summary>
+		/// <param name="dwFlags">
+		/// <para>Flags specifying the language group identifiers to enumerate. This parameter can have one of the following values.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LGRPID_INSTALLED</term>
+		/// <term>Enumerate only installed language group identifiers.</term>
+		/// </item>
+		/// <item>
+		/// <term>LGRPID_SUPPORTED</term>
+		/// <term>Enumerate all supported language group identifiers.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lParam">
+		/// Application-defined value to pass to the callback function. This parameter can be used in error checking. It can also be used to
+		/// ensure thread safety in the callback function.
+		/// </param>
+		/// <returns>List of the language groups.</returns>
+		public static IEnumerable<(LGRPID LanguageGroup, string lpLanguageGroupString, string lpLanguageGroupNameString, LGRPID_FLAGS dwFlags)> EnumSystemLanguageGroups(LGRPID_FLAGS dwFlags = 0)
+		{
+			var list = new List<(LGRPID LanguageGroup, string lpLanguageGroupString, string lpLanguageGroupNameString, LGRPID_FLAGS dwFlags)>();
+			if (!EnumSystemLanguageGroups((g, gs, gn, f, p) => { list.Add((g, gs, gn, f)); return true; }, dwFlags))
+				Win32Error.ThrowLastError();
+			return list;
+		}
 
 		/// <summary>Enumerates the locales that are either installed on or supported by an operating system.</summary>
 		/// <param name="lpLocaleEnumProc">Pointer to an application-defined callback function. For more information, see <c>EnumLocalesProc</c>.</param>
@@ -1851,6 +3799,46 @@ namespace Vanara.PInvoke
 		public static extern bool EnumSystemLocales(EnumLocalesProc lpLocaleEnumProc, LCID_FLAGS dwFlags);
 
 		/// <summary>Enumerates the locales that are either installed on or supported by an operating system.</summary>
+		/// <param name="dwFlags">
+		/// <para>
+		/// Flags specifying the locale identifiers to enumerate. The flags can be used singly or combined using a binary OR. If the
+		/// application specifies 0 for this parameter, the function behaves as for LCID_SUPPORTED.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LCID_INSTALLED</term>
+		/// <term>Enumerate only installed locale identifiers. This value cannot be used with LCID_SUPPORTED.</term>
+		/// </item>
+		/// <item>
+		/// <term>LCID_SUPPORTED</term>
+		/// <term>Enumerate all supported locale identifiers. This value cannot be used with LCID_INSTALLED.</term>
+		/// </item>
+		/// <item>
+		/// <term>LCID_ALTERNATE_SORTS</term>
+		/// <term>
+		/// Enumerate only the alternate sort locale identifiers. If this value is used with either LCID_INSTALLED or LCID_SUPPORTED, the
+		/// installed or supported locales are retrieved, as well as the alternate sort locale identifiers.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>List of system locales.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd317828")]
+		public static IEnumerable<string> EnumSystemLocales(LCID_FLAGS dwFlags)
+		{
+			var list = new List<string>();
+			if (!EnumSystemLocales(s => { list.Add(s); return true; }, dwFlags))
+				Win32Error.ThrowLastError();
+			return list;
+		}
+
+		/// <summary>Enumerates the locales that are either installed on or supported by an operating system.</summary>
 		/// <param name="lpLocaleEnumProcEx">
 		/// Pointer to an application-defined callback function. The <c>EnumSystemLocalesEx</c> function enumerates locales by making
 		/// repeated calls to this callback function. For more information, see <c>EnumLocalesProcEx</c>.
@@ -1872,7 +3860,15 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317829")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumSystemLocalesEx(EnumLocalesProcEx lpLocaleEnumProcEx, LOCALE_FLAGS dwFlags, IntPtr lParam, [Optional] IntPtr lpReserved);
+		public static extern bool EnumSystemLocalesEx(EnumLocalesProcEx lpLocaleEnumProcEx, LOCALE_FLAGS dwFlags, [Optional] IntPtr lParam, [Optional] IntPtr lpReserved);
+
+		public static IEnumerable<(string lpLocaleString, LOCALE_FLAGS dwFlags)> EnumSystemLocalesEx(LOCALE_FLAGS dwFlags)
+		{
+			var list = new List<(string, LOCALE_FLAGS)>();
+			if (!EnumSystemLocalesEx((s, f, p) => { list.Add((s, f)); return true; }, dwFlags))
+				Win32Error.ThrowLastError();
+			return list;
+		}
 
 		/// <summary>Enumerates the time formats that are available for a locale specified by identifier.</summary>
 		/// <param name="lpTimeFmtEnumProc">Pointer to an application-defined callback function. For more information, see <c>EnumTimeFormatsProc</c>.</param>
@@ -1914,7 +3910,48 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317830")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumTimeFormats(EnumTimeFormatsProc lpTimeFmtEnumProc, uint Locale, TIME_FORMAT_ENUM dwFlags);
+		public static extern bool EnumTimeFormats(EnumTimeFormatsProc lpTimeFmtEnumProc, LCID Locale, TIME_FORMAT_ENUM dwFlags);
+
+		/// <summary>Enumerates the time formats that are available for a locale specified by identifier.</summary>
+		/// <param name="Locale">
+		/// Locale identifier that specifies the locale for which to retrieve time format information. You can use the <c>MAKELCID</c> macro
+		/// to create a locale identifier or use one of the following predefined values.
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>The time format. This parameter can specify a combination of any of the following values.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Flag</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>Use the current user's long time format.</term>
+		/// </item>
+		/// <item>
+		/// <term>TIME_NOSECONDS</term>
+		/// <term>Windows 7 and later: Use the current user's short time format.</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCAL_USE_CP_ACP</term>
+		/// <term>
+		/// Specified with the ANSI version of this function, EnumTimeFormatsA (not recommended), to use the system default Windows ANSI code
+		/// page (ACP) instead of the locale code page.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>List of time formats.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd317830")]
+		public static IEnumerable<string> EnumTimeFormats(LCID Locale, TIME_FORMAT_ENUM dwFlags)
+		{
+			var list = new List<string>();
+			if (!EnumTimeFormats(s => { list.Add(s); return true; }, Locale, dwFlags))
+				Win32Error.ThrowLastError();
+			return list;
+		}
 
 		/// <summary>Enumerates the time formats that are available for a locale specified by name.</summary>
 		/// <param name="lpTimeFmtEnumProcEx">Pointer to an application-defined callback function. For more information, see <c>EnumTimeFormatsProcEx</c>.</param>
@@ -1935,7 +3972,23 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317831")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumTimeFormatsEx(EnumTimeFormatsProcEx lpTimeFmtEnumProcEx, string lpLocaleName, TIME_FORMAT_ENUM dwFlags, IntPtr lParam);
+		public static extern bool EnumTimeFormatsEx(EnumTimeFormatsProcEx lpTimeFmtEnumProcEx, string lpLocaleName, TIME_FORMAT_ENUM dwFlags, [Optional] IntPtr lParam);
+
+		/// <summary>Enumerates the time formats that are available for a locale specified by name.</summary>
+		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
+		/// <param name="dwFlags">
+		/// The time format. Set to 0 to use the current user's long time format, or TIME_NOSECONDS (starting with Windows 7) to use the
+		/// short time format.
+		/// </param>
+		/// <returns>List of time formats.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd317831")]
+		public static IEnumerable<string> EnumTimeFormatsEx(string lpLocaleName, TIME_FORMAT_ENUM dwFlags)
+		{
+			var list = new List<string>();
+			if (!EnumTimeFormatsEx((s, p) => { list.Add(s); return true; }, lpLocaleName, dwFlags))
+				Win32Error.ThrowLastError();
+			return list;
+		}
 
 		/// <summary>
 		/// Enumerates the user interface languages that are available on the operating system and calls the callback function with every
@@ -2005,7 +4058,72 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317834")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumUILanguages(EnumUILanguagesProc lpUILanguageEnumProc, MUI_LANGUAGE_ENUM dwFlags, IntPtr lParam);
+		public static extern bool EnumUILanguages(EnumUILanguagesProc lpUILanguageEnumProc, MUI_LANGUAGE_ENUM dwFlags, [Optional] IntPtr lParam);
+
+		/// <summary>
+		/// Enumerates the user interface languages that are available on the operating system and calls the callback function with every
+		/// language in the list.
+		/// </summary>
+		/// <param name="dwFlags">
+		/// <para>
+		/// Flags identifying language format and filtering. The following flags specify the format of the language to pass to the callback
+		/// function. The format flags are mutually exclusive, and MUI_LANGUAGE_ID is the default.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_LANGUAGE_ID</term>
+		/// <term>Pass the language identifier in the language string to the callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_LANGUAGE_NAME</term>
+		/// <term>Pass the language name in the language string to the callback function.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// <para>
+		/// The following flags specify the filtering for the function to use in enumerating the languages. The filtering flags are mutually
+		/// exclusive, and the default is MUI_LICENSED_LANGUAGES.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_ALL_INSTALLED_LANGUAGES</term>
+		/// <term>Enumerate all installed languages available to the operating system.</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_LICENSED_LANGUAGES</term>
+		/// <term>Enumerate all installed languages that are available and licensed for use.</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_GROUP_POLICY</term>
+		/// <term>Enumerate all installed languages that are available and licensed, and that are allowed by the group policy.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// <para>
+		/// <c>Windows Vista and later:</c> The application can set dwFlags to 0, or to one or more of the specified flags. A setting of 0
+		/// causes the parameter value to default to MUI_LANGUAGE_ID | MUI_LICENSED_LANGUAGES.
+		/// </para>
+		/// <para><c>Windows 2000, Windows XP, Windows Server 2003:</c> The application must set dwFlags to 0.</para>
+		/// </param>
+		/// <returns>List of UI languages.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd317834")]
+		public static IEnumerable<string> EnumUILanguages(MUI_LANGUAGE_ENUM dwFlags)
+		{
+			var list = new List<string>();
+			if (!EnumUILanguages((s, p) => { list.Add(s); return true; }, dwFlags))
+				Win32Error.ThrowLastError();
+			return list;
+		}
 
 		/// <summary>
 		/// Locates a Unicode string (wide characters) or its equivalent in another Unicode string for a locale specified by identifier.
@@ -2050,7 +4168,7 @@ namespace Vanara.PInvoke
 		// LPCWSTR lpStringValue, _In_ int cchValue, _Out_opt_ LPINT pcchFound); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318056(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318056")]
-		public static extern int FindNLSString(uint Locale, COMPARE_STRING dwFindNLSStringFlags, string lpStringSource, int cchSource, string lpStringValue, int cchValue, out int pcchFound);
+		public static extern int FindNLSString(LCID Locale, COMPARE_STRING dwFindNLSStringFlags, string lpStringSource, int cchSource, string lpStringValue, int cchValue, out int pcchFound);
 
 		/// <summary>
 		/// Locates a Unicode string (wide characters) or its equivalent in another Unicode string for a locale specified by name.
@@ -2265,7 +4383,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("", MSDNShortId = "eb2622bc-a98d-42bd-ab59-7a849000d79d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCalendarDateFormatEx(string lpszLocale, DATE_FORMAT dwFlags, ref CALDATETIME lpCalDateTime, string lpFormat, StringBuilder lpDateStr, int cchDate);
+		public static extern bool GetCalendarDateFormatEx(string lpszLocale, DATE_FORMAT dwFlags, in CALDATETIME lpCalDateTime, string lpFormat, StringBuilder lpDateStr, int cchDate);
 
 		/// <summary>
 		/// Retrieves information about a calendar for a locale specified by identifier. <note type="note">For interoperability reasons, the
@@ -2315,7 +4433,57 @@ namespace Vanara.PInvoke
 		// _Out_opt_ LPDWORD lpValue); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318072(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318072")]
-		public static extern int GetCalendarInfo(uint Locale, uint Calendar, CALTYPE CalType, StringBuilder lpCalData, int cchData, out uint lpValue);
+		public static extern int GetCalendarInfo(LCID Locale, CALID Calendar, CALTYPE CalType, [Optional] IntPtr lpCalData, [Optional] int cchData, out uint lpValue);
+
+		/// <summary>
+		/// Retrieves information about a calendar for a locale specified by identifier. <note type="note">For interoperability reasons, the
+		/// application should prefer the GetCalendarInfoEx function to GetCalendarInfo because Microsoft is migrating toward the use of
+		/// locale names instead of locale identifiers for new locales. Any application that runs only on Windows Vista and later should use GetCalendarInfoEx.</note>
+		/// </summary>
+		/// <param name="Locale">
+		/// Locale identifier that specifies the locale for which to retrieve calendar information. You can use the MAKELCID macro to create
+		/// a locale identifier or use one of the following predefined values.
+		/// </param>
+		/// <param name="Calendar">Calendar identifier.</param>
+		/// <param name="CalType">
+		/// <para>Type of information to retrieve. For more information, see Calendar Type Information.</para>
+		/// <para>CAL_USE_CP_ACP is relevant only for the ANSI version of this function.</para>
+		/// <para>
+		/// For CAL_NOUSEROVERRIDE, the function ignores any value set by <c>SetCalendarInfo</c> and uses the database settings for the
+		/// current system default locale. This type is relevant only in the combination CAL_NOUSEROVERRIDE | CAL_ITWODIGITYEARMAX.
+		/// CAL_ITWODIGITYEARMAX is the only value that can be set by <c>SetCalendarInfo</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpCalData">
+		/// Pointer to a buffer in which this function retrieves the requested data as a string. If CAL_RETURN_NUMBER is specified in
+		/// CalType, this parameter must retrieve NULL.
+		/// </param>
+		/// <param name="cchData">
+		/// Size, in characters, of the lpCalData buffer. The application can set this parameter to 0 to return the required size for the
+		/// calendar data buffer. In this case, the lpCalData parameter is not used. If CAL_RETURN_NUMBER is specified for CalType, the value
+		/// of cchData must be 0.
+		/// </param>
+		/// <param name="lpValue">
+		/// Pointer to a variable that receives the requested data as a number. If CAL_RETURN_NUMBER is specified in CalType, then lpValue
+		/// must not be NULL. If CAL_RETURN_NUMBER is not specified in CalType, then lpValue must be NULL.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Returns the number of characters retrieved in the lpCalData buffer if successful. If the function succeeds, cchData is set to 0,
+		/// and CAL_RETURN_NUMBER is not specified, the return value is the size of the buffer required to hold the locale information. If
+		/// the function succeeds, cchData is set to 0, and CAL_RETURN_NUMBER is specified, the return value is the size of the value written
+		/// to the lpValue parameter. This size is always 2.
+		/// </para>
+		/// <para>
+		/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
+		/// which can return one of the following error codes:
+		/// </para>
+		/// </returns>
+		// int GetCalendarInfo( _In_ LCID Locale, _In_ CALID Calendar, _In_ CALTYPE CalType, _Out_opt_ LPTSTR lpCalData, _In_ int cchData,
+		// _Out_opt_ LPDWORD lpValue); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318072(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318072")]
+		public static extern int GetCalendarInfo(LCID Locale, CALID Calendar, CALTYPE CalType, StringBuilder lpCalData, int cchData, [Optional] IntPtr lpValue);
 
 		/// <summary>Retrieves information about a calendar for a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -2358,7 +4526,50 @@ namespace Vanara.PInvoke
 		// _Out_opt_ LPWSTR lpCalData, _In_ int cchData, _Out_opt_ LPDWORD lpValue); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318075(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318075")]
-		public static extern int GetCalendarInfoEx(string lpLocaleName, uint Calendar, string lpReserved, CALTYPE CalType, StringBuilder lpCalData, int cchData, out uint lpValue);
+		public static extern int GetCalendarInfoEx(string lpLocaleName, CALID Calendar, [Optional] string lpReserved, CALTYPE CalType, [Optional] IntPtr lpCalData, [Optional] int cchData, out uint lpValue);
+
+		/// <summary>Retrieves information about a calendar for a locale specified by name.</summary>
+		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
+		/// <param name="Calendar">Calendar identifier.</param>
+		/// <param name="lpReserved">Reserved; must be <c>NULL</c>.</param>
+		/// <param name="CalType">
+		/// <para>Type of information to retrieve. For more information, see Calendar Type Information.</para>
+		/// <para>
+		/// For CAL_NOUSEROVERRIDE, the function ignores any value set by <c>SetCalendarInfo</c> and uses the database settings for the
+		/// current system default locale. This type is relevant only in the combination CAL_NOUSEROVERRIDE | CAL_ITWODIGITYEARMAX.
+		/// CAL_ITWODIGITYEARMAX is the only value that can be set by <c>SetCalendarInfo</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpCalData">
+		/// Pointer to a buffer in which this function retrieves the requested data as a string. If CAL_RETURN_NUMBER is specified in
+		/// CalType, this parameter must retrieve <c>NULL</c>.
+		/// </param>
+		/// <param name="cchData">
+		/// Size, in characters, of the lpCalData buffer. The application can set this parameter to 0 to return the required size for the
+		/// calendar data buffer. In this case, the lpCalData parameter is not used. If CAL_RETURN_NUMBER is specified for CalType, the value
+		/// of cchData must be 0.
+		/// </param>
+		/// <param name="lpValue">
+		/// Pointer to a variable that receives the requested data as a number. If CAL_RETURN_NUMBER is specified in CalType, then lpValue
+		/// must not be <c>NULL</c>. If CAL_RETURN_NUMBER is not specified in CalType, then lpValue must be <c>NULL</c>.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Returns the number of characters retrieved in the lpCalData buffer if successful. If the function succeeds, cchData is set to 0,
+		/// and CAL_RETURN_NUMBER is not specified, the return value is the size of the buffer required to hold the locale information. If
+		/// the function succeeds, cchData is set to 0, and CAL_RETURN_NUMBER is specified, the return value is the size of the value written
+		/// to the lpValue parameter. This size is always 2.
+		/// </para>
+		/// <para>
+		/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
+		/// which can return one of the following error codes:
+		/// </para>
+		/// </returns>
+		// int GetCalendarInfoEx( _In_opt_ LPCWSTR lpLocaleName, _In_ CALID Calendar, _In_opt_ LPCWSTR lpReserved, _In_ CALTYPE CalType,
+		// _Out_opt_ LPWSTR lpCalData, _In_ int cchData, _Out_opt_ LPDWORD lpValue); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318075(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318075")]
+		public static extern int GetCalendarInfoEx(string lpLocaleName, CALID Calendar, [Optional] string lpReserved, CALTYPE CalType, StringBuilder lpCalData, int cchData, [Optional] IntPtr lpValue);
 
 		/// <summary>Deprecated. Gets the supported date range for a specified calendar.</summary>
 		/// <param name="Calendar">The calendar.</param>
@@ -2388,7 +4599,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("", MSDNShortId = "fe036ac5-77c0-4e83-8d70-db3fa0f7c803")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCalendarSupportedDateRange(uint Calendar, out CALDATETIME lpCalMinDateTime, out CALDATETIME lpCalMaxDateTime);
+		public static extern bool GetCalendarSupportedDateRange(CALID Calendar, out CALDATETIME lpCalMinDateTime, out CALDATETIME lpCalMaxDateTime);
 
 		/// <summary>Retrieves information about any valid installed or available code page.</summary>
 		/// <param name="CodePage">
@@ -2489,7 +4700,7 @@ namespace Vanara.PInvoke
 		// LPTSTR lpCurrencyStr, _In_ int cchCurrency); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318083(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318083")]
-		public static extern int GetCurrencyFormat(uint Locale, LOCALE_FORMAT_FLAG dwFlags, string lpValue, in CURRENCYFMT lpFormat, StringBuilder lpCurrencyStr, int cchCurrency);
+		public static extern int GetCurrencyFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, [Optional] string lpValue, in CURRENCYFMT lpFormat, StringBuilder lpCurrencyStr, int cchCurrency);
 
 		/// <summary>Formats a number string as a currency string for a locale specified by identifier.</summary>
 		/// <param name="Locale">
@@ -2529,7 +4740,7 @@ namespace Vanara.PInvoke
 		// LPTSTR lpCurrencyStr, _In_ int cchCurrency); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318083(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318083")]
-		public static extern int GetCurrencyFormat(uint Locale, LOCALE_FORMAT_FLAG dwFlags, string lpValue, [Optional] IntPtr lpFormat, StringBuilder lpCurrencyStr, int cchCurrency);
+		public static extern int GetCurrencyFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, [Optional] string lpValue, [Optional] IntPtr lpFormat, StringBuilder lpCurrencyStr, int cchCurrency);
 
 		/// <summary>Formats a number string as a currency string for a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name or one of the following predefined values.</param>
@@ -2568,7 +4779,7 @@ namespace Vanara.PInvoke
 		// *lpFormat, _Out_opt_ LPWSTR lpCurrencyStr, _In_ int cchCurrency); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318084(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318084")]
-		public static extern int GetCurrencyFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, string lpValue, in CURRENCYFMT lpFormat, StringBuilder lpCurrencyStr, int cchCurrency);
+		public static extern int GetCurrencyFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, [Optional] string lpValue, in CURRENCYFMT lpFormat, StringBuilder lpCurrencyStr, int cchCurrency);
 
 		/// <summary>Formats a number string as a currency string for a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name or one of the following predefined values.</param>
@@ -2607,7 +4818,7 @@ namespace Vanara.PInvoke
 		// *lpFormat, _Out_opt_ LPWSTR lpCurrencyStr, _In_ int cchCurrency); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318084(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318084")]
-		public static extern int GetCurrencyFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, string lpValue, [Optional] IntPtr lpFormat, StringBuilder lpCurrencyStr, int cchCurrency);
+		public static extern int GetCurrencyFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, [Optional] string lpValue, [Optional] IntPtr lpFormat, StringBuilder lpCurrencyStr, int cchCurrency);
 
 		/// <summary>Formats a duration of time as a time string for a locale specified by identifier.</summary>
 		/// <param name="Locale">
@@ -2662,7 +4873,62 @@ namespace Vanara.PInvoke
 		// _In_opt_ LPCWSTR lpFormat, _Out_opt_ LPWSTR lpDurationStr, _In_ int cchDuration); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318091(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318091")]
-		public static extern int GetDurationFormat(uint Locale, LOCALE_FORMAT_FLAG dwFlags, in SYSTEMTIME lpDuration, ulong ullDuration, string lpFormat, StringBuilder lpDurationStr, int cchDuration);
+		public static extern int GetDurationFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, in SYSTEMTIME lpDuration, [Optional] ulong ullDuration, [Optional] string lpFormat, StringBuilder lpDurationStr, int cchDuration);
+
+		/// <summary>Formats a duration of time as a time string for a locale specified by identifier.</summary>
+		/// <param name="Locale">
+		/// <para>
+		/// Locale identifier that specifies the locale for which this function formats the duration. You can use the <c>MAKELCID</c> macro
+		/// to create a locale identifier or use one of the following predefined values.
+		/// </para>
+		/// <para><c>Windows Vista and later:</c> The following custom locale identifiers are also supported.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// Flags specifying function options. If lpFormat is not set to <c>NULL</c>, this parameter must be set to 0. If lpFormat is set to
+		/// <c>NULL</c>, your application can specify LOCALE_NOUSEROVERRIDE to format the string using the system default duration format for
+		/// the specified locale.
+		/// </param>
+		/// <param name="lpDuration">
+		/// Pointer to a <c>SYSTEMTIME</c> structure that contains the time duration information to format. If this pointer is <c>NULL</c>,
+		/// the function ignores this parameter and uses ullDuration.
+		/// </param>
+		/// <param name="ullDuration">
+		/// 64-bit unsigned integer that represents the number of 100-nanosecond intervals in the duration. If both lpDuration and
+		/// ullDuration are present, lpDuration takes precedence. If lpDuration is set to <c>NULL</c> and ullDuration is set to 0, the
+		/// duration is zero.
+		/// </param>
+		/// <param name="lpFormat">Pointer to the format string. For details, see the lpFormat parameter of <c>GetDurationFormatEx</c>.</param>
+		/// <param name="lpDurationStr">
+		/// <para>Pointer to the buffer in which the function retrieves the duration string.</para>
+		/// <para>
+		/// Alternatively, this parameter can contain <c>NULL</c> if cchDuration is set to 0. In this case, the function returns the required
+		/// size for the duration string buffer.
+		/// </para>
+		/// </param>
+		/// <param name="cchDuration">
+		/// <para>Size, in characters, of the buffer indicated by lpDurationStr.</para>
+		/// <para>
+		/// Alternatively, the application can set this parameter to 0. In this case, the function retrieves <c>NULL</c> in lpDurationStr and
+		/// returns the required size for the duration string buffer.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Returns the number of characters retrieved in the buffer indicated by lpDurationStr if successful. If lpDurationStr is set to
+		/// <c>NULL</c> and cchDuration is set to 0, the function returns the required size for the duration string buffer, including the
+		/// null terminating character. For example, if 10 characters are written to the buffer, the function returns 11 to include the
+		/// terminating null character.
+		/// </para>
+		/// <para>
+		/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
+		/// which can return one of the following error codes:
+		/// </para>
+		/// </returns>
+		// int GetDurationFormat( _In_ LCID Locale, _In_ DWORD dwFlags, _In_opt_ const SYSTEMTIME *lpDuration, _In_ ULONGLONG ullDuration,
+		// _In_opt_ LPCWSTR lpFormat, _Out_opt_ LPWSTR lpDurationStr, _In_ int cchDuration); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318091(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318091")]
+		public static extern int GetDurationFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, [Optional] IntPtr lpDuration, [Optional] ulong ullDuration, [Optional] string lpFormat, StringBuilder lpDurationStr, int cchDuration);
 
 		/// <summary>Formats a duration of time as a time string for a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -2757,7 +5023,102 @@ namespace Vanara.PInvoke
 		// ullDuration, _In_opt_ LPCWSTR lpFormat, _Out_opt_ LPWSTR lpDurationStr, _In_ int cchDuration); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318092(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318092")]
-		public static extern int GetDurationFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, in SYSTEMTIME lpDuration, ulong ullDuration, string lpFormat, StringBuilder lpDurationStr, int cchDuration);
+		public static extern int GetDurationFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, in SYSTEMTIME lpDuration, [Optional] ulong ullDuration, [Optional] string lpFormat, StringBuilder lpDurationStr, int cchDuration);
+
+		/// <summary>Formats a duration of time as a time string for a locale specified by name.</summary>
+		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
+		/// <param name="dwFlags">
+		/// Flags specifying function options. If lpFormat is not set to <c>NULL</c>, this parameter must be set to 0. If lpFormat is set to
+		/// <c>NULL</c>, your application can specify LOCALE_NOUSEROVERRIDE to format the string using the system default duration format for
+		/// the specified locale.
+		/// </param>
+		/// <param name="lpDuration">
+		/// Pointer to a <c>SYSTEMTIME</c> structure that contains the time duration information to format. The application sets this
+		/// parameter to <c>NULL</c> if the function is to ignore it and use ullDuration.
+		/// </param>
+		/// <param name="ullDuration">
+		/// 64-bit unsigned integer that represents the number of 100-nanosecond intervals in the duration. If both lpDuration and
+		/// ullDuration are set, the lpDuration parameter takes precedence. If lpDuration is set to <c>NULL</c> and ullDuration is set to 0,
+		/// the duration is 0.
+		/// </param>
+		/// <param name="lpFormat">
+		/// <para>
+		/// Pointer to the format string with characters as shown below. The application can set this parameter to <c>NULL</c> if the
+		/// function is to format the string according to the duration format for the specified locale. If lpFormat is not set to
+		/// <c>NULL</c>, the function uses the locale only for information not specified in the format picture string.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>d</term>
+		/// <term>days</term>
+		/// </item>
+		/// <item>
+		/// <term>h or H</term>
+		/// <term>hours</term>
+		/// </item>
+		/// <item>
+		/// <term>hh or HH</term>
+		/// <term>hours; if less than ten, prepend a leading zero</term>
+		/// </item>
+		/// <item>
+		/// <term>m</term>
+		/// <term>minutes</term>
+		/// </item>
+		/// <item>
+		/// <term>mm</term>
+		/// <term>minutes; if less than ten, prepend a leading zero</term>
+		/// </item>
+		/// <item>
+		/// <term>s</term>
+		/// <term>seconds</term>
+		/// </item>
+		/// <item>
+		/// <term>ss</term>
+		/// <term>seconds; if less than ten, prepend a leading zero</term>
+		/// </item>
+		/// <item>
+		/// <term>f</term>
+		/// <term>fractions of a second</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpDurationStr">
+		/// <para>Pointer to the buffer in which the function retrieves the duration string.</para>
+		/// <para>
+		/// Alternatively, this parameter retrieves <c>NULL</c> if cchDuration is set to 0. In this case, the function returns the required
+		/// size for the duration string buffer.
+		/// </para>
+		/// </param>
+		/// <param name="cchDuration">
+		/// <para>Size, in characters, of the buffer indicated by lpDurationStr.</para>
+		/// <para>
+		/// Alternatively, the application can set this parameter to 0. In this case, the function retrieves <c>NULL</c> in lpDurationStr and
+		/// returns the required size for the duration string buffer.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Returns the number of characters retrieved in the buffer indicated by lpDurationStr if successful. If lpDurationStr is set to
+		/// <c>NULL</c> and cchDuration is set to 0, the function returns the required size for the duration string buffer, including the
+		/// terminating null character. For example, if 10 characters are written to the buffer, the function returns 11 to include the
+		/// terminating null character.
+		/// </para>
+		/// <para>
+		/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
+		/// which can return one of the following error codes:
+		/// </para>
+		/// </returns>
+		// int GetDurationFormatEx( _In_opt_ LPCWSTR lpLocaleName, _In_ DWORD dwFlags, _In_opt_ const SYSTEMTIME *lpDuration, _In_ ULONGLONG
+		// ullDuration, _In_opt_ LPCWSTR lpFormat, _Out_opt_ LPWSTR lpDurationStr, _In_ int cchDuration); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318092(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318092")]
+		public static extern int GetDurationFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, [Optional] IntPtr lpDuration, [Optional] ulong ullDuration, [Optional] string lpFormat, StringBuilder lpDurationStr, int cchDuration);
 
 		/// <summary>Retrieves resource-related information about a file.</summary>
 		/// <param name="dwFlags">
@@ -2838,6 +5199,149 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318095")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetFileMUIInfo(MUI_QUERY dwFlags, string pcwszFilePath, ref FILEMUIINFO pFileMUIInfo, ref uint pcbFileMUIInfo);
+
+		/// <summary>Retrieves resource-related information about a file.</summary>
+		/// <param name="dwFlags">
+		/// <para>
+		/// Flags specifying the information to retrieve. Any combination of the following flags is allowed. The default value of the flags
+		/// is MUI_QUERY_TYPE | MUI_QUERY_CHECKSUM.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_QUERY_TYPE</term>
+		/// <term>Retrieve one of the following values in the dwFileType member of FILEMUIINFO:</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_QUERY_CHECKSUM</term>
+		/// <term>
+		/// Retrieve the resource checksum of the input file in the pChecksum member of FILEMUIINFO. If the input file does not have resource
+		/// configuration data, this member of the structure contains 0.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_QUERY_LANGUAGE_NAME</term>
+		/// <term>
+		/// Retrieve the language associated with the input file. For a language-specific resource file, this flag requests the associated
+		/// language. For an LN file, this flag requests the language of the ultimate fallback resources for the module, which can be either
+		/// in the LN file or in a separate language-specific resource file referenced by the resource configuration data of the LN file. For
+		/// more information, see the Remarks section.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_QUERY_RESOURCE_TYPES</term>
+		/// <term>
+		/// Retrieve lists of resource types in the language-specific resource files and LN files as they are specified in the resource
+		/// configuration data. See the Remarks section for a way to access this information.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="pcwszFilePath">
+		/// Pointer to a null-terminated string indicating the path to the file. Typically the file is either an LN file or a
+		/// language-specific resource file. If it is not one of these types, the only significant value that the function retrieves is
+		/// MUI_FILETYPE_NOT_LANGUAGE_NEUTRAL. The function only retrieves this value if the MUI_QUERY_RESOURCE_TYPES flag is set.
+		/// </param>
+		/// <returns>Class containing file information corresponding to a <c>FILEMUIINFO</c> structure.</returns>
+		public static SafeFILEMUIINFO GetFileMUIInfo(MUI_QUERY dwFlags, string pcwszFilePath)
+		{
+			var ret = new SafeFILEMUIINFO();
+			bool success;
+			var sz = 180U; // Magic number that appears to be the initial size for many MUI files.
+			do
+			{
+				ret.dwSize = sz;
+				success = GetFileMUIInfo(dwFlags, pcwszFilePath, ret, ref sz);
+			} while (!success && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER);
+			if (!success)
+				Win32Error.ThrowLastError();
+			return ret;
+		}
+
+		/// <summary>Retrieves resource-related information about a file.</summary>
+		/// <param name="dwFlags">
+		/// <para>
+		/// Flags specifying the information to retrieve. Any combination of the following flags is allowed. The default value of the flags
+		/// is MUI_QUERY_TYPE | MUI_QUERY_CHECKSUM.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_QUERY_TYPE</term>
+		/// <term>Retrieve one of the following values in the dwFileType member of FILEMUIINFO:</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_QUERY_CHECKSUM</term>
+		/// <term>
+		/// Retrieve the resource checksum of the input file in the pChecksum member of FILEMUIINFO. If the input file does not have resource
+		/// configuration data, this member of the structure contains 0.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_QUERY_LANGUAGE_NAME</term>
+		/// <term>
+		/// Retrieve the language associated with the input file. For a language-specific resource file, this flag requests the associated
+		/// language. For an LN file, this flag requests the language of the ultimate fallback resources for the module, which can be either
+		/// in the LN file or in a separate language-specific resource file referenced by the resource configuration data of the LN file. For
+		/// more information, see the Remarks section.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_QUERY_RESOURCE_TYPES</term>
+		/// <term>
+		/// Retrieve lists of resource types in the language-specific resource files and LN files as they are specified in the resource
+		/// configuration data. See the Remarks section for a way to access this information.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="pcwszFilePath">
+		/// Pointer to a null-terminated string indicating the path to the file. Typically the file is either an LN file or a
+		/// language-specific resource file. If it is not one of these types, the only significant value that the function retrieves is
+		/// MUI_FILETYPE_NOT_LANGUAGE_NEUTRAL. The function only retrieves this value if the MUI_QUERY_RESOURCE_TYPES flag is set.
+		/// </param>
+		/// <param name="pFileMUIInfo">
+		/// <para>
+		/// Pointer to a buffer containing file information in a <c>FILEMUIINFO</c> structure and possibly in data following that structure.
+		/// The information buffer might have to be much larger than the size of the structure itself. Depending on flag settings, the
+		/// function can store considerable information following the structure, at offsets retrieved in the structure. For more information,
+		/// see the Remarks section.
+		/// </para>
+		/// <para>
+		/// Alternatively, the application can set this parameter to <c>NULL</c> if pcbFileMUIInfo is set to 0. In this case, the function
+		/// retrieves the required size for the information buffer in pcbFileMUIInfo.
+		/// </para>
+		/// </param>
+		/// <param name="pcbFileMUIInfo">
+		/// <para>
+		/// Pointer to the buffer size, in bytes, for the file information indicated by pFileMUIInfo. On successful return from the function,
+		/// this parameter contains the size of the retrieved file information buffer and the <c>FILEMUIINFO</c> structure that contains it.
+		/// </para>
+		/// <para>
+		/// Alternatively, the application can set this parameter to 0 if it sets <c>NULL</c> in pFileMUIInfo. In this case, the function
+		/// retrieves the required file information buffer size in pcbFileMUIInfo. To allocate the correct amount of memory, this value
+		/// should be added to the size of the <c>FILEMUIINFO</c> structure itself.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// Returns <c>TRUE</c> if successful or <c>FALSE</c> otherwise. To get extended error information, the application can call <c>GetLastError</c>.
+		/// </returns>
+		// BOOL GetFileMUIInfo( _In_ DWORD dwFlags, _In_ PCWSTR pcwszFilePath, _Inout_opt_ PFILEMUIINFO pFileMUIInfo, _Inout_ DWORD
+		// *pcbFileMUIInfo); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318095(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318095")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetFileMUIInfo(MUI_QUERY dwFlags, string pcwszFilePath, [Optional] IntPtr pFileMUIInfo, ref uint pcbFileMUIInfo);
 
 		/// <summary>
 		/// Retrieves the path to all language-specific resource files associated with the supplied LN file. The application must call this
@@ -2986,7 +5490,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318097")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetFileMUIPath(MUI_LANGUAGE_ENUM dwFlags, string pcwszFilePath, StringBuilder pwszLanguage, ref uint pcchLanguage, StringBuilder pwszFileMUIPath, ref uint pcchFileMUIPath, ref ulong pululEnumerator);
+		public static extern bool GetFileMUIPath(MUI_LANGUAGE_PATH dwFlags, string pcwszFilePath, StringBuilder pwszLanguage, ref uint pcchLanguage, StringBuilder pwszFileMUIPath, ref uint pcchFileMUIPath, ref ulong pululEnumerator);
 
 		/// <summary>
 		/// <para>
@@ -3087,7 +5591,39 @@ namespace Vanara.PInvoke
 		// int GetLocaleInfo( _In_ LCID Locale, _In_ LCTYPE LCType, _Out_opt_ LPTSTR lpLCData, _In_ int cchData); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318101(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318101")]
-		public static extern int GetLocaleInfo(uint Locale, LCTYPE LCType, StringBuilder lpLCData, int cchData);
+		public static extern int GetLocaleInfo(LCID Locale, LCTYPE LCType, StringBuilder lpLCData, int cchData);
+
+		/// <summary>Retrieves information about a locale specified by identifier.</summary>
+		/// <param name="Locale">
+		/// Locale identifier for which to retrieve information. You can use the <c>MAKELCID</c> macro to create a locale identifier or use
+		/// one of the following predefined values.
+		/// </param>
+		/// <param name="LCType">The locale information to retrieve. For detailed definitions, see the LCType parameter of <c>GetLocaleInfoEx</c>.</param>
+		/// <param name="lpLCData">
+		/// Pointer to a buffer in which this function retrieves the requested locale information. This pointer is not used if cchData is set
+		/// to 0. For more information, see the Remarks section.
+		/// </param>
+		/// <param name="cchData">
+		/// Size, in TCHAR values, of the data buffer indicated by lpLCData. Alternatively, the application can set this parameter to 0. In
+		/// this case, the function does not use the lpLCData parameter and returns the required buffer size, including the terminating null character.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Returns the number of characters retrieved in the locale data buffer if successful and cchData is a nonzero value. If the
+		/// function succeeds, cchData is nonzero, and LOCALE_RETURN_NUMBER is specified, the return value is the size of the integer
+		/// retrieved in the data buffer; that is, 2 for the Unicode version of the function or 4 for the ANSI version. If the function
+		/// succeeds and the value of cchData is 0, the return value is the required size, in characters including a null character, for the
+		/// locale data buffer.
+		/// </para>
+		/// <para>
+		/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
+		/// which can return one of the following error codes:
+		/// </para>
+		/// </returns>
+		// int GetLocaleInfo( _In_ LCID Locale, _In_ LCTYPE LCType, _Out_opt_ LPTSTR lpLCData, _In_ int cchData); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318101(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318101")]
+		public static extern int GetLocaleInfo(LCID Locale, LCTYPE LCType, IntPtr lpLCData, int cchData);
 
 		/// <summary>Retrieves information about a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -3133,6 +5669,50 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318103")]
 		public static extern int GetLocaleInfoEx(string lpLocaleName, LCTYPE LCType, StringBuilder lpLCData, int cchData);
 
+		/// <summary>Retrieves information about a locale specified by name.</summary>
+		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
+		/// <param name="LCType">
+		/// <para>
+		/// The locale information to retrieve. For possible values, see the "Constants Used in the LCType Parameter of GetLocaleInfo,
+		/// GetLocaleInfoEx, and SetLocaleInfo" section in Locale Information Constants. Note that only one piece of locale information can
+		/// be specified per call.
+		/// </para>
+		/// <para>
+		/// The application can use the binary OR operator to combine LOCALE_RETURN_NUMBER with any other allowed constant. In this case, the
+		/// function retrieves the value as a number instead of a string. The buffer that receives the value must be at least the length of a
+		/// DWORD value, which is 2.
+		/// </para>
+		/// <para>If LCType is set to LOCALE_IOPTIONALCALENDAR, the function retrieves only the first alternate calendar.</para>
+		/// <para>
+		/// Starting with Windows Vista, your applications should not use LOCALE_ILANGUAGE in the LCType parameter to avoid failure or
+		/// retrieval of unexpected data. Instead, it is recommended for your applications to call <c>GetLocaleInfoEx</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpLCData">
+		/// Pointer to a buffer in which this function retrieves the requested locale information. This pointer is not used if cchData is set
+		/// to 0.
+		/// </param>
+		/// <param name="cchData">
+		/// Size, in characters, of the data buffer indicated by lpLCData. Alternatively, the application can set this parameter to 0. In
+		/// this case, the function does not use the lpLCData parameter and returns the required buffer size, including the terminating null character.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Returns the number of characters retrieved in the locale data buffer if successful and cchData is a nonzero value. If the
+		/// function succeeds, cchData is nonzero, and LOCALE_RETURN_NUMBER is specified, the return value is the size of the integer
+		/// retrieved in the data buffer, that is, 2. If the function succeeds and the value of cchData is 0, the return value is the
+		/// required size, in characters including a null character, for the locale data buffer.
+		/// </para>
+		/// <para>
+		/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
+		/// which can return one of the following error codes:
+		/// </para>
+		/// </returns>
+		// int GetLocaleInfoEx( _In_opt_ LPCWSTR lpLocaleName, _In_ LCTYPE LCType, _Out_opt_ LPWSTR lpLCData, _In_ int cchData); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318103(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318103")]
+		public static extern int GetLocaleInfoEx(string lpLocaleName, LCTYPE LCType, IntPtr lpLCData, int cchData);
+
 		/// <summary>Retrieves information about the current version of a specified NLS capability for a locale specified by identifier.</summary>
 		/// <param name="Function">The NLS capability to query. This value must be COMPARE_STRING. See the <c>SYSNLS_FUNCTION</c> enumeration.</param>
 		/// <param name="Locale">
@@ -3153,7 +5733,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318105")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNLSVersion(SYSNLS_FUNCTION Function, uint Locale, ref NLSVERSIONINFO lpVersionInformation);
+		public static extern bool GetNLSVersion(SYSNLS_FUNCTION Function, LCID Locale, ref NLSVERSIONINFO lpVersionInformation);
 
 		/// <summary>Retrieves information about the current version of a specified NLS capability for a locale specified by name.</summary>
 		/// <param name="function">The NLS capability to query. This value must be COMPARE_STRING. See the <c>SYSNLS_FUNCTION</c> enumeration.</param>
@@ -3213,7 +5793,51 @@ namespace Vanara.PInvoke
 		// LPTSTR lpNumberStr, _In_ int cchNumber); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318110(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318110")]
-		public static extern int GetNumberFormat(uint Locale, LOCALE_FORMAT_FLAG dwFlags, string lpValue, in NUMBERFMT lpFormat, StringBuilder lpNumberStr, int cchNumber);
+		public static extern int GetNumberFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, string lpValue, in NUMBERFMT lpFormat, StringBuilder lpNumberStr, int cchNumber);
+
+		/// <summary>Formats a number string as a number string customized for a locale specified by identifier.</summary>
+		/// <param name="Locale">
+		/// Locale identifier that specifies the locale. You can use the <c>MAKELCID</c> macro to create a locale identifier or use one of
+		/// the following predefined values.
+		/// </param>
+		/// <param name="dwFlags">
+		/// Flags controlling the operation of the function. The application must set this parameter to 0 if lpFormat is not set to
+		/// <c>NULL</c>. In this case, the function formats the string using user overrides to the default number format for the locale. If
+		/// lpFormat is set to <c>NULL</c>, the application can specify LOCALE_NOUSEROVERRIDE to format the string using the system default
+		/// number format for the specified locale.
+		/// </param>
+		/// <param name="lpValue">
+		/// Pointer to a null-terminated string containing the number string to format. This string can only contain the following
+		/// characters. All other characters are invalid. The function returns an error if the string indicated by lpValue deviates from
+		/// these rules.
+		/// </param>
+		/// <param name="lpFormat">
+		/// Pointer to a <c>NUMBERFMT</c> structure that contains number formatting information, with all members set to appropriate values.
+		/// If this parameter does is not set to <c>NULL</c>, the function uses the locale only for formatting information not specified in
+		/// the structure, for example, the locale-specific string value for the negative sign.
+		/// </param>
+		/// <param name="lpNumberStr">Pointer to a buffer in which this function retrieves the formatted number string.</param>
+		/// <param name="cchNumber">
+		/// Size, in TCHAR values, for the number string buffer indicated by lpNumberStr. Alternatively, the application can set this
+		/// parameter to 0. In this case, the function returns the required size for the number string buffer, and does not use the
+		/// lpNumberStr parameter.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Returns the number of TCHAR values retrieved in the buffer indicated by lpNumberStr if successful. If the cchNumber parameter is
+		/// set to 0, the function returns the number of characters required to hold the formatted number string, including a terminating
+		/// null character.
+		/// </para>
+		/// <para>
+		/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
+		/// which can return one of the following error codes:
+		/// </para>
+		/// </returns>
+		// int GetNumberFormat( _In_ LCID Locale, _In_ DWORD dwFlags, _In_ LPCTSTR lpValue, _In_opt_ const NUMBERFMT *lpFormat, _Out_opt_
+		// LPTSTR lpNumberStr, _In_ int cchNumber); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318110(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318110")]
+		public static extern int GetNumberFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, string lpValue, [Optional] IntPtr lpFormat, StringBuilder lpNumberStr, int cchNumber);
 
 		/// <summary>Formats a number string as a number string customized for a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -3257,6 +5881,49 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318113")]
 		public static extern int GetNumberFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, string lpValue, in NUMBERFMT lpFormat, StringBuilder lpNumberStr, int cchNumber);
+
+		/// <summary>Formats a number string as a number string customized for a locale specified by name.</summary>
+		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
+		/// <param name="dwFlags">
+		/// Flags controlling the operation of the function. The application must set this parameter to 0 if lpFormat is not set to
+		/// <c>NULL</c>. In this case, the function formats the string using user overrides to the default number format for the locale. If
+		/// lpFormat is set to <c>NULL</c>, the application can specify LOCALE_NOUSEROVERRIDE to format the string using the system default
+		/// number format for the specified locale.
+		/// </param>
+		/// <param name="lpValue">
+		/// Pointer to a null-terminated string containing the number string to format. This string can only contain the following
+		/// characters. All other characters are invalid. The function returns an error if the string indicated by lpValue deviates from
+		/// these rules.
+		/// </param>
+		/// <param name="lpFormat">
+		/// Pointer to a <c>NUMBERFMT</c> structure that contains number formatting information, with all members set to appropriate values.
+		/// If the application does not set this parameter to <c>NULL</c>, the function uses the locale only for formatting information not
+		/// specified in the structure, for example, the locale string value for the negative sign.
+		/// </param>
+		/// <param name="lpNumberStr">
+		/// Pointer to a buffer in which this function retrieves the formatted number string. Alternatively, this parameter contains
+		/// <c>NULL</c> if cchNumber is set to 0. In this case, the function returns the required size for the number string buffer.
+		/// </param>
+		/// <param name="cchNumber">
+		/// Size, in characters, for the number string buffer indicated by lpNumberStr. Alternatively, the application can set this parameter
+		/// to 0. In this case, the function returns the required size for the number string buffer and does not use the lpNumberStr parameter.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Returns the number of characters retrieved in the buffer indicated by lpNumberStr if successful. If the cchNumber parameter is
+		/// set to 0, the function returns the number of characters required to hold the formatted number string, including a terminating
+		/// null character.
+		/// </para>
+		/// <para>
+		/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
+		/// which can return one of the following error codes:
+		/// </para>
+		/// </returns>
+		// int GetNumberFormatEx( _In_opt_ LPCWSTR lpLocaleName, _In_ DWORD dwFlags, _In_ LPCWSTR lpValue, _In_opt_ const NUMBERFMT
+		// *lpFormat, _Out_opt_ LPWSTR lpNumberStr, _In_ int cchNumber); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318113(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318113")]
+		public static extern int GetNumberFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, string lpValue, [Optional] IntPtr lpFormat, StringBuilder lpNumberStr, int cchNumber);
 
 		/// <summary>Returns the current original equipment manufacturer (OEM) code page identifier for the operating system.</summary>
 		/// <returns>Returns the current OEM code page identifier for the operating system.</returns>
@@ -3325,6 +5992,33 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318115")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetProcessPreferredUILanguages(MUI_LANGUAGE_ENUM dwFlags, out uint pulNumLanguages, IntPtr pwszLanguagesBuffer, ref uint pcchLanguagesBuffer);
+
+		/// <summary>Retrieves the process preferred UI languages. For more information, see User Interface Language Management.</summary>
+		/// <param name="dwFlags">
+		/// <para>
+		/// Flags identifying the language format to use for the process preferred UI languages. The flags are mutually exclusive, and the
+		/// default is MUI_LANGUAGE_NAME.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_LANGUAGE_ID</term>
+		/// <term>Retrieve the language strings in language identifier format.</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_LANGUAGE_NAME</term>
+		/// <term>Retrieve the language strings in language name format.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>An ordered, null-delimited list in preference order, starting with the most preferable.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318115")]
+		public static IEnumerable<string> GetProcessPreferredUILanguages(MUI_LANGUAGE_ENUM dwFlags) => GetLanguages(dwFlags, GetProcessPreferredUILanguages);
 
 		/// <summary>Provides a list of scripts used in the specified Unicode string.</summary>
 		/// <param name="dwFlags">
@@ -3415,7 +6109,7 @@ namespace Vanara.PInvoke
 		// LCID GetSystemDefaultLCID(void); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318121(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318121")]
-		public static extern uint GetSystemDefaultLCID();
+		public static extern LCID GetSystemDefaultLCID();
 
 		/// <summary>Retrieves the system default locale name.</summary>
 		/// <param name="lpLocaleName">Pointer to a buffer in which this function retrieves the locale name.</param>
@@ -3528,6 +6222,54 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetSystemPreferredUILanguages(MUI_LANGUAGE_ENUM dwFlags, out uint pulNumLanguages, IntPtr pwszLanguagesBuffer, ref uint pcchLanguagesBuffer);
 
+		/// <summary>Retrieves the system preferred UI languages. For more information, see User Interface Language Management.</summary>
+		/// <param name="dwFlags">
+		/// <para>
+		/// Flags identifying language format and filtering. The following flags specify the format to use for the system preferred UI
+		/// languages. The flags are mutually exclusive, and the default is MUI_LANGUAGE_NAME.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_LANGUAGE_ID</term>
+		/// <term>Retrieve the language strings in language identifier format.</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_LANGUAGE_NAME</term>
+		/// <term>Retrieve the language strings in language name format.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// <para>
+		/// The following flag specifies whether the function is to validate the list of languages (default) or retrieve the system preferred
+		/// UI languages list exactly as it is stored in the registry.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_MACHINE_LANGUAGE_SETTINGS</term>
+		/// <term>
+		/// Retrieve the stored system preferred UI languages list, checking only to ensure that each language name corresponds to a valid
+		/// NLS locale. If this flag is not set, the function retrieves the system preferred UI languages in pwszLanguagesBuffer, as long as
+		/// the list is non-empty and meets the validation criteria. Otherwise, the function retrieves the system default user interface
+		/// language in the language buffer.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>An ordered, null-delimited system preferred UI languages list, in the format specified by dwFlags.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318124")]
+		public static IEnumerable<string> GetSystemPreferredUILanguages(MUI_LANGUAGE_ENUM dwFlags) => GetLanguages(dwFlags, GetSystemPreferredUILanguages);
+
 		/// <summary>Returns the locale identifier of the current locale for the calling thread.</summary>
 		/// <returns>
 		/// <para>Returns the locale identifier of the locale associated with the current thread.</para>
@@ -3540,7 +6282,7 @@ namespace Vanara.PInvoke
 		// LCID GetThreadLocale(void); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318127(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318127")]
-		public static extern uint GetThreadLocale();
+		public static extern LCID GetThreadLocale();
 
 		/// <summary>
 		/// Retrieves the thread preferred UI languages for the current thread. For more information, see User Interface Language Management.
@@ -3643,7 +6385,79 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318128")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetThreadPreferredUILanguages(MUI_LANGUAGE_ENUM dwFlags, out uint pulNumLanguages, IntPtr pwszLanguagesBuffer, ref uint pcchLanguagesBuffer);
+		public static extern bool GetThreadPreferredUILanguages(MUI_LANGUAGE_FILTER dwFlags, out uint pulNumLanguages, IntPtr pwszLanguagesBuffer, ref uint pcchLanguagesBuffer);
+
+		/// <summary>
+		/// Retrieves the thread preferred UI languages for the current thread. For more information, see User Interface Language Management.
+		/// </summary>
+		/// <param name="dwFlags">
+		/// <para>
+		/// Flags identifying language format and filtering. The following flags specify the language format to use for the thread preferred
+		/// UI languages. The flags are mutually exclusive, and the default is MUI_LANGUAGE_NAME.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_LANGUAGE_ID</term>
+		/// <term>Retrieve the language strings in language identifier format.</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_LANGUAGE_NAME</term>
+		/// <term>Retrieve the language strings in language name format.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// <para>
+		/// The following flags specify filtering for the function to use in retrieving the thread preferred UI languages. The default flag
+		/// is MUI_MERGE_USER_FALLBACK.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_MERGE_SYSTEM_FALLBACK</term>
+		/// <term>
+		/// Use the system fallback to retrieve a list that corresponds exactly to the language list used by the resource loader. This flag
+		/// can be used only in combination with MUI_MERGE_USER_FALLBACK. Using the flags in combination alters the usual effect of
+		/// MUI_MERGE_USER_FALLBACK by including fallback and neutral languages in the list.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_MERGE_USER_FALLBACK</term>
+		/// <term>
+		/// Retrieve a composite list consisting of the thread preferred UI languages, followed by process preferred UI languages, followed
+		/// by any user preferred UI languages that are distinct from these, followed by the system default UI language, if it is not already
+		/// in the list. If the user preferred UI languages list is empty, the function retrieves the system preferred UI languages. This
+		/// flag cannot be combined with MUI_THREAD_LANGUAGES.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_THREAD_LANGUAGES</term>
+		/// <term>
+		/// Retrieve only the thread preferred UI languages for the current thread, or an empty list if no preferred languages are set for
+		/// the current thread. This flag cannot be combined with MUI_MERGE_USER_FALLBACK or MUI_MERGE_SYSTEM_FALLBACK.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_UI_FALLBACK</term>
+		/// <term>
+		/// Retrieve a complete thread preferred UI languages list along with associated fallback and neutral languages. Use of this flag is
+		/// equivalent to combining MUI_MERGE_SYSTEM_FALLBACK and MUI_MERGE_USER_FALLBACK. (Applicable only for Windows 7 and later).
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>An ordered, null-delimited thread preferred UI languages list, in the format specified by dwFlags.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318128")]
+		public static IEnumerable<string> GetThreadPreferredUILanguages(MUI_LANGUAGE_FILTER dwFlags) => GetLanguages(dwFlags, GetThreadPreferredUILanguages);
 
 		/// <summary>Returns the language identifier of the first user interface language for the current thread.</summary>
 		/// <returns>
@@ -3756,99 +6570,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318133")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetUILanguageInfo(MUI_LANGUAGE_ENUM dwFlags, IntPtr pwmszLanguage, IntPtr pwszFallbackLanguages, ref uint pcchFallbackLanguages, out MUI_LANGUAGE pdwAttributes);
-
-		/// <summary>Retrieves a variety of information about an installed UI language:</summary>
-		/// <param name="dwFlags">
-		/// <para>Flags defining the format of the specified language. The flags are mutually exclusive, and the default is MUI_LANGUAGE_NAME.</para>
-		/// <para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>MUI_LANGUAGE_ID</term>
-		/// <term>Retrieve the language strings in language identifier format.</term>
-		/// </item>
-		/// <item>
-		/// <term>MUI_LANGUAGE_NAME</term>
-		/// <term>Retrieve the language strings in language name format.</term>
-		/// </item>
-		/// </list>
-		/// </para>
-		/// </param>
-		/// <param name="pwmszLanguage">
-		/// Languages for which the function is to retrieve information. This parameter indicates an ordered array of language identifiers or
-		/// language names, depending on the flag setting. For information on the use of this parameter, see the Remarks section.
-		/// </param>
-		/// <param name="pwszFallbackLanguages">
-		/// <para>A list of fallback languages, formatted as defined by the setting for dwFlags.</para>
-		/// </param>
-		/// <param name="pdwAttributes">
-		/// <para>
-		/// Pointer to flags indicating attributes of the input language list. The function always retrieves the flag characterizing the last
-		/// language listed.
-		/// </para>
-		/// <para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>MUI_FULL_LANGUAGE</term>
-		/// <term>The language is fully localized.</term>
-		/// </item>
-		/// <item>
-		/// <term>MUI_PARTIAL_LANGUAGE</term>
-		/// <term>The language is partially localized.</term>
-		/// </item>
-		/// <item>
-		/// <term>MUI_LIP_LANGUAGE</term>
-		/// <term>The language is an LIP language.</term>
-		/// </item>
-		/// </list>
-		/// </para>
-		/// <para>In addition, pdwAttributes includes one or both of the following flags, as appropriate.</para>
-		/// <para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>MUI_LANGUAGE_INSTALLED</term>
-		/// <term>The language is installed on this computer.</term>
-		/// </item>
-		/// <item>
-		/// <term>MUI_LANGUAGE_LICENSED</term>
-		/// <term>The language is appropriately licensed for the current user.</term>
-		/// </item>
-		/// </list>
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// Returns <c>TRUE</c> if successful or <c>FALSE</c> otherwise. To get extended error information, the application can call
-		/// <c>GetLastError</c>, which can return the following error codes:
-		/// </para>
-		/// <para>If <c>GetLastError</c> returns any other error code, the parameters pcchFallbackLanguages and pdwAttributes are undefined.</para>
-		/// </returns>
-		public static bool GetUILanguageInfo(MUI_LANGUAGE_ENUM dwFlags, string[] pwmszLanguage, out string[] pwszFallbackLanguages, out MUI_LANGUAGE pdwAttributes)
-		{
-			using (var mem = SafeCoTaskMemHandle.CreateFromStringList(pwmszLanguage, StringListPackMethod.Concatenated, CharSet.Unicode))
-			{
-				uint sz = 0;
-				if (!GetUILanguageInfo(dwFlags, (IntPtr)mem, IntPtr.Zero, ref sz, out var _) && sz == 0) Win32Error.ThrowLastError();
-				using (var rmem = new SafeCoTaskMemHandle((int)sz))
-				{
-					var ret = GetUILanguageInfo(dwFlags, (IntPtr)mem, IntPtr.Zero, ref sz, out pdwAttributes);
-					pwszFallbackLanguages = rmem.ToStringEnum(CharSet.Unicode).ToArray();
-					return ret;
-				}
-			}
-		}
+		public static extern bool GetUILanguageInfo(MUI_LANGUAGE_ENUM dwFlags, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Unicode")] string[] pwmszLanguage,
+			IntPtr pwszFallbackLanguages, ref uint pcchFallbackLanguages, out MUI_LANGUAGE pdwAttributes);
 
 		/// <summary>
 		/// Retrieves the two-letter International Organization for Standardization (ISO) 3166-1 code or numeric United Nations (UN) Series
@@ -3920,7 +6643,7 @@ namespace Vanara.PInvoke
 		// LCID GetUserDefaultLCID(void); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318135(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318135")]
-		public static extern uint GetUserDefaultLCID();
+		public static extern LCID GetUserDefaultLCID();
 
 		/// <summary>Retrieves the user default locale name.</summary>
 		/// <param name="lpLocaleName">Pointer to a buffer in which this function retrieves the locale name.</param>
@@ -4027,6 +6750,33 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetUserPreferredUILanguages(MUI_LANGUAGE_ENUM dwFlags, out uint pulNumLanguages, IntPtr pwszLanguagesBuffer, ref uint pcchLanguagesBuffer);
 
+		/// <summary>Retrieves information about the user preferred UI languages. For more information, see User Interface Language Management.</summary>
+		/// <param name="dwFlags">
+		/// <para>
+		/// Flags identifying language format and filtering. The following flags specify the language format to use for the user preferred UI
+		/// languages list. The flags are mutually exclusive, and the default is MUI_LANGUAGE_NAME.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_LANGUAGE_ID</term>
+		/// <term>Retrieve the language strings in language identifier format.</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_LANGUAGE_NAME</term>
+		/// <term>Retrieve the language strings in language name format.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>An ordered, null-delimited user preferred UI languages list, in the format specified by dwflags.</returns>
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318139")]
+		public static IEnumerable<string> GetUserPreferredUILanguages(MUI_LANGUAGE_ENUM dwFlags) => GetLanguages(dwFlags, GetUserPreferredUILanguages);
+
 		/// <summary>
 		/// Converts an internationalized domain name (IDN) or another internationalized label to a Unicode (wide character) representation
 		/// of the ASCII string that represents the name in the Punycode transfer encoding syntax.
@@ -4106,7 +6856,7 @@ namespace Vanara.PInvoke
 		// int cchASCIIChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318149(v=vs.85).aspx
 		[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318149")]
-		public static extern int IdnToAscii(IDN_FLAGS dwFlags, string lpUnicodeCharStr, int cchUnicodeChar, StringBuilder lpASCIICharStr, int cchASCIIChar);
+		public static extern int IdnToAscii(IDN_FLAGS dwFlags, string lpUnicodeCharStr, int cchUnicodeChar, [Out] StringBuilder lpASCIICharStr, int cchASCIIChar);
 
 		/// <summary>
 		/// Converts an internationalized domain name (IDN) or another internationalized label to the NamePrep form specified by Network
@@ -4143,7 +6893,7 @@ namespace Vanara.PInvoke
 		// lpNameprepCharStr, _In_ int cchNameprepChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318150(v=vs.85).aspx
 		[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318150")]
-		public static extern int IdnToNameprepUnicode(IDN_FLAGS dwFlags, string lpUnicodeCharStr, int cchUnicodeChar, StringBuilder lpNameprepCharStr, int cchNameprepChar);
+		public static extern int IdnToNameprepUnicode(IDN_FLAGS dwFlags, string lpUnicodeCharStr, int cchUnicodeChar, [Out] StringBuilder lpNameprepCharStr, int cchNameprepChar);
 
 		/// <summary>
 		/// Converts the Punycode form of an internationalized domain name (IDN) or another internationalized label to the normal Unicode
@@ -4182,7 +6932,7 @@ namespace Vanara.PInvoke
 		// int cchUnicodeChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318151(v=vs.85).aspx
 		[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318151")]
-		public static extern int IdnToUnicode(IDN_FLAGS dwFlags, string lpASCIICharStr, int cchASCIIChar, StringBuilder lpUnicodeCharStr, int cchUnicodeChar);
+		public static extern int IdnToUnicode(IDN_FLAGS dwFlags, string lpASCIICharStr, int cchASCIIChar, [Out] StringBuilder lpUnicodeCharStr, int cchUnicodeChar);
 
 		/// <summary>
 		/// Determines if a specified character is a lead byte for the system default Windows ANSI code page ( <c>CP_ACP</c>). A lead byte is
@@ -4273,7 +7023,37 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318669")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsNLSDefinedString(SYSNLS_FUNCTION Function, [Optional] uint dwFlags, ref NLSVERSIONINFO lpVersionInformation, string lpString, int cchStr);
+		public static extern bool IsNLSDefinedString(SYSNLS_FUNCTION Function, [Optional] uint dwFlags, ref NLSVERSIONINFO lpVersionInformation, string lpString, int cchStr = -1);
+
+		/// <summary>Determines if each character in a string has a defined result for a specified NLS capability.</summary>
+		/// <param name="Function">NLS capability to query. This value must be COMPARE_STRING. See the <c>SYSNLS_FUNCTION</c> enumeration.</param>
+		/// <param name="dwFlags">Flags defining the function. Must be 0.</param>
+		/// <param name="lpVersionInformation">
+		/// Pointer to an <c>NLSVERSIONINFO</c> structure containing version information. Typically, the information is obtained by calling
+		/// <c>GetNLSVersion</c>. The application sets this parameter to <c>NULL</c> if the function is to use the current version.
+		/// </param>
+		/// <param name="lpString">Pointer to the UTF-16 string to examine.</param>
+		/// <param name="cchStr">
+		/// <para>
+		/// Number of UTF-16 characters in the string indicated by lpString. This count can include a terminating null character. If the
+		/// terminating null character is included in the character count, it does not affect the checking behavior because the terminating
+		/// null character is always defined.
+		/// </para>
+		/// <para>
+		/// The application should supply -1 to indicate that the string is null-terminated. In this case, the function itself calculates the
+		/// string length.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// Returns <c>TRUE</c> if successful, only if the input string is valid, or <c>FALSE</c> otherwise. To get extended error
+		/// information, the application can call <c>GetLastError</c>, which can return one of the following error codes:
+		/// </returns>
+		// BOOL IsNLSDefinedString( _In_ NLS_FUNCTION Function, _In_ DWORD dwFlags, _In_ LPNLSVERSIONINFO lpVersionInformation, _In_ LPCWSTR
+		// lpString, _In_ INT cchStr); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318669(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318669")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool IsNLSDefinedString(SYSNLS_FUNCTION Function, [Optional] uint dwFlags, [Optional] IntPtr lpVersionInformation, string lpString, int cchStr = -1);
 
 		/// <summary>
 		/// Verifies that a string is normalized according to Unicode 4.0 TR#15. For more information, see Using Unicode Normalization to
@@ -4296,7 +7076,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318671")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsNormalizedString(NORM_FORM NormForm, string lpString, int cwLength);
+		public static extern bool IsNormalizedString(NORM_FORM NormForm, string lpString, int cwLength = -1);
 
 		/// <summary>Determines if a specified code page is valid.</summary>
 		/// <param name="CodePage">Code page identifier for the code page to check.</param>
@@ -4337,7 +7117,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318677")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsValidLanguageGroup(LGRPID LanguageGroup, LGRPID_FLAGS dwFlags);
+		public static extern bool IsValidLanguageGroup(LGRPID LanguageGroup, LGRPID_FLAGS dwFlags = 0);
 
 		/// <summary>
 		/// <para>
@@ -4385,7 +7165,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318679")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsValidLocale(uint Locale, LCID_FLAGS dwFlags);
+		public static extern bool IsValidLocale(LCID Locale, LCID_FLAGS dwFlags);
 
 		/// <summary>Determines if the specified locale name is valid for a locale that is installed or supported on the operating system.</summary>
 		/// <param name="lpLocaleName">Pointer to the locale name to validate.</param>
@@ -4406,7 +7186,8 @@ namespace Vanara.PInvoke
 		// DWORD IsValidNLSVersion( _In_ NLS_FUNCTION function, _In_opt_ LPCWSTR lpLocaleName, _In_ LPNLSVERSIONINFOEX lpVersionInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706739(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "hh706739")]
-		public static extern uint IsValidNLSVersion(SYSNLS_FUNCTION function, string lpLocaleName, ref NLSVERSIONINFOEX lpVersionInformation);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool IsValidNLSVersion(SYSNLS_FUNCTION function, string lpLocaleName, ref NLSVERSIONINFOEX lpVersionInformation);
 
 		/// <summary>Converts a locale identifier to a locale name.</summary>
 		/// <param name="Locale">
@@ -4447,7 +7228,7 @@ namespace Vanara.PInvoke
 		// int LCIDToLocaleName( _In_ LCID Locale, _Out_opt_ LPWSTR lpName, _In_ int cchName, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318698(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318698")]
-		public static extern int LCIDToLocaleName(uint Locale, StringBuilder lpName, int cchName, LCTYPE dwFlags);
+		public static extern int LCIDToLocaleName(LCID Locale, StringBuilder lpName, int cchName, LCTYPE dwFlags);
 
 		/// <summary>
 		/// For a locale specified by identifier, maps one input character string to another using a specified transformation, or generates a
@@ -4515,7 +7296,7 @@ namespace Vanara.PInvoke
 		// int cchDest); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318700(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318700")]
-		public static extern int LCMapString(uint Locale, uint dwMapFlags, string lpSrcStr, int cchSrc, StringBuilder lpDestStr, int cchDest);
+		public static extern int LCMapString(LCID Locale, uint dwMapFlags, string lpSrcStr, int cchSrc, StringBuilder lpDestStr, int cchDest);
 
 		/// <summary>
 		/// For a locale specified by name, maps an input character string to another using a specified transformation, or generates a sort
@@ -4727,6 +7508,215 @@ namespace Vanara.PInvoke
 		public static extern int LCMapStringEx(string lpLocaleName, uint dwMapFlags, string lpSrcStr, int cchSrc, StringBuilder lpDestStr, int cchDest, ref NLSVERSIONINFO lpVersionInformation, [Optional] IntPtr lpReserved, [Optional] IntPtr sortHandle);
 
 		/// <summary>
+		/// For a locale specified by name, maps an input character string to another using a specified transformation, or generates a sort
+		/// key for the input string.
+		/// </summary>
+		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
+		/// <param name="dwMapFlags">
+		/// <para>
+		/// Flag specifying the type of transformation to use during string mapping or the type of sort key to generate. This parameter can
+		/// have the following values.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Flag</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LCMAP_BYTEREV</term>
+		/// <term>Use byte reversal. For example, if the application passes in 0x3450 0x4822, the result is 0x5034 0x2248.</term>
+		/// </item>
+		/// <item>
+		/// <term>LCMAP_FULLWIDTH</term>
+		/// <term>
+		/// Use Unicode (wide) characters where applicable. This flag and LCMAP_HALFWIDTH are mutually exclusive. With this flag, the mapping
+		/// may use Normalization Form C even if an input character is already full-width. For example, the string &amp;quot;は゛&amp;quot;
+		/// (which is already full-width) is normalized to &amp;quot;ば&amp;quot;. See Unicode normalization forms.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LCMAP_HALFWIDTH</term>
+		/// <term>Use narrow characters where applicable. This flag and LCMAP_FULLWIDTH are mutually exclusive.</term>
+		/// </item>
+		/// <item>
+		/// <term>LCMAP_HIRAGANA</term>
+		/// <term>Map all katakana characters to hiragana. This flag and LCMAP_KATAKANA are mutually exclusive.</term>
+		/// </item>
+		/// <item>
+		/// <term>LCMAP_KATAKANA</term>
+		/// <term>Map all hiragana characters to katakana. This flag and LCMAP_HIRAGANA are mutually exclusive.</term>
+		/// </item>
+		/// <item>
+		/// <term>LCMAP_LINGUISTIC_CASING</term>
+		/// <term>
+		/// Use linguistic rules for casing, instead of file system rules (default). This flag is valid with LCMAP_LOWERCASE or
+		/// LCMAP_UPPERCASE only.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LCMAP_LOWERCASE</term>
+		/// <term>For locales and scripts capable of handling uppercase and lowercase, map all characters to lowercase.</term>
+		/// </item>
+		/// <item>
+		/// <term>LCMAP_SIMPLIFIED_CHINESE</term>
+		/// <term>
+		/// Map traditional Chinese characters to simplified Chinese characters. This flag and LCMAP_TRADITIONAL_CHINESE are mutually exclusive.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LCMAP_SORTKEY</term>
+		/// <term>
+		/// Produce a normalized sort key. If the LCMAP_SORTKEY flag is not specified, the function performs string mapping. For details of
+		/// sort key generation and string mapping, see the Remarks section.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LCMAP_TITLECASE</term>
+		/// <term>Windows 7: Map all characters to title case, in which the first letter of each major word is capitalized.</term>
+		/// </item>
+		/// <item>
+		/// <term>LCMAP_TRADITIONAL_CHINESE</term>
+		/// <term>
+		/// Map simplified Chinese characters to traditional Chinese characters. This flag and LCMAP_SIMPLIFIED_CHINESE are mutually exclusive.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LCMAP_UPPERCASE</term>
+		/// <term>For locales and scripts capable of handling uppercase and lowercase, map all characters to uppercase.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// <para>
+		/// The following flags can be used alone, with one another, or with the LCMAP_SORTKEY and/or LCMAP_BYTEREV flags. However, they
+		/// cannot be combined with the other flags listed above.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Flag</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>NORM_IGNORENONSPACE</term>
+		/// <term>Ignore nonspacing characters. For many scripts (notably Latin scripts), NORM_IGNORENONSPACE coincides with LINGUISTIC_IGNOREDIACRITIC.</term>
+		/// </item>
+		/// <item>
+		/// <term>NORM_IGNORESYMBOLS</term>
+		/// <term>Ignore symbols and punctuation.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// <para>The flags listed below are used only with the LCMAP_SORTKEY flag.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Flag</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LINGUISTIC_IGNORECASE</term>
+		/// <term>Ignore case, as linguistically appropriate.</term>
+		/// </item>
+		/// <item>
+		/// <term>LINGUISTIC_IGNOREDIACRITIC</term>
+		/// <term>Ignore nonspacing characters, as linguistically appropriate.</term>
+		/// </item>
+		/// <item>
+		/// <term>NORM_IGNORECASE</term>
+		/// <term>Ignore case. For many scripts (notably Latin scripts), NORM_IGNORECASE coincides with LINGUISTIC_IGNORECASE.</term>
+		/// </item>
+		/// <item>
+		/// <term>NORM_IGNOREKANATYPE</term>
+		/// <term>
+		/// Do not differentiate between hiragana and katakana characters. Corresponding hiragana and katakana characters compare as equal.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>NORM_IGNOREWIDTH</term>
+		/// <term>
+		/// Ignore the difference between half-width and full-width characters, for example, C a t == cat. The full-width form is a
+		/// formatting distinction used in Chinese and Japanese scripts.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>NORM_LINGUISTIC_CASING</term>
+		/// <term>Use linguistic rules for casing, instead of file system rules (default).</term>
+		/// </item>
+		/// <item>
+		/// <term>SORT_DIGITSASNUMBERS</term>
+		/// <term>Windows 7: Treat digits as numbers during sorting, for example, sort &amp;quot;2&amp;quot; before &amp;quot;10&amp;quot;.</term>
+		/// </item>
+		/// <item>
+		/// <term>SORT_STRINGSORT</term>
+		/// <term>Treat punctuation the same as symbols.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpSrcStr">
+		/// Pointer to a source string that the function maps or uses for sort key generation. This string cannot have a size of 0.
+		/// </param>
+		/// <param name="cchSrc">
+		/// <para>
+		/// Size, in characters, of the source string indicated by lpSrcStr. The size of the source string can include the terminating null
+		/// character, but does not have to. If the terminating null character is included, the mapping behavior of the function is not
+		/// greatly affected because the terminating null character is considered to be unsortable and always maps to itself.
+		/// </para>
+		/// <para>
+		/// The application can set this parameter to any negative value to specify that the source string is null-terminated. In this case,
+		/// if <c>LCMapStringEx</c> is being used in its string-mapping mode, the function calculates the string length itself, and
+		/// null-terminates the mapped string indicated by lpDestStr.
+		/// </para>
+		/// <para>The application cannot set this parameter to 0.</para>
+		/// </param>
+		/// <param name="lpDestStr">
+		/// Pointer to a buffer in which this function retrieves the mapped string or sort key. If the application specifies LCMAP_SORTKEY,
+		/// the function stores a sort key in the buffer as an opaque array of byte values that can include embedded 0 bytes.
+		/// </param>
+		/// <param name="cchDest">
+		/// <para>
+		/// Size, in characters, of the buffer indicated by lpDestStr. If the application is using the function for string mapping, it
+		/// supplies a character count for this parameter. If space for a terminating null character is included in cchSrc, cchDest must also
+		/// include space for a terminating null character.
+		/// </para>
+		/// <para>
+		/// If the application is using the function to generate a sort key, it supplies a byte count for the size. This byte count must
+		/// include space for the sort key 0x00 terminator.
+		/// </para>
+		/// <para>
+		/// The application can set cchDest to 0. In this case, the function does not use the lpDestStr parameter and returns the required
+		/// buffer size for the mapped string or sort key.
+		/// </para>
+		/// </param>
+		/// <param name="lpVersionInformation">
+		/// <para>
+		/// Pointer to an <c>NLSVERSIONINFOEX</c> structure that contains the version information about the relevant NLS capability; usually
+		/// retrieved from <c>GetNLSVersionEx</c>.
+		/// </para>
+		/// <para><c>Windows Vista, Windows 7:</c> Reserved; must set to <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="lpReserved">Reserved; must be <c>NULL</c>.</param>
+		/// <param name="sortHandle">Reserved; must be 0.</param>
+		/// <returns>
+		/// <para>
+		/// Returns the number of characters or bytes in the translated string or sort key, including a terminating null character, if
+		/// successful. If the function succeeds and the value of cchDest is 0, the return value is the size of the buffer required to hold
+		/// the translated string or sort key, including a terminating null character if the input was null terminated.
+		/// </para>
+		/// <para>
+		/// This function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
+		/// which can return one of the following error codes:
+		/// </para>
+		/// </returns>
+		// int LCMapStringEx( _In_opt_ LPCWSTR lpLocaleName, _In_ DWORD dwMapFlags, _In_ LPCWSTR lpSrcStr, _In_ int cchSrc, _Out_opt_ LPWSTR
+		// lpDestStr, _In_ int cchDest, _In_opt_ LPNLSVERSIONINFO lpVersionInformation, _In_opt_ LPVOID lpReserved, _In_opt_ LPARAM
+		// sortHandle); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318702(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318702")]
+		public static extern int LCMapStringEx(string lpLocaleName, uint dwMapFlags, string lpSrcStr, int cchSrc, StringBuilder lpDestStr, int cchDest, [Optional] IntPtr lpVersionInformation, [Optional] IntPtr lpReserved, [Optional] IntPtr sortHandle);
+
+		/// <summary>
 		/// <para>Unsupported. <c>LoadStringByReference</c> may be altered or unavailable. Instead, use SHLoadIndirectString.</para>
 		/// </summary>
 		/// <param name="Flags">
@@ -4760,8 +7750,9 @@ namespace Vanara.PInvoke
 		// Flags, PCWSTR Language, PCWSTR SourceString, PWSTR Buffer, ULONG cchBuffer, PCWSTR Directory, PULONG pcchBufferOut );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("winnls.h", MSDNShortId = "4E0470ED-512F-4B76-A3E4-31C8B269CD5C")]
+		[Obsolete]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool LoadStringByReference(uint Flags, string Language, string SourceString, StringBuilder Buffer, uint cchBuffer, string Directory, out uint pcchBufferOut);
+		public static extern bool LoadStringByReference([Optional] uint Flags, string Language, string SourceString, StringBuilder Buffer, uint cchBuffer, string Directory, out uint pcchBufferOut);
 
 		/// <summary>Converts a locale name to a locale identifier.</summary>
 		/// <param name="lpName">Pointer to a null-terminated string representing a locale name, or one of the following predefined values.</param>
@@ -4786,7 +7777,7 @@ namespace Vanara.PInvoke
 		// LCID LocaleNameToLCID( _In_ LPCWSTR lpName, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318711(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318711")]
-		public static extern uint LocaleNameToLCID(string lpName, LCTYPE dwFlags);
+		public static extern LCID LocaleNameToLCID(string lpName, LCTYPE dwFlags);
 
 		/// <summary>Creates a language identifier from a primary language identifier and a sublanguage identifier.</summary>
 		/// <param name="usPrimaryLanguage">
@@ -4904,34 +7895,97 @@ namespace Vanara.PInvoke
 		/// <summary>Sets an item of locale information for a calendar. For more information, see Date and Calendar.</summary>
 		/// <param name="Locale">
 		/// <para>
-		/// Locale identifier that specifies the locale. You can use the <c>MAKELCID</c> macro to create a locale identifier or use one of
-		/// the following predefined values.
+		/// Locale identifier that specifies the locale. You can use the MAKELCID macro to create a locale identifier or use one of the
+		/// following predefined values.
 		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>LOCALE_INVARIANT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_SYSTEM_DEFAULT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_USER_DEFAULT</term>
+		/// </item>
+		/// </list>
 		/// <para>The following custom locale identifiers are also supported.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>LOCALE_CUSTOM_DEFAULT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_CUSTOM_UI_DEFAULT</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_CUSTOM_UNSPECIFIED</term>
+		/// </item>
+		/// </list>
 		/// </param>
-		/// <param name="Calendar"><c>Calendar identifier</c> for the calendar for which to set information.</param>
+		/// <param name="Calendar">Calendar identifier for the calendar for which to set information.</param>
 		/// <param name="CalType">
 		/// <para>
 		/// Type of calendar information to set. Only the following CALTYPE values are valid for this function. The CAL_USE_CP_ACP constant
 		/// is only meaningful for the ANSI version of the function.
 		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>CAL_USE_CP_ACP</term>
+		/// </item>
+		/// <item>
+		/// <term>CAL_ITWODIGITYEARMAX</term>
+		/// </item>
+		/// </list>
 		/// <para>
 		/// The application can specify only one calendar identifier per call to this function. An exception can be made if the application
-		/// uses the binary OR operator to combine CAL_USE_CP_ACP with any valid CALTYPE value defined in Calendar Type Information.
+		/// uses the binary OR operator to combine CAL_USE_CP_ACP with any valid CALTYPE value defined in
 		/// </para>
+		/// <para>Calendar Type Information</para>
+		/// <para>.</para>
 		/// </param>
 		/// <param name="lpCalData">
 		/// Pointer to a null-terminated calendar information string. The information must be in the format of the specified calendar type.
 		/// </param>
 		/// <returns>
-		/// Returns a nonzero value if successful, or 0 otherwise. To get extended error information, the application can call
-		/// <c>GetLastError</c>, which can return one of the following error codes:
+		/// <para>
+		/// Returns a nonzero value if successful, or 0 otherwise. To get extended error information, the application can call GetLastError,
+		/// which can return one of the following error codes:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>ERROR_INTERNAL_ERROR. An unexpected error occurred in the function.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_FLAGS. The values supplied for flags were not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER. Any of the parameter values was invalid.</term>
+		/// </item>
+		/// </list>
 		/// </returns>
-		// BOOL SetCalendarInfo( _In_ LCID Locale, _In_ CALID Calendar, _In_ CALTYPE CalType, _In_ LPCTSTR lpCalData); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374048(v=vs.85).aspx
+		/// <remarks>
+		/// <para>This function only affects the user override portion of the calendar settings. It does not set the system defaults.</para>
+		/// <para>
+		/// Calendar information is always passed as a null-terminated Unicode string in the Unicode version of this function, and as a
+		/// null-terminated ANSI string in the ANSI version. No integers are allowed by this function. Any numeric values must be specified
+		/// as either Unicode or ANSI text.
+		/// </para>
+		/// <para>
+		/// When the ANSI version of this function is used with a Unicode-only locale identifier, the function can succeed because the
+		/// operating system uses the system code page. However, characters that are undefined in the system code page appear in the string
+		/// as a question mark (?).
+		/// </para>
+		/// <para>
+		/// CAL_ITWODIGITYEARMAX can be used with any calendar, even if the calendar is not supported for the specified locale. To avoid
+		/// complications, the application should call EnumCalendarInfo to ensure that the calendar is supported for the locale of interest.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnls/nf-winnls-setcalendarinfoa BOOL SetCalendarInfoA( LCID Locale, CALID
+		// Calendar, CALTYPE CalType, LPCSTR lpCalData );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("Winnls.h", MSDNShortId = "dd374048")]
+		[PInvokeData("winnls.h", MSDNShortId = "3599f68f-5b7c-4bf9-9c42-452047c0731f")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetCalendarInfo(uint Locale, uint Calendar, CALTYPE CalType, string lpCalData);
+		public static extern bool SetCalendarInfo(LCID Locale, CALID Calendar, CALTYPE CalType, string lpCalData);
 
 		/// <summary>
 		/// Sets an item of information in the user override portion of the current locale. This function does not set the system defaults.
@@ -4962,7 +8016,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd374049")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetLocaleInfo(uint Locale, LCTYPE LCType, string lpLCData);
+		public static extern bool SetLocaleInfo(LCID Locale, LCTYPE LCType, string lpLCData);
 
 		/// <summary>
 		/// Sets the process preferred UI languages for the application process. For more information, see User Interface Language Management.
@@ -5030,7 +8084,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd374051")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetThreadLocale(uint Locale);
+		public static extern bool SetThreadLocale(LCID Locale);
 
 		/// <summary>
 		/// Sets the thread preferred UI languages for the current thread. For more information, see User Interface Language Management.
@@ -5115,7 +8169,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd374052")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetThreadPreferredUILanguages(MUI_LANGUAGE_ENUM dwFlags,
+		public static extern bool SetThreadPreferredUILanguages(MUI_LANGUAGE_FLAGS dwFlags,
 			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Unicode")] string[] pwszLanguagesBuffer, out uint pulNumLanguages);
 
 		/// <summary>
@@ -5154,7 +8208,7 @@ namespace Vanara.PInvoke
 		// LANGID SetThreadUILanguage( _In_ LANGID LangId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374053(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd374053")]
-		public static extern uint SetThreadUILanguage(uint LangId);
+		public static extern ushort SetThreadUILanguage(ushort LangId);
 
 		/// <summary>
 		/// <para>
@@ -5295,6 +8349,19 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool VerifyScripts(VS_FLAGS dwFlags, string lpLocaleScripts, int cchLocaleScripts, string lpTestScripts, int cchTestScripts);
 
+		private static IEnumerable<string> GetLanguages<TEnum>(TEnum dwFlags, GetLangFunc<TEnum> func) where TEnum : Enum
+		{
+			var sz = 0U;
+			if (!func(dwFlags, out _, default, ref sz) && sz == 0)
+				Win32Error.ThrowLastError();
+			using (var mem = new SafeHGlobalHandle(sz))
+			{
+				if (!func(dwFlags, out var c, mem, ref sz))
+					Win32Error.ThrowLastError();
+				return c == 0 ? new string[0] : mem.ToStringEnum(CharSet.Unicode).ToArray();
+			}
+		}
+
 		/// <summary>
 		/// <para>Deprecated. Represents an instant in time, typically expressed as a date and time of day and a corresponding calendar.</para>
 		/// </summary>
@@ -5385,7 +8452,7 @@ namespace Vanara.PInvoke
 		// BYTE DefaultChar[MAX_DEFAULTCHAR]; BYTE LeadByte[MAX_LEADBYTES]; WCHAR UnicodeDefaultChar; UINT CodePage; CHAR
 		// CodePageName[MAX_PATH]; } CPINFOEXA, *LPCPINFOEXA;
 		[PInvokeData("winnls.h", MSDNShortId = "9639bb11-477e-45ee-b9fb-d5d099925e00")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct CPINFOEX
 		{
 			/// <summary>
@@ -5501,7 +8568,7 @@ namespace Vanara.PInvoke
 			public uint dwVersion;
 
 			/// <summary>The file type. Possible values are:</summary>
-			public uint dwFileType;
+			public MUI_FILETYPE dwFileType;
 
 			/// <summary>Pointer to a 128-bit checksum for the file, if it is either an LN file or a language-specific resource file.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
@@ -5554,6 +8621,9 @@ namespace Vanara.PInvoke
 			/// <summary>Remainder of the allocated memory for this structure. See the Remarks section for correct use of this array.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
 			public byte[] abBuffer;
+
+			/// <summary>The default instance of this structure with size and version fields preset.</summary>
+			public static readonly FILEMUIINFO Default = new FILEMUIINFO { dwSize = (uint)Marshal.SizeOf(typeof(FILEMUIINFO)), dwVersion = 1 };
 		}
 
 		/// <summary>
@@ -5582,14 +8652,29 @@ namespace Vanara.PInvoke
 			/// Unicode repertoire is extended, for example, if more characters are defined.
 			/// </summary>
 			public uint dwDefinedVersion;
+
+			/// <summary>The default instance of this structure with size field preset.</summary>
+			public static readonly NLSVERSIONINFO Default = new NLSVERSIONINFO { dwNLSVersionInfoSize = (uint)Marshal.SizeOf(typeof(NLSVERSIONINFO)) };
 		}
 
 		/// <summary>Contains version information about an NLS capability.</summary>
 		// typedef struct _nlsversioninfoex { DWORD dwNLSVersionInfoSize; DWORD dwNLSVersion; DWORD dwDefinedVersion; DWORD dwEffectiveId;
 		// GUID guidCustomVersion;} NLSVERSIONINFOEX, *LPNLSVERSIONINFOEX; https://msdn.microsoft.com/en-us/library/windows/desktop/dd319087(v=vs.85).aspx
 		[PInvokeData("Winnls.h", MSDNShortId = "dd319087")]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct NLSVERSIONINFOEX
 		{
+			/// <summary>Size, in bytes, of the structure.</summary>
+			public uint dwNLSVersionInfoSize;
+
+			/// <summary>
+			/// Version. This value is used to track changes and additions to the set of code points that have the indicated capability for a
+			/// particular locale. The value is locale-specific, and increments when the capability changes. For example, using the
+			/// COMPARE_STRING capability defined by the <c>SYSNLS_FUNCTION</c> enumeration, the version changes if sorting weights are
+			/// assigned to code points that previously had no weights defined for the locale.
+			/// </summary>
+			public uint dwNLSVersion;
+
 			/// <summary>
 			/// <para>
 			/// Defined version. This value is used to track changes in the repertoire of Unicode code points. The value increments when the
@@ -5609,19 +8694,11 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint dwEffectiveId;
 
-			/// <summary>
-			/// Version. This value is used to track changes and additions to the set of code points that have the indicated capability for a
-			/// particular locale. The value is locale-specific, and increments when the capability changes. For example, using the
-			/// COMPARE_STRING capability defined by the <c>SYSNLS_FUNCTION</c> enumeration, the version changes if sorting weights are
-			/// assigned to code points that previously had no weights defined for the locale.
-			/// </summary>
-			public uint dwNLSVersion;
-
-			/// <summary>Size, in bytes, of the structure.</summary>
-			public uint dwNLSVersionInfoSize;
-
 			/// <summary>Unique GUID for the behavior of a custom sort used by the locale for the represented version.</summary>
 			public Guid guidCustomVersion;
+
+			/// <summary>The default instance of this structure with size field preset.</summary>
+			public static readonly NLSVERSIONINFOEX Default = new NLSVERSIONINFOEX { dwNLSVersionInfoSize = (uint)Marshal.SizeOf(typeof(NLSVERSIONINFOEX)) };
 		}
 
 		/// <summary>
@@ -5661,6 +8738,129 @@ namespace Vanara.PInvoke
 
 			/// <summary>Negative number mode. This mode is equivalent to the locale information specified by the value LOCALE_INEGNUMBER.</summary>
 			public uint NegativeOrder;
+		}
+
+		/// <summary>
+		/// A safe instance of <c>FILEMUIINFO</c> that holds its own memory and handles the funky pointer magic required to get the values.
+		/// </summary>
+		public class SafeFILEMUIINFO : IDisposable
+		{
+			internal SafeHeapBlock mem;
+			private const uint minSz = 72;
+
+			/// <summary>Initializes a new instance of the <see cref="SafeFILEMUIINFO"/> class.</summary>
+			public SafeFILEMUIINFO()
+			{
+			}
+
+			/// <summary>The file type. Possible values are:</summary>
+			public MUI_FILETYPE dwFileType => (MUI_FILETYPE)Marshal.ReadInt32(mem, 8);
+
+			/// <summary>
+			/// Size of the structure, including the buffer, which can be extended past the 8 bytes declared. The minimum value allowed is .
+			/// </summary>
+			public uint dwSize
+			{
+				get => mem?.Size ?? 0;
+				set
+				{
+					if (value == dwSize) return;
+					if (mem is null)
+					{
+						mem = new SafeHeapBlock(value);
+						Marshal.WriteInt32(mem, 4, (int)dwVersion);
+					}
+					else
+						mem.Size = value;
+					Marshal.WriteInt32(mem, mem.Size); // dwSize
+				}
+			}
+
+			/// <summary>Version of the structure. The current version is 0x001.</summary>
+			public uint dwVersion { get; } = 1;
+
+			/// <summary>An array enumerating the resource types contained in the LN file.</summary>
+			public uint[] lpTypeIDMain
+			{
+				get
+				{
+					if (dwSize < minSz) return new uint[0];
+					var len = Marshal.ReadInt32(mem, 48);
+					var offset = Marshal.ReadInt32(mem, 52);
+					if (len + offset > mem.Size) throw new OutOfMemoryException();
+					return offset == 0 ? new uint[0] : mem.DangerousGetHandle().ToArray<uint>(len, offset);
+				}
+			}
+
+			/// <summary>An array enumerating the resource types contained in the LN file.</summary>
+			public uint[] lpTypeIDMUI
+			{
+				get
+				{
+					if (dwSize < minSz) return new uint[0];
+					var len = Marshal.ReadInt32(mem, 60);
+					var offset = Marshal.ReadInt32(mem, 64);
+					if (len + offset > mem.Size) throw new OutOfMemoryException();
+					return offset == 0 ? new uint[0] : mem.DangerousGetHandle().ToArray<uint>(len, offset);
+				}
+			}
+
+			/// <summary>A multi-string array enumerating the resource names contained in the LN file.</summary>
+			public string[] lpTypeNameMain
+			{
+				get
+				{
+					if (dwSize < minSz) return new string[0];
+					//var len = Marshal.ReadInt32(mem, 48);
+					var offset = Marshal.ReadInt32(mem, 56);
+					if (offset > mem.Size) throw new OutOfMemoryException();
+					return offset == 0 ? new string[0] : mem.DangerousGetHandle().ToStringEnum(CharSet.Unicode, offset).ToArray();
+				}
+			}
+
+			/// <summary>A multi-string array enumerating the resource names contained in the LN file.</summary>
+			public string[] lpTypeNameMUI
+			{
+				get
+				{
+					if (dwSize < minSz) return new string[0];
+					//var len = Marshal.ReadInt32(mem, 60);
+					var offset = Marshal.ReadInt32(mem, 68);
+					if (offset > mem.Size) throw new OutOfMemoryException();
+					return offset == 0 ? new string[0] : mem.DangerousGetHandle().ToStringEnum(CharSet.Unicode, offset).ToArray();
+				}
+			}
+
+			/// <summary>Pointer to a 128-bit checksum for the file, if it is either an LN file or a language-specific resource file.</summary>
+			public byte[] pChecksum => dwSize < minSz ? new byte[0] : mem.DangerousGetHandle().ToArray<byte>(16, 12);
+
+			/// <summary>Pointer to a 128-bit checksum for the file, used for servicing.</summary>
+			public byte[] pServiceChecksum => dwSize < minSz ? new byte[0] : mem.DangerousGetHandle().ToArray<byte>(16, 28);
+
+			/// <summary>
+			/// The language name string for a language-specific resource file, or to the ultimate fallback language name string for an LN file.
+			/// </summary>
+			public string szLanguageName
+			{
+				get
+				{
+					if (dwSize < minSz) return null;
+					var offset = Marshal.ReadInt32(mem, 44);
+					return offset == 0 ? null : StringHelper.GetString(mem.DangerousGetHandle().Offset(offset), CharSet.Unicode, mem.Size - offset);
+				}
+			}
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeFILEMUIINFO"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="fmi">The <see cref="SafeFILEMUIINFO"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator IntPtr(SafeFILEMUIINFO fmi) => fmi?.mem?.DangerousGetHandle() ?? IntPtr.Zero;
+
+			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+			public void Dispose()
+			{
+				mem?.Dispose();
+				mem = null;
+			}
 		}
 	}
 }
