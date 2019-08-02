@@ -40,7 +40,7 @@ namespace Vanara.PInvoke.Tests
 		public static void WriteValues(this object value)
 		{
 			var json = JsonConvert.SerializeObject(value, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter());
-			TestContext.WriteLine(value.GetType().Name);
+			if (value != null) TestContext.WriteLine(value.GetType().Name);
 			TestContext.WriteLine(json);
 		}
 
