@@ -1082,6 +1082,20 @@ namespace Vanara.PInvoke
 			/// <inheritdoc/>
 			public override bool IsInvalid => handle == IntPtr.Zero;
 
+			/// <summary>Creates a new instance by copying from a <c>CONTEXT</c> structure.</summary>
+			/// <typeparam name="TContext">The type of the context to copy from.</typeparam>
+			/// <param name="context">The context value.</param>
+			/// <param name="contextFlags">The context flags.</param>
+			/// <returns>A new instance.</returns>
+			public static SafeCONTEXT FromContextStruct<TContext>(in TContext context, uint contextFlags) where TContext : struct
+			{
+				var output = new SafeCONTEXT(contextFlags);
+				var pCtx = new PinnedObject(context);
+				if (!CopyContext(output, contextFlags, pCtx))
+					Win32Error.ThrowLastError();
+				return output;
+			}
+
 			/// <summary>Clones this instance.</summary>
 			/// <param name="contextFlags">The context flags.</param>
 			/// <returns>A full copy of this instance.</returns>
@@ -1105,20 +1119,6 @@ namespace Vanara.PInvoke
 				buffer.Dispose();
 				SetHandle(IntPtr.Zero);
 				return true;
-			}
-
-			/// <summary>Creates a new instance by copying from a <c>CONTEXT</c> structure.</summary>
-			/// <typeparam name="TContext">The type of the context to copy from.</typeparam>
-			/// <param name="context">The context value.</param>
-			/// <param name="contextFlags">The context flags.</param>
-			/// <returns>A new instance.</returns>
-			public static SafeCONTEXT FromContextStruct<TContext>(in TContext context, uint contextFlags) where TContext : struct
-			{
-				var output = new SafeCONTEXT(contextFlags);
-				var pCtx = new PinnedObject(context);
-				if (!CopyContext(output, contextFlags, pCtx))
-					Win32Error.ThrowLastError();
-				return output;
 			}
 		}
 	}
