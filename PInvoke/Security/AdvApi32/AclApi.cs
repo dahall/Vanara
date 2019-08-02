@@ -18,6 +18,41 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 		public delegate void FN_PROGRESS(string pObjectName, uint Status, ref PROG_INVOKE_SETTING pInvokeSetting, IntPtr Args, [MarshalAs(UnmanagedType.Bool)] bool SecuritySet);
 
+		/// <summary>Flags to control the behavior of <see cref="TreeSetNamedSecurityInfo"/>.</summary>
+		[PInvokeData("aclapi.h", MSDNShortId = "caa711c3-301b-4ed7-b1f4-dc6a48563905")]
+		public enum TREE_SEC_INFO
+		{
+			/// <summary>
+			/// The security information is set on the object specified by the pObjectName parameter and the tree of child objects of that
+			/// object. If ACLs are specified in either the pDacl or pSacl parameters, the security descriptors are associated with the
+			/// object. The security descriptors are propagated to the tree of child objects based on their inheritance properties.
+			/// </summary>
+			TREE_SEC_INFO_SET = 0x00000001,
+
+			/// <summary>
+			/// The security information is reset on the object specified by the pObjectName parameter and the tree of child objects of that
+			/// object. Any existing security information is removed from all objects on the tree.
+			/// <para>
+			/// If any object in the tree does not grant appropriate permissions to the caller to modify the security descriptor on the
+			/// object, then the propagation of security information on that particular node of the tree and its objects is skipped. The
+			/// operation continues on the rest of the tree under the object specified by the pObjectName parameter.
+			/// </para>
+			/// </summary>
+			TREE_SEC_INFO_RESET = 0x00000002,
+
+			/// <summary>
+			/// The security information is reset on the object specified by the pObjectName parameter and the tree of child objects of that
+			/// object. Any existing inherited security information is removed from all objects on the tree. Security information that was
+			/// explicitly set on objects in the tree is unchanged.
+			/// <para>
+			/// If any object in the tree does not grant appropriate permissions to the caller to modify the security descriptor on the
+			/// object, then the propagation of security information on that particular node of the tree and its objects is skipped. The
+			/// operation continues on the rest of the tree under the object specified by the pObjectName parameter.
+			/// </para>
+			/// </summary>
+			TREE_SEC_INFO_RESET_KEEP_EXPLICIT = 0x00000003,
+		}
+
 		/// <summary>
 		/// <para>
 		/// The <c>BuildExplicitAccessWithName</c> function initializes an EXPLICIT_ACCESS structure with data specified by the caller. The
@@ -903,8 +938,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/aclapi/nf-aclapi-gettrusteenamea LPSTR GetTrusteeNameA( PTRUSTEE_A pTrustee );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("aclapi.h", MSDNShortId = "9d3ce528-fb28-4e2e-bf7f-7d84c697fcb6")]
-		[return: MarshalAs(UnmanagedType.LPStr)]
-		public static extern string GetTrusteeName(in TRUSTEE pTrustee);
+		public static extern StrPtrAuto GetTrusteeName(in TRUSTEE pTrustee);
 
 		/// <summary>
 		/// <para>
@@ -1143,8 +1177,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto)]
 		[PInvokeData("Aclapi.h", MSDNShortId = "aa379579")]
-		public static extern Win32Error SetNamedSecurityInfo(string pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID ppsidOwner,
-			PSID ppsidGroup, PACL ppDacl, PACL ppSacl);
+		public static extern Win32Error SetNamedSecurityInfo(string pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, [Optional] PSID ppsidOwner,
+			[Optional] PSID ppsidGroup, [Optional] PACL ppDacl, [Optional] PACL ppSacl);
 
 		/// <summary>
 		/// <para>
@@ -1256,7 +1290,7 @@ namespace Vanara.PInvoke
 		// SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID psidOwner, PSID psidGroup, PACL pDacl, PACL pSacl );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("aclapi.h", MSDNShortId = "f1781ba9-81eb-46f9-b530-c390b67d65de")]
-		public static extern Win32Error SetSecurityInfo(IntPtr handle, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID psidOwner, PSID psidGroup, PACL pDacl, PACL pSacl);
+		public static extern Win32Error SetSecurityInfo(IntPtr handle, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, [Optional] PSID psidOwner, [Optional] PSID psidGroup, [Optional] PACL pDacl, [Optional] PACL pSacl);
 
 		/// <summary>
 		/// <para>
@@ -1374,7 +1408,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("aclapi.h", MSDNShortId = "adae7d07-a452-409e-b1a1-e9f86f873e39")]
 		public static extern Win32Error TreeResetNamedSecurityInfo(string pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID pOwner, PSID pGroup, PACL pDacl, PACL pSacl,
-			[MarshalAs(UnmanagedType.Bool)] bool KeepExplicit, FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, IntPtr Args);
+			[MarshalAs(UnmanagedType.Bool)] bool KeepExplicit, [Optional] FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, [Optional] IntPtr Args);
 
 		/// <summary>
 		/// <para>
@@ -1527,7 +1561,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("aclapi.h", MSDNShortId = "caa711c3-301b-4ed7-b1f4-dc6a48563905")]
 		public static extern Win32Error TreeSetNamedSecurityInfo(string pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID pOwner, PSID pGroup,
-			PACL pDacl, PACL pSacl, uint dwAction, FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, IntPtr Args);
+			PACL pDacl, PACL pSacl, TREE_SEC_INFO dwAction, [Optional] FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, [Optional] IntPtr Args);
 
 		/// <summary>A <see cref="SafeHandle"/> to hold the array of <see cref="INHERITED_FROM"/> instances returned from <see cref="GetInheritanceSource"/>.</summary>
 		public class SafeInheritedFromArray : SafeHGlobalHandle
