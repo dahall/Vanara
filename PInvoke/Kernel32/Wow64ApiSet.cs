@@ -15,7 +15,8 @@ namespace Vanara.PInvoke
 			IMAGE_FILE_MACHINE_UNKNOWN = 0,
 
 			/// <summary>
-			/// Interacts with the host and not a WOW64 guest. <note>This constant is available starting with Windows 10, version 1607 and Windows Server 2016.</note>
+			/// Interacts with the host and not a WOW64 guest. <note>This constant is available starting with Windows 10, version 1607 and
+			/// Windows Server 2016.</note>
 			/// </summary>
 			IMAGE_FILE_MACHINE_TARGET_HOST = 0x0001,
 
@@ -115,8 +116,9 @@ namespace Vanara.PInvoke
 		/// <param name="uSize">The maximum size of the buffer, in <c>TCHARs</c>.</param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the return value is the length, in <c>TCHARs</c>, of the string copied to the buffer, not including the terminating null
-		/// character. If the length is greater than the size of the buffer, the return value is the size of the buffer required to hold the path.
+		/// If the function succeeds, the return value is the length, in <c>TCHARs</c>, of the string copied to the buffer, not including the
+		/// terminating null character. If the length is greater than the size of the buffer, the return value is the size of the buffer
+		/// required to hold the path.
 		/// </para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// <para>On 32-bit Windows, the function always fails, and the extended error is set to ERROR_CALL_NOT_IMPLEMENTED.</para>
@@ -127,27 +129,29 @@ namespace Vanara.PInvoke
 		public static extern uint GetSystemWow64Directory(StringBuilder lpBuffer, uint uSize);
 
 		/// <summary>
-		/// Retrieves the path of the system directory used by WOW64, using the specified image file machine type. This directory is not present on 32-bit Windows.
+		/// Retrieves the path of the system directory used by WOW64, using the specified image file machine type. This directory is not
+		/// present on 32-bit Windows.
 		/// </summary>
 		/// <param name="lpBuffer">A pointer to the buffer to receive the path. This path does not end with a backslash.</param>
 		/// <param name="uSize">The maximum size of the buffer, in TCHARs.</param>
 		/// <param name="ImageFileMachineType">An IMAGE_FILE_MACHINE_* value that specifies the machine to test.</param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the return value is the length, in <c>TCHARs</c>, of the string copied to the buffer, not including the terminating null
-		/// character. If the length is greater than the size of the buffer, the return value is the size of the buffer required to hold the path.
+		/// If the function succeeds, the return value is the length, in <c>TCHARs</c>, of the string copied to the buffer, not including the
+		/// terminating null character. If the length is greater than the size of the buffer, the return value is the size of the buffer
+		/// required to hold the path.
 		/// </para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
 		// UINT WINAPI GetSystemWow64Directory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize, _In_ WORD ImageFileMachineType); https://msdn.microsoft.com/en-us/library/windows/desktop/mt804319(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Wow64apiset.h", MSDNShortId = "mt804319")]
 		public static extern uint GetSystemWow64Directory2(StringBuilder lpBuffer, uint uSize, IMAGE_FILE_MACHINE ImageFileMachineType);
 
 		/// <summary>
 		/// <para>
-		/// [Some information relates to pre-released product which may be substantially modified before it's commercially released. Microsoft makes no
-		/// warranties, express or implied, with respect to the information provided here.]
+		/// [Some information relates to pre-released product which may be substantially modified before it's commercially released.
+		/// Microsoft makes no warranties, express or implied, with respect to the information provided here.]
 		/// </para>
 		/// <para>Determines which architectures are supported (under WOW64) on the given machine architecture.</para>
 		/// </summary>
@@ -164,14 +168,14 @@ namespace Vanara.PInvoke
 		/// <summary>Determines whether the specified process is running under WOW64.</summary>
 		/// <param name="hProcess">
 		/// <para>
-		/// A handle to the process. The handle must have the PROCESS_QUERY_INFORMATION or PROCESS_QUERY_LIMITED_INFORMATION access right. For more information,
-		/// see Process Security and Access Rights.
+		/// A handle to the process. The handle must have the PROCESS_QUERY_INFORMATION or PROCESS_QUERY_LIMITED_INFORMATION access right.
+		/// For more information, see Process Security and Access Rights.
 		/// </para>
 		/// <para><c>Windows Server 2003 and Windows XP:</c> The handle must have the PROCESS_QUERY_INFORMATION access right.</para>
 		/// </param>
 		/// <param name="Wow64Process">
-		/// A pointer to a value that is set to TRUE if the process is running under WOW64. If the process is running under 32-bit Windows, the value is set to
-		/// FALSE. If the process is a 64-bit application running under 64-bit Windows, the value is also set to FALSE.
+		/// A pointer to a value that is set to TRUE if the process is running under WOW64. If the process is running under 32-bit Windows,
+		/// the value is set to FALSE. If the process is a 64-bit application running under 64-bit Windows, the value is also set to FALSE.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is a nonzero value.</para>
@@ -183,14 +187,16 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool IsWow64Process([In] HPROCESS hProcess, [MarshalAs(UnmanagedType.Bool)] out bool Wow64Process);
 
-		/// <summary>Determines whether the specified process is running under WOW64; also returns additional machine process and architecture information.</summary>
+		/// <summary>
+		/// Determines whether the specified process is running under WOW64; also returns additional machine process and architecture information.
+		/// </summary>
 		/// <param name="hProcess">
-		/// A handle to the process. The handle must have the PROCESS_QUERY_INFORMATION or PROCESS_QUERY_LIMITED_INFORMATION access right. For more information,
-		/// see Process Security and Access Rights.
+		/// A handle to the process. The handle must have the PROCESS_QUERY_INFORMATION or PROCESS_QUERY_LIMITED_INFORMATION access right.
+		/// For more information, see Process Security and Access Rights.
 		/// </param>
 		/// <param name="pProcessMachine">
-		/// On success, returns a pointer to an IMAGE_FILE_MACHINE_* value. The value will be IMAGE_FILE_MACHINE_UNKNOWN if the target process is not a WOW64
-		/// process; otherwise, it will identify the type of WoW process.
+		/// On success, returns a pointer to an IMAGE_FILE_MACHINE_* value. The value will be IMAGE_FILE_MACHINE_UNKNOWN if the target
+		/// process is not a WOW64 process; otherwise, it will identify the type of WoW process.
 		/// </param>
 		/// <param name="pNativeMachine">
 		/// On success, returns a pointer to a possible IMAGE_FILE_MACHINE_* value identifying the native architecture of host system.
@@ -207,7 +213,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>Disables file system redirection for the calling thread. File system redirection is enabled by default.</summary>
 		/// <param name="OldValue">
-		/// The WOW64 file system redirection value. The system uses this parameter to store information necessary to revert (re-enable) file system redirection.
+		/// The WOW64 file system redirection value. The system uses this parameter to store information necessary to revert (re-enable) file
+		/// system redirection.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is a nonzero value.</para>
@@ -224,7 +231,9 @@ namespace Vanara.PInvoke
 		/// <para>This function should not be called without a previous call to the <c>Wow64DisableWow64FsRedirection</c> function.</para>
 		/// <para>Any data allocation on behalf of the <c>Wow64DisableWow64FsRedirection</c> function is cleaned up by this function.</para>
 		/// </summary>
-		/// <param name="OldValue">The WOW64 file system redirection value. This value is obtained from the <c>Wow64DisableWow64FsRedirection</c> function.</param>
+		/// <param name="OldValue">
+		/// The WOW64 file system redirection value. This value is obtained from the <c>Wow64DisableWow64FsRedirection</c> function.
+		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is a nonzero value.</para>
 		/// <para>If the function fails, the return value is <c>FALSE</c> (zero). To get extended error information, call <c>GetLastError</c>.</para>
@@ -238,7 +247,7 @@ namespace Vanara.PInvoke
 		/// <summary>Undocumented.</summary>
 		/// <param name="Machine">Undocumented.</param>
 		/// <returns>Undocumented.</returns>
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 		public static extern IMAGE_FILE_MACHINE Wow64SetThreadDefaultGuestMachine(IMAGE_FILE_MACHINE Machine);
 	}
 }
