@@ -39,6 +39,12 @@ namespace Vanara.Windows.Forms.Tests
 		}
 
 		[Test()]
+		public void SimpleShowTest()
+		{
+			new TaskDialog().ShowDialog();
+		}
+
+		[Test()]
 		public void ShowTest1()
 		{
 			var i = TaskDialog.Show("Main instruct", "Caption", new[] { "Test1", "Test2" }, TaskDialogIcon.Shield);

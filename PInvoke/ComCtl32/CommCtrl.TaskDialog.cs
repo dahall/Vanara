@@ -642,6 +642,14 @@ namespace Vanara.PInvoke
 			public IntPtr lpCallbackData;
 
 			/// <summary>
+			/// Initializes a new instance of the <see cref="TASKDIALOGCONFIG"/> class setting the <see cref="cbSize"/> field properly.
+			/// </summary>
+			public TASKDIALOGCONFIG()
+			{
+				cbSize = (uint)Marshal.SizeOf(typeof(TASKDIALOGCONFIG));
+			}
+
+			/// <summary>
 			/// The width of the task dialog's client area, in dialog units. If 0, the task dialog manager will calculate the ideal width.
 			/// </summary>
 			public uint cxWidth;

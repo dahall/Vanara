@@ -1096,7 +1096,6 @@ namespace Vanara.Windows.Forms
 
 			var config = new TASKDIALOGCONFIG
 			{
-				cbSize = (uint)Marshal.SizeOf(typeof(TASKDIALOGCONFIG)),
 				hwndParent = hwndOwner,
 				dwFlags = flags,
 				dwCommonButtons = (TASKDIALOG_COMMON_BUTTON_FLAGS)CommonButtons
@@ -1158,7 +1157,10 @@ namespace Vanara.Windows.Forms
 
 			config.cxWidth = (uint)Width;
 
-			// The call all this mucking about is here for.
+			// Check to see if a button of some kind is defined, otherwise set to OK button.
+			if (config.dwCommonButtons == 0 && config.cButtons == 0)
+				config.dwCommonButtons = TASKDIALOG_COMMON_BUTTON_FLAGS.TDCBF_OK_BUTTON;
+
 			using (new ComCtl32v6Context())
 			{
 				TaskDialogResult res;
@@ -1286,7 +1288,7 @@ namespace Vanara.Windows.Forms
 
 			/// <summary>Returns a hash code for this instance.</summary>
 			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-			public override int GetHashCode() => new {a = ButtonId, b = ButtonText}.GetHashCode();
+			public override int GetHashCode() => new { a = ButtonId, b = ButtonText }.GetHashCode();
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -1327,7 +1329,7 @@ namespace Vanara.Windows.Forms
 				unchecked
 				{
 					foreach (var item in c)
-						h = h*23 + item.GetHashCode();
+						h = h * 23 + item.GetHashCode();
 				}
 
 				// If new has doesn't equal old hash, reset IntPtr
