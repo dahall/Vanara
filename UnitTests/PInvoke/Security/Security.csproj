@@ -39,6 +39,7 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvApi32\EvntProvTests.cs" />
     <Compile Include="AdvApi32\AdvApi32Tests.cs" />
     <Compile Include="AdvApi32\AclApiTests.cs" />
     <Compile Include="AdvApi32\AuditTests.cs" />

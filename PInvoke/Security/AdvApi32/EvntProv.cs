@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -172,10 +173,8 @@ namespace Vanara.PInvoke
 			/// Indicates whether the provider correctly initializes the EVENT_DATA_DESCRIPTOR values passed to EventWrite APIs, which in
 			/// turn indicates whether the EVENT_DATA_DESCRIPTOR::Type field will be respected by the EventWrite APIs.
 			/// </summary>
+			[CorrespondingType(typeof(byte), CorrespondingAction.Set)]
 			EventProviderUseDescriptorType,
-
-			/// <summary>Maximum value for testing purposes.</summary>
-			MaxEventInfo,
 		}
 
 		/// <summary>Creates, queries, and sets the current activity identifier used by the EventWriteTransfer function.</summary>
@@ -195,7 +194,7 @@ namespace Vanara.PInvoke
 		// EventActivityIdControl( ULONG ControlCode, LPGUID ActivityId );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("evntprov.h", MSDNShortId = "1c412909-bdff-4181-9750-f3444fda4c8f")]
-		public static extern Win32Error EventActivityIdControl(EVENT_ACTIVITY_CTRL ControlCode, in Guid ActivityId);
+		public static extern Win32Error EventActivityIdControl(EVENT_ACTIVITY_CTRL ControlCode, ref Guid ActivityId);
 
 		/// <summary>Determines if the event is enabled for any session.</summary>
 		/// <param name="RegHandle">
@@ -282,7 +281,7 @@ namespace Vanara.PInvoke
 		// ProviderId, PENABLECALLBACK EnableCallback, PVOID CallbackContext, PREGHANDLE RegHandle );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("evntprov.h", MSDNShortId = "6025c3a6-7d88-49dc-bbc3-655c172dde3c")]
-		public static extern Win32Error EventRegister(in Guid ProviderId, EnableCallback EnableCallback, IntPtr CallbackContext, out SafeREGHANDLE RegHandle);
+		public static extern Win32Error EventRegister(in Guid ProviderId, [Optional] EnableCallback EnableCallback, [Optional] IntPtr CallbackContext, out SafeREGHANDLE RegHandle);
 
 		/// <summary>Performs operations on a registration object.</summary>
 		/// <param name="RegHandle">
@@ -366,7 +365,7 @@ namespace Vanara.PInvoke
 		// RegHandle, PCEVENT_DESCRIPTOR EventDescriptor, ULONG UserDataCount, PEVENT_DATA_DESCRIPTOR UserData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("evntprov.h", MSDNShortId = "93070eb7-c167-4419-abff-e861877dad07")]
-		public static extern Win32Error EventWrite(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint UserDataCount, IntPtr UserData);
+		public static extern Win32Error EventWrite(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] EVENT_DATA_DESCRIPTOR[] UserData);
 
 		/// <summary>Use this function to write an event.</summary>
 		/// <param name="RegHandle">Registration handle of the provider. The handle comes from EventRegister.</param>
@@ -441,7 +440,7 @@ namespace Vanara.PInvoke
 		// UserDataCount, PEVENT_DATA_DESCRIPTOR UserData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("evntprov.h", MSDNShortId = "00b907cb-45cd-48c7-bea4-4d8a39b4fa24")]
-		public static extern Win32Error EventWriteEx(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, ulong Filter, [Optional] uint Flags, in Guid ActivityId, in Guid RelatedActivityId, uint UserDataCount, IntPtr UserData);
+		public static extern Win32Error EventWriteEx(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint Filter, [Optional] uint Flags, in Guid ActivityId, in Guid RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] EVENT_DATA_DESCRIPTOR[] UserData);
 
 		/// <summary>Use this function to write an event.</summary>
 		/// <param name="RegHandle">Registration handle of the provider. The handle comes from EventRegister.</param>
@@ -516,7 +515,7 @@ namespace Vanara.PInvoke
 		// UserDataCount, PEVENT_DATA_DESCRIPTOR UserData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("evntprov.h", MSDNShortId = "00b907cb-45cd-48c7-bea4-4d8a39b4fa24")]
-		public static extern Win32Error EventWriteEx(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, ulong Filter, [Optional] uint Flags, [Optional] IntPtr ActivityId, [Optional] IntPtr RelatedActivityId, uint UserDataCount, IntPtr UserData);
+		public static extern Win32Error EventWriteEx(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint Filter, [Optional] uint Flags, [Optional] IntPtr ActivityId, [Optional] IntPtr RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] EVENT_DATA_DESCRIPTOR[] UserData);
 
 		/// <summary>Writes an event that contains a string as its data.</summary>
 		/// <param name="RegHandle">Registration handle of the provider. The handle comes from EventRegister.</param>
@@ -604,7 +603,7 @@ namespace Vanara.PInvoke
 		// PEVENT_DATA_DESCRIPTOR UserData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("evntprov.h", MSDNShortId = "798cf3ba-e1cc-4eaf-a1d2-2313a64aab1a")]
-		public static extern Win32Error EventWriteTransfer(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, in Guid ActivityId, in Guid RelatedActivityId, uint UserDataCount, IntPtr UserData);
+		public static extern Win32Error EventWriteTransfer(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, in Guid ActivityId, in Guid RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EVENT_DATA_DESCRIPTOR[] UserData);
 
 		/// <summary>Links events together when tracing events in an end-to-end scenario.</summary>
 		/// <param name="RegHandle">Registration handle of the provider. The handle comes from EventRegister.</param>
@@ -663,7 +662,7 @@ namespace Vanara.PInvoke
 		// PEVENT_DATA_DESCRIPTOR UserData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("evntprov.h", MSDNShortId = "798cf3ba-e1cc-4eaf-a1d2-2313a64aab1a")]
-		public static extern Win32Error EventWriteTransfer(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, [Optional] IntPtr ActivityId, [Optional] IntPtr RelatedActivityId, uint UserDataCount, IntPtr UserData);
+		public static extern Win32Error EventWriteTransfer(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, [Optional] IntPtr ActivityId, [Optional] IntPtr RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EVENT_DATA_DESCRIPTOR[] UserData);
 
 		/// <summary>
 		/// The EVENT_DATA_DESCRIPTOR structure is used with the user mode EventWrite and the kernel mode EtwWrite functions to send events.
