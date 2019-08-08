@@ -39,14 +39,20 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvApi32\EventRecordEventArgs.cs" />
+    <Compile Include="AdvApi32\EventTraceController.cs" />
+    <Compile Include="AdvApi32\EventTraceLogs.cs" />
+    <Compile Include="AdvApi32\EvnTraceTests.cs" />
     <Compile Include="AdvApi32\EvntProvTests.cs" />
     <Compile Include="AdvApi32\AdvApi32Tests.cs" />
     <Compile Include="AdvApi32\AclApiTests.cs" />
     <Compile Include="AdvApi32\AuditTests.cs" />
     <Compile Include="AdvApi32\AppMgmtTests.cs" />
+    <Compile Include="AdvApi32\ProviderInfo.cs" />
     <Compile Include="AdvApi32\SecurityBaseApiTests.cs" />
     <Compile Include="AdvApi32\ServiceTests.cs" />
     <Compile Include="AdvApi32\PSIDTests.cs" />
+    <Compile Include="AdvApi32\EventTraceSession.cs" />
     <Compile Include="Authz\AuthzTests.cs" />
     <Compile Include="Secur32\SaslTests.cs" />
     <Compile Include="Secur32\SspiTests.cs" />
