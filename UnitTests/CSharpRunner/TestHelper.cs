@@ -1,15 +1,28 @@
 ﻿using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke.Tests
 {
 	public static class TestHelper
 	{
+		public static IList<string> GetNestedStructSizes(this Type type, params string[] filters)
+		{
+			var output = new List<string>();
+			var attr = System.Reflection.TypeAttributes.SequentialLayout | System.Reflection.TypeAttributes.ExplicitLayout;
+			foreach (var t in typeof(AdvApi32).GetNestedTypes(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).
+				Where(t => t.IsValueType && !t.IsEnum && (t.Attributes & attr) != 0 && ((filters?.Length ?? 0) == 0 || filters.Any(s => t.Name.Contains(s)))))
+				output.Add($"{t.Name} = {Marshal.SizeOf(t)}");
+			output.Sort();
+			return output;
+		}
+
 		public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, object, object[]> action = null, Action<Exception> error = null) where TEnum : Enum =>
-			RunForEach(lib, name, makeParam, (e, ex) => error?.Invoke(ex), action);
+					RunForEach(lib, name, makeParam, (e, ex) => error?.Invoke(ex), action);
 
 		public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, Exception> error = null, Action<TEnum, object, object[]> action = null, CorrespondingAction? filter = null) where TEnum : Enum
 		{
@@ -46,9 +59,9 @@ namespace Vanara.PInvoke.Tests
 
 		private class SizeTConverter : JsonConverter<SizeT>
 		{
-			public override void WriteJson(JsonWriter writer, SizeT value, JsonSerializer serializer) => writer.WriteValue(value.Value);
-
 			public override SizeT ReadJson(JsonReader reader, Type objectType, SizeT existingValue, bool hasExistingValue, JsonSerializer serializer) => reader.Value is ulong ul ? new SizeT(ul) : new SizeT(0);
+
+			public override void WriteJson(JsonWriter writer, SizeT value, JsonSerializer serializer) => writer.WriteValue(value.Value);
 		}
 	}
 }
