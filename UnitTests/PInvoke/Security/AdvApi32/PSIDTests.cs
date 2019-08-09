@@ -29,10 +29,10 @@ namespace Vanara.PInvoke.Tests
 			var sid4 = new SafePSID(100);
 			Assert.That(!sid4.IsClosed);
 			Assert.That(!sid4.IsValidSid);
-			Assert.That(sid4.Size, Is.EqualTo(100));
+			Assert.That((int)sid4.Size, Is.EqualTo(100));
 			sid4.Dispose();
 			Assert.That(sid4.IsClosed);
-			Assert.That(sid4.Size, Is.EqualTo(0));
+			Assert.That((int)sid4.Size, Is.EqualTo(0));
 
 			Assert.That(sid.Equals("X"), Is.False);
 			Assert.That(sid.Equals(sid3), Is.False);

@@ -191,7 +191,7 @@ namespace Vanara.Security.AccessControl
 			var ts = sids.DangerousGetHandle().ToIEnum<LSA_TRANSLATED_SID2>(names.Length).ToArray();
 			var retVal = new SystemAccountInfo[names.Length];
 			for (var i = 0; i < names.Length; i++)
-				retVal[i] = new SystemAccountInfo(names[i], ts[i].Use, IsValidSid(ts[i].Use) ? new SecurityIdentifier(ts[i].Sid) : null, ts[i].DomainIndex, d);
+				retVal[i] = new SystemAccountInfo(names[i], ts[i].Use, IsValidSid(ts[i].Use) ? new SecurityIdentifier((IntPtr)ts[i].Sid) : null, ts[i].DomainIndex, d);
 			return retVal;
 		}
 
@@ -208,7 +208,7 @@ namespace Vanara.Security.AccessControl
 			var opts = (preferInternetNames ? LsaLookupSidsFlags.LSA_LOOKUP_PREFER_INTERNET_NAMES : 0) |
 			           (disallowConnectedAccts ? LsaLookupSidsFlags.LSA_LOOKUP_DISALLOW_CONNECTED_ACCOUNT_INTERNET_SID : 0);
 			var psids = sids.Select(s => new PinnedSid(s));
-			var ret = LsaLookupSids2(Handle, opts, (uint)sids.Length, psids.Select(s => (IntPtr)s).ToArray(), out var domains, out var names);
+			var ret = LsaLookupSids2(Handle, opts, (uint)sids.Length, psids.Select(s => s.PSID).ToArray(), out var domains, out var names);
 			if (ret != NTStatus.STATUS_SUCCESS && ret != NTStatus.STATUS_SOME_NOT_MAPPED)
 				ThrowIfLsaError(ret);
 			var d = domains.DangerousGetHandle().ToStructure<LSA_REFERENCED_DOMAIN_LIST>().DomainList.ToArray();
@@ -239,14 +239,14 @@ namespace Vanara.Security.AccessControl
 
 		private static string FromPriv(SystemPrivilege priv) => SystemPrivilegeTypeConverter.PrivLookup[priv];
 
-		private static void ThrowIfLsaError(uint lsaRetVal)
+		private static void ThrowIfLsaError(NTStatus lsaRetVal)
 		{
 			LsaNtStatusToWinError(lsaRetVal).ThrowIfFailed();
 		}
 
 		private void AddRights(string accountName, params string[] privilegeNames)
 		{
-			ThrowIfLsaError(LsaAddAccountRights(Handle, GetSid(accountName), privilegeNames, privilegeNames.Length));
+			ThrowIfLsaError(LsaAddAccountRights(Handle, GetSid(accountName), privilegeNames, (uint)privilegeNames.Length));
 		}
 
 		private SafeLSA_HANDLE GetAccount(string accountName, LsaAccountAccessMask mask = LsaAccountAccessMask.ACCOUNT_VIEW)
@@ -299,7 +299,7 @@ namespace Vanara.Security.AccessControl
 
 		private void RemoveRights(string accountName, params string[] privilegeNames)
 		{
-			ThrowIfLsaError(LsaRemoveAccountRights(Handle, GetSid(accountName), false, privilegeNames, privilegeNames.Length));
+			ThrowIfLsaError(LsaRemoveAccountRights(Handle, GetSid(accountName), false, privilegeNames, (uint)privilegeNames.Length));
 		}
 
 		private static void SetSystemAccess(SafeLSA_HANDLE hAcct, AccountLogonRights rights)
