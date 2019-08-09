@@ -3857,7 +3857,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "1A911FCC-6D11-4185-B532-20FE6C7C4B0B")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeriveCapabilitySidsFromName([MarshalAs(UnmanagedType.LPWStr)] string CapName, out SafeLocalPSIDArray CapabilityGroupSids, out int CapabilityGroupSidCount, out SafeLocalPSIDArray CapabilitySids, out int CapabilitySidCount);
+		public static extern bool DeriveCapabilitySidsFromName([MarshalAs(UnmanagedType.LPWStr)] string CapName, out SafePSIDArray CapabilityGroupSids, out int CapabilityGroupSidCount, out SafePSIDArray CapabilitySids, out int CapabilitySidCount);
 
 		/// <summary>
 		/// The <c>DestroyPrivateObjectSecurity</c> function deletes a private object's security descriptor. For background information, see

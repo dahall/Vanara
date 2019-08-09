@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security;
-using System.Text;
-using Vanara.Extensions;
 using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -21,12 +16,15 @@ namespace Vanara.PInvoke
 		public enum POLICY_DOMAIN_INFORMATION_CLASS
 		{
 			/// <summary/>
+			[CorrespondingType(typeof(POLICY_DOMAIN_QUALITY_OF_SERVICE_INFO), CorrespondingAction.Set)]
 			PolicyDomainQualityOfServiceInformation = 1,
 
 			/// <summary>The information is for Encrypting File System.</summary>
+			[CorrespondingType(typeof(POLICY_DOMAIN_EFS_INFO))]
 			PolicyDomainEfsInformation,
 
 			/// <summary>The information is for a Kerberos ticket.</summary>
+			[CorrespondingType(typeof(POLICY_DOMAIN_KERBEROS_TICKET_INFO))]
 			PolicyDomainKerberosTicketInformation,
 		}
 
@@ -43,47 +41,59 @@ namespace Vanara.PInvoke
 		public enum POLICY_INFORMATION_CLASS
 		{
 			/// <summary>This value is obsolete.</summary>
+			[Obsolete]
 			PolicyAuditLogInformation = 1,
 
 			/// <summary>
 			/// Query or set the auditing rules of the system. You can enable or disable auditing and specify the types of events that are
 			/// audited. Use the POLICY_AUDIT_EVENTS_INFO structure.
 			/// </summary>
+			[CorrespondingType(typeof(POLICY_AUDIT_EVENTS_INFO))]
 			PolicyAuditEventsInformation,
 
 			/// <summary>This value is obsolete. Use the PolicyDnsDomainInformation value instead.</summary>
+			[Obsolete]
 			PolicyPrimaryDomainInformation,
 
 			/// <summary>This value is obsolete.</summary>
+			[Obsolete]
 			PolicyPdAccountInformation,
 
 			/// <summary>Query or set the name and SID of the account domain of the system. Use the POLICY_ACCOUNT_DOMAIN_INFO structure.</summary>
+			[CorrespondingType(typeof(POLICY_ACCOUNT_DOMAIN_INFO))]
 			PolicyAccountDomainInformation,
 
 			/// <summary>Query or set the role of an LSA server. Use the POLICY_LSA_SERVER_ROLE_INFO structure.</summary>
+			[CorrespondingType(typeof(POLICY_LSA_SERVER_ROLE_INFO))]
 			PolicyLsaServerRoleInformation,
 
 			/// <summary>This value is obsolete.</summary>
+			[Obsolete]
 			PolicyReplicaSourceInformation,
 
 			/// <summary>This value is obsolete.</summary>
+			[Obsolete]
 			PolicyDefaultQuotaInformation,
 
 			/// <summary>
 			/// Query or set information about the creation time and last modification of the LSA database. Use the POLICY_MODIFICATION_INFO structure.
 			/// </summary>
+			[CorrespondingType(typeof(POLICY_MODIFICATION_INFO))]
 			PolicyModificationInformation,
 
 			/// <summary>This value is obsolete.</summary>
+			[Obsolete]
 			PolicyAuditFullSetInformation,
 
 			/// <summary>This value is obsolete.</summary>
+			[Obsolete]
 			PolicyAuditFullQueryInformation,
 
 			/// <summary>
 			/// Query or set Domain Name System (DNS) information about the account domain associated with a Policy object. Use the
 			/// POLICY_DNS_DOMAIN_INFO structure.
 			/// </summary>
+			[CorrespondingType(typeof(POLICY_DNS_DOMAIN_INFO))]
 			PolicyDnsDomainInformation,
 
 			/// <summary/>
@@ -94,6 +104,53 @@ namespace Vanara.PInvoke
 
 			/// <summary/>
 			PolicyMachineAccountInformation,
+		}
+
+		/// <summary>
+		/// The <c>POLICY_LSA_SERVER_ROLE</c> enumeration type defines values that indicate the role of an LSA server. The
+		/// LsaQueryInformationPolicy and LsaSetInformationPolicy functions use this enumeration type when their InformationClass parameters
+		/// are set to <c>PolicyLsaServerRoleInformation</c>.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/ne-ntsecapi-policy_lsa_server_role typedef enum
+		// _POLICY_LSA_SERVER_ROLE { PolicyServerRoleBackup, PolicyServerRolePrimary } POLICY_LSA_SERVER_ROLE, *PPOLICY_LSA_SERVER_ROLE;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "a2bcc380-8873-436b-a0d6-e4deb23669bb")]
+		public enum POLICY_LSA_SERVER_ROLE
+		{
+			/// <summary>Indicates a backup LSA server.</summary>
+			PolicyServerRoleBackup = 2,
+
+			/// <summary>Indicates a primary LSA server, a workstation, or a standalone computer.</summary>
+			PolicyServerRolePrimary,
+		}
+
+		/// <summary>[Undocumented] Used by POLICY_DOMAIN_QUALITY_OF_SERVICE_INFO.</summary>
+		[PInvokeData("ntsecapi.h")]
+		public enum POLICY_QOS : uint
+		{
+			POLICY_QOS_SCHANNEL_REQUIRED = 0x00000001,
+			POLICY_QOS_OUTBOUND_INTEGRITY = 0x00000002,
+			POLICY_QOS_OUTBOUND_CONFIDENTIALITY = 0x00000004,
+			POLICY_QOS_INBOUND_INTEGRITY = 0x00000008,
+			POLICY_QOS_INBOUND_CONFIDENTIALITY = 0x00000010,
+			POLICY_QOS_ALLOW_LOCAL_ROOT_CERT_STORE = 0x00000020,
+			POLICY_QOS_RAS_SERVER_ALLOWED = 0x00000040,
+			POLICY_QOS_DHCP_SERVER_ALLOWED = 0x00000080,
+		}
+
+		/// <summary>
+		/// The <c>POLICY_SERVER_ENABLE_STATE</c> enumeration represents the state of the LSA server—that is, whether it is enabled or
+		/// disabled. Some operations may only be performed on an enabled LSA server.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/ne-ntsecapi-policy_server_enable_state typedef enum
+		// _POLICY_SERVER_ENABLE_STATE { PolicyServerEnabled, PolicyServerDisabled } POLICY_SERVER_ENABLE_STATE, *PPOLICY_SERVER_ENABLE_STATE;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "aae5875e-ca55-4571-a9a4-684280ae8aa0")]
+		public enum POLICY_SERVER_ENABLE_STATE
+		{
+			/// <summary>The LSA server is enabled.</summary>
+			PolicyServerEnabled = 2,
+
+			/// <summary>The LSA server is disabled.</summary>
+			PolicyServerDisabled,
 		}
 
 		/// <summary>Indicates the attributes of a trust relationship.</summary>
@@ -179,7 +236,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Query or set the name of a trusted domain. Use the TRUSTED_DOMAIN_NAME_INFO structure.</summary>
 			[CorrespondingType(typeof(TRUSTED_DOMAIN_NAME_INFO))]
-			TrustedDomainNameInformation,
+			TrustedDomainNameInformation = 1,
 
 			/// <summary>This value is obsolete.</summary>
 			TrustedControllersInformation,
@@ -370,6 +427,237 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// The <c>POLICY_ACCOUNT_DOMAIN_INFO</c> structure is used to set and query the name and SID of the system's account domain. The
+		/// LsaQueryInformationPolicy and LsaSetInformationPolicy functions use this structure when their InformationClass parameters are set
+		/// to <c>PolicyAccountDomainInformation</c>.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/lsalookup/ns-lsalookup-policy_account_domain_info typedef struct
+		// _POLICY_ACCOUNT_DOMAIN_INFO { LSA_UNICODE_STRING DomainName; PSID DomainSid; } POLICY_ACCOUNT_DOMAIN_INFO, *PPOLICY_ACCOUNT_DOMAIN_INFO;
+		[PInvokeData("lsalookup.h", MSDNShortId = "0e38ac5f-40db-405d-9394-b6bcb7c652b5")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct POLICY_ACCOUNT_DOMAIN_INFO
+		{
+			/// <summary>An LSA_UNICODE_STRING structure that specifies the name of the account domain.</summary>
+			public LSA_UNICODE_STRING DomainName;
+
+			/// <summary>Pointer to the SID of the account domain.</summary>
+			public PSID DomainSid;
+		}
+
+		/// <summary>
+		/// The <c>POLICY_AUDIT_EVENTS_INFO</c> structure is used to set and query the system's auditing rules. The LsaQueryInformationPolicy
+		/// and LsaSetInformationPolicy functions use this structure when their InformationClass parameters are set to <c>PolicyAuditEventsInformation</c>.
+		/// </summary>
+		/// <remarks>
+		/// LSA Policy defines a mask for the valid event auditing options. The POLICY_AUDIT_EVENT_MASK mask evaluates to <c>TRUE</c> if it
+		/// is set equal to any of the preceding event auditing options.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/ns-ntsecapi-policy_audit_events_info typedef struct
+		// _POLICY_AUDIT_EVENTS_INFO { BOOLEAN AuditingMode; PPOLICY_AUDIT_EVENT_OPTIONS EventAuditingOptions; ULONG MaximumAuditEventCount;
+		// } POLICY_AUDIT_EVENTS_INFO, *PPOLICY_AUDIT_EVENTS_INFO;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "3442e5e5-78cf-4bda-ba11-0f51ee40df16")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct POLICY_AUDIT_EVENTS_INFO
+		{
+			/// <summary>
+			/// <para>Indicates whether auditing is enabled.</para>
+			/// <para>
+			/// If this flag is <c>TRUE</c>, the system generates audit records according to the event auditing options specified in the
+			/// <c>EventAuditingOptions</c> member.
+			/// </para>
+			/// <para>
+			/// If this flag is <c>FALSE</c>, the system does not generate audit records. However, note that set operations update the event
+			/// auditing options as specified in the <c>EventAuditingOptions</c> member even when <c>AuditingMode</c> is <c>FALSE</c>.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool AuditingMode;
+
+			/// <summary>
+			/// <para>
+			/// Pointer to an array of POLICY_AUDIT_EVENT_OPTIONS variables. Each element in this array specifies the auditing options for an
+			/// audit event type. The index of each array element corresponds to an audit event type value in the POLICY_AUDIT_EVENT_TYPE
+			/// enumeration type.
+			/// </para>
+			/// <para>
+			/// Each POLICY_AUDIT_EVENT_OPTIONS variable in the array can specify the following auditing options. You can also combine the
+			/// success and failure options, POLICY_AUDIT_EVENT_SUCCESS and POLICY_AUDIT_EVENT_FAILURE.
+			/// </para>
+			/// <para>
+			/// When LSASetInformationPolicy is called to change the audit policy, any new POLICY_AUDIT_EVENT_OPTIONS array elements are
+			/// added to any existing audit options. Adding a new POLICY_AUDIT_EVENT_OPTIONS element combined with the
+			/// POLICY_AUDIT_EVENT_NONE audit option cancels all previous audit options and begins a new set of options.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>POLICY_AUDIT_EVENT_UNCHANGED</term>
+			/// <term>
+			/// For set operations, specify this value to leave the current options unchanged. For read operations, this value means that no
+			/// audit records for this type are generated. This is the default.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>POLICY_AUDIT_EVENT_SUCCESS</term>
+			/// <term>Generate audit records for successful events of this type.</term>
+			/// </item>
+			/// <item>
+			/// <term>POLICY_AUDIT_EVENT_FAILURE</term>
+			/// <term>Generate audit records for failed attempts to cause an event of this type to occur.</term>
+			/// </item>
+			/// <item>
+			/// <term>POLICY_AUDIT_EVENT_NONE</term>
+			/// <term>Do not generate audit records for events of this type.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public IntPtr EventAuditingOptions;
+
+			/// <summary>
+			/// Specifies the number of elements in the <c>EventAuditingOptions</c> array. For set operations, if this value is less than the
+			/// number of audit event types supported by the system, the system does not change the auditing options for event types with
+			/// indexes equal to or higher than the value specified in <c>MaximumAuditEventCount</c>.
+			/// </summary>
+			public uint MaximumAuditEventCount;
+		}
+
+		/// <summary>
+		/// The <c>POLICY_DNS_DOMAIN_INFO</c> structure is used to set and query Domain Name System (DNS) information about the primary
+		/// domain associated with a Policy object. The LsaQueryInformationPolicy and LsaSetInformationPolicy functions use this structure
+		/// when their InformationClass parameters are set to <c>PolicyDnsDomainInformation</c>.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>POLICY_DNS_DOMAIN_INFO</c> structure is an extended version of the POLICY_PRIMARY_DOMAIN_INFO structure. Setting
+		/// <c>POLICY_DNS_DOMAIN_INFO</c> information will overwrite the corresponding values in the <c>POLICY_PRIMARY_DOMAIN_INFO</c> (name
+		/// and SID), and vice versa.
+		/// </para>
+		/// <para>
+		/// If the computer associated with the Policy object is not a member of a domain, all structure members except <c>Name</c> are
+		/// <c>NULL</c> or zero.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/lsalookup/ns-lsalookup-policy_dns_domain_info typedef struct
+		// _POLICY_DNS_DOMAIN_INFO { LSA_UNICODE_STRING Name; LSA_UNICODE_STRING DnsDomainName; LSA_UNICODE_STRING DnsForestName; GUID
+		// DomainGuid; PSID Sid; } POLICY_DNS_DOMAIN_INFO, *PPOLICY_DNS_DOMAIN_INFO;
+		[PInvokeData("lsalookup.h", MSDNShortId = "5b2879cf-e0dc-4844-bfe8-bf45460285f1")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct POLICY_DNS_DOMAIN_INFO
+		{
+			/// <summary>
+			/// An LSA_UNICODE_STRING structure that specifies the name of the primary domain. This is the same as the primary domain name in
+			/// the POLICY_PRIMARY_DOMAIN_INFO structure.
+			/// </summary>
+			public LSA_UNICODE_STRING Name;
+
+			/// <summary>An LSA_UNICODE_STRING structure that specifies the DNS name of the primary domain.</summary>
+			public LSA_UNICODE_STRING DnsDomainName;
+
+			/// <summary>
+			/// An LSA_UNICODE_STRING structure that specifies the DNS forest name of the primary domain. This is the DNS name of the domain
+			/// at the root of the enterprise.
+			/// </summary>
+			public LSA_UNICODE_STRING DnsForestName;
+
+			/// <summary>A GUID structure that contains the GUID of the primary domain.</summary>
+			public Guid DomainGuid;
+
+			/// <summary>
+			/// Pointer to the SID of the primary domain. This is the same as the primary domain SID in the POLICY_PRIMARY_DOMAIN_INFO structure.
+			/// </summary>
+			public PSID Sid;
+		}
+
+		/// <summary>[Undocumented] Used by <see cref="POLICY_DOMAIN_INFORMATION_CLASS.PolicyDomainEfsInformation"/>.</summary>
+		[PInvokeData("ntsecapi.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct POLICY_DOMAIN_EFS_INFO
+		{
+			/// <summary>Length of the EFS Information blob</summary>
+			public uint InfoLength;
+
+			/// <summary>Efs blob data</summary>
+			public IntPtr EfsBlob;
+		}
+
+		/// <summary>[Undocumented] Used by <see cref="POLICY_DOMAIN_INFORMATION_CLASS.PolicyDomainKerberosTicketInformation"/>.</summary>
+		[PInvokeData("ntsecapi.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct POLICY_DOMAIN_KERBEROS_TICKET_INFO
+		{
+			/// <summary>allowed ticket options (POLICY_KERBEROS_* flags )</summary>
+			public uint AuthenticationOptions;
+
+			/// <summary>Maximum lifetime for a service ticket</summary>
+			public FILETIME MaxServiceTicketAge;
+
+			/// <summary>Maximum lifetime for the initial ticket</summary>
+			public FILETIME MaxTicketAge;
+
+			/// <summary>Maximum cumulative age a renewable ticket can be with requring authentication</summary>
+			public FILETIME MaxRenewAge;
+
+			/// <summary>Maximum tolerance for synchronization of computer clocks</summary>
+			public FILETIME MaxClockSkew;
+
+			/// <summary>Reserved</summary>
+			public FILETIME Reserved;
+		}
+
+		/// <summary>[Undocumented] Used by <see cref="POLICY_DOMAIN_INFORMATION_CLASS.PolicyDomainQualityOfServiceInformation"/>.</summary>
+		[PInvokeData("ntsecapi.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct POLICY_DOMAIN_QUALITY_OF_SERVICE_INFO
+		{
+			/// <summary>Determines what specific QOS actions a machine should take</summary>
+			public POLICY_QOS QualityOfService;
+		}
+
+		/// <summary>
+		/// The <c>POLICY_LSA_SERVER_ROLE_INFO</c> structure is used to set and query the role of an LSA server. The
+		/// LsaQueryInformationPolicy and LsaSetInformationPolicy functions use this structure when their InformationClass parameters are set
+		/// to <c>PolicyLsaServerRoleInformation</c>.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/ns-ntsecapi-policy_lsa_server_role_info typedef struct
+		// _POLICY_LSA_SERVER_ROLE_INFO { POLICY_LSA_SERVER_ROLE LsaServerRole; } POLICY_LSA_SERVER_ROLE_INFO, *PPOLICY_LSA_SERVER_ROLE_INFO;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "f66abe33-d8c8-45b8-9b94-d6890d786aaa")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct POLICY_LSA_SERVER_ROLE_INFO
+		{
+			/// <summary>
+			/// Specifies one of the values from the POLICY_LSA_SERVER_ROLE enumeration type to indicate a primary or backup LSA server.
+			/// </summary>
+			public POLICY_LSA_SERVER_ROLE LsaServerRole;
+		}
+
+		/// <summary>
+		/// The <c>POLICY_MODIFICATION_INFO</c> structure is used to query information about the creation time and last modification of the
+		/// LSA database. The LsaQueryInformationPolicy function uses this structure when its InformationClass parameter is set to PolicyModificationInformation.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/ns-ntsecapi-policy_modification_info typedef struct
+		// _POLICY_MODIFICATION_INFO { LARGE_INTEGER ModifiedId; LARGE_INTEGER DatabaseCreationTime; } POLICY_MODIFICATION_INFO, *PPOLICY_MODIFICATION_INFO;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "ef4d1d1d-9b1b-4d67-80b8-2b548ec31a87")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct POLICY_MODIFICATION_INFO
+		{
+			/// <summary>
+			/// A LARGE_INTEGER structure containing a 64-bit unsigned integer that is incremented each time anything in the LSA database is
+			/// modified. This value is modified only on primary domain controllers.
+			/// </summary>
+			public long ModifiedId;
+
+			/// <summary>
+			/// A LARGE_INTEGER structure that indicates the date and time the LSA database was created. This is a UTC-based time that uses
+			/// the FILETIME format. On backup domain controllers, this value is replicated from the primary domain controller. For more
+			/// information about UTC-based time, see System Time.
+			/// </summary>
+			public FILETIME DatabaseCreationTime;
+		}
+
+		/// <summary>
 		/// <para>
 		/// The <c>TRUSTED_DOMAIN_AUTH_INFORMATION</c> structure is used to retrieve authentication information for a trusted domain. The
 		/// LsaQueryTrustedDomainInfo function uses this structure when its InformationClass parameter is set to <c>TrustedDomainAuthInformation</c>.
@@ -500,7 +788,7 @@ namespace Vanara.PInvoke
 			/// Pointer to the security identifier (SID) of the trusted domain. For non-Microsoft trusted domains, this member can be <c>NULL</c>.
 			/// </para>
 			/// </summary>
-			public IntPtr Sid;
+			public PSID Sid;
 
 			/// <summary>
 			/// <para>A value that indicates the direction of the trust. This member can be one of the following values.</para>
@@ -678,6 +966,5 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint Offset;
 		}
-
 	}
 }

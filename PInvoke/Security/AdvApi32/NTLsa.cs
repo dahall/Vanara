@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -82,12 +83,12 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// The LsaGetAppliedCAPIDs function returns an array of central access policies (CAPs) identifiers (CAPIDs) of all the CAPs applied
-		/// on a specific computer.
+		/// The <c>LsaGetAppliedCAPIDs</c> function returns an array of central access policies (CAPs) identifiers (CAPIDs) of all the CAPs
+		/// applied on a specific computer.
 		/// </summary>
-		/// <param name="systemName">
-		/// The name of the specific computer. The name can have the form of "ComputerName" or "\\ComputerName". If this parameter is NULL,
-		/// then the function returns the CAPIDs of the local computer.
+		/// <param name="SystemName">
+		/// A pointer to an LSA_UNICODE_STRING structure that contains the name of the specific computer. The name can have the form of
+		/// "ComputerName" or "\ComputerName". If this parameter is <c>NULL</c>, then the function returns the CAPIDs of the local computer.
 		/// </param>
 		/// <param name="CAPIDs">
 		/// A pointer to a variable that receives an array of pointers to CAPIDs that identify the CAPs available on the specified computer.
@@ -98,17 +99,45 @@ namespace Vanara.PInvoke
 		/// CAPIDs parameter contains the same number of elements as the CAPIDCount parameter.
 		/// </param>
 		/// <returns>
-		/// If the function succeeds, the return value is STATUS_SUCCESS.
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
 		/// <para>
 		/// If the function fails, the return value is one of the LSA Policy Function Return Values. You can use the LsaNtStatusToWinError
-		/// function to convert the NTSTATUS code to a Windows error code.
+		/// function to convert the <c>NTSTATUS</c> code to a Windows error code.
 		/// </para>
 		/// </returns>
-		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
-		[PInvokeData("ntlsa.h", MSDNShortId = "hh846251")]
+		/// <remarks>
+		/// For specific details about the central access policies, you can query the attributes of the central access policy object in the
+		/// Active Directory on the specified computer's domain controller. Look for the object whose <c>msAuthz-CentralAccessPolicyID</c>
+		/// attribute matches one of the returned CAPIDs.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntlsa/nf-ntlsa-lsagetappliedcapids
+		// NTSTATUS LsaGetAppliedCAPIDs( PLSA_UNICODE_STRING SystemName, PSID **CAPIDs, PULONG CAPIDCount );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntlsa.h", MSDNShortId = "DF10F5CE-BBF5-4CA8-919B-F59B7775C983")]
 		public static extern NTStatus LsaGetAppliedCAPIDs(
-			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string systemName,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string systemName,
 			out SafeLsaMemoryHandle CAPIDs, out uint CAPIDCount);
+
+		/// <summary>
+		/// The <c>LsaGetAppliedCAPIDs</c> function returns an array of central access policies (CAPs) identifiers (CAPIDs) of all the CAPs
+		/// applied on a specific computer.
+		/// </summary>
+		/// <param name="SystemName">
+		/// A pointer to an LSA_UNICODE_STRING structure that contains the name of the specific computer. The name can have the form of
+		/// "ComputerName" or "\ComputerName". If this parameter is <c>NULL</c>, then the function returns the CAPIDs of the local computer.
+		/// </param>
+		/// <returns>An array of pointers to CAPIDs that identify the CAPs available on the specified computer.</returns>
+		/// <remarks>
+		/// For specific details about the central access policies, you can query the attributes of the central access policy object in the
+		/// Active Directory on the specified computer's domain controller. Look for the object whose <c>msAuthz-CentralAccessPolicyID</c>
+		/// attribute matches one of the returned CAPIDs.
+		/// </remarks>
+		[PInvokeData("ntlsa.h", MSDNShortId = "DF10F5CE-BBF5-4CA8-919B-F59B7775C983")]
+		public static IEnumerable<PSID> LsaGetAppliedCAPIDs([Optional] string systemName)
+		{
+			LsaGetAppliedCAPIDs(systemName, out var pCapIds, out var idCnt).ThrowIfFailed();
+			return pCapIds.ToArray<PSID>((int)idCnt);
+		}
 
 		/// <summary>
 		/// <para>
@@ -159,7 +188,7 @@ namespace Vanara.PInvoke
 		// CAPIDCount, PCENTRAL_ACCESS_POLICY *CAPs, PULONG CAPCount );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ntlsa.h", MSDNShortId = "55D6FD6F-0FD5-41F6-967B-F5600E19C3EF")]
-		public static extern NTStatus LsaQueryCAPs([In] IntPtr[] CAPIDs, uint CAPIDCount, SafeLsaMemoryHandle CAPs, out uint CAPCount);
+		public static extern NTStatus LsaQueryCAPs([In] PSID[] CAPIDs, uint CAPIDCount, out SafeLsaMemoryHandle CAPs, out uint CAPCount);
 
 		/// <summary>
 		/// <para>Represents a central access policy that contains a set of central access policy entries.</para>
@@ -174,7 +203,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>The identifier of the central access policy.</para>
 			/// </summary>
-			public IntPtr CAPID;
+			public PSID CAPID;
 
 			/// <summary>
 			/// <para>The name of the central access policy.</para>
@@ -251,7 +280,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>A buffer of security descriptors associated with the entry.</para>
 			/// </summary>
-			public IntPtr SD;
+			public PSECURITY_DESCRIPTOR SD;
 
 			/// <summary>
 			/// <para>The length of the buffer pointed to by the StagedSD field.</para>
@@ -261,7 +290,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>A buffer of staged security descriptors associated with the entry.</para>
 			/// </summary>
-			public IntPtr StagedSD;
+			public PSECURITY_DESCRIPTOR StagedSD;
 
 			/// <summary>
 			/// <para>This field is reserved.</para>

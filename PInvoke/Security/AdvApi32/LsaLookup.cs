@@ -48,10 +48,7 @@ namespace Vanara.PInvoke
 			/// <summary>Should be <c>NULL</c>.</summary>
 			public IntPtr SecurityQualityOfService;
 
-			/// <summary>
-			/// Returns a completely empty reference. This value should be used when calling <see cref="LsaOpenPolicy(string, ref
-			/// LSA_OBJECT_ATTRIBUTES, LsaPolicyRights, out SafeLSA_HANDLE)"/>.
-			/// </summary>
+			/// <summary>Returns a completely empty reference. This value should be used when calling <see cref="LsaOpenPolicy(string, ref LSA_OBJECT_ATTRIBUTES, LsaPolicyRights, out SafeLSA_HANDLE)"/>.</summary>
 			/// <value>An <see cref="LSA_OBJECT_ATTRIBUTES"/> instance with all members set to <c>NULL</c> or zero.</value>
 			public static LSA_OBJECT_ATTRIBUTES Empty { get; } = new LSA_OBJECT_ATTRIBUTES();
 		}
@@ -160,7 +157,7 @@ namespace Vanara.PInvoke
 			public SID_NAME_USE Use;
 
 			/// <summary>The complete SID of the account.</summary>
-			public IntPtr Sid;
+			public PSID Sid;
 
 			/// <summary>
 			/// The index of an entry in a related LSA_REFERENCED_DOMAIN_LIST data structure which describes the domain that owns the
@@ -196,7 +193,7 @@ namespace Vanara.PInvoke
 				var s = ManagedObj as string;
 				if (s == null) return IntPtr.Zero;
 				var str = new LSA_STRING(s);
-				return str.StructureToPtr(Marshal.AllocCoTaskMem, out int _);
+				return str.StructureToPtr(Marshal.AllocCoTaskMem, out var _);
 			}
 
 			public object MarshalNativeToManaged(IntPtr pNativeData)

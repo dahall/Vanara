@@ -11,94 +11,16 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PSID"/> that is disposed using <see cref="LocalFree"/>.</summary>
-		public class SafeLocalPSID : SafeHANDLE
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeLocalPSID"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeLocalPSID(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeLocalPSID"/> class.</summary>
-			private SafeLocalPSID() : base() { }
-
-			/// <summary>Performs an implicit conversion from <see cref="SafeLocalPSID"/> to <see cref="LocalPSID"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator PSID(SafeLocalPSID h) => h.handle;
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => LocalFree(handle) == HLOCAL.NULL;
-		}
-
-		/// <summary>Provides an array of SID pointers whose memory is disposed after use.</summary>
-		/// <seealso cref="Vanara.PInvoke.SafeHANDLE"/>
-		/// <seealso cref="System.Collections.Generic.IEnumerable{Vanara.PInvoke.PSID}"/>
-		public class SafeLocalPSIDArray : SafeHANDLE, IEnumerable<PSID>
-		{
-			private List<SafeLocalPSID> items;
-
-			/// <summary>Initializes a new instance of the <see cref="SafeLocalPSID"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeLocalPSIDArray(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeLocalPSID"/> class.</summary>
-			private SafeLocalPSIDArray() : base() { }
-
-			/// <summary>Gets or sets the length of the array. This value must be set in order to interact with the elements.</summary>
-			/// <value>The length.</value>
-			public int Length
-			{
-				get => items?.Count ?? throw new InvalidOperationException("The length must be set before using this function.");
-				set
-				{
-					if (items != null) throw new InvalidOperationException("The length can only be set once.");
-					items = new List<SafeLocalPSID>(handle.ToIEnum<IntPtr>(value).Select(p => new SafeLocalPSID(p)));
-				}
-			}
-
-			/// <summary>Gets the <see cref="PSID"/> at the specified index.</summary>
-			/// <value>The <see cref="PSID"/>.</value>
-			/// <param name="index">The index.</param>
-			/// <returns>The PSID at the specified index.</returns>
-			/// <exception cref="InvalidOperationException">The length must be set before using this function.</exception>
-			public PSID this[int index] => items?[index] ?? throw new InvalidOperationException("The length must be set before using this function.");
-
-			/// <summary>Returns an enumerator that iterates through the collection.</summary>
-			/// <returns>A <see cref="IEnumerator{PSID}"/> that can be used to iterate through the collection.</returns>
-			public IEnumerator<PSID> GetEnumerator() => items.ConvertAll(p => (PSID)p).GetEnumerator();
-
-			/// <inheritdoc/>
-			IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable<SafeLocalPSID>)items).GetEnumerator();
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle()
-			{
-				if (items != null)
-					foreach (var p in items)
-						p.Dispose();
-				return LocalFree(handle) == HLOCAL.NULL;
-			}
-		}
-
 		/// <summary>Class representation of the native SID structure.</summary>
 		/// <seealso cref="SafeHGlobalHandle"/>
-		public class SafePSID : SafeMemoryHandle<HeapMemoryMethods>, IEquatable<SafePSID>, IEquatable<PSID>, IEquatable<IntPtr>, ICloneable, ISecurityObject
+		public class SafePSID : SafeMemoryHandle<LocalMemoryMethods>, IEquatable<SafePSID>, IEquatable<PSID>, IEquatable<IntPtr>, ICloneable, ISecurityObject
 		{
 			/// <summary>Equivalent to a NULL pointer to a SID.</summary>
 			public static readonly SafePSID Null = new SafePSID(0);
 
-			/// <summary>A SID representing the Everyone Group (S-1-1-0).</summary>
-			public static readonly SafePSID Everyone = CreateWellKnown(WELL_KNOWN_SID_TYPE.WinWorldSid);
-
 			/// <summary>Initializes a new instance of the <see cref="SafePSID"/> class.</summary>
 			/// <param name="psid">The existing <see cref="SafePSID"/> instance to duplicate.</param>
-			public SafePSID(PSID psid) : base(GetLengthSid(psid)) => CopySid(Size, handle, psid);
+			public SafePSID(PSID psid) : base(psid.IsNull ? 0 : GetLengthSid(psid)) { if (!psid.IsNull) CopySid(Size, handle, psid); }
 
 			/// <summary>Initializes a new instance of the <see cref="SafePSID"/> class.</summary>
 			/// <param name="size">The size of memory to allocate, in bytes.</param>
@@ -121,13 +43,19 @@ namespace Vanara.PInvoke
 			/// <see cref="System.Security.Principal.SecurityIdentifier"/> instance.
 			/// </summary>
 			/// <param name="si">The <see cref="System.Security.Principal.SecurityIdentifier"/> instance.</param>
-			public SafePSID(System.Security.Principal.SecurityIdentifier si) : this(GetBytes(si))
+			public SafePSID(System.Security.Principal.SecurityIdentifier si) : this(si is null ? null : GetBytes(si))
 			{
 			}
+
+			/// <summary>Initializes a new instance of the <see cref="SafePSID"/> class.</summary>
+			private SafePSID() : base() { }
 
 			/// <summary>Gets the SID for the current user</summary>
 			/// <value>The current user's SID.</value>
 			public static SafePSID Current => new SafePSID(System.Security.Principal.WindowsIdentity.GetCurrent().User);
+
+			/// <summary>A SID representing the Everyone Group (S-1-1-0).</summary>
+			public static SafePSID Everyone => CreateWellKnown(WELL_KNOWN_SID_TYPE.WinWorldSid);
 
 			/// <summary>
 			/// Verifies that the revision number is within a known range, and that the number of subauthorities is less than the maximum.
@@ -138,12 +66,7 @@ namespace Vanara.PInvoke
 			/// <summary>Copies the specified SID from a memory pointer to a <see cref="SafePSID"/> instance.</summary>
 			/// <param name="psid">The SID pointer. This value remains the responsibility of the caller to release.</param>
 			/// <returns>A <see cref="SafePSID"/> instance.</returns>
-			public static SafePSID CreateFromPtr(IntPtr psid)
-			{
-				var newSid = new SafePSID(GetLengthSid(psid));
-				CopySid(newSid.Size, newSid.handle, psid);
-				return newSid;
-			}
+			public static SafePSID CreateFromPtr(IntPtr psid) => new SafePSID(psid);
 
 			/// <summary>Creates a SID for predefined aliases.</summary>
 			/// <param name="WellKnownSidType">Member of the WELL_KNOWN_SID_TYPE enumeration that specifies what the SID will identify.</param>
@@ -256,7 +179,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the binary form of this SafePSID.</summary>
 			/// <returns>An array of bytes containing the Sid.</returns>
-			public byte[] GetBinaryForm() => base.GetBytes(0, Size);
+			public byte[] GetBinaryForm() => GetBytes(0, Size);
 
 			/// <summary>Returns a hash code for this instance.</summary>
 			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -264,7 +187,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
-			public override string ToString() => ConvertSidToStringSid(this);
+			public override string ToString()
+			{
+				try { return ConvertSidToStringSid(this); }
+				catch { return !IsInvalid && !IsClosed ? "Invalid" : "0"; }
+			}
 
 			/// <summary>Creates a new object that is a copy of the current instance.</summary>
 			/// <returns>A new object that is a copy of this instance.</returns>
@@ -275,6 +202,78 @@ namespace Vanara.PInvoke
 				var b = new byte[si.BinaryLength];
 				si.GetBinaryForm(b, 0);
 				return b;
+			}
+		}
+
+		/// <summary>Provides an array of SID pointers whose memory is disposed after use.</summary>
+		/// <seealso cref="Vanara.PInvoke.SafeHANDLE"/>
+		/// <seealso cref="System.Collections.Generic.IReadOnlyList{Vanara.PInvoke.PSID}"/>
+		public class SafePSIDArray : SafeHANDLE, IReadOnlyList<PSID>
+		{
+			private List<SafePSID> items;
+
+			/// <summary>Initializes a new instance of the <see cref="SafePSIDArray"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafePSIDArray(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafePSIDArray"/> class.</summary>
+			/// <param name="pSIDs">A list of <see cref="SafePSID"/> instances.</param>
+			public SafePSIDArray(IEnumerable<SafePSID> pSIDs) : this(pSIDs.Select(p => (PSID)p))
+			{
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="SafePSIDArray"/> class.</summary>
+			/// <param name="pSIDs">A list of <see cref="SafePSID"/> instances.</param>
+			public SafePSIDArray(IEnumerable<PSID> pSIDs) : base()
+			{
+				items = pSIDs.Select(p => new SafePSID(p)).ToList();
+				SetHandle(items.Cast<IntPtr>().MarshalToPtr(i => LocalAlloc(LMEM.LPTR, i).DangerousGetHandle(), out _));
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="SafePSIDArray"/> class.</summary>
+			private SafePSIDArray() : base() { }
+
+			/// <summary>Gets or sets the length of the array. This value must be set in order to interact with the elements.</summary>
+			/// <value>The length.</value>
+			public int Count
+			{
+				get => items?.Count ?? throw new InvalidOperationException("The length must be set before using this function.");
+				set
+				{
+					if (items != null) throw new InvalidOperationException("The length can only be set once.");
+					items = new List<SafePSID>(handle.ToIEnum<IntPtr>(value).Select(p => new SafePSID(p)));
+				}
+			}
+
+			/// <summary>Gets the <see cref="PSID"/> at the specified index.</summary>
+			/// <value>The <see cref="PSID"/>.</value>
+			/// <param name="index">The index.</param>
+			/// <returns>The PSID at the specified index.</returns>
+			/// <exception cref="InvalidOperationException">The length must be set before using this function.</exception>
+			public PSID this[int index] => items?[index] ?? throw new InvalidOperationException("The length must be set before using this function.");
+
+			/// <summary>Performs an implicit conversion from <see cref="SafePSIDArray"/> to <see cref="PSID[]"/>.</summary>
+			/// <param name="a">The <see cref="SafePSIDArray"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PSID[](SafePSIDArray a) => a.items.ConvertAll(p => (PSID)p).ToArray();
+
+			/// <summary>Returns an enumerator that iterates through the collection.</summary>
+			/// <returns>A <see cref="IEnumerator{PSID}"/> that can be used to iterate through the collection.</returns>
+			public IEnumerator<PSID> GetEnumerator() => items.ConvertAll(p => (PSID)p).GetEnumerator();
+
+			/// <inheritdoc/>
+			IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable<SafePSID>)items).GetEnumerator();
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle()
+			{
+				if (items != null)
+					foreach (var p in items)
+						p.Dispose();
+				return LocalFree(handle) == HLOCAL.NULL;
 			}
 		}
 	}

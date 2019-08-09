@@ -55,8 +55,8 @@ namespace Vanara.PInvoke.Tests
 		public void DeriveCapabilitySidsFromNameTest()
 		{
 			Assert.That(DeriveCapabilitySidsFromName("microsoft.hsaTestCustomCapability_q536wpkpf5cy2", out var grpsids, out var grpcnt, out var sids, out var cnt), ResultIs.Successful);
-			grpsids.Length = grpcnt; sids.Length = cnt;
-			Assert.That(grpsids.Length, Is.EqualTo(grpcnt));
+			grpsids.Count = grpcnt; sids.Count = cnt;
+			Assert.That(grpsids.Count, Is.EqualTo(grpcnt));
 			Assert.That(grpsids, Is.Not.Empty);
 			Assert.That(sids, Is.Not.Empty);
 		}

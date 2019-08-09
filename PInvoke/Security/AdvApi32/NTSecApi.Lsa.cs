@@ -81,36 +81,52 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum LSA_TLN
 		{
-			/// <summary>The top-level name trust record is disabled during initial creation.<note type="note">This flag MUST be used only
-			/// with forest trust record types of ForestTrustTopLevelName and ForestTrustTopLevelNameEx.</note></summary>
+			/// <summary>
+			/// The top-level name trust record is disabled during initial creation. <note type="note">This flag MUST be used only with
+			/// forest trust record types of ForestTrustTopLevelName and ForestTrustTopLevelNameEx.</note>
+			/// </summary>
 			LSA_TLN_DISABLED_NEW = 0x00000001,
 
-			/// <summary>The top-level name trust record is disabled by the domain administrator.<note type="note">This flag MUST be used only
-			/// with forest trust record types of ForestTrustTopLevelName and ForestTrustTopLevelNameEx.</note></summary>
+			/// <summary>
+			/// The top-level name trust record is disabled by the domain administrator. <note type="note">This flag MUST be used only with
+			/// forest trust record types of ForestTrustTopLevelName and ForestTrustTopLevelNameEx.</note>
+			/// </summary>
 			LSA_TLN_DISABLED_ADMIN = 0x00000002,
 
-			/// <summary>The top-level name trust record is disabled due to a conflict.<note type="note">This flag MUST be used only with
-			/// forest trust record types of ForestTrustTopLevelName and ForestTrustTopLevelNameEx.</note></summary>
+			/// <summary>
+			/// The top-level name trust record is disabled due to a conflict. <note type="note">This flag MUST be used only with forest
+			/// trust record types of ForestTrustTopLevelName and ForestTrustTopLevelNameEx.</note>
+			/// </summary>
 			LSA_TLN_DISABLED_CONFLICT = 0x00000004,
 
-			/// <summary>The domain information trust record is disabled by the domain administrator.<note type="note">This flag MUST be used
-			/// only with a forest trust record type of ForestTrustDomainInfo.</note></summary>
+			/// <summary>
+			/// The domain information trust record is disabled by the domain administrator. <note type="note">This flag MUST be used only
+			/// with a forest trust record type of ForestTrustDomainInfo.</note>
+			/// </summary>
 			LSA_SID_DISABLED_ADMIN = 0x00000001,
 
-			/// <summary>The domain information trust record is disabled due to a conflict.<note type="note">This flag MUST be used only with
-			/// a forest trust record type of ForestTrustDomainInfo.</note></summary>
+			/// <summary>
+			/// The domain information trust record is disabled due to a conflict. <note type="note">This flag MUST be used only with a
+			/// forest trust record type of ForestTrustDomainInfo.</note>
+			/// </summary>
 			LSA_SID_DISABLED_CONFLICT = 0x00000002,
 
-			/// <summary>The domain information trust record is disabled by the domain administrator.<note type="note">This flag MUST be used
-			/// only with a forest trust record type of ForestTrustDomainInfo.</note></summary>
+			/// <summary>
+			/// The domain information trust record is disabled by the domain administrator. <note type="note">This flag MUST be used only
+			/// with a forest trust record type of ForestTrustDomainInfo.</note>
+			/// </summary>
 			LSA_NB_DISABLED_ADMIN = 0x00000004,
 
-			/// <summary>The domain information trust record is disabled due to a conflict.<note type="note">This flag MUST be used only with
-			/// a forest trust record type of ForestTrustDomainInfo.</note></summary>
+			/// <summary>
+			/// The domain information trust record is disabled due to a conflict. <note type="note">This flag MUST be used only with a
+			/// forest trust record type of ForestTrustDomainInfo.</note>
+			/// </summary>
 			LSA_NB_DISABLED_CONFLICT = 0x00000008,
 
-			/// <summary>The domain information trust record is disabled.<note type="note">This set of flags is reserved; for current and
-			/// future reasons, the trust is disabled.</note></summary>
+			/// <summary>
+			/// The domain information trust record is disabled. <note type="note">This set of flags is reserved; for current and future
+			/// reasons, the trust is disabled.</note>
+			/// </summary>
 			LSA_FTRECORD_DISABLED_REASONS = 0x0000FFFF,
 		}
 
@@ -208,32 +224,48 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// The LsaAddAccountRights function assigns one or more privileges to an account. If the account does not exist, LsaAddAccountRights
-		/// creates it.
+		/// The <c>LsaAddAccountRights</c> function assigns one or more privileges to an account. If the account does not exist,
+		/// <c>LsaAddAccountRights</c> creates it.
 		/// </summary>
 		/// <param name="PolicyHandle">
 		/// A handle to a Policy object. The handle must have the POLICY_LOOKUP_NAMES access right. If the account identified by the
 		/// AccountSid parameter does not exist, the handle must have the POLICY_CREATE_ACCOUNT access right. For more information, see
 		/// Opening a Policy Object Handle.
 		/// </param>
-		/// <param name="pSID">Pointer to the SID of the account to which the function assigns privileges.</param>
+		/// <param name="AccountSid">Pointer to the SID of the account to which the function assigns privileges.</param>
 		/// <param name="UserRights">
-		/// Pointer to an array of strings. Each string contains the name of a privilege to add to the account. For a list of privilege
-		/// names, see Privilege Constants.
+		/// Pointer to an array of LSA_UNICODE_STRING structures. Each structure contains the name of a privilege to add to the account. For
+		/// a list of privilege names, see Privilege Constants.
 		/// </param>
 		/// <param name="CountOfRights">Specifies the number of elements in the UserRights array.</param>
 		/// <returns>
-		/// If the function succeeds, the return value is STATUS_SUCCESS. If the function fails, the return value is an NTSTATUS code, which
-		/// can be the following value or one of the LSA Policy Function Return Values.
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is an NTSTATUS code, which can be the following value or one of the LSA Policy Function
+		/// Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_NO_SUCH_PRIVILEGE</term>
+		/// <term>One of the privilege names is not valid.</term>
+		/// </item>
+		/// </list>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the NTSTATUS code to a Windows error code.</para>
 		/// </returns>
-		[DllImport(Lib.AdvApi32, ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-		[PInvokeData("ntsecapi.h", MSDNShortId = "ms721786")]
-		public static extern uint LsaAddAccountRights(
-			LSA_HANDLE PolicyHandle,
-			PSID pSID,
-			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringArrayMarshaler))]
-			string[] UserRights,
-			int CountOfRights);
+		/// <remarks>
+		/// <para>If you specify privileges already granted to the account, they are ignored.</para>
+		/// <para>For an example that demonstrates calling this function, see Managing Account Permissions.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-lsaaddaccountrights NTSTATUS LsaAddAccountRights(
+		// LSA_HANDLE PolicyHandle, PSID AccountSid, PLSA_UNICODE_STRING UserRights, ULONG CountOfRights );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntsecapi.h", MSDNShortId = "66b78404-02c2-48e9-92c3-d27b68f77c23")]
+		public static extern NTStatus LsaAddAccountRights(LSA_HANDLE PolicyHandle, PSID AccountSid,
+			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringArrayMarshaler))] string[] UserRights, uint CountOfRights);
 
 		/// <summary>Undocumented function for creating an account.</summary>
 		/// <param name="PolicyHandle">A handle to a Policy object. For more information, see Opening a Policy Object Handle.</param>
@@ -247,7 +279,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("ntlsa.h")]
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
-		public static extern uint LsaCreateAccount(LSA_HANDLE PolicyHandle, PSID AccountSid, LsaAccountAccessMask DesiredAccess, out SafeLSA_HANDLE AccountHandle);
+		public static extern NTStatus LsaCreateAccount(LSA_HANDLE PolicyHandle, PSID AccountSid, LsaAccountAccessMask DesiredAccess, out SafeLSA_HANDLE AccountHandle);
 
 		/// <summary>The <c>LsaCreateTrustedDomainEx</c> function establishes a new trusted domain by creating a new TrustedDomain object.</summary>
 		/// <param name="PolicyHandle">
@@ -356,7 +388,7 @@ namespace Vanara.PInvoke
 		// LsaEnumerateAccountRights( LSA_HANDLE PolicyHandle, PSID AccountSid, PLSA_UNICODE_STRING *UserRights, PULONG CountOfRights );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ntsecapi.h", MSDNShortId = "3f4a4a9a-66ca-410a-8bdc-c390e8b966e3")]
-		public static extern uint LsaEnumerateAccountRights(
+		public static extern NTStatus LsaEnumerateAccountRights(
 			LSA_HANDLE PolicyHandle,
 			PSID AccountSid,
 			out SafeLsaMemoryHandle UserRights,
@@ -377,7 +409,7 @@ namespace Vanara.PInvoke
 			var winErr = LsaNtStatusToWinError(ret);
 			if (winErr == Win32Error.ERROR_FILE_NOT_FOUND) return new string[0];
 			winErr.ThrowIfFailed();
-			return mem.DangerousGetHandle().ToIEnum<LSA_UNICODE_STRING>((int)cnt).Select(u => (string)u.ToString().Clone());
+			return mem.DangerousGetHandle().ToIEnum<LSA_UNICODE_STRING>((int)cnt).Select(u => (string)u.ToString().Clone()).ToArray();
 		}
 
 		/// <summary>
@@ -441,9 +473,9 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntsecapi.h", MSDNShortId = "97e7180e-4edb-4edd-915e-0477e7e7a9ff")]
 		// public static extern NTSTATUS LsaEnumerateAccountsWithUserRight(LSA_HANDLE PolicyHandle, PLSA_UNICODE_STRING UserRight, ref IntPtr
 		// Buffer, ref uint CountReturned);
-		public static extern uint LsaEnumerateAccountsWithUserRight(
+		public static extern NTStatus LsaEnumerateAccountsWithUserRight(
 			LSA_HANDLE PolicyHandle,
-			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string UserRight,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string UserRight,
 			out SafeLsaMemoryHandle Buffer,
 			out int CountReturned);
 
@@ -463,13 +495,12 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </param>
 		/// <returns>An enumeration of security identifiers (SID) of accounts that holds the specified privilege.</returns>
-		public static IEnumerable<PSID> LsaEnumerateAccountsWithUserRight(LSA_HANDLE PolicyHandle, string UserRights)
+		public static IEnumerable<PSID> LsaEnumerateAccountsWithUserRight(LSA_HANDLE PolicyHandle, [Optional] string UserRights)
 		{
 			var ret = LsaEnumerateAccountsWithUserRight(PolicyHandle, UserRights, out var mem, out var cnt);
 			if (ret == NTStatus.STATUS_NO_MORE_ENTRIES) return new PSID[0];
-			var wret = LsaNtStatusToWinError(ret);
-			wret.ThrowIfFailed();
-			return mem.DangerousGetHandle().ToIEnum<LSA_ENUMERATION_INFORMATION>(cnt).Select(u => u.Sid);
+			LsaNtStatusToWinError(ret).ThrowIfFailed();
+			return mem.DangerousGetHandle().ToIEnum<LSA_ENUMERATION_INFORMATION>(cnt).Select(u => u.Sid).ToArray();
 		}
 
 		/// <summary>
@@ -695,15 +726,13 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntsecapi.h", MSDNShortId = "4a203bff-c3e1-4d95-b556-617dc8c2e8c2")]
 		public static extern NTStatus LsaEnumerateTrustedDomainsEx(LSA_HANDLE PolicyHandle, ref LSA_ENUMERATION_HANDLE EnumerationContext, out SafeLsaMemoryHandle Buffer, uint PreferedMaximumLength, out uint CountReturned);
 
-		/// <summary>Gets system access for an account.</summary>
+		/// <summary>[Undocumented] Gets system access for an account.</summary>
 		/// <param name="AccountHandle">The account handle.</param>
 		/// <param name="SystemAccess">The system access.</param>
-		/// <returns>
-		/// <para>If the function succeeds, the function returns one of the following <c>NTSTATUS</c> values.</para>
-		/// </returns>
+		/// <returns>If the function succeeds, the function returns one of the following <c>NTSTATUS</c> values.</returns>
 		[PInvokeData("ntlsa.h")]
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
-		public static extern uint LsaGetSystemAccessAccount(LSA_HANDLE AccountHandle, out int SystemAccess);
+		public static extern NTStatus LsaGetSystemAccessAccount(LSA_HANDLE AccountHandle, out int SystemAccess);
 
 		/// <summary>
 		/// <para>
@@ -1276,34 +1305,29 @@ namespace Vanara.PInvoke
 		// PLSA_REFERENCED_DOMAIN_LIST ReferencedDomains, ref PLSA_TRANSLATED_NAME Names);
 		[PInvokeData("ntsecapi.h", MSDNShortId = "6B30D1FF-35DC-44E8-A765-36A5761EC0CE")]
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
-		public static extern uint LsaLookupSids2(
+		public static extern NTStatus LsaLookupSids2(
 			LSA_HANDLE PolicyHandle,
 			LsaLookupSidsFlags LookupOptions,
 			uint Count,
-			[In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] Sids,
+			[In, MarshalAs(UnmanagedType.LPArray)] PSID[] Sids,
 			out SafeLsaMemoryHandle ReferencedDomains,
 			out SafeLsaMemoryHandle Names);
 
 		/// <summary>
-		/// <para>The <c>LsaNtStatusToWinError</c> function converts an NTSTATUS code returned by an LSA function to a Windows error code.</para>
+		/// The <c>LsaNtStatusToWinError</c> function converts an NTSTATUS code returned by an LSA function to a Windows error code.
 		/// </summary>
-		/// <param name="Status">
-		/// <para>An NTSTATUS code returned by an LSA function call. This value will be converted to a System error code.</para>
-		/// </param>
+		/// <param name="Status">An NTSTATUS code returned by an LSA function call. This value will be converted to a System error code.</param>
 		/// <returns>
-		/// <para>
 		/// The return value is the Windows error code that corresponds to the Status parameter. If there is no corresponding Windows error
 		/// code, the return value is ERROR_MR_MID_NOT_FOUND.
-		/// </para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsantstatustowinerror ULONG LsaNtStatusToWinError(
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-lsantstatustowinerror ULONG LsaNtStatusToWinError(
 		// NTSTATUS Status );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ntsecapi.h", MSDNShortId = "fa91794c-c502-4b36-84cc-a8d77c8e9d9f")]
-		// public static extern uint LsaNtStatusToWinError(NTSTATUS Status);
-		public static extern Win32Error LsaNtStatusToWinError(uint Status);
+		public static extern Win32Error LsaNtStatusToWinError(NTStatus Status);
 
-		/// <summary>Undocumented. Opens an account.</summary>
+		/// <summary>[Undocumented] Opens an account.</summary>
 		/// <param name="PolicyHandle">The policy handle.</param>
 		/// <param name="AccountSid">The account sid.</param>
 		/// <param name="DesiredAccess">The desired access.</param>
@@ -1311,7 +1335,7 @@ namespace Vanara.PInvoke
 		/// <returns>NTSTATUS</returns>
 		[PInvokeData("ntlsa.h")]
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
-		public static extern uint LsaOpenAccount(LSA_HANDLE PolicyHandle, PSID AccountSid, LsaAccountAccessMask DesiredAccess, out SafeLSA_HANDLE AccountHandle);
+		public static extern NTStatus LsaOpenAccount(LSA_HANDLE PolicyHandle, PSID AccountSid, LsaAccountAccessMask DesiredAccess, out SafeLSA_HANDLE AccountHandle);
 
 		/// <summary>
 		/// <para>The <c>LsaOpenPolicy</c> function opens a handle to the Policy object on a local or remote system.</para>
@@ -1360,9 +1384,9 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntsecapi.h", MSDNShortId = "361bc962-1e97-4606-a835-cbce37692c55")]
 		// public static extern NTSTATUS LsaOpenPolicy(PLSA_UNICODE_STRING SystemName, PLSA_OBJECT_ATTRIBUTES ObjectAttributes, ACCESS_MASK
 		// DesiredAccess, PLSA_HANDLE PolicyHandle);
-		public static extern uint LsaOpenPolicy(
+		public static extern NTStatus LsaOpenPolicy(
 			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string SystemName,
-			ref LSA_OBJECT_ATTRIBUTES ObjectAttributes,
+			in LSA_OBJECT_ATTRIBUTES ObjectAttributes,
 			LsaPolicyRights DesiredAccess,
 			out SafeLSA_HANDLE PolicyHandle);
 
@@ -1380,10 +1404,10 @@ namespace Vanara.PInvoke
 		/// opens the Policy object on the local system.
 		/// </param>
 		/// <returns>A pointer to an LSA_HANDLE variable that receives a handle to the Policy object.</returns>
+		[PInvokeData("ntsecapi.h", MSDNShortId = "361bc962-1e97-4606-a835-cbce37692c55")]
 		public static SafeLSA_HANDLE LsaOpenPolicy(LsaPolicyRights DesiredAccess, string SystemName = null)
 		{
-			var oa = LSA_OBJECT_ATTRIBUTES.Empty;
-			LsaNtStatusToWinError(LsaOpenPolicy(SystemName, ref oa, DesiredAccess, out var handle)).ThrowIfFailed();
+			LsaNtStatusToWinError(LsaOpenPolicy(SystemName, LSA_OBJECT_ATTRIBUTES.Empty, DesiredAccess, out var handle)).ThrowIfFailed();
 			return handle;
 		}
 
@@ -1484,7 +1508,7 @@ namespace Vanara.PInvoke
 		// LsaQueryDomainInformationPolicy( LSA_HANDLE PolicyHandle, POLICY_DOMAIN_INFORMATION_CLASS InformationClass, PVOID *Buffer );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ntsecapi.h", MSDNShortId = "39a511d7-46fc-4d12-ba43-771f6db2a33b")]
-		public static extern NTStatus LsaQueryDomainInformationPolicy(LSA_HANDLE PolicyHandle, POLICY_DOMAIN_INFORMATION_CLASS InformationClass, out IntPtr Buffer);
+		public static extern NTStatus LsaQueryDomainInformationPolicy(LSA_HANDLE PolicyHandle, POLICY_DOMAIN_INFORMATION_CLASS InformationClass, out SafeLsaMemoryHandle Buffer);
 
 		/// <summary>
 		/// The <c>LsaQueryForestTrustInformation</c> function retrieves forest trust information for the specified Local Security Authority
@@ -1839,13 +1863,13 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntsecapi.h", MSDNShortId = "ad250a01-7a24-4fae-975c-aa3e65731c82")]
 		// public static extern NTSTATUS LsaRemoveAccountRights(LSA_HANDLE PolicyHandle, PSID AccountSid, [MarshalAs(UnmanagedType.U1)] bool
 		// AllRights, PLSA_UNICODE_STRING UserRights, uint CountOfRights);
-		public static extern uint LsaRemoveAccountRights(
+		public static extern NTStatus LsaRemoveAccountRights(
 			LSA_HANDLE PolicyHandle,
 			PSID AccountSid,
 			[MarshalAs(UnmanagedType.Bool)] bool AllRights,
 			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringArrayMarshaler))]
 			string[] UserRights,
-			int CountOfRights);
+			uint CountOfRights);
 
 		/// <summary>Do not use the LSA private data functions. Instead, use the CryptProtectData and CryptUnprotectData functions.</summary>
 		/// <param name="PolicyHandle">
@@ -1905,7 +1929,10 @@ namespace Vanara.PInvoke
 		// LSA_HANDLE PolicyHandle, PLSA_UNICODE_STRING KeyName, PLSA_UNICODE_STRING *PrivateData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ntsecapi.h", MSDNShortId = "005460db-0919-46eb-b057-37c5b6042243")]
-		public static extern NTStatus LsaRetrievePrivateData(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string KeyName, [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] out string PrivateData);
+		public static extern NTStatus LsaRetrievePrivateData(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string KeyName,
+			out SafeLsaMemoryHandle PrivateData);
+
+		//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] out string PrivateData);
 
 		/// <summary>The <c>LsaSetDomainInformationPolicy</c> function sets domain information to the Policyobject.</summary>
 		/// <param name="PolicyHandle">A handle to the Policy object for the system.</param>
@@ -2098,7 +2125,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("ntlsa.h")]
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
-		public static extern uint LsaSetSystemAccessAccount(LSA_HANDLE AccountHandle, int SystemAccess);
+		public static extern NTStatus LsaSetSystemAccessAccount(LSA_HANDLE AccountHandle, int SystemAccess);
 
 		/// <summary>The <c>LsaSetTrustedDomainInfoByName</c> function sets values for a TrustedDomain object.</summary>
 		/// <param name="PolicyHandle">
@@ -2293,7 +2320,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ntsecapi.h", MSDNShortId = "6283b1da-4ec3-48e1-91f6-321c6390befe")]
 		// public static extern NTSTATUS LsaClose(LSA_HANDLE ObjectHandle);
-		private static extern uint LsaClose(LSA_HANDLE ObjectHandle);
+		private static extern NTStatus LsaClose(LSA_HANDLE ObjectHandle);
 
 		/// <summary>
 		/// <para>
@@ -2329,13 +2356,13 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ntsecapi.h", MSDNShortId = "6eb3d18f-c54c-4e51-8a4b-b7a3f930cfa9")]
 		// public static extern NTSTATUS LsaFreeMemory(IntPtr Buffer);
-		private static extern uint LsaFreeMemory(IntPtr Buffer);
+		private static extern NTStatus LsaFreeMemory(IntPtr Buffer);
 
 		/// <summary>Provides a handle to an LSA enumeration.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct LSA_ENUMERATION_HANDLE : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="LSA_ENUMERATION_HANDLE"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -2599,7 +2626,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct LSA_HANDLE : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="LSA_HANDLE"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -2733,7 +2760,7 @@ namespace Vanara.PInvoke
 			public LSA_UNICODE_STRING Name;
 
 			/// <summary>Pointer to the SID of the domain.</summary>
-			public IntPtr Sid;
+			public PSID Sid;
 		}
 
 		/// <summary>
@@ -2762,7 +2789,7 @@ namespace Vanara.PInvoke
 			public StrPtrUni Buffer;
 
 			/* REMOVED TO AVOID MEMORY LEAK
-			 * 
+			 *
 			/// <summary>Initializes a new instance of the <see cref="LSA_UNICODE_STRING"/> struct from a string.</summary>
 			/// <param name="s">The string value.</param>
 			/// <exception cref="System.ArgumentException">String exceeds 32Kb of data.</exception>
@@ -2796,7 +2823,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="LSA_UNICODE_STRING"/> to <see cref="string"/>.</summary>
 			/// <param name="value">The value.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator string(LSA_UNICODE_STRING value) => (string)value.Buffer;
+			public static implicit operator string(LSA_UNICODE_STRING value) => value.Buffer;
 		}
 
 		/// <summary>Smart wrapper for LSA_FOREST_TRUST_INFORMATION.</summary>
@@ -2925,7 +2952,9 @@ namespace Vanara.PInvoke
 					Excluded = exclude;
 				}
 
-				/// <summary>Gets or sets a value indicating whether this <see cref="LsaForestTrustTopLevelName"/> contains an excluded top-level name..</summary>
+				/// <summary>
+				/// Gets or sets a value indicating whether this <see cref="LsaForestTrustTopLevelName"/> contains an excluded top-level name..
+				/// </summary>
 				/// <value><c>true</c> if excluded; otherwise, <c>false</c> to include.</value>
 				public bool Excluded { get; set; }
 
@@ -2965,28 +2994,36 @@ namespace Vanara.PInvoke
 			public static implicit operator LSA_HANDLE(SafeLSA_HANDLE h) => h.handle;
 
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => LsaClose(this) == 0;
+			protected override bool InternalReleaseHandle() => LsaClose(this).Succeeded;
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="LSA_UNICODE_STRING"/> that manages its own memory allocations.</summary>
 		public class SafeLSA_UNICODE_STRING : SafeHANDLE
 		{
-			/// <summary>
-			/// Initializes a new instance of the <see cref="SafeLSA_UNICODE_STRING"/> class.
-			/// </summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeLSA_UNICODE_STRING"/> class.</summary>
 			/// <param name="value">The value of the string to assign.</param>
-			public SafeLSA_UNICODE_STRING(string value) : base(IntPtr.Zero, true)
-			{
-				Buffer = value;
-			}
+			public SafeLSA_UNICODE_STRING(string value) : base(IntPtr.Zero, true) => Buffer = value;
 
 			/// <summary>Initializes a new instance of the <see cref="SafeLSA_UNICODE_STRING"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
 			public SafeLSA_UNICODE_STRING(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeLSA_UNICODE_STRING"/> class.</summary>
 			private SafeLSA_UNICODE_STRING() : base() { }
+
+			/// <summary>The string value.</summary>
+			public string Buffer
+			{
+				get => LsaUnicodeStringMarshaler.MarshalPtr(handle);
+				set
+				{
+					Close();
+					SetHandle(LsaUnicodeStringMarshaler.MarshalValue(value));
+				}
+			}
 
 			/// <summary>
 			/// Specifies the length, in bytes, of the string pointed to by the Buffer member, not including the terminating null character,
@@ -3000,31 +3037,20 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public short MaximumLength => IsInvalid ? (short)0 : Marshal.ReadInt16(handle, 2);
 
-			/// <summary>The string value.</summary>
-			public string Buffer
-			{
-				get => LsaUnicodeStringMarshaler.MarshalPtr(handle);
-				set
-				{
-					Close();
-					SetHandle(LsaUnicodeStringMarshaler.MarshalValue(value));
-				}
-			}
-
 			/// <summary>Performs an implicit conversion from <see cref="SafeLSA_UNICODE_STRING"/> to <see cref="LSA_UNICODE_STRING"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator LSA_UNICODE_STRING(SafeLSA_UNICODE_STRING h) => h.handle.ToStructure<LSA_UNICODE_STRING>();
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeLSA_UNICODE_STRING"/> to <see cref="System.String"/>.</summary>
-			/// <param name="h">The <see cref="SafeLSA_UNICODE_STRING"/> instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator string(SafeLSA_UNICODE_STRING h) => h.Buffer;
-
 			/// <summary>Performs an implicit conversion from <see cref="System.String"/> to <see cref="SafeLSA_UNICODE_STRING"/>.</summary>
 			/// <param name="val">The string value.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator SafeLSA_UNICODE_STRING(string val) => new SafeLSA_UNICODE_STRING(val);
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeLSA_UNICODE_STRING"/> to <see cref="System.String"/>.</summary>
+			/// <param name="h">The <see cref="SafeLSA_UNICODE_STRING"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator string(SafeLSA_UNICODE_STRING h) => h.Buffer;
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle()
@@ -3051,7 +3077,7 @@ namespace Vanara.PInvoke
 			private SafeLsaMemoryHandle() : base() { }
 
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => LsaFreeMemory(handle) == 0;
+			protected override bool InternalReleaseHandle() => LsaFreeMemory(handle).Succeeded;
 		}
 
 		/// <summary>Base class for other LSA memory handles.</summary>
@@ -3098,7 +3124,9 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		/// <summary>A <see cref="SafeHandle"/> for values that must be freed using the <see cref="Secur32.LsaFreeReturnBuffer(IntPtr)"/> function.</summary>
+		/// <summary>
+		/// A <see cref="SafeHandle"/> for values that must be freed using the <see cref="Secur32.LsaFreeReturnBuffer(IntPtr)"/> function.
+		/// </summary>
 		public sealed class SafeLsaReturnBufferHandle : SafeLsaMemoryHandleBase
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeLsaReturnBufferHandle"/> class.</summary>
@@ -3140,7 +3168,7 @@ namespace Vanara.PInvoke
 					var strSz = uma.Sum(s => s.length + 2);
 					var result = Marshal.AllocCoTaskMem(sz * a.Length + strSz);
 					var strPtr = result.Offset(sz * a.Length);
-					for (int i = 0; i < uma.Length; i++)
+					for (var i = 0; i < uma.Length; i++)
 					{
 						uma[i].Buffer = strPtr;
 						StringHelper.Write(a[i], (IntPtr)uma[i].Buffer, out var byteCnt, true, CharSet.Unicode);
@@ -3187,6 +3215,8 @@ namespace Vanara.PInvoke
 				return s;
 			}
 
+			internal static string MarshalPtr(IntPtr ptr) => ptr == IntPtr.Zero ? null : StringHelper.GetString(ptr.Offset(4), CharSet.Unicode, Marshal.ReadInt16(ptr));
+
 			internal static IntPtr MarshalValue(string value)
 			{
 				if (value is null) return IntPtr.Zero;
@@ -3204,8 +3234,6 @@ namespace Vanara.PInvoke
 				}
 				return mem;
 			}
-
-			internal static string MarshalPtr(IntPtr ptr) => ptr == IntPtr.Zero ? null : StringHelper.GetString(ptr.Offset(4), CharSet.Unicode, Marshal.ReadInt16(ptr));
 		}
 	}
 }
