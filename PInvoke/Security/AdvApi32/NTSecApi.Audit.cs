@@ -653,12 +653,12 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </returns>
 		/// <remarks>To successfully call this function, the caller must have <c>SeSecurityPrivilege</c>.</remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-auditquerysecurity BOOLEAN AuditQuerySecurity(
-		// SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR *ppSecurityDescriptor );
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-auditquerysecurity
+		// BOOLEAN AuditQuerySecurity( SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR *ppSecurityDescriptor );
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ntsecapi.h", MSDNShortId = "496c9659-0c03-42c9-93c4-eb4d97e950e2")]
 		[return: MarshalAs(UnmanagedType.U1)]
-		public static extern bool AuditQuerySecurity(SECURITY_INFORMATION SecurityInformation, out PSECURITY_DESCRIPTOR ppSecurityDescriptor);
+		public static extern bool AuditQuerySecurity(SECURITY_INFORMATION SecurityInformation, out SafePSECURITY_DESCRIPTOR ppSecurityDescriptor);
 
 		/// <summary>The <c>AuditQuerySystemPolicy</c> function retrieves system audit policy for one or more audit-policy subcategories.</summary>
 		/// <param name="pSubCategoryGuids">

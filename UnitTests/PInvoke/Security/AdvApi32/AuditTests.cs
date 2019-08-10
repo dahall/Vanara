@@ -121,7 +121,7 @@ namespace Vanara.PInvoke.Tests
 		public void AuditQuerySetSecurityTest()
 		{
 			Assert.That(AuditQuerySecurity(SECURITY_INFORMATION.SACL_SECURITY_INFORMATION, out var sd), Is.True);
-			Assert.That(sd.IsNull, Is.False);
+			Assert.That(sd.IsInvalid, Is.False);
 			Assert.That(AuditSetSecurity(SECURITY_INFORMATION.SACL_SECURITY_INFORMATION, sd), Is.True);
 		}
 
