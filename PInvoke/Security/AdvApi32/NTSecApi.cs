@@ -8,6 +8,46 @@ namespace Vanara.PInvoke
 	/// <summary>Functions, enumerations and structures found in ADVAPI32.DLL.</summary>
 	public static partial class AdvApi32
 	{
+		/// <summary>Flags that describe the password properties.</summary>
+		[PInvokeData("ntsecapi.h", MSDNShortId = "7dceaf70-d8de-47c0-b940-f0d6a0cca101")]
+		[Flags]
+		public enum DOMAIN_PASSWORD : uint
+		{
+			/// <summary>
+			/// The password must have a mix of at least two of the following types of characters:
+			/// <list type="bullet">
+			/// <item>Uppercase characters</item>
+			/// <item>Lowercase characters</item>
+			/// <item>Numerals</item>
+			/// </list>
+			/// </summary>
+			DOMAIN_PASSWORD_COMPLEX = 0x00000001,
+
+			/// <summary>
+			/// The password cannot be changed without logging on. Otherwise, if your password has expired, you can change your password and
+			/// then log on.
+			/// </summary>
+			DOMAIN_PASSWORD_NO_ANON_CHANGE = 0x00000002,
+
+			/// <summary>Forces the client to use a protocol that does not allow the domain controller to get the plaintext password.</summary>
+			DOMAIN_PASSWORD_NO_CLEAR_CHANGE = 0x00000004,
+
+			/// <summary>Allows the built-in administrator account to be locked out from network logons.</summary>
+			DOMAIN_LOCKOUT_ADMINS = 0x00000008,
+
+			/// <summary>The directory service is storing a plaintext password for all users instead of a hash function of the password.</summary>
+			DOMAIN_PASSWORD_STORE_CLEARTEXT = 0x00000010,
+
+			/// <summary>
+			/// Removes the requirement that the machine account password be automatically changed every week.
+			/// <para>This value should not be used as it can weaken security.</para>
+			/// </summary>
+			DOMAIN_REFUSE_PASSWORD_CHANGE = 0x00000020,
+
+			/// <summary/>
+			DOMAIN_NO_LM_OWF_CHANGE = 0x00000040
+		}
+
 		/// <summary>The <c>POLICY_DOMAIN_INFORMATION_CLASS</c> enumeration defines the type of policy domain information.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ne-ntsecapi-_policy_domain_information_class typedef enum
 		// _POLICY_DOMAIN_INFORMATION_CLASS { PolicyDomainQualityOfServiceInformation, PolicyDomainEfsInformation,
@@ -153,6 +193,27 @@ namespace Vanara.PInvoke
 			PolicyServerDisabled,
 		}
 
+		/// <summary>
+		/// Specifies one of the following values to indicate the type of authentication information in the <c>AuthInfo</c> buffer.
+		/// </summary>
+		public enum TRUST_AUTH_TYPE
+		{
+			/// <summary>The format is unknown and will be ignored.</summary>
+			TRUST_AUTH_TYPE_NONE = 0,
+
+			/// <summary>
+			/// The Windows NT 4.0 one-way format (OWF) of a plaintext password. Note that you cannot derive the clear password back from the
+			/// OWF form of the password. The system sets this information.
+			/// </summary>
+			TRUST_AUTH_TYPE_NT4OWF = 1,
+
+			/// <summary>Plaintext password to use for the trust.</summary>
+			TRUST_AUTH_TYPE_CLEAR = 2,
+
+			/// <summary>Plaintext password version number.</summary>
+			TRUST_AUTH_TYPE_VERSION = 3,
+		}
+
 		/// <summary>Indicates the attributes of a trust relationship.</summary>
 		[PInvokeData("ntsecapi.h", MSDNShortId = "acf9a2b5-f301-4e6a-a515-df338658ad56")]
 		[Flags]
@@ -295,10 +356,11 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>It is used in the MSV1_0_CHANGEPASSWORD_RESPONSE structure.</para>
 		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_domain_password_information typedef struct
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/ns-ntsecapi-domain_password_information typedef struct
 		// _DOMAIN_PASSWORD_INFORMATION { USHORT MinPasswordLength; USHORT PasswordHistoryLength; ULONG PasswordProperties; #if ...
-		// OLD_LARGE_INTEGER MaxPasswordAge; #if ... OLD_LARGE_INTEGER MinPasswordAge; #else LARGE_INTEGER MaxPasswordAge; #endif #else
-		// LARGE_INTEGER MinPasswordAge; #endif } DOMAIN_PASSWORD_INFORMATION, *PDOMAIN_PASSWORD_INFORMATION;
+		// OLD_LARGE_INTEGER MaxPasswordAge; #elif OLD_LARGE_INTEGER MaxPasswordAge; #if ... OLD_LARGE_INTEGER MinPasswordAge; #elif
+		// OLD_LARGE_INTEGER MinPasswordAge; #elif LARGE_INTEGER MaxPasswordAge; #else LARGE_INTEGER MaxPasswordAge; #endif #elif
+		// LARGE_INTEGER MinPasswordAge; #else LARGE_INTEGER MinPasswordAge; #endif } DOMAIN_PASSWORD_INFORMATION, *PDOMAIN_PASSWORD_INFORMATION;
 		[PInvokeData("ntsecapi.h", MSDNShortId = "7dceaf70-d8de-47c0-b940-f0d6a0cca101")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct DOMAIN_PASSWORD_INFORMATION
@@ -356,13 +418,13 @@ namespace Vanara.PInvoke
 			/// A 64-bit value, with delta time syntax, indicating the policy setting for the maximum time allowed before a password reset or
 			/// change is required.
 			/// </summary>
-			public long MaxPasswordAge;
+			public FILETIME MaxPasswordAge;
 
 			/// <summary>
 			/// A 64-bit value, with delta time syntax, indicating the policy setting for the minimum time allowed before a password change
 			/// operation is allowed.
 			/// </summary>
-			public long MinPasswordAge;
+			public FILETIME MinPasswordAge;
 		}
 
 		/// <summary>
@@ -376,12 +438,10 @@ namespace Vanara.PInvoke
 		public struct LSA_AUTH_INFORMATION
 		{
 			/// <summary>
-			/// <para>
 			/// A LARGE_INTEGER structure that uses the Coordinated Universal Time (Greenwich Mean Time) format to indicate the time that
 			/// this value was set. For more information about Coordinated Universal Time, see the FILETIME structure.
-			/// </para>
 			/// </summary>
-			public long LastUpdateTime;
+			public FILETIME LastUpdateTime;
 
 			/// <summary>
 			/// <para>Specifies one of the following values to indicate the type of authentication information in the <c>AuthInfo</c> buffer.</para>
@@ -411,7 +471,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint AuthType;
+			public TRUST_AUTH_TYPE AuthType;
 
 			/// <summary>
 			/// <para>Specifies the size, in bytes, of the <c>AuthInfo</c> member.</para>
@@ -419,9 +479,7 @@ namespace Vanara.PInvoke
 			public uint AuthInfoLength;
 
 			/// <summary>
-			/// <para>
 			/// Pointer to an array of bytes that contains the type of authentication information indicated by the <c>AuthType</c> member.
-			/// </para>
 			/// </summary>
 			public IntPtr AuthInfo;
 		}
@@ -658,10 +716,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>
 		/// The <c>TRUSTED_DOMAIN_AUTH_INFORMATION</c> structure is used to retrieve authentication information for a trusted domain. The
 		/// LsaQueryTrustedDomainInfo function uses this structure when its InformationClass parameter is set to <c>TrustedDomainAuthInformation</c>.
-		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_trusted_domain_auth_information typedef struct
 		// _TRUSTED_DOMAIN_AUTH_INFORMATION { ULONG IncomingAuthInfos; PLSA_AUTH_INFORMATION IncomingAuthenticationInformation;
@@ -673,61 +729,47 @@ namespace Vanara.PInvoke
 		public struct TRUSTED_DOMAIN_AUTH_INFORMATION
 		{
 			/// <summary>
-			/// <para>
 			/// Specifies the number of entries in the <c>IncomingAuthenticationInformation</c> and
 			/// <c>IncomingPreviousAuthenticationInformation</c> arrays.
-			/// </para>
 			/// </summary>
 			public uint IncomingAuthInfos;
 
 			/// <summary>
-			/// <para>
 			/// Pointer to an array of LSA_AUTH_INFORMATION structures containing the authentication information for the incoming side of a
 			/// trust relationship.
-			/// </para>
 			/// </summary>
 			public IntPtr IncomingAuthenticationInformation;
 
 			/// <summary>
-			/// <para>
 			/// Pointer to an array of LSA_AUTH_INFORMATION structures containing the previous authentication information (or old password)
 			/// for the incoming side of a trust relationship. There must be one of these for every entry in the
 			/// <c>IncomingAuthenticationInformation</c> array.
-			/// </para>
 			/// </summary>
 			public IntPtr IncomingPreviousAuthenticationInformation;
 
 			/// <summary>
-			/// <para>
 			/// Specifies the number of entries in the <c>OutgoingAuthenticationInformation</c> and
 			/// <c>OutgoingPreviousAuthenticationInformation</c> arrays.
-			/// </para>
 			/// </summary>
 			public uint OutgoingAuthInfos;
 
 			/// <summary>
-			/// <para>
 			/// Pointer to an array of LSA_AUTH_INFORMATION structures containing the authentication information for the outgoing side of a
 			/// trust relationship.
-			/// </para>
 			/// </summary>
 			public IntPtr OutgoingAuthenticationInformation;
 
 			/// <summary>
-			/// <para>
 			/// Pointer to an array of LSA_AUTH_INFORMATION structures containing the previous authentication information (or old password)
 			/// for the outgoing side of a trust relationship. There must be one of these for every entry in the
 			/// <c>OutgoingAuthenticationInformation</c> array.
-			/// </para>
 			/// </summary>
 			public IntPtr OutgoingPreviousAuthenticationInformation;
 		}
 
 		/// <summary>
-		/// <para>
 		/// The <c>TRUSTED_DOMAIN_FULL_INFORMATION</c> structure is used to retrieve complete information about a trusted domain. The
 		/// LsaQueryTrustedDomainInfo function uses this structure when its InformationClass parameter is set to <c>TrustedDomainFullInformation</c>.
-		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_trusted_domain_full_information typedef struct
 		// _TRUSTED_DOMAIN_FULL_INFORMATION { TRUSTED_DOMAIN_INFORMATION_EX Information; TRUSTED_POSIX_OFFSET_INFO PosixOffset;
@@ -742,9 +784,7 @@ namespace Vanara.PInvoke
 			public TRUSTED_DOMAIN_INFORMATION_EX Information;
 
 			/// <summary>
-			/// <para>
 			/// A TRUSTED_POSIX_OFFSET_INFO structure containing the value used to generate Posix user and group identifiers for a trusted domain.
-			/// </para>
 			/// </summary>
 			public TRUSTED_POSIX_OFFSET_INFO PosixOffset;
 
@@ -755,10 +795,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>
 		/// The <c>TRUSTED_DOMAIN_INFORMATION_EX</c> structure is used to retrieve extended information about a trusted domain. The
 		/// LsaQueryTrustedDomainInfo function uses this structure when its InformationClass parameter is set to TrustedDomainInformationEx.
-		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_trusted_domain_information_ex typedef struct
 		// _TRUSTED_DOMAIN_INFORMATION_EX { LSA_UNICODE_STRING Name; LSA_UNICODE_STRING FlatName; PSID Sid; ULONG TrustDirection; ULONG
@@ -768,25 +806,19 @@ namespace Vanara.PInvoke
 		public struct TRUSTED_DOMAIN_INFORMATION_EX
 		{
 			/// <summary>
-			/// <para>
 			/// An LSA_UNICODE_STRING structure that contains the name of the trusted domain. This is the DNS domain name. For non-Microsoft
 			/// trusted domains, this is the identifying name of the domain.
-			/// </para>
 			/// </summary>
 			public LSA_UNICODE_STRING Name;
 
 			/// <summary>
-			/// <para>
 			/// An LSA_UNICODE_STRING structure that contains the flat name of the trusted domain. For non-Microsoft trusted domains, this is
 			/// the identifying name of the domain or it is <c>NULL</c>.
-			/// </para>
 			/// </summary>
 			public LSA_UNICODE_STRING FlatName;
 
 			/// <summary>
-			/// <para>
 			/// Pointer to the security identifier (SID) of the trusted domain. For non-Microsoft trusted domains, this member can be <c>NULL</c>.
-			/// </para>
 			/// </summary>
 			public PSID Sid;
 
@@ -893,10 +925,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>
 		/// The <c>TRUSTED_DOMAIN_NAME_INFO</c> structure is used to query or set the name of a trusted domain. The LsaQueryTrustedDomainInfo
 		/// and LsaSetTrustedDomainInformation functions use this structure when their InformationClass parameters are set to <c>TrustedDomainNameInformation</c>.
-		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_trusted_domain_name_info typedef struct
 		// _TRUSTED_DOMAIN_NAME_INFO { LSA_UNICODE_STRING Name; } TRUSTED_DOMAIN_NAME_INFO, *PTRUSTED_DOMAIN_NAME_INFO;
@@ -911,17 +941,13 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>
 		/// The <c>TRUSTED_PASSWORD_INFO</c> structure is used to query or set the password for a trusted domain. The
 		/// LsaQueryTrustedDomainInfo and LsaSetTrustedDomainInformation functions use this structure when their InformationClass parameters
 		/// are set to TrustedPasswordInformation.
-		/// </para>
 		/// </summary>
 		/// <remarks>
-		/// <para>
 		/// When you have finished using the <c>TRUSTED_PASSWORD_INFO</c> structure, clear the sensitive information from memory by calling
 		/// the SecureZeroMemory function. For more information about protecting passwords, see Handling Passwords.
-		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_trusted_password_info typedef struct
 		// _TRUSTED_PASSWORD_INFO { LSA_UNICODE_STRING Password; LSA_UNICODE_STRING OldPassword; } TRUSTED_PASSWORD_INFO, *PTRUSTED_PASSWORD_INFO;
@@ -930,27 +956,21 @@ namespace Vanara.PInvoke
 		public struct TRUSTED_PASSWORD_INFO
 		{
 			/// <summary>
-			/// <para>
 			/// An LSA_UNICODE_STRING structure that contains the password to use when creating an authenticated connection to the domain.
-			/// </para>
 			/// </summary>
 			public LSA_UNICODE_STRING Password;
 
 			/// <summary>
-			/// <para>
 			/// An LSA_UNICODE_STRING structure that contains the old password. On set operations, if the <c>Buffer</c> member of this
 			/// structure is <c>NULL</c>, the old password is set to the current password.
-			/// </para>
 			/// </summary>
 			public LSA_UNICODE_STRING OldPassword;
 		}
 
 		/// <summary>
-		/// <para>
 		/// The <c>TRUSTED_POSIX_OFFSET_INFO</c> structure is used to query or set the value used to generate Posix user and group
 		/// identifiers. The LsaQueryTrustedDomainInfo and LsaSetTrustedDomainInformation functions use this structure when their
 		/// InformationClass parameters are set to <c>TrustedPosixOffsetInformation</c>.
-		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_trusted_posix_offset_info typedef struct
 		// _TRUSTED_POSIX_OFFSET_INFO { ULONG Offset; } TRUSTED_POSIX_OFFSET_INFO, *PTRUSTED_POSIX_OFFSET_INFO;
@@ -959,10 +979,8 @@ namespace Vanara.PInvoke
 		public struct TRUSTED_POSIX_OFFSET_INFO
 		{
 			/// <summary>
-			/// <para>
 			/// An offset that the system uses to generate Posix user and group identifiers that correspond to a given SID. To generate a
 			/// Posix identifier, the system adds the RID from the SID to the Posix offset of the trusted domain identified by the SID.
-			/// </para>
 			/// </summary>
 			public uint Offset;
 		}
