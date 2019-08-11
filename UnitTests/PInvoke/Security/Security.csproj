@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <Win32Resource>C:\Users\dahall\Documents\Visual Studio 2017\Projects\Windows-classic-samples\Win7Samples\winbase\PerfCounters\Basic\CPP\ucsCounters.res</Win32Resource>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ServiceProcess" />
@@ -50,6 +53,7 @@
     <Compile Include="AdvApi32\AppMgmtTests.cs" />
     <Compile Include="AdvApi32\ProviderInfo.cs" />
     <Compile Include="AdvApi32\LsaTests.cs" />
+    <Compile Include="AdvApi32\PerfLibTests.cs" />
     <Compile Include="AdvApi32\SecurityBaseApiTests.cs" />
     <Compile Include="AdvApi32\ServiceTests.cs" />
     <Compile Include="AdvApi32\PSIDTests.cs" />

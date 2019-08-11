@@ -7,6 +7,8 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		public const uint PERF_WILDCARD_COUNTER = uint.MaxValue;
+
 		/// <summary>
 		/// <para>
 		/// Providers can implement this function to receive notification when consumers perform certain actions, such as adding or removing
@@ -285,7 +287,7 @@ namespace Vanara.PInvoke
 		// PPERF_COUNTER_IDENTIFIER pCounters, DWORD cbCounters );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("perflib.h", MSDNShortId = "FC66E794-EF13-47BB-A704-735924363310")]
-		public static extern NTStatus PerfAddCounters(HPERFQUERY hQuery, IntPtr pCounters, uint cbCounters);
+		public static extern NTStatus PerfAddCounters(HPERFQUERY hQuery, [In, Out] PERF_COUNTER_IDENTIFIER_WITH_INST_NAME[] pCounters, uint cbCounters);
 
 		/// <summary>Closes a query handle that you opened by calling PerfOpenQueryHandle.</summary>
 		/// <param name="hQuery">A handle to the query that you want to close</param>
@@ -423,7 +425,7 @@ namespace Vanara.PInvoke
 		public static SafePPERF_COUNTERSET_INSTANCE PerfCreateInstance(HPERFPROV ProviderHandle, Guid? CounterSetGuid, string Name, uint Id)
 		{
 			var guid = CounterSetGuid.HasValue ? SafeHGlobalHandle.CreateFromStructure(CounterSetGuid.Value) : SafeHGlobalHandle.Null;
-			return new SafePPERF_COUNTERSET_INSTANCE(ProviderHandle, PerfCreateInstance(ProviderHandle, (IntPtr)guid, Name, Id));
+			return new SafePPERF_COUNTERSET_INSTANCE(ProviderHandle, PerfCreateInstance(ProviderHandle, guid, Name, Id));
 		}
 
 		/// <summary>Decrements the value of a counter whose value is a 4-byte unsigned integer. Providers use this function.</summary>
@@ -464,7 +466,7 @@ namespace Vanara.PInvoke
 		// PerfDecrementULongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONG Value );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("perflib.h", MSDNShortId = "5e8b40d6-b794-4bac-8832-3eb14c49ecec")]
-		public static extern NTStatus PerfDecrementULongCounterValue(HPERFPROV Provider, ref PERF_COUNTERSET_INSTANCE Instance, uint CounterId, uint Value);
+		public static extern NTStatus PerfDecrementULongCounterValue(HPERFPROV Provider, SafePPERF_COUNTERSET_INSTANCE Instance, uint CounterId, uint Value);
 
 		/// <summary>Decrements the value of a counter whose value is an 8-byte unsigned integer. Providers use this function.</summary>
 		/// <param name="Provider">
@@ -504,7 +506,7 @@ namespace Vanara.PInvoke
 		// PerfDecrementULongLongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONGLONG Value );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("perflib.h", MSDNShortId = "38fd52a7-c2af-4c69-a104-aba6a602fbf4")]
-		public static extern NTStatus PerfDecrementULongLongCounterValue(HPERFPROV Provider, ref PERF_COUNTERSET_INSTANCE Instance, uint CounterId, ulong Value);
+		public static extern NTStatus PerfDecrementULongLongCounterValue(HPERFPROV Provider, SafePPERF_COUNTERSET_INSTANCE Instance, uint CounterId, ulong Value);
 
 		/// <summary>Removes the specified performance counter specifications from the specified query.</summary>
 		/// <param name="hQuery">A handle to the query from which you want to remove performance counter specifications.</param>
@@ -530,7 +532,7 @@ namespace Vanara.PInvoke
 		// hQuery, PPERF_COUNTER_IDENTIFIER pCounters, DWORD cbCounters );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("perflib.h", MSDNShortId = "330CA041-41CA-4C48-B88B-C48A0143505E")]
-		public static extern NTStatus PerfDeleteCounters(HPERFQUERY hQuery, IntPtr pCounters, uint cbCounters);
+		public static extern NTStatus PerfDeleteCounters(HPERFQUERY hQuery, [In, Out] PERF_COUNTER_IDENTIFIER_WITH_INST_NAME[] pCounters, uint cbCounters);
 
 		/// <summary>Deletes an instance of the counter set created by the PerfCreateInstance function. Providers use this function.</summary>
 		/// <param name="Provider">
@@ -722,7 +724,7 @@ namespace Vanara.PInvoke
 		// LPDWORD pcbInstancesActual );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("perflib.h", MSDNShortId = "83DCEAB7-5F79-4A55-8BAC-D20F545FF76D")]
-		public static extern NTStatus PerfEnumerateCounterSetInstances([MarshalAs(UnmanagedType.LPWStr), Optional] string szMachine, in Guid pCounterSetId, IntPtr pInstances, uint cbInstances, out uint pcbInstancesActual);
+		public static extern Win32Error PerfEnumerateCounterSetInstances([MarshalAs(UnmanagedType.LPWStr), Optional] string szMachine, in Guid pCounterSetId, IntPtr pInstances, uint cbInstances, out uint pcbInstancesActual);
 
 		/// <summary>Increments the value of a counter whose value is a 4-byte unsigned integer. Providers use this function.</summary>
 		/// <param name="Provider">
@@ -764,7 +766,7 @@ namespace Vanara.PInvoke
 		// PerfIncrementULongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONG Value );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("perflib.h", MSDNShortId = "002162a0-d782-4648-949e-178985fd1d44")]
-		public static extern NTStatus PerfIncrementULongCounterValue(HPERFPROV Provider, ref PERF_COUNTERSET_INSTANCE Instance, uint CounterId, uint Value);
+		public static extern NTStatus PerfIncrementULongCounterValue(HPERFPROV Provider, SafePPERF_COUNTERSET_INSTANCE Instance, uint CounterId, uint Value);
 
 		/// <summary>Increments the value of a counter whose value is an 8-byte unsigned integer. Providers use this function.</summary>
 		/// <param name="Provider">
@@ -806,7 +808,7 @@ namespace Vanara.PInvoke
 		// PerfIncrementULongLongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONGLONG Value );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("perflib.h", MSDNShortId = "6e701561-4036-4ae4-8d4e-667fa6a20d99")]
-		public static extern NTStatus PerfIncrementULongLongCounterValue(HPERFPROV Provider, ref PERF_COUNTERSET_INSTANCE Instance, uint CounterId, ulong Value);
+		public static extern NTStatus PerfIncrementULongLongCounterValue(HPERFPROV Provider, SafePPERF_COUNTERSET_INSTANCE Instance, uint CounterId, ulong Value);
 
 		/// <summary>Creates a handle that references a query on the specified system. A query is a list of counter specifications.</summary>
 		/// <param name="szMachine">The name of the machine for which you want to get the query handle.</param>
@@ -979,7 +981,7 @@ namespace Vanara.PInvoke
 		// hQuery, PPERF_COUNTER_IDENTIFIER pCounters, DWORD cbCounters, LPDWORD pcbCountersActual );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("perflib.h", MSDNShortId = "42CAB98C-4525-499D-BA11-731A666E112D")]
-		public static extern NTStatus PerfQueryCounterInfo(HPERFQUERY hQuery, IntPtr pCounters, uint cbCounters, out uint pcbCountersActual);
+		public static extern NTStatus PerfQueryCounterInfo(HPERFQUERY hQuery, [In, Out] PERF_COUNTER_IDENTIFIER_WITH_INST_NAME[] pCounters, uint cbCounters, out uint pcbCountersActual);
 
 		/// <summary>Gets information about a counter set on the specified system.</summary>
 		/// <param name="szMachine">
@@ -1067,7 +1069,7 @@ namespace Vanara.PInvoke
 		// LPBYTE pbRegInfo, DWORD cbRegInfo, LPDWORD pcbRegInfoActual );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("perflib.h", MSDNShortId = "E8E83E47-2445-42AE-855F-6710FC8F789E")]
-		public static extern NTStatus PerfQueryCounterSetRegistrationInfo([MarshalAs(UnmanagedType.LPWStr), Optional] string szMachine, in Guid pCounterSetId, PerfRegInfoType requestCode, uint requestLangId, IntPtr pbRegInfo, uint cbRegInfo, out uint pcbRegInfoActual);
+		public static extern Win32Error PerfQueryCounterSetRegistrationInfo([MarshalAs(UnmanagedType.LPWStr), Optional] string szMachine, in Guid pCounterSetId, PerfRegInfoType requestCode, uint requestLangId, IntPtr pbRegInfo, uint cbRegInfo, out uint pcbRegInfoActual);
 
 		/// <summary>Retrieves a pointer to the specified counter set instance. Providers use this function.</summary>
 		/// <param name="ProviderHandle">
@@ -1104,7 +1106,7 @@ namespace Vanara.PInvoke
 		// PerfQueryInstance( HANDLE ProviderHandle, LPCGUID CounterSetGuid, PCWSTR Name, ULONG Id );
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("perflib.h", MSDNShortId = "844f3f9e-8de2-4995-b13c-befe0da8a1ab")]
-		public static extern IntPtr PerfQueryInstance(HPERFPROV ProviderHandle, IntPtr CounterSetGuid, [MarshalAs(UnmanagedType.LPWStr)] string Name, uint Id);
+		public static extern IntPtr PerfQueryInstance(HPERFPROV ProviderHandle, in Guid CounterSetGuid, [MarshalAs(UnmanagedType.LPWStr)] string Name, uint Id);
 
 		/// <summary>Updates the value of a counter whose value is a pointer to the actual data. Providers use this function.</summary>
 		/// <param name="Provider">
@@ -1335,7 +1337,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HPERFPROV : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HPERFPROV"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1383,7 +1385,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HPERFQUERY : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HPERFQUERY"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1622,6 +1624,86 @@ namespace Vanara.PInvoke
 
 			/// <summary>Reserved.</summary>
 			public uint Reserved;
+		}
+
+		/// <summary>
+		/// <para>
+		/// Contains information about the <c>PERF_COUNTER_IDENTIFIER</c> block that contains the structure. A <c>PERF_COUNTER_IDENTIFIER</c>
+		/// block provides information about a performance counter specification, and consists of the following items in order:
+		/// </para>
+		/// <list type="number">
+		/// <item>
+		/// <term>A <c>PERF_COUNTER_IDENTIFIER</c> structure</term>
+		/// </item>
+		/// <item>
+		/// <term>An optional null-terminated UTF-16LE string that specifies the instance name</term>
+		/// </item>
+		/// <item>
+		/// <term>Padding as needed to make the size of the block a multiple of 8 bytes.</term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// When you specify a counter set identifier for a single-instance counter set, you must not specify the instance name in the
+		/// additional data of the <c>PERF_COUNTER_IDENTIFIER</c> block. The size of the <c>PERF_COUNTER_IDENTIFIER</c> block must be the
+		/// size of the <c>PERF_COUNTER_IDENTIFIER</c> structure.
+		/// </para>
+		/// <para>
+		/// On the other hand, when you specify a counter set identifier for a multiple-instance counter set, you must specify the instance
+		/// name in the additional data of the <c>PERF_COUNTER_IDENTIFIER</c> block. The identifier is not considered valid unless the size of
+		/// the <c>PERF_COUNTER_IDENTIFIER</c> block is greater than the size of the <c>PERF_COUNTER_IDENTIFIER</c> structure. If you do not
+		/// want to filter the counter sets based on the instance name, use <c>PERF_WILDCARD_INSTANCE</c> as the instance name.
+		/// </para>
+		/// <para>
+		/// The PerfAddCounters and PerfDeleteCounters functions accept a sequence of <c>PERF_COUNTER_IDENTIFIER</c> blocks to define the
+		/// counter specifications that you want to be add or remove from a query.
+		/// </para>
+		/// <para>
+		/// The PerfQueryCounterInfo function gets a sequence of <c>PERF_COUNTER_IDENTIFIER</c> blocks to indicate the counter specifications
+		/// in a query and to indicate in the <c>Index</c> member the order in which the query gets the results.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/perflib/ns-perflib-_perf_counter_identifier typedef struct
+		// _PERF_COUNTER_IDENTIFIER { GUID CounterSetGuid; ULONG Status; ULONG Size; ULONG CounterId; ULONG InstanceId; ULONG Index; ULONG
+		// Reserved; } PERF_COUNTER_IDENTIFIER, *PPERF_COUNTER_IDENTIFIER;
+		[PInvokeData("perflib.h", MSDNShortId = "4BBAB831-9A7F-407E-A7D6-9123192C12B4")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct PERF_COUNTER_IDENTIFIER_WITH_INST_NAME
+		{
+			/// <summary>The <c>GUID</c> of the performance counter set.</summary>
+			public Guid CounterSetGuid;
+
+			/// <summary>An error code that indicates whether the operation to add or delete a performance counter succeeded or failed.</summary>
+			public uint Status;
+
+			/// <summary>
+			/// The total size of the <c>PERF_COUNTER_IDENTIFIER</c> block, in bytes. The total size of the block is the sum of the sizes of
+			/// the <c>PERF_COUNTER_IDENTIFIER</c> structure, the string that specifies the instance name, and the padding.
+			/// </summary>
+			public uint Size;
+
+			/// <summary>The identifier of the performance counter. <c>PERF_WILDCARD_COUNTER</c> specifies all counters.</summary>
+			public uint CounterId;
+
+			/// <summary>The instance identifier. Specify 0xFFFFFFFF if you do not want to filter the results based on the instance identifier.</summary>
+			public uint InstanceId;
+
+			/// <summary>
+			/// The position in the sequence of <c>PERF_COUNTER_IDENTIFIER</c> blocks at which the counter data that corresponds to this
+			/// <c>PERF_COUNTER_IDENTIFIER</c> block is returned. Set by PerfQueryCounterInfo.
+			/// </summary>
+			public uint Index;
+
+			/// <summary>Reserved.</summary>
+			public uint Reserved;
+
+			/// <summary>The instance name used when using multi-instance counter sets.</summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+			public string InstanceName;
+
+			/// <summary>An instance of this structure with the size property preset.</summary>
+			public static readonly PERF_COUNTER_IDENTIFIER_WITH_INST_NAME Default = new PERF_COUNTER_IDENTIFIER_WITH_INST_NAME { Size = (uint)Marshal.SizeOf(typeof(PERF_COUNTER_IDENTIFIER_WITH_INST_NAME)) };
 		}
 
 		/// <summary>Defines the counter that is sent to a provider's callback when the consumer adds or removes a counter from the query.</summary>
@@ -2364,6 +2446,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>Context information passed to the memory allocation and free routines. Can be <c>NULL</c>.</summary>
 			public IntPtr pMemContext;
+
+			/// <summary>Provides a default instance of this structure with the size preset.</summary>
+			public static readonly PERF_PROVIDER_CONTEXT Default = new PERF_PROVIDER_CONTEXT { ContextSize = (uint)Marshal.SizeOf(typeof(PERF_PROVIDER_CONTEXT)) };
 		}
 
 		/// <summary>
@@ -2488,7 +2573,7 @@ namespace Vanara.PInvoke
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
-			public SafePPERF_COUNTERSET_INSTANCE(HPERFPROV ProviderHandle, IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { hProv = ProviderHandle; }
+			public SafePPERF_COUNTERSET_INSTANCE(HPERFPROV ProviderHandle, IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => hProv = ProviderHandle;
 
 			/// <summary>Initializes a new instance of the <see cref="SafePPERF_COUNTERSET_INSTANCE"/> class.</summary>
 			private SafePPERF_COUNTERSET_INSTANCE() : base() { }
