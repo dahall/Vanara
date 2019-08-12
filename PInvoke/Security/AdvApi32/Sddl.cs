@@ -132,8 +132,13 @@ namespace Vanara.PInvoke
 		// SECURITY_INFORMATION SecurityInformation, LPSTR *StringSecurityDescriptor, PULONG StringSecurityDescriptorLen );
 		[PInvokeData("sddl.h", MSDNShortId = "36140833-8e30-4c32-a88a-c10751b6c223")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static string ConvertSecurityDescriptorToStringSecurityDescriptor(PSECURITY_DESCRIPTOR SecurityDescriptor, SECURITY_INFORMATION SecurityInformation) =>
-			ConvertSecurityDescriptorToStringSecurityDescriptor(SecurityDescriptor, SDDL_REVISION.SDDL_REVISION_1, SecurityInformation, out var sd, out var sz) ? sd.ToString(-1) : throw new Win32Exception();
+		public static string ConvertSecurityDescriptorToStringSecurityDescriptor(PSECURITY_DESCRIPTOR SecurityDescriptor, SECURITY_INFORMATION SecurityInformation)
+		{
+			if (!ConvertSecurityDescriptorToStringSecurityDescriptor(SecurityDescriptor, SDDL_REVISION.SDDL_REVISION_1, SecurityInformation, out var sd, out _))
+				throw new Win32Exception();
+			using (sd)
+				return sd.ToString(-1);
+		}
 
 		/// <summary>
 		/// The ConvertSidToStringSid function converts a security identifier (SID) to a string format suitable for display, storage, or transmission.
@@ -155,7 +160,13 @@ namespace Vanara.PInvoke
 		/// <param name="Sid">The SID structure to be converted.</param>
 		/// <returns>A null-terminated SID string.</returns>
 		[PInvokeData("sddl.h", MSDNShortId = "aa376399")]
-		public static string ConvertSidToStringSid(PSID Sid) => ConvertSidToStringSid(Sid, out var str) ? str.ToString(-1) : throw new Win32Exception();
+		public static string ConvertSidToStringSid(PSID Sid)
+		{
+			if (!ConvertSidToStringSid(Sid, out var str))
+				throw new Win32Exception();
+			using (str)
+				return str.ToString(-1);
+		}
 
 		/// <summary>
 		/// <para>
@@ -252,7 +263,8 @@ namespace Vanara.PInvoke
 		{
 			if (!ConvertStringSecurityDescriptorToSecurityDescriptor(StringSecurityDescriptor, SDDL_REVISION.SDDL_REVISION_1, out var sd, out var sz))
 				throw new Win32Exception();
-			return new SafePSECURITY_DESCRIPTOR(sd.ToArray<byte>((int)sz));
+			using (sd)
+				return new SafePSECURITY_DESCRIPTOR(sd.ToArray<byte>((int)sz));
 		}
 
 		/// <summary>
@@ -288,6 +300,12 @@ namespace Vanara.PInvoke
 		/// <returns>A pointer to the converted SID.</returns>
 		[PInvokeData("sddl.h", MSDNShortId = "aa376402")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static SafePSID ConvertStringSidToSid(string pStringSid) => ConvertStringSidToSid(pStringSid, out var psid) ? new SafePSID(psid.DangerousGetHandle()) : throw new Win32Exception();
+		public static SafePSID ConvertStringSidToSid(string pStringSid)
+		{
+			if (!ConvertStringSidToSid(pStringSid, out var psid))
+				throw new Win32Exception();
+			using (psid)
+				return new SafePSID(psid.DangerousGetHandle());
+		}
 	}
 }

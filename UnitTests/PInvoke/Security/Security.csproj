@@ -55,6 +55,7 @@
     <Compile Include="AdvApi32\LsaTests.cs" />
     <Compile Include="AdvApi32\PerfLibTests.cs" />
     <Compile Include="AdvApi32\ProcessThreadsApiTests.cs" />
+    <Compile Include="AdvApi32\SddlTests.cs" />
     <Compile Include="AdvApi32\SecurityBaseApiTests.cs" />
     <Compile Include="AdvApi32\ServiceTests.cs" />
     <Compile Include="AdvApi32\PSIDTests.cs" />
