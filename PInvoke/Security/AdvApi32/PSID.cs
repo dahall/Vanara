@@ -63,6 +63,10 @@ namespace Vanara.PInvoke
 			/// <value><c>true</c> if this instance is a valid SID; otherwise, <c>false</c>.</value>
 			public bool IsValidSid => IsValidSid(this);
 
+			/// <summary>Gets the length, in bytes, of the SID.</summary>
+			/// <value>The SID length, in bytes.</value>
+			public int Length => IsValidSid ? GetLengthSid(this) : 0;
+
 			/// <summary>Copies the specified SID from a memory pointer to a <see cref="SafePSID"/> instance.</summary>
 			/// <param name="psid">The SID pointer. This value remains the responsibility of the caller to release.</param>
 			/// <returns>A <see cref="SafePSID"/> instance.</returns>
@@ -151,7 +155,7 @@ namespace Vanara.PInvoke
 			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 			/// <param name="other">An object to compare with this object.</param>
 			/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-			public bool Equals(SafePSID other) => EqualSid(this, other);
+			public bool Equals(SafePSID other) => other != null && (ReferenceEquals(this, other) || EqualSid(this, other));
 
 			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 			/// <param name="other">An object to compare with this object.</param>
@@ -214,14 +218,22 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="SafePSIDArray"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="count">The count of PSID array values pointed to by <paramref name="preexistingHandle"/>.</param>
 			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not
+			/// recommended). If <see langword="true"/>, the individually allocated values for each PSID will also be released.
 			/// </param>
-			public SafePSIDArray(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+			public SafePSIDArray(IntPtr preexistingHandle, int count, bool ownsHandle = true) : base(preexistingHandle, ownsHandle)
+			{
+				if (ownsHandle)
+					Count = count;
+				else
+					items = new List<SafePSID>(handle.ToIEnum<IntPtr>(count).Select(p => new SafePSID(p)));
+			}
 
 			/// <summary>Initializes a new instance of the <see cref="SafePSIDArray"/> class.</summary>
 			/// <param name="pSIDs">A list of <see cref="SafePSID"/> instances.</param>
-			public SafePSIDArray(IEnumerable<SafePSID> pSIDs) : this(pSIDs.Select(p => (PSID)p))
+			public SafePSIDArray(IEnumerable<SafePSID> pSIDs) : this(pSIDs?.Select(p => (PSID)p))
 			{
 			}
 
@@ -229,8 +241,9 @@ namespace Vanara.PInvoke
 			/// <param name="pSIDs">A list of <see cref="SafePSID"/> instances.</param>
 			public SafePSIDArray(IEnumerable<PSID> pSIDs) : base()
 			{
+				if (pSIDs is null) throw new ArgumentNullException(nameof(pSIDs));
 				items = pSIDs.Select(p => new SafePSID(p)).ToList();
-				SetHandle(items.Cast<IntPtr>().MarshalToPtr(i => LocalAlloc(LMEM.LPTR, i).DangerousGetHandle(), out _));
+				SetHandle(items.Select(p => (IntPtr)p).MarshalToPtr(i => LocalAlloc(LMEM.LPTR, i).DangerousGetHandle(), out _));
 			}
 
 			/// <summary>Initializes a new instance of the <see cref="SafePSIDArray"/> class.</summary>
@@ -243,8 +256,13 @@ namespace Vanara.PInvoke
 				get => items?.Count ?? throw new InvalidOperationException("The length must be set before using this function.");
 				set
 				{
-					if (items != null) throw new InvalidOperationException("The length can only be set once.");
-					items = new List<SafePSID>(handle.ToIEnum<IntPtr>(value).Select(p => new SafePSID(p)));
+					if (items != null) throw new InvalidOperationException("The length can only be set for partially initialized arrays.");
+					items = new List<SafePSID>();
+					foreach (var psid in handle.ToIEnum<IntPtr>(value))
+					{
+						items.Add(new SafePSID(psid));
+						LocalFree(psid);
+					}
 				}
 			}
 
