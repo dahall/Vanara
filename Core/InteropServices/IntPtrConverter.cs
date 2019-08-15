@@ -98,6 +98,8 @@ namespace Vanara.InteropServices
 
 			object GetBlittable(Type retType)
 			{
+				if (retType.IsEnum && Marshal.SizeOf(Enum.GetUnderlyingType(retType)) <= sz)
+					return Enum.ToObject(retType, Marshal.PtrToStructure(ptr, Enum.GetUnderlyingType(retType)));
 				if (Marshal.SizeOf(retType) <= sz)
 					return Marshal.PtrToStructure(ptr, retType);
 				throw SizeExc();
