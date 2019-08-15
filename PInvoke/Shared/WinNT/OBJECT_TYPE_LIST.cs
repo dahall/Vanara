@@ -50,17 +50,18 @@ namespace Vanara.PInvoke
 		{
 			Sbz = 0;
 			this.level = level;
-			if (objType == default)
-				guidObjectType = null;
-			else
+			unsafe
 			{
-				unsafe
-				{
+				if (objType == default)
+					fixed (Guid* pGuid = &Guid.Empty)
+					{
+						guidObjectType = pGuid;
+					}
+				else
 					fixed (Guid* pGuid = &objType)
 					{
 						guidObjectType = pGuid;
 					}
-				}
 			}
 		}
 
