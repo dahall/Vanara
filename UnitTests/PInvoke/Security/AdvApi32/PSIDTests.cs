@@ -114,8 +114,19 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void ToStringTest()
 		{
-			var sid = SafePSID.Init(KnownSIDAuthority.SECURITY_WORLD_SID_AUTHORITY, KnownSIDRelativeID.SECURITY_WORLD_RID);
-			Assert.That(sid.ToString(), Is.EqualTo("S-1-1-0"));
+			var sid = SafePSID.Everyone;
+			const string sddl = "S-1-1-0";
+			Assert.That(sid.ToString(), Is.EqualTo(sddl));
+			Assert.That(sid.ToString(null), Is.EqualTo(sddl));
+			Assert.That(sid.ToString(""), Is.EqualTo(sddl));
+			Assert.That(sid.ToString("D"), Is.EqualTo(sddl));
+			Assert.That(sid.ToString("B"), Is.EqualTo("01 01 00 00 00 00 00 01 00 00 00 00"));
+			Assert.That(sid.ToString("N"), Is.EqualTo("Everyone"));
+			Assert.That(sid.ToString("P"), Is.EqualTo("Everyone"));
+
+			Assert.That(SafePSID.Null.ToString(), Is.EqualTo("0"));
+
+			Assert.That(new SafePSID(new byte[] { 12, 255 }).ToString(), Is.EqualTo("Invalid"));
 		}
 
 		[Test]
