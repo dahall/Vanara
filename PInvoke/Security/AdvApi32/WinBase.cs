@@ -2106,7 +2106,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa379166")]
-		public static extern bool LookupAccountSid(string lpSystemName, byte[] lpSid, StringBuilder lpName, ref int cchName,
+		public static extern bool LookupAccountSid([Optional] string lpSystemName, byte[] lpSid, StringBuilder lpName, ref int cchName,
 			StringBuilder lpReferencedDomainName, ref int cchReferencedDomainName, out SID_NAME_USE peUse);
 
 		/// <summary>
@@ -2153,7 +2153,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa379166")]
-		public static extern bool LookupAccountSid(string lpSystemName, PSID lpSid, StringBuilder lpName, ref int cchName,
+		public static extern bool LookupAccountSid([Optional] string lpSystemName, PSID lpSid, StringBuilder lpName, ref int cchName,
 			StringBuilder lpReferencedDomainName, ref int cchReferencedDomainName, out SID_NAME_USE peUse);
 
 		/// <summary>
@@ -2395,7 +2395,8 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ObjectOpenAuditAlarm(string SubsystemName, IntPtr HandleId, string ObjectTypeName, string ObjectName,
 			PSECURITY_DESCRIPTOR pSecurityDescriptor, HTOKEN ClientToken, ACCESS_MASK DesiredAccess, ACCESS_MASK GrantedAccess,
-			in PRIVILEGE_SET Privileges, [MarshalAs(UnmanagedType.Bool)] bool ObjectCreation, [MarshalAs(UnmanagedType.Bool)] bool AccessGranted,
+			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET Privileges,
+			[MarshalAs(UnmanagedType.Bool)] bool ObjectCreation, [MarshalAs(UnmanagedType.Bool)] bool AccessGranted,
 			[MarshalAs(UnmanagedType.Bool)] out bool GenerateOnClose);
 
 		/// <summary>
@@ -2448,7 +2449,8 @@ namespace Vanara.PInvoke
 		[PInvokeData("winbase.h", MSDNShortId = "76714ffe-be7c-4928-b7c9-e72441ada4c7")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ObjectPrivilegeAuditAlarm(string SubsystemName, IntPtr HandleId, HTOKEN ClientToken, ACCESS_MASK DesiredAccess,
-			in PRIVILEGE_SET Privileges, [MarshalAs(UnmanagedType.Bool)] bool AccessGranted);
+			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET Privileges,
+			[MarshalAs(UnmanagedType.Bool)] bool AccessGranted);
 
 		/// <summary>
 		/// Opens an encrypted file in order to backup (export) or restore (import) the file. This is one of a group of Encrypted File System
@@ -2651,7 +2653,9 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "a424c583-bb71-4bda-a27f-2389b89104d8")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PrivilegedServiceAuditAlarm(string SubsystemName, string ServiceName, HTOKEN ClientToken, PRIVILEGE_SET Privileges, [MarshalAs(UnmanagedType.Bool)] bool AccessGranted);
+		public static extern bool PrivilegedServiceAuditAlarm(string SubsystemName, string ServiceName, HTOKEN ClientToken,
+			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET Privileges,
+			[MarshalAs(UnmanagedType.Bool)] bool AccessGranted);
 
 		/// <summary>
 		/// Backs up (export) encrypted files. This is one of a group of Encrypted File System (EFS) functions that is intended to implement
