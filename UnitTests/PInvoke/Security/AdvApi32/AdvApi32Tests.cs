@@ -18,6 +18,7 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture()]
 	public class AdvApi32Tests
 	{
+		internal const SECURITY_INFORMATION AllSI = SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION | SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.SACL_SECURITY_INFORMATION;
 		internal const string fn = @"C:\Temp\help.ico";
 
 		internal static object[] GetAuthCasesFromFile(bool validUser, bool validCred) => AuthCasesFromFile.Where(objs => ((object[])objs)[0].Equals(validUser) && ((object[])objs)[1].Equals(validCred)).ToArray();
@@ -40,38 +41,6 @@ namespace Vanara.PInvoke.Tests
 					ret[i] = items;
 				}
 				return ret;
-			}
-		}
-
-		[Test]
-		public void AccessCheckTest()
-		{
-			using (var pSD = GetSD(fn, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION))
-			using (var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_READ).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation))
-			{
-				var ps = PRIVILEGE_SET.InitializeWithCapacity(10);
-				var psSz = ps.SizeInBytes;
-				var gm = GENERIC_MAPPING.GenericFileMapping;
-				ACCESS_MASK accessMask = ACCESS_MASK.GENERIC_READ;
-				MapGenericMask(ref accessMask, gm);
-				var b = AccessCheck(pSD, hTok, accessMask, gm, ref ps, ref psSz, out var access, out var status);
-				if (!b) TestContext.WriteLine($"AccessCheck failed: {Win32Error.GetLastError()}");
-				Assert.That(b, Is.True);
-				TestContext.WriteLine($"Access={(Kernel32.FileAccess)access}; Status={status}");
-			}
-		}
-
-		[Test()]
-		public void AdjustTokenPrivilegesTest()
-		{
-			using (var t = SafeHTOKEN.FromThread(SafeHTHREAD.Current, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY))
-			{
-				Assert.That(LookupPrivilegeValue(null, "SeShutdownPrivilege", out var luid));
-				var ptp = new PTOKEN_PRIVILEGES(luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
-				var old = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
-				Assert.That(AdjustTokenPrivileges(t, false, ptp, (uint)old.Size, old, out var rLen));
-
-				Assert.That(AdjustTokenPrivileges(t, false, ptp));
 			}
 		}
 
@@ -98,14 +67,6 @@ namespace Vanara.PInvoke.Tests
 			b = CopySid(len, (IntPtr)p2, pSid);
 			Assert.That(EqualSid(p2, pSid));
 			Assert.That(b);
-		}
-
-		[Test()]
-		public void AllocateLocallyUniqueIdTest()
-		{
-			Assert.That(AllocateLocallyUniqueId(out var luid));
-			TestContext.WriteLine($"{luid.LowPart:X} {luid.HighPart:X}");
-			Assert.That(luid.LowPart, Is.Not.Zero);
 		}
 
 		[Test()]
@@ -198,118 +159,10 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
-		public void DuplicateTokenTest()
-		{
-			using (var pval = SafeHTOKEN.FromProcess(System.Diagnostics.Process.GetCurrentProcess()))
-			{
-				Assert.That(pval.IsInvalid, Is.False);
-				Assert.That(DuplicateToken(pval, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, out var dtok));
-				Assert.That(dtok.IsInvalid, Is.False);
-				dtok.Close();
-			}
-		}
-
-		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AuthCasesFromFile))]
-		public void GetAceTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string username, string password, string notes)
-		{
-			var fun = $"{domain}\\{username}";
-
-			var pSD = GetSD(fn);
-			var b = GetSecurityDescriptorDacl(pSD, out var daclPresent, out var pAcl, out var defaulted);
-			Assert.That(b, Is.True);
-			Assert.That(daclPresent, Is.True);
-			Assert.That(pAcl, Is.Not.EqualTo(IntPtr.Zero));
-			var hardAcl = ((IntPtr)pAcl).ToStructure<ACL>();
-			b = GetAclInformation(pAcl, out ACL_REVISION_INFORMATION ari, (uint)Marshal.SizeOf(typeof(ACL_REVISION_INFORMATION)), ACL_INFORMATION_CLASS.AclRevisionInformation);
-			Assert.That(b, Is.True);
-			Assert.That(ari.AclRevision, Is.EqualTo(hardAcl.AclRevision));
-			b = GetAclInformation(pAcl, out ACL_SIZE_INFORMATION asi, (uint)Marshal.SizeOf(typeof(ACL_SIZE_INFORMATION)), ACL_INFORMATION_CLASS.AclSizeInformation);
-			Assert.That(b, Is.True);
-			Assert.That(asi.AceCount, Is.EqualTo(hardAcl.AceCount));
-			for (var i = 0U; i < asi.AceCount; i++)
-			{
-				b = GetAce(pAcl, i, out var pAce);
-				Assert.That(b, Is.True);
-
-				var accountSize = 1024;
-				var domainSize = 1024;
-				var outuser = new StringBuilder(accountSize, accountSize);
-				var outdomain = new StringBuilder(domainSize, domainSize);
-				b = LookupAccountSid(null, pAce.GetSid(), outuser, ref accountSize, outdomain, ref domainSize, out _);
-				Assert.That(b, Is.True);
-				TestContext.WriteLine($"Ace{i}: {pAce.GetHeader().AceType}={outdomain}\\{outuser}; {pAce.GetMask()}");
-			}
-
-			BuildTrusteeWithName(out var pTrustee, fun);
-			Assert.That(GetEffectiveRightsFromAcl(pAcl, pTrustee, out var accessRights), Is.EqualTo(Win32Error.ERROR_NONE_MAPPED).Or.Zero);
-			var map = new GENERIC_MAPPING((uint)Kernel32.FileAccess.FILE_GENERIC_READ, (uint)Kernel32.FileAccess.FILE_GENERIC_WRITE, (uint)Kernel32.FileAccess.FILE_GENERIC_EXECUTE, (uint)Kernel32.FileAccess.FILE_ALL_ACCESS);
-			var ifArray = new SafeInheritedFromArray(hardAcl.AceCount);
-			var err = GetInheritanceSource(fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, false, null,
-				0, pAcl, IntPtr.Zero, map, ifArray);
-			Assert.That(err, Is.EqualTo(0));
-			TestContext.WriteLine($"{hardAcl.AceCount}: {string.Join("; ", ifArray.Results.Select(i => i.ToString()))}");
-			Assert.That(() => ifArray.Dispose(), Throws.Nothing);
-		}
-
-		[Test()]
 		public void GetNamedSecurityInfoTest()
 		{
 			using (var pSD = GetSD(fn))
 				Assert.That(pSD, Is.Not.Null);
-		}
-
-		[Test()]
-		public void GetPrivateObjectSecurityTest()
-		{
-			using (var pSD = GetSD(fn))
-			{
-				var pos = pSD.GetPrivateObjectSecurity(SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION);
-				Assert.That(!pos.IsInvalid);
-			}
-		}
-
-		[Test()]
-		public void GetTokenInformationTest()
-		{
-			//var p = SafeTokenHandle.CurrentProcessToken.GetInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges).Privileges;
-			using (var t = SafeHTOKEN.FromProcess(Process.GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
-			{
-				Assert.That(t, Is.Not.Null);
-
-				var p = t.GetInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges);
-				Assert.That(p, Is.Not.Null);
-				Assert.That(p.PrivilegeCount, Is.GreaterThan(0));
-				TestContext.WriteLine("Privs: " + string.Join("; ", p.Privileges.Select(i => i.ToString())));
-
-				using (var hMem = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance(50))
-				{
-					var b = GetTokenInformation(t, TOKEN_INFORMATION_CLASS.TokenPrivileges, hMem, hMem.Size, out var sz);
-					Assert.That(b);
-					var p1 = PTOKEN_PRIVILEGES.FromPtr((IntPtr)hMem);
-					Assert.That(p1.PrivilegeCount, Is.EqualTo(p.PrivilegeCount));
-
-					Assert.That(p.Privileges, Is.EquivalentTo(p1.Privileges));
-				}
-			}
-
-			using (var t = SafeHTOKEN.FromThread(GetCurrentThread(), TokenAccess.TOKEN_QUERY))
-			{
-				var id = t.GetInfo<uint>(TOKEN_INFORMATION_CLASS.TokenSessionId);
-				Assert.That(id, Is.Not.Zero);
-				TestContext.WriteLine($"SessId: {id}");
-
-				var ve = t.GetInfo<uint>(TOKEN_INFORMATION_CLASS.TokenVirtualizationEnabled);
-				Assert.That(ve, Is.Zero);
-				TestContext.WriteLine($"VirtEnable: {ve}");
-
-				var et = t.GetInfo<TOKEN_ELEVATION_TYPE>(TOKEN_INFORMATION_CLASS.TokenElevationType);
-				Assert.That(et, Is.Not.Zero);
-				TestContext.WriteLine($"ElevType: {et}");
-
-				var e = t.GetInfo<TOKEN_ELEVATION>(TOKEN_INFORMATION_CLASS.TokenElevation);
-				Assert.That(e, Is.Not.Zero);
-				TestContext.WriteLine($"Elev: {e.TokenIsElevated}");
-			}
 		}
 
 		[Test()]
@@ -404,25 +257,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
-		public void PrivilegeCheckTest()
-		{
-			using (var t = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
-			{
-				Assert.That(LookupPrivilegeValue(null, "SeDebugPrivilege", out var luid));
-				Assert.That(PrivilegeCheck(t, new PRIVILEGE_SET(PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED), out var res));
-				TestContext.WriteLine($"Has {luid}={res}");
-
-				Assert.That(LookupPrivilegeValue(null, "SeChangeNotifyPrivilege", out luid));
-				Assert.That(PrivilegeCheck(t, new PRIVILEGE_SET(PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, new[] { new LUID_AND_ATTRIBUTES(luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED_BY_DEFAULT), new LUID_AND_ATTRIBUTES(luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED) }), out res));
-				TestContext.WriteLine($"Has {luid}={res}");
-
-				Assert.That(LookupPrivilegeValue(null, "SeShutdownPrivilege", out luid));
-				Assert.That(PrivilegeCheck(t, new PRIVILEGE_SET(PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED), out res));
-				TestContext.WriteLine($"Has {luid}={res}");
-			}
-		}
-
-		[Test()]
 		[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
 		public void QueryServiceConfig2Test()
 		{
@@ -498,8 +332,7 @@ namespace Vanara.PInvoke.Tests
 
 		internal static SafePSECURITY_DESCRIPTOR GetSD(string filename, SECURITY_INFORMATION si = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION)
 		{
-			var err = GetNamedSecurityInfo(filename, SE_OBJECT_TYPE.SE_FILE_OBJECT, si, out _, out _, out _, out _, out var pSD);
-			Assert.That(err, Is.EqualTo(0));
+			Assert.That(GetNamedSecurityInfo(filename, SE_OBJECT_TYPE.SE_FILE_OBJECT, si, out _, out _, out _, out _, out var pSD), ResultIs.Successful);
 			Assert.That(!pSD.IsInvalid);
 			return pSD;
 		}

@@ -12,6 +12,9 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		public const uint SECURITY_DESCRIPTOR_REVISION = 1;
+		public const uint SECURITY_DESCRIPTOR_REVISION1 = 1;
+
 		/// <summary>Indicates whether the ObjectTypeName and InheritedObjectTypeName members contain strings.</summary>
 		[PInvokeData("winnt.h")]
 		[Flags]
@@ -161,6 +164,47 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// The capability SID constants define for applications well-known capabilities by using the AllocateAndInitializeSid function.
+		/// </summary>
+		/// <remarks>
+		/// When constructing a capability SID, you need to include the package authority, SECURITY_APP_PACKAGE_AUTHORITY {0,0,0,0,0,15}, in
+		/// the call to the AllocateAndInitializeSid function. Additionally, you need the base RID and RID count for the built-in
+		/// capabilities, SECURITY_CAPABILITY_BASE_RID (0x00000003L) and SECURITY_BUILTIN_CAPABILITY_RID_COUNT (2L).
+		/// </remarks>
+		public enum KnownSIDCapability
+		{
+			/// <summary>An account has access to the Internet from a client computer.</summary>
+			SECURITY_CAPABILITY_INTERNET_CLIENT = 0x00000001,
+
+			/// <summary>An account has access to the Internet from the client and server computers.</summary>
+			SECURITY_CAPABILITY_INTERNET_CLIENT_SERVER = 0x00000002,
+
+			/// <summary>An account has access to the Internet from a private network.</summary>
+			SECURITY_CAPABILITY_PRIVATE_NETWORK_CLIENT_SERVER = 0x00000003,
+
+			/// <summary>An account has access to the pictures library.</summary>
+			SECURITY_CAPABILITY_PICTURES_LIBRARY = 0x00000004,
+
+			/// <summary>An account has access to the videos library.</summary>
+			SECURITY_CAPABILITY_VIDEOS_LIBRARY = 0x00000005,
+
+			/// <summary>An account has access to the music library.</summary>
+			SECURITY_CAPABILITY_MUSIC_LIBRARY = 0x00000006,
+
+			/// <summary>An account has access to the documentation library.</summary>
+			SECURITY_CAPABILITY_DOCUMENTS_LIBRARY = 0x00000007,
+
+			/// <summary>An account has access to the default Windows credentials.</summary>
+			SECURITY_CAPABILITY_ENTERPRISE_AUTHENTICATION = 0x00000008,
+
+			/// <summary>An account has access to the shared user certificates.</summary>
+			SECURITY_CAPABILITY_SHARED_USER_CERTIFICATES = 0x00000009,
+
+			/// <summary>An account has access to removable storage.</summary>
+			SECURITY_CAPABILITY_REMOVABLE_STORAGE = 0x0000000A,
+		}
+
+		/// <summary>
 		/// A set of bit flags that indicate whether the <c>ObjectType</c> and <c>InheritedObjectType</c> members are present in an object ACE.
 		/// </summary>
 		[Flags]
@@ -212,6 +256,55 @@ namespace Vanara.PInvoke
 
 			/// <summary>Indicates that all of the specified privileges must be held by the process requesting access.</summary>
 			PRIVILEGE_SET_ALL_NECESSARY = 1
+		}
+
+		/// <summary>Additional privilege options for <see cref="CreateRestrictedToken"/>.</summary>
+		[PInvokeData("winnt.h")]
+		public enum RestrictedPrivilegeOptions : uint
+		{
+			/// <summary>
+			/// Disables all privileges in the new token except the SeChangeNotifyPrivilege privilege. If this value is specified, the
+			/// DeletePrivilegeCount and PrivilegesToDelete parameters are ignored.
+			/// </summary>
+			DISABLE_MAX_PRIVILEGE = 0x1,
+
+			/// <summary>
+			/// If this value is used, the system does not check AppLocker rules or apply Software Restriction Policies. For AppLocker, this
+			/// flag disables checks for all four rule collections: Executable, Windows Installer, Script, and DLL.
+			/// <para>
+			/// When creating a setup program that must run extracted DLLs during installation, use the flag SAFER_TOKEN_MAKE_INERT in the
+			/// SaferComputeTokenFromLevel function.
+			/// </para>
+			/// <para>A token can be queried for existence of this flag by using GetTokenInformation.</para>
+			/// <para>
+			/// Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: On systems with
+			/// KB2532445 installed, the caller must be running as LocalSystem or TrustedInstaller or the system ignores this flag. For more
+			/// information, see "You can circumvent AppLocker rules by using an Office macro on a computer that is running Windows 7 or
+			/// Windows Server 2008 R2" in the Help and Support Knowledge Base at http://support.microsoft.com/kb/2532445.
+			/// </para>
+			/// <para>
+			/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: AppLocker is not supported. AppLocker was introduced
+			/// in Windows 7 and Windows Server 2008 R2.
+			/// </para>
+			/// </summary>
+			SANDBOX_INERT = 0x2,
+
+			/// <summary>
+			/// The new token is a LUA token.
+			/// <para>Windows Server 2003 and Windows XP: This value is not supported.</para>
+			/// </summary>
+			LUA_TOKEN = 0x4,
+
+			/// <summary>
+			/// The new token contains restricting SIDs that are considered only when evaluating write access.
+			/// <para>
+			/// Windows XP with SP2 and later: The value of this constant is 0x4. For an application to be compatible with Windows XP with
+			/// SP2 and later operating systems, the application should query the operating system by calling the GetVersionEx function to
+			/// determine which value should be used.
+			/// </para>
+			/// <para>Windows Server 2003 and Windows XP with SP1 and earlier: This value is not supported.</para>
+			/// </summary>
+			WRITE_RESTRICTED = 0x8,
 		}
 
 		/// <summary>
@@ -512,57 +605,58 @@ namespace Vanara.PInvoke
 		public enum TOKEN_INFORMATION_CLASS
 		{
 			/// <summary>The buffer receives a TOKEN_USER structure that contains the user account of the token.</summary>
-			[CorrespondingType(typeof(TOKEN_USER))]
+			[CorrespondingType(typeof(TOKEN_USER), CorrespondingAction.Get)]
 			TokenUser = 1,
 
 			/// <summary>The buffer receives a TOKEN_GROUPS structure that contains the group accounts associated with the token.</summary>
-			[CorrespondingType(typeof(TOKEN_GROUPS))]
+			[CorrespondingType(typeof(TOKEN_GROUPS), CorrespondingAction.Get)]
 			TokenGroups,
 
 			/// <summary>The buffer receives a TOKEN_PRIVILEGES structure that contains the privileges of the token.</summary>
-			[CorrespondingType(typeof(PTOKEN_PRIVILEGES))]
+			[CorrespondingType(typeof(TOKEN_PRIVILEGES), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(PTOKEN_PRIVILEGES), CorrespondingAction.Get)]
 			TokenPrivileges,
 
 			/// <summary>
 			/// The buffer receives a TOKEN_OWNER structure that contains the default owner security identifier (SID) for newly created objects.
 			/// </summary>
-			[CorrespondingType(typeof(TOKEN_OWNER))]
+			[CorrespondingType(typeof(TOKEN_OWNER), CorrespondingAction.GetSet)]
 			TokenOwner,
 
 			/// <summary>
 			/// The buffer receives a TOKEN_PRIMARY_GROUP structure that contains the default primary group SID for newly created objects.
 			/// </summary>
-			[CorrespondingType(typeof(TOKEN_PRIMARY_GROUP))]
+			[CorrespondingType(typeof(TOKEN_PRIMARY_GROUP), CorrespondingAction.GetSet)]
 			TokenPrimaryGroup,
 
 			/// <summary>The buffer receives a TOKEN_DEFAULT_DACL structure that contains the default DACL for newly created objects.</summary>
-			[CorrespondingType(typeof(TOKEN_DEFAULT_DACL))]
+			[CorrespondingType(typeof(TOKEN_DEFAULT_DACL), CorrespondingAction.GetSet)]
 			TokenDefaultDacl,
 
 			/// <summary>
 			/// The buffer receives a TOKEN_SOURCE structure that contains the source of the token. TOKEN_QUERY_SOURCE access is needed to
 			/// retrieve this information.
 			/// </summary>
-			[CorrespondingType(typeof(TOKEN_SOURCE))]
+			[CorrespondingType(typeof(TOKEN_SOURCE), CorrespondingAction.Get)]
 			TokenSource,
 
 			/// <summary>The buffer receives a TOKEN_TYPE value that indicates whether the token is a primary or impersonation token.</summary>
-			[CorrespondingType(typeof(TOKEN_TYPE))]
+			[CorrespondingType(typeof(TOKEN_TYPE), CorrespondingAction.Get)]
 			TokenType,
 
 			/// <summary>
 			/// The buffer receives a SECURITY_IMPERSONATION_LEVEL value that indicates the impersonation level of the token. If the access
 			/// token is not an impersonation token, the function fails.
 			/// </summary>
-			[CorrespondingType(typeof(SECURITY_IMPERSONATION_LEVEL))]
+			[CorrespondingType(typeof(SECURITY_IMPERSONATION_LEVEL), CorrespondingAction.Get)]
 			TokenImpersonationLevel,
 
 			/// <summary>The buffer receives a TOKEN_STATISTICS structure that contains various token statistics.</summary>
-			[CorrespondingType(typeof(TOKEN_STATISTICS))]
+			[CorrespondingType(typeof(TOKEN_STATISTICS), CorrespondingAction.Get)]
 			TokenStatistics,
 
 			/// <summary>The buffer receives a TOKEN_GROUPS structure that contains the list of restricting SIDs in a restricted token.</summary>
-			[CorrespondingType(typeof(TOKEN_GROUPS))]
+			[CorrespondingType(typeof(TOKEN_GROUPS), CorrespondingAction.Get)]
 			TokenRestrictedSids,
 
 			/// <summary>
@@ -578,14 +672,14 @@ namespace Vanara.PInvoke
 			/// privilege, and the application must be enabled to set the session ID in a token.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(uint))]
+			[CorrespondingType(typeof(uint), CorrespondingAction.GetSet)]
 			TokenSessionId,
 
 			/// <summary>
 			/// The buffer receives a TOKEN_GROUPS_AND_PRIVILEGES structure that contains the user SID, the group accounts, the restricted
 			/// SIDs, and the authentication ID associated with the token.
 			/// </summary>
-			[CorrespondingType(typeof(TOKEN_GROUPS_AND_PRIVILEGES))]
+			[CorrespondingType(typeof(TOKEN_GROUPS_AND_PRIVILEGES), CorrespondingAction.Get)]
 			TokenGroupsAndPrivileges,
 
 			/// <summary>Reserved.</summary>
@@ -593,7 +687,7 @@ namespace Vanara.PInvoke
 			TokenSessionReference,
 
 			/// <summary>The buffer receives a DWORD value that is nonzero if the token includes the SANDBOX_INERT flag.</summary>
-			[CorrespondingType(typeof(uint))]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			TokenSandBoxInert,
 
 			/// <summary>Reserved.</summary>
@@ -611,55 +705,55 @@ namespace Vanara.PInvoke
 			/// dwLogonType set to LOGON32_LOGON_NETWORK or LOGON32_LOGON_NETWORK_CLEARTEXT, then this value will be zero.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(TOKEN_ORIGIN))]
+			[CorrespondingType(typeof(TOKEN_ORIGIN), CorrespondingAction.GetSet)]
 			TokenOrigin,
 
 			/// <summary>The buffer receives a TOKEN_ELEVATION_TYPE value that specifies the elevation level of the token.</summary>
-			[CorrespondingType(typeof(TOKEN_ELEVATION_TYPE))]
+			[CorrespondingType(typeof(TOKEN_ELEVATION_TYPE), CorrespondingAction.Get)]
 			TokenElevationType,
 
 			/// <summary>
 			/// The buffer receives a TOKEN_LINKED_TOKEN structure that contains a handle to another token that is linked to this token.
 			/// </summary>
-			[CorrespondingType(typeof(TOKEN_LINKED_TOKEN))]
+			[CorrespondingType(typeof(TOKEN_LINKED_TOKEN), CorrespondingAction.GetSet)]
 			TokenLinkedToken,
 
 			/// <summary>The buffer receives a TOKEN_ELEVATION structure that specifies whether the token is elevated.</summary>
-			[CorrespondingType(typeof(TOKEN_ELEVATION))]
+			[CorrespondingType(typeof(TOKEN_ELEVATION), CorrespondingAction.Get)]
 			TokenElevation,
 
 			/// <summary>The buffer receives a DWORD value that is nonzero if the token has ever been filtered.</summary>
-			[CorrespondingType(typeof(uint))]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			TokenHasRestrictions,
 
 			/// <summary>
 			/// The buffer receives a TOKEN_ACCESS_INFORMATION structure that specifies security information contained in the token.
 			/// </summary>
-			[CorrespondingType(typeof(TOKEN_ACCESS_INFORMATION))]
+			[CorrespondingType(typeof(TOKEN_ACCESS_INFORMATION), CorrespondingAction.Get)]
 			TokenAccessInformation,
 
 			/// <summary>The buffer receives a DWORD value that is nonzero if virtualization is allowed for the token.</summary>
-			[CorrespondingType(typeof(uint))]
+			[CorrespondingType(typeof(uint), CorrespondingAction.GetSet)]
 			TokenVirtualizationAllowed,
 
 			/// <summary>The buffer receives a DWORD value that is nonzero if virtualization is enabled for the token.</summary>
-			[CorrespondingType(typeof(uint))]
+			[CorrespondingType(typeof(uint), CorrespondingAction.GetSet)]
 			TokenVirtualizationEnabled,
 
 			/// <summary>The buffer receives a TOKEN_MANDATORY_LABEL structure that specifies the token's integrity level.</summary>
-			[CorrespondingType(typeof(TOKEN_MANDATORY_LABEL))]
+			[CorrespondingType(typeof(TOKEN_MANDATORY_LABEL), CorrespondingAction.GetSet)]
 			TokenIntegrityLevel,
 
 			/// <summary>The buffer receives a DWORD value that is nonzero if the token has the UIAccess flag set.</summary>
-			[CorrespondingType(typeof(uint))]
+			[CorrespondingType(typeof(uint), CorrespondingAction.GetSet)]
 			TokenUIAccess,
 
 			/// <summary>The buffer receives a TOKEN_MANDATORY_POLICY structure that specifies the token's mandatory integrity policy.</summary>
-			[CorrespondingType(typeof(TOKEN_MANDATORY_POLICY))]
+			[CorrespondingType(typeof(TOKEN_MANDATORY_POLICY), CorrespondingAction.GetSet)]
 			TokenMandatoryPolicy,
 
 			/// <summary>The buffer receives a TOKEN_GROUPS structure that specifies the token's logon SID.</summary>
-			[CorrespondingType(typeof(TOKEN_GROUPS))]
+			[CorrespondingType(typeof(TOKEN_GROUPS), CorrespondingAction.Get)]
 			TokenLogonSid,
 
 			/// <summary>
@@ -667,11 +761,11 @@ namespace Vanara.PInvoke
 			/// TokenIsAppContainer and have it return 0 should also verify that the caller token is not an identify level impersonation
 			/// token. If the current token is not an application container but is an identity level token, you should return AccessDenied.
 			/// </summary>
-			[CorrespondingType(typeof(uint))]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			TokenIsAppContainer,
 
 			/// <summary>The buffer receives a TOKEN_GROUPS structure that contains the capabilities associated with the token.</summary>
-			[CorrespondingType(typeof(TOKEN_GROUPS))]
+			[CorrespondingType(typeof(TOKEN_GROUPS), CorrespondingAction.Get)]
 			TokenCapabilities,
 
 			/// <summary>
@@ -679,26 +773,26 @@ namespace Vanara.PInvoke
 			/// If the token is not associated with an application container, the TokenAppContainer member of the
 			/// TOKEN_APPCONTAINER_INFORMATION structure points to NULL.
 			/// </summary>
-			[CorrespondingType(typeof(TOKEN_APPCONTAINER_INFORMATION))]
+			[CorrespondingType(typeof(TOKEN_APPCONTAINER_INFORMATION), CorrespondingAction.Get)]
 			TokenAppContainerSid,
 
 			/// <summary>
 			/// The buffer receives a DWORD value that includes the application container number for the token. For tokens that are not
 			/// application container tokens, this value is zero.
 			/// </summary>
-			[CorrespondingType(typeof(uint))]
+			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			TokenAppContainerNumber,
 
 			/// <summary>
 			/// The buffer receives a CLAIM_SECURITY_ATTRIBUTES_INFORMATION structure that contains the user claims associated with the token.
 			/// </summary>
-			[CorrespondingType(typeof(CLAIM_SECURITY_ATTRIBUTES_INFORMATION))]
+			[CorrespondingType(typeof(CLAIM_SECURITY_ATTRIBUTES_INFORMATION), CorrespondingAction.Get)]
 			TokenUserClaimAttributes,
 
 			/// <summary>
 			/// The buffer receives a CLAIM_SECURITY_ATTRIBUTES_INFORMATION structure that contains the device claims associated with the token.
 			/// </summary>
-			[CorrespondingType(typeof(CLAIM_SECURITY_ATTRIBUTES_INFORMATION))]
+			[CorrespondingType(typeof(CLAIM_SECURITY_ATTRIBUTES_INFORMATION), CorrespondingAction.Get)]
 			TokenDeviceClaimAttributes,
 
 			/// <summary>This value is reserved.</summary>
@@ -710,13 +804,13 @@ namespace Vanara.PInvoke
 			TokenRestrictedDeviceClaimAttributes,
 
 			/// <summary>The buffer receives a TOKEN_GROUPS structure that contains the device groups that are associated with the token.</summary>
-			[CorrespondingType(typeof(TOKEN_GROUPS))]
+			[CorrespondingType(typeof(TOKEN_GROUPS), CorrespondingAction.Get)]
 			TokenDeviceGroups,
 
 			/// <summary>
 			/// The buffer receives a TOKEN_GROUPS structure that contains the restricted device groups that are associated with the token.
 			/// </summary>
-			[CorrespondingType(typeof(TOKEN_GROUPS))]
+			[CorrespondingType(typeof(TOKEN_GROUPS), CorrespondingAction.Get)]
 			TokenRestrictedDeviceGroups,
 
 			/// <summary>This value is reserved.</summary>
@@ -1283,12 +1377,33 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// The ACCESS_ALLOWED_ACE structure defines an access control entry (ACE) for the discretionary access control list (DACL) that
-		/// controls access to an object. An access-allowed ACE allows access to an object for a specific trustee identified by a security
-		/// identifier (SID).
+		/// The <c>ACCESS_ALLOWED_ACE</c> structure defines an access control entry (ACE) for the discretionary access control list (DACL)
+		/// that controls access to an object. An access-allowed ACE allows access to an object for a specific trustee identified by a
+		/// security identifier (SID).
 		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// ACE structures must be aligned on <c>DWORD</c> boundaries. All Windows memory-management functions return <c>DWORD</c>-aligned
+		/// handles to memory.
+		/// </para>
+		/// <para>
+		/// The access rights specified by the <c>Mask</c> member are granted to any trustee that possesses an enabled SID that matches the
+		/// SID stored in the <c>SidStart</c> member.
+		/// </para>
+		/// <para>
+		/// An <c>ACCESS_ALLOWED_ACE</c> structure can be created in an access control list (ACL) by a call to the AddAccessAllowedAce or
+		/// AddAccessAllowedAceEx function. When these functions are used, the correct amount of memory needed to accommodate the trustee's
+		/// SID is allocated and the values of the <c>Header.AceType</c> and <c>Header.AceSize</c> members are set automatically. If the
+		/// <c>AddAccessAllowedAceEx</c> function is used, the <c>Header.AceFlags</c> member is also set. When an <c>ACCESS_ALLOWED_ACE</c>
+		/// structure is created outside an ACL, sufficient memory must be allocated to accommodate the complete SID of the trustee in the
+		/// <c>SidStart</c> member and the contiguous memory following it, and the values of the <c>Header.AceType</c>,
+		/// <c>Header.AceFlags</c>, and <c>Header.AceSize</c> members must be set explicitly by the application.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-access_allowed_ace typedef struct _ACCESS_ALLOWED_ACE {
+		// ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } ACCESS_ALLOWED_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "002a3fa7-02a3-4832-948e-b048f5f5818f")]
 		[StructLayout(LayoutKind.Sequential)]
-		[PInvokeData("Winnt.h", MSDNShortId = "aa374847")]
 		public struct ACCESS_ALLOWED_ACE
 		{
 			/// <summary>
@@ -1299,11 +1414,209 @@ namespace Vanara.PInvoke
 			public ACE_HEADER Header;
 
 			/// <summary>Specifies an ACCESS_MASK structure that specifies the access rights granted by this ACE.</summary>
-			public uint Mask;
+			public ACCESS_MASK Mask;
 
 			/// <summary>
 			/// The first DWORD of a trustee's SID. The remaining bytes of the SID are stored in contiguous memory after the SidStart member.
 			/// This SID can be appended with application data.
+			/// </summary>
+			public uint SidStart;
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>ACCESS_ALLOWED_CALLBACK_ACE</c> structure defines an access control entry (ACE) for the discretionary access control list
+		/// (DACL) that controls access to an object. An access-allowed ACE allows access to an object for a specific trustee identified by a
+		/// security identifier (SID).
+		/// </para>
+		/// <para>
+		/// When the AuthzAccessCheck function is called, each <c>ACCESS_ALLOWED_CALLBACK_ACE</c> structure contained in the DACL of a
+		/// SECURITY_DESCRIPTOR structure passed through a pointer to the <c>AuthzAccessCheck</c> function invokes a call to the
+		/// application-defined AuthzAccessCheckCallback function, in which a pointer to the <c>ACCESS_ALLOWED_CALLBACK_ACE</c> structure
+		/// found is passed in the pAce parameter.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// ACE structures must be aligned on <c>DWORD</c> boundaries. All Windows memory-management functions return <c>DWORD</c>-aligned
+		/// handles to memory.
+		/// </para>
+		/// <para>
+		/// The access rights specified by the <c>Mask</c> member are granted to any trustee that possesses an enabled SID that matches the
+		/// SID stored in the <c>SidStart</c> member.
+		/// </para>
+		/// <para>
+		/// When an <c>ACCESS_ALLOWED_CALLBACK_ACE</c> structure is created, sufficient memory must be allocated to accommodate the complete
+		/// SID of the trustee in the <c>SidStart</c> member and the contiguous memory that follows it.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-access_allowed_callback_ace typedef struct
+		// _ACCESS_ALLOWED_CALLBACK_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } ACCESS_ALLOWED_CALLBACK_ACE, *PACCESS_ALLOWED_CALLBACK_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "0dbca19b-4b54-4c55-920a-c00335692d68")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ACCESS_ALLOWED_CALLBACK_ACE
+		{
+			/// <summary>
+			/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
+			/// child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to
+			/// ACCESS_ALLOWED_CALLBACK_ACE_TYPE, and the <c>AceSize</c> member should be set to the total number of bytes allocated for the
+			/// <c>ACCESS_ALLOWED_CALLBACK_ACE</c> structure.
+			/// </summary>
+			public ACE_HEADER Header;
+
+			/// <summary>Specifies an ACCESS_MASK structure that specifies the access rights granted by this ACE.</summary>
+			public ACCESS_MASK Mask;
+
+			/// <summary>The first <c>DWORD</c> of a trustee's SID.</summary>
+			public uint SidStart;
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>ACCESS_ALLOWED_CALLBACK_OBJECT_ACE</c> structure defines an access control entry (ACE) that controls allowed access to an
+		/// object, property set, or property. The ACE contains a set of access rights, a <c>GUID</c> that identifies the type of object, and
+		/// a security identifier (SID) that identifies the trustee to whom the system will grant access. The ACE also contains a <c>GUID</c>
+		/// and a set of flags that control inheritance of the ACE by child objects.
+		/// </para>
+		/// <para>
+		/// When the AuthzAccessCheck function is called, each <c>ACCESS_ALLOWED_CALLBACK_OBJECT_ACE</c> structure contained in the DACL of a
+		/// SECURITY_DESCRIPTOR structure passed through a pointer to the <c>AuthzAccessCheck</c> function invokes a call to the
+		/// application-defined AuthzAccessCheckCallback function, in which a pointer to the <c>ACCESS_ALLOWED_CALLBACK_OBJECT_ACE</c>
+		/// structure found is passed in the pAce parameter.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If neither the <c>ObjectType</c> nor <c>InheritedObjectType</c><c>GUID</c> is specified, the
+		/// <c>ACCESS_ALLOWED_CALLBACK_OBJECT_ACE</c> structure has the same semantics as those used by the ACCESS_ALLOWED_CALLBACK_ACE
+		/// structure. In that case, use the <c>ACCESS_ALLOWED_CALLBACK_ACE</c> structure because it is smaller and more efficient.
+		/// </para>
+		/// <para>
+		/// An ACL that contains an <c>ACCESS_ALLOWED_CALLBACK_OBJECT_ACE</c> must specify the ACL_REVISION_DS revision number in its ACL header.
+		/// </para>
+		/// <para>
+		/// The access rights specified by the <c>Mask</c> member are granted to any trustee that possesses an enabled SID that matches the
+		/// SID stored in the <c>SidStart</c> member.
+		/// </para>
+		/// <para>
+		/// When an <c>ACCESS_ALLOWED_CALLBACK_OBJECT_ACE</c> structure is created, sufficient memory must be allocated to accommodate the
+		/// GUID structures in the <c>ObjectType</c> and <c>InheritedObjectType</c> members, if one or both of them exists, as well as to
+		/// accommodate the complete SID of the trustee in the <c>SidStart</c> member and the contiguous memory that follows it.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-access_allowed_callback_object_ace typedef struct
+		// _ACCESS_ALLOWED_CALLBACK_OBJECT_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD Flags; GUID ObjectType; GUID InheritedObjectType;
+		// DWORD SidStart; } ACCESS_ALLOWED_CALLBACK_OBJECT_ACE, *PACCESS_ALLOWED_CALLBACK_OBJECT_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "83b00ef3-f7b2-455e-8f3f-01b1da6024b7")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ACCESS_ALLOWED_CALLBACK_OBJECT_ACE
+		{
+			/// <summary>
+			/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
+			/// child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to
+			/// ACCESS_ALLOWED_CALLBACK_OBJECT_ACE_TYPE, and the <c>AceSize</c> member should be set to the total number of bytes allocated
+			/// for the <c>ACCESS_ALLOWED_CALLBACK_OBJECT_ACE</c> structure.
+			/// </summary>
+			public ACE_HEADER Header;
+
+			/// <summary>An ACCESS_MASK that specifies the access rights the system will allow to the trustee.</summary>
+			public ACCESS_MASK Mask;
+
+			/// <summary>
+			/// <para>
+			/// A set of bit flags that indicate whether the <c>ObjectType</c> and <c>InheritedObjectType</c> members are present. This
+			/// parameter can be one or more of the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Neither ObjectType nor InheritedObjectType are present. The SidStart member follows immediately after the Flags member.</term>
+			/// </item>
+			/// <item>
+			/// <term>ACE_OBJECT_TYPE_PRESENT</term>
+			/// <term>
+			/// ObjectType is present and contains a GUID. If this value is not specified, the InheritedObjectType member follows immediately
+			/// after the Flags member.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ACE_INHERITED_OBJECT_TYPE_PRESENT</term>
+			/// <term>
+			/// InheritedObjectType is present and contains a GUID. If this value is not specified, all types of child objects can inherit
+			/// the ACE.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ObjectAceFlags Flags;
+
+			/// <summary>
+			/// <para>
+			/// This member exists only if the ACE_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member. Otherwise, the
+			/// <c>InheritedObjectType</c> member follows immediately after the <c>Flags</c> member.
+			/// </para>
+			/// <para>
+			/// If this member exists, it is a GUID structure that identifies a property set, property, extended right, or type of child
+			/// object. The purpose of this <c>GUID</c> depends on the access rights specified in the <c>Mask</c> member.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CONTROL_ACCESS</term>
+			/// <term>The ObjectType GUID identifies an extended access right.</term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CREATE_CHILD</term>
+			/// <term>
+			/// The ObjectType GUID identifies a type of child object. The ACE controls the trustee's right to create this type of child object.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_READ_PROP</term>
+			/// <term>
+			/// The ObjectType GUID identifies a property set or property of the object. The ACE controls the trustee's right to read the
+			/// property or property set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_WRITE_PROP</term>
+			/// <term>
+			/// The ObjectType GUID identifies a property set or property of the object. The ACE controls the trustee's right to write the
+			/// property or property set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_SELF</term>
+			/// <term>The ObjectType GUID identifies a validated write.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public Guid ObjectType;
+
+			/// <summary>
+			/// <para>This member exists only if the ACE_INHERITED_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member.</para>
+			/// <para>
+			/// If this member exists, it is a GUID structure that identifies the type of child object that can inherit the ACE. Inheritance
+			/// is also controlled by the inheritance flags in the ACE_HEADER, as well as by any protection against inheritance placed on the
+			/// child objects.
+			/// </para>
+			/// <para>
+			/// The offset of this member can vary. If the <c>Flags</c> member does not contain the ACE_OBJECT_TYPE_PRESENT flag, the
+			/// <c>InheritedObjectType</c> member starts at the offset specified by the <c>ObjectType</c> member.
+			/// </para>
+			/// </summary>
+			public Guid InheritedObjectType;
+
+			/// <summary>
+			/// The first <c>DWORD</c> of a trustee's SID. The remaining bytes of the SID are stored in contiguous memory after the
+			/// <c>SidStart</c> member. This SID can be appended with application data.
 			/// </summary>
 			public uint SidStart;
 		}
@@ -1352,7 +1665,7 @@ namespace Vanara.PInvoke
 			public ACE_HEADER Header;
 
 			/// <summary>An ACCESS_MASK that specifies the access rights the system will allow to the trustee.</summary>
-			public uint Mask;
+			public ACCESS_MASK Mask;
 
 			/// <summary>
 			/// <para>
@@ -1461,19 +1774,511 @@ namespace Vanara.PInvoke
 			public uint SidStart;
 		}
 
-		/// <summary>The ACE_HEADER structure defines the type and size of an access control entry (ACE).</summary>
-		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		[PInvokeData("Winnt.h", MSDNShortId = "aa374919")]
+		/// <summary>
+		/// The <c>ACCESS_DENIED_ACE</c> structure defines an access control entry (ACE) for the discretionary access control list (DACL)
+		/// that controls access to an object. An access-denied ACE denies access to an object for a specific trustee identified by a
+		/// security identifier (SID).
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// ACE structures must be aligned on <c>DWORD</c> boundaries. All Windows memory-management functions return <c>DWORD</c>-aligned
+		/// handles to memory.
+		/// </para>
+		/// <para>
+		/// The access rights specified by the <c>Mask</c> member are denied to any trustee that possesses an enabled SID that matches the
+		/// SID stored in the <c>SidStart</c> member.
+		/// </para>
+		/// <para>
+		/// An <c>ACCESS_DENIED_ACE</c> structure can be created in an access control list (ACL) by a call to the AddAccessDeniedAce or
+		/// AddAccessDeniedAceEx function. When these functions are used, the correct amount of memory needed to accommodate the trustee's
+		/// SID is allocated and the values of the <c>Header.AceType</c> and <c>Header.AceSize</c> members are set automatically. If the
+		/// <c>AddAccessDeniedAceEx</c> function is used, the <c>Header.AceFlags</c> member is also set. When an <c>ACCESS_DENIED_ACE</c>
+		/// structure is created outside an ACL, sufficient memory must be allocated to accommodate the complete SID of the trustee in the
+		/// <c>SidStart</c> member and the contiguous memory following it, and the values of the <c>Header.AceType</c>,
+		/// <c>Header.AceFlags</c>, and <c>Header.AceSize</c> members must be set explicitly by the application.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-access_denied_ace typedef struct _ACCESS_DENIED_ACE { ACE_HEADER
+		// Header; ACCESS_MASK Mask; DWORD SidStart; } ACCESS_DENIED_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "d76a92d0-ccd0-4e73-98b6-43bcd661134d")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ACCESS_DENIED_ACE
+		{
+			/// <summary>
+			/// An ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE
+			/// by child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to ACCESS_DENIED_ACE_TYPE, and
+			/// the <c>AceSize</c> member should be set to the total number of bytes allocated for the <c>ACCESS_DENIED_ACE</c> structure.
+			/// </summary>
+			public ACE_HEADER Header;
+
+			/// <summary>An ACCESS_MASK structure that specifies the access rights explicitly denied by this ACE.</summary>
+			public ACCESS_MASK Mask;
+
+			/// <summary>
+			/// The first <c>DWORD</c> of a trustee's SID. The remaining bytes of the SID are stored in contiguous memory after the
+			/// <c>SidStart</c> member. This SID can be appended with application data.
+			/// </summary>
+			public uint SidStart;
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>ACCESS_DENIED_CALLBACK_ACE</c> structure defines an access control entry (ACE) for the discretionary access control list
+		/// (DACL) that controls access to an object. An access-denied ACE denies access to an object for a specific trustee identified by a
+		/// security identifier (SID).
+		/// </para>
+		/// <para>
+		/// When the AuthzAccessCheck function is called, each <c>ACCESS_DENIED_CALLBACK_ACE</c> structure contained in the DACL of a
+		/// SECURITY_DESCRIPTOR structure passed through a pointer to the <c>AuthzAccessCheck</c> function invokes a call to the
+		/// application–defined AuthzAccessCheckCallback function, in which a pointer to the <c>ACCESS_DENIED_CALLBACK_ACE</c> structure
+		/// found is passed in the pAce parameter.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// ACE structures must be aligned on <c>DWORD</c> boundaries. All Windows memory-management functions return <c>DWORD</c>-aligned
+		/// handles to memory.
+		/// </para>
+		/// <para>
+		/// The access rights specified by the <c>Mask</c> member are granted to any trustee that possesses an enabled SID that matches the
+		/// SID stored in the <c>SidStart</c> member.
+		/// </para>
+		/// <para>
+		/// When an <c>ACCESS_DENIED_CALLBACK_ACE</c> structure is created, sufficient memory must be allocated to accommodate the complete
+		/// SID of the trustee in the <c>SidStart</c> member and the contiguous memory that follows it.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-access_denied_callback_ace typedef struct
+		// _ACCESS_DENIED_CALLBACK_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } ACCESS_DENIED_CALLBACK_ACE, *PACCESS_DENIED_CALLBACK_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "6df77b27-7aa3-455f-bffe-eeb90ba1bc15")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ACCESS_DENIED_CALLBACK_ACE
+		{
+			/// <summary>
+			/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
+			/// child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to ACCESS_DENIED_CALLBACK_ACE_TYPE,
+			/// and the <c>AceSize</c> member should be set to the total number of bytes allocated for the <c>ACCESS_DENIED_CALLBACK_ACE</c> structure.
+			/// </summary>
+			public ACE_HEADER Header;
+
+			/// <summary>Specifies an ACCESS_MASK structure that specifies the access rights explicitly denied by this ACE.</summary>
+			public ACCESS_MASK Mask;
+
+			/// <summary>
+			/// The first <c>DWORD</c> of a trustee's SID. The remaining bytes of the SID are stored in contiguous memory after the
+			/// <c>SidStart</c> member. This SID can be appended with application data.
+			/// </summary>
+			public uint SidStart;
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>ACCESS_DENIED_CALLBACK_OBJECT_ACE</c> structure defines an access control entry (ACE) that controls denied access to an
+		/// object, a property set, or property. The ACE contains a set of access rights, a <c>GUID</c> that identifies the type of object,
+		/// and a security identifier (SID) that identifies the trustee to whom the system will deny access. The ACE also contains a
+		/// <c>GUID</c> and a set of flags that control inheritance of the ACE by child objects.
+		/// </para>
+		/// <para>
+		/// When the AuthzAccessCheck function is called, each <c>ACCESS_DENIED_CALLBACK_OBJECT_ACE</c> structure contained in the DACL of a
+		/// SECURITY_DESCRIPTOR structure passed through a pointer to the <c>AuthzAccessCheck</c> function invokes a call to the
+		/// application–defined AuthzAccessCheckCallback function, in which a pointer to the <c>ACCESS_DENIED_CALLBACK_OBJECT_ACE</c>
+		/// structure found is passed in the pAce parameter.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If neither the <c>ObjectType</c> nor <c>InheritedObjectType</c><c>GUID</c> is specified, the
+		/// <c>ACCESS_DENIED_CALLBACK_OBJECT_ACE</c> structure has the same semantics as those used by the ACCESS_DENIED_CALLBACK_ACE
+		/// structure. In that case, use the <c>ACCESS_DENIED_CALLBACK_ACE</c> structure because it is smaller and more efficient.
+		/// </para>
+		/// <para>
+		/// An ACL that contains an <c>ACCESS_DENIED_CALLBACK_OBJECT_ACE</c> must specify the ACL_REVISION_DS revision number in its ACL header.
+		/// </para>
+		/// <para>
+		/// The access rights specified by the <c>Mask</c> member are denied to any trustee that possesses an enabled SID that matches the
+		/// SID stored in the <c>SidStart</c> member.
+		/// </para>
+		/// <para>
+		/// When an <c>ACCESS_DENIED_CALLBACK_OBJECT_ACE</c> structure is created, sufficient memory must be allocated to accommodate the
+		/// GUID structures in the <c>ObjectType</c> and <c>InheritedObjectType</c> members, if one or both of them exists, as well as to
+		/// accommodate the complete SID of the trustee in the <c>SidStart</c> member and the contiguous memory that follows it.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-access_denied_callback_object_ace typedef struct
+		// _ACCESS_DENIED_CALLBACK_OBJECT_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD Flags; GUID ObjectType; GUID InheritedObjectType;
+		// DWORD SidStart; } ACCESS_DENIED_CALLBACK_OBJECT_ACE, *PACCESS_DENIED_CALLBACK_OBJECT_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "945d9c3b-922f-481d-bb1d-3dca50fb9edb")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ACCESS_DENIED_CALLBACK_OBJECT_ACE
+		{
+			/// <summary>
+			/// ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by child
+			/// objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to ACCESS_DENIED_CALLBACK_ACE_TYPE, and
+			/// the <c>AceSize</c> member should be set to the total number of bytes allocated for the
+			/// <c>ACCESS_DENIED_CALLBACK_OBJECT_ACE</c> structure.
+			/// </summary>
+			public ACE_HEADER Header;
+
+			/// <summary>An ACCESS_MASK that specifies the access rights the system will deny to the trustee.</summary>
+			public ACCESS_MASK Mask;
+
+			/// <summary>
+			/// <para>
+			/// A set of bit flags that indicate whether the <c>ObjectType</c> and <c>InheritedObjectType</c> members are present. This
+			/// parameter can be one or more of the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Neither ObjectType nor InheritedObjectType are present. The SidStart member follows immediately after the Flags member.</term>
+			/// </item>
+			/// <item>
+			/// <term>ACE_OBJECT_TYPE_PRESENT</term>
+			/// <term>
+			/// ObjectType is present and contains a GUID. If this value is not specified, the InheritedObjectType member follows immediately
+			/// after the Flags member.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ACE_INHERITED_OBJECT_TYPE_PRESENT</term>
+			/// <term>
+			/// InheritedObjectType is present and contains a GUID. If this value is not specified, all types of child objects can inherit
+			/// the ACE.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ObjectAceFlags Flags;
+
+			/// <summary>
+			/// <para>
+			/// This member exists only if the ACE_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member. Otherwise, the
+			/// <c>InheritedObjectType</c> member follows immediately after the <c>Flags</c> member.
+			/// </para>
+			/// <para>
+			/// If this member exists, it is a GUID structure that identifies a property set, property, extended right, or type of child
+			/// object. The purpose of this <c>GUID</c> depends on the access rights specified in the <c>Mask</c> member.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CONTROL_ACCESS</term>
+			/// <term>The ObjectType GUID identifies an extended access right.</term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CREATE_CHILD</term>
+			/// <term>
+			/// The ObjectType GUID identifies a type of child object. The ACE controls the trustee's right to create this type of child object.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_READ_PROP</term>
+			/// <term>
+			/// The ObjectType GUID identifies a property set or property of the object. The ACE controls the trustee's right to read the
+			/// property or property set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_WRITE_PROP</term>
+			/// <term>
+			/// The ObjectType GUID identifies a property set or property of the object. The ACE controls the trustee's right to write the
+			/// property or property set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_SELF</term>
+			/// <term>The ObjectType GUID identifies a validated write.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public Guid ObjectType;
+
+			/// <summary>
+			/// <para>This member exists only if the ACE_INHERITED_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member.</para>
+			/// <para>
+			/// If this member exists, it is a GUID structure that identifies the type of child object that can inherit the ACE. Inheritance
+			/// is also controlled by the inheritance flags in the ACE_HEADER, as well as by any protection against inheritance placed on the
+			/// child objects.
+			/// </para>
+			/// <para>
+			/// The offset of this member can vary. If the <c>Flags</c> member does not contain the ACE_OBJECT_TYPE_PRESENT flag, the
+			/// <c>InheritedObjectType</c> member starts at the offset specified by the <c>ObjectType</c> member.
+			/// </para>
+			/// </summary>
+			public Guid InheritedObjectType;
+
+			/// <summary>
+			/// The first <c>DWORD</c> of a trustee's SID. The remaining bytes of the SID are stored in contiguous memory after the
+			/// <c>SidStart</c> member. This SID can be appended with application data.
+			/// </summary>
+			public uint SidStart;
+		}
+
+		/// <summary>
+		/// The <c>ACCESS_DENIED_OBJECT_ACE</c> structure defines an access control entry (ACE) that controls denied access to an object, a
+		/// property set, or property. The ACE contains a set of access rights, a <c>GUID</c> that identifies the type of object, and a
+		/// security identifier (SID) that identifies the trustee to whom the system will deny access. The ACE also contains a <c>GUID</c>
+		/// and a set of flags that control inheritance of the ACE by child objects.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If neither the <c>ObjectType</c> nor <c>InheritedObjectType</c><c>GUID</c> is specified, the <c>ACCESS_DENIED_OBJECT_ACE</c>
+		/// structure has the same semantics as those used by the ACCESS_DENIED_ACE structure. In that case, use the <c>ACCESS_DENIED_ACE</c>
+		/// structure because it is smaller and more efficient.
+		/// </para>
+		/// <para>An ACL that contains an <c>ACCESS_DENIED_OBJECT_ACE</c> must specify the ACL_REVISION_DS revision number in its ACL header.</para>
+		/// <para>
+		/// The access rights specified by the <c>Mask</c> member are denied to any trustee that possesses an enabled SID that matches the
+		/// SID stored in the <c>SidStart</c> member.
+		/// </para>
+		/// <para>
+		/// An <c>ACCESS_DENIED_OBJECT_ACE</c> structure can be created in an access control list (ACL) by a call to the
+		/// AddAccessDeniedObjectAce function. When this function is used, the correct amount of memory needed to accommodate the GUID
+		/// structures in the <c>ObjectType</c> and <c>InheritedObjectType</c> members, if one or both of them exists, as well as to
+		/// accommodate the trustee's SID is automatically allocated. In addition, the values of the <c>Header.AceType</c> and
+		/// <c>Header.AceSize</c> members are set automatically. When an <c>ACCESS_DENIED_OBJECT_ACE</c> structure is created outside an ACL,
+		/// sufficient memory must be allocated to accommodate the GUID structures in the <c>ObjectType</c> and <c>InheritedObjectType</c>
+		/// members, if one or both of them exists, as well as to accommodate the complete SID of the trustee in the <c>SidStart</c> member
+		/// and the contiguous memory following it. In addition, the values of the <c>Header.AceType</c> and <c>Header.AceSize</c> members
+		/// must be set explicitly by the application.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-access_denied_object_ace typedef struct
+		// _ACCESS_DENIED_OBJECT_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD Flags; GUID ObjectType; GUID InheritedObjectType; DWORD
+		// SidStart; } ACCESS_DENIED_OBJECT_ACE, *PACCESS_DENIED_OBJECT_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "80e00c2b-7c31-428d-96c1-c4e3d22619f3")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ACCESS_DENIED_OBJECT_ACE
+		{
+			/// <summary>
+			/// ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by child
+			/// objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to ACCESS_DENIED_OBJECT_ACE_TYPE, and the
+			/// <c>AceSize</c> member should be set to the total number of bytes allocated for the <c>ACCESS_DENIED_OBJECT_ACE</c> structure.
+			/// </summary>
+			public ACE_HEADER Header;
+
+			/// <summary>An ACCESS_MASK that specifies the access rights the system will deny to the trustee.</summary>
+			public ACCESS_MASK Mask;
+
+			/// <summary>
+			/// <para>
+			/// A set of bit flags that indicate whether the <c>ObjectType</c> and <c>InheritedObjectType</c> members are present. This
+			/// parameter can be one or more of the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Neither ObjectType nor InheritedObjectType are present. The SidStart member follows immediately after the Flags member.</term>
+			/// </item>
+			/// <item>
+			/// <term>ACE_OBJECT_TYPE_PRESENT</term>
+			/// <term>
+			/// ObjectType is present and contains a GUID. If this value is not specified, the InheritedObjectType member follows immediately
+			/// after the Flags member.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ACE_INHERITED_OBJECT_TYPE_PRESENT</term>
+			/// <term>
+			/// InheritedObjectType is present and contains a GUID. If this value is not specified, all types of child objects can inherit
+			/// the ACE.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ObjectAceFlags Flags;
+
+			/// <summary>
+			/// <para>
+			/// This member exists only if the ACE_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member. Otherwise, the
+			/// <c>InheritedObjectType</c> member follows immediately after the <c>Flags</c> member.
+			/// </para>
+			/// <para>
+			/// If this member exists, it is a GUID structure that identifies a property set, property, extended right, or type of child
+			/// object. The purpose of this <c>GUID</c> depends on the access rights specified in the <c>Mask</c> member.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CONTROL_ACCESS</term>
+			/// <term>The ObjectType GUID identifies an extended access right.</term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CREATE_CHILD</term>
+			/// <term>
+			/// The ObjectType GUID identifies a type of child object. The ACE controls the trustee's right to create this type of child object.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_READ_PROP</term>
+			/// <term>
+			/// The ObjectType GUID identifies a property set or property of the object. The ACE controls the trustee's right to read the
+			/// property or property set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_WRITE_PROP</term>
+			/// <term>
+			/// The ObjectType GUID identifies a property set or property of the object. The ACE controls the trustee's right to write the
+			/// property or property set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_SELF</term>
+			/// <term>The ObjectType GUID identifies a validated write.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public Guid ObjectType;
+
+			/// <summary>
+			/// <para>This member exists only if the ACE_INHERITED_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member.</para>
+			/// <para>
+			/// If this member exists, it is a GUID structure that identifies the type of child object that can inherit the ACE. Inheritance
+			/// is also controlled by the inheritance flags in the ACE_HEADER, as well as by any protection against inheritance placed on the
+			/// child objects.
+			/// </para>
+			/// <para>
+			/// The offset of this member can vary. If the <c>Flags</c> member does not contain the ACE_OBJECT_TYPE_PRESENT flag, the
+			/// <c>InheritedObjectType</c> member starts at the offset specified by the <c>ObjectType</c> member.
+			/// </para>
+			/// </summary>
+			public Guid InheritedObjectType;
+
+			/// <summary>
+			/// <para>
+			/// Specifies the first <c>DWORD</c> of a SID that identifies the trustee for whom the access rights are denied. The remaining
+			/// bytes of the SID are stored in contiguous memory after the <c>SidStart</c> member. This SID can be appended with application data.
+			/// </para>
+			/// <para>
+			/// The offset of this member can vary. If the <c>Flags</c> member is zero, the <c>SidStart</c> member starts at the offset
+			/// specified by the <c>ObjectType</c> member. If <c>Flags</c> contains only one flag (either ACE_OBJECT_TYPE_PRESENT or
+			/// ACE_INHERITED_OBJECT_TYPE_PRESENT), the <c>SidStart</c> member starts at the offset specified by the
+			/// <c>InheritedObjectType</c> member.
+			/// </para>
+			/// </summary>
+			public uint SidStart;
+		}
+
+		/// <summary>The ACE_HEADER structure describes the type and size of an access-control entry (ACE).</summary>
+		/// <remarks>
+		/// <para>The ACE_HEADER structure is the first member of the various types of ACE structures, such as ACCESS_ALLOWED_ACE.</para>
+		/// <para>
+		/// System-alarm ACEs are not currently supported. The <c>AceType</c> member cannot specify the SYSTEM_ALARM_ACE_TYPE. Do not use the
+		/// SYSTEM_ALARM_ACE structure.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_ace_header typedef struct _ACE_HEADER {
+		// UCHAR AceType; UCHAR AceFlags; USHORT AceSize; } ACE_HEADER;
+		[PInvokeData("ntifs.h", MSDNShortId = "f5f39310-8b15-4d6b-a985-3f25522a16b1")]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct ACE_HEADER
 		{
-			/// <summary>Specifies the ACE type.</summary>
+			/// <summary>
+			/// <para>ACE type. This member can be one of the following values:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ACCESS_ALLOWED_ACE_TYPE</term>
+			/// <term>Access-allowed ACE that uses the ACCESS_ALLOWED_ACE structure.</term>
+			/// </item>
+			/// <item>
+			/// <term>ACCESS_DENIED_ACE_TYPE</term>
+			/// <term>Access-denied ACE that uses the ACCESS_DENIED_ACE structure.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYSTEM_AUDIT_ACE_TYPE</term>
+			/// <term>System-audit ACE that uses the SYSTEM_AUDIT_ACE structure.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
 			public AceType AceType;
 
-			/// <summary>Specifies a set of ACE type-specific control flags.</summary>
+			/// <summary>
+			/// <para>Set of ACE type-specific control flags. This member can be a combination of the following values:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CONTAINER_INHERIT_ACE</term>
+			/// <term>
+			/// Child objects that are containers, such as directories, inherit the ACE as an effective ACE. The inherited ACE is inheritable
+			/// unless the NO_PROPAGATE_INHERIT_ACE bit flag is also set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>FAILED_ACCESS_ACE_FLAG</term>
+			/// <term>Used with system-audit ACEs in a SACL to generate audit messages for failed access attempts.</term>
+			/// </item>
+			/// <item>
+			/// <term>INHERIT_ONLY_ACE</term>
+			/// <term>
+			/// Indicates an inherit-only ACE which does not control access to the object to which it is attached. If this flag is not set,
+			/// the ACE is an effective ACE which controls access to the object to which it is attached. Both effective and inherit-only ACEs
+			/// can be inherited depending on the state of the other inheritance flags.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>INHERITED_ACE</term>
+			/// <term>
+			/// Microsoft Windows 2000 or later: Indicates that the ACE was inherited. The system sets this bit when it propagates an
+			/// inherited ACE to a child object.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>NO_PROPAGATE_INHERIT_ACE</term>
+			/// <term>
+			/// If the ACE is inherited by a child object, the system clears the OBJECT_INHERIT_ACE and CONTAINER_INHERIT_ACE flags in the
+			/// inherited ACE. This prevents the ACE from being inherited by subsequent generations of objects.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>OBJECT_INHERIT_ACE</term>
+			/// <term>
+			/// Noncontainer child objects inherit the ACE as an effective ACE. For child objects that are containers, the ACE is inherited
+			/// as an inherit-only ACE unless the NO_PROPAGATE_INHERIT_ACE bit flag is also set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>SUCCESSFUL_ACCESS_ACE_FLAG</term>
+			/// <term>Used with system-audit ACEs in a SACL to generate audit messages for successful access attempts.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
 			public AceFlags AceFlags;
 
-			/// <summary>Specifies the size, in bytes, of the ACE.</summary>
+			/// <summary>Size, in bytes, of the ACE.</summary>
 			public ushort AceSize;
+
+			/// <summary>Initializes a new instance of the <see cref="ACE_HEADER"/> struct.</summary>
+			/// <param name="aceType">ACE type.</param>
+			/// <param name="aceFlags">Set of ACE type-specific control flags.</param>
+			/// <param name="aceSize">Size, in bytes, of the ACE.</param>
+			public ACE_HEADER(AceType aceType, AceFlags aceFlags, int aceSize)
+			{
+				AceType = aceType;
+				AceFlags = aceFlags;
+				AceSize = (ushort)aceSize;
+			}
 		}
 
 		/// <summary>
@@ -2307,6 +3112,570 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// <para>Not supported.</para>
+		/// <para>The <c>SYSTEM_ALARM_ACE</c> structure is reserved for future use.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-system_alarm_ace typedef struct _SYSTEM_ALARM_ACE { ACE_HEADER
+		// Header; ACCESS_MASK Mask; DWORD SidStart; } SYSTEM_ALARM_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "491cc5c7-abb6-4d03-b3b0-ba5eedb5e2ba")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SYSTEM_ALARM_ACE
+		{
+			/// <summary/>
+			public ACE_HEADER Header;
+
+			/// <summary/>
+			public ACCESS_MASK Mask;
+
+			/// <summary/>
+			public uint SidStart;
+		}
+
+		/// <summary>
+		/// <para>Not supported.</para>
+		/// <para>The <c>SYSTEM_ALARM_CALLBACK_ACE</c> structure is reserved for future use.</para>
+		/// </summary>
+		/// <remarks>
+		/// ACE structures must be aligned on <c>DWORD</c> boundaries. All Windows memory-management functions return <c>DWORD</c>-aligned
+		/// handles to memory.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-system_alarm_callback_ace typedef struct
+		// _SYSTEM_ALARM_CALLBACK_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } SYSTEM_ALARM_CALLBACK_ACE, *PSYSTEM_ALARM_CALLBACK_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "8bfb579f-4bee-454e-827b-63a800bccf85")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SYSTEM_ALARM_CALLBACK_ACE
+		{
+			/// <summary>
+			/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
+			/// child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to SYSTEM_ALARM_CALLBACK_ACE_TYPE.
+			/// </summary>
+			public ACE_HEADER Header;
+
+			/// <summary>
+			/// Specifies an ACCESS_MASK structure that gives the access rights that cause audit messages to be generated. The
+			/// SUCCESSFUL_ACCESS_ACE_FLAG and FAILED_ACCESS_ACE_FLAG flags in the <c>AceFlags</c> member of the ACE_HEADER structure
+			/// indicate whether messages are generated for successful access attempts, unsuccessful access attempts, or both.
+			/// </summary>
+			public ACCESS_MASK Mask;
+
+			/// <summary>
+			/// The first <c>DWORD</c> of a trustee's ACE. This ACE can be appended with application data. When the AuthzAccessCheckCallback
+			/// function is called, this ACE is passed as the pAce parameter of that function.
+			/// </summary>
+			public uint SidStart;
+		}
+
+		/// <summary>
+		/// <para>Not supported.</para>
+		/// <para>The <c>SYSTEM_ALARM_CALLBACK_OBJECT_ACE</c> structure is reserved for future use.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If neither the <c>ObjectType</c> nor <c>InheritedObjectType</c> GUID is specified, the <c>SYSTEM_ALARM_CALLBACK_OBJECT_ACE</c>
+		/// structure has the same semantics as the SYSTEM_ALARM_CALLBACK_ACE structure. In that case, use the
+		/// <c>SYSTEM_ALARM_CALLBACK_ACE</c> structure because it is smaller and more efficient.
+		/// </para>
+		/// <para>
+		/// An ACL that contains an <c>SYSTEM_ALARM_CALLBACK_OBJECT_ACE</c> must specify the ACL_REVISION_DS revision number in its
+		/// ACE_HEADER structure.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-system_alarm_callback_object_ace typedef struct
+		// _SYSTEM_ALARM_CALLBACK_OBJECT_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD Flags; GUID ObjectType; GUID InheritedObjectType;
+		// DWORD SidStart; } SYSTEM_ALARM_CALLBACK_OBJECT_ACE, *PSYSTEM_ALARM_CALLBACK_OBJECT_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "3fdd0b75-666a-4064-95ed-9e708f34bed6")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SYSTEM_ALARM_CALLBACK_OBJECT_ACE
+		{
+			/// <summary>
+			/// ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by child
+			/// objects. The structure also contains flags that indicate whether the ACE audits successful access attempts, failed access
+			/// attempts, or both. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to SYSTEM_ALARM_CALLBACK_OBJECT_ACE_TYPE.
+			/// </summary>
+			public ACE_HEADER Header;
+
+			/// <summary>An ACCESS_MASK that specifies the access rights the system will audit for access attempts by the trustee.</summary>
+			public ACCESS_MASK Mask;
+
+			/// <summary>
+			/// <para>
+			/// A set of bit flags that indicate whether the <c>ObjectType</c> and <c>InheritedObjectType</c> members contain GUIDs. This
+			/// parameter can be a combination of the following values. Set all undefined bits to zero.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ACE_OBJECT_TYPE_PRESENT</term>
+			/// <term>The ObjectType member contains a GUID.</term>
+			/// </item>
+			/// <item>
+			/// <term>ACE_INHERITED_OBJECT_TYPE_PRESENT</term>
+			/// <term>The InheritedObjectType member contains a GUID.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ObjectAceFlags Flags;
+
+			/// <summary>
+			/// <para>A GUID structure that identifies a property set, property, extended right, or type of child object.</para>
+			/// <para>
+			/// This member is valid only if the ACE_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member. Otherwise, <c>ObjectType</c>
+			/// is ignored.
+			/// </para>
+			/// <para>The purpose of this GUID depends on the access rights specified in the <c>Mask</c> member.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_READ_PROP and/or ADS_RIGHT_DS_WRITE_PROP</term>
+			/// <term>
+			/// The ObjectType GUID identifies a property set or property of the object. The ACE controls auditing of the trustee's attempts
+			/// to read or write the property or property set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CONTROL_ACCESS</term>
+			/// <term>The ObjectType GUID identifies an extended access right.</term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CREATE_CHILD</term>
+			/// <term>
+			/// The ObjectType GUID identifies a type of child object. The ACE controls auditing of the trustee's attempts to create this
+			/// type of child object.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_SELF</term>
+			/// <term>The ObjectType GUID identifies a validated write.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public Guid ObjectType;
+
+			/// <summary>
+			/// <para>A GUID structure that identifies the type of child object that can inherit the ACE.</para>
+			/// <para>
+			/// This member is valid only if the ACE_INHERITED_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member. If that bit is not
+			/// set, <c>InheritedObjectType</c> is ignored and all types of child objects can inherit the ACE. In either case, inheritance is
+			/// also controlled by the inheritance flags in the ACE_HEADER, as well as by any protection against inheritance placed on the
+			/// child objects.
+			/// </para>
+			/// </summary>
+			public Guid InheritedObjectType;
+
+			/// <summary>
+			/// The first <c>DWORD</c> of a trustee's ACE. This ACE can be appended with application data. When the AuthzAccessCheckCallback
+			/// function is called, this ACE is passed as the pAce parameter of that function.
+			/// </summary>
+			public uint SidStart;
+		}
+
+		/// <summary>The <c>SYSTEM_ALARM_OBJECT_ACE</c> structure is reserved for future use.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-system_alarm_object_ace typedef struct _SYSTEM_ALARM_OBJECT_ACE
+		// { ACE_HEADER Header; ACCESS_MASK Mask; DWORD Flags; GUID ObjectType; GUID InheritedObjectType; DWORD SidStart; }
+		// SYSTEM_ALARM_OBJECT_ACE, *PSYSTEM_ALARM_OBJECT_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "a55f6039-d1d2-4a7d-a6c9-e8f51b291582")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SYSTEM_ALARM_OBJECT_ACE
+		{
+			/// <summary/>
+			public ACE_HEADER Header;
+
+			/// <summary/>
+			public ACCESS_MASK Mask;
+
+			/// <summary/>
+			public ObjectAceFlags Flags;
+
+			/// <summary/>
+			public Guid ObjectType;
+
+			/// <summary/>
+			public Guid InheritedObjectType;
+
+			/// <summary/>
+			public uint SidStart;
+		}
+
+		/// <summary>
+		/// The <c>SYSTEM_AUDIT_ACE</c> structure defines an access control entry (ACE) for the system access control list (SACL) that
+		/// specifies what types of access cause system-level notifications. A system-audit ACE causes an audit message to be logged when a
+		/// specified trustee attempts to gain access to an object. The trustee is identified by a security identifier (SID).
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Audit messages are stored in an event log that can be manipulated by using the Windows API event-logging functions or by using
+		/// the Event Viewer (Eventvwr.exe).
+		/// </para>
+		/// <para>
+		/// ACE structures should be aligned on <c>DWORD</c> boundaries. All Windows memory-management functions return <c>DWORD</c>-aligned
+		/// handles to memory.
+		/// </para>
+		/// <para>
+		/// When a <c>SYSTEM_AUDIT_ACE</c> structure is created, sufficient memory must be allocated to accommodate the complete SID of the
+		/// trustee in the <c>SidStart</c> member and the contiguous memory that follows it.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-system_audit_ace typedef struct _SYSTEM_AUDIT_ACE { ACE_HEADER
+		// Header; ACCESS_MASK Mask; DWORD SidStart; } SYSTEM_AUDIT_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "c26b5856-5447-4606-8110-f24a4d235c64")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SYSTEM_AUDIT_ACE
+		{
+			/// <summary>
+			/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
+			/// child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to SYSTEM_AUDIT_ACE_TYPE, and the
+			/// <c>AceSize</c> member should be set to the total number of bytes allocated for the <c>SYSTEM_AUDIT_ACE</c> structure.
+			/// </summary>
+			public ACE_HEADER Header;
+
+			/// <summary>
+			/// Specifies an ACCESS_MASK structure that gives the access rights that cause audit messages to be generated. The
+			/// SUCCESSFUL_ACCESS_ACE_FLAG and FAILED_ACCESS_ACE_FLAG flags in the <c>AceFlags</c> member of the ACE_HEADER structure
+			/// indicate whether messages are generated for successful access attempts, unsuccessful access attempts, or both.
+			/// </summary>
+			public ACCESS_MASK Mask;
+
+			/// <summary>
+			/// <para>
+			/// The first <c>DWORD</c> of a trustee's SID. The remaining bytes of the SID are stored in contiguous memory after the
+			/// <c>SidStart</c> member. This SID can be appended with application data.
+			/// </para>
+			/// <para>
+			/// An access attempt of a kind specified by the <c>Mask</c> member by any trustee whose SID matches the <c>SidStart</c> member
+			/// causes the system to generate an audit message. If an application does not specify a SID for this member, audit messages are
+			/// generated for the specified access rights for all trustees.
+			/// </para>
+			/// </summary>
+			public uint SidStart;
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>SYSTEM_AUDIT_CALLBACK_ACE</c> structure defines an access control entry (ACE) for the system access control list (SACL)
+		/// that specifies what types of access cause system-level notifications. A system-audit ACE causes an audit message to be logged
+		/// when a specified trustee attempts to gain access to an object. The trustee is identified by a security identifier (SID).
+		/// </para>
+		/// <para>
+		/// When the AuthzAccessCheck function is called, each <c>SYSTEM_AUDIT_CALLBACK_ACE</c> structure contained in the DACL of a
+		/// SECURITY_DESCRIPTOR structure passed through a pointer to the <c>AuthzAccessCheck</c> function invokes a call to the
+		/// application-defined AuthzAccessCheckCallback function, in which a pointer to the <c>SYSTEM_AUDIT_CALLBACK_ACE</c> structure found
+		/// is passed in the pAce parameter.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// ACE structures must be aligned on <c>DWORD</c> boundaries. All Windows memory-management functions return <c>DWORD</c>-aligned
+		/// handles to memory.
+		/// </para>
+		/// <para>
+		/// When a <c>SYSTEM_AUDIT_CALLBACK_ACE</c> structure is created, sufficient memory must be allocated to accommodate the complete SID
+		/// of the trustee in the <c>SidStart</c> member and the contiguous memory that follows it.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-system_audit_callback_ace typedef struct
+		// _SYSTEM_AUDIT_CALLBACK_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } SYSTEM_AUDIT_CALLBACK_ACE, *PSYSTEM_AUDIT_CALLBACK_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "4d1799b0-3e55-48d7-94ff-c0094945adea")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SYSTEM_AUDIT_CALLBACK_ACE
+		{
+			/// <summary>
+			/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
+			/// child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to SYSTEM_AUDIT_CALLBACK_ACE_TYPE,
+			/// and the <c>AceSize</c> member should be set to the total number of bytes allocated for the <c>SYSTEM_AUDIT_CALLBACK_ACE</c> structure.
+			/// </summary>
+			public ACE_HEADER Header;
+
+			/// <summary>
+			/// Specifies an ACCESS_MASK structure that gives the access rights that cause audit messages to be generated. The
+			/// SUCCESSFUL_ACCESS_ACE_FLAG and FAILED_ACCESS_ACE_FLAG flags in the <c>AceFlags</c> member of the ACE_HEADER structure
+			/// indicate whether messages are generated for successful access attempts, unsuccessful access attempts, or both.
+			/// </summary>
+			public ACCESS_MASK Mask;
+
+			/// <summary>
+			/// The first <c>DWORD</c> of a trustee's SID. The remaining bytes of the SID are stored in contiguous memory after the
+			/// <c>SidStart</c> member. This SID can be appended with application data.
+			/// </summary>
+			public uint SidStart;
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>SYSTEM_AUDIT_CALLBACK_OBJECT_ACE</c> structure defines an access control entry (ACE) for a system access control list
+		/// (SACL). The ACE can audit access to an object or subobjects such as property sets or properties. The ACE contains a set of access
+		/// rights, a GUID that identifies the type of object or subobject, and a security identifier (SID) that identifies the trustee for
+		/// whom the system will audit access. The ACE also contains a GUID and a set of flags that control inheritance of the ACE by child objects.
+		/// </para>
+		/// <para>
+		/// When the AuthzAccessCheck function is called, each <c>SYSTEM_AUDIT_CALLBACK_OBJECT_ACE</c> structure contained in the DACL of a
+		/// SECURITY_DESCRIPTOR structure passed through a pointer to the <c>AuthzAccessCheck</c> function invokes a call to the
+		/// application-defined AuthzAccessCheckCallback function, in which a pointer to the <c>SYSTEM_AUDIT_CALLBACK_OBJECT_ACE</c>
+		/// structure found is passed in the pAce parameter.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If neither the <c>ObjectType</c> nor <c>InheritedObjectType</c> GUID is specified, the <c>SYSTEM_AUDIT_CALLBACK_OBJECT_ACE</c>
+		/// structure has the same semantics as the SYSTEM_AUDIT_CALLBACK_ACE structure. In that case, use the
+		/// <c>SYSTEM_AUDIT_CALLBACK_ACE</c> structure because it is smaller and more efficient.
+		/// </para>
+		/// <para>
+		/// An ACL that contains a <c>SYSTEM_AUDIT_CALLBACK_OBJECT_ACE</c> structure must specify the ACL_REVISION_DS revision number in its
+		/// ACE_HEADER structure.
+		/// </para>
+		/// <para>
+		/// When a <c>SYSTEM_AUDIT_CALLBACK_OBJECT_ACE</c> structure is created, sufficient memory must be allocated to accommodate the GUID
+		/// structures in <c>ObjectType</c> and <c>InheritedObjectType</c> members, if one or both of them exists, as well as to accommodate
+		/// the complete SID of the trustee in the <c>SidStart</c> member and the contiguous memory that follows it.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-system_audit_callback_object_ace typedef struct
+		// _SYSTEM_AUDIT_CALLBACK_OBJECT_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD Flags; GUID ObjectType; GUID InheritedObjectType;
+		// DWORD SidStart; } SYSTEM_AUDIT_CALLBACK_OBJECT_ACE, *PSYSTEM_AUDIT_CALLBACK_OBJECT_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "f547c928-4850-4072-be05-76a6c83b79bb")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SYSTEM_AUDIT_CALLBACK_OBJECT_ACE
+		{
+			/// <summary>
+			/// ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by child
+			/// objects. The structure also contains flags that indicate whether the ACE audits successful access attempts, failed access
+			/// attempts, or both. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to
+			/// SYSTEM_AUDIT_CALLBACK_OBJECT_ACE_TYPE, and the <c>AceSize</c> member should be set to the total number of bytes allocated for
+			/// the <c>SYSTEM_AUDIT_CALLBACK_OBJECT_ACE</c> structure.
+			/// </summary>
+			public ACE_HEADER Header;
+
+			/// <summary>An ACCESS_MASK that specifies the access rights the system will audit for access attempts by the trustee.</summary>
+			public ACCESS_MASK Mask;
+
+			/// <summary>
+			/// <para>
+			/// A set of bit flags that indicate whether the <c>ObjectType</c> and <c>InheritedObjectType</c> members contain GUIDs. This
+			/// member can be a combination of the following values. Set all undefined bits to zero.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ACE_OBJECT_TYPE_PRESENT</term>
+			/// <term>The ObjectType member contains a GUID.</term>
+			/// </item>
+			/// <item>
+			/// <term>ACE_INHERITED_OBJECT_TYPE_PRESENT</term>
+			/// <term>The InheritedObjectType member contains a GUID.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ObjectAceFlags Flags;
+
+			/// <summary>
+			/// <para>A GUID structure that identifies a property set, property, extended right, or type of child object.</para>
+			/// <para>
+			/// This member is valid only if the ACE_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member. Otherwise, <c>ObjectType</c>
+			/// is ignored.
+			/// </para>
+			/// <para>The purpose of this GUID depends on the access rights specified in the <c>Mask</c> member.</para>
+			/// <para>This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_READ_PROP and/or ADS_RIGHT_DS_WRITE_PROP</term>
+			/// <term>
+			/// The ObjectType GUID identifies a property set or property of the object. The ACE controls auditing of the trustee's attempts
+			/// to read or write the property or property set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CONTROL_ACCESS</term>
+			/// <term>The ObjectType GUID identifies an extended access right.</term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CREATE_CHILD</term>
+			/// <term>
+			/// The ObjectType GUID identifies a type of child object. The ACE controls auditing of the trustee's attempts to create this
+			/// type of child object.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_SELF</term>
+			/// <term>The ObjectType GUID identifies a validated write.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public Guid ObjectType;
+
+			/// <summary>
+			/// <para>A GUID structure that identifies the type of child object that can inherit the ACE.</para>
+			/// <para>
+			/// This member is valid only if the ACE_INHERITED_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member. If that bit is not
+			/// set, <c>InheritedObjectType</c> is ignored and all types of child objects can inherit the ACE. In either case, inheritance is
+			/// also controlled by the inheritance flags in the ACE_HEADER, as well as by any protection against inheritance placed on the
+			/// child objects.
+			/// </para>
+			/// </summary>
+			public Guid InheritedObjectType;
+
+			/// <summary>
+			/// The first <c>DWORD</c> of a trustee's SID. The remaining bytes of the SID are stored in contiguous memory after the
+			/// <c>SidStart</c> member. This SID can be appended with application data.
+			/// </summary>
+			public uint SidStart;
+		}
+
+		/// <summary>
+		/// The <c>SYSTEM_AUDIT_OBJECT_ACE</c> structure defines an access control entry (ACE) for a system access control list (SACL). The
+		/// ACE can audit access to an object or subobjects such as property sets or properties. The ACE contains a set of access rights, a
+		/// GUID that identifies the type of object or subobject, and a security identifier (SID) that identifies the trustee for whom the
+		/// system will audit access. The ACE also contains a GUID and a set of flags that control inheritance of the ACE by child objects.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If neither the <c>ObjectType</c> nor <c>InheritedObjectType</c> GUID is specified, the <c>SYSTEM_AUDIT_OBJECT_ACE</c> structure
+		/// has the same semantics as the SYSTEM_AUDIT_ACE structure. In that case, use the <c>SYSTEM_AUDIT_ACE</c> structure because it is
+		/// smaller and more efficient.
+		/// </para>
+		/// <para>
+		/// An ACL that contains an <c>SYSTEM_AUDIT_OBJECT_ACE</c> must specify the ACL_REVISION_DS revision number in its ACE_HEADER structure.
+		/// </para>
+		/// <para>
+		/// When a <c>SYSTEM_AUDIT_OBJECT_ACE</c> structure is created, sufficient memory must be allocated to accommodate the GUID
+		/// structures in <c>ObjectType</c> and <c>InheritedObjectType</c> members, if one or both of them exists, as well as to accommodate
+		/// the complete SID of the trustee in the <c>SidStart</c> member and the contiguous memory that follows it.
+		/// </para>
+		/// <para>
+		/// An <c>SYSTEM_AUDIT_OBJECT_ACE</c> structure can be created in an access control list (ACL) by a call to the
+		/// AddAuditAccessObjectAce function. When this function is used, the correct amount of memory needed to accommodate the GUID
+		/// structures in the <c>ObjectType</c> and <c>InheritedObjectType</c> members, if one or both of them exists, as well as to
+		/// accommodate the trustee's SID is automatically allocated. In addition, the values of the <c>Header.AceType</c> and
+		/// <c>Header.AceSize</c> members are set automatically. When an <c>SYSTEM_AUDIT_OBJECT_ACE</c> structure is created outside an ACL,
+		/// sufficient memory must be allocated to accommodate the GUID structures in the <c>ObjectType</c> and <c>InheritedObjectType</c>
+		/// members, if one or both of them exists, as well as to accommodate the complete SID of the trustee in the <c>SidStart</c> member
+		/// and the contiguous memory following it. In addition, the values of the <c>Header.AceType</c> and <c>Header.AceSize</c> members
+		/// must be set explicitly by the application.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-system_audit_object_ace typedef struct _SYSTEM_AUDIT_OBJECT_ACE
+		// { ACE_HEADER Header; ACCESS_MASK Mask; DWORD Flags; GUID ObjectType; GUID InheritedObjectType; DWORD SidStart; }
+		// SYSTEM_AUDIT_OBJECT_ACE, *PSYSTEM_AUDIT_OBJECT_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "de37bef6-e6c8-4455-856a-adebebda4cc7")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SYSTEM_AUDIT_OBJECT_ACE
+		{
+			/// <summary>
+			/// An ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by
+			/// child objects. The structure also contains flags that indicate whether the ACE audits successful access attempts, failed
+			/// access attempts, or both. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to
+			/// SYSTEM_AUDIT_OBJECT_ACE_TYPE, and the <c>AceSize</c> member should be set to the total number of bytes allocated for the
+			/// <c>SYSTEM_AUDIT_OBJECT_ACE</c> structure.
+			/// </summary>
+			public ACE_HEADER Header;
+
+			/// <summary>An ACCESS_MASK that specifies the access rights the system will audit for access attempts by the trustee.</summary>
+			public ACCESS_MASK Mask;
+
+			/// <summary>
+			/// <para>
+			/// A set of bit flags that indicate whether the <c>ObjectType</c> and <c>InheritedObjectType</c> members contain GUIDs. This
+			/// member can be a combination of the following values. Set all undefined bits to zero.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ACE_OBJECT_TYPE_PRESENT</term>
+			/// <term>The ObjectType member contains a GUID.</term>
+			/// </item>
+			/// <item>
+			/// <term>ACE_INHERITED_OBJECT_TYPE_PRESENT</term>
+			/// <term>The InheritedObjectType member contains a GUID.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ObjectAceFlags Flags;
+
+			/// <summary>
+			/// <para>A GUID structure that identifies a property set, property, extended right, or type of child object.</para>
+			/// <para>
+			/// This member is valid only if the ACE_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member. Otherwise, <c>ObjectType</c>
+			/// is ignored.
+			/// </para>
+			/// <para>The purpose of this GUID depends on the access rights specified in the <c>Mask</c> member.</para>
+			/// <para>This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_READ_PROP and/or ADS_RIGHT_DS_WRITE_PROP</term>
+			/// <term>
+			/// The ObjectType GUID identifies a property set or property of the object. The ACE controls auditing of the trustee's attempts
+			/// to read or write the property or property set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CONTROL_ACCESS</term>
+			/// <term>The ObjectType GUID identifies an extended access right.</term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CREATE_CHILD</term>
+			/// <term>
+			/// The ObjectType GUID identifies a type of child object. The ACE controls auditing of the trustee's attempts to create this
+			/// type of child object.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_SELF</term>
+			/// <term>The ObjectType GUID identifies a validated write.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public Guid ObjectType;
+
+			/// <summary>
+			/// <para>A GUID structure that identifies the type of child object that can inherit the ACE.</para>
+			/// <para>
+			/// This member is valid only if the ACE_INHERITED_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member. If that bit is not
+			/// set, <c>InheritedObjectType</c> is ignored and all types of child objects can inherit the ACE. In either case, inheritance is
+			/// also controlled by the inheritance flags in the ACE_HEADER, as well as by any protection against inheritance placed on the
+			/// child objects.
+			/// </para>
+			/// <para>
+			/// The offset of this member can vary. If the <c>Flags</c> member does not contain the ACE_OBJECT_TYPE_PRESENT flag, the
+			/// <c>InheritedObjectType</c> member starts at the offset specified by the <c>ObjectType</c> member.
+			/// </para>
+			/// </summary>
+			public Guid InheritedObjectType;
+
+			/// <summary>
+			/// <para>
+			/// Specifies the first <c>DWORD</c> of a SID that identifies the trustee for whom the access attempts are audited. The remaining
+			/// bytes of the SID are stored in contiguous memory after the <c>SidStart</c> member. This SID can be appended with application data.
+			/// </para>
+			/// <para>
+			/// The offset of this member can vary. If the <c>Flags</c> member is zero, the <c>SidStart</c> member starts at the offset
+			/// specified by the <c>ObjectType</c> member. If <c>Flags</c> contains only one flag (either ACE_OBJECT_TYPE_PRESENT or
+			/// ACE_INHERITED_OBJECT_TYPE_PRESENT), the <c>SidStart</c> member starts at the offset specified by the
+			/// <c>InheritedObjectType</c> member.
+			/// </para>
+			/// </summary>
+			public uint SidStart;
+		}
+
+		/// <summary>
 		/// The TOKEN_ACCESS_INFORMATION structure specifies all the information in a token that is necessary to perform an access check.
 		/// </summary>
 		[StructLayout(LayoutKind.Sequential)]
@@ -2320,7 +3689,7 @@ namespace Vanara.PInvoke
 			public IntPtr RestrictedSidHash;
 
 			/// <summary>A pointer to a TOKEN_PRIVILEGES structure that specifies information about the token's privileges.</summary>
-			public PTOKEN_PRIVILEGES Privileges;
+			public IntPtr Privileges;
 
 			/// <summary>A LUID structure that specifies the token's identity.</summary>
 			public LUID AuthenticationId;
@@ -2403,7 +3772,7 @@ namespace Vanara.PInvoke
 			public uint GroupCount;
 
 			/// <summary>Specifies an array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</summary>
-			[MarshalAs(UnmanagedType.ByValArray)]
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public SID_AND_ATTRIBUTES[] Groups;
 
 			/// <summary>Initializes a new instance of the <see cref="TOKEN_GROUPS"/> struct.</summary>
@@ -2468,7 +3837,7 @@ namespace Vanara.PInvoke
 		public struct TOKEN_LINKED_TOKEN
 		{
 			/// <summary>A handle to the linked token. When you have finished using the handle, close it by calling the CloseHandle function.</summary>
-			public IntPtr LinkedToken;
+			public HTOKEN LinkedToken;
 		}
 
 		/// <summary>The TOKEN_MANDATORY_LABEL structure specifies the mandatory integrity level for a token.</summary>
@@ -2531,6 +3900,57 @@ namespace Vanara.PInvoke
 			/// using this access token. The SID must be one of the group SIDs already in the token.
 			/// </summary>
 			public PSID PrimaryGroup;
+		}
+
+		/// <summary>The <c>TOKEN_PRIVILEGES</c> structure contains information about a set of privileges for an access token.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-token_privileges
+		// typedef struct _TOKEN_PRIVILEGES { DWORD PrivilegeCount; LUID_AND_ATTRIBUTES Privileges[ANYSIZE_ARRAY]; } TOKEN_PRIVILEGES, *PTOKEN_PRIVILEGES;
+		[PInvokeData("winnt.h", MSDNShortId = "c9016511-740f-44f3-92ed-17cc518c6612")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct TOKEN_PRIVILEGES
+		{
+			/// <summary>This must be set to the number of entries in the <c>Privileges</c> array.</summary>
+			public uint PrivilegeCount;
+
+			/// <summary>
+			/// <para>
+			/// Specifies an array of LUID_AND_ATTRIBUTES structures. Each structure contains the LUID and attributes of a privilege. To get
+			/// the name of the privilege associated with a <c>LUID</c>, call the LookupPrivilegeName function, passing the address of the
+			/// <c>LUID</c> as the value of the lpLuid parameter.
+			/// </para>
+			/// <para>
+			/// <c>Important</c> The constant <c>ANYSIZE_ARRAY</c> is defined as 1 in the public header Winnt.h. To create this array with
+			/// more than one element, you must allocate sufficient memory for the structure to take into account additional elements.
+			/// </para>
+			/// <para>The attributes of a privilege can be a combination of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>SE_PRIVILEGE_ENABLED</term>
+			/// <term>The privilege is enabled.</term>
+			/// </item>
+			/// <item>
+			/// <term>SE_PRIVILEGE_ENABLED_BY_DEFAULT</term>
+			/// <term>The privilege is enabled by default.</term>
+			/// </item>
+			/// <item>
+			/// <term>SE_PRIVILEGE_REMOVED</term>
+			/// <term>Used to remove a privilege. For details, see AdjustTokenPrivileges.</term>
+			/// </item>
+			/// <item>
+			/// <term>SE_PRIVILEGE_USED_FOR_ACCESS</term>
+			/// <term>
+			/// The privilege was used to gain access to an object or service. This flag is used to identify the relevant privileges in a set
+			/// passed by a client application that may contain unnecessary privileges.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public LUID_AND_ATTRIBUTES[] Privileges;
 		}
 
 		/// <summary>The TOKEN_SOURCE structure identifies the source of an access token.</summary>
@@ -2660,6 +4080,12 @@ namespace Vanara.PInvoke
 		/// <summary>Known RIDs</summary>
 		public static class KnownSIDRelativeID
 		{
+			public const int SECURITY_APP_PACKAGE_BASE_RID = 0x00000002;
+
+			public const int SECURITY_CAPABILITY_APP_RID = 0x00000040;
+
+			public const int SECURITY_CAPABILITY_BASE_RID = 0x00000003;
+
 			/// <summary>The security creator group rid</summary>
 			public const int SECURITY_CREATOR_GROUP_RID = 0x00000001;
 
@@ -2681,16 +4107,6 @@ namespace Vanara.PInvoke
 			/// <summary>The security local rid</summary>
 			public const int SECURITY_LOCAL_RID = 0x00000000;
 
-			/// <summary>The security null rid</summary>
-			public const int SECURITY_NULL_RID = 0x00000000;
-
-			/// <summary>The security world rid</summary>
-			public const int SECURITY_WORLD_RID = 0x00000000;
-		}
-
-		/// <summary>The following RIDs are used to specify mandatory integrity level.</summary>
-		public static class MandatoryIntegrityLevelSIDRelativeID
-		{
 			/// <summary>High integrity.</summary>
 			public const int SECURITY_MANDATORY_HIGH_RID = 0x00003000;
 
@@ -2711,6 +4127,12 @@ namespace Vanara.PInvoke
 
 			/// <summary>Untrusted.</summary>
 			public const int SECURITY_MANDATORY_UNTRUSTED_RID = 0x00000000;
+
+			/// <summary>The security null rid</summary>
+			public const int SECURITY_NULL_RID = 0x00000000;
+
+			/// <summary>The security world rid</summary>
+			public const int SECURITY_WORLD_RID = 0x00000000;
 		}
 
 		/// <summary>
@@ -2760,6 +4182,16 @@ namespace Vanara.PInvoke
 			{
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="PRIVILEGE_SET"/> class from a pointer to allocated memory.</summary>
+			internal PRIVILEGE_SET(IntPtr ptr)
+			{
+				if (ptr == IntPtr.Zero) return;
+				var sz = Marshal.SizeOf(typeof(uint));
+				PrivilegeCount = (uint)Marshal.ReadInt32(ptr);
+				Control = (PrivilegeSetControl)Marshal.ReadInt32(ptr, sz);
+				Privilege = PrivilegeCount > 0 ? ptr.ToArray<LUID_AND_ATTRIBUTES>((int)PrivilegeCount, sz * 2) : new LUID_AND_ATTRIBUTES[0];
+			}
+
 			/// <summary>Gets the size in bytes of this instance.</summary>
 			/// <value>The size in bytes.</value>
 			public uint SizeInBytes => (uint)Marshal.SizeOf(typeof(uint)) * 2 + (uint)(Marshal.SizeOf(typeof(LUID_AND_ATTRIBUTES)) * (PrivilegeCount == 0 ? 1 : PrivilegeCount));
@@ -2797,15 +4229,7 @@ namespace Vanara.PInvoke
 					return ptr;
 				}
 
-				public object MarshalNativeToManaged(IntPtr pNativeData)
-				{
-					if (pNativeData == IntPtr.Zero) return new PRIVILEGE_SET();
-					var sz = Marshal.SizeOf(typeof(uint));
-					var cnt = Marshal.ReadInt32(pNativeData);
-					var ctrl = (PrivilegeSetControl)Marshal.ReadInt32(pNativeData, sz);
-					var privPtr = Marshal.ReadIntPtr(pNativeData, sz * 2);
-					return new PRIVILEGE_SET { PrivilegeCount = (uint)cnt, Control = ctrl, Privilege = cnt > 0 ? privPtr.ToIEnum<LUID_AND_ATTRIBUTES>(cnt).ToArray() : new LUID_AND_ATTRIBUTES[0] };
-				}
+				public object MarshalNativeToManaged(IntPtr pNativeData) => new PRIVILEGE_SET(pNativeData);
 			}
 		}
 
@@ -3027,23 +4451,15 @@ namespace Vanara.PInvoke
 			private const SECURITY_INFORMATION defSecInfo = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.SACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION;
 
 			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class.</summary>
-			public SafePACL() : base(IntPtr.Zero, 0, false) { }
+			public SafePACL() : base(IntPtr.Zero, 0, true) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class from an existing pointer, copying its content if owning.</summary>
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SafePACL"/> class from an existing pointer, copying its content if owning.
+			/// </summary>
 			/// <param name="pAcl">The access control list pointer.</param>
-			/// <param name="own">if set to <c>true</c> indicates that this pointer should be freed when disposed.</param>
-			public SafePACL(PACL pAcl, bool own = true) : base(IntPtr.Zero, 0, own)
+			public SafePACL(PACL pAcl) : this(IsValidAcl(pAcl) ? (int)pAcl.BytesAllocated() : throw new ArgumentException("Invalid ACL.", nameof(pAcl)))
 			{
-				if (own && IsValidAcl(pAcl))
-				{
-					SetHandle(mm.AllocMem((int)GetAclLength(pAcl)));
-					((IntPtr)pAcl).CopyTo(handle, sz);
-				}
-				else
-				{
-					SetHandle((IntPtr)pAcl);
-					sz = (int)GetAclTotalLength(pAcl);
-				}
+				((IntPtr)pAcl).CopyTo(handle, Size);
 			}
 
 			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class to an empty memory buffer.</summary>
@@ -3065,14 +4481,9 @@ namespace Vanara.PInvoke
 			/// <summary>Determines whether the components of this access control list are valid.</summary>
 			public bool IsValidAcl => IsValidAcl(handle);
 
-			/// <summary>
-			/// Gets the length, in bytes, of a structurally valid access control list. The length includes the length of all associated structures.
-			/// </summary>
-			public uint Length => GetAclLength(handle);
-
 			/// <summary>Gets the revision number for the ACL.</summary>
 			/// <value>The revision.</value>
-			public uint Revision => IsValidAcl ? 0U : GetAclInformation(handle, out ACL_REVISION_INFORMATION ri) ? ri.AclRevision : 0;
+			public uint Revision => IsValidAcl && GetAclInformation(handle, out ACL_REVISION_INFORMATION ri) ? ri.AclRevision : 0U;
 
 			/// <inheritdoc/>
 			public override SizeT Size
@@ -3080,23 +4491,39 @@ namespace Vanara.PInvoke
 				get => base.Size;
 				set
 				{
-					base.Size = value;
-					InitializeAcl(handle, (uint)value, Revision);
+					// Make sure divisible by 4.
+					value = ((value + 3) >> 2) << 2;
+					// Setup newly allocated ACL
+					var newHandle = mm.AllocMem(value);
+					if (!InitializeAcl(newHandle, value, Revision))
+						Win32Error.ThrowLastError();
+					if (!GetAce(handle, 0, out var pace))
+						Win32Error.ThrowLastError();
+					if (!AddAce(newHandle, Revision, 0, (IntPtr)pace, ((PACL)handle).Length() - (uint)Marshal.SizeOf(typeof(ACL))))
+						Win32Error.ThrowLastError();
+					// Update SafeHandle with new ACL and destroy old
+					var oldHandle = handle;
+					SetHandle(newHandle);
+					sz = value;
+					mm.FreeMem(oldHandle);
 				}
 			}
 
-			internal string DebugString => IsInvalid ? "NULL" : $"Aces:{GetAceCount(handle)}, Size:{GetAclLength(handle)}";
+			/// <summary>Gets the number of ACEs held by this ACL.</summary>
+			/// <value>The ace count.</value>
+			public int AceCount => (int)((PACL)handle).AceCount();
+
+			/// <summary>
+			/// Gets the length, in bytes, of a structurally valid access control list. The length includes the length of all associated structures.
+			/// </summary>
+			public uint Length => ((PACL)handle).Length();
+
+			internal string DebugString => IsInvalid ? "NULL" : $"Aces:{AceCount}, Size:{Length}";
 
 			/// <summary>Performs an explicit conversion from <see cref="SafePACL"/> to <see cref="PACL"/>.</summary>
 			/// <param name="sd">The safe access control list.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator PACL(SafePACL sd) => sd.DangerousGetHandle();
-
-			private static uint GetAceCount(PACL pACL) => IsValidAcl(pACL) && GetAclInformation(pACL, out ACL_SIZE_INFORMATION si) ? si.AceCount : 0;
-
-			private static uint GetAclLength(PACL pACL) => IsValidAcl(pACL) && GetAclInformation(pACL, out ACL_SIZE_INFORMATION si) ? si.AclBytesInUse : 0;
-
-			private static uint GetAclTotalLength(PACL pACL) => IsValidAcl(pACL) && GetAclInformation(pACL, out ACL_SIZE_INFORMATION si) ? si.AclBytesFree + si.AclBytesInUse : 0;
 		}
 
 		/// <summary>A SafeHandle for security descriptors. If owned, will call LocalFree on the pointer when disposed.</summary>
@@ -3113,13 +4540,30 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafePSECURITY_DESCRIPTOR"/> class from an existing pointer.</summary>
 			/// <param name="pSecurityDescriptor">The security descriptor pointer.</param>
 			/// <param name="own">if set to <c>true</c> indicates that this pointer should be freed when disposed.</param>
-			public SafePSECURITY_DESCRIPTOR(PSECURITY_DESCRIPTOR pSecurityDescriptor, bool own = true) :
-				base((IntPtr)pSecurityDescriptor, (int)GetSecurityDescriptorLength(pSecurityDescriptor), own)
-			{ }
+			public SafePSECURITY_DESCRIPTOR(PSECURITY_DESCRIPTOR pSecurityDescriptor, bool own = true) : base(IntPtr.Zero, 0, own)
+			{
+				if (pSecurityDescriptor.IsSelfRelative())
+				{
+					sz = (int)pSecurityDescriptor.Length();
+					SetHandle((IntPtr)pSecurityDescriptor);
+				}
+				else if (own)
+				{
+					var newSz = 0U;
+					if (!MakeSelfRelativeSD(pSecurityDescriptor, Null, ref newSz) && newSz == 0)
+						Win32Error.ThrowLastError();
+					Size = newSz;
+					InitializeSecurityDescriptor(this, SECURITY_DESCRIPTOR_REVISION);
+					if (!MakeSelfRelativeSD(pSecurityDescriptor, this, ref newSz))
+						Win32Error.ThrowLastError();
+				}
+				else
+					throw new InvalidOperationException("The supplied security descriptor is in absolute format and can only be copied if this class has ownership of the memory.");
+			}
 
 			/// <summary>Initializes a new instance of the <see cref="SafePSECURITY_DESCRIPTOR"/> class to an empty memory buffer.</summary>
 			/// <param name="size">The size of the uninitialized security descriptor.</param>
-			public SafePSECURITY_DESCRIPTOR(int size) : base(size) { }
+			public SafePSECURITY_DESCRIPTOR(int size) : base(size) => InitializeSecurityDescriptor(this, SECURITY_DESCRIPTOR_REVISION);
 
 			/// <summary>Initializes a new instance of the <see cref="SafePSECURITY_DESCRIPTOR"/> class.</summary>
 			/// <param name="bytes">An array of bytes that contain an existing security descriptor.</param>
@@ -3143,10 +4587,26 @@ namespace Vanara.PInvoke
 			/// <summary>Determines whether the components of this security descriptor are valid.</summary>
 			public bool IsValidSecurityDescriptor => IsValidSecurityDescriptor(handle);
 
+			/// <summary>Determines whether the format of this security descriptor is self-relative.</summary>
+			public bool IsSelfRelative => ((PSECURITY_DESCRIPTOR)handle).IsSelfRelative();
+
 			/// <summary>
 			/// Gets the length, in bytes, of a structurally valid security descriptor. The length includes the length of all associated structures.
 			/// </summary>
-			public uint Length => GetSecurityDescriptorLength(handle);
+			public uint Length => ((PSECURITY_DESCRIPTOR)handle).Length();
+
+			/// <summary>Gets or sets the size in bytes of the security descriptor.</summary>
+			/// <value>The size in bytes of the security descriptor.</value>
+			public override SizeT Size
+			{
+				get
+				{
+					if (sz == 0 && Length > 0)
+						sz = Length;
+					return base.Size;
+				}
+				set => base.Size = value;
+			}
 
 			/// <summary>Performs an explicit conversion from <see cref="SafePSECURITY_DESCRIPTOR"/> to <see cref="PSECURITY_DESCRIPTOR"/>.</summary>
 			/// <param name="sd">The safe security descriptor.</param>
@@ -3207,13 +4667,149 @@ namespace Vanara.PInvoke
 				return false;
 			}
 
+			/// <summary>Gets the binary form of this SafePSECURITY_DESCRIPTOR.</summary>
+			/// <returns>An array of bytes containing the entire security descriptor.</returns>
+			public byte[] GetBinaryForm() => GetBytes(0, (int)Length);
+
 			/// <summary>Returns a hash code for this instance.</summary>
 			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 			public override int GetHashCode() => ToString().GetHashCode();
+
+			/// <summary>
+			/// The <c>MakeAbsoluteSD</c> function creates a security descriptor in absolute format by using a security descriptor in
+			/// self-relative format as a template.
+			/// </summary>
+			/// <returns>
+			/// <para>A tuple containing the following:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term><see cref="SafePSECURITY_DESCRIPTOR"/> pAbsoluteSecurityDescriptor</term>
+			/// <description>
+			/// The main body of an absolute-format security descriptor. This information is formatted as a SECURITY_DESCRIPTOR structure.
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <term><see cref="SafePACL"/> pDacl</term>
+			/// <description>
+			/// The discretionary access control list (DACL) of the absolute-format security descriptor. The main body of the absolute-format
+			/// security descriptor references this pointer.
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <term><see cref="SafePACL"/> pSacl</term>
+			/// <description>
+			/// The system access control list (SACL) of the absolute-format security descriptor. The main body of the absolute-format
+			/// security descriptor references this pointer.
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <term><see cref="SafePSID"/> pOwner</term>
+			/// <description>
+			/// The security identifier (SID) of the owner of the absolute-format security descriptor. The main body of the absolute-format
+			/// security descriptor references this pointer.
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <term><see cref="SafePSID"/> pPrimaryGroup</term>
+			/// <description>
+			/// The absolute-format security descriptor's primary group. The main body of the absolute-format security descriptor references
+			/// this pointer.
+			/// </description>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// A security descriptor in absolute format contains pointers to the information it contains, rather than the information
+			/// itself. A security descriptor in self-relative format contains the information in a contiguous block of memory. In a
+			/// self-relative security descriptor, a SECURITY_DESCRIPTOR structure always starts the information, but the security
+			/// descriptor's other components can follow the structure in any order. Instead of using memory addresses, the components of the
+			/// self-relative security descriptor are identified by offsets from the beginning of the security descriptor. This format is
+			/// useful when a security descriptor must be stored on a floppy disk or transmitted by means of a communications protocol.
+			/// </para>
+			/// <para>
+			/// A server that copies secured objects to various media can use the <c>MakeAbsoluteSD</c> function to create an absolute
+			/// security descriptor from a self-relative security descriptor and the MakeSelfRelativeSD function to create a self-relative
+			/// security descriptor from an absolute security descriptor.
+			/// </para>
+			/// </remarks>
+			public (SafePSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, SafePACL pDacl, SafePACL pSacl, SafePSID pOwner, SafePSID pPrimaryGroup) MakeAbsolute()
+			{
+				uint cSD = 0, cOwn = 0, cGrp = 0, cDacl = 0, cSacl = 0;
+				if (!MakeAbsoluteSD(this, Null, ref cSD, SafePACL.Null, ref cDacl, SafePACL.Null, ref cSacl, SafePSID.Null, ref cOwn, SafePSID.Null, ref cGrp))
+				{
+					var err = Win32Error.GetLastError();
+					if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+						throw err.GetException();
+				}
+
+				var pSD = new SafePSECURITY_DESCRIPTOR((int)cSD);
+				var pDacl = new SafePACL((int)cDacl);
+				var pSacl = new SafePACL((int)cSacl);
+				var pOwn = new SafePSID((int)cOwn);
+				var pGrp = new SafePSID((int)cGrp);
+				if (!MakeAbsoluteSD(this, pSD, ref cSD, pDacl, ref cDacl, pSacl, ref cSacl, pOwn, ref cOwn, pGrp, ref cGrp))
+					Win32Error.ThrowLastError();
+				return (pSD, pDacl, pSacl, pOwn, pGrp);
+			}
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString() => ConvertSecurityDescriptorToStringSecurityDescriptor(handle, defSecInfo);
 		}
+	}
+
+	/// <summary>Extension methods for PACE, PACL and PSECURITY_DESCRIPTOR.</summary>
+	public static class WinNTExtensions
+	{
+		/// <summary>Gets the number of ACEs held by an ACL.</summary>
+		/// <param name="pACL">The pointer to the ACL structure to query.</param>
+		/// <returns>The ace count.</returns>
+		public static uint AceCount(this PACL pACL) => AdvApi32.IsValidAcl(pACL) && AdvApi32.GetAclInformation(pACL, out AdvApi32.ACL_SIZE_INFORMATION si) ? si.AceCount : 0;
+
+		/// <summary>Gets the total number of bytes allocated to the ACL.</summary>
+		/// <param name="pACL">The pointer to the ACL structure to query.</param>
+		/// <returns>The total of the free and used bytes in the ACL.</returns>
+		public static uint BytesAllocated(this PACL pACL) => AdvApi32.IsValidAcl(pACL) && AdvApi32.GetAclInformation(pACL, out AdvApi32.ACL_SIZE_INFORMATION si) ? si.AclBytesFree + si.AclBytesInUse : 0;
+
+		/// <summary>Determines whether the security descriptor is self-relative.</summary>
+		/// <param name="pSD">The pointer to the SECURITY_DESCRIPTOR structure to query.</param>
+		/// <returns><c>true</c> if it is self-relative; otherwise, <c>false</c>.</returns>
+		public static bool IsSelfRelative(this PSECURITY_DESCRIPTOR pSD) => AdvApi32.GetSecurityDescriptorControl(pSD, out var ctrl, out _) ? ctrl.IsFlagSet(AdvApi32.SECURITY_DESCRIPTOR_CONTROL.SE_SELF_RELATIVE) : throw Win32Error.GetLastError().GetException();
+
+		/// <summary>Validates an access control list (ACL).</summary>
+		/// <param name="pACL">The pointer to the ACL structure to query.</param>
+		/// <returns><c>true</c> if the ACL is valid; otherwise, <c>false</c>.</returns>
+		public static bool IsValidAcl(this PACL pAcl) => AdvApi32.IsValidAcl(pAcl);
+
+		/// <summary>Determines whether the components of a security descriptor are valid.</summary>
+		/// <param name="pSD">The pointer to the SECURITY_DESCRIPTOR structure to query.</param>
+		/// <returns>
+		/// <c>true</c> if the components of the security descriptor are valid. If any of the components of the security descriptor are not
+		/// valid, the return value is <c>false</c>.
+		/// </returns>
+		public static bool IsValidSecurityDescriptor(this PSECURITY_DESCRIPTOR pSD) => AdvApi32.IsValidSecurityDescriptor(pSD);
+
+		/// <summary>Gets the size, in bytes, of an ACE.</summary>
+		/// <param name="pACE">The pointer to the ACE structure to query.</param>
+		/// <returns>The size, in bytes, of the ACE.</returns>
+		public static uint Length(this PACE pAce)
+		{
+			unsafe
+			{
+				var p = (AdvApi32.ACE_HEADER*)(void*)pAce.DangerousGetHandle();
+				return p == null ? 0U : p->AceSize;
+			}
+		}
+
+		/// <summary>Gets the size, in bytes, of an ACL. If the ACL is not valid, 0 is returned.</summary>
+		/// <param name="pACL">The pointer to the ACL structure to query.</param>
+		/// <returns>The size, in bytes, of an ACL. If the ACL is not valid, 0 is returned.</returns>
+		public static uint Length(this PACL pACL) => AdvApi32.IsValidAcl(pACL) && AdvApi32.GetAclInformation(pACL, out AdvApi32.ACL_SIZE_INFORMATION si) ? si.AclBytesInUse : 0;
+
+		/// <summary>Gets the size, in bytes, of a security descriptor. If it is not valid, 0 is returned.</summary>
+		/// <param name="pSD">The pointer to the SECURITY_DESCRIPTOR structure to query.</param>
+		/// <returns>The size, in bytes, of a security descriptor. If it is not valid, 0 is returned.</returns>
+		public static uint Length(this PSECURITY_DESCRIPTOR pSD) => AdvApi32.IsValidSecurityDescriptor(pSD) ? AdvApi32.GetSecurityDescriptorLength(pSD) : 0U;
 	}
 }
