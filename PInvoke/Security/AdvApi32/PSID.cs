@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
@@ -13,6 +14,7 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>Class representation of the native SID structure.</summary>
 		/// <seealso cref="SafeHGlobalHandle"/>
+		[DebuggerDisplay("{DebugString}")]
 		public class SafePSID : SafeMemoryHandle<LocalMemoryMethods>, IEquatable<SafePSID>, IEquatable<PSID>, IEquatable<IntPtr>, ICloneable, ISecurityObject
 		{
 			/// <summary>Equivalent to a NULL pointer to a SID.</summary>
@@ -66,6 +68,27 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the length, in bytes, of the SID.</summary>
 			/// <value>The SID length, in bytes.</value>
 			public int Length => IsValidSid ? GetLengthSid(this) : 0;
+
+			/// <summary>Gets the string used to display in the debugger.</summary>
+			internal string DebugString
+			{
+				get
+				{
+					if (IsInvalid || IsClosed) return "NULL";
+					if (!IsValidSid) return "Invalid";
+					var d = ToString("D");
+					var n = ToString("P");
+					return d == n ? $"({d})" : $"{n} ({d})";
+				}
+			}
+
+			/// <summary>Creates a SID for predefined capability.</summary>
+			/// <param name="KnownSIDCapability">
+			/// Member of the KnownSIDCapability enumeration that specifies which capability the SID will identify.
+			/// </param>
+			/// <returns>A <see cref="SafePSID"/> instance.</returns>
+			public static SafePSID CreateCapability(KnownSIDCapability capability) =>
+				Init(KnownSIDAuthority.SECURITY_APP_PACKAGE_AUTHORITY, KnownSIDRelativeID.SECURITY_CAPABILITY_BASE_RID, (int)capability);
 
 			/// <summary>Copies the specified SID from a memory pointer to a <see cref="SafePSID"/> instance.</summary>
 			/// <param name="psid">The SID pointer. This value remains the responsibility of the caller to release.</param>
@@ -191,9 +214,46 @@ namespace Vanara.PInvoke
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
-			public override string ToString()
+			public override string ToString() => ToString(null);
+
+			/// <summary>Converts the value of this security identifier (SID) to its equivalent string representation according to the provided format specifier.</summary>
+			/// <param name="format">
+			/// A single format specifier that indicates how to format the value of this security identifier (SID). The format parameter can be
+			/// "B", "D", "N", or "P". If format is null or an empty string (""), "D" is used.
+			/// </param>
+			/// <returns>The value of this security identifier (SID), in the specified format.</returns>
+			/// <exception cref="ArgumentException">SID value is not a valid SID. - pSid</exception>
+			/// <exception cref="FormatException">The value of format is not null, an empty string (""), "B", "D", "N", or "P".</exception>
+			/// <remarks>
+			///   <para>The following table shows the accepted format specifiers for the format parameter.</para>
+			///   <list type="table">
+			///     <item>
+			///       <description>Specifier</description>
+			///       <description>Format of return value</description>
+			///     </item>
+			///     <item>
+			///       <description>"B"</description>
+			///       <description>
+			///         <para>Binary hex dump representation of the SID.</para>
+			///       </description>
+			///     </item>
+			///     <item>
+			///       <description>"D"</description>
+			///       <description>SDDL representation of the SID.</description>
+			///     </item>
+			///     <item>
+			///       <description>"N"</description>
+			///       <description>The NT4 style name (domain\username) corresponding to the SID.</description>
+			///     </item>
+			///     <item>
+			///       <description>"P"</description>
+			///       <description>The internet style name (UPN) corresponding to the SID.</description>
+			///     </item>
+			///   </list>
+			/// </remarks>
+			public string ToString(string format)
 			{
-				try { return ConvertSidToStringSid(this); }
+				try { return ((PSID)handle).ToString(format); }
 				catch { return !IsInvalid && !IsClosed ? "Invalid" : "0"; }
 			}
 
@@ -292,6 +352,115 @@ namespace Vanara.PInvoke
 					foreach (var p in items)
 						p.Dispose();
 				return LocalFree(handle) == HLOCAL.NULL;
+			}
+		}
+	}
+
+	/// <summary>Extension methods for PSID instances.</summary>
+	public static class PSIDExtensions
+	{
+		/// <summary>Determines equality of two PSID instances.</summary>
+		/// <param name="psid1">The first PSID.</param>
+		/// <param name="psid2">The second PSID.</param>
+		/// <returns><see langword="true"/> if the SID structures are equal; <see langword="false"/> otherwise.</returns>
+		public static bool Equals(this PSID psid1, PSID psid2) => AdvApi32.EqualSid(psid1, psid2);
+
+		/// <summary>Gets the binary form of the SID structure.</summary>
+		/// <param name="pSid">The SID structure pointer.</param>
+		/// <returns>The binary form (byte array) of the SID structure.</returns>
+		public static byte[] GetBinaryForm(this PSID pSid) => pSid.IsValidSid() ? ((IntPtr)pSid).ToArray<byte>(pSid.Length()) : (new byte[0]);
+
+		/// <summary>
+		/// Validates a security identifier (SID) by verifying that the revision number is within a known range, and that the number of
+		/// subauthorities is less than the maximum.
+		/// </summary>
+		/// <param name="pSid">A pointer to the SID structure to validate. This parameter cannot be NULL.</param>
+		/// <returns>
+		/// If the SID structure is valid, the return value is <see langword="true"/>. If the SID structure is not valid, the return value is <see langword="false"/>.
+		/// </returns>
+		public static bool IsValidSid(this PSID pSid) => AdvApi32.IsValidSid(pSid);
+
+		/// <summary>Returns the length, in bytes, of a valid security identifier (SID).</summary>
+		/// <param name="pSid">A pointer to the SID structure whose length is returned. The structure is assumed to be valid.</param>
+		/// <returns>
+		/// If the SID structure is valid, the return value is the length, in bytes, of the SID structure. If the SID structure is not valid,
+		/// the return value is 0.
+		/// </returns>
+		public static int Length(this PSID pSid) => AdvApi32.IsValidSid(pSid) ? AdvApi32.GetLengthSid(pSid) : 0;
+
+		/// <summary>Converts the value of a security identifier (SID) to its equivalent string representation according to the provided format specifier.</summary>
+		/// <param name="pSid">A pointer to a valid SID structure.</param>
+		/// <param name="format">
+		/// A single format specifier that indicates how to format the value of this security identifier (SID). The format parameter can be
+		/// "B", "D", "N", or "P". If format is null or an empty string (""), "D" is used.
+		/// </param>
+		/// <returns>The value of this security identifier (SID), in the specified format.</returns>
+		/// <exception cref="ArgumentException">SID value is not a valid SID. - pSid</exception>
+		/// <exception cref="FormatException">The value of format is not null, an empty string (""), "B", "D", "N", or "P".</exception>
+		/// <remarks>
+		///   <para>The following table shows the accepted format specifiers for the format parameter.</para>
+		///   <list type="table">
+		///     <item>
+		///       <description>Specifier</description>
+		///       <description>Format of return value</description>
+		///     </item>
+		///     <item>
+		///       <description>"B"</description>
+		///       <description>
+		///         <para>Binary hex dump representation of the SID.</para>
+		///       </description>
+		///     </item>
+		///     <item>
+		///       <description>"D"</description>
+		///       <description>SDDL representation of the SID.</description>
+		///     </item>
+		///     <item>
+		///       <description>"N"</description>
+		///       <description>The NT4 style name (domain\username) corresponding to the SID.</description>
+		///     </item>
+		///     <item>
+		///       <description>"P"</description>
+		///       <description>The internet style name (UPN) corresponding to the SID.</description>
+		///     </item>
+		///   </list>
+		/// </remarks>
+		public static string ToString(this PSID pSid, string format)
+		{
+			if (!pSid.IsValidSid())
+				throw new ArgumentException("SID value is not a valid SID.", nameof(pSid));
+			switch (format)
+			{
+				case "B":
+					var len = pSid.Length();
+					return pSid.GetBinaryForm().ToHexDumpString(len, len, 0).Trim(' ', '\r', '\n');
+
+				case "D":
+				case null:
+				case "":
+					return AdvApi32.ConvertSidToStringSid(pSid);
+
+				case "N":
+				case "P":
+					using (var hPol = AdvApi32.LsaOpenPolicy(AdvApi32.LsaPolicyRights.POLICY_ALL_ACCESS))
+					{
+						var flag = format == "P" ? AdvApi32.LsaLookupSidsFlags.LSA_LOOKUP_PREFER_INTERNET_NAMES : 0;
+						try
+						{
+							AdvApi32.LsaLookupSids2(hPol, flag, 1, new[] { pSid }, out var memDoms, out var memNames).ThrowIfFailed();
+							memDoms.Dispose();
+							using (memNames)
+							{
+								return memNames.ToStructure<AdvApi32.LSA_TRANSLATED_NAME>().Name;
+							}
+						}
+						catch (Exception)
+						{
+							goto case "D";
+						}
+					}
+
+				default:
+					throw new FormatException();
 			}
 		}
 	}
