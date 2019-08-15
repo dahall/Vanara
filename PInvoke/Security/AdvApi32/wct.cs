@@ -7,6 +7,8 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		public const uint WCT_MAX_NODE_COUNT = 16;
+
 		/// <summary>
 		/// <para>
 		/// An application-defined callback function that receives a wait chain. Specify this address when calling the
@@ -223,7 +225,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wct.h", MSDNShortId = "5b418fa6-1d07-465e-85ea-b7127264eebf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetThreadWaitChain(HWCT WctHandle, IntPtr Context, WaitChainRetrievalOptions Flags, uint ThreadId, ref uint NodeCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] WAITCHAIN_NODE_INFO[] NodeInfoArray, [MarshalAs(UnmanagedType.Bool)] out bool IsCycle);
+		public static extern bool GetThreadWaitChain(HWCT WctHandle, IntPtr Context, WaitChainRetrievalOptions Flags, uint ThreadId, ref uint NodeCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] WAITCHAIN_NODE_INFO[] NodeInfoArray, [MarshalAs(UnmanagedType.Bool)] out bool IsCycle);
 
 		/// <summary>Creates a new WCT session.</summary>
 		/// <param name="Flags">The session type. This parameter can be one of the following values.</param>
@@ -241,7 +243,7 @@ namespace Vanara.PInvoke
 		// Flags, PWAITCHAINCALLBACK callback );
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wct.h", MSDNShortId = "405d9f3d-c11b-4e20-acc8-9c4f7989685d")]
-		public static extern SafeHWCT OpenThreadWaitChainSession(WaitChainSessionType Flags, [MarshalAs(UnmanagedType.FunctionPtr)] WaitChainCallback callback);
+		public static extern SafeHWCT OpenThreadWaitChainSession(WaitChainSessionType Flags, [Optional, MarshalAs(UnmanagedType.FunctionPtr)] WaitChainCallback callback);
 
 		/// <summary>Register COM callback functions for WCT.</summary>
 		/// <param name="CallStateCallback">The address of the <c>CoGetCallState</c> function.</param>
@@ -260,6 +262,28 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wct.h", MSDNShortId = "f8adffa3-6e63-4fae-81e8-5f6643e988e9")]
 		public static extern void RegisterWaitChainCOMCallback(IntPtr CallStateCallback, IntPtr ActivationStateCallback);
+
+		/// <summary>Register COM callback functions for WCT. This method does the work of getting the method addresses and calling the Windows API function.</summary>
+		/// <returns>This function does not return a value.</returns>
+		/// <remarks>
+		/// <para>
+		/// If a thread is blocked on a COM call, WCT can retrieve COM ownership information using these callback functions. If this function
+		/// is callback multiple times, only the last addresses retrieved are used.
+		/// </para>
+		/// </remarks>
+		[PInvokeData("wct.h", MSDNShortId = "f8adffa3-6e63-4fae-81e8-5f6643e988e9")]
+		public static void RegisterWaitChainCOMCallback()
+		{
+			using (var hLib = Kernel32.LoadLibrary(Lib.Ole32))
+			{
+				if (hLib.IsInvalid) Win32Error.ThrowLastError();
+				var p1 = Kernel32.GetProcAddress(hLib, "CoGetCallState");
+				if (p1 == IntPtr.Zero) Win32Error.ThrowLastError();
+				var p2 = Kernel32.GetProcAddress(hLib, "CoGetActivationState");
+				if (p2 == IntPtr.Zero) Win32Error.ThrowLastError();
+				RegisterWaitChainCOMCallback(p1, p2);
+			}
+		}
 
 		/// <summary>Provides a handle to a thread wait chain.</summary>
 		[StructLayout(LayoutKind.Sequential)]
@@ -337,31 +361,19 @@ namespace Vanara.PInvoke
 			public THREADOBJECT ThreadObject;
 
 			/// <summary/>
-			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode, Size = 272)]
 			public struct LOCKOBJECT
 			{
+				[FieldOffset(0)]
 				private long on0;
-				private long on1;
-				private long on2;
-				private long on3;
-				private long on4;
-				private long on5;
-				private long on6;
-				private long on7;
-				private long on8;
-				private long on9;
-				private long onA;
-				private long onB;
-				private long onC;
-				private long onD;
-				private long onE;
-				private long onF;
 
 				/// <summary>This member is reserved for future use.</summary>
-				public int Timeout;
+				[FieldOffset(256)]
+				public long Timeout;
 
 				/// <summary>This member is reserved for future use.</summary>
 				[MarshalAs(UnmanagedType.Bool)]
+				[FieldOffset(264)]
 				public bool Alertable;
 
 				/// <summary>
@@ -372,16 +384,18 @@ namespace Vanara.PInvoke
 				{
 					get
 					{
-						using (var pin = new PinnedObject(on0))
+						unsafe
 						{
-							return StringHelper.GetString(pin, CharSet.Unicode, 128);
+							fixed (void* pin = &on0)
+								return StringHelper.GetString((IntPtr)pin, CharSet.Unicode, 128);
 						}
 					}
 					set
 					{
-						using (var pin = new PinnedObject(on0))
+						unsafe
 						{
-							StringHelper.Write(value, pin, out _, true, CharSet.Unicode, 128);
+							fixed (void* pin = &on0)
+								StringHelper.Write(value, (IntPtr)pin, out _, true, CharSet.Unicode, 128);
 						}
 					}
 				}
