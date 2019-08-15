@@ -210,9 +210,42 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsididentifierauthority
 		// PSID_IDENTIFIER_AUTHORITY GetSidIdentifierAuthority( PSID pSid );
-		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.AdvApi32, SetLastError = true, EntryPoint = "GetSidIdentifierAuthority")]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "67a06e7b-775f-424c-ab36-0fc9b93b801a")]
-		public static extern PSID_IDENTIFIER_AUTHORITY GetSidIdentifierAuthority(PSID pSid);
+		internal static extern IntPtr InternalGetSidIdentifierAuthority(PSID pSid);
+
+		/// <summary>
+		/// <para>
+		/// The <c>GetSidIdentifierAuthority</c> function returns a pointer to the SID_IDENTIFIER_AUTHORITY structure in a specified security
+		/// identifier (SID).
+		/// </para>
+		/// </summary>
+		/// <param name="pSid">
+		/// <para>A pointer to the SID structure for which a pointer to the SID_IDENTIFIER_AUTHORITY structure is returned.</para>
+		/// <para>
+		/// This function does not handle SID structures that are not valid. Call the IsValidSid function to verify that the <c>SID</c>
+		/// structure is valid before you call this function.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is a pointer to the SID_IDENTIFIER_AUTHORITY structure for the specified SID structure.
+		/// </para>
+		/// <para>
+		/// If the function fails, the return value is undefined. The function fails if the SID structure pointed to by the pSid parameter is
+		/// not valid. To get extended error information, call GetLastError.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function uses a 32-bit RID value. For applications that require a larger RID value, use CreateWellKnownSid and related functions.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsididentifierauthority
+		// PSID_IDENTIFIER_AUTHORITY GetSidIdentifierAuthority( PSID pSid );
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "67a06e7b-775f-424c-ab36-0fc9b93b801a")]
+		public static PSID_IDENTIFIER_AUTHORITY GetSidIdentifierAuthority(PSID pSid) =>
+			new PSID_IDENTIFIER_AUTHORITY(InternalGetSidIdentifierAuthority(pSid));
 
 		/// <summary>
 		/// <para>
@@ -256,9 +289,34 @@ namespace Vanara.PInvoke
 		/// index value specified by the nSubAuthority parameter is out of bounds.
 		/// </para>
 		/// </returns>
-		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
+		[DllImport(Lib.AdvApi32, EntryPoint = "GetSidSubAuthority", SetLastError = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446657")]
-		public static extern IntPtr GetSidSubAuthority(PSID pSid, uint nSubAuthority);
+		internal static extern IntPtr InternalGetSidSubAuthority(PSID pSid, uint nSubAuthority);
+
+		/// <summary>
+		/// The GetSidSubAuthority function returns a pointer to a specified subauthority in a security identifier (SID). The subauthority
+		/// value is a relative identifier (RID).
+		/// </summary>
+		/// <param name="pSid">A pointer to the SID structure from which a pointer to a subauthority is to be returned.</param>
+		/// <param name="nSubAuthority">
+		/// Specifies an index value identifying the subauthority array element whose address the function will return. The function performs
+		/// no validation tests on this value. An application can call the GetSidSubAuthorityCount function to discover the range of
+		/// acceptable values.
+		/// </param>
+		/// <returns>
+		/// On success, the return value is the specified SID subauthority.
+		/// <para>
+		/// If the function fails, an exception is thrown. The function fails if the specified SID structure is not valid or if the index
+		/// value specified by the nSubAuthority parameter is out of bounds.
+		/// </para>
+		/// </returns>
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446657")]
+		public static uint GetSidSubAuthority(PSID pSid, uint nSubAuthority)
+		{
+			var ptr = InternalGetSidSubAuthority(pSid, nSubAuthority);
+			Win32Error.GetLastError().ThrowIfFailed();
+			return unchecked((uint)Marshal.ReadInt32(ptr));
+		}
 
 		/// <summary>
 		/// The <c>GetSidSubAuthorityCount</c> function returns a pointer to the member in a security identifier (SID) structure that
@@ -284,9 +342,41 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsidsubauthoritycount PUCHAR
 		// GetSidSubAuthorityCount( PSID pSid );
-		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.AdvApi32, SetLastError = true, EntryPoint = "GetSidSubAuthorityCount")]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "ca81fb91-f5a1-4dc6-83ec-eadb62a37805")]
-		public static extern IntPtr GetSidSubAuthorityCount(PSID pSid);
+		internal static extern IntPtr InternalGetSidSubAuthorityCount(PSID pSid);
+
+		/// <summary>
+		/// The <c>GetSidSubAuthorityCount</c> function returns a pointer to the member in a security identifier (SID) structure that
+		/// contains the subauthority count.
+		/// </summary>
+		/// <param name="pSid">
+		/// <para>A pointer to the SID structure from which a pointer to the subauthority count is returned.</para>
+		/// <para>
+		/// This function does not handle SID structures that are not valid. Call the IsValidSid function to verify that the <c>SID</c>
+		/// structure is valid before you call this function.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is the subauthority count for the specified SID structure.</para>
+		/// <para>
+		/// If the function fails, an exception is thrown. The function fails if the specified SID structure is not valid. To get
+		/// extended error information, call GetLastError.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// The SID structure specified in pSid uses a 32-bit value. For applications that require longer RID values, use CreateWellKnownSid
+		/// and related functions.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsidsubauthoritycount PUCHAR
+		// GetSidSubAuthorityCount( PSID pSid );
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "ca81fb91-f5a1-4dc6-83ec-eadb62a37805")]
+		public static byte GetSidSubAuthorityCount(PSID pSid)
+		{
+			var ptr = InternalGetSidSubAuthorityCount(pSid);
+			Win32Error.GetLastError().ThrowIfFailed();
+			return Marshal.ReadByte(ptr);
+		}
 
 		/// <summary>
 		/// The <c>GetWindowsAccountDomainSid</c> function receives a security identifier (SID) and returns a SID representing the domain of
@@ -307,6 +397,29 @@ namespace Vanara.PInvoke
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "ee2ba1b4-1bef-4d79-bb18-512705e2c378")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetWindowsAccountDomainSid(PSID pSid, SafePSID pDomainSid, ref uint cbDomainSid);
+
+		/// <summary>
+		/// The <c>GetWindowsAccountDomainSid</c> function receives a security identifier (SID) and returns a SID representing the domain of
+		/// that SID.
+		/// </summary>
+		/// <param name="pSid">A pointer to the SID to examine.</param>
+		/// <param name="pDomainSid">An allocated safe pointer to a SID representing the domain.</param>
+		/// <returns>
+		/// <para>Returns <see langword="true"/> if successful.</para>
+		/// <para>Otherwise, returns <see langword="false"/>. For extended error information, call GetLastError.</para>
+		/// </returns>
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "ee2ba1b4-1bef-4d79-bb18-512705e2c378")]
+		public static bool GetWindowsAccountDomainSid(PSID pSid, out SafePSID pDomainSid)
+		{
+			uint sz = 0;
+			if (!GetWindowsAccountDomainSid(pSid, SafePSID.Null, ref sz) && sz == 0)
+			{
+				pDomainSid = SafePSID.Null;
+				return false;
+			}
+			pDomainSid = new SafePSID(sz);
+			return GetWindowsAccountDomainSid(pSid, pDomainSid, ref sz);
+		}
 
 		/// <summary>The <c>InitializeSid</c> function initializes a security identifier (SID).</summary>
 		/// <param name="Sid">A pointer to a SID structure to be initialized.</param>

@@ -4282,7 +4282,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>An array of 6 bytes specifying a SID's top-level authority.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
-			public byte[] Value;
+			public byte[] Value = new byte[6];
 
 			/// <summary>Initializes a new instance of the <see cref="SID_IDENTIFIER_AUTHORITY"/> struct.</summary>
 			/// <param name="value">The value.</param>
@@ -4291,7 +4291,6 @@ namespace Vanara.PInvoke
 			{
 				if (value == null || value.Length != 6)
 					throw new ArgumentOutOfRangeException(nameof(value));
-				Value = new byte[6];
 				Array.Copy(value, Value, 6);
 			}
 
@@ -4299,9 +4298,16 @@ namespace Vanara.PInvoke
 			/// <param name="value">The value.</param>
 			public PSID_IDENTIFIER_AUTHORITY(long value)
 			{
-				Value = new byte[6];
 				LongValue = value;
 			}
+
+			internal PSID_IDENTIFIER_AUTHORITY(IntPtr existingPtr)
+			{
+				if (existingPtr == IntPtr.Zero)
+					Value = existingPtr.ToArray<byte>(6);
+			}
+
+			private PSID_IDENTIFIER_AUTHORITY() { }
 
 			/// <summary>Gets or sets the long value.</summary>
 			/// <value>The long value.</value>
@@ -4311,10 +4317,7 @@ namespace Vanara.PInvoke
 				{
 					long nAuthority = 0;
 					for (var i = 0; i <= 5; i++)
-					{
-						nAuthority <<= 8;
-						nAuthority |= Value[i];
-					}
+						nAuthority |= (Value[i] << (8 * i));
 					return nAuthority;
 				}
 				set
@@ -4334,6 +4337,21 @@ namespace Vanara.PInvoke
 			/// <param name="sia">The sia.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator PSID_IDENTIFIER_AUTHORITY(SID_IDENTIFIER_AUTHORITY sia) => new PSID_IDENTIFIER_AUTHORITY(sia.Value);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PSID_IDENTIFIER_AUTHORITY h1, PSID_IDENTIFIER_AUTHORITY h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PSID_IDENTIFIER_AUTHORITY h1, PSID_IDENTIFIER_AUTHORITY h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PSID_IDENTIFIER_AUTHORITY h ? h.LongValue == h.LongValue : false;
 		}
 
 		/// <summary>The TOKEN_PRIVILEGES structure contains information about a set of privileges for an access token.</summary>

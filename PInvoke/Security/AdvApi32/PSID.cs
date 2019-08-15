@@ -26,7 +26,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="SafePSID"/> class.</summary>
 			/// <param name="size">The size of memory to allocate, in bytes.</param>
-			public SafePSID(int size) : base(size)
+			public SafePSID(SizeT size) : base(size)
 			{
 			}
 

@@ -45,31 +45,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
-		public void AllocateAndInitializeSidTest()
-		{
-			var b = AllocateAndInitializeSid(KnownSIDAuthority.SECURITY_WORLD_SID_AUTHORITY, 1, KnownSIDRelativeID.SECURITY_WORLD_RID, 0, 0, 0, 0, 0, 0, 0, out var pSid);
-			Assert.That(b);
-			var everyone = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
-			var esid = new byte[everyone.BinaryLength];
-			everyone.GetBinaryForm(esid, 0);
-			var peSid = new SafeByteArray(esid);
-			Assert.That(EqualSid(pSid, (IntPtr)peSid));
-			ConvertStringSidToSid("S-1-2-0", out var lsid);
-			Assert.That(EqualSid(pSid, (IntPtr)lsid), Is.False);
-			string s = null;
-			Assert.That(IsValidSid(pSid), Is.True);
-			Assert.That(() => s = ConvertSidToStringSid(pSid), Throws.Nothing);
-			Assert.That(s, Is.EqualTo("S-1-1-0"));
-			var saptr = GetSidSubAuthority(pSid, 0);
-			Assert.That(Marshal.ReadInt32(saptr), Is.EqualTo(0));
-			var len = GetLengthSid(pSid);
-			var p2 = new SafePSID(len);
-			b = CopySid(len, (IntPtr)p2, pSid);
-			Assert.That(EqualSid(p2, pSid));
-			Assert.That(b);
-		}
-
-		[Test()]
 		[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
 		public void ChangeAndQueryServiceConfigTest()
 		{

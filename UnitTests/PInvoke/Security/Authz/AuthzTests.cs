@@ -46,7 +46,7 @@ namespace Vanara.PInvoke.Tests
 
 		public static SafeAUTHZ_CLIENT_CONTEXT_HANDLE GetCurrentUserAuthContext(SafeAUTHZ_RESOURCE_MANAGER_HANDLE hResMgr)
 		{
-			var b = AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, PSIDTests.GetCurrentSid(), hResMgr, IntPtr.Zero, new LUID(), IntPtr.Zero, out var hCtx);
+			var b = AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, SafePSID.Current, hResMgr, IntPtr.Zero, new LUID(), IntPtr.Zero, out var hCtx);
 			if (!b) TestContext.WriteLine($"AuthzInitializeContextFromSid:{Win32Error.GetLastError()}");
 			Assert.That(b);
 			Assert.That(!hCtx.IsInvalid);
