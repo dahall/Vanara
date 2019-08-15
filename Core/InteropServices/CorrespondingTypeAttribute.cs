@@ -67,7 +67,7 @@ namespace Vanara.InteropServices
 		/// <param name="value">The enumeration type.</param>
 		/// <param name="typeRef">The type supplied by the user to validate.</param>
 		/// <returns><c>true</c> if this instance can get the specified type; otherwise, <c>false</c>.</returns>
-		public static bool CanGet<TEnum>(TEnum value, Type typeRef) where TEnum : System.Enum => GetAttrForEnum(value).Any(a => a.Action.IsFlagSet(CorrespondingAction.Get) && a.TypeRef == typeRef);
+		public static bool CanGet<TEnum>(TEnum value, Type typeRef) where TEnum : System.Enum => GetAttrForEnum(value, CorrespondingAction.Get).Any(a => a.TypeRef == typeRef);
 
 		/// <summary>Determines whether this type can get the specified reference type.</summary>
 		/// <param name="type">The class type.</param>
@@ -140,18 +140,12 @@ namespace Vanara.InteropServices
 		/// <param name="value">The enum value.</param>
 		/// <param name="action">The action to filter for.</param>
 		/// <returns>An enumeration of all associated CorrespondingTypeAttribute instances.</returns>
-		protected static IEnumerable<CorrespondingTypeAttribute> GetAttrForEnum<TEnum>(TEnum value, CorrespondingAction action) where TEnum : System.Enum =>
-			GetAttrForEnum(value).Where(a => a.Action.HasFlag(action));
-
-		/// <summary>Gets the CorrespondingTypeAttribute instances associated with an enum value.</summary>
-		/// <param name="value">The enum value.</param>
-		/// <returns>An enumeration of all associated CorrespondingTypeAttribute instances.</returns>
-		protected static IEnumerable<CorrespondingTypeAttribute> GetAttrForEnum<TEnum>(TEnum value) where TEnum : System.Enum
+		protected static IEnumerable<CorrespondingTypeAttribute> GetAttrForEnum<TEnum>(TEnum value, CorrespondingAction action = (CorrespondingAction)0xf) where TEnum : System.Enum
 		{
 			var valueType = value.GetType();
-			var attr = valueType.GetField(value.ToString()).GetCustomAttributes<CorrespondingTypeAttribute>();
-			if (!attr.Any()) return new CorrespondingTypeAttribute[0];
+			var attr = valueType.GetField(value.ToString()).GetCustomAttributes<CorrespondingTypeAttribute>(false, a => a.Action.HasFlag(action));
 			if (attr.Any(a => a.Action == CorrespondingAction.Exception)) throw new Exception();
+			//if (!attr.Any()) return new CorrespondingTypeAttribute[0];
 			return attr;
 		}
 
