@@ -83,8 +83,7 @@ namespace Vanara.Extensions
 			var tokenIL = hObject.GetInfo<TOKEN_MANDATORY_LABEL>(TOKEN_INFORMATION_CLASS.TokenIntegrityLevel);
 
 			// Integrity Level SIDs are in the form of S-1-16-0xXXXX. (e.g. S-1-16-0x1000 stands for low integrity level SID). There is one and only one subauthority.
-			var pIL = GetSidSubAuthority(tokenIL.Label.Sid, 0);
-			switch (Marshal.ReadInt32(pIL))
+			switch (GetSidSubAuthority(tokenIL.Label.Sid, 0))
 			{
 				case 0:
 					return ProcessIntegrityLevel.Untrusted;
