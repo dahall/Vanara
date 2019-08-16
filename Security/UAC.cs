@@ -79,7 +79,7 @@ namespace Vanara.Security
 					if (elevType == TOKEN_ELEVATION_TYPE.TokenElevationTypeLimited)
 					{
 						// Marshal the linked token value from native to .NET.
-						hObjectToCheck = new SafeHTOKEN(hObject.GetInfo<TOKEN_LINKED_TOKEN>(TOKEN_INFORMATION_CLASS.TokenLinkedToken).LinkedToken);
+						hObjectToCheck = new SafeHTOKEN(hObject.GetInfo<TOKEN_LINKED_TOKEN>(TOKEN_INFORMATION_CLASS.TokenLinkedToken).LinkedToken.DangerousGetHandle());
 					}
 				}
 
@@ -95,8 +95,9 @@ namespace Vanara.Security
 			if (hObjectToCheck == null || hObjectToCheck.IsInvalid) return false;
 
 			// Check if the token to be checked contains admin SID.
-			var id = new WindowsIdentity(hObjectToCheck.DangerousGetHandle());
-			return id.IsAdmin();
+			using (hObjectToCheck)
+			using (var id = new WindowsIdentity(hObjectToCheck.DangerousGetHandle()))
+				return id.IsAdmin();
 		}
 
 		/*/// <summary>Runs the current application elevated if it isn't already. <note>This will close the current running instance.</note></summary>
