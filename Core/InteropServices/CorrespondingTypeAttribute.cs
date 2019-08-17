@@ -106,7 +106,7 @@ namespace Vanara.InteropServices
 		/// <param name="value">The enumeration value or class instance.</param>
 		/// <param name="typeRef">The type supplied by the user to validate.</param>
 		/// <returns><c>true</c> if this instance can set the specified type; otherwise, <c>false</c>.</returns>
-		public static bool CanSet<TEnum>(TEnum value, Type typeRef) where TEnum : System.Enum => GetAttrForEnum(value).Any(a => a.Action.IsFlagSet(CorrespondingAction.Set) && a.TypeRef == typeRef);
+		public static bool CanSet<TEnum>(TEnum value, Type typeRef) where TEnum : System.Enum => GetAttrForEnum(value, CorrespondingAction.Set).Any(a => a.TypeRef == typeRef);
 
 		/// <summary>Determines whether this type can set the specified reference type.</summary>
 		/// <param name="type">The class type.</param>
