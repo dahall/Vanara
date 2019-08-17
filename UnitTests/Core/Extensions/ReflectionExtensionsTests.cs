@@ -1,4 +1,5 @@
 ﻿using Vanara.Extensions;
+using Vanara.Extensions.Reflection;
 using NUnit.Framework;
 using System;
 using System.Drawing;
@@ -109,7 +110,7 @@ namespace Vanara.Extensions.Tests
 			Assert.That(() => dt.InvokeMethod<long>("ToBin"), Throws.Exception);
 			Assert.That(() => dt.InvokeMethod<long>("ToBinary", 1), Throws.Exception);
 			Assert.That(() => dt.InvokeMethod<DateTime>("ToBinary", 1), Throws.Exception);
-			Assert.That(() => dt.InvokeMethod<TimeSpan>("Subtract", new[] {typeof(long)}, new object[] {1}), Throws.ArgumentException);
+			Assert.That(() => dt.InvokeMethod<TimeSpan>("Subtract", new[] { typeof(long) }, new object[] { 1 }), Throws.ArgumentException);
 			Assert.That(() => dt.InvokeMethod<TimeSpan>("Subtract", new[] { typeof(DateTime) }, new object[] { 1 }), Throws.ArgumentException);
 			Assert.That(() => dt.InvokeMethod<long>("Subtract", new[] { typeof(DateTime) }, new object[] { DateTime.Now }), Throws.ArgumentException);
 		}

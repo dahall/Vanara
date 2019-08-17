@@ -705,12 +705,12 @@ namespace Vanara.PInvoke
 							break;
 
 						case DateTime dt:
-							pvFilter = new SYSTEMTIME(dt).StructureToPtr(Marshal.AllocCoTaskMem, out var _);
+							pvFilter = new SYSTEMTIME(dt).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 							type = HeaderItemFilterType.HDFT_ISDATE;
 							break;
 
 						case string str:
-							pvFilter = new HDTEXTFILTER(str).StructureToPtr(Marshal.AllocCoTaskMem, out var _);
+							pvFilter = new HDTEXTFILTER(str).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 							type = HeaderItemFilterType.HDFT_ISSTRING;
 							break;
 
@@ -720,7 +720,7 @@ namespace Vanara.PInvoke
 							break;
 
 						case SYSTEMTIME st:
-							pvFilter = st.StructureToPtr(Marshal.AllocCoTaskMem, out var _);
+							pvFilter = st.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 							type = HeaderItemFilterType.HDFT_ISDATE;
 							break;
 
@@ -929,7 +929,7 @@ namespace Vanara.PInvoke
 			/// <param name="rc">The coordinates of the header.</param>
 			public HDLAYOUT(RECT rc)
 			{
-				prc = rc.StructureToPtr(Marshal.AllocHGlobal, out var _);
+				prc = rc.MarshalToPtr(Marshal.AllocHGlobal, out var _);
 				pwpos = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WINDOWPOS)));
 			}
 
@@ -941,7 +941,7 @@ namespace Vanara.PInvoke
 				set
 				{
 					Marshal.FreeHGlobal(prc);
-					prc = value.StructureToPtr(Marshal.AllocHGlobal, out var _);
+					prc = value.MarshalToPtr(Marshal.AllocHGlobal, out var _);
 				}
 			}
 

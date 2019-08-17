@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using Vanara.Extensions;
+using Vanara.Extensions.Reflection;
 
 namespace Vanara.Configuration
 {
@@ -495,7 +496,7 @@ namespace Vanara.Windows.Forms
 		/// <param name="onRecentFileClick">Action to run when The on recent file click.</param>
 		/// <param name="onClearRecentFilesClick">Optional. The on clear recent files click.</param>
 		/// <param name="storageHandler">Optional. The storage handler.</param>
-		public MenuStripMRUManager(string extensions, ToolStripMenuItem parentMenuItem, Action<string> onRecentFileClick, 
+		public MenuStripMRUManager(string extensions, ToolStripMenuItem parentMenuItem, Action<string> onRecentFileClick,
 			Action<StringCollection> onClearRecentFilesClick = null, IFileListStorage storageHandler = null)
 			: base(storageHandler ?? new AppSettingsFileListStorage(), new MenuStripMenuBuilder())
 		{
@@ -571,7 +572,7 @@ namespace Vanara.Windows.Forms
 				if (!string.IsNullOrEmpty(clearListMenuItemText))
 				{
 					RecentFileMenuItem.DropDownItems.Add("-");
-					RecentFileMenuItem.DropDownItems.Add(clearListMenuItemText, null, (o, e) => clearListMenuItemClick?.Invoke() );
+					RecentFileMenuItem.DropDownItems.Add(clearListMenuItemText, null, (o, e) => clearListMenuItemClick?.Invoke());
 				}
 				RecentFileMenuItem.Enabled = true;
 			}

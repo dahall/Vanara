@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Security.AccessControl;
 using Vanara.Extensions;
+using Vanara.Extensions.Reflection;
 
 namespace Vanara.Security.AccessControl
 {

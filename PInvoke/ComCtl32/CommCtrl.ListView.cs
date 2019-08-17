@@ -2159,14 +2159,12 @@ namespace Vanara.PInvoke
 					}
 					if (cColumns > 0)
 					{
-						puColumns = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(int)) * (int)cColumns);
-						cols.MarshalToPtr(puColumns);
+						puColumns = cols.MarshalToPtr<int>(Marshal.AllocHGlobal, out _);
 					}
 					EnumExtensions.SetFlags(ref mask, ListViewItemMask.LVIF_COLUMNS);
 					if (hasFmts)
 					{
-						piColFmt = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(int)) * (int)cColumns);
-						fmts.MarshalToPtr(piColFmt);
+						piColFmt = fmts.MarshalToPtr<int>(Marshal.AllocHGlobal, out _);
 						EnumExtensions.SetFlags(ref mask, ListViewItemMask.LVIF_COLFMT);
 					}
 				}

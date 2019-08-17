@@ -4,72 +4,12 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace Vanara.Extensions
+namespace Vanara.Extensions.Reflection
 {
-	/// <summary>Extensions related to <c>System.Reflection</c></summary>
+	/// <summary>Extensions for <see cref="object"/> related to <c>System.Reflection</c></summary>
 	public static class ReflectionExtensions
 	{
 		private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
-		private const BindingFlags staticBindingFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
-
-		/// <summary>For a structure, gets either the result of the static Create method or the default.</summary>
-		/// <typeparam name="T">The structure's type.</typeparam>
-		/// <returns>The result of the static Create method or the default.</returns>
-		public static T CreateOrDefault<T>() where T : struct
-		{
-			var mi = typeof(T).GetMethod("Create", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static, null, Type.EmptyTypes, null);
-			return mi == null ? (default) : (T)mi.Invoke(null, null);
-		}
-
-		/// <summary>Gets all loaded types in the <see cref="AppDomain"/>.</summary>
-		/// <param name="appDomain">The application domain.</param>
-		/// <returns>All loaded types.</returns>
-		public static IEnumerable<Type> GetAllTypes(this AppDomain appDomain) => appDomain.GetAssemblies().SelectMany(a => a.GetTypes());
-
-		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
-		/// <typeparam name="TAttr">The type of attribute to search for. Only attributes that are assignable to this type are returned.</typeparam>
-		/// <param name="element">An object derived from the MemberInfo class that describes a constructor, event, field, method, or property member of a class.</param>
-		/// <param name="inherit"><c>true</c> to search this member's inheritance chain to find the attributes; otherwise, <c>false</c>. This parameter is ignored for properties and events.</param>
-		/// <param name="predicate">An optional predicate to refine the results.</param>
-		/// <returns></returns>
-		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this MemberInfo element, bool inherit = false, Func<TAttr, bool> predicate = null) where TAttr : Attribute =>
-			element.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
-
-		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
-		/// <typeparam name="TAttr">The type of attribute to search for. Only attributes that are assignable to this type are returned.</typeparam>
-		/// <param name="type">The type of the <see cref="Type"/> to examine.</param>
-		/// <param name="inherit"><c>true</c> to search this member's inheritance chain to find the attributes; otherwise, <c>false</c>. This parameter is ignored for properties and events.</param>
-		/// <param name="predicate">An optional predicate to refine the results.</param>
-		/// <returns></returns>
-		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this Type type, bool inherit = false, Func<TAttr, bool> predicate = null) where TAttr : Attribute =>
-			type.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
-
-		/// <summary>Finds the type of the element of a type. Returns null if this type does not enumerate.</summary>
-		/// <param name="type">The type to check.</param>
-		/// <returns>The element type, if found; otherwise, <see langword="null"/>.</returns>
-		public static Type FindElementType(this Type type)
-		{
-			if (type.IsArray)
-				return type.GetElementType();
-
-			// type is IEnumerable<T>;
-			if (ImplIEnumT(type))
-				return type.GetGenericArguments().First();
-
-			// type implements/extends IEnumerable<T>;
-			var enumType = type.GetInterfaces().Where(ImplIEnumT).Select(t => t.GetGenericArguments().First()).FirstOrDefault();
-			if (enumType != null)
-				return enumType;
-
-			// type is IEnumerable
-			if (IsIEnum(type) || type.GetInterfaces().Any(IsIEnum))
-				return typeof(object);
-
-			return null;
-
-			bool IsIEnum(Type t) => t == typeof(System.Collections.IEnumerable);
-			bool ImplIEnumT(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
-		}
 
 		/// <summary>Gets a named field value from an object.</summary>
 		/// <typeparam name="T">The expected type of the field to be returned.</typeparam>
@@ -81,16 +21,6 @@ namespace Vanara.Extensions
 			if (obj is null) throw new ArgumentNullException(nameof(obj));
 			if (string.IsNullOrEmpty(fieldName)) throw new ArgumentNullException(nameof(fieldName));
 			return (T)obj.GetType().InvokeMember(fieldName, BindingFlags.GetField | bindingFlags, null, obj, null, null);
-		}
-
-		/// <summary>Gets a named field value from an object.</summary>
-		/// <typeparam name="T">The expected type of the field to be returned.</typeparam>
-		/// <param name="fieldName">Name of the field.</param>
-		/// <returns>The field value.</returns>
-		public static T GetStaticFieldValue<T>(string fieldName)
-		{
-			if (string.IsNullOrEmpty(fieldName)) throw new ArgumentNullException(nameof(fieldName));
-			return (T)typeof(T).InvokeMember(fieldName, BindingFlags.GetField | staticBindingFlags, null, null, null);
 		}
 
 		/// <summary>Gets a named field value from an object.</summary>
@@ -148,31 +78,6 @@ namespace Vanara.Extensions
 			return gmi.Invoke(obj, args);
 		}
 
-		/// <summary>Invokes a named method on a created instance of a type with parameters.</summary>
-		/// <typeparam name="T">The expected type of the method's return value.</typeparam>
-		/// <param name="type">The type to be instantiated and then used to invoke the method. This method assumes the type has a default public constructor.</param>
-		/// <param name="methodName">Name of the method.</param>
-		/// <param name="args">The arguments to provide to the method invocation.</param>
-		/// <returns>The value returned from the method.</returns>
-		public static T InvokeMethod<T>(this Type type, string methodName, params object[] args)
-		{
-			var o = Activator.CreateInstance(type);
-			return InvokeMethod<T>(o, methodName, args);
-		}
-
-		/// <summary>Invokes a named method on a created instance of a type with parameters.</summary>
-		/// <typeparam name="T">The expected type of the method's return value.</typeparam>
-		/// <param name="type">The type to be instantiated and then used to invoke the method.</param>
-		/// <param name="instArgs">The arguments to supply to the constructor.</param>
-		/// <param name="methodName">Name of the method.</param>
-		/// <param name="args">The arguments to provide to the method invocation.</param>
-		/// <returns>The value returned from the method.</returns>
-		public static T InvokeMethod<T>(this Type type, object[] instArgs, string methodName, params object[] args)
-		{
-			var o = Activator.CreateInstance(type, instArgs);
-			return InvokeMethod<T>(o, methodName, args);
-		}
-
 		/// <summary>Invokes a named method on an object with parameters and no return value.</summary>
 		/// <param name="obj">The object on which to invoke the method.</param>
 		/// <param name="methodName">Name of the method.</param>
@@ -224,6 +129,142 @@ namespace Vanara.Extensions
 			if (tt != typeof(object) && mi.ReturnType != tt && !mi.ReturnType.IsSubclassOf(tt))
 				throw new ArgumentException(@"Return type mismatch", nameof(T));
 			return (T)mi.Invoke(obj, args);
+		}
+
+		/// <summary>Sets a named field on an object.</summary>
+		/// <typeparam name="T">The type of the field to be set.</typeparam>
+		/// <param name="obj">The object on which to set the field.</param>
+		/// <param name="fieldName">Name of the field.</param>
+		/// <param name="value">The field value to set on the object.</param>
+		public static void SetFieldValue<T>(this object obj, string fieldName, T value)
+		{
+			try { obj?.GetType().InvokeMember(fieldName, BindingFlags.SetField | bindingFlags, null, obj, new object[] { value }, null); }
+			catch { }
+		}
+
+		/// <summary>Sets a named property on an object.</summary>
+		/// <typeparam name="T">The type of the property to be set.</typeparam>
+		/// <param name="obj">The object on which to set the property.</param>
+		/// <param name="propName">Name of the property.</param>
+		/// <param name="value">The property value to set on the object.</param>
+		public static void SetPropertyValue<T>(this object obj, string propName, T value)
+		{
+			try { obj?.GetType().InvokeMember(propName, BindingFlags.SetProperty | bindingFlags, null, obj, new object[] { value }, null); }
+			catch { }
+		}
+	}
+}
+
+namespace Vanara.Extensions
+{
+	using Vanara.Extensions.Reflection;
+
+	/// <summary>Extensions related to <c>System.Reflection</c></summary>
+	public static class ReflectionExtensions
+	{
+		private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
+		private const BindingFlags staticBindingFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
+
+		/// <summary>For a structure, gets either the result of the static Create method or the default.</summary>
+		/// <typeparam name="T">The structure's type.</typeparam>
+		/// <returns>The result of the static Create method or the default.</returns>
+		public static T CreateOrDefault<T>() where T : struct
+		{
+			var mi = typeof(T).GetMethod("Create", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static, null, Type.EmptyTypes, null);
+			if (mi != null)
+				return (T)mi.Invoke(null, null);
+			var fi = typeof(T).GetField("Default", BindingFlags.Public | BindingFlags.Static);
+			if (fi != null)
+				return (T)fi.GetValue(null);
+			var pi = typeof(T).GetProperty("Default", BindingFlags.Public | BindingFlags.Static | BindingFlags.GetProperty, null, typeof(T), Type.EmptyTypes, null);
+			if (pi != null)
+				return (T)pi.GetValue(null);
+			return default;
+		}
+
+		/// <summary>Gets all loaded types in the <see cref="AppDomain"/>.</summary>
+		/// <param name="appDomain">The application domain.</param>
+		/// <returns>All loaded types.</returns>
+		public static IEnumerable<Type> GetAllTypes(this AppDomain appDomain) => appDomain.GetAssemblies().SelectMany(a => a.GetTypes());
+
+		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
+		/// <typeparam name="TAttr">The type of attribute to search for. Only attributes that are assignable to this type are returned.</typeparam>
+		/// <param name="element">An object derived from the MemberInfo class that describes a constructor, event, field, method, or property member of a class.</param>
+		/// <param name="inherit"><c>true</c> to search this member's inheritance chain to find the attributes; otherwise, <c>false</c>. This parameter is ignored for properties and events.</param>
+		/// <param name="predicate">An optional predicate to refine the results.</param>
+		/// <returns></returns>
+		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this MemberInfo element, bool inherit = false, Func<TAttr, bool> predicate = null) where TAttr : Attribute =>
+			element.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
+
+		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
+		/// <typeparam name="TAttr">The type of attribute to search for. Only attributes that are assignable to this type are returned.</typeparam>
+		/// <param name="type">The type of the <see cref="Type"/> to examine.</param>
+		/// <param name="inherit"><c>true</c> to search this member's inheritance chain to find the attributes; otherwise, <c>false</c>. This parameter is ignored for properties and events.</param>
+		/// <param name="predicate">An optional predicate to refine the results.</param>
+		/// <returns></returns>
+		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this Type type, bool inherit = false, Func<TAttr, bool> predicate = null) where TAttr : Attribute =>
+			type.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
+
+		/// <summary>Finds the type of the element of a type. Returns null if this type does not enumerate.</summary>
+		/// <param name="type">The type to check.</param>
+		/// <returns>The element type, if found; otherwise, <see langword="null"/>.</returns>
+		public static Type FindElementType(this Type type)
+		{
+			if (type.IsArray)
+				return type.GetElementType();
+
+			// type is IEnumerable<T>;
+			if (ImplIEnumT(type))
+				return type.GetGenericArguments().First();
+
+			// type implements/extends IEnumerable<T>;
+			var enumType = type.GetInterfaces().Where(ImplIEnumT).Select(t => t.GetGenericArguments().First()).FirstOrDefault();
+			if (enumType != null)
+				return enumType;
+
+			// type is IEnumerable
+			if (IsIEnum(type) || type.GetInterfaces().Any(IsIEnum))
+				return typeof(object);
+
+			return null;
+
+			bool IsIEnum(Type t) => t == typeof(System.Collections.IEnumerable);
+			bool ImplIEnumT(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
+		}
+
+		/// <summary>Gets a named field value from an object.</summary>
+		/// <typeparam name="T">The expected type of the field to be returned.</typeparam>
+		/// <param name="fieldName">Name of the field.</param>
+		/// <returns>The field value.</returns>
+		public static T GetStaticFieldValue<T>(string fieldName)
+		{
+			if (string.IsNullOrEmpty(fieldName)) throw new ArgumentNullException(nameof(fieldName));
+			return (T)typeof(T).InvokeMember(fieldName, BindingFlags.GetField | staticBindingFlags, null, null, null);
+		}
+
+		/// <summary>Invokes a named method on a created instance of a type with parameters.</summary>
+		/// <typeparam name="T">The expected type of the method's return value.</typeparam>
+		/// <param name="type">The type to be instantiated and then used to invoke the method. This method assumes the type has a default public constructor.</param>
+		/// <param name="methodName">Name of the method.</param>
+		/// <param name="args">The arguments to provide to the method invocation.</param>
+		/// <returns>The value returned from the method.</returns>
+		public static T InvokeMethod<T>(this Type type, string methodName, params object[] args)
+		{
+			var o = Activator.CreateInstance(type);
+			return o.InvokeMethod<T>(methodName, args);
+		}
+
+		/// <summary>Invokes a named method on a created instance of a type with parameters.</summary>
+		/// <typeparam name="T">The expected type of the method's return value.</typeparam>
+		/// <param name="type">The type to be instantiated and then used to invoke the method.</param>
+		/// <param name="instArgs">The arguments to supply to the constructor.</param>
+		/// <param name="methodName">Name of the method.</param>
+		/// <param name="args">The arguments to provide to the method invocation.</param>
+		/// <returns>The value returned from the method.</returns>
+		public static T InvokeMethod<T>(this Type type, object[] instArgs, string methodName, params object[] args)
+		{
+			var o = Activator.CreateInstance(type, instArgs);
+			return o.InvokeMethod<T>(methodName, args);
 		}
 
 		/// <summary>Invokes a named static method of a type with parameters.</summary>
@@ -296,28 +337,6 @@ namespace Vanara.Extensions
 					if (TryGetType(asm2, typeName, out ret)) break;
 			}
 			return ret;
-		}
-
-		/// <summary>Sets a named field on an object.</summary>
-		/// <typeparam name="T">The type of the field to be set.</typeparam>
-		/// <param name="obj">The object on which to set the field.</param>
-		/// <param name="fieldName">Name of the field.</param>
-		/// <param name="value">The field value to set on the object.</param>
-		public static void SetFieldValue<T>(this object obj, string fieldName, T value)
-		{
-			try { obj?.GetType().InvokeMember(fieldName, BindingFlags.SetField | bindingFlags, null, obj, new object[] { value }, null); }
-			catch { }
-		}
-
-		/// <summary>Sets a named property on an object.</summary>
-		/// <typeparam name="T">The type of the property to be set.</typeparam>
-		/// <param name="obj">The object on which to set the property.</param>
-		/// <param name="propName">Name of the property.</param>
-		/// <param name="value">The property value to set on the object.</param>
-		public static void SetPropertyValue<T>(this object obj, string propName, T value)
-		{
-			try { obj?.GetType().InvokeMember(propName, BindingFlags.SetProperty | bindingFlags, null, obj, new object[] { value }, null); }
-			catch { }
 		}
 
 		/// <summary>Tries the retrieve a <see cref="Type"/> reference from an assembly.</summary>

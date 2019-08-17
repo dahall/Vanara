@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
+using Vanara.Extensions.Reflection;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -690,7 +691,7 @@ namespace Vanara.PInvoke
 				flags |= FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS;
 			Win32Error lastError;
 			var buf = new StringBuilder(1024);
-			using (var pargs = new SafeHGlobalHandle(args.MarshalObjectsToPtr(Marshal.AllocHGlobal, out var sz, true), sz, true))
+			using (var pargs = new SafeHGlobalHandle(InteropExtensions.MarshalObjectsToPtr(args, Marshal.AllocHGlobal, out var sz, true), sz, true))
 				do
 				{
 					if (0 != FormatMessage(flags, hLib, id, langId, buf, (uint)buf.Capacity, (IntPtr)pargs))
@@ -735,7 +736,7 @@ namespace Vanara.PInvoke
 				flags |= FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS;
 			Win32Error lastError;
 			var buf = new StringBuilder(1024);
-			using (var pargs = new SafeHGlobalHandle(args.MarshalObjectsToPtr(Marshal.AllocHGlobal, out var sz, true), sz, true))
+			using (var pargs = new SafeHGlobalHandle(InteropExtensions.MarshalObjectsToPtr(args, Marshal.AllocHGlobal, out var sz, true), sz, true))
 				do
 				{
 					if (0 != FormatMessage(flags, formatString, 0, 0, buf, (uint)buf.Capacity, (IntPtr)pargs))

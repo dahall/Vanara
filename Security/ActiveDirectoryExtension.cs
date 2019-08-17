@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.DirectoryServices.ActiveDirectory;
+using Vanara.Extensions.Reflection;
 using static Vanara.PInvoke.NTDSApi;
 
 namespace Vanara.Extensions
