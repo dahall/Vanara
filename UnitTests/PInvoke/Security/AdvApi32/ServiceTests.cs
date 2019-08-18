@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using static Vanara.PInvoke.AdvApi32;
@@ -20,9 +19,9 @@ namespace Vanara.PInvoke.Tests
 		public void _Setup()
 		{
 			hSvcMgr = OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_ALL_ACCESS);
-			AssertHandleIsValid(hSvcMgr);
+			Assert.That(hSvcMgr, ResultIs.ValidHandle);
 			hSvc = OpenService(hSvcMgr, svcName, ServiceAccessTypes.SERVICE_ALL_ACCESS);
-			AssertHandleIsValid(hSvc);
+			Assert.That(hSvc, ResultIs.ValidHandle);
 		}
 
 		[OneTimeTearDown]
@@ -83,53 +82,49 @@ namespace Vanara.PInvoke.Tests
 		{
 			var sb = new StringBuilder(1024, 1024);
 			var sz = (uint)sb.Capacity;
-			var ret = GetServiceKeyName(hSvcMgr, svcKey, sb, ref sz);
-			TestContext.WriteLine(ret ? sb.ToString() : $"Error: {Win32Error.GetLastError()}");
-			Assert.That(ret, Is.True);
+			Assert.That(GetServiceKeyName(hSvcMgr, svcKey, sb, ref sz), ResultIs.Successful);
+			TestContext.WriteLine(sb);
 			Assert.That(sb.ToString(), Is.EqualTo(svcName));
 		}
 
 		[Test]
 		public void NotifyServiceStatusChangeTest()
 		{
+			var cnt = 0;
+			Thread.BeginThreadAffinity();
+			var callback = new PFN_SC_NOTIFY_CALLBACK(ChangeDelegate);
+			GC.KeepAlive(callback);
 			var svcNotify = new SERVICE_NOTIFY_2
 			{
 				dwVersion = 2,
-				pfnNotifyCallback = ChangeDelegate
+				pfnNotifyCallback = callback
 			};
-			Thread.BeginThreadAffinity();
-			var ret = NotifyServiceStatusChange(hSvc, SERVICE_NOTIFY_FLAGS.SERVICE_NOTIFY_PAUSED | SERVICE_NOTIFY_FLAGS.SERVICE_NOTIFY_PAUSE_PENDING | SERVICE_NOTIFY_FLAGS.SERVICE_NOTIFY_CONTINUE_PENDING, ref svcNotify);
-			if (ret.Failed) TestContext.WriteLine(ret);
-			Assert.That(ret.Succeeded, Is.True);
-			new Thread(ThreadExec).Start();
-			Kernel32.SleepEx(10000, true);
+			GC.KeepAlive(svcNotify);
+			Assert.That(NotifyServiceStatusChange(hSvc, SERVICE_NOTIFY_FLAGS.SERVICE_NOTIFY_PAUSED | SERVICE_NOTIFY_FLAGS.SERVICE_NOTIFY_PAUSE_PENDING | SERVICE_NOTIFY_FLAGS.SERVICE_NOTIFY_CONTINUE_PENDING, svcNotify), ResultIs.Successful);
+			var th = new Thread(ThreadExec);
+			th.Start((SC_HANDLE)hSvc);
+			while (th.IsAlive)
+				Kernel32.SleepEx(100, true);
 			Thread.EndThreadAffinity();
+			Assert.That(cnt, Is.EqualTo(3));
 
-			void ChangeDelegate(ref SERVICE_NOTIFY_2 pParameter)
+			void ChangeDelegate(in SERVICE_NOTIFY_2 pParameter)
 			{
-				TestContext.WriteLine(pParameter.ServiceStatus.dwCurrentState);
+				cnt++;
+				System.Diagnostics.Debug.WriteLine(pParameter.ServiceStatus.dwCurrentState);
 			}
 
-			void ThreadExec()
+			void ThreadExec(object handle)
 			{
-				using (var mgr = OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_ALL_ACCESS))
-				{
-					if (!mgr.IsInvalid)
-					{
-						using (var svc = OpenService(hSvcMgr, svcName, ServiceAccessTypes.SERVICE_ALL_ACCESS))
-						{
-							if (!svc.IsInvalid)
-							{
-								TestContext.WriteLine("Pausing...");
-								ControlService(svc, ServiceControl.SERVICE_CONTROL_PAUSE, out _);
-								Thread.Sleep(3000);
-								TestContext.WriteLine("Continuing...");
-								ControlService(svc, ServiceControl.SERVICE_CONTROL_CONTINUE, out _);
-								Thread.Sleep(3000);
-							}
-						}
-					}
-				}
+				var svc = (SC_HANDLE)handle;
+				System.Diagnostics.Debug.WriteLine("Pausing...");
+				if (!ControlService(svc, ServiceControl.SERVICE_CONTROL_PAUSE, out _))
+					System.Diagnostics.Debug.WriteLine($"Pausing failed: {Win32Error.GetLastError()}");
+				WaitForServiceStatus(svc, ServiceState.SERVICE_PAUSED);
+				System.Diagnostics.Debug.WriteLine("Continuing...");
+				if (!ControlService(svc, ServiceControl.SERVICE_CONTROL_CONTINUE, out _))
+					System.Diagnostics.Debug.WriteLine($"Pausing failed: {Win32Error.GetLastError()}");
+				WaitForServiceStatus(svc, ServiceState.SERVICE_RUNNING);
 			}
 		}
 
@@ -138,7 +133,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			using (var scm = OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_CONNECT))
 			{
-				AssertHandleIsValid(scm);
+				Assert.That(scm, ResultIs.ValidHandle);
 			}
 		}
 
@@ -148,17 +143,8 @@ namespace Vanara.PInvoke.Tests
 			//opens task scheduler service
 			using (var service = OpenService(hSvcMgr, "Schedule", ServiceAccessTypes.SERVICE_QUERY_STATUS))
 			{
-				AssertHandleIsValid(service);
+				Assert.That(service, ResultIs.ValidHandle);
 			}
-		}
-
-		[Test]
-		public void QueryServiceStatusTest()
-		{
-			//query service status
-			var ret = QueryServiceStatus(hSvc, out var i);
-			TestContext.WriteLine(ret ? i.dwCurrentState.ToString() : $"Error: {Win32Error.GetLastError()}");
-			Assert.That(ret, Is.True);
 		}
 
 		[Test]
@@ -169,6 +155,15 @@ namespace Vanara.PInvoke.Tests
 
 			Assert.That(status.dwServiceType, Is.EqualTo(ServiceTypes.SERVICE_WIN32_OWN_PROCESS | ServiceTypes.SERVICE_INTERACTIVE_PROCESS));
 			Assert.That(status.dwServiceFlags, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void QueryServiceStatusTest()
+		{
+			//query service status
+			var ret = QueryServiceStatus(hSvc, out var i);
+			TestContext.WriteLine(ret ? i.dwCurrentState.ToString() : $"Error: {Win32Error.GetLastError()}");
+			Assert.That(ret, Is.True);
 		}
 
 		[Test]
@@ -199,19 +194,9 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		private static void AssertHandleIsValid(SafeSC_HANDLE handle)
-		{
-			if (handle.IsInvalid)
-				Win32Error.ThrowLastError();
-
-			Assert.That(handle.IsNull, Is.False);
-			Assert.That(handle.IsClosed, Is.False);
-			Assert.That(handle.IsInvalid, Is.False);
-		}
-
 		private static ServiceState GetState(SC_HANDLE handle) => QueryServiceStatus(handle, out var i) ? i.dwCurrentState : throw Win32Error.GetLastError().GetException();
 
-		private static void WaitForServiceStatus(SafeSC_HANDLE service, ServiceState status)
+		private static void WaitForServiceStatus(SC_HANDLE service, ServiceState status)
 		{
 			//query service status again to check that it changed
 			var tests = 0;

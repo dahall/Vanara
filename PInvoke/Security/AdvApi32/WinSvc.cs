@@ -82,9 +82,9 @@ namespace Vanara.PInvoke
 
 		/// <summary>Callback function used in <see cref="SERVICE_NOTIFY_2"/> to alert changes registered by <see cref="NotifyServiceStatusChange"/>.</summary>
 		/// <param name="pParameter">A pointer to the SERVICE_NOTIFY structure provided by the caller.</param>
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		[PInvokeData("winsvc.h", MSDNShortId = "52ede72e-eb50-48e2-b5c1-125816f6fe57")]
-		public delegate void PFN_SC_NOTIFY_CALLBACK(ref SERVICE_NOTIFY_2 pParameter);
+		public delegate void PFN_SC_NOTIFY_CALLBACK(in SERVICE_NOTIFY_2 pParameter);
 
 		/// <summary>
 		/// <para>The entry point for a service.</para>
@@ -2696,7 +2696,7 @@ namespace Vanara.PInvoke
 		// SC_HANDLE hService, DWORD dwNotifyMask, PSERVICE_NOTIFYA pNotifyBuffer );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsvc.h", MSDNShortId = "e22b7f69-f096-486f-97fa-0465bef499cd")]
-		public static extern Win32Error NotifyServiceStatusChange(SC_HANDLE hService, SERVICE_NOTIFY_FLAGS dwNotifyMask, ref SERVICE_NOTIFY_2 pNotifyBuffer);
+		public static extern Win32Error NotifyServiceStatusChange(SC_HANDLE hService, SERVICE_NOTIFY_FLAGS dwNotifyMask, in SERVICE_NOTIFY_2 pNotifyBuffer);
 
 		/// <summary>
 		/// <para>
@@ -4795,8 +4795,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>If this member is valid, the notification callback function must free the string using the LocalFree function.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string pszServiceNames;
+			public StrPtrAuto pszServiceNames;
 		}
 
 		/// <summary>
@@ -4957,7 +4956,7 @@ namespace Vanara.PInvoke
 		// dwServiceType; DWORD dwCurrentState; DWORD dwControlsAccepted; DWORD dwWin32ExitCode; DWORD dwServiceSpecificExitCode; DWORD
 		// dwCheckPoint; DWORD dwWaitHint; } SERVICE_STATUS, *LPSERVICE_STATUS;
 		[PInvokeData("winsvc.h", MSDNShortId = "d268609b-d442-4d0f-9d49-ed23fee84961")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct SERVICE_STATUS
 		{
 			/// <summary>
@@ -5480,7 +5479,7 @@ namespace Vanara.PInvoke
 			/// is running and on normal termination.
 			/// </para>
 			/// </summary>
-			public uint dwWin32ExitCode;
+			public Win32Error dwWin32ExitCode;
 
 			/// <summary>
 			/// <para>
