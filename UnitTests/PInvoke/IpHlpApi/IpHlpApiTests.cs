@@ -494,7 +494,8 @@ namespace Vanara.PInvoke.Tests
 		public void GetPerTcp6ConnectionEStatsTest()
 		{
 			var addr = LocalAddrV6.sin6_addr;
-			var row = GetTcp6Table(true).First(r => r.LocalAddr == addr && r.dwLocalPort != 0 && r.dwRemotePort != 0);
+			var row = GetTcp6Table(true).FirstOrDefault(r => r.LocalAddr == addr && r.dwLocalPort != 0 && r.dwRemotePort != 0);
+			Assert.That(row, Is.Not.Null);
 			ToggleAllEstats(row, true);
 			foreach (TCP_ESTATS_TYPE type in Enum.GetValues(typeof(TCP_ESTATS_TYPE)))
 			{
@@ -509,7 +510,8 @@ namespace Vanara.PInvoke.Tests
 		public void GetPerTcpConnectionEStatsTest()
 		{
 			var addr = LocalAddrV4.sin_addr;
-			var row = GetTcpTable(true).First(r => r.dwLocalAddr == addr && r.dwLocalPort != 0 && r.dwRemotePort != 0);
+			var row = GetTcpTable(true).FirstOrDefault(r => r.dwLocalAddr == addr && r.dwLocalPort != 0 && r.dwRemotePort != 0);
+			Assert.That(row, Is.Not.Null);
 			ToggleAllEstats(row, true);
 			foreach (TCP_ESTATS_TYPE type in Enum.GetValues(typeof(TCP_ESTATS_TYPE)))
 			{
