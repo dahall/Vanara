@@ -1338,7 +1338,7 @@ namespace Vanara.Windows.Forms
 					// Clean up old array
 					((IDisposable)c).Dispose();
 					// Build new
-					c.ptr = c.Select(b => b.nativeButton).MarshalToPtr(Marshal.AllocHGlobal, out var _);
+					c.ptr = c.Select(b => b.nativeButton).MarshalToPtr<TaskDialogButtonBase.TASKDIALOG_BUTTON>(Marshal.AllocHGlobal, out var _);
 					// Set hash to new value
 					c.ptrHash = h;
 				}

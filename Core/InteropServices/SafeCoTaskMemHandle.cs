@@ -82,7 +82,7 @@ namespace Vanara.InteropServices
 		/// <typeparam name="T">Native type</typeparam>
 		/// <param name="value">The value.</param>
 		/// <returns><see cref="SafeCoTaskMemHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
-		public static SafeCoTaskMemHandle CreateFromStructure<T>(in T value = default) => new SafeCoTaskMemHandle(InteropExtensions.StructureToPtr(value, new CoTaskMemoryMethods().AllocMem, out int s), s);
+		public static SafeCoTaskMemHandle CreateFromStructure<T>(in T value = default) => new SafeCoTaskMemHandle(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), s);
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure elements. It is the
@@ -94,7 +94,7 @@ namespace Vanara.InteropServices
 		/// <param name="count">Number of items in <paramref name="values"/>. Setting this value to -1 will cause the method to get the count by iterating through <paramref name="values"/>.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
 		/// <returns><see cref="SafeCoTaskMemHandle"/> object to an native (unmanaged) structure with a trail array of structures</returns>
-		public static SafeCoTaskMemHandle CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) => new SafeCoTaskMemHandle(InteropExtensions.MarshalToPtr(values, new CoTaskMemoryMethods().AllocMem, out int s, prefixBytes), s);
+		public static SafeCoTaskMemHandle CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) => new SafeCoTaskMemHandle(InteropExtensions.MarshalToPtr(values, mm.AllocMem, out int s, prefixBytes), s);
 
 		/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
 		/// <param name="values">The list of strings.</param>
@@ -102,6 +102,6 @@ namespace Vanara.InteropServices
 		/// <param name="charSet">The character set to use for the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
 		/// <returns><see cref="SafeCoTaskMemHandle"/> object to an native (unmanaged) array of strings stored using the <paramref name="packing"/> model and the character set defined by <paramref name="charSet"/>.</returns>
-		public static SafeCoTaskMemHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new SafeCoTaskMemHandle(InteropExtensions.MarshalToPtr(values, packing, new CoTaskMemoryMethods().AllocMem, out int s, charSet, prefixBytes), s);
+		public static SafeCoTaskMemHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new SafeCoTaskMemHandle(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes), s);
 	}
 }

@@ -85,7 +85,7 @@ namespace Vanara.Extensions.Tests
 		[Test()]
 		public void FILETIMEToStringTest()
 		{
-			Assert.That(new DateTime(2000, 1, 1).ToFileTimeStruct().ToString("M/d/yyyy"), Is.EqualTo("1/1/2000"));
+			Assert.That(new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Local).ToFileTimeStruct().ToString("M/d/yyyy"), Is.EqualTo("1/1/2000"));
 		}
 	}
 }

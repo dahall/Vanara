@@ -52,10 +52,10 @@ namespace Vanara.InteropServices.Tests
 		{
 			const int sz = 100;
 			var ss = new SecureString();
-			foreach (var c in new string('x', sz)) ss.AppendChar(c);
+			for (var i = 0; i < sz; i++) ss.AppendChar('x');
 
 			var s = new SafeCoTaskMemString(ss);
-			Assert.That(s.Capacity, Is.EqualTo(sz + 1));
+			Assert.That(s.Capacity, Is.EqualTo(sz));
 			Assert.That((string)s, Is.EqualTo(new string('x', sz)));
 
 			ss = null;

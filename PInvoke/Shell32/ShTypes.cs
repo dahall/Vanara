@@ -179,7 +179,7 @@ namespace Vanara.PInvoke
 				if (!(ManagedObj is string s)) throw new InvalidCastException();
 				var sr = new STRRET { uType = STRRET_TYPE.STRRET_WSTR };
 				sr.pOleStr.Assign(s);
-				return sr.StructureToPtr(Marshal.AllocCoTaskMem, out var _);
+				return sr.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 			}
 
 			public object MarshalNativeToManaged(IntPtr pNativeData)

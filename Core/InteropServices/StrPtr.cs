@@ -242,7 +242,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Initializes a new instance of the <see cref="GuidPtr"/> struct by allocating memory with <see cref="Marshal.AllocCoTaskMem(int)"/>.</summary>
 		/// <param name="g">The guid value.</param>
-		public GuidPtr(Guid g) => ptr = g.StructureToPtr(Marshal.AllocCoTaskMem, out _);
+		public GuidPtr(Guid g) => ptr = g.MarshalToPtr(Marshal.AllocCoTaskMem, out _);
 
 		/// <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
 		/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
@@ -257,7 +257,7 @@ namespace Vanara.InteropServices
 		public void Assign(Guid g)
 		{
 			if (IsNull)
-				ptr = g.StructureToPtr(Marshal.AllocCoTaskMem, out _);
+				ptr = g.MarshalToPtr(Marshal.AllocCoTaskMem, out _);
 			else
 				Marshal.StructureToPtr(g, ptr, true);
 		}

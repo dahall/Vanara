@@ -30,7 +30,7 @@ namespace Vanara.PInvoke.Tests
 			// Insert 10 items into the list.
 			for (var Count = 1U; Count <= max; Count += 1)
 			{
-				var pProgramItem = new PROGRAM_ITEM { Signature = Count }.StructureToPtr(Marshal.AllocHGlobal, out _);
+				var pProgramItem = new PROGRAM_ITEM { Signature = Count }.MarshalToPtr(Marshal.AllocHGlobal, out _);
 				InterlockedPushEntrySList(listHead, pProgramItem);
 			}
 
@@ -66,7 +66,7 @@ namespace Vanara.PInvoke.Tests
 			var items = new IntPtr[max];
 			for (var Count = 0U; Count < max; Count += 1)
 			{
-				items[Count] = new PROGRAM_ITEM { ItemEntry = new SLIST_ENTRY { Next = Count == 0 ? IntPtr.Zero : items[Count - 1] }, Signature = Count + 1 }.StructureToPtr(Marshal.AllocHGlobal, out _);
+				items[Count] = new PROGRAM_ITEM { ItemEntry = new SLIST_ENTRY { Next = Count == 0 ? IntPtr.Zero : items[Count - 1] }, Signature = Count + 1 }.MarshalToPtr(Marshal.AllocHGlobal, out _);
 			}
 
 			// Add list and check

@@ -64,12 +64,12 @@ namespace Vanara.PInvoke.Tests
 				for (var i = 0; i < 5; i++)
 				{
 					var p = SafeCoTaskMemHandle.CreateFromStructure(i);
-					Assert.That(SafeArrayPutElement(psa, new[] {i}, (IntPtr)p).Succeeded);
+					Assert.That(SafeArrayPutElement(psa, new[] { i }, (IntPtr)p).Succeeded);
 				}
 				for (var i = 0; i < 5; i++)
 				{
 					var p = SafeCoTaskMemHandle.CreateFromStructure<int>();
-					Assert.That(SafeArrayGetElement(psa, new[] {i}, (IntPtr)p).Succeeded);
+					Assert.That(SafeArrayGetElement(psa, new[] { i }, (IntPtr)p).Succeeded);
 					var oi = p.ToStructure<int>();
 					Assert.That(oi, Is.EqualTo(i));
 				}
@@ -91,7 +91,7 @@ namespace Vanara.PInvoke.Tests
 				{
 					//var a = d.Data.ToArray<int>(5);
 					//Assert.That(a, Is.EquivalentTo(new long[] {0, 1, 2, 3, 4}));
-					new[] { 0, 1, 2, 3, 4 }.MarshalToPtr(d.Data);
+					d.Data.Write(new[] { 0, 1, 2, 3, 4 });
 				}
 				for (var i = 0; i < 5; i++)
 				{

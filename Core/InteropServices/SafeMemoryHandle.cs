@@ -195,7 +195,7 @@ namespace Vanara.InteropServices
 	public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where TMem : IMemoryMethods, new()
 	{
 		/// <summary>The <see cref="IMemoryMethods"/> implementation instance.</summary>
-		protected TMem mm = new TMem();
+		protected static readonly TMem mm = new TMem();
 
 		/// <summary>The number of bytes currently allocated.</summary>
 		protected SizeT sz;
@@ -205,8 +205,6 @@ namespace Vanara.InteropServices
 		/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 		protected SafeMemoryHandle(SizeT size = default) : base(IntPtr.Zero, true)
 		{
-			if (size < 0)
-				throw new ArgumentOutOfRangeException(nameof(size), "The value of this argument must be non-negative");
 			if (size == 0) return;
 			RuntimeHelpers.PrepareConstrainedRegions();
 			SetHandle(mm.AllocMem(sz = size));
@@ -240,7 +238,6 @@ namespace Vanara.InteropServices
 				}
 				else
 				{
-					if (value < 0) throw new ArgumentOutOfRangeException(nameof(value));
 					handle = IsInvalid ? mm.AllocMem(value) : mm.ReAllocMem(handle, value);
 					if (value > sz)
 						handle.Offset(sz).FillMemory(0, value - sz);

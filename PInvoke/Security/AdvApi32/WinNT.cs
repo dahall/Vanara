@@ -4225,7 +4225,7 @@ namespace Vanara.PInvoke
 						ptr.FillMemory(0, (int)ps.SizeInBytes);
 					Marshal.WriteInt32(ptr, (int)ps.PrivilegeCount);
 					Marshal.WriteInt32(ptr, Marshal.SizeOf(typeof(int)), (int)ps.Control);
-					ps.Privilege.MarshalToPtr(ptr, Marshal.SizeOf(typeof(int)) * 2);
+					ptr.Write(ps.Privilege, Marshal.SizeOf(typeof(int)) * 2);
 					return ptr;
 				}
 
@@ -4439,7 +4439,7 @@ namespace Vanara.PInvoke
 					}
 					var ptr = Marshal.AllocCoTaskMem((int)GetSize(ps.PrivilegeCount));
 					Marshal.WriteInt32(ptr, ps.PrivilegeCount);
-					ps.Privileges?.MarshalToPtr(ptr, Marshal.SizeOf(typeof(int)));
+					ptr.Write(ps.Privileges, Marshal.SizeOf(typeof(int)));
 					return ptr;
 				}
 

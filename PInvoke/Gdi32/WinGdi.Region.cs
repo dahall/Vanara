@@ -804,7 +804,7 @@ namespace Vanara.PInvoke
 				{
 					((IDisposable)this).Dispose();
 					value = value ?? new RECT[0];
-					_Buffer = value.MarshalToPtr(Marshal.AllocHGlobal, out rdh.nRgnSize);
+					_Buffer = value.MarshalToPtr<RECT>(Marshal.AllocHGlobal, out rdh.nRgnSize);
 					rdh.nCount = (uint)value.Length;
 				}
 			}

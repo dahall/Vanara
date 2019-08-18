@@ -1202,14 +1202,14 @@ namespace Vanara.PInvoke
 			public FOLDERSETTINGS pfs
 			{
 				get => _pfs.ToStructure<FOLDERSETTINGS>();
-				set { Marshal.FreeCoTaskMem(_pfs); _pfs = InteropExtensions.StructureToPtr(value, Marshal.AllocCoTaskMem, out var _); }
+				set { Marshal.FreeCoTaskMem(_pfs); _pfs = InteropExtensions.MarshalToPtr(value, Marshal.AllocCoTaskMem, out var _); }
 			}
 
 			/// <summary>A RECT structure that defines the view's display area.</summary>
 			public RECT prcView
 			{
 				get => _prcView.ToStructure<RECT>();
-				set { Marshal.FreeCoTaskMem(_prcView); _prcView = InteropExtensions.StructureToPtr(value, Marshal.AllocCoTaskMem, out var _); }
+				set { Marshal.FreeCoTaskMem(_prcView); _prcView = InteropExtensions.MarshalToPtr(value, Marshal.AllocCoTaskMem, out var _); }
 			}
 
 			/// <summary>

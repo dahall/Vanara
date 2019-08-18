@@ -303,7 +303,7 @@ namespace Vanara.PInvoke
 			{
 				if (pSIDs is null) throw new ArgumentNullException(nameof(pSIDs));
 				items = pSIDs.Select(p => new SafePSID(p)).ToList();
-				SetHandle(items.Select(p => (IntPtr)p).MarshalToPtr(i => LocalAlloc(LMEM.LPTR, i).DangerousGetHandle(), out _));
+				SetHandle(items.Select(p => (IntPtr)p).MarshalToPtr<IntPtr>(i => LocalAlloc(LMEM.LPTR, i).DangerousGetHandle(), out _));
 			}
 
 			/// <summary>Initializes a new instance of the <see cref="SafePSIDArray"/> class.</summary>

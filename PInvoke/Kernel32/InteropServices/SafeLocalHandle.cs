@@ -96,7 +96,7 @@ namespace Vanara.InteropServices
 		/// <param name="count">Number of items in <paramref name="values"/>.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
 		/// <returns><see cref="SafeLocalHandle"/> object to an native (unmanaged) structure with a trail array of structures</returns>
-		public static SafeLocalHandle CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) => new SafeLocalHandle(InteropExtensions.MarshalToPtr(values, new LocalMemoryMethods().AllocMem, out var s, prefixBytes), s);
+		public static SafeLocalHandle CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) => new SafeLocalHandle(InteropExtensions.MarshalToPtr(values, mm.AllocMem, out var s, prefixBytes), s);
 
 		/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
 		/// <param name="values">The list of strings.</param>
@@ -107,13 +107,13 @@ namespace Vanara.InteropServices
 		/// <see cref="SafeLocalHandle"/> object to an native (unmanaged) array of strings stored using the <paramref name="packing"/> model
 		/// and the character set defined by <paramref name="charSet"/>.
 		/// </returns>
-		public static SafeLocalHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new SafeLocalHandle(InteropExtensions.MarshalToPtr(values, packing, new LocalMemoryMethods().AllocMem, out var s, charSet, prefixBytes), s);
+		public static SafeLocalHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new SafeLocalHandle(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out var s, charSet, prefixBytes), s);
 
 		/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
 		/// <typeparam name="T">Native type</typeparam>
 		/// <param name="value">The value.</param>
 		/// <returns><see cref="SafeLocalHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
-		public static SafeLocalHandle CreateFromStructure<T>(in T value = default) => new SafeLocalHandle(InteropExtensions.StructureToPtr(value, new LocalMemoryMethods().AllocMem, out var s), s);
+		public static SafeLocalHandle CreateFromStructure<T>(in T value = default) => new SafeLocalHandle(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out var s), s);
 
 		/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeLocalHandle"/> where it owns the reference.</summary>
 		/// <param name="ptr">The <see cref="IntPtr"/>.</param>

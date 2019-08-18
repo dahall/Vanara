@@ -18,14 +18,14 @@ namespace Vanara.InteropServices.Tests
 		{
 			using (var m = new SafeHGlobalHandle(1024))
 			using (var ms = new MarshalingStream((IntPtr)m, m.Size))
-				Assert.That(ms.Capacity, Is.EqualTo(m.Size));
+				Assert.That(ms.Capacity, Is.EqualTo((long)m.Size));
 		}
 
 		[Test()]
 		public void FlushTest()
 		{
 			using (var m = new SafeHGlobalHandle(1000))
-			using (var ms = new MarshalingStream((IntPtr) m, m.Size))
+			using (var ms = new MarshalingStream((IntPtr)m, m.Size))
 			{
 				ms.Flush();
 			}
@@ -35,7 +35,7 @@ namespace Vanara.InteropServices.Tests
 		public void SeekTest()
 		{
 			using (var m = new SafeHGlobalHandle(1000))
-			using (var ms = new MarshalingStream((IntPtr) m, m.Size))
+			using (var ms = new MarshalingStream((IntPtr)m, m.Size))
 			{
 				Assert.That(ms.Seek(20, SeekOrigin.Begin), Is.EqualTo(20));
 				Assert.That(ms.Seek(20, SeekOrigin.Current), Is.EqualTo(40));
@@ -49,7 +49,7 @@ namespace Vanara.InteropServices.Tests
 		public void SetLengthTest()
 		{
 			using (var m = new SafeHGlobalHandle(1000))
-			using (var ms = new MarshalingStream((IntPtr) m, m.Size))
+			using (var ms = new MarshalingStream((IntPtr)m, m.Size))
 			{
 				Assert.That(() => ms.SetLength(1), Throws.Exception);
 			}
@@ -59,12 +59,12 @@ namespace Vanara.InteropServices.Tests
 		public void PokeTest()
 		{
 			using (var m = new SafeHGlobalHandle(10))
-			using (var ms = new MarshalingStream((IntPtr) m, m.Size))
+			using (var ms = new MarshalingStream((IntPtr)m, m.Size))
 			{
 				Assert.That(() => ms.Write(0x000001FF), Throws.Nothing);
 				Assert.That(ms.Position, Is.EqualTo(sizeof(int)));
 				ms.Seek(0, SeekOrigin.Begin);
-				var ba = new byte[] {0x2};
+				var ba = new byte[] { 0x2 };
 				Assert.That(() => ms.Poke(null, 0), Throws.ArgumentNullException);
 				Assert.That(() => ms.Poke(ba, 1000), Throws.ArgumentException);
 				Assert.That(() => ms.Poke(ba, -1), Throws.TypeOf<ArgumentOutOfRangeException>());
@@ -78,11 +78,11 @@ namespace Vanara.InteropServices.Tests
 		public void PokeTest1()
 		{
 			using (var m = new SafeHGlobalHandle(100))
-			using (var ms = new MarshalingStream((IntPtr) m, m.Size))
+			using (var ms = new MarshalingStream((IntPtr)m, m.Size))
 			{
 				Assert.That(ms.Position, Is.Zero);
-				Assert.That(() => ms.Write(new [] {1L, 2L}), Throws.Nothing);
-				var bytes = new byte[] {0, 0, 0, 0, 0, 0, 0, 3};
+				Assert.That(() => ms.Write(new[] { 1L, 2L }), Throws.Nothing);
+				var bytes = new byte[] { 0, 0, 0, 0, 0, 0, 0, 3 };
 				ms.Write(bytes, 0, bytes.Length);
 				Assert.That(ms.Position, Is.EqualTo(sizeof(long) * 2 + 8));
 				ms.Seek(0, SeekOrigin.Begin);
@@ -91,7 +91,7 @@ namespace Vanara.InteropServices.Tests
 				ms.Poke(IntPtr.Zero, sizeof(long));
 				var buf = new byte[24];
 				ms.Read(buf, 0, buf.Length);
-				Assert.That(buf, Is.EquivalentTo(new byte[] {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3}));
+				Assert.That(buf, Is.EquivalentTo(new byte[] { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3 }));
 				Assert.That(() => ms.Read(null, 0, 0), Throws.ArgumentNullException);
 				Assert.That(() => ms.Read(buf, 0, 30), Throws.ArgumentException);
 				Assert.That(() => ms.Read(buf, -1, 0), Throws.TypeOf<ArgumentOutOfRangeException>());
@@ -117,24 +117,24 @@ namespace Vanara.InteropServices.Tests
 		public void WriteTest()
 		{
 			using (var m = new SafeHGlobalHandle(10))
-			using (var ms = new MarshalingStream((IntPtr) m, m.Size))
+			using (var ms = new MarshalingStream((IntPtr)m, m.Size))
 			{
 				Assert.That(() => ms.Write(null, 0, 0), Throws.ArgumentNullException);
-				var bytes = new byte[] {0, 0, 0, 0, 0, 0, 0, 3};
+				var bytes = new byte[] { 0, 0, 0, 0, 0, 0, 0, 3 };
 				Assert.That(() => ms.Write(bytes, 1, 8), Throws.ArgumentException);
 				Assert.That(() => ms.Write(bytes, -1, 8), Throws.TypeOf<ArgumentOutOfRangeException>());
 				Assert.That(() => ms.Write(bytes, 1, -8), Throws.TypeOf<ArgumentOutOfRangeException>());
 				Assert.That(() => ms.Write(new byte[22]), Throws.ArgumentException);
-				ms.Write((SafeHGlobalHandle) null);
+				ms.Write((SafeHGlobalHandle)null);
 				Assert.That(ms.Position, Is.Zero);
-				ms.Write((string[]) null);
+				ms.Write((string[])null);
 				Assert.That(ms.Position, Is.Zero);
 				Assert.That(() => ms.Write(0L), Throws.Nothing);
 			}
 			using (var m = new SafeHGlobalHandle(100))
 			using (var ms = new MarshalingStream((IntPtr)m, m.Size))
 			{
-				ms.Write(new []{ "A", "B", "C"});
+				ms.Write(new[] { "A", "B", "C" });
 				Assert.That(ms.Position, Is.GreaterThan(0));
 				Assert.That(() => ms.Write(new byte[100], 0, 100), Throws.ArgumentException);
 			}

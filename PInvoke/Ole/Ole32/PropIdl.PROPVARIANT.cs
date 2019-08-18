@@ -969,13 +969,13 @@ namespace Vanara.PInvoke
 					case VARTYPE.VT_BSTR:
 						vt = svt | VARTYPE.VT_VECTOR;
 						_blob.cbSize = (uint)sc.Length;
-						_blob.pBlobData = value.Select(Marshal.StringToBSTR).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
+						_blob.pBlobData = value.Select(Marshal.StringToBSTR).MarshalToPtr<IntPtr>(Marshal.AllocCoTaskMem, out var _);
 						break;
 
 					case VARTYPE.VT_LPSTR:
 						vt = svt | VARTYPE.VT_VECTOR;
 						_blob.cbSize = (uint)sc.Length;
-						_blob.pBlobData = value.Select(Marshal.StringToCoTaskMemAnsi).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
+						_blob.pBlobData = value.Select(Marshal.StringToCoTaskMemAnsi).MarshalToPtr<IntPtr>(Marshal.AllocCoTaskMem, out var _);
 						break;
 
 					case VARTYPE.VT_LPWSTR:
@@ -1140,7 +1140,7 @@ namespace Vanara.PInvoke
 						if (isVector)
 							AllocVector(GetArray<CLIPDATA>(out sz), sz);
 						else
-							_ptr = ((CLIPDATA)value).StructureToPtr(Marshal.AllocCoTaskMem, out var _);
+							_ptr = ((CLIPDATA)value).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 						break;
 
 					case VARTYPE.VT_BSTR:
@@ -1232,7 +1232,7 @@ namespace Vanara.PInvoke
 				HRESULT AllocVector<T>(T[] vector, uint vsz, PROPVARIANT pv = null)
 				{
 					_blob.cbSize = vsz;
-					_blob.pBlobData = vector.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
+					_blob.pBlobData = vector.MarshalToPtr<T>(global::System.Runtime.InteropServices.Marshal.AllocCoTaskMem, out var _);
 					return HRESULT.S_OK;
 				}
 

@@ -70,7 +70,7 @@ namespace Vanara.InteropServices
 			{
 				Size = GetElemSize != null ? PrefixSize + value.Sum(GetElemSize) : GetRequiredSize(value.Length);
 				Zero();
-				InteropExtensions.MarshalToPtr(value, handle, PrefixSize);
+				InteropExtensions.Write(handle, value, PrefixSize);
 				IntCount = value.Length;
 			}
 		}

@@ -46,7 +46,7 @@ namespace Vanara.Extensions.Tests
 		{
 			var h = new SafeHGlobalHandle(Marshal.SizeOf(typeof(RECT)) * 2 + i);
 			var rs = new[] { new RECT(), new RECT(10, 11, 12, 13) };
-			rs.MarshalToPtr((IntPtr)h, i);
+			((IntPtr)h).Write(rs, i, h.Size);
 			Assert.That(Marshal.ReadInt32((IntPtr)h, 4 * i) == 0);
 			Assert.That(Marshal.ReadInt32((IntPtr)h, 5 * i) == 10);
 			Assert.That(Marshal.ReadInt32((IntPtr)h, 7 * i) == 12);
@@ -174,7 +174,7 @@ namespace Vanara.Extensions.Tests
 		public void StructureToPtrTest()
 		{
 			var rect = new RECT(10, 11, 12, 13);
-			var ptr = rect.StructureToPtr(Marshal.AllocCoTaskMem, out var a);
+			var ptr = rect.MarshalToPtr(Marshal.AllocCoTaskMem, out var a);
 			Assert.That(ptr != IntPtr.Zero);
 			Assert.That(Marshal.ReadInt32(ptr, 1 * i) == 11);
 			Marshal.FreeCoTaskMem(ptr);
@@ -250,8 +250,7 @@ namespace Vanara.Extensions.Tests
 		public void GetNulledPtrArrayLengthTest()
 		{
 			var ptrs = new[] { (IntPtr)1, (IntPtr)1, (IntPtr)1, (IntPtr)1, (IntPtr)1, IntPtr.Zero };
-			var mp = Marshal.AllocCoTaskMem(IntPtr.Size * ptrs.Length);
-			ptrs.MarshalToPtr(mp);
+			var mp = ptrs.MarshalToPtr<IntPtr>(Marshal.AllocCoTaskMem, out _);
 			Assert.That(mp.GetNulledPtrArrayLength(), Is.EqualTo(ptrs.Length - 1));
 			Marshal.WriteIntPtr(mp, IntPtr.Size, IntPtr.Zero);
 			Assert.That(mp.GetNulledPtrArrayLength(), Is.EqualTo(1));

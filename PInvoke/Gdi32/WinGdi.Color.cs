@@ -845,7 +845,7 @@ namespace Vanara.PInvoke
 			public PALETTEENTRY[] palPalEntry
 			{
 				get => _palPalEntry.ToArray<PALETTEENTRY>(palNumEntries);
-				set { Marshal.FreeHGlobal(_palPalEntry); value.MarshalToPtr(Marshal.AllocHGlobal, out _); }
+				set { Marshal.FreeHGlobal(_palPalEntry); value.MarshalToPtr<PALETTEENTRY>(Marshal.AllocHGlobal, out _); }
 			}
 
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>

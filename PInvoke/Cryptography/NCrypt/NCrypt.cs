@@ -3139,7 +3139,7 @@ namespace Vanara.PInvoke
 				{
 					((IDisposable)this).Dispose();
 					if (value == null) return;
-					_pBuffers = InteropExtensions.MarshalToPtr(value.Select(b => new _NCryptBuffer(b)), Marshal.AllocCoTaskMem, out var _);
+					_pBuffers = InteropExtensions.MarshalToPtr<_NCryptBuffer>(value.Select(b => new _NCryptBuffer(b)), Marshal.AllocCoTaskMem, out var _);
 				}
 			}
 
@@ -3174,7 +3174,7 @@ namespace Vanara.PInvoke
 				{
 					cbBuffer = (uint)(b.pvBuffer?.Length ?? 0);
 					BufferType = b.BufferType;
-					pvBuffer = b.pvBuffer?.MarshalToPtr(Marshal.AllocCoTaskMem, out var _) ?? IntPtr.Zero;
+					pvBuffer = b.pvBuffer?.MarshalToPtr<byte>(Marshal.AllocCoTaskMem, out var _) ?? IntPtr.Zero;
 				}
 
 				public static implicit operator NCryptBuffer(_NCryptBuffer b) => new NCryptBuffer { BufferType = b.BufferType, pvBuffer = b.pvBuffer.ToArray<byte>((int)b.cbBuffer) };

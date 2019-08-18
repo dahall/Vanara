@@ -132,7 +132,7 @@ namespace Vanara.InteropServices
 				Count = len;
 				Size = GetRequiredSize(len, HeaderSize);
 				Zero();
-				value.MarshalToPtr(handle, (int)HeaderSize);
+				handle.Write(value, (int)HeaderSize);
 				OnCountChanged();
 				OnUpdateHeader();
 			}

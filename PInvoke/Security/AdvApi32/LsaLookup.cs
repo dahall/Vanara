@@ -193,7 +193,7 @@ namespace Vanara.PInvoke
 				var s = ManagedObj as string;
 				if (s == null) return IntPtr.Zero;
 				var str = new LSA_STRING(s);
-				return str.StructureToPtr(Marshal.AllocCoTaskMem, out var _);
+				return str.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 			}
 
 			public object MarshalNativeToManaged(IntPtr pNativeData)

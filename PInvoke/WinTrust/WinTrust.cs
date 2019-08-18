@@ -2205,7 +2205,7 @@ namespace Vanara.PInvoke
 						throw new NotSupportedException();
 					if (_pSignatureSettings != IntPtr.Zero)
 						Marshal.FreeCoTaskMem(_pSignatureSettings);
-					_pSignatureSettings = value.HasValue ? value.Value.StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+					_pSignatureSettings = value.HasValue ? value.Value.MarshalToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
 				}
 			}
 
@@ -2218,7 +2218,7 @@ namespace Vanara.PInvoke
 					_dwUnionChoice = WTD_CHOICE.WTD_CHOICE_FILE;
 					if (_pInfoStruct != IntPtr.Zero)
 						Marshal.FreeCoTaskMem(_pInfoStruct);
-					_pInfoStruct = value.HasValue ? value.Value.StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+					_pInfoStruct = value.HasValue ? value.Value.MarshalToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
 				}
 			}
 
@@ -2231,7 +2231,7 @@ namespace Vanara.PInvoke
 					_dwUnionChoice = WTD_CHOICE.WTD_CHOICE_CATALOG;
 					if (_pInfoStruct != IntPtr.Zero)
 						Marshal.FreeCoTaskMem(_pInfoStruct);
-					_pInfoStruct = value.HasValue ? value.Value.StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+					_pInfoStruct = value.HasValue ? value.Value.MarshalToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
 				}
 			}
 
@@ -2244,7 +2244,7 @@ namespace Vanara.PInvoke
 					_dwUnionChoice = WTD_CHOICE.WTD_CHOICE_BLOB;
 					if (_pInfoStruct != IntPtr.Zero)
 						Marshal.FreeCoTaskMem(_pInfoStruct);
-					_pInfoStruct = value.HasValue ? value.Value.StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+					_pInfoStruct = value.HasValue ? value.Value.MarshalToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
 				}
 			}
 
@@ -2257,7 +2257,7 @@ namespace Vanara.PInvoke
 					_dwUnionChoice = WTD_CHOICE.WTD_CHOICE_SIGNER;
 					if (_pInfoStruct != IntPtr.Zero)
 						Marshal.FreeCoTaskMem(_pInfoStruct);
-					_pInfoStruct = value.HasValue ? value.Value.StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+					_pInfoStruct = value.HasValue ? value.Value.MarshalToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
 				}
 			}
 
@@ -2270,7 +2270,7 @@ namespace Vanara.PInvoke
 					_dwUnionChoice = WTD_CHOICE.WTD_CHOICE_CERT;
 					if (_pInfoStruct != IntPtr.Zero)
 						Marshal.FreeCoTaskMem(_pInfoStruct);
-					_pInfoStruct = value.HasValue ? value.Value.StructureToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
+					_pInfoStruct = value.HasValue ? value.Value.MarshalToPtr(Marshal.AllocCoTaskMem, out _) : IntPtr.Zero;
 				}
 			}
 

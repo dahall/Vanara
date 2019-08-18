@@ -554,7 +554,7 @@ namespace Vanara.PInvoke
 				{
 					if (prcExclude != IntPtr.Zero) Marshal.FreeCoTaskMem(prcExclude);
 					if (value.HasValue && !value.Value.IsEmpty)
-						prcExclude = value.StructureToPtr(Marshal.AllocCoTaskMem, out var _);
+						prcExclude = value.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 				}
 			}
 
@@ -567,7 +567,7 @@ namespace Vanara.PInvoke
 				{
 					if (pBlendFunction != IntPtr.Zero) Marshal.FreeCoTaskMem(pBlendFunction);
 					if (value.HasValue && !value.Value.IsEmpty)
-						pBlendFunction = value.StructureToPtr(Marshal.AllocCoTaskMem, out var _);
+						pBlendFunction = value.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 				}
 			}
 
