@@ -176,61 +176,6 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AuthCasesFromFile))]
-		public void LogonUserExTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
-		{
-			var b = LogonUserEx(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok, out _, out _, out _, out _);
-			if (!b) TestContext.WriteLine(Win32Error.GetLastError());
-			Assert.That(b, Is.EqualTo(validCred && validUser));
-			hTok.Dispose();
-		}
-
-		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AuthCasesFromFile))]
-		public void LogonUserTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
-		{
-			var b = LogonUser(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok);
-			if (!b) TestContext.WriteLine(Win32Error.GetLastError());
-			Assert.That(b, Is.EqualTo(validCred && validUser));
-			hTok.Dispose();
-		}
-
-		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AuthCasesFromFile))]
-		public void LookupAccountNameTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string username, string password, string notes)
-		{
-			var fun = $"{domain}\\{username}";
-			TestContext.WriteLine(fun);
-			Assert.That(LookupAccountName(null, fun, out var sid, out var dom, out var snu), Is.EqualTo(validUser));
-			Assert.That(sid.IsValidSid, Is.EqualTo(validUser));
-			if (!validUser) return;
-
-			Assert.That(dom, Is.EqualTo(domain).IgnoreCase);
-			Assert.That(snu, Is.EqualTo(SID_NAME_USE.SidTypeUser));
-
-			int chName = 1024, chDom = 1024;
-			var name = new StringBuilder(chName);
-			var domN = new StringBuilder(chDom);
-			Assert.That(LookupAccountSid(null, sid, name, ref chName, domN, ref chDom, out snu));
-			Assert.That(name.ToString(), Is.EqualTo(username).IgnoreCase);
-			Assert.That(domN.ToString(), Is.EqualTo(domain).IgnoreCase);
-			Assert.That(snu, Is.EqualTo(SID_NAME_USE.SidTypeUser));
-		}
-
-		[Test()]
-		public void LookupPrivilegeNameValueTest()
-		{
-			const string priv = "SeBackupPrivilege";
-			Assert.That(LookupPrivilegeValue(null, priv, out var luid));
-			var chSz = 100;
-			var sb = new StringBuilder(chSz);
-			Assert.That(LookupPrivilegeName(null, luid, sb, ref chSz));
-			Assert.That(sb.ToString(), Is.EqualTo(priv));
-
-			// Look at bad values
-			Assert.That(LookupPrivilegeValue(null, "SeBadPrivilege", out luid), Is.False);
-			luid = LUID.NewLUID();
-			Assert.That(LookupPrivilegeName(null, luid, sb, ref chSz), Is.False);
-		}
-
 		[Test()]
 		[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
 		public void QueryServiceConfig2Test()
@@ -307,9 +252,7 @@ namespace Vanara.PInvoke.Tests
 
 		internal static SafePSECURITY_DESCRIPTOR GetSD(string filename, SECURITY_INFORMATION si = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION)
 		{
-			Assert.That(GetNamedSecurityInfo(filename, SE_OBJECT_TYPE.SE_FILE_OBJECT, si, out _, out _, out _, out _, out var pSD), ResultIs.Successful);
-			Assert.That(!pSD.IsInvalid);
-			return pSD;
+			return GetFileSecurity(filename, si);
 		}
 	}
 }

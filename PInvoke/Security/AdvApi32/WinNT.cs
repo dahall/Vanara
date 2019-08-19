@@ -2910,7 +2910,7 @@ namespace Vanara.PInvoke
 			public string GetName(string systemName = null)
 			{
 				var sb = new StringBuilder(1024);
-				var sz = sb.Capacity;
+				var sz = (uint)sb.Capacity;
 				if (!LookupPrivilegeName(systemName, in this, sb, ref sz))
 					Win32Error.ThrowLastError();
 				return sb.ToString();

@@ -2,12 +2,126 @@
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Text;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		/// <summary>size of alert string in server</summary>
+		public const int ALERTSZ = 128;
+
+		/// <summary>Length of client type string</summary>
+		public const int CLTYPE_LEN = 12;
+
+		/// <summary>Computer name length</summary>
+		public const int CNLEN = 15;
+
+		public const int CRYPT_KEY_LEN = 7;
+
+		public const int CRYPT_TXT_LEN = 8;
+
+		/// <summary>Device name length</summary>
+		public const int DEVLEN = 80;
+
+		/// <summary>Maximum domain name length</summary>
+		public const int DNLEN = CNLEN;
+
+		public const int ENCRYPTED_PWLEN = 16;
+
+		/// <summary>Event name length</summary>
+		public const int EVLEN = 16;
+
+		/// <summary>Group name</summary>
+		public const int GNLEN = UNLEN;
+
+		/// <summary>LM 2.0 Computer name length</summary>
+		public const int LM20_CNLEN = 15;
+
+		/// <summary>LM 2.0 Device name length</summary>
+		public const int LM20_DEVLEN = 8;
+
+		/// <summary>LM 2.0 Maximum domain name length</summary>
+		public const int LM20_DNLEN = LM20_CNLEN;
+
+		/// <summary>LM 2.0 Group name</summary>
+		public const int LM20_GNLEN = LM20_UNLEN;
+
+		/// <summary>LM 2.0 Multipurpose comment length</summary>
+		public const int LM20_MAXCOMMENTSZ = 48;
+
+		/// <summary>LM 2.0 Net name length</summary>
+		public const int LM20_NNLEN = 12;
+
+		/// <summary>LM 2.0 Max. path</summary>
+		public const int LM20_PATHLEN = 256;
+
+		/// <summary>LM 2.0 Maximum password length</summary>
+		public const int LM20_PWLEN = 14;
+
+		/// <summary>LM 2.0 Queue name maximum length</summary>
+		public const int LM20_QNLEN = LM20_NNLEN;
+
+		/// <summary>LM 2.0 Max remote name length</summary>
+		public const int LM20_RMLEN = (LM20_UNCLEN + 1 + LM20_NNLEN);
+
+		/// <summary>LM 2.0 Service name length</summary>
+		public const int LM20_SNLEN = 15;
+
+		/// <summary>LM 2.0 Service text length</summary>
+		public const int LM20_STXTLEN = 63;
+
+		/// <summary>LM 2.0 UNC computer name length</summary>
+		public const int LM20_UNCLEN = (LM20_CNLEN + 2);
+
+		/// <summary>LM 2.0 Maximum user name length</summary>
+		public const int LM20_UNLEN = 20;
+
+		public const uint MAX_PREFERRED_LENGTH = uint.MaxValue;
+
+		/// <summary>Multipurpose comment length</summary>
+		public const int MAXCOMMENTSZ = 256;
+
+		/// <summary>NetBIOS net name (bytes)</summary>
+		public const int NETBIOS_NAME_LEN = 16;
+
+		/// <summary>Net name length (share name)</summary>
+		public const int NNLEN = 80;
+
+		public const uint OPERATION_API_VERSION = 1;
+
+		/// <summary>Max. path (not including drive name)</summary>
+		public const int PATHLEN = 256;
+
+		/// <summary>Maximum password length</summary>
+		public const int PWLEN = 256;
+
+		/// <summary>Queue name maximum length</summary>
+		public const int QNLEN = NNLEN;
+
+		/// <summary>Max remote name length</summary>
+		public const int RMLEN = (UNCLEN + 1 + NNLEN);
+
+		public const int SESSION_CRYPT_KLEN = 21;
+
+		public const int SESSION_PWLEN = 24;
+
+		/// <summary>Share password length (bytes)</summary>
+		public const int SHPWLEN = 8;
+
+		/// <summary>Service name length</summary>
+		public const int SNLEN = 80;
+
+		/// <summary>Service text length</summary>
+		public const int STXTLEN = 256;
+
+		/// <summary>UNC computer name length</summary>
+		public const int UNCLEN = (CNLEN + 2);
+
+		/// <summary>Maximum user name length</summary>
+		public const int UNLEN = 256;
+
 		/// <summary>
 		/// <para>
 		/// An application-defined callback function used with ReadEncryptedFileRaw. The system calls <c>ExportCallback</c> one or more
@@ -199,21 +313,66 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum IS_TEXT_UNICODE : uint
 		{
+			/// <summary>The text is Unicode, and contains only zero-extended ASCII values/characters.</summary>
 			IS_TEXT_UNICODE_ASCII16 = 0x0001,
+
+			/// <summary>
+			/// The text is probably Unicode, with the determination made by applying statistical analysis. Absolute certainty is not
+			/// guaranteed. See the Remarks section.
+			/// </summary>
 			IS_TEXT_UNICODE_STATISTICS = 0x0002,
+
+			/// <summary>Same as the preceding, except that the Unicode text is byte-reversed.</summary>
 			IS_TEXT_UNICODE_REVERSE_ASCII16 = 0x0010,
+
+			/// <summary>Same as the preceding, except that the text that is probably Unicode is byte-reversed.</summary>
 			IS_TEXT_UNICODE_REVERSE_STATISTICS = 0x0020,
+
+			/// <summary>
+			/// The text contains Unicode representations of one or more of these nonprinting characters: RETURN, LINEFEED, SPACE, CJK_SPACE, TAB.
+			/// </summary>
 			IS_TEXT_UNICODE_CONTROLS = 0x0004,
+
+			/// <summary>Same as the preceding, except that the Unicode characters are byte-reversed.</summary>
 			IS_TEXT_UNICODE_REVERSE_CONTROLS = 0x0040,
+
+			/// <summary>The text contains the Unicode byte-order mark (BOM) 0xFEFF as its first character.</summary>
 			IS_TEXT_UNICODE_SIGNATURE = 0x0008,
+
+			/// <summary>The text contains the Unicode byte-reversed byte-order mark (Reverse BOM) 0xFFFE as its first character.</summary>
 			IS_TEXT_UNICODE_REVERSE_SIGNATURE = 0x0080,
+
+			/// <summary>
+			/// The text contains one of these Unicode-illegal characters: embedded Reverse BOM, UNICODE_NUL, CRLF (packed into one word), or 0xFFFF.
+			/// </summary>
 			IS_TEXT_UNICODE_ILLEGAL_CHARS = 0x0100,
+
+			/// <summary>The number of characters in the string is odd. A string of odd length cannot (by definition) be Unicode text.</summary>
 			IS_TEXT_UNICODE_ODD_LENGTH = 0x0200,
+
+			/// <summary>Undocumented.</summary>
 			IS_TEXT_UNICODE_DBCS_LEADBYTE = 0x0400,
+
+			/// <summary>The text contains null bytes, which indicate non-ASCII text.</summary>
 			IS_TEXT_UNICODE_NULL_BYTES = 0x1000,
+
+			/// <summary>
+			/// The value is a combination of IS_TEXT_UNICODE_ASCII16, IS_TEXT_UNICODE_STATISTICS, IS_TEXT_UNICODE_CONTROLS, IS_TEXT_UNICODE_SIGNATURE.
+			/// </summary>
 			IS_TEXT_UNICODE_UNICODE_MASK = 0x000F,
+
+			/// <summary>
+			/// The value is a combination of IS_TEXT_UNICODE_REVERSE_ASCII16, IS_TEXT_UNICODE_REVERSE_STATISTICS,
+			/// IS_TEXT_UNICODE_REVERSE_CONTROLS, IS_TEXT_UNICODE_REVERSE_SIGNATURE.
+			/// </summary>
 			IS_TEXT_UNICODE_REVERSE_MASK = 0x00F0,
+
+			/// <summary>
+			/// The value is a combination of IS_TEXT_UNICODE_ILLEGAL_CHARS, IS_TEXT_UNICODE_ODD_LENGTH, and two currently unused bit flags.
+			/// </summary>
 			IS_TEXT_UNICODE_NOT_UNICODE_MASK = 0x0F00,
+
+			/// <summary>The value is a combination of IS_TEXT_UNICODE_NULL_BYTES and three currently unused bit flags.</summary>
 			IS_TEXT_UNICODE_NOT_ASCII_MASK = 0xF000,
 		}
 
@@ -273,6 +432,83 @@ namespace Vanara.PInvoke
 			/// <summary>The logon zero password buffer</summary>
 			LOGON_ZERO_PASSWORD_BUFFER = 0x80000000
 		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>AccessCheckAndAuditAlarm</c> function determines whether a security descriptor grants a specified set of access rights to
+		/// the client being impersonated by the calling thread. If the security descriptor has a SACL with ACEs that apply to the client,
+		/// the function generates any necessary audit messages in the security event log.
+		/// </para>
+		/// <para>Alarms are not currently supported.</para>
+		/// </summary>
+		/// <param name="SubsystemName">
+		/// A pointer to a null-terminated string specifying the name of the subsystem calling the function. This string appears in any audit
+		/// message that the function generates.
+		/// </param>
+		/// <param name="HandleId">
+		/// A pointer to a unique value representing the client's handle to the object. If the access is denied, the system ignores this value.
+		/// </param>
+		/// <param name="ObjectTypeName">
+		/// A pointer to a null-terminated string specifying the type of object being created or accessed. This string appears in any audit
+		/// message that the function generates.
+		/// </param>
+		/// <param name="ObjectName">
+		/// A pointer to a null-terminated string specifying the name of the object being created or accessed. This string appears in any
+		/// audit message that the function generates.
+		/// </param>
+		/// <param name="SecurityDescriptor">A pointer to the SECURITY_DESCRIPTOR structure against which access is checked.</param>
+		/// <param name="DesiredAccess">
+		/// <para>
+		/// Access mask that specifies the access rights to check. This mask must have been mapped by the MapGenericMask function to contain
+		/// no generic access rights.
+		/// </para>
+		/// <para>
+		/// If this parameter is MAXIMUM_ALLOWED, the function sets the GrantedAccess access mask to indicate the maximum access rights the
+		/// security descriptor allows the client.
+		/// </para>
+		/// </param>
+		/// <param name="GenericMapping">
+		/// A pointer to the GENERIC_MAPPING structure associated with the object for which access is being checked.
+		/// </param>
+		/// <param name="ObjectCreation">
+		/// Specifies a flag that determines whether the calling application will create a new object when access is granted. A value of
+		/// <c>TRUE</c> indicates the application will create a new object. A value of <c>FALSE</c> indicates the application will open an
+		/// existing object.
+		/// </param>
+		/// <param name="GrantedAccess">
+		/// A pointer to an access mask that receives the granted access rights. If AccessStatus is set to <c>FALSE</c>, the function sets
+		/// the access mask to zero. If the function fails, it does not set the access mask.
+		/// </param>
+		/// <param name="AccessStatus">
+		/// A pointer to a variable that receives the results of the access check. If the security descriptor allows the requested access
+		/// rights to the client, AccessStatus is set to <c>TRUE</c>. Otherwise, AccessStatus is set to <c>FALSE</c>.
+		/// </param>
+		/// <param name="pfGenerateOnClose">
+		/// A pointer to a flag set by the audit-generation routine when the function returns. Pass this flag to the ObjectCloseAuditAlarm
+		/// function when the object handle is closed.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>For more information, see the How AccessCheck Works overview.</para>
+		/// <para>
+		/// The <c>AccessCheckAndAuditAlarm</c> function requires the calling process to have the SE_AUDIT_NAME privilege enabled. The test
+		/// for this privilege is performed against the primary token of the calling process, not the impersonation token of the thread.
+		/// </para>
+		/// <para>The <c>AccessCheckAndAuditAlarm</c> function fails if the calling thread is not impersonating a client.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-accesscheckandauditalarma BOOL AccessCheckAndAuditAlarmA(
+		// LPCSTR SubsystemName, LPVOID HandleId, LPSTR ObjectTypeName, LPSTR ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, DWORD
+		// DesiredAccess, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD GrantedAccess, LPBOOL AccessStatus, LPBOOL
+		// pfGenerateOnClose );
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winbase.h", MSDNShortId = "c2d144f4-9eeb-4723-9d28-97cfd1a07274")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AccessCheckAndAuditAlarm(string SubsystemName, IntPtr HandleId, string ObjectTypeName, [Optional] string ObjectName,
+			PSECURITY_DESCRIPTOR SecurityDescriptor, ACCESS_MASK DesiredAccess, in GENERIC_MAPPING GenericMapping, [MarshalAs(UnmanagedType.Bool)] bool ObjectCreation,
+			out ACCESS_MASK GrantedAccess, [MarshalAs(UnmanagedType.Bool)] out bool AccessStatus, [MarshalAs(UnmanagedType.Bool)] out bool pfGenerateOnClose);
 
 		/// <summary>
 		/// <para>
@@ -404,9 +640,145 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "ea14fd55-e0e4-4bf2-b20e-5874783c16c3")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AccessCheckByTypeAndAuditAlarm(string SubsystemName, [In] IntPtr HandleId, string ObjectTypeName, [Optional] string ObjectName, [In] PSECURITY_DESCRIPTOR SecurityDescriptor,
-			[In, Optional] PSID PrincipalSelfSid, ACCESS_MASK DesiredAccess, AUDIT_EVENT_TYPE AuditType, AccessCheckFlags Flags, [In, Out, MarshalAs(UnmanagedType.LPArray)] OBJECT_TYPE_LIST[] ObjectTypeList, uint ObjectTypeListLength,
-			in GENERIC_MAPPING GenericMapping, [MarshalAs(UnmanagedType.Bool)] bool ObjectCreation, out ACCESS_MASK GrantedAccess, [MarshalAs(UnmanagedType.Bool)] out bool AccessStatus, [MarshalAs(UnmanagedType.Bool)] out bool pfGenerateOnClose);
+		public static extern bool AccessCheckByTypeAndAuditAlarm(string SubsystemName, [In] IntPtr HandleId, string ObjectTypeName, [Optional] string ObjectName,
+			[In] PSECURITY_DESCRIPTOR SecurityDescriptor, [In, Optional] PSID PrincipalSelfSid, ACCESS_MASK DesiredAccess, AUDIT_EVENT_TYPE AuditType,
+			AccessCheckFlags Flags, [In, Out, MarshalAs(UnmanagedType.LPArray)] OBJECT_TYPE_LIST[] ObjectTypeList, uint ObjectTypeListLength,
+			in GENERIC_MAPPING GenericMapping, [MarshalAs(UnmanagedType.Bool)] bool ObjectCreation, out ACCESS_MASK GrantedAccess,
+			[MarshalAs(UnmanagedType.Bool)] out bool AccessStatus, [MarshalAs(UnmanagedType.Bool)] out bool pfGenerateOnClose);
+
+		/// <summary>
+		/// The <c>AccessCheckByTypeResultListAndAuditAlarm</c> function determines whether a security descriptor grants a specified set of
+		/// access rights to the client being impersonated by the calling thread. The function can check access to a hierarchy of objects,
+		/// such as an object, its property sets, and properties. The function reports the access rights granted or denied to each object
+		/// type in the hierarchy. If the security descriptor has a system access control list (SACL) with access control entries (ACEs) that
+		/// apply to the client, the function generates any necessary audit messages in the security event log. Alarms are not currently supported.
+		/// </summary>
+		/// <param name="SubsystemName">
+		/// A pointer to a null-terminated string that specifies the name of the subsystem calling the function. This string appears in any
+		/// audit message that the function generates.
+		/// </param>
+		/// <param name="HandleId">
+		/// A pointer to a unique value that represents the client's handle to the object. If the access is denied, the system ignores this value.
+		/// </param>
+		/// <param name="ObjectTypeName">
+		/// A pointer to a null-terminated string that specifies the type of object being created or accessed. This string appears in any
+		/// audit message that the function generates.
+		/// </param>
+		/// <param name="ObjectName">
+		/// A pointer to a null-terminated string that specifies the name of the object being created or accessed. This string appears in any
+		/// audit message that the function generates.
+		/// </param>
+		/// <param name="SecurityDescriptor">A pointer to a SECURITY_DESCRIPTOR structure against which access is checked.</param>
+		/// <param name="PrincipalSelfSid">
+		/// <para>
+		/// A pointer to a security identifier (SID). If the security descriptor is associated with an object that represents a principal
+		/// (for example, a user object), the PrincipalSelfSid parameter should be the SID of the object. When evaluating access, this SID
+		/// logically replaces the SID in any ACE that contains the well-known PRINCIPAL_SELF SID (S-1-5-10). For information about
+		/// well-known SIDs, see Well-known SIDs.
+		/// </para>
+		/// <para>Set this parameter to <c>NULL</c> if the protected object does not represent a principal.</para>
+		/// </param>
+		/// <param name="DesiredAccess">
+		/// <para>
+		/// An access mask that specifies the access rights to check. This mask must have been mapped by the MapGenericMask function so that
+		/// it contains no generic access rights.
+		/// </para>
+		/// <para>
+		/// If this parameter is MAXIMUM_ALLOWED, the function sets the access mask in GrantedAccess to indicate the maximum access rights
+		/// the security descriptor allows the client.
+		/// </para>
+		/// </param>
+		/// <param name="AuditType">
+		/// The type of audit to be generated. This can be one of the values from the AUDIT_EVENT_TYPE enumeration type.
+		/// </param>
+		/// <param name="Flags">
+		/// A flag that controls the function's behavior if the calling process does not have the SE_AUDIT_NAME privilege enabled. If the
+		/// AUDIT_ALLOW_NO_PRIVILEGE flag is set, the function performs the access check without generating audit messages when the privilege
+		/// is not enabled. If this parameter is zero, the function fails if the privilege is not enabled.
+		/// </param>
+		/// <param name="ObjectTypeList">
+		/// <para>
+		/// A pointer to an array of OBJECT_TYPE_LIST structures that identify the hierarchy of object types for which to check access. Each
+		/// element in the array specifies a GUID that identifies the object type and a value that indicates the level of the object type in
+		/// the hierarchy of object types. The array should not have two elements with the same GUID.
+		/// </para>
+		/// <para>
+		/// The array must have at least one element. The first element in the array must be at level zero and identify the object itself.
+		/// The array can have only one level zero element. The second element is a subobject, such as a property set, at level 1. Following
+		/// each level 1 entry are subordinate entries for the level 2 through 4 subobjects. Thus, the levels for the elements in the array
+		/// might be {0, 1, 2, 2, 1, 2, 3}. If the object type list is out of order, <c>AccessCheckByTypeResultListAndAuditAlarm</c> fails,
+		/// and GetLastError returns ERROR_INVALID_PARAMETER.
+		/// </para>
+		/// </param>
+		/// <param name="ObjectTypeListLength">The number of elements in the ObjectTypeList array.</param>
+		/// <param name="GenericMapping">
+		/// A pointer to the GENERIC_MAPPING structure associated with the object for which access is being checked.
+		/// </param>
+		/// <param name="ObjectCreation">
+		/// A flag that determines whether the calling application will create a new object when access is granted. A value of <c>TRUE</c>
+		/// indicates the application will create a new object. A value of <c>FALSE</c> indicates the application will open an existing object.
+		/// </param>
+		/// <param name="GrantedAccess">
+		/// A pointer to an array of access masks. The function sets each access mask to indicate the access rights granted to the
+		/// corresponding element in the object type list. If the function fails, it does not set the access masks.
+		/// </param>
+		/// <param name="AccessStatusList">
+		/// A pointer to an array of status codes for the corresponding elements in the object type list. The function sets an element to
+		/// zero to indicate success or to a nonzero value to indicate the specific error during the access check. If the function fails, it
+		/// does not set any of the elements in the array.
+		/// </param>
+		/// <param name="pfGenerateOnClose">
+		/// A pointer to a flag set by the audit-generation routine when the function returns. Pass this flag to the ObjectCloseAuditAlarm
+		/// function when the object handle is closed.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero.</para>
+		/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>For more information, see the How AccessCheck Works overview.</para>
+		/// <para>
+		/// The <c>AccessCheckByTypeResultListAndAuditAlarm</c> function is a combination of the AccessCheckByTypeResultList and
+		/// AccessCheckAndAuditAlarm functions.
+		/// </para>
+		/// <para>
+		/// The ObjectTypeList array does not necessarily represent the entire defined object. Rather, it represents that subset of the
+		/// object for which to check access. For instance, to check access to two properties in a property set, specify an object type list
+		/// with four elements: the object itself at level zero, the property set at level 1, and the two properties at level 2.
+		/// </para>
+		/// <para>
+		/// The <c>AccessCheckByTypeResultListAndAuditAlarm</c> function evaluates ACEs that apply to the object itself and object-specific
+		/// ACEs for the object types listed in the ObjectTypeList array. The function ignores object-specific ACEs for object types not
+		/// listed in the ObjectTypeList array.
+		/// </para>
+		/// <para>
+		/// For more information about how a hierarchy of ACEs controls access to an object and its subobjects, see ACEs to Control Access to
+		/// an Object's Properties.
+		/// </para>
+		/// <para>
+		/// To generate audit messages in the security event log, the calling process must have the SE_AUDIT_NAME privilege enabled. The
+		/// system checks for this privilege in the primary token of the calling process, not the impersonation token of the thread. If the
+		/// Flags parameter includes the AUDIT_ALLOW_NO_PRIVILEGE flag, the function performs the access check without generating audit
+		/// messages when the privilege is not enabled.
+		/// </para>
+		/// <para>The <c>AccessCheckByTypeResultListAndAuditAlarm</c> function fails if the calling thread is not impersonating a client.</para>
+		/// <para>
+		/// If the security descriptor does not contain owner and group SIDs, <c>AccessCheckByTypeResultListAndAuditAlarm</c> fails with ERROR_INVALID_SECURITY_DESCR.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-accesscheckbytyperesultlistandauditalarma BOOL
+		// AccessCheckByTypeResultListAndAuditAlarmA( LPCSTR SubsystemName, LPVOID HandleId, LPCSTR ObjectTypeName, LPCSTR ObjectName,
+		// PSECURITY_DESCRIPTOR SecurityDescriptor, PSID PrincipalSelfSid, DWORD DesiredAccess, AUDIT_EVENT_TYPE AuditType, DWORD Flags,
+		// POBJECT_TYPE_LIST ObjectTypeList, DWORD ObjectTypeListLength, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD
+		// GrantedAccess, LPDWORD AccessStatusList, LPBOOL pfGenerateOnClose );
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winbase.h", MSDNShortId = "4b53a15a-5a6b-40c7-acf8-26b1f4bca4ae")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AccessCheckByTypeResultListAndAuditAlarm(string SubsystemName, IntPtr HandleId, string ObjectTypeName, [Optional] string ObjectName,
+			PSECURITY_DESCRIPTOR SecurityDescriptor, [Optional] PSID PrincipalSelfSid, ACCESS_MASK DesiredAccess, AUDIT_EVENT_TYPE AuditType, AccessCheckFlags Flags,
+			[In, Out, MarshalAs(UnmanagedType.LPArray)] OBJECT_TYPE_LIST[] ObjectTypeList, uint ObjectTypeListLength, in GENERIC_MAPPING GenericMapping,
+			[MarshalAs(UnmanagedType.Bool)] bool ObjectCreation, [Out] uint[] GrantedAccess, [Out] uint[] AccessStatusList,
+			[MarshalAs(UnmanagedType.Bool)] out bool pfGenerateOnClose);
 
 		/// <summary>
 		/// <para>
@@ -552,10 +924,14 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "7d3ddce4-40a2-483d-8cff-48d89313b383")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AccessCheckByTypeResultListAndAuditAlarmByHandle(string SubsystemName, [In] IntPtr HandleId, [In] HTOKEN ClientToken, string ObjectTypeName, [Optional] string ObjectName,
-			[In] PSECURITY_DESCRIPTOR SecurityDescriptor, [Optional] PSID PrincipalSelfSid, ACCESS_MASK DesiredAccess, AUDIT_EVENT_TYPE AuditType, AccessCheckFlags Flags,
-			[In, Out, MarshalAs(UnmanagedType.LPArray)] OBJECT_TYPE_LIST[] ObjectTypeList, uint ObjectTypeListLength, in GENERIC_MAPPING GenericMapping, [MarshalAs(UnmanagedType.Bool)] bool ObjectCreation,
-			[In, Out, MarshalAs(UnmanagedType.LPArray)] ACCESS_MASK[] GrantedAccess, [In, Out, MarshalAs(UnmanagedType.LPArray)] uint[] AccessStatusList, [MarshalAs(UnmanagedType.Bool)] out bool pfGenerateOnClose);
+		public static extern bool AccessCheckByTypeResultListAndAuditAlarmByHandle(string SubsystemName, [In] IntPtr HandleId, [In] HTOKEN ClientToken, string ObjectTypeName,
+			[Optional] string ObjectName, [In] PSECURITY_DESCRIPTOR SecurityDescriptor, [Optional] PSID PrincipalSelfSid,
+			ACCESS_MASK DesiredAccess, AUDIT_EVENT_TYPE AuditType, AccessCheckFlags Flags,
+			[In, Out, MarshalAs(UnmanagedType.LPArray)] OBJECT_TYPE_LIST[] ObjectTypeList, uint ObjectTypeListLength,
+			in GENERIC_MAPPING GenericMapping, [MarshalAs(UnmanagedType.Bool)] bool ObjectCreation,
+			[In, Out, MarshalAs(UnmanagedType.LPArray)] uint[] GrantedAccess,
+			[In, Out, MarshalAs(UnmanagedType.LPArray)] uint[] AccessStatusList,
+			[MarshalAs(UnmanagedType.Bool)] out bool pfGenerateOnClose);
 
 		/// <summary>
 		/// The <c>AddConditionalAce</c> function adds a conditional access control entry (ACE) to the specified access control list (ACL). A
@@ -674,7 +1050,7 @@ namespace Vanara.PInvoke
 		// pvContext );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "54bf7114-0ebb-4d9c-bc67-2ac351dbe55d")]
-		public static extern void CloseEncryptedFileRaw(IntPtr pvContext);
+		public static extern void CloseEncryptedFileRaw(EncryptedFileContext pvContext);
 
 		/// <summary>
 		/// <para>
@@ -1004,8 +1380,9 @@ namespace Vanara.PInvoke
 		// DWORD dwCreationFlags, LPVOID lpEnvironment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo, LPPROCESS_INFORMATION
 		// lpProcessInformation );
 		[PInvokeData("winbase.h", MSDNShortId = "dcfdcd5b-0269-4081-b1db-e272171c27a2")]
-		public static bool CreateProcessWithLogonW(string lpUsername, [Optional] string lpDomain, string lpPassword, ProcessLogonFlags dwLogonFlags, [Optional] string lpApplicationName, [Optional] StringBuilder lpCommandLine,
-			CREATE_PROCESS dwCreationFlags, [Optional] IntPtr lpEnvironment, [Optional] string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
+		public static bool CreateProcessWithLogonW(string lpUsername, [Optional] string lpDomain, string lpPassword, ProcessLogonFlags dwLogonFlags,
+			[Optional] string lpApplicationName, [Optional] StringBuilder lpCommandLine, CREATE_PROCESS dwCreationFlags,
+			[Optional] string[] lpEnvironment, [Optional] string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
 		{
 			var ret = CreateProcessWithLogonW(lpUsername, lpDomain, lpPassword, dwLogonFlags, lpApplicationName, lpCommandLine, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
 			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
@@ -1314,7 +1691,7 @@ namespace Vanara.PInvoke
 		// LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation );
 		[PInvokeData("winbase.h", MSDNShortId = "b329866a-0c0d-4cb3-838c-36aac17c87ed")]
 		public static bool CreateProcessWithTokenW(HTOKEN hToken, ProcessLogonFlags dwLogonFlags, string lpApplicationName, [Optional] StringBuilder lpCommandLine, CREATE_PROCESS dwCreationFlags,
-			[Optional] IntPtr lpEnvironment, [Optional] string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
+			[Optional] string[] lpEnvironment, [Optional] string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
 		{
 			var ret = CreateProcessWithTokenW(hToken, dwLogonFlags, lpApplicationName, lpCommandLine, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
 			lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
@@ -1650,13 +2027,175 @@ namespace Vanara.PInvoke
 		/// <param name="hNamedPipe">A handle to a named pipe.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		// BOOL WINAPI ImpersonateNamedPipeClient( _In_ HANDLE hNamedPipe); https://msdn.microsoft.com/en-us/library/windows/desktop/aa378618(v=vs.85).aspx
+		/// <remarks>
+		/// <para>
+		/// The <c>ImpersonateNamedPipeClient</c> function allows the server end of a named pipe to impersonate the client end. When this
+		/// function is called, the named-pipe file system changes the thread of the calling process to start impersonating the security
+		/// context of the last message read from the pipe. Only the server end of the pipe can call this function.
+		/// </para>
+		/// <para>The server can call the RevertToSelf function when the impersonation is complete.</para>
+		/// <para>
+		/// <c>Important</c> If the <c>ImpersonateNamedPipeClient</c> function fails, the client is not impersonated, and all subsequent
+		/// client requests are made in the security context of the process that called the function. If the calling process is running as a
+		/// privileged account, it can perform actions that the client would not be allowed to perform. To avoid security risks, the calling
+		/// process should always check the return value. If the return value indicates that the function call failed, no client requests
+		/// should be executed.
+		/// </para>
+		/// <para>
+		/// All impersonate functions, including <c>ImpersonateNamedPipeClient</c> allow the requested impersonation if one of the following
+		/// is true:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// The requested impersonation level of the token is less than <c>SecurityImpersonation</c>, such as <c>SecurityIdentification</c>
+		/// or <c>SecurityAnonymous</c>.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>The caller has the <c>SeImpersonatePrivilege</c> privilege.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// A process (or another process in the caller's logon session) created the token using explicit credentials through LogonUser or
+		/// LsaLogonUser function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>The authenticated identity is same as the caller.</term>
+		/// </item>
+		/// </list>
+		/// <para><c>Windows XP with SP1 and earlier:</c> The <c>SeImpersonatePrivilege</c> privilege is not supported.</para>
+		/// <para>Examples</para>
+		/// <para>For an example that uses this function, see Verifying Client Access with ACLs.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-impersonatenamedpipeclient BOOL
+		// ImpersonateNamedPipeClient( HANDLE hNamedPipe );
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winbase.h", MSDNShortId = "aa378618")]
+		[PInvokeData("namedpipeapi.h", MSDNShortId = "63fc90ac-536a-4d9b-ba0d-19dc0cc09e6b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ImpersonateNamedPipeClient(HPIPE hNamedPipe);
+
+		/// <summary>Determines if a buffer is likely to contain a form of Unicode text.</summary>
+		/// <param name="lpv">Pointer to the input buffer to examine.</param>
+		/// <param name="iSize">Size, in bytes, of the input buffer indicated by lpv.</param>
+		/// <param name="lpiResult">
+		/// <para>
+		/// On input, pointer to the tests to apply to the input buffer text. On output, this parameter receives the results of the specified
+		/// tests: 1 if the contents of the buffer pass a test, 0 for failure. Only flags that are set upon input to the function are
+		/// significant upon output.
+		/// </para>
+		/// <para>
+		/// If lpiResult is <c>NULL</c>, the function uses all available tests to determine if the data in the buffer is likely to be Unicode text.
+		/// </para>
+		/// <para>This parameter can be one or more of the following values. Values can be combined with binary "OR".</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_ASCII16</term>
+		/// <term>The text is Unicode, and contains only zero-extended ASCII values/characters.</term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_REVERSE_ASCII16</term>
+		/// <term>Same as the preceding, except that the Unicode text is byte-reversed.</term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_STATISTICS</term>
+		/// <term>
+		/// The text is probably Unicode, with the determination made by applying statistical analysis. Absolute certainty is not guaranteed.
+		/// See the Remarks section.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_REVERSE_STATISTICS</term>
+		/// <term>Same as the preceding, except that the text that is probably Unicode is byte-reversed.</term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_CONTROLS</term>
+		/// <term>
+		/// The text contains Unicode representations of one or more of these nonprinting characters: RETURN, LINEFEED, SPACE, CJK_SPACE, TAB.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_REVERSE_CONTROLS</term>
+		/// <term>Same as the preceding, except that the Unicode characters are byte-reversed.</term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_BUFFER_TOO_SMALL</term>
+		/// <term>There are too few characters in the buffer for meaningful analysis (fewer than two bytes).</term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_SIGNATURE</term>
+		/// <term>The text contains the Unicode byte-order mark (BOM) 0xFEFF as its first character.</term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_REVERSE_SIGNATURE</term>
+		/// <term>The text contains the Unicode byte-reversed byte-order mark (Reverse BOM) 0xFFFE as its first character.</term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_ILLEGAL_CHARS</term>
+		/// <term>
+		/// The text contains one of these Unicode-illegal characters: embedded Reverse BOM, UNICODE_NUL, CRLF (packed into one word), or 0xFFFF.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_ODD_LENGTH</term>
+		/// <term>The number of characters in the string is odd. A string of odd length cannot (by definition) be Unicode text.</term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_NULL_BYTES</term>
+		/// <term>The text contains null bytes, which indicate non-ASCII text.</term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_UNICODE_MASK</term>
+		/// <term>The value is a combination of IS_TEXT_UNICODE_ASCII16, IS_TEXT_UNICODE_STATISTICS, IS_TEXT_UNICODE_CONTROLS, IS_TEXT_UNICODE_SIGNATURE.</term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_REVERSE_MASK</term>
+		/// <term>
+		/// The value is a combination of IS_TEXT_UNICODE_REVERSE_ASCII16, IS_TEXT_UNICODE_REVERSE_STATISTICS,
+		/// IS_TEXT_UNICODE_REVERSE_CONTROLS, IS_TEXT_UNICODE_REVERSE_SIGNATURE.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_NOT_UNICODE_MASK</term>
+		/// <term>
+		/// The value is a combination of IS_TEXT_UNICODE_ILLEGAL_CHARS, IS_TEXT_UNICODE_ODD_LENGTH, and two currently unused bit flags.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IS_TEXT_UNICODE_NOT_ASCII_MASK</term>
+		/// <term>The value is a combination of IS_TEXT_UNICODE_NULL_BYTES and three currently unused bit flags.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// Returns a nonzero value if the data in the buffer passes the specified tests. The function returns 0 if the data in the buffer
+		/// does not pass the specified tests.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function uses various statistical and deterministic methods to make its determination, under the control of flags passed in
+		/// the lpiResult parameter. When the function returns, the results of such tests are reported using the same parameter.
+		/// </para>
+		/// <para>
+		/// The IS_TEXT_UNICODE_STATISTICS and IS_TEXT_UNICODE_REVERSE_STATISTICS tests use statistical analysis. These tests are not
+		/// foolproof. The statistical tests assume certain amounts of variation between low and high bytes in a string, and some ASCII
+		/// strings can slip through. For example, if lpv indicates the ASCII string 0x41, 0x0A, 0x0D, 0x1D (A\n\r^Z), the string passes the
+		/// IS_TEXT_UNICODE_STATISTICS test, although failure would be preferable.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-istextunicode BOOL IsTextUnicode( const VOID *lpv, int
+		// iSize, LPINT lpiResult );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "47e05b5b-a16b-4957-bc86-ed3cef4968ee")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool IsTextUnicode(byte[] lpv, int iSize, ref IS_TEXT_UNICODE lpiResult);
 
 		/// <summary>Determines if a buffer is likely to contain a form of Unicode text.</summary>
 		/// <param name="lpv">Pointer to the input buffer to examine.</param>
@@ -1817,7 +2356,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa378184")]
-		public static extern bool LogonUser(string lpszUserName, string lpszDomain, string lpszPassword, LogonUserType dwLogonType, LogonUserProvider dwLogonProvider,
+		public static extern bool LogonUser(string lpszUserName, [Optional] string lpszDomain, [Optional] string lpszPassword, LogonUserType dwLogonType, LogonUserProvider dwLogonProvider,
 			out SafeHTOKEN phObject);
 
 		/// <summary>
@@ -1871,8 +2410,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa378189")]
-		public static extern bool LogonUserEx(string lpszUserName, string lpszDomain, string lpszPassword, LogonUserType dwLogonType, LogonUserProvider dwLogonProvider,
-			out SafeHTOKEN phObject, out PSID ppLogonSid, out SafeLsaReturnBufferHandle ppProfileBuffer, out uint pdwProfileLength, out QUOTA_LIMITS pQuotaLimits);
+		public static extern bool LogonUserEx(string lpszUserName, [Optional] string lpszDomain, [Optional] string lpszPassword, LogonUserType dwLogonType, LogonUserProvider dwLogonProvider,
+			out SafeHTOKEN phObject, out SafePSID ppLogonSid, out SafeLsaReturnBufferHandle ppProfileBuffer, out uint pdwProfileLength, out QUOTA_LIMITS pQuotaLimits);
 
 		/// <summary>
 		/// <para>
@@ -1976,7 +2515,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("", MSDNShortId = "d90db4c6-a711-4519-8b91-5069cee07738")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool LogonUserExExW(string lpszUsername, [Optional] string lpszDomain, [Optional] string lpszPassword, LogonUserType dwLogonType, LogonUserProvider dwLogonProvider,
-			[In, Optional] in TOKEN_GROUPS pTokenGroups, out SafeHTOKEN phToken, out SafePSID ppLogonSid, out IntPtr ppProfileBuffer, out uint pdwProfileLength, out QUOTA_LIMITS pQuotaLimits);
+			[In, Optional] in TOKEN_GROUPS pTokenGroups, out SafeHTOKEN phToken, out SafePSID ppLogonSid, out SafeLsaReturnBufferHandle ppProfileBuffer, out uint pdwProfileLength, out QUOTA_LIMITS pQuotaLimits);
 
 		/// <summary>
 		/// The LookupAccountName function accepts the name of a system and an account as input. It retrieves a security identifier (SID) for
@@ -2020,7 +2559,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa379159")]
-		public static extern bool LookupAccountName(string lpSystemName, string lpAccountName, SafePSID Sid, ref int cbSid,
+		public static extern bool LookupAccountName([Optional] string lpSystemName, string lpAccountName, SafePSID Sid, ref int cbSid,
 			StringBuilder ReferencedDomainName, ref int cchReferencedDomainName, out SID_NAME_USE peUse);
 
 		/// <summary>
@@ -2051,7 +2590,7 @@ namespace Vanara.PInvoke
 		/// call GetLastError.
 		/// </returns>
 		[PInvokeData("winbase.h", MSDNShortId = "aa379159")]
-		public static bool LookupAccountName(string systemName, string accountName, out SafePSID sid, out string domainName, out SID_NAME_USE snu)
+		public static bool LookupAccountName([Optional] string systemName, string accountName, out SafePSID sid, out string domainName, out SID_NAME_USE snu)
 		{
 			var sb = new StringBuilder(1024);
 			sid = new SafePSID(256);
@@ -2203,7 +2742,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "1fbb26b6-615e-4883-9f4b-3a1d05d9feaa")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool LookupPrivilegeDisplayName(string lpSystemName, string lpName, StringBuilder lpDisplayName, ref uint cchDisplayName, out uint lpLanguageId);
+		public static extern bool LookupPrivilegeDisplayName([Optional] string lpSystemName, string lpName, StringBuilder lpDisplayName, ref uint cchDisplayName, out uint lpLanguageId);
 
 		/// <summary>
 		/// <para>
@@ -2248,7 +2787,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "580fb58f-1470-4389-9f07-8f37403e2bdf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool LookupPrivilegeName(string lpSystemName, in LUID lpLuid, StringBuilder lpName, ref int cchName);
+		public static extern bool LookupPrivilegeName([Optional] string lpSystemName, in LUID lpLuid, StringBuilder lpName, ref uint cchName);
 
 		/// <summary>
 		/// <para>
@@ -2290,7 +2829,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "334b8ba8-101d-43a1-a8bf-1c7e0448c272")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool LookupPrivilegeValue(string lpSystemName, string lpName, out LUID lpLuid);
+		public static extern bool LookupPrivilegeValue([Optional] string lpSystemName, string lpName, out LUID lpLuid);
 
 		/// <summary>
 		/// The <c>ObjectCloseAuditAlarm</c> function generates an audit message in the security event log when a handle to a private object
@@ -2525,7 +3064,7 @@ namespace Vanara.PInvoke
 		// lpFileName, ULONG ulFlags, PVOID *pvContext );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "f792f38d-783e-4f39-a9d8-0c378d508d97")]
-		public static extern Win32Error OpenEncryptedFileRaw(string lpFileName, OpenRawFlags ulFlags, out IntPtr pvContext);
+		public static extern Win32Error OpenEncryptedFileRaw(string lpFileName, OpenRawFlags ulFlags, out SafeEncryptedFileContext pvContext);
 
 		/// <summary>
 		/// <para>Notifies the system that the application is about to end an operation</para>
@@ -2729,7 +3268,7 @@ namespace Vanara.PInvoke
 		// PFE_EXPORT_FUNC pfExportCallback, PVOID pvCallbackContext, PVOID pvContext );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "15f6f617-969d-4a40-9038-b902a3c2518b")]
-		public static extern Win32Error ReadEncryptedFileRaw(ExportCallback pfExportCallback, IntPtr pvCallbackContext, IntPtr pvContext);
+		public static extern Win32Error ReadEncryptedFileRaw(ExportCallback pfExportCallback, IntPtr pvCallbackContext, EncryptedFileContext pvContext);
 
 		/// <summary>
 		/// <para>The <c>SetFileSecurity</c> function sets the security of a file or directory object.</para>
@@ -2835,7 +3374,7 @@ namespace Vanara.PInvoke
 		// PFE_IMPORT_FUNC pfImportCallback, PVOID pvCallbackContext, PVOID pvContext );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "f44e291e-dbc6-4a44-92ba-92a81e043764")]
-		public static extern Win32Error WriteEncryptedFileRaw(ImportCallback pfImportCallback, IntPtr pvCallbackContext, IntPtr pvContext);
+		public static extern Win32Error WriteEncryptedFileRaw(ImportCallback pfImportCallback, IntPtr pvCallbackContext, EncryptedFileContext pvContext);
 
 		/// <summary>
 		/// <para>
@@ -3167,8 +3706,10 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("winbase.h", MSDNShortId = "dcfdcd5b-0269-4081-b1db-e272171c27a2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool CreateProcessWithLogonW(string lpUsername, [Optional] string lpDomain, string lpPassword, ProcessLogonFlags dwLogonFlags, [Optional] string lpApplicationName, [Optional] StringBuilder lpCommandLine,
-			CREATE_PROCESS dwCreationFlags, [Optional] IntPtr lpEnvironment, [Optional] string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
+		private static extern bool CreateProcessWithLogonW(string lpUsername, [Optional] string lpDomain, string lpPassword, ProcessLogonFlags dwLogonFlags,
+			[Optional] string lpApplicationName, [Optional] StringBuilder lpCommandLine, CREATE_PROCESS dwCreationFlags,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] lpEnvironment,
+			[Optional] string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
 		/// <summary>
 		/// <para>
@@ -3474,7 +4015,56 @@ namespace Vanara.PInvoke
 		[PInvokeData("winbase.h", MSDNShortId = "b329866a-0c0d-4cb3-838c-36aac17c87ed")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool CreateProcessWithTokenW(HTOKEN hToken, ProcessLogonFlags dwLogonFlags, string lpApplicationName, [Optional] StringBuilder lpCommandLine, CREATE_PROCESS dwCreationFlags,
-			[Optional] IntPtr lpEnvironment, [Optional] string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] lpEnvironment,
+			[Optional] string lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
+
+		/// <summary>Provides a context handle to an open encrypted file.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct EncryptedFileContext : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="EncryptedFileContext"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public EncryptedFileContext(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="EncryptedFileContext"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static EncryptedFileContext NULL => new EncryptedFileContext(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="EncryptedFileContext"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(EncryptedFileContext h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="EncryptedFileContext"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator EncryptedFileContext(IntPtr h) => new EncryptedFileContext(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(EncryptedFileContext h1, EncryptedFileContext h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(EncryptedFileContext h1, EncryptedFileContext h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is EncryptedFileContext h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
 
 		/// <summary>
 		/// Contains information about a hardware profile. The GetCurrentHwProfile function uses this structure to retrieve the current
@@ -3509,13 +4099,25 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>This structure is used by the OperationEnd function.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_operation_end_parameters typedef struct
+		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-operation_end_parameters typedef struct
 		// _OPERATION_END_PARAMETERS { ULONG Version; OPERATION_ID OperationId; ULONG Flags; } OPERATION_END_PARAMETERS, *POPERATION_END_PARAMETERS;
 		[PInvokeData("winbase.h", MSDNShortId = "45ABFE6A-7B70-418F-8C3C-6388079D1306")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct OPERATION_END_PARAMETERS
 		{
-			/// <summary>This parameter should be initialized to the <c>OPERATION_API_VERSION</c> defined in the Windows SDK.</summary>
+			/// <summary>
+			/// <para>This parameter should be initialized to the <c>OPERATION_API_VERSION</c> defined in the Windows SDK.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>OPERATION_API_VERSION 1</term>
+			/// <term>This API was introduced in Windows 8 and Windows Server 2012 as version 1.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
 			public uint Version;
 
 			/// <summary>
@@ -3524,18 +4126,57 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint OperationId;
 
-			/// <summary>The value of this parameter can include any combination of the following values.</summary>
+			/// <summary>
+			/// <para>The value of this parameter can include any combination of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>OPERATION_END_DISCARD 1</term>
+			/// <term>
+			/// Specifies that the system should discard the information it has been tracking for this operation. Specify this flag when the
+			/// operation either fails or does not follow the expected sequence of steps.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
 			public uint Flags;
+
+			/// <summary>Initializes a new instance of the <see cref="OPERATION_END_PARAMETERS"/> struct.</summary>
+			/// <param name="opId">An OPERATION_ID namespace that is unique for each process.</param>
+			/// <param name="singleThreadOnly">
+			/// if set to <c>true</c> specifies that the system should discard the information it has been tracking for this operation.
+			/// </param>
+			public OPERATION_END_PARAMETERS(uint opId, bool discardInfo = false)
+			{
+				Version = OPERATION_API_VERSION;
+				OperationId = opId;
+				Flags = discardInfo ? 1U : 0U;
+			}
 		}
 
 		/// <summary>This structure is used by the OperationStart function.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_operation_start_parameters typedef struct
+		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-operation_start_parameters typedef struct
 		// _OPERATION_START_PARAMETERS { ULONG Version; OPERATION_ID OperationId; ULONG Flags; } OPERATION_START_PARAMETERS, *POPERATION_START_PARAMETERS;
 		[PInvokeData("winbase.h", MSDNShortId = "51AE0017-2CDE-4BCD-AE03-B366343DE558")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct OPERATION_START_PARAMETERS
 		{
-			/// <summary>This parameter should be initialized to the <c>OPERATION_API_VERSION</c> value defined in the Windows SDK.</summary>
+			/// <summary>
+			/// <para>This parameter should be initialized to the <c>OPERATION_API_VERSION</c> value defined in the Windows SDK.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>OPERATION_API_VERSION 1</term>
+			/// <term>This API was introduced in Windows 8 and Windows Server 2012 as version 1.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
 			public uint Version;
 
 			/// <summary>
@@ -3544,8 +4185,57 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint OperationId;
 
-			/// <summary>The value of this parameter can include any combination of the following values.</summary>
+			/// <summary>
+			/// <para>The value of this parameter can include any combination of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>OPERATION_START_TRACE_CURRENT_THREAD 1</term>
+			/// <term>
+			/// Specifies that the system should only track the activities of the calling thread in a multi-threaded application. Specify
+			/// this flag when the operation is performed on a single thread to isolate its activity from other threads in the process.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
 			public uint Flags;
+
+			/// <summary>Initializes a new instance of the <see cref="OPERATION_START_PARAMETERS"/> struct.</summary>
+			/// <param name="opId">An OPERATION_ID namespace that is unique for each process.</param>
+			/// <param name="singleThreadOnly">
+			/// if set to <c>true</c> specifies that the system should only track the activities of the calling thread in a multi-threaded application.
+			/// </param>
+			public OPERATION_START_PARAMETERS(uint opId, bool singleThreadOnly = false)
+			{
+				Version = OPERATION_API_VERSION;
+				OperationId = opId;
+				Flags = singleThreadOnly ? 1U : 0U;
+			}
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="EncryptedFileContext"/> that is disposed using <see cref="CloseEncryptedFileRaw"/>.</summary>
+		public class SafeEncryptedFileContext : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeEncryptedFileContext"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeEncryptedFileContext(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeEncryptedFileContext"/> class.</summary>
+			private SafeEncryptedFileContext() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeEncryptedFileContext"/> to <see cref="EncryptedFileContext"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator EncryptedFileContext(SafeEncryptedFileContext h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { CloseEncryptedFileRaw(handle); return true; }
 		}
 	}
 }
