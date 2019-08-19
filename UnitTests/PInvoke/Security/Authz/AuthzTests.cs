@@ -311,7 +311,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			const string eventSource = "TestEventSource";
 			var guid = Guid.NewGuid();
-			using (var srcReg = new SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION { szEventSourceName = eventSource, szEventAccessStringsFile = @"%SystemRoot%\System32\MsObjs.dll", szObjectTypeName = "Obj1" , pProviderGuid = guid })
+			using (var srcReg = new SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION { szEventSourceName = eventSource, szEventAccessStringsFile = @"%SystemRoot%\System32\MsObjs.dll", szObjectTypeName = "Obj1", pProviderGuid = guid })
 			{
 				var nSrc = (AUTHZ_SOURCE_SCHEMA_REGISTRATION)srcReg;
 				Assert.That(nSrc.szEventSourceName.ToString(), Is.EqualTo(eventSource));
@@ -335,7 +335,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			const string eventSource = "TestEventSource";
 
-			using (new PrivBlock("SeAuditPrivilege"))
+			using (new ElevPriv("SeAuditPrivilege"))
 			{
 				var srcReg = new SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION { szEventSourceName = eventSource, szEventAccessStringsFile = @"%SystemRoot%\System32\MsObjs.dll", szObjectTypeName = "Obj1", pProviderGuid = Guid.NewGuid() };
 				Assert.That(AuthzInstallSecurityEventSource(0, srcReg), Is.True);
@@ -381,28 +381,6 @@ namespace Vanara.PInvoke.Tests
 				if (!b) TestContext.WriteLine($"AuthzSetAppContainerInformation:{Win32Error.GetLastError()}");
 				Assert.That(b, Is.True);
 			}
-		}
-	}
-
-	internal class PrivBlock : IDisposable
-	{
-		SafeCoTaskMemHandle prevState;
-		SafeHTOKEN tok;
-
-		public PrivBlock(string priv)
-		{
-			tok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY);
-			var newPriv = new PTOKEN_PRIVILEGES(LUID.FromName(priv), PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
-			prevState = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
-			if (!AdjustTokenPrivileges(tok, false, newPriv, (uint)prevState.Size, prevState, out var retLen))
-				Win32Error.ThrowLastError();
-		}
-
-		public void Dispose()
-		{
-			AdjustTokenPrivileges(tok, false, prevState);
-			prevState.Dispose();
-			tok.Dispose();
 		}
 	}
 }

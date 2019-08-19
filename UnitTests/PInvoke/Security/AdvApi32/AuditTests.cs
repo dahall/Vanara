@@ -13,7 +13,7 @@ namespace Vanara.PInvoke.Tests
 		private static readonly Guid objAccAudit = new Guid("6997984a-797a-11d9-bed3-505054503030");
 		private static readonly Guid regAudit = new Guid("0cce921e-69ae-11d9-bed3-505054503030");
 		private static SafePSID pCurSid;
-		private PrivBlock secPriv;
+		private ElevPriv secPriv;
 
 		public static IEnumerable<Guid> Categories => AuditEnumerateCategories();
 
@@ -28,7 +28,7 @@ namespace Vanara.PInvoke.Tests
 		[OneTimeSetUp]
 		public void _SetupTests()
 		{
-			secPriv = new PrivBlock("SeSecurityPrivilege");
+			secPriv = new ElevPriv("SeSecurityPrivilege");
 		}
 
 		[OneTimeTearDown]

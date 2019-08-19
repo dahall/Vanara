@@ -12,7 +12,7 @@ namespace Vanara.PInvoke.Tests
 		public void ThreadWaitChainSessionTest()
 		{
 			RegisterWaitChainCOMCallback();
-			using (new PrivBlock("SeDebugPrivilege"))
+			using (new ElevPriv("SeDebugPrivilege"))
 			using (var hWct = OpenThreadWaitChainSession(WaitChainSessionType.WCT_SYNC_OPEN_FLAG))
 			{
 				Assert.That(hWct, ResultIs.ValidHandle);

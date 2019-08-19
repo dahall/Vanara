@@ -282,7 +282,7 @@ namespace Vanara.PInvoke.Tests
 		public void ConvertToAutoInheritPrivateObjectSecurityTest()
 		{
 			const SECURITY_INFORMATION si = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION;
-			using (new PrivBlock("SeSecurityPrivilege"))
+			using (new ElevPriv("SeSecurityPrivilege"))
 			using (var pParentSD = AdvApi32Tests.GetSD(System.IO.Path.GetDirectoryName(AdvApi32Tests.fn), si))
 			using (var pSD = AdvApi32Tests.GetSD(AdvApi32Tests.fn, si))
 			{
@@ -295,7 +295,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void CreateGetSetPrivateObjectSecurityExTest()
 		{
-			using (new PrivBlock("SeSecurityPrivilege"))
+			using (new ElevPriv("SeSecurityPrivilege"))
 			using (var pParentSD = AdvApi32Tests.GetSD(System.IO.Path.GetDirectoryName(AdvApi32Tests.fn)))
 			using (var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_QUERY).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation))
 			{
@@ -318,7 +318,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void CreatePrivateObjectSecurityTest()
 		{
-			using (new PrivBlock("SeSecurityPrivilege"))
+			using (new ElevPriv("SeSecurityPrivilege"))
 			using (var pParentSD = AdvApi32Tests.GetSD(System.IO.Path.GetDirectoryName(AdvApi32Tests.fn)))
 			using (var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_QUERY).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation))
 			{
@@ -330,7 +330,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void CreatePrivateObjectSecurityWithMultipleInheritanceTest()
 		{
-			using (new PrivBlock("SeSecurityPrivilege"))
+			using (new ElevPriv("SeSecurityPrivilege"))
 			using (var pParentSD = AdvApi32Tests.GetSD(System.IO.Path.GetDirectoryName(AdvApi32Tests.fn)))
 			using (var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_QUERY).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation))
 			{
@@ -342,7 +342,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void CreateRestrictedTokenTest()
 		{
-			using (new PrivBlock("SeSecurityPrivilege"))
+			using (new ElevPriv("SeSecurityPrivilege"))
 			using (var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_ALL_ACCESS))
 			{
 				Assert.That(IsTokenRestricted(hTok), Is.False);
@@ -453,7 +453,7 @@ namespace Vanara.PInvoke.Tests
 		public void GetSetKernelObjectSecurityTest()
 		{
 			HANDLE hProc = (IntPtr)GetCurrentProcess();
-			using (new PrivBlock("SeSecurityPrivilege"))
+			using (new ElevPriv("SeSecurityPrivilege"))
 			using (var pSD = new SafePSECURITY_DESCRIPTOR(2048))
 			{
 				// Get self-relative SD with DACL
@@ -526,7 +526,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetSecurityDescriptorSaclTest()
 		{
-			using (new PrivBlock("SeSecurityPrivilege"))
+			using (new ElevPriv("SeSecurityPrivilege"))
 			using (var pSD = AdvApi32Tests.GetSD(AdvApi32Tests.fn, SECURITY_INFORMATION.SACL_SECURITY_INFORMATION))
 			{
 				Assert.That(GetSecurityDescriptorSacl(pSD, out var present, out var pSacl, out var def), ResultIs.Successful);
@@ -557,7 +557,7 @@ namespace Vanara.PInvoke.Tests
 				}
 			}
 
-			using (new PrivBlock("SeSecurityPrivilege"))
+			using (new ElevPriv("SeSecurityPrivilege"))
 			using (var t = SafeHTOKEN.FromThread(GetCurrentThread(), TokenAccess.TOKEN_ALL_ACCESS))
 			using (var mem = new SafeHGlobalHandle(8192))
 			{

@@ -9,7 +9,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void ConvertSecurityDescriptorToStringSecurityDescriptorTest()
 		{
-			using (new PrivBlock("SeSecurityPrivilege"))
+			using (new ElevPriv("SeSecurityPrivilege"))
 			{
 				var si = SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION | SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.SACL_SECURITY_INFORMATION;
 				Assert.That(GetNamedSecurityInfo(@"C:\Temp\help.ico", SE_OBJECT_TYPE.SE_FILE_OBJECT, si, out _, out _, out _, out _, out var sd), ResultIs.Successful);

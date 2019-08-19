@@ -14,7 +14,7 @@ namespace Vanara.PInvoke.Tests
 
 		static AclApiTests()
 		{
-			using (new PrivBlock("SeSecurityPrivilege"))
+			using (new ElevPriv("SeSecurityPrivilege"))
 				pSd = AdvApi32Tests.GetSD(AdvApi32Tests.fn, SecInfoAll);
 		}
 
@@ -134,7 +134,7 @@ namespace Vanara.PInvoke.Tests
 		public void TreeResetNamedSecurityInfoTest()
 		{
 			var counter = 0;
-			using (new PrivBlock("SeSecurityPrivilege"))
+			using (new ElevPriv("SeSecurityPrivilege"))
 			{
 				Assert.That(GetNamedSecurityInfo(AdvApi32Tests.fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, out var pOwnSid, out var pGrpSid, out var dacl, out var sacl, out var plsd), ResultIs.Successful);
 				Assert.That(TreeResetNamedSecurityInfo(@"C:\Temp\Temp\", SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, pOwnSid, pGrpSid, dacl, sacl, false, OnProgress, PROG_INVOKE_SETTING.ProgressInvokeEveryObject), ResultIs.Successful);
@@ -148,7 +148,7 @@ namespace Vanara.PInvoke.Tests
 		public void TreeSetNamedSecurityInfoTest()
 		{
 			var counter = 0;
-			using (new PrivBlock("SeSecurityPrivilege"))
+			using (new ElevPriv("SeSecurityPrivilege"))
 			{
 				Assert.That(GetNamedSecurityInfo(AdvApi32Tests.fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, out var pOwnSid, out var pGrpSid, out var dacl, out var sacl, out var plsd), ResultIs.Successful);
 				Assert.That(TreeSetNamedSecurityInfo(@"C:\Temp\Temp\", SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, pOwnSid, pGrpSid, dacl, sacl, TREE_SEC_INFO.TREE_SEC_INFO_SET, OnProgress, PROG_INVOKE_SETTING.ProgressInvokeEveryObject), ResultIs.Successful);
