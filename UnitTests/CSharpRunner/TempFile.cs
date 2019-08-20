@@ -15,7 +15,11 @@ namespace Vanara.PInvoke.Tests
 
 		public TempFile(string contents = tmpstr)
 		{
-			FullName = Path.GetTempFileName(); File.WriteAllText(FullName, contents);
+			FullName = Path.GetTempFileName();
+			if (contents is null)
+				File.Delete(FullName);
+			else
+				File.WriteAllText(FullName, contents);
 		}
 
 		public string FullName { get; }
@@ -23,7 +27,9 @@ namespace Vanara.PInvoke.Tests
 
 		void IDisposable.Dispose()
 		{
-			hFile?.Dispose(); File.Delete(FullName);
+			hFile?.Dispose();
+			if (File.Exists(FullName))
+				File.Delete(FullName);
 		}
 	}
 }
