@@ -7,30 +7,6 @@ namespace Vanara.PInvoke
 	{
 		public const uint ELF_LOG_SIGNATURE = 0x654c664c;
 
-		/// <summary>The status of the event log.</summary>
-		[PInvokeData("Winnt.h", MSDNShortId = "bb309024")]
-		[Flags]
-		public enum ELF_FLAGS
-		{
-			/// <summary>
-			/// Indicates that records have been written to an event log, but the event log file has not been properly closed. For more
-			/// information about this flag, see the Remarks section.
-			/// </summary>
-			ELF_LOGFILE_HEADER_DIRTY = 0x0001,
-
-			/// <summary>Indicates that records in the event log have wrapped.</summary>
-			ELF_LOGFILE_HEADER_WRAP = 0x0002,
-
-			/// <summary>Indicates that the most recent write attempt failed due to insufficient space.</summary>
-			ELF_LOGFILE_LOGFULL_WRITTEN = 0x0004,
-
-			/// <summary>
-			/// Indicates that the archive attribute has been set for the file. Normal file APIs can also be used to determine the value of
-			/// this flag.
-			/// </summary>
-			ELF_LOGFILE_ARCHIVE_SET = 0x0008,
-		}
-
 		/// <summary>Saves the specified event log to a backup file. The function does not clear the event log.</summary>
 		/// <param name="hEventLog">A handle to the open event log. The OpenEventLog function returns this handle.</param>
 		/// <param name="lpBackupFileName">The absolute or relative path of the backup file.</param>
@@ -67,7 +43,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "b66896f6-baee-43c4-9d9b-5663c164d092")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ClearEventLog(HEVENTLOG hEventLog, string lpBackupFileName);
+		public static extern bool ClearEventLog(HEVENTLOG hEventLog, [Optional] string lpBackupFileName);
 
 		/// <summary>Closes the specified event log.</summary>
 		/// <param name="hEventLog">
@@ -98,7 +74,20 @@ namespace Vanara.PInvoke
 
 		/// <summary>Retrieves information about the specified event log.</summary>
 		/// <param name="hEventLog">A handle to the event log. The OpenEventLog or RegisterEventSource function returns this handle.</param>
-		/// <param name="dwInfoLevel">The level of event log information to return.</param>
+		/// <param name="dwInfoLevel">
+		/// The level of event log information to return.
+		/// <para>This parameter can be the following value.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>EVENTLOG_FULL_INFO</term>
+		/// <term>Indicate whether the specified log is full. The lpBuffer parameter will contain an EVENTLOG_FULL_INFORMATION structure.</term>
+		/// </item>
+		/// </list>
+		/// </param>
 		/// <param name="lpBuffer">
 		/// An application-allocated buffer that receives the event log information. The format of this data depends on the value of the
 		/// dwInfoLevel parameter.
@@ -112,7 +101,7 @@ namespace Vanara.PInvoke
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-geteventloginformation BOOL GetEventLogInformation( HANDLE
+		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-geteventloginformation BOOL GetEventLogInformation( HANDLE
 		// hEventLog, DWORD dwInfoLevel, LPVOID lpBuffer, DWORD cbBufSize, LPDWORD pcbBytesNeeded );
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "627e0af2-3ce6-47fe-89c6-d7c0483cb94b")]
@@ -214,7 +203,7 @@ namespace Vanara.PInvoke
 		// lpUNCServerName, LPCSTR lpFileName );
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "cfef0912-9d35-44aa-a1d3-f9bb37213ce0")]
-		public static extern SafeHEVENTLOG OpenBackupEventLog(string lpUNCServerName, string lpFileName);
+		public static extern SafeHEVENTLOG OpenBackupEventLog([Optional] string lpUNCServerName, string lpFileName);
 
 		/// <summary>Opens a handle to the specified event log.</summary>
 		/// <param name="lpUNCServerName">
@@ -241,7 +230,7 @@ namespace Vanara.PInvoke
 		// lpUNCServerName, LPCSTR lpSourceName );
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "6cd8797a-aeaf-4603-b43c-b1ff45b6200a")]
-		public static extern SafeHEVENTLOG OpenEventLog(string lpUNCServerName, string lpSourceName);
+		public static extern SafeHEVENTLOG OpenEventLog([Optional] string lpUNCServerName, string lpSourceName);
 
 		/// <summary>
 		/// Reads the specified number of entries from the specified event log. The function can be used to read log entries in chronological
@@ -327,7 +316,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "10b37174-661a-4dc6-a7fe-752739494156")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ReadEventLog(HEVENTLOG hEventLog, uint dwReadFlags, uint dwRecordOffset, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint pnBytesRead, out uint pnMinNumberOfBytesNeeded);
+		public static extern bool ReadEventLog(HEVENTLOG hEventLog, EVENTLOG_READ dwReadFlags, uint dwRecordOffset, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint pnBytesRead, out uint pnMinNumberOfBytesNeeded);
 
 		/// <summary>
 		/// <para>Retrieves a registered handle to the specified event log.</para>
@@ -367,7 +356,7 @@ namespace Vanara.PInvoke
 		// lpUNCServerName, LPCSTR lpSourceName );
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "53706f83-6bc9-45d6-981c-bd0680d7bc08")]
-		public static extern SafeHEVENTSOURCE RegisterEventSource(string lpUNCServerName, string lpSourceName);
+		public static extern SafeHEVENTSOURCE RegisterEventSource([Optional] string lpUNCServerName, string lpSourceName);
 
 		/// <summary>Writes an entry at the end of the specified event log.</summary>
 		/// <param name="hEventLog">
@@ -507,13 +496,13 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "e39273c3-9e42-41a1-9ec1-1cdff2ab7b55")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ReportEvent(HEVENTLOG hEventLog, ushort wType, ushort wCategory, uint dwEventID, PSID lpUserSid, ushort wNumStrings, uint dwDataSize, ref string lpStrings, IntPtr lpRawData);
+		public static extern bool ReportEvent(HEVENTLOG hEventLog, EVENTLOG_TYPE wType, ushort wCategory, uint dwEventID, PSID lpUserSid, ushort wNumStrings, uint dwDataSize, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 5)] string[] lpStrings, IntPtr lpRawData);
 
 		/// <summary>Indicates whether the event log is full.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_eventlog_full_information typedef struct
 		// _EVENTLOG_FULL_INFORMATION { DWORD dwFull; } EVENTLOG_FULL_INFORMATION, *LPEVENTLOG_FULL_INFORMATION;
 		[PInvokeData("winbase.h", MSDNShortId = "3ca41d6b-51a6-4226-89be-ab2c37628289")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct EVENTLOG_FULL_INFORMATION
 		{
 			/// <summary>Indicates whether the event log is full. If the log is full, this member is <c>TRUE</c>. Otherwise, it is <c>FALSE</c>.</summary>

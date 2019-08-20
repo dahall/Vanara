@@ -116,6 +116,74 @@ namespace Vanara.PInvoke
 			CTMF_INCLUDE_LPAC = 0x00000002
 		}
 
+		/// <summary>The status of the event log.</summary>
+		[PInvokeData("Winnt.h", MSDNShortId = "bb309024")]
+		[Flags]
+		public enum ELF_FLAGS
+		{
+			/// <summary>
+			/// Indicates that records have been written to an event log, but the event log file has not been properly closed. For more
+			/// information about this flag, see the Remarks section.
+			/// </summary>
+			ELF_LOGFILE_HEADER_DIRTY = 0x0001,
+
+			/// <summary>Indicates that records in the event log have wrapped.</summary>
+			ELF_LOGFILE_HEADER_WRAP = 0x0002,
+
+			/// <summary>Indicates that the most recent write attempt failed due to insufficient space.</summary>
+			ELF_LOGFILE_LOGFULL_WRITTEN = 0x0004,
+
+			/// <summary>
+			/// Indicates that the archive attribute has been set for the file. Normal file APIs can also be used to determine the value of
+			/// this flag.
+			/// </summary>
+			ELF_LOGFILE_ARCHIVE_SET = 0x0008,
+		}
+
+		/// <summary>Indicate how to read the log file.</summary>
+		[PInvokeData("winnt.h", MSDNShortId = "53706f83-6bc9-45d6-981c-bd0680d7bc08")]
+		[Flags]
+		public enum EVENTLOG_READ
+		{
+			/// <summary>The eventlog sequential read</summary>
+			EVENTLOG_SEQUENTIAL_READ = 0x0001,
+
+			/// <summary>
+			/// Begin reading from the record specified in the dwRecordOffset parameter. This option may not work with large log files if the
+			/// function cannot determine the log file's size. For details, see Knowledge Base article, 177199.
+			/// </summary>
+			EVENTLOG_SEEK_READ = 0x0002,
+
+			/// <summary>The log is read in chronological order (oldest to newest).</summary>
+			EVENTLOG_FORWARDS_READ = 0x0004,
+
+			/// <summary>The log is read in reverse chronological order (newest to oldest).</summary>
+			EVENTLOG_BACKWARDS_READ = 0x0008,
+		}
+
+		/// <summary>The type of event to be logged.</summary>
+		[PInvokeData("winnt.h", MSDNShortId = "e39273c3-9e42-41a1-9ec1-1cdff2ab7b55")]
+		public enum EVENTLOG_TYPE : ushort
+		{
+			/// <summary>Information event</summary>
+			EVENTLOG_SUCCESS = 0x0000,
+
+			/// <summary>Error event</summary>
+			EVENTLOG_ERROR_TYPE = 0x0001,
+
+			/// <summary>Warning event</summary>
+			EVENTLOG_WARNING_TYPE = 0x0002,
+
+			/// <summary>Information event</summary>
+			EVENTLOG_INFORMATION_TYPE = 0x0004,
+
+			/// <summary>Success Audit event</summary>
+			EVENTLOG_AUDIT_SUCCESS = 0x0008,
+
+			/// <summary>Failure Audit event</summary>
+			EVENTLOG_AUDIT_FAILURE = 0x0010,
+		}
+
 		/// <summary>Group attributes.</summary>
 		[Flags]
 		[PInvokeData("winnt.h")]
@@ -2809,7 +2877,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para>For more information, see Event Types.</para>
 			/// </summary>
-			public ushort EventType;
+			public EVENTLOG_TYPE EventType;
 
 			/// <summary>
 			/// The number of strings present in the log (at the position indicated by <c>StringOffset</c>). These strings are merged into
