@@ -96,11 +96,12 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(GetNumberOfEventLogRecords(hEL, out var numRec2), ResultIs.Successful);
 				Assert.That(numRec2, Is.GreaterThan(numRec));
 
-				using (var mem = new SafeHGlobalHandle(4096))
+				using (var mem = new SafePEVENTLOGRECORD())
 				{
 					Assert.That(ReadEventLog(hEL, EVENTLOG_READ.EVENTLOG_BACKWARDS_READ | EVENTLOG_READ.EVENTLOG_SEQUENTIAL_READ, 0, mem, mem.Size, out var read, out var minReq), ResultIs.Successful);
-					var hdr = mem.ToStructure<EVENTLOGRECORD>();
-					Assert.That(hdr.EventType, Is.EqualTo(EVENTLOG_TYPE.EVENTLOG_INFORMATION_TYPE));
+					Assert.That(mem.EventType, Is.EqualTo(EVENTLOG_TYPE.EVENTLOG_INFORMATION_TYPE));
+					Assert.That(mem.Strings.Length, Is.EqualTo(2));
+					Assert.That(mem.Strings[0], Is.EqualTo("Testing"));
 				}
 			}
 

@@ -2811,7 +2811,7 @@ namespace Vanara.PInvoke
 		// EventCategory; WORD ReservedFlags; DWORD ClosingRecordNumber; DWORD StringOffset; DWORD UserSidLength; DWORD UserSidOffset; DWORD
 		// DataLength; DWORD DataOffset; } EVENTLOGRECORD, *PEVENTLOGRECORD;
 		[PInvokeData("winnt.h", MSDNShortId = "669b182a-bc81-4386-9815-6ffa09e2e743")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct EVENTLOGRECORD
 		{
 			/// <summary>
@@ -3971,8 +3971,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The <c>TOKEN_PRIVILEGES</c> structure contains information about a set of privileges for an access token.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-token_privileges
-		// typedef struct _TOKEN_PRIVILEGES { DWORD PrivilegeCount; LUID_AND_ATTRIBUTES Privileges[ANYSIZE_ARRAY]; } TOKEN_PRIVILEGES, *PTOKEN_PRIVILEGES;
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-token_privileges typedef struct _TOKEN_PRIVILEGES { DWORD
+		// PrivilegeCount; LUID_AND_ATTRIBUTES Privileges[ANYSIZE_ARRAY]; } TOKEN_PRIVILEGES, *PTOKEN_PRIVILEGES;
 		[PInvokeData("winnt.h", MSDNShortId = "c9016511-740f-44f3-92ed-17cc518c6612")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct TOKEN_PRIVILEGES
@@ -4375,7 +4375,9 @@ namespace Vanara.PInvoke
 					Value = existingPtr.ToArray<byte>(6);
 			}
 
-			private PSID_IDENTIFIER_AUTHORITY() { }
+			private PSID_IDENTIFIER_AUTHORITY()
+			{
+			}
 
 			/// <summary>Gets or sets the long value.</summary>
 			/// <value>The long value.</value>
@@ -4612,6 +4614,161 @@ namespace Vanara.PInvoke
 			public static implicit operator PACL(SafePACL sd) => sd.DangerousGetHandle();
 		}
 
+		/// <summary>Contains information about an event record returned by the ReadEventLog function.</summary>
+		/// <remarks>
+		/// <para>
+		/// The defined members are followed by the replacement strings for the message identified by the event identifier, the binary
+		/// information, some pad bytes to make sure the full entry is on a <c>DWORD</c> boundary, and finally the length of the log entry
+		/// again. Because the strings and the binary information can be of any length, no structure members are defined to reference them.
+		/// The declaration of this structure in Winnt.h describes these members as follows:
+		/// </para>
+		/// <para>
+		/// The source name is a variable-length string that specifies the name of the event source. The computer name is the name of the
+		/// computer that generated the event. It may be followed with some padding bytes so that the user SID is aligned on a <c>DWORD</c>
+		/// boundary. The user SID identifies the active user at the time this event was logged. If <c>UserSidLength</c> is zero, this field
+		/// may be empty.
+		/// </para>
+		/// <para>
+		/// The event identifier together with source name and a language identifier identify a string that describes the event in more
+		/// detail. The strings are used as replacement strings and are merged into the message string to make a complete message. The
+		/// message strings are contained in a message file specified in the source entry in the registry. To obtain the appropriate message
+		/// string from the message file, load the message file with the LoadLibrary function and use the FormatMessage function.
+		/// </para>
+		/// <para>
+		/// The binary information is information that is specific to the event. It could be the contents of the processor registers when a
+		/// device driver got an error, a dump of an invalid packet that was received from the network, a dump of all the structures in a
+		/// program (when the data area was detected to be corrupt), and so on. This information should be useful to the writer of the device
+		/// driver or the application in tracking down bugs or unauthorized breaks into the application.
+		/// </para>
+		/// </remarks>
+		[PInvokeData("winnt.h", MSDNShortId = "669b182a-bc81-4386-9815-6ffa09e2e743")]
+		public class SafePEVENTLOGRECORD : SafeMemoryHandle<LocalMemoryMethods>
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafePEVENTLOGRECORD"/> class.</summary>
+			/// <param name="bytesToAllocate">The bytes to allocate.</param>
+			public SafePEVENTLOGRECORD(int bytesToAllocate = 512) : base(bytesToAllocate) { }
+
+			private SafePEVENTLOGRECORD()
+			{
+			}
+
+			/// <summary>Reserved.</summary>
+			public uint ClosingRecordNumber => handle.ToStructure<uint>(Size, 32);
+
+			/// <summary>Gets the name of the computer that generated the event.</summary>
+			public string ComputerName
+			{
+				get
+				{
+					var offset = 56 + (Source.Length + 1) * 2;
+					return StringHelper.GetString(handle.Offset(offset), CharSet.Unicode, Size - offset);
+				}
+			}
+
+			/// <summary>
+			/// Gets the event-specific information within this event log record, in bytes. This information could be something specific (a
+			/// disk driver might log the number of retries, for example), followed by binary information specific to the event being logged
+			/// and to the source that generated the entry.
+			/// </summary>
+			/// <param name="basePtr">The address of the structure in memory.</param>
+			public byte[] Data => handle.ToArray<byte>(DataLength, DataOffset, Size);
+
+			/// <summary>
+			/// The category for this event. The meaning of this value depends on the event source. For more information, see Event Categories.
+			/// </summary>
+			public ushort EventCategory => handle.ToStructure<ushort>(Size, 28);
+
+			/// <summary>
+			/// The event identifier. The value is specific to the event source for the event, and is used with source name to locate a
+			/// description string in the message file for the event source. For more information, see Event Identifiers.
+			/// </summary>
+			public uint EventID => handle.ToStructure<uint>(Size, 20);
+
+			/// <summary>
+			/// <para>The type of event. This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>EVENTLOG_ERROR_TYPE 0x0001</term>
+			/// <term>Error event</term>
+			/// </item>
+			/// <item>
+			/// <term>EVENTLOG_AUDIT_FAILURE 0x0010</term>
+			/// <term>Failure Audit event</term>
+			/// </item>
+			/// <item>
+			/// <term>EVENTLOG_AUDIT_SUCCESS 0x0008</term>
+			/// <term>Success Audit event</term>
+			/// </item>
+			/// <item>
+			/// <term>EVENTLOG_INFORMATION_TYPE 0x0004</term>
+			/// <term>Information event</term>
+			/// </item>
+			/// <item>
+			/// <term>EVENTLOG_WARNING_TYPE 0x0002</term>
+			/// <term>Warning event</term>
+			/// </item>
+			/// </list>
+			/// <para>For more information, see Event Types.</para>
+			/// </summary>
+			public EVENTLOG_TYPE EventType => handle.ToStructure<EVENTLOG_TYPE>(Size, 24);
+
+			/// <summary>
+			/// The number of strings present in the log (at the position indicated by <c>StringOffset</c>). These strings are merged into
+			/// the message before it is displayed to the user.
+			/// </summary>
+			public ushort NumStrings => handle.ToStructure<ushort>(Size, 26);
+
+			/// <summary>
+			/// The number of the record. This value can be used with the EVENTLOG_SEEK_READ flag in the ReadEventLog function to begin
+			/// reading at a specified record. For more information, see Event Log Records.
+			/// </summary>
+			public uint RecordNumber => handle.ToStructure<uint>(Size, 8);
+
+			/// <summary>Gets a string that specifies the name of the event source.</summary>
+			public string Source => StringHelper.GetString(handle.Offset(56), CharSet.Unicode, Size - 56);
+
+			/// <summary>Gets the description strings within this event log record.</summary>
+			/// <param name="basePtr">The address of the structure in memory.</param>
+			public string[] Strings =>
+				NumStrings == 0 ? new string[0] : handle.ToStringEnum(CharSet.Unicode, StringOffset, Size).ToArray();
+
+			/// <summary>Gets the <see cref="DateTime"/> value at which this entry was submitted.</summary>
+			public DateTime TimeGenerated => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc) + TimeSpan.FromSeconds(handle.ToStructure<int>(Size, 12));
+
+			/// <summary>Gets the <see cref="DateTime"/> value at which this entry was written.</summary>
+			public DateTime TimeWritten => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc) + TimeSpan.FromSeconds(handle.ToStructure<int>(Size, 16));
+
+			/// <summary>Gets the security identifier (SID) within this event log record.</summary>
+			/// <param name="basePtr">The address of the structure in memory.</param>
+			public SafePSID UserSid => UserSidLength == 0 ? SafePSID.Null : new SafePSID(handle.ToArray<byte>(UserSidLength, UserSidOffset, Size));
+
+			/// <summary>The size of the event-specific data (at the position indicated by <c>DataOffset</c>), in bytes.</summary>
+			private int DataLength => handle.ToStructure<int>(Size, 48);
+
+			/// <summary>
+			/// The offset of the event-specific information within this event log record, in bytes. This information could be something
+			/// specific (a disk driver might log the number of retries, for example), followed by binary information specific to the event
+			/// being logged and to the source that generated the entry.
+			/// </summary>
+			private int DataOffset => handle.ToStructure<int>(Size, 52);
+
+			/// <summary>The offset of the description strings within this event log record.</summary>
+			private int StringOffset => handle.ToStructure<int>(Size, 36);
+
+			/// <summary>The size of the <c>UserSid</c> member, in bytes. This value can be zero if no security identifier was provided.</summary>
+			private int UserSidLength => handle.ToStructure<int>(Size, 40);
+
+			/// <summary>
+			/// The offset of the security identifier (SID) within this event log record. To obtain the user name for this SID, use the
+			/// LookupAccountSid function.
+			/// </summary>
+			private int UserSidOffset => handle.ToStructure<int>(Size, 44);
+		}
+
 		/// <summary>A SafeHandle for security descriptors. If owned, will call LocalFree on the pointer when disposed.</summary>
 		public class SafePSECURITY_DESCRIPTOR : SafeMemoryHandle<LocalMemoryMethods>, IEquatable<SafePSECURITY_DESCRIPTOR>, IEquatable<PSECURITY_DESCRIPTOR>, IEquatable<IntPtr>, ISecurityObject
 		{
@@ -4673,14 +4830,6 @@ namespace Vanara.PInvoke
 			/// <summary>Determines whether the components of this security descriptor are valid.</summary>
 			public bool IsValidSecurityDescriptor => IsValidSecurityDescriptor(handle);
 
-			/// <summary>Determines whether the format of this security descriptor is self-relative.</summary>
-			public bool IsSelfRelative => ((PSECURITY_DESCRIPTOR)handle).IsSelfRelative();
-
-			/// <summary>
-			/// Gets the length, in bytes, of a structurally valid security descriptor. The length includes the length of all associated structures.
-			/// </summary>
-			public uint Length => ((PSECURITY_DESCRIPTOR)handle).Length();
-
 			/// <summary>Gets or sets the size in bytes of the security descriptor.</summary>
 			/// <value>The size in bytes of the security descriptor.</value>
 			public override SizeT Size
@@ -4693,6 +4842,14 @@ namespace Vanara.PInvoke
 				}
 				set => base.Size = value;
 			}
+
+			/// <summary>Determines whether the format of this security descriptor is self-relative.</summary>
+			public bool IsSelfRelative => ((PSECURITY_DESCRIPTOR)handle).IsSelfRelative();
+
+			/// <summary>
+			/// Gets the length, in bytes, of a structurally valid security descriptor. The length includes the length of all associated structures.
+			/// </summary>
+			public uint Length => ((PSECURITY_DESCRIPTOR)handle).Length();
 
 			/// <summary>Performs an explicit conversion from <see cref="SafePSECURITY_DESCRIPTOR"/> to <see cref="PSECURITY_DESCRIPTOR"/>.</summary>
 			/// <param name="sd">The safe security descriptor.</param>

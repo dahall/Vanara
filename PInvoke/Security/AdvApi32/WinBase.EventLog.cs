@@ -319,6 +319,92 @@ namespace Vanara.PInvoke
 		public static extern bool ReadEventLog(HEVENTLOG hEventLog, EVENTLOG_READ dwReadFlags, uint dwRecordOffset, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint pnBytesRead, out uint pnMinNumberOfBytesNeeded);
 
 		/// <summary>
+		/// Reads the specified number of entries from the specified event log. The function can be used to read log entries in chronological
+		/// or reverse chronological order.
+		/// </summary>
+		/// <param name="hEventLog">A handle to the event log to be read. The OpenEventLog function returns this handle.</param>
+		/// <param name="dwReadFlags">
+		/// <para>
+		/// Use the following flag values to indicate how to read the log file. This parameter must include one of the following values (the
+		/// flags are mutually exclusive).
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>EVENTLOG_SEEK_READ 0x0002</term>
+		/// <term>
+		/// Begin reading from the record specified in the dwRecordOffset parameter. This option may not work with large log files if the
+		/// function cannot determine the log file's size. For details, see Knowledge Base article, 177199.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>EVENTLOG_SEQUENTIAL_READ 0x0001</term>
+		/// <term>Read the records sequentially.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// You must specify one of the following flags to indicate the direction for successive read operations (the flags are mutually exclusive).
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>EVENTLOG_FORWARDS_READ 0x0004</term>
+		/// <term>The log is read in chronological order (oldest to newest).</term>
+		/// </item>
+		/// <item>
+		/// <term>EVENTLOG_BACKWARDS_READ 0x0008</term>
+		/// <term>The log is read in reverse chronological order (newest to oldest).</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwRecordOffset">
+		/// The record number of the log-entry at which the read operation should start. This parameter is ignored unless dwReadFlags
+		/// includes the <c>EVENTLOG_SEEK_READ</c> flag.
+		/// </param>
+		/// <param name="lpBuffer">
+		/// <para>
+		/// An application-allocated buffer that will receive one or more EVENTLOGRECORD structures. This parameter cannot be <c>NULL</c>,
+		/// even if the nNumberOfBytesToRead parameter is zero.
+		/// </para>
+		/// <para>The maximum size of this buffer is 0x7ffff bytes.</para>
+		/// </param>
+		/// <param name="nNumberOfBytesToRead">
+		/// The size of the lpBuffer buffer, in bytes. This function will read as many log entries as will fit in the buffer; the function
+		/// will not return partial entries.
+		/// </param>
+		/// <param name="pnBytesRead">A pointer to a variable that receives the number of bytes read by the function.</param>
+		/// <param name="pnMinNumberOfBytesNeeded">
+		/// A pointer to a variable that receives the required size of the lpBuffer buffer. This value is valid only this function returns
+		/// zero and GetLastError returns <c>ERROR_INSUFFICIENT_BUFFER</c>.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>When this function returns successfully, the read position in the event log is adjusted by the number of records read.</para>
+		/// <para>
+		/// <c>Note</c> The configured file name for this source may also be the configured file name for other sources (several sources can
+		/// exist as subkeys under a single log). Therefore, this function may return events that were logged by more than one source.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Querying for Event Information.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-readeventloga BOOL ReadEventLogA( HANDLE hEventLog, DWORD
+		// dwReadFlags, DWORD dwRecordOffset, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, DWORD *pnBytesRead, DWORD
+		// *pnMinNumberOfBytesNeeded );
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winbase.h", MSDNShortId = "10b37174-661a-4dc6-a7fe-752739494156")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ReadEventLog(HEVENTLOG hEventLog, EVENTLOG_READ dwReadFlags, uint dwRecordOffset, SafePEVENTLOGRECORD lpBuffer, uint nNumberOfBytesToRead, out uint pnBytesRead, out uint pnMinNumberOfBytesNeeded);
+
+		/// <summary>
 		/// <para>Retrieves a registered handle to the specified event log.</para>
 		/// </summary>
 		/// <param name="lpUNCServerName">
