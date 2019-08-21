@@ -116,8 +116,9 @@ namespace Vanara.InteropServices
 
 		/// <summary>Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.</summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
+		/// <param name="prefixBytes">Number of bytes preceding the structure.</param>
 		/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
-		T ToStructure<T>();
+		T ToStructure<T>(int prefixBytes = 0);
 	}
 
 	/// <summary>Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.</summary>
@@ -327,7 +328,7 @@ namespace Vanara.InteropServices
 			//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
 			if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 			Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
-			return handle.ToArray<T>(count, prefixBytes);
+			return handle.ToArray<T>(count, prefixBytes, sz);
 		}
 
 		/// <summary>Extracts an enumeration of structures of <typeparamref name="T"/> containing <paramref name="count"/> items.
@@ -344,21 +345,21 @@ namespace Vanara.InteropServices
 			//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
 			if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 			Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
-			return handle.ToIEnum<T>(count, prefixBytes);
+			return handle.ToIEnum<T>(count, prefixBytes, sz);
 		}
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <param name="len">The length.</param>
 		/// <param name="charSet">The character set of the string.</param>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public string ToString(int len, CharSet charSet = CharSet.Unicode) => len == -1 ? StringHelper.GetString(handle, charSet) : StringHelper.GetString(handle, charSet).Substring(0, len);
+		public string ToString(int len, CharSet charSet = CharSet.Unicode) => len == -1 ? StringHelper.GetString(handle, charSet) : StringHelper.GetString(handle, charSet, sz).Substring(0, len);
 
 		/// <summary>Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length <paramref name="count"/>.</summary>
 		/// <param name="count">The count of expected strings.</param>
 		/// <param name="charSet">The character set of the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 		/// <returns>Enumeration of strings.</returns>
-		public IEnumerable<string> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => IsInvalid ? new string[0] : handle.ToStringEnum(count, charSet, prefixBytes);
+		public IEnumerable<string> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => IsInvalid ? new string[0] : handle.ToStringEnum(count, charSet, prefixBytes, sz);
 
 		/// <summary>
 		/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character and is terminated by
@@ -367,17 +368,57 @@ namespace Vanara.InteropServices
 		/// <param name="charSet">The character set of the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 		/// <returns>An enumerated list of strings.</returns>
-		public IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, int prefixBytes = 0) => IsInvalid ? new string[0] : handle.ToStringEnum(charSet, prefixBytes);
+		public IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, int prefixBytes = 0) => IsInvalid ? new string[0] : handle.ToStringEnum(charSet, prefixBytes, sz);
 
 		/// <summary>Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.</summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
+		/// <param name="prefixBytes">Number of bytes preceding the structure.</param>
 		/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
-		public T ToStructure<T>()
+		public T ToStructure<T>(int prefixBytes = 0)
 		{
 			if (IsInvalid) return default;
-			//if (Size < Marshal.SizeOf(typeof(T)))
-			//	throw new InsufficientMemoryException("Requested structure is larger than the memory allocated.");
-			return handle.ToStructure<T>();
+			return handle.ToStructure<T>(sz, prefixBytes);
+		}
+
+		/// <summary>
+		/// Marshals data from a managed list of specified type to an offset within this allocated memory.
+		/// </summary>
+		/// <typeparam name="T">A type of the enumerated managed object that holds the data to be marshaled. The object must be a structure or an instance of a
+		/// formatted class.</typeparam>
+		/// <param name="items">The enumerated list of items to marshal.</param>
+		/// <param name="autoExtend">if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="items"/>.</param>
+		/// <param name="offset">The number of bytes to skip before writing the first element of <paramref name="items" />.</param>
+		public void Write<T>(IEnumerable<T> items, bool autoExtend = true, int offset = 0)
+		{
+			if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
+			if (autoExtend)
+			{
+				var count = items?.Count() ?? 0;
+				if (count == 0) return;
+				InteropExtensions.TrueType(typeof(T), out var iSz);
+				var reqSz = iSz * count + offset;
+				if (sz < reqSz)
+					Size = reqSz;
+			}
+			handle.Write(items, offset, sz);
+		}
+
+		/// <summary>Writes the specified value to an offset within this allocated memory.</summary>
+		/// <typeparam name="T">The type of the value to write.</typeparam>
+		/// <param name="value">The value to write.</param>
+		/// <param name="autoExtend">if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="value"/>.</param>
+		/// <param name="offset">The number of bytes to offset from the beginning of this allocated memory before writing.</param>
+		public void Write<T>(T value, bool autoExtend = true, int offset = 0) where T : struct
+		{
+			if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
+			if (autoExtend)
+			{
+				InteropExtensions.TrueType(typeof(T), out var iSz);
+				var reqSz = iSz + offset;
+				if (sz < reqSz)
+					Size = reqSz;
+			}
+			handle.Write(value, offset, sz);
 		}
 
 		/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>

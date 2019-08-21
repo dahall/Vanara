@@ -173,8 +173,8 @@ namespace Vanara.Extensions
 		/// </typeparam>
 		/// <param name="items">The enumerated list of items to marshal.</param>
 		/// <param name="ptr">
-		/// A pointer to a pre-allocated block of memory. The allocated memory must be sufficient to hold the size of <typeparamref
-		/// name="T"/> times the number of items in the enumeration plus the number of bytes specified by <paramref name="prefixBytes"/>.
+		/// A pointer to a pre-allocated block of memory. The allocated memory must be sufficient to hold the size of
+		/// <typeparamref name="T"/> times the number of items in the enumeration plus the number of bytes specified by <paramref name="prefixBytes"/>.
 		/// </param>
 		/// <param name="prefixBytes">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
 		[Obsolete("Please use the Vanara.Extensions.InteropExtensions.Write method instead. This will be removed from the library shortly as it performs no allocation.", true)]
@@ -540,7 +540,10 @@ namespace Vanara.Extensions
 			}
 			if (i + charLength > allocatedBytes) throw new InsufficientMemoryException();
 
-			int GetCh(IntPtr p) => charLength == 1 ? Marshal.ReadByte(p) : Marshal.ReadInt16(p);
+			int GetCh(IntPtr p)
+			{
+				return charLength == 1 ? Marshal.ReadByte(p) : Marshal.ReadInt16(p);
+			}
 		}
 
 		/// <summary>
@@ -576,7 +579,7 @@ namespace Vanara.Extensions
 			if (allocatedBytes > 0 && allocatedBytes < stSize + offset)
 				throw new InsufficientMemoryException();
 			if (t == typeof(T))
-				Marshal.PtrToStructure(ptr, (object)instance);
+				Marshal.PtrToStructure(ptr, instance);
 			else
 				using (var pin = new PinnedObject(instance))
 					((IntPtr)pin).Write(Marshal.PtrToStructure(ptr.Offset(offset), t));
@@ -598,22 +601,25 @@ namespace Vanara.Extensions
 			unsafe { return new UIntPtr(p.ToPointer()); }
 		}
 
-		/// <summary>
-		/// Marshals data from a managed list of specified type to a pre-allocated unmanaged block of memory.
-		/// </summary>
-		/// <typeparam name="T">A type of the enumerated managed object that holds the data to be marshaled. The object must be a structure or an instance of a
-		/// formatted class.</typeparam>
-		/// <param name="ptr">A pointer to a pre-allocated block of memory. The allocated memory must be sufficient to hold the size of
-		/// <typeparamref name="T" /> times the number of items in the enumeration plus the number of bytes specified by <paramref name="offset" />.</param>
+		/// <summary>Marshals data from a managed list of specified type to a pre-allocated unmanaged block of memory.</summary>
+		/// <typeparam name="T">
+		/// A type of the enumerated managed object that holds the data to be marshaled. The object must be a structure or an instance of a
+		/// formatted class.
+		/// </typeparam>
+		/// <param name="ptr">
+		/// A pointer to a pre-allocated block of memory. The allocated memory must be sufficient to hold the size of
+		/// <typeparamref name="T"/> times the number of items in the enumeration plus the number of bytes specified by <paramref name="offset"/>.
+		/// </param>
 		/// <param name="items">The enumerated list of items to marshal.</param>
-		/// <param name="offset">The number of bytes to skip before writing the first element of <paramref name="items" />.</param>
-		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr" />.</param>
+		/// <param name="offset">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		/// <returns>The number of bytes written. The offset is not included.</returns>
 		/// <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
 		/// <exception cref="InsufficientMemoryException"></exception>
-		public static void Write<T>(this IntPtr ptr, IEnumerable<T> items, int offset = 0, SizeT allocatedBytes = default)
+		public static int Write<T>(this IntPtr ptr, IEnumerable<T> items, int offset = 0, SizeT allocatedBytes = default)
 		{
 			var count = items?.Count() ?? 0;
-			if (count == 0) return;
+			if (count == 0) return 0;
 
 			if (!typeof(T).IsBlittable())
 				throw new ArgumentException(@"Structure layout is not sequential or explicit.");
@@ -626,18 +632,16 @@ namespace Vanara.Extensions
 			var i = 0;
 			foreach (var item in items.Select(v => Convert.ChangeType(v, ttype)))
 				Marshal.StructureToPtr(item, ptr.Offset(offset + i++ * stSize), false);
+
+			return bytesReq - offset;
 		}
 
-		/// <summary>
-		/// Writes the specified value to pre-allocated memory.
-		/// </summary>
+		/// <summary>Writes the specified value to pre-allocated memory.</summary>
 		/// <param name="ptr">The address of the memory where the value is to be written.</param>
 		/// <param name="value">The value to write.</param>
-		/// <param name="offset">The number of bytes to offset from <paramref name="ptr" /> before writing.</param>
-		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr" />.</param>
-		/// <returns>
-		/// The number of bytes written. The offset is not included.
-		/// </returns>
+		/// <param name="offset">The number of bytes to offset from <paramref name="ptr"/> before writing.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		/// <returns>The number of bytes written. The offset is not included.</returns>
 		/// <exception cref="InsufficientMemoryException"></exception>
 		public static int Write(this IntPtr ptr, object value, int offset = 0, SizeT allocatedBytes = default)
 		{
@@ -658,8 +662,15 @@ namespace Vanara.Extensions
 		public static int Write<T>(this IntPtr ptr, T value, int offset = 0, SizeT allocatedBytes = default) where T : struct =>
 			WriteNoChecks(ptr, value, offset, allocatedBytes);
 
+		internal static Type TrueType(Type type, out int size)
+		{
+			var ttype = type.IsEnum ? Enum.GetUnderlyingType(type) : type;
+			size = Marshal.SizeOf(ttype);
+			return ttype;
+		}
+
 		private static T GetValueType<T>(IntPtr ptr, Type trueType = null, int offset = 0) =>
-			(T)GetValueType(ptr, typeof(T), trueType, offset);
+					(T)GetValueType(ptr, typeof(T), trueType, offset);
 
 		private static object GetValueType(IntPtr ptr, Type type, Type trueType = null, int offset = 0)
 		{
@@ -671,13 +682,6 @@ namespace Vanara.Extensions
 			if (type.IsEnum)
 				return Enum.ToObject(type, obj);
 			return Convert.ChangeType(obj, type);
-		}
-
-		private static Type TrueType(Type type, out int size)
-		{
-			var ttype = type.IsEnum ? Enum.GetUnderlyingType(type) : type;
-			size = Marshal.SizeOf(ttype);
-			return ttype;
 		}
 
 		private static object TrueValue(object value, out int size) => Convert.ChangeType(value, TrueType(value.GetType(), out size));
