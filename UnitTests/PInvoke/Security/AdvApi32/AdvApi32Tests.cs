@@ -103,22 +103,6 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		[Test]
-		public void CredEnumerateTest()
-		{
-			var a = CredEnumerate();
-			TestContext.WriteLine(string.Join("; ", a.Select(c => c.TargetName)));
-			Assert.That(a, Is.Not.Empty);
-		}
-
-		[Test]
-		public void CredReadTest()
-		{
-			const CRED_TYPE ct = CRED_TYPE.CRED_TYPE_GENERIC;
-			var genCred = CredEnumerate().FirstOrDefault(f => f.Type == ct).TargetName;
-			Assert.That(CredRead(genCred, ct, 0, out var cred), Is.True);
-		}
-
 		[Test()]
 		public void DuplicateTokenExTest()
 		{

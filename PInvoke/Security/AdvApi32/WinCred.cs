@@ -10,6 +10,30 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		/// <summary>Maximum number of attributes per credential</summary>
+		public const int CRED_MAX_ATTRIBUTES = 64;
+
+		/// <summary>Maximum length of the TargetName field for CRED_TYPE_DOMAIN_* (in characters). Largest one is DfsRoot\DfsShare</summary>
+		public const int CRED_MAX_DOMAIN_TARGET_NAME_LENGTH = (256 + 1 + 80);
+
+		/// <summary>Maximum length of the TargetName field for CRED_TYPE_GENERIC (in characters)</summary>
+		public const int CRED_MAX_GENERIC_TARGET_NAME_LENGTH = 32767;
+
+		/// <summary>Maximum length of the various credential string fields (in characters)</summary>
+		public const int CRED_MAX_STRING_LENGTH = 256;
+
+		/// <summary>Maximum length of a target attribute</summary>
+		public const int CRED_MAX_TARGETNAME_ATTRIBUTE_LENGTH = (256);
+
+		/// <summary>Maximum length of a target namespace</summary>
+		public const int CRED_MAX_TARGETNAME_NAMESPACE_LENGTH = (256);
+
+		/// <summary>Maximum length of the UserName field. The worst case is User@DnsDomain</summary>
+		public const int CRED_MAX_USERNAME_LENGTH = (256 + 1 + 256);
+
+		/// <summary>Maximum size of the Credential Attribute Value field (in bytes)</summary>
+		public const int CRED_MAX_VALUE_SIZE = (256);
+
 		/// <summary>Flags used by CredEnumerate.</summary>
 		[PInvokeData("wincred.h", MSDNShortId = "ef0b7620-7b00-45f1-af16-141d2e940783")]
 		public enum CRED_ENUM
@@ -374,7 +398,8 @@ namespace Vanara.PInvoke
 		{
 			if (!CredEnumerate(filter, filter is null ? CRED_ENUM.CRED_ENUMERATE_ALL_CREDENTIALS : CRED_ENUM.NONE, out var cnt, out var creds))
 				Win32Error.ThrowLastError();
-			return creds.GetCredArray((int)cnt);
+			using (creds)
+				return creds.GetCredArray((int)cnt);
 		}
 
 		/// <summary>
@@ -405,7 +430,31 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wincred.h", MSDNShortId = "b39e3167-dd63-4b81-b850-f3117be348a5")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CredFindBestCredential(string TargetName, CRED_TYPE Type, uint Flags, out SafeCredMemoryHandle Credential);
+		public static extern bool CredFindBestCredential(string TargetName, CRED_TYPE Type, [Optional] uint Flags, out SafeCredMemoryHandle Credential);
+
+		/// <summary>
+		/// The <c>CredFindBestCredential</c> function searches the Credentials Management (CredMan) database for the set of generic
+		/// credentials that are associated with the current logon session and that best match the specified target resource.
+		/// </summary>
+		/// <param name="TargetName">
+		/// A pointer to a null-terminated string that contains the name of the target resource for which to find credentials.
+		/// </param>
+		/// <param name="Type">The type of credentials to search for. Currently, this function supports only <c>CRED_TYPE_GENERIC</c>.</param>
+		/// <param name="Credential">On success, gets a CREDENTIAL_MGD structure that specifies the set of credentials this function finds.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/wincred/nf-wincred-credfindbestcredentiala BOOL CredFindBestCredentialA(
+		// LPCSTR TargetName, DWORD Type, DWORD Flags, PCREDENTIALA *Credential );
+		[PInvokeData("wincred.h", MSDNShortId = "b39e3167-dd63-4b81-b850-f3117be348a5")]
+		public static bool CredFindBestCredential(string TargetName, CRED_TYPE Type, out CREDENTIAL_MGD Credential)
+		{
+			var b = CredFindBestCredential(TargetName, Type, 0, out var cred);
+			using (cred)
+				Credential = b ? cred : default;
+			return b;
+		}
 
 		/// <summary>
 		/// <para>The <c>CredFree</c> function frees a buffer returned by any of the credentials management functions.</para>
@@ -649,6 +698,58 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
+		/// The <c>CredMarshalCredential</c> function transforms a credential into a text string. Historically, many functions, such as
+		/// NetUseAdd, take a domain name, user name, and password as credentials. These functions do not accept certificates as credentials.
+		/// The <c>CredMarshalCredential</c> function converts such credentials into a form that can be passed into these APIs.
+		/// </para>
+		/// <para>
+		/// The marshaled credential should be passed as the user name string to any API that is currently passed credentials. The domain
+		/// name, if applicable, passed to that API should be passed as <c>NULL</c> or empty. For certificate credentials, the PIN of the
+		/// certificate should be passed to that API as the password.
+		/// </para>
+		/// <para>
+		/// The caller should not modify or print marshaled credentials. The returned value can be freely converted between the Unicode,
+		/// ANSI, and OEM characters sets. The string is case sensitive.
+		/// </para>
+		/// </summary>
+		/// <param name="CredType">
+		/// <para>Type of the credential to marshal.</para>
+		/// </param>
+		/// <param name="Credential">
+		/// <para>Credential to marshal.</para>
+		/// <para>This is one of the CRED_MARSHAL_TYPE values.</para>
+		/// <para>If CredType is CertCredential, Credential points to a CERT_CREDENTIAL_INFO structure.</para>
+		/// <para>If CredType is UsernameTargetCredential, Credential points to a USERNAME_TARGET_CREDENTIAL_INFO structure.</para>
+		/// </param>
+		/// <param name="MarshaledCredential">
+		/// <para>
+		/// Pointer to a <c>null</c>-terminated string that contains the marshaled credential. The caller should free the returned buffer
+		/// using CredFree.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// This function returns <c>TRUE</c> on success and <c>FALSE</c> on failure. The GetLastError function can be called to get a more
+		/// specific status code. The following status code can be returned:
+		/// </para>
+		/// <para>ERROR_INVALID_PARAMETER</para>
+		/// <para>CredType is not valid.</para>
+		/// </returns>
+		[PInvokeData("wincred.h", MSDNShortId = "20a1d54b-04a7-4b0a-88e4-1970d1f71502")]
+		public static bool CredMarshalCredential<T>(T Credential, out string MarshaledCredential, CRED_MARSHAL_TYPE CredType = 0) where T : struct
+		{
+			if (CredType == 0 ? !CorrespondingTypeAttribute.CanGet<T, CRED_MARSHAL_TYPE>(out CredType) : !CorrespondingTypeAttribute.CanGet(CredType, typeof(T)))
+				throw new InvalidCastException();
+			using (var mem = SafeHGlobalHandle.CreateFromStructure(Credential))
+			{
+				var b = CredMarshalCredential(CredType, mem, out var cred);
+				MarshaledCredential = b ? cred : null;
+				return b;
+			}
+		}
+
+		/// <summary>
+		/// <para>
 		/// The <c>CredProtect</c> function encrypts the specified credentials so that only the current security context can decrypt them.
 		/// </para>
 		/// </summary>
@@ -695,7 +796,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wincred.h", MSDNShortId = "1e299dfb-2ffe-463c-9e2c-b7774a2216e3")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CredProtect([MarshalAs(UnmanagedType.Bool)] bool fAsSelf, StringBuilder pszCredentials, uint cchCredentials, StringBuilder pszProtectedCredentials, ref uint pcchMaxChars, out CRED_PROTECTION_TYPE ProtectionType);
+		public static extern bool CredProtect([MarshalAs(UnmanagedType.Bool)] bool fAsSelf, string pszCredentials, uint cchCredentials, StringBuilder pszProtectedCredentials, ref uint pcchMaxChars, out CRED_PROTECTION_TYPE ProtectionType);
 
 		/// <summary>
 		/// <para>
@@ -747,7 +848,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wincred.h", MSDNShortId = "3222de7b-5290-4e82-a382-b2db6afc78cc")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CredRead(string TargetName, CRED_TYPE Type, uint Flags, out SafeCredMemoryHandle Credential);
+		public static extern bool CredRead(string TargetName, CRED_TYPE Type, [Optional] uint Flags, out SafeCredMemoryHandle Credential);
 
 		/// <summary>
 		/// <para>
@@ -792,7 +893,8 @@ namespace Vanara.PInvoke
 		public static bool CredRead(string TargetName, CRED_TYPE Type, out CREDENTIAL_MGD Credential)
 		{
 			var b = CredRead(TargetName, Type, 0, out var cred);
-			Credential = b ? new CREDENTIAL_MGD(cred.GetCred()) : default;
+			using (cred)
+				Credential = b ? cred : default;
 			return b;
 		}
 
@@ -965,7 +1067,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/wincred/nf-wincred-credrenamea BOOL CredRenameA( LPCSTR OldTargetName, LPCSTR
 		// NewTargetName, DWORD Type, DWORD Flags );
-		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto), Obsolete("CredRename is no longer supported as of Windows Vista.")]
 		[PInvokeData("wincred.h", MSDNShortId = "e598f2ae-f975-4dd2-bf0b-e2fd96d4c940")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CredRename(string OldTargetName, string NewTargetName, CRED_TYPE Type, uint Flags = 0);
@@ -1481,65 +1583,19 @@ namespace Vanara.PInvoke
 		[PInvokeData("wincred.h")]
 		public struct CREDENTIAL_MGD
 		{
-			/// <summary>The flags</summary>
-			public CRED_FLAGS Flags;
-
-			/// <summary>The type of the credential. This member cannot be changed after the credential is created.</summary>
-			public CRED_TYPE Type;
-
 			/// <summary>
-			/// The name of the credential. The TargetName and Type members uniquely identify the credential. This member cannot be changed
-			/// after the credential is created. Instead, the credential with the old name should be deleted and the credential with the new
-			/// name created.
-			/// <para>
-			/// If Type is CRED_TYPE_DOMAIN_PASSWORD or CRED_TYPE_DOMAIN_CERTIFICATE, this member identifies the server or servers that the
-			/// credential is to be used for. The member is either a NetBIOS or DNS server name, a DNS host name suffix that contains a
-			/// wildcard character, a NetBIOS or DNS domain name that contains a wildcard character sequence, or an asterisk.
-			/// </para>
-			/// <para>If TargetName is a DNS host name, the TargetAlias member can be the NetBIOS name of the host.</para>
-			/// <para>
-			/// If the TargetName is a DNS host name suffix that contains a wildcard character, the leftmost label of the DNS host name is an
-			/// asterisk (*), which denotes that the target name is any server whose name ends in the specified name, for example, *.microsoft.com.
-			/// </para>
-			/// <para>
-			/// If the TargetName is a domain name that contains a wildcard character sequence, the syntax is the domain name followed by a
-			/// backslash and asterisk (\*), which denotes that the target name is any server that is a member of the named domain (or realm).
-			/// </para>
-			/// <para>
-			/// If TargetName is a DNS domain name that contains a wildcard character sequence, the TargetAlias member can be a NetBIOS
-			/// domain name that uses a wildcard sequence for the same domain.
-			/// </para>
-			/// <para>
-			/// If TargetName specifies a DFS share, for example, DfsRoot\DfsShare, then this credential matches the specific DFS share and
-			/// any servers reached through that DFS share.
-			/// </para>
-			/// <para>If TargetName is a single asterisk (*), this credential matches any server name.</para>
-			/// <para>
-			/// If TargetName is CRED_SESSION_WILDCARD_NAME, this credential matches any server name. This credential matches before a single
-			/// asterisk and is only valid if Persist is CRED_PERSIST_SESSION. The credential can be set by applications that want to
-			/// temporarily override the default credential.
-			/// </para>
-			/// <para>This member cannot be longer than CRED_MAX_DOMAIN_TARGET_NAME_LENGTH (337) characters.</para>
-			/// <para>
-			/// If the Type is CRED_TYPE_GENERIC, this member should identify the service that uses the credential in addition to the actual
-			/// target. Microsoft suggests the name be prefixed by the name of the company implementing the service. Microsoft will use the
-			/// prefix "Microsoft". Services written by Microsoft should append their service name, for example Microsoft_RAS_TargetName.
-			/// This member cannot be longer than CRED_MAX_GENERIC_TARGET_NAME_LENGTH (32767) characters.
-			/// </para>
-			/// <para>This member is case-insensitive.</para>
+			/// The number of application-defined attributes to be associated with the credential. This member can be read and written. Its
+			/// value cannot be greater than CRED_MAX_ATTRIBUTES (64).
 			/// </summary>
-			public string TargetName;
+			public uint AttributeCount;
+
+			/// <summary>Application-defined attributes that are associated with the credential. This member can be read and written.</summary>
+			public byte[] Attributes;
 
 			/// <summary>
 			/// A string comment from the user that describes this credential. This member cannot be longer than CRED_MAX_STRING_LENGTH (256) characters.
 			/// </summary>
 			public string Comment;
-
-			/// <summary>
-			/// The time, in Coordinated Universal Time (Greenwich Mean Time), of the last modification of the credential. For write
-			/// operations, the value of this member is ignored.
-			/// </summary>
-			public FILETIME LastWritten;
 
 			/// <summary>
 			/// Secret data for the credential. The CredentialBlob member can be both read and written.
@@ -1560,6 +1616,15 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public byte[] CredentialBlob;
+
+			/// <summary>The flags</summary>
+			public CRED_FLAGS Flags;
+
+			/// <summary>
+			/// The time, in Coordinated Universal Time (Greenwich Mean Time), of the last modification of the credential. For write
+			/// operations, the value of this member is ignored.
+			/// </summary>
+			public FILETIME LastWritten;
 
 			/// <summary>
 			/// Defines the persistence of this credential. This member can be read and written.
@@ -1606,19 +1671,56 @@ namespace Vanara.PInvoke
 			public CRED_PERSIST Persist;
 
 			/// <summary>
-			/// The number of application-defined attributes to be associated with the credential. This member can be read and written. Its
-			/// value cannot be greater than CRED_MAX_ATTRIBUTES (64).
-			/// </summary>
-			public uint AttributeCount;
-
-			/// <summary>Application-defined attributes that are associated with the credential. This member can be read and written.</summary>
-			public byte[] Attributes;
-
-			/// <summary>
 			/// Alias for the TargetName member. This member can be read and written. It cannot be longer than CRED_MAX_STRING_LENGTH (256) characters.
 			/// <para>If the credential Type is CRED_TYPE_GENERIC, this member can be non-NULL, but the credential manager ignores the member.</para>
 			/// </summary>
 			public string TargetAlias;
+
+			/// <summary>
+			/// The name of the credential. The TargetName and Type members uniquely identify the credential. This member cannot be changed
+			/// after the credential is created. Instead, the credential with the old name should be deleted and the credential with the new
+			/// name created.
+			/// <para>
+			/// If Type is CRED_TYPE_DOMAIN_PASSWORD or CRED_TYPE_DOMAIN_CERTIFICATE, this member identifies the server or servers that the
+			/// credential is to be used for. The member is either a NetBIOS or DNS server name, a DNS host name suffix that contains a
+			/// wildcard character, a NetBIOS or DNS domain name that contains a wildcard character sequence, or an asterisk.
+			/// </para>
+			/// <para>If TargetName is a DNS host name, the TargetAlias member can be the NetBIOS name of the host.</para>
+			/// <para>
+			/// If the TargetName is a DNS host name suffix that contains a wildcard character, the leftmost label of the DNS host name is an
+			/// asterisk (*), which denotes that the target name is any server whose name ends in the specified name, for example, *.microsoft.com.
+			/// </para>
+			/// <para>
+			/// If the TargetName is a domain name that contains a wildcard character sequence, the syntax is the domain name followed by a
+			/// backslash and asterisk (\*), which denotes that the target name is any server that is a member of the named domain (or realm).
+			/// </para>
+			/// <para>
+			/// If TargetName is a DNS domain name that contains a wildcard character sequence, the TargetAlias member can be a NetBIOS
+			/// domain name that uses a wildcard sequence for the same domain.
+			/// </para>
+			/// <para>
+			/// If TargetName specifies a DFS share, for example, DfsRoot\DfsShare, then this credential matches the specific DFS share and
+			/// any servers reached through that DFS share.
+			/// </para>
+			/// <para>If TargetName is a single asterisk (*), this credential matches any server name.</para>
+			/// <para>
+			/// If TargetName is CRED_SESSION_WILDCARD_NAME, this credential matches any server name. This credential matches before a single
+			/// asterisk and is only valid if Persist is CRED_PERSIST_SESSION. The credential can be set by applications that want to
+			/// temporarily override the default credential.
+			/// </para>
+			/// <para>This member cannot be longer than CRED_MAX_DOMAIN_TARGET_NAME_LENGTH (337) characters.</para>
+			/// <para>
+			/// If the Type is CRED_TYPE_GENERIC, this member should identify the service that uses the credential in addition to the actual
+			/// target. Microsoft suggests the name be prefixed by the name of the company implementing the service. Microsoft will use the
+			/// prefix "Microsoft". Services written by Microsoft should append their service name, for example Microsoft_RAS_TargetName.
+			/// This member cannot be longer than CRED_MAX_GENERIC_TARGET_NAME_LENGTH (32767) characters.
+			/// </para>
+			/// <para>This member is case-insensitive.</para>
+			/// </summary>
+			public string TargetName;
+
+			/// <summary>The type of the credential. This member cannot be changed after the credential is created.</summary>
+			public CRED_TYPE Type;
 
 			/// <summary>
 			/// The user name of the account used to connect to TargetName.
@@ -1632,9 +1734,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public string UserName;
 
-			/// <summary>
-			/// Initializes a new instance of the <see cref="CREDENTIAL_MGD"/> struct.
-			/// </summary>
+			/// <summary>Initializes a new instance of the <see cref="CREDENTIAL_MGD"/> struct.</summary>
 			/// <param name="c">The c.</param>
 			internal CREDENTIAL_MGD(in CREDENTIAL c)
 			{
@@ -1777,11 +1877,21 @@ namespace Vanara.PInvoke
 			/// <param name="own">if set to <c>true</c> release the memory when out of scope.</param>
 			public SafeCredMemoryHandle(IntPtr ptr, bool own = true) : base(ptr, h => { CredFree(h); return true; }, own) { }
 
-			internal CREDENTIAL GetCred() => handle.ToStructure<CREDENTIAL>();
+			public static implicit operator CREDENTIAL(SafeCredMemoryHandle h) => h.ToStructure<CREDENTIAL>();
+
+			public static implicit operator CREDENTIAL_MGD(SafeCredMemoryHandle h) => new CREDENTIAL_MGD(h.ToStructure<CREDENTIAL>());
+
+			public static implicit operator CREDENTIAL_TARGET_INFORMATION(SafeCredMemoryHandle h) => h.ToStructure<CREDENTIAL_TARGET_INFORMATION>();
+
+			public static implicit operator string(SafeCredMemoryHandle h) => Marshal.PtrToStringAuto(h.handle);
+
+			/// <summary>Marshals data to the type specified by a generic type parameter.</summary>
+			/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
+			/// <returns>A managed object that contains the data of type <typeparamref name="T"/>.</returns>
+			/// <exception cref="InsufficientMemoryException"></exception>
+			public T ToStructure<T>() => handle.ToStructure<T>();
 
 			internal CREDENTIAL_MGD[] GetCredArray(int count) => handle.ToIEnum<IntPtr>(count).Select(p => new CREDENTIAL_MGD(p.ToStructure<CREDENTIAL>())).ToArray();
-
-			internal string GetString() => Marshal.PtrToStringAuto(handle);
 		}
 	}
 }
