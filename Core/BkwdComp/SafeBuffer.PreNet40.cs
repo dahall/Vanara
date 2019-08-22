@@ -1,9 +1,9 @@
 ﻿#if NET20 || NET35
+
 using Microsoft.Win32.SafeHandles;
-using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Runtime.ConstrainedExecution;
-using System.Runtime.Versioning;
+using Vanara.Extensions;
 
 namespace System.Runtime.InteropServices
 {
@@ -19,12 +19,13 @@ namespace System.Runtime.InteropServices
 
 		private UIntPtr numBytes;
 
-		/// <inheritdoc />
+		/// <inheritdoc/>
 		/// <summary>
-		/// Creates a new instance of the <see cref="T:System.Runtime.InteropServices.SafeBuffer" /> class, and specifies whether the buffer handle is to be reliably released.
+		/// Creates a new instance of the <see cref="T:System.Runtime.InteropServices.SafeBuffer"/> class, and specifies whether the buffer
+		/// handle is to be reliably released.
 		/// </summary>
 		/// <param name="ownsHandle">
-		/// <see langword="true" /> to reliably release the handle during the finalization phase; <see langword="false" /> to prevent reliable
+		/// <see langword="true"/> to reliably release the handle during the finalization phase; <see langword="false"/> to prevent reliable
 		/// release (not recommended).
 		/// </param>
 		protected SafeBuffer(bool ownsHandle) : base(ownsHandle) => numBytes = Uninitialized;
@@ -48,16 +49,10 @@ namespace System.Runtime.InteropServices
 				throw NotInitialized();
 
 			pointer = null;
-			RuntimeHelpers.PrepareConstrainedRegions();
-			try
-			{
-			}
-			finally
-			{
-				var junk = false;
-				DangerousAddRef(ref junk);
-				pointer = (byte*)handle;
-			}
+
+			var junk = false;
+			DangerousAddRef(ref junk);
+			pointer = (byte*)handle;
 		}
 
 		/// <summary>
@@ -68,7 +63,6 @@ namespace System.Runtime.InteropServices
 		{
 			if (IntPtr.Size == 4 && numBytes > uint.MaxValue)
 				throw new ArgumentOutOfRangeException(nameof(numBytes), ResourceHelper.GetString("ArgumentOutOfRange_AddressSpace"));
-			Contract.EndContractBlock();
 
 			if (numBytes >= (ulong)Uninitialized)
 				throw new ArgumentOutOfRangeException(nameof(numBytes), ResourceHelper.GetString("ArgumentOutOfRange_UIntPtrMax-1"));
@@ -82,17 +76,7 @@ namespace System.Runtime.InteropServices
 		/// </summary>
 		/// <param name="numElements">The number of elements in the buffer.</param>
 		/// <param name="sizeOfEachElement">The size of each element in the buffer.</param>
-		public void Initialize(uint numElements, uint sizeOfEachElement)
-		{
-			if (IntPtr.Size == 4 && numElements * (ulong)sizeOfEachElement > uint.MaxValue)
-				throw new ArgumentOutOfRangeException(nameof(numElements), ResourceHelper.GetString("ArgumentOutOfRange_AddressSpace"));
-			Contract.EndContractBlock();
-
-			if (numElements * (ulong)sizeOfEachElement >= (ulong)Uninitialized)
-				throw new ArgumentOutOfRangeException(nameof(numElements), ResourceHelper.GetString("ArgumentOutOfRange_UIntPtrMax-1"));
-
-			numBytes = checked((UIntPtr)(numElements * sizeOfEachElement));
-		}
+		public void Initialize(uint numElements, uint sizeOfEachElement) => Initialize((ulong)numElements * sizeOfEachElement);
 
 		/// <summary>
 		/// Defines the allocation size of the memory region by specifying the number of value types. You must call this method before you
@@ -100,38 +84,14 @@ namespace System.Runtime.InteropServices
 		/// </summary>
 		/// <typeparam name="T">The value type to allocate memory for.</typeparam>
 		/// <param name="numElements">The number of elements of the value type to allocate memory for.</param>
-		public void Initialize<T>(uint numElements) where T : struct => Initialize(numElements, (uint)Marshal.SizeOf(typeof(T)));
+		public void Initialize<T>(uint numElements) where T : struct => Initialize(numElements, AlignedSizeOf<T>());
 
 		/// <summary>Reads a value type from memory at the specified offset.</summary>
 		/// <typeparam name="T">The value type to read.</typeparam>
 		/// <param name="byteOffset">The location from which to read the value type. You may have to consider alignment issues.</param>
 		/// <returns>The value type that was read from memory.</returns>
 		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
-		public T Read<T>(ulong byteOffset) where T : struct
-		{
-			if (numBytes == Uninitialized)
-				throw NotInitialized();
-
-			var sizeofT = (uint)Marshal.SizeOf(typeof(T));
-			var ptr = (byte*)handle + byteOffset;
-			SpaceCheck(ptr, sizeofT);
-
-			// return *(T*) (_ptr + byteOffset);
-			T value;
-			var mustCallRelease = false;
-			RuntimeHelpers.PrepareConstrainedRegions();
-			try
-			{
-				DangerousAddRef(ref mustCallRelease);
-				GenericPtrToStructure(ptr, out value, sizeofT);
-			}
-			finally
-			{
-				if (mustCallRelease)
-					DangerousRelease();
-			}
-			return value;
-		}
+		public T Read<T>(ulong byteOffset) where T : struct => handle.ToStructure<T>(numBytes.ToUInt64(), (int)byteOffset);
 
 		/// <summary>
 		/// Reads the specified number of value types from memory starting at the offset, and writes them into an array starting at the index.
@@ -152,32 +112,11 @@ namespace System.Runtime.InteropServices
 				throw new ArgumentOutOfRangeException(nameof(count), ResourceHelper.GetString("ArgumentOutOfRange_NeedNonNegNum"));
 			if (array.Length - index < count)
 				throw new ArgumentException(ResourceHelper.GetString("Argument_InvalidOffLen"));
-			Contract.EndContractBlock();
 
 			if (numBytes == Uninitialized)
 				throw NotInitialized();
 
-			var sizeofT = (uint)Marshal.SizeOf(typeof(T));
-			var alignedSizeofT = (uint)Marshal.SizeOf(typeof(T));
-			var ptr = (byte*)handle + byteOffset;
-			SpaceCheck(ptr, checked((ulong)(alignedSizeofT * count)));
-
-			var mustCallRelease = false;
-			RuntimeHelpers.PrepareConstrainedRegions();
-			try
-			{
-				DangerousAddRef(ref mustCallRelease);
-
-				for (var i = 0; i < count; i++)
-				{
-					GenericPtrToStructure(ptr + alignedSizeofT * i, out array[i + index], sizeofT);
-				}
-			}
-			finally
-			{
-				if (mustCallRelease)
-					DangerousRelease();
-			}
+			Array.Copy(handle.ToArray<T>(count, (int)byteOffset, numBytes.ToUInt64()), 0, array, index, count);
 		}
 
 		/// <summary>Releases a pointer that was obtained by the <see cref="AcquirePointer(ref byte*)"/> method.</summary>
@@ -200,23 +139,7 @@ namespace System.Runtime.InteropServices
 			if (numBytes == Uninitialized)
 				throw NotInitialized();
 
-			var sizeofT = (uint)Marshal.SizeOf(typeof(T));
-			var ptr = (byte*)handle + byteOffset;
-			SpaceCheck(ptr, sizeofT);
-
-			// *((T*) (_ptr + byteOffset)) = value;
-			var mustCallRelease = false;
-			RuntimeHelpers.PrepareConstrainedRegions();
-			try
-			{
-				DangerousAddRef(ref mustCallRelease);
-				GenericStructureToPtr(ref value, ptr, sizeofT);
-			}
-			finally
-			{
-				if (mustCallRelease)
-					DangerousRelease();
-			}
+			handle.Write(value, (int)byteOffset, numBytes.ToUInt64());
 		}
 
 		/// <summary>
@@ -239,71 +162,26 @@ namespace System.Runtime.InteropServices
 				throw new ArgumentOutOfRangeException(nameof(count), ResourceHelper.GetString("ArgumentOutOfRange_NeedNonNegNum"));
 			if (array.Length - index < count)
 				throw new ArgumentException(ResourceHelper.GetString("Argument_InvalidOffLen"));
-			Contract.EndContractBlock();
 
 			if (numBytes == Uninitialized)
 				throw NotInitialized();
 
-			var sizeofT = (uint)Marshal.SizeOf(typeof(T));
-			var alignedSizeofT = (uint)Marshal.SizeOf(typeof(T));
-			var ptr = (byte*)handle + byteOffset;
-			SpaceCheck(ptr, checked((ulong)(alignedSizeofT * count)));
-
-			var mustCallRelease = false;
-			RuntimeHelpers.PrepareConstrainedRegions();
-			try
-			{
-				DangerousAddRef(ref mustCallRelease);
-				for (var i = 0; i < count; i++)
-				{
-					GenericStructureToPtr(ref array[i + index], ptr + alignedSizeofT * i, sizeofT);
-				}
-			}
-			finally
-			{
-				if (mustCallRelease)
-					DangerousRelease();
-			}
+			handle.Write(array, (int)byteOffset, numBytes.ToUInt64());
 		}
-
-		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-		internal static void GenericPtrToStructure<T>(byte* ptr, out T structure, uint sizeofT) where T : struct
-		{
-			structure = default;
-			PtrToStructureNative(ptr, __makeref(structure), sizeofT);
-		}
-
-		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-		internal static void GenericStructureToPtr<T>(ref T structure, byte* ptr, uint sizeofT) where T : struct => StructureToPtrNative(__makeref(structure), ptr, sizeofT);
 
 		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
 		private static void NotEnoughRoom() => throw new ArgumentException(ResourceHelper.GetString("Arg_BufferTooSmall"));
 
 		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-		private static InvalidOperationException NotInitialized()
+		private static InvalidOperationException NotInitialized() => new InvalidOperationException(ResourceHelper.GetString("InvalidOperation_MustCallInitialize"));
+
+		internal static uint AlignedSizeOf<T>()
 		{
-			Contract.Assert(false, "Uninitialized SafeBuffer! Someone needs to call Initialize before using this instance!");
-			return new InvalidOperationException(ResourceHelper.GetString("InvalidOperation_MustCallInitialize"));
+			var size = SizeOf<T>();
+			return (size == 1 || size == 2) ? size : (uint)((size + 3) & (~3));
 		}
 
-		[MethodImpl(MethodImplOptions.InternalCall)]
-		[ResourceExposure(ResourceScope.None)]
-		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-		private static extern void PtrToStructureNative(byte* ptr, /*out T*/ TypedReference structure, uint sizeofT);
-
-		[MethodImpl(MethodImplOptions.InternalCall)]
-		[ResourceExposure(ResourceScope.None)]
-		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-		private static extern void StructureToPtrNative(/*ref T*/ TypedReference structure, byte* ptr, uint sizeofT);
-
-		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-		private void SpaceCheck(byte* ptr, ulong sizeInBytes)
-		{
-			if ((ulong)numBytes < sizeInBytes)
-				NotEnoughRoom();
-			if ((ulong)(ptr - (byte*)handle) > (ulong)numBytes - sizeInBytes)
-				NotEnoughRoom();
-		}
+		internal static uint SizeOf<T>() => (uint)Marshal.SizeOf(typeof(T));
 	}
 
 	internal static class ResourceHelper
@@ -311,4 +189,5 @@ namespace System.Runtime.InteropServices
 		public static string GetString(string value, params object[] vars) => string.Format(Vanara.Properties.Resources.ResourceManager.GetString(value) ?? throw new InvalidOperationException(), vars);
 	}
 }
+
 #endif
