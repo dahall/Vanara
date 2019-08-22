@@ -183,6 +183,26 @@ namespace Vanara.PInvoke
 			FILE_NOTIFY_CHANGE_SECURITY = 0x00000100,
 		}
 
+		/// <summary>Options for file and other type creation or opening.</summary>
+		[PInvokeData("fileapi.h")]
+		public enum CreationOption
+		{
+			/// <summary>Create new if one does not already exist.</summary>
+			CREATE_NEW = 1,
+
+			/// <summary>Always create new, overwriting any existing.</summary>
+			CREATE_ALWAYS = 2,
+
+			/// <summary>Open existing.</summary>
+			OPEN_EXISTING = 3,
+
+			/// <summary>Alway open, creating new if doesn't exist.</summary>
+			OPEN_ALWAYS = 4,
+
+			/// <summary>Truncate existing.</summary>
+			TRUNCATE_EXISTING = 5,
+		}
+
 		/// <summary>File type values returned by <see cref="GetFileType"/>.</summary>
 		[PInvokeData("WinUser.h", MSDNShortId = "aa364960")]
 		[Flags]
