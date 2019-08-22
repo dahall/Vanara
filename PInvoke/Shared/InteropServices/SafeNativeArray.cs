@@ -122,7 +122,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Gets or sets the elements.</summary>
 		/// <value>The elements of the array.</value>
-		protected TElem[] Elements
+		protected virtual TElem[] Elements
 		{
 			get => handle.ToArray<TElem>(Count, (int)HeaderSize);
 			set
@@ -149,7 +149,7 @@ namespace Vanara.InteropServices
 		/// <param name="index">The index.</param>
 		/// <returns></returns>
 		/// <exception cref="ArgumentOutOfRangeException">index or index</exception>
-		public TElem this[int index]
+		public virtual TElem this[int index]
 		{
 			get => PtrOfElem(index).ToStructure<TElem>();
 			set
