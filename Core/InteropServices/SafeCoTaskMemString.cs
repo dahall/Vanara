@@ -31,9 +31,9 @@ namespace Vanara.InteropServices
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemString"/> class.</summary>
-		/// <param name="charLen">The size of the buffer in characters, including the null character terminator.</param>
+		/// <param name="capacity">The size of the buffer in characters, including the null character terminator.</param>
 		/// <param name="charSet">The character set.</param>
-		public SafeCoTaskMemString(int charLen, CharSet charSet = CharSet.Unicode) : base(charLen, charSet)
+		public SafeCoTaskMemString(int capacity, CharSet charSet = CharSet.Unicode) : base(capacity, charSet)
 		{
 		}
 
@@ -41,12 +41,14 @@ namespace Vanara.InteropServices
 		/// <param name="ptr">The PTR.</param>
 		/// <param name="charSet">The character set.</param>
 		/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
+		/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 		[ExcludeFromCodeCoverage]
-		private SafeCoTaskMemString(IntPtr ptr, CharSet charSet = CharSet.Unicode, bool ownsHandle = true) : base(ptr, charSet, ownsHandle)
+		private SafeCoTaskMemString(IntPtr ptr, CharSet charSet = CharSet.Unicode, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
+			base(ptr, charSet, ownsHandle, allocatedBytes)
 		{
 		}
 
-		/// <summary>Represents a <c>null</c> value. Used primarily for comparrison.</summary>
+		/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>
 		/// <value>A null value.</value>
 		public static SafeCoTaskMemString Null => new SafeCoTaskMemString(IntPtr.Zero, CharSet.Unicode, false);
 	}
