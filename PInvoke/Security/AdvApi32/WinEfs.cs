@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Crypt32;
+using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
 {
@@ -52,8 +52,8 @@ namespace Vanara.PInvoke
 		/// <para>Examples</para>
 		/// <para>For example code that uses this function, see Adding Users to an Encrypted File.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winefs/nf-winefs-adduserstoencryptedfile DWORD AddUsersToEncryptedFile(
-		// LPCWSTR lpFileName, PENCRYPTION_CERTIFICATE_LIST pEncryptionCertificates );
+		// https://docs.microsoft.com/en-us/windows/win32/api/winefs/nf-winefs-adduserstoencryptedfile DWORD AddUsersToEncryptedFile( LPCWSTR
+		// lpFileName, PENCRYPTION_CERTIFICATE_LIST pEncryptionCertificates );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winefs.h", MSDNShortId = "a92d6a52-20d1-4d5c-a222-ab9afaf85c4b")]
 		public static extern Win32Error AddUsersToEncryptedFile([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, in ENCRYPTION_CERTIFICATE_LIST pEncryptionCertificates);
@@ -75,8 +75,29 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </param>
 		/// <param name="dwCreationDistribution">
+		/// <para>
 		/// Describes how the destination file or directory identified by the DstFileName parameter value is to be opened. The following are
 		/// the valid values of this parameter.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CREATE_ALWAYS 2</term>
+		/// <term>
+		/// Always create the destination file or directory. Any value passed in this parameter other than CREATE_NEW will be processed as CREATE_ALWAYS.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CREATE_NEW 1</term>
+		/// <term>
+		/// Create the destination file or directory only if it does not already exist. If it does exist, and this value is specified, this
+		/// function will fail.
+		/// </term>
+		/// </item>
+		/// </list>
 		/// </param>
 		/// <param name="dwAttributes">
 		/// The file attributes of the destination file or directory. The <c>FILE_READ_ONLY</c> attribute is currently not processed by this function.
@@ -134,13 +155,13 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// <para>SMB 3.0 does not support EFS on shares with continuous availability capability.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winefs/nf-winefs-duplicateencryptioninfofile DWORD
-		// DuplicateEncryptionInfoFile( LPCWSTR SrcFileName, LPCWSTR DstFileName, DWORD dwCreationDistribution, DWORD dwAttributes, const
-		// LPSECURITY_ATTRIBUTES lpSecurityAttributes );
-		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		// https://docs.microsoft.com/en-us/windows/win32/api/winefs/nf-winefs-duplicateencryptioninfofile DWORD DuplicateEncryptionInfoFile(
+		// LPCWSTR SrcFileName, LPCWSTR DstFileName, DWORD dwCreationDistribution, DWORD dwAttributes, const LPSECURITY_ATTRIBUTES
+		// lpSecurityAttributes );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("winefs.h", MSDNShortId = "c830ae98-3649-4981-9369-7d4cb019b50f")]
-		public static extern Win32Error DuplicateEncryptionInfoFile([MarshalAs(UnmanagedType.LPWStr)] string SrcFileName, [MarshalAs(UnmanagedType.LPWStr)] string DstFileName, uint dwCreationDistribution,
-			FileFlagsAndAttributes dwAttributes, SECURITY_ATTRIBUTES lpSecurityAttributes);
+		public static extern Win32Error DuplicateEncryptionInfoFile(string SrcFileName, string DstFileName, CreationOption dwCreationDistribution,
+			FileFlagsAndAttributes dwAttributes, [Optional] SECURITY_ATTRIBUTES lpSecurityAttributes);
 
 		/// <summary>
 		/// Disables or enables encryption of the specified directory and the files in it. It does not affect encryption of subdirectories
@@ -373,7 +394,7 @@ namespace Vanara.PInvoke
 		// RemoveUsersFromEncryptedFile( LPCWSTR lpFileName, PENCRYPTION_CERTIFICATE_HASH_LIST pHashes );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winefs.h", MSDNShortId = "c6672581-24b4-464c-b32d-48a04e56eef8")]
-		public static extern Win32Error RemoveUsersFromEncryptedFile([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, in ENCRYPTION_CERTIFICATE_HASH_LIST pHashes);
+		public static unsafe extern Win32Error RemoveUsersFromEncryptedFile([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, in ENCRYPTION_CERTIFICATE_HASH_LIST pHashes);
 
 		/// <summary>Sets the user's current key to the specified certificate.</summary>
 		/// <param name="pEncryptionCertificate">
@@ -427,7 +448,7 @@ namespace Vanara.PInvoke
 		// dwCertEncodingType; DWORD cbData; PBYTE pbData; } EFS_CERTIFICATE_BLOB, *PEFS_CERTIFICATE_BLOB;
 		[PInvokeData("winefs.h", MSDNShortId = "e0d0aa0a-ac87-4734-93d0-30c2080319e8")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct CERTIFICATE_BLOB
+		public struct EFS_CERTIFICATE_BLOB
 		{
 			/// <summary>
 			/// <para>A certificate encoding type. This member can be one of the following values.</para>
@@ -542,13 +563,35 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafeENCRYPTION_CERTIFICATE_HASH_LIST"/> class.</summary>
 			private SafeENCRYPTION_CERTIFICATE_HASH_LIST() : base() { }
 
+			/// <summary>Gets the certificate hash items.</summary>
+			public ENCRYPTION_CERTIFICATE_HASH[] Items
+			{
+				get
+				{
+					unsafe
+					{
+						var l = GetList();
+						var pUsers = *(ENCRYPTION_CERTIFICATE_HASH**)l->pUsers;
+						var ret = new ENCRYPTION_CERTIFICATE_HASH[l->nCert_Hash];
+						for (var i = 0; i < l->nCert_Hash; i++)
+							ret[i] = pUsers[i];
+						return ret;
+					}
+				}
+			}
+
 			/// <summary>Performs an implicit conversion from <see cref="SafeENCRYPTION_CERTIFICATE_HASH_LIST"/> to <see cref="ENCRYPTION_CERTIFICATE_HASH_LIST"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
+			/// <param name="l">The list.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator ENCRYPTION_CERTIFICATE_HASH_LIST(SafeENCRYPTION_CERTIFICATE_HASH_LIST h) => h.handle.ToStructure<ENCRYPTION_CERTIFICATE_HASH_LIST>();
+			public static implicit operator ENCRYPTION_CERTIFICATE_HASH_LIST(SafeENCRYPTION_CERTIFICATE_HASH_LIST l) { unsafe { return *l.GetList(); } }
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() { FreeEncryptionCertificateHashList(handle); return true; }
+
+			private unsafe ENCRYPTION_CERTIFICATE_HASH_LIST* GetList()
+			{
+				return (ENCRYPTION_CERTIFICATE_HASH_LIST*)(void*)handle;
+			}
 		}
 	}
 }

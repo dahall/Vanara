@@ -45,6 +45,7 @@
     <Compile Include="AdvApi32\EventRecordEventArgs.cs" />
     <Compile Include="AdvApi32\EventTraceController.cs" />
     <Compile Include="AdvApi32\EventTraceLogs.cs" />
+    <Compile Include="AdvApi32\WinEfsTests.cs" />
     <Compile Include="AdvApi32\WinCredTests.cs" />
     <Compile Include="AdvApi32\WinBase_EventLogTests.cs" />
     <Compile Include="AdvApi32\WinBaseTests.cs" />
@@ -78,6 +79,10 @@
     <ProjectReference Include="..\..\..\PInvoke\CredUI\Vanara.PInvoke.CredUI.csproj">
       <Project>{1f0b972a-06da-4f6a-8b60-87d76fb1f2d9}</Project>
       <Name>Vanara.PInvoke.CredUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Cryptography\Vanara.PInvoke.Cryptography.csproj">
+      <Project>{b0df2976-be60-4856-a634-5487222360b2}</Project>
+      <Name>Vanara.PInvoke.Cryptography</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
       <Project>{842d436f-598c-47d7-b5aa-12399f8ccfe9}</Project>
