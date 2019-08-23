@@ -1374,76 +1374,6 @@ namespace Vanara.PInvoke
 			WinBuiltinDeviceOwnersSid,
 		}
 
-		/// <summary>Gets the Flags for an ACE, if defined.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The Flags value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static ObjectAceFlags? GetFlags(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			return !pAce.IsObjectAce() ? null : (ObjectAceFlags?)pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().Flags;
-		}
-
-		/// <summary>Gets the header for an ACE.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The <see cref="ACE_HEADER"/> value.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static ACE_HEADER GetHeader(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<ACE_HEADER>() : throw new ArgumentNullException(nameof(pAce));
-
-		/// <summary>Gets the InheritedObjectType for an ACE, if defined.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The InheritedObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static Guid? GetInheritedObjectType(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			return !pAce.IsObjectAce() ? null : (Guid?)pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().InheritedObjectType;
-		}
-
-		/// <summary>Gets the mask for an ACE.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The ACCESS_MASK value.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static uint GetMask(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_ACE>().Mask : throw new ArgumentNullException(nameof(pAce));
-
-		/// <summary>Gets the ObjectType for an ACE, if defined.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The ObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static Guid? GetObjectType(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			return !pAce.IsObjectAce() ? null : (Guid?)pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().ObjectType;
-		}
-
-		/// <summary>Gets the SID for an ACE.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The SID value.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static SafePSID GetSid(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			var offset = Marshal.SizeOf(typeof(ACE_HEADER)) + sizeof(uint);
-			if (pAce.IsObjectAce()) offset += sizeof(uint) + Marshal.SizeOf(typeof(Guid)) * 2;
-			unsafe
-			{
-				return SafePSID.CreateFromPtr((IntPtr)((byte*)pAce.DangerousGetHandle() + offset));
-			}
-		}
-
-		/// <summary>Determines if a ACE is an object ACE.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns><see langword="true"/> if is this is an object ACE; otherwise, <see langword="false"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		/// <exception cref="System.ArgumentOutOfRangeException">pAce - Unknown ACE type.</exception>
-		public static bool IsObjectAce(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			var aceType = (byte)GetHeader(pAce).AceType;
-			if (aceType > 0x15) throw new ArgumentOutOfRangeException(nameof(pAce), "Unknown ACE type.");
-			return (aceType >= 0x5 && aceType <= 0x8) || aceType == 0xB || aceType == 0xC || aceType == 0xF || aceType == 0x10;
-		}
-
 		/// <summary>
 		/// The <c>ACCESS_ALLOWED_ACE</c> structure defines an access control entry (ACE) for the discretionary access control list (DACL)
 		/// that controls access to an object. An access-allowed ACE allows access to an object for a specific trustee identified by a
@@ -5014,6 +4944,76 @@ namespace Vanara.PInvoke
 		/// <param name="pACL">The pointer to the ACL structure to query.</param>
 		/// <returns>The total of the free and used bytes in the ACL.</returns>
 		public static uint BytesAllocated(this PACL pACL) => AdvApi32.IsValidAcl(pACL) && AdvApi32.GetAclInformation(pACL, out AdvApi32.ACL_SIZE_INFORMATION si) ? si.AclBytesFree + si.AclBytesInUse : 0;
+
+		/// <summary>Gets the Flags for an ACE, if defined.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The Flags value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static ObjectAceFlags? GetFlags(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			return !pAce.IsObjectAce() ? null : (ObjectAceFlags?)pAce.DangerousGetHandle().ToStructure<AdvApi32.ACCESS_ALLOWED_OBJECT_ACE>().Flags;
+		}
+
+		/// <summary>Gets the header for an ACE.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The <see cref="ACE_HEADER"/> value.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static AdvApi32.ACE_HEADER GetHeader(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<AdvApi32.ACE_HEADER>() : throw new ArgumentNullException(nameof(pAce));
+
+		/// <summary>Gets the InheritedObjectType for an ACE, if defined.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The InheritedObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static Guid? GetInheritedObjectType(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			return !pAce.IsObjectAce() ? null : (Guid?)pAce.DangerousGetHandle().ToStructure<AdvApi32.ACCESS_ALLOWED_OBJECT_ACE>().InheritedObjectType;
+		}
+
+		/// <summary>Gets the mask for an ACE.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The ACCESS_MASK value.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static uint GetMask(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<AdvApi32.ACCESS_ALLOWED_ACE>().Mask : throw new ArgumentNullException(nameof(pAce));
+
+		/// <summary>Gets the ObjectType for an ACE, if defined.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The ObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static Guid? GetObjectType(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			return !pAce.IsObjectAce() ? null : (Guid?)pAce.DangerousGetHandle().ToStructure<AdvApi32.ACCESS_ALLOWED_OBJECT_ACE>().ObjectType;
+		}
+
+		/// <summary>Gets the SID for an ACE.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The SID value.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static AdvApi32.SafePSID GetSid(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			var offset = Marshal.SizeOf(typeof(AdvApi32.ACE_HEADER)) + sizeof(uint);
+			if (pAce.IsObjectAce()) offset += sizeof(uint) + Marshal.SizeOf(typeof(Guid)) * 2;
+			unsafe
+			{
+				return AdvApi32.SafePSID.CreateFromPtr((IntPtr)((byte*)pAce.DangerousGetHandle() + offset));
+			}
+		}
+
+		/// <summary>Determines if a ACE is an object ACE.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns><see langword="true"/> if is this is an object ACE; otherwise, <see langword="false"/>.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		/// <exception cref="System.ArgumentOutOfRangeException">pAce - Unknown ACE type.</exception>
+		public static bool IsObjectAce(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			var aceType = (byte)GetHeader(pAce).AceType;
+			if (aceType > 0x15) throw new ArgumentOutOfRangeException(nameof(pAce), "Unknown ACE type.");
+			return (aceType >= 0x5 && aceType <= 0x8) || aceType == 0xB || aceType == 0xC || aceType == 0xF || aceType == 0x10;
+		}
 
 		/// <summary>Determines whether the security descriptor is self-relative.</summary>
 		/// <param name="pSD">The pointer to the SECURITY_DESCRIPTOR structure to query.</param>

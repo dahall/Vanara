@@ -137,7 +137,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Used by the <see cref="ChangeServiceConfig(SC_HANDLE, ServiceTypes, ServiceStartType, ServiceErrorControlType, string, string, out uint, string, string, string, string)"/> function.
+		/// Used by the
+		/// <see cref="ChangeServiceConfig(SC_HANDLE, ServiceTypes, ServiceStartType, ServiceErrorControlType, string, string, out uint, string, string, string, string)"/> function.
 		/// </summary>
 		public enum ServiceErrorControlType : uint
 		{
@@ -164,7 +165,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Used by the <see cref="ChangeServiceConfig(SC_HANDLE, ServiceTypes, ServiceStartType, ServiceErrorControlType, string, string, out uint, string, string, string, string)"/> function.
+		/// Used by the
+		/// <see cref="ChangeServiceConfig(SC_HANDLE, ServiceTypes, ServiceStartType, ServiceErrorControlType, string, string, out uint, string, string, string, string)"/> function.
 		/// </summary>
 		public enum ServiceStartType : uint
 		{
@@ -188,7 +190,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Used by the <see cref="ChangeServiceConfig(SC_HANDLE, ServiceTypes, ServiceStartType, ServiceErrorControlType, string, string, out uint, string, string, string, string)"/> function.
+		/// Used by the
+		/// <see cref="ChangeServiceConfig(SC_HANDLE, ServiceTypes, ServiceStartType, ServiceErrorControlType, string, string, out uint, string, string, string, string)"/> function.
 		/// </summary>
 		[Flags]
 		public enum ServiceTypes : uint
