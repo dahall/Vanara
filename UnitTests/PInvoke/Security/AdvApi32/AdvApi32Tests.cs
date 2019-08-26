@@ -125,42 +125,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
-		public void InitAndAbortSystemShutdownTest()
-		{
-			//Assert.That(InitiateShutdown(null, "InitiateShutdown test", 60, ShutdownFlags.SHUTDOWN_RESTART | ShutdownFlags.SHUTDOWN_HYBRID,
-			//	SystemShutDownReason.SHTDN_REASON_MAJOR_APPLICATION | SystemShutDownReason.SHTDN_REASON_MINOR_MAINTENANCE |
-			//	SystemShutDownReason.SHTDN_REASON_FLAG_PLANNED), Is.EqualTo(Win32Error.ERROR_ACCESS_DENIED));
-			//using (new PrivilegedCodeBlock(SystemPrivilege.Shutdown))
-			{
-				var e = InitiateShutdown(null, "InitiateShutdown test", 60, ShutdownFlags.SHUTDOWN_RESTART | ShutdownFlags.SHUTDOWN_HYBRID,
-					SystemShutDownReason.SHTDN_REASON_MAJOR_APPLICATION | SystemShutDownReason.SHTDN_REASON_MINOR_MAINTENANCE |
-					SystemShutDownReason.SHTDN_REASON_FLAG_PLANNED);
-				Assert.That(e, Is.EqualTo(0));
-				Thread.Sleep(2000);
-				var b = AbortSystemShutdown(null);
-				Assert.That(b);
-			}
-		}
-
-		[Test()]
-		public void InitiateSystemShutdownExTest()
-		{
-			//Assert.That(InitiateSystemShutdownEx(null, "InitiateSystemShutdownEx test", 60, false, true,
-			//	SystemShutDownReason.SHTDN_REASON_MAJOR_APPLICATION | SystemShutDownReason.SHTDN_REASON_MINOR_MAINTENANCE |
-			//	SystemShutDownReason.SHTDN_REASON_FLAG_PLANNED), Is.False);
-			//using (new PrivilegedCodeBlock(SystemPrivilege.Shutdown))
-			{
-				var e = InitiateSystemShutdownEx(null, "InitiateSystemShutdownEx test", 60, false, true,
-					SystemShutDownReason.SHTDN_REASON_MAJOR_APPLICATION | SystemShutDownReason.SHTDN_REASON_MINOR_MAINTENANCE |
-					SystemShutDownReason.SHTDN_REASON_FLAG_PLANNED);
-				Assert.That(e, Is.True);
-				Thread.Sleep(2000);
-				var b = AbortSystemShutdown(null);
-				Assert.That(b);
-			}
-		}
-
-		[Test()]
 		[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
 		public void QueryServiceConfig2Test()
 		{
@@ -176,24 +140,6 @@ namespace Vanara.PInvoke.Tests
 					TestContext.WriteLine(sd.lpDescription);
 				}
 			}
-		}
-
-		[Test()]
-		public void RegNotifyChangeKeyValueTest()
-		{
-			const string tmpRegKey = "Software\\____TmpRegKey____";
-			new Thread(() =>
-			{
-				Thread.Sleep(1000);
-				Microsoft.Win32.Registry.CurrentUser.CreateSubKey(tmpRegKey);
-				Microsoft.Win32.Registry.CurrentUser.DeleteSubKey(tmpRegKey);
-			}).Start();
-			Assert.That(RegOpenKeyEx(HKEY.HKEY_CURRENT_USER, "Software", RegOpenOptions.REG_OPTION_NON_VOLATILE, RegAccessTypes.KEY_NOTIFY,
-				out var h), Is.EqualTo(0));
-			var hEvent = CreateEvent(null, true, false);
-			Assert.That(RegNotifyChangeKeyValue(h, false, RegNotifyChangeFilter.REG_NOTIFY_CHANGE_NAME, hEvent, true), Is.EqualTo(0));
-			var b = WaitForSingleObject(hEvent, 5000);
-			Assert.That(b == WAIT_STATUS.WAIT_OBJECT_0);
 		}
 
 		[Test()]

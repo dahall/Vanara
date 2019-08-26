@@ -2782,7 +2782,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides a handle to a transaction.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct HTRXN : IHandle
+		public struct HTRXN : IKernelHandle
 		{
 			private IntPtr handle;
 

@@ -4,65 +4,81 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
-		/// <summary>Access mask values for the registry.</summary>
-		[PInvokeData("winnt.h")]
-		public enum RegAccessTypes
+		/// <summary>Disposition results for RegCreateKeyEx.</summary>
+		[PInvokeData("winnt.h", MSDNShortId = "e9ffad7f-c0b6-44ce-bf22-fbe45ca98bf4")]
+		[Flags]
+		public enum REG_DISPOSITION : uint
 		{
-			/// <summary>Required to query the values of a registry key.</summary>
-			KEY_QUERY_VALUE = 0x0001,
+			/// <summary>The key did not exist and was created.</summary>
+			REG_CREATED_NEW_KEY = 0x00000001,
 
-			/// <summary>Required to create, delete, or set a registry value.</summary>
-			KEY_SET_VALUE = 0x0002,
+			/// <summary>The key existed and was simply opened without being changed.</summary>
+			REG_OPENED_EXISTING_KEY = 0x00000002,
+		}
 
-			/// <summary>Required to create a subkey of a registry key.</summary>
-			KEY_CREATE_SUB_KEY = 0x0004,
-
-			/// <summary>Required to enumerate the subkeys of a registry key.</summary>
-			KEY_ENUMERATE_SUB_KEYS = 0x0008,
-
-			/// <summary>Required to request change notifications for a registry key or for subkeys of a registry key.</summary>
-			KEY_NOTIFY = 0x0010,
-
-			/// <summary>Reserved for system use.</summary>
-			KEY_CREATE_LINK = 0x0020,
+		/// <summary>Flags used when restoring keys or loading hives.</summary>
+		[PInvokeData("winnt.h", MSDNShortId = "6267383d-427a-4ae8-b9cc-9c1861d3b7bb")]
+		[Flags]
+		public enum REG_HIVE
+		{
+			/// <summary>
+			/// If specified, a new, volatile (memory-only) set of registry information, or hive, is created. If REG_WHOLE_HIVE_VOLATILE is
+			/// specified, the key identified by the hKey parameter must be either the HKEY_USERS or HKEY_LOCAL_MACHINE value.
+			/// </summary>
+			REG_WHOLE_HIVE_VOLATILE = 0x00000001,
 
 			/// <summary>
-			/// Indicates that an application on 64-bit Windows should operate on the 32-bit registry view. This flag is ignored by 32-bit
-			/// Windows. For more information, see Accessing an Alternate Registry View.
-			/// <para>
-			/// This flag must be combined using the OR operator with the other flags in this table that either query or access registry values.
-			/// </para>
-			/// <note>Windows 2000: This flag is not supported.</note>
+			/// If set, the location of the subtree that the hKey parameter points to is restored to its state immediately following the last
+			/// flush. The subtree must not be lazy flushed (by calling RegRestoreKey with REG_NO_LAZY_FLUSH specified as the value of this
+			/// parameter); the caller must have the trusted computing base (TCB) privilege; and the handle to which the hKey parameter
+			/// refers must point to the root of the subtree.
 			/// </summary>
-			KEY_WOW64_32KEY = 0x0200,
+			REG_REFRESH_HIVE = 0x00000002,
+
+			/// <summary>Never lazy flush this hive.</summary>
+			REG_NO_LAZY_FLUSH = 0x00000004,
 
 			/// <summary>
-			/// Indicates that an application on 64-bit Windows should operate on the 64-bit registry view. This flag is ignored by 32-bit
-			/// Windows. For more information, see Accessing an Alternate Registry View.
-			/// <para>
-			/// This flag must be combined using the OR operator with the other flags in this table that either query or access registry values.
-			/// </para>
-			/// <note>Windows 2000: This flag is not supported.</note>
+			/// If specified, the restore operation is executed even if open handles exist at or beneath the location in the registry
+			/// hierarchy to which the hKey parameter points.
 			/// </summary>
-			KEY_WOW64_64KEY = 0x0100,
+			REG_FORCE_RESTORE = 0x00000008,
 
-			/// <summary></summary>
-			KEY_WOW64_RES = 0x0300,
+			/// <summary>Loads the hive visible to the calling process</summary>
+			REG_APP_HIVE = 0x00000010,
 
-			/// <summary>Combines the STANDARD_RIGHTS_READ, KEY_QUERY_VALUE, KEY_ENUMERATE_SUB_KEYS, and KEY_NOTIFY values.</summary>
-			KEY_READ = 0x20019,
+			/// <summary>Hive cannot be mounted by any other process while in use</summary>
+			REG_PROCESS_PRIVATE = 0x00000020,
 
-			/// <summary>Combines the STANDARD_RIGHTS_WRITE, KEY_SET_VALUE, and KEY_CREATE_SUB_KEY access rights.</summary>
-			KEY_WRITE = 0x20006,
+			/// <summary>Starts Hive Journal</summary>
+			REG_START_JOURNAL = 0x00000040,
 
-			/// <summary>Equivalent to KEY_READ.</summary>
-			KEY_EXECUTE = 0x20019,
+			/// <summary>Grow hive file in exact 4k increments</summary>
+			REG_HIVE_EXACT_FILE_GROWTH = 0x00000080,
 
-			/// <summary>
-			/// Combines the STANDARD_RIGHTS_REQUIRED, KEY_QUERY_VALUE, KEY_SET_VALUE, KEY_CREATE_SUB_KEY, KEY_ENUMERATE_SUB_KEYS,
-			/// KEY_NOTIFY, and KEY_CREATE_LINK access rights.
-			/// </summary>
-			KEY_ALL_ACCESS = 0xF003F,
+			/// <summary>No RM is started for this hive (no transactions)</summary>
+			REG_HIVE_NO_RM = 0x00000100,
+
+			/// <summary>Legacy single logging is used for this hive</summary>
+			REG_HIVE_SINGLE_LOG = 0x00000200,
+
+			/// <summary>This hive might be used by the OS loader</summary>
+			REG_BOOT_HIVE = 0x00000400,
+
+			/// <summary>Load the hive and return a handle to its root kcb</summary>
+			REG_LOAD_HIVE_OPEN_HANDLE = 0x00000800,
+
+			/// <summary>Flush changes to primary hive file size as part of all flushes</summary>
+			REG_FLUSH_HIVE_FILE_GROWTH = 0x00001000,
+
+			/// <summary>Open a hive's files in read-only mode</summary>
+			REG_OPEN_READ_ONLY = 0x00002000,
+
+			/// <summary>Load the hive, but don't allow any modification of it</summary>
+			REG_IMMUTABLE = 0x00004000,
+
+			/// <summary>Open an app hive's files in read-only mode (if the hive was not previously loaded)</summary>
+			REG_APP_HIVE_OPEN_READ_ONLY = REG_OPEN_READ_ONLY,
 		}
 
 		/// <summary>Filter for notifications reported by <see cref="RegNotifyChangeKeyValue"/>.</summary>
@@ -90,10 +106,9 @@ namespace Vanara.PInvoke
 			/// </summary>
 			REG_NOTIFY_THREAD_AGNOSTIC = 0x10000000
 		}
-
 		/// <summary>Options for <see cref="RegOpenKeyEx"/>.</summary>
+		[PInvokeData("winnt.h", MSDNShortId = "e9ffad7f-c0b6-44ce-bf22-fbe45ca98bf4")]
 		[Flags]
-		[PInvokeData("winnt.h")]
 		public enum RegOpenOptions
 		{
 			/// <summary>Reserved.</summary>
@@ -134,6 +149,142 @@ namespace Vanara.PInvoke
 
 			/// <summary>The key is a symbolic link. Registry symbolic links should only be used when absolutely necessary.</summary>
 			REG_OPTION_OPEN_LINK = 0x00000008,
+
+			/// <summary>Disable Open/Read/Write virtualization for this open and the resulting handle.</summary>
+			REG_OPTION_DONT_VIRTUALIZE = 0x00000010,
+		}
+
+		/// <summary>Registry Key Security and Access Rights</summary>
+		[PInvokeData("winnt.h")]
+		[Flags]
+		public enum REGSAM : uint
+		{
+			/// <summary>The right to delete the object.</summary>
+			DELETE = 0x00010000,
+
+			/// <summary>
+			/// The right to read the information in the object's security descriptor, not including the information in the system access
+			/// control list (SACL).
+			/// </summary>
+			READ_CONTROL = 0x00020000,
+
+			/// <summary>The right to modify the discretionary access control list (DACL) in the object's security descriptor.</summary>
+			WRITE_DAC = 0x00040000,
+
+			/// <summary>The right to change the owner in the object's security descriptor.</summary>
+			WRITE_OWNER = 0x00080000,
+
+			/// <summary>Required to query the values of a registry key.</summary>
+			KEY_QUERY_VALUE = 0x0001,
+
+			/// <summary>Required to create, delete, or set a registry value.</summary>
+			KEY_SET_VALUE = 0x0002,
+
+			/// <summary>Required to create a subkey of a registry key.</summary>
+			KEY_CREATE_SUB_KEY = 0x0004,
+
+			/// <summary>Required to enumerate the subkeys of a registry key.</summary>
+			KEY_ENUMERATE_SUB_KEYS = 0x0008,
+
+			/// <summary>Required to request change notifications for a registry key or for subkeys of a registry key.</summary>
+			KEY_NOTIFY = 0x0010,
+
+			/// <summary>Reserved for system use.</summary>
+			KEY_CREATE_LINK = 0x0020,
+
+			/// <summary>
+			/// Indicates that an application on 64-bit Windows should operate on the 32-bit registry view. This flag is ignored by 32-bit
+			/// Windows. For more information, see Accessing an Alternate Registry View.
+			/// <para>
+			/// This flag must be combined using the OR operator with the other flags in this table that either query or access registry values.
+			/// </para>
+			/// <para>Windows 2000: This flag is not supported.</para>
+			/// </summary>
+			KEY_WOW64_32KEY = 0x0200,
+
+			/// <summary>
+			/// Indicates that an application on 64-bit Windows should operate on the 64-bit registry view. This flag is ignored by 32-bit
+			/// Windows. For more information, see Accessing an Alternate Registry View.
+			/// <para>
+			/// This flag must be combined using the OR operator with the other flags in this table that either query or access registry values.
+			/// </para>
+			/// <para>Windows 2000: This flag is not supported.</para>
+			/// </summary>
+			KEY_WOW64_64KEY = 0x0100,
+
+			/// <summary>The key wo W64 resource</summary>
+			KEY_WOW64_RES = 0x0300,
+
+			/// <summary>Combines the STANDARD_RIGHTS_READ, KEY_QUERY_VALUE, KEY_ENUMERATE_SUB_KEYS, and KEY_NOTIFY values.</summary>
+			KEY_READ = (ACCESS_MASK.STANDARD_RIGHTS_READ | KEY_QUERY_VALUE | KEY_ENUMERATE_SUB_KEYS | KEY_NOTIFY) & (~ACCESS_MASK.SYNCHRONIZE),
+
+			/// <summary>Combines the STANDARD_RIGHTS_WRITE, KEY_SET_VALUE, and KEY_CREATE_SUB_KEY access rights.</summary>
+			KEY_WRITE = (ACCESS_MASK.STANDARD_RIGHTS_WRITE | KEY_SET_VALUE | KEY_CREATE_SUB_KEY) & (~ACCESS_MASK.SYNCHRONIZE),
+
+			/// <summary>Equivalent to KEY_READ.</summary>
+			KEY_EXECUTE = (KEY_READ) & (~ACCESS_MASK.SYNCHRONIZE),
+
+			/// <summary>
+			/// Combines the STANDARD_RIGHTS_REQUIRED, KEY_QUERY_VALUE, KEY_SET_VALUE, KEY_CREATE_SUB_KEY, KEY_ENUMERATE_SUB_KEYS,
+			/// KEY_NOTIFY, and KEY_CREATE_LINK access rights.
+			/// </summary>
+			KEY_ALL_ACCESS = (ACCESS_MASK.STANDARD_RIGHTS_ALL | KEY_QUERY_VALUE | KEY_SET_VALUE | KEY_CREATE_SUB_KEY | KEY_ENUMERATE_SUB_KEYS | KEY_NOTIFY | KEY_CREATE_LINK) & (~ACCESS_MASK.SYNCHRONIZE),
+		}
+
+		/// <summary>Flags used by RegGetValue.</summary>
+		[PInvokeData("winnt.h", MSDNShortId = "1c06facb-6735-4b3f-b77d-f162e3faaada")]
+		[Flags]
+		public enum RRF
+		{
+			/// <summary>No type restriction.</summary>
+			RRF_RT_ANY = 0x0000ffff,
+
+			/// <summary>Restrict type to 32-bit RRF_RT_REG_BINARY | RRF_RT_REG_DWORD.</summary>
+			RRF_RT_DWORD = 0x00000018,
+
+			/// <summary>Restrict type to 64-bit RRF_RT_REG_BINARY | RRF_RT_REG_DWORD.</summary>
+			RRF_RT_QWORD = 0x00000048,
+
+			/// <summary>Restrict type to REG_BINARY.</summary>
+			RRF_RT_REG_BINARY = 0x00000008,
+
+			/// <summary>Restrict type to REG_DWORD.</summary>
+			RRF_RT_REG_DWORD = 0x00000010,
+
+			/// <summary>Restrict type to REG_EXPAND_SZ.</summary>
+			RRF_RT_REG_EXPAND_SZ = 0x00000004,
+
+			/// <summary>Restrict type to REG_MULTI_SZ.</summary>
+			RRF_RT_REG_MULTI_SZ = 0x00000020,
+
+			/// <summary>Restrict type to REG_NONE.</summary>
+			RRF_RT_REG_NONE = 0x00000001,
+
+			/// <summary>Restrict type to REG_QWORD.</summary>
+			RRF_RT_REG_QWORD = 0x00000040,
+
+			/// <summary>Restrict type to REG_SZ.</summary>
+			RRF_RT_REG_SZ = 0x00000002,
+
+			/// <summary>Do not automatically expand environment strings if the value is of type REG_EXPAND_SZ.</summary>
+			RRF_NOEXPAND = 0x10000000,
+
+			/// <summary>If pvData is not NULL, set the contents of the buffer to zeroes on failure.</summary>
+			RRF_ZEROONFAILURE = 0x20000000,
+
+			/// <summary>
+			/// If lpSubKey is not NULL, open the subkey that lpSubKey specifies with the KEY_WOW64_64KEY access rights. For information
+			/// about these access rights, see Registry Key Security and Access Rights. You cannot specify RRF_SUBKEY_WOW6464KEY in
+			/// combination with RRF_SUBKEY_WOW6432KEY.
+			/// </summary>
+			RRF_SUBKEY_WOW6464KEY = 0x00010000,
+
+			/// <summary>
+			/// If lpSubKey is not NULL, open the subkey that lpSubKey specifies with the KEY_WOW64_32KEY access rights. For information
+			/// about these access rights, see Registry Key Security and Access Rights. You cannot specify RRF_SUBKEY_WOW6432KEY in
+			/// combination with RRF_SUBKEY_WOW6464KEY.
+			/// </summary>
+			RRF_SUBKEY_WOW6432KEY = 0x00020000,
 		}
 
 		/// <summary>

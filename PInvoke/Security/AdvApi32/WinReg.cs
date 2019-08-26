@@ -2,7 +2,6 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -11,8 +10,8 @@ namespace Vanara.PInvoke
 	public static partial class AdvApi32
 	{
 		/// <summary>
-		/// The maximum shutdown timeout that can be used as the dwGracePeriod in the <see cref="InitiateShutdown(string, string, uint,
-		/// ShutdownFlags, SystemShutDownReason)"/> function.
+		/// The maximum shutdown timeout that can be used as the dwGracePeriod in the
+		/// <see cref="InitiateShutdown(string, string, uint, ShutdownFlags, SystemShutDownReason)"/> function.
 		/// </summary>
 		public const uint MAX_SHUTDOWN_TIMEOUT = 10 * 365 * 24 * 60 * 60;
 
@@ -29,83 +28,6 @@ namespace Vanara.PInvoke
 			REG_PROCESS_APPKEY = 1,
 		}
 
-		/// <summary>Disposition results for RegCreateKeyEx.</summary>
-		[PInvokeData("winnt.h", MSDNShortId = "e9ffad7f-c0b6-44ce-bf22-fbe45ca98bf4")]
-		[Flags]
-		public enum REG_DISPOSITION : uint
-		{
-			/// <summary>The key did not exist and was created.</summary>
-			REG_CREATED_NEW_KEY = 0x00000001,
-
-			/// <summary>The key existed and was simply opened without being changed.</summary>
-			REG_OPENED_EXISTING_KEY = 0x00000002,
-		}
-
-		/// <summary>Flags used when restoring keys or loading hives.</summary>
-		[PInvokeData("winnt.h", MSDNShortId = "6267383d-427a-4ae8-b9cc-9c1861d3b7bb")]
-		[Flags]
-		public enum REG_HIVE
-		{
-			/// <summary>
-			/// If specified, a new, volatile (memory-only) set of registry information, or hive, is created. If REG_WHOLE_HIVE_VOLATILE is
-			/// specified, the key identified by the hKey parameter must be either the HKEY_USERS or HKEY_LOCAL_MACHINE value.
-			/// </summary>
-			REG_WHOLE_HIVE_VOLATILE = 0x00000001,
-
-			/// <summary>
-			/// If set, the location of the subtree that the hKey parameter points to is restored to its state immediately following the last
-			/// flush. The subtree must not be lazy flushed (by calling RegRestoreKey with REG_NO_LAZY_FLUSH specified as the value of this
-			/// parameter); the caller must have the trusted computing base (TCB) privilege; and the handle to which the hKey parameter
-			/// refers must point to the root of the subtree.
-			/// </summary>
-			REG_REFRESH_HIVE = 0x00000002,
-
-			/// <summary>Never lazy flush this hive.</summary>
-			REG_NO_LAZY_FLUSH = 0x00000004,
-
-			/// <summary>
-			/// If specified, the restore operation is executed even if open handles exist at or beneath the location in the registry
-			/// hierarchy to which the hKey parameter points.
-			/// </summary>
-			REG_FORCE_RESTORE = 0x00000008,
-
-			/// <summary>Loads the hive visible to the calling process</summary>
-			REG_APP_HIVE = 0x00000010,
-
-			/// <summary>Hive cannot be mounted by any other process while in use</summary>
-			REG_PROCESS_PRIVATE = 0x00000020,
-
-			/// <summary>Starts Hive Journal</summary>
-			REG_START_JOURNAL = 0x00000040,
-
-			/// <summary>Grow hive file in exact 4k increments</summary>
-			REG_HIVE_EXACT_FILE_GROWTH = 0x00000080,
-
-			/// <summary>No RM is started for this hive (no transactions)</summary>
-			REG_HIVE_NO_RM = 0x00000100,
-
-			/// <summary>Legacy single logging is used for this hive</summary>
-			REG_HIVE_SINGLE_LOG = 0x00000200,
-
-			/// <summary>This hive might be used by the OS loader</summary>
-			REG_BOOT_HIVE = 0x00000400,
-
-			/// <summary>Load the hive and return a handle to its root kcb</summary>
-			REG_LOAD_HIVE_OPEN_HANDLE = 0x00000800,
-
-			/// <summary>Flush changes to primary hive file size as part of all flushes</summary>
-			REG_FLUSH_HIVE_FILE_GROWTH = 0x00001000,
-
-			/// <summary>Open a hive's files in read-only mode</summary>
-			REG_OPEN_READ_ONLY = 0x00002000,
-
-			/// <summary>Load the hive, but don't allow any modification of it</summary>
-			REG_IMMUTABLE = 0x00004000,
-
-			/// <summary>Open an app hive's files in read-only mode (if the hive was not previously loaded)</summary>
-			REG_APP_HIVE_OPEN_READ_ONLY = REG_OPEN_READ_ONLY,
-		}
-
 		/// <summary>Flags used by RegLoadMUIString.</summary>
 		[PInvokeData("winreg.h", MSDNShortId = "76ffc77f-a1bc-4e01-858f-4a76563a2bbc")]
 		public enum REG_MUI_STRING
@@ -117,51 +39,6 @@ namespace Vanara.PInvoke
 			/// The string is truncated to fit the available size of the pszOutBuf buffer.If this flag is specified, pcbData must be NULL.
 			/// </summary>
 			REG_MUI_STRING_TRUNCATE = 0x00000001,
-		}
-
-		/// <summary>Options for RegCreateKeyEx.</summary>
-		[PInvokeData("winnt.h", MSDNShortId = "e9ffad7f-c0b6-44ce-bf22-fbe45ca98bf4")]
-		[Flags]
-		public enum REG_OPTION : uint
-		{
-			/// <summary>
-			/// If this flag is set, the function ignores the samDesired parameter and attempts to open the key with the access required to
-			/// backup or restore the key. If the calling thread has the SE_BACKUP_NAME privilege enabled, the key is opened with the
-			/// ACCESS_SYSTEM_SECURITY and KEY_READ access rights. If the calling thread has the SE_RESTORE_NAME privilege enabled, beginning
-			/// with Windows Vista, the key is opened with the ACCESS_SYSTEM_SECURITY, DELETE and KEY_WRITE access rights. If both privileges
-			/// are enabled, the key has the combined access rights for both privileges. For more information, see Running with Special Privileges.
-			/// </summary>
-			REG_OPTION_BACKUP_RESTORE = 0x00000004,
-
-			/// <summary>
-			/// Note Registry symbolic links should only be used for application compatibility when absolutely necessary.
-			/// <para>
-			/// This key is a symbolic link. The target path is assigned to the L"SymbolicLinkValue" value of the key. The target path must
-			/// be an absolute registry path.
-			/// </para>
-			/// </summary>
-			REG_OPTION_CREATE_LINK = 0x00000002,
-
-			/// <summary>
-			/// This key is not volatile; this is the default. The information is stored in a file and is preserved when the system is
-			/// restarted. The RegSaveKey function saves keys that are not volatile.
-			/// </summary>
-			REG_OPTION_NON_VOLATILE = 0x00000000,
-
-			/// <summary>
-			/// All keys created by the function are volatile. The information is stored in memory and is not preserved when the
-			/// corresponding registry hive is unloaded. For HKEY_LOCAL_MACHINE, this occurs only when the system initiates a full shutdown.
-			/// For registry keys loaded by the RegLoadKey function, this occurs when the corresponding RegUnLoadKey is performed. The
-			/// RegSaveKey function does not save volatile keys. This flag is ignored for keys that already exist. <note>Note On a user
-			/// selected shutdown, a fast startup shutdown is the default behavior for the system.</note>
-			/// </summary>
-			REG_OPTION_VOLATILE = 0x00000001,
-
-			/// <summary>Open symbolic link.</summary>
-			REG_OPTION_OPEN_LINK = 0x00000008,
-
-			/// <summary>Disable Open/Read/Write virtualization for this open and the resulting handle.</summary>
-			REG_OPTION_DONT_VIRTUALIZE = 0x00000010,
 		}
 
 		/// <summary>Flags used by RegSaveKeyEx</summary>
@@ -183,139 +60,6 @@ namespace Vanara.PInvoke
 			/// HKEY_LOCAL_MACHINE or HKEY_USERS. For example, HKLM\SOFTWARE is the root of a hive.
 			/// </summary>
 			REG_NO_COMPRESSION = 4,
-		}
-
-		/// <summary>Registry Key Security and Access Rights</summary>
-		[PInvokeData("winnt.h")]
-		[Flags]
-		public enum REGSAM : uint
-		{
-			/// <summary>The right to delete the object.</summary>
-			DELETE = 0x00010000,
-
-			/// <summary>
-			/// The right to read the information in the object's security descriptor, not including the information in the system access
-			/// control list (SACL).
-			/// </summary>
-			READ_CONTROL = 0x00020000,
-
-			/// <summary>The right to modify the discretionary access control list (DACL) in the object's security descriptor.</summary>
-			WRITE_DAC = 0x00040000,
-
-			/// <summary>The right to change the owner in the object's security descriptor.</summary>
-			WRITE_OWNER = 0x00080000,
-
-			/// <summary>Required to query the values of a registry key.</summary>
-			KEY_QUERY_VALUE = 0x0001,
-
-			/// <summary>Required to create, delete, or set a registry value.</summary>
-			KEY_SET_VALUE = 0x0002,
-
-			/// <summary>Required to create a subkey of a registry key.</summary>
-			KEY_CREATE_SUB_KEY = 0x0004,
-
-			/// <summary>Required to enumerate the subkeys of a registry key.</summary>
-			KEY_ENUMERATE_SUB_KEYS = 0x0008,
-
-			/// <summary>Required to request change notifications for a registry key or for subkeys of a registry key.</summary>
-			KEY_NOTIFY = 0x0010,
-
-			/// <summary>Reserved for system use.</summary>
-			KEY_CREATE_LINK = 0x0020,
-
-			/// <summary>
-			/// Indicates that an application on 64-bit Windows should operate on the 32-bit registry view. This flag is ignored by 32-bit
-			/// Windows. For more information, see Accessing an Alternate Registry View.
-			/// <para>
-			/// This flag must be combined using the OR operator with the other flags in this table that either query or access registry values.
-			/// </para>
-			/// <para>Windows 2000: This flag is not supported.</para>
-			/// </summary>
-			KEY_WOW64_32KEY = 0x0200,
-
-			/// <summary>
-			/// Indicates that an application on 64-bit Windows should operate on the 64-bit registry view. This flag is ignored by 32-bit
-			/// Windows. For more information, see Accessing an Alternate Registry View.
-			/// <para>
-			/// This flag must be combined using the OR operator with the other flags in this table that either query or access registry values.
-			/// </para>
-			/// <para>Windows 2000: This flag is not supported.</para>
-			/// </summary>
-			KEY_WOW64_64KEY = 0x0100,
-
-			/// <summary>The key wo W64 resource</summary>
-			KEY_WOW64_RES = 0x0300,
-
-			/// <summary>Combines the STANDARD_RIGHTS_READ, KEY_QUERY_VALUE, KEY_ENUMERATE_SUB_KEYS, and KEY_NOTIFY values.</summary>
-			KEY_READ = (ACCESS_MASK.STANDARD_RIGHTS_READ | KEY_QUERY_VALUE | KEY_ENUMERATE_SUB_KEYS | KEY_NOTIFY) & (~ACCESS_MASK.SYNCHRONIZE),
-
-			/// <summary>Combines the STANDARD_RIGHTS_WRITE, KEY_SET_VALUE, and KEY_CREATE_SUB_KEY access rights.</summary>
-			KEY_WRITE = (ACCESS_MASK.STANDARD_RIGHTS_WRITE | KEY_SET_VALUE | KEY_CREATE_SUB_KEY) & (~ACCESS_MASK.SYNCHRONIZE),
-
-			/// <summary>Equivalent to KEY_READ.</summary>
-			KEY_EXECUTE = (KEY_READ) & (~ACCESS_MASK.SYNCHRONIZE),
-
-			/// <summary>
-			/// Combines the STANDARD_RIGHTS_REQUIRED, KEY_QUERY_VALUE, KEY_SET_VALUE, KEY_CREATE_SUB_KEY, KEY_ENUMERATE_SUB_KEYS,
-			/// KEY_NOTIFY, and KEY_CREATE_LINK access rights.
-			/// </summary>
-			KEY_ALL_ACCESS = (ACCESS_MASK.STANDARD_RIGHTS_ALL | KEY_QUERY_VALUE | KEY_SET_VALUE | KEY_CREATE_SUB_KEY | KEY_ENUMERATE_SUB_KEYS | KEY_NOTIFY | KEY_CREATE_LINK) & (~ACCESS_MASK.SYNCHRONIZE),
-		}
-
-		/// <summary>Flags used by RegGetValue.</summary>
-		[PInvokeData("winnt.h", MSDNShortId = "1c06facb-6735-4b3f-b77d-f162e3faaada")]
-		[Flags]
-		public enum RRF
-		{
-			/// <summary>No type restriction.</summary>
-			RRF_RT_ANY = 0x0000ffff,
-
-			/// <summary>Restrict type to 32-bit RRF_RT_REG_BINARY | RRF_RT_REG_DWORD.</summary>
-			RRF_RT_DWORD = 0x00000018,
-
-			/// <summary>Restrict type to 64-bit RRF_RT_REG_BINARY | RRF_RT_REG_DWORD.</summary>
-			RRF_RT_QWORD = 0x00000048,
-
-			/// <summary>Restrict type to REG_BINARY.</summary>
-			RRF_RT_REG_BINARY = 0x00000008,
-
-			/// <summary>Restrict type to REG_DWORD.</summary>
-			RRF_RT_REG_DWORD = 0x00000010,
-
-			/// <summary>Restrict type to REG_EXPAND_SZ.</summary>
-			RRF_RT_REG_EXPAND_SZ = 0x00000004,
-
-			/// <summary>Restrict type to REG_MULTI_SZ.</summary>
-			RRF_RT_REG_MULTI_SZ = 0x00000020,
-
-			/// <summary>Restrict type to REG_NONE.</summary>
-			RRF_RT_REG_NONE = 0x00000001,
-
-			/// <summary>Restrict type to REG_QWORD.</summary>
-			RRF_RT_REG_QWORD = 0x00000040,
-
-			/// <summary>Restrict type to REG_SZ.</summary>
-			RRF_RT_REG_SZ = 0x00000002,
-
-			/// <summary>Do not automatically expand environment strings if the value is of type REG_EXPAND_SZ.</summary>
-			RRF_NOEXPAND = 0x10000000,
-
-			/// <summary>If pvData is not NULL, set the contents of the buffer to zeroes on failure.</summary>
-			RRF_ZEROONFAILURE = 0x20000000,
-
-			/// <summary>
-			/// If lpSubKey is not NULL, open the subkey that lpSubKey specifies with the KEY_WOW64_64KEY access rights. For information
-			/// about these access rights, see Registry Key Security and Access Rights. You cannot specify RRF_SUBKEY_WOW6464KEY in
-			/// combination with RRF_SUBKEY_WOW6432KEY.
-			/// </summary>
-			RRF_SUBKEY_WOW6464KEY = 0x00010000,
-
-			/// <summary>
-			/// If lpSubKey is not NULL, open the subkey that lpSubKey specifies with the KEY_WOW64_32KEY access rights. For information
-			/// about these access rights, see Registry Key Security and Access Rights. You cannot specify RRF_SUBKEY_WOW6432KEY in
-			/// combination with RRF_SUBKEY_WOW6464KEY.
-			/// </summary>
-			RRF_SUBKEY_WOW6432KEY = 0x00020000,
 		}
 
 		/// <summary>Flags used in the <see cref="InitiateShutdown"/> function.</summary>
@@ -384,7 +128,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winreg.h", MSDNShortId = "aa376630")]
-		public static extern bool AbortSystemShutdown(string lpMachineName);
+		public static extern bool AbortSystemShutdown([Optional] string lpMachineName);
 
 		/// <summary>
 		/// Initiates a shutdown and restart of the specified computer, and restarts any applications that have been registered for restart.
@@ -410,7 +154,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "aa376872")]
-		public static extern Win32Error InitiateShutdown(string lpMachineName, string lpMessage, uint dwGracePeriod, ShutdownFlags dwShutdownFlags, SystemShutDownReason dwReason);
+		public static extern Win32Error InitiateShutdown([Optional] string lpMachineName, [Optional] string lpMessage, uint dwGracePeriod, ShutdownFlags dwShutdownFlags, SystemShutDownReason dwReason);
 
 		/// <summary>
 		/// <para>Initiates a shutdown and optional restart of the specified computer.</para>
@@ -508,7 +252,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "cad54fea-7f59-438c-83ac-f0160d81496b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool InitiateSystemShutdown(string lpMachineName, string lpMessage, uint dwTimeout, [MarshalAs(UnmanagedType.Bool)] bool bForceAppsClosed, [MarshalAs(UnmanagedType.Bool)] bool bRebootAfterShutdown);
+		public static extern bool InitiateSystemShutdown([Optional] string lpMachineName, [Optional] string lpMessage, uint dwTimeout, [MarshalAs(UnmanagedType.Bool)] bool bForceAppsClosed, [MarshalAs(UnmanagedType.Bool)] bool bRebootAfterShutdown);
 
 		/// <summary>Initiates a shutdown and optional restart of the specified computer.</summary>
 		/// <param name="lpMachineName">
@@ -550,7 +294,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winreg.h", MSDNShortId = "aa376874")]
-		public static extern bool InitiateSystemShutdownEx(string lpMachineName, string lpMessage, uint dwTimeout,
+		public static extern bool InitiateSystemShutdownEx([Optional] string lpMachineName, [Optional] string lpMessage, uint dwTimeout,
 			[MarshalAs(UnmanagedType.Bool)] bool bForceAppsClosed, [MarshalAs(UnmanagedType.Bool)] bool bRebootAfterShutdown,
 			SystemShutDownReason dwReason);
 
@@ -624,7 +368,7 @@ namespace Vanara.PInvoke
 		// lpMachineName, HKEY hKey, PHKEY phkResult );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "d7fb41cc-4855-4ad7-879c-b1ac85ac5803")]
-		public static extern Win32Error RegConnectRegistry(string lpMachineName, HKEY hKey, out SafeRegistryHandle phkResult);
+		public static extern Win32Error RegConnectRegistry([Optional] string lpMachineName, HKEY hKey, out SafeRegistryHandle phkResult);
 
 		/// <summary>
 		/// <para>Copies the specified registry key, along with its values and subkeys, to the specified destination key.</para>
@@ -663,7 +407,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, HKEY hKeyDest );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "d16f2b47-e537-42b0-90b3-9f9a00e61e76")]
-		public static extern Win32Error RegCopyTree(HKEY hKeySrc, string lpSubKey, HKEY hKeyDest);
+		public static extern Win32Error RegCopyTree(HKEY hKeySrc, [Optional] string lpSubKey, HKEY hKeyDest);
 
 		/// <summary>
 		/// <para>Creates the specified registry key. If the key already exists in the registry, the function opens it.</para>
@@ -733,7 +477,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, PHKEY phkResult );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "cb4d30f4-e288-41e8-86e0-807c313db53d")]
-		public static extern Win32Error RegCreateKey(HKEY hKey, string lpSubKey, out SafeRegistryHandle phkResult);
+		public static extern Win32Error RegCreateKey(HKEY hKey, [Optional] string lpSubKey, out SafeRegistryHandle phkResult);
 
 		/// <summary>
 		/// <para>
@@ -892,7 +636,8 @@ namespace Vanara.PInvoke
 		// PHKEY phkResult, LPDWORD lpdwDisposition );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "e9ffad7f-c0b6-44ce-bf22-fbe45ca98bf4")]
-		public static extern Win32Error RegCreateKeyEx(HKEY hKey, string lpSubKey, uint Reserved, string lpClass, REG_OPTION dwOptions, REGSAM samDesired, SECURITY_ATTRIBUTES lpSecurityAttributes, out SafeRegistryHandle phkResult, out REG_DISPOSITION lpdwDisposition);
+		public static extern Win32Error RegCreateKeyEx(HKEY hKey, string lpSubKey, [Optional] uint Reserved, [Optional] string lpClass, [Optional] RegOpenOptions dwOptions,
+			[Optional] REGSAM samDesired, [Optional] SECURITY_ATTRIBUTES lpSecurityAttributes, out SafeRegistryHandle phkResult, out REG_DISPOSITION lpdwDisposition);
 
 		/// <summary>
 		/// <para>
@@ -1053,7 +798,9 @@ namespace Vanara.PInvoke
 		// lpSecurityAttributes, PHKEY phkResult, LPDWORD lpdwDisposition, HANDLE hTransaction, PVOID pExtendedParemeter );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "f18e5ff9-41c3-4c26-8d01-a8ec69bcdef2")]
-		public static extern Win32Error RegCreateKeyTransacted(HKEY hKey, string lpSubKey, uint Reserved, string lpClass, REG_OPTION dwOptions, REGSAM samDesired, SECURITY_ATTRIBUTES lpSecurityAttributes, out SafeRegistryHandle phkResult, out REG_DISPOSITION lpdwDisposition, IntPtr hTransaction, IntPtr pExtendedParemeter);
+		public static extern Win32Error RegCreateKeyTransacted(HKEY hKey, string lpSubKey, [Optional] uint Reserved, [Optional] string lpClass, [Optional] RegOpenOptions dwOptions,
+			[Optional] REGSAM samDesired, [Optional] SECURITY_ATTRIBUTES lpSecurityAttributes, out SafeRegistryHandle phkResult, out REG_DISPOSITION lpdwDisposition,
+			HTRXN hTransaction, IntPtr pExtendedParemeter = default);
 
 		/// <summary>
 		/// <para>Deletes a subkey and its values. Note that key names are not case sensitive.</para>
@@ -1177,7 +924,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, REGSAM samDesired, DWORD Reserved );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "41fde6a5-647c-4293-92b8-74be54fa4136")]
-		public static extern Win32Error RegDeleteKeyEx(HKEY hKey, string lpSubKey, REGSAM samDesired, uint Reserved = 0);
+		public static extern Win32Error RegDeleteKeyEx(HKEY hKey, string lpSubKey, [Optional] REGSAM samDesired, uint Reserved = 0);
 
 		/// <summary>
 		/// <para>
@@ -1261,7 +1008,7 @@ namespace Vanara.PInvoke
 		// HKEY hKey, LPCSTR lpSubKey, REGSAM samDesired, DWORD Reserved, HANDLE hTransaction, PVOID pExtendedParameter );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "4c67e08b-4338-4441-8300-6b6ed31d4b21")]
-		public static extern Win32Error RegDeleteKeyTransacted(HKEY hKey, string lpSubKey, REGSAM samDesired, uint Reserved, IntPtr hTransaction, IntPtr pExtendedParameter);
+		public static extern Win32Error RegDeleteKeyTransacted(HKEY hKey, string lpSubKey, [Optional] REGSAM samDesired, [Optional] uint Reserved, HTRXN hTransaction, IntPtr pExtendedParameter = default);
 
 		/// <summary>
 		/// <para>Removes the specified value from the specified registry key and subkey.</para>
@@ -1339,7 +1086,7 @@ namespace Vanara.PInvoke
 		// lpSubKey );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "984813a9-e191-498f-8288-b8a4c567112b")]
-		public static extern Win32Error RegDeleteTree(HKEY hKey, string lpSubKey);
+		public static extern Win32Error RegDeleteTree(HKEY hKey, [Optional] string lpSubKey);
 
 		/// <summary>
 		/// <para>Removes a named value from the specified registry key. Note that value names are not case sensitive.</para>
@@ -1373,7 +1120,7 @@ namespace Vanara.PInvoke
 		// lpValueName );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "4393b4ef-cd10-40d4-bb12-2d84e7cb7d3c")]
-		public static extern Win32Error RegDeleteValue(HKEY hKey, string lpValueName);
+		public static extern Win32Error RegDeleteValue(HKEY hKey, [Optional] string lpValueName);
 
 		/// <summary>
 		/// <para>
@@ -1665,7 +1412,7 @@ namespace Vanara.PInvoke
 		// dwIndex, LPSTR lpName, LPDWORD lpcchName, LPDWORD lpReserved, LPSTR lpClass, LPDWORD lpcchClass, PFILETIME lpftLastWriteTime );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "647d34cc-01ba-4389-be29-b099ed198e7c")]
-		public static extern Win32Error RegEnumKeyEx(HKEY hKey, uint dwIndex, StringBuilder lpName, ref uint lpcchName, IntPtr lpReserved, StringBuilder lpClass, ref uint lpcchClass, out FILETIME lpftLastWriteTime);
+		public static extern Win32Error RegEnumKeyEx(HKEY hKey, uint dwIndex, StringBuilder lpName, ref uint lpcchName, [Optional] IntPtr lpReserved, StringBuilder lpClass, ref uint lpcchClass, out FILETIME lpftLastWriteTime);
 
 		/// <summary>
 		/// <para>
@@ -1782,7 +1529,124 @@ namespace Vanara.PInvoke
 		// LPDWORD lpcbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "7014ff96-c655-486f-af32-180b87281b06")]
-		public static extern Win32Error RegEnumValue(HKEY hKey, uint dwIndex, StringBuilder lpValueName, ref uint lpcchValueName, IntPtr lpReserved, out REG_VALUE_TYPE lpType, IntPtr lpData, ref uint lpcbData);
+		public static extern Win32Error RegEnumValue(HKEY hKey, uint dwIndex, StringBuilder lpValueName, ref uint lpcchValueName, [Optional] IntPtr lpReserved, out REG_VALUE_TYPE lpType, [Optional] IntPtr lpData, ref uint lpcbData);
+
+		/// <summary>
+		/// <para>
+		/// Enumerates the values for the specified open registry key. The function copies one indexed value name and data block for the key
+		/// each time it is called.
+		/// </para>
+		/// </summary>
+		/// <param name="hKey">
+		/// <para>
+		/// A handle to an open registry key. The key must have been opened with the KEY_QUERY_VALUE access right. For more information, see
+		/// Registry Key Security and Access Rights.
+		/// </para>
+		/// <para>This handle is returned by the</para>
+		/// <para>RegCreateKeyEx</para>
+		/// <para>,</para>
+		/// <para>RegCreateKeyTransacted</para>
+		/// <para>,</para>
+		/// <para>RegOpenKeyEx</para>
+		/// <para>, or</para>
+		/// <para>RegOpenKeyTransacted</para>
+		/// <para>function. It can also be one of the following</para>
+		/// <para>predefined keys</para>
+		/// <para>:</para>
+		/// </param>
+		/// <param name="dwIndex">
+		/// <para>
+		/// The index of the value to be retrieved. This parameter should be zero for the first call to the <c>RegEnumValue</c> function and
+		/// then be incremented for subsequent calls.
+		/// </para>
+		/// <para>
+		/// Because values are not ordered, any new value will have an arbitrary index. This means that the function may return values in any order.
+		/// </para>
+		/// </param>
+		/// <param name="lpValueName">
+		/// <para>A pointer to a buffer that receives the name of the value as a <c>null</c>-terminated string.</para>
+		/// <para>This buffer must be large enough to include the terminating <c>null</c> character.</para>
+		/// <para>For more information, see Registry Element Size Limits.</para>
+		/// </param>
+		/// <param name="lpcchValueName">
+		/// <para>
+		/// A pointer to a variable that specifies the size of the buffer pointed to by the lpValueName parameter, in characters. When the
+		/// function returns, the variable receives the number of characters stored in the buffer, not including the terminating <c>null</c> character.
+		/// </para>
+		/// <para>
+		/// Registry value names are limited to 32,767 bytes. The ANSI version of this function treats this parameter as a <c>SHORT</c>
+		/// value. Therefore, if you specify a value greater than 32,767 bytes, there is an overflow and the function may return ERROR_MORE_DATA.
+		/// </para>
+		/// </param>
+		/// <param name="lpReserved">
+		/// <para>This parameter is reserved and must be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="lpType">
+		/// <para>
+		/// A pointer to a variable that receives a code indicating the type of data stored in the specified value. For a list of the
+		/// possible type codes, see Registry Value Types. The lpType parameter can be <c>NULL</c> if the type code is not required.
+		/// </para>
+		/// </param>
+		/// <param name="lpData">
+		/// <para>
+		/// A pointer to a buffer that receives the data for the value entry. This parameter can be <c>NULL</c> if the data is not required.
+		/// </para>
+		/// <para>
+		/// If lpData is <c>NULL</c> and lpcbData is non- <c>NULL</c>, the function stores the size of the data, in bytes, in the variable
+		/// pointed to by lpcbData. This enables an application to determine the best way to allocate a buffer for the data.
+		/// </para>
+		/// </param>
+		/// <param name="lpcbData">
+		/// <para>
+		/// A pointer to a variable that specifies the size of the buffer pointed to by the lpData parameter, in bytes. When the function
+		/// returns, the variable receives the number of bytes stored in the buffer.
+		/// </para>
+		/// <para>This parameter can be <c>NULL</c> only if lpData is <c>NULL</c>.</para>
+		/// <para>
+		/// If the data has the REG_SZ, REG_MULTI_SZ or REG_EXPAND_SZ type, this size includes any terminating <c>null</c> character or
+		/// characters. For more information, see Remarks.
+		/// </para>
+		/// <para>
+		/// If the buffer specified by lpData is not large enough to hold the data, the function returns ERROR_MORE_DATA and stores the
+		/// required buffer size in the variable pointed to by lpcbData. In this case, the contents of lpData are undefined.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is a system error code. If there are no more values available, the function returns ERROR_NO_MORE_ITEMS.
+		/// </para>
+		/// <para>If the lpData buffer is too small to receive the value, the function returns ERROR_MORE_DATA.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To enumerate values, an application should initially call the <c>RegEnumValue</c> function with the dwIndex parameter set to
+		/// zero. The application should then increment dwIndex and call the <c>RegEnumValue</c> function until there are no more values
+		/// (until the function returns ERROR_NO_MORE_ITEMS).
+		/// </para>
+		/// <para>
+		/// The application can also set dwIndex to the index of the last value on the first call to the function and decrement the index
+		/// until the value with index 0 is enumerated. To retrieve the index of the last value, use the RegQueryInfoKey function.
+		/// </para>
+		/// <para>
+		/// While using <c>RegEnumValue</c>, an application should not call any registry functions that might change the key being queried.
+		/// </para>
+		/// <para>
+		/// If the data has the REG_SZ, REG_MULTI_SZ or REG_EXPAND_SZ type, the string may not have been stored with the proper
+		/// <c>null</c>-terminating characters. Therefore, even if the function returns ERROR_SUCCESS, the application should ensure that the
+		/// string is properly terminated before using it; otherwise, it may overwrite a buffer. (Note that REG_MULTI_SZ strings should have
+		/// two <c>null</c>-terminating characters.)
+		/// </para>
+		/// <para>To determine the maximum size of the name and data buffers, use the RegQueryInfoKey function.</para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Enumerating Registry Subkeys.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regenumvaluea LSTATUS RegEnumValueA( HKEY hKey, DWORD
+		// dwIndex, LPSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpReserved, LPDWORD lpType, __out_data_source(REGISTRY)LPBYTE lpData,
+		// LPDWORD lpcbData );
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winreg.h", MSDNShortId = "7014ff96-c655-486f-af32-180b87281b06")]
+		public static extern Win32Error RegEnumValue(HKEY hKey, uint dwIndex, StringBuilder lpValueName, ref uint lpcchValueName, [Optional] IntPtr lpReserved, [Optional] IntPtr lpType, [Optional] IntPtr lpData, [Optional] IntPtr lpcbData);
 
 		/// <summary>
 		/// <para>Writes all the attributes of the specified open registry key into the registry.</para>
@@ -2078,7 +1942,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, LPCSTR lpValue, DWORD dwFlags, LPDWORD pdwType, PVOID pvData, LPDWORD pcbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "1c06facb-6735-4b3f-b77d-f162e3faaada")]
-		public static extern Win32Error RegGetValue(HKEY hkey, string lpSubKey, string lpValue, RRF dwFlags, out REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
+		public static extern Win32Error RegGetValue(HKEY hkey, [Optional] string lpSubKey, [Optional] string lpValue, RRF dwFlags, out REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>Loads the specified registry hive as an application hive.</para>
@@ -2152,7 +2016,7 @@ namespace Vanara.PInvoke
 		// phkResult, REGSAM samDesired, DWORD dwOptions, DWORD Reserved );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "88eb79c1-9ea0-436e-ad2e-9ce05b8dcb2c")]
-		public static extern Win32Error RegLoadAppKey(string lpFile, out SafeRegistryHandle phkResult, REGSAM samDesired, REG_APPKEY dwOptions, uint Reserved = 0);
+		public static extern Win32Error RegLoadAppKey(string lpFile, out SafeRegistryHandle phkResult, REGSAM samDesired, [Optional] REG_APPKEY dwOptions, uint Reserved = 0);
 
 		/// <summary>
 		/// <para>
@@ -2288,9 +2152,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regloadmuistringa LSTATUS RegLoadMUIStringA( HKEY hKey,
 		// LPCSTR pszValue, LPSTR pszOutBuf, DWORD cbOutBuf, LPDWORD pcbData, DWORD Flags, LPCSTR pszDirectory );
-		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Unicode)]
 		[PInvokeData("winreg.h", MSDNShortId = "76ffc77f-a1bc-4e01-858f-4a76563a2bbc")]
-		public static extern Win32Error RegLoadMUIString(HKEY hKey, string pszValue, StringBuilder pszOutBuf, uint cbOutBuf, IntPtr pcbData, REG_MUI_STRING Flags, string pszDirectory);
+		public static extern Win32Error RegLoadMUIString(HKEY hKey, string pszValue, StringBuilder pszOutBuf, uint cbOutBuf, out uint pcbData, REG_MUI_STRING Flags, [Optional] string pszDirectory);
 
 		/// <summary>Notifies the caller about changes to the attributes or contents of a specified registry key.</summary>
 		/// <param name="hKey">A handle to an open registry key. This handle is returned by the RegCreateKeyEx or RegOpenKeyEx function.</param>
@@ -2405,7 +2269,7 @@ namespace Vanara.PInvoke
 		// PHKEY phkResult );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "bad0a0f8-1889-4eff-98be-084c95d69f3b")]
-		public static extern Win32Error RegOpenKey(HKEY hKey, string lpSubKey, out SafeRegistryHandle phkResult);
+		public static extern Win32Error RegOpenKey(HKEY hKey, [Optional] string lpSubKey, out SafeRegistryHandle phkResult);
 
 		/// <summary>Opens the specified registry key. Note that key names are not case sensitive.</summary>
 		/// <param name="hKey">
@@ -2443,7 +2307,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "ms724897")]
-		public static extern Win32Error RegOpenKeyEx(HKEY hKey, string lpSubKey, RegOpenOptions ulOptions, RegAccessTypes samDesired, out SafeRegistryHandle phkResult);
+		public static extern Win32Error RegOpenKeyEx(HKEY hKey, [Optional] string lpSubKey, [Optional] RegOpenOptions ulOptions, [Optional] REGSAM samDesired, out SafeRegistryHandle phkResult);
 
 		/// <summary>
 		/// <para>Opens the specified registry key and associates it with a transaction. Note that key names are not case sensitive.</para>
@@ -2519,7 +2383,7 @@ namespace Vanara.PInvoke
 		// hKey, LPCSTR lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult, HANDLE hTransaction, PVOID pExtendedParemeter );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "11663ed2-d17c-4f08-be7b-9b591271fbcd")]
-		public static extern Win32Error RegOpenKeyTransacted(HKEY hKey, string lpSubKey, uint ulOptions, REGSAM samDesired, out SafeRegistryHandle phkResult, IntPtr hTransaction, IntPtr pExtendedParemeter);
+		public static extern Win32Error RegOpenKeyTransacted(HKEY hKey, [Optional] string lpSubKey, [Optional] uint ulOptions, [Optional] REGSAM samDesired, out SafeRegistryHandle phkResult, HTRXN hTransaction, [Optional] IntPtr pExtendedParemeter);
 
 		/// <summary>
 		/// <para>
@@ -2579,7 +2443,7 @@ namespace Vanara.PInvoke
 		// HANDLE hToken, DWORD dwOptions, REGSAM samDesired, PHKEY phkResult );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "bd068826-cf88-4fc7-a7d6-96cc03e923c7")]
-		public static extern Win32Error RegOpenUserClassesRoot(HTOKEN hToken, uint dwOptions, REGSAM samDesired, out SafeRegistryHandle phkResult);
+		public static extern Win32Error RegOpenUserClassesRoot(HTOKEN hToken, [Optional] uint dwOptions, [Optional] REGSAM samDesired, out SafeRegistryHandle phkResult);
 
 		/// <summary>
 		/// <para>Maps a predefined registry key to the specified registry key.</para>
@@ -2713,7 +2577,93 @@ namespace Vanara.PInvoke
 		// lpcValues, LPDWORD lpcbMaxValueNameLen, LPDWORD lpcbMaxValueLen, LPDWORD lpcbSecurityDescriptor, PFILETIME lpftLastWriteTime );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "25eb2cd2-9fdd-4d6f-8071-daab56f9aae1")]
-		public static extern Win32Error RegQueryInfoKey(HKEY hKey, StringBuilder lpClass, ref uint lpcchClass, IntPtr lpReserved, out uint lpcSubKeys, out uint lpcbMaxSubKeyLen, out uint lpcbMaxClassLen, out uint lpcValues, out uint lpcbMaxValueNameLen, out uint lpcbMaxValueLen, out uint lpcbSecurityDescriptor, out FILETIME lpftLastWriteTime);
+		public static extern Win32Error RegQueryInfoKey(HKEY hKey, [Optional] StringBuilder lpClass, ref uint lpcchClass, [Optional] IntPtr lpReserved, out uint lpcSubKeys, out uint lpcbMaxSubKeyLen, out uint lpcbMaxClassLen, out uint lpcValues, out uint lpcbMaxValueNameLen, out uint lpcbMaxValueLen, out uint lpcbSecurityDescriptor, out FILETIME lpftLastWriteTime);
+
+		/// <summary>
+		/// <para>Retrieves information about the specified registry key.</para>
+		/// </summary>
+		/// <param name="hKey">
+		/// <para>
+		/// A handle to an open registry key. The key must have been opened with the KEY_QUERY_VALUE access right. For more information, see
+		/// Registry Key Security and Access Rights.
+		/// </para>
+		/// <para>
+		/// This handle is returned by the RegCreateKeyEx, RegCreateKeyTransacted, RegOpenKeyEx, or RegOpenKeyTransacted function. It can
+		/// also be one of the following predefined keys:
+		/// </para>
+		/// </param>
+		/// <param name="lpClass">
+		/// <para>A pointer to a buffer that receives the user-defined class of the key. This parameter can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="lpcchClass">
+		/// <para>A pointer to a variable that specifies the size of the buffer pointed to by the lpClass parameter, in characters.</para>
+		/// <para>
+		/// The size should include the terminating <c>null</c> character. When the function returns, this variable contains the size of the
+		/// class string that is stored in the buffer. The count returned does not include the terminating <c>null</c> character. If the
+		/// buffer is not big enough, the function returns ERROR_MORE_DATA, and the variable contains the size of the string, in characters,
+		/// without counting the terminating <c>null</c> character.
+		/// </para>
+		/// <para>If lpClass is <c>NULL</c>, lpcClass can be <c>NULL</c>.</para>
+		/// <para>
+		/// If the lpClass parameter is a valid address, but the lpcClass parameter is not, for example, it is <c>NULL</c>, then the function
+		/// returns ERROR_INVALID_PARAMETER.
+		/// </para>
+		/// </param>
+		/// <param name="lpReserved">
+		/// <para>This parameter is reserved and must be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="lpcSubKeys">
+		/// <para>
+		/// A pointer to a variable that receives the number of subkeys that are contained by the specified key. This parameter can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpcbMaxSubKeyLen">
+		/// <para>
+		/// A pointer to a variable that receives the size of the key's subkey with the longest name, in Unicode characters, not including
+		/// the terminating <c>null</c> character. This parameter can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpcbMaxClassLen">
+		/// <para>
+		/// A pointer to a variable that receives the size of the longest string that specifies a subkey class, in Unicode characters. The
+		/// count returned does not include the terminating <c>null</c> character. This parameter can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpcValues">
+		/// <para>A pointer to a variable that receives the number of values that are associated with the key. This parameter can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="lpcbMaxValueNameLen">
+		/// <para>
+		/// A pointer to a variable that receives the size of the key's longest value name, in Unicode characters. The size does not include
+		/// the terminating <c>null</c> character. This parameter can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpcbMaxValueLen">
+		/// <para>
+		/// A pointer to a variable that receives the size of the longest data component among the key's values, in bytes. This parameter can
+		/// be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpcbSecurityDescriptor">
+		/// <para>A pointer to a variable that receives the size of the key's security descriptor, in bytes. This parameter can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="lpftLastWriteTime">
+		/// <para>A pointer to a FILETIME structure that receives the last write time. This parameter can be <c>NULL</c>.</para>
+		/// <para>
+		/// The function sets the members of the FILETIME structure to indicate the last time that the key or any of its value entries is modified.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+		/// <para>If the function fails, the return value is a system error code.</para>
+		/// <para>If the lpClass buffer is too small to receive the name of the class, the function returns ERROR_MORE_DATA.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regqueryinfokeya LSTATUS RegQueryInfoKeyA( HKEY hKey, LPSTR
+		// lpClass, LPDWORD lpcchClass, LPDWORD lpReserved, LPDWORD lpcSubKeys, LPDWORD lpcbMaxSubKeyLen, LPDWORD lpcbMaxClassLen, LPDWORD
+		// lpcValues, LPDWORD lpcbMaxValueNameLen, LPDWORD lpcbMaxValueLen, LPDWORD lpcbSecurityDescriptor, PFILETIME lpftLastWriteTime );
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winreg.h", MSDNShortId = "25eb2cd2-9fdd-4d6f-8071-daab56f9aae1")]
+		public static extern unsafe Win32Error RegQueryInfoKey(HKEY hKey, [Optional] void* lpClass, [Optional] uint* lpcchClass, [Optional] void* lpReserved, [Optional] uint* lpcSubKeys, [Optional] uint* lpcbMaxSubKeyLen, [Optional] uint* lpcbMaxClassLen, [Optional] uint* lpcValues, [Optional] uint* lpcbMaxValueNameLen, [Optional] uint* lpcbMaxValueLen, [Optional] uint* lpcbSecurityDescriptor, [Optional] FILETIME* lpftLastWriteTime);
 
 		/// <summary>
 		/// <para>Retrieves the type and data for a list of value names associated with an open registry key.</para>
@@ -2921,7 +2871,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, __out_data_source(REGISTRY)LPSTR lpData, PLONG lpcbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "18f27717-3bd9-45ac-a1ea-61abc1753a52")]
-		public static extern Win32Error RegQueryValue(HKEY hKey, string lpSubKey, IntPtr lpData, ref int lpcbData);
+		public static extern Win32Error RegQueryValue(HKEY hKey, [Optional] string lpSubKey, IntPtr lpData, ref int lpcbData);
 
 		/// <summary>
 		/// <para>Retrieves the type and data for the specified value name associated with an open registry key.</para>
@@ -3045,7 +2995,7 @@ namespace Vanara.PInvoke
 		// lpValueName, LPDWORD lpReserved, LPDWORD lpType, __out_data_source(REGISTRY)LPBYTE lpData, LPDWORD lpcbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "202d253a-10ff-40e7-8eec-a49717443b81")]
-		public static extern Win32Error RegQueryValueEx(HKEY hKey, string lpValueName, IntPtr lpReserved, out REG_VALUE_TYPE lpType, IntPtr lpData, ref uint lpcbData);
+		public static extern Win32Error RegQueryValueEx(HKEY hKey, string lpValueName, [Optional] IntPtr lpReserved, out REG_VALUE_TYPE lpType, [Optional] IntPtr lpData, ref uint lpcbData);
 
 		/// <summary>
 		/// <para>
@@ -3107,7 +3057,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, LPCSTR lpNewFile, LPCSTR lpOldFile );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "f968fa71-edc8-4f49-b9fa-1e89224df33b")]
-		public static extern Win32Error RegReplaceKey(HKEY hKey, string lpSubKey, string lpNewFile, string lpOldFile);
+		public static extern Win32Error RegReplaceKey(HKEY hKey, [Optional] string lpSubKey, string lpNewFile, string lpOldFile);
 
 		/// <summary>
 		/// <para>
@@ -3249,7 +3199,7 @@ namespace Vanara.PInvoke
 		// CONST LPSECURITY_ATTRIBUTES lpSecurityAttributes );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "da80f40d-0099-4748-94ca-5d3b001e633e")]
-		public static extern Win32Error RegSaveKey(HKEY hKey, string lpFile, SECURITY_ATTRIBUTES lpSecurityAttributes);
+		public static extern Win32Error RegSaveKey(HKEY hKey, string lpFile, [Optional] SECURITY_ATTRIBUTES lpSecurityAttributes);
 
 		/// <summary>
 		/// <para>Saves the specified key and all of its subkeys and values to a registry file, in the specified format.</para>
@@ -3341,7 +3291,7 @@ namespace Vanara.PInvoke
 		// lpFile, CONST LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD Flags );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "f93b4162-cac4-42f7-bfd4-9e23fff80a03")]
-		public static extern Win32Error RegSaveKeyEx(HKEY hKey, string lpFile, SECURITY_ATTRIBUTES lpSecurityAttributes, REG_SAVE Flags);
+		public static extern Win32Error RegSaveKeyEx(HKEY hKey, string lpFile, [Optional] SECURITY_ATTRIBUTES lpSecurityAttributes, REG_SAVE Flags);
 
 		/// <summary>
 		/// <para>The <c>RegSetKeySecurity</c> function sets the security of an open registry key.</para>
@@ -3423,7 +3373,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, LPCSTR lpValueName, DWORD dwType, LPCVOID lpData, DWORD cbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "e27d2dd6-b139-4ac1-8dd8-527022333364")]
-		public static extern Win32Error RegSetKeyValue(HKEY hKey, string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData);
+		public static extern Win32Error RegSetKeyValue(HKEY hKey, [Optional] string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData);
 
 		/// <summary>Sets the data for the specified value in the specified registry key and subkey.</summary>
 		/// <param name="hKey">
@@ -3471,7 +3421,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, LPCSTR lpValueName, DWORD dwType, LPCVOID lpData, DWORD cbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "e27d2dd6-b139-4ac1-8dd8-527022333364")]
-		public static extern Win32Error RegSetKeyValue(HKEY hKey, string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, string lpData, uint cbData);
+		public static extern Win32Error RegSetKeyValue(HKEY hKey, [Optional] string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, string lpData, uint cbData);
 
 		/// <summary>Sets the data for the specified value in the specified registry key and subkey.</summary>
 		/// <param name="hKey">
@@ -3519,55 +3469,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, LPCSTR lpValueName, DWORD dwType, LPCVOID lpData, DWORD cbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "e27d2dd6-b139-4ac1-8dd8-527022333364")]
-		public static extern Win32Error RegSetKeyValue(HKEY hKey, string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, byte[] lpData, uint cbData);
-
-		/// <summary>Sets the data for the specified value in the specified registry key and subkey.</summary>
-		/// <param name="hKey">
-		/// <para>
-		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
-		/// Registry Key Security and Access Rights.
-		/// </para>
-		/// <para>
-		/// This handle is returned by the RegCreateKeyEx, RegCreateKeyTransacted, RegOpenKeyEx, or RegOpenKeyTransacted function. It can
-		/// also be one of the following predefined keys:
-		/// </para>
-		/// <para><c></c><c>HKEY_CLASSES_ROOT</c><c>HKEY_CURRENT_CONFIG</c><c>HKEY_CURRENT_USER</c><c>HKEY_LOCAL_MACHINE</c><c>HKEY_USERS</c></para>
-		/// </param>
-		/// <param name="lpSubKey">
-		/// The name of a key and a subkey to the key identified by hKey. If this parameter is <c>NULL</c>, then this value is created in the
-		/// key using the hKey value and the key gets a default security descriptor.
-		/// </param>
-		/// <param name="lpValueName">The name of the registry value whose data is to be updated.</param>
-		/// <param name="dwType">
-		/// The type of data pointed to by the lpData parameter. For a list of the possible types, see Registry Value Types.
-		/// </param>
-		/// <param name="lpData">
-		/// <para>The data to be stored with the specified value name.</para>
-		/// <para>
-		/// For string-based types, such as REG_SZ, the string must be null-terminated. With the REG_MULTI_SZ data type, the string must be
-		/// terminated with two null characters.
-		/// </para>
-		/// </param>
-		/// <param name="cbData">
-		/// The size of the information pointed to by the lpData parameter, in bytes. If the data is of type REG_SZ, REG_EXPAND_SZ, or
-		/// REG_MULTI_SZ, cbData must include the size of the terminating null character or characters.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
-		/// <para>
-		/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the FormatMessage function
-		/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
-		/// </para>
-		/// </returns>
-		/// <remarks>
-		/// To compile an application that uses this function, define _WIN32_WINNT as 0x0600 or later. For more information, see Using the
-		/// Windows Headers.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetkeyvaluea LSTATUS RegSetKeyValueA( HKEY hKey, LPCSTR
-		// lpSubKey, LPCSTR lpValueName, DWORD dwType, LPCVOID lpData, DWORD cbData );
-		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("winreg.h", MSDNShortId = "e27d2dd6-b139-4ac1-8dd8-527022333364")]
-		public static extern Win32Error RegSetKeyValue(HKEY hKey, string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, SafeAllocatedMemoryHandle lpData, uint cbData);
+		public static extern Win32Error RegSetKeyValue(HKEY hKey, [Optional] string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, byte[] lpData, uint cbData);
 
 		/// <summary>
 		/// <para>Sets the data for the default or unnamed value of a specified registry key. The data must be a text string.</para>
@@ -3630,196 +3532,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, DWORD dwType, LPCSTR lpData, DWORD cbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "f99774d4-575b-43a3-8887-e15acb0477fd")]
-		public static extern Win32Error RegSetValue(HKEY hKey, string lpSubKey, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData = 0);
-
-		/// <summary>
-		/// <para>Sets the data for the default or unnamed value of a specified registry key. The data must be a text string.</para>
-		/// <para>
-		/// <c>Note</c> This function is provided only for compatibility with 16-bit versions of Windows. Applications should use the
-		/// RegSetValueEx function.
-		/// </para>
-		/// </summary>
-		/// <param name="hKey">
-		/// <para>
-		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
-		/// Registry Key Security and Access Rights.
-		/// </para>
-		/// <para>This handle is returned by the</para>
-		/// <para>RegCreateKeyEx</para>
-		/// <para>,</para>
-		/// <para>RegCreateKeyTransacted</para>
-		/// <para>,</para>
-		/// <para>RegOpenKeyEx</para>
-		/// <para>, or</para>
-		/// <para>RegOpenKeyTransacted</para>
-		/// <para>function. It can also be one of the following</para>
-		/// <para>predefined keys</para>
-		/// <para>:</para>
-		/// </param>
-		/// <param name="lpSubKey">
-		/// <para>
-		/// The name of a subkey of the hKey parameter. The function sets the default value of the specified subkey. If lpSubKey does not
-		/// exist, the function creates it.
-		/// </para>
-		/// <para>Key names are not case sensitive.</para>
-		/// <para>
-		/// If this parameter is <c>NULL</c> or points to an empty string, the function sets the default value of the key identified by hKey.
-		/// </para>
-		/// <para>For more information, see Registry Element Size Limits.</para>
-		/// </param>
-		/// <param name="dwType">
-		/// The type of information to be stored. This parameter must be the REG_SZ type. To store other data types, use the RegSetValueEx function.
-		/// </param>
-		/// <param name="lpData">The data to be stored. This parameter cannot be <c>NULL</c>.</param>
-		/// <param name="cbData">
-		/// This parameter is ignored. The function calculates this value based on the size of the data in the lpData parameter.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
-		/// <para>
-		/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the FormatMessage function
-		/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
-		/// </para>
-		/// </returns>
-		/// <remarks>
-		/// <para>If the key specified by the lpSubKey parameter does not exist, the <c>RegSetValue</c> function creates it.</para>
-		/// <para>
-		/// If the ANSI version of this function is used (either by explicitly calling <c>RegSetValueA</c> or by not defining UNICODE before
-		/// including the Windows.h file), the lpData parameter must be an ANSI character string. The string is converted to Unicode before
-		/// it is stored in the registry.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetvaluea LSTATUS RegSetValueA( HKEY hKey, LPCSTR
-		// lpSubKey, DWORD dwType, LPCSTR lpData, DWORD cbData );
-		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("winreg.h", MSDNShortId = "f99774d4-575b-43a3-8887-e15acb0477fd")]
-		public static extern Win32Error RegSetValue(HKEY hKey, string lpSubKey, REG_VALUE_TYPE dwType, string lpData, uint cbData = 0);
-
-		/// <summary>
-		/// <para>Sets the data for the default or unnamed value of a specified registry key. The data must be a text string.</para>
-		/// <para>
-		/// <c>Note</c> This function is provided only for compatibility with 16-bit versions of Windows. Applications should use the
-		/// RegSetValueEx function.
-		/// </para>
-		/// </summary>
-		/// <param name="hKey">
-		/// <para>
-		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
-		/// Registry Key Security and Access Rights.
-		/// </para>
-		/// <para>This handle is returned by the</para>
-		/// <para>RegCreateKeyEx</para>
-		/// <para>,</para>
-		/// <para>RegCreateKeyTransacted</para>
-		/// <para>,</para>
-		/// <para>RegOpenKeyEx</para>
-		/// <para>, or</para>
-		/// <para>RegOpenKeyTransacted</para>
-		/// <para>function. It can also be one of the following</para>
-		/// <para>predefined keys</para>
-		/// <para>:</para>
-		/// </param>
-		/// <param name="lpSubKey">
-		/// <para>
-		/// The name of a subkey of the hKey parameter. The function sets the default value of the specified subkey. If lpSubKey does not
-		/// exist, the function creates it.
-		/// </para>
-		/// <para>Key names are not case sensitive.</para>
-		/// <para>
-		/// If this parameter is <c>NULL</c> or points to an empty string, the function sets the default value of the key identified by hKey.
-		/// </para>
-		/// <para>For more information, see Registry Element Size Limits.</para>
-		/// </param>
-		/// <param name="dwType">
-		/// The type of information to be stored. This parameter must be the REG_SZ type. To store other data types, use the RegSetValueEx function.
-		/// </param>
-		/// <param name="lpData">The data to be stored. This parameter cannot be <c>NULL</c>.</param>
-		/// <param name="cbData">
-		/// This parameter is ignored. The function calculates this value based on the size of the data in the lpData parameter.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
-		/// <para>
-		/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the FormatMessage function
-		/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
-		/// </para>
-		/// </returns>
-		/// <remarks>
-		/// <para>If the key specified by the lpSubKey parameter does not exist, the <c>RegSetValue</c> function creates it.</para>
-		/// <para>
-		/// If the ANSI version of this function is used (either by explicitly calling <c>RegSetValueA</c> or by not defining UNICODE before
-		/// including the Windows.h file), the lpData parameter must be an ANSI character string. The string is converted to Unicode before
-		/// it is stored in the registry.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetvaluea LSTATUS RegSetValueA( HKEY hKey, LPCSTR
-		// lpSubKey, DWORD dwType, LPCSTR lpData, DWORD cbData );
-		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("winreg.h", MSDNShortId = "f99774d4-575b-43a3-8887-e15acb0477fd")]
-		public static extern Win32Error RegSetValue(HKEY hKey, string lpSubKey, REG_VALUE_TYPE dwType, SafeAllocatedMemoryHandle lpData, uint cbData = 0);
-
-		/// <summary>
-		/// <para>Sets the data for the default or unnamed value of a specified registry key. The data must be a text string.</para>
-		/// <para>
-		/// <c>Note</c> This function is provided only for compatibility with 16-bit versions of Windows. Applications should use the
-		/// RegSetValueEx function.
-		/// </para>
-		/// </summary>
-		/// <param name="hKey">
-		/// <para>
-		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
-		/// Registry Key Security and Access Rights.
-		/// </para>
-		/// <para>This handle is returned by the</para>
-		/// <para>RegCreateKeyEx</para>
-		/// <para>,</para>
-		/// <para>RegCreateKeyTransacted</para>
-		/// <para>,</para>
-		/// <para>RegOpenKeyEx</para>
-		/// <para>, or</para>
-		/// <para>RegOpenKeyTransacted</para>
-		/// <para>function. It can also be one of the following</para>
-		/// <para>predefined keys</para>
-		/// <para>:</para>
-		/// </param>
-		/// <param name="lpSubKey">
-		/// <para>
-		/// The name of a subkey of the hKey parameter. The function sets the default value of the specified subkey. If lpSubKey does not
-		/// exist, the function creates it.
-		/// </para>
-		/// <para>Key names are not case sensitive.</para>
-		/// <para>
-		/// If this parameter is <c>NULL</c> or points to an empty string, the function sets the default value of the key identified by hKey.
-		/// </para>
-		/// <para>For more information, see Registry Element Size Limits.</para>
-		/// </param>
-		/// <param name="dwType">
-		/// The type of information to be stored. This parameter must be the REG_SZ type. To store other data types, use the RegSetValueEx function.
-		/// </param>
-		/// <param name="lpData">The data to be stored. This parameter cannot be <c>NULL</c>.</param>
-		/// <param name="cbData">
-		/// This parameter is ignored. The function calculates this value based on the size of the data in the lpData parameter.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
-		/// <para>
-		/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the FormatMessage function
-		/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
-		/// </para>
-		/// </returns>
-		/// <remarks>
-		/// <para>If the key specified by the lpSubKey parameter does not exist, the <c>RegSetValue</c> function creates it.</para>
-		/// <para>
-		/// If the ANSI version of this function is used (either by explicitly calling <c>RegSetValueA</c> or by not defining UNICODE before
-		/// including the Windows.h file), the lpData parameter must be an ANSI character string. The string is converted to Unicode before
-		/// it is stored in the registry.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetvaluea LSTATUS RegSetValueA( HKEY hKey, LPCSTR
-		// lpSubKey, DWORD dwType, LPCSTR lpData, DWORD cbData );
-		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("winreg.h", MSDNShortId = "f99774d4-575b-43a3-8887-e15acb0477fd")]
-		public static extern Win32Error RegSetValue(HKEY hKey, string lpSubKey, REG_VALUE_TYPE dwType, byte[] lpData, uint cbData = 0);
+		public static extern Win32Error RegSetValue(HKEY hKey, [Optional] string lpSubKey, REG_VALUE_TYPE dwType, string lpData, uint cbData = 0);
 
 		/// <summary>Sets the data and type of a specified value under a registry key.</summary>
 		/// <param name="hKey">
@@ -3901,7 +3614,7 @@ namespace Vanara.PInvoke
 		// lpValueName, DWORD Reserved, DWORD dwType, CONST BYTE *lpData, DWORD cbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "29b0e27c-4999-4e92-bd8b-bba74920bccc")]
-		public static extern Win32Error RegSetValueEx(HKEY hKey, string lpValueName, uint Reserved, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData);
+		public static extern Win32Error RegSetValueEx(HKEY hKey, [Optional] string lpValueName, [Optional] uint Reserved, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData);
 
 		/// <summary>Sets the data and type of a specified value under a registry key.</summary>
 		/// <param name="hKey">
@@ -3983,7 +3696,7 @@ namespace Vanara.PInvoke
 		// lpValueName, DWORD Reserved, DWORD dwType, CONST BYTE *lpData, DWORD cbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "29b0e27c-4999-4e92-bd8b-bba74920bccc")]
-		public static extern Win32Error RegSetValueEx(HKEY hKey, string lpValueName, uint Reserved, REG_VALUE_TYPE dwType, byte[] lpData, uint cbData);
+		public static extern Win32Error RegSetValueEx(HKEY hKey, [Optional] string lpValueName, [Optional] uint Reserved, REG_VALUE_TYPE dwType, byte[] lpData, uint cbData);
 
 		/// <summary>Sets the data and type of a specified value under a registry key.</summary>
 		/// <param name="hKey">
@@ -4065,89 +3778,7 @@ namespace Vanara.PInvoke
 		// lpValueName, DWORD Reserved, DWORD dwType, CONST BYTE *lpData, DWORD cbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "29b0e27c-4999-4e92-bd8b-bba74920bccc")]
-		public static extern Win32Error RegSetValueEx(HKEY hKey, string lpValueName, uint Reserved, REG_VALUE_TYPE dwType, string lpData, uint cbData);
-
-		/// <summary>Sets the data and type of a specified value under a registry key.</summary>
-		/// <param name="hKey">
-		/// <para>
-		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
-		/// Registry Key Security and Access Rights.
-		/// </para>
-		/// <para>This handle is returned by the</para>
-		/// <para>RegCreateKeyEx</para>
-		/// <para>,</para>
-		/// <para>RegCreateKeyTransacted</para>
-		/// <para>,</para>
-		/// <para>RegOpenKeyEx</para>
-		/// <para>, or</para>
-		/// <para>RegOpenKeyTransacted</para>
-		/// <para>function. It can also be one of the following</para>
-		/// <para>predefined keys</para>
-		/// <para>:</para>
-		/// <para>The Unicode version of this function supports the following additional predefined keys:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term><c>HKEY_PERFORMANCE_TEXT</c></term>
-		/// </item>
-		/// <item>
-		/// <term><c>HKEY_PERFORMANCE_NLSTEXT</c></term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="lpValueName">
-		/// <para>
-		/// The name of the value to be set. If a value with this name is not already present in the key, the function adds it to the key.
-		/// </para>
-		/// <para>
-		/// If lpValueName is <c>NULL</c> or an empty string, "", the function sets the type and data for the key's unnamed or default value.
-		/// </para>
-		/// <para>For more information, see Registry Element Size Limits.</para>
-		/// <para>Registry keys do not have default values, but they can have one unnamed value, which can be of any type.</para>
-		/// </param>
-		/// <param name="Reserved">This parameter is reserved and must be zero.</param>
-		/// <param name="dwType">
-		/// The type of data pointed to by the lpData parameter. For a list of the possible types, see Registry Value Types.
-		/// </param>
-		/// <param name="lpData">
-		/// <para>The data to be stored.</para>
-		/// <para>
-		/// For string-based types, such as REG_SZ, the string must be <c>null</c>-terminated. With the REG_MULTI_SZ data type, the string
-		/// must be terminated with two <c>null</c> characters.
-		/// </para>
-		/// <para><c>Note</c> lpData indicating a <c>null</c> value is valid, however, if this is the case, cbData must be set to '0'.</para>
-		/// </param>
-		/// <param name="cbData">
-		/// The size of the information pointed to by the lpData parameter, in bytes. If the data is of type REG_SZ, REG_EXPAND_SZ, or
-		/// REG_MULTI_SZ, cbData must include the size of the terminating <c>null</c> character or characters.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
-		/// <para>
-		/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the FormatMessage function
-		/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
-		/// </para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// Value sizes are limited by available memory. However, storing large values in the registry can affect its performance. Long
-		/// values (more than 2,048 bytes) should be stored as files, with the locations of the files stored in the registry.
-		/// </para>
-		/// <para>Application elements such as icons, bitmaps, and executable files should be stored as files and not be placed in the registry.</para>
-		/// <para>
-		/// If dwType is the REG_SZ, REG_MULTI_SZ, or REG_EXPAND_SZ type and the ANSI version of this function is used (either by explicitly
-		/// calling <c>RegSetValueExA</c> or by not defining UNICODE before including the Windows.h file), the data pointed to by the lpData
-		/// parameter must be an ANSI character string. The string is converted to Unicode before it is stored in the registry.
-		/// </para>
-		/// <para>
-		/// Note that operations that access certain registry keys are redirected. For more information, see Registry Virtualization and
-		/// 32-bit and 64-bit Application Data in the Registry.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetvalueexa LSTATUS RegSetValueExA( HKEY hKey, LPCSTR
-		// lpValueName, DWORD Reserved, DWORD dwType, CONST BYTE *lpData, DWORD cbData );
-		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("winreg.h", MSDNShortId = "29b0e27c-4999-4e92-bd8b-bba74920bccc")]
-		public static extern Win32Error RegSetValueEx(HKEY hKey, string lpValueName, uint Reserved, REG_VALUE_TYPE dwType, SafeAllocatedMemoryHandle lpData, uint cbData);
+		public static extern Win32Error RegSetValueEx(HKEY hKey, [Optional] string lpValueName, [Optional] uint Reserved, REG_VALUE_TYPE dwType, string lpData, uint cbData);
 
 		/// <summary>
 		/// <para>Unloads the specified registry key and its subkeys from the registry.</para>
@@ -4223,6 +3854,10 @@ namespace Vanara.PInvoke
 			/// <para>The type of data pointed to by <c>ve_valueptr</c>. For a list of the possible types, see Registry Value Types.</para>
 			/// </summary>
 			public REG_VALUE_TYPE ve_type;
+
+			/// <summary>Initializes a new instance of the <see cref="VALENT"/> struct with the name of the value to fetch.</summary>
+			/// <param name="valueName">The name of the value to be retrieved.</param>
+			public VALENT(string valueName) : this() => ve_valuename = valueName;
 		}
 	}
 }
