@@ -7,6 +7,29 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		/// <summary/>
+		public const string SRP_POLICY_APPX = "APPX";
+		/// <summary/>
+		public const string SRP_POLICY_DLL = "DLL";
+		/// <summary/>
+		public const string SRP_POLICY_EXE = "EXE";
+		/// <summary/>
+		public const string SRP_POLICY_MANAGEDINSTALLER = "MANAGEDINSTALLER";
+		/// <summary/>
+		public const string SRP_POLICY_MSI = "MSI";
+		/// <summary/>
+		public const string SRP_POLICY_NOV2 = "IGNORESRPV2";
+		/// <summary/>
+		public const string SRP_POLICY_SCRIPT = "SCRIPT";
+		/// <summary/>
+		public const string SRP_POLICY_SHELL = "SHELL";
+		/// <summary/>
+		public const string SRP_POLICY_WLDPCONFIGCI = "WLDPCONFIGCI";
+		/// <summary/>
+		public const string SRP_POLICY_WLDPMSI = "WLDPMSI";
+		/// <summary/>
+		public const string SRP_POLICY_WLDPSCRIPT = "WLDPSCRIPT";
+
 		private const int SAFER_MAX_HASH_SIZE = 64;
 
 		/// <summary>The types of criteria considered when evaluating this structure.</summary>
@@ -35,11 +58,16 @@ namespace Vanara.PInvoke
 			SAFER_CRITERIA_APPX_PACKAGE = 0x00020,
 		}
 
+		/// <summary/>
+		[PInvokeData("winsafer.h")]
 		public enum SAFER_LEVEL_CREATE_FLAGS
 		{
+			/// <summary/>
 			SAFER_LEVEL_OPEN = 1,
 		}
 
+		/// <summary/>
+		[PInvokeData("winsafer.h")]
 		[Flags]
 		public enum SAFER_LEVELID
 		{
@@ -77,19 +105,19 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsafer.h", MSDNShortId = "31de9e42-6795-433a-937f-c4243e4961df")]
 		public enum SAFER_OBJECT_INFO_CLASS
 		{
-			/// <summary>Queries for the LEVELID constant.</summary>
-			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+			/// <summary>The LEVELID constant.</summary>
+			[CorrespondingType(typeof(SAFER_LEVELID), CorrespondingAction.GetSet)]
 			SaferObjectLevelId = 1,
 
-			/// <summary>Queries for the user or machine scope.</summary>
-			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+			/// <summary>The user or machine scope.</summary>
+			[CorrespondingType(typeof(SAFER_SCOPEID), CorrespondingAction.GetSet)]
 			SaferObjectScopeId,
 
-			/// <summary>Queries for the display name.</summary>
+			/// <summary>The display name.</summary>
 			[CorrespondingType(typeof(string), CorrespondingAction.GetSet)]
 			SaferObjectFriendlyName,
 
-			/// <summary>Queries for the description.</summary>
+			/// <summary>The description.</summary>
 			[CorrespondingType(typeof(string), CorrespondingAction.GetSet)]
 			SaferObjectDescription,
 
@@ -150,24 +178,24 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsafer.h", MSDNShortId = "e1438a9f-abca-463d-8a3a-3a820cba16e8")]
 		public enum SAFER_POLICY_INFO_CLASS
 		{
-			/// <summary>Queries for the list of all levels defined in a policy.</summary>
-			[CorrespondingType(typeof(IntPtr), CorrespondingAction.Get)]
+			/// <summary>The list of all levels defined in a policy.</summary>
+			[CorrespondingType(typeof(uint[]), CorrespondingAction.GetSet)]
 			SaferPolicyLevelList = 1,
 
-			/// <summary>Queries for the policy value to determine whether DLL checking is enabled.</summary>
-			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+			/// <summary>Determines whether DLL checking is enabled.</summary>
+			[CorrespondingType(typeof(uint), CorrespondingAction.GetSet)]
 			SaferPolicyEnableTransparentEnforcement,
 
-			/// <summary>Queries for the default policy level.</summary>
-			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+			/// <summary>The default policy level.</summary>
+			[CorrespondingType(typeof(SAFER_LEVELID), CorrespondingAction.GetSet)]
 			SaferPolicyDefaultLevel,
 
-			/// <summary>Queries to determine whether user scope rules should be consulted during policy evaluation.</summary>
-			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+			/// <summary>Determines whether user scope rules should be consulted during policy evaluation.</summary>
+			[CorrespondingType(typeof(uint), CorrespondingAction.GetSet)]
 			SaferPolicyEvaluateUserScope,
 
-			/// <summary>Queries to determine whether the policy is to skip members of the local administrators group.</summary>
-			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+			/// <summary>Determines whether the policy is to skip members of the local administrators group.</summary>
+			[CorrespondingType(typeof(uint), CorrespondingAction.GetSet)]
 			SaferPolicyScopeFlags,
 
 			/// <summary/>
@@ -179,6 +207,8 @@ namespace Vanara.PInvoke
 			SaferPolicyAuthenticodeEnabled,
 		}
 
+		/// <summary>The scope of the created level.</summary>
+		[PInvokeData("winsafer.h")]
 		public enum SAFER_SCOPEID
 		{
 			/// <summary>The scope of the created level is by computer.</summary>
@@ -557,7 +587,27 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsafer.h", MSDNShortId = "f82c4f40-5c37-4f97-95a2-4b2cc26bf41e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SaferIdentifyLevel(uint dwNumProperties, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] SAFER_CODE_PROPERTIES_V2[] pCodeProperties, out SafeSAFER_LEVEL_HANDLE pLevelHandle, IntPtr lpReserved = default);
+		public static extern bool SaferIdentifyLevel(uint dwNumProperties, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] SAFER_CODE_PROPERTIES_V1[] pCodeProperties, out SafeSAFER_LEVEL_HANDLE pLevelHandle, [Optional, MarshalAs(UnmanagedType.LPWStr)] string lpReserved);
+
+		/// <summary>The <c>SaferIdentifyLevel</c> function retrieves information about a level.</summary>
+		/// <param name="dwNumProperties">Number of SAFER_CODE_PROPERTIES structures in the pCodeproperties parameter.</param>
+		/// <param name="pCodeProperties">
+		/// Array of SAFER_CODE_PROPERTIES structures. Each structure contains a code file to be checked and the criteria used to check the file.
+		/// </param>
+		/// <param name="pLevelHandle">
+		/// The returned SAFER_LEVEL_HANDLE. When you have finished using the handle, close it by calling the SaferCloseLevel function.
+		/// </param>
+		/// <param name="lpReserved">
+		/// <para>Reserved for future use. Should be set to <c>NULL</c>.</para>
+		/// <para>Beginning with Windows 8 and Windows Server 2012 SRP_POLICY_APPX is defined as Windows Store app.</para>
+		/// </param>
+		/// <returns><c>TRUE</c> if a SAFER_LEVEL_HANDLE was opened; otherwise, <c>FALSE</c>. For extended error information, call GetLastError.</returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsafer/nf-winsafer-saferidentifylevel BOOL SaferIdentifyLevel( DWORD
+		// dwNumProperties, PSAFER_CODE_PROPERTIES pCodeProperties, SAFER_LEVEL_HANDLE *pLevelHandle, LPVOID lpReserved );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsafer.h", MSDNShortId = "f82c4f40-5c37-4f97-95a2-4b2cc26bf41e")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SaferIdentifyLevel(uint dwNumProperties, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] SAFER_CODE_PROPERTIES_V2[] pCodeProperties, out SafeSAFER_LEVEL_HANDLE pLevelHandle, [Optional, MarshalAs(UnmanagedType.LPWStr)] string lpReserved);
 
 		/// <summary>
 		/// The <c>SaferiIsExecutableFileType</c> function determines whether a specified file is an executable file. Applications use this
@@ -662,7 +712,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("", MSDNShortId = "1592c8da-31c0-45fb-b832-d439dd53c277")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SaferiSearchMatchingHashRules(ALG_ID HashAlgorithm, IntPtr pHashBytes, uint dwHashSize, uint dwOriginalImageSize, out uint pdwFoundLevel, IntPtr pdwSaferFlags = default);
+		public static extern bool SaferiSearchMatchingHashRules(ALG_ID HashAlgorithm, byte[] pHashBytes, uint dwHashSize, uint dwOriginalImageSize, out SAFER_LEVELID pdwFoundLevel, IntPtr pdwSaferFlags = default);
 
 		/// <summary>The <c>SaferRecordEventLogEntry</c> function saves messages to an event log.</summary>
 		/// <param name="hLevel">SAFER_LEVEL_HANDLE that contains the details of the rule to send to the event log.</param>
@@ -922,7 +972,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// The size, in bytes, of the <c>pByteBlock</c> member. This member is not used if the <c>pByteBlock</c> member is <c>NULL</c>.
 			/// </summary>
-			public int ImageSize;
+			public long ImageSize;
 
 			/// <summary>The hash algorithm used to create the <c>ImageHash</c> member.</summary>
 			public ALG_ID HashAlgorithm;
@@ -1099,7 +1149,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// The size in bytes of the <c>pByteBlock</c> member. This member is not used if the <c>pByteBlock</c> member is <c>NULL</c>.
 			/// </summary>
-			public int ImageSize;
+			public long ImageSize;
 
 			/// <summary>The hash algorithm used to create the <c>ImageHash</c> member.</summary>
 			public ALG_ID HashAlgorithm;
@@ -1198,7 +1248,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct SAFER_LEVEL_HANDLE : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="SAFER_LEVEL_HANDLE"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

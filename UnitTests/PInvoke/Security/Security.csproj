@@ -45,6 +45,7 @@
     <Compile Include="AdvApi32\EventRecordEventArgs.cs" />
     <Compile Include="AdvApi32\EventTraceController.cs" />
     <Compile Include="AdvApi32\EventTraceLogs.cs" />
+    <Compile Include="AdvApi32\WinSaferTests.cs" />
     <Compile Include="AdvApi32\WinRegTests.cs" />
     <Compile Include="AdvApi32\WinEfsTests.cs" />
     <Compile Include="AdvApi32\WinCredTests.cs" />
