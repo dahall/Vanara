@@ -64,7 +64,7 @@
     <Compile Include="AdvApi32\ProcessThreadsApiTests.cs" />
     <Compile Include="AdvApi32\SddlTests.cs" />
     <Compile Include="AdvApi32\SecurityBaseApiTests.cs" />
-    <Compile Include="AdvApi32\ServiceTests.cs" />
+    <Compile Include="AdvApi32\WinSvcTests.cs" />
     <Compile Include="AdvApi32\PSIDTests.cs" />
     <Compile Include="AdvApi32\EventTraceSession.cs" />
     <Compile Include="Authz\AuthzTests.cs" />
