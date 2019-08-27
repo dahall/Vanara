@@ -19,20 +19,20 @@ namespace Vanara.InteropServices.Tests
 			Assert.That(h.ToStructure<int>(), Is.EqualTo(5));
 			Assert.That(h.ToEnumerable<int>(4), Has.Exactly(4).EqualTo(5).And.Exactly(4).Items);
 
-			var d = new[] { new RECT(1,1,1,1), new RECT(2,2,2,2) };
+			var d = new[] { new RECT(1, 1, 1, 1), new RECT(2, 2, 2, 2) };
 			h = SafeCoTaskMemHandle.CreateFromList(d, d.Length);
 			Assert.That(!h.IsClosed && !h.IsInvalid);
 			Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf(typeof(RECT)) * d.Length));
 			Assert.That(h.ToStructure<RECT>().X, Is.EqualTo(1));
-			Assert.That(h.ToArray<RECT>(4), Has.Exactly(4).Items);
+			Assert.That(h.ToArray<RECT>(2), Has.Exactly(2).Items);
 
-			var p = new[] { new PRECT(1,1,1,1), new PRECT(2,2,2,2) };
+			var p = new[] { new PRECT(1, 1, 1, 1), new PRECT(2, 2, 2, 2) };
 			h = SafeCoTaskMemHandle.CreateFromList(p);
 			Assert.That(!h.IsClosed && !h.IsInvalid);
 			Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf(typeof(PRECT)) * p.Length));
-			Assert.That(h.ToArray<RECT>(4), Has.Exactly(4).Items);
+			Assert.That(h.ToArray<RECT>(2), Has.Exactly(2).Items);
 
-			Assert.That(() => SafeCoTaskMemHandle.CreateFromList(new[] {"X"}), Throws.ArgumentException);
+			Assert.That(() => SafeCoTaskMemHandle.CreateFromList(new[] { "X" }), Throws.ArgumentException);
 		}
 
 		[Test(Description = "Allocate an enumeration of strings.")]
