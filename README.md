@@ -6,6 +6,8 @@ This project contains various .NET assemblies that contain P/Invoke functions, i
 
 All assemblies are available via NuGet and provide builds against .NET 2.0, 3.5, 4.0 and 4.5. In all cases where a dependency doesn't disallow it, .NET Standard 2.0, .NET Core 2.0, and 2.1 builds are also included for use with UWP and other .NET Core and Standard projects.
 
+> **_NOTE:_**  Version 3.x was recently released and has many breaking changes. I apologize for the work this will cause you in upgrading. However, I think you will find greater consistency, functionality, usability and quality as a result of the changes. Most notable are changes and additions to the memory classes, complete testing of Kernel32 and Security (AdvApi32, AuthZ, Secur32) functions, support for .NET Std & Core in almost all projects, and the combining of User32 functions into a single project.
+
 ## Use
 1. Look for the function you need in Microsoft documentation. Note which library or DLL the function is in.
 2. Confirm the Vanara library exists and has your function by looking at the Supported Libraries table below. Clicking on the Assembly link will take you to a drill down of that assembly's coverage. Find your function and if there is a matching implementation it will appear to the right.
