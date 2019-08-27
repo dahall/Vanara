@@ -360,6 +360,7 @@ namespace Vanara.PInvoke
 		public static extern bool SetStdHandleEx(StdHandleType nStdHandle, HFILE hHandle, out HFILE phPrevValue);
 
 		[DllImport(Lib.Kernel32, SetLastError = false, EntryPoint = "GetCommandLine", CharSet = CharSet.Auto)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms683156")]
 		private static extern IntPtr GetCommandLineInternal();
 
 		[DllImport(Lib.Kernel32, SetLastError = false, EntryPoint = "GetEnvironmentStrings", CharSet = CharSet.Auto)]
