@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
-using static Vanara.PInvoke.User32_Gdi;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.Windows.Forms
 {
@@ -216,7 +216,7 @@ namespace Vanara.Windows.Forms
 
 		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam = default, IntPtr lParam = default) => this.SendMessage((uint)msg, wParam, lParam);
 
-		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam, ref uint lParam) => User32_Gdi.SendMessage(Handle, msg, wParam, ref lParam);
+		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam, ref uint lParam) => User32.SendMessage(Handle, msg, wParam, ref lParam);
 	}
 
 	/// <summary>Contains the arguments needed to handle the <see cref="IPAddressBox.FieldChanged"/> event.</summary>

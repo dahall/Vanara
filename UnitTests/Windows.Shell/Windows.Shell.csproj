@@ -78,10 +78,6 @@
       <Project>{30fd6779-6549-449e-880a-695815eb89b0}</Project>
       <Name>Vanara.PInvoke.ShlwApi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\PInvoke\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj">
-      <Project>{fc7b25b5-3bb9-44f5-93d9-9ab7193b1be9}</Project>
-      <Name>Vanara.PInvoke.User32.Gdi</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Windows.Shell\Vanara.Windows.Shell.csproj">
       <Project>{43685be2-a65e-4b01-be16-479526940f23}</Project>
       <Name>Vanara.Windows.Shell</Name>

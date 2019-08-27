@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using static Vanara.PInvoke.User32_Gdi;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.Extensions
 {
@@ -117,7 +117,7 @@ namespace Vanara.Extensions
 			if (!ctrl.IsHandleCreated) return null;
 			var cp = ctrl.SendMessage(getLenMsg).ToInt32() + 1;
 			var sb = new System.Text.StringBuilder(cp);
-			Vanara.PInvoke.User32_Gdi.SendMessage(ctrl.Handle, getTextMsg, ref cp, sb);
+			Vanara.PInvoke.User32.SendMessage(ctrl.Handle, getTextMsg, ref cp, sb);
 			return sb.ToString();
 		}
 
@@ -166,7 +166,7 @@ namespace Vanara.Extensions
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
 		public static IntPtr SendMessage(this IWin32Window wnd, uint msg, IntPtr wParam = default, IntPtr lParam = default) =>
-			Vanara.PInvoke.User32_Gdi.SendMessage(wnd.Handle, msg, wParam, lParam);
+			Vanara.PInvoke.User32.SendMessage(wnd.Handle, msg, wParam, lParam);
 
 		/// <summary>Sets the windows styles.</summary>
 		/// <param name="ctrl">The control.</param>

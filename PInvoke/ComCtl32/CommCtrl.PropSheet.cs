@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Macros;
-using static Vanara.PInvoke.User32_Gdi;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke
 {

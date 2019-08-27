@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using static Vanara.PInvoke.User32;
-using static Vanara.PInvoke.User32_Gdi;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke
 {
@@ -100,7 +100,7 @@ namespace Vanara.PInvoke
 			ICC_PROGRESS_CLASS = 0X00000020,
 
 			/// <summary>
-			/// Load one of the intrinsic User32_Gdi control classes. The user controls include button, edit, static, listbox, combobox, and
+			/// Load one of the intrinsic User32 control classes. The user controls include button, edit, static, listbox, combobox, and
 			/// scroll bar.
 			/// </summary>
 			ICC_STANDARD_CLASSES = 0X00004000,

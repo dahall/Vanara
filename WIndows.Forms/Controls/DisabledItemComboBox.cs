@@ -9,7 +9,7 @@ using Vanara.Extensions;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.UxTheme;
 using static Vanara.PInvoke.Macros;
-using static Vanara.PInvoke.User32_Gdi;
+using static Vanara.PInvoke.User32;
 using ComboBoxStyle = System.Windows.Forms.ComboBoxStyle;
 
 namespace Vanara.Windows.Forms

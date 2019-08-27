@@ -74,7 +74,6 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
     <ProjectReference Include="..\PInvoke\Mpr\Vanara.PInvoke.Mpr.csproj" />
     <ProjectReference Include="..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
-    <ProjectReference Include="..\PInvoke\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
     <ProjectReference Include="..\PInvoke\UxTheme\Vanara.PInvoke.UxTheme.csproj" />
     <ProjectReference Include="..\Security\Vanara.Security.csproj" />

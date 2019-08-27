@@ -33,7 +33,7 @@ using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
-using static Vanara.PInvoke.User32_Gdi;
+using static Vanara.PInvoke.User32;
 using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
 
 namespace Vanara.Windows.Forms

@@ -59,10 +59,6 @@
       <Project>{3226020f-4c9d-41b3-ac8a-2bc9fd064cd8}</Project>
       <Name>Vanara.PInvoke.Shell32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\PInvoke\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj">
-      <Project>{FC7B25B5-3BB9-44F5-93D9-9AB7193B1BE9}</Project>
-      <Name>Vanara.PInvoke.User32.Gdi</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NUnit">

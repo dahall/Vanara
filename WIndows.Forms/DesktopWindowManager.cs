@@ -429,7 +429,7 @@ namespace Vanara.Windows.Forms
 					DwmUnregisterThumbnail(hThumbnail);
 					thumbnails.Remove(win.Handle);
 				}
-				DwmRegisterThumbnail(win.Handle, User32_Gdi.FindWindow("Progman", null), out var hThumb).ThrowIfFailed();
+				DwmRegisterThumbnail(win.Handle, User32.FindWindow("Progman", null), out var hThumb).ThrowIfFailed();
 				thumbnails.Add(win.Handle, hThumb);
 				return hThumb;
 			}

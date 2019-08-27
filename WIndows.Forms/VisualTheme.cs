@@ -8,7 +8,7 @@ using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
-using static Vanara.PInvoke.User32_Gdi;
+using static Vanara.PInvoke.User32;
 using static Vanara.PInvoke.UxTheme;
 
 namespace Vanara.Windows.Forms

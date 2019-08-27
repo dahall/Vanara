@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Gdi32;
-using static Vanara.PInvoke.User32_Gdi;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke
 {
@@ -948,7 +948,16 @@ namespace Vanara.PInvoke
 		/// <c>Initialize</c> method.
 		/// </returns>
 		[PInvokeData("Commctrl.h")]
+#if !NETSTANDARD2_0
 		public static TIntf HIMAGELIST_QueryInterface<TIntf>(HIMAGELIST himl) => !himl.IsNull ? (TIntf)Marshal.GetTypedObjectForIUnknown((IntPtr)himl, typeof(TIntf)) : throw new ArgumentNullException(nameof(himl));
+#else
+		public static TIntf HIMAGELIST_QueryInterface<TIntf>(HIMAGELIST himl)
+		{
+			if (himl.IsNull) throw new ArgumentNullException(nameof(himl));
+			HIMAGELIST_QueryInterface(himl, typeof(TIntf).GUID, out var ppv).ThrowIfFailed();
+			return (TIntf)ppv;
+		}
+#endif
 
 		/// <summary>Get an image list handle from an image list interface.</summary>
 		/// <param name="himl">

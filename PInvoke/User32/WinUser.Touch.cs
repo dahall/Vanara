@@ -97,7 +97,7 @@ namespace Vanara.PInvoke
 			GID_ROLLOVER = GID_PRESSANDTAP,
 		}
 
-		/// <summary> Flags for <see cref="InitializeTouchInjection/>. </summary>
+		/// <summary> Flags for <see cref="InitializeTouchInjection"/>. </summary>
 		[PInvokeData("winuser.h", MSDNShortId = "79cc2a05-d8ee-4d87-9c7b-fa7d5354b04f")]
 		public enum TOUCH_FEEDBACK
 		{

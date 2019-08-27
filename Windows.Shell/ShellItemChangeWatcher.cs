@@ -335,7 +335,7 @@ namespace Vanara.Windows.Shell
 
 			public WatcherNativeWindow(ShellItemChangeWatcher parent)
 			{
-				MessageId = User32_Gdi.RegisterWindowMessage($"{parent.GetType()}{DateTime.Now.Ticks}");
+				MessageId = User32.RegisterWindowMessage($"{parent.GetType()}{DateTime.Now.Ticks}");
 				p = parent;
 				var cp = new CreateParams { Style = 0, ExStyle = 0, ClassStyle = 0, Parent = IntPtr.Zero, Caption = GetType().Name };
 				CreateHandle(cp);
