@@ -26,7 +26,7 @@ I have tried to follow the concepts below in laying out the libraries.
 * All functions that are imported from a single DLL should be placed into a single assembly that is named after the DLL.
   * (e.g. The assembly `Vanara.PInvoke.Gdi32.dll` hosts all functions and supporting enumerations, constants and structures that are exported from `gdi32.dll` in the system directory.)
 * Any structure or macro or enumeration (no function) that is used by many libraries is put into either `Vanara.Core` or `Vanara.PInvoke.Shared`.
-  * (e.g. The macro `HIWORD` and the structure `SIZE` are both in `Vanara.PInvoke.Shared` and classes to simplfy interop calls and native memory management are in `Vanara.Core`.)
+  * (e.g. The macro `HIWORD` and the structure `SIZE` are both in `Vanara.PInvoke.Shared` and classes to simplify interop calls and native memory management are in `Vanara.Core`.)
 * Inside a project, all constructs are contained in a file named after the header file (*.h) in which they are defined in the Windows API.
   * (e.g. In the `Vanara.PInvoke.Kernel32` project directory, you'll find a FileApi.cs, a WinBase.cs and a WinNT.cs file representing fileapi.h, winbase.h and winnt.h respectively.)
 * Where the direct interpretation of a structure or function leads to memory leaks or misuse, I have tried to simplify its use.
@@ -35,7 +35,7 @@ I have tried to follow the concepts below in laying out the libraries.
   * e.g. `HTOKEN` is defined. `SafeHTOKEN` builds upon that handle with an automated release calling `CloseHandle`.
 * Wherever possible, all functions that allocate memory that is to be freed by the caller use a safe memory handle.
 * All PInvoke calls are in assemblies prefixed by `Vanara.PInvoke`.
-* If a structure is to passed into a function, that structure is marshaled using the `in` statement which will pass the structure by reference without requiring the `ref` keyword.
+* If a structure is to passed into a function as a constant, that structure is marshaled using the `in` statement which will pass the structure by reference without requiring the `ref` keyword.
   * Windows API: `BOOL MapDialogRect(HWND hDlg, LPRECT lpRect)`
   * Vanara: `bool MapDialogRect(HWND hDlg, in RECT lpRect);`
 * If there are classes or extensions that make use of the PInvoke calls, they are in wrapper assemblies prefixed by `Vanara` and then followed by a logical name for the functionality. Today, those are Core, Security, SystemServices, Windows.Forms and Windows.Shell.
@@ -51,7 +51,7 @@ qmgr.dll (BITS) | [Vanara.PInvoke.BITS](https://github.com/dahall/Vanara/blob/ma
 Cabinet.dll | [Vanara.PInvoke.Cabinet](https://github.com/dahall/Vanara/blob/master/PInvoke/Cabinet/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.Cabinet)](https://www.nuget.org/packages/Vanara.PInvoke.Cabinet)
 ComCtl32.dll | [Vanara.PInvoke.ComCtl32](https://github.com/dahall/Vanara/blob/master/PInvoke/ComCtl32/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.ComCtl32)](https://www.nuget.org/packages/Vanara.PInvoke.ComCtl32)
 CredUI.dll | [Vanara.PInvoke.CredUI](https://github.com/dahall/Vanara/blob/master/PInvoke/CredUI/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.CredUI)](https://www.nuget.org/packages/Vanara.PInvoke.CredUI)
-BCrypt.dll, Crypt32.dll and NCrypt.dll | [Vanara.PInvoke.Cryptography](https://github.com/dahall/Vanara/blob/master/PInvoke/Cryptography/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/23%25-red.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.Cryptography)](https://www.nuget.org/packages/Vanara.PInvoke.Cryptography)
+BCrypt.dll, Crypt32.dll and NCrypt.dll | [Vanara.PInvoke.Cryptography](https://github.com/dahall/Vanara/blob/master/PInvoke/Cryptography/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/25%25-red.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.Cryptography)](https://www.nuget.org/packages/Vanara.PInvoke.Cryptography)
 DwmApi.dll | [Vanara.PInvoke.DwmApi](https://github.com/dahall/Vanara/blob/master/PInvoke/DwmApi/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.DwmApi)](https://www.nuget.org/packages/Vanara.PInvoke.DwmApi)
 Gdi32.dll | [Vanara.PInvoke.Gdi32](https://github.com/dahall/Vanara/blob/master/PInvoke/Gdi32/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/11%25-red.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.Gdi32)](https://www.nuget.org/packages/Vanara.PInvoke.Gdi32)
 IpHlpApi.dll | [Vanara.PInvoke.IpHlpApi](https://github.com/dahall/Vanara/blob/master/PInvoke/IpHlpApi/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.IpHlpApi)](https://www.nuget.org/packages/Vanara.PInvoke.IpHlpApi)

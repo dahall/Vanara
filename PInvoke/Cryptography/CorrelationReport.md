@@ -1,5 +1,5 @@
 ## Correlation report for crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll  
-### Methods (23% complete)  
+### Methods (25% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BCryptAddContextFunction](http://msdn2.microsoft.com/en-us/library/4f5b6db0-775d-42de-b9d9-a99fb11c89f2) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptAddContextFunction  
@@ -72,7 +72,7 @@ Native Method | Native DLL | Header | Managed Method
 [CertAddStoreToCollection](https://www.google.com/search?num=5&q=CertAddStoreToCollection+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertAlgIdToOID](https://www.google.com/search?num=5&q=CertAlgIdToOID+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertCloseServerOcspResponse](https://www.google.com/search?num=5&q=CertCloseServerOcspResponse+site%3Amicrosoft.com) | crypt32.dll |  |   
-[CertCloseStore](https://www.google.com/search?num=5&q=CertCloseStore+site%3Amicrosoft.com) | crypt32.dll |  |   
+[CertCloseStore](http://msdn2.microsoft.com/en-us/library/a93fdd65-359e-4046-910d-347c3af01280) | crypt32.dll | wincrypt.h | Vanara.PInvoke.Crypt32.CertCloseStore  
 [CertCompareCertificate](https://www.google.com/search?num=5&q=CertCompareCertificate+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertCompareCertificateName](https://www.google.com/search?num=5&q=CertCompareCertificateName+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertCompareIntegerBlob](https://www.google.com/search?num=5&q=CertCompareIntegerBlob+site%3Amicrosoft.com) | crypt32.dll |  |   
@@ -101,11 +101,11 @@ Native Method | Native DLL | Header | Managed Method
 [CertEnumCTLsInStore](https://www.google.com/search?num=5&q=CertEnumCTLsInStore+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertEnumPhysicalStore](https://www.google.com/search?num=5&q=CertEnumPhysicalStore+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertEnumSubjectInSortedCTL](https://www.google.com/search?num=5&q=CertEnumSubjectInSortedCTL+site%3Amicrosoft.com) | crypt32.dll |  |   
-[CertEnumSystemStore](https://www.google.com/search?num=5&q=CertEnumSystemStore+site%3Amicrosoft.com) | crypt32.dll |  |   
+[CertEnumSystemStore](http://msdn2.microsoft.com/en-us/library/fd9cb23b-e4a3-41cb-8f0a-30f4e813c6ac) | crypt32.dll | wincrypt.h | Vanara.PInvoke.Crypt32.CertEnumSystemStore  
 [CertEnumSystemStoreLocation](https://www.google.com/search?num=5&q=CertEnumSystemStoreLocation+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertFindAttribute](https://www.google.com/search?num=5&q=CertFindAttribute+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertFindCertificateInCRL](https://www.google.com/search?num=5&q=CertFindCertificateInCRL+site%3Amicrosoft.com) | crypt32.dll |  |   
-[CertFindCertificateInStore](https://www.google.com/search?num=5&q=CertFindCertificateInStore+site%3Amicrosoft.com) | crypt32.dll |  |   
+[CertFindCertificateInStore](http://msdn2.microsoft.com/en-us/library/20b3fcfb-55df-46ff-80a5-70f31a3d03b2) | crypt32.dll | wincrypt.h | Vanara.PInvoke.Crypt32.CertFindCertificateInStore  
 [CertFindChainInStore](https://www.google.com/search?num=5&q=CertFindChainInStore+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertFindCRLInStore](https://www.google.com/search?num=5&q=CertFindCRLInStore+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertFindCTLInStore](https://www.google.com/search?num=5&q=CertFindCTLInStore+site%3Amicrosoft.com) | crypt32.dll |  |   
@@ -116,7 +116,7 @@ Native Method | Native DLL | Header | Managed Method
 [CertFreeCertificateChain](https://www.google.com/search?num=5&q=CertFreeCertificateChain+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertFreeCertificateChainEngine](https://www.google.com/search?num=5&q=CertFreeCertificateChainEngine+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertFreeCertificateChainList](https://www.google.com/search?num=5&q=CertFreeCertificateChainList+site%3Amicrosoft.com) | crypt32.dll |  |   
-[CertFreeCertificateContext](https://www.google.com/search?num=5&q=CertFreeCertificateContext+site%3Amicrosoft.com) | crypt32.dll |  |   
+[CertFreeCertificateContext](http://msdn2.microsoft.com/en-us/library/7d2f3237-3f8b-4234-b6db-3057384cd89b) | crypt32.dll | wincrypt.h | Vanara.PInvoke.Crypt32.CertFreeCertificateContext  
 [CertFreeCRLContext](https://www.google.com/search?num=5&q=CertFreeCRLContext+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertFreeCTLContext](https://www.google.com/search?num=5&q=CertFreeCTLContext+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertFreeServerOcspResponseContext](https://www.google.com/search?num=5&q=CertFreeServerOcspResponseContext+site%3Amicrosoft.com) | crypt32.dll |  |   
@@ -141,7 +141,7 @@ Native Method | Native DLL | Header | Managed Method
 [CertOIDToAlgId](https://www.google.com/search?num=5&q=CertOIDToAlgId+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertOpenServerOcspResponse](https://www.google.com/search?num=5&q=CertOpenServerOcspResponse+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertOpenStore](https://www.google.com/search?num=5&q=CertOpenStore+site%3Amicrosoft.com) | crypt32.dll |  |   
-[CertOpenSystemStore](https://www.google.com/search?num=5&q=CertOpenSystemStoreA+site%3Amicrosoft.com) | crypt32.dll |  |   
+[CertOpenSystemStore](http://msdn2.microsoft.com/en-us/library/23699439-1a6c-4907-93fa-651024856be7) | crypt32.dll | wincrypt.h | Vanara.PInvoke.Crypt32.CertOpenSystemStore  
 [CertRDNValueToStr](https://www.google.com/search?num=5&q=CertRDNValueToStrA+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertRegisterPhysicalStore](https://www.google.com/search?num=5&q=CertRegisterPhysicalStore+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertRegisterSystemStore](https://www.google.com/search?num=5&q=CertRegisterSystemStore+site%3Amicrosoft.com) | crypt32.dll |  |   
@@ -369,8 +369,12 @@ Native Structure | Header | Managed Structure
 [BCRYPT_SECRET_HANDLE](https://www.google.com/search?num=5&q=BCRYPT_SECRET_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.BCrypt+BCRYPT_SECRET_HANDLE  
 [CERT_CONTEXT](https://www.google.com/search?num=5&q=CERT_CONTEXT+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_CONTEXT  
 [CERT_EXTENSION](https://www.google.com/search?num=5&q=CERT_EXTENSION+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_EXTENSION  
+[CERT_ID](http://msdn2.microsoft.com/en-us/library/9e33f661-c365-4725-8c3f-27b6cdd9a84e) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_ID  
 [CERT_INFO](https://www.google.com/search?num=5&q=CERT_INFO+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_INFO  
+[CERT_ISSUER_SERIAL_NUMBER](http://msdn2.microsoft.com/en-us/library/4e44113f-81e7-4551-bf4d-50986d6d57bb) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_ISSUER_SERIAL_NUMBER  
 [CERT_PUBLIC_KEY_INFO](https://www.google.com/search?num=5&q=CERT_PUBLIC_KEY_INFO+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_PUBLIC_KEY_INFO  
+[CERT_RDN](http://msdn2.microsoft.com/en-us/library/e84254b9-e9a7-4689-a12f-2772282c5433) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_RDN  
+[CERT_SYSTEM_STORE_INFO](http://msdn2.microsoft.com/en-us/library/9c17ebd9-423b-4063-bdc3-6be70ceb8623) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_SYSTEM_STORE_INFO  
 [CERT_TRUST_STATUS](http://msdn2.microsoft.com/en-us/library/af1e1db2-7b53-4491-8317-4abf3568fb03) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_TRUST_STATUS  
 [CRYPT_ALGORITHM_IDENTIFIER](https://www.google.com/search?num=5&q=CRYPT_ALGORITHM_IDENTIFIER+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CRYPT_ALGORITHM_IDENTIFIER  
 [CRYPT_ATTRIBUTE_TYPE_VALUE](http://msdn2.microsoft.com/en-us/library/84057581-d0a9-464a-9399-ba806e37516f) | wincrypt.h | Vanara.PInvoke.Crypt32+CRYPT_ATTRIBUTE_TYPE_VALUE  
@@ -381,6 +385,8 @@ Native Structure | Header | Managed Structure
 [CRYPT_CONTEXTS](http://msdn2.microsoft.com/en-us/library/a1b60660-a4c5-4880-8cd4-48d8717c77c3) | bcrypt.h | Vanara.PInvoke.BCrypt+CRYPT_CONTEXTS  
 [CRYPT_PROVIDERS](http://msdn2.microsoft.com/en-us/library/aef0e173-d3df-466e-ac2a-c686cae5edc9) | bcrypt.h | Vanara.PInvoke.BCrypt+CRYPT_PROVIDERS  
 [CRYPTOAPI_BLOB](https://www.google.com/search?num=5&q=CRYPTOAPI_BLOB+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CRYPTOAPI_BLOB  
+[CTL_USAGE](http://msdn2.microsoft.com/en-us/library/70ee138a-df94-4fc4-9de5-0d8b7704b890) | wincrypt.h | Vanara.PInvoke.Crypt32+CTL_USAGE  
+[HCERTSTORE](https://www.google.com/search?num=5&q=HCERTSTORE+site%3Amicrosoft.com) |  | Vanara.PInvoke.Crypt32+HCERTSTORE  
 [NCRYPT_ALLOC_PARA](http://msdn2.microsoft.com/en-us/library/4F546F51-E4DE-4703-B1D1-F84165C3C31B) | ncrypt.h | Vanara.PInvoke.NCrypt+NCRYPT_ALLOC_PARA  
 [NCRYPT_DESCRIPTOR_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_DESCRIPTOR_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.NCrypt+NCRYPT_DESCRIPTOR_HANDLE  
 [NCRYPT_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.NCrypt+NCRYPT_HANDLE  

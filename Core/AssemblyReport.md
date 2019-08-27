@@ -2,6 +2,7 @@
 ### Classes
 Class | Description
 ---- | ----
+AlignedMemory<T> | A memory block aligned on a specific byte boundary.
 BitHelper | Static methods to help with bit manipulation.
 ByteSizeFormatter | A custom formatter for byte sizes (things like files, network bandwidth, etc.) that will automatically determine the best abbreviation.
 ComConnectionPoint | Helper class to create an advised COM sink. When this class is constructed, the source is queried for an `IConnectionPointContainer` reference.
@@ -29,6 +30,7 @@ MarshalingStream | A `Stream` derivative for working with unmanaged memory.
 NativeMemoryStream | A `Stream` derivative for working with unmanaged memory.
 PinnedObject | A safe class that represents an object that is pinned in memory.
 ReflectionExtensions | Extensions related to <c>System.Reflection</c>
+ReflectionExtensions | Extensions for `Object` related to <c>System.Reflection</c>
 SafeAllocatedMemoryHandle | Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.
 SafeByteArray | An safe unmanaged array of bytes allocated on the global heap.
 SafeCoTaskMemHandle | A `SafeHandle` for memory allocated via COM.
@@ -36,6 +38,7 @@ SafeCoTaskMemString | Safely handles an unmanaged memory allocated Unicode strin
 SafeHGlobalHandle | A `SafeHandle` for memory allocated via LocalAlloc.
 SafeMemoryHandle<T> | Abstract base class for all SafeAllocatedMemoryHandle derivatives that apply a specific memory handling routine set.
 SafeMemoryHandleExt<T> | A `SafeHandle` for memory allocated via COM.
+SafeMemString<T> | Base abstract class for a string handler based on <see cref="T:Vanara.InteropServices.SafeMemoryHandle`1" />.
 SparseArray<T> | A sparse array based on a dictionary.
 StringHelper | A safe class that represents an object that is pinned in memory.
 TryGetValueDelegate | Delegate for the implementation of the <see cref="M:Vanara.Collections.GenericVirtualReadOnlyDictionaryy`2.TryGetValue(`0,`1@)" /> method.
@@ -44,12 +47,16 @@ VirtualReadOnlyDictionary<T> | A generic base class for providing a read-only di
 ### Structures
 Struct | Description
 ---- | ----
+BOOL | Managed instance of the SIZE_T type.
+BOOLEAN | Managed instance of the SIZE_T type.
 EnumFlagIndexer<T> | 
+GuidPtr | The GuidPtr structure represents a LPGUID.
+SizeT | Managed instance of the SIZE_T type.
 StrPtrAnsi | The StrPtr structure represents a LPWSTR.
 StrPtrAuto | The StrPtr structure represents a LPTSTR.
 StrPtrUni | The StrPtr structure represents a LPWSTR.
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----
-CorrepsondingAction | Actions that can be taken with a corresponding type. | None, Get, Set, GetSet, Exception
+CorrespondingAction | Actions that can be taken with a corresponding type. | None, Get, Set, GetSet, Exception
 StringListPackMethod | Method used to pack a list of strings into memory. | Concatenated, Packed

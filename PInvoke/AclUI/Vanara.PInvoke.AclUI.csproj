@@ -4,7 +4,7 @@
     <Description>PInvoke API (methods, structures and constants) imported from Windows AclUI.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.3.11</VersionPrefix>
+    <VersionPrefix>3.0.0</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.AclUI</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -28,7 +28,7 @@ Functions
 CreateSecurityPage, EditSecurity, EditSecurityAdvanced
 
 Structures
-EFFPERM_RESULT_LIST, SECURITY_OBJECT, SI_ACCESS, SI_INHERIT_TYPE, SI_OBJECT_INFO, SID_INFO
+EFFPERM_RESULT_LIST, SECURITY_OBJECT, SI_OBJECT_INFO, SID_INFO, SI_ACCESS, SI_INHERIT_TYPE
 
 Interfaces
 IEffectivePermission, IEffectivePermission2, ISecurityInformation, ISecurityInformation2, ISecurityInformation3, ISecurityInformation4, ISecurityObjectTypeInfo

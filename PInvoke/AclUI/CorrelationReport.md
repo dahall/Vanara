@@ -3,8 +3,8 @@
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [CreateSecurityPage](http://msdn2.microsoft.com/en-us/library/aa446584) | aclui.dll | aclui.h | Vanara.PInvoke.AclUI.CreateSecurityPage  
-[EditSecurity](http://msdn2.microsoft.com/en-us/library/aa446618) | aclui.dll | aclui.h | Vanara.PInvoke.AclUI.EditSecurity  
-[EditSecurityAdvanced](http://msdn2.microsoft.com/en-us/library/hh285677) | aclui.dll | aclui.h | Vanara.PInvoke.AclUI.EditSecurityAdvanced  
+[EditSecurity](http://msdn2.microsoft.com/en-us/library/756c94b0-946f-47eb-b4b4-db3e6e89fe46) | aclui.dll | aclui.h | Vanara.PInvoke.AclUI.EditSecurity  
+[EditSecurityAdvanced](http://msdn2.microsoft.com/en-us/library/E451BBB9-4E01-4A8F-9ACD-750351F16453) | aclui.dll | aclui.h | Vanara.PInvoke.AclUI.EditSecurityAdvanced  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
