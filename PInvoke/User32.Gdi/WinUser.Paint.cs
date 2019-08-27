@@ -207,7 +207,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			DST_TEXT = 0x0001,
 
-			/// <summary>The image is text that may contain an accelerator mnemonic. DrawState interprets the ampersand (&) prefix character
+			/// <summary>The image is text that may contain an accelerator mnemonic. DrawState interprets the ampersand (&amp;) prefix character
 			/// as a directive to underscore the character that follows. The lData parameter is a pointer to the string, and the wData
 			/// parameter specifies the length. If wData is zero, the string must be null-terminated.</summary>
 			DST_PREFIXTEXT = 0x0002,
@@ -233,11 +233,11 @@ namespace Vanara.PInvoke
 			/// <summary>Draws the image using the brush specified by the hbr parameter.</summary>
 			DSS_MONO = 0x0080,
 
-			/// <summary>Ignores the ampersand (&) prefix character in the text, thus the letter that follows will not be underlined. This
+			/// <summary>Ignores the ampersand (&amp;) prefix character in the text, thus the letter that follows will not be underlined. This
 			/// must be used with DST_PREFIXTEXT.</summary>
 			DSS_HIDEPREFIX = 0x0200,
 
-			/// <summary>Draws only the underline at the position of the letter after the ampersand (&) prefix character. No text in the
+			/// <summary>Draws only the underline at the position of the letter after the ampersand (&amp;) prefix character. No text in the
 			/// string is drawn. This must be used with DST_PREFIXTEXT.</summary>
 			DSS_PREFIXONLY = 0x0400,
 

@@ -774,12 +774,10 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		/// <summary>Ends the asynchronous call to <see cref="BeginDeviceIoControl{TIn, TOut}(HFILE, uint, TIn?, TOut?, AsyncCallback)"/>.</summary>
+		/// <summary>Ends the asynchronous call to <c>BeginDeviceIoControl&lt;TIn, TOut&gt;(HFILE, uint, TIn?, TOut?, AsyncCallback)</c>.</summary>
 		/// <typeparam name="TIn">The type of the input value.</typeparam>
 		/// <typeparam name="TOut">The type of the output value.</typeparam>
-		/// <param name="asyncResult">
-		/// The asynchronous result returned from <see cref="BeginDeviceIoControl{TIn, TOut}(HFILE, uint, TIn?, TOut?, AsyncCallback)"/>.
-		/// </param>
+		/// <param name="asyncResult">The asynchronous result returned from <c>BeginDeviceIoControl&gt;TIn, TOut&lt;(HFILE, uint, TIn?, TOut?, AsyncCallback)</c>.</param>
 		/// <returns>The output value, if exists; <c>null</c> otherwise.</returns>
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
 		public static TOut? EndDeviceIoControl<TIn, TOut>(IAsyncResult asyncResult) where TIn : struct where TOut : struct
@@ -788,9 +786,9 @@ namespace Vanara.PInvoke
 			return Unpack<TIn, TOut>(ret as byte[]).Item2;
 		}
 
-		/// <summary>Ends the asynchronous call to <see cref="BeginDeviceIoControl{TIn, TOut}(HFILE, uint, TIn?, TOut?, AsyncCallback)"/>.</summary>
+		/// <summary>Ends the asynchronous call to <c>BeginDeviceIoControl&lt;TIn, TOut&gt;(HFILE, uint, TIn?, TOut?, AsyncCallback)</c>.</summary>
 		/// <param name="asyncResult">
-		/// The asynchronous result returned from <see cref="BeginDeviceIoControl{TIn, TOut}(HFILE, uint, TIn?, TOut?, AsyncCallback)"/>.
+		/// The asynchronous result returned from <c>BeginDeviceIoControl&lt;TIn, TOut&gt;(HFILE, uint, TIn?, TOut?, AsyncCallback)</c>.
 		/// </param>
 		/// <returns>The output buffer, if exists; <c>null</c> otherwise.</returns>
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
