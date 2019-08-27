@@ -244,7 +244,7 @@ namespace Vanara.PInvoke
 		// TargetIp, PEXCEPTION_RECORD ExceptionRecord, PVOID ReturnValue, PCONTEXT ContextRecord, PUNWIND_HISTORY_TABLE HistoryTable );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("rtlsupportapi.h", MSDNShortId = "3d2d8778-311e-4cc1-b280-4f83ab457755")]
-		public static extern void RtlUnwindEx([In, Optional] IntPtr TargetFrame, [In, Optional] IntPtr TargetIp, in EXCEPTION_RECORD ExceptionRecord, IntPtr ReturnValue, in CONTEXT OriginalContext, in UNWIND_HISTORY_TABLE HistoryTable);
+		public static extern void RtlUnwindEx([In, Optional] IntPtr TargetFrame, [In, Optional] IntPtr TargetIp, in EXCEPTION_RECORD ExceptionRecord, IntPtr ReturnValue, in CONTEXT ContextRecord, in UNWIND_HISTORY_TABLE HistoryTable);
 
 		/// <summary>Initiates an unwind of procedure call frames.</summary>
 		/// <param name="TargetFrame">
@@ -263,7 +263,7 @@ namespace Vanara.PInvoke
 		// TargetIp, PEXCEPTION_RECORD ExceptionRecord, PVOID ReturnValue, PCONTEXT ContextRecord, PUNWIND_HISTORY_TABLE HistoryTable );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("rtlsupportapi.h", MSDNShortId = "3d2d8778-311e-4cc1-b280-4f83ab457755")]
-		public static extern void RtlUnwindEx([In, Optional] IntPtr TargetFrame, [In, Optional] IntPtr TargetIp, [In, Optional] IntPtr ExceptionRecord, IntPtr ReturnValue, in CONTEXT OriginalContext, [In, Optional] IntPtr HistoryTable);
+		public static extern void RtlUnwindEx([In, Optional] IntPtr TargetFrame, [In, Optional] IntPtr TargetIp, [In, Optional] IntPtr ExceptionRecord, IntPtr ReturnValue, in CONTEXT ContextRecord, [In, Optional] IntPtr HistoryTable);
 
 		/*
 		public static extern void RtlCaptureStackBackTrace();

@@ -319,7 +319,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("timezoneapi.h", MSDNShortId = "f3a87ec2-67a0-418f-af6e-6c0b5547cffb")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SystemTimeToTzSpecificLocalTime(in TIME_ZONE_INFORMATION lpTimeZone, in SYSTEMTIME lpUniversalTime, [Out] out SYSTEMTIME lpLocalTime);
+		public static extern bool SystemTimeToTzSpecificLocalTime(in TIME_ZONE_INFORMATION lpTimeZoneInformation, in SYSTEMTIME lpUniversalTime, [Out] out SYSTEMTIME lpLocalTime);
 
 		/// <summary>Converts a time in Coordinated Universal Time (UTC) to a specified time zone's corresponding local time.</summary>
 		/// <param name="lpTimeZoneInformation">
@@ -361,7 +361,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("timezoneapi.h", MSDNShortId = "f3a87ec2-67a0-418f-af6e-6c0b5547cffb")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SystemTimeToTzSpecificLocalTime([Optional] IntPtr lpTimeZone, in SYSTEMTIME lpUniversalTime, [Out] out SYSTEMTIME lpLocalTime);
+		public static extern bool SystemTimeToTzSpecificLocalTime([Optional] IntPtr lpTimeZoneInformation, in SYSTEMTIME lpUniversalTime, [Out] out SYSTEMTIME lpLocalTime);
 
 		/// <summary>
 		/// Converts a time in Coordinated Universal Time (UTC) with dynamic daylight saving time settings to a specified time zone's

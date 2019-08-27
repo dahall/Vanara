@@ -825,7 +825,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="RGNDATA"/> class.</summary>
 			/// <param name="bounds">A bounding rectangle for the region in logical units.</param>
-			/// <param name="count">The RECT structures that make up the region.</param>
+			/// <param name="rects">The RECT structures that make up the region.</param>
 			public RGNDATA(in RECT bounds, RECT[] rects)
 			{
 				rdh.dwSize = (uint)Marshal.SizeOf(typeof(RGNDATAHEADER));

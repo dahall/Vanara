@@ -3744,10 +3744,6 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </para>
 		/// </param>
-		/// <param name="lParam">
-		/// Application-defined value to pass to the callback function. This parameter can be used in error checking. It can also be used to
-		/// ensure thread safety in the callback function.
-		/// </param>
 		/// <returns>List of the language groups.</returns>
 		public static IEnumerable<(LGRPID LanguageGroup, string lpLanguageGroupString, string lpLanguageGroupNameString, LGRPID_FLAGS dwFlags)> EnumSystemLanguageGroups(LGRPID_FLAGS dwFlags = 0)
 		{

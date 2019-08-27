@@ -31,7 +31,7 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public delegate bool EnumPageFilesProc(IntPtr pContext, in ENUM_PAGE_FILE_INFORMATION pPageFileInfo, string lpFilename);
 
-		/// <summary>Used by <see cref="EnumProcessModulesEx"/>.</summary>
+		/// <summary>Used by <see cref="EnumProcessModulesEx(HPROCESS, LIST_MODULES)"/>.</summary>
 		[PInvokeData("psapi.h", MSDNShortId = "0f982f32-31f4-47b6-85d2-d6e17aa4eeb9")]
 		public enum LIST_MODULES
 		{
@@ -185,7 +185,6 @@ namespace Vanara.PInvoke
 		public static extern bool EnumPageFiles(EnumPageFilesProc pCallBackRoutine, IntPtr pContext);
 
 		/// <summary>Enumerates the pagefiles in the system.</summary>
-		/// <param name="pContext">The user-defined data passed to the callback routine.</param>
 		/// <returns>A list of ENUM_PAGE_FILE_INFORMATION structures with the associated filename.</returns>
 		[PInvokeData("psapi.h", MSDNShortId = "9289fe3c-a7d9-4acb-aeb6-a50de65db0a2")]
 		public static IEnumerable<(ENUM_PAGE_FILE_INFORMATION pageInfo, string filename)> EnumPageFiles()
@@ -1359,20 +1358,17 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Retrieves extended information about the pages at specific virtual addresses in the address space of the specified process.
 		/// </summary>
-		/// <param name="hProcess">
-		/// A handle to the process. The handle must have the <c>PROCESS_QUERY_INFORMATION</c> and <c>PROCESS_VM_READ</c> access rights. For
-		/// more information, see Process Security and Access Rights.
-		/// </param>
+		/// <param name="hProcess">A handle to the process. The handle must have the <c>PROCESS_QUERY_INFORMATION</c> and <c>PROCESS_VM_READ</c> access rights. For
+		/// more information, see Process Security and Access Rights.</param>
+		/// <param name="virtualAddresses">The virtual addresses.</param>
 		/// <returns>
 		/// An array of PSAPI_WORKING_SET_EX_INFORMATION structures. On input, each item in the array specifies a virtual address of
 		/// interest. On output, each item in the array receives information about the corresponding virtual page.
 		/// </returns>
 		/// <remarks>
-		/// <para>
 		/// Unlike the QueryWorkingSet function, which is limited to the working set of the target process, the <c>QueryWorkingSetEx</c>
 		/// function can be used to query addresses that are not in the process working set but are still part of the process, such as AWE
 		/// and large pages.
-		/// </para>
 		/// </remarks>
 		[PInvokeData("psapi.h", MSDNShortId = "59ae76c9-e954-4648-9c9f-787136375b02")]
 		public static PSAPI_WORKING_SET_EX_INFORMATION[] QueryWorkingSetEx(HPROCESS hProcess, [Optional] params IntPtr[] virtualAddresses)

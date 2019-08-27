@@ -379,7 +379,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("realtimeapiset.h", MSDNShortId = "f9cf5440-9be9-4ff9-b85c-2779b847954c")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryUnbiasedInterruptTime(out ulong lpUnbiasedInterruptTime);
+		public static extern bool QueryUnbiasedInterruptTime(out ulong UnbiasedTime);
 
 		/// <summary>
 		/// Gets the current unbiased interrupt-time count, in a more precise form than QueryUnbiasedInterruptTime does. The unbiased

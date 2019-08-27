@@ -3068,7 +3068,7 @@ namespace Vanara.PInvoke
 		// GetThreadDescription( HANDLE hThread, PWSTR *ppszThreadDescription );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processthreadsapi.h", MSDNShortId = "9CFF0A2D-2196-4AE0-8F77-229A8AB7A3E8")]
-		public static extern HRESULT GetThreadDescription(HTHREAD hThread, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LocalStringMarshaler))] out string threadDescription);
+		public static extern HRESULT GetThreadDescription(HTHREAD hThread, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LocalStringMarshaler))] out string ppszThreadDescription);
 
 		/// <summary>Retrieves the thread identifier of the specified thread.</summary>
 		/// <param name="Thread">
@@ -5608,7 +5608,7 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>Initializes a new instance of the <see cref="PROC_THREAD_ATTRIBUTE"/> struct.</summary>
-			/// <param name="Number">The attribute type.</param>
+			/// <param name="type">The attribute type.</param>
 			/// <param name="Thread">if set to <c>true</c> this is thread specific.</param>
 			/// <param name="Input">if set to <c>true</c> this is an input attribute.</param>
 			/// <param name="Additive">if set to <c>true</c> this is additive.</param>
@@ -7092,7 +7092,7 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="ProcThreadAttributeList"/> that is disposed using <see cref="DeleteProcThreadAttributeList"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for a list of <see cref="PROC_THREAD_ATTRIBUTE"/> structures that is disposed using <see cref="DeleteProcThreadAttributeList"/>.</summary>
 		public class SafeProcThreadAttributeList : SafeHANDLE
 		{
 			private List<(PROC_THREAD_ATTRIBUTE attr, object obj, PinnedObject ptr)> values = new List<(PROC_THREAD_ATTRIBUTE attr, object obj, PinnedObject ptr)>();

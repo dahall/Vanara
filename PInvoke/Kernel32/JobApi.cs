@@ -1151,7 +1151,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("jobapi2.h", MSDNShortId = "46f7c579-e8d3-4434-a6ce-56573cd84387")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetInformationJobObject([In] HJOB hJob, JOBOBJECTINFOCLASS JobObjectInfoClass, [In] IntPtr lpJobObjectInfo, uint cbJobObjectInfoLength);
+		public static extern bool SetInformationJobObject([In] HJOB hJob, JOBOBJECTINFOCLASS JobObjectInformationClass, [In] IntPtr lpJobObjectInformation, uint cbJobObjectInformationLength);
 
 		/// <summary>Sets limits for a job object.</summary>
 		/// <param name="hJob">

@@ -1397,7 +1397,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public COMPATIBILITY_CONTEXT_ELEMENT[] Elements;
 
-			/// <summary>Initializes a new instance of the <see cref="ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION_MGD"/> struct.</summary>
+			/// <summary>Initializes a new instance of the <see cref="ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION"/> struct.</summary>
 			/// <param name="mem">The unmanaged pointer to this info.</param>
 			internal ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION(IntPtr mem)
 			{

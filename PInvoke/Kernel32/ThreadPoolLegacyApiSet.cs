@@ -652,7 +652,7 @@ namespace Vanara.PInvoke
 			/// parameter can be <see langword="null"/>.
 			/// </para>
 			/// <para>
-			/// If this parameter is <see cref="SafeEventHandle.Invalid"/>, the function waits for all callback functions to complete before returning.
+			/// If this parameter is <see cref="SafeEventHandle.InvalidHandle"/>, the function waits for all callback functions to complete before returning.
 			/// </para>
 			/// <para>
 			/// If this parameter is <see langword="null"/>, the function marks the timer for deletion and returns immediately. However, most

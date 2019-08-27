@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Functions and types from Gdi32.dll.</summary>
 	public static partial class Gdi32
 	{
 		/// <summary>The type of compression for a compressed bottom-up bitmap (top-down DIBs cannot be compressed). Used in <see cref="BITMAPINFOHEADER"/>.</summary>

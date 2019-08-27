@@ -1069,7 +1069,7 @@ namespace Vanara.PInvoke
 		// LPDWORD lpMode );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ConsoleApi.h", MSDNShortId = "49adf618-196d-4490-93ca-cd177807f58e")]
-		public static extern bool GetConsoleMode(HFILE hConsoleInputBuffer, out CONSOLE_INPUT_MODE lpMode);
+		public static extern bool GetConsoleMode(HFILE hConsoleHandle, out CONSOLE_INPUT_MODE lpMode);
 
 		/// <summary>Retrieves the current input mode of a console's input buffer or the current output mode of a console screen buffer.</summary>
 		/// <param name="hConsoleHandle">
@@ -1249,7 +1249,7 @@ namespace Vanara.PInvoke
 		// LPDWORD lpMode );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ConsoleApi.h", MSDNShortId = "49adf618-196d-4490-93ca-cd177807f58e")]
-		public static extern bool GetConsoleMode(HFILE hConsoleInputBuffer, out CONSOLE_OUTPUT_MODE lpMode);
+		public static extern bool GetConsoleMode(HFILE hConsoleHandle, out CONSOLE_OUTPUT_MODE lpMode);
 
 		/// <summary>Retrieves the original title for the current console window.</summary>
 		/// <param name="lpConsoleTitle">
