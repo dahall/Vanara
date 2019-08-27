@@ -8,6 +8,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class Schannel
 	{
+		public const uint CF_CERT_FROM_FILE = 2;
 		public const string DEFAULT_TLS_SSP_NAME = "Default TLS SSP";
 		public const string PCT1SP_NAME = "Microsoft PCT 1.0";
 		public const string SCHANNEL_NAME = "Schannel";
@@ -24,7 +25,7 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum SP_PROT : uint
 		{
-			/// <summary>The sp prot none</summary>
+			/// <summary/>
 			SP_PROT_NONE = 0,
 
 			/// <summary>Transport Layer Security 1.0 client-side.</summary>
@@ -63,145 +64,145 @@ namespace Vanara.PInvoke
 			/// <summary>Secure Sockets Layer 2.0 server-side. Superseded by SP_PROT_TLS1_SERVER.</summary>
 			SP_PROT_SSL2_SERVER = 4,
 
-			/// <summary>The sp prot pc t1</summary>
+			/// <summary/>
 			SP_PROT_PCT1 = (SP_PROT_PCT1_SERVER | SP_PROT_PCT1_CLIENT),
 
-			/// <summary>The sp prot ss l2</summary>
+			/// <summary/>
 			SP_PROT_SSL2 = (SP_PROT_SSL2_SERVER | SP_PROT_SSL2_CLIENT),
 
-			/// <summary>The sp prot ss l3</summary>
+			/// <summary/>
 			SP_PROT_SSL3 = (SP_PROT_SSL3_SERVER | SP_PROT_SSL3_CLIENT),
 
-			/// <summary>The sp prot tl s1</summary>
+			/// <summary/>
 			SP_PROT_TLS1 = (SP_PROT_TLS1_SERVER | SP_PROT_TLS1_CLIENT),
 
-			/// <summary>The sp prot ss l3 tl s1 clients</summary>
+			/// <summary/>
 			SP_PROT_SSL3TLS1_CLIENTS = (SP_PROT_TLS1_CLIENT | SP_PROT_SSL3_CLIENT),
 
-			/// <summary>The sp prot ss l3 tl s1 servers</summary>
+			/// <summary/>
 			SP_PROT_SSL3TLS1_SERVERS = (SP_PROT_TLS1_SERVER | SP_PROT_SSL3_SERVER),
 
-			/// <summary>The sp prot ss l3 tl s1</summary>
+			/// <summary/>
 			SP_PROT_SSL3TLS1 = (SP_PROT_SSL3 | SP_PROT_TLS1),
 
-			/// <summary>The sp prot uni server</summary>
+			/// <summary/>
 			SP_PROT_UNI_SERVER = 0x40000000,
 
-			/// <summary>The sp prot uni client</summary>
+			/// <summary/>
 			SP_PROT_UNI_CLIENT = 0x80000000,
 
-			/// <summary>The sp prot uni</summary>
+			/// <summary/>
 			SP_PROT_UNI = (SP_PROT_UNI_SERVER | SP_PROT_UNI_CLIENT),
 
-			/// <summary>The sp prot all</summary>
+			/// <summary/>
 			SP_PROT_ALL = 0xffffffff,
 
-			/// <summary>The sp prot clients</summary>
+			/// <summary/>
 			SP_PROT_CLIENTS = (SP_PROT_PCT1_CLIENT | SP_PROT_SSL2_CLIENT | SP_PROT_SSL3_CLIENT | SP_PROT_UNI_CLIENT | SP_PROT_TLS1_CLIENT),
 
-			/// <summary>The sp prot servers</summary>
+			/// <summary/>
 			SP_PROT_SERVERS = (SP_PROT_PCT1_SERVER | SP_PROT_SSL2_SERVER | SP_PROT_SSL3_SERVER | SP_PROT_UNI_SERVER | SP_PROT_TLS1_SERVER),
 
-			/// <summary>The sp prot tl s1 0 server</summary>
+			/// <summary/>
 			SP_PROT_TLS1_0_SERVER = SP_PROT_TLS1_SERVER,
 
-			/// <summary>The sp prot tl s1 0 client</summary>
+			/// <summary/>
 			SP_PROT_TLS1_0_CLIENT = SP_PROT_TLS1_CLIENT,
 
-			/// <summary>The sp prot tl s1 0</summary>
+			/// <summary/>
 			SP_PROT_TLS1_0 = (SP_PROT_TLS1_0_SERVER | SP_PROT_TLS1_0_CLIENT),
 
-			/// <summary>The sp prot tl s1 1</summary>
+			/// <summary/>
 			SP_PROT_TLS1_1 = (SP_PROT_TLS1_1_SERVER | SP_PROT_TLS1_1_CLIENT),
 
-			/// <summary>The sp prot tl s1 2</summary>
+			/// <summary/>
 			SP_PROT_TLS1_2 = (SP_PROT_TLS1_2_SERVER | SP_PROT_TLS1_2_CLIENT),
 
-			/// <summary>The sp prot tl s1 3 server</summary>
+			/// <summary/>
 			SP_PROT_TLS1_3_SERVER = 0x00001000,
 
-			/// <summary>The sp prot tl s1 3 client</summary>
+			/// <summary/>
 			SP_PROT_TLS1_3_CLIENT = 0x00002000,
 
-			/// <summary>The sp prot tl s1 3</summary>
+			/// <summary/>
 			SP_PROT_TLS1_3 = (SP_PROT_TLS1_3_SERVER | SP_PROT_TLS1_3_CLIENT),
 
-			/// <summary>The sp prot DTLS server</summary>
+			/// <summary/>
 			SP_PROT_DTLS_SERVER = 0x00010000,
 
-			/// <summary>The sp prot DTLS client</summary>
+			/// <summary/>
 			SP_PROT_DTLS_CLIENT = 0x00020000,
 
-			/// <summary>The sp prot DTLS</summary>
+			/// <summary/>
 			SP_PROT_DTLS = (SP_PROT_DTLS_SERVER | SP_PROT_DTLS_CLIENT),
 
-			/// <summary>The sp prot DTL s1 0 server</summary>
+			/// <summary/>
 			SP_PROT_DTLS1_0_SERVER = SP_PROT_DTLS_SERVER,
 
-			/// <summary>The sp prot DTL s1 0 client</summary>
+			/// <summary/>
 			SP_PROT_DTLS1_0_CLIENT = SP_PROT_DTLS_CLIENT,
 
-			/// <summary>The sp prot DTL s1 0</summary>
+			/// <summary/>
 			SP_PROT_DTLS1_0 = (SP_PROT_DTLS1_0_SERVER | SP_PROT_DTLS1_0_CLIENT),
 
-			/// <summary>The sp prot DTL s1 2 server</summary>
+			/// <summary/>
 			SP_PROT_DTLS1_2_SERVER = 0x00040000,
 
-			/// <summary>The sp prot DTL s1 2 client</summary>
+			/// <summary/>
 			SP_PROT_DTLS1_2_CLIENT = 0x00080000,
 
-			/// <summary>The sp prot DTL s1 2</summary>
+			/// <summary/>
 			SP_PROT_DTLS1_2 = (SP_PROT_DTLS1_2_SERVER | SP_PROT_DTLS1_2_CLIENT),
 
-			/// <summary>The sp prot DTL s1 x server</summary>
+			/// <summary/>
 			SP_PROT_DTLS1_X_SERVER = (SP_PROT_DTLS1_0_SERVER | SP_PROT_DTLS1_2_SERVER),
 
-			/// <summary>The sp prot DTL s1 x client</summary>
+			/// <summary/>
 			SP_PROT_DTLS1_X_CLIENT = (SP_PROT_DTLS1_0_CLIENT | SP_PROT_DTLS1_2_CLIENT),
 
-			/// <summary>The sp prot DTL s1 x</summary>
+			/// <summary/>
 			SP_PROT_DTLS1_X = (SP_PROT_DTLS1_X_SERVER | SP_PROT_DTLS1_X_CLIENT),
 
-			/// <summary>The sp prot tl s1 1 plus server</summary>
+			/// <summary/>
 			SP_PROT_TLS1_1PLUS_SERVER = (SP_PROT_TLS1_1_SERVER | SP_PROT_TLS1_2_SERVER | SP_PROT_TLS1_3_SERVER),
 
-			/// <summary>The sp prot tl s1 1 plus client</summary>
+			/// <summary/>
 			SP_PROT_TLS1_1PLUS_CLIENT = (SP_PROT_TLS1_1_CLIENT | SP_PROT_TLS1_2_CLIENT | SP_PROT_TLS1_3_CLIENT),
 
-			/// <summary>The sp prot tl s1 1 plus</summary>
+			/// <summary/>
 			SP_PROT_TLS1_1PLUS = (SP_PROT_TLS1_1PLUS_SERVER | SP_PROT_TLS1_1PLUS_CLIENT),
 
-			/// <summary>The sp prot tl s1 3 plus server</summary>
+			/// <summary/>
 			SP_PROT_TLS1_3PLUS_SERVER = SP_PROT_TLS1_3_SERVER,
 
-			/// <summary>The sp prot tl s1 3 plus client</summary>
+			/// <summary/>
 			SP_PROT_TLS1_3PLUS_CLIENT = SP_PROT_TLS1_3_CLIENT,
 
-			/// <summary>The sp prot tl s1 3 plus</summary>
+			/// <summary/>
 			SP_PROT_TLS1_3PLUS = (SP_PROT_TLS1_3PLUS_SERVER | SP_PROT_TLS1_3PLUS_CLIENT),
 
-			/// <summary>The sp prot tl s1 x server</summary>
+			/// <summary/>
 			SP_PROT_TLS1_X_SERVER = (SP_PROT_TLS1_0_SERVER | SP_PROT_TLS1_1_SERVER | SP_PROT_TLS1_2_SERVER | SP_PROT_TLS1_3_SERVER),
 
-			/// <summary>The sp prot tl s1 x client</summary>
+			/// <summary/>
 			SP_PROT_TLS1_X_CLIENT = (SP_PROT_TLS1_0_CLIENT | SP_PROT_TLS1_1_CLIENT | SP_PROT_TLS1_2_CLIENT | SP_PROT_TLS1_3_CLIENT),
 
-			/// <summary>The sp prot tl s1 x</summary>
+			/// <summary/>
 			SP_PROT_TLS1_X = (SP_PROT_TLS1_X_SERVER | SP_PROT_TLS1_X_CLIENT),
 
-			/// <summary>The sp prot ss l3 tl s1 x clients</summary>
+			/// <summary/>
 			SP_PROT_SSL3TLS1_X_CLIENTS = (SP_PROT_TLS1_X_CLIENT | SP_PROT_SSL3_CLIENT),
 
-			/// <summary>The sp prot ss l3 tl s1 x servers</summary>
+			/// <summary/>
 			SP_PROT_SSL3TLS1_X_SERVERS = (SP_PROT_TLS1_X_SERVER | SP_PROT_SSL3_SERVER),
 
-			/// <summary>The sp prot ss l3 tl s1 x</summary>
+			/// <summary/>
 			SP_PROT_SSL3TLS1_X = (SP_PROT_SSL3 | SP_PROT_TLS1_X),
 
-			/// <summary>The sp prot x clients</summary>
+			/// <summary/>
 			SP_PROT_X_CLIENTS = (SP_PROT_CLIENTS | SP_PROT_TLS1_X_CLIENT | SP_PROT_DTLS1_X_CLIENT),
 
-			/// <summary>The sp prot x servers</summary>
+			/// <summary/>
 			SP_PROT_X_SERVERS = (SP_PROT_SERVERS | SP_PROT_TLS1_X_SERVER | SP_PROT_DTLS1_X_SERVER)
 		}
 
@@ -250,7 +251,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Schannel, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("schannel.h", MSDNShortId = "c914d4e3-657e-45ef-ace8-2cea900a8a76")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SslEmptyCache(string pszTargetName, uint dwFlags = 0);
+		public static extern bool SslEmptyCache([Optional] string pszTargetName, uint dwFlags = 0);
 
 		/// <summary>
 		/// <para>

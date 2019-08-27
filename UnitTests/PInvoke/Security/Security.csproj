@@ -71,6 +71,7 @@
     <Compile Include="Secur32\SaslTests.cs" />
     <Compile Include="Secur32\SspiTests.cs" />
     <Compile Include="Secur32\Secur32Tests.cs" />
+    <Compile Include="Schannel\SchannelTests.cs" />
     <Compile Include="SecurityTests.cs" />
   </ItemGroup>
   <ItemGroup>

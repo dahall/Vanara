@@ -4552,7 +4552,7 @@ namespace Vanara.PInvoke
 		// SaslSetContextOption( PCtxtHandle ContextHandle, ULONG Option, PVOID Value, ULONG Size );
 		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("sspi.h", MSDNShortId = "3c3b1209-b0de-4100-8dfe-53ea314b790b")]
-		public static extern HRESULT SaslSetContextOption(in CtxtHandle ContextHandle, SASL_OPTION Option, string Value, uint Size);
+		public static extern HRESULT SaslSetContextOption(in CtxtHandle ContextHandle, SASL_OPTION Option, [MarshalAs(UnmanagedType.LPWStr)] string Value, uint Size);
 
 		/// <summary>The <c>SaslSetContextOption</c> function sets the value of the specified property for the specified SASL context.</summary>
 		/// <param name="ContextHandle">Handle of the SASL context.</param>

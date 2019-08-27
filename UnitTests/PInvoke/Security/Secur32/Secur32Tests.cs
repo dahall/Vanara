@@ -285,6 +285,13 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void LsaRegisterLogonProcessTest()
+		{
+			// This function cannot be tested beyond callability
+			Assert.That(LsaRegisterLogonProcess("alskdjfalksdjf", out var conn, out var mode), ResultIs.Failure);
+		}
+
+		[Test]
 		public void LsaRegisterPolicyChangeNotificationTest()
 		{
 			using (var hEvent = Kernel32.CreateEvent(null, true, false))
