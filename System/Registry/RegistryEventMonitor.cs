@@ -269,7 +269,7 @@ namespace Vanara.Registry
 				if ((index == -1) || (index == keyName.Length))
 					return mhive;
 				var subKeyName = keyName.Substring(index + 1, (keyName.Length - index) - 1);
-				RegOpenKeyEx(mhive, subKeyName, 0, RegAccessTypes.KEY_NOTIFY, out var hkey).ThrowIfFailed();
+				RegOpenKeyEx(mhive, subKeyName, 0, REGSAM.KEY_NOTIFY, out var hkey).ThrowIfFailed();
 				return hkey;
 			}
 			catch
