@@ -9,7 +9,7 @@ namespace Vanara.InteropServices
 	/// <summary>Base abstract class for a string handler based on <see cref="SafeMemoryHandle{TMem}"/>.</summary>
 	/// <typeparam name="TMem">The type of the memory.</typeparam>
 	/// <seealso cref="Vanara.InteropServices.SafeMemoryHandle{TMem}"/>
-	public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem> where TMem : IMemoryMethods, new()
+	public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IEquatable<SafeMemString<TMem>>, IEquatable<string>, IComparable<SafeMemString<TMem>>, IComparable<string> where TMem : IMemoryMethods, new()
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeMemString{TMem}"/> class.</summary>
 		/// <param name="s">The string value.</param>
@@ -48,9 +48,7 @@ namespace Vanara.InteropServices
 		[ExcludeFromCodeCoverage]
 		protected SafeMemString() : base(0) { }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SafeMemString{TMem}" /> class.
-		/// </summary>
+		/// <summary>Initializes a new instance of the <see cref="SafeMemString{TMem}"/> class.</summary>
 		/// <param name="ptr">The PTR.</param>
 		/// <param name="charSet">The character set.</param>
 		/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
@@ -76,6 +74,12 @@ namespace Vanara.InteropServices
 		/// <summary>Gets the number of characters in the current <see cref="SafeMemString{TMem}"/> object.</summary>
 		public int Length => ToString().Length;
 
+		/// <summary>Performs an explicit conversion from <see cref="SafeMemString{TMem}"/> to <see cref="System.Char"/>.</summary>
+		/// <param name="s">The <see cref="SafeMemString{TMem}"/> instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		/// <exception cref="InvalidCastException">Cannot convert an ANSI string to a Char pointer.</exception>
+		public static unsafe explicit operator char*(SafeMemString<TMem> s) => s.CharSet == CharSet.Unicode ? (char*)(void*)s.handle : throw new InvalidCastException("Cannot convert an ANSI string to a Char pointer.");
+
 		/// <summary>Returns the value of the <see cref="SafeHandle.handle"/> field.</summary>
 		/// <param name="s">The <see cref="SafeMemString{TMem}"/> instance.</param>
 		/// <returns>
@@ -91,11 +95,87 @@ namespace Vanara.InteropServices
 		/// </returns>
 		public static implicit operator string(SafeMemString<TMem> s) => s?.ToString();
 
-		/// <summary>Performs an explicit conversion from <see cref="SafeMemString{TMem}"/> to <see cref="System.Char"/>.</summary>
-		/// <param name="s">The <see cref="SafeMemString{TMem}"/> instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		/// <exception cref="InvalidCastException">Cannot convert an ANSI string to a Char pointer.</exception>
-		public static unsafe explicit operator char*(SafeMemString<TMem> s) => s.CharSet == CharSet.Unicode ? (char*)(void*)s.handle : throw new InvalidCastException("Cannot convert an ANSI string to a Char pointer.");
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="s1">The left value.</param>
+		/// <param name="s2">The right value.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(SafeMemString<TMem> s1, SafeMemString<TMem> s2) => !s1.Equals(s2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="s1">The left value.</param>
+		/// <param name="s2">The right value.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(SafeMemString<TMem> s1, SafeMemString<TMem> s2) => s1.Equals(s2);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="s1">The left value.</param>
+		/// <param name="s2">The right value.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(SafeMemString<TMem> s1, string s2) => !s1.Equals(s2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="s1">The left value.</param>
+		/// <param name="s2">The right value.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(SafeMemString<TMem> s1, string s2) => s1.Equals(s2);
+
+		/// <summary>Compares the current object with another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>
+		/// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following
+		/// meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal
+		/// to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
+		/// </returns>
+		public int CompareTo(SafeMemString<TMem> other) => string.Compare(this, other);
+
+		/// <summary>Compares the current object with another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>
+		/// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following
+		/// meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal
+		/// to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
+		/// </returns>
+		public int CompareTo(string other) => string.Compare(this, other);
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(SafeMemString<TMem> other) => string.Equals(this, other);
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(string other) => string.Equals(this, other);
+
+		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(this, obj))
+				return true;
+			switch (obj)
+			{
+				case null:
+					return false;
+
+				case SafeMemString<TMem> ms:
+					return Equals(ms);
+
+				case string s:
+					return Equals(s);
+
+				case SafeAllocatedMemoryHandle m:
+					return m == handle;
+
+				default:
+					return false;
+			}
+		}
+
+		/// <summary>Returns a hash code for this instance.</summary>
+		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+		public override int GetHashCode() => ToString()?.GetHashCode() ?? 0;
 
 		/// <summary>Returns the string value held by this instance.</summary>
 		/// <returns>A <see cref="System.String"/> value held by this instance or <c>null</c> if the handle is invalid.</returns>
