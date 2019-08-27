@@ -30,8 +30,8 @@ namespace Vanara.PInvoke
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>
 		/// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value
-		/// Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref
-		/// name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
+		/// Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to
+		/// <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 		/// </returns>
 		public int CompareTo(Win32Error other) => value.CompareTo(other.value);
 
@@ -108,6 +108,12 @@ namespace Vanara.PInvoke
 		[System.Diagnostics.DebuggerStepThrough]
 		public static void ThrowLastError(string message = null) => GetLastError().ThrowIfFailed(message);
 
+		/// <summary>Throws if the last error failed, unless the error is the specified value.</summary>
+		/// <param name="exception">The failure code to ignore.</param>
+		/// <param name="message">The message to associate with the exception.</param>
+		[System.Diagnostics.DebuggerStepThrough]
+		public static void ThrowLastErrorUnless(Win32Error exception, string message = null) => GetLastError().ThrowUnless(exception, message);
+
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public override string ToString()
@@ -120,8 +126,8 @@ namespace Vanara.PInvoke
 			return string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", value);
 		}
 
-		/// <summary>To the hresult.</summary>
-		/// <returns></returns>
+		/// <summary>Converts this error to an <see cref="HRESULT"/>.</summary>
+		/// <returns>The <see cref="HRESULT"/> equivalent of this error.</returns>
 		public HRESULT ToHRESULT() => (HRESULT)this;
 
 		/// <summary>Throws if failed.</summary>
@@ -131,6 +137,15 @@ namespace Vanara.PInvoke
 		public void ThrowIfFailed(string message = null)
 		{
 			if (value != ERROR_SUCCESS) throw GetException(message);
+		}
+
+		/// <summary>Throws if failed, unless the error is the specified value.</summary>
+		/// <param name="exception">The failure code to ignore.</param>
+		/// <param name="message">The message.</param>
+		[System.Diagnostics.DebuggerStepThrough]
+		public void ThrowUnless(Win32Error exception, string message = null)
+		{
+			if (value != ERROR_SUCCESS && value != (int)exception) throw GetException(message);
 		}
 
 		/// <summary>Throws if failed.</summary>
