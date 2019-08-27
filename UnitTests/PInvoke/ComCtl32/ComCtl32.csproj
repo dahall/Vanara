@@ -59,6 +59,10 @@
       <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
       <Name>Vanara.PInvoke.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\User32\Vanara.PInvoke.User32.csproj">
+      <Project>{a6771907-addc-49fc-8444-a97aa65e77e2}</Project>
+      <Name>Vanara.PInvoke.User32</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

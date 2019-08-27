@@ -4,31 +4,12 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.User32;
-using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke.Tests
 {
 	[TestFixture()]
-	public class User32Tests
+	public partial class User32Tests
 	{
-		[Test()]
-		public void CallNextHookExTest()
-		{
-			throw new NotImplementedException();
-		}
-
-		[Test()]
-		public void ChildWindowFromPointExTest()
-		{
-			throw new NotImplementedException();
-		}
-
-		[Test()]
-		public void DestroyIconTest()
-		{
-			throw new NotImplementedException();
-		}
-
 		[Test]
 		public void GetGestureConfigTest()
 		{
