@@ -1,14 +1,18 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke.Tests
 {
 	[TestFixture()]
-	public class ServiceTests
+	public class WinSvcTests
 	{
 		private const string svcKey = "Windows Management Instrumentation";
 		private const string svcName = "Winmgmt";
@@ -32,14 +36,70 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
+		public void ChangeAndQueryServiceConfig2Test()
+		{
+			Assert.That(QueryServiceConfig2(hSvc, ServiceConfigOption.SERVICE_CONFIG_DESCRIPTION, out SERVICE_DESCRIPTION sd), ResultIs.Successful);
+			Assert.That(ChangeServiceConfig2(hSvc, ServiceConfigOption.SERVICE_CONFIG_DESCRIPTION, sd), ResultIs.Successful);
+			Thread.Sleep(10000);
+		}
+
+		[Test]
+		[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
+		public void ChangeAndQueryServiceConfigTest()
+		{
+			var st = GetStartType();
+			Assert.That(ChangeServiceConfig(hSvc, ServiceTypes.SERVICE_NO_CHANGE, ServiceStartType.SERVICE_DISABLED, ServiceErrorControlType.SERVICE_NO_CHANGE), ResultIs.Successful);
+			Thread.Sleep(10000);
+
+			Assert.That(GetStartType(), Is.EqualTo(ServiceStartType.SERVICE_DISABLED));
+			Assert.That(ChangeServiceConfig(hSvc, ServiceTypes.SERVICE_NO_CHANGE, st, ServiceErrorControlType.SERVICE_NO_CHANGE), ResultIs.Successful);
+			Assert.That(GetStartType(), Is.EqualTo(st));
+
+			ServiceStartType GetStartType()
+			{
+				using (var info = new SafeHGlobalHandle(1024))
+				{
+					Assert.That(QueryServiceConfig(hSvc, info, info.Size, out var _), ResultIs.Successful);
+					var qsc = info.ToStructure<QUERY_SERVICE_CONFIG>();
+					return qsc.dwStartType;
+				}
+			}
+		}
+
+		[Test]
+		public void ControlServiceExTest()
+		{
+			var reason = new SERVICE_CONTROL_STATUS_REASON_PARAMS();
+			Assert.That(ControlServiceEx(hSvc, ServiceControl.SERVICE_CONTROL_PAUSE, ServiceInfoLevels.SERVICE_CONTROL_STATUS_REASON_INFO, ref reason), ResultIs.Successful);
+			Thread.Sleep((int)reason.serviceStatus.dwWaitHint);
+			Assert.That(GetState(hSvc), Is.EqualTo(ServiceState.SERVICE_PAUSED).Or.EqualTo(ServiceState.SERVICE_PAUSE_PENDING));
+			Assert.That(ControlServiceEx(hSvc, ServiceControl.SERVICE_CONTROL_CONTINUE, ServiceInfoLevels.SERVICE_CONTROL_STATUS_REASON_INFO, ref reason), ResultIs.Successful);
+			Thread.Sleep((int)reason.serviceStatus.dwWaitHint);
+			Assert.That(GetState(hSvc), Is.EqualTo(ServiceState.SERVICE_RUNNING));
+		}
+
+		[Test]
 		public void ControlServiceTest()
 		{
-			Assert.That(ControlService(hSvc, ServiceControl.SERVICE_CONTROL_PAUSE, out var status), Is.True);
+			Assert.That(ControlService(hSvc, ServiceControl.SERVICE_CONTROL_PAUSE, out var status), ResultIs.Successful);
 			Thread.Sleep((int)status.dwWaitHint);
 			Assert.That(GetState(hSvc), Is.EqualTo(ServiceState.SERVICE_PAUSED).Or.EqualTo(ServiceState.SERVICE_PAUSE_PENDING));
-			Assert.That(ControlService(hSvc, ServiceControl.SERVICE_CONTROL_CONTINUE, out status), Is.True);
+			Assert.That(ControlService(hSvc, ServiceControl.SERVICE_CONTROL_CONTINUE, out status), ResultIs.Successful);
 			Thread.Sleep((int)status.dwWaitHint);
 			Assert.That(GetState(hSvc), Is.EqualTo(ServiceState.SERVICE_RUNNING));
+		}
+
+		[Test]
+		public void CreateDeleteServiceTest()
+		{
+			var access = (uint)ServiceAccessRights.SERVICE_ALL_ACCESS;
+			const string path = @"C:\Temp\DummyWindowsService.exe";
+			SafeSC_HANDLE hMySvc;
+			Assert.That(hMySvc = CreateService(hSvcMgr, "Dummy", "Dummy service", access, ServiceTypes.SERVICE_USER_OWN_PROCESS, ServiceStartType.SERVICE_DEMAND_START,
+				ServiceErrorControlType.SERVICE_ERROR_NORMAL, path), ResultIs.ValidHandle);
+			using (hMySvc)
+				Assert.That(DeleteService(hMySvc), ResultIs.Successful);
 		}
 
 		[Test]
@@ -71,9 +131,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var sb = new StringBuilder(1024, 1024);
 			var sz = (uint)sb.Capacity;
-			var ret = GetServiceDisplayName(hSvcMgr, svcName, sb, ref sz);
-			TestContext.WriteLine(ret ? sb.ToString() : $"Error: {Win32Error.GetLastError()}");
-			Assert.That(ret, Is.True);
+			Assert.That(GetServiceDisplayName(hSvcMgr, svcName, sb, ref sz), ResultIs.Successful);
 			Assert.That(sb.ToString(), Is.EqualTo(svcKey));
 		}
 
@@ -88,30 +146,46 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void LockServiceDatabaseTest()
+		{
+			SC_LOCK hLock;
+			Assert.That(hLock = LockServiceDatabase(hSvcMgr), ResultIs.ValidHandle);
+			Assert.That(UnlockServiceDatabase(hLock), ResultIs.Successful);
+		}
+
+		[Test]
 		public void NotifyServiceStatusChangeTest()
 		{
 			var cnt = 0;
+			ManualResetEvent evt;
 			Thread.BeginThreadAffinity();
-			var callback = new PFN_SC_NOTIFY_CALLBACK(ChangeDelegate);
-			GC.KeepAlive(callback);
-			var svcNotify = new SERVICE_NOTIFY_2
+			try
 			{
-				dwVersion = 2,
-				pfnNotifyCallback = callback
-			};
-			GC.KeepAlive(svcNotify);
-			//Assert.That(NotifyServiceStatusChange(hSvc, SERVICE_NOTIFY_FLAGS.SERVICE_NOTIFY_PAUSED | SERVICE_NOTIFY_FLAGS.SERVICE_NOTIFY_PAUSE_PENDING | SERVICE_NOTIFY_FLAGS.SERVICE_NOTIFY_CONTINUE_PENDING, svcNotify), ResultIs.Successful);
-			var th = new Thread(ThreadExec);
-			th.Start((SC_HANDLE)hSvc);
-			while (th.IsAlive)
-				Kernel32.SleepEx(100, true);
-			Thread.EndThreadAffinity();
-			//Assert.That(cnt, Is.EqualTo(3));
+				PFN_SC_NOTIFY_CALLBACK callback = ChangeDelegate;
+				var svcNotify = new SERVICE_NOTIFY_2
+				{
+					dwVersion = 2,
+					pfnNotifyCallback = Marshal.GetFunctionPointerForDelegate(callback),
+				};
+				using (evt = new ManualResetEvent(false))
+				using (var pNotify = new PinnedObject(svcNotify))
+				{
+					Assert.That(NotifyServiceStatusChange(hSvc, SERVICE_NOTIFY_FLAGS.SERVICE_NOTIFY_PAUSED | SERVICE_NOTIFY_FLAGS.SERVICE_NOTIFY_PAUSE_PENDING | SERVICE_NOTIFY_FLAGS.SERVICE_NOTIFY_CONTINUE_PENDING, pNotify), ResultIs.Successful);
+					var th = new Thread(ThreadExec);
+					th.Start((SC_HANDLE)hSvc);
+					while (!evt.WaitOne(5)) ;
+					Assert.That(cnt, Is.GreaterThan(0));
+				}
+			}
+			finally
+			{
+				Thread.EndThreadAffinity();
+			}
 
-			void ChangeDelegate(in SERVICE_NOTIFY_2 pParameter)
+			void ChangeDelegate(IntPtr pParameter)
 			{
+				System.Diagnostics.Debug.WriteLine(pParameter.ToStructure<SERVICE_NOTIFY_2>().ServiceStatus.dwCurrentState);
 				cnt++;
-				System.Diagnostics.Debug.WriteLine(pParameter.ServiceStatus.dwCurrentState);
 			}
 
 			void ThreadExec(object handle)
@@ -125,6 +199,8 @@ namespace Vanara.PInvoke.Tests
 				if (!ControlService(svc, ServiceControl.SERVICE_CONTROL_CONTINUE, out _))
 					System.Diagnostics.Debug.WriteLine($"Pausing failed: {Win32Error.GetLastError()}");
 				WaitForServiceStatus(svc, ServiceState.SERVICE_RUNNING);
+				System.Diagnostics.Debug.WriteLine("Running...");
+				evt.Set();
 			}
 		}
 
@@ -147,6 +223,15 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
+		[Test()]
+		[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
+		public void QueryServiceConfig2Test()
+		{
+			Assert.That(QueryServiceConfig2(hSvc, ServiceConfigOption.SERVICE_CONFIG_DESCRIPTION, out SERVICE_DESCRIPTION sd), ResultIs.Successful);
+			Assert.That(sd.lpDescription, Is.Not.Null);
+			TestContext.WriteLine(sd.lpDescription);
+		}
+
 		[Test]
 		public void QueryServiceStatusExTest()
 		{
@@ -155,15 +240,73 @@ namespace Vanara.PInvoke.Tests
 
 			Assert.That(status.dwServiceType, Is.EqualTo(ServiceTypes.SERVICE_WIN32));
 			Assert.That(status.dwServiceFlags, Is.EqualTo(0));
+			status.WriteValues();
 		}
 
 		[Test]
 		public void QueryServiceStatusTest()
 		{
-			//query service status
-			var ret = QueryServiceStatus(hSvc, out var i);
-			TestContext.WriteLine(ret ? i.dwCurrentState.ToString() : $"Error: {Win32Error.GetLastError()}");
-			Assert.That(ret, Is.True);
+			Assert.That(QueryServiceStatus(hSvc, out var i), ResultIs.Successful);
+			i.WriteValues();
+		}
+
+		[Test]
+		public void QuerySetServiceObjectSecurityTest()
+		{
+			using (var pSD = new SafePSECURITY_DESCRIPTOR(1024))
+			{
+				Assert.That(QueryServiceObjectSecurity(hSvc, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, pSD, pSD.Size, out var req), ResultIs.Successful);
+				Assert.That(SetServiceObjectSecurity(hSvc, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, pSD), ResultIs.Successful);
+			}
+		}
+
+		// [Test] These functions can only be called from within a service executable
+		public void RegisterQueryBitsServiceCtrlHandlerTest()
+		{
+			SERVICE_STATUS_HANDLE hSt;
+			Assert.That(hSt = RegisterServiceCtrlHandler(svcName, HandlerProc), ResultIs.ValidHandle);
+			Assert.That(SetServiceBits(hSt, 3, true, true), ResultIs.Successful);
+			Assert.That(QueryServiceDynamicInformation(hSt, SERVICE_DYNAMIC_INFORMATION_LEVEL_START_REASON, out var info), ResultIs.Successful);
+			using (info)
+				TestContext.Write(info.ToStructure<SERVICE_START_REASON>().dwReason);
+
+			void HandlerProc(ServiceControl dwControl)
+			{
+			}
+		}
+
+		// [Test] These functions can only be called from within a service executable
+		public void RegisterServiceCtrlHandlerExTest()
+		{
+			SERVICE_STATUS_HANDLE hSt;
+			Assert.That(hSt = RegisterServiceCtrlHandlerEx(svcName, HandlerProc, default), ResultIs.ValidHandle);
+			var hServStatus = new SERVICE_STATUS
+			{
+				dwServiceType = ServiceTypes.SERVICE_WIN32_OWN_PROCESS,
+				dwCurrentState = ServiceState.SERVICE_START_PENDING,
+				dwControlsAccepted = ServiceAcceptedControlCodes.SERVICE_ACCEPT_STOP | ServiceAcceptedControlCodes.SERVICE_ACCEPT_SHUTDOWN | ServiceAcceptedControlCodes.SERVICE_ACCEPT_PAUSE_CONTINUE,
+				dwWin32ExitCode = Win32Error.ERROR_SERVICE_SPECIFIC_ERROR,
+				dwWaitHint = 2 * 100
+			};
+			Assert.That(SetServiceStatus(hSt, hServStatus), ResultIs.Successful);
+
+			Win32Error HandlerProc(ServiceControl dwControl, uint dwEventType, IntPtr lpEventData, IntPtr lpContext)
+			{
+				return Win32Error.ERROR_SUCCESS;
+			}
+		}
+
+		// [Test] These functions can only be called from within a service executable
+		public void StartServiceCtrlDispatcherTest()
+		{
+			var dispatchTable = new[]
+			{
+				new SERVICE_TABLE_ENTRY("Dummy", DummyProc),
+				new SERVICE_TABLE_ENTRY()
+			};
+			Assert.That(StartServiceCtrlDispatcher(dispatchTable), ResultIs.Successful);
+
+			void DummyProc(uint dwNumServicesArgs, string[] lpServiceArgVectors) => throw new NotImplementedException();
 		}
 
 		[Test]

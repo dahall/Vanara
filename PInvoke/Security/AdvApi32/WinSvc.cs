@@ -9,6 +9,8 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		public const uint SERVICE_DYNAMIC_INFORMATION_LEVEL_START_REASON = 1;
+
 		/// <summary>
 		/// <para>
 		/// An application-defined callback function used with the RegisterServiceCtrlHandler function. A service program can use it as the
@@ -80,11 +82,347 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		public delegate void Handler(ServiceControl dwControl);
 
+		/// <summary>
+		/// <para>
+		/// An application-defined callback function used with the RegisterServiceCtrlHandlerEx function. A service program can use it as the
+		/// control handler function of a particular service.
+		/// </para>
+		/// <para>
+		/// The <c>LPHANDLER_FUNCTION_EX</c> type defines a pointer to this function. <c>HandlerEx</c> is a placeholder for the
+		/// application-defined name.
+		/// </para>
+		/// <para>
+		/// This function supersedes the Handler control handler function used with the RegisterServiceCtrlHandler function. A service can
+		/// use either control handler, but the new control handler supports user-defined context data and additional extended control codes.
+		/// </para>
+		/// </summary>
+		/// <param name="dwControl">
+		/// <para>The control code. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Control code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SERVICE_CONTROL_CONTINUE 0x00000003</term>
+		/// <term>Notifies a paused service that it should resume.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_INTERROGATE 0x00000004</term>
+		/// <term>
+		/// Notifies a service to report its current status information to the service control manager. The handler should simply return
+		/// NO_ERROR; the SCM is aware of the current state of the service.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_NETBINDADD 0x00000007</term>
+		/// <term>
+		/// Notifies a network service that there is a new component for binding. The service should bind to the new component. Applications
+		/// should use Plug and Play functionality instead.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_NETBINDDISABLE 0x0000000A</term>
+		/// <term>
+		/// Notifies a network service that one of its bindings has been disabled. The service should reread its binding information and
+		/// remove the binding. Applications should use Plug and Play functionality instead.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_NETBINDENABLE 0x00000009</term>
+		/// <term>
+		/// Notifies a network service that a disabled binding has been enabled. The service should reread its binding information and add
+		/// the new binding. Applications should use Plug and Play functionality instead.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_NETBINDREMOVE 0x00000008</term>
+		/// <term>
+		/// Notifies a network service that a component for binding has been removed. The service should reread its binding information and
+		/// unbind from the removed component. Applications should use Plug and Play functionality instead.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_PARAMCHANGE 0x00000006</term>
+		/// <term>Notifies a service that service-specific startup parameters have changed. The service should reread its startup parameters.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_PAUSE 0x00000002</term>
+		/// <term>Notifies a service that it should pause.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_PRESHUTDOWN 0x0000000F</term>
+		/// <term>
+		/// Notifies a service that the system will be shutting down. Services that need additional time to perform cleanup tasks beyond the
+		/// tight time restriction at system shutdown can use this notification. The service control manager sends this notification to
+		/// applications that have registered for it before sending a SERVICE_CONTROL_SHUTDOWN notification to applications that have
+		/// registered for that notification. A service that handles this notification blocks system shutdown until the service stops or the
+		/// preshutdown time-out interval specified through SERVICE_PRESHUTDOWN_INFO expires. Because this affects the user experience,
+		/// services should use this feature only if it is absolutely necessary to avoid data loss or significant recovery time at the next
+		/// system start. Windows Server 2003 and Windows XP: This value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_SHUTDOWN 0x00000005</term>
+		/// <term>
+		/// Notifies a service that the system is shutting down so the service can perform cleanup tasks. Note that services that register
+		/// for SERVICE_CONTROL_PRESHUTDOWN notifications cannot receive this notification because they have already stopped. If a service
+		/// accepts this control code, it must stop after it performs its cleanup tasks and return NO_ERROR. After the SCM sends this control
+		/// code, it will not send other control codes to the service. For more information, see the Remarks section of this topic.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_STOP 0x00000001</term>
+		/// <term>
+		/// Notifies a service that it should stop. If a service accepts this control code, it must stop upon receipt and return NO_ERROR.
+		/// After the SCM sends this control code, it will not send other control codes to the service. Windows XP: If the service returns
+		/// NO_ERROR and continues to run, it continues to receive control codes. This behavior changed starting with Windows Server 2003 and
+		/// Windows XP with SP2.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// This parameter can also be one of the following extended control codes. Note that these control codes are not supported by the
+		/// Handler function.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Control Code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SERVICE_CONTROL_DEVICEEVENT 0x0000000B</term>
+		/// <term>
+		/// Notifies a service of device events. (The service must have registered to receive these notifications using the
+		/// RegisterDeviceNotification function.) The dwEventType and lpEventData parameters contain additional information.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_HARDWAREPROFILECHANGE 0x0000000C</term>
+		/// <term>Notifies a service that the computer's hardware profile has changed. The dwEventType parameter contains additional information.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_POWEREVENT 0x0000000D</term>
+		/// <term>
+		/// Notifies a service of system power events. The dwEventType parameter contains additional information. If dwEventType is
+		/// PBT_POWERSETTINGCHANGE, the lpEventData parameter also contains additional information.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_SESSIONCHANGE 0x0000000E</term>
+		/// <term>
+		/// Notifies a service of session change events. Note that a service will only be notified of a user logon if it is fully loaded
+		/// before the logon attempt is made. The dwEventType and lpEventData parameters contain additional information.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_TIMECHANGE 0x00000010</term>
+		/// <term>
+		/// Notifies a service that the system time has changed. The lpEventData parameter contains additional information. The dwEventType
+		/// parameter is not used. Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This control code is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_TRIGGEREVENT 0x00000020</term>
+		/// <term>
+		/// Notifies a service registered for a service trigger event that the event has occurred. Windows Server 2008, Windows Vista,
+		/// Windows Server 2003 and Windows XP: This control code is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_CONTROL_USERMODEREBOOT 0x00000040</term>
+		/// <term>
+		/// Notifies a service that the user has initiated a reboot. Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista,
+		/// Windows Server 2003 and Windows XP: This control code is not supported.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>This parameter can also be a user-defined control code, as described in the following table.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Control code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Range 128 to 255.</term>
+		/// <term>The service defines the action associated with the control code.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwEventType">
+		/// <para>
+		/// The type of event that has occurred. This parameter is used if dwControl is <c>SERVICE_CONTROL_DEVICEEVENT</c>,
+		/// <c>SERVICE_CONTROL_HARDWAREPROFILECHANGE</c>, <c>SERVICE_CONTROL_POWEREVENT</c>, or <c>SERVICE_CONTROL_SESSIONCHANGE</c>.
+		/// Otherwise, it is zero.
+		/// </para>
+		/// <para>If dwControl is <c>SERVICE_CONTROL_DEVICEEVENT</c>, this parameter can be one of the following values:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>DBT_DEVICEARRIVAL</term>
+		/// </item>
+		/// <item>
+		/// <term>DBT_DEVICEREMOVECOMPLETE</term>
+		/// </item>
+		/// <item>
+		/// <term>DBT_DEVICEQUERYREMOVE</term>
+		/// </item>
+		/// <item>
+		/// <term>DBT_DEVICEQUERYREMOVEFAILED</term>
+		/// </item>
+		/// <item>
+		/// <term>DBT_DEVICEREMOVEPENDING</term>
+		/// </item>
+		/// <item>
+		/// <term>DBT_CUSTOMEVENT</term>
+		/// </item>
+		/// </list>
+		/// <para>If</para>
+		/// <para>dwControl</para>
+		/// <para>is</para>
+		/// <para>SERVICE_CONTROL_HARDWAREPROFILECHANGE</para>
+		/// <para>, this parameter can be one of the following values:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>DBT_CONFIGCHANGED</term>
+		/// </item>
+		/// <item>
+		/// <term>DBT_QUERYCHANGECONFIG</term>
+		/// </item>
+		/// <item>
+		/// <term>DBT_CONFIGCHANGECANCELED</term>
+		/// </item>
+		/// </list>
+		/// <para>If</para>
+		/// <para>dwControl</para>
+		/// <para>is</para>
+		/// <para>SERVICE_CONTROL_POWEREVENT</para>
+		/// <para>, this parameter can be one of the values specified in the</para>
+		/// <para>wParam</para>
+		/// <para>parameter of the</para>
+		/// <para>WM_POWERBROADCAST</para>
+		/// <para>message.</para>
+		/// <para>
+		/// If dwControl is <c>SERVICE_CONTROL_SESSIONCHANGE</c>, this parameter can be one of the values specified in the wParam parameter
+		/// of the WM_WTSSESSION_CHANGE message.
+		/// </para>
+		/// </param>
+		/// <param name="lpEventData">
+		/// <para>
+		/// Additional device information, if required. The format of this data depends on the value of the dwControl and dwEventType parameters.
+		/// </para>
+		/// <para>
+		/// If dwControl is <c>SERVICE_CONTROL_DEVICEEVENT</c>, this data corresponds to the lParam parameter that applications receive as
+		/// part of a WM_DEVICECHANGE message.
+		/// </para>
+		/// <para>
+		/// If dwControl is <c>SERVICE_CONTROL_POWEREVENT</c> and dwEventType is PBT_POWERSETTINGCHANGE, this data is a pointer to a
+		/// POWERBROADCAST_SETTING structure.
+		/// </para>
+		/// <para>If dwControl is <c>SERVICE_CONTROL_SESSIONCHANGE</c>, this parameter is a pointer to a WTSSESSION_NOTIFICATION structure.</para>
+		/// <para>If dwControl is <c>SERVICE_CONTROL_TIMECHANGE</c>, this data is a pointer to a SERVICE_TIMECHANGE_INFO structure.</para>
+		/// </param>
+		/// <param name="lpContext">
+		/// User-defined data passed from RegisterServiceCtrlHandlerEx. When multiple services share a process, the lpContext parameter can
+		/// help identify the service.
+		/// </param>
+		/// <returns>
+		/// <para>The return value for this function depends on the control code received.</para>
+		/// <para>The following list identifies the rules for this return value:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// In general, if your service does not handle the control, return <c>ERROR_CALL_NOT_IMPLEMENTED</c>. However, your service should
+		/// return <c>NO_ERROR</c> for <c>SERVICE_CONTROL_INTERROGATE</c> even if your service does not handle it.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>If your service handles <c>SERVICE_CONTROL_STOP</c> or <c>SERVICE_CONTROL_SHUTDOWN</c>, return <c>NO_ERROR</c>.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If your service handles <c>SERVICE_CONTROL_DEVICEEVENT</c>, return <c>NO_ERROR</c> to grant the request and an error code to deny
+		/// the request.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If your service handles <c>SERVICE_CONTROL_HARDWAREPROFILECHANGE</c>, return <c>NO_ERROR</c> to grant the request and an error
+		/// code to deny the request.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If your service handles <c>SERVICE_CONTROL_POWEREVENT</c>, return <c>NO_ERROR</c> to grant the request and an error code to deny
+		/// the request.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>For all other control codes your service handles, return <c>NO_ERROR</c>.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When a service is started, its ServiceMain function should immediately call the RegisterServiceCtrlHandlerEx function to specify
+		/// a <c>HandlerEx</c> function to process control requests. To specify the control codes to be accepted, use the SetServiceStatus
+		/// and RegisterDeviceNotification functions.
+		/// </para>
+		/// <para>
+		/// The control dispatcher in the main thread of a service invokes the control handler function for the specified service whenever it
+		/// receives a control request from the service control manager. After processing the control request, the control handler must call
+		/// SetServiceStatus if the service state changes to report its new status to the service control manager.
+		/// </para>
+		/// <para>
+		/// The control handler function is intended to receive notification and return immediately. The callback function should save its
+		/// parameters and create other threads to perform additional work. (Your application must ensure that such threads have exited
+		/// before stopping the service.) In particular, a control handler should avoid operations that might block, such as taking a lock,
+		/// because this could result in a deadlock or cause the system to stop responding.
+		/// </para>
+		/// <para>
+		/// When the service control manager sends a control code to a service, it waits for the handler function to return before sending
+		/// additional control codes to other services. The control handler should return as quickly as possible; if it does not return
+		/// within 30 seconds, the SCM returns an error. If a service must do lengthy processing when the service is executing the control
+		/// handler, it should create a secondary thread to perform the lengthy processing, and then return from the control handler. This
+		/// prevents the service from tying up the control dispatcher and blocking other services from receiving control codes.
+		/// </para>
+		/// <para>
+		/// The <c>SERVICE_CONTROL_SHUTDOWN</c> control code should only be processed by services that must absolutely clean up during
+		/// shutdown, because there is a limited time (about 20 seconds) available for service shutdown. After this time expires, system
+		/// shutdown proceeds regardless of whether service shutdown is complete. Note that if the system is left in the shutdown state (not
+		/// restarted or powered down), the service continues to run. If your service registers to accept <c>SERVICE_CONTROL_SHUTDOWN</c>, it
+		/// must handle the control code and return <c>NO_ERROR</c>. Returning an error for this control code and not stopping in a timely
+		/// fashion can increase the time required to shut down the system, because the system must wait for the full amount of time allowed
+		/// for service shutdown before system shutdown can proceed.
+		/// </para>
+		/// <para>
+		/// If the service requires more time to clean up, it should send <c>STOP_PENDING</c> status messages, along with a wait hint, so the
+		/// service controller knows how long to wait before reporting to the system that service shutdown is complete. However, to prevent a
+		/// service from stopping shutdown, there is a limit to how long the service controller waits. If the service is being shut down
+		/// through the Services snap-in, the limit is 125 seconds. If the operating system is rebooting, the time limit is specified in the
+		/// <c>WaitToKillServiceTimeout</c> value of the following registry key:
+		/// </para>
+		/// <para><c>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control</c></para>
+		/// <para>
+		/// Be sure to handle Plug and Play device events as quickly as possible; otherwise, the system may become unresponsive. If your
+		/// event handler is to perform an operation that may block execution (such as I/O), it is best to start another thread to perform
+		/// the operation asynchronously.
+		/// </para>
+		/// <para>
+		/// Services can also use the SetConsoleCtrlHandler function to receive shutdown notification. This notification is received when the
+		/// running applications are shutting down, which occurs before services are shut down.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsvc/nc-winsvc-lphandler_function_ex LPHANDLER_FUNCTION_EX
+		// LphandlerFunctionEx; DWORD LphandlerFunctionEx( DWORD dwControl, DWORD dwEventType, LPVOID lpEventData, LPVOID lpContext ) {...}
+		[PInvokeData("winsvc.h", MSDNShortId = "bb1b863f-e29f-496f-a50e-9ea524fe8603")]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate Win32Error HandlerEx(ServiceControl dwControl, uint dwEventType, IntPtr lpEventData, IntPtr lpContext);
+
 		/// <summary>Callback function used in <see cref="SERVICE_NOTIFY_2"/> to alert changes registered by <see cref="NotifyServiceStatusChange"/>.</summary>
 		/// <param name="pParameter">A pointer to the SERVICE_NOTIFY structure provided by the caller.</param>
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		[PInvokeData("winsvc.h", MSDNShortId = "52ede72e-eb50-48e2-b5c1-125816f6fe57")]
-		public delegate void PFN_SC_NOTIFY_CALLBACK(in SERVICE_NOTIFY_2 pParameter);
+		public delegate void PFN_SC_NOTIFY_CALLBACK(IntPtr pParameter); //in SERVICE_NOTIFY_2 pParameter);
 
 		/// <summary>
 		/// <para>The entry point for a service.</para>
@@ -224,47 +562,6 @@ namespace Vanara.PInvoke
 											  SC_MANAGER_LOCK |
 											  SC_MANAGER_QUERY_LOCK_STATUS |
 											  SC_MANAGER_MODIFY_BOOT_CONFIG
-		}
-
-		[Flags]
-		public enum ServiceAccessRights : uint
-		{
-			/// <summary>Includes STANDARD_RIGHTS_REQUIRED in addition to all access rights in this table.</summary>
-			SERVICE_ALL_ACCESS = 0xF01FF,
-			/// <summary>Required to call the ChangeServiceConfig or ChangeServiceConfig2 function to change the service configuration. Because this grants the caller the right to change the executable file that the system runs, it should be granted only to administrators.</summary>
-			SERVICE_CHANGE_CONFIG = 0x0002,
-			/// <summary>Required to call the EnumDependentServices function to enumerate all the services dependent on the service.</summary>
-			SERVICE_ENUMERATE_DEPENDENTS = 0x0008,
-			/// <summary>Required to call the ControlService function to ask the service to report its status immediately.</summary>
-			SERVICE_INTERROGATE = 0x0080,
-			/// <summary>Required to call the ControlService function to pause or continue the service.</summary>
-			SERVICE_PAUSE_CONTINUE = 0x0040,
-			/// <summary>Required to call the QueryServiceConfig and QueryServiceConfig2 functions to query the service configuration.</summary>
-			SERVICE_QUERY_CONFIG = 0x0001,
-			/// <summary>Required to call the QueryServiceStatus or QueryServiceStatusEx function to ask the service control manager about the status of the service.
-			/// <para>Required to call the NotifyServiceStatusChange function to receive notification when a service changes status.</para></summary>
-			SERVICE_QUERY_STATUS = 0x0004,
-			/// <summary>Required to call the StartService function to start the service.</summary>
-			SERVICE_START = 0x0010,
-			/// <summary>Required to call the ControlService function to stop the service.</summary>
-			SERVICE_STOP = 0x0020,
-			/// <summary>Required to call the ControlService function to specify a user-defined control code.</summary>
-			SERVICE_USER_DEFINED_CONTROL = 0x0100,
-
-			/// <summary>Required to call the QueryServiceObjectSecurity or SetServiceObjectSecurity function to access the SACL. The proper way to obtain this access is to enable the SE_SECURITY_NAMEprivilege in the caller's current access token, open the handle for ACCESS_SYSTEM_SECURITY access, and then disable the privilege.</summary>
-			ACCESS_SYSTEM_SECURITY = 0x01000000,
-			/// <summary>Required to call the DeleteService function to delete the service.</summary>
-			DELETE = ACCESS_MASK.DELETE,
-			/// <summary>Required to call the QueryServiceObjectSecurity function to query the security descriptor of the service object.</summary>
-			READ_CONTROL = ACCESS_MASK.READ_CONTROL,
-			/// <summary>Required to call the SetServiceObjectSecurity function to modify the Dacl member of the service object's security descriptor.</summary>
-			WRITE_DAC = ACCESS_MASK.WRITE_DAC,
-			/// <summary>Required to call the SetServiceObjectSecurity function to modify the Owner and Group members of the service object's security descriptor.</summary>
-			WRITE_OWNER = ACCESS_MASK.WRITE_OWNER,
-
-			GENERIC_READ = ACCESS_MASK.STANDARD_RIGHTS_READ | SERVICE_QUERY_CONFIG | SERVICE_QUERY_STATUS | SERVICE_INTERROGATE | SERVICE_ENUMERATE_DEPENDENTS,
-			GENERIC_WRITE = ACCESS_MASK.STANDARD_RIGHTS_WRITE | SERVICE_CHANGE_CONFIG,
-			GENERIC_EXECUTE = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE | SERVICE_START | SERVICE_STOP | SERVICE_PAUSE_CONTINUE | SERVICE_USER_DEFINED_CONTROL,
 		}
 
 		/// <summary>The type of status changes that should be reported.</summary>
@@ -492,6 +789,74 @@ namespace Vanara.PInvoke
 			SERVICE_ACCEPT_SYSTEMLOWRESOURCES = 0x00004000,
 		}
 
+		[Flags]
+		public enum ServiceAccessRights : uint
+		{
+			/// <summary>Includes STANDARD_RIGHTS_REQUIRED in addition to all access rights in this table.</summary>
+			SERVICE_ALL_ACCESS = 0xF01FF,
+
+			/// <summary>
+			/// Required to call the ChangeServiceConfig or ChangeServiceConfig2 function to change the service configuration. Because this
+			/// grants the caller the right to change the executable file that the system runs, it should be granted only to administrators.
+			/// </summary>
+			SERVICE_CHANGE_CONFIG = 0x0002,
+
+			/// <summary>Required to call the EnumDependentServices function to enumerate all the services dependent on the service.</summary>
+			SERVICE_ENUMERATE_DEPENDENTS = 0x0008,
+
+			/// <summary>Required to call the ControlService function to ask the service to report its status immediately.</summary>
+			SERVICE_INTERROGATE = 0x0080,
+
+			/// <summary>Required to call the ControlService function to pause or continue the service.</summary>
+			SERVICE_PAUSE_CONTINUE = 0x0040,
+
+			/// <summary>Required to call the QueryServiceConfig and QueryServiceConfig2 functions to query the service configuration.</summary>
+			SERVICE_QUERY_CONFIG = 0x0001,
+
+			/// <summary>
+			/// Required to call the QueryServiceStatus or QueryServiceStatusEx function to ask the service control manager about the status
+			/// of the service.
+			/// <para>Required to call the NotifyServiceStatusChange function to receive notification when a service changes status.</para>
+			/// </summary>
+			SERVICE_QUERY_STATUS = 0x0004,
+
+			/// <summary>Required to call the StartService function to start the service.</summary>
+			SERVICE_START = 0x0010,
+
+			/// <summary>Required to call the ControlService function to stop the service.</summary>
+			SERVICE_STOP = 0x0020,
+
+			/// <summary>Required to call the ControlService function to specify a user-defined control code.</summary>
+			SERVICE_USER_DEFINED_CONTROL = 0x0100,
+
+			/// <summary>
+			/// Required to call the QueryServiceObjectSecurity or SetServiceObjectSecurity function to access the SACL. The proper way to
+			/// obtain this access is to enable the SE_SECURITY_NAMEprivilege in the caller's current access token, open the handle for
+			/// ACCESS_SYSTEM_SECURITY access, and then disable the privilege.
+			/// </summary>
+			ACCESS_SYSTEM_SECURITY = 0x01000000,
+
+			/// <summary>Required to call the DeleteService function to delete the service.</summary>
+			DELETE = ACCESS_MASK.DELETE,
+
+			/// <summary>Required to call the QueryServiceObjectSecurity function to query the security descriptor of the service object.</summary>
+			READ_CONTROL = ACCESS_MASK.READ_CONTROL,
+
+			/// <summary>
+			/// Required to call the SetServiceObjectSecurity function to modify the Dacl member of the service object's security descriptor.
+			/// </summary>
+			WRITE_DAC = ACCESS_MASK.WRITE_DAC,
+
+			/// <summary>
+			/// Required to call the SetServiceObjectSecurity function to modify the Owner and Group members of the service object's security descriptor.
+			/// </summary>
+			WRITE_OWNER = ACCESS_MASK.WRITE_OWNER,
+
+			GENERIC_READ = ACCESS_MASK.STANDARD_RIGHTS_READ | SERVICE_QUERY_CONFIG | SERVICE_QUERY_STATUS | SERVICE_INTERROGATE | SERVICE_ENUMERATE_DEPENDENTS,
+			GENERIC_WRITE = ACCESS_MASK.STANDARD_RIGHTS_WRITE | SERVICE_CHANGE_CONFIG,
+			GENERIC_EXECUTE = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE | SERVICE_START | SERVICE_STOP | SERVICE_PAUSE_CONTINUE | SERVICE_USER_DEFINED_CONTROL,
+		}
+
 		/// <summary>Service object specific access type</summary>
 		/// <see cref="https://docs.microsoft.com/en-gb/windows/desktop/Services/service-security-and-access-rights#access-rights-for-a-service"/>
 		[PInvokeData("winsvc.h")]
@@ -627,12 +992,6 @@ namespace Vanara.PInvoke
 		/// <summary>Service control codes to be used with <see cref="ControlService"/> and <see cref="ControlServiceEx"/></summary>
 		public enum ServiceControl : uint
 		{
-			/// <summary>
-			/// Notifies a service that it should stop. The hService handle must have the SERVICE_STOP access right. After sending the stop
-			/// request to a service, you should not send other controls to the service.
-			/// </summary>
-			SERVICE_CONTROL_STOP = 0x00000001,
-
 			/// <summary>Notifies a service that it should pause. The hService handle must have the SERVICE_PAUSE_CONTINUE access right.</summary>
 			SERVICE_CONTROL_PAUSE = 0x00000002,
 
@@ -647,9 +1006,6 @@ namespace Vanara.PInvoke
 			/// current state of the service
 			/// </summary>
 			SERVICE_CONTROL_INTERROGATE = 0x00000004,
-
-			/// <summary></summary>
-			SERVICE_CONTROL_SHUTDOWN = 0x00000005,
 
 			/// <summary>
 			/// Notifies a service that its startup parameters have changed. The hService handle must have the SERVICE_PAUSE_CONTINUE access right.
@@ -680,35 +1036,99 @@ namespace Vanara.PInvoke
 			/// </summary>
 			SERVICE_CONTROL_NETBINDDISABLE = 0x0000000A,
 
-			/// <summary></summary>
-			SERVICE_CONTROL_DEVICEEVENT = 0x0000000B,
-
-			/// <summary></summary>
-			SERVICE_CONTROL_HARDWAREPROFILECHANGE = 0x0000000C,
-
-			/// <summary></summary>
-			SERVICE_CONTROL_POWEREVENT = 0x0000000D,
-
-			/// <summary></summary>
-			SERVICE_CONTROL_SESSIONCHANGE = 0x0000000E,
-
-			/// <summary></summary>
-			SERVICE_CONTROL_PRESHUTDOWN = 0x0000000F,
-
-			/// <summary></summary>
-			SERVICE_CONTROL_TIMECHANGE = 0x00000010,
-
 			//#define SERVICE_CONTROL_USER_LOGOFF  = 0x00000011
-			/// <summary></summary>
-			SERVICE_CONTROL_TRIGGEREVENT = 0x00000020,
-
 			//reserved for internal use            = 0x00000021
 			//reserved for internal use            = 0x00000050
+
 			/// <summary></summary>
 			SERVICE_CONTROL_LOWRESOURCES = 0x00000060,
 
 			/// <summary></summary>
-			SERVICE_CONTROL_SYSTEMLOWRESOURCES = 0x00000061
+			SERVICE_CONTROL_SYSTEMLOWRESOURCES = 0x00000061,
+
+			/// <summary>
+			/// Notifies a service that the system will be shutting down. Services that need additional time to perform cleanup tasks beyond
+			/// the tight time restriction at system shutdown can use this notification. The service control manager sends this notification
+			/// to applications that have registered for it before sending a SERVICE_CONTROL_SHUTDOWN notification to applications that have
+			/// registered for that notification.
+			/// <para>
+			/// A service that handles this notification blocks system shutdown until the service stops or the pre-shutdown time-out interval
+			/// specified through SERVICE_PRESHUTDOWN_INFO expires. Because this affects the user experience, services should use this
+			/// feature only if it is absolutely necessary to avoid data loss or significant recovery time at the next system start.
+			/// </para>
+			/// <para>Windows Server 2003 and Windows XP: This value is not supported.</para>
+			/// </summary>
+			SERVICE_CONTROL_PRESHUTDOWN = 0x0000000F,
+
+			/// <summary>
+			/// Notifies a service that the system is shutting down so the service can perform cleanup tasks. Note that services that
+			/// register for SERVICE_CONTROL_PRESHUTDOWN notifications cannot receive this notification because they have already stopped.
+			/// <para>
+			/// If a service accepts this control code, it must stop after it performs its cleanup tasks and return NO_ERROR. After the SCM
+			/// sends this control code, it will not send other control codes to the service.
+			/// </para>
+			/// <para>For more information, see the Remarks section of this topic.</para>
+			/// </summary>
+			SERVICE_CONTROL_SHUTDOWN = 0x00000005,
+
+			/// <summary>
+			/// Notifies a service that it should stop.
+			/// <para>
+			/// If a service accepts this control code, it must stop upon receipt and return NO_ERROR. After the SCM sends this control code,
+			/// it will not send other control codes to the service. Windows XP: If the service returns NO_ERROR and continues to run, it
+			/// continues to receive control codes. This behavior changed starting with Windows Server 2003 and Windows XP with SP2.
+			/// </para>
+			/// <para>
+			/// This parameter can also be one of the following extended control codes. Note that these control codes are not supported by
+			/// the Handler function.
+			/// </para>
+			/// </summary>
+			SERVICE_CONTROL_STOP = 0x00000001,
+
+			/// <summary>
+			/// Notifies a service of device events. (The service must have registered to receive these notifications using the
+			/// RegisterDeviceNotification function.) The dwEventType and lpEventData parameters contain additional information.
+			/// </summary>
+			SERVICE_CONTROL_DEVICEEVENT = 0x0000000B,
+
+			/// <summary>
+			/// Notifies a service that the computer's hardware profile has changed. The dwEventType parameter contains additional information.
+			/// </summary>
+			SERVICE_CONTROL_HARDWAREPROFILECHANGE = 0x0000000C,
+
+			/// <summary>
+			/// Notifies a service of system power events. The dwEventType parameter contains additional information. If dwEventType is
+			/// PBT_POWERSETTINGCHANGE, the lpEventData parameter also contains additional information.
+			/// </summary>
+			SERVICE_CONTROL_POWEREVENT = 0x0000000D,
+
+			/// <summary>
+			/// Notifies a service of session change events. Note that a service will only be notified of a user logon if it is fully loaded
+			/// before the logon attempt is made. The dwEventType and lpEventData parameters contain additional information.
+			/// </summary>
+			SERVICE_CONTROL_SESSIONCHANGE = 0x0000000E,
+
+			/// <summary>
+			/// Notifies a service that the system time has changed. The lpEventData parameter contains additional information. The
+			/// dwEventType parameter is not used.
+			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This control code is not supported.</para>
+			/// </summary>
+			SERVICE_CONTROL_TIMECHANGE = 0x00000010,
+
+			/// <summary>
+			/// Notifies a service registered for a service trigger event that the event has occurred.
+			/// <para>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This control code is not supported.</para>
+			/// </summary>
+			SERVICE_CONTROL_TRIGGEREVENT = 0x00000020,
+
+			/// <summary>
+			/// Notifies a service that the user has initiated a reboot.
+			/// <para>
+			/// Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This control code
+			/// is not supported.
+			/// </para>
+			/// </summary>
+			SERVICE_CONTROL_USERMODEREBOOT = 0x00000040,
 		}
 
 		/// <summary>Info levels for <see cref="ControlServiceEx"/></summary>
@@ -716,6 +1136,16 @@ namespace Vanara.PInvoke
 		{
 			[CorrespondingType(typeof(SERVICE_CONTROL_STATUS_REASON_PARAMS))]
 			SERVICE_CONTROL_STATUS_REASON_INFO = 1
+		}
+
+		[Flags]
+		public enum ServiceStartReason : uint
+		{
+			SERVICE_START_REASON_DEMAND = 1 << 0,
+			SERVICE_START_REASON_AUTO = 1 << 1,
+			SERVICE_START_REASON_TRIGGER = 1 << 2,
+			SERVICE_START_REASON_RESTART_ON_FAILURE = 1 << 3,
+			SERVICE_START_REASON_DELAYEDAUTO = 1 << 4,
 		}
 
 		/// <summary>The current state of the service.</summary>
@@ -1605,7 +2035,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsvc.h", MSDNShortId = "de249903-7545-4fb6-925a-aa647f862f93")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ControlServiceEx(SC_HANDLE hService, ServiceControl dwControl, ServiceInfoLevels dwInfoLevel, in SERVICE_CONTROL_STATUS_REASON_PARAMS pControlParams);
+		public static extern bool ControlServiceEx(SC_HANDLE hService, ServiceControl dwControl, ServiceInfoLevels dwInfoLevel, ref SERVICE_CONTROL_STATUS_REASON_PARAMS pControlParams);
 
 		/// <summary>
 		/// <para>Creates a service object and adds it to the specified service control manager database.</para>
@@ -1982,9 +2412,390 @@ namespace Vanara.PInvoke
 		// lpServiceStartName, LPCSTR lpPassword );
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsvc.h", MSDNShortId = "47288924-3294-4a50-b27d-7df80d5c957c")]
-		public static extern SafeSC_HANDLE CreateService(SC_HANDLE hSCManager, string lpServiceName, string lpDisplayName, uint dwDesiredAccess, ServiceTypes dwServiceType,
+		public static extern SafeSC_HANDLE CreateService(SC_HANDLE hSCManager, string lpServiceName, [Optional] string lpDisplayName, uint dwDesiredAccess, ServiceTypes dwServiceType,
 			ServiceStartType dwStartType, ServiceErrorControlType dwErrorControl, string lpBinaryPathName, [Optional] string lpLoadOrderGroup, out uint lpdwTagId,
-			[Optional] string lpDependencies, [Optional] string lpServiceStartName, [Optional] string lpPassword);
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] lpDependencies,
+			[Optional] string lpServiceStartName, [Optional] string lpPassword);
+
+		/// <summary>
+		/// <para>Creates a service object and adds it to the specified service control manager database.</para>
+		/// </summary>
+		/// <param name="hSCManager">
+		/// <para>
+		/// A handle to the service control manager database. This handle is returned by the OpenSCManager function and must have the
+		/// <c>SC_MANAGER_CREATE_SERVICE</c> access right. For more information, see Service Security and Access Rights.
+		/// </para>
+		/// </param>
+		/// <param name="lpServiceName">
+		/// <para>
+		/// The name of the service to install. The maximum string length is 256 characters. The service control manager database preserves
+		/// the case of the characters, but service name comparisons are always case insensitive. Forward-slash (/) and backslash () are not
+		/// valid service name characters.
+		/// </para>
+		/// </param>
+		/// <param name="lpDisplayName">
+		/// <para>
+		/// The display name to be used by user interface programs to identify the service. This string has a maximum length of 256
+		/// characters. The name is case-preserved in the service control manager. Display name comparisons are always case-insensitive.
+		/// </para>
+		/// </param>
+		/// <param name="dwDesiredAccess">
+		/// <para>
+		/// The access to the service. Before granting the requested access, the system checks the access token of the calling process. For a
+		/// list of values, see Service Security and Access Rights.
+		/// </para>
+		/// </param>
+		/// <param name="dwServiceType">
+		/// <para>The service type. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SERVICE_ADAPTER 0x00000004</term>
+		/// <term>Reserved.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_FILE_SYSTEM_DRIVER 0x00000002</term>
+		/// <term>File system driver service.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_KERNEL_DRIVER 0x00000001</term>
+		/// <term>Driver service.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_RECOGNIZER_DRIVER 0x00000008</term>
+		/// <term>Reserved.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_WIN32_OWN_PROCESS 0x00000010</term>
+		/// <term>Service that runs in its own process.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_WIN32_SHARE_PROCESS 0x00000020</term>
+		/// <term>Service that shares a process with one or more other services. For more information, see Service Programs.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_USER_OWN_PROCESS 0x00000050</term>
+		/// <term>The service runs in its own process under the logged-on user account.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_USER_SHARE_PROCESS 0x00000060</term>
+		/// <term>The service shares a process with one or more other services that run under the logged-on user account.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If you specify either <c>SERVICE_WIN32_OWN_PROCESS</c> or <c>SERVICE_WIN32_SHARE_PROCESS</c>, and the service is running in the
+		/// context of the LocalSystem account, you can also specify the following value.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SERVICE_INTERACTIVE_PROCESS 0x00000100</term>
+		/// <term>The service can interact with the desktop. For more information, see Interactive Services.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwStartType">
+		/// <para>The service start options. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SERVICE_AUTO_START 0x00000002</term>
+		/// <term>
+		/// A service started automatically by the service control manager during system startup. For more information, see Automatically
+		/// Starting Services.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_BOOT_START 0x00000000</term>
+		/// <term>A device driver started by the system loader. This value is valid only for driver services.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_DEMAND_START 0x00000003</term>
+		/// <term>
+		/// A service started by the service control manager when a process calls the StartService function. For more information, see
+		/// Starting Services on Demand.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_DISABLED 0x00000004</term>
+		/// <term>A service that cannot be started. Attempts to start the service result in the error code ERROR_SERVICE_DISABLED.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_SYSTEM_START 0x00000001</term>
+		/// <term>A device driver started by the IoInitSystem function. This value is valid only for driver services.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwErrorControl">
+		/// <para>
+		/// The severity of the error, and action taken, if this service fails to start. This parameter can be one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SERVICE_ERROR_CRITICAL 0x00000003</term>
+		/// <term>
+		/// The startup program logs the error in the event log, if possible. If the last-known-good configuration is being started, the
+		/// startup operation fails. Otherwise, the system is restarted with the last-known good configuration.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_ERROR_IGNORE 0x00000000</term>
+		/// <term>The startup program ignores the error and continues the startup operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_ERROR_NORMAL 0x00000001</term>
+		/// <term>The startup program logs the error in the event log but continues the startup operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>SERVICE_ERROR_SEVERE 0x00000002</term>
+		/// <term>
+		/// The startup program logs the error in the event log. If the last-known-good configuration is being started, the startup operation
+		/// continues. Otherwise, the system is restarted with the last-known-good configuration.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpBinaryPathName">
+		/// <para>
+		/// The fully qualified path to the service binary file. If the path contains a space, it must be quoted so that it is correctly
+		/// interpreted. For example, "d:\my share\myservice.exe" should be specified as ""d:\my share\myservice.exe"".
+		/// </para>
+		/// <para>
+		/// The path can also include arguments for an auto-start service. For example, "d:\myshare\myservice.exe arg1 arg2". These arguments
+		/// are passed to the service entry point (typically the <c>main</c> function).
+		/// </para>
+		/// <para>
+		/// If you specify a path on another computer, the share must be accessible by the computer account of the local computer because
+		/// this is the security context used in the remote call. However, this requirement allows any potential vulnerabilities in the
+		/// remote computer to affect the local computer. Therefore, it is best to use a local file.
+		/// </para>
+		/// </param>
+		/// <param name="lpLoadOrderGroup">
+		/// <para>
+		/// The names of the load ordering group of which this service is a member. Specify NULL or an empty string if the service does not
+		/// belong to a group.
+		/// </para>
+		/// <para>
+		/// The startup program uses load ordering groups to load groups of services in a specified order with respect to the other groups.
+		/// The list of load ordering groups is contained in the following registry value: <c>HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control</c>&lt;b&gt;ServiceGroupOrder
+		/// </para>
+		/// </param>
+		/// <param name="lpdwTagId">
+		/// <para>
+		/// A pointer to a variable that receives a tag value that is unique in the group specified in the lpLoadOrderGroup parameter.
+		/// Specify NULL if you are not changing the existing tag.
+		/// </para>
+		/// <para>
+		/// You can use a tag for ordering service startup within a load ordering group by specifying a tag order vector in the following
+		/// registry value: <c>HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control</c>&lt;b&gt;GroupOrderList
+		/// </para>
+		/// <para>Tags are only evaluated for driver services that have <c>SERVICE_BOOT_START</c> or <c>SERVICE_SYSTEM_START</c> start types.</para>
+		/// </param>
+		/// <param name="lpDependencies">
+		/// <para>
+		/// A pointer to a double null-terminated array of null-separated names of services or load ordering groups that the system must
+		/// start before this service. Specify NULL or an empty string if the service has no dependencies. Dependency on a group means that
+		/// this service can run if at least one member of the group is running after an attempt to start all members of the group.
+		/// </para>
+		/// <para>
+		/// You must prefix group names with <c>SC_GROUP_IDENTIFIER</c> so that they can be distinguished from a service name, because
+		/// services and service groups share the same name space.
+		/// </para>
+		/// </param>
+		/// <param name="lpServiceStartName">
+		/// <para>
+		/// The name of the account under which the service should run. If the service type is SERVICE_WIN32_OWN_PROCESS, use an account name
+		/// in the form DomainName&lt;i&gt;UserName. The service process will be logged on as this user. If the account belongs to the
+		/// built-in domain, you can specify .&lt;i&gt;UserName.
+		/// </para>
+		/// <para>
+		/// If this parameter is NULL, <c>CreateService</c> uses the LocalSystem account. If the service type specifies
+		/// <c>SERVICE_INTERACTIVE_PROCESS</c>, the service must run in the LocalSystem account.
+		/// </para>
+		/// <para>
+		/// If this parameter is NT AUTHORITY\LocalService, <c>CreateService</c> uses the LocalService account. If the parameter is NT
+		/// AUTHORITY\NetworkService, <c>CreateService</c> uses the NetworkService account.
+		/// </para>
+		/// <para>A shared process can run as any user.</para>
+		/// <para>
+		/// If the service type is <c>SERVICE_KERNEL_DRIVER</c> or <c>SERVICE_FILE_SYSTEM_DRIVER</c>, the name is the driver object name that
+		/// the system uses to load the device driver. Specify NULL if the driver is to use a default object name created by the I/O system.
+		/// </para>
+		/// <para>
+		/// A service can be configured to use a managed account or a virtual account. If the service is configured to use a managed service
+		/// account, the name is the managed service account name. If the service is configured to use a virtual account, specify the name as
+		/// NT SERVICE&lt;i&gt;ServiceName. For more information about managed service accounts and virtual accounts, see the Service
+		/// Accounts Step-by-Step Guide.
+		/// </para>
+		/// <para>
+		/// <c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> Managed service accounts and virtual accounts are
+		/// not supported until Windows 7 and Windows Server 2008 R2.
+		/// </para>
+		/// </param>
+		/// <param name="lpPassword">
+		/// <para>
+		/// The password to the account name specified by the lpServiceStartName parameter. Specify an empty string if the account has no
+		/// password or if the service runs in the LocalService, NetworkService, or LocalSystem account. For more information, see Service
+		/// Record List.
+		/// </para>
+		/// <para>
+		/// If the account name specified by the lpServiceStartName parameter is the name of a managed service account or virtual account
+		/// name, the lpPassword parameter must be NULL.
+		/// </para>
+		/// <para>Passwords are ignored for driver services.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a handle to the service.</para>
+		/// <para>If the function fails, the return value is NULL. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// The following error codes can be set by the service control manager. Other error codes can be set by the registry functions that
+		/// are called by the service control manager.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>The handle to the SCM database does not have the SC_MANAGER_CREATE_SERVICE access right.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_CIRCULAR_DEPENDENCY</term>
+		/// <term>A circular service dependency was specified.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_DUPLICATE_SERVICE_NAME</term>
+		/// <term>
+		/// The display name already exists in the service control manager database either as a service name or as another display name.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_HANDLE</term>
+		/// <term>The handle to the specified service control manager database is invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_NAME</term>
+		/// <term>The specified service name is invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>A parameter that was specified is invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_SERVICE_ACCOUNT</term>
+		/// <term>The user account name specified in the lpServiceStartName parameter does not exist.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_SERVICE_EXISTS</term>
+		/// <term>The specified service already exists in this database.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_SERVICE_MARKED_FOR_DELETE</term>
+		/// <term>The specified service already exists in this database and has been marked for deletion.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>CreateService</c> function creates a service object and installs it in the service control manager database by creating a
+		/// key with the same name as the service under the following registry key: <c>HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services</c>
+		/// </para>
+		/// <para>
+		/// Information specified by <c>CreateService</c>, ChangeServiceConfig, and ChangeServiceConfig2 is saved as values under this key.
+		/// The following are examples of values stored for a service.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DependOnGroup</term>
+		/// <term>Load-ordering groups on which this service depends, as specified by lpDependencies.</term>
+		/// </item>
+		/// <item>
+		/// <term>DependOnService</term>
+		/// <term>Services on which this service depends, as specified by lpDependencies.</term>
+		/// </item>
+		/// <item>
+		/// <term>Description</term>
+		/// <term>Description specified by ChangeServiceConfig2.</term>
+		/// </item>
+		/// <item>
+		/// <term>DisplayName</term>
+		/// <term>Display name specified by lpDisplayName.</term>
+		/// </item>
+		/// <item>
+		/// <term>ErrorControl</term>
+		/// <term>Error control specified by dwErrorControl.</term>
+		/// </item>
+		/// <item>
+		/// <term>FailureActions</term>
+		/// <term>Failure actions specified by ChangeServiceConfig2.</term>
+		/// </item>
+		/// <item>
+		/// <term>Group</term>
+		/// <term>
+		/// Load ordering group specified by lpLoadOrderGroup. Note that setting this value can override the setting of the DependOnService value.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ImagePath</term>
+		/// <term>Name of binary file, as specified by lpBinaryPathName.</term>
+		/// </item>
+		/// <item>
+		/// <term>ObjectName</term>
+		/// <term>Account name specified by lpServiceStartName.</term>
+		/// </item>
+		/// <item>
+		/// <term>Start</term>
+		/// <term>When to start service, as specified by dwStartType.</term>
+		/// </item>
+		/// <item>
+		/// <term>Tag</term>
+		/// <term>Tag identifier specified by lpdwTagId.</term>
+		/// </item>
+		/// <item>
+		/// <term>Type</term>
+		/// <term>Service type specified by dwServiceType.</term>
+		/// </item>
+		/// </list>
+		/// <para>Setup programs and the service itself can create additional subkeys for service-specific information.</para>
+		/// <para>
+		/// The returned handle is only valid for the process that called <c>CreateService</c>. It can be closed by calling the
+		/// CloseServiceHandle function.
+		/// </para>
+		/// <para>
+		/// If you are creating services that share a process, avoid calling functions with process-wide effects, such as ExitProcess. In
+		/// addition, do not unload your service DLL.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Installing a Service.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-createservicea SC_HANDLE CreateServiceA( SC_HANDLE
+		// hSCManager, LPCSTR lpServiceName, LPCSTR lpDisplayName, DWORD dwDesiredAccess, DWORD dwServiceType, DWORD dwStartType, DWORD
+		// dwErrorControl, LPCSTR lpBinaryPathName, LPCSTR lpLoadOrderGroup, LPDWORD lpdwTagId, LPCSTR lpDependencies, LPCSTR
+		// lpServiceStartName, LPCSTR lpPassword );
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winsvc.h", MSDNShortId = "47288924-3294-4a50-b27d-7df80d5c957c")]
+		public static extern SafeSC_HANDLE CreateService(SC_HANDLE hSCManager, string lpServiceName, [Optional] string lpDisplayName, uint dwDesiredAccess, ServiceTypes dwServiceType,
+			ServiceStartType dwStartType, ServiceErrorControlType dwErrorControl, string lpBinaryPathName, [Optional] string lpLoadOrderGroup, [Optional] IntPtr lpdwTagId,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] lpDependencies,
+			[Optional] string lpServiceStartName, [Optional] string lpPassword);
 
 		/// <summary>Marks the specified service for deletion from the service control manager database.</summary>
 		/// <param name="hService">
@@ -2604,8 +3415,8 @@ namespace Vanara.PInvoke
 		/// more information, see Service Security and Access Rights.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-notifybootconfigstatus
-		// BOOL NotifyBootConfigStatus( BOOL BootAcceptable );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-notifybootconfigstatus BOOL NotifyBootConfigStatus( BOOL
+		// BootAcceptable );
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsvc.h", MSDNShortId = "0b2b9cd0-f897-4681-9e99-5d0bed986112")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -2696,7 +3507,7 @@ namespace Vanara.PInvoke
 		// SC_HANDLE hService, DWORD dwNotifyMask, PSERVICE_NOTIFYA pNotifyBuffer );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsvc.h", MSDNShortId = "e22b7f69-f096-486f-97fa-0465bef499cd")]
-		public static extern Win32Error NotifyServiceStatusChange(SC_HANDLE hService, SERVICE_NOTIFY_FLAGS dwNotifyMask, in SERVICE_NOTIFY_2 pNotifyBuffer);
+		public static extern Win32Error NotifyServiceStatusChange(SC_HANDLE hService, SERVICE_NOTIFY_FLAGS dwNotifyMask, IntPtr pNotifyBuffer); // ref SERVICE_NOTIFY_2 pNotifyBuffer);
 
 		/// <summary>
 		/// <para>
@@ -3119,8 +3930,8 @@ namespace Vanara.PInvoke
 		/// UnlockServiceDatabase function to release the lock.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-queryservicelockstatusa
-		// BOOL QueryServiceLockStatusA( SC_HANDLE hSCManager, LPQUERY_SERVICE_LOCK_STATUSA lpLockStatus, DWORD cbBufSize, LPDWORD pcbBytesNeeded );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-queryservicelockstatusa BOOL QueryServiceLockStatusA(
+		// SC_HANDLE hSCManager, LPQUERY_SERVICE_LOCK_STATUSA lpLockStatus, DWORD cbBufSize, LPDWORD pcbBytesNeeded );
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsvc.h", MSDNShortId = "5139d31b-65f1-41ba-852a-91eab1dc366e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -3502,7 +4313,7 @@ namespace Vanara.PInvoke
 		// RegisterServiceCtrlHandlerExA( LPCSTR lpServiceName, LPHANDLER_FUNCTION_EX lpHandlerProc, LPVOID lpContext );
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsvc.h", MSDNShortId = "23eea346-9899-4214-88f4-9b7eb7ce1332")]
-		public static extern SERVICE_STATUS_HANDLE RegisterServiceCtrlHandlerEx(string lpServiceName, Handler lpHandlerProc, IntPtr lpContext);
+		public static extern SERVICE_STATUS_HANDLE RegisterServiceCtrlHandlerEx(string lpServiceName, HandlerEx lpHandlerProc, [Optional] IntPtr lpContext);
 
 		/// <summary>
 		/// Registers a service type with the service control manager and the Server service. The Server service can then announce the
@@ -3882,7 +4693,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsvc.h", MSDNShortId = "f185a878-e1c3-4fe5-8ec9-c5296d27f985")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool StartService(SC_HANDLE hService, int dwNumServiceArgs = 0, string[] lpServiceArgVectors = null);
+		public static extern bool StartService(SC_HANDLE hService, [Optional] int dwNumServiceArgs, [Optional] string[] lpServiceArgVectors);
 
 		/// <summary>
 		/// Connects the main thread of a service process to the service control manager, which causes the thread to be the service control
@@ -3979,8 +4790,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="reason">A reason and comment for why the service is being stopped</param>
 		/// <returns></returns>
-		public static bool StopService(SC_HANDLE hService, in SERVICE_CONTROL_STATUS_REASON_PARAMS reason) =>
-			ControlServiceEx(hService, ServiceControl.SERVICE_CONTROL_STOP, ServiceInfoLevels.SERVICE_CONTROL_STATUS_REASON_INFO, reason);
+		public static bool StopService(SC_HANDLE hService, ref SERVICE_CONTROL_STATUS_REASON_PARAMS reason) =>
+			ControlServiceEx(hService, ServiceControl.SERVICE_CONTROL_STOP, ServiceInfoLevels.SERVICE_CONTROL_STATUS_REASON_INFO, ref reason);
 
 		/// <summary>
 		/// <para>[This function has no effect as of Windows Vista.]</para>
@@ -4762,8 +5573,7 @@ namespace Vanara.PInvoke
 			public uint dwVersion;
 
 			/// <summary>A pointer to the callback function. For more information, see Remarks.</summary>
-			[MarshalAs(UnmanagedType.FunctionPtr)]
-			public PFN_SC_NOTIFY_CALLBACK pfnNotifyCallback;
+			public IntPtr pfnNotifyCallback;
 
 			/// <summary>Any user-defined data to be passed to the callback function.</summary>
 			public IntPtr pContext;
@@ -4943,6 +5753,12 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </summary>
 			public uint dwServiceSidType;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public readonly struct SERVICE_START_REASON
+		{
+			public readonly ServiceStartReason dwReason;
 		}
 
 		/// <summary>
@@ -5551,6 +6367,15 @@ namespace Vanara.PInvoke
 			/// <summary>A pointer to a ServiceMain function.</summary>
 			[MarshalAs(UnmanagedType.FunctionPtr)]
 			public ServiceMain lpServiceProc;
+
+			/// <summary>Initializes a new instance of the <see cref="SERVICE_TABLE_ENTRY"/> struct.</summary>
+			/// <param name="serviceName">Name of the service.</param>
+			/// <param name="serviceProc">The service proc.</param>
+			public SERVICE_TABLE_ENTRY(string serviceName, ServiceMain serviceProc)
+			{
+				lpServiceName = serviceName;
+				lpServiceProc = serviceProc;
+			}
 		}
 
 		/// <summary>

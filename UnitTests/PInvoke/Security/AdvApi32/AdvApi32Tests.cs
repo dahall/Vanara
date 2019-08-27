@@ -45,41 +45,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
-		[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
-		public void ChangeAndQueryServiceConfigTest()
-		{
-			using (var sc = new System.ServiceProcess.ServiceController("Netlogon"))
-			{
-				using (var h = sc.ServiceHandle)
-				{
-					var hSvc = h.DangerousGetHandle();
-
-					var st = GetStartType();
-					var b = ChangeServiceConfig(hSvc, ServiceTypes.SERVICE_NO_CHANGE, ServiceStartType.SERVICE_DISABLED, ServiceErrorControlType.SERVICE_NO_CHANGE);
-					if (!b) TestContext.WriteLine($"Err: {Win32Error.GetLastError()}");
-					Assert.That(b, Is.True);
-					Thread.Sleep(10000);
-
-					Assert.That(GetStartType(), Is.EqualTo(ServiceStartType.SERVICE_DISABLED));
-					b = ChangeServiceConfig(hSvc, ServiceTypes.SERVICE_NO_CHANGE, st, ServiceErrorControlType.SERVICE_NO_CHANGE);
-					if (!b) TestContext.WriteLine($"Err: {Win32Error.GetLastError()}");
-					Assert.That(b, Is.True);
-					Assert.That(GetStartType(), Is.EqualTo(st));
-
-					ServiceStartType GetStartType()
-					{
-						using (var info = new SafeHGlobalHandle(1024))
-						{
-							Assert.That(QueryServiceConfig(hSvc, (IntPtr)info, (uint)info.Size, out var _), Is.True);
-							var qsc = info.ToStructure<QUERY_SERVICE_CONFIG>();
-							return qsc.dwStartType;
-						}
-					}
-				}
-			}
-		}
-
-		[Test()]
 		public void ConvertSecurityDescriptorToStringSecurityDescriptorTest()
 		{
 			var pSD = GetSD(fn);
@@ -122,24 +87,6 @@ namespace Vanara.PInvoke.Tests
 		{
 			using (var pSD = GetSD(fn))
 				Assert.That(pSD, Is.Not.Null);
-		}
-
-		[Test()]
-		[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
-		public void QueryServiceConfig2Test()
-		{
-			using (var sc = new System.ServiceProcess.ServiceController("Netlogon"))
-			{
-				using (var h = sc.ServiceHandle)
-				{
-					var hSvc = h.DangerousGetHandle();
-
-					var b = QueryServiceConfig2(hSvc, ServiceConfigOption.SERVICE_CONFIG_DESCRIPTION, out SERVICE_DESCRIPTION sd);
-					Assert.That(b, Is.True);
-					Assert.That(sd.lpDescription, Is.Not.Null);
-					TestContext.WriteLine(sd.lpDescription);
-				}
-			}
 		}
 
 		[Test()]
