@@ -42,6 +42,9 @@
 		/// <summary>The kernel base</summary>
 		public const string KernelBase = "kernelbase.dll";
 
+		/// <summary>The Kernel Transaction Manager (KTM)</summary>
+		public const string Ktmw32 = "ktmw32.dll";
+
 		/// <summary>The MPR</summary>
 		public const string Mpr = "mpr.dll";
 
