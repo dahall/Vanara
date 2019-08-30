@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
@@ -2363,10 +2364,12 @@ namespace Vanara.PInvoke
 			/// </returns>
 			public bool Set() => SetEvent(this);
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
+#pragma warning disable CS0618 // Type or member is obsolete
+			/// <summary>Performs an implicit conversion from <see cref="EventWaitHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
 			/// <param name="h">The SafeSyncHandle instance.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator SafeEventHandle(SafeWaitHandle h) => new SafeEventHandle(h.DangerousGetHandle(), false);
+			public static implicit operator SafeEventHandle(EventWaitHandle h) => new SafeEventHandle(h.Handle, false);
+#pragma warning restore CS0618 // Type or member is obsolete
 
 			/// <summary>Gets an invalid event handle.</summary>
 			public static SafeEventHandle InvalidHandle => new SafeEventHandle(new IntPtr(-1), false);
