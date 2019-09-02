@@ -1308,4 +1308,28 @@ namespace Vanara.PInvoke
 			public SafeExceptionHandlerHandle(IntPtr handle) : base(handle, RemoveVectoredExceptionHandler) { }
 		}
 	}
+
+	public static class WinErrExtensions
+	{
+		/// <summary>Gets the system message for the provided system error with optional parameters.</summary>
+		/// <param name="err">The error.</param>
+		/// <param name="args">The arguments.</param>
+		/// <returns>The formatted system message.</returns>
+		public static string FormatMessage(this IErrorProvider err, params object[] args)
+		{
+			try { return Kernel32.FormatMessage((uint)err.ToHRESULT(), args); }
+			catch { return string.Empty; }
+		}
+
+		/// <summary>Gets the system message for the provided system error with optional parameters.</summary>
+		/// <param name="err">The error.</param>
+		/// <param name="hLib">A handle to the module that contains the message table to search.</param>
+		/// <param name="args">The arguments.</param>
+		/// <returns>The formatted system message.</returns>
+		public static string FormatMessage(this IErrorProvider err, HINSTANCE hLib, params object[] args)
+		{
+			try { return Kernel32.FormatMessage((uint)err.ToHRESULT(), args, hLib); }
+			catch { return string.Empty; }
+		}
+	}
 }
