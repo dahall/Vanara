@@ -94,6 +94,10 @@ namespace Vanara.Windows.Forms
 			ResetTheme();
 		}
 
+		/// <summary>Sets the theme using <see cref="VisualStyleElement"/> information.</summary>
+		/// <param name="visualStyle">The visual style.</param>
+		public void SetTheme(VisualStyleElement visualStyle) => SetTheme(visualStyle?.ClassName, visualStyle?.Part ?? 0, visualStyle?.State ?? 0);
+
 		/// <summary>Raises the <see cref="Control.Paint"/> event.</summary>
 		/// <param name="e">A <see cref="PaintEventArgs"/> that contains the event data.</param>
 		protected override void OnPaint(PaintEventArgs e)

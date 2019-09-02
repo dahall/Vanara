@@ -143,6 +143,10 @@ namespace Vanara.Windows.Forms
 			ResetTheme();
 		}
 
+		/// <summary>Sets the theme using <see cref="System.Windows.Forms.VisualStyles.VisualStyleElement"/> information.</summary>
+		/// <param name="visualStyle">The visual style.</param>
+		public void SetTheme(System.Windows.Forms.VisualStyles.VisualStyleElement visualStyle) => SetTheme(visualStyle?.ClassName, visualStyle?.Part ?? 0, visualStyle?.State ?? 0);
+
 		internal static Rectangle DeflateRect(Rectangle rect, Padding padding)
 		{
 			rect.X += padding.Left;
