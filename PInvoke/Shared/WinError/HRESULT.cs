@@ -427,7 +427,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an explicit conversion from <see cref="HRESULT"/> to <see cref="System.Int32"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator int(HRESULT value) => (int)value._value;
+		public static explicit operator int(HRESULT value) => unchecked((int)value._value);
+
+		/// <summary>Performs an explicit conversion from <see cref="HRESULT"/> to <see cref="System.UInt32"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator uint(HRESULT value) => value._value;
 
 		/// <summary>Performs an explicit conversion from <see cref="System.Boolean"/> to <see cref="HRESULT"/>.</summary>
 		/// <param name="value">if set to <see langword="true" /> returns S_OK; otherwise S_FALSE.</param>
