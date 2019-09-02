@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework.Constraints;
 using System;
+using Vanara.PInvoke;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -118,7 +119,7 @@ namespace Vanara.PInvoke.Tests
 		public override ConstraintResult ApplyTo<TActual>(TActual actual)
 		{
 			var success = false;
-			object updActual = actual;
+			var updActual = actual as IErrorProvider;
 			switch (actual)
 			{
 				case bool b:
