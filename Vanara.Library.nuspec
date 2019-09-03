@@ -1,19 +1,19 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Vanara.Library</id>
-    <version>3.0.0</version>
     <title>Vanara Libraries Metapackage</title>
+    <version>3.0.0</version>
+    <description>The full set of packages associated with the Vanara PInvoke Libraries.</description>
+    <tags>pinvoke;vanara;net-extensions;interop</tags>
+    <copyright>Copyright Â© 2017-2019</copyright>
     <authors>David Hall</authors>
     <owners>David Hall</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/dahall/vanara</projectUrl>
-	<iconUrl>https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/Vanara48x48.png</iconUrl>
-	<repository type="git" url="https://github.com/dahall/Vanara.git" />
+    <iconUrl>https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/Vanara48x48.png</iconUrl>
+    <repository type="git" url="https://github.com/dahall/Vanara.git" />
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>The full set of packages associated with the Vanara PInvoke Libraries.</description>
-	<tags>pinvoke;vanara;net-extensions;interop</tags>
-    <copyright>Copyright © 2017-2019</copyright>
-	<language>en-US</language>
+    <language>en-US</language>
     <dependencies>
       <dependency id="Vanara.Core" version="3.0.0" />
       <dependency id="Vanara.PInvoke.Shared" version="3.0.0" />
@@ -55,4 +55,5 @@
       <dependency id="Vanara.Windows.Shell" version="3.0.0" />
     </dependencies>
   </metadata>
+  <files/>
 </package>
