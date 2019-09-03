@@ -345,7 +345,7 @@ namespace Vanara.Registry
 				while (!breakEvent.WaitOne(0, true))
 				{
 					Debug.WriteLine($"Calling RegNotify for {filter}");
-					RegNotifyChangeKeyValue(hkey, includeSubKeys, filter, hEvent, true).ThrowIfFailed();
+					RegNotifyChangeKeyValue(hkey, includeSubKeys, filter, autoEvent, true).ThrowIfFailed();
 					threadsStarted[idx].Set();
 					Debug.WriteLine($"Waiting for {filter}");
 					if (WaitHandle.WaitAny(waitHandles) == 0)
