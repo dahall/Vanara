@@ -8679,5 +8679,305 @@ namespace Vanara.PInvoke
 
 		/// <summary>This operation is only valid in the context of an app container.</summary>
 		public const int NOT_APPCONTAINER = 4250;
+
+		/// <summary>The data for the counter was returned successfully, but is unchanged from the last time the counter was read.</summary>
+		public const int PDH_CSTATUS_VALID_DATA = 0x0;
+
+		/// <summary>
+		/// The data for the counter was returned successfully and is different from the last time the counter was read. PDH_CSTATUS_NEW_DATA
+		/// can be returned on a rate counter even if the resulting rate is the same as the last sample. This is because the raw data value
+		/// that is used in the determination of this status value has changed, not the computed rate.
+		/// </summary>
+		public const int PDH_CSTATUS_NEW_DATA = 0x1;
+
+		/// <summary>
+		/// Unable to access the desired computer or service. Check the permissions and authentication of the log service or the interactive
+		/// user session against those on the computer or service being monitored.
+		/// </summary>
+		public const int PDH_ACCESS_DENIED = unchecked((int)0xC0000BDB);
+
+		/// <summary>A time-out occurred while waiting for the asynchronous counter collection thread to end.</summary>
+		public const int PDH_ASYNC_QUERY_TIMEOUT = unchecked((int)0x800007DB);
+
+		/// <summary>Unable to read counter information and data from input binary log files.</summary>
+		public const int PDH_BINARY_LOG_CORRUPT = unchecked((int)0xC0000BF7);
+
+		/// <summary>A counter has a negative denominator value.</summary>
+		public const int PDH_CALC_NEGATIVE_DENOMINATOR = unchecked((int)0x800007D6);
+
+		/// <summary>A counter has a negative timebase value.</summary>
+		public const int PDH_CALC_NEGATIVE_TIMEBASE = unchecked((int)0x800007D7);
+
+		/// <summary>A counter has a negative value.</summary>
+		public const int PDH_CALC_NEGATIVE_VALUE = unchecked((int)0x800007D8);
+
+		/// <summary>Unable to connect to the requested computer.</summary>
+		public const int PDH_CANNOT_CONNECT_MACHINE = unchecked((int)0xC0000BC3);
+
+		/// <summary>Unable to connect to the WMI server on requested computer.</summary>
+		public const int PDH_CANNOT_CONNECT_WMI_SERVER = unchecked((int)0xC0000BE8);
+
+		/// <summary>Unable to read the counter and/or help text from the specified computer.</summary>
+		public const int PDH_CANNOT_READ_NAME_STRINGS = unchecked((int)0xC0000BC8);
+
+		/// <summary>Cannot change set default real-time data source. There are real-time query sessions collecting counter data.</summary>
+		public const int PDH_CANNOT_SET_DEFAULT_REALTIME_DATASOURCE = unchecked((int)0x800007DC);
+
+		/// <summary>The PDH counter already in query</summary>
+		public const int PDH_COUNTER_ALREADY_IN_QUERY = unchecked((int)0xC0000BF6);
+
+		/// <summary>The counter path format is incorrect.</summary>
+		public const int PDH_CSTATUS_BAD_COUNTERNAME = unchecked((int)0xC0000BC0);
+
+		/// <summary>
+		/// The counter was successfully found, but the data returned is not valid. This error can occur if the counter value is less than
+		/// the previous value. (Because counter values always increment, the counter value rolls over to zero when it reaches its maximum
+		/// value.) Another possible cause is a system timer that is not correct.
+		/// </summary>
+		public const int PDH_CSTATUS_INVALID_DATA = unchecked((int)0xC0000BBA);
+
+		/// <summary>
+		/// The counter has been added to the query, but has not been validated nor accessed. No additional status information on this
+		/// counter is available.
+		/// </summary>
+		public const int PDH_CSTATUS_ITEM_NOT_VALIDATED = unchecked((int)0x800007D3);
+
+		/// <summary>
+		/// The specified counter was not found in the specified object. If this status is returned when the counter is being added, then the
+		/// counter is not added to the query. If this status is returned after data collection, the data for that counter is invalid. Each
+		/// time the data is requested, PDH tries to obtain this counter data.
+		/// </summary>
+		public const int PDH_CSTATUS_NO_COUNTER = unchecked((int)0xC0000BB9);
+
+		/// <summary>No counter name was specified in the query.</summary>
+		public const int PDH_CSTATUS_NO_COUNTERNAME = unchecked((int)0xC0000BBF);
+
+		/// <summary>
+		/// The specified instance was not found in the object. If this status is returned while the counter is being added to the query, the
+		/// counter is successfully added to the query, but no data is available until the specific instance appears and a successful status
+		/// is returned.
+		/// </summary>
+		public const int PDH_CSTATUS_NO_INSTANCE = unchecked((int)0x800007D1);
+
+		/// <summary>
+		/// PDH was unable to connect to the computer specified in the counter path. If this status is returned when the counter is being
+		/// added, the counter is not completely initialized. Each time the query is updated, PDH retries the connection. When the connection
+		/// is established, normal data collection resumes.
+		/// </summary>
+		public const int PDH_CSTATUS_NO_MACHINE = unchecked((int)0x800007D0);
+
+		/// <summary>
+		/// The specified computer was found, but the specified performance object was found on the computer. If this status is returned when
+		/// the counter is being added, the specified counter is not included in the query. If this status is returned by an active counter,
+		/// the data for that counter is invalid. Each time the data is requested, PDH tries to obtain this counter data.
+		/// </summary>
+		public const int PDH_CSTATUS_NO_OBJECT = unchecked((int)0xC0000BB8);
+
+		/// <summary>The specified data source is a log file.</summary>
+		public const int PDH_DATA_SOURCE_IS_LOG_FILE = unchecked((int)0xC0000BCE);
+
+		/// <summary>The specified data source is the current activity.</summary>
+		public const int PDH_DATA_SOURCE_IS_REAL_TIME = unchecked((int)0xC0000BCF);
+
+		/// <summary>The user canceled the dialog box.</summary>
+		public const int PDH_DIALOG_CANCELLED = unchecked((int)0x800007D9);
+
+		/// <summary>The end of the log file was reached.</summary>
+		public const int PDH_END_OF_LOG_FILE = unchecked((int)0x800007DA);
+
+		/// <summary>The specified record was not found in the log file.</summary>
+		public const int PDH_ENTRY_NOT_IN_LOG_FILE = unchecked((int)0xC0000BCD);
+
+		/// <summary>There is already a file with the specified file name.</summary>
+		public const int PDH_FILE_ALREADY_EXISTS = unchecked((int)0xC0000BD2);
+
+		/// <summary>Unable to find the specified file.</summary>
+		public const int PDH_FILE_NOT_FOUND = unchecked((int)0xC0000BD1);
+
+		/// <summary>Unable to find the specified function.</summary>
+		public const int PDH_FUNCTION_NOT_FOUND = unchecked((int)0xC0000BBE);
+
+		/// <summary>The PDH incorrect append time</summary>
+		public const int PDH_INCORRECT_APPEND_TIME = unchecked((int)0xC0000BFB);
+
+		/// <summary>The requested data is larger than the buffer supplied. Unable to return the requested data.</summary>
+		public const int PDH_INSUFFICIENT_BUFFER = unchecked((int)0xC0000BC2);
+
+		/// <summary>A required argument is missing or incorrect.</summary>
+		public const int PDH_INVALID_ARGUMENT = unchecked((int)0xC0000BBD);
+
+		/// <summary>The buffer passed by the caller is not valid.</summary>
+		public const int PDH_INVALID_BUFFER = unchecked((int)0xC0000BC1);
+
+		/// <summary>The data is not valid.</summary>
+		public const int PDH_INVALID_DATA = unchecked((int)0xC0000BC6);
+
+		/// <summary>Cannot connect to ODBC DataSource Name.</summary>
+		public const int PDH_INVALID_DATASOURCE = unchecked((int)0xC0000BDD);
+
+		/// <summary>The handle is not a valid PDH object.</summary>
+		public const int PDH_INVALID_HANDLE = unchecked((int)0xC0000BBC);
+
+		/// <summary>The instance name could not be read from the specified counter path.</summary>
+		public const int PDH_INVALID_INSTANCE = unchecked((int)0xC0000BC5);
+
+		/// <summary>The specified counter path could not be interpreted.</summary>
+		public const int PDH_INVALID_PATH = unchecked((int)0xC0000BC4);
+
+		/// <summary>The PDH invalid SQL log format</summary>
+		public const int PDH_INVALID_SQL_LOG_FORMAT = unchecked((int)0xC0000BF5);
+
+		/// <summary>SQL Database does not contain a valid set of tables for Perfmon.</summary>
+		public const int PDH_INVALID_SQLDB = unchecked((int)0xC0000BDE);
+
+		/// <summary>Unable to create the specified log file.</summary>
+		public const int PDH_LOG_FILE_CREATE_ERROR = unchecked((int)0xC0000BC9);
+
+		/// <summary>Unable to open the specified log file.</summary>
+		public const int PDH_LOG_FILE_OPEN_ERROR = unchecked((int)0xC0000BCA);
+
+		/// <summary>
+		/// The maximum log file size specified is too small to log the selected counters. No data will be recorded in this log file. Specify
+		/// a smaller set of counters to log or a larger file size and retry this call.
+		/// </summary>
+		public const int PDH_LOG_FILE_TOO_SMALL = unchecked((int)0xC0000BDC);
+
+		/// <summary>The PDH log sample too small</summary>
+		public const int PDH_LOG_SAMPLE_TOO_SMALL = unchecked((int)0xC0000BF8);
+
+		/// <summary>The specified log file type has not been installed on this system.</summary>
+		public const int PDH_LOG_TYPE_NOT_FOUND = unchecked((int)0xC0000BCB);
+
+		/// <summary>
+		/// The Performance Data Log Service key could not be opened. This may be due to insufficient privilege or because the service has
+		/// not been installed.
+		/// </summary>
+		public const int PDH_LOGSVC_NOT_OPENED = unchecked((int)0xC0000BD9);
+
+		/// <summary>The specified query from the Log Service could not be found or could not be opened.</summary>
+		public const int PDH_LOGSVC_QUERY_NOT_FOUND = unchecked((int)0xC0000BD8);
+
+		/// <summary>
+		/// A PDH function could not allocate enough temporary memory to complete the operation. Close some applications or extend the page
+		/// file and retry the function.
+		/// </summary>
+		public const int PDH_MEMORY_ALLOCATION_FAILURE = unchecked((int)0xC0000BBB);
+
+		/// <summary>
+		/// The supplied buffer was not large enough to store all of the counter data. Allocate a larger buffer and execute the function again.
+		/// </summary>
+		public const int PDH_MORE_DATA = unchecked((int)0x800007D2);
+
+		/// <summary>No counters were found for this Perfmon SQL Log Set.</summary>
+		public const int PDH_NO_COUNTERS = unchecked((int)0xC0000BDF);
+
+		/// <summary>No data to return.</summary>
+		public const int PDH_NO_DATA = unchecked((int)0x800007D5);
+
+		/// <summary>The dialog box data block was missing or not valid.</summary>
+		public const int PDH_NO_DIALOG_DATA = unchecked((int)0xC0000BC7);
+
+		/// <summary>No more data is available.</summary>
+		public const int PDH_NO_MORE_DATA = unchecked((int)0xC0000BCC);
+
+		/// <summary>The function referenced has not been implemented.</summary>
+		public const int PDH_NOT_IMPLEMENTED = unchecked((int)0xC0000BD3);
+
+		/// <summary>The PDH os earlier version</summary>
+		public const int PDH_OS_EARLIER_VERSION = unchecked((int)0xC0000BFA);
+
+		/// <summary>The PDH os later version</summary>
+		public const int PDH_OS_LATER_VERSION = unchecked((int)0xC0000BF9);
+
+		/// <summary>The PDH pla collection already running</summary>
+		public const int PDH_PLA_COLLECTION_ALREADY_RUNNING = unchecked((int)0xC0000BE9);
+
+		/// <summary>The PDH pla collection not found</summary>
+		public const int PDH_PLA_COLLECTION_NOT_FOUND = unchecked((int)0xC0000BEB);
+
+		/// <summary>The PDH pla error already exists</summary>
+		public const int PDH_PLA_ERROR_ALREADY_EXISTS = unchecked((int)0xC0000BEE);
+
+		/// <summary>The PDH pla error filepath</summary>
+		public const int PDH_PLA_ERROR_FILEPATH = unchecked((int)0xC0000BF0);
+
+		/// <summary>The PDH pla error name too long</summary>
+		public const int PDH_PLA_ERROR_NAME_TOO_LONG = unchecked((int)0xC0000BF4);
+
+		/// <summary>The PDH pla error nostart</summary>
+		public const int PDH_PLA_ERROR_NOSTART = unchecked((int)0xC0000BED);
+
+		/// <summary>The PDH pla error schedule elapsed</summary>
+		public const int PDH_PLA_ERROR_SCHEDULE_ELAPSED = unchecked((int)0xC0000BEC);
+
+		/// <summary>The PDH pla error schedule overlap</summary>
+		public const int PDH_PLA_ERROR_SCHEDULE_OVERLAP = unchecked((int)0xC0000BEA);
+
+		/// <summary>The PDH pla error type mismatch</summary>
+		public const int PDH_PLA_ERROR_TYPE_MISMATCH = unchecked((int)0xC0000BEF);
+
+		/// <summary>The PDH pla service error</summary>
+		public const int PDH_PLA_SERVICE_ERROR = unchecked((int)0xC0000BF1);
+
+		/// <summary>The PDH pla validation error</summary>
+		public const int PDH_PLA_VALIDATION_ERROR = unchecked((int)0xC0000BF2);
+
+		/// <summary>The PDH pla validation warning</summary>
+		public const int PDH_PLA_VALIDATION_WARNING = unchecked((int)0x80000BF3);
+
+		/// <summary>The PDH query perf data timeout</summary>
+		public const int PDH_QUERY_PERF_DATA_TIMEOUT = unchecked((int)0xC0000BFE);
+
+		/// <summary>The selected operation should be retried.</summary>
+		public const int PDH_RETRY = unchecked((int)0x800007D4);
+
+		/// <summary>Call to SQLAllocStmt failed with %1.</summary>
+		public const int PDH_SQL_ALLOC_FAILED = unchecked((int)0xC0000BE0);
+
+		/// <summary>Call to SQLAllocConnect failed with %1.</summary>
+		public const int PDH_SQL_ALLOCCON_FAILED = unchecked((int)0xC0000BE1);
+
+		/// <summary>The PDH SQL alter detail failed</summary>
+		public const int PDH_SQL_ALTER_DETAIL_FAILED = unchecked((int)0xC0000BFD);
+
+		/// <summary>Call to SQLBindCol failed with %1.</summary>
+		public const int PDH_SQL_BIND_FAILED = unchecked((int)0xC0000BE7);
+
+		/// <summary>Call to SQLConnect failed with %1.</summary>
+		public const int PDH_SQL_CONNECT_FAILED = unchecked((int)0xC0000BE6);
+
+		/// <summary>Call to SQLExecDirect failed with %1.</summary>
+		public const int PDH_SQL_EXEC_DIRECT_FAILED = unchecked((int)0xC0000BE2);
+
+		/// <summary>Call to SQLFetch failed with %1.</summary>
+		public const int PDH_SQL_FETCH_FAILED = unchecked((int)0xC0000BE3);
+
+		/// <summary>Call to SQLMoreResults failed with %1.</summary>
+		public const int PDH_SQL_MORE_RESULTS_FAILED = unchecked((int)0xC0000BE5);
+
+		/// <summary>Call to SQLRowCount failed with %1.</summary>
+		public const int PDH_SQL_ROWCOUNT_FAILED = unchecked((int)0xC0000BE4);
+
+		/// <summary>Unable to find the specified string in the list of performance name and help text strings.</summary>
+		public const int PDH_STRING_NOT_FOUND = unchecked((int)0xC0000BD4);
+
+		/// <summary>Unable to map to the performance counter name data files. The data will be read from the registry and stored locally.</summary>
+		public const int PDH_UNABLE_MAP_NAME_FILES = unchecked((int)0x80000BD5);
+
+		/// <summary>The log file header could not be read.</summary>
+		public const int PDH_UNABLE_READ_LOG_HEADER = unchecked((int)0xC0000BD0);
+
+		/// <summary>The format of the specified log file is not recognized by the PDH DLL.</summary>
+		public const int PDH_UNKNOWN_LOG_FORMAT = unchecked((int)0xC0000BD6);
+
+		/// <summary>The specified Log Service command value is not recognized.</summary>
+		public const int PDH_UNKNOWN_LOGSVC_COMMAND = unchecked((int)0xC0000BD7);
+
+		/// <summary>The PDH unmatched append counter</summary>
+		public const int PDH_UNMATCHED_APPEND_COUNTER = unchecked((int)0xC0000BFC);
+
+		/// <summary>An error occurred while accessing the WBEM data store.</summary>
+		public const int PDH_WBEM_ERROR = unchecked((int)0xC0000BDA);
+
 	}
 }

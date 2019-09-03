@@ -75,6 +75,9 @@
 		/// <summary>The OLE aut32</summary>
 		public const string OleAut32 = "oleaut32.dll";
 
+		/// <summary>The pdh.dll</summary>
+		public const string Pdh = "pdh.dll";
+
 		/// <summary>The power profiling DLL.</summary>
 		public const string PowrProf = "powrprof.dll";
 
