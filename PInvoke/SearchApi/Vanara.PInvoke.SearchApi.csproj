@@ -4,7 +4,7 @@
     <Description>PInvoke API (methods, structures and constants imported from Windows Search.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.0.0</VersionPrefix>
+    <VersionPrefix>3.0.1</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.SearchApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -24,11 +24,14 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
+Classes
+ICondition, ICondition2, IConditionFactory, IConditionFactory2, IEntity, IEnumSearchRoots, IEnumSearchScopeRules, IFilter, ILoadFilter, INamedEntity, IOpLockStatus, IProtocolHandlerSite, IQueryParser, IQueryParserManager, IQuerySolution, IRelationship, IRichChunk, IRowsetEvents, IRowsetPrioritization, ISchemaLocalizerSupport, ISchemaProvider, ISearchCatalogManager, ISearchCatalogManager2, ISearchCrawlScopeManager, ISearchCrawlScopeManager2, ISearchFolderItemFactory, ISearchItemsChangedSink, ISearchLanguageSupport, ISearchManager, ISearchManager2, ISearchNotifyInlineSite, ISearchPersistentItemsChangedSink, ISearchProtocol, ISearchProtocol2, ISearchProtocolThreadContext, ISearchQueryHelper, ISearchRoot, ISearchScopeRule, ISearchViewChangedSink, ITokenCollection, IUrlAccessor, IUrlAccessor2, IUrlAccessor3, IUrlAccessor4, CompoundCondition, ConditionFactory, CSearchManager, CSearchRoot, CSearchScopeRule, FilterRegistration, LeafCondition, NegationCondition, QueryParser, QueryParserManager, SearchApi, SearchFolderItemFactory
+
 Structures
 AUTHENTICATION_INFO, FILTERED_DATA_SOURCES, FILTERREGION, INCREMENTAL_ACCESS_INFO, ITEM_INFO, PROXY_INFO, SEARCH_COLUMN_PROPERTIES, SEARCH_ITEM_CHANGE, SEARCH_ITEM_INDEXING_STATUS, SEARCH_ITEM_PERSISTENT_CHANGE, TIMEOUT_INFO
 
-Interfaces
-IEnumSearchRoots, IEnumSearchScopeRules, IFilter, ILoadFilter, IOpLockStatus, IProtocolHandlerSite, IRowsetEvents, IRowsetPrioritization, ISearchCatalogManager, ISearchCatalogManager2, ISearchCrawlScopeManager, ISearchCrawlScopeManager2, ISearchItemsChangedSink, ISearchLanguageSupport, ISearchManager, ISearchManager2, ISearchNotifyInlineSite, ISearchPersistentItemsChangedSink, ISearchProtocol, ISearchProtocol2, ISearchProtocolThreadContext, ISearchQueryHelper, ISearchRoot, ISearchScopeRule, ISearchViewChangedSink, IUrlAccessor, IUrlAccessor2, IUrlAccessor3, IUrlAccessor4, ISearchFolderItemFactory, IConditionFactory, IConditionFactory2, IEntity, INamedEntity, IQueryParser, IQueryParserManager, IQuerySolution, IRelationship, ISchemaLocalizerSupport, ISchemaProvider, ITokenCollection, ICondition, ICondition2, IRichChunk
+Enumerations
+AUTH_TYPE, CatalogPausedReason, CatalogStatus, CHUNK_BREAKTYPE, CHUNKSTATE, CLUSION_REASON, CONDITION_CREATION_OPTIONS, CONDITION_OPERATION, CONDITION_TYPE, FOLLOW_FLAGS, IFILTER_FLAGS, IFILTER_INIT, PRIORITIZE_FLAGS, PRIORITY_LEVEL, PROXY_ACCESS, QUERY_PARSER_MANAGER_OPTION, ROWSETEVENT_ITEMSTATE, ROWSETEVENT_TYPE, SEARCH_INDEXING_PHASE, SEARCH_KIND_OF_CHANGE, SEARCH_NOTIFICATION_PRIORITY, SEARCH_QUERY_SYNTAX, SEARCH_TERM_EXPANSION, STRUCTURED_QUERY_MULTIOPTION, STRUCTURED_QUERY_RESOLVE_OPTION, STRUCTURED_QUERY_SINGLE_OPTION
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>

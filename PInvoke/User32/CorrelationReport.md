@@ -284,7 +284,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetUserObjectInformationA](http://msdn2.microsoft.com/en-us/library/64f7361d-1a94-4d5b-86f1-a2a21737668a) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetUserObjectInformation  
 [GetUserObjectInformationW](http://msdn2.microsoft.com/en-us/library/64f7361d-1a94-4d5b-86f1-a2a21737668a) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetUserObjectInformation  
 [GetUserObjectSecurity](http://msdn2.microsoft.com/en-us/library/998c2520-7833-4efd-a794-b13b528f0485) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetUserObjectSecurity  
-[GetWindow](https://www.google.com/search?num=5&q=GetWindow+site%3Amicrosoft.com) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetWindow  
+[GetWindow](http://msdn2.microsoft.com/en-us/library/getwindow) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetWindow  
 [GetWindowContextHelpId](http://msdn2.microsoft.com/en-us/library/28e57c01-0327-4f64-9ef4-ca13c3c32b0c) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetWindowContextHelpId  
 [GetWindowDC](http://msdn2.microsoft.com/en-us/library/9e6a135e-e337-4129-a3ad-faf9a8ac9b2d) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetWindowDC  
 [GetWindowDisplayAffinity](http://msdn2.microsoft.com/en-us/library/getwindowdisplayaffinity) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetWindowDisplayAffinity  

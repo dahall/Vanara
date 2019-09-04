@@ -1,4 +1,4 @@
-## Correlation report for   
+## Correlation report for structuredquery.dll  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

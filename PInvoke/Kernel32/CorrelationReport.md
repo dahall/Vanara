@@ -1,5 +1,5 @@
-## Correlation report for kernel32.dll, kernelbase.dll  
-### Methods (100% complete)  
+## Correlation report for kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
+### Methods (95% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](http://msdn2.microsoft.com/en-us/library/ms681930) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive  
@@ -131,6 +131,7 @@ Native Method | Native DLL | Header | Managed Method
 [CreateUmsThreadContext](http://msdn2.microsoft.com/en-us/library/b27ce81a-8463-46af-8acf-2de091f625df) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.CreateUmsThreadContext  
 [CreateWaitableTimer](http://msdn2.microsoft.com/en-us/library/ms682492) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateWaitableTimer  
 [CreateWaitableTimerEx](http://msdn2.microsoft.com/en-us/library/ms682494) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateWaitableTimerEx  
+[DbgPrint](https://www.google.com/search?num=5&q=DbgPrint+site%3Amicrosoft.com) | vertdll.dll |  |   
 [DeactivateActCtx](http://msdn2.microsoft.com/en-us/library/aa375140) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DeactivateActCtx  
 [DebugActiveProcess](http://msdn2.microsoft.com/en-us/library/ms679295) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DebugActiveProcess  
 [DebugActiveProcessStop](http://msdn2.microsoft.com/en-us/library/ms679296) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DebugActiveProcessStop  
@@ -141,6 +142,7 @@ Native Method | Native DLL | Header | Managed Method
 [DecodeRemotePointer](http://msdn2.microsoft.com/en-us/library/dn877133) | kernelbase.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.DecodeRemotePointer  
 [DecodeSystemPointer](http://msdn2.microsoft.com/en-us/library/bb432243) | kernel32.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.DecodeSystemPointer  
 [DefineDosDevice](http://msdn2.microsoft.com/en-us/library/924b1456-b2c5-4d52-aacf-6172608c73ea) | kernel32.dll | fileapi.h | Vanara.PInvoke.Kernel32.DefineDosDevice  
+[DelayLoadFailureHook](https://www.google.com/search?num=5&q=DelayLoadFailureHook+site%3Amicrosoft.com) | vertdll.dll |  |   
 [DeleteAtom](http://msdn2.microsoft.com/en-us/library/ms649057) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DeleteAtom  
 [DeleteBoundaryDescriptor](http://msdn2.microsoft.com/en-us/library/759d9cd9-9ef2-4bbe-9e99-8aec87f5ba4a) | kernel32.dll | namespaceapi.h | Vanara.PInvoke.Kernel32.DeleteBoundaryDescriptor  
 [DeleteCriticalSection](http://msdn2.microsoft.com/en-us/library/ms682552) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteCriticalSection  
@@ -168,6 +170,11 @@ Native Method | Native DLL | Header | Managed Method
 [DuplicateHandle](http://msdn2.microsoft.com/en-us/library/ms724251) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DuplicateHandle  
 [EmptyWorkingSet](http://msdn2.microsoft.com/en-us/library/76f2252e-7305-46b0-b1af-40ac084e6696) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.EmptyWorkingSet  
 [EnableThreadProfiling](http://msdn2.microsoft.com/en-us/library/dd796393) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EnableThreadProfiling  
+[EnclaveGetAttestationReport](https://www.google.com/search?num=5&q=EnclaveGetAttestationReport+site%3Amicrosoft.com) | vertdll.dll |  |   
+[EnclaveGetEnclaveInformation](https://www.google.com/search?num=5&q=EnclaveGetEnclaveInformation+site%3Amicrosoft.com) | vertdll.dll |  |   
+[EnclaveSealData](https://www.google.com/search?num=5&q=EnclaveSealData+site%3Amicrosoft.com) | vertdll.dll |  |   
+[EnclaveUnsealData](https://www.google.com/search?num=5&q=EnclaveUnsealData+site%3Amicrosoft.com) | vertdll.dll |  |   
+[EnclaveVerifyAttestationReport](https://www.google.com/search?num=5&q=EnclaveVerifyAttestationReport+site%3Amicrosoft.com) | vertdll.dll |  |   
 [EncodePointer](http://msdn2.microsoft.com/en-us/library/bb432254) | kernel32.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.EncodePointer  
 [EncodeRemotePointer](http://msdn2.microsoft.com/en-us/library/dn877135) | kernelbase.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.EncodeRemotePointer  
 [EncodeSystemPointer](http://msdn2.microsoft.com/en-us/library/bb432255) | kernel32.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.EncodeSystemPointer  
@@ -209,6 +216,10 @@ Native Method | Native DLL | Header | Managed Method
 [EnumUILanguages](http://msdn2.microsoft.com/en-us/library/dd317834) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumUILanguages  
 [EraseTape](http://msdn2.microsoft.com/en-us/library/aa362523) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EraseTape  
 [EscapeCommFunction](http://msdn2.microsoft.com/en-us/library/aa363254) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EscapeCommFunction  
+[EventRegister](https://www.google.com/search?num=5&q=EventRegister+site%3Amicrosoft.com) | vertdll.dll |  |   
+[EventSetInformation](https://www.google.com/search?num=5&q=EventSetInformation+site%3Amicrosoft.com) | vertdll.dll |  |   
+[EventUnregister](https://www.google.com/search?num=5&q=EventUnregister+site%3Amicrosoft.com) | vertdll.dll |  |   
+[EventWriteTransfer](https://www.google.com/search?num=5&q=EventWriteTransfer+site%3Amicrosoft.com) | vertdll.dll |  |   
 [ExecuteUmsThread](http://msdn2.microsoft.com/en-us/library/e4265351-e8e9-4878-bd42-93258b4cd1a0) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.ExecuteUmsThread  
 [ExitProcess](http://msdn2.microsoft.com/en-us/library/ms682658) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ExitProcess  
 [ExitThread](http://msdn2.microsoft.com/en-us/library/ms682659) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ExitThread  
@@ -370,6 +381,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetFileTime](http://msdn2.microsoft.com/en-us/library/ms724320) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileTime  
 [GetFileType](http://msdn2.microsoft.com/en-us/library/aa364960) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileType  
 [GetFinalPathNameByHandle](http://msdn2.microsoft.com/en-us/library/aa364962) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFinalPathNameByHandle  
+[GetFipsModeFromIumKernelState](https://www.google.com/search?num=5&q=GetFipsModeFromIumKernelState+site%3Amicrosoft.com) | vertdll.dll |  |   
 [GetFirmwareEnvironmentVariable](http://msdn2.microsoft.com/en-us/library/ms724325) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetFirmwareEnvironmentVariable  
 [GetFirmwareEnvironmentVariableEx](http://msdn2.microsoft.com/en-us/library/B093BA68-C68B-4ED6-9902-058650A191FD) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetFirmwareEnvironmentVariableEx  
 [GetFullPathName](https://www.google.com/search?num=5&q=GetFullPathNameA+site%3Amicrosoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFullPathName  
@@ -477,6 +489,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetProfileString](http://msdn2.microsoft.com/en-us/library/ms724366) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetProfileString  
 [GetQueuedCompletionStatus](http://msdn2.microsoft.com/en-us/library/aa364986) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetQueuedCompletionStatus  
 [GetQueuedCompletionStatusEx](http://msdn2.microsoft.com/en-us/library/aa364988) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.GetQueuedCompletionStatusEx  
+[GetSeedFromIumKernelState](https://www.google.com/search?num=5&q=GetSeedFromIumKernelState+site%3Amicrosoft.com) | vertdll.dll |  |   
 [GetShortPathName](https://www.google.com/search?num=5&q=GetShortPathNameA+site%3Amicrosoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetShortPathName  
 [GetStagedPackageOrigin](http://msdn2.microsoft.com/en-us/library/7A1EE2CA-83CE-4E03-85A5-0061E29EB49B) | kernelbase.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetStagedPackageOrigin  
 [GetStagedPackagePathByFullName](http://msdn2.microsoft.com/en-us/library/F0A37D77-6262-44B1-BEC5-083E41BDE139) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetStagedPackagePathByFullName  
@@ -641,9 +654,12 @@ Native Method | Native DLL | Header | Managed Method
 [IsWow64GuestMachineSupported](http://msdn2.microsoft.com/en-us/library/mt804321) | kernel32.dll | Wow64apiset.h | Vanara.PInvoke.Kernel32.IsWow64GuestMachineSupported  
 [IsWow64Process](http://msdn2.microsoft.com/en-us/library/ms684139) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsWow64Process  
 [IsWow64Process2](http://msdn2.microsoft.com/en-us/library/mt804318) | kernel32.dll | Wow64apiset.h | Vanara.PInvoke.Kernel32.IsWow64Process2  
+[KiUserExceptionDispatcher](https://www.google.com/search?num=5&q=KiUserExceptionDispatcher+site%3Amicrosoft.com) | vertdll.dll |  |   
 [LCIDToLocaleName](http://msdn2.microsoft.com/en-us/library/dd318698) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.LCIDToLocaleName  
 [LCMapString](http://msdn2.microsoft.com/en-us/library/dd318700) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.LCMapString  
 [LCMapStringEx](http://msdn2.microsoft.com/en-us/library/dd318702) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.LCMapStringEx  
+[LdrDisableThreadCalloutsForDll](https://www.google.com/search?num=5&q=LdrDisableThreadCalloutsForDll+site%3Amicrosoft.com) | vertdll.dll |  |   
+[LdrResolveDelayLoadedAPI](https://www.google.com/search?num=5&q=LdrResolveDelayLoadedAPI+site%3Amicrosoft.com) | vertdll.dll |  |   
 [LeaveCriticalSection](http://msdn2.microsoft.com/en-us/library/ms684169) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.LeaveCriticalSection  
 [LeaveCriticalSectionWhenCallbackReturns](http://msdn2.microsoft.com/en-us/library/ms684171) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.LeaveCriticalSectionWhenCallbackReturns  
 [LoadEnclaveData](http://msdn2.microsoft.com/en-us/library/mt592871) | kernel32.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.LoadEnclaveData  
@@ -681,6 +697,10 @@ Native Method | Native DLL | Header | Managed Method
 [MapViewOfFileExNuma](http://msdn2.microsoft.com/en-us/library/1e28c8db-112d-481d-b470-8ca618e125ce) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.MapViewOfFileExNuma  
 [MapViewOfFileFromApp](http://msdn2.microsoft.com/en-us/library/hh994454) | kernel32.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.MapViewOfFileFromApp  
 [MapViewOfFileNuma2](http://msdn2.microsoft.com/en-us/library/mt492558) | kernelbase.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapViewOfFileNuma2  
+[memcmp](https://www.google.com/search?num=5&q=memcmp+site%3Amicrosoft.com) | vertdll.dll |  |   
+[memcpy](https://www.google.com/search?num=5&q=memcpy+site%3Amicrosoft.com) | vertdll.dll |  |   
+[memmove](https://www.google.com/search?num=5&q=memmove+site%3Amicrosoft.com) | vertdll.dll |  |   
+[memset](https://www.google.com/search?num=5&q=memset+site%3Amicrosoft.com) | vertdll.dll |  |   
 [Module32First](http://msdn2.microsoft.com/en-us/library/bb41cab9-13a1-469d-bf76-68c172e982f6) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Module32First  
 [Module32Next](https://www.google.com/search?num=5&q=Module32Next+site%3Amicrosoft.com) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Module32Next  
 [Module32NextA](http://msdn2.microsoft.com/en-us/library/88ec1af4-bae7-4cd7-b830-97a98fb337f4) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Module32Next  
@@ -704,6 +724,7 @@ Native Method | Native DLL | Header | Managed Method
 [OpenPackageInfoByFullName](http://msdn2.microsoft.com/en-us/library/9ECFC757-1CB3-43A1-BA45-9AF72CAB240E) | kernelbase.dll | appmodel.h | Vanara.PInvoke.Kernel32.OpenPackageInfoByFullName  
 [OpenPrivateNamespace](http://msdn2.microsoft.com/en-us/library/ms684318) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenPrivateNamespaceInternal  
 [OpenProcess](http://msdn2.microsoft.com/en-us/library/ms684320) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenProcess  
+[OpenProcessToken](https://www.google.com/search?num=5&q=OpenProcessToken+site%3Amicrosoft.com) | vertdll.dll |  |   
 [OpenSemaphore](http://msdn2.microsoft.com/en-us/library/ms684326) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenSemaphore  
 [OpenThread](http://msdn2.microsoft.com/en-us/library/ms684335) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenThread  
 [OpenWaitableTimer](http://msdn2.microsoft.com/en-us/library/ms684337) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenWaitableTimer  
@@ -744,6 +765,7 @@ Native Method | Native DLL | Header | Managed Method
 [PowerSetRequest](http://msdn2.microsoft.com/en-us/library/85249de8-5832-4f25-bbd9-3576cfd1caa0) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.PowerSetRequest  
 [PrefetchVirtualMemory](http://msdn2.microsoft.com/en-us/library/hh780543) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.PrefetchVirtualMemory  
 [PrepareTape](http://msdn2.microsoft.com/en-us/library/aa362532) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.PrepareTape  
+[PrivilegeCheck](https://www.google.com/search?num=5&q=PrivilegeCheck+site%3Amicrosoft.com) | vertdll.dll |  |   
 [Process32First](https://www.google.com/search?num=5&q=Process32First+site%3Amicrosoft.com) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Process32First  
 [Process32FirstA](http://msdn2.microsoft.com/en-us/library/097790e8-30c2-4b00-9256-fa26e2ceb893) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Process32First  
 [Process32Next](https://www.google.com/search?num=5&q=Process32Next+site%3Amicrosoft.com) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Process32Next  
@@ -761,11 +783,13 @@ Native Method | Native DLL | Header | Managed Method
 [PssWalkSnapshot](http://msdn2.microsoft.com/en-us/library/C6AC38B5-0A1C-44D7-A1F6-8196AE9B8FB0) | kernel32.dll | processsnapshot.h | Vanara.PInvoke.Kernel32.PssWalkSnapshot  
 [PulseEvent](http://msdn2.microsoft.com/en-us/library/ms684914) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.PulseEvent  
 [PurgeComm](http://msdn2.microsoft.com/en-us/library/aa363428) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.PurgeComm  
+[qsort](https://www.google.com/search?num=5&q=qsort+site%3Amicrosoft.com) | vertdll.dll |  |   
 [QueryActCtxSettingsW](http://msdn2.microsoft.com/en-us/library/aa375700) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.QueryActCtxSettingsW  
 [QueryActCtxW](http://msdn2.microsoft.com/en-us/library/7d45f63f-0baf-4236-b245-d36f9eb32e8c) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.QueryActCtxW  
 [QueryAuxiliaryCounterFrequency](http://msdn2.microsoft.com/en-us/library/71E00DF2-7F67-43D2-9D6D-BFE9FEA4B30A) | kernelbase.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryAuxiliaryCounterFrequency  
 [QueryDepthSList](http://msdn2.microsoft.com/en-us/library/3f9b4481-647f-457f-bdfb-62e6ae4198e5) | kernel32.dll | interlockedapi.h | Vanara.PInvoke.Kernel32.QueryDepthSList  
 [QueryDosDevice](http://msdn2.microsoft.com/en-us/library/aa365461) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.QueryDosDevice  
+[QueryFullProcess](https://www.google.com/search?num=5&q=QueryFullProcess+site%3Amicrosoft.com) | vertdll.dll |  |   
 [QueryFullProcessImageName](http://msdn2.microsoft.com/en-us/library/49a9d1aa-30f3-45ea-a4ec-9f55df692b8b) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.QueryFullProcessImageName  
 [QueryIdleProcessorCycleTime](http://msdn2.microsoft.com/en-us/library/75a5c4cf-ccc7-47ab-a2a9-88051e0a7d06) | kernel32.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryIdleProcessorCycleTime  
 [QueryIdleProcessorCycleTimeEx](http://msdn2.microsoft.com/en-us/library/4bf05e40-96d1-4c01-b3a8-8a45934b38c6) | kernel32.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryIdleProcessorCycleTimeEx  
@@ -810,6 +834,7 @@ Native Method | Native DLL | Header | Managed Method
 [RegisterApplicationRestart](http://msdn2.microsoft.com/en-us/library/aa373347) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.RegisterApplicationRestart  
 [RegisterBadMemoryNotification](http://msdn2.microsoft.com/en-us/library/hh691013) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RegisterBadMemoryNotification  
 [RegisterWaitForSingleObject](https://www.google.com/search?num=5&q=RegisterWaitForSingleObject+site%3Amicrosoft.com) | kernel32.dll |  | Vanara.PInvoke.Kernel32.RegisterWaitForSingleObject  
+[RegisterWaitForSingleObjectEx](https://www.google.com/search?num=5&q=RegisterWaitForSingleObjectEx+site%3Amicrosoft.com) | vertdll.dll |  |   
 [ReleaseActCtx](http://msdn2.microsoft.com/en-us/library/aa375713) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ReleaseActCtx  
 [ReleaseMutex](http://msdn2.microsoft.com/en-us/library/ms685066) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReleaseMutex  
 [ReleaseMutexWhenCallbackReturns](http://msdn2.microsoft.com/en-us/library/ms685070) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReleaseMutexWhenCallbackReturns  
@@ -828,20 +853,46 @@ Native Method | Native DLL | Header | Managed Method
 [RequestWakeupLatency](http://msdn2.microsoft.com/en-us/library/aa373199) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RequestWakeupLatency  
 [ResetEvent](http://msdn2.microsoft.com/en-us/library/ms685081) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ResetEvent  
 [ResetWriteWatch](http://msdn2.microsoft.com/en-us/library/aa366874) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ResetWriteWatch  
+[ResolveDelayLoadedAPI](https://www.google.com/search?num=5&q=ResolveDelayLoadedAPI+site%3Amicrosoft.com) | vertdll.dll |  |   
 [ResolveLocaleName](http://msdn2.microsoft.com/en-us/library/dd319112) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.ResolveLocaleName  
 [RestoreLastError](https://www.google.com/search?num=5&q=RestoreLastError+site%3Amicrosoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RestoreLastError  
 [ResumeThread](http://msdn2.microsoft.com/en-us/library/ms685086) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ResumeThread  
+[RtlAcquireResourceExclusive](https://www.google.com/search?num=5&q=RtlAcquireResourceExclusive+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlAcquireResourceShared](https://www.google.com/search?num=5&q=RtlAcquireResourceShared+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlAddFunctionTable](http://msdn2.microsoft.com/en-us/library/4717f29e-c5f8-4b02-a7c8-edd065f1c793) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlAddFunctionTable  
+[RtlAllocateHeap](https://www.google.com/search?num=5&q=RtlAllocateHeap+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlAssert](https://www.google.com/search?num=5&q=RtlAssert+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlCallEnclaveReturn](https://www.google.com/search?num=5&q=RtlCallEnclaveReturn+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlCaptureContext](http://msdn2.microsoft.com/en-us/library/e2ce0cde-43ab-4681-be66-bd7509fd6ca2) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlCaptureContext  
+[RtlCompareUnicodeString](https://www.google.com/search?num=5&q=RtlCompareUnicodeString+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlDeleteCriticalSection](https://www.google.com/search?num=5&q=RtlDeleteCriticalSection+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlDeleteFunctionTable](http://msdn2.microsoft.com/en-us/library/42bc3d83-8053-40e9-b153-f68733d0cb2b) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlDeleteFunctionTable  
+[RtlDeleteResource](https://www.google.com/search?num=5&q=RtlDeleteResource+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlEnclaveCallDispatch](https://www.google.com/search?num=5&q=RtlEnclaveCallDispatch+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlEnclaveCallDispatchReturn](https://www.google.com/search?num=5&q=RtlEnclaveCallDispatchReturn+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlEnterCriticalSection](https://www.google.com/search?num=5&q=RtlEnterCriticalSection+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlFillMemory](http://msdn2.microsoft.com/en-us/library/aa366561) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FillMemory  
+[RtlFreeHeap](https://www.google.com/search?num=5&q=RtlFreeHeap+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlGetCurrentProcessorNumberEx](https://www.google.com/search?num=5&q=RtlGetCurrentProcessorNumberEx+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlGetLastNtStatus](https://www.google.com/search?num=5&q=RtlGetLastNtStatus+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlImageNtHeader](https://www.google.com/search?num=5&q=RtlImageNtHeader+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlInitializeCriticalSection](https://www.google.com/search?num=5&q=RtlInitializeCriticalSection+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlInitializeResource](https://www.google.com/search?num=5&q=RtlInitializeResource+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlInitUnicodeString](https://www.google.com/search?num=5&q=RtlInitUnicodeString+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlInstallFunctionTableCallback](http://msdn2.microsoft.com/en-us/library/63b35b17-0b0e-46ed-9dbf-98290ab08bd1) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlInstallFunctionTableCallback  
+[RtlLeaveCriticalSection](https://www.google.com/search?num=5&q=RtlLeaveCriticalSection+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlLookupFunctionEntry](http://msdn2.microsoft.com/en-us/library/624b97fb-0453-4f47-b6bd-92aa14705e78) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlLookupFunctionEntry  
 [RtlMoveMemory](http://msdn2.microsoft.com/en-us/library/D374F14D-24C7-4771-AD40-3AC37E7A2D2F) | kernel32.dll | winnt.h | Vanara.PInvoke.Kernel32.RtlMoveMemory  
+[RtlNtStatusToDosError](https://www.google.com/search?num=5&q=RtlNtStatusToDosError+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlPcToFileHeader](http://msdn2.microsoft.com/en-us/library/690c9f20-d471-49c9-a40c-28926f03acac) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlPcToFileHeader  
+[RtlRaiseStatus](https://www.google.com/search?num=5&q=RtlRaiseStatus+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlReleaseResource](https://www.google.com/search?num=5&q=RtlReleaseResource+site%3Amicrosoft.com) | vertdll.dll |  |   
+[RtlReleaseResourceShared](https://www.google.com/search?num=5&q=RtlReleaseResourceShared+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlRestoreContext](http://msdn2.microsoft.com/en-us/library/f5304d17-bc67-4e0f-a535-efca4e65c74c) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlRestoreContext  
+[RtlUnhandledExceptionFilter](https://www.google.com/search?num=5&q=RtlUnhandledExceptionFilter+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlUnwind](http://msdn2.microsoft.com/en-us/library/254b2547-9d3d-468f-a360-20a12e9dd82e) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlUnwind  
 [RtlUnwindEx](http://msdn2.microsoft.com/en-us/library/3d2d8778-311e-4cc1-b280-4f83ab457755) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlUnwindEx  
+[RtlVirtualUnwind](https://www.google.com/search?num=5&q=RtlVirtualUnwind+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlZeroMemory](https://www.google.com/search?num=5&q=RtlZeroMemory+site%3Amicrosoft.com) | kernel32.dll | winnt.h | Vanara.PInvoke.Kernel32.RtlZeroMemory  
 [ScrollConsoleScreenBuffer](https://www.google.com/search?num=5&q=ScrollConsoleScreenBufferA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.ScrollConsoleScreenBuffer  
 [SearchPath](http://msdn2.microsoft.com/en-us/library/aa365527) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SearchPath  
