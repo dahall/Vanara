@@ -792,6 +792,31 @@ namespace Vanara.PInvoke
 		[PInvokeData("pdh.h", MSDNShortId = "eaed9b28-eb09-4123-9317-5d3d50e2d77a")]
 		public static extern Win32Error PdhBindInputDataSource(out SafePDH_HLOG phDataSource, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] LogFileNameList);
 
+		/// <summary>Binds one or more binary log files together for reading log data.</summary>
+		/// <param name="LogFileNameList">
+		/// <para>
+		/// One or more binary log files to bind together. The log file names can contain absolute or relative paths. You cannot specify more
+		/// than 32 log files.
+		/// </para>
+		/// <para>If <c>NULL</c>, the source is a real-time data source.</para>
+		/// </param>
+		/// <returns>Handle to the bound data sources.</returns>
+		/// <remarks>
+		/// <para>
+		/// This function is used with the PDH functions that require a handle to a data source. For a list of these functions, see See Also.
+		/// </para>
+		/// <para>
+		/// You cannot specify more than one comma-delimited (CSV) or tab-delimited (TSV) file. The list can contain only one type of
+		/// file—you cannot combine multiple file types.
+		/// </para>
+		/// </remarks>
+		[PInvokeData("pdh.h", MSDNShortId = "eaed9b28-eb09-4123-9317-5d3d50e2d77a")]
+		public static SafePDH_HLOG PdhBindInputDataSource(params string[] LogFileNameList)
+		{
+			var err = PdhBindInputDataSource(out var hLog, LogFileNameList is null || LogFileNameList.Length == 0 ? null : LogFileNameList);
+			return err.Succeeded ? hLog : throw err.GetException();
+		}
+
 		/// <summary>
 		/// <para>
 		/// Displays a <c>Browse Counters</c> dialog box that the user can use to select one or more counters that they want to add to the query.
@@ -3835,7 +3860,7 @@ namespace Vanara.PInvoke
 		// dwAccessFlags, LPDWORD lpdwLogType, PDH_HQUERY hQuery, DWORD dwMaxSize, LPCSTR szUserCaption, PDH_HLOG *phLog );
 		[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("pdh.h", MSDNShortId = "a8457959-af3a-497f-91ca-0876cbb552cc")]
-		public static extern Win32Error PdhOpenLog(string szLogFileName, PdhLogAccess dwAccessFlags, ref PDH_LOG_TYPE lpdwLogType, [Optional] PDH_HQUERY hQuery, uint dwMaxSize, [Optional] string szUserCaption, out SafePDH_HLOG phLog);
+		public static extern Win32Error PdhOpenLog(string szLogFileName, PdhLogAccess dwAccessFlags, ref PDH_LOG_TYPE lpdwLogType, [Optional] PDH_HQUERY hQuery, [Optional] uint dwMaxSize, [Optional] string szUserCaption, out SafePDH_HLOG phLog);
 
 		/// <summary>
 		/// <para>Creates a new query that is used to manage the collection of performance data.</para>
@@ -4704,10 +4729,10 @@ namespace Vanara.PInvoke
 			/// of this parameter is PDH_MIN_SCALE (–7) (the returned value is the actual value times 10⁷) to PDH_MAX_SCALE (+7) (the
 			/// returned value is the actual value times 10⁺⁷). A value of zero will set the scale to one, so that the actual value is returned
 			/// </summary>
-			public int lScale;
+			public long lScale;
 
 			/// <summary>Default scale factor as suggested by the counter's provider.</summary>
-			public int lDefaultScale;
+			public long lDefaultScale;
 
 			/// <summary>The value passed in the dwUserData parameter when calling PdhAddCounter.</summary>
 			public IntPtr dwUserData;
@@ -4716,46 +4741,40 @@ namespace Vanara.PInvoke
 			public IntPtr dwQueryUserData;
 
 			/// <summary><c>Null</c>-terminated string that specifies the full counter path. The string follows this structure in memory.</summary>
-			[MarshalAs(UnmanagedType.LPTStr)] public string szFullPath;
-
-			/// <summary>A PDH_DATA_ITEM_PATH_ELEMENTS structure. Not used.</summary>
-			public PDH_DATA_ITEM_PATH_ELEMENTS DataItemPath;
-
-			/// <summary>A PDH_COUNTER_PATH_ELEMENTS structure.</summary>
-			public PDH_COUNTER_PATH_ELEMENTS CounterPath;
+			public StrPtrAuto szFullPath;
 
 			/// <summary>
 			/// <c>Null</c>-terminated string that contains the name of the computer specified in the counter path. Is <c>NULL</c>, if the
 			/// path does not specify a computer. The string follows this structure in memory.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)] public string szMachineName;
+			public StrPtrAuto szMachineName;
 
 			/// <summary>
 			/// <c>Null</c>-terminated string that contains the name of the performance object specified in the counter path. The string
 			/// follows this structure in memory.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)] public string szObjectName;
+			public StrPtrAuto szObjectName;
 
 			/// <summary>
 			/// <c>Null</c>-terminated string that contains the name of the object instance specified in the counter path. Is <c>NULL</c>, if
 			/// the path does not specify an instance. The string follows this structure in memory.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)] public string szInstanceName;
+			public StrPtrAuto szInstanceName;
 
 			/// <summary>
 			/// <c>Null</c>-terminated string that contains the name of the parent instance specified in the counter path. Is <c>NULL</c>, if
 			/// the path does not specify a parent instance. The string follows this structure in memory.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)] public string szParentInstance;
+			public StrPtrAuto szParentInstance;
 
 			/// <summary>Instance index specified in the counter path. Is 0, if the path does not specify an instance index.</summary>
 			public uint dwInstanceIndex;
 
 			/// <summary><c>Null</c>-terminated string that contains the counter name. The string follows this structure in memory.</summary>
-			[MarshalAs(UnmanagedType.LPTStr)] public string szCounterName;
+			public StrPtrAuto szCounterName;
 
 			/// <summary>Help text that describes the counter. Is <c>NULL</c> if the source is a log file.</summary>
-			[MarshalAs(UnmanagedType.LPTStr)] public string szExplainText;
+			public StrPtrAuto szExplainText;
 
 			/// <summary>Start of the string data that is appended to the structure.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
@@ -4826,7 +4845,7 @@ namespace Vanara.PInvoke
 		// CStatus; union { LONG longValue; double doubleValue; LONGLONG largeValue; LPCSTR AnsiStringValue; LPCWSTR WideStringValue; }; }
 		// PDH_FMT_COUNTERVALUE, *PPDH_FMT_COUNTERVALUE;
 		[PInvokeData("pdh.h", MSDNShortId = "68ccd722-94d2-4610-ba64-f51318f5436e")]
-		[StructLayout(LayoutKind.Explicit)]
+		[StructLayout(LayoutKind.Explicit, Size = 16)]
 		public struct PDH_FMT_COUNTERVALUE
 		{
 			/// <summary>
@@ -4834,26 +4853,26 @@ namespace Vanara.PInvoke
 			/// displaying its value. For a list of possible values, see Checking PDH Interface Return Values.
 			/// </summary>
 			[FieldOffset(0)]
-			public uint CStatus;
+			public Win32Error CStatus;
 
 			/// <summary>The computed counter value as a <c>LONG</c>.</summary>
-			[FieldOffset(0)]
+			[FieldOffset(8)]
 			public int longValue;
 
 			/// <summary>The computed counter value as a <c>DOUBLE</c>.</summary>
-			[FieldOffset(0)]
+			[FieldOffset(8)]
 			public double doubleValue;
 
 			/// <summary>The computed counter value as a <c>LONGLONG</c>.</summary>
-			[FieldOffset(0)]
+			[FieldOffset(8)]
 			public long largeValue;
 
 			/// <summary>The computed counter value as a <c>LPCSTR</c>. Not supported.</summary>
-			[FieldOffset(0)]
+			[FieldOffset(8)]
 			public StrPtrAnsi AnsiStringValue;
 
 			/// <summary>The computed counter value as a <c>LPCWSTR</c>. Not supported.</summary>
-			[FieldOffset(0)]
+			[FieldOffset(8)]
 			public StrPtrUni WideStringValue;
 		}
 
@@ -5116,10 +5135,9 @@ namespace Vanara.PInvoke
 			/// <summary>Size of the <c>RawBytes</c> data.</summary>
 			public uint dwItems;
 
-			private byte _RawBytes;
-
 			/// <summary>Binary record.</summary>
-			public byte[] RawBytes => StructHelper.FieldToArray(ref _RawBytes, (int)dwItems);
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public byte[] RawBytes;
 		}
 
 		/// <summary>
@@ -5132,7 +5150,7 @@ namespace Vanara.PInvoke
 		public struct PDH_STATISTICS
 		{
 			/// <summary>Format of the data. The format is specified in the dwFormat when calling PdhComputeCounterStatistics.</summary>
-			public uint dwFormat;
+			public PDH_FMT dwFormat;
 
 			/// <summary>Number of values in the array.</summary>
 			public uint count;
@@ -5153,7 +5171,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/pdh/ns-pdh-pdh_time_info typedef struct _PDH_TIME_INFO { LONGLONG StartTime;
 		// LONGLONG EndTime; DWORD SampleCount; } PDH_TIME_INFO, *PPDH_TIME_INFO;
 		[PInvokeData("pdh.h", MSDNShortId = "a747f288-8d6c-401c-a927-a61ffea3d423")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Size = 24)]
 		public struct PDH_TIME_INFO
 		{
 			/// <summary>Starting time of the sample interval, in local FILETIME format.</summary>

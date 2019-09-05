@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -11,9 +13,9 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture]
 	public class PdhTests
 	{
-		private const string counterPath = "\\Processor(0)\\% Processor Time";
-		private const string dsn = "Test";
-		private const string logFile = @"C:\Temp\TestLogFile.etl";
+		private const string counterPath = @"\Processor(0)\% Processor Time";
+		private const string dsn = "TestSet";
+		private const string logFile = @"C:\PerfLogs\Admin\TestSet\System Monitor Log.blg";
 
 		[Test]
 		public void BrowsePerfCountersTest()
@@ -65,8 +67,8 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void PdhBindInputDataSourceTest()
 		{
-			throw new NotImplementedException();
-			//Assert.That(PdhBindInputDataSource(), ResultIs.Successful);
+			Assert.That(PdhBindInputDataSource(out var hLog, new[] { logFile }), ResultIs.Successful);
+			hLog.Dispose();
 		}
 
 		[Test]
@@ -87,10 +89,6 @@ namespace Vanara.PInvoke.Tests
 						Assert.That(PdhCollectQueryDataEx(Query, 0, evt), ResultIs.Successful);
 						evt.WaitOne(100);
 					}
-
-					// Compute a displayable value for the counter.
-					Assert.That(PdhGetFormattedCounterValue(Counter, PDH_FMT.PDH_FMT_DOUBLE, out var CounterType, out var DisplayValue), ResultIs.Successful);
-					TestContext.WriteLine($",\"{DisplayValue.doubleValue}\"");
 				}
 			}
 		}
@@ -135,7 +133,7 @@ namespace Vanara.PInvoke.Tests
 					Assert.That(PdhCalculateCounterFromRawValue(Counter, PDH_FMT.PDH_FMT_LONG, rawCounter1, rawCounter2, out var fmtValue), ResultIs.Successful);
 					TestContext.WriteLine($"{fmtValue.longValue}");
 
-					//Assert.That(PdhFormatFromRawValue(CounterType.PERF_100NSEC_TIMER)
+					Assert.That(PdhFormatFromRawValue(type, PDH_FMT.PDH_FMT_LONG, ft2, rawCounter1, rawCounter2, out fmtValue), ResultIs.Successful);
 				}
 			}
 		}
@@ -150,9 +148,10 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(PdhAddCounter(Query, counterPath, default, out var Counter), ResultIs.Successful);
 				using (Counter)
 				{
-					var first = 0U;
-					var values = new PDH_RAW_COUNTER[] { };
-					Assert.That(PdhComputeCounterStatistics(Counter, PDH_FMT.PDH_FMT_LONG, first, (uint)values.Length, values, out var stats), ResultIs.Failure);
+					Assert.That(PdhGetRawCounterValue(Counter, out var type, out var rawCounter), ResultIs.Successful);
+					var values = new PDH_RAW_COUNTER[] { rawCounter };
+					Assert.That(PdhComputeCounterStatistics(Counter, PDH_FMT.PDH_FMT_LONG, 0, (uint)values.Length, values, out var stats), ResultIs.Successful);
+					stats.WriteValues();
 				}
 			}
 		}
@@ -254,6 +253,13 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void PdhExpandWildCardPathHTest()
+		{
+			Assert.That(CallMethodWithStrings((IntPtr p, ref uint sz) => PdhExpandWildCardPathH(default, @"\Process(*)\ID Process", p, ref sz, 0), out var strs), ResultIs.Successful);
+			TestContext.WriteLine(string.Join("\n", strs));
+		}
+
+		[Test]
 		public void PdhExpandWildCardPathTest()
 		{
 			Assert.That(CallMethodWithStrings((IntPtr p, ref uint sz) => PdhExpandWildCardPath(null, @"\Process(*)\ID Process", p, ref sz, 0), out var strs), ResultIs.Successful);
@@ -261,10 +267,228 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void PdhExpandWildCardPathHTest()
+		public void PdhGetCounterInfoTest()
 		{
-			Assert.That(CallMethodWithStrings((IntPtr p, ref uint sz) => PdhExpandWildCardPathH(default, @"\Process(*)\ID Process", p, ref sz, 0), out var strs), ResultIs.Successful);
-			TestContext.WriteLine(string.Join("\n", strs));
+			Assert.That(PdhOpenQuery(null, default, out var Query), ResultIs.Successful);
+			using (Query)
+			{
+				// Add the selected counter to the query.
+				Assert.That(PdhAddCounter(Query, counterPath, default, out var Counter), ResultIs.Successful);
+				using (Counter)
+				{
+					Assert.That(PdhSetCounterScaleFactor(Counter, 1), ResultIs.Successful);
+
+					uint sz = 0;
+					Assert.That(PdhGetCounterInfo(Counter, true, ref sz, default), ResultIs.FailureCode(Win32Error.PDH_MORE_DATA));
+					using (var buffer = new SafeHGlobalHandle(sz))
+					{
+						Assert.That(PdhGetCounterInfo(Counter, true, ref sz, buffer), ResultIs.Successful);
+						buffer.ToStructure<PDH_COUNTER_INFO>().WriteValues();
+					}
+				}
+			}
+		}
+
+		[Test]
+		public void PdhGetCounterTimeBaseTest()
+		{
+			Assert.That(PdhOpenQuery(null, default, out var Query), ResultIs.Successful);
+			using (Query)
+			{
+				// Add the selected counter to the query.
+				Assert.That(PdhAddCounter(Query, counterPath, default, out var Counter), ResultIs.Successful);
+				using (Counter)
+				{
+					Assert.That(PdhGetCounterTimeBase(Counter, out var ft), ResultIs.Successful);
+					TestContext.Write(ft.ToString("U"));
+				}
+			}
+		}
+
+		[Test]
+		public void PdhGetDataSourceTimeRangeHTest()
+		{
+			Assert.That(PdhBindInputDataSource(out var hLog, new[] { logFile }), ResultIs.Successful);
+			using (hLog)
+			{
+				uint sz = (uint)Marshal.SizeOf<PDH_TIME_INFO>();
+				Assert.That(PdhGetDataSourceTimeRangeH(hLog, out var cnt, out var info, ref sz), ResultIs.Successful);
+				Assert.That(cnt, Is.EqualTo(1));
+				info.WriteValues();
+			}
+		}
+
+		[Test]
+		public void PdhGetDataSourceTimeRangeTest()
+		{
+			uint sz = (uint)Marshal.SizeOf<PDH_TIME_INFO>();
+			Assert.That(PdhGetDataSourceTimeRange(logFile, out var cnt, out var info, ref sz), ResultIs.Successful);
+			Assert.That(cnt, Is.EqualTo(1));
+			info.WriteValues();
+		}
+
+		[Test]
+		public void PdhGetDefaultPerfCounterObjectHTest()
+		{
+			var sz = 1024U;
+			var sb = new StringBuilder((int)sz);
+			Assert.That(PdhGetDefaultPerfObjectH(PDH_HLOG.NULL, null, sb, ref sz), ResultIs.Successful);
+			TestContext.WriteLine($"DefObj: {sb}");
+
+			sz = (uint)sb.Capacity;
+			var obj = sb.ToString();
+			Assert.That(PdhGetDefaultPerfCounterH(PDH_HLOG.NULL, null, obj, sb, ref sz), ResultIs.Successful);
+			TestContext.WriteLine($"DefCntr: {sb}");
+		}
+
+		[Test]
+		public void PdhGetDefaultPerfCounterObjectTest()
+		{
+			var sz = 1024U;
+			var sb = new StringBuilder((int)sz);
+			Assert.That(PdhGetDefaultPerfObject(null, null, sb, ref sz), ResultIs.Successful);
+			TestContext.WriteLine($"DefObj: {sb}");
+
+			sz = (uint)sb.Capacity;
+			var obj = sb.ToString();
+			Assert.That(PdhGetDefaultPerfCounter(null, null, obj, sb, ref sz), ResultIs.Successful);
+			TestContext.WriteLine($"DefCntr: {sb}");
+		}
+
+		[Test]
+		public void PdhGetDllVersionTest()
+		{
+			Assert.That(PdhGetDllVersion(out var ver), ResultIs.Successful);
+			TestContext.Write(ver);
+		}
+
+		[Test]
+		public void PdhGetFormattedRawCounterArrayTest()
+		{
+			Assert.That(PdhOpenQuery(null, default, out var Query), ResultIs.Successful);
+			using (Query)
+			{
+				// Add the selected counter to the query.
+				Assert.That(PdhAddCounter(Query, counterPath.Replace("(0)", "(*)"), default, out var Counter), ResultIs.Successful);
+				using (Counter)
+				{
+					Assert.That(PdhCollectQueryData(Query), ResultIs.Successful);
+					Assert.That(PdhCollectQueryData(Query), ResultIs.Successful);
+
+					// Compute a displayable value for the counter.
+					using (var mem = new SafeHGlobalHandle(4096))
+					{
+						var sz = (uint)mem.Size;
+						Assert.That(PdhGetFormattedCounterArray(Counter, PDH_FMT.PDH_FMT_DOUBLE, ref sz, out var n, mem), ResultIs.Successful);
+						mem.ToArray<PDH_FMT_COUNTERVALUE_ITEM>((int)n).WriteValues();
+
+						TestContext.WriteLine("===============================");
+
+						sz = (uint)mem.Size;
+						Assert.That(PdhGetRawCounterArray(Counter, ref sz, out n, mem), ResultIs.Successful);
+						mem.ToArray<PDH_RAW_COUNTER_ITEM>((int)n).WriteValues();
+					}
+				}
+			}
+		}
+
+		[Test]
+		public void PdhGetLogFileSizeTest()
+		{
+			var type = PDH_LOG_TYPE.PDH_LOG_TYPE_UNDEFINED;
+			Assert.That(PdhOpenLog(logFile, PdhLogAccess.PDH_LOG_READ_ACCESS | PdhLogAccess.PDH_LOG_OPEN_EXISTING, ref type, phLog: out var hlog), ResultIs.Successful);
+			using (hlog)
+			{
+				Assert.That(PdhGetLogFileSize(hlog, out var sz), ResultIs.Successful);
+				TestContext.Write(sz);
+			}
+		}
+
+		[Test]
+		public void PdhLookupPerfNameByIndexTest()
+		{
+			var name = "Cache";
+			Assert.That(PdhLookupPerfIndexByName(null, name, out var idx), ResultIs.Successful);
+
+			var sz = 1024U;
+			var sb = new StringBuilder((int)sz);
+			Assert.That(PdhLookupPerfNameByIndex(null, idx, sb, ref sz), ResultIs.Successful);
+
+			Assert.That(name, Is.EqualTo(sb.ToString()));
+		}
+
+		[Test]
+		public void PdhMakeCounterPathTest()
+		{
+			var e = new PDH_COUNTER_PATH_ELEMENTS { szObjectName = "Processor", szInstanceName = "1", szCounterName = "% Processor Time" };
+			var sz = 1024U;
+			var sb = new StringBuilder((int)sz);
+			Assert.That(PdhMakeCounterPath(e, sb, ref sz, 0, Kernel32.GetSystemDefaultLangID()), ResultIs.Successful);
+			TestContext.Write(sb);
+		}
+
+		[Test]
+		public void PdhParseCounterPathTest()
+		{
+			using (var mem = new SafeCoTaskMemHandle(1024))
+			{
+				uint sz = mem.Size;
+				Assert.That(PdhParseCounterPath(counterPath, mem, ref sz), ResultIs.Successful);
+				mem.ToStructure<PDH_COUNTER_PATH_ELEMENTS>().WriteValues();
+			}
+		}
+
+		[Test]
+		public void PdhParseInstanceNameTest()
+		{
+			var sz1 = 1024U;
+			var sb1 = new StringBuilder((int)sz1);
+			var sz2 = 1024U;
+			var sb2 = new StringBuilder((int)sz2);
+			Assert.That(PdhParseInstanceName("dog/cat#1", sb1, ref sz1, sb2, ref sz2, out var idx), ResultIs.Successful);
+			Assert.That(sb2.ToString(), Is.EqualTo("dog"));
+			Assert.That(idx, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void PdhReadRawLogRecordTest()
+		{
+			using (var hlog = PdhBindInputDataSource(logFile))
+			using (var mem = new SafeCoTaskMemHandle(1024))
+			{
+				uint sz = (uint)Marshal.SizeOf<PDH_TIME_INFO>();
+				Assert.That(PdhGetDataSourceTimeRangeH(hlog, out var cnt, out var info, ref sz), ResultIs.Successful);
+				TestContext.WriteLine($"Start:{info.StartTime.ToString("U")}; End:{info.EndTime.ToString("U")}; Cnt:{info.SampleCount}");
+
+				sz = mem.Size;
+				// TODO: Can't get this to return anything but PDH_ENTRY_NOT_IN_LOG_FILE
+				Assert.That(PdhReadRawLogRecord(hlog, info.StartTime, mem, ref sz), ResultIs.FailureCode(Win32Error.PDH_ENTRY_NOT_IN_LOG_FILE));
+				//var rec = mem.ToStructure<PDH_RAW_LOG_RECORD>();
+				//rec.WriteValues();
+				//TestContext.Write(mem.ToArray<byte>((int)rec.dwItems, 12).ToHexString((int)rec.dwItems));
+			}
+		}
+
+		[Test]
+		public void PdhSelectDataSourceTest()
+		{
+			var sz = 1024U;
+			var sb = new StringBuilder((int)sz);
+			Assert.That(PdhSelectDataSource(default, PdhSelectDataSourceFlags.Default, sb, ref sz), ResultIs.Successful);
+		}
+
+		[Test]
+		public void PdhSetQueryTimeRangeTest()
+		{
+			using (var hlog = PdhBindInputDataSource(logFile))
+			{
+				uint sz = (uint)Marshal.SizeOf<PDH_TIME_INFO>();
+				Assert.That(PdhGetDataSourceTimeRangeH(hlog, out var cnt, out var info, ref sz), ResultIs.Successful);
+
+				Assert.That(PdhOpenQueryH(hlog, default, out var Query), ResultIs.Successful);
+				using (Query)
+					Assert.That(PdhSetQueryTimeRange(Query, info), ResultIs.Successful);
+			}
 		}
 
 		[Test]
@@ -275,6 +499,8 @@ namespace Vanara.PInvoke.Tests
 			using (var tmp = new TempFile(null))
 			using (hQuery)
 			{
+				Assert.That(PdhIsRealTimeQuery(hQuery), Is.True);
+
 				// Add one counter that will provide the data.
 				Assert.That(PdhAddEnglishCounter(hQuery, counterPath, default, out var hCounter), ResultIs.Successful);
 
@@ -284,6 +510,18 @@ namespace Vanara.PInvoke.Tests
 				using (hLog)
 					Assert.That(PdhUpdateLog(hLog, null), ResultIs.Successful);
 			}
+		}
+
+		[Test]
+		public void PdhValidatePathExWTest()
+		{
+			Assert.That(PdhValidatePathExW(PDH_HLOG.NULL, counterPath), ResultIs.Successful);
+		}
+
+		[Test]
+		public void PdhValidatePathTest()
+		{
+			Assert.That(PdhValidatePath(counterPath), ResultIs.Successful);
 		}
 
 		private static Win32Error CallMethodWithStrings(FunctionHelper.PtrFunc<uint> method, out string[] result)
