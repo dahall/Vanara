@@ -5,12 +5,49 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary>Enclave constant.</summary>
+		public const int ENCLAVE_LONG_ID_LENGTH = 32;
+
+		/// <summary>Enclave constant.</summary>
+		public const int ENCLAVE_SHORT_ID_LENGTH = 16;
+
+		/// <summary>Enclave constant.</summary>
+		public const int IMAGE_ENCLAVE_LONG_ID_LENGTH = ENCLAVE_LONG_ID_LENGTH;
+
+		/// <summary>Enclave constant.</summary>
+		public const int IMAGE_ENCLAVE_SHORT_ID_LENGTH = ENCLAVE_SHORT_ID_LENGTH;
+
 		/// <summary>Used by the <see cref="CallEnclave"/> function.</summary>
 		/// <param name="lpThreadParameter">The thread parameter.</param>
 		/// <returns>The return thread parameter.</returns>
 		[PInvokeData("MinWinBase.h")]
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		public delegate IntPtr PENCLAVE_ROUTINE(IntPtr lpThreadParameter);
+
+		/// <summary>
+		/// Specifies how another enclave must be related to the enclave that calls <c>EnclaveSealData</c> for the enclave to unseal the data.
+		/// </summary>
+		[PInvokeData("ntenclv.h")]
+		public enum ENCLAVE_SEALING_IDENTITY_POLICY
+		{
+			/// <summary/>
+			ENCLAVE_IDENTITY_POLICY_SEAL_INVALID = 0,
+
+			/// <summary/>
+			ENCLAVE_IDENTITY_POLICY_SEAL_EXACT_CODE,
+
+			/// <summary/>
+			ENCLAVE_IDENTITY_POLICY_SEAL_SAME_PRIMARY_CODE,
+
+			/// <summary/>
+			ENCLAVE_IDENTITY_POLICY_SEAL_SAME_IMAGE,
+
+			/// <summary/>
+			ENCLAVE_IDENTITY_POLICY_SEAL_SAME_FAMILY,
+
+			/// <summary/>
+			ENCLAVE_IDENTITY_POLICY_SEAL_SAME_AUTHOR,
+		}
 
 		/// <summary>A flag that indicates whether the enclave permits debugging.</summary>
 		public enum ENCLAVE_VBS_FLAG : uint
@@ -246,6 +283,219 @@ namespace Vanara.PInvoke
 		[PInvokeData("Enclaveapi.h", MSDNShortId = "mt844232")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DeleteEnclave(IntPtr lpAddress);
+
+		/// <summary>
+		/// Gets an enclave attestation report that describes the current enclave and is signed by the authority that is responsible for the
+		/// type of the enclave.
+		/// </summary>
+		/// <param name="EnclaveData">
+		/// A pointer to a 64-byte buffer of data that the enclave wants to insert into its signed report. For example, this buffer could
+		/// include a 256-bit nonce that the relying party supplied, followed by a SHA-256 hash of additional data that the enclave wants to
+		/// convey, such as a public key that corresponds to a private key that the enclave owns. If this parameter is NULL, the
+		/// corresponding field of the report is filled with zeroes.
+		/// </param>
+		/// <param name="Report">
+		/// A pointer to a buffer where the report should be placed. This report may be stored either within the address range of the enclave
+		/// or within the address space of the host process. Specify NULL to indicate that only the size of the buffer required for the
+		/// output should be calculated, and not the report itself.
+		/// </param>
+		/// <param name="BufferSize">
+		/// The size of the buffer to which the Report parameter points. If Report is NULL, BufferSize must be zero. If Report is not NULL,
+		/// and if the size of the report is larger than this value, an error is returned.
+		/// </param>
+		/// <param name="OutputSize">A pointer to a variable that receives the size of the report.</param>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		/// <remarks>
+		/// <para><c>EnclaveGetAttestationReport</c> must be called from within an enclave.</para>
+		/// <para>
+		/// <c>EnclaveGetAttestationReport</c> is not currently supported for enclaves with a type of <c>ENCLAVE_TYPE_SGX</c>. For VBS
+		/// enclaves, the report that <c>EnclaveGetAttestationReport</c> gets is signed by using a VBS-specific key.
+		/// </para>
+		/// <para>
+		/// The enclave attestation report contains the identity of all code loaded into the enclave, as well as policies that control how
+		/// the enclave is running, such as whether the enclave is running with debugger access active. The report also includes a small
+		/// amount of information that the enclave generated to use in a key-exchange protocol.
+		/// </para>
+		/// <para>The report that <c>EnclaveGetAttestationReport</c> generates consists of the following items:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>A VBS_ENCLAVE_REPORT_PKG_HEADER structure</term>
+		/// </item>
+		/// <item>
+		/// <term>A signed statement that consist of the following items:</term>
+		/// </item>
+		/// <item>
+		/// <term>A signature</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The enclave attestation report provide proof that specific code is running with an enclave. If a validating entity also obtains
+		/// proof that the host system is running with VBS turned on, that entity can use that proof in conjunction with the enclave
+		/// attestation report to verify that a specific enclave, populated with specific code, has been loaded.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclavegetattestationreport HRESULT
+		// EnclaveGetAttestationReport( const UINT8 [ENCLAVE_REPORT_DATA_LENGTH] EnclaveData, PVOID Report, UINT32 BufferSize, UINT32
+		// *OutputSize );
+		[DllImport(Lib.VertDll, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winenclaveapi.h", MSDNShortId = "FEE8F05B-540F-4C10-A90C-55607A4E9293")]
+		public static extern HRESULT EnclaveGetAttestationReport(byte[] EnclaveData, IntPtr Report, uint BufferSize, out uint OutputSize);
+
+		/// <summary>Gets information about the currently executing enclave.</summary>
+		/// <param name="InformationSize">
+		/// The size of the ENCLAVE_INFORMATION structure that the EnclaveInformation parameter points to, in bytes.
+		/// </param>
+		/// <param name="EnclaveInformation">Information about the currently executing enclave.</param>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		/// <remarks>
+		/// <c>EnclaveGetEnclaveInformation</c> must be called from within an enclave, and is only supported within enclaves that have the
+		/// <c>ENCLAVE_TYPE_VBS</c> enclave type.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclavegetenclaveinformation HRESULT
+		// EnclaveGetEnclaveInformation( UINT32 InformationSize, ENCLAVE_INFORMATION *EnclaveInformation );
+		[DllImport(Lib.VertDll, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winenclaveapi.h", MSDNShortId = "26349C3C-4B73-430C-B002-ED262DB0304F")]
+		public static extern HRESULT EnclaveGetEnclaveInformation(uint InformationSize, ref ENCLAVE_INFORMATION EnclaveInformation);
+
+		/// <summary>Generates an encrypted binary large object (blob) from unencypted data.</summary>
+		/// <param name="DataToEncrypt">
+		/// A pointer to the data that you want to seal. This data can be stored either within the address range of the enclave or within the
+		/// address range of the host process.
+		/// </param>
+		/// <param name="DataToEncryptSize">The size of the data that you want to seal, in bytes.</param>
+		/// <param name="IdentityPolicy">
+		/// A value that specifies how another enclave must be related to the enclave that calls <c>EnclaveSealData</c> for the enclave to
+		/// unseal the data.
+		/// </param>
+		/// <param name="RuntimePolicy">
+		/// <para>
+		/// A value that indicates whether an enclave that runs with debugging turned on is permitted to unseal the data the this call to
+		/// <c>EnclaveSealData</c> seals.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ENCLAVE_RUNTIME_POLICY_ALLOW_FULL_DEBUG 1</term>
+		/// <term>
+		/// If specified, indicates that an enclave that runs with debugging turned on is permitted to unseal the data. If not specified,
+		/// indicates that an enclave that runs with debugging turned on is not permitted to unseal the data. This flag is automatically
+		/// included if the calling enclave is running with debugging turned on.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ENCLAVE_RUNTIME_POLICY_ALLOW_DYNAMIC_DEBUG 2</term>
+		/// <term>
+		/// If specified, indicates that an enclave that runs with dynamic debugging turned on is permitted to unseal the data. If not
+		/// specified, indicates that an enclave that runs with dynamic debugging turned on is not permitted to unseal the data. This flag is
+		/// automatically included if the calling enclave is running with dynamic debugging turned on
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="ProtectedBlob">
+		/// A pointer to a buffer where the sealed data should be placed. This data may be stored either within the address range of the
+		/// enclave or within the address space of the host process. If this parameter is NULL, only the size of the protected blob is calculated.
+		/// </param>
+		/// <param name="BufferSize">
+		/// A pointer to a variable that holds the size of the buffer to which the ProtectedBlob parameter points. If ProtectedBlob is NULL,
+		/// this value must be zero. If ProtectedBlob is not NULL, and if the size of the encrypted data is larger than this value, an error occurs.
+		/// </param>
+		/// <param name="ProtectedBlobSize">A pointer to a variable that receives the actual size of the encrypted blob.</param>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		/// <remarks>
+		/// <c>EnclaveSealData</c> must be called from within an enclave, and is only supported within enclaves that have the
+		/// <c>ENCLAVE_TYPE_VBS</c> enclave type.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclavesealdata HRESULT EnclaveSealData( const
+		// VOID *DataToEncrypt, UINT32 DataToEncryptSize, ENCLAVE_SEALING_IDENTITY_POLICY IdentityPolicy, UINT32 RuntimePolicy, PVOID
+		// ProtectedBlob, UINT32 BufferSize, UINT32 *ProtectedBlobSize );
+		[DllImport(Lib.VertDll, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winenclaveapi.h", MSDNShortId = "C5711D43-F0B4-43C6-B0DB-D65622851384")]
+		public static extern HRESULT EnclaveSealData(IntPtr DataToEncrypt, uint DataToEncryptSize, ENCLAVE_SEALING_IDENTITY_POLICY IdentityPolicy, uint RuntimePolicy, IntPtr ProtectedBlob, uint BufferSize, out uint ProtectedBlobSize);
+
+		/// <summary>Decrypts an encrypted binary large object (blob).</summary>
+		/// <param name="ProtectedBlob">
+		/// A pointer to the sealed data to unseal. This data may be stored either within the address range of the enclave or within the
+		/// address space of the host process
+		/// </param>
+		/// <param name="ProtectedBlobSize">The size of the sealed data to unseal, in bytes.</param>
+		/// <param name="DecryptedData">
+		/// A pointer to a buffer where the unencrypted data should be placed. This data may be stored either within the address range of the
+		/// enclave or within the address space of the host process. If this parameter is NULL, only the size of the decrypted data is calculated.
+		/// </param>
+		/// <param name="BufferSize">
+		/// The size of the buffer to which the DecryptedData parameter points, in bytes. If DecryptedData is NULL, BufferSize must be zero.
+		/// If DecryptedData is not NULL, and if the size of the decrypted data is larger than this value, an error is returned.
+		/// </param>
+		/// <param name="DecryptedDataSize">A pointer to a variable that receives the actual size of the decrypted data, in bytes.</param>
+		/// <param name="SealingIdentity">
+		/// An optional pointer to a buffer that should be filled with the identity of the enclave that sealed the data. If this pointer is
+		/// NULL, the identity of the sealing enclave is not returned.
+		/// </param>
+		/// <param name="UnsealingFlags">
+		/// <para>
+		/// An optional pointer to a variable that receives zero or more of the following flags that describe the encrypted binary large object.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ENCLAVE_UNSEAL_FLAG_STALE_KEY 1</term>
+		/// <term>
+		/// The data was encrypted with a stale key. Sealing keys are rotated when required for security, and the system can only maintain a
+		/// fixed number of recently known keys. An enclave that determines that data was encrypted with a stale key should reencrypt the
+		/// data with a current key to minimize the chances that the key used to encrypt the data is no longer maintained in the key list.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		/// <remarks>
+		/// <para>
+		/// The enclave that calls <c>EnclaveUnsealData</c> must meet the criteria that correspond to the value of the
+		/// ENCLAVE_SEALING_IDENTITY_POLICY that was specified by the enclave that sealed the data by calling EnclaveSealData.
+		/// </para>
+		/// <para>
+		/// <c>EnclaveUnsealData</c> must be called from within an enclave, and is only supported within enclaves that have the
+		/// <c>ENCLAVE_TYPE_VBS</c> enclave type.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclaveunsealdata HRESULT EnclaveUnsealData(
+		// const VOID *ProtectedBlob, UINT32 ProtectedBlobSize, PVOID DecryptedData, UINT32 BufferSize, UINT32 *DecryptedDataSize,
+		// ENCLAVE_IDENTITY *SealingIdentity, UINT32 *UnsealingFlags );
+		[DllImport(Lib.VertDll, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winenclaveapi.h", MSDNShortId = "DDBDBEDE-E7EA-43B0-B2C7-B85D75EF3EB0")]
+		public static extern HRESULT EnclaveUnsealData(IntPtr ProtectedBlob, uint ProtectedBlobSize, IntPtr DecryptedData, uint BufferSize, out uint DecryptedDataSize, out ENCLAVE_IDENTITY SealingIdentity, out uint UnsealingFlags);
+
+		/// <summary>Verifies an attestation report that was generated on the current system.</summary>
+		/// <param name="EnclaveType">The type of the enclave for which the report was generated. Must be <c>ENCLAVE_TYPE_VBS</c>.</param>
+		/// <param name="Report">
+		/// A pointer to a buffer that stores the report. This report may be stored either within the address range of the enclave or within
+		/// the address space of the host process.
+		/// </param>
+		/// <param name="ReportSize">The size of the report, in bytes.</param>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		/// <remarks>
+		/// <para>
+		/// This function is used if two enclaves run on the same system and need to establish a secure channel between one another. When you
+		/// call <c>EnclaveVerifyAttestationReport</c> from a virtualization-based security (VBS) enclave, you can only use
+		/// <c>EnclaveVerifyAttestationReport</c> to validate an attestation report that another VBS enclave generated.
+		/// </para>
+		/// <para>
+		/// <c>EnclaveVerifyAttestationReport</c> must be called from within an enclave, and is only supported within enclaves that have the
+		/// <c>ENCLAVE_TYPE_VBS</c> enclave type.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclaveverifyattestationreport HRESULT
+		// EnclaveVerifyAttestationReport( UINT32 EnclaveType, const VOID *Report, UINT32 ReportSize );
+		[DllImport(Lib.VertDll, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winenclaveapi.h", MSDNShortId = "D74F89FB-9F06-4AA1-9E2E-C9265B3C5B44")]
+		public static extern HRESULT EnclaveVerifyAttestationReport(uint EnclaveType, IntPtr Report, uint ReportSize);
 
 		/// <summary>Initializes an enclave that you created and loaded with data.</summary>
 		/// <param name="hProcess">A handle to the process for which the enclave was created.</param>
@@ -559,6 +809,113 @@ namespace Vanara.PInvoke
 			/// <summary>The identifier of the owner of the enclave.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
 			public byte[] OwnerID;
+		}
+
+		/// <summary>Describes the identity of the primary module of an enclave.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntenclv/ns-ntenclv-enclave_identity typedef struct ENCLAVE_IDENTITY { UINT8
+		// OwnerId[IMAGE_ENCLAVE_LONG_ID_LENGTH]; UINT8 UniqueId[IMAGE_ENCLAVE_LONG_ID_LENGTH]; UINT8 AuthorId[IMAGE_ENCLAVE_LONG_ID_LENGTH];
+		// UINT8 FamilyId[IMAGE_ENCLAVE_SHORT_ID_LENGTH]; UINT8 ImageId[IMAGE_ENCLAVE_SHORT_ID_LENGTH]; UINT32 EnclaveSvn; UINT32
+		// SecureKernelSvn; UINT32 PlatformSvn; UINT32 Flags; UINT32 SigningLevel; UINT32 EnclaveType; } ENCLAVE_IDENTITY;
+		[PInvokeData("ntenclv.h", MSDNShortId = "D584D824-3C86-4BBB-9086-6DBE0290E0A4")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ENCLAVE_IDENTITY
+		{
+			/// <summary>The identifier of the owner for the enclave.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = IMAGE_ENCLAVE_LONG_ID_LENGTH)]
+			public byte[] OwnerId;
+
+			/// <summary>The unique identifier of the primary module for the enclave.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = IMAGE_ENCLAVE_LONG_ID_LENGTH)]
+			public byte[] UniqueId;
+
+			/// <summary>The author identifier of the primary module for the enclave.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = IMAGE_ENCLAVE_LONG_ID_LENGTH)]
+			public byte[] AuthorId;
+
+			/// <summary>The family identifier of the primary module for the enclave.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = IMAGE_ENCLAVE_SHORT_ID_LENGTH)]
+			public byte[] FamilyId;
+
+			/// <summary>The image identifier of the primary module for the enclave.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = IMAGE_ENCLAVE_SHORT_ID_LENGTH)]
+			public byte[] ImageId;
+
+			/// <summary>The security version number of the primary module for the enclave.</summary>
+			public uint EnclaveSvn;
+
+			/// <summary>The security version number of the Virtual Secure Mode (VSM) kernel.</summary>
+			public uint SecureKernelSvn;
+
+			/// <summary>The security version number of the platform that hosts the enclave.</summary>
+			public uint PlatformSvn;
+
+			/// <summary>
+			/// <para>Flags that describe the runtime policy for the enclave.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ENCLAVE_FLAG_FULL_DEBUG_ENABLED 0x00000001</term>
+			/// <term>The enclave supports debugging.</term>
+			/// </item>
+			/// <item>
+			/// <term>ENCLAVE_FLAG_DYNAMIC_DEBUG_ENABLED 0x00000002</term>
+			/// <term>The enclave supports dynamic debugging.</term>
+			/// </item>
+			/// <item>
+			/// <term>ENCLAVE_FLAG_DYNAMIC_DEBUG_ACTIVE 0x00000004</term>
+			/// <term>Dynamic debugging is turned on for the enclave.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint Flags;
+
+			/// <summary>The signing level of the primary module for the enclave.</summary>
+			public uint SigningLevel;
+
+			/// <summary/>
+			public uint EnclaveType;
+		}
+
+		/// <summary>Contains information about the currently executing enclave.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntenclv/ns-ntenclv-enclave_information typedef struct ENCLAVE_INFORMATION {
+		// ULONG EnclaveType; ULONG Reserved; PVOID BaseAddress; SIZE_T Size; ENCLAVE_IDENTITY Identity; } ENCLAVE_INFORMATION;
+		[PInvokeData("ntenclv.h", MSDNShortId = "6720EDBE-6A0E-4192-A096-2ACA681E2AAF")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ENCLAVE_INFORMATION
+		{
+			/// <summary>
+			/// <para>The architecture type of the enclave.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ENCLAVE_TYPE_SGX 0x00000001</term>
+			/// <term>An enclave for the Intel Software Guard Extensions (SGX) architecture extension.</term>
+			/// </item>
+			/// <item>
+			/// <term>ENCLAVE_TYPE_VBS 0x00000010</term>
+			/// <term>A VBS enclave.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint EnclaveType;
+
+			/// <summary>Reserved.</summary>
+			public uint Reserved;
+
+			/// <summary>A pointer to the base address of the enclave.</summary>
+			public IntPtr BaseAddress;
+
+			/// <summary>The size of the enclave, in bytes.</summary>
+			public SizeT Size;
+
+			/// <summary>The identity of the primary module of an enclave.</summary>
+			public ENCLAVE_IDENTITY Identity;
 		}
 
 		/// <summary>
