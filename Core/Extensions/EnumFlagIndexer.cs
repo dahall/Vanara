@@ -5,30 +5,26 @@ using System.Collections.Generic;
 namespace Vanara.Extensions
 {
 	/// <summary>Structure to use in place of a enumerated type with the <see cref="FlagsAttribute"/> set. Allows for indexer access to flags and simplifies boolean logic.</summary>
-	/// <example><para>Use this structure by replacing an enumerated type field for simpler access. Instead of:</para>
-	/// <code language="cs" title="Old way">
-	/// var fileInfo = new FileInfo(@"C:\MyFile.txt");
+	/// <typeparam name="TEnum">An enumerated type.</typeparam>
+	/// <example>
+	///   <para>Use this structure by replacing an enumerated type field for simpler access. See old and new way examples below:</para>
+	///   <code title="Old way">var fileInfo = new FileInfo(@"C:\MyFile.txt");
 	/// FileAttributes fileAttr = fileInfo.Attributes;
 	/// if ((fileAttr &amp; FileAttributes.Hidden) != FileAttributes.Hidden)
 	/// {
 	///    Console.WriteLine("The file is hidden. Trying to unhide now.");
 	///    fileInfo.Attributes = (fileAttr &amp; ~FileAttributes.Hidden);
-	/// }
-	/// </code>
-	/// <para>Do this instead:</para>
-	/// <code language="cs" title="New way">
-	/// var fileInfo = new FileInfo(@"C:\MyFile.txt");
+	/// }</code>
+	///   <code title="New way">var fileInfo = new FileInfo(@"C:\MyFile.txt");
 	/// EnumFlagIndexer&lt;FileAttributes&gt; fileAttr = fileInfo.Attributes;
 	/// if (fileAttr[FileAttributes.Hidden])
 	/// {
 	///    Console.WriteLine("The file is hidden. Trying to unhide now.");
 	///    fileAttr[FileAttributes.Hidden] = false;
 	///    fileInfo.Attributes = fileAttr;
-	/// }
-	/// </code>
+	/// }</code>
 	/// </example>
-	/// <typeparam name="TEnum">Must be an enumerated type or constructor will fail.</typeparam>
-	public struct EnumFlagIndexer<TEnum> : IEquatable<TEnum>, IEquatable<EnumFlagIndexer<TEnum>>, IEnumerable<TEnum> where TEnum : struct, IComparable
+	public struct EnumFlagIndexer<TEnum> : IEquatable<TEnum>, IEquatable<EnumFlagIndexer<TEnum>>, IEnumerable<TEnum> where TEnum : System.Enum
 	{
 		private TEnum flags;
 

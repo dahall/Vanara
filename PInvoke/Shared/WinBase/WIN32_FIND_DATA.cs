@@ -6,6 +6,7 @@ using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 namespace Vanara.PInvoke
 {
 	/// <summary>Contains information about the file that is found by the FindFirstFile, FindFirstFileEx, or FindNextFile function.</summary>
+	[PInvokeData("winbase.h")]
 	[Serializable, StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct WIN32_FIND_DATA
 	{

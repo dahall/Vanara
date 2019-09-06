@@ -7,6 +7,7 @@ using static Vanara.PInvoke.Macros;
 namespace Vanara.PInvoke
 {
 	/// <summary>Predefined resource types.</summary>
+	[PInvokeData("winuser.h")]
 	public enum ResourceType : ushort
 	{
 		/// <summary>Accelerator table.</summary>
@@ -78,6 +79,7 @@ namespace Vanara.PInvoke
 
 	/// <summary>Helper structure to use for a pointer that can morph into a string, pointer or integer.</summary>
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	[PInvokeData("winuser.h")]
 	public struct ResourceId : IEquatable<string>, IEquatable<IntPtr>, IEquatable<int>, IEquatable<ResourceId>, IHandle
 	{
 		private IntPtr ptr;

@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 namespace Vanara.PInvoke
 {
 	/// <summary>Access flags.</summary>
+	[PInvokeData("winnt.h")]
 	[StructLayout(LayoutKind.Sequential)]
 	public partial struct ACCESS_MASK : IEquatable<ACCESS_MASK>
 	{

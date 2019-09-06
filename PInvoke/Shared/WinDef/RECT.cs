@@ -16,6 +16,7 @@ namespace Vanara.PInvoke
 	/// function, the rectangle is filled up to, but not including, the right column and bottom row of pixels. This structure is identical to
 	/// the RECT structure.
 	/// </remarks>
+	[PInvokeData("windef.h")]
 	[StructLayout(LayoutKind.Sequential), TypeConverter(typeof(RECTConverter))]
 	public struct RECT : IEquatable<PRECT>, IEquatable<RECT>, IEquatable<Rectangle>
 	{

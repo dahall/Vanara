@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 namespace Vanara.PInvoke
 {
 	/// <summary>Valid values for the <see cref="OBJECT_TYPE_LIST.level"/> field.</summary>
+	[PInvokeData("winnt.h")]
 	public enum ObjectTypeListLevel : ushort
 	{
 		/// <summary>Indicates the object itself at level zero.</summary>

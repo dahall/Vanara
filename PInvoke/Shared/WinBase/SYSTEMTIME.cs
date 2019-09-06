@@ -9,6 +9,7 @@ namespace Vanara.PInvoke
 	/// Specifies a date and time, using individual members for the month, day, year, weekday, hour, minute, second, and millisecond. The
 	/// time is either in coordinated universal time (UTC) or local time, depending on the function that is being called.
 	/// </summary>
+	[PInvokeData("winbase.h")]
 	[StructLayout(LayoutKind.Sequential, Pack = 2)]
 	public struct SYSTEMTIME : IEquatable<SYSTEMTIME>, IComparable<SYSTEMTIME>
 	{

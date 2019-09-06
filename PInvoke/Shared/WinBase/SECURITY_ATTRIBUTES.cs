@@ -8,6 +8,7 @@ namespace Vanara.PInvoke
 	/// specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as
 	/// CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.
 	/// </summary>
+	[PInvokeData("winbase.h")]
 	[StructLayout(LayoutKind.Sequential)]
 	public class SECURITY_ATTRIBUTES
 	{
@@ -20,7 +21,7 @@ namespace Vanara.PInvoke
 		/// granting access to everyone by assigning a NULL discretionary access control list (DACL). By default, the default DACL in the
 		/// access token of a process allows access only to the user represented by the access token.
 		/// </summary>
-		public IntPtr lpSecurityDescriptor;
+		public PSECURITY_DESCRIPTOR lpSecurityDescriptor;
 
 		/// <summary>
 		/// A Boolean value that specifies whether the returned handle is inherited when a new process is created. If this member is TRUE,

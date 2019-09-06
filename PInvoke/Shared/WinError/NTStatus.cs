@@ -36,6 +36,7 @@ namespace Vanara.PInvoke
 	/// <seealso cref="System.IEquatable{NTStatus}"/>
 	[StructLayout(LayoutKind.Sequential)]
 	[TypeConverter(typeof(NTStatusTypeConverter))]
+	[PInvokeData("winerr.h")]
 	public partial struct NTStatus : IComparable, IComparable<NTStatus>, IEquatable<NTStatus>, IConvertible, IErrorProvider
 	{
 		internal readonly uint _value;
@@ -48,6 +49,7 @@ namespace Vanara.PInvoke
 		private const int severityShift = 30;
 
 		/// <summary>Enumeration of facility codes</summary>
+		[PInvokeData("winerr.h")]
 		public enum FacilityCode : ushort
 		{
 			/// <summary>The default facility code.</summary>
@@ -211,6 +213,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>A value indicating the severity of an <see cref="NTStatus"/> value (bits 30-31).</summary>
+		[PInvokeData("winerr.h")]
 		public enum SeverityLevel : byte
 		{
 			/// <summary>

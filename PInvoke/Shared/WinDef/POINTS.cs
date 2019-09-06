@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 namespace Vanara.PInvoke
 {
 	/// <summary>The POINTS structure defines the coordinates of a point.</summary>
+	[PInvokeData("windef.h")]
 	[StructLayout(LayoutKind.Sequential), Serializable]
 	public struct POINTS : IEquatable<POINTS>
 	{

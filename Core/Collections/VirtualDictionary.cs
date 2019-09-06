@@ -8,7 +8,7 @@ namespace Vanara.Collections
 	/// <summary>A generic class that creates a read-only dictionary from a list and getter function.</summary>
 	/// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
 	/// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
-	public class GenericVirtualReadOnlyDictionaryy<TKey, TValue> : VirtualReadOnlyDictionary<TKey, TValue>
+	public class GenericVirtualReadOnlyDictionary<TKey, TValue> : VirtualReadOnlyDictionary<TKey, TValue>
 	{
 		private readonly TryGetValueDelegate getValFunc;
 
@@ -21,7 +21,7 @@ namespace Vanara.Collections
 		/// An optional function to directly determine if a key exists. If not supplied, the default implementation checks for equality on
 		/// every value in <paramref name="keys"/>.
 		/// </param>
-		public GenericVirtualReadOnlyDictionaryy(IEnumerable<TKey> keys, TryGetValueDelegate getValue, Func<TKey, bool> hasKey = null)
+		public GenericVirtualReadOnlyDictionary(IEnumerable<TKey> keys, TryGetValueDelegate getValue, Func<TKey, bool> hasKey = null)
 		{
 			Keys = keys ?? throw new ArgumentNullException(nameof(keys));
 			getValFunc = getValue ?? throw new ArgumentNullException(nameof(getValue));

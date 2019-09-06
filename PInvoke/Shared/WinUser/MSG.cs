@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 namespace Vanara.PInvoke
 {
 	/// <summary>Contains message information from a thread's message queue.</summary>
+	[PInvokeData("winuser.h")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct MSG
 	{

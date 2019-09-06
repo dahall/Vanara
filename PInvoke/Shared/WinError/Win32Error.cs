@@ -10,6 +10,7 @@ namespace Vanara.PInvoke
 	/// <summary>Represents a Win32 Error Code. This can be used in place of a return value.</summary>
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
 	[TypeConverter(typeof(Win32ErrorTypeConverter))]
+	[PInvokeData("winerr.h")]
 	public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<int>, IConvertible, IComparable<Win32Error>, IComparable, IErrorProvider
 	{
 		internal readonly int value;

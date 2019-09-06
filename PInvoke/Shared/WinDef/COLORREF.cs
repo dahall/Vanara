@@ -80,6 +80,6 @@ namespace Vanara.PInvoke
 		public static COLORREF Default = new COLORREF(0xFF000000);
 
 		/// <inheritdoc />
-        public override string ToString() => ((System.Drawing.Color)this).ToString();
-    }
+		public override string ToString() => ((System.Drawing.Color)this).ToString();
+	}
 }

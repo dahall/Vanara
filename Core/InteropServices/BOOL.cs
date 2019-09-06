@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Vanara
 {
-	/// <summary>Managed instance of the SIZE_T type.</summary>
+	/// <summary>Managed instance of the four-byte BOOL type.</summary>
 	[StructLayout(LayoutKind.Sequential), Serializable]
 	[TypeConverter(typeof(BOOLTypeConverter))]
 	public struct BOOL : IEquatable<BOOL>, IComparable<BOOL>, IEquatable<bool>, IComparable<bool>, IConvertible, IComparable

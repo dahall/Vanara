@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Vanara
 {
-	/// <summary>Managed instance of the SIZE_T type.</summary>
+	/// <summary>Managed instance of the single-byte BOOLEAN type.</summary>
 	[StructLayout(LayoutKind.Sequential), Serializable]
 	[TypeConverter(typeof(BOOLEANTypeConverter))]
 	public struct BOOLEAN : IEquatable<BOOLEAN>, IComparable<BOOLEAN>, IEquatable<bool>, IComparable<bool>, IConvertible, IComparable

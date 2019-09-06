@@ -39,6 +39,7 @@ namespace Vanara.PInvoke
 	/// <seealso cref="System.IEquatable{HRESULT}"/>
 	[StructLayout(LayoutKind.Sequential)]
 	[TypeConverter(typeof(HRESULTTypeConverter))]
+	[PInvokeData("winerr.h")]
 	public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HRESULT>, IConvertible, IErrorProvider
 	{
 		internal readonly uint _value;
@@ -50,6 +51,7 @@ namespace Vanara.PInvoke
 		private const int severityShift = 31;
 
 		/// <summary>Enumeration of facility codes</summary>
+		[PInvokeData("winerr.h")]
 		public enum FacilityCode
 		{
 			/// <summary>The default facility code.</summary>
@@ -210,6 +212,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>A value indicating whether an <see cref="HRESULT"/> is a success (Severity bit 31 equals 0).</summary>
+		[PInvokeData("winerr.h")]
 		public enum SeverityLevel
 		{
 			/// <summary>Success</summary>

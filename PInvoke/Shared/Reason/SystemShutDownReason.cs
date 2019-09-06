@@ -3,6 +3,7 @@
 namespace Vanara.PInvoke
 {
 	/// <summary>Flags used in the ExitWindowsEx, InitiateShutdown and InitiateSystemShutdownEx functions.</summary>
+	[PInvokeData("reason.h")]
 	[Flags]
 	public enum SystemShutDownReason : uint
 	{
