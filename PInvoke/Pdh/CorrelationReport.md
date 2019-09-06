@@ -1,13 +1,9 @@
 ## Correlation report for pdh.dll  
-### Methods (66% complete)  
+### Methods (100% complete)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[PdhAdd009Counter](https://www.google.com/search?num=5&q=PdhAdd009CounterA+site%3Amicrosoft.com) |  |   
 [PdhAddCounter](http://msdn2.microsoft.com/en-us/library/b8b9a332-ce28-46d4-92e2-91f9f6c24da5) | pdh.h | [Vanara.PInvoke.Pdh.PdhAddCounter](https://github.com/dahall/Vanara/search?l=C%23&q=PdhAddCounter)  
 [PdhAddEnglishCounter](http://msdn2.microsoft.com/en-us/library/6a94b40d-0105-4358-93e1-dae603a35cc4) | pdh.h | [Vanara.PInvoke.Pdh.PdhAddEnglishCounter](https://github.com/dahall/Vanara/search?l=C%23&q=PdhAddEnglishCounter)  
-[PdhAddRelogCounter](https://www.google.com/search?num=5&q=PdhAddRelogCounter+site%3Amicrosoft.com) |  |   
-[PdhAddV1Counter](https://www.google.com/search?num=5&q=PdhAddV1Counter+site%3Amicrosoft.com) |  |   
-[PdhAddV2Counter](https://www.google.com/search?num=5&q=PdhAddV2Counter+site%3Amicrosoft.com) |  |   
 [PdhBindInputDataSource](http://msdn2.microsoft.com/en-us/library/eaed9b28-eb09-4123-9317-5d3d50e2d77a) | pdh.h | [Vanara.PInvoke.Pdh.PdhBindInputDataSource](https://github.com/dahall/Vanara/search?l=C%23&q=PdhBindInputDataSource)  
 [PdhBrowseCounters](http://msdn2.microsoft.com/en-us/library/4e9e4b20-a573-4f6d-97e8-63bcc675032b) | pdh.h | [Vanara.PInvoke.Pdh.PdhBrowseCounters](https://github.com/dahall/Vanara/search?l=C%23&q=PdhBrowseCounters)  
 [PdhBrowseCountersH](http://msdn2.microsoft.com/en-us/library/ab835bf8-1adc-463f-99c3-654a328af98a) | pdh.h | [Vanara.PInvoke.Pdh.PdhBrowseCountersH](https://github.com/dahall/Vanara/search?l=C%23&q=PdhBrowseCountersH)  
@@ -19,7 +15,6 @@ Native Method | Header | Managed Method
 [PdhCollectQueryDataWithTime](http://msdn2.microsoft.com/en-us/library/2c47c690-0748-4ed4-a138-894d45c72581) | pdh.h | [Vanara.PInvoke.Pdh.PdhCollectQueryDataWithTime](https://github.com/dahall/Vanara/search?l=C%23&q=PdhCollectQueryDataWithTime)  
 [PdhComputeCounterStatistics](http://msdn2.microsoft.com/en-us/library/a986ae6c-88ee-4a03-9077-3d286157b9d1) | pdh.h | [Vanara.PInvoke.Pdh.PdhComputeCounterStatistics](https://github.com/dahall/Vanara/search?l=C%23&q=PdhComputeCounterStatistics)  
 [PdhConnectMachine](http://msdn2.microsoft.com/en-us/library/8f8b4651-b550-4b34-bb2f-d2497c56b572) | pdh.h | [Vanara.PInvoke.Pdh.PdhConnectMachine](https://github.com/dahall/Vanara/search?l=C%23&q=PdhConnectMachine)  
-[PdhCreateSQLTables](https://www.google.com/search?num=5&q=PdhCreateSQLTablesA+site%3Amicrosoft.com) |  |   
 [PdhEnumLogSetNames](http://msdn2.microsoft.com/en-us/library/c74cc8a6-915b-40ed-a88b-bc2147215d52) | pdh.h | [Vanara.PInvoke.Pdh.PdhEnumLogSetNames](https://github.com/dahall/Vanara/search?l=C%23&q=PdhEnumLogSetNames)  
 [PdhEnumMachines](http://msdn2.microsoft.com/en-us/library/77584d3b-3ba5-4288-b730-be2458f4fc1c) | pdh.h | [Vanara.PInvoke.Pdh.PdhEnumMachines](https://github.com/dahall/Vanara/search?l=C%23&q=PdhEnumMachines)  
 [PdhEnumMachinesH](http://msdn2.microsoft.com/en-us/library/7e8dc113-76a7-4a7a-bbad-1a4387831501) | pdh.h | [Vanara.PInvoke.Pdh.PdhEnumMachinesH](https://github.com/dahall/Vanara/search?l=C%23&q=PdhEnumMachinesH)  
@@ -40,16 +35,12 @@ Native Method | Header | Managed Method
 [PdhGetDefaultPerfObject](http://msdn2.microsoft.com/en-us/library/7c6d4d82-8b60-4422-8108-8ac10f254278) | pdh.h | [Vanara.PInvoke.Pdh.PdhGetDefaultPerfObject](https://github.com/dahall/Vanara/search?l=C%23&q=PdhGetDefaultPerfObject)  
 [PdhGetDefaultPerfObjectH](http://msdn2.microsoft.com/en-us/library/4950d5b7-3a6f-410d-830f-7868aa84f6d5) | pdh.h | [Vanara.PInvoke.Pdh.PdhGetDefaultPerfObjectH](https://github.com/dahall/Vanara/search?l=C%23&q=PdhGetDefaultPerfObjectH)  
 [PdhGetDllVersion](http://msdn2.microsoft.com/en-us/library/09c9ecf6-43e0-480c-b607-537632b56576) | pdh.h | [Vanara.PInvoke.Pdh.PdhGetDllVersion](https://github.com/dahall/Vanara/search?l=C%23&q=PdhGetDllVersion)  
-[PdhGetExplainText](https://www.google.com/search?num=5&q=PdhGetExplainText+site%3Amicrosoft.com) |  |   
 [PdhGetFormattedCounterArray](http://msdn2.microsoft.com/en-us/library/0f388c7e-d0c8-461d-908c-48af92166996) | pdh.h | [Vanara.PInvoke.Pdh.PdhGetFormattedCounterArray](https://github.com/dahall/Vanara/search?l=C%23&q=PdhGetFormattedCounterArray)  
 [PdhGetFormattedCounterValue](http://msdn2.microsoft.com/en-us/library/cd104b26-1498-4f95-a411-97d868b43836) | pdh.h | [Vanara.PInvoke.Pdh.PdhGetFormattedCounterValue](https://github.com/dahall/Vanara/search?l=C%23&q=PdhGetFormattedCounterValue)  
 [PdhGetLogFileSize](http://msdn2.microsoft.com/en-us/library/2bb94019-c664-4144-98b6-a0a545f7e4c1) | pdh.h | [Vanara.PInvoke.Pdh.PdhGetLogFileSize](https://github.com/dahall/Vanara/search?l=C%23&q=PdhGetLogFileSize)  
-[PdhGetLogFileType](https://www.google.com/search?num=5&q=PdhGetLogFileTypeA+site%3Amicrosoft.com) |  |   
-[PdhGetLogSetGUID](https://www.google.com/search?num=5&q=PdhGetLogSetGUID+site%3Amicrosoft.com) |  |   
 [PdhGetRawCounterArray](http://msdn2.microsoft.com/en-us/library/03b30d08-6901-45cd-bd6d-d2672eb0f914) | pdh.h | [Vanara.PInvoke.Pdh.PdhGetRawCounterArray](https://github.com/dahall/Vanara/search?l=C%23&q=PdhGetRawCounterArray)  
 [PdhGetRawCounterValue](http://msdn2.microsoft.com/en-us/library/bb246c82-8748-4e2f-9f44-a206199aff90) | pdh.h | [Vanara.PInvoke.Pdh.PdhGetRawCounterValue](https://github.com/dahall/Vanara/search?l=C%23&q=PdhGetRawCounterValue)  
 [PdhIsRealTimeQuery](http://msdn2.microsoft.com/en-us/library/4f6b2d8d-3a0f-4346-8b8e-a7aea11fbc40) | pdh.h | [Vanara.PInvoke.Pdh.PdhIsRealTimeQuery](https://github.com/dahall/Vanara/search?l=C%23&q=PdhIsRealTimeQuery)  
-[PdhListLogFileHeader](https://www.google.com/search?num=5&q=PdhListLogFileHeaderA+site%3Amicrosoft.com) |  |   
 [PdhLookupPerfIndexByName](http://msdn2.microsoft.com/en-us/library/b8530bf3-0a9b-49c2-9494-4dca14cd57ef) | pdh.h | [Vanara.PInvoke.Pdh.PdhLookupPerfIndexByName](https://github.com/dahall/Vanara/search?l=C%23&q=PdhLookupPerfIndexByName)  
 [PdhLookupPerfNameByIndex](http://msdn2.microsoft.com/en-us/library/6d5e1465-296b-4d8c-b0cb-aefdffb8539e) | pdh.h | [Vanara.PInvoke.Pdh.PdhLookupPerfNameByIndex](https://github.com/dahall/Vanara/search?l=C%23&q=PdhLookupPerfNameByIndex)  
 [PdhMakeCounterPath](http://msdn2.microsoft.com/en-us/library/f2dc5f77-9f9e-4290-95fa-ce2f1e81fc69) | pdh.h | [Vanara.PInvoke.Pdh.PdhMakeCounterPath](https://github.com/dahall/Vanara/search?l=C%23&q=PdhMakeCounterPath)  
@@ -59,36 +50,16 @@ Native Method | Header | Managed Method
 [PdhParseCounterPath](http://msdn2.microsoft.com/en-us/library/760b94e9-88df-4f7d-92e9-333d682779f6) | pdh.h | [Vanara.PInvoke.Pdh.PdhParseCounterPath](https://github.com/dahall/Vanara/search?l=C%23&q=PdhParseCounterPath)  
 [PdhParseInstanceName](http://msdn2.microsoft.com/en-us/library/8304ecee-5141-450a-be11-838b9f52413b) | pdh.h | [Vanara.PInvoke.Pdh.PdhParseInstanceName](https://github.com/dahall/Vanara/search?l=C%23&q=PdhParseInstanceName)  
 [PdhReadRawLogRecord](http://msdn2.microsoft.com/en-us/library/fb93b6ea-ca31-4ff1-a553-b02388be8b72) | pdh.h | [Vanara.PInvoke.Pdh.PdhReadRawLogRecord](https://github.com/dahall/Vanara/search?l=C%23&q=PdhReadRawLogRecord)  
-[PdhRelog](https://www.google.com/search?num=5&q=PdhRelogA+site%3Amicrosoft.com) |  |   
 [PdhRemoveCounter](http://msdn2.microsoft.com/en-us/library/adf9c7bd-47d6-489a-88fc-954fdf127ce8) | pdh.h | [Vanara.PInvoke.Pdh.PdhRemoveCounter](https://github.com/dahall/Vanara/search?l=C%23&q=PdhRemoveCounter)  
-[PdhResetRelogCounterValues](https://www.google.com/search?num=5&q=PdhResetRelogCounterValues+site%3Amicrosoft.com) |  |   
 [PdhSelectDataSource](http://msdn2.microsoft.com/en-us/library/211d4504-e1f9-48a0-8ddd-613f2f183c59) | pdh.h | [Vanara.PInvoke.Pdh.PdhSelectDataSource](https://github.com/dahall/Vanara/search?l=C%23&q=PdhSelectDataSource)  
 [PdhSetCounterScaleFactor](http://msdn2.microsoft.com/en-us/library/6db99e03-0b03-4c1c-b82a-2982b52746db) | pdh.h | [Vanara.PInvoke.Pdh.PdhSetCounterScaleFactor](https://github.com/dahall/Vanara/search?l=C%23&q=PdhSetCounterScaleFactor)  
-[PdhSetCounterValue](https://www.google.com/search?num=5&q=PdhSetCounterValue+site%3Amicrosoft.com) |  |   
 [PdhSetDefaultRealTimeDataSource](http://msdn2.microsoft.com/en-us/library/5a46ac26-c1a1-40c1-a328-688e0b394e18) | pdh.h | [Vanara.PInvoke.Pdh.PdhSetDefaultRealTimeDataSource](https://github.com/dahall/Vanara/search?l=C%23&q=PdhSetDefaultRealTimeDataSource)  
-[PdhSetLogSetRunID](https://www.google.com/search?num=5&q=PdhSetLogSetRunID+site%3Amicrosoft.com) |  |   
 [PdhSetQueryTimeRange](http://msdn2.microsoft.com/en-us/library/ed0e100e-9f82-48c0-b4bb-72820c5eeaa8) | pdh.h | [Vanara.PInvoke.Pdh.PdhSetQueryTimeRange](https://github.com/dahall/Vanara/search?l=C%23&q=PdhSetQueryTimeRange)  
-[PdhTranslate009Counter](https://www.google.com/search?num=5&q=PdhTranslate009CounterA+site%3Amicrosoft.com) |  |   
-[PdhTranslateLocaleCounter](https://www.google.com/search?num=5&q=PdhTranslateLocaleCounterA+site%3Amicrosoft.com) |  |   
 [PdhUpdateLog](http://msdn2.microsoft.com/en-us/library/b2052275-6944-41f4-92ac-38967ed270f3) | pdh.h | [Vanara.PInvoke.Pdh.PdhUpdateLog](https://github.com/dahall/Vanara/search?l=C%23&q=PdhUpdateLog)  
 [PdhUpdateLogFileCatalog](http://msdn2.microsoft.com/en-us/library/e8aa8462-48f1-4ccd-8c41-a7358975e056) | pdh.h | [Vanara.PInvoke.Pdh.PdhUpdateLogFileCatalog](https://github.com/dahall/Vanara/search?l=C%23&q=PdhUpdateLogFileCatalog)  
 [PdhValidatePath](http://msdn2.microsoft.com/en-us/library/9248e63c-2672-466f-85f5-46f26e31dc75) | pdh.h | [Vanara.PInvoke.Pdh.PdhValidatePath](https://github.com/dahall/Vanara/search?l=C%23&q=PdhValidatePath)  
-[PdhValidatePathEx](https://www.google.com/search?num=5&q=PdhValidatePathExA+site%3Amicrosoft.com) |  |   
 [PdhValidatePathExWA](http://msdn2.microsoft.com/en-us/library/e6b52af7-7276-4565-aa61-73899796a13c) | pdh.h | [Vanara.PInvoke.Pdh.PdhValidatePathExW](https://github.com/dahall/Vanara/search?l=C%23&q=PdhValidatePathExW)  
 [PdhValidatePathExWW](http://msdn2.microsoft.com/en-us/library/e6b52af7-7276-4565-aa61-73899796a13c) | pdh.h | [Vanara.PInvoke.Pdh.PdhValidatePathExW](https://github.com/dahall/Vanara/search?l=C%23&q=PdhValidatePathExW)  
-[PdhVbAddCounter](https://www.google.com/search?num=5&q=PdhVbAddCounter+site%3Amicrosoft.com) |  |   
-[PdhVbCreateCounterPathList](https://www.google.com/search?num=5&q=PdhVbCreateCounterPathList+site%3Amicrosoft.com) |  |   
-[PdhVbGetCounterPathElements](https://www.google.com/search?num=5&q=PdhVbGetCounterPathElements+site%3Amicrosoft.com) |  |   
-[PdhVbGetCounterPathFromList](https://www.google.com/search?num=5&q=PdhVbGetCounterPathFromList+site%3Amicrosoft.com) |  |   
-[PdhVbGetDoubleCounterValue](https://www.google.com/search?num=5&q=PdhVbGetDoubleCounterValue+site%3Amicrosoft.com) |  |   
-[PdhVbGetLogFileSize](https://www.google.com/search?num=5&q=PdhVbGetLogFileSize+site%3Amicrosoft.com) |  |   
-[PdhVbGetOneCounterPath](https://www.google.com/search?num=5&q=PdhVbGetOneCounterPath+site%3Amicrosoft.com) |  |   
-[PdhVbIsGoodStatus](https://www.google.com/search?num=5&q=PdhVbIsGoodStatus+site%3Amicrosoft.com) |  |   
-[PdhVbOpenLog](https://www.google.com/search?num=5&q=PdhVbOpenLog+site%3Amicrosoft.com) |  |   
-[PdhVbOpenQuery](https://www.google.com/search?num=5&q=PdhVbOpenQuery+site%3Amicrosoft.com) |  |   
-[PdhVbUpdateLog](https://www.google.com/search?num=5&q=PdhVbUpdateLog+site%3Amicrosoft.com) |  |   
-[PdhVerifySQLDB](https://www.google.com/search?num=5&q=PdhVerifySQLDBA+site%3Amicrosoft.com) |  |   
-[PdhWriteRelogSample](https://www.google.com/search?num=5&q=PdhWriteRelogSample+site%3Amicrosoft.com) |  |   
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
