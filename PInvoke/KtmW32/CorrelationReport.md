@@ -1,51 +1,51 @@
 ## Correlation report for ktmw32.dll  
 ### Methods (100% complete)  
-Native Method | Native DLL | Header | Managed Method  
---- | --- | --- | ---  
-[CommitComplete](http://msdn2.microsoft.com/en-us/library/de3e3a26-3e56-4732-8e7c-945b45593aed) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.CommitComplete  
-[CommitEnlistment](http://msdn2.microsoft.com/en-us/library/d1e1043d-2db3-4f05-affc-2d32744baf10) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.CommitEnlistment  
-[CommitTransaction](http://msdn2.microsoft.com/en-us/library/17db5e1f-685b-46f0-bac6-dff4c18bb515) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.CommitTransaction  
-[CommitTransactionAsync](http://msdn2.microsoft.com/en-us/library/cc0f4314-e216-490b-a49a-14bb850e0762) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.CommitTransactionAsync  
-[CreateEnlistment](http://msdn2.microsoft.com/en-us/library/7bc06468-947f-48ec-8e58-20df58ed93bd) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.CreateEnlistment  
-[CreateResourceManager](http://msdn2.microsoft.com/en-us/library/ad88e478-1dff-4f35-a0e3-6bda8bb45711) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.CreateResourceManager  
-[CreateTransaction](http://msdn2.microsoft.com/en-us/library/578bda35-bd35-4f6d-8366-a4bfb4dbfe42) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.CreateTransaction  
-[CreateTransactionManager](http://msdn2.microsoft.com/en-us/library/f5b7d0c1-9cd0-48fc-8125-d4da040951c4) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.CreateTransactionManager  
-[GetCurrentClockTransactionManager](http://msdn2.microsoft.com/en-us/library/21d7c0fa-3a49-43b3-9325-d3dfdabbcb98) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.GetCurrentClockTransactionManager  
-[GetEnlistmentId](http://msdn2.microsoft.com/en-us/library/ffd37a2e-6bac-4566-bb15-eafce8a11c3b) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.GetEnlistmentId  
-[GetEnlistmentRecoveryInformation](http://msdn2.microsoft.com/en-us/library/05bfbe81-5f3d-4e32-b4fa-4532227f522e) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.GetEnlistmentRecoveryInformation  
-[GetNotificationResourceManager](http://msdn2.microsoft.com/en-us/library/d606f960-e843-4478-8ba7-5201f85c44ce) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.GetNotificationResourceManager  
-[GetNotificationResourceManagerAsync](http://msdn2.microsoft.com/en-us/library/c83e104b-6cd7-4399-8232-7c2e7b408f1a) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.GetNotificationResourceManagerAsync  
-[GetTransactionId](http://msdn2.microsoft.com/en-us/library/10f4729f-3e6e-469a-8f72-48c29735e7b1) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.GetTransactionId  
-[GetTransactionInformation](http://msdn2.microsoft.com/en-us/library/5ce3c96a-629e-49d0-8ec4-f9bf76af99ac) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.GetTransactionInformation  
-[GetTransactionManagerId](http://msdn2.microsoft.com/en-us/library/e1aa573d-add9-42b7-8b2b-773dc12aa51b) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.GetTransactionManagerId  
-[OpenEnlistment](http://msdn2.microsoft.com/en-us/library/2c403e22-3feb-415a-b65b-572802764548) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.OpenEnlistment  
-[OpenResourceManager](http://msdn2.microsoft.com/en-us/library/396b586f-c594-4481-b095-862e9058519c) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.OpenResourceManager  
-[OpenTransaction](http://msdn2.microsoft.com/en-us/library/d95f15e4-d0fd-4665-849d-eecac8fc542b) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.OpenTransaction  
-[OpenTransactionManager](http://msdn2.microsoft.com/en-us/library/6b53609a-b956-441c-b5b5-9a8e6aa489c9) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.OpenTransactionManager  
-[OpenTransactionManagerById](http://msdn2.microsoft.com/en-us/library/4724383d-8ecf-40cb-8159-15a6d5ddfd1b) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.OpenTransactionManagerById  
-[PrepareComplete](http://msdn2.microsoft.com/en-us/library/47488c70-3409-4544-bcca-3415f91e7194) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.PrepareComplete  
-[PrepareEnlistment](http://msdn2.microsoft.com/en-us/library/5f1b1eb2-e2f5-4daf-b549-7f0c195414f0) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.PrepareEnlistment  
-[PrePrepareComplete](http://msdn2.microsoft.com/en-us/library/b4a70a51-2c49-4626-9fca-9ca6e0d21a53) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.PrePrepareComplete  
-[PrePrepareEnlistment](http://msdn2.microsoft.com/en-us/library/7a336267-4bee-4aac-abff-ec112650789a) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.PrePrepareEnlistment  
-[ReadOnlyEnlistment](http://msdn2.microsoft.com/en-us/library/a6411fad-8ad0-4a31-9e09-0c18dd384634) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.ReadOnlyEnlistment  
-[RecoverEnlistment](http://msdn2.microsoft.com/en-us/library/5c36732f-bf4f-4071-959e-3359be0b2363) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.RecoverEnlistment  
-[RecoverResourceManager](http://msdn2.microsoft.com/en-us/library/616ff873-c0d0-464e-9b1b-74a426b99abd) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.RecoverResourceManager  
-[RecoverTransactionManager](http://msdn2.microsoft.com/en-us/library/6f217ebb-3423-41d3-acff-eb21838c9751) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.RecoverTransactionManager  
-[RenameTransactionManager](http://msdn2.microsoft.com/en-us/library/2767e689-1342-458f-a215-a29d774c0648) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.RenameTransactionManager  
-[RollbackComplete](http://msdn2.microsoft.com/en-us/library/c9d53777-eef9-4c60-921d-50b0fbf8d005) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.RollbackComplete  
-[RollbackEnlistment](http://msdn2.microsoft.com/en-us/library/e62c0c81-6802-4a76-94bb-617933490e83) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.RollbackEnlistment  
-[RollbackTransaction](http://msdn2.microsoft.com/en-us/library/7d3522b8-ddf0-449e-8ab4-09e679ba1f15) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.RollbackTransaction  
-[RollbackTransactionAsync](http://msdn2.microsoft.com/en-us/library/df23e5af-c37e-4e60-b160-6ffa8f6a26e3) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.RollbackTransactionAsync  
-[RollforwardTransactionManager](http://msdn2.microsoft.com/en-us/library/13492b74-8707-46bb-93f1-59c3c5ceab6d) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.RollforwardTransactionManager  
-[SetEnlistmentRecoveryInformation](http://msdn2.microsoft.com/en-us/library/54e7526f-57f0-40cd-9624-fce0644a0884) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.SetEnlistmentRecoveryInformation  
-[SetResourceManagerCompletionPort](http://msdn2.microsoft.com/en-us/library/219fc899-84ee-474f-9f86-6ebf9c721810) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.SetResourceManagerCompletionPort  
-[SetTransactionInformation](http://msdn2.microsoft.com/en-us/library/e33d221b-cd06-4f20-a4b5-407a04362ba0) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.SetTransactionInformation  
-[SinglePhaseReject](http://msdn2.microsoft.com/en-us/library/8cc77686-e130-4b82-b2f5-70121b40e052) | ktmw32.dll | ktmw32.h | Vanara.PInvoke.KtmW32.SinglePhaseReject  
+Native Method | Header | Managed Method  
+--- | --- | ---  
+[CommitComplete](http://msdn2.microsoft.com/en-us/library/de3e3a26-3e56-4732-8e7c-945b45593aed) | ktmw32.h | [Vanara.PInvoke.KtmW32.CommitComplete](https://github.com/dahall/Vanara/search?l=C%23&q=CommitComplete)  
+[CommitEnlistment](http://msdn2.microsoft.com/en-us/library/d1e1043d-2db3-4f05-affc-2d32744baf10) | ktmw32.h | [Vanara.PInvoke.KtmW32.CommitEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=CommitEnlistment)  
+[CommitTransaction](http://msdn2.microsoft.com/en-us/library/17db5e1f-685b-46f0-bac6-dff4c18bb515) | ktmw32.h | [Vanara.PInvoke.KtmW32.CommitTransaction](https://github.com/dahall/Vanara/search?l=C%23&q=CommitTransaction)  
+[CommitTransactionAsync](http://msdn2.microsoft.com/en-us/library/cc0f4314-e216-490b-a49a-14bb850e0762) | ktmw32.h | [Vanara.PInvoke.KtmW32.CommitTransactionAsync](https://github.com/dahall/Vanara/search?l=C%23&q=CommitTransactionAsync)  
+[CreateEnlistment](http://msdn2.microsoft.com/en-us/library/7bc06468-947f-48ec-8e58-20df58ed93bd) | ktmw32.h | [Vanara.PInvoke.KtmW32.CreateEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=CreateEnlistment)  
+[CreateResourceManager](http://msdn2.microsoft.com/en-us/library/ad88e478-1dff-4f35-a0e3-6bda8bb45711) | ktmw32.h | [Vanara.PInvoke.KtmW32.CreateResourceManager](https://github.com/dahall/Vanara/search?l=C%23&q=CreateResourceManager)  
+[CreateTransaction](http://msdn2.microsoft.com/en-us/library/578bda35-bd35-4f6d-8366-a4bfb4dbfe42) | ktmw32.h | [Vanara.PInvoke.KtmW32.CreateTransaction](https://github.com/dahall/Vanara/search?l=C%23&q=CreateTransaction)  
+[CreateTransactionManager](http://msdn2.microsoft.com/en-us/library/f5b7d0c1-9cd0-48fc-8125-d4da040951c4) | ktmw32.h | [Vanara.PInvoke.KtmW32.CreateTransactionManager](https://github.com/dahall/Vanara/search?l=C%23&q=CreateTransactionManager)  
+[GetCurrentClockTransactionManager](http://msdn2.microsoft.com/en-us/library/21d7c0fa-3a49-43b3-9325-d3dfdabbcb98) | ktmw32.h | [Vanara.PInvoke.KtmW32.GetCurrentClockTransactionManager](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentClockTransactionManager)  
+[GetEnlistmentId](http://msdn2.microsoft.com/en-us/library/ffd37a2e-6bac-4566-bb15-eafce8a11c3b) | ktmw32.h | [Vanara.PInvoke.KtmW32.GetEnlistmentId](https://github.com/dahall/Vanara/search?l=C%23&q=GetEnlistmentId)  
+[GetEnlistmentRecoveryInformation](http://msdn2.microsoft.com/en-us/library/05bfbe81-5f3d-4e32-b4fa-4532227f522e) | ktmw32.h | [Vanara.PInvoke.KtmW32.GetEnlistmentRecoveryInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetEnlistmentRecoveryInformation)  
+[GetNotificationResourceManager](http://msdn2.microsoft.com/en-us/library/d606f960-e843-4478-8ba7-5201f85c44ce) | ktmw32.h | [Vanara.PInvoke.KtmW32.GetNotificationResourceManager](https://github.com/dahall/Vanara/search?l=C%23&q=GetNotificationResourceManager)  
+[GetNotificationResourceManagerAsync](http://msdn2.microsoft.com/en-us/library/c83e104b-6cd7-4399-8232-7c2e7b408f1a) | ktmw32.h | [Vanara.PInvoke.KtmW32.GetNotificationResourceManagerAsync](https://github.com/dahall/Vanara/search?l=C%23&q=GetNotificationResourceManagerAsync)  
+[GetTransactionId](http://msdn2.microsoft.com/en-us/library/10f4729f-3e6e-469a-8f72-48c29735e7b1) | ktmw32.h | [Vanara.PInvoke.KtmW32.GetTransactionId](https://github.com/dahall/Vanara/search?l=C%23&q=GetTransactionId)  
+[GetTransactionInformation](http://msdn2.microsoft.com/en-us/library/5ce3c96a-629e-49d0-8ec4-f9bf76af99ac) | ktmw32.h | [Vanara.PInvoke.KtmW32.GetTransactionInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetTransactionInformation)  
+[GetTransactionManagerId](http://msdn2.microsoft.com/en-us/library/e1aa573d-add9-42b7-8b2b-773dc12aa51b) | ktmw32.h | [Vanara.PInvoke.KtmW32.GetTransactionManagerId](https://github.com/dahall/Vanara/search?l=C%23&q=GetTransactionManagerId)  
+[OpenEnlistment](http://msdn2.microsoft.com/en-us/library/2c403e22-3feb-415a-b65b-572802764548) | ktmw32.h | [Vanara.PInvoke.KtmW32.OpenEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=OpenEnlistment)  
+[OpenResourceManager](http://msdn2.microsoft.com/en-us/library/396b586f-c594-4481-b095-862e9058519c) | ktmw32.h | [Vanara.PInvoke.KtmW32.OpenResourceManager](https://github.com/dahall/Vanara/search?l=C%23&q=OpenResourceManager)  
+[OpenTransaction](http://msdn2.microsoft.com/en-us/library/d95f15e4-d0fd-4665-849d-eecac8fc542b) | ktmw32.h | [Vanara.PInvoke.KtmW32.OpenTransaction](https://github.com/dahall/Vanara/search?l=C%23&q=OpenTransaction)  
+[OpenTransactionManager](http://msdn2.microsoft.com/en-us/library/6b53609a-b956-441c-b5b5-9a8e6aa489c9) | ktmw32.h | [Vanara.PInvoke.KtmW32.OpenTransactionManager](https://github.com/dahall/Vanara/search?l=C%23&q=OpenTransactionManager)  
+[OpenTransactionManagerById](http://msdn2.microsoft.com/en-us/library/4724383d-8ecf-40cb-8159-15a6d5ddfd1b) | ktmw32.h | [Vanara.PInvoke.KtmW32.OpenTransactionManagerById](https://github.com/dahall/Vanara/search?l=C%23&q=OpenTransactionManagerById)  
+[PrepareComplete](http://msdn2.microsoft.com/en-us/library/47488c70-3409-4544-bcca-3415f91e7194) | ktmw32.h | [Vanara.PInvoke.KtmW32.PrepareComplete](https://github.com/dahall/Vanara/search?l=C%23&q=PrepareComplete)  
+[PrepareEnlistment](http://msdn2.microsoft.com/en-us/library/5f1b1eb2-e2f5-4daf-b549-7f0c195414f0) | ktmw32.h | [Vanara.PInvoke.KtmW32.PrepareEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=PrepareEnlistment)  
+[PrePrepareComplete](http://msdn2.microsoft.com/en-us/library/b4a70a51-2c49-4626-9fca-9ca6e0d21a53) | ktmw32.h | [Vanara.PInvoke.KtmW32.PrePrepareComplete](https://github.com/dahall/Vanara/search?l=C%23&q=PrePrepareComplete)  
+[PrePrepareEnlistment](http://msdn2.microsoft.com/en-us/library/7a336267-4bee-4aac-abff-ec112650789a) | ktmw32.h | [Vanara.PInvoke.KtmW32.PrePrepareEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=PrePrepareEnlistment)  
+[ReadOnlyEnlistment](http://msdn2.microsoft.com/en-us/library/a6411fad-8ad0-4a31-9e09-0c18dd384634) | ktmw32.h | [Vanara.PInvoke.KtmW32.ReadOnlyEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=ReadOnlyEnlistment)  
+[RecoverEnlistment](http://msdn2.microsoft.com/en-us/library/5c36732f-bf4f-4071-959e-3359be0b2363) | ktmw32.h | [Vanara.PInvoke.KtmW32.RecoverEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=RecoverEnlistment)  
+[RecoverResourceManager](http://msdn2.microsoft.com/en-us/library/616ff873-c0d0-464e-9b1b-74a426b99abd) | ktmw32.h | [Vanara.PInvoke.KtmW32.RecoverResourceManager](https://github.com/dahall/Vanara/search?l=C%23&q=RecoverResourceManager)  
+[RecoverTransactionManager](http://msdn2.microsoft.com/en-us/library/6f217ebb-3423-41d3-acff-eb21838c9751) | ktmw32.h | [Vanara.PInvoke.KtmW32.RecoverTransactionManager](https://github.com/dahall/Vanara/search?l=C%23&q=RecoverTransactionManager)  
+[RenameTransactionManager](http://msdn2.microsoft.com/en-us/library/2767e689-1342-458f-a215-a29d774c0648) | ktmw32.h | [Vanara.PInvoke.KtmW32.RenameTransactionManager](https://github.com/dahall/Vanara/search?l=C%23&q=RenameTransactionManager)  
+[RollbackComplete](http://msdn2.microsoft.com/en-us/library/c9d53777-eef9-4c60-921d-50b0fbf8d005) | ktmw32.h | [Vanara.PInvoke.KtmW32.RollbackComplete](https://github.com/dahall/Vanara/search?l=C%23&q=RollbackComplete)  
+[RollbackEnlistment](http://msdn2.microsoft.com/en-us/library/e62c0c81-6802-4a76-94bb-617933490e83) | ktmw32.h | [Vanara.PInvoke.KtmW32.RollbackEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=RollbackEnlistment)  
+[RollbackTransaction](http://msdn2.microsoft.com/en-us/library/7d3522b8-ddf0-449e-8ab4-09e679ba1f15) | ktmw32.h | [Vanara.PInvoke.KtmW32.RollbackTransaction](https://github.com/dahall/Vanara/search?l=C%23&q=RollbackTransaction)  
+[RollbackTransactionAsync](http://msdn2.microsoft.com/en-us/library/df23e5af-c37e-4e60-b160-6ffa8f6a26e3) | ktmw32.h | [Vanara.PInvoke.KtmW32.RollbackTransactionAsync](https://github.com/dahall/Vanara/search?l=C%23&q=RollbackTransactionAsync)  
+[RollforwardTransactionManager](http://msdn2.microsoft.com/en-us/library/13492b74-8707-46bb-93f1-59c3c5ceab6d) | ktmw32.h | [Vanara.PInvoke.KtmW32.RollforwardTransactionManager](https://github.com/dahall/Vanara/search?l=C%23&q=RollforwardTransactionManager)  
+[SetEnlistmentRecoveryInformation](http://msdn2.microsoft.com/en-us/library/54e7526f-57f0-40cd-9624-fce0644a0884) | ktmw32.h | [Vanara.PInvoke.KtmW32.SetEnlistmentRecoveryInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetEnlistmentRecoveryInformation)  
+[SetResourceManagerCompletionPort](http://msdn2.microsoft.com/en-us/library/219fc899-84ee-474f-9f86-6ebf9c721810) | ktmw32.h | [Vanara.PInvoke.KtmW32.SetResourceManagerCompletionPort](https://github.com/dahall/Vanara/search?l=C%23&q=SetResourceManagerCompletionPort)  
+[SetTransactionInformation](http://msdn2.microsoft.com/en-us/library/e33d221b-cd06-4f20-a4b5-407a04362ba0) | ktmw32.h | [Vanara.PInvoke.KtmW32.SetTransactionInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetTransactionInformation)  
+[SinglePhaseReject](http://msdn2.microsoft.com/en-us/library/8cc77686-e130-4b82-b2f5-70121b40e052) | ktmw32.h | [Vanara.PInvoke.KtmW32.SinglePhaseReject](https://github.com/dahall/Vanara/search?l=C%23&q=SinglePhaseReject)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[HENLISTMENT](https://www.google.com/search?num=5&q=HENLISTMENT+site%3Amicrosoft.com) |  | Vanara.PInvoke.KtmW32+HENLISTMENT  
-[HRESMGR](https://www.google.com/search?num=5&q=HRESMGR+site%3Amicrosoft.com) |  | Vanara.PInvoke.KtmW32+HRESMGR  
-[HTRXNMGR](https://www.google.com/search?num=5&q=HTRXNMGR+site%3Amicrosoft.com) |  | Vanara.PInvoke.KtmW32+HTRXNMGR  
-[TRANSACTION_NOTIFICATION](http://msdn2.microsoft.com/en-us/library/4f87de9d-a068-4ab9-8f38-b75f20552b1d) | ktmtypes.h | Vanara.PInvoke.KtmW32+TRANSACTION_NOTIFICATION  
-[TRANSACTION_NOTIFICATION_RECOVERY_ARGUMENT](http://msdn2.microsoft.com/en-us/library/29a32b89-22d1-4d26-8927-a2051dd5d37a) | ktmtypes.h | Vanara.PInvoke.KtmW32+TRANSACTION_NOTIFICATION_RECOVERY_ARGUMENT  
+[HENLISTMENT](https://www.google.com/search?num=5&q=HENLISTMENT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.KtmW32.HENLISTMENT](https://github.com/dahall/Vanara/search?l=C%23&q=HENLISTMENT)  
+[HRESMGR](https://www.google.com/search?num=5&q=HRESMGR+site%3Amicrosoft.com) |  | [Vanara.PInvoke.KtmW32.HRESMGR](https://github.com/dahall/Vanara/search?l=C%23&q=HRESMGR)  
+[HTRXNMGR](https://www.google.com/search?num=5&q=HTRXNMGR+site%3Amicrosoft.com) |  | [Vanara.PInvoke.KtmW32.HTRXNMGR](https://github.com/dahall/Vanara/search?l=C%23&q=HTRXNMGR)  
+[TRANSACTION_NOTIFICATION](http://msdn2.microsoft.com/en-us/library/4f87de9d-a068-4ab9-8f38-b75f20552b1d) | ktmtypes.h | [Vanara.PInvoke.KtmW32.TRANSACTION_NOTIFICATION](https://github.com/dahall/Vanara/search?l=C%23&q=TRANSACTION_NOTIFICATION)  
+[TRANSACTION_NOTIFICATION_RECOVERY_ARGUMENT](http://msdn2.microsoft.com/en-us/library/29a32b89-22d1-4d26-8927-a2051dd5d37a) | ktmtypes.h | [Vanara.PInvoke.KtmW32.TRANSACTION_NOTIFICATION_RECOVERY_ARGUMENT](https://github.com/dahall/Vanara/search?l=C%23&q=TRANSACTION_NOTIFICATION_RECOVERY_ARGUMENT)  

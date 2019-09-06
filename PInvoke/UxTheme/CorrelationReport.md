@@ -1,95 +1,95 @@
 ## Correlation report for uxtheme.dll  
 ### Methods (100% complete)  
-Native Method | Native DLL | Header | Managed Method  
---- | --- | --- | ---  
-[BeginBufferedAnimation](http://msdn2.microsoft.com/en-us/library/bb773252) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.BeginBufferedAnimation  
-[BeginBufferedPaint](http://msdn2.microsoft.com/en-us/library/bb773257) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.BeginBufferedPaint  
-[BeginPanningFeedback](http://msdn2.microsoft.com/en-us/library/dd317331) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.BeginPanningFeedback  
-[BufferedPaintClear](http://msdn2.microsoft.com/en-us/library/bb773262) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.BufferedPaintClear  
-[BufferedPaintInit](http://msdn2.microsoft.com/en-us/library/bb773266) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.BufferedPaintInit  
-[BufferedPaintRenderAnimation](http://msdn2.microsoft.com/en-us/library/bb773271) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.BufferedPaintRenderAnimation  
-[BufferedPaintSetAlpha](http://msdn2.microsoft.com/en-us/library/bb773276) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.BufferedPaintSetAlpha  
-[BufferedPaintStopAllAnimations](http://msdn2.microsoft.com/en-us/library/bb773280) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.BufferedPaintStopAllAnimations  
-[BufferedPaintUnInit](http://msdn2.microsoft.com/en-us/library/bb773284) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.BufferedPaintUnInit  
-[CloseThemeData](http://msdn2.microsoft.com/en-us/library/bb773287) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.CloseThemeData  
-[DrawThemeBackground](http://msdn2.microsoft.com/en-us/library/bb773289) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.DrawThemeBackground  
-[DrawThemeBackgroundEx](http://msdn2.microsoft.com/en-us/library/bb773294) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.DrawThemeBackgroundEx  
-[DrawThemeEdge](http://msdn2.microsoft.com/en-us/library/bb773298) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.DrawThemeEdge  
-[DrawThemeIcon](http://msdn2.microsoft.com/en-us/library/bb773301) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.DrawThemeIcon  
-[DrawThemeParentBackground](http://msdn2.microsoft.com/en-us/library/bb773306) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.DrawThemeParentBackground  
-[DrawThemeParentBackgroundEx](http://msdn2.microsoft.com/en-us/library/bb773309) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundEx  
-[DrawThemeText](http://msdn2.microsoft.com/en-us/library/bb773312) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.DrawThemeText  
-[DrawThemeTextEx](http://msdn2.microsoft.com/en-us/library/bb773317) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.DrawThemeTextEx  
-[EnableThemeDialogTexture](http://msdn2.microsoft.com/en-us/library/bb773320) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.EnableThemeDialogTexture  
-[EnableTheming](http://msdn2.microsoft.com/en-us/library/bb773324) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.EnableTheming  
-[EndBufferedAnimation](http://msdn2.microsoft.com/en-us/library/bb773328) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.EndBufferedAnimation  
-[EndBufferedPaint](http://msdn2.microsoft.com/en-us/library/bb773343) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.EndBufferedPaint  
-[EndPanningFeedback](http://msdn2.microsoft.com/en-us/library/dd317327) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.EndPanningFeedback  
-[GetBufferedPaintBits](http://msdn2.microsoft.com/en-us/library/bb773348) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetBufferedPaintBits  
-[GetBufferedPaintDC](http://msdn2.microsoft.com/en-us/library/bb773351) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetBufferedPaintDC  
-[GetBufferedPaintTargetDC](http://msdn2.microsoft.com/en-us/library/bb773356) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetBufferedPaintTargetDC  
-[GetBufferedPaintTargetRect](http://msdn2.microsoft.com/en-us/library/bb773361) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetBufferedPaintTargetRect  
-[GetCurrentThemeName](http://msdn2.microsoft.com/en-us/library/bb773365) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetCurrentThemeName  
-[GetThemeAnimationProperty](http://msdn2.microsoft.com/en-us/library/hh404183) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeAnimationProperty  
-[GetThemeAnimationTransform](http://msdn2.microsoft.com/en-us/library/hh404186) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeAnimationTransform  
-[GetThemeAppProperties](http://msdn2.microsoft.com/en-us/library/bb773369) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeAppProperties  
-[GetThemeBackgroundContentRect](http://msdn2.microsoft.com/en-us/library/bb773375) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeBackgroundContentRect  
-[GetThemeBackgroundExtent](http://msdn2.microsoft.com/en-us/library/bb773380) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeBackgroundExtent  
-[GetThemeBackgroundRegion](http://msdn2.microsoft.com/en-us/library/bb773384) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeBackgroundRegion  
-[GetThemeBitmap](http://msdn2.microsoft.com/en-us/library/bb773388) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeBitmap  
-[GetThemeBool](http://msdn2.microsoft.com/en-us/library/bb773392) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeBool  
-[GetThemeColor](http://msdn2.microsoft.com/en-us/library/bb773397) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeColor  
-[GetThemeDocumentationProperty](http://msdn2.microsoft.com/en-us/library/bb773402) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeDocumentationProperty  
-[GetThemeEnumValue](http://msdn2.microsoft.com/en-us/library/bb773406) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeEnumValue  
-[GetThemeFilename](http://msdn2.microsoft.com/en-us/library/bb759743) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeFilename  
-[GetThemeFont](http://msdn2.microsoft.com/en-us/library/bb759745) | uxtheme.dll | uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeFont  
-[GetThemeInt](http://msdn2.microsoft.com/en-us/library/bb759749) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeInt  
-[GetThemeIntList](http://msdn2.microsoft.com/en-us/library/bb759752) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeIntListPreVista  
-[GetThemeMargins](http://msdn2.microsoft.com/en-us/library/bb759755) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeMargins  
-[GetThemeMetric](http://msdn2.microsoft.com/en-us/library/bb759757) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeMetric  
-[GetThemePartSize](http://msdn2.microsoft.com/en-us/library/bb759759) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemePartSize  
-[GetThemePosition](http://msdn2.microsoft.com/en-us/library/bb759762) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemePosition  
-[GetThemePropertyOrigin](http://msdn2.microsoft.com/en-us/library/bb759764) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemePropertyOrigin  
-[GetThemeRect](http://msdn2.microsoft.com/en-us/library/bb759766) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeRect  
-[GetThemeStream](http://msdn2.microsoft.com/en-us/library/bb759768) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeStream  
-[GetThemeString](http://msdn2.microsoft.com/en-us/library/bb759770) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeString  
-[GetThemeSysBool](http://msdn2.microsoft.com/en-us/library/bb759773) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeSysBool  
-[GetThemeSysColor](http://msdn2.microsoft.com/en-us/library/bb759776) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeSysColor  
-[GetThemeSysColorBrush](http://msdn2.microsoft.com/en-us/library/bb759780) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeSysColorBrush  
-[GetThemeSysFont](http://msdn2.microsoft.com/en-us/library/bb759783) | uxtheme.dll | uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeSysFont  
-[GetThemeSysInt](http://msdn2.microsoft.com/en-us/library/bb759787) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeSysInt  
-[GetThemeSysSize](http://msdn2.microsoft.com/en-us/library/bb759790) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeSysSize  
-[GetThemeSysString](http://msdn2.microsoft.com/en-us/library/bb759793) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeSysString  
-[GetThemeTextExtent](http://msdn2.microsoft.com/en-us/library/bb759798) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeTextExtent  
-[GetThemeTextMetrics](http://msdn2.microsoft.com/en-us/library/bb759801) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeTextMetrics  
-[GetThemeTimingFunction](http://msdn2.microsoft.com/en-us/library/hh404194) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeTimingFunction  
-[GetThemeTransitionDuration](http://msdn2.microsoft.com/en-us/library/bb759804) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeTransitionDuration  
-[GetWindowTheme](http://msdn2.microsoft.com/en-us/library/bb759806) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetWindowTheme  
-[HitTestThemeBackground](http://msdn2.microsoft.com/en-us/library/bb759808) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.HitTestThemeBackground  
-[IsAppThemed](http://msdn2.microsoft.com/en-us/library/bb759809) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.IsAppThemed  
-[IsCompositionActive](http://msdn2.microsoft.com/en-us/library/bb759811) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.IsCompositionActive  
-[IsThemeActive](http://msdn2.microsoft.com/en-us/library/bb759813) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.IsThemeActive  
-[IsThemeBackgroundPartiallyTransparent](http://msdn2.microsoft.com/en-us/library/bb759815) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.IsThemeBackgroundPartiallyTransparent  
-[IsThemeDialogTextureEnabled](http://msdn2.microsoft.com/en-us/library/bb759818) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.IsThemeDialogTextureEnabled  
-[IsThemePartDefined](http://msdn2.microsoft.com/en-us/library/bb759819) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.IsThemePartDefined  
-[OpenThemeData](http://msdn2.microsoft.com/en-us/library/bb759821) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.OpenThemeData  
-[OpenThemeDataEx](http://msdn2.microsoft.com/en-us/library/bb759823) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.OpenThemeDataEx  
-[OpenThemeDataForDpi](http://msdn2.microsoft.com/en-us/library/mt807674) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.OpenThemeDataForDpi  
-[SetThemeAppProperties](http://msdn2.microsoft.com/en-us/library/bb759825) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.SetThemeAppProperties  
-[SetWindowTheme](http://msdn2.microsoft.com/en-us/library/bb759827) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.SetWindowTheme  
-[SetWindowThemeAttribute](http://msdn2.microsoft.com/en-us/library/bb759829) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.SetWindowThemeAttribute  
-[UpdatePanningFeedback](http://msdn2.microsoft.com/en-us/library/dd317336) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.UpdatePanningFeedback  
+Native Method | Header | Managed Method  
+--- | --- | ---  
+[BeginBufferedAnimation](http://msdn2.microsoft.com/en-us/library/bb773252) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BeginBufferedAnimation](https://github.com/dahall/Vanara/search?l=C%23&q=BeginBufferedAnimation)  
+[BeginBufferedPaint](http://msdn2.microsoft.com/en-us/library/bb773257) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BeginBufferedPaint](https://github.com/dahall/Vanara/search?l=C%23&q=BeginBufferedPaint)  
+[BeginPanningFeedback](http://msdn2.microsoft.com/en-us/library/dd317331) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BeginPanningFeedback](https://github.com/dahall/Vanara/search?l=C%23&q=BeginPanningFeedback)  
+[BufferedPaintClear](http://msdn2.microsoft.com/en-us/library/bb773262) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BufferedPaintClear](https://github.com/dahall/Vanara/search?l=C%23&q=BufferedPaintClear)  
+[BufferedPaintInit](http://msdn2.microsoft.com/en-us/library/bb773266) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BufferedPaintInit](https://github.com/dahall/Vanara/search?l=C%23&q=BufferedPaintInit)  
+[BufferedPaintRenderAnimation](http://msdn2.microsoft.com/en-us/library/bb773271) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BufferedPaintRenderAnimation](https://github.com/dahall/Vanara/search?l=C%23&q=BufferedPaintRenderAnimation)  
+[BufferedPaintSetAlpha](http://msdn2.microsoft.com/en-us/library/bb773276) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BufferedPaintSetAlpha](https://github.com/dahall/Vanara/search?l=C%23&q=BufferedPaintSetAlpha)  
+[BufferedPaintStopAllAnimations](http://msdn2.microsoft.com/en-us/library/bb773280) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BufferedPaintStopAllAnimations](https://github.com/dahall/Vanara/search?l=C%23&q=BufferedPaintStopAllAnimations)  
+[BufferedPaintUnInit](http://msdn2.microsoft.com/en-us/library/bb773284) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BufferedPaintUnInit](https://github.com/dahall/Vanara/search?l=C%23&q=BufferedPaintUnInit)  
+[CloseThemeData](http://msdn2.microsoft.com/en-us/library/bb773287) | Uxtheme.h | [Vanara.PInvoke.UxTheme.CloseThemeData](https://github.com/dahall/Vanara/search?l=C%23&q=CloseThemeData)  
+[DrawThemeBackground](http://msdn2.microsoft.com/en-us/library/bb773289) | Uxtheme.h | [Vanara.PInvoke.UxTheme.DrawThemeBackground](https://github.com/dahall/Vanara/search?l=C%23&q=DrawThemeBackground)  
+[DrawThemeBackgroundEx](http://msdn2.microsoft.com/en-us/library/bb773294) | Uxtheme.h | [Vanara.PInvoke.UxTheme.DrawThemeBackgroundEx](https://github.com/dahall/Vanara/search?l=C%23&q=DrawThemeBackgroundEx)  
+[DrawThemeEdge](http://msdn2.microsoft.com/en-us/library/bb773298) | Uxtheme.h | [Vanara.PInvoke.UxTheme.DrawThemeEdge](https://github.com/dahall/Vanara/search?l=C%23&q=DrawThemeEdge)  
+[DrawThemeIcon](http://msdn2.microsoft.com/en-us/library/bb773301) | Uxtheme.h | [Vanara.PInvoke.UxTheme.DrawThemeIcon](https://github.com/dahall/Vanara/search?l=C%23&q=DrawThemeIcon)  
+[DrawThemeParentBackground](http://msdn2.microsoft.com/en-us/library/bb773306) | Uxtheme.h | [Vanara.PInvoke.UxTheme.DrawThemeParentBackground](https://github.com/dahall/Vanara/search?l=C%23&q=DrawThemeParentBackground)  
+[DrawThemeParentBackgroundEx](http://msdn2.microsoft.com/en-us/library/bb773309) | Uxtheme.h | [Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundEx](https://github.com/dahall/Vanara/search?l=C%23&q=DrawThemeParentBackgroundEx)  
+[DrawThemeText](http://msdn2.microsoft.com/en-us/library/bb773312) | Uxtheme.h | [Vanara.PInvoke.UxTheme.DrawThemeText](https://github.com/dahall/Vanara/search?l=C%23&q=DrawThemeText)  
+[DrawThemeTextEx](http://msdn2.microsoft.com/en-us/library/bb773317) | Uxtheme.h | [Vanara.PInvoke.UxTheme.DrawThemeTextEx](https://github.com/dahall/Vanara/search?l=C%23&q=DrawThemeTextEx)  
+[EnableThemeDialogTexture](http://msdn2.microsoft.com/en-us/library/bb773320) | Uxtheme.h | [Vanara.PInvoke.UxTheme.EnableThemeDialogTexture](https://github.com/dahall/Vanara/search?l=C%23&q=EnableThemeDialogTexture)  
+[EnableTheming](http://msdn2.microsoft.com/en-us/library/bb773324) | Uxtheme.h | [Vanara.PInvoke.UxTheme.EnableTheming](https://github.com/dahall/Vanara/search?l=C%23&q=EnableTheming)  
+[EndBufferedAnimation](http://msdn2.microsoft.com/en-us/library/bb773328) | Uxtheme.h | [Vanara.PInvoke.UxTheme.EndBufferedAnimation](https://github.com/dahall/Vanara/search?l=C%23&q=EndBufferedAnimation)  
+[EndBufferedPaint](http://msdn2.microsoft.com/en-us/library/bb773343) | Uxtheme.h | [Vanara.PInvoke.UxTheme.EndBufferedPaint](https://github.com/dahall/Vanara/search?l=C%23&q=EndBufferedPaint)  
+[EndPanningFeedback](http://msdn2.microsoft.com/en-us/library/dd317327) | Uxtheme.h | [Vanara.PInvoke.UxTheme.EndPanningFeedback](https://github.com/dahall/Vanara/search?l=C%23&q=EndPanningFeedback)  
+[GetBufferedPaintBits](http://msdn2.microsoft.com/en-us/library/bb773348) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetBufferedPaintBits](https://github.com/dahall/Vanara/search?l=C%23&q=GetBufferedPaintBits)  
+[GetBufferedPaintDC](http://msdn2.microsoft.com/en-us/library/bb773351) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetBufferedPaintDC](https://github.com/dahall/Vanara/search?l=C%23&q=GetBufferedPaintDC)  
+[GetBufferedPaintTargetDC](http://msdn2.microsoft.com/en-us/library/bb773356) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetBufferedPaintTargetDC](https://github.com/dahall/Vanara/search?l=C%23&q=GetBufferedPaintTargetDC)  
+[GetBufferedPaintTargetRect](http://msdn2.microsoft.com/en-us/library/bb773361) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetBufferedPaintTargetRect](https://github.com/dahall/Vanara/search?l=C%23&q=GetBufferedPaintTargetRect)  
+[GetCurrentThemeName](http://msdn2.microsoft.com/en-us/library/bb773365) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetCurrentThemeName](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentThemeName)  
+[GetThemeAnimationProperty](http://msdn2.microsoft.com/en-us/library/hh404183) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeAnimationProperty](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeAnimationProperty)  
+[GetThemeAnimationTransform](http://msdn2.microsoft.com/en-us/library/hh404186) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeAnimationTransform](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeAnimationTransform)  
+[GetThemeAppProperties](http://msdn2.microsoft.com/en-us/library/bb773369) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeAppProperties](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeAppProperties)  
+[GetThemeBackgroundContentRect](http://msdn2.microsoft.com/en-us/library/bb773375) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeBackgroundContentRect](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeBackgroundContentRect)  
+[GetThemeBackgroundExtent](http://msdn2.microsoft.com/en-us/library/bb773380) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeBackgroundExtent](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeBackgroundExtent)  
+[GetThemeBackgroundRegion](http://msdn2.microsoft.com/en-us/library/bb773384) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeBackgroundRegion](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeBackgroundRegion)  
+[GetThemeBitmap](http://msdn2.microsoft.com/en-us/library/bb773388) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeBitmap](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeBitmap)  
+[GetThemeBool](http://msdn2.microsoft.com/en-us/library/bb773392) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeBool](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeBool)  
+[GetThemeColor](http://msdn2.microsoft.com/en-us/library/bb773397) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeColor](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeColor)  
+[GetThemeDocumentationProperty](http://msdn2.microsoft.com/en-us/library/bb773402) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeDocumentationProperty](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeDocumentationProperty)  
+[GetThemeEnumValue](http://msdn2.microsoft.com/en-us/library/bb773406) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeEnumValue](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeEnumValue)  
+[GetThemeFilename](http://msdn2.microsoft.com/en-us/library/bb759743) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeFilename](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeFilename)  
+[GetThemeFont](http://msdn2.microsoft.com/en-us/library/bb759745) | uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeFont](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeFont)  
+[GetThemeInt](http://msdn2.microsoft.com/en-us/library/bb759749) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeInt](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeInt)  
+[GetThemeIntList](http://msdn2.microsoft.com/en-us/library/bb759752) | UxTheme.h | [Vanara.PInvoke.UxTheme.GetThemeIntListPreVista](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeIntListPreVista)  
+[GetThemeMargins](http://msdn2.microsoft.com/en-us/library/bb759755) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeMargins](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeMargins)  
+[GetThemeMetric](http://msdn2.microsoft.com/en-us/library/bb759757) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeMetric](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeMetric)  
+[GetThemePartSize](http://msdn2.microsoft.com/en-us/library/bb759759) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemePartSize](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemePartSize)  
+[GetThemePosition](http://msdn2.microsoft.com/en-us/library/bb759762) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemePosition](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemePosition)  
+[GetThemePropertyOrigin](http://msdn2.microsoft.com/en-us/library/bb759764) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemePropertyOrigin](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemePropertyOrigin)  
+[GetThemeRect](http://msdn2.microsoft.com/en-us/library/bb759766) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeRect](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeRect)  
+[GetThemeStream](http://msdn2.microsoft.com/en-us/library/bb759768) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeStream](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeStream)  
+[GetThemeString](http://msdn2.microsoft.com/en-us/library/bb759770) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeString](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeString)  
+[GetThemeSysBool](http://msdn2.microsoft.com/en-us/library/bb759773) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeSysBool](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeSysBool)  
+[GetThemeSysColor](http://msdn2.microsoft.com/en-us/library/bb759776) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeSysColor](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeSysColor)  
+[GetThemeSysColorBrush](http://msdn2.microsoft.com/en-us/library/bb759780) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeSysColorBrush](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeSysColorBrush)  
+[GetThemeSysFont](http://msdn2.microsoft.com/en-us/library/bb759783) | uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeSysFont](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeSysFont)  
+[GetThemeSysInt](http://msdn2.microsoft.com/en-us/library/bb759787) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeSysInt](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeSysInt)  
+[GetThemeSysSize](http://msdn2.microsoft.com/en-us/library/bb759790) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeSysSize](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeSysSize)  
+[GetThemeSysString](http://msdn2.microsoft.com/en-us/library/bb759793) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeSysString](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeSysString)  
+[GetThemeTextExtent](http://msdn2.microsoft.com/en-us/library/bb759798) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeTextExtent](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeTextExtent)  
+[GetThemeTextMetrics](http://msdn2.microsoft.com/en-us/library/bb759801) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeTextMetrics](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeTextMetrics)  
+[GetThemeTimingFunction](http://msdn2.microsoft.com/en-us/library/hh404194) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeTimingFunction](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeTimingFunction)  
+[GetThemeTransitionDuration](http://msdn2.microsoft.com/en-us/library/bb759804) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetThemeTransitionDuration](https://github.com/dahall/Vanara/search?l=C%23&q=GetThemeTransitionDuration)  
+[GetWindowTheme](http://msdn2.microsoft.com/en-us/library/bb759806) | Uxtheme.h | [Vanara.PInvoke.UxTheme.GetWindowTheme](https://github.com/dahall/Vanara/search?l=C%23&q=GetWindowTheme)  
+[HitTestThemeBackground](http://msdn2.microsoft.com/en-us/library/bb759808) | Uxtheme.h | [Vanara.PInvoke.UxTheme.HitTestThemeBackground](https://github.com/dahall/Vanara/search?l=C%23&q=HitTestThemeBackground)  
+[IsAppThemed](http://msdn2.microsoft.com/en-us/library/bb759809) | Uxtheme.h | [Vanara.PInvoke.UxTheme.IsAppThemed](https://github.com/dahall/Vanara/search?l=C%23&q=IsAppThemed)  
+[IsCompositionActive](http://msdn2.microsoft.com/en-us/library/bb759811) | Uxtheme.h | [Vanara.PInvoke.UxTheme.IsCompositionActive](https://github.com/dahall/Vanara/search?l=C%23&q=IsCompositionActive)  
+[IsThemeActive](http://msdn2.microsoft.com/en-us/library/bb759813) | Uxtheme.h | [Vanara.PInvoke.UxTheme.IsThemeActive](https://github.com/dahall/Vanara/search?l=C%23&q=IsThemeActive)  
+[IsThemeBackgroundPartiallyTransparent](http://msdn2.microsoft.com/en-us/library/bb759815) | Uxtheme.h | [Vanara.PInvoke.UxTheme.IsThemeBackgroundPartiallyTransparent](https://github.com/dahall/Vanara/search?l=C%23&q=IsThemeBackgroundPartiallyTransparent)  
+[IsThemeDialogTextureEnabled](http://msdn2.microsoft.com/en-us/library/bb759818) | Uxtheme.h | [Vanara.PInvoke.UxTheme.IsThemeDialogTextureEnabled](https://github.com/dahall/Vanara/search?l=C%23&q=IsThemeDialogTextureEnabled)  
+[IsThemePartDefined](http://msdn2.microsoft.com/en-us/library/bb759819) | Uxtheme.h | [Vanara.PInvoke.UxTheme.IsThemePartDefined](https://github.com/dahall/Vanara/search?l=C%23&q=IsThemePartDefined)  
+[OpenThemeData](http://msdn2.microsoft.com/en-us/library/bb759821) | Uxtheme.h | [Vanara.PInvoke.UxTheme.OpenThemeData](https://github.com/dahall/Vanara/search?l=C%23&q=OpenThemeData)  
+[OpenThemeDataEx](http://msdn2.microsoft.com/en-us/library/bb759823) | Uxtheme.h | [Vanara.PInvoke.UxTheme.OpenThemeDataEx](https://github.com/dahall/Vanara/search?l=C%23&q=OpenThemeDataEx)  
+[OpenThemeDataForDpi](http://msdn2.microsoft.com/en-us/library/mt807674) | Uxtheme.h | [Vanara.PInvoke.UxTheme.OpenThemeDataForDpi](https://github.com/dahall/Vanara/search?l=C%23&q=OpenThemeDataForDpi)  
+[SetThemeAppProperties](http://msdn2.microsoft.com/en-us/library/bb759825) | Uxtheme.h | [Vanara.PInvoke.UxTheme.SetThemeAppProperties](https://github.com/dahall/Vanara/search?l=C%23&q=SetThemeAppProperties)  
+[SetWindowTheme](http://msdn2.microsoft.com/en-us/library/bb759827) | Uxtheme.h | [Vanara.PInvoke.UxTheme.SetWindowTheme](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowTheme)  
+[SetWindowThemeAttribute](http://msdn2.microsoft.com/en-us/library/bb759829) | Uxtheme.h | [Vanara.PInvoke.UxTheme.SetWindowThemeAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowThemeAttribute)  
+[UpdatePanningFeedback](http://msdn2.microsoft.com/en-us/library/dd317336) | Uxtheme.h | [Vanara.PInvoke.UxTheme.UpdatePanningFeedback](https://github.com/dahall/Vanara/search?l=C%23&q=UpdatePanningFeedback)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[BP_ANIMATIONPARAMS](http://msdn2.microsoft.com/en-us/library/bb773224) | Uxtheme.h | Vanara.PInvoke.UxTheme+BP_ANIMATIONPARAMS  
-[BP_PAINTPARAMS](http://msdn2.microsoft.com/en-us/library/bb773228) | Uxtheme.h | Vanara.PInvoke.UxTheme+BP_PAINTPARAMS  
-[DTBGOPTS](http://msdn2.microsoft.com/en-us/library/bb773233) | Uxtheme.h | Vanara.PInvoke.UxTheme+DTBGOPTS  
-[DTTOPTS](http://msdn2.microsoft.com/en-us/library/bb773236) | Uxtheme.h | Vanara.PInvoke.UxTheme+DTTOPTS  
-[HANIMATIONBUFFER](https://www.google.com/search?num=5&q=HANIMATIONBUFFER+site%3Amicrosoft.com) |  | Vanara.PInvoke.UxTheme+HANIMATIONBUFFER  
-[HPAINTBUFFER](https://www.google.com/search?num=5&q=HPAINTBUFFER+site%3Amicrosoft.com) |  | Vanara.PInvoke.UxTheme+HPAINTBUFFER  
-[INTLIST](http://msdn2.microsoft.com/en-us/library/bb773240) | UxTheme.h | Vanara.PInvoke.UxTheme+INTLIST  
-[MARGINS](http://msdn2.microsoft.com/en-us/library/bb773244) | UxTheme.h | Vanara.PInvoke.UxTheme+MARGINS  
-[TA_TIMINGFUNCTION](https://www.google.com/search?num=5&q=TA_TIMINGFUNCTION+site%3Amicrosoft.com) |  | Vanara.PInvoke.UxTheme+TA_TIMINGFUNCTION  
-[TA_TRANSFORM](https://www.google.com/search?num=5&q=TA_TRANSFORM+site%3Amicrosoft.com) |  | Vanara.PInvoke.UxTheme+TA_TRANSFORM  
-[WTA_OPTIONS](http://msdn2.microsoft.com/en-us/library/bb773248) | Uxtheme.h | Vanara.PInvoke.UxTheme+WTA_OPTIONS  
+[BP_ANIMATIONPARAMS](http://msdn2.microsoft.com/en-us/library/bb773224) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS](https://github.com/dahall/Vanara/search?l=C%23&q=BP_ANIMATIONPARAMS)  
+[BP_PAINTPARAMS](http://msdn2.microsoft.com/en-us/library/bb773228) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BP_PAINTPARAMS](https://github.com/dahall/Vanara/search?l=C%23&q=BP_PAINTPARAMS)  
+[DTBGOPTS](http://msdn2.microsoft.com/en-us/library/bb773233) | Uxtheme.h | [Vanara.PInvoke.UxTheme.DTBGOPTS](https://github.com/dahall/Vanara/search?l=C%23&q=DTBGOPTS)  
+[DTTOPTS](http://msdn2.microsoft.com/en-us/library/bb773236) | Uxtheme.h | [Vanara.PInvoke.UxTheme.DTTOPTS](https://github.com/dahall/Vanara/search?l=C%23&q=DTTOPTS)  
+[HANIMATIONBUFFER](https://www.google.com/search?num=5&q=HANIMATIONBUFFER+site%3Amicrosoft.com) |  | [Vanara.PInvoke.UxTheme.HANIMATIONBUFFER](https://github.com/dahall/Vanara/search?l=C%23&q=HANIMATIONBUFFER)  
+[HPAINTBUFFER](https://www.google.com/search?num=5&q=HPAINTBUFFER+site%3Amicrosoft.com) |  | [Vanara.PInvoke.UxTheme.HPAINTBUFFER](https://github.com/dahall/Vanara/search?l=C%23&q=HPAINTBUFFER)  
+[INTLIST](http://msdn2.microsoft.com/en-us/library/bb773240) | UxTheme.h | [Vanara.PInvoke.UxTheme.INTLIST](https://github.com/dahall/Vanara/search?l=C%23&q=INTLIST)  
+[MARGINS](http://msdn2.microsoft.com/en-us/library/bb773244) | UxTheme.h | [Vanara.PInvoke.UxTheme.MARGINS](https://github.com/dahall/Vanara/search?l=C%23&q=MARGINS)  
+[TA_TIMINGFUNCTION](https://www.google.com/search?num=5&q=TA_TIMINGFUNCTION+site%3Amicrosoft.com) |  | [Vanara.PInvoke.UxTheme.TA_TIMINGFUNCTION](https://github.com/dahall/Vanara/search?l=C%23&q=TA_TIMINGFUNCTION)  
+[TA_TRANSFORM](https://www.google.com/search?num=5&q=TA_TRANSFORM+site%3Amicrosoft.com) |  | [Vanara.PInvoke.UxTheme.TA_TRANSFORM](https://github.com/dahall/Vanara/search?l=C%23&q=TA_TRANSFORM)  
+[WTA_OPTIONS](http://msdn2.microsoft.com/en-us/library/bb773248) | Uxtheme.h | [Vanara.PInvoke.UxTheme.WTA_OPTIONS](https://github.com/dahall/Vanara/search?l=C%23&q=WTA_OPTIONS)  

@@ -2,23 +2,23 @@
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[NLM_DATAPLAN_STATUS](http://msdn2.microsoft.com/en-us/library/hh448265) | Netlistmgr.h | Vanara.PInvoke.NetListMgr.NLM_DATAPLAN_STATUS  
-[NLM_SIMULATED_PROFILE_INFO](http://msdn2.microsoft.com/en-us/library/dn280985) | Netlistmgr.h | Vanara.PInvoke.NetListMgr.NLM_SIMULATED_PROFILE_INFO  
-[NLM_USAGE_DATA](http://msdn2.microsoft.com/en-us/library/hh448268) | Netlistmgr.h | Vanara.PInvoke.NetListMgr.NLM_USAGE_DATA  
+[NLM_DATAPLAN_STATUS](http://msdn2.microsoft.com/en-us/library/hh448265) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_DATAPLAN_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_DATAPLAN_STATUS)  
+[NLM_SIMULATED_PROFILE_INFO](http://msdn2.microsoft.com/en-us/library/dn280985) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_SIMULATED_PROFILE_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_SIMULATED_PROFILE_INFO)  
+[NLM_USAGE_DATA](http://msdn2.microsoft.com/en-us/library/hh448268) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_USAGE_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_USAGE_DATA)  
 ### Interfaces  
-Native Interface | Native DLL | Header | Managed Interface  
---- | --- | --- | ---  
-[IEnumNetworkConnections](https://www.google.com/search?num=5&q=IEnumNetworkConnections+site%3Amicrosoft.com) | netprofm.dll | Netlistmgr.h | Vanara.PInvoke.NetListMgr.IEnumNetworkConnections  
-[IEnumNetworks](https://www.google.com/search?num=5&q=IEnumNetworks+site%3Amicrosoft.com) | netprofm.dll | Netlistmgr.h | Vanara.PInvoke.NetListMgr.IEnumNetworks  
-[IErrorLog](https://www.google.com/search?num=5&q=IErrorLog+site%3Amicrosoft.com) | netprofm.dll |  |   
-[INetwork](https://www.google.com/search?num=5&q=INetwork+site%3Amicrosoft.com) | netprofm.dll | Netlistmgr.h | Vanara.PInvoke.NetListMgr.INetwork  
-[INetworkConnection](https://www.google.com/search?num=5&q=INetworkConnection+site%3Amicrosoft.com) | netprofm.dll | Netlistmgr.h | Vanara.PInvoke.NetListMgr.INetworkConnection  
-[INetworkConnectionCost](https://www.google.com/search?num=5&q=INetworkConnectionCost+site%3Amicrosoft.com) | netprofm.dll | Netlistmgr.h | Vanara.PInvoke.NetListMgr.INetworkConnectionCost  
-[INetworkConnectionCostEvents](https://www.google.com/search?num=5&q=INetworkConnectionCostEvents+site%3Amicrosoft.com) | netprofm.dll | Netlistmgr.h | Vanara.PInvoke.NetListMgr.INetworkConnectionCostEvents  
-[INetworkConnectionEvents](https://www.google.com/search?num=5&q=INetworkConnectionEvents+site%3Amicrosoft.com) | netprofm.dll | Netlistmgr.h | Vanara.PInvoke.NetListMgr.INetworkConnectionEvents  
-[INetworkCostManager](https://www.google.com/search?num=5&q=INetworkCostManager+site%3Amicrosoft.com) | netprofm.dll | Netlistmgr.h | Vanara.PInvoke.NetListMgr.INetworkCostManager  
-[INetworkCostManagerEvents](https://www.google.com/search?num=5&q=INetworkCostManagerEvents+site%3Amicrosoft.com) | netprofm.dll | Netlistmgr.h | Vanara.PInvoke.NetListMgr.INetworkCostManagerEvents  
-[INetworkEvents](https://www.google.com/search?num=5&q=INetworkEvents+site%3Amicrosoft.com) | netprofm.dll | Netlistmgr.h | Vanara.PInvoke.NetListMgr.INetworkEvents  
-[INetworkListManager](https://www.google.com/search?num=5&q=INetworkListManager+site%3Amicrosoft.com) | netprofm.dll | Netlistmgr.h | Vanara.PInvoke.NetListMgr.INetworkListManager  
-[INetworkListManagerEvents](https://www.google.com/search?num=5&q=INetworkListManagerEvents+site%3Amicrosoft.com) | netprofm.dll | Netlistmgr.h | Vanara.PInvoke.NetListMgr.INetworkListManagerEvents  
-[IPropertyBag](https://www.google.com/search?num=5&q=IPropertyBag+site%3Amicrosoft.com) | netprofm.dll |  |   
+Native Interface | Header | Managed Interface  
+--- | --- | ---  
+[IEnumNetworkConnections](https://www.google.com/search?num=5&q=IEnumNetworkConnections+site%3Amicrosoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.IEnumNetworkConnections](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumNetworkConnections)  
+[IEnumNetworks](https://www.google.com/search?num=5&q=IEnumNetworks+site%3Amicrosoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.IEnumNetworks](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumNetworks)  
+[IErrorLog](https://www.google.com/search?num=5&q=IErrorLog+site%3Amicrosoft.com) |  |   
+[INetwork](https://www.google.com/search?num=5&q=INetwork+site%3Amicrosoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetwork](https://github.com/dahall/Vanara/search?l=C%23&q=INetwork)  
+[INetworkConnection](https://www.google.com/search?num=5&q=INetworkConnection+site%3Amicrosoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkConnection](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkConnection)  
+[INetworkConnectionCost](https://www.google.com/search?num=5&q=INetworkConnectionCost+site%3Amicrosoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkConnectionCost](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkConnectionCost)  
+[INetworkConnectionCostEvents](https://www.google.com/search?num=5&q=INetworkConnectionCostEvents+site%3Amicrosoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkConnectionCostEvents](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkConnectionCostEvents)  
+[INetworkConnectionEvents](https://www.google.com/search?num=5&q=INetworkConnectionEvents+site%3Amicrosoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkConnectionEvents](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkConnectionEvents)  
+[INetworkCostManager](https://www.google.com/search?num=5&q=INetworkCostManager+site%3Amicrosoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkCostManager](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkCostManager)  
+[INetworkCostManagerEvents](https://www.google.com/search?num=5&q=INetworkCostManagerEvents+site%3Amicrosoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkCostManagerEvents](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkCostManagerEvents)  
+[INetworkEvents](https://www.google.com/search?num=5&q=INetworkEvents+site%3Amicrosoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkEvents](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkEvents)  
+[INetworkListManager](https://www.google.com/search?num=5&q=INetworkListManager+site%3Amicrosoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkListManager](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkListManager)  
+[INetworkListManagerEvents](https://www.google.com/search?num=5&q=INetworkListManagerEvents+site%3Amicrosoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkListManagerEvents](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkListManagerEvents)  
+[IPropertyBag](https://www.google.com/search?num=5&q=IPropertyBag+site%3Amicrosoft.com) |  |   

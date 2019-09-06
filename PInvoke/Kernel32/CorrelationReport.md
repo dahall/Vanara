@@ -2,876 +2,876 @@
 ### Methods (95% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
-[AcquireSRWLockExclusive](http://msdn2.microsoft.com/en-us/library/ms681930) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive  
-[AcquireSRWLockShared](http://msdn2.microsoft.com/en-us/library/ms681934) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AcquireSRWLockShared  
-[ActivateActCtx](http://msdn2.microsoft.com/en-us/library/aa374151) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ActivateActCtx  
-[AddAtom](http://msdn2.microsoft.com/en-us/library/ms649056) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.AddAtom  
-[AddConsoleAlias](https://www.google.com/search?num=5&q=AddConsoleAliasA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.AddConsoleAlias  
-[AddDllDirectory](http://msdn2.microsoft.com/en-us/library/hh310513) | kernel32.dll | LibLoaderAPI.h | Vanara.PInvoke.Kernel32.AddDllDirectory  
-[AddIntegrityLabelToBoundaryDescriptor](http://msdn2.microsoft.com/en-us/library/6b56e664-7795-4e30-8bca-1e4df2764606) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.AddIntegrityLabelToBoundaryDescriptor  
-[AddLocalAlternateComputerName](http://msdn2.microsoft.com/en-us/library/e4d8355b-0492-4b6f-988f-3887e63a2bba) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.AddLocalAlternateComputerName  
-[AddRefActCtx](http://msdn2.microsoft.com/en-us/library/aa374171) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.AddRefActCtx  
-[AddSecureMemoryCacheCallback](http://msdn2.microsoft.com/en-us/library/6c89d6f3-182e-4b10-931c-8d55d603c9dc) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.AddSecureMemoryCacheCallback  
-[AddSIDToBoundaryDescriptor](http://msdn2.microsoft.com/en-us/library/ms681937) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AddSIDToBoundaryDescriptor  
-[AddVectoredContinueHandler](http://msdn2.microsoft.com/en-us/library/ms679273) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AddVectoredContinueHandler  
-[AddVectoredExceptionHandler](http://msdn2.microsoft.com/en-us/library/ms679274) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AddVectoredExceptionHandler  
-[AdjustCalendarDate](http://msdn2.microsoft.com/en-us/library/be8d61fd-efa3-4386-969f-30216c282ebc) | kernel32.dll |  | Vanara.PInvoke.Kernel32.AdjustCalendarDate  
-[AllocateUserPhysicalPages](http://msdn2.microsoft.com/en-us/library/aa366528) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AllocateUserPhysicalPages  
-[AllocateUserPhysicalPagesNuma](http://msdn2.microsoft.com/en-us/library/aa366529) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AllocateUserPhysicalPagesNuma  
-[AllocConsole](https://www.google.com/search?num=5&q=AllocConsole+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.AllocConsole  
-[ApplicationRecoveryFinished](http://msdn2.microsoft.com/en-us/library/aa373328) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ApplicationRecoveryFinished  
-[ApplicationRecoveryInProgress](http://msdn2.microsoft.com/en-us/library/aa373329) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ApplicationRecoveryInProgress  
-[AppPolicyGetCreateFileAccess](http://msdn2.microsoft.com/en-us/library/mt829655) | kernel32.dll | AppModel.h | Vanara.PInvoke.Kernel32.AppPolicyGetCreateFileAccess  
-[AppPolicyGetProcessTerminationMethod](http://msdn2.microsoft.com/en-us/library/mt829656) | kernel32.dll | AppModel.h | Vanara.PInvoke.Kernel32.AppPolicyGetProcessTerminationMethod  
-[AppPolicyGetShowDeveloperDiagnostic](http://msdn2.microsoft.com/en-us/library/mt829657) | kernel32.dll | AppModel.h | Vanara.PInvoke.Kernel32.AppPolicyGetShowDeveloperDiagnostic  
-[AppPolicyGetThreadInitializationType](http://msdn2.microsoft.com/en-us/library/mt829658) | kernel32.dll | AppModel.h | Vanara.PInvoke.Kernel32.AppPolicyGetThreadInitializationType  
-[AreFileApisANSI](http://msdn2.microsoft.com/en-us/library/aa363781) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AreFileApisANSI  
-[AssignProcessToJobObject](http://msdn2.microsoft.com/en-us/library/ms681949) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AssignProcessToJobObject  
-[AttachConsole](https://www.google.com/search?num=5&q=AttachConsole+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.AttachConsole  
-[BackupRead](http://msdn2.microsoft.com/en-us/library/aa362509) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.BackupRead  
-[BackupSeek](http://msdn2.microsoft.com/en-us/library/aa362510) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.BackupSeek  
-[BackupWrite](http://msdn2.microsoft.com/en-us/library/aa362511) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.BackupWrite  
-[BaseFlushAppcompatCache](http://msdn2.microsoft.com/en-us/library/03f47813-87f6-4b71-b453-77a2facab019) | kernelbase.dll |  | Vanara.PInvoke.Kernel32.BaseFlushAppcompatCache  
-[Beep](http://msdn2.microsoft.com/en-us/library/ms679277) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.Beep  
-[BeginUpdateResource](http://msdn2.microsoft.com/en-us/library/ms648030) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.BeginUpdateResource  
-[BindIoCompletionCallback](http://msdn2.microsoft.com/en-us/library/aa363484) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.BindIoCompletionCallback  
-[BuildCommDCB](http://msdn2.microsoft.com/en-us/library/aa363143) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.BuildCommDCB  
-[BuildCommDCBAndTimeouts](http://msdn2.microsoft.com/en-us/library/aa363145) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.BuildCommDCBAndTimeouts  
-[CallbackMayRunLong](http://msdn2.microsoft.com/en-us/library/ms681981) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CallbackMayRunLong  
-[CallEnclave](http://msdn2.microsoft.com/en-us/library/mt844231) | kernelbase.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.CallEnclave  
-[CallNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365144) | kernel32.dll | namedpipeapi.h | Vanara.PInvoke.Kernel32.CallNamedPipe  
-[CancelIo](http://msdn2.microsoft.com/en-us/library/aa363791) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.CancelIo  
-[CancelIoEx](http://msdn2.microsoft.com/en-us/library/aa363792) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.CancelIoEx  
-[CancelSynchronousIo](http://msdn2.microsoft.com/en-us/library/aa363794) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.CancelSynchronousIo  
-[CancelThreadpoolIo](http://msdn2.microsoft.com/en-us/library/ms681983) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CancelThreadpoolIo  
-[CancelWaitableTimer](http://msdn2.microsoft.com/en-us/library/ms681985) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CancelWaitableTimer  
-[CeipIsOptedIn](http://msdn2.microsoft.com/en-us/library/4CDB5B09-B172-4E99-AB46-A08E32346266) | kernel32.dll | windowsceip.h | Vanara.PInvoke.Kernel32.CeipIsOptedIn  
-[ChangeTimerQueueTimer](http://msdn2.microsoft.com/en-us/library/ms682004) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ChangeTimerQueueTimer  
-[CheckNameLegalDOS8Dot3](http://msdn2.microsoft.com/en-us/library/aa363807) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CheckNameLegalDOS8Dot3  
-[CheckRemoteDebuggerPresent](http://msdn2.microsoft.com/en-us/library/ms679280) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CheckRemoteDebuggerPresent  
-[ClearCommBreak](http://msdn2.microsoft.com/en-us/library/aa363179) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ClearCommBreak  
-[ClearCommError](http://msdn2.microsoft.com/en-us/library/aa363180) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ClearCommError  
-[CloseHandle](http://msdn2.microsoft.com/en-us/library/ms724211) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.CloseHandle  
-[ClosePackageInfo](http://msdn2.microsoft.com/en-us/library/BA84FB47-F241-4120-9441-7E1149F68738) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.ClosePackageInfo  
-[ClosePrivateNamespace](http://msdn2.microsoft.com/en-us/library/b9b74cf2-bf13-4ceb-9242-bc6a884ac6f1) | kernel32.dll | namespaceapi.h | Vanara.PInvoke.Kernel32.ClosePrivateNamespace  
-[CloseThreadpool](http://msdn2.microsoft.com/en-us/library/ms682030) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CloseThreadpool  
-[CloseThreadpoolCleanupGroup](http://msdn2.microsoft.com/en-us/library/ms682033) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CloseThreadpoolCleanupGroup  
-[CloseThreadpoolCleanupGroupMembers](http://msdn2.microsoft.com/en-us/library/ms682036) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CloseThreadpoolCleanupGroupMembers  
-[CloseThreadpoolIo](http://msdn2.microsoft.com/en-us/library/ms682038) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CloseThreadpoolIo  
-[CloseThreadpoolTimer](http://msdn2.microsoft.com/en-us/library/ms682040) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CloseThreadpoolTimer  
-[CloseThreadpoolWait](http://msdn2.microsoft.com/en-us/library/ms682042) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CloseThreadpoolWait  
-[CloseThreadpoolWork](http://msdn2.microsoft.com/en-us/library/ms682043) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CloseThreadpoolWork  
-[CommConfigDialog](http://msdn2.microsoft.com/en-us/library/aa363187) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.CommConfigDialog  
-[CompareFileTime](http://msdn2.microsoft.com/en-us/library/ms724214) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.CompareFileTime  
-[CompareObjectHandles](http://msdn2.microsoft.com/en-us/library/mt438733) | kernelbase.dll | Handleapi.h | Vanara.PInvoke.Kernel32.CompareObjectHandles  
-[CompareString](http://msdn2.microsoft.com/en-us/library/dd317759) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.CompareString  
-[CompareStringEx](http://msdn2.microsoft.com/en-us/library/dd317761) | kernel32.dll | Stringapiset.h | Vanara.PInvoke.Kernel32.CompareStringEx  
-[CompareStringOrdinal](http://msdn2.microsoft.com/en-us/library/dd317762) | kernel32.dll | Stringapiset.h | Vanara.PInvoke.Kernel32.CompareStringOrdinal  
-[ConnectNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365146) | kernel32.dll | namedpipeapi.h | Vanara.PInvoke.Kernel32.ConnectNamedPipe  
-[ContinueDebugEvent](http://msdn2.microsoft.com/en-us/library/ms679285) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ContinueDebugEvent  
-[ConvertAuxiliaryCounterToPerformanceCounter](http://msdn2.microsoft.com/en-us/library/94664D63-D1B0-443B-BB88-C8A8771577A6) | kernelbase.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.ConvertAuxiliaryCounterToPerformanceCounter  
-[ConvertCalDateTimeToSystemTime](http://msdn2.microsoft.com/en-us/library/0c3f602d-62de-4c27-95d9-d35738f3279d) | kernel32.dll |  | Vanara.PInvoke.Kernel32.ConvertCalDateTimeToSystemTime  
-[ConvertDefaultLocale](http://msdn2.microsoft.com/en-us/library/dd317768) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.ConvertDefaultLocale  
-[ConvertFiberToThread](http://msdn2.microsoft.com/en-us/library/ms682112) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ConvertFiberToThread  
-[ConvertPerformanceCounterToAuxiliaryCounter](http://msdn2.microsoft.com/en-us/library/2499981B-6C13-4A3D-836A-D4CCD11C8D50) | kernelbase.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.ConvertPerformanceCounterToAuxiliaryCounter  
-[ConvertSystemTimeToCalDateTime](http://msdn2.microsoft.com/en-us/library/d21f75bc-1a93-4cb9-8b9b-6fa0e81886bf) | kernel32.dll |  | Vanara.PInvoke.Kernel32.ConvertSystemTimeToCalDateTime  
-[ConvertThreadToFiber](http://msdn2.microsoft.com/en-us/library/ms682115) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ConvertThreadToFiber  
-[ConvertThreadToFiberEx](http://msdn2.microsoft.com/en-us/library/cb0473f8-bc49-44c9-a8b7-6d5b55aa37a5) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.ConvertThreadToFiberEx  
-[CopyContext](http://msdn2.microsoft.com/en-us/library/805CD02A-53BC-487C-83F8-FE804368C770) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.CopyContext  
-[CopyFile](http://msdn2.microsoft.com/en-us/library/aa363851) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CopyFile  
-[CopyFile2](http://msdn2.microsoft.com/en-us/library/aa2df686-4b61-4d90-ba0b-c78c5a0d2d59) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.CopyFile2  
-[CopyFileEx](http://msdn2.microsoft.com/en-us/library/aa363852) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CopyFileEx  
-[CopyFileTransacted](http://msdn2.microsoft.com/en-us/library/118392de-166b-413e-99c9-b3deb756de0e) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.CopyFileTransacted  
-[CreateActCtx](http://msdn2.microsoft.com/en-us/library/aa375125) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.CreateActCtx  
-[CreateBoundaryDescriptor](http://msdn2.microsoft.com/en-us/library/ms682121) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateBoundaryDescriptor  
-[CreateConsoleScreenBuffer](https://www.google.com/search?num=5&q=CreateConsoleScreenBuffer+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.CreateConsoleScreenBuffer  
-[CreateDirectory](http://msdn2.microsoft.com/en-us/library/aa363855) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.CreateDirectory  
-[CreateDirectoryEx](http://msdn2.microsoft.com/en-us/library/aa363856) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateDirectoryEx  
-[CreateDirectoryTransacted](http://msdn2.microsoft.com/en-us/library/75663b30-5bd9-4de7-8e4f-dc58016c2c40) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.CreateDirectoryTransacted  
-[CreateEnclave](http://msdn2.microsoft.com/en-us/library/mt592866) | kernel32.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.CreateEnclave  
-[CreateEvent](http://msdn2.microsoft.com/en-us/library/ms682396) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateEvent  
-[CreateEventEx](http://msdn2.microsoft.com/en-us/library/ms682400) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateEventEx  
-[CreateFiber](http://msdn2.microsoft.com/en-us/library/ms682402) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFiber  
-[CreateFiberEx](http://msdn2.microsoft.com/en-us/library/ms682406) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFiberEx  
-[CreateFile](http://msdn2.microsoft.com/en-us/library/aa363858) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.CreateFile  
-[CreateFile2](http://msdn2.microsoft.com/en-us/library/cd7a81f3-60ee-443a-99f3-a4c8afd365e7) | kernel32.dll | fileapi.h | Vanara.PInvoke.Kernel32.CreateFile2  
-[CreateFileMapping](http://msdn2.microsoft.com/en-us/library/aa366537) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFileMapping  
-[CreateFileMappingFromApp](http://msdn2.microsoft.com/en-us/library/hh994453) | kernel32.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.CreateFileMappingFromApp  
-[CreateFileMappingNuma](http://msdn2.microsoft.com/en-us/library/aa366539) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFileMappingNuma  
-[CreateFileTransacted](http://msdn2.microsoft.com/en-us/library/0cbc081d-8787-409b-84bc-a6a28d8f83a0) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.CreateFileTransacted  
-[CreateHardLink](http://msdn2.microsoft.com/en-us/library/aa363860) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateHardLink  
-[CreateHardLinkTransacted](http://msdn2.microsoft.com/en-us/library/27dd5b0a-08ef-4757-8f51-03d9918028c8) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.CreateHardLinkTransacted  
-[CreateIoCompletionPort](http://msdn2.microsoft.com/en-us/library/40cb47fc-7b15-47f6-bee2-2611d4686053) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.CreateIoCompletionPort  
-[CreateJobObject](http://msdn2.microsoft.com/en-us/library/ca6a044f-67ed-4a9c-9aeb-69dd77652854) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.CreateJobObject  
-[CreateMailslot](http://msdn2.microsoft.com/en-us/library/aa365147) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.CreateMailslot  
-[CreateMemoryResourceNotification](http://msdn2.microsoft.com/en-us/library/aa366541) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateMemoryResourceNotification  
-[CreateMutex](http://msdn2.microsoft.com/en-us/library/ms682411) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateMutex  
-[CreateMutexEx](http://msdn2.microsoft.com/en-us/library/ms682418) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateMutexEx  
-[CreateNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365150) | kernel32.dll | namedpipeapi.h | Vanara.PInvoke.Kernel32.CreateNamedPipe  
-[CreatePipe](http://msdn2.microsoft.com/en-us/library/aa365152) | kernel32.dll | namedpipeapi.h | Vanara.PInvoke.Kernel32.CreatePipe  
-[CreatePrivateNamespace](http://msdn2.microsoft.com/en-us/library/ms682419) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreatePrivateNamespace  
-[CreateProcess](http://msdn2.microsoft.com/en-us/library/ms682425) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateProcess  
-[CreateRemoteThread](http://msdn2.microsoft.com/en-us/library/ms682437) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateRemoteThread  
-[CreateRemoteThreadEx](http://msdn2.microsoft.com/en-us/library/dd405484) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateRemoteThreadEx  
-[CreateSemaphore](http://msdn2.microsoft.com/en-us/library/ms682438) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateSemaphore  
-[CreateSemaphoreEx](http://msdn2.microsoft.com/en-us/library/ms682446) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateSemaphoreEx  
-[CreateSymbolicLink](http://msdn2.microsoft.com/en-us/library/aa363866) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateSymbolicLink  
-[CreateTapePartition](http://msdn2.microsoft.com/en-us/library/aa362519) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.CreateTapePartition  
-[CreateThread](http://msdn2.microsoft.com/en-us/library/ms682453) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateThread  
-[CreateThreadpool](http://msdn2.microsoft.com/en-us/library/cc00d7bf-ac52-44ff-a6a8-76c8eaace5e6) | kernel32.dll | threadpoolapiset.h | Vanara.PInvoke.Kernel32.CreateThreadpool  
-[CreateThreadpoolCleanupGroup](http://msdn2.microsoft.com/en-us/library/ms682462) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateThreadpoolCleanupGroup  
-[CreateThreadpoolIo](http://msdn2.microsoft.com/en-us/library/ms682464) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateThreadpoolIo  
-[CreateThreadpoolTimer](http://msdn2.microsoft.com/en-us/library/ms682466) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InternalCreateThreadpoolTimer  
-[CreateThreadpoolWait](http://msdn2.microsoft.com/en-us/library/ms682474) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InternalCreateThreadpoolWait  
-[CreateThreadpoolWork](http://msdn2.microsoft.com/en-us/library/ms682478) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InternalCreateThreadpoolWork  
-[CreateTimerQueue](http://msdn2.microsoft.com/en-us/library/ms682483) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateTimerQueue  
-[CreateTimerQueueTimer](http://msdn2.microsoft.com/en-us/library/ms682485) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateTimerQueueTimer  
-[CreateToolhelp32Snapshot](http://msdn2.microsoft.com/en-us/library/df643c25-7558-424c-b187-b3f86ba51358) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.CreateToolhelp32Snapshot  
-[CreateUmsCompletionList](http://msdn2.microsoft.com/en-us/library/6e77b793-a82e-4e23-8c8b-7aff79d69346) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.CreateUmsCompletionList  
-[CreateUmsThreadContext](http://msdn2.microsoft.com/en-us/library/b27ce81a-8463-46af-8acf-2de091f625df) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.CreateUmsThreadContext  
-[CreateWaitableTimer](http://msdn2.microsoft.com/en-us/library/ms682492) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateWaitableTimer  
-[CreateWaitableTimerEx](http://msdn2.microsoft.com/en-us/library/ms682494) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateWaitableTimerEx  
+[AcquireSRWLockExclusive](http://msdn2.microsoft.com/en-us/library/ms681930) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  
+[AcquireSRWLockShared](http://msdn2.microsoft.com/en-us/library/ms681934) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockShared](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockShared)  
+[ActivateActCtx](http://msdn2.microsoft.com/en-us/library/aa374151) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.ActivateActCtx](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateActCtx)  
+[AddAtom](http://msdn2.microsoft.com/en-us/library/ms649056) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.AddAtom](https://github.com/dahall/Vanara/search?l=C%23&q=AddAtom)  
+[AddConsoleAlias](https://www.google.com/search?num=5&q=AddConsoleAliasA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.AddConsoleAlias](https://github.com/dahall/Vanara/search?l=C%23&q=AddConsoleAlias)  
+[AddDllDirectory](http://msdn2.microsoft.com/en-us/library/hh310513) | kernel32.dll | LibLoaderAPI.h | [Vanara.PInvoke.Kernel32.AddDllDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=AddDllDirectory)  
+[AddIntegrityLabelToBoundaryDescriptor](http://msdn2.microsoft.com/en-us/library/6b56e664-7795-4e30-8bca-1e4df2764606) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.AddIntegrityLabelToBoundaryDescriptor](https://github.com/dahall/Vanara/search?l=C%23&q=AddIntegrityLabelToBoundaryDescriptor)  
+[AddLocalAlternateComputerName](http://msdn2.microsoft.com/en-us/library/e4d8355b-0492-4b6f-988f-3887e63a2bba) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.AddLocalAlternateComputerName](https://github.com/dahall/Vanara/search?l=C%23&q=AddLocalAlternateComputerName)  
+[AddRefActCtx](http://msdn2.microsoft.com/en-us/library/aa374171) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.AddRefActCtx](https://github.com/dahall/Vanara/search?l=C%23&q=AddRefActCtx)  
+[AddSecureMemoryCacheCallback](http://msdn2.microsoft.com/en-us/library/6c89d6f3-182e-4b10-931c-8d55d603c9dc) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.AddSecureMemoryCacheCallback](https://github.com/dahall/Vanara/search?l=C%23&q=AddSecureMemoryCacheCallback)  
+[AddSIDToBoundaryDescriptor](http://msdn2.microsoft.com/en-us/library/ms681937) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AddSIDToBoundaryDescriptor](https://github.com/dahall/Vanara/search?l=C%23&q=AddSIDToBoundaryDescriptor)  
+[AddVectoredContinueHandler](http://msdn2.microsoft.com/en-us/library/ms679273) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AddVectoredContinueHandler](https://github.com/dahall/Vanara/search?l=C%23&q=AddVectoredContinueHandler)  
+[AddVectoredExceptionHandler](http://msdn2.microsoft.com/en-us/library/ms679274) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AddVectoredExceptionHandler](https://github.com/dahall/Vanara/search?l=C%23&q=AddVectoredExceptionHandler)  
+[AdjustCalendarDate](http://msdn2.microsoft.com/en-us/library/be8d61fd-efa3-4386-969f-30216c282ebc) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.AdjustCalendarDate](https://github.com/dahall/Vanara/search?l=C%23&q=AdjustCalendarDate)  
+[AllocateUserPhysicalPages](http://msdn2.microsoft.com/en-us/library/aa366528) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AllocateUserPhysicalPages](https://github.com/dahall/Vanara/search?l=C%23&q=AllocateUserPhysicalPages)  
+[AllocateUserPhysicalPagesNuma](http://msdn2.microsoft.com/en-us/library/aa366529) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AllocateUserPhysicalPagesNuma](https://github.com/dahall/Vanara/search?l=C%23&q=AllocateUserPhysicalPagesNuma)  
+[AllocConsole](https://www.google.com/search?num=5&q=AllocConsole+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.AllocConsole](https://github.com/dahall/Vanara/search?l=C%23&q=AllocConsole)  
+[ApplicationRecoveryFinished](http://msdn2.microsoft.com/en-us/library/aa373328) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.ApplicationRecoveryFinished](https://github.com/dahall/Vanara/search?l=C%23&q=ApplicationRecoveryFinished)  
+[ApplicationRecoveryInProgress](http://msdn2.microsoft.com/en-us/library/aa373329) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.ApplicationRecoveryInProgress](https://github.com/dahall/Vanara/search?l=C%23&q=ApplicationRecoveryInProgress)  
+[AppPolicyGetCreateFileAccess](http://msdn2.microsoft.com/en-us/library/mt829655) | kernel32.dll | AppModel.h | [Vanara.PInvoke.Kernel32.AppPolicyGetCreateFileAccess](https://github.com/dahall/Vanara/search?l=C%23&q=AppPolicyGetCreateFileAccess)  
+[AppPolicyGetProcessTerminationMethod](http://msdn2.microsoft.com/en-us/library/mt829656) | kernel32.dll | AppModel.h | [Vanara.PInvoke.Kernel32.AppPolicyGetProcessTerminationMethod](https://github.com/dahall/Vanara/search?l=C%23&q=AppPolicyGetProcessTerminationMethod)  
+[AppPolicyGetShowDeveloperDiagnostic](http://msdn2.microsoft.com/en-us/library/mt829657) | kernel32.dll | AppModel.h | [Vanara.PInvoke.Kernel32.AppPolicyGetShowDeveloperDiagnostic](https://github.com/dahall/Vanara/search?l=C%23&q=AppPolicyGetShowDeveloperDiagnostic)  
+[AppPolicyGetThreadInitializationType](http://msdn2.microsoft.com/en-us/library/mt829658) | kernel32.dll | AppModel.h | [Vanara.PInvoke.Kernel32.AppPolicyGetThreadInitializationType](https://github.com/dahall/Vanara/search?l=C%23&q=AppPolicyGetThreadInitializationType)  
+[AreFileApisANSI](http://msdn2.microsoft.com/en-us/library/aa363781) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AreFileApisANSI](https://github.com/dahall/Vanara/search?l=C%23&q=AreFileApisANSI)  
+[AssignProcessToJobObject](http://msdn2.microsoft.com/en-us/library/ms681949) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AssignProcessToJobObject](https://github.com/dahall/Vanara/search?l=C%23&q=AssignProcessToJobObject)  
+[AttachConsole](https://www.google.com/search?num=5&q=AttachConsole+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.AttachConsole](https://github.com/dahall/Vanara/search?l=C%23&q=AttachConsole)  
+[BackupRead](http://msdn2.microsoft.com/en-us/library/aa362509) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.BackupRead](https://github.com/dahall/Vanara/search?l=C%23&q=BackupRead)  
+[BackupSeek](http://msdn2.microsoft.com/en-us/library/aa362510) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.BackupSeek](https://github.com/dahall/Vanara/search?l=C%23&q=BackupSeek)  
+[BackupWrite](http://msdn2.microsoft.com/en-us/library/aa362511) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.BackupWrite](https://github.com/dahall/Vanara/search?l=C%23&q=BackupWrite)  
+[BaseFlushAppcompatCache](http://msdn2.microsoft.com/en-us/library/03f47813-87f6-4b71-b453-77a2facab019) | kernelbase.dll |  | [Vanara.PInvoke.Kernel32.BaseFlushAppcompatCache](https://github.com/dahall/Vanara/search?l=C%23&q=BaseFlushAppcompatCache)  
+[Beep](http://msdn2.microsoft.com/en-us/library/ms679277) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.Beep](https://github.com/dahall/Vanara/search?l=C%23&q=Beep)  
+[BeginUpdateResource](http://msdn2.microsoft.com/en-us/library/ms648030) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.BeginUpdateResource](https://github.com/dahall/Vanara/search?l=C%23&q=BeginUpdateResource)  
+[BindIoCompletionCallback](http://msdn2.microsoft.com/en-us/library/aa363484) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.BindIoCompletionCallback](https://github.com/dahall/Vanara/search?l=C%23&q=BindIoCompletionCallback)  
+[BuildCommDCB](http://msdn2.microsoft.com/en-us/library/aa363143) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.BuildCommDCB](https://github.com/dahall/Vanara/search?l=C%23&q=BuildCommDCB)  
+[BuildCommDCBAndTimeouts](http://msdn2.microsoft.com/en-us/library/aa363145) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.BuildCommDCBAndTimeouts](https://github.com/dahall/Vanara/search?l=C%23&q=BuildCommDCBAndTimeouts)  
+[CallbackMayRunLong](http://msdn2.microsoft.com/en-us/library/ms681981) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CallbackMayRunLong](https://github.com/dahall/Vanara/search?l=C%23&q=CallbackMayRunLong)  
+[CallEnclave](http://msdn2.microsoft.com/en-us/library/mt844231) | kernelbase.dll | Enclaveapi.h | [Vanara.PInvoke.Kernel32.CallEnclave](https://github.com/dahall/Vanara/search?l=C%23&q=CallEnclave)  
+[CallNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365144) | kernel32.dll | namedpipeapi.h | [Vanara.PInvoke.Kernel32.CallNamedPipe](https://github.com/dahall/Vanara/search?l=C%23&q=CallNamedPipe)  
+[CancelIo](http://msdn2.microsoft.com/en-us/library/aa363791) | kernel32.dll | IoAPI.h | [Vanara.PInvoke.Kernel32.CancelIo](https://github.com/dahall/Vanara/search?l=C%23&q=CancelIo)  
+[CancelIoEx](http://msdn2.microsoft.com/en-us/library/aa363792) | kernel32.dll | IoAPI.h | [Vanara.PInvoke.Kernel32.CancelIoEx](https://github.com/dahall/Vanara/search?l=C%23&q=CancelIoEx)  
+[CancelSynchronousIo](http://msdn2.microsoft.com/en-us/library/aa363794) | kernel32.dll | IoAPI.h | [Vanara.PInvoke.Kernel32.CancelSynchronousIo](https://github.com/dahall/Vanara/search?l=C%23&q=CancelSynchronousIo)  
+[CancelThreadpoolIo](http://msdn2.microsoft.com/en-us/library/ms681983) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CancelThreadpoolIo](https://github.com/dahall/Vanara/search?l=C%23&q=CancelThreadpoolIo)  
+[CancelWaitableTimer](http://msdn2.microsoft.com/en-us/library/ms681985) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CancelWaitableTimer](https://github.com/dahall/Vanara/search?l=C%23&q=CancelWaitableTimer)  
+[CeipIsOptedIn](http://msdn2.microsoft.com/en-us/library/4CDB5B09-B172-4E99-AB46-A08E32346266) | kernel32.dll | windowsceip.h | [Vanara.PInvoke.Kernel32.CeipIsOptedIn](https://github.com/dahall/Vanara/search?l=C%23&q=CeipIsOptedIn)  
+[ChangeTimerQueueTimer](http://msdn2.microsoft.com/en-us/library/ms682004) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ChangeTimerQueueTimer](https://github.com/dahall/Vanara/search?l=C%23&q=ChangeTimerQueueTimer)  
+[CheckNameLegalDOS8Dot3](http://msdn2.microsoft.com/en-us/library/aa363807) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CheckNameLegalDOS8Dot3](https://github.com/dahall/Vanara/search?l=C%23&q=CheckNameLegalDOS8Dot3)  
+[CheckRemoteDebuggerPresent](http://msdn2.microsoft.com/en-us/library/ms679280) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CheckRemoteDebuggerPresent](https://github.com/dahall/Vanara/search?l=C%23&q=CheckRemoteDebuggerPresent)  
+[ClearCommBreak](http://msdn2.microsoft.com/en-us/library/aa363179) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.ClearCommBreak](https://github.com/dahall/Vanara/search?l=C%23&q=ClearCommBreak)  
+[ClearCommError](http://msdn2.microsoft.com/en-us/library/aa363180) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.ClearCommError](https://github.com/dahall/Vanara/search?l=C%23&q=ClearCommError)  
+[CloseHandle](http://msdn2.microsoft.com/en-us/library/ms724211) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.CloseHandle](https://github.com/dahall/Vanara/search?l=C%23&q=CloseHandle)  
+[ClosePackageInfo](http://msdn2.microsoft.com/en-us/library/BA84FB47-F241-4120-9441-7E1149F68738) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.ClosePackageInfo](https://github.com/dahall/Vanara/search?l=C%23&q=ClosePackageInfo)  
+[ClosePrivateNamespace](http://msdn2.microsoft.com/en-us/library/b9b74cf2-bf13-4ceb-9242-bc6a884ac6f1) | kernel32.dll | namespaceapi.h | [Vanara.PInvoke.Kernel32.ClosePrivateNamespace](https://github.com/dahall/Vanara/search?l=C%23&q=ClosePrivateNamespace)  
+[CloseThreadpool](http://msdn2.microsoft.com/en-us/library/ms682030) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CloseThreadpool](https://github.com/dahall/Vanara/search?l=C%23&q=CloseThreadpool)  
+[CloseThreadpoolCleanupGroup](http://msdn2.microsoft.com/en-us/library/ms682033) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CloseThreadpoolCleanupGroup](https://github.com/dahall/Vanara/search?l=C%23&q=CloseThreadpoolCleanupGroup)  
+[CloseThreadpoolCleanupGroupMembers](http://msdn2.microsoft.com/en-us/library/ms682036) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CloseThreadpoolCleanupGroupMembers](https://github.com/dahall/Vanara/search?l=C%23&q=CloseThreadpoolCleanupGroupMembers)  
+[CloseThreadpoolIo](http://msdn2.microsoft.com/en-us/library/ms682038) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CloseThreadpoolIo](https://github.com/dahall/Vanara/search?l=C%23&q=CloseThreadpoolIo)  
+[CloseThreadpoolTimer](http://msdn2.microsoft.com/en-us/library/ms682040) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CloseThreadpoolTimer](https://github.com/dahall/Vanara/search?l=C%23&q=CloseThreadpoolTimer)  
+[CloseThreadpoolWait](http://msdn2.microsoft.com/en-us/library/ms682042) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CloseThreadpoolWait](https://github.com/dahall/Vanara/search?l=C%23&q=CloseThreadpoolWait)  
+[CloseThreadpoolWork](http://msdn2.microsoft.com/en-us/library/ms682043) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CloseThreadpoolWork](https://github.com/dahall/Vanara/search?l=C%23&q=CloseThreadpoolWork)  
+[CommConfigDialog](http://msdn2.microsoft.com/en-us/library/aa363187) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.CommConfigDialog](https://github.com/dahall/Vanara/search?l=C%23&q=CommConfigDialog)  
+[CompareFileTime](http://msdn2.microsoft.com/en-us/library/ms724214) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.CompareFileTime](https://github.com/dahall/Vanara/search?l=C%23&q=CompareFileTime)  
+[CompareObjectHandles](http://msdn2.microsoft.com/en-us/library/mt438733) | kernelbase.dll | Handleapi.h | [Vanara.PInvoke.Kernel32.CompareObjectHandles](https://github.com/dahall/Vanara/search?l=C%23&q=CompareObjectHandles)  
+[CompareString](http://msdn2.microsoft.com/en-us/library/dd317759) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.CompareString](https://github.com/dahall/Vanara/search?l=C%23&q=CompareString)  
+[CompareStringEx](http://msdn2.microsoft.com/en-us/library/dd317761) | kernel32.dll | Stringapiset.h | [Vanara.PInvoke.Kernel32.CompareStringEx](https://github.com/dahall/Vanara/search?l=C%23&q=CompareStringEx)  
+[CompareStringOrdinal](http://msdn2.microsoft.com/en-us/library/dd317762) | kernel32.dll | Stringapiset.h | [Vanara.PInvoke.Kernel32.CompareStringOrdinal](https://github.com/dahall/Vanara/search?l=C%23&q=CompareStringOrdinal)  
+[ConnectNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365146) | kernel32.dll | namedpipeapi.h | [Vanara.PInvoke.Kernel32.ConnectNamedPipe](https://github.com/dahall/Vanara/search?l=C%23&q=ConnectNamedPipe)  
+[ContinueDebugEvent](http://msdn2.microsoft.com/en-us/library/ms679285) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ContinueDebugEvent](https://github.com/dahall/Vanara/search?l=C%23&q=ContinueDebugEvent)  
+[ConvertAuxiliaryCounterToPerformanceCounter](http://msdn2.microsoft.com/en-us/library/94664D63-D1B0-443B-BB88-C8A8771577A6) | kernelbase.dll | realtimeapiset.h | [Vanara.PInvoke.Kernel32.ConvertAuxiliaryCounterToPerformanceCounter](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertAuxiliaryCounterToPerformanceCounter)  
+[ConvertCalDateTimeToSystemTime](http://msdn2.microsoft.com/en-us/library/0c3f602d-62de-4c27-95d9-d35738f3279d) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.ConvertCalDateTimeToSystemTime](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertCalDateTimeToSystemTime)  
+[ConvertDefaultLocale](http://msdn2.microsoft.com/en-us/library/dd317768) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.ConvertDefaultLocale](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertDefaultLocale)  
+[ConvertFiberToThread](http://msdn2.microsoft.com/en-us/library/ms682112) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ConvertFiberToThread](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertFiberToThread)  
+[ConvertPerformanceCounterToAuxiliaryCounter](http://msdn2.microsoft.com/en-us/library/2499981B-6C13-4A3D-836A-D4CCD11C8D50) | kernelbase.dll | realtimeapiset.h | [Vanara.PInvoke.Kernel32.ConvertPerformanceCounterToAuxiliaryCounter](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertPerformanceCounterToAuxiliaryCounter)  
+[ConvertSystemTimeToCalDateTime](http://msdn2.microsoft.com/en-us/library/d21f75bc-1a93-4cb9-8b9b-6fa0e81886bf) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.ConvertSystemTimeToCalDateTime](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertSystemTimeToCalDateTime)  
+[ConvertThreadToFiber](http://msdn2.microsoft.com/en-us/library/ms682115) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ConvertThreadToFiber](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertThreadToFiber)  
+[ConvertThreadToFiberEx](http://msdn2.microsoft.com/en-us/library/cb0473f8-bc49-44c9-a8b7-6d5b55aa37a5) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.ConvertThreadToFiberEx](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertThreadToFiberEx)  
+[CopyContext](http://msdn2.microsoft.com/en-us/library/805CD02A-53BC-487C-83F8-FE804368C770) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.CopyContext](https://github.com/dahall/Vanara/search?l=C%23&q=CopyContext)  
+[CopyFile](http://msdn2.microsoft.com/en-us/library/aa363851) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CopyFile](https://github.com/dahall/Vanara/search?l=C%23&q=CopyFile)  
+[CopyFile2](http://msdn2.microsoft.com/en-us/library/aa2df686-4b61-4d90-ba0b-c78c5a0d2d59) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.CopyFile2](https://github.com/dahall/Vanara/search?l=C%23&q=CopyFile2)  
+[CopyFileEx](http://msdn2.microsoft.com/en-us/library/aa363852) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CopyFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=CopyFileEx)  
+[CopyFileTransacted](http://msdn2.microsoft.com/en-us/library/118392de-166b-413e-99c9-b3deb756de0e) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.CopyFileTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=CopyFileTransacted)  
+[CreateActCtx](http://msdn2.microsoft.com/en-us/library/aa375125) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.CreateActCtx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateActCtx)  
+[CreateBoundaryDescriptor](http://msdn2.microsoft.com/en-us/library/ms682121) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateBoundaryDescriptor](https://github.com/dahall/Vanara/search?l=C%23&q=CreateBoundaryDescriptor)  
+[CreateConsoleScreenBuffer](https://www.google.com/search?num=5&q=CreateConsoleScreenBuffer+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.CreateConsoleScreenBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=CreateConsoleScreenBuffer)  
+[CreateDirectory](http://msdn2.microsoft.com/en-us/library/aa363855) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.CreateDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=CreateDirectory)  
+[CreateDirectoryEx](http://msdn2.microsoft.com/en-us/library/aa363856) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateDirectoryEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateDirectoryEx)  
+[CreateDirectoryTransacted](http://msdn2.microsoft.com/en-us/library/75663b30-5bd9-4de7-8e4f-dc58016c2c40) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.CreateDirectoryTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=CreateDirectoryTransacted)  
+[CreateEnclave](http://msdn2.microsoft.com/en-us/library/mt592866) | kernel32.dll | Enclaveapi.h | [Vanara.PInvoke.Kernel32.CreateEnclave](https://github.com/dahall/Vanara/search?l=C%23&q=CreateEnclave)  
+[CreateEvent](http://msdn2.microsoft.com/en-us/library/ms682396) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateEvent](https://github.com/dahall/Vanara/search?l=C%23&q=CreateEvent)  
+[CreateEventEx](http://msdn2.microsoft.com/en-us/library/ms682400) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateEventEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateEventEx)  
+[CreateFiber](http://msdn2.microsoft.com/en-us/library/ms682402) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateFiber](https://github.com/dahall/Vanara/search?l=C%23&q=CreateFiber)  
+[CreateFiberEx](http://msdn2.microsoft.com/en-us/library/ms682406) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateFiberEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateFiberEx)  
+[CreateFile](http://msdn2.microsoft.com/en-us/library/aa363858) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.CreateFile](https://github.com/dahall/Vanara/search?l=C%23&q=CreateFile)  
+[CreateFile2](http://msdn2.microsoft.com/en-us/library/cd7a81f3-60ee-443a-99f3-a4c8afd365e7) | kernel32.dll | fileapi.h | [Vanara.PInvoke.Kernel32.CreateFile2](https://github.com/dahall/Vanara/search?l=C%23&q=CreateFile2)  
+[CreateFileMapping](http://msdn2.microsoft.com/en-us/library/aa366537) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateFileMapping](https://github.com/dahall/Vanara/search?l=C%23&q=CreateFileMapping)  
+[CreateFileMappingFromApp](http://msdn2.microsoft.com/en-us/library/hh994453) | kernel32.dll | MemoryApi.h | [Vanara.PInvoke.Kernel32.CreateFileMappingFromApp](https://github.com/dahall/Vanara/search?l=C%23&q=CreateFileMappingFromApp)  
+[CreateFileMappingNuma](http://msdn2.microsoft.com/en-us/library/aa366539) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateFileMappingNuma](https://github.com/dahall/Vanara/search?l=C%23&q=CreateFileMappingNuma)  
+[CreateFileTransacted](http://msdn2.microsoft.com/en-us/library/0cbc081d-8787-409b-84bc-a6a28d8f83a0) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.CreateFileTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=CreateFileTransacted)  
+[CreateHardLink](http://msdn2.microsoft.com/en-us/library/aa363860) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateHardLink](https://github.com/dahall/Vanara/search?l=C%23&q=CreateHardLink)  
+[CreateHardLinkTransacted](http://msdn2.microsoft.com/en-us/library/27dd5b0a-08ef-4757-8f51-03d9918028c8) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.CreateHardLinkTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=CreateHardLinkTransacted)  
+[CreateIoCompletionPort](http://msdn2.microsoft.com/en-us/library/40cb47fc-7b15-47f6-bee2-2611d4686053) | kernel32.dll | IoAPI.h | [Vanara.PInvoke.Kernel32.CreateIoCompletionPort](https://github.com/dahall/Vanara/search?l=C%23&q=CreateIoCompletionPort)  
+[CreateJobObject](http://msdn2.microsoft.com/en-us/library/ca6a044f-67ed-4a9c-9aeb-69dd77652854) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.CreateJobObject](https://github.com/dahall/Vanara/search?l=C%23&q=CreateJobObject)  
+[CreateMailslot](http://msdn2.microsoft.com/en-us/library/aa365147) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.CreateMailslot](https://github.com/dahall/Vanara/search?l=C%23&q=CreateMailslot)  
+[CreateMemoryResourceNotification](http://msdn2.microsoft.com/en-us/library/aa366541) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateMemoryResourceNotification](https://github.com/dahall/Vanara/search?l=C%23&q=CreateMemoryResourceNotification)  
+[CreateMutex](http://msdn2.microsoft.com/en-us/library/ms682411) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateMutex](https://github.com/dahall/Vanara/search?l=C%23&q=CreateMutex)  
+[CreateMutexEx](http://msdn2.microsoft.com/en-us/library/ms682418) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateMutexEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateMutexEx)  
+[CreateNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365150) | kernel32.dll | namedpipeapi.h | [Vanara.PInvoke.Kernel32.CreateNamedPipe](https://github.com/dahall/Vanara/search?l=C%23&q=CreateNamedPipe)  
+[CreatePipe](http://msdn2.microsoft.com/en-us/library/aa365152) | kernel32.dll | namedpipeapi.h | [Vanara.PInvoke.Kernel32.CreatePipe](https://github.com/dahall/Vanara/search?l=C%23&q=CreatePipe)  
+[CreatePrivateNamespace](http://msdn2.microsoft.com/en-us/library/ms682419) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreatePrivateNamespace](https://github.com/dahall/Vanara/search?l=C%23&q=CreatePrivateNamespace)  
+[CreateProcess](http://msdn2.microsoft.com/en-us/library/ms682425) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateProcess](https://github.com/dahall/Vanara/search?l=C%23&q=CreateProcess)  
+[CreateRemoteThread](http://msdn2.microsoft.com/en-us/library/ms682437) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateRemoteThread](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRemoteThread)  
+[CreateRemoteThreadEx](http://msdn2.microsoft.com/en-us/library/dd405484) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateRemoteThreadEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRemoteThreadEx)  
+[CreateSemaphore](http://msdn2.microsoft.com/en-us/library/ms682438) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateSemaphore](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSemaphore)  
+[CreateSemaphoreEx](http://msdn2.microsoft.com/en-us/library/ms682446) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateSemaphoreEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSemaphoreEx)  
+[CreateSymbolicLink](http://msdn2.microsoft.com/en-us/library/aa363866) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateSymbolicLink](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSymbolicLink)  
+[CreateTapePartition](http://msdn2.microsoft.com/en-us/library/aa362519) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.CreateTapePartition](https://github.com/dahall/Vanara/search?l=C%23&q=CreateTapePartition)  
+[CreateThread](http://msdn2.microsoft.com/en-us/library/ms682453) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateThread](https://github.com/dahall/Vanara/search?l=C%23&q=CreateThread)  
+[CreateThreadpool](http://msdn2.microsoft.com/en-us/library/cc00d7bf-ac52-44ff-a6a8-76c8eaace5e6) | kernel32.dll | threadpoolapiset.h | [Vanara.PInvoke.Kernel32.CreateThreadpool](https://github.com/dahall/Vanara/search?l=C%23&q=CreateThreadpool)  
+[CreateThreadpoolCleanupGroup](http://msdn2.microsoft.com/en-us/library/ms682462) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateThreadpoolCleanupGroup](https://github.com/dahall/Vanara/search?l=C%23&q=CreateThreadpoolCleanupGroup)  
+[CreateThreadpoolIo](http://msdn2.microsoft.com/en-us/library/ms682464) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateThreadpoolIo](https://github.com/dahall/Vanara/search?l=C%23&q=CreateThreadpoolIo)  
+[CreateThreadpoolTimer](http://msdn2.microsoft.com/en-us/library/ms682466) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InternalCreateThreadpoolTimer](https://github.com/dahall/Vanara/search?l=C%23&q=InternalCreateThreadpoolTimer)  
+[CreateThreadpoolWait](http://msdn2.microsoft.com/en-us/library/ms682474) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InternalCreateThreadpoolWait](https://github.com/dahall/Vanara/search?l=C%23&q=InternalCreateThreadpoolWait)  
+[CreateThreadpoolWork](http://msdn2.microsoft.com/en-us/library/ms682478) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InternalCreateThreadpoolWork](https://github.com/dahall/Vanara/search?l=C%23&q=InternalCreateThreadpoolWork)  
+[CreateTimerQueue](http://msdn2.microsoft.com/en-us/library/ms682483) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateTimerQueue](https://github.com/dahall/Vanara/search?l=C%23&q=CreateTimerQueue)  
+[CreateTimerQueueTimer](http://msdn2.microsoft.com/en-us/library/ms682485) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateTimerQueueTimer](https://github.com/dahall/Vanara/search?l=C%23&q=CreateTimerQueueTimer)  
+[CreateToolhelp32Snapshot](http://msdn2.microsoft.com/en-us/library/df643c25-7558-424c-b187-b3f86ba51358) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.CreateToolhelp32Snapshot](https://github.com/dahall/Vanara/search?l=C%23&q=CreateToolhelp32Snapshot)  
+[CreateUmsCompletionList](http://msdn2.microsoft.com/en-us/library/6e77b793-a82e-4e23-8c8b-7aff79d69346) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.CreateUmsCompletionList](https://github.com/dahall/Vanara/search?l=C%23&q=CreateUmsCompletionList)  
+[CreateUmsThreadContext](http://msdn2.microsoft.com/en-us/library/b27ce81a-8463-46af-8acf-2de091f625df) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.CreateUmsThreadContext](https://github.com/dahall/Vanara/search?l=C%23&q=CreateUmsThreadContext)  
+[CreateWaitableTimer](http://msdn2.microsoft.com/en-us/library/ms682492) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateWaitableTimer](https://github.com/dahall/Vanara/search?l=C%23&q=CreateWaitableTimer)  
+[CreateWaitableTimerEx](http://msdn2.microsoft.com/en-us/library/ms682494) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateWaitableTimerEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateWaitableTimerEx)  
 [DbgPrint](https://www.google.com/search?num=5&q=DbgPrint+site%3Amicrosoft.com) | vertdll.dll |  |   
-[DeactivateActCtx](http://msdn2.microsoft.com/en-us/library/aa375140) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DeactivateActCtx  
-[DebugActiveProcess](http://msdn2.microsoft.com/en-us/library/ms679295) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DebugActiveProcess  
-[DebugActiveProcessStop](http://msdn2.microsoft.com/en-us/library/ms679296) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DebugActiveProcessStop  
-[DebugBreak](http://msdn2.microsoft.com/en-us/library/ms679297) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DebugBreak  
-[DebugBreakProcess](http://msdn2.microsoft.com/en-us/library/ms679298) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DebugBreakProcess  
-[DebugSetProcessKillOnExit](http://msdn2.microsoft.com/en-us/library/ms679307) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DebugSetProcessKillOnExit  
-[DecodePointer](http://msdn2.microsoft.com/en-us/library/bb432242) | kernel32.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.DecodePointer  
-[DecodeRemotePointer](http://msdn2.microsoft.com/en-us/library/dn877133) | kernelbase.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.DecodeRemotePointer  
-[DecodeSystemPointer](http://msdn2.microsoft.com/en-us/library/bb432243) | kernel32.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.DecodeSystemPointer  
-[DefineDosDevice](http://msdn2.microsoft.com/en-us/library/924b1456-b2c5-4d52-aacf-6172608c73ea) | kernel32.dll | fileapi.h | Vanara.PInvoke.Kernel32.DefineDosDevice  
+[DeactivateActCtx](http://msdn2.microsoft.com/en-us/library/aa375140) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.DeactivateActCtx](https://github.com/dahall/Vanara/search?l=C%23&q=DeactivateActCtx)  
+[DebugActiveProcess](http://msdn2.microsoft.com/en-us/library/ms679295) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DebugActiveProcess](https://github.com/dahall/Vanara/search?l=C%23&q=DebugActiveProcess)  
+[DebugActiveProcessStop](http://msdn2.microsoft.com/en-us/library/ms679296) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DebugActiveProcessStop](https://github.com/dahall/Vanara/search?l=C%23&q=DebugActiveProcessStop)  
+[DebugBreak](http://msdn2.microsoft.com/en-us/library/ms679297) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DebugBreak](https://github.com/dahall/Vanara/search?l=C%23&q=DebugBreak)  
+[DebugBreakProcess](http://msdn2.microsoft.com/en-us/library/ms679298) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DebugBreakProcess](https://github.com/dahall/Vanara/search?l=C%23&q=DebugBreakProcess)  
+[DebugSetProcessKillOnExit](http://msdn2.microsoft.com/en-us/library/ms679307) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DebugSetProcessKillOnExit](https://github.com/dahall/Vanara/search?l=C%23&q=DebugSetProcessKillOnExit)  
+[DecodePointer](http://msdn2.microsoft.com/en-us/library/bb432242) | kernel32.dll | UtilApiSet.h | [Vanara.PInvoke.Kernel32.DecodePointer](https://github.com/dahall/Vanara/search?l=C%23&q=DecodePointer)  
+[DecodeRemotePointer](http://msdn2.microsoft.com/en-us/library/dn877133) | kernelbase.dll | UtilApiSet.h | [Vanara.PInvoke.Kernel32.DecodeRemotePointer](https://github.com/dahall/Vanara/search?l=C%23&q=DecodeRemotePointer)  
+[DecodeSystemPointer](http://msdn2.microsoft.com/en-us/library/bb432243) | kernel32.dll | UtilApiSet.h | [Vanara.PInvoke.Kernel32.DecodeSystemPointer](https://github.com/dahall/Vanara/search?l=C%23&q=DecodeSystemPointer)  
+[DefineDosDevice](http://msdn2.microsoft.com/en-us/library/924b1456-b2c5-4d52-aacf-6172608c73ea) | kernel32.dll | fileapi.h | [Vanara.PInvoke.Kernel32.DefineDosDevice](https://github.com/dahall/Vanara/search?l=C%23&q=DefineDosDevice)  
 [DelayLoadFailureHook](https://www.google.com/search?num=5&q=DelayLoadFailureHook+site%3Amicrosoft.com) | vertdll.dll |  |   
-[DeleteAtom](http://msdn2.microsoft.com/en-us/library/ms649057) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DeleteAtom  
-[DeleteBoundaryDescriptor](http://msdn2.microsoft.com/en-us/library/759d9cd9-9ef2-4bbe-9e99-8aec87f5ba4a) | kernel32.dll | namespaceapi.h | Vanara.PInvoke.Kernel32.DeleteBoundaryDescriptor  
-[DeleteCriticalSection](http://msdn2.microsoft.com/en-us/library/ms682552) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteCriticalSection  
-[DeleteEnclave](http://msdn2.microsoft.com/en-us/library/mt844232) | kernelbase.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.DeleteEnclave  
-[DeleteFiber](http://msdn2.microsoft.com/en-us/library/ms682556) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteFiber  
-[DeleteFile](http://msdn2.microsoft.com/en-us/library/aa363915) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.DeleteFile  
-[DeleteFileTransacted](http://msdn2.microsoft.com/en-us/library/e0a6230b-2da1-4746-95fe-80f7b6bae41f) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.DeleteFileTransacted  
-[DeleteProcThreadAttributeList](http://msdn2.microsoft.com/en-us/library/ms682559) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteProcThreadAttributeList  
-[DeleteSynchronizationBarrier](http://msdn2.microsoft.com/en-us/library/hh706887) | kernel32.dll | SynchAPI.h | Vanara.PInvoke.Kernel32.DeleteSynchronizationBarrier  
-[DeleteTimerQueue](http://msdn2.microsoft.com/en-us/library/ms682565) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteTimerQueue  
-[DeleteTimerQueueEx](http://msdn2.microsoft.com/en-us/library/ms682568) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteTimerQueueEx  
-[DeleteTimerQueueTimer](http://msdn2.microsoft.com/en-us/library/ms682569) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteTimerQueueTimer  
-[DeleteUmsCompletionList](http://msdn2.microsoft.com/en-us/library/98124359-ddd1-468c-9f99-74dd3f631fa1) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.DeleteUmsCompletionList  
-[DeleteUmsThreadContext](http://msdn2.microsoft.com/en-us/library/cdd118fc-f664-44ce-958d-857216ceb9a7) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.DeleteUmsThreadContext  
-[DeleteVolumeMountPoint](http://msdn2.microsoft.com/en-us/library/aa363927) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.DeleteVolumeMountPoint  
-[DequeueUmsCompletionListItems](http://msdn2.microsoft.com/en-us/library/91499eb9-9fc5-4135-95f6-1bced78f1e07) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.DequeueUmsCompletionListItems  
-[DeviceIoControl](http://msdn2.microsoft.com/en-us/library/aa363216) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DeviceIoControl  
-[DisableThreadLibraryCalls](http://msdn2.microsoft.com/en-us/library/ms682579) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DisableThreadLibraryCalls  
-[DisableThreadProfiling](http://msdn2.microsoft.com/en-us/library/dd796392) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DisableThreadProfiling  
-[DisassociateCurrentThreadFromCallback](http://msdn2.microsoft.com/en-us/library/ms682581) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DisassociateCurrentThreadFromCallback  
-[DiscardVirtualMemory](http://msdn2.microsoft.com/en-us/library/dn781432) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DiscardVirtualMemory  
-[DisconnectNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365166) | kernel32.dll | namedpipeapi.h | Vanara.PInvoke.Kernel32.DisconnectNamedPipe  
-[DnsHostnameToComputerName](http://msdn2.microsoft.com/en-us/library/d5646fe6-9112-42cd-ace9-00dd1b590ecb) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.DnsHostnameToComputerName  
-[DosDateTimeToFileTime](http://msdn2.microsoft.com/en-us/library/ms724247) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DosDateTimeToFileTime  
-[DuplicateHandle](http://msdn2.microsoft.com/en-us/library/ms724251) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DuplicateHandle  
-[EmptyWorkingSet](http://msdn2.microsoft.com/en-us/library/76f2252e-7305-46b0-b1af-40ac084e6696) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.EmptyWorkingSet  
-[EnableThreadProfiling](http://msdn2.microsoft.com/en-us/library/dd796393) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EnableThreadProfiling  
+[DeleteAtom](http://msdn2.microsoft.com/en-us/library/ms649057) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.DeleteAtom](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteAtom)  
+[DeleteBoundaryDescriptor](http://msdn2.microsoft.com/en-us/library/759d9cd9-9ef2-4bbe-9e99-8aec87f5ba4a) | kernel32.dll | namespaceapi.h | [Vanara.PInvoke.Kernel32.DeleteBoundaryDescriptor](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteBoundaryDescriptor)  
+[DeleteCriticalSection](http://msdn2.microsoft.com/en-us/library/ms682552) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DeleteCriticalSection](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteCriticalSection)  
+[DeleteEnclave](http://msdn2.microsoft.com/en-us/library/mt844232) | kernelbase.dll | Enclaveapi.h | [Vanara.PInvoke.Kernel32.DeleteEnclave](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteEnclave)  
+[DeleteFiber](http://msdn2.microsoft.com/en-us/library/ms682556) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DeleteFiber](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteFiber)  
+[DeleteFile](http://msdn2.microsoft.com/en-us/library/aa363915) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.DeleteFile](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteFile)  
+[DeleteFileTransacted](http://msdn2.microsoft.com/en-us/library/e0a6230b-2da1-4746-95fe-80f7b6bae41f) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.DeleteFileTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteFileTransacted)  
+[DeleteProcThreadAttributeList](http://msdn2.microsoft.com/en-us/library/ms682559) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DeleteProcThreadAttributeList](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteProcThreadAttributeList)  
+[DeleteSynchronizationBarrier](http://msdn2.microsoft.com/en-us/library/hh706887) | kernel32.dll | SynchAPI.h | [Vanara.PInvoke.Kernel32.DeleteSynchronizationBarrier](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteSynchronizationBarrier)  
+[DeleteTimerQueue](http://msdn2.microsoft.com/en-us/library/ms682565) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DeleteTimerQueue](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteTimerQueue)  
+[DeleteTimerQueueEx](http://msdn2.microsoft.com/en-us/library/ms682568) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DeleteTimerQueueEx](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteTimerQueueEx)  
+[DeleteTimerQueueTimer](http://msdn2.microsoft.com/en-us/library/ms682569) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DeleteTimerQueueTimer](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteTimerQueueTimer)  
+[DeleteUmsCompletionList](http://msdn2.microsoft.com/en-us/library/98124359-ddd1-468c-9f99-74dd3f631fa1) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.DeleteUmsCompletionList](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteUmsCompletionList)  
+[DeleteUmsThreadContext](http://msdn2.microsoft.com/en-us/library/cdd118fc-f664-44ce-958d-857216ceb9a7) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.DeleteUmsThreadContext](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteUmsThreadContext)  
+[DeleteVolumeMountPoint](http://msdn2.microsoft.com/en-us/library/aa363927) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.DeleteVolumeMountPoint](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteVolumeMountPoint)  
+[DequeueUmsCompletionListItems](http://msdn2.microsoft.com/en-us/library/91499eb9-9fc5-4135-95f6-1bced78f1e07) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.DequeueUmsCompletionListItems](https://github.com/dahall/Vanara/search?l=C%23&q=DequeueUmsCompletionListItems)  
+[DeviceIoControl](http://msdn2.microsoft.com/en-us/library/aa363216) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.DeviceIoControl](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceIoControl)  
+[DisableThreadLibraryCalls](http://msdn2.microsoft.com/en-us/library/ms682579) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.DisableThreadLibraryCalls](https://github.com/dahall/Vanara/search?l=C%23&q=DisableThreadLibraryCalls)  
+[DisableThreadProfiling](http://msdn2.microsoft.com/en-us/library/dd796392) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.DisableThreadProfiling](https://github.com/dahall/Vanara/search?l=C%23&q=DisableThreadProfiling)  
+[DisassociateCurrentThreadFromCallback](http://msdn2.microsoft.com/en-us/library/ms682581) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DisassociateCurrentThreadFromCallback](https://github.com/dahall/Vanara/search?l=C%23&q=DisassociateCurrentThreadFromCallback)  
+[DiscardVirtualMemory](http://msdn2.microsoft.com/en-us/library/dn781432) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.DiscardVirtualMemory](https://github.com/dahall/Vanara/search?l=C%23&q=DiscardVirtualMemory)  
+[DisconnectNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365166) | kernel32.dll | namedpipeapi.h | [Vanara.PInvoke.Kernel32.DisconnectNamedPipe](https://github.com/dahall/Vanara/search?l=C%23&q=DisconnectNamedPipe)  
+[DnsHostnameToComputerName](http://msdn2.microsoft.com/en-us/library/d5646fe6-9112-42cd-ace9-00dd1b590ecb) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.DnsHostnameToComputerName](https://github.com/dahall/Vanara/search?l=C%23&q=DnsHostnameToComputerName)  
+[DosDateTimeToFileTime](http://msdn2.microsoft.com/en-us/library/ms724247) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.DosDateTimeToFileTime](https://github.com/dahall/Vanara/search?l=C%23&q=DosDateTimeToFileTime)  
+[DuplicateHandle](http://msdn2.microsoft.com/en-us/library/ms724251) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.DuplicateHandle](https://github.com/dahall/Vanara/search?l=C%23&q=DuplicateHandle)  
+[EmptyWorkingSet](http://msdn2.microsoft.com/en-us/library/76f2252e-7305-46b0-b1af-40ac084e6696) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.EmptyWorkingSet](https://github.com/dahall/Vanara/search?l=C%23&q=EmptyWorkingSet)  
+[EnableThreadProfiling](http://msdn2.microsoft.com/en-us/library/dd796393) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.EnableThreadProfiling](https://github.com/dahall/Vanara/search?l=C%23&q=EnableThreadProfiling)  
 [EnclaveGetAttestationReport](https://www.google.com/search?num=5&q=EnclaveGetAttestationReport+site%3Amicrosoft.com) | vertdll.dll |  |   
 [EnclaveGetEnclaveInformation](https://www.google.com/search?num=5&q=EnclaveGetEnclaveInformation+site%3Amicrosoft.com) | vertdll.dll |  |   
 [EnclaveSealData](https://www.google.com/search?num=5&q=EnclaveSealData+site%3Amicrosoft.com) | vertdll.dll |  |   
 [EnclaveUnsealData](https://www.google.com/search?num=5&q=EnclaveUnsealData+site%3Amicrosoft.com) | vertdll.dll |  |   
 [EnclaveVerifyAttestationReport](https://www.google.com/search?num=5&q=EnclaveVerifyAttestationReport+site%3Amicrosoft.com) | vertdll.dll |  |   
-[EncodePointer](http://msdn2.microsoft.com/en-us/library/bb432254) | kernel32.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.EncodePointer  
-[EncodeRemotePointer](http://msdn2.microsoft.com/en-us/library/dn877135) | kernelbase.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.EncodeRemotePointer  
-[EncodeSystemPointer](http://msdn2.microsoft.com/en-us/library/bb432255) | kernel32.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.EncodeSystemPointer  
-[EndUpdateResource](http://msdn2.microsoft.com/en-us/library/ms648032) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EndUpdateResource  
-[EnterCriticalSection](http://msdn2.microsoft.com/en-us/library/ms682608) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.EnterCriticalSection  
-[EnterSynchronizationBarrier](http://msdn2.microsoft.com/en-us/library/hh706889) | kernel32.dll | Synchapi.h | Vanara.PInvoke.Kernel32.EnterSynchronizationBarrier  
-[EnterUmsSchedulingMode](http://msdn2.microsoft.com/en-us/library/792bd7fa-0ae9-4c38-a664-5fb3e3d0c52b) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.EnterUmsSchedulingMode  
-[EnumCalendarInfo](http://msdn2.microsoft.com/en-us/library/dd317803) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumCalendarInfo  
-[EnumCalendarInfoEx](http://msdn2.microsoft.com/en-us/library/dd317804) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumCalendarInfoEx  
-[EnumCalendarInfoExEx](http://msdn2.microsoft.com/en-us/library/dd317805) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumCalendarInfoExEx  
-[EnumDateFormats](http://msdn2.microsoft.com/en-us/library/dd317810) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumDateFormats  
-[EnumDateFormatsEx](http://msdn2.microsoft.com/en-us/library/dd317811) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumDateFormatsEx  
-[EnumDateFormatsExEx](http://msdn2.microsoft.com/en-us/library/dd317812) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumDateFormatsExEx  
-[EnumDeviceDrivers](http://msdn2.microsoft.com/en-us/library/55925741-da23-44b1-93e8-0e9468434a61) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.EnumDeviceDrivers  
-[EnumDynamicTimeZoneInformation](http://msdn2.microsoft.com/en-us/library/EBB2366A-86FE-4764-B7F9-5D305993CE0A) | kernelbase.dll | timezoneapi.h | Vanara.PInvoke.Kernel32.EnumDynamicTimeZoneInformation  
-[EnumLanguageGroupLocales](http://msdn2.microsoft.com/en-us/library/dd317819) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumLanguageGroupLocales  
-[EnumPageFilesA](http://msdn2.microsoft.com/en-us/library/9289fe3c-a7d9-4acb-aeb6-a50de65db0a2) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.EnumPageFiles  
-[EnumPageFilesW](http://msdn2.microsoft.com/en-us/library/9289fe3c-a7d9-4acb-aeb6-a50de65db0a2) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.EnumPageFiles  
-[EnumProcessesA](http://msdn2.microsoft.com/en-us/library/0c0445cb-27d2-4857-a4a5-7a4c180b068b) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.EnumProcesses  
-[EnumProcessesW](http://msdn2.microsoft.com/en-us/library/0c0445cb-27d2-4857-a4a5-7a4c180b068b) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.EnumProcesses  
-[EnumProcessModules](http://msdn2.microsoft.com/en-us/library/b4088506-2f69-4cf0-9bab-3e6a7185f5b2) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.EnumProcessModules  
-[EnumProcessModulesExA](http://msdn2.microsoft.com/en-us/library/0f982f32-31f4-47b6-85d2-d6e17aa4eeb9) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.EnumProcessModulesEx  
-[EnumProcessModulesExW](http://msdn2.microsoft.com/en-us/library/0f982f32-31f4-47b6-85d2-d6e17aa4eeb9) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.EnumProcessModulesEx  
-[EnumResourceLanguagesEx](https://www.google.com/search?num=5&q=EnumResourceLanguagesExA+site%3Amicrosoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.EnumResourceLanguagesEx  
-[EnumResourceLanguagesW](http://msdn2.microsoft.com/en-us/library/ms648035) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EnumResourceLanguages  
-[EnumResourceNames](https://www.google.com/search?num=5&q=EnumResourceNamesA+site%3Amicrosoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.EnumResourceNames  
-[EnumResourceNamesEx](https://www.google.com/search?num=5&q=EnumResourceNamesExA+site%3Amicrosoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.EnumResourceNamesEx  
-[EnumResourceTypesEx](http://msdn2.microsoft.com/en-us/library/ms648040) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EnumResourceTypesEx  
-[EnumResourceTypesW](http://msdn2.microsoft.com/en-us/library/ms648039) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EnumResourceTypes  
-[EnumSystemCodePages](http://msdn2.microsoft.com/en-us/library/dd317825) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumSystemCodePages  
-[EnumSystemFirmwareTables](http://msdn2.microsoft.com/en-us/library/ms724259) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EnumSystemFirmwareTables  
-[EnumSystemGeoID](http://msdn2.microsoft.com/en-us/library/dd317826) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumSystemGeoID  
-[EnumSystemGeoNames](http://msdn2.microsoft.com/en-us/library/mt826465) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumSystemGeoNames  
-[EnumSystemLanguageGroups](http://msdn2.microsoft.com/en-us/library/dd317827) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumSystemLanguageGroups  
-[EnumSystemLocales](http://msdn2.microsoft.com/en-us/library/dd317828) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumSystemLocales  
-[EnumSystemLocalesEx](http://msdn2.microsoft.com/en-us/library/dd317829) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumSystemLocalesEx  
-[EnumTimeFormats](http://msdn2.microsoft.com/en-us/library/dd317830) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumTimeFormats  
-[EnumTimeFormatsEx](http://msdn2.microsoft.com/en-us/library/dd317831) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumTimeFormatsEx  
-[EnumUILanguages](http://msdn2.microsoft.com/en-us/library/dd317834) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumUILanguages  
-[EraseTape](http://msdn2.microsoft.com/en-us/library/aa362523) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EraseTape  
-[EscapeCommFunction](http://msdn2.microsoft.com/en-us/library/aa363254) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EscapeCommFunction  
+[EncodePointer](http://msdn2.microsoft.com/en-us/library/bb432254) | kernel32.dll | UtilApiSet.h | [Vanara.PInvoke.Kernel32.EncodePointer](https://github.com/dahall/Vanara/search?l=C%23&q=EncodePointer)  
+[EncodeRemotePointer](http://msdn2.microsoft.com/en-us/library/dn877135) | kernelbase.dll | UtilApiSet.h | [Vanara.PInvoke.Kernel32.EncodeRemotePointer](https://github.com/dahall/Vanara/search?l=C%23&q=EncodeRemotePointer)  
+[EncodeSystemPointer](http://msdn2.microsoft.com/en-us/library/bb432255) | kernel32.dll | UtilApiSet.h | [Vanara.PInvoke.Kernel32.EncodeSystemPointer](https://github.com/dahall/Vanara/search?l=C%23&q=EncodeSystemPointer)  
+[EndUpdateResource](http://msdn2.microsoft.com/en-us/library/ms648032) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.EndUpdateResource](https://github.com/dahall/Vanara/search?l=C%23&q=EndUpdateResource)  
+[EnterCriticalSection](http://msdn2.microsoft.com/en-us/library/ms682608) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.EnterCriticalSection](https://github.com/dahall/Vanara/search?l=C%23&q=EnterCriticalSection)  
+[EnterSynchronizationBarrier](http://msdn2.microsoft.com/en-us/library/hh706889) | kernel32.dll | Synchapi.h | [Vanara.PInvoke.Kernel32.EnterSynchronizationBarrier](https://github.com/dahall/Vanara/search?l=C%23&q=EnterSynchronizationBarrier)  
+[EnterUmsSchedulingMode](http://msdn2.microsoft.com/en-us/library/792bd7fa-0ae9-4c38-a664-5fb3e3d0c52b) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.EnterUmsSchedulingMode](https://github.com/dahall/Vanara/search?l=C%23&q=EnterUmsSchedulingMode)  
+[EnumCalendarInfo](http://msdn2.microsoft.com/en-us/library/dd317803) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumCalendarInfo](https://github.com/dahall/Vanara/search?l=C%23&q=EnumCalendarInfo)  
+[EnumCalendarInfoEx](http://msdn2.microsoft.com/en-us/library/dd317804) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumCalendarInfoEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumCalendarInfoEx)  
+[EnumCalendarInfoExEx](http://msdn2.microsoft.com/en-us/library/dd317805) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumCalendarInfoExEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumCalendarInfoExEx)  
+[EnumDateFormats](http://msdn2.microsoft.com/en-us/library/dd317810) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumDateFormats](https://github.com/dahall/Vanara/search?l=C%23&q=EnumDateFormats)  
+[EnumDateFormatsEx](http://msdn2.microsoft.com/en-us/library/dd317811) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumDateFormatsEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumDateFormatsEx)  
+[EnumDateFormatsExEx](http://msdn2.microsoft.com/en-us/library/dd317812) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumDateFormatsExEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumDateFormatsExEx)  
+[EnumDeviceDrivers](http://msdn2.microsoft.com/en-us/library/55925741-da23-44b1-93e8-0e9468434a61) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.EnumDeviceDrivers](https://github.com/dahall/Vanara/search?l=C%23&q=EnumDeviceDrivers)  
+[EnumDynamicTimeZoneInformation](http://msdn2.microsoft.com/en-us/library/EBB2366A-86FE-4764-B7F9-5D305993CE0A) | kernelbase.dll | timezoneapi.h | [Vanara.PInvoke.Kernel32.EnumDynamicTimeZoneInformation](https://github.com/dahall/Vanara/search?l=C%23&q=EnumDynamicTimeZoneInformation)  
+[EnumLanguageGroupLocales](http://msdn2.microsoft.com/en-us/library/dd317819) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumLanguageGroupLocales](https://github.com/dahall/Vanara/search?l=C%23&q=EnumLanguageGroupLocales)  
+[EnumPageFilesA](http://msdn2.microsoft.com/en-us/library/9289fe3c-a7d9-4acb-aeb6-a50de65db0a2) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.EnumPageFiles](https://github.com/dahall/Vanara/search?l=C%23&q=EnumPageFiles)  
+[EnumPageFilesW](http://msdn2.microsoft.com/en-us/library/9289fe3c-a7d9-4acb-aeb6-a50de65db0a2) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.EnumPageFiles](https://github.com/dahall/Vanara/search?l=C%23&q=EnumPageFiles)  
+[EnumProcessesA](http://msdn2.microsoft.com/en-us/library/0c0445cb-27d2-4857-a4a5-7a4c180b068b) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.EnumProcesses](https://github.com/dahall/Vanara/search?l=C%23&q=EnumProcesses)  
+[EnumProcessesW](http://msdn2.microsoft.com/en-us/library/0c0445cb-27d2-4857-a4a5-7a4c180b068b) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.EnumProcesses](https://github.com/dahall/Vanara/search?l=C%23&q=EnumProcesses)  
+[EnumProcessModules](http://msdn2.microsoft.com/en-us/library/b4088506-2f69-4cf0-9bab-3e6a7185f5b2) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.EnumProcessModules](https://github.com/dahall/Vanara/search?l=C%23&q=EnumProcessModules)  
+[EnumProcessModulesExA](http://msdn2.microsoft.com/en-us/library/0f982f32-31f4-47b6-85d2-d6e17aa4eeb9) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.EnumProcessModulesEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumProcessModulesEx)  
+[EnumProcessModulesExW](http://msdn2.microsoft.com/en-us/library/0f982f32-31f4-47b6-85d2-d6e17aa4eeb9) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.EnumProcessModulesEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumProcessModulesEx)  
+[EnumResourceLanguagesEx](https://www.google.com/search?num=5&q=EnumResourceLanguagesExA+site%3Amicrosoft.com) | kernelbase.dll | Winbase.h | [Vanara.PInvoke.Kernel32.EnumResourceLanguagesEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumResourceLanguagesEx)  
+[EnumResourceLanguagesW](http://msdn2.microsoft.com/en-us/library/ms648035) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.EnumResourceLanguages](https://github.com/dahall/Vanara/search?l=C%23&q=EnumResourceLanguages)  
+[EnumResourceNames](https://www.google.com/search?num=5&q=EnumResourceNamesA+site%3Amicrosoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.EnumResourceNames](https://github.com/dahall/Vanara/search?l=C%23&q=EnumResourceNames)  
+[EnumResourceNamesEx](https://www.google.com/search?num=5&q=EnumResourceNamesExA+site%3Amicrosoft.com) | kernelbase.dll | Winbase.h | [Vanara.PInvoke.Kernel32.EnumResourceNamesEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumResourceNamesEx)  
+[EnumResourceTypesEx](http://msdn2.microsoft.com/en-us/library/ms648040) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.EnumResourceTypesEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumResourceTypesEx)  
+[EnumResourceTypesW](http://msdn2.microsoft.com/en-us/library/ms648039) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.EnumResourceTypes](https://github.com/dahall/Vanara/search?l=C%23&q=EnumResourceTypes)  
+[EnumSystemCodePages](http://msdn2.microsoft.com/en-us/library/dd317825) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumSystemCodePages](https://github.com/dahall/Vanara/search?l=C%23&q=EnumSystemCodePages)  
+[EnumSystemFirmwareTables](http://msdn2.microsoft.com/en-us/library/ms724259) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.EnumSystemFirmwareTables](https://github.com/dahall/Vanara/search?l=C%23&q=EnumSystemFirmwareTables)  
+[EnumSystemGeoID](http://msdn2.microsoft.com/en-us/library/dd317826) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumSystemGeoID](https://github.com/dahall/Vanara/search?l=C%23&q=EnumSystemGeoID)  
+[EnumSystemGeoNames](http://msdn2.microsoft.com/en-us/library/mt826465) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumSystemGeoNames](https://github.com/dahall/Vanara/search?l=C%23&q=EnumSystemGeoNames)  
+[EnumSystemLanguageGroups](http://msdn2.microsoft.com/en-us/library/dd317827) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumSystemLanguageGroups](https://github.com/dahall/Vanara/search?l=C%23&q=EnumSystemLanguageGroups)  
+[EnumSystemLocales](http://msdn2.microsoft.com/en-us/library/dd317828) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumSystemLocales](https://github.com/dahall/Vanara/search?l=C%23&q=EnumSystemLocales)  
+[EnumSystemLocalesEx](http://msdn2.microsoft.com/en-us/library/dd317829) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumSystemLocalesEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumSystemLocalesEx)  
+[EnumTimeFormats](http://msdn2.microsoft.com/en-us/library/dd317830) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumTimeFormats](https://github.com/dahall/Vanara/search?l=C%23&q=EnumTimeFormats)  
+[EnumTimeFormatsEx](http://msdn2.microsoft.com/en-us/library/dd317831) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumTimeFormatsEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumTimeFormatsEx)  
+[EnumUILanguages](http://msdn2.microsoft.com/en-us/library/dd317834) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.EnumUILanguages](https://github.com/dahall/Vanara/search?l=C%23&q=EnumUILanguages)  
+[EraseTape](http://msdn2.microsoft.com/en-us/library/aa362523) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.EraseTape](https://github.com/dahall/Vanara/search?l=C%23&q=EraseTape)  
+[EscapeCommFunction](http://msdn2.microsoft.com/en-us/library/aa363254) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.EscapeCommFunction](https://github.com/dahall/Vanara/search?l=C%23&q=EscapeCommFunction)  
 [EventRegister](https://www.google.com/search?num=5&q=EventRegister+site%3Amicrosoft.com) | vertdll.dll |  |   
 [EventSetInformation](https://www.google.com/search?num=5&q=EventSetInformation+site%3Amicrosoft.com) | vertdll.dll |  |   
 [EventUnregister](https://www.google.com/search?num=5&q=EventUnregister+site%3Amicrosoft.com) | vertdll.dll |  |   
 [EventWriteTransfer](https://www.google.com/search?num=5&q=EventWriteTransfer+site%3Amicrosoft.com) | vertdll.dll |  |   
-[ExecuteUmsThread](http://msdn2.microsoft.com/en-us/library/e4265351-e8e9-4878-bd42-93258b4cd1a0) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.ExecuteUmsThread  
-[ExitProcess](http://msdn2.microsoft.com/en-us/library/ms682658) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ExitProcess  
-[ExitThread](http://msdn2.microsoft.com/en-us/library/ms682659) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ExitThread  
-[ExpandEnvironmentStrings](http://msdn2.microsoft.com/en-us/library/ms724265) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ExpandEnvironmentStrings  
-[FatalAppExit](http://msdn2.microsoft.com/en-us/library/ms679336) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FatalAppExit  
-[FatalExit](http://msdn2.microsoft.com/en-us/library/ms679337) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FatalExit  
-[FileTimeToDosDateTime](http://msdn2.microsoft.com/en-us/library/ms724274) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FileTimeToDosDateTime  
-[FileTimeToLocalFileTime](http://msdn2.microsoft.com/en-us/library/ms724277) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FileTimeToLocalFileTime  
-[FileTimeToSystemTime](http://msdn2.microsoft.com/en-us/library/ms724280) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FileTimeToSystemTime  
-[FillConsoleOutputAttribute](https://www.google.com/search?num=5&q=FillConsoleOutputAttribute+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.FillConsoleOutputAttribute  
-[FillConsoleOutputCharacter](https://www.google.com/search?num=5&q=FillConsoleOutputCharacterA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.FillConsoleOutputCharacter  
-[FindActCtxSectionGuid](http://msdn2.microsoft.com/en-us/library/aa375148) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FindActCtxSectionGuid  
-[FindActCtxSectionString](http://msdn2.microsoft.com/en-us/library/aa375149) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FindActCtxSectionString  
-[FindAtom](http://msdn2.microsoft.com/en-us/library/ms649058) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FindAtom  
-[FindClose](http://msdn2.microsoft.com/en-us/library/64b3bc49-1e0e-4572-9d9f-936c45f5b01c) | kernel32.dll | fileapi.h | Vanara.PInvoke.Kernel32.FindClose  
-[FindCloseChangeNotification](http://msdn2.microsoft.com/en-us/library/aa364414) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindCloseChangeNotification  
-[FindFirstChangeNotification](http://msdn2.microsoft.com/en-us/library/aa364417) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindFirstChangeNotification  
-[FindFirstFile](http://msdn2.microsoft.com/en-us/library/aa364418) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindFirstFile  
-[FindFirstFileEx](http://msdn2.microsoft.com/en-us/library/9f40e98f-153f-4b65-afd9-06742684c100) | kernel32.dll | fileapi.h | Vanara.PInvoke.Kernel32.FindFirstFileEx  
-[FindFirstFileNameTransactedW](http://msdn2.microsoft.com/en-us/library/79c7d32d-3cb7-4e27-9db1-f24282bf606a) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.FindFirstFileNameTransactedW  
-[FindFirstFileNameW](http://msdn2.microsoft.com/en-us/library/aa364421) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindFirstFileName  
-[FindFirstFileTransacted](http://msdn2.microsoft.com/en-us/library/d94bf32b-f14b-44b4-824b-ed453d0424ef) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.FindFirstFileTransacted  
-[FindFirstStreamTransactedW](http://msdn2.microsoft.com/en-us/library/76c64aa9-0501-457d-b774-c209fbac4ccc) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.FindFirstStreamTransactedW  
-[FindFirstStreamW](http://msdn2.microsoft.com/en-us/library/aa364424) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindFirstStream  
-[FindFirstVolume](http://msdn2.microsoft.com/en-us/library/aa364419) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindFirstVolume  
-[FindFirstVolumeMountPoint](http://msdn2.microsoft.com/en-us/library/aa364426) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindFirstVolumeMountPoint  
-[FindNextChangeNotification](http://msdn2.microsoft.com/en-us/library/aa364427) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindNextChangeNotification  
-[FindNextFile](http://msdn2.microsoft.com/en-us/library/aa364428) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindNextFile  
-[FindNextFileNameW](http://msdn2.microsoft.com/en-us/library/aa364429) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindNextFileName  
-[FindNextStreamW](http://msdn2.microsoft.com/en-us/library/aa364430) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindNextStream  
-[FindNextVolume](http://msdn2.microsoft.com/en-us/library/aa364431) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindNextVolume  
-[FindNextVolumeMountPoint](http://msdn2.microsoft.com/en-us/library/aa364432) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindNextVolumeMountPoint  
-[FindNLSString](http://msdn2.microsoft.com/en-us/library/dd318056) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.FindNLSString  
-[FindNLSStringEx](http://msdn2.microsoft.com/en-us/library/dd318059) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.FindNLSStringEx  
-[FindPackagesByPackageFamily](http://msdn2.microsoft.com/en-us/library/D52E98BD-726F-4AC0-A034-02896B1D1687) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.FindPackagesByPackageFamily  
-[FindResource](https://www.google.com/search?num=5&q=FindResourceA+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FindResource  
-[FindResourceEx](https://www.google.com/search?num=5&q=FindResourceExA+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FindResourceEx  
-[FindStringOrdinal](http://msdn2.microsoft.com/en-us/library/dd318061) | kernel32.dll | Libloaderapi.h | Vanara.PInvoke.Kernel32.FindStringOrdinal  
-[FindVolumeClose](http://msdn2.microsoft.com/en-us/library/aa364433) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindVolumeClose  
-[FindVolumeMountPointClose](http://msdn2.microsoft.com/en-us/library/aa364435) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindVolumeMountPointClose  
-[FlsAlloc](http://msdn2.microsoft.com/en-us/library/ms682664) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FlsAlloc  
-[FlsFree](http://msdn2.microsoft.com/en-us/library/ms682667) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FlsFree  
-[FlsGetValue](http://msdn2.microsoft.com/en-us/library/ms683141) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FlsGetValue  
-[FlsSetValue](http://msdn2.microsoft.com/en-us/library/ms683146) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FlsSetValue  
-[FlushConsoleInputBuffer](https://www.google.com/search?num=5&q=FlushConsoleInputBuffer+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.FlushConsoleInputBuffer  
-[FlushFileBuffers](http://msdn2.microsoft.com/en-us/library/aa364433) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FlushFileBuffers  
-[FlushInstructionCache](http://msdn2.microsoft.com/en-us/library/ms679350) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FlushInstructionCache  
-[FlushProcessWriteBuffers](http://msdn2.microsoft.com/en-us/library/ms683148) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FlushProcessWriteBuffers  
-[FlushViewOfFile](http://msdn2.microsoft.com/en-us/library/aa366563) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FlushViewOfFile  
-[FoldString](http://msdn2.microsoft.com/en-us/library/dd318063) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.FoldString  
-[FormatApplicationUserModelId](http://msdn2.microsoft.com/en-us/library/F48D19C2-6373-41FC-A99D-E3CCB68D6C6C) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.FormatApplicationUserModelId  
-[FormatMessage](http://msdn2.microsoft.com/en-us/library/ms679351) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FormatMessage  
-[FreeConsole](https://www.google.com/search?num=5&q=FreeConsole+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.FreeConsole  
-[FreeEnvironmentStrings](http://msdn2.microsoft.com/en-us/library/ms683151) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FreeEnvironmentStrings  
-[FreeLibrary](http://msdn2.microsoft.com/en-us/library/ms683152) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FreeLibrary  
-[FreeLibraryAndExitThread](http://msdn2.microsoft.com/en-us/library/ms683153) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FreeLibraryAndExitThread  
-[FreeLibraryWhenCallbackReturns](http://msdn2.microsoft.com/en-us/library/ms683154) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FreeLibraryWhenCallbackReturns  
-[FreeMemoryJobObject](http://msdn2.microsoft.com/en-us/library/mt280121) | kernel32.dll | Jobapi2.h | Vanara.PInvoke.Kernel32.FreeMemoryJobObject  
-[FreeResource](http://msdn2.microsoft.com/en-us/library/ms648044) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FreeResource  
-[FreeUserPhysicalPages](http://msdn2.microsoft.com/en-us/library/aa366566) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FreeUserPhysicalPages  
-[GenerateConsoleCtrlEvent](https://www.google.com/search?num=5&q=GenerateConsoleCtrlEvent+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GenerateConsoleCtrlEvent  
-[GetACP](http://msdn2.microsoft.com/en-us/library/dd318070) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetACP  
-[GetActiveProcessorCount](http://msdn2.microsoft.com/en-us/library/f4ebb0a7-1c05-4478-85e3-80e6327ef8a4) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetActiveProcessorCount  
-[GetActiveProcessorGroupCount](http://msdn2.microsoft.com/en-us/library/566c6abe-9269-4e0e-9c98-e4607c808452) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetActiveProcessorGroupCount  
-[GetAppContainerNamedObjectPath](http://msdn2.microsoft.com/en-us/library/466CE2DA-332E-4AA7-A0EB-868A646C0979) | kernel32.dll | securityappcontainer.h | Vanara.PInvoke.Kernel32.GetAppContainerNamedObjectPath  
-[GetApplicationRecoveryCallback](http://msdn2.microsoft.com/en-us/library/aa373343) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetApplicationRecoveryCallback  
-[GetApplicationRestartSettings](http://msdn2.microsoft.com/en-us/library/aa373344) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetApplicationRestartSettings  
-[GetApplicationUserModelId](http://msdn2.microsoft.com/en-us/library/FE4E0818-F548-494B-B3BD-FB51DC748451) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetApplicationUserModelId  
-[GetApplicationUserModelIdFromToken](http://msdn2.microsoft.com/en-us/library/80036518-927E-4CD0-B499-8EA472AB7E5A) | kernelbase.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetApplicationUserModelIdFromToken  
-[GetAtomName](http://msdn2.microsoft.com/en-us/library/ms649059) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetAtomName  
-[GetBinaryType](https://www.google.com/search?num=5&q=GetBinaryType+site%3Amicrosoft.com) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetBinaryType  
-[GetCalendarDateFormatEx](http://msdn2.microsoft.com/en-us/library/eb2622bc-a98d-42bd-ab59-7a849000d79d) | kernel32.dll |  | Vanara.PInvoke.Kernel32.GetCalendarDateFormatEx  
-[GetCalendarInfo](http://msdn2.microsoft.com/en-us/library/dd318072) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetCalendarInfo  
-[GetCalendarInfoEx](http://msdn2.microsoft.com/en-us/library/dd318075) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetCalendarInfoEx  
-[GetCalendarSupportedDateRange](http://msdn2.microsoft.com/en-us/library/fe036ac5-77c0-4e83-8d70-db3fa0f7c803) | kernel32.dll |  | Vanara.PInvoke.Kernel32.GetCalendarSupportedDateRange  
-[GetCommandLine](http://msdn2.microsoft.com/en-us/library/ms683156) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCommandLineInternal  
-[GetCommConfig](http://msdn2.microsoft.com/en-us/library/aa363256) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommConfig  
-[GetCommMask](http://msdn2.microsoft.com/en-us/library/aa363257) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommMask  
-[GetCommModemStatus](http://msdn2.microsoft.com/en-us/library/aa363258) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommModemStatus  
-[GetCommPorts](http://msdn2.microsoft.com/en-us/library/8E57FB62-D7A0-4B47-942B-E33E0B7A37B1) | kernelbase.dll | winbase.h | Vanara.PInvoke.Kernel32.GetCommPorts  
-[GetCommProperties](http://msdn2.microsoft.com/en-us/library/aa363259) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommProperties  
-[GetCommState](http://msdn2.microsoft.com/en-us/library/aa363260) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommState  
-[GetCommTimeouts](http://msdn2.microsoft.com/en-us/library/aa363261) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommTimeouts  
-[GetComPlusPackageInstallStatus](http://msdn2.microsoft.com/en-us/library/c68af270-6a40-4026-9725-5fe657123fd5) | kernel32.dll |  | Vanara.PInvoke.Kernel32.GetComPlusPackageInstallStatus  
-[GetCompressedFileSize](http://msdn2.microsoft.com/en-us/library/aa364930) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCompressedFileSize  
-[GetComputerName](http://msdn2.microsoft.com/en-us/library/ms724295) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetComputerName  
-[GetComputerNameEx](http://msdn2.microsoft.com/en-us/library/ms724301) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetComputerNameEx  
-[GetConsoleAlias](https://www.google.com/search?num=5&q=GetConsoleAliasA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleAlias  
-[GetConsoleAliases](http://msdn2.microsoft.com/en-us/library/92eefa4e-ffde-4886-afde-5aecf450b425) | kernel32.dll | ConsoleApi3.h | Vanara.PInvoke.Kernel32.GetConsoleAliases  
-[GetConsoleAliasesLength](https://www.google.com/search?num=5&q=GetConsoleAliasesLengthA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleAliasesLength  
-[GetConsoleAliasExes](https://www.google.com/search?num=5&q=GetConsoleAliasExesA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleAliasExes  
-[GetConsoleAliasExesLength](https://www.google.com/search?num=5&q=GetConsoleAliasExesLengthA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleAliasExesLength  
-[GetConsoleCP](https://www.google.com/search?num=5&q=GetConsoleCP+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleCP  
-[GetConsoleCursorInfo](https://www.google.com/search?num=5&q=GetConsoleCursorInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleCursorInfo  
-[GetConsoleDisplayMode](https://www.google.com/search?num=5&q=GetConsoleDisplayMode+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleDisplayMode  
-[GetConsoleFontSize](https://www.google.com/search?num=5&q=GetConsoleFontSize+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleFontSize  
-[GetConsoleHistoryInfo](https://www.google.com/search?num=5&q=GetConsoleHistoryInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleHistoryInfo  
-[GetConsoleMode](http://msdn2.microsoft.com/en-us/library/49adf618-196d-4490-93ca-cd177807f58e) | kernel32.dll | ConsoleApi.h | Vanara.PInvoke.Kernel32.GetConsoleMode  
-[GetConsoleOriginalTitle](https://www.google.com/search?num=5&q=GetConsoleOriginalTitleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleOriginalTitle  
-[GetConsoleOutputCP](https://www.google.com/search?num=5&q=GetConsoleOutputCP+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleOutputCP  
-[GetConsoleProcessList](https://www.google.com/search?num=5&q=GetConsoleProcessList+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleProcessList  
-[GetConsoleScreenBufferInfo](https://www.google.com/search?num=5&q=GetConsoleScreenBufferInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleScreenBufferInfo  
-[GetConsoleScreenBufferInfoEx](https://www.google.com/search?num=5&q=GetConsoleScreenBufferInfoEx+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleScreenBufferInfoEx  
-[GetConsoleSelectionInfo](https://www.google.com/search?num=5&q=GetConsoleSelectionInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleSelectionInfo  
-[GetConsoleTitle](https://www.google.com/search?num=5&q=GetConsoleTitleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleTitle  
-[GetConsoleWindow](https://www.google.com/search?num=5&q=GetConsoleWindow+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleWindow  
-[GetCPInfo](http://msdn2.microsoft.com/en-us/library/dd318078) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetCPInfo  
-[GetCPInfoEx](https://www.google.com/search?num=5&q=GetCPInfoExA+site%3Amicrosoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetCPInfoEx  
-[GetCurrencyFormat](http://msdn2.microsoft.com/en-us/library/dd318083) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetCurrencyFormat  
-[GetCurrencyFormatEx](http://msdn2.microsoft.com/en-us/library/dd318084) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetCurrencyFormatEx  
-[GetCurrentActCtx](http://msdn2.microsoft.com/en-us/library/aa375152) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCurrentActCtx  
-[GetCurrentApplicationUserModelId](http://msdn2.microsoft.com/en-us/library/562BB225-0922-4FE7-92C0-573A2CCE3195) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetCurrentApplicationUserModelId  
-[GetCurrentConsoleFont](https://www.google.com/search?num=5&q=GetCurrentConsoleFont+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetCurrentConsoleFont  
-[GetCurrentConsoleFontEx](https://www.google.com/search?num=5&q=GetCurrentConsoleFontEx+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetCurrentConsoleFontEx  
-[GetCurrentDirectory](http://msdn2.microsoft.com/en-us/library/aa364934) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCurrentDirectory  
-[GetCurrentPackageFamilyName](http://msdn2.microsoft.com/en-us/library/39DBFBDD-A1CC-45C3-A5DD-5ED9697F9AFE) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetCurrentPackageFamilyName  
-[GetCurrentPackageFullName](http://msdn2.microsoft.com/en-us/library/D5B00C53-1FBF-4245-92D1-FA39713A9EE7) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetCurrentPackageFullName  
-[GetCurrentPackageId](http://msdn2.microsoft.com/en-us/library/4CFC707A-2A5A-41FE-BB5F-6FECACC99271) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetCurrentPackageId  
-[GetCurrentPackageInfo](http://msdn2.microsoft.com/en-us/library/A1887D61-0FAD-4BE8-850F-F104CC074798) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetCurrentPackageInfo  
-[GetCurrentPackagePath](http://msdn2.microsoft.com/en-us/library/46CE81DF-A9D5-492E-AB5E-4F043DC326E2) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetCurrentPackagePath  
-[GetCurrentProcess](http://msdn2.microsoft.com/en-us/library/ms683179) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCurrentProcess  
-[GetCurrentProcessId](http://msdn2.microsoft.com/en-us/library/ms683180) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCurrentProcessId  
-[GetCurrentProcessorNumber](http://msdn2.microsoft.com/en-us/library/1f2bebc7-a548-409a-ab74-78a4b55c8fa7) | kernel32.dll | processthreadsapi.h | Vanara.PInvoke.Kernel32.GetCurrentProcessorNumber  
-[GetCurrentProcessorNumberEx](http://msdn2.microsoft.com/en-us/library/dd405487) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCurrentProcessorNumberEx  
-[GetCurrentThread](http://msdn2.microsoft.com/en-us/library/ms683182) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCurrentThread  
-[GetCurrentThreadId](http://msdn2.microsoft.com/en-us/library/ms683183) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCurrentThreadId  
-[GetCurrentThreadStackLimits](http://msdn2.microsoft.com/en-us/library/hh706789) | kernel32.dll | Processthreadsapi.h | Vanara.PInvoke.Kernel32.GetCurrentThreadStackLimits  
-[GetCurrentUmsThread](http://msdn2.microsoft.com/en-us/library/f2e20816-919a-443d-96d3-94e98afc28f2) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetCurrentUmsThread  
-[GetDateFormat](http://msdn2.microsoft.com/en-us/library/546cede1-1702-403a-bba3-b5cd3b35a1bf) | kernel32.dll | datetimeapi.h | Vanara.PInvoke.Kernel32.GetDateFormat  
-[GetDateFormatEx](http://msdn2.microsoft.com/en-us/library/791fb386-3cc5-410e-bfce-52598fdb10c9) | kernel32.dll | datetimeapi.h | Vanara.PInvoke.Kernel32.GetDateFormatEx  
-[GetDefaultCommConfig](http://msdn2.microsoft.com/en-us/library/aa363262) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetDefaultCommConfig  
-[GetDeviceDriverBaseName](http://msdn2.microsoft.com/en-us/library/a19a927d-4669-4d4c-951e-43f294a8fb40) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.GetDeviceDriverBaseName  
-[GetDeviceDriverFileName](http://msdn2.microsoft.com/en-us/library/6ddbcf7e-e41c-4ea7-b60a-01ed5c98c530) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.GetDeviceDriverFileName  
-[GetDevicePowerState](http://msdn2.microsoft.com/en-us/library/aa372690) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetDevicePowerState  
-[GetDiskFreeSpace](http://msdn2.microsoft.com/en-us/library/aa364935) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetDiskFreeSpace  
-[GetDiskFreeSpaceEx](http://msdn2.microsoft.com/en-us/library/aa364937) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetDiskFreeSpaceEx  
-[GetDllDirectory](http://msdn2.microsoft.com/en-us/library/ms683186) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetDllDirectory  
-[GetDriveType](http://msdn2.microsoft.com/en-us/library/aa364937) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetDriveType  
-[GetDurationFormat](http://msdn2.microsoft.com/en-us/library/dd318091) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetDurationFormat  
-[GetDurationFormatEx](http://msdn2.microsoft.com/en-us/library/dd318092) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetDurationFormatEx  
-[GetDynamicTimeZoneInformation](http://msdn2.microsoft.com/en-us/library/ms724318) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetDynamicTimeZoneInformation  
-[GetDynamicTimeZoneInformationEffectiveYears](http://msdn2.microsoft.com/en-us/library/hh706894) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetDynamicTimeZoneInformationEffectiveYears  
-[GetEnabledXStateFeatures](http://msdn2.microsoft.com/en-us/library/E7DE090F-F83E-440D-B2A3-BCF160889F2E) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetEnabledXStateFeatures  
-[GetEnvironmentStrings](http://msdn2.microsoft.com/en-us/library/ms683187) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InternalGetEnvironmentStrings  
-[GetEnvironmentVariable](http://msdn2.microsoft.com/en-us/library/ms683188) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetEnvironmentVariable  
-[GetErrorMode](http://msdn2.microsoft.com/en-us/library/ms679355) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetErrorMode  
-[GetExitCodeProcess](http://msdn2.microsoft.com/en-us/library/ms683189) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetExitCodeProcess  
-[GetExitCodeThread](http://msdn2.microsoft.com/en-us/library/ms683190) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetExitCodeThread  
-[GetFileAttributes](http://msdn2.microsoft.com/en-us/library/aa364944) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileAttributes  
-[GetFileAttributesEx](http://msdn2.microsoft.com/en-us/library/aa364946) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileAttributesEx  
-[GetFileAttributesTransacted](http://msdn2.microsoft.com/en-us/library/dd1435da-93e5-440a-913a-9e40e39b4a01) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetFileAttributesTransacted  
-[GetFileBandwidthReservation](http://msdn2.microsoft.com/en-us/library/3caf38f6-e853-4057-a192-71cda4443dbd) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetFileBandwidthReservation  
-[GetFileInformationByHandle](http://msdn2.microsoft.com/en-us/library/aa364952) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileInformationByHandle  
-[GetFileInformationByHandleEx](http://msdn2.microsoft.com/en-us/library/e261ea45-d084-490e-94b4-129bd76f6a04) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetFileInformationByHandleEx  
-[GetFileMUIInfo](http://msdn2.microsoft.com/en-us/library/dd318095) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetFileMUIInfo  
-[GetFileMUIPath](http://msdn2.microsoft.com/en-us/library/dd318097) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetFileMUIPath  
-[GetFileSize](http://msdn2.microsoft.com/en-us/library/aa364955) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileSize  
-[GetFileSizeEx](http://msdn2.microsoft.com/en-us/library/aa364957) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileSizeEx  
-[GetFileTime](http://msdn2.microsoft.com/en-us/library/ms724320) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileTime  
-[GetFileType](http://msdn2.microsoft.com/en-us/library/aa364960) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileType  
-[GetFinalPathNameByHandle](http://msdn2.microsoft.com/en-us/library/aa364962) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFinalPathNameByHandle  
+[ExecuteUmsThread](http://msdn2.microsoft.com/en-us/library/e4265351-e8e9-4878-bd42-93258b4cd1a0) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.ExecuteUmsThread](https://github.com/dahall/Vanara/search?l=C%23&q=ExecuteUmsThread)  
+[ExitProcess](http://msdn2.microsoft.com/en-us/library/ms682658) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ExitProcess](https://github.com/dahall/Vanara/search?l=C%23&q=ExitProcess)  
+[ExitThread](http://msdn2.microsoft.com/en-us/library/ms682659) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ExitThread](https://github.com/dahall/Vanara/search?l=C%23&q=ExitThread)  
+[ExpandEnvironmentStrings](http://msdn2.microsoft.com/en-us/library/ms724265) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.ExpandEnvironmentStrings](https://github.com/dahall/Vanara/search?l=C%23&q=ExpandEnvironmentStrings)  
+[FatalAppExit](http://msdn2.microsoft.com/en-us/library/ms679336) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FatalAppExit](https://github.com/dahall/Vanara/search?l=C%23&q=FatalAppExit)  
+[FatalExit](http://msdn2.microsoft.com/en-us/library/ms679337) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FatalExit](https://github.com/dahall/Vanara/search?l=C%23&q=FatalExit)  
+[FileTimeToDosDateTime](http://msdn2.microsoft.com/en-us/library/ms724274) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.FileTimeToDosDateTime](https://github.com/dahall/Vanara/search?l=C%23&q=FileTimeToDosDateTime)  
+[FileTimeToLocalFileTime](http://msdn2.microsoft.com/en-us/library/ms724277) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.FileTimeToLocalFileTime](https://github.com/dahall/Vanara/search?l=C%23&q=FileTimeToLocalFileTime)  
+[FileTimeToSystemTime](http://msdn2.microsoft.com/en-us/library/ms724280) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.FileTimeToSystemTime](https://github.com/dahall/Vanara/search?l=C%23&q=FileTimeToSystemTime)  
+[FillConsoleOutputAttribute](https://www.google.com/search?num=5&q=FillConsoleOutputAttribute+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.FillConsoleOutputAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=FillConsoleOutputAttribute)  
+[FillConsoleOutputCharacter](https://www.google.com/search?num=5&q=FillConsoleOutputCharacterA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.FillConsoleOutputCharacter](https://github.com/dahall/Vanara/search?l=C%23&q=FillConsoleOutputCharacter)  
+[FindActCtxSectionGuid](http://msdn2.microsoft.com/en-us/library/aa375148) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.FindActCtxSectionGuid](https://github.com/dahall/Vanara/search?l=C%23&q=FindActCtxSectionGuid)  
+[FindActCtxSectionString](http://msdn2.microsoft.com/en-us/library/aa375149) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.FindActCtxSectionString](https://github.com/dahall/Vanara/search?l=C%23&q=FindActCtxSectionString)  
+[FindAtom](http://msdn2.microsoft.com/en-us/library/ms649058) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.FindAtom](https://github.com/dahall/Vanara/search?l=C%23&q=FindAtom)  
+[FindClose](http://msdn2.microsoft.com/en-us/library/64b3bc49-1e0e-4572-9d9f-936c45f5b01c) | kernel32.dll | fileapi.h | [Vanara.PInvoke.Kernel32.FindClose](https://github.com/dahall/Vanara/search?l=C%23&q=FindClose)  
+[FindCloseChangeNotification](http://msdn2.microsoft.com/en-us/library/aa364414) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.FindCloseChangeNotification](https://github.com/dahall/Vanara/search?l=C%23&q=FindCloseChangeNotification)  
+[FindFirstChangeNotification](http://msdn2.microsoft.com/en-us/library/aa364417) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.FindFirstChangeNotification](https://github.com/dahall/Vanara/search?l=C%23&q=FindFirstChangeNotification)  
+[FindFirstFile](http://msdn2.microsoft.com/en-us/library/aa364418) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.FindFirstFile](https://github.com/dahall/Vanara/search?l=C%23&q=FindFirstFile)  
+[FindFirstFileEx](http://msdn2.microsoft.com/en-us/library/9f40e98f-153f-4b65-afd9-06742684c100) | kernel32.dll | fileapi.h | [Vanara.PInvoke.Kernel32.FindFirstFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=FindFirstFileEx)  
+[FindFirstFileNameTransactedW](http://msdn2.microsoft.com/en-us/library/79c7d32d-3cb7-4e27-9db1-f24282bf606a) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.FindFirstFileNameTransactedW](https://github.com/dahall/Vanara/search?l=C%23&q=FindFirstFileNameTransactedW)  
+[FindFirstFileNameW](http://msdn2.microsoft.com/en-us/library/aa364421) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FindFirstFileName](https://github.com/dahall/Vanara/search?l=C%23&q=FindFirstFileName)  
+[FindFirstFileTransacted](http://msdn2.microsoft.com/en-us/library/d94bf32b-f14b-44b4-824b-ed453d0424ef) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.FindFirstFileTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=FindFirstFileTransacted)  
+[FindFirstStreamTransactedW](http://msdn2.microsoft.com/en-us/library/76c64aa9-0501-457d-b774-c209fbac4ccc) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.FindFirstStreamTransactedW](https://github.com/dahall/Vanara/search?l=C%23&q=FindFirstStreamTransactedW)  
+[FindFirstStreamW](http://msdn2.microsoft.com/en-us/library/aa364424) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FindFirstStream](https://github.com/dahall/Vanara/search?l=C%23&q=FindFirstStream)  
+[FindFirstVolume](http://msdn2.microsoft.com/en-us/library/aa364419) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.FindFirstVolume](https://github.com/dahall/Vanara/search?l=C%23&q=FindFirstVolume)  
+[FindFirstVolumeMountPoint](http://msdn2.microsoft.com/en-us/library/aa364426) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FindFirstVolumeMountPoint](https://github.com/dahall/Vanara/search?l=C%23&q=FindFirstVolumeMountPoint)  
+[FindNextChangeNotification](http://msdn2.microsoft.com/en-us/library/aa364427) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.FindNextChangeNotification](https://github.com/dahall/Vanara/search?l=C%23&q=FindNextChangeNotification)  
+[FindNextFile](http://msdn2.microsoft.com/en-us/library/aa364428) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.FindNextFile](https://github.com/dahall/Vanara/search?l=C%23&q=FindNextFile)  
+[FindNextFileNameW](http://msdn2.microsoft.com/en-us/library/aa364429) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FindNextFileName](https://github.com/dahall/Vanara/search?l=C%23&q=FindNextFileName)  
+[FindNextStreamW](http://msdn2.microsoft.com/en-us/library/aa364430) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FindNextStream](https://github.com/dahall/Vanara/search?l=C%23&q=FindNextStream)  
+[FindNextVolume](http://msdn2.microsoft.com/en-us/library/aa364431) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.FindNextVolume](https://github.com/dahall/Vanara/search?l=C%23&q=FindNextVolume)  
+[FindNextVolumeMountPoint](http://msdn2.microsoft.com/en-us/library/aa364432) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FindNextVolumeMountPoint](https://github.com/dahall/Vanara/search?l=C%23&q=FindNextVolumeMountPoint)  
+[FindNLSString](http://msdn2.microsoft.com/en-us/library/dd318056) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.FindNLSString](https://github.com/dahall/Vanara/search?l=C%23&q=FindNLSString)  
+[FindNLSStringEx](http://msdn2.microsoft.com/en-us/library/dd318059) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.FindNLSStringEx](https://github.com/dahall/Vanara/search?l=C%23&q=FindNLSStringEx)  
+[FindPackagesByPackageFamily](http://msdn2.microsoft.com/en-us/library/D52E98BD-726F-4AC0-A034-02896B1D1687) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.FindPackagesByPackageFamily](https://github.com/dahall/Vanara/search?l=C%23&q=FindPackagesByPackageFamily)  
+[FindResource](https://www.google.com/search?num=5&q=FindResourceA+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.FindResource](https://github.com/dahall/Vanara/search?l=C%23&q=FindResource)  
+[FindResourceEx](https://www.google.com/search?num=5&q=FindResourceExA+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.FindResourceEx](https://github.com/dahall/Vanara/search?l=C%23&q=FindResourceEx)  
+[FindStringOrdinal](http://msdn2.microsoft.com/en-us/library/dd318061) | kernel32.dll | Libloaderapi.h | [Vanara.PInvoke.Kernel32.FindStringOrdinal](https://github.com/dahall/Vanara/search?l=C%23&q=FindStringOrdinal)  
+[FindVolumeClose](http://msdn2.microsoft.com/en-us/library/aa364433) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.FindVolumeClose](https://github.com/dahall/Vanara/search?l=C%23&q=FindVolumeClose)  
+[FindVolumeMountPointClose](http://msdn2.microsoft.com/en-us/library/aa364435) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FindVolumeMountPointClose](https://github.com/dahall/Vanara/search?l=C%23&q=FindVolumeMountPointClose)  
+[FlsAlloc](http://msdn2.microsoft.com/en-us/library/ms682664) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FlsAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=FlsAlloc)  
+[FlsFree](http://msdn2.microsoft.com/en-us/library/ms682667) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FlsFree](https://github.com/dahall/Vanara/search?l=C%23&q=FlsFree)  
+[FlsGetValue](http://msdn2.microsoft.com/en-us/library/ms683141) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FlsGetValue](https://github.com/dahall/Vanara/search?l=C%23&q=FlsGetValue)  
+[FlsSetValue](http://msdn2.microsoft.com/en-us/library/ms683146) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FlsSetValue](https://github.com/dahall/Vanara/search?l=C%23&q=FlsSetValue)  
+[FlushConsoleInputBuffer](https://www.google.com/search?num=5&q=FlushConsoleInputBuffer+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.FlushConsoleInputBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=FlushConsoleInputBuffer)  
+[FlushFileBuffers](http://msdn2.microsoft.com/en-us/library/aa364433) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.FlushFileBuffers](https://github.com/dahall/Vanara/search?l=C%23&q=FlushFileBuffers)  
+[FlushInstructionCache](http://msdn2.microsoft.com/en-us/library/ms679350) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FlushInstructionCache](https://github.com/dahall/Vanara/search?l=C%23&q=FlushInstructionCache)  
+[FlushProcessWriteBuffers](http://msdn2.microsoft.com/en-us/library/ms683148) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FlushProcessWriteBuffers](https://github.com/dahall/Vanara/search?l=C%23&q=FlushProcessWriteBuffers)  
+[FlushViewOfFile](http://msdn2.microsoft.com/en-us/library/aa366563) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FlushViewOfFile](https://github.com/dahall/Vanara/search?l=C%23&q=FlushViewOfFile)  
+[FoldString](http://msdn2.microsoft.com/en-us/library/dd318063) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.FoldString](https://github.com/dahall/Vanara/search?l=C%23&q=FoldString)  
+[FormatApplicationUserModelId](http://msdn2.microsoft.com/en-us/library/F48D19C2-6373-41FC-A99D-E3CCB68D6C6C) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.FormatApplicationUserModelId](https://github.com/dahall/Vanara/search?l=C%23&q=FormatApplicationUserModelId)  
+[FormatMessage](http://msdn2.microsoft.com/en-us/library/ms679351) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FormatMessage](https://github.com/dahall/Vanara/search?l=C%23&q=FormatMessage)  
+[FreeConsole](https://www.google.com/search?num=5&q=FreeConsole+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.FreeConsole](https://github.com/dahall/Vanara/search?l=C%23&q=FreeConsole)  
+[FreeEnvironmentStrings](http://msdn2.microsoft.com/en-us/library/ms683151) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FreeEnvironmentStrings](https://github.com/dahall/Vanara/search?l=C%23&q=FreeEnvironmentStrings)  
+[FreeLibrary](http://msdn2.microsoft.com/en-us/library/ms683152) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.FreeLibrary](https://github.com/dahall/Vanara/search?l=C%23&q=FreeLibrary)  
+[FreeLibraryAndExitThread](http://msdn2.microsoft.com/en-us/library/ms683153) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.FreeLibraryAndExitThread](https://github.com/dahall/Vanara/search?l=C%23&q=FreeLibraryAndExitThread)  
+[FreeLibraryWhenCallbackReturns](http://msdn2.microsoft.com/en-us/library/ms683154) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FreeLibraryWhenCallbackReturns](https://github.com/dahall/Vanara/search?l=C%23&q=FreeLibraryWhenCallbackReturns)  
+[FreeMemoryJobObject](http://msdn2.microsoft.com/en-us/library/mt280121) | kernel32.dll | Jobapi2.h | [Vanara.PInvoke.Kernel32.FreeMemoryJobObject](https://github.com/dahall/Vanara/search?l=C%23&q=FreeMemoryJobObject)  
+[FreeResource](http://msdn2.microsoft.com/en-us/library/ms648044) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.FreeResource](https://github.com/dahall/Vanara/search?l=C%23&q=FreeResource)  
+[FreeUserPhysicalPages](http://msdn2.microsoft.com/en-us/library/aa366566) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FreeUserPhysicalPages](https://github.com/dahall/Vanara/search?l=C%23&q=FreeUserPhysicalPages)  
+[GenerateConsoleCtrlEvent](https://www.google.com/search?num=5&q=GenerateConsoleCtrlEvent+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GenerateConsoleCtrlEvent](https://github.com/dahall/Vanara/search?l=C%23&q=GenerateConsoleCtrlEvent)  
+[GetACP](http://msdn2.microsoft.com/en-us/library/dd318070) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetACP](https://github.com/dahall/Vanara/search?l=C%23&q=GetACP)  
+[GetActiveProcessorCount](http://msdn2.microsoft.com/en-us/library/f4ebb0a7-1c05-4478-85e3-80e6327ef8a4) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetActiveProcessorCount](https://github.com/dahall/Vanara/search?l=C%23&q=GetActiveProcessorCount)  
+[GetActiveProcessorGroupCount](http://msdn2.microsoft.com/en-us/library/566c6abe-9269-4e0e-9c98-e4607c808452) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetActiveProcessorGroupCount](https://github.com/dahall/Vanara/search?l=C%23&q=GetActiveProcessorGroupCount)  
+[GetAppContainerNamedObjectPath](http://msdn2.microsoft.com/en-us/library/466CE2DA-332E-4AA7-A0EB-868A646C0979) | kernel32.dll | securityappcontainer.h | [Vanara.PInvoke.Kernel32.GetAppContainerNamedObjectPath](https://github.com/dahall/Vanara/search?l=C%23&q=GetAppContainerNamedObjectPath)  
+[GetApplicationRecoveryCallback](http://msdn2.microsoft.com/en-us/library/aa373343) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetApplicationRecoveryCallback](https://github.com/dahall/Vanara/search?l=C%23&q=GetApplicationRecoveryCallback)  
+[GetApplicationRestartSettings](http://msdn2.microsoft.com/en-us/library/aa373344) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetApplicationRestartSettings](https://github.com/dahall/Vanara/search?l=C%23&q=GetApplicationRestartSettings)  
+[GetApplicationUserModelId](http://msdn2.microsoft.com/en-us/library/FE4E0818-F548-494B-B3BD-FB51DC748451) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetApplicationUserModelId](https://github.com/dahall/Vanara/search?l=C%23&q=GetApplicationUserModelId)  
+[GetApplicationUserModelIdFromToken](http://msdn2.microsoft.com/en-us/library/80036518-927E-4CD0-B499-8EA472AB7E5A) | kernelbase.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetApplicationUserModelIdFromToken](https://github.com/dahall/Vanara/search?l=C%23&q=GetApplicationUserModelIdFromToken)  
+[GetAtomName](http://msdn2.microsoft.com/en-us/library/ms649059) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetAtomName](https://github.com/dahall/Vanara/search?l=C%23&q=GetAtomName)  
+[GetBinaryType](https://www.google.com/search?num=5&q=GetBinaryType+site%3Amicrosoft.com) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetBinaryType](https://github.com/dahall/Vanara/search?l=C%23&q=GetBinaryType)  
+[GetCalendarDateFormatEx](http://msdn2.microsoft.com/en-us/library/eb2622bc-a98d-42bd-ab59-7a849000d79d) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.GetCalendarDateFormatEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetCalendarDateFormatEx)  
+[GetCalendarInfo](http://msdn2.microsoft.com/en-us/library/dd318072) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetCalendarInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetCalendarInfo)  
+[GetCalendarInfoEx](http://msdn2.microsoft.com/en-us/library/dd318075) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetCalendarInfoEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetCalendarInfoEx)  
+[GetCalendarSupportedDateRange](http://msdn2.microsoft.com/en-us/library/fe036ac5-77c0-4e83-8d70-db3fa0f7c803) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.GetCalendarSupportedDateRange](https://github.com/dahall/Vanara/search?l=C%23&q=GetCalendarSupportedDateRange)  
+[GetCommandLine](http://msdn2.microsoft.com/en-us/library/ms683156) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetCommandLineInternal](https://github.com/dahall/Vanara/search?l=C%23&q=GetCommandLineInternal)  
+[GetCommConfig](http://msdn2.microsoft.com/en-us/library/aa363256) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetCommConfig](https://github.com/dahall/Vanara/search?l=C%23&q=GetCommConfig)  
+[GetCommMask](http://msdn2.microsoft.com/en-us/library/aa363257) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetCommMask](https://github.com/dahall/Vanara/search?l=C%23&q=GetCommMask)  
+[GetCommModemStatus](http://msdn2.microsoft.com/en-us/library/aa363258) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetCommModemStatus](https://github.com/dahall/Vanara/search?l=C%23&q=GetCommModemStatus)  
+[GetCommPorts](http://msdn2.microsoft.com/en-us/library/8E57FB62-D7A0-4B47-942B-E33E0B7A37B1) | kernelbase.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetCommPorts](https://github.com/dahall/Vanara/search?l=C%23&q=GetCommPorts)  
+[GetCommProperties](http://msdn2.microsoft.com/en-us/library/aa363259) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetCommProperties](https://github.com/dahall/Vanara/search?l=C%23&q=GetCommProperties)  
+[GetCommState](http://msdn2.microsoft.com/en-us/library/aa363260) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetCommState](https://github.com/dahall/Vanara/search?l=C%23&q=GetCommState)  
+[GetCommTimeouts](http://msdn2.microsoft.com/en-us/library/aa363261) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetCommTimeouts](https://github.com/dahall/Vanara/search?l=C%23&q=GetCommTimeouts)  
+[GetComPlusPackageInstallStatus](http://msdn2.microsoft.com/en-us/library/c68af270-6a40-4026-9725-5fe657123fd5) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.GetComPlusPackageInstallStatus](https://github.com/dahall/Vanara/search?l=C%23&q=GetComPlusPackageInstallStatus)  
+[GetCompressedFileSize](http://msdn2.microsoft.com/en-us/library/aa364930) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetCompressedFileSize](https://github.com/dahall/Vanara/search?l=C%23&q=GetCompressedFileSize)  
+[GetComputerName](http://msdn2.microsoft.com/en-us/library/ms724295) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetComputerName](https://github.com/dahall/Vanara/search?l=C%23&q=GetComputerName)  
+[GetComputerNameEx](http://msdn2.microsoft.com/en-us/library/ms724301) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetComputerNameEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetComputerNameEx)  
+[GetConsoleAlias](https://www.google.com/search?num=5&q=GetConsoleAliasA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleAlias](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleAlias)  
+[GetConsoleAliases](http://msdn2.microsoft.com/en-us/library/92eefa4e-ffde-4886-afde-5aecf450b425) | kernel32.dll | ConsoleApi3.h | [Vanara.PInvoke.Kernel32.GetConsoleAliases](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleAliases)  
+[GetConsoleAliasesLength](https://www.google.com/search?num=5&q=GetConsoleAliasesLengthA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleAliasesLength](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleAliasesLength)  
+[GetConsoleAliasExes](https://www.google.com/search?num=5&q=GetConsoleAliasExesA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleAliasExes](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleAliasExes)  
+[GetConsoleAliasExesLength](https://www.google.com/search?num=5&q=GetConsoleAliasExesLengthA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleAliasExesLength](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleAliasExesLength)  
+[GetConsoleCP](https://www.google.com/search?num=5&q=GetConsoleCP+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleCP](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleCP)  
+[GetConsoleCursorInfo](https://www.google.com/search?num=5&q=GetConsoleCursorInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleCursorInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleCursorInfo)  
+[GetConsoleDisplayMode](https://www.google.com/search?num=5&q=GetConsoleDisplayMode+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleDisplayMode](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleDisplayMode)  
+[GetConsoleFontSize](https://www.google.com/search?num=5&q=GetConsoleFontSize+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleFontSize](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleFontSize)  
+[GetConsoleHistoryInfo](https://www.google.com/search?num=5&q=GetConsoleHistoryInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleHistoryInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleHistoryInfo)  
+[GetConsoleMode](http://msdn2.microsoft.com/en-us/library/49adf618-196d-4490-93ca-cd177807f58e) | kernel32.dll | ConsoleApi.h | [Vanara.PInvoke.Kernel32.GetConsoleMode](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleMode)  
+[GetConsoleOriginalTitle](https://www.google.com/search?num=5&q=GetConsoleOriginalTitleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleOriginalTitle](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleOriginalTitle)  
+[GetConsoleOutputCP](https://www.google.com/search?num=5&q=GetConsoleOutputCP+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleOutputCP](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleOutputCP)  
+[GetConsoleProcessList](https://www.google.com/search?num=5&q=GetConsoleProcessList+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleProcessList](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleProcessList)  
+[GetConsoleScreenBufferInfo](https://www.google.com/search?num=5&q=GetConsoleScreenBufferInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleScreenBufferInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleScreenBufferInfo)  
+[GetConsoleScreenBufferInfoEx](https://www.google.com/search?num=5&q=GetConsoleScreenBufferInfoEx+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleScreenBufferInfoEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleScreenBufferInfoEx)  
+[GetConsoleSelectionInfo](https://www.google.com/search?num=5&q=GetConsoleSelectionInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleSelectionInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleSelectionInfo)  
+[GetConsoleTitle](https://www.google.com/search?num=5&q=GetConsoleTitleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleTitle](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleTitle)  
+[GetConsoleWindow](https://www.google.com/search?num=5&q=GetConsoleWindow+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetConsoleWindow](https://github.com/dahall/Vanara/search?l=C%23&q=GetConsoleWindow)  
+[GetCPInfo](http://msdn2.microsoft.com/en-us/library/dd318078) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetCPInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetCPInfo)  
+[GetCPInfoEx](https://www.google.com/search?num=5&q=GetCPInfoExA+site%3Amicrosoft.com) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetCPInfoEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetCPInfoEx)  
+[GetCurrencyFormat](http://msdn2.microsoft.com/en-us/library/dd318083) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetCurrencyFormat](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrencyFormat)  
+[GetCurrencyFormatEx](http://msdn2.microsoft.com/en-us/library/dd318084) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetCurrencyFormatEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrencyFormatEx)  
+[GetCurrentActCtx](http://msdn2.microsoft.com/en-us/library/aa375152) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetCurrentActCtx](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentActCtx)  
+[GetCurrentApplicationUserModelId](http://msdn2.microsoft.com/en-us/library/562BB225-0922-4FE7-92C0-573A2CCE3195) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetCurrentApplicationUserModelId](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentApplicationUserModelId)  
+[GetCurrentConsoleFont](https://www.google.com/search?num=5&q=GetCurrentConsoleFont+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetCurrentConsoleFont](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentConsoleFont)  
+[GetCurrentConsoleFontEx](https://www.google.com/search?num=5&q=GetCurrentConsoleFontEx+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetCurrentConsoleFontEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentConsoleFontEx)  
+[GetCurrentDirectory](http://msdn2.microsoft.com/en-us/library/aa364934) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetCurrentDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentDirectory)  
+[GetCurrentPackageFamilyName](http://msdn2.microsoft.com/en-us/library/39DBFBDD-A1CC-45C3-A5DD-5ED9697F9AFE) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetCurrentPackageFamilyName](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentPackageFamilyName)  
+[GetCurrentPackageFullName](http://msdn2.microsoft.com/en-us/library/D5B00C53-1FBF-4245-92D1-FA39713A9EE7) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetCurrentPackageFullName](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentPackageFullName)  
+[GetCurrentPackageId](http://msdn2.microsoft.com/en-us/library/4CFC707A-2A5A-41FE-BB5F-6FECACC99271) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetCurrentPackageId](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentPackageId)  
+[GetCurrentPackageInfo](http://msdn2.microsoft.com/en-us/library/A1887D61-0FAD-4BE8-850F-F104CC074798) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetCurrentPackageInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentPackageInfo)  
+[GetCurrentPackagePath](http://msdn2.microsoft.com/en-us/library/46CE81DF-A9D5-492E-AB5E-4F043DC326E2) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetCurrentPackagePath](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentPackagePath)  
+[GetCurrentProcess](http://msdn2.microsoft.com/en-us/library/ms683179) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetCurrentProcess](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentProcess)  
+[GetCurrentProcessId](http://msdn2.microsoft.com/en-us/library/ms683180) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetCurrentProcessId](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentProcessId)  
+[GetCurrentProcessorNumber](http://msdn2.microsoft.com/en-us/library/1f2bebc7-a548-409a-ab74-78a4b55c8fa7) | kernel32.dll | processthreadsapi.h | [Vanara.PInvoke.Kernel32.GetCurrentProcessorNumber](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentProcessorNumber)  
+[GetCurrentProcessorNumberEx](http://msdn2.microsoft.com/en-us/library/dd405487) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetCurrentProcessorNumberEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentProcessorNumberEx)  
+[GetCurrentThread](http://msdn2.microsoft.com/en-us/library/ms683182) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetCurrentThread](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentThread)  
+[GetCurrentThreadId](http://msdn2.microsoft.com/en-us/library/ms683183) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetCurrentThreadId](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentThreadId)  
+[GetCurrentThreadStackLimits](http://msdn2.microsoft.com/en-us/library/hh706789) | kernel32.dll | Processthreadsapi.h | [Vanara.PInvoke.Kernel32.GetCurrentThreadStackLimits](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentThreadStackLimits)  
+[GetCurrentUmsThread](http://msdn2.microsoft.com/en-us/library/f2e20816-919a-443d-96d3-94e98afc28f2) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetCurrentUmsThread](https://github.com/dahall/Vanara/search?l=C%23&q=GetCurrentUmsThread)  
+[GetDateFormat](http://msdn2.microsoft.com/en-us/library/546cede1-1702-403a-bba3-b5cd3b35a1bf) | kernel32.dll | datetimeapi.h | [Vanara.PInvoke.Kernel32.GetDateFormat](https://github.com/dahall/Vanara/search?l=C%23&q=GetDateFormat)  
+[GetDateFormatEx](http://msdn2.microsoft.com/en-us/library/791fb386-3cc5-410e-bfce-52598fdb10c9) | kernel32.dll | datetimeapi.h | [Vanara.PInvoke.Kernel32.GetDateFormatEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetDateFormatEx)  
+[GetDefaultCommConfig](http://msdn2.microsoft.com/en-us/library/aa363262) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetDefaultCommConfig](https://github.com/dahall/Vanara/search?l=C%23&q=GetDefaultCommConfig)  
+[GetDeviceDriverBaseName](http://msdn2.microsoft.com/en-us/library/a19a927d-4669-4d4c-951e-43f294a8fb40) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetDeviceDriverBaseName](https://github.com/dahall/Vanara/search?l=C%23&q=GetDeviceDriverBaseName)  
+[GetDeviceDriverFileName](http://msdn2.microsoft.com/en-us/library/6ddbcf7e-e41c-4ea7-b60a-01ed5c98c530) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetDeviceDriverFileName](https://github.com/dahall/Vanara/search?l=C%23&q=GetDeviceDriverFileName)  
+[GetDevicePowerState](http://msdn2.microsoft.com/en-us/library/aa372690) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetDevicePowerState](https://github.com/dahall/Vanara/search?l=C%23&q=GetDevicePowerState)  
+[GetDiskFreeSpace](http://msdn2.microsoft.com/en-us/library/aa364935) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetDiskFreeSpace](https://github.com/dahall/Vanara/search?l=C%23&q=GetDiskFreeSpace)  
+[GetDiskFreeSpaceEx](http://msdn2.microsoft.com/en-us/library/aa364937) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetDiskFreeSpaceEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetDiskFreeSpaceEx)  
+[GetDllDirectory](http://msdn2.microsoft.com/en-us/library/ms683186) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetDllDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=GetDllDirectory)  
+[GetDriveType](http://msdn2.microsoft.com/en-us/library/aa364937) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetDriveType](https://github.com/dahall/Vanara/search?l=C%23&q=GetDriveType)  
+[GetDurationFormat](http://msdn2.microsoft.com/en-us/library/dd318091) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetDurationFormat](https://github.com/dahall/Vanara/search?l=C%23&q=GetDurationFormat)  
+[GetDurationFormatEx](http://msdn2.microsoft.com/en-us/library/dd318092) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetDurationFormatEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetDurationFormatEx)  
+[GetDynamicTimeZoneInformation](http://msdn2.microsoft.com/en-us/library/ms724318) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetDynamicTimeZoneInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetDynamicTimeZoneInformation)  
+[GetDynamicTimeZoneInformationEffectiveYears](http://msdn2.microsoft.com/en-us/library/hh706894) | kernelbase.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetDynamicTimeZoneInformationEffectiveYears](https://github.com/dahall/Vanara/search?l=C%23&q=GetDynamicTimeZoneInformationEffectiveYears)  
+[GetEnabledXStateFeatures](http://msdn2.microsoft.com/en-us/library/E7DE090F-F83E-440D-B2A3-BCF160889F2E) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetEnabledXStateFeatures](https://github.com/dahall/Vanara/search?l=C%23&q=GetEnabledXStateFeatures)  
+[GetEnvironmentStrings](http://msdn2.microsoft.com/en-us/library/ms683187) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InternalGetEnvironmentStrings](https://github.com/dahall/Vanara/search?l=C%23&q=InternalGetEnvironmentStrings)  
+[GetEnvironmentVariable](http://msdn2.microsoft.com/en-us/library/ms683188) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetEnvironmentVariable](https://github.com/dahall/Vanara/search?l=C%23&q=GetEnvironmentVariable)  
+[GetErrorMode](http://msdn2.microsoft.com/en-us/library/ms679355) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetErrorMode](https://github.com/dahall/Vanara/search?l=C%23&q=GetErrorMode)  
+[GetExitCodeProcess](http://msdn2.microsoft.com/en-us/library/ms683189) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetExitCodeProcess](https://github.com/dahall/Vanara/search?l=C%23&q=GetExitCodeProcess)  
+[GetExitCodeThread](http://msdn2.microsoft.com/en-us/library/ms683190) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetExitCodeThread](https://github.com/dahall/Vanara/search?l=C%23&q=GetExitCodeThread)  
+[GetFileAttributes](http://msdn2.microsoft.com/en-us/library/aa364944) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetFileAttributes](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileAttributes)  
+[GetFileAttributesEx](http://msdn2.microsoft.com/en-us/library/aa364946) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetFileAttributesEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileAttributesEx)  
+[GetFileAttributesTransacted](http://msdn2.microsoft.com/en-us/library/dd1435da-93e5-440a-913a-9e40e39b4a01) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetFileAttributesTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileAttributesTransacted)  
+[GetFileBandwidthReservation](http://msdn2.microsoft.com/en-us/library/3caf38f6-e853-4057-a192-71cda4443dbd) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetFileBandwidthReservation](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileBandwidthReservation)  
+[GetFileInformationByHandle](http://msdn2.microsoft.com/en-us/library/aa364952) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetFileInformationByHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileInformationByHandle)  
+[GetFileInformationByHandleEx](http://msdn2.microsoft.com/en-us/library/e261ea45-d084-490e-94b4-129bd76f6a04) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetFileInformationByHandleEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileInformationByHandleEx)  
+[GetFileMUIInfo](http://msdn2.microsoft.com/en-us/library/dd318095) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetFileMUIInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileMUIInfo)  
+[GetFileMUIPath](http://msdn2.microsoft.com/en-us/library/dd318097) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetFileMUIPath](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileMUIPath)  
+[GetFileSize](http://msdn2.microsoft.com/en-us/library/aa364955) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetFileSize](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileSize)  
+[GetFileSizeEx](http://msdn2.microsoft.com/en-us/library/aa364957) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetFileSizeEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileSizeEx)  
+[GetFileTime](http://msdn2.microsoft.com/en-us/library/ms724320) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetFileTime](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileTime)  
+[GetFileType](http://msdn2.microsoft.com/en-us/library/aa364960) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetFileType](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileType)  
+[GetFinalPathNameByHandle](http://msdn2.microsoft.com/en-us/library/aa364962) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetFinalPathNameByHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GetFinalPathNameByHandle)  
 [GetFipsModeFromIumKernelState](https://www.google.com/search?num=5&q=GetFipsModeFromIumKernelState+site%3Amicrosoft.com) | vertdll.dll |  |   
-[GetFirmwareEnvironmentVariable](http://msdn2.microsoft.com/en-us/library/ms724325) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetFirmwareEnvironmentVariable  
-[GetFirmwareEnvironmentVariableEx](http://msdn2.microsoft.com/en-us/library/B093BA68-C68B-4ED6-9902-058650A191FD) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetFirmwareEnvironmentVariableEx  
-[GetFullPathName](https://www.google.com/search?num=5&q=GetFullPathNameA+site%3Amicrosoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFullPathName  
-[GetFullPathNameTransacted](http://msdn2.microsoft.com/en-us/library/63cbcec6-e9f0-4db3-bf2f-03a987000af1) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetFullPathNameTransacted  
-[GetGamingDeviceModelInformation](http://msdn2.microsoft.com/en-us/library/78101CBA-63B5-4B3F-9CEC-A215F32D9EB8) | kernelbase.dll | gamingdeviceinformation.h | Vanara.PInvoke.Kernel32.GetGamingDeviceModelInformation  
-[GetGeoInfo](http://msdn2.microsoft.com/en-us/library/dd318099) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetGeoInfo  
-[GetGeoInfoEx](http://msdn2.microsoft.com/en-us/library/mt826489) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetGeoInfoEx  
-[GetHandleInformation](http://msdn2.microsoft.com/en-us/library/ms724329) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetHandleInformation  
-[GetIntegratedDisplaySize](http://msdn2.microsoft.com/en-us/library/dn904185) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetIntegratedDisplaySize  
-[GetLargePageMinimum](http://msdn2.microsoft.com/en-us/library/aa366568) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetLargePageMinimum  
-[GetLargestConsoleWindowSize](https://www.google.com/search?num=5&q=GetLargestConsoleWindowSize+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetLargestConsoleWindowSize  
-[GetLastError](http://msdn2.microsoft.com/en-us/library/ms679360) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetLastError  
-[GetLocaleInfo](http://msdn2.microsoft.com/en-us/library/dd318101) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetLocaleInfo  
-[GetLocaleInfoEx](http://msdn2.microsoft.com/en-us/library/dd318103) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetLocaleInfoEx  
-[GetLocalTime](http://msdn2.microsoft.com/en-us/library/ms724338) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetLocalTime  
-[GetLogicalDrives](http://msdn2.microsoft.com/en-us/library/aa364972) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetLogicalDrives  
-[GetLogicalDriveStrings](http://msdn2.microsoft.com/en-us/library/aa364975) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetLogicalDriveStrings  
-[GetLogicalProcessorInformation](http://msdn2.microsoft.com/en-us/library/ms683194) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetLogicalProcessorInformation  
-[GetLogicalProcessorInformationEx](http://msdn2.microsoft.com/en-us/library/dd405488) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetLogicalProcessorInformationEx  
-[GetLongPathName](https://www.google.com/search?num=5&q=GetLongPathNameA+site%3Amicrosoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetLongPathName  
-[GetLongPathNameTransacted](http://msdn2.microsoft.com/en-us/library/8523cde9-f0dd-4832-8d9d-9e68bac89344) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetLongPathNameTransacted  
-[GetMailslotInfo](http://msdn2.microsoft.com/en-us/library/aa365435) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetMailslotInfo  
-[GetMappedFileName](http://msdn2.microsoft.com/en-us/library/10a2e5ab-f495-486d-8ef7-ef763716afd1) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.GetMappedFileName  
-[GetMaximumProcessorCount](http://msdn2.microsoft.com/en-us/library/71ce4fb4-ef63-4750-a842-bbfb1a5b0543) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetMaximumProcessorCount  
-[GetMaximumProcessorGroupCount](http://msdn2.microsoft.com/en-us/library/7762ec89-5892-4af3-9032-bf084aef9075) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetMaximumProcessorGroupCount  
-[GetMemoryErrorHandlingCapabilities](http://msdn2.microsoft.com/en-us/library/hh691012) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetMemoryErrorHandlingCapabilities  
-[GetModuleBaseName](http://msdn2.microsoft.com/en-us/library/31a9eb69-95f0-4dd7-8fd5-296f2cff0b8a) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.GetModuleBaseName  
-[GetModuleFileName](http://msdn2.microsoft.com/en-us/library/ms683197) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetModuleFileName  
-[GetModuleHandle](http://msdn2.microsoft.com/en-us/library/ms683199) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetModuleHandle  
-[GetModuleHandleEx](http://msdn2.microsoft.com/en-us/library/ms683200) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetModuleHandleEx  
-[GetModuleInformation](http://msdn2.microsoft.com/en-us/library/afb9f4c8-c8ae-4497-96c1-b559cfa2cedf) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.GetModuleInformation  
-[GetNamedPipeClientComputerName](http://msdn2.microsoft.com/en-us/library/aa365437) | kernel32.dll | namedpipeapi.h | Vanara.PInvoke.Kernel32.GetNamedPipeClientComputerName  
-[GetNamedPipeClientProcessId](http://msdn2.microsoft.com/en-us/library/7001eb89-3d91-44e3-b245-b19e8ab5f9fe) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetNamedPipeClientProcessId  
-[GetNamedPipeClientSessionId](http://msdn2.microsoft.com/en-us/library/b3ea0b7f-fead-4369-b87a-2f522a2a1984) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetNamedPipeClientSessionId  
-[GetNamedPipeHandleState](http://msdn2.microsoft.com/en-us/library/aa365443) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetNamedPipeHandleState  
-[GetNamedPipeInfo](http://msdn2.microsoft.com/en-us/library/aa365445) | kernel32.dll | namedpipeapi.h | Vanara.PInvoke.Kernel32.GetNamedPipeInfo  
-[GetNamedPipeServerProcessId](http://msdn2.microsoft.com/en-us/library/1ee33a66-a71c-4c34-b907-aab7860294c4) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetNamedPipeServerProcessId  
-[GetNamedPipeServerSessionId](http://msdn2.microsoft.com/en-us/library/cd628d6d-aa13-4762-893b-42f6cf7a2ba6) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetNamedPipeServerSessionId  
-[GetNativeSystemInfo](http://msdn2.microsoft.com/en-us/library/ms724340) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetNativeSystemInfo  
-[GetNextUmsListItem](http://msdn2.microsoft.com/en-us/library/fb2c8420-12f4-4bd7-ac00-b53bab760db0) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetNextUmsListItem  
-[GetNLSVersion](http://msdn2.microsoft.com/en-us/library/dd318105) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetNLSVersion  
-[GetNLSVersionEx](http://msdn2.microsoft.com/en-us/library/dd318107) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetNLSVersionEx  
-[GetNumaAvailableMemoryNode](http://msdn2.microsoft.com/en-us/library/ms683202) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetNumaAvailableMemoryNode  
-[GetNumaAvailableMemoryNodeEx](http://msdn2.microsoft.com/en-us/library/59382114-f3da-45e0-843e-51c0fd52a164) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetNumaAvailableMemoryNodeEx  
-[GetNumaHighestNodeNumber](http://msdn2.microsoft.com/en-us/library/ms683203) | kernel32.dll | systemtopology.h | Vanara.PInvoke.Kernel32.GetNumaHighestNodeNumber  
-[GetNumaNodeNumberFromHandle](http://msdn2.microsoft.com/en-us/library/7622f7c9-2dfc-4ab7-b3e9-48d483c6cc0e) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetNumaNodeNumberFromHandle  
-[GetNumaNodeProcessorMask](http://msdn2.microsoft.com/en-us/library/ms683204) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetNumaNodeProcessorMask  
-[GetNumaNodeProcessorMaskEx](http://msdn2.microsoft.com/en-us/library/dd405493) | kernel32.dll | systemtopology.h | Vanara.PInvoke.Kernel32.GetNumaNodeProcessorMaskEx  
-[GetNumaProcessorNode](http://msdn2.microsoft.com/en-us/library/ms683205) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetNumaProcessorNode  
-[GetNumaProcessorNodeEx](http://msdn2.microsoft.com/en-us/library/6b843cd8-eeb5-4aa1-aad4-ce98916346b1) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetNumaProcessorNodeEx  
-[GetNumaProximityNode](http://msdn2.microsoft.com/en-us/library/9a2dbfe3-13e7-442d-a5f6-b2632878f618) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetNumaProximityNode  
-[GetNumaProximityNodeEx](http://msdn2.microsoft.com/en-us/library/dd405495) | kernel32.dll | systemtopology.h | Vanara.PInvoke.Kernel32.GetNumaProximityNodeEx  
-[GetNumberFormat](http://msdn2.microsoft.com/en-us/library/dd318110) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetNumberFormat  
-[GetNumberFormatEx](http://msdn2.microsoft.com/en-us/library/dd318113) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetNumberFormatEx  
-[GetNumberOfConsoleInputEvents](https://www.google.com/search?num=5&q=GetNumberOfConsoleInputEvents+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetNumberOfConsoleInputEvents  
-[GetNumberOfConsoleMouseButtons](https://www.google.com/search?num=5&q=GetNumberOfConsoleMouseButtons+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetNumberOfConsoleMouseButtons  
-[GetOEMCP](http://msdn2.microsoft.com/en-us/library/dd318114) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetOEMCP  
-[GetOsManufacturingMode](https://www.google.com/search?num=5&q=GetOsManufacturingMode+site%3Amicrosoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetOsManufacturingMode  
-[GetOsSafeBootMode](https://www.google.com/search?num=5&q=GetOsSafeBootMode+site%3Amicrosoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetOsSafeBootMode  
-[GetOverlappedResult](http://msdn2.microsoft.com/en-us/library/ms683209) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetOverlappedResult  
-[GetOverlappedResultEx](http://msdn2.microsoft.com/en-us/library/hh448542) | kernel32.dll | Ioapiset.h | Vanara.PInvoke.Kernel32.GetOverlappedResultEx  
-[GetPackageApplicationIds](http://msdn2.microsoft.com/en-us/library/F08135F9-FF45-4309-84B5-77F4AFD7FC0C) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetPackageApplicationIds  
-[GetPackageFamilyName](http://msdn2.microsoft.com/en-us/library/AC239898-9924-4193-9072-7A7EEC2D03E9) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetPackageFamilyName  
-[GetPackageFamilyNameFromToken](http://msdn2.microsoft.com/en-us/library/C4FAF5DE-DF1F-4AFA-813B-5D80C786031B) | kernelbase.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetPackageFamilyNameFromToken  
-[GetPackageFullNameFromToken](http://msdn2.microsoft.com/en-us/library/7B0D574E-A2F5-4D08-AEFB-9E040BBC729F) | kernelbase.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetPackageFullNameFromToken  
-[GetPackageInfo](http://msdn2.microsoft.com/en-us/library/28F45B3B-A61F-44D3-B606-6966AD5866FA) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetPackageInfo  
-[GetPackagePath](http://msdn2.microsoft.com/en-us/library/BDA0DD87-A36D-486B-BF89-EA5CC105C742) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetPackagePath  
-[GetPackagePathByFullName](http://msdn2.microsoft.com/en-us/library/9C25708C-1464-4C59-9740-E9F105116385) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetPackagePathByFullName  
-[GetPackagesByPackageFamily](http://msdn2.microsoft.com/en-us/library/C2163203-D654-4491-9090-0CC43F42EC35) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetPackagesByPackageFamily  
-[GetPerformanceInfo](http://msdn2.microsoft.com/en-us/library/21655278-49da-4e63-a4f9-0ee9f6179f4a) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.GetPerformanceInfo  
-[GetPhysicallyInstalledSystemMemory](http://msdn2.microsoft.com/en-us/library/cc300158) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetPhysicallyInstalledSystemMemory  
-[GetPriorityClass](http://msdn2.microsoft.com/en-us/library/ms683211) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetPriorityClass  
-[GetPrivateProfileInt](http://msdn2.microsoft.com/en-us/library/ms724345) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetPrivateProfileInt  
-[GetPrivateProfileSection](http://msdn2.microsoft.com/en-us/library/ms724348) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetPrivateProfileSection  
-[GetPrivateProfileSectionNames](http://msdn2.microsoft.com/en-us/library/ms724352) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetPrivateProfileSectionNames  
-[GetPrivateProfileString](http://msdn2.microsoft.com/en-us/library/ms724353) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetPrivateProfileString  
-[GetPrivateProfileStruct](http://msdn2.microsoft.com/en-us/library/ms724356) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetPrivateProfileStruct  
-[GetProcAddress](http://msdn2.microsoft.com/en-us/library/ms683212) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetProcAddress  
-[GetProcessAffinityMask](http://msdn2.microsoft.com/en-us/library/ms683213) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessAffinityMask  
-[GetProcessDefaultCpuSets](http://msdn2.microsoft.com/en-us/library/mt186424) | kernel32.dll | Processthreadapi.h | Vanara.PInvoke.Kernel32.GetProcessDefaultCpuSets  
-[GetProcessDEPPolicy](http://msdn2.microsoft.com/en-us/library/adf15b9c-24f4-49ea-9283-0db5f3f13e65) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetProcessDEPPolicy  
-[GetProcessGroupAffinity](http://msdn2.microsoft.com/en-us/library/e22a4910-45dd-4eb6-9ed5-a8e0bcdfad7b) | kernel32.dll | processtopologyapi.h | Vanara.PInvoke.Kernel32.GetProcessGroupAffinity  
-[GetProcessHandleCount](http://msdn2.microsoft.com/en-us/library/ms683214) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessHandleCount  
-[GetProcessHeap](http://msdn2.microsoft.com/en-us/library/ecd716b2-df48-4914-9de4-47d8ad8ff9a2) | kernel32.dll | heapapi.h | Vanara.PInvoke.Kernel32.GetProcessHeap  
-[GetProcessHeaps](http://msdn2.microsoft.com/en-us/library/aa366571) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.GetProcessHeaps  
-[GetProcessId](http://msdn2.microsoft.com/en-us/library/ms683215) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessId  
-[GetProcessIdOfThread](http://msdn2.microsoft.com/en-us/library/ms683216) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessIdOfThread  
-[GetProcessImageFileName](http://msdn2.microsoft.com/en-us/library/819fc2f4-0801-417b-9cbb-d7fd2894634e) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.GetProcessImageFileName  
-[GetProcessInformation](http://msdn2.microsoft.com/en-us/library/hh448381) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessInformation  
-[GetProcessIoCounters](http://msdn2.microsoft.com/en-us/library/ms683218) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessIoCounters  
-[GetProcessMemoryInfoA](http://msdn2.microsoft.com/en-us/library/12990e8d-6097-4502-824e-db6c3f76c715) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.GetProcessMemoryInfo  
-[GetProcessMemoryInfoW](http://msdn2.microsoft.com/en-us/library/12990e8d-6097-4502-824e-db6c3f76c715) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.GetProcessMemoryInfo  
-[GetProcessMitigationPolicy](http://msdn2.microsoft.com/en-us/library/hh769085) | kernel32.dll | Processthreadsapi.h | Vanara.PInvoke.Kernel32.GetProcessMitigationPolicy  
-[GetProcessorSystemCycleTime](http://msdn2.microsoft.com/en-us/library/dd405497) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessorSystemCycleTime  
-[GetProcessPreferredUILanguages](http://msdn2.microsoft.com/en-us/library/dd318115) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetProcessPreferredUILanguages  
-[GetProcessPriorityBoost](http://msdn2.microsoft.com/en-us/library/ms683220) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessPriorityBoost  
-[GetProcessShutdownParameters](http://msdn2.microsoft.com/en-us/library/ms683221) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessShutdownParameters  
-[GetProcessTimes](http://msdn2.microsoft.com/en-us/library/ms683223) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessTimes  
-[GetProcessVersion](http://msdn2.microsoft.com/en-us/library/ms683224) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessVersion  
-[GetProcessWorkingSetSize](http://msdn2.microsoft.com/en-us/library/ms683226) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessWorkingSetSize  
-[GetProcessWorkingSetSizeEx](http://msdn2.microsoft.com/en-us/library/ms683226) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessWorkingSetSizeEx  
-[GetProductInfo](http://msdn2.microsoft.com/en-us/library/ms724358) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetProductInfo  
-[GetProfileInt](http://msdn2.microsoft.com/en-us/library/ms724360) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetProfileInt  
-[GetProfileSection](http://msdn2.microsoft.com/en-us/library/ms724363) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetProfileSection  
-[GetProfileString](http://msdn2.microsoft.com/en-us/library/ms724366) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetProfileString  
-[GetQueuedCompletionStatus](http://msdn2.microsoft.com/en-us/library/aa364986) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetQueuedCompletionStatus  
-[GetQueuedCompletionStatusEx](http://msdn2.microsoft.com/en-us/library/aa364988) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.GetQueuedCompletionStatusEx  
+[GetFirmwareEnvironmentVariable](http://msdn2.microsoft.com/en-us/library/ms724325) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetFirmwareEnvironmentVariable](https://github.com/dahall/Vanara/search?l=C%23&q=GetFirmwareEnvironmentVariable)  
+[GetFirmwareEnvironmentVariableEx](http://msdn2.microsoft.com/en-us/library/B093BA68-C68B-4ED6-9902-058650A191FD) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetFirmwareEnvironmentVariableEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetFirmwareEnvironmentVariableEx)  
+[GetFullPathName](https://www.google.com/search?num=5&q=GetFullPathNameA+site%3Amicrosoft.com) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetFullPathName](https://github.com/dahall/Vanara/search?l=C%23&q=GetFullPathName)  
+[GetFullPathNameTransacted](http://msdn2.microsoft.com/en-us/library/63cbcec6-e9f0-4db3-bf2f-03a987000af1) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetFullPathNameTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=GetFullPathNameTransacted)  
+[GetGamingDeviceModelInformation](http://msdn2.microsoft.com/en-us/library/78101CBA-63B5-4B3F-9CEC-A215F32D9EB8) | kernelbase.dll | gamingdeviceinformation.h | [Vanara.PInvoke.Kernel32.GetGamingDeviceModelInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetGamingDeviceModelInformation)  
+[GetGeoInfo](http://msdn2.microsoft.com/en-us/library/dd318099) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetGeoInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetGeoInfo)  
+[GetGeoInfoEx](http://msdn2.microsoft.com/en-us/library/mt826489) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetGeoInfoEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetGeoInfoEx)  
+[GetHandleInformation](http://msdn2.microsoft.com/en-us/library/ms724329) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetHandleInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetHandleInformation)  
+[GetIntegratedDisplaySize](http://msdn2.microsoft.com/en-us/library/dn904185) | kernelbase.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetIntegratedDisplaySize](https://github.com/dahall/Vanara/search?l=C%23&q=GetIntegratedDisplaySize)  
+[GetLargePageMinimum](http://msdn2.microsoft.com/en-us/library/aa366568) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetLargePageMinimum](https://github.com/dahall/Vanara/search?l=C%23&q=GetLargePageMinimum)  
+[GetLargestConsoleWindowSize](https://www.google.com/search?num=5&q=GetLargestConsoleWindowSize+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetLargestConsoleWindowSize](https://github.com/dahall/Vanara/search?l=C%23&q=GetLargestConsoleWindowSize)  
+[GetLastError](http://msdn2.microsoft.com/en-us/library/ms679360) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetLastError](https://github.com/dahall/Vanara/search?l=C%23&q=GetLastError)  
+[GetLocaleInfo](http://msdn2.microsoft.com/en-us/library/dd318101) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetLocaleInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetLocaleInfo)  
+[GetLocaleInfoEx](http://msdn2.microsoft.com/en-us/library/dd318103) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetLocaleInfoEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetLocaleInfoEx)  
+[GetLocalTime](http://msdn2.microsoft.com/en-us/library/ms724338) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetLocalTime](https://github.com/dahall/Vanara/search?l=C%23&q=GetLocalTime)  
+[GetLogicalDrives](http://msdn2.microsoft.com/en-us/library/aa364972) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetLogicalDrives](https://github.com/dahall/Vanara/search?l=C%23&q=GetLogicalDrives)  
+[GetLogicalDriveStrings](http://msdn2.microsoft.com/en-us/library/aa364975) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetLogicalDriveStrings](https://github.com/dahall/Vanara/search?l=C%23&q=GetLogicalDriveStrings)  
+[GetLogicalProcessorInformation](http://msdn2.microsoft.com/en-us/library/ms683194) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetLogicalProcessorInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetLogicalProcessorInformation)  
+[GetLogicalProcessorInformationEx](http://msdn2.microsoft.com/en-us/library/dd405488) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetLogicalProcessorInformationEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetLogicalProcessorInformationEx)  
+[GetLongPathName](https://www.google.com/search?num=5&q=GetLongPathNameA+site%3Amicrosoft.com) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetLongPathName](https://github.com/dahall/Vanara/search?l=C%23&q=GetLongPathName)  
+[GetLongPathNameTransacted](http://msdn2.microsoft.com/en-us/library/8523cde9-f0dd-4832-8d9d-9e68bac89344) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetLongPathNameTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=GetLongPathNameTransacted)  
+[GetMailslotInfo](http://msdn2.microsoft.com/en-us/library/aa365435) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetMailslotInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetMailslotInfo)  
+[GetMappedFileName](http://msdn2.microsoft.com/en-us/library/10a2e5ab-f495-486d-8ef7-ef763716afd1) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetMappedFileName](https://github.com/dahall/Vanara/search?l=C%23&q=GetMappedFileName)  
+[GetMaximumProcessorCount](http://msdn2.microsoft.com/en-us/library/71ce4fb4-ef63-4750-a842-bbfb1a5b0543) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetMaximumProcessorCount](https://github.com/dahall/Vanara/search?l=C%23&q=GetMaximumProcessorCount)  
+[GetMaximumProcessorGroupCount](http://msdn2.microsoft.com/en-us/library/7762ec89-5892-4af3-9032-bf084aef9075) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetMaximumProcessorGroupCount](https://github.com/dahall/Vanara/search?l=C%23&q=GetMaximumProcessorGroupCount)  
+[GetMemoryErrorHandlingCapabilities](http://msdn2.microsoft.com/en-us/library/hh691012) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetMemoryErrorHandlingCapabilities](https://github.com/dahall/Vanara/search?l=C%23&q=GetMemoryErrorHandlingCapabilities)  
+[GetModuleBaseName](http://msdn2.microsoft.com/en-us/library/31a9eb69-95f0-4dd7-8fd5-296f2cff0b8a) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetModuleBaseName](https://github.com/dahall/Vanara/search?l=C%23&q=GetModuleBaseName)  
+[GetModuleFileName](http://msdn2.microsoft.com/en-us/library/ms683197) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetModuleFileName](https://github.com/dahall/Vanara/search?l=C%23&q=GetModuleFileName)  
+[GetModuleHandle](http://msdn2.microsoft.com/en-us/library/ms683199) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetModuleHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GetModuleHandle)  
+[GetModuleHandleEx](http://msdn2.microsoft.com/en-us/library/ms683200) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetModuleHandleEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetModuleHandleEx)  
+[GetModuleInformation](http://msdn2.microsoft.com/en-us/library/afb9f4c8-c8ae-4497-96c1-b559cfa2cedf) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetModuleInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetModuleInformation)  
+[GetNamedPipeClientComputerName](http://msdn2.microsoft.com/en-us/library/aa365437) | kernel32.dll | namedpipeapi.h | [Vanara.PInvoke.Kernel32.GetNamedPipeClientComputerName](https://github.com/dahall/Vanara/search?l=C%23&q=GetNamedPipeClientComputerName)  
+[GetNamedPipeClientProcessId](http://msdn2.microsoft.com/en-us/library/7001eb89-3d91-44e3-b245-b19e8ab5f9fe) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetNamedPipeClientProcessId](https://github.com/dahall/Vanara/search?l=C%23&q=GetNamedPipeClientProcessId)  
+[GetNamedPipeClientSessionId](http://msdn2.microsoft.com/en-us/library/b3ea0b7f-fead-4369-b87a-2f522a2a1984) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetNamedPipeClientSessionId](https://github.com/dahall/Vanara/search?l=C%23&q=GetNamedPipeClientSessionId)  
+[GetNamedPipeHandleState](http://msdn2.microsoft.com/en-us/library/aa365443) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetNamedPipeHandleState](https://github.com/dahall/Vanara/search?l=C%23&q=GetNamedPipeHandleState)  
+[GetNamedPipeInfo](http://msdn2.microsoft.com/en-us/library/aa365445) | kernel32.dll | namedpipeapi.h | [Vanara.PInvoke.Kernel32.GetNamedPipeInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetNamedPipeInfo)  
+[GetNamedPipeServerProcessId](http://msdn2.microsoft.com/en-us/library/1ee33a66-a71c-4c34-b907-aab7860294c4) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetNamedPipeServerProcessId](https://github.com/dahall/Vanara/search?l=C%23&q=GetNamedPipeServerProcessId)  
+[GetNamedPipeServerSessionId](http://msdn2.microsoft.com/en-us/library/cd628d6d-aa13-4762-893b-42f6cf7a2ba6) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetNamedPipeServerSessionId](https://github.com/dahall/Vanara/search?l=C%23&q=GetNamedPipeServerSessionId)  
+[GetNativeSystemInfo](http://msdn2.microsoft.com/en-us/library/ms724340) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetNativeSystemInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetNativeSystemInfo)  
+[GetNextUmsListItem](http://msdn2.microsoft.com/en-us/library/fb2c8420-12f4-4bd7-ac00-b53bab760db0) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetNextUmsListItem](https://github.com/dahall/Vanara/search?l=C%23&q=GetNextUmsListItem)  
+[GetNLSVersion](http://msdn2.microsoft.com/en-us/library/dd318105) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetNLSVersion](https://github.com/dahall/Vanara/search?l=C%23&q=GetNLSVersion)  
+[GetNLSVersionEx](http://msdn2.microsoft.com/en-us/library/dd318107) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetNLSVersionEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetNLSVersionEx)  
+[GetNumaAvailableMemoryNode](http://msdn2.microsoft.com/en-us/library/ms683202) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetNumaAvailableMemoryNode](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumaAvailableMemoryNode)  
+[GetNumaAvailableMemoryNodeEx](http://msdn2.microsoft.com/en-us/library/59382114-f3da-45e0-843e-51c0fd52a164) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetNumaAvailableMemoryNodeEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumaAvailableMemoryNodeEx)  
+[GetNumaHighestNodeNumber](http://msdn2.microsoft.com/en-us/library/ms683203) | kernel32.dll | systemtopology.h | [Vanara.PInvoke.Kernel32.GetNumaHighestNodeNumber](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumaHighestNodeNumber)  
+[GetNumaNodeNumberFromHandle](http://msdn2.microsoft.com/en-us/library/7622f7c9-2dfc-4ab7-b3e9-48d483c6cc0e) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetNumaNodeNumberFromHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumaNodeNumberFromHandle)  
+[GetNumaNodeProcessorMask](http://msdn2.microsoft.com/en-us/library/ms683204) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetNumaNodeProcessorMask](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumaNodeProcessorMask)  
+[GetNumaNodeProcessorMaskEx](http://msdn2.microsoft.com/en-us/library/dd405493) | kernel32.dll | systemtopology.h | [Vanara.PInvoke.Kernel32.GetNumaNodeProcessorMaskEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumaNodeProcessorMaskEx)  
+[GetNumaProcessorNode](http://msdn2.microsoft.com/en-us/library/ms683205) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetNumaProcessorNode](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumaProcessorNode)  
+[GetNumaProcessorNodeEx](http://msdn2.microsoft.com/en-us/library/6b843cd8-eeb5-4aa1-aad4-ce98916346b1) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetNumaProcessorNodeEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumaProcessorNodeEx)  
+[GetNumaProximityNode](http://msdn2.microsoft.com/en-us/library/9a2dbfe3-13e7-442d-a5f6-b2632878f618) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetNumaProximityNode](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumaProximityNode)  
+[GetNumaProximityNodeEx](http://msdn2.microsoft.com/en-us/library/dd405495) | kernel32.dll | systemtopology.h | [Vanara.PInvoke.Kernel32.GetNumaProximityNodeEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumaProximityNodeEx)  
+[GetNumberFormat](http://msdn2.microsoft.com/en-us/library/dd318110) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetNumberFormat](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumberFormat)  
+[GetNumberFormatEx](http://msdn2.microsoft.com/en-us/library/dd318113) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetNumberFormatEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumberFormatEx)  
+[GetNumberOfConsoleInputEvents](https://www.google.com/search?num=5&q=GetNumberOfConsoleInputEvents+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetNumberOfConsoleInputEvents](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumberOfConsoleInputEvents)  
+[GetNumberOfConsoleMouseButtons](https://www.google.com/search?num=5&q=GetNumberOfConsoleMouseButtons+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.GetNumberOfConsoleMouseButtons](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumberOfConsoleMouseButtons)  
+[GetOEMCP](http://msdn2.microsoft.com/en-us/library/dd318114) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetOEMCP](https://github.com/dahall/Vanara/search?l=C%23&q=GetOEMCP)  
+[GetOsManufacturingMode](https://www.google.com/search?num=5&q=GetOsManufacturingMode+site%3Amicrosoft.com) | kernelbase.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetOsManufacturingMode](https://github.com/dahall/Vanara/search?l=C%23&q=GetOsManufacturingMode)  
+[GetOsSafeBootMode](https://www.google.com/search?num=5&q=GetOsSafeBootMode+site%3Amicrosoft.com) | kernelbase.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetOsSafeBootMode](https://github.com/dahall/Vanara/search?l=C%23&q=GetOsSafeBootMode)  
+[GetOverlappedResult](http://msdn2.microsoft.com/en-us/library/ms683209) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetOverlappedResult](https://github.com/dahall/Vanara/search?l=C%23&q=GetOverlappedResult)  
+[GetOverlappedResultEx](http://msdn2.microsoft.com/en-us/library/hh448542) | kernel32.dll | Ioapiset.h | [Vanara.PInvoke.Kernel32.GetOverlappedResultEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetOverlappedResultEx)  
+[GetPackageApplicationIds](http://msdn2.microsoft.com/en-us/library/F08135F9-FF45-4309-84B5-77F4AFD7FC0C) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetPackageApplicationIds](https://github.com/dahall/Vanara/search?l=C%23&q=GetPackageApplicationIds)  
+[GetPackageFamilyName](http://msdn2.microsoft.com/en-us/library/AC239898-9924-4193-9072-7A7EEC2D03E9) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetPackageFamilyName](https://github.com/dahall/Vanara/search?l=C%23&q=GetPackageFamilyName)  
+[GetPackageFamilyNameFromToken](http://msdn2.microsoft.com/en-us/library/C4FAF5DE-DF1F-4AFA-813B-5D80C786031B) | kernelbase.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetPackageFamilyNameFromToken](https://github.com/dahall/Vanara/search?l=C%23&q=GetPackageFamilyNameFromToken)  
+[GetPackageFullNameFromToken](http://msdn2.microsoft.com/en-us/library/7B0D574E-A2F5-4D08-AEFB-9E040BBC729F) | kernelbase.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetPackageFullNameFromToken](https://github.com/dahall/Vanara/search?l=C%23&q=GetPackageFullNameFromToken)  
+[GetPackageInfo](http://msdn2.microsoft.com/en-us/library/28F45B3B-A61F-44D3-B606-6966AD5866FA) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetPackageInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetPackageInfo)  
+[GetPackagePath](http://msdn2.microsoft.com/en-us/library/BDA0DD87-A36D-486B-BF89-EA5CC105C742) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetPackagePath](https://github.com/dahall/Vanara/search?l=C%23&q=GetPackagePath)  
+[GetPackagePathByFullName](http://msdn2.microsoft.com/en-us/library/9C25708C-1464-4C59-9740-E9F105116385) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetPackagePathByFullName](https://github.com/dahall/Vanara/search?l=C%23&q=GetPackagePathByFullName)  
+[GetPackagesByPackageFamily](http://msdn2.microsoft.com/en-us/library/C2163203-D654-4491-9090-0CC43F42EC35) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetPackagesByPackageFamily](https://github.com/dahall/Vanara/search?l=C%23&q=GetPackagesByPackageFamily)  
+[GetPerformanceInfo](http://msdn2.microsoft.com/en-us/library/21655278-49da-4e63-a4f9-0ee9f6179f4a) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetPerformanceInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetPerformanceInfo)  
+[GetPhysicallyInstalledSystemMemory](http://msdn2.microsoft.com/en-us/library/cc300158) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetPhysicallyInstalledSystemMemory](https://github.com/dahall/Vanara/search?l=C%23&q=GetPhysicallyInstalledSystemMemory)  
+[GetPriorityClass](http://msdn2.microsoft.com/en-us/library/ms683211) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetPriorityClass](https://github.com/dahall/Vanara/search?l=C%23&q=GetPriorityClass)  
+[GetPrivateProfileInt](http://msdn2.microsoft.com/en-us/library/ms724345) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetPrivateProfileInt](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrivateProfileInt)  
+[GetPrivateProfileSection](http://msdn2.microsoft.com/en-us/library/ms724348) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetPrivateProfileSection](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrivateProfileSection)  
+[GetPrivateProfileSectionNames](http://msdn2.microsoft.com/en-us/library/ms724352) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetPrivateProfileSectionNames](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrivateProfileSectionNames)  
+[GetPrivateProfileString](http://msdn2.microsoft.com/en-us/library/ms724353) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetPrivateProfileString](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrivateProfileString)  
+[GetPrivateProfileStruct](http://msdn2.microsoft.com/en-us/library/ms724356) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetPrivateProfileStruct](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrivateProfileStruct)  
+[GetProcAddress](http://msdn2.microsoft.com/en-us/library/ms683212) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetProcAddress](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcAddress)  
+[GetProcessAffinityMask](http://msdn2.microsoft.com/en-us/library/ms683213) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessAffinityMask](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessAffinityMask)  
+[GetProcessDefaultCpuSets](http://msdn2.microsoft.com/en-us/library/mt186424) | kernel32.dll | Processthreadapi.h | [Vanara.PInvoke.Kernel32.GetProcessDefaultCpuSets](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessDefaultCpuSets)  
+[GetProcessDEPPolicy](http://msdn2.microsoft.com/en-us/library/adf15b9c-24f4-49ea-9283-0db5f3f13e65) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetProcessDEPPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessDEPPolicy)  
+[GetProcessGroupAffinity](http://msdn2.microsoft.com/en-us/library/e22a4910-45dd-4eb6-9ed5-a8e0bcdfad7b) | kernel32.dll | processtopologyapi.h | [Vanara.PInvoke.Kernel32.GetProcessGroupAffinity](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessGroupAffinity)  
+[GetProcessHandleCount](http://msdn2.microsoft.com/en-us/library/ms683214) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessHandleCount](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessHandleCount)  
+[GetProcessHeap](http://msdn2.microsoft.com/en-us/library/ecd716b2-df48-4914-9de4-47d8ad8ff9a2) | kernel32.dll | heapapi.h | [Vanara.PInvoke.Kernel32.GetProcessHeap](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessHeap)  
+[GetProcessHeaps](http://msdn2.microsoft.com/en-us/library/aa366571) | kernel32.dll | HeapApi.h | [Vanara.PInvoke.Kernel32.GetProcessHeaps](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessHeaps)  
+[GetProcessId](http://msdn2.microsoft.com/en-us/library/ms683215) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessId](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessId)  
+[GetProcessIdOfThread](http://msdn2.microsoft.com/en-us/library/ms683216) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessIdOfThread](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessIdOfThread)  
+[GetProcessImageFileName](http://msdn2.microsoft.com/en-us/library/819fc2f4-0801-417b-9cbb-d7fd2894634e) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetProcessImageFileName](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessImageFileName)  
+[GetProcessInformation](http://msdn2.microsoft.com/en-us/library/hh448381) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessInformation)  
+[GetProcessIoCounters](http://msdn2.microsoft.com/en-us/library/ms683218) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessIoCounters](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessIoCounters)  
+[GetProcessMemoryInfoA](http://msdn2.microsoft.com/en-us/library/12990e8d-6097-4502-824e-db6c3f76c715) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetProcessMemoryInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessMemoryInfo)  
+[GetProcessMemoryInfoW](http://msdn2.microsoft.com/en-us/library/12990e8d-6097-4502-824e-db6c3f76c715) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetProcessMemoryInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessMemoryInfo)  
+[GetProcessMitigationPolicy](http://msdn2.microsoft.com/en-us/library/hh769085) | kernel32.dll | Processthreadsapi.h | [Vanara.PInvoke.Kernel32.GetProcessMitigationPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessMitigationPolicy)  
+[GetProcessorSystemCycleTime](http://msdn2.microsoft.com/en-us/library/dd405497) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessorSystemCycleTime](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessorSystemCycleTime)  
+[GetProcessPreferredUILanguages](http://msdn2.microsoft.com/en-us/library/dd318115) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetProcessPreferredUILanguages](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessPreferredUILanguages)  
+[GetProcessPriorityBoost](http://msdn2.microsoft.com/en-us/library/ms683220) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessPriorityBoost](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessPriorityBoost)  
+[GetProcessShutdownParameters](http://msdn2.microsoft.com/en-us/library/ms683221) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessShutdownParameters](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessShutdownParameters)  
+[GetProcessTimes](http://msdn2.microsoft.com/en-us/library/ms683223) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessTimes](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessTimes)  
+[GetProcessVersion](http://msdn2.microsoft.com/en-us/library/ms683224) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessVersion](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessVersion)  
+[GetProcessWorkingSetSize](http://msdn2.microsoft.com/en-us/library/ms683226) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessWorkingSetSize](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessWorkingSetSize)  
+[GetProcessWorkingSetSizeEx](http://msdn2.microsoft.com/en-us/library/ms683226) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetProcessWorkingSetSizeEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetProcessWorkingSetSizeEx)  
+[GetProductInfo](http://msdn2.microsoft.com/en-us/library/ms724358) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetProductInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetProductInfo)  
+[GetProfileInt](http://msdn2.microsoft.com/en-us/library/ms724360) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetProfileInt](https://github.com/dahall/Vanara/search?l=C%23&q=GetProfileInt)  
+[GetProfileSection](http://msdn2.microsoft.com/en-us/library/ms724363) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetProfileSection](https://github.com/dahall/Vanara/search?l=C%23&q=GetProfileSection)  
+[GetProfileString](http://msdn2.microsoft.com/en-us/library/ms724366) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetProfileString](https://github.com/dahall/Vanara/search?l=C%23&q=GetProfileString)  
+[GetQueuedCompletionStatus](http://msdn2.microsoft.com/en-us/library/aa364986) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetQueuedCompletionStatus](https://github.com/dahall/Vanara/search?l=C%23&q=GetQueuedCompletionStatus)  
+[GetQueuedCompletionStatusEx](http://msdn2.microsoft.com/en-us/library/aa364988) | kernel32.dll | IoAPI.h | [Vanara.PInvoke.Kernel32.GetQueuedCompletionStatusEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetQueuedCompletionStatusEx)  
 [GetSeedFromIumKernelState](https://www.google.com/search?num=5&q=GetSeedFromIumKernelState+site%3Amicrosoft.com) | vertdll.dll |  |   
-[GetShortPathName](https://www.google.com/search?num=5&q=GetShortPathNameA+site%3Amicrosoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetShortPathName  
-[GetStagedPackageOrigin](http://msdn2.microsoft.com/en-us/library/7A1EE2CA-83CE-4E03-85A5-0061E29EB49B) | kernelbase.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetStagedPackageOrigin  
-[GetStagedPackagePathByFullName](http://msdn2.microsoft.com/en-us/library/F0A37D77-6262-44B1-BEC5-083E41BDE139) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.GetStagedPackagePathByFullName  
-[GetStartupInfo](http://msdn2.microsoft.com/en-us/library/ms683230) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetStartupInfo  
-[GetStdHandle](https://www.google.com/search?num=5&q=GetStdHandle+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetStdHandle  
-[GetStringScripts](http://msdn2.microsoft.com/en-us/library/dd318116) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetStringScripts  
-[GetStringType](http://msdn2.microsoft.com/en-us/library/dd318117) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetStringTypeA  
-[GetStringTypeEx](http://msdn2.microsoft.com/en-us/library/e0cd051f-6627-457a-9a83-d71de607f67f) | kernel32.dll | winnls.h | Vanara.PInvoke.Kernel32.GetStringTypeEx  
-[GetSystemCpuSetInformation](http://msdn2.microsoft.com/en-us/library/mt186425) | kernel32.dll | Processthreadapi.h | Vanara.PInvoke.Kernel32.GetSystemCpuSetInformation  
-[GetSystemDefaultLangID](http://msdn2.microsoft.com/en-us/library/dd318120) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetSystemDefaultLangID  
-[GetSystemDefaultLCID](http://msdn2.microsoft.com/en-us/library/dd318121) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetSystemDefaultLCID  
-[GetSystemDefaultLocaleName](http://msdn2.microsoft.com/en-us/library/dd318122) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetSystemDefaultLocaleName  
-[GetSystemDefaultUILanguage](http://msdn2.microsoft.com/en-us/library/dd318123) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetSystemDefaultUILanguage  
-[GetSystemDEPPolicy](http://msdn2.microsoft.com/en-us/library/82cb1d4e-c0e5-4601-aa55-9171a106c286) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetSystemDEPPolicy  
-[GetSystemDirectory](http://msdn2.microsoft.com/en-us/library/ms724373) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemDirectory  
-[GetSystemFileCacheSize](http://msdn2.microsoft.com/en-us/library/aa965224) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetSystemFileCacheSize  
-[GetSystemFirmwareTable](http://msdn2.microsoft.com/en-us/library/ms724379) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemFirmwareTable  
-[GetSystemInfo](http://msdn2.microsoft.com/en-us/library/ms724381) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemInfo  
-[GetSystemPowerStatus](http://msdn2.microsoft.com/en-us/library/aa372693) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemPowerStatus  
-[GetSystemPreferredUILanguages](http://msdn2.microsoft.com/en-us/library/dd318124) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetSystemPreferredUILanguages  
-[GetSystemRegistryQuota](http://msdn2.microsoft.com/en-us/library/ms724387) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemRegistryQuota  
-[GetSystemTime](http://msdn2.microsoft.com/en-us/library/ms724390) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTime  
-[GetSystemTimeAdjustment](http://msdn2.microsoft.com/en-us/library/ms724394) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimeAdjustment  
-[GetSystemTimeAdjustmentPrecise](http://msdn2.microsoft.com/en-us/library/95EEE23D-01D8-49E1-BA64-49C07E8B1619) | kernelbase.dll | sysinfoapi.h | Vanara.PInvoke.Kernel32.GetSystemTimeAdjustmentPrecise  
-[GetSystemTimeAsFileTime](http://msdn2.microsoft.com/en-us/library/ms724397) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimeAsFileTime  
-[GetSystemTimePreciseAsFileTime](http://msdn2.microsoft.com/en-us/library/hh706895) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetSystemTimePreciseAsFileTime  
-[GetSystemTimes](http://msdn2.microsoft.com/en-us/library/ms724400) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimes  
-[GetSystemWindowsDirectory](http://msdn2.microsoft.com/en-us/library/ms724403) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemWindowsDirectory  
-[GetSystemWow64Directory](http://msdn2.microsoft.com/en-us/library/ms724405) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemWow64Directory  
-[GetSystemWow64Directory2](http://msdn2.microsoft.com/en-us/library/mt804319) | kernelbase.dll | Wow64apiset.h | Vanara.PInvoke.Kernel32.GetSystemWow64Directory2  
-[GetTapeParameters](http://msdn2.microsoft.com/en-us/library/aa362526) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetTapeParameters  
-[GetTapePosition](http://msdn2.microsoft.com/en-us/library/aa362528) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetTapePosition  
-[GetTapeStatus](http://msdn2.microsoft.com/en-us/library/aa362530) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetTapeStatus  
-[GetTempFileName](http://msdn2.microsoft.com/en-us/library/0a30055f-a3b9-439f-9304-40ee8a07b967) | kernel32.dll | fileapi.h | Vanara.PInvoke.Kernel32.GetTempFileName  
-[GetTempPath](http://msdn2.microsoft.com/en-us/library/aa364992) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetTempPath  
-[GetThreadContext](http://msdn2.microsoft.com/en-us/library/ms679362) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetThreadContext  
-[GetThreadDescription](http://msdn2.microsoft.com/en-us/library/9CFF0A2D-2196-4AE0-8F77-229A8AB7A3E8) | kernel32.dll | processthreadsapi.h | Vanara.PInvoke.Kernel32.GetThreadDescription  
-[GetThreadErrorMode](http://msdn2.microsoft.com/en-us/library/246d838a-ba16-4ba4-8cd3-f25dfc7d2f23) | kernel32.dll | errhandlingapi.h | Vanara.PInvoke.Kernel32.GetThreadErrorMode  
-[GetThreadGroupAffinity](http://msdn2.microsoft.com/en-us/library/effc75be-60da-43cc-bfb3-5fb905e1404d) | kernel32.dll | processtopologyapi.h | Vanara.PInvoke.Kernel32.GetThreadGroupAffinity  
-[GetThreadId](http://msdn2.microsoft.com/en-us/library/ms683233) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetThreadId  
-[GetThreadIdealProcessorEx](http://msdn2.microsoft.com/en-us/library/dd405499) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetThreadIdealProcessorEx  
-[GetThreadInformation](http://msdn2.microsoft.com/en-us/library/hh448382) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetThreadInformation  
-[GetThreadIOPendingFlag](http://msdn2.microsoft.com/en-us/library/ms683234) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetThreadIOPendingFlag  
-[GetThreadLocale](http://msdn2.microsoft.com/en-us/library/dd318127) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetThreadLocale  
-[GetThreadPreferredUILanguages](http://msdn2.microsoft.com/en-us/library/dd318128) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetThreadPreferredUILanguages  
-[GetThreadPriority](http://msdn2.microsoft.com/en-us/library/ms683235) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetThreadPriority  
-[GetThreadPriorityBoost](http://msdn2.microsoft.com/en-us/library/ms683236) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetThreadPriorityBoost  
-[GetThreadSelectedCpuSets](http://msdn2.microsoft.com/en-us/library/mt186426) | kernel32.dll | Processthreadapi.h | Vanara.PInvoke.Kernel32.GetThreadSelectedCpuSets  
-[GetThreadSelectorEntry](http://msdn2.microsoft.com/en-us/library/ms679363) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetThreadSelectorEntry  
-[GetThreadTimes](http://msdn2.microsoft.com/en-us/library/ms683237) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetThreadTimes  
-[GetThreadUILanguage](http://msdn2.microsoft.com/en-us/library/dd318129) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetThreadUILanguage  
-[GetTickCount](http://msdn2.microsoft.com/en-us/library/ms724408) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetTickCount  
-[GetTickCount64](http://msdn2.microsoft.com/en-us/library/ms724411) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetTickCount64  
-[GetTimeFormat](http://msdn2.microsoft.com/en-us/library/3db91d29-df97-4660-b3cd-0db5b42cfd01) | kernel32.dll | datetimeapi.h | Vanara.PInvoke.Kernel32.GetTimeFormat  
-[GetTimeFormatEx](http://msdn2.microsoft.com/en-us/library/4d63888e-4496-4315-ac87-bf60c54daa37) | kernel32.dll | datetimeapi.h | Vanara.PInvoke.Kernel32.GetTimeFormatEx  
-[GetTimeZoneInformation](http://msdn2.microsoft.com/en-us/library/ms724421) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetTimeZoneInformation  
-[GetTimeZoneInformationForYear](http://msdn2.microsoft.com/en-us/library/5bd29a25-98f0-439e-be88-8011bbf98926) | kernel32.dll | timezoneapi.h | Vanara.PInvoke.Kernel32.GetTimeZoneInformationForYear  
-[GetUILanguageInfo](http://msdn2.microsoft.com/en-us/library/dd318133) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUILanguageInfo  
-[GetUmsCompletionListEvent](http://msdn2.microsoft.com/en-us/library/393f6e0a-fbea-4aa0-9c18-f96da18e61e9) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetUmsCompletionListEvent  
-[GetUmsSystemThreadInformation](http://msdn2.microsoft.com/en-us/library/7c8347b6-6546-4ea9-9b2a-11794782f482) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetUmsSystemThreadInformation  
-[GetUserDefaultGeoName](http://msdn2.microsoft.com/en-us/library/mt826490) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserDefaultGeoName  
-[GetUserDefaultLangID](http://msdn2.microsoft.com/en-us/library/dd318134) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserDefaultLangID  
-[GetUserDefaultLCID](http://msdn2.microsoft.com/en-us/library/dd318135) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserDefaultLCID  
-[GetUserDefaultLocaleName](http://msdn2.microsoft.com/en-us/library/dd318136) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserDefaultLocaleName  
-[GetUserDefaultUILanguage](http://msdn2.microsoft.com/en-us/library/dd318137) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserDefaultUILanguage  
-[GetUserGeoID](http://msdn2.microsoft.com/en-us/library/dd318138) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserGeoID  
-[GetUserPreferredUILanguages](http://msdn2.microsoft.com/en-us/library/dd318139) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserPreferredUILanguages  
-[GetVersion](http://msdn2.microsoft.com/en-us/library/ms724439) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetVersion  
-[GetVersionEx](http://msdn2.microsoft.com/en-us/library/ms724451) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetVersionEx  
-[GetVolumeInformation](http://msdn2.microsoft.com/en-us/library/aa364993) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumeInformation  
-[GetVolumeInformationByHandleW](http://msdn2.microsoft.com/en-us/library/aa964920) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumeInformationByHandleW  
-[GetVolumeNameForVolumeMountPoint](http://msdn2.microsoft.com/en-us/library/aa364994) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumeNameForVolumeMountPoint  
-[GetVolumePathName](http://msdn2.microsoft.com/en-us/library/aa364996) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumePathName  
-[GetVolumePathNamesForVolumeName](http://msdn2.microsoft.com/en-us/library/aa364998) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumePathNamesForVolumeName  
-[GetWindowsDirectory](http://msdn2.microsoft.com/en-us/library/ms724454) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetWindowsDirectory  
-[GetWriteWatch](http://msdn2.microsoft.com/en-us/library/aa366573) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetWriteWatch  
-[GetWsChanges](http://msdn2.microsoft.com/en-us/library/ace5106c-9c7b-4d5f-a69a-c3a8bff0bb2d) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.GetWsChanges  
-[GetWsChangesExA](http://msdn2.microsoft.com/en-us/library/8572db5c-2ffc-424f-8cec-b6a6902fed62) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.GetWsChangesEx  
-[GetWsChangesExW](http://msdn2.microsoft.com/en-us/library/8572db5c-2ffc-424f-8cec-b6a6902fed62) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.GetWsChangesEx  
-[GetXStateFeaturesMask](http://msdn2.microsoft.com/en-us/library/D9A8D0B6-21E3-46B7-AB88-CE2FF4025A17) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetXStateFeaturesMask  
-[GlobalAddAtom](http://msdn2.microsoft.com/en-us/library/ms649060) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GlobalAddAtom  
-[GlobalAddAtomEx](http://msdn2.microsoft.com/en-us/library/dn764994) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GlobalAddAtomEx  
-[GlobalAlloc](http://msdn2.microsoft.com/en-us/library/aa366574) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GlobalAlloc  
-[GlobalDeleteAtom](http://msdn2.microsoft.com/en-us/library/ms649061) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GlobalDeleteAtom  
-[GlobalFindAtom](http://msdn2.microsoft.com/en-us/library/ms649062) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GlobalFindAtom  
-[GlobalFlags](http://msdn2.microsoft.com/en-us/library/aa366577) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GlobalFlags  
-[GlobalFree](http://msdn2.microsoft.com/en-us/library/aa366579) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GlobalFree  
-[GlobalGetAtomName](http://msdn2.microsoft.com/en-us/library/ms649063) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GlobalGetAtomName  
-[GlobalHandle](http://msdn2.microsoft.com/en-us/library/aa366582) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GlobalHandle  
-[GlobalLock](http://msdn2.microsoft.com/en-us/library/0d7deac2-c9c4-4adc-8a0a-edfc512a4d6c) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GlobalLock  
-[GlobalMemoryStatus](http://msdn2.microsoft.com/en-us/library/aa366586) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GlobalMemoryStatus  
-[GlobalMemoryStatusEx](http://msdn2.microsoft.com/en-us/library/aa366589) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GlobalMemoryStatusEx  
-[GlobalReAlloc](http://msdn2.microsoft.com/en-us/library/aa366590) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GlobalReAlloc  
-[GlobalSize](http://msdn2.microsoft.com/en-us/library/aa366593) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GlobalSize  
-[GlobalUnlock](http://msdn2.microsoft.com/en-us/library/580a2873-7f06-47a1-acf5-c2b3c96e15e7) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GlobalUnlock  
-[Heap32First](http://msdn2.microsoft.com/en-us/library/79d01e3a-b11b-46b5-99d0-b445000288a7) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Heap32First  
-[Heap32ListFirst](http://msdn2.microsoft.com/en-us/library/b9a2992b-0dc1-41c3-aa23-796def674831) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Heap32ListFirst  
-[Heap32ListNext](http://msdn2.microsoft.com/en-us/library/bb4d573c-a82f-48ac-be22-440d6a1d0c9c) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Heap32ListNext  
-[Heap32Next](http://msdn2.microsoft.com/en-us/library/cc3becd0-edba-47cf-ac2d-26a5d98390e7) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Heap32Next  
-[HeapAlloc](https://www.google.com/search?num=5&q=HeapAlloc+site%3Amicrosoft.com) | kernel32.dll |  | Vanara.PInvoke.Kernel32.HeapAllocInternal  
-[HeapCompact](http://msdn2.microsoft.com/en-us/library/792ec16f-d6b0-4afd-a832-29fe12b25058) | kernel32.dll | heapapi.h | Vanara.PInvoke.Kernel32.HeapCompact  
-[HeapCreate](http://msdn2.microsoft.com/en-us/library/aa366599) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.HeapCreate  
-[HeapDestroy](http://msdn2.microsoft.com/en-us/library/aa366700) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.HeapDestroy  
-[HeapFree](http://msdn2.microsoft.com/en-us/library/aa366701) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.HeapFree  
-[HeapLock](http://msdn2.microsoft.com/en-us/library/bc01b82d-ef10-40d7-af82-e599ba825944) | kernel32.dll | heapapi.h | Vanara.PInvoke.Kernel32.HeapLock  
-[HeapQueryInformation](http://msdn2.microsoft.com/en-us/library/6bf6cb8b-7212-4ddb-9ea6-34bc78824a8f) | kernel32.dll | heapapi.h | Vanara.PInvoke.Kernel32.HeapQueryInformation  
-[HeapReAlloc](https://www.google.com/search?num=5&q=HeapReAlloc+site%3Amicrosoft.com) | kernel32.dll |  | Vanara.PInvoke.Kernel32.HeapReAllocInternal  
-[HeapSetInformation](http://msdn2.microsoft.com/en-us/library/33c262ca-5093-4f44-a8c6-09045bc90f60) | kernel32.dll | heapapi.h | Vanara.PInvoke.Kernel32.HeapSetInformation  
-[HeapSize](http://msdn2.microsoft.com/en-us/library/a8fcfd99-7b04-4aa3-8619-272b254551a3) | kernel32.dll | heapapi.h | Vanara.PInvoke.Kernel32.HeapSize  
-[HeapSummary](https://www.google.com/search?num=5&q=HeapSummary+site%3Amicrosoft.com) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.HeapSummary  
-[HeapUnlock](http://msdn2.microsoft.com/en-us/library/aa366707) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.HeapUnlock  
-[HeapValidate](http://msdn2.microsoft.com/en-us/library/aa366708) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.HeapValidate  
-[HeapWalk](http://msdn2.microsoft.com/en-us/library/aa366710) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.HeapWalk  
-[IdnToAscii](http://msdn2.microsoft.com/en-us/library/dd318149) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IdnToAscii  
-[IdnToNameprepUnicode](http://msdn2.microsoft.com/en-us/library/dd318150) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IdnToNameprepUnicode  
-[IdnToUnicode](http://msdn2.microsoft.com/en-us/library/dd318151) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IdnToUnicode  
-[InitAtomTable](http://msdn2.microsoft.com/en-us/library/ms649064) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.InitAtomTable  
-[InitializeConditionVariable](http://msdn2.microsoft.com/en-us/library/ms683469) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitializeConditionVariable  
-[InitializeContext](http://msdn2.microsoft.com/en-us/library/909BF5F7-0622-4B22-A2EC-27722389700A) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.InitializeContext  
-[InitializeCriticalSection](http://msdn2.microsoft.com/en-us/library/ms683472) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitializeCriticalSection  
-[InitializeCriticalSectionAndSpinCount](http://msdn2.microsoft.com/en-us/library/ms683476) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitializeCriticalSectionAndSpinCount  
-[InitializeCriticalSectionEx](http://msdn2.microsoft.com/en-us/library/da84b187-0eb7-4363-8e68-8a525586d7d9) | kernel32.dll | synchapi.h | Vanara.PInvoke.Kernel32.InitializeCriticalSectionEx  
-[InitializeEnclave](http://msdn2.microsoft.com/en-us/library/mt592869) | kernel32.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.InitializeEnclave  
-[InitializeProcessForWsWatchA](http://msdn2.microsoft.com/en-us/library/c928656c-a59d-41b5-9434-911329b0278e) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.InitializeProcessForWsWatch  
-[InitializeProcessForWsWatchW](http://msdn2.microsoft.com/en-us/library/c928656c-a59d-41b5-9434-911329b0278e) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.InitializeProcessForWsWatch  
-[InitializeProcThreadAttributeList](http://msdn2.microsoft.com/en-us/library/ms683481) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitializeProcThreadAttributeList  
-[InitializeSListHead](http://msdn2.microsoft.com/en-us/library/4e34f947-1687-4ea9-aaa1-8d8dc11dad70) | kernel32.dll | interlockedapi.h | Vanara.PInvoke.Kernel32.InitializeSListHead  
-[InitializeSRWLock](http://msdn2.microsoft.com/en-us/library/ms683483) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitializeSRWLock  
-[InitializeSynchronizationBarrier](http://msdn2.microsoft.com/en-us/library/hh706890) | kernel32.dll | SynchAPI.h | Vanara.PInvoke.Kernel32.InitializeSynchronizationBarrier  
-[InitOnceBeginInitialize](http://msdn2.microsoft.com/en-us/library/ms683487) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitOnceBeginInitialize  
-[InitOnceComplete](http://msdn2.microsoft.com/en-us/library/ms683491) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitOnceComplete  
-[InitOnceExecuteOnce](http://msdn2.microsoft.com/en-us/library/ms683493) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitOnceExecuteOnce  
-[InitOnceInitialize](http://msdn2.microsoft.com/en-us/library/ms683495) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitOnceInitialize  
-[InstallELAMCertificateInfo](http://msdn2.microsoft.com/en-us/library/dn369255) | kernel32.dll | Windows.h | Vanara.PInvoke.Kernel32.InstallELAMCertificateInfo  
-[InterlockedFlushSList](http://msdn2.microsoft.com/en-us/library/3fde3377-8a98-4976-a350-2c173b209e8c) | kernel32.dll | interlockedapi.h | Vanara.PInvoke.Kernel32.InterlockedFlushSList  
-[InterlockedPopEntrySList](http://msdn2.microsoft.com/en-us/library/10760fd4-5973-4ab0-991c-7a5951c798a4) | kernel32.dll | interlockedapi.h | Vanara.PInvoke.Kernel32.InterlockedPopEntrySList  
-[InterlockedPushEntrySList](http://msdn2.microsoft.com/en-us/library/60e3b6f7-f556-4699-be90-db7330cfb8ca) | kernel32.dll | interlockedapi.h | Vanara.PInvoke.Kernel32.InterlockedPushEntrySList  
-[InterlockedPushListSList](http://msdn2.microsoft.com/en-us/library/hh448545) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InterlockedPushListSList  
-[InterlockedPushListSListEx](http://msdn2.microsoft.com/en-us/library/f4f334c6-fda8-4c5f-9177-b672c8aed6b3) | kernel32.dll | interlockedapi.h | Vanara.PInvoke.Kernel32.InterlockedPushListSListEx  
-[IsBadCodePtr](http://msdn2.microsoft.com/en-us/library/aa366712) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsBadCodePtr  
-[IsBadReadPtr](http://msdn2.microsoft.com/en-us/library/aa366713) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsBadReadPtr  
-[IsBadStringPtr](http://msdn2.microsoft.com/en-us/library/aa366714) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsBadStringPtr  
-[IsBadWritePtr](http://msdn2.microsoft.com/en-us/library/aa366716) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsBadWritePtr  
-[IsDBCSLeadByte](http://msdn2.microsoft.com/en-us/library/dd318664) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsDBCSLeadByte  
-[IsDBCSLeadByteEx](http://msdn2.microsoft.com/en-us/library/dd318667) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsDBCSLeadByteEx  
-[IsDebuggerPresent](http://msdn2.microsoft.com/en-us/library/ms680345) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsDebuggerPresent  
-[IsEnclaveTypeSupported](http://msdn2.microsoft.com/en-us/library/mt592870) | kernel32.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.IsEnclaveTypeSupported  
-[IsNativeVhdBoot](http://msdn2.microsoft.com/en-us/library/8198D4AF-553D-42B3-AF22-EC2C63C0E9AE) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.IsNativeVhdBoot  
-[IsNLSDefinedString](http://msdn2.microsoft.com/en-us/library/dd318669) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsNLSDefinedString  
-[IsNormalizedString](http://msdn2.microsoft.com/en-us/library/dd318671) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsNormalizedString  
-[IsProcessCritical](http://msdn2.microsoft.com/en-us/library/dn386160) | kernel32.dll | Processthreadsapi.h | Vanara.PInvoke.Kernel32.IsProcessCritical  
-[IsProcessInJob](http://msdn2.microsoft.com/en-us/library/ms684127) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsProcessInJob  
-[IsProcessorFeaturePresent](http://msdn2.microsoft.com/en-us/library/ms724482) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.IsProcessorFeaturePresent  
-[IsSystemResumeAutomatic](http://msdn2.microsoft.com/en-us/library/aa372708) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.IsSystemResumeAutomatic  
-[IsThreadAFiber](http://msdn2.microsoft.com/en-us/library/ms684131) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsThreadAFiber  
-[IsThreadpoolTimerSet](http://msdn2.microsoft.com/en-us/library/ms684133) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsThreadpoolTimerSet  
-[IsValidCodePage](http://msdn2.microsoft.com/en-us/library/dd318674) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsValidCodePage  
-[IsValidLanguageGroup](http://msdn2.microsoft.com/en-us/library/dd318677) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsValidLanguageGroup  
-[IsValidLocale](http://msdn2.microsoft.com/en-us/library/dd318679) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsValidLocale  
-[IsValidLocaleName](http://msdn2.microsoft.com/en-us/library/dd318681) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsValidLocaleName  
-[IsValidNLSVersion](http://msdn2.microsoft.com/en-us/library/hh706739) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsValidNLSVersion  
-[IsWow64GuestMachineSupported](http://msdn2.microsoft.com/en-us/library/mt804321) | kernel32.dll | Wow64apiset.h | Vanara.PInvoke.Kernel32.IsWow64GuestMachineSupported  
-[IsWow64Process](http://msdn2.microsoft.com/en-us/library/ms684139) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsWow64Process  
-[IsWow64Process2](http://msdn2.microsoft.com/en-us/library/mt804318) | kernel32.dll | Wow64apiset.h | Vanara.PInvoke.Kernel32.IsWow64Process2  
+[GetShortPathName](https://www.google.com/search?num=5&q=GetShortPathNameA+site%3Amicrosoft.com) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetShortPathName](https://github.com/dahall/Vanara/search?l=C%23&q=GetShortPathName)  
+[GetStagedPackageOrigin](http://msdn2.microsoft.com/en-us/library/7A1EE2CA-83CE-4E03-85A5-0061E29EB49B) | kernelbase.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetStagedPackageOrigin](https://github.com/dahall/Vanara/search?l=C%23&q=GetStagedPackageOrigin)  
+[GetStagedPackagePathByFullName](http://msdn2.microsoft.com/en-us/library/F0A37D77-6262-44B1-BEC5-083E41BDE139) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetStagedPackagePathByFullName](https://github.com/dahall/Vanara/search?l=C%23&q=GetStagedPackagePathByFullName)  
+[GetStartupInfo](http://msdn2.microsoft.com/en-us/library/ms683230) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetStartupInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetStartupInfo)  
+[GetStdHandle](https://www.google.com/search?num=5&q=GetStdHandle+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetStdHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GetStdHandle)  
+[GetStringScripts](http://msdn2.microsoft.com/en-us/library/dd318116) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetStringScripts](https://github.com/dahall/Vanara/search?l=C%23&q=GetStringScripts)  
+[GetStringType](http://msdn2.microsoft.com/en-us/library/dd318117) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetStringTypeA](https://github.com/dahall/Vanara/search?l=C%23&q=GetStringTypeA)  
+[GetStringTypeEx](http://msdn2.microsoft.com/en-us/library/e0cd051f-6627-457a-9a83-d71de607f67f) | kernel32.dll | winnls.h | [Vanara.PInvoke.Kernel32.GetStringTypeEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetStringTypeEx)  
+[GetSystemCpuSetInformation](http://msdn2.microsoft.com/en-us/library/mt186425) | kernel32.dll | Processthreadapi.h | [Vanara.PInvoke.Kernel32.GetSystemCpuSetInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemCpuSetInformation)  
+[GetSystemDefaultLangID](http://msdn2.microsoft.com/en-us/library/dd318120) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetSystemDefaultLangID](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemDefaultLangID)  
+[GetSystemDefaultLCID](http://msdn2.microsoft.com/en-us/library/dd318121) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetSystemDefaultLCID](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemDefaultLCID)  
+[GetSystemDefaultLocaleName](http://msdn2.microsoft.com/en-us/library/dd318122) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetSystemDefaultLocaleName](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemDefaultLocaleName)  
+[GetSystemDefaultUILanguage](http://msdn2.microsoft.com/en-us/library/dd318123) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetSystemDefaultUILanguage](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemDefaultUILanguage)  
+[GetSystemDEPPolicy](http://msdn2.microsoft.com/en-us/library/82cb1d4e-c0e5-4601-aa55-9171a106c286) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetSystemDEPPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemDEPPolicy)  
+[GetSystemDirectory](http://msdn2.microsoft.com/en-us/library/ms724373) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetSystemDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemDirectory)  
+[GetSystemFileCacheSize](http://msdn2.microsoft.com/en-us/library/aa965224) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetSystemFileCacheSize](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemFileCacheSize)  
+[GetSystemFirmwareTable](http://msdn2.microsoft.com/en-us/library/ms724379) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetSystemFirmwareTable](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemFirmwareTable)  
+[GetSystemInfo](http://msdn2.microsoft.com/en-us/library/ms724381) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetSystemInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemInfo)  
+[GetSystemPowerStatus](http://msdn2.microsoft.com/en-us/library/aa372693) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetSystemPowerStatus](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemPowerStatus)  
+[GetSystemPreferredUILanguages](http://msdn2.microsoft.com/en-us/library/dd318124) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetSystemPreferredUILanguages](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemPreferredUILanguages)  
+[GetSystemRegistryQuota](http://msdn2.microsoft.com/en-us/library/ms724387) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetSystemRegistryQuota](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemRegistryQuota)  
+[GetSystemTime](http://msdn2.microsoft.com/en-us/library/ms724390) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetSystemTime](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemTime)  
+[GetSystemTimeAdjustment](http://msdn2.microsoft.com/en-us/library/ms724394) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetSystemTimeAdjustment](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemTimeAdjustment)  
+[GetSystemTimeAdjustmentPrecise](http://msdn2.microsoft.com/en-us/library/95EEE23D-01D8-49E1-BA64-49C07E8B1619) | kernelbase.dll | sysinfoapi.h | [Vanara.PInvoke.Kernel32.GetSystemTimeAdjustmentPrecise](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemTimeAdjustmentPrecise)  
+[GetSystemTimeAsFileTime](http://msdn2.microsoft.com/en-us/library/ms724397) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetSystemTimeAsFileTime](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemTimeAsFileTime)  
+[GetSystemTimePreciseAsFileTime](http://msdn2.microsoft.com/en-us/library/hh706895) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetSystemTimePreciseAsFileTime](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemTimePreciseAsFileTime)  
+[GetSystemTimes](http://msdn2.microsoft.com/en-us/library/ms724400) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetSystemTimes](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemTimes)  
+[GetSystemWindowsDirectory](http://msdn2.microsoft.com/en-us/library/ms724403) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetSystemWindowsDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemWindowsDirectory)  
+[GetSystemWow64Directory](http://msdn2.microsoft.com/en-us/library/ms724405) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetSystemWow64Directory](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemWow64Directory)  
+[GetSystemWow64Directory2](http://msdn2.microsoft.com/en-us/library/mt804319) | kernelbase.dll | Wow64apiset.h | [Vanara.PInvoke.Kernel32.GetSystemWow64Directory2](https://github.com/dahall/Vanara/search?l=C%23&q=GetSystemWow64Directory2)  
+[GetTapeParameters](http://msdn2.microsoft.com/en-us/library/aa362526) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetTapeParameters](https://github.com/dahall/Vanara/search?l=C%23&q=GetTapeParameters)  
+[GetTapePosition](http://msdn2.microsoft.com/en-us/library/aa362528) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetTapePosition](https://github.com/dahall/Vanara/search?l=C%23&q=GetTapePosition)  
+[GetTapeStatus](http://msdn2.microsoft.com/en-us/library/aa362530) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetTapeStatus](https://github.com/dahall/Vanara/search?l=C%23&q=GetTapeStatus)  
+[GetTempFileName](http://msdn2.microsoft.com/en-us/library/0a30055f-a3b9-439f-9304-40ee8a07b967) | kernel32.dll | fileapi.h | [Vanara.PInvoke.Kernel32.GetTempFileName](https://github.com/dahall/Vanara/search?l=C%23&q=GetTempFileName)  
+[GetTempPath](http://msdn2.microsoft.com/en-us/library/aa364992) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetTempPath](https://github.com/dahall/Vanara/search?l=C%23&q=GetTempPath)  
+[GetThreadContext](http://msdn2.microsoft.com/en-us/library/ms679362) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetThreadContext](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadContext)  
+[GetThreadDescription](http://msdn2.microsoft.com/en-us/library/9CFF0A2D-2196-4AE0-8F77-229A8AB7A3E8) | kernel32.dll | processthreadsapi.h | [Vanara.PInvoke.Kernel32.GetThreadDescription](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadDescription)  
+[GetThreadErrorMode](http://msdn2.microsoft.com/en-us/library/246d838a-ba16-4ba4-8cd3-f25dfc7d2f23) | kernel32.dll | errhandlingapi.h | [Vanara.PInvoke.Kernel32.GetThreadErrorMode](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadErrorMode)  
+[GetThreadGroupAffinity](http://msdn2.microsoft.com/en-us/library/effc75be-60da-43cc-bfb3-5fb905e1404d) | kernel32.dll | processtopologyapi.h | [Vanara.PInvoke.Kernel32.GetThreadGroupAffinity](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadGroupAffinity)  
+[GetThreadId](http://msdn2.microsoft.com/en-us/library/ms683233) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetThreadId](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadId)  
+[GetThreadIdealProcessorEx](http://msdn2.microsoft.com/en-us/library/dd405499) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetThreadIdealProcessorEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadIdealProcessorEx)  
+[GetThreadInformation](http://msdn2.microsoft.com/en-us/library/hh448382) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetThreadInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadInformation)  
+[GetThreadIOPendingFlag](http://msdn2.microsoft.com/en-us/library/ms683234) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetThreadIOPendingFlag](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadIOPendingFlag)  
+[GetThreadLocale](http://msdn2.microsoft.com/en-us/library/dd318127) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetThreadLocale](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadLocale)  
+[GetThreadPreferredUILanguages](http://msdn2.microsoft.com/en-us/library/dd318128) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetThreadPreferredUILanguages](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadPreferredUILanguages)  
+[GetThreadPriority](http://msdn2.microsoft.com/en-us/library/ms683235) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetThreadPriority](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadPriority)  
+[GetThreadPriorityBoost](http://msdn2.microsoft.com/en-us/library/ms683236) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetThreadPriorityBoost](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadPriorityBoost)  
+[GetThreadSelectedCpuSets](http://msdn2.microsoft.com/en-us/library/mt186426) | kernel32.dll | Processthreadapi.h | [Vanara.PInvoke.Kernel32.GetThreadSelectedCpuSets](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadSelectedCpuSets)  
+[GetThreadSelectorEntry](http://msdn2.microsoft.com/en-us/library/ms679363) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetThreadSelectorEntry](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadSelectorEntry)  
+[GetThreadTimes](http://msdn2.microsoft.com/en-us/library/ms683237) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetThreadTimes](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadTimes)  
+[GetThreadUILanguage](http://msdn2.microsoft.com/en-us/library/dd318129) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetThreadUILanguage](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadUILanguage)  
+[GetTickCount](http://msdn2.microsoft.com/en-us/library/ms724408) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetTickCount](https://github.com/dahall/Vanara/search?l=C%23&q=GetTickCount)  
+[GetTickCount64](http://msdn2.microsoft.com/en-us/library/ms724411) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetTickCount64](https://github.com/dahall/Vanara/search?l=C%23&q=GetTickCount64)  
+[GetTimeFormat](http://msdn2.microsoft.com/en-us/library/3db91d29-df97-4660-b3cd-0db5b42cfd01) | kernel32.dll | datetimeapi.h | [Vanara.PInvoke.Kernel32.GetTimeFormat](https://github.com/dahall/Vanara/search?l=C%23&q=GetTimeFormat)  
+[GetTimeFormatEx](http://msdn2.microsoft.com/en-us/library/4d63888e-4496-4315-ac87-bf60c54daa37) | kernel32.dll | datetimeapi.h | [Vanara.PInvoke.Kernel32.GetTimeFormatEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetTimeFormatEx)  
+[GetTimeZoneInformation](http://msdn2.microsoft.com/en-us/library/ms724421) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetTimeZoneInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetTimeZoneInformation)  
+[GetTimeZoneInformationForYear](http://msdn2.microsoft.com/en-us/library/5bd29a25-98f0-439e-be88-8011bbf98926) | kernel32.dll | timezoneapi.h | [Vanara.PInvoke.Kernel32.GetTimeZoneInformationForYear](https://github.com/dahall/Vanara/search?l=C%23&q=GetTimeZoneInformationForYear)  
+[GetUILanguageInfo](http://msdn2.microsoft.com/en-us/library/dd318133) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetUILanguageInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetUILanguageInfo)  
+[GetUmsCompletionListEvent](http://msdn2.microsoft.com/en-us/library/393f6e0a-fbea-4aa0-9c18-f96da18e61e9) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetUmsCompletionListEvent](https://github.com/dahall/Vanara/search?l=C%23&q=GetUmsCompletionListEvent)  
+[GetUmsSystemThreadInformation](http://msdn2.microsoft.com/en-us/library/7c8347b6-6546-4ea9-9b2a-11794782f482) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetUmsSystemThreadInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetUmsSystemThreadInformation)  
+[GetUserDefaultGeoName](http://msdn2.microsoft.com/en-us/library/mt826490) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetUserDefaultGeoName](https://github.com/dahall/Vanara/search?l=C%23&q=GetUserDefaultGeoName)  
+[GetUserDefaultLangID](http://msdn2.microsoft.com/en-us/library/dd318134) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetUserDefaultLangID](https://github.com/dahall/Vanara/search?l=C%23&q=GetUserDefaultLangID)  
+[GetUserDefaultLCID](http://msdn2.microsoft.com/en-us/library/dd318135) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetUserDefaultLCID](https://github.com/dahall/Vanara/search?l=C%23&q=GetUserDefaultLCID)  
+[GetUserDefaultLocaleName](http://msdn2.microsoft.com/en-us/library/dd318136) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetUserDefaultLocaleName](https://github.com/dahall/Vanara/search?l=C%23&q=GetUserDefaultLocaleName)  
+[GetUserDefaultUILanguage](http://msdn2.microsoft.com/en-us/library/dd318137) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetUserDefaultUILanguage](https://github.com/dahall/Vanara/search?l=C%23&q=GetUserDefaultUILanguage)  
+[GetUserGeoID](http://msdn2.microsoft.com/en-us/library/dd318138) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetUserGeoID](https://github.com/dahall/Vanara/search?l=C%23&q=GetUserGeoID)  
+[GetUserPreferredUILanguages](http://msdn2.microsoft.com/en-us/library/dd318139) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.GetUserPreferredUILanguages](https://github.com/dahall/Vanara/search?l=C%23&q=GetUserPreferredUILanguages)  
+[GetVersion](http://msdn2.microsoft.com/en-us/library/ms724439) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetVersion](https://github.com/dahall/Vanara/search?l=C%23&q=GetVersion)  
+[GetVersionEx](http://msdn2.microsoft.com/en-us/library/ms724451) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetVersionEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetVersionEx)  
+[GetVolumeInformation](http://msdn2.microsoft.com/en-us/library/aa364993) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetVolumeInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetVolumeInformation)  
+[GetVolumeInformationByHandleW](http://msdn2.microsoft.com/en-us/library/aa964920) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetVolumeInformationByHandleW](https://github.com/dahall/Vanara/search?l=C%23&q=GetVolumeInformationByHandleW)  
+[GetVolumeNameForVolumeMountPoint](http://msdn2.microsoft.com/en-us/library/aa364994) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetVolumeNameForVolumeMountPoint](https://github.com/dahall/Vanara/search?l=C%23&q=GetVolumeNameForVolumeMountPoint)  
+[GetVolumePathName](http://msdn2.microsoft.com/en-us/library/aa364996) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetVolumePathName](https://github.com/dahall/Vanara/search?l=C%23&q=GetVolumePathName)  
+[GetVolumePathNamesForVolumeName](http://msdn2.microsoft.com/en-us/library/aa364998) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetVolumePathNamesForVolumeName](https://github.com/dahall/Vanara/search?l=C%23&q=GetVolumePathNamesForVolumeName)  
+[GetWindowsDirectory](http://msdn2.microsoft.com/en-us/library/ms724454) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetWindowsDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=GetWindowsDirectory)  
+[GetWriteWatch](http://msdn2.microsoft.com/en-us/library/aa366573) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetWriteWatch](https://github.com/dahall/Vanara/search?l=C%23&q=GetWriteWatch)  
+[GetWsChanges](http://msdn2.microsoft.com/en-us/library/ace5106c-9c7b-4d5f-a69a-c3a8bff0bb2d) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetWsChanges](https://github.com/dahall/Vanara/search?l=C%23&q=GetWsChanges)  
+[GetWsChangesExA](http://msdn2.microsoft.com/en-us/library/8572db5c-2ffc-424f-8cec-b6a6902fed62) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetWsChangesEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetWsChangesEx)  
+[GetWsChangesExW](http://msdn2.microsoft.com/en-us/library/8572db5c-2ffc-424f-8cec-b6a6902fed62) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetWsChangesEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetWsChangesEx)  
+[GetXStateFeaturesMask](http://msdn2.microsoft.com/en-us/library/D9A8D0B6-21E3-46B7-AB88-CE2FF4025A17) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetXStateFeaturesMask](https://github.com/dahall/Vanara/search?l=C%23&q=GetXStateFeaturesMask)  
+[GlobalAddAtom](http://msdn2.microsoft.com/en-us/library/ms649060) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GlobalAddAtom](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalAddAtom)  
+[GlobalAddAtomEx](http://msdn2.microsoft.com/en-us/library/dn764994) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GlobalAddAtomEx](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalAddAtomEx)  
+[GlobalAlloc](http://msdn2.microsoft.com/en-us/library/aa366574) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GlobalAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalAlloc)  
+[GlobalDeleteAtom](http://msdn2.microsoft.com/en-us/library/ms649061) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GlobalDeleteAtom](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalDeleteAtom)  
+[GlobalFindAtom](http://msdn2.microsoft.com/en-us/library/ms649062) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GlobalFindAtom](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalFindAtom)  
+[GlobalFlags](http://msdn2.microsoft.com/en-us/library/aa366577) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GlobalFlags](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalFlags)  
+[GlobalFree](http://msdn2.microsoft.com/en-us/library/aa366579) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GlobalFree](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalFree)  
+[GlobalGetAtomName](http://msdn2.microsoft.com/en-us/library/ms649063) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GlobalGetAtomName](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalGetAtomName)  
+[GlobalHandle](http://msdn2.microsoft.com/en-us/library/aa366582) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GlobalHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalHandle)  
+[GlobalLock](http://msdn2.microsoft.com/en-us/library/0d7deac2-c9c4-4adc-8a0a-edfc512a4d6c) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GlobalLock](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalLock)  
+[GlobalMemoryStatus](http://msdn2.microsoft.com/en-us/library/aa366586) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GlobalMemoryStatus](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalMemoryStatus)  
+[GlobalMemoryStatusEx](http://msdn2.microsoft.com/en-us/library/aa366589) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GlobalMemoryStatusEx](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalMemoryStatusEx)  
+[GlobalReAlloc](http://msdn2.microsoft.com/en-us/library/aa366590) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GlobalReAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalReAlloc)  
+[GlobalSize](http://msdn2.microsoft.com/en-us/library/aa366593) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GlobalSize](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalSize)  
+[GlobalUnlock](http://msdn2.microsoft.com/en-us/library/580a2873-7f06-47a1-acf5-c2b3c96e15e7) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GlobalUnlock](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalUnlock)  
+[Heap32First](http://msdn2.microsoft.com/en-us/library/79d01e3a-b11b-46b5-99d0-b445000288a7) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Heap32First](https://github.com/dahall/Vanara/search?l=C%23&q=Heap32First)  
+[Heap32ListFirst](http://msdn2.microsoft.com/en-us/library/b9a2992b-0dc1-41c3-aa23-796def674831) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Heap32ListFirst](https://github.com/dahall/Vanara/search?l=C%23&q=Heap32ListFirst)  
+[Heap32ListNext](http://msdn2.microsoft.com/en-us/library/bb4d573c-a82f-48ac-be22-440d6a1d0c9c) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Heap32ListNext](https://github.com/dahall/Vanara/search?l=C%23&q=Heap32ListNext)  
+[Heap32Next](http://msdn2.microsoft.com/en-us/library/cc3becd0-edba-47cf-ac2d-26a5d98390e7) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Heap32Next](https://github.com/dahall/Vanara/search?l=C%23&q=Heap32Next)  
+[HeapAlloc](https://www.google.com/search?num=5&q=HeapAlloc+site%3Amicrosoft.com) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.HeapAllocInternal](https://github.com/dahall/Vanara/search?l=C%23&q=HeapAllocInternal)  
+[HeapCompact](http://msdn2.microsoft.com/en-us/library/792ec16f-d6b0-4afd-a832-29fe12b25058) | kernel32.dll | heapapi.h | [Vanara.PInvoke.Kernel32.HeapCompact](https://github.com/dahall/Vanara/search?l=C%23&q=HeapCompact)  
+[HeapCreate](http://msdn2.microsoft.com/en-us/library/aa366599) | kernel32.dll | HeapApi.h | [Vanara.PInvoke.Kernel32.HeapCreate](https://github.com/dahall/Vanara/search?l=C%23&q=HeapCreate)  
+[HeapDestroy](http://msdn2.microsoft.com/en-us/library/aa366700) | kernel32.dll | HeapApi.h | [Vanara.PInvoke.Kernel32.HeapDestroy](https://github.com/dahall/Vanara/search?l=C%23&q=HeapDestroy)  
+[HeapFree](http://msdn2.microsoft.com/en-us/library/aa366701) | kernel32.dll | HeapApi.h | [Vanara.PInvoke.Kernel32.HeapFree](https://github.com/dahall/Vanara/search?l=C%23&q=HeapFree)  
+[HeapLock](http://msdn2.microsoft.com/en-us/library/bc01b82d-ef10-40d7-af82-e599ba825944) | kernel32.dll | heapapi.h | [Vanara.PInvoke.Kernel32.HeapLock](https://github.com/dahall/Vanara/search?l=C%23&q=HeapLock)  
+[HeapQueryInformation](http://msdn2.microsoft.com/en-us/library/6bf6cb8b-7212-4ddb-9ea6-34bc78824a8f) | kernel32.dll | heapapi.h | [Vanara.PInvoke.Kernel32.HeapQueryInformation](https://github.com/dahall/Vanara/search?l=C%23&q=HeapQueryInformation)  
+[HeapReAlloc](https://www.google.com/search?num=5&q=HeapReAlloc+site%3Amicrosoft.com) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.HeapReAllocInternal](https://github.com/dahall/Vanara/search?l=C%23&q=HeapReAllocInternal)  
+[HeapSetInformation](http://msdn2.microsoft.com/en-us/library/33c262ca-5093-4f44-a8c6-09045bc90f60) | kernel32.dll | heapapi.h | [Vanara.PInvoke.Kernel32.HeapSetInformation](https://github.com/dahall/Vanara/search?l=C%23&q=HeapSetInformation)  
+[HeapSize](http://msdn2.microsoft.com/en-us/library/a8fcfd99-7b04-4aa3-8619-272b254551a3) | kernel32.dll | heapapi.h | [Vanara.PInvoke.Kernel32.HeapSize](https://github.com/dahall/Vanara/search?l=C%23&q=HeapSize)  
+[HeapSummary](https://www.google.com/search?num=5&q=HeapSummary+site%3Amicrosoft.com) | kernel32.dll | HeapApi.h | [Vanara.PInvoke.Kernel32.HeapSummary](https://github.com/dahall/Vanara/search?l=C%23&q=HeapSummary)  
+[HeapUnlock](http://msdn2.microsoft.com/en-us/library/aa366707) | kernel32.dll | HeapApi.h | [Vanara.PInvoke.Kernel32.HeapUnlock](https://github.com/dahall/Vanara/search?l=C%23&q=HeapUnlock)  
+[HeapValidate](http://msdn2.microsoft.com/en-us/library/aa366708) | kernel32.dll | HeapApi.h | [Vanara.PInvoke.Kernel32.HeapValidate](https://github.com/dahall/Vanara/search?l=C%23&q=HeapValidate)  
+[HeapWalk](http://msdn2.microsoft.com/en-us/library/aa366710) | kernel32.dll | HeapApi.h | [Vanara.PInvoke.Kernel32.HeapWalk](https://github.com/dahall/Vanara/search?l=C%23&q=HeapWalk)  
+[IdnToAscii](http://msdn2.microsoft.com/en-us/library/dd318149) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IdnToAscii](https://github.com/dahall/Vanara/search?l=C%23&q=IdnToAscii)  
+[IdnToNameprepUnicode](http://msdn2.microsoft.com/en-us/library/dd318150) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IdnToNameprepUnicode](https://github.com/dahall/Vanara/search?l=C%23&q=IdnToNameprepUnicode)  
+[IdnToUnicode](http://msdn2.microsoft.com/en-us/library/dd318151) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IdnToUnicode](https://github.com/dahall/Vanara/search?l=C%23&q=IdnToUnicode)  
+[InitAtomTable](http://msdn2.microsoft.com/en-us/library/ms649064) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.InitAtomTable](https://github.com/dahall/Vanara/search?l=C%23&q=InitAtomTable)  
+[InitializeConditionVariable](http://msdn2.microsoft.com/en-us/library/ms683469) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InitializeConditionVariable](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeConditionVariable)  
+[InitializeContext](http://msdn2.microsoft.com/en-us/library/909BF5F7-0622-4B22-A2EC-27722389700A) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.InitializeContext](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeContext)  
+[InitializeCriticalSection](http://msdn2.microsoft.com/en-us/library/ms683472) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InitializeCriticalSection](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeCriticalSection)  
+[InitializeCriticalSectionAndSpinCount](http://msdn2.microsoft.com/en-us/library/ms683476) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InitializeCriticalSectionAndSpinCount](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeCriticalSectionAndSpinCount)  
+[InitializeCriticalSectionEx](http://msdn2.microsoft.com/en-us/library/da84b187-0eb7-4363-8e68-8a525586d7d9) | kernel32.dll | synchapi.h | [Vanara.PInvoke.Kernel32.InitializeCriticalSectionEx](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeCriticalSectionEx)  
+[InitializeEnclave](http://msdn2.microsoft.com/en-us/library/mt592869) | kernel32.dll | Enclaveapi.h | [Vanara.PInvoke.Kernel32.InitializeEnclave](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeEnclave)  
+[InitializeProcessForWsWatchA](http://msdn2.microsoft.com/en-us/library/c928656c-a59d-41b5-9434-911329b0278e) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.InitializeProcessForWsWatch](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeProcessForWsWatch)  
+[InitializeProcessForWsWatchW](http://msdn2.microsoft.com/en-us/library/c928656c-a59d-41b5-9434-911329b0278e) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.InitializeProcessForWsWatch](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeProcessForWsWatch)  
+[InitializeProcThreadAttributeList](http://msdn2.microsoft.com/en-us/library/ms683481) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InitializeProcThreadAttributeList](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeProcThreadAttributeList)  
+[InitializeSListHead](http://msdn2.microsoft.com/en-us/library/4e34f947-1687-4ea9-aaa1-8d8dc11dad70) | kernel32.dll | interlockedapi.h | [Vanara.PInvoke.Kernel32.InitializeSListHead](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeSListHead)  
+[InitializeSRWLock](http://msdn2.microsoft.com/en-us/library/ms683483) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InitializeSRWLock](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeSRWLock)  
+[InitializeSynchronizationBarrier](http://msdn2.microsoft.com/en-us/library/hh706890) | kernel32.dll | SynchAPI.h | [Vanara.PInvoke.Kernel32.InitializeSynchronizationBarrier](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeSynchronizationBarrier)  
+[InitOnceBeginInitialize](http://msdn2.microsoft.com/en-us/library/ms683487) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InitOnceBeginInitialize](https://github.com/dahall/Vanara/search?l=C%23&q=InitOnceBeginInitialize)  
+[InitOnceComplete](http://msdn2.microsoft.com/en-us/library/ms683491) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InitOnceComplete](https://github.com/dahall/Vanara/search?l=C%23&q=InitOnceComplete)  
+[InitOnceExecuteOnce](http://msdn2.microsoft.com/en-us/library/ms683493) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InitOnceExecuteOnce](https://github.com/dahall/Vanara/search?l=C%23&q=InitOnceExecuteOnce)  
+[InitOnceInitialize](http://msdn2.microsoft.com/en-us/library/ms683495) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InitOnceInitialize](https://github.com/dahall/Vanara/search?l=C%23&q=InitOnceInitialize)  
+[InstallELAMCertificateInfo](http://msdn2.microsoft.com/en-us/library/dn369255) | kernel32.dll | Windows.h | [Vanara.PInvoke.Kernel32.InstallELAMCertificateInfo](https://github.com/dahall/Vanara/search?l=C%23&q=InstallELAMCertificateInfo)  
+[InterlockedFlushSList](http://msdn2.microsoft.com/en-us/library/3fde3377-8a98-4976-a350-2c173b209e8c) | kernel32.dll | interlockedapi.h | [Vanara.PInvoke.Kernel32.InterlockedFlushSList](https://github.com/dahall/Vanara/search?l=C%23&q=InterlockedFlushSList)  
+[InterlockedPopEntrySList](http://msdn2.microsoft.com/en-us/library/10760fd4-5973-4ab0-991c-7a5951c798a4) | kernel32.dll | interlockedapi.h | [Vanara.PInvoke.Kernel32.InterlockedPopEntrySList](https://github.com/dahall/Vanara/search?l=C%23&q=InterlockedPopEntrySList)  
+[InterlockedPushEntrySList](http://msdn2.microsoft.com/en-us/library/60e3b6f7-f556-4699-be90-db7330cfb8ca) | kernel32.dll | interlockedapi.h | [Vanara.PInvoke.Kernel32.InterlockedPushEntrySList](https://github.com/dahall/Vanara/search?l=C%23&q=InterlockedPushEntrySList)  
+[InterlockedPushListSList](http://msdn2.microsoft.com/en-us/library/hh448545) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.InterlockedPushListSList](https://github.com/dahall/Vanara/search?l=C%23&q=InterlockedPushListSList)  
+[InterlockedPushListSListEx](http://msdn2.microsoft.com/en-us/library/f4f334c6-fda8-4c5f-9177-b672c8aed6b3) | kernel32.dll | interlockedapi.h | [Vanara.PInvoke.Kernel32.InterlockedPushListSListEx](https://github.com/dahall/Vanara/search?l=C%23&q=InterlockedPushListSListEx)  
+[IsBadCodePtr](http://msdn2.microsoft.com/en-us/library/aa366712) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsBadCodePtr](https://github.com/dahall/Vanara/search?l=C%23&q=IsBadCodePtr)  
+[IsBadReadPtr](http://msdn2.microsoft.com/en-us/library/aa366713) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsBadReadPtr](https://github.com/dahall/Vanara/search?l=C%23&q=IsBadReadPtr)  
+[IsBadStringPtr](http://msdn2.microsoft.com/en-us/library/aa366714) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsBadStringPtr](https://github.com/dahall/Vanara/search?l=C%23&q=IsBadStringPtr)  
+[IsBadWritePtr](http://msdn2.microsoft.com/en-us/library/aa366716) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsBadWritePtr](https://github.com/dahall/Vanara/search?l=C%23&q=IsBadWritePtr)  
+[IsDBCSLeadByte](http://msdn2.microsoft.com/en-us/library/dd318664) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsDBCSLeadByte](https://github.com/dahall/Vanara/search?l=C%23&q=IsDBCSLeadByte)  
+[IsDBCSLeadByteEx](http://msdn2.microsoft.com/en-us/library/dd318667) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsDBCSLeadByteEx](https://github.com/dahall/Vanara/search?l=C%23&q=IsDBCSLeadByteEx)  
+[IsDebuggerPresent](http://msdn2.microsoft.com/en-us/library/ms680345) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsDebuggerPresent](https://github.com/dahall/Vanara/search?l=C%23&q=IsDebuggerPresent)  
+[IsEnclaveTypeSupported](http://msdn2.microsoft.com/en-us/library/mt592870) | kernel32.dll | Enclaveapi.h | [Vanara.PInvoke.Kernel32.IsEnclaveTypeSupported](https://github.com/dahall/Vanara/search?l=C%23&q=IsEnclaveTypeSupported)  
+[IsNativeVhdBoot](http://msdn2.microsoft.com/en-us/library/8198D4AF-553D-42B3-AF22-EC2C63C0E9AE) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.IsNativeVhdBoot](https://github.com/dahall/Vanara/search?l=C%23&q=IsNativeVhdBoot)  
+[IsNLSDefinedString](http://msdn2.microsoft.com/en-us/library/dd318669) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsNLSDefinedString](https://github.com/dahall/Vanara/search?l=C%23&q=IsNLSDefinedString)  
+[IsNormalizedString](http://msdn2.microsoft.com/en-us/library/dd318671) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsNormalizedString](https://github.com/dahall/Vanara/search?l=C%23&q=IsNormalizedString)  
+[IsProcessCritical](http://msdn2.microsoft.com/en-us/library/dn386160) | kernel32.dll | Processthreadsapi.h | [Vanara.PInvoke.Kernel32.IsProcessCritical](https://github.com/dahall/Vanara/search?l=C%23&q=IsProcessCritical)  
+[IsProcessInJob](http://msdn2.microsoft.com/en-us/library/ms684127) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsProcessInJob](https://github.com/dahall/Vanara/search?l=C%23&q=IsProcessInJob)  
+[IsProcessorFeaturePresent](http://msdn2.microsoft.com/en-us/library/ms724482) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.IsProcessorFeaturePresent](https://github.com/dahall/Vanara/search?l=C%23&q=IsProcessorFeaturePresent)  
+[IsSystemResumeAutomatic](http://msdn2.microsoft.com/en-us/library/aa372708) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.IsSystemResumeAutomatic](https://github.com/dahall/Vanara/search?l=C%23&q=IsSystemResumeAutomatic)  
+[IsThreadAFiber](http://msdn2.microsoft.com/en-us/library/ms684131) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsThreadAFiber](https://github.com/dahall/Vanara/search?l=C%23&q=IsThreadAFiber)  
+[IsThreadpoolTimerSet](http://msdn2.microsoft.com/en-us/library/ms684133) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsThreadpoolTimerSet](https://github.com/dahall/Vanara/search?l=C%23&q=IsThreadpoolTimerSet)  
+[IsValidCodePage](http://msdn2.microsoft.com/en-us/library/dd318674) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsValidCodePage](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidCodePage)  
+[IsValidLanguageGroup](http://msdn2.microsoft.com/en-us/library/dd318677) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsValidLanguageGroup](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidLanguageGroup)  
+[IsValidLocale](http://msdn2.microsoft.com/en-us/library/dd318679) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsValidLocale](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidLocale)  
+[IsValidLocaleName](http://msdn2.microsoft.com/en-us/library/dd318681) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsValidLocaleName](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidLocaleName)  
+[IsValidNLSVersion](http://msdn2.microsoft.com/en-us/library/hh706739) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsValidNLSVersion](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidNLSVersion)  
+[IsWow64GuestMachineSupported](http://msdn2.microsoft.com/en-us/library/mt804321) | kernel32.dll | Wow64apiset.h | [Vanara.PInvoke.Kernel32.IsWow64GuestMachineSupported](https://github.com/dahall/Vanara/search?l=C%23&q=IsWow64GuestMachineSupported)  
+[IsWow64Process](http://msdn2.microsoft.com/en-us/library/ms684139) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsWow64Process](https://github.com/dahall/Vanara/search?l=C%23&q=IsWow64Process)  
+[IsWow64Process2](http://msdn2.microsoft.com/en-us/library/mt804318) | kernel32.dll | Wow64apiset.h | [Vanara.PInvoke.Kernel32.IsWow64Process2](https://github.com/dahall/Vanara/search?l=C%23&q=IsWow64Process2)  
 [KiUserExceptionDispatcher](https://www.google.com/search?num=5&q=KiUserExceptionDispatcher+site%3Amicrosoft.com) | vertdll.dll |  |   
-[LCIDToLocaleName](http://msdn2.microsoft.com/en-us/library/dd318698) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.LCIDToLocaleName  
-[LCMapString](http://msdn2.microsoft.com/en-us/library/dd318700) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.LCMapString  
-[LCMapStringEx](http://msdn2.microsoft.com/en-us/library/dd318702) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.LCMapStringEx  
+[LCIDToLocaleName](http://msdn2.microsoft.com/en-us/library/dd318698) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.LCIDToLocaleName](https://github.com/dahall/Vanara/search?l=C%23&q=LCIDToLocaleName)  
+[LCMapString](http://msdn2.microsoft.com/en-us/library/dd318700) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.LCMapString](https://github.com/dahall/Vanara/search?l=C%23&q=LCMapString)  
+[LCMapStringEx](http://msdn2.microsoft.com/en-us/library/dd318702) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.LCMapStringEx](https://github.com/dahall/Vanara/search?l=C%23&q=LCMapStringEx)  
 [LdrDisableThreadCalloutsForDll](https://www.google.com/search?num=5&q=LdrDisableThreadCalloutsForDll+site%3Amicrosoft.com) | vertdll.dll |  |   
 [LdrResolveDelayLoadedAPI](https://www.google.com/search?num=5&q=LdrResolveDelayLoadedAPI+site%3Amicrosoft.com) | vertdll.dll |  |   
-[LeaveCriticalSection](http://msdn2.microsoft.com/en-us/library/ms684169) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.LeaveCriticalSection  
-[LeaveCriticalSectionWhenCallbackReturns](http://msdn2.microsoft.com/en-us/library/ms684171) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.LeaveCriticalSectionWhenCallbackReturns  
-[LoadEnclaveData](http://msdn2.microsoft.com/en-us/library/mt592871) | kernel32.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.LoadEnclaveData  
-[LoadEnclaveImage](http://msdn2.microsoft.com/en-us/library/mt844248) | kernelbase.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.LoadEnclaveImage  
-[LoadLibrary](http://msdn2.microsoft.com/en-us/library/ms684175) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.LoadLibrary  
-[LoadLibraryEx](http://msdn2.microsoft.com/en-us/library/ms684179) | kernel32.dll | LibLoaderAPI.h | Vanara.PInvoke.Kernel32.LoadLibraryEx  
-[LoadModule](http://msdn2.microsoft.com/en-us/library/80571b80-851a-4272-bfa6-d26e217e714a) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.LoadModule  
-[LoadPackagedLibrary](http://msdn2.microsoft.com/en-us/library/4a103753-a2c9-487f-b797-01d5f5d489f3) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.LoadPackagedLibrary  
-[LoadResource](http://msdn2.microsoft.com/en-us/library/ms648046) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.LoadResource  
-[LoadStringByReference](http://msdn2.microsoft.com/en-us/library/4E0470ED-512F-4B76-A3E4-31C8B269CD5C) | kernelbase.dll | winnls.h | Vanara.PInvoke.Kernel32.LoadStringByReference  
-[LocalAlloc](http://msdn2.microsoft.com/en-us/library/da8cd2be-ff4c-4da5-813c-8759a58228c9) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.LocalAlloc  
-[LocaleNameToLCID](http://msdn2.microsoft.com/en-us/library/dd318711) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.LocaleNameToLCID  
-[LocalFileTimeToFileTime](http://msdn2.microsoft.com/en-us/library/ms724490) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.LocalFileTimeToFileTime  
-[LocalFlags](http://msdn2.microsoft.com/en-us/library/aa366728) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.LocalFlags  
-[LocalFree](http://msdn2.microsoft.com/en-us/library/a0393983-cb43-4dfa-91a6-d82a5fb8de12) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.LocalFree  
-[LocalHandle](http://msdn2.microsoft.com/en-us/library/aa366733) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.LocalHandle  
-[LocalLock](http://msdn2.microsoft.com/en-us/library/aa366737) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.LocalLock  
-[LocalReAlloc](http://msdn2.microsoft.com/en-us/library/88527ddd-e0c2-4a41-825e-d3a6df77fd2a) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.LocalReAlloc  
-[LocalSize](http://msdn2.microsoft.com/en-us/library/d1337845-d89c-4cd5-a584-36fe0c682c1a) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.LocalSize  
-[LocalUnlock](http://msdn2.microsoft.com/en-us/library/aa366747) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.LocalUnlock  
-[LocateXStateFeature](http://msdn2.microsoft.com/en-us/library/7AAEA13B-E4A4-4410-BFC7-09B81B92FF26) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.LocateXStateFeature  
-[LockFile](http://msdn2.microsoft.com/en-us/library/c88e7b6c-c339-443b-adf9-0325807203dc) | kernel32.dll | fileapi.h | Vanara.PInvoke.Kernel32.LockFile  
-[LockFileEx](http://msdn2.microsoft.com/en-us/library/aa365203) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.LockFileEx  
-[LockResource](http://msdn2.microsoft.com/en-us/library/ms648047) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.LockResource  
-[lstrcmp](https://www.google.com/search?num=5&q=lstrcmp+site%3Amicrosoft.com) | kernelbase.dll | winbase.h | Vanara.PInvoke.Kernel32.lstrcmp  
-[lstrcmpi](https://www.google.com/search?num=5&q=lstrcmpi+site%3Amicrosoft.com) | kernelbase.dll | winbase.h | Vanara.PInvoke.Kernel32.lstrcmpi  
-[lstrcpyn](https://www.google.com/search?num=5&q=lstrcpyn+site%3Amicrosoft.com) | kernelbase.dll | winbase.h | Vanara.PInvoke.Kernel32.lstrcpyn  
-[lstrlen](https://www.google.com/search?num=5&q=lstrlen+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.lstrlen  
-[MapUserPhysicalPages](http://msdn2.microsoft.com/en-us/library/aa366753) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapUserPhysicalPages  
-[MapUserPhysicalPagesScatter](http://msdn2.microsoft.com/en-us/library/aa366755) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapUserPhysicalPagesScatter  
-[MapViewOfFile](http://msdn2.microsoft.com/en-us/library/aa366761) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapViewOfFile  
-[MapViewOfFile3](http://msdn2.microsoft.com/en-us/library/585D7BA1-688F-4F24-8D8D-46A2FC137193) | kernelbase.dll | memoryapi.h | Vanara.PInvoke.Kernel32.MapViewOfFile3  
-[MapViewOfFile3FromApp](http://msdn2.microsoft.com/en-us/library/5E10E1B2-69D9-4F68-8F06-D411CF7FE2ED) | kernelbase.dll | memoryapi.h | Vanara.PInvoke.Kernel32.MapViewOfFile3FromApp  
-[MapViewOfFileEx](http://msdn2.microsoft.com/en-us/library/aa366763) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapViewOfFileEx  
-[MapViewOfFileExNuma](http://msdn2.microsoft.com/en-us/library/1e28c8db-112d-481d-b470-8ca618e125ce) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.MapViewOfFileExNuma  
-[MapViewOfFileFromApp](http://msdn2.microsoft.com/en-us/library/hh994454) | kernel32.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.MapViewOfFileFromApp  
-[MapViewOfFileNuma2](http://msdn2.microsoft.com/en-us/library/mt492558) | kernelbase.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapViewOfFileNuma2  
+[LeaveCriticalSection](http://msdn2.microsoft.com/en-us/library/ms684169) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.LeaveCriticalSection](https://github.com/dahall/Vanara/search?l=C%23&q=LeaveCriticalSection)  
+[LeaveCriticalSectionWhenCallbackReturns](http://msdn2.microsoft.com/en-us/library/ms684171) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.LeaveCriticalSectionWhenCallbackReturns](https://github.com/dahall/Vanara/search?l=C%23&q=LeaveCriticalSectionWhenCallbackReturns)  
+[LoadEnclaveData](http://msdn2.microsoft.com/en-us/library/mt592871) | kernel32.dll | Enclaveapi.h | [Vanara.PInvoke.Kernel32.LoadEnclaveData](https://github.com/dahall/Vanara/search?l=C%23&q=LoadEnclaveData)  
+[LoadEnclaveImage](http://msdn2.microsoft.com/en-us/library/mt844248) | kernelbase.dll | Enclaveapi.h | [Vanara.PInvoke.Kernel32.LoadEnclaveImage](https://github.com/dahall/Vanara/search?l=C%23&q=LoadEnclaveImage)  
+[LoadLibrary](http://msdn2.microsoft.com/en-us/library/ms684175) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.LoadLibrary](https://github.com/dahall/Vanara/search?l=C%23&q=LoadLibrary)  
+[LoadLibraryEx](http://msdn2.microsoft.com/en-us/library/ms684179) | kernel32.dll | LibLoaderAPI.h | [Vanara.PInvoke.Kernel32.LoadLibraryEx](https://github.com/dahall/Vanara/search?l=C%23&q=LoadLibraryEx)  
+[LoadModule](http://msdn2.microsoft.com/en-us/library/80571b80-851a-4272-bfa6-d26e217e714a) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.LoadModule](https://github.com/dahall/Vanara/search?l=C%23&q=LoadModule)  
+[LoadPackagedLibrary](http://msdn2.microsoft.com/en-us/library/4a103753-a2c9-487f-b797-01d5f5d489f3) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.LoadPackagedLibrary](https://github.com/dahall/Vanara/search?l=C%23&q=LoadPackagedLibrary)  
+[LoadResource](http://msdn2.microsoft.com/en-us/library/ms648046) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.LoadResource](https://github.com/dahall/Vanara/search?l=C%23&q=LoadResource)  
+[LoadStringByReference](http://msdn2.microsoft.com/en-us/library/4E0470ED-512F-4B76-A3E4-31C8B269CD5C) | kernelbase.dll | winnls.h | [Vanara.PInvoke.Kernel32.LoadStringByReference](https://github.com/dahall/Vanara/search?l=C%23&q=LoadStringByReference)  
+[LocalAlloc](http://msdn2.microsoft.com/en-us/library/da8cd2be-ff4c-4da5-813c-8759a58228c9) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.LocalAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=LocalAlloc)  
+[LocaleNameToLCID](http://msdn2.microsoft.com/en-us/library/dd318711) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.LocaleNameToLCID](https://github.com/dahall/Vanara/search?l=C%23&q=LocaleNameToLCID)  
+[LocalFileTimeToFileTime](http://msdn2.microsoft.com/en-us/library/ms724490) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.LocalFileTimeToFileTime](https://github.com/dahall/Vanara/search?l=C%23&q=LocalFileTimeToFileTime)  
+[LocalFlags](http://msdn2.microsoft.com/en-us/library/aa366728) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.LocalFlags](https://github.com/dahall/Vanara/search?l=C%23&q=LocalFlags)  
+[LocalFree](http://msdn2.microsoft.com/en-us/library/a0393983-cb43-4dfa-91a6-d82a5fb8de12) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.LocalFree](https://github.com/dahall/Vanara/search?l=C%23&q=LocalFree)  
+[LocalHandle](http://msdn2.microsoft.com/en-us/library/aa366733) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.LocalHandle](https://github.com/dahall/Vanara/search?l=C%23&q=LocalHandle)  
+[LocalLock](http://msdn2.microsoft.com/en-us/library/aa366737) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.LocalLock](https://github.com/dahall/Vanara/search?l=C%23&q=LocalLock)  
+[LocalReAlloc](http://msdn2.microsoft.com/en-us/library/88527ddd-e0c2-4a41-825e-d3a6df77fd2a) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.LocalReAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=LocalReAlloc)  
+[LocalSize](http://msdn2.microsoft.com/en-us/library/d1337845-d89c-4cd5-a584-36fe0c682c1a) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.LocalSize](https://github.com/dahall/Vanara/search?l=C%23&q=LocalSize)  
+[LocalUnlock](http://msdn2.microsoft.com/en-us/library/aa366747) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.LocalUnlock](https://github.com/dahall/Vanara/search?l=C%23&q=LocalUnlock)  
+[LocateXStateFeature](http://msdn2.microsoft.com/en-us/library/7AAEA13B-E4A4-4410-BFC7-09B81B92FF26) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.LocateXStateFeature](https://github.com/dahall/Vanara/search?l=C%23&q=LocateXStateFeature)  
+[LockFile](http://msdn2.microsoft.com/en-us/library/c88e7b6c-c339-443b-adf9-0325807203dc) | kernel32.dll | fileapi.h | [Vanara.PInvoke.Kernel32.LockFile](https://github.com/dahall/Vanara/search?l=C%23&q=LockFile)  
+[LockFileEx](http://msdn2.microsoft.com/en-us/library/aa365203) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.LockFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=LockFileEx)  
+[LockResource](http://msdn2.microsoft.com/en-us/library/ms648047) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.LockResource](https://github.com/dahall/Vanara/search?l=C%23&q=LockResource)  
+[lstrcmp](https://www.google.com/search?num=5&q=lstrcmp+site%3Amicrosoft.com) | kernelbase.dll | winbase.h | [Vanara.PInvoke.Kernel32.lstrcmp](https://github.com/dahall/Vanara/search?l=C%23&q=lstrcmp)  
+[lstrcmpi](https://www.google.com/search?num=5&q=lstrcmpi+site%3Amicrosoft.com) | kernelbase.dll | winbase.h | [Vanara.PInvoke.Kernel32.lstrcmpi](https://github.com/dahall/Vanara/search?l=C%23&q=lstrcmpi)  
+[lstrcpyn](https://www.google.com/search?num=5&q=lstrcpyn+site%3Amicrosoft.com) | kernelbase.dll | winbase.h | [Vanara.PInvoke.Kernel32.lstrcpyn](https://github.com/dahall/Vanara/search?l=C%23&q=lstrcpyn)  
+[lstrlen](https://www.google.com/search?num=5&q=lstrlen+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.lstrlen](https://github.com/dahall/Vanara/search?l=C%23&q=lstrlen)  
+[MapUserPhysicalPages](http://msdn2.microsoft.com/en-us/library/aa366753) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.MapUserPhysicalPages](https://github.com/dahall/Vanara/search?l=C%23&q=MapUserPhysicalPages)  
+[MapUserPhysicalPagesScatter](http://msdn2.microsoft.com/en-us/library/aa366755) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.MapUserPhysicalPagesScatter](https://github.com/dahall/Vanara/search?l=C%23&q=MapUserPhysicalPagesScatter)  
+[MapViewOfFile](http://msdn2.microsoft.com/en-us/library/aa366761) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.MapViewOfFile](https://github.com/dahall/Vanara/search?l=C%23&q=MapViewOfFile)  
+[MapViewOfFile3](http://msdn2.microsoft.com/en-us/library/585D7BA1-688F-4F24-8D8D-46A2FC137193) | kernelbase.dll | memoryapi.h | [Vanara.PInvoke.Kernel32.MapViewOfFile3](https://github.com/dahall/Vanara/search?l=C%23&q=MapViewOfFile3)  
+[MapViewOfFile3FromApp](http://msdn2.microsoft.com/en-us/library/5E10E1B2-69D9-4F68-8F06-D411CF7FE2ED) | kernelbase.dll | memoryapi.h | [Vanara.PInvoke.Kernel32.MapViewOfFile3FromApp](https://github.com/dahall/Vanara/search?l=C%23&q=MapViewOfFile3FromApp)  
+[MapViewOfFileEx](http://msdn2.microsoft.com/en-us/library/aa366763) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.MapViewOfFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=MapViewOfFileEx)  
+[MapViewOfFileExNuma](http://msdn2.microsoft.com/en-us/library/1e28c8db-112d-481d-b470-8ca618e125ce) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.MapViewOfFileExNuma](https://github.com/dahall/Vanara/search?l=C%23&q=MapViewOfFileExNuma)  
+[MapViewOfFileFromApp](http://msdn2.microsoft.com/en-us/library/hh994454) | kernel32.dll | MemoryApi.h | [Vanara.PInvoke.Kernel32.MapViewOfFileFromApp](https://github.com/dahall/Vanara/search?l=C%23&q=MapViewOfFileFromApp)  
+[MapViewOfFileNuma2](http://msdn2.microsoft.com/en-us/library/mt492558) | kernelbase.dll | WinBase.h | [Vanara.PInvoke.Kernel32.MapViewOfFileNuma2](https://github.com/dahall/Vanara/search?l=C%23&q=MapViewOfFileNuma2)  
 [memcmp](https://www.google.com/search?num=5&q=memcmp+site%3Amicrosoft.com) | vertdll.dll |  |   
 [memcpy](https://www.google.com/search?num=5&q=memcpy+site%3Amicrosoft.com) | vertdll.dll |  |   
 [memmove](https://www.google.com/search?num=5&q=memmove+site%3Amicrosoft.com) | vertdll.dll |  |   
 [memset](https://www.google.com/search?num=5&q=memset+site%3Amicrosoft.com) | vertdll.dll |  |   
-[Module32First](http://msdn2.microsoft.com/en-us/library/bb41cab9-13a1-469d-bf76-68c172e982f6) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Module32First  
-[Module32Next](https://www.google.com/search?num=5&q=Module32Next+site%3Amicrosoft.com) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Module32Next  
-[Module32NextA](http://msdn2.microsoft.com/en-us/library/88ec1af4-bae7-4cd7-b830-97a98fb337f4) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Module32Next  
-[MoveFile](http://msdn2.microsoft.com/en-us/library/aa365239) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MoveFile  
-[MoveFileEx](http://msdn2.microsoft.com/en-us/library/aa365240) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MoveFileEx  
-[MoveFileTransacted](http://msdn2.microsoft.com/en-us/library/466d733b-30d2-4297-a0e6-77038f1a21d5) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.MoveFileTransacted  
-[MoveFileWithProgress](http://msdn2.microsoft.com/en-us/library/aa365242) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MoveFileWithProgress  
-[MulDiv](http://msdn2.microsoft.com/en-us/library/aa383718) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.MulDiv  
-[MultiByteToWideChar](http://msdn2.microsoft.com/en-us/library/dd319072) | kernel32.dll | Stringapiset.h | Vanara.PInvoke.Kernel32.MultiByteToWideChar  
-[NeedCurrentDirectoryForExePath](http://msdn2.microsoft.com/en-us/library/ms684269) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.NeedCurrentDirectoryForExePath  
-[NormalizeString](http://msdn2.microsoft.com/en-us/library/dd319093) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.NormalizeString  
-[OfferVirtualMemory](http://msdn2.microsoft.com/en-us/library/dn781436) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OfferVirtualMemory  
-[OpenCommPort](http://msdn2.microsoft.com/en-us/library/D96D3F6D-2158-4E6A-84A8-DC3BAE9624FA) | kernelbase.dll | winbase.h | Vanara.PInvoke.Kernel32.OpenCommPort  
-[OpenEvent](http://msdn2.microsoft.com/en-us/library/ms684305) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenEvent  
-[OpenFile](http://msdn2.microsoft.com/en-us/library/aa365430) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenFile  
-[OpenFileById](http://msdn2.microsoft.com/en-us/library/caa757a2-fc3f-4883-8d3e-b98d28f92517) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.OpenFileById  
-[OpenFileMapping](http://msdn2.microsoft.com/en-us/library/aa366791) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenFileMapping  
-[OpenFileMappingFromApp](http://msdn2.microsoft.com/en-us/library/mt169844) | kernelbase.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.OpenFileMappingFromApp  
-[OpenJobObject](http://msdn2.microsoft.com/en-us/library/ms684312) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenJobObject  
-[OpenMutex](http://msdn2.microsoft.com/en-us/library/ms684315) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenMutex  
-[OpenPackageInfoByFullName](http://msdn2.microsoft.com/en-us/library/9ECFC757-1CB3-43A1-BA45-9AF72CAB240E) | kernelbase.dll | appmodel.h | Vanara.PInvoke.Kernel32.OpenPackageInfoByFullName  
-[OpenPrivateNamespace](http://msdn2.microsoft.com/en-us/library/ms684318) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenPrivateNamespaceInternal  
-[OpenProcess](http://msdn2.microsoft.com/en-us/library/ms684320) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenProcess  
+[Module32First](http://msdn2.microsoft.com/en-us/library/bb41cab9-13a1-469d-bf76-68c172e982f6) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Module32First](https://github.com/dahall/Vanara/search?l=C%23&q=Module32First)  
+[Module32Next](https://www.google.com/search?num=5&q=Module32Next+site%3Amicrosoft.com) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Module32Next](https://github.com/dahall/Vanara/search?l=C%23&q=Module32Next)  
+[Module32NextA](http://msdn2.microsoft.com/en-us/library/88ec1af4-bae7-4cd7-b830-97a98fb337f4) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Module32Next](https://github.com/dahall/Vanara/search?l=C%23&q=Module32Next)  
+[MoveFile](http://msdn2.microsoft.com/en-us/library/aa365239) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.MoveFile](https://github.com/dahall/Vanara/search?l=C%23&q=MoveFile)  
+[MoveFileEx](http://msdn2.microsoft.com/en-us/library/aa365240) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.MoveFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=MoveFileEx)  
+[MoveFileTransacted](http://msdn2.microsoft.com/en-us/library/466d733b-30d2-4297-a0e6-77038f1a21d5) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.MoveFileTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=MoveFileTransacted)  
+[MoveFileWithProgress](http://msdn2.microsoft.com/en-us/library/aa365242) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.MoveFileWithProgress](https://github.com/dahall/Vanara/search?l=C%23&q=MoveFileWithProgress)  
+[MulDiv](http://msdn2.microsoft.com/en-us/library/aa383718) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.MulDiv](https://github.com/dahall/Vanara/search?l=C%23&q=MulDiv)  
+[MultiByteToWideChar](http://msdn2.microsoft.com/en-us/library/dd319072) | kernel32.dll | Stringapiset.h | [Vanara.PInvoke.Kernel32.MultiByteToWideChar](https://github.com/dahall/Vanara/search?l=C%23&q=MultiByteToWideChar)  
+[NeedCurrentDirectoryForExePath](http://msdn2.microsoft.com/en-us/library/ms684269) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.NeedCurrentDirectoryForExePath](https://github.com/dahall/Vanara/search?l=C%23&q=NeedCurrentDirectoryForExePath)  
+[NormalizeString](http://msdn2.microsoft.com/en-us/library/dd319093) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.NormalizeString](https://github.com/dahall/Vanara/search?l=C%23&q=NormalizeString)  
+[OfferVirtualMemory](http://msdn2.microsoft.com/en-us/library/dn781436) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.OfferVirtualMemory](https://github.com/dahall/Vanara/search?l=C%23&q=OfferVirtualMemory)  
+[OpenCommPort](http://msdn2.microsoft.com/en-us/library/D96D3F6D-2158-4E6A-84A8-DC3BAE9624FA) | kernelbase.dll | winbase.h | [Vanara.PInvoke.Kernel32.OpenCommPort](https://github.com/dahall/Vanara/search?l=C%23&q=OpenCommPort)  
+[OpenEvent](http://msdn2.microsoft.com/en-us/library/ms684305) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.OpenEvent](https://github.com/dahall/Vanara/search?l=C%23&q=OpenEvent)  
+[OpenFile](http://msdn2.microsoft.com/en-us/library/aa365430) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.OpenFile](https://github.com/dahall/Vanara/search?l=C%23&q=OpenFile)  
+[OpenFileById](http://msdn2.microsoft.com/en-us/library/caa757a2-fc3f-4883-8d3e-b98d28f92517) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.OpenFileById](https://github.com/dahall/Vanara/search?l=C%23&q=OpenFileById)  
+[OpenFileMapping](http://msdn2.microsoft.com/en-us/library/aa366791) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.OpenFileMapping](https://github.com/dahall/Vanara/search?l=C%23&q=OpenFileMapping)  
+[OpenFileMappingFromApp](http://msdn2.microsoft.com/en-us/library/mt169844) | kernelbase.dll | MemoryApi.h | [Vanara.PInvoke.Kernel32.OpenFileMappingFromApp](https://github.com/dahall/Vanara/search?l=C%23&q=OpenFileMappingFromApp)  
+[OpenJobObject](http://msdn2.microsoft.com/en-us/library/ms684312) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.OpenJobObject](https://github.com/dahall/Vanara/search?l=C%23&q=OpenJobObject)  
+[OpenMutex](http://msdn2.microsoft.com/en-us/library/ms684315) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.OpenMutex](https://github.com/dahall/Vanara/search?l=C%23&q=OpenMutex)  
+[OpenPackageInfoByFullName](http://msdn2.microsoft.com/en-us/library/9ECFC757-1CB3-43A1-BA45-9AF72CAB240E) | kernelbase.dll | appmodel.h | [Vanara.PInvoke.Kernel32.OpenPackageInfoByFullName](https://github.com/dahall/Vanara/search?l=C%23&q=OpenPackageInfoByFullName)  
+[OpenPrivateNamespace](http://msdn2.microsoft.com/en-us/library/ms684318) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.OpenPrivateNamespaceInternal](https://github.com/dahall/Vanara/search?l=C%23&q=OpenPrivateNamespaceInternal)  
+[OpenProcess](http://msdn2.microsoft.com/en-us/library/ms684320) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.OpenProcess](https://github.com/dahall/Vanara/search?l=C%23&q=OpenProcess)  
 [OpenProcessToken](https://www.google.com/search?num=5&q=OpenProcessToken+site%3Amicrosoft.com) | vertdll.dll |  |   
-[OpenSemaphore](http://msdn2.microsoft.com/en-us/library/ms684326) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenSemaphore  
-[OpenThread](http://msdn2.microsoft.com/en-us/library/ms684335) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenThread  
-[OpenWaitableTimer](http://msdn2.microsoft.com/en-us/library/ms684337) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenWaitableTimer  
-[OutputDebugString](http://msdn2.microsoft.com/en-us/library/aa363362) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OutputDebugString  
-[PackageFamilyNameFromFullName](http://msdn2.microsoft.com/en-us/library/98E95CE5-E970-4A19-BAD3-994DAEC4BEA0) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.PackageFamilyNameFromFullName  
-[PackageFamilyNameFromId](http://msdn2.microsoft.com/en-us/library/198DAB6B-21D2-4ACB-87DF-B3F4EFBEE323) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.PackageFamilyNameFromId  
-[PackageFullNameFromId](http://msdn2.microsoft.com/en-us/library/0024AF55-295E-49B1-90C2-9144D336529B) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.PackageFullNameFromId  
-[PackageIdFromFullName](http://msdn2.microsoft.com/en-us/library/EED832F8-E4F7-4A0F-93E2-451F78F67767) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.PackageIdFromFullName  
-[PackageNameAndPublisherIdFromFamilyName](http://msdn2.microsoft.com/en-us/library/4AA5BD75-F865-40D6-9C10-E54C197D47C4) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.PackageNameAndPublisherIdFromFamilyName  
-[ParseApplicationUserModelId](http://msdn2.microsoft.com/en-us/library/03B29E82-611F-47D1-8CB6-047B9BEB4D9E) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.ParseApplicationUserModelId  
-[PathAllocCanonicalize](http://msdn2.microsoft.com/en-us/library/3179fe78-a969-4ee2-a50b-5f4f7d4dad71) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathAllocCanonicalize  
-[PathAllocCombine](http://msdn2.microsoft.com/en-us/library/dd619138-f867-4517-bc67-a52c598efad0) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathAllocCombine  
-[PathCchAddBackslash](http://msdn2.microsoft.com/en-us/library/b50677cd-8815-4d84-b70a-c83863378c56) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchAddBackslash  
-[PathCchAddBackslashEx](http://msdn2.microsoft.com/en-us/library/89adf45f-f16d-49d1-9e76-b57b73b4d4c3) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchAddBackslashEx  
-[PathCchAddExtension](http://msdn2.microsoft.com/en-us/library/c37b438b-39e7-4f24-b076-2401900dab71) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchAddExtension  
-[PathCchAppend](http://msdn2.microsoft.com/en-us/library/b64884ad-15c7-495e-8037-34daf68f8cf7) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchAppend  
-[PathCchAppendEx](http://msdn2.microsoft.com/en-us/library/5421c666-1c8a-4ae8-baba-9e6f69c877df) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchAppendEx  
-[PathCchCanonicalize](http://msdn2.microsoft.com/en-us/library/25ff08b2-5978-4d44-9877-ba4230ef7d12) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchCanonicalize  
-[PathCchCanonicalizeEx](http://msdn2.microsoft.com/en-us/library/fd7b8ce0-3c67-48fb-8e7e-521a6b438676) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchCanonicalizeEx  
-[PathCchCombine](http://msdn2.microsoft.com/en-us/library/506a4165-f572-4521-958f-56a0296f9c05) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchCombine  
-[PathCchCombineEx](http://msdn2.microsoft.com/en-us/library/798c2e49-04a5-4270-b584-41faf1519e4b) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchCombineEx  
-[PathCchFindExtension](http://msdn2.microsoft.com/en-us/library/dac6cf02-7b53-449c-b788-4a7b6d1622ed) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchFindExtension  
-[PathCchIsRoot](http://msdn2.microsoft.com/en-us/library/b9770030-b298-47f8-98a7-3ce9b4d44dd1) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchIsRoot  
-[PathCchRemoveBackslash](http://msdn2.microsoft.com/en-us/library/61afc20e-ee6c-46ad-a058-64c57de41ba4) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchRemoveBackslash  
-[PathCchRemoveBackslashEx](http://msdn2.microsoft.com/en-us/library/250c2faa-94bb-42c1-97d4-37f8f59dbde6) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchRemoveBackslashEx  
-[PathCchRemoveExtension](http://msdn2.microsoft.com/en-us/library/9adfb054-6d62-41bb-9036-0bf670ea24b2) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchRemoveExtension  
-[PathCchRemoveFileSpec](http://msdn2.microsoft.com/en-us/library/c37aeddc-ed24-4828-b92b-bce0e6384726) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchRemoveFileSpec  
-[PathCchRenameExtension](http://msdn2.microsoft.com/en-us/library/79cd9499-03b7-4482-abd3-a42edd1b2b67) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchRenameExtension  
-[PathCchSkipRoot](http://msdn2.microsoft.com/en-us/library/187bc49e-c5ae-42b8-acbd-a765f871d73b) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchSkipRoot  
-[PathCchStripPrefix](http://msdn2.microsoft.com/en-us/library/2e50b23e-2725-4200-bd5e-845ff3458026) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchStripPrefix  
-[PathCchStripToRoot](http://msdn2.microsoft.com/en-us/library/e0539478-8c64-4445-ab99-22f1df70afe8) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchStripToRoot  
-[PathIsUNCEx](http://msdn2.microsoft.com/en-us/library/3b2a4158-63ec-49eb-a031-7493d02f2caa) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathIsUNCEx  
-[PeekConsoleInput](https://www.google.com/search?num=5&q=PeekConsoleInputA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.PeekConsoleInput  
-[PeekNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365779) | kernel32.dll | namedpipeapi.h | Vanara.PInvoke.Kernel32.PeekNamedPipe  
-[PostQueuedCompletionStatus](http://msdn2.microsoft.com/en-us/library/aa365458) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.PostQueuedCompletionStatus  
-[PowerClearRequest](http://msdn2.microsoft.com/en-us/library/794248b1-5aa8-495e-aca6-1a1f35dc9c7f) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.PowerClearRequest  
-[PowerCreateRequest](http://msdn2.microsoft.com/en-us/library/2122bf00-9e6b-48ab-89b0-f53dd6804902) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.PowerCreateRequest  
-[PowerSetRequest](http://msdn2.microsoft.com/en-us/library/85249de8-5832-4f25-bbd9-3576cfd1caa0) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.PowerSetRequest  
-[PrefetchVirtualMemory](http://msdn2.microsoft.com/en-us/library/hh780543) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.PrefetchVirtualMemory  
-[PrepareTape](http://msdn2.microsoft.com/en-us/library/aa362532) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.PrepareTape  
+[OpenSemaphore](http://msdn2.microsoft.com/en-us/library/ms684326) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.OpenSemaphore](https://github.com/dahall/Vanara/search?l=C%23&q=OpenSemaphore)  
+[OpenThread](http://msdn2.microsoft.com/en-us/library/ms684335) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.OpenThread](https://github.com/dahall/Vanara/search?l=C%23&q=OpenThread)  
+[OpenWaitableTimer](http://msdn2.microsoft.com/en-us/library/ms684337) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.OpenWaitableTimer](https://github.com/dahall/Vanara/search?l=C%23&q=OpenWaitableTimer)  
+[OutputDebugString](http://msdn2.microsoft.com/en-us/library/aa363362) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.OutputDebugString](https://github.com/dahall/Vanara/search?l=C%23&q=OutputDebugString)  
+[PackageFamilyNameFromFullName](http://msdn2.microsoft.com/en-us/library/98E95CE5-E970-4A19-BAD3-994DAEC4BEA0) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.PackageFamilyNameFromFullName](https://github.com/dahall/Vanara/search?l=C%23&q=PackageFamilyNameFromFullName)  
+[PackageFamilyNameFromId](http://msdn2.microsoft.com/en-us/library/198DAB6B-21D2-4ACB-87DF-B3F4EFBEE323) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.PackageFamilyNameFromId](https://github.com/dahall/Vanara/search?l=C%23&q=PackageFamilyNameFromId)  
+[PackageFullNameFromId](http://msdn2.microsoft.com/en-us/library/0024AF55-295E-49B1-90C2-9144D336529B) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.PackageFullNameFromId](https://github.com/dahall/Vanara/search?l=C%23&q=PackageFullNameFromId)  
+[PackageIdFromFullName](http://msdn2.microsoft.com/en-us/library/EED832F8-E4F7-4A0F-93E2-451F78F67767) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.PackageIdFromFullName](https://github.com/dahall/Vanara/search?l=C%23&q=PackageIdFromFullName)  
+[PackageNameAndPublisherIdFromFamilyName](http://msdn2.microsoft.com/en-us/library/4AA5BD75-F865-40D6-9C10-E54C197D47C4) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.PackageNameAndPublisherIdFromFamilyName](https://github.com/dahall/Vanara/search?l=C%23&q=PackageNameAndPublisherIdFromFamilyName)  
+[ParseApplicationUserModelId](http://msdn2.microsoft.com/en-us/library/03B29E82-611F-47D1-8CB6-047B9BEB4D9E) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.ParseApplicationUserModelId](https://github.com/dahall/Vanara/search?l=C%23&q=ParseApplicationUserModelId)  
+[PathAllocCanonicalize](http://msdn2.microsoft.com/en-us/library/3179fe78-a969-4ee2-a50b-5f4f7d4dad71) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathAllocCanonicalize](https://github.com/dahall/Vanara/search?l=C%23&q=PathAllocCanonicalize)  
+[PathAllocCombine](http://msdn2.microsoft.com/en-us/library/dd619138-f867-4517-bc67-a52c598efad0) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathAllocCombine](https://github.com/dahall/Vanara/search?l=C%23&q=PathAllocCombine)  
+[PathCchAddBackslash](http://msdn2.microsoft.com/en-us/library/b50677cd-8815-4d84-b70a-c83863378c56) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchAddBackslash](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchAddBackslash)  
+[PathCchAddBackslashEx](http://msdn2.microsoft.com/en-us/library/89adf45f-f16d-49d1-9e76-b57b73b4d4c3) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchAddBackslashEx](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchAddBackslashEx)  
+[PathCchAddExtension](http://msdn2.microsoft.com/en-us/library/c37b438b-39e7-4f24-b076-2401900dab71) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchAddExtension](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchAddExtension)  
+[PathCchAppend](http://msdn2.microsoft.com/en-us/library/b64884ad-15c7-495e-8037-34daf68f8cf7) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchAppend](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchAppend)  
+[PathCchAppendEx](http://msdn2.microsoft.com/en-us/library/5421c666-1c8a-4ae8-baba-9e6f69c877df) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchAppendEx](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchAppendEx)  
+[PathCchCanonicalize](http://msdn2.microsoft.com/en-us/library/25ff08b2-5978-4d44-9877-ba4230ef7d12) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchCanonicalize](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchCanonicalize)  
+[PathCchCanonicalizeEx](http://msdn2.microsoft.com/en-us/library/fd7b8ce0-3c67-48fb-8e7e-521a6b438676) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchCanonicalizeEx](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchCanonicalizeEx)  
+[PathCchCombine](http://msdn2.microsoft.com/en-us/library/506a4165-f572-4521-958f-56a0296f9c05) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchCombine](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchCombine)  
+[PathCchCombineEx](http://msdn2.microsoft.com/en-us/library/798c2e49-04a5-4270-b584-41faf1519e4b) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchCombineEx](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchCombineEx)  
+[PathCchFindExtension](http://msdn2.microsoft.com/en-us/library/dac6cf02-7b53-449c-b788-4a7b6d1622ed) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchFindExtension](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchFindExtension)  
+[PathCchIsRoot](http://msdn2.microsoft.com/en-us/library/b9770030-b298-47f8-98a7-3ce9b4d44dd1) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchIsRoot](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchIsRoot)  
+[PathCchRemoveBackslash](http://msdn2.microsoft.com/en-us/library/61afc20e-ee6c-46ad-a058-64c57de41ba4) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchRemoveBackslash](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchRemoveBackslash)  
+[PathCchRemoveBackslashEx](http://msdn2.microsoft.com/en-us/library/250c2faa-94bb-42c1-97d4-37f8f59dbde6) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchRemoveBackslashEx](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchRemoveBackslashEx)  
+[PathCchRemoveExtension](http://msdn2.microsoft.com/en-us/library/9adfb054-6d62-41bb-9036-0bf670ea24b2) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchRemoveExtension](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchRemoveExtension)  
+[PathCchRemoveFileSpec](http://msdn2.microsoft.com/en-us/library/c37aeddc-ed24-4828-b92b-bce0e6384726) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchRemoveFileSpec](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchRemoveFileSpec)  
+[PathCchRenameExtension](http://msdn2.microsoft.com/en-us/library/79cd9499-03b7-4482-abd3-a42edd1b2b67) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchRenameExtension](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchRenameExtension)  
+[PathCchSkipRoot](http://msdn2.microsoft.com/en-us/library/187bc49e-c5ae-42b8-acbd-a765f871d73b) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchSkipRoot](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchSkipRoot)  
+[PathCchStripPrefix](http://msdn2.microsoft.com/en-us/library/2e50b23e-2725-4200-bd5e-845ff3458026) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchStripPrefix](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchStripPrefix)  
+[PathCchStripToRoot](http://msdn2.microsoft.com/en-us/library/e0539478-8c64-4445-ab99-22f1df70afe8) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathCchStripToRoot](https://github.com/dahall/Vanara/search?l=C%23&q=PathCchStripToRoot)  
+[PathIsUNCEx](http://msdn2.microsoft.com/en-us/library/3b2a4158-63ec-49eb-a031-7493d02f2caa) | kernelbase.dll | pathcch.h | [Vanara.PInvoke.Kernel32.PathIsUNCEx](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsUNCEx)  
+[PeekConsoleInput](https://www.google.com/search?num=5&q=PeekConsoleInputA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.PeekConsoleInput](https://github.com/dahall/Vanara/search?l=C%23&q=PeekConsoleInput)  
+[PeekNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365779) | kernel32.dll | namedpipeapi.h | [Vanara.PInvoke.Kernel32.PeekNamedPipe](https://github.com/dahall/Vanara/search?l=C%23&q=PeekNamedPipe)  
+[PostQueuedCompletionStatus](http://msdn2.microsoft.com/en-us/library/aa365458) | kernel32.dll | IoAPI.h | [Vanara.PInvoke.Kernel32.PostQueuedCompletionStatus](https://github.com/dahall/Vanara/search?l=C%23&q=PostQueuedCompletionStatus)  
+[PowerClearRequest](http://msdn2.microsoft.com/en-us/library/794248b1-5aa8-495e-aca6-1a1f35dc9c7f) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.PowerClearRequest](https://github.com/dahall/Vanara/search?l=C%23&q=PowerClearRequest)  
+[PowerCreateRequest](http://msdn2.microsoft.com/en-us/library/2122bf00-9e6b-48ab-89b0-f53dd6804902) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.PowerCreateRequest](https://github.com/dahall/Vanara/search?l=C%23&q=PowerCreateRequest)  
+[PowerSetRequest](http://msdn2.microsoft.com/en-us/library/85249de8-5832-4f25-bbd9-3576cfd1caa0) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.PowerSetRequest](https://github.com/dahall/Vanara/search?l=C%23&q=PowerSetRequest)  
+[PrefetchVirtualMemory](http://msdn2.microsoft.com/en-us/library/hh780543) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.PrefetchVirtualMemory](https://github.com/dahall/Vanara/search?l=C%23&q=PrefetchVirtualMemory)  
+[PrepareTape](http://msdn2.microsoft.com/en-us/library/aa362532) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.PrepareTape](https://github.com/dahall/Vanara/search?l=C%23&q=PrepareTape)  
 [PrivilegeCheck](https://www.google.com/search?num=5&q=PrivilegeCheck+site%3Amicrosoft.com) | vertdll.dll |  |   
-[Process32First](https://www.google.com/search?num=5&q=Process32First+site%3Amicrosoft.com) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Process32First  
-[Process32FirstA](http://msdn2.microsoft.com/en-us/library/097790e8-30c2-4b00-9256-fa26e2ceb893) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Process32First  
-[Process32Next](https://www.google.com/search?num=5&q=Process32Next+site%3Amicrosoft.com) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Process32Next  
-[Process32NextA](http://msdn2.microsoft.com/en-us/library/843a95fd-27ae-4215-83d0-82fc402b82b6) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Process32Next  
-[ProcessIdToSessionId](http://msdn2.microsoft.com/en-us/library/aa382990) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ProcessIdToSessionId  
-[PssCaptureSnapshot](https://www.google.com/search?num=5&q=PssCaptureSnapshot+site%3Amicrosoft.com) | kernel32.dll |  | Vanara.PInvoke.Kernel32.PssCaptureSnapshotInternal  
-[PssDuplicateSnapshot](https://www.google.com/search?num=5&q=PssDuplicateSnapshot+site%3Amicrosoft.com) | kernel32.dll |  | Vanara.PInvoke.Kernel32.PssDuplicateSnapshotInternal  
-[PssFreeSnapshot](http://msdn2.microsoft.com/en-us/library/5D062AE6-2F7C-4121-AB6E-9BFA06AB36C6) | kernel32.dll | processsnapshot.h | Vanara.PInvoke.Kernel32.PssFreeSnapshot  
-[PssQuerySnapshot](http://msdn2.microsoft.com/en-us/library/D9580147-28ED-4FF5-B7DB-844ACB19769F) | kernel32.dll | processsnapshot.h | Vanara.PInvoke.Kernel32.PssQuerySnapshot  
-[PssWalkMarkerCreate](http://msdn2.microsoft.com/en-us/library/58E2FBAF-661C-45BE-A25A-A096AF52ED3E) | kernel32.dll | processsnapshot.h | Vanara.PInvoke.Kernel32.PssWalkMarkerCreate  
-[PssWalkMarkerFree](http://msdn2.microsoft.com/en-us/library/74158846-6A5F-4F81-B4D7-46DED1EE017C) | kernel32.dll | processsnapshot.h | Vanara.PInvoke.Kernel32.PssWalkMarkerFree  
-[PssWalkMarkerGetPosition](http://msdn2.microsoft.com/en-us/library/A2058E81-2B01-4436-ACC6-2A3E58BC4E27) | kernel32.dll | processsnapshot.h | Vanara.PInvoke.Kernel32.PssWalkMarkerGetPosition  
-[PssWalkMarkerSeekToBeginning](http://msdn2.microsoft.com/en-us/library/BE0FA122-3966-4827-9DA3-A98A162EF270) | kernel32.dll | processsnapshot.h | Vanara.PInvoke.Kernel32.PssWalkMarkerSeekToBeginning  
-[PssWalkMarkerSetPosition](http://msdn2.microsoft.com/en-us/library/D89EA4DB-D8C6-43D1-B292-D24F1EAB2E43) | kernel32.dll | processsnapshot.h | Vanara.PInvoke.Kernel32.PssWalkMarkerSetPosition  
-[PssWalkSnapshot](http://msdn2.microsoft.com/en-us/library/C6AC38B5-0A1C-44D7-A1F6-8196AE9B8FB0) | kernel32.dll | processsnapshot.h | Vanara.PInvoke.Kernel32.PssWalkSnapshot  
-[PulseEvent](http://msdn2.microsoft.com/en-us/library/ms684914) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.PulseEvent  
-[PurgeComm](http://msdn2.microsoft.com/en-us/library/aa363428) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.PurgeComm  
+[Process32First](https://www.google.com/search?num=5&q=Process32First+site%3Amicrosoft.com) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Process32First](https://github.com/dahall/Vanara/search?l=C%23&q=Process32First)  
+[Process32FirstA](http://msdn2.microsoft.com/en-us/library/097790e8-30c2-4b00-9256-fa26e2ceb893) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Process32First](https://github.com/dahall/Vanara/search?l=C%23&q=Process32First)  
+[Process32Next](https://www.google.com/search?num=5&q=Process32Next+site%3Amicrosoft.com) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Process32Next](https://github.com/dahall/Vanara/search?l=C%23&q=Process32Next)  
+[Process32NextA](http://msdn2.microsoft.com/en-us/library/843a95fd-27ae-4215-83d0-82fc402b82b6) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Process32Next](https://github.com/dahall/Vanara/search?l=C%23&q=Process32Next)  
+[ProcessIdToSessionId](http://msdn2.microsoft.com/en-us/library/aa382990) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.ProcessIdToSessionId](https://github.com/dahall/Vanara/search?l=C%23&q=ProcessIdToSessionId)  
+[PssCaptureSnapshot](https://www.google.com/search?num=5&q=PssCaptureSnapshot+site%3Amicrosoft.com) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.PssCaptureSnapshotInternal](https://github.com/dahall/Vanara/search?l=C%23&q=PssCaptureSnapshotInternal)  
+[PssDuplicateSnapshot](https://www.google.com/search?num=5&q=PssDuplicateSnapshot+site%3Amicrosoft.com) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.PssDuplicateSnapshotInternal](https://github.com/dahall/Vanara/search?l=C%23&q=PssDuplicateSnapshotInternal)  
+[PssFreeSnapshot](http://msdn2.microsoft.com/en-us/library/5D062AE6-2F7C-4121-AB6E-9BFA06AB36C6) | kernel32.dll | processsnapshot.h | [Vanara.PInvoke.Kernel32.PssFreeSnapshot](https://github.com/dahall/Vanara/search?l=C%23&q=PssFreeSnapshot)  
+[PssQuerySnapshot](http://msdn2.microsoft.com/en-us/library/D9580147-28ED-4FF5-B7DB-844ACB19769F) | kernel32.dll | processsnapshot.h | [Vanara.PInvoke.Kernel32.PssQuerySnapshot](https://github.com/dahall/Vanara/search?l=C%23&q=PssQuerySnapshot)  
+[PssWalkMarkerCreate](http://msdn2.microsoft.com/en-us/library/58E2FBAF-661C-45BE-A25A-A096AF52ED3E) | kernel32.dll | processsnapshot.h | [Vanara.PInvoke.Kernel32.PssWalkMarkerCreate](https://github.com/dahall/Vanara/search?l=C%23&q=PssWalkMarkerCreate)  
+[PssWalkMarkerFree](http://msdn2.microsoft.com/en-us/library/74158846-6A5F-4F81-B4D7-46DED1EE017C) | kernel32.dll | processsnapshot.h | [Vanara.PInvoke.Kernel32.PssWalkMarkerFree](https://github.com/dahall/Vanara/search?l=C%23&q=PssWalkMarkerFree)  
+[PssWalkMarkerGetPosition](http://msdn2.microsoft.com/en-us/library/A2058E81-2B01-4436-ACC6-2A3E58BC4E27) | kernel32.dll | processsnapshot.h | [Vanara.PInvoke.Kernel32.PssWalkMarkerGetPosition](https://github.com/dahall/Vanara/search?l=C%23&q=PssWalkMarkerGetPosition)  
+[PssWalkMarkerSeekToBeginning](http://msdn2.microsoft.com/en-us/library/BE0FA122-3966-4827-9DA3-A98A162EF270) | kernel32.dll | processsnapshot.h | [Vanara.PInvoke.Kernel32.PssWalkMarkerSeekToBeginning](https://github.com/dahall/Vanara/search?l=C%23&q=PssWalkMarkerSeekToBeginning)  
+[PssWalkMarkerSetPosition](http://msdn2.microsoft.com/en-us/library/D89EA4DB-D8C6-43D1-B292-D24F1EAB2E43) | kernel32.dll | processsnapshot.h | [Vanara.PInvoke.Kernel32.PssWalkMarkerSetPosition](https://github.com/dahall/Vanara/search?l=C%23&q=PssWalkMarkerSetPosition)  
+[PssWalkSnapshot](http://msdn2.microsoft.com/en-us/library/C6AC38B5-0A1C-44D7-A1F6-8196AE9B8FB0) | kernel32.dll | processsnapshot.h | [Vanara.PInvoke.Kernel32.PssWalkSnapshot](https://github.com/dahall/Vanara/search?l=C%23&q=PssWalkSnapshot)  
+[PulseEvent](http://msdn2.microsoft.com/en-us/library/ms684914) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.PulseEvent](https://github.com/dahall/Vanara/search?l=C%23&q=PulseEvent)  
+[PurgeComm](http://msdn2.microsoft.com/en-us/library/aa363428) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.PurgeComm](https://github.com/dahall/Vanara/search?l=C%23&q=PurgeComm)  
 [qsort](https://www.google.com/search?num=5&q=qsort+site%3Amicrosoft.com) | vertdll.dll |  |   
-[QueryActCtxSettingsW](http://msdn2.microsoft.com/en-us/library/aa375700) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.QueryActCtxSettingsW  
-[QueryActCtxW](http://msdn2.microsoft.com/en-us/library/7d45f63f-0baf-4236-b245-d36f9eb32e8c) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.QueryActCtxW  
-[QueryAuxiliaryCounterFrequency](http://msdn2.microsoft.com/en-us/library/71E00DF2-7F67-43D2-9D6D-BFE9FEA4B30A) | kernelbase.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryAuxiliaryCounterFrequency  
-[QueryDepthSList](http://msdn2.microsoft.com/en-us/library/3f9b4481-647f-457f-bdfb-62e6ae4198e5) | kernel32.dll | interlockedapi.h | Vanara.PInvoke.Kernel32.QueryDepthSList  
-[QueryDosDevice](http://msdn2.microsoft.com/en-us/library/aa365461) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.QueryDosDevice  
+[QueryActCtxSettingsW](http://msdn2.microsoft.com/en-us/library/aa375700) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.QueryActCtxSettingsW](https://github.com/dahall/Vanara/search?l=C%23&q=QueryActCtxSettingsW)  
+[QueryActCtxW](http://msdn2.microsoft.com/en-us/library/7d45f63f-0baf-4236-b245-d36f9eb32e8c) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.QueryActCtxW](https://github.com/dahall/Vanara/search?l=C%23&q=QueryActCtxW)  
+[QueryAuxiliaryCounterFrequency](http://msdn2.microsoft.com/en-us/library/71E00DF2-7F67-43D2-9D6D-BFE9FEA4B30A) | kernelbase.dll | realtimeapiset.h | [Vanara.PInvoke.Kernel32.QueryAuxiliaryCounterFrequency](https://github.com/dahall/Vanara/search?l=C%23&q=QueryAuxiliaryCounterFrequency)  
+[QueryDepthSList](http://msdn2.microsoft.com/en-us/library/3f9b4481-647f-457f-bdfb-62e6ae4198e5) | kernel32.dll | interlockedapi.h | [Vanara.PInvoke.Kernel32.QueryDepthSList](https://github.com/dahall/Vanara/search?l=C%23&q=QueryDepthSList)  
+[QueryDosDevice](http://msdn2.microsoft.com/en-us/library/aa365461) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.QueryDosDevice](https://github.com/dahall/Vanara/search?l=C%23&q=QueryDosDevice)  
 [QueryFullProcess](https://www.google.com/search?num=5&q=QueryFullProcess+site%3Amicrosoft.com) | vertdll.dll |  |   
-[QueryFullProcessImageName](http://msdn2.microsoft.com/en-us/library/49a9d1aa-30f3-45ea-a4ec-9f55df692b8b) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.QueryFullProcessImageName  
-[QueryIdleProcessorCycleTime](http://msdn2.microsoft.com/en-us/library/75a5c4cf-ccc7-47ab-a2a9-88051e0a7d06) | kernel32.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryIdleProcessorCycleTime  
-[QueryIdleProcessorCycleTimeEx](http://msdn2.microsoft.com/en-us/library/4bf05e40-96d1-4c01-b3a8-8a45934b38c6) | kernel32.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryIdleProcessorCycleTimeEx  
-[QueryInformationJobObject](http://msdn2.microsoft.com/en-us/library/ms684925) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryInformationJobObject  
-[QueryInterruptTime](http://msdn2.microsoft.com/en-us/library/FB2B179B-5E44-4201-86E2-DB386607FD90) | kernelbase.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryInterruptTime  
-[QueryInterruptTimePrecise](http://msdn2.microsoft.com/en-us/library/0F65A707-0899-4F79-B7CD-16C9143C4173) | kernelbase.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryInterruptTimePrecise  
-[QueryIoRateControlInformationJobObject](http://msdn2.microsoft.com/en-us/library/mt280127) | kernel32.dll | Jobapi2.h | Vanara.PInvoke.Kernel32.QueryIoRateControlInformationJobObject  
-[QueryMemoryResourceNotification](http://msdn2.microsoft.com/en-us/library/aa366799) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryMemoryResourceNotification  
-[QueryOptionalDelayLoadedAPI](http://msdn2.microsoft.com/en-us/library/43690689-4372-48ae-ac6d-230250f05f7c) | kernelbase.dll | libloaderapi2.h | Vanara.PInvoke.Kernel32.QueryOptionalDelayLoadedAPI  
-[QueryPerformanceCounter](https://www.google.com/search?num=5&q=QueryPerformanceCounter+site%3Amicrosoft.com) | kernel32.dll | profileapi.h | Vanara.PInvoke.Kernel32.QueryPerformanceCounter  
-[QueryPerformanceFrequency](https://www.google.com/search?num=5&q=QueryPerformanceFrequency+site%3Amicrosoft.com) | kernel32.dll | profileapi.h | Vanara.PInvoke.Kernel32.QueryPerformanceFrequency  
-[QueryProcessAffinityUpdateMode](http://msdn2.microsoft.com/en-us/library/bb309062) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryProcessAffinityUpdateMode  
-[QueryProcessCycleTime](http://msdn2.microsoft.com/en-us/library/1859bc0f-8065-4104-b421-1b4c020ad5ea) | kernel32.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryProcessCycleTime  
-[QueryProtectedPolicy](http://msdn2.microsoft.com/en-us/library/dn893591) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.QueryProtectedPolicy  
-[QueryThreadCycleTime](http://msdn2.microsoft.com/en-us/library/5828b073-48af-4118-9206-096b87c978e7) | kernel32.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryThreadCycleTime  
-[QueryThreadpoolStackInformation](http://msdn2.microsoft.com/en-us/library/dd405508) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryThreadpoolStackInformation  
-[QueryThreadProfiling](http://msdn2.microsoft.com/en-us/library/dd796402) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.QueryThreadProfiling  
-[QueryUmsThreadInformation](http://msdn2.microsoft.com/en-us/library/5f694edf-ba5e-45a2-a938-5013edddcae2) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.QueryUmsThreadInformation  
-[QueryUnbiasedInterruptTime](http://msdn2.microsoft.com/en-us/library/f9cf5440-9be9-4ff9-b85c-2779b847954c) | kernel32.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryUnbiasedInterruptTime  
-[QueryUnbiasedInterruptTimePrecise](http://msdn2.microsoft.com/en-us/library/FADFC168-A3CF-4676-9B6E-7A4028049423) | kernelbase.dll | realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryUnbiasedInterruptTimePrecise  
-[QueryVirtualMemoryInformation](http://msdn2.microsoft.com/en-us/library/mt845761) | kernelbase.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.QueryVirtualMemoryInformation  
-[QueryWorkingSet](http://msdn2.microsoft.com/en-us/library/b932153f-2bbd-460e-8ff7-b3e493c397bb) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.QueryWorkingSet  
-[QueryWorkingSetEx](http://msdn2.microsoft.com/en-us/library/59ae76c9-e954-4648-9c9f-787136375b02) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.QueryWorkingSetEx  
-[QueueUserAPC](http://msdn2.microsoft.com/en-us/library/5b141372-7c95-4eb2-987b-64fdf7d0783d) | kernel32.dll | processthreadsapi.h | Vanara.PInvoke.Kernel32.QueueUserAPC  
-[QueueUserWorkItem](http://msdn2.microsoft.com/en-us/library/ms684957) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueueUserWorkItem  
-[RaiseException](http://msdn2.microsoft.com/en-us/library/ms680552) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RaiseException  
-[RaiseFailFastException](http://msdn2.microsoft.com/en-us/library/dd941688) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RaiseFailFastException  
-[ReadConsole](https://www.google.com/search?num=5&q=ReadConsoleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.ReadConsole  
-[ReadConsoleInput](https://www.google.com/search?num=5&q=ReadConsoleInputA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.ReadConsoleInput  
-[ReadConsoleOutput](https://www.google.com/search?num=5&q=ReadConsoleOutputA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.ReadConsoleOutput  
-[ReadConsoleOutputAttribute](https://www.google.com/search?num=5&q=ReadConsoleOutputAttribute+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.ReadConsoleOutputAttribute  
-[ReadConsoleOutputCharacter](https://www.google.com/search?num=5&q=ReadConsoleOutputCharacterA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.ReadConsoleOutputCharacter  
-[ReadDirectoryChangesExW](http://msdn2.microsoft.com/en-us/library/90C2F258-094C-4A0E-80E7-3FA241D288EA) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.ReadDirectoryChangesExW  
-[ReadDirectoryChangesW](http://msdn2.microsoft.com/en-us/library/aa365465) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReadDirectoryChanges  
-[ReadFile](http://msdn2.microsoft.com/en-us/library/aa365467) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.ReadFile  
-[ReadFileEx](http://msdn2.microsoft.com/en-us/library/aa365468) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.ReadFileEx  
-[ReadFileScatter](http://msdn2.microsoft.com/en-us/library/aa365469) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.ReadFileScatter  
-[ReadProcessMemory](http://msdn2.microsoft.com/en-us/library/ms680553) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReadProcessMemory  
-[ReadThreadProfilingData](http://msdn2.microsoft.com/en-us/library/dd796403) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ReadThreadProfilingData  
-[ReclaimVirtualMemory](http://msdn2.microsoft.com/en-us/library/dn781437) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReclaimVirtualMemory  
-[RegisterApplicationRecoveryCallback](http://msdn2.microsoft.com/en-us/library/aa373345) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.RegisterApplicationRecoveryCallback  
-[RegisterApplicationRestart](http://msdn2.microsoft.com/en-us/library/aa373347) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.RegisterApplicationRestart  
-[RegisterBadMemoryNotification](http://msdn2.microsoft.com/en-us/library/hh691013) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RegisterBadMemoryNotification  
-[RegisterWaitForSingleObject](https://www.google.com/search?num=5&q=RegisterWaitForSingleObject+site%3Amicrosoft.com) | kernel32.dll |  | Vanara.PInvoke.Kernel32.RegisterWaitForSingleObject  
+[QueryFullProcessImageName](http://msdn2.microsoft.com/en-us/library/49a9d1aa-30f3-45ea-a4ec-9f55df692b8b) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.QueryFullProcessImageName](https://github.com/dahall/Vanara/search?l=C%23&q=QueryFullProcessImageName)  
+[QueryIdleProcessorCycleTime](http://msdn2.microsoft.com/en-us/library/75a5c4cf-ccc7-47ab-a2a9-88051e0a7d06) | kernel32.dll | realtimeapiset.h | [Vanara.PInvoke.Kernel32.QueryIdleProcessorCycleTime](https://github.com/dahall/Vanara/search?l=C%23&q=QueryIdleProcessorCycleTime)  
+[QueryIdleProcessorCycleTimeEx](http://msdn2.microsoft.com/en-us/library/4bf05e40-96d1-4c01-b3a8-8a45934b38c6) | kernel32.dll | realtimeapiset.h | [Vanara.PInvoke.Kernel32.QueryIdleProcessorCycleTimeEx](https://github.com/dahall/Vanara/search?l=C%23&q=QueryIdleProcessorCycleTimeEx)  
+[QueryInformationJobObject](http://msdn2.microsoft.com/en-us/library/ms684925) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.QueryInformationJobObject](https://github.com/dahall/Vanara/search?l=C%23&q=QueryInformationJobObject)  
+[QueryInterruptTime](http://msdn2.microsoft.com/en-us/library/FB2B179B-5E44-4201-86E2-DB386607FD90) | kernelbase.dll | realtimeapiset.h | [Vanara.PInvoke.Kernel32.QueryInterruptTime](https://github.com/dahall/Vanara/search?l=C%23&q=QueryInterruptTime)  
+[QueryInterruptTimePrecise](http://msdn2.microsoft.com/en-us/library/0F65A707-0899-4F79-B7CD-16C9143C4173) | kernelbase.dll | realtimeapiset.h | [Vanara.PInvoke.Kernel32.QueryInterruptTimePrecise](https://github.com/dahall/Vanara/search?l=C%23&q=QueryInterruptTimePrecise)  
+[QueryIoRateControlInformationJobObject](http://msdn2.microsoft.com/en-us/library/mt280127) | kernel32.dll | Jobapi2.h | [Vanara.PInvoke.Kernel32.QueryIoRateControlInformationJobObject](https://github.com/dahall/Vanara/search?l=C%23&q=QueryIoRateControlInformationJobObject)  
+[QueryMemoryResourceNotification](http://msdn2.microsoft.com/en-us/library/aa366799) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.QueryMemoryResourceNotification](https://github.com/dahall/Vanara/search?l=C%23&q=QueryMemoryResourceNotification)  
+[QueryOptionalDelayLoadedAPI](http://msdn2.microsoft.com/en-us/library/43690689-4372-48ae-ac6d-230250f05f7c) | kernelbase.dll | libloaderapi2.h | [Vanara.PInvoke.Kernel32.QueryOptionalDelayLoadedAPI](https://github.com/dahall/Vanara/search?l=C%23&q=QueryOptionalDelayLoadedAPI)  
+[QueryPerformanceCounter](https://www.google.com/search?num=5&q=QueryPerformanceCounter+site%3Amicrosoft.com) | kernel32.dll | profileapi.h | [Vanara.PInvoke.Kernel32.QueryPerformanceCounter](https://github.com/dahall/Vanara/search?l=C%23&q=QueryPerformanceCounter)  
+[QueryPerformanceFrequency](https://www.google.com/search?num=5&q=QueryPerformanceFrequency+site%3Amicrosoft.com) | kernel32.dll | profileapi.h | [Vanara.PInvoke.Kernel32.QueryPerformanceFrequency](https://github.com/dahall/Vanara/search?l=C%23&q=QueryPerformanceFrequency)  
+[QueryProcessAffinityUpdateMode](http://msdn2.microsoft.com/en-us/library/bb309062) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.QueryProcessAffinityUpdateMode](https://github.com/dahall/Vanara/search?l=C%23&q=QueryProcessAffinityUpdateMode)  
+[QueryProcessCycleTime](http://msdn2.microsoft.com/en-us/library/1859bc0f-8065-4104-b421-1b4c020ad5ea) | kernel32.dll | realtimeapiset.h | [Vanara.PInvoke.Kernel32.QueryProcessCycleTime](https://github.com/dahall/Vanara/search?l=C%23&q=QueryProcessCycleTime)  
+[QueryProtectedPolicy](http://msdn2.microsoft.com/en-us/library/dn893591) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.QueryProtectedPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=QueryProtectedPolicy)  
+[QueryThreadCycleTime](http://msdn2.microsoft.com/en-us/library/5828b073-48af-4118-9206-096b87c978e7) | kernel32.dll | realtimeapiset.h | [Vanara.PInvoke.Kernel32.QueryThreadCycleTime](https://github.com/dahall/Vanara/search?l=C%23&q=QueryThreadCycleTime)  
+[QueryThreadpoolStackInformation](http://msdn2.microsoft.com/en-us/library/dd405508) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.QueryThreadpoolStackInformation](https://github.com/dahall/Vanara/search?l=C%23&q=QueryThreadpoolStackInformation)  
+[QueryThreadProfiling](http://msdn2.microsoft.com/en-us/library/dd796402) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.QueryThreadProfiling](https://github.com/dahall/Vanara/search?l=C%23&q=QueryThreadProfiling)  
+[QueryUmsThreadInformation](http://msdn2.microsoft.com/en-us/library/5f694edf-ba5e-45a2-a938-5013edddcae2) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.QueryUmsThreadInformation](https://github.com/dahall/Vanara/search?l=C%23&q=QueryUmsThreadInformation)  
+[QueryUnbiasedInterruptTime](http://msdn2.microsoft.com/en-us/library/f9cf5440-9be9-4ff9-b85c-2779b847954c) | kernel32.dll | realtimeapiset.h | [Vanara.PInvoke.Kernel32.QueryUnbiasedInterruptTime](https://github.com/dahall/Vanara/search?l=C%23&q=QueryUnbiasedInterruptTime)  
+[QueryUnbiasedInterruptTimePrecise](http://msdn2.microsoft.com/en-us/library/FADFC168-A3CF-4676-9B6E-7A4028049423) | kernelbase.dll | realtimeapiset.h | [Vanara.PInvoke.Kernel32.QueryUnbiasedInterruptTimePrecise](https://github.com/dahall/Vanara/search?l=C%23&q=QueryUnbiasedInterruptTimePrecise)  
+[QueryVirtualMemoryInformation](http://msdn2.microsoft.com/en-us/library/mt845761) | kernelbase.dll | MemoryApi.h | [Vanara.PInvoke.Kernel32.QueryVirtualMemoryInformation](https://github.com/dahall/Vanara/search?l=C%23&q=QueryVirtualMemoryInformation)  
+[QueryWorkingSet](http://msdn2.microsoft.com/en-us/library/b932153f-2bbd-460e-8ff7-b3e493c397bb) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.QueryWorkingSet](https://github.com/dahall/Vanara/search?l=C%23&q=QueryWorkingSet)  
+[QueryWorkingSetEx](http://msdn2.microsoft.com/en-us/library/59ae76c9-e954-4648-9c9f-787136375b02) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.QueryWorkingSetEx](https://github.com/dahall/Vanara/search?l=C%23&q=QueryWorkingSetEx)  
+[QueueUserAPC](http://msdn2.microsoft.com/en-us/library/5b141372-7c95-4eb2-987b-64fdf7d0783d) | kernel32.dll | processthreadsapi.h | [Vanara.PInvoke.Kernel32.QueueUserAPC](https://github.com/dahall/Vanara/search?l=C%23&q=QueueUserAPC)  
+[QueueUserWorkItem](http://msdn2.microsoft.com/en-us/library/ms684957) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.QueueUserWorkItem](https://github.com/dahall/Vanara/search?l=C%23&q=QueueUserWorkItem)  
+[RaiseException](http://msdn2.microsoft.com/en-us/library/ms680552) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.RaiseException](https://github.com/dahall/Vanara/search?l=C%23&q=RaiseException)  
+[RaiseFailFastException](http://msdn2.microsoft.com/en-us/library/dd941688) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.RaiseFailFastException](https://github.com/dahall/Vanara/search?l=C%23&q=RaiseFailFastException)  
+[ReadConsole](https://www.google.com/search?num=5&q=ReadConsoleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.ReadConsole](https://github.com/dahall/Vanara/search?l=C%23&q=ReadConsole)  
+[ReadConsoleInput](https://www.google.com/search?num=5&q=ReadConsoleInputA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.ReadConsoleInput](https://github.com/dahall/Vanara/search?l=C%23&q=ReadConsoleInput)  
+[ReadConsoleOutput](https://www.google.com/search?num=5&q=ReadConsoleOutputA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.ReadConsoleOutput](https://github.com/dahall/Vanara/search?l=C%23&q=ReadConsoleOutput)  
+[ReadConsoleOutputAttribute](https://www.google.com/search?num=5&q=ReadConsoleOutputAttribute+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.ReadConsoleOutputAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=ReadConsoleOutputAttribute)  
+[ReadConsoleOutputCharacter](https://www.google.com/search?num=5&q=ReadConsoleOutputCharacterA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.ReadConsoleOutputCharacter](https://github.com/dahall/Vanara/search?l=C%23&q=ReadConsoleOutputCharacter)  
+[ReadDirectoryChangesExW](http://msdn2.microsoft.com/en-us/library/90C2F258-094C-4A0E-80E7-3FA241D288EA) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.ReadDirectoryChangesExW](https://github.com/dahall/Vanara/search?l=C%23&q=ReadDirectoryChangesExW)  
+[ReadDirectoryChangesW](http://msdn2.microsoft.com/en-us/library/aa365465) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReadDirectoryChanges](https://github.com/dahall/Vanara/search?l=C%23&q=ReadDirectoryChanges)  
+[ReadFile](http://msdn2.microsoft.com/en-us/library/aa365467) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.ReadFile](https://github.com/dahall/Vanara/search?l=C%23&q=ReadFile)  
+[ReadFileEx](http://msdn2.microsoft.com/en-us/library/aa365468) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.ReadFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=ReadFileEx)  
+[ReadFileScatter](http://msdn2.microsoft.com/en-us/library/aa365469) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.ReadFileScatter](https://github.com/dahall/Vanara/search?l=C%23&q=ReadFileScatter)  
+[ReadProcessMemory](http://msdn2.microsoft.com/en-us/library/ms680553) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReadProcessMemory](https://github.com/dahall/Vanara/search?l=C%23&q=ReadProcessMemory)  
+[ReadThreadProfilingData](http://msdn2.microsoft.com/en-us/library/dd796403) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.ReadThreadProfilingData](https://github.com/dahall/Vanara/search?l=C%23&q=ReadThreadProfilingData)  
+[ReclaimVirtualMemory](http://msdn2.microsoft.com/en-us/library/dn781437) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReclaimVirtualMemory](https://github.com/dahall/Vanara/search?l=C%23&q=ReclaimVirtualMemory)  
+[RegisterApplicationRecoveryCallback](http://msdn2.microsoft.com/en-us/library/aa373345) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.RegisterApplicationRecoveryCallback](https://github.com/dahall/Vanara/search?l=C%23&q=RegisterApplicationRecoveryCallback)  
+[RegisterApplicationRestart](http://msdn2.microsoft.com/en-us/library/aa373347) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.RegisterApplicationRestart](https://github.com/dahall/Vanara/search?l=C%23&q=RegisterApplicationRestart)  
+[RegisterBadMemoryNotification](http://msdn2.microsoft.com/en-us/library/hh691013) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.RegisterBadMemoryNotification](https://github.com/dahall/Vanara/search?l=C%23&q=RegisterBadMemoryNotification)  
+[RegisterWaitForSingleObject](https://www.google.com/search?num=5&q=RegisterWaitForSingleObject+site%3Amicrosoft.com) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.RegisterWaitForSingleObject](https://github.com/dahall/Vanara/search?l=C%23&q=RegisterWaitForSingleObject)  
 [RegisterWaitForSingleObjectEx](https://www.google.com/search?num=5&q=RegisterWaitForSingleObjectEx+site%3Amicrosoft.com) | vertdll.dll |  |   
-[ReleaseActCtx](http://msdn2.microsoft.com/en-us/library/aa375713) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ReleaseActCtx  
-[ReleaseMutex](http://msdn2.microsoft.com/en-us/library/ms685066) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReleaseMutex  
-[ReleaseMutexWhenCallbackReturns](http://msdn2.microsoft.com/en-us/library/ms685070) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReleaseMutexWhenCallbackReturns  
-[ReleaseSemaphore](http://msdn2.microsoft.com/en-us/library/ms685071) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReleaseSemaphore  
-[ReleaseSemaphoreWhenCallbackReturns](http://msdn2.microsoft.com/en-us/library/ms685073) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReleaseSemaphoreWhenCallbackReturns  
-[ReleaseSRWLockExclusive](http://msdn2.microsoft.com/en-us/library/ms685076) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReleaseSRWLockExclusive  
-[ReleaseSRWLockShared](http://msdn2.microsoft.com/en-us/library/ms685080) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReleaseSRWLockShared  
-[RemoveDirectory](http://msdn2.microsoft.com/en-us/library/aa365488) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.RemoveDirectory  
-[RemoveDirectoryTransacted](http://msdn2.microsoft.com/en-us/library/e8600166-62dc-4398-9e16-43b07f7f0b89) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.RemoveDirectoryTransacted  
-[RemoveDllDirectory](http://msdn2.microsoft.com/en-us/library/hh310514) | kernel32.dll | LibLoaderAPI.h | Vanara.PInvoke.Kernel32.RemoveDllDirectory  
-[RemoveSecureMemoryCacheCallback](http://msdn2.microsoft.com/en-us/library/8be6ff04-34c7-4942-a38c-507584c8bbeb) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.RemoveSecureMemoryCacheCallback  
-[RemoveVectoredContinueHandler](http://msdn2.microsoft.com/en-us/library/ms680567) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RemoveVectoredContinueHandler  
-[RemoveVectoredExceptionHandler](http://msdn2.microsoft.com/en-us/library/ms680571) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RemoveVectoredExceptionHandler  
-[ReOpenFile](http://msdn2.microsoft.com/en-us/library/56d8a4b1-e3b5-4134-8d21-bf40761e9dcc) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.ReOpenFile  
-[ReplaceFile](https://www.google.com/search?num=5&q=ReplaceFile+site%3Amicrosoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReplaceFile  
-[RequestWakeupLatency](http://msdn2.microsoft.com/en-us/library/aa373199) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RequestWakeupLatency  
-[ResetEvent](http://msdn2.microsoft.com/en-us/library/ms685081) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ResetEvent  
-[ResetWriteWatch](http://msdn2.microsoft.com/en-us/library/aa366874) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ResetWriteWatch  
+[ReleaseActCtx](http://msdn2.microsoft.com/en-us/library/aa375713) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.ReleaseActCtx](https://github.com/dahall/Vanara/search?l=C%23&q=ReleaseActCtx)  
+[ReleaseMutex](http://msdn2.microsoft.com/en-us/library/ms685066) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReleaseMutex](https://github.com/dahall/Vanara/search?l=C%23&q=ReleaseMutex)  
+[ReleaseMutexWhenCallbackReturns](http://msdn2.microsoft.com/en-us/library/ms685070) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReleaseMutexWhenCallbackReturns](https://github.com/dahall/Vanara/search?l=C%23&q=ReleaseMutexWhenCallbackReturns)  
+[ReleaseSemaphore](http://msdn2.microsoft.com/en-us/library/ms685071) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReleaseSemaphore](https://github.com/dahall/Vanara/search?l=C%23&q=ReleaseSemaphore)  
+[ReleaseSemaphoreWhenCallbackReturns](http://msdn2.microsoft.com/en-us/library/ms685073) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReleaseSemaphoreWhenCallbackReturns](https://github.com/dahall/Vanara/search?l=C%23&q=ReleaseSemaphoreWhenCallbackReturns)  
+[ReleaseSRWLockExclusive](http://msdn2.microsoft.com/en-us/library/ms685076) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReleaseSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=ReleaseSRWLockExclusive)  
+[ReleaseSRWLockShared](http://msdn2.microsoft.com/en-us/library/ms685080) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReleaseSRWLockShared](https://github.com/dahall/Vanara/search?l=C%23&q=ReleaseSRWLockShared)  
+[RemoveDirectory](http://msdn2.microsoft.com/en-us/library/aa365488) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.RemoveDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveDirectory)  
+[RemoveDirectoryTransacted](http://msdn2.microsoft.com/en-us/library/e8600166-62dc-4398-9e16-43b07f7f0b89) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.RemoveDirectoryTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveDirectoryTransacted)  
+[RemoveDllDirectory](http://msdn2.microsoft.com/en-us/library/hh310514) | kernel32.dll | LibLoaderAPI.h | [Vanara.PInvoke.Kernel32.RemoveDllDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveDllDirectory)  
+[RemoveSecureMemoryCacheCallback](http://msdn2.microsoft.com/en-us/library/8be6ff04-34c7-4942-a38c-507584c8bbeb) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.RemoveSecureMemoryCacheCallback](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveSecureMemoryCacheCallback)  
+[RemoveVectoredContinueHandler](http://msdn2.microsoft.com/en-us/library/ms680567) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.RemoveVectoredContinueHandler](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveVectoredContinueHandler)  
+[RemoveVectoredExceptionHandler](http://msdn2.microsoft.com/en-us/library/ms680571) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.RemoveVectoredExceptionHandler](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveVectoredExceptionHandler)  
+[ReOpenFile](http://msdn2.microsoft.com/en-us/library/56d8a4b1-e3b5-4134-8d21-bf40761e9dcc) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.ReOpenFile](https://github.com/dahall/Vanara/search?l=C%23&q=ReOpenFile)  
+[ReplaceFile](https://www.google.com/search?num=5&q=ReplaceFile+site%3Amicrosoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReplaceFile](https://github.com/dahall/Vanara/search?l=C%23&q=ReplaceFile)  
+[RequestWakeupLatency](http://msdn2.microsoft.com/en-us/library/aa373199) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.RequestWakeupLatency](https://github.com/dahall/Vanara/search?l=C%23&q=RequestWakeupLatency)  
+[ResetEvent](http://msdn2.microsoft.com/en-us/library/ms685081) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ResetEvent](https://github.com/dahall/Vanara/search?l=C%23&q=ResetEvent)  
+[ResetWriteWatch](http://msdn2.microsoft.com/en-us/library/aa366874) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ResetWriteWatch](https://github.com/dahall/Vanara/search?l=C%23&q=ResetWriteWatch)  
 [ResolveDelayLoadedAPI](https://www.google.com/search?num=5&q=ResolveDelayLoadedAPI+site%3Amicrosoft.com) | vertdll.dll |  |   
-[ResolveLocaleName](http://msdn2.microsoft.com/en-us/library/dd319112) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.ResolveLocaleName  
-[RestoreLastError](https://www.google.com/search?num=5&q=RestoreLastError+site%3Amicrosoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RestoreLastError  
-[ResumeThread](http://msdn2.microsoft.com/en-us/library/ms685086) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ResumeThread  
+[ResolveLocaleName](http://msdn2.microsoft.com/en-us/library/dd319112) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.ResolveLocaleName](https://github.com/dahall/Vanara/search?l=C%23&q=ResolveLocaleName)  
+[RestoreLastError](https://www.google.com/search?num=5&q=RestoreLastError+site%3Amicrosoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.RestoreLastError](https://github.com/dahall/Vanara/search?l=C%23&q=RestoreLastError)  
+[ResumeThread](http://msdn2.microsoft.com/en-us/library/ms685086) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ResumeThread](https://github.com/dahall/Vanara/search?l=C%23&q=ResumeThread)  
 [RtlAcquireResourceExclusive](https://www.google.com/search?num=5&q=RtlAcquireResourceExclusive+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlAcquireResourceShared](https://www.google.com/search?num=5&q=RtlAcquireResourceShared+site%3Amicrosoft.com) | vertdll.dll |  |   
-[RtlAddFunctionTable](http://msdn2.microsoft.com/en-us/library/4717f29e-c5f8-4b02-a7c8-edd065f1c793) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlAddFunctionTable  
+[RtlAddFunctionTable](http://msdn2.microsoft.com/en-us/library/4717f29e-c5f8-4b02-a7c8-edd065f1c793) | kernel32.dll | rtlsupportapi.h | [Vanara.PInvoke.Kernel32.RtlAddFunctionTable](https://github.com/dahall/Vanara/search?l=C%23&q=RtlAddFunctionTable)  
 [RtlAllocateHeap](https://www.google.com/search?num=5&q=RtlAllocateHeap+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlAssert](https://www.google.com/search?num=5&q=RtlAssert+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlCallEnclaveReturn](https://www.google.com/search?num=5&q=RtlCallEnclaveReturn+site%3Amicrosoft.com) | vertdll.dll |  |   
-[RtlCaptureContext](http://msdn2.microsoft.com/en-us/library/e2ce0cde-43ab-4681-be66-bd7509fd6ca2) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlCaptureContext  
+[RtlCaptureContext](http://msdn2.microsoft.com/en-us/library/e2ce0cde-43ab-4681-be66-bd7509fd6ca2) | kernel32.dll | rtlsupportapi.h | [Vanara.PInvoke.Kernel32.RtlCaptureContext](https://github.com/dahall/Vanara/search?l=C%23&q=RtlCaptureContext)  
 [RtlCompareUnicodeString](https://www.google.com/search?num=5&q=RtlCompareUnicodeString+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlDeleteCriticalSection](https://www.google.com/search?num=5&q=RtlDeleteCriticalSection+site%3Amicrosoft.com) | vertdll.dll |  |   
-[RtlDeleteFunctionTable](http://msdn2.microsoft.com/en-us/library/42bc3d83-8053-40e9-b153-f68733d0cb2b) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlDeleteFunctionTable  
+[RtlDeleteFunctionTable](http://msdn2.microsoft.com/en-us/library/42bc3d83-8053-40e9-b153-f68733d0cb2b) | kernel32.dll | rtlsupportapi.h | [Vanara.PInvoke.Kernel32.RtlDeleteFunctionTable](https://github.com/dahall/Vanara/search?l=C%23&q=RtlDeleteFunctionTable)  
 [RtlDeleteResource](https://www.google.com/search?num=5&q=RtlDeleteResource+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlEnclaveCallDispatch](https://www.google.com/search?num=5&q=RtlEnclaveCallDispatch+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlEnclaveCallDispatchReturn](https://www.google.com/search?num=5&q=RtlEnclaveCallDispatchReturn+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlEnterCriticalSection](https://www.google.com/search?num=5&q=RtlEnterCriticalSection+site%3Amicrosoft.com) | vertdll.dll |  |   
-[RtlFillMemory](http://msdn2.microsoft.com/en-us/library/aa366561) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FillMemory  
+[RtlFillMemory](http://msdn2.microsoft.com/en-us/library/aa366561) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.FillMemory](https://github.com/dahall/Vanara/search?l=C%23&q=FillMemory)  
 [RtlFreeHeap](https://www.google.com/search?num=5&q=RtlFreeHeap+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlGetCurrentProcessorNumberEx](https://www.google.com/search?num=5&q=RtlGetCurrentProcessorNumberEx+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlGetLastNtStatus](https://www.google.com/search?num=5&q=RtlGetLastNtStatus+site%3Amicrosoft.com) | vertdll.dll |  |   
@@ -879,550 +879,550 @@ Native Method | Native DLL | Header | Managed Method
 [RtlInitializeCriticalSection](https://www.google.com/search?num=5&q=RtlInitializeCriticalSection+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlInitializeResource](https://www.google.com/search?num=5&q=RtlInitializeResource+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlInitUnicodeString](https://www.google.com/search?num=5&q=RtlInitUnicodeString+site%3Amicrosoft.com) | vertdll.dll |  |   
-[RtlInstallFunctionTableCallback](http://msdn2.microsoft.com/en-us/library/63b35b17-0b0e-46ed-9dbf-98290ab08bd1) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlInstallFunctionTableCallback  
+[RtlInstallFunctionTableCallback](http://msdn2.microsoft.com/en-us/library/63b35b17-0b0e-46ed-9dbf-98290ab08bd1) | kernel32.dll | rtlsupportapi.h | [Vanara.PInvoke.Kernel32.RtlInstallFunctionTableCallback](https://github.com/dahall/Vanara/search?l=C%23&q=RtlInstallFunctionTableCallback)  
 [RtlLeaveCriticalSection](https://www.google.com/search?num=5&q=RtlLeaveCriticalSection+site%3Amicrosoft.com) | vertdll.dll |  |   
-[RtlLookupFunctionEntry](http://msdn2.microsoft.com/en-us/library/624b97fb-0453-4f47-b6bd-92aa14705e78) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlLookupFunctionEntry  
-[RtlMoveMemory](http://msdn2.microsoft.com/en-us/library/D374F14D-24C7-4771-AD40-3AC37E7A2D2F) | kernel32.dll | winnt.h | Vanara.PInvoke.Kernel32.RtlMoveMemory  
+[RtlLookupFunctionEntry](http://msdn2.microsoft.com/en-us/library/624b97fb-0453-4f47-b6bd-92aa14705e78) | kernel32.dll | rtlsupportapi.h | [Vanara.PInvoke.Kernel32.RtlLookupFunctionEntry](https://github.com/dahall/Vanara/search?l=C%23&q=RtlLookupFunctionEntry)  
+[RtlMoveMemory](http://msdn2.microsoft.com/en-us/library/D374F14D-24C7-4771-AD40-3AC37E7A2D2F) | kernel32.dll | winnt.h | [Vanara.PInvoke.Kernel32.RtlMoveMemory](https://github.com/dahall/Vanara/search?l=C%23&q=RtlMoveMemory)  
 [RtlNtStatusToDosError](https://www.google.com/search?num=5&q=RtlNtStatusToDosError+site%3Amicrosoft.com) | vertdll.dll |  |   
-[RtlPcToFileHeader](http://msdn2.microsoft.com/en-us/library/690c9f20-d471-49c9-a40c-28926f03acac) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlPcToFileHeader  
+[RtlPcToFileHeader](http://msdn2.microsoft.com/en-us/library/690c9f20-d471-49c9-a40c-28926f03acac) | kernel32.dll | rtlsupportapi.h | [Vanara.PInvoke.Kernel32.RtlPcToFileHeader](https://github.com/dahall/Vanara/search?l=C%23&q=RtlPcToFileHeader)  
 [RtlRaiseStatus](https://www.google.com/search?num=5&q=RtlRaiseStatus+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlReleaseResource](https://www.google.com/search?num=5&q=RtlReleaseResource+site%3Amicrosoft.com) | vertdll.dll |  |   
 [RtlReleaseResourceShared](https://www.google.com/search?num=5&q=RtlReleaseResourceShared+site%3Amicrosoft.com) | vertdll.dll |  |   
-[RtlRestoreContext](http://msdn2.microsoft.com/en-us/library/f5304d17-bc67-4e0f-a535-efca4e65c74c) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlRestoreContext  
+[RtlRestoreContext](http://msdn2.microsoft.com/en-us/library/f5304d17-bc67-4e0f-a535-efca4e65c74c) | kernel32.dll | rtlsupportapi.h | [Vanara.PInvoke.Kernel32.RtlRestoreContext](https://github.com/dahall/Vanara/search?l=C%23&q=RtlRestoreContext)  
 [RtlUnhandledExceptionFilter](https://www.google.com/search?num=5&q=RtlUnhandledExceptionFilter+site%3Amicrosoft.com) | vertdll.dll |  |   
-[RtlUnwind](http://msdn2.microsoft.com/en-us/library/254b2547-9d3d-468f-a360-20a12e9dd82e) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlUnwind  
-[RtlUnwindEx](http://msdn2.microsoft.com/en-us/library/3d2d8778-311e-4cc1-b280-4f83ab457755) | kernel32.dll | rtlsupportapi.h | Vanara.PInvoke.Kernel32.RtlUnwindEx  
+[RtlUnwind](http://msdn2.microsoft.com/en-us/library/254b2547-9d3d-468f-a360-20a12e9dd82e) | kernel32.dll | rtlsupportapi.h | [Vanara.PInvoke.Kernel32.RtlUnwind](https://github.com/dahall/Vanara/search?l=C%23&q=RtlUnwind)  
+[RtlUnwindEx](http://msdn2.microsoft.com/en-us/library/3d2d8778-311e-4cc1-b280-4f83ab457755) | kernel32.dll | rtlsupportapi.h | [Vanara.PInvoke.Kernel32.RtlUnwindEx](https://github.com/dahall/Vanara/search?l=C%23&q=RtlUnwindEx)  
 [RtlVirtualUnwind](https://www.google.com/search?num=5&q=RtlVirtualUnwind+site%3Amicrosoft.com) | vertdll.dll |  |   
-[RtlZeroMemory](https://www.google.com/search?num=5&q=RtlZeroMemory+site%3Amicrosoft.com) | kernel32.dll | winnt.h | Vanara.PInvoke.Kernel32.RtlZeroMemory  
-[ScrollConsoleScreenBuffer](https://www.google.com/search?num=5&q=ScrollConsoleScreenBufferA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.ScrollConsoleScreenBuffer  
-[SearchPath](http://msdn2.microsoft.com/en-us/library/aa365527) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SearchPath  
-[SetCalendarInfo](http://msdn2.microsoft.com/en-us/library/3599f68f-5b7c-4bf9-9c42-452047c0731f) | kernel32.dll | winnls.h | Vanara.PInvoke.Kernel32.SetCalendarInfo  
-[SetCommBreak](http://msdn2.microsoft.com/en-us/library/aa363433) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetCommBreak  
-[SetCommConfig](http://msdn2.microsoft.com/en-us/library/aa363434) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetCommConfig  
-[SetCommMask](http://msdn2.microsoft.com/en-us/library/aa363435) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetCommMask  
-[SetCommState](http://msdn2.microsoft.com/en-us/library/aa363436) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetCommState  
-[SetCommTimeouts](http://msdn2.microsoft.com/en-us/library/aa363437) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetCommTimeouts  
-[SetComputerName](http://msdn2.microsoft.com/en-us/library/ms724930) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetComputerName  
-[SetComputerNameEx](http://msdn2.microsoft.com/en-us/library/ms724931) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetComputerNameEx  
-[SetComputerNameEx2W](https://www.google.com/search?num=5&q=SetComputerNameEx2W+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetComputerNameEx2  
-[SetConsoleActiveScreenBuffer](https://www.google.com/search?num=5&q=SetConsoleActiveScreenBuffer+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleActiveScreenBuffer  
-[SetConsoleCP](https://www.google.com/search?num=5&q=SetConsoleCP+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleCP  
-[SetConsoleCtrlHandler](https://www.google.com/search?num=5&q=SetConsoleCtrlHandler+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleCtrlHandler  
-[SetConsoleCursorInfo](https://www.google.com/search?num=5&q=SetConsoleCursorInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleCursorInfo  
-[SetConsoleCursorPosition](http://msdn2.microsoft.com/en-us/library/8e9abada-a64e-429f-8286-ced1169c7104) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleCursorPosition  
-[SetConsoleDisplayMode](https://www.google.com/search?num=5&q=SetConsoleDisplayMode+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleDisplayMode  
-[SetConsoleHistoryInfo](https://www.google.com/search?num=5&q=SetConsoleHistoryInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleHistoryInfo  
-[SetConsoleMode](https://www.google.com/search?num=5&q=SetConsoleMode+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleMode  
-[SetConsoleOutputCP](https://www.google.com/search?num=5&q=SetConsoleOutputCP+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleOutputCP  
-[SetConsoleScreenBufferInfoEx](https://www.google.com/search?num=5&q=SetConsoleScreenBufferInfoEx+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleScreenBufferInfoEx  
-[SetConsoleScreenBufferSize](https://www.google.com/search?num=5&q=SetConsoleScreenBufferSize+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleScreenBufferSize  
-[SetConsoleTextAttribute](https://www.google.com/search?num=5&q=SetConsoleTextAttribute+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleTextAttribute  
-[SetConsoleTitle](https://www.google.com/search?num=5&q=SetConsoleTitleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleTitle  
-[SetConsoleWindowInfo](https://www.google.com/search?num=5&q=SetConsoleWindowInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleWindowInfo  
-[SetCriticalSectionSpinCount](http://msdn2.microsoft.com/en-us/library/ms686197) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetCriticalSectionSpinCount  
-[SetCurrentConsoleFontEx](https://www.google.com/search?num=5&q=SetCurrentConsoleFontEx+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetCurrentConsoleFontEx  
-[SetCurrentDirectory](http://msdn2.microsoft.com/en-us/library/aa365530) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetCurrentDirectory  
-[SetDefaultCommConfig](http://msdn2.microsoft.com/en-us/library/aa363438) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetDefaultCommConfig  
-[SetDefaultDllDirectories](http://msdn2.microsoft.com/en-us/library/hh310515) | kernel32.dll | LibLoaderAPI.h | Vanara.PInvoke.Kernel32.SetDefaultDllDirectories  
-[SetDllDirectory](http://msdn2.microsoft.com/en-us/library/ms686203) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetDllDirectory  
-[SetDynamicTimeZoneInformation](http://msdn2.microsoft.com/en-us/library/ms724932) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetDynamicTimeZoneInformation  
-[SetEndOfFile](http://msdn2.microsoft.com/en-us/library/aa365531) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.SetEndOfFile  
-[SetEnvironmentStrings](https://www.google.com/search?num=5&q=SetEnvironmentStringsA+site%3Amicrosoft.com) | kernel32.dll | ProcessEnv.h | Vanara.PInvoke.Kernel32.SetEnvironmentStrings  
-[SetEnvironmentVariable](http://msdn2.microsoft.com/en-us/library/ms686206) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetEnvironmentVariable  
-[SetErrorMode](http://msdn2.microsoft.com/en-us/library/ms680621) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetErrorMode  
-[SetEvent](http://msdn2.microsoft.com/en-us/library/ms686211) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetEvent  
-[SetEventWhenCallbackReturns](http://msdn2.microsoft.com/en-us/library/ms686214) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetEventWhenCallbackReturns  
-[SetFileApisToANSI](http://msdn2.microsoft.com/en-us/library/aa365533) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetFileApisToANSI  
-[SetFileApisToOEM](http://msdn2.microsoft.com/en-us/library/aa365534) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetFileApisToOEM  
-[SetFileAttributes](http://msdn2.microsoft.com/en-us/library/aa365535) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.SetFileAttributes  
-[SetFileAttributesTransacted](http://msdn2.microsoft.com/en-us/library/e25e77b2-a6ad-4ce4-8589-d7ff6c4074f6) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.SetFileAttributesTransacted  
-[SetFileBandwidthReservation](http://msdn2.microsoft.com/en-us/library/a22bd8f3-4fbf-4f77-b8b6-7e786942615a) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.SetFileBandwidthReservation  
-[SetFileCompletionNotificationModes](http://msdn2.microsoft.com/en-us/library/23796484-ee47-4f80-856d-5a5d5635547c) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.SetFileCompletionNotificationModes  
-[SetFileInformationByHandle](http://msdn2.microsoft.com/en-us/library/aa365539) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.SetFileInformationByHandle  
-[SetFileIoOverlappedRange](http://msdn2.microsoft.com/en-us/library/aa365540) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetFileIoOverlappedRange  
-[SetFilePointer](http://msdn2.microsoft.com/en-us/library/aa365541) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.SetFilePointer  
-[SetFilePointerEx](http://msdn2.microsoft.com/en-us/library/aa365542) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.SetFilePointerEx  
-[SetFileShortName](http://msdn2.microsoft.com/en-us/library/aa365543) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetFileShortName  
-[SetFileTime](http://msdn2.microsoft.com/en-us/library/ms724933) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.SetFileTime  
-[SetFileValidData](http://msdn2.microsoft.com/en-us/library/c6ded2d7-270a-4b75-b2d4-1007a92fe831) | kernel32.dll | fileapi.h | Vanara.PInvoke.Kernel32.SetFileValidData  
-[SetFirmwareEnvironmentVariable](http://msdn2.microsoft.com/en-us/library/ms724934) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetFirmwareEnvironmentVariable  
-[SetFirmwareEnvironmentVariableEx](http://msdn2.microsoft.com/en-us/library/D3C2F03F-66F6-40A4-830E-058BBA925ACD) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.SetFirmwareEnvironmentVariableEx  
-[SetHandleInformation](http://msdn2.microsoft.com/en-us/library/ms724935) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetHandleInformation  
-[SetInformationJobObject](http://msdn2.microsoft.com/en-us/library/46f7c579-e8d3-4434-a6ce-56573cd84387) | kernel32.dll | jobapi2.h | Vanara.PInvoke.Kernel32.SetInformationJobObject  
-[SetIoRateControlInformationJobObject](http://msdn2.microsoft.com/en-us/library/mt280128) | kernel32.dll | Jobapi2.h | Vanara.PInvoke.Kernel32.SetIoRateControlInformationJobObject  
-[SetLastError](http://msdn2.microsoft.com/en-us/library/ms680627) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetLastError  
-[SetLocaleInfo](http://msdn2.microsoft.com/en-us/library/dd374049) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.SetLocaleInfo  
-[SetLocalTime](http://msdn2.microsoft.com/en-us/library/ms724936) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetLocalTime  
-[SetMailslotInfo](http://msdn2.microsoft.com/en-us/library/aa365786) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetMailslotInfo  
-[SetNamedPipeHandleState](http://msdn2.microsoft.com/en-us/library/aa365787) | kernel32.dll | namedpipeapi.h | Vanara.PInvoke.Kernel32.SetNamedPipeHandleState  
-[SetPriorityClass](http://msdn2.microsoft.com/en-us/library/ms686219) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetPriorityClass  
-[SetProcessAffinityMask](http://msdn2.microsoft.com/en-us/library/ms686223) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessAffinityMask  
-[SetProcessAffinityUpdateMode](http://msdn2.microsoft.com/en-us/library/bb309063) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessAffinityUpdateMode  
-[SetProcessDefaultCpuSets](http://msdn2.microsoft.com/en-us/library/mt186427) | kernel32.dll | Processthreadapi.h | Vanara.PInvoke.Kernel32.SetProcessDefaultCpuSets  
-[SetProcessDEPPolicy](http://msdn2.microsoft.com/en-us/library/17c9f522-fd64-4061-9212-8fc91cc96b18) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.SetProcessDEPPolicy  
-[SetProcessInformation](http://msdn2.microsoft.com/en-us/library/hh448389) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessInformation  
-[SetProcessMitigationPolicy](http://msdn2.microsoft.com/en-us/library/hh769088) | kernel32.dll | Processthreadsapi.h | Vanara.PInvoke.Kernel32.SetProcessMitigationPolicy  
-[SetProcessPreferredUILanguages](http://msdn2.microsoft.com/en-us/library/dd374050) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.SetProcessPreferredUILanguages  
-[SetProcessPriorityBoost](http://msdn2.microsoft.com/en-us/library/ms686225) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessPriorityBoost  
-[SetProcessShutdownParameters](http://msdn2.microsoft.com/en-us/library/ms686227) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessShutdownParameters  
-[SetProcessValidCallTargets](http://msdn2.microsoft.com/en-us/library/dn934202) | kernelbase.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessValidCallTargets  
-[SetProcessWorkingSetSize](http://msdn2.microsoft.com/en-us/library/ms686234) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessWorkingSetSize  
-[SetProcessWorkingSetSizeEx](http://msdn2.microsoft.com/en-us/library/ms686237) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessWorkingSetSizeEx  
-[SetProtectedPolicy](http://msdn2.microsoft.com/en-us/library/dn893592) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetProtectedPolicy  
-[SetSearchPathMode](http://msdn2.microsoft.com/en-us/library/1874933d-92c3-4945-a3e4-e6dede232d5e) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.SetSearchPathMode  
-[SetStdHandle](https://www.google.com/search?num=5&q=SetStdHandle+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetStdHandle  
-[SetStdHandleEx](https://www.google.com/search?num=5&q=SetStdHandleEx+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetStdHandleEx  
-[SetSystemFileCacheSize](http://msdn2.microsoft.com/en-us/library/aa965240) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetSystemFileCacheSize  
-[SetSystemPowerState](http://msdn2.microsoft.com/en-us/library/58cf4e29-2a2e-499a-85ce-0034f4323cfe) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.SetSystemPowerState  
-[SetSystemTime](http://msdn2.microsoft.com/en-us/library/ms724942) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetSystemTime  
-[SetSystemTimeAdjustment](http://msdn2.microsoft.com/en-us/library/ms724943) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetSystemTimeAdjustment  
-[SetSystemTimeAdjustmentPrecise](http://msdn2.microsoft.com/en-us/library/8B429BFC-9781-4434-9A2F-9E50E2BF299A) | kernelbase.dll | sysinfoapi.h | Vanara.PInvoke.Kernel32.SetSystemTimeAdjustmentPrecise  
-[SetTapeParameters](http://msdn2.microsoft.com/en-us/library/aa362534) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetTapeParameters  
-[SetTapePosition](http://msdn2.microsoft.com/en-us/library/aa362536) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetTapePosition  
-[SetThreadAffinityMask](http://msdn2.microsoft.com/en-us/library/ms686247) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadAffinityMask  
-[SetThreadContext](http://msdn2.microsoft.com/en-us/library/ms680632) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadContext  
-[SetThreadDescription](http://msdn2.microsoft.com/en-us/library/mt774976) | kernel32.dll | ProcessThreadsApi.h | Vanara.PInvoke.Kernel32.SetThreadDescription  
-[SetThreadErrorMode](http://msdn2.microsoft.com/en-us/library/dd553630) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadErrorMode  
-[SetThreadExecutionState](http://msdn2.microsoft.com/en-us/library/aa373208) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetThreadExecutionState  
-[SetThreadGroupAffinity](http://msdn2.microsoft.com/en-us/library/9f24f1bf-a63d-4318-af2a-eb3553f2b0f9) | kernel32.dll | processtopologyapi.h | Vanara.PInvoke.Kernel32.SetThreadGroupAffinity  
-[SetThreadIdealProcessor](http://msdn2.microsoft.com/en-us/library/ms686253) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadIdealProcessor  
-[SetThreadIdealProcessorEx](http://msdn2.microsoft.com/en-us/library/dd405517) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadIdealProcessorEx  
-[SetThreadInformation](http://msdn2.microsoft.com/en-us/library/c0159bea-870a-46b7-a350-91fe52efae49) | kernel32.dll | processthreadsapi.h | Vanara.PInvoke.Kernel32.SetThreadInformation  
-[SetThreadLocale](http://msdn2.microsoft.com/en-us/library/dd374051) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.SetThreadLocale  
-[SetThreadpoolStackInformation](http://msdn2.microsoft.com/en-us/library/dd405520) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadpoolStackInformation  
-[SetThreadpoolThreadMaximum](http://msdn2.microsoft.com/en-us/library/ms686266) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadpoolThreadMaximum  
-[SetThreadpoolThreadMinimum](http://msdn2.microsoft.com/en-us/library/ms686268) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadpoolThreadMinimum  
-[SetThreadpoolTimer](http://msdn2.microsoft.com/en-us/library/ms686271) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadpoolTimer  
-[SetThreadpoolTimerEx](http://msdn2.microsoft.com/en-us/library/dn894018) | kernel32.dll | Threadpoolapiset.h | Vanara.PInvoke.Kernel32.SetThreadpoolTimerEx  
-[SetThreadpoolWait](http://msdn2.microsoft.com/en-us/library/ms686273) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadpoolWait  
-[SetThreadpoolWaitEx](http://msdn2.microsoft.com/en-us/library/mt186618) | kernel32.dll | Threadpoolapiset.h | Vanara.PInvoke.Kernel32.SetThreadpoolWaitEx  
-[SetThreadPreferredUILanguages](http://msdn2.microsoft.com/en-us/library/dd374052) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.SetThreadPreferredUILanguages  
-[SetThreadPriority](http://msdn2.microsoft.com/en-us/library/ms686277) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadPriority  
-[SetThreadPriorityBoost](http://msdn2.microsoft.com/en-us/library/ms686280) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadPriorityBoost  
-[SetThreadSelectedCpuSets](http://msdn2.microsoft.com/en-us/library/mt186428) | kernel32.dll | Processthreadapi.h | Vanara.PInvoke.Kernel32.SetThreadSelectedCpuSets  
-[SetThreadStackGuarantee](http://msdn2.microsoft.com/en-us/library/ms686283) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadStackGuarantee  
-[SetThreadUILanguage](http://msdn2.microsoft.com/en-us/library/dd374053) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.SetThreadUILanguage  
-[SetTimeZoneInformation](http://msdn2.microsoft.com/en-us/library/ms724944) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetTimeZoneInformation  
-[SetUmsThreadInformation](http://msdn2.microsoft.com/en-us/library/19f190fd-1f78-4bb6-93eb-73a5c522b44d) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.SetUmsThreadInformation  
-[SetUnhandledExceptionFilter](http://msdn2.microsoft.com/en-us/library/ms680634) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetUnhandledExceptionFilter  
-[SetupComm](http://msdn2.microsoft.com/en-us/library/aa363439) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetupComm  
-[SetUserGeoID](http://msdn2.microsoft.com/en-us/library/dd374055) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.SetUserGeoID  
-[SetUserGeoName](http://msdn2.microsoft.com/en-us/library/mt812045) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.SetUserGeoName  
-[SetVolumeLabel](http://msdn2.microsoft.com/en-us/library/aa365560) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetVolumeLabel  
-[SetVolumeMountPoint](http://msdn2.microsoft.com/en-us/library/aa365561) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetVolumeMountPoint  
-[SetWaitableTimer](http://msdn2.microsoft.com/en-us/library/ms686289) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetWaitableTimer  
-[SetWaitableTimerEx](http://msdn2.microsoft.com/en-us/library/dd405521) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetWaitableTimerEx  
-[SetXStateFeaturesMask](http://msdn2.microsoft.com/en-us/library/64ADEA8A-DE78-437E-AE68-A68E7214C5FD) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.SetXStateFeaturesMask  
-[SignalObjectAndWait](https://www.google.com/search?num=5&q=SignalObjectAndWait+site%3Amicrosoft.com) | kernel32.dll |  | Vanara.PInvoke.Kernel32.SignalObjectAndWait  
-[SizeofResource](http://msdn2.microsoft.com/en-us/library/ms648048) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SizeofResource  
-[Sleep](http://msdn2.microsoft.com/en-us/library/ms686298) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.Sleep  
-[SleepConditionVariableCS](http://msdn2.microsoft.com/en-us/library/ms686301) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SleepConditionVariableCS  
-[SleepConditionVariableSRW](http://msdn2.microsoft.com/en-us/library/ms686304) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SleepConditionVariableSRW  
-[SleepEx](http://msdn2.microsoft.com/en-us/library/ms686307) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SleepEx  
-[StartThreadpoolIo](http://msdn2.microsoft.com/en-us/library/ms686326) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.StartThreadpoolIo  
-[SubmitThreadpoolWork](http://msdn2.microsoft.com/en-us/library/ms686338) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SubmitThreadpoolWork  
-[SuspendThread](http://msdn2.microsoft.com/en-us/library/ms686345) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SuspendThread  
-[SwitchToFiber](http://msdn2.microsoft.com/en-us/library/ms686350) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SwitchToFiber  
-[SwitchToThread](http://msdn2.microsoft.com/en-us/library/ms686352) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SwitchToThread  
-[SystemTimeToFileTime](http://msdn2.microsoft.com/en-us/library/ms724948) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SystemTimeToFileTime  
-[SystemTimeToTzSpecificLocalTime](http://msdn2.microsoft.com/en-us/library/f3a87ec2-67a0-418f-af6e-6c0b5547cffb) | kernel32.dll | timezoneapi.h | Vanara.PInvoke.Kernel32.SystemTimeToTzSpecificLocalTime  
-[SystemTimeToTzSpecificLocalTimeEx](http://msdn2.microsoft.com/en-us/library/jj206642) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SystemTimeToTzSpecificLocalTimeEx  
-[TerminateEnclave](http://msdn2.microsoft.com/en-us/library/mt844249) | kernelbase.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.TerminateEnclave  
-[TerminateJobObject](http://msdn2.microsoft.com/en-us/library/ms686709) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TerminateJobObject  
-[TerminateProcess](http://msdn2.microsoft.com/en-us/library/ms686714) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TerminateProcess  
-[TerminateProcessOnMemoryExhaustion](https://www.google.com/search?num=5&q=TerminateProcessOnMemoryExhaustion+site%3Amicrosoft.com) | kernelbase.dll | WinBase.h | Vanara.PInvoke.Kernel32.TerminateProcessOnMemoryExhaustion  
-[TerminateThread](http://msdn2.microsoft.com/en-us/library/ms686717) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TerminateThread  
-[TermsrvAppInstallMode](http://msdn2.microsoft.com/en-us/library/edf362e6-c1a4-49fe-8e07-1188c66616be) | kernel32.dll |  | Vanara.PInvoke.Kernel32.TermsrvAppInstallMode  
-[Thread32First](http://msdn2.microsoft.com/en-us/library/d4cb7a19-850e-43b5-bda5-91be48382d2a) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Thread32First  
-[Thread32Next](http://msdn2.microsoft.com/en-us/library/5efe514e-626c-4138-97a0-bdad217c424f) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Thread32Next  
-[TlsAlloc](http://msdn2.microsoft.com/en-us/library/cbb3d832-cd92-4875-8366-6b69be7a536f) | kernel32.dll | processthreadsapi.h | Vanara.PInvoke.Kernel32.TlsAlloc  
-[TlsFree](http://msdn2.microsoft.com/en-us/library/f5b1e8fc-02eb-4a06-b606-2b647944029b) | kernel32.dll | processthreadsapi.h | Vanara.PInvoke.Kernel32.TlsFree  
-[TlsGetValue](http://msdn2.microsoft.com/en-us/library/82bd5ff6-ff0b-42b7-9ece-e9e8531eb5fb) | kernel32.dll | processthreadsapi.h | Vanara.PInvoke.Kernel32.TlsGetValue  
-[TlsSetValue](http://msdn2.microsoft.com/en-us/library/531b4a4a-a251-4ab4-b00a-754783a51283) | kernel32.dll | processthreadsapi.h | Vanara.PInvoke.Kernel32.TlsSetValue  
-[Toolhelp32ReadProcessMemory](http://msdn2.microsoft.com/en-us/library/e579b813-32ef-481d-8dc6-f959ec9b6bad) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Toolhelp32ReadProcessMemory  
-[TransactNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365790) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.TransactNamedPipe  
-[TransmitCommChar](http://msdn2.microsoft.com/en-us/library/aa363473) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.TransmitCommChar  
-[TryAcquireSRWLockExclusive](http://msdn2.microsoft.com/en-us/library/dd405523) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TryAcquireSRWLockExclusive  
-[TryAcquireSRWLockShared](http://msdn2.microsoft.com/en-us/library/dd405524) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TryAcquireSRWLockShared  
-[TryEnterCriticalSection](http://msdn2.microsoft.com/en-us/library/ms686857) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TryEnterCriticalSection  
-[TrySubmitThreadpoolCallback](http://msdn2.microsoft.com/en-us/library/ms686862) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TrySubmitThreadpoolCallback  
-[TzSpecificLocalTimeToSystemTime](http://msdn2.microsoft.com/en-us/library/ms725485) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.TzSpecificLocalTimeToSystemTime  
-[TzSpecificLocalTimeToSystemTimeEx](http://msdn2.microsoft.com/en-us/library/jj206643) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.TzSpecificLocalTimeToSystemTimeEx  
-[UmsThreadYield](http://msdn2.microsoft.com/en-us/library/d7c94ed5-9536-4c39-8658-27e4237cc9ba) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.UmsThreadYield  
-[UnhandledExceptionFilter](http://msdn2.microsoft.com/en-us/library/ms681401) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.UnhandledExceptionFilter  
-[UnlockFile](http://msdn2.microsoft.com/en-us/library/aa365715) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.UnlockFile  
-[UnlockFileEx](http://msdn2.microsoft.com/en-us/library/aa365716) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.UnlockFileEx  
-[UnmapViewOfFile](http://msdn2.microsoft.com/en-us/library/aa366882) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.UnmapViewOfFile  
-[UnmapViewOfFile2](http://msdn2.microsoft.com/en-us/library/mt492559) | kernelbase.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.UnmapViewOfFile2  
-[UnmapViewOfFileEx](http://msdn2.microsoft.com/en-us/library/mt670639) | kernel32.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.UnmapViewOfFileEx  
-[UnregisterApplicationRecoveryCallback](http://msdn2.microsoft.com/en-us/library/aa373348) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.UnregisterApplicationRecoveryCallback  
-[UnregisterApplicationRestart](http://msdn2.microsoft.com/en-us/library/aa373349) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.UnregisterApplicationRestart  
-[UnregisterBadMemoryNotification](http://msdn2.microsoft.com/en-us/library/hh691014) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.UnregisterBadMemoryNotification  
-[UnregisterWait](http://msdn2.microsoft.com/en-us/library/ms686870) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.UnregisterWait  
-[UnregisterWaitEx](http://msdn2.microsoft.com/en-us/library/ms686876) | kernel32.dll | LibLoaderAPI.h | Vanara.PInvoke.Kernel32.UnregisterWaitEx  
-[UpdateCalendarDayOfWeek](http://msdn2.microsoft.com/en-us/library/b9ae250a-73bb-4ec2-bb0d-e1f8b25c173c) | kernel32.dll |  | Vanara.PInvoke.Kernel32.UpdateCalendarDayOfWeek  
-[UpdateProcThreadAttribute](http://msdn2.microsoft.com/en-us/library/ms686880) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.UpdateProcThreadAttribute  
-[UpdateResource](http://msdn2.microsoft.com/en-us/library/ms648049) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.UpdateResource  
-[UserHandleGrantAccess](http://msdn2.microsoft.com/en-us/library/6e7a6cfc-f881-43cc-a5af-b97e0bf14bf4) | user32.dll | winuser.h | Vanara.PInvoke.Kernel32.UserHandleGrantAccess  
-[VerifyScripts](http://msdn2.microsoft.com/en-us/library/dd374129) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.VerifyScripts  
-[VerifyVersionInfo](http://msdn2.microsoft.com/en-us/library/ms725492) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.VerifyVersionInfo  
-[VerSetConditionMask](http://msdn2.microsoft.com/en-us/library/ms725493) | kernel32.dll | Winnt.h | Vanara.PInvoke.Kernel32.VerSetConditionMask  
-[VirtualAlloc](http://msdn2.microsoft.com/en-us/library/aa366887) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualAlloc  
-[VirtualAlloc2](http://msdn2.microsoft.com/en-us/library/5021062F-E414-49A1-8B70-BE2A57A90E54) | kernelbase.dll | memoryapi.h | Vanara.PInvoke.Kernel32.VirtualAlloc2  
-[VirtualAlloc2FromApp](http://msdn2.microsoft.com/en-us/library/84896A75-A917-4CA1-A417-650428E1FBFD) | kernelbase.dll | memoryapi.h | Vanara.PInvoke.Kernel32.VirtualAlloc2FromApp  
-[VirtualAllocEx](http://msdn2.microsoft.com/en-us/library/aa366890) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualAllocEx  
-[VirtualAllocExNuma](http://msdn2.microsoft.com/en-us/library/aa366891) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualAllocExNuma  
-[VirtualAllocFromApp](http://msdn2.microsoft.com/en-us/library/mt169845) | kernelbase.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.VirtualAllocFromApp  
-[VirtualFree](http://msdn2.microsoft.com/en-us/library/aa366892) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualFree  
-[VirtualFreeEx](http://msdn2.microsoft.com/en-us/library/aa366894) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualFreeEx  
-[VirtualLock](http://msdn2.microsoft.com/en-us/library/aa366895) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualLock  
-[VirtualProtect](http://msdn2.microsoft.com/en-us/library/aa366898) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualProtect  
-[VirtualProtectEx](http://msdn2.microsoft.com/en-us/library/aa366899) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualProtectEx  
-[VirtualProtectFromApp](http://msdn2.microsoft.com/en-us/library/mt169846) | kernelbase.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.VirtualProtectFromApp  
-[VirtualQuery](http://msdn2.microsoft.com/en-us/library/aa366902) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualQuery  
-[VirtualQueryEx](http://msdn2.microsoft.com/en-us/library/aa366907) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualQueryEx  
-[VirtualUnlock](http://msdn2.microsoft.com/en-us/library/aa366910) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualUnlock  
-[WaitCommEvent](http://msdn2.microsoft.com/en-us/library/aa363479) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WaitCommEvent  
-[WaitForDebugEvent](http://msdn2.microsoft.com/en-us/library/ms681423) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForDebugEvent  
-[WaitForDebugEventEx](http://msdn2.microsoft.com/en-us/library/mt171594) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForDebugEventEx  
-[WaitForMultipleObjects](https://www.google.com/search?num=5&q=WaitForMultipleObjects+site%3Amicrosoft.com) | kernel32.dll |  | Vanara.PInvoke.Kernel32.WaitForMultipleObjects  
-[WaitForMultipleObjectsEx](https://www.google.com/search?num=5&q=WaitForMultipleObjectsEx+site%3Amicrosoft.com) | kernel32.dll |  | Vanara.PInvoke.Kernel32.WaitForMultipleObjectsEx  
-[WaitForSingleObject](https://www.google.com/search?num=5&q=WaitForSingleObject+site%3Amicrosoft.com) | kernel32.dll |  | Vanara.PInvoke.Kernel32.WaitForSingleObject  
-[WaitForSingleObjectEx](https://www.google.com/search?num=5&q=WaitForSingleObjectEx+site%3Amicrosoft.com) | kernel32.dll |  | Vanara.PInvoke.Kernel32.WaitForSingleObjectEx  
-[WaitForThreadpoolIoCallbacks](http://msdn2.microsoft.com/en-us/library/ms687038) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForThreadpoolIoCallbacks  
-[WaitForThreadpoolTimerCallbacks](http://msdn2.microsoft.com/en-us/library/ms687042) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForThreadpoolTimerCallbacks  
-[WaitForThreadpoolWaitCallbacks](http://msdn2.microsoft.com/en-us/library/ms687047) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForThreadpoolWaitCallbacks  
-[WaitForThreadpoolWorkCallbacks](http://msdn2.microsoft.com/en-us/library/ms687053) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForThreadpoolWorkCallbacks  
-[WaitNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365800) | kernel32.dll | namedpipeapi.h | Vanara.PInvoke.Kernel32.WaitNamedPipe  
-[WaitOnAddress](http://msdn2.microsoft.com/en-us/library/hh706898) | kernelbase.dll | SynchAPI.h | Vanara.PInvoke.Kernel32.WaitOnAddress  
-[WakeAllConditionVariable](http://msdn2.microsoft.com/en-us/library/ms687076) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WakeAllConditionVariable  
-[WakeByAddressAll](http://msdn2.microsoft.com/en-us/library/hh706899) | kernelbase.dll | SynchAPI.h | Vanara.PInvoke.Kernel32.WakeByAddressAll  
-[WakeByAddressSingle](http://msdn2.microsoft.com/en-us/library/hh706900) | kernelbase.dll | SynchAPI.h | Vanara.PInvoke.Kernel32.WakeByAddressSingle  
-[WakeConditionVariable](http://msdn2.microsoft.com/en-us/library/ms687080) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WakeConditionVariable  
-[WerGetFlags](http://msdn2.microsoft.com/en-us/library/8c5f08c0-e2d1-448c-9a57-ef19897f64c6) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerGetFlags  
-[WerRegisterAdditionalProcess](http://msdn2.microsoft.com/en-us/library/mt492585) | kernel32.dll | Werapi.h | Vanara.PInvoke.Kernel32.WerRegisterAdditionalProcess  
-[WerRegisterAppLocalDump](http://msdn2.microsoft.com/en-us/library/C57F5758-2BF7-444E-A22C-62C925B899A1) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerRegisterAppLocalDump  
-[WerRegisterCustomMetadata](http://msdn2.microsoft.com/en-us/library/55FB3110-314A-4327-AA8F-3AF77B7006DD) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerRegisterCustomMetadata  
-[WerRegisterExcludedMemoryBlock](http://msdn2.microsoft.com/en-us/library/6CDA8EDD-C8A5-471D-9716-3AB29E571133) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerRegisterExcludedMemoryBlock  
-[WerRegisterFile](http://msdn2.microsoft.com/en-us/library/4b4bb1bb-6782-447a-901f-75702256d907) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerRegisterFile  
-[WerRegisterMemoryBlock](http://msdn2.microsoft.com/en-us/library/10fa2bf3-ec12-4c7c-b986-9b22cdaa7319) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerRegisterMemoryBlock  
-[WerRegisterRuntimeExceptionModule](http://msdn2.microsoft.com/en-us/library/b0fb2c0d-cc98-43cc-a508-e80545377b7f) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerRegisterRuntimeExceptionModule  
-[WerSetFlags](http://msdn2.microsoft.com/en-us/library/2a71203f-3a08-461f-a230-e3fee00d9d99) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerSetFlags  
-[WerUnregisterAdditionalProcess](http://msdn2.microsoft.com/en-us/library/CE840EE8-5EB6-4F0F-935E-5DA9097E950F) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerUnregisterAdditionalProcess  
-[WerUnregisterAppLocalDump](http://msdn2.microsoft.com/en-us/library/A3AD976A-9C44-494C-ABF0-90D151001E30) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerUnregisterAppLocalDump  
-[WerUnregisterCustomMetadata](http://msdn2.microsoft.com/en-us/library/29DB2CE5-2A96-450B-96C8-082B786613F9) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerUnregisterCustomMetadata  
-[WerUnregisterExcludedMemoryBlock](http://msdn2.microsoft.com/en-us/library/99FF746E-8EFC-47DB-AEE6-EC46F7BC7F0B) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerUnregisterExcludedMemoryBlock  
-[WerUnregisterFile](http://msdn2.microsoft.com/en-us/library/bb513630) | kernel32.dll | Werapi.h | Vanara.PInvoke.Kernel32.WerUnregisterFile  
-[WerUnregisterMemoryBlock](http://msdn2.microsoft.com/en-us/library/016800e8-4a03-40f6-9dba-54cd9082eb48) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerUnregisterMemoryBlock  
-[WerUnregisterRuntimeExceptionModule](http://msdn2.microsoft.com/en-us/library/1a315923-b554-4363-a607-076690fc76a1) | kernel32.dll | werapi.h | Vanara.PInvoke.Kernel32.WerUnregisterRuntimeExceptionModule  
-[WideCharToMultiByte](http://msdn2.microsoft.com/en-us/library/dd374130) | kernel32.dll | Stringapiset.h | Vanara.PInvoke.Kernel32.WideCharToMultiByte  
-[WinExec](http://msdn2.microsoft.com/en-us/library/ms687393) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WinExec  
-[Wow64DisableWow64FsRedirection](http://msdn2.microsoft.com/en-us/library/aa365743) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.Wow64DisableWow64FsRedirection  
-[Wow64EnableWow64FsRedirection](http://msdn2.microsoft.com/en-us/library/8d11a7ba-540d-4bd0-881a-a61605357dd8) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.Wow64EnableWow64FsRedirection  
-[Wow64GetThreadContext](http://msdn2.microsoft.com/en-us/library/1bac28e1-3558-43c4-97e4-d8bb9514c38e) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.Wow64GetThreadContext  
-[Wow64GetThreadSelectorEntry](http://msdn2.microsoft.com/en-us/library/68393913-6725-4cc6-90b9-57da2a96c91e) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.Wow64GetThreadSelectorEntry  
-[Wow64RevertWow64FsRedirection](http://msdn2.microsoft.com/en-us/library/aa365745) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.Wow64RevertWow64FsRedirection  
-[Wow64SetThreadContext](http://msdn2.microsoft.com/en-us/library/4119c945-b654-4634-a88b-e41bc762018a) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.Wow64SetThreadContext  
-[Wow64SetThreadDefaultGuestMachine](https://www.google.com/search?num=5&q=Wow64SetThreadDefaultGuestMachine+site%3Amicrosoft.com) | kernelbase.dll |  | Vanara.PInvoke.Kernel32.Wow64SetThreadDefaultGuestMachine  
-[Wow64SuspendThread](http://msdn2.microsoft.com/en-us/library/d976675a-5400-41ac-a11d-c39a1b2dd50d) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.Wow64SuspendThread  
-[WriteConsole](https://www.google.com/search?num=5&q=WriteConsoleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.WriteConsole  
-[WriteConsoleInput](https://www.google.com/search?num=5&q=WriteConsoleInputA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.WriteConsoleInput  
-[WriteConsoleOutput](https://www.google.com/search?num=5&q=WriteConsoleOutputA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.WriteConsoleOutput  
-[WriteConsoleOutputAttribute](https://www.google.com/search?num=5&q=WriteConsoleOutputAttribute+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.WriteConsoleOutputAttribute  
-[WriteConsoleOutputCharacter](https://www.google.com/search?num=5&q=WriteConsoleOutputCharacterA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.WriteConsoleOutputCharacter  
-[WriteFile](http://msdn2.microsoft.com/en-us/library/aa365747) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.WriteFile  
-[WriteFileEx](http://msdn2.microsoft.com/en-us/library/aa365748) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.WriteFileEx  
-[WriteFileGather](http://msdn2.microsoft.com/en-us/library/aa365749) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.WriteFileGather  
-[WritePrivateProfileSection](http://msdn2.microsoft.com/en-us/library/ms725500) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WritePrivateProfileSection  
-[WritePrivateProfileString](http://msdn2.microsoft.com/en-us/library/ms725501) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WritePrivateProfileString  
-[WritePrivateProfileStruct](http://msdn2.microsoft.com/en-us/library/ms725502) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WritePrivateProfileStruct  
-[WriteProcessMemory](http://msdn2.microsoft.com/en-us/library/ms681674) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WriteProcessMemory  
-[WriteProfileSection](http://msdn2.microsoft.com/en-us/library/ms725503) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WriteProfileSection  
-[WriteProfileString](http://msdn2.microsoft.com/en-us/library/ms725504) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WriteProfileString  
-[WriteTapemark](http://msdn2.microsoft.com/en-us/library/aa362668) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WriteTapemark  
-[WTSGetActiveConsoleSessionId](http://msdn2.microsoft.com/en-us/library/aa383835) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WTSGetActiveConsoleSessionId  
-[ZombifyActCtx](http://msdn2.microsoft.com/en-us/library/aa376622) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ZombifyActCtx  
+[RtlZeroMemory](https://www.google.com/search?num=5&q=RtlZeroMemory+site%3Amicrosoft.com) | kernel32.dll | winnt.h | [Vanara.PInvoke.Kernel32.RtlZeroMemory](https://github.com/dahall/Vanara/search?l=C%23&q=RtlZeroMemory)  
+[ScrollConsoleScreenBuffer](https://www.google.com/search?num=5&q=ScrollConsoleScreenBufferA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.ScrollConsoleScreenBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=ScrollConsoleScreenBuffer)  
+[SearchPath](http://msdn2.microsoft.com/en-us/library/aa365527) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SearchPath](https://github.com/dahall/Vanara/search?l=C%23&q=SearchPath)  
+[SetCalendarInfo](http://msdn2.microsoft.com/en-us/library/3599f68f-5b7c-4bf9-9c42-452047c0731f) | kernel32.dll | winnls.h | [Vanara.PInvoke.Kernel32.SetCalendarInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetCalendarInfo)  
+[SetCommBreak](http://msdn2.microsoft.com/en-us/library/aa363433) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetCommBreak](https://github.com/dahall/Vanara/search?l=C%23&q=SetCommBreak)  
+[SetCommConfig](http://msdn2.microsoft.com/en-us/library/aa363434) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetCommConfig](https://github.com/dahall/Vanara/search?l=C%23&q=SetCommConfig)  
+[SetCommMask](http://msdn2.microsoft.com/en-us/library/aa363435) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetCommMask](https://github.com/dahall/Vanara/search?l=C%23&q=SetCommMask)  
+[SetCommState](http://msdn2.microsoft.com/en-us/library/aa363436) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetCommState](https://github.com/dahall/Vanara/search?l=C%23&q=SetCommState)  
+[SetCommTimeouts](http://msdn2.microsoft.com/en-us/library/aa363437) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetCommTimeouts](https://github.com/dahall/Vanara/search?l=C%23&q=SetCommTimeouts)  
+[SetComputerName](http://msdn2.microsoft.com/en-us/library/ms724930) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetComputerName](https://github.com/dahall/Vanara/search?l=C%23&q=SetComputerName)  
+[SetComputerNameEx](http://msdn2.microsoft.com/en-us/library/ms724931) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetComputerNameEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetComputerNameEx)  
+[SetComputerNameEx2W](https://www.google.com/search?num=5&q=SetComputerNameEx2W+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetComputerNameEx2](https://github.com/dahall/Vanara/search?l=C%23&q=SetComputerNameEx2)  
+[SetConsoleActiveScreenBuffer](https://www.google.com/search?num=5&q=SetConsoleActiveScreenBuffer+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleActiveScreenBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleActiveScreenBuffer)  
+[SetConsoleCP](https://www.google.com/search?num=5&q=SetConsoleCP+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleCP](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleCP)  
+[SetConsoleCtrlHandler](https://www.google.com/search?num=5&q=SetConsoleCtrlHandler+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleCtrlHandler](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleCtrlHandler)  
+[SetConsoleCursorInfo](https://www.google.com/search?num=5&q=SetConsoleCursorInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleCursorInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleCursorInfo)  
+[SetConsoleCursorPosition](http://msdn2.microsoft.com/en-us/library/8e9abada-a64e-429f-8286-ced1169c7104) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleCursorPosition](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleCursorPosition)  
+[SetConsoleDisplayMode](https://www.google.com/search?num=5&q=SetConsoleDisplayMode+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleDisplayMode](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleDisplayMode)  
+[SetConsoleHistoryInfo](https://www.google.com/search?num=5&q=SetConsoleHistoryInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleHistoryInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleHistoryInfo)  
+[SetConsoleMode](https://www.google.com/search?num=5&q=SetConsoleMode+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleMode](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleMode)  
+[SetConsoleOutputCP](https://www.google.com/search?num=5&q=SetConsoleOutputCP+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleOutputCP](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleOutputCP)  
+[SetConsoleScreenBufferInfoEx](https://www.google.com/search?num=5&q=SetConsoleScreenBufferInfoEx+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleScreenBufferInfoEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleScreenBufferInfoEx)  
+[SetConsoleScreenBufferSize](https://www.google.com/search?num=5&q=SetConsoleScreenBufferSize+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleScreenBufferSize](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleScreenBufferSize)  
+[SetConsoleTextAttribute](https://www.google.com/search?num=5&q=SetConsoleTextAttribute+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleTextAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleTextAttribute)  
+[SetConsoleTitle](https://www.google.com/search?num=5&q=SetConsoleTitleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleTitle](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleTitle)  
+[SetConsoleWindowInfo](https://www.google.com/search?num=5&q=SetConsoleWindowInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetConsoleWindowInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetConsoleWindowInfo)  
+[SetCriticalSectionSpinCount](http://msdn2.microsoft.com/en-us/library/ms686197) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetCriticalSectionSpinCount](https://github.com/dahall/Vanara/search?l=C%23&q=SetCriticalSectionSpinCount)  
+[SetCurrentConsoleFontEx](https://www.google.com/search?num=5&q=SetCurrentConsoleFontEx+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.SetCurrentConsoleFontEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetCurrentConsoleFontEx)  
+[SetCurrentDirectory](http://msdn2.microsoft.com/en-us/library/aa365530) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetCurrentDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=SetCurrentDirectory)  
+[SetDefaultCommConfig](http://msdn2.microsoft.com/en-us/library/aa363438) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetDefaultCommConfig](https://github.com/dahall/Vanara/search?l=C%23&q=SetDefaultCommConfig)  
+[SetDefaultDllDirectories](http://msdn2.microsoft.com/en-us/library/hh310515) | kernel32.dll | LibLoaderAPI.h | [Vanara.PInvoke.Kernel32.SetDefaultDllDirectories](https://github.com/dahall/Vanara/search?l=C%23&q=SetDefaultDllDirectories)  
+[SetDllDirectory](http://msdn2.microsoft.com/en-us/library/ms686203) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetDllDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=SetDllDirectory)  
+[SetDynamicTimeZoneInformation](http://msdn2.microsoft.com/en-us/library/ms724932) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetDynamicTimeZoneInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetDynamicTimeZoneInformation)  
+[SetEndOfFile](http://msdn2.microsoft.com/en-us/library/aa365531) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.SetEndOfFile](https://github.com/dahall/Vanara/search?l=C%23&q=SetEndOfFile)  
+[SetEnvironmentStrings](https://www.google.com/search?num=5&q=SetEnvironmentStringsA+site%3Amicrosoft.com) | kernel32.dll | ProcessEnv.h | [Vanara.PInvoke.Kernel32.SetEnvironmentStrings](https://github.com/dahall/Vanara/search?l=C%23&q=SetEnvironmentStrings)  
+[SetEnvironmentVariable](http://msdn2.microsoft.com/en-us/library/ms686206) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetEnvironmentVariable](https://github.com/dahall/Vanara/search?l=C%23&q=SetEnvironmentVariable)  
+[SetErrorMode](http://msdn2.microsoft.com/en-us/library/ms680621) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetErrorMode](https://github.com/dahall/Vanara/search?l=C%23&q=SetErrorMode)  
+[SetEvent](http://msdn2.microsoft.com/en-us/library/ms686211) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetEvent](https://github.com/dahall/Vanara/search?l=C%23&q=SetEvent)  
+[SetEventWhenCallbackReturns](http://msdn2.microsoft.com/en-us/library/ms686214) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetEventWhenCallbackReturns](https://github.com/dahall/Vanara/search?l=C%23&q=SetEventWhenCallbackReturns)  
+[SetFileApisToANSI](http://msdn2.microsoft.com/en-us/library/aa365533) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetFileApisToANSI](https://github.com/dahall/Vanara/search?l=C%23&q=SetFileApisToANSI)  
+[SetFileApisToOEM](http://msdn2.microsoft.com/en-us/library/aa365534) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetFileApisToOEM](https://github.com/dahall/Vanara/search?l=C%23&q=SetFileApisToOEM)  
+[SetFileAttributes](http://msdn2.microsoft.com/en-us/library/aa365535) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.SetFileAttributes](https://github.com/dahall/Vanara/search?l=C%23&q=SetFileAttributes)  
+[SetFileAttributesTransacted](http://msdn2.microsoft.com/en-us/library/e25e77b2-a6ad-4ce4-8589-d7ff6c4074f6) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.SetFileAttributesTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=SetFileAttributesTransacted)  
+[SetFileBandwidthReservation](http://msdn2.microsoft.com/en-us/library/a22bd8f3-4fbf-4f77-b8b6-7e786942615a) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.SetFileBandwidthReservation](https://github.com/dahall/Vanara/search?l=C%23&q=SetFileBandwidthReservation)  
+[SetFileCompletionNotificationModes](http://msdn2.microsoft.com/en-us/library/23796484-ee47-4f80-856d-5a5d5635547c) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.SetFileCompletionNotificationModes](https://github.com/dahall/Vanara/search?l=C%23&q=SetFileCompletionNotificationModes)  
+[SetFileInformationByHandle](http://msdn2.microsoft.com/en-us/library/aa365539) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.SetFileInformationByHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SetFileInformationByHandle)  
+[SetFileIoOverlappedRange](http://msdn2.microsoft.com/en-us/library/aa365540) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetFileIoOverlappedRange](https://github.com/dahall/Vanara/search?l=C%23&q=SetFileIoOverlappedRange)  
+[SetFilePointer](http://msdn2.microsoft.com/en-us/library/aa365541) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.SetFilePointer](https://github.com/dahall/Vanara/search?l=C%23&q=SetFilePointer)  
+[SetFilePointerEx](http://msdn2.microsoft.com/en-us/library/aa365542) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.SetFilePointerEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetFilePointerEx)  
+[SetFileShortName](http://msdn2.microsoft.com/en-us/library/aa365543) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetFileShortName](https://github.com/dahall/Vanara/search?l=C%23&q=SetFileShortName)  
+[SetFileTime](http://msdn2.microsoft.com/en-us/library/ms724933) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.SetFileTime](https://github.com/dahall/Vanara/search?l=C%23&q=SetFileTime)  
+[SetFileValidData](http://msdn2.microsoft.com/en-us/library/c6ded2d7-270a-4b75-b2d4-1007a92fe831) | kernel32.dll | fileapi.h | [Vanara.PInvoke.Kernel32.SetFileValidData](https://github.com/dahall/Vanara/search?l=C%23&q=SetFileValidData)  
+[SetFirmwareEnvironmentVariable](http://msdn2.microsoft.com/en-us/library/ms724934) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetFirmwareEnvironmentVariable](https://github.com/dahall/Vanara/search?l=C%23&q=SetFirmwareEnvironmentVariable)  
+[SetFirmwareEnvironmentVariableEx](http://msdn2.microsoft.com/en-us/library/D3C2F03F-66F6-40A4-830E-058BBA925ACD) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.SetFirmwareEnvironmentVariableEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetFirmwareEnvironmentVariableEx)  
+[SetHandleInformation](http://msdn2.microsoft.com/en-us/library/ms724935) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetHandleInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetHandleInformation)  
+[SetInformationJobObject](http://msdn2.microsoft.com/en-us/library/46f7c579-e8d3-4434-a6ce-56573cd84387) | kernel32.dll | jobapi2.h | [Vanara.PInvoke.Kernel32.SetInformationJobObject](https://github.com/dahall/Vanara/search?l=C%23&q=SetInformationJobObject)  
+[SetIoRateControlInformationJobObject](http://msdn2.microsoft.com/en-us/library/mt280128) | kernel32.dll | Jobapi2.h | [Vanara.PInvoke.Kernel32.SetIoRateControlInformationJobObject](https://github.com/dahall/Vanara/search?l=C%23&q=SetIoRateControlInformationJobObject)  
+[SetLastError](http://msdn2.microsoft.com/en-us/library/ms680627) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetLastError](https://github.com/dahall/Vanara/search?l=C%23&q=SetLastError)  
+[SetLocaleInfo](http://msdn2.microsoft.com/en-us/library/dd374049) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.SetLocaleInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetLocaleInfo)  
+[SetLocalTime](http://msdn2.microsoft.com/en-us/library/ms724936) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetLocalTime](https://github.com/dahall/Vanara/search?l=C%23&q=SetLocalTime)  
+[SetMailslotInfo](http://msdn2.microsoft.com/en-us/library/aa365786) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetMailslotInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetMailslotInfo)  
+[SetNamedPipeHandleState](http://msdn2.microsoft.com/en-us/library/aa365787) | kernel32.dll | namedpipeapi.h | [Vanara.PInvoke.Kernel32.SetNamedPipeHandleState](https://github.com/dahall/Vanara/search?l=C%23&q=SetNamedPipeHandleState)  
+[SetPriorityClass](http://msdn2.microsoft.com/en-us/library/ms686219) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetPriorityClass](https://github.com/dahall/Vanara/search?l=C%23&q=SetPriorityClass)  
+[SetProcessAffinityMask](http://msdn2.microsoft.com/en-us/library/ms686223) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetProcessAffinityMask](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessAffinityMask)  
+[SetProcessAffinityUpdateMode](http://msdn2.microsoft.com/en-us/library/bb309063) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetProcessAffinityUpdateMode](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessAffinityUpdateMode)  
+[SetProcessDefaultCpuSets](http://msdn2.microsoft.com/en-us/library/mt186427) | kernel32.dll | Processthreadapi.h | [Vanara.PInvoke.Kernel32.SetProcessDefaultCpuSets](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessDefaultCpuSets)  
+[SetProcessDEPPolicy](http://msdn2.microsoft.com/en-us/library/17c9f522-fd64-4061-9212-8fc91cc96b18) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.SetProcessDEPPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessDEPPolicy)  
+[SetProcessInformation](http://msdn2.microsoft.com/en-us/library/hh448389) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetProcessInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessInformation)  
+[SetProcessMitigationPolicy](http://msdn2.microsoft.com/en-us/library/hh769088) | kernel32.dll | Processthreadsapi.h | [Vanara.PInvoke.Kernel32.SetProcessMitigationPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessMitigationPolicy)  
+[SetProcessPreferredUILanguages](http://msdn2.microsoft.com/en-us/library/dd374050) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.SetProcessPreferredUILanguages](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessPreferredUILanguages)  
+[SetProcessPriorityBoost](http://msdn2.microsoft.com/en-us/library/ms686225) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetProcessPriorityBoost](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessPriorityBoost)  
+[SetProcessShutdownParameters](http://msdn2.microsoft.com/en-us/library/ms686227) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetProcessShutdownParameters](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessShutdownParameters)  
+[SetProcessValidCallTargets](http://msdn2.microsoft.com/en-us/library/dn934202) | kernelbase.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetProcessValidCallTargets](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessValidCallTargets)  
+[SetProcessWorkingSetSize](http://msdn2.microsoft.com/en-us/library/ms686234) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetProcessWorkingSetSize](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessWorkingSetSize)  
+[SetProcessWorkingSetSizeEx](http://msdn2.microsoft.com/en-us/library/ms686237) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetProcessWorkingSetSizeEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessWorkingSetSizeEx)  
+[SetProtectedPolicy](http://msdn2.microsoft.com/en-us/library/dn893592) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetProtectedPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=SetProtectedPolicy)  
+[SetSearchPathMode](http://msdn2.microsoft.com/en-us/library/1874933d-92c3-4945-a3e4-e6dede232d5e) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.SetSearchPathMode](https://github.com/dahall/Vanara/search?l=C%23&q=SetSearchPathMode)  
+[SetStdHandle](https://www.google.com/search?num=5&q=SetStdHandle+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetStdHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SetStdHandle)  
+[SetStdHandleEx](https://www.google.com/search?num=5&q=SetStdHandleEx+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetStdHandleEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetStdHandleEx)  
+[SetSystemFileCacheSize](http://msdn2.microsoft.com/en-us/library/aa965240) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetSystemFileCacheSize](https://github.com/dahall/Vanara/search?l=C%23&q=SetSystemFileCacheSize)  
+[SetSystemPowerState](http://msdn2.microsoft.com/en-us/library/58cf4e29-2a2e-499a-85ce-0034f4323cfe) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.SetSystemPowerState](https://github.com/dahall/Vanara/search?l=C%23&q=SetSystemPowerState)  
+[SetSystemTime](http://msdn2.microsoft.com/en-us/library/ms724942) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetSystemTime](https://github.com/dahall/Vanara/search?l=C%23&q=SetSystemTime)  
+[SetSystemTimeAdjustment](http://msdn2.microsoft.com/en-us/library/ms724943) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetSystemTimeAdjustment](https://github.com/dahall/Vanara/search?l=C%23&q=SetSystemTimeAdjustment)  
+[SetSystemTimeAdjustmentPrecise](http://msdn2.microsoft.com/en-us/library/8B429BFC-9781-4434-9A2F-9E50E2BF299A) | kernelbase.dll | sysinfoapi.h | [Vanara.PInvoke.Kernel32.SetSystemTimeAdjustmentPrecise](https://github.com/dahall/Vanara/search?l=C%23&q=SetSystemTimeAdjustmentPrecise)  
+[SetTapeParameters](http://msdn2.microsoft.com/en-us/library/aa362534) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetTapeParameters](https://github.com/dahall/Vanara/search?l=C%23&q=SetTapeParameters)  
+[SetTapePosition](http://msdn2.microsoft.com/en-us/library/aa362536) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetTapePosition](https://github.com/dahall/Vanara/search?l=C%23&q=SetTapePosition)  
+[SetThreadAffinityMask](http://msdn2.microsoft.com/en-us/library/ms686247) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadAffinityMask](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadAffinityMask)  
+[SetThreadContext](http://msdn2.microsoft.com/en-us/library/ms680632) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadContext](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadContext)  
+[SetThreadDescription](http://msdn2.microsoft.com/en-us/library/mt774976) | kernel32.dll | ProcessThreadsApi.h | [Vanara.PInvoke.Kernel32.SetThreadDescription](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadDescription)  
+[SetThreadErrorMode](http://msdn2.microsoft.com/en-us/library/dd553630) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadErrorMode](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadErrorMode)  
+[SetThreadExecutionState](http://msdn2.microsoft.com/en-us/library/aa373208) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetThreadExecutionState](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadExecutionState)  
+[SetThreadGroupAffinity](http://msdn2.microsoft.com/en-us/library/9f24f1bf-a63d-4318-af2a-eb3553f2b0f9) | kernel32.dll | processtopologyapi.h | [Vanara.PInvoke.Kernel32.SetThreadGroupAffinity](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadGroupAffinity)  
+[SetThreadIdealProcessor](http://msdn2.microsoft.com/en-us/library/ms686253) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadIdealProcessor](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadIdealProcessor)  
+[SetThreadIdealProcessorEx](http://msdn2.microsoft.com/en-us/library/dd405517) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadIdealProcessorEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadIdealProcessorEx)  
+[SetThreadInformation](http://msdn2.microsoft.com/en-us/library/c0159bea-870a-46b7-a350-91fe52efae49) | kernel32.dll | processthreadsapi.h | [Vanara.PInvoke.Kernel32.SetThreadInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadInformation)  
+[SetThreadLocale](http://msdn2.microsoft.com/en-us/library/dd374051) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.SetThreadLocale](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadLocale)  
+[SetThreadpoolStackInformation](http://msdn2.microsoft.com/en-us/library/dd405520) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadpoolStackInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadpoolStackInformation)  
+[SetThreadpoolThreadMaximum](http://msdn2.microsoft.com/en-us/library/ms686266) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadpoolThreadMaximum](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadpoolThreadMaximum)  
+[SetThreadpoolThreadMinimum](http://msdn2.microsoft.com/en-us/library/ms686268) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadpoolThreadMinimum](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadpoolThreadMinimum)  
+[SetThreadpoolTimer](http://msdn2.microsoft.com/en-us/library/ms686271) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadpoolTimer](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadpoolTimer)  
+[SetThreadpoolTimerEx](http://msdn2.microsoft.com/en-us/library/dn894018) | kernel32.dll | Threadpoolapiset.h | [Vanara.PInvoke.Kernel32.SetThreadpoolTimerEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadpoolTimerEx)  
+[SetThreadpoolWait](http://msdn2.microsoft.com/en-us/library/ms686273) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadpoolWait](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadpoolWait)  
+[SetThreadpoolWaitEx](http://msdn2.microsoft.com/en-us/library/mt186618) | kernel32.dll | Threadpoolapiset.h | [Vanara.PInvoke.Kernel32.SetThreadpoolWaitEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadpoolWaitEx)  
+[SetThreadPreferredUILanguages](http://msdn2.microsoft.com/en-us/library/dd374052) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.SetThreadPreferredUILanguages](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadPreferredUILanguages)  
+[SetThreadPriority](http://msdn2.microsoft.com/en-us/library/ms686277) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadPriority](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadPriority)  
+[SetThreadPriorityBoost](http://msdn2.microsoft.com/en-us/library/ms686280) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadPriorityBoost](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadPriorityBoost)  
+[SetThreadSelectedCpuSets](http://msdn2.microsoft.com/en-us/library/mt186428) | kernel32.dll | Processthreadapi.h | [Vanara.PInvoke.Kernel32.SetThreadSelectedCpuSets](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadSelectedCpuSets)  
+[SetThreadStackGuarantee](http://msdn2.microsoft.com/en-us/library/ms686283) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetThreadStackGuarantee](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadStackGuarantee)  
+[SetThreadUILanguage](http://msdn2.microsoft.com/en-us/library/dd374053) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.SetThreadUILanguage](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadUILanguage)  
+[SetTimeZoneInformation](http://msdn2.microsoft.com/en-us/library/ms724944) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetTimeZoneInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetTimeZoneInformation)  
+[SetUmsThreadInformation](http://msdn2.microsoft.com/en-us/library/19f190fd-1f78-4bb6-93eb-73a5c522b44d) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.SetUmsThreadInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetUmsThreadInformation)  
+[SetUnhandledExceptionFilter](http://msdn2.microsoft.com/en-us/library/ms680634) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetUnhandledExceptionFilter](https://github.com/dahall/Vanara/search?l=C%23&q=SetUnhandledExceptionFilter)  
+[SetupComm](http://msdn2.microsoft.com/en-us/library/aa363439) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SetupComm](https://github.com/dahall/Vanara/search?l=C%23&q=SetupComm)  
+[SetUserGeoID](http://msdn2.microsoft.com/en-us/library/dd374055) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.SetUserGeoID](https://github.com/dahall/Vanara/search?l=C%23&q=SetUserGeoID)  
+[SetUserGeoName](http://msdn2.microsoft.com/en-us/library/mt812045) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.SetUserGeoName](https://github.com/dahall/Vanara/search?l=C%23&q=SetUserGeoName)  
+[SetVolumeLabel](http://msdn2.microsoft.com/en-us/library/aa365560) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetVolumeLabel](https://github.com/dahall/Vanara/search?l=C%23&q=SetVolumeLabel)  
+[SetVolumeMountPoint](http://msdn2.microsoft.com/en-us/library/aa365561) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetVolumeMountPoint](https://github.com/dahall/Vanara/search?l=C%23&q=SetVolumeMountPoint)  
+[SetWaitableTimer](http://msdn2.microsoft.com/en-us/library/ms686289) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetWaitableTimer](https://github.com/dahall/Vanara/search?l=C%23&q=SetWaitableTimer)  
+[SetWaitableTimerEx](http://msdn2.microsoft.com/en-us/library/dd405521) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetWaitableTimerEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetWaitableTimerEx)  
+[SetXStateFeaturesMask](http://msdn2.microsoft.com/en-us/library/64ADEA8A-DE78-437E-AE68-A68E7214C5FD) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.SetXStateFeaturesMask](https://github.com/dahall/Vanara/search?l=C%23&q=SetXStateFeaturesMask)  
+[SignalObjectAndWait](https://www.google.com/search?num=5&q=SignalObjectAndWait+site%3Amicrosoft.com) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.SignalObjectAndWait](https://github.com/dahall/Vanara/search?l=C%23&q=SignalObjectAndWait)  
+[SizeofResource](http://msdn2.microsoft.com/en-us/library/ms648048) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SizeofResource](https://github.com/dahall/Vanara/search?l=C%23&q=SizeofResource)  
+[Sleep](http://msdn2.microsoft.com/en-us/library/ms686298) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.Sleep](https://github.com/dahall/Vanara/search?l=C%23&q=Sleep)  
+[SleepConditionVariableCS](http://msdn2.microsoft.com/en-us/library/ms686301) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SleepConditionVariableCS](https://github.com/dahall/Vanara/search?l=C%23&q=SleepConditionVariableCS)  
+[SleepConditionVariableSRW](http://msdn2.microsoft.com/en-us/library/ms686304) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SleepConditionVariableSRW](https://github.com/dahall/Vanara/search?l=C%23&q=SleepConditionVariableSRW)  
+[SleepEx](http://msdn2.microsoft.com/en-us/library/ms686307) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SleepEx](https://github.com/dahall/Vanara/search?l=C%23&q=SleepEx)  
+[StartThreadpoolIo](http://msdn2.microsoft.com/en-us/library/ms686326) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.StartThreadpoolIo](https://github.com/dahall/Vanara/search?l=C%23&q=StartThreadpoolIo)  
+[SubmitThreadpoolWork](http://msdn2.microsoft.com/en-us/library/ms686338) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SubmitThreadpoolWork](https://github.com/dahall/Vanara/search?l=C%23&q=SubmitThreadpoolWork)  
+[SuspendThread](http://msdn2.microsoft.com/en-us/library/ms686345) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SuspendThread](https://github.com/dahall/Vanara/search?l=C%23&q=SuspendThread)  
+[SwitchToFiber](http://msdn2.microsoft.com/en-us/library/ms686350) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SwitchToFiber](https://github.com/dahall/Vanara/search?l=C%23&q=SwitchToFiber)  
+[SwitchToThread](http://msdn2.microsoft.com/en-us/library/ms686352) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SwitchToThread](https://github.com/dahall/Vanara/search?l=C%23&q=SwitchToThread)  
+[SystemTimeToFileTime](http://msdn2.microsoft.com/en-us/library/ms724948) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SystemTimeToFileTime](https://github.com/dahall/Vanara/search?l=C%23&q=SystemTimeToFileTime)  
+[SystemTimeToTzSpecificLocalTime](http://msdn2.microsoft.com/en-us/library/f3a87ec2-67a0-418f-af6e-6c0b5547cffb) | kernel32.dll | timezoneapi.h | [Vanara.PInvoke.Kernel32.SystemTimeToTzSpecificLocalTime](https://github.com/dahall/Vanara/search?l=C%23&q=SystemTimeToTzSpecificLocalTime)  
+[SystemTimeToTzSpecificLocalTimeEx](http://msdn2.microsoft.com/en-us/library/jj206642) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.SystemTimeToTzSpecificLocalTimeEx](https://github.com/dahall/Vanara/search?l=C%23&q=SystemTimeToTzSpecificLocalTimeEx)  
+[TerminateEnclave](http://msdn2.microsoft.com/en-us/library/mt844249) | kernelbase.dll | Enclaveapi.h | [Vanara.PInvoke.Kernel32.TerminateEnclave](https://github.com/dahall/Vanara/search?l=C%23&q=TerminateEnclave)  
+[TerminateJobObject](http://msdn2.microsoft.com/en-us/library/ms686709) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.TerminateJobObject](https://github.com/dahall/Vanara/search?l=C%23&q=TerminateJobObject)  
+[TerminateProcess](http://msdn2.microsoft.com/en-us/library/ms686714) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.TerminateProcess](https://github.com/dahall/Vanara/search?l=C%23&q=TerminateProcess)  
+[TerminateProcessOnMemoryExhaustion](https://www.google.com/search?num=5&q=TerminateProcessOnMemoryExhaustion+site%3Amicrosoft.com) | kernelbase.dll | WinBase.h | [Vanara.PInvoke.Kernel32.TerminateProcessOnMemoryExhaustion](https://github.com/dahall/Vanara/search?l=C%23&q=TerminateProcessOnMemoryExhaustion)  
+[TerminateThread](http://msdn2.microsoft.com/en-us/library/ms686717) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.TerminateThread](https://github.com/dahall/Vanara/search?l=C%23&q=TerminateThread)  
+[TermsrvAppInstallMode](http://msdn2.microsoft.com/en-us/library/edf362e6-c1a4-49fe-8e07-1188c66616be) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.TermsrvAppInstallMode](https://github.com/dahall/Vanara/search?l=C%23&q=TermsrvAppInstallMode)  
+[Thread32First](http://msdn2.microsoft.com/en-us/library/d4cb7a19-850e-43b5-bda5-91be48382d2a) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Thread32First](https://github.com/dahall/Vanara/search?l=C%23&q=Thread32First)  
+[Thread32Next](http://msdn2.microsoft.com/en-us/library/5efe514e-626c-4138-97a0-bdad217c424f) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Thread32Next](https://github.com/dahall/Vanara/search?l=C%23&q=Thread32Next)  
+[TlsAlloc](http://msdn2.microsoft.com/en-us/library/cbb3d832-cd92-4875-8366-6b69be7a536f) | kernel32.dll | processthreadsapi.h | [Vanara.PInvoke.Kernel32.TlsAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=TlsAlloc)  
+[TlsFree](http://msdn2.microsoft.com/en-us/library/f5b1e8fc-02eb-4a06-b606-2b647944029b) | kernel32.dll | processthreadsapi.h | [Vanara.PInvoke.Kernel32.TlsFree](https://github.com/dahall/Vanara/search?l=C%23&q=TlsFree)  
+[TlsGetValue](http://msdn2.microsoft.com/en-us/library/82bd5ff6-ff0b-42b7-9ece-e9e8531eb5fb) | kernel32.dll | processthreadsapi.h | [Vanara.PInvoke.Kernel32.TlsGetValue](https://github.com/dahall/Vanara/search?l=C%23&q=TlsGetValue)  
+[TlsSetValue](http://msdn2.microsoft.com/en-us/library/531b4a4a-a251-4ab4-b00a-754783a51283) | kernel32.dll | processthreadsapi.h | [Vanara.PInvoke.Kernel32.TlsSetValue](https://github.com/dahall/Vanara/search?l=C%23&q=TlsSetValue)  
+[Toolhelp32ReadProcessMemory](http://msdn2.microsoft.com/en-us/library/e579b813-32ef-481d-8dc6-f959ec9b6bad) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Toolhelp32ReadProcessMemory](https://github.com/dahall/Vanara/search?l=C%23&q=Toolhelp32ReadProcessMemory)  
+[TransactNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365790) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.TransactNamedPipe](https://github.com/dahall/Vanara/search?l=C%23&q=TransactNamedPipe)  
+[TransmitCommChar](http://msdn2.microsoft.com/en-us/library/aa363473) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.TransmitCommChar](https://github.com/dahall/Vanara/search?l=C%23&q=TransmitCommChar)  
+[TryAcquireSRWLockExclusive](http://msdn2.microsoft.com/en-us/library/dd405523) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.TryAcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=TryAcquireSRWLockExclusive)  
+[TryAcquireSRWLockShared](http://msdn2.microsoft.com/en-us/library/dd405524) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.TryAcquireSRWLockShared](https://github.com/dahall/Vanara/search?l=C%23&q=TryAcquireSRWLockShared)  
+[TryEnterCriticalSection](http://msdn2.microsoft.com/en-us/library/ms686857) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.TryEnterCriticalSection](https://github.com/dahall/Vanara/search?l=C%23&q=TryEnterCriticalSection)  
+[TrySubmitThreadpoolCallback](http://msdn2.microsoft.com/en-us/library/ms686862) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.TrySubmitThreadpoolCallback](https://github.com/dahall/Vanara/search?l=C%23&q=TrySubmitThreadpoolCallback)  
+[TzSpecificLocalTimeToSystemTime](http://msdn2.microsoft.com/en-us/library/ms725485) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.TzSpecificLocalTimeToSystemTime](https://github.com/dahall/Vanara/search?l=C%23&q=TzSpecificLocalTimeToSystemTime)  
+[TzSpecificLocalTimeToSystemTimeEx](http://msdn2.microsoft.com/en-us/library/jj206643) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.TzSpecificLocalTimeToSystemTimeEx](https://github.com/dahall/Vanara/search?l=C%23&q=TzSpecificLocalTimeToSystemTimeEx)  
+[UmsThreadYield](http://msdn2.microsoft.com/en-us/library/d7c94ed5-9536-4c39-8658-27e4237cc9ba) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.UmsThreadYield](https://github.com/dahall/Vanara/search?l=C%23&q=UmsThreadYield)  
+[UnhandledExceptionFilter](http://msdn2.microsoft.com/en-us/library/ms681401) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.UnhandledExceptionFilter](https://github.com/dahall/Vanara/search?l=C%23&q=UnhandledExceptionFilter)  
+[UnlockFile](http://msdn2.microsoft.com/en-us/library/aa365715) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.UnlockFile](https://github.com/dahall/Vanara/search?l=C%23&q=UnlockFile)  
+[UnlockFileEx](http://msdn2.microsoft.com/en-us/library/aa365716) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.UnlockFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=UnlockFileEx)  
+[UnmapViewOfFile](http://msdn2.microsoft.com/en-us/library/aa366882) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.UnmapViewOfFile](https://github.com/dahall/Vanara/search?l=C%23&q=UnmapViewOfFile)  
+[UnmapViewOfFile2](http://msdn2.microsoft.com/en-us/library/mt492559) | kernelbase.dll | MemoryApi.h | [Vanara.PInvoke.Kernel32.UnmapViewOfFile2](https://github.com/dahall/Vanara/search?l=C%23&q=UnmapViewOfFile2)  
+[UnmapViewOfFileEx](http://msdn2.microsoft.com/en-us/library/mt670639) | kernel32.dll | MemoryApi.h | [Vanara.PInvoke.Kernel32.UnmapViewOfFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=UnmapViewOfFileEx)  
+[UnregisterApplicationRecoveryCallback](http://msdn2.microsoft.com/en-us/library/aa373348) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.UnregisterApplicationRecoveryCallback](https://github.com/dahall/Vanara/search?l=C%23&q=UnregisterApplicationRecoveryCallback)  
+[UnregisterApplicationRestart](http://msdn2.microsoft.com/en-us/library/aa373349) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.UnregisterApplicationRestart](https://github.com/dahall/Vanara/search?l=C%23&q=UnregisterApplicationRestart)  
+[UnregisterBadMemoryNotification](http://msdn2.microsoft.com/en-us/library/hh691014) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.UnregisterBadMemoryNotification](https://github.com/dahall/Vanara/search?l=C%23&q=UnregisterBadMemoryNotification)  
+[UnregisterWait](http://msdn2.microsoft.com/en-us/library/ms686870) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.UnregisterWait](https://github.com/dahall/Vanara/search?l=C%23&q=UnregisterWait)  
+[UnregisterWaitEx](http://msdn2.microsoft.com/en-us/library/ms686876) | kernel32.dll | LibLoaderAPI.h | [Vanara.PInvoke.Kernel32.UnregisterWaitEx](https://github.com/dahall/Vanara/search?l=C%23&q=UnregisterWaitEx)  
+[UpdateCalendarDayOfWeek](http://msdn2.microsoft.com/en-us/library/b9ae250a-73bb-4ec2-bb0d-e1f8b25c173c) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.UpdateCalendarDayOfWeek](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateCalendarDayOfWeek)  
+[UpdateProcThreadAttribute](http://msdn2.microsoft.com/en-us/library/ms686880) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.UpdateProcThreadAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateProcThreadAttribute)  
+[UpdateResource](http://msdn2.microsoft.com/en-us/library/ms648049) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.UpdateResource](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateResource)  
+[UserHandleGrantAccess](http://msdn2.microsoft.com/en-us/library/6e7a6cfc-f881-43cc-a5af-b97e0bf14bf4) | user32.dll | winuser.h | [Vanara.PInvoke.Kernel32.UserHandleGrantAccess](https://github.com/dahall/Vanara/search?l=C%23&q=UserHandleGrantAccess)  
+[VerifyScripts](http://msdn2.microsoft.com/en-us/library/dd374129) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.VerifyScripts](https://github.com/dahall/Vanara/search?l=C%23&q=VerifyScripts)  
+[VerifyVersionInfo](http://msdn2.microsoft.com/en-us/library/ms725492) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.VerifyVersionInfo](https://github.com/dahall/Vanara/search?l=C%23&q=VerifyVersionInfo)  
+[VerSetConditionMask](http://msdn2.microsoft.com/en-us/library/ms725493) | kernel32.dll | Winnt.h | [Vanara.PInvoke.Kernel32.VerSetConditionMask](https://github.com/dahall/Vanara/search?l=C%23&q=VerSetConditionMask)  
+[VirtualAlloc](http://msdn2.microsoft.com/en-us/library/aa366887) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.VirtualAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualAlloc)  
+[VirtualAlloc2](http://msdn2.microsoft.com/en-us/library/5021062F-E414-49A1-8B70-BE2A57A90E54) | kernelbase.dll | memoryapi.h | [Vanara.PInvoke.Kernel32.VirtualAlloc2](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualAlloc2)  
+[VirtualAlloc2FromApp](http://msdn2.microsoft.com/en-us/library/84896A75-A917-4CA1-A417-650428E1FBFD) | kernelbase.dll | memoryapi.h | [Vanara.PInvoke.Kernel32.VirtualAlloc2FromApp](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualAlloc2FromApp)  
+[VirtualAllocEx](http://msdn2.microsoft.com/en-us/library/aa366890) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.VirtualAllocEx](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualAllocEx)  
+[VirtualAllocExNuma](http://msdn2.microsoft.com/en-us/library/aa366891) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.VirtualAllocExNuma](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualAllocExNuma)  
+[VirtualAllocFromApp](http://msdn2.microsoft.com/en-us/library/mt169845) | kernelbase.dll | MemoryApi.h | [Vanara.PInvoke.Kernel32.VirtualAllocFromApp](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualAllocFromApp)  
+[VirtualFree](http://msdn2.microsoft.com/en-us/library/aa366892) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.VirtualFree](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualFree)  
+[VirtualFreeEx](http://msdn2.microsoft.com/en-us/library/aa366894) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.VirtualFreeEx](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualFreeEx)  
+[VirtualLock](http://msdn2.microsoft.com/en-us/library/aa366895) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.VirtualLock](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualLock)  
+[VirtualProtect](http://msdn2.microsoft.com/en-us/library/aa366898) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.VirtualProtect](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualProtect)  
+[VirtualProtectEx](http://msdn2.microsoft.com/en-us/library/aa366899) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.VirtualProtectEx](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualProtectEx)  
+[VirtualProtectFromApp](http://msdn2.microsoft.com/en-us/library/mt169846) | kernelbase.dll | MemoryApi.h | [Vanara.PInvoke.Kernel32.VirtualProtectFromApp](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualProtectFromApp)  
+[VirtualQuery](http://msdn2.microsoft.com/en-us/library/aa366902) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.VirtualQuery](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualQuery)  
+[VirtualQueryEx](http://msdn2.microsoft.com/en-us/library/aa366907) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.VirtualQueryEx](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualQueryEx)  
+[VirtualUnlock](http://msdn2.microsoft.com/en-us/library/aa366910) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.VirtualUnlock](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualUnlock)  
+[WaitCommEvent](http://msdn2.microsoft.com/en-us/library/aa363479) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.WaitCommEvent](https://github.com/dahall/Vanara/search?l=C%23&q=WaitCommEvent)  
+[WaitForDebugEvent](http://msdn2.microsoft.com/en-us/library/ms681423) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.WaitForDebugEvent](https://github.com/dahall/Vanara/search?l=C%23&q=WaitForDebugEvent)  
+[WaitForDebugEventEx](http://msdn2.microsoft.com/en-us/library/mt171594) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.WaitForDebugEventEx](https://github.com/dahall/Vanara/search?l=C%23&q=WaitForDebugEventEx)  
+[WaitForMultipleObjects](https://www.google.com/search?num=5&q=WaitForMultipleObjects+site%3Amicrosoft.com) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.WaitForMultipleObjects](https://github.com/dahall/Vanara/search?l=C%23&q=WaitForMultipleObjects)  
+[WaitForMultipleObjectsEx](https://www.google.com/search?num=5&q=WaitForMultipleObjectsEx+site%3Amicrosoft.com) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.WaitForMultipleObjectsEx](https://github.com/dahall/Vanara/search?l=C%23&q=WaitForMultipleObjectsEx)  
+[WaitForSingleObject](https://www.google.com/search?num=5&q=WaitForSingleObject+site%3Amicrosoft.com) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.WaitForSingleObject](https://github.com/dahall/Vanara/search?l=C%23&q=WaitForSingleObject)  
+[WaitForSingleObjectEx](https://www.google.com/search?num=5&q=WaitForSingleObjectEx+site%3Amicrosoft.com) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.WaitForSingleObjectEx](https://github.com/dahall/Vanara/search?l=C%23&q=WaitForSingleObjectEx)  
+[WaitForThreadpoolIoCallbacks](http://msdn2.microsoft.com/en-us/library/ms687038) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.WaitForThreadpoolIoCallbacks](https://github.com/dahall/Vanara/search?l=C%23&q=WaitForThreadpoolIoCallbacks)  
+[WaitForThreadpoolTimerCallbacks](http://msdn2.microsoft.com/en-us/library/ms687042) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.WaitForThreadpoolTimerCallbacks](https://github.com/dahall/Vanara/search?l=C%23&q=WaitForThreadpoolTimerCallbacks)  
+[WaitForThreadpoolWaitCallbacks](http://msdn2.microsoft.com/en-us/library/ms687047) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.WaitForThreadpoolWaitCallbacks](https://github.com/dahall/Vanara/search?l=C%23&q=WaitForThreadpoolWaitCallbacks)  
+[WaitForThreadpoolWorkCallbacks](http://msdn2.microsoft.com/en-us/library/ms687053) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.WaitForThreadpoolWorkCallbacks](https://github.com/dahall/Vanara/search?l=C%23&q=WaitForThreadpoolWorkCallbacks)  
+[WaitNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365800) | kernel32.dll | namedpipeapi.h | [Vanara.PInvoke.Kernel32.WaitNamedPipe](https://github.com/dahall/Vanara/search?l=C%23&q=WaitNamedPipe)  
+[WaitOnAddress](http://msdn2.microsoft.com/en-us/library/hh706898) | kernelbase.dll | SynchAPI.h | [Vanara.PInvoke.Kernel32.WaitOnAddress](https://github.com/dahall/Vanara/search?l=C%23&q=WaitOnAddress)  
+[WakeAllConditionVariable](http://msdn2.microsoft.com/en-us/library/ms687076) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.WakeAllConditionVariable](https://github.com/dahall/Vanara/search?l=C%23&q=WakeAllConditionVariable)  
+[WakeByAddressAll](http://msdn2.microsoft.com/en-us/library/hh706899) | kernelbase.dll | SynchAPI.h | [Vanara.PInvoke.Kernel32.WakeByAddressAll](https://github.com/dahall/Vanara/search?l=C%23&q=WakeByAddressAll)  
+[WakeByAddressSingle](http://msdn2.microsoft.com/en-us/library/hh706900) | kernelbase.dll | SynchAPI.h | [Vanara.PInvoke.Kernel32.WakeByAddressSingle](https://github.com/dahall/Vanara/search?l=C%23&q=WakeByAddressSingle)  
+[WakeConditionVariable](http://msdn2.microsoft.com/en-us/library/ms687080) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.WakeConditionVariable](https://github.com/dahall/Vanara/search?l=C%23&q=WakeConditionVariable)  
+[WerGetFlags](http://msdn2.microsoft.com/en-us/library/8c5f08c0-e2d1-448c-9a57-ef19897f64c6) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerGetFlags](https://github.com/dahall/Vanara/search?l=C%23&q=WerGetFlags)  
+[WerRegisterAdditionalProcess](http://msdn2.microsoft.com/en-us/library/mt492585) | kernel32.dll | Werapi.h | [Vanara.PInvoke.Kernel32.WerRegisterAdditionalProcess](https://github.com/dahall/Vanara/search?l=C%23&q=WerRegisterAdditionalProcess)  
+[WerRegisterAppLocalDump](http://msdn2.microsoft.com/en-us/library/C57F5758-2BF7-444E-A22C-62C925B899A1) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerRegisterAppLocalDump](https://github.com/dahall/Vanara/search?l=C%23&q=WerRegisterAppLocalDump)  
+[WerRegisterCustomMetadata](http://msdn2.microsoft.com/en-us/library/55FB3110-314A-4327-AA8F-3AF77B7006DD) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerRegisterCustomMetadata](https://github.com/dahall/Vanara/search?l=C%23&q=WerRegisterCustomMetadata)  
+[WerRegisterExcludedMemoryBlock](http://msdn2.microsoft.com/en-us/library/6CDA8EDD-C8A5-471D-9716-3AB29E571133) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerRegisterExcludedMemoryBlock](https://github.com/dahall/Vanara/search?l=C%23&q=WerRegisterExcludedMemoryBlock)  
+[WerRegisterFile](http://msdn2.microsoft.com/en-us/library/4b4bb1bb-6782-447a-901f-75702256d907) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerRegisterFile](https://github.com/dahall/Vanara/search?l=C%23&q=WerRegisterFile)  
+[WerRegisterMemoryBlock](http://msdn2.microsoft.com/en-us/library/10fa2bf3-ec12-4c7c-b986-9b22cdaa7319) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerRegisterMemoryBlock](https://github.com/dahall/Vanara/search?l=C%23&q=WerRegisterMemoryBlock)  
+[WerRegisterRuntimeExceptionModule](http://msdn2.microsoft.com/en-us/library/b0fb2c0d-cc98-43cc-a508-e80545377b7f) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerRegisterRuntimeExceptionModule](https://github.com/dahall/Vanara/search?l=C%23&q=WerRegisterRuntimeExceptionModule)  
+[WerSetFlags](http://msdn2.microsoft.com/en-us/library/2a71203f-3a08-461f-a230-e3fee00d9d99) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerSetFlags](https://github.com/dahall/Vanara/search?l=C%23&q=WerSetFlags)  
+[WerUnregisterAdditionalProcess](http://msdn2.microsoft.com/en-us/library/CE840EE8-5EB6-4F0F-935E-5DA9097E950F) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerUnregisterAdditionalProcess](https://github.com/dahall/Vanara/search?l=C%23&q=WerUnregisterAdditionalProcess)  
+[WerUnregisterAppLocalDump](http://msdn2.microsoft.com/en-us/library/A3AD976A-9C44-494C-ABF0-90D151001E30) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerUnregisterAppLocalDump](https://github.com/dahall/Vanara/search?l=C%23&q=WerUnregisterAppLocalDump)  
+[WerUnregisterCustomMetadata](http://msdn2.microsoft.com/en-us/library/29DB2CE5-2A96-450B-96C8-082B786613F9) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerUnregisterCustomMetadata](https://github.com/dahall/Vanara/search?l=C%23&q=WerUnregisterCustomMetadata)  
+[WerUnregisterExcludedMemoryBlock](http://msdn2.microsoft.com/en-us/library/99FF746E-8EFC-47DB-AEE6-EC46F7BC7F0B) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerUnregisterExcludedMemoryBlock](https://github.com/dahall/Vanara/search?l=C%23&q=WerUnregisterExcludedMemoryBlock)  
+[WerUnregisterFile](http://msdn2.microsoft.com/en-us/library/bb513630) | kernel32.dll | Werapi.h | [Vanara.PInvoke.Kernel32.WerUnregisterFile](https://github.com/dahall/Vanara/search?l=C%23&q=WerUnregisterFile)  
+[WerUnregisterMemoryBlock](http://msdn2.microsoft.com/en-us/library/016800e8-4a03-40f6-9dba-54cd9082eb48) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerUnregisterMemoryBlock](https://github.com/dahall/Vanara/search?l=C%23&q=WerUnregisterMemoryBlock)  
+[WerUnregisterRuntimeExceptionModule](http://msdn2.microsoft.com/en-us/library/1a315923-b554-4363-a607-076690fc76a1) | kernel32.dll | werapi.h | [Vanara.PInvoke.Kernel32.WerUnregisterRuntimeExceptionModule](https://github.com/dahall/Vanara/search?l=C%23&q=WerUnregisterRuntimeExceptionModule)  
+[WideCharToMultiByte](http://msdn2.microsoft.com/en-us/library/dd374130) | kernel32.dll | Stringapiset.h | [Vanara.PInvoke.Kernel32.WideCharToMultiByte](https://github.com/dahall/Vanara/search?l=C%23&q=WideCharToMultiByte)  
+[WinExec](http://msdn2.microsoft.com/en-us/library/ms687393) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.WinExec](https://github.com/dahall/Vanara/search?l=C%23&q=WinExec)  
+[Wow64DisableWow64FsRedirection](http://msdn2.microsoft.com/en-us/library/aa365743) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.Wow64DisableWow64FsRedirection](https://github.com/dahall/Vanara/search?l=C%23&q=Wow64DisableWow64FsRedirection)  
+[Wow64EnableWow64FsRedirection](http://msdn2.microsoft.com/en-us/library/8d11a7ba-540d-4bd0-881a-a61605357dd8) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.Wow64EnableWow64FsRedirection](https://github.com/dahall/Vanara/search?l=C%23&q=Wow64EnableWow64FsRedirection)  
+[Wow64GetThreadContext](http://msdn2.microsoft.com/en-us/library/1bac28e1-3558-43c4-97e4-d8bb9514c38e) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.Wow64GetThreadContext](https://github.com/dahall/Vanara/search?l=C%23&q=Wow64GetThreadContext)  
+[Wow64GetThreadSelectorEntry](http://msdn2.microsoft.com/en-us/library/68393913-6725-4cc6-90b9-57da2a96c91e) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.Wow64GetThreadSelectorEntry](https://github.com/dahall/Vanara/search?l=C%23&q=Wow64GetThreadSelectorEntry)  
+[Wow64RevertWow64FsRedirection](http://msdn2.microsoft.com/en-us/library/aa365745) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.Wow64RevertWow64FsRedirection](https://github.com/dahall/Vanara/search?l=C%23&q=Wow64RevertWow64FsRedirection)  
+[Wow64SetThreadContext](http://msdn2.microsoft.com/en-us/library/4119c945-b654-4634-a88b-e41bc762018a) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.Wow64SetThreadContext](https://github.com/dahall/Vanara/search?l=C%23&q=Wow64SetThreadContext)  
+[Wow64SetThreadDefaultGuestMachine](https://www.google.com/search?num=5&q=Wow64SetThreadDefaultGuestMachine+site%3Amicrosoft.com) | kernelbase.dll |  | [Vanara.PInvoke.Kernel32.Wow64SetThreadDefaultGuestMachine](https://github.com/dahall/Vanara/search?l=C%23&q=Wow64SetThreadDefaultGuestMachine)  
+[Wow64SuspendThread](http://msdn2.microsoft.com/en-us/library/d976675a-5400-41ac-a11d-c39a1b2dd50d) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.Wow64SuspendThread](https://github.com/dahall/Vanara/search?l=C%23&q=Wow64SuspendThread)  
+[WriteConsole](https://www.google.com/search?num=5&q=WriteConsoleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.WriteConsole](https://github.com/dahall/Vanara/search?l=C%23&q=WriteConsole)  
+[WriteConsoleInput](https://www.google.com/search?num=5&q=WriteConsoleInputA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.WriteConsoleInput](https://github.com/dahall/Vanara/search?l=C%23&q=WriteConsoleInput)  
+[WriteConsoleOutput](https://www.google.com/search?num=5&q=WriteConsoleOutputA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.WriteConsoleOutput](https://github.com/dahall/Vanara/search?l=C%23&q=WriteConsoleOutput)  
+[WriteConsoleOutputAttribute](https://www.google.com/search?num=5&q=WriteConsoleOutputAttribute+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.WriteConsoleOutputAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=WriteConsoleOutputAttribute)  
+[WriteConsoleOutputCharacter](https://www.google.com/search?num=5&q=WriteConsoleOutputCharacterA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.WriteConsoleOutputCharacter](https://github.com/dahall/Vanara/search?l=C%23&q=WriteConsoleOutputCharacter)  
+[WriteFile](http://msdn2.microsoft.com/en-us/library/aa365747) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.WriteFile](https://github.com/dahall/Vanara/search?l=C%23&q=WriteFile)  
+[WriteFileEx](http://msdn2.microsoft.com/en-us/library/aa365748) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.WriteFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=WriteFileEx)  
+[WriteFileGather](http://msdn2.microsoft.com/en-us/library/aa365749) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.WriteFileGather](https://github.com/dahall/Vanara/search?l=C%23&q=WriteFileGather)  
+[WritePrivateProfileSection](http://msdn2.microsoft.com/en-us/library/ms725500) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.WritePrivateProfileSection](https://github.com/dahall/Vanara/search?l=C%23&q=WritePrivateProfileSection)  
+[WritePrivateProfileString](http://msdn2.microsoft.com/en-us/library/ms725501) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.WritePrivateProfileString](https://github.com/dahall/Vanara/search?l=C%23&q=WritePrivateProfileString)  
+[WritePrivateProfileStruct](http://msdn2.microsoft.com/en-us/library/ms725502) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.WritePrivateProfileStruct](https://github.com/dahall/Vanara/search?l=C%23&q=WritePrivateProfileStruct)  
+[WriteProcessMemory](http://msdn2.microsoft.com/en-us/library/ms681674) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.WriteProcessMemory](https://github.com/dahall/Vanara/search?l=C%23&q=WriteProcessMemory)  
+[WriteProfileSection](http://msdn2.microsoft.com/en-us/library/ms725503) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.WriteProfileSection](https://github.com/dahall/Vanara/search?l=C%23&q=WriteProfileSection)  
+[WriteProfileString](http://msdn2.microsoft.com/en-us/library/ms725504) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.WriteProfileString](https://github.com/dahall/Vanara/search?l=C%23&q=WriteProfileString)  
+[WriteTapemark](http://msdn2.microsoft.com/en-us/library/aa362668) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.WriteTapemark](https://github.com/dahall/Vanara/search?l=C%23&q=WriteTapemark)  
+[WTSGetActiveConsoleSessionId](http://msdn2.microsoft.com/en-us/library/aa383835) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.WTSGetActiveConsoleSessionId](https://github.com/dahall/Vanara/search?l=C%23&q=WTSGetActiveConsoleSessionId)  
+[ZombifyActCtx](http://msdn2.microsoft.com/en-us/library/aa376622) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.ZombifyActCtx](https://github.com/dahall/Vanara/search?l=C%23&q=ZombifyActCtx)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[ACTCTX](http://msdn2.microsoft.com/en-us/library/aa374149) | Winbase.h | Vanara.PInvoke.Kernel32+ACTCTX  
-[ACTCTX_SECTION_KEYED_DATA](http://msdn2.microsoft.com/en-us/library/aa374148) | Winbase.h | Vanara.PInvoke.Kernel32+ACTCTX_SECTION_KEYED_DATA  
-[ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION](http://msdn2.microsoft.com/en-us/library/b093cc6a-55ea-49bf-904d-2b43517f9b02) | winnt.h | Vanara.PInvoke.Kernel32+ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION  
-[ACTIVATION_CONTEXT_BASIC_INFORMATION](https://www.google.com/search?num=5&q=ACTIVATION_CONTEXT_BASIC_INFORMATION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+ACTIVATION_CONTEXT_BASIC_INFORMATION  
-[ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION](https://www.google.com/search?num=5&q=ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION  
-[ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION_UNMGD](http://msdn2.microsoft.com/en-us/library/d8c1ef4a-8e64-45bd-a185-b4af7932a0d2) | winnt.h | Vanara.PInvoke.Kernel32+ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION_UNMGD  
-[ACTIVATION_CONTEXT_DETAILED_INFORMATION](http://msdn2.microsoft.com/en-us/library/58e4acfe-d5c8-45ae-bf32-469229ffc836) | winnt.h | Vanara.PInvoke.Kernel32+ACTIVATION_CONTEXT_DETAILED_INFORMATION  
-[ACTIVATION_CONTEXT_QUERY_INDEX](http://msdn2.microsoft.com/en-us/library/eb15895c-07c9-4b68-83ef-2f2b8e3b271c) | winnt.h | Vanara.PInvoke.Kernel32+ACTIVATION_CONTEXT_QUERY_INDEX  
-[ACTIVATION_CONTEXT_RUN_LEVEL_INFORMATION](http://msdn2.microsoft.com/en-us/library/1c4e7333-6982-4d58-ab2a-d1993c59d0ef) | winnt.h | Vanara.PInvoke.Kernel32+ACTIVATION_CONTEXT_RUN_LEVEL_INFORMATION  
-[APP_MEMORY_INFORMATION](http://msdn2.microsoft.com/en-us/library/mt767995) | WinBase.h | Vanara.PInvoke.Kernel32+APP_MEMORY_INFORMATION  
-[ASSEMBLY_FILE_DETAILED_INFORMATION](http://msdn2.microsoft.com/en-us/library/7f1e5155-a6c1-4b6a-be47-37fab337186c) | winnt.h | Vanara.PInvoke.Kernel32+ASSEMBLY_FILE_DETAILED_INFORMATION  
-[ATOM](https://www.google.com/search?num=5&q=ATOM+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+ATOM  
-[BLOCK_DATA](https://www.google.com/search?num=5&q=BLOCK_DATA+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PROCESS_HEAP_ENTRY+BLOCK_REGION_UNION+BLOCK_DATA  
-[BLOCK_REGION_UNION](https://www.google.com/search?num=5&q=BLOCK_REGION_UNION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PROCESS_HEAP_ENTRY+BLOCK_REGION_UNION  
-[BoundaryDescriptorHandle](https://www.google.com/search?num=5&q=BoundaryDescriptorHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+BoundaryDescriptorHandle  
-[BY_HANDLE_FILE_INFORMATION](http://msdn2.microsoft.com/en-us/library/aa363788) | FileAPI.h | Vanara.PInvoke.Kernel32+BY_HANDLE_FILE_INFORMATION  
-[CACHE_DESCRIPTOR](http://msdn2.microsoft.com/en-us/library/ms681979) | WinNT.h | Vanara.PInvoke.Kernel32+CACHE_DESCRIPTOR  
-[CACHE_RELATIONSHIP](http://msdn2.microsoft.com/en-us/library/f8fe521b-02d6-4c58-8ef8-653280add111) | winnt.h | Vanara.PInvoke.Kernel32+CACHE_RELATIONSHIP  
-[CALDATETIME](http://msdn2.microsoft.com/en-us/library/a714ff32-2b1f-4256-931e-324d64daf2ac) |  | Vanara.PInvoke.Kernel32+CALDATETIME  
-[CFG_CALL_TARGET_INFO](http://msdn2.microsoft.com/en-us/library/mt219054) | Ntmmapi.h | Vanara.PInvoke.Kernel32+CFG_CALL_TARGET_INFO  
-[CHAR_INFO](https://www.google.com/search?num=5&q=CHAR_INFO+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CHAR_INFO  
-[ChunkFinished](https://www.google.com/search?num=5&q=ChunkFinished+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+COPYFILE2_MESSAGE+ChunkFinished  
-[ChunkStarted](https://www.google.com/search?num=5&q=ChunkStarted+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+COPYFILE2_MESSAGE+ChunkStarted  
-[COMMCONFIG](http://msdn2.microsoft.com/en-us/library/aa363188) | Winbase.h | Vanara.PInvoke.Kernel32+COMMCONFIG  
-[COMMPROP](http://msdn2.microsoft.com/en-us/library/aa363189) | WinBase.h | Vanara.PInvoke.Kernel32+COMMPROP  
-[COMMTIMEOUTS](http://msdn2.microsoft.com/en-us/library/aa363190) | Winbase.h | Vanara.PInvoke.Kernel32+COMMTIMEOUTS  
-[COMPATIBILITY_CONTEXT_ELEMENT](http://msdn2.microsoft.com/en-us/library/3e654f44-43f6-4282-b277-14ed6e25abf2) | winnt.h | Vanara.PInvoke.Kernel32+COMPATIBILITY_CONTEXT_ELEMENT  
-[COMSTAT](http://msdn2.microsoft.com/en-us/library/aa363200) | Winbase.h | Vanara.PInvoke.Kernel32+COMSTAT  
-[CONDITION_VARIABLE](https://www.google.com/search?num=5&q=CONDITION_VARIABLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+CONDITION_VARIABLE  
-[CONSOLE_CURSOR_INFO](https://www.google.com/search?num=5&q=CONSOLE_CURSOR_INFO+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_CURSOR_INFO  
-[CONSOLE_FONT_INFO](https://www.google.com/search?num=5&q=CONSOLE_FONT_INFO+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_FONT_INFO  
-[CONSOLE_FONT_INFOEX](https://www.google.com/search?num=5&q=CONSOLE_FONT_INFOEX+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_FONT_INFOEX  
-[CONSOLE_HISTORY_INFO](https://www.google.com/search?num=5&q=CONSOLE_HISTORY_INFO+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_HISTORY_INFO  
-[CONSOLE_READCONSOLE_CONTROL](http://msdn2.microsoft.com/en-us/library/6a8451a6-d692-43af-88c4-972c4dc5e07c) | ConsoleApi.h | Vanara.PInvoke.Kernel32+CONSOLE_READCONSOLE_CONTROL  
-[CONSOLE_SCREEN_BUFFER_INFO](https://www.google.com/search?num=5&q=CONSOLE_SCREEN_BUFFER_INFO+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_SCREEN_BUFFER_INFO  
-[CONSOLE_SCREEN_BUFFER_INFOEX](https://www.google.com/search?num=5&q=CONSOLE_SCREEN_BUFFER_INFOEX+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_SCREEN_BUFFER_INFOEX  
-[CONSOLE_SELECTION_INFO](https://www.google.com/search?num=5&q=CONSOLE_SELECTION_INFO+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_SELECTION_INFO  
-[CONTEXT](https://www.google.com/search?num=5&q=CONTEXT+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+CONTEXT  
-[CONTEXT64](https://www.google.com/search?num=5&q=CONTEXT64+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+CONTEXT64  
-[COORD](https://www.google.com/search?num=5&q=COORD+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+COORD  
-[COPYFILE2_EXTENDED_PARAMETERS](http://msdn2.microsoft.com/en-us/library/a8da62e5-bc49-4aff-afaa-e774393b7120) | winbase.h | Vanara.PInvoke.Kernel32+COPYFILE2_EXTENDED_PARAMETERS  
-[COPYFILE2_MESSAGE](http://msdn2.microsoft.com/en-us/library/ab841bee-90a0-4beb-99d3-764e608c3872) | winbase.h | Vanara.PInvoke.Kernel32+COPYFILE2_MESSAGE  
-[CPINFO](http://msdn2.microsoft.com/en-us/library/dd317780) | Winnls.h | Vanara.PInvoke.Kernel32+CPINFO  
-[CPINFOEX](http://msdn2.microsoft.com/en-us/library/9639bb11-477e-45ee-b9fb-d5d099925e00) | winnls.h | Vanara.PInvoke.Kernel32+CPINFOEX  
-[CPU_RATE_CONTROL_UNION](https://www.google.com/search?num=5&q=CPU_RATE_CONTROL_UNION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+JOBOBJECT_CPU_RATE_CONTROL_INFORMATION+CPU_RATE_CONTROL_UNION  
-[CPU_SET](https://www.google.com/search?num=5&q=CPU_SET+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+SYSTEM_CPU_SET_INFORMATION+CPU_SET  
-[CREATE_PROCESS_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679286) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+CREATE_PROCESS_DEBUG_INFO  
-[CREATE_THREAD_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679287) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+CREATE_THREAD_DEBUG_INFO  
-[CREATEFILE2_EXTENDED_PARAMETERS](http://msdn2.microsoft.com/en-us/library/hh449426) | FileAPI.h | Vanara.PInvoke.Kernel32+CREATEFILE2_EXTENDED_PARAMETERS  
-[CRITICAL_SECTION](https://www.google.com/search?num=5&q=CRITICAL_SECTION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+CRITICAL_SECTION  
-[CURRENCYFMT](http://msdn2.microsoft.com/en-us/library/dd317784) | Winnls.h | Vanara.PInvoke.Kernel32+CURRENCYFMT  
-[DCB](http://msdn2.microsoft.com/en-us/library/aa363214) | Winbase.h | Vanara.PInvoke.Kernel32+DCB  
-[DEBUG_EVENT](http://msdn2.microsoft.com/en-us/library/ms679308) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT  
-[DETAIL](https://www.google.com/search?num=5&q=DETAIL+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+REASON_CONTEXT+DETAIL  
-[DUMMYSTRUCTNAME](https://www.google.com/search?num=5&q=DUMMYSTRUCTNAME+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PACKAGE_VERSION+DUMMYSTRUCTNAME  
-[DUMMYUNIONNAME](https://www.google.com/search?num=5&q=DUMMYUNIONNAME+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+FILE_ID_DESCRIPTOR+DUMMYUNIONNAME  
-[DYNAMIC_TIME_ZONE_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms724253) | WinBase.h | Vanara.PInvoke.Kernel32+DYNAMIC_TIME_ZONE_INFORMATION  
-[ENCLAVE_CREATE_INFO_SGX](http://msdn2.microsoft.com/en-us/library/mt592867) | Winnt.h | Vanara.PInvoke.Kernel32+ENCLAVE_CREATE_INFO_SGX  
-[ENCLAVE_CREATE_INFO_VBS](http://msdn2.microsoft.com/en-us/library/mt844238) | Winnt.h | Vanara.PInvoke.Kernel32+ENCLAVE_CREATE_INFO_VBS  
-[ENCLAVE_INIT_INFO_SGX](http://msdn2.microsoft.com/en-us/library/mt592868) | Winnt.h | Vanara.PInvoke.Kernel32+ENCLAVE_INIT_INFO_SGX  
-[ENCLAVE_INIT_INFO_VBS](http://msdn2.microsoft.com/en-us/library/mt844241) | Winnt.h | Vanara.PInvoke.Kernel32+ENCLAVE_INIT_INFO_VBS  
-[ENUM_PAGE_FILE_INFORMATION](http://msdn2.microsoft.com/en-us/library/020f3be8-f624-4788-8079-0f7679c9bef0) | psapi.h | Vanara.PInvoke.Kernel32+ENUM_PAGE_FILE_INFORMATION  
-[Error](https://www.google.com/search?num=5&q=Error+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+COPYFILE2_MESSAGE+Error  
-[Event](https://www.google.com/search?num=5&q=Event+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+Event  
-[EXCEPTION_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679326) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_DEBUG_INFO  
-[EXCEPTION_INFO](http://msdn2.microsoft.com/en-us/library/ms679308) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO  
-[EXCEPTION_POINTERS](http://msdn2.microsoft.com/en-us/library/ms679331) | WinNT.h | Vanara.PInvoke.Kernel32+EXCEPTION_POINTERS  
-[EXCEPTION_RECORD](http://msdn2.microsoft.com/en-us/library/aa363082) | WinNT.h | Vanara.PInvoke.Kernel32+EXCEPTION_RECORD  
-[EXIT_PROCESS_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679334) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXIT_PROCESS_DEBUG_INFO  
-[EXIT_THREAD_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679335) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXIT_THREAD_DEBUG_INFO  
-[FILE_ALIGNMENT_INFO](http://msdn2.microsoft.com/en-us/library/a6d3cba0-d59b-45c2-a763-ecdde5b36348) | winbase.h | Vanara.PInvoke.Kernel32+FILE_ALIGNMENT_INFO  
-[FILE_ALLOCATION_INFO](http://msdn2.microsoft.com/en-us/library/909f1747-0099-407e-89a7-bec6331887da) | winbase.h | Vanara.PInvoke.Kernel32+FILE_ALLOCATION_INFO  
-[FILE_ATTRIBUTE_TAG_INFO](http://msdn2.microsoft.com/en-us/library/4a2467a2-c22a-4ee6-a40e-5603ea381adc) | winbase.h | Vanara.PInvoke.Kernel32+FILE_ATTRIBUTE_TAG_INFO  
-[FILE_BASIC_INFO](http://msdn2.microsoft.com/en-us/library/7765e430-cf6b-4ccf-b5e7-9fb6e15ca6d6) | winbase.h | Vanara.PInvoke.Kernel32+FILE_BASIC_INFO  
-[FILE_COMPRESSION_INFO](http://msdn2.microsoft.com/en-us/library/2f64e7cc-e23c-4e3d-8e17-0e8e38f1ea24) | winbase.h | Vanara.PInvoke.Kernel32+FILE_COMPRESSION_INFO  
-[FILE_DISPOSITION_INFO](http://msdn2.microsoft.com/en-us/library/07095f62-323a-463a-a33e-7e4ca9adcb69) | winbase.h | Vanara.PInvoke.Kernel32+FILE_DISPOSITION_INFO  
-[FILE_END_OF_FILE_INFO](http://msdn2.microsoft.com/en-us/library/77500ae7-654a-4b34-aaee-5c3844303271) | winbase.h | Vanara.PInvoke.Kernel32+FILE_END_OF_FILE_INFO  
-[FILE_FULL_DIR_INFO](http://msdn2.microsoft.com/en-us/library/606726e7-fd6b-4419-bd37-7282283007f8) | winbase.h | Vanara.PInvoke.Kernel32+FILE_FULL_DIR_INFO  
-[FILE_ID_128](http://msdn2.microsoft.com/en-us/library/254ea6a9-e1dd-4b97-91f7-2693065c4bb8) | winnt.h | Vanara.PInvoke.Kernel32+FILE_ID_128  
-[FILE_ID_BOTH_DIR_INFO](http://msdn2.microsoft.com/en-us/library/d7011ea4-e70a-4c03-a715-6144ce0c7029) | winbase.h | Vanara.PInvoke.Kernel32+FILE_ID_BOTH_DIR_INFO  
-[FILE_ID_DESCRIPTOR](http://msdn2.microsoft.com/en-us/library/9092a701-3b47-4c4c-8221-54fa3220d322) | winbase.h | Vanara.PInvoke.Kernel32+FILE_ID_DESCRIPTOR  
-[FILE_ID_EXTD_DIR_INFO](http://msdn2.microsoft.com/en-us/library/68f222c4-beb6-4be1-a31a-c5fbebbf76f7) | winbase.h | Vanara.PInvoke.Kernel32+FILE_ID_EXTD_DIR_INFO  
-[FILE_ID_INFO](http://msdn2.microsoft.com/en-us/library/e2774e29-1a90-44d6-9001-f73a98be6624) | winbase.h | Vanara.PInvoke.Kernel32+FILE_ID_INFO  
-[FILE_IO_PRIORITY_HINT_INFO](http://msdn2.microsoft.com/en-us/library/a142b8fd-b71c-4449-a8c6-fb23715d1576) | winbase.h | Vanara.PInvoke.Kernel32+FILE_IO_PRIORITY_HINT_INFO  
-[FILE_NAME_INFO](http://msdn2.microsoft.com/en-us/library/7ab98f41-b99e-4731-b803-921064a961c4) | winbase.h | Vanara.PInvoke.Kernel32+FILE_NAME_INFO  
-[FILE_NOTIFY_EXTENDED_INFORMATION](http://msdn2.microsoft.com/en-us/library/4558F2E8-F515-4202-9CAA-FDAF20160F61) | winnt.h | Vanara.PInvoke.Kernel32+FILE_NOTIFY_EXTENDED_INFORMATION  
-[FILE_NOTIFY_INFORMATION](http://msdn2.microsoft.com/en-us/library/cb95352f-8a15-48d8-9150-e4bc395e0122) | winnt.h | Vanara.PInvoke.Kernel32+FILE_NOTIFY_INFORMATION  
-[FILE_REMOTE_PROTOCOL_INFO](http://msdn2.microsoft.com/en-us/library/ddb555ad-0acb-4538-88ce-a871adfc21fc) | winbase.h | Vanara.PInvoke.Kernel32+FILE_REMOTE_PROTOCOL_INFO  
-[FILE_RENAME_INFO](http://msdn2.microsoft.com/en-us/library/f4de0130-66fd-4847-bb6f-3f16fe17ca6e) | winbase.h | Vanara.PInvoke.Kernel32+FILE_RENAME_INFO  
-[FILE_STANDARD_INFO](http://msdn2.microsoft.com/en-us/library/da3187de-7de2-4307-a083-ae5fff6d8096) | winbase.h | Vanara.PInvoke.Kernel32+FILE_STANDARD_INFO  
-[FILE_STORAGE_INFO](http://msdn2.microsoft.com/en-us/library/1aa9585d-9001-4d94-babe-a39c8dde2332) | winbase.h | Vanara.PInvoke.Kernel32+FILE_STORAGE_INFO  
-[FILE_STREAM_INFO](http://msdn2.microsoft.com/en-us/library/36d1b0b3-bd6b-41e7-937a-4e8deef6f9da) | winbase.h | Vanara.PInvoke.Kernel32+FILE_STREAM_INFO  
-[FILEMUIINFO](http://msdn2.microsoft.com/en-us/library/dd318039) | Winnls.h | Vanara.PInvoke.Kernel32+FILEMUIINFO  
-[FLOATING_SAVE_AREA](http://msdn2.microsoft.com/en-us/library/ms681671) | WinNT.h | Vanara.PInvoke.Kernel32+CONTEXT+FLOATING_SAVE_AREA  
-[FOCUS_EVENT_RECORD](https://www.google.com/search?num=5&q=FOCUS_EVENT_RECORD+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+FOCUS_EVENT_RECORD  
-[GAMING_DEVICE_MODEL_INFORMATION](http://msdn2.microsoft.com/en-us/library/0D5A6358-0F82-4414-BD17-BDE22EDBBB15) | gamingdeviceinformation.h | Vanara.PInvoke.Kernel32+GAMING_DEVICE_MODEL_INFORMATION  
-[GenericReserved_](https://www.google.com/search?num=5&q=GenericReserved_+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+FILE_REMOTE_PROTOCOL_INFO+GenericReserved_  
-[GROUP_AFFINITY](http://msdn2.microsoft.com/en-us/library/dd405500) | WinNT.h | Vanara.PInvoke.Kernel32+GROUP_AFFINITY  
-[GROUP_RELATIONSHIP](http://msdn2.microsoft.com/en-us/library/3529ddef-04c5-4573-877d-c225da684e38) | winnt.h | Vanara.PInvoke.Kernel32+GROUP_RELATIONSHIP  
-[HACTCTX](https://www.google.com/search?num=5&q=HACTCTX+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HACTCTX  
-[HARDWARE_COUNTER_DATA](http://msdn2.microsoft.com/en-us/library/dd796394) | Winnt.h | Vanara.PInvoke.Kernel32+HARDWARE_COUNTER_DATA  
-[HEAP_OPTIMIZE_RESOURCES_INFORMATION](http://msdn2.microsoft.com/en-us/library/c801a08a-0b1a-4ffe-8ec7-c3ea8d913ec8) | winnt.h | Vanara.PInvoke.Kernel32+HEAP_OPTIMIZE_RESOURCES_INFORMATION  
-[HEAP_SUMMARY](https://www.google.com/search?num=5&q=HEAP_SUMMARY+site%3Amicrosoft.com) | winnt.h | Vanara.PInvoke.Kernel32+HEAP_SUMMARY  
-[HEAPENTRY32](http://msdn2.microsoft.com/en-us/library/c5f1dc66-d44f-4491-b0b7-961b163d0f1f) | tlhelp32.h | Vanara.PInvoke.Kernel32+HEAPENTRY32  
-[HEAPLIST32](http://msdn2.microsoft.com/en-us/library/61e01d23-9f15-44c5-9f6d-45df4809ccad) | tlhelp32.h | Vanara.PInvoke.Kernel32+HEAPLIST32  
-[HGLOBAL](https://www.google.com/search?num=5&q=HGLOBAL+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HGLOBAL  
-[HHEAP](https://www.google.com/search?num=5&q=HHEAP+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HHEAP  
-[HJOB](https://www.google.com/search?num=5&q=HJOB+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HJOB  
-[HLOCAL](https://www.google.com/search?num=5&q=HLOCAL+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HLOCAL  
-[HPIPE](https://www.google.com/search?num=5&q=HPIPE+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HPIPE  
-[HPSS](https://www.google.com/search?num=5&q=HPSS+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HPSS  
-[HPSSWALK](https://www.google.com/search?num=5&q=HPSSWALK+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HPSSWALK  
-[HRSRC](https://www.google.com/search?num=5&q=HRSRC+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HRSRC  
-[HRSRCDATA](https://www.google.com/search?num=5&q=HRSRCDATA+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HRSRCDATA  
-[HSNAPSHOT](https://www.google.com/search?num=5&q=HSNAPSHOT+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HSNAPSHOT  
-[HTRXN](https://www.google.com/search?num=5&q=HTRXN+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HTRXN  
-[HUPDRES](https://www.google.com/search?num=5&q=HUPDRES+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HUPDRES  
-[IMAGE_RUNTIME_FUNCTION_ENTRY](http://msdn2.microsoft.com/en-us/library/9ed16f9a-3403-4ba9-9968-f51f6788a1f8) | winnt.h | Vanara.PInvoke.Kernel32+IMAGE_RUNTIME_FUNCTION_ENTRY  
-[INIT_ONCE](https://www.google.com/search?num=5&q=INIT_ONCE+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+INIT_ONCE  
-[INPUT_RECORD](http://msdn2.microsoft.com/en-us/library/a46ba7fd-097a-455d-96ac-13aa01e11dc1) | Wincon.h | Vanara.PInvoke.Kernel32+INPUT_RECORD  
-[INPUT_RECORD_EVENT](https://www.google.com/search?num=5&q=INPUT_RECORD_EVENT+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+INPUT_RECORD+INPUT_RECORD_EVENT  
-[IO_COUNTERS](http://msdn2.microsoft.com/en-us/library/ms684125) | WinNT.h | Vanara.PInvoke.Kernel32+IO_COUNTERS  
-[JOBOBJECT_ASSOCIATE_COMPLETION_PORT](http://msdn2.microsoft.com/en-us/library/ms684141) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_ASSOCIATE_COMPLETION_PORT  
-[JOBOBJECT_BASIC_ACCOUNTING_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684143) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_BASIC_ACCOUNTING_INFORMATION  
-[JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684144) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION  
-[JOBOBJECT_BASIC_LIMIT_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684147) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_BASIC_LIMIT_INFORMATION  
-[JOBOBJECT_BASIC_PROCESS_ID_LIST](http://msdn2.microsoft.com/en-us/library/ms684150) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_BASIC_PROCESS_ID_LIST  
-[JOBOBJECT_BASIC_UI_RESTRICTIONS](http://msdn2.microsoft.com/en-us/library/ms684152) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_BASIC_UI_RESTRICTIONS  
-[JOBOBJECT_CPU_RATE_CONTROL_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448384) | Winnt.h | Vanara.PInvoke.Kernel32+JOBOBJECT_CPU_RATE_CONTROL_INFORMATION  
-[JOBOBJECT_END_OF_JOB_TIME_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684155) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_END_OF_JOB_TIME_INFORMATION  
-[JOBOBJECT_EXTENDED_LIMIT_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684156) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_EXTENDED_LIMIT_INFORMATION  
-[JOBOBJECT_IO_ATTRIBUTION_INFORMATION](https://www.google.com/search?num=5&q=JOBOBJECT_IO_ATTRIBUTION_INFORMATION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+JOBOBJECT_IO_ATTRIBUTION_INFORMATION  
-[JOBOBJECT_IO_ATTRIBUTION_STATS](https://www.google.com/search?num=5&q=JOBOBJECT_IO_ATTRIBUTION_STATS+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+JOBOBJECT_IO_ATTRIBUTION_STATS  
-[JOBOBJECT_IO_RATE_CONTROL_INFORMATION](http://msdn2.microsoft.com/en-us/library/mt280122) | Jobapi2.h | Vanara.PInvoke.Kernel32+JOBOBJECT_IO_RATE_CONTROL_INFORMATION  
-[JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE](https://www.google.com/search?num=5&q=JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE  
-[JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V2](https://www.google.com/search?num=5&q=JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V2+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V2  
-[JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V3](https://www.google.com/search?num=5&q=JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V3+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V3  
-[JOBOBJECT_JOBSET_INFORMATION](https://www.google.com/search?num=5&q=JOBOBJECT_JOBSET_INFORMATION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+JOBOBJECT_JOBSET_INFORMATION  
-[JOBOBJECT_LIMIT_VIOLATION_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448385) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_LIMIT_VIOLATION_INFORMATION  
-[JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2](http://msdn2.microsoft.com/en-us/library/mt280123) | Winnt.h | Vanara.PInvoke.Kernel32+JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2  
-[JOBOBJECT_NET_RATE_CONTROL_INFORMATION](http://msdn2.microsoft.com/en-us/library/mt280124) | Winnt.h | Vanara.PInvoke.Kernel32+JOBOBJECT_NET_RATE_CONTROL_INFORMATION  
-[JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448386) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION  
-[JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2](http://msdn2.microsoft.com/en-us/library/mt280125) | Winnt.h | Vanara.PInvoke.Kernel32+JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2  
-[JOBOBJECT_SECURITY_LIMIT_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684159) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_SECURITY_LIMIT_INFORMATION  
-[KEY_EVENT_RECORD](http://msdn2.microsoft.com/en-us/library/b3fed86b-84ef-48e4-97e1-cb3d65f714a7) | Wincon.h | Vanara.PInvoke.Kernel32+KEY_EVENT_RECORD  
-[LDT_ENTRY](http://msdn2.microsoft.com/en-us/library/ms680348) | WinNT.h | Vanara.PInvoke.Kernel32+LDT_ENTRY  
-[LOAD_DLL_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms680351) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+LOAD_DLL_DEBUG_INFO  
-[LOADPARMS32](http://msdn2.microsoft.com/en-us/library/80571b80-851a-4272-bfa6-d26e217e714a) | winbase.h | Vanara.PInvoke.Kernel32+LOADPARMS32  
-[M128A](https://www.google.com/search?num=5&q=M128A+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+CONTEXT64+M128A  
-[MEM_ADDRESS_REQUIREMENTS](http://msdn2.microsoft.com/en-us/library/1CAB4942-F0D2-4A60-9472-4EDF2FC9FA7A) | winnt.h | Vanara.PInvoke.Kernel32+MEM_ADDRESS_REQUIREMENTS  
-[MEM_EXTENDED_PARAMETER](http://msdn2.microsoft.com/en-us/library/8D189F7E-83E7-4AF3-9E25-928C66666887) | winnt.h | Vanara.PInvoke.Kernel32+MEM_EXTENDED_PARAMETER  
-[MEMORY_BASIC_INFORMATION](http://msdn2.microsoft.com/en-us/library/dc3fa48e-0986-49cc-88a9-ff8179fbe5f0) | winnt.h | Vanara.PInvoke.Kernel32+MEMORY_BASIC_INFORMATION  
-[MEMORY_PRIORITY_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448387) | WinBase.h | Vanara.PInvoke.Kernel32+MEMORY_PRIORITY_INFORMATION  
-[MEMORYSTATUS](http://msdn2.microsoft.com/en-us/library/aa366772) | WinBase.h | Vanara.PInvoke.Kernel32+MEMORYSTATUS  
-[MEMORYSTATUSEX](http://msdn2.microsoft.com/en-us/library/aa366770) | WinBase.h | Vanara.PInvoke.Kernel32+MEMORYSTATUSEX  
-[MENU_EVENT_RECORD](https://www.google.com/search?num=5&q=MENU_EVENT_RECORD+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+MENU_EVENT_RECORD  
-[MODULEENTRY32](http://msdn2.microsoft.com/en-us/library/305fab35-625c-42e3-a434-e2513e4c8870) | tlhelp32.h | Vanara.PInvoke.Kernel32+MODULEENTRY32  
-[MODULEINFO](http://msdn2.microsoft.com/en-us/library/583caafe-7fa3-4041-b5bc-4e8899b3a08a) | psapi.h | Vanara.PInvoke.Kernel32+MODULEINFO  
-[MOUSE_EVENT_RECORD](https://www.google.com/search?num=5&q=MOUSE_EVENT_RECORD+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+MOUSE_EVENT_RECORD  
-[Mutant](https://www.google.com/search?num=5&q=Mutant+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+Mutant  
-[NamespaceHandle](https://www.google.com/search?num=5&q=NamespaceHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+NamespaceHandle  
-[NLSVERSIONINFO](http://msdn2.microsoft.com/en-us/library/dd319086) | Winnls.h | Vanara.PInvoke.Kernel32+NLSVERSIONINFO  
-[NLSVERSIONINFOEX](http://msdn2.microsoft.com/en-us/library/dd319087) | Winnls.h | Vanara.PInvoke.Kernel32+NLSVERSIONINFOEX  
-[NUMA_NODE_RELATIONSHIP](http://msdn2.microsoft.com/en-us/library/a4e4c994-c4af-4b4f-8684-6037bcba35a9) | winnt.h | Vanara.PInvoke.Kernel32+NUMA_NODE_RELATIONSHIP  
-[NUMBERFMT](http://msdn2.microsoft.com/en-us/library/dd319095) | Winnls.h | Vanara.PInvoke.Kernel32+NUMBERFMT  
-[OFSTRUCT](http://msdn2.microsoft.com/en-us/library/aa365282) | WinBase.h | Vanara.PInvoke.Kernel32+OFSTRUCT  
-[OSVERSIONINFOEX](http://msdn2.microsoft.com/en-us/library/ms724833) | Winnt.h | Vanara.PInvoke.Kernel32+OSVERSIONINFOEX  
-[OUTPUT_DEBUG_STRING_INFO](http://msdn2.microsoft.com/en-us/library/ms680545) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+OUTPUT_DEBUG_STRING_INFO  
-[PACKAGE_ID](http://msdn2.microsoft.com/en-us/library/4B15281A-2227-47B7-A750-0A01DB8543FC) | appmodel.h | Vanara.PInvoke.Kernel32+PACKAGE_ID  
-[PACKAGE_INFO_REFERENCE](https://www.google.com/search?num=5&q=PACKAGE_INFO_REFERENCE+site%3Amicrosoft.com) | appmodel.h | Vanara.PInvoke.Kernel32+PACKAGE_INFO_REFERENCE  
-[PACKAGE_VERSION](http://msdn2.microsoft.com/en-us/library/8543DF84-A908-4DF5-AEE6-169FECB2AA97) | appmodel.h | Vanara.PInvoke.Kernel32+PACKAGE_VERSION  
-[PERFORMANCE_DATA](http://msdn2.microsoft.com/en-us/library/dd796401) | Winnt.h | Vanara.PInvoke.Kernel32+PERFORMANCE_DATA  
-[PERFORMANCE_INFORMATION](http://msdn2.microsoft.com/en-us/library/efc47f6e-1a60-4e77-9e5d-c725f9042ab8) | psapi.h | Vanara.PInvoke.Kernel32+PERFORMANCE_INFORMATION  
-[PerformanceDataHandle](https://www.google.com/search?num=5&q=PerformanceDataHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PerformanceDataHandle  
-[PollContinue](https://www.google.com/search?num=5&q=PollContinue+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+COPYFILE2_MESSAGE+PollContinue  
-[PROC_THREAD_ATTRIBUTE](https://www.google.com/search?num=5&q=PROC_THREAD_ATTRIBUTE+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PROC_THREAD_ATTRIBUTE  
-[Process](https://www.google.com/search?num=5&q=Process+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+Process  
-[PROCESS_HEAP_ENTRY](http://msdn2.microsoft.com/en-us/library/aa366798) | WinBase.h | Vanara.PInvoke.Kernel32+PROCESS_HEAP_ENTRY  
-[PROCESS_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684873) | WinBase.h | Vanara.PInvoke.Kernel32+PROCESS_INFORMATION  
-[PROCESS_MEMORY_COUNTERS](http://msdn2.microsoft.com/en-us/library/288b5865-28a3-478b-ad32-c710fe4f3a81) | psapi.h | Vanara.PInvoke.Kernel32+PROCESS_MEMORY_COUNTERS  
-[PROCESS_MEMORY_EXHAUSTION_INFO](http://msdn2.microsoft.com/en-us/library/mt767997) | WinBase.h | Vanara.PInvoke.Kernel32+PROCESS_MEMORY_EXHAUSTION_INFO  
-[PROCESS_MITIGATION_ASLR_POLICY](http://msdn2.microsoft.com/en-us/library/hh769086) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_ASLR_POLICY  
-[PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY](http://msdn2.microsoft.com/en-us/library/mt706242) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY  
-[PROCESS_MITIGATION_CHILD_PROCESS_POLICY](https://www.google.com/search?num=5&q=PROCESS_MITIGATION_CHILD_PROCESS_POLICY+site%3Amicrosoft.com) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_CHILD_PROCESS_POLICY  
-[PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY](http://msdn2.microsoft.com/en-us/library/mt654121) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY  
-[PROCESS_MITIGATION_DEP_POLICY](http://msdn2.microsoft.com/en-us/library/hh769087) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_DEP_POLICY  
-[PROCESS_MITIGATION_DYNAMIC_CODE_POLICY](http://msdn2.microsoft.com/en-us/library/mt706243) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_DYNAMIC_CODE_POLICY  
-[PROCESS_MITIGATION_EXTENSION_POINT_DISABLE_POLICY](http://msdn2.microsoft.com/en-us/library/jj200586) | Winnt.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_EXTENSION_POINT_DISABLE_POLICY  
-[PROCESS_MITIGATION_FONT_DISABLE_POLICY](http://msdn2.microsoft.com/en-us/library/mt706244) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_FONT_DISABLE_POLICY  
-[PROCESS_MITIGATION_IMAGE_LOAD_POLICY](http://msdn2.microsoft.com/en-us/library/mt706245) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_IMAGE_LOAD_POLICY  
-[PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY](https://www.google.com/search?num=5&q=PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY+site%3Amicrosoft.com) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY  
-[PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY](http://msdn2.microsoft.com/en-us/library/hh871471) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY  
-[PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY](http://msdn2.microsoft.com/en-us/library/hh871472) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY  
-[PROCESS_MITIGATION_SYSTEM_CALL_FILTER_POLICY](http://msdn2.microsoft.com/en-us/library/mt843942) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESS_MITIGATION_SYSTEM_CALL_FILTER_POLICY  
-[PROCESS_POWER_THROTTLING_STATE](http://msdn2.microsoft.com/en-us/library/394B6509-849C-4B4C-9A46-AF5011A03585) | processthreadsapi.h | Vanara.PInvoke.Kernel32+PROCESS_POWER_THROTTLING_STATE  
-[PROCESS_PROTECTION_LEVEL_INFORMATION](http://msdn2.microsoft.com/en-us/library/mt823702) | Processthreadsapi.h | Vanara.PInvoke.Kernel32+PROCESS_PROTECTION_LEVEL_INFORMATION  
-[PROCESSENTRY32](http://msdn2.microsoft.com/en-us/library/9e2f7345-52bf-4bfc-9761-90b0b374c727) | tlhelp32.h | Vanara.PInvoke.Kernel32+PROCESSENTRY32  
-[PROCESSOR_GROUP_INFO](http://msdn2.microsoft.com/en-us/library/6ff9cc3c-34e7-4dc4-94cd-6ed278dfaa03) | winnt.h | Vanara.PInvoke.Kernel32+PROCESSOR_GROUP_INFO  
-[PROCESSOR_NUMBER](http://msdn2.microsoft.com/en-us/library/dd405505) | WinNT.h | Vanara.PInvoke.Kernel32+PROCESSOR_NUMBER  
-[PROCESSOR_RELATIONSHIP](http://msdn2.microsoft.com/en-us/library/1efda80d-cf5b-4312-801a-ea3585b152ac) | winnt.h | Vanara.PInvoke.Kernel32+PROCESSOR_RELATIONSHIP  
-[ProcessorRelationUnion](https://www.google.com/search?num=5&q=ProcessorRelationUnion+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+SYSTEM_LOGICAL_PROCESSOR_INFORMATION+ProcessorRelationUnion  
-[ProcessorRelationUnion](https://www.google.com/search?num=5&q=ProcessorRelationUnion+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX+ProcessorRelationUnion  
-[ProtocolSpecific_](https://www.google.com/search?num=5&q=ProtocolSpecific_+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+FILE_REMOTE_PROTOCOL_INFO+ProtocolSpecific_  
-[PSAPI_WORKING_SET_BLOCK](http://msdn2.microsoft.com/en-us/library/feb64235-1003-4595-a6a9-aca1f94f94b8) | psapi.h | Vanara.PInvoke.Kernel32+PSAPI_WORKING_SET_BLOCK  
-[PSAPI_WORKING_SET_EX_BLOCK](http://msdn2.microsoft.com/en-us/library/4ba17fa0-2aed-4099-9380-fc13f1b826ca) | psapi.h | Vanara.PInvoke.Kernel32+PSAPI_WORKING_SET_EX_BLOCK  
-[PSAPI_WORKING_SET_EX_INFORMATION](http://msdn2.microsoft.com/en-us/library/d3500737-b9af-41a8-bf69-61d0bfbd6ce4) | psapi.h | Vanara.PInvoke.Kernel32+PSAPI_WORKING_SET_EX_INFORMATION  
-[PSAPI_WORKING_SET_INFORMATION](http://msdn2.microsoft.com/en-us/library/59ca42c0-ca88-4153-b061-980d961a8ca2) | psapi.h | Vanara.PInvoke.Kernel32+PSAPI_WORKING_SET_INFORMATION  
-[PSAPI_WS_WATCH_INFORMATION](http://msdn2.microsoft.com/en-us/library/61083366-2a55-431c-807a-3eb85ba0b347) | psapi.h | Vanara.PInvoke.Kernel32+PSAPI_WS_WATCH_INFORMATION  
-[PSAPI_WS_WATCH_INFORMATION_EX](http://msdn2.microsoft.com/en-us/library/fb0429b1-ec93-401c-aeb1-f7e9d9acfa47) | psapi.h | Vanara.PInvoke.Kernel32+PSAPI_WS_WATCH_INFORMATION_EX  
-[PSS_ALLOCATOR](http://msdn2.microsoft.com/en-us/library/54225F76-9A2E-4CB3-A3B5-9F9DB5551D53) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_ALLOCATOR  
-[PSS_AUXILIARY_PAGE_ENTRY](http://msdn2.microsoft.com/en-us/library/A3D948E6-6FFE-4732-A8C7-A292FDA07D7C) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_AUXILIARY_PAGE_ENTRY  
-[PSS_AUXILIARY_PAGES_INFORMATION](http://msdn2.microsoft.com/en-us/library/122DD3DF-002A-4250-9E37-BA239638A684) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_AUXILIARY_PAGES_INFORMATION  
-[PSS_HANDLE_ENTRY](http://msdn2.microsoft.com/en-us/library/F56E8C35-949A-4DEE-973F-CF24F6596036) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY  
-[PSS_HANDLE_INFORMATION](http://msdn2.microsoft.com/en-us/library/77192849-D919-4947-9BFF-343C166C5A51) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_HANDLE_INFORMATION  
-[PSS_HANDLE_TRACE_INFORMATION](http://msdn2.microsoft.com/en-us/library/0877DF1F-044C-48F2-9BCC-938EBD6D46EE) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_HANDLE_TRACE_INFORMATION  
-[PSS_PERFORMANCE_COUNTERS](http://msdn2.microsoft.com/en-us/library/298C1FC8-D19D-4DB3-84AA-3870D06B16A1) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_PERFORMANCE_COUNTERS  
-[PSS_PROCESS_INFORMATION](http://msdn2.microsoft.com/en-us/library/D629FA42-B501-4A0E-9B53-6D70E580B687) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_PROCESS_INFORMATION  
-[PSS_THREAD_ENTRY](http://msdn2.microsoft.com/en-us/library/99C89DBB-8C12-482E-B33D-AE59C37662CF) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_THREAD_ENTRY  
-[PSS_THREAD_INFORMATION](http://msdn2.microsoft.com/en-us/library/68BC42FD-9A30-462F-AFB1-DF9587C50F45) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_THREAD_INFORMATION  
-[PSS_VA_CLONE_INFORMATION](http://msdn2.microsoft.com/en-us/library/F93D61B0-EDB2-4560-A69F-CF839EC98B53) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_VA_CLONE_INFORMATION  
-[PSS_VA_SPACE_ENTRY](http://msdn2.microsoft.com/en-us/library/69B8F6A3-76DF-421B-B89B-73BA3254F897) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_VA_SPACE_ENTRY  
-[PSS_VA_SPACE_INFORMATION](http://msdn2.microsoft.com/en-us/library/F38FF7EB-DDC5-4692-8F57-8D633193D891) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_VA_SPACE_INFORMATION  
-[PTP_CALLBACK_ENVIRON](https://www.google.com/search?num=5&q=PTP_CALLBACK_ENVIRON+site%3Amicrosoft.com) | threadpoolapiset.h | Vanara.PInvoke.Kernel32+PTP_CALLBACK_ENVIRON  
-[PTP_CALLBACK_INSTANCE](https://www.google.com/search?num=5&q=PTP_CALLBACK_INSTANCE+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PTP_CALLBACK_INSTANCE  
-[PTP_CLEANUP_GROUP](https://www.google.com/search?num=5&q=PTP_CLEANUP_GROUP+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PTP_CLEANUP_GROUP  
-[PTP_IO](https://www.google.com/search?num=5&q=PTP_IO+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PTP_IO  
-[PTP_POOL](https://www.google.com/search?num=5&q=PTP_POOL+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PTP_POOL  
-[PTP_TIMER](https://www.google.com/search?num=5&q=PTP_TIMER+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PTP_TIMER  
-[PTP_WAIT](https://www.google.com/search?num=5&q=PTP_WAIT+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PTP_WAIT  
-[PTP_WORK](https://www.google.com/search?num=5&q=PTP_WORK+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PTP_WORK  
-[PUMS_COMPLETION_LIST](https://www.google.com/search?num=5&q=PUMS_COMPLETION_LIST+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PUMS_COMPLETION_LIST  
-[PUMS_CONTEXT](https://www.google.com/search?num=5&q=PUMS_CONTEXT+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PUMS_CONTEXT  
-[REASON_CONTEXT](http://msdn2.microsoft.com/en-us/library/dd405536) | MinWinBase.h | Vanara.PInvoke.Kernel32+REASON_CONTEXT  
-[REGION_DATA](https://www.google.com/search?num=5&q=REGION_DATA+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PROCESS_HEAP_ENTRY+BLOCK_REGION_UNION+REGION_DATA  
-[RIP_INFO](http://msdn2.microsoft.com/en-us/library/ms680587) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+RIP_INFO  
-[Section](https://www.google.com/search?num=5&q=Section+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+Section  
-[SECURITY_CAPABILITIES](http://msdn2.microsoft.com/en-us/library/1A865519-E042-4871-886C-9AA64D71CCE4) | winnt.h | Vanara.PInvoke.Kernel32+SECURITY_CAPABILITIES  
-[Semaphore](https://www.google.com/search?num=5&q=Semaphore+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+Semaphore  
-[Server](https://www.google.com/search?num=5&q=Server+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+FILE_REMOTE_PROTOCOL_INFO+Server  
-[Share](https://www.google.com/search?num=5&q=Share+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+FILE_REMOTE_PROTOCOL_INFO+Share  
-[SLIST_ENTRY](https://www.google.com/search?num=5&q=SLIST_ENTRY+site%3Amicrosoft.com) | winnt.h | Vanara.PInvoke.Kernel32+SLIST_ENTRY  
-[SLIST_HEADER](https://www.google.com/search?num=5&q=SLIST_HEADER+site%3Amicrosoft.com) | winnt.h | Vanara.PInvoke.Kernel32+SLIST_HEADER  
-[SMALL_RECT](https://www.google.com/search?num=5&q=SMALL_RECT+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+SMALL_RECT  
-[Smb2](https://www.google.com/search?num=5&q=Smb2+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+FILE_REMOTE_PROTOCOL_INFO+Smb2  
-[SRWLOCK](https://www.google.com/search?num=5&q=SRWLOCK+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+SRWLOCK  
-[STARTUPINFO](http://msdn2.microsoft.com/en-us/library/cf4b795c-52c1-4573-8328-99ee13f68bb3) | processthreadsapi.h | Vanara.PInvoke.Kernel32+STARTUPINFO  
-[STARTUPINFOEX](http://msdn2.microsoft.com/en-us/library/61203f57-292d-4ea1-88f4-a3b05012d7a3) | winbase.h | Vanara.PInvoke.Kernel32+STARTUPINFOEX  
-[StreamFinished](https://www.google.com/search?num=5&q=StreamFinished+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+COPYFILE2_MESSAGE+StreamFinished  
-[StreamStarted](https://www.google.com/search?num=5&q=StreamStarted+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+COPYFILE2_MESSAGE+StreamStarted  
-[SYNCHRONIZATION_BARRIER](https://www.google.com/search?num=5&q=SYNCHRONIZATION_BARRIER+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+SYNCHRONIZATION_BARRIER  
-[SYSTEM_CPU_SET_INFORMATION](http://msdn2.microsoft.com/en-us/library/mt186429) | Winnt.h | Vanara.PInvoke.Kernel32+SYSTEM_CPU_SET_INFORMATION  
-[SYSTEM_INFO](http://msdn2.microsoft.com/en-us/library/ms724958) | Winbase.h | Vanara.PInvoke.Kernel32+SYSTEM_INFO  
-[SYSTEM_LOGICAL_PROCESSOR_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms686694) | WinNT.h | Vanara.PInvoke.Kernel32+SYSTEM_LOGICAL_PROCESSOR_INFORMATION  
-[SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX](http://msdn2.microsoft.com/en-us/library/6ff16cda-c1dc-4d5c-ac60-756653cd6b07) | winnt.h | Vanara.PInvoke.Kernel32+SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX  
-[SYSTEM_POWER_STATUS](http://msdn2.microsoft.com/en-us/library/aa373232) | Winbase.h | Vanara.PInvoke.Kernel32+SYSTEM_POWER_STATUS  
-[SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION](https://www.google.com/search?num=5&q=SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION+site%3Amicrosoft.com) | WinNT.h | Vanara.PInvoke.Kernel32+SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION  
-[TAPE_GET_DRIVE_PARAMETERS](http://msdn2.microsoft.com/en-us/library/aa362562) | Winnt.h | Vanara.PInvoke.Kernel32+TAPE_GET_DRIVE_PARAMETERS  
-[TAPE_GET_MEDIA_PARAMETERS](http://msdn2.microsoft.com/en-us/library/aa362564) | Winnt.h | Vanara.PInvoke.Kernel32+TAPE_GET_MEDIA_PARAMETERS  
-[Thread](https://www.google.com/search?num=5&q=Thread+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+Thread  
-[THREAD_POWER_THROTTLING_STATE](http://msdn2.microsoft.com/en-us/library/mt804325) | Processthreadsapi.h | Vanara.PInvoke.Kernel32+THREAD_POWER_THROTTLING_STATE  
-[THREADENTRY32](http://msdn2.microsoft.com/en-us/library/923feca1-8807-4752-8a5a-79075688aabd) | tlhelp32.h | Vanara.PInvoke.Kernel32+THREADENTRY32  
-[TIME_ZONE_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms725481) | Winbase.h | Vanara.PInvoke.Kernel32+TIME_ZONE_INFORMATION  
-[TimerQueueHandle](https://www.google.com/search?num=5&q=TimerQueueHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+TimerQueueHandle  
-[TimerQueueTimerHandle](https://www.google.com/search?num=5&q=TimerQueueTimerHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+TimerQueueTimerHandle  
-[TP_POOL_STACK_INFORMATION](https://www.google.com/search?num=5&q=TP_POOL_STACK_INFORMATION+site%3Amicrosoft.com) | threadpoolapiset.h | Vanara.PInvoke.Kernel32+TP_POOL_STACK_INFORMATION  
-[UMS_CREATE_THREAD_ATTRIBUTES](http://msdn2.microsoft.com/en-us/library/5d3e1721-c439-49bb-9cb6-8386fa8aaf50) | winnt.h | Vanara.PInvoke.Kernel32+UMS_CREATE_THREAD_ATTRIBUTES  
-[UMS_SCHEDULER_STARTUP_INFO](http://msdn2.microsoft.com/en-us/library/e3f7b1b7-d2b8-432d-bce7-3633292e855b) | winbase.h | Vanara.PInvoke.Kernel32+UMS_SCHEDULER_STARTUP_INFO  
-[UMS_SYSTEM_THREAD_INFORMATION](http://msdn2.microsoft.com/en-us/library/eecdc592-5046-47c3-a4c6-ecb10899db3c) | winbase.h | Vanara.PInvoke.Kernel32+UMS_SYSTEM_THREAD_INFORMATION  
-[Union](https://www.google.com/search?num=5&q=Union+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+COPYFILE2_MESSAGE+Union  
-[UNION](https://www.google.com/search?num=5&q=UNION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+UNION  
-[UNLOAD_DLL_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms681403) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+UNLOAD_DLL_DEBUG_INFO  
-[UNWIND_HISTORY_TABLE](https://www.google.com/search?num=5&q=UNWIND_HISTORY_TABLE+site%3Amicrosoft.com) | winnt.h | Vanara.PInvoke.Kernel32+UNWIND_HISTORY_TABLE  
-[UNWIND_HISTORY_TABLE_ENTRY](https://www.google.com/search?num=5&q=UNWIND_HISTORY_TABLE_ENTRY+site%3Amicrosoft.com) | winnt.h | Vanara.PInvoke.Kernel32+UNWIND_HISTORY_TABLE_ENTRY  
-[WIN32_FILE_ATTRIBUTE_DATA](http://msdn2.microsoft.com/en-us/library/aa365739) | WinBase.h | Vanara.PInvoke.Kernel32+WIN32_FILE_ATTRIBUTE_DATA  
-[WIN32_FIND_STREAM_DATA](http://msdn2.microsoft.com/en-us/library/aa365741) | WinBase.h | Vanara.PInvoke.Kernel32+WIN32_FIND_STREAM_DATA  
-[WIN32_MEMORY_RANGE_ENTRY](http://msdn2.microsoft.com/en-us/library/hh780544) | WinBase.h | Vanara.PInvoke.Kernel32+WIN32_MEMORY_RANGE_ENTRY  
-[WINDOW_BUFFER_SIZE_RECORD](https://www.google.com/search?num=5&q=WINDOW_BUFFER_SIZE_RECORD+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+WINDOW_BUFFER_SIZE_RECORD  
-[WOW64_CONTEXT](http://msdn2.microsoft.com/en-us/library/b27205a2-2c33-4f45-8948-9919bcd2355a) | winnt.h | Vanara.PInvoke.Kernel32+WOW64_CONTEXT  
-[WOW64_FLOATING_SAVE_AREA](http://msdn2.microsoft.com/en-us/library/56fba1c1-432b-40a8-b882-e4c637c03d5d) | winnt.h | Vanara.PInvoke.Kernel32+WOW64_FLOATING_SAVE_AREA  
-[WOW64_LDT_ENTRY](http://msdn2.microsoft.com/en-us/library/a571cd2f-0873-4ad5-bcb8-c0da2d47a820) | winnt.h | Vanara.PInvoke.Kernel32+WOW64_LDT_ENTRY  
-[XSAVE_FORMAT64](https://www.google.com/search?num=5&q=XSAVE_FORMAT64+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+CONTEXT64+XSAVE_FORMAT64  
+[ACTCTX](http://msdn2.microsoft.com/en-us/library/aa374149) | Winbase.h | [Vanara.PInvoke.Kernel32.ACTCTX](https://github.com/dahall/Vanara/search?l=C%23&q=ACTCTX)  
+[ACTCTX_SECTION_KEYED_DATA](http://msdn2.microsoft.com/en-us/library/aa374148) | Winbase.h | [Vanara.PInvoke.Kernel32.ACTCTX_SECTION_KEYED_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=ACTCTX_SECTION_KEYED_DATA)  
+[ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION](http://msdn2.microsoft.com/en-us/library/b093cc6a-55ea-49bf-904d-2b43517f9b02) | winnt.h | [Vanara.PInvoke.Kernel32.ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION)  
+[ACTIVATION_CONTEXT_BASIC_INFORMATION](https://www.google.com/search?num=5&q=ACTIVATION_CONTEXT_BASIC_INFORMATION+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.ACTIVATION_CONTEXT_BASIC_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=ACTIVATION_CONTEXT_BASIC_INFORMATION)  
+[ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION](https://www.google.com/search?num=5&q=ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION)  
+[ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION_UNMGD](http://msdn2.microsoft.com/en-us/library/d8c1ef4a-8e64-45bd-a185-b4af7932a0d2) | winnt.h | [Vanara.PInvoke.Kernel32.ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION_UNMGD](https://github.com/dahall/Vanara/search?l=C%23&q=ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION_UNMGD)  
+[ACTIVATION_CONTEXT_DETAILED_INFORMATION](http://msdn2.microsoft.com/en-us/library/58e4acfe-d5c8-45ae-bf32-469229ffc836) | winnt.h | [Vanara.PInvoke.Kernel32.ACTIVATION_CONTEXT_DETAILED_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=ACTIVATION_CONTEXT_DETAILED_INFORMATION)  
+[ACTIVATION_CONTEXT_QUERY_INDEX](http://msdn2.microsoft.com/en-us/library/eb15895c-07c9-4b68-83ef-2f2b8e3b271c) | winnt.h | [Vanara.PInvoke.Kernel32.ACTIVATION_CONTEXT_QUERY_INDEX](https://github.com/dahall/Vanara/search?l=C%23&q=ACTIVATION_CONTEXT_QUERY_INDEX)  
+[ACTIVATION_CONTEXT_RUN_LEVEL_INFORMATION](http://msdn2.microsoft.com/en-us/library/1c4e7333-6982-4d58-ab2a-d1993c59d0ef) | winnt.h | [Vanara.PInvoke.Kernel32.ACTIVATION_CONTEXT_RUN_LEVEL_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=ACTIVATION_CONTEXT_RUN_LEVEL_INFORMATION)  
+[APP_MEMORY_INFORMATION](http://msdn2.microsoft.com/en-us/library/mt767995) | WinBase.h | [Vanara.PInvoke.Kernel32.APP_MEMORY_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=APP_MEMORY_INFORMATION)  
+[ASSEMBLY_FILE_DETAILED_INFORMATION](http://msdn2.microsoft.com/en-us/library/7f1e5155-a6c1-4b6a-be47-37fab337186c) | winnt.h | [Vanara.PInvoke.Kernel32.ASSEMBLY_FILE_DETAILED_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=ASSEMBLY_FILE_DETAILED_INFORMATION)  
+[ATOM](https://www.google.com/search?num=5&q=ATOM+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.ATOM](https://github.com/dahall/Vanara/search?l=C%23&q=ATOM)  
+[BLOCK_DATA](https://www.google.com/search?num=5&q=BLOCK_DATA+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PROCESS_HEAP_ENTRY.BLOCK_REGION_UNION.BLOCK_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=BLOCK_DATA)  
+[BLOCK_REGION_UNION](https://www.google.com/search?num=5&q=BLOCK_REGION_UNION+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PROCESS_HEAP_ENTRY.BLOCK_REGION_UNION](https://github.com/dahall/Vanara/search?l=C%23&q=BLOCK_REGION_UNION)  
+[BoundaryDescriptorHandle](https://www.google.com/search?num=5&q=BoundaryDescriptorHandle+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.BoundaryDescriptorHandle](https://github.com/dahall/Vanara/search?l=C%23&q=BoundaryDescriptorHandle)  
+[BY_HANDLE_FILE_INFORMATION](http://msdn2.microsoft.com/en-us/library/aa363788) | FileAPI.h | [Vanara.PInvoke.Kernel32.BY_HANDLE_FILE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=BY_HANDLE_FILE_INFORMATION)  
+[CACHE_DESCRIPTOR](http://msdn2.microsoft.com/en-us/library/ms681979) | WinNT.h | [Vanara.PInvoke.Kernel32.CACHE_DESCRIPTOR](https://github.com/dahall/Vanara/search?l=C%23&q=CACHE_DESCRIPTOR)  
+[CACHE_RELATIONSHIP](http://msdn2.microsoft.com/en-us/library/f8fe521b-02d6-4c58-8ef8-653280add111) | winnt.h | [Vanara.PInvoke.Kernel32.CACHE_RELATIONSHIP](https://github.com/dahall/Vanara/search?l=C%23&q=CACHE_RELATIONSHIP)  
+[CALDATETIME](http://msdn2.microsoft.com/en-us/library/a714ff32-2b1f-4256-931e-324d64daf2ac) |  | [Vanara.PInvoke.Kernel32.CALDATETIME](https://github.com/dahall/Vanara/search?l=C%23&q=CALDATETIME)  
+[CFG_CALL_TARGET_INFO](http://msdn2.microsoft.com/en-us/library/mt219054) | Ntmmapi.h | [Vanara.PInvoke.Kernel32.CFG_CALL_TARGET_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CFG_CALL_TARGET_INFO)  
+[CHAR_INFO](https://www.google.com/search?num=5&q=CHAR_INFO+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.CHAR_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CHAR_INFO)  
+[ChunkFinished](https://www.google.com/search?num=5&q=ChunkFinished+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.COPYFILE2_MESSAGE.ChunkFinished](https://github.com/dahall/Vanara/search?l=C%23&q=ChunkFinished)  
+[ChunkStarted](https://www.google.com/search?num=5&q=ChunkStarted+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.COPYFILE2_MESSAGE.ChunkStarted](https://github.com/dahall/Vanara/search?l=C%23&q=ChunkStarted)  
+[COMMCONFIG](http://msdn2.microsoft.com/en-us/library/aa363188) | Winbase.h | [Vanara.PInvoke.Kernel32.COMMCONFIG](https://github.com/dahall/Vanara/search?l=C%23&q=COMMCONFIG)  
+[COMMPROP](http://msdn2.microsoft.com/en-us/library/aa363189) | WinBase.h | [Vanara.PInvoke.Kernel32.COMMPROP](https://github.com/dahall/Vanara/search?l=C%23&q=COMMPROP)  
+[COMMTIMEOUTS](http://msdn2.microsoft.com/en-us/library/aa363190) | Winbase.h | [Vanara.PInvoke.Kernel32.COMMTIMEOUTS](https://github.com/dahall/Vanara/search?l=C%23&q=COMMTIMEOUTS)  
+[COMPATIBILITY_CONTEXT_ELEMENT](http://msdn2.microsoft.com/en-us/library/3e654f44-43f6-4282-b277-14ed6e25abf2) | winnt.h | [Vanara.PInvoke.Kernel32.COMPATIBILITY_CONTEXT_ELEMENT](https://github.com/dahall/Vanara/search?l=C%23&q=COMPATIBILITY_CONTEXT_ELEMENT)  
+[COMSTAT](http://msdn2.microsoft.com/en-us/library/aa363200) | Winbase.h | [Vanara.PInvoke.Kernel32.COMSTAT](https://github.com/dahall/Vanara/search?l=C%23&q=COMSTAT)  
+[CONDITION_VARIABLE](https://www.google.com/search?num=5&q=CONDITION_VARIABLE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.CONDITION_VARIABLE](https://github.com/dahall/Vanara/search?l=C%23&q=CONDITION_VARIABLE)  
+[CONSOLE_CURSOR_INFO](https://www.google.com/search?num=5&q=CONSOLE_CURSOR_INFO+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.CONSOLE_CURSOR_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_CURSOR_INFO)  
+[CONSOLE_FONT_INFO](https://www.google.com/search?num=5&q=CONSOLE_FONT_INFO+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.CONSOLE_FONT_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_FONT_INFO)  
+[CONSOLE_FONT_INFOEX](https://www.google.com/search?num=5&q=CONSOLE_FONT_INFOEX+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.CONSOLE_FONT_INFOEX](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_FONT_INFOEX)  
+[CONSOLE_HISTORY_INFO](https://www.google.com/search?num=5&q=CONSOLE_HISTORY_INFO+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.CONSOLE_HISTORY_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_HISTORY_INFO)  
+[CONSOLE_READCONSOLE_CONTROL](http://msdn2.microsoft.com/en-us/library/6a8451a6-d692-43af-88c4-972c4dc5e07c) | ConsoleApi.h | [Vanara.PInvoke.Kernel32.CONSOLE_READCONSOLE_CONTROL](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_READCONSOLE_CONTROL)  
+[CONSOLE_SCREEN_BUFFER_INFO](https://www.google.com/search?num=5&q=CONSOLE_SCREEN_BUFFER_INFO+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.CONSOLE_SCREEN_BUFFER_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_SCREEN_BUFFER_INFO)  
+[CONSOLE_SCREEN_BUFFER_INFOEX](https://www.google.com/search?num=5&q=CONSOLE_SCREEN_BUFFER_INFOEX+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.CONSOLE_SCREEN_BUFFER_INFOEX](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_SCREEN_BUFFER_INFOEX)  
+[CONSOLE_SELECTION_INFO](https://www.google.com/search?num=5&q=CONSOLE_SELECTION_INFO+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.CONSOLE_SELECTION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_SELECTION_INFO)  
+[CONTEXT](https://www.google.com/search?num=5&q=CONTEXT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=CONTEXT)  
+[CONTEXT64](https://www.google.com/search?num=5&q=CONTEXT64+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.CONTEXT64](https://github.com/dahall/Vanara/search?l=C%23&q=CONTEXT64)  
+[COORD](https://www.google.com/search?num=5&q=COORD+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.COORD](https://github.com/dahall/Vanara/search?l=C%23&q=COORD)  
+[COPYFILE2_EXTENDED_PARAMETERS](http://msdn2.microsoft.com/en-us/library/a8da62e5-bc49-4aff-afaa-e774393b7120) | winbase.h | [Vanara.PInvoke.Kernel32.COPYFILE2_EXTENDED_PARAMETERS](https://github.com/dahall/Vanara/search?l=C%23&q=COPYFILE2_EXTENDED_PARAMETERS)  
+[COPYFILE2_MESSAGE](http://msdn2.microsoft.com/en-us/library/ab841bee-90a0-4beb-99d3-764e608c3872) | winbase.h | [Vanara.PInvoke.Kernel32.COPYFILE2_MESSAGE](https://github.com/dahall/Vanara/search?l=C%23&q=COPYFILE2_MESSAGE)  
+[CPINFO](http://msdn2.microsoft.com/en-us/library/dd317780) | Winnls.h | [Vanara.PInvoke.Kernel32.CPINFO](https://github.com/dahall/Vanara/search?l=C%23&q=CPINFO)  
+[CPINFOEX](http://msdn2.microsoft.com/en-us/library/9639bb11-477e-45ee-b9fb-d5d099925e00) | winnls.h | [Vanara.PInvoke.Kernel32.CPINFOEX](https://github.com/dahall/Vanara/search?l=C%23&q=CPINFOEX)  
+[CPU_RATE_CONTROL_UNION](https://www.google.com/search?num=5&q=CPU_RATE_CONTROL_UNION+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.JOBOBJECT_CPU_RATE_CONTROL_INFORMATION.CPU_RATE_CONTROL_UNION](https://github.com/dahall/Vanara/search?l=C%23&q=CPU_RATE_CONTROL_UNION)  
+[CPU_SET](https://www.google.com/search?num=5&q=CPU_SET+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.SYSTEM_CPU_SET_INFORMATION.CPU_SET](https://github.com/dahall/Vanara/search?l=C%23&q=CPU_SET)  
+[CREATE_PROCESS_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679286) | WinBase.h | [Vanara.PInvoke.Kernel32.DEBUG_EVENT.CREATE_PROCESS_DEBUG_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CREATE_PROCESS_DEBUG_INFO)  
+[CREATE_THREAD_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679287) | WinBase.h | [Vanara.PInvoke.Kernel32.DEBUG_EVENT.CREATE_THREAD_DEBUG_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CREATE_THREAD_DEBUG_INFO)  
+[CREATEFILE2_EXTENDED_PARAMETERS](http://msdn2.microsoft.com/en-us/library/hh449426) | FileAPI.h | [Vanara.PInvoke.Kernel32.CREATEFILE2_EXTENDED_PARAMETERS](https://github.com/dahall/Vanara/search?l=C%23&q=CREATEFILE2_EXTENDED_PARAMETERS)  
+[CRITICAL_SECTION](https://www.google.com/search?num=5&q=CRITICAL_SECTION+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.CRITICAL_SECTION](https://github.com/dahall/Vanara/search?l=C%23&q=CRITICAL_SECTION)  
+[CURRENCYFMT](http://msdn2.microsoft.com/en-us/library/dd317784) | Winnls.h | [Vanara.PInvoke.Kernel32.CURRENCYFMT](https://github.com/dahall/Vanara/search?l=C%23&q=CURRENCYFMT)  
+[DCB](http://msdn2.microsoft.com/en-us/library/aa363214) | Winbase.h | [Vanara.PInvoke.Kernel32.DCB](https://github.com/dahall/Vanara/search?l=C%23&q=DCB)  
+[DEBUG_EVENT](http://msdn2.microsoft.com/en-us/library/ms679308) | WinBase.h | [Vanara.PInvoke.Kernel32.DEBUG_EVENT](https://github.com/dahall/Vanara/search?l=C%23&q=DEBUG_EVENT)  
+[DETAIL](https://www.google.com/search?num=5&q=DETAIL+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.REASON_CONTEXT.DETAIL](https://github.com/dahall/Vanara/search?l=C%23&q=DETAIL)  
+[DUMMYSTRUCTNAME](https://www.google.com/search?num=5&q=DUMMYSTRUCTNAME+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PACKAGE_VERSION.DUMMYSTRUCTNAME](https://github.com/dahall/Vanara/search?l=C%23&q=DUMMYSTRUCTNAME)  
+[DUMMYUNIONNAME](https://www.google.com/search?num=5&q=DUMMYUNIONNAME+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.FILE_ID_DESCRIPTOR.DUMMYUNIONNAME](https://github.com/dahall/Vanara/search?l=C%23&q=DUMMYUNIONNAME)  
+[DYNAMIC_TIME_ZONE_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms724253) | WinBase.h | [Vanara.PInvoke.Kernel32.DYNAMIC_TIME_ZONE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=DYNAMIC_TIME_ZONE_INFORMATION)  
+[ENCLAVE_CREATE_INFO_SGX](http://msdn2.microsoft.com/en-us/library/mt592867) | Winnt.h | [Vanara.PInvoke.Kernel32.ENCLAVE_CREATE_INFO_SGX](https://github.com/dahall/Vanara/search?l=C%23&q=ENCLAVE_CREATE_INFO_SGX)  
+[ENCLAVE_CREATE_INFO_VBS](http://msdn2.microsoft.com/en-us/library/mt844238) | Winnt.h | [Vanara.PInvoke.Kernel32.ENCLAVE_CREATE_INFO_VBS](https://github.com/dahall/Vanara/search?l=C%23&q=ENCLAVE_CREATE_INFO_VBS)  
+[ENCLAVE_INIT_INFO_SGX](http://msdn2.microsoft.com/en-us/library/mt592868) | Winnt.h | [Vanara.PInvoke.Kernel32.ENCLAVE_INIT_INFO_SGX](https://github.com/dahall/Vanara/search?l=C%23&q=ENCLAVE_INIT_INFO_SGX)  
+[ENCLAVE_INIT_INFO_VBS](http://msdn2.microsoft.com/en-us/library/mt844241) | Winnt.h | [Vanara.PInvoke.Kernel32.ENCLAVE_INIT_INFO_VBS](https://github.com/dahall/Vanara/search?l=C%23&q=ENCLAVE_INIT_INFO_VBS)  
+[ENUM_PAGE_FILE_INFORMATION](http://msdn2.microsoft.com/en-us/library/020f3be8-f624-4788-8079-0f7679c9bef0) | psapi.h | [Vanara.PInvoke.Kernel32.ENUM_PAGE_FILE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=ENUM_PAGE_FILE_INFORMATION)  
+[Error](https://www.google.com/search?num=5&q=Error+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.COPYFILE2_MESSAGE.Error](https://github.com/dahall/Vanara/search?l=C%23&q=Error)  
+[Event](https://www.google.com/search?num=5&q=Event+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PSS_HANDLE_ENTRY.Event](https://github.com/dahall/Vanara/search?l=C%23&q=Event)  
+[EXCEPTION_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679326) | WinBase.h | [Vanara.PInvoke.Kernel32.DEBUG_EVENT.EXCEPTION_DEBUG_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=EXCEPTION_DEBUG_INFO)  
+[EXCEPTION_INFO](http://msdn2.microsoft.com/en-us/library/ms679308) | WinBase.h | [Vanara.PInvoke.Kernel32.DEBUG_EVENT.EXCEPTION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=EXCEPTION_INFO)  
+[EXCEPTION_POINTERS](http://msdn2.microsoft.com/en-us/library/ms679331) | WinNT.h | [Vanara.PInvoke.Kernel32.EXCEPTION_POINTERS](https://github.com/dahall/Vanara/search?l=C%23&q=EXCEPTION_POINTERS)  
+[EXCEPTION_RECORD](http://msdn2.microsoft.com/en-us/library/aa363082) | WinNT.h | [Vanara.PInvoke.Kernel32.EXCEPTION_RECORD](https://github.com/dahall/Vanara/search?l=C%23&q=EXCEPTION_RECORD)  
+[EXIT_PROCESS_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679334) | WinBase.h | [Vanara.PInvoke.Kernel32.DEBUG_EVENT.EXIT_PROCESS_DEBUG_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=EXIT_PROCESS_DEBUG_INFO)  
+[EXIT_THREAD_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679335) | WinBase.h | [Vanara.PInvoke.Kernel32.DEBUG_EVENT.EXIT_THREAD_DEBUG_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=EXIT_THREAD_DEBUG_INFO)  
+[FILE_ALIGNMENT_INFO](http://msdn2.microsoft.com/en-us/library/a6d3cba0-d59b-45c2-a763-ecdde5b36348) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_ALIGNMENT_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_ALIGNMENT_INFO)  
+[FILE_ALLOCATION_INFO](http://msdn2.microsoft.com/en-us/library/909f1747-0099-407e-89a7-bec6331887da) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_ALLOCATION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_ALLOCATION_INFO)  
+[FILE_ATTRIBUTE_TAG_INFO](http://msdn2.microsoft.com/en-us/library/4a2467a2-c22a-4ee6-a40e-5603ea381adc) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_ATTRIBUTE_TAG_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_ATTRIBUTE_TAG_INFO)  
+[FILE_BASIC_INFO](http://msdn2.microsoft.com/en-us/library/7765e430-cf6b-4ccf-b5e7-9fb6e15ca6d6) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_BASIC_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_BASIC_INFO)  
+[FILE_COMPRESSION_INFO](http://msdn2.microsoft.com/en-us/library/2f64e7cc-e23c-4e3d-8e17-0e8e38f1ea24) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_COMPRESSION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_COMPRESSION_INFO)  
+[FILE_DISPOSITION_INFO](http://msdn2.microsoft.com/en-us/library/07095f62-323a-463a-a33e-7e4ca9adcb69) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_DISPOSITION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_DISPOSITION_INFO)  
+[FILE_END_OF_FILE_INFO](http://msdn2.microsoft.com/en-us/library/77500ae7-654a-4b34-aaee-5c3844303271) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_END_OF_FILE_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_END_OF_FILE_INFO)  
+[FILE_FULL_DIR_INFO](http://msdn2.microsoft.com/en-us/library/606726e7-fd6b-4419-bd37-7282283007f8) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_FULL_DIR_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_FULL_DIR_INFO)  
+[FILE_ID_128](http://msdn2.microsoft.com/en-us/library/254ea6a9-e1dd-4b97-91f7-2693065c4bb8) | winnt.h | [Vanara.PInvoke.Kernel32.FILE_ID_128](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_ID_128)  
+[FILE_ID_BOTH_DIR_INFO](http://msdn2.microsoft.com/en-us/library/d7011ea4-e70a-4c03-a715-6144ce0c7029) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_ID_BOTH_DIR_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_ID_BOTH_DIR_INFO)  
+[FILE_ID_DESCRIPTOR](http://msdn2.microsoft.com/en-us/library/9092a701-3b47-4c4c-8221-54fa3220d322) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_ID_DESCRIPTOR](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_ID_DESCRIPTOR)  
+[FILE_ID_EXTD_DIR_INFO](http://msdn2.microsoft.com/en-us/library/68f222c4-beb6-4be1-a31a-c5fbebbf76f7) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_ID_EXTD_DIR_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_ID_EXTD_DIR_INFO)  
+[FILE_ID_INFO](http://msdn2.microsoft.com/en-us/library/e2774e29-1a90-44d6-9001-f73a98be6624) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_ID_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_ID_INFO)  
+[FILE_IO_PRIORITY_HINT_INFO](http://msdn2.microsoft.com/en-us/library/a142b8fd-b71c-4449-a8c6-fb23715d1576) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_IO_PRIORITY_HINT_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_IO_PRIORITY_HINT_INFO)  
+[FILE_NAME_INFO](http://msdn2.microsoft.com/en-us/library/7ab98f41-b99e-4731-b803-921064a961c4) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_NAME_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_NAME_INFO)  
+[FILE_NOTIFY_EXTENDED_INFORMATION](http://msdn2.microsoft.com/en-us/library/4558F2E8-F515-4202-9CAA-FDAF20160F61) | winnt.h | [Vanara.PInvoke.Kernel32.FILE_NOTIFY_EXTENDED_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_NOTIFY_EXTENDED_INFORMATION)  
+[FILE_NOTIFY_INFORMATION](http://msdn2.microsoft.com/en-us/library/cb95352f-8a15-48d8-9150-e4bc395e0122) | winnt.h | [Vanara.PInvoke.Kernel32.FILE_NOTIFY_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_NOTIFY_INFORMATION)  
+[FILE_REMOTE_PROTOCOL_INFO](http://msdn2.microsoft.com/en-us/library/ddb555ad-0acb-4538-88ce-a871adfc21fc) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_REMOTE_PROTOCOL_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_REMOTE_PROTOCOL_INFO)  
+[FILE_RENAME_INFO](http://msdn2.microsoft.com/en-us/library/f4de0130-66fd-4847-bb6f-3f16fe17ca6e) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_RENAME_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_RENAME_INFO)  
+[FILE_STANDARD_INFO](http://msdn2.microsoft.com/en-us/library/da3187de-7de2-4307-a083-ae5fff6d8096) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_STANDARD_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_STANDARD_INFO)  
+[FILE_STORAGE_INFO](http://msdn2.microsoft.com/en-us/library/1aa9585d-9001-4d94-babe-a39c8dde2332) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_STORAGE_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_STORAGE_INFO)  
+[FILE_STREAM_INFO](http://msdn2.microsoft.com/en-us/library/36d1b0b3-bd6b-41e7-937a-4e8deef6f9da) | winbase.h | [Vanara.PInvoke.Kernel32.FILE_STREAM_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_STREAM_INFO)  
+[FILEMUIINFO](http://msdn2.microsoft.com/en-us/library/dd318039) | Winnls.h | [Vanara.PInvoke.Kernel32.FILEMUIINFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILEMUIINFO)  
+[FLOATING_SAVE_AREA](http://msdn2.microsoft.com/en-us/library/ms681671) | WinNT.h | [Vanara.PInvoke.Kernel32.CONTEXT.FLOATING_SAVE_AREA](https://github.com/dahall/Vanara/search?l=C%23&q=FLOATING_SAVE_AREA)  
+[FOCUS_EVENT_RECORD](https://www.google.com/search?num=5&q=FOCUS_EVENT_RECORD+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.FOCUS_EVENT_RECORD](https://github.com/dahall/Vanara/search?l=C%23&q=FOCUS_EVENT_RECORD)  
+[GAMING_DEVICE_MODEL_INFORMATION](http://msdn2.microsoft.com/en-us/library/0D5A6358-0F82-4414-BD17-BDE22EDBBB15) | gamingdeviceinformation.h | [Vanara.PInvoke.Kernel32.GAMING_DEVICE_MODEL_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=GAMING_DEVICE_MODEL_INFORMATION)  
+[GenericReserved_](https://www.google.com/search?num=5&q=GenericReserved_+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.FILE_REMOTE_PROTOCOL_INFO.GenericReserved_](https://github.com/dahall/Vanara/search?l=C%23&q=GenericReserved_)  
+[GROUP_AFFINITY](http://msdn2.microsoft.com/en-us/library/dd405500) | WinNT.h | [Vanara.PInvoke.Kernel32.GROUP_AFFINITY](https://github.com/dahall/Vanara/search?l=C%23&q=GROUP_AFFINITY)  
+[GROUP_RELATIONSHIP](http://msdn2.microsoft.com/en-us/library/3529ddef-04c5-4573-877d-c225da684e38) | winnt.h | [Vanara.PInvoke.Kernel32.GROUP_RELATIONSHIP](https://github.com/dahall/Vanara/search?l=C%23&q=GROUP_RELATIONSHIP)  
+[HACTCTX](https://www.google.com/search?num=5&q=HACTCTX+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HACTCTX](https://github.com/dahall/Vanara/search?l=C%23&q=HACTCTX)  
+[HARDWARE_COUNTER_DATA](http://msdn2.microsoft.com/en-us/library/dd796394) | Winnt.h | [Vanara.PInvoke.Kernel32.HARDWARE_COUNTER_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=HARDWARE_COUNTER_DATA)  
+[HEAP_OPTIMIZE_RESOURCES_INFORMATION](http://msdn2.microsoft.com/en-us/library/c801a08a-0b1a-4ffe-8ec7-c3ea8d913ec8) | winnt.h | [Vanara.PInvoke.Kernel32.HEAP_OPTIMIZE_RESOURCES_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=HEAP_OPTIMIZE_RESOURCES_INFORMATION)  
+[HEAP_SUMMARY](https://www.google.com/search?num=5&q=HEAP_SUMMARY+site%3Amicrosoft.com) | winnt.h | [Vanara.PInvoke.Kernel32.HEAP_SUMMARY](https://github.com/dahall/Vanara/search?l=C%23&q=HEAP_SUMMARY)  
+[HEAPENTRY32](http://msdn2.microsoft.com/en-us/library/c5f1dc66-d44f-4491-b0b7-961b163d0f1f) | tlhelp32.h | [Vanara.PInvoke.Kernel32.HEAPENTRY32](https://github.com/dahall/Vanara/search?l=C%23&q=HEAPENTRY32)  
+[HEAPLIST32](http://msdn2.microsoft.com/en-us/library/61e01d23-9f15-44c5-9f6d-45df4809ccad) | tlhelp32.h | [Vanara.PInvoke.Kernel32.HEAPLIST32](https://github.com/dahall/Vanara/search?l=C%23&q=HEAPLIST32)  
+[HGLOBAL](https://www.google.com/search?num=5&q=HGLOBAL+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HGLOBAL](https://github.com/dahall/Vanara/search?l=C%23&q=HGLOBAL)  
+[HHEAP](https://www.google.com/search?num=5&q=HHEAP+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HHEAP](https://github.com/dahall/Vanara/search?l=C%23&q=HHEAP)  
+[HJOB](https://www.google.com/search?num=5&q=HJOB+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HJOB](https://github.com/dahall/Vanara/search?l=C%23&q=HJOB)  
+[HLOCAL](https://www.google.com/search?num=5&q=HLOCAL+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HLOCAL](https://github.com/dahall/Vanara/search?l=C%23&q=HLOCAL)  
+[HPIPE](https://www.google.com/search?num=5&q=HPIPE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HPIPE](https://github.com/dahall/Vanara/search?l=C%23&q=HPIPE)  
+[HPSS](https://www.google.com/search?num=5&q=HPSS+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HPSS](https://github.com/dahall/Vanara/search?l=C%23&q=HPSS)  
+[HPSSWALK](https://www.google.com/search?num=5&q=HPSSWALK+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HPSSWALK](https://github.com/dahall/Vanara/search?l=C%23&q=HPSSWALK)  
+[HRSRC](https://www.google.com/search?num=5&q=HRSRC+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HRSRC](https://github.com/dahall/Vanara/search?l=C%23&q=HRSRC)  
+[HRSRCDATA](https://www.google.com/search?num=5&q=HRSRCDATA+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HRSRCDATA](https://github.com/dahall/Vanara/search?l=C%23&q=HRSRCDATA)  
+[HSNAPSHOT](https://www.google.com/search?num=5&q=HSNAPSHOT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HSNAPSHOT](https://github.com/dahall/Vanara/search?l=C%23&q=HSNAPSHOT)  
+[HTRXN](https://www.google.com/search?num=5&q=HTRXN+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HTRXN](https://github.com/dahall/Vanara/search?l=C%23&q=HTRXN)  
+[HUPDRES](https://www.google.com/search?num=5&q=HUPDRES+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.HUPDRES](https://github.com/dahall/Vanara/search?l=C%23&q=HUPDRES)  
+[IMAGE_RUNTIME_FUNCTION_ENTRY](http://msdn2.microsoft.com/en-us/library/9ed16f9a-3403-4ba9-9968-f51f6788a1f8) | winnt.h | [Vanara.PInvoke.Kernel32.IMAGE_RUNTIME_FUNCTION_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=IMAGE_RUNTIME_FUNCTION_ENTRY)  
+[INIT_ONCE](https://www.google.com/search?num=5&q=INIT_ONCE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.INIT_ONCE](https://github.com/dahall/Vanara/search?l=C%23&q=INIT_ONCE)  
+[INPUT_RECORD](http://msdn2.microsoft.com/en-us/library/a46ba7fd-097a-455d-96ac-13aa01e11dc1) | Wincon.h | [Vanara.PInvoke.Kernel32.INPUT_RECORD](https://github.com/dahall/Vanara/search?l=C%23&q=INPUT_RECORD)  
+[INPUT_RECORD_EVENT](https://www.google.com/search?num=5&q=INPUT_RECORD_EVENT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.INPUT_RECORD.INPUT_RECORD_EVENT](https://github.com/dahall/Vanara/search?l=C%23&q=INPUT_RECORD_EVENT)  
+[IO_COUNTERS](http://msdn2.microsoft.com/en-us/library/ms684125) | WinNT.h | [Vanara.PInvoke.Kernel32.IO_COUNTERS](https://github.com/dahall/Vanara/search?l=C%23&q=IO_COUNTERS)  
+[JOBOBJECT_ASSOCIATE_COMPLETION_PORT](http://msdn2.microsoft.com/en-us/library/ms684141) | WinNT.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_ASSOCIATE_COMPLETION_PORT](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_ASSOCIATE_COMPLETION_PORT)  
+[JOBOBJECT_BASIC_ACCOUNTING_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684143) | WinNT.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_BASIC_ACCOUNTING_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_BASIC_ACCOUNTING_INFORMATION)  
+[JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684144) | WinNT.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION)  
+[JOBOBJECT_BASIC_LIMIT_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684147) | WinNT.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_BASIC_LIMIT_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_BASIC_LIMIT_INFORMATION)  
+[JOBOBJECT_BASIC_PROCESS_ID_LIST](http://msdn2.microsoft.com/en-us/library/ms684150) | WinNT.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_BASIC_PROCESS_ID_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_BASIC_PROCESS_ID_LIST)  
+[JOBOBJECT_BASIC_UI_RESTRICTIONS](http://msdn2.microsoft.com/en-us/library/ms684152) | WinNT.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_BASIC_UI_RESTRICTIONS](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_BASIC_UI_RESTRICTIONS)  
+[JOBOBJECT_CPU_RATE_CONTROL_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448384) | Winnt.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_CPU_RATE_CONTROL_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_CPU_RATE_CONTROL_INFORMATION)  
+[JOBOBJECT_END_OF_JOB_TIME_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684155) | WinNT.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_END_OF_JOB_TIME_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_END_OF_JOB_TIME_INFORMATION)  
+[JOBOBJECT_EXTENDED_LIMIT_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684156) | WinNT.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_EXTENDED_LIMIT_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_EXTENDED_LIMIT_INFORMATION)  
+[JOBOBJECT_IO_ATTRIBUTION_INFORMATION](https://www.google.com/search?num=5&q=JOBOBJECT_IO_ATTRIBUTION_INFORMATION+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.JOBOBJECT_IO_ATTRIBUTION_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_IO_ATTRIBUTION_INFORMATION)  
+[JOBOBJECT_IO_ATTRIBUTION_STATS](https://www.google.com/search?num=5&q=JOBOBJECT_IO_ATTRIBUTION_STATS+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.JOBOBJECT_IO_ATTRIBUTION_STATS](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_IO_ATTRIBUTION_STATS)  
+[JOBOBJECT_IO_RATE_CONTROL_INFORMATION](http://msdn2.microsoft.com/en-us/library/mt280122) | Jobapi2.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_IO_RATE_CONTROL_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_IO_RATE_CONTROL_INFORMATION)  
+[JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE](https://www.google.com/search?num=5&q=JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE)  
+[JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V2](https://www.google.com/search?num=5&q=JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V2+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V2](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V2)  
+[JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V3](https://www.google.com/search?num=5&q=JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V3+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V3](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V3)  
+[JOBOBJECT_JOBSET_INFORMATION](https://www.google.com/search?num=5&q=JOBOBJECT_JOBSET_INFORMATION+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.JOBOBJECT_JOBSET_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_JOBSET_INFORMATION)  
+[JOBOBJECT_LIMIT_VIOLATION_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448385) | WinNT.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_LIMIT_VIOLATION_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_LIMIT_VIOLATION_INFORMATION)  
+[JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2](http://msdn2.microsoft.com/en-us/library/mt280123) | Winnt.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2)  
+[JOBOBJECT_NET_RATE_CONTROL_INFORMATION](http://msdn2.microsoft.com/en-us/library/mt280124) | Winnt.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_NET_RATE_CONTROL_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_NET_RATE_CONTROL_INFORMATION)  
+[JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448386) | WinNT.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION)  
+[JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2](http://msdn2.microsoft.com/en-us/library/mt280125) | Winnt.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2)  
+[JOBOBJECT_SECURITY_LIMIT_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684159) | WinNT.h | [Vanara.PInvoke.Kernel32.JOBOBJECT_SECURITY_LIMIT_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=JOBOBJECT_SECURITY_LIMIT_INFORMATION)  
+[KEY_EVENT_RECORD](http://msdn2.microsoft.com/en-us/library/b3fed86b-84ef-48e4-97e1-cb3d65f714a7) | Wincon.h | [Vanara.PInvoke.Kernel32.KEY_EVENT_RECORD](https://github.com/dahall/Vanara/search?l=C%23&q=KEY_EVENT_RECORD)  
+[LDT_ENTRY](http://msdn2.microsoft.com/en-us/library/ms680348) | WinNT.h | [Vanara.PInvoke.Kernel32.LDT_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=LDT_ENTRY)  
+[LOAD_DLL_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms680351) | WinBase.h | [Vanara.PInvoke.Kernel32.DEBUG_EVENT.LOAD_DLL_DEBUG_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=LOAD_DLL_DEBUG_INFO)  
+[LOADPARMS32](http://msdn2.microsoft.com/en-us/library/80571b80-851a-4272-bfa6-d26e217e714a) | winbase.h | [Vanara.PInvoke.Kernel32.LOADPARMS32](https://github.com/dahall/Vanara/search?l=C%23&q=LOADPARMS32)  
+[M128A](https://www.google.com/search?num=5&q=M128A+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.CONTEXT64.M128A](https://github.com/dahall/Vanara/search?l=C%23&q=M128A)  
+[MEM_ADDRESS_REQUIREMENTS](http://msdn2.microsoft.com/en-us/library/1CAB4942-F0D2-4A60-9472-4EDF2FC9FA7A) | winnt.h | [Vanara.PInvoke.Kernel32.MEM_ADDRESS_REQUIREMENTS](https://github.com/dahall/Vanara/search?l=C%23&q=MEM_ADDRESS_REQUIREMENTS)  
+[MEM_EXTENDED_PARAMETER](http://msdn2.microsoft.com/en-us/library/8D189F7E-83E7-4AF3-9E25-928C66666887) | winnt.h | [Vanara.PInvoke.Kernel32.MEM_EXTENDED_PARAMETER](https://github.com/dahall/Vanara/search?l=C%23&q=MEM_EXTENDED_PARAMETER)  
+[MEMORY_BASIC_INFORMATION](http://msdn2.microsoft.com/en-us/library/dc3fa48e-0986-49cc-88a9-ff8179fbe5f0) | winnt.h | [Vanara.PInvoke.Kernel32.MEMORY_BASIC_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=MEMORY_BASIC_INFORMATION)  
+[MEMORY_PRIORITY_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448387) | WinBase.h | [Vanara.PInvoke.Kernel32.MEMORY_PRIORITY_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=MEMORY_PRIORITY_INFORMATION)  
+[MEMORYSTATUS](http://msdn2.microsoft.com/en-us/library/aa366772) | WinBase.h | [Vanara.PInvoke.Kernel32.MEMORYSTATUS](https://github.com/dahall/Vanara/search?l=C%23&q=MEMORYSTATUS)  
+[MEMORYSTATUSEX](http://msdn2.microsoft.com/en-us/library/aa366770) | WinBase.h | [Vanara.PInvoke.Kernel32.MEMORYSTATUSEX](https://github.com/dahall/Vanara/search?l=C%23&q=MEMORYSTATUSEX)  
+[MENU_EVENT_RECORD](https://www.google.com/search?num=5&q=MENU_EVENT_RECORD+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.MENU_EVENT_RECORD](https://github.com/dahall/Vanara/search?l=C%23&q=MENU_EVENT_RECORD)  
+[MODULEENTRY32](http://msdn2.microsoft.com/en-us/library/305fab35-625c-42e3-a434-e2513e4c8870) | tlhelp32.h | [Vanara.PInvoke.Kernel32.MODULEENTRY32](https://github.com/dahall/Vanara/search?l=C%23&q=MODULEENTRY32)  
+[MODULEINFO](http://msdn2.microsoft.com/en-us/library/583caafe-7fa3-4041-b5bc-4e8899b3a08a) | psapi.h | [Vanara.PInvoke.Kernel32.MODULEINFO](https://github.com/dahall/Vanara/search?l=C%23&q=MODULEINFO)  
+[MOUSE_EVENT_RECORD](https://www.google.com/search?num=5&q=MOUSE_EVENT_RECORD+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.MOUSE_EVENT_RECORD](https://github.com/dahall/Vanara/search?l=C%23&q=MOUSE_EVENT_RECORD)  
+[Mutant](https://www.google.com/search?num=5&q=Mutant+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PSS_HANDLE_ENTRY.Mutant](https://github.com/dahall/Vanara/search?l=C%23&q=Mutant)  
+[NamespaceHandle](https://www.google.com/search?num=5&q=NamespaceHandle+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.NamespaceHandle](https://github.com/dahall/Vanara/search?l=C%23&q=NamespaceHandle)  
+[NLSVERSIONINFO](http://msdn2.microsoft.com/en-us/library/dd319086) | Winnls.h | [Vanara.PInvoke.Kernel32.NLSVERSIONINFO](https://github.com/dahall/Vanara/search?l=C%23&q=NLSVERSIONINFO)  
+[NLSVERSIONINFOEX](http://msdn2.microsoft.com/en-us/library/dd319087) | Winnls.h | [Vanara.PInvoke.Kernel32.NLSVERSIONINFOEX](https://github.com/dahall/Vanara/search?l=C%23&q=NLSVERSIONINFOEX)  
+[NUMA_NODE_RELATIONSHIP](http://msdn2.microsoft.com/en-us/library/a4e4c994-c4af-4b4f-8684-6037bcba35a9) | winnt.h | [Vanara.PInvoke.Kernel32.NUMA_NODE_RELATIONSHIP](https://github.com/dahall/Vanara/search?l=C%23&q=NUMA_NODE_RELATIONSHIP)  
+[NUMBERFMT](http://msdn2.microsoft.com/en-us/library/dd319095) | Winnls.h | [Vanara.PInvoke.Kernel32.NUMBERFMT](https://github.com/dahall/Vanara/search?l=C%23&q=NUMBERFMT)  
+[OFSTRUCT](http://msdn2.microsoft.com/en-us/library/aa365282) | WinBase.h | [Vanara.PInvoke.Kernel32.OFSTRUCT](https://github.com/dahall/Vanara/search?l=C%23&q=OFSTRUCT)  
+[OSVERSIONINFOEX](http://msdn2.microsoft.com/en-us/library/ms724833) | Winnt.h | [Vanara.PInvoke.Kernel32.OSVERSIONINFOEX](https://github.com/dahall/Vanara/search?l=C%23&q=OSVERSIONINFOEX)  
+[OUTPUT_DEBUG_STRING_INFO](http://msdn2.microsoft.com/en-us/library/ms680545) | WinBase.h | [Vanara.PInvoke.Kernel32.DEBUG_EVENT.OUTPUT_DEBUG_STRING_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=OUTPUT_DEBUG_STRING_INFO)  
+[PACKAGE_ID](http://msdn2.microsoft.com/en-us/library/4B15281A-2227-47B7-A750-0A01DB8543FC) | appmodel.h | [Vanara.PInvoke.Kernel32.PACKAGE_ID](https://github.com/dahall/Vanara/search?l=C%23&q=PACKAGE_ID)  
+[PACKAGE_INFO_REFERENCE](https://www.google.com/search?num=5&q=PACKAGE_INFO_REFERENCE+site%3Amicrosoft.com) | appmodel.h | [Vanara.PInvoke.Kernel32.PACKAGE_INFO_REFERENCE](https://github.com/dahall/Vanara/search?l=C%23&q=PACKAGE_INFO_REFERENCE)  
+[PACKAGE_VERSION](http://msdn2.microsoft.com/en-us/library/8543DF84-A908-4DF5-AEE6-169FECB2AA97) | appmodel.h | [Vanara.PInvoke.Kernel32.PACKAGE_VERSION](https://github.com/dahall/Vanara/search?l=C%23&q=PACKAGE_VERSION)  
+[PERFORMANCE_DATA](http://msdn2.microsoft.com/en-us/library/dd796401) | Winnt.h | [Vanara.PInvoke.Kernel32.PERFORMANCE_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=PERFORMANCE_DATA)  
+[PERFORMANCE_INFORMATION](http://msdn2.microsoft.com/en-us/library/efc47f6e-1a60-4e77-9e5d-c725f9042ab8) | psapi.h | [Vanara.PInvoke.Kernel32.PERFORMANCE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PERFORMANCE_INFORMATION)  
+[PerformanceDataHandle](https://www.google.com/search?num=5&q=PerformanceDataHandle+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PerformanceDataHandle](https://github.com/dahall/Vanara/search?l=C%23&q=PerformanceDataHandle)  
+[PollContinue](https://www.google.com/search?num=5&q=PollContinue+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.COPYFILE2_MESSAGE.PollContinue](https://github.com/dahall/Vanara/search?l=C%23&q=PollContinue)  
+[PROC_THREAD_ATTRIBUTE](https://www.google.com/search?num=5&q=PROC_THREAD_ATTRIBUTE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PROC_THREAD_ATTRIBUTE](https://github.com/dahall/Vanara/search?l=C%23&q=PROC_THREAD_ATTRIBUTE)  
+[Process](https://www.google.com/search?num=5&q=Process+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PSS_HANDLE_ENTRY.Process](https://github.com/dahall/Vanara/search?l=C%23&q=Process)  
+[PROCESS_HEAP_ENTRY](http://msdn2.microsoft.com/en-us/library/aa366798) | WinBase.h | [Vanara.PInvoke.Kernel32.PROCESS_HEAP_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_HEAP_ENTRY)  
+[PROCESS_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684873) | WinBase.h | [Vanara.PInvoke.Kernel32.PROCESS_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_INFORMATION)  
+[PROCESS_MEMORY_COUNTERS](http://msdn2.microsoft.com/en-us/library/288b5865-28a3-478b-ad32-c710fe4f3a81) | psapi.h | [Vanara.PInvoke.Kernel32.PROCESS_MEMORY_COUNTERS](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MEMORY_COUNTERS)  
+[PROCESS_MEMORY_EXHAUSTION_INFO](http://msdn2.microsoft.com/en-us/library/mt767997) | WinBase.h | [Vanara.PInvoke.Kernel32.PROCESS_MEMORY_EXHAUSTION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MEMORY_EXHAUSTION_INFO)  
+[PROCESS_MITIGATION_ASLR_POLICY](http://msdn2.microsoft.com/en-us/library/hh769086) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_ASLR_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_ASLR_POLICY)  
+[PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY](http://msdn2.microsoft.com/en-us/library/mt706242) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY)  
+[PROCESS_MITIGATION_CHILD_PROCESS_POLICY](https://www.google.com/search?num=5&q=PROCESS_MITIGATION_CHILD_PROCESS_POLICY+site%3Amicrosoft.com) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_CHILD_PROCESS_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_CHILD_PROCESS_POLICY)  
+[PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY](http://msdn2.microsoft.com/en-us/library/mt654121) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY)  
+[PROCESS_MITIGATION_DEP_POLICY](http://msdn2.microsoft.com/en-us/library/hh769087) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_DEP_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_DEP_POLICY)  
+[PROCESS_MITIGATION_DYNAMIC_CODE_POLICY](http://msdn2.microsoft.com/en-us/library/mt706243) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_DYNAMIC_CODE_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_DYNAMIC_CODE_POLICY)  
+[PROCESS_MITIGATION_EXTENSION_POINT_DISABLE_POLICY](http://msdn2.microsoft.com/en-us/library/jj200586) | Winnt.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_EXTENSION_POINT_DISABLE_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_EXTENSION_POINT_DISABLE_POLICY)  
+[PROCESS_MITIGATION_FONT_DISABLE_POLICY](http://msdn2.microsoft.com/en-us/library/mt706244) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_FONT_DISABLE_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_FONT_DISABLE_POLICY)  
+[PROCESS_MITIGATION_IMAGE_LOAD_POLICY](http://msdn2.microsoft.com/en-us/library/mt706245) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_IMAGE_LOAD_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_IMAGE_LOAD_POLICY)  
+[PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY](https://www.google.com/search?num=5&q=PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY+site%3Amicrosoft.com) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY)  
+[PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY](http://msdn2.microsoft.com/en-us/library/hh871471) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY)  
+[PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY](http://msdn2.microsoft.com/en-us/library/hh871472) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY)  
+[PROCESS_MITIGATION_SYSTEM_CALL_FILTER_POLICY](http://msdn2.microsoft.com/en-us/library/mt843942) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESS_MITIGATION_SYSTEM_CALL_FILTER_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MITIGATION_SYSTEM_CALL_FILTER_POLICY)  
+[PROCESS_POWER_THROTTLING_STATE](http://msdn2.microsoft.com/en-us/library/394B6509-849C-4B4C-9A46-AF5011A03585) | processthreadsapi.h | [Vanara.PInvoke.Kernel32.PROCESS_POWER_THROTTLING_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_POWER_THROTTLING_STATE)  
+[PROCESS_PROTECTION_LEVEL_INFORMATION](http://msdn2.microsoft.com/en-us/library/mt823702) | Processthreadsapi.h | [Vanara.PInvoke.Kernel32.PROCESS_PROTECTION_LEVEL_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_PROTECTION_LEVEL_INFORMATION)  
+[PROCESSENTRY32](http://msdn2.microsoft.com/en-us/library/9e2f7345-52bf-4bfc-9761-90b0b374c727) | tlhelp32.h | [Vanara.PInvoke.Kernel32.PROCESSENTRY32](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESSENTRY32)  
+[PROCESSOR_GROUP_INFO](http://msdn2.microsoft.com/en-us/library/6ff9cc3c-34e7-4dc4-94cd-6ed278dfaa03) | winnt.h | [Vanara.PInvoke.Kernel32.PROCESSOR_GROUP_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESSOR_GROUP_INFO)  
+[PROCESSOR_NUMBER](http://msdn2.microsoft.com/en-us/library/dd405505) | WinNT.h | [Vanara.PInvoke.Kernel32.PROCESSOR_NUMBER](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESSOR_NUMBER)  
+[PROCESSOR_RELATIONSHIP](http://msdn2.microsoft.com/en-us/library/1efda80d-cf5b-4312-801a-ea3585b152ac) | winnt.h | [Vanara.PInvoke.Kernel32.PROCESSOR_RELATIONSHIP](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESSOR_RELATIONSHIP)  
+[ProcessorRelationUnion](https://www.google.com/search?num=5&q=ProcessorRelationUnion+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.SYSTEM_LOGICAL_PROCESSOR_INFORMATION.ProcessorRelationUnion](https://github.com/dahall/Vanara/search?l=C%23&q=ProcessorRelationUnion)  
+[ProcessorRelationUnion](https://www.google.com/search?num=5&q=ProcessorRelationUnion+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX.ProcessorRelationUnion](https://github.com/dahall/Vanara/search?l=C%23&q=ProcessorRelationUnion)  
+[ProtocolSpecific_](https://www.google.com/search?num=5&q=ProtocolSpecific_+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.FILE_REMOTE_PROTOCOL_INFO.ProtocolSpecific_](https://github.com/dahall/Vanara/search?l=C%23&q=ProtocolSpecific_)  
+[PSAPI_WORKING_SET_BLOCK](http://msdn2.microsoft.com/en-us/library/feb64235-1003-4595-a6a9-aca1f94f94b8) | psapi.h | [Vanara.PInvoke.Kernel32.PSAPI_WORKING_SET_BLOCK](https://github.com/dahall/Vanara/search?l=C%23&q=PSAPI_WORKING_SET_BLOCK)  
+[PSAPI_WORKING_SET_EX_BLOCK](http://msdn2.microsoft.com/en-us/library/4ba17fa0-2aed-4099-9380-fc13f1b826ca) | psapi.h | [Vanara.PInvoke.Kernel32.PSAPI_WORKING_SET_EX_BLOCK](https://github.com/dahall/Vanara/search?l=C%23&q=PSAPI_WORKING_SET_EX_BLOCK)  
+[PSAPI_WORKING_SET_EX_INFORMATION](http://msdn2.microsoft.com/en-us/library/d3500737-b9af-41a8-bf69-61d0bfbd6ce4) | psapi.h | [Vanara.PInvoke.Kernel32.PSAPI_WORKING_SET_EX_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PSAPI_WORKING_SET_EX_INFORMATION)  
+[PSAPI_WORKING_SET_INFORMATION](http://msdn2.microsoft.com/en-us/library/59ca42c0-ca88-4153-b061-980d961a8ca2) | psapi.h | [Vanara.PInvoke.Kernel32.PSAPI_WORKING_SET_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PSAPI_WORKING_SET_INFORMATION)  
+[PSAPI_WS_WATCH_INFORMATION](http://msdn2.microsoft.com/en-us/library/61083366-2a55-431c-807a-3eb85ba0b347) | psapi.h | [Vanara.PInvoke.Kernel32.PSAPI_WS_WATCH_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PSAPI_WS_WATCH_INFORMATION)  
+[PSAPI_WS_WATCH_INFORMATION_EX](http://msdn2.microsoft.com/en-us/library/fb0429b1-ec93-401c-aeb1-f7e9d9acfa47) | psapi.h | [Vanara.PInvoke.Kernel32.PSAPI_WS_WATCH_INFORMATION_EX](https://github.com/dahall/Vanara/search?l=C%23&q=PSAPI_WS_WATCH_INFORMATION_EX)  
+[PSS_ALLOCATOR](http://msdn2.microsoft.com/en-us/library/54225F76-9A2E-4CB3-A3B5-9F9DB5551D53) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_ALLOCATOR](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_ALLOCATOR)  
+[PSS_AUXILIARY_PAGE_ENTRY](http://msdn2.microsoft.com/en-us/library/A3D948E6-6FFE-4732-A8C7-A292FDA07D7C) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_AUXILIARY_PAGE_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_AUXILIARY_PAGE_ENTRY)  
+[PSS_AUXILIARY_PAGES_INFORMATION](http://msdn2.microsoft.com/en-us/library/122DD3DF-002A-4250-9E37-BA239638A684) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_AUXILIARY_PAGES_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_AUXILIARY_PAGES_INFORMATION)  
+[PSS_HANDLE_ENTRY](http://msdn2.microsoft.com/en-us/library/F56E8C35-949A-4DEE-973F-CF24F6596036) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_HANDLE_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_HANDLE_ENTRY)  
+[PSS_HANDLE_INFORMATION](http://msdn2.microsoft.com/en-us/library/77192849-D919-4947-9BFF-343C166C5A51) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_HANDLE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_HANDLE_INFORMATION)  
+[PSS_HANDLE_TRACE_INFORMATION](http://msdn2.microsoft.com/en-us/library/0877DF1F-044C-48F2-9BCC-938EBD6D46EE) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_HANDLE_TRACE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_HANDLE_TRACE_INFORMATION)  
+[PSS_PERFORMANCE_COUNTERS](http://msdn2.microsoft.com/en-us/library/298C1FC8-D19D-4DB3-84AA-3870D06B16A1) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_PERFORMANCE_COUNTERS](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_PERFORMANCE_COUNTERS)  
+[PSS_PROCESS_INFORMATION](http://msdn2.microsoft.com/en-us/library/D629FA42-B501-4A0E-9B53-6D70E580B687) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_PROCESS_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_PROCESS_INFORMATION)  
+[PSS_THREAD_ENTRY](http://msdn2.microsoft.com/en-us/library/99C89DBB-8C12-482E-B33D-AE59C37662CF) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_THREAD_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_THREAD_ENTRY)  
+[PSS_THREAD_INFORMATION](http://msdn2.microsoft.com/en-us/library/68BC42FD-9A30-462F-AFB1-DF9587C50F45) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_THREAD_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_THREAD_INFORMATION)  
+[PSS_VA_CLONE_INFORMATION](http://msdn2.microsoft.com/en-us/library/F93D61B0-EDB2-4560-A69F-CF839EC98B53) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_VA_CLONE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_VA_CLONE_INFORMATION)  
+[PSS_VA_SPACE_ENTRY](http://msdn2.microsoft.com/en-us/library/69B8F6A3-76DF-421B-B89B-73BA3254F897) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_VA_SPACE_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_VA_SPACE_ENTRY)  
+[PSS_VA_SPACE_INFORMATION](http://msdn2.microsoft.com/en-us/library/F38FF7EB-DDC5-4692-8F57-8D633193D891) | processsnapshot.h | [Vanara.PInvoke.Kernel32.PSS_VA_SPACE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PSS_VA_SPACE_INFORMATION)  
+[PTP_CALLBACK_ENVIRON](https://www.google.com/search?num=5&q=PTP_CALLBACK_ENVIRON+site%3Amicrosoft.com) | threadpoolapiset.h | [Vanara.PInvoke.Kernel32.PTP_CALLBACK_ENVIRON](https://github.com/dahall/Vanara/search?l=C%23&q=PTP_CALLBACK_ENVIRON)  
+[PTP_CALLBACK_INSTANCE](https://www.google.com/search?num=5&q=PTP_CALLBACK_INSTANCE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PTP_CALLBACK_INSTANCE](https://github.com/dahall/Vanara/search?l=C%23&q=PTP_CALLBACK_INSTANCE)  
+[PTP_CLEANUP_GROUP](https://www.google.com/search?num=5&q=PTP_CLEANUP_GROUP+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PTP_CLEANUP_GROUP](https://github.com/dahall/Vanara/search?l=C%23&q=PTP_CLEANUP_GROUP)  
+[PTP_IO](https://www.google.com/search?num=5&q=PTP_IO+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PTP_IO](https://github.com/dahall/Vanara/search?l=C%23&q=PTP_IO)  
+[PTP_POOL](https://www.google.com/search?num=5&q=PTP_POOL+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PTP_POOL](https://github.com/dahall/Vanara/search?l=C%23&q=PTP_POOL)  
+[PTP_TIMER](https://www.google.com/search?num=5&q=PTP_TIMER+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PTP_TIMER](https://github.com/dahall/Vanara/search?l=C%23&q=PTP_TIMER)  
+[PTP_WAIT](https://www.google.com/search?num=5&q=PTP_WAIT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PTP_WAIT](https://github.com/dahall/Vanara/search?l=C%23&q=PTP_WAIT)  
+[PTP_WORK](https://www.google.com/search?num=5&q=PTP_WORK+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PTP_WORK](https://github.com/dahall/Vanara/search?l=C%23&q=PTP_WORK)  
+[PUMS_COMPLETION_LIST](https://www.google.com/search?num=5&q=PUMS_COMPLETION_LIST+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PUMS_COMPLETION_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=PUMS_COMPLETION_LIST)  
+[PUMS_CONTEXT](https://www.google.com/search?num=5&q=PUMS_CONTEXT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PUMS_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=PUMS_CONTEXT)  
+[REASON_CONTEXT](http://msdn2.microsoft.com/en-us/library/dd405536) | MinWinBase.h | [Vanara.PInvoke.Kernel32.REASON_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=REASON_CONTEXT)  
+[REGION_DATA](https://www.google.com/search?num=5&q=REGION_DATA+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PROCESS_HEAP_ENTRY.BLOCK_REGION_UNION.REGION_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=REGION_DATA)  
+[RIP_INFO](http://msdn2.microsoft.com/en-us/library/ms680587) | WinBase.h | [Vanara.PInvoke.Kernel32.DEBUG_EVENT.RIP_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=RIP_INFO)  
+[Section](https://www.google.com/search?num=5&q=Section+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PSS_HANDLE_ENTRY.Section](https://github.com/dahall/Vanara/search?l=C%23&q=Section)  
+[SECURITY_CAPABILITIES](http://msdn2.microsoft.com/en-us/library/1A865519-E042-4871-886C-9AA64D71CCE4) | winnt.h | [Vanara.PInvoke.Kernel32.SECURITY_CAPABILITIES](https://github.com/dahall/Vanara/search?l=C%23&q=SECURITY_CAPABILITIES)  
+[Semaphore](https://www.google.com/search?num=5&q=Semaphore+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PSS_HANDLE_ENTRY.Semaphore](https://github.com/dahall/Vanara/search?l=C%23&q=Semaphore)  
+[Server](https://www.google.com/search?num=5&q=Server+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.FILE_REMOTE_PROTOCOL_INFO.Server](https://github.com/dahall/Vanara/search?l=C%23&q=Server)  
+[Share](https://www.google.com/search?num=5&q=Share+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.FILE_REMOTE_PROTOCOL_INFO.Share](https://github.com/dahall/Vanara/search?l=C%23&q=Share)  
+[SLIST_ENTRY](https://www.google.com/search?num=5&q=SLIST_ENTRY+site%3Amicrosoft.com) | winnt.h | [Vanara.PInvoke.Kernel32.SLIST_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=SLIST_ENTRY)  
+[SLIST_HEADER](https://www.google.com/search?num=5&q=SLIST_HEADER+site%3Amicrosoft.com) | winnt.h | [Vanara.PInvoke.Kernel32.SLIST_HEADER](https://github.com/dahall/Vanara/search?l=C%23&q=SLIST_HEADER)  
+[SMALL_RECT](https://www.google.com/search?num=5&q=SMALL_RECT+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.SMALL_RECT](https://github.com/dahall/Vanara/search?l=C%23&q=SMALL_RECT)  
+[Smb2](https://www.google.com/search?num=5&q=Smb2+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.FILE_REMOTE_PROTOCOL_INFO.Smb2](https://github.com/dahall/Vanara/search?l=C%23&q=Smb2)  
+[SRWLOCK](https://www.google.com/search?num=5&q=SRWLOCK+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.SRWLOCK](https://github.com/dahall/Vanara/search?l=C%23&q=SRWLOCK)  
+[STARTUPINFO](http://msdn2.microsoft.com/en-us/library/cf4b795c-52c1-4573-8328-99ee13f68bb3) | processthreadsapi.h | [Vanara.PInvoke.Kernel32.STARTUPINFO](https://github.com/dahall/Vanara/search?l=C%23&q=STARTUPINFO)  
+[STARTUPINFOEX](http://msdn2.microsoft.com/en-us/library/61203f57-292d-4ea1-88f4-a3b05012d7a3) | winbase.h | [Vanara.PInvoke.Kernel32.STARTUPINFOEX](https://github.com/dahall/Vanara/search?l=C%23&q=STARTUPINFOEX)  
+[StreamFinished](https://www.google.com/search?num=5&q=StreamFinished+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.COPYFILE2_MESSAGE.StreamFinished](https://github.com/dahall/Vanara/search?l=C%23&q=StreamFinished)  
+[StreamStarted](https://www.google.com/search?num=5&q=StreamStarted+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.COPYFILE2_MESSAGE.StreamStarted](https://github.com/dahall/Vanara/search?l=C%23&q=StreamStarted)  
+[SYNCHRONIZATION_BARRIER](https://www.google.com/search?num=5&q=SYNCHRONIZATION_BARRIER+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.SYNCHRONIZATION_BARRIER](https://github.com/dahall/Vanara/search?l=C%23&q=SYNCHRONIZATION_BARRIER)  
+[SYSTEM_CPU_SET_INFORMATION](http://msdn2.microsoft.com/en-us/library/mt186429) | Winnt.h | [Vanara.PInvoke.Kernel32.SYSTEM_CPU_SET_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_CPU_SET_INFORMATION)  
+[SYSTEM_INFO](http://msdn2.microsoft.com/en-us/library/ms724958) | Winbase.h | [Vanara.PInvoke.Kernel32.SYSTEM_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_INFO)  
+[SYSTEM_LOGICAL_PROCESSOR_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms686694) | WinNT.h | [Vanara.PInvoke.Kernel32.SYSTEM_LOGICAL_PROCESSOR_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_LOGICAL_PROCESSOR_INFORMATION)  
+[SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX](http://msdn2.microsoft.com/en-us/library/6ff16cda-c1dc-4d5c-ac60-756653cd6b07) | winnt.h | [Vanara.PInvoke.Kernel32.SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX)  
+[SYSTEM_POWER_STATUS](http://msdn2.microsoft.com/en-us/library/aa373232) | Winbase.h | [Vanara.PInvoke.Kernel32.SYSTEM_POWER_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_POWER_STATUS)  
+[SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION](https://www.google.com/search?num=5&q=SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION+site%3Amicrosoft.com) | WinNT.h | [Vanara.PInvoke.Kernel32.SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION)  
+[TAPE_GET_DRIVE_PARAMETERS](http://msdn2.microsoft.com/en-us/library/aa362562) | Winnt.h | [Vanara.PInvoke.Kernel32.TAPE_GET_DRIVE_PARAMETERS](https://github.com/dahall/Vanara/search?l=C%23&q=TAPE_GET_DRIVE_PARAMETERS)  
+[TAPE_GET_MEDIA_PARAMETERS](http://msdn2.microsoft.com/en-us/library/aa362564) | Winnt.h | [Vanara.PInvoke.Kernel32.TAPE_GET_MEDIA_PARAMETERS](https://github.com/dahall/Vanara/search?l=C%23&q=TAPE_GET_MEDIA_PARAMETERS)  
+[Thread](https://www.google.com/search?num=5&q=Thread+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PSS_HANDLE_ENTRY.Thread](https://github.com/dahall/Vanara/search?l=C%23&q=Thread)  
+[THREAD_POWER_THROTTLING_STATE](http://msdn2.microsoft.com/en-us/library/mt804325) | Processthreadsapi.h | [Vanara.PInvoke.Kernel32.THREAD_POWER_THROTTLING_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=THREAD_POWER_THROTTLING_STATE)  
+[THREADENTRY32](http://msdn2.microsoft.com/en-us/library/923feca1-8807-4752-8a5a-79075688aabd) | tlhelp32.h | [Vanara.PInvoke.Kernel32.THREADENTRY32](https://github.com/dahall/Vanara/search?l=C%23&q=THREADENTRY32)  
+[TIME_ZONE_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms725481) | Winbase.h | [Vanara.PInvoke.Kernel32.TIME_ZONE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=TIME_ZONE_INFORMATION)  
+[TimerQueueHandle](https://www.google.com/search?num=5&q=TimerQueueHandle+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.TimerQueueHandle](https://github.com/dahall/Vanara/search?l=C%23&q=TimerQueueHandle)  
+[TimerQueueTimerHandle](https://www.google.com/search?num=5&q=TimerQueueTimerHandle+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.TimerQueueTimerHandle](https://github.com/dahall/Vanara/search?l=C%23&q=TimerQueueTimerHandle)  
+[TP_POOL_STACK_INFORMATION](https://www.google.com/search?num=5&q=TP_POOL_STACK_INFORMATION+site%3Amicrosoft.com) | threadpoolapiset.h | [Vanara.PInvoke.Kernel32.TP_POOL_STACK_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=TP_POOL_STACK_INFORMATION)  
+[UMS_CREATE_THREAD_ATTRIBUTES](http://msdn2.microsoft.com/en-us/library/5d3e1721-c439-49bb-9cb6-8386fa8aaf50) | winnt.h | [Vanara.PInvoke.Kernel32.UMS_CREATE_THREAD_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=UMS_CREATE_THREAD_ATTRIBUTES)  
+[UMS_SCHEDULER_STARTUP_INFO](http://msdn2.microsoft.com/en-us/library/e3f7b1b7-d2b8-432d-bce7-3633292e855b) | winbase.h | [Vanara.PInvoke.Kernel32.UMS_SCHEDULER_STARTUP_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=UMS_SCHEDULER_STARTUP_INFO)  
+[UMS_SYSTEM_THREAD_INFORMATION](http://msdn2.microsoft.com/en-us/library/eecdc592-5046-47c3-a4c6-ecb10899db3c) | winbase.h | [Vanara.PInvoke.Kernel32.UMS_SYSTEM_THREAD_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=UMS_SYSTEM_THREAD_INFORMATION)  
+[Union](https://www.google.com/search?num=5&q=Union+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.COPYFILE2_MESSAGE.Union](https://github.com/dahall/Vanara/search?l=C%23&q=Union)  
+[UNION](https://www.google.com/search?num=5&q=UNION+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.PSS_HANDLE_ENTRY.UNION](https://github.com/dahall/Vanara/search?l=C%23&q=UNION)  
+[UNLOAD_DLL_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms681403) | WinBase.h | [Vanara.PInvoke.Kernel32.DEBUG_EVENT.UNLOAD_DLL_DEBUG_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=UNLOAD_DLL_DEBUG_INFO)  
+[UNWIND_HISTORY_TABLE](https://www.google.com/search?num=5&q=UNWIND_HISTORY_TABLE+site%3Amicrosoft.com) | winnt.h | [Vanara.PInvoke.Kernel32.UNWIND_HISTORY_TABLE](https://github.com/dahall/Vanara/search?l=C%23&q=UNWIND_HISTORY_TABLE)  
+[UNWIND_HISTORY_TABLE_ENTRY](https://www.google.com/search?num=5&q=UNWIND_HISTORY_TABLE_ENTRY+site%3Amicrosoft.com) | winnt.h | [Vanara.PInvoke.Kernel32.UNWIND_HISTORY_TABLE_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=UNWIND_HISTORY_TABLE_ENTRY)  
+[WIN32_FILE_ATTRIBUTE_DATA](http://msdn2.microsoft.com/en-us/library/aa365739) | WinBase.h | [Vanara.PInvoke.Kernel32.WIN32_FILE_ATTRIBUTE_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=WIN32_FILE_ATTRIBUTE_DATA)  
+[WIN32_FIND_STREAM_DATA](http://msdn2.microsoft.com/en-us/library/aa365741) | WinBase.h | [Vanara.PInvoke.Kernel32.WIN32_FIND_STREAM_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=WIN32_FIND_STREAM_DATA)  
+[WIN32_MEMORY_RANGE_ENTRY](http://msdn2.microsoft.com/en-us/library/hh780544) | WinBase.h | [Vanara.PInvoke.Kernel32.WIN32_MEMORY_RANGE_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=WIN32_MEMORY_RANGE_ENTRY)  
+[WINDOW_BUFFER_SIZE_RECORD](https://www.google.com/search?num=5&q=WINDOW_BUFFER_SIZE_RECORD+site%3Amicrosoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.WINDOW_BUFFER_SIZE_RECORD](https://github.com/dahall/Vanara/search?l=C%23&q=WINDOW_BUFFER_SIZE_RECORD)  
+[WOW64_CONTEXT](http://msdn2.microsoft.com/en-us/library/b27205a2-2c33-4f45-8948-9919bcd2355a) | winnt.h | [Vanara.PInvoke.Kernel32.WOW64_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=WOW64_CONTEXT)  
+[WOW64_FLOATING_SAVE_AREA](http://msdn2.microsoft.com/en-us/library/56fba1c1-432b-40a8-b882-e4c637c03d5d) | winnt.h | [Vanara.PInvoke.Kernel32.WOW64_FLOATING_SAVE_AREA](https://github.com/dahall/Vanara/search?l=C%23&q=WOW64_FLOATING_SAVE_AREA)  
+[WOW64_LDT_ENTRY](http://msdn2.microsoft.com/en-us/library/a571cd2f-0873-4ad5-bcb8-c0da2d47a820) | winnt.h | [Vanara.PInvoke.Kernel32.WOW64_LDT_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=WOW64_LDT_ENTRY)  
+[XSAVE_FORMAT64](https://www.google.com/search?num=5&q=XSAVE_FORMAT64+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Kernel32.CONTEXT64.XSAVE_FORMAT64](https://github.com/dahall/Vanara/search?l=C%23&q=XSAVE_FORMAT64)  

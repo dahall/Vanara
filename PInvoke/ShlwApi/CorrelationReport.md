@@ -1,225 +1,225 @@
 ## Correlation report for shlwapi.dll  
 ### Methods (100% complete)  
-Native Method | Native DLL | Header | Managed Method  
---- | --- | --- | ---  
-[AssocCreate](http://msdn2.microsoft.com/en-us/library/33099e0e-73e3-4047-804f-765a59e42e3f) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.AssocCreate  
-[AssocGetPerceivedType](http://msdn2.microsoft.com/en-us/library/d37f1574-b261-43bf-9712-05a569ab4246) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.AssocGetPerceivedType  
-[AssocIsDangerous](http://msdn2.microsoft.com/en-us/library/4e0bc3ce-f9d2-4766-8b19-c0954d71e890) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.AssocIsDangerous  
-[AssocQueryKey](http://msdn2.microsoft.com/en-us/library/9eaeb885-0428-48c3-82a7-5dc21d5015ce) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.AssocQueryKey  
-[AssocQueryString](http://msdn2.microsoft.com/en-us/library/026b841d-b831-475e-a788-2c79801e20b8) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.AssocQueryString  
-[ChrCmpI](http://msdn2.microsoft.com/en-us/library/ae2f3cbf-c65b-41a4-8d59-39d6fadf40ca) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.ChrCmpI  
-[ColorAdjustLuma](http://msdn2.microsoft.com/en-us/library/d113ad59-cde4-4f11-b7f1-53b3fb69ec10) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.ColorAdjustLuma  
-[ColorHLSToRGB](http://msdn2.microsoft.com/en-us/library/1bf0b337-01de-4ce3-851f-d845866fb46f) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.ColorHLSToRGB  
-[ColorRGBToHLS](http://msdn2.microsoft.com/en-us/library/ed000f53-cc7e-4693-994c-a5dd7c789f1f) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.ColorRGBToHLS  
-[ConnectToConnectionPoint](http://msdn2.microsoft.com/en-us/library/f0c6051e-cced-4f38-a35d-d4c184d39084) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.ConnectToConnectionPoint  
-[GetAcceptLanguages](http://msdn2.microsoft.com/en-us/library/a680a7fd-f980-485d-b52a-eb4d482ebc17) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.GetAcceptLanguages  
-[GetMenuPosFromID](http://msdn2.microsoft.com/en-us/library/25fb51bc-9b36-4afb-bb07-7bc455c7fbc4) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.GetMenuPosFromID  
-[HashData](http://msdn2.microsoft.com/en-us/library/7b42b3ae-c021-49be-b5a7-d3bc0a5d346a) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.HashData  
-[IsCharSpace](http://msdn2.microsoft.com/en-us/library/40ccde4d-38e8-4c03-a826-b6c060037ae5) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IsCharSpace  
-[IsInternetESCEnabled](http://msdn2.microsoft.com/en-us/library/2f803b69-9734-484c-9392-a48e116cf506) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IsInternetESCEnabled  
-[IsOS](http://msdn2.microsoft.com/en-us/library/827a76bc-3581-4f1c-8095-8e2fd30dfdbc) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IsOS  
-[IStream_Copy](http://msdn2.microsoft.com/en-us/library/7d6a1080-dad4-4821-8f2a-bd1e01ca10cf) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IStream_Copy  
-[IStream_Read](http://msdn2.microsoft.com/en-us/library/07a3a500-babb-458b-ba98-9344c63ea014) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IStream_Read  
-[IStream_ReadPidl](http://msdn2.microsoft.com/en-us/library/63b1f842-139b-4558-8105-4986ce592b56) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IStream_ReadPidl  
-[IStream_ReadStr](http://msdn2.microsoft.com/en-us/library/e3f140c4-4033-4c82-af2c-4a7744461920) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IStream_ReadStr  
-[IStream_Reset](http://msdn2.microsoft.com/en-us/library/1e7a881d-decb-4018-b2e8-e0cba454236d) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IStream_Reset  
-[IStream_Size](http://msdn2.microsoft.com/en-us/library/93c7c24d-6431-4859-b0b8-b36392bc5108) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IStream_Size  
-[IStream_Write](http://msdn2.microsoft.com/en-us/library/fdcfdaf8-7fcb-433e-b3d4-98ca143fbe6b) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IStream_Write  
-[IStream_WritePidl](http://msdn2.microsoft.com/en-us/library/29b6a42b-08bd-4b5f-92ad-a6456e7a6f98) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IStream_WritePidl  
-[IStream_WriteStr](http://msdn2.microsoft.com/en-us/library/13292ccd-fc0c-4230-a935-4d5aed8cec97) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IStream_WriteStr  
-[IUnknown_AtomicRelease](http://msdn2.microsoft.com/en-us/library/6bb3f9cf-bf28-4f94-8557-56c1952384ec) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IUnknown_AtomicRelease  
-[IUnknown_GetSite](http://msdn2.microsoft.com/en-us/library/95e83078-ab74-40d6-8e31-653e578770f2) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IUnknown_GetSite  
-[IUnknown_GetWindow](http://msdn2.microsoft.com/en-us/library/f8a6f61f-bea3-4049-89fb-c33ef00b327f) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IUnknown_GetWindow  
-[IUnknown_QueryService](http://msdn2.microsoft.com/en-us/library/3e3f3ed0-ad36-40ef-b30c-8c85ff159f21) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IUnknown_QueryService  
-[IUnknown_Set](http://msdn2.microsoft.com/en-us/library/b3c4bee2-12cb-483e-9a46-f09d63ae9a2e) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IUnknown_Set  
-[IUnknown_SetSite](http://msdn2.microsoft.com/en-us/library/66175435-f85b-4e26-b148-f4edb74cb41d) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.IUnknown_SetSite  
-[MLLoadLibrary](http://msdn2.microsoft.com/en-us/library/bb773822) | shlwapi.dll | Shlwapi.h | Vanara.PInvoke.ShlwApi.MLLoadLibrary  
-[ParseURL](http://msdn2.microsoft.com/en-us/library/3d42dad0-b9eb-4e40-afc8-68cb85b27504) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.ParseURL  
-[PathAddBackslash](http://msdn2.microsoft.com/en-us/library/27d8aec7-8b00-412a-9a42-8ce27e262781) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathAddBackslash  
-[PathAddExtension](http://msdn2.microsoft.com/en-us/library/2c113d11-11d5-4362-bad5-c859d65aca2a) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathAddExtension  
-[PathAppend](http://msdn2.microsoft.com/en-us/library/896737ef-a05c-4f0f-b8b0-56355ae9c2d9) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathAppend  
-[PathBuildRoot](http://msdn2.microsoft.com/en-us/library/0a6895bd-54cf-499c-9057-f2d721bce5d9) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathBuildRoot  
-[PathCanonicalize](http://msdn2.microsoft.com/en-us/library/e9b1e877-2cd6-4dd9-a15b-676cb940daed) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathCanonicalize  
-[PathCombine](http://msdn2.microsoft.com/en-us/library/ed03334b-f688-4993-9685-092135ca29c9) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathCombine  
-[PathCommonPrefix](http://msdn2.microsoft.com/en-us/library/13c32b32-8541-41c4-82d8-48d3b2439f0c) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathCommonPrefix  
-[PathCompactPath](http://msdn2.microsoft.com/en-us/library/b8184c98-1f86-4714-baf8-af4ef3e71cf2) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathCompactPath  
-[PathCompactPathEx](http://msdn2.microsoft.com/en-us/library/ff108ee6-3d71-4ab2-a04a-d4bcce408f88) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathCompactPathEx  
-[PathCreateFromUrl](http://msdn2.microsoft.com/en-us/library/f4136c80-a309-4551-be73-f2f24ecd4675) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathCreateFromUrl  
-[PathCreateFromUrlAlloc](http://msdn2.microsoft.com/en-us/library/274411cd-5922-4db8-8775-feb93cae32dd) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathCreateFromUrlAlloc  
-[PathFileExists](http://msdn2.microsoft.com/en-us/library/26d01e9f-cbf2-4e40-9970-a594879b424d) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathFileExists  
-[PathFindExtension](http://msdn2.microsoft.com/en-us/library/afebd4b7-2685-4b6e-8f8a-d43944dacef5) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathFindExtension  
-[PathFindFileName](http://msdn2.microsoft.com/en-us/library/f3824dee-1169-4f89-9844-35aa8a1830c4) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathFindFileName  
-[PathFindNextComponent](http://msdn2.microsoft.com/en-us/library/2c76b901-dc0e-4f26-93c8-3c59b8f7147d) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathFindNextComponent  
-[PathFindOnPath](http://msdn2.microsoft.com/en-us/library/d9281eb2-39b7-444f-85b7-1e1e76c38ae2) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathFindOnPath  
-[PathFindSuffixArray](http://msdn2.microsoft.com/en-us/library/e2285f7d-bb5d-48c5-bdf1-10ca410389f0) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathFindSuffixArray  
-[PathGetArgs](http://msdn2.microsoft.com/en-us/library/17dfb601-1306-41b6-a504-8bf69ff204c9) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathGetArgs  
-[PathGetCharType](http://msdn2.microsoft.com/en-us/library/838a255f-413e-424c-819e-47265224208d) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathGetCharType  
-[PathGetDriveNumber](http://msdn2.microsoft.com/en-us/library/38914866-fdd4-47f2-b0e7-d09d1cfb0eee) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathGetDriveNumber  
-[PathIsContentType](http://msdn2.microsoft.com/en-us/library/53eac496-9666-41fc-8682-f7b6583a62fe) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsContentType  
-[PathIsDirectory](http://msdn2.microsoft.com/en-us/library/9af3e3da-6b3a-4e81-ba50-ff7aeeb73c44) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsDirectory  
-[PathIsDirectoryEmpty](http://msdn2.microsoft.com/en-us/library/833fe68e-8b21-4819-8370-d1b5391a3080) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsDirectoryEmpty  
-[PathIsFileSpec](http://msdn2.microsoft.com/en-us/library/c69d6cca-44e7-4792-8fb2-3c4ecd2e57f2) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsFileSpec  
-[PathIsLFNFileSpec](http://msdn2.microsoft.com/en-us/library/599cb457-da72-4416-bfb7-5bc55a0eeb2d) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsLFNFileSpec  
-[PathIsNetworkPath](http://msdn2.microsoft.com/en-us/library/3a9c33bc-2325-4285-b6c3-4c3e1d323c1e) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsNetworkPath  
-[PathIsPrefix](http://msdn2.microsoft.com/en-us/library/b24f761e-6492-4a6d-9c7e-d5a5f2cbdaf3) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsPrefix  
-[PathIsRelative](http://msdn2.microsoft.com/en-us/library/ad36c277-645f-4c62-af7d-b75e29de573f) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsRelative  
-[PathIsRoot](http://msdn2.microsoft.com/en-us/library/8586df98-91c4-49a6-9b07-7dceb8a63431) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsRoot  
-[PathIsSameRoot](http://msdn2.microsoft.com/en-us/library/3409a8f1-e22c-4c13-961e-211a2d10fe10) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsSameRoot  
-[PathIsSystemFolder](http://msdn2.microsoft.com/en-us/library/796901a8-1bc1-4fd1-b5b8-acd8f930ff14) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsSystemFolder  
-[PathIsUNC](http://msdn2.microsoft.com/en-us/library/53da5ba7-a2a4-45b2-90e0-ae006415933e) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsUNC  
-[PathIsUNCServer](http://msdn2.microsoft.com/en-us/library/9158ceb6-dd20-4b1a-93d3-cf7a5a5c6c75) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsUNCServer  
-[PathIsUNCServerShare](http://msdn2.microsoft.com/en-us/library/306cfc34-7cb2-4f60-af5c-8b567149c2fc) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsUNCServerShare  
-[PathIsURL](http://msdn2.microsoft.com/en-us/library/8791bcd8-0d8f-4f7b-9c8e-59bcb95b5d19) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathIsURL  
-[PathMakePretty](http://msdn2.microsoft.com/en-us/library/fb871054-4c63-42de-b85b-edefa4b09ea0) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathMakePretty  
-[PathMakeSystemFolder](http://msdn2.microsoft.com/en-us/library/5b0faeb8-f8ae-481b-b5b2-cae9efe638e5) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathMakeSystemFolder  
-[PathMatchSpec](http://msdn2.microsoft.com/en-us/library/908e7204-d168-4179-9c7b-ad46ba68bebc) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathMatchSpec  
-[PathMatchSpecEx](http://msdn2.microsoft.com/en-us/library/bd9bf950-e349-4b67-8608-7acad84c0907) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathMatchSpecEx  
-[PathParseIconLocation](http://msdn2.microsoft.com/en-us/library/1ded2f0f-0e11-4730-ab7b-16536e7f4435) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathParseIconLocation  
-[PathQuoteSpaces](http://msdn2.microsoft.com/en-us/library/76a51c21-b924-4919-a6bb-8c6bdec5b3f0) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathQuoteSpaces  
-[PathRelativePathTo](http://msdn2.microsoft.com/en-us/library/7ed8d50a-2ad4-4ddf-941d-aea593341592) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathRelativePathTo  
-[PathRemoveArgs](http://msdn2.microsoft.com/en-us/library/430072bc-4ddc-4b3d-bf32-fb60d7b56faf) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathRemoveArgs  
-[PathRemoveBackslash](http://msdn2.microsoft.com/en-us/library/58d13c38-40aa-4aaa-81dc-2b68425f1fe0) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathRemoveBackslash  
-[PathRemoveBlanks](http://msdn2.microsoft.com/en-us/library/0f496855-3ea7-4193-b895-fd4ea26ef6c5) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathRemoveBlanks  
-[PathRemoveExtension](http://msdn2.microsoft.com/en-us/library/6e26d005-50af-4376-b734-19ba3d9c470f) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathRemoveExtension  
-[PathRemoveFileSpec](http://msdn2.microsoft.com/en-us/library/c47bcf8a-c59d-4d6a-81a9-a3960ae39867) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathRemoveFileSpec  
-[PathRenameExtension](http://msdn2.microsoft.com/en-us/library/3d94f67c-e3ee-4b64-b0b9-8f771423bdc5) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathRenameExtension  
-[PathSearchAndQualify](http://msdn2.microsoft.com/en-us/library/90da281d-349a-460a-aa5a-14e3b4ced727) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathSearchAndQualify  
-[PathSetDlgItemPath](http://msdn2.microsoft.com/en-us/library/05737525-d906-482c-847f-bdbf0ba0ce3d) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathSetDlgItemPath  
-[PathSkipRoot](http://msdn2.microsoft.com/en-us/library/528a3953-26d7-4fff-be31-9c9788d429ab) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathSkipRoot  
-[PathStripPath](http://msdn2.microsoft.com/en-us/library/84b439f2-f570-4e7f-bc3f-e0fdd185ea15) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathStripPath  
-[PathStripToRoot](http://msdn2.microsoft.com/en-us/library/ce9a1a40-2a03-44d2-80bc-0dc10654550b) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathStripToRoot  
-[PathUndecorate](http://msdn2.microsoft.com/en-us/library/2d98ad60-8a7d-4b8d-9b5c-27e348bdc2c3) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathUndecorate  
-[PathUnExpandEnvStrings](http://msdn2.microsoft.com/en-us/library/cfab1ee0-03f3-4e0f-a29d-5331fec022b5) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathUnExpandEnvStrings  
-[PathUnmakeSystemFolder](http://msdn2.microsoft.com/en-us/library/9c748ed6-3ee6-4889-8fdd-b33ed9d711d0) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathUnmakeSystemFolder  
-[PathUnquoteSpaces](http://msdn2.microsoft.com/en-us/library/00474c95-ec59-489a-bee3-191b98a47567) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathUnquoteSpaces  
-[QISearch](http://msdn2.microsoft.com/en-us/library/8429778b-bc9c-43f6-8d75-0fb78e36e790) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.QISearch  
-[SHAllocShared](http://msdn2.microsoft.com/en-us/library/0388b6a0-24d9-48eb-bef2-3a1658d8bb3c) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHAllocShared  
-[SHAnsiToAnsi](http://msdn2.microsoft.com/en-us/library/e57142ca-3098-4118-aac0-89724f711872) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHAnsiToAnsi  
-[SHAnsiToUnicode](http://msdn2.microsoft.com/en-us/library/9578f26e-56ea-4f3b-b024-b2e285d0c4d2) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHAnsiToUnicode  
-[SHAutoComplete](http://msdn2.microsoft.com/en-us/library/b47efa8d-2118-4805-bb04-97bd143228dc) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHAutoComplete  
-[SHCopyKey](http://msdn2.microsoft.com/en-us/library/52521ef4-fe59-4766-8828-acb557b0e968) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHCopyKey  
-[SHCreateMemStream](http://msdn2.microsoft.com/en-us/library/f3ae8241-f3a6-4007-a10f-ff05960c5de8) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHCreateMemStream  
-[SHCreateShellPalette](http://msdn2.microsoft.com/en-us/library/49afb04a-34e3-4696-a046-bc9308ae7adf) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHCreateShellPalette  
-[SHCreateStreamOnFile](http://msdn2.microsoft.com/en-us/library/9b1fd6c4-d7b0-40b9-bc9f-ea062a1079c1) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHCreateStreamOnFile  
-[SHCreateStreamOnFileEx](http://msdn2.microsoft.com/en-us/library/f948f7dd-987d-4c2d-b650-62081133c3f4) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHCreateStreamOnFileEx  
-[SHCreateThread](http://msdn2.microsoft.com/en-us/library/2140e396-29cd-4665-b684-337170570b73) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHCreateThread  
-[SHCreateThreadRef](http://msdn2.microsoft.com/en-us/library/6abca2df-832c-410b-93c7-5131e481e595) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHCreateThreadRef  
-[SHCreateThreadWithHandle](http://msdn2.microsoft.com/en-us/library/22a3a97a-857f-46b8-a2e0-8f3a14f40322) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHCreateThreadWithHandle  
-[SHDeleteEmptyKey](http://msdn2.microsoft.com/en-us/library/6a560bc3-f65e-4b7d-9fbc-b4f2971ce2a9) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHDeleteEmptyKey  
-[SHDeleteKey](http://msdn2.microsoft.com/en-us/library/3c46db08-52d8-48fa-bda5-3c087908a1d3) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHDeleteKey  
-[SHDeleteValue](http://msdn2.microsoft.com/en-us/library/54f3459b-486c-4907-84b1-39b1f8abb12d) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHDeleteValue  
-[SHEnumKeyEx](http://msdn2.microsoft.com/en-us/library/51bf9cf7-87bc-407c-b2ee-18db3cdfe1dc) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHEnumKeyEx  
-[SHEnumValue](http://msdn2.microsoft.com/en-us/library/bb0eaa07-5112-4ce3-8796-5439bd863226) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHEnumValue  
-[SHFormatDateTime](http://msdn2.microsoft.com/en-us/library/2208ed29-6029-4051-bdcc-885c42fe5c1b) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHFormatDateTime  
-[SHFreeShared](http://msdn2.microsoft.com/en-us/library/5a86ae5d-8caa-4126-a22e-bc3cc7df2381) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHFreeShared  
-[SHGetInverseCMAP](http://msdn2.microsoft.com/en-us/library/46d5ccd2-3c5d-431b-b27b-6a7a95043e0a) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHGetInverseCMAP  
-[SHGetThreadRef](http://msdn2.microsoft.com/en-us/library/307b284b-f493-4d24-a7be-17c150d62b34) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHGetThreadRef  
-[SHGetValue](http://msdn2.microsoft.com/en-us/library/8cca6bfe-d365-4d10-bc8d-f3bebefaad02) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHGetValue  
-[SHGetViewStatePropertyBag](http://msdn2.microsoft.com/en-us/library/6852867a-30a5-4d4e-b790-3746104e3ed8) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHGetViewStatePropertyBag  
-[SHIsChildOrSelf](http://msdn2.microsoft.com/en-us/library/bb773834) | shlwapi.dll | Shlwapi.h | Vanara.PInvoke.ShlwApi.SHIsChildOrSelf  
-[SHIsLowMemoryMachine](http://msdn2.microsoft.com/en-us/library/3a91156d-eef9-4d3c-9cb8-fd50bfa94354) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHIsLowMemoryMachine  
-[SHLoadIndirectString](http://msdn2.microsoft.com/en-us/library/f0265cd8-deb8-4bca-b379-39aff49c7df1) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHLoadIndirectString  
-[SHLockShared](http://msdn2.microsoft.com/en-us/library/5b948044-6cec-4649-a266-21959154f999) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHLockShared  
-[SHMessageBoxCheck](http://msdn2.microsoft.com/en-us/library/7e62cde0-2b9f-44d3-afb8-5df71f98453a) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHMessageBoxCheck  
-[SHOpenRegStream2](http://msdn2.microsoft.com/en-us/library/bb759879) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHOpenRegStream2  
-[SHQueryInfoKey](http://msdn2.microsoft.com/en-us/library/dea535e7-5e61-4587-aa22-b1d62b76943a) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHQueryInfoKey  
-[SHQueryValueEx](http://msdn2.microsoft.com/en-us/library/9969acae-5965-40fe-bde9-6de9ddf26bb8) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHQueryValueEx  
-[SHRegCloseUSKey](http://msdn2.microsoft.com/en-us/library/1e9900d6-8411-4e6b-a9c0-006f378a2625) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegCloseUSKey  
-[SHRegCreateUSKey](http://msdn2.microsoft.com/en-us/library/10e3e31e-bff6-4260-95fa-2d750de16ab3) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegCreateUSKey  
-[SHRegDeleteEmptyUSKey](http://msdn2.microsoft.com/en-us/library/adb09a2b-674c-472d-9f16-8e150476f1f5) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegDeleteEmptyUSKey  
-[SHRegDeleteUSValue](http://msdn2.microsoft.com/en-us/library/f70407af-d8ee-4333-be32-01887d4add4c) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegDeleteUSValue  
-[SHRegDuplicateHKey](http://msdn2.microsoft.com/en-us/library/73182aa9-0c4d-4723-ba3c-8bab6b51181b) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegDuplicateHKey  
-[SHRegEnumUSKey](http://msdn2.microsoft.com/en-us/library/9418ad45-f451-4976-afd7-fa1e0088038d) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegEnumUSKey  
-[SHRegEnumUSValue](http://msdn2.microsoft.com/en-us/library/bb773520) | shlwapi.dll | Shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegEnumUSValue  
-[SHRegGetBoolUSValue](http://msdn2.microsoft.com/en-us/library/afd95ce4-0ced-48ce-814f-1d02d7913be5) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegGetBoolUSValue  
-[SHRegGetBoolValueFromHKCUHKLM](http://msdn2.microsoft.com/en-us/library/05239aef-a6cf-426f-919e-08b70baee3f8) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegGetBoolValueFromHKCUHKLM  
-[SHRegGetIntW](http://msdn2.microsoft.com/en-us/library/027e3470-46be-4d37-b815-e1fd550d0c60) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegGetIntW  
-[SHRegGetPath](http://msdn2.microsoft.com/en-us/library/2874b868-33f9-4f20-9e0b-136125cf268c) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegGetPath  
-[SHRegGetUSValue](http://msdn2.microsoft.com/en-us/library/4d3b3bbe-dc2e-40c9-8ff1-0f9d2e323743) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegGetUSValue  
-[SHRegGetValue](http://msdn2.microsoft.com/en-us/library/5650eb4c-40fd-47d7-af76-2688d62d9bca) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegGetValue  
-[SHRegGetValueFromHKCUHKLM](http://msdn2.microsoft.com/en-us/library/5c4b13f4-0dd8-476e-9e89-ace23d541389) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegGetValueFromHKCUHKLM  
-[SHRegOpenUSKey](http://msdn2.microsoft.com/en-us/library/756430a9-a495-412e-95c3-a93222bc467a) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegOpenUSKey  
-[SHRegQueryInfoUSKey](http://msdn2.microsoft.com/en-us/library/e47b4fad-50c7-43d7-82f2-6a835ac543f0) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegQueryInfoUSKey  
-[SHRegQueryUSValue](http://msdn2.microsoft.com/en-us/library/302a51b5-9cf9-46e5-908c-df0d3c31c91c) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegQueryUSValue  
-[SHRegSetPath](http://msdn2.microsoft.com/en-us/library/3ee6ec69-5d16-4bdd-a591-651af05bf944) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegSetPath  
-[SHRegSetUSValue](http://msdn2.microsoft.com/en-us/library/96559f8c-8527-4924-928e-f27049069407) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegSetUSValue  
-[SHRegWriteUSValue](http://msdn2.microsoft.com/en-us/library/f94569c6-415b-4263-bab4-8a5baca47901) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHRegWriteUSValue  
-[SHReleaseThreadRef](http://msdn2.microsoft.com/en-us/library/7f3fd09b-baad-4019-a060-c68727aee61f) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHReleaseThreadRef  
-[SHSendMessageBroadcast](http://msdn2.microsoft.com/en-us/library/98671f0f-2386-486f-ac96-14dd44c776c6) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHSendMessageBroadcast  
-[SHSetThreadRef](http://msdn2.microsoft.com/en-us/library/1d0d70ca-a0e6-4620-9a01-8d4986990b9c) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHSetThreadRef  
-[SHSetValue](http://msdn2.microsoft.com/en-us/library/6cd5b7fd-8fb9-4c24-9670-20c23ca709bf) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHSetValue  
-[SHSkipJunction](http://msdn2.microsoft.com/en-us/library/73af64a4-57eb-43db-91bb-75fe7134ad28) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHSkipJunction  
-[SHStrDup](http://msdn2.microsoft.com/en-us/library/6f014fb4-7637-48a8-9bec-d3278c46a6d8) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHStrDup  
-[SHStripMneumonic](http://msdn2.microsoft.com/en-us/library/25479814-825a-4af2-8751-b35cf39bbb80) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHStripMneumonic  
-[SHUnicodeToAnsi](http://msdn2.microsoft.com/en-us/library/f0db3976-9956-418f-8432-7755b140050f) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHUnicodeToAnsi  
-[SHUnicodeToUnicode](http://msdn2.microsoft.com/en-us/library/1a208c2d-e627-4aac-9a28-b579c734a2a8) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHUnicodeToUnicode  
-[SHUnlockShared](http://msdn2.microsoft.com/en-us/library/8ecbf62b-fd0d-4a8d-bd55-42c0c3f64390) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.SHUnlockShared  
-[StrCatBuff](http://msdn2.microsoft.com/en-us/library/ce8c002f-f4f8-4b5f-a9e2-7bcd21f8808c) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCatBuff  
-[StrCatChainW](http://msdn2.microsoft.com/en-us/library/8df35616-f6f3-45eb-9a83-89fc84938fd7) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCatChainW  
-[StrCatW](http://msdn2.microsoft.com/en-us/library/fd357462-83be-42a8-9f39-1e023bd5f86e) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCatW  
-[StrChr](http://msdn2.microsoft.com/en-us/library/3e4c20cb-0b46-4f84-bbd1-860fdedde8c8) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrChr  
-[StrChrI](http://msdn2.microsoft.com/en-us/library/bad606d2-e337-42b5-853e-c7afa8d3d71b) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrChrI  
-[StrChrNIW](http://msdn2.microsoft.com/en-us/library/01F2CC10-F59A-45dd-8A18-7DC33BDD717F) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrChrNIW  
-[StrChrNW](http://msdn2.microsoft.com/en-us/library/f90470c3-62db-4fbb-a045-8fdd300a6aa4) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrChrNW  
-[StrCmpC](http://msdn2.microsoft.com/en-us/library/f4c4bc76-1e42-4cb0-bf74-d395743c9b1c) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCmpC  
-[StrCmpIC](http://msdn2.microsoft.com/en-us/library/3f6d1ca1-fbd2-4ce2-b6d4-c3dfb37f1f87) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCmpIC  
-[StrCmpIW](http://msdn2.microsoft.com/en-us/library/d059b6bd-8f03-4273-aa7a-b8b07f84d268) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCmpIW  
-[StrCmpLogicalW](http://msdn2.microsoft.com/en-us/library/013c6db3-7d14-44ef-89af-b3aac28f4e3f) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCmpLogicalW  
-[StrCmpN](http://msdn2.microsoft.com/en-us/library/e2d97502-1819-463e-a56a-2d22b33502b7) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCmpN  
-[StrCmpNC](http://msdn2.microsoft.com/en-us/library/4b4f18d3-9325-4bd9-ac65-af7f3012fdaa) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCmpNC  
-[StrCmpNI](http://msdn2.microsoft.com/en-us/library/c6657bd5-21b6-457c-9ed0-45e44b2571ba) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCmpNI  
-[StrCmpNIC](http://msdn2.microsoft.com/en-us/library/ed2e7df9-7f36-4566-8a3e-e3517307a584) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCmpNIC  
-[StrCmpW](http://msdn2.microsoft.com/en-us/library/12530a04-776c-4506-86d1-07e2c3569a36) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCmpW  
-[StrCpyNW](http://msdn2.microsoft.com/en-us/library/7e21414d-0d82-40b9-b32f-5eaf351166da) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCpyNW  
-[StrCpyW](http://msdn2.microsoft.com/en-us/library/83d1a8dc-fc43-4b06-b36c-c9c91d779d25) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCpyW  
-[StrCSpn](http://msdn2.microsoft.com/en-us/library/24e9ec52-a5d7-4220-8e71-f850b53c49dd) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCSpn  
-[StrCSpnI](http://msdn2.microsoft.com/en-us/library/d21eb80b-5f02-4eb7-9a22-02425b7050b3) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrCSpnI  
-[StrDup](http://msdn2.microsoft.com/en-us/library/fa77f0b3-8a9b-4221-87e3-9aebff4409fb) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrDup  
-[StrFormatByteSize](http://msdn2.microsoft.com/en-us/library/244f93cb-0976-4a31-958c-ae0ed81c1dcf) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrFormatByteSizeA  
-[StrFormatByteSize64A](http://msdn2.microsoft.com/en-us/library/b56dd90a-7033-409b-a8ea-e81a7a8a2342) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrFormatByteSize64A  
-[StrFormatByteSizeEx](http://msdn2.microsoft.com/en-us/library/9ecc6427-e7bb-43ec-ab78-665ef52f8b10) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrFormatByteSizeEx  
-[StrFormatKBSize](http://msdn2.microsoft.com/en-us/library/029c2eb8-3bcd-4302-8894-be2dbe430426) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrFormatKBSize  
-[StrFromTimeInterval](http://msdn2.microsoft.com/en-us/library/e2a9492f-acfa-4cbd-8426-895e361f0174) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrFromTimeInterval  
-[StrIsIntlEqual](http://msdn2.microsoft.com/en-us/library/02c66644-8aab-4ddd-a3ab-d52aeaa900a3) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrIsIntlEqual  
-[StrNCat](http://msdn2.microsoft.com/en-us/library/28099350-5759-4595-8353-3452c5cf6ca8) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrNCat  
-[StrPBrk](http://msdn2.microsoft.com/en-us/library/116c0791-33dd-4c3f-b8a4-a7df91fc5f6a) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrPBrk  
-[StrRChr](http://msdn2.microsoft.com/en-us/library/7f1e91ad-aaa0-4449-834e-8e309c88d6b1) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrRChr  
-[StrRChrI](http://msdn2.microsoft.com/en-us/library/3dc39c2a-d621-4f46-b65b-eb8a531e5abe) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrRChrI  
-[StrRetToBSTR](http://msdn2.microsoft.com/en-us/library/2a5a9a2b-74df-4521-a5b2-8fc91c3559eb) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrRetToBSTR  
-[StrRetToBuf](http://msdn2.microsoft.com/en-us/library/89dab3ee-e9f8-499a-97ec-6fe732315891) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrRetToBuf  
-[StrRetToStr](http://msdn2.microsoft.com/en-us/library/03b0dffb-8ef7-41da-9773-81ed55275802) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrRetToStr  
-[StrRStrI](http://msdn2.microsoft.com/en-us/library/41057976-6443-40dc-96f7-f2cbd5d494de) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrRStrI  
-[StrSpn](http://msdn2.microsoft.com/en-us/library/1a57da7f-76e7-49f2-aa31-50c224376e95) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrSpn  
-[StrStr](http://msdn2.microsoft.com/en-us/library/b1de5007-6773-4dea-8a15-ccd5f6924a13) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrStr  
-[StrStrI](http://msdn2.microsoft.com/en-us/library/b0281641-1375-4815-a707-03e1ce7e5a29) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrStrI  
-[StrStrNIW](http://msdn2.microsoft.com/en-us/library/743f74f6-a0a6-4c03-b3bf-7f819bbc665f) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrStrNIW  
-[StrStrNW](http://msdn2.microsoft.com/en-us/library/e7aac4c7-b2d5-43d8-97f5-1b11ebb24ee1) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrStrNW  
-[StrToInt](http://msdn2.microsoft.com/en-us/library/74313e56-a820-4d02-91f4-f629d2fc72d4) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrToInt  
-[StrToInt64Ex](http://msdn2.microsoft.com/en-us/library/8ea04c9f-6485-4931-a5d5-b22eb6681bd1) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrToInt64Ex  
-[StrToIntEx](http://msdn2.microsoft.com/en-us/library/2e8286c7-585f-441b-904b-f3b4e8cf95f9) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrToIntEx  
-[StrTrim](http://msdn2.microsoft.com/en-us/library/aea422b9-326e-4b12-b2a9-7c220677a467) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.StrTrim  
-[UrlApplyScheme](http://msdn2.microsoft.com/en-us/library/af60643e-b1a4-4013-b116-dd9fad4e90bf) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlApplyScheme  
-[UrlCanonicalize](http://msdn2.microsoft.com/en-us/library/70802745-0611-4d37-800e-b50d5ea23426) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlCanonicalize  
-[UrlCombine](http://msdn2.microsoft.com/en-us/library/f574d365-1ab9-4de4-84fe-17820c327ccf) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlCombine  
-[UrlCompare](http://msdn2.microsoft.com/en-us/library/d5c9e003-b85b-4f9f-b231-e3e4b71d4ce6) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlCompare  
-[UrlCreateFromPath](http://msdn2.microsoft.com/en-us/library/b69ab203-daab-4951-b3b9-c5ca37c532b3) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlCreateFromPath  
-[UrlEscape](http://msdn2.microsoft.com/en-us/library/52ee1501-2cd4-4193-8363-0af91673ec88) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlEscape  
-[UrlFixupW](http://msdn2.microsoft.com/en-us/library/3750d027-847f-4f33-851d-a10be7562bcb) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlFixupW  
-[UrlGetLocation](http://msdn2.microsoft.com/en-us/library/e75bde92-2ca0-4d34-a276-50b4eeceda1c) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlGetLocation  
-[UrlGetPart](http://msdn2.microsoft.com/en-us/library/5f43dedd-c543-46b2-b90e-f0af576d2605) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlGetPart  
-[UrlHash](http://msdn2.microsoft.com/en-us/library/9c0ce709-e097-4501-bee1-b24df9d4828d) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlHash  
-[UrlIs](http://msdn2.microsoft.com/en-us/library/2e83c953-b4c5-4411-90ca-49ffb94ee374) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlIs  
-[UrlIsNoHistory](http://msdn2.microsoft.com/en-us/library/7602d2ef-1f21-4b2f-8ac9-195bb21d6ae7) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlIsNoHistory  
-[UrlIsOpaque](http://msdn2.microsoft.com/en-us/library/460f4d41-2796-496d-9199-f2d1cd6e4a24) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlIsOpaque  
-[UrlUnescape](http://msdn2.microsoft.com/en-us/library/5bff5161-3b57-4f12-b126-42eac3f60267) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.UrlUnescape  
-[WhichPlatform](http://msdn2.microsoft.com/en-us/library/14af733b-81b4-40a2-b93b-6f387b181f12) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.WhichPlatform  
+Native Method | Header | Managed Method  
+--- | --- | ---  
+[AssocCreate](http://msdn2.microsoft.com/en-us/library/33099e0e-73e3-4047-804f-765a59e42e3f) | shlwapi.h | [Vanara.PInvoke.ShlwApi.AssocCreate](https://github.com/dahall/Vanara/search?l=C%23&q=AssocCreate)  
+[AssocGetPerceivedType](http://msdn2.microsoft.com/en-us/library/d37f1574-b261-43bf-9712-05a569ab4246) | shlwapi.h | [Vanara.PInvoke.ShlwApi.AssocGetPerceivedType](https://github.com/dahall/Vanara/search?l=C%23&q=AssocGetPerceivedType)  
+[AssocIsDangerous](http://msdn2.microsoft.com/en-us/library/4e0bc3ce-f9d2-4766-8b19-c0954d71e890) | shlwapi.h | [Vanara.PInvoke.ShlwApi.AssocIsDangerous](https://github.com/dahall/Vanara/search?l=C%23&q=AssocIsDangerous)  
+[AssocQueryKey](http://msdn2.microsoft.com/en-us/library/9eaeb885-0428-48c3-82a7-5dc21d5015ce) | shlwapi.h | [Vanara.PInvoke.ShlwApi.AssocQueryKey](https://github.com/dahall/Vanara/search?l=C%23&q=AssocQueryKey)  
+[AssocQueryString](http://msdn2.microsoft.com/en-us/library/026b841d-b831-475e-a788-2c79801e20b8) | shlwapi.h | [Vanara.PInvoke.ShlwApi.AssocQueryString](https://github.com/dahall/Vanara/search?l=C%23&q=AssocQueryString)  
+[ChrCmpI](http://msdn2.microsoft.com/en-us/library/ae2f3cbf-c65b-41a4-8d59-39d6fadf40ca) | shlwapi.h | [Vanara.PInvoke.ShlwApi.ChrCmpI](https://github.com/dahall/Vanara/search?l=C%23&q=ChrCmpI)  
+[ColorAdjustLuma](http://msdn2.microsoft.com/en-us/library/d113ad59-cde4-4f11-b7f1-53b3fb69ec10) | shlwapi.h | [Vanara.PInvoke.ShlwApi.ColorAdjustLuma](https://github.com/dahall/Vanara/search?l=C%23&q=ColorAdjustLuma)  
+[ColorHLSToRGB](http://msdn2.microsoft.com/en-us/library/1bf0b337-01de-4ce3-851f-d845866fb46f) | shlwapi.h | [Vanara.PInvoke.ShlwApi.ColorHLSToRGB](https://github.com/dahall/Vanara/search?l=C%23&q=ColorHLSToRGB)  
+[ColorRGBToHLS](http://msdn2.microsoft.com/en-us/library/ed000f53-cc7e-4693-994c-a5dd7c789f1f) | shlwapi.h | [Vanara.PInvoke.ShlwApi.ColorRGBToHLS](https://github.com/dahall/Vanara/search?l=C%23&q=ColorRGBToHLS)  
+[ConnectToConnectionPoint](http://msdn2.microsoft.com/en-us/library/f0c6051e-cced-4f38-a35d-d4c184d39084) | shlwapi.h | [Vanara.PInvoke.ShlwApi.ConnectToConnectionPoint](https://github.com/dahall/Vanara/search?l=C%23&q=ConnectToConnectionPoint)  
+[GetAcceptLanguages](http://msdn2.microsoft.com/en-us/library/a680a7fd-f980-485d-b52a-eb4d482ebc17) | shlwapi.h | [Vanara.PInvoke.ShlwApi.GetAcceptLanguages](https://github.com/dahall/Vanara/search?l=C%23&q=GetAcceptLanguages)  
+[GetMenuPosFromID](http://msdn2.microsoft.com/en-us/library/25fb51bc-9b36-4afb-bb07-7bc455c7fbc4) | shlwapi.h | [Vanara.PInvoke.ShlwApi.GetMenuPosFromID](https://github.com/dahall/Vanara/search?l=C%23&q=GetMenuPosFromID)  
+[HashData](http://msdn2.microsoft.com/en-us/library/7b42b3ae-c021-49be-b5a7-d3bc0a5d346a) | shlwapi.h | [Vanara.PInvoke.ShlwApi.HashData](https://github.com/dahall/Vanara/search?l=C%23&q=HashData)  
+[IsCharSpace](http://msdn2.microsoft.com/en-us/library/40ccde4d-38e8-4c03-a826-b6c060037ae5) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IsCharSpace](https://github.com/dahall/Vanara/search?l=C%23&q=IsCharSpace)  
+[IsInternetESCEnabled](http://msdn2.microsoft.com/en-us/library/2f803b69-9734-484c-9392-a48e116cf506) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IsInternetESCEnabled](https://github.com/dahall/Vanara/search?l=C%23&q=IsInternetESCEnabled)  
+[IsOS](http://msdn2.microsoft.com/en-us/library/827a76bc-3581-4f1c-8095-8e2fd30dfdbc) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IsOS](https://github.com/dahall/Vanara/search?l=C%23&q=IsOS)  
+[IStream_Copy](http://msdn2.microsoft.com/en-us/library/7d6a1080-dad4-4821-8f2a-bd1e01ca10cf) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IStream_Copy](https://github.com/dahall/Vanara/search?l=C%23&q=IStream_Copy)  
+[IStream_Read](http://msdn2.microsoft.com/en-us/library/07a3a500-babb-458b-ba98-9344c63ea014) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IStream_Read](https://github.com/dahall/Vanara/search?l=C%23&q=IStream_Read)  
+[IStream_ReadPidl](http://msdn2.microsoft.com/en-us/library/63b1f842-139b-4558-8105-4986ce592b56) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IStream_ReadPidl](https://github.com/dahall/Vanara/search?l=C%23&q=IStream_ReadPidl)  
+[IStream_ReadStr](http://msdn2.microsoft.com/en-us/library/e3f140c4-4033-4c82-af2c-4a7744461920) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IStream_ReadStr](https://github.com/dahall/Vanara/search?l=C%23&q=IStream_ReadStr)  
+[IStream_Reset](http://msdn2.microsoft.com/en-us/library/1e7a881d-decb-4018-b2e8-e0cba454236d) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IStream_Reset](https://github.com/dahall/Vanara/search?l=C%23&q=IStream_Reset)  
+[IStream_Size](http://msdn2.microsoft.com/en-us/library/93c7c24d-6431-4859-b0b8-b36392bc5108) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IStream_Size](https://github.com/dahall/Vanara/search?l=C%23&q=IStream_Size)  
+[IStream_Write](http://msdn2.microsoft.com/en-us/library/fdcfdaf8-7fcb-433e-b3d4-98ca143fbe6b) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IStream_Write](https://github.com/dahall/Vanara/search?l=C%23&q=IStream_Write)  
+[IStream_WritePidl](http://msdn2.microsoft.com/en-us/library/29b6a42b-08bd-4b5f-92ad-a6456e7a6f98) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IStream_WritePidl](https://github.com/dahall/Vanara/search?l=C%23&q=IStream_WritePidl)  
+[IStream_WriteStr](http://msdn2.microsoft.com/en-us/library/13292ccd-fc0c-4230-a935-4d5aed8cec97) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IStream_WriteStr](https://github.com/dahall/Vanara/search?l=C%23&q=IStream_WriteStr)  
+[IUnknown_AtomicRelease](http://msdn2.microsoft.com/en-us/library/6bb3f9cf-bf28-4f94-8557-56c1952384ec) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IUnknown_AtomicRelease](https://github.com/dahall/Vanara/search?l=C%23&q=IUnknown_AtomicRelease)  
+[IUnknown_GetSite](http://msdn2.microsoft.com/en-us/library/95e83078-ab74-40d6-8e31-653e578770f2) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IUnknown_GetSite](https://github.com/dahall/Vanara/search?l=C%23&q=IUnknown_GetSite)  
+[IUnknown_GetWindow](http://msdn2.microsoft.com/en-us/library/f8a6f61f-bea3-4049-89fb-c33ef00b327f) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IUnknown_GetWindow](https://github.com/dahall/Vanara/search?l=C%23&q=IUnknown_GetWindow)  
+[IUnknown_QueryService](http://msdn2.microsoft.com/en-us/library/3e3f3ed0-ad36-40ef-b30c-8c85ff159f21) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IUnknown_QueryService](https://github.com/dahall/Vanara/search?l=C%23&q=IUnknown_QueryService)  
+[IUnknown_Set](http://msdn2.microsoft.com/en-us/library/b3c4bee2-12cb-483e-9a46-f09d63ae9a2e) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IUnknown_Set](https://github.com/dahall/Vanara/search?l=C%23&q=IUnknown_Set)  
+[IUnknown_SetSite](http://msdn2.microsoft.com/en-us/library/66175435-f85b-4e26-b148-f4edb74cb41d) | shlwapi.h | [Vanara.PInvoke.ShlwApi.IUnknown_SetSite](https://github.com/dahall/Vanara/search?l=C%23&q=IUnknown_SetSite)  
+[MLLoadLibrary](http://msdn2.microsoft.com/en-us/library/bb773822) | Shlwapi.h | [Vanara.PInvoke.ShlwApi.MLLoadLibrary](https://github.com/dahall/Vanara/search?l=C%23&q=MLLoadLibrary)  
+[ParseURL](http://msdn2.microsoft.com/en-us/library/3d42dad0-b9eb-4e40-afc8-68cb85b27504) | shlwapi.h | [Vanara.PInvoke.ShlwApi.ParseURL](https://github.com/dahall/Vanara/search?l=C%23&q=ParseURL)  
+[PathAddBackslash](http://msdn2.microsoft.com/en-us/library/27d8aec7-8b00-412a-9a42-8ce27e262781) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathAddBackslash](https://github.com/dahall/Vanara/search?l=C%23&q=PathAddBackslash)  
+[PathAddExtension](http://msdn2.microsoft.com/en-us/library/2c113d11-11d5-4362-bad5-c859d65aca2a) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathAddExtension](https://github.com/dahall/Vanara/search?l=C%23&q=PathAddExtension)  
+[PathAppend](http://msdn2.microsoft.com/en-us/library/896737ef-a05c-4f0f-b8b0-56355ae9c2d9) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathAppend](https://github.com/dahall/Vanara/search?l=C%23&q=PathAppend)  
+[PathBuildRoot](http://msdn2.microsoft.com/en-us/library/0a6895bd-54cf-499c-9057-f2d721bce5d9) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathBuildRoot](https://github.com/dahall/Vanara/search?l=C%23&q=PathBuildRoot)  
+[PathCanonicalize](http://msdn2.microsoft.com/en-us/library/e9b1e877-2cd6-4dd9-a15b-676cb940daed) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathCanonicalize](https://github.com/dahall/Vanara/search?l=C%23&q=PathCanonicalize)  
+[PathCombine](http://msdn2.microsoft.com/en-us/library/ed03334b-f688-4993-9685-092135ca29c9) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathCombine](https://github.com/dahall/Vanara/search?l=C%23&q=PathCombine)  
+[PathCommonPrefix](http://msdn2.microsoft.com/en-us/library/13c32b32-8541-41c4-82d8-48d3b2439f0c) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathCommonPrefix](https://github.com/dahall/Vanara/search?l=C%23&q=PathCommonPrefix)  
+[PathCompactPath](http://msdn2.microsoft.com/en-us/library/b8184c98-1f86-4714-baf8-af4ef3e71cf2) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathCompactPath](https://github.com/dahall/Vanara/search?l=C%23&q=PathCompactPath)  
+[PathCompactPathEx](http://msdn2.microsoft.com/en-us/library/ff108ee6-3d71-4ab2-a04a-d4bcce408f88) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathCompactPathEx](https://github.com/dahall/Vanara/search?l=C%23&q=PathCompactPathEx)  
+[PathCreateFromUrl](http://msdn2.microsoft.com/en-us/library/f4136c80-a309-4551-be73-f2f24ecd4675) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathCreateFromUrl](https://github.com/dahall/Vanara/search?l=C%23&q=PathCreateFromUrl)  
+[PathCreateFromUrlAlloc](http://msdn2.microsoft.com/en-us/library/274411cd-5922-4db8-8775-feb93cae32dd) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathCreateFromUrlAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=PathCreateFromUrlAlloc)  
+[PathFileExists](http://msdn2.microsoft.com/en-us/library/26d01e9f-cbf2-4e40-9970-a594879b424d) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathFileExists](https://github.com/dahall/Vanara/search?l=C%23&q=PathFileExists)  
+[PathFindExtension](http://msdn2.microsoft.com/en-us/library/afebd4b7-2685-4b6e-8f8a-d43944dacef5) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathFindExtension](https://github.com/dahall/Vanara/search?l=C%23&q=PathFindExtension)  
+[PathFindFileName](http://msdn2.microsoft.com/en-us/library/f3824dee-1169-4f89-9844-35aa8a1830c4) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathFindFileName](https://github.com/dahall/Vanara/search?l=C%23&q=PathFindFileName)  
+[PathFindNextComponent](http://msdn2.microsoft.com/en-us/library/2c76b901-dc0e-4f26-93c8-3c59b8f7147d) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathFindNextComponent](https://github.com/dahall/Vanara/search?l=C%23&q=PathFindNextComponent)  
+[PathFindOnPath](http://msdn2.microsoft.com/en-us/library/d9281eb2-39b7-444f-85b7-1e1e76c38ae2) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathFindOnPath](https://github.com/dahall/Vanara/search?l=C%23&q=PathFindOnPath)  
+[PathFindSuffixArray](http://msdn2.microsoft.com/en-us/library/e2285f7d-bb5d-48c5-bdf1-10ca410389f0) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathFindSuffixArray](https://github.com/dahall/Vanara/search?l=C%23&q=PathFindSuffixArray)  
+[PathGetArgs](http://msdn2.microsoft.com/en-us/library/17dfb601-1306-41b6-a504-8bf69ff204c9) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathGetArgs](https://github.com/dahall/Vanara/search?l=C%23&q=PathGetArgs)  
+[PathGetCharType](http://msdn2.microsoft.com/en-us/library/838a255f-413e-424c-819e-47265224208d) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathGetCharType](https://github.com/dahall/Vanara/search?l=C%23&q=PathGetCharType)  
+[PathGetDriveNumber](http://msdn2.microsoft.com/en-us/library/38914866-fdd4-47f2-b0e7-d09d1cfb0eee) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathGetDriveNumber](https://github.com/dahall/Vanara/search?l=C%23&q=PathGetDriveNumber)  
+[PathIsContentType](http://msdn2.microsoft.com/en-us/library/53eac496-9666-41fc-8682-f7b6583a62fe) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsContentType](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsContentType)  
+[PathIsDirectory](http://msdn2.microsoft.com/en-us/library/9af3e3da-6b3a-4e81-ba50-ff7aeeb73c44) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsDirectory)  
+[PathIsDirectoryEmpty](http://msdn2.microsoft.com/en-us/library/833fe68e-8b21-4819-8370-d1b5391a3080) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsDirectoryEmpty](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsDirectoryEmpty)  
+[PathIsFileSpec](http://msdn2.microsoft.com/en-us/library/c69d6cca-44e7-4792-8fb2-3c4ecd2e57f2) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsFileSpec](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsFileSpec)  
+[PathIsLFNFileSpec](http://msdn2.microsoft.com/en-us/library/599cb457-da72-4416-bfb7-5bc55a0eeb2d) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsLFNFileSpec](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsLFNFileSpec)  
+[PathIsNetworkPath](http://msdn2.microsoft.com/en-us/library/3a9c33bc-2325-4285-b6c3-4c3e1d323c1e) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsNetworkPath](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsNetworkPath)  
+[PathIsPrefix](http://msdn2.microsoft.com/en-us/library/b24f761e-6492-4a6d-9c7e-d5a5f2cbdaf3) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsPrefix](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsPrefix)  
+[PathIsRelative](http://msdn2.microsoft.com/en-us/library/ad36c277-645f-4c62-af7d-b75e29de573f) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsRelative](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsRelative)  
+[PathIsRoot](http://msdn2.microsoft.com/en-us/library/8586df98-91c4-49a6-9b07-7dceb8a63431) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsRoot](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsRoot)  
+[PathIsSameRoot](http://msdn2.microsoft.com/en-us/library/3409a8f1-e22c-4c13-961e-211a2d10fe10) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsSameRoot](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsSameRoot)  
+[PathIsSystemFolder](http://msdn2.microsoft.com/en-us/library/796901a8-1bc1-4fd1-b5b8-acd8f930ff14) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsSystemFolder](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsSystemFolder)  
+[PathIsUNC](http://msdn2.microsoft.com/en-us/library/53da5ba7-a2a4-45b2-90e0-ae006415933e) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsUNC](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsUNC)  
+[PathIsUNCServer](http://msdn2.microsoft.com/en-us/library/9158ceb6-dd20-4b1a-93d3-cf7a5a5c6c75) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsUNCServer](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsUNCServer)  
+[PathIsUNCServerShare](http://msdn2.microsoft.com/en-us/library/306cfc34-7cb2-4f60-af5c-8b567149c2fc) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsUNCServerShare](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsUNCServerShare)  
+[PathIsURL](http://msdn2.microsoft.com/en-us/library/8791bcd8-0d8f-4f7b-9c8e-59bcb95b5d19) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathIsURL](https://github.com/dahall/Vanara/search?l=C%23&q=PathIsURL)  
+[PathMakePretty](http://msdn2.microsoft.com/en-us/library/fb871054-4c63-42de-b85b-edefa4b09ea0) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathMakePretty](https://github.com/dahall/Vanara/search?l=C%23&q=PathMakePretty)  
+[PathMakeSystemFolder](http://msdn2.microsoft.com/en-us/library/5b0faeb8-f8ae-481b-b5b2-cae9efe638e5) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathMakeSystemFolder](https://github.com/dahall/Vanara/search?l=C%23&q=PathMakeSystemFolder)  
+[PathMatchSpec](http://msdn2.microsoft.com/en-us/library/908e7204-d168-4179-9c7b-ad46ba68bebc) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathMatchSpec](https://github.com/dahall/Vanara/search?l=C%23&q=PathMatchSpec)  
+[PathMatchSpecEx](http://msdn2.microsoft.com/en-us/library/bd9bf950-e349-4b67-8608-7acad84c0907) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathMatchSpecEx](https://github.com/dahall/Vanara/search?l=C%23&q=PathMatchSpecEx)  
+[PathParseIconLocation](http://msdn2.microsoft.com/en-us/library/1ded2f0f-0e11-4730-ab7b-16536e7f4435) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathParseIconLocation](https://github.com/dahall/Vanara/search?l=C%23&q=PathParseIconLocation)  
+[PathQuoteSpaces](http://msdn2.microsoft.com/en-us/library/76a51c21-b924-4919-a6bb-8c6bdec5b3f0) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathQuoteSpaces](https://github.com/dahall/Vanara/search?l=C%23&q=PathQuoteSpaces)  
+[PathRelativePathTo](http://msdn2.microsoft.com/en-us/library/7ed8d50a-2ad4-4ddf-941d-aea593341592) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathRelativePathTo](https://github.com/dahall/Vanara/search?l=C%23&q=PathRelativePathTo)  
+[PathRemoveArgs](http://msdn2.microsoft.com/en-us/library/430072bc-4ddc-4b3d-bf32-fb60d7b56faf) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathRemoveArgs](https://github.com/dahall/Vanara/search?l=C%23&q=PathRemoveArgs)  
+[PathRemoveBackslash](http://msdn2.microsoft.com/en-us/library/58d13c38-40aa-4aaa-81dc-2b68425f1fe0) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathRemoveBackslash](https://github.com/dahall/Vanara/search?l=C%23&q=PathRemoveBackslash)  
+[PathRemoveBlanks](http://msdn2.microsoft.com/en-us/library/0f496855-3ea7-4193-b895-fd4ea26ef6c5) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathRemoveBlanks](https://github.com/dahall/Vanara/search?l=C%23&q=PathRemoveBlanks)  
+[PathRemoveExtension](http://msdn2.microsoft.com/en-us/library/6e26d005-50af-4376-b734-19ba3d9c470f) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathRemoveExtension](https://github.com/dahall/Vanara/search?l=C%23&q=PathRemoveExtension)  
+[PathRemoveFileSpec](http://msdn2.microsoft.com/en-us/library/c47bcf8a-c59d-4d6a-81a9-a3960ae39867) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathRemoveFileSpec](https://github.com/dahall/Vanara/search?l=C%23&q=PathRemoveFileSpec)  
+[PathRenameExtension](http://msdn2.microsoft.com/en-us/library/3d94f67c-e3ee-4b64-b0b9-8f771423bdc5) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathRenameExtension](https://github.com/dahall/Vanara/search?l=C%23&q=PathRenameExtension)  
+[PathSearchAndQualify](http://msdn2.microsoft.com/en-us/library/90da281d-349a-460a-aa5a-14e3b4ced727) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathSearchAndQualify](https://github.com/dahall/Vanara/search?l=C%23&q=PathSearchAndQualify)  
+[PathSetDlgItemPath](http://msdn2.microsoft.com/en-us/library/05737525-d906-482c-847f-bdbf0ba0ce3d) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathSetDlgItemPath](https://github.com/dahall/Vanara/search?l=C%23&q=PathSetDlgItemPath)  
+[PathSkipRoot](http://msdn2.microsoft.com/en-us/library/528a3953-26d7-4fff-be31-9c9788d429ab) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathSkipRoot](https://github.com/dahall/Vanara/search?l=C%23&q=PathSkipRoot)  
+[PathStripPath](http://msdn2.microsoft.com/en-us/library/84b439f2-f570-4e7f-bc3f-e0fdd185ea15) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathStripPath](https://github.com/dahall/Vanara/search?l=C%23&q=PathStripPath)  
+[PathStripToRoot](http://msdn2.microsoft.com/en-us/library/ce9a1a40-2a03-44d2-80bc-0dc10654550b) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathStripToRoot](https://github.com/dahall/Vanara/search?l=C%23&q=PathStripToRoot)  
+[PathUndecorate](http://msdn2.microsoft.com/en-us/library/2d98ad60-8a7d-4b8d-9b5c-27e348bdc2c3) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathUndecorate](https://github.com/dahall/Vanara/search?l=C%23&q=PathUndecorate)  
+[PathUnExpandEnvStrings](http://msdn2.microsoft.com/en-us/library/cfab1ee0-03f3-4e0f-a29d-5331fec022b5) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathUnExpandEnvStrings](https://github.com/dahall/Vanara/search?l=C%23&q=PathUnExpandEnvStrings)  
+[PathUnmakeSystemFolder](http://msdn2.microsoft.com/en-us/library/9c748ed6-3ee6-4889-8fdd-b33ed9d711d0) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathUnmakeSystemFolder](https://github.com/dahall/Vanara/search?l=C%23&q=PathUnmakeSystemFolder)  
+[PathUnquoteSpaces](http://msdn2.microsoft.com/en-us/library/00474c95-ec59-489a-bee3-191b98a47567) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PathUnquoteSpaces](https://github.com/dahall/Vanara/search?l=C%23&q=PathUnquoteSpaces)  
+[QISearch](http://msdn2.microsoft.com/en-us/library/8429778b-bc9c-43f6-8d75-0fb78e36e790) | shlwapi.h | [Vanara.PInvoke.ShlwApi.QISearch](https://github.com/dahall/Vanara/search?l=C%23&q=QISearch)  
+[SHAllocShared](http://msdn2.microsoft.com/en-us/library/0388b6a0-24d9-48eb-bef2-3a1658d8bb3c) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHAllocShared](https://github.com/dahall/Vanara/search?l=C%23&q=SHAllocShared)  
+[SHAnsiToAnsi](http://msdn2.microsoft.com/en-us/library/e57142ca-3098-4118-aac0-89724f711872) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHAnsiToAnsi](https://github.com/dahall/Vanara/search?l=C%23&q=SHAnsiToAnsi)  
+[SHAnsiToUnicode](http://msdn2.microsoft.com/en-us/library/9578f26e-56ea-4f3b-b024-b2e285d0c4d2) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHAnsiToUnicode](https://github.com/dahall/Vanara/search?l=C%23&q=SHAnsiToUnicode)  
+[SHAutoComplete](http://msdn2.microsoft.com/en-us/library/b47efa8d-2118-4805-bb04-97bd143228dc) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHAutoComplete](https://github.com/dahall/Vanara/search?l=C%23&q=SHAutoComplete)  
+[SHCopyKey](http://msdn2.microsoft.com/en-us/library/52521ef4-fe59-4766-8828-acb557b0e968) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHCopyKey](https://github.com/dahall/Vanara/search?l=C%23&q=SHCopyKey)  
+[SHCreateMemStream](http://msdn2.microsoft.com/en-us/library/f3ae8241-f3a6-4007-a10f-ff05960c5de8) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHCreateMemStream](https://github.com/dahall/Vanara/search?l=C%23&q=SHCreateMemStream)  
+[SHCreateShellPalette](http://msdn2.microsoft.com/en-us/library/49afb04a-34e3-4696-a046-bc9308ae7adf) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHCreateShellPalette](https://github.com/dahall/Vanara/search?l=C%23&q=SHCreateShellPalette)  
+[SHCreateStreamOnFile](http://msdn2.microsoft.com/en-us/library/9b1fd6c4-d7b0-40b9-bc9f-ea062a1079c1) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHCreateStreamOnFile](https://github.com/dahall/Vanara/search?l=C%23&q=SHCreateStreamOnFile)  
+[SHCreateStreamOnFileEx](http://msdn2.microsoft.com/en-us/library/f948f7dd-987d-4c2d-b650-62081133c3f4) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHCreateStreamOnFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=SHCreateStreamOnFileEx)  
+[SHCreateThread](http://msdn2.microsoft.com/en-us/library/2140e396-29cd-4665-b684-337170570b73) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHCreateThread](https://github.com/dahall/Vanara/search?l=C%23&q=SHCreateThread)  
+[SHCreateThreadRef](http://msdn2.microsoft.com/en-us/library/6abca2df-832c-410b-93c7-5131e481e595) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHCreateThreadRef](https://github.com/dahall/Vanara/search?l=C%23&q=SHCreateThreadRef)  
+[SHCreateThreadWithHandle](http://msdn2.microsoft.com/en-us/library/22a3a97a-857f-46b8-a2e0-8f3a14f40322) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHCreateThreadWithHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SHCreateThreadWithHandle)  
+[SHDeleteEmptyKey](http://msdn2.microsoft.com/en-us/library/6a560bc3-f65e-4b7d-9fbc-b4f2971ce2a9) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHDeleteEmptyKey](https://github.com/dahall/Vanara/search?l=C%23&q=SHDeleteEmptyKey)  
+[SHDeleteKey](http://msdn2.microsoft.com/en-us/library/3c46db08-52d8-48fa-bda5-3c087908a1d3) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHDeleteKey](https://github.com/dahall/Vanara/search?l=C%23&q=SHDeleteKey)  
+[SHDeleteValue](http://msdn2.microsoft.com/en-us/library/54f3459b-486c-4907-84b1-39b1f8abb12d) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHDeleteValue](https://github.com/dahall/Vanara/search?l=C%23&q=SHDeleteValue)  
+[SHEnumKeyEx](http://msdn2.microsoft.com/en-us/library/51bf9cf7-87bc-407c-b2ee-18db3cdfe1dc) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHEnumKeyEx](https://github.com/dahall/Vanara/search?l=C%23&q=SHEnumKeyEx)  
+[SHEnumValue](http://msdn2.microsoft.com/en-us/library/bb0eaa07-5112-4ce3-8796-5439bd863226) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHEnumValue](https://github.com/dahall/Vanara/search?l=C%23&q=SHEnumValue)  
+[SHFormatDateTime](http://msdn2.microsoft.com/en-us/library/2208ed29-6029-4051-bdcc-885c42fe5c1b) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHFormatDateTime](https://github.com/dahall/Vanara/search?l=C%23&q=SHFormatDateTime)  
+[SHFreeShared](http://msdn2.microsoft.com/en-us/library/5a86ae5d-8caa-4126-a22e-bc3cc7df2381) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHFreeShared](https://github.com/dahall/Vanara/search?l=C%23&q=SHFreeShared)  
+[SHGetInverseCMAP](http://msdn2.microsoft.com/en-us/library/46d5ccd2-3c5d-431b-b27b-6a7a95043e0a) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHGetInverseCMAP](https://github.com/dahall/Vanara/search?l=C%23&q=SHGetInverseCMAP)  
+[SHGetThreadRef](http://msdn2.microsoft.com/en-us/library/307b284b-f493-4d24-a7be-17c150d62b34) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHGetThreadRef](https://github.com/dahall/Vanara/search?l=C%23&q=SHGetThreadRef)  
+[SHGetValue](http://msdn2.microsoft.com/en-us/library/8cca6bfe-d365-4d10-bc8d-f3bebefaad02) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHGetValue](https://github.com/dahall/Vanara/search?l=C%23&q=SHGetValue)  
+[SHGetViewStatePropertyBag](http://msdn2.microsoft.com/en-us/library/6852867a-30a5-4d4e-b790-3746104e3ed8) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHGetViewStatePropertyBag](https://github.com/dahall/Vanara/search?l=C%23&q=SHGetViewStatePropertyBag)  
+[SHIsChildOrSelf](http://msdn2.microsoft.com/en-us/library/bb773834) | Shlwapi.h | [Vanara.PInvoke.ShlwApi.SHIsChildOrSelf](https://github.com/dahall/Vanara/search?l=C%23&q=SHIsChildOrSelf)  
+[SHIsLowMemoryMachine](http://msdn2.microsoft.com/en-us/library/3a91156d-eef9-4d3c-9cb8-fd50bfa94354) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHIsLowMemoryMachine](https://github.com/dahall/Vanara/search?l=C%23&q=SHIsLowMemoryMachine)  
+[SHLoadIndirectString](http://msdn2.microsoft.com/en-us/library/f0265cd8-deb8-4bca-b379-39aff49c7df1) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHLoadIndirectString](https://github.com/dahall/Vanara/search?l=C%23&q=SHLoadIndirectString)  
+[SHLockShared](http://msdn2.microsoft.com/en-us/library/5b948044-6cec-4649-a266-21959154f999) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHLockShared](https://github.com/dahall/Vanara/search?l=C%23&q=SHLockShared)  
+[SHMessageBoxCheck](http://msdn2.microsoft.com/en-us/library/7e62cde0-2b9f-44d3-afb8-5df71f98453a) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHMessageBoxCheck](https://github.com/dahall/Vanara/search?l=C%23&q=SHMessageBoxCheck)  
+[SHOpenRegStream2](http://msdn2.microsoft.com/en-us/library/bb759879) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHOpenRegStream2](https://github.com/dahall/Vanara/search?l=C%23&q=SHOpenRegStream2)  
+[SHQueryInfoKey](http://msdn2.microsoft.com/en-us/library/dea535e7-5e61-4587-aa22-b1d62b76943a) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHQueryInfoKey](https://github.com/dahall/Vanara/search?l=C%23&q=SHQueryInfoKey)  
+[SHQueryValueEx](http://msdn2.microsoft.com/en-us/library/9969acae-5965-40fe-bde9-6de9ddf26bb8) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHQueryValueEx](https://github.com/dahall/Vanara/search?l=C%23&q=SHQueryValueEx)  
+[SHRegCloseUSKey](http://msdn2.microsoft.com/en-us/library/1e9900d6-8411-4e6b-a9c0-006f378a2625) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegCloseUSKey](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegCloseUSKey)  
+[SHRegCreateUSKey](http://msdn2.microsoft.com/en-us/library/10e3e31e-bff6-4260-95fa-2d750de16ab3) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegCreateUSKey](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegCreateUSKey)  
+[SHRegDeleteEmptyUSKey](http://msdn2.microsoft.com/en-us/library/adb09a2b-674c-472d-9f16-8e150476f1f5) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegDeleteEmptyUSKey](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegDeleteEmptyUSKey)  
+[SHRegDeleteUSValue](http://msdn2.microsoft.com/en-us/library/f70407af-d8ee-4333-be32-01887d4add4c) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegDeleteUSValue](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegDeleteUSValue)  
+[SHRegDuplicateHKey](http://msdn2.microsoft.com/en-us/library/73182aa9-0c4d-4723-ba3c-8bab6b51181b) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegDuplicateHKey](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegDuplicateHKey)  
+[SHRegEnumUSKey](http://msdn2.microsoft.com/en-us/library/9418ad45-f451-4976-afd7-fa1e0088038d) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegEnumUSKey](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegEnumUSKey)  
+[SHRegEnumUSValue](http://msdn2.microsoft.com/en-us/library/bb773520) | Shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegEnumUSValue](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegEnumUSValue)  
+[SHRegGetBoolUSValue](http://msdn2.microsoft.com/en-us/library/afd95ce4-0ced-48ce-814f-1d02d7913be5) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegGetBoolUSValue](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegGetBoolUSValue)  
+[SHRegGetBoolValueFromHKCUHKLM](http://msdn2.microsoft.com/en-us/library/05239aef-a6cf-426f-919e-08b70baee3f8) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegGetBoolValueFromHKCUHKLM](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegGetBoolValueFromHKCUHKLM)  
+[SHRegGetIntW](http://msdn2.microsoft.com/en-us/library/027e3470-46be-4d37-b815-e1fd550d0c60) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegGetIntW](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegGetIntW)  
+[SHRegGetPath](http://msdn2.microsoft.com/en-us/library/2874b868-33f9-4f20-9e0b-136125cf268c) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegGetPath](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegGetPath)  
+[SHRegGetUSValue](http://msdn2.microsoft.com/en-us/library/4d3b3bbe-dc2e-40c9-8ff1-0f9d2e323743) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegGetUSValue](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegGetUSValue)  
+[SHRegGetValue](http://msdn2.microsoft.com/en-us/library/5650eb4c-40fd-47d7-af76-2688d62d9bca) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegGetValue](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegGetValue)  
+[SHRegGetValueFromHKCUHKLM](http://msdn2.microsoft.com/en-us/library/5c4b13f4-0dd8-476e-9e89-ace23d541389) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegGetValueFromHKCUHKLM](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegGetValueFromHKCUHKLM)  
+[SHRegOpenUSKey](http://msdn2.microsoft.com/en-us/library/756430a9-a495-412e-95c3-a93222bc467a) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegOpenUSKey](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegOpenUSKey)  
+[SHRegQueryInfoUSKey](http://msdn2.microsoft.com/en-us/library/e47b4fad-50c7-43d7-82f2-6a835ac543f0) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegQueryInfoUSKey](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegQueryInfoUSKey)  
+[SHRegQueryUSValue](http://msdn2.microsoft.com/en-us/library/302a51b5-9cf9-46e5-908c-df0d3c31c91c) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegQueryUSValue](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegQueryUSValue)  
+[SHRegSetPath](http://msdn2.microsoft.com/en-us/library/3ee6ec69-5d16-4bdd-a591-651af05bf944) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegSetPath](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegSetPath)  
+[SHRegSetUSValue](http://msdn2.microsoft.com/en-us/library/96559f8c-8527-4924-928e-f27049069407) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegSetUSValue](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegSetUSValue)  
+[SHRegWriteUSValue](http://msdn2.microsoft.com/en-us/library/f94569c6-415b-4263-bab4-8a5baca47901) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHRegWriteUSValue](https://github.com/dahall/Vanara/search?l=C%23&q=SHRegWriteUSValue)  
+[SHReleaseThreadRef](http://msdn2.microsoft.com/en-us/library/7f3fd09b-baad-4019-a060-c68727aee61f) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHReleaseThreadRef](https://github.com/dahall/Vanara/search?l=C%23&q=SHReleaseThreadRef)  
+[SHSendMessageBroadcast](http://msdn2.microsoft.com/en-us/library/98671f0f-2386-486f-ac96-14dd44c776c6) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHSendMessageBroadcast](https://github.com/dahall/Vanara/search?l=C%23&q=SHSendMessageBroadcast)  
+[SHSetThreadRef](http://msdn2.microsoft.com/en-us/library/1d0d70ca-a0e6-4620-9a01-8d4986990b9c) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHSetThreadRef](https://github.com/dahall/Vanara/search?l=C%23&q=SHSetThreadRef)  
+[SHSetValue](http://msdn2.microsoft.com/en-us/library/6cd5b7fd-8fb9-4c24-9670-20c23ca709bf) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHSetValue](https://github.com/dahall/Vanara/search?l=C%23&q=SHSetValue)  
+[SHSkipJunction](http://msdn2.microsoft.com/en-us/library/73af64a4-57eb-43db-91bb-75fe7134ad28) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHSkipJunction](https://github.com/dahall/Vanara/search?l=C%23&q=SHSkipJunction)  
+[SHStrDup](http://msdn2.microsoft.com/en-us/library/6f014fb4-7637-48a8-9bec-d3278c46a6d8) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHStrDup](https://github.com/dahall/Vanara/search?l=C%23&q=SHStrDup)  
+[SHStripMneumonic](http://msdn2.microsoft.com/en-us/library/25479814-825a-4af2-8751-b35cf39bbb80) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHStripMneumonic](https://github.com/dahall/Vanara/search?l=C%23&q=SHStripMneumonic)  
+[SHUnicodeToAnsi](http://msdn2.microsoft.com/en-us/library/f0db3976-9956-418f-8432-7755b140050f) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHUnicodeToAnsi](https://github.com/dahall/Vanara/search?l=C%23&q=SHUnicodeToAnsi)  
+[SHUnicodeToUnicode](http://msdn2.microsoft.com/en-us/library/1a208c2d-e627-4aac-9a28-b579c734a2a8) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHUnicodeToUnicode](https://github.com/dahall/Vanara/search?l=C%23&q=SHUnicodeToUnicode)  
+[SHUnlockShared](http://msdn2.microsoft.com/en-us/library/8ecbf62b-fd0d-4a8d-bd55-42c0c3f64390) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHUnlockShared](https://github.com/dahall/Vanara/search?l=C%23&q=SHUnlockShared)  
+[StrCatBuff](http://msdn2.microsoft.com/en-us/library/ce8c002f-f4f8-4b5f-a9e2-7bcd21f8808c) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCatBuff](https://github.com/dahall/Vanara/search?l=C%23&q=StrCatBuff)  
+[StrCatChainW](http://msdn2.microsoft.com/en-us/library/8df35616-f6f3-45eb-9a83-89fc84938fd7) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCatChainW](https://github.com/dahall/Vanara/search?l=C%23&q=StrCatChainW)  
+[StrCatW](http://msdn2.microsoft.com/en-us/library/fd357462-83be-42a8-9f39-1e023bd5f86e) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCatW](https://github.com/dahall/Vanara/search?l=C%23&q=StrCatW)  
+[StrChr](http://msdn2.microsoft.com/en-us/library/3e4c20cb-0b46-4f84-bbd1-860fdedde8c8) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrChr](https://github.com/dahall/Vanara/search?l=C%23&q=StrChr)  
+[StrChrI](http://msdn2.microsoft.com/en-us/library/bad606d2-e337-42b5-853e-c7afa8d3d71b) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrChrI](https://github.com/dahall/Vanara/search?l=C%23&q=StrChrI)  
+[StrChrNIW](http://msdn2.microsoft.com/en-us/library/01F2CC10-F59A-45dd-8A18-7DC33BDD717F) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrChrNIW](https://github.com/dahall/Vanara/search?l=C%23&q=StrChrNIW)  
+[StrChrNW](http://msdn2.microsoft.com/en-us/library/f90470c3-62db-4fbb-a045-8fdd300a6aa4) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrChrNW](https://github.com/dahall/Vanara/search?l=C%23&q=StrChrNW)  
+[StrCmpC](http://msdn2.microsoft.com/en-us/library/f4c4bc76-1e42-4cb0-bf74-d395743c9b1c) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCmpC](https://github.com/dahall/Vanara/search?l=C%23&q=StrCmpC)  
+[StrCmpIC](http://msdn2.microsoft.com/en-us/library/3f6d1ca1-fbd2-4ce2-b6d4-c3dfb37f1f87) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCmpIC](https://github.com/dahall/Vanara/search?l=C%23&q=StrCmpIC)  
+[StrCmpIW](http://msdn2.microsoft.com/en-us/library/d059b6bd-8f03-4273-aa7a-b8b07f84d268) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCmpIW](https://github.com/dahall/Vanara/search?l=C%23&q=StrCmpIW)  
+[StrCmpLogicalW](http://msdn2.microsoft.com/en-us/library/013c6db3-7d14-44ef-89af-b3aac28f4e3f) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCmpLogicalW](https://github.com/dahall/Vanara/search?l=C%23&q=StrCmpLogicalW)  
+[StrCmpN](http://msdn2.microsoft.com/en-us/library/e2d97502-1819-463e-a56a-2d22b33502b7) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCmpN](https://github.com/dahall/Vanara/search?l=C%23&q=StrCmpN)  
+[StrCmpNC](http://msdn2.microsoft.com/en-us/library/4b4f18d3-9325-4bd9-ac65-af7f3012fdaa) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCmpNC](https://github.com/dahall/Vanara/search?l=C%23&q=StrCmpNC)  
+[StrCmpNI](http://msdn2.microsoft.com/en-us/library/c6657bd5-21b6-457c-9ed0-45e44b2571ba) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCmpNI](https://github.com/dahall/Vanara/search?l=C%23&q=StrCmpNI)  
+[StrCmpNIC](http://msdn2.microsoft.com/en-us/library/ed2e7df9-7f36-4566-8a3e-e3517307a584) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCmpNIC](https://github.com/dahall/Vanara/search?l=C%23&q=StrCmpNIC)  
+[StrCmpW](http://msdn2.microsoft.com/en-us/library/12530a04-776c-4506-86d1-07e2c3569a36) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCmpW](https://github.com/dahall/Vanara/search?l=C%23&q=StrCmpW)  
+[StrCpyNW](http://msdn2.microsoft.com/en-us/library/7e21414d-0d82-40b9-b32f-5eaf351166da) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCpyNW](https://github.com/dahall/Vanara/search?l=C%23&q=StrCpyNW)  
+[StrCpyW](http://msdn2.microsoft.com/en-us/library/83d1a8dc-fc43-4b06-b36c-c9c91d779d25) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCpyW](https://github.com/dahall/Vanara/search?l=C%23&q=StrCpyW)  
+[StrCSpn](http://msdn2.microsoft.com/en-us/library/24e9ec52-a5d7-4220-8e71-f850b53c49dd) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCSpn](https://github.com/dahall/Vanara/search?l=C%23&q=StrCSpn)  
+[StrCSpnI](http://msdn2.microsoft.com/en-us/library/d21eb80b-5f02-4eb7-9a22-02425b7050b3) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrCSpnI](https://github.com/dahall/Vanara/search?l=C%23&q=StrCSpnI)  
+[StrDup](http://msdn2.microsoft.com/en-us/library/fa77f0b3-8a9b-4221-87e3-9aebff4409fb) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrDup](https://github.com/dahall/Vanara/search?l=C%23&q=StrDup)  
+[StrFormatByteSize](http://msdn2.microsoft.com/en-us/library/244f93cb-0976-4a31-958c-ae0ed81c1dcf) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrFormatByteSizeA](https://github.com/dahall/Vanara/search?l=C%23&q=StrFormatByteSizeA)  
+[StrFormatByteSize64A](http://msdn2.microsoft.com/en-us/library/b56dd90a-7033-409b-a8ea-e81a7a8a2342) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrFormatByteSize64A](https://github.com/dahall/Vanara/search?l=C%23&q=StrFormatByteSize64A)  
+[StrFormatByteSizeEx](http://msdn2.microsoft.com/en-us/library/9ecc6427-e7bb-43ec-ab78-665ef52f8b10) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrFormatByteSizeEx](https://github.com/dahall/Vanara/search?l=C%23&q=StrFormatByteSizeEx)  
+[StrFormatKBSize](http://msdn2.microsoft.com/en-us/library/029c2eb8-3bcd-4302-8894-be2dbe430426) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrFormatKBSize](https://github.com/dahall/Vanara/search?l=C%23&q=StrFormatKBSize)  
+[StrFromTimeInterval](http://msdn2.microsoft.com/en-us/library/e2a9492f-acfa-4cbd-8426-895e361f0174) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrFromTimeInterval](https://github.com/dahall/Vanara/search?l=C%23&q=StrFromTimeInterval)  
+[StrIsIntlEqual](http://msdn2.microsoft.com/en-us/library/02c66644-8aab-4ddd-a3ab-d52aeaa900a3) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrIsIntlEqual](https://github.com/dahall/Vanara/search?l=C%23&q=StrIsIntlEqual)  
+[StrNCat](http://msdn2.microsoft.com/en-us/library/28099350-5759-4595-8353-3452c5cf6ca8) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrNCat](https://github.com/dahall/Vanara/search?l=C%23&q=StrNCat)  
+[StrPBrk](http://msdn2.microsoft.com/en-us/library/116c0791-33dd-4c3f-b8a4-a7df91fc5f6a) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrPBrk](https://github.com/dahall/Vanara/search?l=C%23&q=StrPBrk)  
+[StrRChr](http://msdn2.microsoft.com/en-us/library/7f1e91ad-aaa0-4449-834e-8e309c88d6b1) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrRChr](https://github.com/dahall/Vanara/search?l=C%23&q=StrRChr)  
+[StrRChrI](http://msdn2.microsoft.com/en-us/library/3dc39c2a-d621-4f46-b65b-eb8a531e5abe) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrRChrI](https://github.com/dahall/Vanara/search?l=C%23&q=StrRChrI)  
+[StrRetToBSTR](http://msdn2.microsoft.com/en-us/library/2a5a9a2b-74df-4521-a5b2-8fc91c3559eb) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrRetToBSTR](https://github.com/dahall/Vanara/search?l=C%23&q=StrRetToBSTR)  
+[StrRetToBuf](http://msdn2.microsoft.com/en-us/library/89dab3ee-e9f8-499a-97ec-6fe732315891) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrRetToBuf](https://github.com/dahall/Vanara/search?l=C%23&q=StrRetToBuf)  
+[StrRetToStr](http://msdn2.microsoft.com/en-us/library/03b0dffb-8ef7-41da-9773-81ed55275802) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrRetToStr](https://github.com/dahall/Vanara/search?l=C%23&q=StrRetToStr)  
+[StrRStrI](http://msdn2.microsoft.com/en-us/library/41057976-6443-40dc-96f7-f2cbd5d494de) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrRStrI](https://github.com/dahall/Vanara/search?l=C%23&q=StrRStrI)  
+[StrSpn](http://msdn2.microsoft.com/en-us/library/1a57da7f-76e7-49f2-aa31-50c224376e95) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrSpn](https://github.com/dahall/Vanara/search?l=C%23&q=StrSpn)  
+[StrStr](http://msdn2.microsoft.com/en-us/library/b1de5007-6773-4dea-8a15-ccd5f6924a13) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrStr](https://github.com/dahall/Vanara/search?l=C%23&q=StrStr)  
+[StrStrI](http://msdn2.microsoft.com/en-us/library/b0281641-1375-4815-a707-03e1ce7e5a29) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrStrI](https://github.com/dahall/Vanara/search?l=C%23&q=StrStrI)  
+[StrStrNIW](http://msdn2.microsoft.com/en-us/library/743f74f6-a0a6-4c03-b3bf-7f819bbc665f) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrStrNIW](https://github.com/dahall/Vanara/search?l=C%23&q=StrStrNIW)  
+[StrStrNW](http://msdn2.microsoft.com/en-us/library/e7aac4c7-b2d5-43d8-97f5-1b11ebb24ee1) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrStrNW](https://github.com/dahall/Vanara/search?l=C%23&q=StrStrNW)  
+[StrToInt](http://msdn2.microsoft.com/en-us/library/74313e56-a820-4d02-91f4-f629d2fc72d4) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrToInt](https://github.com/dahall/Vanara/search?l=C%23&q=StrToInt)  
+[StrToInt64Ex](http://msdn2.microsoft.com/en-us/library/8ea04c9f-6485-4931-a5d5-b22eb6681bd1) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrToInt64Ex](https://github.com/dahall/Vanara/search?l=C%23&q=StrToInt64Ex)  
+[StrToIntEx](http://msdn2.microsoft.com/en-us/library/2e8286c7-585f-441b-904b-f3b4e8cf95f9) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrToIntEx](https://github.com/dahall/Vanara/search?l=C%23&q=StrToIntEx)  
+[StrTrim](http://msdn2.microsoft.com/en-us/library/aea422b9-326e-4b12-b2a9-7c220677a467) | shlwapi.h | [Vanara.PInvoke.ShlwApi.StrTrim](https://github.com/dahall/Vanara/search?l=C%23&q=StrTrim)  
+[UrlApplyScheme](http://msdn2.microsoft.com/en-us/library/af60643e-b1a4-4013-b116-dd9fad4e90bf) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlApplyScheme](https://github.com/dahall/Vanara/search?l=C%23&q=UrlApplyScheme)  
+[UrlCanonicalize](http://msdn2.microsoft.com/en-us/library/70802745-0611-4d37-800e-b50d5ea23426) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlCanonicalize](https://github.com/dahall/Vanara/search?l=C%23&q=UrlCanonicalize)  
+[UrlCombine](http://msdn2.microsoft.com/en-us/library/f574d365-1ab9-4de4-84fe-17820c327ccf) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlCombine](https://github.com/dahall/Vanara/search?l=C%23&q=UrlCombine)  
+[UrlCompare](http://msdn2.microsoft.com/en-us/library/d5c9e003-b85b-4f9f-b231-e3e4b71d4ce6) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlCompare](https://github.com/dahall/Vanara/search?l=C%23&q=UrlCompare)  
+[UrlCreateFromPath](http://msdn2.microsoft.com/en-us/library/b69ab203-daab-4951-b3b9-c5ca37c532b3) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlCreateFromPath](https://github.com/dahall/Vanara/search?l=C%23&q=UrlCreateFromPath)  
+[UrlEscape](http://msdn2.microsoft.com/en-us/library/52ee1501-2cd4-4193-8363-0af91673ec88) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlEscape](https://github.com/dahall/Vanara/search?l=C%23&q=UrlEscape)  
+[UrlFixupW](http://msdn2.microsoft.com/en-us/library/3750d027-847f-4f33-851d-a10be7562bcb) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlFixupW](https://github.com/dahall/Vanara/search?l=C%23&q=UrlFixupW)  
+[UrlGetLocation](http://msdn2.microsoft.com/en-us/library/e75bde92-2ca0-4d34-a276-50b4eeceda1c) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlGetLocation](https://github.com/dahall/Vanara/search?l=C%23&q=UrlGetLocation)  
+[UrlGetPart](http://msdn2.microsoft.com/en-us/library/5f43dedd-c543-46b2-b90e-f0af576d2605) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlGetPart](https://github.com/dahall/Vanara/search?l=C%23&q=UrlGetPart)  
+[UrlHash](http://msdn2.microsoft.com/en-us/library/9c0ce709-e097-4501-bee1-b24df9d4828d) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlHash](https://github.com/dahall/Vanara/search?l=C%23&q=UrlHash)  
+[UrlIs](http://msdn2.microsoft.com/en-us/library/2e83c953-b4c5-4411-90ca-49ffb94ee374) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlIs](https://github.com/dahall/Vanara/search?l=C%23&q=UrlIs)  
+[UrlIsNoHistory](http://msdn2.microsoft.com/en-us/library/7602d2ef-1f21-4b2f-8ac9-195bb21d6ae7) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlIsNoHistory](https://github.com/dahall/Vanara/search?l=C%23&q=UrlIsNoHistory)  
+[UrlIsOpaque](http://msdn2.microsoft.com/en-us/library/460f4d41-2796-496d-9199-f2d1cd6e4a24) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlIsOpaque](https://github.com/dahall/Vanara/search?l=C%23&q=UrlIsOpaque)  
+[UrlUnescape](http://msdn2.microsoft.com/en-us/library/5bff5161-3b57-4f12-b126-42eac3f60267) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlUnescape](https://github.com/dahall/Vanara/search?l=C%23&q=UrlUnescape)  
+[WhichPlatform](http://msdn2.microsoft.com/en-us/library/14af733b-81b4-40a2-b93b-6f387b181f12) | shlwapi.h | [Vanara.PInvoke.ShlwApi.WhichPlatform](https://github.com/dahall/Vanara/search?l=C%23&q=WhichPlatform)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[HUSKEY](https://www.google.com/search?num=5&q=HUSKEY+site%3Amicrosoft.com) |  | Vanara.PInvoke.ShlwApi+HUSKEY  
-[PARSEDURL](http://msdn2.microsoft.com/en-us/library/9092dd7a-ff5b-465f-a808-ef4e0067f540) | shlwapi.h | Vanara.PInvoke.ShlwApi+PARSEDURL  
-[QITAB](http://msdn2.microsoft.com/en-us/library/3a055773-6e53-45e1-8936-011a8b2b8b16) | shlwapi.h | Vanara.PInvoke.ShlwApi+QITAB  
+[HUSKEY](https://www.google.com/search?num=5&q=HUSKEY+site%3Amicrosoft.com) |  | [Vanara.PInvoke.ShlwApi.HUSKEY](https://github.com/dahall/Vanara/search?l=C%23&q=HUSKEY)  
+[PARSEDURL](http://msdn2.microsoft.com/en-us/library/9092dd7a-ff5b-465f-a808-ef4e0067f540) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PARSEDURL](https://github.com/dahall/Vanara/search?l=C%23&q=PARSEDURL)  
+[QITAB](http://msdn2.microsoft.com/en-us/library/3a055773-6e53-45e1-8936-011a8b2b8b16) | shlwapi.h | [Vanara.PInvoke.ShlwApi.QITAB](https://github.com/dahall/Vanara/search?l=C%23&q=QITAB)  
 ### Interfaces  
-Native Interface | Native DLL | Header | Managed Interface  
---- | --- | --- | ---  
-[IQueryAssociations](http://msdn2.microsoft.com/en-us/library/bb761400) | Shlwapi.h | Vanara.PInvoke.ShlwApi+IQueryAssociations  
+Native Interface | Header | Managed Interface  
+--- | --- | ---  
+[IQueryAssociations](http://msdn2.microsoft.com/en-us/library/bb761400) | Shlwapi.h | [Vanara.PInvoke.ShlwApi.IQueryAssociations](https://github.com/dahall/Vanara/search?l=C%23&q=IQueryAssociations)  

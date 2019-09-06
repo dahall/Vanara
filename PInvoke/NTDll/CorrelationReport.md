@@ -1,505 +1,505 @@
 ## Correlation report for ntdll.dll  
 ### Methods (4% complete)  
-Native Method | Native DLL | Header | Managed Method  
---- | --- | --- | ---  
-[_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Amicrosoft.com) | ntdll.dll |  |   
-[DbgBreakPoint](http://msdn2.microsoft.com/en-us/library/deeac910-2cc3-4a54-bf3b-aeb56d0004dc) | ntdll.dll | wdm.h | Vanara.PInvoke.NtDll.DbgBreakPoint  
-[DbgPrint](https://www.google.com/search?num=5&q=DbgPrint+site%3Amicrosoft.com) | ntdll.dll |  |   
-[DbgPrintEx](https://www.google.com/search?num=5&q=DbgPrintEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[DbgPrompt](http://msdn2.microsoft.com/en-us/library/4bb44aab-7032-4cc7-89e3-6ac3bee233d3) | ntdll.dll | ntddk.h | Vanara.PInvoke.NtDll.DbgPrompt  
-[EtwCheckCoverage](https://www.google.com/search?num=5&q=EtwCheckCoverage+site%3Amicrosoft.com) | ntdll.dll |  |   
-[LdrCallEnclave](https://www.google.com/search?num=5&q=LdrCallEnclave+site%3Amicrosoft.com) | ntdll.dll |  |   
-[LdrControlFlowGuardEnforced](https://www.google.com/search?num=5&q=LdrControlFlowGuardEnforced+site%3Amicrosoft.com) | ntdll.dll |  |   
-[LdrCreateEnclave](https://www.google.com/search?num=5&q=LdrCreateEnclave+site%3Amicrosoft.com) | ntdll.dll |  |   
-[LdrDeleteEnclave](https://www.google.com/search?num=5&q=LdrDeleteEnclave+site%3Amicrosoft.com) | ntdll.dll |  |   
-[LdrFastFailInLoaderCallout](http://msdn2.microsoft.com/en-us/library/5C10BF04-B7C7-4481-A184-FDD418FE5F52) | ntdll.dll | ntldr.h | Vanara.PInvoke.NtDll.LdrFastFailInLoaderCallout  
-[LdrInitializeEnclave](https://www.google.com/search?num=5&q=LdrInitializeEnclave+site%3Amicrosoft.com) | ntdll.dll |  |   
-[LdrLoadEnclaveModule](https://www.google.com/search?num=5&q=LdrLoadEnclaveModule+site%3Amicrosoft.com) | ntdll.dll |  |   
-[LdrRegisterDllNotification](http://msdn2.microsoft.com/en-us/library/c2757aa0-76fa-427a-a4f6-cb26e7f7d0d1) | ntdll.dll |  | Vanara.PInvoke.NtDll.LdrRegisterDllNotification  
-[LdrUnregisterDllNotification](http://msdn2.microsoft.com/en-us/library/18c3a027-e3cb-4083-afdc-00f416a70d8c) | ntdll.dll | ntldr.h | Vanara.PInvoke.NtDll.LdrUnregisterDllNotification  
-[NtAllocateVirtualMemory](http://msdn2.microsoft.com/en-us/library/bb82c90d-9bd3-4a23-b171-06a3208e424b) | ntdll.dll | ntifs.h | Vanara.PInvoke.NtDll.NtAllocateVirtualMemory  
-[NtAllocateVirtualMemoryEx](https://www.google.com/search?num=5&q=NtAllocateVirtualMemoryEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtCallEnclave](https://www.google.com/search?num=5&q=NtCallEnclave+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtClose](https://www.google.com/search?num=5&q=NtClose+site%3Amicrosoft.com) | ntdll.dll | winternl.h | Vanara.PInvoke.NtDll.NtClose  
-[NtCommitComplete](http://msdn2.microsoft.com/en-us/library/d0b968bc-bbab-4b6f-bb1f-9e36ac7c1e05) | ntdll.dll | wdm.h | Vanara.PInvoke.NtDll.NtCommitComplete  
-[NtCommitEnlistment](http://msdn2.microsoft.com/en-us/library/9c7f3e24-1d7c-450e-bbef-df0479911bc6) | ntdll.dll | wdm.h | Vanara.PInvoke.NtDll.NtCommitEnlistment  
-[NtCommitTransaction](http://msdn2.microsoft.com/en-us/library/145646f3-ff90-41d6-bf76-947cdf93b489) | ntdll.dll | wdm.h | Vanara.PInvoke.NtDll.NtCommitTransaction  
-[NtCompareTokens](http://msdn2.microsoft.com/en-us/library/3a07ddc6-9748-4f96-a597-2af6b4282e56) | ntdll.dll |  | Vanara.PInvoke.NtDll.NtCompareTokens  
-[NtCreateEnlistment](http://msdn2.microsoft.com/en-us/library/5ffd8262-10b3-4c40-bd3e-050271338508) | ntdll.dll | wdm.h | Vanara.PInvoke.NtDll.NtCreateEnlistment  
-[NtCreateFile](https://www.google.com/search?num=5&q=NtCreateFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtCreateFileA](http://msdn2.microsoft.com/en-us/library/c40b99be-5627-44f3-9853-c3ae31a8035c) | ntdll.dll | ntifs.h | Vanara.PInvoke.NtDll.NtCreateFile  
-[NtCreateFileW](http://msdn2.microsoft.com/en-us/library/c40b99be-5627-44f3-9853-c3ae31a8035c) | ntdll.dll | ntifs.h | Vanara.PInvoke.NtDll.NtCreateFile  
-[NtCreateResourceManager](http://msdn2.microsoft.com/en-us/library/4812eeb4-134f-4ecb-870b-dbab04c1137b) | ntdll.dll | wdm.h | Vanara.PInvoke.NtDll.NtCreateResourceManager  
-[NtCreateSection](https://www.google.com/search?num=5&q=NtCreateSection+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtCreateSectionA](http://msdn2.microsoft.com/en-us/library/805d7eff-19be-47a1-acc9-1b97e5493031) | ntdll.dll | ntifs.h | Vanara.PInvoke.NtDll.NtCreateSection  
-[NtCreateSectionW](http://msdn2.microsoft.com/en-us/library/805d7eff-19be-47a1-acc9-1b97e5493031) | ntdll.dll | ntifs.h | Vanara.PInvoke.NtDll.NtCreateSection  
-[NtCreateTransaction](https://www.google.com/search?num=5&q=NtCreateTransaction+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtCreateTransactionA](http://msdn2.microsoft.com/en-us/library/b4c2dd68-3c1a-46d3-ab9c-be2291ed80f4) | ntdll.dll | wdm.h | Vanara.PInvoke.NtDll.NtCreateTransaction  
-[NtCreateTransactionManager](https://www.google.com/search?num=5&q=NtCreateTransactionManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtCreateTransactionManagerA](http://msdn2.microsoft.com/en-us/library/9c9f0a8b-7add-4ab1-835d-39f508ce32a9) | ntdll.dll | wdm.h | Vanara.PInvoke.NtDll.NtCreateTransactionManager  
-[NtCreateTransactionManagerW](http://msdn2.microsoft.com/en-us/library/9c9f0a8b-7add-4ab1-835d-39f508ce32a9) | ntdll.dll | wdm.h | Vanara.PInvoke.NtDll.NtCreateTransactionManager  
-[NtCreateTransactionW](http://msdn2.microsoft.com/en-us/library/b4c2dd68-3c1a-46d3-ab9c-be2291ed80f4) | ntdll.dll | wdm.h | Vanara.PInvoke.NtDll.NtCreateTransaction  
-[NtDeviceIoControlFile](https://www.google.com/search?num=5&q=NtDeviceIoControlFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtDuplicateToken](https://www.google.com/search?num=5&q=NtDuplicateToken+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtEnumerateTransactionObject](https://www.google.com/search?num=5&q=NtEnumerateTransactionObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtFlushBuffersFileEx](https://www.google.com/search?num=5&q=NtFlushBuffersFileEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtFreeVirtualMemory](https://www.google.com/search?num=5&q=NtFreeVirtualMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtFsControlFile](https://www.google.com/search?num=5&q=NtFsControlFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtGetCurrentProcessorNumber](https://www.google.com/search?num=5&q=NtGetCurrentProcessorNumber+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtGetNotificationResourceManager](https://www.google.com/search?num=5&q=NtGetNotificationResourceManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtLockFile](https://www.google.com/search?num=5&q=NtLockFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtMapViewOfSectionEx](https://www.google.com/search?num=5&q=NtMapViewOfSectionEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtNotifyChangeDirectoryFileEx](https://www.google.com/search?num=5&q=NtNotifyChangeDirectoryFileEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtNotifyChangeMultipleKeys](https://www.google.com/search?num=5&q=NtNotifyChangeMultipleKeys+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtOpenDirectoryObject](https://www.google.com/search?num=5&q=NtOpenDirectoryObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtOpenEnlistment](https://www.google.com/search?num=5&q=NtOpenEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtOpenFile](https://www.google.com/search?num=5&q=NtOpenFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtOpenProcess](https://www.google.com/search?num=5&q=NtOpenProcess+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtOpenProcessTokenEx](https://www.google.com/search?num=5&q=NtOpenProcessTokenEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtOpenResourceManager](https://www.google.com/search?num=5&q=NtOpenResourceManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtOpenSymbolicLinkObject](https://www.google.com/search?num=5&q=NtOpenSymbolicLinkObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtOpenThread](https://www.google.com/search?num=5&q=NtOpenThread+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtOpenThreadTokenEx](https://www.google.com/search?num=5&q=NtOpenThreadTokenEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtOpenTransaction](https://www.google.com/search?num=5&q=NtOpenTransaction+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtOpenTransactionManager](https://www.google.com/search?num=5&q=NtOpenTransactionManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtPowerInformation](https://www.google.com/search?num=5&q=NtPowerInformation+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtPrepareComplete](https://www.google.com/search?num=5&q=NtPrepareComplete+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtPrepareEnlistment](https://www.google.com/search?num=5&q=NtPrepareEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtPrePrepareComplete](https://www.google.com/search?num=5&q=NtPrePrepareComplete+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtPrePrepareEnlistment](https://www.google.com/search?num=5&q=NtPrePrepareEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtProtectVirtualMemory](https://www.google.com/search?num=5&q=NtProtectVirtualMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryAttributesFile](https://www.google.com/search?num=5&q=NtQueryAttributesFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryDirectoryFile](https://www.google.com/search?num=5&q=NtQueryDirectoryFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryDirectoryFileEx](https://www.google.com/search?num=5&q=NtQueryDirectoryFileEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryInformationEnlistment](https://www.google.com/search?num=5&q=NtQueryInformationEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryInformationFile](https://www.google.com/search?num=5&q=NtQueryInformationFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryInformationProcess](https://www.google.com/search?num=5&q=NtQueryInformationProcess+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryInformationResourceManager](https://www.google.com/search?num=5&q=NtQueryInformationResourceManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryInformationThread](https://www.google.com/search?num=5&q=NtQueryInformationThread+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryInformationToken](https://www.google.com/search?num=5&q=NtQueryInformationToken+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryInformationTransaction](https://www.google.com/search?num=5&q=NtQueryInformationTransaction+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryInformationTransactionManager](https://www.google.com/search?num=5&q=NtQueryInformationTransactionManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryKey](http://msdn2.microsoft.com/en-us/library/3b2d3a8b-a21f-4067-a1f0-9aa66c1973f5) | ntdll.dll | wdm.h | Vanara.PInvoke.NtDll.NtQueryKey  
-[NtQueryMultipleValueKey](https://www.google.com/search?num=5&q=NtQueryMultipleValueKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryObject](https://www.google.com/search?num=5&q=NtQueryObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryPerformanceCounter](https://www.google.com/search?num=5&q=NtQueryPerformanceCounter+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryQuotaInformationFile](https://www.google.com/search?num=5&q=NtQueryQuotaInformationFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQuerySecurityObject](https://www.google.com/search?num=5&q=NtQuerySecurityObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQuerySymbolicLinkObject](https://www.google.com/search?num=5&q=NtQuerySymbolicLinkObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQuerySystemInformation](http://msdn2.microsoft.com/en-us/library/553ec7b9-c5eb-4955-8dc0-f1c06f59fe31) | ntdll.dll | winternl.h | Vanara.PInvoke.NtDll.NtQuerySystemInformation  
-[NtQuerySystemTime](https://www.google.com/search?num=5&q=NtQuerySystemTime+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryVirtualMemory](https://www.google.com/search?num=5&q=NtQueryVirtualMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtQueryVolumeInformationFile](https://www.google.com/search?num=5&q=NtQueryVolumeInformationFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtReadFile](https://www.google.com/search?num=5&q=NtReadFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtReadOnlyEnlistment](https://www.google.com/search?num=5&q=NtReadOnlyEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtRecoverEnlistment](https://www.google.com/search?num=5&q=NtRecoverEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtRecoverResourceManager](https://www.google.com/search?num=5&q=NtRecoverResourceManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtRecoverTransactionManager](https://www.google.com/search?num=5&q=NtRecoverTransactionManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtRenameKey](https://www.google.com/search?num=5&q=NtRenameKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtRenameTransactionManager](https://www.google.com/search?num=5&q=NtRenameTransactionManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtRollbackComplete](https://www.google.com/search?num=5&q=NtRollbackComplete+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtRollbackEnlistment](https://www.google.com/search?num=5&q=NtRollbackEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtRollbackTransaction](https://www.google.com/search?num=5&q=NtRollbackTransaction+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtRollforwardTransactionManager](https://www.google.com/search?num=5&q=NtRollforwardTransactionManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtSetInformationEnlistment](https://www.google.com/search?num=5&q=NtSetInformationEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtSetInformationFile](https://www.google.com/search?num=5&q=NtSetInformationFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtSetInformationKey](https://www.google.com/search?num=5&q=NtSetInformationKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtSetInformationResourceManager](https://www.google.com/search?num=5&q=NtSetInformationResourceManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtSetInformationThread](https://www.google.com/search?num=5&q=NtSetInformationThread+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtSetInformationToken](https://www.google.com/search?num=5&q=NtSetInformationToken+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtSetInformationTransaction](https://www.google.com/search?num=5&q=NtSetInformationTransaction+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtSetInformationTransactionManager](https://www.google.com/search?num=5&q=NtSetInformationTransactionManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtSetQuotaInformationFile](https://www.google.com/search?num=5&q=NtSetQuotaInformationFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtSetSecurityObject](https://www.google.com/search?num=5&q=NtSetSecurityObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtSinglePhaseReject](https://www.google.com/search?num=5&q=NtSinglePhaseReject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtTerminateEnclave](https://www.google.com/search?num=5&q=NtTerminateEnclave+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtUnlockFile](https://www.google.com/search?num=5&q=NtUnlockFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtUnmapViewOfSection](https://www.google.com/search?num=5&q=NtUnmapViewOfSection+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtWaitForSingleObject](https://www.google.com/search?num=5&q=NtWaitForSingleObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[NtWriteFile](https://www.google.com/search?num=5&q=NtWriteFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAbsoluteToSelfRelativeSD](https://www.google.com/search?num=5&q=RtlAbsoluteToSelfRelativeSD+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAddAccessAllowedAce](https://www.google.com/search?num=5&q=RtlAddAccessAllowedAce+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAddAccessAllowedAceEx](https://www.google.com/search?num=5&q=RtlAddAccessAllowedAceEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAddAce](https://www.google.com/search?num=5&q=RtlAddAce+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAddFunctionTable](https://www.google.com/search?num=5&q=RtlAddFunctionTable+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAddGrowableFunctionTable](https://www.google.com/search?num=5&q=RtlAddGrowableFunctionTable+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAllocateAndInitializeSid](https://www.google.com/search?num=5&q=RtlAllocateAndInitializeSid+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAllocateHeap](https://www.google.com/search?num=5&q=RtlAllocateHeap+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAnsiStringToUnicodeString](https://www.google.com/search?num=5&q=RtlAnsiStringToUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAppendStringToString](https://www.google.com/search?num=5&q=RtlAppendStringToString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAppendUnicodeStringToString](https://www.google.com/search?num=5&q=RtlAppendUnicodeStringToString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAppendUnicodeToString](https://www.google.com/search?num=5&q=RtlAppendUnicodeToString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAreBitsClear](https://www.google.com/search?num=5&q=RtlAreBitsClear+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlAreBitsSet](https://www.google.com/search?num=5&q=RtlAreBitsSet+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCallEnclaveReturn](https://www.google.com/search?num=5&q=RtlCallEnclaveReturn+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCapabilityCheckForSingleSessionSku](https://www.google.com/search?num=5&q=RtlCapabilityCheckForSingleSessionSku+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCaptureContext](https://www.google.com/search?num=5&q=RtlCaptureContext+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCaptureStackBackTrace](https://www.google.com/search?num=5&q=RtlCaptureStackBackTrace+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCharToInteger](https://www.google.com/search?num=5&q=RtlCharToInteger+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCheckRegistryKey](https://www.google.com/search?num=5&q=RtlCheckRegistryKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCheckSystemBootStatusIntegrity](https://www.google.com/search?num=5&q=RtlCheckSystemBootStatusIntegrity+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlClearBits](https://www.google.com/search?num=5&q=RtlClearBits+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCmEncodeMemIoResource](https://www.google.com/search?num=5&q=RtlCmEncodeMemIoResource+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCompareMemory](https://www.google.com/search?num=5&q=RtlCompareMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCompareMemoryUlong](https://www.google.com/search?num=5&q=RtlCompareMemoryUlong+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCompareString](https://www.google.com/search?num=5&q=RtlCompareString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCompareUnicodeString](https://www.google.com/search?num=5&q=RtlCompareUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCompressBuffer](https://www.google.com/search?num=5&q=RtlCompressBuffer+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlConvertSidToUnicodeString](https://www.google.com/search?num=5&q=RtlConvertSidToUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCopyLuid](https://www.google.com/search?num=5&q=RtlCopyLuid+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCopyMemoryNonTemporal](https://www.google.com/search?num=5&q=RtlCopyMemoryNonTemporal+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCopySid](https://www.google.com/search?num=5&q=RtlCopySid+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCopyString](https://www.google.com/search?num=5&q=RtlCopyString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCopyUnicodeString](https://www.google.com/search?num=5&q=RtlCopyUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCreateAcl](https://www.google.com/search?num=5&q=RtlCreateAcl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCreateHeap](https://www.google.com/search?num=5&q=RtlCreateHeap+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCreateRegistryKey](https://www.google.com/search?num=5&q=RtlCreateRegistryKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCreateSecurityDescriptor](https://www.google.com/search?num=5&q=RtlCreateSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCreateSystemVolumeInformationFolder](https://www.google.com/search?num=5&q=RtlCreateSystemVolumeInformationFolder+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCreateUnicodeString](https://www.google.com/search?num=5&q=RtlCreateUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlCustomCPToUnicodeN](https://www.google.com/search?num=5&q=RtlCustomCPToUnicodeN+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDecompressBuffer](https://www.google.com/search?num=5&q=RtlDecompressBuffer+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDecompressBufferEx](https://www.google.com/search?num=5&q=RtlDecompressBufferEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDecompressFragment](https://www.google.com/search?num=5&q=RtlDecompressFragment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDelete](https://www.google.com/search?num=5&q=RtlDelete+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDeleteAce](https://www.google.com/search?num=5&q=RtlDeleteAce+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDeleteElementGenericTable](https://www.google.com/search?num=5&q=RtlDeleteElementGenericTable+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDeleteElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlDeleteElementGenericTableAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDeleteFunctionTable](https://www.google.com/search?num=5&q=RtlDeleteFunctionTable+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDeleteGrowableFunctionTable](https://www.google.com/search?num=5&q=RtlDeleteGrowableFunctionTable+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDeleteNoSplay](https://www.google.com/search?num=5&q=RtlDeleteNoSplay+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDeleteRegistryValue](https://www.google.com/search?num=5&q=RtlDeleteRegistryValue+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDestroyHeap](https://www.google.com/search?num=5&q=RtlDestroyHeap+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDosLongPathNameToNtPathName_U_WithStatus](https://www.google.com/search?num=5&q=RtlDosLongPathNameToNtPathName_U_WithStatus+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDosLongPathNameToRelativeNtPathName_U_WithStatus](https://www.google.com/search?num=5&q=RtlDosLongPathNameToRelativeNtPathName_U_WithStatus+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDowncaseUnicodeString](https://www.google.com/search?num=5&q=RtlDowncaseUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlDrainNonVolatileFlush](https://www.google.com/search?num=5&q=RtlDrainNonVolatileFlush+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlEnclaveCallDispatch](https://www.google.com/search?num=5&q=RtlEnclaveCallDispatch+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlEnclaveCallDispatchReturn](https://www.google.com/search?num=5&q=RtlEnclaveCallDispatchReturn+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlEnumerateGenericTable](https://www.google.com/search?num=5&q=RtlEnumerateGenericTable+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlEnumerateGenericTableAvl](https://www.google.com/search?num=5&q=RtlEnumerateGenericTableAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlEnumerateGenericTableLikeADirectory](https://www.google.com/search?num=5&q=RtlEnumerateGenericTableLikeADirectory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlEnumerateGenericTableWithoutSplaying](https://www.google.com/search?num=5&q=RtlEnumerateGenericTableWithoutSplaying+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlEnumerateGenericTableWithoutSplayingAvl](https://www.google.com/search?num=5&q=RtlEnumerateGenericTableWithoutSplayingAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlEqualPrefixSid](https://www.google.com/search?num=5&q=RtlEqualPrefixSid+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlEqualSid](https://www.google.com/search?num=5&q=RtlEqualSid+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlEqualUnicodeString](https://www.google.com/search?num=5&q=RtlEqualUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlEthernetAddressToString](https://www.google.com/search?num=5&q=RtlEthernetAddressToStringA+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlEthernetStringToAddress](https://www.google.com/search?num=5&q=RtlEthernetStringToAddressA+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlExtendCorrelationVector](https://www.google.com/search?num=5&q=RtlExtendCorrelationVector+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFindClearBits](https://www.google.com/search?num=5&q=RtlFindClearBits+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFindClearBitsAndSet](https://www.google.com/search?num=5&q=RtlFindClearBitsAndSet+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFindClearRuns](https://www.google.com/search?num=5&q=RtlFindClearRuns+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFindLastBackwardRunClear](https://www.google.com/search?num=5&q=RtlFindLastBackwardRunClear+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFindLeastSignificantBit](https://www.google.com/search?num=5&q=RtlFindLeastSignificantBit+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFindLongestRunClear](https://www.google.com/search?num=5&q=RtlFindLongestRunClear+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFindMostSignificantBit](https://www.google.com/search?num=5&q=RtlFindMostSignificantBit+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFindNextForwardRunClear](https://www.google.com/search?num=5&q=RtlFindNextForwardRunClear+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFindSetBits](https://www.google.com/search?num=5&q=RtlFindSetBits+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFindSetBitsAndClear](https://www.google.com/search?num=5&q=RtlFindSetBitsAndClear+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFirstEntrySList](https://www.google.com/search?num=5&q=RtlFirstEntrySList+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFlushNonVolatileMemory](https://www.google.com/search?num=5&q=RtlFlushNonVolatileMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFlushNonVolatileMemoryRanges](https://www.google.com/search?num=5&q=RtlFlushNonVolatileMemoryRanges+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFreeAnsiString](https://www.google.com/search?num=5&q=RtlFreeAnsiString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFreeHeap](https://www.google.com/search?num=5&q=RtlFreeHeap+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFreeNonVolatileToken](https://www.google.com/search?num=5&q=RtlFreeNonVolatileToken+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFreeOemString](https://www.google.com/search?num=5&q=RtlFreeOemString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlFreeUnicodeString](https://www.google.com/search?num=5&q=RtlFreeUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGenerate8dot3Name](https://www.google.com/search?num=5&q=RtlGenerate8dot3Name+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetAce](https://www.google.com/search?num=5&q=RtlGetAce+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetCompressionWorkSpaceSize](https://www.google.com/search?num=5&q=RtlGetCompressionWorkSpaceSize+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetDaclSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetDaclSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetElementGenericTable](https://www.google.com/search?num=5&q=RtlGetElementGenericTable+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlGetElementGenericTableAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetEnabledExtendedFeatures](https://www.google.com/search?num=5&q=RtlGetEnabledExtendedFeatures+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetFunctionTableListHead](https://www.google.com/search?num=5&q=RtlGetFunctionTableListHead+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetGroupSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetGroupSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetNonVolatileToken](https://www.google.com/search?num=5&q=RtlGetNonVolatileToken+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetOwnerSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetOwnerSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetPersistedStateLocation](https://www.google.com/search?num=5&q=RtlGetPersistedStateLocation+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetSaclSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetSaclSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetSystemBootStatus](https://www.google.com/search?num=5&q=RtlGetSystemBootStatus+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetSystemBootStatusEx](https://www.google.com/search?num=5&q=RtlGetSystemBootStatusEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetUnloadEventTrace](https://www.google.com/search?num=5&q=RtlGetUnloadEventTrace+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetUnloadEventTraceEx](https://www.google.com/search?num=5&q=RtlGetUnloadEventTraceEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGetVersion](https://www.google.com/search?num=5&q=RtlGetVersion+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGrowFunctionTable](https://www.google.com/search?num=5&q=RtlGrowFunctionTable+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlGUIDFromString](https://www.google.com/search?num=5&q=RtlGUIDFromString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlHashUnicodeString](https://www.google.com/search?num=5&q=RtlHashUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIncrementCorrelationVector](https://www.google.com/search?num=5&q=RtlIncrementCorrelationVector+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitAnsiString](https://www.google.com/search?num=5&q=RtlInitAnsiString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitCodePageTable](https://www.google.com/search?num=5&q=RtlInitCodePageTable+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitializeBitMap](https://www.google.com/search?num=5&q=RtlInitializeBitMap+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitializeBitMapEx](https://www.google.com/search?num=5&q=RtlInitializeBitMapEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitializeCorrelationVector](https://www.google.com/search?num=5&q=RtlInitializeCorrelationVector+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitializeGenericTable](https://www.google.com/search?num=5&q=RtlInitializeGenericTable+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitializeGenericTableAvl](https://www.google.com/search?num=5&q=RtlInitializeGenericTableAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitializeSid](https://www.google.com/search?num=5&q=RtlInitializeSid+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitializeSidEx](https://www.google.com/search?num=5&q=RtlInitializeSidEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitializeSListHead](https://www.google.com/search?num=5&q=RtlInitializeSListHead+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitString](https://www.google.com/search?num=5&q=RtlInitString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitStringEx](https://www.google.com/search?num=5&q=RtlInitStringEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInitUnicodeString](https://www.google.com/search?num=5&q=RtlInitUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInsertElementGenericTable](https://www.google.com/search?num=5&q=RtlInsertElementGenericTable+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInsertElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlInsertElementGenericTableAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInsertElementGenericTableFullAvl](https://www.google.com/search?num=5&q=RtlInsertElementGenericTableFullAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInstallFunctionTableCallback](https://www.google.com/search?num=5&q=RtlInstallFunctionTableCallback+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInt64ToUnicodeString](https://www.google.com/search?num=5&q=RtlInt64ToUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIntegerToUnicodeString](https://www.google.com/search?num=5&q=RtlIntegerToUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInterlockedFlushSList](https://www.google.com/search?num=5&q=RtlInterlockedFlushSList+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlInterlockedPushEntrySList](https://www.google.com/search?num=5&q=RtlInterlockedPushEntrySList+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIoDecodeMemIoResource](https://www.google.com/search?num=5&q=RtlIoDecodeMemIoResource+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIoEncodeMemIoResource](https://www.google.com/search?num=5&q=RtlIoEncodeMemIoResource+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIpv4AddressToStringA](https://www.google.com/search?num=5&q=RtlIpv4AddressToStringA+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIpv4AddressToStringExW](https://www.google.com/search?num=5&q=RtlIpv4AddressToStringExW+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIpv4StringToAddress](https://www.google.com/search?num=5&q=RtlIpv4StringToAddressA+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIpv4StringToAddressEx](https://www.google.com/search?num=5&q=RtlIpv4StringToAddressExA+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIpv6AddressToString](https://www.google.com/search?num=5&q=RtlIpv6AddressToStringA+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIpv6AddressToStringExW](https://www.google.com/search?num=5&q=RtlIpv6AddressToStringExW+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIpv6StringToAddress](https://www.google.com/search?num=5&q=RtlIpv6StringToAddressA+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIpv6StringToAddressExW](https://www.google.com/search?num=5&q=RtlIpv6StringToAddressExW+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsCloudFilesPlaceholder](https://www.google.com/search?num=5&q=RtlIsCloudFilesPlaceholder+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsCurrentProcess](https://www.google.com/search?num=5&q=RtlIsCurrentProcess+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsCurrentThread](https://www.google.com/search?num=5&q=RtlIsCurrentThread+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsGenericTableEmpty](https://www.google.com/search?num=5&q=RtlIsGenericTableEmpty+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsGenericTableEmptyAvl](https://www.google.com/search?num=5&q=RtlIsGenericTableEmptyAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsNameInExpression](https://www.google.com/search?num=5&q=RtlIsNameInExpression+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsNameInUnUpcasedExpression](https://www.google.com/search?num=5&q=RtlIsNameInUnUpcasedExpression+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsNameLegalDOS8Dot3](https://www.google.com/search?num=5&q=RtlIsNameLegalDOS8Dot3+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsPartialPlaceholder](https://www.google.com/search?num=5&q=RtlIsPartialPlaceholder+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsPartialPlaceholderFileHandle](https://www.google.com/search?num=5&q=RtlIsPartialPlaceholderFileHandle+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsPartialPlaceholderFileInfo](https://www.google.com/search?num=5&q=RtlIsPartialPlaceholderFileInfo+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsStateSeparationEnabled](https://www.google.com/search?num=5&q=RtlIsStateSeparationEnabled+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlIsValidLocaleName](https://www.google.com/search?num=5&q=RtlIsValidLocaleName+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlLengthSecurityDescriptor](https://www.google.com/search?num=5&q=RtlLengthSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlLengthSid](https://www.google.com/search?num=5&q=RtlLengthSid+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlLocalTimeToSystemTime](https://www.google.com/search?num=5&q=RtlLocalTimeToSystemTime+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlLookupElementGenericTable](https://www.google.com/search?num=5&q=RtlLookupElementGenericTable+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlLookupElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlLookupElementGenericTableAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlLookupElementGenericTableFullAvl](https://www.google.com/search?num=5&q=RtlLookupElementGenericTableFullAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlLookupFirstMatchingElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlLookupFirstMatchingElementGenericTableAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlLookupFunctionEntry](https://www.google.com/search?num=5&q=RtlLookupFunctionEntry+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlMapGenericMask](https://www.google.com/search?num=5&q=RtlMapGenericMask+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlMoveMemory](https://www.google.com/search?num=5&q=RtlMoveMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlMultiByteToUnicodeN](https://www.google.com/search?num=5&q=RtlMultiByteToUnicodeN+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlMultiByteToUnicodeSize](https://www.google.com/search?num=5&q=RtlMultiByteToUnicodeSize+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlNtStatusToDosError](https://www.google.com/search?num=5&q=RtlNtStatusToDosError+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlNumberGenericTableElements](https://www.google.com/search?num=5&q=RtlNumberGenericTableElements+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlNumberGenericTableElementsAvl](https://www.google.com/search?num=5&q=RtlNumberGenericTableElementsAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlNumberOfClearBits](https://www.google.com/search?num=5&q=RtlNumberOfClearBits+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlNumberOfSetBits](https://www.google.com/search?num=5&q=RtlNumberOfSetBits+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlNumberOfSetBitsUlongPtr](https://www.google.com/search?num=5&q=RtlNumberOfSetBitsUlongPtr+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlOemStringToUnicodeString](https://www.google.com/search?num=5&q=RtlOemStringToUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlOemToUnicodeN](https://www.google.com/search?num=5&q=RtlOemToUnicodeN+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlPcToFileHeader](https://www.google.com/search?num=5&q=RtlPcToFileHeader+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlPrefixUnicodeString](https://www.google.com/search?num=5&q=RtlPrefixUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlQueryDepthSList](https://www.google.com/search?num=5&q=RtlQueryDepthSList+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlQueryImageMitigationPolicy](https://www.google.com/search?num=5&q=RtlQueryImageMitigationPolicy+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlQueryProcessPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlQueryProcessPlaceholderCompatibilityMode+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlQueryRegistryValues](https://www.google.com/search?num=5&q=RtlQueryRegistryValues+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlQueryRegistryValueWithFallback](https://www.google.com/search?num=5&q=RtlQueryRegistryValueWithFallback+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlQueryThreadPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlQueryThreadPlaceholderCompatibilityMode+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlQueryTokenHostIdAsUlong64](https://www.google.com/search?num=5&q=RtlQueryTokenHostIdAsUlong64+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlRaiseCustomSystemEventTrigger](https://www.google.com/search?num=5&q=RtlRaiseCustomSystemEventTrigger+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlRaiseException](https://www.google.com/search?num=5&q=RtlRaiseException+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlRandom](https://www.google.com/search?num=5&q=RtlRandom+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlRandomEx](https://www.google.com/search?num=5&q=RtlRandomEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlRealPredecessor](https://www.google.com/search?num=5&q=RtlRealPredecessor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlRealSuccessor](https://www.google.com/search?num=5&q=RtlRealSuccessor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlRestoreContext](https://www.google.com/search?num=5&q=RtlRestoreContext+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlRestoreSystemBootStatusDefaults](https://www.google.com/search?num=5&q=RtlRestoreSystemBootStatusDefaults+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlRunOnceBeginInitialize](https://www.google.com/search?num=5&q=RtlRunOnceBeginInitialize+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlRunOnceComplete](https://www.google.com/search?num=5&q=RtlRunOnceComplete+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlRunOnceExecuteOnce](https://www.google.com/search?num=5&q=RtlRunOnceExecuteOnce+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlRunOnceInitialize](https://www.google.com/search?num=5&q=RtlRunOnceInitialize+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSecondsSince1970ToTime](https://www.google.com/search?num=5&q=RtlSecondsSince1970ToTime+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSecondsSince1980ToTime](https://www.google.com/search?num=5&q=RtlSecondsSince1980ToTime+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSelfRelativeToAbsoluteSD](https://www.google.com/search?num=5&q=RtlSelfRelativeToAbsoluteSD+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSetAllBits](https://www.google.com/search?num=5&q=RtlSetAllBits+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSetBits](https://www.google.com/search?num=5&q=RtlSetBits+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSetDaclSecurityDescriptor](https://www.google.com/search?num=5&q=RtlSetDaclSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSetGroupSecurityDescriptor](https://www.google.com/search?num=5&q=RtlSetGroupSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSetImageMitigationPolicy](https://www.google.com/search?num=5&q=RtlSetImageMitigationPolicy+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSetOwnerSecurityDescriptor](https://www.google.com/search?num=5&q=RtlSetOwnerSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSetProcessPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlSetProcessPlaceholderCompatibilityMode+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSetProxiedProcessId](https://www.google.com/search?num=5&q=RtlSetProxiedProcessId+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSetSystemBootStatus](https://www.google.com/search?num=5&q=RtlSetSystemBootStatus+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSetSystemBootStatusEx](https://www.google.com/search?num=5&q=RtlSetSystemBootStatusEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSetThreadPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlSetThreadPlaceholderCompatibilityMode+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSplay](https://www.google.com/search?num=5&q=RtlSplay+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlStringFromGUID](https://www.google.com/search?num=5&q=RtlStringFromGUID+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSubAuthorityCountSid](https://www.google.com/search?num=5&q=RtlSubAuthorityCountSid+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSubAuthoritySid](https://www.google.com/search?num=5&q=RtlSubAuthoritySid+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSubtreePredecessor](https://www.google.com/search?num=5&q=RtlSubtreePredecessor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlSubtreeSuccessor](https://www.google.com/search?num=5&q=RtlSubtreeSuccessor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlTestBitEx](https://www.google.com/search?num=5&q=RtlTestBitEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlTimeFieldsToTime](https://www.google.com/search?num=5&q=RtlTimeFieldsToTime+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlTimeToSecondsSince1970](https://www.google.com/search?num=5&q=RtlTimeToSecondsSince1970+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlTimeToSecondsSince1980](https://www.google.com/search?num=5&q=RtlTimeToSecondsSince1980+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlTimeToTimeFields](https://www.google.com/search?num=5&q=RtlTimeToTimeFields+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUnicodeStringToAnsiString](https://www.google.com/search?num=5&q=RtlUnicodeStringToAnsiString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUnicodeStringToCountedOemString](https://www.google.com/search?num=5&q=RtlUnicodeStringToCountedOemString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUnicodeStringToInteger](https://www.google.com/search?num=5&q=RtlUnicodeStringToInteger+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUnicodeStringToOemString](https://www.google.com/search?num=5&q=RtlUnicodeStringToOemString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUnicodeToCustomCPN](https://www.google.com/search?num=5&q=RtlUnicodeToCustomCPN+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUnicodeToMultiByteN](https://www.google.com/search?num=5&q=RtlUnicodeToMultiByteN+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUnicodeToMultiByteSize](https://www.google.com/search?num=5&q=RtlUnicodeToMultiByteSize+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUnicodeToOemN](https://www.google.com/search?num=5&q=RtlUnicodeToOemN+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUnicodeToUTF8N](https://www.google.com/search?num=5&q=RtlUnicodeToUTF8N+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUniform](https://www.google.com/search?num=5&q=RtlUniform+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUnwind](https://www.google.com/search?num=5&q=RtlUnwind+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUpcaseUnicodeChar](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeChar+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUpcaseUnicodeString](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUpcaseUnicodeStringToCountedOemString](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeStringToCountedOemString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUpcaseUnicodeStringToOemString](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeStringToOemString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUpcaseUnicodeToCustomCPN](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeToCustomCPN+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUpcaseUnicodeToMultiByteN](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeToMultiByteN+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUpcaseUnicodeToOemN](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeToOemN+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUpperChar](https://www.google.com/search?num=5&q=RtlUpperChar+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUpperString](https://www.google.com/search?num=5&q=RtlUpperString+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlUTF8ToUnicodeN](https://www.google.com/search?num=5&q=RtlUTF8ToUnicodeN+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlValidateCorrelationVector](https://www.google.com/search?num=5&q=RtlValidateCorrelationVector+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlValidRelativeSecurityDescriptor](https://www.google.com/search?num=5&q=RtlValidRelativeSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlVerifyVersionInfo](https://www.google.com/search?num=5&q=RtlVerifyVersionInfo+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlVirtualUnwind](https://www.google.com/search?num=5&q=RtlVirtualUnwind+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlWow64GetEquivalentMachineCHPE](https://www.google.com/search?num=5&q=RtlWow64GetEquivalentMachineCHPE+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlWow64GetSharedInfoProcess](https://www.google.com/search?num=5&q=RtlWow64GetSharedInfoProcess+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlWow64PopAllCrossProcessWork](https://www.google.com/search?num=5&q=RtlWow64PopAllCrossProcessWork+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlWow64PopCrossProcessWork](https://www.google.com/search?num=5&q=RtlWow64PopCrossProcessWork+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlWow64PushCrossProcessWork](https://www.google.com/search?num=5&q=RtlWow64PushCrossProcessWork+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlWriteNonVolatileMemory](https://www.google.com/search?num=5&q=RtlWriteNonVolatileMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[RtlWriteRegistryValue](https://www.google.com/search?num=5&q=RtlWriteRegistryValue+site%3Amicrosoft.com) | ntdll.dll |  |   
-[vDbgPrintEx](https://www.google.com/search?num=5&q=vDbgPrintEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[vDbgPrintExWithPrefix](https://www.google.com/search?num=5&q=vDbgPrintExWithPrefix+site%3Amicrosoft.com) | ntdll.dll |  |   
-[VerSetConditionMask](https://www.google.com/search?num=5&q=VerSetConditionMask+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwAllocateLocallyUniqueId](https://www.google.com/search?num=5&q=ZwAllocateLocallyUniqueId+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwAllocateVirtualMemory](https://www.google.com/search?num=5&q=ZwAllocateVirtualMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwAllocateVirtualMemoryEx](https://www.google.com/search?num=5&q=ZwAllocateVirtualMemoryEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCallEnclave](https://www.google.com/search?num=5&q=ZwCallEnclave+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwClose](https://www.google.com/search?num=5&q=ZwClose+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCommitComplete](https://www.google.com/search?num=5&q=ZwCommitComplete+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCommitEnlistment](https://www.google.com/search?num=5&q=ZwCommitEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCommitTransaction](https://www.google.com/search?num=5&q=ZwCommitTransaction+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCreateDirectoryObject](https://www.google.com/search?num=5&q=ZwCreateDirectoryObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCreateEnlistment](https://www.google.com/search?num=5&q=ZwCreateEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCreateEvent](https://www.google.com/search?num=5&q=ZwCreateEvent+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCreateFile](https://www.google.com/search?num=5&q=ZwCreateFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCreateKey](https://www.google.com/search?num=5&q=ZwCreateKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCreateKeyTransacted](https://www.google.com/search?num=5&q=ZwCreateKeyTransacted+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCreateResourceManager](https://www.google.com/search?num=5&q=ZwCreateResourceManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCreateSection](https://www.google.com/search?num=5&q=ZwCreateSection+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCreateTransaction](https://www.google.com/search?num=5&q=ZwCreateTransaction+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwCreateTransactionManager](https://www.google.com/search?num=5&q=ZwCreateTransactionManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwDeleteFile](https://www.google.com/search?num=5&q=ZwDeleteFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwDeleteKey](https://www.google.com/search?num=5&q=ZwDeleteKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwDeleteValueKey](https://www.google.com/search?num=5&q=ZwDeleteValueKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwDeviceIoControlFile](https://www.google.com/search?num=5&q=ZwDeviceIoControlFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwDuplicateObject](https://www.google.com/search?num=5&q=ZwDuplicateObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwDuplicateToken](https://www.google.com/search?num=5&q=ZwDuplicateToken+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwEnumerateKey](https://www.google.com/search?num=5&q=ZwEnumerateKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwEnumerateTransactionObject](https://www.google.com/search?num=5&q=ZwEnumerateTransactionObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwEnumerateValueKey](https://www.google.com/search?num=5&q=ZwEnumerateValueKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwFlushBuffersFileEx](https://www.google.com/search?num=5&q=ZwFlushBuffersFileEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwFlushKey](https://www.google.com/search?num=5&q=ZwFlushKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwFlushVirtualMemory](https://www.google.com/search?num=5&q=ZwFlushVirtualMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwFreeVirtualMemory](https://www.google.com/search?num=5&q=ZwFreeVirtualMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwFsControlFile](https://www.google.com/search?num=5&q=ZwFsControlFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwGetNotificationResourceManager](https://www.google.com/search?num=5&q=ZwGetNotificationResourceManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwLoadDriver](https://www.google.com/search?num=5&q=ZwLoadDriver+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwLockFile](https://www.google.com/search?num=5&q=ZwLockFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwMakeTemporaryObject](https://www.google.com/search?num=5&q=ZwMakeTemporaryObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwMapViewOfSection](https://www.google.com/search?num=5&q=ZwMapViewOfSection+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwMapViewOfSectionEx](https://www.google.com/search?num=5&q=ZwMapViewOfSectionEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwNotifyChangeDirectoryFileEx](https://www.google.com/search?num=5&q=ZwNotifyChangeDirectoryFileEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwNotifyChangeKey](https://www.google.com/search?num=5&q=ZwNotifyChangeKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenDirectoryObject](https://www.google.com/search?num=5&q=ZwOpenDirectoryObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenEnlistment](https://www.google.com/search?num=5&q=ZwOpenEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenEvent](https://www.google.com/search?num=5&q=ZwOpenEvent+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenFile](https://www.google.com/search?num=5&q=ZwOpenFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenKey](https://www.google.com/search?num=5&q=ZwOpenKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenKeyEx](https://www.google.com/search?num=5&q=ZwOpenKeyEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenKeyTransacted](https://www.google.com/search?num=5&q=ZwOpenKeyTransacted+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenKeyTransactedEx](https://www.google.com/search?num=5&q=ZwOpenKeyTransactedEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenProcess](https://www.google.com/search?num=5&q=ZwOpenProcess+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenProcessTokenEx](https://www.google.com/search?num=5&q=ZwOpenProcessTokenEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenResourceManager](https://www.google.com/search?num=5&q=ZwOpenResourceManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenSection](https://www.google.com/search?num=5&q=ZwOpenSection+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenSymbolicLinkObject](https://www.google.com/search?num=5&q=ZwOpenSymbolicLinkObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenThreadTokenEx](https://www.google.com/search?num=5&q=ZwOpenThreadTokenEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenTransaction](https://www.google.com/search?num=5&q=ZwOpenTransaction+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwOpenTransactionManager](https://www.google.com/search?num=5&q=ZwOpenTransactionManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwPowerInformation](https://www.google.com/search?num=5&q=ZwPowerInformation+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwPrepareComplete](https://www.google.com/search?num=5&q=ZwPrepareComplete+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwPrepareEnlistment](https://www.google.com/search?num=5&q=ZwPrepareEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwPrePrepareComplete](https://www.google.com/search?num=5&q=ZwPrePrepareComplete+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwPrePrepareEnlistment](https://www.google.com/search?num=5&q=ZwPrePrepareEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryDirectoryFile](https://www.google.com/search?num=5&q=ZwQueryDirectoryFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryDirectoryFileEx](https://www.google.com/search?num=5&q=ZwQueryDirectoryFileEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryEaFile](https://www.google.com/search?num=5&q=ZwQueryEaFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryFullAttributesFile](https://www.google.com/search?num=5&q=ZwQueryFullAttributesFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryInformationEnlistment](https://www.google.com/search?num=5&q=ZwQueryInformationEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryInformationFile](https://www.google.com/search?num=5&q=ZwQueryInformationFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryInformationProcess](https://www.google.com/search?num=5&q=ZwQueryInformationProcess+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryInformationResourceManager](https://www.google.com/search?num=5&q=ZwQueryInformationResourceManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryInformationToken](https://www.google.com/search?num=5&q=ZwQueryInformationToken+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryInformationTransaction](https://www.google.com/search?num=5&q=ZwQueryInformationTransaction+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryInformationTransactionManager](https://www.google.com/search?num=5&q=ZwQueryInformationTransactionManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryKey](https://www.google.com/search?num=5&q=ZwQueryKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryObject](https://www.google.com/search?num=5&q=ZwQueryObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryQuotaInformationFile](https://www.google.com/search?num=5&q=ZwQueryQuotaInformationFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQuerySecurityObject](https://www.google.com/search?num=5&q=ZwQuerySecurityObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQuerySymbolicLinkObject](https://www.google.com/search?num=5&q=ZwQuerySymbolicLinkObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQuerySystemInformation](https://www.google.com/search?num=5&q=ZwQuerySystemInformation+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQuerySystemInformationEx](https://www.google.com/search?num=5&q=ZwQuerySystemInformationEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryValueKey](https://www.google.com/search?num=5&q=ZwQueryValueKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryVirtualMemory](https://www.google.com/search?num=5&q=ZwQueryVirtualMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwQueryVolumeInformationFile](https://www.google.com/search?num=5&q=ZwQueryVolumeInformationFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwReadFile](https://www.google.com/search?num=5&q=ZwReadFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwReadOnlyEnlistment](https://www.google.com/search?num=5&q=ZwReadOnlyEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwRecoverEnlistment](https://www.google.com/search?num=5&q=ZwRecoverEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwRecoverResourceManager](https://www.google.com/search?num=5&q=ZwRecoverResourceManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwRecoverTransactionManager](https://www.google.com/search?num=5&q=ZwRecoverTransactionManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwRollbackComplete](https://www.google.com/search?num=5&q=ZwRollbackComplete+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwRollbackEnlistment](https://www.google.com/search?num=5&q=ZwRollbackEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwRollbackTransaction](https://www.google.com/search?num=5&q=ZwRollbackTransaction+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwRollforwardTransactionManager](https://www.google.com/search?num=5&q=ZwRollforwardTransactionManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetEaFile](https://www.google.com/search?num=5&q=ZwSetEaFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetEvent](https://www.google.com/search?num=5&q=ZwSetEvent+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetInformationEnlistment](https://www.google.com/search?num=5&q=ZwSetInformationEnlistment+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetInformationFile](https://www.google.com/search?num=5&q=ZwSetInformationFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetInformationResourceManager](https://www.google.com/search?num=5&q=ZwSetInformationResourceManager+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetInformationThread](https://www.google.com/search?num=5&q=ZwSetInformationThread+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetInformationToken](https://www.google.com/search?num=5&q=ZwSetInformationToken+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetInformationTransaction](https://www.google.com/search?num=5&q=ZwSetInformationTransaction+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetInformationVirtualMemory](https://www.google.com/search?num=5&q=ZwSetInformationVirtualMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetQuotaInformationFile](https://www.google.com/search?num=5&q=ZwSetQuotaInformationFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetSecurityObject](https://www.google.com/search?num=5&q=ZwSetSecurityObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetValueKey](https://www.google.com/search?num=5&q=ZwSetValueKey+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSetVolumeInformationFile](https://www.google.com/search?num=5&q=ZwSetVolumeInformationFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSinglePhaseReject](https://www.google.com/search?num=5&q=ZwSinglePhaseReject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwSuspendProcess](https://www.google.com/search?num=5&q=ZwSuspendProcess+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwTerminateEnclave](https://www.google.com/search?num=5&q=ZwTerminateEnclave+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwTerminateProcess](https://www.google.com/search?num=5&q=ZwTerminateProcess+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwUnloadDriver](https://www.google.com/search?num=5&q=ZwUnloadDriver+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwUnlockFile](https://www.google.com/search?num=5&q=ZwUnlockFile+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwUnmapViewOfSection](https://www.google.com/search?num=5&q=ZwUnmapViewOfSection+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwUnmapViewOfSectionEx](https://www.google.com/search?num=5&q=ZwUnmapViewOfSectionEx+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwWaitForSingleObject](https://www.google.com/search?num=5&q=ZwWaitForSingleObject+site%3Amicrosoft.com) | ntdll.dll |  |   
-[ZwWriteFile](https://www.google.com/search?num=5&q=ZwWriteFile+site%3Amicrosoft.com) | ntdll.dll |  |   
+Native Method | Header | Managed Method  
+--- | --- | ---  
+[_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Amicrosoft.com) |  |   
+[DbgBreakPoint](http://msdn2.microsoft.com/en-us/library/deeac910-2cc3-4a54-bf3b-aeb56d0004dc) | wdm.h | [Vanara.PInvoke.NtDll.DbgBreakPoint](https://github.com/dahall/Vanara/search?l=C%23&q=DbgBreakPoint)  
+[DbgPrint](https://www.google.com/search?num=5&q=DbgPrint+site%3Amicrosoft.com) |  |   
+[DbgPrintEx](https://www.google.com/search?num=5&q=DbgPrintEx+site%3Amicrosoft.com) |  |   
+[DbgPrompt](http://msdn2.microsoft.com/en-us/library/4bb44aab-7032-4cc7-89e3-6ac3bee233d3) | ntddk.h | [Vanara.PInvoke.NtDll.DbgPrompt](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrompt)  
+[EtwCheckCoverage](https://www.google.com/search?num=5&q=EtwCheckCoverage+site%3Amicrosoft.com) |  |   
+[LdrCallEnclave](https://www.google.com/search?num=5&q=LdrCallEnclave+site%3Amicrosoft.com) |  |   
+[LdrControlFlowGuardEnforced](https://www.google.com/search?num=5&q=LdrControlFlowGuardEnforced+site%3Amicrosoft.com) |  |   
+[LdrCreateEnclave](https://www.google.com/search?num=5&q=LdrCreateEnclave+site%3Amicrosoft.com) |  |   
+[LdrDeleteEnclave](https://www.google.com/search?num=5&q=LdrDeleteEnclave+site%3Amicrosoft.com) |  |   
+[LdrFastFailInLoaderCallout](http://msdn2.microsoft.com/en-us/library/5C10BF04-B7C7-4481-A184-FDD418FE5F52) | ntldr.h | [Vanara.PInvoke.NtDll.LdrFastFailInLoaderCallout](https://github.com/dahall/Vanara/search?l=C%23&q=LdrFastFailInLoaderCallout)  
+[LdrInitializeEnclave](https://www.google.com/search?num=5&q=LdrInitializeEnclave+site%3Amicrosoft.com) |  |   
+[LdrLoadEnclaveModule](https://www.google.com/search?num=5&q=LdrLoadEnclaveModule+site%3Amicrosoft.com) |  |   
+[LdrRegisterDllNotification](http://msdn2.microsoft.com/en-us/library/c2757aa0-76fa-427a-a4f6-cb26e7f7d0d1) |  | [Vanara.PInvoke.NtDll.LdrRegisterDllNotification](https://github.com/dahall/Vanara/search?l=C%23&q=LdrRegisterDllNotification)  
+[LdrUnregisterDllNotification](http://msdn2.microsoft.com/en-us/library/18c3a027-e3cb-4083-afdc-00f416a70d8c) | ntldr.h | [Vanara.PInvoke.NtDll.LdrUnregisterDllNotification](https://github.com/dahall/Vanara/search?l=C%23&q=LdrUnregisterDllNotification)  
+[NtAllocateVirtualMemory](http://msdn2.microsoft.com/en-us/library/bb82c90d-9bd3-4a23-b171-06a3208e424b) | ntifs.h | [Vanara.PInvoke.NtDll.NtAllocateVirtualMemory](https://github.com/dahall/Vanara/search?l=C%23&q=NtAllocateVirtualMemory)  
+[NtAllocateVirtualMemoryEx](https://www.google.com/search?num=5&q=NtAllocateVirtualMemoryEx+site%3Amicrosoft.com) |  |   
+[NtCallEnclave](https://www.google.com/search?num=5&q=NtCallEnclave+site%3Amicrosoft.com) |  |   
+[NtClose](https://www.google.com/search?num=5&q=NtClose+site%3Amicrosoft.com) | winternl.h | [Vanara.PInvoke.NtDll.NtClose](https://github.com/dahall/Vanara/search?l=C%23&q=NtClose)  
+[NtCommitComplete](http://msdn2.microsoft.com/en-us/library/d0b968bc-bbab-4b6f-bb1f-9e36ac7c1e05) | wdm.h | [Vanara.PInvoke.NtDll.NtCommitComplete](https://github.com/dahall/Vanara/search?l=C%23&q=NtCommitComplete)  
+[NtCommitEnlistment](http://msdn2.microsoft.com/en-us/library/9c7f3e24-1d7c-450e-bbef-df0479911bc6) | wdm.h | [Vanara.PInvoke.NtDll.NtCommitEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=NtCommitEnlistment)  
+[NtCommitTransaction](http://msdn2.microsoft.com/en-us/library/145646f3-ff90-41d6-bf76-947cdf93b489) | wdm.h | [Vanara.PInvoke.NtDll.NtCommitTransaction](https://github.com/dahall/Vanara/search?l=C%23&q=NtCommitTransaction)  
+[NtCompareTokens](http://msdn2.microsoft.com/en-us/library/3a07ddc6-9748-4f96-a597-2af6b4282e56) |  | [Vanara.PInvoke.NtDll.NtCompareTokens](https://github.com/dahall/Vanara/search?l=C%23&q=NtCompareTokens)  
+[NtCreateEnlistment](http://msdn2.microsoft.com/en-us/library/5ffd8262-10b3-4c40-bd3e-050271338508) | wdm.h | [Vanara.PInvoke.NtDll.NtCreateEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateEnlistment)  
+[NtCreateFile](https://www.google.com/search?num=5&q=NtCreateFile+site%3Amicrosoft.com) |  |   
+[NtCreateFileA](http://msdn2.microsoft.com/en-us/library/c40b99be-5627-44f3-9853-c3ae31a8035c) | ntifs.h | [Vanara.PInvoke.NtDll.NtCreateFile](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateFile)  
+[NtCreateFileW](http://msdn2.microsoft.com/en-us/library/c40b99be-5627-44f3-9853-c3ae31a8035c) | ntifs.h | [Vanara.PInvoke.NtDll.NtCreateFile](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateFile)  
+[NtCreateResourceManager](http://msdn2.microsoft.com/en-us/library/4812eeb4-134f-4ecb-870b-dbab04c1137b) | wdm.h | [Vanara.PInvoke.NtDll.NtCreateResourceManager](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateResourceManager)  
+[NtCreateSection](https://www.google.com/search?num=5&q=NtCreateSection+site%3Amicrosoft.com) |  |   
+[NtCreateSectionA](http://msdn2.microsoft.com/en-us/library/805d7eff-19be-47a1-acc9-1b97e5493031) | ntifs.h | [Vanara.PInvoke.NtDll.NtCreateSection](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateSection)  
+[NtCreateSectionW](http://msdn2.microsoft.com/en-us/library/805d7eff-19be-47a1-acc9-1b97e5493031) | ntifs.h | [Vanara.PInvoke.NtDll.NtCreateSection](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateSection)  
+[NtCreateTransaction](https://www.google.com/search?num=5&q=NtCreateTransaction+site%3Amicrosoft.com) |  |   
+[NtCreateTransactionA](http://msdn2.microsoft.com/en-us/library/b4c2dd68-3c1a-46d3-ab9c-be2291ed80f4) | wdm.h | [Vanara.PInvoke.NtDll.NtCreateTransaction](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateTransaction)  
+[NtCreateTransactionManager](https://www.google.com/search?num=5&q=NtCreateTransactionManager+site%3Amicrosoft.com) |  |   
+[NtCreateTransactionManagerA](http://msdn2.microsoft.com/en-us/library/9c9f0a8b-7add-4ab1-835d-39f508ce32a9) | wdm.h | [Vanara.PInvoke.NtDll.NtCreateTransactionManager](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateTransactionManager)  
+[NtCreateTransactionManagerW](http://msdn2.microsoft.com/en-us/library/9c9f0a8b-7add-4ab1-835d-39f508ce32a9) | wdm.h | [Vanara.PInvoke.NtDll.NtCreateTransactionManager](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateTransactionManager)  
+[NtCreateTransactionW](http://msdn2.microsoft.com/en-us/library/b4c2dd68-3c1a-46d3-ab9c-be2291ed80f4) | wdm.h | [Vanara.PInvoke.NtDll.NtCreateTransaction](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateTransaction)  
+[NtDeviceIoControlFile](https://www.google.com/search?num=5&q=NtDeviceIoControlFile+site%3Amicrosoft.com) |  |   
+[NtDuplicateToken](https://www.google.com/search?num=5&q=NtDuplicateToken+site%3Amicrosoft.com) |  |   
+[NtEnumerateTransactionObject](https://www.google.com/search?num=5&q=NtEnumerateTransactionObject+site%3Amicrosoft.com) |  |   
+[NtFlushBuffersFileEx](https://www.google.com/search?num=5&q=NtFlushBuffersFileEx+site%3Amicrosoft.com) |  |   
+[NtFreeVirtualMemory](https://www.google.com/search?num=5&q=NtFreeVirtualMemory+site%3Amicrosoft.com) |  |   
+[NtFsControlFile](https://www.google.com/search?num=5&q=NtFsControlFile+site%3Amicrosoft.com) |  |   
+[NtGetCurrentProcessorNumber](https://www.google.com/search?num=5&q=NtGetCurrentProcessorNumber+site%3Amicrosoft.com) |  |   
+[NtGetNotificationResourceManager](https://www.google.com/search?num=5&q=NtGetNotificationResourceManager+site%3Amicrosoft.com) |  |   
+[NtLockFile](https://www.google.com/search?num=5&q=NtLockFile+site%3Amicrosoft.com) |  |   
+[NtMapViewOfSectionEx](https://www.google.com/search?num=5&q=NtMapViewOfSectionEx+site%3Amicrosoft.com) |  |   
+[NtNotifyChangeDirectoryFileEx](https://www.google.com/search?num=5&q=NtNotifyChangeDirectoryFileEx+site%3Amicrosoft.com) |  |   
+[NtNotifyChangeMultipleKeys](https://www.google.com/search?num=5&q=NtNotifyChangeMultipleKeys+site%3Amicrosoft.com) |  |   
+[NtOpenDirectoryObject](https://www.google.com/search?num=5&q=NtOpenDirectoryObject+site%3Amicrosoft.com) |  |   
+[NtOpenEnlistment](https://www.google.com/search?num=5&q=NtOpenEnlistment+site%3Amicrosoft.com) |  |   
+[NtOpenFile](https://www.google.com/search?num=5&q=NtOpenFile+site%3Amicrosoft.com) |  |   
+[NtOpenProcess](https://www.google.com/search?num=5&q=NtOpenProcess+site%3Amicrosoft.com) |  |   
+[NtOpenProcessTokenEx](https://www.google.com/search?num=5&q=NtOpenProcessTokenEx+site%3Amicrosoft.com) |  |   
+[NtOpenResourceManager](https://www.google.com/search?num=5&q=NtOpenResourceManager+site%3Amicrosoft.com) |  |   
+[NtOpenSymbolicLinkObject](https://www.google.com/search?num=5&q=NtOpenSymbolicLinkObject+site%3Amicrosoft.com) |  |   
+[NtOpenThread](https://www.google.com/search?num=5&q=NtOpenThread+site%3Amicrosoft.com) |  |   
+[NtOpenThreadTokenEx](https://www.google.com/search?num=5&q=NtOpenThreadTokenEx+site%3Amicrosoft.com) |  |   
+[NtOpenTransaction](https://www.google.com/search?num=5&q=NtOpenTransaction+site%3Amicrosoft.com) |  |   
+[NtOpenTransactionManager](https://www.google.com/search?num=5&q=NtOpenTransactionManager+site%3Amicrosoft.com) |  |   
+[NtPowerInformation](https://www.google.com/search?num=5&q=NtPowerInformation+site%3Amicrosoft.com) |  |   
+[NtPrepareComplete](https://www.google.com/search?num=5&q=NtPrepareComplete+site%3Amicrosoft.com) |  |   
+[NtPrepareEnlistment](https://www.google.com/search?num=5&q=NtPrepareEnlistment+site%3Amicrosoft.com) |  |   
+[NtPrePrepareComplete](https://www.google.com/search?num=5&q=NtPrePrepareComplete+site%3Amicrosoft.com) |  |   
+[NtPrePrepareEnlistment](https://www.google.com/search?num=5&q=NtPrePrepareEnlistment+site%3Amicrosoft.com) |  |   
+[NtProtectVirtualMemory](https://www.google.com/search?num=5&q=NtProtectVirtualMemory+site%3Amicrosoft.com) |  |   
+[NtQueryAttributesFile](https://www.google.com/search?num=5&q=NtQueryAttributesFile+site%3Amicrosoft.com) |  |   
+[NtQueryDirectoryFile](https://www.google.com/search?num=5&q=NtQueryDirectoryFile+site%3Amicrosoft.com) |  |   
+[NtQueryDirectoryFileEx](https://www.google.com/search?num=5&q=NtQueryDirectoryFileEx+site%3Amicrosoft.com) |  |   
+[NtQueryInformationEnlistment](https://www.google.com/search?num=5&q=NtQueryInformationEnlistment+site%3Amicrosoft.com) |  |   
+[NtQueryInformationFile](https://www.google.com/search?num=5&q=NtQueryInformationFile+site%3Amicrosoft.com) |  |   
+[NtQueryInformationProcess](https://www.google.com/search?num=5&q=NtQueryInformationProcess+site%3Amicrosoft.com) |  |   
+[NtQueryInformationResourceManager](https://www.google.com/search?num=5&q=NtQueryInformationResourceManager+site%3Amicrosoft.com) |  |   
+[NtQueryInformationThread](https://www.google.com/search?num=5&q=NtQueryInformationThread+site%3Amicrosoft.com) |  |   
+[NtQueryInformationToken](https://www.google.com/search?num=5&q=NtQueryInformationToken+site%3Amicrosoft.com) |  |   
+[NtQueryInformationTransaction](https://www.google.com/search?num=5&q=NtQueryInformationTransaction+site%3Amicrosoft.com) |  |   
+[NtQueryInformationTransactionManager](https://www.google.com/search?num=5&q=NtQueryInformationTransactionManager+site%3Amicrosoft.com) |  |   
+[NtQueryKey](http://msdn2.microsoft.com/en-us/library/3b2d3a8b-a21f-4067-a1f0-9aa66c1973f5) | wdm.h | [Vanara.PInvoke.NtDll.NtQueryKey](https://github.com/dahall/Vanara/search?l=C%23&q=NtQueryKey)  
+[NtQueryMultipleValueKey](https://www.google.com/search?num=5&q=NtQueryMultipleValueKey+site%3Amicrosoft.com) |  |   
+[NtQueryObject](https://www.google.com/search?num=5&q=NtQueryObject+site%3Amicrosoft.com) |  |   
+[NtQueryPerformanceCounter](https://www.google.com/search?num=5&q=NtQueryPerformanceCounter+site%3Amicrosoft.com) |  |   
+[NtQueryQuotaInformationFile](https://www.google.com/search?num=5&q=NtQueryQuotaInformationFile+site%3Amicrosoft.com) |  |   
+[NtQuerySecurityObject](https://www.google.com/search?num=5&q=NtQuerySecurityObject+site%3Amicrosoft.com) |  |   
+[NtQuerySymbolicLinkObject](https://www.google.com/search?num=5&q=NtQuerySymbolicLinkObject+site%3Amicrosoft.com) |  |   
+[NtQuerySystemInformation](http://msdn2.microsoft.com/en-us/library/553ec7b9-c5eb-4955-8dc0-f1c06f59fe31) | winternl.h | [Vanara.PInvoke.NtDll.NtQuerySystemInformation](https://github.com/dahall/Vanara/search?l=C%23&q=NtQuerySystemInformation)  
+[NtQuerySystemTime](https://www.google.com/search?num=5&q=NtQuerySystemTime+site%3Amicrosoft.com) |  |   
+[NtQueryVirtualMemory](https://www.google.com/search?num=5&q=NtQueryVirtualMemory+site%3Amicrosoft.com) |  |   
+[NtQueryVolumeInformationFile](https://www.google.com/search?num=5&q=NtQueryVolumeInformationFile+site%3Amicrosoft.com) |  |   
+[NtReadFile](https://www.google.com/search?num=5&q=NtReadFile+site%3Amicrosoft.com) |  |   
+[NtReadOnlyEnlistment](https://www.google.com/search?num=5&q=NtReadOnlyEnlistment+site%3Amicrosoft.com) |  |   
+[NtRecoverEnlistment](https://www.google.com/search?num=5&q=NtRecoverEnlistment+site%3Amicrosoft.com) |  |   
+[NtRecoverResourceManager](https://www.google.com/search?num=5&q=NtRecoverResourceManager+site%3Amicrosoft.com) |  |   
+[NtRecoverTransactionManager](https://www.google.com/search?num=5&q=NtRecoverTransactionManager+site%3Amicrosoft.com) |  |   
+[NtRenameKey](https://www.google.com/search?num=5&q=NtRenameKey+site%3Amicrosoft.com) |  |   
+[NtRenameTransactionManager](https://www.google.com/search?num=5&q=NtRenameTransactionManager+site%3Amicrosoft.com) |  |   
+[NtRollbackComplete](https://www.google.com/search?num=5&q=NtRollbackComplete+site%3Amicrosoft.com) |  |   
+[NtRollbackEnlistment](https://www.google.com/search?num=5&q=NtRollbackEnlistment+site%3Amicrosoft.com) |  |   
+[NtRollbackTransaction](https://www.google.com/search?num=5&q=NtRollbackTransaction+site%3Amicrosoft.com) |  |   
+[NtRollforwardTransactionManager](https://www.google.com/search?num=5&q=NtRollforwardTransactionManager+site%3Amicrosoft.com) |  |   
+[NtSetInformationEnlistment](https://www.google.com/search?num=5&q=NtSetInformationEnlistment+site%3Amicrosoft.com) |  |   
+[NtSetInformationFile](https://www.google.com/search?num=5&q=NtSetInformationFile+site%3Amicrosoft.com) |  |   
+[NtSetInformationKey](https://www.google.com/search?num=5&q=NtSetInformationKey+site%3Amicrosoft.com) |  |   
+[NtSetInformationResourceManager](https://www.google.com/search?num=5&q=NtSetInformationResourceManager+site%3Amicrosoft.com) |  |   
+[NtSetInformationThread](https://www.google.com/search?num=5&q=NtSetInformationThread+site%3Amicrosoft.com) |  |   
+[NtSetInformationToken](https://www.google.com/search?num=5&q=NtSetInformationToken+site%3Amicrosoft.com) |  |   
+[NtSetInformationTransaction](https://www.google.com/search?num=5&q=NtSetInformationTransaction+site%3Amicrosoft.com) |  |   
+[NtSetInformationTransactionManager](https://www.google.com/search?num=5&q=NtSetInformationTransactionManager+site%3Amicrosoft.com) |  |   
+[NtSetQuotaInformationFile](https://www.google.com/search?num=5&q=NtSetQuotaInformationFile+site%3Amicrosoft.com) |  |   
+[NtSetSecurityObject](https://www.google.com/search?num=5&q=NtSetSecurityObject+site%3Amicrosoft.com) |  |   
+[NtSinglePhaseReject](https://www.google.com/search?num=5&q=NtSinglePhaseReject+site%3Amicrosoft.com) |  |   
+[NtTerminateEnclave](https://www.google.com/search?num=5&q=NtTerminateEnclave+site%3Amicrosoft.com) |  |   
+[NtUnlockFile](https://www.google.com/search?num=5&q=NtUnlockFile+site%3Amicrosoft.com) |  |   
+[NtUnmapViewOfSection](https://www.google.com/search?num=5&q=NtUnmapViewOfSection+site%3Amicrosoft.com) |  |   
+[NtWaitForSingleObject](https://www.google.com/search?num=5&q=NtWaitForSingleObject+site%3Amicrosoft.com) |  |   
+[NtWriteFile](https://www.google.com/search?num=5&q=NtWriteFile+site%3Amicrosoft.com) |  |   
+[RtlAbsoluteToSelfRelativeSD](https://www.google.com/search?num=5&q=RtlAbsoluteToSelfRelativeSD+site%3Amicrosoft.com) |  |   
+[RtlAddAccessAllowedAce](https://www.google.com/search?num=5&q=RtlAddAccessAllowedAce+site%3Amicrosoft.com) |  |   
+[RtlAddAccessAllowedAceEx](https://www.google.com/search?num=5&q=RtlAddAccessAllowedAceEx+site%3Amicrosoft.com) |  |   
+[RtlAddAce](https://www.google.com/search?num=5&q=RtlAddAce+site%3Amicrosoft.com) |  |   
+[RtlAddFunctionTable](https://www.google.com/search?num=5&q=RtlAddFunctionTable+site%3Amicrosoft.com) |  |   
+[RtlAddGrowableFunctionTable](https://www.google.com/search?num=5&q=RtlAddGrowableFunctionTable+site%3Amicrosoft.com) |  |   
+[RtlAllocateAndInitializeSid](https://www.google.com/search?num=5&q=RtlAllocateAndInitializeSid+site%3Amicrosoft.com) |  |   
+[RtlAllocateHeap](https://www.google.com/search?num=5&q=RtlAllocateHeap+site%3Amicrosoft.com) |  |   
+[RtlAnsiStringToUnicodeString](https://www.google.com/search?num=5&q=RtlAnsiStringToUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlAppendStringToString](https://www.google.com/search?num=5&q=RtlAppendStringToString+site%3Amicrosoft.com) |  |   
+[RtlAppendUnicodeStringToString](https://www.google.com/search?num=5&q=RtlAppendUnicodeStringToString+site%3Amicrosoft.com) |  |   
+[RtlAppendUnicodeToString](https://www.google.com/search?num=5&q=RtlAppendUnicodeToString+site%3Amicrosoft.com) |  |   
+[RtlAreBitsClear](https://www.google.com/search?num=5&q=RtlAreBitsClear+site%3Amicrosoft.com) |  |   
+[RtlAreBitsSet](https://www.google.com/search?num=5&q=RtlAreBitsSet+site%3Amicrosoft.com) |  |   
+[RtlCallEnclaveReturn](https://www.google.com/search?num=5&q=RtlCallEnclaveReturn+site%3Amicrosoft.com) |  |   
+[RtlCapabilityCheckForSingleSessionSku](https://www.google.com/search?num=5&q=RtlCapabilityCheckForSingleSessionSku+site%3Amicrosoft.com) |  |   
+[RtlCaptureContext](https://www.google.com/search?num=5&q=RtlCaptureContext+site%3Amicrosoft.com) |  |   
+[RtlCaptureStackBackTrace](https://www.google.com/search?num=5&q=RtlCaptureStackBackTrace+site%3Amicrosoft.com) |  |   
+[RtlCharToInteger](https://www.google.com/search?num=5&q=RtlCharToInteger+site%3Amicrosoft.com) |  |   
+[RtlCheckRegistryKey](https://www.google.com/search?num=5&q=RtlCheckRegistryKey+site%3Amicrosoft.com) |  |   
+[RtlCheckSystemBootStatusIntegrity](https://www.google.com/search?num=5&q=RtlCheckSystemBootStatusIntegrity+site%3Amicrosoft.com) |  |   
+[RtlClearBits](https://www.google.com/search?num=5&q=RtlClearBits+site%3Amicrosoft.com) |  |   
+[RtlCmEncodeMemIoResource](https://www.google.com/search?num=5&q=RtlCmEncodeMemIoResource+site%3Amicrosoft.com) |  |   
+[RtlCompareMemory](https://www.google.com/search?num=5&q=RtlCompareMemory+site%3Amicrosoft.com) |  |   
+[RtlCompareMemoryUlong](https://www.google.com/search?num=5&q=RtlCompareMemoryUlong+site%3Amicrosoft.com) |  |   
+[RtlCompareString](https://www.google.com/search?num=5&q=RtlCompareString+site%3Amicrosoft.com) |  |   
+[RtlCompareUnicodeString](https://www.google.com/search?num=5&q=RtlCompareUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlCompressBuffer](https://www.google.com/search?num=5&q=RtlCompressBuffer+site%3Amicrosoft.com) |  |   
+[RtlConvertSidToUnicodeString](https://www.google.com/search?num=5&q=RtlConvertSidToUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlCopyLuid](https://www.google.com/search?num=5&q=RtlCopyLuid+site%3Amicrosoft.com) |  |   
+[RtlCopyMemoryNonTemporal](https://www.google.com/search?num=5&q=RtlCopyMemoryNonTemporal+site%3Amicrosoft.com) |  |   
+[RtlCopySid](https://www.google.com/search?num=5&q=RtlCopySid+site%3Amicrosoft.com) |  |   
+[RtlCopyString](https://www.google.com/search?num=5&q=RtlCopyString+site%3Amicrosoft.com) |  |   
+[RtlCopyUnicodeString](https://www.google.com/search?num=5&q=RtlCopyUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlCreateAcl](https://www.google.com/search?num=5&q=RtlCreateAcl+site%3Amicrosoft.com) |  |   
+[RtlCreateHeap](https://www.google.com/search?num=5&q=RtlCreateHeap+site%3Amicrosoft.com) |  |   
+[RtlCreateRegistryKey](https://www.google.com/search?num=5&q=RtlCreateRegistryKey+site%3Amicrosoft.com) |  |   
+[RtlCreateSecurityDescriptor](https://www.google.com/search?num=5&q=RtlCreateSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlCreateSystemVolumeInformationFolder](https://www.google.com/search?num=5&q=RtlCreateSystemVolumeInformationFolder+site%3Amicrosoft.com) |  |   
+[RtlCreateUnicodeString](https://www.google.com/search?num=5&q=RtlCreateUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlCustomCPToUnicodeN](https://www.google.com/search?num=5&q=RtlCustomCPToUnicodeN+site%3Amicrosoft.com) |  |   
+[RtlDecompressBuffer](https://www.google.com/search?num=5&q=RtlDecompressBuffer+site%3Amicrosoft.com) |  |   
+[RtlDecompressBufferEx](https://www.google.com/search?num=5&q=RtlDecompressBufferEx+site%3Amicrosoft.com) |  |   
+[RtlDecompressFragment](https://www.google.com/search?num=5&q=RtlDecompressFragment+site%3Amicrosoft.com) |  |   
+[RtlDelete](https://www.google.com/search?num=5&q=RtlDelete+site%3Amicrosoft.com) |  |   
+[RtlDeleteAce](https://www.google.com/search?num=5&q=RtlDeleteAce+site%3Amicrosoft.com) |  |   
+[RtlDeleteElementGenericTable](https://www.google.com/search?num=5&q=RtlDeleteElementGenericTable+site%3Amicrosoft.com) |  |   
+[RtlDeleteElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlDeleteElementGenericTableAvl+site%3Amicrosoft.com) |  |   
+[RtlDeleteFunctionTable](https://www.google.com/search?num=5&q=RtlDeleteFunctionTable+site%3Amicrosoft.com) |  |   
+[RtlDeleteGrowableFunctionTable](https://www.google.com/search?num=5&q=RtlDeleteGrowableFunctionTable+site%3Amicrosoft.com) |  |   
+[RtlDeleteNoSplay](https://www.google.com/search?num=5&q=RtlDeleteNoSplay+site%3Amicrosoft.com) |  |   
+[RtlDeleteRegistryValue](https://www.google.com/search?num=5&q=RtlDeleteRegistryValue+site%3Amicrosoft.com) |  |   
+[RtlDestroyHeap](https://www.google.com/search?num=5&q=RtlDestroyHeap+site%3Amicrosoft.com) |  |   
+[RtlDosLongPathNameToNtPathName_U_WithStatus](https://www.google.com/search?num=5&q=RtlDosLongPathNameToNtPathName_U_WithStatus+site%3Amicrosoft.com) |  |   
+[RtlDosLongPathNameToRelativeNtPathName_U_WithStatus](https://www.google.com/search?num=5&q=RtlDosLongPathNameToRelativeNtPathName_U_WithStatus+site%3Amicrosoft.com) |  |   
+[RtlDowncaseUnicodeString](https://www.google.com/search?num=5&q=RtlDowncaseUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlDrainNonVolatileFlush](https://www.google.com/search?num=5&q=RtlDrainNonVolatileFlush+site%3Amicrosoft.com) |  |   
+[RtlEnclaveCallDispatch](https://www.google.com/search?num=5&q=RtlEnclaveCallDispatch+site%3Amicrosoft.com) |  |   
+[RtlEnclaveCallDispatchReturn](https://www.google.com/search?num=5&q=RtlEnclaveCallDispatchReturn+site%3Amicrosoft.com) |  |   
+[RtlEnumerateGenericTable](https://www.google.com/search?num=5&q=RtlEnumerateGenericTable+site%3Amicrosoft.com) |  |   
+[RtlEnumerateGenericTableAvl](https://www.google.com/search?num=5&q=RtlEnumerateGenericTableAvl+site%3Amicrosoft.com) |  |   
+[RtlEnumerateGenericTableLikeADirectory](https://www.google.com/search?num=5&q=RtlEnumerateGenericTableLikeADirectory+site%3Amicrosoft.com) |  |   
+[RtlEnumerateGenericTableWithoutSplaying](https://www.google.com/search?num=5&q=RtlEnumerateGenericTableWithoutSplaying+site%3Amicrosoft.com) |  |   
+[RtlEnumerateGenericTableWithoutSplayingAvl](https://www.google.com/search?num=5&q=RtlEnumerateGenericTableWithoutSplayingAvl+site%3Amicrosoft.com) |  |   
+[RtlEqualPrefixSid](https://www.google.com/search?num=5&q=RtlEqualPrefixSid+site%3Amicrosoft.com) |  |   
+[RtlEqualSid](https://www.google.com/search?num=5&q=RtlEqualSid+site%3Amicrosoft.com) |  |   
+[RtlEqualUnicodeString](https://www.google.com/search?num=5&q=RtlEqualUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlEthernetAddressToString](https://www.google.com/search?num=5&q=RtlEthernetAddressToStringA+site%3Amicrosoft.com) |  |   
+[RtlEthernetStringToAddress](https://www.google.com/search?num=5&q=RtlEthernetStringToAddressA+site%3Amicrosoft.com) |  |   
+[RtlExtendCorrelationVector](https://www.google.com/search?num=5&q=RtlExtendCorrelationVector+site%3Amicrosoft.com) |  |   
+[RtlFindClearBits](https://www.google.com/search?num=5&q=RtlFindClearBits+site%3Amicrosoft.com) |  |   
+[RtlFindClearBitsAndSet](https://www.google.com/search?num=5&q=RtlFindClearBitsAndSet+site%3Amicrosoft.com) |  |   
+[RtlFindClearRuns](https://www.google.com/search?num=5&q=RtlFindClearRuns+site%3Amicrosoft.com) |  |   
+[RtlFindLastBackwardRunClear](https://www.google.com/search?num=5&q=RtlFindLastBackwardRunClear+site%3Amicrosoft.com) |  |   
+[RtlFindLeastSignificantBit](https://www.google.com/search?num=5&q=RtlFindLeastSignificantBit+site%3Amicrosoft.com) |  |   
+[RtlFindLongestRunClear](https://www.google.com/search?num=5&q=RtlFindLongestRunClear+site%3Amicrosoft.com) |  |   
+[RtlFindMostSignificantBit](https://www.google.com/search?num=5&q=RtlFindMostSignificantBit+site%3Amicrosoft.com) |  |   
+[RtlFindNextForwardRunClear](https://www.google.com/search?num=5&q=RtlFindNextForwardRunClear+site%3Amicrosoft.com) |  |   
+[RtlFindSetBits](https://www.google.com/search?num=5&q=RtlFindSetBits+site%3Amicrosoft.com) |  |   
+[RtlFindSetBitsAndClear](https://www.google.com/search?num=5&q=RtlFindSetBitsAndClear+site%3Amicrosoft.com) |  |   
+[RtlFirstEntrySList](https://www.google.com/search?num=5&q=RtlFirstEntrySList+site%3Amicrosoft.com) |  |   
+[RtlFlushNonVolatileMemory](https://www.google.com/search?num=5&q=RtlFlushNonVolatileMemory+site%3Amicrosoft.com) |  |   
+[RtlFlushNonVolatileMemoryRanges](https://www.google.com/search?num=5&q=RtlFlushNonVolatileMemoryRanges+site%3Amicrosoft.com) |  |   
+[RtlFreeAnsiString](https://www.google.com/search?num=5&q=RtlFreeAnsiString+site%3Amicrosoft.com) |  |   
+[RtlFreeHeap](https://www.google.com/search?num=5&q=RtlFreeHeap+site%3Amicrosoft.com) |  |   
+[RtlFreeNonVolatileToken](https://www.google.com/search?num=5&q=RtlFreeNonVolatileToken+site%3Amicrosoft.com) |  |   
+[RtlFreeOemString](https://www.google.com/search?num=5&q=RtlFreeOemString+site%3Amicrosoft.com) |  |   
+[RtlFreeUnicodeString](https://www.google.com/search?num=5&q=RtlFreeUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlGenerate8dot3Name](https://www.google.com/search?num=5&q=RtlGenerate8dot3Name+site%3Amicrosoft.com) |  |   
+[RtlGetAce](https://www.google.com/search?num=5&q=RtlGetAce+site%3Amicrosoft.com) |  |   
+[RtlGetCompressionWorkSpaceSize](https://www.google.com/search?num=5&q=RtlGetCompressionWorkSpaceSize+site%3Amicrosoft.com) |  |   
+[RtlGetDaclSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetDaclSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlGetElementGenericTable](https://www.google.com/search?num=5&q=RtlGetElementGenericTable+site%3Amicrosoft.com) |  |   
+[RtlGetElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlGetElementGenericTableAvl+site%3Amicrosoft.com) |  |   
+[RtlGetEnabledExtendedFeatures](https://www.google.com/search?num=5&q=RtlGetEnabledExtendedFeatures+site%3Amicrosoft.com) |  |   
+[RtlGetFunctionTableListHead](https://www.google.com/search?num=5&q=RtlGetFunctionTableListHead+site%3Amicrosoft.com) |  |   
+[RtlGetGroupSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetGroupSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlGetNonVolatileToken](https://www.google.com/search?num=5&q=RtlGetNonVolatileToken+site%3Amicrosoft.com) |  |   
+[RtlGetOwnerSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetOwnerSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlGetPersistedStateLocation](https://www.google.com/search?num=5&q=RtlGetPersistedStateLocation+site%3Amicrosoft.com) |  |   
+[RtlGetSaclSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetSaclSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlGetSystemBootStatus](https://www.google.com/search?num=5&q=RtlGetSystemBootStatus+site%3Amicrosoft.com) |  |   
+[RtlGetSystemBootStatusEx](https://www.google.com/search?num=5&q=RtlGetSystemBootStatusEx+site%3Amicrosoft.com) |  |   
+[RtlGetUnloadEventTrace](https://www.google.com/search?num=5&q=RtlGetUnloadEventTrace+site%3Amicrosoft.com) |  |   
+[RtlGetUnloadEventTraceEx](https://www.google.com/search?num=5&q=RtlGetUnloadEventTraceEx+site%3Amicrosoft.com) |  |   
+[RtlGetVersion](https://www.google.com/search?num=5&q=RtlGetVersion+site%3Amicrosoft.com) |  |   
+[RtlGrowFunctionTable](https://www.google.com/search?num=5&q=RtlGrowFunctionTable+site%3Amicrosoft.com) |  |   
+[RtlGUIDFromString](https://www.google.com/search?num=5&q=RtlGUIDFromString+site%3Amicrosoft.com) |  |   
+[RtlHashUnicodeString](https://www.google.com/search?num=5&q=RtlHashUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlIncrementCorrelationVector](https://www.google.com/search?num=5&q=RtlIncrementCorrelationVector+site%3Amicrosoft.com) |  |   
+[RtlInitAnsiString](https://www.google.com/search?num=5&q=RtlInitAnsiString+site%3Amicrosoft.com) |  |   
+[RtlInitCodePageTable](https://www.google.com/search?num=5&q=RtlInitCodePageTable+site%3Amicrosoft.com) |  |   
+[RtlInitializeBitMap](https://www.google.com/search?num=5&q=RtlInitializeBitMap+site%3Amicrosoft.com) |  |   
+[RtlInitializeBitMapEx](https://www.google.com/search?num=5&q=RtlInitializeBitMapEx+site%3Amicrosoft.com) |  |   
+[RtlInitializeCorrelationVector](https://www.google.com/search?num=5&q=RtlInitializeCorrelationVector+site%3Amicrosoft.com) |  |   
+[RtlInitializeGenericTable](https://www.google.com/search?num=5&q=RtlInitializeGenericTable+site%3Amicrosoft.com) |  |   
+[RtlInitializeGenericTableAvl](https://www.google.com/search?num=5&q=RtlInitializeGenericTableAvl+site%3Amicrosoft.com) |  |   
+[RtlInitializeSid](https://www.google.com/search?num=5&q=RtlInitializeSid+site%3Amicrosoft.com) |  |   
+[RtlInitializeSidEx](https://www.google.com/search?num=5&q=RtlInitializeSidEx+site%3Amicrosoft.com) |  |   
+[RtlInitializeSListHead](https://www.google.com/search?num=5&q=RtlInitializeSListHead+site%3Amicrosoft.com) |  |   
+[RtlInitString](https://www.google.com/search?num=5&q=RtlInitString+site%3Amicrosoft.com) |  |   
+[RtlInitStringEx](https://www.google.com/search?num=5&q=RtlInitStringEx+site%3Amicrosoft.com) |  |   
+[RtlInitUnicodeString](https://www.google.com/search?num=5&q=RtlInitUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlInsertElementGenericTable](https://www.google.com/search?num=5&q=RtlInsertElementGenericTable+site%3Amicrosoft.com) |  |   
+[RtlInsertElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlInsertElementGenericTableAvl+site%3Amicrosoft.com) |  |   
+[RtlInsertElementGenericTableFullAvl](https://www.google.com/search?num=5&q=RtlInsertElementGenericTableFullAvl+site%3Amicrosoft.com) |  |   
+[RtlInstallFunctionTableCallback](https://www.google.com/search?num=5&q=RtlInstallFunctionTableCallback+site%3Amicrosoft.com) |  |   
+[RtlInt64ToUnicodeString](https://www.google.com/search?num=5&q=RtlInt64ToUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlIntegerToUnicodeString](https://www.google.com/search?num=5&q=RtlIntegerToUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlInterlockedFlushSList](https://www.google.com/search?num=5&q=RtlInterlockedFlushSList+site%3Amicrosoft.com) |  |   
+[RtlInterlockedPushEntrySList](https://www.google.com/search?num=5&q=RtlInterlockedPushEntrySList+site%3Amicrosoft.com) |  |   
+[RtlIoDecodeMemIoResource](https://www.google.com/search?num=5&q=RtlIoDecodeMemIoResource+site%3Amicrosoft.com) |  |   
+[RtlIoEncodeMemIoResource](https://www.google.com/search?num=5&q=RtlIoEncodeMemIoResource+site%3Amicrosoft.com) |  |   
+[RtlIpv4AddressToStringA](https://www.google.com/search?num=5&q=RtlIpv4AddressToStringA+site%3Amicrosoft.com) |  |   
+[RtlIpv4AddressToStringExW](https://www.google.com/search?num=5&q=RtlIpv4AddressToStringExW+site%3Amicrosoft.com) |  |   
+[RtlIpv4StringToAddress](https://www.google.com/search?num=5&q=RtlIpv4StringToAddressA+site%3Amicrosoft.com) |  |   
+[RtlIpv4StringToAddressEx](https://www.google.com/search?num=5&q=RtlIpv4StringToAddressExA+site%3Amicrosoft.com) |  |   
+[RtlIpv6AddressToString](https://www.google.com/search?num=5&q=RtlIpv6AddressToStringA+site%3Amicrosoft.com) |  |   
+[RtlIpv6AddressToStringExW](https://www.google.com/search?num=5&q=RtlIpv6AddressToStringExW+site%3Amicrosoft.com) |  |   
+[RtlIpv6StringToAddress](https://www.google.com/search?num=5&q=RtlIpv6StringToAddressA+site%3Amicrosoft.com) |  |   
+[RtlIpv6StringToAddressExW](https://www.google.com/search?num=5&q=RtlIpv6StringToAddressExW+site%3Amicrosoft.com) |  |   
+[RtlIsCloudFilesPlaceholder](https://www.google.com/search?num=5&q=RtlIsCloudFilesPlaceholder+site%3Amicrosoft.com) |  |   
+[RtlIsCurrentProcess](https://www.google.com/search?num=5&q=RtlIsCurrentProcess+site%3Amicrosoft.com) |  |   
+[RtlIsCurrentThread](https://www.google.com/search?num=5&q=RtlIsCurrentThread+site%3Amicrosoft.com) |  |   
+[RtlIsGenericTableEmpty](https://www.google.com/search?num=5&q=RtlIsGenericTableEmpty+site%3Amicrosoft.com) |  |   
+[RtlIsGenericTableEmptyAvl](https://www.google.com/search?num=5&q=RtlIsGenericTableEmptyAvl+site%3Amicrosoft.com) |  |   
+[RtlIsNameInExpression](https://www.google.com/search?num=5&q=RtlIsNameInExpression+site%3Amicrosoft.com) |  |   
+[RtlIsNameInUnUpcasedExpression](https://www.google.com/search?num=5&q=RtlIsNameInUnUpcasedExpression+site%3Amicrosoft.com) |  |   
+[RtlIsNameLegalDOS8Dot3](https://www.google.com/search?num=5&q=RtlIsNameLegalDOS8Dot3+site%3Amicrosoft.com) |  |   
+[RtlIsPartialPlaceholder](https://www.google.com/search?num=5&q=RtlIsPartialPlaceholder+site%3Amicrosoft.com) |  |   
+[RtlIsPartialPlaceholderFileHandle](https://www.google.com/search?num=5&q=RtlIsPartialPlaceholderFileHandle+site%3Amicrosoft.com) |  |   
+[RtlIsPartialPlaceholderFileInfo](https://www.google.com/search?num=5&q=RtlIsPartialPlaceholderFileInfo+site%3Amicrosoft.com) |  |   
+[RtlIsStateSeparationEnabled](https://www.google.com/search?num=5&q=RtlIsStateSeparationEnabled+site%3Amicrosoft.com) |  |   
+[RtlIsValidLocaleName](https://www.google.com/search?num=5&q=RtlIsValidLocaleName+site%3Amicrosoft.com) |  |   
+[RtlLengthSecurityDescriptor](https://www.google.com/search?num=5&q=RtlLengthSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlLengthSid](https://www.google.com/search?num=5&q=RtlLengthSid+site%3Amicrosoft.com) |  |   
+[RtlLocalTimeToSystemTime](https://www.google.com/search?num=5&q=RtlLocalTimeToSystemTime+site%3Amicrosoft.com) |  |   
+[RtlLookupElementGenericTable](https://www.google.com/search?num=5&q=RtlLookupElementGenericTable+site%3Amicrosoft.com) |  |   
+[RtlLookupElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlLookupElementGenericTableAvl+site%3Amicrosoft.com) |  |   
+[RtlLookupElementGenericTableFullAvl](https://www.google.com/search?num=5&q=RtlLookupElementGenericTableFullAvl+site%3Amicrosoft.com) |  |   
+[RtlLookupFirstMatchingElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlLookupFirstMatchingElementGenericTableAvl+site%3Amicrosoft.com) |  |   
+[RtlLookupFunctionEntry](https://www.google.com/search?num=5&q=RtlLookupFunctionEntry+site%3Amicrosoft.com) |  |   
+[RtlMapGenericMask](https://www.google.com/search?num=5&q=RtlMapGenericMask+site%3Amicrosoft.com) |  |   
+[RtlMoveMemory](https://www.google.com/search?num=5&q=RtlMoveMemory+site%3Amicrosoft.com) |  |   
+[RtlMultiByteToUnicodeN](https://www.google.com/search?num=5&q=RtlMultiByteToUnicodeN+site%3Amicrosoft.com) |  |   
+[RtlMultiByteToUnicodeSize](https://www.google.com/search?num=5&q=RtlMultiByteToUnicodeSize+site%3Amicrosoft.com) |  |   
+[RtlNtStatusToDosError](https://www.google.com/search?num=5&q=RtlNtStatusToDosError+site%3Amicrosoft.com) |  |   
+[RtlNumberGenericTableElements](https://www.google.com/search?num=5&q=RtlNumberGenericTableElements+site%3Amicrosoft.com) |  |   
+[RtlNumberGenericTableElementsAvl](https://www.google.com/search?num=5&q=RtlNumberGenericTableElementsAvl+site%3Amicrosoft.com) |  |   
+[RtlNumberOfClearBits](https://www.google.com/search?num=5&q=RtlNumberOfClearBits+site%3Amicrosoft.com) |  |   
+[RtlNumberOfSetBits](https://www.google.com/search?num=5&q=RtlNumberOfSetBits+site%3Amicrosoft.com) |  |   
+[RtlNumberOfSetBitsUlongPtr](https://www.google.com/search?num=5&q=RtlNumberOfSetBitsUlongPtr+site%3Amicrosoft.com) |  |   
+[RtlOemStringToUnicodeString](https://www.google.com/search?num=5&q=RtlOemStringToUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlOemToUnicodeN](https://www.google.com/search?num=5&q=RtlOemToUnicodeN+site%3Amicrosoft.com) |  |   
+[RtlPcToFileHeader](https://www.google.com/search?num=5&q=RtlPcToFileHeader+site%3Amicrosoft.com) |  |   
+[RtlPrefixUnicodeString](https://www.google.com/search?num=5&q=RtlPrefixUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlQueryDepthSList](https://www.google.com/search?num=5&q=RtlQueryDepthSList+site%3Amicrosoft.com) |  |   
+[RtlQueryImageMitigationPolicy](https://www.google.com/search?num=5&q=RtlQueryImageMitigationPolicy+site%3Amicrosoft.com) |  |   
+[RtlQueryProcessPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlQueryProcessPlaceholderCompatibilityMode+site%3Amicrosoft.com) |  |   
+[RtlQueryRegistryValues](https://www.google.com/search?num=5&q=RtlQueryRegistryValues+site%3Amicrosoft.com) |  |   
+[RtlQueryRegistryValueWithFallback](https://www.google.com/search?num=5&q=RtlQueryRegistryValueWithFallback+site%3Amicrosoft.com) |  |   
+[RtlQueryThreadPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlQueryThreadPlaceholderCompatibilityMode+site%3Amicrosoft.com) |  |   
+[RtlQueryTokenHostIdAsUlong64](https://www.google.com/search?num=5&q=RtlQueryTokenHostIdAsUlong64+site%3Amicrosoft.com) |  |   
+[RtlRaiseCustomSystemEventTrigger](https://www.google.com/search?num=5&q=RtlRaiseCustomSystemEventTrigger+site%3Amicrosoft.com) |  |   
+[RtlRaiseException](https://www.google.com/search?num=5&q=RtlRaiseException+site%3Amicrosoft.com) |  |   
+[RtlRandom](https://www.google.com/search?num=5&q=RtlRandom+site%3Amicrosoft.com) |  |   
+[RtlRandomEx](https://www.google.com/search?num=5&q=RtlRandomEx+site%3Amicrosoft.com) |  |   
+[RtlRealPredecessor](https://www.google.com/search?num=5&q=RtlRealPredecessor+site%3Amicrosoft.com) |  |   
+[RtlRealSuccessor](https://www.google.com/search?num=5&q=RtlRealSuccessor+site%3Amicrosoft.com) |  |   
+[RtlRestoreContext](https://www.google.com/search?num=5&q=RtlRestoreContext+site%3Amicrosoft.com) |  |   
+[RtlRestoreSystemBootStatusDefaults](https://www.google.com/search?num=5&q=RtlRestoreSystemBootStatusDefaults+site%3Amicrosoft.com) |  |   
+[RtlRunOnceBeginInitialize](https://www.google.com/search?num=5&q=RtlRunOnceBeginInitialize+site%3Amicrosoft.com) |  |   
+[RtlRunOnceComplete](https://www.google.com/search?num=5&q=RtlRunOnceComplete+site%3Amicrosoft.com) |  |   
+[RtlRunOnceExecuteOnce](https://www.google.com/search?num=5&q=RtlRunOnceExecuteOnce+site%3Amicrosoft.com) |  |   
+[RtlRunOnceInitialize](https://www.google.com/search?num=5&q=RtlRunOnceInitialize+site%3Amicrosoft.com) |  |   
+[RtlSecondsSince1970ToTime](https://www.google.com/search?num=5&q=RtlSecondsSince1970ToTime+site%3Amicrosoft.com) |  |   
+[RtlSecondsSince1980ToTime](https://www.google.com/search?num=5&q=RtlSecondsSince1980ToTime+site%3Amicrosoft.com) |  |   
+[RtlSelfRelativeToAbsoluteSD](https://www.google.com/search?num=5&q=RtlSelfRelativeToAbsoluteSD+site%3Amicrosoft.com) |  |   
+[RtlSetAllBits](https://www.google.com/search?num=5&q=RtlSetAllBits+site%3Amicrosoft.com) |  |   
+[RtlSetBits](https://www.google.com/search?num=5&q=RtlSetBits+site%3Amicrosoft.com) |  |   
+[RtlSetDaclSecurityDescriptor](https://www.google.com/search?num=5&q=RtlSetDaclSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlSetGroupSecurityDescriptor](https://www.google.com/search?num=5&q=RtlSetGroupSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlSetImageMitigationPolicy](https://www.google.com/search?num=5&q=RtlSetImageMitigationPolicy+site%3Amicrosoft.com) |  |   
+[RtlSetOwnerSecurityDescriptor](https://www.google.com/search?num=5&q=RtlSetOwnerSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlSetProcessPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlSetProcessPlaceholderCompatibilityMode+site%3Amicrosoft.com) |  |   
+[RtlSetProxiedProcessId](https://www.google.com/search?num=5&q=RtlSetProxiedProcessId+site%3Amicrosoft.com) |  |   
+[RtlSetSystemBootStatus](https://www.google.com/search?num=5&q=RtlSetSystemBootStatus+site%3Amicrosoft.com) |  |   
+[RtlSetSystemBootStatusEx](https://www.google.com/search?num=5&q=RtlSetSystemBootStatusEx+site%3Amicrosoft.com) |  |   
+[RtlSetThreadPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlSetThreadPlaceholderCompatibilityMode+site%3Amicrosoft.com) |  |   
+[RtlSplay](https://www.google.com/search?num=5&q=RtlSplay+site%3Amicrosoft.com) |  |   
+[RtlStringFromGUID](https://www.google.com/search?num=5&q=RtlStringFromGUID+site%3Amicrosoft.com) |  |   
+[RtlSubAuthorityCountSid](https://www.google.com/search?num=5&q=RtlSubAuthorityCountSid+site%3Amicrosoft.com) |  |   
+[RtlSubAuthoritySid](https://www.google.com/search?num=5&q=RtlSubAuthoritySid+site%3Amicrosoft.com) |  |   
+[RtlSubtreePredecessor](https://www.google.com/search?num=5&q=RtlSubtreePredecessor+site%3Amicrosoft.com) |  |   
+[RtlSubtreeSuccessor](https://www.google.com/search?num=5&q=RtlSubtreeSuccessor+site%3Amicrosoft.com) |  |   
+[RtlTestBitEx](https://www.google.com/search?num=5&q=RtlTestBitEx+site%3Amicrosoft.com) |  |   
+[RtlTimeFieldsToTime](https://www.google.com/search?num=5&q=RtlTimeFieldsToTime+site%3Amicrosoft.com) |  |   
+[RtlTimeToSecondsSince1970](https://www.google.com/search?num=5&q=RtlTimeToSecondsSince1970+site%3Amicrosoft.com) |  |   
+[RtlTimeToSecondsSince1980](https://www.google.com/search?num=5&q=RtlTimeToSecondsSince1980+site%3Amicrosoft.com) |  |   
+[RtlTimeToTimeFields](https://www.google.com/search?num=5&q=RtlTimeToTimeFields+site%3Amicrosoft.com) |  |   
+[RtlUnicodeStringToAnsiString](https://www.google.com/search?num=5&q=RtlUnicodeStringToAnsiString+site%3Amicrosoft.com) |  |   
+[RtlUnicodeStringToCountedOemString](https://www.google.com/search?num=5&q=RtlUnicodeStringToCountedOemString+site%3Amicrosoft.com) |  |   
+[RtlUnicodeStringToInteger](https://www.google.com/search?num=5&q=RtlUnicodeStringToInteger+site%3Amicrosoft.com) |  |   
+[RtlUnicodeStringToOemString](https://www.google.com/search?num=5&q=RtlUnicodeStringToOemString+site%3Amicrosoft.com) |  |   
+[RtlUnicodeToCustomCPN](https://www.google.com/search?num=5&q=RtlUnicodeToCustomCPN+site%3Amicrosoft.com) |  |   
+[RtlUnicodeToMultiByteN](https://www.google.com/search?num=5&q=RtlUnicodeToMultiByteN+site%3Amicrosoft.com) |  |   
+[RtlUnicodeToMultiByteSize](https://www.google.com/search?num=5&q=RtlUnicodeToMultiByteSize+site%3Amicrosoft.com) |  |   
+[RtlUnicodeToOemN](https://www.google.com/search?num=5&q=RtlUnicodeToOemN+site%3Amicrosoft.com) |  |   
+[RtlUnicodeToUTF8N](https://www.google.com/search?num=5&q=RtlUnicodeToUTF8N+site%3Amicrosoft.com) |  |   
+[RtlUniform](https://www.google.com/search?num=5&q=RtlUniform+site%3Amicrosoft.com) |  |   
+[RtlUnwind](https://www.google.com/search?num=5&q=RtlUnwind+site%3Amicrosoft.com) |  |   
+[RtlUpcaseUnicodeChar](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeChar+site%3Amicrosoft.com) |  |   
+[RtlUpcaseUnicodeString](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlUpcaseUnicodeStringToCountedOemString](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeStringToCountedOemString+site%3Amicrosoft.com) |  |   
+[RtlUpcaseUnicodeStringToOemString](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeStringToOemString+site%3Amicrosoft.com) |  |   
+[RtlUpcaseUnicodeToCustomCPN](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeToCustomCPN+site%3Amicrosoft.com) |  |   
+[RtlUpcaseUnicodeToMultiByteN](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeToMultiByteN+site%3Amicrosoft.com) |  |   
+[RtlUpcaseUnicodeToOemN](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeToOemN+site%3Amicrosoft.com) |  |   
+[RtlUpperChar](https://www.google.com/search?num=5&q=RtlUpperChar+site%3Amicrosoft.com) |  |   
+[RtlUpperString](https://www.google.com/search?num=5&q=RtlUpperString+site%3Amicrosoft.com) |  |   
+[RtlUTF8ToUnicodeN](https://www.google.com/search?num=5&q=RtlUTF8ToUnicodeN+site%3Amicrosoft.com) |  |   
+[RtlValidateCorrelationVector](https://www.google.com/search?num=5&q=RtlValidateCorrelationVector+site%3Amicrosoft.com) |  |   
+[RtlValidRelativeSecurityDescriptor](https://www.google.com/search?num=5&q=RtlValidRelativeSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlVerifyVersionInfo](https://www.google.com/search?num=5&q=RtlVerifyVersionInfo+site%3Amicrosoft.com) |  |   
+[RtlVirtualUnwind](https://www.google.com/search?num=5&q=RtlVirtualUnwind+site%3Amicrosoft.com) |  |   
+[RtlWow64GetEquivalentMachineCHPE](https://www.google.com/search?num=5&q=RtlWow64GetEquivalentMachineCHPE+site%3Amicrosoft.com) |  |   
+[RtlWow64GetSharedInfoProcess](https://www.google.com/search?num=5&q=RtlWow64GetSharedInfoProcess+site%3Amicrosoft.com) |  |   
+[RtlWow64PopAllCrossProcessWork](https://www.google.com/search?num=5&q=RtlWow64PopAllCrossProcessWork+site%3Amicrosoft.com) |  |   
+[RtlWow64PopCrossProcessWork](https://www.google.com/search?num=5&q=RtlWow64PopCrossProcessWork+site%3Amicrosoft.com) |  |   
+[RtlWow64PushCrossProcessWork](https://www.google.com/search?num=5&q=RtlWow64PushCrossProcessWork+site%3Amicrosoft.com) |  |   
+[RtlWriteNonVolatileMemory](https://www.google.com/search?num=5&q=RtlWriteNonVolatileMemory+site%3Amicrosoft.com) |  |   
+[RtlWriteRegistryValue](https://www.google.com/search?num=5&q=RtlWriteRegistryValue+site%3Amicrosoft.com) |  |   
+[vDbgPrintEx](https://www.google.com/search?num=5&q=vDbgPrintEx+site%3Amicrosoft.com) |  |   
+[vDbgPrintExWithPrefix](https://www.google.com/search?num=5&q=vDbgPrintExWithPrefix+site%3Amicrosoft.com) |  |   
+[VerSetConditionMask](https://www.google.com/search?num=5&q=VerSetConditionMask+site%3Amicrosoft.com) |  |   
+[ZwAllocateLocallyUniqueId](https://www.google.com/search?num=5&q=ZwAllocateLocallyUniqueId+site%3Amicrosoft.com) |  |   
+[ZwAllocateVirtualMemory](https://www.google.com/search?num=5&q=ZwAllocateVirtualMemory+site%3Amicrosoft.com) |  |   
+[ZwAllocateVirtualMemoryEx](https://www.google.com/search?num=5&q=ZwAllocateVirtualMemoryEx+site%3Amicrosoft.com) |  |   
+[ZwCallEnclave](https://www.google.com/search?num=5&q=ZwCallEnclave+site%3Amicrosoft.com) |  |   
+[ZwClose](https://www.google.com/search?num=5&q=ZwClose+site%3Amicrosoft.com) |  |   
+[ZwCommitComplete](https://www.google.com/search?num=5&q=ZwCommitComplete+site%3Amicrosoft.com) |  |   
+[ZwCommitEnlistment](https://www.google.com/search?num=5&q=ZwCommitEnlistment+site%3Amicrosoft.com) |  |   
+[ZwCommitTransaction](https://www.google.com/search?num=5&q=ZwCommitTransaction+site%3Amicrosoft.com) |  |   
+[ZwCreateDirectoryObject](https://www.google.com/search?num=5&q=ZwCreateDirectoryObject+site%3Amicrosoft.com) |  |   
+[ZwCreateEnlistment](https://www.google.com/search?num=5&q=ZwCreateEnlistment+site%3Amicrosoft.com) |  |   
+[ZwCreateEvent](https://www.google.com/search?num=5&q=ZwCreateEvent+site%3Amicrosoft.com) |  |   
+[ZwCreateFile](https://www.google.com/search?num=5&q=ZwCreateFile+site%3Amicrosoft.com) |  |   
+[ZwCreateKey](https://www.google.com/search?num=5&q=ZwCreateKey+site%3Amicrosoft.com) |  |   
+[ZwCreateKeyTransacted](https://www.google.com/search?num=5&q=ZwCreateKeyTransacted+site%3Amicrosoft.com) |  |   
+[ZwCreateResourceManager](https://www.google.com/search?num=5&q=ZwCreateResourceManager+site%3Amicrosoft.com) |  |   
+[ZwCreateSection](https://www.google.com/search?num=5&q=ZwCreateSection+site%3Amicrosoft.com) |  |   
+[ZwCreateTransaction](https://www.google.com/search?num=5&q=ZwCreateTransaction+site%3Amicrosoft.com) |  |   
+[ZwCreateTransactionManager](https://www.google.com/search?num=5&q=ZwCreateTransactionManager+site%3Amicrosoft.com) |  |   
+[ZwDeleteFile](https://www.google.com/search?num=5&q=ZwDeleteFile+site%3Amicrosoft.com) |  |   
+[ZwDeleteKey](https://www.google.com/search?num=5&q=ZwDeleteKey+site%3Amicrosoft.com) |  |   
+[ZwDeleteValueKey](https://www.google.com/search?num=5&q=ZwDeleteValueKey+site%3Amicrosoft.com) |  |   
+[ZwDeviceIoControlFile](https://www.google.com/search?num=5&q=ZwDeviceIoControlFile+site%3Amicrosoft.com) |  |   
+[ZwDuplicateObject](https://www.google.com/search?num=5&q=ZwDuplicateObject+site%3Amicrosoft.com) |  |   
+[ZwDuplicateToken](https://www.google.com/search?num=5&q=ZwDuplicateToken+site%3Amicrosoft.com) |  |   
+[ZwEnumerateKey](https://www.google.com/search?num=5&q=ZwEnumerateKey+site%3Amicrosoft.com) |  |   
+[ZwEnumerateTransactionObject](https://www.google.com/search?num=5&q=ZwEnumerateTransactionObject+site%3Amicrosoft.com) |  |   
+[ZwEnumerateValueKey](https://www.google.com/search?num=5&q=ZwEnumerateValueKey+site%3Amicrosoft.com) |  |   
+[ZwFlushBuffersFileEx](https://www.google.com/search?num=5&q=ZwFlushBuffersFileEx+site%3Amicrosoft.com) |  |   
+[ZwFlushKey](https://www.google.com/search?num=5&q=ZwFlushKey+site%3Amicrosoft.com) |  |   
+[ZwFlushVirtualMemory](https://www.google.com/search?num=5&q=ZwFlushVirtualMemory+site%3Amicrosoft.com) |  |   
+[ZwFreeVirtualMemory](https://www.google.com/search?num=5&q=ZwFreeVirtualMemory+site%3Amicrosoft.com) |  |   
+[ZwFsControlFile](https://www.google.com/search?num=5&q=ZwFsControlFile+site%3Amicrosoft.com) |  |   
+[ZwGetNotificationResourceManager](https://www.google.com/search?num=5&q=ZwGetNotificationResourceManager+site%3Amicrosoft.com) |  |   
+[ZwLoadDriver](https://www.google.com/search?num=5&q=ZwLoadDriver+site%3Amicrosoft.com) |  |   
+[ZwLockFile](https://www.google.com/search?num=5&q=ZwLockFile+site%3Amicrosoft.com) |  |   
+[ZwMakeTemporaryObject](https://www.google.com/search?num=5&q=ZwMakeTemporaryObject+site%3Amicrosoft.com) |  |   
+[ZwMapViewOfSection](https://www.google.com/search?num=5&q=ZwMapViewOfSection+site%3Amicrosoft.com) |  |   
+[ZwMapViewOfSectionEx](https://www.google.com/search?num=5&q=ZwMapViewOfSectionEx+site%3Amicrosoft.com) |  |   
+[ZwNotifyChangeDirectoryFileEx](https://www.google.com/search?num=5&q=ZwNotifyChangeDirectoryFileEx+site%3Amicrosoft.com) |  |   
+[ZwNotifyChangeKey](https://www.google.com/search?num=5&q=ZwNotifyChangeKey+site%3Amicrosoft.com) |  |   
+[ZwOpenDirectoryObject](https://www.google.com/search?num=5&q=ZwOpenDirectoryObject+site%3Amicrosoft.com) |  |   
+[ZwOpenEnlistment](https://www.google.com/search?num=5&q=ZwOpenEnlistment+site%3Amicrosoft.com) |  |   
+[ZwOpenEvent](https://www.google.com/search?num=5&q=ZwOpenEvent+site%3Amicrosoft.com) |  |   
+[ZwOpenFile](https://www.google.com/search?num=5&q=ZwOpenFile+site%3Amicrosoft.com) |  |   
+[ZwOpenKey](https://www.google.com/search?num=5&q=ZwOpenKey+site%3Amicrosoft.com) |  |   
+[ZwOpenKeyEx](https://www.google.com/search?num=5&q=ZwOpenKeyEx+site%3Amicrosoft.com) |  |   
+[ZwOpenKeyTransacted](https://www.google.com/search?num=5&q=ZwOpenKeyTransacted+site%3Amicrosoft.com) |  |   
+[ZwOpenKeyTransactedEx](https://www.google.com/search?num=5&q=ZwOpenKeyTransactedEx+site%3Amicrosoft.com) |  |   
+[ZwOpenProcess](https://www.google.com/search?num=5&q=ZwOpenProcess+site%3Amicrosoft.com) |  |   
+[ZwOpenProcessTokenEx](https://www.google.com/search?num=5&q=ZwOpenProcessTokenEx+site%3Amicrosoft.com) |  |   
+[ZwOpenResourceManager](https://www.google.com/search?num=5&q=ZwOpenResourceManager+site%3Amicrosoft.com) |  |   
+[ZwOpenSection](https://www.google.com/search?num=5&q=ZwOpenSection+site%3Amicrosoft.com) |  |   
+[ZwOpenSymbolicLinkObject](https://www.google.com/search?num=5&q=ZwOpenSymbolicLinkObject+site%3Amicrosoft.com) |  |   
+[ZwOpenThreadTokenEx](https://www.google.com/search?num=5&q=ZwOpenThreadTokenEx+site%3Amicrosoft.com) |  |   
+[ZwOpenTransaction](https://www.google.com/search?num=5&q=ZwOpenTransaction+site%3Amicrosoft.com) |  |   
+[ZwOpenTransactionManager](https://www.google.com/search?num=5&q=ZwOpenTransactionManager+site%3Amicrosoft.com) |  |   
+[ZwPowerInformation](https://www.google.com/search?num=5&q=ZwPowerInformation+site%3Amicrosoft.com) |  |   
+[ZwPrepareComplete](https://www.google.com/search?num=5&q=ZwPrepareComplete+site%3Amicrosoft.com) |  |   
+[ZwPrepareEnlistment](https://www.google.com/search?num=5&q=ZwPrepareEnlistment+site%3Amicrosoft.com) |  |   
+[ZwPrePrepareComplete](https://www.google.com/search?num=5&q=ZwPrePrepareComplete+site%3Amicrosoft.com) |  |   
+[ZwPrePrepareEnlistment](https://www.google.com/search?num=5&q=ZwPrePrepareEnlistment+site%3Amicrosoft.com) |  |   
+[ZwQueryDirectoryFile](https://www.google.com/search?num=5&q=ZwQueryDirectoryFile+site%3Amicrosoft.com) |  |   
+[ZwQueryDirectoryFileEx](https://www.google.com/search?num=5&q=ZwQueryDirectoryFileEx+site%3Amicrosoft.com) |  |   
+[ZwQueryEaFile](https://www.google.com/search?num=5&q=ZwQueryEaFile+site%3Amicrosoft.com) |  |   
+[ZwQueryFullAttributesFile](https://www.google.com/search?num=5&q=ZwQueryFullAttributesFile+site%3Amicrosoft.com) |  |   
+[ZwQueryInformationEnlistment](https://www.google.com/search?num=5&q=ZwQueryInformationEnlistment+site%3Amicrosoft.com) |  |   
+[ZwQueryInformationFile](https://www.google.com/search?num=5&q=ZwQueryInformationFile+site%3Amicrosoft.com) |  |   
+[ZwQueryInformationProcess](https://www.google.com/search?num=5&q=ZwQueryInformationProcess+site%3Amicrosoft.com) |  |   
+[ZwQueryInformationResourceManager](https://www.google.com/search?num=5&q=ZwQueryInformationResourceManager+site%3Amicrosoft.com) |  |   
+[ZwQueryInformationToken](https://www.google.com/search?num=5&q=ZwQueryInformationToken+site%3Amicrosoft.com) |  |   
+[ZwQueryInformationTransaction](https://www.google.com/search?num=5&q=ZwQueryInformationTransaction+site%3Amicrosoft.com) |  |   
+[ZwQueryInformationTransactionManager](https://www.google.com/search?num=5&q=ZwQueryInformationTransactionManager+site%3Amicrosoft.com) |  |   
+[ZwQueryKey](https://www.google.com/search?num=5&q=ZwQueryKey+site%3Amicrosoft.com) |  |   
+[ZwQueryObject](https://www.google.com/search?num=5&q=ZwQueryObject+site%3Amicrosoft.com) |  |   
+[ZwQueryQuotaInformationFile](https://www.google.com/search?num=5&q=ZwQueryQuotaInformationFile+site%3Amicrosoft.com) |  |   
+[ZwQuerySecurityObject](https://www.google.com/search?num=5&q=ZwQuerySecurityObject+site%3Amicrosoft.com) |  |   
+[ZwQuerySymbolicLinkObject](https://www.google.com/search?num=5&q=ZwQuerySymbolicLinkObject+site%3Amicrosoft.com) |  |   
+[ZwQuerySystemInformation](https://www.google.com/search?num=5&q=ZwQuerySystemInformation+site%3Amicrosoft.com) |  |   
+[ZwQuerySystemInformationEx](https://www.google.com/search?num=5&q=ZwQuerySystemInformationEx+site%3Amicrosoft.com) |  |   
+[ZwQueryValueKey](https://www.google.com/search?num=5&q=ZwQueryValueKey+site%3Amicrosoft.com) |  |   
+[ZwQueryVirtualMemory](https://www.google.com/search?num=5&q=ZwQueryVirtualMemory+site%3Amicrosoft.com) |  |   
+[ZwQueryVolumeInformationFile](https://www.google.com/search?num=5&q=ZwQueryVolumeInformationFile+site%3Amicrosoft.com) |  |   
+[ZwReadFile](https://www.google.com/search?num=5&q=ZwReadFile+site%3Amicrosoft.com) |  |   
+[ZwReadOnlyEnlistment](https://www.google.com/search?num=5&q=ZwReadOnlyEnlistment+site%3Amicrosoft.com) |  |   
+[ZwRecoverEnlistment](https://www.google.com/search?num=5&q=ZwRecoverEnlistment+site%3Amicrosoft.com) |  |   
+[ZwRecoverResourceManager](https://www.google.com/search?num=5&q=ZwRecoverResourceManager+site%3Amicrosoft.com) |  |   
+[ZwRecoverTransactionManager](https://www.google.com/search?num=5&q=ZwRecoverTransactionManager+site%3Amicrosoft.com) |  |   
+[ZwRollbackComplete](https://www.google.com/search?num=5&q=ZwRollbackComplete+site%3Amicrosoft.com) |  |   
+[ZwRollbackEnlistment](https://www.google.com/search?num=5&q=ZwRollbackEnlistment+site%3Amicrosoft.com) |  |   
+[ZwRollbackTransaction](https://www.google.com/search?num=5&q=ZwRollbackTransaction+site%3Amicrosoft.com) |  |   
+[ZwRollforwardTransactionManager](https://www.google.com/search?num=5&q=ZwRollforwardTransactionManager+site%3Amicrosoft.com) |  |   
+[ZwSetEaFile](https://www.google.com/search?num=5&q=ZwSetEaFile+site%3Amicrosoft.com) |  |   
+[ZwSetEvent](https://www.google.com/search?num=5&q=ZwSetEvent+site%3Amicrosoft.com) |  |   
+[ZwSetInformationEnlistment](https://www.google.com/search?num=5&q=ZwSetInformationEnlistment+site%3Amicrosoft.com) |  |   
+[ZwSetInformationFile](https://www.google.com/search?num=5&q=ZwSetInformationFile+site%3Amicrosoft.com) |  |   
+[ZwSetInformationResourceManager](https://www.google.com/search?num=5&q=ZwSetInformationResourceManager+site%3Amicrosoft.com) |  |   
+[ZwSetInformationThread](https://www.google.com/search?num=5&q=ZwSetInformationThread+site%3Amicrosoft.com) |  |   
+[ZwSetInformationToken](https://www.google.com/search?num=5&q=ZwSetInformationToken+site%3Amicrosoft.com) |  |   
+[ZwSetInformationTransaction](https://www.google.com/search?num=5&q=ZwSetInformationTransaction+site%3Amicrosoft.com) |  |   
+[ZwSetInformationVirtualMemory](https://www.google.com/search?num=5&q=ZwSetInformationVirtualMemory+site%3Amicrosoft.com) |  |   
+[ZwSetQuotaInformationFile](https://www.google.com/search?num=5&q=ZwSetQuotaInformationFile+site%3Amicrosoft.com) |  |   
+[ZwSetSecurityObject](https://www.google.com/search?num=5&q=ZwSetSecurityObject+site%3Amicrosoft.com) |  |   
+[ZwSetValueKey](https://www.google.com/search?num=5&q=ZwSetValueKey+site%3Amicrosoft.com) |  |   
+[ZwSetVolumeInformationFile](https://www.google.com/search?num=5&q=ZwSetVolumeInformationFile+site%3Amicrosoft.com) |  |   
+[ZwSinglePhaseReject](https://www.google.com/search?num=5&q=ZwSinglePhaseReject+site%3Amicrosoft.com) |  |   
+[ZwSuspendProcess](https://www.google.com/search?num=5&q=ZwSuspendProcess+site%3Amicrosoft.com) |  |   
+[ZwTerminateEnclave](https://www.google.com/search?num=5&q=ZwTerminateEnclave+site%3Amicrosoft.com) |  |   
+[ZwTerminateProcess](https://www.google.com/search?num=5&q=ZwTerminateProcess+site%3Amicrosoft.com) |  |   
+[ZwUnloadDriver](https://www.google.com/search?num=5&q=ZwUnloadDriver+site%3Amicrosoft.com) |  |   
+[ZwUnlockFile](https://www.google.com/search?num=5&q=ZwUnlockFile+site%3Amicrosoft.com) |  |   
+[ZwUnmapViewOfSection](https://www.google.com/search?num=5&q=ZwUnmapViewOfSection+site%3Amicrosoft.com) |  |   
+[ZwUnmapViewOfSectionEx](https://www.google.com/search?num=5&q=ZwUnmapViewOfSectionEx+site%3Amicrosoft.com) |  |   
+[ZwWaitForSingleObject](https://www.google.com/search?num=5&q=ZwWaitForSingleObject+site%3Amicrosoft.com) |  |   
+[ZwWriteFile](https://www.google.com/search?num=5&q=ZwWriteFile+site%3Amicrosoft.com) |  |   
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[CLIENT_ID](https://www.google.com/search?num=5&q=CLIENT_ID+site%3Amicrosoft.com) |  | Vanara.PInvoke.NtDll+CLIENT_ID  
-[IO_STATUS_BLOCK](http://msdn2.microsoft.com/en-us/library/1ce2b1d0-a8b2-4a05-8895-e13802690a7b) | wdm.h | Vanara.PInvoke.NtDll+IO_STATUS_BLOCK  
-[KEY_BASIC_INFORMATION](http://msdn2.microsoft.com/en-us/library/789c60b6-a5a4-4570-bb0c-acfe1166a302) | wdm.h | Vanara.PInvoke.NtDll+KEY_BASIC_INFORMATION  
-[KEY_FULL_INFORMATION](http://msdn2.microsoft.com/en-us/library/dd099435-e3e3-4d78-a829-0f12f2db46d9) | wdm.h | Vanara.PInvoke.NtDll+KEY_FULL_INFORMATION  
-[KEY_NAME_INFORMATION](http://msdn2.microsoft.com/en-us/library/5b46e7d9-fbb0-4e55-b1f5-d9d0f1dd1f2c) | ntddk.h | Vanara.PInvoke.NtDll+KEY_NAME_INFORMATION  
-[KEY_NODE_INFORMATION](http://msdn2.microsoft.com/en-us/library/2eed1a3d-fc40-4416-ad61-d82bf4fb69a1) | wdm.h | Vanara.PInvoke.NtDll+KEY_NODE_INFORMATION  
-[LDR_DLL_NOTIFICATION_DATA](http://msdn2.microsoft.com/en-us/library/12202797-c80c-4fa3-9cc4-dcb1a9f01551) | ntldr.h | Vanara.PInvoke.NtDll+LDR_DLL_NOTIFICATION_DATA  
-[OBJECT_ATTRIBUTES](http://msdn2.microsoft.com/en-us/library/08f5a141-abce-4890-867c-5fe8c4239905) | wudfwdm.h | Vanara.PInvoke.NtDll+OBJECT_ATTRIBUTES  
-[SYSTEM_BASIC_INFORMATION](http://msdn2.microsoft.com/en-us/library/553ec7b9-c5eb-4955-8dc0-f1c06f59fe31) | winternl.h | Vanara.PInvoke.NtDll+SYSTEM_BASIC_INFORMATION  
-[SYSTEM_PROCESS_INFORMATION](http://msdn2.microsoft.com/en-us/library/553ec7b9-c5eb-4955-8dc0-f1c06f59fe31) | winternl.h | Vanara.PInvoke.NtDll+SYSTEM_PROCESS_INFORMATION  
-[SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION](http://msdn2.microsoft.com/en-us/library/553ec7b9-c5eb-4955-8dc0-f1c06f59fe31) | winternl.h | Vanara.PInvoke.NtDll+SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION  
-[SYSTEM_REGISTRY_QUOTA_INFORMATION](http://msdn2.microsoft.com/en-us/library/553ec7b9-c5eb-4955-8dc0-f1c06f59fe31) | winternl.h | Vanara.PInvoke.NtDll+SYSTEM_REGISTRY_QUOTA_INFORMATION  
-[SYSTEM_THREAD_INFORMATION](http://msdn2.microsoft.com/en-us/library/553ec7b9-c5eb-4955-8dc0-f1c06f59fe31) | winternl.h | Vanara.PInvoke.NtDll+SYSTEM_THREAD_INFORMATION  
-[UNICODE_STRING](http://msdn2.microsoft.com/en-us/library/b02f29a9-1049-4e29-aac3-72bf0c70a21e) | wudfwdm.h | Vanara.PInvoke.NtDll+UNICODE_STRING  
+[CLIENT_ID](https://www.google.com/search?num=5&q=CLIENT_ID+site%3Amicrosoft.com) |  | [Vanara.PInvoke.NtDll.CLIENT_ID](https://github.com/dahall/Vanara/search?l=C%23&q=CLIENT_ID)  
+[IO_STATUS_BLOCK](http://msdn2.microsoft.com/en-us/library/1ce2b1d0-a8b2-4a05-8895-e13802690a7b) | wdm.h | [Vanara.PInvoke.NtDll.IO_STATUS_BLOCK](https://github.com/dahall/Vanara/search?l=C%23&q=IO_STATUS_BLOCK)  
+[KEY_BASIC_INFORMATION](http://msdn2.microsoft.com/en-us/library/789c60b6-a5a4-4570-bb0c-acfe1166a302) | wdm.h | [Vanara.PInvoke.NtDll.KEY_BASIC_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=KEY_BASIC_INFORMATION)  
+[KEY_FULL_INFORMATION](http://msdn2.microsoft.com/en-us/library/dd099435-e3e3-4d78-a829-0f12f2db46d9) | wdm.h | [Vanara.PInvoke.NtDll.KEY_FULL_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=KEY_FULL_INFORMATION)  
+[KEY_NAME_INFORMATION](http://msdn2.microsoft.com/en-us/library/5b46e7d9-fbb0-4e55-b1f5-d9d0f1dd1f2c) | ntddk.h | [Vanara.PInvoke.NtDll.KEY_NAME_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=KEY_NAME_INFORMATION)  
+[KEY_NODE_INFORMATION](http://msdn2.microsoft.com/en-us/library/2eed1a3d-fc40-4416-ad61-d82bf4fb69a1) | wdm.h | [Vanara.PInvoke.NtDll.KEY_NODE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=KEY_NODE_INFORMATION)  
+[LDR_DLL_NOTIFICATION_DATA](http://msdn2.microsoft.com/en-us/library/12202797-c80c-4fa3-9cc4-dcb1a9f01551) | ntldr.h | [Vanara.PInvoke.NtDll.LDR_DLL_NOTIFICATION_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=LDR_DLL_NOTIFICATION_DATA)  
+[OBJECT_ATTRIBUTES](http://msdn2.microsoft.com/en-us/library/08f5a141-abce-4890-867c-5fe8c4239905) | wudfwdm.h | [Vanara.PInvoke.NtDll.OBJECT_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=OBJECT_ATTRIBUTES)  
+[SYSTEM_BASIC_INFORMATION](http://msdn2.microsoft.com/en-us/library/553ec7b9-c5eb-4955-8dc0-f1c06f59fe31) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_BASIC_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_BASIC_INFORMATION)  
+[SYSTEM_PROCESS_INFORMATION](http://msdn2.microsoft.com/en-us/library/553ec7b9-c5eb-4955-8dc0-f1c06f59fe31) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_PROCESS_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_PROCESS_INFORMATION)  
+[SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION](http://msdn2.microsoft.com/en-us/library/553ec7b9-c5eb-4955-8dc0-f1c06f59fe31) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION)  
+[SYSTEM_REGISTRY_QUOTA_INFORMATION](http://msdn2.microsoft.com/en-us/library/553ec7b9-c5eb-4955-8dc0-f1c06f59fe31) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_REGISTRY_QUOTA_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_REGISTRY_QUOTA_INFORMATION)  
+[SYSTEM_THREAD_INFORMATION](http://msdn2.microsoft.com/en-us/library/553ec7b9-c5eb-4955-8dc0-f1c06f59fe31) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_THREAD_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_THREAD_INFORMATION)  
+[UNICODE_STRING](http://msdn2.microsoft.com/en-us/library/b02f29a9-1049-4e29-aac3-72bf0c70a21e) | wudfwdm.h | [Vanara.PInvoke.NtDll.UNICODE_STRING](https://github.com/dahall/Vanara/search?l=C%23&q=UNICODE_STRING)  
