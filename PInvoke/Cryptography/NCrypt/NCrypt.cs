@@ -4309,6 +4309,54 @@ namespace Vanara.PInvoke
 			public PFN_NCRYPT_FREE pfnFree;
 		}
 
+		/// <summary>Provides a handle to a hash handle.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NCRYPT_HASH_HANDLE : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="NCRYPT_HASH_HANDLE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public NCRYPT_HASH_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="NCRYPT_HASH_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static NCRYPT_HASH_HANDLE NULL => new NCRYPT_HASH_HANDLE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="NCRYPT_HASH_HANDLE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(NCRYPT_HASH_HANDLE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="NCRYPT_HASH_HANDLE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator NCRYPT_HASH_HANDLE(IntPtr h) => new NCRYPT_HASH_HANDLE(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(NCRYPT_HASH_HANDLE h1, NCRYPT_HASH_HANDLE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(NCRYPT_HASH_HANDLE h1, NCRYPT_HASH_HANDLE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is NCRYPT_HASH_HANDLE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
 		/// <summary>Provides a handle to a key storage object.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct NCRYPT_HANDLE : IHandle
