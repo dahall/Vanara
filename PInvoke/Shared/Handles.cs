@@ -1512,6 +1512,54 @@ namespace Vanara.PInvoke
 		public IntPtr DangerousGetHandle() => handle;
 	}
 
+	/// <summary>Provides a handle to a blocking task.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct HTASK : IHandle
+	{
+		private IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="HTASK"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public HTASK(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HTASK"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HTASK NULL => new HTASK(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Performs an explicit conversion from <see cref="HTASK"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(HTASK h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HTASK"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HTASK(IntPtr h) => new HTASK(h);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HTASK h1, HTASK h2) => !(h1 == h2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HTASK h1, HTASK h2) => h1.Equals(h2);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is HTASK h ? handle == h.handle : false;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
 	/// <summary>Provides a handle to a Windows theme.</summary>
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HTHEME : IHandle
