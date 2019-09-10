@@ -61,6 +61,40 @@ namespace Vanara.PInvoke
 			BIND_JUSTTESTEXISTENCE = 2,
 		}
 
+		/// <summary>Specifies the call types used by IMessageFilter::HandleInComingCall.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/ne-objidl-calltype typedef enum tagCALLTYPE { CALLTYPE_TOPLEVEL,
+		// CALLTYPE_NESTED, CALLTYPE_ASYNC, CALLTYPE_TOPLEVEL_CALLPENDING, CALLTYPE_ASYNC_CALLPENDING } CALLTYPE;
+		[PInvokeData("objidl.h", MSDNShortId = "341d429d-8f45-461f-bc77-36e191faecc2")]
+		public enum CALLTYPE
+		{
+			/// <summary>
+			/// A top-level call has arrived and the object is not currently waiting for a reply from a previous outgoing call. Calls of this
+			/// type should always be handled.
+			/// </summary>
+			CALLTYPE_TOPLEVEL = 1,
+
+			/// <summary>
+			/// A call has arrived bearing the same logical thread identifier as that of a previous outgoing call for which the object is
+			/// still awaiting a reply. Calls of this type should always be handled.
+			/// </summary>
+			CALLTYPE_NESTED,
+
+			/// <summary>An asynchronous call has arrived. Calls of this type cannot be rejected. OLE always delivers calls of this type.</summary>
+			CALLTYPE_ASYNC,
+
+			/// <summary>
+			/// A new top-level call has arrived with a new logical thread identifier and the object is currently waiting for a reply from a
+			/// previous outgoing call. Calls of this type may be handled or rejected.
+			/// </summary>
+			CALLTYPE_TOPLEVEL_CALLPENDING,
+
+			/// <summary>
+			/// An asynchronous call has arrived with a new logical thread identifier and the object is currently waiting for a reply from a
+			/// previous outgoing call. Calls of this type cannot be rejected.
+			/// </summary>
+			CALLTYPE_ASYNC_CALLPENDING,
+		}
+
 		/// <summary>
 		/// <para>Specifies various capabilities in CoInitializeSecurity and IClientSecurity::SetBlanket (or its helper function CoSetProxyBlanket).</para>
 		/// </summary>
@@ -221,6 +255,35 @@ namespace Vanara.PInvoke
 			LOCK_ONLYONCE = 4,
 		}
 
+		/// <summary>Specifies the return values for the IMessageFilter::MessagePending method.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/ne-objidl-pendingmsg typedef enum tagPENDINGMSG { PENDINGMSG_CANCELCALL,
+		// PENDINGMSG_WAITNOPROCESS, PENDINGMSG_WAITDEFPROCESS } PENDINGMSG;
+		[PInvokeData("objidl.h", MSDNShortId = "105bbcd4-b1b2-444d-bd55-7f6e564fec42")]
+		public enum PENDINGMSG
+		{
+			/// <summary>Cancel the outgoing call.</summary>
+			PENDINGMSG_CANCELCALL,
+
+			/// <summary>Wait for the return and don't dispatch the message.</summary>
+			PENDINGMSG_WAITNOPROCESS,
+
+			/// <summary>Wait and dispatch the message.</summary>
+			PENDINGMSG_WAITDEFPROCESS,
+		}
+
+		/// <summary>Indicates the level of nesting in the IMessageFilter::MessagePending method.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/ne-objidl-pendingtype typedef enum tagPENDINGTYPE {
+		// PENDINGTYPE_TOPLEVEL, PENDINGTYPE_NESTED } PENDINGTYPE;
+		[PInvokeData("objidl.h", MSDNShortId = "8f167342-5398-4ecc-9b56-dcf2b4248c65")]
+		public enum PENDINGTYPE
+		{
+			/// <summary>Top-level call.</summary>
+			PENDINGTYPE_TOPLEVEL = 1,
+
+			/// <summary>Nested call.</summary>
+			PENDINGTYPE_NESTED,
+		}
+
 		/// <summary>Flags used by <see cref="IRunningObjectTable.Register"/></summary>
 		[PInvokeData("wtypes.h")]
 		[Flags]
@@ -234,6 +297,25 @@ namespace Vanara.PInvoke
 			/// station that registered the object can connect to it.
 			/// </summary>
 			ROTFLAGS_ALLOWANYCLIENT = 0x2,
+		}
+
+		/// <summary>Indicates the status of server call.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/ne-objidl-servercall typedef enum tagSERVERCALL { SERVERCALL_ISHANDLED,
+		// SERVERCALL_REJECTED, SERVERCALL_RETRYLATER } SERVERCALL;
+		[PInvokeData("objidl.h", MSDNShortId = "2a9b5e85-44b9-43c1-b3e5-a8f2c140b674")]
+		public enum SERVERCALL
+		{
+			/// <summary>The object may be able to process the call.</summary>
+			SERVERCALL_ISHANDLED,
+
+			/// <summary>The object cannot handle the call due to an unforeseen problem, such as network unavailability.</summary>
+			SERVERCALL_REJECTED,
+
+			/// <summary>
+			/// The object cannot handle the call at this time. For example, an application might return this value when it is in a
+			/// user-controlled modal state.
+			/// </summary>
+			SERVERCALL_RETRYLATER,
 		}
 
 		/// <summary>
@@ -257,26 +339,6 @@ namespace Vanara.PInvoke
 			/// <summary>Indicates that the storage element is a property storage object.</summary>
 			STGTY_PROPERTY,
 		}
-
-		/// <summary>Enumerates the values in a <see cref="IEnumContextProps"/> instance.</summary>
-		/// <param name="e">The <see cref="IEnumContextProps"/> instance.</param>
-		/// <returns>The enumerated values.</returns>
-		public static IEnumerable<ContextProperty> Enumerate(this IEnumContextProps e) => new Collections.IEnumFromCom<ContextProperty>(e.Next, e.Reset);
-
-		/// <summary>Enumerates the values in a <see cref="IEnumSTATSTG"/> instance.</summary>
-		/// <param name="e">The <see cref="IEnumSTATSTG"/> instance.</param>
-		/// <returns>The enumerated values.</returns>
-		public static IEnumerable<STATSTG> Enumerate(this IEnumSTATSTG e) => new Collections.IEnumFromCom<STATSTG>(e.Next, e.Reset);
-
-		/// <summary>Enumerates the values in a <see cref="IEnumUnknown"/> instance.</summary>
-		/// <param name="e">The <see cref="IEnumUnknown"/> instance.</param>
-		/// <returns>The enumerated values.</returns>
-		public static IEnumerable<IntPtr> Enumerate(this IEnumUnknown e) => new Collections.IEnumFromCom<IntPtr>(e.Next, e.Reset);
-
-		/// <summary>Enumerates the values in a <see cref="IEnumUnknown"/> instance.</summary>
-		/// <param name="e">The <see cref="IEnumUnknown"/> instance.</param>
-		/// <returns>The enumerated values.</returns>
-		public static IEnumerable<T> Enumerate<T>(this IEnumUnknown e) where T : class => new Collections.IEnumFromCom<IntPtr>(e.Next, e.Reset).Select(p => (T)Marshal.GetObjectForIUnknown(p));
 
 		/// <summary>Undocumented.</summary>
 		[PInvokeData("objidl.h")]
@@ -514,7 +576,7 @@ namespace Vanara.PInvoke
 			/// Retrieves an interface pointer to the running object table (ROT) for the computer on which this bind context is running.
 			/// </summary>
 			/// <param name="pprot">
-			/// The address of a IRunningObjectTable* pointer variable that receives the interface pointer to the running object table. If an
+			/// The address of a IRunningObjectTable pointer variable that receives the interface pointer to the running object table. If an
 			/// error occurs, *pprot is set to <c>NULL</c>. If *pprot is non- <c>NULL</c>, the implementation calls AddRef on the running
 			/// table object; it is the caller's responsibility to call Release.
 			/// </param>
@@ -627,7 +689,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			/// <param name="pszKey">The bind context string key to be searched for. Key string comparison is case-sensitive.</param>
 			/// <param name="ppunk">
-			/// The address of an IUnknown* pointer variable that receives the interface pointer to the object associated with pszKey. When
+			/// The address of an IUnknown pointer variable that receives the interface pointer to the object associated with pszKey. When
 			/// successful, the implementation calls AddRef on *ppunk. It is the caller's responsibility to call Release. If an error occurs,
 			/// the implementation sets *ppunk to <c>NULL</c>.
 			/// </param>
@@ -663,7 +725,7 @@ namespace Vanara.PInvoke
 			/// Retrieves a pointer to an interface that can be used to enumerate the keys of the bind context's string-keyed table of pointers.
 			/// </summary>
 			/// <param name="ppenum">
-			/// The address of an IEnumString* pointer variable that receives the interface pointer to the enumerator. If an error occurs,
+			/// The address of an IEnumString pointer variable that receives the interface pointer to the enumerator. If an error occurs,
 			/// *ppenum is set to <c>NULL</c>. If *ppenum is non- <c>NULL</c>, the implementation calls AddRef on *ppenum; it is the caller's
 			/// responsibility to call Release.
 			/// </param>
@@ -764,6 +826,177 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-icontext-enumcontextprops HRESULT EnumContextProps(
 			// IEnumContextProps **ppEnumContextProps );
 			IEnumContextProps EnumContextProps();
+		}
+
+		/// <summary>
+		/// <para>
+		/// Creates and manages advisory connections between a data object and one or more advise sinks. Its methods are intended to be used
+		/// to implement the advisory methods of IDataObject. <c>IDataAdviseHolder</c> is implemented on an advise holder object. Its methods
+		/// establish and delete data advisory connections and send notification of change in data from a data object to an object that
+		/// requires this notification, such as an OLE container, which must contain an advise sink.
+		/// </para>
+		/// <para>
+		/// Advise sinks are objects that require notification of change in the data the object contains and implement the IAdviseSink
+		/// interface. Advise sinks are also usually associated with OLE compound document containers.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nn-objidl-idataadviseholder
+		[PInvokeData("objidl.h", MSDNShortId = "740a6366-6ab1-4a20-82df-1efdd62211eb")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000110-0000-0000-C000-000000000046")]
+		public interface IDataAdviseHolder
+		{
+			/// <summary>Creates a connection between an advise sink and a data object for receiving notifications.</summary>
+			/// <param name="pDataObject">
+			/// A pointer to the IDataObject interface on the data object for which notifications are requested. If data in this object
+			/// changes, a notification is sent to the advise sinks that have requested notification.
+			/// </param>
+			/// <param name="pFetc">
+			/// A pointer to a FORMATETC structure that contains the specified format, medium, and target device that is of interest to the
+			/// advise sink requesting notification. For example, one sink may want to know only when the bitmap representation of the data
+			/// in the data object changes. Another sink may be interested in only the metafile format of the same object. Each advise sink
+			/// is notified when the data of interest changes. This data is passed back to the advise sink when notification occurs.
+			/// </param>
+			/// <param name="advf">
+			/// <para>
+			/// A group of flags that control the advisory connection. Possible values are from the ADVF enumeration. However, only some of
+			/// the possible <c>ADVF</c> values are relevant for this method. The following table briefly describes the relevant values; a
+			/// more detailed description can be found in the description of the <c>ADVF</c> enumeration.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ADVF_NODATA</term>
+			/// <term>Asks that no data be sent along with the notification.</term>
+			/// </item>
+			/// <item>
+			/// <term>ADVF_ONLYONCE</term>
+			/// <term>
+			/// Causes the advisory connection to be destroyed after the first notification is sent. An implicit call to
+			/// IDataAdviseHolder::Unadvise is made on behalf of the caller to remove the connection.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADVF_PRIMEFIRST</term>
+			/// <term>Causes an initial notification to be sent regardless of whether data has changed from its current state.</term>
+			/// </item>
+			/// <item>
+			/// <term>ADVF_DATAONSTOP</term>
+			/// <term>
+			/// When specified with ADVF_NODATA, this flag causes a last notification with the data included to be sent before the data
+			/// object is destroyed. When ADVF_NODATA is not specified, this flag has no effect.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </param>
+			/// <param name="pAdvise">A pointer to the IAdviseSink interface on the advisory sink that receives the change notification.</param>
+			/// <param name="pdwConnection">
+			/// A pointer to a variable that receives a token that identifies this connection. The calling object can later delete the
+			/// advisory connection by passing this token to IDataAdviseHolder::Unadvise. If this value is zero, the connection was not established.
+			/// </param>
+			/// <returns>This method returns S_OK on success.</returns>
+			/// <remarks>
+			/// <para>
+			/// Through the connection established through this method, the advisory sink can receive future notifications in a call to IAdviseSink::OnDataChange.
+			/// </para>
+			/// <para>
+			/// An object issues a call to IDataObject::DAdvise to request notification on changes to the format, medium, or target device of
+			/// interest. This data is specified in the pFormatetc parameter. The <c>DAdvise</c> method is usually implemented to call
+			/// <c>IDataAdviseHolder::Advise</c> to delegate the task of setting up and tracking a connection to the advise holder. When the
+			/// format, medium, or target device in question changes, the data object calls IDataAdviseHolder::SendOnDataChange to send the
+			/// necessary notifications.
+			/// </para>
+			/// <para>The established connection can be deleted by passing the value in pdwConnection in a call to IDataAdviseHolder::Unadvise.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataadviseholder-advise HRESULT Advise( IDataObject
+			// *pDataObject, FORMATETC *pFetc, DWORD advf, IAdviseSink *pAdvise, DWORD *pdwConnection );
+			[PreserveSig]
+			HRESULT Advise([Optional] IDataObject pDataObject, in FORMATETC pFetc, ADVF advf, IAdviseSink pAdvise, out uint pdwConnection);
+
+			/// <summary>
+			/// Removes a connection between a data object and an advisory sink that was set up through a previous call to
+			/// IDataAdviseHolder::Advise. This method is typically called in the implementation of IDataObject::DUnadvise.
+			/// </summary>
+			/// <param name="dwConnection">
+			/// A token that specifies the connection to be removed. This value was returned by IDataAdviseHolder::Advise when the connection
+			/// was originally established.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>OLE_E_NOCONNECTION</term>
+			/// <term>The dwConnection parameter does not specify a valid connection.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataadviseholder-unadvise HRESULT Unadvise( DWORD
+			// dwConnection );
+			[PreserveSig]
+			HRESULT Unadvise(uint dwConnection);
+
+			/// <summary>Returns an object that can be used to enumerate the current advisory connections.</summary>
+			/// <param name="ppenumAdvise">
+			/// A pointer to an IEnumSTATDATA pointer variable that receives the interface pointer to the new enumerator object. If the
+			/// implementation returns NULL in *ppenumAdvise, there are no connections to advise sinks at this time.
+			/// </param>
+			/// <returns>This method returns S_OK if the enumerator object is successfully instantiated or there are no connections.</returns>
+			/// <remarks>
+			/// <para>
+			/// This method must supply a pointer to an implementation of the IEnumSTATDATA interface. Its methods allow you to enumerate the
+			/// data stored in an array of STATDATA structures. You get a pointer to the OLE implementation of IDataAdviseHolder through a
+			/// call to CreateDataAdviseHolder, and then call <c>IDataAdviseHolder::EnumAdvise</c> to implement IDataObject::EnumDAdvise.
+			/// </para>
+			/// <para>
+			/// Adding more advisory connections while the enumerator object is active has an undefined effect on the enumeration that
+			/// results from this method.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/zh-cn/windows/win32/api/objidl/nf-objidl-idataadviseholder-enumadvise HRESULT EnumAdvise(
+			// IEnumSTATDATA **ppenumAdvise );
+			[PreserveSig]
+			HRESULT EnumAdvise(out IEnumSTATDATA ppenumAdvise);
+
+			/// <summary>
+			/// Sends notifications to each advise sink for which there is a connection established by calling the IAdviseSink::OnDataChange
+			/// method for each advise sink currently being handled by this instance of the advise holder object.
+			/// </summary>
+			/// <param name="pDataObject">
+			/// A pointer to the IDataObject interface on the data object in which the data has just changed. This pointer is used in
+			/// subsequent calls to IAdviseSink::OnDataChange.
+			/// </param>
+			/// <param name="dwReserved">This parameter is reserved and must be 0.</param>
+			/// <param name="advf">
+			/// Container for advise flags that specify how the call to IAdviseSink::OnDataChange is made. These flag values are from the
+			/// enumeration ADVF. Typically, the value for advf is <c>NULL</c>. The only exception occurs when the data object is shutting
+			/// down and must send a final notification that includes the actual data to sinks that have specified ADVF_DATAONSTOP and
+			/// ADVF_NODATA in their call to IDataObject::DAdvise. In this case, advf contains ADVF_DATAONSTOP.
+			/// </param>
+			/// <returns>This method returns S_OK on success.</returns>
+			/// <remarks>
+			/// <para>
+			/// The data object must call this method when it detects a change that would be of interest to an advise sink that has
+			/// previously requested notification.
+			/// </para>
+			/// <para>
+			/// Most notifications include the actual data with them. The only exception is if the ADVF_NODATA flag was previously specified
+			/// when the connection was initially set up in the IDataAdviseHolder::Advise method.
+			/// </para>
+			/// <para>
+			/// Before calling the IAdviseSink::OnDataChange method for each advise sink, this method obtains the actual data by calling the
+			/// IDataObject::GetData method through the pointer specified in the pDataObject parameter.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataadviseholder-sendondatachange HRESULT
+			// SendOnDataChange( IDataObject *pDataObject, DWORD dwReserved, DWORD advf );
+			[PreserveSig]
+			HRESULT SendOnDataChange(IDataObject pDataObject, [Optional] uint dwReserved, ADVF advf);
 		}
 
 		/// <summary>
@@ -1096,6 +1329,64 @@ namespace Vanara.PInvoke
 			// bCanceled );
 			[PInvokeData("objidl.h", MSDNShortId = "21ea78c7-51f1-4418-915c-79db47c25715")]
 			void Terminate([MarshalAs(UnmanagedType.Bool)] bool bCanceled);
+		}
+
+		/// <summary>Performs initialization or cleanup when entering or exiting a COM apartment.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nn-objidl-iinitializespy
+		[PInvokeData("objidl.h", MSDNShortId = "9cf1a3fa-dbc6-4760-a9e9-ef237737acfb")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000034-0000-0000-C000-000000000046")]
+		public interface IInitializeSpy
+		{
+			/// <summary>Performs initialization steps required before calling the CoInitializeEx function.</summary>
+			/// <param name="dwCoInit">The apartment type passed to CoInitializeEx, specified as a member of the COINIT enumeration.</param>
+			/// <param name="dwCurThreadAptRefs">The number of times CoInitializeEx has been called on this thread.</param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-iinitializespy-preinitialize HRESULT PreInitialize( DWORD
+			// dwCoInit, DWORD dwCurThreadAptRefs );
+			[PreserveSig]
+			HRESULT PreInitialize(COINIT dwCoInit, uint dwCurThreadAptRefs);
+
+			/// <summary>Performs initialization steps required after calling the CoInitializeEx function.</summary>
+			/// <param name="hrCoInit">The value returned by CoInitializeEx.</param>
+			/// <param name="dwCoInit">The apartment type passed to CoInitializeEx, specified as a member of the COINIT enumeration.</param>
+			/// <param name="dwNewThreadAptRefs">The number of times CoInitializeEx has been called on this thread.</param>
+			/// <returns>
+			/// This method returns the value that it intends the CoInitializeEx call to return to its caller. For more information, see the
+			/// Remarks section.
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The return value from <c>PostInitialize</c> is intended to be the returned <c>HRESULT</c> from the call to CoInitializeEx.
+			/// This is always the case for a single active registration on this thread.
+			/// </para>
+			/// <para>
+			/// For cases where there are multiple registrations active on this thread, the returned <c>HRESULT</c> is arrived at by chaining
+			/// of the various <c>PostInitialize</c> methods as follows: The COM determined <c>HRESULT</c> will be passed as the hrCoInit
+			/// parameter to the first <c>PostInitialize</c> method called. The <c>HRESULT</c> from that <c>PostInitialize</c> call will be
+			/// passed as the hrCoInit parameter to the next <c>PostInitialize</c> call. This chaining continues leading to the
+			/// <c>HRESULT</c> from the last <c>PostInitialize</c> call being returned as the <c>HRESULT</c> from the call to CoInitializeEx.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-iinitializespy-postinitialize HRESULT PostInitialize(
+			// HRESULT hrCoInit, DWORD dwCoInit, DWORD dwNewThreadAptRefs );
+			[PreserveSig]
+			HRESULT PostInitialize(HRESULT hrCoInit, COINIT dwCoInit, uint dwNewThreadAptRefs);
+
+			/// <summary>Performs cleanup steps required before calling the CoUninitialize function.</summary>
+			/// <param name="dwCurThreadAptRefs">The number of times CoInitializeEx has been called on this thread.</param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-iinitializespy-preuninitialize HRESULT PreUninitialize(
+			// DWORD dwCurThreadAptRefs );
+			[PreserveSig]
+			HRESULT PreUninitialize(uint dwCurThreadAptRefs);
+
+			/// <summary>Performs cleanup steps required after calling the CoUninitialize function.</summary>
+			/// <param name="dwNewThreadAptRefs">The number of calls to CoUninitialize remaining on this thread.</param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-iinitializespy-postuninitialize HRESULT PostUninitialize(
+			// DWORD dwNewThreadAptRefs );
+			[PreserveSig]
+			HRESULT PostUninitialize(uint dwNewThreadAptRefs);
 		}
 
 		/// <summary>
@@ -1513,6 +1804,219 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-heapminimize void HeapMinimize( );
 			[PreserveSig]
 			void HeapMinimize();
+		}
+
+		/// <summary>
+		/// Enables application developers to monitor (spy on) memory allocation, detect memory leaks, and simulate memory failure in calls
+		/// to IMalloc methods.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nn-objidl-imallocspy
+		[PInvokeData("objidl.h", MSDNShortId = "8ba500f7-c070-4788-b7fe-58b6a4e6a94c")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0000001d-0000-0000-C000-000000000046")]
+		public interface IMallocSpy
+		{
+			/// <summary>Performs operations required before calling IMalloc::Alloc.</summary>
+			/// <param name="cbRequest">The number of bytes specified in the allocation request the caller is passing to Alloc.</param>
+			/// <returns>The number of bytes specified in the call to Alloc, which can be greater than or equal to the value of cbRequest.</returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>PreAlloc</c> implementation may extend and/or modify the allocation to store debug-specific information with the allocation.
+			/// </para>
+			/// <para>
+			/// <c>PreAlloc</c> can force memory allocation failure by returning 0, allowing testing to ensure that the application handles
+			/// allocation failure gracefully in all cases. In this case, IMallocSpy::PostAlloc is not called and Alloc returns <c>NULL</c>.
+			/// Forcing allocation failure is effective only if cbRequest is not equal to 0. If <c>PreAlloc</c> is forcing failure by
+			/// returning <c>NULL</c>, <c>PostAlloc</c> is not called. However, <c>Alloc</c> encounters a real memory failure and returns
+			/// <c>NULL</c>, <c>PostAlloc</c> is called.
+			/// </para>
+			/// <para>The call to <c>PreAlloc</c> through the return from PostAlloc is guaranteed to be thread-safe.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-prealloc SIZE_T PreAlloc( SIZE_T cbRequest );
+			[PreserveSig]
+			SizeT PreAlloc(SizeT cbRequest);
+
+			/// <summary>Performs operations required after calling IMalloc::Alloc.</summary>
+			/// <param name="pActual">The pointer returned from Alloc.</param>
+			/// <returns>
+			/// This method returns a pointer to the beginning of the block of memory actually allocated. This pointer is also returned to
+			/// the caller of Alloc. If debug information is written at the front of the caller's allocation, this should be a forward offset
+			/// from pActual. The value is the same as pActual if debug information is appended or if no debug information is attached.
+			/// </returns>
+			/// <remarks>
+			/// When a spy object implementing IMallocSpy is registered using the CoRegisterMallocSpy function, COM calls <c>PostAlloc</c>
+			/// after any call to Alloc. It takes as input a pointer to the allocation done by the call to <c>Alloc</c>, and returns a
+			/// pointer to the beginning of the total allocation, which could include a forward offset from the other value if
+			/// IMallocSpy::PreAlloc was implemented to attach debug information to the allocation in this way. If not, the same pointer is
+			/// returned and also becomes the return value to the caller of <c>Alloc</c>.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-postalloc void * PostAlloc( void *pActual );
+			[PreserveSig]
+			IntPtr PostAlloc(IntPtr pActual);
+
+			/// <summary>
+			/// Performs operations required before calling IMalloc::Free. This method ensures that the pointer passed to <c>Free</c> points
+			/// to the beginning of the actual allocation.
+			/// </summary>
+			/// <param name="pRequest">A pointer to the block of memory that the caller is passing to Free.</param>
+			/// <param name="fSpyed">Indicates whether the block of memory to be freed was allocated while the current spy was active.</param>
+			/// <returns>The value to be passed to IMalloc::Free.</returns>
+			/// <remarks>
+			/// If IMallocSpy::PreAlloc modified the original allocation request passed to IMalloc::Alloc (or IMalloc::Realloc),
+			/// <c>PreFree</c> must supply a pointer to the actual allocation, which COM will pass to IMalloc::Free. For example, if the
+			/// <c>PreAlloc</c>/PostAlloc pair attached a header used to store debug information to the beginning of the caller's allocation,
+			/// <c>PreFree</c> must return a pointer to the beginning of this header so that all of the block that was allocated can be freed.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-prefree void * PreFree( void *pRequest, BOOL
+			// fSpyed );
+			IntPtr PreFree(IntPtr pRequest, [MarshalAs(UnmanagedType.Bool)] bool fSpyed);
+
+			/// <summary>Performs operations required after calling IMalloc::Free.</summary>
+			/// <param name="fSpyed">Indicates whether the block of memory to be freed was allocated while the current spy was active.</param>
+			/// <returns>This method does not return a value.</returns>
+			/// <remarks>
+			/// When a spy object implementing IMallocSpy is registered using CoRegisterMallocSpy function, COM calls this method immediately
+			/// after any call to IMalloc::Free. This method is included for completeness and consistencyâ€”it is not anticipated that
+			/// developers will implement significant functionality in this method.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-postfree void PostFree( BOOL fSpyed );
+			[PreserveSig]
+			void PostFree([MarshalAs(UnmanagedType.Bool)] bool fSpyed);
+
+			/// <summary>Performs operations required before calling IMalloc::Realloc.</summary>
+			/// <param name="pRequest">The pointer to the block of memory specified in the call to IMalloc::Realloc.</param>
+			/// <param name="cbRequest">The byte count of the block of memory as specified in the original call to IMalloc::Realloc.</param>
+			/// <param name="ppNewRequest">
+			/// Address of pointer variable that receives a pointer to the memory block to be reallocated. This may be different from the
+			/// pointer in pRequest if the implementation of <c>PreRealloc</c> extends or modifies the reallocation. This is pointer should
+			/// always be stored by <c>PreRealloc</c>.
+			/// </param>
+			/// <param name="fSpyed">Indicates whether the block of memory was allocated while this spy was active.</param>
+			/// <returns>The byte count to be passed to IMalloc::Realloc.</returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>PreRealloc</c> implementation may extend and/or modify the allocation to store debug-specific information with the
+			/// allocation. Thus, the ppNewRequest parameter may differ from pRequest, a pointer to the request specified in the original
+			/// call to Realloc.
+			/// </para>
+			/// <para>
+			/// <c>PreRealloc</c> can force memory allocation failure by returning 0, allowing testing to ensure that the application handles
+			/// allocation failure gracefully in all cases. In this case, PostRealloc is not called and Realloc returns <c>NULL</c>. However,
+			/// if <c>Realloc</c> encounters a real memory failure and returns <c>NULL</c>, <c>PostRealloc</c> is called. Forcing allocation
+			/// failure is effective only if cbRequest is not equal to 0.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-prerealloc SIZE_T PreRealloc( void *pRequest,
+			// SIZE_T cbRequest, void **ppNewRequest, BOOL fSpyed );
+			[PreserveSig]
+			SizeT PreRealloc(IntPtr pRequest, SizeT cbRequest, out IntPtr ppNewRequest, [MarshalAs(UnmanagedType.Bool)] bool fSpyed);
+
+			/// <summary>Performs operations required after calling IMalloc::Realloc.</summary>
+			/// <param name="pActual">The pointer specified in the call to Realloc.</param>
+			/// <param name="fSpyed">Indicates whether the block of memory was allocated while the current spy was active.</param>
+			/// <returns>
+			/// The method returns a pointer to the beginning of the block actually allocated. This pointer is also returned to the caller of
+			/// IMalloc::Realloc. If debug information is written at the front of the caller's allocation, it should be a forward offset from
+			/// pActual. The value should be the same as pActual if debug information is appended or if no debug information is attached.
+			/// </returns>
+			/// <remarks>
+			/// If memory is successfully reallocated while the spy is active, fSpyed will be <c>TRUE</c> in subsequent calls to IMallocSpy
+			/// methods that track the reallocated memory, even if fSpyed was previously <c>FALSE</c>.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-postrealloc void * PostRealloc( void *pActual,
+			// BOOL fSpyed );
+			[PreserveSig]
+			IntPtr PostRealloc(IntPtr pActual, [MarshalAs(UnmanagedType.Bool)] bool fSpyed);
+
+			/// <summary>Performs operations required before calling IMalloc::GetSize.</summary>
+			/// <param name="pRequest">The pointer that the caller is passing to GetSize.</param>
+			/// <param name="fSpyed">Indicates whether the block of memory was allocated while the current spy was active.</param>
+			/// <returns>A pointer to the actual allocation for which the size is to be determined.</returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>PreGetSize</c> method receives as its pRequest parameter the pointer the caller is passing to IMalloc::GetSize. It
+			/// must then return a pointer to the actual allocation, which may have altered pRequest in the implementation of either the
+			/// PreAlloc or the PreRealloc method of IMallocSpy. The pointer to the true allocation is then passed to <c>GetSize</c> as its
+			/// pv parameter.
+			/// </para>
+			/// <para>IMalloc::GetSize then returns the size determined, and COM passes this value to IMallocSpy::PostGetSize in cbActual.</para>
+			/// <para>
+			/// The size determined by GetSize is the value returned by the HeapSize function. This is the size originally requested. For
+			/// example, a memory allocation request of 27 bytes returns an allocation of 32 bytes and <c>GetSize</c> returns 27.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-pregetsize void * PreGetSize( void *pRequest,
+			// BOOL fSpyed );
+			IntPtr PreGetSize(IntPtr pRequest, [MarshalAs(UnmanagedType.Bool)] bool fSpyed);
+
+			/// <summary>Performs operations required after calling IMalloc::GetSize.</summary>
+			/// <param name="cbActual">The number of bytes in the allocation, as returned by GetSize.</param>
+			/// <param name="fSpyed">Indicates whether the block of memory was allocated while the current spy was active.</param>
+			/// <returns>The value returned by IMalloc::GetSize, which is the size of the allocated block of memory, in bytes.</returns>
+			/// <remarks>
+			/// The size determined by GetSize is the value returned by the HeapSize function. This is the size originally requested. For
+			/// example, a memory allocation request of 27 bytes returns an allocation of 32 bytes and <c>GetSize</c> returns 27.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-postgetsize SIZE_T PostGetSize( SIZE_T
+			// cbActual, BOOL fSpyed );
+			[PreserveSig]
+			SizeT PostGetSize(SizeT cbActual, [MarshalAs(UnmanagedType.Bool)] bool fSpyed);
+
+			/// <summary>Performs operations required before calling IMalloc::DidAlloc.</summary>
+			/// <param name="pRequest">The pointer specified in the call to DidAlloc.</param>
+			/// <param name="fSpyed">Indicates whether the allocation was done while this spy was active.</param>
+			/// <returns>The value passed to DidAlloc as the fActual parameter.</returns>
+			/// <remarks>
+			/// When a spy object implementing IMallocSpy is registered with the CoRegisterMallocSpy function, COM calls this method
+			/// immediately before any call to IMalloc::DidAlloc. This method is included for completeness and consistencyâ€”it is not
+			/// anticipated that developers will implement significant functionality in this method.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-predidalloc void * PreDidAlloc( void *pRequest,
+			// BOOL fSpyed );
+			[PreserveSig]
+			IntPtr PreDidAlloc(IntPtr pRequest, [MarshalAs(UnmanagedType.Bool)] bool fSpyed);
+
+			/// <summary>Performs operations required after calling IMalloc::DidAlloc.</summary>
+			/// <param name="pRequest">The pointer specified in the call to DidAlloc.</param>
+			/// <param name="fSpyed">Indicates whether the allocation was done while this spy was active.</param>
+			/// <param name="fActual">The value returned by DidAlloc.</param>
+			/// <returns>The value returned to the caller of DidAlloc.</returns>
+			/// <remarks>
+			/// <para>
+			/// When a spy object implementing IMallocSpy is registered using the CoRegisterMallocSpy function, COM calls this method
+			/// immediately after any call to DidAlloc. This method is included for completeness and consistencyâ€”it is not anticipated that
+			/// developers will implement significant functionality in this method.
+			/// </para>
+			/// <para>
+			/// For convenience, pRequest, the original pointer passed in the call to DidAlloc, is passed to <c>PostDidAlloc</c>. In
+			/// addition, the parameter fActual is a Boolean value that indicates whether this value was actually passed to <c>DidAlloc</c>.
+			/// If not, it would indicate that IMallocSpy::PreDidAlloc was implemented to alter this pointer for some debugging purpose.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-postdidalloc int PostDidAlloc( void *pRequest,
+			// BOOL fSpyed, int fActual );
+			[PreserveSig]
+			int PostDidAlloc(IntPtr pRequest, [MarshalAs(UnmanagedType.Bool)] bool fSpyed, int fActual);
+
+			/// <summary>Performs operations required before calling IMalloc::HeapMinimize.</summary>
+			/// <returns>This method does not return a value.</returns>
+			/// <remarks>
+			/// This method is included for completeness; it is not anticipated that developers will implement significant functionality in
+			/// this method.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-preheapminimize void PreHeapMinimize( );
+			[PreserveSig]
+			void PreHeapMinimize();
+
+			/// <summary>Performs operations required after calling IMalloc::HeapMinimize.</summary>
+			/// <returns>This method does not return a value.</returns>
+			/// <remarks>
+			/// When a spy object implementing IMallocSpy is registered using the CoRegisterMallocSpy function, COM calls this method
+			/// immediately after any call to IMalloc::Free. This method is included for completeness and consistencyâ€”it is not anticipated
+			/// that developers will implement significant functionality in this method.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-postheapminimize void PostHeapMinimize( );
+			[PreserveSig]
+			void PostHeapMinimize();
 		}
 
 		/// <summary>Enables a COM object to define and manage the marshaling of its interface pointers.</summary>
@@ -2019,6 +2523,241 @@ namespace Vanara.PInvoke
 			void DisconnectObject([In, Optional] uint dwReserved);
 		}
 
+		/// <summary>
+		/// <para>This interface allows an application to capture a message before it is dispatched to a control or form.</para>
+		/// <para>
+		/// A class that implements the IMessageFilter interface can be added to the application's message pump to filter out a message or
+		/// perform other operations before the message is dispatched to a form or control. To add the message filter to an application's
+		/// message pump, use the AddMessageFilter method in the Application class.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.imessagefilter?view=netframework-4.8
+		[PInvokeData("", MSDNShortId = "System.Windows.Forms.IMessageFilter")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000016-0000-0000-C000-000000000046")]
+		public interface IMessageFilter
+		{
+			/// <summary>
+			/// <para>Provides a single entry point for incoming calls.</para>
+			/// <para>
+			/// This method is called prior to each method invocation originating outside the current process and provides the ability to
+			/// filter or reject incoming calls (or callbacks) to an object or a process.
+			/// </para>
+			/// </summary>
+			/// <param name="dwCallType">The type of incoming call that has been received. Possible values are from the enumeration CALLTYPE.</param>
+			/// <param name="htaskCaller">The thread id of the caller.</param>
+			/// <param name="dwTickCount">
+			/// The elapsed tick count since the outgoing call was made, if dwCallType is not CALLTYPE_TOPLEVEL. If dwCallType is
+			/// CALLTYPE_TOPLEVEL, dwTickCount should be ignored.
+			/// </param>
+			/// <param name="lpInterfaceInfo">
+			/// A pointer to an INTERFACEINFO structure that identifies the object, interface, and method being called. In the case of DDE
+			/// calls, lpInterfaceInfo can be <c>NULL</c> because the DDE layer does not return interface information.
+			/// </param>
+			/// <returns>
+			/// <para>This method can return the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>SERVERCALL_ISHANDLED</term>
+			/// <term>The application might be able to process the call.</term>
+			/// </item>
+			/// <item>
+			/// <term>SERVERCALL_REJECTED</term>
+			/// <term>
+			/// The application cannot handle the call due to an unforeseen problem, such as network unavailability, or if it is in the
+			/// process of terminating.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>SERVERCALL_RETRYLATER</term>
+			/// <term>
+			/// The application cannot handle the call at this time. An application might return this value when it is in a user-controlled
+			/// modal state.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>If implemented, <c>HandleInComingCall</c> is called by COM when an incoming COM message is received.</para>
+			/// <para>
+			/// Depending on an application's current state, a call is either accepted and processed or rejected (permanently or
+			/// temporarily). If SERVERCALL_ISHANDLED is returned, the application may be able to process the call, although success depends
+			/// on the interface for which the call is destined. If the call cannot be processed, COM returns RPC_E_CALL_REJECTED.
+			/// </para>
+			/// <para>Input-synchronized and asynchronous calls are dispatched even if the application returns SERVERCALL_REJECTED or SERVERCALL_RETRYLATER.</para>
+			/// <para>
+			/// <c>HandleInComingCall</c> should not be used to hold off updates to objects during operations such as band printing. For that
+			/// purpose, use IViewObject::Freeze.
+			/// </para>
+			/// <para>
+			/// You can also use <c>HandleInComingCall</c> to set up the application's state so that the call can be processed in the future.
+			/// </para>
+			/// <para>
+			/// <c>Note</c> Although the htaskCaller parameter is typed as an HTASK, it contains the thread id of the calling thread. When
+			/// you implement the IMessageFilter interface, you can call the OpenThread function to get the thread handle from the
+			/// htaskCaller parameter, and you can call the GetProcessIdOfThread function to get the process id.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imessagefilter-handleincomingcall DWORD
+			// HandleInComingCall( DWORD dwCallType, HTASK htaskCaller, DWORD dwTickCount, LPINTERFACEINFO lpInterfaceInfo );
+			[PreserveSig]
+			SERVERCALL HandleInComingCall(CALLTYPE dwCallType, HTASK htaskCaller, uint dwTickCount, [Optional] INTERFACEINFO lpInterfaceInfo);
+
+			/// <summary>
+			/// Provides applications with an opportunity to display a dialog box offering retry, cancel, or task-switching options.
+			/// </summary>
+			/// <param name="htaskCallee">The thread id of the called application.</param>
+			/// <param name="dwTickCount">The number of elapsed ticks since the call was made.</param>
+			/// <param name="dwRejectType">Specifies either SERVERCALL_REJECTED or SERVERCALL_RETRYLATER, as returned by the object application.</param>
+			/// <returns>
+			/// <para>This method can return the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return value</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>-1</term>
+			/// <term>The call should be canceled. COM then returns RPC_E_CALL_REJECTED from the original method call.</term>
+			/// </item>
+			/// <item>
+			/// <term>0 ≤ value &lt; 100</term>
+			/// <term>The call is to be retried immediately.</term>
+			/// </item>
+			/// <item>
+			/// <term>100 ≤ value</term>
+			/// <term>COM will wait for this many milliseconds and then retry the call.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// COM calls <c>RetryRejectedCall</c> on the caller's IMessageFilter interface immediately after receiving SERVERCALL_RETRYLATER
+			/// or SERVERCALL_REJECTED from the IMessageFilter::HandleInComingCall method on the callee's <c>IMessageFilter</c> interface.
+			/// </para>
+			/// <para>
+			/// If a called task rejects a call, the application is probably in a state where it cannot handle such calls, possibly only
+			/// temporarily. When this occurs, COM returns to the caller and issues <c>RetryRejectedCall</c> to determine whether it should
+			/// retry the rejected call.
+			/// </para>
+			/// <para>
+			/// Applications should silently retry calls that have returned with SERVERCALL_RETRYLATER. If, after a reasonable amount of time
+			/// has passed, say about 30 seconds, the application should display the busy dialog box; a standard implementation of this
+			/// dialog box is available in the OLEDLG library. The callee may momentarily be in a state where calls can be handled. The
+			/// option to wait and retry is provided for special kinds of calling applications, such as background tasks executing macros or
+			/// scripts, so that they can retry the calls in a nonintrusive way.
+			/// </para>
+			/// <para>
+			/// If, after a dialog box is displayed, the user chooses to cancel, <c>RetryRejectedCall</c> returns -1 and the call will appear
+			/// to fail with RPC_E_CALL_REJECTED.
+			/// </para>
+			/// <para>
+			/// If a client implements IMessageFilter and calls a server method on a remote machine, <c>RetryRejectedCall</c> will not be called.
+			/// </para>
+			/// <para>
+			/// <c>Note</c> Although the htaskCallee parameter is typed as an HTASK, it contains the thread id of the called thread. When you
+			/// implement the IMessageFilter interface, you can call the OpenThread function to get the thread handle from the htaskCallee
+			/// parameter, and you can call the GetProcessIdOfThread function to get the process id.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imessagefilter-retryrejectedcall DWORD RetryRejectedCall(
+			// HTASK htaskCallee, DWORD dwTickCount, DWORD dwRejectType );
+			[PreserveSig]
+			uint RetryRejectedCall(HTASK htaskCallee, uint dwTickCount, SERVERCALL dwRejectType);
+
+			/// <summary>
+			/// <para>Indicates that a message has arrived while COM is waiting to respond to a remote call.</para>
+			/// <para>
+			/// Handling input while waiting for an outgoing call to finish can introduce complications. The application should determine
+			/// whether to process the message without interrupting the call, to continue waiting, or to cancel the operation.
+			/// </para>
+			/// </summary>
+			/// <param name="htaskCallee">The thread id of the called application.</param>
+			/// <param name="dwTickCount">The number of ticks since the call was made. It is calculated from the GetTickCount function.</param>
+			/// <param name="dwPendingType">
+			/// The type of call made during which a message or event was received. Possible values are from the enumeration PENDINGTYPE,
+			/// where PENDINGTYPE_TOPLEVEL means the outgoing call was not nested within a call from another application and
+			/// PENDINTGYPE_NESTED means the outgoing call was nested within a call from another application.
+			/// </param>
+			/// <returns>
+			/// <para>This method can return the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>PENDINGMSG_CANCELCALL</term>
+			/// <term>
+			/// Cancel the outgoing call. This should be returned only under extreme conditions. Canceling a call that has not replied or
+			/// been rejected can create orphan transactions and lose resources. COM fails the original call and returns RPC_E_CALL_CANCELLED.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>PENDINGMSG_WAITNOPROCESS</term>
+			/// <term>Unused.</term>
+			/// </item>
+			/// <item>
+			/// <term>PENDINGMSG_WAITDEFPROCESS</term>
+			/// <term>
+			/// Keyboard and mouse messages are no longer dispatched. However there are some cases where mouse and keyboard messages could
+			/// cause the system to deadlock, and in these cases, mouse and keyboard messages are discarded. WM_PAINT messages are
+			/// dispatched. Task-switching and activation messages are handled as before.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// COM calls <c>MessagePending</c> after an application has made a COM method call and a Windows message occurs before the call
+			/// has returned. A Windows message is sent, for example, when the user selects a menu command or double-clicks an object. Before
+			/// COM makes the <c>MessagePending</c> call, it calculates the elapsed time since the original COM method call was made. COM
+			/// delivers the elapsed time in the dwTickCount parameter. In the meantime, COM does not remove the message from the queue.
+			/// </para>
+			/// <para>
+			/// Windows messages that appear in the caller's queue should remain in the queue until sufficient time has passed to ensure that
+			/// the messages are probably not the result of typing ahead, but are instead an attempt to get attention. Set the delay with the
+			/// dwTickCount parameter —a two-second or three-second delay is recommended. If that amount of time passes and the call has not
+			/// been completed, the caller should flush the messages from the queue and the OLE UI busy dialog box should be displayed
+			/// offering the user the choice of retrying the call (continue waiting) or switching to the specified task. This ensures the
+			/// following behaviors:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>If calls are completed in a reasonable amount of time, type ahead will be treated correctly.</term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// If the callee does not respond, type ahead is not misinterpreted and the user is able to act to solve the problem. For
+			/// example, OLE 1 servers can queue up requests without responding when they are in modal dialog boxes.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// Handling input while waiting for an outgoing call to finish can introduce complications. The application should determine
+			/// whether to process the message without interrupting the call, to continue waiting, or to cancel the operation.
+			/// </para>
+			/// <para>
+			/// When there is no response to the original COM call, the application can cancel the call and restore the COM object to a
+			/// consistent state by calling IStorage::Revert on its storage. The object can be released when the container can shut down.
+			/// However, canceling a call can create orphaned operations and resource leaks. Canceling should be used only as a last resort.
+			/// It is strongly recommended that applications not allow such calls to be canceled.
+			/// </para>
+			/// <para>
+			/// <c>Note</c> Although the htaskCallee parameter is typed as an HTASK, it contains the thread id of the called thread. When you
+			/// implement the IMessageFilter interface, you can call the OpenThread function to get the thread handle from the htaskCallee
+			/// parameter, and you can call the GetProcessIdOfThread function to get the process id.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imessagefilter-messagepending DWORD MessagePending( HTASK
+			// htaskCallee, DWORD dwTickCount, DWORD dwPendingType );
+			[PreserveSig]
+			PENDINGMSG MessagePending(HTASK htaskCallee, uint dwTickCount, PENDINGTYPE dwPendingType);
+		}
+
 		/// <summary>Marks an object that doesn't support being marshaled or stored in the Global Interface Table.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-inomarshal
 		[PInvokeData("objidl.h", MSDNShortId = "6C82B08D-C8AF-4FB6-988C-CD7F9BABEE92")]
@@ -2065,19 +2804,384 @@ namespace Vanara.PInvoke
 			// IEnumContextProps **ppEnumContextProps );
 			new IEnumContextProps EnumContextProps();
 
+			/// <summary/>
 			void Reserved1();
 
+			/// <summary/>
 			void Reserved2();
 
+			/// <summary/>
 			void Reserved3();
 
+			/// <summary/>
 			void Reserved4();
 
+			/// <summary/>
 			void Reserved5();
 
+			/// <summary/>
 			void Reserved6();
 
+			/// <summary/>
 			void Reserved7();
+		}
+
+		/// <summary>
+		/// Enables a container application to pass a storage object to one of its contained objects and to load and save the storage object.
+		/// This interface supports the structured storage model, in which each contained object has its own storage that is nested within
+		/// the container's storage.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nn-objidl-ipersiststorage
+		[PInvokeData("objidl.h", MSDNShortId = "1c1a20fc-c101-4cbc-a7a6-30613aa387d7")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0000010a-0000-0000-C000-000000000046")]
+		public interface IPersistStorage : IPersist
+		{
+			/// <summary>Retrieves the class identifier (CLSID) of the object.</summary>
+			/// <returns>
+			/// <para>
+			/// A pointer to the location that receives the CLSID on return. The CLSID is a globally unique identifier (GUID) that uniquely
+			/// represents an object class that defines the code that can manipulate the object's data.
+			/// </para>
+			/// <para>If the method succeeds, the return value is S_OK. Otherwise, it is E_FAIL.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>GetClassID</c> method retrieves the class identifier (CLSID) for an object, used in later operations to load
+			/// object-specific code into the caller's context.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// A container application might call this method to retrieve the original CLSID of an object that it is treating as a different
+			/// class. Such a call would be necessary if a user performed an editing operation that required the object to be saved. If the
+			/// container were to save it using the treat-as CLSID, the original application would no longer be able to edit the object.
+			/// Typically, in this case, the container calls the OleSave helper function, which performs all the necessary steps. For this
+			/// reason, most container applications have no need to call this method directly.
+			/// </para>
+			/// <para>
+			/// The exception would be a container that provides an object handler for certain objects. In particular, a container
+			/// application should not get an object's CLSID and then use it to retrieve class specific information from the registry.
+			/// Instead, the container should use IOleObject and IDataObject interfaces to retrieve such class-specific information directly
+			/// from the object.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Typically, implementations of this method simply supply a constant CLSID for an object. If, however, the object's
+			/// <c>TreatAs</c> registry key has been set by an application that supports emulation (and so is treating the object as one of a
+			/// different class), a call to <c>GetClassID</c> must supply the CLSID specified in the <c>TreatAs</c> key. For more information
+			/// on emulation, see CoTreatAsClass.
+			/// </para>
+			/// <para>
+			/// When an object is in the running state, the default handler calls an implementation of <c>GetClassID</c> that delegates the
+			/// call to the implementation in the object. When the object is not running, the default handler instead calls the ReadClassStg
+			/// function to read the CLSID that is saved in the object's storage.
+			/// </para>
+			/// <para>
+			/// If you are writing a custom object handler for your object, you might want to simply delegate this method to the default
+			/// handler implementation (see OleCreateDefaultHandler).
+			/// </para>
+			/// <para>URL Moniker Notes</para>
+			/// <para>This method returns CLSID_StdURLMoniker.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersist-getclassid HRESULT GetClassID( CLSID *pClassID );
+			new Guid GetClassID();
+
+			/// <summary>Determines whether an object has changed since it was last saved to its current storage.</summary>
+			/// <returns>This method returns S_OK to indicate that the object has changed. Otherwise, it returns S_FALSE.</returns>
+			/// <remarks>
+			/// <para>
+			/// Use this method to determine whether an object should be saved before closing it. The dirty flag for an object is
+			/// conditionally cleared in the IPersistStorage::Save method.
+			/// </para>
+			/// <para>
+			/// For example, you could optimize a <c>File Save</c> operation by calling the <c>IPersistStorage::IsDirty</c> method for each
+			/// object and then calling the IPersistStorage::Save method only for those objects that are dirty.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// You should treat any error return codes as an indication that the object has changed. Unless this method explicitly returns
+			/// S_FALSE, assume that the object must be saved.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>An object with no contained objects simply checks its dirty flag to return the appropriate result.</para>
+			/// <para>
+			/// A container with one or more contained objects must maintain an internal dirty flag that is set when any of its contained
+			/// objects has changed since it was last saved.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-ipersiststorage-isdirty HRESULT IsDirty( );
+			[PreserveSig]
+			HRESULT IsDirty();
+
+			/// <summary>Initializes a new storage object.</summary>
+			/// <param name="pStg">
+			/// An IStorage pointer to the new storage object to be initialized. The container creates a nested storage object in its storage
+			/// object (see IStorage::CreateStorage). Then, the container calls the WriteClassStg function to initialize the new storage
+			/// object with the object class identifier (CLSID).
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// A container application can call this method when it needs to initialize a new object, for example, with an InsertObject command.
+			/// </para>
+			/// <para>
+			/// An object that supports the IPersistStorage interface must have access to a valid storage object at all times while it is
+			/// running. This includes the time just after the object has been created but before it has been made persistent. The object's
+			/// container must provide the object with a valid IStorage pointer to the storage during this time through the call to
+			/// <c>IPersistStorage::InitNew</c>. Depending on the container's state, a temporary file might have to be created for this purpose.
+			/// </para>
+			/// <para>If the object wants to retain the IStorage instance, it must call AddRef to increment its reference count.</para>
+			/// <para>
+			/// After the call to <c>IPersistStorage::InitNew</c>, the object is in either the loaded or running state. For example, if the
+			/// object class has an in-process server, the object will be in the running state. However, if the object uses the default
+			/// handler, the container's call to <c>InitNew</c> only invokes the handler's implementation which does not run the object.
+			/// Later if the container runs the object, the handler calls the <c>InitNew</c> method for the object.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Rather than calling <c>IPersistStorage::InitNew</c> directly, you typically call the OleCreate helper function which does the following:
+			/// </para>
+			/// <list type="number">
+			/// <item>
+			/// <term>Calls the CoCreateInstance function to create an instance of the object class.</term>
+			/// </item>
+			/// <item>
+			/// <term>Queries the new instance for the IPersistStorage interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>Calls the <c>InitNew</c> method to initialize the object.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// The container application should cache the IPersistStorage pointer to the object for use in later operations on the object.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// An implementation of <c>IPersistStorage::InitNew</c> should initialize the object to its default state, taking the following steps:
+			/// </para>
+			/// <list type="number">
+			/// <item>
+			/// <term>Pre-open and cache the pointers to any streams or storages that the object will need to save itself to this storage.</term>
+			/// </item>
+			/// <item>
+			/// <term>Call AddRef and cache the storage pointer that is passed in.</term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// Call the WriteFmtUserTypeStg function to write the native clipboard format and user type string for the object to the storage object.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>Set the dirty flag for the object.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// The first two steps are particularly important for ensuring that the object can save itself in low memory situations.
+			/// Pre-opening and holding onto pointers to the stream and storage interfaces guarantee that a save operation to this storage
+			/// will not fail due to insufficient memory.
+			/// </para>
+			/// <para>
+			/// Your implementation of this method should return the CO_E_ALREADYINITIALIZED error code if it receives a call to either the
+			/// <c>IPersistStorage::InitNew</c> method or the IPersistStorage::Load method after it is already initialized.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-ipersiststorage-initnew HRESULT InitNew( IStorage *pStg );
+			void InitNew([In] IStorage pStg);
+
+			/// <summary>Loads an object from its existing storage.</summary>
+			/// <param name="pStg">An IStorage pointer to the existing storage from which the object is to be loaded.</param>
+			/// <remarks>
+			/// <para>
+			/// This method initializes an object from an existing storage. The object is placed in the loaded state if this method is called
+			/// by the container application. If called by the default handler, this method places the object in the running state.
+			/// </para>
+			/// <para>Either the default handler or the object itself can hold onto the IStorage pointer while the object is loaded or running.</para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Rather than calling <c>IPersistStorage::Load</c> directly, you typically call the OleLoad helper function which does the following:
+			/// </para>
+			/// <list type="number">
+			/// <item>
+			/// <term>Create an uninitialized instance of the object class.</term>
+			/// </item>
+			/// <item>
+			/// <term>Query the new instance for the IPersistStorage interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>Call <c>Load</c> to initialize the object from the existing storage.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// You also call this method indirectly when you call the OleCreateFromData function or the OleCreateFromFile function to insert
+			/// an object into a compound file (as in a drag-and-drop or clipboard paste operation).
+			/// </para>
+			/// <para>The container should cache the IPersistStorage pointer for use in later operations on the object.</para>
+			/// <para>Notes to Implementers</para>
+			/// <para>Your implementation should perform the following steps to load an object:</para>
+			/// <list type="number">
+			/// <item>
+			/// <term>Open the object's streams in the storage object, and read the necessary data into the object's internal data structures.</term>
+			/// </item>
+			/// <item>
+			/// <term>Clear the object's dirty flag.</term>
+			/// </item>
+			/// <item>
+			/// <term>Call the AddRef method and cache the passed in storage pointer.</term>
+			/// </item>
+			/// <item>
+			/// <term>Keep open and cache the pointers to any streams or storages that the object will need to save itself to this storage.</term>
+			/// </item>
+			/// <item>
+			/// <term>Perform any other default initialization required for the object.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// Steps 3 and 4 are particularly important for ensuring that the object can save itself in low memory situations. Holding onto
+			/// pointers to the storage and stream interfaces guarantees that a save operation to this storage will not fail due to
+			/// insufficient memory.
+			/// </para>
+			/// <para>
+			/// Your implementation of this method should return the CO_E_ALREADYINITIALIZED error code if it receives a call to either the
+			/// IPersistStorage::InitNew method or the <c>IPersistStorage::Load</c> method after it is already initialized.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-ipersiststorage-load HRESULT Load( IStorage *pStg );
+			void Load([In] IStorage pStg);
+
+			/// <summary>
+			/// Saves an object, and any nested objects that it contains, into the specified storage object. The object enters NoScribble mode.
+			/// </summary>
+			/// <param name="pStgSave">An IStorage pointer to the storage into which the object is to be saved.</param>
+			/// <param name="fSameAsLoad">
+			/// <para>
+			/// Indicates whether the specified storage is the current one, which was passed to the object by one of the following calls:
+			/// IPersistStorage::InitNew, IPersistStorage::Load, or IPersistStorage::SaveCompleted.
+			/// </para>
+			/// <para>
+			/// This parameter is set to <c>FALSE</c> when performing a <c>Save As</c> or <c>Save A Copy To</c> operation or when performing
+			/// a full save. In the latter case, this method saves to a temporary file, deletes the original file, and renames the temporary file.
+			/// </para>
+			/// <para>
+			/// This parameter is set to <c>TRUE</c> to perform a full save in a low-memory situation or to perform a fast incremental save
+			/// in which only the dirty components are saved.
+			/// </para>
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// This method saves an object, and any nested objects it contains, into the specified storage. It also places the object into
+			/// NoScribble mode. Thus, the object cannot write to its storage until a subsequent call to the IPersistStorage::SaveCompleted
+			/// method returns the object to Normal mode.
+			/// </para>
+			/// <para>
+			/// If the storage object is the same as the one it was loaded or created from, the save operation may be able to write
+			/// incremental changes to the storage object. Otherwise, a full save must be done.
+			/// </para>
+			/// <para>
+			/// This method recursively calls the <c>IPersistStorage::Save</c> method, the OleSave function, or the IStorage::CopyTo method
+			/// to save its nested objects.
+			/// </para>
+			/// <para>
+			/// This method does not call the IStorage::Commit method. Nor does it write the CLSID to the storage object. Both of these tasks
+			/// are the responsibilities of the caller.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Rather than calling <c>IPersistStorage::Save</c> directly, you typically call the OleSave helper function which performs the
+			/// following steps:
+			/// </para>
+			/// <list type="number">
+			/// <item>
+			/// <term>Call the WriteClassStg function to write the class identifier for the object to the storage.</term>
+			/// </item>
+			/// <item>
+			/// <term>Call the <c>IPersistStorage::Save</c> method.</term>
+			/// </item>
+			/// <item>
+			/// <term>If needed, call the IStorage::Commit method on the storage object.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// Then, a container application performs any other operations necessary to complete the save and calls the SaveCompleted method
+			/// for each object.
+			/// </para>
+			/// <para>
+			/// If an embedded object passes the <c>IPersistStorage::Save</c> method to its nested objects, it must receive a call to its
+			/// IPersistStorage::SaveCompleted method before calling this method for its nested objects.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-ipersiststorage-save HRESULT Save( IStorage *pStgSave,
+			// BOOL fSameAsLoad );
+			void Save([In] IStorage pStgSave, [MarshalAs(UnmanagedType.Bool)] bool fSameAsLoad);
+
+			/// <summary>
+			/// Notifies the object that it can write to its storage object. It does this by notifying the object that it can revert from
+			/// NoScribble mode (in which it must not write to its storage object), to Normal mode (in which it can). The object enters
+			/// NoScribble mode when it receives an IPersistStorage::Save call.
+			/// </summary>
+			/// <param name="pStgNew">
+			/// An IStorage pointer to the new storage object, if different from the storage object prior to saving. This pointer can be
+			/// <c>NULL</c> if the current storage object does not change during the save operation. If the object is in HandsOff mode, this
+			/// parameter must be non- <c>NULL</c>.
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// This method notifies an object that it can revert to Normal mode and can once again write to its storage object. The object
+			/// exits NoScribble mode or HandsOff mode.
+			/// </para>
+			/// <para>
+			/// If the object is reverting from HandsOff mode, the pStgNew parameter must be non- <c>NULL</c>. In HandsOffFromNormal mode,
+			/// this parameter is the new storage object that replaces the one that was revoked by the IPersistStorage::HandsOffStorage
+			/// method. The data in the storage object is a copy of the data from the revoked storage object. In HandsOffAfterSave mode, the
+			/// data is the same as the data that was most recently saved. It is not the same as the data in the revoked storage object.
+			/// </para>
+			/// <para>
+			/// If the object is reverting from NoScribble mode, the pStgNew parameter can be <c>NULL</c> or non- <c>NULL</c>. If
+			/// <c>NULL</c>, the object once again has access to its storage object. If it is not <c>NULL</c>, the component object should
+			/// simulate receiving a call to its HandsOffStorage method. If the component object cannot simulate this call, its container
+			/// must be prepared to actually call the <c>HandsOffStorage</c> method.
+			/// </para>
+			/// <para>This method must recursively call any nested objects that are loaded or running.</para>
+			/// <para>
+			/// If this method returns an error code, the object is not returned to Normal mode. Thus, the container object can attempt
+			/// different save strategies.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-ipersiststorage-savecompleted HRESULT SaveCompleted(
+			// IStorage *pStgNew );
+			void SaveCompleted([In] IStorage pStgNew);
+
+			/// <summary>
+			/// Instructs the object to release all storage objects that have been passed to it by its container and to enter HandsOff mode.
+			/// </summary>
+			/// <remarks>
+			/// <para>
+			/// This method causes an object to release any storage objects that it is holding and to enter the HandsOff mode until a
+			/// subsequent IPersistStorage::SaveCompleted call. In HandsOff mode, the object cannot do anything and the only operation that
+			/// works is a close operation.
+			/// </para>
+			/// <para>
+			/// A container application typically calls this method during a full save or low-memory full save operation to force the object
+			/// to release all pointers to its current storage. In these scenarios, the <c>HandsOffStorage</c> call comes after a call to
+			/// either OleSave or IPersistStorage::Save, putting the object in HandsOffAfterSave mode. Calling this method is necessary so
+			/// the container application can delete the current file as part of a full save, or so it can call the
+			/// IRootStorage::SwitchToFile method as part of a low-memory save.
+			/// </para>
+			/// <para>
+			/// A container application also calls this method when an object is in Normal mode to put the object in HandsOffFromNormal mode.
+			/// </para>
+			/// <para>
+			/// While the component object is in either HandsOffAfterSave or HandsOffFromNormal mode, most operations on the object will
+			/// fail. Thus, the container should restore the object to Normal mode as soon as possible. The container application does this
+			/// by calling the IPersistStorage::SaveCompleted method, which passes a storage pointer back to the component object for the new
+			/// storage object.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// This method must release all pointers to the current storage object, including pointers to any nested streams and storages.
+			/// If the object contains nested objects, the container application must recursively call this method for any nested objects
+			/// that are loaded or running.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-ipersiststorage-handsoffstorage HRESULT HandsOffStorage( );
+			void HandsOffStorage();
 		}
 
 		/// <summary>
@@ -2775,6 +3879,26 @@ namespace Vanara.PInvoke
 			void FreeSurrogate();
 		}
 
+		/// <summary>Enumerates the values in a <see cref="IEnumContextProps"/> instance.</summary>
+		/// <param name="e">The <see cref="IEnumContextProps"/> instance.</param>
+		/// <returns>The enumerated values.</returns>
+		public static IEnumerable<ContextProperty> Enumerate(this IEnumContextProps e) => new Collections.IEnumFromCom<ContextProperty>(e.Next, e.Reset);
+
+		/// <summary>Enumerates the values in a <see cref="IEnumSTATSTG"/> instance.</summary>
+		/// <param name="e">The <see cref="IEnumSTATSTG"/> instance.</param>
+		/// <returns>The enumerated values.</returns>
+		public static IEnumerable<STATSTG> Enumerate(this IEnumSTATSTG e) => new Collections.IEnumFromCom<STATSTG>(e.Next, e.Reset);
+
+		/// <summary>Enumerates the values in a <see cref="IEnumUnknown"/> instance.</summary>
+		/// <param name="e">The <see cref="IEnumUnknown"/> instance.</param>
+		/// <returns>The enumerated values.</returns>
+		public static IEnumerable<IntPtr> Enumerate(this IEnumUnknown e) => new Collections.IEnumFromCom<IntPtr>(e.Next, e.Reset);
+
+		/// <summary>Enumerates the values in a <see cref="IEnumUnknown"/> instance.</summary>
+		/// <param name="e">The <see cref="IEnumUnknown"/> instance.</param>
+		/// <returns>The enumerated values.</returns>
+		public static IEnumerable<T> Enumerate<T>(this IEnumUnknown e) where T : class => new Collections.IEnumFromCom<IntPtr>(e.Next, e.Reset).Select(p => (T)Marshal.GetObjectForIUnknown(p));
+
 		/// <summary>Structure returned by IEnumContextProps::Enum</summary>
 		[PInvokeData("objidl.h", MSDNShortId = "64591e45-5478-4360-8c1f-08b09b5aef8e")]
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumcontextprops-next
@@ -2784,6 +3908,58 @@ namespace Vanara.PInvoke
 			public Guid policyId;
 			public uint flags;
 			public IntPtr pUnk;
+		}
+
+		/// <summary>
+		/// Specifies information about the target device for which data is being composed. <c>DVTARGETDEVICE</c> contains enough information
+		/// about a Windows target device so a handle to a device context ( <c>HDC</c>) can be created using the CreateDC function.
+		/// </summary>
+		/// <remarks>
+		/// Some OLE 1 client applications incorrectly construct target devices by allocating too few bytes in the DEVMODE structure for the
+		/// <c>DVTARGETDEVICE</c>. They typically only supply the number of bytes in the <c>dmSize</c> member of <c>DEVMODE</c>. The number
+		/// of bytes to be allocated should be the sum of <c>dmSize</c> + <c>dmDriverExtra</c>. When a call is made to the CreateDC function
+		/// with an incorrect target device, the printer driver tries to access the additional bytes and unpredictable results can occur. To
+		/// help protect against a crash and make the additional bytes available, OLE pads the size of OLE 2 target devices created from OLE
+		/// 1 target devices.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/ns-objidl-dvtargetdevice typedef struct tagDVTARGETDEVICE { DWORD
+		// tdSize; WORD tdDriverNameOffset; WORD tdDeviceNameOffset; WORD tdPortNameOffset; WORD tdExtDevmodeOffset; BYTE tdData[1]; } DVTARGETDEVICE;
+		[PInvokeData("objidl.h", MSDNShortId = "724ff714-c170-4d06-92cb-e042e41c0af2")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DVTARGETDEVICE
+		{
+			/// <summary>
+			/// The size, in bytes, of the <c>DVTARGETDEVICE</c> structure. The initial size is included so the structure can be copied more easily.
+			/// </summary>
+			public uint tdSize;
+
+			/// <summary>
+			/// The offset, in bytes, from the beginning of the structure to the device driver name, which is stored as a NULL-terminated
+			/// string in the <c>tdData</c> buffer.
+			/// </summary>
+			public ushort tdDriverNameOffset;
+
+			/// <summary>
+			/// The offset, in bytes, from the beginning of the structure to the device name, which is stored as a NULL-terminated string in
+			/// the <c>tdData</c> buffer. This value can be zero to indicate no device name.
+			/// </summary>
+			public ushort tdDeviceNameOffset;
+
+			/// <summary>
+			/// The offset, in bytes, from the beginning of the structure to the port name, which is stored as a NULL-terminated string in
+			/// the <c>tdData</c> buffer. This value can be zero to indicate no port name.
+			/// </summary>
+			public ushort tdPortNameOffset;
+
+			/// <summary>The offset, in bytes, from the beginning of the structure to the DEVMODE structure retrieved by calling DocumentProperties.</summary>
+			public ushort tdExtDevmodeOffset;
+
+			/// <summary>
+			/// An array of bytes containing data for the target device. It is not necessary to include empty strings in <c>tdData</c> (for
+			/// names where the offset value is zero).
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public byte[] tdData;
 		}
 
 		/// <summary>
@@ -3031,7 +4207,7 @@ namespace Vanara.PInvoke
 				new System.Runtime.InteropServices.ComTypes.BIND_OPTS { cbStruct = (int)bo.cbStruct, grfFlags = (int)bo.grfFlags, grfMode = (int)bo.grfFlags, dwTickCountDeadline = (int)bo.dwTickCountDeadline };
 
 			/// <summary>Performs an implicit conversion from <see cref="System.Runtime.InteropServices.ComTypes.BIND_OPTS"/> to <see cref="BIND_OPTS_V"/>.</summary>
-			/// <param name="bo">The <see cref="BIND_OPTS"/> instance.</param>
+			/// <param name="bo">The <see cref="System.Runtime.InteropServices.ComTypes.BIND_OPTS"/> instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator BIND_OPTS_V(System.Runtime.InteropServices.ComTypes.BIND_OPTS bo) =>
 				new BIND_OPTS_V() { grfFlags = (BIND_FLAGS)bo.grfFlags, grfMode = (STGM)bo.grfFlags, dwTickCountDeadline = (uint)bo.dwTickCountDeadline };
@@ -3130,6 +4306,23 @@ namespace Vanara.PInvoke
 			public BIND_OPTS3() => cbStruct = (uint)Marshal.SizeOf(typeof(BIND_OPTS3));
 		}
 
+		/// <summary>Contains information about incoming calls.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/ns-objidl-interfaceinfo typedef struct tagINTERFACEINFO { IUnknown
+		// *pUnk; IID iid; WORD wMethod; } INTERFACEINFO, *LPINTERFACEINFO;
+		[PInvokeData("objidl.h", MSDNShortId = "5c2c07bf-1c15-4f21-baef-103837ea24d0")]
+		[StructLayout(LayoutKind.Sequential)]
+		public class INTERFACEINFO
+		{
+			/// <summary>A pointer to the IUnknown interface on the object.</summary>
+			[MarshalAs(UnmanagedType.IUnknown)] public object pUnk;
+
+			/// <summary>The identifier of the requested interface.</summary>
+			public Guid iid;
+
+			/// <summary>The interface method.</summary>
+			public ushort wMethod;
+		}
+
 		/// <summary>
 		/// A string name block (SNB) is a pointer to an array of pointers to strings, that ends in a NULL pointer. String name blocks are
 		/// used by the IStorage interface and by function calls that open storage objects. The strings point to contained storage objects or
@@ -3139,7 +4332,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public class SNB : IDisposable
 		{
-			private SafeCoTaskMemHandle ptr;
+			private readonly SafeCoTaskMemHandle ptr;
 
 			/// <summary>Initializes a new instance of the <see cref="SNB"/> class.</summary>
 			/// <param name="names">The list of names to associate with this instance.</param>

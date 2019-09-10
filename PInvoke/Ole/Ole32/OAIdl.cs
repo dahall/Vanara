@@ -6,6 +6,232 @@ namespace Vanara.PInvoke
 {
 	public static partial class Ole32
 	{
+		/// <summary>Returns error information.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nn-oaidl-icreateerrorinfo
+		[PInvokeData("oaidl.h", MSDNShortId = "2e7c5ad5-9018-413e-8826-ef752ebf302c")]
+		[ComImport, Guid("22F03340-547D-101B-8E65-08002B2BD119"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface ICreateErrorInfo
+		{
+			/// <summary>Sets the globally unique identifier (GUID) of the interface that defined the error.</summary>
+			/// <param name="rguid">
+			/// The GUID of the interface that defined the error, or GUID_NULL if the error was defined by the operating system.
+			/// </param>
+			/// <returns>
+			/// <para>This method can return one of these values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>Success.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory to complete the operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// This method sets the GUID of the interface that defined the error. If the error was defined by the system, set
+			/// <c>ICreateErrorInfo::SetGUID</c> to GUID_NULL.
+			/// </para>
+			/// <para>
+			/// This GUID does not necessarily represent the source of the error; however, the source is the class or application that raised
+			/// the error. Using the GUID, applications can handle errors in an interface, independent of the class that implements the interface.
+			/// </para>
+			/// <para>Use of this function is demonstrated in the file Main.cpp of the COM Fundamentals Hello sample.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreateerrorinfo-setguid HRESULT SetGUID( REFGUID rguid );
+			[PreserveSig]
+			HRESULT SetGUID(in Guid rguid);
+
+			/// <summary>Sets the language-dependent programmatic identifier (ProgID) for the class or application that raised the error.</summary>
+			/// <param name="szSource">A ProgID in the form progname.objectname.</param>
+			/// <returns>
+			/// <para>This method can return one of these values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>Success.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory to complete the operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// This method should be used to identify the class or application that is the source of the error. The language for the
+			/// returned ProgID depends on the locale identifier (LCID) that was passed to the method at the time of invocation.
+			/// </para>
+			/// <para>Use of this function is demonstrated in the file Main.cpp of the COM Fundamentals Hello sample.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreateerrorinfo-setsource HRESULT SetSource( LPOLESTR
+			// szSource );
+			[PreserveSig]
+			HRESULT SetSource([MarshalAs(UnmanagedType.LPWStr)] string szSource);
+
+			/// <summary>Sets the textual description of the error.</summary>
+			/// <param name="szDescription">A brief description of the error.</param>
+			/// <returns>
+			/// <para>This method can return one of these values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>Success.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory to complete the operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The text should be supplied in the language specified by the locale ID (LCID) that was passed to the method raising the
+			/// error. For more information, see LCID Attribute in Type Libraries and the Object Description Language.
+			/// </para>
+			/// <para>Use of this function is demonstrated in the file Main.cpp of the COM Fundamentals Hello sample.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreateerrorinfo-setdescription HRESULT SetDescription(
+			// LPOLESTR szDescription );
+			[PreserveSig]
+			HRESULT SetDescription([MarshalAs(UnmanagedType.LPWStr)] string szDescription);
+
+			/// <summary>Sets the path of the Help file that describes the error.</summary>
+			/// <param name="szHelpFile">The fully qualified path of the Help file that describes the error.</param>
+			/// <returns>
+			/// <para>This method can return one of these values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>Success.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory to complete the operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// This method sets the fully qualified path of the Help file that describes the current error. Use
+			/// ICreateErrorInfo::SetHelpContext to set the Help context ID for the error in the Help file.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreateerrorinfo-sethelpfile HRESULT SetHelpFile( LPOLESTR
+			// szHelpFile );
+			[PreserveSig]
+			HRESULT SetHelpFile([MarshalAs(UnmanagedType.LPWStr)] string szHelpFile);
+
+			/// <summary>Sets the Help context identifier (ID) for the error.</summary>
+			/// <param name="dwHelpContext">The Help context ID for the error.</param>
+			/// <returns>
+			/// <para>This method can return one of these values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>Success.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory to complete the operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>This method sets the Help context ID for the error. To establish the Help file to which it applies, use ICreateErrorInfo::SetHelpFile.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreateerrorinfo-sethelpcontext HRESULT SetHelpContext(
+			// DWORD dwHelpContext );
+			[PreserveSig]
+			HRESULT SetHelpContext(uint dwHelpContext);
+		}
+
+		/// <summary>Provides detailed contextual error information.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nn-oaidl-ierrorinfo
+		[PInvokeData("oaidl.h", MSDNShortId = "4dda6909-2d9a-4727-ae0c-b5f90dcfa447")]
+		[ComImport, Guid("1CF2B120-547D-101B-8E65-08002B2BD119"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IErrorInfo
+		{
+			/// <summary>Returns the globally unique identifier (GUID) of the interface that defined the error.</summary>
+			/// <param name="pGUID">A pointer to a GUID, or GUID_NULL, if the error was defined by the operating system.</param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			/// <remarks>
+			/// <para>
+			/// <c>IErrorInfo::GetGUID</c> returns the GUID of the interface that defined the error. If the error was defined by the system,
+			/// <c>IErrorInfo::GetGUID</c> returns GUID_NULL.
+			/// </para>
+			/// <para>
+			/// This GUID does not necessarily represent the source of the error. The source is the class or application that raised the
+			/// error. Using the GUID, an application can handle errors in an interface, independent of the class that implements the interface.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-ierrorinfo-getguid HRESULT GetGUID( GUID *pGUID );
+			[PreserveSig]
+			HRESULT GetGUID(out Guid pGUID);
+
+			/// <summary>Returns the language-dependent programmatic ID (ProgID) for the class or application that raised the error.</summary>
+			/// <param name="pBstrSource">A ProgID, in the form progname.objectname.</param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			/// <remarks>
+			/// Use <c>IErrorInfo::GetSource</c> to determine the class or application that is the source of the error. The language for the
+			/// returned ProgID depends on the locale ID (LCID) that was passed into the method at the time of invocation.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-ierrorinfo-getsource HRESULT GetSource( BSTR *pBstrSource );
+			[PreserveSig]
+			HRESULT GetSource([MarshalAs(UnmanagedType.BStr)] out string pBstrSource);
+
+			/// <summary>Returns a textual description of the error.</summary>
+			/// <param name="pBstrDescription">A brief description of the error.</param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			/// <remarks>
+			/// The text is returned in the language specified by the locale identifier (LCID) that was passed to IDispatch::Invoke for the
+			/// method that encountered the error.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-ierrorinfo-getdescription HRESULT GetDescription( BSTR
+			// *pBstrDescription );
+			[PreserveSig]
+			HRESULT GetDescription([MarshalAs(UnmanagedType.BStr)] out string pBstrDescription);
+
+			/// <summary>Returns the path of the Help file that describes the error.</summary>
+			/// <param name="pBstrHelpFile">The fully qualified path of the Help file.</param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			/// <remarks>
+			/// This method returns the fully qualified path of the Help file that describes the current error. IErrorInfo::GetHelpContext
+			/// should be used to find the Help context ID for the error in the Help file.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-ierrorinfo-gethelpfile HRESULT GetHelpFile( BSTR
+			// *pBstrHelpFile );
+			[PreserveSig]
+			HRESULT GetHelpFile([MarshalAs(UnmanagedType.BStr)] out string pBstrHelpFile);
+
+			/// <summary>Returns the Help context identifier (ID) for the error.</summary>
+			/// <param name="pdwHelpContext">The Help context ID for the error.</param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			/// <remarks>This method returns the Help context ID for the error. To find the Help file to which it applies, use IErrorInfo::GetHelpFile.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-ierrorinfo-gethelpcontext HRESULT GetHelpContext( DWORD
+			// *pdwHelpContext );
+			[PreserveSig]
+			HRESULT GetHelpContext(out uint pdwHelpContext);
+		}
+
 		/// <summary>Communicates detailed error information between a client and an object.</summary>
 		[ComImport, Guid("3127CA40-446E-11CE-8135-00AA004BB851"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("OAIdl.h")]
@@ -366,6 +592,54 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-recorddestroy
 			void RecordDestroy(IntPtr pvRecord);
+		}
+
+		/// <summary>
+		/// Ensures that error information can be propagated up the call chain correctly. Automation objects that use the error handling
+		/// interfaces must implement <c>ISupportErrorInfo</c>.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nn-oaidl-isupporterrorinfo
+		[PInvokeData("oaidl.h", MSDNShortId = "42d33066-36b4-4a5b-aa5d-46682e560f32")]
+		[ComImport, Guid("DF0B3D60-548F-101B-8E65-08002B2BD119"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface ISupportErrorInfo
+		{
+			/// <summary>Indicates whether an interface supports the IErrorInfo interface.</summary>
+			/// <param name="riid">An interface identifier (IID).</param>
+			/// <returns>
+			/// <para>This method can return one of these values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>The interface supports IErrorInfo.</term>
+			/// </item>
+			/// <item>
+			/// <term>S_FALSE</term>
+			/// <term>The interface does not support IErrorInfo.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Objects that support the IErrorInfo interface must also implement this interface.</para>
+			/// <para>
+			/// Programs that receive an error return value should call <c>QueryInterface</c> to get a pointer to the
+			/// ISupportErrorInfointerface, and then call <c>InterfaceSupportsErrorInfo</c> with the riid of the interface that returned the
+			/// return value. If <c>InterfaceSupportsErrorInfo</c> returns S_FALSE, then the error object does not represent an error
+			/// returned from the caller, but from somewhere else. In this case, the error object can be considered incorrect and should be discarded.
+			/// </para>
+			/// <para>If ISupportErrorInfo returns S_OK, use the GetErrorInfo function to get a pointer to the error object.</para>
+			/// <para>
+			/// For an example that demonstrates implementing <c>InterfaceSupportsErrorInfo</c>, see the ErrorInfo.cpp file in the COM
+			/// Fundamentals Lines sample.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-isupporterrorinfo-interfacesupportserrorinfo HRESULT
+			// InterfaceSupportsErrorInfo( REFIID riid );
+			[PreserveSig]
+			HRESULT InterfaceSupportsErrorInfo(in Guid riid);
 		}
 	}
 }

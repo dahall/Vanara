@@ -286,5 +286,48 @@ namespace Vanara.PInvoke
 			/// <summary>A void pointer for local use.</summary>
 			VT_BYREF = 0x4000,
 		}
+
+		/// <summary>Contains an operating system platform and processor architecture.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wtypes/ns-wtypes-csplatform typedef struct tagCSPLATFORM { DWORD dwPlatformId;
+		// DWORD dwVersionHi; DWORD dwVersionLo; DWORD dwProcessorArch; } CSPLATFORM;
+		[PInvokeData("wtypes.h", MSDNShortId = "e9ffa8ba-98a2-431c-a069-20ed4a45e6f8")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CSPLATFORM
+		{
+			/// <summary>The operating system platform. See the <c>dwPlatformId</c> member of OSVERSIONINFO.</summary>
+			public PlatformID dwPlatformId;
+
+			/// <summary>The major version of the operating system.</summary>
+			public uint dwVersionHi;
+
+			/// <summary>The minor version of the operating system.</summary>
+			public uint dwVersionLo;
+
+			/// <summary>The processor architecture. See the <c>wProcessorArchitecture</c> member of SYSTEM_INFO.</summary>
+			public ProcessorArchitecture dwProcessorArch;
+		}
+
+		/// <summary>Contains a list of attributes used to look up a class implementation.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wtypes/ns-wtypes-querycontext typedef struct tagQUERYCONTEXT { DWORD dwContext;
+		// CSPLATFORM Platform; LCID Locale; DWORD dwVersionHi; DWORD dwVersionLo; } QUERYCONTEXT;
+		[PInvokeData("wtypes.h", MSDNShortId = "5d6a17e1-dcdd-4691-aec2-f63dbcb26027")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct QUERYCONTEXT
+		{
+			/// <summary>The execution context.</summary>
+			public CLSCTX dwContext;
+
+			/// <summary>The operating system platform and processor architecture. For more information, see CSPLATFORM.</summary>
+			public CSPLATFORM Platform;
+
+			/// <summary>The locale identifier. For more information, see Language Identifier Constants and Strings.</summary>
+			public LCID Locale;
+
+			/// <summary>The high version number.</summary>
+			public uint dwVersionHi;
+
+			/// <summary>The low version number.</summary>
+			public uint dwVersionLo;
+		}
 	}
 }
