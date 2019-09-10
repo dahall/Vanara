@@ -435,6 +435,28 @@ namespace Vanara.PInvoke
 			NCRYPT_SILENT_FLAG = 0x00000040,
 		}
 
+		/// <summary>Flags used by <see cref="NCryptNotifyChangeKey"/>.</summary>
+		[PInvokeData("ncrypt.h")]
+		[Flags]
+		public enum NotifyFlags : uint
+		{
+			/// <summary>Create a new change notification. The phEvent parameter will receive the key change notification handle.</summary>
+			NCRYPT_REGISTER_NOTIFY_FLAG = 0x00000001,
+
+			/// <summary>
+			/// Remove an existing change notification. The phEvent parameter must contain a valid key change notification handle. This
+			/// handle is no longer valid after this function is called with this flag and the INVALID_HANDLE_VALUE value is placed in this handle.
+			/// </summary>
+			NCRYPT_UNREGISTER_NOTIFY_FLAG = 0x00000002,
+
+			/// <summary>
+			/// Receive change notifications for keys in the machine key store. If this flag is not specified, the change notification events
+			/// will only occur for keys in the calling user's key store. This flag is only valid when combined with the
+			/// NCRYPT_REGISTER_NOTIFY_FLAG flag.
+			/// </summary>
+			NCRYPT_MACHINE_KEY_FLAG = 0x00000020,
+		}
+
 		/// <summary>Flags used with <c>NCryptOpenKey</c>.</summary>
 		[Flags]
 		public enum OpenKeyFlags
@@ -3408,7 +3430,7 @@ namespace Vanara.PInvoke
 		// NCRYPT_PROV_HANDLE hProvider, HANDLE *phEvent, DWORD dwFlags );
 		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ncrypt.h", MSDNShortId = "2d2ddb55-ef32-4227-b901-ee11e961d0e6")]
-		public static extern HRESULT NCryptNotifyChangeKey(NCRYPT_PROV_HANDLE hProvider, ref IntPtr phEvent, XXX dwFlags);
+		public static extern HRESULT NCryptNotifyChangeKey(NCRYPT_PROV_HANDLE hProvider, ref IntPtr phEvent, NotifyFlags dwFlags);
 
 		/// <summary>
 		/// <para>The <c>NCryptOpenKey</c> function opens a key that exists in the specified CNG key storage provider.</para>

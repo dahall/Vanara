@@ -1,5 +1,5 @@
 ## Correlation report for crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll  
-### Methods (25% complete)  
+### Methods (38% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BCryptAddContextFunction](http://msdn2.microsoft.com/en-us/library/4f5b6db0-775d-42de-b9d9-a99fb11c89f2) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptAddContextFunction](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptAddContextFunction)  
@@ -271,27 +271,27 @@ Native Method | Native DLL | Header | Managed Method
 [CryptVerifyMessageSignatureWithKey](https://www.google.com/search?num=5&q=CryptVerifyMessageSignatureWithKey+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CryptVerifyTimeStampSignature](https://www.google.com/search?num=5&q=CryptVerifyTimeStampSignature+site%3Amicrosoft.com) | crypt32.dll |  |   
 [NCryptCloseProtectionDescriptor](http://msdn2.microsoft.com/en-us/library/523FD83E-85A3-4A0E-BA8D-2F27F82C1072) | ncrypt.dll | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCryptCloseProtectionDescriptor](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptCloseProtectionDescriptor)  
-[NCryptCreateClaim](https://www.google.com/search?num=5&q=NCryptCreateClaim+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptCreateClaim](http://msdn2.microsoft.com/en-us/library/EBEE3A67-0693-4B85-88B1-580CB2152703) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptCreateClaim](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptCreateClaim)  
 [NCryptCreatePersistedKey](http://msdn2.microsoft.com/en-us/library/eeb1842f-fd9e-4edf-9db8-7b4e91760e9b) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptCreatePersistedKey](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptCreatePersistedKey)  
 [NCryptCreateProtectionDescriptor](http://msdn2.microsoft.com/en-us/library/BA6B15AC-2CD8-4D9A-817F-65CF9C09D22C) | ncrypt.dll | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCryptCreateProtectionDescriptor](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptCreateProtectionDescriptor)  
-[NCryptDecrypt](https://www.google.com/search?num=5&q=NCryptDecrypt+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptDecrypt](http://msdn2.microsoft.com/en-us/library/02c309bc-8c94-4c0f-901f-e024c83c824a) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptDecrypt](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptDecrypt)  
 [NCryptDeleteKey](http://msdn2.microsoft.com/en-us/library/2e1958a7-51e0-4731-b4cf-a90d6c1f9ae0) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptDeleteKey](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptDeleteKey)  
 [NCryptDeriveKey](http://msdn2.microsoft.com/en-us/library/0ff08c6a-5f30-43ca-9db8-cda3e0704b0a) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptDeriveKey](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptDeriveKey)  
-[NCryptEncrypt](https://www.google.com/search?num=5&q=NCryptEncrypt+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptEnumAlgorithms](https://www.google.com/search?num=5&q=NCryptEnumAlgorithms+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptEnumKeys](https://www.google.com/search?num=5&q=NCryptEnumKeys+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptEnumStorageProviders](https://www.google.com/search?num=5&q=NCryptEnumStorageProviders+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptEncrypt](http://msdn2.microsoft.com/en-us/library/837fc720-2167-4ead-86ea-2c3d438f2530) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptEncrypt](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptEncrypt)  
+[NCryptEnumAlgorithms](http://msdn2.microsoft.com/en-us/library/ea4f270b-c556-4f52-892a-199c9cfced26) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptEnumAlgorithms](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptEnumAlgorithms)  
+[NCryptEnumKeys](http://msdn2.microsoft.com/en-us/library/ca8c5b70-ea5e-4fb9-82d3-1de839f0d244) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptEnumKeys](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptEnumKeys)  
+[NCryptEnumStorageProviders](http://msdn2.microsoft.com/en-us/library/24a8ee01-b716-4f36-9df5-b6476b1df4f0) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptEnumStorageProviders](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptEnumStorageProviders)  
 [NCryptExportKey](http://msdn2.microsoft.com/en-us/library/1588eb29-4026-4d1c-8bee-a035df38444a) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptExportKey](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptExportKey)  
 [NCryptFinalizeKey](http://msdn2.microsoft.com/en-us/library/4386030d-4ce6-4b2e-adc5-a15ddc869349) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptFinalizeKey](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptFinalizeKey)  
-[NCryptFreeBuffer](https://www.google.com/search?num=5&q=NCryptFreeBuffer+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptFreeBuffer](http://msdn2.microsoft.com/en-us/library/15f19999-cf64-4a30-b38d-9372066add0a) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptFreeBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptFreeBuffer)  
 [NCryptFreeObject](http://msdn2.microsoft.com/en-us/library/a5535cf9-ba8c-4212-badd-f1dc88903624) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptFreeObject](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptFreeObject)  
-[NCryptGetProperty](https://www.google.com/search?num=5&q=NCryptGetProperty+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptGetProperty](http://msdn2.microsoft.com/en-us/library/7b857ce0-8525-489b-9987-ef40081a5577) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptGetProperty](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptGetProperty)  
 [NCryptGetProtectionDescriptorInfo](http://msdn2.microsoft.com/en-us/library/EF4777D5-E218-4868-8D25-58E0EF8C9D30) | ncrypt.dll | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCryptGetProtectionDescriptorInfo](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptGetProtectionDescriptorInfo)  
 [NCryptImportKey](http://msdn2.microsoft.com/en-us/library/ede0e7e0-cb2c-44c0-b724-58db3480b781) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptImportKey](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptImportKey)  
-[NCryptIsAlgSupported](https://www.google.com/search?num=5&q=NCryptIsAlgSupported+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptIsKeyHandle](https://www.google.com/search?num=5&q=NCryptIsKeyHandle+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptKeyDerivation](https://www.google.com/search?num=5&q=NCryptKeyDerivation+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptNotifyChangeKey](https://www.google.com/search?num=5&q=NCryptNotifyChangeKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptIsAlgSupported](http://msdn2.microsoft.com/en-us/library/99563293-662f-4478-b8da-8526b832012d) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptIsAlgSupported](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptIsAlgSupported)  
+[NCryptIsKeyHandle](http://msdn2.microsoft.com/en-us/library/ad841c2e-8097-4b07-914e-8e7240d55585) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptIsKeyHandle](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptIsKeyHandle)  
+[NCryptKeyDerivation](http://msdn2.microsoft.com/en-us/library/5D2D61B1-022E-412F-A19E-11057930A615) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptKeyDerivation](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptKeyDerivation)  
+[NCryptNotifyChangeKey](http://msdn2.microsoft.com/en-us/library/2d2ddb55-ef32-4227-b901-ee11e961d0e6) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptNotifyChangeKey](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptNotifyChangeKey)  
 [NCryptOpenKey](http://msdn2.microsoft.com/en-us/library/581c5d89-730d-4d8c-b3bb-a28edec25910) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptOpenKey](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptOpenKey)  
 [NCryptOpenStorageProvider](http://msdn2.microsoft.com/en-us/library/febcf440-78b3-420b-b13d-030e8071cd50) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptOpenStorageProvider](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptOpenStorageProvider)  
 [NCryptProtectSecret](http://msdn2.microsoft.com/en-us/library/8726F92B-34D5-4696-8803-3D7F50F1006D) | ncrypt.dll | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCryptProtectSecret](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptProtectSecret)  
@@ -299,52 +299,51 @@ Native Method | Native DLL | Header | Managed Method
 [NCryptRegisterProtectionDescriptorName](http://msdn2.microsoft.com/en-us/library/DAB03CB2-630F-4BB3-93BD-06BE9126B1C4) | ncrypt.dll | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCryptRegisterProtectionDescriptorName](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptRegisterProtectionDescriptorName)  
 [NCryptSecretAgreement](http://msdn2.microsoft.com/en-us/library/b5bf3eac-1fae-43e2-84b6-e8e5e255d7c5) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptSecretAgreement](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptSecretAgreement)  
 [NCryptSetProperty](http://msdn2.microsoft.com/en-us/library/ad1148aa-5f64-4867-9e17-6b41cc0c20b7) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptSetProperty](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptSetProperty)  
-[NCryptSignHash](https://www.google.com/search?num=5&q=NCryptSignHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptSignHash](http://msdn2.microsoft.com/en-us/library/7404e37a-d7c6-49ed-b951-6081dd2b921a) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptSignHash](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptSignHash)  
 [NCryptStreamClose](http://msdn2.microsoft.com/en-us/library/770640F2-04C7-4512-8004-41F4ECDC110E) | ncrypt.dll | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCryptStreamClose](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptStreamClose)  
 [NCryptStreamOpenToProtect](http://msdn2.microsoft.com/en-us/library/7DE74BB1-1B84-4721-BE4A-4D2661E93E00) | ncrypt.dll | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCryptStreamOpenToProtect](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptStreamOpenToProtect)  
 [NCryptStreamOpenToUnprotect](http://msdn2.microsoft.com/en-us/library/9848082E-EDDA-4DA1-9896-42EAF2ADFAB4) | ncrypt.dll | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCryptStreamOpenToUnprotect](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptStreamOpenToUnprotect)  
 [NCryptStreamOpenToUnprotectEx](http://msdn2.microsoft.com/en-us/library/8E607F4F-4A0F-4796-8F40-D232687815AF) | ncrypt.dll | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCryptStreamOpenToUnprotectEx](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptStreamOpenToUnprotectEx)  
 [NCryptStreamUpdate](http://msdn2.microsoft.com/en-us/library/417F9267-6055-489C-AF26-BEF5E17CB8B4) | ncrypt.dll | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCryptStreamUpdate](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptStreamUpdate)  
-[NCryptTranslateHandle](https://www.google.com/search?num=5&q=NCryptTranslateHandle+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptTranslateHandle](http://msdn2.microsoft.com/en-us/library/0c339864-b598-430c-a597-09d3571fdbb2) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptTranslateHandle](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptTranslateHandle)  
 [NCryptUnprotectSecret](http://msdn2.microsoft.com/en-us/library/F532F0ED-36F4-47E3-B478-089CC083E5D1) | ncrypt.dll | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCryptUnprotectSecret](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptUnprotectSecret)  
-[NCryptVerifyClaim](https://www.google.com/search?num=5&q=NCryptVerifyClaim+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptVerifySignature](https://www.google.com/search?num=5&q=NCryptVerifySignature+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptVerifyClaim](http://msdn2.microsoft.com/en-us/library/D3C837A5-49D7-4099-B8FE-37364A275A73) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptVerifyClaim](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptVerifyClaim)  
+[NCryptVerifySignature](http://msdn2.microsoft.com/en-us/library/9a839d99-4e9a-4114-982c-51dee38d2949) | ncrypt.dll | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptVerifySignature](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptVerifySignature)  
 [PFXExportCertStore](https://www.google.com/search?num=5&q=PFXExportCertStore+site%3Amicrosoft.com) | crypt32.dll |  |   
 [PFXExportCertStoreEx](https://www.google.com/search?num=5&q=PFXExportCertStoreEx+site%3Amicrosoft.com) | crypt32.dll |  |   
 [PFXImportCertStore](https://www.google.com/search?num=5&q=PFXImportCertStore+site%3Amicrosoft.com) | crypt32.dll |  |   
 [PFXIsPFXBlob](https://www.google.com/search?num=5&q=PFXIsPFXBlob+site%3Amicrosoft.com) | crypt32.dll |  |   
 [PFXVerifyPassword](https://www.google.com/search?num=5&q=PFXVerifyPassword+site%3Amicrosoft.com) | crypt32.dll |  |   
-[SslChangeNotify](https://www.google.com/search?num=5&q=SslChangeNotify+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslComputeClientAuthHash](https://www.google.com/search?num=5&q=SslComputeClientAuthHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslComputeEapKeyBlock](https://www.google.com/search?num=5&q=SslComputeEapKeyBlock+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslComputeFinishedHash](https://www.google.com/search?num=5&q=SslComputeFinishedHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslCreateClientAuthHash](https://www.google.com/search?num=5&q=SslCreateClientAuthHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslCreateEphemeralKey](https://www.google.com/search?num=5&q=SslCreateEphemeralKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslCreateHandshakeHash](https://www.google.com/search?num=5&q=SslCreateHandshakeHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslDecrementProviderReferenceCount](https://www.google.com/search?num=5&q=SslDecrementProviderReferenceCount+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslDecryptPacket](https://www.google.com/search?num=5&q=SslDecryptPacket+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslEncryptPacket](https://www.google.com/search?num=5&q=SslEncryptPacket+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslEnumCipherSuites](https://www.google.com/search?num=5&q=SslEnumCipherSuites+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslEnumProtocolProviders](https://www.google.com/search?num=5&q=SslEnumProtocolProviders+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslExportKey](https://www.google.com/search?num=5&q=SslExportKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslExportKeyingMaterial](https://www.google.com/search?num=5&q=SslExportKeyingMaterial+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslFreeBuffer](https://www.google.com/search?num=5&q=SslFreeBuffer+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslFreeObject](https://www.google.com/search?num=5&q=SslFreeObject+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslGenerateMasterKey](https://www.google.com/search?num=5&q=SslGenerateMasterKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslGenerateSessionKeys](https://www.google.com/search?num=5&q=SslGenerateSessionKeys+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslGetCipherSuitePRFHashAlgorithm](https://www.google.com/search?num=5&q=SslGetCipherSuitePRFHashAlgorithm+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslGetKeyProperty](https://www.google.com/search?num=5&q=SslGetKeyProperty+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslGetProviderProperty](https://www.google.com/search?num=5&q=SslGetProviderProperty+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslHashHandshake](https://www.google.com/search?num=5&q=SslHashHandshake+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslImportKey](https://www.google.com/search?num=5&q=SslImportKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslImportMasterKey](https://www.google.com/search?num=5&q=SslImportMasterKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslIncrementProviderReferenceCount](https://www.google.com/search?num=5&q=SslIncrementProviderReferenceCount+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslLookupCipherLengths](https://www.google.com/search?num=5&q=SslLookupCipherLengths+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslLookupCipherSuiteInfo](https://www.google.com/search?num=5&q=SslLookupCipherSuiteInfo+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslOpenPrivateKey](https://www.google.com/search?num=5&q=SslOpenPrivateKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslOpenProvider](https://www.google.com/search?num=5&q=SslOpenProvider+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslSignHash](https://www.google.com/search?num=5&q=SslSignHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslVerifySignature](https://www.google.com/search?num=5&q=SslVerifySignature+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[SslComputeClientAuthHash](http://msdn2.microsoft.com/en-us/library/f4a12464-8ad6-4bf9-8b6e-49bdf5332b66) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslComputeClientAuthHash](https://github.com/dahall/Vanara/search?l=C%23&q=SslComputeClientAuthHash)  
+[SslComputeEapKeyBlock](http://msdn2.microsoft.com/en-us/library/0f382668-6fc6-440f-ba61-70b1db0f3987) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslComputeEapKeyBlock](https://github.com/dahall/Vanara/search?l=C%23&q=SslComputeEapKeyBlock)  
+[SslComputeFinishedHash](http://msdn2.microsoft.com/en-us/library/82dfeb1d-c141-40c9-b692-daad78ab6d55) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslComputeFinishedHash](https://github.com/dahall/Vanara/search?l=C%23&q=SslComputeFinishedHash)  
+[SslCreateClientAuthHash](http://msdn2.microsoft.com/en-us/library/55007ce0-4bf1-4605-9b34-2931935762aa) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslCreateClientAuthHash](https://github.com/dahall/Vanara/search?l=C%23&q=SslCreateClientAuthHash)  
+[SslCreateEphemeralKey](http://msdn2.microsoft.com/en-us/library/faad9b3b-e476-4e61-b978-bcb517ecaeb7) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslCreateEphemeralKey](https://github.com/dahall/Vanara/search?l=C%23&q=SslCreateEphemeralKey)  
+[SslCreateHandshakeHash](http://msdn2.microsoft.com/en-us/library/31390584-9d23-41d1-8604-b84a5e52ecde) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslCreateHandshakeHash](https://github.com/dahall/Vanara/search?l=C%23&q=SslCreateHandshakeHash)  
+[SslDecrementProviderReferenceCount](http://msdn2.microsoft.com/en-us/library/67bfa4b5-c02c-4a76-871d-93f3bf4e3602) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslDecrementProviderReferenceCount](https://github.com/dahall/Vanara/search?l=C%23&q=SslDecrementProviderReferenceCount)  
+[SslDecryptPacket](http://msdn2.microsoft.com/en-us/library/22a7dd2b-d023-47b9-8f76-1c17c2dd6466) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslDecryptPacket](https://github.com/dahall/Vanara/search?l=C%23&q=SslDecryptPacket)  
+[SslEncryptPacket](http://msdn2.microsoft.com/en-us/library/1002158b-1a4f-4461-978f-b221ef6332e0) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslEncryptPacket](https://github.com/dahall/Vanara/search?l=C%23&q=SslEncryptPacket)  
+[SslEnumCipherSuites](http://msdn2.microsoft.com/en-us/library/c12bc422-71c9-44f4-abf7-76902b19d3bd) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslEnumCipherSuites](https://github.com/dahall/Vanara/search?l=C%23&q=SslEnumCipherSuites)  
+[SslEnumProtocolProviders](http://msdn2.microsoft.com/en-us/library/a61ddcf5-b7e3-40b2-82fc-1cf87eb963ec) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslEnumProtocolProviders](https://github.com/dahall/Vanara/search?l=C%23&q=SslEnumProtocolProviders)  
+[SslExportKey](http://msdn2.microsoft.com/en-us/library/c978e6ac-a535-4625-8598-4aa16484dcad) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslExportKey](https://github.com/dahall/Vanara/search?l=C%23&q=SslExportKey)  
+[SslExportKeyingMaterial](http://msdn2.microsoft.com/en-us/library/19624852-B1A6-4BB4-96AF-0457834DA294) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslExportKeyingMaterial](https://github.com/dahall/Vanara/search?l=C%23&q=SslExportKeyingMaterial)  
+[SslFreeBuffer](http://msdn2.microsoft.com/en-us/library/75a85013-c745-43cb-85b5-e13a2778ec1d) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslFreeBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=SslFreeBuffer)  
+[SslFreeObject](http://msdn2.microsoft.com/en-us/library/73fa0a08-4654-4515-bdb2-9951936b689a) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslFreeObject](https://github.com/dahall/Vanara/search?l=C%23&q=SslFreeObject)  
+[SslGenerateMasterKey](http://msdn2.microsoft.com/en-us/library/c9408eb3-711d-42c3-a4ba-e388689da34e) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslGenerateMasterKey](https://github.com/dahall/Vanara/search?l=C%23&q=SslGenerateMasterKey)  
+[SslGenerateSessionKeys](http://msdn2.microsoft.com/en-us/library/88465f30-8591-411e-8618-8a381d4c22e9) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslGenerateSessionKeys](https://github.com/dahall/Vanara/search?l=C%23&q=SslGenerateSessionKeys)  
+[SslGetCipherSuitePRFHashAlgorithm](http://msdn2.microsoft.com/en-us/library/8d20b2da-390e-458e-b122-f5ef3722ad87) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslGetCipherSuitePRFHashAlgorithm](https://github.com/dahall/Vanara/search?l=C%23&q=SslGetCipherSuitePRFHashAlgorithm)  
+[SslGetKeyProperty](http://msdn2.microsoft.com/en-us/library/01a7e82a-3888-4f96-85a2-e07811f1895e) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslGetKeyProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SslGetKeyProperty)  
+[SslGetProviderProperty](http://msdn2.microsoft.com/en-us/library/69235520-acaa-4ec4-9fd6-4b3297e14376) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslGetProviderProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SslGetProviderProperty)  
+[SslHashHandshake](http://msdn2.microsoft.com/en-us/library/c0f20084-c863-42cf-afdf-298c5a96eed9) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslHashHandshake](https://github.com/dahall/Vanara/search?l=C%23&q=SslHashHandshake)  
+[SslImportKey](http://msdn2.microsoft.com/en-us/library/42310799-384e-4396-a9d5-5f226ca25a86) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslImportKey](https://github.com/dahall/Vanara/search?l=C%23&q=SslImportKey)  
+[SslImportMasterKey](http://msdn2.microsoft.com/en-us/library/052e38ee-658c-47dc-8098-c9a1fd359e1c) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslImportMasterKey](https://github.com/dahall/Vanara/search?l=C%23&q=SslImportMasterKey)  
+[SslIncrementProviderReferenceCount](http://msdn2.microsoft.com/en-us/library/67e7b8b4-b073-4936-b1e0-3fc7c1c011a2) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslIncrementProviderReferenceCount](https://github.com/dahall/Vanara/search?l=C%23&q=SslIncrementProviderReferenceCount)  
+[SslLookupCipherLengths](http://msdn2.microsoft.com/en-us/library/44d0d803-16d7-4bdf-9638-afbdaf9e1802) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslLookupCipherLengths](https://github.com/dahall/Vanara/search?l=C%23&q=SslLookupCipherLengths)  
+[SslLookupCipherSuiteInfo](http://msdn2.microsoft.com/en-us/library/ab995d9a-48fa-491a-95b1-d15c5b92f1da) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslLookupCipherSuiteInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SslLookupCipherSuiteInfo)  
+[SslOpenPrivateKey](http://msdn2.microsoft.com/en-us/library/2406be2c-121c-4475-b193-d370a88641da) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslOpenPrivateKey](https://github.com/dahall/Vanara/search?l=C%23&q=SslOpenPrivateKey)  
+[SslOpenProvider](http://msdn2.microsoft.com/en-us/library/0d5c4da3-12d6-4a53-a4d0-f0f174a4c8d8) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslOpenProvider](https://github.com/dahall/Vanara/search?l=C%23&q=SslOpenProvider)  
+[SslSignHash](http://msdn2.microsoft.com/en-us/library/25e8ebc5-278d-4d1f-977a-c2fab07b790a) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslSignHash](https://github.com/dahall/Vanara/search?l=C%23&q=SslSignHash)  
+[SslVerifySignature](http://msdn2.microsoft.com/en-us/library/fa274851-15f2-4be0-9e2f-4cdced36daff) | ncrypt.dll |  | [Vanara.PInvoke.NCrypt.SslVerifySignature](https://github.com/dahall/Vanara/search?l=C%23&q=SslVerifySignature)  
 [TokenBindingDeleteAllBindings](http://msdn2.microsoft.com/en-us/library/0446F62F-96B4-4F4B-9789-0CD12173E601) | tokenbinding.dll | tokenbinding.h | [Vanara.PInvoke.TokenBinding.TokenBindingDeleteAllBindings](https://github.com/dahall/Vanara/search?l=C%23&q=TokenBindingDeleteAllBindings)  
 [TokenBindingDeleteBinding](http://msdn2.microsoft.com/en-us/library/4258CC92-580E-403C-9AE4-4BB726255464) | tokenbinding.dll | tokenbinding.h | [Vanara.PInvoke.TokenBinding.TokenBindingDeleteBinding](https://github.com/dahall/Vanara/search?l=C%23&q=TokenBindingDeleteBinding)  
 [TokenBindingGenerateBinding](http://msdn2.microsoft.com/en-us/library/4289E3F0-17AC-485B-A326-2C8BECD5CABB) | tokenbinding.dll | tokenbinding.h | [Vanara.PInvoke.TokenBinding.TokenBindingGenerateBinding](https://github.com/dahall/Vanara/search?l=C%23&q=TokenBindingGenerateBinding)  
@@ -387,15 +386,22 @@ Native Structure | Header | Managed Structure
 [CRYPTOAPI_BLOB](https://www.google.com/search?num=5&q=CRYPTOAPI_BLOB+site%3Amicrosoft.com) | wincrypt.h | [Vanara.PInvoke.Crypt32.CRYPTOAPI_BLOB](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTOAPI_BLOB)  
 [CTL_USAGE](http://msdn2.microsoft.com/en-us/library/70ee138a-df94-4fc4-9de5-0d8b7704b890) | wincrypt.h | [Vanara.PInvoke.Crypt32.CTL_USAGE](https://github.com/dahall/Vanara/search?l=C%23&q=CTL_USAGE)  
 [HCERTSTORE](https://www.google.com/search?num=5&q=HCERTSTORE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Crypt32.HCERTSTORE](https://github.com/dahall/Vanara/search?l=C%23&q=HCERTSTORE)  
+[HCRYPTHASH](https://www.google.com/search?num=5&q=HCRYPTHASH+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Crypt32.HCRYPTHASH](https://github.com/dahall/Vanara/search?l=C%23&q=HCRYPTHASH)  
+[HCRYPTKEY](https://www.google.com/search?num=5&q=HCRYPTKEY+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Crypt32.HCRYPTKEY](https://github.com/dahall/Vanara/search?l=C%23&q=HCRYPTKEY)  
+[HCRYPTPROV](https://www.google.com/search?num=5&q=HCRYPTPROV+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Crypt32.HCRYPTPROV](https://github.com/dahall/Vanara/search?l=C%23&q=HCRYPTPROV)  
 [NCRYPT_ALLOC_PARA](http://msdn2.microsoft.com/en-us/library/4F546F51-E4DE-4703-B1D1-F84165C3C31B) | ncrypt.h | [Vanara.PInvoke.NCrypt.NCRYPT_ALLOC_PARA](https://github.com/dahall/Vanara/search?l=C%23&q=NCRYPT_ALLOC_PARA)  
 [NCRYPT_DESCRIPTOR_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_DESCRIPTOR_HANDLE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.NCrypt.NCRYPT_DESCRIPTOR_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=NCRYPT_DESCRIPTOR_HANDLE)  
 [NCRYPT_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_HANDLE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.NCrypt.NCRYPT_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=NCRYPT_HANDLE)  
+[NCRYPT_HASH_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_HASH_HANDLE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.NCrypt.NCRYPT_HASH_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=NCRYPT_HASH_HANDLE)  
 [NCRYPT_KEY_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_KEY_HANDLE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.NCrypt.NCRYPT_KEY_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=NCRYPT_KEY_HANDLE)  
 [NCRYPT_PROTECT_STREAM_INFO](http://msdn2.microsoft.com/en-us/library/77FADFC1-6C66-4801-B0BD-263963555C3C) | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCRYPT_PROTECT_STREAM_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=NCRYPT_PROTECT_STREAM_INFO)  
 [NCRYPT_PROTECT_STREAM_INFO_EX](https://www.google.com/search?num=5&q=NCRYPT_PROTECT_STREAM_INFO_EX+site%3Amicrosoft.com) | ncryptprotect.h | [Vanara.PInvoke.NCrypt.NCRYPT_PROTECT_STREAM_INFO_EX](https://github.com/dahall/Vanara/search?l=C%23&q=NCRYPT_PROTECT_STREAM_INFO_EX)  
 [NCRYPT_PROV_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_PROV_HANDLE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.NCrypt.NCRYPT_PROV_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=NCRYPT_PROV_HANDLE)  
 [NCRYPT_SECRET_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_SECRET_HANDLE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.NCrypt.NCRYPT_SECRET_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=NCRYPT_SECRET_HANDLE)  
+[NCRYPT_SSL_CIPHER_LENGTHS](http://msdn2.microsoft.com/en-us/library/44d0d803-16d7-4bdf-9638-afbdaf9e1802) |  | [Vanara.PInvoke.NCrypt.NCRYPT_SSL_CIPHER_LENGTHS](https://github.com/dahall/Vanara/search?l=C%23&q=NCRYPT_SSL_CIPHER_LENGTHS)  
+[NCRYPT_SSL_CIPHER_SUITE](http://msdn2.microsoft.com/en-us/library/ab995d9a-48fa-491a-95b1-d15c5b92f1da) |  | [Vanara.PInvoke.NCrypt.NCRYPT_SSL_CIPHER_SUITE](https://github.com/dahall/Vanara/search?l=C%23&q=NCRYPT_SSL_CIPHER_SUITE)  
 [NCRYPT_STREAM_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_STREAM_HANDLE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.NCrypt.NCRYPT_STREAM_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=NCRYPT_STREAM_HANDLE)  
+[NCryptAlgorithmName](http://msdn2.microsoft.com/en-us/library/79b0193e-3be8-46ce-a422-40ed9698363f) | ncrypt.h | [Vanara.PInvoke.NCrypt.NCryptAlgorithmName](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptAlgorithmName)  
 [NCryptBuffer](http://msdn2.microsoft.com/en-us/library/474d3c0d-ae14-448a-a56d-25abc7e5de88) | bcrypt.h | [Vanara.PInvoke.NCrypt.NCryptBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptBuffer)  
 [NCryptBufferDesc](http://msdn2.microsoft.com/en-us/library/aa375370) | Bcrypt.h | [Vanara.PInvoke.NCrypt.NCryptBufferDesc](https://github.com/dahall/Vanara/search?l=C%23&q=NCryptBufferDesc)  
 [TOKENBINDING_IDENTIFIER](http://msdn2.microsoft.com/en-us/library/301E099E-B621-41E1-BF9B-3AF8C53F9227) | tokenbinding.h | [Vanara.PInvoke.TokenBinding.TOKENBINDING_IDENTIFIER](https://github.com/dahall/Vanara/search?l=C%23&q=TOKENBINDING_IDENTIFIER)  
