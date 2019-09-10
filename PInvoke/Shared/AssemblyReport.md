@@ -35,6 +35,7 @@ Struct | Description
 ---- | ----
 [Vanara.PInvoke.ACCESS_MASK](https://github.com/dahall/Vanara/search?l=C%23&q=ACCESS_MASK) | Access flags.
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.BusNumber](https://github.com/dahall/Vanara/search?l=C%23&q=BusNumber) | 
+[Vanara.PInvoke.CLIPFORMAT](https://github.com/dahall/Vanara/search?l=C%23&q=CLIPFORMAT) | CLIPFORMAT is a 2-byte value representing a clipboard format. <para> This cannot be used as a drop-in replacement for many of the winuser.h function as they expect a 4-byte value. However, this can automatically convert between the 4-byte values and the 2-byte value.
 [Vanara.PInvoke.CM_FULL_RESOURCE_DESCRIPTOR](https://github.com/dahall/Vanara/search?l=C%23&q=CM_FULL_RESOURCE_DESCRIPTOR) | <para> The <c>CM_FULL_RESOURCE_DESCRIPTOR</c> structure specifies a set of system hardware resources of various types, assigned to a device that is connected to a specific bus. This structure is contained within a CM_RESOURCE_LIST structure. </para>
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR](https://github.com/dahall/Vanara/search?l=C%23&q=CM_PARTIAL_RESOURCE_DESCRIPTOR) | The <c>CM_PARTIAL_RESOURCE_DESCRIPTOR</c> structure specifies one or more system hardware resources, of a single type, assigned to a device. This structure is used to create an array within a CM_PARTIAL_RESOURCE_LIST structure.
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=CM_PARTIAL_RESOURCE_LIST) | <para> The <c>CM_PARTIAL_RESOURCE_LIST</c> structure specifies a set of system hardware resources, of various types, assigned to a device. This structure is contained within a CM_FULL_RESOURCE_DESCRIPTOR structure. </para>
@@ -75,6 +76,7 @@ Struct | Description
 [Vanara.PInvoke.HPROPSHEETPAGE](https://github.com/dahall/Vanara/search?l=C%23&q=HPROPSHEETPAGE) | Provides a handle to a property sheet page.
 [Vanara.PInvoke.HRESULT](https://github.com/dahall/Vanara/search?l=C%23&q=HRESULT) | Formal replacement for the Windows HRESULT definition. In windows.h, it is a defined UINT value. For .NET, this class strongly types the value.
 [Vanara.PInvoke.HRGN](https://github.com/dahall/Vanara/search?l=C%23&q=HRGN) | Provides a handle to a drawing region.
+[Vanara.PInvoke.HTASK](https://github.com/dahall/Vanara/search?l=C%23&q=HTASK) | Provides a handle to a blocking task.
 [Vanara.PInvoke.HTHEME](https://github.com/dahall/Vanara/search?l=C%23&q=HTHEME) | Provides a handle to a Windows theme.
 [Vanara.PInvoke.HTHREAD](https://github.com/dahall/Vanara/search?l=C%23&q=HTHREAD) | Provides a handle to a thread.
 [Vanara.PInvoke.HTHUMBNAIL](https://github.com/dahall/Vanara/search?l=C%23&q=HTHUMBNAIL) | Provides a handle to a Windows thumbnail.
