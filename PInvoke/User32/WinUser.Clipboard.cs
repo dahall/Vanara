@@ -215,6 +215,7 @@ namespace Vanara.PInvoke
 		/// <summary>The clipboard formats defined by the system are called standard clipboard formats.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/dataxchg/standard-clipboard-formats
 		[PInvokeData("Winuser.h", MSDNShortId = "f0af4e61-7ef1-4263-b2c5-e4114515124f")]
+		[Obsolete("Use Vanara.PInvoke.CLIPFORMAT instead. This enumeration will be removed in a future version.")]
 		public enum StandardClipboardFormat : uint
 		{
 			/// <summary>A handle to a bitmap (HBITMAP).</summary>
