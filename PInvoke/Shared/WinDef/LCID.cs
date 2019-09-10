@@ -12,7 +12,6 @@ namespace Vanara.PInvoke
 	/// <seealso cref="System.IComparable{LCID}"/>
 	/// <seealso cref="System.IEquatable{LCID}"/>
 	[StructLayout(LayoutKind.Sequential)]
-	[TypeConverter(typeof(NTStatusTypeConverter))]
 	[PInvokeData("winnls.h")]
 	public partial struct LCID : IComparable, IComparable<LCID>, IEquatable<LCID>
 	{
@@ -22,8 +21,8 @@ namespace Vanara.PInvoke
 		private const uint sortMask = 0xF0000;
 		private const int sortShift = 16;
 
-		/// <summary>Initializes a new instance of the <see cref="NTStatus"/> structure.</summary>
-		/// <param name="rawValue">The raw NTStatus value.</param>
+		/// <summary>Initializes a new instance of the <see cref="LCID"/> structure.</summary>
+		/// <param name="rawValue">The raw LCID value.</param>
 		public LCID(uint rawValue) => _value = rawValue;
 
 		/// <summary>Compares the current object with another object of the same type.</summary>
