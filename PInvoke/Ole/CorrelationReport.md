@@ -1,5 +1,5 @@
 ## Correlation report for ole32.dll, oleaut32.dll, propsys.dll  
-### Methods (56% complete)  
+### Methods (66% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindMoniker](http://msdn2.microsoft.com/en-us/library/5a022c39-fc2c-458b-9dfe-fed1255d49a4) | ole32.dll | objbase.h | [Vanara.PInvoke.Ole32.BindMoniker](https://github.com/dahall/Vanara/search?l=C%23&q=BindMoniker)  
@@ -14,7 +14,7 @@ Native Method | Native DLL | Header | Managed Method
 [BstrFromVector](https://www.google.com/search?num=5&q=BstrFromVector+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [ClearCustData](https://www.google.com/search?num=5&q=ClearCustData+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [ClearPropVariantArray](http://msdn2.microsoft.com/en-us/library/e8d7f951-8a9e-441b-9fa7-bf21cf08c8ac) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.ClearPropVariantArray](https://github.com/dahall/Vanara/search?l=C%23&q=ClearPropVariantArray)  
-[ClearVariantArray](https://www.google.com/search?num=5&q=ClearVariantArray+site%3Amicrosoft.com) | propsys.dll |  |   
+[ClearVariantArray](http://msdn2.microsoft.com/en-us/library/8126392e-d86c-420c-9f0d-ca7cb97030b0) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.ClearVariantArray](https://github.com/dahall/Vanara/search?l=C%23&q=ClearVariantArray)  
 [CLSIDFromProgID](http://msdn2.microsoft.com/en-us/library/89fb20af-65bf-4ed4-9f71-eb707ee8eb09) | ole32.dll | combaseapi.h | [Vanara.PInvoke.Ole32.CLSIDFromProgID](https://github.com/dahall/Vanara/search?l=C%23&q=CLSIDFromProgID)  
 [CLSIDFromProgIDEx](http://msdn2.microsoft.com/en-us/library/2f937ac1-b214-482a-af4b-8cc8c0c585c3) | ole32.dll | combaseapi.h | [Vanara.PInvoke.Ole32.CLSIDFromProgIDEx](https://github.com/dahall/Vanara/search?l=C%23&q=CLSIDFromProgIDEx)  
 [CLSIDFromString](http://msdn2.microsoft.com/en-us/library/36cc9037-480f-491f-a9bb-5aa1e707781e) | ole32.dll | combaseapi.h | [Vanara.PInvoke.Ole32.CLSIDFromString](https://github.com/dahall/Vanara/search?l=C%23&q=CLSIDFromString)  
@@ -168,22 +168,22 @@ Native Method | Native DLL | Header | Managed Method
 [InitPropVariantFromUInt32Vector](http://msdn2.microsoft.com/en-us/library/bb762312) | propsys.dll | Propvarutil.h | [Vanara.PInvoke.PropSys.InitPropVariantFromUInt32Vector](https://github.com/dahall/Vanara/search?l=C%23&q=InitPropVariantFromUInt32Vector)  
 [InitPropVariantFromUInt64Vector](http://msdn2.microsoft.com/en-us/library/bb762314) | propsys.dll | Propvarutil.h | [Vanara.PInvoke.PropSys.InitPropVariantFromUInt64Vector](https://github.com/dahall/Vanara/search?l=C%23&q=InitPropVariantFromUInt64Vector)  
 [InitPropVariantVectorFromPropVariant](http://msdn2.microsoft.com/en-us/library/bb762315) | propsys.dll | Propvarutil.h | [Vanara.PInvoke.PropSys.InitPropVariantVectorFromPropVariant](https://github.com/dahall/Vanara/search?l=C%23&q=InitPropVariantVectorFromPropVariant)  
-[InitVariantFromBooleanArray](https://www.google.com/search?num=5&q=InitVariantFromBooleanArray+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromBuffer](https://www.google.com/search?num=5&q=InitVariantFromBuffer+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromDoubleArray](https://www.google.com/search?num=5&q=InitVariantFromDoubleArray+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromFileTime](https://www.google.com/search?num=5&q=InitVariantFromFileTime+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromFileTimeArray](https://www.google.com/search?num=5&q=InitVariantFromFileTimeArray+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromGUIDAsString](https://www.google.com/search?num=5&q=InitVariantFromGUIDAsString+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromInt16Array](https://www.google.com/search?num=5&q=InitVariantFromInt16Array+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromInt32Array](https://www.google.com/search?num=5&q=InitVariantFromInt32Array+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromInt64Array](https://www.google.com/search?num=5&q=InitVariantFromInt64Array+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromResource](https://www.google.com/search?num=5&q=InitVariantFromResource+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromStringArray](https://www.google.com/search?num=5&q=InitVariantFromStringArray+site%3Amicrosoft.com) | propsys.dll |  |   
+[InitVariantFromBooleanArray](http://msdn2.microsoft.com/en-us/library/50780131-c0ed-443b-86e8-deb996a5c98e) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromBooleanArray](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromBooleanArray)  
+[InitVariantFromBuffer](http://msdn2.microsoft.com/en-us/library/4dd28a13-2161-4258-a32f-57e5bd8ce091) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromBuffer)  
+[InitVariantFromDoubleArray](http://msdn2.microsoft.com/en-us/library/781b6999-4551-499d-ba37-0a7e05fc6eab) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromDoubleArray](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromDoubleArray)  
+[InitVariantFromFileTime](http://msdn2.microsoft.com/en-us/library/cd61a268-ef73-4dd3-98d4-9811922d01f4) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromFileTime](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromFileTime)  
+[InitVariantFromFileTimeArray](http://msdn2.microsoft.com/en-us/library/d1b25aec-f302-4d39-93c1-0fcb2d7dbf45) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromFileTimeArray](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromFileTimeArray)  
+[InitVariantFromGUIDAsString](http://msdn2.microsoft.com/en-us/library/2a78257a-a8ce-45e8-aea2-dfa9f380528a) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromGUIDAsString](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromGUIDAsString)  
+[InitVariantFromInt16Array](http://msdn2.microsoft.com/en-us/library/6aeca46e-96b5-42cb-b5db-2c1e3152d629) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromInt16Array](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromInt16Array)  
+[InitVariantFromInt32Array](http://msdn2.microsoft.com/en-us/library/0805d510-ee9c-4f10-978d-c34d572488f9) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromInt32Array](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromInt32Array)  
+[InitVariantFromInt64Array](http://msdn2.microsoft.com/en-us/library/18e9c804-b5e4-4abe-adcd-eaa402c6c94a) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromInt64Array](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromInt64Array)  
+[InitVariantFromResource](http://msdn2.microsoft.com/en-us/library/ae309a04-7b21-46ef-b481-2593dc162e19) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromResource](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromResource)  
+[InitVariantFromStringArray](http://msdn2.microsoft.com/en-us/library/f46cfc71-9e27-4ba1-8a32-5b279b628732) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromStringArray](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromStringArray)  
 [InitVariantFromStrRet](https://www.google.com/search?num=5&q=InitVariantFromStrRet+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromUInt16Array](https://www.google.com/search?num=5&q=InitVariantFromUInt16Array+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromUInt32Array](https://www.google.com/search?num=5&q=InitVariantFromUInt32Array+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromUInt64Array](https://www.google.com/search?num=5&q=InitVariantFromUInt64Array+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitVariantFromVariantArrayElem](https://www.google.com/search?num=5&q=InitVariantFromVariantArrayElem+site%3Amicrosoft.com) | propsys.dll |  |   
+[InitVariantFromUInt16Array](http://msdn2.microsoft.com/en-us/library/57fe1dd2-48a5-486e-a2cb-53cf0b8f96b0) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromUInt16Array](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromUInt16Array)  
+[InitVariantFromUInt32Array](http://msdn2.microsoft.com/en-us/library/b08e61bc-8b76-4baf-acf7-9eb97e521b65) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromUInt32Array](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromUInt32Array)  
+[InitVariantFromUInt64Array](http://msdn2.microsoft.com/en-us/library/67886e29-c3dd-4bfd-b53f-761c16daaf63) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromUInt64Array](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromUInt64Array)  
+[InitVariantFromVariantArrayElem](http://msdn2.microsoft.com/en-us/library/531731a5-7a13-49be-8512-5cf25c96ee35) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromVariantArrayElem](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromVariantArrayElem)  
 [IsAccelerator](http://msdn2.microsoft.com/en-us/library/2d09f81a-b422-4379-89c8-d50992ebb24c) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.IsAccelerator](https://github.com/dahall/Vanara/search?l=C%23&q=IsAccelerator)  
 [IsEqualGUID](http://msdn2.microsoft.com/en-us/library/3580a0c4-e1f8-4bb7-ba66-c4702ecd11f1) | ole32.dll | guiddef.h | [Vanara.PInvoke.Ole32.IsEqualGUID](https://github.com/dahall/Vanara/search?l=C%23&q=IsEqualGUID)  
 [LHashValOfNameSys](https://www.google.com/search?num=5&q=LHashValOfNameSys+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -580,65 +580,65 @@ Native Method | Native DLL | Header | Managed Method
 [VariantChangeType](https://www.google.com/search?num=5&q=VariantChangeType+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VariantChangeTypeEx](https://www.google.com/search?num=5&q=VariantChangeTypeEx+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VariantClear](http://msdn2.microsoft.com/en-us/library/ms221165) | oleaut32.dll | OleAuto.h | [Vanara.PInvoke.OleAut32.VariantClear](https://github.com/dahall/Vanara/search?l=C%23&q=VariantClear)  
-[VariantCompare](https://www.google.com/search?num=5&q=VariantCompare+site%3Amicrosoft.com) | propsys.dll |  |   
+[VariantCompare](http://msdn2.microsoft.com/en-us/library/45aed78c-1614-4aad-a930-c44615546d6f) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantCompare](https://github.com/dahall/Vanara/search?l=C%23&q=VariantCompare)  
 [VariantCopy](https://www.google.com/search?num=5&q=VariantCopy+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VariantCopyInd](https://www.google.com/search?num=5&q=VariantCopyInd+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VariantGetBooleanElem](https://www.google.com/search?num=5&q=VariantGetBooleanElem+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantGetDoubleElem](https://www.google.com/search?num=5&q=VariantGetDoubleElem+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantGetElementCount](https://www.google.com/search?num=5&q=VariantGetElementCount+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantGetInt16Elem](https://www.google.com/search?num=5&q=VariantGetInt16Elem+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantGetInt32Elem](https://www.google.com/search?num=5&q=VariantGetInt32Elem+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantGetInt64Elem](https://www.google.com/search?num=5&q=VariantGetInt64Elem+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantGetStringElem](https://www.google.com/search?num=5&q=VariantGetStringElem+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantGetUInt16Elem](https://www.google.com/search?num=5&q=VariantGetUInt16Elem+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantGetUInt32Elem](https://www.google.com/search?num=5&q=VariantGetUInt32Elem+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantGetUInt64Elem](https://www.google.com/search?num=5&q=VariantGetUInt64Elem+site%3Amicrosoft.com) | propsys.dll |  |   
+[VariantGetBooleanElem](http://msdn2.microsoft.com/en-us/library/d21ad8cc-5919-4582-a593-64bd98a82a89) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantGetBooleanElem](https://github.com/dahall/Vanara/search?l=C%23&q=VariantGetBooleanElem)  
+[VariantGetDoubleElem](http://msdn2.microsoft.com/en-us/library/cc6cb3a0-ba39-4088-8d72-082f6a4e39d3) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantGetDoubleElem](https://github.com/dahall/Vanara/search?l=C%23&q=VariantGetDoubleElem)  
+[VariantGetElementCount](http://msdn2.microsoft.com/en-us/library/2bf96650-c0c4-4c99-9a04-d36d506b8f68) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantGetElementCount](https://github.com/dahall/Vanara/search?l=C%23&q=VariantGetElementCount)  
+[VariantGetInt16Elem](http://msdn2.microsoft.com/en-us/library/fd572a65-c74c-490e-8cff-aa9ba54da5a1) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantGetInt16Elem](https://github.com/dahall/Vanara/search?l=C%23&q=VariantGetInt16Elem)  
+[VariantGetInt32Elem](http://msdn2.microsoft.com/en-us/library/de67face-9284-4e0a-8ea7-d4b6e7c037fc) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantGetInt32Elem](https://github.com/dahall/Vanara/search?l=C%23&q=VariantGetInt32Elem)  
+[VariantGetInt64Elem](http://msdn2.microsoft.com/en-us/library/285705d3-3b8e-40ad-abf2-1adc5adda3d8) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantGetInt64Elem](https://github.com/dahall/Vanara/search?l=C%23&q=VariantGetInt64Elem)  
+[VariantGetStringElem](http://msdn2.microsoft.com/en-us/library/c4d1a37e-f7d1-4c0e-8d05-93a0153f2878) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantGetStringElem](https://github.com/dahall/Vanara/search?l=C%23&q=VariantGetStringElem)  
+[VariantGetUInt16Elem](http://msdn2.microsoft.com/en-us/library/6d2a8b0b-bcd2-4bad-a006-2443eabd7a16) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantGetUInt16Elem](https://github.com/dahall/Vanara/search?l=C%23&q=VariantGetUInt16Elem)  
+[VariantGetUInt32Elem](http://msdn2.microsoft.com/en-us/library/b950d051-2500-4523-8307-5817274878f2) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantGetUInt32Elem](https://github.com/dahall/Vanara/search?l=C%23&q=VariantGetUInt32Elem)  
+[VariantGetUInt64Elem](http://msdn2.microsoft.com/en-us/library/7fd3c87b-5511-4dbc-b99e-65656a96303e) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantGetUInt64Elem](https://github.com/dahall/Vanara/search?l=C%23&q=VariantGetUInt64Elem)  
 [VariantInit](https://www.google.com/search?num=5&q=VariantInit+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VariantTimeToDosDateTime](https://www.google.com/search?num=5&q=VariantTimeToDosDateTime+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VariantTimeToSystemTime](https://www.google.com/search?num=5&q=VariantTimeToSystemTime+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[VariantToBoolean](https://www.google.com/search?num=5&q=VariantToBoolean+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToBooleanArray](https://www.google.com/search?num=5&q=VariantToBooleanArray+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToBooleanArrayAlloc](https://www.google.com/search?num=5&q=VariantToBooleanArrayAlloc+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToBooleanWithDefault](https://www.google.com/search?num=5&q=VariantToBooleanWithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToBuffer](https://www.google.com/search?num=5&q=VariantToBuffer+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToDosDateTime](https://www.google.com/search?num=5&q=VariantToDosDateTime+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToDouble](https://www.google.com/search?num=5&q=VariantToDouble+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToDoubleArray](https://www.google.com/search?num=5&q=VariantToDoubleArray+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToDoubleArrayAlloc](https://www.google.com/search?num=5&q=VariantToDoubleArrayAlloc+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToDoubleWithDefault](https://www.google.com/search?num=5&q=VariantToDoubleWithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToFileTime](https://www.google.com/search?num=5&q=VariantToFileTime+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToGUID](https://www.google.com/search?num=5&q=VariantToGUID+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToInt16](https://www.google.com/search?num=5&q=VariantToInt16+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToInt16Array](https://www.google.com/search?num=5&q=VariantToInt16Array+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToInt16ArrayAlloc](https://www.google.com/search?num=5&q=VariantToInt16ArrayAlloc+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToInt16WithDefault](https://www.google.com/search?num=5&q=VariantToInt16WithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToInt32](https://www.google.com/search?num=5&q=VariantToInt32+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToInt32Array](https://www.google.com/search?num=5&q=VariantToInt32Array+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToInt32ArrayAlloc](https://www.google.com/search?num=5&q=VariantToInt32ArrayAlloc+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToInt32WithDefault](https://www.google.com/search?num=5&q=VariantToInt32WithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToInt64](https://www.google.com/search?num=5&q=VariantToInt64+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToInt64Array](https://www.google.com/search?num=5&q=VariantToInt64Array+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToInt64ArrayAlloc](https://www.google.com/search?num=5&q=VariantToInt64ArrayAlloc+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToInt64WithDefault](https://www.google.com/search?num=5&q=VariantToInt64WithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
+[VariantToBoolean](http://msdn2.microsoft.com/en-us/library/3ad12c41-e124-45f1-99f1-92790121ad93) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToBoolean](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToBoolean)  
+[VariantToBooleanArray](http://msdn2.microsoft.com/en-us/library/80a1e7d4-ec11-4b16-ba05-b97f3bbf02d0) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToBooleanArray](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToBooleanArray)  
+[VariantToBooleanArrayAlloc](http://msdn2.microsoft.com/en-us/library/6a623ee0-d99e-47db-82f9-9008c618a526) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToBooleanArrayAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToBooleanArrayAlloc)  
+[VariantToBooleanWithDefault](http://msdn2.microsoft.com/en-us/library/523c6e75-a51c-4ef7-928c-0d228ab0d337) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToBooleanWithDefault](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToBooleanWithDefault)  
+[VariantToBuffer](http://msdn2.microsoft.com/en-us/library/2d310156-c274-4aaf-aee2-ac311a952889) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToBuffer)  
+[VariantToDosDateTime](http://msdn2.microsoft.com/en-us/library/ebbba4d9-8e97-422d-b52f-67c417f295cc) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToDosDateTime](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToDosDateTime)  
+[VariantToDouble](http://msdn2.microsoft.com/en-us/library/7bd756c6-f02a-4cf4-9458-b3304e2da2db) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToDouble](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToDouble)  
+[VariantToDoubleArray](http://msdn2.microsoft.com/en-us/library/6830c2e2-d19a-45d5-af15-debfb08548bc) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToDoubleArray](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToDoubleArray)  
+[VariantToDoubleArrayAlloc](http://msdn2.microsoft.com/en-us/library/334d192e-7f63-47b4-88d4-9361e679cb15) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToDoubleArrayAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToDoubleArrayAlloc)  
+[VariantToDoubleWithDefault](http://msdn2.microsoft.com/en-us/library/a3e32a30-363d-487e-bdd5-ac2616d6de14) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToDoubleWithDefault](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToDoubleWithDefault)  
+[VariantToFileTime](http://msdn2.microsoft.com/en-us/library/e3094bd1-e641-43d8-8bc5-926c8d5a6ebe) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToFileTime](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToFileTime)  
+[VariantToGUID](http://msdn2.microsoft.com/en-us/library/1af84b55-da7e-430c-97fe-1c544a40c039) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToGUID](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToGUID)  
+[VariantToInt16](http://msdn2.microsoft.com/en-us/library/5a0d22c1-4295-405d-a503-2b9fdd6eaa81) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToInt16](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToInt16)  
+[VariantToInt16Array](http://msdn2.microsoft.com/en-us/library/dd00d986-acfa-445e-a0f6-0f52860b762b) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToInt16Array](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToInt16Array)  
+[VariantToInt16ArrayAlloc](http://msdn2.microsoft.com/en-us/library/616c9d03-f641-49e3-af95-80ebaea3e8aa) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToInt16ArrayAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToInt16ArrayAlloc)  
+[VariantToInt16WithDefault](http://msdn2.microsoft.com/en-us/library/4d6d0b7d-ae20-456c-9ef4-97fa682ece8b) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToInt16WithDefault](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToInt16WithDefault)  
+[VariantToInt32](http://msdn2.microsoft.com/en-us/library/6d2a4b8f-2ec5-4ffd-80b0-6615fdfb2379) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToInt32](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToInt32)  
+[VariantToInt32Array](http://msdn2.microsoft.com/en-us/library/9407e400-1621-4d96-b541-579aa3ac7a67) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToInt32Array](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToInt32Array)  
+[VariantToInt32ArrayAlloc](http://msdn2.microsoft.com/en-us/library/6010ee34-d7d2-4b8b-a49b-0f2aa88a3b54) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToInt32ArrayAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToInt32ArrayAlloc)  
+[VariantToInt32WithDefault](http://msdn2.microsoft.com/en-us/library/fd2d5330-2b31-4dbb-b57b-4ca5579fa03f) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToInt32WithDefault](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToInt32WithDefault)  
+[VariantToInt64](http://msdn2.microsoft.com/en-us/library/5b8b4f93-dff1-40ef-9f99-c108a0b1bf70) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToInt64](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToInt64)  
+[VariantToInt64Array](http://msdn2.microsoft.com/en-us/library/936e87e8-8102-4da2-b388-147fab6ec16f) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToInt64Array](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToInt64Array)  
+[VariantToInt64ArrayAlloc](http://msdn2.microsoft.com/en-us/library/15a583bd-fdef-4802-a18b-0a21b9be5448) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToInt64ArrayAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToInt64ArrayAlloc)  
+[VariantToInt64WithDefault](http://msdn2.microsoft.com/en-us/library/c4a5fc5c-19f9-4313-9d98-a486bfdfb359) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToInt64WithDefault](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToInt64WithDefault)  
 [VariantToPropVariant](http://msdn2.microsoft.com/en-us/library/bb776616) | propsys.dll | Propvarutil.h | [Vanara.PInvoke.PropSys.VariantToPropVariant](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToPropVariant)  
-[VariantToString](https://www.google.com/search?num=5&q=VariantToString+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToStringAlloc](https://www.google.com/search?num=5&q=VariantToStringAlloc+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToStringArray](https://www.google.com/search?num=5&q=VariantToStringArray+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToStringArrayAlloc](https://www.google.com/search?num=5&q=VariantToStringArrayAlloc+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToStringWithDefault](https://www.google.com/search?num=5&q=VariantToStringWithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
+[VariantToString](http://msdn2.microsoft.com/en-us/library/4850f9b8-8f86-4428-bf3b-f3abdc6047c1) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToString](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToString)  
+[VariantToStringAlloc](http://msdn2.microsoft.com/en-us/library/9cd4433c-d8ad-43ef-bdb9-9c1b8d8bea01) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToStringAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToStringAlloc)  
+[VariantToStringArray](http://msdn2.microsoft.com/en-us/library/d19b12ad-408c-4502-ad59-49386784bd69) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToStringArray](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToStringArray)  
+[VariantToStringArrayAlloc](http://msdn2.microsoft.com/en-us/library/2725b824-b26c-4b33-bc18-a6f4c0ef74e6) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToStringArrayAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToStringArrayAlloc)  
+[VariantToStringWithDefault](http://msdn2.microsoft.com/en-us/library/f8ca7844-057f-4e95-a4a9-f03f1d2ad492) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToStringWithDefault](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToStringWithDefault)  
 [VariantToStrRet](https://www.google.com/search?num=5&q=VariantToStrRet+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToUInt16](https://www.google.com/search?num=5&q=VariantToUInt16+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToUInt16Array](https://www.google.com/search?num=5&q=VariantToUInt16Array+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToUInt16ArrayAlloc](https://www.google.com/search?num=5&q=VariantToUInt16ArrayAlloc+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToUInt16WithDefault](https://www.google.com/search?num=5&q=VariantToUInt16WithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToUInt32](https://www.google.com/search?num=5&q=VariantToUInt32+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToUInt32Array](https://www.google.com/search?num=5&q=VariantToUInt32Array+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToUInt32ArrayAlloc](https://www.google.com/search?num=5&q=VariantToUInt32ArrayAlloc+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToUInt32WithDefault](https://www.google.com/search?num=5&q=VariantToUInt32WithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToUInt64](https://www.google.com/search?num=5&q=VariantToUInt64+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToUInt64Array](https://www.google.com/search?num=5&q=VariantToUInt64Array+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToUInt64ArrayAlloc](https://www.google.com/search?num=5&q=VariantToUInt64ArrayAlloc+site%3Amicrosoft.com) | propsys.dll |  |   
-[VariantToUInt64WithDefault](https://www.google.com/search?num=5&q=VariantToUInt64WithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
+[VariantToUInt16](http://msdn2.microsoft.com/en-us/library/aa88be72-9ea5-4668-a0c5-1ca5320bda00) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt16](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt16)  
+[VariantToUInt16Array](http://msdn2.microsoft.com/en-us/library/8da12aa7-f54e-4a38-b9bb-0dd019f8823b) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt16Array](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt16Array)  
+[VariantToUInt16ArrayAlloc](http://msdn2.microsoft.com/en-us/library/59e8d295-3be4-4e9a-a096-ead777d3aa8a) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt16ArrayAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt16ArrayAlloc)  
+[VariantToUInt16WithDefault](http://msdn2.microsoft.com/en-us/library/937d64c3-f5af-4230-b811-6d5883ecaf86) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt16WithDefault](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt16WithDefault)  
+[VariantToUInt32](http://msdn2.microsoft.com/en-us/library/24421477-8930-4c8f-8fee-5d8367123c7e) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt32](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt32)  
+[VariantToUInt32Array](http://msdn2.microsoft.com/en-us/library/506a02f8-6390-44a0-9f14-bfc8fb7ad180) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt32Array](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt32Array)  
+[VariantToUInt32ArrayAlloc](http://msdn2.microsoft.com/en-us/library/4d6cbfc8-fe1c-4bd0-8d29-32bce01d31f8) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt32ArrayAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt32ArrayAlloc)  
+[VariantToUInt32WithDefault](http://msdn2.microsoft.com/en-us/library/02ec869b-154e-436a-a9b7-57eff4e958aa) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt32WithDefault](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt32WithDefault)  
+[VariantToUInt64](http://msdn2.microsoft.com/en-us/library/1278f775-8439-4d05-acc9-b5207a3ccba7) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt64](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt64)  
+[VariantToUInt64Array](http://msdn2.microsoft.com/en-us/library/90b39ed2-a8a9-424c-bfd2-90517b9224fd) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt64Array](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt64Array)  
+[VariantToUInt64ArrayAlloc](http://msdn2.microsoft.com/en-us/library/898edef6-a688-4a39-897c-70f29952db49) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt64ArrayAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt64ArrayAlloc)  
+[VariantToUInt64WithDefault](http://msdn2.microsoft.com/en-us/library/6ff75c81-519b-4539-9aa5-c6b39b3e2d94) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt64WithDefault](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt64WithDefault)  
 [VarIdiv](https://www.google.com/search?num=5&q=VarIdiv+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarImp](https://www.google.com/search?num=5&q=VarImp+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarInt](https://www.google.com/search?num=5&q=VarInt+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -690,7 +690,7 @@ Native Method | Native DLL | Header | Managed Method
 [VarUI8FromI2](https://www.google.com/search?num=5&q=VarUI8FromI2+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VarWeekdayName](https://www.google.com/search?num=5&q=VarWeekdayName+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [VectorFromBstr](https://www.google.com/search?num=5&q=VectorFromBstr+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[WinRTPropertyValueToPropVariant](https://www.google.com/search?num=5&q=WinRTPropertyValueToPropVariant+site%3Amicrosoft.com) | propsys.dll |  |   
+[WinRTPropertyValueToPropVariant](http://msdn2.microsoft.com/en-us/library/3D6853B0-0A3F-4ACF-9C93-478688DAE9CF) | propsys.dll | propsys.h | [Vanara.PInvoke.PropSys.WinRTPropertyValueToPropVariant](https://github.com/dahall/Vanara/search?l=C%23&q=WinRTPropertyValueToPropVariant)  
 [WriteClassStg](http://msdn2.microsoft.com/en-us/library/5f2f16d1-923f-4ba7-8d4b-7e8535f6f15e) | ole32.dll | coml2api.h | [Vanara.PInvoke.Ole32.WriteClassStg](https://github.com/dahall/Vanara/search?l=C%23&q=WriteClassStg)  
 [WriteClassStm](http://msdn2.microsoft.com/en-us/library/c08bfbc8-f7ac-4534-8c98-c732c6daa2f7) | ole32.dll | coml2api.h | [Vanara.PInvoke.Ole32.WriteClassStm](https://github.com/dahall/Vanara/search?l=C%23&q=WriteClassStm)  
 [WriteFmtUserTypeStg](http://msdn2.microsoft.com/en-us/library/ef60493c-164e-4633-a248-05c4afade937) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.WriteFmtUserTypeStg](https://github.com/dahall/Vanara/search?l=C%23&q=WriteFmtUserTypeStg)  
@@ -731,6 +731,7 @@ Native Structure | Header | Managed Structure
 [STATPROPSTG](http://msdn2.microsoft.com/en-us/library/3b8de6d3-18a3-4c0a-94d1-04bcec05d41a) | propidl.h | [Vanara.PInvoke.Ole32.STATPROPSTG](https://github.com/dahall/Vanara/search?l=C%23&q=STATPROPSTG)  
 [STGOPTIONS](http://msdn2.microsoft.com/en-us/library/aa380344) | Objbase.h | [Vanara.PInvoke.Ole32.STGOPTIONS](https://github.com/dahall/Vanara/search?l=C%23&q=STGOPTIONS)  
 [StorageLayout](http://msdn2.microsoft.com/en-us/library/1e4fb36d-077b-44bd-ab6e-8c122ec95a46) | objidl.h | [Vanara.PInvoke.Ole32.StorageLayout](https://github.com/dahall/Vanara/search?l=C%23&q=StorageLayout)  
+[VARIANT](https://www.google.com/search?num=5&q=VARIANT+site%3Amicrosoft.com) | oaidl.h | [Vanara.PInvoke.Ole32.VARIANT](https://github.com/dahall/Vanara/search?l=C%23&q=VARIANT)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  

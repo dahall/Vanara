@@ -34,6 +34,7 @@ Native Method | Header | Managed Method
 [ILRemoveLastID](http://msdn2.microsoft.com/en-us/library/bb776456) | Shobjidl.h | [Vanara.PInvoke.Shell32.ILRemoveLastID](https://github.com/dahall/Vanara/search?l=C%23&q=ILRemoveLastID)  
 [ILSaveToStream](http://msdn2.microsoft.com/en-us/library/40d5ce57-58dc-4c79-8fe6-5412e3d7dc64) | shlobj_core.h | [Vanara.PInvoke.Shell32.ILSaveToStream](https://github.com/dahall/Vanara/search?l=C%23&q=ILSaveToStream)  
 [InitNetworkAddressControl](http://msdn2.microsoft.com/en-us/library/52b475e3-7335-4c34-80d7-ccd81af0e0ec) | shellapi.h | [Vanara.PInvoke.Shell32.InitNetworkAddressControl](https://github.com/dahall/Vanara/search?l=C%23&q=InitNetworkAddressControl)  
+[InitVariantFromStrRet](http://msdn2.microsoft.com/en-us/library/8e9542a9-9ed0-4e44-b9b1-32b31151bd8e) | propvarutil.h | [Vanara.PInvoke.Shell32.InitVariantFromStrRet](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromStrRet)  
 [IsNetDrive](http://msdn2.microsoft.com/en-us/library/44e02665-648a-4cf0-9dc0-038e54d08a49) | shlobj_core.h | [Vanara.PInvoke.Shell32.IsNetDrive](https://github.com/dahall/Vanara/search?l=C%23&q=IsNetDrive)  
 [IsUserAnAdmin](http://msdn2.microsoft.com/en-us/library/fe698d32-32f6-4b2b-ad0c-5d9ec815177f) | shlobj_core.h | [Vanara.PInvoke.Shell32.IsUserAnAdmin](https://github.com/dahall/Vanara/search?l=C%23&q=IsUserAnAdmin)  
 [OpenRegStream](http://msdn2.microsoft.com/en-us/library/e1e35c94-84ac-4aa1-b2a1-47b37a7f224e) | shlobj_core.h | [Vanara.PInvoke.Shell32.OpenRegStream](https://github.com/dahall/Vanara/search?l=C%23&q=OpenRegStream)  
@@ -188,6 +189,7 @@ Native Method | Header | Managed Method
 [SHValidateUNC](http://msdn2.microsoft.com/en-us/library/42394650-5571-4165-84f1-19a26fb4a1b8) | shlobj_core.h | [Vanara.PInvoke.Shell32.SHValidateUNC](https://github.com/dahall/Vanara/search?l=C%23&q=SHValidateUNC)  
 [SignalFileOpen](http://msdn2.microsoft.com/en-us/library/b46bb06f-a183-4a39-89bd-457fa4fe728f) | shlobj_core.h | [Vanara.PInvoke.Shell32.SignalFileOpen](https://github.com/dahall/Vanara/search?l=C%23&q=SignalFileOpen)  
 [StgMakeUniqueName](http://msdn2.microsoft.com/en-us/library/d45ec25c-359b-46f8-b0f6-5888525c7349) | shlobj_core.h | [Vanara.PInvoke.Shell32.StgMakeUniqueName](https://github.com/dahall/Vanara/search?l=C%23&q=StgMakeUniqueName)  
+[VariantToStrRet](http://msdn2.microsoft.com/en-us/library/dfc1f52e-58c6-48fd-8da9-1d4d5115912c) | propvarutil.h | [Vanara.PInvoke.Shell32.VariantToStrRet](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToStrRet)  
 [Win32DeleteFile](http://msdn2.microsoft.com/en-us/library/e6b2ac77-a206-413e-aba7-0fd627799a95) | shlobj_core.h | [Vanara.PInvoke.Shell32.Win32DeleteFile](https://github.com/dahall/Vanara/search?l=C%23&q=Win32DeleteFile)  
 [WriteCabinetState](http://msdn2.microsoft.com/en-us/library/cbd08812-eedc-4ba7-827e-1e5d1e3e6368) | shlobj_core.h | [Vanara.PInvoke.Shell32.WriteCabinetState](https://github.com/dahall/Vanara/search?l=C%23&q=WriteCabinetState)  
 ### Structures  
