@@ -130,6 +130,29 @@ namespace Vanara.PInvoke
 		[PInvokeData("propvarutil.h", MSDNShortId = "e8d7f951-8a9e-441b-9fa7-bf21cf08c8ac")]
 		public static extern HRESULT ClearPropVariantArray([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPVARIANT[] rgPropVar, uint cVars);
 
+		/// <summary>Frees the memory and references used by an array of VARIANT structures stored in an array.</summary>
+		/// <param name="pvars">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>Array of VARIANT structures to free.</para>
+		/// </param>
+		/// <param name="cvars">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of elements in the array specified by pvars.</para>
+		/// </param>
+		/// <returns>No return value.</returns>
+		/// <remarks>
+		/// <para>
+		/// This function releases the memory and references held by each structure in the array before it sets the structures to zero.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use ClearVariantArray</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-clearvariantarray PSSTDAPI_(void) ClearVariantArray(
+		// VARIANT *pvars, UINT cvars );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "8126392e-d86c-420c-9f0d-ca7cb97030b0")]
+		public static extern void ClearVariantArray([In, Out] VARIANT[] pvars, uint cvars);
+
 		/// <summary>Initializes a <see cref="PROPVARIANT"/> structure from a specified Boolean vector.</summary>
 		/// <param name="prgf">
 		/// Pointer to the Boolean vector used to initialize the structure. If this parameter is NULL, the elements pointed to by the
@@ -425,6 +448,467 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propvarutil.h", MSDNShortId = "bb762315")]
 		public static extern HRESULT InitPropVariantVectorFromPropVariant([In] PROPVARIANT propvarSingle, [Out] PROPVARIANT ppropvarVector);
+
+		/// <summary>Initializes a VARIANT structure from an array of Boolean values.</summary>
+		/// <param name="prgf">
+		/// <para>Type: <c>const BOOL*</c></para>
+		/// <para>Pointer to source array of Boolean values.</para>
+		/// </param>
+		/// <param name="cElems">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the array.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_ARRAY | VT_BOOL variant.</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromBooleanArray.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfrombooleanarray PSSTDAPI
+		// InitVariantFromBooleanArray( const BOOL *prgf, ULONG cElems, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "50780131-c0ed-443b-86e8-deb996a5c98e")]
+		public static extern HRESULT InitVariantFromBooleanArray([In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Bool, SizeParamIndex = 1)] bool[] prgf, uint cElems, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure with the contents of a buffer.</summary>
+		/// <param name="pv">
+		/// <para>Type: <c>const VOID*</c></para>
+		/// <para>Pointer to the source buffer.</para>
+		/// </param>
+		/// <param name="cb">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The length of the buffer, in bytes.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_ARRAY | VT_UI1 variant..</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromBuffer.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfrombuffer PSSTDAPI
+		// InitVariantFromBuffer( const void *pv, UINT cb, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "4dd28a13-2161-4258-a32f-57e5bd8ce091")]
+		public static extern HRESULT InitVariantFromBuffer([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pv, uint cb, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure with an array of values of type DOUBLE.</summary>
+		/// <param name="prgn">
+		/// <para>Type: <c>const DOUBLE*</c></para>
+		/// <para>Pointer to the source array of DOUBLE values.</para>
+		/// </param>
+		/// <param name="cElems">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the array pointed to by prgn.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_ARRAY | VT_R8 variant.</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromDoubleArray.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromdoublearray PSSTDAPI
+		// InitVariantFromDoubleArray( const DOUBLE *prgn, ULONG cElems, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "781b6999-4551-499d-ba37-0a7e05fc6eab")]
+		public static extern HRESULT InitVariantFromDoubleArray([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] prgn, uint cElems, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure with the contents of a FILETIME structure.</summary>
+		/// <param name="pft">
+		/// <para>Type: <c>const FILETIME*</c></para>
+		/// <para>Pointer to date and time information stored in a FILETIME structure.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_DATE variant.</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromFileTime.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromfiletime PSSTDAPI
+		// InitVariantFromFileTime( const FILETIME *pft, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "cd61a268-ef73-4dd3-98d4-9811922d01f4")]
+		public static extern HRESULT InitVariantFromFileTime(in FILETIME pft, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure with an array of FILETIME structures.</summary>
+		/// <param name="prgft">
+		/// <para>Type: <c>const FILETIME*</c></para>
+		/// <para>Pointer to an array of FILETIME structures.</para>
+		/// </param>
+		/// <param name="cElems">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the array pointed to by prgft.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_ARRAY | VT_DATE variant.</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromFileTimeArray.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromfiletimearray PSSTDAPI
+		// InitVariantFromFileTimeArray( const FILETIME *prgft, ULONG cElems, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "d1b25aec-f302-4d39-93c1-0fcb2d7dbf45")]
+		public static extern HRESULT InitVariantFromFileTimeArray([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FILETIME[] prgft, uint cElems, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure based on a <c>GUID</c>. The structure is initialized as a <c>VT_BSTR</c> type.</summary>
+		/// <param name="guid">
+		/// <para>Type: <c>REFGUID</c></para>
+		/// <para>Reference to the source <c>GUID</c>.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_BSTR variant, formatting the GUID in a form similar to .</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use <c>InitVariantFromGUIDAsString</c>.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromguidasstring PSSTDAPI
+		// InitVariantFromGUIDAsString( REFGUID guid, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "2a78257a-a8ce-45e8-aea2-dfa9f380528a")]
+		public static extern HRESULT InitVariantFromGUIDAsString(in Guid guid, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure with an array of 16-bit integer values.</summary>
+		/// <param name="prgn">
+		/// <para>Type: <c>const SHORT*</c></para>
+		/// <para>Pointer to the source array of <c>SHORT</c> values.</para>
+		/// </param>
+		/// <param name="cElems">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the array pointed to by prgn.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_ARRAY | VT_I2 variant.</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromInt16Array.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromint16array PSSTDAPI
+		// InitVariantFromInt16Array( const SHORT *prgn, ULONG cElems, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "6aeca46e-96b5-42cb-b5db-2c1e3152d629")]
+		public static extern HRESULT InitVariantFromInt16Array([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] short[] prgn, uint cElems, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure with an array of 32-bit integer values.</summary>
+		/// <param name="prgn">
+		/// <para>Type: <c>const LONG*</c></para>
+		/// <para>Pointer to the source array of <c>LONG</c> values.</para>
+		/// </param>
+		/// <param name="cElems">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the array pointed to by prgn.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_ARRAY | VT_I4 variant.</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromInt32Array.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromint32array PSSTDAPI
+		// InitVariantFromInt32Array( const LONG *prgn, ULONG cElems, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "0805d510-ee9c-4f10-978d-c34d572488f9")]
+		public static extern HRESULT InitVariantFromInt32Array([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] int[] prgn, uint cElems, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure with an array of 64-bit integer values.</summary>
+		/// <param name="prgn">
+		/// <para>Type: <c>const LONGLONG*</c></para>
+		/// <para>Pointer to the source array of <c>LONGLONG</c> values.</para>
+		/// </param>
+		/// <param name="cElems">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the array pointed to by prgn.</para>
+		/// <para>The number of array elements.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_ARRAY | VT_I8 variant.</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromInt64Array.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromint64array PSSTDAPI
+		// InitVariantFromInt64Array( const LONGLONG *prgn, ULONG cElems, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "18e9c804-b5e4-4abe-adcd-eaa402c6c94a")]
+		public static extern HRESULT InitVariantFromInt64Array([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] long[] prgn, uint cElems, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure based on a string resource imbedded in an executable file.</summary>
+		/// <param name="hinst">
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>Handle to an instance of the module whose executable file contains the string resource.</para>
+		/// </param>
+		/// <param name="id">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>Integer identifier of the string to be loaded.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Creates a VT_BSTR variant. If the resource does not exist, this function initializes the VARIANT as VT_EMPTY and returns a
+		/// failure code.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromResource.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromresource PSSTDAPI
+		// InitVariantFromResource( HINSTANCE hinst, UINT id, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "ae309a04-7b21-46ef-b481-2593dc162e19")]
+		public static extern HRESULT InitVariantFromResource(HINSTANCE hinst, uint id, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure with an array of strings.</summary>
+		/// <param name="prgsz">
+		/// <para>Type: <c>PCWSTR*</c></para>
+		/// <para>Pointer to an array of strings.</para>
+		/// </param>
+		/// <param name="cElems">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the array pointed to by prgsz.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_ARRAY | VT_BSTR variant.</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromStringArray.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromstringarray PSSTDAPI
+		// InitVariantFromStringArray( PCWSTR *prgsz, ULONG cElems, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "f46cfc71-9e27-4ba1-8a32-5b279b628732")]
+		public static extern HRESULT InitVariantFromStringArray([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.LPWStr)] string[] prgsz, uint cElems, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure with an array of unsigned 16-bit integer values.</summary>
+		/// <param name="prgn">
+		/// <para>Type: <c>const USHORT*</c></para>
+		/// <para>Pointer to the source array of <c>USHORT</c> values.</para>
+		/// </param>
+		/// <param name="cElems">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the array pointed to by prgn.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_ARRAY | VT_UI2 variant.</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromUInt16Array.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromuint16array PSSTDAPI
+		// InitVariantFromUInt16Array( const USHORT *prgn, ULONG cElems, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "57fe1dd2-48a5-486e-a2cb-53cf0b8f96b0")]
+		public static extern HRESULT InitVariantFromUInt16Array([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] prgn, uint cElems, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure with an array of unsigned 32-bit integer values.</summary>
+		/// <param name="prgn">
+		/// <para>Type: <c>const ULONG*</c></para>
+		/// <para>Pointer to the source array of <c>ULONG</c> values.</para>
+		/// </param>
+		/// <param name="cElems">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the array pointed to by prgn.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_ARRAY | VT_UI4 variant.</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromUInt32Array.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromuint32array PSSTDAPI
+		// InitVariantFromUInt32Array( const ULONG *prgn, ULONG cElems, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "b08e61bc-8b76-4baf-acf7-9eb97e521b65")]
+		public static extern HRESULT InitVariantFromUInt32Array([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] prgn, uint cElems, out VARIANT pvar);
+
+		/// <summary>Initializes a VARIANT structure with an array of unsigned 64-bit integer values.</summary>
+		/// <param name="prgn">
+		/// <para>Type: <c>const ULONGLONG*</c></para>
+		/// <para>Pointer to the source array of <c>ULONGLONG</c> values.</para>
+		/// </param>
+		/// <param name="cElems">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the array pointed to by prgn.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_ARRAY | VT_UI8 variant.</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromUInt64Array.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromuint64array PSSTDAPI
+		// InitVariantFromUInt64Array( const ULONGLONG *prgn, ULONG cElems, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "67886e29-c3dd-4bfd-b53f-761c16daaf63")]
+		public static extern HRESULT InitVariantFromUInt64Array([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ulong[] prgn, uint cElems, ref object pvar);
+
+		/// <summary>Initializes a VARIANT structure with a value stored in another <c>VARIANT</c> structure.</summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to the source VARIANT structure.</para>
+		/// </param>
+		/// <param name="iElem">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Index of one of the source VARIANT structure elements.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>This helper function works for VARIANT structures of the following types:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>VT_BSTR</term>
+		/// </item>
+		/// <item>
+		/// <term>VT_BOOL</term>
+		/// </item>
+		/// <item>
+		/// <term>VT_I2</term>
+		/// </item>
+		/// <item>
+		/// <term>VT_I4</term>
+		/// </item>
+		/// <item>
+		/// <term>VT_I8</term>
+		/// </item>
+		/// <item>
+		/// <term>VT_U12</term>
+		/// </item>
+		/// <item>
+		/// <term>VT_U14</term>
+		/// </item>
+		/// <item>
+		/// <term>VT_U18</term>
+		/// </item>
+		/// <item>
+		/// <term>VT_DATE</term>
+		/// </item>
+		/// <item>
+		/// <term>VT_ARRAY | (any one of VT_BSTR, VT_BOOL, VT_I2, VT_I4, VT_I8, VT_U12, VT_U14, VT_U18, VT_DATE)</term>
+		/// </item>
+		/// </list>
+		/// <para>Additional types may be supported in the future.</para>
+		/// <para>
+		/// This function extracts a single value from the source VARIANT structure and uses that value to initialize the output
+		/// <c>VARIANT</c> structure. The calling application must use VariantClear to free the <c>VARIANT</c> referred to by pvar when it is
+		/// no longer needed.
+		/// </para>
+		/// <para>If the source VARIANT is an array, iElem must be less than the number of elements in the array.</para>
+		/// <para>If the source VARIANT has a single value, iElem must be 0.</para>
+		/// <para>If the source VARIANT is empty, this function always returns an error code.</para>
+		/// <para>You can use VariantGetElementCount to obtain the number of elements in the array or array.</para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromVariantArrayElem in an
+		/// iteration statement to access the values in a VARIANT.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromvariantarrayelem PSSTDAPI
+		// InitVariantFromVariantArrayElem( REFVARIANT varIn, ULONG iElem, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "531731a5-7a13-49be-8512-5cf25c96ee35")]
+		public static extern HRESULT InitVariantFromVariantArrayElem(in VARIANT varIn, uint iElem, out VARIANT pvar);
 
 		/// <summary>Coerces a value stored as a <see cref="PROPVARIANT"/> structure to an equivalent value of a different variant type.</summary>
 		/// <param name="ppropvarDest">
@@ -1289,8 +1773,8 @@ namespace Vanara.PInvoke
 		/// <summary>Extracts data from a <see cref="PROPVARIANT"/> structure into a newly-allocated <see cref="FILETIME"/> vector.</summary>
 		/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
 		/// <param name="pprgf">
-		/// When this function returns, contains a pointer to a vector of <see cref="FILETIME"/> values extracted from the source <see
-		/// cref="PROPVARIANT"/> structure.
+		/// When this function returns, contains a pointer to a vector of <see cref="FILETIME"/> values extracted from the source
+		/// <see cref="PROPVARIANT"/> structure.
 		/// </param>
 		/// <param name="pcElem">
 		/// When this function returns, contains the count of <see cref="FILETIME"/> elements extracted from source <see cref="PROPVARIANT"/> structure.
@@ -2493,6 +2977,1036 @@ namespace Vanara.PInvoke
 		[PInvokeData("Propvarutil.h", MSDNShortId = "bb776579")]
 		public static extern HRESULT StgSerializePropVariant([In] PROPVARIANT ppropvar, out SafeCoTaskMemHandle ppProp, out uint pcb);
 
+		/// <summary>Compares two variant structures, based on default comparison rules.</summary>
+		/// <param name="var1">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a first variant structure.</para>
+		/// </param>
+		/// <param name="var2">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a second variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>INT</c></para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Returns 1 if var1 is greater than var2</term>
+		/// </item>
+		/// <item>
+		/// <term>Returns 0 if var1 equals var2</term>
+		/// </item>
+		/// <item>
+		/// <term>Returns -1 if var1 is less than var2</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>Note</c> This function does not support the comparison of different VARIANT types. If the types named in var1 and var2 are
+		/// different, the results are undefined and should be ignored. Calling applications should ensure that they are comparing two of the
+		/// same type before they call this function. The PropVariantChangeType function can be used to convert the two structures to the
+		/// same type.
+		/// </para>
+		/// <para>By default, VT_NULL / VT_EMPTY / 0-element vectors are considered to be less than any other vartype.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-variantcompare PSSTDAPI_(int) VariantCompare(
+		// REFVARIANT var1, REFVARIANT var2 );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "45aed78c-1614-4aad-a930-c44615546d6f")]
+		public static extern int VariantCompare(in VARIANT var1, in VARIANT var2);
+
+		/// <summary>Extracts a single Boolean element from a variant structure.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="iElem">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies vector or array index; otherwise, value must be 0.</para>
+		/// </param>
+		/// <param name="pfVal">
+		/// <para>Type: <c>BOOL*</c></para>
+		/// <para>Pointer to the extracted element value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-variantgetbooleanelem PSSTDAPI
+		// VariantGetBooleanElem( REFVARIANT var, ULONG iElem, BOOL *pfVal );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "d21ad8cc-5919-4582-a593-64bd98a82a89")]
+		public static extern HRESULT VariantGetBooleanElem(in VARIANT var, uint iElem, [MarshalAs(UnmanagedType.Bool)] out bool pfVal);
+
+		/// <summary>Extracts one <c>double</c> element from a variant structure.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="iElem">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies vector or array index; otherwise, value must be 0.</para>
+		/// </param>
+		/// <param name="pnVal">
+		/// <para>Type: <c>DOUBLE*</c></para>
+		/// <para>Pointer to the extracted element value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-variantgetdoubleelem PSSTDAPI VariantGetDoubleElem(
+		// REFVARIANT var, ULONG iElem, DOUBLE *pnVal );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "cc6cb3a0-ba39-4088-8d72-082f6a4e39d3")]
+		public static extern HRESULT VariantGetDoubleElem(in VARIANT var, uint iElem, out double pnVal);
+
+		/// <summary>Retrieves the element count of a variant structure.</summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Returns the element count for values of type VT_ARRAY; otherwise, returns 1.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-variantgetelementcount PSSTDAPI_(ULONG)
+		// VariantGetElementCount( REFVARIANT varIn );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "2bf96650-c0c4-4c99-9a04-d36d506b8f68")]
+		public static extern uint VariantGetElementCount(in VARIANT varIn);
+
+		/// <summary>Extracts a single <c>Int16</c> element from a variant structure.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="iElem">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies vector or array index; otherwise, value must be 0.</para>
+		/// </param>
+		/// <param name="pnVal">
+		/// <para>Type: <c>SHORT*</c></para>
+		/// <para>Pointer to the extracted element value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-variantgetint16elem PSSTDAPI VariantGetInt16Elem(
+		// REFVARIANT var, ULONG iElem, SHORT *pnVal );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "fd572a65-c74c-490e-8cff-aa9ba54da5a1")]
+		public static extern HRESULT VariantGetInt16Elem(in VARIANT var, uint iElem, out short pnVal);
+
+		/// <summary>Extracts a single <c>Int32</c> element from a variant structure.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="iElem">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies vector or array index; otherwise, value must be 0.</para>
+		/// </param>
+		/// <param name="pnVal">
+		/// <para>Type: <c>LONG*</c></para>
+		/// <para>Pointer to the extracted element value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-variantgetint32elem PSSTDAPI VariantGetInt32Elem(
+		// REFVARIANT var, ULONG iElem, LONG *pnVal );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "de67face-9284-4e0a-8ea7-d4b6e7c037fc")]
+		public static extern HRESULT VariantGetInt32Elem(in VARIANT var, uint iElem, out int pnVal);
+
+		/// <summary>Extracts a single <c>Int64</c> element from a variant structure.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="iElem">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies vector or array index; otherwise, value must be 0.</para>
+		/// </param>
+		/// <param name="pnVal">
+		/// <para>Type: <c>LONGLONG*</c></para>
+		/// <para>Pointer to the extracted element value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-variantgetint64elem PSSTDAPI VariantGetInt64Elem(
+		// REFVARIANT var, ULONG iElem, LONGLONG *pnVal );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "285705d3-3b8e-40ad-abf2-1adc5adda3d8")]
+		public static extern HRESULT VariantGetInt64Elem(in VARIANT var, uint iElem, out long pnVal);
+
+		/// <summary>Extracts a single wide string element from a variant structure.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="iElem">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies a vector or array index; otherwise, value must be 0.</para>
+		/// </param>
+		/// <param name="ppszVal">
+		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>The address of a pointer to the extracted element value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-variantgetstringelem PSSTDAPI VariantGetStringElem(
+		// REFVARIANT var, ULONG iElem, PWSTR *ppszVal );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "c4d1a37e-f7d1-4c0e-8d05-93a0153f2878")]
+		public static extern HRESULT VariantGetStringElem(in VARIANT var, uint iElem, out StrPtrUni ppszVal);
+
+		/// <summary>Extracts a single unsigned <c>Int16</c> element from a variant structure.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="iElem">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies a vector or array index; otherwise, value must be 0.</para>
+		/// </param>
+		/// <param name="pnVal">
+		/// <para>Type: <c>USHORT*</c></para>
+		/// <para>Pointer to the extracted element value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-variantgetuint16elem PSSTDAPI VariantGetUInt16Elem(
+		// REFVARIANT var, ULONG iElem, USHORT *pnVal );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "6d2a8b0b-bcd2-4bad-a006-2443eabd7a16")]
+		public static extern HRESULT VariantGetUInt16Elem(in VARIANT var, uint iElem, out ushort pnVal);
+
+		/// <summary>Extracts a single unsigned <c>Int32</c> element from a variant structure.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="iElem">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies vector or array index; otherwise, value must be 0.</para>
+		/// </param>
+		/// <param name="pnVal">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the extracted element value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-variantgetuint32elem PSSTDAPI VariantGetUInt32Elem(
+		// REFVARIANT var, ULONG iElem, ULONG *pnVal );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "b950d051-2500-4523-8307-5817274878f2")]
+		public static extern HRESULT VariantGetUInt32Elem(in VARIANT var, uint iElem, out uint pnVal);
+
+		/// <summary>Extracts a single unsigned <c>Int64</c> element from a variant structure.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="iElem">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies vector or array index; otherwise, value must be 0.</para>
+		/// </param>
+		/// <param name="pnVal">
+		/// <para>Type: <c>ULONGLONG*</c></para>
+		/// <para>Pointer to the extracted element value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-variantgetuint64elem PSSTDAPI VariantGetUInt64Elem(
+		// REFVARIANT var, ULONG iElem, ULONGLONG *pnVal );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "7fd3c87b-5511-4dbc-b99e-65656a96303e")]
+		public static extern HRESULT VariantGetUInt64Elem(in VARIANT var, uint iElem, out ulong pnVal);
+
+		/// <summary>
+		/// Extracts the value of a Boolean property from a VARIANT structure. If no value can be extracted, then a default value is assigned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source VARIANT structure.</para>
+		/// </param>
+		/// <param name="pfRet">
+		/// <para>Type: <c>BOOL*</c></para>
+		/// <para>When this function returns, contains the extracted value if one exists; otherwise, <c>FALSE</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This helper function is used when the calling application expects a VARIANT to hold a Boolean value. For instance, an application
+		/// that obtains values from a Shell folder can use this function to safely extract the value from one of the folder's Boolean properties.
+		/// </para>
+		/// <para>If the source VARIANT is of type VT_BOOL, this function extracts the <c>BOOL</c> value.</para>
+		/// <para>
+		/// If the source VARIANT is not of type VT_BOOL, this function attempts to convert the value in the <c>VARIANT</c> structure into a
+		/// <c>BOOL</c>. If a conversion is not possible, VariantToBoolean returns a failure code and sets pfRet to <c>FALSE</c>. See
+		/// PropVariantChangeType for a list of possible conversions. Of note, VT_EMPTY is successfully converted to <c>FALSE</c>.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use VariantToBoolean to access a
+		/// <c>BOOL</c> value in a VARIANT.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoboolean PSSTDAPI VariantToBoolean(
+		// REFVARIANT varIn, BOOL *pfRet );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "3ad12c41-e124-45f1-99f1-92790121ad93")]
+		public static extern HRESULT VariantToBoolean(in VARIANT varIn, [MarshalAs(UnmanagedType.Bool)] out bool pfRet);
+
+		/// <summary>Extracts an array of Boolean values from a VARIANT structure.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source VARIANT structure.</para>
+		/// </param>
+		/// <param name="prgf">
+		/// <para>Type: <c>BOOL*</c></para>
+		/// <para>
+		/// Pointer to a buffer that contains crgn Boolean values. When this function returns, the buffer has been initialized with *pcElem
+		/// <c>BOOL</c> elements extracted from the source VARIANT structure.
+		/// </para>
+		/// </param>
+		/// <param name="crgn">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the buffer pointed to by prgf.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>
+		/// When this function returns, contains a pointer to the count of <c>BOOL</c> elements extracted from the source VARIANT structure.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>Returns <c>S_OK</c> if successful, or an error value otherwise, including the following:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TYPE_E_BUFFERTOOSMALL</term>
+		/// <term>The source VARIANT contained more than crgn values.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>The VARIANT was not of the appropriate type.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This helper function is used when the calling application expects a VARIANT to hold an array that consists of a fixed number of
+		/// Boolean values.
+		/// </para>
+		/// <para>
+		/// If the source VARIANT is of type VT_ARRAY | VT_BOOL, this function extracts up to crgn <c>BOOL</c> values and places them into
+		/// the buffer pointed to by prgf. If the <c>VARIANT</c> contains more elements than will fit into the prgf buffer, this function
+		/// returns an error and sets *pcElem to 0.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use VariantToBooleanArray to access an
+		/// array of <c>BOOL</c> values stored in a VARIANT structure.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttobooleanarray PSSTDAPI
+		// VariantToBooleanArray( REFVARIANT var, BOOL *prgf, ULONG crgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "80a1e7d4-ec11-4b16-ba05-b97f3bbf02d0")]
+		public static extern HRESULT VariantToBooleanArray(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.Bool)] bool[] prgf, uint crgn, out uint pcElem);
+
+		/// <summary>Allocates an array of <c>BOOL</c> values then extracts data from a VARIANT structure into that array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source VARIANT structure.</para>
+		/// </param>
+		/// <param name="pprgf">
+		/// <para>Type: <c>BOOL**</c></para>
+		/// <para>When this function returns, contains a pointer to an array of <c>BOOL</c> values extracted from the source VARIANT structure.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>When this function returns, contains a pointer to the count of elements extracted from the source VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>This helper function is used when the calling application expects a VARIANT to hold an array of <c>BOOL</c> values.</para>
+		/// <para>
+		/// If the source VARIANT is of type VT_ARRAY | VT_BOOL, this function extracts an array of <c>BOOL</c> values into a newly allocated
+		/// array. The calling application is responsible for using CoTaskMemFree to release the array pointed to by pprgf when it is no
+		/// longer needed.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use VariantToBooleanArrayAlloc to access
+		/// an array of <c>BOOL</c> values stored in a VARIANT structure.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttobooleanarrayalloc PSSTDAPI
+		// VariantToBooleanArrayAlloc( REFVARIANT var, BOOL **pprgf, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "6a623ee0-d99e-47db-82f9-9008c618a526")]
+		public static extern HRESULT VariantToBooleanArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgf, out uint pcElem);
+
+		/// <summary>Extracts a <c>BOOL</c> value from a VARIANT structure. If no value exists, then the specified default value is returned.</summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source VARIANT structure.</para>
+		/// </param>
+		/// <param name="fDefault">
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>The default value for use where no extractable value exists.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns the extracted <c>BOOL</c> value; otherwise, the default value specified in fDefault.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This helper function is used when the calling application expects a VARIANT to hold a <c>BOOL</c> value and wants to use a
+		/// default value if it does not.
+		/// </para>
+		/// <para>If the source VARIANT is of type VT_BOOL, this helper extracts the <c>BOOL</c> value.</para>
+		/// <para>
+		/// If the source VARIANT is not of type VT_BOOL, the function attempts to convert the value in the <c>VARIANT</c> into a <c>BOOL</c>.
+		/// </para>
+		/// <para>
+		/// If the source VARIANT is of type VT_EMPTY or a conversion is not possible, then VariantToBooleanWithDefault returns the default
+		/// value provided by fDefault. See PropVariantChangeType for a list of possible conversions.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use VariantToBooleanWithDefault to access
+		/// a <c>BOOL</c> value stored in a VARIANT structure.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttobooleanwithdefault PSSTDAPI_(BOOL)
+		// VariantToBooleanWithDefault( REFVARIANT varIn, BOOL fDefault );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "523c6e75-a51c-4ef7-928c-0d228ab0d337")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool VariantToBooleanWithDefault(in VARIANT varIn, [MarshalAs(UnmanagedType.Bool)] bool fDefault);
+
+		/// <summary>Extracts the contents of a buffer stored in a VARIANT structure of type VT_ARRRAY | VT_UI1.</summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source VARIANT structure.</para>
+		/// </param>
+		/// <param name="pv">
+		/// <para>Type: <c>VOID*</c></para>
+		/// <para>
+		/// Pointer to a buffer of length cb bytes. When this function returns, contains the first cb bytes of the extracted buffer value.
+		/// </para>
+		/// </param>
+		/// <param name="cb">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The size of the pv buffer, in bytes. The buffer should be the same size as the data to be extracted, or smaller.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>Returns one of the following values:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Data successfully extracted.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>The VARIANT was not of type VT_ARRRAY | VT_UI1.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>The VARIANT buffer value had fewer than cb bytes.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function is used when the calling application expects a VARIANT to hold a buffer value. The calling application should check
+		/// that the value has the expected length before it calls this function.
+		/// </para>
+		/// <para>
+		/// If the source VARIANT has type VT_ARRAY | VT_UI1, this function extracts the first cb bytes from the structure and places them in
+		/// the buffer pointed to by pv.
+		/// </para>
+		/// <para>If the stored value has fewer than cb bytes, then VariantToBuffer fails and the buffer is not modified.</para>
+		/// <para>If the value has more than cb bytes, then VariantToBuffer succeeds and truncates the value.</para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use VariantToBuffer to access a structure
+		/// that has been stored in a VARIANT.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttobuffer PSSTDAPI VariantToBuffer( REFVARIANT
+		// varIn, void *pv, UINT cb );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "2d310156-c274-4aaf-aee2-ac311a952889")]
+		public static extern HRESULT VariantToBuffer(in VARIANT varIn, byte[] pv, uint cb);
+
+		/// <summary>Extracts a date and time value in Microsoft MS-DOS format from a VARIANT structure.</summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source VARIANT structure.</para>
+		/// </param>
+		/// <param name="pwDate">
+		/// <para>Type: <c>WORD*</c></para>
+		/// <para>When this function returns, contains the extracted <c>WORD</c> that represents a MS-DOS date.</para>
+		/// </param>
+		/// <param name="pwTime">
+		/// <para>Type: <c>WORD*</c></para>
+		/// <para>When this function returns, contains the extracted contains the extracted <c>WORD</c> that represents a MS-DOS time.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>This helper function is used when the calling application expects a VARIANT to hold a datetime value.</para>
+		/// <para>If the source VARIANT is of type <c>VT_DATE</c>, this function extracts the datetime value.</para>
+		/// <para>
+		/// If the source VARIANT is not of type <c>VT_DATE</c>, the function attempts to convert the value in the <c>VARIANT</c> structure
+		/// into the right format. If a conversion is not possible, VariantToDosDateTime returns a failure code. See PropVariantChangeType
+		/// for a list of possible conversions.
+		/// </para>
+		/// <para>See DosDateTimeToVariantTime for more information about the formats of pwDate, pwTime, and the source datetime value.</para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use VariantToDosDateTime to access a
+		/// datetime value in a VARIANT.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttodosdatetime PSSTDAPI VariantToDosDateTime(
+		// REFVARIANT varIn, WORD *pwDate, WORD *pwTime );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "ebbba4d9-8e97-422d-b52f-67c417f295cc")]
+		public static extern HRESULT VariantToDosDateTime(in VARIANT varIn, out ushort pwDate, out ushort pwTime);
+
+		/// <summary>Extracts a <c>DOUBLE</c> value from a VARIANT structure. If no value can be extracted, then a default value is assigned.</summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source VARIANT structure.</para>
+		/// </param>
+		/// <param name="pdblRet">
+		/// <para>Type: <c>DOUBLE*</c></para>
+		/// <para>When this function returns, contains the extracted value if one exists; otherwise, 0.0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This helper function is used when the calling application expects a VARIANT to hold a <c>DOUBLE</c> value. For instance, an
+		/// application that obtains values from a Shell folder can use this function to safely extract the value from one of the folder's
+		/// properties whose value is stored as a <c>DOUBLE</c>.
+		/// </para>
+		/// <para>If the source VARIANT is of type VT_R8, this function extracts the <c>DOUBLE</c> value.</para>
+		/// <para>
+		/// If the source VARIANT is not of type VT_R8, the function attempts to convert the value stored in the <c>VARIANT</c> structure
+		/// into a <c>DOUBLE</c>. If a conversion is not possible, VariantToDouble returns a failure code and sets pdblRet to . See
+		/// PropVariantChangeType for a list of possible conversions. Of note, VT_EMPTY is successfully converted to 0.0.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use VariantToDouble to access a
+		/// <c>DOUBLE</c> value stored in a VARIANT structure.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttodouble PSSTDAPI VariantToDouble( REFVARIANT
+		// varIn, DOUBLE *pdblRet );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "7bd756c6-f02a-4cf4-9458-b3304e2da2db")]
+		public static extern HRESULT VariantToDouble(in VARIANT varIn, out double pdblRet);
+
+		/// <summary>Extracts an array of <c>DOUBLE</c> values from a VARIANT structure.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source VARIANT structure.</para>
+		/// </param>
+		/// <param name="prgn">
+		/// <para>Type: <c>DOUBLE*</c></para>
+		/// <para>
+		/// Pointer to a buffer that contains crgn <c>DOUBLE</c> values. When this function returns, the buffer has been initialized with
+		/// *pcElem <c>DOUBLE</c> elements extracted from the source VARIANT structure.
+		/// </para>
+		/// </param>
+		/// <param name="crgn">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the buffer pointed to by prgn.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>When this function returns, contains the count of <c>DOUBLE</c> elements extracted from the source VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>Returns <c>S_OK</c> if successful, or an error value otherwise, including the following:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TYPE_E_BUFFERTOOSMALL</term>
+		/// <term>The source VARIANT contained more than crgn values.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>The VARIANT was not of the appropriate type.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This helper function is used when the calling application expects a VARIANT to hold an array that consists of a fixed number of
+		/// <c>DOUBLE</c> values.
+		/// </para>
+		/// <para>
+		/// If the source VARIANT has type VT_ARRAY | VT_DOUBLE, this function extracts up to crgn <c>DOUBLE</c> values and places them into
+		/// the buffer pointed to by prgn.
+		/// </para>
+		/// <para>
+		/// If the VARIANT contains more elements than will fit into the prgn buffer, this function returns an error and sets *pcElem to 0.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use VariantToDoubleArray to access a
+		/// <c>DOUBLE</c> array stored in a VARIANT.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttodoublearray PSSTDAPI VariantToDoubleArray(
+		// REFVARIANT var, DOUBLE *prgn, ULONG crgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "6830c2e2-d19a-45d5-af15-debfb08548bc")]
+		public static extern HRESULT VariantToDoubleArray(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] prgn, uint crgn, out uint pcElem);
+
+		/// <summary>Allocates an array of <c>DOUBLE</c> values then extracts data from a VARIANT structure into that array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source VARIANT structure.</para>
+		/// </param>
+		/// <param name="pprgn">
+		/// <para>Type: <c>DOUBLE**</c></para>
+		/// <para>When this function returns, contains a pointer to an array of <c>DOUBLE</c> values extracted from the source VARIANT structure.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>When this function returns, contains a pointer to the count of elements extracted from the source VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>This helper function is used when the calling application expects a VARIANT to hold an array of <c>DOUBLE</c> values.</para>
+		/// <para>
+		/// If the source VARIANT is of type VT_ARRAY | VT_R8, this function extracts an array of <c>DOUBLE</c> values into a newly allocated
+		/// array. The calling application is responsible for using CoTaskMemFree to release the array pointed to by pprgn when it is no
+		/// longer needed.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use VariantToDoubleArrayAlloc to access a
+		/// <c>DOUBLE</c> array value in a VARIANT.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttodoublearrayalloc PSSTDAPI
+		// VariantToDoubleArrayAlloc( REFVARIANT var, DOUBLE **pprgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "334d192e-7f63-47b4-88d4-9361e679cb15")]
+		public static extern HRESULT VariantToDoubleArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+
+		/// <summary>
+		/// Extracts a <c>DOUBLE</c> value from a VARIANT structure. If no value exists, then the specified default value is returned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source VARIANT structure.</para>
+		/// </param>
+		/// <param name="dblDefault">
+		/// <para>Type: <c>DOUBLE</c></para>
+		/// <para>The default value for use where no extractable value exists.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>DOUBLE</c></para>
+		/// <para>Returns the extracted <c>double</c> value; otherwise, the default value specified in dblDefault.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This helper function is used when the calling application expects a VARIANT to hold a <c>DOUBLE</c> value and wants to use a
+		/// default value if it does not.
+		/// </para>
+		/// <para>If the source VARIANT is of type VT_R8, this helper extracts the <c>DOUBLE</c> value.</para>
+		/// <para>If the source VARIANT is not of type VT_R8, the function attempts to convert the value in the <c>VARIANT</c> into a <c>DOUBLE</c>.</para>
+		/// <para>
+		/// If the source VARIANT is of type VT_EMPTY or a conversion is not possible, then VariantToDoubleWithDefault returns the default
+		/// value provided by dblDefault. See PropVariantChangeType for a list of possible conversions.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use VariantToDoubleWithDefault to access a
+		/// <c>DOUBLE</c> value stored in a VARIANT structure.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttodoublewithdefault PSSTDAPI_(DOUBLE)
+		// VariantToDoubleWithDefault( REFVARIANT varIn, DOUBLE dblDefault );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "a3e32a30-363d-487e-bdd5-ac2616d6de14")]
+		public static extern double VariantToDoubleWithDefault(in VARIANT varIn, double dblDefault);
+
+		/// <summary>Extracts a FILETIME structure from a variant structure.</summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="stfOut">
+		/// <para>Type: <c>PSTIME_FLAGS</c></para>
+		/// <para>Specifies one of the following time flags:</para>
+		/// <para>PSTF_UTC (0)</para>
+		/// <para>Indicates coordinated universal time.</para>
+		/// <para>PSTF_LOCAL (1)</para>
+		/// <para>Indicates local time.</para>
+		/// </param>
+		/// <param name="pftOut">
+		/// <para>Type: <c>FILETIME*</c></para>
+		/// <para>Pointer to the extracted FILETIME structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>stfOut flags override any property description flags.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttofiletime PSSTDAPI VariantToFileTime(
+		// REFVARIANT varIn, PSTIME_FLAGS stfOut, FILETIME *pftOut );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "e3094bd1-e641-43d8-8bc5-926c8d5a6ebe")]
+		public static extern HRESULT VariantToFileTime(in VARIANT varIn, PSTIME_FLAGS stfOut, out FILETIME pftOut);
+
+		/// <summary>Extracts a <c>GUID</c> property value of a variant structure.</summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pguid">
+		/// <para>Type: <c>GUID*</c></para>
+		/// <para>Pointer to the extracted property value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoguid PSSTDAPI VariantToGUID( REFVARIANT
+		// varIn, GUID *pguid );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "1af84b55-da7e-430c-97fe-1c544a40c039")]
+		public static extern HRESULT VariantToGUID(in VARIANT varIn, out Guid pguid);
+
+		/// <summary>
+		/// Extracts the <c>Int16</c> property value of a variant structure. If no value can be extracted, then a default value is assigned
+		/// by this function.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="piRet">
+		/// <para>Type: <c>SHORT*</c></para>
+		/// <para>Pointer to the extracted property value if one exists; otherwise, 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoint16 PSSTDAPI VariantToInt16( REFVARIANT
+		// varIn, SHORT *piRet );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "5a0d22c1-4295-405d-a503-2b9fdd6eaa81")]
+		public static extern HRESULT VariantToInt16(in VARIANT varIn, out short piRet);
+
+		/// <summary>Extracts data from a vector structure into an <c>Int16</c> array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="prgn">
+		/// <para>Type: <c>SHORT*</c></para>
+		/// <para>Pointer to the <c>Int16</c> data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="crgn">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies <c>Int16</c> array size.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of <c>Int16</c> elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoint16array PSSTDAPI VariantToInt16Array(
+		// REFVARIANT var, SHORT *prgn, ULONG crgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "dd00d986-acfa-445e-a0f6-0f52860b762b")]
+		public static extern HRESULT VariantToInt16Array(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] short[] prgn, uint crgn, out uint pcElem);
+
+		/// <summary>Extracts data from a vector structure into a newly-allocated <c>Int16</c> array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pprgn">
+		/// <para>Type: <c>SHORT**</c></para>
+		/// <para>Pointer to the address of the <c>Int16</c> data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of <c>Int16</c> elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoint16arrayalloc PSSTDAPI
+		// VariantToInt16ArrayAlloc( REFVARIANT var, SHORT **pprgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "616c9d03-f641-49e3-af95-80ebaea3e8aa")]
+		public static extern HRESULT VariantToInt16ArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+
+		/// <summary>
+		/// Extracts an <c>Int16</c> property value of a variant structure. If no value exists, then the specified default value is returned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="iDefault">
+		/// <para>Type: <c>SHORT</c></para>
+		/// <para>Specifies default property value, for use where no value currently exists.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>SHORT</c></para>
+		/// <para>Returns the extracted <c>Int16</c> value, or default.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoint16withdefault PSSTDAPI_(SHORT)
+		// VariantToInt16WithDefault( REFVARIANT varIn, SHORT iDefault );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "4d6d0b7d-ae20-456c-9ef4-97fa682ece8b")]
+		public static extern short VariantToInt16WithDefault(in VARIANT varIn, short iDefault);
+
+		/// <summary>
+		/// Extracts an <c>Int32</c> property value of a variant structure. If no value can be extracted, then a default value is assigned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="plRet">
+		/// <para>Type: <c>LONG*</c></para>
+		/// <para>Pointer to the extracted property value if one exists; otherwise, 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoint32 PSSTDAPI VariantToInt32( REFVARIANT
+		// varIn, LONG *plRet );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "6d2a4b8f-2ec5-4ffd-80b0-6615fdfb2379")]
+		public static extern HRESULT VariantToInt32(in VARIANT varIn, out int plRet);
+
+		/// <summary>Extracts data from a vector structure into an <c>Int32</c> array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="prgn">
+		/// <para>Type: <c>LONG*</c></para>
+		/// <para>Pointer to the <c>Int32</c> data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="crgn">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies <c>Int32</c> array size.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of <c>Int32</c> elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoint32array PSSTDAPI VariantToInt32Array(
+		// REFVARIANT var, LONG *prgn, ULONG crgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "9407e400-1621-4d96-b541-579aa3ac7a67")]
+		public static extern HRESULT VariantToInt32Array(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[] prgn, uint crgn, out uint pcElem);
+
+		/// <summary>Extracts data from a vector structure into a newly-allocated <c>Int32</c> array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pprgn">
+		/// <para>Type: <c>LONG**</c></para>
+		/// <para>Pointer to the address of the <c>Int32</c> data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of <c>Int32</c> elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoint32arrayalloc PSSTDAPI
+		// VariantToInt32ArrayAlloc( REFVARIANT var, LONG **pprgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "6010ee34-d7d2-4b8b-a49b-0f2aa88a3b54")]
+		public static extern HRESULT VariantToInt32ArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+
+		/// <summary>
+		/// Extracts an <c>Int32</c> property value of a variant structure. If no value exists, then the specified default value is returned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="lDefault">
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>Specifies default property value, for use where no value currently exists.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>Returns the extracted Int32 value, or default.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoint32withdefault PSSTDAPI_(LONG)
+		// VariantToInt32WithDefault( REFVARIANT varIn, LONG lDefault );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "fd2d5330-2b31-4dbb-b57b-4ca5579fa03f")]
+		public static extern int VariantToInt32WithDefault(in VARIANT varIn, int lDefault);
+
+		/// <summary>
+		/// Extracts an <c>Int64</c> property value of a variant structure. If no value can be extracted, then a default value is assigned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pllRet">
+		/// <para>Type: <c>LONGLONG*</c></para>
+		/// <para>Pointer to the extracted property value if one exists; otherwise, 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoint64 PSSTDAPI VariantToInt64( REFVARIANT
+		// varIn, LONGLONG *pllRet );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "5b8b4f93-dff1-40ef-9f99-c108a0b1bf70")]
+		public static extern HRESULT VariantToInt64(in VARIANT varIn, out long pllRet);
+
+		/// <summary>Extracts data from a vector structure into an <c>Int64</c> array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="prgn">
+		/// <para>Type: <c>LONGLONG*</c></para>
+		/// <para>Pointer to the Int64 data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="crgn">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies Int64 array size.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of Int64 elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoint64array PSSTDAPI VariantToInt64Array(
+		// REFVARIANT var, LONGLONG *prgn, ULONG crgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "936e87e8-8102-4da2-b388-147fab6ec16f")]
+		public static extern HRESULT VariantToInt64Array(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] long[] prgn, uint crgn, out uint pcElem);
+
+		/// <summary>Extracts data from a vector structure into a newly-allocated <c>Int64</c> array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pprgn">
+		/// <para>Type: <c>LONGLONG**</c></para>
+		/// <para>Pointer to the address of the <c>Int64</c> data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of <c>Int64</c> elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoint64arrayalloc PSSTDAPI
+		// VariantToInt64ArrayAlloc( REFVARIANT var, LONGLONG **pprgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "15a583bd-fdef-4802-a18b-0a21b9be5448")]
+		public static extern HRESULT VariantToInt64ArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+
+		/// <summary>
+		/// Extracts an <c>Int64</c> property value of a variant structure. If no value exists, then the specified default value is returned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="llDefault">
+		/// <para>Type: <c>LONGLONG</c></para>
+		/// <para>Specifies default property value, for use where no value currently exists.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LONGLONG</c></para>
+		/// <para>Returns extracted <c>Int64</c> value, or default.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttoint64withdefault PSSTDAPI_(LONGLONG)
+		// VariantToInt64WithDefault( REFVARIANT varIn, LONGLONG llDefault );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "c4a5fc5c-19f9-4313-9d98-a486bfdfb359")]
+		public static extern int VariantToInt64WithDefault(in VARIANT varIn, int llDefault);
+
 		/// <summary>Copies the contents of a VARIANT structure to a <see cref="PROPVARIANT"/> structure.</summary>
 		/// <param name="pVar">Pointer to a source VARIANT structure.</param>
 		/// <param name="pPropVar">
@@ -2503,5 +4017,417 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propvarutil.h", MSDNShortId = "bb776616")]
 		public static extern HRESULT VariantToPropVariant([In] IntPtr pVar, [In, Out] PROPVARIANT pPropVar);
+
+		/// <summary>
+		/// Extracts the variant value of a variant structure to a string. If no value can be extracted, then a default value is assigned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pszBuf">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Pointer to the extracted property value if one exists; otherwise, empty.</para>
+		/// </param>
+		/// <param name="cchBuf">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>Specifies string length, in characters.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttostring PSSTDAPI VariantToString( REFVARIANT
+		// varIn, PWSTR pszBuf, UINT cchBuf );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "4850f9b8-8f86-4428-bf3b-f3abdc6047c1")]
+		public static extern HRESULT VariantToString(in VARIANT varIn, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszBuf, uint cchBuf);
+
+		/// <summary>
+		/// Extracts the variant value of a variant structure to a newly-allocated string. If no value can be extracted, then a default value
+		/// is assigned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="ppszBuf">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Pointer to the extracted property value if one exists; otherwise, empty.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttostringalloc PSSTDAPI VariantToStringAlloc(
+		// REFVARIANT varIn, PWSTR *ppszBuf );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "9cd4433c-d8ad-43ef-bdb9-9c1b8d8bea01")]
+		public static extern HRESULT VariantToStringAlloc(in VARIANT varIn, out SafeCoTaskMemString ppszBuf);
+
+		/// <summary>Extracts data from a vector structure into a String array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="prgsz">
+		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Pointer to the string data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="crgsz">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies string array size.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of string elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttostringarray PSSTDAPI VariantToStringArray(
+		// REFVARIANT var, PWSTR *prgsz, ULONG crgsz, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "d19b12ad-408c-4502-ad59-49386784bd69")]
+		public static extern HRESULT VariantToStringArray(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.LPWStr)] string[] prgsz, uint crgsz, out uint pcElem);
+
+		/// <summary>Extracts data from a vector structure into a newly-allocated String array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pprgsz">
+		/// <para>Type: <c>PWSTR**</c></para>
+		/// <para>The address of a pointer to the string data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of string elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttostringarrayalloc PSSTDAPI
+		// VariantToStringArrayAlloc( REFVARIANT var, PWSTR **pprgsz, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "2725b824-b26c-4b33-bc18-a6f4c0ef74e6")]
+		public static extern HRESULT VariantToStringArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgsz, out uint pcElem);
+
+		/// <summary>
+		/// Extracts the string property value of a variant structure. If no value exists, then the specified default value is returned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pszDefault">
+		/// <para>Type: <c>LPCWSTR</c></para>
+		/// <para>Pointer to the default Unicode string property value, for use where no value currently exists.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>Returns the extracted string value, or default.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttostringwithdefault PSSTDAPI_(PCWSTR)
+		// VariantToStringWithDefault( REFVARIANT varIn, LPCWSTR pszDefault );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "f8ca7844-057f-4e95-a4a9-f03f1d2ad492")]
+		public static extern string VariantToStringWithDefault(in VARIANT varIn, string pszDefault);
+
+		/// <summary>
+		/// Extracts an unsigned <c>Int16</c> property value of a variant structure. If no value can be extracted, then a default value is
+		/// assigned by this function.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="puiRet">
+		/// <para>Type: <c>USHORT*</c></para>
+		/// <para>Pointer to the extracted property value if one exists; otherwise, 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttouint16 PSSTDAPI VariantToUInt16( REFVARIANT
+		// varIn, USHORT *puiRet );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "aa88be72-9ea5-4668-a0c5-1ca5320bda00")]
+		public static extern HRESULT VariantToUInt16(in VARIANT varIn, out ushort puiRet);
+
+		/// <summary>Extracts data from a vector structure into an unsigned <c>Int16</c> array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="prgn">
+		/// <para>Type: <c>USHORT*</c></para>
+		/// <para>Pointer to the unsigned <c>Int16</c> data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="crgn">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies unsigned <c>Int16</c> array size.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of unsigned <c>Int16</c> elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttouint16array PSSTDAPI VariantToUInt16Array(
+		// REFVARIANT var, USHORT *prgn, ULONG crgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "8da12aa7-f54e-4a38-b9bb-0dd019f8823b")]
+		public static extern HRESULT VariantToUInt16Array(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ushort[] prgn, uint crgn, out uint pcElem);
+
+		/// <summary>Extracts data from a vector structure into a newly-allocated unsigned <c>Int16</c> array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pprgn">
+		/// <para>Type: <c>USHORT**</c></para>
+		/// <para>Pointer to the address of the unsigned <c>Int16</c> data extracted from the source variant structure.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of unsigned <c>Int16</c> elements extracted from the source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttouint16arrayalloc PSSTDAPI
+		// VariantToUInt16ArrayAlloc( REFVARIANT var, USHORT **pprgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "59e8d295-3be4-4e9a-a096-ead777d3aa8a")]
+		public static extern HRESULT VariantToUInt16ArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+
+		/// <summary>
+		/// Extracts an unsigned <c>Int16</c> property value of a variant structure. If no value exists, then the specified default value is returned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="uiDefault">
+		/// <para>Type: <c>USHORT</c></para>
+		/// <para>Specifies default property value, for use where no value currently exists.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>USHORT</c></para>
+		/// <para>Returns extracted unsigned <c>Int16</c> value, or default.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttouint16withdefault PSSTDAPI_(USHORT)
+		// VariantToUInt16WithDefault( REFVARIANT varIn, USHORT uiDefault );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "937d64c3-f5af-4230-b811-6d5883ecaf86")]
+		public static extern ushort VariantToUInt16WithDefault(in VARIANT varIn, ushort uiDefault);
+
+		/// <summary>
+		/// Extracts unsigned <c>Int32</c> property value of a variant structure. If no value can be extracted, then a default value is assigned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pulRet">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the extracted property value if one exists; otherwise, 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttouint32 PSSTDAPI VariantToUInt32( REFVARIANT
+		// varIn, ULONG *pulRet );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "24421477-8930-4c8f-8fee-5d8367123c7e")]
+		public static extern HRESULT VariantToUInt32(in VARIANT varIn, out uint pulRet);
+
+		/// <summary>Extracts data from a vector structure into an unsigned <c>Int32</c> array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="prgn">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the unsigned <c>Int32</c> data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="crgn">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies unsigned <c>Int32</c> array size.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of unsigned <c>Int32</c> elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttouint32array PSSTDAPI VariantToUInt32Array(
+		// REFVARIANT var, ULONG *prgn, ULONG crgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "506a02f8-6390-44a0-9f14-bfc8fb7ad180")]
+		public static extern HRESULT VariantToUInt32Array(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] prgn, uint crgn, out uint pcElem);
+
+		/// <summary>Extracts data from a vector structure into a newly-allocated unsigned <c>Int32</c> array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pprgn">
+		/// <para>Type: <c>ULONG**</c></para>
+		/// <para>The address of a pointer to the unsigned <c>Int32</c> data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of unsigned <c>Int32</c> elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttouint32arrayalloc PSSTDAPI
+		// VariantToUInt32ArrayAlloc( REFVARIANT var, ULONG **pprgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "4d6cbfc8-fe1c-4bd0-8d29-32bce01d31f8")]
+		public static extern HRESULT VariantToUInt32ArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+
+		/// <summary>
+		/// Extracts an unsigned <c>Int32</c> property value of a variant structure. If no value currently exists, then the specified default
+		/// value is returned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="ulDefault">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies default property value, for use where no value currently exists.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Returns extracted unsigned <c>Int32</c> value, or default.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttouint32withdefault PSSTDAPI_(ULONG)
+		// VariantToUInt32WithDefault( REFVARIANT varIn, ULONG ulDefault );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "02ec869b-154e-436a-a9b7-57eff4e958aa")]
+		public static extern uint VariantToUInt32WithDefault(in VARIANT varIn, uint ulDefault);
+
+		/// <summary>
+		/// Extracts unsigned <c>Int64</c> property value of a variant structure. If no value can be extracted, then a default value is assigned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pullRet">
+		/// <para>Type: <c>ULONGLONG*</c></para>
+		/// <para>Pointer to the extracted property value if one exists; otherwise, 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttouint64 PSSTDAPI VariantToUInt64( REFVARIANT
+		// varIn, ULONGLONG *pullRet );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "1278f775-8439-4d05-acc9-b5207a3ccba7")]
+		public static extern HRESULT VariantToUInt64(in VARIANT varIn, out ulong pullRet);
+
+		/// <summary>Extracts data from a vector structure into an unsigned <c>Int64</c> array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="prgn">
+		/// <para>Type: <c>ULONGLONG*</c></para>
+		/// <para>Pointer to the unsigned <c>Int64</c> data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="crgn">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Specifies unsigned <c>Int64</c> array size.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of unsigned <c>Int64</c> elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttouint64array PSSTDAPI VariantToUInt64Array(
+		// REFVARIANT var, ULONGLONG *prgn, ULONG crgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "90b39ed2-a8a9-424c-bfd2-90517b9224fd")]
+		public static extern HRESULT VariantToUInt64Array(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] prgn, uint crgn, out uint pcElem);
+
+		/// <summary>Extracts data from a vector structure into a newly-allocated unsigned <c>Int64</c> array.</summary>
+		/// <param name="var">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pprgn">
+		/// <para>Type: <c>ULONGLONG**</c></para>
+		/// <para>The address of a pointer to the unsigned <c>Int64</c> data extracted from source variant structure.</para>
+		/// </param>
+		/// <param name="pcElem">
+		/// <para>Type: <c>ULONG*</c></para>
+		/// <para>Pointer to the count of unsigned <c>Int64</c> elements extracted from source variant structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttouint64arrayalloc PSSTDAPI
+		// VariantToUInt64ArrayAlloc( REFVARIANT var, ULONGLONG **pprgn, ULONG *pcElem );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "898edef6-a688-4a39-897c-70f29952db49")]
+		public static extern HRESULT VariantToUInt64ArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+
+		/// <summary>
+		/// Extracts an unsigned <c>Int64</c> property value of a variant structure. If no value currently exists, then the specified default
+		/// value is returned.
+		/// </summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="ullDefault">
+		/// <para>Type: <c>ULONGLONG</c></para>
+		/// <para>Specifies default property value, for use where no value currently exists.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>ULONGLONG</c></para>
+		/// <para>Returns the extracted unsigned <c>Int64</c> value, or a default.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttouint64withdefault PSSTDAPI_(ULONGLONG)
+		// VariantToUInt64WithDefault( REFVARIANT varIn, ULONGLONG ullDefault );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "6ff75c81-519b-4539-9aa5-c6b39b3e2d94")]
+		public static extern ulong VariantToUInt64WithDefault(in VARIANT varIn, ulong ullDefault);
+
+		/// <summary>Copies the content from a Windows runtime property value to a PROPVARIANT structure.</summary>
+		/// <param name="punkPropertyValue">
+		/// A pointer to the IUnknown interface from which this function can access the contents of a Windows runtime property value by
+		/// retrieving and using the Windows::Foundation::IPropertyValue interface.
+		/// </param>
+		/// <param name="ppropvar">
+		/// Pointer to a PROPVARIANT structure. When this function returns, the <c>PROPVARIANT</c> contains the converted info.
+		/// </param>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-winrtpropertyvaluetopropvariant PSSTDAPI
+		// WinRTPropertyValueToPropVariant( IUnknown *punkPropertyValue, PROPVARIANT *ppropvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "3D6853B0-0A3F-4ACF-9C93-478688DAE9CF")]
+		public static extern HRESULT WinRTPropertyValueToPropVariant([MarshalAs(UnmanagedType.IUnknown)] object punkPropertyValue, PROPVARIANT ppropvar);
 	}
 }
