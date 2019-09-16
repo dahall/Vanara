@@ -14,7 +14,7 @@ namespace Vanara.Collections
 
 		private readonly Func<TKey, bool> hasKeyFunc;
 
-		/// <summary>Initializes a new instance of the <see cref="GenericVirtualReadOnlyDictionaryy{TKey, TValue}"/> class.</summary>
+		/// <summary>Initializes a new instance of the <see cref="GenericVirtualReadOnlyDictionary{TKey, TValue}"/> class.</summary>
 		/// <param name="keys">The enumerated list of keys.</param>
 		/// <param name="getValue">The function used to get a value given a key. Called directly by <c>TryGetValue</c>.</param>
 		/// <param name="hasKey">
