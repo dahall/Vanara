@@ -177,6 +177,13 @@ namespace Vanara.InteropServices
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => ToString()?.GetHashCode() ?? 0;
 
+		/// <summary>Assigns a new string to this memory.</summary>
+		/// <param name="value">The string value. This value can be <see langword="null"/>, but its length cannot be greater than the current <see cref="Capacity"/>.</param>
+		public virtual void Set(string value)
+		{
+			StringHelper.Write(value, handle, out _, true, CharSet, Size);
+		}
+
 		/// <summary>Returns the string value held by this instance.</summary>
 		/// <returns>A <see cref="System.String"/> value held by this instance or <c>null</c> if the handle is invalid.</returns>
 		public override string ToString() => IsInvalid ? null : StringHelper.GetString(handle, CharSet, Size);
