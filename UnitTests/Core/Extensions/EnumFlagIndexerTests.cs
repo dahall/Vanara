@@ -10,7 +10,6 @@ namespace Vanara.Extensions.Tests
 		public void EnumFlagIndexerTest()
 		{
 			Assert.That(() => { EnumFlagIndexer<ConsoleColor> e = ConsoleColor.Black; }, Throws.ArgumentException);
-			Assert.That(() => { EnumFlagIndexer<int> e1 = 0; }, Throws.ArgumentException);
 			var efi = new EnumFlagIndexer<GenericUriParserOptions>();
 			Assert.That((GenericUriParserOptions)efi, Is.EqualTo(GenericUriParserOptions.Default));
 			efi = new EnumFlagIndexer<GenericUriParserOptions>(GenericUriParserOptions.Idn);
