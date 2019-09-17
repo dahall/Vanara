@@ -7,7 +7,7 @@
     <ProjectGuid>{A96CFF10-0967-429A-8700-4A86C97C5603}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CSharpRunner</RootNamespace>
+    <RootNamespace>Vanara.PInvoke.Tests</RootNamespace>
     <AssemblyName>CSharpRunner</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -47,6 +47,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SuccessfulConstraint.cs" />
     <Compile Include="TempFile.cs" />
+    <Compile Include="TestCaseSources.cs" />
     <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
