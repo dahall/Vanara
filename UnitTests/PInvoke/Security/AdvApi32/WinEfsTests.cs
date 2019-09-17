@@ -85,7 +85,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void EncryptionDisableTest()
 		{
-			var dir = System.IO.Path.Combine(@"C:\Temp\", System.IO.Path.GetRandomFileName());
+			var dir = System.IO.Path.Combine(TestCaseSources.TempDirWhack, System.IO.Path.GetRandomFileName());
 			var dirInfo = System.IO.Directory.CreateDirectory(dir);
 			try
 			{

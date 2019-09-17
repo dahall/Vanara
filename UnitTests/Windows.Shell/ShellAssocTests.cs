@@ -84,7 +84,7 @@ namespace Vanara.Windows.Shell.Tests
 				progid.CLSID = null;
 				Assert.That(progid.CLSID, Is.Null);
 
-				var i = new IconLocation(@"C:\Temp\dllexp.exe", -1);
+				var i = new IconLocation(Vanara.PInvoke.Tests.TestCaseSources.ResourceFile, -1);
 				progid.DefaultIcon = i;
 				Assert.That(progid.DefaultIcon.ToString(), Is.EqualTo(i.ToString()));
 				progid.DefaultIcon = null;
@@ -96,7 +96,7 @@ namespace Vanara.Windows.Shell.Tests
 				progid.EditFlags = 0;
 				Assert.That(progid.EditFlags, Is.EqualTo(PInvoke.ShlwApi.FILETYPEATTRIBUTEFLAGS.FTA_None));
 
-				var fn = new IndirectString(@"C:\Temp\dllexp.exe", -1);
+				var fn = new IndirectString(Vanara.PInvoke.Tests.TestCaseSources.ResourceFile, -1);
 				progid.FriendlyTypeName = fn;
 				Assert.That(progid.FriendlyTypeName.ToString(), Is.EqualTo(fn.ToString()));
 				progid.FriendlyTypeName = null;
@@ -110,7 +110,7 @@ namespace Vanara.Windows.Shell.Tests
 				var vopen = progid.Verbs.Add("Open", "&Open", "notepad.exe %1");
 				var vprint = progid.Verbs.Add("Print", "&Print", "notepad.exe %1");
 				var vend = progid.Verbs.Add("Terminate", "&End", "notepad.exe %1");
-				progid.Verbs.Order = new[] {vend, vprint};
+				progid.Verbs.Order = new[] { vend, vprint };
 			}
 		}
 	}

@@ -412,7 +412,7 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(FindFirstFreeAce(acl, out var pAce), ResultIs.Successful);
 		}
 
-		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.AuthCasesFromFile))]
+		[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
 		public void GetAceTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string username, string password, string notes)
 		{
 			var fun = $"{domain}\\{username}";

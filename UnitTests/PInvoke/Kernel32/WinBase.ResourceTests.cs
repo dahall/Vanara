@@ -6,7 +6,7 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture]
 	public partial class WinBaseTests_Resource
 	{
-		private const string ResExe = @"C:\Temp\DummyResourceExe.exe";
+		private const string ResExe = TestCaseSources.ResourceFile;
 		private const int ResId1 = 103;
 		private const int ResId2 = 129;
 		private const int ResType = (int)ResourceType.RT_DIALOG;

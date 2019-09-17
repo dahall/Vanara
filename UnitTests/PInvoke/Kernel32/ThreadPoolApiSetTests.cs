@@ -65,7 +65,7 @@ namespace Vanara.PInvoke.Tests
 					Assert.That(SetThreadpoolTimerEx(timer, FileDueTime, 0, 0), Is.False);
 					Assert.That(IsThreadpoolTimerSet(timer), Is.True);
 
-					using (var hFile = CreateFile(@"C:\Temp\help.ico", FileAccess.FILE_GENERIC_READ, System.IO.FileShare.Read, null, System.IO.FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED))
+					using (var hFile = CreateFile(TestCaseSources.SmallFile, FileAccess.FILE_GENERIC_READ, System.IO.FileShare.Read, null, System.IO.FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED))
 					using (var io = CreateThreadpoolIo(hFile, MyIoCallback, default, CallBackEnviron))
 					{
 						Assert.That(io, ResultIs.ValidHandle);

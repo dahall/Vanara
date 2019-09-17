@@ -114,7 +114,7 @@ namespace Vanara.PInvoke.Tests
 					(uint)FileAccess.FILE_GENERIC_READ, SafePSID.Everyone, "(exists Administrator)", out var ret), ResultIs.Successful);
 		}
 
-		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.GetAuthCasesFromFile), new object[] { true, true })]
+		[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.GetAuthCasesFromFile), new object[] { true, true })]
 		public void CreateProcessWithLogonWTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string username, string password, string notes)
 		{
 			var sti = new STARTUPINFO { ShowWindowCommand = ShowWindowCommand.SW_SHOWMINIMIZED };
@@ -216,7 +216,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(isUni.HasFlag(IS_TEXT_UNICODE.IS_TEXT_UNICODE_ASCII16));
 		}
 
-		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.AuthCasesFromFile))]
+		[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
 		public void LogonUserExTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 		{
 			Assert.That(LogonUserEx(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok, out var pSid,
@@ -226,7 +226,7 @@ namespace Vanara.PInvoke.Tests
 			buf.Dispose();
 		}
 
-		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.AuthCasesFromFile))]
+		[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
 		public void LogonUserExExTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 		{
 			using (new ElevPriv("SeTcbPrivilege"))
@@ -243,7 +243,7 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.AuthCasesFromFile))]
+		[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
 		public void LogonUserTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 		{
 			Assert.That(LogonUser(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok),
@@ -251,7 +251,7 @@ namespace Vanara.PInvoke.Tests
 			hTok.Dispose();
 		}
 
-		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.AuthCasesFromFile))]
+		[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
 		public void LookupAccountNameSidTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string username, string password, string notes)
 		{
 			var fun = $"{domain}\\{username}";

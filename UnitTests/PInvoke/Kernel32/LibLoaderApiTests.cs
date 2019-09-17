@@ -20,7 +20,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void AddRemoveDllDirectoryTest()
 		{
-			var ptr = AddDllDirectory(@"C:\Temp");
+			var ptr = AddDllDirectory(TestCaseSources.TempDir);
 			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
 			Assert.That(RemoveDllDirectory(ptr), Is.True);
 		}

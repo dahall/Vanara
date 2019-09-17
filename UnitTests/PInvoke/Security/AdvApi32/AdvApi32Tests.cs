@@ -19,30 +19,7 @@ namespace Vanara.PInvoke.Tests
 	public class AdvApi32Tests
 	{
 		internal const SECURITY_INFORMATION AllSI = SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION | SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.SACL_SECURITY_INFORMATION;
-		internal const string fn = @"C:\Temp\help.ico";
-
-		internal static object[] GetAuthCasesFromFile(bool validUser, bool validCred) => AuthCasesFromFile.Where(objs => ((object[])objs)[0].Equals(validUser) && ((object[])objs)[1].Equals(validCred)).ToArray();
-
-		internal static object[] AuthCasesFromFile
-		{
-			get
-			{
-				const string authfn = @"C:\Temp\AuthTestCases.txt";
-				var lines = File.ReadAllLines(authfn).Skip(1).Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
-				var ret = new object[lines.Length];
-				for (var i = 0; i < lines.Length; i++)
-				{
-					var items = lines[i].Split('\t').Select(s => s == string.Empty ? null : s).Cast<object>().ToArray();
-					if (items.Length < 9) continue;
-					bool.TryParse(items[0].ToString(), out var validUser);
-					items[0] = validUser;
-					bool.TryParse(items[1].ToString(), out var validCred);
-					items[1] = validCred;
-					ret[i] = items;
-				}
-				return ret;
-			}
-		}
+		internal const string fn = TestCaseSources.SmallFile;
 
 		[Test()]
 		public void ConvertSecurityDescriptorToStringSecurityDescriptorTest()

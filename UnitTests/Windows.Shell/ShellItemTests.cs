@@ -14,8 +14,8 @@ namespace Vanara.Windows.Shell.Tests
 	public class ShellItemTests
 	{
 		internal const string badTestDoc = @"C:\Temp\BadTest.doc";
-		internal const string testDoc = @"C:\Temp\Test.docx";
-		internal const string testLinkDoc = @"C:\Temp\Test.lnk";
+		internal const string testDoc = Vanara.PInvoke.Tests.TestCaseSources.WordDoc;
+		internal const string testLinkDoc = Vanara.PInvoke.Tests.TestCaseSources.WordDocLink;
 
 		[Test]
 		public void ShellItemTest1()
@@ -206,7 +206,7 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void GetHandlerTest2()
 		{
-			using (var shellItem = new ShellItem(@"C:\Temp\Holes.mp4"))
+			using (var shellItem = new ShellItem(Vanara.PInvoke.Tests.TestCaseSources.LargeFile))
 			{
 				if (!shellItem.IsFolder)
 					TestContext.WriteLine(shellItem.Properties[PROPERTYKEY.System.MIMEType]);
@@ -226,7 +226,7 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(bmp, Is.Not.Null);
 				Assert.That(bmp.Size, Is.EqualTo(sz));
 			}
-			using (var i = new ShellItem(@"C:\Temp\IDA256.png"))
+			using (var i = new ShellItem(Vanara.PInvoke.Tests.TestCaseSources.ImageFile))
 			{
 				var sz = new System.Drawing.Size(1024, 1024);
 				var bmp = i.GetImage(sz, ShellItemGetImageOptions.ThumbnailOnly | ShellItemGetImageOptions.ScaleUp);

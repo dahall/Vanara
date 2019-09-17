@@ -105,7 +105,7 @@ namespace Vanara.PInvoke.Tests
 			using (var hRM = GetAuthzInitializeResourceManager())
 			using (var hCtx = GetCurrentUserAuthContext(hRM))
 			using (var hEvt = GetAuthzInitializeObjectAccessAuditEvent())
-			using (var psd = AdvApi32Tests.GetSD(@"C:\Temp\help.ico"))
+			using (var psd = AdvApi32Tests.GetSD(TestCaseSources.SmallFile))
 			using (var reply = new AUTHZ_ACCESS_REPLY(1))
 			{
 				var req = new AUTHZ_ACCESS_REQUEST((uint)ACCESS_MASK.MAXIMUM_ALLOWED);
@@ -286,7 +286,7 @@ namespace Vanara.PInvoke.Tests
 			using (var hRM = GetAuthzInitializeResourceManager())
 			using (var hCtx = GetCurrentUserAuthContext(hRM))
 			using (var hEvt = GetAuthzInitializeObjectAccessAuditEvent())
-			using (var psd = AdvApi32Tests.GetSD(@"C:\Temp\help.ico"))
+			using (var psd = AdvApi32Tests.GetSD(TestCaseSources.SmallFile))
 			using (var reply = new AUTHZ_ACCESS_REPLY(1))
 			{
 				var req = new AUTHZ_ACCESS_REQUEST((uint)ACCESS_MASK.MAXIMUM_ALLOWED);

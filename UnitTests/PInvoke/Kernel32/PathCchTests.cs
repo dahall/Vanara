@@ -45,41 +45,41 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void PathCchAddBackslashTest()
 		{
-			var sb = new StringBuilder(@"C:\Temp\", 100);
+			var sb = new StringBuilder(TestCaseSources.TempDirWhack, 100);
 			Assert.That(PathCchAddBackslash(sb, sb.Capacity), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
-			Assert.That(sb.ToString(), Is.EqualTo(@"C:\Temp\"));
+			Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 
-			sb = new StringBuilder(@"C:\Temp", 100);
+			sb = new StringBuilder(TestCaseSources.TempDir, 100);
 			Assert.That(PathCchAddBackslash(sb, sb.Capacity), Is.EqualTo((HRESULT)0));
-			Assert.That(sb.ToString(), Is.EqualTo(@"C:\Temp\"));
+			Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 		}
 
 		[Test]
 		public void PathCchAddBackslashExTest()
 		{
-			var sb = new StringBuilder(@"C:\Temp\", 64);
+			var sb = new StringBuilder(TestCaseSources.TempDirWhack, 64);
 			Assert.That(PathCchAddBackslashEx(sb, sb.Capacity, out var end, out var rem), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
-			Assert.That(sb.ToString(), Is.EqualTo(@"C:\Temp\"));
+			Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 			Assert.That(end, Is.Not.EqualTo(IntPtr.Zero));
 			Assert.That(rem, Is.LessThan(60));
 
-			sb = new StringBuilder(@"C:\Temp", 64);
+			sb = new StringBuilder(TestCaseSources.TempDir, 64);
 			Assert.That(PathCchAddBackslashEx(sb, sb.Capacity, out end, out rem), Is.EqualTo((HRESULT)0));
-			Assert.That(sb.ToString(), Is.EqualTo(@"C:\Temp\"));
+			Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 			Assert.That(rem, Is.LessThan(60));
 		}
 
 		[Test]
 		public void PathCchAddBackslashExTest2()
 		{
-			var sb = new SafeCoTaskMemString(@"C:\Temp\", 64);
+			var sb = new SafeCoTaskMemString(TestCaseSources.TempDirWhack, 64);
 			Assert.That(PathCchAddBackslashEx((IntPtr)sb, sb.Capacity, out var end, out var rem), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
-			Assert.That(sb.ToString(), Is.EqualTo(@"C:\Temp\"));
+			Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 			Assert.That(end, Is.EqualTo(sb.DangerousGetHandle().Offset(sb.Length * 2)));
 
-			sb = new SafeCoTaskMemString(@"C:\Temp", 64);
+			sb = new SafeCoTaskMemString(TestCaseSources.TempDir, 64);
 			Assert.That(PathCchAddBackslashEx((IntPtr)sb, sb.Size, out end, out rem), Is.EqualTo((HRESULT)0));
-			Assert.That(sb.ToString(), Is.EqualTo(@"C:\Temp\"));
+			Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 			Assert.That(end, Is.EqualTo(sb.DangerousGetHandle().Offset(sb.Length * 2)));
 		}
 
@@ -156,26 +156,26 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void PathCchRemoveBackslashTest()
 		{
-			var sb = new StringBuilder(@"C:\Temp\", 64);
+			var sb = new StringBuilder(TestCaseSources.TempDirWhack, 64);
 			Assert.That(PathCchRemoveBackslash(sb, sb.Capacity), Is.EqualTo((HRESULT)0));
-			Assert.That(sb.ToString(), Is.EqualTo(@"C:\Temp"));
+			Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDir));
 
-			sb = new StringBuilder(@"C:\Temp", 64);
+			sb = new StringBuilder(TestCaseSources.TempDir, 64);
 			Assert.That(PathCchRemoveBackslash(sb, sb.Capacity), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
-			Assert.That(sb.ToString(), Is.EqualTo(@"C:\Temp"));
+			Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDir));
 		}
 
 		[Test]
 		public void PathCchRemoveBackslashExTest()
 		{
-			var sb = new SafeCoTaskMemString(@"C:\Temp\", 64);
+			var sb = new SafeCoTaskMemString(TestCaseSources.TempDirWhack, 64);
 			Assert.That(PathCchRemoveBackslashEx((IntPtr)sb, sb.Capacity, out var end, out var rem), Is.EqualTo((HRESULT)0));
-			Assert.That(sb.ToString(), Is.EqualTo(@"C:\Temp"));
+			Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDir));
 			Assert.That(end, Is.EqualTo(sb.DangerousGetHandle().Offset(14)));
 
-			sb = new SafeCoTaskMemString(@"C:\Temp", 64);
+			sb = new SafeCoTaskMemString(TestCaseSources.TempDir, 64);
 			Assert.That(PathCchRemoveBackslashEx((IntPtr)sb, sb.Capacity, out end, out rem), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
-			Assert.That(sb.ToString(), Is.EqualTo(@"C:\Temp"));
+			Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDir));
 			Assert.That(end, Is.EqualTo(sb.DangerousGetHandle().Offset(14)));
 		}
 
@@ -214,7 +214,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void PathCchSkipRootTest()
 		{
-			var sb = new SafeCoTaskMemString(@"C:\Temp\", 64);
+			var sb = new SafeCoTaskMemString(TestCaseSources.TempDirWhack, 64);
 			Assert.That(PathCchSkipRoot((IntPtr)sb, out var end), Is.EqualTo((HRESULT)0));
 			Assert.That(end, Is.EqualTo(sb.DangerousGetHandle().Offset(6)));
 		}

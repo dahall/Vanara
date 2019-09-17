@@ -15,7 +15,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void ExtractAssociatedIconTest()
 		{
-			const string icoFile = @"C:\Temp\Test.docx";
+			const string icoFile = TestCaseSources.WordDoc;
 			var sb = new StringBuilder(icoFile, MAX_PATH);
 			ushort iidx = 0;
 			using (var hIcon = ExtractAssociatedIcon(HINSTANCE.NULL, sb, ref iidx))
@@ -26,7 +26,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void ExtractAssociatedIconExTest()
 		{
-			const string icoFile = @"C:\Temp\Test.docx";
+			const string icoFile = TestCaseSources.WordDoc;
 			var sb = new StringBuilder(icoFile, MAX_PATH);
 			ushort iidx = 0, iid = 0;
 			using (var hIcon = ExtractAssociatedIconEx(HINSTANCE.NULL, sb, ref iidx, ref iid))

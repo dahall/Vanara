@@ -312,7 +312,7 @@ namespace Vanara.PInvoke.Tests
 			// Try set string value
 			var sb = new System.Text.StringBuilder(Kernel32.MAX_PATH, Kernel32.MAX_PATH);
 			Assert.That(SystemParametersInfo(SPI.SPI_GETDESKWALLPAPER, (uint)sb.Capacity, sb, 0));
-			var wp = @"C:\Temp\tsnew256.png";
+			var wp = TestCaseSources.ImageFile;
 			Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)wp.Length, wp, SPIF.SPIF_SENDCHANGE));
 			Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)sb.Length, sb.ToString(), SPIF.SPIF_SENDCHANGE));
 		}

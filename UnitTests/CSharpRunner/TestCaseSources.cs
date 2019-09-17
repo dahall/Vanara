@@ -10,6 +10,38 @@ namespace Vanara.PInvoke.Tests
 {
 	public static class TestCaseSources
 	{
+		public const string BmpFile = @"C:\Temp\Vanara.bmp";
+
+		public const string EventFile = @"C:\Temp\TestLogFile.etl";
+
+		public const string IcoFile = @"C:\Temp\Vanara.ico";
+
+		public const string ImageFile = @"C:\Temp\Vanara.png";
+
+		public const string Image2File = @"C:\Temp\X.png";
+
+		public const string LargeFile = @"C:\Temp\Holes.mp4";
+
+		public const string LogFile = @"C:\Temp\Test.log";
+
+		public const string ResourceFile = @"C:\Temp\DummyResourceExe.exe";
+
+		public const string SmallFile = IcoFile;
+
+		public const string TempChildDir = @"C:\Temp\Temp";
+
+		public const string TempChildDirWhack = TempChildDir + "\\";
+
+		public const string TempDir = @"C:\Temp";
+
+		public const string TempDirWhack = TempDir + "\\";
+
+		public const string VirtualDisk = @"D:\VirtualBox VMs\Windows Client\Windows XP Pro\Windows XP Pro.vhd";
+
+		public const string WordDoc = @"C:\Temp\Test.docx";
+
+		public const string WordDocLink = @"C:\Temp\Test.lnk";
+
 		// Header: ValidUser ValidCred URN DN DC Domain Username Password Notes
 		private const string authfn = @"C:\Temp\AuthTestCases.txt";
 
@@ -37,15 +69,6 @@ namespace Vanara.PInvoke.Tests
 				return ret;
 			}
 		}
-
-		public static string LargeFile => @"C:\Temp\Holes.mp4";
-		public static string LogFile => @"C:\Temp\TestLogFile.etl";
-		public static string ResourceFile => @"C:\Temp\DummyResourceExe.exe";
-		public static string SmallFile => @"C:\Temp\Help.ico";
-		public static string TempChildDir => @"C:\Temp\Temp";
-		public static string TempDir => @"C:\Temp";
-		public static string WordDoc => @"C:\Temp\Test.docx";
-
 		public static object[] GetAuthCasesFromFile(bool validUser, bool validCred) => AuthCasesFromFile.Where(objs => ((object[])objs)[0].Equals(validUser) && ((object[])objs)[1].Equals(validCred)).ToArray();
 
 		public static IEnumerable<TestCaseData> RemoteConnections(bool? named)

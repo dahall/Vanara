@@ -24,7 +24,7 @@ namespace Vanara.Windows.Forms.Tests
 		public void ImageListFromHandleTest()
 		{
 			var himl = ImageList_Create(32, 32, ILC.ILC_COLOR32 | ILC.ILC_MASK, 8, 8);
-			himl.Interface.Add(new Gdi32.SafeHBITMAP((Image.FromFile(@"C:\Temp\TriggerTypeLogon.png", true) as Bitmap).GetHbitmap()), HBITMAP.NULL);
+			himl.Interface.Add(new Gdi32.SafeHBITMAP((Image.FromFile(Vanara.PInvoke.Tests.TestCaseSources.ImageFile, true) as Bitmap).GetHbitmap()), HBITMAP.NULL);
 			Assert.That(himl.IsNull, Is.False);
 			var il2 = ImageListExtension.ToImageList(himl);
 			Assert.That(il2.HandleCreated, Is.True);
@@ -37,9 +37,9 @@ namespace Vanara.Windows.Forms.Tests
 		public void AddOverlayAndDrawTest()
 		{
 			var il = new ImageList() { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(32, 32) };
-			il.Images.Add(new Icon(@"C:\Temp\help.ico"));
+			il.Images.Add(new Icon(Vanara.PInvoke.Tests.TestCaseSources.SmallFile));
 			Assert.That(il.Images.Count, Is.EqualTo(1));
-			var ovIdx = il.AddOverlay(new Bitmap(@"C:\Temp\overlay32.png"), Color.Transparent);
+			var ovIdx = il.AddOverlay(new Bitmap(Vanara.PInvoke.Tests.TestCaseSources.Image2File), Color.Transparent);
 			Assert.That(il.Images.Count, Is.EqualTo(2));
 			var bmp = new Bitmap(32, 32, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 			using (var g = Graphics.FromImage(bmp))
@@ -52,12 +52,12 @@ namespace Vanara.Windows.Forms.Tests
 		{
 			var il = new ImageList() { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(32, 32) };
 			il.SetBackgroundColor(Color.Transparent);
-			var img1 = Image.FromFile(@"C:\Temp\tsnew32.png", true);
+			var img1 = Image.FromFile(Vanara.PInvoke.Tests.TestCaseSources.ImageFile, true);
 			il.Images.Add(img1, Color.Transparent);
 			ShowImage(il.Images[0]);
 			var il2 = new ImageList() { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(32, 32) };
 			il2.SetBackgroundColor(Color.Transparent);
-			var img2 = Image.FromFile(@"C:\Temp\TriggerTypeLogon.png", true);
+			var img2 = Image.FromFile(Vanara.PInvoke.Tests.TestCaseSources.Image2File, true);
 			il2.Images.Add(img2, Color.Transparent);
 			ShowImage(il2.Images[0]);
 			var ico = il.MergeImage(0, il2, 0);
@@ -73,7 +73,7 @@ namespace Vanara.Windows.Forms.Tests
 			frm.KeyDown += (s, e) => frm.BackColor = Color.Red;
 			frm.Controls.Add(pbox);
 			if (timeOut > 0)
-				frm.Shown += (s,e) => FormTimeout();
+				frm.Shown += (s, e) => FormTimeout();
 			frm.ShowDialog();
 
 			void FormTimeout()

@@ -56,7 +56,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void CreateDirectoryTest()
 		{
-			const string dir = @"C:\Temp\Temp";
+			const string dir = TestCaseSources.TempChildDir;
 			Assert.That(CreateDirectory(dir), Is.True);
 			Assert.That(System.IO.Directory.Exists(dir), Is.True);
 			Assert.That(RemoveDirectory(dir), Is.True);
@@ -113,7 +113,7 @@ namespace Vanara.PInvoke.Tests
 		public void DefineDosDeviceTest()
 		{
 			const string src = "M:";
-			const string target = @"C:\Temp";
+			const string target = TestCaseSources.TempDir;
 
 			var c = QueryDosDevice(src).ToArray().Length;
 			Assert.That(DefineDosDevice(DDD.DDD_NO_BROADCAST_SYSTEM, src, target), Is.True);
@@ -159,7 +159,7 @@ namespace Vanara.PInvoke.Tests
 			var thread = new Thread(FileMaker);
 			try
 			{
-				using (var h = FindFirstChangeNotification(@"C:\Temp", false, FILE_NOTIFY_CHANGE.FILE_NOTIFY_CHANGE_FILE_NAME))
+				using (var h = FindFirstChangeNotification(TestCaseSources.TempDir, false, FILE_NOTIFY_CHANGE.FILE_NOTIFY_CHANGE_FILE_NAME))
 				{
 					Assert.That(h.IsInvalid, Is.False);
 					thread.Start();
@@ -176,7 +176,7 @@ namespace Vanara.PInvoke.Tests
 
 			void FileMaker()
 			{
-				const string fn = @"C:\Temp\_tempFile.txt";
+				const string fn = TestCaseSources.TempDir + @"\_tempFile.txt";
 				while (keepGoing)
 				{
 					Thread.Sleep(200);

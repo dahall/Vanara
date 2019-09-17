@@ -12,9 +12,9 @@ namespace Vanara.IO.Tests
 	[TestFixture()]
 	public class VirtualDiskTests
 	{
-		const string tmpfn = @"C:\Temp\TestVHD.vhd";
-		const string tmpcfn = @"C:\Temp\TestVHD-Diff.vhd";
-		const string fn = @"D:\VirtualBox VMs\Windows Client\Windows XP Pro\Windows XP Pro.vhd";
+		const string tmpfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestVHD.vhd";
+		const string tmpcfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestVHD - Diff.vhd";
+		const string fn = Vanara.PInvoke.Tests.TestCaseSources.VirtualDisk;
 
 		[Test()]
 		public void CreateDynPropTest()
@@ -148,7 +148,7 @@ namespace Vanara.IO.Tests
 					Assert.That(vhd.ParentIdentifier, Is.Not.EqualTo(Guid.Empty)); // must be differencing
 					Assert.That(vhd.ParentPaths, Is.Null); // must be differencing
 					Assert.That(vhd.ParentTimeStamp, Is.Zero); // must be differencing
-					//TestContext.WriteLine(vhd.PhysicalPath); // must be attached
+															   //TestContext.WriteLine(vhd.PhysicalPath); // must be attached
 					Assert.That(vhd.PhysicalSectorSize, Is.EqualTo(0x200));
 					Assert.That(vhd.PhysicalSize, Is.LessThan(sz));
 					Assert.That(vhd.ProviderSubtype, Is.EqualTo(VirtualDisk.Subtype.Differencing));

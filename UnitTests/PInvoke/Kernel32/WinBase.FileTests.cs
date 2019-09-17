@@ -16,8 +16,8 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture]
 	public partial class WinBaseTests_File
 	{
-		private const string bigfn = @"C:\Temp\Holes.mp4";
-		private const string fn = @"C:\Temp\help.ico";
+		private const string bigfn = TestCaseSources.LargeFile;
+		private const string fn = TestCaseSources.SmallFile;
 		private const string newfn = @"C:\Temp\help2.ico";
 
 		[Test]
@@ -68,8 +68,8 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void CreateDirectoryExTest()
 		{
-			Assert.That(CreateDirectoryEx(@"C:\Temp", @"C:\Temp\NewDir"), ResultIs.Successful);
-			Assert.That(RemoveDirectory(@"C:\Temp\NewDir"), ResultIs.Successful);
+			Assert.That(CreateDirectoryEx(TestCaseSources.TempDir, TestCaseSources.TempChildDir), ResultIs.Successful);
+			Assert.That(RemoveDirectory(TestCaseSources.TempChildDir), ResultIs.Successful);
 		}
 
 		[Test]
@@ -105,7 +105,7 @@ namespace Vanara.PInvoke.Tests
 		public void EnumVolumeMountPointsTest()
 		{
 			// Setup a new mount on C:
-			const string mntDir = @"C:\Temp\Mounted\";
+			const string mntDir = TestCaseSources.TempDirWhack + @"Mounted\";
 			var sb = new StringBuilder(100);
 			Assert.That(GetVolumeNameForVolumeMountPoint(@"C:\", sb, (uint)sb.Capacity), ResultIs.Successful);
 			var cvol = sb.ToString();
@@ -140,7 +140,7 @@ namespace Vanara.PInvoke.Tests
 		public void GetFileInformationByHandleExTest()
 		{
 			using (var tmp = new TempFile(FileAccess.GENERIC_READ, FileShare.Read))
-			using (var hDir = CreateFile(@"C:\Temp\", FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS))
+			using (var hDir = CreateFile(TestCaseSources.TempDirWhack, FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS))
 			{
 				var exes = new List<Exception>();
 				TestHelper.RunForEach<FILE_INFO_BY_HANDLE_CLASS>(typeof(Kernel32), "GetFileInformationByHandleEx", e => new object[] { IsDir(e) ? (HFILE)hDir : (HFILE)tmp.hFile, e },
@@ -167,7 +167,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void MoveFileExTest()
 		{
-			const string newFld = @"C:\Temp\Temp\";
+			const string newFld = TestCaseSources.TempChildDir;
 			Assert.That(MoveFileEx(fn, Path.Combine(newFld, Path.GetFileName(fn)), MOVEFILE.MOVEFILE_REPLACE_EXISTING), ResultIs.Successful);
 			Assert.That(MoveFileEx(Path.Combine(newFld, Path.GetFileName(fn)), fn, MOVEFILE.MOVEFILE_REPLACE_EXISTING), ResultIs.Successful);
 		}
@@ -175,7 +175,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void MoveFileTest()
 		{
-			const string newFld = @"C:\Temp\Temp\";
+			const string newFld = TestCaseSources.TempChildDir;
 			Assert.That(MoveFile(fn, Path.Combine(newFld, Path.GetFileName(fn))), ResultIs.Successful);
 			Assert.That(MoveFile(Path.Combine(newFld, Path.GetFileName(fn)), fn), ResultIs.Successful);
 		}
@@ -183,7 +183,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void MoveFileWithProgressTest()
 		{
-			const string newFld = @"C:\Temp\Temp\";
+			const string newFld = TestCaseSources.TempChildDir;
 			var qtr = 0;
 			Assert.That(MoveFileWithProgress(bigfn, Path.Combine(newFld, Path.GetFileName(bigfn)), fProgress, default, MOVEFILE.MOVEFILE_REPLACE_EXISTING), ResultIs.Successful);
 			Assert.That(MoveFileWithProgress(Path.Combine(newFld, Path.GetFileName(bigfn)), bigfn, fProgress, default, MOVEFILE.MOVEFILE_REPLACE_EXISTING), ResultIs.Successful);
@@ -209,7 +209,7 @@ namespace Vanara.PInvoke.Tests
 		public unsafe void ReadDirectoryChangesExWTest()
 		{
 			var newFile = Path.Combine(Path.GetDirectoryName(fn), "X.ico");
-			using (var hDir = CreateFile(@"C:\Temp\", FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS))
+			using (var hDir = CreateFile(TestCaseSources.TempDirWhack, FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS))
 			using (var mem = new SafeHGlobalHandle(4096))
 			{
 				new Thread(() => { Sleep(100); DeleteFile(newFile); CopyFile(fn, newFile, false); DeleteFile(newFile); }).Start();
@@ -237,7 +237,7 @@ namespace Vanara.PInvoke.Tests
 		public void ReadDirectoryChangesTest()
 		{
 			var newFile = Path.Combine(Path.GetDirectoryName(fn), "X.ico");
-			using (var hDir = CreateFile(@"C:\Temp\", FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS))
+			using (var hDir = CreateFile(TestCaseSources.TempDirWhack, FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS))
 			using (var mem = new SafeHGlobalHandle(4096))
 			{
 				new Thread(() => { Sleep(100); DeleteFile(newFile); CopyFile(fn, newFile, false); DeleteFile(newFile); }).Start();
@@ -276,7 +276,7 @@ namespace Vanara.PInvoke.Tests
 		public void ReplaceFileTest()
 		{
 			Assert.That(CopyFile(fn, newfn, false), ResultIs.Successful);
-			Assert.That(ReplaceFile(newfn, @"C:\Temp\tsnew.ico"), ResultIs.Successful);
+			Assert.That(ReplaceFile(newfn, TestCaseSources.BmpFile), ResultIs.Successful);
 			Assert.That(DeleteFile(newfn), ResultIs.Successful);
 		}
 

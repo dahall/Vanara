@@ -14,27 +14,6 @@ namespace Vanara.PInvoke.Tests
 		public SafeDsHandle hDs;
 		public string dn;
 
-		internal static object[] AuthCasesFromFile
-		{
-			get
-			{
-				const string authfn = @"C:\Temp\AuthTestCases.txt";
-				var lines = File.ReadAllLines(authfn).Skip(1).Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
-				var ret = new object[lines.Length];
-				for (var i = 0; i < lines.Length; i++)
-				{
-					var items = lines[i].Split('\t').Select(s => s == string.Empty ? null : s).Cast<object>().ToArray();
-					if (items.Length < 9) continue;
-					bool.TryParse(items[0].ToString(), out var validUser);
-					items[0] = validUser;
-					bool.TryParse(items[1].ToString(), out var validCred);
-					items[1] = validCred;
-					ret[i] = items;
-				}
-				return ret;
-			}
-		}
-
 		[OneTimeSetUp]
 		public void Setup()
 		{
@@ -42,7 +21,7 @@ namespace Vanara.PInvoke.Tests
 			DsBind(null, dn, out hDs).ThrowIfFailed();
 		}
 
-		[Test, TestCaseSource(typeof(NTDSApiTests), nameof(NTDSApiTests.AuthCasesFromFile))]
+		[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
 		public void DsBindTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 		{
 			Assert.That(DsBind(dcn, dn, out var dsb).Succeeded && !dsb.IsInvalid, Is.EqualTo(validUser));
@@ -50,7 +29,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(DsBind(null, dn, out var dsb2).Succeeded && !dsb2.IsInvalid, Is.EqualTo(validUser));
 		}
 
-		[Test, TestCaseSource(typeof(NTDSApiTests), nameof(NTDSApiTests.AuthCasesFromFile))]
+		[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
 		public void DsBindByInstanceTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 		{
 			Assert.That(DsBindByInstance(DnsDomainName: dn, AuthIdentity: SafeAuthIdentityHandle.LocalThreadIdentity, phDS: out var dsb).Succeeded && !dsb.IsInvalid, Is.EqualTo(validUser));
@@ -62,7 +41,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(DsBindToISTG(null, out var dsb).Succeeded && !dsb.IsInvalid, Is.True);
 		}
 
-		[Test, TestCaseSource(typeof(NTDSApiTests), nameof(NTDSApiTests.AuthCasesFromFile))]
+		[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
 		public void DsBindWithCredTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 		{
 			void Meth()
@@ -76,7 +55,7 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(Meth, Throws.Nothing);
 		}
 
-		[Test, TestCaseSource(typeof(NTDSApiTests), nameof(NTDSApiTests.AuthCasesFromFile))]
+		[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
 		public void DsCrackNamesTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string un, string pwd, string notes)
 		{
 			var res = DsCrackNames(hDs, new[] {un}, DS_NAME_FORMAT.DS_NT4_ACCOUNT_NAME);

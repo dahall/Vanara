@@ -44,7 +44,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(blob.Length, Is.EqualTo(blobSize));
 		}
 
-		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.GetAuthCasesFromFile), new object[] { true, true })]
+		[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.GetAuthCasesFromFile), new object[] { true, true })]
 		public void SspiTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string username, string password, string notes)
 		{
 			var save = false;

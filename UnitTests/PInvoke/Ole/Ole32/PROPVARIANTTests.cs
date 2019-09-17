@@ -213,7 +213,7 @@ namespace Vanara.PInvoke.Tests
 
 		/*public void GetCF()
 		{
-			foreach (var f in Directory.EnumerateFiles(@"C:\Temp", "*.*", SearchOption.AllDirectories))
+			foreach (var f in Directory.EnumerateFiles(TestCaseSources.TempDir, "*.*", SearchOption.AllDirectories))
 			{
 				try
 				{
@@ -273,7 +273,7 @@ namespace Vanara.PInvoke.Tests
 					StgCreateStorageEx(Path.GetTempFileName(), STGM.STGM_DELETEONRELEASE | STGM.STGM_CREATE | STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, STGFMT.STGFMT_DOCFILE, 0, IntPtr.Zero, IntPtr.Zero, typeof(IStorage).GUID, out var iptr);
 					return (IStorage)iptr;
 				case VARTYPE.VT_STREAM:
-					SHCreateStreamOnFileEx(@"C:\Temp\Help.ico", STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, 0, false, null, out var stm);
+					SHCreateStreamOnFileEx(TestCaseSources.SmallFile, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, 0, false, null, out var stm);
 					return stm;
 				case VARTYPE.VT_UNKNOWN:
 					return Activator.CreateInstance(Type.GetTypeFromProgID("ADODB.Error"));

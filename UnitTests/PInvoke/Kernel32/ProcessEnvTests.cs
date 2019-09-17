@@ -40,11 +40,11 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(sb.ToString().StartsWith("C:"));
 			TestContext.WriteLine(sb);
 
-			Assert.That(SetCurrentDirectory(@"C:\Temp"), Is.True);
+			Assert.That(SetCurrentDirectory(TestCaseSources.TempDir), Is.True);
 
 			var sb2 = new StringBuilder(MAX_PATH);
 			Assert.That(GetCurrentDirectory((uint)sb2.Capacity, sb2), Is.GreaterThan(0));
-			Assert.That(sb2.ToString(), Is.EqualTo(@"C:\Temp"));
+			Assert.That(sb2.ToString(), Is.EqualTo(TestCaseSources.TempDir));
 
 			Assert.That(SetCurrentDirectory(sb.ToString()));
 		}

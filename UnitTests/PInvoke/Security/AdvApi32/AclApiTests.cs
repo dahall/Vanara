@@ -137,7 +137,7 @@ namespace Vanara.PInvoke.Tests
 			using (new ElevPriv("SeSecurityPrivilege"))
 			{
 				Assert.That(GetNamedSecurityInfo(AdvApi32Tests.fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, out var pOwnSid, out var pGrpSid, out var dacl, out var sacl, out var plsd), ResultIs.Successful);
-				Assert.That(TreeResetNamedSecurityInfo(@"C:\Temp\Temp\", SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, pOwnSid, pGrpSid, dacl, sacl, false, OnProgress, PROG_INVOKE_SETTING.ProgressInvokeEveryObject), ResultIs.Successful);
+				Assert.That(TreeResetNamedSecurityInfo(TestCaseSources.TempChildDirWhack, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, pOwnSid, pGrpSid, dacl, sacl, false, OnProgress, PROG_INVOKE_SETTING.ProgressInvokeEveryObject), ResultIs.Successful);
 			}
 			Assert.That(counter, Is.GreaterThan(0));
 
@@ -151,7 +151,7 @@ namespace Vanara.PInvoke.Tests
 			using (new ElevPriv("SeSecurityPrivilege"))
 			{
 				Assert.That(GetNamedSecurityInfo(AdvApi32Tests.fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, out var pOwnSid, out var pGrpSid, out var dacl, out var sacl, out var plsd), ResultIs.Successful);
-				Assert.That(TreeSetNamedSecurityInfo(@"C:\Temp\Temp\", SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, pOwnSid, pGrpSid, dacl, sacl, TREE_SEC_INFO.TREE_SEC_INFO_SET, OnProgress, PROG_INVOKE_SETTING.ProgressInvokeEveryObject), ResultIs.Successful);
+				Assert.That(TreeSetNamedSecurityInfo(TestCaseSources.TempChildDirWhack, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, pOwnSid, pGrpSid, dacl, sacl, TREE_SEC_INFO.TREE_SEC_INFO_SET, OnProgress, PROG_INVOKE_SETTING.ProgressInvokeEveryObject), ResultIs.Successful);
 			}
 			Assert.That(counter, Is.GreaterThan(0));
 
