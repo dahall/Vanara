@@ -772,7 +772,7 @@ namespace Vanara.Windows.Shell
 		{
 			var dibsection = GetObject<DIBSECTION>(hbitmap);
 			var bitmap = new Bitmap(dibsection.dsBm.bmWidth, dibsection.dsBm.bmHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			using (var mstr = new MarshalingStream(dibsection.dsBm.bmBits, (long)dibsection.dsBm.bmBits))
+			using (var mstr = new NativeMemoryStream(dibsection.dsBm.bmBits, (long)dibsection.dsBmih.biSizeImage))
 			{
 				for (var x = 0; x < dibsection.dsBmih.biWidth; x++)
 					for (var y = 0; y < dibsection.dsBmih.biHeight; y++)
