@@ -26,7 +26,7 @@ namespace Vanara.PInvoke.Tests
 
 		public const string ResourceFile = @"C:\Temp\DummyResourceExe.exe";
 
-		public const string SmallFile = IcoFile;
+		public const string SmallFile = Image2File;
 
 		public const string TempChildDir = @"C:\Temp\Temp";
 
