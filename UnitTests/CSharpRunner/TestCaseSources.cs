@@ -71,14 +71,16 @@ namespace Vanara.PInvoke.Tests
 		}
 		public static object[] GetAuthCasesFromFile(bool validUser, bool validCred) => AuthCasesFromFile.Where(objs => ((object[])objs)[0].Equals(validUser) && ((object[])objs)[1].Equals(validCred)).ToArray();
 
-		public static IEnumerable<TestCaseData> RemoteConnections(bool? named)
+		public static IEnumerable<TestCaseData> RemoteConnections(bool? named, int flags = 0)
 		{
 			foreach (var item in GetFileItems(svrfn, null, filter))
 			{
-				var tcd = new TestCaseData(item.Take(5).Cast<object>().ToArray()).SetName(item[10]);
+				var tcd = new TestCaseData(item.Take(5).Cast<object>().ToArray()); //.SetName(item[10]);
+				int flagVal = 0;
 				for (int i = 5; i < 10; i++)
-					if (item[i][0] == 'T') tcd.SetCategory(svrhdr[i]);
-				yield return tcd;
+					if (item[i][0] == 'T') { tcd.SetCategory(svrhdr[i]); flagVal |= (1 << (i - 5)); }
+				if (flags == 0 || flags == flagVal)
+					yield return tcd;
 			}
 
 			bool filter(IReadOnlyDictionary<string, string> d)
