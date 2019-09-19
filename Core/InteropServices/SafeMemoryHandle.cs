@@ -52,7 +52,7 @@ namespace Vanara.InteropServices
 	}
 
 	/// <summary>Interface for classes that support safe memory pointers.</summary>
-	public interface ISafeMemoryHandle
+	public interface ISafeMemoryHandle : IDisposable
 	{
 		/// <summary>Gets a value indicating whether the handle value is invalid.</summary>
 		bool IsInvalid { get; }
