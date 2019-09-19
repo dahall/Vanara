@@ -419,6 +419,17 @@ namespace Vanara.PInvoke
 			LWA_COLORKEY = 0x01,
 		}
 
+		/// <summary>Specifies whether to enable or disable calls to SetForegroundWindow.</summary>
+		[PInvokeData("winuser.h")]
+		public enum LSFW
+		{
+			/// <summary>Disables calls to SetForegroundWindow.</summary>
+			SFW_LOCK = 1,
+
+			/// <summary>Enables calls to SetForegroundWindow.</summary>
+			LSFW_UNLOCK = 2,
+		}
+
 		/// <summary>The tiling flags.</summary>
 		[PInvokeData("winuser.h")]
 		[Flags]
@@ -4810,9 +4821,7 @@ namespace Vanara.PInvoke
 		public static extern bool IsZoomed(HWND hWnd);
 
 		/// <summary>
-		/// <para>
 		/// The foreground process can call the <c>LockSetForegroundWindow</c> function to disable calls to the SetForegroundWindow function.
-		/// </para>
 		/// </summary>
 		/// <param name="uLockCode">
 		/// <para>Type: <c>UINT</c></para>
@@ -4847,12 +4856,12 @@ namespace Vanara.PInvoke
 		/// interaction with the user.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-locksetforegroundwindow BOOL LockSetForegroundWindow( UINT
-		// uLockCode );
+		// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-locksetforegroundwindow
+		// BOOL LockSetForegroundWindow( UINT uLockCode );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winuser.h", MSDNShortId = "locksetforegroundwindow")]
+		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool LockSetForegroundWindow([MarshalAs(UnmanagedType.Bool)] bool uLockCode);
+		public static extern bool LockSetForegroundWindow(LSFW uLockCode);
 
 		/// <summary>
 		/// <para>Converts the logical coordinates of a point in a window to physical coordinates.</para>
