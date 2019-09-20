@@ -8979,5 +8979,153 @@ namespace Vanara.PInvoke
 		/// <summary>An error occurred while accessing the WBEM data store.</summary>
 		public const int PDH_WBEM_ERROR = unchecked((int)0xC0000BDA);
 
+		/// <summary>Returned by WinHttpGetProxyForUrl when a proxy for the specified URL cannot be located.</summary>
+		public const int ERROR_WINHTTP_AUTO_PROXY_SERVICE_ERROR = 12178;
+
+		/// <summary>Returned by WinHttpDetectAutoProxyConfigUrl if WinHTTP was unable to discover the URL of the Proxy Auto-Configuration (PAC) file.</summary>
+		public const int ERROR_WINHTTP_AUTODETECTION_FAILED = 12180;
+
+		/// <summary>An error occurred executing the script code in the Proxy Auto-Configuration (PAC) file.</summary>
+		public const int ERROR_WINHTTP_BAD_AUTO_PROXY_SCRIPT = 12166;
+
+		/// <summary>Returned by the HttpRequest object if a specified option cannot be requested after the Open method has been called.</summary>
+		public const int ERROR_WINHTTP_CANNOT_CALL_AFTER_OPEN = 12103;
+
+		/// <summary>Returned by the HttpRequest object if a requested operation cannot be performed after calling the Send method.</summary>
+		public const int ERROR_WINHTTP_CANNOT_CALL_AFTER_SEND = 12102;
+
+		/// <summary>Returned by the HttpRequest object if a requested operation cannot be performed before calling the Open method.</summary>
+		public const int ERROR_WINHTTP_CANNOT_CALL_BEFORE_OPEN = 12100;
+
+		/// <summary>Returned by the HttpRequest object if a requested operation cannot be performed before calling the Send method.</summary>
+		public const int ERROR_WINHTTP_CANNOT_CALL_BEFORE_SEND = 12101;
+
+		/// <summary>Returned if connection to the server failed.</summary>
+		public const int ERROR_WINHTTP_CANNOT_CONNECT = 12029;
+
+		/// <summary>The server requires SSL client Authentication. The application retrieves the list of certificate issuers by calling WinHttpQueryOption with the WINHTTP_OPTION_CLIENT_CERT_ISSUER_LIST option. For more information, see the WINHTTP_OPTION_CLIENT_CERT_ISSUER_LIST option.
+		/// <para>If the server requests the client certificate, but does not require it, the application can alternately call WinHttpSetOption with the WINHTTP_OPTION_CLIENT_CERT_CONTEXT option. In this case, the application specifies the WINHTTP_NO_CLIENT_CERT_CONTEXT macro in the lpBuffer parameter of WinHttpSetOption. For more information, see the WINHTTP_OPTION_CLIENT_CERT_CONTEXT option.</para>
+		/// <para>Windows Server 2003 with SP1 and Windows XP with SP2: This error is not supported.</para></summary>
+		public const int ERROR_WINHTTP_CLIENT_AUTH_CERT_NEEDED = 12044;
+
+		/// <summary>The application does not have the required privileges to access the private key associated with the client certificate.
+		/// <para>Windows Server 2003 with SP1 and Windows XP with SP2: This error is not supported.</para></summary>
+		public const int ERROR_WINHTTP_CLIENT_CERT_NO_ACCESS_PRIVATE_KEY = 12186;
+
+		/// <summary>The context for the SSL client certificate does not have a private key associated with it. The client certificate may have been imported to the computer without the private key.
+		/// <para>Windows Server 2003 with SP1 and Windows XP with SP2: This error is not supported.</para></summary>
+		public const int ERROR_WINHTTP_CLIENT_CERT_NO_PRIVATE_KEY = 12185;
+
+		/// <summary>Returned by WinHttpReceiveResponse when an overflow condition is encountered in the course of parsing chunked encoding.</summary>
+		public const int ERROR_WINHTTP_CHUNKED_ENCODING_HEADER_SIZE_OVERFLOW = 12183;
+
+		/// <summary>The connection with the server has been reset or terminated, or an incompatible SSL protocol was encountered. For example, WinHTTP version 5.1 does not support SSL2 unless the client specifically enables it.</summary>
+		public const int ERROR_WINHTTP_CONNECTION_ERROR = 12030;
+
+		/// <summary>Obsolete; no longer used.</summary>
+		public const int ERROR_WINHTTP_HEADER_ALREADY_EXISTS = 12155;
+
+		/// <summary>Returned by WinHttpReceiveResponse when a larger number of headers were present in a response than WinHTTP could receive.</summary>
+		public const int ERROR_WINHTTP_HEADER_COUNT_EXCEEDED = 12181;
+
+		/// <summary>The requested header cannot be located.</summary>
+		public const int ERROR_WINHTTP_HEADER_NOT_FOUND = 12150;
+
+		/// <summary>Returned by WinHttpReceiveResponse when the size of headers received exceeds the limit for the request handle.</summary>
+		public const int ERROR_WINHTTP_HEADER_SIZE_OVERFLOW = 12182;
+
+		/// <summary>The requested operation cannot be carried out because the handle supplied is not in the correct state.</summary>
+		public const int ERROR_WINHTTP_INCORRECT_HANDLE_STATE = 12019;
+
+		/// <summary>The type of handle supplied is incorrect for this operation.</summary>
+		public const int ERROR_WINHTTP_INCORRECT_HANDLE_TYPE = 12018;
+
+		/// <summary>An internal error has occurred.</summary>
+		public const int ERROR_WINHTTP_INTERNAL_ERROR = 12004;
+
+		/// <summary>A request to WinHttpQueryOption or WinHttpSetOption specified an invalid option value.</summary>
+		public const int ERROR_WINHTTP_INVALID_OPTION = 12009;
+
+		/// <summary>Obsolete; no longer used.</summary>
+		public const int ERROR_WINHTTP_INVALID_QUERY_REQUEST = 12154;
+
+		/// <summary>The server response cannot be parsed.</summary>
+		public const int ERROR_WINHTTP_INVALID_SERVER_RESPONSE = 12152;
+
+		/// <summary>The URL is not valid.</summary>
+		public const int ERROR_WINHTTP_INVALID_URL = 12005;
+
+		/// <summary>The login attempt failed. When this error is encountered, the request handle should be closed with WinHttpCloseHandle. A new request handle must be created before retrying the function that originally produced this error.</summary>
+		public const int ERROR_WINHTTP_LOGIN_FAILURE = 12015;
+
+		/// <summary>The server name cannot be resolved.</summary>
+		public const int ERROR_WINHTTP_NAME_NOT_RESOLVED = 12007;
+
+		/// <summary>Obsolete; no longer used.</summary>
+		public const int ERROR_WINHTTP_NOT_INITIALIZED = 12172;
+
+		/// <summary>The operation was canceled, usually because the handle on which the request was operating was closed before the operation completed.</summary>
+		public const int ERROR_WINHTTP_OPERATION_CANCELLED = 12017;
+
+		/// <summary>The requested option cannot be set, only queried.</summary>
+		public const int ERROR_WINHTTP_OPTION_NOT_SETTABLE = 12011;
+
+		/// <summary>Obsolete; no longer used.</summary>
+		public const int ERROR_WINHTTP_OUT_OF_HANDLES = 12001;
+
+		/// <summary>The redirection failed because either the scheme changed or all attempts made to redirect failed (default is five attempts).</summary>
+		public const int ERROR_WINHTTP_REDIRECT_FAILED = 12156;
+
+		/// <summary>The WinHTTP function failed. The desired function can be retried on the same request handle.</summary>
+		public const int ERROR_WINHTTP_RESEND_REQUEST = 12032;
+
+		/// <summary>Returned when an incoming response exceeds an internal WinHTTP size limit.</summary>
+		public const int ERROR_WINHTTP_RESPONSE_DRAIN_OVERFLOW = 12184;
+
+		/// <summary>An error was encountered while executing a script.</summary>
+		public const int ERROR_WINHTTP_SCRIPT_EXECUTION_ERROR = 12177;
+
+		/// <summary>Returned when a certificate CN name does not match the passed value (equivalent to a CERT_E_CN_NO_MATCH error).</summary>
+		public const int ERROR_WINHTTP_SECURE_CERT_CN_INVALID = 12038;
+
+		/// <summary>Indicates that a required certificate is not within its validity period when verifying against the current system clock or the timestamp in the signed file, or that the validity periods of the certification chain do not nest correctly (equivalent to a CERT_E_EXPIRED or a CERT_E_VALIDITYPERIODNESTING error).</summary>
+		public const int ERROR_WINHTTP_SECURE_CERT_DATE_INVALID = 12037;
+
+		/// <summary>Indicates that revocation cannot be checked because the revocation server was offline (equivalent to CRYPT_E_REVOCATION_OFFLINE).</summary>
+		public const int ERROR_WINHTTP_SECURE_CERT_REV_FAILED = 12057;
+
+		/// <summary>Indicates that a certificate has been revoked (equivalent to CRYPT_E_REVOKED).</summary>
+		public const int ERROR_WINHTTP_SECURE_CERT_REVOKED = 12170;
+
+		/// <summary>Indicates that a certificate is not valid for the requested usage (equivalent to CERT_E_WRONG_USAGE).</summary>
+		public const int ERROR_WINHTTP_SECURE_CERT_WRONG_USAGE = 12179;
+
+		/// <summary>Indicates that an error occurred having to do with a secure channel (equivalent to error codes that begin with "SEC_E_" and "SEC_I_" listed in the "winerror.h" header file).</summary>
+		public const int ERROR_WINHTTP_SECURE_CHANNEL_ERROR = 12157;
+
+		/// <summary>One or more errors were found in the Secure Sockets Layer (SSL) certificate sent by the server. To determine what type of error was encountered, check for a WINHTTP_CALLBACK_STATUS_SECURE_FAILURE notification in a status callback function. For more information, see WINHTTP_STATUS_CALLBACK.</summary>
+		public const int ERROR_WINHTTP_SECURE_FAILURE = 12175;
+
+		/// <summary>Indicates that a certificate chain was processed, but terminated in a root certificate that is not trusted by the trust provider (equivalent to CERT_E_UNTRUSTEDROOT).</summary>
+		public const int ERROR_WINHTTP_SECURE_INVALID_CA = 12045;
+
+		/// <summary>Indicates that a certificate is invalid (equivalent to errors such as CERT_E_ROLE, CERT_E_PATHLENCONST, CERT_E_CRITICAL, CERT_E_PURPOSE, CERT_E_ISSUERCHAINING, CERT_E_MALFORMED and CERT_E_CHAINING).</summary>
+		public const int ERROR_WINHTTP_SECURE_INVALID_CERT = 12169;
+
+		/// <summary>The WinHTTP function support is being shut down or unloaded.</summary>
+		public const int ERROR_WINHTTP_SHUTDOWN = 12012;
+
+		/// <summary>The request has timed out.
+		/// <para>This error can be returned as a result of TCP/IP time-out behavior, regardless of time-out values set in Windows HTTP Services.</para></summary>
+		public const int ERROR_WINHTTP_TIMEOUT = 12002;
+
+		/// <summary>The PAC file cannot be downloaded. For example, the server referenced by the PAC URL may not have been reachable, or the server returned a 404 NOT FOUND response.</summary>
+		public const int ERROR_WINHTTP_UNABLE_TO_DOWNLOAD_SCRIPT = 12167;
+
+		/// <summary>The script type is not supported.</summary>
+		public const int ERROR_WINHTTP_UNHANDLED_SCRIPT_TYPE = 12176;
+
+		/// <summary>The URL specified a scheme other than "http:" or "https:".</summary>
+		public const int ERROR_WINHTTP_UNRECOGNIZED_SCHEME = 12006;
 	}
 }

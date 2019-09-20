@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Vanara.PInvoke.Tests</RootNamespace>
     <AssemblyName>UnitTest.PInvoke.WinINet</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <LangVersion>latest</LangVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,6 +57,10 @@
     <ProjectReference Include="..\..\..\PInvoke\WinInet\Vanara.PInvoke.WinINet.csproj">
       <Project>{e8a0c4df-541c-4435-937b-2865cd61bb17}</Project>
       <Name>Vanara.PInvoke.WinINet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CSharpRunner\Shared.csproj">
+      <Project>{a96cff10-0967-429a-8700-4a86c97c5603}</Project>
+      <Name>Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
