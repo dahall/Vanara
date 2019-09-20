@@ -7755,7 +7755,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-privacygetzonepreferencew void PrivacyGetZonePreferenceW(
 		// DWORD dwZone, DWORD dwType, LPDWORD pdwTemplate, LPWSTR pszBuffer, LPDWORD pdwBufferLength );
-		[DllImport(Lib.WinInet, SetLastError = false, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.WinInet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("wininet.h", MSDNShortId = "530a86a0-bb67-406a-be83-5f2b463a1aa1")]
 		public static extern Win32Error PrivacyGetZonePreferenceW(URLZONE dwZone, PrivacyType dwType, out PrivacyTemplate pdwTemplate, StringBuilder pszBuffer, ref uint pdwBufferLength);
 
@@ -7854,7 +7854,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-privacysetzonepreferencew void PrivacySetZonePreferenceW(
 		// DWORD dwZone, DWORD dwType, DWORD dwTemplate, LPCWSTR pszPreference );
-		[DllImport(Lib.WinInet, SetLastError = false, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.WinInet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("wininet.h", MSDNShortId = "29c8dbc0-052e-40f4-a036-cb647d920055")]
 		public static extern Win32Error PrivacySetZonePreferenceW(URLZONE dwZone, PrivacyType dwType, PrivacyTemplate dwTemplate, [Optional] string pszPreference);
 
