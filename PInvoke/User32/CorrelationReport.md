@@ -354,7 +354,7 @@ Native Method | Header | Managed Method
 [LoadMenu](http://msdn2.microsoft.com/en-us/library/loadmenu.htm) | winuser.h | [Vanara.PInvoke.User32.LoadMenu](https://github.com/dahall/Vanara/search?l=C%23&q=LoadMenu)  
 [LoadMenuIndirect](http://msdn2.microsoft.com/en-us/library/loadmenuindirect.htm) | winuser.h | [Vanara.PInvoke.User32.LoadMenuIndirect](https://github.com/dahall/Vanara/search?l=C%23&q=LoadMenuIndirect)  
 [LoadString](http://msdn2.microsoft.com/en-us/library/ms647486) | WinUser.h | [Vanara.PInvoke.User32.LoadString](https://github.com/dahall/Vanara/search?l=C%23&q=LoadString)  
-[LockSetForegroundWindow](http://msdn2.microsoft.com/en-us/library/locksetforegroundwindow) | winuser.h | [Vanara.PInvoke.User32.LockSetForegroundWindow](https://github.com/dahall/Vanara/search?l=C%23&q=LockSetForegroundWindow)  
+[LockSetForegroundWindow](https://www.google.com/search?num=5&q=LockSetForegroundWindow+site%3Amicrosoft.com) | winuser.h | [Vanara.PInvoke.User32.LockSetForegroundWindow](https://github.com/dahall/Vanara/search?l=C%23&q=LockSetForegroundWindow)  
 [LockWindowUpdate](http://msdn2.microsoft.com/en-us/library/00ec40c7-8ab2-40db-a9bb-48e18d66bf1a) | winuser.h | [Vanara.PInvoke.User32.LockWindowUpdate](https://github.com/dahall/Vanara/search?l=C%23&q=LockWindowUpdate)  
 [LockWorkStation](https://www.google.com/search?num=5&q=LockWorkStation+site%3Amicrosoft.com) | Winuser.h | [Vanara.PInvoke.User32.LockWorkStation](https://github.com/dahall/Vanara/search?l=C%23&q=LockWorkStation)  
 [LogicalToPhysicalPoint](http://msdn2.microsoft.com/en-us/library/logicaltophysicalpoint) | winuser.h | [Vanara.PInvoke.User32.LogicalToPhysicalPoint](https://github.com/dahall/Vanara/search?l=C%23&q=LogicalToPhysicalPoint)  
