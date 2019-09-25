@@ -20,7 +20,7 @@ namespace Vanara.Extensions
 			var flagValue = Convert.ToInt64(flags);
 			if (flagValue == 0) throw new ArgumentException("The flag value is zero and has no bit position.");
 			var r = Math.Log(flagValue, 2);
-			if (!Math.Abs(r).Equals(r)) throw new ArithmeticException("The flag value has more than a single bit set.");
+			if (r % 1 > 0) throw new ArithmeticException("The flag value has more than a single bit set.");
 			return Convert.ToByte(r);
 		}
 
