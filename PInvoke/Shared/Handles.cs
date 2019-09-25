@@ -239,6 +239,54 @@ namespace Vanara.PInvoke
 		public IntPtr DangerousGetHandle() => handle;
 	}
 
+	/// <summary>Provides a handle to a color space.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct HCOLORSPACE : IGraphicsObjectHandle
+	{
+		private IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="HCOLORSPACE"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public HCOLORSPACE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HCOLORSPACE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HCOLORSPACE NULL => new HCOLORSPACE(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Performs an explicit conversion from <see cref="HCOLORSPACE"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(HCOLORSPACE h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCOLORSPACE"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HCOLORSPACE(IntPtr h) => new HCOLORSPACE(h);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HCOLORSPACE h1, HCOLORSPACE h2) => !(h1 == h2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HCOLORSPACE h1, HCOLORSPACE h2) => h1.Equals(h2);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is HCOLORSPACE h ? handle == h.handle : false;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
 	/// <summary>Provides a handle to a Windows cursor.</summary>
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HCURSOR : IGraphicsObjectHandle
@@ -774,10 +822,30 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator HGDIOBJ(HBRUSH h) => new HGDIOBJ((IntPtr)h);
 
+		/// <summary>Performs an implicit conversion from <see cref="HCOLORSPACE"/> to <see cref="HGDIOBJ"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HGDIOBJ(HCOLORSPACE h) => new HGDIOBJ((IntPtr)h);
+
+		/// <summary>Performs an implicit conversion from <see cref="HDC"/> to <see cref="HGDIOBJ"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HGDIOBJ(HDC h) => new HGDIOBJ((IntPtr)h);
+
 		/// <summary>Performs an implicit conversion from <see cref="HFONT"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator HGDIOBJ(HFONT h) => new HGDIOBJ((IntPtr)h);
+
+		/// <summary>Performs an implicit conversion from <see cref="HMETAFILE"/> to <see cref="HGDIOBJ"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HGDIOBJ(HMETAFILE h) => new HGDIOBJ((IntPtr)h);
+
+		/// <summary>Performs an implicit conversion from <see cref="HENHMETAFILE"/> to <see cref="HGDIOBJ"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HGDIOBJ(HENHMETAFILE h) => new HGDIOBJ((IntPtr)h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HPALETTE"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
