@@ -98,6 +98,13 @@ namespace Vanara.InteropServices
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		string ToString(int len, CharSet charSet = CharSet.Unicode);
 
+		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
+		/// <param name="len">The length.</param>
+		/// <param name="prefixBytes">Number of bytes preceding the string pointer.</param>
+		/// <param name="charSet">The character set of the string.</param>
+		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+		string ToString(int len, int prefixBytes, CharSet charSet = CharSet.Unicode);
+
 		/// <summary>
 		/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character and is terminated by
 		/// two '\0' characters.
@@ -352,7 +359,18 @@ namespace Vanara.InteropServices
 		/// <param name="len">The length.</param>
 		/// <param name="charSet">The character set of the string.</param>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public string ToString(int len, CharSet charSet = CharSet.Unicode) => len == -1 ? StringHelper.GetString(handle, charSet) : StringHelper.GetString(handle, charSet, sz).Substring(0, len);
+		public string ToString(int len, CharSet charSet = CharSet.Unicode) => ToString(len, 0, charSet);
+
+		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
+		/// <param name="len">The length.</param>
+		/// <param name="prefixBytes">Number of bytes preceding the string pointer.</param>
+		/// <param name="charSet">The character set of the string.</param>
+		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+		public string ToString(int len, int prefixBytes, CharSet charSet = CharSet.Unicode)
+		{
+			var str = StringHelper.GetString(handle.Offset(prefixBytes), charSet, sz - prefixBytes);
+			return len == -1 ? str : str.Substring(0, len);
+		}
 
 		/// <summary>Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length <paramref name="count"/>.</summary>
 		/// <param name="count">The count of expected strings.</param>
