@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -10,19 +8,8 @@ namespace Vanara.PInvoke
 		[PInvokeData("Wingdi.h")]
 		public const int LF_FACESIZE = 32;
 
-		/// <summary>The background mode used by the <see cref="SetBkMode"/> function.</summary>
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd162965")]
-		public enum BackgroundMode
-		{
-			/// <summary>Indicates that on return, the <see cref="SetBkMode"/> has failed.</summary>
-			ERROR = 0,
-
-			/// <summary>Background remains untouched.</summary>
-			TRANSPARENT = 1,
-
-			/// <summary>Background is filled with the current background color before the text, hatched brush, or pen is drawn.</summary>
-			OPAQUE = 2,
-		}
+		[PInvokeData("Wingdi.h")]
+		public const int LF_FULLFACESIZE = 64;
 
 		/// <summary>Brush style used by <see cref="LOGBRUSH.lbStyle"/>.</summary>
 		[PInvokeData("wingdi.h", MSDNShortId = "ded2c7a4-2248-4d01-95c6-ab4050719094")]
@@ -86,128 +73,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>Disables any reflection during BitBlt and StretchBlt operations.</summary>
 			LAYOUT_BITMAPORIENTATIONPRESERVED = 8,
-		}
-
-		/// <summary>Values used by the <see cref="GetDeviceCaps"/> function.</summary>
-		public enum DeviceCap
-		{
-			/// <summary>Device driver version</summary>
-			DRIVERVERSION = 0,
-
-			/// <summary>Device classification</summary>
-			TECHNOLOGY = 2,
-
-			/// <summary>Horizontal size in millimeters</summary>
-			HORZSIZE = 4,
-
-			/// <summary>Vertical size in millimeters</summary>
-			VERTSIZE = 6,
-
-			/// <summary>Horizontal width in pixels</summary>
-			HORZRES = 8,
-
-			/// <summary>Vertical height in pixels</summary>
-			VERTRES = 10,
-
-			/// <summary>Number of bits per pixel</summary>
-			BITSPIXEL = 12,
-
-			/// <summary>Number of planes</summary>
-			PLANES = 14,
-
-			/// <summary>Number of brushes the device has</summary>
-			NUMBRUSHES = 16,
-
-			/// <summary>Number of pens the device has</summary>
-			NUMPENS = 18,
-
-			/// <summary>Number of markers the device has</summary>
-			NUMMARKERS = 20,
-
-			/// <summary>Number of fonts the device has</summary>
-			NUMFONTS = 22,
-
-			/// <summary>Number of colors the device supports</summary>
-			NUMCOLORS = 24,
-
-			/// <summary>Size required for device descriptor</summary>
-			PDEVICESIZE = 26,
-
-			/// <summary>Curve capabilities</summary>
-			CURVECAPS = 28,
-
-			/// <summary>Line capabilities</summary>
-			LINECAPS = 30,
-
-			/// <summary>Polygonal capabilities</summary>
-			POLYGONALCAPS = 32,
-
-			/// <summary>Text capabilities</summary>
-			TEXTCAPS = 34,
-
-			/// <summary>Clipping capabilities</summary>
-			CLIPCAPS = 36,
-
-			/// <summary>Bitblt capabilities</summary>
-			RASTERCAPS = 38,
-
-			/// <summary>Length of the X leg</summary>
-			ASPECTX = 40,
-
-			/// <summary>Length of the Y leg</summary>
-			ASPECTY = 42,
-
-			/// <summary>Length of the hypotenuse</summary>
-			ASPECTXY = 44,
-
-			/// <summary>Shading and Blending caps</summary>
-			SHADEBLENDCAPS = 45,
-
-			/// <summary>Logical pixels inch in X</summary>
-			LOGPIXELSX = 88,
-
-			/// <summary>Logical pixels inch in Y</summary>
-			LOGPIXELSY = 90,
-
-			/// <summary>Number of entries in physical palette</summary>
-			SIZEPALETTE = 104,
-
-			/// <summary>Number of reserved entries in palette</summary>
-			NUMRESERVED = 106,
-
-			/// <summary>Actual color resolution</summary>
-			COLORRES = 108,
-
-			// Printing related DeviceCaps. These replace the appropriate Escapes
-			/// <summary>Physical Width in device units</summary>
-			PHYSICALWIDTH = 110,
-
-			/// <summary>Physical Height in device units</summary>
-			PHYSICALHEIGHT = 111,
-
-			/// <summary>Physical Printable Area x margin</summary>
-			PHYSICALOFFSETX = 112,
-
-			/// <summary>Physical Printable Area y margin</summary>
-			PHYSICALOFFSETY = 113,
-
-			/// <summary>Scaling factor x</summary>
-			SCALINGFACTORX = 114,
-
-			/// <summary>Scaling factor y</summary>
-			SCALINGFACTORY = 115,
-
-			/// <summary>Current vertical refresh rate of the display device (for displays only) in Hz</summary>
-			VREFRESH = 116,
-
-			/// <summary>Vertical height of entire desktop in pixels</summary>
-			DESKTOPVERTRES = 117,
-
-			/// <summary>Horizontal width of entire desktop in pixels</summary>
-			DESKTOPHORZRES = 118,
-
-			/// <summary>Preferred blt alignment</summary>
-			BLTALIGNMENT = 119
 		}
 
 		/// <summary>Device state flags.</summary>
@@ -294,532 +159,233 @@ namespace Vanara.PInvoke
 			HS_VERTICAL = 1
 		}
 
-		/// <summary>
-		/// Defines how the color data for the source rectangle is to be combined with the color data for the destination rectangle to
-		/// achieve the final color when using the <see cref="BitBlt"/> function.
-		/// </summary>
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd183370")]
-		public enum RasterOperationMode
+		/// <summary>Flags specifying how to perform the character set translation.</summary>
+		[PInvokeData("wingdi.h", MSDNShortId = "0e6e81f1-ec7b-42ba-8706-a352349fa6ab")]
+		public enum TCI
 		{
-			/// <summary>Copies the source rectangle directly to the destination rectangle.</summary>
-			SRCCOPY = 0x00CC0020,
+			/// <summary>Source contains the character set value in the low word, and 0 in the high word.</summary>
+			TCI_SRCCHARSET = 1,
 
-			/// <summary>Combines the colors of the source and destination rectangles by using the Boolean OR operator.</summary>
-			SRCPAINT = 0x00EE0086,
-
-			/// <summary>Combines the colors of the source and destination rectangles by using the Boolean AND operator.</summary>
-			SRCAND = 0x008800C6,
-
-			/// <summary>Combines the colors of the source and destination rectangles by using the Boolean XOR operator.</summary>
-			SRCINVERT = 0x00660046,
+			/// <summary>Source is a code page identifier in the low word and 0 in the high word.</summary>
+			TCI_SRCCODEPAGE = 2,
 
 			/// <summary>
-			/// Combines the inverted colors of the destination rectangle with the colors of the source rectangle by using the Boolean AND operator.
+			/// Source is the code page bitfield portion of a FONTSIGNATURE structure. On input this should have only one Windows code-page
+			/// bit set, either for an ANSI code page value or for a common ANSI and OEM value (for OEM values, bits 32-63 must be clear). On
+			/// output, this has only one bit set. If the TCI_SRCFONTSIG value is given, the lpSrc parameter must be the address of the
+			/// code-page bitfield. If any other TCI_ value is given, the lpSrc parameter must be a value not an address.
 			/// </summary>
-			SRCERASE = 0x00440328,
-
-			/// <summary></summary>
-			NOTSRCCOPY = 0x00330008,
-
-			/// <summary>Copies the inverted source rectangle to the destination.</summary>
-			NOTSRCERASE = 0x001100A6,
+			TCI_SRCFONTSIG = 3,
 
 			/// <summary>
-			/// Merges the colors of the source rectangle with the brush currently selected in hdcDest, by using the Boolean AND operator.
+			/// Windows 2000: Source is the locale identifier (LCID) or language identifier of the keyboard layout. If it is a language
+			/// identifier, the value is in the low word.
 			/// </summary>
-			MERGECOPY = 0x00C000CA,
-
-			/// <summary>
-			/// Merges the colors of the inverted source rectangle with the colors of the destination rectangle by using the Boolean OR operator.
-			/// </summary>
-			MERGEPAINT = 0x00BB0226,
-
-			/// <summary>Copies the brush currently selected in hdcDest, into the destination bitmap.</summary>
-			PATCOPY = 0x00F00021,
-
-			/// <summary>
-			/// Combines the colors of the brush currently selected in hdcDest, with the colors of the inverted source rectangle by using the
-			/// Boolean OR operator. The result of this operation is combined with the colors of the destination rectangle by using the
-			/// Boolean OR operator.
-			/// </summary>
-			PATPAINT = 0x00FB0A09,
-
-			/// <summary>
-			/// Combines the colors of the brush currently selected in hdcDest, with the colors of the destination rectangle by using the
-			/// Boolean XOR operator.
-			/// </summary>
-			PATINVERT = 0x005A0049,
-
-			/// <summary>Inverts the destination rectangle.</summary>
-			DSTINVERT = 0x00550009,
-
-			/// <summary>
-			/// Fills the destination rectangle using the color associated with index 0 in the physical palette. (This color is black for the
-			/// default physical palette.)
-			/// </summary>
-			BLACKNESS = 0x00000042,
-
-			/// <summary>
-			/// Fills the destination rectangle using the color associated with index 1 in the physical palette. (This color is white for the
-			/// default physical palette.)
-			/// </summary>
-			WHITENESS = 0x00FF0062,
-
-			/// <summary>Prevents the bitmap from being mirrored.</summary>
-			NOMIRRORBITMAP = -2147483648,
-
-			/// <summary>
-			/// Includes any windows that are layered on top of your window in the resulting image.By default, the image only contains your
-			/// window.Note that this generally cannot be used for printing device contexts.
-			/// </summary>
-			CAPTUREBLT = 0x40000000
+			TCI_SRCLOCALE = 0x1000
 		}
 
-		/// <summary>Flags used with region functions.</summary>
-		[PInvokeData("wingdi.h")]
-		public enum RegionFlags
-		{
-			/// <summary>An error occurred.</summary>
-			ERROR = 0,
-
-			/// <summary>Region is empty.</summary>
-			NULLREGION = 1,
-
-			/// <summary>Region is a single rectangle.</summary>
-			SIMPLEREGION = 2,
-
-			/// <summary>Region consists of more than one rectangle.</summary>
-			COMPLEXREGION = 3,
-		}
-
-		/// <summary>The AlphaBlend function displays bitmaps that have transparent or semitransparent pixels.</summary>
-		/// <param name="hdcDest">A handle to the destination device context.</param>
-		/// <param name="nXOriginDest">The x-coordinate, in logical units, of the upper-left corner of the destination rectangle.</param>
-		/// <param name="nYOriginDest">The y-coordinate, in logical units, of the upper-left corner of the destination rectangle.</param>
-		/// <param name="nWidthDest">The width, in logical units, of the destination rectangle.</param>
-		/// <param name="nHeightDest">The height, in logical units, of the destination rectangle.</param>
-		/// <param name="hdcSrc">A handle to the source device context.</param>
-		/// <param name="nXOriginSrc">The x-coordinate, in logical units, of the upper-left corner of the source rectangle.</param>
-		/// <param name="nYOriginSrc">The y-coordinate, in logical units, of the upper-left corner of the source rectangle.</param>
-		/// <param name="nWidthSrc">The width, in logical units, of the source rectangle.</param>
-		/// <param name="nHeightSrc">The height, in logical units, of the source rectangle.</param>
-		/// <param name="blendFunction">
-		/// The alpha-blending function for source and destination bitmaps, a global alpha value to be applied to the entire source bitmap,
-		/// and format information for the source bitmap. The source and destination blend functions are currently limited to AC_SRC_OVER.
-		/// </param>
-		/// <returns>If the function succeeds, the return value is TRUE. If the function fails, the return value is FALSE.</returns>
-		/// <remarks>
-		/// If the source rectangle and destination rectangle are not the same size, the source bitmap is stretched to match the destination
-		/// rectangle. If the SetStretchBltMode function is used, the iStretchMode value is automatically converted to COLORONCOLOR for this
-		/// function (that is, BLACKONWHITE, WHITEONBLACK, and HALFTONE are changed to COLORONCOLOR).
-		/// <para>
-		/// The destination coordinates are transformed by using the transformation currently specified for the destination device context.
-		/// The source coordinates are transformed by using the transformation currently specified for the source device context.
-		/// </para>
-		/// <para>An error occurs (and the function returns FALSE) if the source device context identifies an enhanced metafile device context.</para>
-		/// <para>
-		/// If destination and source bitmaps do not have the same color format, AlphaBlend converts the source bitmap to match the
-		/// destination bitmap.
-		/// </para>
-		/// <para>
-		/// AlphaBlend does not support mirroring. If either the width or height of the source or destination is negative, this call will fail.
-		/// </para>
-		/// <para>
-		/// When rendering to a printer, first call GetDeviceCaps with SHADEBLENDCAPS to determine if the printer supports blending with
-		/// AlphaBlend. Note that, for a display DC, all blending operations are supported and these flags represent whether the operations
-		/// are accelerated.
-		/// </para>
-		/// <para>
-		/// If the source and destination are the same surface that is, they are both the screen or the same memory bitmap and the source and
-		/// destination rectangles overlap, an error occurs and the function returns FALSE.
-		/// </para>
-		/// <para>
-		/// The source rectangle must lie completely within the source surface, otherwise an error occurs and the function returns FALSE.
-		/// </para>
-		/// <para>AlphaBlend fails if the width or height of the source or destination is negative.</para>
-		/// <para>
-		/// The SourceConstantAlpha member of BLENDFUNCTION specifies an alpha transparency value to be used on the entire source bitmap. The
-		/// SourceConstantAlpha value is combined with any per-pixel alpha values. If SourceConstantAlpha is 0, it is assumed that the image
-		/// is transparent. Set the SourceConstantAlpha value to 255 (which indicates that the image is opaque) when you only want to use
-		/// per-pixel alpha values.
-		/// </para>
-		/// </remarks>
-		[DllImport(Lib.Gdi32, SetLastError = true, EntryPoint = "GdiAlphaBlend")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd183351")]
-		public static extern bool AlphaBlend(HDC hdcDest, int nXOriginDest, int nYOriginDest, int nWidthDest, int nHeightDest, HDC hdcSrc, int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, BLENDFUNCTION blendFunction);
-
 		/// <summary>
-		/// The BitBlt function performs a bit-block transfer of the color data corresponding to a rectangle of pixels from the specified
-		/// source device context into a destination device context.
+		/// <para>
+		/// The <c>GetCharWidth</c> function retrieves the widths, in logical coordinates, of consecutive characters in a specified range
+		/// from the current font.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> This function is provided only for compatibility with 16-bit versions of Windows. Applications should call the
+		/// GetCharWidth32 function, which provides more accurate results.
+		/// </para>
 		/// </summary>
-		/// <param name="hdc">A handle to the destination device context.</param>
-		/// <param name="nXDest">The x-coordinate, in logical units, of the upper-left corner of the destination rectangle.</param>
-		/// <param name="nYDest">The y-coordinate, in logical units, of the upper-left corner of the destination rectangle.</param>
-		/// <param name="nWidth">The width, in logical units, of the destination rectangle.</param>
-		/// <param name="nHeight">The height, in logical units, of the destination rectangle.</param>
-		/// <param name="hdcSrc">A handle to the source device context.</param>
-		/// <param name="nXSrc">The x-coordinate, in logical units, of the upper-left corner of the source rectangle.</param>
-		/// <param name="nYSrc">The y-coordinate, in logical units, of the upper-left corner of the source rectangle.</param>
-		/// <param name="dwRop">
-		/// A raster-operation code. These codes define how the color data for the source rectangle is to be combined with the color data for
-		/// the destination rectangle to achieve the final color.
-		/// </param>
-		/// <returns>
-		/// If the function succeeds, the return value is nonzero.
-		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// BitBlt only does clipping on the destination DC.
-		/// <para>
-		/// If a rotation or shear transformation is in effect in the source device context, BitBlt returns an error. If other
-		/// transformations exist in the source device context (and a matching transformation is not in effect in the destination device
-		/// context), the rectangle in the destination device context is stretched, compressed, or rotated, as necessary.
-		/// </para>
-		/// <para>
-		/// If the color formats of the source and destination device contexts do not match, the BitBlt function converts the source color
-		/// format to match the destination format.
-		/// </para>
-		/// <para>
-		/// When an enhanced metafile is being recorded, an error occurs if the source device context identifies an enhanced-metafile device context.
-		/// </para>
-		/// <para>
-		/// Not all devices support the BitBlt function. For more information, see the RC_BITBLT raster capability entry in the GetDeviceCaps
-		/// function as well as the following functions: MaskBlt, PlgBlt, and StretchBlt.
-		/// </para>
-		/// <para>
-		/// BitBlt returns an error if the source and destination device contexts represent different devices. To transfer data between DCs
-		/// for different devices, convert the memory bitmap to a DIB by calling GetDIBits. To display the DIB to the second device, call
-		/// SetDIBits or StretchDIBits.
-		/// </para>
-		/// <para>ICM: No color management is performed when blits occur.</para>
-		/// </remarks>
-		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd183370")]
-		public static extern bool BitBlt(HDC hdc, int nXDest, int nYDest, int nWidth, int nHeight, HDC hdcSrc, int nXSrc, int nYSrc, RasterOperationMode dwRop);
-
-		/// <summary>The CreateCompatibleDC function creates a memory device context (DC) compatible with the specified device.</summary>
-		/// <param name="hDC">
-		/// A handle to an existing DC. If this handle is NULL, the function creates a memory DC compatible with the application's current screen.
-		/// </param>
-		/// <returns>
-		/// If the function succeeds, the return value is the handle to a memory DC.
-		/// <para>If the function fails, the return value is NULL.</para>
-		/// </returns>
-		/// <remarks>
-		/// A memory DC exists only in memory. When the memory DC is created, its display surface is exactly one monochrome pixel wide and
-		/// one monochrome pixel high. Before an application can use a memory DC for drawing operations, it must select a bitmap of the
-		/// correct width and height into the DC. To select a bitmap into a DC, use the CreateCompatibleBitmap function, specifying the
-		/// height, width, and color organization required.
-		/// <para>
-		/// When a memory DC is created, all attributes are set to normal default values. The memory DC can be used as a normal DC. You can
-		/// set the attributes; obtain the current settings of its attributes; and select pens, brushes, and regions.
-		/// </para>
-		/// <para>
-		/// The CreateCompatibleDC function can only be used with devices that support raster operations. An application can determine
-		/// whether a device supports these operations by calling the GetDeviceCaps function.
-		/// </para>
-		/// <para>
-		/// When you no longer need the memory DC, call the DeleteDC function. We recommend that you call DeleteDC to delete the DC. However,
-		/// you can also call DeleteObject with the HDC to delete the DC.
-		/// </para>
-		/// <para>
-		/// If hdc is NULL, the thread that calls CreateCompatibleDC owns the HDC that is created. When this thread is destroyed, the HDC is
-		/// no longer valid. Thus, if you create the HDC and pass it to another thread, then exit the first thread, the second thread will
-		/// not be able to use the HDC.
-		/// </para>
-		/// <para>
-		/// ICM: If the DC that is passed to this function is enabled for Image Color Management (ICM), the DC created by the function is
-		/// ICM-enabled. The source and destination color spaces are specified in the DC.
-		/// </para>
-		/// </remarks>
-		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd183489")]
-		public static extern SafeHDC CreateCompatibleDC(HDC hDC);
-
-		/// <summary>The DeleteDC function deletes the specified device context (DC).</summary>
 		/// <param name="hdc">A handle to the device context.</param>
-		/// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
-		/// <remarks>
-		/// An application must not delete a DC whose handle was obtained by calling the GetDC function. Instead, it must call the ReleaseDC
-		/// function to free the DC.
-		/// </remarks>
-		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[System.Security.SecurityCritical]
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd183533")]
-		public static extern bool DeleteDC(HDC hdc);
-
-		/// <summary>
-		/// The DeleteObject function deletes a logical pen, brush, font, bitmap, region, or palette, freeing all system resources associated
-		/// with the object. After the object is deleted, the specified handle is no longer valid.
-		/// </summary>
-		/// <param name="hObject">A handle to a logical pen, brush, font, bitmap, region, or palette.</param>
-		/// <returns>
-		/// If the function succeeds, the return value is nonzero. If the specified handle is not valid or is currently selected into a DC,
-		/// the return value is zero.
-		/// </returns>
-		/// <remarks>
-		/// Do not delete a drawing object (pen or brush) while it is still selected into a DC.
-		/// <para>When a pattern brush is deleted, the bitmap associated with the brush is not deleted. The bitmap must be deleted independently.</para>
-		/// </remarks>
-		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd183539")]
-		public static extern bool DeleteObject(HGDIOBJ hObject);
-
-		/// <summary>The GdiFlush function flushes the calling thread's current batch.</summary>
-		/// <returns>
-		/// If all functions in the current batch succeed, the return value is nonzero.
-		/// <para>
-		/// If not all functions in the current batch succeed, the return value is zero, indicating that at least one function returned an error.
-		/// </para>
-		/// </returns>
-		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[System.Security.SecurityCritical]
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd144844")]
-		public static extern bool GdiFlush();
-
-		/// <summary>The GetDeviceCaps function retrieves device-specific information for the specified device.</summary>
-		/// <param name="hdc">A handle to the DC.</param>
-		/// <param name="index">The item to be returned.</param>
-		/// <returns>
-		/// The return value specifies the value of the desired item. When nIndex is BITSPIXEL and the device has 15bpp or 16bpp, the return
-		/// value is 16.
-		/// </returns>
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/dd144877(v=vs.85).aspx
-		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd144877")]
-		public static extern int GetDeviceCaps(HDC hdc, DeviceCap index);
-
-		/// <summary>The GetObject function retrieves information for the specified graphics object.</summary>
-		/// <param name="hgdiobj">
-		/// A handle to the graphics object of interest. This can be a handle to one of the following: a logical bitmap, a brush, a font, a
-		/// palette, a pen, or a device independent bitmap created by calling the CreateDIBSection function.
-		/// </param>
-		/// <param name="cbBuffer">The number of bytes of information to be written to the buffer.</param>
-		/// <param name="lpvObject">
-		/// A pointer to a buffer that receives the information about the specified graphics object. If the <paramref name="lpvObject"/>
-		/// parameter is NULL, the function return value is the number of bytes required to store the information it writes to the buffer for
-		/// the specified graphics object.
-		/// </param>
-		/// <returns>
-		/// If the function succeeds, and <paramref name="lpvObject"/> is a valid pointer, the return value is the number of bytes stored
-		/// into the buffer.
-		/// <para>
-		/// If the function succeeds, and <paramref name="lpvObject"/> is NULL, the return value is the number of bytes required to hold the
-		/// information the function would store into the buffer.
-		/// </para>
-		/// <para>If the function fails, the return value is zero.</para>
-		/// </returns>
-		/// <remarks>
-		/// The buffer pointed to by the <paramref name="lpvObject"/> parameter must be sufficiently large to receive the information about
-		/// the graphics object. Depending on the graphics object, the function uses a BITMAP, DIBSECTION, EXTLOGPEN, LOGBRUSH, LOGFONT, or
-		/// LOGPEN structure, or a count of table entries (for a logical palette).
-		/// <para>
-		/// If <paramref name="hgdiobj"/> is a handle to a bitmap created by calling CreateDIBSection, and the specified buffer is large
-		/// enough, the GetObject function returns a DIBSECTION structure. In addition, the bmBits member of the BITMAP structure contained
-		/// within the DIBSECTION will contain a pointer to the bitmap's bit values.
-		/// </para>
-		/// <para>
-		/// If <paramref name="hgdiobj"/> is a handle to a bitmap created by any other means, GetObject returns only the width, height, and
-		/// color format information of the bitmap. You can obtain the bitmap's bit values by calling the GetDIBits or GetBitmapBits function.
-		/// </para>
-		/// <para>
-		/// If <paramref name="hgdiobj"/> is a handle to a logical palette, GetObject retrieves a 2-byte integer that specifies the number of
-		/// entries in the palette. The function does not retrieve the LOGPALETTE structure defining the palette. To retrieve information
-		/// about palette entries, an application can call the GetPaletteEntries function.
-		/// </para>
-		/// <para>
-		/// If <paramref name="hgdiobj"/> is a handle to a font, the LOGFONT that is returned is the LOGFONT used to create the font. If
-		/// Windows had to make some interpolation of the font because the precise LOGFONT could not be represented, the interpolation will
-		/// not be reflected in the LOGFONT. For example, if you ask for a vertical version of a font that doesn't support vertical painting,
-		/// the LOGFONT indicates the font is vertical, but Windows will paint it horizontally.
-		/// </para>
-		/// </remarks>
-		[DllImport(Lib.Gdi32, CharSet = CharSet.Auto, SetLastError = true)]
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd144904")]
-		public static extern int GetObject(HGDIOBJ hgdiobj, int cbBuffer, IntPtr lpvObject);
-
-		/// <summary>The GetObject function retrieves information for the specified graphics object.</summary>
-		/// <typeparam name="T">The output structure type.</typeparam>
-		/// <param name="hgdiobj">
-		/// A handle to the graphics object of interest. This can be a handle to one of the following: a logical bitmap, a brush, a font, a
-		/// palette, a pen, or a device independent bitmap created by calling the CreateDIBSection function.
-		/// </param>
-		/// <returns>The output structure holding the information for the graphics object.</returns>
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd144904")]
-		public static T GetObject<T>(HGDIOBJ hgdiobj) where T : struct
-		{
-			using (var ptr = GetObject(hgdiobj))
-				return ptr.ToStructure<T>();
-		}
-
-		/// <summary>The GetObject function retrieves information for the specified graphics object.</summary>
-		/// <param name="hgdiobj">
-		/// A handle to the graphics object of interest. This can be a handle to one of the following: a logical bitmap, a brush, a font, a
-		/// palette, a pen, or a device independent bitmap created by calling the CreateDIBSection function.
-		/// </param>
-		/// <returns>Allocated memory holding the information for the graphics object.</returns>
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd144904")]
-		public static SafeHGlobalHandle GetObject(HGDIOBJ hgdiobj)
-		{
-			var sz = GetObject(hgdiobj, 0, IntPtr.Zero);
-			var ptr = new SafeHGlobalHandle(sz);
-			var ret = GetObject(hgdiobj, ptr.Size, (IntPtr)ptr);
-			if (ret == 0)
-				Win32Error.ThrowLastError();
-			return ptr;
-		}
-
-		/// <summary>Converts a height in logical units to pixels.</summary>
-		/// <param name="height">The height in logical units.</param>
-		/// <param name="hdc">The device context handle.</param>
-		/// <returns>The height in pixels.</returns>
-		public static int LogicalHeightToDeviceWidth(int height, HDC hdc = default)
-		{
-			var pts = new[] { new Point(0, height) };
-			LPtoDP(hdc.IsNull ? SafeHDC.ScreenCompatibleDCHandle : hdc, pts, 1);
-			return pts[0].Y;
-		}
-
-		/// <summary>Converts a width in logical units to pixels.</summary>
-		/// <param name="width">The width in logical units.</param>
-		/// <param name="hdc">The device context handle.</param>
-		/// <returns>The width in pixels.</returns>
-		public static int LogicalWidthToDeviceWidth(int width, HDC hdc = default)
-		{
-			var pts = new[] { new Point(width, 0) };
-			LPtoDP(hdc.IsNull ? SafeHDC.ScreenCompatibleDCHandle : hdc, pts, 1);
-			return pts[0].X;
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>LPtoDP</c> function converts logical coordinates into device coordinates. The conversion depends on the mapping mode of
-		/// the device context, the settings of the origins and extents for the window and viewport, and the world transformation.
-		/// </para>
-		/// </summary>
-		/// <param name="hdc">
-		/// <para>A handle to the device context.</para>
-		/// </param>
-		/// <param name="lppt">
-		/// <para>
-		/// A pointer to an array of POINT structures. The x-coordinates and y-coordinates contained in each of the <c>POINT</c> structures
-		/// will be transformed.
-		/// </para>
-		/// </param>
-		/// <param name="c">
-		/// <para>The number of points in the array.</para>
-		/// </param>
+		/// <param name="iFirst">The first character in the group of consecutive characters.</param>
+		/// <param name="iLast">The last character in the group of consecutive characters, which must not precede the specified first character.</param>
+		/// <param name="lpBuffer">A pointer to a buffer that receives the character widths, in logical coordinates.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero.</para>
 		/// </returns>
 		/// <remarks>
+		/// <para><c>GetCharWidth</c> cannot be used on TrueType fonts. To retrieve character widths for TrueType fonts, use GetCharABCWidths.</para>
 		/// <para>
-		/// The <c>LPtoDP</c> function fails if the logical coordinates exceed 32 bits, or if the converted device coordinates exceed 27
-		/// bits. In the case of such an overflow, the results for all the points are undefined.
+		/// The range is inclusive; that is, the returned widths include the widths of the characters specified by the iFirstChar and
+		/// iLastChar parameters.
 		/// </para>
-		/// <para>
-		/// <c>LPtoDP</c> calculates complex floating-point arithmetic, and it has a caching system for efficiency. Therefore, the conversion
-		/// result of an initial call to <c>LPtoDP</c> might not exactly match the conversion result of a later call to <c>LPtoDP</c>. We
-		/// recommend not to write code that relies on the exact match of the conversion results from multiple calls to <c>LPtoDP</c> even if
-		/// the parameters that are passed to each call are identical.
-		/// </para>
+		/// <para>If a character does not exist in the current font, it is assigned the width of the default character.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-lptodp
-		// BOOL LPtoDP( HDC hdc, LPPOINT lppt, int c );
-		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wingdi.h", MSDNShortId = "670a16fb-842e-4250-9ad7-dc08e849c2ba")]
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getcharwidtha
+		// BOOL GetCharWidthA( HDC hdc, UINT iFirst, UINT iLast, LPINT lpBuffer );
+		[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("wingdi.h", MSDNShortId = "be29c195-cf67-45d5-8a46-ac572afb756d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool LPtoDP(HDC hdc, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Point[] lppt, int c);
+		public static extern bool GetCharWidth(HDC hdc, uint iFirst, uint iLast, [Out] int[] lpBuffer);
 
 		/// <summary>
-		/// The SelectObject function selects an object into the specified device context (DC). The new object replaces the previous object
-		/// of the same type.
+		/// <para>Retrieves a character set identifier for the font that is currently selected into a specified device context.</para>
+		/// <para><c>Note</c> A call to this function is equivalent to a call to GetTextCharsetInfo passing <c>NULL</c> for the data buffer.</para>
 		/// </summary>
-		/// <param name="hDC">A handle to the DC.</param>
-		/// <param name="hObject">
-		/// A handle to the object to be selected. The specified object must have been created by using one of the following functions.
+		/// <param name="hdc">
+		/// Handle to a device context. The function obtains a character set identifier for the font that is selected into this device context.
 		/// </param>
 		/// <returns>
-		/// If the selected object is not a region and the function succeeds, the return value is a handle to the object being replaced. If
-		/// the selected object is a region and the function succeeds, the return value is one of the following values.
+		/// <para>
+		/// If successful, returns a value identifying the character set of the font that is currently selected into the specified device
+		/// context. The following character set identifiers are defined:
+		/// </para>
+		/// <para>If the function fails, it returns DEFAULT_CHARSET.</para>
 		/// </returns>
-		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd162957")]
-		public static extern HGDIOBJ SelectObject(HDC hDC, HGDIOBJ hObject);
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gettextcharset int GetTextCharset( HDC hdc );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "11040353-a2ea-42fe-aa89-3438ffc1fea6")]
+		public static extern CharacterSetUint GetTextCharset(HDC hdc);
 
-		/// <summary>
-		/// The SetBkMode function sets the background mix mode of the specified device context. The background mix mode is used with text,
-		/// hatched brushes, and pen styles that are not solid lines.
-		/// </summary>
-		/// <param name="hdc">A handle to the device context.</param>
-		/// <param name="mode">The background mode.</param>
+		/// <summary>Retrieves information about the character set of the font that is currently selected into a specified device context.</summary>
+		/// <param name="hdc">
+		/// Handle to a device context. The function obtains information about the font that is selected into this device context.
+		/// </param>
+		/// <param name="lpSig">
+		/// <para>Pointer to a FONTSIGNATURE data structure that receives font-signature information.</para>
+		/// <para>
+		/// If a TrueType font is currently selected into the device context, the FONTSIGNATURE structure receives information that
+		/// identifies the code page and Unicode subranges for which the font provides glyphs.
+		/// </para>
+		/// <para>
+		/// If a font other than TrueType is currently selected into the device context, the FONTSIGNATURE structure receives zeros. In this
+		/// case, the application should use the TranslateCharsetInfo function to obtain generic font-signature information for the character set.
+		/// </para>
+		/// <para>
+		/// The lpSig parameter specifies <c>NULL</c> if the application does not require the FONTSIGNATURE information. In this case, the
+		/// application can also call the GetTextCharset function, which is equivalent to calling <c>GetTextCharsetInfo</c> with lpSig set to <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">Reserved; must be set to 0.</param>
 		/// <returns>
-		/// If the function succeeds, the return value specifies the previous background mode. If the function fails, the return value is zero.
+		/// <para>
+		/// If successful, returns a value identifying the character set of the font currently selected into the specified device context.
+		/// The following character set identifiers are defined:
+		/// </para>
+		/// <para>If the function fails, the return value is DEFAULT_CHARSET.</para>
 		/// </returns>
-		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd162965")]
-		public static extern BackgroundMode SetBkMode(HDC hdc, BackgroundMode mode);
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gettextcharsetinfo int GetTextCharsetInfo( HDC hdc,
+		// LPFONTSIGNATURE lpSig, DWORD dwFlags );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "1c8c114a-b261-457c-b541-4648a8f38ee8")]
+		public static extern CharacterSetUint GetTextCharsetInfo(HDC hdc, out FONTSIGNATURE lpSig, uint dwFlags = 0);
 
-		/// <summary>The SetLayout function changes the layout of a device context (DC).</summary>
-		/// <param name="hdc">A handle to the DC.</param>
-		/// <param name="dwLayout">The DC layout.</param>
-		/// <returns>If the function succeeds, it returns the previous layout of the DC. If the function fails, it returns GDI_ERROR.</returns>
-		/// <remarks>
-		/// The layout specifies the order in which text and graphics are revealed in a window or a device context. The default is left to
-		/// right. The SetLayout function changes this to be right to left, which is the standard in Arabic and Hebrew cultures.
-		/// </remarks>
-		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd162979")]
-		public static extern DCLayout SetLayout(HDC hdc, DCLayout dwLayout);
-
-		/// <summary>
-		/// The TransparentBlt function performs a bit-block transfer of the color data corresponding to a rectangle of pixels from the
-		/// specified source device context into a destination device context.
-		/// </summary>
-		/// <param name="hdcDest">A handle to the destination device context.</param>
-		/// <param name="xOriginDest">The x-coordinate, in logical units, of the upper-left corner of the destination rectangle.</param>
-		/// <param name="yOriginDest">The y-coordinate, in logical units, of the upper-left corner of the destination rectangle.</param>
-		/// <param name="wDest">The width, in logical units, of the destination rectangle.</param>
-		/// <param name="hDest">The height, in logical units, of the destination rectangle.</param>
-		/// <param name="hdcSrc">A handle to the source device context.</param>
-		/// <param name="xOriginSrc">The x-coordinate, in logical units, of the upper-left corner of the source rectangle.</param>
-		/// <param name="yOriginSrc">The y-coordinate, in logical units, of the upper-left corner of the source rectangle.</param>
-		/// <param name="wSrc">The width, in logical units, of the source rectangle.</param>
-		/// <param name="hSrc">The height, in logical units, of the source rectangle.</param>
-		/// <param name="crTransparent">The RGB color in the source bitmap to treat as transparent.</param>
-		/// <returns>If the function succeeds, the return value is TRUE. If the function fails, the return value is FALSE.</returns>
-		/// <remarks>
-		/// The TransparentBlt function works with compatible bitmaps (DDBs).
-		/// <para>
-		/// The TransparentBlt function supports all formats of source bitmaps. However, for 32 bpp bitmaps, it just copies the alpha value
-		/// over. Use AlphaBlend to specify 32 bits-per-pixel bitmaps with transparency.
-		/// </para>
-		/// <para>
-		/// If the source and destination rectangles are not the same size, the source bitmap is stretched to match the destination
-		/// rectangle. When the SetStretchBltMode function is used, the iStretchMode modes of BLACKONWHITE and WHITEONBLACK are converted to
-		/// COLORONCOLOR for the TransparentBlt function.
-		/// </para>
-		/// <para>
-		/// The destination device context specifies the transformation type for the destination coordinates. The source device context
-		/// specifies the transformation type for the source coordinates.
-		/// </para>
-		/// <para>TransparentBlt does not mirror a bitmap if either the width or height, of either the source or destination, is negative.</para>
-		/// <para>
-		/// When used in a multiple monitor system, both hdcSrc and hdcDest must refer to the same device or the function will fail. To
-		/// transfer data between DCs for different devices, convert the memory bitmap to a DIB by calling GetDIBits. To display the DIB to
-		/// the second device, call SetDIBits or StretchDIBits.
-		/// </para>
-		/// </remarks>
-		[DllImport(Lib.Gdi32, SetLastError = true, EntryPoint = "GdiTransparentBlt")]
+		/// <summary>Translates character set information and sets all members of a destination structure to appropriate values.</summary>
+		/// <param name="lpSrc">
+		/// Pointer to the <c>fsCsb</c> member of a FONTSIGNATURE structure if dwFlags is set to TCI_SRCFONTSIG. Otherwise, this parameter is
+		/// set to a DWORD value indicating the source.
+		/// </param>
+		/// <param name="lpCs">Pointer to a CHARSETINFO structure that receives the translated character set information.</param>
+		/// <param name="dwFlags">
+		/// <para>Flags specifying how to perform the translation. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TCI_SRCCHARSET</term>
+		/// <term>Source contains the character set value in the low word, and 0 in the high word.</term>
+		/// </item>
+		/// <item>
+		/// <term>TCI_SRCCODEPAGE</term>
+		/// <term>Source is a code page identifier in the low word and 0 in the high word.</term>
+		/// </item>
+		/// <item>
+		/// <term>TCI_SRCFONTSIG</term>
+		/// <term>
+		/// Source is the code page bitfield portion of a FONTSIGNATURE structure. On input this should have only one Windows code-page bit
+		/// set, either for an ANSI code page value or for a common ANSI and OEM value (for OEM values, bits 32-63 must be clear). On output,
+		/// this has only one bit set. If the TCI_SRCFONTSIG value is given, the lpSrc parameter must be the address of the code-page
+		/// bitfield. If any other TCI_ value is given, the lpSrc parameter must be a value not an address.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>TCI_SRCLOCALE</term>
+		/// <term>
+		/// Windows 2000: Source is the locale identifier (LCID) or language identifier of the keyboard layout. If it is a language
+		/// identifier, the value is in the low word.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// Returns a nonzero value if successful, or 0 otherwise. To get extended error information, the application can call GetLastError.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-translatecharsetinfo BOOL TranslateCharsetInfo( DWORD *lpSrc,
+		// LPCHARSETINFO lpCs, DWORD dwFlags );
+		[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "0e6e81f1-ec7b-42ba-8706-a352349fa6ab")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd145141")]
-		public static extern bool TransparentBlt(HDC hdcDest, int xOriginDest, int yOriginDest, int wDest, int hDest, HDC hdcSrc, int xOriginSrc, int yOriginSrc, int wSrc, int hSrc, int crTransparent);
+		public static extern bool TranslateCharsetInfo(ref uint lpSrc, out CHARSETINFO lpCs, TCI dwFlags);
+
+		/// <summary>Translates character set information and sets all members of a destination structure to appropriate values.</summary>
+		/// <param name="lpSrc">
+		/// Pointer to the <c>fsCsb</c> member of a FONTSIGNATURE structure if dwFlags is set to TCI_SRCFONTSIG. Otherwise, this parameter is
+		/// set to a DWORD value indicating the source.
+		/// </param>
+		/// <param name="lpCs">Pointer to a CHARSETINFO structure that receives the translated character set information.</param>
+		/// <param name="dwFlags">
+		/// <para>Flags specifying how to perform the translation. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TCI_SRCCHARSET</term>
+		/// <term>Source contains the character set value in the low word, and 0 in the high word.</term>
+		/// </item>
+		/// <item>
+		/// <term>TCI_SRCCODEPAGE</term>
+		/// <term>Source is a code page identifier in the low word and 0 in the high word.</term>
+		/// </item>
+		/// <item>
+		/// <term>TCI_SRCFONTSIG</term>
+		/// <term>
+		/// Source is the code page bitfield portion of a FONTSIGNATURE structure. On input this should have only one Windows code-page bit
+		/// set, either for an ANSI code page value or for a common ANSI and OEM value (for OEM values, bits 32-63 must be clear). On output,
+		/// this has only one bit set. If the TCI_SRCFONTSIG value is given, the lpSrc parameter must be the address of the code-page
+		/// bitfield. If any other TCI_ value is given, the lpSrc parameter must be a value not an address.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>TCI_SRCLOCALE</term>
+		/// <term>
+		/// Windows 2000: Source is the locale identifier (LCID) or language identifier of the keyboard layout. If it is a language
+		/// identifier, the value is in the low word.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// Returns a nonzero value if successful, or 0 otherwise. To get extended error information, the application can call GetLastError.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-translatecharsetinfo BOOL TranslateCharsetInfo( DWORD *lpSrc,
+		// LPCHARSETINFO lpCs, DWORD dwFlags );
+		[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "0e6e81f1-ec7b-42ba-8706-a352349fa6ab")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool TranslateCharsetInfo(IntPtr lpSrc, out CHARSETINFO lpCs, TCI dwFlags);
+
+		/// <summary>Contains information about a character set.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-charsetinfo typedef struct tagCHARSETINFO { UINT ciCharset;
+		// UINT ciACP; FONTSIGNATURE fs; } CHARSETINFO, *PCHARSETINFO, *NPCHARSETINFO, *LPCHARSETINFO;
+		[PInvokeData("wingdi.h", MSDNShortId = "4f815f53-9fac-41f3-9493-bd8d68cff543")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CHARSETINFO
+		{
+			/// <summary>Character set value.</summary>
+			public uint ciCharset;
+
+			/// <summary>Windows ANSI code page identifier. For a list of identifiers, see Code Page Identifiers.</summary>
+			public uint ciACP;
+
+			/// <summary>
+			/// A FONTSIGNATURE structure that identifies the Unicode subrange and the specific Windows ANSI character set/code page. Only
+			/// one code page will be set when this structure is set by the function.
+			/// </summary>
+			public FONTSIGNATURE fs;
+		}
 
 		/// <summary>
 		/// The <c>DISPLAY_DEVICE</c> structure receives information about the display device specified by the iDevNum parameter of the

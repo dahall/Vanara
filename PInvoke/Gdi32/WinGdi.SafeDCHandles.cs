@@ -152,7 +152,7 @@ namespace Vanara.PInvoke
 			public static implicit operator SafeHDC(Graphics graphics) => new SafeHDC(graphics);
 
 			/// <summary>Gets the compatible device context handle.</summary>
-			/// <returns></returns>
+			/// <returns>A device context handle.</returns>
 			public SafeHDC GetCompatibleDCHandle() => CreateCompatibleDC(this);
 
 			/// <summary>Creates a context into which a graphics object is selected.</summary>

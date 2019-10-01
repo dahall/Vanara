@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke
@@ -9,6 +10,20 @@ namespace Vanara.PInvoke
 	/// <summary>Extension methods to convert GdiObj handle variants to their .NET equivalents.</summary>
 	public static class GdiObjExtensions
 	{
+		/// <summary>Converts the generic GDI object handle to a specific handle.</summary>
+		/// <typeparam name="T">The handle type to which to convert.</typeparam>
+		/// <param name="hObj">The generic GDI object handle.</param>
+		/// <returns>The converted handle of type <typeparamref name="T"/>.</returns>
+		/// <exception cref="ArgumentException">The conversion type specified is not valid for the supplied GDI object.</exception>
+		public static T ConvertTo<T>(this IGraphicsObjectHandle hObj) where T : IGraphicsObjectHandle
+		{
+			var ot = GetObjectType(hObj.DangerousGetHandle());
+			if (ot == 0) Win32Error.ThrowLastError();
+			if (!CorrespondingTypeAttribute.CanGet(ot, typeof(T)))
+				throw new ArgumentException($"The conversion type specified is not valid for the supplied GDI object.");
+			return (T)(object)hObj.DangerousGetHandle();
+		}
+
 		/// <summary>Draws on a device context (<see cref="Graphics"/>) via a DIB section. This is useful when you need to draw on a transparent background.</summary>
 		/// <param name="dc">The device context.</param>
 		/// <param name="bounds">The bounds of the device context to paint.</param>
@@ -144,9 +159,11 @@ namespace Vanara.PInvoke
 			public NativeBrush(HBRUSH hBrush)
 			{
 				var lb = GetObject<LOGBRUSH>(hBrush);
-				var b2 = CreateBrushIndirect(lb);
-				SetNativeBrush(b2.DangerousGetHandle());
-				b2.SetHandleAsInvalid();
+				using (var b2 = CreateBrushIndirect(lb))
+				{
+					SetNativeBrush(b2.DangerousGetHandle());
+					b2.SetHandleAsInvalid();
+				}
 			}
 
 			public override object Clone() => this;

@@ -70,7 +70,7 @@ namespace Vanara.PInvoke
 
 	/// <summary>The character set.</summary>
 	[PInvokeData("Wingdi.h", MSDNShortId = "dd145037")]
-	public enum LogFontCharSet : byte
+	public enum CharacterSet : byte
 	{
 		/// <summary>Specifies the English character set.</summary>
 		ANSI_CHARSET = 0,
@@ -341,16 +341,19 @@ namespace Vanara.PInvoke
 		private int _lfWeight;
 
 		/// <summary>An italic font if set to TRUE.</summary>
-		private byte _lfItalic;
+		[MarshalAs(UnmanagedType.U1)]
+		public bool lfItalic;
 
 		/// <summary>An underlined font if set to TRUE.</summary>
-		private byte _lfUnderline;
+		[MarshalAs(UnmanagedType.U1)]
+		public bool lfUnderline;
 
 		/// <summary>A strikeout font if set to TRUE.</summary>
-		private byte _lfStrikeOut;
+		[MarshalAs(UnmanagedType.U1)]
+		public bool lfStrikeOut;
 
 		/// <summary>The character set.</summary>
-		public LogFontCharSet lfCharSet;
+		public CharacterSet lfCharSet;
 
 		/// <summary>
 		/// The output precision. The output precision defines how closely the output must match the requested font's height, width,
@@ -401,27 +404,6 @@ namespace Vanara.PInvoke
 					throw new ArgumentException(@"The face name may not have more than 31 characters.", nameof(lfFaceName));
 				_lfFaceName = value;
 			}
-		}
-
-		/// <summary>Gets or sets a value indicating whether this <see cref="LOGFONT"/> is italicized.</summary>
-		/// <value><c>true</c> if italicized; otherwise, <c>false</c>.</value>
-		public bool lfItalic
-		{
-			get => _lfItalic == 1; set => _lfItalic = System.Convert.ToByte(value);
-		}
-
-		/// <summary>Gets or sets a value indicating whether struck out.</summary>
-		/// <value><c>true</c> if struck out; otherwise, <c>false</c>.</value>
-		public bool lfStrikeOut
-		{
-			get => _lfStrikeOut == 1; set => _lfStrikeOut = System.Convert.ToByte(value);
-		}
-
-		/// <summary>Gets or sets a value indicating whether this <see cref="LOGFONT"/> is underlined.</summary>
-		/// <value><c>true</c> if underlined; otherwise, <c>false</c>.</value>
-		public bool lfUnderline
-		{
-			get => _lfUnderline == 1; set => _lfUnderline = System.Convert.ToByte(value);
 		}
 
 		/// <summary>

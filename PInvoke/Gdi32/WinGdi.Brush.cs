@@ -348,49 +348,6 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// The <c>GetSysColorBrush</c> function retrieves a handle identifying a logical brush that corresponds to the specified color index.
-		/// </para>
-		/// </summary>
-		/// <param name="nIndex">
-		/// <para>
-		/// A color index. This value corresponds to the color used to paint one of the window elements. See GetSysColor for system color
-		/// index values.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// The return value identifies a logical brush if the nIndex parameter is supported by the current platform. Otherwise, it returns <c>NULL</c>.
-		/// </para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// A brush is a bitmap that the system uses to paint the interiors of filled shapes. An application can retrieve the current system
-		/// colors by calling the GetSysColor function. An application can set the current system colors by calling the SetSysColors function.
-		/// </para>
-		/// <para>
-		/// An application must not register a window class for a window using a system brush. To register a window class with a system
-		/// color, see the documentation of the <c>hbrBackground</c> member of the WNDCLASS or WNDCLASSEX structures.
-		/// </para>
-		/// <para>
-		/// System color brushes track changes in system colors. In other words, when the user changes a system color, the associated system
-		/// color brush automatically changes to the new color.
-		/// </para>
-		/// <para>
-		/// To paint with a system color brush, an application should use <c>GetSysColorBrush</c> (nIndex) instead of CreateSolidBrush (
-		/// GetSysColor (nIndex)), because <c>GetSysColorBrush</c> returns a cached brush instead of allocating a new one.
-		/// </para>
-		/// <para>
-		/// System color brushes are owned by the system so you don't need to destroy them. Although you don't need to delete the logical
-		/// brush that <c>GetSysColorBrush</c> returns, no harm occurs by calling DeleteObject.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getsyscolorbrush HBRUSH GetSysColorBrush( int nIndex );
-		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("winuser.h", MSDNShortId = "07a1d8e3-eae8-40ab-9d0f-4efa9fac0117")]
-		public static extern HBRUSH GetSysColorBrush(SystemColorIndex nIndex);
-
-		/// <summary>
-		/// <para>
 		/// The <c>PatBlt</c> function paints the specified rectangle using the brush that is currently selected into the specified device
 		/// context. The brush color and the surface color or colors are combined by using the specified raster operation.
 		/// </para>
@@ -527,16 +484,45 @@ namespace Vanara.PInvoke
 		public static extern bool SetBrushOrgEx(HDC hdc, int x, int y, in Point lppt);
 
 		/// <summary>
-		/// <para>
-		/// The <c>LOGBRUSH</c> structure defines the style, color, and pattern of a physical brush. It is used by the CreateBrushIndirect
-		/// and ExtCreatePen functions.
-		/// </para>
+		/// <c>SetDCBrushColor</c> function sets the current device context (DC) brush color to the specified color value. If the device
+		/// cannot represent the specified color value, the color is set to the nearest physical color.
 		/// </summary>
+		/// <param name="hdc">A handle to the DC.</param>
+		/// <param name="color">The new brush color.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value specifies the previous DC brush color as a COLORREF value.</para>
+		/// <para>If the function fails, the return value is CLR_INVALID.</para>
+		/// </returns>
 		/// <remarks>
 		/// <para>
+		/// When the stock DC_BRUSH is selected in a DC, all the subsequent drawings will be done using the DC brush color until the stock
+		/// brush is deselected. The default DC_BRUSH color is WHITE.
+		/// </para>
+		/// <para>
+		/// The function returns the previous DC_BRUSH color, even if the stock brush DC_BRUSH is not selected in the DC: however, this will
+		/// not be used in drawing operations until the stock DC_BRUSH is selected in the DC.
+		/// </para>
+		/// <para>
+		/// The GetStockObject function with an argument of DC_BRUSH or DC_PEN can be used interchangeably with the SetDCPenColor and
+		/// <c>SetDCBrushColor</c> functions.
+		/// </para>
+		/// <para><c>ICM:</c> Color management is performed if ICM is enabled.</para>
+		/// <para>Examples</para>
+		/// <para>For an example of setting colors, see Setting the Pen or Brush Color.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setdcbrushcolor
+		// COLORREF SetDCBrushColor( HDC hdc, COLORREF color );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "4feed536-2f1d-4a25-8311-7cae303167ca")]
+		public static extern COLORREF SetDCBrushColor(HDC hdc, COLORREF color);
+
+		/// <summary>
+		/// The <c>LOGBRUSH</c> structure defines the style, color, and pattern of a physical brush. It is used by the CreateBrushIndirect
+		/// and ExtCreatePen functions.
+		/// </summary>
+		/// <remarks>
 		/// Although <c>lbColor</c> controls the foreground color of a hatch brush, the SetBkMode and SetBkColor functions control the
 		/// background color.
-		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/ns-wingdi-taglogbrush typedef struct tagLOGBRUSH { UINT lbStyle;
 		// COLORREF lbColor; ULONG_PTR lbHatch; } LOGBRUSH, *PLOGBRUSH, *NPLOGBRUSH, *LPLOGBRUSH;

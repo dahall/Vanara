@@ -613,6 +613,24 @@ namespace Vanara.PInvoke
 		[PInvokeData("wingdi.h", MSDNShortId = "233926c4-2658-405d-89b6-05ece844623d")]
 		public static extern System.Drawing.Drawing2D.FillMode SetPolyFillMode(HDC hdc, System.Drawing.Drawing2D.FillMode mode);
 
+		/// <summary>The <c>SetRectRgn</c> function converts a region into a rectangular region with the specified coordinates.</summary>
+		/// <param name="hrgn">Handle to the region.</param>
+		/// <param name="left">Specifies the x-coordinate of the upper-left corner of the rectangular region in logical units.</param>
+		/// <param name="top">Specifies the y-coordinate of the upper-left corner of the rectangular region in logical units.</param>
+		/// <param name="right">Specifies the x-coordinate of the lower-right corner of the rectangular region in logical units.</param>
+		/// <param name="bottom">Specifies the y-coordinate of the lower-right corner of the rectangular region in logical units.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>The region does not include the lower and right boundaries of the rectangle.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setrectrgn
+		// BOOL SetRectRgn( HRGN hrgn, int left, int top, int right, int bottom );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "9a024d61-f397-43d8-a48e-edb8102a6f55")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetRectRgn(HRGN hrgn, int left, int top, int right, int bottom);
+
 		/// <summary>The <c>RGNDATAHEADER</c> structure describes the data returned by the GetRegionData function.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/ns-wingdi-_rgndataheader typedef struct _RGNDATAHEADER { DWORD dwSize;
 		// DWORD iType; DWORD nCount; DWORD nRgnSize; RECT rcBound; } RGNDATAHEADER, *PRGNDATAHEADER;
@@ -637,144 +655,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>A bounding rectangle for the region in logical units.</summary>
 			public RECT rcBound;
-		}
-
-		/// <summary>The <c>XFORM</c> structure specifies a world-space to page-space transformation.</summary>
-		/// <remarks>
-		/// <para>The following list describes how the members are used for each operation.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Operation</term>
-		/// <term>eM11</term>
-		/// <term>eM12</term>
-		/// <term>eM21</term>
-		/// <term>eM22</term>
-		/// </listheader>
-		/// <item>
-		/// <term>Rotation</term>
-		/// <term>Cosine</term>
-		/// <term>Sine</term>
-		/// <term>Negative sine</term>
-		/// <term>Cosine</term>
-		/// </item>
-		/// <item>
-		/// <term>Scaling</term>
-		/// <term>Horizontal scaling component</term>
-		/// <term>Not used</term>
-		/// <term>Not used</term>
-		/// <term>Vertical Scaling Component</term>
-		/// </item>
-		/// <item>
-		/// <term>Shear</term>
-		/// <term>Not used</term>
-		/// <term>Horizontal Proportionality Constant</term>
-		/// <term>Vertical Proportionality Constant</term>
-		/// <term>Not used</term>
-		/// </item>
-		/// <item>
-		/// <term>Reflection</term>
-		/// <term>Horizontal Reflection Component</term>
-		/// <term>Not used</term>
-		/// <term>Not used</term>
-		/// <term>Vertical Reflection Component</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/ns-wingdi-xform typedef struct tagXFORM { FLOAT eM11; FLOAT eM12;
-		// FLOAT eM21; FLOAT eM22; FLOAT eDx; FLOAT eDy; } XFORM, *PXFORM, *LPXFORM;
-		[PInvokeData("wingdi.h", MSDNShortId = "49f0d7ee-77fa-415e-af00-b8930253a3a9")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct XFORM
-		{
-			/// <summary>
-			/// <para>The following.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Operation</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>Scaling</term>
-			/// <term>Horizontal scaling component</term>
-			/// </item>
-			/// <item>
-			/// <term>Rotation</term>
-			/// <term>Cosine of rotation angle</term>
-			/// </item>
-			/// <item>
-			/// <term>Reflection</term>
-			/// <term>Horizontal component</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public float eM11;
-
-			/// <summary>
-			/// <para>The following.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Operation</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>Shear</term>
-			/// <term>Horizontal proportionality constant</term>
-			/// </item>
-			/// <item>
-			/// <term>Rotation</term>
-			/// <term>Sine of the rotation angle</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public float eM12;
-
-			/// <summary>
-			/// <para>The following.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Operation</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>Shear</term>
-			/// <term>Vertical proportionality constant</term>
-			/// </item>
-			/// <item>
-			/// <term>Rotation</term>
-			/// <term>Negative sine of the rotation angle</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public float eM21;
-
-			/// <summary>
-			/// <para>The following.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Operation</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>Scaling</term>
-			/// <term>Vertical scaling component</term>
-			/// </item>
-			/// <item>
-			/// <term>Rotation</term>
-			/// <term>Cosine of rotation angle</term>
-			/// </item>
-			/// <item>
-			/// <term>Reflection</term>
-			/// <term>Vertical reflection component</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public float eM22;
-
-			/// <summary>The horizontal translation component, in logical units.</summary>
-			public float eDx;
-
-			/// <summary>The vertical translation component, in logical units.</summary>
-			public float eDy;
 		}
 
 		/// <summary>

@@ -337,6 +337,23 @@ namespace Vanara.PInvoke
 		public static extern uint GetEnhMetaFilePixelFormat(HENHMETAFILE hemf, uint cbBuffer, ref PIXELFORMATDESCRIPTOR ppfd);
 
 		/// <summary>
+		/// The <c>GetPixelFormat</c> function obtains the index of the currently selected pixel format of the specified device context.
+		/// </summary>
+		/// <param name="hdc">Specifies the device context of the currently selected pixel format index returned by the function.</param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is the currently selected pixel format index of the specified device context. This is
+		/// a positive, one-based index value.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getpixelformat
+		// int GetPixelFormat( HDC hdc );
+		[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "e9a65f3a-6932-462f-b342-a993d222fae8")]
+		public static extern int GetPixelFormat(HDC hdc);
+
+		/// <summary>
 		/// The <c>SetPixelFormat</c> function sets the pixel format of the specified device context to the format specified by the
 		/// iPixelFormat index.
 		/// </summary>
