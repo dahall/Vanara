@@ -186,6 +186,9 @@ namespace Vanara.PInvoke
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString() => $"{{left={left},top={top},right={right},bottom={bottom}}}";
+
+		/// <summary>Represents an empty instance where all values are set to 0.</summary>
+		public static readonly RECT Empty = new RECT();
 	}
 
 	/// <summary>Defines the coordinates of the upper-left and lower-right corners of a rectangle.</summary>
