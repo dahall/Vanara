@@ -18,11 +18,13 @@ namespace Vanara.InteropServices
 
 		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class from a copy of a managed TElem array.</summary>
 		/// <param name="array">The array of bytes to copy.</param>
-		public SafeNativeArray(TElem[] array) : base(array, 0) { }
+		/// <param name="headerSize">The number of bytes to allocate in front of the array allocation.</param>
+		public SafeNativeArray(TElem[] array, uint headerSize = 0) : base(array, headerSize) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
 		/// <param name="elementCount">The element count. This value can be 0.</param>
-		public SafeNativeArray(int elementCount) : base((uint)(ElemSize * elementCount), 0) { }
+		/// <param name="headerSize">The number of bytes to allocate in front of the array allocation.</param>
+		public SafeNativeArray(int elementCount, uint headerSize = 0) : base((uint)(ElemSize * elementCount), headerSize) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
 		/// <param name="ptr">The handle.</param>
