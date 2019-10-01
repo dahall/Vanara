@@ -2283,43 +2283,6 @@ namespace Vanara.PInvoke
 		}
 
 		/*
-		CryptCATAdminAcquireContext https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatadminacquirecontext
-		CryptCATAdminAcquireContext2 https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatadminacquirecontext2
-		CryptCATAdminAddCatalog https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatadminaddcatalog
-		CryptCATAdminCalcHashFromFileHandle https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatadmincalchashfromfilehandle
-		CryptCATAdminCalcHashFromFileHandle2 https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatadmincalchashfromfilehandle2
-		CryptCATAdminReleaseCatalogContext https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatadminreleasecatalogcontext
-		CryptCATAdminReleaseContext https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatadminreleasecontext
-		CryptCATAdminRemoveCatalog https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatadminremovecatalog
-		CryptCATAdminResolveCatalogPath https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatadminresolvecatalogpath
-		CryptCATCDFClose https://docs.microsoft.com/en-us/windows/desktop/api/Mscat/nf-mscat-cryptcatcdfclose
-		CryptCATCDFEnumAttributesWithCDFTag https://docs.microsoft.com/en-us/windows/desktop/SecCrypto/cryptcatcdfenumattributeswithcdftag
-		CryptCATCDFEnumCatAttributes https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatcdfenumcatattributes
-		CryptCATCDFEnumMembersByCDFTagEx https://docs.microsoft.com/en-us/windows/desktop/SecCrypto/cryptcatcdfenummembersbycdftagex
-		CryptCATCDFOpen https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatcdfopen
-		CryptCATCatalogInfoFromContext https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatcataloginfofromcontext
-		CryptCATClose https://docs.microsoft.com/en-us/windows/desktop/api/Mscat/nf-mscat-cryptcatclose
-		CryptCATEnumerateAttr https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatenumerateattr
-		CryptCATEnumerateCatAttr https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatenumeratecatattr
-		CryptCATEnumerateMember https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatenumeratemember
-		CryptCATGetAttrInfo https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatgetattrinfo
-		CryptCATGetMemberInfo https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatgetmemberinfo
-		CryptCATHandleFromStore https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcathandlefromstore
-		CryptCATOpen https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatopen
-		CryptCATPersistStore https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatpersiststore
-		CryptCATPutAttrInfo https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatputattrinfo
-		CryptCATPutCatAttrInfo https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatputcatattrinfo
-		CryptCATPutMemberInfo https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatputmemberinfo
-		CryptCATStoreFromHandle https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-cryptcatstorefromhandle
-		CryptSIPCreateIndirectData https://docs.microsoft.com/en-us/windows/desktop/api/mssip/nf-mssip-cryptsipcreateindirectdata
-		CryptSIPGetCaps https://docs.microsoft.com/en-us/windows/desktop/api/mssip/nf-mssip-cryptsipgetcaps
-		CryptSIPGetSignedDataMsg https://docs.microsoft.com/en-us/windows/desktop/api/mssip/nf-mssip-cryptsipgetsigneddatamsg
-		CryptSIPPutSignedDataMsg https://docs.microsoft.com/en-us/windows/desktop/api/mssip/nf-mssip-cryptsipputsigneddatamsg
-		CryptSIPRemoveSignedDataMsg https://docs.microsoft.com/en-us/windows/desktop/api/mssip/nf-mssip-cryptsipremovesigneddatamsg
-		CryptSIPVerifyIndirectData https://docs.microsoft.com/en-us/windows/desktop/api/mssip/nf-mssip-cryptsipverifyindirectdata
-		DllRegisterServer https://docs.microsoft.com/en-us/windows/desktop/api/olectl/nf-olectl-dllregisterserver
-		DllUnregisterServer https://docs.microsoft.com/en-us/windows/desktop/api/olectl/nf-olectl-dllunregisterserver
-		IsCatalogFile https://docs.microsoft.com/en-us/windows/desktop/api/mscat/nf-mscat-iscatalogfile
 		OpenPersonalTrustDBDialog https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-openpersonaltrustdbdialog
 		OpenPersonalTrustDBDialogEx https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-openpersonaltrustdbdialogex
 		WTHelperCertCheckValidSignature https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wthelpercertcheckvalidsignature
