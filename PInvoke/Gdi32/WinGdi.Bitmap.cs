@@ -32,7 +32,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>The type of fill operation to be performed.</summary>
 		[PInvokeData("wingdi.h", MSDNShortId = "b996d47d-5aaf-4b13-8643-209744e5a04b")]
-		public enum FloodFill : uint
+		public enum FloodFillType : uint
 		{
 			/// <summary>
 			/// The fill area is bounded by the color specified by the crColor parameter. This style is identical to the filling performed by
@@ -792,7 +792,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "b996d47d-5aaf-4b13-8643-209744e5a04b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ExtFloodFill(HDC hdc, int x, int y, COLORREF color, FloodFill type);
+		public static extern bool ExtFloodFill(HDC hdc, int x, int y, COLORREF color, FloodFillType type);
 
 		/// <summary>
 		/// <para>
