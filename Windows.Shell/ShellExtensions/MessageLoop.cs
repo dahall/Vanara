@@ -25,7 +25,7 @@ namespace Vanara.PInvoke
 		public MessageLoop() => curThreadId = GetCurrentThreadId();
 
 		/// <summary>Occurs when a new message is available.</summary>
-		public event EventHandlerEx<MessageEventArgs> ProcessMessage;
+		public event EventHandler<MessageEventArgs> ProcessMessage;
 
 		/// <summary>Gets a value indicating whether this <see cref="MessageLoop"/> is running.</summary>
 		/// <value><see langword="true"/> if running; otherwise, <see langword="false"/>.</value>
