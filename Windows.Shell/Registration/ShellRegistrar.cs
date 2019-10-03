@@ -216,6 +216,7 @@ namespace Vanara.Windows.Shell
 			NotifyShell();
 		}
 
+#if !NETCOREAPP3_0
 		/// <summary>Registers the specified type as a COM Local Server.</summary>
 		/// <typeparam name="TComObject">The type of the COM object.</typeparam>
 		/// <param name="pszFriendlyName">The friendly name of the COM object.</param>
@@ -249,6 +250,7 @@ namespace Vanara.Windows.Shell
 				rLS32.SetValue("ServerExecutable", cmdLine);
 			}
 		}
+#endif
 
 		/// <summary>
 		/// Registers the ProgID.

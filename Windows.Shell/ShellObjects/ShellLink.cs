@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.AccessControl;
 using System.Security.Permissions;
+using System.Security.Principal;
 using System.Windows.Forms;
 using Vanara.Extensions;
 using Vanara.PInvoke;
@@ -309,7 +311,7 @@ namespace Vanara.Windows.Shell
 		/// </param>
 		/// <returns>A FileSecurity object that encapsulates the access control rules for the current file.</returns>
 		public FileSecurity GetAccessControl(AccessControlSections includeSections = AccessControlSections.Access | AccessControlSections.Group | AccessControlSections.Owner) =>
-			File.GetAccessControl(FullPath, includeSections);
+			new FileSecurity(FullPath, includeSections);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -334,7 +336,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="fileSecurity">
 		/// A FileSecurity object that describes an access control list (ACL) entry to apply to the current file.
 		/// </param>
-		public void SetAccessControl(FileSecurity fileSecurity) => File.SetAccessControl(FullPath, fileSecurity);
+		public void SetAccessControl(FileSecurity fileSecurity) => new FileInfo(FullPath).SetAccessControl(fileSecurity);
 
 		/*/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
