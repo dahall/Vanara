@@ -1,5 +1,5 @@
 ## Correlation report for crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll  
-### Methods (38% complete)  
+### Methods (38% complete, 135 of 350 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BCryptAddContextFunction](http://msdn2.microsoft.com/en-us/library/4f5b6db0-775d-42de-b9d9-a99fb11c89f2) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptAddContextFunction](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptAddContextFunction)  

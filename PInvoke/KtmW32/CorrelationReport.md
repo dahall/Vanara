@@ -1,5 +1,5 @@
 ## Correlation report for ktmw32.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 39 of 39 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CommitComplete](http://msdn2.microsoft.com/en-us/library/de3e3a26-3e56-4732-8e7c-945b45593aed) | ktmw32.h | [Vanara.PInvoke.KtmW32.CommitComplete](https://github.com/dahall/Vanara/search?l=C%23&q=CommitComplete)  

@@ -1,5 +1,5 @@
 ## Correlation report for oleacc.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 15 of 15 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AccessibleChildren](http://msdn2.microsoft.com/en-us/library/dc9262d8-f57f-41f8-8945-d95f38d197e9) | oleacc.h | [Vanara.PInvoke.Oleacc.AccessibleChildren](https://github.com/dahall/Vanara/search?l=C%23&q=AccessibleChildren)  

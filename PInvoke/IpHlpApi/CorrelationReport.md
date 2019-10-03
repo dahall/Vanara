@@ -1,5 +1,5 @@
 ## Correlation report for iphlpapi.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 155 of 155 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AddIPAddress](http://msdn2.microsoft.com/en-us/library/669264cd-a43c-4681-9416-2704d4232685) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.AddIPAddress](https://github.com/dahall/Vanara/search?l=C%23&q=AddIPAddress)  

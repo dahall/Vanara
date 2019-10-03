@@ -1,5 +1,5 @@
 ## Correlation report for shlwapi.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 211 of 211 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AssocCreate](http://msdn2.microsoft.com/en-us/library/33099e0e-73e3-4047-804f-765a59e42e3f) | shlwapi.h | [Vanara.PInvoke.ShlwApi.AssocCreate](https://github.com/dahall/Vanara/search?l=C%23&q=AssocCreate)  

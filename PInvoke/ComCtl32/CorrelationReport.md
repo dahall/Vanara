@@ -1,5 +1,5 @@
 ## Correlation report for comctl32.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 69 of 69 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_TrackMouseEvent](http://msdn2.microsoft.com/en-us/library/ms646266) | CommCtrl.h | [Vanara.PInvoke.ComCtl32._TrackMouseEvent](https://github.com/dahall/Vanara/search?l=C%23&q=_TrackMouseEvent)  

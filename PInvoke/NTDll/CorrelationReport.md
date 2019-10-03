@@ -1,5 +1,5 @@
 ## Correlation report for ntdll.dll  
-### Methods (4% complete)  
+### Methods (4% complete, 23 of 484 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Amicrosoft.com) |  |   

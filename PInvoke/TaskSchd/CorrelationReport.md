@@ -1,5 +1,5 @@
 ## Correlation report for taskschd.dll, mstask.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 2 of 2 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [GetNetScheduleAccountInformation](http://msdn2.microsoft.com/en-us/library/aa370264) | mstask.dll | AtAcct.h | [Vanara.PInvoke.MSTask.GetNetScheduleAccountInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetNetScheduleAccountInformation)  

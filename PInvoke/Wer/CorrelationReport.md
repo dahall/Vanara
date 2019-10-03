@@ -1,5 +1,5 @@
 ## Correlation report for wer.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 15 of 15 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [WerAddExcludedApplication](http://msdn2.microsoft.com/en-us/library/ac1ec373-868f-4634-8658-4253d4f5923a) | werapi.h | [Vanara.PInvoke.Wer.WerAddExcludedApplication](https://github.com/dahall/Vanara/search?l=C%23&q=WerAddExcludedApplication)  

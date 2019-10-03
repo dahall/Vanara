@@ -1,5 +1,5 @@
 ## Correlation report for ws2_32.dll  
-### Methods (13% complete)  
+### Methods (13% complete, 20 of 146 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [__WSAFDIsSet](https://www.google.com/search?num=5&q=__WSAFDIsSet+site%3Amicrosoft.com) |  |   

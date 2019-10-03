@@ -1,5 +1,5 @@
 ## Correlation report for wininet.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 108 of 108 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CommitUrlCacheEntryA](http://msdn2.microsoft.com/en-us/library/4bd21b30-cac5-482b-9826-b5a4ffeeebe9) | wininet.h | [Vanara.PInvoke.WinINet.CommitUrlCacheEntry](https://github.com/dahall/Vanara/search?l=C%23&q=CommitUrlCacheEntry)  

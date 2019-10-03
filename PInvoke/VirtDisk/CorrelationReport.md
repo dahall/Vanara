@@ -1,5 +1,5 @@
 ## Correlation report for virtdisk.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 27 of 27 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AddVirtualDiskParent](https://www.google.com/search?num=5&q=AddVirtualDiskParent+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.AddVirtualDiskParent](https://github.com/dahall/Vanara/search?l=C%23&q=AddVirtualDiskParent)  

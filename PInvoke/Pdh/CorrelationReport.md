@@ -1,5 +1,5 @@
 ## Correlation report for pdh.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 58 of 58 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [PdhAddCounter](http://msdn2.microsoft.com/en-us/library/b8b9a332-ce28-46d4-92e2-91f9f6c24da5) | pdh.h | [Vanara.PInvoke.Pdh.PdhAddCounter](https://github.com/dahall/Vanara/search?l=C%23&q=PdhAddCounter)  

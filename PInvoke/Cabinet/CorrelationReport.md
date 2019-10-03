@@ -1,5 +1,5 @@
 ## Correlation report for cabinet.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 22 of 22 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CloseCompressor](http://msdn2.microsoft.com/en-us/library/098cf0b9-cd42-4a40-b30f-d7364d067e41) | compressapi.h | [Vanara.PInvoke.Cabinet.CloseCompressor](https://github.com/dahall/Vanara/search?l=C%23&q=CloseCompressor)  

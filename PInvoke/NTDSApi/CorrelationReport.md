@@ -1,5 +1,5 @@
 ## Correlation report for ntdsapi.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 52 of 52 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DsAddSidHistory](http://msdn2.microsoft.com/en-us/library/36ef8734-717a-4c3a-a839-6591d85c9734) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsAddSidHistory](https://github.com/dahall/Vanara/search?l=C%23&q=DsAddSidHistory)  

@@ -1,5 +1,5 @@
 ## Correlation report for credui.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 14 of 14 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CredPackAuthenticationBuffer](http://msdn2.microsoft.com/en-us/library/aa374802) | wincred.h | [Vanara.PInvoke.CredUI.CredPackAuthenticationBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=CredPackAuthenticationBuffer)  

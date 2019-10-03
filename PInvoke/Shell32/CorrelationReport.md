@@ -1,5 +1,5 @@
 ## Correlation report for shell32.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 190 of 190 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AssocCreateForClasses](http://msdn2.microsoft.com/en-us/library/43257507-dd5e-4622-8445-c132187fd1e5) | shellapi.h | [Vanara.PInvoke.Shell32.AssocCreateForClasses](https://github.com/dahall/Vanara/search?l=C%23&q=AssocCreateForClasses)  

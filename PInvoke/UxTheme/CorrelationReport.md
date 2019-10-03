@@ -1,5 +1,5 @@
 ## Correlation report for uxtheme.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 77 of 77 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [BeginBufferedAnimation](http://msdn2.microsoft.com/en-us/library/bb773252) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BeginBufferedAnimation](https://github.com/dahall/Vanara/search?l=C%23&q=BeginBufferedAnimation)  

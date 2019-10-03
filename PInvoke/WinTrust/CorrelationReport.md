@@ -1,5 +1,5 @@
 ## Correlation report for wintrust.dll  
-### Methods (28% complete)  
+### Methods (28% complete, 16 of 56 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CryptCATAdminAcquireContext](https://www.google.com/search?num=5&q=CryptCATAdminAcquireContext+site%3Amicrosoft.com) |  |   

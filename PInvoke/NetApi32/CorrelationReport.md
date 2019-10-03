@@ -1,5 +1,5 @@
 ## Correlation report for netapi32.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 156 of 156 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DavAddConnection](http://msdn2.microsoft.com/en-us/library/d69cba04-503c-4d21-b762-3094c0921e28) | davclnt.h | [Vanara.PInvoke.NetApi32.DavAddConnection](https://github.com/dahall/Vanara/search?l=C%23&q=DavAddConnection)  

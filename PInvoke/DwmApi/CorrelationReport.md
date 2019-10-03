@@ -1,5 +1,5 @@
 ## Correlation report for dwmapi.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 26 of 26 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DwmDefWindowProc](https://www.google.com/search?num=5&q=DwmDefWindowProc+site%3Amicrosoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DwmDefWindowProc](https://github.com/dahall/Vanara/search?l=C%23&q=DwmDefWindowProc)  

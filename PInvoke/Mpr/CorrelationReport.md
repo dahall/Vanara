@@ -1,5 +1,5 @@
 ## Correlation report for mpr.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 22 of 22 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [MultinetGetConnectionPerformance](http://msdn2.microsoft.com/en-us/library/aa385342) | Winnetwk.h | [Vanara.PInvoke.Mpr.MultinetGetConnectionPerformance](https://github.com/dahall/Vanara/search?l=C%23&q=MultinetGetConnectionPerformance)  

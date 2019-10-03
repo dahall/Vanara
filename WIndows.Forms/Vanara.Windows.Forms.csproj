@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <Description>Classes for user interface related items derived from the Vanara PInvoke libraries. Includes extensions for almost all common controls to give post Vista capabilities, WinForms controls (panel, commandlink, enhanced combo boxes, IPAddress, split button, trackbar and themed controls), shutdown/restart/lock control, buffered painting, resource files, access control editor, simplifed designer framework for Windows.Forms.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.0.1</VersionPrefix>
-    <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
+    <VersionPrefix>3.1.0</VersionPrefix>
+    <TargetFrameworks>net20;net35;net40;net45;netcoreapp3.0</TargetFrameworks>
+    <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>Vanara.Windows.Forms</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -15,7 +16,7 @@
     <Authors>David Hall</Authors>
     <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIconUrl>https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/Vanara48x48.png</PackageIconUrl>
+    <PackageIcon>Vanara64x64.png</PackageIcon>
     <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
@@ -41,6 +42,9 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Remove="_InProgress_\**\*" />
   </ItemGroup>
   <ItemGroup>
@@ -50,7 +54,7 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
   <ItemGroup>
     <None Remove="Controls\ExplorerBrowser.bmp" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />

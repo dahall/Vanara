@@ -1,5 +1,5 @@
 ## Correlation report for aclui.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 3 of 3 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CreateSecurityPage](http://msdn2.microsoft.com/en-us/library/aa446584) | aclui.h | [Vanara.PInvoke.AclUI.CreateSecurityPage](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSecurityPage)  

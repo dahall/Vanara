@@ -1,5 +1,5 @@
 ## Correlation report for powrprof.dll  
-### Methods (100% complete)  
+### Methods (100% complete, 80 of 80 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CallNtPowerInformation](http://msdn2.microsoft.com/en-us/library/adc0052d-e2dd-4c55-996c-6af8f5987d79) | powerbase.h | [Vanara.PInvoke.PowrProf.CallNtPowerInformation](https://github.com/dahall/Vanara/search?l=C%23&q=CallNtPowerInformation)  

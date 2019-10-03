@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Theraot.Collections;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -115,7 +114,7 @@ namespace Vanara.PInvoke.Tests
 					hdr = items;
 					if (cols is null)
 						cols = items;
-					idxs = cols.Select(s => items.IndexOf(s)).ToArray();
+					idxs = cols.Select(s => Array.IndexOf(items, s)).ToArray();
 					first = false;
 					continue;
 				}
@@ -156,7 +155,7 @@ namespace Vanara.PInvoke.Tests
 
 			public bool TryGetValue(string key, out string value)
 			{
-				var idx = keys.IndexOf(key);
+				var idx = Array.IndexOf(keys, key);
 				if (idx == -1)
 				{
 					value = null;
