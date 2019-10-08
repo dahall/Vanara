@@ -114,6 +114,27 @@ namespace Vanara.InteropServices
 		/// <returns><c>true</c> if this type can set the specified reference type; otherwise, <c>false</c>.</returns>
 		public static bool CanSet(Type type, Type typeRef) => GetAttrForType(type).Any(a => a.Action.IsFlagSet(CorrespondingAction.Set) && a.TypeRef == typeRef);
 
+		/// <summary>Determines whether an enum value exists that supports a corresponding type of <typeparamref name="T"/>.</summary>
+		/// <typeparam name="T">The corresponding type to look for.</typeparam>
+		/// <typeparam name="TEnum">The type of the enum.</typeparam>
+		/// <param name="value">The value of type <typeparamref name="TEnum"/> that has the corresponding type <typeparamref name="T"/>.</param>
+		/// <returns>
+		///   <see langword="true" /> if this instance can get the specified value; otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool CanSet<T, TEnum>(out TEnum value) where TEnum : struct, System.Enum
+		{
+			foreach (TEnum v in Enum.GetValues(typeof(TEnum)))
+			{
+				if (CanSet(v, typeof(T)))
+				{
+					value = v;
+					return true;
+				}
+			}
+			value = default;
+			return false;
+		}
+
 		/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
 		/// <param name="enumValue">The class or structure instance.</param>
 		/// <returns>The types defined by the attribute.</returns>
