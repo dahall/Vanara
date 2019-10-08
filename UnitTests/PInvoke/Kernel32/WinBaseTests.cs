@@ -60,11 +60,9 @@ namespace Vanara.PInvoke.Tests
 		public void GetActiveProcessorCountTest()
 		{
 			var gc = GetActiveProcessorGroupCount();
-			if (gc == 0)
-				Assert.Fail(Win32Error.GetLastError().ToString());
+			Assert.That(gc, ResultIs.Not.Value(0));
 			var pc = GetActiveProcessorCount(--gc);
-			if (pc == 0)
-				Assert.Fail(Win32Error.GetLastError().ToString());
+			Assert.That(pc, ResultIs.Not.Value(0));
 		}
 
 		[Test]
