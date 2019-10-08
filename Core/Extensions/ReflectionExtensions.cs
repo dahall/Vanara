@@ -133,13 +133,28 @@ namespace Vanara.Extensions.Reflection
 
 		/// <summary>Sets a named field on an object.</summary>
 		/// <typeparam name="T">The type of the field to be set.</typeparam>
+		/// <typeparam name="TS">The type of the object on which to the set the field.</typeparam>
 		/// <param name="obj">The object on which to set the field.</param>
 		/// <param name="fieldName">Name of the field.</param>
 		/// <param name="value">The field value to set on the object.</param>
-		public static void SetFieldValue<T>(this object obj, string fieldName, T value)
+		public static void SetFieldValue<T, TS>(this TS obj, string fieldName, T value) where TS : class
 		{
 			try { obj?.GetType().InvokeMember(fieldName, BindingFlags.SetField | bindingFlags, null, obj, new object[] { value }, null); }
 			catch { }
+		}
+
+		/// <summary>Sets a named field on an object.</summary>
+		/// <typeparam name="T">The type of the field to be set.</typeparam>
+		/// <typeparam name="TS">The type of the structure on which to the set the field.</typeparam>
+		/// <param name="obj">The object on which to set the field.</param>
+		/// <param name="fieldName">Name of the field.</param>
+		/// <param name="value">The field value to set on the object.</param>
+		public static void SetFieldValue<T, TS>(this ref TS obj, string fieldName, T value) where TS : struct
+		{
+			var tr = __makeref(obj);
+			var fi = typeof(TS).GetField(fieldName, bindingFlags);
+			if (fi is null) throw new MissingFieldException(typeof(TS).Name, fieldName);
+			fi.SetValueDirect(tr, value);
 		}
 
 		/// <summary>Sets a named property on an object.</summary>
