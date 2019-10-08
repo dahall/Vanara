@@ -92,14 +92,9 @@ namespace Vanara.Windows.Shell.Tests
 		{
 			using (var i = new ShellItem(testDoc))
 			{
+				Assert.That(i.GetDisplayName(ShellItemDisplayString.FileSysPath), Is.EqualTo(testDoc).IgnoreCase);
 				foreach (ShellItemDisplayString e in Enum.GetValues(typeof(ShellItemDisplayString)))
-				{
-					Assert.That(() =>
-					{
-						var s = i.GetDisplayName(e);
-						Debug.WriteLine($"{e}={s}");
-					}, Throws.Nothing);
-				}
+					Assert.That(() => TestContext.WriteLine($"{e}={i.GetDisplayName(e)}"), Throws.Nothing);
 				Assert.That(i.GetDisplayName((ShellItemDisplayString)0x8fffffff), Is.EqualTo(i.GetDisplayName(0)));
 			}
 		}
