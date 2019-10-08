@@ -37,6 +37,9 @@ namespace Vanara.InteropServices
 		{
 		}
 
+		/// <summary>Prevents a default instance of the <see cref="SafeCoTaskMemString"/> class from being created.</summary>
+		private SafeCoTaskMemString() : base() { }
+
 		/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemString"/> class.</summary>
 		/// <param name="ptr">The PTR.</param>
 		/// <param name="charSet">The character set.</param>
