@@ -247,7 +247,7 @@ namespace Vanara.Diagnostics
 		}
 
 		/// <summary>Gets the total percentage of charge remaining from all batteries connected to the device.</summary>
-		/// <value>Returns a <see cref="Nullable{T}.int"/> value from 0 to 100, or <see langword="null"/> if the status is unknown.</value>
+		/// <value>Returns a <c>int?</c> value from 0 to 100, or <see langword="null"/> if the status is unknown.</value>
 		public static int? RemainingChargePercent { get { var p = GetStatus().BatteryLifePercent; return p == 255 ? (int?)null : p; } }
 
 		/// <summary>Gets the total runtime remaining from all batteries connected to the device.</summary>
@@ -296,7 +296,7 @@ namespace Vanara.Diagnostics
 	}
 
 	/// <summary>Retrieves the list, optionally filtered, of the powered devices on the system.</summary>
-	/// <seealso cref="VirtualDictionary{string, PoweredDevice}"/>
+	/// <seealso cref="VirtualDictionary{TKey, TValue}"/>
 	public class PoweredDeviceCollection : VirtualDictionary<string, PoweredDevice>
 	{
 		private static Finalizer finalizer;
@@ -663,7 +663,7 @@ namespace Vanara.Diagnostics
 		}
 
 		/// <summary>Gets the possible values for this setting.</summary>
-		/// <value>Returns a <see cref="IEnumerable{System.ValueTuple{object, string, string}}"/> value.</value>
+		/// <value>Returns a <see cref="IEnumerable{T}"/> value.</value>
 		public IEnumerable<(object value, string name, string description)> PossibleValues
 		{
 			get

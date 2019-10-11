@@ -82,10 +82,10 @@ namespace Vanara.InteropServices
 		/// <returns><see langword="true"/> if this instance can get the specified value; otherwise, <see langword="false"/>.</returns>
 		public static bool CanGet<T, TEnum>(out TEnum value) where TEnum : struct, System.Enum => CanGet(typeof(T), out value);
 
-		/// <summary>Determines whether an enum value exists that supports a corresponding type of <typeparamref name="T"/>.</summary>
+		/// <summary>Determines whether an enum value exists that supports a corresponding type of <paramref name="typeRef"/>.</summary>
 		/// <typeparam name="TEnum">The type of the enum.</typeparam>
 		/// <param name="typeRef">The corresponding type to look for.</param>
-		/// <param name="value">The value of type <typeparamref name="TEnum"/> that has the corresponding type <typeparamref name="T"/>.</param>
+		/// <param name="value">The value of type <typeparamref name="TEnum"/> that has the corresponding type <paramref name="typeRef"/>.</param>
 		/// <returns><see langword="true"/> if this instance can get the specified value; otherwise, <see langword="false"/>.</returns>
 		public static bool CanGet<TEnum>(Type typeRef, out TEnum value) where TEnum : struct, System.Enum
 		{
@@ -126,10 +126,10 @@ namespace Vanara.InteropServices
 		/// <returns><see langword="true"/> if this instance can get the specified value; otherwise, <see langword="false"/>.</returns>
 		public static bool CanSet<T, TEnum>(out TEnum value) where TEnum : struct, System.Enum => CanSet(typeof(T), out value);
 
-		/// <summary>Determines whether an enum value exists that supports a corresponding type of <typeparamref name="T"/>.</summary>
+		/// <summary>Determines whether an enum value exists that supports a corresponding type of <paramref name="typeRef"/>.</summary>
 		/// <typeparam name="TEnum">The type of the enum.</typeparam>
 		/// <param name="typeRef">The type supplied by the user to validate.</param>
-		/// <param name="value">The value of type <typeparamref name="TEnum"/> that has the corresponding type <typeparamref name="T"/>.</param>
+		/// <param name="value">The value of type <typeparamref name="TEnum"/> that has the corresponding type <paramref name="typeRef"/>.</param>
 		/// <returns><see langword="true"/> if this instance can get the specified value; otherwise, <see langword="false"/>.</returns>
 		public static bool CanSet<TEnum>(Type typeRef, out TEnum value) where TEnum : struct, System.Enum
 		{
