@@ -85,8 +85,11 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetProcessMemoryInfoTest()
 		{
-			Assert.That(GetProcessMemoryInfo(GetCurrentProcess(), out var cnt, PROCESS_MEMORY_COUNTERS.Default.cb), Is.True);
+			Assert.That(GetProcessMemoryInfo(GetCurrentProcess(), out PROCESS_MEMORY_COUNTERS cnt, PROCESS_MEMORY_COUNTERS.Default.cb), Is.True);
 			TestContext.WriteLine($"PgUse = {cnt.PeakPagefileUsage}");
+
+			Assert.That(GetProcessMemoryInfo(GetCurrentProcess(), out PROCESS_MEMORY_COUNTERS_EX cntex, PROCESS_MEMORY_COUNTERS_EX.Default.cb), Is.True);
+			TestContext.WriteLine($"PvUse = {cntex.PrivateUsage}");
 		}
 
 		[Test]
