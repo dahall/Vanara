@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 
 namespace Vanara.PInvoke
 {
@@ -69,6 +71,29 @@ namespace Vanara.PInvoke
 
 			/// <summary>This member is reserved.</summary>
 			private ushort Reserved3;
+
+			/// <summary>Gets or sets the affinitized processors in the <see cref="Mask"/> field as their indexed values.</summary>
+			/// <value>The affinitized processors.</value>
+			public IEnumerable<uint> AffinitizedProcessors
+			{
+				get
+				{
+					var v = Mask.ToUInt64();
+					for (uint i = 0; i < UIntPtr.Size * 8; i++)
+					{
+						if ((v & 0x1UL) == 1)
+							yield return i;
+						v = v >> 1;
+					}
+				}
+				set
+				{
+					var v = 0UL;
+					foreach (var i in value)
+						v |= 1UL << (int)i;
+					Mask = (UIntPtr)v;
+				}
+			}
 		}
 	}
 }
