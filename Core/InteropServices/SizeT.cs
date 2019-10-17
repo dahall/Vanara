@@ -13,6 +13,9 @@ namespace Vanara.PInvoke
 		/// <summary>Represents the smallest possible value of <see cref="SizeT"/>. This field is constant.</summary>
 		public static readonly SizeT MinValue = 0;
 
+		/// <summary>Represents the zero value of <see cref="SizeT"/>. This field is constant.</summary>
+		public static readonly SizeT Zero = default;
+
 		private UIntPtr val;
 
 		/// <summary>Initializes a new instance of the <see cref="SizeT"/> struct.</summary>
