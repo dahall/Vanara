@@ -659,7 +659,7 @@ namespace Vanara.Extensions
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 		/// <returns>The number of bytes written. The offset is not included.</returns>
 		/// <exception cref="InsufficientMemoryException"></exception>
-		public static int Write<T>(this IntPtr ptr, T value, int offset = 0, SizeT allocatedBytes = default) where T : struct =>
+		public static int Write<T>(this IntPtr ptr, in T value, int offset = 0, SizeT allocatedBytes = default) where T : struct =>
 			WriteNoChecks(ptr, value, offset, allocatedBytes);
 
 		internal static Type TrueType(Type type, out int size)

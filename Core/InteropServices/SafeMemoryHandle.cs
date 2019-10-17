@@ -426,7 +426,7 @@ namespace Vanara.InteropServices
 		/// <param name="value">The value to write.</param>
 		/// <param name="autoExtend">if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="value"/>.</param>
 		/// <param name="offset">The number of bytes to offset from the beginning of this allocated memory before writing.</param>
-		public void Write<T>(T value, bool autoExtend = true, int offset = 0) where T : struct
+		public void Write<T>(in T value, bool autoExtend = true, int offset = 0) where T : struct
 		{
 			if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
 			if (autoExtend)
