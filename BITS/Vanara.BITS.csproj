@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>.NET classes to access Background Intelligent Transfer Service (BITS) functionality. Intelligently uses most recent library functions and gracefully fails when new features are not available on olders OS versions.</Description>
+    <Description>.NET classes to access Background Intelligent Transfer Service (BITS) functionality. Intelligently uses most recent library functions and gracefully fails when new features are not available on older OS versions.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>3.1.1</VersionPrefix>
