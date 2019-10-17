@@ -2,14 +2,26 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke.Tests
 {
 	public static class TestHelper
 	{
+		private const string testApp = @"C:\Users\dahall\Documents\Visual Studio 2017\Projects\TestSysConsumption\bin\Debug\netcoreapp3.0\TestSysConsumption.exe";
+
+		public static Process RunThrottleApp() => Process.Start(testApp);
+
+		public static void SetThrottle(string type, bool on)
+		{
+			using (var evt = new EventWaitHandle(false, EventResetMode.AutoReset, (on ? "" : "End") + type))
+				evt.Set();
+		}
+
 		public static IList<string> GetNestedStructSizes(this Type type, params string[] filters)
 		{
 			var output = new List<string>();
