@@ -942,7 +942,60 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa364986")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool GetQueuedCompletionStatus([In] HANDLE CompletionPort, out uint lpNumberOfBytes, out uint lpCompletionKey, NativeOverlapped** lpOverlapped, uint dwMilliseconds);
+		public static extern unsafe bool GetQueuedCompletionStatus([In] HANDLE CompletionPort, out uint lpNumberOfBytes, out UIntPtr lpCompletionKey, NativeOverlapped** lpOverlapped, uint dwMilliseconds);
+
+		/// <summary>
+		/// <para>
+		/// Attempts to dequeue an I/O completion packet from the specified I/O completion port. If there is no completion packet queued, the
+		/// function waits for a pending I/O operation associated with the completion port to complete.
+		/// </para>
+		/// <para>To dequeue multiple I/O completion packets at once, use the <c>GetQueuedCompletionStatusEx</c> function.</para>
+		/// </summary>
+		/// <param name="CompletionPort">
+		/// A handle to the completion port. To create a completion port, use the <c>CreateIoCompletionPort</c> function.
+		/// </param>
+		/// <param name="lpNumberOfBytes">
+		/// A pointer to a variable that receives the number of bytes transferred during an I/O operation that has completed.
+		/// </param>
+		/// <param name="lpCompletionKey">
+		/// A pointer to a variable that receives the completion key value associated with the file handle whose I/O operation has completed.
+		/// A completion key is a per-file key that is specified in a call to <c>CreateIoCompletionPort</c>.
+		/// </param>
+		/// <param name="lpOverlapped">
+		/// <para>
+		/// A pointer to a variable that receives the address of the <c>OVERLAPPED</c> structure that was specified when the completed I/O
+		/// operation was started.
+		/// </para>
+		/// <para>
+		/// Even if you have passed the function a file handle associated with a completion port and a valid <c>OVERLAPPED</c> structure, an
+		/// application can prevent completion port notification. This is done by specifying a valid event handle for the <c>hEvent</c>
+		/// member of the <c>OVERLAPPED</c> structure, and setting its low-order bit. A valid event handle whose low-order bit is set keeps
+		/// I/O completion from being queued to the completion port.
+		/// </para>
+		/// </param>
+		/// <param name="dwMilliseconds">
+		/// <para>
+		/// The number of milliseconds that the caller is willing to wait for a completion packet to appear at the completion port. If a
+		/// completion packet does not appear within the specified time, the function times out, returns <c>FALSE</c>, and sets *lpOverlapped
+		/// to <c>NULL</c>.
+		/// </para>
+		/// <para>
+		/// If dwMilliseconds is <c>INFINITE</c>, the function will never time out. If dwMilliseconds is zero and there is no I/O operation
+		/// to dequeue, the function will time out immediately.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Returns nonzero ( <c>TRUE</c>) if successful or zero ( <c>FALSE</c>) otherwise.</para>
+		/// <para>To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>For more information, see the Remarks section.</para>
+		/// </returns>
+		// BOOL WINAPI GetQueuedCompletionStatus( _In_ HANDLE CompletionPort, _Out_ LPDWORD lpNumberOfBytes, _Out_ PULONG_PTR
+		// lpCompletionKey, _Out_ LPOVERLAPPED
+		// *lpOverlapped, _In_ DWORD dwMilliseconds); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364986(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "aa364986")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetQueuedCompletionStatus([In] HANDLE CompletionPort, out uint lpNumberOfBytes, out UIntPtr lpCompletionKey, out IntPtr lpOverlapped, uint dwMilliseconds);
 
 		/// <summary>
 		/// <para>
@@ -992,7 +1045,7 @@ namespace Vanara.PInvoke
 		// ulCount, _Out_ PULONG ulNumEntriesRemoved, _In_ DWORD dwMilliseconds, _In_ BOOL fAlertable); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364988(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa364988")]
-		public static extern void GetQueuedCompletionStatusEx(HANDLE CompletionPort, IntPtr lpCompletionPortEntries, uint ulCount, out uint ulNumEntriesRemoved, uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool fAlertable);
+		public static extern void GetQueuedCompletionStatusEx(HANDLE CompletionPort, OVERLAPPED_ENTRY[] lpCompletionPortEntries, uint ulCount, out uint ulNumEntriesRemoved, uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool fAlertable);
 
 		/// <summary>Posts an I/O completion packet to an I/O completion port.</summary>
 		/// <param name="CompletionPort">A handle to an I/O completion port to which the I/O completion packet is to be posted.</param>
@@ -1015,6 +1068,28 @@ namespace Vanara.PInvoke
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa365458")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern unsafe bool PostQueuedCompletionStatus([In] HANDLE CompletionPort, uint dwNumberOfBytesTransferred, UIntPtr dwCompletionKey, NativeOverlapped* lpOverlapped);
+
+		/// <summary>Posts an I/O completion packet to an I/O completion port.</summary>
+		/// <param name="CompletionPort">A handle to an I/O completion port to which the I/O completion packet is to be posted.</param>
+		/// <param name="dwNumberOfBytesTransferred">
+		/// The value to be returned through the lpNumberOfBytesTransferred parameter of the <c>GetQueuedCompletionStatus</c> function.
+		/// </param>
+		/// <param name="dwCompletionKey">
+		/// The value to be returned through the lpCompletionKey parameter of the <c>GetQueuedCompletionStatus</c> function.
+		/// </param>
+		/// <param name="lpOverlapped">
+		/// The value to be returned through the lpOverlapped parameter of the <c>GetQueuedCompletionStatus</c> function.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c> .</para>
+		/// </returns>
+		// BOOL WINAPI PostQueuedCompletionStatus( _In_ HANDLE CompletionPort, _In_ DWORD dwNumberOfBytesTransferred, _In_ ULONG_PTR
+		// dwCompletionKey, _In_opt_ LPOVERLAPPED lpOverlapped); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365458(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("IoAPI.h", MSDNShortId = "aa365458")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool PostQueuedCompletionStatus([In] HANDLE CompletionPort, uint dwNumberOfBytesTransferred, [Optional] UIntPtr dwCompletionKey, [Optional] IntPtr lpOverlapped);
 
 		private static unsafe IAsyncResult BeginDeviceIoControl<TIn, TOut>(HFILE hDevice, uint dwIoControlCode, byte[] buffer, AsyncCallback userCallback, object userState) where TIn : struct where TOut : struct =>
 			BeginDeviceIoControl(hDevice, dwIoControlCode, buffer, userCallback, userState);
@@ -1099,6 +1174,32 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		/// <summary>Contains the information returned by a call to the GetQueuedCompletionStatusEx function.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-overlapped_entry typedef struct _OVERLAPPED_ENTRY {
+		// ULONG_PTR lpCompletionKey; LPOVERLAPPED lpOverlapped; ULONG_PTR Internal; DWORD dwNumberOfBytesTransferred; } OVERLAPPED_ENTRY, *LPOVERLAPPED_ENTRY;
+		[PInvokeData("minwinbase.h", MSDNShortId = "3e244e6c-0731-477a-b1d3-2601c29449ca")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct OVERLAPPED_ENTRY
+		{
+			/// <summary>
+			/// Receives the completion key value associated with the file handle whose I/O operation has completed. A completion key is a
+			/// per-file key that is specified in a call to CreateIoCompletionPort.
+			/// </summary>
+			public UIntPtr lpCompletionKey;
+
+			/// <summary>Receives the address of the OVERLAPPED structure that was specified when the completed I/O operation was started.</summary>
+			public IntPtr lpOverlapped;
+
+			/// <summary>Reserved.</summary>
+			public UIntPtr Internal;
+
+			/// <summary>Receives the number of bytes transferred during the I/O operation that has completed.</summary>
+			public uint dwNumberOfBytesTransferred;
+		}
+
+		/// <summary>
+		/// Represents IO control codes.
+		/// </summary>
 		[PInvokeData("WinIOCtl.h")]
 		public static class IOControlCode
 		{

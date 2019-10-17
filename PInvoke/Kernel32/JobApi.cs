@@ -7,6 +7,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary/>
 		public const int JOB_OBJECT_NET_RATE_CONTROL_MAX_DSCP_TAG = 64;
 
 		/// <summary>The scheduling policy for CPU rate control.</summary>
@@ -14,22 +15,22 @@ namespace Vanara.PInvoke
 		public enum JOB_OBJECT_CPU_RATE_CONTROL_FLAGS
 		{
 			/// <summary>
-			/// This flag enables the job's CPU rate to be controlled based on weight or hard cap. You must set this value if you
-			/// also set JOB_OBJECT_CPU_RATE_CONTROL_WEIGHT_BASED, JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP, or JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE.
+			/// This flag enables the job's CPU rate to be controlled based on weight or hard cap. You must set this value if you also set
+			/// JOB_OBJECT_CPU_RATE_CONTROL_WEIGHT_BASED, JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP, or JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE.
 			/// </summary>
 			JOB_OBJECT_CPU_RATE_CONTROL_ENABLE = 0x1,
 
 			/// <summary>
-			/// The job's CPU rate is calculated based on its relative weight to the weight of other jobs. If this flag is set, the
-			/// Weight member contains more information. If this flag is clear, the CpuRate member contains more information.If you set
+			/// The job's CPU rate is calculated based on its relative weight to the weight of other jobs. If this flag is set, the Weight
+			/// member contains more information. If this flag is clear, the CpuRate member contains more information.If you set
 			/// JOB_OBJECT_CPU_RATE_CONTROL_WEIGHT_BASED, you cannot also set JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE.
 			/// </summary>
 			JOB_OBJECT_CPU_RATE_CONTROL_WEIGHT_BASED = 0x2,
 
 			/// <summary>
-			/// The job's CPU rate is a hard limit. After the job reaches its CPU cycle limit for the current scheduling interval, no
-			/// threads associated with the job will run until the next interval. If you set JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP, you cannot
-			/// also set JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE.
+			/// The job's CPU rate is a hard limit. After the job reaches its CPU cycle limit for the current scheduling interval, no threads
+			/// associated with the job will run until the next interval. If you set JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP, you cannot also
+			/// set JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE.
 			/// </summary>
 			JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP = 0x4,
 
@@ -43,12 +44,98 @@ namespace Vanara.PInvoke
 			JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE = 0x10,
 		}
 
+		/// <summary>The policy for control of the I/O rate.</summary>
 		[Flags]
 		public enum JOB_OBJECT_IO_RATE_CONTROL_FLAGS
 		{
+			/// <summary>
+			/// Turns on control of the I/O rate for the job when this structure is passed to the SetIoRateControlInformationJobObject
+			/// function. Indicates that control of the I/O rate for the job is turned on when this structure is used with the
+			/// QueryIoRateControlInformationJobObject function.
+			/// </summary>
 			JOB_OBJECT_IO_RATE_CONTROL_ENABLE = 0x1,
+
+			/// <summary/>
 			JOB_OBJECT_IO_RATE_CONTROL_STANDALONE_VOLUME = 0x2,
-			JOB_OBJECT_IO_RATE_CONTROL_VALID_FLAGS = JOB_OBJECT_IO_RATE_CONTROL_ENABLE | JOB_OBJECT_IO_RATE_CONTROL_STANDALONE_VOLUME
+
+			/// <summary/>
+			JOB_OBJECT_IO_RATE_CONTROL_FORCE_UNIT_ACCESS_ALL = 0x4,
+
+			/// <summary/>
+			JOB_OBJECT_IO_RATE_CONTROL_FORCE_UNIT_ACCESS_ON_SOFT_CAP = 0x8,
+		}
+
+		/// <summary>
+		/// Completion Port Messages for job objects. These values are returned via the lpNumberOfBytesTransferred parameter when calling <c>GetQueuedCompletionStatus</c>.
+		/// </summary>
+		[Flags]
+		public enum JOB_OBJECT_MSG : uint
+		{
+			/// <summary>
+			/// Indicates that the JOB_OBJECT_POST_AT_END_OF_JOB option is in effect and the end-of-job time limit has been reached. Upon
+			/// posting this message, the time limit is canceled and the job's processes can continue to run. The value of lpOverlapped is NULL.
+			/// </summary>
+			JOB_OBJECT_MSG_END_OF_JOB_TIME = 1,
+
+			/// <summary>
+			/// Indicates that a process has exceeded a per-process time limit. The system sends this message after the process termination
+			/// has been requested. The value of lpOverlapped is the identifier of the process that exceeded its limit.
+			/// </summary>
+			JOB_OBJECT_MSG_END_OF_PROCESS_TIME = 2,
+
+			/// <summary>Indicates that the active process limit has been exceeded. The value of lpOverlapped is NULL.</summary>
+			JOB_OBJECT_MSG_ACTIVE_PROCESS_LIMIT = 3,
+
+			/// <summary>
+			/// Indicates that the active process count has been decremented to 0. For example, if the job currently has two active
+			/// processes, the system sends this message after they both terminate. The value of lpOverlapped is NULL.
+			/// </summary>
+			JOB_OBJECT_MSG_ACTIVE_PROCESS_ZERO = 4,
+
+			/// <summary>
+			/// Indicates that a process has been added to the job. Processes added to a job at the time a completion port is associated are
+			/// also reported. The value of lpOverlapped is the identifier of the process added to the job.
+			/// </summary>
+			JOB_OBJECT_MSG_NEW_PROCESS = 6,
+
+			/// <summary>
+			/// Indicates that a process associated with the job has exited. The value of lpOverlapped is the identifier of the exiting process.
+			/// </summary>
+			JOB_OBJECT_MSG_EXIT_PROCESS = 7,
+
+			/// <summary>
+			/// Indicates that a process associated with the job exited with an exit code that indicates an abnormal exit (see the list
+			/// following this table). The value of lpOverlapped is the identifier of the exiting process.
+			/// </summary>
+			JOB_OBJECT_MSG_ABNORMAL_EXIT_PROCESS = 8,
+
+			/// <summary>
+			/// Indicates that a process associated with the job has exceeded its memory limit (if one is in effect). The value of
+			/// lpOverlapped is the identifier of the process that has exceeded its limit. The system does not send this message if the
+			/// process has not yet reported its process identifier.
+			/// </summary>
+			JOB_OBJECT_MSG_PROCESS_MEMORY_LIMIT = 9,
+
+			/// <summary>
+			/// Indicates that a process associated with the job caused the job to exceed the job-wide memory limit (if one is in effect).
+			/// The value of lpOverlapped specifies the identifier of the process that has attempted to exceed the limit. The system does not
+			/// send this message if the process has not yet reported its process identifier.
+			/// </summary>
+			JOB_OBJECT_MSG_JOB_MEMORY_LIMIT = 10,
+
+			/// <summary>
+			/// Indicates that a process associated with a job that has registered for resource limit notifications has exceeded one or more
+			/// limits. Use the QueryInformationJobObject function with JobObjectLimitViolationInformation to determine which limit was
+			/// exceeded. The value of lpOverlapped is the identifier of the process that has exceeded its limit. The system does not send
+			/// this message if the process has not yet reported its process identifier.
+			/// </summary>
+			JOB_OBJECT_MSG_NOTIFICATION_LIMIT = 11,
+
+			/// <summary>Undocumented.</summary>
+			JOB_OBJECT_MSG_JOB_CYCLE_TIME_LIMIT = 12,
+
+			/// <summary>Undocumented.</summary>
+			JOB_OBJECT_MSG_SILO_TERMINATED = 13,
 		}
 
 		/// <summary>Specifies types of scheduling policies for network rate control.</summary>
@@ -81,6 +168,166 @@ namespace Vanara.PInvoke
 			JOB_OBJECT_NET_RATE_CONTROL_VALID_FLAGS = 0x7
 		}
 
+		/// <summary>
+		/// <para>
+		/// The Microsoft Windows security model enables you to control access to job objects. For more information about security, see
+		/// Access-Control Model.
+		/// </para>
+		/// <para>
+		/// You can specify a security descriptor for a job object when you call the <c>CreateJobObject</c> function. If you specify NULL,
+		/// the job object gets a default security descriptor. The ACLs in the default security descriptor for a job object come from the
+		/// primary or impersonation token of the creator.
+		/// </para>
+		/// <para>
+		/// To get or set the security descriptor for a job object, call the <c>GetNamedSecurityInfo</c>, <c>SetNamedSecurityInfo</c>,
+		/// <c>GetSecurityInfo</c>, or <c>SetSecurityInfo</c> function.
+		/// </para>
+		/// <para>
+		/// The valid access rights for job objects include the standard access rights and some job-specific access rights. The following
+		/// table lists the standard access rights used by all objects.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DELETE (0x00010000L)</term>
+		/// <term>Required to delete the object.</term>
+		/// </item>
+		/// <item>
+		/// <term>READ_CONTROL (0x00020000L)</term>
+		/// <term>
+		/// Required to read information in the security descriptor for the object, not including the information in the SACL. To read or
+		/// write the SACL, you must request the ACCESS_SYSTEM_SECURITY access right. For more information, see SACL Access Right.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SYNCHRONIZE (0x00100000L)</term>
+		/// <term>The right to use the object for synchronization. This enables a thread to wait until the object is in the signaled state.</term>
+		/// </item>
+		/// <item>
+		/// <term>WRITE_DAC (0x00040000L)</term>
+		/// <term>Required to modify the DACL in the security descriptor for the object.</term>
+		/// </item>
+		/// <item>
+		/// <term>WRITE_OWNER (0x00080000L)</term>
+		/// <term>Required to change the owner in the security descriptor for the object.</term>
+		/// </item>
+		/// </list>
+		/// <para>The following table lists the job-specific access rights.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>JOB_OBJECT_ALL_ACCESS (0x1F001F)</term>
+		/// <term>Combines all valid job object access rights.</term>
+		/// </item>
+		/// <item>
+		/// <term>JOB_OBJECT_ASSIGN_PROCESS (0x0001)</term>
+		/// <term>Required to call the AssignProcessToJobObject function to assign processes to the job object.</term>
+		/// </item>
+		/// <item>
+		/// <term>JOB_OBJECT_QUERY (0x0004)</term>
+		/// <term>
+		/// Required to retrieve certain information about a job object, such as attributes and accounting information (see
+		/// QueryInformationJobObject and IsProcessInJob).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JOB_OBJECT_SET_ATTRIBUTES (0x0002)</term>
+		/// <term>Required to call the SetInformationJobObject function to set the attributes of the job object.</term>
+		/// </item>
+		/// <item>
+		/// <term>JOB_OBJECT_SET_SECURITY_ATTRIBUTES (0x0010)</term>
+		/// <term>
+		/// This flag is not supported. You must set security limitations individually for each process associated with a job object.Windows
+		/// Server 2003 and Windows XP: Required to call the SetInformationJobObject function with the JobObjectSecurityLimitInformation
+		/// information class to set security limitations for the processes associated with the job object. Support for this flag was removed
+		/// in Windows Vista and Windows Server 2008.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>JOB_OBJECT_TERMINATE (0x0008)</term>
+		/// <term>Required to call the TerminateJobObject function to terminate all processes in the job object.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The handle returned by <c>CreateJobObject</c> has <c>JOB_OBJECT_ALL_ACCESS</c> access to the job object. When you call the
+		/// <c>OpenJobObject</c> function, the system checks the requested access rights against the object's security descriptor. If a job
+		/// object is in a hierarchy of nested jobs, a caller with access to the job object implicitly has access to all of its child jobs in
+		/// the hierarchy.
+		/// </para>
+		/// <para>
+		/// You can request the <c>ACCESS_SYSTEM_SECURITY</c> access right to a job object if you want to read or write the object's SACL.
+		/// For more information, see Access-Control Lists (ACLs) and SACL Access Right.
+		/// </para>
+		/// <para>
+		/// You must set security limitations individually for each process associated with a job object, rather than setting them for the
+		/// job object itself. For information, see Process Security and Access Rights.
+		/// </para>
+		/// <para>
+		/// **Windows Server 2003 and Windows XP: ** You can use the <c>SetInformationJobObject</c> function to set security limitations for
+		/// the job object. This capability was removed in Windows Vista and Windows Server 2008.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/procthread/job-object-security-and-access-rights
+		[PInvokeData("", MSDNShortId = "8d212292-f087-41e4-884e-cec4423dac49")]
+		[Flags]
+		public enum JobAccessRight : uint
+		{
+			/// <summary>Required to delete the object.</summary>
+			DELETE = ACCESS_MASK.DELETE,
+
+			/// <summary>
+			/// Required to read information in the security descriptor for the object, not including the information in the SACL. To read or
+			/// write the SACL, you must request the ACCESS_SYSTEM_SECURITY access right. For more information, see SACL Access Right.
+			/// </summary>
+			READ_CONTROL = ACCESS_MASK.READ_CONTROL,
+
+			/// <summary>
+			/// The right to use the object for synchronization. This enables a thread to wait until the object is in the signaled state.
+			/// </summary>
+			SYNCHRONIZE = ACCESS_MASK.SYNCHRONIZE,
+
+			/// <summary>Required to modify the DACL in the security descriptor for the object.</summary>
+			WRITE_DAC = ACCESS_MASK.WRITE_DAC,
+
+			/// <summary>Required to change the owner in the security descriptor for the object.</summary>
+			WRITE_OWNER = ACCESS_MASK.WRITE_OWNER,
+
+			/// <summary>Required to call the AssignProcessToJobObject function to assign processes to the job object.</summary>
+			JOB_OBJECT_ASSIGN_PROCESS = 0x0001,
+
+			/// <summary>
+			/// Required to retrieve certain information about a job object, such as attributes and accounting information (see
+			/// QueryInformationJobObject and IsProcessInJob).
+			/// </summary>
+			JOB_OBJECT_QUERY = 0x0004,
+
+			/// <summary>Required to call the SetInformationJobObject function to set the attributes of the job object.</summary>
+			JOB_OBJECT_SET_ATTRIBUTES = 0x0002,
+
+			/// <summary>
+			/// This flag is not supported. You must set security limitations individually for each process associated with a job
+			/// object.Windows Server 2003 and Windows XP: Required to call the SetInformationJobObject function with the
+			/// JobObjectSecurityLimitInformation information class to set security limitations for the processes associated with the job
+			/// object. Support for this flag was removed in Windows Vista and Windows Server 2008.
+			/// </summary>
+			JOB_OBJECT_SET_SECURITY_ATTRIBUTES = 0x0010,
+
+			/// <summary>Required to call the TerminateJobObject function to terminate all processes in the job object.</summary>
+			JOB_OBJECT_TERMINATE = 0x0008,
+
+			/// <summary>Undocumented.</summary>
+			JOB_OBJECT_IMPERSONATE = 0x0020,
+
+			/// <summary>Combines all valid job object access rights.</summary>
+			JOB_OBJECT_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | ACCESS_MASK.SYNCHRONIZE | 0x3F,
+		}
+
 		/// <summary>The action that the system will perform when the end-of-job time limit has been exceeded.</summary>
 		public enum JOBOBJECT_END_OF_JOB_TIME_ACTION
 		{
@@ -99,11 +346,17 @@ namespace Vanara.PInvoke
 			JOB_OBJECT_POST_AT_END_OF_JOB = 1
 		}
 
+		/// <summary/>
 		[Flags]
 		public enum JOBOBJECT_IO_ATTRIBUTION_CONTROL_FLAGS
 		{
+			/// <summary/>
 			JOBOBJECT_IO_ATTRIBUTION_CONTROL_ENABLE = 0x1,
+
+			/// <summary/>
 			JOBOBJECT_IO_ATTRIBUTION_CONTROL_DISABLE = 0x2,
+
+			/// <summary/>
 			JOBOBJECT_IO_ATTRIBUTION_CONTROL_VALID_FLAGS = 0x3
 		}
 
@@ -310,7 +563,7 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum JOBOBJECT_UILIMIT_FLAGS
 		{
-			/// <summary>The job object uilimit none</summary>
+			/// <summary/>
 			JOB_OBJECT_UILIMIT_NONE = 0x00000000,
 
 			/// <summary>
@@ -397,7 +650,7 @@ namespace Vanara.PInvoke
 			/// currently assigned. The variable pointed to by the lpReturnLength parameter is set to the size of the group data. Divide this
 			/// value by sizeof(USHORT) to determine the number of groups.
 			/// </summary>
-			[CorrespondingType(typeof(ushort), CorrespondingAction.GetSet)]
+			[CorrespondingType(typeof(ushort[]), CorrespondingAction.GetSet)]
 			JobObjectGroupInformation,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION structure.</summary>
@@ -418,7 +671,7 @@ namespace Vanara.PInvoke
 			JobObjectGroupInformationEx,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_CPU_RATE_CONTROL_INFORMATION structure.</summary>
-			[CorrespondingType(typeof(JOBOBJECT_CPU_RATE_CONTROL_INFORMATION), CorrespondingAction.Set)]
+			[CorrespondingType(typeof(JOBOBJECT_CPU_RATE_CONTROL_INFORMATION), CorrespondingAction.GetSet)]
 			JobObjectCpuRateControlInformation,
 
 			/// <summary>Undocumented.</summary>
@@ -475,7 +728,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2 structure.</summary>
 			[CorrespondingType(typeof(JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2), CorrespondingAction.GetSet)]
-			JobObjectNotificationLimitInformation2 = 34,
+			JobObjectNotificationLimitInformation2,
 
 			/// <summary>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2 structure.</summary>
 			[CorrespondingType(typeof(JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2), CorrespondingAction.GetSet)]
@@ -674,7 +927,7 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI OpenJobObject( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandles, _In_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684312(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684312")]
-		public static extern HJOB OpenJobObject(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, string lpName);
+		public static extern SafeHJOB OpenJobObject(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, string lpName);
 
 		/// <summary>Retrieves limit and job state information from the job object.</summary>
 		/// <param name="hJob">
@@ -936,15 +1189,13 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </para>
 		/// </param>
-		/// <returns>
-		/// The limit or job state information. The format of this data depends on the value of the JobObjectInfoClass parameter.
-		/// </returns>
+		/// <returns>The limit or job state information. The format of this data depends on the value of the JobObjectInfoClass parameter.</returns>
 		public static T QueryInformationJobObject<T>([In] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass) where T : struct
 		{
 			if (!CorrespondingTypeAttribute.CanGet(jobObjectInfoClass, typeof(T))) throw new ArgumentException("Type mismatch.", nameof(jobObjectInfoClass));
 			using (var mem = SafeHGlobalHandle.CreateFromStructure<T>())
 			{
-				if (!QueryInformationJobObject(hJob, jobObjectInfoClass, (IntPtr)mem, (uint)mem.Size, out _))
+				if (!QueryInformationJobObject(hJob, jobObjectInfoClass, mem, mem.Size, out _))
 					Win32Error.ThrowLastError();
 				return mem.ToStructure<T>();
 			}
@@ -1011,6 +1262,9 @@ namespace Vanara.PInvoke
 		[PInvokeData("Jobapi2.h", MSDNShortId = "mt280127")]
 		public static JOBOBJECT_IO_RATE_CONTROL_INFORMATION[] QueryIoRateControlInformationJobObject(HJOB hJob, string VolumeName = null)
 		{
+			var relId = int.Parse(Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "0").ToString());
+			if (relId == 0 || relId >= 1607)
+				throw new NotSupportedException("This function is only supported on Windows 10 releases before 1607.");
 			if (!QueryIoRateControlInformationJobObject(hJob, VolumeName, out var ib, out var ibc))
 				Win32Error.ThrowLastError();
 			try
@@ -1146,8 +1400,8 @@ namespace Vanara.PInvoke
 		/// Windows Headers.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/jobapi2/nf-jobapi2-setinformationjobobject
-		// BOOL SetInformationJobObject( HANDLE hJob, JOBOBJECTINFOCLASS JobObjectInformationClass, LPVOID lpJobObjectInformation, DWORD cbJobObjectInformationLength );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/jobapi2/nf-jobapi2-setinformationjobobject BOOL SetInformationJobObject(
+		// HANDLE hJob, JOBOBJECTINFOCLASS JobObjectInformationClass, LPVOID lpJobObjectInformation, DWORD cbJobObjectInformationLength );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("jobapi2.h", MSDNShortId = "46f7c579-e8d3-4434-a6ce-56573cd84387")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -1258,7 +1512,7 @@ namespace Vanara.PInvoke
 		{
 			if (!CorrespondingTypeAttribute.CanSet(jobObjectInfoClass, typeof(T))) throw new ArgumentException("Type mismatch.", nameof(jobObjectInfoClass));
 			using (var mem = SafeHGlobalHandle.CreateFromStructure(jobObjectInfo))
-				if (!SetInformationJobObject(hJob, jobObjectInfoClass, (IntPtr)mem, (uint)mem.Size))
+				if (!SetInformationJobObject(hJob, jobObjectInfoClass, mem, mem.Size))
 					Win32Error.ThrowLastError();
 		}
 
@@ -1310,53 +1564,11 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool TerminateJobObject([In] HJOB hJob, uint uExitCode);
 
-		/// <summary>
-		/// <para>
-		/// Grants or denies access to a handle to a User object to a job that has a user-interface restriction. When access is granted, all
-		/// processes associated with the job can subsequently recognize and use the handle. When access is denied, the processes can no
-		/// longer use the handle. For more information see User Objects.
-		/// </para>
-		/// </summary>
-		/// <param name="hUserHandle">
-		/// <para>A handle to the User object.</para>
-		/// </param>
-		/// <param name="hJob">
-		/// <para>
-		/// A handle to the job to be granted access to the User handle. The CreateJobObject or OpenJobObject function returns this handle.
-		/// </para>
-		/// </param>
-		/// <param name="bGrant">
-		/// <para>
-		/// If this parameter is TRUE, all processes associated with the job can recognize and use the handle. If the parameter is FALSE, the
-		/// processes cannot use the handle.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The <c>UserHandleGrantAccess</c> function can be called only from a process not associated with the job specified by the hJob
-		/// parameter. The User handle must not be owned by a process or thread associated with the job.
-		/// </para>
-		/// <para>
-		/// To create user-interface restrictions, call the SetInformationJobObject function with the JobObjectBasicUIRestrictions job
-		/// information class.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-userhandlegrantaccess BOOL UserHandleGrantAccess( HANDLE
-		// hUserHandle, HANDLE hJob, BOOL bGrant );
-		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winuser.h", MSDNShortId = "6e7a6cfc-f881-43cc-a5af-b97e0bf14bf4")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UserHandleGrantAccess(HANDLE hUserHandle, HJOB hJob, [MarshalAs(UnmanagedType.Bool)] bool bGrant);
-
 		/// <summary>Provides a handle to a job object.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HJOB : ISyncHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HJOB"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1440,7 +1652,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// The value to use in the dwCompletionKey parameter of PostQueuedCompletionStatus when messages are sent on behalf of the job.
 			/// </summary>
-			public IntPtr CompletionKey;
+			public UIntPtr CompletionKey;
 
 			/// <summary>
 			/// The completion port to use in the CompletionPort parameter of the PostQueuedCompletionStatus function when messages are sent
@@ -1450,7 +1662,7 @@ namespace Vanara.PInvoke
 			/// remove the association between the current completion port and the job.
 			/// </para>
 			/// </summary>
-			public IntPtr CompletionPort;
+			public HANDLE CompletionPort;
 		}
 
 		/// <summary>Contains basic accounting information for a job object.</summary>
@@ -1466,13 +1678,13 @@ namespace Vanara.PInvoke
 			/// The total amount of user-mode execution time for all active processes associated with the job, as well as all terminated
 			/// processes no longer associated with the job, in 100-nanosecond ticks.
 			/// </summary>
-			public long TotalUserTime;
+			public TimeSpan TotalUserTime;
 
 			/// <summary>
 			/// The total amount of kernel-mode execution time for all active processes associated with the job, as well as all terminated
 			/// processes no longer associated with the job, in 100-nanosecond ticks.
 			/// </summary>
-			public long TotalKernelTime;
+			public TimeSpan TotalKernelTime;
 
 			/// <summary>
 			/// <para>
@@ -1481,7 +1693,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>This member is set to 0 on creation of the job, and each time a per-job user-mode time limit is established.</para>
 			/// </summary>
-			public long ThisPeriodTotalUserTime;
+			public TimeSpan ThisPeriodTotalUserTime;
 
 			/// <summary>
 			/// <para>
@@ -1490,7 +1702,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>This member is set to zero on creation of the job, and each time a per-job kernel-mode time limit is established.</para>
 			/// </summary>
-			public long ThisPeriodTotalKernelTime;
+			public TimeSpan ThisPeriodTotalKernelTime;
 
 			/// <summary>
 			/// The total number of page faults encountered by all active processes associated with the job, as well as all terminated
@@ -1554,7 +1766,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>If the job is nested, the effective limit is the most restrictive limit in the job chain.</para>
 			/// </summary>
-			public long PerProcessUserTimeLimit;
+			public TimeSpan PerProcessUserTimeLimit;
 
 			/// <summary>
 			/// <para>
@@ -1576,7 +1788,7 @@ namespace Vanara.PInvoke
 			/// <c>SetInformationJobObject</c> function with the <c>JobObjectNotificationLimitInformation</c> information class.
 			/// </para>
 			/// </summary>
-			public long PerJobUserTimeLimit;
+			public TimeSpan PerJobUserTimeLimit;
 
 			/// <summary>
 			/// <para>
@@ -1619,7 +1831,7 @@ namespace Vanara.PInvoke
 			/// Forces a call to the SetErrorMode function with the SEM_NOGPFAULTERRORBOX flag for each process associated with the job. If
 			/// an exception occurs and the system calls the UnhandledExceptionFilter function, the debugger will be given a chance to act.
 			/// If there is no debugger, the functions returns EXCEPTION_EXECUTE_HANDLER. Normally, this will cause termination of the
-			/// process with the exception code as the exit status.This limit requires use of a JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+			/// process with the exception code as the exit status. This limit requires use of a JOBOBJECT_EXTENDED_LIMIT_INFORMATION
 			/// structure. Its BasicLimitInformation member is a JOBOBJECT_BASIC_LIMIT_INFORMATION structure.
 			/// </term>
 			/// </item>
@@ -1628,10 +1840,10 @@ namespace Vanara.PInvoke
 			/// <term>
 			/// Causes all processes associated with the job to limit the job-wide sum of their committed memory. When a process attempts to
 			/// commit memory that would exceed the job-wide limit, it fails. If the job object is associated with a completion port, a
-			/// JOB_OBJECT_MSG_JOB_MEMORY_LIMIT message is sent to the completion port.This limit requires use of a
+			/// JOB_OBJECT_MSG_JOB_MEMORY_LIMIT message is sent to the completion port. This limit requires use of a
 			/// JOBOBJECT_EXTENDED_LIMIT_INFORMATION structure. Its BasicLimitInformation member is a JOBOBJECT_BASIC_LIMIT_INFORMATION
-			/// structure.To register for notification when this limit is exceeded while allowing processes to continue to commit memory, use
-			/// the SetInformationJobObject function with the JobObjectNotificationLimitInformation information class.
+			/// structure. To register for notification when this limit is exceeded while allowing processes to continue to commit memory,
+			/// use the SetInformationJobObject function with the JobObjectNotificationLimitInformation information class.
 			/// </term>
 			/// </item>
 			/// <item>
@@ -1875,59 +2087,72 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Contains CPU rate control information for a job object. This structure is used by the <c>SetInformationJobObject</c> and
-		/// <c>QueryInformationJobObject</c> functions with the <c>JobObjectCpuRateControlInformation</c> information class.
+		/// Contains CPU rate control information for a job object. This structure is used by the SetInformationJobObject and
+		/// QueryInformationJobObject functions with the <c>JobObjectCpuRateControlInformation</c> information class.
 		/// </summary>
-		// typedef struct _JOBOBJECT_CPU_RATE_CONTROL_INFORMATION { DWORD ControlFlags; union { DWORD CpuRate; DWORD Weight; struct { WORD
-		// MinRate; WORD MaxRate; }; };} JOBOBJECT_CPU_RATE_CONTROL_INFORMATION, *PJOBOBJECT_CPU_RATE_CONTROL_INFORMATION; https://msdn.microsoft.com/en-us/library/windows/desktop/hh448384(v=vs.85).aspx
-		[PInvokeData("Winnt.h", MSDNShortId = "hh448384")]
+		/// <remarks>
+		/// <para>
+		/// You can set CPU rate control for multiple jobs in a hierarchy of nested jobs. When you set CPU rate control for a job object, the
+		/// settings apply to the job and its child jobs in the hierarchy. When you set CPU rate control for a job in a nested hierarchy, the
+		/// system calculates the corresponding quotas with respect to the CPU rate control of the immediate parent job for the job. In other
+		/// words, the rates set for the job represent its portion of the CPU rate that is allocated to its parent job. If a job object does
+		/// not have a parent with CPU rate control turned on in the chain of its parent jobs, the rate control for the job represents the
+		/// portion of the CPU for the entire system.
+		/// </para>
+		/// <para>
+		/// CPU rate control cannot be used by job objects in applications running under Remote Desktop Services (formerly Terminal Services)
+		/// if Dynamic Fair Share Scheduling (DFSS) is in effect.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-jobobject_cpu_rate_control_information typedef struct
+		// _JOBOBJECT_CPU_RATE_CONTROL_INFORMATION { DWORD ControlFlags; union { DWORD CpuRate; DWORD Weight; struct { WORD MinRate; WORD
+		// MaxRate; } DUMMYSTRUCTNAME; } DUMMYUNIONNAME; } JOBOBJECT_CPU_RATE_CONTROL_INFORMATION, *PJOBOBJECT_CPU_RATE_CONTROL_INFORMATION;
+		[PInvokeData("winnt.h", MSDNShortId = "eaa5bda2-a37e-441b-a0e4-e00dff6425b2")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct JOBOBJECT_CPU_RATE_CONTROL_INFORMATION
 		{
 			/// <summary>
 			/// <para>The scheduling policy for CPU rate control. This member can be one of the following values.</para>
-			/// <para>
 			/// <list type="table">
 			/// <listheader>
 			/// <term>Value</term>
 			/// <term>Meaning</term>
 			/// </listheader>
 			/// <item>
-			/// <term>JOB_OBJECT_CPU_RATE_CONTROL_ENABLE0x1</term>
+			/// <term>JOB_OBJECT_CPU_RATE_CONTROL_ENABLE 0x1</term>
 			/// <term>
-			/// This flag enables the job's CPU rate to be controlled based on weight or hard cap. You must set this value if you
-			/// also set JOB_OBJECT_CPU_RATE_CONTROL_WEIGHT_BASED, JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP, or JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE.
+			/// This flag enables the job's CPU rate to be controlled based on weight or hard cap. You must set this value if you also set
+			/// JOB_OBJECT_CPU_RATE_CONTROL_WEIGHT_BASED, JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP, or JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE.
 			/// </term>
 			/// </item>
 			/// <item>
-			/// <term>JOB_OBJECT_CPU_RATE_CONTROL_WEIGHT_BASED0x2</term>
+			/// <term>JOB_OBJECT_CPU_RATE_CONTROL_WEIGHT_BASED 0x2</term>
 			/// <term>
-			/// The job's CPU rate is calculated based on its relative weight to the weight of other jobs. If this flag is set, the
-			/// Weight member contains more information. If this flag is clear, the CpuRate member contains more information.If you set
+			/// The job's CPU rate is calculated based on its relative weight to the weight of other jobs. If this flag is set, the Weight
+			/// member contains more information. If this flag is clear, the CpuRate member contains more information. If you set
 			/// JOB_OBJECT_CPU_RATE_CONTROL_WEIGHT_BASED, you cannot also set JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE.
 			/// </term>
 			/// </item>
 			/// <item>
-			/// <term>JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP0x4</term>
+			/// <term>JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP 0x4</term>
 			/// <term>
-			/// The job's CPU rate is a hard limit. After the job reaches its CPU cycle limit for the current scheduling interval, no
-			/// threads associated with the job will run until the next interval. If you set JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP, you cannot
-			/// also set JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE.
+			/// The job's CPU rate is a hard limit. After the job reaches its CPU cycle limit for the current scheduling interval, no threads
+			/// associated with the job will run until the next interval. If you set JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP, you cannot also
+			/// set JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE.
 			/// </term>
 			/// </item>
 			/// <item>
-			/// <term>JOB_OBJECT_CPU_RATE_CONTROL_NOTIFY0x8</term>
+			/// <term>JOB_OBJECT_CPU_RATE_CONTROL_NOTIFY 0x8</term>
 			/// <term>Sends messages when the CPU rate for the job exceeds the rate limits for the job during the tolerance interval.</term>
 			/// </item>
 			/// <item>
-			/// <term>JOB_OBJECT_ CPU_RATE_CONTROL_MIN_MAX_RATE0x10</term>
+			/// <term>JOB_OBJECT_ CPU_RATE_CONTROL_MIN_MAX_RATE 0x10</term>
 			/// <term>
-			/// The CPU rate for the job is limited by minimum and maximum rates that you specify in the MinRate and MaxRate members.If you
+			/// The CPU rate for the job is limited by minimum and maximum rates that you specify in the MinRate and MaxRate members. If you
 			/// set JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE, you can set neither JOB_OBJECT_CPU_RATE_CONTROL_WEIGHT_BASED nor JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP.
 			/// </term>
 			/// </item>
 			/// </list>
-			/// </para>
 			/// </summary>
 			public JOB_OBJECT_CPU_RATE_CONTROL_FLAGS ControlFlags;
 
@@ -1938,15 +2163,63 @@ namespace Vanara.PInvoke
 			[StructLayout(LayoutKind.Explicit)]
 			public struct CPU_RATE_CONTROL_UNION
 			{
+				/// <summary>
+				/// <para>
+				/// Specifies the portion of processor cycles that the threads in a job object can use during each scheduling interval, as
+				/// the number of cycles per 10,000 cycles. If the <c>ControlFlags</c> member specifies
+				/// <c>JOB_OBJECT_CPU_RATE_WEIGHT_BASED</c> or <c>JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE</c>, this member is not used.
+				/// </para>
+				/// <para>
+				/// Set <c>CpuRate</c> to a percentage times 100. For example, to let the job use 20% of the CPU, set <c>CpuRate</c> to 20
+				/// times 100, or 2,000.
+				/// </para>
+				/// <para>Do not set <c>CpuRate</c> to 0. If <c>CpuRate</c> is 0, SetInformationJobObject returns <c>INVALID_ARGS</c>.</para>
+				/// </summary>
 				[FieldOffset(0)]
 				public uint CpuRate;
 
+				/// <summary>
+				/// <para>
+				/// If the <c>ControlFlags</c> member specifies <c>JOB_OBJECT_CPU_RATE_WEIGHT_BASED</c>, this member specifies the scheduling
+				/// weight of the job object, which determines the share of processor time given to the job relative to other workloads on
+				/// the processor.
+				/// </para>
+				/// <para>
+				/// This member can be a value from 1 through 9, where 1 is the smallest share and 9 is the largest share. The default is 5,
+				/// which should be used for most workloads.
+				/// </para>
+				/// <para>
+				/// If the <c>ControlFlags</c> member specifies <c>JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE</c>, this member is not used.
+				/// </para>
+				/// </summary>
 				[FieldOffset(0)]
 				public uint Weight;
 
+				/// <summary>
+				/// <para>
+				/// Specifies the minimum portion of the processor cycles that the threads in a job object can reserve during each scheduling
+				/// interval. Specify this rate as a percentage times 100. For example, to set a minimum rate of 50%, specify 50 times 100,
+				/// or 5,000.
+				/// </para>
+				/// <para>
+				/// For the minimum rates to work correctly, the sum of the minimum rates for all of the job objects in the system cannot
+				/// exceed 10,000, which is the equivalent of 100%.
+				/// </para>
+				/// </summary>
 				[FieldOffset(0)]
 				public ushort MinRate;
 
+				/// <summary>
+				/// <para>
+				/// Specifies the maximum portion of processor cycles that the threads in a job object can use during each scheduling
+				/// interval. Specify this rate as a percentage times 100. For example, to set a maximum rate of 50%, specify 50 times 100,
+				/// or 5,000.
+				/// </para>
+				/// <para>
+				/// After the job reaches this limit for a scheduling interval, no threads associated with the job can run until the next
+				/// scheduling interval.
+				/// </para>
+				/// </summary>
 				[FieldOffset(2)]
 				public ushort MaxRate;
 			}
@@ -2027,20 +2300,36 @@ namespace Vanara.PInvoke
 			public SizeT PeakJobMemoryUsed;
 		}
 
+		/// <summary/>
+		[PInvokeData("WinNT.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct JOBOBJECT_IO_ATTRIBUTION_INFORMATION
 		{
+			/// <summary/>
 			public uint ControlFlags;
+
+			/// <summary/>
 			public JOBOBJECT_IO_ATTRIBUTION_STATS ReadStats;
+
+			/// <summary/>
 			public JOBOBJECT_IO_ATTRIBUTION_STATS WriteStats;
 		}
 
+		/// <summary/>
+		[PInvokeData("WinNT.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct JOBOBJECT_IO_ATTRIBUTION_STATS
 		{
+			/// <summary/>
 			public UIntPtr IoCount;
+
+			/// <summary/>
 			public ulong TotalNonOverlappedQueueTime;
+
+			/// <summary/>
 			public ulong TotalNonOverlappedServiceTime;
+
+			/// <summary/>
 			public ulong TotalSize;
 		}
 
@@ -2135,58 +2424,139 @@ namespace Vanara.PInvoke
 			public JOB_OBJECT_IO_RATE_CONTROL_FLAGS ControlFlags;
 		}
 
+		/// <summary/>
+		[PInvokeData("WinNT.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE
 		{
+			/// <summary/>
 			public long MaxIops;
+
+			/// <summary/>
 			public long MaxBandwidth;
+
+			/// <summary/>
 			public long ReservationIops;
+
+			/// <summary/>
 			[MarshalAs(UnmanagedType.LPWStr)]
 			public string VolumeName;
+
+			/// <summary/>
 			public uint BaseIoSize;
+
+			/// <summary/>
 			public JOB_OBJECT_IO_RATE_CONTROL_FLAGS ControlFlags;
+
+			/// <summary/>
 			public ushort VolumeNameLength;
 		}
 
+		/// <summary/>
+		[PInvokeData("WinNT.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V2
 		{
+			/// <summary/>
 			public long MaxIops;
+
+			/// <summary/>
 			public long MaxBandwidth;
+
+			/// <summary/>
 			public long ReservationIops;
+
+			/// <summary/>
 			public string VolumeName;
+
+			/// <summary/>
 			public uint BaseIoSize;
+
+			/// <summary/>
 			public JOB_OBJECT_IO_RATE_CONTROL_FLAGS ControlFlags;
+
+			/// <summary/>
 			public ushort VolumeNameLength;
+
+			/// <summary/>
 			public long CriticalReservationIops;
+
+			/// <summary/>
 			public long ReservationBandwidth;
+
+			/// <summary/>
 			public long CriticalReservationBandwidth;
+
+			/// <summary/>
 			public long MaxTimePercent;
+
+			/// <summary/>
 			public long ReservationTimePercent;
+
+			/// <summary/>
 			public long CriticalReservationTimePercent;
 		}
 
+		/// <summary/>
+		[PInvokeData("WinNT.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V3
 		{
+			/// <summary/>
 			public long MaxIops;
+
+			/// <summary/>
 			public long MaxBandwidth;
+
+			/// <summary/>
 			public long ReservationIops;
+
+			/// <summary/>
 			public string VolumeName;
+
+			/// <summary/>
 			public uint BaseIoSize;
+
+			/// <summary/>
 			public JOB_OBJECT_IO_RATE_CONTROL_FLAGS ControlFlags;
+
+			/// <summary/>
 			public ushort VolumeNameLength;
+
+			/// <summary/>
 			public long CriticalReservationIops;
+
+			/// <summary/>
 			public long ReservationBandwidth;
+
+			/// <summary/>
 			public long CriticalReservationBandwidth;
+
+			/// <summary/>
 			public long MaxTimePercent;
+
+			/// <summary/>
 			public long ReservationTimePercent;
+
+			/// <summary/>
 			public long CriticalReservationTimePercent;
+
+			/// <summary/>
 			public long SoftMaxIops;
+
+			/// <summary/>
 			public long SoftMaxBandwidth;
+
+			/// <summary/>
 			public long SoftMaxTimePercent;
+
+			/// <summary/>
 			public long LimitExcessNotifyIops;
+
+			/// <summary/>
 			public long LimitExcessNotifyBandwidth;
+
+			/// <summary/>
 			public long LimitExcessNotifyTimePercent;
 		}
 
@@ -2270,9 +2640,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// <item>
 			/// <term>JOB_OBJECT_LIMIT_JOB_TIME0x00000004</term>
-			/// <term>
-			/// The job's user-mode execution time notification limit has been exceeded. The PerJobUserTime member contains more information.
-			/// </term>
+			/// <term>The job's user-mode execution time notification limit has been exceeded. The PerJobUserTime member contains more information.</term>
 			/// </item>
 			/// <item>
 			/// <term>JOB_OBJECT_LIMIT_JOB_MEMORY0x00000200</term>
@@ -2285,7 +2653,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public uint ViolationLimitFlags;
+			public JOBOBJECT_LIMIT_FLAGS ViolationLimitFlags;
 
 			/// <summary>
 			/// If the ViolationLimitFlags member specifies JOB_OBJECT_LIMIT_READ_BYTES, this member contains the total I/O read bytes for
@@ -2315,13 +2683,13 @@ namespace Vanara.PInvoke
 			/// If the ViolationLimitFlags member specifies JOB_OBJECT_LIMIT_JOB_TIME, this member contains the total user-mode execution
 			/// time for all processes in the job at the time the notification was sent.
 			/// </summary>
-			public long PerJobUserTime;
+			public TimeSpan PerJobUserTime;
 
 			/// <summary>
 			/// If the LimitFlags member specifies JOB_OBJECT_LIMIT_JOB_TIME, this member contains the user-mode execution notification limit
 			/// in effect for the job.
 			/// </summary>
-			public long PerJobUserTimeLimit;
+			public TimeSpan PerJobUserTimeLimit;
 
 			/// <summary>
 			/// If the ViolationLimitFlags member specifies JOB_OBJECT_LIMIT_JOB_MEMORY, this member contains the committed memory for all
@@ -2467,9 +2835,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// <item>
 			/// <term>JOB_OBJECT_LIMIT_JOB_TIME0x00000004</term>
-			/// <term>
-			/// The job's user-mode execution time notification limit has been exceeded. The PerJobUserTime member contains more information.
-			/// </term>
+			/// <term>The job's user-mode execution time notification limit has been exceeded. The PerJobUserTime member contains more information.</term>
 			/// </item>
 			/// <item>
 			/// <term>JOB_OBJECT_LIMIT_JOB_MEMORY0x00000200</term>
@@ -2482,7 +2848,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public uint ViolationLimitFlags;
+			public JOBOBJECT_LIMIT_FLAGS ViolationLimitFlags;
 
 			/// <summary>
 			/// If the ViolationLimitFlags member specifies JOB_OBJECT_LIMIT_READ_BYTES, this member contains the total I/O read bytes for
@@ -2512,13 +2878,13 @@ namespace Vanara.PInvoke
 			/// If the ViolationLimitFlags member specifies JOB_OBJECT_LIMIT_JOB_TIME, this member contains the total user-mode execution
 			/// time for all processes in the job at the time the notification was sent.
 			/// </summary>
-			public long PerJobUserTime;
+			public TimeSpan PerJobUserTime;
 
 			/// <summary>
 			/// If the LimitFlags member specifies JOB_OBJECT_LIMIT_JOB_TIME, this member contains the user-mode execution notification limit
 			/// in effect for the job.
 			/// </summary>
-			public long PerJobUserTimeLimit;
+			public TimeSpan PerJobUserTimeLimit;
 
 			/// <summary>
 			/// If the ViolationLimitFlags member specifies JOB_OBJECT_LIMIT_JOB_MEMORY, this member contains the committed memory for all
@@ -2715,7 +3081,7 @@ namespace Vanara.PInvoke
 		// typedef struct JOBOBJECT_NET_RATE_CONTROL_INFORMATION { DWORD64 MaxBandwidth; JOB_OBJECT_NET_RATE_CONTROL_FLAGS ControlFlags; BYTE
 		// DscpTag;} JOBOBJECT_NET_RATE_CONTROL_INFORMATION; https://msdn.microsoft.com/en-us/library/windows/desktop/mt280124(v=vs.85).aspx
 		[PInvokeData("Winnt.h", MSDNShortId = "mt280124")]
-		[StructLayout(LayoutKind.Sequential, Pack = 1)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4, Size = 16)]
 		public struct JOBOBJECT_NET_RATE_CONTROL_INFORMATION
 		{
 			/// <summary>The maximum bandwidth for outgoing network traffic for the job, in bytes.</summary>
@@ -2774,7 +3140,7 @@ namespace Vanara.PInvoke
 			/// <c>JOBOBJECT_BASIC_LIMIT_INFORMATION</c> structure.
 			/// </para>
 			/// </summary>
-			public long PerJobUserTimeLimit;
+			public TimeSpan PerJobUserTimeLimit;
 
 			/// <summary>
 			/// <para>
@@ -2943,7 +3309,7 @@ namespace Vanara.PInvoke
 			/// <c>JOBOBJECT_BASIC_LIMIT_INFORMATION</c> structure.
 			/// </para>
 			/// </summary>
-			public long PerJobUserTimeLimit;
+			public TimeSpan PerJobUserTimeLimit;
 
 			/// <summary>
 			/// If the LimitFlags parameter specifies <c>JOB_OBJECT_LIMIT_JOB_MEMORY_HIGH</c>, this member is the notification maximum limit
@@ -3328,7 +3694,7 @@ namespace Vanara.PInvoke
 			/// restricted token. Otherwise, the caller must have the SE_ASSIGNPRIMARYTOKEN_NAME privilege.
 			/// </para>
 			/// </summary>
-			public IntPtr JobToken;
+			public HTOKEN JobToken;
 
 			/// <summary>
 			/// <para>
@@ -3368,7 +3734,9 @@ namespace Vanara.PInvoke
 			/// </param>
 			public SafeHJOB(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			private SafeHJOB() : base() { }
+			private SafeHJOB() : base()
+			{
+			}
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHJOB"/> to <see cref="HJOB"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
