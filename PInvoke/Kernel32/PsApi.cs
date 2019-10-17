@@ -953,6 +953,57 @@ namespace Vanara.PInvoke
 		public static extern bool GetProcessMemoryInfo(HPROCESS Process, out PROCESS_MEMORY_COUNTERS ppsmemCounters, uint cb);
 
 		/// <summary>
+		/// <para>Retrieves information about the memory usage of the specified process.</para>
+		/// </summary>
+		/// <param name="Process">
+		/// <para>
+		/// A handle to the process. The handle must have the <c>PROCESS_QUERY_INFORMATION</c> or <c>PROCESS_QUERY_LIMITED_INFORMATION</c>
+		/// access right and the <c>PROCESS_VM_READ</c> access right. For more information, see Process Security and Access Rights.
+		/// </para>
+		/// <para>
+		/// <c>Windows Server 2003 and Windows XP:</c> The handle must have the <c>PROCESS_QUERY_INFORMATION</c> and <c>PROCESS_VM_READ</c>
+		/// access rights.
+		/// </para>
+		/// </param>
+		/// <param name="ppsmemCounters">
+		/// <para>
+		/// A pointer to the PROCESS_MEMORY_COUNTERS or PROCESS_MEMORY_COUNTERS_EX structure that receives information about the memory usage
+		/// of the process.
+		/// </para>
+		/// </param>
+		/// <param name="cb">
+		/// <para>The size of the ppsmemCounters structure, in bytes.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Starting with Windows 7 and Windows Server 2008 R2, Psapi.h establishes version numbers for the PSAPI functions. The PSAPI
+		/// version number affects the name used to call the function and the library that a program must load.
+		/// </para>
+		/// <para>
+		/// If <c>PSAPI_VERSION</c> is 2 or greater, this function is defined as <c>K32GetProcessMemoryInfo</c> in Psapi.h and exported in
+		/// Kernel32.lib and Kernel32.dll. If <c>PSAPI_VERSION</c> is 1, this function is defined as <c>GetProcessMemoryInfo</c> in Psapi.h
+		/// and exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetProcessMemoryInfo</c>.
+		/// </para>
+		/// <para>
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
+		/// <c>GetProcessMemoryInfo</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile
+		/// the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Collecting Memory Usage Information for a Process.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getprocessmemoryinfo BOOL GetProcessMemoryInfo( HANDLE
+		// Process, PPROCESS_MEMORY_COUNTERS ppsmemCounters, DWORD cb );
+		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("psapi.h", MSDNShortId = "12990e8d-6097-4502-824e-db6c3f76c715")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetProcessMemoryInfo(HPROCESS Process, out PROCESS_MEMORY_COUNTERS_EX ppsmemCounters, uint cb);
+
+		/// <summary>
 		/// <para>
 		/// Retrieves information about the pages that have been added to the working set of the specified process since the last time this
 		/// function or the InitializeProcessForWsWatch function was called.
@@ -1598,6 +1649,63 @@ namespace Vanara.PInvoke
 
 			/// <summary>A default initialized instance.</summary>
 			public static readonly PROCESS_MEMORY_COUNTERS Default = new PROCESS_MEMORY_COUNTERS { cb = (uint)Marshal.SizeOf(typeof(PROCESS_MEMORY_COUNTERS)) };
+		}
+
+		/// <summary>Contains extended memory statistics for a process.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters_ex typedef struct
+		// _PROCESS_MEMORY_COUNTERS_EX { DWORD cb; DWORD PageFaultCount; SIZE_T PeakWorkingSetSize; SIZE_T WorkingSetSize; SIZE_T
+		// QuotaPeakPagedPoolUsage; SIZE_T QuotaPagedPoolUsage; SIZE_T QuotaPeakNonPagedPoolUsage; SIZE_T QuotaNonPagedPoolUsage; SIZE_T
+		// PagefileUsage; SIZE_T PeakPagefileUsage; SIZE_T PrivateUsage; } PROCESS_MEMORY_COUNTERS_EX;
+		[PInvokeData("psapi.h", MSDNShortId = "cf06445d-b71a-4320-afc8-4bd88ebfb284")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PROCESS_MEMORY_COUNTERS_EX
+		{
+			/// <summary>The size of the structure, in bytes.</summary>
+			public uint cb;
+
+			/// <summary>The number of page faults.</summary>
+			public uint PageFaultCount;
+
+			/// <summary>The peak working set size, in bytes.</summary>
+			public SizeT PeakWorkingSetSize;
+
+			/// <summary>The current working set size, in bytes.</summary>
+			public SizeT WorkingSetSize;
+
+			/// <summary>The peak paged pool usage, in bytes.</summary>
+			public SizeT QuotaPeakPagedPoolUsage;
+
+			/// <summary>The current paged pool usage, in bytes.</summary>
+			public SizeT QuotaPagedPoolUsage;
+
+			/// <summary>The peak nonpaged pool usage, in bytes.</summary>
+			public SizeT QuotaPeakNonPagedPoolUsage;
+
+			/// <summary>The current nonpaged pool usage, in bytes.</summary>
+			public SizeT QuotaNonPagedPoolUsage;
+
+			/// <summary>
+			/// <para>
+			/// The Commit Charge value in bytes for this process. Commit Charge is the total amount of memory that the memory manager has
+			/// committed for a running process.
+			/// </para>
+			/// <para>
+			/// <c>Windows 7 and Windows Server 2008 R2 and earlier:</c><c>PagefileUsage</c> is always zero. Check <c>PrivateUsage</c> instead.
+			/// </para>
+			/// </summary>
+			public SizeT PagefileUsage;
+
+			/// <summary>The peak value in bytes of the Commit Charge during the lifetime of this process.</summary>
+			public SizeT PeakPagefileUsage;
+
+			/// <summary>
+			/// Same as <c>PagefileUsage</c>. The Commit Charge value in bytes for this process. Commit Charge is the total amount of memory
+			/// that the memory manager has committed for a running process.
+			/// </summary>
+			public SizeT PrivateUsage;
+
+			/// <summary>A default initialized instance.</summary>
+			public static readonly PROCESS_MEMORY_COUNTERS_EX Default = new PROCESS_MEMORY_COUNTERS_EX { cb = (uint)Marshal.SizeOf(typeof(PROCESS_MEMORY_COUNTERS_EX)) };
 		}
 
 		/// <summary>Contains working set information for a page.</summary>
