@@ -4,7 +4,7 @@
     <Description>.NET classes to access Background Intelligent Transfer Service (BITS) functionality. Intelligently uses most recent library functions and gracefully fails when new features are not available on olders OS versions.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.0</VersionPrefix>
+    <VersionPrefix>3.1.1</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Vanara.BITS</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -23,7 +23,18 @@
     <IncludeSymbols>true</IncludeSymbols>
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+BackgroundCopyException, BackgroundCopyFileCollection, BackgroundCopyFileInfo, BackgroundCopyFileRange, BackgroundCopyFileRangesTransferredEventArgs, BackgroundCopyFileTransferredEventArgs, BackgroundCopyJob, BackgroundCopyJobCollection, BackgroundCopyJobCredential, BackgroundCopyJobCredentials, BackgroundCopyJobEventArgs, BackgroundCopyManager
+
+Structures
+BackgroundCopyFileRange, BackgroundCopyJobProgress, BackgroundCopyJobReplyProgress
+
+Enumerations
+BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, BackgroundCopyJobCredentialScheme, BackgroundCopyJobCredentialTarget, BackgroundCopyJobPriority, BackgroundCopyJobSecurity, BackgroundCopyJobState, BackgroundCopyJobType
+
+</PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Vanara.snk</AssemblyOriginatorKeyFile>
