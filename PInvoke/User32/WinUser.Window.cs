@@ -8643,7 +8643,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a window or dialog that releases a created HWND instance at disposal using DestroyWindow.
 		/// </summary>
-		public class SafeHWND : SafeHANDLE
+		public class SafeHWND : SafeHANDLE, IUserHandle
 		{
 			/// <summary>Initializes a new instance of the <see cref="HWND"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

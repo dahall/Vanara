@@ -1040,7 +1040,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides a handle to a hook.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct HHOOK : IHandle
+		public struct HHOOK : IUserHandle
 		{
 			private IntPtr handle;
 
@@ -1431,7 +1431,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HHOOK"/> that is disposed using <see cref="UnhookWindowsHookEx"/>.</summary>
-		public class SafeHHOOK : SafeHANDLE
+		public class SafeHHOOK : SafeHANDLE, IUserHandle
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHHOOK"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

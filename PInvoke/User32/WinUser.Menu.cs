@@ -4082,7 +4082,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HMENU"/> that is disposed using <see cref="DestroyMenu"/>.</summary>
-		public class SafeHMENU : SafeHANDLE
+		public class SafeHMENU : SafeHANDLE, IUserHandle
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHMENU"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

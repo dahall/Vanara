@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 namespace Vanara.PInvoke
 {
 	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
-	public interface IGraphicsObjectHandle : IHandle { }
+	public interface IGraphicsObjectHandle : IUserHandle { }
 
 	/// <summary>Signals that a structure or class holds a HANDLE.</summary>
 	public interface IHandle
@@ -34,7 +34,7 @@ namespace Vanara.PInvoke
 
 	/// <summary>Provides a handle to an accelerator table.</summary>
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
-	public struct HACCEL : IHandle
+	public struct HACCEL : IUserHandle
 	{
 		private IntPtr handle;
 

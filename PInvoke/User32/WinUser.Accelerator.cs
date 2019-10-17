@@ -247,7 +247,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HACCEL"/> that is disposed using <see cref="DestroyAcceleratorTable"/>.</summary>
-		public class SafeHACCEL : SafeHANDLE
+		public class SafeHACCEL : SafeHANDLE, IUserHandle
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHACCEL"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
