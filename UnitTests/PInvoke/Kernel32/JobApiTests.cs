@@ -13,6 +13,37 @@ namespace Vanara.PInvoke.Tests
 	public class JobApiTests
 	{
 		[Test]
+		public void ClearSetValueTest()
+		{
+			using var job = CreateJobObject();
+
+			var bi = QueryInformationJobObject<JOBOBJECT_BASIC_LIMIT_INFORMATION>(job, JOBOBJECTINFOCLASS.JobObjectBasicLimitInformation);
+			Assert.That(bi.LimitFlags, Is.EqualTo((JOBOBJECT_LIMIT_FLAGS)0));
+			Assert.That(bi.ActiveProcessLimit, Is.Zero);
+			bi.WriteValues();
+
+			bi.ActiveProcessLimit = 2U;
+			bi.Affinity = (UIntPtr)0xfU;
+			bi.LimitFlags |= JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_ACTIVE_PROCESS | JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_AFFINITY;
+			Assert.That(() => SetInformationJobObject(job, JOBOBJECTINFOCLASS.JobObjectBasicLimitInformation, bi), Throws.Nothing);
+
+			var bi2 = QueryInformationJobObject<JOBOBJECT_BASIC_LIMIT_INFORMATION>(job, JOBOBJECTINFOCLASS.JobObjectBasicLimitInformation);
+			Assert.That(bi2.LimitFlags, Is.EqualTo(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_ACTIVE_PROCESS | JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_AFFINITY));
+			Assert.That(bi2.ActiveProcessLimit, Is.Not.Zero);
+			Assert.That(bi2.Affinity, Is.EqualTo((UIntPtr)0xfU));
+			bi2.WriteValues();
+
+			bi2.ActiveProcessLimit = 0;
+			bi2.LimitFlags &= ~JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_ACTIVE_PROCESS;
+			Assert.That(() => SetInformationJobObject(job, JOBOBJECTINFOCLASS.JobObjectBasicLimitInformation, bi2), Throws.Nothing);
+
+			var bi3 = QueryInformationJobObject<JOBOBJECT_BASIC_LIMIT_INFORMATION>(job, JOBOBJECTINFOCLASS.JobObjectBasicLimitInformation);
+			Assert.That(bi3.LimitFlags.IsFlagSet(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_ACTIVE_PROCESS), Is.False);
+			Assert.That(bi3.ActiveProcessLimit, Is.Zero);
+			bi3.WriteValues();
+		}
+
+		[Test]
 		public void CreateAssignChcekJobObjectTest()
 		{
 			using (var hProc = CreateProcess(@"C:\Windows\notepad.exe"))
