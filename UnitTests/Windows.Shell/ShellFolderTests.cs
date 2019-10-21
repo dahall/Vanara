@@ -110,6 +110,7 @@ namespace Vanara.Windows.Shell.Tests
 				}
 			}, Throws.Nothing);
 			Assert.That(() => new ShellFolder(KNOWNFOLDERID.FOLDERID_Windows).EnumerateChildren((FolderItemFilter)0x80000), Is.Empty);
+			Assert.That(() => new ShellFolder(KNOWNFOLDERID.FOLDERID_ComputerFolder).EnumerateChildren(), Is.Not.Empty);
 		}
 
 		[Test]
