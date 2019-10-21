@@ -166,7 +166,7 @@ namespace Vanara.Windows.Shell
 			catch (Exception e) { Debug.WriteLine($"Unable to enum children in folder: {e.Message}"); }
 			if (eo != null)
 			{
-				foreach (var p in new Collections.IEnumFromNext<IntPtr>((out IntPtr p) => eo.Next(1, out p, out var f).Succeeded && f == 1, () => eo.Reset()))
+				foreach (var p in new Collections.IEnumFromNext<IntPtr>((out IntPtr p) => eo.Next(1, out p, out var f).Succeeded && f == 1, () => { try { eo.Reset(); } catch { } }))
 				{
 					ShellItem i = null;
 					try { i = this[new PIDL(p)]; } catch (Exception e) { Debug.WriteLine($"Unable to open folder child: {e.Message}"); }
