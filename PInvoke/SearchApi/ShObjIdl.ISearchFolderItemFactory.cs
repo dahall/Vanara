@@ -35,7 +35,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-isearchfolderitemfactory-setfoldertypeid
 			// HRESULT SetFolderTypeID( FOLDERTYPEID ftid );
-			void SetFolderTypeID(FOLDERTYPEID ftid);
+			void SetFolderTypeID(Guid ftid);
 
 			/// <summary>
 			/// Sets folder logical view mode. The default settings are based on the which is set by the
