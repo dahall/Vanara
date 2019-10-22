@@ -1403,12 +1403,52 @@ namespace Vanara.PInvoke
 			/// <summary>Adds a single file to the job.</summary>
 			/// <param name="RemoteUrl">
 			/// Null-terminated string that contains the name of the file on the server. For information on specifying the remote name, see
-			/// the RemoteName member and Remarks section of the BG_FILE_INFO structure.
+			/// the <c>RemoteName</c> member and Remarks section of the BG_FILE_INFO structure.
 			/// </param>
 			/// <param name="LocalName">
 			/// Null-terminated string that contains the name of the file on the client. For information on specifying the local name, see
-			/// the LocalName member and Remarks section of the BG_FILE_INFO structure.
+			/// the <c>LocalName</c> member and Remarks section of the BG_FILE_INFO structure.
 			/// </param>
+			/// <remarks>
+			/// <para>
+			/// To add more than one file at a time to a job, call the IBackgroundCopyJob::AddFileSet method. It is more efficient to call
+			/// the <c>AddFileSet</c> method when adding multiple files to a job than to call the <c>AddFile</c> method in a loop. For more
+			/// information, see Adding Files to a Job.
+			/// </para>
+			/// <para>
+			/// To add a file to a job from which BITS downloads ranges of data from the file, call the
+			/// IBackgroundCopyJob3::AddFileWithRanges method.
+			/// </para>
+			/// <para>Upload jobs can only contain one file. If you add a second file, the method returns BG_E_TOO_MANY_FILES.</para>
+			/// <para>
+			/// For downloads, BITS guarantees that the version of a file (based on file size and date, not content) that it transfers will
+			/// be consistent; however, it does not guarantee that a set of files will be consistent. For example, if BITS is in the middle
+			/// of downloading the second of two files in the job at the time that the files are updated on the server, BITS restarts the
+			/// download of the second file; however, the first file is not downloaded again.
+			/// </para>
+			/// <para>
+			/// Note that if you own the file being downloaded from the server, you should create a new URL for each new version of the file.
+			/// If you use the same URL for new versions of the file, some proxy servers may serve stale data from their cache because they
+			/// do not verify with the original server if the file is stale.
+			/// </para>
+			/// <para>
+			/// For uploads, BITS generates an error if the local file changes while the file is transferring. The error code is
+			/// BG_E_FILE_CHANGED and the context is BG_ERROR_CONTEXT_LOCAL_FILE.
+			/// </para>
+			/// <para>
+			/// BITS transfers the files within a job sequentially. If an error occurs while transferring a file, the job moves to an error
+			/// state and no more files within the job are processed until the error is resolved.
+			/// </para>
+			/// <para>
+			/// By default, a user can add up to 200 files to a job. This limit does not apply to administrators or service accounts. To
+			/// change the default, set the <c>MaxFilesPerJob</c> group policies.
+			/// </para>
+			/// <para><c>Prior to Windows Vista:</c> There is no limit on the number of files that a user can add to a job.</para>
+			/// <para>For scalability concerns, see Best Practices When Using BITS.</para>
+			/// <para>Examples</para>
+			/// <para>For an example that adds a single file to a job, see Adding Files to a Job.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits/nf-bits-ibackgroundcopyjob-addfile
 			void AddFile([In, MarshalAs(UnmanagedType.LPWStr)] string RemoteUrl, [In, MarshalAs(UnmanagedType.LPWStr)] string LocalName);
 
 			/// <summary>Retrieves an IEnumBackgroundCopyFiles interface pointer that you use to enumerate the files in a job.</summary>

@@ -1,19 +1,19 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Vanara.IO.Tests
 {
 	[TestFixture()]
 	public class BackgroundCopyTests
 	{
-		const string jname = "TestJob";
-		const string src = @"file:///C:/Temp/Holes.mp4";
-		const string dest = @"D:\dest.bin";
+		private const string jname = "TestJob";
+		private const string src = @"file:///C:/Temp/Holes.mp4";
+		private const string dest = @"D:\dest.bin";
 
 		[Test]
 		public void EnumJobTest()
@@ -25,10 +25,7 @@ namespace Vanara.IO.Tests
 		}
 
 		[Test]
-		public void VerTest()
-		{
-			Assert.That(BackgroundCopyManager.Version, Is.GreaterThanOrEqualTo(new Version(10, 0)));
-		}
+		public void VerTest() => Assert.That(BackgroundCopyManager.Version, Is.GreaterThanOrEqualTo(new Version(10, 0)));
 
 		[Test]
 		public void JobCollTest()
@@ -53,7 +50,7 @@ namespace Vanara.IO.Tests
 		public void FileCollTest()
 		{
 			var job = BackgroundCopyManager.Jobs.Add(jname);
-			System.IO.File.Delete(dest);
+			File.Delete(dest);
 			Assert.That(() => job.Files.Add(src, dest), Throws.Nothing);
 			Assert.That(job.Files.Count, Is.EqualTo(1));
 			Assert.That(job.Files.Count(), Is.EqualTo(1));
@@ -64,22 +61,22 @@ namespace Vanara.IO.Tests
 		[Test]
 		public void CopyTest()
 		{
-			System.IO.File.Delete(dest);
+			File.Delete(dest);
 			Assert.That(() => BackgroundCopyManager.Copy(src, dest), Throws.Nothing);
-			Assert.That(System.IO.File.Exists(dest));
-			System.IO.File.Delete(dest);
+			Assert.That(File.Exists(dest));
+			File.Delete(dest);
 		}
 
 		[Test]
 		public void CopyAsyncCancelReportTest()
 		{
-			System.IO.File.Delete(dest);
+			File.Delete(dest);
 			var cts = new CancellationTokenSource();
 			var l = new List<string>();
 			var prog = new Progress<Tuple<BackgroundCopyJobState, byte>>(t => l.Add($"{t.Item2}% : {t.Item1}"));
 			cts.CancelAfter(2000);
 			Assert.That(() => BackgroundCopyManager.CopyAsync(src, dest, cts.Token, prog), Throws.TypeOf<OperationCanceledException>());
-			Assert.That(System.IO.File.Exists(dest), Is.False);
+			Assert.That(File.Exists(dest), Is.False);
 			Assert.That(l.Count, Is.GreaterThanOrEqualTo(0));
 			TestContext.Write(string.Join("\r\n", l));
 		}
@@ -87,12 +84,12 @@ namespace Vanara.IO.Tests
 		[Test]
 		public void CopyAsyncReportTest()
 		{
-			System.IO.File.Delete(dest);
+			File.Delete(dest);
 			var cts = new CancellationTokenSource();
 			var l = new List<string>();
 			var prog = new Progress<Tuple<BackgroundCopyJobState, byte>>(t => l.Add($"{t.Item2}% : {t.Item1}"));
 			Assert.That(() => BackgroundCopyManager.CopyAsync(src, dest, cts.Token, prog), Throws.Nothing);
-			Assert.That(System.IO.File.Exists(dest), Is.True);
+			Assert.That(File.Exists(dest), Is.True);
 			Assert.That(l.Count, Is.GreaterThan(0));
 			TestContext.Write(string.Join("\r\n", l));
 		}
@@ -100,11 +97,11 @@ namespace Vanara.IO.Tests
 		[Test]
 		public void CopyAsyncTest()
 		{
-			System.IO.File.Delete(dest);
+			File.Delete(dest);
 			var cts = new CancellationTokenSource();
 			Assert.That(() => BackgroundCopyManager.CopyAsync(src, dest, cts.Token, null), Throws.Nothing);
-			Assert.That(System.IO.File.Exists(dest), Is.True);
-			System.IO.File.Delete(dest);
+			Assert.That(File.Exists(dest), Is.True);
+			File.Delete(dest);
 		}
 
 		[Test]
@@ -118,6 +115,51 @@ namespace Vanara.IO.Tests
 			job.SetCertificate(store, c);
 			Assert.That(job.Certificate, Is.EqualTo(c));
 			store.Close();
+		}
+
+		[Test]
+		public void JobExample()
+		{
+			try
+			{
+				var evt = new AutoResetEvent(false);
+				// ===== Create a download job (default) =================
+				using var job = BackgroundCopyManager.Jobs.Add("Download directory");
+				// Set properties on the job
+				job.Credentials.Add(BackgroundCopyJobCredentialScheme.Digest, BackgroundCopyJobCredentialTarget.Proxy, "user", "mypwd");
+				job.CustomHeaders = new System.Net.WebHeaderCollection() { "A1:Test", "A2:Prova" };
+				job.MinimumNotificationInterval = TimeSpan.FromSeconds(1);
+				// Set event handlers for job
+				job.Completed += (s, e) => { System.Diagnostics.Debug.WriteLine("Job completed."); job.Complete(); evt.Set(); };
+				job.Error += (s, e) => throw job.LastError;
+				job.FileTransferred += (s, e) => System.Diagnostics.Debug.WriteLine($"{e.FileInfo.LocalFilePath} of size {e.FileInfo.BytesTransferred} bytes was transferred.");
+				// Add download file information
+				job.Files.AddRange(@"file:///C:/Temp/", @"D:\", new[] { "Holes.mp4", "NuGet.exe", "procexp.exe" });
+				// Start (resume) the job.
+				job.Resume();
+				if (!evt.WaitOne(20000))
+					throw new InvalidOperationException();
+
+				// ===== Create an upload job ============================
+				using var uploadJob = BackgroundCopyManager.Jobs.Add("Upload", null, BackgroundCopyJobType.Upload);
+				// Set completion handler for job that calls the Complete method to end the job and save all files.
+				uploadJob.Completed += (s, e) => { job.Complete(); evt.Set(); };
+				uploadJob.Error += (s, e) => throw uploadJob.LastError;
+				// Add a single file (multiple files are not supported for upload jobs)
+				uploadJob.Files.Add("file:///C:/Temp/upload.tmp", @"D:\procexp.exe");
+				// Start (resume) the job.
+				uploadJob.Resume();
+				if (!evt.WaitOne(20000))
+					throw new InvalidOperationException();
+			}
+			finally
+			{
+				// Cleanup
+				File.Delete(@"C:\Temp\upload.tmp");
+				File.Delete(@"D:\Holes.mp4");
+				File.Delete(@"D:\NuGet.exe");
+				File.Delete(@"D:\procexp.exe");
+			}
 		}
 
 		[Test]
@@ -198,9 +240,9 @@ namespace Vanara.IO.Tests
 
 			Assert.That(job.Owner, Is.EqualTo(System.Security.Principal.WindowsIdentity.GetCurrent().User));
 
-			Assert.That(job.OwnerIntegrityLevel, Is.EqualTo(12288));
+			Assert.That(job.OwnerIntegrityLevel, Is.EqualTo(8192));
 
-			Assert.That(job.OwnerIsElevated, Is.EqualTo(true));
+			Assert.That(job.OwnerIsElevated, Is.EqualTo(false));
 
 			Assert.That(job.Priority, Is.EqualTo(job.GetDefVal<BackgroundCopyJobPriority>(nameof(job.Priority))));
 			Assert.That(() => job.Priority = BackgroundCopyJobPriority.Low, Throws.Nothing);
