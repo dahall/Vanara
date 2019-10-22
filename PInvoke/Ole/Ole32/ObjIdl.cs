@@ -4364,5 +4364,103 @@ namespace Vanara.PInvoke
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			void IDisposable.Dispose() => ptr?.Dispose();
 		}
+
+		/// <summary>Simple generic implementation of <see cref="IEnumUnknown"/>.</summary>
+		/// <typeparam name="T">The type to enumerate.</typeparam>
+		/// <seealso cref="System.Collections.Generic.IReadOnlyList{T}"/>
+		/// <seealso cref="Vanara.PInvoke.Ole32.IEnumUnknown"/>
+		public class IEnumUnknownImpl<T> : IReadOnlyList<T>, IEnumUnknown where T : class
+		{
+			private int current = -1;
+			private List<T> items;
+
+			/// <summary>Initializes a new instance of the <see cref="IEnumUnknownImpl{T}"/> class using an existing enumeration.</summary>
+			/// <param name="items">The items to enumerate.</param>
+			/// <exception cref="ArgumentNullException">items</exception>
+			public IEnumUnknownImpl(IEnumerable<T> items)
+			{
+				this.items = new List<T>(items ?? throw new ArgumentNullException(nameof(items)));
+			}
+
+			/// <summary>Gets the element at the specified index in the read-only list.</summary>
+			/// <value>The element at the specified index in the read-only list.</value>
+			/// <param name="index">The zero-based index of the element to get.</param>
+			public T this[int index] => items[index];
+
+			/// <summary>Gets the number of elements in the collection.</summary>
+			/// <value>The number of elements in the collection.</value>
+			public int Count => items.Count;
+
+			/// <summary>Retrieves the specified number of items in the enumeration sequence.</summary>
+			/// <param name="celt">
+			/// The number of items to be retrieved. If there are fewer than the requested number of items left in the sequence, this method
+			/// retrieves the remaining elements.
+			/// </param>
+			/// <param name="rgelt">
+			/// <para>An array of enumerated items.</para>
+			/// <para>
+			/// The enumerator is responsible for calling AddRef, and the caller is responsible for calling Release through each pointer
+			/// enumerated. If celt is greater than 1, the caller must also pass a non-NULL pointer passed to pceltFetched to know how many
+			/// pointers to release.
+			/// </para>
+			/// </param>
+			/// <param name="pceltFetched">
+			/// The number of items that were retrieved. This parameter is always less than or equal to the number of items requested.
+			/// </param>
+			/// <returns>If the method retrieves the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
+			/// <exception cref="ArgumentOutOfRangeException">rgelt - The length is not large enough for the requested number of items.</exception>
+			HRESULT IEnumUnknown.Next(uint celt, IntPtr[] rgelt, out uint pceltFetched)
+			{
+				pceltFetched = 0;
+				if (++current < items.Count)
+				{
+					pceltFetched = Math.Min((uint)(items.Count - current), celt);
+					if (rgelt is null || rgelt.Length < pceltFetched)
+						throw new ArgumentOutOfRangeException(nameof(rgelt), "The length is not large enough for the requested number of items.");
+					for (int i = 0; i < pceltFetched; i++)
+						rgelt[i] = Marshal.GetIUnknownForObject(items[current + i]);
+					return HRESULT.S_OK;
+				}
+				return HRESULT.S_FALSE;
+			}
+
+			/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
+			/// <param name="celt">The number of items to be skipped.</param>
+			/// <returns>If the method skips the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
+			HRESULT IEnumUnknown.Skip(uint celt)
+			{
+				var temp = current + (int)celt;
+				if (temp > items.Count - 1)
+					return HRESULT.S_FALSE;
+				current = temp;
+				return HRESULT.S_OK;
+			}
+
+			/// <summary>Resets the enumeration sequence to the beginning.</summary>
+			/// <remarks>
+			/// There is no guarantee that the same set of objects will be enumerated after the reset operation has completed. A static
+			/// collection is reset to the beginning, but it can be too expensive for some collections, such as files in a directory, to
+			/// guarantee this condition.
+			/// </remarks>
+			void IEnumUnknown.Reset() => current = -1;
+
+			/// <summary>
+			/// <para>Creates a new enumerator that contains the same enumeration state as the current one.</para>
+			/// <para>
+			/// This method makes it possible to record a point in the enumeration sequence in order to return to that point at a later time.
+			/// The caller must release this new enumerator separately from the first enumerator.
+			/// </para>
+			/// </summary>
+			/// <returns>A pointer to the cloned enumerator object.</returns>
+			IEnumUnknown IEnumUnknown.Clone() => new IEnumUnknownImpl<T>(items);
+
+			/// <summary>Returns an enumerator that iterates through the collection.</summary>
+			/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
+			public IEnumerator<T> GetEnumerator() => items.GetEnumerator();
+
+			/// <summary>Returns an enumerator that iterates through a collection.</summary>
+			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+		}
 	}
 }
