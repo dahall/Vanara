@@ -7,6 +7,86 @@ using Vanara.PInvoke;
 namespace Vanara.Collections
 {
 	/// <summary>
+	/// Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
+	/// </summary>
+	/// <typeparam name="TItem">The type of the item.</typeparam>
+	/// <param name="value">The value, on success, of the next item.</param>
+	/// <returns><c>true</c> if an item is returned, otherwise <c>false</c>.</returns>
+	public delegate bool TryGetNext<TItem>(out TItem value);
+
+	/// <summary>
+	/// Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
+	/// </summary>
+	/// <typeparam name="TIEnum">The type of the enumerator object.</typeparam>
+	/// <typeparam name="TItem">The type of the item.</typeparam>
+	/// <param name="enumObj">The enumerator object.</param>
+	/// <param name="value">The value, on success, of the next item.</param>
+	/// <returns><c>true</c> if an item is returned, otherwise <c>false</c>.</returns>
+	public delegate bool TryGetNext<TIEnum, TItem>(TIEnum enumObj, out TItem value);
+
+	/// <summary>An implementation the <see cref="IEnumerator"/> interface that can iterate through next and reset methods.</summary>
+	public class IEnumeratorFromNext<TIEnum, TItem> : IEnumerator<TItem> where TIEnum : class
+	{
+		/// <summary>The current item being iterated.</summary>
+		protected TItem current;
+
+		/// <summary>The object that is enumerated.</summary>
+		protected TIEnum ienum;
+
+		/// <summary>The next function delegate.</summary>
+		protected TryGetNext<TIEnum, TItem> next;
+
+		/// <summary>The reset function delegate.</summary>
+		protected Action<TIEnum> reset;
+
+		/// <summary>Initializes a new instance of the <see cref="IEnumeratorFromNext{TItem, TIEnum}"/> class.</summary>
+		/// <param name="enumObj">The object to be enumerated.</param>
+		/// <param name="next">The method used to get the next value.</param>
+		/// <param name="reset">The method used to reset the enumeration.</param>
+		/// <exception cref="ArgumentNullException">Thrown if any parameter is <see langword="null"/>.</exception>
+		public IEnumeratorFromNext(TIEnum enumObj, TryGetNext<TIEnum, TItem> next, Action<TIEnum> reset)
+		{
+			if (enumObj == null || next == null || reset == null) throw new ArgumentNullException();
+			ienum = enumObj;
+			this.next = next;
+			this.reset = reset;
+			reset(ienum);
+		}
+
+		/// <summary>
+		/// Gets the <typeparamref name="TItem"/> object in the <typeparamref name="TIEnum"/> collection to which the enumerator is pointing.
+		/// </summary>
+		public virtual TItem Current => current;
+
+		/// <summary>
+		/// Gets the <typeparamref name="TItem"/> object in the <typeparamref name="TIEnum"/> collection to which the enumerator is pointing.
+		/// </summary>
+		object IEnumerator.Current => Current;
+
+		/// <summary>Disposes of the Enumerator object.</summary>
+		public virtual void Dispose()
+		{
+			ienum = null;
+			current = default;
+		}
+
+		/// <summary>Moves the enumerator index to the next object in the collection.</summary>
+		/// <returns></returns>
+		public virtual bool MoveNext()
+		{
+			try { return next(ienum, out current); }
+			catch { return false; }
+		}
+
+		/// <summary>Resets the enumerator index to the beginning of the <typeparamref name="TIEnum"/> collection.</summary>
+		public virtual void Reset()
+		{
+			current = default;
+			reset(ienum);
+		}
+	}
+
+	/// <summary>
 	/// Creates an enumerable class from a get next method in the form of HRESULT Next(uint, TItem[], out uint) and a reset method. Useful if
 	/// a class doesn't support <see cref="IEnumerable"/> or <see cref="IEnumerable{T}"/> like some COM objects.
 	/// </summary>
@@ -126,7 +206,7 @@ namespace Vanara.Collections
 	public class IEnumFromNext<TItem> : IEnumerable<TItem>
 	{
 		/// <summary>The next function delegate.</summary>
-		protected TryGetNext next;
+		protected TryGetNext<TItem> next;
 
 		/// <summary>The reset function delegate.</summary>
 		protected Action reset;
@@ -134,7 +214,7 @@ namespace Vanara.Collections
 		/// <summary>Initializes a new instance of the <see cref="IEnumFromNext{TItem}"/> class.</summary>
 		/// <param name="next">The method used to try to get the next item in the enumeration.</param>
 		/// <param name="reset">The method used to reset the enumeration to the first element.</param>
-		public IEnumFromNext(TryGetNext next, Action reset)
+		public IEnumFromNext(TryGetNext<TItem> next, Action reset)
 		{
 			if (next == null || reset == null) throw new ArgumentNullException();
 			this.next = next;
@@ -143,13 +223,6 @@ namespace Vanara.Collections
 
 		/// <summary>Initializes a new instance of the <see cref="IEnumFromNext{TItem}"/> class.</summary>
 		protected IEnumFromNext() { }
-
-		/// <summary>
-		/// Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
-		/// </summary>
-		/// <param name="value">The value, on success, of the next item.</param>
-		/// <returns><c>true</c> if an item is returned, otherwise <c>false</c>.</returns>
-		public delegate bool TryGetNext(out TItem value);
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
