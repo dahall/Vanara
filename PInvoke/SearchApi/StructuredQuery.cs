@@ -398,7 +398,7 @@ namespace Vanara.PInvoke
 			// MakeLeaf( LPCWSTR pszPropertyName, CONDITION_OPERATION cop, LPCWSTR pszValueType, const PROPVARIANT *ppropvar, IRichChunk
 			// *pPropertyNameTerm, IRichChunk *pOperationTerm, IRichChunk *pValueTerm, BOOL fExpand, ICondition **ppcResult );
 			ICondition MakeLeaf([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropertyName, [In] CONDITION_OPERATION cop, [In, MarshalAs(UnmanagedType.LPWStr)] string pszValueType,
-				[In] PROPVARIANT ppropvar, IRichChunk richChunk1, IRichChunk richChunk2, IRichChunk richChunk3, [In, MarshalAs(UnmanagedType.Bool)] bool fExpand);
+				[In] PROPVARIANT ppropvar, [Optional] IRichChunk richChunk1, [Optional] IRichChunk richChunk2, [Optional] IRichChunk richChunk3, [In, Optional, MarshalAs(UnmanagedType.Bool)] bool fExpand);
 
 			/// <summary>
 			/// Performs a variety of transformations on a condition tree, including the following: resolves conditions with relative
