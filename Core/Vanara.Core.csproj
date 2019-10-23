@@ -68,12 +68,14 @@ CorrespondingAction, StringListPackMethod
     <Compile Remove="Collections\Hierarchy.cs" />
     <Compile Remove="Collections\Tree.cs" />
     <Compile Remove="Collections\VaList.cs" />
+    <Compile Remove="InteropServices\SafeIDispatch.cs" />
     <Compile Remove="InteropServices\StructMarshaler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Collections\Hierarchy.cs" />
     <None Include="Collections\Tree.cs" />
     <None Include="Collections\VaList.cs" />
+    <None Include="InteropServices\SafeIDispatch.cs" />
     <None Include="InteropServices\StructMarshaler.cs" />
   </ItemGroup>
   <ItemGroup>
