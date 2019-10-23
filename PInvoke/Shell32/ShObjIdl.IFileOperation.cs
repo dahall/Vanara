@@ -82,9 +82,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>Deprecated.</summary>
 			FOF_NORECURSEREPARSE = 0x8000,
-			
+
 			/// <summary>Don't display any UI at all.</summary>
-			FOF_NO_UI = FOF_SILENT | FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_NOCONFIRMMKDIR;
+			FOF_NO_UI = FOF_SILENT | FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_NOCONFIRMMKDIR,
 
 			/// <summary>
 			/// Walk into Shell namespace junctions. By default, junctions are not entered. For more information on junctions, see Specifying
