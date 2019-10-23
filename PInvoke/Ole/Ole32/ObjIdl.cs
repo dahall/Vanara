@@ -3895,9 +3895,10 @@ namespace Vanara.PInvoke
 		public static IEnumerable<IntPtr> Enumerate(this IEnumUnknown e) => new Collections.IEnumFromCom<IntPtr>(e.Next, e.Reset);
 
 		/// <summary>Enumerates the values in a <see cref="IEnumUnknown"/> instance.</summary>
+		/// <typeparam name="T">The COM interface type to query for from each item in the collection. Note that if this type cannot be retrieved, an exception will be thrown.</typeparam>
 		/// <param name="e">The <see cref="IEnumUnknown"/> instance.</param>
 		/// <returns>The enumerated values.</returns>
-		public static IEnumerable<T> Enumerate<T>(this IEnumUnknown e) where T : class => new Collections.IEnumFromCom<IntPtr>(e.Next, e.Reset).Select(p => (T)Marshal.GetObjectForIUnknown(p));
+		public static IEnumerable<T> Enumerate<T>(this IEnumUnknown e) where T : class => e.Enumerate().Select(p => p == IntPtr.Zero ? null : (T)Marshal.GetObjectForIUnknown(p));
 
 		/// <summary>Structure returned by IEnumContextProps::Enum</summary>
 		[PInvokeData("objidl.h", MSDNShortId = "64591e45-5478-4360-8c1f-08b09b5aef8e")]
