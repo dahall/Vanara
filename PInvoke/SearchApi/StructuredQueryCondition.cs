@@ -359,7 +359,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getsubconditions
 			// HRESULT GetSubConditions( REFIID riid, void **ppv );
-			[return: MarshalAs(UnmanagedType.IUnknown)]
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
 			object GetSubConditions(in Guid riid);
 
 			/// <summary>Retrieves the property name, operation, and value from a leaf search condition node.</summary>
