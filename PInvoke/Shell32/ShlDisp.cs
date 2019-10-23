@@ -124,7 +124,7 @@ namespace Vanara.PInvoke
 	/// <summary><para>Exposes methods that modify the view and select items in the current folder.</para></summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shldisp/nn-shldisp-ishellfolderviewdual
 	[PInvokeData("shldisp.h", MSDNShortId = "48135f9d-ee80-4dec-87dc-83f407c25777")]
-	[ComImport, Guid("E572D3C9-37BE-4AE2-825D-D521763E3108"), InterfaceType(ComInterfaceType.InterfaceIsDual)]
+	[ComImport, Guid("E7A1AF80-4D96-11CF-960C-0080C7F4EE85"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
 	public interface IShellFolderViewDual
 	{
 		object Application { [return: MarshalAs(UnmanagedType.IDispatch)] get; }
