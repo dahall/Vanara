@@ -56,7 +56,6 @@ ChangeFilters, ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryVie
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="ShellObjects\~ShellSearch.cs" />
     <Compile Remove="TaskBar\AssocUtil.cs" />
     <Compile Remove="TaskBar\ImageIndexer.cs" />
     <Compile Remove="TaskBar\JumpList.cs" />
@@ -75,10 +74,8 @@ ChangeFilters, ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryVie
     <Compile Remove="TaskBar\~ThumbnailToolbar.cs" />
     <Compile Remove="TaskBar\~ThumbnailToolbarButton.cs" />
     <Compile Remove="TaskBar\~ThumbnailToolbarButtonCollection.cs" />
-    <Compile Remove="~ShellSearchConditions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ShellObjects\~ShellSearch.cs" />
     <None Include="TaskBar\~AssocUtil.cs" />
     <None Include="TaskBar\~ImageIndexer.cs" />
     <None Include="TaskBar\~JumpList.cs" />
@@ -88,12 +85,12 @@ ChangeFilters, ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryVie
     <None Include="TaskBar\~ThumbnailToolbar.cs" />
     <None Include="TaskBar\~ThumbnailToolbarButton.cs" />
     <None Include="TaskBar\~ThumbnailToolbarButtonCollection.cs" />
-    <None Include="~ShellSearchConditions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />
+    <ProjectReference Include="..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj" />
     <ProjectReference Include="..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
     <ProjectReference Include="..\PInvoke\SearchApi\Vanara.PInvoke.SearchApi.csproj" />

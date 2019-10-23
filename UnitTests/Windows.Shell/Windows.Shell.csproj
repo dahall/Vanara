@@ -46,6 +46,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ShellSearchTests.cs" />
     <Compile Include="ControlPanelTests.cs" />
     <Compile Include="ShellAssocTests.cs" />
     <Compile Include="ShellFileOperationsTests.cs" />
