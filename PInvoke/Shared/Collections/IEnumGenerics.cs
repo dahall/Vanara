@@ -123,7 +123,7 @@ namespace Vanara.Collections
 		{
 			var res = new TItem[1];
 			item = default;
-			if (cnext(1, res, out var ret).Failed)
+			if (cnext(1, res, out var ret) != HRESULT.S_OK)
 				return false;
 			item = res[0];
 			return true;
@@ -239,7 +239,8 @@ namespace Vanara.Collections
 
 			public Enumerator(IEnumFromNext<TItem> ienum)
 			{
-				this.ienum = ienum; ((IEnumerator)this).Reset();
+				this.ienum = ienum;
+				((IEnumerator)this).Reset();
 			}
 
 			public TItem Current { get; private set; }
@@ -251,15 +252,15 @@ namespace Vanara.Collections
 
 			bool IEnumerator.MoveNext()
 			{
-				if (ienum == null || !ienum.next(out var p)) return false;
+				if (ienum == null || !ienum.next(out var p))
+					return false;
 				Current = p;
 				return true;
 			}
 
 			void IEnumerator.Reset()
 			{
-				if (ienum == null) return;
-				ienum.reset();
+				ienum?.reset();
 				Current = default;
 			}
 		}
