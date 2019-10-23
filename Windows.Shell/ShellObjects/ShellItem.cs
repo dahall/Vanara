@@ -401,7 +401,7 @@ namespace Vanara.Windows.Shell
 		public ShellItemAttribute Attributes => (ShellItemAttribute)iShellItem.GetAttributes((SFGAO)0xFFFFFFFF);
 
 		/// <summary>Gets the <see cref="ShellFileInfo"/> corresponding to this instance.</summary>
-		public ShellFileInfo FileInfo => IsFileSystem ? new ShellFileInfo(PIDL) : throw new InvalidOperationException("Not file system objects do not have associated ShellFileInfo objects");
+		public ShellFileInfo FileInfo => IsFileSystem ? new ShellFileInfo(PIDL) : null;
 
 		/// <summary>Gets the file system path if this item is part of the file system.</summary>
 		/// <value>The file system path.</value>
@@ -613,8 +613,12 @@ namespace Vanara.Windows.Shell
 		/// <returns>A <see cref="PropertyDescriptionList"/> instance for the supplied key.</returns>
 		public PropertyDescriptionList GetPropertyDescriptionList(PROPERTYKEY keyType)
 		{
-			ThrowIfNoShellItem2();
-			return new PropertyDescriptionList(iShellItem2.GetPropertyDescriptionList(keyType, typeof(IPropertyDescriptionList).GUID));
+			if (iShellItem2 != null)
+			{
+				try { return new PropertyDescriptionList(iShellItem2.GetPropertyDescriptionList(keyType, typeof(IPropertyDescriptionList).GUID)); }
+				catch { }
+			}
+			return new PropertyDescriptionList((IPropertyDescriptionList)null);
 		}
 
 		/// <summary>Gets the stream of the file contents.</summary>
