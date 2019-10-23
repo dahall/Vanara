@@ -45,7 +45,11 @@ namespace Vanara.InteropServices
 			var result = IntPtr.Zero;
 			try
 			{
+#if NETSTANDARD2_0
+				result = Marshal.GetComInterfaceForObject(target, typeof(IDispatch));
+#else
 				result = Marshal.GetIDispatchForObject(target);
+#endif
 			}
 			finally
 			{
@@ -55,5 +59,10 @@ namespace Vanara.InteropServices
 			}
 			return result;
 		}
+
+#if NETSTANDARD2_0
+		[ComImport, Guid("00020400-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+		private interface IDispatch { }
+#endif
 	}
 }
