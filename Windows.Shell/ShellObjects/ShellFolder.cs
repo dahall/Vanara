@@ -156,7 +156,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="filter">A filter for the types of children to enumerate.</param>
 		/// <param name="parentWindow">The parent window.</param>
 		/// <returns>An enumerated list of children matching the filter.</returns>
-		public IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter = FolderItemFilter.Folders | FolderItemFilter.IncludeHidden | FolderItemFilter.NonFolders | FolderItemFilter.IncludeSuperHidden, System.Windows.Forms.IWin32Window parentWindow = null)
+		public IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter /*= FolderItemFilter.Folders | FolderItemFilter.IncludeHidden | FolderItemFilter.NonFolders | FolderItemFilter.IncludeSuperHidden */, System.Windows.Forms.IWin32Window parentWindow = null)
 		{
 			IEnumIDList eo = null;
 			try
@@ -229,10 +229,6 @@ namespace Vanara.Windows.Shell
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		internal static HWND IWin2Ptr(System.Windows.Forms.IWin32Window wnd, bool desktopIfNull = true) => wnd?.Handle ?? User32.FindWindow("Progman", null);
-
-		/// <summary>Enumerates all the children of the current item. Not valid before Vista.</summary>
-		/// <returns>An enumeration of the child objects.</returns>
-		protected override IEnumerable<ShellItem> EnumerateChildren() => EnumerateChildren();
 
 		private IShellFolder GetInstance() => (IShellFolder)iShellItem.BindToHandler(null, BHID.BHID_SFObject.Guid(), typeof(IShellFolder).GUID);
 	}
