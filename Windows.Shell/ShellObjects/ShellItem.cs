@@ -655,8 +655,14 @@ namespace Vanara.Windows.Shell
 			iShellItem2.Update(BindContext);
 		}
 
-		/// <summary>Open a new Windows Explorer window with this item selected.</summary>
-		public void ViewInExplorer() => SHOpenFolderAndSelectItems(Parent.PIDL, 1, new IntPtr[] { (IntPtr)PIDL }, OFASI.OFASI_NONE);
+		/// <summary>Open a new Windows Explorer window with this item selected if item or this item if folder.</summary>
+		public void ViewInExplorer()
+		{
+			if (IsFolder)
+				SHOpenFolderAndSelectItems(PIDL, 0, null, OFASI.OFASI_NONE);
+			else
+				SHOpenFolderAndSelectItems(Parent.PIDL, 1, new IntPtr[] { (IntPtr)PIDL }, OFASI.OFASI_NONE);
+		}
 
 		/// <summary>
 		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current
