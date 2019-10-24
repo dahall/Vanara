@@ -84,7 +84,7 @@ namespace Vanara.PInvoke
 				if (hr == 0x80070002)
 				{
 					Ole32.CreateBindCtx(0, out var ibc).ThrowIfFailed();
-					using (var _ibc = new InteropServices.ComReleaser<IBindCtx>(ibc))
+					using (var _ibc = InteropServices.ComReleaserFactory.Create(ibc))
 					{
 						var bd = new IntFileSysBindData();
 						ibc.RegisterObjectParam(STR_FILE_SYS_BIND_DATA, bd);
@@ -131,18 +131,26 @@ namespace Vanara.PInvoke
 				{
 				}
 
-				public long GetFileID() => fileId;
+				public HRESULT GetFileID(out long pliFileID) { pliFileID = fileId; return HRESULT.S_OK; }
 
-				public void GetFindData(out WIN32_FIND_DATA pfd) => pfd = fd;
+				public HRESULT GetFindData(out WIN32_FIND_DATA pfd) { pfd = fd; return HRESULT.S_OK; }
 
-				[return: MarshalAs(UnmanagedType.LPStruct)]
-				public Guid GetJunctionCLSID() => clsidJunction != CLSID_UnknownJunction ? clsidJunction : throw new COMException("Unable to handle junctions", unchecked((int)HRESULT.E_FAIL));
+				public HRESULT GetJunctionCLSID(out Guid pclsid)
+				{
+					if (clsidJunction != CLSID_UnknownJunction)
+					{
+						pclsid = clsidJunction;
+						return HRESULT.S_OK;
+					}
+					pclsid = Guid.Empty;
+					return HRESULT.E_FAIL;
+				}
 
-				public void SetFileID(long liFileID) => fileId = liFileID;
+				public HRESULT SetFileID(long liFileID) { fileId = liFileID; return HRESULT.S_OK; }
 
-				public void SetFindData(in WIN32_FIND_DATA pfd) => fd = pfd;
+				public HRESULT SetFindData(in WIN32_FIND_DATA pfd) { fd = pfd; return HRESULT.S_OK; }
 
-				public void SetJunctionCLSID(in Guid clsid) => clsidJunction = clsid;
+				public HRESULT SetJunctionCLSID(in Guid clsid) { clsidJunction = clsid; return HRESULT.S_OK; }
 			}
 		}
 	}
