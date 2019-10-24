@@ -1009,65 +1009,200 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Exposes methods that store file system information for optimizing calls to IShellFolder::ParseDisplayName.</summary>
+		/// <remarks>
+		/// <para>
+		/// <c>IFileSystemBindData</c> stores the file system information in a WIN32_FIND_DATA structure. The object that implements
+		/// <c>IFileSystemBindData</c> is then stored in a bind context that is passed to IShellFolder::ParseDisplayName.
+		/// </para>
+		/// <para>
+		/// Implement <c>IFileSystemBindData</c> when you want to optimize calls to IShellFolder::ParseDisplayName and you already have the
+		/// WIN32_FIND_DATA structure's file information available to you.
+		/// </para>
+		/// <para>
+		/// To store the WIN32_FIND_DATA information prior to calling IShellFolder::ParseDisplayName, the client uses the following procedure.
+		/// </para>
+		/// <list type="number">
+		/// <item>
+		/// <term>Create an instance of the object that exposes the <c>IFileSystemBindData</c> interface.</term>
+		/// </item>
+		/// <item>
+		/// <term>Use IFileSystemBindData::SetFindData to store the data in the object.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Store the object in a bind context through the IBindCtx::RegisterObjectParam method. Set the pszKey parameter to the string and
+		/// the punk parameter to the address of the <c>IFileSystemBindData</c> interface.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>The bind context is then passed with the call to IShellFolder::ParseDisplayName.</para>
+		/// <para><c>Note</c> Prior to Windows Vista this interface was declared in Shlobj.h.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-ifilesystembinddata
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "f5099bb3-21a7-4708-ac48-d32a14646614")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("01E18D10-4D8B-11d2-855D-006008059367")]
-		[PInvokeData("Shobjidl.h", MSDNShortId = "bb775671")]
 		public interface IFileSystemBindData
 		{
-			/// <summary>Stores file system information in a WIN32_FIND_DATA structure. This information is used by IShellFolder::ParseDisplayName.</summary>
-			/// <param name="pfd">A pointer to the WIN32_FIND_DATA structure that specifies the data you want to store.</param>
-			void SetFindData(in WIN32_FIND_DATA pfd);
+			/// <summary>Stores file system information in a WIN32_FIND_DATA structure. This information is used by ParseDisplayName.</summary>
+			/// <param name="pfd">
+			/// <para>Type: <c>const WIN32_FIND_DATA*</c></para>
+			/// <para>A pointer to the WIN32_FIND_DATA structure that specifies the data you want to store.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Always returns <c>S_OK</c>.</para>
+			/// </returns>
+			/// <remarks>
+			/// After the client stores the file information, the instance of the object itself must be stored in a bind context by using the
+			/// IBindCtx::RegisterObjectParam method with the pszKey parameter set to .
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata-setfinddata
+			// HRESULT SetFindData( const WIN32_FIND_DATAW *pfd );
+			[PreserveSig]
+			HRESULT SetFindData(in WIN32_FIND_DATA pfd);
 
 			/// <summary>Gets the file system information stored in the WIN32_FIND_DATA structure.</summary>
-			/// <param name="pfd">A pointer to the WIN32_FIND_DATA structure that receives the data.</param>
-			void GetFindData(out WIN32_FIND_DATA pfd);
+			/// <param name="pfd">
+			/// <para>Type: <c>WIN32_FIND_DATA*</c></para>
+			/// <para>A pointer to the WIN32_FIND_DATA structure that receives the data.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Returns S_OK.</para>
+			/// </returns>
+			/// <remarks>
+			/// This method provides bind context information to IShellFolder::ParseDisplayName. The client accesses the object by calling
+			/// IBindCtx::GetObjectParam with the pszKey parameter set to the string "File System Bind Data".
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata-getfinddata
+			// HRESULT GetFindData( WIN32_FIND_DATAW *pfd );
+			[PreserveSig]
+			HRESULT GetFindData(out WIN32_FIND_DATA pfd);
 		}
 
 		/// <summary>
 		/// Extends IFileSystemBindData, which stores file system information for optimizing calls to IShellFolder::ParseDisplayName. This
 		/// interface adds the ability set or get file ID or junction class identifier (CLSID).
 		/// </summary>
-		/// <seealso cref="Vanara.PInvoke.Shell32.IFileSystemBindData"/>
+		/// <remarks>
+		/// <para>This interface also provides the methods of the IFileSystemBindData interface, from which it inherits.</para>
+		/// <para>
+		/// To pass the information expressed in this interface to a data source IShellFolder::ParseDisplayName, an IBindCtx object is
+		/// created (use CreateBindCtx) and populated with an object that implements IFileSystemBindData by calling the following:
+		/// </para>
+		/// <para>Where pfsbd is the object that implements <c>IFileSystemBindData</c>.</para>
+		/// <para>Implementers of IShellFolder::ParseDisplayName first make the following call.</para>
+		/// <para>Next the implementer calls one of the <c>Get</c> methods listed above to retrieve the parameters.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-ifilesystembinddata2
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "c9659147-e2b6-4040-b939-42b7efec32d7")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("3acf075f-71db-4afa-81f0-3fc4fdf2a5b8")]
-		[PInvokeData("Shobjidl.h", MSDNShortId = "bb775660")]
 		public interface IFileSystemBindData2 : IFileSystemBindData
 		{
-			/// <summary>Stores file system information in a WIN32_FIND_DATA structure. This information is used by IShellFolder::ParseDisplayName.</summary>
-			/// <param name="pfd">A pointer to the WIN32_FIND_DATA structure that specifies the data you want to store.</param>
-			new void SetFindData(in WIN32_FIND_DATA pfd);
+			/// <summary>Stores file system information in a WIN32_FIND_DATA structure. This information is used by ParseDisplayName.</summary>
+			/// <param name="pfd">
+			/// <para>Type: <c>const WIN32_FIND_DATA*</c></para>
+			/// <para>A pointer to the WIN32_FIND_DATA structure that specifies the data you want to store.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Always returns <c>S_OK</c>.</para>
+			/// </returns>
+			/// <remarks>
+			/// After the client stores the file information, the instance of the object itself must be stored in a bind context by using the
+			/// IBindCtx::RegisterObjectParam method with the pszKey parameter set to .
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata-setfinddata
+			// HRESULT SetFindData( const WIN32_FIND_DATAW *pfd );
+			[PreserveSig]
+			new HRESULT SetFindData(in WIN32_FIND_DATA pfd);
 
 			/// <summary>Gets the file system information stored in the WIN32_FIND_DATA structure.</summary>
-			/// <param name="pfd">A pointer to the WIN32_FIND_DATA structure that receives the data.</param>
-			new void GetFindData(out WIN32_FIND_DATA pfd);
+			/// <param name="pfd">
+			/// <para>Type: <c>WIN32_FIND_DATA*</c></para>
+			/// <para>A pointer to the WIN32_FIND_DATA structure that receives the data.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Returns S_OK.</para>
+			/// </returns>
+			/// <remarks>
+			/// This method provides bind context information to IShellFolder::ParseDisplayName. The client accesses the object by calling
+			/// IBindCtx::GetObjectParam with the pszKey parameter set to the string "File System Bind Data".
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata-getfinddata
+			// HRESULT GetFindData( WIN32_FIND_DATAW *pfd );
+			[PreserveSig]
+			new HRESULT GetFindData(out WIN32_FIND_DATA pfd);
 
 			/// <summary>Sets the unique file identifier for the current file.</summary>
 			/// <param name="liFileID">
+			/// <para>Type: <c>LARGE_INTEGER</c></para>
+			/// <para>
 			/// A unique file identifier for the current file. liFileID is a value that is a concatenation of the values nFileIndexHigh and
 			/// nFileIndexlow, noted in structure _by_handle_file_information.
+			/// </para>
 			/// </param>
-			void SetFileID(long liFileID);
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata2-setfileid
+			// HRESULT SetFileID( LARGE_INTEGER liFileID );
+			[PreserveSig]
+			HRESULT SetFileID(long liFileID);
 
 			/// <summary>Gets the unique file identifier for the current file.</summary>
-			/// <returns>
+			/// <param name="pliFileID">
+			/// <para>Type: <c>LARGE_INTEGER*</c></para>
+			/// <para>
 			/// When this method returns successfully, receives a pointer to the unique file identifier for the current file. pliFileID is a
 			/// pointer to a value that is a concatenation of the values nFileIndexHigh and nFileIndexlow, noted in structure _by_handle_file_information.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			long GetFileID();
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata2-getfileid
+			// HRESULT GetFileID( LARGE_INTEGER *pliFileID );
+			[PreserveSig]
+			HRESULT GetFileID(out long pliFileID);
 
 			/// <summary>
 			/// Sets the class identifier (CLSID) of the object that implements IShellFolder, if the current item is a junction point.
 			/// </summary>
-			/// <param name="clsid">The CLSID for the object that implements IShellFolder with a junction point as its current item.</param>
-			void SetJunctionCLSID(in Guid clsid);
+			/// <param name="clsid">
+			/// <para>Type: <c>REFCLSID</c></para>
+			/// <para>The CLSID for the object that implements IShellFolder with a junction point as its current item.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata2-setjunctionclsid
+			// HRESULT SetJunctionCLSID( REFCLSID clsid );
+			[PreserveSig]
+			HRESULT SetJunctionCLSID(in Guid clsid);
 
 			/// <summary>
 			/// Gets the class identifier (CLSID) of the object that implements IShellFolder for the item, if the item is a junction point.
 			/// </summary>
-			/// <returns>
+			/// <param name="pclsid">
+			/// <para>Type: <c>CLSID*</c></para>
+			/// <para>
 			/// When this method returns successfully, receives a pointer to the CLSID of the object that implements IShellFolder for the
 			/// current item, if the item is a junction point.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.LPStruct)]
-			Guid GetJunctionCLSID();
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata2-getjunctionclsid
+			// HRESULT GetJunctionCLSID( CLSID *pclsid );
+			[PreserveSig]
+			HRESULT GetJunctionCLSID(out Guid pclsid);
 		}
 
 		/// <summary>
