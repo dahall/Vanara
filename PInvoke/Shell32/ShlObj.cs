@@ -16,22 +16,22 @@ namespace Vanara.PInvoke
 	[SuppressUnmanagedCodeSecurity]
 	public static partial class Shell32
 	{
-		// Defined in wingdi.h
-		private const int LF_FACESIZE = 32;
-
-		/// <summary>The overlay icon that indicates a shared folder.</summary>
-		public const int IDO_SHGIOI_SHARE = 0x0FFFFFFF;
-
-		/// <summary>The overlay icon that indicates a linked folder or file.</summary>
-		public const int IDO_SHGIOI_LINK = 0x0FFFFFFE;
-
-		/// <summary>The overlay icon that indicates a slow file.</summary>
-		public const int IDO_SHGIOI_SLOWFILE = 0x0FFFFFFD;
-
 		/// <summary>
 		/// <c>Windows 7 and later.</c> The overlay icon that indicates that the item is the default in a set. One example is the default printer.
 		/// </summary>
 		public const int IDO_SHGIOI_DEFAULT = 0x0FFFFFFC;
+
+		/// <summary>The overlay icon that indicates a linked folder or file.</summary>
+		public const int IDO_SHGIOI_LINK = 0x0FFFFFFE;
+
+		/// <summary>The overlay icon that indicates a shared folder.</summary>
+		public const int IDO_SHGIOI_SHARE = 0x0FFFFFFF;
+
+		/// <summary>The overlay icon that indicates a slow file.</summary>
+		public const int IDO_SHGIOI_SLOWFILE = 0x0FFFFFFD;
+
+		// Defined in wingdi.h
+		private const int LF_FACESIZE = 32;
 
 		/// <summary>
 		/// <para>
@@ -162,6 +162,298 @@ namespace Vanara.PInvoke
 
 			/// <summary>Abandon cached data.</summary>
 			CLOSEPROPS_DISCARD = 0x0001
+		}
+
+		/// <summary>
+		/// CSIDL (constant special item ID list) values provide a unique system-independent way to identify special folders used frequently
+		/// by applications, but which may not have the same name or location on any given system. For example, the system folder may be
+		/// "C:\Windows" on one system and "C:\Winnt" on another. These constants are defined in Shlobj.h.
+		/// </summary>
+		[PInvokeData("Shlobj.h", MSDNShortId = "bb762494")]
+		public enum CSIDL
+		{
+			/// <summary>The virtual folder that represents the Windows desktop, the root of the namespace.</summary>
+			CSIDL_DESKTOP = 0x0000,
+
+			/// <summary>A virtual folder for Internet Explorer.</summary>
+			CSIDL_INTERNET = 0x0001,
+
+			/// <summary>
+			/// The file system directory that contains the user's program groups (which are themselves file system directories). A typical
+			/// path is C:\Documents and Settings\username\Start Menu\Programs.
+			/// </summary>
+			CSIDL_PROGRAMS = 0x0002,
+
+			/// <summary>The virtual folder that contains icons for the Control Panel applications.</summary>
+			CSIDL_CONTROLS = 0x0003,
+
+			/// <summary>The virtual folder that contains installed printers.</summary>
+			CSIDL_PRINTERS = 0x0004,
+
+			/// <summary>
+			/// Version 6.0. The virtual folder that represents the My Documents desktop item. This is equivalent to CSIDL_MYDOCUMENTS.
+			/// <para>
+			/// Previous to Version 6.0. The file system directory used to physically store a user's common repository of documents. A
+			/// typical path is C:\Documents and Settings\username\My Documents. This should be distinguished from the virtual My Documents
+			/// folder in the namespace. To access that virtual folder, use SHGetFolderLocation, which returns the ITEMIDLIST for the virtual
+			/// location, or refer to the technique described in Managing the File System.
+			/// </para>
+			/// </summary>
+			CSIDL_PERSONAL = 0x0005,
+
+			/// <summary>
+			/// The file system directory that serves as a common repository for the user's favorite items. A typical path is C:\Documents
+			/// and Settings\username\Favorites.
+			/// </summary>
+			CSIDL_FAVORITES = 0x0006,
+
+			/// <summary>
+			/// The file system directory that corresponds to the user's Startup program group. The system starts these programs whenever the
+			/// associated user logs on. A typical path is C:\Documents and Settings\username\Start Menu\Programs\Startup.
+			/// </summary>
+			CSIDL_STARTUP = 0x0007,
+
+			/// <summary>
+			/// The file system directory that contains shortcuts to the user's most recently used documents. A typical path is C:\Documents
+			/// and Settings\username\My Recent Documents. To create a shortcut in this folder, use SHAddToRecentDocs. In addition to
+			/// creating the shortcut, this function updates the Shell's list of recent documents and adds the shortcut to the My Recent
+			/// Documents submenu of the Start menu.
+			/// </summary>
+			CSIDL_RECENT = 0x0008,
+
+			/// <summary>The file system directory that contains Send To menu items. A typical path is C:\Documents and Settings\username\SendTo.</summary>
+			CSIDL_SENDTO = 0x0009,
+
+			/// <summary>The virtual folder that contains the objects in the user's Recycle Bin.</summary>
+			CSIDL_BITBUCKET = 0x000a,
+
+			/// <summary>
+			/// The file system directory that contains Start menu items. A typical path is C:\Documents and Settings\username\Start Menu.
+			/// </summary>
+			CSIDL_STARTMENU = 0x000b,
+
+			/// <summary>Version 6.0. The virtual folder that represents the My Documents desktop item. This value is equivalent to CSIDL_PERSONAL.</summary>
+			CSIDL_MYDOCUMENTS = CSIDL_PERSONAL,
+
+			/// <summary>
+			/// The file system directory that serves as a common repository for music files. A typical path is C:\Documents and
+			/// Settings\User\My Documents\My Music.
+			/// </summary>
+			CSIDL_MYMUSIC = 0x000d,
+
+			/// <summary>
+			/// Version 6.0. The file system directory that serves as a common repository for video files. A typical path is C:\Documents and
+			/// Settings\username\My Documents\My Videos.
+			/// </summary>
+			CSIDL_MYVIDEO = 0x000e,
+
+			/// <summary>
+			/// The file system directory used to physically store file objects on the desktop (not to be confused with the desktop folder
+			/// itself). A typical path is C:\Documents and Settings\username\Desktop.
+			/// </summary>
+			CSIDL_DESKTOPDIRECTORY = 0x0010,
+
+			/// <summary>
+			/// The virtual folder that represents My Computer, containing everything on the local computer: storage devices, printers, and
+			/// Control Panel. The folder can also contain mapped network drives.
+			/// </summary>
+			CSIDL_DRIVES = 0x0011,
+
+			/// <summary>A virtual folder that represents Network Neighborhood, the root of the network namespace hierarchy.</summary>
+			CSIDL_NETWORK = 0x0012,
+
+			/// <summary>
+			/// A file system directory that contains the link objects that may exist in the My Network Places virtual folder. It is not the
+			/// same as CSIDL_NETWORK, which represents the network namespace root. A typical path is C:\Documents and Settings\username\NetHood.
+			/// </summary>
+			CSIDL_NETHOOD = 0x0013,
+
+			/// <summary>A virtual folder that contains fonts. A typical path is C:\Windows\Fonts.</summary>
+			CSIDL_FONTS = 0x0014,
+
+			/// <summary>
+			/// The file system directory that serves as a common repository for document templates. A typical path is C:\Documents and Settings\username\Templates.
+			/// </summary>
+			CSIDL_TEMPLATES = 0x0015,
+
+			/// <summary>
+			/// The file system directory that contains the programs and folders that appear on the Start menu for all users. A typical path
+			/// is C:\Documents and Settings\All Users\Start Menu.
+			/// </summary>
+			CSIDL_COMMON_STARTMENU = 0x0016,
+
+			/// <summary>
+			/// The file system directory that contains the directories for the common program groups that appear on the Start menu for all
+			/// users. A typical path is C:\Documents and Settings\All Users\Start Menu\Programs.
+			/// </summary>
+			CSIDL_COMMON_PROGRAMS = 0X0017,
+
+			/// <summary>
+			/// The file system directory that contains the programs that appear in the Startup folder for all users. A typical path is
+			/// C:\Documents and Settings\All Users\Start Menu\Programs\Startup.
+			/// </summary>
+			CSIDL_COMMON_STARTUP = 0x0018,
+
+			/// <summary>
+			/// The file system directory that contains files and folders that appear on the desktop for all users. A typical path is
+			/// C:\Documents and Settings\All Users\Desktop.
+			/// </summary>
+			CSIDL_COMMON_DESKTOPDIRECTORY = 0x0019,
+
+			/// <summary>
+			/// Version 4.71. The file system directory that serves as a common repository for application-specific data. A typical path is
+			/// C:\Documents and Settings\username\Application Data.
+			/// </summary>
+			CSIDL_APPDATA = 0x001a,
+
+			/// <summary>
+			/// The file system directory that contains the link objects that can exist in the Printers virtual folder. A typical path is
+			/// C:\Documents and Settings\username\PrintHood.
+			/// </summary>
+			CSIDL_PRINTHOOD = 0x001b,
+
+			/// <summary>
+			/// Version 5.0. The file system directory that serves as a data repository for local (nonroaming) applications. A typical path
+			/// is C:\Documents and Settings\username\Local Settings\Application Data.
+			/// </summary>
+			CSIDL_LOCAL_APPDATA = 0x001c,
+
+			/// <summary>
+			/// The file system directory that corresponds to the user's nonlocalized Startup program group. This value is recognized in
+			/// Windows Vista for backward compatibility, but the folder itself no longer exists.
+			/// </summary>
+			CSIDL_ALTSTARTUP = 0x001d,
+
+			/// <summary>
+			/// The file system directory that corresponds to the nonlocalized Startup program group for all users. This value is recognized
+			/// in Windows Vista for backward compatibility, but the folder itself no longer exists.
+			/// </summary>
+			CSIDL_COMMON_ALTSTARTUP = 0x001e,
+
+			/// <summary>The file system directory that serves as a common repository for favorite items common to all users.</summary>
+			CSIDL_COMMON_FAVORITES = 0x001f,
+
+			/// <summary>
+			/// Version 4.72. The file system directory that serves as a common repository for temporary Internet files. A typical path is
+			/// C:\Documents and Settings\username\Local Settings\Temporary Internet Files.
+			/// </summary>
+			CSIDL_INTERNET_CACHE = 0x0020,
+
+			/// <summary>
+			/// The file system directory that serves as a common repository for Internet cookies. A typical path is C:\Documents and Settings\username\Cookies.
+			/// </summary>
+			CSIDL_COOKIES = 0x0021,
+
+			/// <summary>The file system directory that serves as a common repository for Internet history items.</summary>
+			CSIDL_HISTORY = 0x0022,
+
+			/// <summary>
+			/// Version 5.0. The file system directory that contains application data for all users. A typical path is C:\Documents and
+			/// Settings\All Users\Application Data. This folder is used for application data that is not user specific. For example, an
+			/// application can store a spell-check dictionary, a database of clip art, or a log file in the CSIDL_COMMON_APPDATA folder.
+			/// This information will not roam and is available to anyone using the computer.
+			/// </summary>
+			CSIDL_COMMON_APPDATA = 0x0023,
+
+			/// <summary>
+			/// Version 5.0. The Windows directory or SYSROOT. This corresponds to the %windir% or %SYSTEMROOT% environment variables. A
+			/// typical path is C:\Windows.
+			/// </summary>
+			CSIDL_WINDOWS = 0x0024,
+
+			/// <summary>Version 5.0. The Windows System folder. A typical path is C:\Windows\System32.</summary>
+			CSIDL_SYSTEM = 0x0025,
+
+			/// <summary>Version 5.0. The Program Files folder. A typical path is C:\Program Files.</summary>
+			CSIDL_PROGRAM_FILES = 0x0026,
+
+			/// <summary>
+			/// Version 5.0. The file system directory that serves as a common repository for image files. A typical path is C:\Documents and
+			/// Settings\username\My Documents\My Pictures.
+			/// </summary>
+			CSIDL_MYPICTURES = 0x0027,
+
+			/// <summary>
+			/// Version 5.0. The user's profile folder. A typical path is C:\Users\username. Applications should not create files or folders
+			/// at this level; they should put their data under the locations referred to by CSIDL_APPDATA or CSIDL_LOCAL_APPDATA. However,
+			/// if you are creating a new Known Folder the profile root referred to by CSIDL_PROFILE is appropriate.
+			/// </summary>
+			CSIDL_PROFILE = 0x0028,
+
+			/// <summary/>
+			CSIDL_SYSTEMX86 = 0x0029,
+
+			/// <summary/>
+			CSIDL_PROGRAM_FILESX86 = 0x002a,
+
+			/// <summary>
+			/// Version 5.0. A folder for components that are shared across applications. A typical path is C:\Program Files\Common. Valid
+			/// only for Windows XP.
+			/// </summary>
+			CSIDL_PROGRAM_FILES_COMMON = 0x002b,
+
+			/// <summary/>
+			CSIDL_PROGRAM_FILES_COMMONX86 = 0x002c,
+
+			/// <summary>
+			/// The file system directory that contains the templates that are available to all users. A typical path is C:\Documents and
+			/// Settings\All Users\Templates.
+			/// </summary>
+			CSIDL_COMMON_TEMPLATES = 0x002d,
+
+			/// <summary>
+			/// The file system directory that contains documents that are common to all users. A typical path is C:\Documents and
+			/// Settings\All Users\Documents.
+			/// </summary>
+			CSIDL_COMMON_DOCUMENTS = 0x002e,
+
+			/// <summary>Version 5.0. The file system directory that contains administrative tools for all users of the computer.</summary>
+			CSIDL_COMMON_ADMINTOOLS = 0x002f,
+
+			/// <summary>
+			/// Version 5.0. The file system directory that is used to store administrative tools for an individual user. The MMC will save
+			/// customized consoles to this directory, and it will roam with the user.
+			/// </summary>
+			CSIDL_ADMINTOOLS = 0x0030,
+
+			/// <summary>The virtual folder that represents Network Connections, that contains network and dial-up connections.</summary>
+			CSIDL_CONNECTIONS = 0x0031,
+
+			/// <summary>
+			/// Version 6.0. The file system directory that serves as a repository for music files common to all users. A typical path is
+			/// C:\Documents and Settings\All Users\Documents\My Music.
+			/// </summary>
+			CSIDL_COMMON_MUSIC = 0x0035,
+
+			/// <summary>
+			/// Version 6.0. The file system directory that serves as a repository for image files common to all users. A typical path is
+			/// C:\Documents and Settings\All Users\Documents\My Pictures.
+			/// </summary>
+			CSIDL_COMMON_PICTURES = 0x0036,
+
+			/// <summary>
+			/// Version 6.0. The file system directory that serves as a repository for video files common to all users. A typical path is
+			/// C:\Documents and Settings\All Users\Documents\My Videos.
+			/// </summary>
+			CSIDL_COMMON_VIDEO = 0x0037,
+
+			/// <summary>Windows Vista. The file system directory that contains resource data. A typical path is C:\Windows\Resources.</summary>
+			CSIDL_RESOURCES = 0x0038,
+
+			/// <summary/>
+			CSIDL_RESOURCES_LOCALIZED = 0x0039,
+
+			/// <summary>This value is recognized in Windows Vista for backward compatibility, but the folder itself is no longer used.</summary>
+			CSIDL_COMMON_OEM_LINKS = 0x003a,
+
+			/// <summary>
+			/// Version 6.0. The file system directory that acts as a staging area for files waiting to be written to a CD. A typical path is
+			/// C:\Documents and Settings\username\Local Settings\Application Data\Microsoft\CD Burning.
+			/// </summary>
+			CSIDL_CDBURN_AREA = 0x003b,
+
+			/// <summary>The folder that represents other computers in your workgroup.</summary>
+			CSIDL_COMPUTERSNEARME = 0x003d,
 		}
 
 		/// <summary>A flag that controls the action of SHGetSetFolderCustomSettings.</summary>
@@ -1990,42 +2282,6 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// CSIDL (constant special item ID list) values provide a unique system-independent way to identify special folders used frequently
-		/// by applications, but which may not have the same name or location on any given system. For example, the system folder may be
-		/// "C:\Windows" on one system and "C:\Winnt" on another. These constants are defined in Shlobj.h.
-		/// </summary>
-		[PInvokeData("Shlobj.h", MSDNShortId = "bb762494")]
-		public enum CSIDL
-		{
-			CSIDL_ADMINTOOLS = 0x0030,
-			CSIDL_CDBURN_AREA = 0x003b,
-			CSIDL_COMMON_ADMINTOOLS = 0x002f,
-			CSIDL_COMMON_DESKTOPDIRECTORY = 0x0019,
-			CSIDL_COMMON_DOCUMENTS = 0x002e,
-			CSIDL_COMMON_MUSIC = 0x0035,
-			CSIDL_COMMON_OEM_LINKS = 0x003a,
-			CSIDL_COMMON_PICTURES = 0x0036,
-			CSIDL_COMMON_PROGRAMS = 0X0017,
-			CSIDL_COMMON_STARTMENU = 0x0016,
-			CSIDL_COMMON_STARTUP = 0x0018,
-			CSIDL_COMMON_TEMPLATES = 0x002d,
-			CSIDL_COMMON_VIDEO = 0x0037,
-			CSIDL_FLAG_CREATE = 0x8000, // force folder creation in SHGetFolderPath
-			CSIDL_FLAG_DONT_VERIFY = 0x4000, // return an unverified folder path
-			CSIDL_FONTS = 0x0014, // windows\fonts
-			CSIDL_MYVIDEO = 0x000e, // "My Videos" folder
-			CSIDL_NETHOOD = 0x0013, // %APPDATA%\Microsoft\Windows\Network Shortcuts
-			CSIDL_PRINTHOOD = 0x001b, // %APPDATA%\Microsoft\Windows\Printer Shortcuts
-			CSIDL_PROFILE = 0x0028, // %USERPROFILE% (%SystemDrive%\Users\%USERNAME%)
-			CSIDL_PROGRAM_FILES_COMMONX86 = 0x002c, // x86 Program Files\Common on RISC
-			CSIDL_PROGRAM_FILESX86 = 0x002a, // x86 C:\Program Files on RISC
-			CSIDL_RESOURCES = 0x0038, // %windir%\Resources
-			CSIDL_RESOURCES_LOCALIZED = 0x0039, // %windir%\resources\0409 (code page)
-			CSIDL_SYSTEMX86 = 0x0029, // %windir%\system32
-			CSIDL_WINDOWS = 0x0024, // GetWindowsDirectory()
-		}
-
-		/// <summary>
 		/// <para>Retrieves the value for a given property key using the file association information provided by the Namespace Extensions.</para>
 		/// </summary>
 		/// <param name="psf">
@@ -2809,8 +3065,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>Returns <see langword="true"/> if successful; otherwise, <see langword="false"/>.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pickicondlg
-		// int PickIconDlg( HWND hwnd, PWSTR pszIconPath, UINT cchIconPath, int *piIconIndex );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pickicondlg int PickIconDlg( HWND hwnd, PWSTR
+		// pszIconPath, UINT cchIconPath, int *piIconIndex );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "3dfcda10-26d8-495d-8c92-7ff16da098c1")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -3283,15 +3539,20 @@ namespace Vanara.PInvoke
 		/// Given a Shell namespace item specified in the form of a folder, and an item identifier list relative to that folder, this
 		/// function binds to the parent of the namespace item and optionally returns a pointer to the final component of the item identifier list.
 		/// </summary>
-		/// <typeparam name="TIntf">The type of the requested interface. This is typically IShellFolder or IShellFolder2, but
-		/// can be anything supported by the target folder.</typeparam>
-		/// <param name="psfRoot"><para>Type: <c>IShellFolder*</c></para>
-		/// <para>A pointer to a Shell folder object. If is <c>NULL</c>, indicates that the IDList passed is relative to the desktop.</para></param>
-		/// <param name="pidl"><para>Type: <c>PCUIDLIST_RELATIVE</c></para>
-		/// <para>A PIDL to bind to, relative to . If is <c>NULL</c>, this is an absolute IDList relative to the desktop folder.</para></param>
+		/// <typeparam name="TIntf">
+		/// The type of the requested interface. This is typically IShellFolder or IShellFolder2, but can be anything supported by the target folder.
+		/// </typeparam>
+		/// <param name="psfRoot">
+		/// <para>Type: <c>IShellFolder*</c></para>
+		/// <para>A pointer to a Shell folder object. If is <c>NULL</c>, indicates that the IDList passed is relative to the desktop.</para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+		/// <para>A PIDL to bind to, relative to . If is <c>NULL</c>, this is an absolute IDList relative to the desktop folder.</para>
+		/// </param>
 		/// <returns>
-		/// When this function returns, contains the interface pointer requested. This is typically IShellFolder or IShellFolder2, but
-		/// can be anything supported by the target folder.
+		/// When this function returns, contains the interface pointer requested. This is typically IShellFolder or IShellFolder2, but can be
+		/// anything supported by the target folder.
 		/// </returns>
 		/// <remarks>
 		/// <c>Note</c> Calling the <c>SHBindToFolderIDListParent</c> function is equivalent to calling the SHBindToFolderIDListParentEx
@@ -3384,31 +3645,39 @@ namespace Vanara.PInvoke
 		public static TIntf SHBindToFolderIDListParentEx<TIntf>(IShellFolder psfRoot = null, PIDL pidl = null, IBindCtx ppbc = null) where TIntf : class =>
 			IidGetObj<TIntf>((in Guid g, out object o) => SHBindToFolderIDListParentEx(psfRoot, pidl, ppbc, g, out o, out var _));
 
-		/// <summary>
-		/// Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.
-		/// </summary>
-		/// <param name="psf"><para>Type: <c>IShellFolder*</c></para>
+		/// <summary>Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.</summary>
+		/// <param name="psf">
+		/// <para>Type: <c>IShellFolder*</c></para>
 		/// <para>
 		/// A pointer to IShellFolder. This parameter can be <c>NULL</c>. If is <c>NULL</c>, this indicates parameter is relative to the
 		/// desktop. In this case, must specify an absolute ITEMIDLIST.
-		/// </para></param>
-		/// <param name="pidl"><para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+		/// </para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUIDLIST_RELATIVE</c></para>
 		/// <para>
 		/// A pointer to a constant ITEMIDLIST to bind to that is relative to . If is <c>NULL</c>, this is an absolute <c>ITEMIDLIST</c>
 		/// relative to the desktop folder.
-		/// </para></param>
-		/// <param name="pbc"><para>Type: <c>IBindCtx*</c></para>
+		/// </para>
+		/// </param>
+		/// <param name="pbc">
+		/// <para>Type: <c>IBindCtx*</c></para>
 		/// <para>
 		/// A pointer to IBindCtx interface on a bind context object to be used during this operation. If this parameter is not used, set it
 		/// to <c>NULL</c>. Because support for is optional for folder object implementations, some folders may not support the use of bind contexts.
-		/// </para></param>
-		/// <param name="riid"><para>Type: <c>REFIID</c></para>
-		/// <para>Identifier of the interface to return.</para></param>
-		/// <param name="ppv"><para>Type: <c>void**</c></para>
+		/// </para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>Identifier of the interface to return.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
 		/// <para>
 		/// When this method returns, contains the interface pointer as specified in to the bound object. If an error occurs, contains a
 		/// <c>NULL</c> pointer.
-		/// </para></param>
+		/// </para>
+		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HRESULT</c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
@@ -3420,25 +3689,29 @@ namespace Vanara.PInvoke
 		[PInvokeData("shlobj_core.h", MSDNShortId = "acc16097-8301-4118-8cb5-00aa2705306a")]
 		public static extern HRESULT SHBindToObject(IShellFolder psf, PIDL pidl, IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
-		/// <summary>
-		/// Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.
-		/// </summary>
+		/// <summary>Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.</summary>
 		/// <typeparam name="TIntf">Type of the interface to return.</typeparam>
-		/// <param name="psf"><para>Type: <c>IShellFolder*</c></para>
+		/// <param name="psf">
+		/// <para>Type: <c>IShellFolder*</c></para>
 		/// <para>
 		/// A pointer to IShellFolder. This parameter can be <c>NULL</c>. If is <c>NULL</c>, this indicates parameter is relative to the
 		/// desktop. In this case, must specify an absolute ITEMIDLIST.
-		/// </para></param>
-		/// <param name="pidl"><para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+		/// </para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUIDLIST_RELATIVE</c></para>
 		/// <para>
 		/// A pointer to a constant ITEMIDLIST to bind to that is relative to . If is <c>NULL</c>, this is an absolute <c>ITEMIDLIST</c>
 		/// relative to the desktop folder.
-		/// </para></param>
-		/// <param name="pbc"><para>Type: <c>IBindCtx*</c></para>
+		/// </para>
+		/// </param>
+		/// <param name="pbc">
+		/// <para>Type: <c>IBindCtx*</c></para>
 		/// <para>
 		/// A pointer to IBindCtx interface on a bind context object to be used during this operation. If this parameter is not used, set it
 		/// to <c>NULL</c>. Because support for is optional for folder object implementations, some folders may not support the use of bind contexts.
-		/// </para></param>
+		/// </para>
+		/// </param>
 		/// <returns>
 		/// When this method returns, contains the interface pointer as specified in to the bound object. If an error occurs, contains a
 		/// <c>NULL</c> pointer.
@@ -3492,8 +3765,10 @@ namespace Vanara.PInvoke
 		/// Takes a pointer to a fully qualified item identifier list (PIDL), and returns a specified interface pointer on the parent object.
 		/// </summary>
 		/// <typeparam name="TIntf">The Type of one of the interfaces exposed by the item's parent object.</typeparam>
-		/// <param name="pidl"><para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
-		/// <para>The item's PIDL.</para></param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>The item's PIDL.</para>
+		/// </param>
 		/// <returns>A pointer to the interface specified. You must release the object when you are finished.</returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtoparent SHSTDAPI SHBindToParent(
 		// PCIDLIST_ABSOLUTE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
@@ -3539,8 +3814,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>HANDLE</c></para>
 		/// <para>Returns a handle (HLOCK) to the locked memory. Pass this value to SHChangeNotification_Unlock when finished.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotification_lock
-		// HANDLE SHChangeNotification_Lock( HANDLE hChange, DWORD dwProcId, PIDLIST_ABSOLUTE **pppidl, LONG *plEvent );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotification_lock HANDLE
+		// SHChangeNotification_Lock( HANDLE hChange, DWORD dwProcId, PIDLIST_ABSOLUTE **pppidl, LONG *plEvent );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "8e22d5d0-64be-403c-982d-c23705d85223")]
 		public static extern HLOCK SHChangeNotification_Lock(HWND hChange, uint dwProcId, out IntPtr pppidl, out SHCNE plEvent);
@@ -4276,8 +4551,8 @@ namespace Vanara.PInvoke
 		/// It is the responsibility of the caller to free the icon resources created through this function when they are no longer needed.
 		/// This can be done through the DestroyIcon function.
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shdefextracticona
-		// SHSTDAPI SHDefExtractIconA( LPCSTR pszIconFile, int iIndex, UINT uFlags, HICON *phiconLarge, HICON *phiconSmall, UINT nIconSize );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shdefextracticona SHSTDAPI SHDefExtractIconA(
+		// LPCSTR pszIconFile, int iIndex, UINT uFlags, HICON *phiconLarge, HICON *phiconSmall, UINT nIconSize );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "fbaa600a-5e5c-4948-81fb-d2c3993dcd47")]
 		public static extern HRESULT SHDefExtractIcon(string pszIconFile, int iIndex, GetIconLocationResultFlags uFlags, out SafeHICON phiconLarge, out SafeHICON phiconSmall, uint nIconSize);
@@ -6345,18 +6620,22 @@ namespace Vanara.PInvoke
 
 		/// <summary>Creates a unique name for a stream or storage object from a template.</summary>
 		/// <typeparam name="TIntf">The type of the interface to retrieve through, typically IStorage or IStream.</typeparam>
-		/// <param name="pstgParent"><para>Type: <c>IStorage*</c></para>
-		/// <para>A pointer to an IStorage object.</para></param>
-		/// <param name="pszFileSpec"><para>Type: <c>PCWSTR</c></para>
-		/// <para>The format or template for the name of the stream or storage object.</para></param>
-		/// <param name="grfMode"><para>Type: <c>DWORD</c></para>
+		/// <param name="pstgParent">
+		/// <para>Type: <c>IStorage*</c></para>
+		/// <para>A pointer to an IStorage object.</para>
+		/// </param>
+		/// <param name="pszFileSpec">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>The format or template for the name of the stream or storage object.</para>
+		/// </param>
+		/// <param name="grfMode">
+		/// <para>Type: <c>DWORD</c></para>
 		/// <para>
 		/// The access mode to use when opening the stream or storage object. For more information and descriptions of the possible values,
 		/// see STGM Constants.
-		/// </para></param>
-		/// <returns>
-		/// When this method returns, contains the interface pointer requested in . This is typically IStorage or IStream.
-		/// </returns>
+		/// </para>
+		/// </param>
+		/// <returns>When this method returns, contains the interface pointer requested in . This is typically IStorage or IStream.</returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-stgmakeuniquename HRESULT StgMakeUniqueName(
 		// IStorage *pstgParent, PCWSTR pszFileSpec, DWORD grfMode, REFIID riid, void **ppv );
 		[PInvokeData("shlobj_core.h", MSDNShortId = "d45ec25c-359b-46f8-b0f6-5888525c7349")]
@@ -6643,11 +6922,11 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public IQueryAssociations punkAssociationInfo;
 
-			/// <summary> The count of items in member aKeys. This value can be zero. If the value is zero, the extensions are loaded based
-			/// on the object that supports interface IQueryAssociations as specified by member punkAssociationInfo. If the value is
-			/// non-NULL, the extensions are loaded based only on member aKeys and not member punkAssociationInfo.
-			/// <note>Note The maximum number of keys is 16. Callers must enforce this limit as the API does not. Failing to do so can result in
-			/// memory corruption.</note>
+			/// <summary>
+			/// The count of items in member aKeys. This value can be zero. If the value is zero, the extensions are loaded based on the
+			/// object that supports interface IQueryAssociations as specified by member punkAssociationInfo. If the value is non-NULL, the
+			/// extensions are loaded based only on member aKeys and not member punkAssociationInfo. <note>Note The maximum number of keys is
+			/// 16. Callers must enforce this limit as the API does not. Failing to do so can result in memory corruption.</note>
 			/// </summary>
 			public uint cKeys;
 

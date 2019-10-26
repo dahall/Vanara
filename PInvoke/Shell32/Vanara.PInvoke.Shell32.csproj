@@ -69,4 +69,7 @@ IAutoComplete, IAutoComplete2, IShellFolderViewDual, IOleCommandTarget, IShellWi
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\ShlwApi\Vanara.PInvoke.ShlwApi.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="CustomMarshalers" />
+  </ItemGroup>
 </Project>
