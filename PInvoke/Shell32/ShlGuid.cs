@@ -1,7 +1,99 @@
+using System;
+
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary>Service ID to find common dialog browser.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SCommDlgBrowser = new Guid(0x80f30233, 0xb7df, 0x11d2, 0xa3, 0x3b, 0x0, 0x60, 0x97, 0xdf, 0x5b, 0xd4);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SGetViewFromViewDual = new Guid(0x889A935D, 0x971E, 0x4B12, 0xB9, 0x0C, 0x24, 0xDF, 0xC9, 0xE1, 0xE5, 0xE8);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_ShellFolderViewCB = typeof(IShellFolderViewCB).GUID;
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SInPlaceBrowser = new Guid(0x1D2AE02B, 0x3655, 0x46CC, 0xB6, 0x3A, 0x28, 0x59, 0x88, 0x15, 0x3B, 0xCA);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SInternetExplorer = new Guid("0002DF05-0000-0000-C000-000000000046");
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SMenuBandBKContextMenu = new Guid(0x164bbd86, 0x1d0d, 0x4de0, 0x9a, 0x3b, 0xd9, 0x72, 0x96, 0x47, 0xc2, 0xb8);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SMenuBandBottom = new Guid(0x743ca664, 0xdeb, 0x11d1, 0x98, 0x25, 0x0, 0xc0, 0x4f, 0xd9, 0x19, 0x72);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SMenuBandBottomSelected = new Guid(0x165ebaf4, 0x6d51, 0x11d2, 0x83, 0xad, 0x0, 0xc0, 0x4f, 0xd9, 0x18, 0xd0);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SMenuBandChild = new Guid(0xed9cc020, 0x8b9, 0x11d1, 0x98, 0x23, 0x0, 0xc0, 0x4f, 0xd9, 0x19, 0x72);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SMenuBandContextMenuModifier = new Guid(0x39545874, 0x7162, 0x465e, 0xb7, 0x83, 0x2a, 0xa1, 0x87, 0x4f, 0xef, 0x81);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SMenuBandParent = new Guid(0x8c278eec, 0x3eab, 0x11d1, 0x8c, 0xb0, 0x0, 0xc0, 0x4f, 0xd9, 0x18, 0xd0);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SMenuBandTop = new Guid(0x9493a810, 0xec38, 0x11d0, 0xbc, 0x46, 0x0, 0xaa, 0x0, 0x6c, 0xe2, 0xf5);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SMenuPopup = new Guid(0xD1E7AFEB, 0x6A2E, 0x11d0, 0x8C, 0x78, 0x0, 0xC0, 0x4F, 0xD9, 0x18, 0xB4);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SProgressUI = new Guid(0xf8383852, 0xfcd3, 0x11d1, 0xa6, 0xb9, 0x0, 0x60, 0x97, 0xdf, 0x5b, 0xd4);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SSearchBoxInfo = new Guid(0x142daa61, 0x516b, 0x4713, 0xb4, 0x9c, 0xfb, 0x98, 0x5e, 0xf8, 0x29, 0x98);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SShellBrowser = typeof(IShellBrowser).GUID;
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SShellDesktop = new Guid("00021400-0000-0000-C000-000000000046");
+
+		/// <summary>Service ID to find top-level browser.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_STopLevelBrowser = new Guid(0x4C96BE40, 0x915C, 0x11CF, 0x99, 0xD3, 0x00, 0xAA, 0x00, 0x4A, 0xE8, 0x37);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_STopWindow = new Guid(0x49e1b500, 0x4636, 0x11d3, 0x97, 0xf7, 0x0, 0xc0, 0x4f, 0x45, 0xd0, 0xb3);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SUrlHistory = new Guid(0x3C374A40, 0xBAE4, 0x11CF, 0xBF, 0x7D, 0x00, 0xAA, 0x00, 0x69, 0x46, 0xEE);
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SWebBrowserApp = new Guid("0002DF05-0000-0000-C000-000000000046");
+
+		/// <summary>Undocumented.</summary>
+		[PInvokeData("shlguid.h")]
+		public static readonly Guid SID_SWebBrowserEventsService = new Guid("54A8F188-9EBD-4795-AD16-9B4945119636");
+
+		/// <summary>Reference to a GUID that specifies which handler will be created.</summary>
+		[PInvokeData("shlguid.h")]
 		public enum BHID
 		{
 			/// <summary>Restricts usage to BindToObject.</summary>
