@@ -33,7 +33,7 @@ namespace Vanara.InteropServices
 	/// use an enumeration value to determine the type to get or set.
 	/// </summary>
 	/// <seealso cref="System.Attribute"/>
-	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Class, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true)]
 	public class CorrespondingTypeAttribute : Attribute
 	{
 		/// <summary>Initializes a new instance of the <see cref="CorrespondingTypeAttribute"/> class.</summary>
