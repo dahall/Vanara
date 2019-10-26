@@ -6,6 +6,37 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary>The detected partition type.</summary>
+		[PInvokeData("winioctl.h", MSDNShortId = "57ca68f4-f748-4bc4-90c3-13d545716d87")]
+		public enum DETECTION_TYPE
+		{
+			/// <summary>The disk does not have an Int13 or an extended Int13 partition.</summary>
+			DetectNone,
+
+			/// <summary>The disk has a standard Int13 partition.</summary>
+			DetectInt13,
+
+			/// <summary>The disk has an extended Int13 partition.</summary>
+			DetectExInt13
+		}
+
+		/// <summary>
+		/// Determines the likelihood of data cached from a read operation remaining in the cache. This data might be given a different
+		/// priority than data cached under other circumstances, such as from a prefetch operation.
+		/// </summary>
+		[PInvokeData("winioctl.h", MSDNShortId = "ea175bea-5f2b-4f3e-9fe0-239b1d2e3d96")]
+		public enum DISK_CACHE_RETENTION_PRIORITY
+		{
+			/// <summary>No data is held in the cache on a preferential basis.</summary>
+			EqualPriority,
+
+			/// <summary>A preference is to be given to prefetched data.</summary>
+			KeepPrefetchedData,
+
+			/// <summary>A preference is to be given to data cached from a read operation.</summary>
+			KeepReadData
+		}
+
 		/// <summary>
 		/// <para>
 		/// The flags that identify reasons for changes that have accumulated in this file or directory journal record since the file or
@@ -211,6 +242,399 @@ namespace Vanara.PInvoke
 
 			/// <summary>The number of elements in the range.</summary>
 			public uint NumberOfElements;
+		}
+
+		/// <summary>
+		/// Provides information about the disk cache.This structure is used by the IOCTL_DISK_GET_CACHE_INFORMATION and
+		/// IOCTL_DISK_SET_CACHE_INFORMATION control codes.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-disk_cache_information typedef struct
+		// _DISK_CACHE_INFORMATION { BOOLEAN ParametersSavable; BOOLEAN ReadCacheEnabled; BOOLEAN WriteCacheEnabled;
+		// DISK_CACHE_RETENTION_PRIORITY ReadRetentionPriority; DISK_CACHE_RETENTION_PRIORITY WriteRetentionPriority; WORD
+		// DisablePrefetchTransferLength; BOOLEAN PrefetchScalar; union { struct { WORD Minimum; WORD Maximum; WORD MaximumBlocks; }
+		// ScalarPrefetch; struct { WORD Minimum; WORD Maximum; } BlockPrefetch; } DUMMYUNIONNAME; } DISK_CACHE_INFORMATION, *PDISK_CACHE_INFORMATION;
+		[PInvokeData("winioctl.h", MSDNShortId = "ea175bea-5f2b-4f3e-9fe0-239b1d2e3d96")]
+		[StructLayout(LayoutKind.Sequential, Size = 24, Pack = 8)]
+		public struct DISK_CACHE_INFORMATION
+		{
+			/// <summary>Indicates whether the device is capable of saving any parameters in nonvolatile storage.</summary>
+			[MarshalAs(UnmanagedType.U1)] public bool ParametersSavable;
+
+			/// <summary>Indicates whether the read cache is enabled.</summary>
+			[MarshalAs(UnmanagedType.U1)] public bool ReadCacheEnabled;
+
+			/// <summary>Indicates whether the write cache is enabled.</summary>
+			[MarshalAs(UnmanagedType.U1)] public bool WriteCacheEnabled;
+
+			/// <summary>
+			/// <para>
+			/// Determines the likelihood of data cached from a read operation remaining in the cache. This data might be given a different
+			/// priority than data cached under other circumstances, such as from a prefetch operation.
+			/// </para>
+			/// <para>This member can be one of the following values from the <c>DISK_CACHE_RETENTION_PRIORITY</c> enumeration type.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>EqualPriority 0</term>
+			/// <term>No data is held in the cache on a preferential basis.</term>
+			/// </item>
+			/// <item>
+			/// <term>KeepPrefetchedData 1</term>
+			/// <term>A preference is to be given to prefetched data.</term>
+			/// </item>
+			/// <item>
+			/// <term>KeepReadData 2</term>
+			/// <term>A preference is to be given to data cached from a read operation.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public DISK_CACHE_RETENTION_PRIORITY ReadRetentionPriority;
+
+			/// <summary>
+			/// Determines the likelihood of data cached from a write operation remaining in the cache. This data might be given a different
+			/// priority than data cached under other circumstances, such as from a prefetch operation.
+			/// </summary>
+			public DISK_CACHE_RETENTION_PRIORITY WriteRetentionPriority;
+
+			/// <summary>
+			/// Disables prefetching. Prefetching might be disabled whenever the number of blocks requested exceeds the value in
+			/// DisablePrefetchTransferLength. When zero, prefetching is disabled no matter what the size of the block request.
+			/// </summary>
+			public ushort DisablePrefetchTransferLength;
+
+			/// <summary>
+			/// If this member is <c>TRUE</c>, the union is a <c>ScalarPrefetch</c> structure. Otherwise, the union is a <c>BlockPrefetch</c> structure.
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)] public bool PrefetchScalar;
+
+			/// <summary>
+			/// The scalar multiplier of the transfer length of the request, when <c>PrefetchScalar</c> is <c>TRUE</c>. When
+			/// <c>PrefetchScalar</c> is <c>TRUE</c>, this value is multiplied by the transfer length to obtain the minimum amount of data
+			/// that can be prefetched into the cache on a disk operation.
+			/// <para>
+			/// The minimum amount of data that can be prefetched into the cache on a disk operation, as an absolute number of disk blocks
+			/// when PrefetchScalar is <see langword="false"/>.
+			/// </para>
+			/// </summary>
+			public ushort Minimum;
+
+			/// <summary>
+			/// The scalar multiplier of the transfer length of the request when <c>PrefetchScalar</c> is <c>TRUE</c>. When
+			/// <c>PrefetchScalar</c> is <c>TRUE</c>, this value is multiplied by the transfer length to obtain the maximum amount of data
+			/// that can be prefetched into the cache on a disk operation.
+			/// <para>
+			/// The maximum amount of data that can be prefetched into the cache on a disk operation, as an absolute number of disk blocks
+			/// when PrefetchScalar is <see langword="false"/>.
+			/// </para>
+			/// </summary>
+			public ushort Maximum;
+
+			/// <summary>The maximum number of blocks which can be prefetched when <c>PrefetchScalar</c> is <c>TRUE</c>.</summary>
+			public ushort MaximumBlocks;
+		}
+
+		/// <summary>Contains detected drive parameters.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-disk_detection_info typedef struct _DISK_DETECTION_INFO {
+		// DWORD SizeOfDetectInfo; DETECTION_TYPE DetectionType; union { struct { DISK_INT13_INFO Int13; DISK_EX_INT13_INFO ExInt13; }
+		// DUMMYSTRUCTNAME; } DUMMYUNIONNAME; } DISK_DETECTION_INFO, *PDISK_DETECTION_INFO;
+		[PInvokeData("winioctl.h", MSDNShortId = "57ca68f4-f748-4bc4-90c3-13d545716d87")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DISK_DETECTION_INFO
+		{
+			/// <summary>The size of the structure, in bytes.</summary>
+			public uint SizeOfDetectInfo;
+
+			/// <summary>
+			/// <para>The detected partition type.</para>
+			/// <para>This member can be one of the following values from the <c>DETECTION_TYPE</c> enumeration.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>DetectExInt13 2</term>
+			/// <term>The disk has an extended Int13 partition.</term>
+			/// </item>
+			/// <item>
+			/// <term>DetectInt13 1</term>
+			/// <term>The disk has a standard Int13 partition.</term>
+			/// </item>
+			/// <item>
+			/// <term>DetectNone 0</term>
+			/// <term>The disk does not have an Int13 or an extended Int13 partition.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public DETECTION_TYPE DetectionType;
+
+			/// <summary>If <c>DetectionType</c> is DetectInt13, the union is a DISK_INT13_INFO structure.</summary>
+			public DISK_INT13_INFO Int13;
+
+			/// <summary>If <c>DetectionType</c> is DetectExInt13, the union is a DISK_EX_INT13_INFO structure.</summary>
+			public DISK_EX_INT13_INFO ExInt13;
+		}
+
+		/// <summary>Contains extended Int13 drive parameters.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-disk_ex_int13_info typedef struct _DISK_EX_INT13_INFO {
+		// WORD ExBufferSize; WORD ExFlags; DWORD ExCylinders; DWORD ExHeads; DWORD ExSectorsPerTrack; DWORD64 ExSectorsPerDrive; WORD
+		// ExSectorSize; WORD ExReserved; } DISK_EX_INT13_INFO, *PDISK_EX_INT13_INFO;
+		[PInvokeData("winioctl.h", MSDNShortId = "efde6ede-b921-4d1d-ab4a-b9f85ae6aea1")]
+		[StructLayout(LayoutKind.Sequential, Pack = 8, Size = 32)]
+		public struct DISK_EX_INT13_INFO
+		{
+			/// <summary>The size of the extended drive parameter buffer for this partition or disk. For valid values, see the BIOS documentation.</summary>
+			public ushort ExBufferSize;
+
+			/// <summary>The information flags for this partition or disk. For valid values, see the BIOS documentation.</summary>
+			public ushort ExFlags;
+
+			/// <summary>The number of cylinders per head. For valid values, see the BIOS documentation.</summary>
+			public uint ExCylinders;
+
+			/// <summary>The maximum number of heads for this hard disk. For valid values, see the BIOS documentation.</summary>
+			public uint ExHeads;
+
+			/// <summary>The number of sectors per track. For valid values, see the BIOS documentation.</summary>
+			public uint ExSectorsPerTrack;
+
+			/// <summary>The total number of sectors for this disk. For valid values, see the BIOS documentation.</summary>
+			public ulong ExSectorsPerDrive;
+
+			/// <summary>The sector size for this disk. For valid values, see the BIOS documentation.</summary>
+			public ushort ExSectorSize;
+
+			/// <summary>Reserved for future use.</summary>
+			public ushort ExReserved;
+		}
+
+		/// <summary>Represents a disk extent.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-disk_extent typedef struct _DISK_EXTENT { DWORD
+		// DiskNumber; LARGE_INTEGER StartingOffset; LARGE_INTEGER ExtentLength; } DISK_EXTENT, *PDISK_EXTENT;
+		[PInvokeData("winioctl.h", MSDNShortId = "1b8dc6fa-e60b-4490-b439-44c93b6f4ce5")]
+		[StructLayout(LayoutKind.Sequential, Pack = 8, Size = 24)]
+		public struct DISK_EXTENT
+		{
+			/// <summary>
+			/// <para>The number of the disk that contains this extent.</para>
+			/// <para>
+			/// This is the same number that is used to construct the name of the disk, for example, the X in "\?\PhysicalDriveX" or "\?\HarddiskX".
+			/// </para>
+			/// </summary>
+			public uint DiskNumber;
+
+			/// <summary>The offset from the beginning of the disk to the extent, in bytes.</summary>
+			public long StartingOffset;
+
+			/// <summary>The number of bytes in this extent.</summary>
+			public long ExtentLength;
+		}
+
+		/// <summary>Describes the geometry of disk devices and media.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-disk_geometry typedef struct _DISK_GEOMETRY {
+		// LARGE_INTEGER Cylinders; MEDIA_TYPE MediaType; DWORD TracksPerCylinder; DWORD SectorsPerTrack; DWORD BytesPerSector; }
+		// DISK_GEOMETRY, *PDISK_GEOMETRY;
+		[PInvokeData("winioctl.h", MSDNShortId = "5e5955b4-1319-42c9-9df8-9910c05dec69")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DISK_GEOMETRY
+		{
+			/// <summary>The number of cylinders. See LARGE_INTEGER.</summary>
+			public long Cylinders;
+
+			/// <summary>The type of media. For a list of values, see MEDIA_TYPE.</summary>
+			public MEDIA_TYPE MediaType;
+
+			/// <summary>The number of tracks per cylinder.</summary>
+			public uint TracksPerCylinder;
+
+			/// <summary>The number of sectors per track.</summary>
+			public uint SectorsPerTrack;
+
+			/// <summary>The number of bytes per sector.</summary>
+			public uint BytesPerSector;
+		}
+
+		/// <summary>Describes the extended geometry of disk devices and media.</summary>
+		/// <remarks>
+		/// <para>
+		/// <c>DISK_GEOMETRY_EX</c> is a variable-length structure composed of a DISK_GEOMETRY structure followed by a DISK_PARTITION_INFO
+		/// structure and a DISK_DETECTION_INFO structure. Because the detection information is not at a fixed location within the
+		/// <c>DISK_GEOMETRY_EX</c> structure, use the following macro to access the <c>DISK_DETECTION_INFO</c> structure.
+		/// </para>
+		/// <para>Similarly, use the following macro to access the DISK_PARTITION_INFO structure.</para>
+		/// <para>
+		/// The information returned does not include the number of partitions nor the partition information contained in the
+		/// PARTITION_INFORMATION structure. To obtain this information, use the IOCTL_DISK_GET_DRIVE_LAYOUT_EX control code.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-disk_geometry_ex typedef struct _DISK_GEOMETRY_EX {
+		// DISK_GEOMETRY Geometry; LARGE_INTEGER DiskSize; BYTE Data[1]; } DISK_GEOMETRY_EX, *PDISK_GEOMETRY_EX;
+		[PInvokeData("winioctl.h", MSDNShortId = "2b8b2021-8650-452d-a975-54249620d72f")]
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
+		public struct DISK_GEOMETRY_EX
+		{
+			/// <summary>A DISK_GEOMETRY structure.</summary>
+			public DISK_GEOMETRY Geometry;
+
+			/// <summary>The disk size, in bytes. See LARGE_INTEGER.</summary>
+			public long DiskSize;
+
+			/// <summary>Any additional data. For more information, see Remarks.</summary>
+			public byte Data;
+		}
+
+		/// <summary>
+		/// Contains information used to increase the size of a partition.This structure is used by the IOCTL_DISK_GROW_PARTITION control code.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-disk_grow_partition typedef struct _DISK_GROW_PARTITION {
+		// DWORD PartitionNumber; LARGE_INTEGER BytesToGrow; } DISK_GROW_PARTITION, *PDISK_GROW_PARTITION;
+		[PInvokeData("winioctl.h", MSDNShortId = "17ff8bbb-45a6-4ddd-a871-8519500c03a9")]
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
+		public struct DISK_GROW_PARTITION
+		{
+			/// <summary>The identifier of the partition to be enlarged.</summary>
+			public uint PartitionNumber;
+
+			/// <summary>
+			/// The number of bytes by which the partition is to be enlarged (positive value) or reduced (negative value). Note that this
+			/// value is not the new size of the partition.
+			/// </summary>
+			public long BytesToGrow;
+		}
+
+		/// <summary>Contains standard Int13 drive geometry parameters.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-disk_int13_info typedef struct _DISK_INT13_INFO { WORD
+		// DriveSelect; DWORD MaxCylinders; WORD SectorsPerTrack; WORD MaxHeads; WORD NumberDrives; } DISK_INT13_INFO, *PDISK_INT13_INFO;
+		[PInvokeData("winioctl.h", MSDNShortId = "a6991ad1-da8a-4df6-a055-ead3c30938df")]
+		[StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
+		public struct DISK_INT13_INFO
+		{
+			/// <summary>The letter that is related to the specified partition or hard disk. For valid values, see the BIOS documentation.</summary>
+			public ushort DriveSelect;
+
+			/// <summary>The maximum number of cylinders per head. For valid values, see the BIOS documentation.</summary>
+			public uint MaxCylinders;
+
+			/// <summary>The number of sectors per track. For valid values, see the BIOS documentation.</summary>
+			public ushort SectorsPerTrack;
+
+			/// <summary>The maximum number of heads for this hard disk. For valid values, see the BIOS documentation.</summary>
+			public ushort MaxHeads;
+
+			/// <summary>The number of drives. For valid values, see the BIOS documentation.</summary>
+			public ushort NumberDrives;
+		}
+
+		/// <summary>Contains the disk partition information.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-disk_partition_info typedef struct _DISK_PARTITION_INFO {
+		// DWORD SizeOfPartitionInfo; PARTITION_STYLE PartitionStyle; union { struct { DWORD Signature; DWORD CheckSum; } Mbr; struct { GUID
+		// DiskId; } Gpt; } DUMMYUNIONNAME; } DISK_PARTITION_INFO, *PDISK_PARTITION_INFO;
+		[PInvokeData("winioctl.h", MSDNShortId = "34a086fc-72ea-46ed-adb3-c084abcb3c74")]
+		[StructLayout(LayoutKind.Explicit)]
+		public struct DISK_PARTITION_INFO
+		{
+			/// <summary>The size of this structure, in bytes.</summary>
+			[FieldOffset(0)]
+			public uint SizeOfPartitionInfo;
+
+			/// <summary>
+			/// <para>The format of a partition.</para>
+			/// <para>For more information, see PARTITION_STYLE.</para>
+			/// </summary>
+			[FieldOffset(4)]
+			public PARTITION_STYLE PartitionStyle;
+
+			/// <summary>The MBR partition info</summary>
+			[FieldOffset(8)]
+			public MBR Mbr;
+
+			/// <summary>The GPT partition info</summary>
+			[FieldOffset(8)]
+			public GPT Gpt;
+
+			/// <summary>The MBR partition info</summary>
+			[StructLayout(LayoutKind.Sequential)]
+			public struct MBR
+			{
+				/// <summary>MBR signature of the partition.</summary>
+				public uint Signature;
+
+				/// <summary/>
+				public uint CheckSum;
+			}
+
+			/// <summary>The GPT partition info</summary>
+			[StructLayout(LayoutKind.Sequential)]
+			public struct GPT
+			{
+				/// <summary><c>GUID</c> of the GPT partition.</summary>
+				public Guid DiskId;
+			}
+		}
+
+		/// <summary>Provides disk performance information. It is used by the IOCTL_DISK_PERFORMANCE control code.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-disk_performance typedef struct _DISK_PERFORMANCE {
+		// LARGE_INTEGER BytesRead; LARGE_INTEGER BytesWritten; LARGE_INTEGER ReadTime; LARGE_INTEGER WriteTime; LARGE_INTEGER IdleTime;
+		// DWORD ReadCount; DWORD WriteCount; DWORD QueueDepth; DWORD SplitCount; LARGE_INTEGER QueryTime; DWORD StorageDeviceNumber; WCHAR
+		// StorageManagerName[8]; } DISK_PERFORMANCE, *PDISK_PERFORMANCE;
+		[PInvokeData("winioctl.h", MSDNShortId = "938ec37b-450e-4ebf-ad2b-9f1ac5f56112")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct DISK_PERFORMANCE
+		{
+			/// <summary>The number of bytes read.</summary>
+			public long BytesRead;
+
+			/// <summary>The number of bytes written.</summary>
+			public long BytesWritten;
+
+			/// <summary>The time it takes to complete a read.</summary>
+			public long ReadTime;
+
+			/// <summary>The time it takes to complete a write.</summary>
+			public long WriteTime;
+
+			/// <summary>The idle time.</summary>
+			public long IdleTime;
+
+			/// <summary>The number of read operations.</summary>
+			public uint ReadCount;
+
+			/// <summary>The number of write operations.</summary>
+			public uint WriteCount;
+
+			/// <summary>The depth of the queue.</summary>
+			public uint QueueDepth;
+
+			/// <summary>
+			/// <para>The cumulative count of I/Os that are associated I/Os.</para>
+			/// <para>
+			/// An associated I/O is a fragmented I/O, where multiple I/Os to a disk are required to fulfill the original logical I/O
+			/// request. The most common example of this scenario is a file that is fragmented on a disk. The multiple I/Os are counted as
+			/// split I/O counts.
+			/// </para>
+			/// </summary>
+			public uint SplitCount;
+
+			/// <summary>
+			/// <para>The system time stamp when a query for this structure is returned.</para>
+			/// <para>Use this member to synchronize between the file system driver and a caller.</para>
+			/// </summary>
+			public long QueryTime;
+
+			/// <summary>
+			/// The unique number for a device that identifies it to the storage manager that is indicated in the <c>StorageManagerName</c> member.
+			/// </summary>
+			public uint StorageDeviceNumber;
+
+			/// <summary>
+			/// <para>The name of the storage manager that controls this device.</para>
+			/// <para>Examples of storage managers are "PhysDisk," "FTDISK," and "DMIO".</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
+			public string StorageManagerName;
 		}
 
 		/// <summary>
@@ -1532,7 +1956,6 @@ namespace Vanara.PInvoke
 		/*
 		https://docs.microsoft.com/en-us/windows/win32/api/winioctl/
 
-BOOT_AREA_INFO : 24
 CHANGER_ELEMENT : 8
 CHANGER_ELEMENT_LIST : 12
 CHANGER_ELEMENT_STATUS : 100
@@ -1573,16 +1996,6 @@ DEVICE_POWER_DESCRIPTOR : 20
 DEVICE_SEEK_PENALTY_DESCRIPTOR : 12
 DEVICE_TRIM_DESCRIPTOR : 12
 DEVICE_WRITE_AGGREGATION_DESCRIPTOR : 12
-DISK_CACHE_INFORMATION : 24
-DISK_DETECTION_INFO : 56
-DISK_EX_INT13_INFO : 32
-DISK_EXTENT : 24
-DISK_GEOMETRY : 24
-DISK_GEOMETRY_EX : 40
-DISK_GROW_PARTITION : 16
-DISK_INT13_INFO : 16
-DISK_PARTITION_INFO : 24
-DISK_PERFORMANCE : 88
 DRIVE_LAYOUT_INFORMATION : 40
 DRIVE_LAYOUT_INFORMATION_EX : 192
 DRIVE_LAYOUT_INFORMATION_GPT : 40
@@ -1752,16 +2165,6 @@ winioctl_DEVICE_POWER_DESCRIPTOR	The DEVICE_POWER_DESCRIPTOR structure describes
 winioctl_DEVICE_SEEK_PENALTY_DESCRIPTOR	Used in conjunction with the IOCTL_STORAGE_QUERY_PROPERTY request to retrieve the seek penalty descriptor data for a device.
 winioctl_DEVICE_TRIM_DESCRIPTOR	Used in conjunction with the IOCTL_STORAGE_QUERY_PROPERTY request to retrieve the trim descriptor data for a device.
 winioctl_DEVICE_WRITE_AGGREGATION_DESCRIPTOR	Reserved for system use.
-winioctl_DISK_CACHE_INFORMATION	Provides information about the disk cache.
-winioctl_DISK_DETECTION_INFO	Contains detected drive parameters.
-winioctl_DISK_EX_INT13_INFO	Contains extended Int13 drive parameters.
-winioctl_DISK_EXTENT	Represents a disk extent.
-winioctl_DISK_GEOMETRY	Describes the geometry of disk devices and media.
-winioctl_DISK_GEOMETRY_EX	Describes the extended geometry of disk devices and media.
-winioctl_DISK_GROW_PARTITION	Contains information used to increase the size of a partition.
-winioctl_DISK_INT13_INFO	Contains standard Int13 drive geometry parameters.
-winioctl_DISK_PARTITION_INFO	Contains the disk partition information.
-winioctl_DISK_PERFORMANCE	Provides disk performance information.
 winioctl_DRIVE_LAYOUT_INFORMATION	Contains information about the partitions of a drive.
 winioctl_DRIVE_LAYOUT_INFORMATION_EX	Contains extended information about a drive's partitions.
 winioctl_DRIVE_LAYOUT_INFORMATION_GPT	Contains information about a drive's GUID partition table (GPT) partitions.
