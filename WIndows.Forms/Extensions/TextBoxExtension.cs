@@ -5,7 +5,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Forms;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
-using static Vanara.PInvoke.ComCtl32;
+using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.Extensions
