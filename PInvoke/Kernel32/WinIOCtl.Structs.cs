@@ -6,6 +6,74 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary>
+		/// The data partition type that is created and recognized by Windows.
+		/// <para>
+		/// Only partitions of this type can be assigned drive letters, receive volume GUID paths, host mounted folders (also called volume
+		/// mount points), and be enumerated by calls to FindFirstVolume and FindNextVolume.
+		/// </para>
+		/// <para>
+		/// This value can be set only for basic disks, with one exception. If both PARTITION_BASIC_DATA_GUID and
+		/// GPT_ATTRIBUTE_PLATFORM_REQUIRED are set for a partition on a basic disk that is subsequently converted to a dynamic disk, the
+		/// partition remains a basic partition, even though the rest of the disk is a dynamic disk.This is because the partition is
+		/// considered to be an OEM partition on a GPT disk.
+		/// </para>
+		/// </summary>
+		public static readonly Guid PARTITION_BASIC_DATA_GUID = new Guid(0xEBD0A0A2, 0xB9E5, 0x4433, 0x87, 0xC0, 0x68, 0xB6, 0xB7, 0x26, 0x99, 0xC7);
+
+		/// <summary>BSP partition</summary>
+		public static readonly Guid PARTITION_BSP_GUID = new Guid(0x57434F53, 0x4DF9, 0x45B9, 0x8E, 0x9E, 0x23, 0x70, 0xF0, 0x06, 0x45, 0x7C);
+
+		/// <summary>Cluster metadata partition</summary>
+		public static readonly Guid PARTITION_CLUSTER_GUID = new Guid(0xDB97DBA9, 0x0840, 0x4BAE, 0x97, 0xF0, 0xFF, 0xB9, 0xA3, 0x27, 0xC7, 0xE1);
+
+		/// <summary>DPP partition</summary>
+		public static readonly Guid PARTITION_DPP_GUID = new Guid(0x57434F53, 0x94CB, 0x43F0, 0xA5, 0x33, 0xD7, 0x3C, 0x10, 0xCF, 0xA5, 0x7D);
+
+		/// <summary>There is no partition. This value can be set for basic and dynamic disks.</summary>
+		public static readonly Guid PARTITION_ENTRY_UNUSED_GUID = new Guid(0x00000000, 0x0000, 0x0000, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+
+		/// <summary>The partition is an LDM data partition on a dynamic disk. This value can be set only for dynamic disks.</summary>
+		public static readonly Guid PARTITION_LDM_DATA_GUID = new Guid(0xAF9B60A0, 0x1431, 0x4F62, 0xBC, 0x68, 0x33, 0x11, 0x71, 0x4A, 0x69, 0xAD);
+
+		/// <summary>
+		/// The partition is a Logical Disk Manager (LDM) metadata partition on a dynamic disk. This value can be set only for dynamic disks.
+		/// </summary>
+		public static readonly Guid PARTITION_LDM_METADATA_GUID = new Guid(0x5808C8AA, 0x7E8F, 0x42E0, 0x85, 0xD2, 0xE1, 0xE9, 0x04, 0x34, 0xCF, 0xB3);
+
+		/// <summary>Main OS partition</summary>
+		public static readonly Guid PARTITION_MAIN_OS_GUID = new Guid(0x57434F53, 0x8F45, 0x405E, 0x8A, 0x23, 0x18, 0x6D, 0x8A, 0x43, 0x30, 0xD3);
+
+		/// <summary>The partition is a Microsoft recovery partition. This value can be set for basic and dynamic disks.</summary>
+		public static readonly Guid PARTITION_MSFT_RECOVERY_GUID = new Guid(0xDE94BBA4, 0x06D1, 0x4D40, 0xA1, 0x6A, 0xBF, 0xD5, 0x01, 0x79, 0xD6, 0xAC);
+
+		/// <summary>The partition is a Microsoft reserved partition. This value can be set for basic and dynamic disks.</summary>
+		public static readonly Guid PARTITION_MSFT_RESERVED_GUID = new Guid(0xE3C9E316, 0x0B5C, 0x4DB8, 0x81, 0x7D, 0xF9, 0x2D, 0xF0, 0x02, 0x15, 0xAE);
+
+		/// <summary>Microsoft shadow copy partition</summary>
+		public static readonly Guid PARTITION_MSFT_SNAPSHOT_GUID = new Guid(0xCADDEBF1, 0x4400, 0x4DE8, 0xB1, 0x03, 0x12, 0x11, 0x7D, 0xCF, 0x3C, 0xCF);
+
+		/// <summary>OS data partition</summary>
+		public static readonly Guid PARTITION_OS_DATA_GUID = new Guid(0x57434F53, 0x23F2, 0x44D5, 0xA8, 0x30, 0x67, 0xBB, 0xDA, 0xA6, 0x09, 0xF9);
+
+		/// <summary>Patch partition</summary>
+		public static readonly Guid PARTITION_PATCH_GUID = new Guid(0x8967A686, 0x96AA, 0x6AA8, 0x95, 0x89, 0xA8, 0x42, 0x56, 0x54, 0x10, 0x90);
+
+		/// <summary>PreInstalled partition</summary>
+		public static readonly Guid PARTITION_PRE_INSTALLED_GUID = new Guid(0x57434F53, 0x7FE0, 0x4196, 0x9B, 0x42, 0x42, 0x7B, 0x51, 0x64, 0x34, 0x84);
+
+		/// <summary>Storage Spaces protective partition</summary>
+		public static readonly Guid PARTITION_SPACES_DATA_GUID = new Guid(0xE7ADDCB4, 0xDC34, 0x4539, 0x9A, 0x76, 0xEB, 0xBD, 0x07, 0xBE, 0x6F, 0x7E);
+
+		/// <summary>Storage Spaces protective partition</summary>
+		public static readonly Guid PARTITION_SPACES_GUID = new Guid(0xE75CAF8F, 0xF680, 0x4CEE, 0xAF, 0xA3, 0xB0, 0x01, 0xE5, 0x6E, 0xFC, 0x2D);
+
+		/// <summary>The partition is an EFI system partition. This value can be set for basic and dynamic disks.</summary>
+		public static readonly Guid PARTITION_SYSTEM_GUID = new Guid(0xC12A7328, 0xF81F, 0x11D2, 0xBA, 0x4B, 0x00, 0xA0, 0xC9, 0x3E, 0xC9, 0x3B);
+
+		/// <summary>Windows system partition</summary>
+		public static readonly Guid PARTITION_WINDOWS_SYSTEM_GUID = new Guid(0x57434F53, 0xE3E3, 0x4631, 0xA5, 0xC5, 0x26, 0xD2, 0x24, 0x38, 0x73, 0xAA);
+
 		/// <summary>The detected partition type.</summary>
 		[PInvokeData("winioctl.h", MSDNShortId = "57ca68f4-f748-4bc4-90c3-13d545716d87")]
 		public enum DETECTION_TYPE
@@ -35,6 +103,188 @@ namespace Vanara.PInvoke
 
 			/// <summary>A preference is to be given to data cached from a read operation.</summary>
 			KeepReadData
+		}
+
+		/// <summary>
+		/// Specifies the partition entry attributes used for diagnostics, recovery tools, and other firmware essential to the operation of
+		/// the device.
+		/// </summary>
+		[PInvokeData("winioctl.h", MSDNShortId = "373b4eb3-af6d-4112-9787-f14c19972189")]
+		[Flags]
+		public enum GPT_ATTRIBUTE : ulong
+		{
+			/// <summary>
+			/// If this attribute is set, the partition is required by a computer to function properly.
+			/// <para>
+			/// For example, this attribute must be set for OEM partitions. Note that if this attribute is set, you can use the DiskPart.exe
+			/// utility to perform partition operations such as deleting the partition. However, because the partition is not a volume, you
+			/// cannot use the DiskPart.exe utility to perform volume operations on the partition.
+			/// </para>
+			/// <para>
+			/// This attribute can be set for basic and dynamic disks. If it is set for a partition on a basic disk and the disk is converted
+			/// to a dynamic disk, the partition remains a basic partition, even though the rest of the disk is a dynamic disk. This is
+			/// because the partition is considered to be an OEM partition on a GPT disk.
+			/// </para>
+			/// </summary>
+			GPT_ATTRIBUTE_PLATFORM_REQUIRED = 0x0000000000000001,
+
+			/// <summary>
+			/// If this attribute is set, the partition does not receive a drive letter by default when the disk is moved to another computer
+			/// or when the disk is seen for the first time by a computer.
+			/// <para>This attribute is useful in storage area network (SAN) environments.</para>
+			/// <para>Despite its name, this attribute can be set for basic and dynamic disks.</para>
+			/// </summary>
+			GPT_BASIC_DATA_ATTRIBUTE_NO_DRIVE_LETTER = 0x8000000000000000,
+
+			/// <summary>
+			/// If this attribute is set, the partition is not detected by the Mount Manager.
+			/// <para>
+			/// As a result, the partition does not receive a drive letter, does not receive a volume GUID path, does not host mounted
+			/// folders (also called volume mount points), and is not enumerated by calls to FindFirstVolume and FindNextVolume.This ensures
+			/// that applications such as Disk Defragmenter do not access the partition. The Volume Shadow Copy Service (VSS) uses this attribute.
+			/// </para>
+			/// <para>Despite its name, this attribute can be set for basic and dynamic disks.</para>
+			/// </summary>
+			GPT_BASIC_DATA_ATTRIBUTE_HIDDEN = 0x4000000000000000,
+
+			/// <summary>
+			/// If this attribute is set, the partition is a shadow copy of another partition.
+			/// <para>
+			/// VSS uses this attribute. This attribute is an indication for file system filter driver-based software (such as antivirus
+			/// programs) to avoid attaching to the volume.
+			/// </para>
+			/// <para>
+			/// An application can use the attribute to differentiate a shadow copy volume from a production volume.An application that does
+			/// a fast recovery, for example, will break a shadow copy LUN and clear the read-only and hidden attributes and this
+			/// attribute.This attribute is set when the shadow copy is created and cleared when the shadow copy is broken.
+			/// </para>
+			/// <para>Despite its name, this attribute can be set for basic and dynamic disks.</para>
+			/// <para>Windows Server 2003: This attribute is not supported before Windows Server 2003 with SP1.</para>
+			/// </summary>
+			GPT_BASIC_DATA_ATTRIBUTE_SHADOW_COPY = 0x2000000000000000,
+
+			/// <summary>
+			/// If this attribute is set, the partition is read-only.
+			/// <para>
+			/// Writes to the partition will fail. IOCTL_DISK_IS_WRITABLE will fail with the ERROR_WRITE_PROTECT Win32 error code, which
+			/// causes the file system to mount as read only, if a file system is present.
+			/// </para>
+			/// <para>VSS uses this attribute.</para>
+			/// <para>
+			/// Do not set this attribute for dynamic disks. Setting it can cause I/O errors and prevent the file system from mounting properly.
+			/// </para>
+			/// </summary>
+			GPT_BASIC_DATA_ATTRIBUTE_READ_ONLY = 0x1000000000000000,
+
+			/// <summary>Undocumented.</summary>
+			GPT_BASIC_DATA_ATTRIBUTE_OFFLINE = 0x0800000000000000,
+
+			/// <summary>Undocumented.</summary>
+			GPT_BASIC_DATA_ATTRIBUTE_DAX = 0x0400000000000000,
+
+			/// <summary>Undocumented.</summary>
+			GPT_BASIC_DATA_ATTRIBUTE_SERVICE = 0x0200000000000000,
+
+			/// <summary>Undocumented.</summary>
+			GPT_SPACES_ATTRIBUTE_NO_METADATA = 0x8000000000000000,
+		}
+
+		/// <summary>Partition types.</summary>
+		[PInvokeData("winioctl.h")]
+		public enum PartitionType : byte
+		{
+			/// <summary>Unused entry</summary>
+			PARTITION_ENTRY_UNUSED = 0,
+
+			/// <summary>Specifies a partition with 12-bit FAT entries</summary>
+			PARTITION_FAT_12,
+
+			/// <summary>Specifies a XENIX Type 1 partition</summary>
+			PARTITION_XENIX_1,
+
+			/// <summary>Specifies a XENIX Type 2 partition</summary>
+			PARTITION_XENIX_2,
+
+			/// <summary>Specifies a partition with 16-bit FAT entries.</summary>
+			PARTITION_FAT_16,
+
+			/// <summary>Specifies an MS-DOS V4 extended partition</summary>
+			PARTITION_EXTENDED,
+
+			/// <summary>Specifies an MS-DOS V4 huge partition</summary>
+			PARTITION_HUGE,
+
+			/// <summary>Specifies an IFS partition</summary>
+			PARTITION_IFS,
+
+			/// <summary>OS/2 Boot Manager/OPUS/Coherent swap</summary>
+			PARTITION_OS2BOOTMGR = 0x0A,
+
+			/// <summary>Specifies a FAT32 partition</summary>
+			PARTITION_FAT32,
+
+			/// <summary>Win95 partition using extended int13 services</summary>
+			PARTITION_XINT13 = 0x0E,
+
+			/// <summary>Windows 95/98: Specifies a partition that uses extended INT 13 services</summary>
+			PARTITION_FAT32_XINT13,
+
+			/// <summary>Windows 95/98: Same as PARTITION_EXTENDED, but uses extended INT 13 services</summary>
+			PARTITION_XINT13_EXTENDED,
+
+			/// <summary>Microsoft recovery partition</summary>
+			PARTITION_MSFT_RECOVERY = 0x27,
+
+			/// <summary>Main OS partition</summary>
+			PARTITION_MAIN_OS = 0x28,
+
+			/// <summary>OS data partition</summary>
+			PARTIITON_OS_DATA = 0x29,
+
+			/// <summary>PreInstalled partition</summary>
+			PARTITION_PRE_INSTALLED = 0x2a,
+
+			/// <summary>BSP partition</summary>
+			PARTITION_BSP = 0x2b,
+
+			/// <summary>DPP partition</summary>
+			PARTITION_DPP = 0x2c,
+
+			/// <summary>Windows system partition</summary>
+			PARTITION_WINDOWS_SYSTEM = 0x2d,
+
+			/// <summary>Specifies a PowerPC Reference Platform partition</summary>
+			PARTITION_PREP = 0x41,
+
+			/// <summary>Specifies a logical disk manager partition</summary>
+			PARTITION_LDM,
+
+			/// <summary>OnTrack Disk Manager partition</summary>
+			PARTITION_DM = 0x54,
+
+			/// <summary>EZ-Drive partition</summary>
+			PARTITION_EZDRIVE = 0x55,
+
+			/// <summary>Specifies a UNIX partition</summary>
+			PARTITION_UNIX = 0x63,
+
+			/// <summary>Storage Spaces protective partition</summary>
+			PARTITION_SPACES_DATA = 0xD7,
+
+			/// <summary>Storage Spaces protective partition</summary>
+			PARTITION_SPACES = 0xE7,
+
+			/// <summary>Gpt protective partition</summary>
+			PARTITION_GPT = 0xEE,
+
+			/// <summary>System partition</summary>
+			PARTITION_SYSTEM = 0xEF,
+
+			/// <summary>
+			/// Specifies an NTFT partition. This value is used in combination (that is, bitwise logically ORed) with the other values in
+			/// this table
+			/// </summary>
+			PARTITION_NTFT = 0x80,
 		}
 
 		/// <summary>
@@ -242,6 +492,151 @@ namespace Vanara.PInvoke
 
 			/// <summary>The number of elements in the range.</summary>
 			public uint NumberOfElements;
+		}
+
+		/// <summary>
+		/// Contains information that the IOCTL_DISK_CREATE_DISK control code uses to initialize GUID partition table (GPT), master boot
+		/// record (MBR), or raw disks.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-create_disk typedef struct _CREATE_DISK { PARTITION_STYLE
+		// PartitionStyle; union { CREATE_DISK_MBR Mbr; CREATE_DISK_GPT Gpt; } DUMMYUNIONNAME; } CREATE_DISK, *PCREATE_DISK;
+		[PInvokeData("winioctl.h", MSDNShortId = "ec4a1ef9-ff2e-41b3-951b-241c545f256b")]
+		[StructLayout(LayoutKind.Explicit)]
+		public struct CREATE_DISK
+		{
+			/// <summary>
+			/// <para>The format of a partition.</para>
+			/// <para>For more information, see PARTITION_STYLE.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public PARTITION_STYLE PartitionStyle;
+
+			/// <summary>A CREATE_DISK_MBR structure that contains disk information when an MBR disk is to be initialized.</summary>
+			[FieldOffset(4)]
+			public CREATE_DISK_MBR Mbr;
+
+			/// <summary>A CREATE_DISK_GPT structure that contains disk information when a GPT disk is to be initialized.</summary>
+			[FieldOffset(4)]
+			public CREATE_DISK_GPT Gpt;
+		}
+
+		/// <summary>Contains information used by the IOCTL_DISK_CREATE_DISK control code to initialize GUID partition table (GPT) disks.</summary>
+		/// <remarks>
+		/// <para>The <c>CREATE_DISK_GPT</c> structure is defined as part of the CREATE_DISK structure.</para>
+		/// <para>
+		/// If a maximum partition count of less than 128 is specified, it will be reset to 128. This is in compliance with the EFI specification.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-create_disk_gpt typedef struct _CREATE_DISK_GPT { GUID
+		// DiskId; DWORD MaxPartitionCount; } CREATE_DISK_GPT, *PCREATE_DISK_GPT;
+		[PInvokeData("winioctl.h", MSDNShortId = "526a265b-e15e-4cd2-adaf-c955a8cb92e5")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CREATE_DISK_GPT
+		{
+			/// <summary>The disk identifier (GUID) of the GPT disk to be initialized.</summary>
+			public Guid DiskId;
+
+			/// <summary>The maximum number of partitions allowed on the GPT disk to be initialized without repartitioning the disk.</summary>
+			public uint MaxPartitionCount;
+		}
+
+		/// <summary>Contains information that the IOCTL_DISK_CREATE_DISK control code uses to initialize master boot record (MBR) disks.</summary>
+		/// <remarks>The <c>CREATE_DISK_MBR</c> structure is part of the CREATE_DISK structure.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-create_disk_mbr typedef struct _CREATE_DISK_MBR { DWORD
+		// Signature; } CREATE_DISK_MBR, *PCREATE_DISK_MBR;
+		[PInvokeData("winioctl.h", MSDNShortId = "6b475622-371d-4097-9de1-6ef31af76322")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CREATE_DISK_MBR
+		{
+			/// <summary>The disk signature of the MBR disk to be initialized.</summary>
+			public uint Signature;
+		}
+
+		/// <summary>Contains information that describes an update sequence number (USN) change journal.</summary>
+		/// <remarks>For more information, see Creating, Modifying, and Deleting a Change Journal.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-create_usn_journal_data typedef struct { DWORDLONG
+		// MaximumSize; DWORDLONG AllocationDelta; } CREATE_USN_JOURNAL_DATA, *PCREATE_USN_JOURNAL_DATA;
+		[PInvokeData("winioctl.h", MSDNShortId = "84d00427-c6eb-41aa-a594-8c57bdd56202")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CREATE_USN_JOURNAL_DATA
+		{
+			/// <summary>
+			/// <para>The target maximum size that the NTFS file system allocates for the change journal, in bytes.</para>
+			/// <para>
+			/// The change journal can grow larger than this value, but it is then truncated at the next NTFS file system checkpoint to less
+			/// than this value.
+			/// </para>
+			/// </summary>
+			public ulong MaximumSize;
+
+			/// <summary>
+			/// <para>The size of memory allocation that is added to the end and removed from the beginning of the change journal, in bytes.</para>
+			/// <para>
+			/// The change journal can grow to more than the sum of the values of <c>MaximumSize</c> and <c>AllocationDelta</c> before being trimmed.
+			/// </para>
+			/// </summary>
+			public ulong AllocationDelta;
+		}
+
+		/// <summary>
+		/// Contains information on the deletion of an update sequence number (USN) change journal using the FSCTL_DELETE_USN_JOURNAL control code.
+		/// </summary>
+		/// <remarks>For more information, see Creating, Modifying, and Deleting a Change Journal.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-delete_usn_journal_data typedef struct { DWORDLONG
+		// UsnJournalID; DWORD DeleteFlags; } DELETE_USN_JOURNAL_DATA, *PDELETE_USN_JOURNAL_DATA;
+		[PInvokeData("winioctl.h", MSDNShortId = "06db4b46-fc91-40e0-ab0b-1e014622ae22")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DELETE_USN_JOURNAL_DATA
+		{
+			/// <summary>
+			/// <para>The identifier of the change journal to be deleted.</para>
+			/// <para>
+			/// If the journal is active and deletion is requested by setting the USN_DELETE_FLAG_DELETE flag in the <c>DeleteFlags</c>
+			/// member, then this identifier must specify the change journal for the current volume. Use FSCTL_QUERY_USN_JOURNAL to retrieve
+			/// the identifier of this change journal. If in this case the identifier is not for the current volume's change journal,
+			/// FSCTL_DELETE_USN_JOURNAL fails.
+			/// </para>
+			/// <para>
+			/// If notification instead of deletion is requested by setting only the USN_DELETE_FLAG_NOTIFY flag in <c>DeleteFlags</c>,
+			/// <c>UsnJournalID</c> is ignored.
+			/// </para>
+			/// </summary>
+			public ulong UsnJournalID;
+
+			/// <summary>
+			/// <para>
+			/// Indicates whether deletion or notification regarding deletion is performed, or both. The <c>DeleteFlags</c> member must
+			/// contain one or both of the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>USN_DELETE_FLAG_DELETE 0x00000001</term>
+			/// <term>
+			/// If this flag is set and the USN_DELETE_FLAG_NOTIFY flag is not set, the FSCTL_DELETE_USN_JOURNAL operation starts the journal
+			/// deletion process and returns immediately. The journal deletion process continues, if necessary, across system restarts. If
+			/// this flag is set and the USN_DELETE_FLAG_NOTIFY flag is also set, both deletion and notification occur. If this flag is set
+			/// and the journal is active, you must provide the identifier for the change journal for the current volume in UsnJournalID or
+			/// the operation fails. If the journal is not active, then UsnJournalID is ignored and the journal is deleted.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_DELETE_FLAG_NOTIFY 0x00000002</term>
+			/// <term>
+			/// If this flag is set, the call sets up notification about when deletion is complete. The journal deletion request is completed
+			/// when the journal deletion process is complete. If this flag is set and the USN_DELETE_FLAG_DELETE flag is not set, then the
+			/// call sets up notification of a deletion that may already be in progress. For example, when your application starts, it might
+			/// use this flag to determine if a deletion is in progress. If this flag is set and the USN_DELETE_FLAG_DELETE flag is also set,
+			/// both deletion and notification occur. The notification is performed using an I/O completion port or another mechanism for
+			/// asynchronous event notification.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint DeleteFlags;
 		}
 
 		/// <summary>
@@ -638,6 +1033,431 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// <para>Contains information about the partitions of a drive.</para>
+		/// <para><c>Note</c><c>DRIVE_LAYOUT_INFORMATION</c> is superseded by the DRIVE_LAYOUT_INFORMATION_EX structure.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-drive_layout_information typedef struct
+		// _DRIVE_LAYOUT_INFORMATION { DWORD PartitionCount; DWORD Signature; PARTITION_INFORMATION PartitionEntry[1]; }
+		// DRIVE_LAYOUT_INFORMATION, *PDRIVE_LAYOUT_INFORMATION;
+		[PInvokeData("winioctl.h", MSDNShortId = "e67ccaa7-a735-4695-8385-28f57b41821c")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DRIVE_LAYOUT_INFORMATION
+		{
+			/// <summary>
+			/// <para>The number of partitions on a drive.</para>
+			/// <para>
+			/// On disks with the MBR layout, this value is always a multiple of 4. Any partitions that are unused have a partition type of
+			/// <c>PARTITION_ENTRY_UNUSED</c> (0).
+			/// </para>
+			/// </summary>
+			public uint PartitionCount;
+
+			/// <summary>The drive signature value.</summary>
+			public uint Signature;
+
+			/// <summary>A variable-sized array of PARTITION_INFORMATION structures, one structure for each partition on a drive.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public PARTITION_INFORMATION[] PartitionEntry;
+		}
+
+		/// <summary>Contains extended information about a drive's partitions.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-drive_layout_information_ex typedef struct
+		// _DRIVE_LAYOUT_INFORMATION_EX { DWORD PartitionStyle; DWORD PartitionCount; union { DRIVE_LAYOUT_INFORMATION_MBR Mbr;
+		// DRIVE_LAYOUT_INFORMATION_GPT Gpt; } DUMMYUNIONNAME; PARTITION_INFORMATION_EX PartitionEntry[1]; } DRIVE_LAYOUT_INFORMATION_EX, *PDRIVE_LAYOUT_INFORMATION_EX;
+		[PInvokeData("winioctl.h", MSDNShortId = "381c87a8-fe40-4251-a4df-dddc9e2a126d")]
+		[StructLayout(LayoutKind.Explicit)]
+		public struct DRIVE_LAYOUT_INFORMATION_EX
+		{
+			/// <summary>
+			/// <para>The style of the partitions on the drive enumerated by the PARTITION_STYLE enumeration.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>PARTITION_STYLE_MBR 0</term>
+			/// <term>Master boot record (MBR) format.</term>
+			/// </item>
+			/// <item>
+			/// <term>PARTITION_STYLE_GPT 1</term>
+			/// <term>GUID Partition Table (GPT) format.</term>
+			/// </item>
+			/// <item>
+			/// <term>PARTITION_STYLE_RAW 2</term>
+			/// <term>Partition not formatted in either of the recognized formats—MBR or GPT.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			[FieldOffset(0)]
+			public uint PartitionStyle;
+
+			/// <summary>
+			/// The number of partitions on the drive. On hard disks with the MBR layout, this value will always be a multiple of 4. Any
+			/// partitions that are actually unused will have a partition type of <c>PARTITION_ENTRY_UNUSED</c> (0) set in the
+			/// <c>PartitionType</c> member of the PARTITION_INFORMATION_MBR structure of the <c>Mbr</c> member of the
+			/// PARTITION_INFORMATION_EX structure of the <c>PartitionEntry</c> member of this structure.
+			/// </summary>
+			[FieldOffset(4)]
+			public uint PartitionCount;
+
+			/// <summary>
+			/// A DRIVE_LAYOUT_INFORMATION_MBR structure containing information about the master boot record type partitioning on the drive.
+			/// </summary>
+			[FieldOffset(8)]
+			public DRIVE_LAYOUT_INFORMATION_MBR Mbr;
+
+			/// <summary>
+			/// A DRIVE_LAYOUT_INFORMATION_GPT structure containing information about the GUID disk partition type partitioning on the drive.
+			/// </summary>
+			[FieldOffset(8)]
+			public DRIVE_LAYOUT_INFORMATION_GPT Gpt;
+
+			/// <summary>A variable-sized array of PARTITION_INFORMATION_EX structures, one structure for each partition on the drive.</summary>
+			[FieldOffset(48)]
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public PARTITION_INFORMATION_EX[] PartitionEntry;
+		}
+
+		/// <summary>Contains information about a drive's GUID partition table (GPT) partitions.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-drive_layout_information_gpt typedef struct
+		// _DRIVE_LAYOUT_INFORMATION_GPT { GUID DiskId; LARGE_INTEGER StartingUsableOffset; LARGE_INTEGER UsableLength; DWORD
+		// MaxPartitionCount; } DRIVE_LAYOUT_INFORMATION_GPT, *PDRIVE_LAYOUT_INFORMATION_GPT;
+		[PInvokeData("winioctl.h", MSDNShortId = "763b0d64-6dcc-411c-aca1-3beea0890124")]
+		[StructLayout(LayoutKind.Sequential, Pack = 8, Size = 40)]
+		public struct DRIVE_LAYOUT_INFORMATION_GPT
+		{
+			/// <summary>The <c>GUID</c> of the disk.</summary>
+			public Guid DiskId;
+
+			/// <summary>The starting byte offset of the first usable block.</summary>
+			public long StartingUsableOffset;
+
+			/// <summary>The size of the usable blocks on the disk, in bytes.</summary>
+			public long UsableLength;
+
+			/// <summary>The maximum number of partitions that can be defined in the usable block.</summary>
+			public uint MaxPartitionCount;
+		}
+
+		/// <summary>Provides information about a drive's master boot record (MBR) partitions.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-drive_layout_information_mbr typedef struct
+		// _DRIVE_LAYOUT_INFORMATION_MBR { DWORD Signature; DWORD CheckSum; } DRIVE_LAYOUT_INFORMATION_MBR, *PDRIVE_LAYOUT_INFORMATION_MBR;
+		[PInvokeData("winioctl.h", MSDNShortId = "71c361fe-8c85-4915-9776-8ad3f5837e11")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DRIVE_LAYOUT_INFORMATION_MBR
+		{
+			/// <summary>The signature of the drive.</summary>
+			public uint Signature;
+
+			/// <summary/>
+			public uint CheckSum;
+		}
+
+		/// <summary>Contains statistical information from the exFAT file system.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-exfat_statistics typedef struct _EXFAT_STATISTICS { DWORD
+		// CreateHits; DWORD SuccessfulCreates; DWORD FailedCreates; DWORD NonCachedReads; DWORD NonCachedReadBytes; DWORD NonCachedWrites;
+		// DWORD NonCachedWriteBytes; DWORD NonCachedDiskReads; DWORD NonCachedDiskWrites; } EXFAT_STATISTICS, *PEXFAT_STATISTICS;
+		[PInvokeData("winioctl.h", MSDNShortId = "fc33e967-fbc0-4f98-9b6c-2d6ac103a256")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct EXFAT_STATISTICS
+		{
+			/// <summary>The number of create operations.</summary>
+			public uint CreateHits;
+
+			/// <summary>The number of successful create operations.</summary>
+			public uint SuccessfulCreates;
+
+			/// <summary>The number of failed create operations.</summary>
+			public uint FailedCreates;
+
+			/// <summary>The number of read operations that were not cached.</summary>
+			public uint NonCachedReads;
+
+			/// <summary>The number of bytes read from a file that were not cached.</summary>
+			public uint NonCachedReadBytes;
+
+			/// <summary>The number of write operations that were not cached.</summary>
+			public uint NonCachedWrites;
+
+			/// <summary>The number of bytes written to a file that were not cached.</summary>
+			public uint NonCachedWriteBytes;
+
+			/// <summary>The number of read operations that were not cached. This value includes sub-read operations.</summary>
+			public uint NonCachedDiskReads;
+
+			/// <summary>The number of write operations that were not cached. This value includes sub-write operations.</summary>
+			public uint NonCachedDiskWrites;
+		}
+
+		/// <summary>Contains statistical information from the FAT file system.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-fat_statistics typedef struct _FAT_STATISTICS { DWORD
+		// CreateHits; DWORD SuccessfulCreates; DWORD FailedCreates; DWORD NonCachedReads; DWORD NonCachedReadBytes; DWORD NonCachedWrites;
+		// DWORD NonCachedWriteBytes; DWORD NonCachedDiskReads; DWORD NonCachedDiskWrites; } FAT_STATISTICS, *PFAT_STATISTICS;
+		[PInvokeData("winioctl.h", MSDNShortId = "98d293e8-e708-48f5-99b1-603f27e6ef16")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct FAT_STATISTICS
+		{
+			/// <summary>The number of create operations.</summary>
+			public uint CreateHits;
+
+			/// <summary>The number of successful create operations.</summary>
+			public uint SuccessfulCreates;
+
+			/// <summary>The number of failed create operations.</summary>
+			public uint FailedCreates;
+
+			/// <summary>The number of read operations that were not cached.</summary>
+			public uint NonCachedReads;
+
+			/// <summary>The number of bytes read from a file that were not cached.</summary>
+			public uint NonCachedReadBytes;
+
+			/// <summary>The number of write operations that were not cached.</summary>
+			public uint NonCachedWrites;
+
+			/// <summary>The number of bytes written to a file that were not cached.</summary>
+			public uint NonCachedWriteBytes;
+
+			/// <summary>The number of read operations that were not cached. This value includes sub-read operations.</summary>
+			public uint NonCachedDiskReads;
+
+			/// <summary>The number of write operations that were not cached. This value includes sub-write operations.</summary>
+			public uint NonCachedDiskWrites;
+		}
+
+		/// <summary>
+		/// <para>Contains statistical information from the file system.</para>
+		/// <para><c>Tip</c> Applications targeting Windows 10 can access additional statistics through FILESYSTEM_STATISTICS_EX.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// There are two types of files: user and metadata. User files are available for the user. Metadata files are system files that
+		/// contain information, which the file system uses for its internal organization.
+		/// </para>
+		/// <para>The number of read and write operations measured is the number of paging operations.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-filesystem_statistics typedef struct
+		// _FILESYSTEM_STATISTICS { WORD FileSystemType; WORD Version; DWORD SizeOfCompleteStructure; DWORD UserFileReads; DWORD
+		// UserFileReadBytes; DWORD UserDiskReads; DWORD UserFileWrites; DWORD UserFileWriteBytes; DWORD UserDiskWrites; DWORD MetaDataReads;
+		// DWORD MetaDataReadBytes; DWORD MetaDataDiskReads; DWORD MetaDataWrites; DWORD MetaDataWriteBytes; DWORD MetaDataDiskWrites; }
+		// FILESYSTEM_STATISTICS, *PFILESYSTEM_STATISTICS;
+		[PInvokeData("winioctl.h", MSDNShortId = "ff8c7dfe-da7f-4ee2-9a54-613e0cd3e1e2")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct FILESYSTEM_STATISTICS
+		{
+			/// <summary>
+			/// <para>The type of file system.</para>
+			/// <para>This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>FILESYSTEM_STATISTICS_TYPE_EXFAT 3</term>
+			/// <term>
+			/// The file system is an exFAT file system. If this value is set, this structure is followed by an EXFAT_STATISTICS structure.
+			/// Windows Vista, Windows Server 2003 and Windows XP: This value is not supported until Windows Vista with SP1.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>FILESYSTEM_STATISTICS_TYPE_FAT 2</term>
+			/// <term>The file system is a FAT file system. If this value is set, this structure is followed by a FAT_STATISTICS structure.</term>
+			/// </item>
+			/// <item>
+			/// <term>FILESYSTEM_STATISTICS_TYPE_NTFS 1</term>
+			/// <term>The file system is the NTFS file system. If this value is set, this structure is followed by an NTFS_STATISTICS structure.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ushort FileSystemType;
+
+			/// <summary>This member is set to 1 (one).</summary>
+			public ushort Version;
+
+			/// <summary>
+			/// <para>
+			/// The size of this structure plus the size of the file system-specific structure that follows this structure, multiplied by the
+			/// number of processors.
+			/// </para>
+			/// <para>
+			/// This value must be a multiple of 64. For example, if the size of <c>FILESYSTEM_STATISTICS</c> is 0x38, the size of
+			/// NTFS_STATISTICS is 0xD8, and if there are 2 processors, the buffer allocated must be 0x280.
+			/// </para>
+			/// <para>sizeof( <c>FILESYSTEM_STATISTICS</c>) = 0x38</para>
+			/// <para>sizeof(NTFS_STATISTICS) = 0xD8</para>
+			/// <para>Total Size = 0x110</para>
+			/// <para>size of the complete structure = 0x140 (which is the aligned length, a multiple of 64)</para>
+			/// <para>multiplied by 2 (the number of processors) = 0x280</para>
+			/// </summary>
+			public uint SizeOfCompleteStructure;
+
+			/// <summary>The number of read operations on user files.</summary>
+			public uint UserFileReads;
+
+			/// <summary>The number of bytes read from user files.</summary>
+			public uint UserFileReadBytes;
+
+			/// <summary>
+			/// <para>The number of read operations on user files.</para>
+			/// <para>This value includes sub-read operations.</para>
+			/// </summary>
+			public uint UserDiskReads;
+
+			/// <summary>The number of write operations on user files.</summary>
+			public uint UserFileWrites;
+
+			/// <summary>The number of bytes written to user files.</summary>
+			public uint UserFileWriteBytes;
+
+			/// <summary>
+			/// <para>The number of write operations on user files.</para>
+			/// <para>This value includes sub-write operations.</para>
+			/// </summary>
+			public uint UserDiskWrites;
+
+			/// <summary>The number of read operations on metadata files.</summary>
+			public uint MetaDataReads;
+
+			/// <summary>The number of bytes read from metadata files.</summary>
+			public uint MetaDataReadBytes;
+
+			/// <summary>
+			/// <para>The number of read operations on metadata files.</para>
+			/// <para>This value includes sub-read operations.</para>
+			/// </summary>
+			public uint MetaDataDiskReads;
+
+			/// <summary>The number of write operations on metadata files.</summary>
+			public uint MetaDataWrites;
+
+			/// <summary>The number of bytes written to metadata files.</summary>
+			public uint MetaDataWriteBytes;
+
+			/// <summary>
+			/// <para>The number of write operations on metadata files.</para>
+			/// <para>This value includes sub-write operations.</para>
+			/// </summary>
+			public uint MetaDataDiskWrites;
+		}
+
+		/// <summary>Contains statistical information from the file system.Support for this structure started with Windows 10.</summary>
+		/// <remarks>
+		/// <para>
+		/// There are two types of files: user and metadata. User files are available for the user. Metadata files are system files that
+		/// contain information, which the file system uses for its internal organization.
+		/// </para>
+		/// <para>The number of read and write operations measured is the number of paging operations.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-filesystem_statistics_ex typedef struct
+		// _FILESYSTEM_STATISTICS_EX { WORD FileSystemType; WORD Version; DWORD SizeOfCompleteStructure; DWORDLONG UserFileReads; DWORDLONG
+		// UserFileReadBytes; DWORDLONG UserDiskReads; DWORDLONG UserFileWrites; DWORDLONG UserFileWriteBytes; DWORDLONG UserDiskWrites;
+		// DWORDLONG MetaDataReads; DWORDLONG MetaDataReadBytes; DWORDLONG MetaDataDiskReads; DWORDLONG MetaDataWrites; DWORDLONG
+		// MetaDataWriteBytes; DWORDLONG MetaDataDiskWrites; } FILESYSTEM_STATISTICS_EX, *PFILESYSTEM_STATISTICS_EX;
+		[PInvokeData("winioctl.h", MSDNShortId = "E869CF11-E321-478A-948F-226B04D61492")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct FILESYSTEM_STATISTICS_EX
+		{
+			/// <summary>
+			/// <para>The type of file system.</para>
+			/// <para>This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>FILESYSTEM_STATISTICS_TYPE_EXFAT 3</term>
+			/// <term>
+			/// The file system is an exFAT file system. If this value is set, this structure is followed by an EXFAT_STATISTICS structure.
+			/// Windows Vista, Windows Server 2003 and Windows XP: This value is not supported until Windows Vista with SP1.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>FILESYSTEM_STATISTICS_TYPE_FAT 2</term>
+			/// <term>The file system is a FAT file system. If this value is set, this structure is followed by a FAT_STATISTICS structure.</term>
+			/// </item>
+			/// <item>
+			/// <term>FILESYSTEM_STATISTICS_TYPE_NTFS 1</term>
+			/// <term>
+			/// The file system is the NTFS file system. If this value is set, this structure is followed by an NTFS_STATISTICS_EX structure.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ushort FileSystemType;
+
+			/// <summary>This member is set to 1 (one).</summary>
+			public ushort Version;
+
+			/// <summary>
+			/// <para>
+			/// The size of this structure plus the size of the file system-specific structure that follows this structure, multiplied by the
+			/// number of processors.
+			/// </para>
+			/// <para>
+			/// This value must be a multiple of 64. For example, if the size of <c>FILESYSTEM_STATISTICS_EX</c> is 0x68, the size of
+			/// NTFS_STATISTICS_EX is 0x1D8, and if there are 2 processors, the buffer allocated must be 0x480.
+			/// </para>
+			/// <para>sizeof( <c>FILESYSTEM_STATISTICS_EX</c>) = 0x68</para>
+			/// <para>sizeof(NTFS_STATISTICS_EX) = 0x1D8</para>
+			/// <para>Total Size = 0x240</para>
+			/// <para>size of the complete structure = 0x240 (which is the aligned length, a multiple of 64)</para>
+			/// <para>multiplied by 2 (the number of processors) = 0x480</para>
+			/// </summary>
+			public uint SizeOfCompleteStructure;
+
+			/// <summary>The number of read operations on user files.</summary>
+			public ulong UserFileReads;
+
+			/// <summary>The number of bytes read from user files.</summary>
+			public ulong UserFileReadBytes;
+
+			/// <summary>
+			/// <para>The number of read operations on user files.</para>
+			/// <para>This value includes sub-read operations.</para>
+			/// </summary>
+			public ulong UserDiskReads;
+
+			/// <summary>The number of write operations on user files.</summary>
+			public ulong UserFileWrites;
+
+			/// <summary>The number of bytes written to user files.</summary>
+			public ulong UserFileWriteBytes;
+
+			/// <summary>
+			/// <para>The number of write operations on user files.</para>
+			/// <para>This value includes sub-write operations.</para>
+			/// </summary>
+			public ulong UserDiskWrites;
+
+			/// <summary>The number of read operations on metadata files.</summary>
+			public ulong MetaDataReads;
+
+			/// <summary>The number of bytes read from metadata files.</summary>
+			public ulong MetaDataReadBytes;
+
+			/// <summary>
+			/// <para>The number of read operations on metadata files.</para>
+			/// <para>This value includes sub-read operations.</para>
+			/// </summary>
+			public ulong MetaDataDiskReads;
+
+			/// <summary>The number of write operations on metadata files.</summary>
+			public ulong MetaDataWrites;
+
+			/// <summary>The number of bytes written to metadata files.</summary>
+			public ulong MetaDataWriteBytes;
+
+			/// <summary>
+			/// <para>The number of write operations on metadata files.</para>
+			/// <para>This value includes sub-write operations.</para>
+			/// </summary>
+			public ulong MetaDataDiskWrites;
+		}
+
+		/// <summary>
 		/// Contains information defining the boundaries for and starting place of an enumeration of update sequence number (USN) change
 		/// journal records. It is used as the input buffer for the FSCTL_ENUM_USN_DATA control code. Prior to Windows Server 2012 this
 		/// structure was named <c>MFT_ENUM_DATA</c>. Use that name to compile with older SDKs and compilers.
@@ -717,6 +1537,1371 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
+			public ushort MaxMajorVersion;
+		}
+
+		/// <summary>
+		/// <para>Contains statistical information from the NTFS file system.</para>
+		/// <para><c>Tip</c> Applications targeting Windows 10 can access additional statistics through NTFS_STATISTICS_EX.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The MFT, MFT mirror, root index, user index, bitmap, and MFT bitmap are counted as metadata files. The log file is not counted as
+		/// a metadata file.
+		/// </para>
+		/// <para>The number of read and write operations measured is the number of paging operations.</para>
+		/// <para>For additional statistics that are only available with Windows 10, use NTFS_STATISTICS_EX.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-ntfs_statistics typedef struct _NTFS_STATISTICS { DWORD
+		// LogFileFullExceptions; DWORD OtherExceptions; DWORD MftReads; DWORD MftReadBytes; DWORD MftWrites; DWORD MftWriteBytes; struct {
+		// WORD Write; WORD Create; WORD SetInfo; WORD Flush; } MftWritesUserLevel; WORD MftWritesFlushForLogFileFull; WORD
+		// MftWritesLazyWriter; WORD MftWritesUserRequest; DWORD Mft2Writes; DWORD Mft2WriteBytes; struct { WORD Write; WORD Create; WORD
+		// SetInfo; WORD Flush; } Mft2WritesUserLevel; WORD Mft2WritesFlushForLogFileFull; WORD Mft2WritesLazyWriter; WORD
+		// Mft2WritesUserRequest; DWORD RootIndexReads; DWORD RootIndexReadBytes; DWORD RootIndexWrites; DWORD RootIndexWriteBytes; DWORD
+		// BitmapReads; DWORD BitmapReadBytes; DWORD BitmapWrites; DWORD BitmapWriteBytes; WORD BitmapWritesFlushForLogFileFull; WORD
+		// BitmapWritesLazyWriter; WORD BitmapWritesUserRequest; struct { WORD Write; WORD Create; WORD SetInfo; } BitmapWritesUserLevel;
+		// DWORD MftBitmapReads; DWORD MftBitmapReadBytes; DWORD MftBitmapWrites; DWORD MftBitmapWriteBytes; WORD
+		// MftBitmapWritesFlushForLogFileFull; WORD MftBitmapWritesLazyWriter; WORD MftBitmapWritesUserRequest; struct { WORD Write; WORD
+		// Create; WORD SetInfo; WORD Flush; } MftBitmapWritesUserLevel; DWORD UserIndexReads; DWORD UserIndexReadBytes; DWORD
+		// UserIndexWrites; DWORD UserIndexWriteBytes; DWORD LogFileReads; DWORD LogFileReadBytes; DWORD LogFileWrites; DWORD
+		// LogFileWriteBytes; struct { DWORD Calls; DWORD Clusters; DWORD Hints; DWORD RunsReturned; DWORD HintsHonored; DWORD HintsClusters;
+		// DWORD Cache; DWORD CacheClusters; DWORD CacheMiss; DWORD CacheMissClusters; } Allocate; DWORD DiskResourcesExhausted; }
+		// NTFS_STATISTICS, *PNTFS_STATISTICS;
+		[PInvokeData("winioctl.h", MSDNShortId = "9b5cffc5-386d-4333-9a37-cc27b8f9b187")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NTFS_STATISTICS
+		{
+			/// <summary>The number of exceptions generated due to the log file being full.</summary>
+			public uint LogFileFullExceptions;
+
+			/// <summary>The number of other exceptions generated.</summary>
+			public uint OtherExceptions;
+
+			/// <summary>The number of read operations on the master file table (MFT).</summary>
+			public uint MftReads;
+
+			/// <summary>The number of bytes read from the MFT.</summary>
+			public uint MftReadBytes;
+
+			/// <summary>The number of write operations on the MFT.</summary>
+			public uint MftWrites;
+
+			/// <summary>The number of bytes written to the MFT.</summary>
+			public uint MftWriteBytes;
+
+			/// <summary/>
+			public MFTWRITESUSERLEVEL MftWritesUserLevel;
+
+			[StructLayout(LayoutKind.Sequential)]
+			public struct MFTWRITESUSERLEVEL
+			{
+				/// <summary>The number of MFT writes due to a write operation.</summary>
+				public ushort Write;
+
+				/// <summary>The number of MFT writes due to a create operation.</summary>
+				public ushort Create;
+
+				/// <summary>The number of MFT writes due to setting file information.</summary>
+				public ushort SetInfo;
+
+				/// <summary>The number of MFT writes due to a flush operation.</summary>
+				public ushort Flush;
+			}
+
+			/// <summary>The number of flushes of the MFT performed because the log file was full.</summary>
+			public ushort MftWritesFlushForLogFileFull;
+
+			/// <summary>The number of MFT write operations performed by the lazy writer thread.</summary>
+			public ushort MftWritesLazyWriter;
+
+			/// <summary>Reserved.</summary>
+			public ushort MftWritesUserRequest;
+
+			/// <summary>The number of write operations on the MFT mirror.</summary>
+			public uint Mft2Writes;
+
+			/// <summary>The number of bytes written to the MFT mirror.</summary>
+			public uint Mft2WriteBytes;
+
+			/// <summary/>
+			public MFT2WRITESUSERLEVEL Mft2WritesUserLevel;
+
+			[StructLayout(LayoutKind.Sequential)]
+			public struct MFT2WRITESUSERLEVEL
+			{
+				/// <summary>The number of MFT mirror writes due to a write operation.</summary>
+				public ushort Write;
+
+				/// <summary>The number of MFT mirror writes due to a create operation.</summary>
+				public ushort Create;
+
+				/// <summary>The number of MFT mirror writes due to setting file information.</summary>
+				public ushort SetInfo;
+
+				/// <summary>The number of MFT mirror writes due to a flush operation.</summary>
+				public ushort Flush;
+			}
+
+			/// <summary>The number of flushes of the MFT mirror performed because the log file was full.</summary>
+			public ushort Mft2WritesFlushForLogFileFull;
+
+			/// <summary>The number of MFT mirror write operations performed by the lazy writer thread.</summary>
+			public ushort Mft2WritesLazyWriter;
+
+			/// <summary>Reserved.</summary>
+			public ushort Mft2WritesUserRequest;
+
+			/// <summary>The number of read operations on the root index.</summary>
+			public uint RootIndexReads;
+
+			/// <summary>The number of bytes read from the root index.</summary>
+			public uint RootIndexReadBytes;
+
+			/// <summary>The number of write operations on the root index.</summary>
+			public uint RootIndexWrites;
+
+			/// <summary>The number of bytes written to the root index.</summary>
+			public uint RootIndexWriteBytes;
+
+			/// <summary>The number of read operations on the cluster allocation bitmap.</summary>
+			public uint BitmapReads;
+
+			/// <summary>The number of bytes read from the cluster allocation bitmap.</summary>
+			public uint BitmapReadBytes;
+
+			/// <summary>The number of write operations on the cluster allocation bitmap.</summary>
+			public uint BitmapWrites;
+
+			/// <summary>The number of bytes written to the cluster allocation bitmap.</summary>
+			public uint BitmapWriteBytes;
+
+			/// <summary>The number of flushes of the bitmap performed because the log file was full.</summary>
+			public ushort BitmapWritesFlushForLogFileFull;
+
+			/// <summary>The number of bitmap write operations performed by the lazy writer thread.</summary>
+			public ushort BitmapWritesLazyWriter;
+
+			/// <summary>Reserved.</summary>
+			public ushort BitmapWritesUserRequest;
+
+			/// <summary/>
+			public BITMAPWRITESUSERLEVEL BitmapWritesUserLevel;
+
+			[StructLayout(LayoutKind.Sequential)]
+			public struct BITMAPWRITESUSERLEVEL
+			{
+				/// <summary>The number of bitmap writes due to a write operation.</summary>
+				public ushort Write;
+
+				/// <summary>The number of bitmap writes due to a create operation.</summary>
+				public ushort Create;
+
+				/// <summary>The number of bitmap writes due to setting file information.</summary>
+				public ushort SetInfo;
+			}
+
+			/// <summary>The number of read operations on the MFT bitmap.</summary>
+			public uint MftBitmapReads;
+
+			/// <summary>The number of bytes read from the MFT bitmap.</summary>
+			public uint MftBitmapReadBytes;
+
+			/// <summary>The number of write operations on the MFT bitmap.</summary>
+			public uint MftBitmapWrites;
+
+			/// <summary>The number of bytes written to the MFT bitmap.</summary>
+			public uint MftBitmapWriteBytes;
+
+			/// <summary>The number of flushes of the MFT bitmap performed because the log file was full.</summary>
+			public ushort MftBitmapWritesFlushForLogFileFull;
+
+			/// <summary>The number of MFT bitmap write operations performed by the lazy writer thread.</summary>
+			public ushort MftBitmapWritesLazyWriter;
+
+			/// <summary>Reserved.</summary>
+			public ushort MftBitmapWritesUserRequest;
+
+			/// <summary/>
+			public MFTBITMAPWRITESUSERLEVEL MftBitmapWritesUserLevel;
+
+			[StructLayout(LayoutKind.Sequential)]
+			public struct MFTBITMAPWRITESUSERLEVEL
+			{
+				/// <summary>The number of MFT bitmap writes due to a write operation.</summary>
+				public ushort Write;
+
+				/// <summary>The number of bitmap writes due to a create operation.</summary>
+				public ushort Create;
+
+				/// <summary>The number of bitmap writes due to setting file information.</summary>
+				public ushort SetInfo;
+
+				/// <summary>The number of bitmap writes due to a flush operation.</summary>
+				public ushort Flush;
+			}
+
+			/// <summary>The number of read operations on the user index.</summary>
+			public uint UserIndexReads;
+
+			/// <summary>The number of bytes read from the user index.</summary>
+			public uint UserIndexReadBytes;
+
+			/// <summary>The number of write operations on the user index.</summary>
+			public uint UserIndexWrites;
+
+			/// <summary>The number of bytes written to the user index.</summary>
+			public uint UserIndexWriteBytes;
+
+			/// <summary>The number of read operations on the log file.</summary>
+			public uint LogFileReads;
+
+			/// <summary>The number of bytes read from the log file.</summary>
+			public uint LogFileReadBytes;
+
+			/// <summary>The number of write operations on the log file.</summary>
+			public uint LogFileWrites;
+
+			/// <summary>The number of bytes written to the log file.</summary>
+			public uint LogFileWriteBytes;
+
+			/// <summary/>
+			public ALLOCATE Allocate;
+
+			[StructLayout(LayoutKind.Sequential)]
+			public struct ALLOCATE
+			{
+				/// <summary>The number of individual calls to allocate clusters.</summary>
+				public uint Calls;
+
+				/// <summary>The number of clusters allocated.</summary>
+				public uint Clusters;
+
+				/// <summary>The number of times a hint was specified.</summary>
+				public uint Hints;
+
+				/// <summary>The number of runs used to satisfy all the requests.</summary>
+				public uint RunsReturned;
+
+				/// <summary>The number of times the hint was useful.</summary>
+				public uint HintsHonored;
+
+				/// <summary>The number of clusters allocated through the hint.</summary>
+				public uint HintsClusters;
+
+				/// <summary>The number of times the cache was useful other than the hint.</summary>
+				public uint Cache;
+
+				/// <summary>The number of clusters allocated through the cache other than the hint.</summary>
+				public uint CacheClusters;
+
+				/// <summary>The number of times the cache was not useful.</summary>
+				public uint CacheMiss;
+
+				/// <summary>The number of clusters allocated without the cache.</summary>
+				public uint CacheMissClusters;
+			}
+
+			/// <summary>
+			/// <para>The number of failed attempts made to acquire a slab of storage for use on the current thinly provisioned volume.</para>
+			/// <para>Support for this member started with Windows 8.1.</para>
+			/// </summary>
+			public uint DiskResourcesExhausted;
+		}
+
+		/// <summary>
+		/// <para>
+		/// [Some information relates to pre-released product which may be substantially modified before it's commercially released.
+		/// Microsoft makes no warranties, express or implied, with respect to the information provided here.]
+		/// </para>
+		/// <para>Contains statistical information from the NTFS file system.Support for this structure started with Windows 10.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The MFT, MFT mirror, root index, user index, bitmap, and MFT bitmap are counted as metadata files. The log file is not counted as
+		/// a metadata file.
+		/// </para>
+		/// <para>The number of read and write operations measured is the number of paging operations.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-ntfs_statistics_ex typedef struct _NTFS_STATISTICS_EX {
+		// DWORD LogFileFullExceptions; DWORD OtherExceptions; DWORDLONG MftReads; DWORDLONG MftReadBytes; DWORDLONG MftWrites; DWORDLONG
+		// MftWriteBytes; struct { DWORD Write; DWORD Create; DWORD SetInfo; DWORD Flush; } MftWritesUserLevel; DWORD
+		// MftWritesFlushForLogFileFull; DWORD MftWritesLazyWriter; DWORD MftWritesUserRequest; DWORDLONG Mft2Writes; DWORDLONG
+		// Mft2WriteBytes; struct { DWORD Write; DWORD Create; DWORD SetInfo; DWORD Flush; } Mft2WritesUserLevel; DWORD
+		// Mft2WritesFlushForLogFileFull; DWORD Mft2WritesLazyWriter; DWORD Mft2WritesUserRequest; DWORDLONG RootIndexReads; DWORDLONG
+		// RootIndexReadBytes; DWORDLONG RootIndexWrites; DWORDLONG RootIndexWriteBytes; DWORDLONG BitmapReads; DWORDLONG BitmapReadBytes;
+		// DWORDLONG BitmapWrites; DWORDLONG BitmapWriteBytes; DWORD BitmapWritesFlushForLogFileFull; DWORD BitmapWritesLazyWriter; DWORD
+		// BitmapWritesUserRequest; struct { DWORD Write; DWORD Create; DWORD SetInfo; DWORD Flush; } BitmapWritesUserLevel; DWORDLONG
+		// MftBitmapReads; DWORDLONG MftBitmapReadBytes; DWORDLONG MftBitmapWrites; DWORDLONG MftBitmapWriteBytes; DWORD
+		// MftBitmapWritesFlushForLogFileFull; DWORD MftBitmapWritesLazyWriter; DWORD MftBitmapWritesUserRequest; struct { DWORD Write; DWORD
+		// Create; DWORD SetInfo; DWORD Flush; } MftBitmapWritesUserLevel; DWORDLONG UserIndexReads; DWORDLONG UserIndexReadBytes; DWORDLONG
+		// UserIndexWrites; DWORDLONG UserIndexWriteBytes; DWORDLONG LogFileReads; DWORDLONG LogFileReadBytes; DWORDLONG LogFileWrites;
+		// DWORDLONG LogFileWriteBytes; struct { DWORD Calls; DWORD RunsReturned; DWORD Hints; DWORD HintsHonored; DWORD Cache; DWORD
+		// CacheMiss; DWORDLONG Clusters; DWORDLONG HintsClusters; DWORDLONG CacheClusters; DWORDLONG CacheMissClusters; } Allocate; DWORD
+		// DiskResourcesExhausted; DWORDLONG VolumeTrimCount; DWORDLONG VolumeTrimTime; DWORDLONG VolumeTrimByteCount; DWORDLONG
+		// FileLevelTrimCount; DWORDLONG FileLevelTrimTime; DWORDLONG FileLevelTrimByteCount; DWORDLONG VolumeTrimSkippedCount; DWORDLONG
+		// VolumeTrimSkippedByteCount; DWORDLONG NtfsFillStatInfoFromMftRecordCalledCount; DWORDLONG
+		// NtfsFillStatInfoFromMftRecordBailedBecauseOfAttributeListCount; DWORDLONG
+		// NtfsFillStatInfoFromMftRecordBailedBecauseOfNonResReparsePointCount; } NTFS_STATISTICS_EX, *PNTFS_STATISTICS_EX;
+		[PInvokeData("winioctl.h", MSDNShortId = "D1A6995C-A4BA-4ECC-892A-196581FA41CE")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NTFS_STATISTICS_EX
+		{
+			/// <summary>The number of exceptions generated due to the log file being full.</summary>
+			public uint LogFileFullExceptions;
+
+			/// <summary>The number of other exceptions generated.</summary>
+			public uint OtherExceptions;
+
+			/// <summary>The number of read operations on the master file table (MFT).</summary>
+			public ulong MftReads;
+
+			/// <summary>The number of bytes read from the MFT.</summary>
+			public ulong MftReadBytes;
+
+			/// <summary>The number of write operations on the MFT.</summary>
+			public ulong MftWrites;
+
+			/// <summary>The number of bytes written to the MFT.</summary>
+			public ulong MftWriteBytes;
+
+			/// <summary/>
+			public MFTWRITESUSERLEVEL MftWritesUserLevel;
+
+			[StructLayout(LayoutKind.Sequential)]
+			public struct MFTWRITESUSERLEVEL
+			{
+				/// <summary>The number of MFT writes due to a write operation.</summary>
+				public uint Write;
+
+				/// <summary>The number of MFT writes due to a create operation.</summary>
+				public uint Create;
+
+				/// <summary>The number of MFT writes due to setting file information.</summary>
+				public uint SetInfo;
+
+				/// <summary>The number of MFT writes due to a flush operation.</summary>
+				public uint Flush;
+			}
+
+			/// <summary>The number of flushes of the MFT performed because the log file was full.</summary>
+			public uint MftWritesFlushForLogFileFull;
+
+			/// <summary>The number of MFT write operations performed by the lazy writer thread.</summary>
+			public uint MftWritesLazyWriter;
+
+			/// <summary>Reserved.</summary>
+			public uint MftWritesUserRequest;
+
+			/// <summary>The number of write operations on the MFT mirror.</summary>
+			public ulong Mft2Writes;
+
+			/// <summary>The number of bytes written to the MFT mirror.</summary>
+			public ulong Mft2WriteBytes;
+
+			/// <summary/>
+			public MFT2WRITESUSERLEVEL Mft2WritesUserLevel;
+
+			[StructLayout(LayoutKind.Sequential)]
+			public struct MFT2WRITESUSERLEVEL
+			{
+				/// <summary>The number of MFT mirror writes due to a write operation.</summary>
+				public uint Write;
+
+				/// <summary>The number of MFT mirror writes due to a create operation.</summary>
+				public uint Create;
+
+				/// <summary>The number of MFT mirror writes due to setting file information.</summary>
+				public uint SetInfo;
+
+				/// <summary>The number of MFT mirror writes due to a flush operation.</summary>
+				public uint Flush;
+			}
+
+			/// <summary>The number of flushes of the MFT mirror performed because the log file was full.</summary>
+			public uint Mft2WritesFlushForLogFileFull;
+
+			/// <summary>The number of MFT mirror write operations performed by the lazy writer thread.</summary>
+			public uint Mft2WritesLazyWriter;
+
+			/// <summary>Reserved.</summary>
+			public uint Mft2WritesUserRequest;
+
+			/// <summary>The number of read operations on the root index.</summary>
+			public ulong RootIndexReads;
+
+			/// <summary>The number of bytes read from the root index.</summary>
+			public ulong RootIndexReadBytes;
+
+			/// <summary>The number of write operations on the root index.</summary>
+			public ulong RootIndexWrites;
+
+			/// <summary>The number of bytes written to the root index.</summary>
+			public ulong RootIndexWriteBytes;
+
+			/// <summary>The number of read operations on the cluster allocation bitmap.</summary>
+			public ulong BitmapReads;
+
+			/// <summary>The number of bytes read from the cluster allocation bitmap.</summary>
+			public ulong BitmapReadBytes;
+
+			/// <summary>The number of write operations on the cluster allocation bitmap.</summary>
+			public ulong BitmapWrites;
+
+			/// <summary>The number of bytes written to the cluster allocation bitmap.</summary>
+			public ulong BitmapWriteBytes;
+
+			/// <summary>The number of flushes of the bitmap performed because the log file was full.</summary>
+			public uint BitmapWritesFlushForLogFileFull;
+
+			/// <summary>The number of bitmap write operations performed by the lazy writer thread.</summary>
+			public uint BitmapWritesLazyWriter;
+
+			/// <summary>Reserved.</summary>
+			public uint BitmapWritesUserRequest;
+
+			/// <summary/>
+			public BITMAPWRITESUSERLEVEL BitmapWritesUserLevel;
+
+			[StructLayout(LayoutKind.Sequential)]
+			public struct BITMAPWRITESUSERLEVEL
+			{
+				/// <summary>The number of bitmap writes due to a write operation.</summary>
+				public uint Write;
+
+				/// <summary>The number of bitmap writes due to a create operation.</summary>
+				public uint Create;
+
+				/// <summary>The number of bitmap writes due to setting file information.</summary>
+				public uint SetInfo;
+
+				/// <summary>The number of bitmap writes due to a flush operation.</summary>
+				public uint Flush;
+			}
+
+			/// <summary>The number of read operations on the MFT bitmap.</summary>
+			public ulong MftBitmapReads;
+
+			/// <summary>The number of bytes read from the MFT bitmap.</summary>
+			public ulong MftBitmapReadBytes;
+
+			/// <summary>The number of write operations on the MFT bitmap.</summary>
+			public ulong MftBitmapWrites;
+
+			/// <summary>The number of bytes written to the MFT bitmap.</summary>
+			public ulong MftBitmapWriteBytes;
+
+			/// <summary>The number of flushes of the MFT bitmap performed because the log file was full.</summary>
+			public uint MftBitmapWritesFlushForLogFileFull;
+
+			/// <summary>The number of MFT bitmap write operations performed by the lazy writer thread.</summary>
+			public uint MftBitmapWritesLazyWriter;
+
+			/// <summary>Reserved.</summary>
+			public uint MftBitmapWritesUserRequest;
+
+			/// <summary/>
+			public MFTBITMAPWRITESUSERLEVEL MftBitmapWritesUserLevel;
+
+			[StructLayout(LayoutKind.Sequential)]
+			public struct MFTBITMAPWRITESUSERLEVEL
+			{
+				/// <summary>The number of MFT bitmap writes due to a write operation.</summary>
+				public uint Write;
+
+				/// <summary>The number of bitmap writes due to a create operation.</summary>
+				public uint Create;
+
+				/// <summary>The number of bitmap writes due to setting file information.</summary>
+				public uint SetInfo;
+
+				/// <summary>The number of bitmap writes due to a flush operation.</summary>
+				public uint Flush;
+			}
+
+			/// <summary>The number of read operations on the user index.</summary>
+			public ulong UserIndexReads;
+
+			/// <summary>The number of bytes read from the user index.</summary>
+			public ulong UserIndexReadBytes;
+
+			/// <summary>The number of write operations on the user index.</summary>
+			public ulong UserIndexWrites;
+
+			/// <summary>The number of bytes written to the user index.</summary>
+			public ulong UserIndexWriteBytes;
+
+			/// <summary>The number of read operations on the log file.</summary>
+			public ulong LogFileReads;
+
+			/// <summary>The number of bytes read from the log file.</summary>
+			public ulong LogFileReadBytes;
+
+			/// <summary>The number of write operations on the log file.</summary>
+			public ulong LogFileWrites;
+
+			/// <summary>The number of bytes written to the log file.</summary>
+			public ulong LogFileWriteBytes;
+
+			/// <summary/>
+			public ALLOCATE Allocate;
+
+			[StructLayout(LayoutKind.Sequential)]
+			public struct ALLOCATE
+			{
+				/// <summary>The number of individual calls to allocate clusters.</summary>
+				public uint Calls;
+
+				/// <summary>The number of runs used to satisfy all the requests.</summary>
+				public uint RunsReturned;
+
+				/// <summary>The number of times a hint was specified.</summary>
+				public uint Hints;
+
+				/// <summary>The number of times the hint was useful.</summary>
+				public uint HintsHonored;
+
+				/// <summary>The number of times the cache was useful other than the hint.</summary>
+				public uint Cache;
+
+				/// <summary>The number of times the cache was not useful.</summary>
+				public uint CacheMiss;
+
+				/// <summary>The number of clusters allocated.</summary>
+				public ulong Clusters;
+
+				/// <summary>The number of clusters allocated through the hint.</summary>
+				public ulong HintsClusters;
+
+				/// <summary>The number of clusters allocated through the cache other than the hint.</summary>
+				public ulong CacheClusters;
+
+				/// <summary>The number of clusters allocated without the cache.</summary>
+				public ulong CacheMissClusters;
+			}
+
+			/// <summary>The number of failed attempts made to acquire a slab of storage for use on the current thinly provisioned volume.</summary>
+			public uint DiskResourcesExhausted;
+
+			/// <summary>The number of volume level trim operations issued.</summary>
+			public ulong VolumeTrimCount;
+
+			/// <summary>
+			/// The total time elapsed during all volume level trim operations. This value, divided by the frequency value from
+			/// QueryPerformanceFrequency or KeQueryPerformanceCounter, will give the time in seconds.
+			/// </summary>
+			public ulong VolumeTrimTime;
+
+			/// <summary>The total number of bytes issued by all volume level trim operations.</summary>
+			public ulong VolumeTrimByteCount;
+
+			/// <summary>The number of file level trim operations issued.</summary>
+			public ulong FileLevelTrimCount;
+
+			/// <summary>
+			/// The total time elapsed during all file level trim operations. This value, divided by the frequency value from
+			/// QueryPerformanceFrequency or KeQueryPerformanceCounter, will give the time in seconds.
+			/// </summary>
+			public ulong FileLevelTrimTime;
+
+			/// <summary>The total number of bytes issued by all file level trim operations.</summary>
+			public ulong FileLevelTrimByteCount;
+
+			/// <summary>The number of times a volume level trim operation was aborted before being sent down through the storage stack.</summary>
+			public ulong VolumeTrimSkippedCount;
+
+			/// <summary>The number of bytes that were not sent through a volume level trim operation because they were skipped.</summary>
+			public ulong VolumeTrimSkippedByteCount;
+
+			/// <summary/>
+			public ulong NtfsFillStatInfoFromMftRecordCalledCount;
+
+			/// <summary/>
+			public ulong NtfsFillStatInfoFromMftRecordBailedBecauseOfAttributeListCount;
+
+			/// <summary/>
+			public ulong NtfsFillStatInfoFromMftRecordBailedBecauseOfNonResReparsePointCount;
+		}
+
+		/// <summary>
+		/// <para>Contains information about a disk partition.</para>
+		/// <para><c>Note</c><c>PARTITION_INFORMATION</c> has been superseded by the PARTITION_INFORMATION_EX structure.</para>
+		/// </summary>
+		/// <remarks>
+		/// If the partition is on a disk formatted as type master boot record (MBR), partition size totals are limited. For more
+		/// information, see the Remarks section of IOCTL_DISK_SET_DRIVE_LAYOUT.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-partition_information typedef struct
+		// _PARTITION_INFORMATION { LARGE_INTEGER StartingOffset; LARGE_INTEGER PartitionLength; DWORD HiddenSectors; DWORD PartitionNumber;
+		// BYTE PartitionType; BOOLEAN BootIndicator; BOOLEAN RecognizedPartition; BOOLEAN RewritePartition; } PARTITION_INFORMATION, *PPARTITION_INFORMATION;
+		[PInvokeData("winioctl.h", MSDNShortId = "2c8fa83a-0694-4e17-a9e4-87f839a0d458")]
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
+		public struct PARTITION_INFORMATION
+		{
+			/// <summary>The starting offset of the partition.</summary>
+			public long StartingOffset;
+
+			/// <summary>The length of the partition, in bytes.</summary>
+			public long PartitionLength;
+
+			/// <summary>The number of hidden sectors in the partition.</summary>
+			public uint HiddenSectors;
+
+			/// <summary>The number of the partition (1-based).</summary>
+			public uint PartitionNumber;
+
+			/// <summary>The type of partition. For a list of values, see Disk Partition Types.</summary>
+			public PartitionType PartitionType;
+
+			/// <summary>If this member is <c>TRUE</c>, the partition is bootable.</summary>
+			[MarshalAs(UnmanagedType.U1)] public bool BootIndicator;
+
+			/// <summary>If this member is <c>TRUE</c>, the partition is of a recognized type.</summary>
+			[MarshalAs(UnmanagedType.U1)] public bool RecognizedPartition;
+
+			/// <summary>
+			/// If this member is <c>TRUE</c>, the partition information has changed. When you change a partition (with
+			/// IOCTL_DISK_SET_DRIVE_LAYOUT), the system uses this member to determine which partitions have changed and need their
+			/// information rewritten.
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)] public bool RewritePartition;
+		}
+
+		/// <summary>
+		/// Contains partition information for standard AT-style master boot record (MBR) and Extensible Firmware Interface (EFI) disks.
+		/// </summary>
+		/// <remarks>
+		/// If the partition is on a disk formatted as type master boot record (MBR), partition size totals are limited. For more
+		/// information, see the Remarks section of IOCTL_DISK_SET_DRIVE_LAYOUT.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-partition_information_ex typedef struct
+		// _PARTITION_INFORMATION_EX { PARTITION_STYLE PartitionStyle; LARGE_INTEGER StartingOffset; LARGE_INTEGER PartitionLength; DWORD
+		// PartitionNumber; BOOLEAN RewritePartition; BOOLEAN IsServicePartition; union { PARTITION_INFORMATION_MBR Mbr;
+		// PARTITION_INFORMATION_GPT Gpt; } DUMMYUNIONNAME; } PARTITION_INFORMATION_EX, *PPARTITION_INFORMATION_EX;
+		[PInvokeData("winioctl.h", MSDNShortId = "3c88ebae-274e-403a-8f57-58fdf863f511")]
+		[StructLayout(LayoutKind.Explicit)]
+		public struct PARTITION_INFORMATION_EX
+		{
+			/// <summary>The format of the partition. For a list of values, see PARTITION_STYLE.</summary>
+			[FieldOffset(0)]
+			public PARTITION_STYLE PartitionStyle;
+
+			/// <summary>The starting offset of the partition.</summary>
+			[FieldOffset(8)]
+			public long StartingOffset;
+
+			/// <summary>The size of the partition, in bytes.</summary>
+			[FieldOffset(16)]
+			public long PartitionLength;
+
+			/// <summary>The number of the partition (1-based).</summary>
+			[FieldOffset(24)]
+			public uint PartitionNumber;
+
+			/// <summary>If this member is <c>TRUE</c>, the partition is rewritable. The value of this parameter should be set to <c>TRUE</c>.</summary>
+			[FieldOffset(28)]
+			[MarshalAs(UnmanagedType.U1)] public bool RewritePartition;
+
+			/// <summary/>
+			[FieldOffset(29)]
+			[MarshalAs(UnmanagedType.U1)] public bool IsServicePartition;
+
+			/// <summary>
+			/// A PARTITION_INFORMATION_MBR structure that specifies partition information specific to master boot record (MBR) disks. The
+			/// MBR partition format is the standard AT-style format.
+			/// </summary>
+			[FieldOffset(32)]
+			public PARTITION_INFORMATION_MBR Mbr;
+
+			/// <summary>
+			/// A PARTITION_INFORMATION_GPT structure that specifies partition information specific to GUID partition table (GPT) disks. The
+			/// GPT format corresponds to the EFI partition format.
+			/// </summary>
+			[FieldOffset(32)]
+			public PARTITION_INFORMATION_GPT Gpt;
+		}
+
+		/// <summary>Contains <c>GUID</c> partition table (GPT) partition information.</summary>
+		/// <remarks>
+		/// <para>
+		/// The GPT partition format is required for disks that are used to boot computers that use Extended Firmware Interface (EFI)
+		/// firmware. GPT data disks can reside on x86, x64, and Itanium-based architectures.
+		/// </para>
+		/// <para>Starting with Windows Server 2003 with SP1, GPT is supported on all Windows platforms, not only platforms that use EFI.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-partition_information_gpt typedef struct
+		// _PARTITION_INFORMATION_GPT { GUID PartitionType; GUID PartitionId; DWORD64 Attributes; WCHAR Name[36]; }
+		// PARTITION_INFORMATION_GPT, *PPARTITION_INFORMATION_GPT;
+		[PInvokeData("winioctl.h", MSDNShortId = "373b4eb3-af6d-4112-9787-f14c19972189")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct PARTITION_INFORMATION_GPT
+		{
+			/// <summary>
+			/// <para>A <c>GUID</c> that identifies the partition type.</para>
+			/// <para>
+			/// Each partition type that the EFI specification supports is identified by its own <c>GUID</c>, which is published by the
+			/// developer of the partition.
+			/// </para>
+			/// <para>This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>PARTITION_BASIC_DATA_GUID ebd0a0a2-b9e5-4433-87c0-68b6b72699c7</term>
+			/// <term>
+			/// The data partition type that is created and recognized by Windows. Only partitions of this type can be assigned drive
+			/// letters, receive volume GUID paths, host mounted folders (also called volume mount points), and be enumerated by calls to
+			/// FindFirstVolume and FindNextVolume. This value can be set only for basic disks, with one exception. If both
+			/// PARTITION_BASIC_DATA_GUID and GPT_ATTRIBUTE_PLATFORM_REQUIRED are set for a partition on a basic disk that is subsequently
+			/// converted to a dynamic disk, the partition remains a basic partition, even though the rest of the disk is a dynamic disk.
+			/// This is because the partition is considered to be an OEM partition on a GPT disk.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>PARTITION_ENTRY_UNUSED_GUID 00000000-0000-0000-0000-000000000000</term>
+			/// <term>There is no partition. This value can be set for basic and dynamic disks.</term>
+			/// </item>
+			/// <item>
+			/// <term>PARTITION_SYSTEM_GUID c12a7328-f81f-11d2-ba4b-00a0c93ec93b</term>
+			/// <term>The partition is an EFI system partition. This value can be set for basic and dynamic disks.</term>
+			/// </item>
+			/// <item>
+			/// <term>PARTITION_MSFT_RESERVED_GUID e3c9e316-0b5c-4db8-817d-f92df00215ae</term>
+			/// <term>The partition is a Microsoft reserved partition. This value can be set for basic and dynamic disks.</term>
+			/// </item>
+			/// <item>
+			/// <term>PARTITION_LDM_METADATA_GUID 5808c8aa-7e8f-42e0-85d2-e1e90434cfb3</term>
+			/// <term>
+			/// The partition is a Logical Disk Manager (LDM) metadata partition on a dynamic disk. This value can be set only for dynamic disks.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>PARTITION_LDM_DATA_GUID af9b60a0-1431-4f62-bc68-3311714a69ad</term>
+			/// <term>The partition is an LDM data partition on a dynamic disk. This value can be set only for dynamic disks.</term>
+			/// </item>
+			/// <item>
+			/// <term>PARTITION_MSFT_RECOVERY_GUID de94bba4-06d1-4d40-a16a-bfd50179d6ac</term>
+			/// <term>The partition is a Microsoft recovery partition. This value can be set for basic and dynamic disks.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public Guid PartitionType;
+
+			/// <summary>The GUID of the partition.</summary>
+			public Guid PartitionId;
+
+			/// <summary>
+			/// <para>The Extensible Firmware Interface (EFI) attributes of the partition.</para>
+			/// <para>This member can be one or more of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>GPT_ATTRIBUTE_PLATFORM_REQUIRED 0x0000000000000001</term>
+			/// <term>
+			/// If this attribute is set, the partition is required by a computer to function properly. For example, this attribute must be
+			/// set for OEM partitions. Note that if this attribute is set, you can use the DiskPart.exe utility to perform partition
+			/// operations such as deleting the partition. However, because the partition is not a volume, you cannot use the DiskPart.exe
+			/// utility to perform volume operations on the partition. This attribute can be set for basic and dynamic disks. If it is set
+			/// for a partition on a basic disk and the disk is converted to a dynamic disk, the partition remains a basic partition, even
+			/// though the rest of the disk is a dynamic disk. This is because the partition is considered to be an OEM partition on a GPT disk.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>GPT_BASIC_DATA_ATTRIBUTE_NO_DRIVE_LETTER 0x8000000000000000</term>
+			/// <term>
+			/// If this attribute is set, the partition does not receive a drive letter by default when the disk is moved to another computer
+			/// or when the disk is seen for the first time by a computer. This attribute is useful in storage area network (SAN)
+			/// environments. Despite its name, this attribute can be set for basic and dynamic disks.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>GPT_BASIC_DATA_ATTRIBUTE_HIDDEN 0x4000000000000000</term>
+			/// <term>
+			/// If this attribute is set, the partition is not detected by the Mount Manager. As a result, the partition does not receive a
+			/// drive letter, does not receive a volume GUID path, does not host mounted folders (also called volume mount points), and is
+			/// not enumerated by calls to FindFirstVolume and FindNextVolume. This ensures that applications such as Disk Defragmenter do
+			/// not access the partition. The Volume Shadow Copy Service (VSS) uses this attribute. Despite its name, this attribute can be
+			/// set for basic and dynamic disks.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>GPT_BASIC_DATA_ATTRIBUTE_SHADOW_COPY 0x2000000000000000</term>
+			/// <term>
+			/// If this attribute is set, the partition is a shadow copy of another partition. VSS uses this attribute. This attribute is an
+			/// indication for file system filter driver-based software (such as antivirus programs) to avoid attaching to the volume. An
+			/// application can use the attribute to differentiate a shadow copy volume from a production volume. An application that does a
+			/// fast recovery, for example, will break a shadow copy LUN and clear the read-only and hidden attributes and this attribute.
+			/// This attribute is set when the shadow copy is created and cleared when the shadow copy is broken. Despite its name, this
+			/// attribute can be set for basic and dynamic disks. Windows Server 2003: This attribute is not supported before Windows Server
+			/// 2003 with SP1.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>GPT_BASIC_DATA_ATTRIBUTE_READ_ONLY 0x1000000000000000</term>
+			/// <term>
+			/// If this attribute is set, the partition is read-only. Writes to the partition will fail. IOCTL_DISK_IS_WRITABLE will fail
+			/// with the ERROR_WRITE_PROTECT Win32 error code, which causes the file system to mount as read only, if a file system is
+			/// present. VSS uses this attribute. Do not set this attribute for dynamic disks. Setting it can cause I/O errors and prevent
+			/// the file system from mounting properly.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public GPT_ATTRIBUTE Attributes;
+
+			/// <summary>A wide-character string that describes the partition.</summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 36)]
+			public string Name;
+		}
+
+		/// <summary>Contains partition information specific to master boot record (MBR) disks.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-partition_information_mbr typedef struct
+		// _PARTITION_INFORMATION_MBR { BYTE PartitionType; BOOLEAN BootIndicator; BOOLEAN RecognizedPartition; DWORD HiddenSectors; GUID
+		// PartitionId; } PARTITION_INFORMATION_MBR, *PPARTITION_INFORMATION_MBR;
+		[PInvokeData("winioctl.h", MSDNShortId = "5b74b06f-ef4c-44ab-95c6-49c050faf1f4")]
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
+		public struct PARTITION_INFORMATION_MBR
+		{
+			/// <summary>The type of partition. For a list of values, see Disk Partition Types.</summary>
+			public PartitionType PartitionType;
+
+			/// <summary>
+			/// If the member is <c>TRUE</c>, the partition is a boot partition. When this structure is used with the
+			/// IOCTL_DISK_SET_PARTITION_INFO_EX control code, the value of this parameter is ignored.
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)] public bool BootIndicator;
+
+			/// <summary>
+			/// If this member is <c>TRUE</c>, the partition is of a recognized type. When this structure is used with the
+			/// IOCTL_DISK_SET_PARTITION_INFO_EX control code, the value of this parameter is ignored.
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)] public bool RecognizedPartition;
+
+			/// <summary>The number of hidden sectors to be allocated when the partition table is created.</summary>
+			public uint HiddenSectors;
+
+			/// <summary/>
+			public Guid PartitionId;
+		}
+
+		/// <summary>
+		/// Specifies the versions of the update sequence number (USN) change journal supported by the application. This structure is the
+		/// input structure to the FSCTL_READ_FILE_USN_DATA control code.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-read_file_usn_data typedef struct { WORD MinMajorVersion;
+		// WORD MaxMajorVersion; } READ_FILE_USN_DATA, *PREAD_FILE_USN_DATA;
+		[PInvokeData("winioctl.h", MSDNShortId = "8c403eec-7504-4a69-9f05-7a3a164557a6")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct READ_FILE_USN_DATA
+		{
+			/// <summary>
+			/// The lowest version of the USN change journal accepted by the application. If the input buffer is not specified this defaults
+			/// to 2.
+			/// </summary>
+			public ushort MinMajorVersion;
+
+			/// <summary>
+			/// The highest version of the USN change journal accepted by the application. If the input buffer is not specified this defaults
+			/// to 2. To support 128-bit file identifiers used by ReFS this must be 3 or higher.
+			/// </summary>
+			public ushort MaxMajorVersion;
+		}
+
+		/// <summary>
+		/// Contains information defining a set of update sequence number (USN) change journal records to return to the calling process. It
+		/// is used by the FSCTL_QUERY_USN_JOURNAL and FSCTL_READ_USN_JOURNAL control codes. Prior to Windows 8 and Windows Server 2012 this
+		/// structure was named <c>READ_USN_JOURNAL_DATA</c>. Use that name to compile with older SDKs and compilers. Windows Server 2012
+		/// introduced READ_USN_JOURNAL_DATA_V1 to support 128-bit file identifiers used by ReFS.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-read_usn_journal_data_v0 typedef struct { USN StartUsn;
+		// DWORD ReasonMask; DWORD ReturnOnlyOnClose; DWORDLONG Timeout; DWORDLONG BytesToWaitFor; DWORDLONG UsnJournalID; }
+		// READ_USN_JOURNAL_DATA_V0, *PREAD_USN_JOURNAL_DATA_V0;
+		[PInvokeData("winioctl.h", MSDNShortId = "f88e71ba-6099-4928-9d71-732a4ca809bc")]
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
+		public struct READ_USN_JOURNAL_DATA_V0
+		{
+			/// <summary>
+			/// <para>The USN at which to begin reading the change journal.</para>
+			/// <para>
+			/// To start the read operation at the first record in the journal, set the <c>StartUsn</c> member to zero. Because a USN is
+			/// contained in every journal record, the output buffer tells at which record the read operation actually started.
+			/// </para>
+			/// <para>To start the read operation at a specific record, set <c>StartUsn</c> to that record USN.</para>
+			/// <para>
+			/// If a nonzero USN is specified that is less than the first USN in the change journal, then an error occurs and the
+			/// <c>ERROR_JOURNAL_ENTRY_DELETED</c> error code is returned. This code may indicate a case in which the specified USN is valid
+			/// at one time but has since been deleted.
+			/// </para>
+			/// <para>
+			/// For more information on navigating the change journal buffer returned in <c>READ_USN_JOURNAL_DATA_V0</c>, see Walking a
+			/// Buffer of Change Journal Records.
+			/// </para>
+			/// </summary>
+			public int StartUsn;
+
+			/// <summary>
+			/// <para>
+			/// A mask of flags, each flag noting a change for which the file or directory has a record in the change journal. To be returned
+			/// in a FSCTL_READ_USN_JOURNAL operation, a change journal record must have at least one of these flags set.
+			/// </para>
+			/// <para>The list of valid flags is as follows. Unused bits are reserved.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>USN_REASON_BASIC_INFO_CHANGE 0x00008000</term>
+			/// <term>
+			/// A user has either changed one or more file or directory attributes (such as the read-only, hidden, system, archive, or sparse
+			/// attribute), or one or more time stamps.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_CLOSE 0x80000000</term>
+			/// <term>The file or directory is closed.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_COMPRESSION_CHANGE 0x00020000</term>
+			/// <term>The compression state of the file or directory is changed from or to compressed.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_DATA_EXTEND 0x00000002</term>
+			/// <term>The file or directory is added to.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_DATA_OVERWRITE 0x00000001</term>
+			/// <term>Data in the file or directory is overwritten.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_DATA_TRUNCATION 0x00000004</term>
+			/// <term>The file or directory is truncated.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_EA_CHANGE 0x00000400</term>
+			/// <term>
+			/// The user makes a change to the file or directory extended attributes. These NTFS file system attributes are not accessible to
+			/// Windows-based applications.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_ENCRYPTION_CHANGE 0x00040000</term>
+			/// <term>The file or directory is encrypted or decrypted.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_FILE_CREATE 0x00000100</term>
+			/// <term>The file or directory is created for the first time.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_FILE_DELETE 0x00000200</term>
+			/// <term>The file or directory is deleted.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_HARD_LINK_CHANGE 0x00010000</term>
+			/// <term>
+			/// An NTFS file system hard link is added to or removed from the file or directory. An NTFS file system hard link, similar to a
+			/// POSIX hard link, is one of several directory entries that see the same file or directory.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_INDEXABLE_CHANGE 0x00004000</term>
+			/// <term>
+			/// A user changed the FILE_ATTRIBUTE_NOT_CONTENT_INDEXED attribute. That is, the user changed the file or directory from one
+			/// that can be content indexed to one that cannot, or vice versa. (Content indexing permits rapid searching of data by building
+			/// a database of selected content.)
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_NAMED_DATA_EXTEND 0x00000020</term>
+			/// <term>One or more named data streams for the file were added to.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_NAMED_DATA_OVERWRITE 0x00000010</term>
+			/// <term>Data in one or more named data streams for the file is overwritten.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_NAMED_DATA_TRUNCATION 0x00000040</term>
+			/// <term>One or more named data streams for the file is truncated.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_OBJECT_ID_CHANGE 0x00080000</term>
+			/// <term>The object identifier of the file or directory is changed.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_RENAME_NEW_NAME 0x00002000</term>
+			/// <term>
+			/// The file or directory is renamed, and the file name in the USN_RECORD_V2 or USN_RECORD_V3 structure holding this journal
+			/// record is the new name.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_RENAME_OLD_NAME 0x00001000</term>
+			/// <term>
+			/// The file or directory is renamed, and the file name in the USN_RECORD_V2 or USN_RECORD_V3 structure holding this journal
+			/// record is the previous name.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_REPARSE_POINT_CHANGE 0x00100000</term>
+			/// <term>
+			/// The reparse point contained in the file or directory is changed, or a reparse point is added to or deleted from the file or directory.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_SECURITY_CHANGE 0x00000800</term>
+			/// <term>A change is made in the access permissions to the file or directory.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_STREAM_CHANGE 0x00200000</term>
+			/// <term>A named stream is added to or removed from the file or directory, or a named stream is renamed.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint ReasonMask;
+
+			/// <summary>
+			/// <para>A value that specifies when to return change journal records.</para>
+			/// <para>
+			/// To receive notification when the final handle for the changed file or directory is closed, rather than at the time a change
+			/// occurs, set <c>ReturnOnlyOnClose</c> to any nonzero value and specify the <c>USN_REASON_CLOSE</c> flag in the
+			/// <c>ReasonMask</c> member.
+			/// </para>
+			/// <para>
+			/// All changes indicated by <c>ReasonMask</c> flags eventually generate a call to the change journal software when the file is
+			/// closed. If your DeviceIoControl call is waiting for the file to be closed, that call in turn will allow your
+			/// <c>DeviceIoControl</c> call to return. In the event that a file or directory is not closed prior to a volume failure,
+			/// operating system failure, or shutdown, a cleanup call to the change journal software occurs the next time the volume is
+			/// mounted. The call occurs even if there is an intervening system restart.
+			/// </para>
+			/// <para>
+			/// To receive notification the first time each change is logged, as well as at cleanup, set <c>ReturnOnlyOnClose</c> to zero.
+			/// </para>
+			/// <para>
+			/// Whether <c>ReturnOnlyOnClose</c> is zero or nonzero, the records generated at cleanup log within the change journal all
+			/// reasons for USN changes that occurred to the file or directory. Each time a final close operation occurs for an item, a USN
+			/// close record is written to the change journal, and the <c>ReasonMask</c> flags for the item are all reset.
+			/// </para>
+			/// <para>
+			/// For a file or directory for which no user data exists (for example, a mounted folder), the final close operation occurs when
+			/// the CloseHandle function is called on the last user handle to the item.
+			/// </para>
+			/// </summary>
+			public uint ReturnOnlyOnClose;
+
+			/// <summary>
+			/// <para>
+			/// The time-out value, in seconds, used with the <c>BytesToWaitFor</c> member to tell the operating system what to do if the
+			/// FSCTL_READ_USN_JOURNAL operation requests more data than exists in the change journal.
+			/// </para>
+			/// <para>
+			/// If <c>Timeout</c> is zero and <c>BytesToWaitFor</c> is nonzero, and the FSCTL_READ_USN_JOURNAL operation call reaches the end
+			/// of the change journal without finding data to return, <c>FSCTL_READ_USN_JOURNAL</c> waits until <c>BytesToWaitFor</c> bytes
+			/// of unfiltered data have been added to the change journal and then retrieves the specified records.
+			/// </para>
+			/// <para>
+			/// If <c>Timeout</c> is nonzero and <c>BytesToWaitFor</c> is nonzero, and the FSCTL_READ_USN_JOURNAL operation call reaches the
+			/// end of the change journal without finding data to return, <c>FSCTL_READ_USN_JOURNAL</c> waits <c>Timeout</c> seconds and then
+			/// attempts to return the specified records. After <c>Timeout</c> seconds, <c>FSCTL_READ_USN_JOURNAL</c> retrieves any records
+			/// available within the specified range.
+			/// </para>
+			/// <para>
+			/// In either case, after the time-out period any new data appended to the change journal is processed. If there are still no
+			/// records to return from the specified set, the time-out period is repeated. In this mode, FSCTL_READ_USN_JOURNAL remains
+			/// outstanding until at least one record is returned or I/O is canceled.
+			/// </para>
+			/// <para>
+			/// If <c>BytesToWaitFor</c> is zero, then <c>Timeout</c> is ignored. <c>Timeout</c> is also ignored for asynchronously opened handles.
+			/// </para>
+			/// </summary>
+			public ulong Timeout;
+
+			/// <summary>
+			/// <para>
+			/// The number of bytes of unfiltered data added to the change journal. Use this value with <c>Timeout</c> to tell the operating
+			/// system what to do if the FSCTL_READ_USN_JOURNAL operation requests more data than exists in the change journal.
+			/// </para>
+			/// <para>
+			/// If <c>BytesToWaitFor</c> is zero, then <c>Timeout</c> is ignored. In this case, the FSCTL_READ_USN_JOURNAL operation always
+			/// returns successfully when the end of the change journal file is encountered. It also retrieves the USN that should be used
+			/// for the next <c>FSCTL_READ_USN_JOURNAL</c> operation. When the returned next USN is the same as the <c>StartUsn</c> supplied,
+			/// there are no records available. The calling process should not use <c>FSCTL_READ_USN_JOURNAL</c> again immediately.
+			/// </para>
+			/// <para>
+			/// Because the amount of data returned cannot be predicted when <c>BytesToWaitFor</c> is zero, you run a risk of overflowing the
+			/// output buffer. To reduce this risk, specify a nonzero <c>BytesToWaitFor</c> value in repeated FSCTL_READ_USN_JOURNAL
+			/// operations until all records in the change journal are exhausted. Then specify zero to await new records.
+			/// </para>
+			/// <para>
+			/// Alternatively, use the lpBytesReturned parameter of DeviceIoControl in the FSCTL_READ_USN_JOURNAL operation call to determine
+			/// the amount of data available, reallocate the output buffer (with room to spare for new records), and call
+			/// <c>DeviceIoControl</c> again.
+			/// </para>
+			/// </summary>
+			public ulong BytesToWaitFor;
+
+			/// <summary>
+			/// <para>The identifier for the instance of the journal that is current for the volume.</para>
+			/// <para>
+			/// The NTFS file system can miss putting events in the change journal if the change journal is stopped and restarted or deleted
+			/// and re-created. If either of these events occurs, the NTFS file system gives the journal a new identifier. If the journal
+			/// identifier does not agree with the current journal identifier, the call to DeviceIoControl fails and returns an appropriate
+			/// error code. To retrieve the new journal identifier, call <c>DeviceIoControl</c> with the FSCTL_QUERY_USN_JOURNAL operation.
+			/// </para>
+			/// </summary>
+			public ulong UsnJournalID;
+		}
+
+		/// <summary>
+		/// Contains information defining a set of update sequence number (USN) change journal records to return to the calling process. It
+		/// is used by the FSCTL_QUERY_USN_JOURNAL and FSCTL_READ_USN_JOURNAL control codes. Prior to Windows 8 and Windows Server 2012 this
+		/// structure was named <c>READ_USN_JOURNAL_DATA</c>. Use that name to compile with older SDKs and compilers. Windows Server 2012
+		/// introduced READ_USN_JOURNAL_DATA_V1 to support 128-bit file identifiers used by ReFS.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-read_usn_journal_data_v1 typedef struct { USN StartUsn;
+		// DWORD ReasonMask; DWORD ReturnOnlyOnClose; DWORDLONG Timeout; DWORDLONG BytesToWaitFor; DWORDLONG UsnJournalID; WORD
+		// MinMajorVersion; WORD MaxMajorVersion; } READ_USN_JOURNAL_DATA_V1, *PREAD_USN_JOURNAL_DATA_V1;
+		[PInvokeData("winioctl.h", MSDNShortId = "f88e71ba-6099-4928-9d71-732a4ca809bc")]
+		[StructLayout(LayoutKind.Sequential, Pack = 8, Size = 48)]
+		public struct READ_USN_JOURNAL_DATA_V1
+		{
+			/// <summary>
+			/// <para>The USN at which to begin reading the change journal.</para>
+			/// <para>
+			/// To start the read operation at the first record in the journal, set the <c>StartUsn</c> member to zero. Because a USN is
+			/// contained in every journal record, the output buffer tells at which record the read operation actually started.
+			/// </para>
+			/// <para>To start the read operation at a specific record, set <c>StartUsn</c> to that record USN.</para>
+			/// <para>
+			/// If a nonzero USN is specified that is less than the first USN in the change journal, then an error occurs and the
+			/// <c>ERROR_JOURNAL_ENTRY_DELETED</c> error code is returned. This code may indicate a case in which the specified USN is valid
+			/// at one time but has since been deleted.
+			/// </para>
+			/// <para>
+			/// For more information on navigating the change journal buffer returned in <c>READ_USN_JOURNAL_DATA_V0</c>, see Walking a
+			/// Buffer of Change Journal Records.
+			/// </para>
+			/// </summary>
+			public int StartUsn;
+
+			/// <summary>
+			/// <para>
+			/// A mask of flags, each flag noting a change for which the file or directory has a record in the change journal. To be returned
+			/// in a FSCTL_READ_USN_JOURNAL operation, a change journal record must have at least one of these flags set.
+			/// </para>
+			/// <para>The list of valid flags is as follows. Unused bits are reserved.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>USN_REASON_BASIC_INFO_CHANGE 0x00008000</term>
+			/// <term>
+			/// A user has either changed one or more file or directory attributes (such as the read-only, hidden, system, archive, or sparse
+			/// attribute), or one or more time stamps.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_CLOSE 0x80000000</term>
+			/// <term>The file or directory is closed.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_COMPRESSION_CHANGE 0x00020000</term>
+			/// <term>The compression state of the file or directory is changed from or to compressed.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_DATA_EXTEND 0x00000002</term>
+			/// <term>The file or directory is added to.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_DATA_OVERWRITE 0x00000001</term>
+			/// <term>Data in the file or directory is overwritten.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_DATA_TRUNCATION 0x00000004</term>
+			/// <term>The file or directory is truncated.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_EA_CHANGE 0x00000400</term>
+			/// <term>
+			/// The user makes a change to the file or directory extended attributes. These NTFS file system attributes are not accessible to
+			/// Windows-based applications.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_ENCRYPTION_CHANGE 0x00040000</term>
+			/// <term>The file or directory is encrypted or decrypted.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_FILE_CREATE 0x00000100</term>
+			/// <term>The file or directory is created for the first time.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_FILE_DELETE 0x00000200</term>
+			/// <term>The file or directory is deleted.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_HARD_LINK_CHANGE 0x00010000</term>
+			/// <term>
+			/// An NTFS file system hard link is added to or removed from the file or directory. An NTFS file system hard link, similar to a
+			/// POSIX hard link, is one of several directory entries that see the same file or directory.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_INDEXABLE_CHANGE 0x00004000</term>
+			/// <term>
+			/// A user changed the FILE_ATTRIBUTE_NOT_CONTENT_INDEXED attribute. That is, the user changed the file or directory from one
+			/// that can be content indexed to one that cannot, or vice versa. (Content indexing permits rapid searching of data by building
+			/// a database of selected content.)
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_NAMED_DATA_EXTEND 0x00000020</term>
+			/// <term>One or more named data streams for the file were added to.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_NAMED_DATA_OVERWRITE 0x00000010</term>
+			/// <term>Data in one or more named data streams for the file is overwritten.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_NAMED_DATA_TRUNCATION 0x00000040</term>
+			/// <term>One or more named data streams for the file is truncated.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_OBJECT_ID_CHANGE 0x00080000</term>
+			/// <term>The object identifier of the file or directory is changed.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_RENAME_NEW_NAME 0x00002000</term>
+			/// <term>
+			/// The file or directory is renamed, and the file name in the USN_RECORD_V2 or USN_RECORD_V3 structure holding this journal
+			/// record is the new name.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_RENAME_OLD_NAME 0x00001000</term>
+			/// <term>
+			/// The file or directory is renamed, and the file name in the USN_RECORD_V2 or USN_RECORD_V3 structure holding this journal
+			/// record is the previous name.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_REPARSE_POINT_CHANGE 0x00100000</term>
+			/// <term>
+			/// The reparse point contained in the file or directory is changed, or a reparse point is added to or deleted from the file or directory.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_SECURITY_CHANGE 0x00000800</term>
+			/// <term>A change is made in the access permissions to the file or directory.</term>
+			/// </item>
+			/// <item>
+			/// <term>USN_REASON_STREAM_CHANGE 0x00200000</term>
+			/// <term>A named stream is added to or removed from the file or directory, or a named stream is renamed.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint ReasonMask;
+
+			/// <summary>
+			/// <para>A value that specifies when to return change journal records.</para>
+			/// <para>
+			/// To receive notification when the final handle for the changed file or directory is closed, rather than at the time a change
+			/// occurs, set <c>ReturnOnlyOnClose</c> to any nonzero value and specify the <c>USN_REASON_CLOSE</c> flag in the
+			/// <c>ReasonMask</c> member.
+			/// </para>
+			/// <para>
+			/// All changes indicated by <c>ReasonMask</c> flags eventually generate a call to the change journal software when the file is
+			/// closed. If your DeviceIoControl call is waiting for the file to be closed, that call in turn will allow your
+			/// <c>DeviceIoControl</c> call to return. In the event that a file or directory is not closed prior to a volume failure,
+			/// operating system failure, or shutdown, a cleanup call to the change journal software occurs the next time the volume is
+			/// mounted. The call occurs even if there is an intervening system restart.
+			/// </para>
+			/// <para>
+			/// To receive notification the first time each change is logged, as well as at cleanup, set <c>ReturnOnlyOnClose</c> to zero.
+			/// </para>
+			/// <para>
+			/// Whether <c>ReturnOnlyOnClose</c> is zero or nonzero, the records generated at cleanup log within the change journal all
+			/// reasons for USN changes that occurred to the file or directory. Each time a final close operation occurs for an item, a USN
+			/// close record is written to the change journal, and the <c>ReasonMask</c> flags for the item are all reset.
+			/// </para>
+			/// <para>
+			/// For a file or directory for which no user data exists (for example, a mounted folder), the final close operation occurs when
+			/// the CloseHandle function is called on the last user handle to the item.
+			/// </para>
+			/// </summary>
+			public uint ReturnOnlyOnClose;
+
+			/// <summary>
+			/// <para>
+			/// The time-out value, in seconds, used with the <c>BytesToWaitFor</c> member to tell the operating system what to do if the
+			/// FSCTL_READ_USN_JOURNAL operation requests more data than exists in the change journal.
+			/// </para>
+			/// <para>
+			/// If <c>Timeout</c> is zero and <c>BytesToWaitFor</c> is nonzero, and the FSCTL_READ_USN_JOURNAL operation call reaches the end
+			/// of the change journal without finding data to return, <c>FSCTL_READ_USN_JOURNAL</c> waits until <c>BytesToWaitFor</c> bytes
+			/// of unfiltered data have been added to the change journal and then retrieves the specified records.
+			/// </para>
+			/// <para>
+			/// If <c>Timeout</c> is nonzero and <c>BytesToWaitFor</c> is nonzero, and the FSCTL_READ_USN_JOURNAL operation call reaches the
+			/// end of the change journal without finding data to return, <c>FSCTL_READ_USN_JOURNAL</c> waits <c>Timeout</c> seconds and then
+			/// attempts to return the specified records. After <c>Timeout</c> seconds, <c>FSCTL_READ_USN_JOURNAL</c> retrieves any records
+			/// available within the specified range.
+			/// </para>
+			/// <para>
+			/// In either case, after the time-out period any new data appended to the change journal is processed. If there are still no
+			/// records to return from the specified set, the time-out period is repeated. In this mode, FSCTL_READ_USN_JOURNAL remains
+			/// outstanding until at least one record is returned or I/O is canceled.
+			/// </para>
+			/// <para>
+			/// If <c>BytesToWaitFor</c> is zero, then <c>Timeout</c> is ignored. <c>Timeout</c> is also ignored for asynchronously opened handles.
+			/// </para>
+			/// </summary>
+			public ulong Timeout;
+
+			/// <summary>
+			/// <para>
+			/// The number of bytes of unfiltered data added to the change journal. Use this value with <c>Timeout</c> to tell the operating
+			/// system what to do if the FSCTL_READ_USN_JOURNAL operation requests more data than exists in the change journal.
+			/// </para>
+			/// <para>
+			/// If <c>BytesToWaitFor</c> is zero, then <c>Timeout</c> is ignored. In this case, the FSCTL_READ_USN_JOURNAL operation always
+			/// returns successfully when the end of the change journal file is encountered. It also retrieves the USN that should be used
+			/// for the next <c>FSCTL_READ_USN_JOURNAL</c> operation. When the returned next USN is the same as the <c>StartUsn</c> supplied,
+			/// there are no records available. The calling process should not use <c>FSCTL_READ_USN_JOURNAL</c> again immediately.
+			/// </para>
+			/// <para>
+			/// Because the amount of data returned cannot be predicted when <c>BytesToWaitFor</c> is zero, you run a risk of overflowing the
+			/// output buffer. To reduce this risk, specify a nonzero <c>BytesToWaitFor</c> value in repeated FSCTL_READ_USN_JOURNAL
+			/// operations until all records in the change journal are exhausted. Then specify zero to await new records.
+			/// </para>
+			/// <para>
+			/// Alternatively, use the lpBytesReturned parameter of DeviceIoControl in the FSCTL_READ_USN_JOURNAL operation call to determine
+			/// the amount of data available, reallocate the output buffer (with room to spare for new records), and call
+			/// <c>DeviceIoControl</c> again.
+			/// </para>
+			/// </summary>
+			public ulong BytesToWaitFor;
+
+			/// <summary>
+			/// <para>The identifier for the instance of the journal that is current for the volume.</para>
+			/// <para>
+			/// The NTFS file system can miss putting events in the change journal if the change journal is stopped and restarted or deleted
+			/// and re-created. If either of these events occurs, the NTFS file system gives the journal a new identifier. If the journal
+			/// identifier does not agree with the current journal identifier, the call to DeviceIoControl fails and returns an appropriate
+			/// error code. To retrieve the new journal identifier, call <c>DeviceIoControl</c> with the FSCTL_QUERY_USN_JOURNAL operation.
+			/// </para>
+			/// </summary>
+			public ulong UsnJournalID;
+
+			/// <summary/>
+			public ushort MinMajorVersion;
+
+			/// <summary/>
 			public ushort MaxMajorVersion;
 		}
 
@@ -1972,7 +4157,6 @@ CLASS_MEDIA_CHANGE_CONTEXT : 8
 CREATE_DISK : 24
 CREATE_DISK_GPT : 20
 CREATE_DISK_MBR : 4
-CREATE_USN_JOURNAL_DATA : 16
 CSV_CONTROL_PARAM : 16
 CSV_IS_OWNED_BY_CSVFS : 1
 CSV_NAMESPACE_INFO : 24
@@ -1980,7 +4164,6 @@ CSV_QUERY_FILE_REVISION : 32
 CSV_QUERY_MDS_PATH : 16
 CSV_QUERY_REDIRECT_STATE : 12
 CSV_QUERY_VETO_FILE_DIRECT_IO_OUTPUT : 528
-DELETE_USN_JOURNAL_DATA : 16
 DEVICE_COPY_OFFLOAD_DESCRIPTOR : 48
 DEVICE_DATA_SET_LB_PROVISIONING_STATE : 32
 DEVICE_DATA_SET_RANGE : 16
@@ -2052,9 +4235,6 @@ PARTITION_INFORMATION_MBR : 24
 PLEX_READ_DATA_REQUEST : 16
 PREVENT_MEDIA_REMOVAL : 1
 READ_ELEMENT_ADDRESS_INFO : 104
-READ_FILE_USN_DATA : 4
-READ_USN_JOURNAL_DATA_V0 : 40
-READ_USN_JOURNAL_DATA_V1 : 48
 REASSIGN_BLOCKS : 8
 REASSIGN_BLOCKS_EX : 12
 REPAIR_COPIES_INPUT : 32
@@ -2112,16 +4292,6 @@ TXFS_QUERY_RM_INFORMATION : 176
 TXFS_READ_BACKUP_INFORMATION_OUT : 4
 TXFS_TRANSACTION_ACTIVE_INFO : 1
 TXFS_WRITE_BACKUP_INFORMATION : 1
-USN_JOURNAL_DATA_V0 : 56
-USN_JOURNAL_DATA_V1 : 64
-USN_JOURNAL_DATA_V2 : 80
-USN_RANGE_TRACK_OUTPUT : 8
-USN_RECORD_COMMON_HEADER : 8
-USN_RECORD_EXTENT : 16
-USN_RECORD_V2 : 64
-USN_RECORD_V3 : 80
-USN_RECORD_V4 : 80
-USN_TRACK_MODIFIED_RANGES : 24
 VERIFY_INFORMATION : 16
 VOLUME_BITMAP_BUFFER : 24
 VOLUME_DISK_EXTENTS : 32
@@ -2138,10 +4308,6 @@ winioctl_CHANGER_SEND_VOLUME_TAG_INFORMATION	Contains information that the IOCTL
 winioctl_CHANGER_SET_ACCESS	Contains information that the IOCTL_CHANGER_SET_ACCESS control code needs to set the state of the device's insert/eject port, door, or keypad.
 winioctl_CHANGER_SET_POSITION	Contains information needed by the IOCTL_CHANGER_SET_POSITION control code to set the changer's robotic transport mechanism to the specified element address.
 winioctl_CLASS_MEDIA_CHANGE_CONTEXT	Contains information associated with a media change event.
-winioctl_CREATE_DISK	Contains information that the IOCTL_DISK_CREATE_DISK control code uses to initialize GUID partition table (GPT), master boot record (MBR), or raw disks.
-winioctl_CREATE_DISK_GPT	Contains information used by the IOCTL_DISK_CREATE_DISK control code to initialize GUID partition table (GPT) disks.
-winioctl_CREATE_DISK_MBR	Contains information that the IOCTL_DISK_CREATE_DISK control code uses to initialize master boot record (MBR) disks.
-winioctl_CREATE_USN_JOURNAL_DATA	Contains information that describes an update sequence number (USN) change journal.
 winioctl_CSV_CONTROL_PARAM	Represents a type of CSV control operation.
 winioctl_CSV_IS_OWNED_BY_CSVFS	Contains the output for the FSCTL_IS_VOLUME_OWNED_BYCSVFS control code that determines whether a volume is owned by CSVFS.
 winioctl_CSV_NAMESPACE_INFO	Contains the output for the FSCTL_IS_CSV_FILE control code that retrieves namespace information for a file.
@@ -2149,7 +4315,6 @@ winioctl_CSV_QUERY_FILE_REVISION	Contains information about whether files in a s
 winioctl_CSV_QUERY_MDS_PATH	Contains the path that is used by CSV to communicate to the MDS.
 winioctl_CSV_QUERY_REDIRECT_STATE	Contains information about whether files in a stream have been redirected.
 winioctl_CSV_QUERY_VETO_FILE_DIRECT_IO_OUTPUT	Contains troubleshooting information about why a volume is in redirected mode.
-winioctl_DELETE_USN_JOURNAL_DATA	Contains information on the deletion of an update sequence number (USN) change journal using the FSCTL_DELETE_USN_JOURNAL control code.
 winioctl_DEVICE_COPY_OFFLOAD_DESCRIPTOR	Contains the copy offload capabilities for a storage device.
 winioctl_DEVICE_DATA_SET_LB_PROVISIONING_STATE	Output structure for the DeviceDsmAction_Allocation action of the IOCTL_STORAGE_MANAGE_DATA_SET_ATTRIBUTES control code.
 winioctl_DEVICE_DATA_SET_RANGE	Provides data set range information for use with the IOCTL_STORAGE_MANAGE_DATA_SET_ATTRIBUTES control code.
@@ -2165,13 +4330,7 @@ winioctl_DEVICE_POWER_DESCRIPTOR	The DEVICE_POWER_DESCRIPTOR structure describes
 winioctl_DEVICE_SEEK_PENALTY_DESCRIPTOR	Used in conjunction with the IOCTL_STORAGE_QUERY_PROPERTY request to retrieve the seek penalty descriptor data for a device.
 winioctl_DEVICE_TRIM_DESCRIPTOR	Used in conjunction with the IOCTL_STORAGE_QUERY_PROPERTY request to retrieve the trim descriptor data for a device.
 winioctl_DEVICE_WRITE_AGGREGATION_DESCRIPTOR	Reserved for system use.
-winioctl_DRIVE_LAYOUT_INFORMATION	Contains information about the partitions of a drive.
-winioctl_DRIVE_LAYOUT_INFORMATION_EX	Contains extended information about a drive's partitions.
-winioctl_DRIVE_LAYOUT_INFORMATION_GPT	Contains information about a drive's GUID partition table (GPT) partitions.
-winioctl_DRIVE_LAYOUT_INFORMATION_MBR	Provides information about a drive's master boot record (MBR) partitions.
 winioctl_DUPLICATE_EXTENTS_DATA	Contains parameters for the FSCTL_DUPLICATE_EXTENTS control code that performs the Block Cloning operation.
-winioctl_EXFAT_STATISTICS	Contains statistical information from the exFAT file system.
-winioctl_FAT_STATISTICS	Contains statistical information from the FAT file system.
 winioctl_FILE_ALLOCATED_RANGE_BUFFER	Indicates a range of bytes in a file.
 winioctl_FILE_LEVEL_TRIM	Used as input to the FSCTL_FILE_LEVEL_TRIM control code.
 winioctl_FILE_LEVEL_TRIM_OUTPUT	Used as output to the FSCTL_FILE_LEVEL_TRIM control code.
@@ -2186,8 +4345,6 @@ winioctl_FILE_STORAGE_TIER	Represents an identifier for the storage tier relativ
 winioctl_FILE_STORAGE_TIER_REGION	Describes a single storage tier region.
 winioctl_FILE_SYSTEM_RECOGNITION_INFORMATION	Contains file system recognition information retrieved by the FSCTL_QUERY_FILE_SYSTEM_RECOGNITION control code.
 winioctl_FILE_ZERO_DATA_INFORMATION	Contains a range of a file to set to zeros.
-winioctl_FILESYSTEM_STATISTICS	Contains statistical information from the file system.
-winioctl_FILESYSTEM_STATISTICS_EX	Contains statistical information from the file system.Support for this structure started with Windows 10.
 winioctl_FIND_BY_SID_DATA	Contains data for the FSCTL_FIND_FILES_BY_SID control code.
 winioctl_FIND_BY_SID_OUTPUT	Represents a file name.
 winioctl_FORMAT_EX_PARAMETERS	Contains information used in formatting a contiguous set of disk tracks. It is used by the IOCTL_DISK_FORMAT_TRACKS_EX control code.
@@ -2210,19 +4367,10 @@ winioctl_MOVE_FILE_DATA	Contains input data for the FSCTL_MOVE_FILE control code
 winioctl_NTFS_EXTENDED_VOLUME_DATA	Represents volume data.
 winioctl_NTFS_FILE_RECORD_INPUT_BUFFER	Contains data for the FSCTL_GET_NTFS_FILE_RECORD control code.
 winioctl_NTFS_FILE_RECORD_OUTPUT_BUFFER	Receives output data from the FSCTL_GET_NTFS_FILE_RECORD control code.
-winioctl_NTFS_STATISTICS	Contains statistical information from the NTFS file system.
-winioctl_NTFS_STATISTICS_EX	Contains statistical information from the NTFS file system.Support for this structure started with Windows 10.
 winioctl_NTFS_VOLUME_DATA_BUFFER	Represents volume data.
-winioctl_PARTITION_INFORMATION	Contains information about a disk partition.
-winioctl_PARTITION_INFORMATION_EX	Contains partition information for standard AT-style master boot record (MBR) and Extensible Firmware Interface (EFI) disks.
-winioctl_PARTITION_INFORMATION_GPT	Contains GUID partition table (GPT) partition information.
-winioctl_PARTITION_INFORMATION_MBR	Contains partition information specific to master boot record (MBR) disks.
 winioctl_PLEX_READ_DATA_REQUEST	Indicates the range of the read operation to perform and the plex from which to read.
 winioctl_PREVENT_MEDIA_REMOVAL	Provides removable media locking data. It is used by the IOCTL_STORAGE_MEDIA_REMOVAL control code.
 winioctl_READ_ELEMENT_ADDRESS_INFO	Represents the volume tag information. It is used by the IOCTL_CHANGER_QUERY_VOLUME_TAGS control code.
-winioctl_READ_FILE_USN_DATA	Specifies the versions of the update sequence number (USN) change journal supported by the application.
-winioctl_READ_USN_JOURNAL_DATA_V0	Contains information defining a set of update sequence number (USN) change journal records to return to the calling process.
-winioctl_READ_USN_JOURNAL_DATA_V1	Contains information defining a set of update sequence number (USN) change journal records to return to the calling process.
 winioctl_REASSIGN_BLOCKS	Contains disk block reassignment data.
 winioctl_REASSIGN_BLOCKS_EX	Contains disk block reassignment data.
 winioctl_REPAIR_COPIES_INPUT	Input structure for the FSCTL_REPAIR_COPIES control code.
