@@ -247,6 +247,13 @@ namespace Vanara.Extensions
 			bool ImplIEnumT(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
 		}
 
+		/// <summary>Gets the fields of a structure with sequential layout in the order in which they appear in memory.</summary>
+		/// <param name="type">The type of the structure.</param>
+		/// <param name="bindingFlags">The binding flags.</param>
+		/// <returns>An ordered sequence of <see cref="FieldInfo"/> instances representing the fields in the structure.</returns>
+		public static IEnumerable<FieldInfo> GetOrderedFields(this Type type, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance) =>
+			type.GetFields(bindingFlags).Select(fi => (System.Runtime.InteropServices.Marshal.OffsetOf(type, fi.Name).ToInt64(), fi)).OrderBy(t => t.Item1).Select(t => t.fi);
+
 		/// <summary>Gets a named field value from an object.</summary>
 		/// <typeparam name="T">The expected type of the field to be returned.</typeparam>
 		/// <param name="fieldName">Name of the field.</param>
