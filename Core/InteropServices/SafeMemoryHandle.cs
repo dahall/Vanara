@@ -160,6 +160,17 @@ namespace Vanara.InteropServices
 			handle.FillMemory(value, length);
 		}
 
+		/// <summary>Releases the owned handle without releasing the allocated memory and returns a pointer to the current memory.</summary>
+		/// <returns>A pointer to the currently allocated memory. The caller now has the responsibility to free this memory.</returns>
+		public virtual IntPtr TakeOwnership()
+		{
+			var h = handle;
+			SetHandleAsInvalid();
+			handle = IntPtr.Zero;
+			Size = 0;
+			return h;
+		}
+
 		/// <summary>Zero out all allocated memory.</summary>
 		public virtual void Zero() => Fill(0, Size);
 
