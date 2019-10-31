@@ -345,6 +345,47 @@ namespace Vanara.PInvoke
 			VER_PRODUCT_TYPE = 0x0000080,
 		}
 
+		/// <summary>The <c>RtlCopyMemory</c> routine copies the contents of a source memory block to a destination memory block.</summary>
+		/// <param name="Destination">Datatype: void*. A pointer to the destination memory block to copy the bytes to.</param>
+		/// <param name="Source">Datatype: const void*. A pointer to the source memory block to copy the bytes from.</param>
+		/// <param name="Length">Datatype: size_t. The number of bytes to copy from the source to the destination.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>
+		/// <c>RtlCopyMemory</c> runs faster than <c>RtlMoveMemory</c>. However, <c>RtlCopyMemory</c> requires that the source memory block,
+		/// which is defined by Source and Length, cannot overlap the destination memory block, which is defined by Destination and Length.
+		/// In contrast, <c>RtlMoveMemory</c> correctly handles the case in which the source and destination memory blocks overlap.
+		/// </para>
+		/// <para>New drivers should use the <c>RtlCopyMemory</c> routine instead of <c>RtlCopyBytes</c>.</para>
+		/// <para>
+		/// Callers of <c>RtlCopyMemory</c> can be running at any IRQL if the source and destination memory blocks are in nonpaged system
+		/// memory. Otherwise, the caller must be running at IRQL &lt;= APC_LEVEL.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-rtlcopymemory
+		// void RtlCopyMemory( Destination, Source, Length );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wdm.h", MSDNShortId = "d204eeb4-e109-4a86-986f-0fccdda3f8f8")]
+		public static extern void RtlCopyMemory(IntPtr Destination, IntPtr Source, SizeT Length);
+
+		/// <summary>The <c>RtlFillMemory</c> routine fills a block of memory with the specified fill value.</summary>
+		/// <param name="Destination">Datatype: void*. A pointer to the block of memory to be filled.</param>
+		/// <param name="Length">Datatype: size_t. The number of bytes in the block of memory to be filled.</param>
+		/// <param name="Fill">
+		/// Datatype: int. The value to fill the destination memory block with. This value is copied to every byte in the memory block that
+		///           is defined by Destination and Length.
+		/// </param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// Callers of <c>RtlFillMemory</c> can be running at any IRQL if the destination memory block is in nonpaged system memory.
+		/// Otherwise, the caller must be running at IRQL &lt;= APC_LEVEL.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-rtlfillmemory
+		// void RtlFillMemory( Destination, Length, Fill );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wdm.h", MSDNShortId = "9a73331a-cc73-4a47-948b-a821600ca6a6")]
+		public static extern void RtlFillMemory(IntPtr Destination, SizeT Length, int Fill);
+
 		/// <summary>
 		/// Copies the contents of a source memory block to a destination memory block, and supports overlapping source and destination
 		/// memory blocks.
