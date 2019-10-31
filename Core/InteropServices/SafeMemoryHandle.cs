@@ -225,8 +225,7 @@ namespace Vanara.InteropServices
 		protected SafeMemoryHandle(SizeT size = default) : base(IntPtr.Zero, true)
 		{
 			if (size == 0) return;
-			RuntimeHelpers.PrepareConstrainedRegions();
-			SetHandle(mm.AllocMem(sz = size));
+			InitFromSize(size);
 			Zero();
 		}
 
@@ -239,7 +238,24 @@ namespace Vanara.InteropServices
 		/// <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
 		/// <param name="bytes">Array of unmanaged pointers</param>
 		/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
-		protected SafeMemoryHandle(byte[] bytes) : this(bytes.Length) => Marshal.Copy(bytes, 0, handle, bytes.Length);
+		protected SafeMemoryHandle(byte[] bytes) : base(IntPtr.Zero, true)
+		{
+			if ((bytes?.Length ?? 0) == 0) return;
+			InitFromSize(bytes.Length);
+			Marshal.Copy(bytes, 0, handle, bytes.Length);
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SafeMemoryHandle{TMem}"/> class from a <see cref="SafeAllocatedMemoryHandle"/>
+		/// instance, copying all the memory.
+		/// </summary>
+		/// <param name="source">The source memory block.</param>
+		protected SafeMemoryHandle(SafeAllocatedMemoryHandle source) : base(IntPtr.Zero, true)
+		{
+			if (source is null) return;
+			InitFromSize(source.Size);
+			((IntPtr)source).CopyTo(handle, source.Size);
+		}
 
 		/// <summary>When overridden in a derived class, gets a value indicating whether the handle value is invalid.</summary>
 		public override bool IsInvalid => handle == IntPtr.Zero;
@@ -257,6 +273,7 @@ namespace Vanara.InteropServices
 				}
 				else
 				{
+					RuntimeHelpers.PrepareConstrainedRegions();
 					handle = IsInvalid ? mm.AllocMem(value) : mm.ReAllocMem(handle, value);
 					if (value > sz)
 						handle.Offset(sz).FillMemory(0, value - sz);
@@ -276,6 +293,12 @@ namespace Vanara.InteropServices
 			sz = 0;
 			handle = IntPtr.Zero;
 			return true;
+		}
+
+		private void InitFromSize(SizeT size)
+		{
+			RuntimeHelpers.PrepareConstrainedRegions();
+			SetHandle(mm.AllocMem(sz = size));
 		}
 	}
 
