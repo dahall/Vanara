@@ -112,13 +112,15 @@ namespace Vanara.PInvoke
 			if (err.Failed && (bufErr == null || bufErr.Value != err) && !buffErrs.Contains(err)) return err;
 			using (var buf = new SafeHGlobalHandle(sz.ToInt32(null)))
 			{
-				var ret = method(buf.DangerousGetHandle(), ref sz);
-				result = (outConverter ?? Conv)(buf.DangerousGetHandle(), sz);
-				return ret;
+				err = method(buf.DangerousGetHandle(), ref sz);
+				if (err.Succeeded)
+					result = (outConverter ?? Conv)(buf.DangerousGetHandle(), sz);
+				return err;
 			}
 
 			Win32Error GetSize(ref TSize sz1) => method(IntPtr.Zero, ref sz1);
-			TOut Conv(IntPtr p, TSize s) => p.ToStructure<TOut>();
+
+			static TOut Conv(IntPtr p, TSize s) => p == IntPtr.Zero ? default : p.Convert<TOut>(Convert.ToUInt32(s));
 		}
 
 		/// <summary>Calls a method with buffer for a type and gets the result or error.</summary>
