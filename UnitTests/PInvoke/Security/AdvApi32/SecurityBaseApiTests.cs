@@ -230,31 +230,23 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void AdjustTokenGroupsTest()
 		{
-			using (var t = SafeHTOKEN.FromThread(SafeHTHREAD.Current, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_ADJUST_GROUPS | TokenAccess.TOKEN_QUERY))
-			{
-				var tg = new TOKEN_GROUPS(1);
-				tg.Groups[0] = new SID_AND_ATTRIBUTES(SafePSID.Everyone, 0);
-				Assert.That(AdjustTokenGroups(t, true, tg, 0, IntPtr.Zero, out var req), ResultIs.Failure);
-				using (var mem = new SafeHGlobalHandle(req))
-					Assert.That(AdjustTokenGroups(t, true, tg, mem.Size, mem, out req), ResultIs.Successful);
-			}
+			using var t = SafeHTOKEN.FromThread(SafeHTHREAD.Current, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_ADJUST_GROUPS | TokenAccess.TOKEN_QUERY);
+			var tg = new TOKEN_GROUPS(SafePSID.Everyone);
+			Assert.That(AdjustTokenGroups(t, true, tg, out var old), ResultIs.Successful);
+			Assert.That((int)old.GroupCount, Is.EqualTo(old.Groups.Length));
 		}
 
-		[Test()]
+		[Test]
 		public void AdjustTokenPrivilegesTest()
 		{
-			using (var t = SafeHTOKEN.FromThread(SafeHTHREAD.Current, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY))
-			{
-				Assert.That(LookupPrivilegeValue(null, "SeShutdownPrivilege", out var luid));
-				var ptp = new PTOKEN_PRIVILEGES(luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
-				var old = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
-				Assert.That(AdjustTokenPrivileges(t, false, ptp, old.Size, old, out var rLen));
-
-				Assert.That(AdjustTokenPrivileges(t, false, ptp));
-			}
+			using var t = SafeHTOKEN.FromThread(SafeHTHREAD.Current, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY);
+			Assert.That(LookupPrivilegeValue(null, "SeShutdownPrivilege", out var luid));
+			var ptp = new TOKEN_PRIVILEGES(luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
+			Assert.That(AdjustTokenPrivileges(t, false, ptp, out var old), ResultIs.Successful);
+			Assert.That((int)old.PrivilegeCount, Is.EqualTo(old.Privileges.Length));
 		}
 
-		[Test()]
+		[Test]
 		public void AllocateLocallyUniqueIdTest()
 		{
 			Assert.That(AllocateLocallyUniqueId(out var luid));
@@ -380,7 +372,7 @@ namespace Vanara.PInvoke.Tests
 			TestContext.WriteLine(string.Join("\n", capSids.Select(s => s.ToString("P"))));
 		}
 
-		[Test()]
+		[Test]
 		public void DuplicateTokenTest()
 		{
 			using (var pval = SafeHTOKEN.FromProcess(Process.GetCurrentProcess()))
@@ -392,7 +384,7 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		[Test()]
+		[Test]
 		public void DuplicateTokenExTest()
 		{
 			using (var pval = SafeHTOKEN.FromProcess(Process.GetCurrentProcess()))
@@ -535,26 +527,22 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		[Test()]
+		[Test]
 		public void GetSetTokenInformationTest()
 		{
 			using (var t = SafeHTOKEN.FromProcess(Process.GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
 			{
 				Assert.That(t, Is.Not.Null);
 
-				var p = t.GetInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges);
+				var p = t.GetInfo<TOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges);
 				Assert.That(p, Is.Not.Null);
 				Assert.That(p.PrivilegeCount, Is.GreaterThan(0));
 				TestContext.WriteLine("Privs: " + string.Join("; ", p.Privileges.Select(i => i.ToString())));
 
-				using (var hMem = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance(50))
-				{
-					Assert.That(GetTokenInformation(t, TOKEN_INFORMATION_CLASS.TokenPrivileges, hMem, hMem.Size, out var sz), ResultIs.Successful);
-					var p1 = PTOKEN_PRIVILEGES.FromPtr(hMem);
-					Assert.That(p1.PrivilegeCount, Is.EqualTo(p.PrivilegeCount));
-
-					Assert.That(p.Privileges, Is.EquivalentTo(p1.Privileges));
-				}
+				using var hMem = new SafeAnysizeStruct<TOKEN_PRIVILEGES>(2048);
+				Assert.That(GetTokenInformation(t, TOKEN_INFORMATION_CLASS.TokenPrivileges, hMem, hMem.Size, out var sz), ResultIs.Successful);
+				Assert.That(hMem.Value.PrivilegeCount, Is.EqualTo(p.PrivilegeCount));
+				Assert.That(p.Privileges, Is.EquivalentTo(hMem.Value.Privileges));
 			}
 
 			using (new ElevPriv("SeSecurityPrivilege"))
@@ -698,7 +686,7 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		[Test()]
+		[Test]
 		public void PrivilegeCheckTest()
 		{
 			using (var t = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY))

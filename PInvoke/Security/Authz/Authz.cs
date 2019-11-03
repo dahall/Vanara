@@ -178,7 +178,7 @@ namespace Vanara.PInvoke
 			AuthzContextInfoRestrictedSids,
 
 			/// <summary>Retrieves a TOKEN_PRIVILEGES structure that contains the privileges held by the user.</summary>
-			[CorrespondingType(typeof(PTOKEN_PRIVILEGES))]
+			[CorrespondingType(typeof(TOKEN_PRIVILEGES))]
 			AuthzContextInfoPrivileges,
 
 			/// <summary>Retrieves the expiration time set on the context.</summary>

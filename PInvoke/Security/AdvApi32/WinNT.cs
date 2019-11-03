@@ -682,7 +682,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>The buffer receives a TOKEN_PRIVILEGES structure that contains the privileges of the token.</summary>
 			[CorrespondingType(typeof(TOKEN_PRIVILEGES), CorrespondingAction.Get)]
-			[CorrespondingType(typeof(PTOKEN_PRIVILEGES), CorrespondingAction.Get)]
 			TokenPrivileges,
 
 			/// <summary>
@@ -3764,13 +3763,13 @@ namespace Vanara.PInvoke
 
 		/// <summary>The TOKEN_GROUPS structure contains information about the group security identifiers (SIDs) in an access token.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct TOKEN_GROUPS
+		public struct TOKEN_GROUPS : IMarshalDirective
 		{
 			/// <summary>Specifies the number of groups in the access token.</summary>
 			public uint GroupCount;
 
 			/// <summary>Specifies an array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			[MarshalAs(UnmanagedType.ByValArray)]
 			public SID_AND_ATTRIBUTES[] Groups;
 
 			/// <summary>Initializes a new instance of the <see cref="TOKEN_GROUPS"/> struct.</summary>
@@ -3780,6 +3779,25 @@ namespace Vanara.PInvoke
 				GroupCount = count;
 				Groups = new SID_AND_ATTRIBUTES[count];
 			}
+
+			/// <summary>Initializes a new instance of the <see cref="TOKEN_GROUPS"/> struct with and array of SIDs and attributes.</summary>
+			/// <param name="groups">An array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</param>
+			public TOKEN_GROUPS(SID_AND_ATTRIBUTES[] groups)
+			{
+				Groups = groups;
+				GroupCount = (uint)(groups?.Length ?? 0);
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="TOKEN_GROUPS"/> struct with a single SID and attribute.</summary>
+			/// <param name="sid">The SID.</param>
+			/// <param name="attributes">The attributes of the SID.</param>
+			public TOKEN_GROUPS(PSID sid, uint attributes = 0) : this(1U)
+			{
+				Groups[0] = new SID_AND_ATTRIBUTES(sid, attributes);
+			}
+
+			MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<TOKEN_GROUPS>(p, s, nameof(GroupCount)).Value : default;
+			SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<TOKEN_GROUPS>(this);
 		}
 
 		/// <summary>
@@ -3905,7 +3923,7 @@ namespace Vanara.PInvoke
 		// PrivilegeCount; LUID_AND_ATTRIBUTES Privileges[ANYSIZE_ARRAY]; } TOKEN_PRIVILEGES, *PTOKEN_PRIVILEGES;
 		[PInvokeData("winnt.h", MSDNShortId = "c9016511-740f-44f3-92ed-17cc518c6612")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct TOKEN_PRIVILEGES
+		public struct TOKEN_PRIVILEGES : IMarshalDirective
 		{
 			/// <summary>This must be set to the number of entries in the <c>Privileges</c> array.</summary>
 			public uint PrivilegeCount;
@@ -3947,8 +3965,28 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			[MarshalAs(UnmanagedType.ByValArray)]
 			public LUID_AND_ATTRIBUTES[] Privileges;
+
+			/// <summary>Initializes a new instance of the <see cref="TOKEN_PRIVILEGES"/> structure with a single LUID_AND_ATTRIBUTES value.</summary>
+			/// <param name="luid">The LUID value.</param>
+			/// <param name="attribute">The attribute value.</param>
+			public TOKEN_PRIVILEGES(LUID luid, PrivilegeAttributes attribute)
+			{
+				PrivilegeCount = 1;
+				Privileges = new[] { new LUID_AND_ATTRIBUTES(luid, attribute) };
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="TOKEN_PRIVILEGES"/> structure from a list of privileges.</summary>
+			/// <param name="values">The values.</param>
+			public TOKEN_PRIVILEGES(LUID_AND_ATTRIBUTES[] values)
+			{
+				PrivilegeCount = (uint)(values?.Length ?? 0);
+				Privileges = (LUID_AND_ATTRIBUTES[])values?.Clone() ?? new LUID_AND_ATTRIBUTES[0];
+			}
+
+			MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<TOKEN_PRIVILEGES>(p, s, nameof(PrivilegeCount)).Value : default;
+			SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<TOKEN_PRIVILEGES>(this);
 		}
 
 		/// <summary>The TOKEN_SOURCE structure identifies the source of an access token.</summary>
@@ -4352,111 +4390,6 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public override bool Equals(object obj) => obj is PSID_IDENTIFIER_AUTHORITY h ? h.LongValue == h.LongValue : false;
-		}
-
-		/// <summary>The TOKEN_PRIVILEGES structure contains information about a set of privileges for an access token.</summary>
-		[StructLayout(LayoutKind.Sequential)]
-		public class PTOKEN_PRIVILEGES
-		{
-			/// <summary>This must be set to the number of entries in the Privileges array.</summary>
-			public int PrivilegeCount;
-
-			/// <summary>
-			/// Specifies an array of LUID_AND_ATTRIBUTES structures. Each structure contains the LUID and attributes of a privilege. To get
-			/// the name of the privilege associated with a LUID, call the LookupPrivilegeName function, passing the address of the LUID as
-			/// the value of the lpLuid parameter.
-			/// </summary>
-			public LUID_AND_ATTRIBUTES[] Privileges;
-
-			/// <summary>Initializes a new instance of the <see cref="PTOKEN_PRIVILEGES"/> class.</summary>
-			public PTOKEN_PRIVILEGES() : this(null) { }
-
-			/// <summary>Initializes a new instance of the <see cref="PTOKEN_PRIVILEGES"/> class with a single LUID_AND_ATTRIBUTES value.</summary>
-			/// <param name="luid">The LUID value.</param>
-			/// <param name="attribute">The attribute value.</param>
-			public PTOKEN_PRIVILEGES(LUID luid, PrivilegeAttributes attribute)
-			{
-				PrivilegeCount = 1;
-				Privileges = new[] { new LUID_AND_ATTRIBUTES(luid, attribute) };
-			}
-
-			/// <summary>Initializes a new instance of the <see cref="PTOKEN_PRIVILEGES"/> class from a list of privileges.</summary>
-			/// <param name="values">The values.</param>
-			public PTOKEN_PRIVILEGES(LUID_AND_ATTRIBUTES[] values)
-			{
-				PrivilegeCount = values?.Length ?? 0;
-				Privileges = (LUID_AND_ATTRIBUTES[])values?.Clone() ?? new LUID_AND_ATTRIBUTES[0];
-			}
-
-			/// <summary>Gets the size of this instance in bytes.</summary>
-			/// <value>The size in bytes.</value>
-			public uint SizeInBytes => Marshaler.GetSize(PrivilegeCount);
-
-			/// <summary>Creates a new instance of <see cref="PTOKEN_PRIVILEGES"/> from a pointer.</summary>
-			/// <param name="hMem">A pointer to a memory block that contains a native TOKEN_PRIVILEGES structure.</param>
-			/// <returns>A new instance of <see cref="PTOKEN_PRIVILEGES"/>.</returns>
-			public static PTOKEN_PRIVILEGES FromPtr(IntPtr hMem) => Marshaler.GetInstance(null).MarshalNativeToManaged(hMem) as PTOKEN_PRIVILEGES;
-
-			/// <summary>Gets unmanaged memory allocated to hold the number of privileges specified by <paramref name="privilegeCount"/>.</summary>
-			/// <param name="privilegeCount">The privilege count.</param>
-			public static SafeCoTaskMemHandle GetAllocatedAndEmptyInstance(int privilegeCount = 100) => new SafeCoTaskMemHandle((int)Marshaler.GetSize(privilegeCount));
-
-			/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-			public override string ToString() => $"Count:{PrivilegeCount}";
-
-			internal class Marshaler : ICustomMarshaler
-			{
-				private readonly bool allocOut;
-
-				private Marshaler(string cookie) => allocOut = cookie == "Out";
-
-				public static ICustomMarshaler GetInstance(string cookie) => new Marshaler(cookie);
-
-				/// <summary>Performs necessary cleanup of the managed data when it is no longer needed.</summary>
-				/// <param name="ManagedObj">The managed object to be destroyed.</param>
-				public void CleanUpManagedData(object ManagedObj) { }
-
-				/// <summary>Performs necessary cleanup of the unmanaged data when it is no longer needed.</summary>
-				/// <param name="pNativeData">A pointer to the unmanaged data to be destroyed.</param>
-				public void CleanUpNativeData(IntPtr pNativeData) => Marshal.FreeCoTaskMem(pNativeData);
-
-				/// <summary>Returns the size of the native data to be marshaled.</summary>
-				/// <returns>The size in bytes of the native data.</returns>
-				public int GetNativeDataSize() => -1;
-
-				/// <summary>Converts the managed data to unmanaged data.</summary>
-				/// <param name="ManagedObj">The managed object to be converted.</param>
-				/// <returns>Returns the COM view of the managed object.</returns>
-				public IntPtr MarshalManagedToNative(object ManagedObj)
-				{
-					if (!(ManagedObj is PTOKEN_PRIVILEGES ps)) return IntPtr.Zero;
-					if (allocOut)
-					{
-						var sz = Math.Abs(ps.PrivilegeCount);
-						ps.PrivilegeCount = 0;
-						return Marshal.AllocCoTaskMem(sz);
-					}
-					var ptr = Marshal.AllocCoTaskMem((int)GetSize(ps.PrivilegeCount));
-					Marshal.WriteInt32(ptr, ps.PrivilegeCount);
-					ptr.Write(ps.Privileges, Marshal.SizeOf(typeof(int)));
-					return ptr;
-				}
-
-				/// <summary>Converts the unmanaged data to managed data.</summary>
-				/// <param name="pNativeData">A pointer to the unmanaged data to be wrapped.</param>
-				/// <returns>Returns the managed view of the COM data.</returns>
-				public object MarshalNativeToManaged(IntPtr pNativeData)
-				{
-					if (pNativeData == IntPtr.Zero) return new PTOKEN_PRIVILEGES();
-					var sz = Marshal.SizeOf(typeof(uint));
-					var cnt = Marshal.ReadInt32(pNativeData);
-					var privPtr = pNativeData.Offset(sz);
-					return new PTOKEN_PRIVILEGES { PrivilegeCount = cnt, Privileges = cnt > 0 ? privPtr.ToIEnum<LUID_AND_ATTRIBUTES>(cnt).ToArray() : new LUID_AND_ATTRIBUTES[0] };
-				}
-
-				internal static uint GetSize(int privCount) => (uint)Marshal.SizeOf(typeof(uint)) + (uint)(Marshal.SizeOf(typeof(LUID_AND_ATTRIBUTES)) * (privCount == 0 ? 1 : Math.Abs(privCount)));
-			}
 		}
 
 		/// <summary>A SafeHandle for access control lists. If owned, will call LocalFree on the pointer when disposed.</summary>

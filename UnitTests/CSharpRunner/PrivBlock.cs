@@ -7,7 +7,7 @@ namespace Vanara.PInvoke.Tests
 {
 	public class ElevPriv : IDisposable
 	{
-		SafeCoTaskMemHandle prevState;
+		TOKEN_PRIVILEGES prevState;
 		SafeHTOKEN tok;
 
 		public ElevPriv(string priv, HPROCESS hProc = default, TokenAccess access = TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY) :
@@ -31,17 +31,13 @@ namespace Vanara.PInvoke.Tests
 
 		private void ElevatePrivileges(string[] privs)
 		{
-			var newPriv = new PTOKEN_PRIVILEGES(Array.ConvertAll(privs, s => new LUID_AND_ATTRIBUTES(LUID.FromName(s), PrivilegeAttributes.SE_PRIVILEGE_ENABLED)));
-			prevState = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
-			if (!AdjustTokenPrivileges(tok, false, newPriv, prevState.Size, prevState, out var retLen))
-				Win32Error.ThrowLastError();
-			prevState.Size = (int)retLen;
+			var newPriv = new TOKEN_PRIVILEGES(Array.ConvertAll(privs, s => new LUID_AND_ATTRIBUTES(LUID.FromName(s), PrivilegeAttributes.SE_PRIVILEGE_ENABLED)));
+			AdjustTokenPrivileges(tok, false, newPriv, out prevState).ThrowIfFailed();
 		}
 
 		public void Dispose()
 		{
-			AdjustTokenPrivileges(tok, false, prevState);
-			prevState.Dispose();
+			AdjustTokenPrivileges(tok, false, prevState, out _);
 			tok.Dispose();
 		}
 	}

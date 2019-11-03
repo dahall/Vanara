@@ -14,7 +14,7 @@ namespace Vanara.Security.AccessControl
 	public sealed class PrivilegedCodeBlock : IDisposable
 	{
 		private bool disposed;
-		private readonly SafeCoTaskMemHandle prev;
+		private readonly TOKEN_PRIVILEGES prev;
 		private readonly SafeHTOKEN hObj;
 
 		/// <summary>Initializes a new instance of the <see cref="PrivilegedCodeBlock"/> class.</summary>
@@ -65,12 +65,13 @@ namespace Vanara.Security.AccessControl
 		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail), SecurityCritical]
 		private void Revert()
 		{
-			if (disposed || prev == null) return;
-			lock (prev)
+			if (disposed) return;
+			lock (hObj)
 			{
 				RuntimeHelpers.PrepareConstrainedRegions();
 				hObj.AdjustPrivileges(prev);
 			}
+			hObj.Dispose();
 			disposed = true;
 		}
 	}

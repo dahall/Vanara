@@ -111,13 +111,7 @@ namespace Vanara.PInvoke
 			public BITMAPINFO(int width, int height, ushort bitCount = 32)
 				: this()
 			{
-				bmiHeader.biSize = Marshal.SizeOf(typeof(BITMAPINFO));
-				bmiHeader.biWidth = width;
-				bmiHeader.biHeight = height;
-				bmiHeader.biPlanes = 1;
-				bmiHeader.biBitCount = bitCount;
-				bmiHeader.biCompression = BitmapCompressionMode.BI_RGB;
-				bmiHeader.biSizeImage = 0; // (uint)width * (uint)height * bitCount / 8;
+				bmiHeader = new BITMAPINFOHEADER(width, height, bitCount);
 			}
 		}
 
@@ -263,6 +257,22 @@ namespace Vanara.PInvoke
 
 			/// <summary>The number of color indexes that are required for displaying the bitmap. If this value is zero, all colors are required.</summary>
 			public uint biClrImportant;
+
+			/// <summary>Initializes a new instance of the <see cref="BITMAPINFOHEADER"/> structure.</summary>
+			/// <param name="width">The width.</param>
+			/// <param name="height">The height.</param>
+			/// <param name="bitCount">The bit count.</param>
+			public BITMAPINFOHEADER(int width, int height, ushort bitCount = 32)
+				: this()
+			{
+				biSize = Marshal.SizeOf(typeof(BITMAPINFO));
+				biWidth = width;
+				biHeight = height;
+				biPlanes = 1;
+				biBitCount = bitCount;
+				biCompression = BitmapCompressionMode.BI_RGB;
+				biSizeImage = 0; // (uint)width * (uint)height * bitCount / 8;
+			}
 		}
 
 		/// <summary>

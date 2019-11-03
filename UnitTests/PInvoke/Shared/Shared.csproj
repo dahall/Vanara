@@ -33,11 +33,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\ComEnumeratorTests.cs" />
+    <Compile Include="InteropServices\AnysizeStructTests.cs" />
     <Compile Include="InteropServices\CoTaskMemStringMarshalerTests.cs" />
     <Compile Include="InteropServices\SafeNativeArrayTests.cs" />
     <Compile Include="OverlappedAsyncTests.cs" />

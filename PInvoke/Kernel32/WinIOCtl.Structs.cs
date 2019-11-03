@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
@@ -1041,7 +1042,7 @@ namespace Vanara.PInvoke
 		// DRIVE_LAYOUT_INFORMATION, *PDRIVE_LAYOUT_INFORMATION;
 		[PInvokeData("winioctl.h", MSDNShortId = "e67ccaa7-a735-4695-8385-28f57b41821c")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct DRIVE_LAYOUT_INFORMATION
+		public struct DRIVE_LAYOUT_INFORMATION : IMarshalDirective
 		{
 			/// <summary>
 			/// <para>The number of partitions on a drive.</para>
@@ -1058,6 +1059,9 @@ namespace Vanara.PInvoke
 			/// <summary>A variable-sized array of PARTITION_INFORMATION structures, one structure for each partition on a drive.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public PARTITION_INFORMATION[] PartitionEntry;
+
+			MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<DRIVE_LAYOUT_INFORMATION>(p, s, nameof(PartitionCount)).Value : default;
+			SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<DRIVE_LAYOUT_INFORMATION>(this, nameof(PartitionCount));
 		}
 
 		/// <summary>Contains extended information about a drive's partitions.</summary>
@@ -1066,7 +1070,7 @@ namespace Vanara.PInvoke
 		// DRIVE_LAYOUT_INFORMATION_GPT Gpt; } DUMMYUNIONNAME; PARTITION_INFORMATION_EX PartitionEntry[1]; } DRIVE_LAYOUT_INFORMATION_EX, *PDRIVE_LAYOUT_INFORMATION_EX;
 		[PInvokeData("winioctl.h", MSDNShortId = "381c87a8-fe40-4251-a4df-dddc9e2a126d")]
 		[StructLayout(LayoutKind.Explicit)]
-		public struct DRIVE_LAYOUT_INFORMATION_EX
+		public struct DRIVE_LAYOUT_INFORMATION_EX : IMarshalDirective
 		{
 			/// <summary>
 			/// <para>The style of the partitions on the drive enumerated by the PARTITION_STYLE enumeration.</para>
@@ -1117,6 +1121,9 @@ namespace Vanara.PInvoke
 			[FieldOffset(48)]
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public PARTITION_INFORMATION_EX[] PartitionEntry;
+
+			MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<DRIVE_LAYOUT_INFORMATION_EX>(p, s, nameof(PartitionCount)).Value : default;
+			SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<DRIVE_LAYOUT_INFORMATION_EX>(this, nameof(PartitionCount));
 		}
 
 		/// <summary>Contains information about a drive's GUID partition table (GPT) partitions.</summary>
@@ -3875,7 +3882,7 @@ namespace Vanara.PInvoke
 		// RemainingExtents; WORD NumberOfExtents; WORD ExtentSize; USN_RECORD_EXTENT Extents[1]; } USN_RECORD_V4, *PUSN_RECORD_V4;
 		[PInvokeData("winioctl.h", MSDNShortId = "2636D1A1-6FD1-4F84-954C-499DCCE6E390")]
 		[StructLayout(LayoutKind.Sequential, Size = 80)]
-		public struct USN_RECORD_V4
+		public struct USN_RECORD_V4 : IMarshalDirective
 		{
 			/// <summary>
 			/// A USN_RECORD_COMMON_HEADER structure that describes the record length, major version, and minor version for the record.
@@ -4095,6 +4102,9 @@ namespace Vanara.PInvoke
 			/// <summary>An array of USN_RECORD_EXTENT structures that represent the extents in the <c>USN_RECORD_V4</c> entry.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public USN_RECORD_EXTENT[] Extents;
+
+			MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<USN_RECORD_V4>(p, s, nameof(NumberOfExtents)).Value : default;
+			SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<USN_RECORD_V4>(this, nameof(NumberOfExtents));
 		}
 
 		/// <summary>

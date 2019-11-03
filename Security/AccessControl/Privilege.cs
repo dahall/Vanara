@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
 
@@ -13,6 +12,7 @@ namespace Vanara.Security.AccessControl
 	[TypeConverter(typeof(SystemPrivilegeTypeConverter))]
 	public enum SystemPrivilege
 	{
+		/// <summary>Required to logon interactively.</summary>
 		InteractiveLogon = 0x00000001,
 
 		/// <summary>Required for an account to log on using the network logon type.</summary>
@@ -154,56 +154,70 @@ namespace Vanara.Security.AccessControl
 	/// <summary>Extension methods for <see cref="SafeHTOKEN"/> for working with privileges.</summary>
 	public static class PrivilegeExtension
 	{
-		public static SafeCoTaskMemHandle AdjustPrivilege(this SafeHTOKEN hObj, SystemPrivilege priv, PrivilegeAttributes attr)
+		/// <summary>Adjusts a specified privilege on a security token to have the supplied attributes.</summary>
+		/// <param name="hObj">The security token object.</param>
+		/// <param name="priv">The privilege to adjust.</param>
+		/// <param name="attr">The attribute to change.</param>
+		/// <returns>The privious privileges.</returns>
+		public static TOKEN_PRIVILEGES AdjustPrivilege(this SafeHTOKEN hObj, SystemPrivilege priv, PrivilegeAttributes attr) => AdjustPrivileges(hObj, new TOKEN_PRIVILEGES(priv.GetLUID(), attr));
+
+		/// <summary>Adjusts the specified privileges on a security token to have the supplied attributes.</summary>
+		/// <param name="hObj">The security token object.</param>
+		/// <param name="privileges">The privileges to change.</param>
+		/// <returns>The privious privileges.</returns>
+		public static TOKEN_PRIVILEGES AdjustPrivileges(this SafeHTOKEN hObj, params PrivilegeAndAttributes[] privileges)
 		{
-			var newState = new PTOKEN_PRIVILEGES(priv.GetLUID(), attr);
-			var prevState = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
-			if (!AdjustTokenPrivileges(hObj, false, newState, (uint)prevState.Size, prevState, out var retLen))
-				throw new Win32Exception();
-			prevState.Size = (int)retLen;
-			return prevState;
+			if (privileges == null || privileges.Length == 0) throw new ArgumentNullException(nameof(privileges));
+			return AdjustPrivileges(hObj, new TOKEN_PRIVILEGES(privileges.Select(pa => new LUID_AND_ATTRIBUTES(pa.Privilege.GetLUID(), pa.Attributes)).ToArray()));
 		}
 
-		public static SafeCoTaskMemHandle AdjustPrivileges(this SafeHTOKEN hObj, params PrivilegeAndAttributes[] privileges)
-		{
-			if (privileges == null || privileges.Length == 0) return SafeCoTaskMemHandle.Null;
-			var newState = new PTOKEN_PRIVILEGES(privileges.Select(pa => new LUID_AND_ATTRIBUTES(pa.Privilege.GetLUID(), pa.Attributes)).ToArray());
-			var prevState = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
-			if (!AdjustTokenPrivileges(hObj, false, newState, (uint)prevState.Size, prevState, out var retLen))
-				throw new Win32Exception();
-			prevState.Size = (int)retLen;
-			return prevState;
-		}
+		/// <summary>Adjusts the specified privileges on a security token to have the supplied attributes.</summary>
+		/// <param name="hObj">The security token object.</param>
+		/// <param name="privileges">The privileges to change.</param>
+		/// <returns>The privious privileges.</returns>
+		public static TOKEN_PRIVILEGES AdjustPrivileges(this SafeHTOKEN hObj, in TOKEN_PRIVILEGES privileges) { AdjustTokenPrivileges(hObj, false, privileges, out var ret).ThrowIfFailed(); return ret; }
 
-		public static void AdjustPrivileges(this SafeHTOKEN hObj, PTOKEN_PRIVILEGES privileges)
-		{
-			if (privileges == null) return;
-			if (!AdjustTokenPrivileges(hObj, false, privileges))
-				throw new Win32Exception();
-		}
-
-		public static void AdjustPrivileges(this SafeHTOKEN hObj, SafeAllocatedMemoryHandle privileges)
-		{
-			if (privileges == null || privileges.IsInvalid) return;
-			if (!AdjustTokenPrivileges(hObj, false, privileges))
-				throw new Win32Exception();
-		}
-
+		/// <summary>Gets the <see cref="LUID"/> for this <see cref="SystemPrivilege"/>.</summary>
+		/// <param name="systemPrivilege">The system privilege to lookup.</param>
+		/// <param name="systemName">
+		/// Name of the system on which to check for the LUID value. A <see langword="null"/> will use the local system.
+		/// </param>
+		/// <returns>The associated LUID.</returns>
 		public static LUID GetLUID(this SystemPrivilege systemPrivilege, string systemName = null) => SystemPrivilegeTypeConverter.GetLUID(systemPrivilege, systemName);
 
+		/// <summary>Gets the <see cref="SystemPrivilege"/> value for this <see cref="LUID"/>.</summary>
+		/// <param name="luid">The luid.</param>
+		/// <param name="systemName">
+		/// Name of the system on which to check for the LUID value. A <see langword="null"/> will use the local system.
+		/// </param>
+		/// <returns>The associated <see cref="SystemPrivilege"/>.</returns>
 		public static SystemPrivilege GetPrivilege(this LUID luid, string systemName = null) => SystemPrivilegeTypeConverter.GetPrivilege(luid, systemName);
 
+		/// <summary>Enumerates all the privileges held by a security token.</summary>
+		/// <param name="hObj">The security token object.</param>
+		/// <returns>A sequence of held privileges.</returns>
+		public static IEnumerable<LUID_AND_ATTRIBUTES> GetPrivileges(this SafeHTOKEN hObj) =>
+			hObj.GetInfo<TOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges).Privileges;
+
+		/// <summary>Determines whether the specified security token has a privilege.</summary>
+		/// <param name="hObj">The security token object.</param>
+		/// <param name="priv">The privilege to assess.</param>
+		/// <returns><see langword="true"/> if the specified token has the supplied privilege; otherwise, <see langword="false"/>.</returns>
 		public static bool HasPrivilege(this SafeHTOKEN hObj, SystemPrivilege priv) => HasPrivileges(hObj, true, priv);
 
+		/// <summary>Determines whether the specified security token has multiple privileges.</summary>
+		/// <param name="hObj">The security token object.</param>
+		/// <param name="requireAll">
+		/// if set to <see langword="true"/> this method will only return <see langword="true"/> if all supplied privileges all held.
+		/// </param>
+		/// <param name="privs">The privileges to check.</param>
+		/// <returns><see langword="true"/> if the specified token has the supplied privileges; otherwise, <see langword="false"/>.</returns>
 		public static bool HasPrivileges(this SafeHTOKEN hObj, bool requireAll, params SystemPrivilege[] privs)
 		{
-			if (!PrivilegeCheck(hObj, new PRIVILEGE_SET((PrivilegeSetControl)(requireAll ? 1 : 0), privs.Select(p => new LUID_AND_ATTRIBUTES(p.GetLUID(), PrivilegeAttributes.SE_PRIVILEGE_ENABLED)).ToArray()), out bool ret))
+			if (!PrivilegeCheck(hObj, new PRIVILEGE_SET((PrivilegeSetControl)(requireAll ? 1 : 0), privs.Select(p => new LUID_AND_ATTRIBUTES(p.GetLUID(), PrivilegeAttributes.SE_PRIVILEGE_ENABLED)).ToArray()), out var ret))
 				Win32Error.ThrowLastError();
 			return ret;
 		}
-
-		public static IEnumerable<LUID_AND_ATTRIBUTES> GetPrivileges(this SafeHTOKEN hObj) =>
-			hObj.GetInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges).Privileges;
 	}
 
 	internal class SystemPrivilegeTypeConverter : TypeConverter
@@ -261,10 +275,10 @@ namespace Vanara.Security.AccessControl
 
 		private static readonly Dictionary<SystemPrivilege, LUID> luidLookup = new Dictionary<SystemPrivilege, LUID>();
 
-		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) => 
+		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
 			sourceType == typeof(string) || sourceType == typeof(LUID) || base.CanConvertFrom(context, sourceType);
 
-		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) => 
+		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
 			destinationType == typeof(string) || destinationType == typeof(LUID) || base.CanConvertTo(context, destinationType);
 
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)

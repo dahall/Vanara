@@ -138,7 +138,7 @@ namespace Vanara.PInvoke
 			SaferObjectInvertDeletedPrivileges,
 
 			/// <summary/>
-			[CorrespondingType(typeof(PTOKEN_PRIVILEGES), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(TOKEN_PRIVILEGES), CorrespondingAction.Get)]
 			SaferObjectDeletedPrivileges,
 
 			/// <summary/>

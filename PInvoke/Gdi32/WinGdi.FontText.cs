@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -3142,16 +3143,11 @@ namespace Vanara.PInvoke
 		{
 			var l = GetFontUnicodeRanges(hdc, IntPtr.Zero);
 			if (l == 0) throw new Exception();
-			using (var mem = new SafeHGlobalHandle(l))
-			{
-				mem.Write(l); // Set cbThis
-				if (0 == GetFontUnicodeRanges(hdc, mem))
-					throw new Exception();
-				var gs = mem.ToStructure<GLYPHSET>();
-				if (gs.cRanges > 1)
-					gs.ranges = mem.ToArray<WCRANGE>((int)gs.cRanges, 16);
-				return gs;
-			}
+			using var mem = new SafeAnysizeStruct<GLYPHSET>(l, nameof(GLYPHSET.cRanges));
+			mem.DangerousGetHandle().Write(l); // Set cbThis
+			if (0 == GetFontUnicodeRanges(hdc, mem))
+				throw new Exception();
+			return mem.Value;
 		}
 
 		/// <summary>
@@ -4846,7 +4842,7 @@ namespace Vanara.PInvoke
 		// flAccel; DWORD cGlyphsSupported; DWORD cRanges; WCRANGE ranges[1]; } GLYPHSET, *PGLYPHSET, *LPGLYPHSET;
 		[PInvokeData("wingdi.h", MSDNShortId = "b8ac8d3f-b062-491c-966f-02f3d4c11419")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct GLYPHSET
+		public struct GLYPHSET : IMarshalDirective
 		{
 			/// <summary>The size, in bytes, of this structure.</summary>
 			public uint cbThis;
@@ -4875,6 +4871,9 @@ namespace Vanara.PInvoke
 			/// <summary>Array of Unicode ranges that are supported in the font.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public WCRANGE[] ranges;
+
+			MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<GLYPHSET>(p, s, nameof(cRanges)).Value : default;
+			SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<GLYPHSET>(this, nameof(cRanges));
 		}
 
 		/// <summary>The <c>KERNINGPAIR</c> structure defines a kerning pair.</summary>
