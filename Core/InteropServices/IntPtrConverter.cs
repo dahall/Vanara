@@ -4,13 +4,32 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Vanara.Extensions;
+using Vanara.PInvoke;
 
 namespace Vanara.InteropServices
 {
+	/// <summary>Delegate that marshals native memory to an object. See <see cref="IMarshalDirective.GetActivator"/>.</summary>
+	/// <param name="ptr">The pointer to a block of memory.</param>
+	/// <param name="allocatedBytes">The size of the allocated memory block.</param>
+	/// <returns>An instance of the object pointed to in memory.</returns>
+	public delegate object MarshalDirectiveActivator(IntPtr ptr, SizeT allocatedBytes);
+
+	/// <summary>Supports methods that allow for marshaling to and from native memory.</summary>
+	public interface IMarshalDirective
+	{
+		/// <summary>Returns a method that creates a new instance of this type from native memory.</summary>
+		/// <returns>A delegate n object of the current type that matches</returns>
+		MarshalDirectiveActivator GetActivator();
+
+		/// <summary>Converts the current instance to its native equivalent.</summary>
+		/// <returns>Allocated memory with the binary representation of this instance.</returns>
+		SafeAllocatedMemoryHandle ToNative();
+	}
+
 	/// <summary>Functions to safely convert a memory pointer to a type.</summary>
 	public static class IntPtrConverter
 	{
-		/// <summary>Converts the specified pointer to <typeparamref name="T" />.</summary>
+		/// <summary>Converts the specified pointer to <typeparamref name="T"/>.</summary>
 		/// <typeparam name="T">The destination type.</typeparam>
 		/// <param name="ptr">The pointer to a block of memory.</param>
 		/// <param name="sz">The size of the allocated memory block.</param>
@@ -18,17 +37,13 @@ namespace Vanara.InteropServices
 		/// <returns>A value of the type specified.</returns>
 		public static T Convert<T>(this IntPtr ptr, uint sz, CharSet charSet = CharSet.Auto) => (T)Convert(ptr, sz, typeof(T), charSet);
 
-		/// <summary>Converts the specified pointer to type specified in <paramref name="destType" />.</summary>
+		/// <summary>Converts the specified pointer to type specified in <paramref name="destType"/>.</summary>
 		/// <param name="ptr">The pointer to a block of memory.</param>
 		/// <param name="sz">The size of the allocated memory block.</param>
 		/// <param name="destType">The destination type.</param>
 		/// <param name="charSet">The character set.</param>
 		/// <returns>A value of the type specified.</returns>
-		/// <exception cref="ArgumentException">
-		/// Cannot convert a null pointer. - ptr
-		/// or
-		/// Cannot convert a pointer with no Size. - sz
-		/// </exception>
+		/// <exception cref="ArgumentException">Cannot convert a null pointer. - ptr or Cannot convert a pointer with no Size. - sz</exception>
 		/// <exception cref="NotSupportedException">Thrown if type cannot be converted from memory.</exception>
 		/// <exception cref="OutOfMemoryException"></exception>
 		public static object Convert(this IntPtr ptr, uint sz, Type destType, CharSet charSet = CharSet.Auto)
@@ -50,10 +65,16 @@ namespace Vanara.InteropServices
 			switch (typeCode)
 			{
 				case TypeCode.Object:
+					if (typeof(IMarshalDirective).IsAssignableFrom(destType))
+					{
+						var f = ((IMarshalDirective)Activator.CreateInstance(destType)).GetActivator();
+						if (f != null)
+							return f(ptr, sz);
+					}
 					if (typeof(ISerializable).IsAssignableFrom(destType))
 					{
-						using (var mem = new MemoryStream(ptr.ToArray<byte>((int)sz)))
-							return new BinaryFormatter().Deserialize(mem);
+						using var mem = new MemoryStream(ptr.ToArray<byte>((int)sz));
+						return new BinaryFormatter().Deserialize(mem);
 					}
 					try
 					{
@@ -115,7 +136,7 @@ namespace Vanara.InteropServices
 		public static T ToType<T>(this SafeAllocatedMemoryHandle hMem)
 		{
 			if (hMem == null) throw new ArgumentNullException(nameof(hMem));
-			return Convert<T>(hMem.DangerousGetHandle(), (uint)hMem.Size);
+			return Convert<T>(hMem.DangerousGetHandle(), hMem.Size);
 		}
 	}
 }
