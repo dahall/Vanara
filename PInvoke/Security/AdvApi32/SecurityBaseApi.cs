@@ -6199,9 +6199,8 @@ namespace Vanara.PInvoke
 				{
 					if (Marshal.GetLastWin32Error() == Win32Error.ERROR_NO_TOKEN)
 					{
-						var pval = FromProcess(System.Diagnostics.Process.GetCurrentProcess());
-						if (!DuplicateTokenEx(pval, TokenAccess.TOKEN_IMPERSONATE | desiredAccess, null, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, TOKEN_TYPE.TokenImpersonation, out val))
-							Win32Error.ThrowLastError();
+						using var pval = FromProcess(null);
+						val = pval.DuplicateImpersonate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, TokenAccess.TOKEN_IMPERSONATE | desiredAccess);
 						if (!SetThreadToken(IntPtr.Zero, val))
 							Win32Error.ThrowLastError();
 					}
