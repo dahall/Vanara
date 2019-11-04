@@ -521,7 +521,6 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.SysInt)]
 		public static extern IntPtr PropertySheet(ref PROPSHEETHEADER lppsph);
 
-		// TODO: Convert resource id fields to managed properties.
 		/// <summary>Defines the frame and pages of a property sheet.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774546")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -555,7 +554,7 @@ namespace Vanara.PInvoke
 			/// dwFlags member does not include PSH_USEICONID, this member is ignored. This member is declared as a union with hIcon.
 			/// </para>
 			/// </summary>
-			public HICON pIcon;
+			public ResourceIdOrHandle<HICON> pIcon;
 
 			/// <summary>
 			/// Title of the property sheet dialog box. This member can specify either the identifier of a string resource or the address of
@@ -563,7 +562,7 @@ namespace Vanara.PInvoke
 			/// the beginning of the title. This field is ignored for Wizard97 wizards. For Aero wizards, the string alone is used for the
 			/// caption, regardless of whether the PSH_PROPTITLE flag is set.
 			/// </summary>
-			public IntPtr pszCaption;
+			public ResourceId pszCaption;
 
 			/// <summary>Number of elements in the phpage array.</summary>
 			public uint nPages;
@@ -577,7 +576,7 @@ namespace Vanara.PInvoke
 			/// identifier of a string resource or the address of a string that specifies the name. This member is declared as a union with nStartPage.
 			/// </para>
 			/// </summary>
-			public IntPtr pStartPage;
+			public ResourceId pStartPage;
 
 			/// <summary>
 			/// Pointer to an array of PROPSHEETPAGE structures that define the pages in the property sheet. If the dwFlags member does not
@@ -610,7 +609,7 @@ namespace Vanara.PInvoke
 			/// PSH_USEHBMWATERMARK, this member is ignored.
 			/// </para>
 			/// </summary>
-			public HBITMAP hbmWatermark;
+			public ResourceIdOrHandle<HBITMAP> hbmWatermark;
 
 			/// <summary>
 			/// Version 5.80 or later. HPALETTE structure used for drawing the watermark bitmap and/or header bitmap. If the dwFlags member
@@ -627,7 +626,7 @@ namespace Vanara.PInvoke
 			/// PSH_USEHBMHEADER, this member is ignored.
 			/// </para>
 			/// </summary>
-			public HBITMAP hbmHeader;
+			public ResourceIdOrHandle<HBITMAP> hbmHeader;
 		}
 
 		/// <summary>Defines a page in a property sheet.</summary>
