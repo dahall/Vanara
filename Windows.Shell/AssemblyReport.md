@@ -47,6 +47,7 @@ Class | Description
 [Vanara.Windows.Shell.PropertyTypeList](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyTypeList) | Exposes methods that enumerate the possible values for a property.
 [Vanara.Windows.Shell.RegBasedSettings](https://github.com/dahall/Vanara/search?l=C%23&q=RegBasedSettings) | Base class for registry based settings.
 [Vanara.Windows.Shell.RegistryBasedVirtualDictionary<T>](https://github.com/dahall/Vanara/search?l=C%23&q=RegistryBasedVirtualDictionary<T>) | A virtual dictionary that is based on values in the Windows Registry.
+[Vanara.Windows.Shell.SearchCondition](https://github.com/dahall/Vanara/search?l=C%23&q=SearchCondition) | Provides properties and methods for retrieving information about a search condition.
 [Vanara.Windows.Shell.ShellAssociation](https://github.com/dahall/Vanara/search?l=C%23&q=ShellAssociation) | Represents a Shell file association defined in the Windows Registry. Wraps `Vanara.PInvoke.ShlwApi.IQueryAssociations`.
 [Vanara.Windows.Shell.ShellCommand](https://github.com/dahall/Vanara/search?l=C%23&q=ShellCommand) | Wraps the functionality of IInitializeCommand. When deriving, handling the `Vanara.Windows.Shell.ShellCommand.InitializeCommand` event is optional.
 [Vanara.Windows.Shell.ShellDropTarget](https://github.com/dahall/Vanara/search?l=C%23&q=ShellDropTarget) | COM object that implements IDropTarget. Solves race problem on drop and simplifies interface calls. All IDropTarget methods call their equivalent On[MethodName] equivalents. To specialize their handling, simply override the On[MethodName] method or hook an event to the corresponding event.
@@ -67,4 +68,6 @@ Class | Description
 [Vanara.Windows.Shell.ShellLibrary.ShellLibraryFolders](https://github.com/dahall/Vanara/search?l=C%23&q=ShellLibraryFolders) | Folders of a `Vanara.Windows.Shell.ShellLibrary`.
 [Vanara.Windows.Shell.ShellLink](https://github.com/dahall/Vanara/search?l=C%23&q=ShellLink) | Represents a Shell Shortcut (.lnk) file.
 [Vanara.Windows.Shell.ShellRegistrar](https://github.com/dahall/Vanara/search?l=C%23&q=ShellRegistrar) | Contains static methods used to register and unregister shell items in the Windows Registry.
+[Vanara.Windows.Shell.ShellSearch](https://github.com/dahall/Vanara/search?l=C%23&q=ShellSearch) | Represents functionality of the Windows Search Service.
+[Vanara.Windows.Shell.ShellSearchViewSettings](https://github.com/dahall/Vanara/search?l=C%23&q=ShellSearchViewSettings) | Settings that change the folder view of a search.
 [Vanara.Windows.Shell.TaskbarList](https://github.com/dahall/Vanara/search?l=C%23&q=TaskbarList) | Methods that control the Windows taskbar. It allows you to dynamically add, remove, and activate items on the taskbar. This wraps all of the ITaskbarListX interfaces.

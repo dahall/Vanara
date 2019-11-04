@@ -26,7 +26,7 @@ Class | Description
 [Vanara.IO.BackgroundCopyFileRange](https://github.com/dahall/Vanara/search?l=C%23&q=BackgroundCopyFileRange) | Identifies a range of bytes to download from a file.
 [Vanara.IO.BackgroundCopyFileRangesTransferredEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=BackgroundCopyFileRangesTransferredEventArgs) | Used by `Vanara.IO.BackgroundCopyJob.FileRangesTransferred` events.
 [Vanara.IO.BackgroundCopyFileTransferredEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=BackgroundCopyFileTransferredEventArgs) | Used by `Vanara.IO.BackgroundCopyJob.FileTransferred` events.
-[Vanara.IO.BackgroundCopyJob](https://github.com/dahall/Vanara/search?l=C%23&q=BackgroundCopyJob) | A job in the Backgroup Copy Service (BITS)
+[Vanara.IO.BackgroundCopyJob](https://github.com/dahall/Vanara/search?l=C%23&q=BackgroundCopyJob) | A job in the Background Copy Service (BITS)
 [Vanara.IO.BackgroundCopyJobCollection](https://github.com/dahall/Vanara/search?l=C%23&q=BackgroundCopyJobCollection) | Manages the set of jobs for the background copy service (BITS).
 [Vanara.IO.BackgroundCopyJobCredential](https://github.com/dahall/Vanara/search?l=C%23&q=BackgroundCopyJobCredential) | Represents a single BITS job credential.
 [Vanara.IO.BackgroundCopyJobCredentials](https://github.com/dahall/Vanara/search?l=C%23&q=BackgroundCopyJobCredentials) | The list of credentials for a job.

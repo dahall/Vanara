@@ -252,25 +252,25 @@ Native Structure | Header | Managed Structure
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  
-[DFConstraint](https://www.google.com/search?num=5&q=DFConstraint+site%3Amicrosoft.com) |  |   
-[DShellFolderViewEvents](https://www.google.com/search?num=5&q=DShellFolderViewEvents+site%3Amicrosoft.com) |  |   
-[Folder](https://www.google.com/search?num=5&q=Folder+site%3Amicrosoft.com) |  |   
-[Folder2](https://www.google.com/search?num=5&q=Folder2+site%3Amicrosoft.com) |  |   
-[Folder3](https://www.google.com/search?num=5&q=Folder3+site%3Amicrosoft.com) |  |   
-[FolderItem](https://www.google.com/search?num=5&q=FolderItem+site%3Amicrosoft.com) |  |   
-[FolderItem2](https://www.google.com/search?num=5&q=FolderItem2+site%3Amicrosoft.com) |  |   
-[FolderItems](https://www.google.com/search?num=5&q=FolderItems+site%3Amicrosoft.com) |  |   
-[FolderItems2](https://www.google.com/search?num=5&q=FolderItems2+site%3Amicrosoft.com) |  |   
-[FolderItems3](https://www.google.com/search?num=5&q=FolderItems3+site%3Amicrosoft.com) |  |   
-[FolderItemVerb](https://www.google.com/search?num=5&q=FolderItemVerb+site%3Amicrosoft.com) |  |   
-[FolderItemVerbs](https://www.google.com/search?num=5&q=FolderItemVerbs+site%3Amicrosoft.com) |  |   
+[DFConstraint](https://www.google.com/search?num=5&q=DFConstraint+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Shell32.DFConstraint](https://github.com/dahall/Vanara/search?l=C%23&q=DFConstraint)  
+[DShellFolderViewEvents](https://www.google.com/search?num=5&q=DShellFolderViewEvents+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Shell32.DShellFolderViewEvents](https://github.com/dahall/Vanara/search?l=C%23&q=DShellFolderViewEvents)  
+[Folder](https://www.google.com/search?num=5&q=Folder+site%3Amicrosoft.com) | Shldisp.h | [Vanara.PInvoke.Shell32.Folder](https://github.com/dahall/Vanara/search?l=C%23&q=Folder)  
+[Folder2](https://www.google.com/search?num=5&q=Folder2+site%3Amicrosoft.com) | Shldisp.h | [Vanara.PInvoke.Shell32.Folder2](https://github.com/dahall/Vanara/search?l=C%23&q=Folder2)  
+[Folder3](https://www.google.com/search?num=5&q=Folder3+site%3Amicrosoft.com) | Shldisp.h | [Vanara.PInvoke.Shell32.Folder3](https://github.com/dahall/Vanara/search?l=C%23&q=Folder3)  
+[FolderItem](https://www.google.com/search?num=5&q=FolderItem+site%3Amicrosoft.com) | Shldisp.h | [Vanara.PInvoke.Shell32.FolderItem](https://github.com/dahall/Vanara/search?l=C%23&q=FolderItem)  
+[FolderItem2](https://www.google.com/search?num=5&q=FolderItem2+site%3Amicrosoft.com) | Shldisp.h | [Vanara.PInvoke.Shell32.FolderItem2](https://github.com/dahall/Vanara/search?l=C%23&q=FolderItem2)  
+[FolderItems](https://www.google.com/search?num=5&q=FolderItems+site%3Amicrosoft.com) | Shldisp.h | [Vanara.PInvoke.Shell32.FolderItems](https://github.com/dahall/Vanara/search?l=C%23&q=FolderItems)  
+[FolderItems2](https://www.google.com/search?num=5&q=FolderItems2+site%3Amicrosoft.com) | Shldisp.h | [Vanara.PInvoke.Shell32.FolderItems2](https://github.com/dahall/Vanara/search?l=C%23&q=FolderItems2)  
+[FolderItems3](https://www.google.com/search?num=5&q=FolderItems3+site%3Amicrosoft.com) | Shldisp.h | [Vanara.PInvoke.Shell32.FolderItems3](https://github.com/dahall/Vanara/search?l=C%23&q=FolderItems3)  
+[FolderItemVerb](https://www.google.com/search?num=5&q=FolderItemVerb+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.FolderItemVerb](https://github.com/dahall/Vanara/search?l=C%23&q=FolderItemVerb)  
+[FolderItemVerbs](https://www.google.com/search?num=5&q=FolderItemVerbs+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.FolderItemVerbs](https://github.com/dahall/Vanara/search?l=C%23&q=FolderItemVerbs)  
 [IActionProgress](http://msdn2.microsoft.com/en-us/library/e742e381-0fd2-482a-81a0-7b43d11b073b) | shobjidl_core.h | [Vanara.PInvoke.Shell32.IActionProgress](https://github.com/dahall/Vanara/search?l=C%23&q=IActionProgress)  
 [IActionProgressDialog](http://msdn2.microsoft.com/en-us/library/f3c0e4ae-f93f-4ee2-873a-d9370044e922) | shobjidl_core.h | [Vanara.PInvoke.Shell32.IActionProgressDialog](https://github.com/dahall/Vanara/search?l=C%23&q=IActionProgressDialog)  
 [IApplicationAssociationRegistration](http://msdn2.microsoft.com/en-us/library/015a3be4-2e74-4a2b-8c02-54dcbf0ecacd) | shobjidl_core.h | [Vanara.PInvoke.Shell32.IApplicationAssociationRegistration](https://github.com/dahall/Vanara/search?l=C%23&q=IApplicationAssociationRegistration)  
 [IApplicationDestinations](http://msdn2.microsoft.com/en-us/library/dd378413) | Shobjidl.h | [Vanara.PInvoke.Shell32.IApplicationDestinations](https://github.com/dahall/Vanara/search?l=C%23&q=IApplicationDestinations)  
 [IApplicationDocumentLists](http://msdn2.microsoft.com/en-us/library/bb762502) | Shobjidl.h | [Vanara.PInvoke.Shell32.IApplicationDocumentLists](https://github.com/dahall/Vanara/search?l=C%23&q=IApplicationDocumentLists)  
-[IAutoComplete](https://www.google.com/search?num=5&q=IAutoComplete+site%3Amicrosoft.com) |  | [Vanara.PInvoke.IAutoComplete](https://github.com/dahall/Vanara/search?l=C%23&q=IAutoComplete)  
-[IAutoComplete2](https://www.google.com/search?num=5&q=IAutoComplete2+site%3Amicrosoft.com) |  | [Vanara.PInvoke.IAutoComplete2](https://github.com/dahall/Vanara/search?l=C%23&q=IAutoComplete2)  
+[IAutoComplete](https://www.google.com/search?num=5&q=IAutoComplete+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IAutoComplete](https://github.com/dahall/Vanara/search?l=C%23&q=IAutoComplete)  
+[IAutoComplete2](https://www.google.com/search?num=5&q=IAutoComplete2+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IAutoComplete2](https://github.com/dahall/Vanara/search?l=C%23&q=IAutoComplete2)  
 [IColumnManager](http://msdn2.microsoft.com/en-us/library/d01cacd8-1867-4f44-bbc3-876bd727c0fe) | shobjidl_core.h | [Vanara.PInvoke.Shell32.IColumnManager](https://github.com/dahall/Vanara/search?l=C%23&q=IColumnManager)  
 [ICommDlgBrowser](http://msdn2.microsoft.com/en-us/library/bf89ac6e-6c2e-4944-885c-9ab62f58fe71) | Shobjidl.h | [Vanara.PInvoke.Shell32.ICommDlgBrowser](https://github.com/dahall/Vanara/search?l=C%23&q=ICommDlgBrowser)  
 [ICommDlgBrowser3](http://msdn2.microsoft.com/en-us/library/c9286061-8ac8-452b-9204-193bc6b571cb) | Shobjidl.h | [Vanara.PInvoke.Shell32.ICommDlgBrowser3](https://github.com/dahall/Vanara/search?l=C%23&q=ICommDlgBrowser3)  
@@ -302,12 +302,12 @@ Native Interface | Header | Managed Interface
 [IFileOperation](https://www.google.com/search?num=5&q=IFileOperation+site%3Amicrosoft.com) | Shobjidl.h | [Vanara.PInvoke.Shell32.IFileOperation](https://github.com/dahall/Vanara/search?l=C%23&q=IFileOperation)  
 [IFileOperationProgressSink](http://msdn2.microsoft.com/en-us/library/bb775722) | Shobjidl.h | [Vanara.PInvoke.Shell32.IFileOperationProgressSink](https://github.com/dahall/Vanara/search?l=C%23&q=IFileOperationProgressSink)  
 [IFileSaveDialog](http://msdn2.microsoft.com/en-us/library/bb775688) | Shobjidl.h | [Vanara.PInvoke.Shell32.IFileSaveDialog](https://github.com/dahall/Vanara/search?l=C%23&q=IFileSaveDialog)  
-[IFileSearchBand](https://www.google.com/search?num=5&q=IFileSearchBand+site%3Amicrosoft.com) |  |   
-[IFileSystemBindData](http://msdn2.microsoft.com/en-us/library/bb775671) | Shobjidl.h | [Vanara.PInvoke.Shell32.IFileSystemBindData](https://github.com/dahall/Vanara/search?l=C%23&q=IFileSystemBindData)  
-[IFileSystemBindData2](http://msdn2.microsoft.com/en-us/library/bb775660) | Shobjidl.h | [Vanara.PInvoke.Shell32.IFileSystemBindData2](https://github.com/dahall/Vanara/search?l=C%23&q=IFileSystemBindData2)  
+[IFileSearchBand](https://www.google.com/search?num=5&q=IFileSearchBand+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IFileSearchBand](https://github.com/dahall/Vanara/search?l=C%23&q=IFileSearchBand)  
+[IFileSystemBindData](http://msdn2.microsoft.com/en-us/library/f5099bb3-21a7-4708-ac48-d32a14646614) | shobjidl_core.h | [Vanara.PInvoke.Shell32.IFileSystemBindData](https://github.com/dahall/Vanara/search?l=C%23&q=IFileSystemBindData)  
+[IFileSystemBindData2](http://msdn2.microsoft.com/en-us/library/c9659147-e2b6-4040-b939-42b7efec32d7) | shobjidl_core.h | [Vanara.PInvoke.Shell32.IFileSystemBindData2](https://github.com/dahall/Vanara/search?l=C%23&q=IFileSystemBindData2)  
 [IFolderView](http://msdn2.microsoft.com/en-us/library/bb761848) | Shobjidl.h | [Vanara.PInvoke.Shell32.IFolderView](https://github.com/dahall/Vanara/search?l=C%23&q=IFolderView)  
 [IFolderView2](http://msdn2.microsoft.com/en-us/library/bb761848) | Shobjidl.h | [Vanara.PInvoke.Shell32.IFolderView2](https://github.com/dahall/Vanara/search?l=C%23&q=IFolderView2)  
-[IFolderViewOC](https://www.google.com/search?num=5&q=IFolderViewOC+site%3Amicrosoft.com) |  |   
+[IFolderViewOC](https://www.google.com/search?num=5&q=IFolderViewOC+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IFolderViewOC](https://github.com/dahall/Vanara/search?l=C%23&q=IFolderViewOC)  
 [IFolderViewOptions](http://msdn2.microsoft.com/en-us/library/4831e62c-45e4-435d-b926-0e140cbfb6fc) | shobjidl.h | [Vanara.PInvoke.Shell32.IFolderViewOptions](https://github.com/dahall/Vanara/search?l=C%23&q=IFolderViewOptions)  
 [IInitializeCommand](http://msdn2.microsoft.com/en-us/library/e5a2a4d3-2488-4da2-aaab-c27461859d9f) | shobjidl_core.h | [Vanara.PInvoke.Shell32.IInitializeCommand](https://github.com/dahall/Vanara/search?l=C%23&q=IInitializeCommand)  
 [IInitializeWithFile](http://msdn2.microsoft.com/en-us/library/323181ab-1dc2-4b2a-a91f-3eccd7968bcd) | propsys.h | [Vanara.PInvoke.Shell32.IInitializeWithFile](https://github.com/dahall/Vanara/search?l=C%23&q=IInitializeWithFile)  
@@ -322,7 +322,7 @@ Native Interface | Header | Managed Interface
 [INamespaceWalk](http://msdn2.microsoft.com/en-us/library/164732ae-1c72-465c-a16b-a8eeaa9cc185) | shobjidl_core.h | [Vanara.PInvoke.Shell32.INamespaceWalk](https://github.com/dahall/Vanara/search?l=C%23&q=INamespaceWalk)  
 [INamespaceWalkCB](http://msdn2.microsoft.com/en-us/library/15244d6e-6cd7-4dee-8e4e-2533d5a60ae7) | shobjidl_core.h | [Vanara.PInvoke.Shell32.INamespaceWalkCB](https://github.com/dahall/Vanara/search?l=C%23&q=INamespaceWalkCB)  
 [INamespaceWalkCB2](http://msdn2.microsoft.com/en-us/library/a748083b-a99e-4015-93da-112d2950f623) | shobjidl_core.h | [Vanara.PInvoke.Shell32.INamespaceWalkCB2](https://github.com/dahall/Vanara/search?l=C%23&q=INamespaceWalkCB2)  
-[INewWDEvents](https://www.google.com/search?num=5&q=INewWDEvents+site%3Amicrosoft.com) |  |   
+[INewWDEvents](https://www.google.com/search?num=5&q=INewWDEvents+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.INewWDEvents](https://github.com/dahall/Vanara/search?l=C%23&q=INewWDEvents)  
 [IObjectArray](http://msdn2.microsoft.com/en-us/library/ab0bb213-dc9c-4853-98d7-668e7ca76583) | objectarray.h | [Vanara.PInvoke.Shell32.IObjectArray](https://github.com/dahall/Vanara/search?l=C%23&q=IObjectArray)  
 [IObjectCollection](http://msdn2.microsoft.com/en-us/library/d7665b26-5839-4b08-a099-ef25a68c65db) | objectarray.h | [Vanara.PInvoke.Shell32.IObjectCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IObjectCollection)  
 [IObjectWithAppUserModelId](http://msdn2.microsoft.com/en-us/library/f5b4e6bf-a5bf-49c5-b343-e9c1ec6c263d) | shobjidl_core.h | [Vanara.PInvoke.Shell32.IObjectWithAppUserModelId](https://github.com/dahall/Vanara/search?l=C%23&q=IObjectWithAppUserModelId)  
@@ -341,27 +341,27 @@ Native Interface | Header | Managed Interface
 [IResultsFolder](http://msdn2.microsoft.com/en-us/library/db44052b-bd26-412f-9f2a-66a0c53b65ac) | shobjidl.h | [Vanara.PInvoke.Shell32.IResultsFolder](https://github.com/dahall/Vanara/search?l=C%23&q=IResultsFolder)  
 [IServiceProvider](https://www.google.com/search?num=5&q=IServiceProvider+site%3Amicrosoft.com) | servprov.h | [Vanara.PInvoke.Shell32.IServiceProvider](https://github.com/dahall/Vanara/search?l=C%23&q=IServiceProvider)  
 [IShellBrowser](http://msdn2.microsoft.com/en-us/library/bb775123) | Shobjidl.h | [Vanara.PInvoke.Shell32.IShellBrowser](https://github.com/dahall/Vanara/search?l=C%23&q=IShellBrowser)  
-[IShellDispatch](https://www.google.com/search?num=5&q=IShellDispatch+site%3Amicrosoft.com) |  |   
-[IShellDispatch2](https://www.google.com/search?num=5&q=IShellDispatch2+site%3Amicrosoft.com) |  |   
-[IShellDispatch3](https://www.google.com/search?num=5&q=IShellDispatch3+site%3Amicrosoft.com) |  |   
-[IShellDispatch4](https://www.google.com/search?num=5&q=IShellDispatch4+site%3Amicrosoft.com) |  |   
-[IShellDispatch5](https://www.google.com/search?num=5&q=IShellDispatch5+site%3Amicrosoft.com) |  |   
-[IShellDispatch6](https://www.google.com/search?num=5&q=IShellDispatch6+site%3Amicrosoft.com) |  |   
+[IShellDispatch](https://www.google.com/search?num=5&q=IShellDispatch+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IShellDispatch](https://github.com/dahall/Vanara/search?l=C%23&q=IShellDispatch)  
+[IShellDispatch2](https://www.google.com/search?num=5&q=IShellDispatch2+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IShellDispatch2](https://github.com/dahall/Vanara/search?l=C%23&q=IShellDispatch2)  
+[IShellDispatch3](https://www.google.com/search?num=5&q=IShellDispatch3+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IShellDispatch3](https://github.com/dahall/Vanara/search?l=C%23&q=IShellDispatch3)  
+[IShellDispatch4](https://www.google.com/search?num=5&q=IShellDispatch4+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IShellDispatch4](https://github.com/dahall/Vanara/search?l=C%23&q=IShellDispatch4)  
+[IShellDispatch5](https://www.google.com/search?num=5&q=IShellDispatch5+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IShellDispatch5](https://github.com/dahall/Vanara/search?l=C%23&q=IShellDispatch5)  
+[IShellDispatch6](https://www.google.com/search?num=5&q=IShellDispatch6+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IShellDispatch6](https://github.com/dahall/Vanara/search?l=C%23&q=IShellDispatch6)  
 [IShellExtInit](http://msdn2.microsoft.com/en-us/library/bb775096) | Shobjidl.h | [Vanara.PInvoke.Shell32.IShellExtInit](https://github.com/dahall/Vanara/search?l=C%23&q=IShellExtInit)  
 [IShellFolder](http://msdn2.microsoft.com/en-us/library/bb775075) | Shobjidl.h | [Vanara.PInvoke.Shell32.IShellFolder](https://github.com/dahall/Vanara/search?l=C%23&q=IShellFolder)  
 [IShellFolder2](http://msdn2.microsoft.com/en-us/library/bb775075) | Shobjidl.h | [Vanara.PInvoke.Shell32.IShellFolder2](https://github.com/dahall/Vanara/search?l=C%23&q=IShellFolder2)  
 [IShellFolderViewCB](http://msdn2.microsoft.com/en-us/library/bb774967) | Shlobj.h | [Vanara.PInvoke.Shell32.IShellFolderViewCB](https://github.com/dahall/Vanara/search?l=C%23&q=IShellFolderViewCB)  
-[IShellFolderViewDual](https://www.google.com/search?num=5&q=IShellFolderViewDual+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.IShellFolderViewDual](https://github.com/dahall/Vanara/search?l=C%23&q=IShellFolderViewDual)  
-[IShellFolderViewDual2](https://www.google.com/search?num=5&q=IShellFolderViewDual2+site%3Amicrosoft.com) |  |   
-[IShellFolderViewDual3](https://www.google.com/search?num=5&q=IShellFolderViewDual3+site%3Amicrosoft.com) |  |   
+[IShellFolderViewDual](https://www.google.com/search?num=5&q=IShellFolderViewDual+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IShellFolderViewDual](https://github.com/dahall/Vanara/search?l=C%23&q=IShellFolderViewDual)  
+[IShellFolderViewDual2](https://www.google.com/search?num=5&q=IShellFolderViewDual2+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IShellFolderViewDual2](https://github.com/dahall/Vanara/search?l=C%23&q=IShellFolderViewDual2)  
+[IShellFolderViewDual3](https://www.google.com/search?num=5&q=IShellFolderViewDual3+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IShellFolderViewDual3](https://github.com/dahall/Vanara/search?l=C%23&q=IShellFolderViewDual3)  
 [IShellItem](http://msdn2.microsoft.com/en-us/library/bb761144) | Shobjidl.h | [Vanara.PInvoke.Shell32.IShellItem](https://github.com/dahall/Vanara/search?l=C%23&q=IShellItem)  
 [IShellItem2](http://msdn2.microsoft.com/en-us/library/bb761130) | Shobjidl.h | [Vanara.PInvoke.Shell32.IShellItem2](https://github.com/dahall/Vanara/search?l=C%23&q=IShellItem2)  
 [IShellItemArray](http://msdn2.microsoft.com/en-us/library/bb761106) | Shobjidl.h | [Vanara.PInvoke.Shell32.IShellItemArray](https://github.com/dahall/Vanara/search?l=C%23&q=IShellItemArray)  
 [IShellItemImageFactory](http://msdn2.microsoft.com/en-us/library/a6eea412-553a-4bdd-afc2-cc002c4500a4) | shobjidl_core.h | [Vanara.PInvoke.Shell32.IShellItemImageFactory](https://github.com/dahall/Vanara/search?l=C%23&q=IShellItemImageFactory)  
 [IShellLibrary](https://www.google.com/search?num=5&q=IShellLibrary+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Shell32.IShellLibrary](https://github.com/dahall/Vanara/search?l=C%23&q=IShellLibrary)  
 [IShellLinkDataList](http://msdn2.microsoft.com/en-us/library/bb774916) | Shobjidl.h | [Vanara.PInvoke.Shell32.IShellLinkDataList](https://github.com/dahall/Vanara/search?l=C%23&q=IShellLinkDataList)  
-[IShellLinkDual](https://www.google.com/search?num=5&q=IShellLinkDual+site%3Amicrosoft.com) |  |   
-[IShellLinkDual2](https://www.google.com/search?num=5&q=IShellLinkDual2+site%3Amicrosoft.com) |  |   
+[IShellLinkDual](https://www.google.com/search?num=5&q=IShellLinkDual+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IShellLinkDual](https://github.com/dahall/Vanara/search?l=C%23&q=IShellLinkDual)  
+[IShellLinkDual2](https://www.google.com/search?num=5&q=IShellLinkDual2+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IShellLinkDual2](https://github.com/dahall/Vanara/search?l=C%23&q=IShellLinkDual2)  
 [IShellLinkW](http://msdn2.microsoft.com/en-us/library/bb774950) | Shobjidl.h | [Vanara.PInvoke.Shell32.IShellLinkW](https://github.com/dahall/Vanara/search?l=C%23&q=IShellLinkW)  
 [IShellPropSheetExt](http://msdn2.microsoft.com/en-us/library/1671ad3e-c131-4de0-a213-b22c9966bae2) | shobjidl_core.h | [Vanara.PInvoke.Shell32.IShellPropSheetExt](https://github.com/dahall/Vanara/search?l=C%23&q=IShellPropSheetExt)  
 [IShellView](http://msdn2.microsoft.com/en-us/library/91438583-e4f1-456f-a130-2a45846fd725) | shobjidl_core.h | [Vanara.PInvoke.Shell32.IShellView](https://github.com/dahall/Vanara/search?l=C%23&q=IShellView)  
@@ -374,5 +374,5 @@ Native Interface | Header | Managed Interface
 [ITaskbarList3](http://msdn2.microsoft.com/en-us/library/dd391692) | Shobjidl.h | [Vanara.PInvoke.Shell32.ITaskbarList3](https://github.com/dahall/Vanara/search?l=C%23&q=ITaskbarList3)  
 [ITaskbarList4](http://msdn2.microsoft.com/en-us/library/dd562040) | Shobjidl.h | [Vanara.PInvoke.Shell32.ITaskbarList4](https://github.com/dahall/Vanara/search?l=C%23&q=ITaskbarList4)  
 [IThumbnailProvider](http://msdn2.microsoft.com/en-us/library/55c4739a-4835-4f53-a435-804ddf06ffcf) | thumbcache.h | [Vanara.PInvoke.Shell32.IThumbnailProvider](https://github.com/dahall/Vanara/search?l=C%23&q=IThumbnailProvider)  
-[IWebWizardHost](https://www.google.com/search?num=5&q=IWebWizardHost+site%3Amicrosoft.com) |  |   
-[IWebWizardHost2](https://www.google.com/search?num=5&q=IWebWizardHost2+site%3Amicrosoft.com) |  |   
+[IWebWizardHost](https://www.google.com/search?num=5&q=IWebWizardHost+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IWebWizardHost](https://github.com/dahall/Vanara/search?l=C%23&q=IWebWizardHost)  
+[IWebWizardHost2](https://www.google.com/search?num=5&q=IWebWizardHost2+site%3Amicrosoft.com) | shldisp.h | [Vanara.PInvoke.Shell32.IWebWizardHost2](https://github.com/dahall/Vanara/search?l=C%23&q=IWebWizardHost2)  
