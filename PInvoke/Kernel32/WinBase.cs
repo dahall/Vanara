@@ -7,47 +7,6 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
-		/*/// <summary>
-		/// Formats a message string. The function requires a message definition as input. The message definition can come from a message
-		/// table resource in an already-loaded module. Or the caller can ask the function to search the system's message table resource(s)
-		/// for the message definition. The function finds the message definition in a message table resource based on a message identifier
-		/// and a language identifier. The function returns the formatted message text, processing any embedded insert sequences if
-		/// requested. </summary> <param name="formatString">Pointer to a string that consists of unformatted message text. It will be
-		/// scanned for inserts and formatted accordingly.</param> <param name="args"> An array of values that are used as insert values in
-		/// the formatted message. A %1 in the format string indicates the first value in the Arguments array; a %2 indicates the second
-		/// argument; and so on. The interpretation of each value depends on the formatting information associated with the insert in the
-		/// message definition. Each insert must have a corresponding element in the array. </param> <param name="flags"> The formatting
-		/// options, and how to interpret the lpSource parameter. The low-order byte of dwFlags specifies how the function handles line
-		/// breaks in the output buffer. The low-order byte can also specify the maximum width of a formatted output line. </param> <returns>
-		/// If the function succeeds, the return value is the string that specifies the formatted message. To get extended error information,
-		/// call GetLastError. </returns>
-		[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
-		private static string FormatMessage(string formatString, object[] args, FormatMessageFlags flags = 0)
-		{
-			if (string.IsNullOrEmpty(formatString) || args == null || args.Length == 0 || flags.IsFlagSet(FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS)) return formatString;
-			flags &= ~(FormatMessageFlags.FORMAT_MESSAGE_FROM_HMODULE | FormatMessageFlags.FORMAT_MESSAGE_FROM_SYSTEM);
-			flags |= FormatMessageFlags.FORMAT_MESSAGE_FROM_STRING | FormatMessageFlags.FORMAT_MESSAGE_ALLOCATE_BUFFER | FormatMessageFlags.FORMAT_MESSAGE_ARGUMENT_ARRAY;
-			var ptr = IntPtr.Zero;
-			var s = new SafeCoTaskMemString(formatString);
-			var m = new DynamicMethod("FormatMessage", typeof(void), new Type[0], typeof(Kernel32), true);
-			var il = m.GetILGenerator();
-
-			// TODO: Finish work here to push args onto stack and dynamically call method.
-			il.Emit(OpCodes.Ldstr, formatString);
-			il.Emit(OpCodes.Ldind_I, 0);
-			il.Emit(OpCodes.Ldind_U4, 0);
-			il.Emit(OpCodes.Ldind_U4, 0);
-			il.EmitCall(OpCodes.Call, typeof(Kernel32).GetMethod("FormatMessage", BindingFlags.Public | BindingFlags.Static), new Type[] { typeof(string), typeof(IntPtr), typeof(uint), typeof(uint), typeof(int) });
-			il.Emit(OpCodes.Pop);
-			il.Emit(OpCodes.Ret);
-
-			//var action = (Action)m.CreateDelegate(Action);
-			//action.Invoke();
-
-			//if (ret == 0) Win32Error.ThrowLastError();
-			return new SafeLocalHandle(ptr, 0).ToString(-1);
-		}*/
-
 		/// <summary>All active processors in the system.</summary>
 		public const ushort ALL_PROCESSOR_GROUPS = 0xffff;
 
