@@ -437,7 +437,8 @@ namespace Vanara.PInvoke
 				case "D":
 				case null:
 				case "":
-					return AdvApi32.ConvertSidToStringSid(pSid);
+					try { return AdvApi32.ConvertSidToStringSid(pSid); }
+					catch { goto case "B"; }
 
 				case "N":
 				case "P":
