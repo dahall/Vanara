@@ -3097,6 +3097,10 @@ namespace Vanara.PInvoke
 				Sid = sid;
 				Attributes = attributes;
 			}
+
+			/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
+			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			public override string ToString() => $"{(Sid.IsValidSid() ? Sid.ToString("N") : "")}:{Attributes}";
 		}
 
 		/// <summary>The SID_IDENTIFIER_AUTHORITY structure represents the top-level authority of a security identifier (SID).</summary>
