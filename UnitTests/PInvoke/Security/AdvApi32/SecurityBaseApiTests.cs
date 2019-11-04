@@ -543,6 +543,12 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(GetTokenInformation(t, TOKEN_INFORMATION_CLASS.TokenPrivileges, hMem, hMem.Size, out var sz), ResultIs.Successful);
 				Assert.That(hMem.Value.PrivilegeCount, Is.EqualTo(p.PrivilegeCount));
 				Assert.That(p.Privileges, Is.EquivalentTo(hMem.Value.Privileges));
+
+				var g = t.GetInfo(TOKEN_INFORMATION_CLASS.TokenGroups);
+				Assert.That(g, Is.Not.Null);
+				var tg = g.DangerousGetHandle().Convert<TOKEN_GROUPS>(g.Size);
+				Assert.That(tg.GroupCount, Is.GreaterThan(0));
+				TestContext.WriteLine("Grps: " + string.Join("; ", tg.Groups.Select(i => i.ToString())));
 			}
 
 			using (new ElevPriv("SeSecurityPrivilege"))
@@ -741,7 +747,7 @@ namespace Vanara.PInvoke.Tests
 		public void SetSecurityDescriptorControlTest()
 		{
 			using (var pSD = new SafePSECURITY_DESCRIPTOR(48))
-				Assert.That(SetSecurityDescriptorControl(pSD, SECURITY_DESCRIPTOR_CONTROL.SE_DACL_PRESENT, SECURITY_DESCRIPTOR_CONTROL.SE_DACL_PRESENT), ResultIs.Successful);
+				Assert.That(SetSecurityDescriptorControl(pSD, SECURITY_DESCRIPTOR_CONTROL.SE_DACL_AUTO_INHERIT_REQ, 0), ResultIs.Successful);
 		}
 
 		[Test]
