@@ -151,6 +151,9 @@ namespace Vanara.PInvoke
 				case ResourceId r:
 					return Equals(r);
 
+				case IHandle h:
+					return Equals(h.DangerousGetHandle());
+
 				default:
 					if (!obj.GetType().IsPrimitive) return false;
 					try { return Equals(Convert.ToInt32(obj)); } catch { return false; }
@@ -186,6 +189,123 @@ namespace Vanara.PInvoke
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		/// <exception cref="NotImplementedException"></exception>
 		public bool Equals(ResourceId other) => string.Equals(other.ToString(), ToString());
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => ptr;
+	}
+
+	/// <summary>Helper structure to use for a pointer that can morph into a string, handle or integer.</summary>
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	[PInvokeData("winuser.h")]
+	public struct ResourceIdOrHandle<THandle> : IEquatable<string>, IEquatable<int>, IEquatable<ResourceIdOrHandle<THandle>>, IHandle where THandle : IHandle
+	{
+		private IntPtr ptr;
+
+		/// <summary>Gets or sets an integer identifier.</summary>
+		/// <value>The identifier.</value>
+		public int id
+		{
+			get => IS_INTRESOURCE(ptr) ? (ushort)ptr.ToInt32() : 0;
+			set
+			{
+				if (value > ushort.MaxValue || value <= 0) throw new ArgumentOutOfRangeException(nameof(id));
+				ptr = (IntPtr)(ushort)value;
+			}
+		}
+
+		/// <summary>Represent a NULL value.</summary>
+		public static readonly ResourceIdOrHandle<THandle> NULL = new ResourceIdOrHandle<THandle>();
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeResourceId"/> to <see cref="System.Int32"/>.</summary>
+		/// <param name="r">The r.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator int(ResourceIdOrHandle<THandle> r) => r.id;
+
+		/// <summary>Performs an implicit conversion from <see cref="ResourceIdOrHandle{THandle}"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="r">The r.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator IntPtr(ResourceIdOrHandle<THandle> r) => r.ptr;
+
+		/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="ResourceIdOrHandle{THandle}"/>.</summary>
+		/// <param name="resId">The resource identifier.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator ResourceIdOrHandle<THandle>(int resId) => new ResourceIdOrHandle<THandle> { id = resId };
+
+		/// <summary>Performs an implicit conversion from <see cref="ResourceType"/> to <see cref="ResourceIdOrHandle{THandle}"/>.</summary>
+		/// <param name="resType">Type of the resource.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator ResourceIdOrHandle<THandle>(ResourceType resType) => new ResourceIdOrHandle<THandle> { id = (int)resType };
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="ResourceIdOrHandle{THandle}"/>.</summary>
+		/// <param name="p">The PTR.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator ResourceIdOrHandle<THandle>(THandle p) => new ResourceIdOrHandle<THandle> { ptr = p.DangerousGetHandle() };
+
+		/// <summary>Performs an implicit conversion from <see cref="ResourceIdOrHandle{THandle}"/> to <see cref="string"/>.</summary>
+		/// <param name="r">The r.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator string(ResourceIdOrHandle<THandle> r) => r.ToString();
+
+		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		public override bool Equals(object obj)
+		{
+			switch (obj)
+			{
+				case null:
+					return false;
+
+				case string s:
+					return Equals(s);
+
+				case int i:
+					return Equals(i);
+
+				case IntPtr p:
+					return Equals(p);
+
+				case ResourceIdOrHandle<THandle> r:
+					return Equals(r);
+
+				case IHandle h:
+					return Equals(h.DangerousGetHandle());
+
+				default:
+					if (!obj.GetType().IsPrimitive) return false;
+					try { return Equals(Convert.ToInt32(obj)); } catch { return false; }
+			}
+		}
+
+		/// <summary>Returns a hash code for this instance.</summary>
+		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+		public override int GetHashCode() => ptr.GetHashCode();
+
+		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+		/// <returns>A <see cref="string"/> that represents this instance.</returns>
+		public override string ToString() => IS_INTRESOURCE(ptr) ? $"#{ptr.ToInt32()}" : Marshal.PtrToStringAuto(ptr);
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(int other) => ptr.ToInt32().Equals(other);
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		/// <exception cref="NotImplementedException"></exception>
+		public bool Equals(string other) => string.Equals(ToString(), other);
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(IntPtr other) => ptr.Equals(other);
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		/// <exception cref="NotImplementedException"></exception>
+		public bool Equals(ResourceIdOrHandle<THandle> other) => string.Equals(other.ToString(), ToString());
 
 		/// <inheritdoc/>
 		public IntPtr DangerousGetHandle() => ptr;
