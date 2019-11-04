@@ -951,6 +951,26 @@ namespace Vanara.PInvoke
 			TOKEN_EXECUTE = 0x00020000
 		}
 
+		/// <summary>The mandatory integrity access policy for the associated token.</summary>
+		[PInvokeData("winnt.h", MSDNShortId = "f5fc438b-c4f0-46f6-a188-52ce660d13da")]
+		public enum TokenMandatoryPolicy
+		{
+			/// <summary>No mandatory integrity policy is enforced for the token.</summary>
+			TOKEN_MANDATORY_POLICY_OFF = 0x0,
+
+			/// <summary>A process associated with the token cannot write to objects that have a greater mandatory integrity level.</summary>
+			TOKEN_MANDATORY_POLICY_NO_WRITE_UP = 0x1,
+
+			/// <summary>
+			/// A process created with the token has an integrity level that is the lesser of the parent-process integrity level and the
+			/// executable-file integrity level.
+			/// </summary>
+			TOKEN_MANDATORY_POLICY_NEW_PROCESS_MIN = 0x2,
+
+			/// <summary>A combination of TOKEN_MANDATORY_POLICY_NO_WRITE_UP and TOKEN_MANDATORY_POLICY_NEW_PROCESS_MIN.</summary>
+			TOKEN_MANDATORY_POLICY_VALID_MASK = 0x3,
+		}
+
 		/// <summary>
 		/// <para>
 		/// The <c>WELL_KNOWN_SID_TYPE</c> enumeration is a list of commonly used security identifiers (SIDs). Programs can pass these values
@@ -3868,14 +3888,39 @@ namespace Vanara.PInvoke
 			public SID_AND_ATTRIBUTES Label;
 		}
 
-		/// <summary>The TOKEN_MANDATORY_POLICY structure specifies the mandatory integrity policy for a token.</summary>
+		/// <summary>The <c>TOKEN_MANDATORY_POLICY</c> structure specifies the mandatory integrity policy for a token.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-token_mandatory_policy
+		// typedef struct _TOKEN_MANDATORY_POLICY { DWORD Policy; } TOKEN_MANDATORY_POLICY, *PTOKEN_MANDATORY_POLICY;
+		[PInvokeData("winnt.h", MSDNShortId = "f5fc438b-c4f0-46f6-a188-52ce660d13da")]
 		[StructLayout(LayoutKind.Sequential)]
-		[PInvokeData("WinNT.h", MSDNShortId = "bb394728")]
 		public struct TOKEN_MANDATORY_POLICY
 		{
-			/// <summary>The mandatory integrity access policy for the associated token.</summary>
-			// TODO: Convert to enum
-			public uint Policy;
+			/// <summary>
+			///   <para>The mandatory integrity access policy for the associated token. This can be one of the following values.</para>
+			///   <list type="table">
+			///     <listheader>
+			///       <term>Value</term>
+			///       <term>Meaning</term>
+			///     </listheader>
+			///     <item>
+			///       <term>TOKEN_MANDATORY_POLICY_OFF 0x0</term>
+			///       <term>No mandatory integrity policy is enforced for the token.</term>
+			///     </item>
+			///     <item>
+			///       <term>TOKEN_MANDATORY_POLICY_NO_WRITE_UP 0x1</term>
+			///       <term>A process associated with the token cannot write to objects that have a greater mandatory integrity level.</term>
+			///     </item>
+			///     <item>
+			///       <term>TOKEN_MANDATORY_POLICY_NEW_PROCESS_MIN 0x2</term>
+			///       <term>A process created with the token has an integrity level that is the lesser of the parent-process integrity level and the executable-file integrity level.</term>
+			///     </item>
+			///     <item>
+			///       <term>TOKEN_MANDATORY_POLICY_VALID_MASK 0x3</term>
+			///       <term>A combination of TOKEN_MANDATORY_POLICY_NO_WRITE_UP and TOKEN_MANDATORY_POLICY_NEW_PROCESS_MIN.</term>
+			///     </item>
+			///   </list>
+			/// </summary>
+			public TokenMandatoryPolicy Policy;
 		}
 
 		/// <summary>
