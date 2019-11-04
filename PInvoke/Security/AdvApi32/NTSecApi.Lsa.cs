@@ -2818,12 +2818,12 @@ namespace Vanara.PInvoke
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
-			public override string ToString() => (string)Buffer ?? string.Empty;
+			public override string ToString() => StringHelper.GetString((IntPtr)Buffer, CharSet.Unicode, length) ?? string.Empty;
 
 			/// <summary>Performs an implicit conversion from <see cref="LSA_UNICODE_STRING"/> to <see cref="string"/>.</summary>
 			/// <param name="value">The value.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator string(LSA_UNICODE_STRING value) => value.Buffer;
+			public static implicit operator string(LSA_UNICODE_STRING value) => value.ToString();
 		}
 
 		/// <summary>Smart wrapper for LSA_FOREST_TRUST_INFORMATION.</summary>
