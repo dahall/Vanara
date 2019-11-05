@@ -1277,6 +1277,145 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// Contains parameters used to check for strong signatures on certificates, certificate revocation lists (CRLs), online certificate
+		/// status protocol (OCSP) responses, and PKCS #7 messages.
+		/// </summary>
+		/// <remarks>
+		/// <para>The parameters needed to check for a strong signature include the following:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Name of the public (asymmetric) algorithm</term>
+		/// </item>
+		/// <item>
+		/// <term>Size, in bits, of the public key</term>
+		/// </item>
+		/// <item>
+		/// <term>Name of the signature algorithm</term>
+		/// </item>
+		/// <item>
+		/// <term>Name of the hashing algorithm</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The value you specify for the <c>dwInfoChoice</c> member of this structure chooses whether the parameters are transmitted as
+		/// serialized strings or are predefined by using an object identifier.
+		/// </para>
+		/// <para>The <c>CERT_STRONG_SIGN_PARA</c> structure is directly referenced by the following functions:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>CertIsStrongHashToSign</term>
+		/// </item>
+		/// <item>
+		/// <term>CryptMsgControl</term>
+		/// </item>
+		/// <item>
+		/// <term>CryptMsgVerifyCountersignatureEncodedEx</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The <c>CERT_STRONG_SIGN_PARA</c> structure is also directly referenced by the CRYPT_VERIFY_MESSAGE_PARA structure and is
+		/// therefore available for use by the following functions:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>CryptDecodeMessage</term>
+		/// </item>
+		/// <item>
+		/// <term>CryptDecryptAndVerifyMessageSignature</term>
+		/// </item>
+		/// <item>
+		/// <term>CryptVerifyDetachedMessageSignature</term>
+		/// </item>
+		/// <item>
+		/// <term>CryptVerifyMessageSignature</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Finally, the <c>CERT_STRONG_SIGN_PARA</c> structure is directly referenced by the CERT_CHAIN_PARA structure and is therefore
+		/// available for use by the following functions:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>CertGetCertificateChain</term>
+		/// </item>
+		/// <item>
+		/// <term>CertSelectCertificateChains</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_strong_sign_para typedef struct
+		// _CERT_STRONG_SIGN_PARA { DWORD cbSize; DWORD dwInfoChoice; union { void *pvInfo; PCERT_STRONG_SIGN_SERIALIZED_INFO
+		// pSerializedInfo; LPSTR pszOID; } DUMMYUNIONNAME; } CERT_STRONG_SIGN_PARA, *PCERT_STRONG_SIGN_PARA;
+		[PInvokeData("wincrypt.h", MSDNShortId = "12D9F82C-F484-43B0-BD55-F07321058671")]
+		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
+		public struct CERT_STRONG_SIGN_PARA
+		{
+			/// <summary>Size, in bytes, of this structure.</summary>
+			[FieldOffset(0)]
+			public uint cbSize;
+
+			/// <summary>
+			/// <para>Indicates which nested union member points to the strong signature information. This can be one of the following values:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CERT_STRONG_SIGN_SERIALIZED_INFO_CHOICE</term>
+			/// <term>Specifies the pSerializedInfo member.</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_STRONG_SIGN_OID_INFO_CHOICE</term>
+			/// <term>Specifies the pszOID member.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			[FieldOffset(4)]
+			public uint dwInfoChoice;
+
+			/// <summary>Reserved.</summary>
+			[FieldOffset(8)]
+			public IntPtr pvInfo;
+
+			/// <summary>Pointer to a CERT_STRONG_SIGN_SERIALIZED_INFO structure that specifies the parameters.</summary>
+			[FieldOffset(8)]
+			public IntPtr pSerializedInfo;
+
+			/// <summary>
+			/// <para>
+			/// Pointer to a string that contains an object identifier (OID) that represents predefined parameters that can be used for
+			/// strong signature checking. This can be one of the following values:
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>szOID_CERT_STRONG_SIGN_OS_1 "1.3.6.1.4.1.311.72.1.1"</term>
+			/// <term>
+			/// The SHA2 hash algorithm is supported. MD2, MD4, MD5, and SSHA1 are not supported. The signing and public key algorithms can
+			/// be RSA or ECDSA. The DSA algorithm is not supported. The key size for the RSA algorithm must equal or be greater than 2047
+			/// bits. The key size for the ECDSA algorithm must equal or be greater than 256 bits. Strong signing of CRLs and OCSP responses
+			/// are enabled.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_CERT_STRONG_KEY_OS_1 "1.3.6.1.4.1.311.72.2.1"</term>
+			/// <term>
+			/// SHA1 and SHA2 hashes are supported. MD2, MD4, and MD5 are not. The signing and public key algorithms can be RSA or ECDSA.
+			/// The DSA algorithm is not supported. The key size for the RSA algorithm must equal or be greater than 2047 bits. The key size
+			/// for the ECDSA algorithm must equal or be greater than 256 bits. Strong signing of CRLs and OCSP responses are enabled.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			[FieldOffset(8)]
+			public StrPtrAnsi pszOID;
+		}
+
+		/// <summary>
 		/// The <c>CERT_SYSTEM_STORE_INFO</c> structure contains information used by functions that work with system stores. Currently, no
 		/// essential information is contained in this structure.
 		/// </summary>

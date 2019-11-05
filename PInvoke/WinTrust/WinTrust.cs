@@ -9,6 +9,30 @@ namespace Vanara.PInvoke
 {
 	public static partial class WinTrust
 	{
+		/// <summary>Confidence values.</summary>
+		[PInvokeData("wintrust.h", MSDNShortId = "622e7a72-445a-4820-b236-1c90dad08351")]
+		[Flags]
+		public enum CertConfidence
+		{
+			/// <summary>The signature of the certificate is valid.</summary>
+			CERT_CONFIDENCE_SIG = 0x10000000,
+
+			/// <summary>The time of the certificate issuer is valid.</summary>
+			CERT_CONFIDENCE_TIME = 0x01000000,
+
+			/// <summary>The time of the certificate is valid.</summary>
+			CERT_CONFIDENCE_TIMENEST = 0x00100000,
+
+			/// <summary>The authority ID extension is valid.</summary>
+			CERT_CONFIDENCE_AUTHIDEXT = 0x00010000,
+
+			/// <summary>At a minimum, the signature of the certificate and authority ID extension are valid.</summary>
+			CERT_CONFIDENCE_HYGIENE = 0x00001000,
+
+			/// <summary>A combination of all of the other confidence values.</summary>
+			CERT_CONFIDENCE_HIGHEST = 0x11111000,
+		}
+
 		/// <summary>Action to perform.</summary>
 		[PInvokeData("wintrust.h", MSDNShortId = "B2ED5489-792F-4B00-A21E-EE1B1462D1C8")]
 		public enum DWACTION
@@ -83,9 +107,10 @@ namespace Vanara.PInvoke
 		public enum WTD_REVOKE
 		{
 			/// <summary>
-			/// No additional revocation checking will be done when the WTD_REVOKE_NONE flag is used in conjunction with the HTTPSPROV_ACTION
-			/// value set in the pgActionID parameter of the WinVerifyTrust function. To ensure the WinVerifyTrust function does not attempt
-			/// any network retrieval when verifying code signatures, WTD_CACHE_ONLY_URL_RETRIEVAL must be set in the dwProvFlags parameter.
+			/// No additional revocation checking will be done when the WTD_REVOKE_NONE flag is used in conjunction with the
+			/// HTTPSPROV_ACTION value set in the pgActionID parameter of the WinVerifyTrust function. To ensure the WinVerifyTrust function
+			/// does not attempt any network retrieval when verifying code signatures, WTD_CACHE_ONLY_URL_RETRIEVAL must be set in the
+			/// dwProvFlags parameter.
 			/// </summary>
 			WTD_REVOKE_NONE = 0x00000000,
 
@@ -134,8 +159,8 @@ namespace Vanara.PInvoke
 			WTD_NO_IE4_CHAIN_FLAG = 0x00000002,
 
 			/// <summary>
-			/// The default verification of the policy provider, such as code signing for Authenticode, is not performed, and the certificate
-			/// is assumed valid for all usages.
+			/// The default verification of the policy provider, such as code signing for Authenticode, is not performed, and the
+			/// certificate is assumed valid for all usages.
 			/// </summary>
 			WTD_NO_POLICY_USAGE_FLAG = 0x00000004,
 
@@ -181,9 +206,9 @@ namespace Vanara.PInvoke
 			WTD_DISABLE_MD2_MD4 = 0x00002000,
 
 			/// <summary>
-			/// If this flag is specified it is assumed that the file being verified has been downloaded from the web and has the Mark of the
-			/// Web attribute. Policies that are meant to apply to Mark of the Web files will be enforced. <note>Note This flag is supported
-			/// on Windows 8.1 and later operating systems or on systems that have installed KB2862966.</note>
+			/// If this flag is specified it is assumed that the file being verified has been downloaded from the web and has the Mark of
+			/// the Web attribute. Policies that are meant to apply to Mark of the Web files will be enforced. <note>Note This flag is
+			/// supported on Windows 8.1 and later operating systems or on systems that have installed KB2862966.</note>
 			/// </summary>
 			WTD_MOTW = 0x00004000,
 
@@ -209,8 +234,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// A DWORD value that specifies the user interface context for the WinVerifyTrust function. This causes the text in the Authenticode
-		/// dialog box to match the action taken on the file.
+		/// A DWORD value that specifies the user interface context for the WinVerifyTrust function. This causes the text in the
+		/// Authenticode dialog box to match the action taken on the file.
 		/// </summary>
 		[PInvokeData("wintrust.h", MSDNShortId = "8fb68f44-6f69-4eac-90de-02689e3e86cf")]
 		public enum WTD_UICONTEXT
@@ -298,8 +323,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>WT_TRUSTDBDIALOG_ONLY_PUB_TAB_FLAG 2 (0x2)</term>
 		/// <term>
-		/// Only display the Trusted Publisher tab. By default, all of the user interface tabs are displayed and the Trusted Publisher tab is
-		/// initially selected.
+		/// Only display the Trusted Publisher tab. By default, all of the user interface tabs are displayed and the Trusted Publisher tab
+		/// is initially selected.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -705,8 +730,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// The <c>WinVerifyTrust</c> function performs a trust verification action on a specified object. The function passes the inquiry to
-		/// a trust provider that supports the action identifier, if one exists.
+		/// The <c>WinVerifyTrust</c> function performs a trust verification action on a specified object. The function passes the inquiry
+		/// to a trust provider that supports the action identifier, if one exists.
 		/// </para>
 		/// <para>For certificate verification, use the CertGetCertificateChain and CertVerifyCertificateChainPolicy functions.</para>
 		/// </summary>
@@ -732,8 +757,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>A valid window handle</term>
 		/// <term>
-		/// A trust provider can treat any value other than INVALID_HANDLE_VALUE or zero as a valid window handle that it can use to interact
-		/// with the user.
+		/// A trust provider can treat any value other than INVALID_HANDLE_VALUE or zero as a valid window handle that it can use to
+		/// interact with the user.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -813,9 +838,9 @@ namespace Vanara.PInvoke
 		/// from the trust provider.
 		/// </para>
 		/// <para>
-		/// For example, a trust provider might indicate that the subject is not trusted, or is trusted but with limitations or warnings. The
-		/// return value can be a trust-provider-specific value described in the documentation for an individual trust provider, or it can be
-		/// one of the following error codes.
+		/// For example, a trust provider might indicate that the subject is not trusted, or is trusted but with limitations or warnings.
+		/// The return value can be a trust-provider-specific value described in the documentation for an individual trust provider, or it
+		/// can be one of the following error codes.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -853,16 +878,16 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// For example, the Software Publisher Trust Provider can verify that an executable image file comes from a trusted software
-		/// publisher and that the file has not been modified since it was published. In this case, the pWinTrustData parameter specifies the
-		/// name of the file and the type of file, such as a Microsoft Portable Executable image file.
+		/// publisher and that the file has not been modified since it was published. In this case, the pWinTrustData parameter specifies
+		/// the name of the file and the type of file, such as a Microsoft Portable Executable image file.
 		/// </para>
 		/// <para>
 		/// Each trust provider supports a specific set of actions that it can evaluate. Each action has a GUID that identifies it. A trust
 		/// provider can support any number of action identifiers, but two trust providers cannot support the same action identifier.
 		/// </para>
 		/// <para>
-		/// For an example that demonstrates how to use this function to verify the signature of a portable executable (PE) file, see Example
-		/// C Program: Verifying the Signature of a PE File.
+		/// For an example that demonstrates how to use this function to verify the signature of a portable executable (PE) file, see
+		/// Example C Program: Verifying the Signature of a PE File.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-winverifytrust LONG WinVerifyTrust( HWND hwnd, GUID
@@ -874,8 +899,9 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// <para>
 		/// The <c>WinVerifyTrustEx</c> function performs a trust verification action on a specified object and takes a pointer to a
-		/// WINTRUST_DATA structure. The function passes the inquiry to a trust provider, if one exists, that supports the action identifier.
-		/// This function has no associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+		/// WINTRUST_DATA structure. The function passes the inquiry to a trust provider, if one exists, that supports the action
+		/// identifier. This function has no associated import library. You must use the LoadLibrary and GetProcAddress functions to
+		/// dynamically link to Wintrust.dll.
 		/// </para>
 		/// <para>For certificate verification, use the CertGetCertificateChain and CertVerifyCertificateChainPolicy functions.</para>
 		/// </summary>
@@ -901,8 +927,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>A valid window handle</term>
 		/// <term>
-		/// A trust provider can treat any value other than INVALID_HANDLE_VALUE or zero as a valid window handle that it can use to interact
-		/// with the user.
+		/// A trust provider can treat any value other than INVALID_HANDLE_VALUE or zero as a valid window handle that it can use to
+		/// interact with the user.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -983,9 +1009,9 @@ namespace Vanara.PInvoke
 		/// Otherwise, the function returns a status code from the trust provider.
 		/// </para>
 		/// <para>
-		/// For example, a trust provider might indicate that the subject is not trusted, or is trusted but with limitations or warnings. The
-		/// return value can be a trust provider–specific value described in the documentation for an individual trust provider, or it can be
-		/// one of the following error codes.
+		/// For example, a trust provider might indicate that the subject is not trusted, or is trusted but with limitations or warnings.
+		/// The return value can be a trust provider–specific value described in the documentation for an individual trust provider, or it
+		/// can be one of the following error codes.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -1026,9 +1052,9 @@ namespace Vanara.PInvoke
 		/// and CertVerifyCertificateChainPolicy functions. For Microsoft Authenticode technology signature verification, use the .NET Framework.]
 		/// </para>
 		/// <para>
-		/// The <c>WTHelperCertCheckValidSignature</c> function checks whether a signature is valid. It can be used by trust providers to get
-		/// an initial assessment of the validity of a signature before calling the function pointed to by the <c>pfnFinalPolicy</c> member
-		/// of a CRYPT_PROVIDER_FUNCTIONS structure.
+		/// The <c>WTHelperCertCheckValidSignature</c> function checks whether a signature is valid. It can be used by trust providers to
+		/// get an initial assessment of the validity of a signature before calling the function pointed to by the <c>pfnFinalPolicy</c>
+		/// member of a CRYPT_PROVIDER_FUNCTIONS structure.
 		/// </para>
 		/// </summary>
 		/// <param name="pProvData">A pointer to the CRYPT_PROVIDER_DATA structure that contains the signer and countersigner information.</param>
@@ -1043,6 +1069,87 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wintrust.h", MSDNShortId = "d46eea18-03cb-4199-873e-0e9e13061598")]
 		public static extern HRESULT WTHelperCertCheckValidSignature(in CRYPT_PROVIDER_DATA pProvData);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>WTHelperCertFindIssuerCertificate</c> function is available for use in the operating systems specified in the
+		/// Requirements section. It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// The <c>WTHelperCertFindIssuerCertificate</c> function finds an issuer certificate from the specified certificate stores that
+		/// matches the specified subject certificate.
+		/// </para>
+		/// </summary>
+		/// <param name="pChildContext">The subject certificate for which to find a matching issuer certificate.</param>
+		/// <param name="chStores">The number of elements in the pahStores array.</param>
+		/// <param name="pahStores">An array of certificate stores in which to search.</param>
+		/// <param name="psftVerifyAsOf">The time of verification.</param>
+		/// <param name="dwEncoding">
+		/// A <c>DWORD</c> value that specifies the encoding types of the certificate to check. For information about possible encoding
+		/// types, see Certificate and Message Encoding Types.
+		/// </param>
+		/// <param name="pdwConfidence">
+		/// <para>This parameter can be a bitwise combination of zero or more of the following confidence values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_CONFIDENCE_SIG 0x10000000</term>
+		/// <term>The signature of the certificate is valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CONFIDENCE_TIME 0x01000000</term>
+		/// <term>The time of the certificate issuer is valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CONFIDENCE_TIMENEST 0x00100000</term>
+		/// <term>The time of the certificate is valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CONFIDENCE_AUTHIDEXT 0x00010000</term>
+		/// <term>The authority ID extension is valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CONFIDENCE_HYGIENE 0x00001000</term>
+		/// <term>At a minimum, the signature of the certificate and authority ID extension are valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CONFIDENCE_HIGHEST 0x11111000</term>
+		/// <term>A combination of all of the other confidence values.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwError">A pointer to a <c>DWORD</c> variable that contains the error value for this certificate, if applicable.</param>
+		/// <returns>An issuer certificate that matches the subject certificate specified by the pChildContext parameter.</returns>
+		/// <remarks>
+		/// <para>To successfully find a matching issuer certificate, the following requirements must be met:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The signature of the subject certificate specified by the pChildContext parameter must be valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The <c>rgExtension</c> member of the <c>pCertInfo</c> member of the pChildContext parameter must contain a
+		/// <c>CERT_AUTHORITY_KEY_ID_INFO</c> structure. The <c>CertIssuer</c> and <c>CertSerialMember</c> members of this structure much
+		/// match the corresponding members for the issuer certificate.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>The value of the psftVerifyAsOf parameter must be within the period of validity of the subject certificate.</term>
+		/// </item>
+		/// <item>
+		/// <term>The period of validity of the subject certificate must be within the period of validity of the issuer certificate.</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/seccrypto/wthelpercertfindissuercertificate PCCERT_CONTEXT WINAPI
+		// WTHelperCertFindIssuerCertificate( _In_ PCCERT_CONTEXT pChildContext, _In_ DWORD chStores, _In_ HCERTSTORE *pahStores, _In_
+		// FILETIME *psftVerifyAsOf, _In_ DWORD dwEncoding, _Out_opt_ DWORD *pdwConfidence, _Out_ DWORD *dwError );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wintrust.h", MSDNShortId = "c724f602-fc73-4857-941f-0f22a9e472d1")]
+		public static extern IntPtr WTHelperCertFindIssuerCertificate(in CERT_CONTEXT pChildContext, uint chStores, [In] HCERTSTORE[] pahStores, in FILETIME psftVerifyAsOf, CertEncodingType dwEncoding, out CertConfidence pdwConfidence, out Win32Error dwError);
 
 		/// <summary>
 		/// <para>
@@ -1073,13 +1180,88 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
+		/// [The <c>WTHelperGetFileHash</c> function is available for use in the operating systems specified in the Requirements section. It
+		/// may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// The <c>WTHelperGetFileHash</c> function verifies the signature of a signed file and obtains the hash value and algorithm
+		/// identifier for the file.
+		/// </para>
+		/// </summary>
+		/// <param name="pwszFilename">
+		/// A pointer to a null-terminated Unicode string that contains the path and file name of the file to get the hash for.
+		/// </param>
+		/// <param name="dwFlags">This parameter is not used and should be zero.</param>
+		/// <param name="pvReserved">This parameter is not used and should be <c>NULL</c>.</param>
+		/// <param name="pbFileHash">
+		/// A pointer to a buffer to receive the hash value for the file. The pcbFileHash parameter contains the size of this buffer.
+		/// </param>
+		/// <param name="pcbFileHash">
+		/// <para>
+		/// A pointer to a <c>DWORD</c> variable that, on input, contains the size, in bytes, of the pbFileHash buffer and, on output,
+		/// receives the size, in bytes, of the hash value.
+		/// </para>
+		/// <para>
+		/// To obtain the required size of the hash value, pass <c>NULL</c> for the pbFileHash parameter. This function will place the
+		/// required size, in bytes, of the hash value in this location.
+		/// </para>
+		/// <para>
+		/// If the pbFileHash parameter is not <c>NULL</c>, and the size is not large enough to receive the hash value, this function will
+		/// place the required size, in bytes, in this location and return <c>ERROR_MORE_DATA</c>.
+		/// </para>
+		/// </param>
+		/// <param name="pHashAlgid">
+		/// A pointer to an <c>ALG_ID</c> variable to receive the identifier of the algorithm used to create the hash value. This parameter
+		/// can be <c>NULL</c> if this information is not needed.
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>The file is signed, and the signature was verified.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_MORE_DATA</term>
+		/// <term>
+		/// The pbFileHash parameter is not NULL, and the size specified by the pcbFileHash parameter is not large enough to receive the hash.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_ENOUGH_MEMORY</term>
+		/// <term>A memory allocation failure occurred.</term>
+		/// </item>
+		/// <item>
+		/// <term>TRUST_E_BAD_DIGEST</term>
+		/// <term>The signature of the file was not verified.</term>
+		/// </item>
+		/// <item>
+		/// <term>TRUST_E_NOSIGNATURE</term>
+		/// <term>The file was not signed or had a signature that is not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/seccrypto/wthelpergetfilehash LONG WINAPI WTHelperGetFileHash( _In_ LPCWSTR
+		// pwszFilename, _In_ DWORD dwFlags, _Inout_opt_ PVOID pvReserved, _Out_opt_ BYTE *pbFileHash, _Inout_opt_ DWORD *pcbFileHash,
+		// _Out_opt_ ALG_ID *pHashAlgid );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wintrust.h", MSDNShortId = "130b3c3e-cc67-44ec-acc7-daa87b714299")]
+		public static extern int WTHelperGetFileHash([MarshalAs(UnmanagedType.LPWStr)] string pwszFilename, [Optional] uint dwFlags, [In, Out, Optional] IntPtr pvReserved, [Out] IntPtr pbFileHash, ref uint pcbFileHash, out ALG_ID pHashAlgid);
+
+		/// <summary>
+		/// <para>
 		/// [The <c>WTHelperGetProvCertFromChain</c> function is available for use in the operating systems specified in the Requirements
 		/// section. It may be altered or unavailable in subsequent versions. For certificate verification, use the CertGetCertificateChain
 		/// and CertVerifyCertificateChainPolicy functions. For Microsoft Authenticode technology signature verification, use the .NET Framework.]
 		/// </para>
 		/// <para>
-		/// The <c>WTHelperGetProvCertFromChain</c> function retrieves a trust provider certificate from the certificate chain. This function
-		/// has no associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+		/// The <c>WTHelperGetProvCertFromChain</c> function retrieves a trust provider certificate from the certificate chain. This
+		/// function has no associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
 		/// </para>
 		/// </summary>
 		/// <param name="pSgnr">
@@ -1129,15 +1311,74 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [The <c>CRYPT_PROVIDER_CERT</c> structure is available for use in the operating systems specified in the Requirements section. It
-		/// may be altered or unavailable in subsequent versions.]
+		/// [The <c>WTHelperGetProvSignerFromChain</c> function is available for use in the operating systems specified in the Requirements
+		/// section. It may be altered or unavailable in subsequent versions. For certificate verification, use the CertGetCertificateChain
+		/// and CertVerifyCertificateChainPolicy functions. For Microsoft Authenticode technology signature verification, use the .NET Framework.]
+		/// </para>
+		/// <para>
+		/// The <c>WTHelperGetProvSignerFromChain</c> function retrieves a signer or countersigner by index from the chain. This function
+		/// has no associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+		/// </para>
+		/// </summary>
+		/// <param name="pProvData">A pointer to the CRYPT_PROVIDER_DATA structure that contains the signer and countersigner information.</param>
+		/// <param name="idxSigner">The index of the signer. The index is zero based.</param>
+		/// <param name="fCounterSigner">
+		/// If <c>TRUE</c>, the countersigner, as specified by idxCounterSigner, is retrieved by this function; the signer that contains the
+		/// countersigner is identified by idxSigner. If <c>FALSE</c>, the signer, as specified by idxSigner, is retrieved by this function.
+		/// </param>
+		/// <param name="idxCounterSigner">
+		/// The index of the countersigner. The index is zero based. The countersigner applies to the signer identified by idxSigner.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the function returns a pointer to a CRYPT_PROVIDER_SGNR structure for the requested signer or countersigner.
+		/// </para>
+		/// <para>If the function fails, it returns <c>NULL</c>.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wintrust/nf-wintrust-wthelpergetprovsignerfromchain CRYPT_PROVIDER_SGNR *
+		// WTHelperGetProvSignerFromChain( CRYPT_PROVIDER_DATA *pProvData, DWORD idxSigner, BOOL fCounterSigner, DWORD idxCounterSigner );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wintrust.h", MSDNShortId = "8e1ebf82-73c2-445b-9964-6739f7c90c47")]
+		public static extern IntPtr WTHelperGetProvSignerFromChain(in CRYPT_PROVIDER_DATA pProvData, uint idxSigner, [MarshalAs(UnmanagedType.Bool)] bool fCounterSigner, uint idxCounterSigner);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>WTHelperProvDataFromStateData</c> function is available for use in the operating systems specified in the Requirements
+		/// section. It may be altered or unavailable in subsequent versions. For certificate verification, use the CertGetCertificateChain
+		/// and CertVerifyCertificateChainPolicy functions. For Microsoft Authenticode technology signature verification, use the .NET Framework.]
+		/// </para>
+		/// <para>
+		/// The <c>WTHelperProvDataFromStateData</c> function retrieves trust provider information from a specified handle. This function
+		/// has no associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+		/// </para>
+		/// </summary>
+		/// <param name="hStateData">
+		/// A handle previously set by the WinVerifyTrustEx function as the <c>hWVTStateData</c> member of the WINTRUST_DATA structure.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the function returns a pointer to a CRYPT_PROVIDER_DATA structure. The returned pointer can be used by
+		/// the WTHelperGetProvSignerFromChain function.
+		/// </para>
+		/// <para>If the function fails, it returns <c>NULL</c>.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wintrust/nf-wintrust-wthelperprovdatafromstatedata CRYPT_PROVIDER_DATA *
+		// WTHelperProvDataFromStateData( HANDLE hStateData );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wintrust.h", MSDNShortId = "ca2ca612-2da6-4fe1-8b1e-bc6307eb92af")]
+		public static extern IntPtr WTHelperProvDataFromStateData(HANDLE hStateData);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CRYPT_PROVIDER_CERT</c> structure is available for use in the operating systems specified in the Requirements section.
+		/// It may be altered or unavailable in subsequent versions.]
 		/// </para>
 		/// <para>The <c>CRYPT_PROVIDER_CERT</c> structure provides information about a provider certificate.</para>
 		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-_crypt_provider_cert typedef struct _CRYPT_PROVIDER_CERT
-		// { DWORD cbStruct; PCCERT_CONTEXT pCert; BOOL fCommercial; BOOL fTrustedRoot; BOOL fSelfSigned; BOOL fTestCert; DWORD
-		// dwRevokedReason; DWORD dwConfidence; DWORD dwError; CTL_CONTEXT *pTrustListContext; BOOL fTrustListSignerCert; PCCTL_CONTEXT
-		// pCtlContext; DWORD dwCtlError; BOOL fIsCyclic; PCERT_CHAIN_ELEMENT pChainElement; } CRYPT_PROVIDER_CERT, *PCRYPT_PROVIDER_CERT;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-_crypt_provider_cert typedef struct
+		// _CRYPT_PROVIDER_CERT { DWORD cbStruct; PCCERT_CONTEXT pCert; BOOL fCommercial; BOOL fTrustedRoot; BOOL fSelfSigned; BOOL
+		// fTestCert; DWORD dwRevokedReason; DWORD dwConfidence; DWORD dwError; CTL_CONTEXT *pTrustListContext; BOOL fTrustListSignerCert;
+		// PCCTL_CONTEXT pCtlContext; DWORD dwCtlError; BOOL fIsCyclic; PCERT_CHAIN_ELEMENT pChainElement; } CRYPT_PROVIDER_CERT, *PCRYPT_PROVIDER_CERT;
 		[PInvokeData("wintrust.h", MSDNShortId = "622e7a72-445a-4820-b236-1c90dad08351")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CRYPT_PROVIDER_CERT
@@ -1196,7 +1437,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint dwConfidence;
+			public CertConfidence dwConfidence;
 
 			/// <summary>A pointer to a <c>DWORD</c> variable that contains the error value for this certificate, if applicable.</summary>
 			public uint dwError;
@@ -1226,7 +1467,8 @@ namespace Vanara.PInvoke
 		/// [The CRYPT_PROVUI_DATA structure is available for use in the operating systems specified in the Requirements section. It may be
 		/// altered or unavailable in subsequent versions.]
 		/// <para>
-		/// The CRYPT_PROVUI_DATA structure provides user interface (UI) data for a provider.This structure is used by the CRYPT_PROVUI_FUNCS structure.
+		/// The CRYPT_PROVUI_DATA structure provides user interface (UI) data for a provider.This structure is used by the
+		/// CRYPT_PROVUI_FUNCS structure.
 		/// </para>
 		/// </summary>
 		[PInvokeData("wintrust.h", MSDNShortId = "86f819f0-c243-45ba-8b7b-97ed906e6e8a")]
@@ -1271,8 +1513,8 @@ namespace Vanara.PInvoke
 			public string pCopyActionTextNoTS;
 
 			/// <summary>
-			/// A pointer to a null-terminated string for the text used when a signature is not provided. If this parameter is NULL, then "Do
-			/// you want to install and run ""%1""?" is used.
+			/// A pointer to a null-terminated string for the text used when a signature is not provided. If this parameter is NULL, then
+			/// "Do you want to install and run ""%1""?" is used.
 			/// </summary>
 			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pCopyActionTextNotSigned;
@@ -1435,15 +1677,15 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [The <c>CRYPT_PROVIDER_SGNR</c> structure is available for use in the operating systems specified in the Requirements section. It
-		/// may be altered or unavailable in subsequent versions.]
+		/// [The <c>CRYPT_PROVIDER_SGNR</c> structure is available for use in the operating systems specified in the Requirements section.
+		/// It may be altered or unavailable in subsequent versions.]
 		/// </para>
 		/// <para>The <c>CRYPT_PROVIDER_SGNR</c> structure provides information about a signer or countersigner.</para>
 		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-_crypt_provider_sgnr typedef struct _CRYPT_PROVIDER_SGNR
-		// { DWORD cbStruct; FILETIME sftVerifyAsOf; DWORD csCertChain; struct _CRYPT_PROVIDER_CERT *pasCertChain; DWORD dwSignerType;
-		// CMSG_SIGNER_INFO *psSigner; DWORD dwError; DWORD csCounterSigners; struct _CRYPT_PROVIDER_SGNR *pasCounterSigners;
-		// PCCERT_CHAIN_CONTEXT pChainContext; } CRYPT_PROVIDER_SGNR, *PCRYPT_PROVIDER_SGNR;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-_crypt_provider_sgnr typedef struct
+		// _CRYPT_PROVIDER_SGNR { DWORD cbStruct; FILETIME sftVerifyAsOf; DWORD csCertChain; struct _CRYPT_PROVIDER_CERT *pasCertChain;
+		// DWORD dwSignerType; CMSG_SIGNER_INFO *psSigner; DWORD dwError; DWORD csCounterSigners; struct _CRYPT_PROVIDER_SGNR
+		// *pasCounterSigners; PCCERT_CHAIN_CONTEXT pChainContext; } CRYPT_PROVIDER_SGNR, *PCRYPT_PROVIDER_SGNR;
 		[PInvokeData("wintrust.h", MSDNShortId = "39cf9a03-768d-4ae0-a19d-17652181dbe4")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CRYPT_PROVIDER_SGNR
@@ -1626,8 +1868,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </summary>
 		/// <remarks>The prototype for PFN_PROVUI_CALL is defined as:</remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-_crypt_provui_funcs typedef struct _CRYPT_PROVUI_FUNCS {
-		// DWORD cbStruct; struct _CRYPT_PROVUI_DATA *psUIData; PFN_PROVUI_CALL pfnOnMoreInfoClick; PFN_PROVUI_CALL
+		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-_crypt_provui_funcs typedef struct _CRYPT_PROVUI_FUNCS
+		// { DWORD cbStruct; struct _CRYPT_PROVUI_DATA *psUIData; PFN_PROVUI_CALL pfnOnMoreInfoClick; PFN_PROVUI_CALL
 		// pfnOnMoreInfoClickDefault; PFN_PROVUI_CALL pfnOnAdvancedClick; PFN_PROVUI_CALL pfnOnAdvancedClickDefault; } CRYPT_PROVUI_FUNCS, *PCRYPT_PROVUI_FUNCS;
 		[PInvokeData("wintrust.h", MSDNShortId = "7cdc32ea-b28a-400f-ad8a-984f86bb95fd")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -1729,7 +1971,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HCATADMIN : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HCATADMIN"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1777,7 +2019,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HCRYPTMSG : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HCRYPTMSG"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1822,8 +2064,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// The <c>SPC_INDIRECT_DATA_CONTENT</c> structure is used in Authenticode signatures to store the digest and other attributes of the
-		/// signed file.
+		/// The <c>SPC_INDIRECT_DATA_CONTENT</c> structure is used in Authenticode signatures to store the digest and other attributes of
+		/// the signed file.
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-_spc_indirect_data_content typedef struct
 		// _SPC_INDIRECT_DATA_CONTENT { CRYPT_ATTRIBUTE_TYPE_VALUE Data; CRYPT_ALGORITHM_IDENTIFIER DigestAlgorithm; CRYPT_HASH_BLOB Digest;
@@ -1843,8 +2085,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>This structure encapsulates a signature used in verifying executable files.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-_win_certificate typedef struct _WIN_CERTIFICATE { DWORD
-		// dwLength; WORD wRevision; WORD wCertificateType; BYTE bCertificate[ANYSIZE_ARRAY]; } WIN_CERTIFICATE, *LPWIN_CERTIFICATE;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-_win_certificate typedef struct _WIN_CERTIFICATE {
+		// DWORD dwLength; WORD wRevision; WORD wCertificateType; BYTE bCertificate[ANYSIZE_ARRAY]; } WIN_CERTIFICATE, *LPWIN_CERTIFICATE;
 		[PInvokeData("wintrust.h", MSDNShortId = "AC666871-265B-4D09-B7A6-DEC48D4645FD")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct WIN_CERTIFICATE
@@ -1904,8 +2146,8 @@ namespace Vanara.PInvoke
 		/// that support this structure.
 		/// </para>
 		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-wintrust_blob_info_ typedef struct WINTRUST_BLOB_INFO_ {
-		// DWORD cbStruct; GUID gSubject; LPCWSTR pcwszDisplayName; DWORD cbMemObject; BYTE *pbMemObject; DWORD cbMemSignedMsg; BYTE
+		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-wintrust_blob_info_ typedef struct WINTRUST_BLOB_INFO_
+		// { DWORD cbStruct; GUID gSubject; LPCWSTR pcwszDisplayName; DWORD cbMemObject; BYTE *pbMemObject; DWORD cbMemSignedMsg; BYTE
 		// *pbMemSignedMsg; } WINTRUST_BLOB_INFO, *PWINTRUST_BLOB_INFO;
 		[PInvokeData("wintrust.h", MSDNShortId = "8b13d355-4d24-4d8e-aae3-db16467999be")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -1990,8 +2232,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>The <c>WINTRUST_CERT_INFO</c> structure is used when calling WinVerifyTrust to verify a CERT_CONTEXT.</para>
 		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-wintrust_cert_info_ typedef struct WINTRUST_CERT_INFO_ {
-		// DWORD cbStruct; LPCWSTR pcwszDisplayName; CERT_CONTEXT *psCertContext; DWORD chStores; HCERTSTORE *pahStores; DWORD dwFlags;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-wintrust_cert_info_ typedef struct WINTRUST_CERT_INFO_
+		// { DWORD cbStruct; LPCWSTR pcwszDisplayName; CERT_CONTEXT *psCertContext; DWORD chStores; HCERTSTORE *pahStores; DWORD dwFlags;
 		// FILETIME *psftVerifyAsOf; } WINTRUST_CERT_INFO, *PWINTRUST_CERT_INFO;
 		[PInvokeData("wintrust.h", MSDNShortId = "6522d1f0-3d96-4499-9220-23288122e0e6")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -2010,8 +2252,8 @@ namespace Vanara.PInvoke
 			public uint chStores;
 
 			/// <summary>
-			/// An array of open certificate stores to add to the list of stores that the policy provider looks in to find certificates while
-			/// building a trust chain.
+			/// An array of open certificate stores to add to the list of stores that the policy provider looks in to find certificates
+			/// while building a trust chain.
 			/// </summary>
 			public IntPtr pahStores;
 
@@ -2023,8 +2265,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The <c>WINTRUST_FILE_INFO</c> structure is used when calling WinVerifyTrust to verify an individual file.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-wintrust_file_info_ typedef struct WINTRUST_FILE_INFO_ {
-		// DWORD cbStruct; LPCWSTR pcwszFilePath; HANDLE hFile; GUID *pgKnownSubject; } WINTRUST_FILE_INFO, *PWINTRUST_FILE_INFO;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/ns-wintrust-wintrust_file_info_ typedef struct WINTRUST_FILE_INFO_
+		// { DWORD cbStruct; LPCWSTR pcwszFilePath; HANDLE hFile; GUID *pgKnownSubject; } WINTRUST_FILE_INFO, *PWINTRUST_FILE_INFO;
 		[PInvokeData("wintrust.h", MSDNShortId = "3c3bef86-a2ed-47d1-a726-90630433358a")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct WINTRUST_FILE_INFO
@@ -2133,7 +2375,7 @@ namespace Vanara.PInvoke
 		public class WINTRUST_DATA : IDisposable
 		{
 			/// <summary>The size, in bytes, of this structure.</summary>
-			private int _cbStruct;
+			private readonly int _cbStruct;
 
 			/// <summary>A pointer to a data buffer used to pass policy-specific data to a policy provider. This member can be NULL.</summary>
 			public IntPtr pPolicyCallbackData;
@@ -2281,28 +2523,5 @@ namespace Vanara.PInvoke
 					Marshal.FreeCoTaskMem(_pInfoStruct);
 			}
 		}
-
-		/*
-		OpenPersonalTrustDBDialog https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-openpersonaltrustdbdialog
-		OpenPersonalTrustDBDialogEx https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-openpersonaltrustdbdialogex
-		WTHelperCertCheckValidSignature https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wthelpercertcheckvalidsignature
-		WTHelperCertFindIssuerCertificate https://docs.microsoft.com/en-us/windows/desktop/SecCrypto/wthelpercertfindissuercertificate
-		WTHelperCertIsSelfSigned https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wthelpercertisselfsigned
-		WTHelperGetFileHash https://docs.microsoft.com/en-us/windows/desktop/SecCrypto/wthelpergetfilehash
-		WTHelperGetProvCertFromChain https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wthelpergetprovcertfromchain
-		WTHelperGetProvPrivateDataFromChain https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wthelpergetprovprivatedatafromchain
-		WTHelperGetProvSignerFromChain https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wthelpergetprovsignerfromchain
-		WTHelperProvDataFromStateData https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wthelperprovdatafromstatedata
-		WinVerifyTrust https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-winverifytrust
-		WinVerifyTrustEx https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-winverifytrustex
-		WintrustAddActionID https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wintrustaddactionid
-		WintrustAddDefaultForUsage https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wintrustadddefaultforusage
-		WintrustGetDefaultForUsage https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wintrustgetdefaultforusage
-		WintrustGetRegPolicyFlags https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wintrustgetregpolicyflags
-		WintrustLoadFunctionPointers https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wintrustloadfunctionpointers
-		WintrustRemoveActionID https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wintrustremoveactionid
-		WintrustSetDefaultIncludePEPageHashes https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wintrustsetdefaultincludepepagehashes
-		WintrustSetRegPolicyFlags https://docs.microsoft.com/en-us/windows/desktop/api/wintrust/nf-wintrust-wintrustsetregpolicyflags
-		*/
 	}
 }
