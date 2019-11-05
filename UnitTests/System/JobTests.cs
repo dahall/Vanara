@@ -197,6 +197,15 @@ namespace Vanara.Diagnostics.Tests
 		}
 
 		[Test]
+		public void SettingsMixTest()
+		{
+			using var job = Job.Create();
+			Assert.That(() => job.Settings.Affinity = (UIntPtr)0x2, Throws.Nothing);
+			job.Settings.KillOnJobClose = true;
+			Assert.That(() => job.Settings.Affinity = (UIntPtr)0x2, Throws.Nothing);
+		}
+
+		[Test]
 		public void SettingsTest()
 		{
 			using var job = Job.Create();
