@@ -4,7 +4,7 @@
     <SupportedDlls>wintrust.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
-    <Description>PInvoke API (methods, structures and constants imported from Windows WinTrust.dll.</Description>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows WinTrust.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>3.1.2</VersionPrefix>
@@ -18,7 +18,7 @@
     <PackageIcon>Vanara64x64.png</PackageIcon>
     <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;wintrust</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <IncludeSource>true</IncludeSource>
     <IncludeSymbols>true</IncludeSymbols>

@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using static Vanara.PInvoke.Crypt32;
 
 namespace Vanara.PInvoke
@@ -156,11 +157,20 @@ namespace Vanara.PInvoke
 			CRYPTCAT_E_CDF_ATTR_TYPECOMBO = 0x00020004,
 		}
 
-		/// <summary>Flags used by CRYPTCATSTORE.</summary>
-		[PInvokeData("mscat.h", MSDNShortId = "65a15797-453c-4f47-8ea1-c92e616b50aa")]
+		/// <summary>Flags used by <see cref="CryptCATOpen"/> and <see cref="CRYPTCATSTORE"/>.</summary>
+		[PInvokeData("mscat.h", MSDNShortId = "e81f3a3d-d5b7-4266-838d-b83e331c8594")]
 		[Flags]
 		public enum CRYPTCAT_OPEN : uint
 		{
+			/// <summary>Opens the file, if it exists, or creates a new file, if needed.</summary>
+			CRYPTCAT_OPEN_ALWAYS = 0x00000002,
+
+			/// <summary>A new catalog file is created. If a previously created file exists, it is overwritten.</summary>
+			CRYPTCAT_OPEN_CREATENEW = 0x00000001,
+
+			/// <summary>Opens the file, only if it exists.</summary>
+			CRYPTCAT_OPEN_EXISTING = 0x00000004,
+
 			/// <summary>Exclude page hashes in SPC_INDIRECT_DATA.</summary>
 			CRYPTCAT_OPEN_EXCLUDE_PAGE_HASHES = 0x00010000,
 
@@ -180,6 +190,20 @@ namespace Vanara.PInvoke
 
 			/// <summary>Verify the signature hash but not the certificate chain.</summary>
 			CRYPTCAT_OPEN_VERIFYSIGHASH = 0x10000000,
+		}
+
+		/// <summary>Version values used by <see cref="CryptCATOpen"/>.</summary>
+		[PInvokeData("mscat.h", MSDNShortId = "e81f3a3d-d5b7-4266-838d-b83e331c8594")]
+		public enum CRYPTCAT_VERSION
+		{
+			/// <summary>Version 1 file format.</summary>
+			CRYPTCAT_VERSION_1 = 0x100,
+
+			/// <summary>
+			/// Version 2 file format.
+			/// <para>Windows 8 and Windows Server 2012: Support for this value begins.</para>
+			/// </summary>
+			CRYPTCAT_VERSION_2 = 0x200,
 		}
 
 		/// <summary>
@@ -593,6 +617,775 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
+		/// [The <c>CryptCATAdminRemoveCatalog</c> function is available for use in the operating systems specified in the Requirements
+		/// section. It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// The <c>CryptCATAdminRemoveCatalog</c> function deletes a catalog file and removes that catalog's entry from the Windows catalog
+		/// database. This function is the only supported way to remove catalogs from the database while ensuring the integrity of the
+		/// database. The function has no associated import library. You must use the LoadLibrary and GetProcAddress functions to
+		/// dynamically link to Wintrust.dll.
+		/// </para>
+		/// </summary>
+		/// <param name="hCatAdmin">Handle previously assigned by the CryptCATAdminAcquireContext function.</param>
+		/// <param name="pwszCatalogFile">
+		/// A pointer to a null-terminated string for the name of the catalog to remove. This string must contain only the name, without any
+		/// path information.
+		/// </param>
+		/// <param name="dwFlags">This parameter is reserved for future use and must be set to zero.</param>
+		/// <returns>
+		/// <para>The return value is <c>TRUE</c> if the function succeeds; <c>FALSE</c> if the function fails.</para>
+		/// <para>
+		/// For extended error information, call the GetLastError function. For a complete list of error codes provided by the operating
+		/// system, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatadminremovecatalog BOOL CryptCATAdminRemoveCatalog( IN
+		// HCATADMIN hCatAdmin, IN LPCWSTR pwszCatalogFile, IN DWORD dwFlags );
+		[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "e09fe991-0e7a-45da-910a-8cb148bdff9a")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptCATAdminRemoveCatalog(HCATADMIN hCatAdmin, [MarshalAs(UnmanagedType.LPWStr)] string pwszCatalogFile, uint dwFlags = 0);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATAdminResolveCatalogPath</c> function is available for use in the operating systems specified in the Requirements
+		/// section. It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>The <c>CryptCATAdminResolveCatalogPath</c> function retrieves the fully qualified path of the specified catalog.</para>
+		/// <para>
+		/// <c>Note</c> This function has no associated import library. You must use the LoadLibrary and GetProcAddress functions to
+		/// dynamically link to Wintrust.dll.
+		/// </para>
+		/// </summary>
+		/// <param name="hCatAdmin">A handle that was previously assigned by the CryptCATAdminAcquireContext function.</param>
+		/// <param name="pwszCatalogFile">The name of the catalog file for which to retrieve the fully qualified path.</param>
+		/// <param name="psCatInfo">
+		/// A pointer to the CATALOG_INFO structure. This value cannot be <c>NULL</c>. Upon return from this function, the wszCatalogFile
+		/// member of the <c>CATALOG_INFO</c> structure contains the catalog file name.
+		/// </param>
+		/// <param name="dwFlags">This parameter is reserved and must be set to zero.</param>
+		/// <returns>
+		/// <para>Returns nonzero if successful or zero otherwise.</para>
+		/// <para>
+		/// For extended error information, call the GetLastError function. For a complete list of error codes provided by the operating
+		/// system, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatadminresolvecatalogpath BOOL
+		// CryptCATAdminResolveCatalogPath( HCATADMIN hCatAdmin, WCHAR *pwszCatalogFile, CATALOG_INFO *psCatInfo, DWORD dwFlags );
+		[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "bdbfa02d-8801-40d4-84f4-bc5a449bce50")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptCATAdminResolveCatalogPath(HCATADMIN hCatAdmin, [MarshalAs(UnmanagedType.LPWStr)] string pwszCatalogFile, ref CATALOG_INFO psCatInfo, uint dwFlags = 0);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATCatalogInfoFromContext</c> function is available for use in the operating systems specified in the Requirements
+		/// section. It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// The <c>CryptCATCatalogInfoFromContext</c> function retrieves catalog information from a specified catalog context. This function
+		/// has no associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+		/// </para>
+		/// </summary>
+		/// <param name="hCatInfo">A handle to the catalog context. This value cannot be <c>NULL</c>.</param>
+		/// <param name="psCatInfo">
+		/// A pointer to the CATALOG_INFO structure. This value cannot be <c>NULL</c>. Upon return from this function, the wszCatalogFile
+		/// member of the CATALOG_INFO structure contains the catalog file name.
+		/// </param>
+		/// <param name="dwFlags">Unused; set to zero.</param>
+		/// <returns>
+		/// <para>The return value is <c>TRUE</c> if the function succeeds; <c>FALSE</c> if the function fails.</para>
+		/// <para>
+		/// For extended error information, call the GetLastError function. For a complete list of error codes provided by the operating
+		/// system, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatcataloginfofromcontext BOOL
+		// CryptCATCatalogInfoFromContext( HCATINFO hCatInfo, CATALOG_INFO *psCatInfo, DWORD dwFlags );
+		[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "ec195fcc-1cff-4dd6-9075-c4904b653da7")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptCATCatalogInfoFromContext(HCATINFO hCatInfo, ref CATALOG_INFO psCatInfo, uint dwFlags = 0);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATCDFClose</c> function is available for use in the operating systems specified in the Requirements section. It
+		/// may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// The <c>CryptCATCDFClose</c> function closes a catalog definition file (CDF) and frees the memory for the corresponding
+		/// CRYPTCATCDF structure. <c>CryptCATCDFClose</c> is called by MakeCat.
+		/// </para>
+		/// </summary>
+		/// <param name="pCDF">A pointer to a CRYPTCATCDF structure.</param>
+		/// <returns>
+		/// Upon success, this function returns <c>TRUE</c>. The <c>CryptCATCDFClose</c> function returns <c>FALSE</c> with an
+		/// <c>ERROR_INVALID_PARAMETER</c> error if it fails.
+		/// </returns>
+		/// <remarks>
+		/// Before closing the catalog output file specified in pCDF, the <c>CryptCATCDFClose</c> function signs and persists it to the file system.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatcdfclose BOOL CryptCATCDFClose( IN CRYPTCATCDF *pCDF );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "9f2a1175-f9fe-4f4d-bf6f-e4f4c59739ec")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptCATCDFClose(IntPtr pCDF);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATCDFEnumCatAttributes</c> function is available for use in the operating systems specified in the Requirements
+		/// section. It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// The <c>CryptCATCDFEnumCatAttributes</c> function enumerates catalog-level attributes within the <c>CatalogHeader</c> section of
+		/// a catalog definition file (CDF). <c>CryptCATCDFEnumCatAttributes</c> is called by MakeCat.
+		/// </para>
+		/// </summary>
+		/// <param name="pCDF">A pointer to a CRYPTCATCDF structure.</param>
+		/// <param name="pPrevAttr">A pointer to a CRYPTCATATTRIBUTE structure for a catalog attribute in the CDF pointed to by pCDF.</param>
+		/// <param name="pfnParseError">A pointer to a user-defined function to handle file parse errors.</param>
+		/// <returns>
+		/// Upon success, this function returns a pointer to a CRYPTCATATTRIBUTE structure. The <c>CryptCATCDFEnumCatAttributes</c> function
+		/// returns a <c>NULL</c> pointer if it fails.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// You typically call this function in a loop to enumerate all of the catalog header attributes in a CDF. Before entering the loop,
+		/// set pPrevAttr to <c>NULL</c>. The function returns a pointer to the first attribute. Set pPrevAttr to the return value of the
+		/// function for subsequent iterations of the loop.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>The following example shows the correct sequence of assignments for the pPrevAttr parameter ().</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatcdfenumcatattributes CRYPTCATATTRIBUTE *
+		// CryptCATCDFEnumCatAttributes( CRYPTCATCDF *pCDF, CRYPTCATATTRIBUTE *pPrevAttr, PFN_CDF_PARSE_ERROR_CALLBACK pfnParseError );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "01889cb9-7bf4-4591-9bb2-b263c4effe0c")]
+		public static extern IntPtr CryptCATCDFEnumCatAttributes(SafeCRYPTCATCDF pCDF, IntPtr pPrevAttr, PfnCdfParseErrorCallback pfnParseError);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATCDFOpen</c> function is available for use in the operating systems specified in the Requirements section. It may
+		/// be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// The <c>CryptCATCDFOpen</c> function opens an existing catalog definition file (CDF) for reading and initializes a CRYPTCATCDF
+		/// structure. <c>CryptCATCDFOpen</c> is called by MakeCat.
+		/// </para>
+		/// </summary>
+		/// <param name="pwszFilePath">A pointer to a null-terminated string that contains the path of the CDF file to open.</param>
+		/// <param name="pfnParseError">A pointer to a user-defined function to handle file parse errors.</param>
+		/// <returns>
+		/// Upon success, this function returns a pointer to the newly created CRYPTCATCDF structure. The <c>CryptCATCDFOpen</c> function
+		/// returns a <c>NULL</c> pointer if it fails.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The following default values are used by the <c>CryptCATCDFOpen</c> function for given conditions in the CDF
+		/// <c>CatalogHeader</c> section.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>CatalogHeader condition</term>
+		/// <term>Default value</term>
+		/// </listheader>
+		/// <item>
+		/// <term>No Name value is specified.</term>
+		/// <term>The file name in pwszFilePath is used for the catalog (.cat) output file.</term>
+		/// </item>
+		/// <item>
+		/// <term>No PublicVersion value is specified.</term>
+		/// <term>0x00000001</term>
+		/// </item>
+		/// <item>
+		/// <term>No EncodingType value is specified.</term>
+		/// <term>PKCS_7_ASN_ENCODING or X509_ASN_ENCODING (0x00010001)</term>
+		/// </item>
+		/// </list>
+		/// <para>The following actions are performed by the <c>CryptCATCDFOpen</c> function for given error conditions.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error condition</term>
+		/// <term>Action performed</term>
+		/// </listheader>
+		/// <item>
+		/// <term>No CatalogHeader or Name tags are found in CDF.</term>
+		/// <term>
+		/// If specified by the caller, the CryptCATCDFOpen function calls the function specified by pfnParseError and returns a NULL pointer.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The CryptCATCDFOpen function calls the CryptCATOpen function to get a handle to the catalog (.cat) output file, but it gets an
+		/// invalid or NULL handle.
+		/// </term>
+		/// <term>Calls the CryptCATCDFClose function and returns a NULL pointer.</term>
+		/// </item>
+		/// </list>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Additional OIDs for the Catalog branch</term>
+		/// <term>Definition</term>
+		/// </listheader>
+		/// <item>
+		/// <term>szOID_CATALOG_LIST_MEMBER_V2</term>
+		/// <term>1.3.6.1.4.1.311.12.1.3</term>
+		/// </item>
+		/// <item>
+		/// <term>CAT_MEMBERINFO2_OBJID</term>
+		/// <term>1.3.6.1.4.1.311.12.2.3</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> The additional
+		/// Catalog OIDs are not available.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatcdfopen CRYPTCATCDF * CryptCATCDFOpen( LPWSTR
+		// pwszFilePath, PFN_CDF_PARSE_ERROR_CALLBACK pfnParseError );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "d400d8bd-c0a0-41dc-9093-8e4fc758d82f")]
+		public static extern SafeCRYPTCATCDF CryptCATCDFOpen([MarshalAs(UnmanagedType.LPWStr)] string pwszFilePath, PfnCdfParseErrorCallback pfnParseError);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATClose</c> function is available for use in the operating systems specified in the Requirements section. It may
+		/// be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// The <c>CryptCATClose</c> function closes a catalog handle opened previously by the CryptCATOpen function. This function has no
+		/// associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+		/// </para>
+		/// </summary>
+		/// <param name="hCatalog">Handle opened previously by a call to the CryptCATOpen function.</param>
+		/// <returns>The return value is <c>TRUE</c> if the function succeeds; <c>FALSE</c> if the function fails.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatclose BOOL CryptCATClose( IN HANDLE hCatalog );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "f6fa2d10-0049-4d5e-9688-566e5c11d64e")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptCATClose(HCATALOG hCatalog);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATEnumerateAttr</c> function is available for use in the operating systems specified in the Requirements section.
+		/// It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// The <c>CryptCATEnumerateAttr</c> function enumerates the attributes associated with a member of a catalog. This function has no
+		/// associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+		/// </para>
+		/// </summary>
+		/// <param name="hCatalog">Handle for the catalog that contains the member identified by pCatMember. This value cannot be <c>NULL</c>.</param>
+		/// <param name="pCatMember">A pointer to the CRYPTCATMEMBER structure that identifies which member of the catalog is being enumerated.</param>
+		/// <param name="pPrevAttr">
+		/// A pointer to the previously returned value from this function or pointer to <c>NULL</c> to start the enumeration.
+		/// </param>
+		/// <returns>
+		/// The return value is a pointer to the CRYPTCATATTRIBUTE structure that contains the attribute information or <c>NULL</c>, if no
+		/// more attributes are in the enumeration or if an error is encountered. The returned pointer is passed in as the pPrevAttr
+		/// parameter for subsequent calls to this function.
+		/// </returns>
+		/// <remarks>Do not free the returned pointer nor any of the members pointed to by the returned pointer.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatenumerateattr CRYPTCATATTRIBUTE *
+		// CryptCATEnumerateAttr( IN HANDLE hCatalog, IN CRYPTCATMEMBER *pCatMember, IN CRYPTCATATTRIBUTE *pPrevAttr );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "064e87db-4330-4b8b-9865-ba8b9714f6e4")]
+		public static extern IntPtr CryptCATEnumerateAttr(HCATALOG hCatalog, in CRYPTCATMEMBER pCatMember, IntPtr pPrevAttr);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATEnumerateCatAttr</c> function is available for use in the operating systems specified in the Requirements
+		/// section. It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// The <c>CryptCATEnumerateCatAttr</c> function enumerates the attributes associated with a catalog. This function has no
+		/// associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+		/// </para>
+		/// </summary>
+		/// <param name="hCatalog">Handle for the catalog whose attributes are being enumerated. This value cannot be <c>NULL</c>.</param>
+		/// <param name="pPrevAttr">
+		/// A pointer to the previously returned pointer to the CRYPTCATATTRIBUTE structure from this function or pointer to <c>NULL</c> to
+		/// start the enumeration.
+		/// </param>
+		/// <returns>
+		/// The return value is a pointer to the CRYPTCATATTRIBUTE structure that contains the attribute information or <c>NULL</c>, if no
+		/// more attributes are in the enumeration or if an error is encountered. The returned pointer is passed in as the pPrevAttr
+		/// parameter for subsequent calls to this function.
+		/// </returns>
+		/// <remarks>Do not free the returned pointer nor any of the members pointed to by the returned pointer.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatenumeratecatattr CRYPTCATATTRIBUTE *
+		// CryptCATEnumerateCatAttr( IN HANDLE hCatalog, IN CRYPTCATATTRIBUTE *pPrevAttr );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "57b6ff5c-e47e-41ac-8ec8-01a47ea77acf")]
+		public static extern IntPtr CryptCATEnumerateCatAttr(HCATALOG hCatalog, IntPtr pPrevAttr);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATEnumerateMember</c> function is available for use in the operating systems specified in the Requirements
+		/// section. It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>The <c>CryptCATEnumerateMember</c> function enumerates the members of a catalog.</para>
+		/// </summary>
+		/// <param name="hCatalog">The handle of the catalog that contains the members to enumerate. This value cannot be <c>NULL</c>.</param>
+		/// <param name="pPrevMember">
+		/// A pointer to a CRYPTCATMEMBER structure that identifies which member of the catalog was last retrieved. If this parameter is
+		/// <c>NULL</c>, this function will retrieve the first member of the catalog.
+		/// </param>
+		/// <returns>
+		/// This function returns a pointer to a CRYPTCATMEMBER structure that represents the next member of the catalog. If there are no
+		/// more members in the catalog to enumerate, this function returns <c>NULL</c>.
+		/// </returns>
+		/// <remarks>
+		/// <para>Do not free the returned pointer nor any of the members pointed to by the returned pointer.</para>
+		/// <para>Examples</para>
+		/// <para>The following pseudocode example shows how to use this function to enumerate all of the members of a catalog.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatenumeratemember CRYPTCATMEMBER *
+		// CryptCATEnumerateMember( IN HANDLE hCatalog, IN CRYPTCATMEMBER *pPrevMember );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "6bbfef11-a150-4255-8620-27c1b1587b48")]
+		public static extern IntPtr CryptCATEnumerateMember(HCATALOG hCatalog, IntPtr pPrevMember);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATGetAttrInfo</c> function is available for use in the operating systems specified in the Requirements section. It
+		/// may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>The <c>CryptCATGetAttrInfo</c> function retrieves information about an attribute of a member of a catalog.</para>
+		/// </summary>
+		/// <param name="hCatalog">
+		/// The handle of the catalog that contains the member to retrieve the attribute information for. This handle is obtained by calling
+		/// the CryptCATOpen function. This parameter is required and cannot be <c>NULL</c>.
+		/// </param>
+		/// <param name="pCatMember">
+		/// A pointer to a CRYPTCATMEMBER structure that represents the member to retrieve the attribute information for. This can be
+		/// obtained by calling the CryptCATGetMemberInfo function. This parameter is required and cannot be <c>NULL</c>.
+		/// </param>
+		/// <param name="pwszReferenceTag">
+		/// A pointer to a null-terminated Unicode string that contains the name of the attribute to retrieve the information for. This
+		/// parameter is required and cannot be <c>NULL</c>.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// This function returns a pointer to a CRYPTCATATTRIBUTE structure that contains the attribute information. If the function fails,
+		/// it returns <c>NULL</c>.
+		/// </para>
+		/// <para><c>Important</c> Do not free the returned pointer nor any of the members pointed to by the returned pointer.</para>
+		/// <para>
+		/// If this function returns <c>NULL</c>, additional error information can be obtained by calling the GetLastError function.
+		/// <c>GetLastError</c> will return one of the following error codes.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_E_NOT_FOUND</term>
+		/// <term>The member or the attribute could not be found.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>One or more of the parameters are not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatgetattrinfo CRYPTCATATTRIBUTE * CryptCATGetAttrInfo( IN
+		// HANDLE hCatalog, IN CRYPTCATMEMBER *pCatMember, LPWSTR pwszReferenceTag );
+		[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "e36966ea-741e-4380-85cd-5a3c9db38e6d")]
+		public static extern IntPtr CryptCATGetAttrInfo(HCATALOG hCatalog, in CRYPTCATMEMBER pCatMember, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATGetMemberInfo</c> function is available for use in the operating systems specified in the Requirements section.
+		/// It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// The <c>CryptCATGetMemberInfo</c> function retrieves member information from the catalog's PKCS #7. In addition to retrieving the
+		/// member information for a specified reference tag, this function opens a member context. This function has no associated import
+		/// library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+		/// </para>
+		/// </summary>
+		/// <param name="hCatalog">A handle to the catalog. This parameter cannot be <c>NULL</c>.</param>
+		/// <param name="pwszReferenceTag">
+		/// A pointer to a <c>null</c>-terminated string that represents the reference tag for the member information being retrieved.
+		/// </param>
+		/// <returns>
+		/// A pointer to the CRYPTCATMEMBER structure that contains the member information or <c>NULL</c>, if no information can be found.
+		/// </returns>
+		/// <remarks>Do not free the returned pointer nor any of the members pointed to by the returned pointer.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatgetmemberinfo CRYPTCATMEMBER * CryptCATGetMemberInfo(
+		// IN HANDLE hCatalog, LPWSTR pwszReferenceTag );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "ff265232-f57e-4ab0-ba07-05e6d6745ae3")]
+		public static extern IntPtr CryptCATGetMemberInfo(HCATALOG hCatalog, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATHandleFromStore</c> function is available for use in the operating systems specified in the Requirements
+		/// section. It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>The <c>CryptCATHandleFromStore</c> function retrieves a catalog handle from memory.</para>
+		/// </summary>
+		/// <param name="pCatStore">A pointer to a CRYPTCATSTORE structure that contains the handle to retrieve.</param>
+		/// <returns>A handle to the catalog.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcathandlefromstore HANDLE CryptCATHandleFromStore( IN
+		// CRYPTCATSTORE *pCatStore );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "e9aedc2d-9492-4ed7-9f2d-891997f85f6f")]
+		public static extern SafeHCATALOG CryptCATHandleFromStore(in CRYPTCATSTORE pCatStore);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATOpen</c> function is available for use in the operating systems specified in the Requirements section. It may be
+		/// altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>The <c>CryptCATOpen</c> function opens a catalog and returns a context handle to the open catalog.</para>
+		/// <para>
+		/// <c>Note</c> Some older versions of Wintrust.lib do not contain the export information for this function. In this case, you must
+		/// use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+		/// </para>
+		/// </summary>
+		/// <param name="pwszFileName">A pointer to a null-terminated string for the catalog file name.</param>
+		/// <param name="fdwOpenFlags">
+		/// <para>Zero, to open an existing catalog file, or a bitwise combination of one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPTCAT_OPEN_ALWAYS</term>
+		/// <term>Opens the file, if it exists, or creates a new file, if needed.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_OPEN_CREATENEW</term>
+		/// <term>A new catalog file is created. If a previously created file exists, it is overwritten.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="hProv">A handle to a cryptographic service provider (CSP).</param>
+		/// <param name="dwPublicVersion">
+		/// <para>Version of the file. This can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPTCAT_VERSION_1 0x100</term>
+		/// <term>Version 1 file format.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_VERSION_2 0x200</term>
+		/// <term>Version 2 file format. Windows 8 and Windows Server 2012: Support for this value begins.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwEncodingType">
+		/// Encoding type used for the file. If this value is 0, then the encoding type is set to PKCS_7_ASN_ENCODING | X509_ASN_ENCODING.
+		/// </param>
+		/// <returns>
+		/// Upon success, this function returns a handle to the open catalog. When you have finished using the handle, close it by calling
+		/// the CryptCATClose function. The <c>CryptCATOpen</c> function returns INVALID_HANDLE_VALUE if it fails.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatopen HANDLE CryptCATOpen( LPWSTR pwszFileName, IN DWORD
+		// fdwOpenFlags, IN HCRYPTPROV hProv, IN DWORD dwPublicVersion, IN DWORD dwEncodingType );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "e81f3a3d-d5b7-4266-838d-b83e331c8594")]
+		public static extern SafeHCATALOG CryptCATOpen([MarshalAs(UnmanagedType.LPWStr)] string pwszFileName, CRYPTCAT_OPEN fdwOpenFlags, [In] HCRYPTPROV hProv, [In] CRYPTCAT_VERSION dwPublicVersion, CertEncodingType dwEncodingType);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATPersistStore</c> function is available for use in the operating systems specified in the Requirements section.
+		/// It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>The <c>CryptCATPersistStore</c> function saves the information in the specified catalog store to an unsigned catalog file.</para>
+		/// </summary>
+		/// <param name="hCatalog">
+		/// A handle to the catalog obtained from CryptCATHandleFromStore or CryptCATOpen function. Beginning with Windows 8 you must use
+		/// only <c>CryptCATOpen</c> to retrieve a handle.
+		/// </param>
+		/// <returns>
+		/// <para>The return value is <c>TRUE</c> if the function succeeds; otherwise, <c>FALSE</c>.</para>
+		/// <para>
+		/// If this function returns <c>FALSE</c>, additional error information can be obtained by calling the GetLastError function.
+		/// <c>GetLastError</c> will return the following error code.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>One or more of the parameters are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_SUPPORTED</term>
+		/// <term>
+		/// Beginning with Windows 8 and Windows Server 2012, you must retrieve a handle by calling the CryptCATOpen function with the
+		/// dwPublicVersion parameter set to 0x100 or 0x200. For more information, see Remarks.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>pwszP7File</c> member of the CRYPTCATSTORE structure must be initialized before you call <c>CryptCATPersistStore</c>.</para>
+		/// <para>Beginning with Windows 8 and Windows Server 2012, the following changes apply to this function:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>If CryptCATOpen was called with a dwPublicVersion parameter of 0x200, the catalog is written by using the v2 format.</term>
+		/// </item>
+		/// <item>
+		/// <term>If CryptCATOpen was called with a dwPublicVersion parameter of 0x100, the catalog is written by using the v1 format.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If CryptCATOpen was called with a dwPublicVersion parameter other than 0x200 or 0x100, the <c>CryptCATPersistStore</c> function
+		/// returns <c>FALSE</c> and the error code is set to <c>ERROR_NOT_SUPPORTED</c>.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatpersiststore BOOL CryptCATPersistStore( IN HANDLE
+		// hCatalog );
+		[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "2a564b0e-fcc6-4702-8173-d18df7064e53")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptCATPersistStore([In] HCATALOG hCatalog);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATPutAttrInfo</c> function is available for use in the operating systems specified in the Requirements section. It
+		/// may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>The <c>CryptCATPutAttrInfo</c> function allocates memory for an attribute and adds it to a catalog member.</para>
+		/// </summary>
+		/// <param name="hCatalog">A handle to the catalog obtained from the CryptCATOpen or CryptCATHandleFromStore function.</param>
+		/// <param name="pCatMember">A pointer to a CRYPTCATMEMBER structure that contains the catalog member.</param>
+		/// <param name="pwszReferenceTag">A pointer to a null-terminated string that contains the name of the attribute.</param>
+		/// <param name="dwAttrTypeAndAction">
+		/// <para>
+		/// A value that represents a bitwise combination of the following flags. The caller must at least specify
+		/// <c>CRYPTCAT_ATTR_DATABASE64</c> or <c>CRYPTCAT_ATTR_DATAASCII</c>.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_AUTHENTICATED 0x10000000</term>
+		/// <term>The attribute is authenticated.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_UNAUTHENTICATED 0x20000000</term>
+		/// <term>The attribute is unauthenticated.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_NAMEASCII 0x00000001</term>
+		/// <term>The attribute is an ASCII string.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_NAMEOBJID 0x00000002</term>
+		/// <term>The attribute is a cryptographic object identifier (OID).</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_DATAASCII 0x00010000</term>
+		/// <term>The attribute contains simple ASCII characters that should not be decoded.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_DATABASE64 0x00020000</term>
+		/// <term>The attribute is in base 64 format.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_DATAREPLACE 0x00040000</term>
+		/// <term>The attribute replaces the value for an existing attribute.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="cbData">A value that specifies the number of bytes in the pbData buffer.</param>
+		/// <param name="pbData">A pointer to a memory buffer that contains the attribute value.</param>
+		/// <returns>
+		/// <para>
+		/// Upon success, this function returns a pointer to a CRYPTCATATTRIBUTE structure that contains the assigned attribute. The caller
+		/// must not free this pointer or any of its members.
+		/// </para>
+		/// <para>
+		/// If this function returns <c>NULL</c>, additional error information can be obtained by calling the GetLastError function.
+		/// <c>GetLastError</c> will return one of the following error codes.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>One or more of the parameters are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_ENOUGH_MEMORY</term>
+		/// <term>The operating system ran out of memory during the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatputattrinfo CRYPTCATATTRIBUTE * CryptCATPutAttrInfo( IN
+		// HANDLE hCatalog, IN CRYPTCATMEMBER *pCatMember, LPWSTR pwszReferenceTag, IN DWORD dwAttrTypeAndAction, IN DWORD cbData, IN BYTE
+		// *pbData );
+		[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "13d5cdb4-2a15-4442-9e11-c3f76ca03f7e")]
+		public static extern IntPtr CryptCATPutAttrInfo([In] HCATALOG hCatalog, in CRYPTCATMEMBER pCatMember, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag, [In] CRYPTCAT_ATTR dwAttrTypeAndAction, [In] uint cbData, [In] IntPtr pbData);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATPutCatAttrInfo</c> function is available for use in the operating systems specified in the Requirements section.
+		/// It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>The <c>CryptCATPutCatAttrInfo</c> function allocates memory for a catalog file attribute and adds it to the catalog.</para>
+		/// </summary>
+		/// <param name="hCatalog">A handle to the catalog obtained from the CryptCATOpen or CryptCATHandleFromStore functions.</param>
+		/// <param name="pwszReferenceTag">A pointer to a null-terminated string for the name of the attribute.</param>
+		/// <param name="dwAttrTypeAndAction">
+		/// <para>
+		/// A value that represents a bitwise combination of the following flags. The caller must at least specify
+		/// <c>CRYPTCAT_ATTR_DATAASCII</c> or <c>CRYPTCAT_ATTR_DATABASE64</c>.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_AUTHENTICATED 0x10000000</term>
+		/// <term>The attribute is authenticated.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_UNAUTHENTICATED 0x20000000</term>
+		/// <term>The attribute is unauthenticated.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_NAMEASCII 0x00000001</term>
+		/// <term>The attribute is an ASCII string.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_NAMEOBJID 0x00000002</term>
+		/// <term>The attribute is a cryptographic object identifier (OID).</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_DATAASCII 0x00010000</term>
+		/// <term>The attribute contains simple ASCII characters that should not be decoded.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_DATABASE64 0x00020000</term>
+		/// <term>The attribute is in base 64 format.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPTCAT_ATTR_DATAREPLACE 0x00040000</term>
+		/// <term>The attribute replaces the value for an existing attribute.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="cbData">A value that specifies the number of bytes in the pbData buffer.</param>
+		/// <param name="pbData">A pointer to a memory buffer that contains the attribute value.</param>
+		/// <returns>
+		/// <para>
+		/// A pointer to a CRYPTCATATTRIBUTE structure that contains the catalog attribute. The caller must not free this pointer or any of
+		/// its members.
+		/// </para>
+		/// <para>
+		/// If this function returns <c>NULL</c>, additional error information can be obtained by calling the GetLastError function.
+		/// <c>GetLastError</c> will return one of the following error codes.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>One or more of the parameters are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_ENOUGH_MEMORY</term>
+		/// <term>The operating system ran out of memory during the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatputcatattrinfo CRYPTCATATTRIBUTE *
+		// CryptCATPutCatAttrInfo( IN HANDLE hCatalog, LPWSTR pwszReferenceTag, IN DWORD dwAttrTypeAndAction, IN DWORD cbData, IN BYTE
+		// *pbData );
+		[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "16bb8560-d4fc-4c81-8eed-21a2da7f396d")]
+		public static extern IntPtr CryptCATPutCatAttrInfo(HCATALOG hCatalog, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag, [In] CRYPTCAT_ATTR dwAttrTypeAndAction, [In] uint cbData, [In] IntPtr pbData);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATPutMemberInfo</c> function is available for use in the operating systems specified in the Requirements section.
+		/// It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>The <c>CryptCATPutMemberInfo</c> function allocates memory for a catalog member and adds it to the catalog.</para>
+		/// </summary>
+		/// <param name="hCatalog">A handle to the catalog obtained from the CryptCATOpen or CryptCATHandleFromStore function.</param>
+		/// <param name="pwszFileName">A pointer to a null-terminated string for the catalog file name.</param>
+		/// <param name="pwszReferenceTag">A pointer to a null-terminated string that contains the name of the member.</param>
+		/// <param name="pgSubjectType">A GUID for the subject type of the member.</param>
+		/// <param name="dwCertVersion">A value that specifies the certificate version.</param>
+		/// <param name="cbSIPIndirectData">A value that specifies the number of bytes in the pbSIPIndirectData buffer.</param>
+		/// <param name="pbSIPIndirectData">A pointer to a memory buffer for subject interface package (SIP)-indirect data.</param>
+		/// <returns>
+		/// <para>
+		/// A pointer to a CRYPTCATMEMBER structure that contains the assigned member. The caller must not free this pointer or any of its members.
+		/// </para>
+		/// <para>
+		/// If this function returns <c>NULL</c>, additional error information can be obtained by calling the GetLastError function.
+		/// <c>GetLastError</c> will return one of the following error codes.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>One or more of the parameters are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_ENOUGH_MEMORY</term>
+		/// <term>The operating system ran out of memory during the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatputmemberinfo CRYPTCATMEMBER * CryptCATPutMemberInfo(
+		// IN HANDLE hCatalog, LPWSTR pwszFileName, LPWSTR pwszReferenceTag, IN GUID *pgSubjectType, IN DWORD dwCertVersion, IN DWORD
+		// cbSIPIndirectData, IN BYTE *pbSIPIndirectData );
+		[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "bfc10577-e32e-4b2e-ad24-1d0a85c6730a")]
+		public static extern IntPtr CryptCATPutMemberInfo([In] HCATALOG hCatalog, [MarshalAs(UnmanagedType.LPWStr)] string pwszFileName, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag, in Guid pgSubjectType, [In] uint dwCertVersion, [In] uint cbSIPIndirectData, [In] IntPtr pbSIPIndirectData);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATStoreFromHandle</c> function is available for use in the operating systems specified in the Requirements
+		/// section. It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>The <c>CryptCATStoreFromHandle</c> function retrieves a CRYPTCATSTORE structure from a catalog handle.</para>
+		/// </summary>
+		/// <param name="hCatalog">A handle to the catalog obtained from the CryptCATOpen or CryptCATHandleFromStore function.</param>
+		/// <returns>
+		/// A pointer to a CRYPTCATSTORE structure that contains the catalog store. The caller must not free this pointer or any of its members.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatstorefromhandle CRYPTCATSTORE *
+		// CryptCATStoreFromHandle( IN HANDLE hCatalog );
+		[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("mscat.h", MSDNShortId = "ce4fe972-0ed5-4b18-8ec5-9883af326335")]
+		public static extern IntPtr CryptCATStoreFromHandle([In] HCATALOG hCatalog);
+
+		/// <summary>
+		/// <para>
 		/// [The <c>IsCatalogFile</c> function is available for use in the operating systems specified in the Requirements section. It may
 		/// be altered or unavailable in subsequent versions.]
 		/// </para>
@@ -913,6 +1706,54 @@ namespace Vanara.PInvoke
 			public HANDLE hSorted;
 		}
 
+		/// <summary>Provides a handle to a catalog.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HCATALOG : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HCATALOG"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HCATALOG(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HCATALOG"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HCATALOG NULL => new HCATALOG(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HCATALOG"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HCATALOG h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCATALOG"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HCATALOG(IntPtr h) => new HCATALOG(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HCATALOG h1, HCATALOG h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HCATALOG h1, HCATALOG h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HCATALOG h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
 		/// <summary>Provides a handle to a catalog information context.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HCATINFO : IHandle
@@ -961,6 +1802,33 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="CRYPTCATCDF"/> that is disposed using <see cref="CryptCATCDFClose"/>.</summary>
+		public class SafeCRYPTCATCDF : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeCRYPTCATCDF"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeCRYPTCATCDF(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeCRYPTCATCDF"/> class.</summary>
+			private SafeCRYPTCATCDF() : base() { }
+
+			/// <summary>
+			/// Gets the structure with the data behind this handle. If the handle is invalid, this value is the default for the structure.
+			/// </summary>
+			public CRYPTCATCDF Value => IsInvalid ? default : handle.ToStructure<CRYPTCATCDF>();
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeCRYPTCATCDF"/> to <see cref="CRYPTCATCDF"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator CRYPTCATCDF(SafeCRYPTCATCDF h) => h.Value;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => CryptCATCDFClose(handle);
+		}
+
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCATADMIN"/> that is disposed using <see cref="CryptCATAdminReleaseContext"/>.</summary>
 		public class SafeHCATADMIN : SafeHANDLE
 		{
@@ -981,6 +1849,28 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => CryptCATAdminReleaseContext(handle);
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCATALOG"/> that is disposed using <see cref="CryptCATClose"/>.</summary>
+		public class SafeHCATALOG : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHCATALOG"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHCATALOG(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHCATALOG"/> class.</summary>
+			private SafeHCATALOG() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHCATALOG"/> to <see cref="HCATALOG"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HCATALOG(SafeHCATALOG h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => CryptCATClose(handle);
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCATINFO"/> that is disposed using <see cref="CryptCATAdminReleaseCatalogContext"/>.</summary>
@@ -1007,27 +1897,5 @@ namespace Vanara.PInvoke
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => CryptCATAdminReleaseCatalogContext(hAdmin, handle);
 		}
-
-		/*
-		CryptCATAdminRemoveCatalog	Deletes a catalog file and removes that catalog's entry from the Windows catalog database.
-		CryptCATAdminResolveCatalogPath	Retrieves the fully qualified path of the specified catalog.
-		CryptCATCatalogInfoFromContext	Retrieves catalog information from a specified catalog context.
-		CryptCATCDFClose	Closes a catalog definition file (CDF) and frees the memory for the corresponding CRYPTCATCDF structure.
-		CryptCATCDFEnumCatAttributes	Enumerates catalog-level attributes within the CatalogHeader section of a catalog definition file (CDF).
-		CryptCATCDFOpen	Opens an existing catalog definition file (CDF) for reading and initializes a CRYPTCATCDF structure.
-		CryptCATClose	Closes a catalog handle opened previously by the CryptCATOpen function.
-		CryptCATEnumerateAttr	Enumerates the attributes associated with a member of a catalog. This function has no associated import library.
-		CryptCATEnumerateCatAttr	Enumerates the attributes associated with a catalog. This function has no associated import library.
-		CryptCATEnumerateMember	Enumerates the members of a catalog.
-		CryptCATGetAttrInfo	Retrieves information about an attribute of a member of a catalog.
-		CryptCATGetMemberInfo	Retrieves member information from the catalog's PKCS #7.
-		CryptCATHandleFromStore	Retrieves a catalog handle from memory.
-		CryptCATOpen	Opens a catalog and returns a context handle to the open catalog.
-		CryptCATPersistStore	Saves the information in the specified catalog store to an unsigned catalog file.
-		CryptCATPutAttrInfo	Allocates memory for an attribute and adds it to a catalog member.
-		CryptCATPutCatAttrInfo	Allocates memory for a catalog file attribute and adds it to the catalog.
-		CryptCATPutMemberInfo	Allocates memory for a catalog member and adds it to the catalog.
-		CryptCATStoreFromHandle	Retrieves a CRYPTCATSTORE structure from a catalog handle.
-		*/
 	}
 }
