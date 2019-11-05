@@ -726,7 +726,7 @@ namespace Vanara.Diagnostics
 		/// <param name="value">The value.</param>
 		/// <param name="setter">The method to set the field.</param>
 		internal void SetBasic<T>(JOBOBJECT_LIMIT_FLAGS flag, T? value, Job.RefAction<JOBOBJECT_BASIC_LIMIT_INFORMATION> setter) where T : struct =>
-			job.CheckThenSet((ref JOBOBJECT_BASIC_LIMIT_INFORMATION i) => { i.LimitFlags = i.LimitFlags.SetFlags(flag, value.HasValue); setter(ref i); });
+			job.CheckThenSet((ref JOBOBJECT_BASIC_LIMIT_INFORMATION i) => { i.LimitFlags = (JOBOBJECT_LIMIT_FLAGS)0xFF & i.LimitFlags.SetFlags(flag, value.HasValue); setter(ref i); });
 	}
 
 	/// <summary>Settings for <see cref="Job"/> that set limits for different runtime values.</summary>
