@@ -64,8 +64,8 @@ namespace Vanara.PInvoke
 		/// A pointer that receives a pointer to a <c>GUID</c> structure. Use the LocalFree function to free this memory.
 		/// </param>
 		/// <returns>Returns <c>ERROR_SUCCESS</c> (zero) if the call was successful, and a nonzero value if the call failed.</returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/powersetting/nf-powersetting-powergetactivescheme DWORD PowerGetActiveScheme(
-		// HKEY UserRootPowerKey, GUID **ActivePolicyGuid );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/powersetting/nf-powersetting-powergetactivescheme DWORD
+		// PowerGetActiveScheme( HKEY UserRootPowerKey, GUID **ActivePolicyGuid );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("powersetting.h", MSDNShortId = "cd72562c-8987-40c1-89c7-04a95b5f1fd0")]
 		public static extern Win32Error PowerGetActiveScheme([Optional] HKEY UserRootPowerKey, out SafeLocalHandle ActivePolicyGuid);
@@ -73,8 +73,8 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the active power scheme and returns a <c>GUID</c> that identifies the scheme.</summary>
 		/// <param name="ActivePolicyGuid">Receives a <c>GUID</c> structure.</param>
 		/// <returns>Returns <c>ERROR_SUCCESS</c> (zero) if the call was successful, and a nonzero value if the call failed.</returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/powersetting/nf-powersetting-powergetactivescheme DWORD PowerGetActiveScheme(
-		// HKEY UserRootPowerKey, GUID **ActivePolicyGuid );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/powersetting/nf-powersetting-powergetactivescheme DWORD
+		// PowerGetActiveScheme( HKEY UserRootPowerKey, GUID **ActivePolicyGuid );
 		[PInvokeData("powersetting.h", MSDNShortId = "cd72562c-8987-40c1-89c7-04a95b5f1fd0")]
 		public static Win32Error PowerGetActiveScheme(out Guid ActivePolicyGuid)
 		{
@@ -88,8 +88,8 @@ namespace Vanara.PInvoke
 		/// <param name="SchemeGuid">The identifier of the power scheme.</param>
 		/// <param name="SubGroupOfPowerSettingsGuid">
 		/// <para>
-		/// The subgroup of power settings. This parameter can be one of the following values defined in WinNT.h. Use <c>NO_SUBGROUP_GUID</c>
-		/// to retrieve the setting for the default power scheme.
+		/// The subgroup of power settings. This parameter can be one of the following values defined in WinNT.h. Use
+		/// <c>NO_SUBGROUP_GUID</c> to retrieve the setting for the default power scheme.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -166,8 +166,8 @@ namespace Vanara.PInvoke
 		/// <param name="SchemeGuid">The identifier of the power scheme.</param>
 		/// <param name="SubGroupOfPowerSettingsGuid">
 		/// <para>
-		/// The subgroup of power settings. This parameter can be one of the following values defined in WinNT.h. Use <c>NO_SUBGROUP_GUID</c>
-		/// to retrieve the setting for the default power scheme.
+		/// The subgroup of power settings. This parameter can be one of the following values defined in WinNT.h. Use
+		/// <c>NO_SUBGROUP_GUID</c> to retrieve the setting for the default power scheme.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -242,8 +242,8 @@ namespace Vanara.PInvoke
 		/// <summary>Registers a callback to receive effective power mode change notifications.</summary>
 		/// <param name="Version">
 		/// <para>
-		/// Supplies the maximum effective power mode version the caller understands. If the effective power mode comes from a later version,
-		/// it is reduced to a compatible version that is then passed to the callback.
+		/// Supplies the maximum effective power mode version the caller understands. If the effective power mode comes from a later
+		/// version, it is reduced to a compatible version that is then passed to the callback.
 		/// </para>
 		/// <para>As of Windows 10, version 1809 the only understood version is EFFECTIVE_POWER_MODE_V1.</para>
 		/// </param>
@@ -269,8 +269,8 @@ namespace Vanara.PInvoke
 		/// <param name="UserRootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
 		/// <param name="SchemeGuid">The identifier of the power scheme.</param>
 		/// <returns>Returns <c>ERROR_SUCCESS</c> (zero) if the call was successful, and a nonzero value if the call failed.</returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/powersetting/nf-powersetting-powersetactivescheme DWORD PowerSetActiveScheme(
-		// HKEY UserRootPowerKey, const GUID *SchemeGuid );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/powersetting/nf-powersetting-powersetactivescheme DWORD
+		// PowerSetActiveScheme( HKEY UserRootPowerKey, const GUID *SchemeGuid );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("powersetting.h", MSDNShortId = "e56bc3f4-2141-4be7-8479-12f8d59971af")]
 		public static extern Win32Error PowerSetActiveScheme([Optional] HKEY UserRootPowerKey, in Guid SchemeGuid);
@@ -340,8 +340,8 @@ namespace Vanara.PInvoke
 		/// <param name="SchemeGuid">The identifier of the power scheme.</param>
 		/// <param name="SubGroupOfPowerSettingsGuid">
 		/// <para>
-		/// The subgroup of power settings. This parameter can be one of the following values defined in WinNT.h. Use <c>NO_SUBGROUP_GUID</c>
-		/// to refer to the default power scheme.
+		/// The subgroup of power settings. This parameter can be one of the following values defined in WinNT.h. Use
+		/// <c>NO_SUBGROUP_GUID</c> to refer to the default power scheme.
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -398,8 +398,8 @@ namespace Vanara.PInvoke
 		/// <param name="SchemeGuid">The identifier of the power scheme.</param>
 		/// <param name="SubGroupOfPowerSettingsGuid">
 		/// <para>
-		/// The subgroup of power settings. This parameter can be one of the following values defined in WinNT.h. Use <c>NO_SUBGROUP_GUID</c>
-		/// to refer to the default power scheme.
+		/// The subgroup of power settings. This parameter can be one of the following values defined in WinNT.h. Use
+		/// <c>NO_SUBGROUP_GUID</c> to refer to the default power scheme.
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -472,7 +472,7 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => PowerUnregisterFromEffectivePowerModeNotifications(handle).Succeeded;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPOWERNOTIFY"/> that is disposed using <see cref="PowerSettingUnregisterNotification"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for a registered power notification that is disposed using <see cref="PowerSettingUnregisterNotification"/>.</summary>
 		public class SafeHPOWERNOTIFY : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHPOWERNOTIFY"/> class and assigns an existing handle.</summary>

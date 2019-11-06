@@ -606,6 +606,7 @@ namespace Vanara.PInvoke
 			/// <param name="ipV4">The IPv4 address.</param>
 			/// <param name="ifIdx">The index of the adapter.</param>
 			/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
+			/// <param name="type">The type of ARP entry.</param>
 			public MIB_IPNETROW(IN_ADDR ipV4, uint ifIdx, byte[] macAddr = null, MIB_IPNET_TYPE? type = null)
 			{
 				dwIndex = ifIdx;

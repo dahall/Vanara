@@ -1563,7 +1563,7 @@ namespace Vanara.PInvoke
 		public static extern Win32Error TreeSetNamedSecurityInfo(string pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID pOwner, PSID pGroup,
 			PACL pDacl, PACL pSacl, TREE_SEC_INFO dwAction, [Optional] FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, [Optional] IntPtr Args);
 
-		/// <summary>A <see cref="SafeHandle"/> to hold the array of <see cref="INHERITED_FROM"/> instances returned from <see cref="GetInheritanceSource"/>.</summary>
+		/// <summary>A <see cref="SafeHandle"/> to hold the array of <see cref="INHERITED_FROM"/> instances returned from <see cref="GetInheritanceSource(string, SE_OBJECT_TYPE, SECURITY_INFORMATION, bool, Guid[], uint, PACL, IntPtr, in GENERIC_MAPPING, SafeInheritedFromArray)"/>.</summary>
 		public class SafeInheritedFromArray : SafeHGlobalHandle
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeInheritedFromArray"/> class.</summary>

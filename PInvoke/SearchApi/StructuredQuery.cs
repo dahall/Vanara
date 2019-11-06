@@ -459,7 +459,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Extends the functionality of IConditionFactory. <c>IConditionFactory2</c> provides methods for creating or resolving a condition tree that was obtained by parsing a query string.
 		/// </summary>
-		/// <seealso cref="Vanara.PInvoke.Shell32.IConditionFactory" />
+		/// <seealso cref="IConditionFactory" />
 		/// <remarks>
 		/// The StructuredQuerySample code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to read lines from the console, parse them using the system schema, and display the resulting condition trees.
 		/// </remarks>
@@ -646,10 +646,6 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>REFIID</c></para>
 			/// <para>The desired IID of the enumerating interface: either IEnumUnknown, IEnumVARIANT, or (for a negation condition) IID_ICondition.</para>
 			/// </param>
-			/// <param name="ppv">
-			/// <para>Type: <c>void**</c></para>
-			/// <para>Receives a pointer to zero or more ICondition and ICondition2 objects.</para>
-			/// </param>
 			/// <returns>Receives a pointer to zero or more ICondition and ICondition2 objects.</returns>
 			/// <remarks>For default options, use the CONDITION_CREATION_DEFAULT flag.</remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createtruefalse
@@ -758,7 +754,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// The desired IID of the enumerating interface: either IEnumUnknown, IID_IEnumVARIANT, or (for a negation condition) IID_ICondition.
 			/// </para></param>
-			/// <param name="ppv">The PPV.</param>
 			/// <returns>
 			/// <para>Type: <c>void**</c></para>
 			/// <para>Receives a pointer to zero or more ICondition and ICondition2 objects.</para>
@@ -1919,7 +1914,6 @@ namespace Vanara.PInvoke
 		/// Identifies parts of the input string that the parser did not recognize or did not use when constructing the IQuerySolution
 		/// condition tree.
 		/// </summary>
-		/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
 		/// <param name="qs">The <see cref="IQuerySolution"/> instance.</param>
 		/// <returns>
 		/// <para>Type: <c>void**</c></para>
@@ -1931,7 +1925,6 @@ namespace Vanara.PInvoke
 		/// <c>IRichChunk</c> object <c>ppsz</c> string is <c>NULL</c>, and the pValue is a PROPVARIANT that contains a <c>lVal</c>
 		/// identifying the STRUCTURED_QUERY_PARSE_ERROR enumeration.
 		/// </para>
-		/// <para>The valid values for <paramref name="riid"/> are __uuidof(IEnumUnknown) and __uuidof(IEnumVARIANT).</para>
 		/// </remarks>
 		public static IEnumerable<IRichChunk> GetErrors(this IQuerySolution qs) => ((IEnumUnknown)qs.GetErrors(typeof(IEnumUnknown).GUID)).Enumerate<IRichChunk>();
 

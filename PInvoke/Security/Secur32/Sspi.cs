@@ -1296,7 +1296,6 @@ namespace Vanara.PInvoke
 		/// EnumerateSecurityPackages function. After a context is established, QueryContextAttributes (CredSSP) can be called with
 		/// ulAttribute set to <c>SECPKG_ATTR_PACKAGE_INFO</c> to return information on the security package in use.
 		/// </param>
-		/// <param name="">The .</param>
 		/// <param name="fCredentialUse">
 		/// <para>A flag that indicates how these credentials will be used. This parameter can be one of the following values.</para>
 		/// <list type="table">
@@ -1426,7 +1425,6 @@ namespace Vanara.PInvoke
 		/// EnumerateSecurityPackages function. After a context is established, QueryContextAttributes (CredSSP) can be called with
 		/// ulAttribute set to <c>SECPKG_ATTR_PACKAGE_INFO</c> to return information on the security package in use.
 		/// </param>
-		/// <param name="">The .</param>
 		/// <param name="fCredentialUse">
 		/// <para>A flag that indicates how these credentials will be used. This parameter can be one of the following values.</para>
 		/// <list type="table">
@@ -6827,31 +6825,33 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>
-			/// The <c>AcquireCredentialsHandle (CredSSP)</c> function acquires a handle to preexisting credentials of a security principal. This
-			/// handle is required by the InitializeSecurityContext (CredSSP) and AcceptSecurityContext (CredSSP) functions. These can be either
-			/// preexisting credentials, which are established through a system logon that is not described here, or the caller can provide
-			/// alternative credentials.
+			/// The <c>AcquireCredentialsHandle (CredSSP)</c> function acquires a handle to preexisting credentials of a security principal.
+			/// This handle is required by the InitializeSecurityContext (CredSSP) and AcceptSecurityContext (CredSSP) functions. These can
+			/// be either preexisting credentials, which are established through a system logon that is not described here, or the caller
+			/// can provide alternative credentials.
 			/// </para>
-			/// <para>
-			///   <c>Note</c> This is not a "log on to the network" and does not imply gathering of credentials.</para>
+			/// <note type="note">This is not a "log on to the network" and does not imply gathering of credentials.</note>
 			/// </summary>
-			/// <param name="pszPackage">A string that specifies the name of the security package with which these credentials will be used.
-			/// This is a security package name returned in the <c>Name</c> member of a SecPkgInfo structure returned by the
-			/// EnumerateSecurityPackages function. After a context is established, QueryContextAttributes (CredSSP) can be called with
-			/// ulAttribute set to <c>SECPKG_ATTR_PACKAGE_INFO</c> to return information on the security package in use.</param>
-			/// <param name="fCredentialUse"><para>A flag that indicates how these credentials will be used.</param>
+			/// <param name="pszPackage">
+			/// A string that specifies the name of the security package with which these credentials will be used. This is a security
+			/// package name returned in the <c>Name</c> member of a SecPkgInfo structure returned by the EnumerateSecurityPackages
+			/// function. After a context is established, QueryContextAttributes (CredSSP) can be called with ulAttribute set to
+			/// <c>SECPKG_ATTR_PACKAGE_INFO</c> to return information on the security package in use.
+			/// </param>
+			/// <param name="fCredentialUse">A flag that indicates how these credentials will be used.</param>
 			/// <returns>On success, this function returns a credential handle.</returns>
 			/// <remarks>
 			/// <para>
 			/// The <c>AcquireCredentialsHandle (CredSSP)</c> function returns a handle to the credentials of a principal, such as a user or
-			/// client, as used by a specific security package. The function can return the handle to either preexisting credentials or newly
-			/// created credentials and return it. This handle can be used in subsequent calls to the AcceptSecurityContext (CredSSP) and
-			/// InitializeSecurityContext (CredSSP) functions.
+			/// client, as used by a specific security package. The function can return the handle to either preexisting credentials or
+			/// newly created credentials and return it. This handle can be used in subsequent calls to the AcceptSecurityContext (CredSSP)
+			/// and InitializeSecurityContext (CredSSP) functions.
 			/// </para>
 			/// <para>
 			/// In general, <c>AcquireCredentialsHandle (CredSSP)</c> does not provide the credentials of other users logged on to the same
-			/// computer. However, a caller with SE_TCB_NAME privilege can obtain the credentials of an existing logon session by specifying the
-			/// logon identifier (LUID) of that session. Typically, this is used by kernel-mode modules that must act on behalf of a logged-on user.
+			/// computer. However, a caller with SE_TCB_NAME privilege can obtain the credentials of an existing logon session by specifying
+			/// the logon identifier (LUID) of that session. Typically, this is used by kernel-mode modules that must act on behalf of a
+			/// logged-on user.
 			/// </para>
 			/// </remarks>
 			public static SafeCredHandle Acquire(string pszPackage, SECPKG_CRED fCredentialUse) => Acquire<int>(pszPackage, fCredentialUse, null, null, null, out _);
@@ -6866,12 +6866,16 @@ namespace Vanara.PInvoke
 			/// <para>
 			///   <c>Note</c> This is not a "log on to the network" and does not imply gathering of credentials.</para>
 			/// </summary>
+			/// <typeparam name="TAuthData">The type of the authentication data structure.</typeparam>
 			/// <param name="pszPackage">A string that specifies the name of the security package with which these credentials will be used.
 			/// This is a security package name returned in the <c>Name</c> member of a SecPkgInfo structure returned by the
 			/// EnumerateSecurityPackages function. After a context is established, QueryContextAttributes (CredSSP) can be called with
 			/// ulAttribute set to <c>SECPKG_ATTR_PACKAGE_INFO</c> to return information on the security package in use.</param>
-			/// <param name="fCredentialUse"><para>A flag that indicates how these credentials will be used.</param>
-			/// <returns>On success, this function returns a credential handle.</returns>
+			/// <param name="fCredentialUse">A flag that indicates how these credentials will be used.</param>
+			/// <param name="pAuthData">The optional authentication data structure.</param>
+			/// <returns>
+			/// On success, this function returns a credential handle.
+			/// </returns>
 			/// <remarks>
 			/// <para>
 			/// The <c>AcquireCredentialsHandle (CredSSP)</c> function returns a handle to the credentials of a principal, such as a user or
@@ -6903,7 +6907,7 @@ namespace Vanara.PInvoke
 			/// This is a security package name returned in the <c>Name</c> member of a SecPkgInfo structure returned by the
 			/// EnumerateSecurityPackages function. After a context is established, QueryContextAttributes (CredSSP) can be called with
 			/// ulAttribute set to <c>SECPKG_ATTR_PACKAGE_INFO</c> to return information on the security package in use.</param>
-			/// <param name="fCredentialUse"><para>A flag that indicates how these credentials will be used.</param>
+			/// <param name="fCredentialUse">A flag that indicates how these credentials will be used.</param>
 			/// <param name="pAuthData">An optional structure that specifies authentication data. The structure allowed depends on the type of protocol.</param>
 			/// <param name="pszPrincipal"><para>An optional string that specifies the name of the principal whose credentials the handle will reference.</para>
 			/// <para>

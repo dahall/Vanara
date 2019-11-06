@@ -3667,7 +3667,7 @@ namespace Vanara.PInvoke
 		// TraceGuidReg, _In_ LPCTSTR MofImagePath, _In_ LPCTSTR MofResourceName, _Out_ PTRACEHANDLE RegistrationHandle );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("evntrace.h", MSDNShortId = "c9158292-281b-4a02-b280-956e340d225c")]
-		public static extern Win32Error RegisterTraceGuids([MarshalAs(UnmanagedType.FunctionPtr)] TraceControlCallback TraceRequestAddress, [In, Optional] IntPtr RequestContext, in Guid ControlGuid, uint GuidCount,
+		public static extern Win32Error RegisterTraceGuids([MarshalAs(UnmanagedType.FunctionPtr)] TraceControlCallback RequestAddress, [In, Optional] IntPtr RequestContext, in Guid ControlGuid, uint GuidCount,
 			[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] TRACE_GUID_REGISTRATION[] TraceGuidReg, [In, Optional] string MofImagePath, [In, Optional] string MofResourceName, out TRACEHANDLE RegistrationHandle);
 
 		//public unsafe delegate Win32Error UnsafeTraceControlCallback([In] WMIDPREQUESTCODE RequestCode, [In] void* Context, uint* Reserved, void* Buffer);
@@ -4572,30 +4572,6 @@ namespace Vanara.PInvoke
 		/// Number that uniquely identifies each occurrence of the message. You must define the value specified for this parameter; the value
 		/// should be meaningful to the application.
 		/// </param>
-		/// <param name="__arglist">
-		/// <para>
-		/// A list of variable arguments to be appended to the message. Use this list to specify your provider-specific event data. The list
-		/// must be composed of pairs of arguments, as described in the following table.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Data Type</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>PVOID</term>
-		/// <term>Pointer to the argument data.</term>
-		/// </item>
-		/// <item>
-		/// <term>size_t</term>
-		/// <term>The size of the argument data, in bytes.</term>
-		/// </item>
-		/// </list>
-		/// <para>Terminate the list using an argument pair consisting of a pointer to <c>NULL</c> and zero.</para>
-		/// <para>
-		/// The caller must ensure that the sum of the sizes of the arguments + 72 does not exceed the size of the event tracing session's buffer.
-		/// </para>
-		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
 		/// <para>
@@ -4641,6 +4617,29 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>Providers call this function.</para>
+		/// <para>The final __arglist parameter has the following requirements.</para>
+		/// <para>
+		/// A list of variable arguments to be appended to the message. Use this list to specify your provider-specific event data. The list
+		/// must be composed of pairs of arguments, as described in the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Data Type</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PVOID</term>
+		/// <term>Pointer to the argument data.</term>
+		/// </item>
+		/// <item>
+		/// <term>size_t</term>
+		/// <term>The size of the argument data, in bytes.</term>
+		/// </item>
+		/// </list>
+		/// <para>Terminate the list using an argument pair consisting of a pointer to <c>NULL</c> and zero.</para>
+		/// <para>
+		/// The caller must ensure that the sum of the sizes of the arguments + 72 does not exceed the size of the event tracing session's buffer.
+		/// </para>
 		/// <para>
 		/// Using the <c>TraceEvent</c> function is the preferred way to log an event. On Windows Vista, you should use the <c>EventWrite</c>
 		/// function to log events.
@@ -5105,7 +5104,7 @@ namespace Vanara.PInvoke
 		// SessionName, _Inout_ PEVENT_TRACE_PROPERTIES Properties );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Evntrace.h", MSDNShortId = "40e6deaf-7363-45eb-80d0-bc3f33760875")]
-		public static extern Win32Error UpdateTrace(TRACEHANDLE TraceHandle, string InstanceName, ref EVENT_TRACE_PROPERTIES Properties);
+		public static extern Win32Error UpdateTrace(TRACEHANDLE SessionHandle, string SessionName, ref EVENT_TRACE_PROPERTIES Properties);
 
 		// ULONG EnableTrace( _In_ ULONG Enable, _In_ ULONG EnableFlag, _In_ ULONG EnableLevel, _In_ LPCGUID ControlGuid, _In_ TRACEHANDLE
 		// SessionHandle );
@@ -5493,9 +5492,15 @@ namespace Vanara.PInvoke
 			//public ushort Events[ANYSIZE_ARRAY];
 		}
 
-		/// <summary> <para>The <c>EVENT_FILTER_EVENT_NAME</c> structure defines event IDs used in an EVENT_FILTER_DESCRIPTOR structure for
-		/// an event name or stalk walk name filter.</para> <para>This filter will only be applied to events that are otherwise enabled on
-		/// the logging session, via level/keyword in the enable call.</para>
+		/// <summary>
+		/// <para>
+		/// The <c>EVENT_FILTER_EVENT_NAME</c> structure defines event IDs used in an EVENT_FILTER_DESCRIPTOR structure for an event name or
+		/// stalk walk name filter.
+		/// </para>
+		/// <para>
+		/// This filter will only be applied to events that are otherwise enabled on the logging session, via level/keyword in the enable call.
+		/// </para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/evntprov/ns-evntprov-event_filter_event_name typedef struct
 		// _EVENT_FILTER_EVENT_NAME { ULONGLONG MatchAnyKeyword; ULONGLONG MatchAllKeyword; UCHAR Level; BOOLEAN FilterIn; USHORT NameCount;
 		// UCHAR Names[ANYSIZE_ARRAY]; } EVENT_FILTER_EVENT_NAME, *PEVENT_FILTER_EVENT_NAME;
@@ -5503,7 +5508,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct EVENT_FILTER_EVENT_NAME
 		{
-			/// </summary> <summary>Bitmask of keywords that determine the category of events to filter on.</summary>
+			/// <summary>Bitmask of keywords that determine the category of events to filter on.</summary>
 			public ulong MatchAnyKeyword;
 
 			/// <summary>
@@ -5581,9 +5586,15 @@ namespace Vanara.PInvoke
 			public uint NextOffset;
 		}
 
-		/// <summary> <para>The <c>EVENT_FILTER_LEVEL_KW</c> structure defines event IDs used in an EVENT_FILTER_DESCRIPTOR structure for a
-		/// stack walk level-keyword filter.</para> <para>This filter is only applied to events that are otherwise enabled on the logging
-		/// session, via a level/keyword in the enable call.</para>
+		/// <summary>
+		/// <para>
+		/// The <c>EVENT_FILTER_LEVEL_KW</c> structure defines event IDs used in an EVENT_FILTER_DESCRIPTOR structure for a stack walk
+		/// level-keyword filter.
+		/// </para>
+		/// <para>
+		/// This filter is only applied to events that are otherwise enabled on the logging session, via a level/keyword in the enable call.
+		/// </para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/evntprov/ns-evntprov-event_filter_level_kw typedef struct
 		// _EVENT_FILTER_LEVEL_KW { ULONGLONG MatchAnyKeyword; ULONGLONG MatchAllKeyword; UCHAR Level; BOOLEAN FilterIn; }
 		// EVENT_FILTER_LEVEL_KW, *PEVENT_FILTER_LEVEL_KW;
@@ -5591,7 +5602,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct EVENT_FILTER_LEVEL_KW
 		{
-			/// </summary> <summary>Bitmask of keywords that determine the category of events to filter on.</summary>
+			/// <summary>Bitmask of keywords that determine the category of events to filter on.</summary>
 			public ulong MatchAnyKeyword;
 
 			/// <summary>

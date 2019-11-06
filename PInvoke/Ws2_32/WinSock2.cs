@@ -3946,7 +3946,7 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="SOCKET"/> that is disposed using <see cref="closesocket/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="SOCKET"/> that is disposed using <see cref="closesocket"/>.</summary>
 		public class SafeSOCKET : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeSOCKET"/> class and assigns an existing handle.</summary>

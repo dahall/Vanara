@@ -101,7 +101,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			///   <para>Type: <c>UINT[]</c></para><para>An array of offsets, relative to the beginning of this structure. The array contains <c>cidl</c>+1 elements. The first element of <c>aoffset</c> contains an offset to the fully qualified PIDL of a parent folder. If this PIDL is empty, the parent folder is the desktop. Each of the remaining elements of the array contains an offset to one of the PIDLs to be transferred. All of these PIDLs are relative to the PIDL of the parent folder.</para>
 			/// </summary>
-			/// <value>Returns a <see cref="UInt32[]"/> value.</value>
+			/// <value>Returns a <see cref="UInt32"/>[] value.</value>
 			public uint[] offsets => aoffset.ToArray<uint>((int)cidl + 1);
 
 			public PIDL GetFolderPIDL()

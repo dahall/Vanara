@@ -1481,15 +1481,15 @@ namespace Vanara.PInvoke
 			/// <summary>Error code, if applicable.</summary>
 			public uint dwFinalError;
 
-			/// <summary> A pointer to a null-terminated string for the Yes button text. If this parameter is NULL, then "&Yes" is used. </summary>
+			/// <summary> A pointer to a null-terminated string for the Yes button text. If this parameter is NULL, then "&amp;Yes" is used. </summary>
 			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pYesButtonText;
 
-			/// <summary> A pointer to a null-terminated string for the No button text. If this parameter is NULL, then "&No" is used. </summary>
+			/// <summary> A pointer to a null-terminated string for the No button text. If this parameter is NULL, then "&amp;No" is used. </summary>
 			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pNoButtonText;
 
-			/// <summary> A pointer to a null-terminated string for the More Info button text. If this parameter is NULL, then "&More Info"
+			/// <summary> A pointer to a null-terminated string for the More Info button text. If this parameter is NULL, then "&amp;More Info"
 			/// is used. </summary>
 			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pMoreInfoButtonText;

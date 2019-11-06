@@ -78,7 +78,7 @@ namespace Vanara.PInvoke
 			COMMON_LVB_UNDERSCORE = 32768,
 		}
 
-		/// <summary>Used by <see cref="GetConsoleMode"/> and <see cref="SetConsoleMode"/>.</summary>
+		/// <summary>Used by <see cref="GetConsoleMode(HFILE, out CONSOLE_INPUT_MODE)"/> and <see cref="SetConsoleMode(HFILE, CONSOLE_INPUT_MODE)"/>.</summary>
 		[Flags]
 		public enum CONSOLE_INPUT_MODE : uint
 		{
@@ -145,7 +145,7 @@ namespace Vanara.PInvoke
 			ENABLE_VIRTUAL_TERMINAL_INPUT = 0x0200,
 		}
 
-		/// <summary>Used by <see cref="GetConsoleMode"/> and <see cref="SetConsoleMode"/>.</summary>
+		/// <summary>Used by <see cref="GetConsoleMode(HFILE, out CONSOLE_OUTPUT_MODE)"/> and <see cref="SetConsoleMode(HFILE, CONSOLE_OUTPUT_MODE)"/>.</summary>
 		[Flags]
 		public enum CONSOLE_OUTPUT_MODE : uint
 		{

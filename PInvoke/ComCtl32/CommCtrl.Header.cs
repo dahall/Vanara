@@ -249,6 +249,8 @@ namespace Vanara.PInvoke
 			HDM_SETUNICODEFORMAT = 0X2005,        // CCM_SETUNICODEFORMAT,
 		}
 
+#pragma warning disable CS1572 // XML comment has a param tag, but there is no parameter by that name
+
 		/// <summary>Header control notifications</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "ff485940")]
 		public enum HeaderNotification
@@ -465,6 +467,8 @@ namespace Vanara.PInvoke
 			/// <returns>Returns <c>FALSE</c> to continue tracking the divider, or <c>TRUE</c> to end tracking.</returns>
 			HDN_TRACK = HDN_FIRST - 28,
 		}
+
+#pragma warning restore CS1572 // XML comment has a param tag, but there is no parameter by that name
 
 		/// <summary>
 		/// Header controls have a number of styles, described in this section, that determine the control's appearance and behavior. You set

@@ -86,7 +86,7 @@ namespace Vanara.PInvoke
 		/// The <c>LsaGetAppliedCAPIDs</c> function returns an array of central access policies (CAPs) identifiers (CAPIDs) of all the CAPs
 		/// applied on a specific computer.
 		/// </summary>
-		/// <param name="SystemName">
+		/// <param name="systemName">
 		/// A pointer to an LSA_UNICODE_STRING structure that contains the name of the specific computer. The name can have the form of
 		/// "ComputerName" or "\ComputerName". If this parameter is <c>NULL</c>, then the function returns the CAPIDs of the local computer.
 		/// </param>
@@ -133,9 +133,9 @@ namespace Vanara.PInvoke
 		/// attribute matches one of the returned CAPIDs.
 		/// </remarks>
 		[PInvokeData("ntlsa.h", MSDNShortId = "DF10F5CE-BBF5-4CA8-919B-F59B7775C983")]
-		public static IEnumerable<PSID> LsaGetAppliedCAPIDs([Optional] string systemName)
+		public static IEnumerable<PSID> LsaGetAppliedCAPIDs([Optional] string SystemName)
 		{
-			LsaGetAppliedCAPIDs(systemName, out var pCapIds, out var idCnt).ThrowIfFailed();
+			LsaGetAppliedCAPIDs(SystemName, out var pCapIds, out var idCnt).ThrowIfFailed();
 			return pCapIds.ToArray<PSID>((int)idCnt);
 		}
 

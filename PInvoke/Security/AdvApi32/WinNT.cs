@@ -27,7 +27,7 @@ namespace Vanara.PInvoke
 			ACE_INHERITED_OBJECT_TYPE_PRESENT = 0x2
 		}
 
-		/// <summary>Used by the <see cref="GetAclInformation(PACL, ref ACL_SIZE_INFORMATION, uint, ACL_INFORMATION_CLASS)"/> function.</summary>
+		/// <summary>Used by the <see cref="GetAclInformation(PACL, IntPtr, uint, ACL_INFORMATION_CLASS)"/> function.</summary>
 		[PInvokeData("winnt.h")]
 		public enum ACL_INFORMATION_CLASS : uint
 		{
@@ -4464,6 +4464,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class to an empty memory buffer.</summary>
 			/// <param name="size">The size of the uninitialized access control list.</param>
+			/// <param name="revision">ACL revision.</param>
 			public SafePACL(int size, uint revision = ACL_REVISION) : base(size)
 			{
 				if (size % 4 != 0) throw new ArgumentOutOfRangeException(nameof(size), "ACL structures must be DWORD aligned. This value must be a multiple of 4.");
@@ -4582,7 +4583,6 @@ namespace Vanara.PInvoke
 			/// disk driver might log the number of retries, for example), followed by binary information specific to the event being logged
 			/// and to the source that generated the entry.
 			/// </summary>
-			/// <param name="basePtr">The address of the structure in memory.</param>
 			public byte[] Data => handle.ToArray<byte>(DataLength, DataOffset, Size);
 
 			/// <summary>
@@ -4644,7 +4644,6 @@ namespace Vanara.PInvoke
 			public string Source => StringHelper.GetString(handle.Offset(56), CharSet.Unicode, Size - 56);
 
 			/// <summary>Gets the description strings within this event log record.</summary>
-			/// <param name="basePtr">The address of the structure in memory.</param>
 			public string[] Strings =>
 				NumStrings == 0 ? new string[0] : handle.ToStringEnum(CharSet.Unicode, StringOffset, Size).ToArray();
 
@@ -4655,7 +4654,6 @@ namespace Vanara.PInvoke
 			public DateTime TimeWritten => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc) + TimeSpan.FromSeconds(handle.ToStructure<int>(Size, 16));
 
 			/// <summary>Gets the security identifier (SID) within this event log record.</summary>
-			/// <param name="basePtr">The address of the structure in memory.</param>
 			public SafePSID UserSid => UserSidLength == 0 ? SafePSID.Null : new SafePSID(handle.ToArray<byte>(UserSidLength, UserSidOffset, Size));
 
 			/// <summary>The size of the event-specific data (at the position indicated by <c>DataOffset</c>), in bytes.</summary>
@@ -4939,7 +4937,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets the header for an ACE.</summary>
 		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The <see cref="ACE_HEADER"/> value.</returns>
+		/// <returns>The <see cref="AdvApi32.ACE_HEADER"/> value.</returns>
 		/// <exception cref="System.ArgumentNullException">pAce</exception>
 		public static AdvApi32.ACE_HEADER GetHeader(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<AdvApi32.ACE_HEADER>() : throw new ArgumentNullException(nameof(pAce));
 
@@ -5003,7 +5001,7 @@ namespace Vanara.PInvoke
 		public static bool IsSelfRelative(this PSECURITY_DESCRIPTOR pSD) => AdvApi32.GetSecurityDescriptorControl(pSD, out var ctrl, out _) ? ctrl.IsFlagSet(AdvApi32.SECURITY_DESCRIPTOR_CONTROL.SE_SELF_RELATIVE) : throw Win32Error.GetLastError().GetException();
 
 		/// <summary>Validates an access control list (ACL).</summary>
-		/// <param name="pACL">The pointer to the ACL structure to query.</param>
+		/// <param name="pAcl">The pointer to the ACL structure to query.</param>
 		/// <returns><c>true</c> if the ACL is valid; otherwise, <c>false</c>.</returns>
 		public static bool IsValidAcl(this PACL pAcl) => AdvApi32.IsValidAcl(pAcl);
 
@@ -5016,7 +5014,7 @@ namespace Vanara.PInvoke
 		public static bool IsValidSecurityDescriptor(this PSECURITY_DESCRIPTOR pSD) => AdvApi32.IsValidSecurityDescriptor(pSD);
 
 		/// <summary>Gets the size, in bytes, of an ACE.</summary>
-		/// <param name="pACE">The pointer to the ACE structure to query.</param>
+		/// <param name="pAce">The pointer to the ACE structure to query.</param>
 		/// <returns>The size, in bytes, of the ACE.</returns>
 		public static uint Length(this PACE pAce)
 		{

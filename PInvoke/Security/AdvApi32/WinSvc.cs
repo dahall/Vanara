@@ -507,7 +507,7 @@ namespace Vanara.PInvoke
 			SC_ACTION_OWN_RESTART = 4
 		}
 
-		/// <summary>The service attributes that are to be returned from <see cref="EnumServicesStatusEx"/>.</summary>
+		/// <summary>The service attributes that are to be returned from <see cref="EnumServicesStatusEx(SC_HANDLE, ServiceTypes, SERVICE_STATE, string)"/>.</summary>
 		public enum SC_ENUM_TYPE
 		{
 			/// <summary>
@@ -525,7 +525,6 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Service Control Manager object specific access types</summary>
-		/// <see cref="https://docs.microsoft.com/en-gb/windows/desktop/Services/service-security-and-access-rights#access-rights-for-the-service-control-manager"/>
 		[PInvokeData("winsvc.h")]
 		[Flags]
 		public enum ScManagerAccessTypes : uint
@@ -537,7 +536,7 @@ namespace Vanara.PInvoke
 			SC_MANAGER_CREATE_SERVICE = 0x0002,
 
 			/// <summary>
-			/// Required to call the <see cref="EnumServicesStatus"/> or <see cref="EnumServicesStatusEx"/> function to list the services
+			/// Required to call the <see cref="EnumServicesStatus(SC_HANDLE, ServiceTypes, SERVICE_STATE)"/> or <see cref="EnumServicesStatusEx(SC_HANDLE, ServiceTypes, SERVICE_STATE, string)"/> function to list the services
 			/// that are in the database. Required to call the <see cref="NotifyServiceStatusChange"/> function to receive notification when
 			/// any service is created or deleted.
 			/// </summary>
@@ -858,7 +857,6 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Service object specific access type</summary>
-		/// <see cref="https://docs.microsoft.com/en-gb/windows/desktop/Services/service-security-and-access-rights#access-rights-for-a-service"/>
 		[PInvokeData("winsvc.h")]
 		[Flags]
 		public enum ServiceAccessTypes : uint
@@ -869,7 +867,7 @@ namespace Vanara.PInvoke
 			SERVICE_QUERY_CONFIG = 0x0001,
 
 			/// <summary>
-			/// Required to call the <see cref="ChangeServiceConfig"/> or <see cref="ChangeServiceConfig2"/> function to change the service
+			/// Required to call the <see cref="ChangeServiceConfig(SC_HANDLE, ServiceTypes, ServiceStartType, ServiceErrorControlType, string, string, IntPtr, string, string, string, string)"/> or <see cref="ChangeServiceConfig2"/> function to change the service
 			/// configuration. Because this grants the caller the right to change the executable file that the system runs, it should be
 			/// granted only to administrators.
 			/// </summary>
@@ -883,7 +881,7 @@ namespace Vanara.PInvoke
 			SERVICE_QUERY_STATUS = 0x0004,
 
 			/// <summary>
-			/// Required to call the <see cref="EnumDependentServices"/> function to enumerate all the services dependent on the service.
+			/// Required to call the <see cref="EnumDependentServices(SC_HANDLE, SERVICE_STATE)"/> function to enumerate all the services dependent on the service.
 			/// </summary>
 			SERVICE_ENUMERATE_DEPENDENTS = 0x0008,
 
@@ -4772,8 +4770,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>Stops a service using <see cref="ControlService"/> with <see cref="ServiceControl.SERVICE_CONTROL_STOP"/></summary>
 		/// <param name="hService">
-		/// A handle to the service. This handle is returned by the <see cref="OpenService"/> or <see cref="CreateService"/> function. The
-		/// access rights required for this handle depend on the <paramref name="dwControl"/> code requested.
+		/// A handle to the service. This handle is returned by the <see cref="OpenService"/> or <see cref="CreateService(SC_HANDLE, string, string, uint, ServiceTypes, ServiceStartType, ServiceErrorControlType, string, string, IntPtr, string[], string, string)"/> function. The
+		/// access rights required for this handle depend on the <see cref="ServiceControl"/> code requested.
 		/// </param>
 		/// <param name="lpServiceStatus">
 		/// A pointer to a <see cref="SERVICE_STATUS"/> structure that receives the latest service status information. The information
@@ -4785,8 +4783,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>Stops a service using <see cref="ControlServiceEx"/> with <see cref="ServiceControl.SERVICE_CONTROL_STOP"/></summary>
 		/// <param name="hService">
-		/// A handle to the service. This handle is returned by the <see cref="OpenService"/> or <see cref="CreateService"/> function. The
-		/// access rights required for this handle depend on the <paramref name="dwControl"/> code requested.
+		/// A handle to the service. This handle is returned by the <see cref="OpenService"/> or <see cref="CreateService(SC_HANDLE, string, string, uint, ServiceTypes, ServiceStartType, ServiceErrorControlType, string, string, IntPtr, string[], string, string)"/> function. The
+		/// access rights required for this handle depend on the <see cref="ServiceControl"/> code requested.
 		/// </param>
 		/// <param name="reason">A reason and comment for why the service is being stopped</param>
 		/// <returns></returns>

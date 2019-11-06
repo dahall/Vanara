@@ -1070,7 +1070,6 @@ namespace Vanara.PInvoke
 		/// Enumerates the specified elements in a power scheme. This function is normally called in a loop incrementing the Index parameter
 		/// to retrieve subkeys until they've all been enumerated.
 		/// </summary>
-		/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
 		/// <param name="SchemeGuid">
 		/// The identifier of the power scheme. If this parameter is <c>NULL</c>, an enumeration of the power policies is returned.
 		/// </param>
@@ -1521,7 +1520,6 @@ namespace Vanara.PInvoke
 		/// parameter is <c>NULL</c>, the description of the subgroup will be returned. If the SchemeGuid, SubGroupOfPowerSettingsGuid, and
 		/// PowerSettingGuid parameters are not <c>NULL</c>, the description of the power setting will be returned.
 		/// </summary>
-		/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
 		/// <param name="SchemeGuid">The identifier of the power scheme.</param>
 		/// <param name="SubGroupOfPowerSettingsGuid">
 		/// <para>
@@ -2896,7 +2894,6 @@ namespace Vanara.PInvoke
 		/// <c>NULL</c>, the friendly name of the subgroup will be set. If the SchemeGuid, SubGroupOfPowerSettingsGuid, and PowerSettingGuid
 		/// parameters are not <c>NULL</c>, the friendly name of the power setting will be set.
 		/// </summary>
-		/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
 		/// <param name="SchemeGuid">The identifier of the power scheme.</param>
 		/// <param name="SubGroupOfPowerSettingsGuid">
 		/// <para>

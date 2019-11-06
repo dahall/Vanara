@@ -27,8 +27,8 @@ namespace Vanara.Extensions
 		/// </summary>
 		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
 		/// <param name="dc">The <see cref="IDeviceContext"/> used to draw the background image.</param>
-		/// <param name="bounds">A <see cref="Rectangle"/> in which the background image is drawn.</param>
-		/// <param name="clipRectangle">A <see cref="Rectangle"/> that defines a clipping rectangle for the drawing operation.</param>
+		/// <param name="bounds">A <see cref="System.Drawing.Rectangle"/> in which the background image is drawn.</param>
+		/// <param name="clipRectangle">A <see cref="System.Drawing.Rectangle"/> that defines a clipping rectangle for the drawing operation.</param>
 		/// <param name="rightToLeft">If set to <c>true</c> flip the image for right to left layout.</param>
 		public static void DrawBackground(this VisualStyleRenderer rnd, IDeviceContext dc, Rectangle bounds, Rectangle? clipRectangle = null, bool rightToLeft = false)
 		{
@@ -57,8 +57,8 @@ namespace Vanara.Extensions
 		/// </summary>
 		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
 		/// <param name="dc">The <see cref="IDeviceContext"/> used to draw the background image.</param>
-		/// <param name="bounds">A <see cref="Rectangle"/> in which the background image is drawn.</param>
-		/// <param name="clipRectangle">A <see cref="Rectangle"/> that defines a clipping rectangle for the drawing operation.</param>
+		/// <param name="bounds">A <see cref="System.Drawing.Rectangle"/> in which the background image is drawn.</param>
+		/// <param name="clipRectangle">A <see cref="System.Drawing.Rectangle"/> that defines a clipping rectangle for the drawing operation.</param>
 		/// <param name="rightToLeft">If set to <c>true</c> flip the image for right to left layout.</param>
 		public static void DrawGlassBackground(this VisualStyleRenderer rnd, IDeviceContext dc, Rectangle bounds, Rectangle? clipRectangle = null, bool rightToLeft = false)
 		{
@@ -82,7 +82,7 @@ namespace Vanara.Extensions
 		/// <summary>Draws the image from the specified <paramref name="imageList"/> within the specified bounds on a glass background.</summary>
 		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
 		/// <param name="g">The <see cref="Graphics"/> used to draw the image.</param>
-		/// <param name="bounds">A <see cref="Rectangle"/> in which the image is drawn.</param>
+		/// <param name="bounds">A <see cref="System.Drawing.Rectangle"/> in which the image is drawn.</param>
 		/// <param name="imageList">An <see cref="ImageList"/> that contains the <see cref="Image"/> to draw.</param>
 		/// <param name="imageIndex">The index of the <see cref="Image"/> within <paramref name="imageList"/> to draw.</param>
 		public static void DrawGlassImage(this VisualStyleRenderer rnd, IDeviceContext g, Rectangle bounds, ImageList imageList, int imageIndex)
@@ -95,7 +95,7 @@ namespace Vanara.Extensions
 		/// <summary>Draws the specified image within the specified bounds on a glass background.</summary>
 		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
 		/// <param name="g">The <see cref="Graphics"/> used to draw the image.</param>
-		/// <param name="bounds">A <see cref="Rectangle"/> in which the image is drawn.</param>
+		/// <param name="bounds">A <see cref="System.Drawing.Rectangle"/> in which the image is drawn.</param>
 		/// <param name="image">An <see cref="ImageList"/> that contains the <see cref="Image"/> to draw.</param>
 		/// <param name="disabled">
 		/// if set to <c>true</c> draws the image in a disabled state using the <see cref="ControlPaint.DrawImageDisabled"/> method.
@@ -120,7 +120,7 @@ namespace Vanara.Extensions
 		/// </summary>
 		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
 		/// <param name="dc">The <see cref="IDeviceContext"/> used to draw the text.</param>
-		/// <param name="bounds">A <see cref="Rectangle"/> in which the text is drawn.</param>
+		/// <param name="bounds">A <see cref="System.Drawing.Rectangle"/> in which the text is drawn.</param>
 		/// <param name="text">The text to draw.</param>
 		/// <param name="font">Optional font override.</param>
 		/// <param name="color">Optionally, the color to draw text in overriding the default color for the theme.</param>
@@ -147,7 +147,7 @@ namespace Vanara.Extensions
 		/// <summary>Draws text in the specified bounding rectangle with the option of applying other text formatting.</summary>
 		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
 		/// <param name="dc">The <see cref="IDeviceContext"/> used to draw the text.</param>
-		/// <param name="bounds">A <see cref="Rectangle"/> in which the text is drawn.</param>
+		/// <param name="bounds">A <see cref="System.Drawing.Rectangle"/> in which the text is drawn.</param>
 		/// <param name="text">The text to draw.</param>
 		/// <param name="flags">A bitwise combination of the <see cref="TextFormatFlags"/> values.</param>
 		/// <param name="options">The <see cref="DTTOPTS"/> .</param>

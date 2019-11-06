@@ -1670,7 +1670,7 @@ namespace Vanara.PInvoke
 			public IntPtr Information;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="IcmpHandle"/> that is disposed using <see cref="IcmpCloseHandle"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for an IMCP handle that is disposed using <see cref="IcmpCloseHandle"/>.</summary>
 		public class SafeIcmpHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeIcmpHandle"/> class and assigns an existing handle.</summary>

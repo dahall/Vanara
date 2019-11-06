@@ -140,10 +140,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>REFIID</c></para>
 			/// <para>A reference to the desired IID.</para>
 			/// </param>
-			/// <param name="ppv">
-			/// <para>Type: <c>void**</c></para>
-			/// <para>The IShellItem interface pointer specified in riid.</para>
-			/// </param>
+			/// <returns>The IShellItem interface pointer specified in riid.</returns>
 			/// <remarks>When the retrieved IShellItem is enumerated, it returns the search results.</remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-isearchfolderitemfactory-getshellitem
 			// HRESULT GetShellItem( REFIID riid, void **ppv );

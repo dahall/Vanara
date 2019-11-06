@@ -4858,11 +4858,11 @@ namespace Vanara.PInvoke
 			public const string NCRYPT_CHAINING_MODE_PROPERTY = "Chaining Mode";
 			/// <summary>SmartCardDismissUITimeoutSeconds</summary>
 			public const string NCRYPT_DISMISS_UI_TIMEOUT_SEC_PROPERTY = "SmartCardDismissUITimeoutSeconds";
-			/// <summaryBCrypt.PropertyName.BCRYPT_ECC_CURVE_NAME_LIS</summary>
+			/// <summary>BCrypt.PropertyName.BCRYPT_ECC_CURVE_NAME_LIS</summary>
 			public const string NCRYPT_ECC_CURVE_NAME_LIST_PROPERTY = BCrypt.PropertyName.BCRYPT_ECC_CURVE_NAME_LIST;
-			/// <summaryBCrypt.PropertyName.BCRYPT_ECC_CURVE_NAM</summary>
+			/// <summary>BCrypt.PropertyName.BCRYPT_ECC_CURVE_NAM</summary>
 			public const string NCRYPT_ECC_CURVE_NAME_PROPERTY = BCrypt.PropertyName.BCRYPT_ECC_CURVE_NAME;
-			/// <summaryBCrypt.PropertyName.BCRYPT_ECC_PARAMETER</summary>
+			/// <summary>BCrypt.PropertyName.BCRYPT_ECC_PARAMETER</summary>
 			public const string NCRYPT_ECC_PARAMETERS_PROPERTY = BCrypt.PropertyName.BCRYPT_ECC_PARAMETERS;
 			/// <summary>Export Policy</summary>
 			public const string NCRYPT_EXPORT_POLICY_PROPERTY = "Export Policy";
@@ -4986,7 +4986,7 @@ namespace Vanara.PInvoke
 			public const string NCRYPT_PIN_PROPERTY = "SmartCardPin";
 			/// <summary>Provider Handle</summary>
 			public const string NCRYPT_PROVIDER_HANDLE_PROPERTY = "Provider Handle";
-			/// <summaryBCrypt.PropertyName.BCRYPT_PUBLIC_KEY_LENGT</summary>
+			/// <summary>BCrypt.PropertyName.BCRYPT_PUBLIC_KEY_LENGT</summary>
 			public const string NCRYPT_PUBLIC_LENGTH_PROPERTY = BCrypt.PropertyName.BCRYPT_PUBLIC_KEY_LENGTH;
 			/// <summary>SmartCardReaderIcon</summary>
 			public const string NCRYPT_READER_ICON_PROPERTY = "SmartCardReaderIcon";
@@ -5004,7 +5004,7 @@ namespace Vanara.PInvoke
 			public const string NCRYPT_SECURITY_DESCR_PROPERTY = "Security Descr";
 			/// <summary>Security Descr Support</summary>
 			public const string NCRYPT_SECURITY_DESCR_SUPPORT_PROPERTY = "Security Descr Support";
-			/// <summaryBCrypt.PropertyName.BCRYPT_SIGNATURE_LENGT</summary>
+			/// <summary>BCrypt.PropertyName.BCRYPT_SIGNATURE_LENGT</summary>
 			public const string NCRYPT_SIGNATURE_LENGTH_PROPERTY = BCrypt.PropertyName.BCRYPT_SIGNATURE_LENGTH;
 			/// <summary>SmartCardGuid</summary>
 			public const string NCRYPT_SMARTCARD_GUID_PROPERTY = "SmartCardGuid";

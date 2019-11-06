@@ -2561,7 +2561,7 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => PerfCloseQueryHandle(this).Succeeded;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PPERF_COUNTERSET_INSTANCE"/> that is disposed using <see cref="PerfDeleteInstance"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PERF_COUNTERSET_INSTANCE"/> that is disposed using <see cref="PerfDeleteInstance"/>.</summary>
 		public class SafePPERF_COUNTERSET_INSTANCE : SafeHANDLE
 		{
 			private HPERFPROV hProv;
@@ -2569,6 +2569,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Initializes a new instance of the <see cref="SafePPERF_COUNTERSET_INSTANCE"/> class and assigns an existing handle.
 			/// </summary>
+			/// <param name="ProviderHandle">Handle for the open provider.</param>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).

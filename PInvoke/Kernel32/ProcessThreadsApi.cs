@@ -232,7 +232,7 @@ namespace Vanara.PInvoke
 			PROCESS_MODE_BACKGROUND_END = 0x00200000,
 		}
 
-		/// <summary>Flags used by <see cref="CreateRemoteThread"/>.</summary>
+		/// <summary>Flags used by <see cref="CreateRemoteThread(HPROCESS, SECURITY_ATTRIBUTES, SizeT, IntPtr, IntPtr, CREATE_THREAD_FLAGS, out uint)"/>.</summary>
 		[Flags]
 		public enum CREATE_THREAD_FLAGS
 		{

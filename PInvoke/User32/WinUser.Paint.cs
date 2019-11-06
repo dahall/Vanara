@@ -191,7 +191,7 @@ namespace Vanara.PInvoke
 			DC_BUTTONS = 0x1000,
 		}
 
-		/// <summary>Flags used by <see cref="DrawState"/>.</summary>
+		/// <summary>Flags used by <see cref="DrawState(HDC, HBRUSH, DrawStateProc, IntPtr, IntPtr, int, int, int, int, DrawStateFlags)"/>.</summary>
 		[PInvokeData("winuser.h", MSDNShortId = "b92150be-8264-4ea8-a2ea-d70b7fba6361")]
 		[Flags]
 		public enum DrawStateFlags

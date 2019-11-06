@@ -5,6 +5,7 @@ using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Contains structures, enumerations and functions from COMCTL32.DLL.</summary>
 	public static partial class ComCtl32
 	{
 		/// <summary>Used in the <see cref="BUTTON_IMAGELIST"/> structure himl member to indicate that no glyph should be displayed.</summary>

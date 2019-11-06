@@ -48,7 +48,7 @@ namespace Vanara.PInvoke
 			/// <summary>Should be <c>NULL</c>.</summary>
 			public IntPtr SecurityQualityOfService;
 
-			/// <summary>Returns a completely empty reference. This value should be used when calling <see cref="LsaOpenPolicy(string, ref LSA_OBJECT_ATTRIBUTES, LsaPolicyRights, out SafeLSA_HANDLE)"/>.</summary>
+			/// <summary>Returns a completely empty reference. This value should be used when calling <see cref="LsaOpenPolicy(string, in LSA_OBJECT_ATTRIBUTES, LsaPolicyRights, out SafeLSA_HANDLE)"/>.</summary>
 			/// <value>An <see cref="LSA_OBJECT_ATTRIBUTES"/> instance with all members set to <c>NULL</c> or zero.</value>
 			public static LSA_OBJECT_ATTRIBUTES Empty { get; } = new LSA_OBJECT_ATTRIBUTES();
 		}

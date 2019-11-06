@@ -1415,6 +1415,7 @@ namespace Vanara.PInvoke
 		/// <param name="dwAdditionalParameterCount">
 		/// <para>Must be set to zero.</para>
 		/// </param>
+		/// <param name="parameters">Additional parameters.</param>
 		/// <returns>
 		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
 		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
@@ -1465,7 +1466,7 @@ namespace Vanara.PInvoke
 		/// <param name="szAdditionalInfo2">Pointer to a string defined by the Resource Manager that contains additional audit information.</param>
 		/// <param name="phAuditEvent">A pointer to the returned <c>AUTHZ_AUDIT_EVENT_HANDLE</c> handle.</param>
 		/// <param name="dwAdditionalParameterCount">Must be set to zero.</param>
-		/// <param name="">The .</param>
+		/// <param name="parameters">Additional parameters.</param>
 		/// <returns>
 		/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
 		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
@@ -1913,7 +1914,6 @@ namespace Vanara.PInvoke
 		/// <param name="dwCount">
 		/// The number of AuditParamFlag type/value pairs that appear in the variable arguments section that follows this parameter.
 		/// </param>
-		/// <param name="arg6">A list of AuditParamFlag type/value pairs that provide additional information about the event.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
 		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>

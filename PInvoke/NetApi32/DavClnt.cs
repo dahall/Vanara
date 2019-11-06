@@ -58,8 +58,6 @@ namespace Vanara.PInvoke
 		/// <param name="pCallbackCred">A pointer to a DAV_CALLBACK_CRED structure.</param>
 		/// <param name="NextStep">The next step.</param>
 		/// <param name="pFreeCred">The p free cred.</param>
-		/// <param name="">The .</param>
-		/// <param name="">The .</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
 		/// <para>If the function fails, the return value is a system error code.</para>

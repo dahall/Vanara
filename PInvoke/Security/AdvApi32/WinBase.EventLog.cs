@@ -666,7 +666,7 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => CloseEventLog(this);
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HEVENTSOURCE"/> that is disposed using <see cref="DeregisterEventSource"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HEVENTLOG"/> that is disposed using <see cref="DeregisterEventSource"/>.</summary>
 		public class SafeHEVENTSOURCE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHEVENTSOURCE"/> class and assigns an existing handle.</summary>
@@ -679,7 +679,7 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafeHEVENTSOURCE"/> class.</summary>
 			private SafeHEVENTSOURCE() : base() { }
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeHEVENTSOURCE"/> to <see cref="HEVENTSOURCE"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="SafeHEVENTSOURCE"/> to <see cref="HEVENTLOG"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HEVENTLOG(SafeHEVENTSOURCE h) => h.handle;

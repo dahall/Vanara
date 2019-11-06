@@ -573,7 +573,6 @@ namespace Vanara.PInvoke
 		/// A <c>LsaForestTrustInformation</c> instance that contains the old forest trust data to be merged. This parameter may be
 		/// <see langword="null"/> if no records exist.
 		/// </param>
-		/// <param name="MergedForestTrustInfo">A <c>LsaForestTrustInformation</c> instance with the merged forest trust data.</param>
 		/// <returns>Returns <c>NO_ERROR</c> if successful or a Windows error code otherwise.</returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/nf-dsgetdc-dsmergeforesttrustinformationw
 		[PInvokeData("dsgetdc.h", MSDNShortId = "f42e16d0-62b2-49c4-b182-d1e744afe58c")]
@@ -592,23 +591,15 @@ namespace Vanara.PInvoke
 		/// directory service installation and domain data.
 		/// </summary>
 		/// <param name="lpServer">
-		/// Pointer to null-terminated Unicode string that contains the name of the computer on which to call the function. If this parameter
-		/// is <see langword="null"/>, the local computer is used.
+		/// Pointer to null-terminated Unicode string that contains the name of the computer on which to call the function. If this
+		/// parameter is <see langword="null"/>, the local computer is used.
 		/// </param>
 		/// <param name="InfoLevel">
 		/// Contains one of the DSROLE_PRIMARY_DOMAIN_INFO_LEVEL values that specify the type of data to retrieve. This parameter also
 		/// determines the format of the data supplied in Buffer.
 		/// </param>
-		/// <param name="Buffer">
-		/// <para>
-		/// Pointer to the address of a buffer that receives the requested data. The format of this data depends on the value of the
-		/// InfoLevel parameter.
-		/// </para>
-		/// <para>The caller must free this memory when it is no longer required by calling DsRoleFreeMemory.</para>
-		/// </param>
 		/// <returns>
-		/// <para>If the function is successful, the return value is <c>ERROR_SUCCESS</c>.</para>
-		/// <para>If the function fails, the return value can be one of the following values.</para>
+		/// <para>The requested data. The format of this data depends on the value of the InfoLevel parameter.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/dsrole/nf-dsrole-dsrolegetprimarydomaininformation DWORD
 		// DsRoleGetPrimaryDomainInformation( IN LPCWSTR lpServer, IN DSROLE_PRIMARY_DOMAIN_INFO_LEVEL InfoLevel, OUT PBYTE *Buffer );
@@ -659,35 +650,7 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </param>
-		/// <param name="bufptr">
-		/// <para>
-		/// Pointer to the address of the buffer that receives the information. The format of this data depends on the value of the level parameter.
-		/// </para>
-		/// <para>
-		/// This buffer is allocated by the system and must be freed using the NetApiBufferFree function. Note that you must free the buffer
-		/// even if the function fails with <c>ERROR_MORE_DATA</c>.
-		/// </para>
-		/// </param>
-		/// <param name="prefmaxlen">
-		/// Specifies the preferred maximum length of returned data, in bytes. If you specify <c>MAX_PREFERRED_LENGTH</c>, the function
-		/// allocates the amount of memory required for the data. If you specify another value in this parameter, it can restrict the number
-		/// of bytes that the function returns. If the buffer size is insufficient to hold all entries, the function returns
-		/// <c>ERROR_MORE_DATA</c>. For more information, see Network Management Function Buffers and Network Management Function Buffer Lengths.
-		/// </param>
-		/// <param name="entriesread">Pointer to a value that receives the count of elements actually enumerated.</param>
-		/// <param name="totalentries">
-		/// Pointer to a value that receives the total number of entries that could have been enumerated from the current resume position.
-		/// Note that applications should consider this value only as a hint.
-		/// </param>
-		/// <param name="resume_handle">
-		/// Pointer to a value that contains a resume handle which is used to continue an existing connection search. The handle should be
-		/// zero on the first call and left unchanged for subsequent calls. If this parameter is <see langword="null"/>, then no resume
-		/// handle is stored.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is <c>NERR_Success</c>.</para>
-		/// <para>If the function fails, the return value is a system error code. For a list of error codes, see System Error Codes.</para>
-		/// </returns>
+		/// <returns>A sequence of the requested type.</returns>
 		/// <remarks>
 		/// <para>
 		/// Administrator, Server or Print Operator, or Power User group membership is required to successfully execute the
@@ -2632,40 +2595,7 @@ namespace Vanara.PInvoke
 		/// A pointer to a string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If this
 		/// parameter is <see langword="null"/>, the local computer is used.
 		/// </param>
-		/// <param name="bufptr">An array of strings (a drive letter followed by a colon).</param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is NERR_Success.</para>
-		/// <para>If the function fails, the return value can be one of the following error codes.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>ERROR_ACCESS_DENIED</term>
-		/// <term>The user does not have access to the requested information.</term>
-		/// </item>
-		/// <item>
-		/// <term>ERROR_INVALID_LEVEL</term>
-		/// <term>The value specified for the level parameter is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>ERROR_MORE_DATA</term>
-		/// <term>More entries are available. Specify a large enough buffer to receive all entries.</term>
-		/// </item>
-		/// <item>
-		/// <term>ERROR_NOT_ENOUGH_MEMORY</term>
-		/// <term>Insufficient memory is available.</term>
-		/// </item>
-		/// <item>
-		/// <term>ERROR_NOT_SUPPORTED</term>
-		/// <term>
-		/// The request is not supported. This error is returned if a remote server was specified in servername parameter, the remote server
-		/// only supports remote RPC calls using the legacy Remote Access Protocol mechanism, and this request is not supported.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// </returns>
+		/// <returns>A sequence of strings (a drive letter followed by a colon).</returns>
 		/// <remarks>
 		/// <para>
 		/// Only members of the Administrators or Server Operators local group can successfully execute the <c>NetServerDiskEnum</c> function
@@ -2766,49 +2696,7 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </param>
-		/// <param name="bufptr">
-		/// Pointer to the buffer that receives the data. The format of this data depends on the value of the level parameter. This buffer is
-		/// allocated by the system and must be freed using the NetApiBufferFree function. Note that you must free the buffer even if the
-		/// function fails with ERROR_MORE_DATA.
-		/// </param>
-		/// <param name="prefmaxlen">
-		/// Specifies the preferred maximum length of returned data, in bytes. If you specify MAX_PREFERRED_LENGTH, the function allocates
-		/// the amount of memory required for the data. If you specify another value in this parameter, it can restrict the number of bytes
-		/// that the function returns. If the buffer size is insufficient to hold all entries, the function returns ERROR_MORE_DATA. For more
-		/// information, see Network Management Function Buffers and Network Management Function Buffer Lengths.
-		/// </param>
-		/// <param name="entriesread">Pointer to a value that receives the count of elements actually enumerated.</param>
-		/// <param name="totalentries">
-		/// Pointer to a value that receives the total number of entries that could have been enumerated from the current resume position.
-		/// Note that applications should consider this value only as a hint.
-		/// </param>
-		/// <param name="resume_handle">The resume handle.</param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is NERR_Success.</para>
-		/// <para>If the function fails, the return value can be one of the following error codes.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>ERROR_INVALID_LEVEL</term>
-		/// <term>The value specified for the level parameter is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>ERROR_MORE_DATA</term>
-		/// <term>More entries are available. Specify a large enough buffer to receive all entries.</term>
-		/// </item>
-		/// <item>
-		/// <term>ERROR_NOT_ENOUGH_MEMORY</term>
-		/// <term>Insufficient memory is available.</term>
-		/// </item>
-		/// <item>
-		/// <term>NERR_BufTooSmall</term>
-		/// <term>The supplied buffer is too small.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
+		/// <returns>The data sequence. The format of this data depends on the value of the level parameter.</returns>
 		/// <remarks>
 		/// <para>
 		/// Only Authenticated Users can successfully call this function. <c>Windows XP/2000:</c> No special group membership is required to
@@ -3502,7 +3390,7 @@ namespace Vanara.PInvoke
 		/// <para>The <c>NetUseEnum</c> function lists all current connections between the local computer and resources on remote servers.</para>
 		/// <para>You can also use the WNetOpenEnum and the WNetEnumResource functions to enumerate network resources or connections.</para>
 		/// </summary>
-		/// <typeparam name="T">The expected element return type associated with the <paramref name="level"/>.</typeparam>
+		/// <typeparam name="T">The expected element return type associated with the <paramref name="LevelFlags"/>.</typeparam>
 		/// <param name="UncServerName">
 		/// <para>
 		/// The UNC name of the computer on which to execute this function. If this is parameter is <c>NULL</c>, then the local computer is
@@ -3607,15 +3495,7 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </param>
-		/// <param name="bufptr">
-		/// A pointer to the buffer that receives the data. The format of this data depends on the value of the Level parameter. This buffer
-		/// is allocated by the system and must be freed using the NetApiBufferFree function. For more information, see Network Management
-		/// Function Buffers and Network Management Function Buffer Lengths.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is NERR_Success.</para>
-		/// <para>If the function fails, the return value is a system error code. For a list of error codes, see System Error Codes.</para>
-		/// </returns>
+		/// <returns>The data. The format of this data depends on the value of the Level parameter.</returns>
 		/// <remarks>
 		/// <para>
 		/// No special group membership is required to call the <c>NetUseGetInfo</c> function. This function cannot be executed on a remote
@@ -5281,7 +5161,6 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// The <c>NetWkstaUserSetInfo</c> function sets the user-specific information about the configuration elements for a workstation.
 		/// </summary>
-		/// <param name="reserved">This parameter must be set to zero.</param>
 		/// <param name="level">
 		/// <para>Specifies the information level of the data. This parameter can be one of the following values.</para>
 		/// <list type="table">
@@ -5305,10 +5184,6 @@ namespace Vanara.PInvoke
 		/// <param name="buf">
 		/// Pointer to the buffer that specifies the data. The format of this data depends on the value of the level parameter. For more
 		/// information, see Network Management Function Buffers.
-		/// </param>
-		/// <param name="parm_err">
-		/// Pointer to a value that receives the index of the first parameter that causes the ERROR_INVALID_PARAMETER error. If this
-		/// parameter is <c>NULL</c>, the index is not returned on error.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is NERR_Success.</para>

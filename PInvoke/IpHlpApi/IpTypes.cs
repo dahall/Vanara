@@ -1528,7 +1528,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// The <c>IP_ADDR_STRING</c> structure represents a node in a linked-list of IPv4 addresses.
 		/// </summary>
-		/// <seealso cref="Vanara.PInvoke.IpHlpApi.ILinkedListElement{Vanara.PInvoke.IpHlpApi.IP_ADDR_STRING}" />
+		/// <seealso cref="Vanara.PInvoke.IpHlpApi.ILinkedListElement{T}" />
 		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_addr_string typedef struct _IP_ADDR_STRING { struct
 		// _IP_ADDR_STRING *Next; IP_ADDRESS_STRING IpAddress; IP_MASK_STRING IpMask; DWORD Context; } IP_ADDR_STRING, *PIP_ADDR_STRING;
 		[PInvokeData("iptypes.h", MSDNShortId = "783c383d-7fd3-45bc-90f6-2e8ce01db3c3")]

@@ -2759,7 +2759,6 @@ namespace Vanara.PInvoke
 		/// <para>To use handles to data sources, use the PdhGetDefaultPerfCounterH function.</para>
 		/// </summary>
 		/// <param name="szDataSource">Should be <c>NULL</c>.</param>
-		/// <param name="&#x9;&#x9;&#x9;&#x9;If you specify a log file, &amp;lt;i&amp;gt;szDefaultCounterName&amp;lt;/i&amp;gt; will be a &amp;lt;b&amp;gt;null&amp;lt;/b&amp;gt; string.&#xA;"/>
 		/// <param name="szMachineName">
 		/// <c>Null</c>-terminated string that specifies the name of the computer used to verify the object name. If <c>NULL</c>, the local
 		/// computer is used to verify the object name.
@@ -2839,7 +2838,6 @@ namespace Vanara.PInvoke
 		/// <para>This function is identical to PdhGetDefaultPerfCounter, except that it supports the use of handles to data sources.</para>
 		/// </summary>
 		/// <param name="hDataSource">Should be <c>NULL</c>.</param>
-		/// <param name="&#x9;&#x9;&#x9;&#x9;If you specify a log file handle, &amp;lt;i&amp;gt;szDefaultCounterName&amp;lt;/i&amp;gt; will be a &amp;lt;b&amp;gt;null&amp;lt;/b&amp;gt; string.&#xA;"/>
 		/// <param name="szMachineName">
 		/// <c>Null</c>-terminated string that specifies the name of the computer used to verify the object name. If <c>NULL</c>, the local
 		/// computer is used to verify the name.
@@ -2918,7 +2916,6 @@ namespace Vanara.PInvoke
 		/// <para>To use handles to data sources, use the PdhGetDefaultPerfObjectH function.</para>
 		/// </summary>
 		/// <param name="szDataSource">Should be <c>NULL</c>.</param>
-		/// <param name="&#x9;&#x9;&#x9;&#x9;If you specify a log file, the &amp;lt;i&amp;gt;szDefaultObjectName&amp;lt;/i&amp;gt; parameter will be a &amp;lt;b&amp;gt;null&amp;lt;/b&amp;gt; string.&#xA;"/>
 		/// <param name="szMachineName">
 		/// <c>Null</c>-terminated string that specifies the name of the computer used to verify the object name. If <c>NULL</c>, the local
 		/// computer is used to verify the name.
@@ -2988,7 +2985,6 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </summary>
 		/// <param name="hDataSource">Should be <c>NULL</c>.</param>
-		/// <param name="&#x9;&#x9;&#x9;&#x9;If you specify a log file handle, &amp;lt;i&amp;gt;szDefaultObjectName&amp;lt;/i&amp;gt; will be a &amp;lt;b&amp;gt;null&amp;lt;/b&amp;gt; string.&#xA;"/>
 		/// <param name="szMachineName">
 		/// <c>Null</c>-terminated string that specifies the name of the computer used to verify the object name. If <c>NULL</c>, the local
 		/// computer is used to verify the name.

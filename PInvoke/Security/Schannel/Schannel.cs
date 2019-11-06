@@ -963,7 +963,7 @@ namespace Vanara.PInvoke
 			public IntPtr pPublicKey;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="SslCertificate"/> that is disposed using <see cref="SslFreeCertificate"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for an Ssl Certificate that is disposed using <see cref="SslFreeCertificate"/>.</summary>
 		public class SafeSslCertificate : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeSslCertificate"/> class and assigns an existing handle.</summary>

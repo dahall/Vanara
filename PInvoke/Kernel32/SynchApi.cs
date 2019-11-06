@@ -1818,7 +1818,7 @@ namespace Vanara.PInvoke
 		public static extern bool TryEnterCriticalSection(ref CRITICAL_SECTION lpCriticalSection);
 
 		/// <summary>
-		/// <para>Cancels a registered wait operation issued by the <see cref="RegisterWaitForSingleObject"/> function.</para>
+		/// <para>Cancels a registered wait operation issued by the <see cref="RegisterWaitForSingleObject(out SafeRegisteredWaitHandle, IntPtr, WaitOrTimerCallback, IntPtr, uint, WT)"/> function.</para>
 		/// <para>To use a completion event, call the <c>UnregisterWaitEx</c> function.</para>
 		/// </summary>
 		/// <param name="WaitHandle">The wait handle. This handle is returned by the <c>RegisterWaitForSingleObject</c> function.</param>

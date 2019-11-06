@@ -3638,7 +3638,7 @@ namespace Vanara.PInvoke
 			/// <value><c>true</c> if not mirroring; otherwise, <c>false</c>.</value>
 			public bool DoNotMirror { get => dwFlags.IsFlagSet(DrawThemeBackgroundFlags.DTBG_NOMIRROR); set => SetFlag(DrawThemeBackgroundFlags.DTBG_NOMIRROR, value); }
 
-			/// <summary>Performs an implicit conversion from <see cref="Rectangle"/> to <see cref="DTBGOPTS"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="System.Drawing.Rectangle"/> to <see cref="DTBGOPTS"/>.</summary>
 			/// <param name="clipRectangle">The clipping rectangle.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator DTBGOPTS(Rectangle clipRectangle) => new DTBGOPTS(clipRectangle);

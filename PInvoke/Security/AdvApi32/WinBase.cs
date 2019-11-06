@@ -309,7 +309,7 @@ namespace Vanara.PInvoke
 			FILE_DIR_DISALLOWED = 9,
 		}
 
-		/// <summary>Flags used by <see cref="IsTextUnicode"/>.</summary>
+		/// <summary>Flags used by <see cref="IsTextUnicode(byte[], int, ref IS_TEXT_UNICODE)"/>.</summary>
 		[Flags]
 		public enum IS_TEXT_UNICODE : uint
 		{
@@ -2514,7 +2514,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("", MSDNShortId = "d90db4c6-a711-4519-8b91-5069cee07738")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool LogonUserExExW(string lpszUsername, [Optional] string lpszDomain, [Optional] string lpszPassword, LogonUserType dwLogonType, LogonUserProvider dwLogonProvider,
+		public static extern bool LogonUserExExW(string lpszUserName, [Optional] string lpszDomain, [Optional] string lpszPassword, LogonUserType dwLogonType, LogonUserProvider dwLogonProvider,
 			[In, Optional] in TOKEN_GROUPS pTokenGroups, out SafeHTOKEN phToken, out SafePSID ppLogonSid, out SafeLsaReturnBufferHandle ppProfileBuffer, out uint pdwProfileLength, out QUOTA_LIMITS pQuotaLimits);
 
 		/// <summary>
@@ -4149,11 +4149,11 @@ namespace Vanara.PInvoke
 			/// <param name="singleThreadOnly">
 			/// if set to <c>true</c> specifies that the system should discard the information it has been tracking for this operation.
 			/// </param>
-			public OPERATION_END_PARAMETERS(uint opId, bool discardInfo = false)
+			public OPERATION_END_PARAMETERS(uint opId, bool singleThreadOnly = false)
 			{
 				Version = OPERATION_API_VERSION;
 				OperationId = opId;
-				Flags = discardInfo ? 1U : 0U;
+				Flags = singleThreadOnly ? 1U : 0U;
 			}
 		}
 

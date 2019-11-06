@@ -342,20 +342,17 @@ namespace Vanara.PInvoke
 			/// The desired IID of the enumerating interface: either IID_IEnumUnknown, IID_IEnumVARIANT or (for a negation condition) IID_ICondition.
 			/// </para>
 			/// </param>
-			/// <param name="ppv">
-			/// <para>Type: <c>void**</c></para>
-			/// <para>
+			/// <returns>
 			/// Receives a collection of zero or more ICondition objects. Each object is a subcondition of this condition node. If <paramref
 			/// name="riid"/> was IID_ICondition and this is a negation condition, this parameter receives the single subcondition.
-			/// </para>
-			/// </param>
+			/// </returns>
 			/// <remarks>
 			/// <para>
 			/// The <paramref name="riid"/> parameter must be the <c>GUID</c> of an IEnumUnknown or IEnumVARIANT interface or in the case of
 			/// a negation node, IID_ICondition.
 			/// </para>
-			/// <para>If the subcondition is a negation node, <paramref name="ppv"/> is set to an enumeration of one element.</para>
-			/// <para>If the node is a conjunction or disjunction node, <paramref name="ppv"/> is set to an enumeration of the subconditions.</para>
+			/// <para>If the subcondition is a negation node, the return value is set to an enumeration of one element.</para>
+			/// <para>If the node is a conjunction or disjunction node, the return value is set to an enumeration of the subconditions.</para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getsubconditions
 			// HRESULT GetSubConditions( REFIID riid, void **ppv );
@@ -461,7 +458,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Extends the functionality of the ICondition interface. <c>ICondition2</c> provides methods for retrieving information about a search condition.
 		/// </summary>
-		/// <seealso cref="Vanara.PInvoke.Shell32.ICondition" />
+		/// <seealso cref="ICondition" />
 		/// <remarks>
 		/// The StructuredQuerySample code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to read lines from the console, parse them using the system schema, and display the resulting condition trees.
 		/// </remarks>
@@ -682,20 +679,17 @@ namespace Vanara.PInvoke
 			/// The desired IID of the enumerating interface: either IID_IEnumUnknown, IID_IEnumVARIANT or (for a negation condition) IID_ICondition.
 			/// </para>
 			/// </param>
-			/// <param name="ppv">
-			/// <para>Type: <c>void**</c></para>
-			/// <para>
+			/// <returns>
 			/// Receives a collection of zero or more ICondition objects. Each object is a subcondition of this condition node. If <paramref
 			/// name="riid"/> was IID_ICondition and this is a negation condition, this parameter receives the single subcondition.
-			/// </para>
-			/// </param>
+			/// </returns>
 			/// <remarks>
 			/// <para>
 			/// The <paramref name="riid"/> parameter must be the <c>GUID</c> of an IEnumUnknown or IEnumVARIANT interface or in the case of
 			/// a negation node, IID_ICondition.
 			/// </para>
-			/// <para>If the subcondition is a negation node, <paramref name="ppv"/> is set to an enumeration of one element.</para>
-			/// <para>If the node is a conjunction or disjunction node, <paramref name="ppv"/> is set to an enumeration of the subconditions.</para>
+			/// <para>If the subcondition is a negation node, the return value is set to an enumeration of one element.</para>
+			/// <para>If the node is a conjunction or disjunction node, the return value is set to an enumeration of the subconditions.</para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getsubconditions
 			// HRESULT GetSubConditions( REFIID riid, void **ppv );

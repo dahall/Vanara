@@ -154,8 +154,8 @@ namespace Vanara.PInvoke
 		public static extern Win32Error GetManagedApplications(IntPtr pCategory, uint dwQueryFlags, uint dwInfoLevel, out uint pdwApps, out SafeLocalHandle prgManagedApps);
 
 		/// <summary>
-		/// The <c>GetManagedApplications</c> function gets a list of applications that are displayed in the <c>Add</c> pane of <c>Add/Remove
-		/// Programs</c> (ARP) for a specified user context.
+		/// The <c>GetManagedApplications</c> function gets a list of applications that are displayed in the <c>Add</c> pane of
+		/// <c>Add/Remove Programs</c> (ARP) for a specified user context.
 		/// </summary>
 		/// <param name="pCategory">
 		/// <para>A pointer to a GUID that specifies the category</para>
@@ -164,23 +164,9 @@ namespace Vanara.PInvoke
 		/// is null, dwQueryFlags cannot contain <c>MANAGED_APPS_FROMCATEGORY</c>.
 		/// </para>
 		/// </param>
-		/// <param name="dwQueryFlags">
-		/// <para>This parameter can contain one or more of the following values.</para>
-		/// <para>MANAGED_APPS_USERAPPLICATIONS</para>
-		/// <para>Lists all applications that apply to the user. The parameter pCategory must be null.</para>
-		/// <para>MANAGED_APPS_FROMCATEGORY</para>
-		/// <para>Lists only applications in the category specified by pCategory. The pCategory parameter cannot be null.</para>
-		/// </param>
-		/// <param name="dwInfoLevel">This parameter must be <c>MANAGED_APPS_INFOLEVEL_DEFAULT</c>.</param>
-		/// <param name="pdwApps">The count of applications in the list returned by this function.</param>
-		/// <param name="prgManagedApps">
-		/// This parameter is a pointer to an array of MANAGEDAPPLICATION structures. This array contains the list of applications listed in
-		/// the <c>Add</c> pane of <c>Add/Remove Programs</c> (ARP). You must call <c>LocalFree</c> to free the array when they array is no
-		/// longer required.
-		/// </param>
 		/// <returns>
-		/// If the function succeeds, the return value is <c>ERROR_SUCCESS</c>. Otherwise, the function returns one of the system error
-		/// codes. For a complete list of error codes, see System Error Codes or the header file WinError.h.
+		/// A sequence of MANAGEDAPPLICATION structures. This array contains the list of applications listed in the <c>Add</c> pane of
+		/// <c>Add/Remove Programs</c> (ARP).
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/appmgmt/nf-appmgmt-getmanagedapplications DWORD GetManagedApplications( GUID
 		// *pCategory, DWORD dwQueryFlags, DWORD dwInfoLevel, LPDWORD pdwApps, PMANAGEDAPPLICATION *prgManagedApps );

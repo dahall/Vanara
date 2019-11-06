@@ -1355,7 +1355,6 @@ namespace Vanara.PInvoke
 			/// <value>
 			/// <para>Receives the name of the current catalog.</para>
 			/// </value>
-			/// <param name="pszName">Type: <c>LPCWSTR*</c></param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-get_name HRESULT get_Name(
 			// LPWSTR *pszName );
 			[PInvokeData("searchapi.h")]
@@ -1645,7 +1644,6 @@ namespace Vanara.PInvoke
 			/// and recognizes diacritics; otherwise, <c>FALSE</c>.
 			/// </para>
 			/// </value>
-			/// <param name="fDiacriticSensitive">Type: <c>BOOL</c></param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-put_diacriticsensitivity
 			// HRESULT put_DiacriticSensitivity( BOOL fDiacriticSensitive );
 			[PInvokeData("searchapi.h")]
@@ -1675,7 +1673,6 @@ namespace Vanara.PInvoke
 			/// <value>
 			/// <para>Receives the name of the current catalog.</para>
 			/// </value>
-			/// <param name="pszName">Type: <c>LPCWSTR*</c></param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-get_name HRESULT get_Name(
 			// LPWSTR *pszName );
 			[PInvokeData("searchapi.h")]
@@ -1965,7 +1962,6 @@ namespace Vanara.PInvoke
 			/// and recognizes diacritics; otherwise, <c>FALSE</c>.
 			/// </para>
 			/// </value>
-			/// <param name="fDiacriticSensitive">Type: <c>BOOL</c></param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-put_diacriticsensitivity
 			// HRESULT put_DiacriticSensitivity( BOOL fDiacriticSensitive );
 			[PInvokeData("searchapi.h")]
@@ -3013,9 +3009,12 @@ namespace Vanara.PInvoke
 		[ComImport, Guid("AB310581-AC80-11D1-8DF3-00C04FB6EF69"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(CSearchManager))]
 		public interface ISearchManager
 		{
-			/// <summary>Retrieves the version of the current indexer as a single string.</summary> <param name="ppszVersionString">
-			/// <returns>The version of the current indexer.</returns> <remarks>The ReindexMatchingUrls code sample, available on Code
-			/// Gallery and the Windows 7 SDK, demonstrates ways to specify which files to re-index and how.</remarks>
+			/// <summary>Retrieves the version of the current indexer as a single string.</summary>
+			/// <returns>The version of the current indexer.</returns>
+			/// <remarks>
+			/// The ReindexMatchingUrls code sample, available on Code Gallery and the Windows 7 SDK, demonstrates ways to specify which
+			/// files to re-index and how.
+			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchmanager-getindexerversionstr HRESULT
 			// GetIndexerVersionStr( LPWSTR *ppszVersionString );
 			[PInvokeData("searchapi.h")]
@@ -3237,12 +3236,24 @@ namespace Vanara.PInvoke
 			uint PortNumber { get; }
 		}
 
+		/// <summary>Enabled applications to create and delete custom catalogs in the Windows Search indexer</summary>
+		/// <remarks>
+		/// <para>ISearchManager interface ref: http://msdn.microsoft.com/en-us/library/bb231485(VS.85).aspx Managing the Index ref: http://msdn.microsoft.com/en-us/library/bb266516(VS.85).aspx</para>
+		/// <para>The new functionality is exposed through the new ISearchManager2 interface. Apps can call QueryInterface on the existing ISearchManager interface to get the new interface. On older versions of Windows where this functionality does not exist the QueryInterface call will fail, and not return the new interface. The existing ISearchManager interface can be used unchanged.</para>
+		/// <para>Errors are returned through HRESULTs returned on each method in the standard way COM. ISupportErrorInfo / IErrorInfo are not supported. No exceptions are thrown.</para>
+		/// <para>These methods can be called in any COM apartment, and the behavior will not be impacted by the type of apartment. These APIs is safe to call on a UI thread but this is not recommended practice as the APIs involve cross-process IO and other potentially long-running operations.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nn-searchapi-isearchmanager2
+		[PInvokeData("searchapi.h", MSDNShortId = "EE08AC43-D2E9-4B70-BBA5-52E36DD7F9A1")]
 		[ComImport, Guid("DBAB3F73-DB19-4A79-BFC0-A61A93886DDF"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(CSearchManager))]
 		public interface ISearchManager2 : ISearchManager
 		{
-			/// <summary>Retrieves the version of the current indexer as a single string.</summary> <param name="ppszVersionString">
-			/// <returns>The version of the current indexer.</returns> <remarks>The ReindexMatchingUrls code sample, available on Code
-			/// Gallery and the Windows 7 SDK, demonstrates ways to specify which files to re-index and how.</remarks>
+			/// <summary>Retrieves the version of the current indexer as a single string.</summary>
+			/// <returns>The version of the current indexer.</returns>
+			/// <remarks>
+			/// The ReindexMatchingUrls code sample, available on Code Gallery and the Windows 7 SDK, demonstrates ways to specify which
+			/// files to re-index and how.
+			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchmanager-getindexerversionstr HRESULT
 			// GetIndexerVersionStr( LPWSTR *ppszVersionString );
 			[PInvokeData("searchapi.h")]
@@ -4335,11 +4346,7 @@ namespace Vanara.PInvoke
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("04C18CCF-1F57-4CBD-88CC-3900F5195CE3"), CoClass(typeof(CSearchRoot))]
 		public interface ISearchRoot
 		{
-			/// <summary>Not implemented.</summary>
-			/// <param name="pszTaskArg">
-			/// <para>Type: <c>LPCWSTR</c></para>
-			/// <para>Pointer to a null-terminated, Unicode buffer that contains the name of the task to be inserted.</para>
-			/// </param>
+			/// <summary>The name of the task to be inserted.</summary>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_schedule HRESULT put_Schedule(
 			// LPCWSTR pszTaskArg );
 			[PInvokeData("searchapi.h", MSDNShortId = "")]
@@ -4347,10 +4354,6 @@ namespace Vanara.PInvoke
 			string Schedule { [return: MarshalAs(UnmanagedType.LPWStr)] get; [param: In, MarshalAs(UnmanagedType.LPWStr)] set; }
 
 			/// <summary>Sets the URL of the current search root.</summary>
-			/// <param name="pszURL">
-			/// <para>Type: <c>LPCWSTR</c></para>
-			/// <para>Pointer to a null-terminated, Unicode buffer that contains the URL of this search root.</para>
-			/// </param>
 			/// <remarks>
 			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
 			/// line options for Crawl Scope Manager (CSM) indexing operations.
@@ -4362,10 +4365,6 @@ namespace Vanara.PInvoke
 			string RootURL { [return: MarshalAs(UnmanagedType.LPWStr)] get; [param: In, MarshalAs(UnmanagedType.LPWStr)] set; }
 
 			/// <summary>Sets a value that indicates whether the search is rooted on a hierarchical tree structure.</summary>
-			/// <param name="fIsHierarchical">
-			/// <para>Type: <c>BOOL</c></para>
-			/// <para><c>TRUE</c> for hierarchical tree structures, <c>FALSE</c> for non-hierarchical systems such as websites.</para>
-			/// </param>
 			/// <remarks>
 			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
 			/// line options for Crawl Scope Manager (CSM) indexing operations.
@@ -4380,10 +4379,6 @@ namespace Vanara.PInvoke
 			/// Sets a value that indicates whether the search engine is notified (by protocol handlers or other applications) about changes
 			/// to the URLs under the search root.
 			/// </summary>
-			/// <param name="fProvidesNotifications">
-			/// <para>Type: <c>BOOL</c></para>
-			/// <para><c>TRUE</c> if notifications are provided; otherwise, <c>FALSE</c>.</para>
-			/// </param>
 			/// <remarks>
 			/// <para>That value that <c>ISearchRoot::put_ProvidesNotifications</c> sets is not protocol specific.</para>
 			/// <para>
@@ -4398,10 +4393,6 @@ namespace Vanara.PInvoke
 			bool ProvidesNotifications { [return: MarshalAs(UnmanagedType.Bool)] get; [param: In, MarshalAs(UnmanagedType.Bool)] set; }
 
 			/// <summary>Sets a value that indicates whether this search root should be indexed only by notification and not crawled.</summary>
-			/// <param name="fUseNotificationsOnly">
-			/// <para>Type: <c>BOOL</c></para>
-			/// <para><c>TRUE</c> if this search root should be indexed only by notification; otherwise, <c>FALSE</c>.</para>
-			/// </param>
 			/// <remarks>
 			/// <para>
 			/// For search root URLs in a custom data store or on a remote system, it can be useful to limit the search engine to indexing
@@ -4420,10 +4411,6 @@ namespace Vanara.PInvoke
 			bool UseNotificationsOnly { [return: MarshalAs(UnmanagedType.Bool)] get; [param: In, MarshalAs(UnmanagedType.Bool)] set; }
 
 			/// <summary>Sets the enumeration depth for this search root.</summary>
-			/// <param name="dwDepth">
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The depth (number of levels) to enumerate.</para>
-			/// </param>
 			/// <remarks>
 			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
 			/// line options for Crawl Scope Manager (CSM) indexing operations.
@@ -4438,10 +4425,6 @@ namespace Vanara.PInvoke
 			/// <para>[ <c>put_HostDepth</c> may be altered or unavailable in subsequent versions of the operating system or product.]</para>
 			/// <para>Sets a value that indicates how far into a host tree to crawl when indexing.</para>
 			/// </summary>
-			/// <param name="dwDepth">
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The depth (number of levels) to crawl a host tree.</para>
-			/// </param>
 			/// <remarks>
 			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
 			/// line options for Crawl Scope Manager (CSM) indexing operations.
@@ -4456,10 +4439,6 @@ namespace Vanara.PInvoke
 			/// Sets a <c>BOOL</c> value that indicates whether the search engine should follow subdirectories and hierarchical scopes for
 			/// this search root.
 			/// </summary>
-			/// <param name="fFollowDirectories">
-			/// <para>Type: <c>BOOL</c></para>
-			/// <para><c>TRUE</c> to follow directories or hierarchical scopes, otherwise <c>FALSE</c>. The default for this value is <c>TRUE</c>.</para>
-			/// </param>
 			/// <remarks>
 			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
 			/// line options for Crawl Scope Manager (CSM) indexing operations.
@@ -4471,10 +4450,6 @@ namespace Vanara.PInvoke
 			bool FollowDirectories { [return: MarshalAs(UnmanagedType.Bool)] get; [param: In, MarshalAs(UnmanagedType.Bool)] set; }
 
 			/// <summary>Sets the type of authentication required to access the URLs under this search root.</summary>
-			/// <param name="authType">
-			/// <para>Type: <c>AUTH_TYPE</c></para>
-			/// <para>A value from the AUTH_TYPE enumeration that indicates the authentication type.</para>
-			/// </param>
 			/// <remarks>
 			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
 			/// line options for Crawl Scope Manager (CSM) indexing operations.
@@ -4486,7 +4461,6 @@ namespace Vanara.PInvoke
 			AUTH_TYPE AuthenticationType { get; [param: In] set; }
 
 			/// <summary>Not implemented.</summary>
-			/// <param name="pszUser">TBD</param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_user HRESULT put_User( LPCWSTR
 			// pszUser );
 			[PInvokeData("searchapi.h")]
@@ -4494,7 +4468,6 @@ namespace Vanara.PInvoke
 			string User { [return: MarshalAs(UnmanagedType.LPWStr)] get; [param: In, MarshalAs(UnmanagedType.LPWStr)] set; }
 
 			/// <summary>Not implemented.</summary>
-			/// <param name="pszPassword">TBD</param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_password HRESULT put_Password(
 			// LPCWSTR pszPassword );
 			[PInvokeData("searchapi.h")]

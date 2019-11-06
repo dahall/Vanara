@@ -1436,7 +1436,7 @@ namespace Vanara.PInvoke
 		// HICON ExtractAssociatedIconA( HINSTANCE hInst, LPSTR pszIconPath, WORD *piIcon );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "157ce603-9988-4cae-a2cd-51db290268c3")]
-		public static extern SafeHICON ExtractAssociatedIcon(HINSTANCE hInst, StringBuilder lpIconPath, ref ushort lpiIcon);
+		public static extern SafeHICON ExtractAssociatedIcon(HINSTANCE hInst, StringBuilder pszIconPath, ref ushort piIcon);
 
 		/// <summary>
 		/// <para>
@@ -1497,7 +1497,7 @@ namespace Vanara.PInvoke
 		// HICON ExtractIconA( HINSTANCE hInst, LPCSTR pszExeFileName, UINT nIconIndex );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "a0314423-79d6-416e-8be0-be946477da3e")]
-		public static extern SafeHICON ExtractIcon(HINSTANCE hInst, string lpszExeFileName, int nIconIndex);
+		public static extern SafeHICON ExtractIcon(HINSTANCE hInst, string pszExeFileName, int nIconIndex);
 
 		/// <summary>The <c>ExtractIconEx</c> function creates an array of handles to large or small icons extracted from the specified executable file, DLL, or icon file.</summary>
 		/// <param name="lpszFile">
@@ -1536,8 +1536,8 @@ namespace Vanara.PInvoke
 		[PInvokeData("shellapi.h", MSDNShortId = "1c4d760a-79b5-4646-9cf2-6cd32c5d05ee")]
 		//  public static extern uint ExtractIconEx([MarshalAs(UnmanagedType.LPTStr)] string lpszFile, int nIconIndex, ref HICON phiconLarge, ref HICON phiconSmall, uint nIcons);
 		public static extern uint ExtractIconEx(string lpszFile, int nIconIndex,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phIconLarge,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phIconSmall, uint nIcons);
+			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phiconLarge,
+			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phiconSmall, uint nIcons);
 
 		/// <summary>The <c>ExtractIconEx</c> function creates an array of handles to large or small icons extracted from the specified executable file, DLL, or icon file.</summary>
 		/// <param name="lpszFile">
@@ -1572,13 +1572,13 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extracticonexa
 		// UINT ExtractIconExA( LPCSTR lpszFile, int nIconIndex, HICON *phiconLarge, HICON *phiconSmall, UINT nIcons );
 		[PInvokeData("shellapi.h", MSDNShortId = "1c4d760a-79b5-4646-9cf2-6cd32c5d05ee")]
-		public static uint ExtractIconEx(string lpszFile, int nIconIndex, uint nIcons, out SafeHICON[] phIconLarge, out SafeHICON[] phIconSmall)
+		public static uint ExtractIconEx(string lpszFile, int nIconIndex, uint nIcons, out SafeHICON[] phiconLarge, out SafeHICON[] phiconSmall)
 		{
 			HICON[] sm = nIcons > 0 ? new HICON[nIcons] : null, lg = nIcons > 0 ? new HICON[nIcons] : null;
 			var ret = ExtractIconEx(lpszFile, nIconIndex, lg, sm, nIcons);
 			var conv = nIconIndex != -1 && ret > 0;
-			phIconLarge = conv ? Array.ConvertAll(lg, h => new SafeHICON((IntPtr)h)) : null;
-			phIconSmall = conv ? Array.ConvertAll(sm, h => new SafeHICON((IntPtr)h)) : null;
+			phiconLarge = conv ? Array.ConvertAll(lg, h => new SafeHICON((IntPtr)h)) : null;
+			phiconSmall = conv ? Array.ConvertAll(sm, h => new SafeHICON((IntPtr)h)) : null;
 			return ret;
 		}
 

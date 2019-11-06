@@ -1274,7 +1274,7 @@ namespace Vanara.PInvoke
 			public WER_REPORT_PARAMETER[] Parameters;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HREPORT"/> that is disposed using <see cref="WerReportClose"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HREPORT"/> that is disposed using <see cref="WerReportCloseHandle"/>.</summary>
 		public class SafeHREPORT : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHREPORT"/> class and assigns an existing handle.</summary>
@@ -1296,7 +1296,7 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => WerReportCloseHandle(handle).Succeeded;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HREPORTSTORE"/> that is disposed using <see cref="WerCloseStoreClose"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HREPORTSTORE"/> that is disposed using <see cref="WerStoreClose"/>.</summary>
 		public class SafeHREPORTSTORE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHREPORTSTORE"/> class and assigns an existing handle.</summary>

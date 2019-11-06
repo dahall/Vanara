@@ -81,7 +81,6 @@ namespace Vanara.PInvoke
 		/// <param name="pSid2">
 		/// A pointer to one of the two SIDs to compare. This SID must be either an account domain SID or a BUILTIN SID.
 		/// </param>
-		/// <param name="">The .</param>
 		/// <param name="pfEqual">
 		/// A pointer to a BOOL that <c>EqualDomainSid</c> sets to <c>TRUE</c> if the domains of the two SIDs are equal or <c>FALSE</c> if
 		/// they are not equal. This value cannot be <c>NULL</c>.

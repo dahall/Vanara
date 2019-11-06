@@ -83,7 +83,7 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>Creates a SID for predefined capability.</summary>
-			/// <param name="KnownSIDCapability">
+			/// <param name="capability">
 			/// Member of the KnownSIDCapability enumeration that specifies which capability the SID will identify.
 			/// </param>
 			/// <returns>A <see cref="SafePSID"/> instance.</returns>
@@ -101,13 +101,13 @@ namespace Vanara.PInvoke
 			/// A pointer to a SID that identifies the domain to use when creating the SID. Pass <c>PSID.NULL</c> to use the local computer.
 			/// </param>
 			/// <returns>A <see cref="SafePSID"/> instance.</returns>
-			public static SafePSID CreateWellKnown(WELL_KNOWN_SID_TYPE sidType, PSID domainSid = default)
+			public static SafePSID CreateWellKnown(WELL_KNOWN_SID_TYPE WellKnownSidType, PSID DomainSid = default)
 			{
 				var sz = 0U;
-				CreateWellKnownSid(sidType, domainSid, Null, ref sz);
+				CreateWellKnownSid(WellKnownSidType, DomainSid, Null, ref sz);
 				if (sz == 0) Win32Error.ThrowLastError();
 				var newSid = new SafePSID((int)sz);
-				if (!CreateWellKnownSid(sidType, domainSid, newSid, ref sz))
+				if (!CreateWellKnownSid(WellKnownSidType, DomainSid, newSid, ref sz))
 					Win32Error.ThrowLastError();
 				return newSid;
 			}
@@ -271,7 +271,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides an array of SID pointers whose memory is disposed after use.</summary>
 		/// <seealso cref="Vanara.PInvoke.SafeHANDLE"/>
-		/// <seealso cref="System.Collections.Generic.IReadOnlyList{Vanara.PInvoke.PSID}"/>
+		/// <seealso cref="System.Collections.Generic.IReadOnlyList{T}"/>
 		public class SafePSIDArray : SafeHANDLE, IReadOnlyList<PSID>
 		{
 			private List<SafePSID> items;
@@ -333,7 +333,7 @@ namespace Vanara.PInvoke
 			/// <exception cref="InvalidOperationException">The length must be set before using this function.</exception>
 			public PSID this[int index] => items?[index] ?? throw new InvalidOperationException("The length must be set before using this function.");
 
-			/// <summary>Performs an implicit conversion from <see cref="SafePSIDArray"/> to <see cref="PSID[]"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="SafePSIDArray"/> to <see cref="PSID"/>[].</summary>
 			/// <param name="a">The <see cref="SafePSIDArray"/> instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator PSID[](SafePSIDArray a) => a.items.ConvertAll(p => (PSID)p).ToArray();

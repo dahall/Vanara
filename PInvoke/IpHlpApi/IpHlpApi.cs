@@ -860,7 +860,7 @@ namespace Vanara.PInvoke
 			NET_ADDRESS_IPV6,
 		}
 
-		/// <summary>Flags used by the <see cref="ParseNetworkString"/> function.</summary>
+		/// <summary>Flags used by the <see cref="ParseNetworkString(string, NET_STRING, IntPtr, IntPtr, IntPtr)"/> function.</summary>
 		[PInvokeData("iphlpapi.h", MSDNShortId = "43bc866f-7776-4f59-9ed6-4c6fc4da7f83")]
 		[Flags]
 		public enum NET_STRING
@@ -4332,24 +4332,23 @@ namespace Vanara.PInvoke
 		[PInvokeData("iphlpapi.h", MSDNShortId = "655d63eb-455a-4a5e-97e2-7b7588eee4d9")]
 		public static extern Win32Error GetNumberOfInterfaces(out uint pdwNumIf);
 
-		/// <summary>
-		/// Gets the owner module from pid and information. (Undocumented)
-		/// </summary>
+		/// <summary>Gets the owner module from pid and information. (Undocumented)</summary>
 		/// <param name="ulPid">The pid.</param>
 		/// <param name="pInfo">The information.</param>
 		/// <param name="Class">
-		/// <para>
+		///   <para>
 		/// A TCPIP_OWNER_MODULE_INFO_CLASS enumeration value that indicates the type of data to obtain regarding the owner module. The
 		/// <c>TCPIP_OWNER_MODULE_INFO_CLASS</c> enumeration is defined in the Iprtrmib.h header file.
 		/// </para>
-		/// <para>This parameter must be set to <c>TCPIP_OWNER_MODULE_INFO_BASIC</c>.</para>
+		///   <para>This parameter must be set to <c>TCPIP_OWNER_MODULE_INFO_BASIC</c>.</para>
 		/// </param>
 		/// <param name="pBuffer">
-		/// <para>
+		///   <para>
 		/// A pointer to a buffer that contains a TCPIP_OWNER_MODULE_BASIC_INFO structure with the owner module data. The type of data
 		/// returned in this buffer is indicated by the value of the Class parameter.
 		/// </para>
-		/// <para>The following structures are used for the data in Buffer when Class is set to the corresponding value.</para>
+		///   <para>The following structures are used for the data in Buffer when Class is set to the corresponding value.</para>
+		/// </param>
 		/// <param name="pdwSize">
 		/// The estimated size of the structure returned in Buffer, in bytes. If this value is set too small,
 		/// <c>ERROR_INSUFFICIENT_BUFFER</c> is returned by this function, and this field will contain the correct structure size.
@@ -4477,13 +4476,6 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <param name="pTcpEntry">
 		/// A pointer to a MIB_TCP6ROW_OWNER_MODULE structure that contains the IPv6 TCP endpoint entry used to obtain the owner module.
-		/// </param>
-		/// <param name="Class">
-		/// <para>
-		/// A TCPIP_OWNER_MODULE_INFO_CLASS enumeration value that indicates the type of data to obtain regarding the owner module. The
-		/// <c>TCPIP_OWNER_MODULE_INFO_CLASS</c> enumeration is defined in the Iprtrmib.h header file.
-		/// </para>
-		/// <para>This parameter must be set to <c>TCPIP_OWNER_MODULE_INFO_BASIC</c>.</para>
 		/// </param>
 		/// <returns>
 		/// <para>
@@ -4631,36 +4623,6 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <param name="pTcpEntry">
 		/// A pointer to a MIB_TCPROW_OWNER_MODULE structure that contains the IPv4 TCP endpoint entry used to obtain the owner module.
-		/// </param>
-		/// <param name="Class">
-		/// <para>
-		/// A TCPIP_OWNER_MODULE_INFO_CLASS enumeration value that indicates the type of data to obtain regarding the owner module. The
-		/// <c>TCPIP_OWNER_MODULE_INFO_CLASS</c> enumeration is defined in the Iprtrmib.h header file.
-		/// </para>
-		/// <para>This parameter must be set to <c>TCPIP_OWNER_MODULE_INFO_BASIC</c>.</para>
-		/// </param>
-		/// <param name="pBuffer">
-		/// <para>
-		/// A pointer a buffer that contains a TCPIP_OWNER_MODULE_BASIC_INFO structure with the owner module data. The type of data returned
-		/// in this buffer is indicated by the value of the Class parameter.
-		/// </para>
-		/// <para>The following structures are used for the data in Buffer when Class is set to the corresponding value.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Class enumeration value</term>
-		/// <term>Buffer data format</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TCPIP_OWNER_MODULE_BASIC_INFO</term>
-		/// <term>TCPIP_OWNER_MODULE_BASIC_INFO</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="pdwSize">
-		/// The estimated size, in bytes, of the structure returned in Buffer. If this value is set too small,
-		/// <c>ERROR_INSUFFICIENT_BUFFER</c> is returned by this function, and this field will contain the correct size of the buffer. The
-		/// size required is the size of the corresponding structure plus an additional number of bytes equal to the length of data pointed
-		/// to in the structure (for example, the name and path strings).
 		/// </param>
 		/// <returns>
 		/// <para>If the function call is successful, the value <c>NO_ERROR</c> is returned.</para>

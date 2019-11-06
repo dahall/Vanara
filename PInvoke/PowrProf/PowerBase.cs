@@ -611,7 +611,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("powerbase.h", MSDNShortId = "5680e6bd-1694-4d5f-94ea-41b24149c741")]
 		public static extern Win32Error PowerUnregisterSuspendResumeNotification(HANDLE RegistrationHandle);
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPOWERNOTIFY"/> that is disposed using <see cref="PowerUnregisterSuspendResumeNotification"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for a registered power suspend/resume notification that is disposed using <see cref="PowerUnregisterSuspendResumeNotification"/>.</summary>
 		public class SafeHPOWERSRNOTIFY : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHPOWERSRNOTIFY"/> class and assigns an existing handle.</summary>

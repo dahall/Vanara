@@ -13,7 +13,7 @@ namespace Vanara.PInvoke
 	{
 		public const int OCM_NOTIFY = 0x204E; // WM_NOTIFY + WM_REFLECT
 
-		/// <summary>Flags used by <see cref="ChangeDisplaySettings"/>.</summary>
+		/// <summary>Flags used by <see cref="ChangeDisplaySettings(in DEVMODE, ChangeDisplaySettingsFlags)"/>.</summary>
 		[PInvokeData("winuser.h", MSDNShortId = "208bf1cc-c03c-4d03-92e4-32fcf856b4d8")]
 		[Flags]
 		public enum ChangeDisplaySettingsFlags
@@ -279,7 +279,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Flags used for <see cref="GetWindowLong"/> and <see cref="SetWindowLong"/> methods to retrieve information about a window.
+		/// Flags used for <see cref="GetWindowLong"/> and <see cref="SetWindowLong(HWND, WindowLongFlags, int)"/> methods to retrieve information about a window.
 		/// </summary>
 		public enum WindowLongFlags
 		{

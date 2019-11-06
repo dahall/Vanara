@@ -131,7 +131,7 @@ namespace Vanara.PInvoke
 		/// <summary>Specifies if the operating system should use adaptive timers (based on previous behavior) to power down the disk,</summary>
 		public static readonly Guid GUID_DISK_ADAPTIVE_POWERDOWN = new Guid("{396A32E1-499A-40B2-9124-A96AFE707667}");
 
-		/// </summary>
+		/// <summary/>
 		public static readonly Guid GUID_ENABLE_SWITCH_FORCED_SHUTDOWN = new Guid("{833a6b62-dfa4-46d1-82f8-e09e34d029d6}");
 
 		#endregion

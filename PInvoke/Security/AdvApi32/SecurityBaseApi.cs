@@ -2438,7 +2438,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "8e3f70cd-814e-4aab-8f48-0ca482beef2e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AdjustTokenPrivileges([In] HTOKEN objectHandle, [In, MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges,
+		public static extern bool AdjustTokenPrivileges([In] HTOKEN TokenHandle, [In, MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges,
 			[In] IntPtr NewState, [In] uint BufferLength = 0, IntPtr PreviousState = default, IntPtr ReturnLength = default);
 
 		/// <summary>The <c>AllocateLocallyUniqueId</c> function allocates a locally unique identifier (LUID).</summary>

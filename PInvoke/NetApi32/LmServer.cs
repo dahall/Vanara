@@ -13,7 +13,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		public const uint MAX_PREFERRED_LENGTH = unchecked((uint)-1);
 
-		/// <summary>Filters used by <see cref="NetServerEnum(string, int, out SafeNetApiBuffer, int, out int, out int, NetServerEnumFilter, string, IntPtr)"/>.</summary>
+		/// <summary>Filters used by <see cref="NetServerEnum(string, uint, out SafeNetApiBuffer, uint, out uint, out uint, NetServerEnumFilter, string, IntPtr)"/>.</summary>
 		[Flags]
 		[PInvokeData("lmserver.h", MSDNShortId = "aa370623")]
 		public enum NetServerEnumFilter : uint
