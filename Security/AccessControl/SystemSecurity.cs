@@ -8,8 +8,6 @@ using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
 
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.Security.AccessControl
 {
 	/// <summary>Provides access to the local security authority on a given server.</summary>
@@ -22,15 +20,15 @@ namespace Vanara.Security.AccessControl
 		/// <param name="server">The server. Use <c>null</c> for the local server.</param>
 		public SystemSecurity(DesiredAccess access = DesiredAccess.AllAccess, string server = null)
 		{
-			Handle = LsaOpenPolicy((LsaPolicyRights)((uint)ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | (uint)access), server);
+			Handle = LsaOpenPolicy((LsaPolicyRights)(ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | (uint)access), server);
 			svr = server;
 			CurrentUserLogonRights = new LogonRights(this);
 			CurrentUserPrivileges = new AccountPrivileges(this);
 		}
 
 		/// <summary>
-		/// Account rights determine the type of logon that a user account can perform. An administrator assigns account rights to user and group accounts. Each
-		/// user's account rights include those granted to the user and to the groups to which the user belongs.
+		/// Account rights determine the type of logon that a user account can perform. An administrator assigns account rights to user and
+		/// group accounts. Each user's account rights include those granted to the user and to the groups to which the user belongs.
 		/// </summary>
 		[Flags]
 		public enum AccountLogonRights
@@ -71,15 +69,18 @@ namespace Vanara.Security.AccessControl
 		public enum DesiredAccess
 		{
 			/// <summary>
-			/// This access type is needed to read the target system's miscellaneous security policy information. This includes the default quota, auditing,
-			/// server state and role information, and trust information. This access type is also needed to enumerate trusted domains, accounts, and privileges.
+			/// This access type is needed to read the target system's miscellaneous security policy information. This includes the default
+			/// quota, auditing, server state and role information, and trust information. This access type is also needed to enumerate
+			/// trusted domains, accounts, and privileges.
 			/// </summary>
 			ViewLocalInformation = 1,
 
 			/// <summary>This access type is needed to view audit trail or audit requirements information.</summary>
 			ViewAuditInformation = 2,
 
-			/// <summary>This access type is needed to view sensitive information, such as the names of accounts established for trusted domain relationships.</summary>
+			/// <summary>
+			/// This access type is needed to view sensitive information, such as the names of accounts established for trusted domain relationships.
+			/// </summary>
 			GetPrivateInformation = 4,
 
 			/// <summary>This access type is needed to change the account domain or primary domain information.</summary>
@@ -98,14 +99,14 @@ namespace Vanara.Security.AccessControl
 			SetAuditRequirements = 0x100,
 
 			/// <summary>
-			/// This access type is needed to change the characteristics of the audit trail such as its maximum size or the retention period for audit records,
-			/// or to clear the log.
+			/// This access type is needed to change the characteristics of the audit trail such as its maximum size or the retention period
+			/// for audit records, or to clear the log.
 			/// </summary>
 			AuditLogAdmin = 0x200,
 
 			/// <summary>
-			/// This access type is needed to modify the server state or role (master/replica) information. It is also needed to change the replica source and
-			/// account name information.
+			/// This access type is needed to modify the server state or role (master/replica) information. It is also needed to change the
+			/// replica source and account name information.
 			/// </summary>
 			ServerAdmin = 0x400,
 
@@ -133,7 +134,7 @@ namespace Vanara.Security.AccessControl
 		private SafeLSA_HANDLE Handle { get; }
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-		public void Dispose() { Handle?.Dispose(); }
+		public void Dispose() => Handle?.Dispose();
 
 		/// <summary>
 		/// Enumerates the accounts with the specified privilege. Requires the <see cref="DesiredAccess.LookupNames"/> and
@@ -163,20 +164,20 @@ namespace Vanara.Security.AccessControl
 		/// <see cref="DesiredAccess.LookupNames"/> right.
 		/// </summary>
 		/// <param name="name">
-		/// The name of the account. This string can be the name of a user, group, or local group account, or the name of a domain. Domain names can be DNS
-		/// domain names or NetBIOS domain names.
+		/// The name of the account. This string can be the name of a user, group, or local group account, or the name of a domain. Domain
+		/// names can be DNS domain names or NetBIOS domain names.
 		/// </param>
 		/// <returns>A <see cref="SystemAccountInfo"/> for the <paramref name="name"/>.</returns>
 		public SystemAccountInfo GetAccountInfo(string name) => GetAccountInfo(false, name).FirstOrDefault();
 
 		/// <summary>
-		/// Looks up a list of account names and returns information about each in a <see cref="SystemAccountInfo"/> class. Requires the 
+		/// Looks up a list of account names and returns information about each in a <see cref="SystemAccountInfo"/> class. Requires the
 		/// <see cref="DesiredAccess.LookupNames"/> right.
 		/// </summary>
 		/// <param name="localOnly">If set to <c>true</c> restrict the search to only local accounts.</param>
 		/// <param name="names">
-		/// The account names to lookup. These strings can be the names of user, group, or local group accounts, or the names of domains. Domain names can be DNS
-		/// domain names or NetBIOS domain names.
+		/// The account names to lookup. These strings can be the names of user, group, or local group accounts, or the names of domains.
+		/// Domain names can be DNS domain names or NetBIOS domain names.
 		/// </param>
 		/// <returns>Contains a corresponding result for each name provided in <paramref name="names"/>.</returns>
 		/// <exception cref="ArgumentException">At least one user name must be supplied.</exception>
@@ -196,7 +197,7 @@ namespace Vanara.Security.AccessControl
 		}
 
 		/// <summary>
-		/// Looks up a list of account names and returns information about each in a <see cref="SystemAccountInfo"/> class. Requires the 
+		/// Looks up a list of account names and returns information about each in a <see cref="SystemAccountInfo"/> class. Requires the
 		/// <see cref="DesiredAccess.LookupNames"/> right.
 		/// </summary>
 		/// <returns>Contains a corresponding result for each name provided in <paramref name="sids"/>.</returns>
@@ -206,7 +207,7 @@ namespace Vanara.Security.AccessControl
 			if (sids == null || sids.Length == 0)
 				throw new ArgumentException(@"At least one SecurityIdentifier must be supplied.", nameof(sids));
 			var opts = (preferInternetNames ? LsaLookupSidsFlags.LSA_LOOKUP_PREFER_INTERNET_NAMES : 0) |
-			           (disallowConnectedAccts ? LsaLookupSidsFlags.LSA_LOOKUP_DISALLOW_CONNECTED_ACCOUNT_INTERNET_SID : 0);
+					   (disallowConnectedAccts ? LsaLookupSidsFlags.LSA_LOOKUP_DISALLOW_CONNECTED_ACCOUNT_INTERNET_SID : 0);
 			var psids = sids.Select(s => new PinnedSid(s));
 			var ret = LsaLookupSids2(Handle, opts, (uint)sids.Length, psids.Select(s => s.PSID).ToArray(), out var domains, out var names);
 			if (ret != NTStatus.STATUS_SUCCESS && ret != NTStatus.STATUS_SOME_NOT_MAPPED)
@@ -239,15 +240,23 @@ namespace Vanara.Security.AccessControl
 
 		private static string FromPriv(SystemPrivilege priv) => SystemPrivilegeTypeConverter.PrivLookup[priv];
 
-		private static void ThrowIfLsaError(NTStatus lsaRetVal)
+		private static AccountLogonRights GetSystemAccess(SafeLSA_HANDLE hAcct)
 		{
-			LsaNtStatusToWinError(lsaRetVal).ThrowIfFailed();
+			ThrowIfLsaError(LsaGetSystemAccessAccount(hAcct, out var rights));
+			return (AccountLogonRights)rights;
 		}
 
-		private void AddRights(string accountName, params string[] privilegeNames)
+		private static bool IsValidSid(SID_NAME_USE use) => Array.IndexOf(new[] { 1, 2, 4, 5, 9 }, (int)use) != -1;
+
+		private static void SetSystemAccess(SafeLSA_HANDLE hAcct, AccountLogonRights rights)
 		{
-			ThrowIfLsaError(LsaAddAccountRights(Handle, GetSid(accountName), privilegeNames, (uint)privilegeNames.Length));
+			var cur = GetSystemAccess(hAcct);
+			ThrowIfLsaError(LsaSetSystemAccessAccount(hAcct, (int)(cur | rights)));
 		}
+
+		private static void ThrowIfLsaError(NTStatus lsaRetVal) => LsaNtStatusToWinError(lsaRetVal).ThrowIfFailed();
+
+		private void AddRights(string accountName, params string[] privilegeNames) => ThrowIfLsaError(LsaAddAccountRights(Handle, GetSid(accountName), privilegeNames, (uint)privilegeNames.Length));
 
 		private SafeLSA_HANDLE GetAccount(string accountName, LsaAccountAccessMask mask = LsaAccountAccessMask.ACCOUNT_VIEW)
 		{
@@ -284,29 +293,9 @@ namespace Vanara.Security.AccessControl
 			return sid;
 		}
 
-		private static AccountLogonRights GetSystemAccess(SafeLSA_HANDLE hAcct)
-		{
-			ThrowIfLsaError(LsaGetSystemAccessAccount(hAcct, out var rights));
-			return (AccountLogonRights)rights;
-		}
+		private void RemoveAllRights(string accountName) => ThrowIfLsaError(LsaRemoveAccountRights(Handle, GetSid(accountName), true, null, 0));
 
-		private static bool IsValidSid(SID_NAME_USE use) => Array.IndexOf(new[] {1, 2, 4, 5, 9}, (int) use) != -1;
-
-		private void RemoveAllRights(string accountName)
-		{
-			ThrowIfLsaError(LsaRemoveAccountRights(Handle, GetSid(accountName), true, null, 0));
-		}
-
-		private void RemoveRights(string accountName, params string[] privilegeNames)
-		{
-			ThrowIfLsaError(LsaRemoveAccountRights(Handle, GetSid(accountName), false, privilegeNames, (uint)privilegeNames.Length));
-		}
-
-		private static void SetSystemAccess(SafeLSA_HANDLE hAcct, AccountLogonRights rights)
-		{
-			var cur = GetSystemAccess(hAcct);
-			ThrowIfLsaError(LsaSetSystemAccessAccount(hAcct, (int)(cur | rights)));
-		}
+		private void RemoveRights(string accountName, params string[] privilegeNames) => ThrowIfLsaError(LsaRemoveAccountRights(Handle, GetSid(accountName), false, privilegeNames, (uint)privilegeNames.Length));
 
 		/// <summary>Allows for the privileges of a user to be retrieved, enumerated and set.</summary>
 		public class AccountPrivileges : IEnumerable<SystemPrivilege>
@@ -347,13 +336,10 @@ namespace Vanara.Security.AccessControl
 			public IEnumerator<SystemPrivilege> GetEnumerator() => ctrl.GetRights(user).Select(SystemPrivilegeTypeConverter.ConvertKnownString).GetEnumerator();
 
 			/// <summary>Removes all privileges.</summary>
-			public void RemoveAll()
-			{
-				ctrl.RemoveAllRights(user);
-			}
+			public void RemoveAll() => ctrl.RemoveAllRights(user);
 
-			/// <summary>Returns a <see cref="string" /> that represents this instance.</summary>
-			/// <returns>A <see cref="string" /> that represents this instance.</returns>
+			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString() => $"{string.Join(",", ctrl.GetRights(user).ToArray())}";
 
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -373,6 +359,10 @@ namespace Vanara.Security.AccessControl
 				ctrl = parent; user = userName ?? WindowsIdentity.GetCurrent().Name;
 			}
 
+			/// <summary>Gets the logon rights for the current user.</summary>
+			/// <value>The rights.</value>
+			private AccountLogonRights Rights => GetSystemAccess(ctrl.GetAccount(user));
+
 			/// <summary>Gets or sets the enablement of the specified privilege.</summary>
 			/// <value><c>true</c> if the specified privilege is enabled; otherwise <c>false</c>.</value>
 			/// <param name="right">The name of the privilege.</param>
@@ -390,10 +380,6 @@ namespace Vanara.Security.AccessControl
 				}
 			}
 
-			/// <summary>Gets the logon rights for the current user.</summary>
-			/// <value>The rights.</value>
-			private AccountLogonRights Rights => GetSystemAccess(ctrl.GetAccount(user));
-
 			/// <summary>Returns an enumerator that iterates through the assigned rights.</summary>
 			/// <returns>A <see cref="IEnumerator{T}"/> that can be used to iterate through the assigned rights.</returns>
 			public IEnumerator<AccountLogonRights> GetEnumerator()
@@ -402,14 +388,16 @@ namespace Vanara.Security.AccessControl
 				return r.GetEnumerator();
 			}
 
-			/// <summary>Returns a <see cref="string" /> that represents this instance.</summary>
-			/// <returns>A <see cref="string" /> that represents this instance.</returns>
+			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString() => $"{Rights}";
 
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		}
 
-		/// <summary>Contains a corresponding result for each name provided to the <see cref="SystemSecurity.GetAccountInfo(bool,string[])"/> method.</summary>
+		/// <summary>
+		/// Contains a corresponding result for each name provided to the <see cref="GetAccountInfo(bool,string[])"/> method.
+		/// </summary>
 		public class SystemAccountInfo
 		{
 			internal SystemAccountInfo(string name, SID_NAME_USE use, SecurityIdentifier sid, int domainIndex, IList<LSA_TRUST_INFORMATION> domains)
@@ -432,8 +420,8 @@ namespace Vanara.Security.AccessControl
 			/// <summary>Gets the <see cref="SID_NAME_USE"/> associated with the supplied <see cref="Name"/>.</summary>
 			public SID_NAME_USE SidType { get; }
 
-			/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString() => $"Sid: {Sid?.Value} ({SidType}); Domain: {Domain}";
 		}
 	}
