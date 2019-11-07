@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke
 {
-	public static partial class Ole32
+	public static partial class OleAut32
 	{
 		/// <summary>
 		/// VARIANTARG describes arguments passed within DISPPARAMS, and VARIANT to specify variant data that cannot be passed by reference.
