@@ -1,6 +1,7 @@
 ﻿using System;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.OleAut32;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell

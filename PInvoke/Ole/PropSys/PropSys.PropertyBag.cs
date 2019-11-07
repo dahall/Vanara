@@ -5,6 +5,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.OleAut32;
 
 namespace Vanara.PInvoke
 {

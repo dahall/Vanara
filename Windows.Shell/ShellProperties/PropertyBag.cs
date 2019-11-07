@@ -1,4 +1,4 @@
-﻿using static Vanara.PInvoke.Ole32;
+﻿using static Vanara.PInvoke.OleAut32;
 
 namespace Vanara.Windows.Shell
 {

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using static Vanara.PInvoke.OleAut32;
 
 namespace Vanara.PInvoke
 {
@@ -31,7 +32,7 @@ namespace Vanara.PInvoke
 		// InitVariantFromStrRet( STRRET *pstrret, PCUITEMID_CHILD pidl, VARIANT *pvar );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propvarutil.h", MSDNShortId = "8e9542a9-9ed0-4e44-b9b1-32b31151bd8e")]
-		public static extern HRESULT InitVariantFromStrRet(in STRRET pstrret, PIDL pidl, out Ole32.VARIANT pvar);
+		public static extern HRESULT InitVariantFromStrRet(in STRRET pstrret, PIDL pidl, out VARIANT pvar);
 
 		/// <summary>If the source variant is a VT_BSTR, extracts string and places it into a STRRET structure.</summary>
 		/// <param name="varIn">
@@ -50,6 +51,6 @@ namespace Vanara.PInvoke
 		// varIn, STRRET *pstrret );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propvarutil.h", MSDNShortId = "dfc1f52e-58c6-48fd-8da9-1d4d5115912c")]
-		public static extern HRESULT VariantToStrRet(in Ole32.VARIANT varIn, out STRRET pstrret);
+		public static extern HRESULT VariantToStrRet(in VARIANT varIn, out STRRET pstrret);
 	}
 }
