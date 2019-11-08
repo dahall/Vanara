@@ -103,6 +103,7 @@ Struct | Description
 [Vanara.PInvoke.PSID](https://github.com/dahall/Vanara/search?l=C%23&q=PSID) | Provides a pointer to a security identifier.
 [Vanara.PInvoke.RECT](https://github.com/dahall/Vanara/search?l=C%23&q=RECT) | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
 [Vanara.PInvoke.ResourceId](https://github.com/dahall/Vanara/search?l=C%23&q=ResourceId) | Helper structure to use for a pointer that can morph into a string, pointer or integer.
+[Vanara.PInvoke.ResourceIdOrHandle<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ResourceIdOrHandle<T>) | 
 [Vanara.PInvoke.SECURITY_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=SECURITY_ATTRIBUTES) | The SECURITY_ATTRIBUTES structure contains the security descriptor for an object and specifies whether the handle retrieved by specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.
 [Vanara.PInvoke.SIZE](https://github.com/dahall/Vanara/search?l=C%23&q=SIZE) | The <c>SIZE</c> structure specifies the width and height of a rectangle.
 [Vanara.PInvoke.SYSTEMTIME](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEMTIME) | Specifies a date and time, using individual members for the month, day, year, weekday, hour, minute, second, and millisecond. The time is either in coordinated universal time (UTC) or local time, depending on the function that is being called.

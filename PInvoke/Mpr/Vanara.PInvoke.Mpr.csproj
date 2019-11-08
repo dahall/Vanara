@@ -7,7 +7,7 @@
     <Description>PInvoke API (methods, structures and constants) imported from Windows Mpr.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.2</VersionPrefix>
+    <VersionPrefix>3.1.3</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Mpr</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -28,7 +28,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-MultinetGetConnectionPerformanceA, MultinetGetConnectionPerformanceW, WNetAddConnection2A, WNetAddConnection2W, WNetAddConnection3A, WNetAddConnection3W, WNetAddConnectionA, WNetAddConnectionW, WNetCancelConnection2A, WNetCancelConnection2W, WNetCloseEnum, WNetConnectionDialog, WNetConnectionDialog1A, WNetConnectionDialog1W, WNetDisconnectDialog, WNetDisconnectDialog1A, WNetDisconnectDialog1W, WNetEnumResourceA, WNetEnumResourceW, WNetGetConnectionA, WNetGetConnectionW, WNetGetLastErrorA, WNetGetLastErrorW, WNetGetNetworkInformationA, WNetGetNetworkInformationW, WNetGetProviderNameA, WNetGetProviderNameW, WNetGetResourceInformationA, WNetGetResourceInformationW, WNetGetResourceParentA, WNetGetResourceParentW, WNetGetUniversalNameA, WNetGetUniversalNameW, WNetGetUserA, WNetGetUserW, WNetOpenEnumA, WNetOpenEnumW, WNetSetLastErrorA, WNetSetLastErrorW, WNetUseConnectionA, WNetUseConnectionW
+MultinetGetConnectionPerformance, WNetAddConnection, WNetAddConnection2, WNetAddConnection3, WNetCancelConnection2, WNetCloseEnum, WNetConnectionDialog, WNetConnectionDialog1, WNetDisconnectDialog, WNetDisconnectDialog1, WNetEnumResource, WNetGetConnection, WNetGetLastError, WNetGetNetworkInformation, WNetGetProviderName, WNetGetResourceInformation, WNetGetResourceParent, WNetGetUniversalName, WNetGetUser, WNetOpenEnum, WNetSetLastError, WNetUseConnection
 
 Structures
 CONNECTDLGSTRUCT, DISCDLGSTRUCT, NETCONNECTINFOSTRUCT, NETINFOSTRUCT, NETRESOURCE, REMOTE_NAME_INFO, UNIVERSAL_NAME_INFO

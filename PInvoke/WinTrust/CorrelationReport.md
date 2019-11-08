@@ -1,43 +1,48 @@
 ## Correlation report for wintrust.dll  
-### Methods (28% complete, 16 of 56 functions)  
+### Methods (96% complete, 59 of 61 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[CryptCATAdminAcquireContext](https://www.google.com/search?num=5&q=CryptCATAdminAcquireContext+site%3Amicrosoft.com) |  |   
-[CryptCATAdminAcquireContext2](https://www.google.com/search?num=5&q=CryptCATAdminAcquireContext2+site%3Amicrosoft.com) |  |   
-[CryptCATAdminAddCatalog](https://www.google.com/search?num=5&q=CryptCATAdminAddCatalog+site%3Amicrosoft.com) |  |   
-[CryptCATAdminCalcHashFromFileHandle](https://www.google.com/search?num=5&q=CryptCATAdminCalcHashFromFileHandle+site%3Amicrosoft.com) |  |   
-[CryptCATAdminCalcHashFromFileHandle2](https://www.google.com/search?num=5&q=CryptCATAdminCalcHashFromFileHandle2+site%3Amicrosoft.com) |  |   
-[CryptCATAdminEnumCatalogFromHash](https://www.google.com/search?num=5&q=CryptCATAdminEnumCatalogFromHash+site%3Amicrosoft.com) |  |   
-[CryptCATAdminReleaseCatalogContext](https://www.google.com/search?num=5&q=CryptCATAdminReleaseCatalogContext+site%3Amicrosoft.com) |  |   
-[CryptCATAdminReleaseContext](https://www.google.com/search?num=5&q=CryptCATAdminReleaseContext+site%3Amicrosoft.com) |  |   
-[CryptCATAdminRemoveCatalog](https://www.google.com/search?num=5&q=CryptCATAdminRemoveCatalog+site%3Amicrosoft.com) |  |   
-[CryptCATAdminResolveCatalogPath](https://www.google.com/search?num=5&q=CryptCATAdminResolveCatalogPath+site%3Amicrosoft.com) |  |   
-[CryptCATCatalogInfoFromContext](https://www.google.com/search?num=5&q=CryptCATCatalogInfoFromContext+site%3Amicrosoft.com) |  |   
-[CryptCATCDFClose](https://www.google.com/search?num=5&q=CryptCATCDFClose+site%3Amicrosoft.com) |  |   
+[CryptCATAdminAcquireContext](http://msdn2.microsoft.com/en-us/library/693af055-fa93-4526-aa9c-3a659f8ff78f) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminAcquireContext](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminAcquireContext)  
+[CryptCATAdminAcquireContext2](http://msdn2.microsoft.com/en-us/library/B089217A-5C12-4C51-8E46-3A9243347B21) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminAcquireContext2](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminAcquireContext2)  
+[CryptCATAdminAddCatalog](https://www.google.com/search?num=5&q=CryptCATAdminAddCatalog+site%3Amicrosoft.com) |  | [Vanara.PInvoke.WinTrust.InternalCryptCATAdminAddCatalog](https://github.com/dahall/Vanara/search?l=C%23&q=InternalCryptCATAdminAddCatalog)  
+[CryptCATAdminCalcHashFromFileHandle](http://msdn2.microsoft.com/en-us/library/4dc5688f-4b7a-4baf-9671-868cac7f1896) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminCalcHashFromFileHandle](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminCalcHashFromFileHandle)  
+[CryptCATAdminCalcHashFromFileHandle2](http://msdn2.microsoft.com/en-us/library/CBFA60A8-5E5A-4FAD-8AD3-26539802CD53) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminCalcHashFromFileHandle2](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminCalcHashFromFileHandle2)  
+[CryptCATAdminEnumCatalogFromHash](https://www.google.com/search?num=5&q=CryptCATAdminEnumCatalogFromHash+site%3Amicrosoft.com) |  | [Vanara.PInvoke.WinTrust.InternalCryptCATAdminEnumCatalogFromHash](https://github.com/dahall/Vanara/search?l=C%23&q=InternalCryptCATAdminEnumCatalogFromHash)  
+[CryptCATAdminReleaseCatalogContext](http://msdn2.microsoft.com/en-us/library/6cc13013-2c0a-4934-a866-30b69cbcf934) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminReleaseCatalogContext](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminReleaseCatalogContext)  
+[CryptCATAdminReleaseContext](http://msdn2.microsoft.com/en-us/library/dff253dc-c444-46be-a383-41340d634cce) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminReleaseContext](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminReleaseContext)  
+[CryptCATAdminRemoveCatalog](http://msdn2.microsoft.com/en-us/library/e09fe991-0e7a-45da-910a-8cb148bdff9a) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminRemoveCatalog](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminRemoveCatalog)  
+[CryptCATAdminResolveCatalogPath](http://msdn2.microsoft.com/en-us/library/bdbfa02d-8801-40d4-84f4-bc5a449bce50) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminResolveCatalogPath](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminResolveCatalogPath)  
+[CryptCATCatalogInfoFromContext](http://msdn2.microsoft.com/en-us/library/ec195fcc-1cff-4dd6-9075-c4904b653da7) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATCatalogInfoFromContext](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATCatalogInfoFromContext)  
+[CryptCATCDFClose](http://msdn2.microsoft.com/en-us/library/9f2a1175-f9fe-4f4d-bf6f-e4f4c59739ec) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATCDFClose](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATCDFClose)  
 [CryptCATCDFEnumAttributesWithCDFTag](https://www.google.com/search?num=5&q=CryptCATCDFEnumAttributesWithCDFTag+site%3Amicrosoft.com) |  |   
-[CryptCATCDFEnumCatAttributes](https://www.google.com/search?num=5&q=CryptCATCDFEnumCatAttributes+site%3Amicrosoft.com) |  |   
+[CryptCATCDFEnumCatAttributes](http://msdn2.microsoft.com/en-us/library/01889cb9-7bf4-4591-9bb2-b263c4effe0c) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATCDFEnumCatAttributes](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATCDFEnumCatAttributes)  
 [CryptCATCDFEnumMembersByCDFTagEx](https://www.google.com/search?num=5&q=CryptCATCDFEnumMembersByCDFTagEx+site%3Amicrosoft.com) |  |   
-[CryptCATCDFOpen](https://www.google.com/search?num=5&q=CryptCATCDFOpen+site%3Amicrosoft.com) |  |   
-[CryptCATClose](https://www.google.com/search?num=5&q=CryptCATClose+site%3Amicrosoft.com) |  |   
-[CryptCATEnumerateAttr](https://www.google.com/search?num=5&q=CryptCATEnumerateAttr+site%3Amicrosoft.com) |  |   
-[CryptCATEnumerateCatAttr](https://www.google.com/search?num=5&q=CryptCATEnumerateCatAttr+site%3Amicrosoft.com) |  |   
-[CryptCATEnumerateMember](https://www.google.com/search?num=5&q=CryptCATEnumerateMember+site%3Amicrosoft.com) |  |   
-[CryptCATGetAttrInfo](https://www.google.com/search?num=5&q=CryptCATGetAttrInfo+site%3Amicrosoft.com) |  |   
-[CryptCATGetMemberInfo](https://www.google.com/search?num=5&q=CryptCATGetMemberInfo+site%3Amicrosoft.com) |  |   
-[CryptCATHandleFromStore](https://www.google.com/search?num=5&q=CryptCATHandleFromStore+site%3Amicrosoft.com) |  |   
-[CryptCATOpen](https://www.google.com/search?num=5&q=CryptCATOpen+site%3Amicrosoft.com) |  |   
-[CryptCATPersistStore](https://www.google.com/search?num=5&q=CryptCATPersistStore+site%3Amicrosoft.com) |  |   
-[CryptCATPutAttrInfo](https://www.google.com/search?num=5&q=CryptCATPutAttrInfo+site%3Amicrosoft.com) |  |   
-[CryptCATPutCatAttrInfo](https://www.google.com/search?num=5&q=CryptCATPutCatAttrInfo+site%3Amicrosoft.com) |  |   
-[CryptCATPutMemberInfo](https://www.google.com/search?num=5&q=CryptCATPutMemberInfo+site%3Amicrosoft.com) |  |   
-[CryptCATStoreFromHandle](https://www.google.com/search?num=5&q=CryptCATStoreFromHandle+site%3Amicrosoft.com) |  |   
-[CryptSIPCreateIndirectData](https://www.google.com/search?num=5&q=CryptSIPCreateIndirectData+site%3Amicrosoft.com) |  |   
-[CryptSIPGetCaps](https://www.google.com/search?num=5&q=CryptSIPGetCaps+site%3Amicrosoft.com) |  |   
-[CryptSIPGetSignedDataMsg](https://www.google.com/search?num=5&q=CryptSIPGetSignedDataMsg+site%3Amicrosoft.com) |  |   
-[CryptSIPPutSignedDataMsg](https://www.google.com/search?num=5&q=CryptSIPPutSignedDataMsg+site%3Amicrosoft.com) |  |   
-[CryptSIPRemoveSignedDataMsg](https://www.google.com/search?num=5&q=CryptSIPRemoveSignedDataMsg+site%3Amicrosoft.com) |  |   
-[CryptSIPVerifyIndirectData](https://www.google.com/search?num=5&q=CryptSIPVerifyIndirectData+site%3Amicrosoft.com) |  |   
-[IsCatalogFile](https://www.google.com/search?num=5&q=IsCatalogFile+site%3Amicrosoft.com) |  |   
+[CryptCATCDFOpen](http://msdn2.microsoft.com/en-us/library/d400d8bd-c0a0-41dc-9093-8e4fc758d82f) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATCDFOpen](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATCDFOpen)  
+[CryptCATClose](http://msdn2.microsoft.com/en-us/library/f6fa2d10-0049-4d5e-9688-566e5c11d64e) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATClose](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATClose)  
+[CryptCATEnumerateAttr](http://msdn2.microsoft.com/en-us/library/064e87db-4330-4b8b-9865-ba8b9714f6e4) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATEnumerateAttr](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATEnumerateAttr)  
+[CryptCATEnumerateCatAttr](http://msdn2.microsoft.com/en-us/library/57b6ff5c-e47e-41ac-8ec8-01a47ea77acf) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATEnumerateCatAttr](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATEnumerateCatAttr)  
+[CryptCATEnumerateMember](http://msdn2.microsoft.com/en-us/library/6bbfef11-a150-4255-8620-27c1b1587b48) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATEnumerateMember](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATEnumerateMember)  
+[CryptCATGetAttrInfo](http://msdn2.microsoft.com/en-us/library/e36966ea-741e-4380-85cd-5a3c9db38e6d) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATGetAttrInfo](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATGetAttrInfo)  
+[CryptCATGetMemberInfo](http://msdn2.microsoft.com/en-us/library/ff265232-f57e-4ab0-ba07-05e6d6745ae3) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATGetMemberInfo](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATGetMemberInfo)  
+[CryptCATHandleFromStore](http://msdn2.microsoft.com/en-us/library/e9aedc2d-9492-4ed7-9f2d-891997f85f6f) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATHandleFromStore](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATHandleFromStore)  
+[CryptCATOpen](http://msdn2.microsoft.com/en-us/library/e81f3a3d-d5b7-4266-838d-b83e331c8594) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATOpen](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATOpen)  
+[CryptCATPersistStore](http://msdn2.microsoft.com/en-us/library/2a564b0e-fcc6-4702-8173-d18df7064e53) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATPersistStore](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATPersistStore)  
+[CryptCATPutAttrInfo](http://msdn2.microsoft.com/en-us/library/13d5cdb4-2a15-4442-9e11-c3f76ca03f7e) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATPutAttrInfo](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATPutAttrInfo)  
+[CryptCATPutCatAttrInfo](http://msdn2.microsoft.com/en-us/library/16bb8560-d4fc-4c81-8eed-21a2da7f396d) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATPutCatAttrInfo](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATPutCatAttrInfo)  
+[CryptCATPutMemberInfo](http://msdn2.microsoft.com/en-us/library/bfc10577-e32e-4b2e-ad24-1d0a85c6730a) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATPutMemberInfo](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATPutMemberInfo)  
+[CryptCATStoreFromHandle](http://msdn2.microsoft.com/en-us/library/ce4fe972-0ed5-4b18-8ec5-9883af326335) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATStoreFromHandle](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATStoreFromHandle)  
+[CryptSIPAddProvider](http://msdn2.microsoft.com/en-us/library/99633c2f-e5ed-49e4-9c98-7501f66e5571) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPAddProvider](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPAddProvider)  
+[CryptSIPCreateIndirectData](http://msdn2.microsoft.com/en-us/library/bb4ecc95-972f-415c-9722-59b00a27cddc) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPCreateIndirectData](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPCreateIndirectData)  
+[CryptSIPGetCaps](http://msdn2.microsoft.com/en-us/library/F939F6D5-DDFE-478F-8FDD-8FA9FAB26010) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPGetCaps](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPGetCaps)  
+[CryptSIPGetSignedDataMsg](http://msdn2.microsoft.com/en-us/library/e3fabaa7-2dda-4c6c-8d1a-3ee5363e10b5) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPGetSignedDataMsg](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPGetSignedDataMsg)  
+[CryptSIPLoad](http://msdn2.microsoft.com/en-us/library/3378ecee-bd5d-45e5-9a1f-a3734d086782) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPLoad](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPLoad)  
+[CryptSIPPutSignedDataMsg](http://msdn2.microsoft.com/en-us/library/731f64bf-49f0-4799-b84a-9ca04292aa91) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPPutSignedDataMsg](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPPutSignedDataMsg)  
+[CryptSIPRemoveProvider](http://msdn2.microsoft.com/en-us/library/0a269956-b2c7-414a-b002-7cec0d52bfd6) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPRemoveProvider](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPRemoveProvider)  
+[CryptSIPRemoveSignedDataMsg](http://msdn2.microsoft.com/en-us/library/c3ea46bb-931a-4ca6-93f5-db7e07b4cb7a) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPRemoveSignedDataMsg](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPRemoveSignedDataMsg)  
+[CryptSIPRetrieveSubjectGuid](http://msdn2.microsoft.com/en-us/library/b81472bc-6d9c-4634-a378-e39786a0ca09) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPRetrieveSubjectGuid](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPRetrieveSubjectGuid)  
+[CryptSIPRetrieveSubjectGuidForCatalogFile](http://msdn2.microsoft.com/en-us/library/7f757dc8-948c-476e-aca3-a9051e962ed4) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPRetrieveSubjectGuidForCatalogFile](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPRetrieveSubjectGuidForCatalogFile)  
+[CryptSIPVerifyIndirectData](http://msdn2.microsoft.com/en-us/library/137b8858-a31f-4ef6-96bd-c5e26ae7b3e8) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPVerifyIndirectData](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPVerifyIndirectData)  
+[IsCatalogFile](http://msdn2.microsoft.com/en-us/library/eeba34d4-08aa-456a-8fdc-16795cbce36a) | mscat.h | [Vanara.PInvoke.WinTrust.IsCatalogFile](https://github.com/dahall/Vanara/search?l=C%23&q=IsCatalogFile)  
 [OpenPersonalTrustDBDialog](http://msdn2.microsoft.com/en-us/library/25f1d012-0c82-4992-b924-b539d4c6dc5f) | wintrust.h | [Vanara.PInvoke.WinTrust.OpenPersonalTrustDBDialog](https://github.com/dahall/Vanara/search?l=C%23&q=OpenPersonalTrustDBDialog)  
 [OpenPersonalTrustDBDialogEx](http://msdn2.microsoft.com/en-us/library/5e4dbccd-4cd0-4525-85dc-3327a5b713a1) | wintrust.h | [Vanara.PInvoke.WinTrust.OpenPersonalTrustDBDialogEx](https://github.com/dahall/Vanara/search?l=C%23&q=OpenPersonalTrustDBDialogEx)  
 [WintrustAddActionID](http://msdn2.microsoft.com/en-us/library/3b282342-9c86-42fa-b745-e5194d2885dc) | wintrust.h | [Vanara.PInvoke.WinTrust.WintrustAddActionID](https://github.com/dahall/Vanara/search?l=C%23&q=WintrustAddActionID)  
@@ -51,16 +56,17 @@ Native Method | Header | Managed Method
 [WinVerifyTrust](http://msdn2.microsoft.com/en-us/library/b7efac6a-ac9f-477a-aada-63fe32208e6f) | wintrust.h | [Vanara.PInvoke.WinTrust.WinVerifyTrust](https://github.com/dahall/Vanara/search?l=C%23&q=WinVerifyTrust)  
 [WinVerifyTrustEx](http://msdn2.microsoft.com/en-us/library/209c9953-a4a5-4ff0-961f-92e97ccce23d) | wintrust.h | [Vanara.PInvoke.WinTrust.WinVerifyTrustEx](https://github.com/dahall/Vanara/search?l=C%23&q=WinVerifyTrustEx)  
 [WTHelperCertCheckValidSignature](http://msdn2.microsoft.com/en-us/library/d46eea18-03cb-4199-873e-0e9e13061598) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperCertCheckValidSignature](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperCertCheckValidSignature)  
-[WTHelperCertFindIssuerCertificate](https://www.google.com/search?num=5&q=WTHelperCertFindIssuerCertificate+site%3Amicrosoft.com) |  |   
+[WTHelperCertFindIssuerCertificate](http://msdn2.microsoft.com/en-us/library/c724f602-fc73-4857-941f-0f22a9e472d1) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperCertFindIssuerCertificate](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperCertFindIssuerCertificate)  
 [WTHelperCertIsSelfSigned](http://msdn2.microsoft.com/en-us/library/456b8c8c-6ca3-469a-a415-e72109696bf5) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperCertIsSelfSigned](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperCertIsSelfSigned)  
-[WTHelperGetFileHash](https://www.google.com/search?num=5&q=WTHelperGetFileHash+site%3Amicrosoft.com) |  |   
+[WTHelperGetFileHash](http://msdn2.microsoft.com/en-us/library/130b3c3e-cc67-44ec-acc7-daa87b714299) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperGetFileHash](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperGetFileHash)  
 [WTHelperGetProvCertFromChain](http://msdn2.microsoft.com/en-us/library/047278fe-37d5-4fd6-8b36-9e28ead0cc5a) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperGetProvCertFromChain](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperGetProvCertFromChain)  
 [WTHelperGetProvPrivateDataFromChain](http://msdn2.microsoft.com/en-us/library/67a718a2-47ca-4c45-a939-99dd8311dc6d) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperGetProvPrivateDataFromChain](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperGetProvPrivateDataFromChain)  
-[WTHelperGetProvSignerFromChain](https://www.google.com/search?num=5&q=WTHelperGetProvSignerFromChain+site%3Amicrosoft.com) |  |   
-[WTHelperProvDataFromStateData](https://www.google.com/search?num=5&q=WTHelperProvDataFromStateData+site%3Amicrosoft.com) |  |   
+[WTHelperGetProvSignerFromChain](http://msdn2.microsoft.com/en-us/library/8e1ebf82-73c2-445b-9964-6739f7c90c47) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperGetProvSignerFromChain](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperGetProvSignerFromChain)  
+[WTHelperProvDataFromStateData](http://msdn2.microsoft.com/en-us/library/ca2ca612-2da6-4fe1-8b1e-bc6307eb92af) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperProvDataFromStateData](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperProvDataFromStateData)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[CATALOG_INFO](http://msdn2.microsoft.com/en-us/library/f6e66412-3ed2-48d9-a377-5df11500db59) | mscat.h | [Vanara.PInvoke.WinTrust.CATALOG_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CATALOG_INFO)  
 [CRYPT_PROVIDER_CERT](http://msdn2.microsoft.com/en-us/library/622e7a72-445a-4820-b236-1c90dad08351) | wintrust.h | [Vanara.PInvoke.WinTrust.CRYPT_PROVIDER_CERT](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPT_PROVIDER_CERT)  
 [CRYPT_PROVIDER_DATA](http://msdn2.microsoft.com/en-us/library/86f819f0-c243-45ba-8b7b-97ed906e6e8a) | wintrust.h | [Vanara.PInvoke.WinTrust.CRYPT_PROVIDER_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPT_PROVIDER_DATA)  
 [CRYPT_PROVIDER_DEFUSAGE](http://msdn2.microsoft.com/en-us/library/28A93F39-0CBC-432C-841B-83B54A50EA14) | wintrust.h | [Vanara.PInvoke.WinTrust.CRYPT_PROVIDER_DEFUSAGE](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPT_PROVIDER_DEFUSAGE)  
@@ -73,8 +79,23 @@ Native Structure | Header | Managed Structure
 [CRYPT_PROVUI_FUNCS](http://msdn2.microsoft.com/en-us/library/7cdc32ea-b28a-400f-ad8a-984f86bb95fd) | wintrust.h | [Vanara.PInvoke.WinTrust.CRYPT_PROVUI_FUNCS](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPT_PROVUI_FUNCS)  
 [CRYPT_REGISTER_ACTIONID](http://msdn2.microsoft.com/en-us/library/0b2b482f-f087-4be7-b17f-91c287c3460d) | wintrust.h | [Vanara.PInvoke.WinTrust.CRYPT_REGISTER_ACTIONID](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPT_REGISTER_ACTIONID)  
 [CRYPT_TRUST_REG_ENTRY](http://msdn2.microsoft.com/en-us/library/1a531219-f254-4057-934b-af95bfe0bb83) | wintrust.h | [Vanara.PInvoke.WinTrust.CRYPT_TRUST_REG_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPT_TRUST_REG_ENTRY)  
+[CRYPTCATATTRIBUTE](http://msdn2.microsoft.com/en-us/library/41b91303-f3eb-4288-9ad2-98f170680988) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCATATTRIBUTE](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCATATTRIBUTE)  
+[CRYPTCATCDF](http://msdn2.microsoft.com/en-us/library/15d5710a-d4df-4e45-b161-5d4f7509ba29) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCATCDF](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCATCDF)  
+[CRYPTCATMEMBER](http://msdn2.microsoft.com/en-us/library/08f663d9-9dc2-4ac9-95c5-7f2ed972eb9b) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCATMEMBER](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCATMEMBER)  
+[CRYPTCATSTORE](http://msdn2.microsoft.com/en-us/library/65a15797-453c-4f47-8ea1-c92e616b50aa) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCATSTORE](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCATSTORE)  
 [HCATADMIN](https://www.google.com/search?num=5&q=HCATADMIN+site%3Amicrosoft.com) |  | [Vanara.PInvoke.WinTrust.HCATADMIN](https://github.com/dahall/Vanara/search?l=C%23&q=HCATADMIN)  
+[HCATALOG](https://www.google.com/search?num=5&q=HCATALOG+site%3Amicrosoft.com) |  | [Vanara.PInvoke.WinTrust.HCATALOG](https://github.com/dahall/Vanara/search?l=C%23&q=HCATALOG)  
+[HCATINFO](https://www.google.com/search?num=5&q=HCATINFO+site%3Amicrosoft.com) |  | [Vanara.PInvoke.WinTrust.HCATINFO](https://github.com/dahall/Vanara/search?l=C%23&q=HCATINFO)  
 [HCRYPTMSG](https://www.google.com/search?num=5&q=HCRYPTMSG+site%3Amicrosoft.com) |  | [Vanara.PInvoke.WinTrust.HCRYPTMSG](https://github.com/dahall/Vanara/search?l=C%23&q=HCRYPTMSG)  
+[MS_ADDINFO_BLOB](http://msdn2.microsoft.com/en-us/library/236c8778-0b80-4157-8a81-24712ebf9a77) | mssip.h | [Vanara.PInvoke.WinTrust.MS_ADDINFO_BLOB](https://github.com/dahall/Vanara/search?l=C%23&q=MS_ADDINFO_BLOB)  
+[MS_ADDINFO_CATALOGMEMBER](http://msdn2.microsoft.com/en-us/library/40a00c8a-95e4-406c-b04e-0d29beb70d67) | mssip.h | [Vanara.PInvoke.WinTrust.MS_ADDINFO_CATALOGMEMBER](https://github.com/dahall/Vanara/search?l=C%23&q=MS_ADDINFO_CATALOGMEMBER)  
+[MS_ADDINFO_FLAT](http://msdn2.microsoft.com/en-us/library/9f5bebd1-8eda-456d-9339-3334a19c0ea4) | mssip.h | [Vanara.PInvoke.WinTrust.MS_ADDINFO_FLAT](https://github.com/dahall/Vanara/search?l=C%23&q=MS_ADDINFO_FLAT)  
+[SIP_ADD_NEWPROVIDER](http://msdn2.microsoft.com/en-us/library/5ca88c0c-a7c9-4517-a874-49d38c1bc7c3) | mssip.h | [Vanara.PInvoke.WinTrust.SIP_ADD_NEWPROVIDER](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_ADD_NEWPROVIDER)  
+[SIP_CAP_SET_V2](http://msdn2.microsoft.com/en-us/library/0B6D173B-0183-4A7C-BB92-2D451F746164) | mssip.h | [Vanara.PInvoke.WinTrust.SIP_CAP_SET_V2](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_CAP_SET_V2)  
+[SIP_CAP_SET_V3](http://msdn2.microsoft.com/en-us/library/0B6D173B-0183-4A7C-BB92-2D451F746164) | mssip.h | [Vanara.PInvoke.WinTrust.SIP_CAP_SET_V3](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_CAP_SET_V3)  
+[SIP_DISPATCH_INFO](http://msdn2.microsoft.com/en-us/library/d34b5081-0af8-4dcc-8133-a91d0603d419) | mssip.h | [Vanara.PInvoke.WinTrust.SIP_DISPATCH_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_DISPATCH_INFO)  
+[SIP_INDIRECT_DATA](http://msdn2.microsoft.com/en-us/library/d34b599b-fe49-47c4-bb52-73ee14d73253) | mssip.h | [Vanara.PInvoke.WinTrust.SIP_INDIRECT_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_INDIRECT_DATA)  
+[SIP_SUBJECTINFO](http://msdn2.microsoft.com/en-us/library/6274cd08-d67f-410d-9303-3a42b7f1edc6) | mssip.h | [Vanara.PInvoke.WinTrust.SIP_SUBJECTINFO](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_SUBJECTINFO)  
 [SPC_INDIRECT_DATA_CONTENT](http://msdn2.microsoft.com/en-us/library/BD790CA5-9C51-4483-93C1-5492154BF913) | wintrust.h | [Vanara.PInvoke.WinTrust.SPC_INDIRECT_DATA_CONTENT](https://github.com/dahall/Vanara/search?l=C%23&q=SPC_INDIRECT_DATA_CONTENT)  
 [WIN_CERTIFICATE](http://msdn2.microsoft.com/en-us/library/AC666871-265B-4D09-B7A6-DEC48D4645FD) | wintrust.h | [Vanara.PInvoke.WinTrust.WIN_CERTIFICATE](https://github.com/dahall/Vanara/search?l=C%23&q=WIN_CERTIFICATE)  
 [WINTRUST_BLOB_INFO](http://msdn2.microsoft.com/en-us/library/8b13d355-4d24-4d8e-aae3-db16467999be) | wintrust.h | [Vanara.PInvoke.WinTrust.WINTRUST_BLOB_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WINTRUST_BLOB_INFO)  

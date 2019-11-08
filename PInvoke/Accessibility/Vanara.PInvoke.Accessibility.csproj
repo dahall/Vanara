@@ -7,7 +7,7 @@
     <Description>PInvoke API (methods, structures and constants) for Windows Accessibility Features.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.2</VersionPrefix>
+    <VersionPrefix>3.1.3</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Accessibility</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -28,7 +28,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-AccessibleChildren, AccessibleObjectFromEvent, AccessibleObjectFromPoint, AccessibleObjectFromWindow, AccNotifyTouchInteraction, AccSetRunningUtilityState, CreateStdAccessibleObject, CreateStdAccessibleProxyA, CreateStdAccessibleProxyW, GetOleaccVersionInfo, GetProcessHandleFromHwnd, GetRoleTextA, GetRoleTextW, GetStateTextA, GetStateTextW, LresultFromObject, ObjectFromLresult, WindowFromAccessibleObject
+AccessibleChildren, AccessibleObjectFromEvent, AccessibleObjectFromPoint, AccessibleObjectFromWindow, AccNotifyTouchInteraction, AccSetRunningUtilityState, CreateStdAccessibleObject, CreateStdAccessibleProxy, GetOleaccVersionInfo, GetProcessHandleFromHwnd, GetRoleText, GetStateText, LresultFromObject, ObjectFromLresult, WindowFromAccessibleObject
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>

@@ -7,7 +7,7 @@
     <Description>PInvoke API (methods, structures and constants) imported from Windows CredUI.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.2</VersionPrefix>
+    <VersionPrefix>3.1.3</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.CredUI</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -28,7 +28,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-CredPackAuthenticationBufferA, CredPackAuthenticationBufferW, CredUICmdLinePromptForCredentialsA, CredUICmdLinePromptForCredentialsW, CredUIConfirmCredentialsA, CredUIConfirmCredentialsW, CredUIParseUserNameA, CredUIParseUserNameW, CredUIPromptForCredentialsA, CredUIPromptForCredentialsW, CredUIPromptForWindowsCredentialsA, CredUIPromptForWindowsCredentialsW, CredUIReadSSOCredA, CredUIReadSSOCredW, CredUIStoreSSOCredA, CredUIStoreSSOCredW, CredUnPackAuthenticationBufferA, CredUnPackAuthenticationBufferW, SspiGetCredUIContext, SspiIsPromptingNeeded, SspiPromptForCredentialsA, SspiPromptForCredentialsW, SspiUnmarshalCredUIContext, SspiUpdateCredentials
+CredPackAuthenticationBuffer, CredUICmdLinePromptForCredentials, CredUIConfirmCredentials, CredUIParseUserName, CredUIPromptForCredentials, CredUIPromptForWindowsCredentials, CredUIReadSSOCred, CredUIStoreSSOCred, CredUnPackAuthenticationBuffer, SspiGetCredUIContext, SspiIsPromptingNeeded, SspiPromptForCredentials, SspiUnmarshalCredUIContext, SspiUpdateCredentials
 
 Structures
 PSEC_WINNT_CREDUI_CONTEXT, PSEC_WINNT_CREDUI_CONTEXT_VECTOR, CREDUI_INFO

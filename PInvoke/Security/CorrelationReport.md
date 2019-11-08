@@ -830,7 +830,7 @@ Native Structure | Header | Managed Structure
 [TOKEN_GROUPS_AND_PRIVILEGES](http://msdn2.microsoft.com/en-us/library/aa379625) | WinNT.h | [Vanara.PInvoke.AdvApi32.TOKEN_GROUPS_AND_PRIVILEGES](https://github.com/dahall/Vanara/search?l=C%23&q=TOKEN_GROUPS_AND_PRIVILEGES)  
 [TOKEN_LINKED_TOKEN](http://msdn2.microsoft.com/en-us/library/bb530719) | WinNT.h | [Vanara.PInvoke.AdvApi32.TOKEN_LINKED_TOKEN](https://github.com/dahall/Vanara/search?l=C%23&q=TOKEN_LINKED_TOKEN)  
 [TOKEN_MANDATORY_LABEL](https://www.google.com/search?num=5&q=TOKEN_MANDATORY_LABEL+site%3Amicrosoft.com) |  | [Vanara.PInvoke.AdvApi32.TOKEN_MANDATORY_LABEL](https://github.com/dahall/Vanara/search?l=C%23&q=TOKEN_MANDATORY_LABEL)  
-[TOKEN_MANDATORY_POLICY](http://msdn2.microsoft.com/en-us/library/bb394728) | WinNT.h | [Vanara.PInvoke.AdvApi32.TOKEN_MANDATORY_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=TOKEN_MANDATORY_POLICY)  
+[TOKEN_MANDATORY_POLICY](http://msdn2.microsoft.com/en-us/library/f5fc438b-c4f0-46f6-a188-52ce660d13da) | winnt.h | [Vanara.PInvoke.AdvApi32.TOKEN_MANDATORY_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=TOKEN_MANDATORY_POLICY)  
 [TOKEN_ORIGIN](http://msdn2.microsoft.com/en-us/library/aa379627) | WinNT.h | [Vanara.PInvoke.AdvApi32.TOKEN_ORIGIN](https://github.com/dahall/Vanara/search?l=C%23&q=TOKEN_ORIGIN)  
 [TOKEN_OWNER](http://msdn2.microsoft.com/en-us/library/aa379628) | WinNT.h | [Vanara.PInvoke.AdvApi32.TOKEN_OWNER](https://github.com/dahall/Vanara/search?l=C%23&q=TOKEN_OWNER)  
 [TOKEN_PRIMARY_GROUP](http://msdn2.microsoft.com/en-us/library/aa379629) | WinNT.h | [Vanara.PInvoke.AdvApi32.TOKEN_PRIMARY_GROUP](https://github.com/dahall/Vanara/search?l=C%23&q=TOKEN_PRIMARY_GROUP)  
