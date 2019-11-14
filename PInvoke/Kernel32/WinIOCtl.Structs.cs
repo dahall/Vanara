@@ -1042,7 +1042,7 @@ namespace Vanara.PInvoke
 		// DRIVE_LAYOUT_INFORMATION, *PDRIVE_LAYOUT_INFORMATION;
 		[PInvokeData("winioctl.h", MSDNShortId = "e67ccaa7-a735-4695-8385-28f57b41821c")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct DRIVE_LAYOUT_INFORMATION : IMarshalDirective
+		public struct DRIVE_LAYOUT_INFORMATION : IVanaraMarshaler
 		{
 			/// <summary>
 			/// <para>The number of partitions on a drive.</para>
@@ -1060,8 +1060,9 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public PARTITION_INFORMATION[] PartitionEntry;
 
-			MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<DRIVE_LAYOUT_INFORMATION>(p, s, nameof(PartitionCount)).Value : default;
-			SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<DRIVE_LAYOUT_INFORMATION>(this, nameof(PartitionCount));
+			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(GetType());
+			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object obj) => new SafeAnysizeStruct<DRIVE_LAYOUT_INFORMATION>((DRIVE_LAYOUT_INFORMATION)obj, nameof(PartitionCount));
+			object IVanaraMarshaler.MarshalNativeToManaged(IntPtr p, SizeT s) => p != IntPtr.Zero ? new SafeAnysizeStruct<DRIVE_LAYOUT_INFORMATION>(p, s, nameof(PartitionCount)).Value : default;
 		}
 
 		/// <summary>Contains extended information about a drive's partitions.</summary>
@@ -1070,7 +1071,7 @@ namespace Vanara.PInvoke
 		// DRIVE_LAYOUT_INFORMATION_GPT Gpt; } DUMMYUNIONNAME; PARTITION_INFORMATION_EX PartitionEntry[1]; } DRIVE_LAYOUT_INFORMATION_EX, *PDRIVE_LAYOUT_INFORMATION_EX;
 		[PInvokeData("winioctl.h", MSDNShortId = "381c87a8-fe40-4251-a4df-dddc9e2a126d")]
 		[StructLayout(LayoutKind.Explicit)]
-		public struct DRIVE_LAYOUT_INFORMATION_EX : IMarshalDirective
+		public struct DRIVE_LAYOUT_INFORMATION_EX : IVanaraMarshaler
 		{
 			/// <summary>
 			/// <para>The style of the partitions on the drive enumerated by the PARTITION_STYLE enumeration.</para>
@@ -1122,8 +1123,9 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public PARTITION_INFORMATION_EX[] PartitionEntry;
 
-			MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<DRIVE_LAYOUT_INFORMATION_EX>(p, s, nameof(PartitionCount)).Value : default;
-			SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<DRIVE_LAYOUT_INFORMATION_EX>(this, nameof(PartitionCount));
+			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(GetType());
+			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object obj) => new SafeAnysizeStruct<DRIVE_LAYOUT_INFORMATION_EX>((DRIVE_LAYOUT_INFORMATION_EX)obj, nameof(PartitionCount));
+			object IVanaraMarshaler.MarshalNativeToManaged(IntPtr p, SizeT s) => p != IntPtr.Zero ? new SafeAnysizeStruct<DRIVE_LAYOUT_INFORMATION_EX>(p, s, nameof(PartitionCount)).Value : default;
 		}
 
 		/// <summary>Contains information about a drive's GUID partition table (GPT) partitions.</summary>
@@ -3882,7 +3884,7 @@ namespace Vanara.PInvoke
 		// RemainingExtents; WORD NumberOfExtents; WORD ExtentSize; USN_RECORD_EXTENT Extents[1]; } USN_RECORD_V4, *PUSN_RECORD_V4;
 		[PInvokeData("winioctl.h", MSDNShortId = "2636D1A1-6FD1-4F84-954C-499DCCE6E390")]
 		[StructLayout(LayoutKind.Sequential, Size = 80)]
-		public struct USN_RECORD_V4 : IMarshalDirective
+		public struct USN_RECORD_V4 : IVanaraMarshaler
 		{
 			/// <summary>
 			/// A USN_RECORD_COMMON_HEADER structure that describes the record length, major version, and minor version for the record.
@@ -4103,8 +4105,9 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public USN_RECORD_EXTENT[] Extents;
 
-			MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<USN_RECORD_V4>(p, s, nameof(NumberOfExtents)).Value : default;
-			SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<USN_RECORD_V4>(this, nameof(NumberOfExtents));
+			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(GetType());
+			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object obj) => new SafeAnysizeStruct<USN_RECORD_V4>((USN_RECORD_V4)obj, nameof(NumberOfExtents));
+			object IVanaraMarshaler.MarshalNativeToManaged(IntPtr p, SizeT s) => p != IntPtr.Zero ? new SafeAnysizeStruct<USN_RECORD_V4>(p, s, nameof(NumberOfExtents)).Value : default;
 		}
 
 		/// <summary>

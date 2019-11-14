@@ -3787,7 +3787,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>The TOKEN_GROUPS structure contains information about the group security identifiers (SIDs) in an access token.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct TOKEN_GROUPS : IMarshalDirective
+		public struct TOKEN_GROUPS : IVanaraMarshaler
 		{
 			/// <summary>Specifies the number of groups in the access token.</summary>
 			public uint GroupCount;
@@ -3820,8 +3820,9 @@ namespace Vanara.PInvoke
 				Groups[0] = new SID_AND_ATTRIBUTES(sid, attributes);
 			}
 
-			MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<TOKEN_GROUPS>(p, s, nameof(GroupCount)).Value : default;
-			SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<TOKEN_GROUPS>(this);
+			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(GetType());
+			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object obj) => new SafeAnysizeStruct<TOKEN_GROUPS>((TOKEN_GROUPS)obj, nameof(GroupCount));
+			object IVanaraMarshaler.MarshalNativeToManaged(IntPtr p, SizeT s) => p != IntPtr.Zero ? new SafeAnysizeStruct<TOKEN_GROUPS>(p, s, nameof(GroupCount)).Value : default;
 		}
 
 		/// <summary>
@@ -3972,7 +3973,7 @@ namespace Vanara.PInvoke
 		// PrivilegeCount; LUID_AND_ATTRIBUTES Privileges[ANYSIZE_ARRAY]; } TOKEN_PRIVILEGES, *PTOKEN_PRIVILEGES;
 		[PInvokeData("winnt.h", MSDNShortId = "c9016511-740f-44f3-92ed-17cc518c6612")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct TOKEN_PRIVILEGES : IMarshalDirective
+		public struct TOKEN_PRIVILEGES : IVanaraMarshaler
 		{
 			/// <summary>This must be set to the number of entries in the <c>Privileges</c> array.</summary>
 			public uint PrivilegeCount;
@@ -4034,8 +4035,9 @@ namespace Vanara.PInvoke
 				Privileges = (LUID_AND_ATTRIBUTES[])values?.Clone() ?? new LUID_AND_ATTRIBUTES[0];
 			}
 
-			MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<TOKEN_PRIVILEGES>(p, s, nameof(PrivilegeCount)).Value : default;
-			SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<TOKEN_PRIVILEGES>(this);
+			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(GetType());
+			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object obj) => new SafeAnysizeStruct<TOKEN_PRIVILEGES>((TOKEN_PRIVILEGES)obj, nameof(PrivilegeCount));
+			object IVanaraMarshaler.MarshalNativeToManaged(IntPtr p, SizeT s) => p != IntPtr.Zero ? new SafeAnysizeStruct<TOKEN_PRIVILEGES>(p, s, nameof(PrivilegeCount)).Value : default;
 		}
 
 		/// <summary>The TOKEN_SOURCE structure identifies the source of an access token.</summary>

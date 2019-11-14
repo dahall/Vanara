@@ -5090,7 +5090,7 @@ namespace Vanara.PInvoke
 		// dwStructureSize; DWORD dwRecordType; DWORD dwItems; UCHAR RawBytes[1]; } PDH_RAW_LOG_RECORD, *PPDH_RAW_LOG_RECORD;
 		[PInvokeData("pdh.h", MSDNShortId = "ae96515f-ea3f-4578-a249-fb8f41cdfa69")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct PDH_RAW_LOG_RECORD : IMarshalDirective
+		public struct PDH_RAW_LOG_RECORD : IVanaraMarshaler
 		{
 			/// <summary>
 			/// Size of this structure, in bytes. The size includes this structure and the <c>RawBytes</c> appended to the end of this structure.
@@ -5135,8 +5135,9 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public byte[] RawBytes;
 
-			MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<PDH_RAW_LOG_RECORD>(p, s, nameof(dwItems)).Value : default;
-			SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<PDH_RAW_LOG_RECORD>(this, nameof(dwItems));
+			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(GetType());
+			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object obj) => new SafeAnysizeStruct<PDH_RAW_LOG_RECORD>((PDH_RAW_LOG_RECORD)obj, nameof(dwItems));
+			object IVanaraMarshaler.MarshalNativeToManaged(IntPtr p, SizeT s) => p != IntPtr.Zero ? new SafeAnysizeStruct<PDH_RAW_LOG_RECORD>(p, s, nameof(dwItems)).Value : default;
 		}
 
 		/// <summary>

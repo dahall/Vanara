@@ -957,7 +957,7 @@ namespace Vanara.PInvoke
 	// CM_PARTIAL_RESOURCE_LIST, *PCM_PARTIAL_RESOURCE_LIST;
 	[PInvokeData("wdm.h", MSDNShortId = "f16b26f5-1f32-4c2e-83ec-0a0f79a4be85")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CM_PARTIAL_RESOURCE_LIST : IMarshalDirective
+	public struct CM_PARTIAL_RESOURCE_LIST : IVanaraMarshaler
 	{
 		/// <summary>The version number of this structure. This value should be 1.</summary>
 		public ushort Version;
@@ -972,8 +972,9 @@ namespace Vanara.PInvoke
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 		public CM_PARTIAL_RESOURCE_DESCRIPTOR[] PartialDescriptors;
 
-		MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<CM_PARTIAL_RESOURCE_LIST>(p, s, nameof(Count)).Value : default;
-		SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<CM_PARTIAL_RESOURCE_LIST>(this, nameof(Count));
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(GetType());
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object obj) => new SafeAnysizeStruct<CM_PARTIAL_RESOURCE_LIST>((CM_PARTIAL_RESOURCE_LIST)obj, nameof(Count));
+		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr p, SizeT s) => p != IntPtr.Zero ? new SafeAnysizeStruct<CM_PARTIAL_RESOURCE_LIST>(p, s, nameof(Count)).Value : default;
 	}
 
 	/// <summary>The <c>CM_RESOURCE_LIST</c> structure specifies all of the system hardware resources assigned to a device.</summary>
@@ -1017,7 +1018,7 @@ namespace Vanara.PInvoke
 	// ULONG Count; CM_FULL_RESOURCE_DESCRIPTOR List[1]; } CM_RESOURCE_LIST, *PCM_RESOURCE_LIST;
 	[PInvokeData("wdm.h", MSDNShortId = "01f31255-a4f7-4a16-9238-a7391bb850d1")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct CM_RESOURCE_LIST : IMarshalDirective
+	public struct CM_RESOURCE_LIST : IVanaraMarshaler
 	{
 		/// <summary>
 		/// The number of full resource descriptors that are specified by this <c>CM_RESOURCE_LIST</c> structure. The <c>List</c> member is
@@ -1034,7 +1035,8 @@ namespace Vanara.PInvoke
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 		public CM_FULL_RESOURCE_DESCRIPTOR[] List;
 
-		MarshalDirectiveActivator IMarshalDirective.GetActivator() => (p, s) => p != IntPtr.Zero ? new SafeAnysizeStruct<CM_RESOURCE_LIST>(p, s, nameof(Count)).Value : default;
-		SafeAllocatedMemoryHandle IMarshalDirective.ToNative() => new SafeAnysizeStruct<CM_RESOURCE_LIST>(this, nameof(Count));
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(GetType());
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object obj) => new SafeAnysizeStruct<CM_RESOURCE_LIST>((CM_RESOURCE_LIST)obj, nameof(Count));
+		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr p, SizeT s) => p != IntPtr.Zero ? new SafeAnysizeStruct<CM_RESOURCE_LIST>(p, s, nameof(Count)).Value : default;
 	}
 }

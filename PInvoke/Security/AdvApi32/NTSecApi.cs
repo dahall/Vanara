@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
@@ -46,6 +47,36 @@ namespace Vanara.PInvoke
 
 			/// <summary/>
 			DOMAIN_NO_LM_OWF_CHANGE = 0x00000040
+		}
+
+		/// <summary>Auditing options for an audit event type.</summary>
+		[PInvokeData("ntsecapi.h")]
+		[Flags]
+		public enum POLICY_AUDIT_EVENT_OPTIONS : uint
+		{
+			/// <summary>
+			/// Do not change auditing options for the specified event type.
+			/// <para>This value is valid for the AuditSetSystemPolicy and AuditQuerySystemPolicy functions.</para>
+			/// </summary>
+			POLICY_AUDIT_EVENT_UNCHANGED = 0x00000000,
+
+			/// <summary>
+			/// Audit successful occurrences of the specified event type.
+			/// <para>This value is valid for the AuditSetSystemPolicy and AuditQuerySystemPolicy functions.</para>
+			/// </summary>
+			POLICY_AUDIT_EVENT_SUCCESS = 0x00000001,
+
+			/// <summary>
+			/// Audit failed attempts to cause the specified event type.
+			/// <para>This value is valid for the AuditSetSystemPolicy and AuditQuerySystemPolicy functions.</para>
+			/// </summary>
+			POLICY_AUDIT_EVENT_FAILURE = 0x00000002,
+
+			/// <summary>
+			/// Do not audit the specified event type.
+			/// <para>This value is valid for the AuditSetSystemPolicy and AuditQuerySystemPolicy functions.</para>
+			/// </summary>
+			POLICY_AUDIT_EVENT_NONE = 0x00000004,
 		}
 
 		/// <summary>The <c>POLICY_DOMAIN_INFORMATION_CLASS</c> enumeration defines the type of policy domain information.</summary>
@@ -515,7 +546,7 @@ namespace Vanara.PInvoke
 		// } POLICY_AUDIT_EVENTS_INFO, *PPOLICY_AUDIT_EVENTS_INFO;
 		[PInvokeData("ntsecapi.h", MSDNShortId = "3442e5e5-78cf-4bda-ba11-0f51ee40df16")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct POLICY_AUDIT_EVENTS_INFO
+		public struct POLICY_AUDIT_EVENTS_INFO : IVanaraMarshaler
 		{
 			/// <summary>
 			/// <para>Indicates whether auditing is enabled.</para>
@@ -528,8 +559,7 @@ namespace Vanara.PInvoke
 			/// auditing options as specified in the <c>EventAuditingOptions</c> member even when <c>AuditingMode</c> is <c>FALSE</c>.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.U1)]
-			public bool AuditingMode;
+			public BOOLEAN AuditingMode;
 
 			/// <summary>
 			/// <para>
@@ -572,14 +602,44 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public IntPtr EventAuditingOptions;
+			public POLICY_AUDIT_EVENT_OPTIONS[] EventAuditingOptions;
 
 			/// <summary>
 			/// Specifies the number of elements in the <c>EventAuditingOptions</c> array. For set operations, if this value is less than the
 			/// number of audit event types supported by the system, the system does not change the auditing options for event types with
 			/// indexes equal to or higher than the value specified in <c>MaximumAuditEventCount</c>.
 			/// </summary>
-			public uint MaximumAuditEventCount;
+			public int MaximumAuditEventCount => EventAuditingOptions?.Length ?? 0;
+
+			SizeT IVanaraMarshaler.GetNativeSize() => 8 + IntPtr.Size;
+
+			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object obj)
+			{
+				var i = (POLICY_AUDIT_EVENTS_INFO)obj;
+				var mem = new SafeHGlobalHandle(64);
+				using (var ret = new NativeMemoryStream(mem))
+				{
+					ret.Write(i.AuditingMode);
+					ret.Position = 4;
+					ret.Write(i.EventAuditingOptions, true);
+					ret.Write(i.MaximumAuditEventCount);
+				}
+				return mem;
+			}
+
+			object IVanaraMarshaler.MarshalNativeToManaged(IntPtr ptr, SizeT size)
+			{
+				using var str = new NativeMemoryStream(ptr, size);
+				var mode = str.Read<BOOLEAN>();
+				str.Position = 4 + IntPtr.Size;
+				var cnt = str.Read<int>();
+				str.Position = 4;
+				return new POLICY_AUDIT_EVENTS_INFO
+				{
+					AuditingMode = mode,
+					EventAuditingOptions = str.ReadArray<POLICY_AUDIT_EVENT_OPTIONS>(cnt, true).ToArray()
+				};
+			}
 		}
 
 		/// <summary>
