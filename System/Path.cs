@@ -322,7 +322,7 @@ namespace Vanara.IO
 		/// Return <see langword="true"/> if a file name pattern specified in <paramref name="pattern"/> matched the file name found in the
 		/// string pointed to by <paramref name="path"/>.
 		/// </returns>
-		public static bool MatchesLookupPattern(string path, string pattern, bool ignorePatternWhitespace = false) => PathMatchSpecEx(path, pattern, (ignorePatternWhitespace ? PMSF.PMSF_DONT_STRIP_SPACES : 0) | (pattern.IndexOf(';') < 0 ? PMSF.PMSF_NORMAL : PMSF.PMSF_MULTIPLE)).Succeeded;
+		public static bool MatchesLookupPattern(string path, string pattern, bool ignorePatternWhitespace = false) => PathMatchSpecEx(path, pattern, (ignorePatternWhitespace ? PMSF.PMSF_DONT_STRIP_SPACES : 0) | (pattern.IndexOf(';') < 0 ? PMSF.PMSF_NORMAL : PMSF.PMSF_MULTIPLE)) == HRESULT.S_OK;
 
 		/// <summary>Searches a path for spaces. If spaces are found, the entire path is enclosed in quotation marks.</summary>
 		/// <param name="path">A string that contains the path to search.</param>
