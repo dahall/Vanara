@@ -4,7 +4,7 @@
     <Description>Classes for system related items derived from the Vanara PInvoke libraries. Includes extensions for Process (privileges and elavation), FileInfo (compression info), and ServiceController (SetStartType) that pull extended information through native API calls.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.3</VersionPrefix>
+    <VersionPrefix>3.1.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Vanara.SystemServices</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
