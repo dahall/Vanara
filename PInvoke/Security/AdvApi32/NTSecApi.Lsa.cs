@@ -1640,6 +1640,24 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntsecapi.h", MSDNShortId = "2d543500-f639-4ef7-91f4-cdc5060dd567")]
 		public static extern NTStatus LsaQueryInformationPolicy(LSA_HANDLE PolicyHandle, POLICY_INFORMATION_CLASS InformationClass, out SafeLsaMemoryHandle Buffer);
 
+		/// <summary>The <c>LsaQueryInformationPolicy</c> function retrieves information about a Policy object.</summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. The required access rights for this handle depend on the value of the InformationClass parameter.
+		/// For more information, see Opening a Policy Object Handle.
+		/// <returns>
+		/// The structure containing the requested information.
+		/// </returns>
+		/// <remarks>For an example that demonstrates calling this function see Managing Policy Information.</remarks>
+		[PInvokeData("ntsecapi.h", MSDNShortId = "2d543500-f639-4ef7-91f4-cdc5060dd567")]
+		public static T LsaQueryInformationPolicy<T>(LSA_HANDLE PolicyHandle) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanGet<T, POLICY_INFORMATION_CLASS>(out var ic))
+				throw new ArgumentException($"Type mismatch between {ic} and {typeof(T).Name}.");
+			LsaQueryInformationPolicy(PolicyHandle, ic, out var mem).ThrowIfFailed();
+			using (mem)
+				return mem.DangerousGetHandle().Convert<T>(uint.MaxValue, CharSet.Unicode);
+		}
+
 		/// <summary>
 		/// <para>The <c>LsaQueryTrustedDomainInfo</c> function retrieves information about a trusted domain.</para>
 		/// </summary>
@@ -1932,8 +1950,6 @@ namespace Vanara.PInvoke
 		public static extern NTStatus LsaRetrievePrivateData(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string KeyName,
 			out SafeLsaMemoryHandle PrivateData);
 
-		//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] out string PrivateData);
-
 		/// <summary>The <c>LsaSetDomainInformationPolicy</c> function sets domain information to the Policyobject.</summary>
 		/// <param name="PolicyHandle">A handle to the Policy object for the system.</param>
 		/// <param name="InformationClass">
@@ -1983,6 +1999,23 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ntsecapi.h", MSDNShortId = "77af6fdc-a52e-476c-9de2-36ee48133a87")]
 		public static extern NTStatus LsaSetDomainInformationPolicy(LSA_HANDLE PolicyHandle, POLICY_DOMAIN_INFORMATION_CLASS InformationClass, IntPtr Buffer);
+
+		/// <summary>The <c>LsaSetDomainInformationPolicy</c> function sets domain information to the Policyobject.</summary>
+		/// <typeparam name="T">The type of the structure being passed as <paramref name="value"/>.</typeparam>
+		/// <param name="PolicyHandle">A handle to the Policy object for the system.</param>
+		/// <param name="value">The information to set to the Policyobject.</param>
+		/// <remarks>
+		/// The POLICY_TRUST_ADMIN access type is required to set domain information to the Policyobject. For more information, see Policy
+		/// Object Access Rights.
+		/// </remarks>
+		[PInvokeData("ntsecapi.h", MSDNShortId = "77af6fdc-a52e-476c-9de2-36ee48133a87")]
+		public static void LsaSetDomainInformationPolicy<T>(LSA_HANDLE PolicyHandle, in T value) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanSet<T, POLICY_DOMAIN_INFORMATION_CLASS>(out var ic))
+				throw new ArgumentException($"Unable to use {typeof(T).Name} with this function.");
+			using var mem = SafeHGlobalHandle.CreateFromStructure(value);
+			LsaSetDomainInformationPolicy(PolicyHandle, ic, mem).ThrowIfFailed();
+		}
 
 		/// <summary>
 		/// <para>
@@ -2115,6 +2148,23 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ntsecapi.h", MSDNShortId = "2aa3b09e-2cd9-4a09-bfd6-b37c97266dcb")]
 		public static extern NTStatus LsaSetInformationPolicy(LSA_HANDLE PolicyHandle, POLICY_INFORMATION_CLASS InformationClass, IntPtr Buffer);
+
+		/// <summary>
+		/// The <c>LsaSetInformationPolicy</c> function modifies information in a Policy object.
+		/// </summary>
+		/// <typeparam name="T">The type of the structure being passed as <paramref name="value"/>.</typeparam>
+		/// <param name="PolicyHandle">A handle to a Policy object. The required access rights for this handle depend on the value of the InformationClass parameter.
+		/// For more information, see Opening a Policy Object Handle.</param>
+		/// <param name="value">A structure containing the information to set.</param>
+		/// <exception cref="ArgumentException">Unable to use {typeof(T).Name} with this function.</exception>
+		[PInvokeData("ntsecapi.h", MSDNShortId = "2aa3b09e-2cd9-4a09-bfd6-b37c97266dcb")]
+		public static void LsaSetInformationPolicy<T>(LSA_HANDLE PolicyHandle, in T value) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanSet<T, POLICY_INFORMATION_CLASS>(out var ic))
+				throw new ArgumentException($"Unable to use {typeof(T).Name} with this function.");
+			using var mem = SafeHGlobalHandle.CreateFromStructure(value);
+			LsaSetInformationPolicy(PolicyHandle, ic, mem).ThrowIfFailed();
+		}
 
 		/// <summary>Undocumented.</summary>
 		/// <param name="AccountHandle">The account handle.</param>
