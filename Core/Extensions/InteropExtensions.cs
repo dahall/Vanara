@@ -383,7 +383,7 @@ namespace Vanara.Extensions
 			if (allocatedBytes > 0 && stSize * count + prefixBytes > allocatedBytes)
 				throw new InsufficientMemoryException();
 			for (var i = 0; i < count; i++)
-				ret.SetValue(GetValueType(ptr, type, ttype, prefixBytes + i * stSize), i);
+				ret.SetValue(GetValueType(ptr, type, ttype, prefixBytes + i * stSize, allocatedBytes), i);
 			return ret;
 		}
 
@@ -412,7 +412,7 @@ namespace Vanara.Extensions
 			if (allocatedBytes > 0 && stSize * count + prefixBytes > allocatedBytes)
 				throw new InsufficientMemoryException();
 			for (var i = 0; i < count; i++)
-				yield return GetValueType(ptr, type, ttype, prefixBytes + i * stSize);
+				yield return GetValueType(ptr, type, ttype, prefixBytes + i * stSize, allocatedBytes);
 		}
 
 		/// <summary>Converts a <see cref="SecureString"/> to a string.</summary>
@@ -562,7 +562,7 @@ namespace Vanara.Extensions
 			var t = TrueType(typeof(T), out var stSize);
 			if (allocatedBytes > 0 && allocatedBytes < stSize + offset)
 				throw new InsufficientMemoryException();
-			return GetValueType<T>(ptr, t, offset);
+			return GetValueType<T>(ptr, t, offset, allocatedBytes);
 		}
 
 		/// <summary>Marshals data from an unmanaged block of memory to a managed object.</summary>
@@ -665,18 +665,20 @@ namespace Vanara.Extensions
 		internal static Type TrueType(Type type, out int size)
 		{
 			var ttype = type.IsEnum ? Enum.GetUnderlyingType(type) : type;
-			size = Marshal.SizeOf(ttype);
+			try { size = Marshal.SizeOf(ttype); } catch { size = 0; }
 			return ttype;
 		}
 
-		private static T GetValueType<T>(IntPtr ptr, Type trueType = null, int offset = 0) =>
-					(T)GetValueType(ptr, typeof(T), trueType, offset);
+		private static T GetValueType<T>(IntPtr ptr, Type trueType, int offset, SizeT allocatedBytes) =>
+			(T)GetValueType(ptr, typeof(T), trueType, offset, allocatedBytes);
 
-		private static object GetValueType(IntPtr ptr, Type type, Type trueType = null, int offset = 0)
+		private static object GetValueType(IntPtr ptr, Type type, Type trueType, int offset, SizeT allocatedBytes)
 		{
 			if (trueType is null)
 				trueType = type.IsEnum ? Enum.GetUnderlyingType(type) : type;
-			var obj = Marshal.PtrToStructure(ptr.Offset(offset), trueType);
+			var obj = VanaraMarshaler.CanMarshal(trueType, out var marshaler) ?
+				marshaler.MarshalNativeToManaged(ptr.Offset(offset), allocatedBytes == 0 ? SizeT.MaxValue : allocatedBytes) : 
+				Marshal.PtrToStructure(ptr.Offset(offset), trueType);
 			if (type == trueType)
 				return obj;
 			if (type.IsEnum)
