@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -8,24 +9,6 @@ using Vanara.PInvoke;
 
 namespace Vanara.InteropServices
 {
-	/// <summary>Delegate that marshals native memory to an object. See <see cref="IMarshalDirective.GetActivator"/>.</summary>
-	/// <param name="ptr">The pointer to a block of memory.</param>
-	/// <param name="allocatedBytes">The size of the allocated memory block.</param>
-	/// <returns>An instance of the object pointed to in memory.</returns>
-	public delegate object MarshalDirectiveActivator(IntPtr ptr, SizeT allocatedBytes);
-
-	/// <summary>Supports methods that allow for marshaling to and from native memory.</summary>
-	public interface IMarshalDirective
-	{
-		/// <summary>Returns a method that creates a new instance of this type from native memory.</summary>
-		/// <returns>A delegate n object of the current type that matches</returns>
-		MarshalDirectiveActivator GetActivator();
-
-		/// <summary>Converts the current instance to its native equivalent.</summary>
-		/// <returns>Allocated memory with the binary representation of this instance.</returns>
-		SafeAllocatedMemoryHandle ToNative();
-	}
-
 	/// <summary>Functions to safely convert a memory pointer to a type.</summary>
 	public static class IntPtrConverter
 	{
@@ -65,11 +48,9 @@ namespace Vanara.InteropServices
 			switch (typeCode)
 			{
 				case TypeCode.Object:
-					if (typeof(IMarshalDirective).IsAssignableFrom(destType))
+					if (VanaraMarshaler.CanMarshal(destType, out var marshaler))
 					{
-						var f = ((IMarshalDirective)Activator.CreateInstance(destType)).GetActivator();
-						if (f != null)
-							return f(ptr, sz);
+						return marshaler.MarshalNativeToManaged(ptr, sz);
 					}
 					if (typeof(ISerializable).IsAssignableFrom(destType))
 					{
