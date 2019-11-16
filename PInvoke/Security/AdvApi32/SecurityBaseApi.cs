@@ -6313,11 +6313,11 @@ namespace Vanara.PInvoke
 			/// an identify level impersonation token. If the current token is not an application container but is an identity level token,
 			/// you should return AccessDenied.
 			/// </param>
-			public T GetInfo<T>(TOKEN_INFORMATION_CLASS tokenInfoClass)
+			public T GetInfo<T>(TOKEN_INFORMATION_CLASS? tokenInfoClass = null)
 			{
-				if (!CorrespondingTypeAttribute.CanGet(tokenInfoClass, typeof(T)))
+				if (!CorrespondingTypeAttribute.CanGet<T, TOKEN_INFORMATION_CLASS>(tokenInfoClass, out var ti))
 					throw new InvalidCastException();
-				using var pType = GetInfo(tokenInfoClass);
+				using var pType = GetInfo(ti);
 				return ((IntPtr)pType).Convert<T>(pType.Size);
 			}
 
@@ -6377,6 +6377,30 @@ namespace Vanara.PInvoke
 			// SetTokenInformation( HANDLE TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, LPVOID TokenInformation, DWORD
 			// TokenInformationLength );
 			public bool SetInfo<T>(TOKEN_INFORMATION_CLASS TokenInformationClass, T TokenInformation) => SetTokenInformation(this, TokenInformationClass, TokenInformation);
+
+			/// <summary>
+			/// The <c>SetInfo</c> function sets various types of information for a specified access token. The information that this
+			/// function sets replaces existing information. The calling process must have appropriate access rights to set the information.
+			/// </summary>
+			/// <param name="TokenInformation">
+			/// A value that contains the information set in the access token. The structure of this buffer depends on the type of
+			/// information specified by the TokenInformationClass parameter.
+			/// </param>
+			/// <returns>
+			/// <para>If the function succeeds, the function returns nonzero.</para>
+			/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// To set privilege information, an application can call the AdjustTokenPrivileges function. To set a token's groups, an
+			/// application can call the AdjustTokenGroups function.
+			/// </para>
+			/// <para>Token-type information can be set only when an access token is created.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-settokeninformation BOOL
+			// SetTokenInformation( HANDLE TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, LPVOID TokenInformation, DWORD
+			// TokenInformationLength );
+			public bool SetInfo<T>(T TokenInformation) => CorrespondingTypeAttribute.CanSet<T, TOKEN_INFORMATION_CLASS>(out var ti) ? SetTokenInformation(this, ti, TokenInformation) : throw new InvalidCastException("Cannot get this type.");
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="SECURITY_DESCRIPTOR"/> that is disposed using <see cref="DestroyPrivateObjectSecurity"/>.</summary>

@@ -534,7 +534,7 @@ namespace Vanara.PInvoke.Tests
 			{
 				Assert.That(t, Is.Not.Null);
 
-				var p = t.GetInfo<TOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges);
+				var p = t.GetInfo<TOKEN_PRIVILEGES>();
 				Assert.That(p, Is.Not.Null);
 				Assert.That(p.PrivilegeCount, Is.GreaterThan(0));
 				TestContext.WriteLine("Privs: " + string.Join("; ", p.Privileges.Select(i => i.ToString())));

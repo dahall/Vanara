@@ -4841,8 +4841,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-glyphset typedef struct tagGLYPHSET { DWORD cbThis; DWORD
 		// flAccel; DWORD cGlyphsSupported; DWORD cRanges; WCRANGE ranges[1]; } GLYPHSET, *PGLYPHSET, *LPGLYPHSET;
 		[PInvokeData("wingdi.h", MSDNShortId = "b8ac8d3f-b062-491c-966f-02f3d4c11419")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<GLYPHSET>), nameof(cRanges))]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct GLYPHSET : IVanaraMarshaler
+		public struct GLYPHSET
 		{
 			/// <summary>The size, in bytes, of this structure.</summary>
 			public uint cbThis;
@@ -4871,10 +4872,6 @@ namespace Vanara.PInvoke
 			/// <summary>Array of Unicode ranges that are supported in the font.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public WCRANGE[] ranges;
-
-			SizeT IVanaraMarshaler.GetNativeSize() => 20;
-			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject) => new SafeAnysizeStruct<GLYPHSET>((GLYPHSET)managedObject, nameof(cRanges));
-			object IVanaraMarshaler.MarshalNativeToManaged(IntPtr p, SizeT s) => p != IntPtr.Zero ? new SafeAnysizeStruct<GLYPHSET>(p, s, nameof(cRanges)).Value : default;
 		}
 
 		/// <summary>The <c>KERNINGPAIR</c> structure defines a kerning pair.</summary>
