@@ -101,6 +101,15 @@ namespace Vanara.InteropServices
 			return false;
 		}
 
+		/// <summary>Determines whether an enum value exists that supports a corresponding type of <typeparamref name="T"/>.</summary>
+		/// <typeparam name="T">The corresponding type to look for.</typeparam>
+		/// <typeparam name="TEnum">The type of the enum.</typeparam>
+		/// <param name="input">If not <see langword="null"/>, the enumeration value to check.</param>
+		/// <param name="value">The value of type <typeparamref name="TEnum"/> that has the corresponding type <typeparamref name="T"/>.</param>
+		/// <returns><see langword="true"/> if this instance can get the specified value; otherwise, <see langword="false"/>.</returns>
+		public static bool CanGet<T, TEnum>(TEnum? input, out TEnum value) where TEnum : struct, System.Enum =>
+			input.HasValue ? CanGet(value = input.Value, typeof(T)) : CanGet<T, TEnum>(out value);
+
 		/// <summary>Determines whether this instance can set the type for the specified enum value or class.</summary>
 		/// <param name="value">The enumeration value or class instance.</param>
 		/// <param name="typeRef">The type supplied by the user to validate.</param>
