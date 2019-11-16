@@ -34,8 +34,8 @@ namespace Vanara.InteropServices
 		/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStruct{T}"/> class.</summary>
 		/// <param name="value">The initial value of the structure, if provided.</param>
 		/// <param name="sizeFieldName">
-		/// The name of the field in <typeparamref name="T"/> that holds the length of the array. If <see langword="null"/>, the first public
-		/// field will be selected.
+		/// The name of the field in <typeparamref name="T"/> that holds the length of the array. If <see langword="null"/>, the first
+		/// public field will be selected.
 		/// </param>
 		/// <exception cref="InvalidOperationException">This class can only manange sequential layout structures.</exception>
 		public SafeAnysizeStruct(in T value, string sizeFieldName = null) : base(baseSz)
@@ -48,8 +48,8 @@ namespace Vanara.InteropServices
 		/// <param name="allocatedMemory">A pointer to memory that holds the value of an instance of <typeparamref name="T"/>.</param>
 		/// <param name="size">The size of the allocated memory in <paramref name="allocatedMemory"/> in bytes.</param>
 		/// <param name="sizeFieldName">
-		/// The name of the field in <typeparamref name="T"/> that holds the length of the array. If <see langword="null"/>, the first public
-		/// field will be selected.
+		/// The name of the field in <typeparamref name="T"/> that holds the length of the array. If <see langword="null"/>, the first
+		/// public field will be selected.
 		/// </param>
 		public SafeAnysizeStruct(IntPtr allocatedMemory, int size, string sizeFieldName = null) : base(size)
 		{
@@ -62,8 +62,8 @@ namespace Vanara.InteropServices
 		/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStruct{T}"/> class with an initial empty memory allocation.</summary>
 		/// <param name="size">The size of the reserved memory in bytes.</param>
 		/// <param name="sizeFieldName">
-		/// The name of the field in <typeparamref name="T"/> that holds the length of the array. If <see langword="null"/>, the first public
-		/// field will be selected.
+		/// The name of the field in <typeparamref name="T"/> that holds the length of the array. If <see langword="null"/>, the first
+		/// public field will be selected.
 		/// </param>
 		public SafeAnysizeStruct(SizeT size, string sizeFieldName = null) : base(size) => InitCountField(sizeFieldName);
 
@@ -127,6 +127,37 @@ namespace Vanara.InteropServices
 			// Push each element of the array into memory
 			for (var i = 0; i < arrLen; i++)
 				Marshal.StructureToPtr(((Array)arrVal).GetValue(i), handle.Offset(baseSz - arrElemSz * (i - 1)), false);
+		}
+	}
+
+	/// <summary>
+	/// A marshaler implementation of <see cref="IVanaraMarshaler"/> to set the marshaler as an attribute using
+	/// <see cref="SafeAnysizeStruct{T}"/>. Use the cookie paramter of
+	/// <see cref="SafeAnysizeStructMarshaler{T}.SafeAnysizeStructMarshaler(string)"/> to specify the name of the field in
+	/// <typeparamref name="T"/> that specifies the number of elements in the last field of <typeparamref name="T"/>.
+	/// </summary>
+	/// <typeparam name="T">The structure type to be marshaled.</typeparam>
+	/// <seealso cref="Vanara.InteropServices.IVanaraMarshaler"/>
+	public class SafeAnysizeStructMarshaler<T> : IVanaraMarshaler where T : struct
+	{
+		private string sizeFieldName;
+
+		/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStructMarshaler{T}"/> class.</summary>
+		/// <param name="cookie">
+		/// The name of the field in <typeparamref name="T"/> that specifies the number of elements in the last field of <typeparamref name="T"/>.
+		/// </param>
+		public SafeAnysizeStructMarshaler(string cookie) => sizeFieldName = cookie;
+
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(T));
+
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject) =>
+			managedObject is null ? SafeCoTaskMemHandle.Null : (SafeAllocatedMemoryHandle)new SafeAnysizeStruct<T>((T)managedObject, sizeFieldName);
+
+		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			if (pNativeData == IntPtr.Zero) return null;
+			using var s = new SafeAnysizeStruct<T>(pNativeData, allocatedBytes, sizeFieldName);
+			return s.Value;
 		}
 	}
 }
