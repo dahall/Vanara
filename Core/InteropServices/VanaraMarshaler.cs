@@ -27,40 +27,6 @@ namespace Vanara.InteropServices
 		object MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes);
 	}
 
-	[VanaraMarshaler(typeof(TestMarshal))]
-	internal struct TestMarshal : IVanaraMarshaler
-	{
-		public bool bVal;
-		public uint[] uArray;
-
-		SizeT IVanaraMarshaler.GetNativeSize() => 12;
-
-		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject)
-		{
-			if (managedObject is null) return SafeHGlobalHandle.Null;
-			if (!(managedObject is TestMarshal t))
-				throw new ArgumentException($"Object must be a {nameof(TestMarshal)} instance.", nameof(managedObject));
-			var mem = new SafeHGlobalHandle(12);
-			mem.Write(t.bVal ? 1U : 0U);
-			mem.Write(t.uArray?.Length ?? 0);
-			mem.Write(t.uArray, true, 8);
-			return mem;
-		}
-
-		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
-		{
-			var ret = default(TestMarshal);
-			if (pNativeData != IntPtr.Zero)
-			{
-				using var str = new NativeMemoryStream(pNativeData, allocatedBytes);
-				ret.bVal = str.Read<uint>() != 0;
-				var len = str.Read<int>();
-				ret.uArray = str.ReadArray<uint>(len, false).ToArray();
-			}
-			return ret;
-		}
-	}
-
 	/// <summary>Provides methods to assist with custom marshaling.</summary>
 	public static class VanaraMarshaler
 	{
@@ -73,7 +39,10 @@ namespace Vanara.InteropServices
 			var vattr = t.GetCustomAttributes<VanaraMarshalerAttribute>(true).FirstOrDefault();
 			if (vattr != null)
 			{
-				marshaler = Activator.CreateInstance(vattr.MarshalType) as IVanaraMarshaler;
+				var cookie = vattr.Cookie;
+				marshaler = cookie is null ? 
+					Activator.CreateInstance(vattr.MarshalType) as IVanaraMarshaler :
+					Activator.CreateInstance(vattr.MarshalType, cookie) as IVanaraMarshaler;
 				return marshaler != null;
 			}
 			if (typeof(IVanaraMarshaler).IsAssignableFrom(t))
@@ -100,10 +69,9 @@ namespace Vanara.InteropServices
 	public class VanaraCustomMarshaler<T> : ICustomMarshaler
 	{
 		private SafeAllocatedMemoryHandle mem;
+		private readonly string cookie;
 
-		private VanaraCustomMarshaler(string _)
-		{
-		}
+		private VanaraCustomMarshaler(string cookie) => this.cookie = cookie;
 
 		/// <summary>Gets the instance.</summary>
 		/// <param name="cookie">The cookie.</param>
@@ -130,14 +98,21 @@ namespace Vanara.InteropServices
 	{
 		/// <summary>Initializes a new instance of the <see cref="VanaraMarshalerAttribute"/> class.</summary>
 		/// <param name="marshalType">A type that derives from <see cref="IVanaraMarshaler"/> that will marshal this class or structure.</param>
-		public VanaraMarshalerAttribute(Type marshalType)
+		/// <param name="cookie">The cookie value to pass to the constructor.</param>
+		/// <exception cref="ArgumentNullException">marshalType</exception>
+		/// <exception cref="ArgumentException">The supplied type must inherit from {nameof(IVanaraMarshaler)}. - marshalType</exception>
+		public VanaraMarshalerAttribute(Type marshalType, string cookie = null)
 		{
 			if (marshalType is null)
 				throw new ArgumentNullException(nameof(marshalType));
 			if (!typeof(IVanaraMarshaler).IsAssignableFrom(marshalType))
 				throw new ArgumentException($"The supplied type must inherit from {nameof(IVanaraMarshaler)}.", nameof(marshalType));
 			MarshalType = marshalType;
+			Cookie = cookie;
 		}
+
+		/// <summary>Gets the cookie value, that if not <see langword="null"/>, will get passed to the constructor of <see cref="MarshalType"/>.</summary>
+		public string Cookie { get; }
 
 		/// <summary>Gets the type that will marshal this class or structure.</summary>
 		public Type MarshalType { get; }
