@@ -1458,12 +1458,14 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="SafeSAFEARRAY"/> to <see cref="SAFEARRAY"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator SAFEARRAY(SafeSAFEARRAY h) => h.IsInvalid ? new SAFEARRAY() : (SAFEARRAY)Marshal.PtrToStructure(h.handle, typeof(SAFEARRAY));
+			public static implicit operator SAFEARRAY(SafeSAFEARRAY h) => h.IsInvalid ? new SAFEARRAY() : h.handle.ToStructure<SAFEARRAY>();
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => SafeArrayDestroy(handle).Succeeded;
 		}
 
+		/// <summary>Provides a safe handle for items created with <see cref="SafeArrayAllocDescriptor"/>.</summary>
+		/// <seealso cref="Vanara.PInvoke.OleAut32.SafeSAFEARRAY"/>
 		public class SafeDescriptorSAFEARRAY : SafeSAFEARRAY
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeDescriptorSAFEARRAY"/> class and assigns an existing handle.</summary>

@@ -5261,7 +5261,7 @@ namespace Vanara.PInvoke
 				get
 				{
 					var t = CorrespondingTypeAttribute.GetCorrespondingTypes(Type).FirstOrDefault();
-					return t == null || IsInvalid ? null : Marshal.PtrToStructure(handle, t);
+					return t == null || IsInvalid ? null : handle.Convert(uint.MaxValue, t);
 				}
 			}
 

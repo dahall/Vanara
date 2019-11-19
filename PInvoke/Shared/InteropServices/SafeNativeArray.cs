@@ -153,12 +153,12 @@ namespace Vanara.InteropServices
 		/// <exception cref="ArgumentOutOfRangeException">index or index</exception>
 		public virtual TElem this[int index]
 		{
-			get => PtrOfElem(index).ToStructure<TElem>();
+			get => handle.ToStructure<TElem>(Size, ElemOffset(index));
 			set
 			{
 				if (IsReadOnly)
 					throw new InvalidOperationException("Array is read-only.");
-				Marshal.StructureToPtr(value, PtrOfElem(index), false);
+				handle.Write(value, ElemOffset(index), Size);
 			}
 		}
 
@@ -216,7 +216,7 @@ namespace Vanara.InteropServices
 			var insertPt = ElemOffset(index);
 			if (index > 0)
 				CopyTo(newPtr, 0, insertPt);
-			Marshal.StructureToPtr(item, newPtr.Offset(insertPt), false);
+			newPtr.Write(item, insertPt, newSz);
 			if (index < Count - 1)
 				CopyTo(newPtr.Offset(insertPt + ElemSize), insertPt, Size - insertPt);
 			mm.FreeMem(handle);

@@ -193,11 +193,21 @@ namespace Vanara.Extensions
 		/// <returns>A pointer to the memory allocated by <paramref name="memAlloc"/>.</returns>
 		public static IntPtr MarshalToPtr<T>(this T value, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0)
 		{
-			var newVal = TrueValue(value, out bytesAllocated);
-			bytesAllocated += prefixBytes;
-			var ret = memAlloc(bytesAllocated);
-			Write(ret, newVal, prefixBytes, bytesAllocated);
-			return ret;
+			if (VanaraMarshaler.CanMarshal(typeof(T), out var marshaler))
+			{
+				using var mem = marshaler.MarshalManagedToNative(value);
+				var ret = memAlloc(bytesAllocated = mem.Size + prefixBytes);
+				mem.DangerousGetHandle().CopyTo(ret.Offset(prefixBytes), mem.Size);
+				return ret;
+			}
+			else
+			{
+				var newVal = TrueValue(value, out bytesAllocated);
+				bytesAllocated += prefixBytes;
+				var ret = memAlloc(bytesAllocated);
+				Write(ret, newVal, prefixBytes, bytesAllocated);
+				return ret;
+			}
 		}
 
 		/// <summary>
@@ -226,12 +236,7 @@ namespace Vanara.Extensions
 			var sz = Marshal.SizeOf(typeof(T));
 			bytesAllocated += sz * count;
 			var result = memAlloc(bytesAllocated);
-			var ptr = result.Offset(prefixBytes);
-			foreach (var value in items)
-			{
-				Marshal.StructureToPtr(value, ptr, false);
-				ptr = ptr.Offset(sz);
-			}
+			result.Write(items, prefixBytes, bytesAllocated);
 			return result;
 		}
 
@@ -344,6 +349,23 @@ namespace Vanara.Extensions
 			return hr;
 		}
 
+		/// <summary>Returns the native memory size of a type, if possible.</summary>
+		/// <typeparam name="T">The type whose size is to be returned.</typeparam>
+		/// <returns>The size, in bytes, of the type that is specified by the <typeparamref name="T"/> type parameter.</returns>
+		/// <exception cref="ArgumentException">Unable to get size of type.</exception>
+		public static SizeT SizeOf<T>() => SizeOf(typeof(T));
+
+		/// <summary>Returns the native memory size of a type, if possible.</summary>
+		/// <param name="type">The type whose size is to be returned.</param>
+		/// <returns>The size, in bytes, of the type that is specified by the <paramref name="type"/> parameter.</returns>
+		/// <exception cref="ArgumentException">Unable to get size of type. - type</exception>
+		public static SizeT SizeOf(Type type)
+		{
+			if (VanaraMarshaler.CanMarshal(type, out var marshaler))
+				return marshaler.GetNativeSize();
+			return type.IsEnum ? Marshal.SizeOf(Enum.GetUnderlyingType(type)) : Marshal.SizeOf(type);
+		}
+
 		/// <summary>Marshals data from a managed object to an unmanaged block of memory that is allocated using <paramref name="memAlloc"/>.</summary>
 		/// <typeparam name="T">The type of the managed object.</typeparam>
 		/// <param name="value">
@@ -379,11 +401,15 @@ namespace Vanara.Extensions
 			if (type is null) throw new ArgumentNullException(nameof(type));
 			if (ptr == IntPtr.Zero) return null;
 			var ret = Array.CreateInstance(type, count); // new object[count];
-			var ttype = TrueType(type, out var stSize);
+			var stSize = SizeOf(type);
 			if (allocatedBytes > 0 && stSize * count + prefixBytes > allocatedBytes)
 				throw new InsufficientMemoryException();
+			if (allocatedBytes == default) allocatedBytes = SizeT.MaxValue;
 			for (var i = 0; i < count; i++)
-				ret.SetValue(GetValueType(ptr, type, ttype, prefixBytes + i * stSize, allocatedBytes), i);
+			{
+				var offset = prefixBytes + i * stSize;
+				ret.SetValue(ptr.Offset(offset).Convert(allocatedBytes - (uint)offset, type), i);
+			}
 			return ret;
 		}
 
@@ -408,11 +434,15 @@ namespace Vanara.Extensions
 		{
 			if (type is null) throw new ArgumentNullException(nameof(type));
 			if (count == 0 || ptr == IntPtr.Zero) yield break;
-			var ttype = TrueType(type, out var stSize);
+			var stSize = SizeOf(type);
 			if (allocatedBytes > 0 && stSize * count + prefixBytes > allocatedBytes)
 				throw new InsufficientMemoryException();
+			if (allocatedBytes == default) allocatedBytes = SizeT.MaxValue;
 			for (var i = 0; i < count; i++)
-				yield return GetValueType(ptr, type, ttype, prefixBytes + i * stSize, allocatedBytes);
+			{
+				var offset = prefixBytes + i * stSize;
+				yield return ptr.Offset(offset).Convert(allocatedBytes - (uint)offset - (uint)prefixBytes, type);
+			}
 		}
 
 		/// <summary>Converts a <see cref="SecureString"/> to a string.</summary>
@@ -558,11 +588,8 @@ namespace Vanara.Extensions
 		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public static T ToStructure<T>(this IntPtr ptr, SizeT allocatedBytes = default, int offset = 0)
 		{
-			if (ptr == IntPtr.Zero) throw new NullReferenceException();
-			var t = TrueType(typeof(T), out var stSize);
-			if (allocatedBytes > 0 && allocatedBytes < stSize + offset)
-				throw new InsufficientMemoryException();
-			return GetValueType<T>(ptr, t, offset, allocatedBytes);
+			if (allocatedBytes == default) allocatedBytes = SizeT.MaxValue;
+			return ptr.Offset(offset).Convert<T>(allocatedBytes - (uint)offset);
 		}
 
 		/// <summary>Marshals data from an unmanaged block of memory to a managed object.</summary>
@@ -572,7 +599,7 @@ namespace Vanara.Extensions
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 		/// <param name="offset">The number of bytes to skip before reading the element.</param>
 		/// <returns>A managed object that contains the data that the <paramref name="ptr"/> parameter points to.</returns>
-		public static void ToStructure<T>(this IntPtr ptr, T instance, SizeT allocatedBytes = default, int offset = 0)
+		public static void ToStructure<T>(this IntPtr ptr, T instance, SizeT allocatedBytes = default, int offset = 0) where T : class
 		{
 			if (ptr == IntPtr.Zero) throw new NullReferenceException();
 			var t = TrueType(typeof(T), out var stSize);
@@ -631,7 +658,7 @@ namespace Vanara.Extensions
 
 			var i = 0;
 			foreach (var item in items.Select(v => Convert.ChangeType(v, ttype)))
-				Marshal.StructureToPtr(item, ptr.Offset(offset + i++ * stSize), false);
+				ptr.Write(item, offset + i++ * stSize, allocatedBytes);
 
 			return bytesReq - offset;
 		}
@@ -664,37 +691,45 @@ namespace Vanara.Extensions
 
 		internal static Type TrueType(Type type, out int size)
 		{
-			var ttype = type.IsEnum ? Enum.GetUnderlyingType(type) : type;
+			var ttype = type.IsEnum ? Enum.GetUnderlyingType(type) : type == typeof(bool) ? typeof(uint) : type;
 			try { size = Marshal.SizeOf(ttype); } catch { size = 0; }
 			return ttype;
 		}
 
-		private static T GetValueType<T>(IntPtr ptr, Type trueType, int offset, SizeT allocatedBytes) =>
+		internal static T GetValueType<T>(IntPtr ptr, Type trueType = null, int offset = 0, SizeT allocatedBytes = default) =>
 			(T)GetValueType(ptr, typeof(T), trueType, offset, allocatedBytes);
 
-		private static object GetValueType(IntPtr ptr, Type type, Type trueType, int offset, SizeT allocatedBytes)
+		internal static object GetValueType(IntPtr ptr, Type type, Type trueType = null, int offset = 0, SizeT allocatedBytes = default)
 		{
-			if (trueType is null)
-				trueType = type.IsEnum ? Enum.GetUnderlyingType(type) : type;
+			if (allocatedBytes == 0)
+				allocatedBytes = SizeT.MaxValue;
+			trueType ??= type.IsEnum ? Enum.GetUnderlyingType(type) : type;
 			var obj = VanaraMarshaler.CanMarshal(trueType, out var marshaler) ?
-				marshaler.MarshalNativeToManaged(ptr.Offset(offset), allocatedBytes == 0 ? SizeT.MaxValue : allocatedBytes) : 
-				Marshal.PtrToStructure(ptr.Offset(offset), trueType);
-			if (type == trueType)
-				return obj;
-			if (type.IsEnum)
-				return Enum.ToObject(type, obj);
-			return Convert.ChangeType(obj, type);
+				marshaler.MarshalNativeToManaged(ptr.Offset(offset), allocatedBytes) :
+				Marshal.SizeOf(trueType) <= allocatedBytes ? Marshal.PtrToStructure(ptr.Offset(offset), trueType) : throw new InsufficientMemoryException();
+			return type == trueType ? obj : type.IsEnum ? Enum.ToObject(type, obj) : Convert.ChangeType(obj, type);
 		}
 
 		private static object TrueValue(object value, out int size) => Convert.ChangeType(value, TrueType(value.GetType(), out size));
 
 		private static int WriteNoChecks(IntPtr ptr, object value, int offset, SizeT allocatedBytes)
 		{
-			var newVal = TrueValue(value, out var cbValue);
-			if (allocatedBytes > 0 && offset + cbValue > allocatedBytes)
-				throw new InsufficientMemoryException();
-			Marshal.StructureToPtr(newVal, ptr.Offset(offset), false);
-			return cbValue;
+			if (VanaraMarshaler.CanMarshal(value.GetType(), out var marshaler))
+			{
+				using var mem = marshaler.MarshalManagedToNative(value);
+				if (allocatedBytes > 0 && offset + mem.Size > allocatedBytes)
+					throw new InsufficientMemoryException();
+				mem.DangerousGetHandle().CopyTo(ptr.Offset(offset), mem.Size);
+				return mem.Size;
+			}
+			else
+			{
+				var newVal = TrueValue(value, out var cbValue);
+				if (allocatedBytes > 0 && offset + cbValue > allocatedBytes)
+					throw new InsufficientMemoryException();
+				Marshal.StructureToPtr(newVal, ptr.Offset(offset), false);
+				return cbValue;
+			}
 		}
 	}
 }

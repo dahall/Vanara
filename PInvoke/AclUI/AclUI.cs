@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Authz;
 
@@ -988,7 +989,7 @@ namespace Vanara.PInvoke
 			/// The GUID can identify a property set or property on the object, or a type of child object that can be contained by the
 			/// object. If this member points to GUID_NULL, the access right applies to the object itself.
 			/// </summary>
-			public IntPtr pguid;
+			public GuidPtr pguid;
 
 			/// <summary>
 			/// A bitmask that specifies the access right described by this structure. The mask can contain any combination of standard and
@@ -1024,22 +1025,11 @@ namespace Vanara.PInvoke
 			/// <value>The object type identifier.</value>
 			public Guid ObjectTypeId
 			{
-				get => pguid == IntPtr.Zero ? Guid.Empty : (Guid)Marshal.PtrToStructure(pguid, typeof(Guid));
-				set
-				{
-					((IDisposable)this).Dispose();
-					if (value == Guid.Empty) return;
-					pguid = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(Guid)));
-					Marshal.StructureToPtr(value, pguid, true);
-				}
+				get => pguid.Value.GetValueOrDefault();
+				set => pguid.Assign(value);
 			}
 
-			void IDisposable.Dispose()
-			{
-				if (pguid == IntPtr.Zero) return;
-				Marshal.FreeCoTaskMem(pguid);
-				pguid = IntPtr.Zero;
-			}
+			void IDisposable.Dispose() => pguid.Free();
 		}
 
 		/// <summary>
@@ -1055,7 +1045,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a GUID structure that identifies the type of child object. This member can be a pointer to GUID_NULL. The GUID
 			/// corresponds to the InheritedObjectType member of an object-specific ACE.
 			/// </summary>
-			public IntPtr pguid;
+			public GuidPtr pguid;
 
 			/// <summary>
 			/// A set of <see cref="INHERIT_FLAGS"/> that indicate the types of ACEs that can be inherited by the
@@ -1092,22 +1082,11 @@ namespace Vanara.PInvoke
 			/// <value>The child object type identifier.</value>
 			public Guid ChildObjectTypeId
 			{
-				get => pguid == IntPtr.Zero ? Guid.Empty : (Guid)Marshal.PtrToStructure(pguid, typeof(Guid));
-				set
-				{
-					((IDisposable)this).Dispose();
-					if (value == Guid.Empty) return;
-					pguid = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(Guid)));
-					Marshal.StructureToPtr(value, pguid, true);
-				}
+				get => pguid.Value.GetValueOrDefault();
+				set => pguid.Assign(value);
 			}
 
-			void IDisposable.Dispose()
-			{
-				if (pguid == IntPtr.Zero) return;
-				Marshal.FreeCoTaskMem(pguid);
-				pguid = IntPtr.Zero;
-			}
+			void IDisposable.Dispose() => pguid.Free();
 		}
 	}
 }

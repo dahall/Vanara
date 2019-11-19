@@ -246,7 +246,7 @@ namespace Vanara.InteropServices
 					for (var index = 0; index < ptrs.Length; index++)
 					{
 						var ptr = ptrs[index];
-						ret.SetValue(Marshal.PtrToStructure(ptr, elemType), index);
+						ret.SetValue(ptr.Convert((uint)Capacity - (uint)Position, elemType, CharSet), index);
 					}
 				}
 				else
@@ -405,7 +405,7 @@ namespace Vanara.InteropServices
 				if (value is IntPtr p)
 					Marshal.WriteIntPtr(PositionPtr, p);
 				else
-					Marshal.StructureToPtr(value, PositionPtr, false);
+					PositionPtr.Write(value);
 				position += stSize;
 				length += stSize;
 			}

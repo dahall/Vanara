@@ -235,7 +235,7 @@ namespace Vanara.Extensions.Tests
 		[Test()]
 		public void ToStructureTest1()
 		{
-			var h = SafeHGlobalHandle.CreateFromStructure(new PRECT(10, 11, 12, 13));
+			using var h = SafeHGlobalHandle.CreateFromStructure(new PRECT(10, 11, 12, 13));
 			var r = new PRECT(0, 0, 0, 0);
 			Assert.That(() => ((IntPtr)h).ToStructure(r), Throws.Nothing);
 			Assert.That(r.left, Is.EqualTo(10));

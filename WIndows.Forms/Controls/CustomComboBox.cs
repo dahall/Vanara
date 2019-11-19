@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
+using Vanara.Extensions;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.User32;
@@ -1202,7 +1203,7 @@ namespace Vanara.Windows.Forms
 				var hostedControl = GetHostedControl();
 				if (hostedControl != null)
 				{
-					var minmax = (MINMAXINFO)Marshal.PtrToStructure(m.LParam, typeof(MINMAXINFO));
+					var minmax = m.LParam.ToStructure<MINMAXINFO>();
 
 					// Maximum size.
 					if (hostedControl.MaximumSize.Width != 0)

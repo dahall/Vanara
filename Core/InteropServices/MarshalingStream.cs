@@ -145,10 +145,7 @@ namespace Vanara.InteropServices
 			}
 			else
 			{
-				var stSize = Marshal.SizeOf(value);
-				if (stSize + Position > Capacity) throw new ArgumentException();
-				Marshal.StructureToPtr(value, PositionPtr, false);
-				Position += stSize;
+				Position += Pointer.Write(value, (int)Position, Capacity);
 			}
 		}
 
@@ -160,17 +157,13 @@ namespace Vanara.InteropServices
 			if (items == null) return;
 			if (items.GetType().GetElementType() == typeof(string))
 			{
-				var hMem = SafeHGlobalHandle.CreateFromStringList(items as string[], StringListPackMethod.Packed, CharSet, 0);
+				using var hMem = SafeHGlobalHandle.CreateFromStringList(items as string[], StringListPackMethod.Packed, CharSet, 0);
 				var bytes = hMem.ToArray<byte>(hMem.Size);
 				Write(bytes, 0, bytes.Length);
 			}
 			else
 			{
-				var stSize = Marshal.SizeOf(typeof(T));
-				if (stSize * items.Length + Position > Capacity) throw new ArgumentException();
-				for (var i = 0; i < items.Length; i++)
-					Marshal.StructureToPtr(items[i], PositionPtr.Offset(i * stSize), false);
-				Position += stSize * items.Length;
+				Position += Pointer.Write(items, (int)Position, Capacity);
 			}
 		}
 

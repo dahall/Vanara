@@ -495,13 +495,13 @@ namespace Vanara.PInvoke.Tests
 		{
 			var addr = LocalAddrV6.sin6_addr;
 			var row = GetTcp6Table(true).FirstOrDefault(r => r.LocalAddr == addr && r.dwLocalPort != 0 && r.dwRemotePort != 0);
-			Assert.That(row, Is.Not.Null);
+			Assert.That(row.LocalAddr != IN6_ADDR.Unspecified);
 			ToggleAllEstats(row, true);
 			foreach (TCP_ESTATS_TYPE type in Enum.GetValues(typeof(TCP_ESTATS_TYPE)))
 			{
 				if (type == TCP_ESTATS_TYPE.TcpConnectionEstatsSynOpts) continue;
-				Assert.That(GetPerTcp6ConnectionEStats(row, type, out var srw, out _, out _), Is.Zero);
-				Console.Write(GetStats(srw));
+				Assert.That(GetPerTcp6ConnectionEStats(row, type, out var srw, out _, out _), ResultIs.Successful);
+				TestContext.Write(GetStats(srw));
 			}
 			ToggleAllEstats(row, false);
 		}
@@ -516,8 +516,8 @@ namespace Vanara.PInvoke.Tests
 			foreach (TCP_ESTATS_TYPE type in Enum.GetValues(typeof(TCP_ESTATS_TYPE)))
 			{
 				if (type == TCP_ESTATS_TYPE.TcpConnectionEstatsSynOpts) continue;
-				Assert.That(GetPerTcpConnectionEStats(row, type, out var srw, out _, out _), Is.Zero);
-				Console.Write(GetStats(srw));
+				Assert.That(GetPerTcpConnectionEStats(row, type, out var srw, out _, out _), ResultIs.Successful);
+				TestContext.Write(GetStats(srw));
 			}
 			ToggleAllEstats(row, false);
 		}
@@ -721,6 +721,7 @@ namespace Vanara.PInvoke.Tests
 
 		private static string GetStats(object rw)
 		{
+			if (rw is null) return string.Empty;
 			var sb = new StringBuilder();
 			foreach (var fi in rw.GetType().GetFields())
 				sb.AppendLine($"{rw.GetType().Name}.{fi.Name} = {fi.GetValue(rw)}");

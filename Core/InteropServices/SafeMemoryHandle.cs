@@ -473,6 +473,24 @@ namespace Vanara.InteropServices
 			handle.Write(value, offset, sz);
 		}
 
+		/// <summary>Writes the specified value to an offset within this allocated memory.</summary>
+		/// <param name="value">The value to write.</param>
+		/// <param name="autoExtend">if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="value"/>.</param>
+		/// <param name="offset">The number of bytes to offset from the beginning of this allocated memory before writing.</param>
+		public void Write(object value, bool autoExtend = true, int offset = 0)
+		{
+			if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
+			if (value is null) return;
+			if (autoExtend)
+			{
+				InteropExtensions.TrueType(value.GetType(), out var iSz);
+				var reqSz = iSz + offset;
+				if (sz < reqSz)
+					Size = reqSz;
+			}
+			handle.Write(value, offset, sz);
+		}
+
 		/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
 		/// <returns>
 		/// true if the handle is released successfully; otherwise, in the event of a catastrophic failure, false. In this case, it generates a

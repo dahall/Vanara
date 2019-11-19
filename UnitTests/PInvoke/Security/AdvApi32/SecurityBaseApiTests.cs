@@ -598,7 +598,7 @@ namespace Vanara.PInvoke.Tests
 							try
 							{
 								var inst = Activator.CreateInstance(settype);
-								Marshal.StructureToPtr(inst, mem, false);
+								mem.Write(inst);
 							}
 							catch
 							{

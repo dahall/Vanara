@@ -4301,11 +4301,11 @@ namespace Vanara.PInvoke
 		{
 			var mem = SafeCoTaskMemHandle.CreateFromStructure<FIXED_INFO>();
 			var len = (uint)mem.Size;
-			var e = GetNetworkParams((IntPtr)mem, ref len);
+			var e = GetNetworkParams(mem, ref len);
 			if (e == Win32Error.ERROR_BUFFER_OVERFLOW)
 			{
 				mem.Size = (int)len;
-				GetNetworkParams((IntPtr)mem, ref len).ThrowIfFailed();
+				GetNetworkParams(mem, ref len).ThrowIfFailed();
 			}
 			else
 			{
@@ -5426,10 +5426,10 @@ namespace Vanara.PInvoke
 			var mrw = new SafeCoTaskMemHandle((int)srw);
 			var mros = new SafeCoTaskMemHandle((int)sros);
 			var mrod = new SafeCoTaskMemHandle((int)srod);
-			var ret = GetPerTcp6ConnectionEStats(Row, EstatsType, (IntPtr)mrw, 0, srw, (IntPtr)mros, 0, sros, (IntPtr)mrod, 0, srod);
-			Rw = ret.Failed || srw == 0 ? null : Marshal.PtrToStructure((IntPtr)mrw, trw);
-			Ros = ret.Failed || sros == 0 ? null : Marshal.PtrToStructure((IntPtr)mros, tros);
-			Rod = ret.Failed || srod == 0 ? null : Marshal.PtrToStructure((IntPtr)mrod, trod);
+			var ret = GetPerTcp6ConnectionEStats(Row, EstatsType, mrw, 0, srw, mros, 0, sros, mrod, 0, srod);
+			Rw = ret.Failed || srw == 0 ? null : Marshal.PtrToStructure(mrw, trw);
+			Ros = ret.Failed || sros == 0 ? null : Marshal.PtrToStructure(mros, tros);
+			Rod = ret.Failed || srod == 0 ? null : Marshal.PtrToStructure(mrod, trod);
 			return ret;
 		}
 
@@ -5882,10 +5882,10 @@ namespace Vanara.PInvoke
 			var mrw = new SafeCoTaskMemHandle((int)srw);
 			var mros = new SafeCoTaskMemHandle((int)sros);
 			var mrod = new SafeCoTaskMemHandle((int)srod);
-			var ret = GetPerTcpConnectionEStats(Row, EstatsType, (IntPtr)mrw, 0, srw, (IntPtr)mros, 0, sros, (IntPtr)mrod, 0, srod);
-			Rw = ret.Failed || srw == 0 ? null : Marshal.PtrToStructure((IntPtr)mrw, trw);
-			Ros = ret.Failed || sros == 0 ? null : Marshal.PtrToStructure((IntPtr)mros, tros);
-			Rod = ret.Failed || srod == 0 ? null : Marshal.PtrToStructure((IntPtr)mrod, trod);
+			var ret = GetPerTcpConnectionEStats(Row, EstatsType, mrw, 0, srw, mros, 0, sros, mrod, 0, srod);
+			Rw = ret.Failed || srw == 0 ? null : Marshal.PtrToStructure(mrw, trw);
+			Ros = ret.Failed || sros == 0 ? null : Marshal.PtrToStructure(mros, tros);
+			Rod = ret.Failed || srod == 0 ? null : Marshal.PtrToStructure(mrod, trod);
 			return ret;
 		}
 

@@ -122,11 +122,11 @@ namespace Vanara.InteropServices
 			var memSz = baseSz + arrElemSz * (arrLen - 1);
 			// Set memory size
 			Size = memSz;
-			// Marshal base structure
+			// Marshal base structure - don't use Write to prevent loops
 			Marshal.StructureToPtr(value, handle, false);
 			// Push each element of the array into memory
 			for (var i = 0; i < arrLen; i++)
-				Marshal.StructureToPtr(((Array)arrVal).GetValue(i), handle.Offset(baseSz - arrElemSz * (i - 1)), false);
+				handle.Write(((Array)arrVal).GetValue(i), baseSz - arrElemSz * (i - 1), memSz);
 		}
 	}
 

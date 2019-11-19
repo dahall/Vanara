@@ -794,7 +794,7 @@ namespace Vanara.PInvoke
 								try { return (T)Convert.ChangeType((float)Marshal.PtrToStructure(new IntPtr(dataPtr), typeof(float)), typeof(T)); } catch { return null; }
 							if (vt.IsFlagSet(IntVARTYPE.VT_R8))
 								try { return (T)Convert.ChangeType((double)Marshal.PtrToStructure(new IntPtr(dataPtr), typeof(double)), typeof(T)); } catch { return null; }*/
-							return (T)Marshal.PtrToStructure(new IntPtr(dataPtr), typeof(T));
+							return new IntPtr(dataPtr).ToStructure<T>();
 						}
 					}
 				}

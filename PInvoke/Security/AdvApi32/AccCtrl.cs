@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -968,11 +969,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the <see cref="OBJECTS_AND_NAME"/> from the <see cref="ptstrName"/> field.</summary>
 			/// <value>The structure.</value>
-			public OBJECTS_AND_NAME ObjectsAndName => TrusteeForm == TRUSTEE_FORM.TRUSTEE_IS_OBJECTS_AND_NAME ? (OBJECTS_AND_NAME)Marshal.PtrToStructure(ptstrName, typeof(OBJECTS_AND_NAME)) : default;
+			public OBJECTS_AND_NAME ObjectsAndName => TrusteeForm == TRUSTEE_FORM.TRUSTEE_IS_OBJECTS_AND_NAME ? ptstrName.ToStructure<OBJECTS_AND_NAME>() : default;
 
 			/// <summary>Gets the <see cref="OBJECTS_AND_SID"/> from the <see cref="ptstrName"/> field.</summary>
 			/// <value>The structure.</value>
-			public OBJECTS_AND_SID ObjectsAndSid => TrusteeForm == TRUSTEE_FORM.TRUSTEE_IS_OBJECTS_AND_SID ? (OBJECTS_AND_SID)Marshal.PtrToStructure(ptstrName, typeof(OBJECTS_AND_SID)) : default;
+			public OBJECTS_AND_SID ObjectsAndSid => TrusteeForm == TRUSTEE_FORM.TRUSTEE_IS_OBJECTS_AND_SID ? ptstrName.ToStructure<OBJECTS_AND_SID>() : default;
 		}
 	}
 }

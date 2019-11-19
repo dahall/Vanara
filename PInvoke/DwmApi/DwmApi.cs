@@ -548,12 +548,9 @@ namespace Vanara.PInvoke
 		public static HRESULT DwmGetWindowAttribute<T>(HWND hwnd, DWMWINDOWATTRIBUTE dwAttribute, out T pvAttribute)
 		{
 			if (!CorrespondingTypeAttribute.CanGet(dwAttribute, typeof(T))) throw new ArgumentException();
-			var type = typeof(T);
-			var isBool = type == typeof(bool);
-			type = isBool ? typeof(uint) : (type.IsEnum ? Enum.GetUnderlyingType(type) : type);
-			var m = new SafeCoTaskMemHandle(Marshal.SizeOf(type));
-			var hr = DwmGetWindowAttribute(hwnd, dwAttribute, (IntPtr)m, m.Size);
-			pvAttribute = isBool ? (T)Convert.ChangeType(m.ToStructure<uint>(), typeof(bool)) : (T)Marshal.PtrToStructure((IntPtr)m, type);
+			var m = SafeCoTaskMemHandle.CreateFromStructure<T>();
+			var hr = DwmGetWindowAttribute(hwnd, dwAttribute, m, m.Size);
+			pvAttribute = m.ToType<T>();
 			return hr;
 		}
 

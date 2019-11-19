@@ -295,17 +295,17 @@ namespace Vanara.PInvoke.Tests
 		public void GetSetIpInterfaceEntryTest()
 		{
 			var mibrow = new MIB_IPINTERFACE_ROW(ADDRESS_FAMILY.AF_INET, primaryAdapter.Luid);
-			Assert.That(GetIpInterfaceEntry(ref mibrow), Is.Zero);
+			Assert.That(GetIpInterfaceEntry(ref mibrow), ResultIs.Successful);
 			var prev = mibrow.SitePrefixLength;
 			mibrow.SitePrefixLength = 0;
-			Assert.That(SetIpInterfaceEntry(mibrow), Is.Zero);
+			Assert.That(SetIpInterfaceEntry(mibrow), ResultIs.Successful);
 
 			mibrow = new MIB_IPINTERFACE_ROW(ADDRESS_FAMILY.AF_INET, primaryAdapter.Luid);
-			Assert.That(GetIpInterfaceEntry(ref mibrow), Is.Zero);
+			Assert.That(GetIpInterfaceEntry(ref mibrow), ResultIs.Successful);
 			Assert.That(mibrow.PathMtuDiscoveryTimeout, Is.EqualTo(600000));
 
 			mibrow.SitePrefixLength = prev;
-			Assert.That(SetIpInterfaceEntry(mibrow), Is.Zero);
+			Assert.That(SetIpInterfaceEntry(mibrow), ResultIs.Successful);
 		}
 
 		[Test]

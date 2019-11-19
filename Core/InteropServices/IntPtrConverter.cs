@@ -34,7 +34,7 @@ namespace Vanara.InteropServices
 			if (ptr == IntPtr.Zero)
 			{
 				if (!destType.IsValueType) return null;
-				throw new ArgumentException("Cannot convert a null pointer.", nameof(ptr));
+				throw new NullReferenceException();
 			}
 			if (sz == 0) throw new ArgumentException("Cannot convert a pointer with no Size.", nameof(sz));
 
@@ -98,16 +98,7 @@ namespace Vanara.InteropServices
 					throw new NotSupportedException("Unsupported type parameter.");
 			}
 
-			object GetBlittable(Type retType)
-			{
-				if (retType.IsEnum && Marshal.SizeOf(Enum.GetUnderlyingType(retType)) <= sz)
-					return Enum.ToObject(retType, Marshal.PtrToStructure(ptr, Enum.GetUnderlyingType(retType)));
-				if (Marshal.SizeOf(retType) <= sz)
-					return Marshal.PtrToStructure(ptr, retType);
-				throw SizeExc();
-			}
-
-			Exception SizeExc() => new ArgumentOutOfRangeException(nameof(sz), "Type size is larger than buffer size.");
+			object GetBlittable(Type retType) => InteropExtensions.GetValueType(ptr, retType);
 		}
 
 		/// <summary>Converts the specified pointer to <typeparamref name="T"/>.</summary>

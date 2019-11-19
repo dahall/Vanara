@@ -140,7 +140,7 @@ namespace Vanara.PInvoke
 			/// <summary>Returns an extracted structure from this buffer.</summary>
 			/// <typeparam name="T">The structure type to extract.</typeparam>
 			/// <returns>Extracted structure or default(T) if the buffer is invalid.</returns>
-			public T ToStructure<T>() where T : struct => IsInvalid ? default : (T)Marshal.PtrToStructure(handle, typeof(T));
+			public T ToStructure<T>() where T : struct => IsInvalid ? default : handle.ToStructure<T>();
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => NetApiBufferFree(handle) == 0;
