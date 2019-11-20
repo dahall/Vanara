@@ -39,9 +39,10 @@ namespace Vanara.Windows.Shell
 		/// </summary>
 		/// <param name="parent">The Shell data source object that is the parent of the child items specified in <paramref name="pidls"/>.</param>
 		/// <param name="pidls">The list of child item IDs for which the array is being created. This value can be <see langword="null"/>.</param>
-		public ShellItemArray(IShellFolder parent, IntPtr[] pidls)
+		public ShellItemArray(IShellFolder parent, IEnumerable<PIDL> pidls)
 		{
-			SHCreateShellItemArray(PIDL.Null, parent, (uint)(pidls?.Length ?? 0), pidls, out array).ThrowIfFailed();
+			var pa = pidls?.ToArray();
+			SHCreateShellItemArray(PIDL.Null, parent, (uint)(pa?.Length ?? 0), pa, out array).ThrowIfFailed();
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
