@@ -378,7 +378,7 @@ namespace Vanara.PInvoke
 			/// The caller requests this value by passing a non-null ppidlOut. Implementations of IShellFolder::SetNameOf must return a
 			/// pointer to the new ITEMIDLIST in the ppidlOut parameter.
 			/// </param>
-			void SetNameOf(HWND hwnd, [In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszName, SHGDNF uFlags, out PIDL ppidlOut);
+			void SetNameOf([Optional] HWND hwnd, [In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszName, SHGDNF uFlags, out PIDL ppidlOut);
 		}
 
 		/// <summary>

@@ -21,7 +21,7 @@ namespace Vanara.PInvoke
 			[PreserveSig]
 			//HRESULT QueryService(in Guid guidService, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvObject);
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			HRESULT QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
+			HRESULT QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject);
 		}
 	}
 }

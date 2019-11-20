@@ -750,7 +750,7 @@ namespace Vanara.PInvoke
 			/// pointer can be NULL.
 			/// </param>
 			/// <param name="iIcon">A Shell icon ID.</param>
-			void SetNormalIcon([In, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
+			void SetNormalIcon([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
 
 			/// <summary>Sets the icon that allows containers to specify an "open" look.</summary>
 			/// <param name="pszFile">
@@ -758,7 +758,7 @@ namespace Vanara.PInvoke
 			/// pointer can be NULL.
 			/// </param>
 			/// <param name="iIcon">Shell icon ID.</param>
-			void SetOpenIcon([In, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
+			void SetOpenIcon([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
 
 			/// <summary>Sets the icon for a shortcut to the object.</summary>
 			/// <param name="pszFile">
@@ -766,7 +766,7 @@ namespace Vanara.PInvoke
 			/// pointer can be NULL.
 			/// </param>
 			/// <param name="iIcon">Shell icon ID.</param>
-			void SetShortcutIcon([In, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
+			void SetShortcutIcon([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
 
 			/// <summary>Sets the default icon.</summary>
 			/// <param name="pszFile">
@@ -774,7 +774,7 @@ namespace Vanara.PInvoke
 			/// pointer can be NULL.
 			/// </param>
 			/// <param name="iIcon">The Shell icon ID.</param>
-			void SetDefaultIcon([In, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
+			void SetDefaultIcon([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
 		}
 
 		/// <summary>Exposes a method that allows enumeration of a collection of handlers associated with particular file name extensions.</summary>
@@ -1652,7 +1652,7 @@ namespace Vanara.PInvoke
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762135")]
 		public static extern HRESULT SHCreateItemFromRelativeName([In, MarshalAs(UnmanagedType.Interface)] IShellItem psiParent, [In, MarshalAs(UnmanagedType.LPWStr)] string pszName,
-			[In, MarshalAs(UnmanagedType.Interface)] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
+			[In, Optional, MarshalAs(UnmanagedType.Interface)] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
 
 		/// <summary>Creates and initializes a Shell item object from a relative parsing name.</summary>
 		/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
@@ -1722,7 +1722,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762137")]
-		public static extern HRESULT SHCreateItemWithParent([In] PIDL pidlParent, [In, MarshalAs(UnmanagedType.Interface)] IShellFolder psfParent,
+		public static extern HRESULT SHCreateItemWithParent([In, Optional] PIDL pidlParent, [In, Optional, MarshalAs(UnmanagedType.Interface)] IShellFolder psfParent,
 			[In] PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppvItem);
 
 		/// <summary>Create a Shell item, given a parent folder and a child item ID.</summary>
@@ -1789,8 +1789,8 @@ namespace Vanara.PInvoke
 		// SHSTDAPI SHCreateShellItemArray( PCIDLIST_ABSOLUTE pidlParent, IShellFolder *psf, UINT cidl, PCUITEMID_CHILD_ARRAY ppidl, IShellItemArray **ppsiItemArray );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "024ccbc7-97f1-4cb5-8588-9c9b1f747336")]
-		public static extern HRESULT SHCreateShellItemArray([In] PIDL pidlParent, [In, MarshalAs(UnmanagedType.Interface), Optional] IShellFolder psf,
-			[In, Optional] uint cidl, [In, Optional] IntPtr[] ppidl, out IShellItemArray ppsiItemArray);
+		public static extern HRESULT SHCreateShellItemArray([In, Optional] PIDL pidlParent, [In, MarshalAs(UnmanagedType.Interface), Optional] IShellFolder psf,
+			[In, Optional] uint cidl, [In, Optional] PIDL[] ppidl, out IShellItemArray ppsiItemArray);
 
 		/// <summary>
 		/// <para>Creates a Shell item array object from a data object.</para>
@@ -2059,12 +2059,8 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobjidl.h", MSDNShortId = "bb762197")]
-		public static extern HRESULT SHGetPropertyStoreFromParsingName(
-			[In, MarshalAs(UnmanagedType.LPWStr)] string pszPath,
-			[In] IBindCtx pbc,
-			GETPROPERTYSTOREFLAGS flags,
-			in Guid riid,
-			out IPropertyStore propertyStore);
+		public static extern HRESULT SHGetPropertyStoreFromParsingName([In, MarshalAs(UnmanagedType.LPWStr)] string pszPath, [In, Optional] IBindCtx pbc,
+			GETPROPERTYSTOREFLAGS flags, in Guid riid, out IPropertyStore propertyStore);
 
 		/// <summary>
 		/// <para>

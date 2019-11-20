@@ -952,8 +952,8 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the address of a pointer to a null-terminated Unicode string that contains an error
 			/// message if one was generated. This value can be NULL.
 			/// </returns>
-			SafeCoTaskMemString Redirect(in Guid rfid, [In] HWND hwnd, [In] KF_REDIRECT_FLAGS flags,
-				[In, MarshalAs(UnmanagedType.LPWStr)] string pszTargetPath, [In] uint cFolders, [In] Guid[] pExclusion);
+			SafeCoTaskMemString Redirect(in Guid rfid, [In, Optional] HWND hwnd, [In] KF_REDIRECT_FLAGS flags,
+				[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszTargetPath, [In] uint cFolders, [In] Guid[] pExclusion);
 		}
 
 		/// <summary>Gets an array of all registered known folder IDs. This can be used in enumerating all known folders.</summary>

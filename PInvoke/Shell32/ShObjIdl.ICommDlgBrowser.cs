@@ -77,6 +77,7 @@ namespace Vanara.PInvoke
 			/// <summary>Called when a user double-clicks in the view or presses the ENTER key.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT OnDefaultCommand([In] IShellView ppshv);
 
@@ -84,6 +85,7 @@ namespace Vanara.PInvoke
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="uChange">Change in the selection state. This parameter can be one of the following values.</param>
 			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT OnStateChange([In] IShellView ppshv, CDBOSC uChange);
 
@@ -91,6 +93,7 @@ namespace Vanara.PInvoke
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="pidl">A PIDL, relative to the folder, that identifies the object.</param>
 			/// <returns>The browser should return S_OK to include the object in the view, or S_FALSE to hide it.</returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT IncludeObject([In] IShellView ppshv, [In] PIDL pidl);
 		}
@@ -166,6 +169,7 @@ namespace Vanara.PInvoke
 			/// <summary>Called when a user double-clicks in the view or presses the ENTER key.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT OnDefaultCommand([In] IShellView ppshv);
 
@@ -173,6 +177,7 @@ namespace Vanara.PInvoke
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="uChange">Change in the selection state. This parameter can be one of the following values.</param>
 			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT OnStateChange([In] IShellView ppshv, CDBOSC uChange);
 
@@ -180,8 +185,9 @@ namespace Vanara.PInvoke
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="pidl">A PIDL, relative to the folder, that identifies the object.</param>
 			/// <returns>The browser should return S_OK to include the object in the view, or S_FALSE to hide it.</returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
-			HRESULT IncludeObject([In] IShellView ppshv, [In] IntPtr pidl);
+			HRESULT IncludeObject([In] IShellView ppshv, [In] PIDL pidl);
 
 			/// <summary>Called by the Shell view to get the default shortcut menu text.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
@@ -193,6 +199,7 @@ namespace Vanara.PInvoke
 			/// Returns S_OK if a new default shortcut menu text was returned in pshv. If S_FALSE is returned, use the normal default text.
 			/// Otherwise, returns a standard COM error value.
 			/// </returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT GetDefaultMenuText([In] IShellView ppshv, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszText, int cchMax);
 
@@ -201,6 +208,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			/// <param name="pdwFlags">A DWORD value that controls the behavior of the view when in common dialog mode.</param>
 			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT GetViewFlags(out CDB2GVF pdwFlags);
 
@@ -208,6 +216,7 @@ namespace Vanara.PInvoke
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="dwNotifyType">A flag that can can take one of the following two values.</param>
 			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT Notify([In] IShellView ppshv, CDB2N dwNotifyType);
 
@@ -215,6 +224,7 @@ namespace Vanara.PInvoke
 			/// <param name="pszFileSpec">Contains a pointer to the current filter path/file as a Unicode string.</param>
 			/// <param name="cchFileSpec">Specifies the path/file length, in characters.</param>
 			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT GetCurrentFilter([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszFileSpec, int cchFileSpec);
 
@@ -222,71 +232,16 @@ namespace Vanara.PInvoke
 			/// <param name="ppshv">A pointer to the IShellView interface of the hosted view.</param>
 			/// <param name="iColumn">The index of the column clicked.</param>
 			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT OnColumnClicked([In] IShellView ppshv, int iColumn);
 
 			/// <summary>Called after a specified preview is created in the IShellView interface.</summary>
 			/// <param name="ppshv">A pointer to the IShellView interface of the hosted view.</param>
 			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT OnPreViewCreated([In] IShellView ppshv);
 		}
-		
-		/*[ComImport, Guid("c8ad25a1-3294-41ee-8165-71174bd01c57"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface ICommDlgBrowser3
-		{
-			// dlg1
-			[PreserveSig]
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			HRESULT OnDefaultCommand(IntPtr ppshv);
-
-			[PreserveSig]
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			HRESULT OnStateChange(
-				IntPtr ppshv,
-				CDBOSC uChange);
-
-			[PreserveSig]
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			HRESULT IncludeObject(
-				IntPtr ppshv,
-				IntPtr pidl);
-
-			// dlg2
-			[PreserveSig]
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			HRESULT GetDefaultMenuText(
-				IShellView shellView,
-				IntPtr buffer, //A pointer to a buffer that is used by the Shell browser to return the default shortcut menu text.
-				int bufferMaxLength); //should be max size = 260?
-
-			[PreserveSig]
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			HRESULT GetViewFlags(
-				[Out] out CDB2GVF pdwFlags); // CommDlgBrowser2ViewFlags 
-
-
-			[PreserveSig]
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			HRESULT Notify(
-				IntPtr pshv, CDB2N notifyType);
-
-			// dlg3
-			[PreserveSig]
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			HRESULT GetCurrentFilter(
-				StringBuilder pszFileSpec,
-				int cchFileSpec);
-
-			[PreserveSig]
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			HRESULT OnColumnClicked(
-				IShellView ppshv,
-				int iColumn);
-
-			[PreserveSig]
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			HRESULT OnPreViewCreated(IShellView ppshv);
-		}*/
 	}
 }

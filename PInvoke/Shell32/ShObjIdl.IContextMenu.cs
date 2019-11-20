@@ -446,7 +446,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT CallBack(IShellFolder psf, HWND hwndOwner, IDataObject pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
+			HRESULT CallBack([Optional] IShellFolder psf, [Optional] HWND hwndOwner, [Optional] IDataObject pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
 		}
 
 		/*

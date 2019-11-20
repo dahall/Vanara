@@ -268,7 +268,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "dd378433")]
-		public static extern HRESULT SHShowManageLibraryUI(IShellItem psiLibrary, HWND hwndOwner, [In, MarshalAs(UnmanagedType.LPWStr)] string pszTitle, [In, MarshalAs(UnmanagedType.LPWStr)] string pszInstruction, LIBRARYMANAGEDIALOGOPTIONS lmdOptions);
+		public static extern HRESULT SHShowManageLibraryUI(IShellItem psiLibrary, HWND hwndOwner, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszTitle, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszInstruction, LIBRARYMANAGEDIALOGOPTIONS lmdOptions);
 
 		/// <summary>Class interface for IShellLibrary</summary>
 		[ComImport, Guid("d9b3211d-e57f-4426-aaef-30a806add397"), ClassInterface(ClassInterfaceType.None)]

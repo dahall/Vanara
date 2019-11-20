@@ -734,7 +734,7 @@ namespace Vanara.PInvoke
 			/// <param name="lpButtons">The address of an array of TBBUTTON structures.</param>
 			/// <param name="nButtons">The number of TBBUTTON structures in the lpButtons array.</param>
 			/// <param name="uFlags">Flags specifying where the toolbar buttons should go.</param>
-			void SetToolbarItems([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TBBUTTON[] lpButtons, uint nButtons, FCT uFlags);
+			void SetToolbarItems([Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TBBUTTON[] lpButtons, uint nButtons, FCT uFlags);
 		}
 
 		/// <summary>
@@ -1136,6 +1136,39 @@ namespace Vanara.PInvoke
 				ViewMode = viewMode;
 				fFlags = flags;
 			}
+		}
+
+		/// <summary>Contains folder view information.</summary>
+		[PInvokeData("Shobjidl.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public class PFOLDERSETTINGS
+		{
+			private FOLDERSETTINGS settings;
+
+			/// <summary>Folder view mode.</summary>
+			public FOLDERVIEWMODE ViewMode { get => settings.ViewMode; set => settings.ViewMode = value; }
+
+			/// <summary>A set of flags that indicate the options for the folder.</summary>
+			public FOLDERFLAGS fFlags { get => settings.fFlags; set => settings.fFlags = value; }
+
+			/// <summary>Initializes a new instance of the <see cref="FOLDERSETTINGS"/> struct.</summary>
+			/// <param name="viewMode">Folder view mode.</param>
+			/// <param name="flags">A set of flags that indicate the options for the folder.</param>
+			public PFOLDERSETTINGS(FOLDERVIEWMODE viewMode, FOLDERFLAGS flags)
+			{
+				settings.ViewMode = viewMode;
+				settings.fFlags = flags;
+			}
+
+			/// <summary>Performs an implicit conversion from <see cref="PFOLDERSETTINGS"/> to <see cref="FOLDERSETTINGS"/>.</summary>
+			/// <param name="r">The <see cref="PFOLDERSETTINGS"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator FOLDERSETTINGS(PFOLDERSETTINGS r) => r.settings;
+
+			/// <summary>Performs an implicit conversion from <see cref="FOLDERSETTINGS"/> to <see cref="PFOLDERSETTINGS"/>.</summary>
+			/// <param name="r">The <see cref="FOLDERSETTINGS"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PFOLDERSETTINGS(in FOLDERSETTINGS r) => new PFOLDERSETTINGS(r.ViewMode, r.fFlags);
 		}
 
 		/// <summary>

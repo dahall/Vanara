@@ -156,7 +156,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-iexplorerbrowser
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "da2cf5d4-5a68-4d18-807b-b9d4e2712c10")]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("DFD3B6B5-C10C-4BE9-85F6-A66969F402F6"), CoClass(typeof(ExplorerBrowser))]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("dfd3b6b5-c10c-4be9-85f6-a66969f402f6"), CoClass(typeof(ExplorerBrowser))]
 		public interface IExplorerBrowser
 		{
 			/// <summary>Prepares the browser to be navigated.</summary>
@@ -166,14 +166,17 @@ namespace Vanara.PInvoke
 			/// relative to hwndParent.
 			/// </param>
 			/// <param name="pfs">A pointer to a FOLDERSETTINGS structure that determines how the folder will be displayed in the view.</param>
-			void Initialize([In] HWND hwndParent, in RECT prc, in FOLDERSETTINGS pfs);
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+			void Initialize([In] HWND hwndParent, in RECT prc, [Optional] PFOLDERSETTINGS pfs);
 
 			/// <summary>Destroys the browser.</summary>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void Destroy();
 
 			/// <summary>Sets the size and position of the view windows created by the browser.</summary>
 			/// <param name="phdwp">A pointer to a DeferWindowPos handle. This parameter can be NULL.</param>
 			/// <param name="rcBrowser">The coordinates that the browser will occupy.</param>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void SetRect([In, Out] ref HDWP phdwp, [In] RECT rcBrowser);
 
 			/// <summary>Sets the name of the property bag.</summary>
@@ -181,14 +184,17 @@ namespace Vanara.PInvoke
 			/// A pointer to a constant, null-terminated, Unicode string that contains the name of the property bag. View state information
 			/// that is specific to the application of the client is stored (persisted) using this name.
 			/// </param>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void SetPropertyBag([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropertyBag);
 
 			/// <summary>Sets the default empty text.</summary>
 			/// <param name="pszEmptyText">A pointer to a constant, null-terminated, Unicode string that contains the empty text.</param>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void SetEmptyText([In, MarshalAs(UnmanagedType.LPWStr)] string pszEmptyText);
 
 			/// <summary>Sets the folder settings for the current view.</summary>
 			/// <param name="pfs">A pointer to a FOLDERSETTINGS structure that contains the folder settings to be applied.</param>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void SetFolderSettings(in FOLDERSETTINGS pfs);
 
 			/// <summary>Initiates a connection with IExplorerBrowser for event callbacks.</summary>
@@ -197,12 +203,14 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains a token that uniquely identifies the event listener. This allows several event listeners
 			/// to be subscribed at a time.
 			/// </param>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void Advise([In] IExplorerBrowserEvents psbe, out uint pdwCookie);
 
 			/// <summary>Terminates an advisory connection.</summary>
 			/// <param name="dwCookie">
 			/// A connection token previously returned from IExplorerBrowser::Advise. Identifies the connection to be terminated.
 			/// </param>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void Unadvise([In] uint dwCookie);
 
 			/// <summary>Sets the current browser options.</summary>
@@ -210,8 +218,8 @@ namespace Vanara.PInvoke
 			void SetOptions([In] EXPLORER_BROWSER_OPTIONS dwFlag);
 
 			/// <summary>Gets the current browser options.</summary>
-			/// <returns>When this method returns, contains the current EXPLORER_BROWSER_OPTIONS for the browser.</returns>
-			EXPLORER_BROWSER_OPTIONS GetOptions();
+			/// <param name="pdwFlag">When this method returns, contains the current EXPLORER_BROWSER_OPTIONS for the browser.</param>
+			void GetOptions(out EXPLORER_BROWSER_OPTIONS pdwFlag);
 
 			/// <summary>Browses to a pointer to an item identifier list (PIDL)</summary>
 			/// <param name="pidl">
@@ -219,7 +227,7 @@ namespace Vanara.PInvoke
 			/// This parameter can be NULL. For more information, see Remarks.
 			/// </param>
 			/// <param name="uFlags">A flag that specifies the category of the pidl. This affects how navigation is accomplished.</param>
-			void BrowseToIDList([In] IntPtr pidl, [In] SBSP uFlags);
+			void BrowseToIDList([In] PIDL pidl, [In] SBSP uFlags);
 
 			/// <summary>Browses to an object.</summary>
 			/// <param name="punk">A pointer to an object to browse to. If the object cannot be browsed, an error value is returned.</param>
@@ -270,8 +278,9 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iexplorerbrowserevents-onnavigationpending
 			// HRESULT OnNavigationPending( PCIDLIST_ABSOLUTE pidlFolder );
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
-			HRESULT OnNavigationPending([In] IntPtr pidlFolder);
+			HRESULT OnNavigationPending([In] PIDL pidlFolder);
 
 			/// <summary>Notifies clients that the view of the Explorer browser has been created and can be modified.</summary>
 			/// <param name="psv">
@@ -288,6 +297,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iexplorerbrowserevents-onviewcreated
 			// HRESULT OnViewCreated( IShellView *psv );
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT OnViewCreated([In] IShellView psv);
 
@@ -310,8 +320,9 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iexplorerbrowserevents-onnavigationcomplete
 			// HRESULT OnNavigationComplete( PCIDLIST_ABSOLUTE pidlFolder );
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
-			HRESULT OnNavigationComplete([In] IntPtr pidlFolder);
+			HRESULT OnNavigationComplete([In] PIDL pidlFolder);
 
 			/// <summary>Notifies clients that the Explorer browser has failed to navigate to a Shell folder.</summary>
 			/// <param name="pidlFolder">
@@ -333,8 +344,9 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iexplorerbrowserevents-onnavigationfailed
 			// HRESULT OnNavigationFailed( PCIDLIST_ABSOLUTE pidlFolder );
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
-			HRESULT OnNavigationFailed([In] IntPtr pidlFolder);
+			HRESULT OnNavigationFailed([In] PIDL pidlFolder);
 		}
 
 		/// <summary>Extension method to simplify using the <see cref="IExplorerBrowser.GetCurrentView"/> method.</summary>

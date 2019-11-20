@@ -101,6 +101,7 @@ namespace Vanara.PInvoke
 			/// treated as if EPS_DONTCARE was returned for the parameter.
 			/// </remarks>
 			[PInvokeData("shobjidl_core.h", MSDNShortId = "6c051cdc-b7f9-48dc-ba32-38f0f1ee5fda")]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
 			HRESULT GetPaneState(in Guid ep, out EXPLORERPANESTATE peps);
 		}
