@@ -48,10 +48,6 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
     <Compile Remove="_InProgress_\**\*" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Controls\ExplorerBrowser.cs" />
-    <Compile Remove="Design\ExplorerBrowserDesigner.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Controls\ExplorerBrowser.bmp" />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
@@ -64,10 +60,6 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
   <ItemGroup>
     <EmbeddedResource Include="Controls\ExplorerBrowser.bmp" />
     <EmbeddedResource Include="Extenders\GlassExtenderProvider.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Controls\ExplorerBrowser.cs" />
-    <None Include="Design\ExplorerBrowserDesigner.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Vanara.Core.csproj" />

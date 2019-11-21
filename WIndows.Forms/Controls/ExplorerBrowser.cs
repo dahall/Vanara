@@ -1,22 +1,6 @@
-﻿// MMMMMMMMMMMMMMMN0XWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-// MMMMMMMMMMMMMWOc::dNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-// MMMMMMMMMMMMWk;cko,lXMMMMMMMMMMMMWNXXXXXXNNWMMMMMMNXXXXXXXNWMMMMMMMMMMMWXK000KXWMMMMMMWNXXNMMMMMNXKXWMMNXXXXXXXXXNWMMWXXXNWMMMMMMNXXNMMMM
-// MMMMMMMMMMMNd,l0K0d;cKMMMMMMMMMMM0;.......,:xXMMMXl.......';lONMMMMNXOl,... ...,lOWMMMKc..cXMMWk;..:KMXc.........cKMNd....cKMMMMXc..dWMMM
-// MMMMMMMMMMNo,oOdclxx;:KMMMMMMMMMMx.  'lol,   :XMMK,  .:ol:.  .oNMM0:..  'cool:.  .oXMM0'  ,KMXo.  ;0WM0'  .:lllllkNMN:     ,0WMMK,  cNMMM
-// MMMMMMMMMXl,d0d.  ;Ok::0WMMMMMMMMx.  lWMMK,  '0MMK,  '0MMWk.  ,KMK;   .oNMMMMW0;  .oWM0'  ,00;  .dNMMM0'  ,KMMMMMMMMX:  ..  'OWMK,  cNMMM
-// MMMMMMMMK:;x0Kx.  :0KO:;kWMMMMMMMx.  ;xkx:. .dNMMK,  .xKKO:   oNWd.   cNMMMMMMMx.  ;KM0,  .:.  :0WMMMM0'  .lxxxxONMMX:  ;d'  .kWK,  cNMMM
-// MMMMMMW0::kKKKk,  c0KKOc,xWMMMMMMx.   ..    ,dXMMK,   ...  .;kNMWl    oWMMMMMMMO.  '0M0,   .  .xWMMMMM0'    ....:KMMX:  :XO'  .k0,  cNMMM
-// MMMMMWk;cOKKKKO; .oKKKK0l,dNMMMMMx.  :O0Ox:.  :KMK,  .co:.  :0WMWo    cNMMMMMMMk.  ;XM0,  'o,  .oNMMMM0'  'x0000XWMMN:  ;XW0,  .l,  cNMMM
-// MMMMWx,lOKKKKK0d;ckKKKKK0o,oNMMMMx.  lWMMM0,  .OMK,  '0MWx.  ,0MMO.   .kWMMMMWK;  .dWM0,  ,KKc   :KWMM0'  ,KMMMMMMMMN:  ;XMM0;      cNMMM
-// MMMNo,o0KKKKKKk:..l0KKKKK0d,lXMMMx.  ,dxxo;   cXMK,  '0MMWd.  ;KMNd.   .:dxxdc.  .oNMM0,  ,KMNo.  'kWM0'  .lddddxONMN:  ;XMMMK:     cNMMM
-// MMXl,d0KKKKKKKOc''o0KKKKKKKx;cKMMO'  ......'ckNMMX:  ;KMMMNo. .oNMW0xl'.      .,l0WMMMK;  :XMMWk,. 'kMK:.  ......;KMNl. cXMMMMXl.  .dWMMM
-// MMx':dxxxxxxxxxdoddxxxxxxxxd:'dWMWK000000KXNMMMMMWX0OKWMMMMNKOOKWMMMMMNKOkxxkOKNMMMMMMWX00XWMMMMX0O0XMWX000000000KWMMX00XWMMMMMWK00KNMMMM
-// MMXxoooooooooooooooooooooooooxXMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-// MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-
-// Heavily leverages the work done by Microsoft on the control by the same name in WindowsVistaApiPack. Work was done to improve the designer
-// experience, remove nested properties, add missing capabilities, simplify COM calls, align names to those in other mainstream controls, and
-// use the Vanara libraries.
+﻿// Heavily leverages the work done by Microsoft on the control by the same name in WindowsVistaApiPack. Work was done to improve the
+// designer experience, remove nested properties, add missing capabilities, simplify COM calls, align names to those in other mainstream
+// controls, and use the Vanara libraries.
 
 using System;
 using System.Collections;
@@ -137,8 +121,8 @@ namespace Vanara.Windows.Forms
 		None = EXPLORER_BROWSER_FILL_FLAGS.EBF_NONE,
 
 		/// <summary>
-		/// Causes <see cref="ExplorerBrowser.LoadCustomItems"/> to first populate the results folder with the contents of the parent folders
-		/// of the items in the data object, and then select only the items that are in the data object.
+		/// Causes <see cref="ExplorerBrowser.LoadCustomItems"/> to first populate the results folder with the contents of the parent
+		/// folders of the items in the data object, and then select only the items that are in the data object.
 		/// </summary>
 		SelectFromDataObject = EXPLORER_BROWSER_FILL_FLAGS.EBF_SELECTFROMDATAOBJECT,
 
@@ -322,6 +306,16 @@ namespace Vanara.Windows.Forms
 		Tile = FOLDERVIEWMODE.FVM_TILE
 	}
 
+	/// <summary>The direction argument for Navigate</summary>
+	public enum NavigationLogDirection
+	{
+		/// <summary>Navigates forward through the navigation log</summary>
+		Forward,
+
+		/// <summary>Navigates backward through the travel log</summary>
+		Backward
+	}
+
 	/// <summary>Indicates the visibility state of an ExplorerBrowser pane.</summary>
 	public enum PaneVisibilityState
 	{
@@ -335,30 +329,21 @@ namespace Vanara.Windows.Forms
 		Show = EXPLORERPANESTATE.EPS_DEFAULT_ON | EXPLORERPANESTATE.EPS_FORCE
 	}
 
-	/// <summary>The direction argument for Navigate</summary>
-	internal enum NavigationLogDirection
-	{
-		/// <summary>Navigates forward through the navigation log</summary>
-		Forward,
-
-		/// <summary>Navigates backward through the travel log</summary>
-		Backward
-	}
-
 	/// <summary>
-	/// <c>ExplorerBrowser</c> is a browser object that can be either navigated or that can host a view of a data object. As a
-	/// full-featured browser object, it also supports an automatic travel log.
+	/// <c>ExplorerBrowser</c> is a browser object that can be either navigated or that can host a view of a data object. As a full-featured
+	/// browser object, it also supports an automatic travel log.
 	/// </summary>
-	/// <seealso cref="Control" />
-	/// <seealso cref="IServiceProvider" />
-	/// <seealso cref="IExplorerPaneVisibility" />
-	/// <seealso cref="IExplorerBrowserEvents" />
-	/// <seealso cref="ICommDlgBrowser3" />
-	/// <seealso cref="IMessageFilter" />
+	/// <seealso cref="Control"/>
+	/// <seealso cref="IServiceProvider"/>
+	/// <seealso cref="IExplorerPaneVisibility"/>
+	/// <seealso cref="IExplorerBrowserEvents"/>
+	/// <seealso cref="ICommDlgBrowser3"/>
+	/// <seealso cref="IMessageFilter"/>
 	[Designer(typeof(Design.ExplorerBrowserDesigner)), DefaultProperty(nameof(Name)), DefaultEvent(nameof(SelectionChanged))]
 	[ToolboxItem(true), ToolboxBitmap(typeof(ExplorerBrowser), "ExplorerBrowser.bmp")]
 	[Description("A Shell browser object that can be either navigated or that can host a view of a data object.")]
-	public class ExplorerBrowser : UserControl, IServiceProvider, IExplorerPaneVisibility, IExplorerBrowserEvents, ICommDlgBrowser3, IMessageFilter
+	[ComVisible(true), Guid("01103386-B66B-4AFB-AF50-78AED6E562DA")]
+	public class ExplorerBrowser : UserControl, ICommDlgBrowser3, IExplorerBrowserEvents, IExplorerPaneVisibility, IMessageFilter, IServiceProvider
 	{
 		internal uint eventsCookie;
 		internal IExplorerBrowser explorerBrowserControl;
@@ -370,18 +355,22 @@ namespace Vanara.Windows.Forms
 		private const int HRESULT_RESOURCE_IN_USE = unchecked((int)0x800700AA);
 
 		private static readonly string defaultPropBagName = typeof(ExplorerBrowser).FullName;
-		private static readonly Guid IID_ICommDlgBrowser = new Guid("000214F1-0000-0000-C000-000000000046");
+		private static readonly Guid IID_ICommDlgBrowser = typeof(ICommDlgBrowser).GUID;
 
-		private Tuple<ShellItem, ExplorerBrowserNavigationItemCategory> antecreationNavigationTarget;
+		private (ShellItem item, ExplorerBrowserNavigationItemCategory category) antecreationNavigationTarget;
+		private IContainer components = null;
 		private EXPLORER_BROWSER_OPTIONS options = EXPLORER_BROWSER_OPTIONS.EBO_SHOWFRAMES;
 		private string propertyBagName = defaultPropBagName;
 		private int thumbnailSize = defaultThumbnailSize;
-		private ExplorerBrowserViewEvents viewEvents;
+		private ViewEvents viewEvents;
 
 		/// <summary>Initializes a new instance of the <see cref="ExplorerBrowser"/> class.</summary>
 		public ExplorerBrowser()
 		{
-			History = new ExplorerBrowserNavigationLog(this);
+			components = new Container();
+			AutoScaleMode = AutoScaleMode.Font;
+
+			History = new NavigationLog(this);
 			Items = new ShellItemCollection(this, SVGIO.SVGIO_ALLVIEW);
 			SelectedItems = new ShellItemCollection(this, SVGIO.SVGIO_SELECTION);
 		}
@@ -526,7 +515,7 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Contains the navigation history of the ExplorerBrowser</summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public ExplorerBrowserNavigationLog History { get; }
+		public NavigationLog History { get; }
 
 		/// <summary>The set of ShellItems in the Explorer Browser</summary>
 		[Browsable(false)]
@@ -546,13 +535,13 @@ namespace Vanara.Windows.Forms
 		[Browsable(false), DefaultValue(0), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 		public ExplorerBrowserNavigateOptions NavigationFlags
 		{
-			get => (ExplorerBrowserNavigateOptions)(explorerBrowserControl?.GetOptions() ?? options);
-			set
+			get
 			{
-				// Always forcing SHOWFRAMES because we handle IExplorerPaneVisibility
-				options = (EXPLORER_BROWSER_OPTIONS)value | EXPLORER_BROWSER_OPTIONS.EBO_SHOWFRAMES;
-				explorerBrowserControl?.SetOptions(options);
+				explorerBrowserControl?.GetOptions(out options);
+				return (ExplorerBrowserNavigateOptions)options;
 			}
+			// Always forcing SHOWFRAMES because we handle IExplorerPaneVisibility
+			set => explorerBrowserControl?.SetOptions(options = (EXPLORER_BROWSER_OPTIONS)value | EXPLORER_BROWSER_OPTIONS.EBO_SHOWFRAMES);
 		}
 
 		/// <summary>The view should not save view state in the browser.</summary>
@@ -673,11 +662,7 @@ namespace Vanara.Windows.Forms
 		public string PropertyBagName
 		{
 			get => propertyBagName;
-			set
-			{
-				propertyBagName = value;
-				explorerBrowserControl?.SetPropertyBag(propertyBagName);
-			}
+			set { propertyBagName = value; explorerBrowserControl?.SetPropertyBag(propertyBagName); }
 		}
 
 		/// <summary>The set of selected ShellItems in the Explorer Browser</summary>
@@ -718,31 +703,15 @@ namespace Vanara.Windows.Forms
 		{
 			get
 			{
-				var iFV2 = GetFolderView2();
-				if (iFV2 is null) return thumbnailSize;
-				try
-				{
-					iFV2.GetViewModeAndIconSize(out var fvm, out var iconSize);
-					return thumbnailSize = iconSize;
-				}
-				finally
-				{
-					iFV2 = null;
-				}
+				GetFolderView2()?.GetViewModeAndIconSize(out _, out thumbnailSize);
+				return thumbnailSize;
 			}
 			set
 			{
 				var iFV2 = GetFolderView2();
 				if (iFV2 is null) return;
-				try
-				{
-					iFV2.GetViewModeAndIconSize(out var fvm, out var iconSize);
-					iFV2.SetViewModeAndIconSize(fvm, thumbnailSize = value);
-				}
-				finally
-				{
-					iFV2 = null;
-				}
+				iFV2.GetViewModeAndIconSize(out var fvm, out _);
+				iFV2.SetViewModeAndIconSize(fvm, thumbnailSize = value);
 			}
 		}
 
@@ -782,18 +751,10 @@ namespace Vanara.Windows.Forms
 		/// <summary>Removes all items from the results folder.</summary>
 		public void ClearCustomItems() => explorerBrowserControl?.RemoveAll();
 
-		/// <summary>Navigates to the last item in the navigation history list. This does not change the set of locations in the navigation log.</summary>
-		/// <returns>True if the navigation succeeded, false if it failed for any reason.</returns>
-		public bool GoBack() => History.NavigateLog(NavigationLogDirection.Backward);
-
-		/// <summary>Navigates to the next item in the navigation history list. This does not change the set of locations in the navigation log.</summary>
-		/// <returns>True if the navigation succeeded, false if it failed for any reason.</returns>
-		public bool GoForward() => History.NavigateLog(NavigationLogDirection.Forward);
-
 		/// <summary>Creates a custom folder and fills it with items.</summary>
 		/// <param name="obj">
-		/// An interface pointer on the source object that will fill the control. This can be an <see cref="IDataObject"/> or any object that
-		/// can be used with <see cref="INamespaceWalk"/>.
+		/// An interface pointer on the source object that will fill the control. This can be an <see cref="IDataObject"/> or any object
+		/// that can be used with <see cref="INamespaceWalk"/>.
 		/// </param>
 		/// <param name="flags">One of the <see cref="ExplorerBrowserLoadFlags"/> values.</param>
 		public void LoadCustomItems(object obj, ExplorerBrowserLoadFlags flags = ExplorerBrowserLoadFlags.None) => explorerBrowserControl?.FillFromObject(obj, (EXPLORER_BROWSER_FILL_FLAGS)flags);
@@ -804,42 +765,64 @@ namespace Vanara.Windows.Forms
 		/// </summary>
 		/// <param name="shellItem">The shell container to navigate to.</param>
 		/// <param name="category">The category of the <paramref name="shellItem"/>.</param>
-		public void Navigate(ShellItem shellItem, ExplorerBrowserNavigationItemCategory category = ExplorerBrowserNavigationItemCategory.Absolute)
+		public void Navigate(ShellItem shellItem, ExplorerBrowserNavigationItemCategory category = ExplorerBrowserNavigationItemCategory.Default)
 		{
-			if (shellItem == null)
-				throw new ArgumentNullException(nameof(shellItem));
-
-			if (explorerBrowserControl == null)
+			if (explorerBrowserControl is null)
 			{
-				antecreationNavigationTarget = new Tuple<ShellItem, ExplorerBrowserNavigationItemCategory>(shellItem, category);
+				antecreationNavigationTarget = (shellItem, category);
 			}
 			else
 			{
-				try
-				{
-					explorerBrowserControl.BrowseToObject(shellItem.IShellItem, (SBSP)category);
-				}
-				catch (COMException e)
-				{
-					if (e.ErrorCode == HRESULT_RESOURCE_IN_USE || e.ErrorCode == HRESULT_CANCELLED)
-					{
-						OnNavigationFailed(new NavigationFailedEventArgs { FailedLocation = shellItem });
-					}
-					else
-					{
-						throw new ArgumentException("Unable to browse to this shell item.", nameof(shellItem), e);
-					}
-				}
-				catch (Exception e)
-				{
-					throw new ArgumentException("Unable to browse to this shell item.", nameof(shellItem), e);
-				}
+				var hr = explorerBrowserControl.BrowseToObject(shellItem?.IShellItem, (SBSP)category);
+				if (hr == HRESULT_RESOURCE_IN_USE || hr == HRESULT_CANCELLED)
+					OnNavigationFailed(new NavigationFailedEventArgs { FailedLocation = shellItem });
+				else if (hr.Failed)
+					throw new ArgumentException("Unable to browse to this shell item.", nameof(shellItem), hr.GetException());
 			}
 		}
+
+		/// <summary>
+		/// Navigates to the last item in the navigation history list. This does not change the set of locations in the navigation log.
+		/// </summary>
+		public bool NavigateBack() { if (History.CanNavigateBackward) { Navigate(null, ExplorerBrowserNavigationItemCategory.NavigateBack); return true; } return false; }
+
+		/// <summary>
+		/// Navigates to the next item in the navigation history list. This does not change the set of locations in the navigation log.
+		/// </summary>
+		/// <returns>True if the navigation succeeded, false if it failed for any reason.</returns>
+		public bool NavigateForward() { if (History.CanNavigateForward) { Navigate(null, ExplorerBrowserNavigationItemCategory.NavigateForward); return true; } return false; }
+
+		/// <summary>
+		/// Navigate within the navigation log in a specific direciton. This does not change the set of locations in the navigation log.
+		/// </summary>
+		/// <param name="direction">The direction to navigate within the navigation logs collection.</param>
+		/// <returns>True if the navigation succeeded, false if it failed for any reason.</returns>
+		public bool NavigateFromHistory(NavigationLogDirection direction) => History.NavigateLog(direction);
+
 		/// <summary>Navigate within the navigation log. This does not change the set of locations in the navigation log.</summary>
 		/// <param name="historyIndex">An index into the navigation logs Locations collection.</param>
 		/// <returns>True if the navigation succeeded, false if it failed for any reason.</returns>
 		public bool NavigateToHistoryIndex(int historyIndex) => History.NavigateLog(historyIndex);
+
+		/// <summary>Selects all items in the current view.</summary>
+		public void SelectAll()
+		{
+			var fv = GetFolderView2();
+			if (fv is null) return;
+			try
+			{
+				var items = fv.ItemCount(SVGIO.SVGIO_ALLVIEW);
+				for (var i = 0; i < items; i++)
+					fv.SelectItem(i, SVSIF.SVSI_SELECT);
+			}
+			finally
+			{
+				Marshal.ReleaseComObject(fv);
+			}
+		}
+
+		/// <summary>Unselects all items in the current view.</summary>
+		public void UnselectAll() => GetFolderView2()?.SelectItem(-1, SVSIF.SVSI_DESELECTOTHERS);
 
 		HRESULT ICommDlgBrowser3.GetCurrentFilter(StringBuilder pszFileSpec, int cchFileSpec) => HRESULT.S_OK;
 
@@ -847,52 +830,30 @@ namespace Vanara.Windows.Forms
 
 		HRESULT IExplorerPaneVisibility.GetPaneState(in Guid ep, out EXPLORERPANESTATE peps)
 		{
-			switch (ep)
+			peps = ep switch
 			{
-				case var a when a.Equals(IExplorerPaneVisibilityConstants.EP_AdvQueryPane):
-					peps = (EXPLORERPANESTATE)PaneVisibility.AdvancedQuery;
-					break;
+				var a when a.Equals(IExplorerPaneVisibilityConstants.EP_AdvQueryPane) => (EXPLORERPANESTATE)PaneVisibility.AdvancedQuery,
 
-				case var a when a.Equals(IExplorerPaneVisibilityConstants.EP_Commands):
-					peps = (EXPLORERPANESTATE)PaneVisibility.Commands;
-					break;
+				var a when a.Equals(IExplorerPaneVisibilityConstants.EP_Commands) => (EXPLORERPANESTATE)PaneVisibility.Commands,
 
-				case var a when a.Equals(IExplorerPaneVisibilityConstants.EP_Commands_Organize):
-					peps = (EXPLORERPANESTATE)PaneVisibility.CommandsOrganize;
-					break;
+				var a when a.Equals(IExplorerPaneVisibilityConstants.EP_Commands_Organize) => (EXPLORERPANESTATE)PaneVisibility.CommandsOrganize,
 
-				case var a when a.Equals(IExplorerPaneVisibilityConstants.EP_Commands_View):
-					peps = (EXPLORERPANESTATE)PaneVisibility.CommandsView;
-					break;
+				var a when a.Equals(IExplorerPaneVisibilityConstants.EP_Commands_View) => (EXPLORERPANESTATE)PaneVisibility.CommandsView,
 
-				case var a when a.Equals(IExplorerPaneVisibilityConstants.EP_DetailsPane):
-					peps = (EXPLORERPANESTATE)PaneVisibility.Details;
-					break;
+				var a when a.Equals(IExplorerPaneVisibilityConstants.EP_DetailsPane) => (EXPLORERPANESTATE)PaneVisibility.Details,
 
-				case var a when a.Equals(IExplorerPaneVisibilityConstants.EP_NavPane):
-					peps = (EXPLORERPANESTATE)PaneVisibility.Navigation;
-					break;
+				var a when a.Equals(IExplorerPaneVisibilityConstants.EP_NavPane) => (EXPLORERPANESTATE)PaneVisibility.Navigation,
 
-				case var a when a.Equals(IExplorerPaneVisibilityConstants.EP_PreviewPane):
-					peps = (EXPLORERPANESTATE)PaneVisibility.Preview;
-					break;
+				var a when a.Equals(IExplorerPaneVisibilityConstants.EP_PreviewPane) => (EXPLORERPANESTATE)PaneVisibility.Preview,
 
-				case var a when a.Equals(IExplorerPaneVisibilityConstants.EP_QueryPane):
-					peps = (EXPLORERPANESTATE)PaneVisibility.Query;
-					break;
+				var a when a.Equals(IExplorerPaneVisibilityConstants.EP_QueryPane) => (EXPLORERPANESTATE)PaneVisibility.Query,
 
-				case var a when a.Equals(IExplorerPaneVisibilityConstants.EP_Ribbon):
-					peps = (EXPLORERPANESTATE)PaneVisibility.Ribbon;
-					break;
+				var a when a.Equals(IExplorerPaneVisibilityConstants.EP_Ribbon) => (EXPLORERPANESTATE)PaneVisibility.Ribbon,
 
-				case var a when a.Equals(IExplorerPaneVisibilityConstants.EP_StatusBar):
-					peps = (EXPLORERPANESTATE)PaneVisibility.StatusBar;
-					break;
+				var a when a.Equals(IExplorerPaneVisibilityConstants.EP_StatusBar) => (EXPLORERPANESTATE)PaneVisibility.StatusBar,
 
-				default:
-					peps = EXPLORERPANESTATE.EPS_DONTCARE;
-					break;
-			}
+				_ => EXPLORERPANESTATE.EPS_DONTCARE,
+			};
 			return HRESULT.S_OK;
 		}
 
@@ -908,15 +869,11 @@ namespace Vanara.Windows.Forms
 			return HRESULT.S_OK;
 		}
 
-		//HRESULT ICommDlgBrowser.IncludeObject(IShellView ppshv, PIDL pidl) => ((ICommDlgBrowser3)this).IncludeObject(ppshv, pidl);
-
 		HRESULT ICommDlgBrowser3.Notify(IShellView ppshv, CDB2N dwNotifyType) => HRESULT.S_OK;
 
 		HRESULT ICommDlgBrowser3.OnColumnClicked(IShellView ppshv, int iColumn) => HRESULT.S_OK;
 
 		HRESULT ICommDlgBrowser3.OnDefaultCommand(IShellView ppshv) => HRESULT.S_FALSE;
-
-		//HRESULT ICommDlgBrowser.OnDefaultCommand(IShellView ppshv) => ((ICommDlgBrowser3)this).OnDefaultCommand(ppshv);
 
 		HRESULT IExplorerBrowserEvents.OnNavigationComplete(IntPtr pidlFolder)
 		{
@@ -946,32 +903,28 @@ namespace Vanara.Windows.Forms
 			return HRESULT.S_OK;
 		}
 
-		//HRESULT ICommDlgBrowser.OnStateChange(IShellView ppshv, CDBOSC uChange) => ((ICommDlgBrowser3)this).OnStateChange(ppshv, uChange);
-
 		HRESULT IExplorerBrowserEvents.OnViewCreated(IShellView psv)
 		{
-			viewEvents.ConnectToView((IShellView)psv);
+			viewEvents?.ConnectToView(psv);
 			return HRESULT.S_OK;
 		}
 
-		bool IMessageFilter.PreFilterMessage(ref Message m) => (explorerBrowserControl as IInputObject)?.TranslateAcceleratorIO(m.ToMSG()).Succeeded ?? false;
-		HRESULT IServiceProvider.QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
+		bool IMessageFilter.PreFilterMessage(ref Message m) => /*(explorerBrowserControl as IInputObject)?.TranslateAcceleratorIO(m.ToMSG()).Succeeded ??*/ false;
+
+		HRESULT IServiceProvider.QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject)
 		{
-			HRESULT hr = HRESULT.E_NOINTERFACE;
-			ppvObject = default;
 			if (guidService.Equals(typeof(IExplorerPaneVisibility).GUID))
 			{
-				//hr = InteropExtensions.QueryInterface(this, guidService, out ppvObject);
 				ppvObject = Marshal.GetComInterfaceForObject(this, typeof(IExplorerPaneVisibility));
-				hr = HRESULT.S_OK;
+				return HRESULT.S_OK;
 			}
 			else if (guidService.Equals(IID_ICommDlgBrowser) && (riid.Equals(IID_ICommDlgBrowser) || riid.Equals(typeof(ICommDlgBrowser3).GUID)))
 			{
-				//hr = InteropExtensions.QueryInterface(this, riid, out ppvObject);
 				ppvObject = Marshal.GetComInterfaceForObject(this, typeof(ICommDlgBrowser3));
-				hr = HRESULT.S_OK;
+				return HRESULT.S_OK;
 			}
-			return hr;
+			ppvObject = default;
+			return HRESULT.E_NOINTERFACE;
 		}
 
 		/// <summary>Gets the IFolderView2 interface from the explorer browser.</summary>
@@ -979,20 +932,8 @@ namespace Vanara.Windows.Forms
 		internal IFolderView2 GetFolderView2() => explorerBrowserControl?.GetCurrentView<IFolderView2>();
 
 		/// <summary>Gets the items in the ExplorerBrowser as an IShellItemArray</summary>
-		/// <returns></returns>
-		internal IShellItemArray GetItemsArray(SVGIO opt)
-		{
-			var iFV2 = GetFolderView2();
-			if (iFV2 is null) return null;
-			try
-			{
-				return iFV2.Items<IShellItemArray>(opt);
-			}
-			finally
-			{
-				iFV2 = null;
-			}
-		}
+		/// <returns>An <see cref="IShellItemArray"/> instance or <see langword="null"/> if not available.</returns>
+		internal IShellItemArray GetItemsArray(SVGIO opt) { try { return GetFolderView2()?.Items<IShellItemArray>(opt); } catch { return null; } }
 
 		/// <summary>Raises the <see cref="ItemsChanged"/> event.</summary>
 		protected internal virtual void OnItemsChanged() => ItemsChanged?.Invoke(this, EventArgs.Empty);
@@ -1003,7 +944,7 @@ namespace Vanara.Windows.Forms
 		/// <summary>Raises the <see cref="Navigated"/> event.</summary>
 		protected internal virtual void OnNavigated(NavigatedEventArgs ncevent)
 		{
-			if (ncevent?.NewLocation == null) return;
+			if (ncevent?.NewLocation is null) return;
 			Navigated?.Invoke(this, ncevent);
 		}
 
@@ -1011,7 +952,7 @@ namespace Vanara.Windows.Forms
 		protected internal virtual void OnNavigating(NavigatingEventArgs npevent, out bool cancelled)
 		{
 			cancelled = false;
-			if (Navigating == null || npevent?.PendingLocation == null) return;
+			if (Navigating is null || npevent?.PendingLocation is null) return;
 			foreach (var del in Navigating.GetInvocationList())
 			{
 				del.DynamicInvoke(new object[] { this, npevent });
@@ -1023,7 +964,7 @@ namespace Vanara.Windows.Forms
 		/// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>
 		protected internal virtual void OnNavigationFailed(NavigationFailedEventArgs nfevent)
 		{
-			if (nfevent?.FailedLocation == null) return;
+			if (nfevent?.FailedLocation is null) return;
 			NavigationFailed?.Invoke(this, nfevent);
 		}
 
@@ -1033,6 +974,17 @@ namespace Vanara.Windows.Forms
 		/// <summary>Raises the <see cref="SelectionChanged"/> event.</summary>
 		protected internal virtual void OnSelectionChanged() => SelectionChanged?.Invoke(this, EventArgs.Empty);
 
+		/// <summary>Clean up any resources being used.</summary>
+		/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				components?.Dispose();
+				viewEvents?.Dispose();
+			}
+			base.Dispose(disposing);
+		}
 		/// <summary>Called when [create control].</summary>
 		protected override void OnCreateControl()
 		{
@@ -1049,25 +1001,26 @@ namespace Vanara.Windows.Forms
 				explorerBrowserControl.Advise(this, out eventsCookie);
 
 				// sets up ExplorerBrowser view connection point events
-				viewEvents = new ExplorerBrowserViewEvents(this);
+				viewEvents = new ViewEvents(this);
 
 				explorerBrowserControl.Initialize(Handle, ClientRectangle, folderSettings);
 
-				// Force an initial show frames so that IExplorerPaneVisibility works the first time it is set. This also enables the control
-				// panel to be browsed to. If it is not set, then navigating to the control panel succeeds, but no items are visible in the view.
+				// Force an initial show frames so that IExplorerPaneVisibility works the first time it is set. This also enables the
+				// control panel to be browsed to. If it is not set, then navigating to the control panel succeeds, but no items are visible
+				// in the view.
 				explorerBrowserControl.SetOptions(options);
+
+				explorerBrowserControl.SetPropertyBag(propertyBagName);
 
 				// ExplorerBrowserOptions.NoBorder does not work, so we do it manually...
 				RemoveWindowBorder();
 
-				explorerBrowserControl.SetPropertyBag(propertyBagName);
-
-				if (antecreationNavigationTarget != null)
+				if (antecreationNavigationTarget.item != null)
 				{
 					BeginInvoke(new MethodInvoker(delegate
 					{
-						Navigate(antecreationNavigationTarget.Item1, antecreationNavigationTarget.Item2);
-						antecreationNavigationTarget = null;
+						Navigate(antecreationNavigationTarget.item, antecreationNavigationTarget.category);
+						antecreationNavigationTarget = default;
 					}));
 				}
 			}
@@ -1082,7 +1035,7 @@ namespace Vanara.Windows.Forms
 			if (explorerBrowserControl != null)
 			{
 				// unhook events
-				viewEvents.DisconnectFromView();
+				viewEvents?.DisconnectFromView();
 				explorerBrowserControl.Unadvise(eventsCookie);
 				SetSite(null);
 
@@ -1090,6 +1043,7 @@ namespace Vanara.Windows.Forms
 				explorerBrowserControl.Destroy();
 
 				// release com reference to it
+				Marshal.ReleaseComObject(explorerBrowserControl);
 				explorerBrowserControl = null;
 			}
 
@@ -1115,13 +1069,21 @@ namespace Vanara.Windows.Forms
 					rsb.Offset(0, cr.Height - sz.Height);
 					new VisualStyleRenderer(VisualStyleElement.ScrollBar.ArrowButton.DownDisabled).DrawBackground(pe.Graphics, rsb);
 				}
+				else
+				{
+					var sz = new Size(SystemInformation.VerticalScrollBarWidth, SystemInformation.VerticalScrollBarArrowHeight);
+					var rsb = new Rectangle(cr.X + cr.Width - sz.Width, cr.Y, sz.Width, cr.Height);
+					pe.Graphics.FillRectangle(SystemBrushes.ControlLightLight, rsb);
+					rsb.Height = sz.Height;
+					ControlPaint.DrawScrollButton(pe.Graphics, rsb, ScrollButton.Up, ButtonState.Inactive);
+					rsb.Offset(0, cr.Height - sz.Height);
+					ControlPaint.DrawScrollButton(pe.Graphics, rsb, ScrollButton.Down, ButtonState.Inactive);
+				}
 				ControlPaint.DrawBorder(pe.Graphics, cr, SystemColors.WindowFrame, ButtonBorderStyle.Solid);
 
-				using (var font = new Font("Segoe UI", 9))
-				using (var sf = new StringFormat { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near })
-				{
-					pe.Graphics.DrawString(nameof(ExplorerBrowser), font, SystemBrushes.GrayText, cr, sf);
-				}
+				using var font = new Font("Segoe UI", 9);
+				using var sf = new StringFormat { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near };
+				pe.Graphics.DrawString(nameof(Windows.Forms.ExplorerBrowser), font, SystemBrushes.GrayText, cr, sf);
 			}
 
 			base.OnPaint(pe);
@@ -1135,19 +1097,15 @@ namespace Vanara.Windows.Forms
 			base.OnSizeChanged(e);
 		}
 
-		private FOLDERVIEWMODE GetCurrentViewMode()
-		{
-			var ifv2 = GetFolderView2();
-			if (ifv2 is null) return 0;
-			try
-			{
-				return ifv2.GetCurrentViewMode();
-			}
-			finally
-			{
-				ifv2 = null;
-			}
-		}
+		/// <summary>Enables a container to pass an object a pointer to the interface for its site.</summary>
+		/// <param name="sp">
+		/// A pointer to the <c>IServiceProvider</c> interface pointer of the site managing this object. If <see langword="null"/>, the
+		/// object should call Release on any existing site at which point the object no longer knows its site.
+		/// </param>
+		protected virtual void SetSite(IServiceProvider sp) => (explorerBrowserControl as IObjectWithSite)?.SetSite(sp);
+
+		private FOLDERVIEWMODE GetCurrentViewMode() => GetFolderView2()?.GetCurrentViewMode() ?? 0;
+
 		private bool IsContentFlagSet(ExplorerBrowserContentSectionOptions flag) => folderSettings.fFlags.IsFlagSet((FOLDERFLAGS)flag);
 
 		private bool IsNavFlagSet(ExplorerBrowserNavigateOptions flag) => NavigationFlags.IsFlagSet(flag);
@@ -1164,7 +1122,6 @@ namespace Vanara.Windows.Forms
 			SetWindowLong(hwnd, WindowLongFlags.GWL_STYLE, (int)explorerBrowserStyle.ClearFlags(WindowStyles.WS_CAPTION | WindowStyles.WS_BORDER));
 			SetWindowPos(hwnd, default, 0, 0, 0, 0, SetWindowPosFlags.SWP_FRAMECHANGED | SetWindowPosFlags.SWP_NOMOVE | SetWindowPosFlags.SWP_NOSIZE);
 		}
-		private void ResetPropertyBagName() => PropertyBagName = defaultPropBagName;
 
 		private void SetContentFlag(ExplorerBrowserContentSectionOptions flag, bool value)
 		{
@@ -1174,19 +1131,92 @@ namespace Vanara.Windows.Forms
 
 		private void SetNavFlag(ExplorerBrowserNavigateOptions flag, bool value) => NavigationFlags = NavigationFlags.SetFlags(flag, value);
 
-		private void SetSite(IServiceProvider sp) => (explorerBrowserControl as IObjectWithSite)?.SetSite(sp);
-
 		private bool ShouldSerializePropertyBagName() => propertyBagName != defaultPropBagName;
 
-		/// <summary>The navigation log is a history of the locations visited by the explorer browser.</summary>
-		public class ExplorerBrowserNavigationLog
+		/// <summary>Controls the visibility of the various ExplorerBrowser panes on subsequent navigation</summary>
+		[TypeConverter(typeof(BetterExpandableObjectConverter)), Serializable]
+		public class ExplorerBrowserPaneVisibility
 		{
-			private ExplorerBrowser parent = null;
+			internal ExplorerBrowserPaneVisibility()
+			{
+			}
+
+			/// <summary>Additional fields and options to aid in a search.</summary>
+			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("Additional fields and options to aid in a search.")]
+			public PaneVisibilityState AdvancedQuery { get; set; } = PaneVisibilityState.Default;
+
+			/// <summary>Commands module along the top of the Windows Explorer window.</summary>
+			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("Commands module along the top of the Windows Explorer window.")]
+			public PaneVisibilityState Commands { get; set; } = PaneVisibilityState.Default;
+
+			/// <summary>Organize menu within the commands module.</summary>
+			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("Organize menu within the commands module.")]
+			public PaneVisibilityState CommandsOrganize { get; set; } = PaneVisibilityState.Default;
+
+			/// <summary>View menu within the commands module.</summary>
+			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("View menu within the commands module.")]
+			public PaneVisibilityState CommandsView { get; set; } = PaneVisibilityState.Default;
+
+			/// <summary>Pane showing metadata along the bottom of the Windows Explorer window.</summary>
+			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("Pane showing metadata along the bottom of the Windows Explorer window.")]
+			public PaneVisibilityState Details { get; set; } = PaneVisibilityState.Default;
+
+			/// <summary>The pane on the left side of the Windows Explorer window that hosts the folders tree and Favorites.</summary>
+			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("The pane on the left side of the Windows Explorer window that hosts the folders tree and Favorites.")]
+			public PaneVisibilityState Navigation { get; set; } = PaneVisibilityState.Default;
+
+			/// <summary>Pane on the right of the Windows Explorer window that shows a large reading preview of the file.</summary>
+			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("Pane on the right of the Windows Explorer window that shows a large reading preview of the file.")]
+			public PaneVisibilityState Preview { get; set; } = PaneVisibilityState.Default;
+
+			/// <summary>Quick filter buttons to aid in a search.</summary>
+			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("Quick filter buttons to aid in a search.")]
+			public PaneVisibilityState Query { get; set; } = PaneVisibilityState.Default;
+
+			/// <summary>
+			/// Introduced in Windows 8: The ribbon, which is the control that replaced menus and toolbars at the top of many Microsoft applications.
+			/// </summary>
+			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("The ribbon, which is the control that replaced menus and toolbars at the top of many Microsoft applications.")]
+			public PaneVisibilityState Ribbon { get; set; } = PaneVisibilityState.Default;
+
+			/// <summary>Introduced in Windows 8: A status bar that indicates the progress of some process, such as copying or downloading.</summary>
+			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("A status bar that indicates the progress of some process, such as copying or downloading.")]
+			public PaneVisibilityState StatusBar { get; set; } = PaneVisibilityState.Default;
+		}
+
+		/// <summary>Event argument for The Navigated event</summary>
+		public class NavigatedEventArgs : EventArgs
+		{
+			/// <summary>The new location of the explorer browser</summary>
+			public ShellItem NewLocation { get; set; }
+		}
+
+		/// <summary>Event argument for The Navigating event</summary>
+		public class NavigatingEventArgs : EventArgs
+		{
+			/// <summary>Set to 'True' to cancel the navigation.</summary>
+			public bool Cancel { get; set; }
+
+			/// <summary>The location being navigated to</summary>
+			public ShellItem PendingLocation { get; set; }
+		}
+
+		/// <summary>Event argument for the NavigatinoFailed event</summary>
+		public class NavigationFailedEventArgs : EventArgs
+		{
+			/// <summary>The location the browser would have navigated to.</summary>
+			public ShellItem FailedLocation { get; set; }
+		}
+
+		/// <summary>The navigation log is a history of the locations visited by the explorer browser.</summary>
+		public class NavigationLog
+		{
+			private readonly ExplorerBrowser parent = null;
 
 			/// <summary>The pending navigation log action. null if the user is not navigating via the navigation log.</summary>
 			private PendingNavigation pendingNavigation;
 
-			internal ExplorerBrowserNavigationLog(ExplorerBrowser parent)
+			internal NavigationLog(ExplorerBrowser parent)
 			{
 				// Hook navigation events from the parent to distinguish between navigation log induced navigation, and other navigations.
 				this.parent = parent ?? throw new ArgumentNullException(nameof(parent));
@@ -1237,18 +1267,19 @@ namespace Vanara.Windows.Forms
 			internal bool NavigateLog(NavigationLogDirection direction)
 			{
 				// determine proper index to navigate to
-				var locationIndex = 0;
-				if (direction == NavigationLogDirection.Backward && CanNavigateBackward)
+				int locationIndex;
+				switch (direction)
 				{
-					locationIndex = CurrentLocationIndex - 1;
-				}
-				else if (direction == NavigationLogDirection.Forward && CanNavigateForward)
-				{
-					locationIndex = CurrentLocationIndex + 1;
-				}
-				else
-				{
-					return false;
+					case NavigationLogDirection.Backward when CanNavigateBackward:
+						locationIndex = CurrentLocationIndex - 1;
+						break;
+
+					case NavigationLogDirection.Forward when CanNavigateForward:
+						locationIndex = CurrentLocationIndex + 1;
+						break;
+
+					default:
+						return false;
 				}
 
 				// initiate traversal request
@@ -1285,7 +1316,7 @@ namespace Vanara.Windows.Forms
 
 					// determine if new location is the same as the traversal request
 					var shellItemsEqual = pendingNavigation.Location.IShellItem.Compare(args.NewLocation.IShellItem, SICHINTF.SICHINT_ALLFIELDS) == 0;
-					if (shellItemsEqual == false)
+					if (!shellItemsEqual)
 					{
 						// new location is different than traversal request, behave is if it never happened! remove history following
 						// currentLocationIndex, append new item
@@ -1341,75 +1372,41 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		/// <summary>Controls the visibility of the various ExplorerBrowser panes on subsequent navigation</summary>
-		[TypeConverter(typeof(BetterExpandableObjectConverter)), Serializable]
-		public class ExplorerBrowserPaneVisibility
+		/// <summary>The event argument for NavigationLogChangedEvent</summary>
+		public class NavigationLogEventArgs : EventArgs
 		{
-			/// <summary>Additional fields and options to aid in a search.</summary>
-			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("Additional fields and options to aid in a search.")]
-			public PaneVisibilityState AdvancedQuery { get; set; } = PaneVisibilityState.Default;
+			/// <summary>Indicates CanNavigateBackward has changed</summary>
+			public bool CanNavigateBackwardChanged { get; set; }
 
-			/// <summary>Commands module along the top of the Windows Explorer window.</summary>
-			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("Commands module along the top of the Windows Explorer window.")]
-			public PaneVisibilityState Commands { get; set; } = PaneVisibilityState.Default;
+			/// <summary>Indicates CanNavigateForward has changed</summary>
+			public bool CanNavigateForwardChanged { get; set; }
 
-			/// <summary>Organize menu within the commands module.</summary>
-			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("Organize menu within the commands module.")]
-			public PaneVisibilityState CommandsOrganize { get; set; } = PaneVisibilityState.Default;
-
-			/// <summary>View menu within the commands module.</summary>
-			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("View menu within the commands module.")]
-			public PaneVisibilityState CommandsView { get; set; } = PaneVisibilityState.Default;
-
-			/// <summary>Pane showing metadata along the bottom of the Windows Explorer window.</summary>
-			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("Pane showing metadata along the bottom of the Windows Explorer window.")]
-			public PaneVisibilityState Details { get; set; } = PaneVisibilityState.Default;
-
-			/// <summary>The pane on the left side of the Windows Explorer window that hosts the folders tree and Favorites.</summary>
-			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("The pane on the left side of the Windows Explorer window that hosts the folders tree and Favorites.")]
-			public PaneVisibilityState Navigation { get; set; } = PaneVisibilityState.Default;
-
-			/// <summary>Pane on the right of the Windows Explorer window that shows a large reading preview of the file.</summary>
-			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("Pane on the right of the Windows Explorer window that shows a large reading preview of the file.")]
-			public PaneVisibilityState Preview { get; set; } = PaneVisibilityState.Default;
-
-			/// <summary>Quick filter buttons to aid in a search.</summary>
-			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("Quick filter buttons to aid in a search.")]
-			public PaneVisibilityState Query { get; set; } = PaneVisibilityState.Default;
-
-			/// <summary>
-			/// Introduced in Windows 8: The ribbon, which is the control that replaced menus and toolbars at the top of many Microsoft applications.
-			/// </summary>
-			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("The ribbon, which is the control that replaced menus and toolbars at the top of many Microsoft applications.")]
-			public PaneVisibilityState Ribbon { get; set; } = PaneVisibilityState.Default;
-
-			/// <summary>Introduced in Windows 8: A status bar that indicates the progress of some process, such as copying or downloading.</summary>
-			[DefaultValue(PaneVisibilityState.Default), Category("Appearance"), Description("A status bar that indicates the progress of some process, such as copying or downloading.")]
-			public PaneVisibilityState StatusBar { get; set; } = PaneVisibilityState.Default;
+			/// <summary>Indicates the Locations collection has changed</summary>
+			public bool LocationsChanged { get; set; }
 		}
 
 		/// <summary>This provides a connection point container compatible dispatch interface for hooking into the ExplorerBrowser view.</summary>
 		[ComVisible(true)]
 		[ClassInterface(ClassInterfaceType.AutoDual)]
-		private class ExplorerBrowserViewEvents : IDisposable
+		public class ViewEvents : IDisposable
 		{
-			private const int ContentsChanged = 207;
-			private const int FileListEnumDone = 201;
-			private const int SelectedItemModified = 220;
-			private const int SelectionChanged = 200;
 			private static readonly Guid IID_DShellFolderViewEvents = new Guid("62112AA2-EBE4-11cf-A5FB-0020AFE7292D");
-			private static readonly Guid IID_IDispatch = new Guid("00020400-0000-0000-C000-000000000046");
-			private ExplorerBrowser parent;
+
+			private static readonly Guid IID_IDispatch = typeof(PInvoke.OleAut32.IDispatch).GUID;
+
+			private readonly ExplorerBrowser parent;
+
 			private uint viewConnectionPointCookie;
+
 			private object viewDispatch;
 
-			/// <summary>Default constructor for ExplorerBrowserViewEvents</summary>
-			public ExplorerBrowserViewEvents() : this(null) { }
+			internal ViewEvents(ExplorerBrowser parent) => this.parent = parent;
 
-			internal ExplorerBrowserViewEvents(ExplorerBrowser parent) => this.parent = parent;
+			// Prevent default construction
+			private ViewEvents() { }
 
-			/// <summary>Finalizes ExplorerBrowserViewEvents</summary>
-			~ExplorerBrowserViewEvents()
+			/// <summary>Finalizes ViewEvents</summary>
+			~ViewEvents()
 			{
 				Dispose(false);
 			}
@@ -1418,38 +1415,37 @@ namespace Vanara.Windows.Forms
 			public void Dispose()
 			{
 				Dispose(true);
-				GC.SuppressFinalize(this);
+				System.GC.SuppressFinalize(this);
 			}
 
 			/// <summary>The contents of the view have changed</summary>
-			[DispId(ContentsChanged)]
+			[DispId(DispIds.ContentsChanged)]
 			public void ViewContentsChanged() => parent.OnItemsChanged();
 
 			/// <summary>The enumeration of files in the view is complete</summary>
-			[DispId(FileListEnumDone)]
+			[DispId(DispIds.FileListEnumDone)]
 			public void ViewFileListEnumDone() => parent.OnItemsEnumerated();
 
 			/// <summary>The selected item in the view has changed (not the same as the selection has changed)</summary>
-			[DispId(SelectedItemModified)]
+			[DispId(DispIds.SelectedItemModified)]
 			public void ViewSelectedItemModified() => parent.OnSelectedItemModified();
 
 			/// <summary>The view selection has changed</summary>
-			[DispId(SelectionChanged)]
+			[DispId(DispIds.SelectionChanged)]
 			public void ViewSelectionChanged() => parent.OnSelectionChanged();
 
 			internal void ConnectToView(IShellView psv)
 			{
 				DisconnectFromView();
 				viewDispatch = psv.GetItemObject(SVGIO.SVGIO_BACKGROUND, IID_IDispatch);
-				var hr = ConnectToConnectionPoint(this, IID_DShellFolderViewEvents, true, viewDispatch, ref viewConnectionPointCookie, out var _);
-				if (hr != HRESULT.S_OK)
-					viewDispatch = null;
+				ConnectToConnectionPoint(this, IID_DShellFolderViewEvents, true, viewDispatch, ref viewConnectionPointCookie, out _).ThrowIfFailed();
 			}
 
 			internal void DisconnectFromView()
 			{
 				if (viewDispatch is null) return;
-				ConnectToConnectionPoint(null, IID_DShellFolderViewEvents, false, viewDispatch, ref viewConnectionPointCookie, out var _);
+				ConnectToConnectionPoint(null, IID_DShellFolderViewEvents, false, viewDispatch, ref viewConnectionPointCookie, out _);
+				Marshal.ReleaseComObject(viewDispatch);
 				viewDispatch = null;
 				viewConnectionPointCookie = 0;
 			}
@@ -1463,6 +1459,14 @@ namespace Vanara.Windows.Forms
 				{
 					DisconnectFromView();
 				}
+			}
+
+			private static class DispIds
+			{
+				internal const int ContentsChanged = 207;
+				internal const int FileListEnumDone = 201;
+				internal const int SelectedItemModified = 220;
+				internal const int SelectionChanged = 200;
 			}
 		}
 
@@ -1480,7 +1484,7 @@ namespace Vanara.Windows.Forms
 
 			/// <summary>Gets the number of elements in the collection.</summary>
 			/// <value>Returns a <see cref="int"/> value.</value>
-			public int Count => (int)Array.GetCount();
+			public int Count => eb?.GetFolderView2()?.ItemCount(option) ?? 0;
 
 			private IShellItemArray Array => eb.GetItemsArray(option);
 
@@ -1489,8 +1493,17 @@ namespace Vanara.Windows.Forms
 				get
 				{
 					var array = Array;
-					for (uint i = 0; i < array.GetCount(); i++)
-						yield return array.GetItemAt(i);
+					if (array is null)
+						yield break;
+					try
+					{
+						for (uint i = 0; i < array.GetCount(); i++)
+							yield return array.GetItemAt(i);
+					}
+					finally
+					{
+						Marshal.ReleaseComObject(array);
+					}
 				}
 			}
 
@@ -1501,13 +1514,19 @@ namespace Vanara.Windows.Forms
 			{
 				get
 				{
+					var array = Array;
 					try
 					{
-						return ShellItem.Open(Array.GetItemAt((uint)index));
+						return array is null ? null : ShellItem.Open(array.GetItemAt((uint)index));
 					}
 					catch
 					{
 						return null;
+					}
+					finally
+					{
+						if (array != null)
+							Marshal.ReleaseComObject(array);
 					}
 				}
 			}
@@ -1520,42 +1539,5 @@ namespace Vanara.Windows.Forms
 			/// <returns>An enumerator that can be used to iterate through the collection.</returns>
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		}
-	}
-
-	/// <summary>Event argument for The Navigated event</summary>
-	public class NavigatedEventArgs : EventArgs
-	{
-		/// <summary>The new location of the explorer browser</summary>
-		public ShellItem NewLocation { get; set; }
-	}
-
-	/// <summary>Event argument for The Navigating event</summary>
-	public class NavigatingEventArgs : EventArgs
-	{
-		/// <summary>Set to 'True' to cancel the navigation.</summary>
-		public bool Cancel { get; set; }
-
-		/// <summary>The location being navigated to</summary>
-		public ShellItem PendingLocation { get; set; }
-	}
-
-	/// <summary>Event argument for the NavigatinoFailed event</summary>
-	public class NavigationFailedEventArgs : EventArgs
-	{
-		/// <summary>The location the browser would have navigated to.</summary>
-		public ShellItem FailedLocation { get; set; }
-	}
-
-	/// <summary>The event argument for NavigationLogChangedEvent</summary>
-	public class NavigationLogEventArgs : EventArgs
-	{
-		/// <summary>Indicates CanNavigateBackward has changed</summary>
-		public bool CanNavigateBackwardChanged { get; set; }
-
-		/// <summary>Indicates CanNavigateForward has changed</summary>
-		public bool CanNavigateForwardChanged { get; set; }
-
-		/// <summary>Indicates the Locations collection has changed</summary>
-		public bool LocationsChanged { get; set; }
 	}
 }

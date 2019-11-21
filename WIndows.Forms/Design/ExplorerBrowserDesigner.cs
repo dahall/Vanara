@@ -11,7 +11,7 @@ namespace Vanara.Windows.Forms.Design
 	{
 		public ExplorerBrowserDesigner() { }
 
-		public override SelectionRules SelectionRules => (SelectionRules.Visible | SelectionRules.AllSizeable | SelectionRules.Moveable);
+		public override SelectionRules SelectionRules => SelectionRules.Visible | SelectionRules.AllSizeable | SelectionRules.Moveable;
 
 		protected override IEnumerable<string> PropertiesToRemove { get; } = new string[] { "AutoEllipsis", "BackColor",
 			"BackgroundImage", "BackgroundImageLayout", "CausesValidation", "ContextMenuStrip", "Cursor", "Font",
