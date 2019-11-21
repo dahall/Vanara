@@ -367,7 +367,7 @@ namespace Vanara.InteropServices
 			if (IsInvalid) return null;
 			//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
 			//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
-			if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
+			//if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 			Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
 			return handle.ToArray<T>(count, prefixBytes, sz);
 		}
@@ -384,7 +384,7 @@ namespace Vanara.InteropServices
 			if (IsInvalid) return new T[0];
 			//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
 			//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
-			if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
+			//if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 			Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
 			return handle.ToIEnum<T>(count, prefixBytes, sz);
 		}
