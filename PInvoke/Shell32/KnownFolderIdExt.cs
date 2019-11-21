@@ -27,6 +27,11 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the IShellItem associated with a <see cref="KNOWNFOLDERID"/>.</summary>
 		/// <param name="id">The known folder.</param>
 		/// <returns>The <see cref="IShellItem"/> instance.</returns>
+		public static IKnownFolder GetIKnownFolder(this KNOWNFOLDERID id) => new IKnownFolderManager().GetFolder(id.Guid());
+
+		/// <summary>Retrieves the IShellItem associated with a <see cref="KNOWNFOLDERID"/>.</summary>
+		/// <param name="id">The known folder.</param>
+		/// <returns>The <see cref="IShellItem"/> instance.</returns>
 		public static IShellItem GetIShellItem(this KNOWNFOLDERID id)
 		{
 			SHGetKnownFolderItem(id.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, HTOKEN.NULL, typeof(IShellItem).GUID, out var ppv).ThrowIfFailed();
@@ -61,7 +66,23 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the name associated with a <see cref="KNOWNFOLDERID"/>.</summary>
 		/// <param name="id">The known folder.</param>
 		/// <returns>The name.</returns>
-		public static string Name(this KNOWNFOLDERID id) => id.GetRegistryProperty<string>("Name");
+		public static string Name(this KNOWNFOLDERID id) => id.GetIKnownFolder().Name();
+
+		/// <summary>Retrieves the name associated with a <see cref="IKnownFolder"/>.</summary>
+		/// <param name="kf">The known folder.</param>
+		/// <returns>The name.</returns>
+		public static string Name(this IKnownFolder kf)
+		{
+			var fd = kf.GetFolderDefinition();
+			try
+			{
+				return fd.pszName.ToString();
+			}
+			finally
+			{
+				FreeKnownFolderDefinitionFields(fd);
+			}
+		}
 
 		/// <summary>Retrieves the PIDL associated with a <see cref="KNOWNFOLDERID"/>.</summary>
 		/// <param name="id">The known folder.</param>
