@@ -740,7 +740,7 @@ namespace Vanara.PInvoke
 		public static void FreeKnownFolderDefinitionFields(in KNOWNFOLDER_DEFINITION pKFD)
 		{
 			foreach (var fi in pKFD.GetType().GetFields().Where(f => f.FieldType == typeof(StrPtrUni)))
-				Marshal.FreeCoTaskMem((IntPtr)fi.GetValue(pKFD));
+				Marshal.FreeCoTaskMem((IntPtr)(StrPtrUni)fi.GetValue(pKFD));
 		}
 
 		/// <summary>
@@ -958,7 +958,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets an array of all registered known folder IDs. This can be used in enumerating all known folders.</summary>
 		/// <param name="mgr">The <see cref="IKnownFolderManager"/> instance.</param>
-		/// <returns>An enumeration of all KNOWNFOLDERID values registered with the system.</returns>
+		/// <returns>An enumeration of all known folder Guid values registered with the system.</returns>
 		/// <remarks>
 		/// <para>The caller of this method must have User privileges.</para>
 		/// <para>You can use StringFromCLSID or StringFromGUID2 to convert the retrieved KNOWNFOLDERID values to strings.</para>
@@ -966,7 +966,19 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iknownfoldermanager-getfolderids HRESULT
 		// GetFolderIds( KNOWNFOLDERID **ppKFId, UINT *pCount );
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "3ac09fc4-15c4-4346-94ad-2a4617c463d1")]
-		public static IEnumerable<KNOWNFOLDERID> GetFolderIds(this IKnownFolderManager mgr) { mgr.GetFolderIds(out var mem, out var c); return mem.ToEnumerable<Guid>((int)c).Select(g => AssociateAttribute.TryEnumLookup<KNOWNFOLDERID>(g, out var kf) ? kf : 0); }
+		public static IEnumerable<Guid> GetFolderIds(this IKnownFolderManager mgr) { mgr.GetFolderIds(out var mem, out var c); using (mem) return mem.ToArray<Guid>((int)c); }
+
+		/// <summary>Gets an array of all registered known folder IDs. This can be used in enumerating all known folders.</summary>
+		/// <param name="mgr">The <see cref="IKnownFolderManager"/> instance.</param>
+		/// <returns>An enumeration of all KNOWNFOLDERID values registered with the system.</returns>
+		/// <remarks>The caller of this method must have User privileges.</remarks>
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "3ac09fc4-15c4-4346-94ad-2a4617c463d1")]
+		public static IEnumerable<KNOWNFOLDERID> GetKnownFolderIds(this IKnownFolderManager mgr)
+		{
+			foreach (var id in mgr.GetFolderIds())
+				if (AssociateAttribute.TryEnumLookup<KNOWNFOLDERID>(id, out var kf))
+					yield return kf;
+		}
 
 		/// <summary>Extension method to simplify using the <see cref="IKnownFolder.GetShellItem"/> method.</summary>
 		/// <typeparam name="T">Type of the interface to get.</typeparam>
@@ -975,7 +987,7 @@ namespace Vanara.PInvoke
 		/// Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
 		/// </param>
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-		public static T GetShellItem<T>(this IKnownFolder fv, [In] KNOWN_FOLDER_FLAG dwFlags) where T : class => (T)fv.GetShellItem(dwFlags, typeof(T).GUID);
+		public static T GetShellItem<T>(this IKnownFolder fv, [In] KNOWN_FOLDER_FLAG dwFlags = KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT) where T : class => (T)fv.GetShellItem(dwFlags, typeof(T).GUID);
 
 		/// <summary>Defines the specifics of a known folder.</summary>
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -1068,7 +1080,7 @@ namespace Vanara.PInvoke
 			/// read-only (FILE_ATTRIBUTE_HIDDEN and FILE_ATTRIBUTE_READONLY). For a complete list of possible values, see the
 			/// dwFlagsAndAttributes parameter of the CreateFile function. Set to -1 if not needed.
 			/// </summary>
-			public uint dwAttributes;
+			public FileFlagsAndAttributes dwAttributes;
 
 			/// <summary>
 			/// Optional. One of more values from the KF_DEFINITION_FLAGS enumeration that allow you to restrict redirection, allow PC-to-PC
@@ -1096,9 +1108,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="KnownFolderDetailAttribute"/> class with a GUID for the <see cref="KNOWNFOLDERID"/>.</summary>
 			/// <param name="knownFolderGuid">The GUID for the <see cref="KNOWNFOLDERID"/>.</param>
-			public KnownFolderDetailAttribute(string knownFolderGuid) : base(knownFolderGuid)
-			{
-			}
+			public KnownFolderDetailAttribute(string knownFolderGuid) : base(knownFolderGuid) { }
 		}
 	}
 }
