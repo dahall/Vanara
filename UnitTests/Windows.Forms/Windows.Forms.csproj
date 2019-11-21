@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -51,7 +53,6 @@
     <Compile Include="Dialogs\CredentialsDialogTests.cs" />
     <Compile Include="Dialogs\NetworkConnectionDialogTests.cs" />
     <Compile Include="Dialogs\TaskDialogTests.cs" />
-    <None Include="ExplorerBrowserTests.cs" />
     <Compile Include="Extensions\ImageListTests.cs" />
     <Compile Include="ThemedControlTests.cs" />
     <Compile Include="VisualThemeTests.cs" />
