@@ -167,7 +167,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="pfs">A pointer to a FOLDERSETTINGS structure that determines how the folder will be displayed in the view.</param>
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void Initialize([In] HWND hwndParent, in RECT prc, [Optional] PFOLDERSETTINGS pfs);
+			void Initialize([In] IntPtr hwndParent, in RECT prc, [Optional] PFOLDERSETTINGS pfs);
 
 			/// <summary>Destroys the browser.</summary>
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -215,10 +215,12 @@ namespace Vanara.PInvoke
 
 			/// <summary>Sets the current browser options.</summary>
 			/// <param name="dwFlag">One or more EXPLORER_BROWSER_OPTIONS flags to be set.</param>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void SetOptions([In] EXPLORER_BROWSER_OPTIONS dwFlag);
 
 			/// <summary>Gets the current browser options.</summary>
 			/// <param name="pdwFlag">When this method returns, contains the current EXPLORER_BROWSER_OPTIONS for the browser.</param>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void GetOptions(out EXPLORER_BROWSER_OPTIONS pdwFlag);
 
 			/// <summary>Browses to a pointer to an item identifier list (PIDL)</summary>
@@ -227,12 +229,15 @@ namespace Vanara.PInvoke
 			/// This parameter can be NULL. For more information, see Remarks.
 			/// </param>
 			/// <param name="uFlags">A flag that specifies the category of the pidl. This affects how navigation is accomplished.</param>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void BrowseToIDList([In] PIDL pidl, [In] SBSP uFlags);
 
 			/// <summary>Browses to an object.</summary>
 			/// <param name="punk">A pointer to an object to browse to. If the object cannot be browsed, an error value is returned.</param>
 			/// <param name="uFlags">A flag that specifies the category of the pidl. This affects how navigation is accomplished.</param>
-			void BrowseToObject([In, MarshalAs(UnmanagedType.IUnknown)] object punk, [In] SBSP uFlags);
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+			[PreserveSig]
+			HRESULT BrowseToObject([MarshalAs(UnmanagedType.IUnknown)] object punk, SBSP uFlags);
 
 			/// <summary>Creates a results folder and fills it with items.</summary>
 			/// <param name="punk">
@@ -240,9 +245,11 @@ namespace Vanara.PInvoke
 			/// can be used with INamespaceWalk.
 			/// </param>
 			/// <param name="dwFlags">One of the EXPLORER_BROWSER_FILL_FLAGS values.</param>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void FillFromObject([In, MarshalAs(UnmanagedType.IUnknown)] object punk, [In] EXPLORER_BROWSER_FILL_FLAGS dwFlags);
 
 			/// <summary>Removes all items from the results folder.</summary>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void RemoveAll();
 
 			/// <summary>Gets an interface for the current view of the browser.</summary>
@@ -251,6 +258,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This will typically be
 			/// IShellView, IShellView2, IFolderView, or a related interface.
 			/// </returns>
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)]
 			object GetCurrentView(in Guid riid);
 		}
@@ -280,7 +288,7 @@ namespace Vanara.PInvoke
 			// HRESULT OnNavigationPending( PCIDLIST_ABSOLUTE pidlFolder );
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
-			HRESULT OnNavigationPending([In] PIDL pidlFolder);
+			HRESULT OnNavigationPending([In] IntPtr pidlFolder);
 
 			/// <summary>Notifies clients that the view of the Explorer browser has been created and can be modified.</summary>
 			/// <param name="psv">
@@ -322,7 +330,7 @@ namespace Vanara.PInvoke
 			// HRESULT OnNavigationComplete( PCIDLIST_ABSOLUTE pidlFolder );
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
-			HRESULT OnNavigationComplete([In] PIDL pidlFolder);
+			HRESULT OnNavigationComplete([In] IntPtr pidlFolder);
 
 			/// <summary>Notifies clients that the Explorer browser has failed to navigate to a Shell folder.</summary>
 			/// <param name="pidlFolder">
@@ -346,7 +354,7 @@ namespace Vanara.PInvoke
 			// HRESULT OnNavigationFailed( PCIDLIST_ABSOLUTE pidlFolder );
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
-			HRESULT OnNavigationFailed([In] PIDL pidlFolder);
+			HRESULT OnNavigationFailed([In] IntPtr pidlFolder);
 		}
 
 		/// <summary>Extension method to simplify using the <see cref="IExplorerBrowser.GetCurrentView"/> method.</summary>

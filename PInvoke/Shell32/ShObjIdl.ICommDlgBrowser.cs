@@ -95,7 +95,7 @@ namespace Vanara.PInvoke
 			/// <returns>The browser should return S_OK to include the object in the view, or S_FALSE to hide it.</returns>
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
-			HRESULT IncludeObject([In] IShellView ppshv, [In] PIDL pidl);
+			HRESULT IncludeObject([In] IShellView ppshv, [In] IntPtr pidl);
 		}
 
 		/*
@@ -187,7 +187,7 @@ namespace Vanara.PInvoke
 			/// <returns>The browser should return S_OK to include the object in the view, or S_FALSE to hide it.</returns>
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[PreserveSig]
-			HRESULT IncludeObject([In] IShellView ppshv, [In] PIDL pidl);
+			HRESULT IncludeObject([In] IShellView ppshv, [In] IntPtr pidl);
 
 			/// <summary>Called by the Shell view to get the default shortcut menu text.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
