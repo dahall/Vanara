@@ -343,7 +343,7 @@ namespace Vanara.Windows.Forms
 	[ToolboxItem(true), ToolboxBitmap(typeof(ExplorerBrowser), "ExplorerBrowser.bmp")]
 	[Description("A Shell browser object that can be either navigated or that can host a view of a data object.")]
 	[ComVisible(true), Guid("01103386-B66B-4AFB-AF50-78AED6E562DA")]
-	public class ExplorerBrowser : UserControl, ICommDlgBrowser3, IExplorerBrowserEvents, IExplorerPaneVisibility, IMessageFilter, IServiceProvider
+	public class ExplorerBrowser : Control, ICommDlgBrowser3, IExplorerBrowserEvents, IExplorerPaneVisibility, IMessageFilter, IServiceProvider
 	{
 		internal uint eventsCookie;
 		internal IExplorerBrowser explorerBrowserControl;
@@ -368,7 +368,7 @@ namespace Vanara.Windows.Forms
 		public ExplorerBrowser()
 		{
 			components = new Container();
-			AutoScaleMode = AutoScaleMode.Font;
+			//AutoScaleMode = AutoScaleMode.Font;
 
 			History = new NavigationLog(this);
 			Items = new ShellItemCollection(this, SVGIO.SVGIO_ALLVIEW);
@@ -933,7 +933,7 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Gets the IFolderView2 interface from the explorer browser.</summary>
 		/// <returns>An <see cref="IFolderView2"/> instance.</returns>
-		internal IFolderView2 GetFolderView2() => explorerBrowserControl?.GetCurrentView<IFolderView2>();
+		internal IFolderView2 GetFolderView2() { try { return explorerBrowserControl?.GetCurrentView<IFolderView2>(); } catch { return null; } }
 
 		/// <summary>Gets the items in the ExplorerBrowser as an IShellItemArray</summary>
 		/// <returns>An <see cref="IShellItemArray"/> instance or <see langword="null"/> if not available.</returns>
@@ -1087,7 +1087,7 @@ namespace Vanara.Windows.Forms
 
 				using var font = new Font("Segoe UI", 9);
 				using var sf = new StringFormat { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near };
-				pe.Graphics.DrawString(nameof(Windows.Forms.ExplorerBrowser), font, SystemBrushes.GrayText, cr, sf);
+				pe.Graphics.DrawString(nameof(Windows.Forms.ExplorerBrowser), font, SystemBrushes.GrayText, Rectangle.Inflate(cr, -3, -3), sf);
 			}
 
 			base.OnPaint(pe);
