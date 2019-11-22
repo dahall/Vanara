@@ -27,9 +27,7 @@ namespace Microsoft.WindowsAPICodePack.Samples
 			knownFolderCombo.Items.AddRange(KFItem.All);
 
 			// initial property grids
-			navigationPropertyGrid.SelectedObject = explorerBrowser;
-			visibilityPropertyGrid.SelectedObject = explorerBrowser.PaneVisibility;
-			contentPropertyGrid.SelectedObject = explorerBrowser;
+			propertyGrid.SelectedObject = explorerBrowser;
 
 			// setup ExplorerBrowser navigation events
 			explorerBrowser.Navigating += new EventHandler<ExplorerBrowser.NavigatingEventArgs>(explorerBrowser_Navigating);
