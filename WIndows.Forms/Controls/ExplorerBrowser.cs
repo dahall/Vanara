@@ -909,7 +909,11 @@ namespace Vanara.Windows.Forms
 			return HRESULT.S_OK;
 		}
 
-		bool IMessageFilter.PreFilterMessage(ref Message m) => /*(explorerBrowserControl as IInputObject)?.TranslateAcceleratorIO(m.ToMSG()).Succeeded ??*/ false;
+		bool IMessageFilter.PreFilterMessage(ref Message m)
+		{
+			if (explorerBrowserControl is null) return false;
+			return ((IInputObject_WinForms)explorerBrowserControl).TranslateAcceleratorIO(m) == HRESULT.S_OK;
+		}
 
 		HRESULT IServiceProvider.QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject)
 		{
@@ -1468,6 +1472,20 @@ namespace Vanara.Windows.Forms
 				internal const int SelectedItemModified = 220;
 				internal const int SelectionChanged = 200;
 			}
+		}
+
+		// *** The implementation in Shell32 uses MSG which has proven to be slow. This passes the Message structure directly. ***
+		[ComImport, Guid("68284fAA-6A48-11D0-8c78-00C04fd918b4"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		private interface IInputObject_WinForms
+		{
+			[PreserveSig]
+			HRESULT UIActivateIO([In, MarshalAs(UnmanagedType.Bool)] bool fActivate, in Message pMsg);
+
+			[PreserveSig]
+			HRESULT HasFocusIO();
+
+			[PreserveSig]
+			HRESULT TranslateAcceleratorIO(in Message pMsg);
 		}
 
 		/// <summary>Represents a collection of <see cref="ShellItem"/> attached to an <see cref="ExplorerBrowser"/>.</summary>
