@@ -208,7 +208,7 @@ namespace Vanara.Security.AccessControl
 				}
 				else
 				{
-					EditSecurityAdvanced(hWnd, this, pageType, pageAct);
+					Marshal.ThrowExceptionForHR((int)EditSecurityAdvanced(hWnd, this, pageType, pageAct));
 				}
 				if (sd != null)
 				{
