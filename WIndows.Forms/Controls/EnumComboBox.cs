@@ -5,33 +5,49 @@ using System.Windows.Forms;
 
 namespace Vanara.Windows.Forms
 {
+	/// <summary>
+	/// A combo box that displays the items of an <see cref="Enum"/> type. If the Enum type has a <see cref="FlagsAttribute"/>, then the
+	/// drop-down will be checked list of the values.
+	/// </summary>
+	/// <seealso cref="CustomComboBox"/>
 	public class EnumComboBox : CustomComboBox
 	{
-		private Type type = typeof(DayOfWeek);
-		private List<ECBItem> items = new List<ECBItem>();
+		private readonly List<ECBItem> items = new List<ECBItem>();
+		private readonly Timer timer = new Timer { Interval = 150 };
 		private CheckedListBox checkListBox;
-		private Timer timer = new Timer { Interval = 150 };
+		private Type type = null;
 
+		/// <summary>Initializes a new instance of the <see cref="EnumComboBox"/> class.</summary>
 		public EnumComboBox() : base()
 		{
 			base.DropDownStyle = ComboBoxStyle.DropDownList;
 			timer.Tick += Timer_Tick;
 		}
 
-		private void Timer_Tick(object sender, EventArgs e)
-		{
-			timer.Enabled = false;
-			if (HasFlags)
-				Text = GetFlagText();
-		}
+		/// <summary>Gets or sets the data source for this <see cref="T:System.Windows.Forms.ComboBox"/>.</summary>
+		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public new object DataSource { get => base.DataSource; set => base.DataSource = value; }
 
-		[DefaultValue("System.DayOfWeek")]
+		/// <summary>Gets or sets the property to display for this <see cref="T:System.Windows.Forms.ListControl"/>.</summary>
+		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public new string DisplayMember { get => base.DisplayMember; set => base.DisplayMember = value; }
+
+		/// <summary>Gets or sets a value specifying the style of the combo box.</summary>
+		/// <PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence"/><IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/></PermissionSet>
+		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public new ComboBoxStyle DropDownStyle { get => base.DropDownStyle; set => base.DropDownStyle = value; }
+
+		/// <summary>Gets or sets the Enum type that is used to populate the values of the combo box.</summary>
+		/// <value>The enum type string.</value>
+		/// <exception cref="ArgumentException">EnumTypeString must be an enumerated type.</exception>
+		[DefaultValue(""), Description("The Enum type that is used to populate the values of the combo box.")]
 		public string EnumTypeString
 		{
-			get => type.FullName; set
+			get => type?.FullName ?? "";
+			set
 			{
-				type = FindType(null, value, true);
-				if (type == null || !type.IsEnum)
+				type = FindType(value, true);
+				if (type is null || !type.IsEnum)
 					throw new ArgumentException("EnumTypeString must be an enumerated type.");
 
 				items.Clear();
@@ -42,9 +58,9 @@ namespace Vanara.Windows.Forms
 				{
 					if (checkListBox == null)
 					{
-						checkListBox = new System.Windows.Forms.CheckedListBox()
+						checkListBox = new CheckedListBox()
 						{
-							BorderStyle = System.Windows.Forms.BorderStyle.None,
+							BorderStyle = BorderStyle.None,
 							CheckOnClick = true,
 							FormattingEnabled = true,
 							Location = new System.Drawing.Point(17, 35),
@@ -69,59 +85,23 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		private void CheckListBox_ItemCheck(object sender, ItemCheckEventArgs e)
-		{
-			timer.Enabled = true;
-		}
-
-		private string GetFlagText()
-		{
-			string[] items = new string[checkListBox.CheckedItems.Count];
-			for (int i = 0; i < checkListBox.CheckedItems.Count; i++)
-				items[i] = checkListBox.CheckedItems[i].ToString();
-			return string.Join(", ", items);
-		}
-
-		private Type FindType(global::System.Reflection.Assembly asm, string name, bool ignoreCase)
-		{
-			Type t = null;
-			foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
-				if ((t = a.GetType(name, false, ignoreCase)) != null)
-					break;
-			return t;
-		}
-
-		public T GetSelectedValue<T>() => SelectedValue == null ? default : (T)SelectedValue;
-
-		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public new ComboBoxStyle DropDownStyle { get => base.DropDownStyle; set => base.DropDownStyle = value; }
-
-		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public new string DisplayMember { get => base.DisplayMember; set => base.DisplayMember = value; }
-
-		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public new string ValueMember { get => base.ValueMember; set => base.ValueMember = value; }
-
-		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public new object DataSource { get => base.DataSource; set => base.DataSource = value; }
-
-		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public new ObjectCollection Items => base.Items;
-
+		/// <summary>
+		/// Gets or sets the value of the member property specified by the <see cref="P:System.Windows.Forms.ListControl.ValueMember"/> property.
+		/// </summary>
 		public new object SelectedValue
 		{
 			get
 			{
-				long ret = 0;
+				var ret = 0L;
 				if (!HasFlags)
 				{
 					ret = Convert.ToInt64(items[SelectedIndex].Value);
 				}
 				else
 				{
-					for (int i = 0; i < checkListBox.CheckedItems.Count; i++)
+					for (var i = 0; i < checkListBox.CheckedItems.Count; i++)
 					{
-						ECBItem o = checkListBox.CheckedItems[i] as ECBItem;
+						var o = checkListBox.CheckedItems[i] as ECBItem;
 						if (o != null && o.Value is IConvertible)
 							try { ret |= Convert.ToInt64(o.Value); } catch { }
 					}
@@ -135,12 +115,12 @@ namespace Vanara.Windows.Forms
 					SelectedIndex = items.FindIndex(i => i.Value == value);
 				else
 				{
-					long lval = Convert.ToInt64(value);
+					var lval = Convert.ToInt64(value);
 					checkListBox.BeginUpdate();
-					for (int i = 0; i < checkListBox.Items.Count; i++)
+					for (var i = 0; i < checkListBox.Items.Count; i++)
 					{
 						long? val = null;
-						ECBItem o = checkListBox.Items[i] as ECBItem;
+						var o = checkListBox.Items[i] as ECBItem;
 						if (o != null && o.Value is IConvertible)
 							try { val = Convert.ToInt64(o.Value); } catch { }
 						checkListBox.SetItemCheckState(i, (val.HasValue && (val.Value & lval) == val.Value) ? CheckState.Checked : CheckState.Unchecked);
@@ -150,7 +130,20 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
+		/// <summary>Gets or sets the property to use as the actual value for the items in the <see cref="T:System.Windows.Forms.ListControl"/>.</summary>
+		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public new string ValueMember { get => base.ValueMember; set => base.ValueMember = value; }
+
+		/// <summary>Gets an object representing the collection of the items contained in this <see cref="T:System.Windows.Forms.ComboBox"/>.</summary>
+		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public new ObjectCollection Items => base.Items;
+
 		private bool HasFlags => DropDownControl != null;
+
+		/// <summary>Gets the selected value.</summary>
+		/// <typeparam name="T">The type of the value to retrieve.</typeparam>
+		/// <returns>The selected value cast to <typeparamref name="T"/>.</returns>
+		public T GetSelectedValue<T>() => SelectedValue == null ? default : (T)SelectedValue;
 
 		private static Type GetEnumUnderlyingType(Type eType)
 		{
@@ -160,6 +153,32 @@ namespace Vanara.Windows.Forms
 			if (fields == null || fields.Length != 1)
 				throw new ArgumentException("Invalid Enum type.", nameof(eType));
 			return fields[0].FieldType;
+		}
+
+		private void CheckListBox_ItemCheck(object sender, ItemCheckEventArgs e) => timer.Enabled = true;
+
+		private Type FindType(string name, bool ignoreCase)
+		{
+			Type t = null;
+			foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+				if ((t = a.GetType(name, false, ignoreCase)) != null)
+					break;
+			return t;
+		}
+
+		private string GetFlagText()
+		{
+			var items = new string[checkListBox.CheckedItems.Count];
+			for (var i = 0; i < checkListBox.CheckedItems.Count; i++)
+				items[i] = checkListBox.CheckedItems[i].ToString();
+			return string.Join(", ", items);
+		}
+
+		private void Timer_Tick(object sender, EventArgs e)
+		{
+			timer.Enabled = false;
+			if (HasFlags)
+				Text = GetFlagText();
 		}
 
 		[Serializable]
@@ -174,6 +193,7 @@ namespace Vanara.Windows.Forms
 
 			public string Text { get; set; }
 			public object Value { get; set; }
+
 			public override string ToString() => Text;
 		}
 	}
