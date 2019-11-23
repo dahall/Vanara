@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Vanara.Windows.Forms
@@ -40,7 +41,7 @@ namespace Vanara.Windows.Forms
 		/// <summary>Gets or sets the Enum type that is used to populate the values of the combo box.</summary>
 		/// <value>The enum type string.</value>
 		/// <exception cref="ArgumentException">EnumTypeString must be an enumerated type.</exception>
-		[DefaultValue(""), Description("The Enum type that is used to populate the values of the combo box.")]
+		[DefaultValue(""), Category("Behavior"), Description("The Enum type that is used to populate the values of the combo box.")]
 		public string EnumTypeString
 		{
 			get => type?.FullName ?? "";
@@ -157,14 +158,7 @@ namespace Vanara.Windows.Forms
 
 		private void CheckListBox_ItemCheck(object sender, ItemCheckEventArgs e) => timer.Enabled = true;
 
-		private Type FindType(string name, bool ignoreCase)
-		{
-			Type t = null;
-			foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
-				if ((t = a.GetType(name, false, ignoreCase)) != null)
-					break;
-			return t;
-		}
+		private Type FindType(string name, bool ignoreCase) => AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType(name, false, ignoreCase)).Where(t => t != null).FirstOrDefault();
 
 		private string GetFlagText()
 		{
