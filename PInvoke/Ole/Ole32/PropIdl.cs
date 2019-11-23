@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
@@ -1133,7 +1134,7 @@ namespace Vanara.PInvoke
 				/// <para>Specifies the string name of the property as a null-terminated Unicode string.</para>
 				/// </summary>
 				[FieldOffset(0)]
-				public string lpwstr;
+				public StrPtrUni lpwstr;
 			}
 		}
 
