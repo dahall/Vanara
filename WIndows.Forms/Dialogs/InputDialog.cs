@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
 namespace Vanara.Windows.Forms
 {
-	/// <summary>An input dialog that automatically creates controls to collect the values of the object supplied via the <see cref="Data"/> property.</summary>
+	/// <summary>
+	/// An input dialog that automatically creates controls to collect the values of the object supplied via the <see cref="Data"/> property.
+	/// </summary>
 	public class InputDialog : CommonDialog
 	{
 		private object data;
 
 		/// <summary>
-		/// Gets or sets the data for the input dialog box. The data type will determine the type of input mechanism displayed. For simple types, a
-		/// <see cref="TextBox"/> with validation, or a <see cref="CheckBox"/> or a <see cref="ComboBox"/> will be displayed. For classes and structures, all of
-		/// the public, top-level, fields and properties will have input mechanisms shown for each. See Remarks for more detail.
+		/// Gets or sets the data for the input dialog box. The data type will determine the type of input mechanism displayed. For simple
+		/// types, a <see cref="TextBox"/> with validation, or a <see cref="CheckBox"/> or a <see cref="ComboBox"/> will be displayed. For
+		/// classes and structures, all of the public, top-level, fields and properties will have input mechanisms shown for each. See
+		/// Remarks for more detail.
 		/// </summary>
 		/// <value>The data for the input dialog box.</value>
 		/// <remarks>TBD</remarks>
@@ -26,7 +30,9 @@ namespace Vanara.Windows.Forms
 			set => data = value;
 		}
 
-		/// <summary>Gets or sets the image to display on the top left corner of the dialog. This value can be <c>null</c> to display no image.</summary>
+		/// <summary>
+		/// Gets or sets the image to display on the top left corner of the dialog. This value can be <c>null</c> to display no image.
+		/// </summary>
 		/// <value>The image to display on the top left corner of the dialog.</value>
 		[DefaultValue(null), Category("Appearance"), Description("The image to display on the top left corner of the dialog.")]
 		[Localizable(true)]
@@ -49,41 +55,45 @@ namespace Vanara.Windows.Forms
 		/// <param name="prompt">The text prompt to display above all input options. This value can be <c>null</c>.</param>
 		/// <param name="caption">The caption for the dialog.</param>
 		/// <param name="data">
-		/// The data for the input. The data type will determine the type of input mechanism displayed. For simple types, a <see cref="TextBox"/> with
-		/// validation, or a <see cref="CheckBox"/> or a <see cref="ComboBox"/> will be displayed. For classes and structures, all of the public, top-level,
-		/// fields and properties will have input mechanisms shown for each. See Remarks for more detail.
+		/// The data for the input. The data type will determine the type of input mechanism displayed. For simple types, a
+		/// <see cref="TextBox"/> with validation, or a <see cref="CheckBox"/> or a <see cref="ComboBox"/> will be displayed. For classes
+		/// and structures, all of the public, top-level, fields and properties will have input mechanisms shown for each. See Remarks for
+		/// more detail.
 		/// </param>
-		/// <param name="image">The image to display on the top left corner of the dialog. This value can be <c>null</c> to display no image.</param>
+		/// <param name="image">
+		/// The image to display on the top left corner of the dialog. This value can be <c>null</c> to display no image.
+		/// </param>
 		/// <param name="width">The desired width of the <see cref="InternalInputDialog"/>. A value of <c>0</c> indicates a default width.</param>
 		/// <returns>
-		/// Either <see cref="DialogResult.OK"/> or <see cref="DialogResult.Cancel"/>. On OK, the <paramref name="data"/> parameter will include the updated
-		/// values from the <see cref="InternalInputDialog"/>.
+		/// Either <see cref="DialogResult.OK"/> or <see cref="DialogResult.Cancel"/>. On OK, the <paramref name="data"/> parameter will
+		/// include the updated values from the <see cref="InternalInputDialog"/>.
 		/// </returns>
 		/// <remarks></remarks>
 		public static DialogResult Show(IWin32Window owner, string prompt, string caption, ref object data, Image image = null, int width = 0)
 		{
-			using (var dlg = new InternalInputDialog(prompt, caption, image, data, width))
-			{
-				var ret = owner == null ? dlg.ShowDialog() : dlg.ShowDialog(owner);
-				if (ret == DialogResult.OK)
-					data = dlg.Data;
-				return ret;
-			}
+			using var dlg = new InternalInputDialog(prompt, caption, image, data, width);
+			var ret = owner == null ? dlg.ShowDialog() : dlg.ShowDialog(owner);
+			if (ret == DialogResult.OK)
+				data = dlg.Data;
+			return ret;
 		}
 
 		/// <summary>Displays an input dialog with the specified prompt, caption, data, and image.</summary>
 		/// <param name="prompt">The text prompt to display above all input options. This value can be <c>null</c>.</param>
 		/// <param name="caption">The caption for the dialog.</param>
 		/// <param name="data">
-		/// The data for the input. The data type will determine the type of input mechanism displayed. For simple types, a <see cref="TextBox"/> with
-		/// validation, or a <see cref="CheckBox"/> or a <see cref="ComboBox"/> will be displayed. For classes and structures, all of the public, top-level,
-		/// fields and properties will have input mechanisms shown for each. See Remarks for more detail.
+		/// The data for the input. The data type will determine the type of input mechanism displayed. For simple types, a
+		/// <see cref="TextBox"/> with validation, or a <see cref="CheckBox"/> or a <see cref="ComboBox"/> will be displayed. For classes
+		/// and structures, all of the public, top-level, fields and properties will have input mechanisms shown for each. See Remarks for
+		/// more detail.
 		/// </param>
-		/// <param name="image">The image to display on the top left corner of the dialog. This value can be <c>null</c> to display no image.</param>
+		/// <param name="image">
+		/// The image to display on the top left corner of the dialog. This value can be <c>null</c> to display no image.
+		/// </param>
 		/// <param name="width">The desired width of the <see cref="InternalInputDialog"/>. A value of <c>0</c> indicates a default width.</param>
 		/// <returns>
-		/// Either <see cref="DialogResult.OK"/> or <see cref="DialogResult.Cancel"/>. On OK, the <paramref name="data"/> parameter will include the updated
-		/// values from the <see cref="InternalInputDialog"/>.
+		/// Either <see cref="DialogResult.OK"/> or <see cref="DialogResult.Cancel"/>. On OK, the <paramref name="data"/> parameter will
+		/// include the updated values from the <see cref="InternalInputDialog"/>.
 		/// </returns>
 		/// <remarks></remarks>
 		public static DialogResult Show(string prompt, string caption, ref object data, Image image = null, int width = 0) => Show(null, prompt, caption, ref data, image, width);
@@ -120,7 +130,9 @@ namespace Vanara.Windows.Forms
 				[typeof(TimeSpan)] = GetCultureChars(true, true, false, new[] { '-' }),
 				[typeof(Guid)] = GetCultureChars(true, false, false, "-{}()".ToCharArray()),
 			};
+
 			private static readonly Size minSize = new Size(193, 104);
+
 			private static readonly Type[] simpleTypes = { typeof(Enum), typeof(decimal), typeof(DateTime),
 				typeof(DateTimeOffset), typeof(string), typeof(TimeSpan), typeof(Guid) };
 
@@ -172,10 +184,11 @@ namespace Vanara.Windows.Forms
 			[DefaultValue(null), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 			public object Data
 			{
-				get => dataObj; set
+				get => dataObj;
+				set
 				{
 					if (value == null)
-						throw new ArgumentNullException(nameof(Data));
+						value = string.Empty;
 
 					items.Clear();
 
@@ -262,20 +275,18 @@ namespace Vanara.Windows.Forms
 
 			private static string ConvertToStr(object value)
 			{
-				switch (value)
+				return value switch
 				{
-					case null:
-						return string.Empty;
-					case IConvertible conv:
-						return value.ToString();
-				}
-				return (string)TypeDescriptor.GetConverter(value).ConvertTo(value, typeof(string));
+					null => string.Empty,
+
+					IConvertible _ => value.ToString(), _ => (string)TypeDescriptor.GetConverter(value).ConvertTo(value, typeof(string)),
+				};
 			}
 
 			private static int GetBestHeight(Control c)
 			{
-				using (var g = c.CreateGraphics())
-					return TextRenderer.MeasureText(g, c.Text, c.Font, new Size(c.Width, 0), TextFormatFlags.WordBreak).Height;
+				using var g = c.CreateGraphics();
+				return TextRenderer.MeasureText(g, c.Text, c.Font, new Size(c.Width, 0), TextFormatFlags.WordBreak).Height;
 			}
 
 			private static char[] GetCultureChars(bool digits, bool neg, bool pos, bool dec = false, bool grp = false, bool e = false)
@@ -312,7 +323,7 @@ namespace Vanara.Windows.Forms
 				return ca;
 			}
 
-			private static bool IsSimpleType(Type type) => type.IsPrimitive || type.IsEnum || Array.Exists(simpleTypes, t => t == type) || Convert.GetTypeCode(type) != TypeCode.Object ||
+			private static bool IsSimpleType(Type type) => type.IsPrimitive || type.IsEnum || simpleTypes.Contains(type) || Convert.GetTypeCode(type) != TypeCode.Object ||
 				type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && IsSimpleType(type.GetGenericArguments()[0]);
 
 			private static bool IsSupportedType(Type type)
@@ -468,7 +479,7 @@ namespace Vanara.Windows.Forms
 
 			private void CancelBtn_Click(object sender, EventArgs e) => Close();
 
-			private InputDialogItemAttribute GetAttr(MemberInfo mi) => (InputDialogItemAttribute)Attribute.GetCustomAttribute(mi, typeof(InputDialogItemAttribute), true);
+			private InputDialogItemAttribute GetAttr(MemberInfo mi) => mi is null ? null : (InputDialogItemAttribute)Attribute.GetCustomAttribute(mi, typeof(InputDialogItemAttribute), true);
 
 			private Type GetItemType(MemberInfo mi) => mi == null ? dataObj.GetType() : ((mi as PropertyInfo)?.PropertyType ?? ((FieldInfo)mi).FieldType);
 
@@ -526,7 +537,7 @@ namespace Vanara.Windows.Forms
 				cancelBtn.UseVisualStyleBackColor = true;
 				cancelBtn.Click += new EventHandler(CancelBtn_Click);
 				// borderPanel
-				borderPanel.BackColor = Color.FromArgb((int)(byte)223, (int)(byte)223, (int)(byte)223);
+				borderPanel.BackColor = Color.FromArgb(223, 223, 223);
 				borderPanel.Dock = DockStyle.Bottom;
 				borderPanel.Location = new Point(0, 24);
 				borderPanel.Margin = new Padding(0);
@@ -562,7 +573,7 @@ namespace Vanara.Windows.Forms
 				Controls.Add(table);
 				Controls.Add(borderPanel);
 				Controls.Add(buttonPanel);
-				Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
+				Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
 				FormBorderStyle = FormBorderStyle.FixedDialog;
 				MinimumSize = new Size(prefWidth, minSize.Height);
 				MaximumSize = new Size(prefWidth, int.MaxValue);
@@ -608,16 +619,16 @@ namespace Vanara.Windows.Forms
 			{
 				public string RegexPattern { get; set; }
 
-				protected override void OnKeyPress(KeyPressEventArgs e)
-				{
+				protected override void OnKeyPress(KeyPressEventArgs e) =>
 					//System.Text.RegularExpressions.Regex.IsMatch()
 					base.OnKeyPress(e);
-				}
 			}
 		}
 	}
 
-	/// <summary>Allows a developer to attribute a property or field with text that gets shown instead of the field or property name in an <see cref="InputDialog"/>.</summary>
+	/// <summary>
+	/// Allows a developer to attribute a property or field with text that gets shown instead of the field or property name in an <see cref="InputDialog"/>.
+	/// </summary>
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
 	public sealed class InputDialogItemAttribute : Attribute
 	{
