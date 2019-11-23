@@ -3,46 +3,25 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Vanara.Extensions;
 using static Vanara.PInvoke.User32;
 
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable EventNeverSubscribedTo.Global
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.Windows.Forms
 {
-	/// <summary>
-	/// Represents a Windows Command Link control.
-	/// </summary>
-	/// <seealso cref="System.Windows.Forms.Button" />
+	/// <summary>Represents a Windows Command Link control.</summary>
+	/// <seealso cref="System.Windows.Forms.Button"/>
 	[Designer(typeof(Design.CommandLinkDesigner)), DefaultProperty("Text")]
 	public class CommandLink : Button
 	{
-		//private const uint BCM_GETNOTE = 0x0000160A;
-		//private const uint BCM_GETNOTELENGTH = 0x0000160B;
-		private const uint BCM_SETNOTE = 0x00001609;
-		private const uint BCM_SETSHIELD = 0x0000160C;
-		private const uint BM_SETIMAGE = 0x000000F7;
-		private const uint BS_COMMANDLINK = 0x0000000E;
-		private const uint BS_DEFCOMMANDLINK = 0x0000000F;
-
 		private static readonly bool IsPlatformSupported = Environment.OSVersion.Version.Major > 5;
 		private PushButtonState buttonState = PushButtonState.Normal;
 		private string noteText;
 		private bool showShield;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CommandLink"/> class.
-		/// </summary>
-		public CommandLink()
-		{
-			FlatStyle = IsPlatformSupported ? FlatStyle.System : FlatStyle.Standard;
-		}
+		/// <summary>Initializes a new instance of the <see cref="CommandLink"/> class.</summary>
+		public CommandLink() => FlatStyle = IsPlatformSupported ? FlatStyle.System : FlatStyle.Standard;
 
 		/// <summary>
 		/// Gets or sets the drawing style for custom drawing. By default, a style the resembles how Vista renders Command Links is provided.
@@ -51,33 +30,25 @@ namespace Vanara.Windows.Forms
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public IDrawingStyle<CommandLink, PushButtonState> DrawingStyle { get; set; } = new VistaCustomDrawingStyle();
 
-		/// <summary>
-		/// Gets or sets the image that is displayed on a button control.
-		/// </summary>
+		/// <summary>Gets or sets the image that is displayed on a button control.</summary>
 		[DefaultValue(null), Category("Appearance"), Localizable(true)]
+		[Description("The image that is displayed on a button control.")]
 		public new Bitmap Image
 		{
-			get
-			{
-				if (base.Image == null) return null;
-				return base.Image as Bitmap ?? new Bitmap(base.Image);
-			}
+			get => base.Image is null ? null : base.Image as Bitmap ?? new Bitmap(base.Image);
 			set
 			{
 				base.Image = value;
 				if (IsPlatformSupported)
-					this.SendMessage(BM_SETIMAGE, (IntPtr)1, (base.Image as Bitmap)?.GetHicon() ?? IntPtr.Zero);
+					this.SendMessage((uint)ButtonMessage.BM_SETIMAGE, (IntPtr)1, (base.Image as Bitmap)?.GetHicon() ?? IntPtr.Zero);
 			}
 		}
 
-		/// <summary>
-		/// Gets or sets the optional supplemental note to show below the main text.
-		/// </summary>
-		/// <value>
-		/// The text to display for the note. If this value is <c>null</c>, no note will be displayed.
-		/// </value>
+		/// <summary>Gets or sets the optional supplemental note to show below the main text.</summary>
+		/// <value>The text to display for the note. If this value is <c>null</c>, no note will be displayed.</value>
 		[Bindable(true)]
 		[DefaultValue(null), Category("Appearance"), Localizable(true)]
+		[Description("The text to display for the note.")]
 		public string NoteText
 		{
 			get => noteText;
@@ -91,17 +62,10 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		private void SetNote()
-		{
-			if (IsPlatformSupported && IsHandleCreated)
-				SendMessage(Handle, BCM_SETNOTE, IntPtr.Zero, noteText);
-		}
-
-		/// <summary>
-		/// Gets or sets a value indicating whether to indicate that elevation is required by showing the elevation (shield) icon.
-		/// </summary>
+		/// <summary>Gets or sets a value indicating if elevation is required by showing the shield icon.</summary>
 		/// <value><c>true</c> to indicate that elevation is required; otherwise, <c>false</c>.</value>
 		[DefaultValue(false), Category("Behavior")]
+		[Description("Indicates if elevation is required by showing the shield icon.")]
 		public bool ShowShield
 		{
 			get => showShield;
@@ -110,45 +74,35 @@ namespace Vanara.Windows.Forms
 				if (showShield == value) return;
 				showShield = value;
 				if (IsPlatformSupported)
-					this.SendMessage(BCM_SETSHIELD, (IntPtr)0, (IntPtr)(value ? 1 : 0));
+					this.SendMessage((uint)ButtonMessage.BCM_SETSHIELD, (IntPtr)0, (IntPtr)(value ? 1 : 0));
 				Invalidate();
 			}
 		}
 
-		/// <summary>
-		/// Gets a <see cref="T:System.Windows.Forms.CreateParams" /> on the base class when creating a window.
-		/// </summary>
+		/// <summary>Gets a <see cref="T:System.Windows.Forms.CreateParams"/> on the base class when creating a window.</summary>
 		protected override CreateParams CreateParams
 		{
 			get
 			{
 				var cp = base.CreateParams;
 				if (IsPlatformSupported)
-					cp.Style |= (int)(Default ? BS_DEFCOMMANDLINK : BS_COMMANDLINK);
+					cp.Style |= (int)(Default ? ButtonStyle.BS_DEFCOMMANDLINK : ButtonStyle.BS_COMMANDLINK);
 				return cp;
 			}
 		}
 
-		/// <summary>
-		/// Gets the default size of the control.
-		/// </summary>
+		/// <summary>Gets the default size of the control.</summary>
 		protected override Size DefaultSize => new Size(200, AutoSize ? PreferredSize.Height : 58);
 
 		private bool Default => ReferenceEquals(FindForm()?.AcceptButton, this);
 
-		/// <summary>
-		/// Retrieves the size of a rectangular area into which a control can be fitted.
-		/// </summary>
+		/// <summary>Retrieves the size of a rectangular area into which a control can be fitted.</summary>
 		/// <param name="proposedSize">The custom-sized area for a control.</param>
-		/// <returns>
-		/// An ordered pair of type <see cref="T:System.Drawing.Size" /> representing the width and height of a rectangle.
-		/// </returns>
+		/// <returns>An ordered pair of type <see cref="T:System.Drawing.Size"/> representing the width and height of a rectangle.</returns>
 		public override Size GetPreferredSize(Size proposedSize) => IsPlatformSupported ? proposedSize : DrawingStyle.Measure(this, buttonState);
 
-		/// <summary>
-		/// Raises the <see cref="E:Control.EnabledChanged" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:Control.EnabledChanged"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnEnabledChanged(EventArgs e)
 		{
 			base.OnEnabledChanged(e);
@@ -158,12 +112,15 @@ namespace Vanara.Windows.Forms
 			Invalidate();
 		}
 
-		protected override void OnHandleCreated(EventArgs e) { base.OnHandleCreated(e); SetNote(); }
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.HandleCreated"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+		protected override void OnHandleCreated(EventArgs e)
+		{
+			base.OnHandleCreated(e); SetNote();
+		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.MouseDown" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseDown"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			buttonState = Enabled ? PushButtonState.Pressed : PushButtonState.Disabled;
@@ -171,9 +128,7 @@ namespace Vanara.Windows.Forms
 			base.OnMouseDown(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:Control.MouseEnter" /> event.
-		/// </summary>
+		/// <summary>Raises the <see cref="E:Control.MouseEnter"/> event.</summary>
 		/// <param name="e">Provides information for the event.</param>
 		protected override void OnMouseEnter(EventArgs e)
 		{
@@ -182,9 +137,7 @@ namespace Vanara.Windows.Forms
 			base.OnMouseEnter(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:Control.MouseLeave" /> event.
-		/// </summary>
+		/// <summary>Raises the <see cref="E:Control.MouseLeave"/> event.</summary>
 		/// <param name="e">Provides missing information for the event.</param>
 		protected override void OnMouseLeave(EventArgs e)
 		{
@@ -193,10 +146,8 @@ namespace Vanara.Windows.Forms
 			base.OnMouseLeave(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
 			buttonState = Enabled ? PushButtonState.Hot : PushButtonState.Disabled;
@@ -204,10 +155,8 @@ namespace Vanara.Windows.Forms
 			base.OnMouseUp(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.Paint" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.Paint"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.</param>
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			if (IsPlatformSupported)
@@ -225,6 +174,12 @@ namespace Vanara.Windows.Forms
 				DrawingStyle.Draw(this, buttonState, e);
 			}
 		}
+
+		private void SetNote()
+		{
+			if (IsPlatformSupported && IsHandleCreated)
+				SendMessage(Handle, (uint)ButtonMessage.BCM_SETNOTE, IntPtr.Zero, noteText);
+		}
 	}
 
 	internal class VistaCustomDrawingStyle : IDrawingStyle<CommandLink, PushButtonState>
@@ -239,7 +194,7 @@ namespace Vanara.Windows.Forms
 		private const int tbMargin = 10;
 
 		private static readonly Font largeFont = new Font(fontName, 12, FontStyle.Regular, GraphicsUnit.Point, 0);
-		private static readonly Font smallFont = new Font(fontName, 9, FontStyle.Regular, GraphicsUnit.Point, 0);
+
 		private static readonly Dictionary<PushButtonState, DrawPattern> paintPattern = new Dictionary<PushButtonState, DrawPattern>
 		{
 			[PushButtonState.Normal] = new DrawPattern(Color.Transparent, Color.Transparent, Color.FromArgb(21, 28, 85), Properties.Resources.ArrowNormal),
@@ -248,6 +203,8 @@ namespace Vanara.Windows.Forms
 			[PushButtonState.Disabled] = new DrawPattern(Color.Transparent, Color.Transparent, Color.FromArgb(126, 133, 156), Properties.Resources.ArrowDisabled),
 			[PushButtonState.Default] = new DrawPattern(Color.Transparent, Color.FromArgb(192, 233, 243), Color.FromArgb(21, 28, 85), Properties.Resources.ArrowNormal)
 		};
+
+		private static readonly Font smallFont = new Font(fontName, 9, FontStyle.Regular, GraphicsUnit.Point, 0);
 
 		public void Draw(CommandLink ctrl, PushButtonState state, PaintEventArgs e)
 		{
@@ -275,10 +232,7 @@ namespace Vanara.Windows.Forms
 		{
 			private int h;
 
-			public DrawPattern(Color fill, Color line, Color text, Image arrow) : this(line, text, arrow)
-			{
-				Fill = fill.IsSystemColor ? SystemBrushes.FromSystemColor(fill) : new SolidBrush(fill);
-			}
+			public DrawPattern(Color fill, Color line, Color text, Image arrow) : this(line, text, arrow) => Fill = fill.IsSystemColor ? SystemBrushes.FromSystemColor(fill) : new SolidBrush(fill);
 
 			public DrawPattern(Color fill1, Color fill2, int height, Color line, Color text, Image arrow)
 				: this(line, text, arrow)
