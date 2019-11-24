@@ -818,12 +818,28 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
+		/// <summary>Local implementation of IShellItem.</summary>
+		/// <seealso cref="System.IDisposable"/>
+		/// <seealso cref="Vanara.PInvoke.Shell32.IShellItem"/>
 		protected class ShellItemImpl : IDisposable, IShellItem
 		{
+			/// <summary>Initializes a new instance of the <see cref="ShellItemImpl"/> class.</summary>
+			/// <param name="pidl">The pidl.</param>
+			/// <param name="owner">if set to <see langword="true"/> [owner].</param>
 			public ShellItemImpl(PIDL pidl, bool owner) => PIDL = owner ? pidl : new PIDL(pidl);
 
 			private PIDL PIDL { get; set; }
 
+			/// <summary>Binds to a handler for an item as specified by the handler ID value (BHID).</summary>
+			/// <param name="pbc">
+			/// A pointer to an IBindCtx interface on a bind context object. Used to pass optional parameters to the handler. The contents
+			/// of the bind context are handler-specific. For example, when binding to BHID_Stream, the STGM flags in the bind context
+			/// indicate the mode of access desired (read or read/write).
+			/// </param>
+			/// <param name="bhid">Reference to a GUID that specifies which handler will be created.</param>
+			/// <param name="riid">IID of the object type to retrieve.</param>
+			/// <returns>When this method returns, contains a pointer of type riid that is returned by the handler specified by rbhid.</returns>
+			/// <exception cref="InvalidCastException"></exception>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			public object BindToHandler(IBindCtx pbc, in Guid bhid, in Guid riid)
 			{
@@ -832,6 +848,16 @@ namespace Vanara.Windows.Shell
 				throw new InvalidCastException();
 			}
 
+			/// <summary>Compares two IShellItem objects.</summary>
+			/// <param name="psi">A pointer to an IShellItem object to compare with the existing IShellItem object.</param>
+			/// <param name="hint">
+			/// One of the SICHINTF values that determines how to perform the comparison. See SICHINTF for the list of possible values for
+			/// this parameter.
+			/// </param>
+			/// <returns>
+			/// This parameter receives the result of the comparison. If the two items are the same this parameter equals zero; if they are
+			/// different the parameter is nonzero.
+			/// </returns>
 			public int Compare(IShellItem psi, SICHINTF hint)
 			{
 				var other = (ShellItemImpl)psi;
@@ -842,8 +868,18 @@ namespace Vanara.Windows.Shell
 				return 1;
 			}
 
+			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			public void Dispose() => PIDL = null;
 
+			/// <summary>Gets a requested set of attributes of the IShellItem object.</summary>
+			/// <param name="sfgaoMask">
+			/// Specifies the attributes to retrieve. One or more of the SFGAO values. Use a bitwise OR operator to determine the attributes
+			/// to retrieve.
+			/// </param>
+			/// <returns>
+			/// A pointer to a value that, when this method returns successfully, contains the requested attributes. One or more of the
+			/// SFGAO values. Only those attributes specified by sfgaoMask are returned; other attribute values are undefined.
+			/// </returns>
 			public SFGAO GetAttributes(SFGAO sfgaoMask)
 			{
 				var parentFolder = InternalGetParent().GetIShellFolder();
@@ -852,6 +888,12 @@ namespace Vanara.Windows.Shell
 				return result & sfgaoMask;
 			}
 
+			/// <summary>Gets the display name of the IShellItem object.</summary>
+			/// <param name="sigdnName">One of the SIGDN values that indicates how the name should look.</param>
+			/// <returns>
+			/// A value that, when this function returns successfully, receives the address of a pointer to the retrieved display name.
+			/// </returns>
+			/// <exception cref="ArgumentException"></exception>
 			public SafeCoTaskMemString GetDisplayName(SIGDN sigdnName)
 			{
 				if (sigdnName == SIGDN.SIGDN_FILESYSPATH)
@@ -864,9 +906,12 @@ namespace Vanara.Windows.Shell
 
 				var parentFolder = InternalGetParent().GetIShellFolder();
 				var child = PIDL.LastId;
-				return new SafeCoTaskMemString(parentFolder.GetDisplayNameOf(child, (SHGDNF)((int)sigdnName & 0xffff)), CharSet.Unicode);
+				parentFolder.GetDisplayNameOf(child, (SHGDNF)((int)sigdnName & 0xffff), out var name);
+				return new SafeCoTaskMemString(name, CharSet.Unicode);
 			}
 
+			/// <summary>Gets the parent of an IShellItem object.</summary>
+			/// <returns>The address of a pointer to the parent of an IShellItem interface.</returns>
 			public IShellItem GetParent()
 			{
 				var pidlCopy = new PIDL(PIDL);
