@@ -41,15 +41,12 @@ namespace Vanara.PInvoke.Tests
 		public void SHGetDesktopFolderTest()
 		{
 			Assert.That(SHGetDesktopFolder(out var sf), ResultIs.Successful);
-			var eo = sf.EnumObjects(HWND.NULL, SHCONTF.SHCONTF_NONFOLDERS);
-			Assert.That(eo, Is.Not.Null);
-			foreach (var sub in new Collections.IEnumFromNext<IntPtr>((out IntPtr p) => eo.Next(1, out p, out var f).Succeeded && f == 1, () => { try { eo.Reset(); } catch { } }))
+			foreach (var sub in sf.EnumObjects())
 			{
-				STRRET name = default;
-				Assert.That(() => sf.GetDisplayNameOf(sub, SHGDNF.SHGDN_NORMAL | SHGDNF.SHGDN_INFOLDER, out name), Throws.Nothing);
+				string name = null;
+				Assert.That(() => name = sf.GetDisplayNameOf(SHGDNF.SHGDN_NORMAL | SHGDNF.SHGDN_INFOLDER, sub), Throws.Nothing);
 				TestContext.WriteLine(name);
 			}
-			Marshal.ReleaseComObject(eo);
 			Marshal.ReleaseComObject(sf);
 		}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
@@ -759,6 +760,27 @@ namespace Vanara.PInvoke
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
 		public static T BindToStorage<T>(this IShellFolder sf, [In] PIDL pidl, [In, Optional] IBindCtx pbc) where T : class => (T)sf.BindToStorage(pidl, pbc, typeof(T).GUID);
 
+		/// <summary>
+		/// Enables a client to determine the contents of a folder by creating an item identifier enumeration object and returning its
+		/// IEnumIDList interface. The methods supported by that interface can then be used to enumerate the folder's contents.
+		/// </summary>
+		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
+		/// <param name="grfFlags">
+		/// Flags indicating which items to include in the enumeration. For a list of possible values, see the SHCONTF enumerated type.
+		/// </param>
+		/// <param name="hwnd">
+		/// If user input is required to perform the enumeration, this window handle should be used by the enumeration object as the parent
+		/// window to take user input. An example would be a dialog box to ask for a password or prompt the user to insert a CD or floppy
+		/// disk. If hwndOwner is set to NULL, the enumerator should not post any messages, and if user input is required, it should
+		/// silently fail.
+		/// </param>
+		/// <returns>An enumeration of the PIDL for the folder content items.</returns>
+		public static IEnumerable<PIDL> EnumObjects(this IShellFolder sf, SHCONTF grfFlags = SHCONTF.SHCONTF_FOLDERS | SHCONTF.SHCONTF_NONFOLDERS, HWND hwnd = default)
+		{
+			var eo = sf.EnumObjects(hwnd, grfFlags);
+			return new Collections.IEnumFromNext<PIDL>((out PIDL p) => { eo.Next(1, out var e, out var f); p = e; return f == 1; }, () => { try { eo.Reset(); } catch { } });
+		}
+
 		/// <summary>Extension method to simplify using the <see cref="IShellFolder.CreateViewObject"/> method.</summary>
 		/// <typeparam name="T">Type of the interface to get.</typeparam>
 		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
@@ -768,6 +790,51 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
 		public static T CreateViewObject<T>(this IShellFolder sf, HWND hwndOwner) where T : class => (T)sf.CreateViewObject(hwndOwner, typeof(T).GUID);
+
+		/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
+		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
+		/// <param name="uFlags">
+		/// <para>Type: <c>SHGDNF</c></para>
+		/// <para>Flags used to request the type of display name to return. For a list of possible values, see the SHGDNF enumerated type.</para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUITEMID_CHILD</c></para>
+		/// <para>PIDL that uniquely identifies the file object or subfolder relative to the parent folder.</para>
+		/// </param>
+		/// <returns>
+		/// When this method returns, contains the display name. The type of name returned can be the requested type, but the Shell folder
+		/// might return a different type.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Normally, pidl can refer only to items contained by the parent folder. The PIDL must be single-level and contain exactly one
+		/// SHITEMID structure followed by a terminating zero. If you want to retrieve the display name of an item that is deeper than one
+		/// level away from the parent folder, use SHBindToParent to bind with the item's immediate parent folder and then pass the item's
+		/// single-level PIDL to <c>IShellFolder::GetDisplayNameOf</c>.
+		/// </para>
+		/// <para>
+		/// Also, if the SHGDN_FORPARSING flag is set in uFlags and the SHGDN_INFOLDER flag is not set, pidl can refer to an object at any
+		/// level below the parent folder in the namespace hierarchy. At one time, pidl could be a multilevel PIDL, relative to the parent
+		/// folder, and could contain multiple SHITEMID structures. However, this is no longer supported and pidl should now refer only to a
+		/// single child item.
+		/// </para>
+		/// <para>
+		/// The flags specified in uFlags are hints about the intended use of the name. They do not guarantee that IShellFolder will return
+		/// the requested form of the name. If that form is not available, a different one might be returned. In particular, there is no
+		/// guarantee that the name returned by the SHGDN_FORPARSING flag will be successfully parsed by IShellFolder::ParseDisplayName.
+		/// There are also some combinations of flags that might cause the <c>GetDisplayNameOf</c>/ <c>ParseDisplayName</c> round trip to
+		/// not return the original identifier list. This occurrence is exceptional, but you should check to be sure.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The parsing name that is returned when uFlags has the SHGDN_FORPARSING flag set is not necessarily a normal text
+		/// string. Virtual folders such as My Computer might return a string containing the folder object's GUID in the form "::{GUID}".
+		/// Developers who implement <c>IShellFolder::GetDisplayNameOf</c> are encouraged to return parse names that are as close to the
+		/// display names as possible, because the end user often needs to type or edit these names.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-getdisplaynameof
+		// HRESULT GetDisplayNameOf( PCUITEMID_CHILD pidl, SHGDNF uFlags, STRRET *pName );
+		public static string GetDisplayNameOf(this IShellFolder sf, SHGDNF uFlags, PIDL pidl) { sf.GetDisplayNameOf(pidl ?? PIDL.Null, uFlags, out var p); return p; }
 
 		/// <summary>Extension method to simplify using the <see cref="IShellFolder.GetUIObjectOf"/> method.</summary>
 		/// <typeparam name="T">Type of the interface to get.</typeparam>
