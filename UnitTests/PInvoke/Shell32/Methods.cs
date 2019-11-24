@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.PInvoke.Tests
@@ -33,6 +35,22 @@ namespace Vanara.PInvoke.Tests
 		{
 			Assert.Fail("Not implemented.");
 			//Assert.That(AssocGetDetailsOfPropKey(), Is.Zero);
+		}
+
+		[Test]
+		public void SHGetDesktopFolderTest()
+		{
+			Assert.That(SHGetDesktopFolder(out var sf), ResultIs.Successful);
+			var eo = sf.EnumObjects(HWND.NULL, SHCONTF.SHCONTF_NONFOLDERS);
+			Assert.That(eo, Is.Not.Null);
+			foreach (var sub in new Collections.IEnumFromNext<IntPtr>((out IntPtr p) => eo.Next(1, out p, out var f).Succeeded && f == 1, () => { try { eo.Reset(); } catch { } }))
+			{
+				STRRET name = default;
+				Assert.That(() => sf.GetDisplayNameOf(sub, SHGDNF.SHGDN_NORMAL | SHGDNF.SHGDN_INFOLDER, out name), Throws.Nothing);
+				TestContext.WriteLine(name);
+			}
+			Marshal.ReleaseComObject(eo);
+			Marshal.ReleaseComObject(sf);
 		}
 
 		/*
@@ -136,7 +154,6 @@ namespace Vanara.PInvoke.Tests
 		SHFreeNameMappings
 		SHGetAttributesFromDataObject
 		SHGetDataFromIDList
-		SHGetDesktopFolder
 		SHGetDiskFreeSpaceA
 		SHGetDiskFreeSpaceEx
 		SHGetDiskFreeSpaceW

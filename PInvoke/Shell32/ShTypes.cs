@@ -152,9 +152,15 @@ namespace Vanara.PInvoke
 			[FieldOffset(4)]
 			public StrPtrAnsi cStr;
 
-			/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-			public override string ToString() => (uType == STRRET_TYPE.STRRET_CSTR ? cStr : (uType == STRRET_TYPE.STRRET_WSTR ? pOleStr : (string)null)) ?? string.Empty;
+			/// <summary>Performs an implicit conversion from <see cref="STRRET"/> to <see cref="System.String"/>.</summary>
+			/// <param name="s">The <see cref="STRRET"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator string(in STRRET s) => 
+				ShlwApi.StrRetToBSTR(new PinnedObject(s), default, out var ret).Succeeded ? ret : null;
+
+			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
+			public override string ToString() => (string)this ?? "";
 		}
 
 		internal class STRRETMarshaler : ICustomMarshaler
@@ -182,15 +188,8 @@ namespace Vanara.PInvoke
 				return sr.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 			}
 
-			public object MarshalNativeToManaged(IntPtr pNativeData)
-			{
-				if (pNativeData == IntPtr.Zero) return null;
-				var sr = pNativeData.ToStructure<STRRET>();
-				var s = sr.ToString().Clone() as string;
-				if (sr.uType == STRRET_TYPE.STRRET_WSTR)
-					sr.pOleStr.Free();
-				return s;
-			}
+			public object MarshalNativeToManaged(IntPtr pNativeData) => 
+				pNativeData != IntPtr.Zero && ShlwApi.StrRetToBSTR(pNativeData, default, out var ret).Succeeded ? ret : null;
 		}
 	}
 }
