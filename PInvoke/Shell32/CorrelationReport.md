@@ -229,6 +229,7 @@ Native Structure | Header | Managed Structure
 [OLECMD](https://www.google.com/search?num=5&q=OLECMD+site%3Amicrosoft.com) | docobj.h | [Vanara.PInvoke.Shell32.OLECMD](https://github.com/dahall/Vanara/search?l=C%23&q=OLECMD)  
 [OLECMDTEXT](https://www.google.com/search?num=5&q=OLECMDTEXT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Shell32.OLECMDTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=OLECMDTEXT)  
 [OPENASINFO](http://msdn2.microsoft.com/en-us/library/5486c4d3-c6c5-459d-aa7f-426971184876) | shlobj_core.h | [Vanara.PInvoke.Shell32.OPENASINFO](https://github.com/dahall/Vanara/search?l=C%23&q=OPENASINFO)  
+[PFOLDERSETTINGS](https://www.google.com/search?num=5&q=PFOLDERSETTINGS+site%3Amicrosoft.com) | Shobjidl.h | [Vanara.PInvoke.Shell32.PFOLDERSETTINGS](https://github.com/dahall/Vanara/search?l=C%23&q=PFOLDERSETTINGS)  
 [PREVIEWHANDLERFRAMEINFO](http://msdn2.microsoft.com/en-us/library/dd93675e-fd69-4fa3-a8e7-5238c27783d8) | shobjidl_core.h | [Vanara.PInvoke.Shell32.PREVIEWHANDLERFRAMEINFO](https://github.com/dahall/Vanara/search?l=C%23&q=PREVIEWHANDLERFRAMEINFO)  
 [PROPPRG](http://msdn2.microsoft.com/en-us/library/603f990b-efb8-4d72-bc96-27bda4ffcbd8) | shlobj_core.h | [Vanara.PInvoke.Shell32.PROPPRG](https://github.com/dahall/Vanara/search?l=C%23&q=PROPPRG)  
 [SFV_CREATE](https://www.google.com/search?num=5&q=SFV_CREATE+site%3Amicrosoft.com) | Shlobj.h | [Vanara.PInvoke.Shell32.SFV_CREATE](https://github.com/dahall/Vanara/search?l=C%23&q=SFV_CREATE)  

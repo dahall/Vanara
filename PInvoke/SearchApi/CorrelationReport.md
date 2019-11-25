@@ -5,6 +5,7 @@ Native Structure | Header | Managed Structure
 [AUTHENTICATION_INFO](https://www.google.com/search?num=5&q=AUTHENTICATION_INFO+site%3Amicrosoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.AUTHENTICATION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=AUTHENTICATION_INFO)  
 [FILTERED_DATA_SOURCES](http://msdn2.microsoft.com/en-us/library/5baae290-aead-4986-a7d4-0302931e0104) | filtereg.h | [Vanara.PInvoke.SearchApi.FILTERED_DATA_SOURCES](https://github.com/dahall/Vanara/search?l=C%23&q=FILTERED_DATA_SOURCES)  
 [FILTERREGION](https://www.google.com/search?num=5&q=FILTERREGION+site%3Amicrosoft.com) | filter.h | [Vanara.PInvoke.SearchApi.FILTERREGION](https://github.com/dahall/Vanara/search?l=C%23&q=FILTERREGION)  
+[FULLPROPSPEC](https://www.google.com/search?num=5&q=FULLPROPSPEC+site%3Amicrosoft.com) | filter.h | [Vanara.PInvoke.SearchApi.FULLPROPSPEC](https://github.com/dahall/Vanara/search?l=C%23&q=FULLPROPSPEC)  
 [INCREMENTAL_ACCESS_INFO](https://www.google.com/search?num=5&q=INCREMENTAL_ACCESS_INFO+site%3Amicrosoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.INCREMENTAL_ACCESS_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=INCREMENTAL_ACCESS_INFO)  
 [ITEM_INFO](https://www.google.com/search?num=5&q=ITEM_INFO+site%3Amicrosoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.ITEM_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=ITEM_INFO)  
 [PROXY_INFO](https://www.google.com/search?num=5&q=PROXY_INFO+site%3Amicrosoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.PROXY_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=PROXY_INFO)  
@@ -12,6 +13,7 @@ Native Structure | Header | Managed Structure
 [SEARCH_ITEM_CHANGE](https://www.google.com/search?num=5&q=SEARCH_ITEM_CHANGE+site%3Amicrosoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.SEARCH_ITEM_CHANGE](https://github.com/dahall/Vanara/search?l=C%23&q=SEARCH_ITEM_CHANGE)  
 [SEARCH_ITEM_INDEXING_STATUS](https://www.google.com/search?num=5&q=SEARCH_ITEM_INDEXING_STATUS+site%3Amicrosoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.SEARCH_ITEM_INDEXING_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=SEARCH_ITEM_INDEXING_STATUS)  
 [SEARCH_ITEM_PERSISTENT_CHANGE](https://www.google.com/search?num=5&q=SEARCH_ITEM_PERSISTENT_CHANGE+site%3Amicrosoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.SEARCH_ITEM_PERSISTENT_CHANGE](https://github.com/dahall/Vanara/search?l=C%23&q=SEARCH_ITEM_PERSISTENT_CHANGE)  
+[STAT_CHUNK](https://www.google.com/search?num=5&q=STAT_CHUNK+site%3Amicrosoft.com) | filter.h | [Vanara.PInvoke.SearchApi.STAT_CHUNK](https://github.com/dahall/Vanara/search?l=C%23&q=STAT_CHUNK)  
 [TIMEOUT_INFO](https://www.google.com/search?num=5&q=TIMEOUT_INFO+site%3Amicrosoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.TIMEOUT_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=TIMEOUT_INFO)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  

@@ -727,6 +727,8 @@ Native Structure | Header | Managed Structure
 [PACKEDMETA](https://www.google.com/search?num=5&q=PACKEDMETA+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.PACKEDMETA](https://github.com/dahall/Vanara/search?l=C%23&q=PACKEDMETA)  
 [PARAMDATA](http://msdn2.microsoft.com/en-us/library/3166eac0-7e07-47e1-9bca-60b15cbdf971) | oleauto.h | [Vanara.PInvoke.OleAut32.PARAMDATA](https://github.com/dahall/Vanara/search?l=C%23&q=PARAMDATA)  
 [PROPERTYKEY](http://msdn2.microsoft.com/en-us/library/bb773381) | Wtypes.h | [Vanara.PInvoke.Ole32.PROPERTYKEY](https://github.com/dahall/Vanara/search?l=C%23&q=PROPERTYKEY)  
+[PROPSPEC](http://msdn2.microsoft.com/en-us/library/5bb3b9c6-ab82-498c-94f9-13a9ffa7452b) | propidl.h | [Vanara.PInvoke.Ole32.PROPSPEC](https://github.com/dahall/Vanara/search?l=C%23&q=PROPSPEC)  
+[PROPSPECunion](https://www.google.com/search?num=5&q=PROPSPECunion+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.PROPSPEC.PROPSPECunion](https://github.com/dahall/Vanara/search?l=C%23&q=PROPSPECunion)  
 [PROPVARIANT](https://www.google.com/search?num=5&q=PROPVARIANT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.PROPVARIANT](https://github.com/dahall/Vanara/search?l=C%23&q=PROPVARIANT)  
 [QUERYCONTEXT](http://msdn2.microsoft.com/en-us/library/5d6a17e1-dcdd-4691-aec2-f63dbcb26027) | wtypes.h | [Vanara.PInvoke.Ole32.QUERYCONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=QUERYCONTEXT)  
 [RPC_AUTH_IDENTITY_HANDLE](https://www.google.com/search?num=5&q=RPC_AUTH_IDENTITY_HANDLE+site%3Amicrosoft.com) | rpcdce.h | [Vanara.PInvoke.Ole32.RPC_AUTH_IDENTITY_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_AUTH_IDENTITY_HANDLE)  
