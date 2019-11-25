@@ -108,7 +108,7 @@ namespace Vanara.PInvoke
 		/// <param name="b3">The field 3 address.</param>
 		/// <returns>Returns an LPARAM value that contains the address.</returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
-		public static uint MAKEIPADDRESS(byte b0, byte b1, byte b2, byte b3) => (((uint)b0 << 24) | ((uint)b1 << 16) | ((uint)b2 << 8) | b3);
+		public static uint MAKEIPADDRESS(byte b0, byte b1, byte b2, byte b3) => ((uint)b0 << 24) + ((uint)b1 << 16) + ((uint)b2 << 8) + b3;
 
 		/// <summary>Packs four byte-values into a single LPARAM suitable for use with the IPM_SETADDRESS message.</summary>
 		/// <param name="bytes">The bytes ordered 0-3.</param>

@@ -65,10 +65,22 @@ namespace Vanara.Windows.Forms
 			}
 			set
 			{
-				if (value != null && value.AddressFamily != AddressFamily.InterNetwork)
+				if (value is null)
+				{
+					Clear();
+					return;
+				}
+				if (value.AddressFamily != AddressFamily.InterNetwork)
 					throw new ArgumentException("Only IP v4 addresses are permissible.");
-				try { var ip = MAKEIPADDRESS(value?.GetAddressBytes()); SendMessage(IPAddressMessage.IPM_SETADDRESS, IntPtr.Zero, ref ip); }
-				catch (Exception e) { Debug.WriteLine($"set_IPAddress:{e}"); }
+				try
+				{
+					var ip = MAKEIPADDRESS(value.GetAddressBytes());
+					SendMessage(IPAddressMessage.IPM_SETADDRESS, IntPtr.Zero, (IntPtr)unchecked((int)ip));
+				}
+				catch (Exception e)
+				{
+					Debug.WriteLine($"set_IPAddress:{e}");
+				}
 			}
 		}
 
@@ -96,12 +108,14 @@ namespace Vanara.Windows.Forms
 		[DefaultValue(defaultText)]
 		public override string Text
 		{
-			get => base.Text; set
+			get => base.Text;
+			set
 			{
 				if (value == Name) return;
 				if (!string.IsNullOrEmpty(value) && !System.Text.RegularExpressions.Regex.Match(value, @"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$").Success)
 					throw new ArgumentException($"Invalid format. Text cannot be assigned a value of '{value}'.", nameof(Text));
-				try { if (value != base.Text) IPAddress = string.IsNullOrEmpty(value) ? null : IPAddress.Parse(value); } catch { }
+				if (value != base.Text)
+					IPAddress = string.IsNullOrEmpty(value) ? null : IPAddress.Parse(value);
 			}
 		}
 
@@ -140,8 +154,8 @@ namespace Vanara.Windows.Forms
 		{
 			const string measureString = "  255  .  255  .  255  .  255  ";
 
-			// 3px vertical space is required between the text and the border to keep the last line from being clipped. This 3 pixel size was
-			// added in everett and we do this to maintain compat. old everett behavior was FontHeight + [SystemInformation.BorderSize.Height
+			// 3px vertical space is required between the text and the border to keep the last line from being clipped. This 3 pixel size
+			// was added in everett and we do this to maintain compat. old everett behavior was FontHeight + [SystemInformation.BorderSize.Height
 			// * 4 + 3] however the [ ] was only added if borderstyle was not none.
 			var bordersAndPadding = SizeFromClientSize(Size.Empty) + Padding.Size;
 
