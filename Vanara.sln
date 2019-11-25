@@ -179,6 +179,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualDisk", "UnitTests\Vi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerBrowserDemo", "UnitTests\ExplorerBrowser\ExplorerBrowserDemo.csproj", "{2AACFF7E-F4B1-44F6-92C6-20ACBB647A4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows.Forms.App", "UnitTests\Windows.Forms.App\Windows.Forms.App.csproj", "{9520EC8B-9C63-47E6-A7BD-1CCF9BBB5BFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug (no Unit Tests)|Any CPU = Debug (no Unit Tests)|Any CPU
@@ -589,6 +591,12 @@ Global
 		{2AACFF7E-F4B1-44F6-92C6-20ACBB647A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AACFF7E-F4B1-44F6-92C6-20ACBB647A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AACFF7E-F4B1-44F6-92C6-20ACBB647A4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9520EC8B-9C63-47E6-A7BD-1CCF9BBB5BFA}.Debug (no Unit Tests)|Any CPU.ActiveCfg = Debug|Any CPU
+		{9520EC8B-9C63-47E6-A7BD-1CCF9BBB5BFA}.Debug (no Unit Tests)|Any CPU.Build.0 = Debug|Any CPU
+		{9520EC8B-9C63-47E6-A7BD-1CCF9BBB5BFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9520EC8B-9C63-47E6-A7BD-1CCF9BBB5BFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9520EC8B-9C63-47E6-A7BD-1CCF9BBB5BFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9520EC8B-9C63-47E6-A7BD-1CCF9BBB5BFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -666,6 +674,7 @@ Global
 		{5558B8E3-FF1C-401F-978E-E91D1E78B898} = {3EC6B40D-71D3-4E59-A0E0-544EC605FE11}
 		{687F9162-8CA0-4277-B868-4E7F2EC614F8} = {3EC6B40D-71D3-4E59-A0E0-544EC605FE11}
 		{2AACFF7E-F4B1-44F6-92C6-20ACBB647A4D} = {3EC6B40D-71D3-4E59-A0E0-544EC605FE11}
+		{9520EC8B-9C63-47E6-A7BD-1CCF9BBB5BFA} = {3EC6B40D-71D3-4E59-A0E0-544EC605FE11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}
