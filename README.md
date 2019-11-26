@@ -99,4 +99,4 @@ Assembly | &nbsp;&nbsp;&nbsp;NuGet&nbsp;Link&nbsp;&nbsp;&nbsp; | Description
 * [Issues](https://github.com/dahall/Vanara/issues)
 
 ## Sample Code
-There are numerous examples in the [UnitTest](https://github.com/dahall/Vanara/tree/master/UnitTests) folder.
+There are numerous examples in the [UnitTest](https://github.com/dahall/Vanara/tree/master/UnitTests) folder and in the [WinClassicSamplesCS](https://github.com/dahall/WinClassicSamplesCS) project that recreates the Windows Samples in C# using Vanara.
