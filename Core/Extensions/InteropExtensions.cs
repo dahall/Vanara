@@ -404,7 +404,7 @@ namespace Vanara.Extensions
 			var stSize = SizeOf(type);
 			if (allocatedBytes > 0 && stSize * count + prefixBytes > allocatedBytes)
 				throw new InsufficientMemoryException();
-			if (allocatedBytes == default) allocatedBytes = SizeT.MaxValue;
+			if (allocatedBytes == default) allocatedBytes = uint.MaxValue;
 			for (var i = 0; i < count; i++)
 			{
 				var offset = prefixBytes + i * stSize;
@@ -437,7 +437,7 @@ namespace Vanara.Extensions
 			var stSize = SizeOf(type);
 			if (allocatedBytes > 0 && stSize * count + prefixBytes > allocatedBytes)
 				throw new InsufficientMemoryException();
-			if (allocatedBytes == default) allocatedBytes = SizeT.MaxValue;
+			if (allocatedBytes == default) allocatedBytes = uint.MaxValue;
 			for (var i = 0; i < count; i++)
 			{
 				var offset = prefixBytes + i * stSize;
@@ -588,7 +588,7 @@ namespace Vanara.Extensions
 		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public static T ToStructure<T>(this IntPtr ptr, SizeT allocatedBytes = default, int offset = 0)
 		{
-			if (allocatedBytes == default) allocatedBytes = SizeT.MaxValue;
+			if (allocatedBytes == default) allocatedBytes = uint.MaxValue;
 			return ptr.Offset(offset).Convert<T>(allocatedBytes - (uint)offset);
 		}
 
