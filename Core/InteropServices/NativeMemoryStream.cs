@@ -222,7 +222,7 @@ namespace Vanara.InteropServices
 			ThrowIfDisposed();
 			if (!CanRead) throw new NotSupportedException();
 			if (fsize == 0) return Array.CreateInstance(elemType, 0);
-			var elemSize = elemType == typeof(string) || byRef ? IntPtr.Size : Marshal.SizeOf(elemType);
+			var elemSize = elemType == typeof(string) || byRef ? IntPtr.Size : (int)InteropExtensions.SizeOf(elemType);
 			var blockSize = elemSize * fsize;
 			if (Position + blockSize > Capacity) throw new ArgumentOutOfRangeException();
 			Array ret;
@@ -479,10 +479,10 @@ namespace Vanara.InteropServices
 					return es.Sum(s => s.GetByteCount(true, charSet));
 
 				case IEnumerable<object> eo:
-					return eo.Sum(o => o is null ? 0 : Marshal.SizeOf(o));
+					return eo.Sum(o => o is null ? 0 : (int)InteropExtensions.SizeOf(o.GetType()));
 
 				default:
-					return Marshal.SizeOf(obj);
+					return (int)InteropExtensions.SizeOf(obj.GetType());
 			}
 		}
 
