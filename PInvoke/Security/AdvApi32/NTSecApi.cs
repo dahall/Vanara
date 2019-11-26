@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -545,7 +546,6 @@ namespace Vanara.PInvoke
 		// _POLICY_AUDIT_EVENTS_INFO { BOOLEAN AuditingMode; PPOLICY_AUDIT_EVENT_OPTIONS EventAuditingOptions; ULONG MaximumAuditEventCount;
 		// } POLICY_AUDIT_EVENTS_INFO, *PPOLICY_AUDIT_EVENTS_INFO;
 		[PInvokeData("ntsecapi.h", MSDNShortId = "3442e5e5-78cf-4bda-ba11-0f51ee40df16")]
-		[StructLayout(LayoutKind.Sequential)]
 		public struct POLICY_AUDIT_EVENTS_INFO : IVanaraMarshaler
 		{
 			/// <summary>
@@ -559,7 +559,7 @@ namespace Vanara.PInvoke
 			/// auditing options as specified in the <c>EventAuditingOptions</c> member even when <c>AuditingMode</c> is <c>FALSE</c>.
 			/// </para>
 			/// </summary>
-			public BOOLEAN AuditingMode;
+			public bool AuditingMode;
 
 			/// <summary>
 			/// <para>
@@ -611,19 +611,16 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public int MaximumAuditEventCount => EventAuditingOptions?.Length ?? 0;
 
-			SizeT IVanaraMarshaler.GetNativeSize() => 8 + IntPtr.Size;
+			SizeT IVanaraMarshaler.GetNativeSize() => IntPtr.Size * 3 + 36;
 
 			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object obj)
 			{
 				var i = (POLICY_AUDIT_EVENTS_INFO)obj;
-				var mem = new SafeHGlobalHandle(64);
-				using (var ret = new NativeMemoryStream(mem))
-				{
-					ret.Write(i.AuditingMode);
-					ret.Position = 4;
-					ret.Write(i.EventAuditingOptions, true);
-					ret.Write(i.MaximumAuditEventCount);
-				}
+				var mem = new SafeHGlobalHandle(IntPtr.Size * 3 + 36);
+				mem.Write((BOOLEAN)i.AuditingMode);
+				mem.Write(mem.DangerousGetHandle().Offset(IntPtr.Size * 3), false, IntPtr.Size);
+				mem.Write(i.MaximumAuditEventCount, false, IntPtr.Size * 2);
+				mem.Write(i.EventAuditingOptions, false, IntPtr.Size * 3);
 				return mem;
 			}
 
@@ -631,13 +628,13 @@ namespace Vanara.PInvoke
 			{
 				using var str = new NativeMemoryStream(ptr, size);
 				var mode = str.Read<BOOLEAN>();
-				str.Position = 4 + IntPtr.Size;
+				str.Position = IntPtr.Size * 2;
 				var cnt = str.Read<int>();
-				str.Position = 4;
+				str.Position = IntPtr.Size;
 				return new POLICY_AUDIT_EVENTS_INFO
 				{
 					AuditingMode = mode,
-					EventAuditingOptions = str.ReadArray<POLICY_AUDIT_EVENT_OPTIONS>(cnt, true).ToArray()
+					EventAuditingOptions = str.Read<IntPtr>().ToArray<POLICY_AUDIT_EVENT_OPTIONS>(cnt).ToArray()
 				};
 			}
 		}
