@@ -51,12 +51,11 @@ namespace Vanara.InteropServices
 		/// The name of the field in <typeparamref name="T"/> that holds the length of the array. If <see langword="null"/>, the first
 		/// public field will be selected.
 		/// </param>
-		public SafeAnysizeStruct(IntPtr allocatedMemory, int size, string sizeFieldName = null) : base(size)
+		public SafeAnysizeStruct(IntPtr allocatedMemory, int size, string sizeFieldName = null) : base(allocatedMemory, size, false)
 		{
 			if (allocatedMemory == IntPtr.Zero) throw new ArgumentNullException(nameof(allocatedMemory));
 			if (baseSz > size) throw new OutOfMemoryException();
 			InitCountField(sizeFieldName);
-			allocatedMemory.CopyTo(handle, size); //ToNative(FromNative(allocatedMemory, size));
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStruct{T}"/> class with an initial empty memory allocation.</summary>
@@ -90,7 +89,7 @@ namespace Vanara.InteropServices
 
 		private T FromNative(IntPtr allocatedMemory, int size)
 		{
-			var local = (T)Marshal.PtrToStructure(allocatedMemory, structType);
+			var local = (T)Marshal.PtrToStructure(allocatedMemory, structType); // Can't use Convert or get circular ref.
 			var cnt = Convert.ToInt32(fiCount.GetValue(local));
 			var arrOffset = Marshal.OffsetOf(structType, fiArray.Name).ToInt32();
 			fiArray.SetValueDirect(__makeref(local), allocatedMemory.ToArray(elemType, cnt, arrOffset, size));
