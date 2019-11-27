@@ -3160,7 +3160,7 @@ namespace Vanara.PInvoke
 			public T[] ToArray<T>(int count, int prefixBytes = 0)
 			{
 				if (IsInvalid) return null;
-				return handle.ToArray<T>(count, prefixBytes, Size == 0 ? (SizeT)(prefixBytes + InteropExtensions.SizeOf<T>() * count) : Size);
+				return handle.ToArray<T>(count, prefixBytes, Size == 0 ? (SizeT)int.MaxValue : Size);
 			}
 
 			/// <summary>
@@ -3171,7 +3171,7 @@ namespace Vanara.PInvoke
 			public T ToStructure<T>()
 			{
 				if (IsInvalid) return default;
-				return handle.ToStructure<T>(Size == 0 ? InteropExtensions.SizeOf<T>() : Size);
+				return handle.ToStructure<T>(Size == 0 ? (SizeT)int.MaxValue : Size);
 			}
 		}
 
