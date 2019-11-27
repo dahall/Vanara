@@ -629,7 +629,10 @@ namespace Vanara.PInvoke
 			SidTypeComputer,
 
 			/// <summary>A mandatory integrity label SID.</summary>
-			SidTypeLabel
+			SidTypeLabel,
+			
+			/// <summary/>
+			SidTypeLogonSession
 		}
 
 		/// <summary>
