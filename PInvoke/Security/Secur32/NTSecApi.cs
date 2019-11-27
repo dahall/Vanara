@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -8,6 +11,10 @@ namespace Vanara.PInvoke
 	/// <summary>Functions, enumerations and structures found in Secur32.dll.</summary>
 	public static partial class Secur32
 	{
+		/// <summary>Microsoft CredSSP Security Provider.</summary>
+		[PInvokeData("credssp.h")]
+		public const string CREDSSP_NAME = "CREDSSP";
+
 		/// <summary>The Kerberos authentication package name.</summary>
 		[PInvokeData("Ntsecapi.h")]
 		public const string MICROSOFT_KERBEROS_NAME = "Kerberos";
@@ -24,22 +31,17 @@ namespace Vanara.PInvoke
 		[PInvokeData("Security.h")]
 		public const string NTLMSP_NAME = "NTLM";
 
-		/// <summary>Digest Authentication for Windows.</summary>
-		[PInvokeData("wdigest.h")]
-		public const string WDIGEST_SP_NAME = "WDigest";
-
-		/// <summary>Microsoft CredSSP Security Provider.</summary>
-		[PInvokeData("credssp.h")]
-		public const string CREDSSP_NAME = "CREDSSP";
+		/// <summary>TS Service Security Package</summary>
+		[PInvokeData("Ntsecapi.h")]
+		public const string PKU2U_PACKAGE_NAME = "pku2u";
 
 		/// <summary>TS Service Security Package</summary>
 		[PInvokeData("credssp.h")]
 		public const string TS_SSP_NAME = "TSSSP";
 
-		/// <summary>TS Service Security Package</summary>
-		[PInvokeData("Ntsecapi.h")]
-		public const string PKU2U_PACKAGE_NAME = "pku2u";
-
+		/// <summary>Digest Authentication for Windows.</summary>
+		[PInvokeData("wdigest.h")]
+		public const string WDIGEST_SP_NAME = "WDigest";
 		/// <summary>Kerberos encryption types.</summary>
 		[PInvokeData("Ntsecapi.h", MSDNShortId = "3b088c94-810b-44c7-887a-58e8dbd13603")]
 		public enum KERB_ETYPE
@@ -83,6 +85,40 @@ namespace Vanara.PInvoke
 			KERB_ETYPE_DES_CBC_MD5_NT = 20,
 			KERB_ETYPE_RC4_HMAC_NT = 23,
 			KERB_ETYPE_RC4_HMAC_NT_EXP = 24
+		}
+
+		/// <summary>The <c>KERB_LOGON_SUBMIT_TYPE</c> enumeration identifies the type of logon being requested.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ne-ntsecapi-kerb_logon_submit_type
+		// typedef enum _KERB_LOGON_SUBMIT_TYPE { KerbInteractiveLogon, KerbSmartCardLogon, KerbWorkstationUnlockLogon, KerbSmartCardUnlockLogon, KerbProxyLogon, KerbTicketLogon, KerbTicketUnlockLogon, KerbS4ULogon, KerbCertificateLogon, KerbCertificateS4ULogon, KerbCertificateUnlockLogon, KerbNoElevationLogon, KerbLuidLogon } KERB_LOGON_SUBMIT_TYPE, *PKERB_LOGON_SUBMIT_TYPE;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "500bee53-638b-4782-b42d-1df158396fb6")]
+		public enum KERB_LOGON_SUBMIT_TYPE
+		{
+			/// <summary>Perform an interactive logon.</summary>
+			KerbInteractiveLogon = 2,
+			/// <summary>Logon using a smart card.</summary>
+			KerbSmartCardLogon = 6,
+			/// <summary>Unlock a workstation.</summary>
+			KerbWorkstationUnlockLogon,
+			/// <summary>Unlock a workstation using a smart card.</summary>
+			KerbSmartCardUnlockLogon,
+			/// <summary>Logon using a proxy server.</summary>
+			KerbProxyLogon,
+			/// <summary>Logon using a valid Kerberos ticket as a credential.</summary>
+			KerbTicketLogon,
+			/// <summary>Unlock a workstation by using a Kerberos ticket.</summary>
+			KerbTicketUnlockLogon,
+			/// <summary>Perform a service for user logon.</summary>
+			KerbS4ULogon,
+			/// <summary>Logon interactively using a certificate stored on a smart card.</summary>
+			KerbCertificateLogon,
+			/// <summary>Perform a service for user logon using a certificate stored on a smart card.</summary>
+			KerbCertificateS4ULogon,
+			/// <summary>Unlock a workstation using a certificate stored on a smart card.</summary>
+			KerbCertificateUnlockLogon,
+			/// <summary />
+			KerbNoElevationLogon = 83,
+			/// <summary />
+			KerbLuidLogon,
 		}
 
 		/// <summary>
@@ -242,38 +278,77 @@ namespace Vanara.PInvoke
 			KerbQueryS4U2ProxyCacheMessage,
 		}
 
-		/// <summary>The <c>KERB_LOGON_SUBMIT_TYPE</c> enumeration identifies the type of logon being requested.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ne-ntsecapi-kerb_logon_submit_type
-		// typedef enum _KERB_LOGON_SUBMIT_TYPE { KerbInteractiveLogon, KerbSmartCardLogon, KerbWorkstationUnlockLogon, KerbSmartCardUnlockLogon, KerbProxyLogon, KerbTicketLogon, KerbTicketUnlockLogon, KerbS4ULogon, KerbCertificateLogon, KerbCertificateS4ULogon, KerbCertificateUnlockLogon, KerbNoElevationLogon, KerbLuidLogon } KERB_LOGON_SUBMIT_TYPE, *PKERB_LOGON_SUBMIT_TYPE;
-		[PInvokeData("ntsecapi.h", MSDNShortId = "500bee53-638b-4782-b42d-1df158396fb6")]
-		public enum KERB_LOGON_SUBMIT_TYPE
+		/// <summary>Ticket flags, as defined in Internet RFC 4120. This parameter can be one or more of the following values.</summary>
+		[PInvokeData("ntsecapi.h", MSDNShortId = "742e2795-ec74-4856-a680-7a1c233a2934")]
+		[Flags]
+		public enum KERB_TICKET_FLAGS : uint
 		{
-			/// <summary>Perform an interactive logon.</summary>
-			KerbInteractiveLogon = 2,
-			/// <summary>Logon using a smart card.</summary>
-			KerbSmartCardLogon = 6,
-			/// <summary>Unlock a workstation.</summary>
-			KerbWorkstationUnlockLogon,
-			/// <summary>Unlock a workstation using a smart card.</summary>
-			KerbSmartCardUnlockLogon,
-			/// <summary>Logon using a proxy server.</summary>
-			KerbProxyLogon,
-			/// <summary>Logon using a valid Kerberos ticket as a credential.</summary>
-			KerbTicketLogon,
-			/// <summary>Unlock a workstation by using a Kerberos ticket.</summary>
-			KerbTicketUnlockLogon,
-			/// <summary>Perform a service for user logon.</summary>
-			KerbS4ULogon,
-			/// <summary>Logon interactively using a certificate stored on a smart card.</summary>
-			KerbCertificateLogon,
-			/// <summary>Perform a service for user logon using a certificate stored on a smart card.</summary>
-			KerbCertificateS4ULogon,
-			/// <summary>Unlock a workstation using a certificate stored on a smart card.</summary>
-			KerbCertificateUnlockLogon,
-			/// <summary />
-			KerbNoElevationLogon = 83,
-			/// <summary />
-			KerbLuidLogon,
+			/// <summary>
+			/// The ticket-granting server can issue a new ticket-granting ticket with a different network address, based on the presented ticket.
+			/// </summary>
+			KERB_TICKET_FLAGS_forwardable = 0x40000000,
+
+			/// <summary>
+			/// The ticket has either been forwarded or was issued based on authentication that involved a forwarded ticket-granting ticket.
+			/// </summary>
+			KERB_TICKET_FLAGS_forwarded = 0x20000000,
+
+			/// <summary>
+			/// The protocol employed for initial authentication required the use of hardware expected to be possessed solely by the named
+			/// client. The hardware authentication method is selected by the KDC, and the strength of the method is not indicated.
+			/// </summary>
+			KERB_TICKET_FLAGS_hw_authent = 0x00100000,
+
+			/// <summary>
+			/// The ticket was issued by using the Authentication Service protocol instead of being based on a ticket-granting ticket.
+			/// </summary>
+			KERB_TICKET_FLAGS_initial = 0x00400000,
+
+			/// <summary>The ticket is not valid.</summary>
+			KERB_TICKET_FLAGS_invalid = 0x01000000,
+
+			/// <summary>
+			/// Indicates to the ticket-granting server that a postdated ticket can be issued based on this ticket-granting ticket.
+			/// </summary>
+			KERB_TICKET_FLAGS_may_postdate = 0x04000000,
+
+			/// <summary>
+			/// The target of the ticket is trusted by the directory service for delegation. Thus, the clients may delegate their
+			/// credentials to the server, which lets the server act as the client when talking to other services.
+			/// </summary>
+			KERB_TICKET_FLAGS_ok_as_delegate = 0x00040000,
+
+			/// <summary>
+			/// The ticket has been postdated. The end service can check the ticket's authtime member to determine when the original
+			/// authentication occurred.
+			/// </summary>
+			KERB_TICKET_FLAGS_postdated = 0x02000000,
+
+			/// <summary>
+			/// During initial authentication, the client was authenticated by the KDC before a ticket was issued. The strength of the
+			/// preauthentication method is not indicated but is acceptable to the KDC.
+			/// </summary>
+			KERB_TICKET_FLAGS_pre_authent = 0x00200000,
+
+			/// <summary>
+			/// Indicates to the ticket-granting server that only nonticket-granting tickets can be issued with different network addresses.
+			/// </summary>
+			KERB_TICKET_FLAGS_proxiable = 0x10000000,
+
+			/// <summary>The ticket is a proxy.</summary>
+			KERB_TICKET_FLAGS_proxy = 0x08000000,
+
+			/// <summary>
+			/// The ticket is renewable. If this flag is set, the time limit for renewing the ticket is set in the RenewTime member of a
+			/// KERB_TICKET_CACHE_INFO structure. A renewable ticket can be used to obtain a replacement ticket that expires at a later date.
+			/// </summary>
+			KERB_TICKET_FLAGS_renewable = 0x00800000,
+
+			/// <summary>Reserved for future use. Do not set this flag.</summary>
+			KERB_TICKET_FLAGS_reserved = 0x80000000,
+
+			/// <summary>Reserved.</summary>
+			KERB_TICKET_FLAGS_reserved1 = 0x00000001,
 		}
 
 		[PInvokeData("ntsecapi.h", MSDNShortId = "8ed37546-6443-4010-a078-4359dd1c2861")]
@@ -1646,8 +1721,16 @@ namespace Vanara.PInvoke
 			[FieldOffset(8)]
 			public IntPtr Names;
 
-			// /// <inheritdoc/> public override string ToString() => NameCount == 0 ? "" : string.Join("; ",
-			// Array.ConvertAll(Names.ToArray<LSA_UNICODE_STRING>(NameCount), s => s.ToString()));
+			/// <summary>Extracts the names from <see cref="Names"/>.</summary>
+			/// <returns>A sequence of names.</returns>
+			public IEnumerable<string> GetNames()
+			{
+				if (NameCount == 0)
+					yield break;
+				using var pin = new PinnedObject(this);
+				foreach (var us in ((IntPtr)pin).ToIEnum<LSA_UNICODE_STRING>(NameCount, 8))
+					yield return us.ToString();
+			}
 		}
 
 		/// <summary>
@@ -1785,7 +1868,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint TicketFlags;
+			public KERB_TICKET_FLAGS TicketFlags;
 
 			/// <summary>Reserved for future use. Set this member to zero.</summary>
 			public uint Flags;
@@ -1847,6 +1930,105 @@ namespace Vanara.PInvoke
 			/// memory by calling SecureZeroMemory. For more information on protecting the password, see Handling Passwords.
 			/// </summary>
 			public LSA_UNICODE_STRING Password;
+		}
+
+		/// <summary>
+		/// <para>The <c>KERB_PURGE_TKT_CACHE_REQUEST</c> structure contains information used to delete entries from the ticket cache.</para>
+		/// <para>It is used by LsaCallAuthenticationPackage.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If both <c>ServerName</c> and <c>RealmName</c> are of zero length, LsaCallAuthenticationPackage will delete all tickets for the
+		/// logon session identified by <c>LogonId</c>. Otherwise, <c>LsaCallAuthenticationPackage</c> will search the cache tickets for
+		/// <c>ServerName</c>@ <c>RealmName</c>, and will delete all such tickets.
+		/// </para>
+		/// <para>
+		/// LsaCallAuthenticationPackage does not return this buffer. It returns STATUS_SUCCESS if one or more tickets are deleted. If no
+		/// tickets are found, the function returns SEC_E_NO_CREDENTIALS.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/ns-ntsecapi-kerb_purge_tkt_cache_request typedef struct
+		// _KERB_PURGE_TKT_CACHE_REQUEST { KERB_PROTOCOL_MESSAGE_TYPE MessageType; LUID LogonId; UNICODE_STRING ServerName; UNICODE_STRING
+		// RealmName; } KERB_PURGE_TKT_CACHE_REQUEST, *PKERB_PURGE_TKT_CACHE_REQUEST;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "4e5e944a-8163-42de-b534-3b0478d9f334")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct KERB_PURGE_TKT_CACHE_REQUEST
+		{
+			/// <summary>KERB_PROTOCOL_MESSAGE_TYPE value identifying the type of request being made. This member must be set to <c>KerbPurgeTicketCacheMessage</c>.</summary>
+			public KERB_PROTOCOL_MESSAGE_TYPE MessageType;
+
+			/// <summary>
+			/// LUID structure containing the logon session identifier. This can be zero for the current user's logon session. If not zero,
+			/// the caller must have the SeTcbPrivilege privilege set. If this fails, the Kerberos authentication package sets the
+			/// ProtocolStatus parameter of LsaCallAuthenticationPackage to <c>STATUS_ACCESS_DENIED</c>.
+			/// </summary>
+			public LUID LogonId;
+
+			/// <summary>UNICODE_STRING containing the name of the service whose tickets should be deleted from the cache.</summary>
+			public LSA_UNICODE_STRING ServerName;
+
+			/// <summary>UNICODE_STRING containing the name of the realm whose tickets should be deleted from the cache.</summary>
+			public LSA_UNICODE_STRING RealmName;
+		}
+
+		/// <summary>
+		/// <para>The <c>KERB_QUERY_TKT_CACHE_REQUEST</c> structure contains information used to query the ticket cache.</para>
+		/// <para>It is used by LsaCallAuthenticationPackage.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/ns-ntsecapi-kerb_query_tkt_cache_request typedef struct
+		// _KERB_QUERY_TKT_CACHE_REQUEST { KERB_PROTOCOL_MESSAGE_TYPE MessageType; LUID LogonId; } KERB_QUERY_TKT_CACHE_REQUEST, *PKERB_QUERY_TKT_CACHE_REQUEST;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "3c8e63b3-9ac4-4228-87e1-6802c3d12d6c")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct KERB_QUERY_TKT_CACHE_REQUEST
+		{
+			/// <summary>
+			/// <para>
+			/// KERB_PROTOCOL_MESSAGE_TYPE value identifying the type of request being made. This member must be set to
+			/// <c>KerbQueryTicketCacheMessage</c> or <c>KerbRetrieveTicketMessage</c>.
+			/// </para>
+			/// <para>
+			/// If this member is set to <c>KerbQueryTicketCacheMessage</c>, the request is for information about all of the cached tickets
+			/// for the specified user logon session. If it is set to <c>KerbRetrieveTicketMessage</c>, the request is for the ticket
+			/// granting ticket from the ticket cache of the specified user logon session.
+			/// </para>
+			/// </summary>
+			public KERB_PROTOCOL_MESSAGE_TYPE MessageType;
+
+			/// <summary>
+			/// LUID structure containing the logon session identifier. This can be zero for the current user's logon session. If not zero,
+			/// the caller must have the SeTcbPrivilege privilege set. If this fails, the Kerberos authentication package sets the
+			/// ProtocolStatus parameter of LsaCallAuthenticationPackage to STATUS_ACCESS_DENIED.
+			/// </summary>
+			public LUID LogonId;
+		}
+
+		/// <summary>
+		/// <para>The <c>KERB_QUERY_TKT_CACHE_RESPONSE</c> structure contains the results of querying the ticket cache.</para>
+		/// <para>It is used by LsaCallAuthenticationPackage.</para>
+		/// </summary>
+		/// <remarks>
+		/// This buffer is allocated by the Kerberos authentication package and should be deleted by the application that called
+		/// LsaCallAuthenticationPackage, using LsaFreeReturnBuffer.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/ns-ntsecapi-kerb_query_tkt_cache_response typedef struct
+		// _KERB_QUERY_TKT_CACHE_RESPONSE { KERB_PROTOCOL_MESSAGE_TYPE MessageType; ULONG CountOfTickets; KERB_TICKET_CACHE_INFO
+		// Tickets[ANYSIZE_ARRAY]; } KERB_QUERY_TKT_CACHE_RESPONSE, *PKERB_QUERY_TKT_CACHE_RESPONSE;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "2101c1de-f304-4d44-899f-f9f03cd50934")]
+		[StructLayout(LayoutKind.Sequential)]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<KERB_QUERY_TKT_CACHE_RESPONSE>), nameof(CountOfTickets))]
+		public struct KERB_QUERY_TKT_CACHE_RESPONSE
+		{
+			/// <summary>KERB_PROTOCOL_MESSAGE_TYPE value identifying the type of request being made. This member must be set to <c>KerbQueryTicketCacheMessage</c>.</summary>
+			public KERB_PROTOCOL_MESSAGE_TYPE MessageType;
+
+			/// <summary>
+			/// Number of tickets in <c>Tickets</c> array. This can be zero if no tickets are available for the specified logon session.
+			/// </summary>
+			public uint CountOfTickets;
+
+			/// <summary>Array of length <c>CountOfTickets</c> of KERB_TICKET_CACHE_INFO structures.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public KERB_TICKET_CACHE_INFO[] Tickets;
 		}
 
 		/// <summary>
@@ -2011,6 +2193,139 @@ namespace Vanara.PInvoke
 			public KERB_EXTERNAL_TICKET Ticket;
 		}
 
+		/// <summary>
+		/// <para>
+		/// The <c>KERB_TICKET_CACHE_INFO</c> structure contains information about a cached Kerberos ticket. The Kerberos ticket is defined
+		/// in Internet RFC 4120. For more information, see http://www.ietf.org.
+		/// </para>
+		/// <para>
+		/// It can be used both for retrieving tickets and querying the ticket cache. The KERB_QUERY_TKT_CACHE_RESPONSE structure uses this structure.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/ns-ntsecapi-kerb_ticket_cache_info typedef struct
+		// _KERB_TICKET_CACHE_INFO { UNICODE_STRING ServerName; UNICODE_STRING RealmName; LARGE_INTEGER StartTime; LARGE_INTEGER EndTime;
+		// LARGE_INTEGER RenewTime; LONG EncryptionType; ULONG TicketFlags; } KERB_TICKET_CACHE_INFO, *PKERB_TICKET_CACHE_INFO;
+		[PInvokeData("ntsecapi.h", MSDNShortId = "e9ac70f0-65dc-4c5a-b41f-7c4659680333")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct KERB_TICKET_CACHE_INFO
+		{
+			/// <summary>
+			/// A UNICODE_STRING that contains the name of the server the ticket applies to. This name is combined with the <c>RealmName</c>
+			/// value to create the full name <c>ServerName</c>@ <c>RealmName</c>.
+			/// </summary>
+			public LSA_UNICODE_STRING ServerName;
+
+			/// <summary>A UNICODE_STRING that contains the name of the realm the ticket applies to.</summary>
+			public LSA_UNICODE_STRING RealmName;
+
+			/// <summary>
+			/// A FILETIME structure that contains the time at which the ticket becomes valid. If the <c>starttime</c> member of the ticket
+			/// is not set, this value defaults to the time when the ticket was initially authenticated, <c>authtime</c>. The
+			/// <c>starttime</c> member of a ticket is optional.
+			/// </summary>
+			public FILETIME StartTime;
+
+			/// <summary>A FILETIME structure that contains the time when the ticket expires.</summary>
+			public FILETIME EndTime;
+
+			/// <summary>
+			/// If KERB_TICKET_FLAGS_renewable is set in <c>TicketFlags</c>, this member is a FILETIME structure that contains the time
+			/// beyond which the ticket cannot be renewed.
+			/// </summary>
+			public FILETIME RenewTime;
+
+			/// <summary>The type of encryption used in the ticket.</summary>
+			public KERB_ETYPE EncryptionType;
+
+			/// <summary>
+			/// <para>The ticket flags, as defined in Internet RFC 4120. These flags can be one or more of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_forwardable 0x40000000</term>
+			/// <term>
+			/// The ticket-granting server can issue a new ticket-granting ticket with a different network address based on the presented ticket.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_forwarded 0x20000000</term>
+			/// <term>
+			/// The ticket has either been forwarded or was issued based on authentication that involved a forwarded ticket-granting ticket.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_hw_authent 0x00100000</term>
+			/// <term>
+			/// The protocol employed for initial authentication required the use of hardware expected to be possessed solely by the named
+			/// client. The hardware authentication method is selected by the KDC and the strength of the method is not indicated.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_initial 0x00400000</term>
+			/// <term>The ticket was issued by using the Authentication Service protocol instead of being based on a ticket-granting ticket.</term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_invalid 0x01000000</term>
+			/// <term>The ticket is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_may_postdate 0x04000000</term>
+			/// <term>Indicates to the ticket-granting server that a postdated ticket can be issued based on this ticket-granting ticket.</term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_ok_as_delegate 0x00040000</term>
+			/// <term>
+			/// The target of the ticket is trusted by the directory service for delegation. Thus, clients may delegate their credentials to
+			/// the server, which lets the server act as the client when talking to other services.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_postdated 0x02000000</term>
+			/// <term>
+			/// The ticket has been postdated. The end-service can check the ticket's authtime member to see when the original
+			/// authentication occurred.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_pre_authent 0x00200000</term>
+			/// <term>
+			/// During initial authentication, the client was authenticated by the Key Distribution Center (KDC) before a ticket was issued.
+			/// The strength of the preauthentication method is not indicated, but is acceptable to the KDC.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_proxiable 0x10000000</term>
+			/// <term>
+			/// Indicates to the ticket-granting server that only nonticket-granting tickets can be issued based on this ticket but with a
+			/// different network addresses.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_proxy 0x08000000</term>
+			/// <term>The ticket is a proxy.</term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_renewable 0x00800000</term>
+			/// <term>
+			/// The ticket is renewable. If this flag is set, the time limit for renewing the ticket is set in RenewTime. A renewable ticket
+			/// can be used to obtain a replacement ticket that expires at a later date.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_reserved 0x80000000</term>
+			/// <term>Reserved for future use. Do not set this flag.</term>
+			/// </item>
+			/// <item>
+			/// <term>KERB_TICKET_FLAGS_reserved1 0x00000001</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public KERB_TICKET_FLAGS TicketFlags;
+		}
 		/// <summary>The <c>LSA_LAST_INTER_LOGON_INFO</c> structure contains information about a logon session.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_lsa_last_inter_logon_info typedef struct
 		// _LSA_LAST_INTER_LOGON_INFO { LARGE_INTEGER LastSuccessfulLogon; LARGE_INTEGER LastFailedLogon; ULONG

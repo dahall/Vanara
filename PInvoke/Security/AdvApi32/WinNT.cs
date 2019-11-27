@@ -14,6 +14,9 @@ namespace Vanara.PInvoke
 	{
 		public const uint SECURITY_DESCRIPTOR_REVISION = 1;
 		public const uint SECURITY_DESCRIPTOR_REVISION1 = 1;
+		public const int SID_MAX_SUB_AUTHORITIES = 15;
+		public const int SID_RECOMMENDED_SUB_AUTHORITIES = 1; // Will change to around 6
+		public const uint SID_REVISION = 1; // Current revision level
 
 		/// <summary>Indicates whether the ObjectTypeName and InheritedObjectTypeName members contain strings.</summary>
 		[PInvokeData("winnt.h")]
