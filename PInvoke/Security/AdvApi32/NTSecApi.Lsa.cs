@@ -3145,6 +3145,10 @@ namespace Vanara.PInvoke
 			/// </param>
 			protected SafeLsaMemoryHandleBase(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => SetHandle(preexistingHandle);
 
+			/// <summary>Gets or sets the size that will be passed to limit buffer overruns.</summary>
+			/// <value>The size.</value>
+			public SizeT Size { get; set; } = 0;
+
 			/// <summary>
 			/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
 			/// call can cause memory exceptions if the pointer does not have sufficient allocated memory to retrieve all the structures.</note>
@@ -3156,10 +3160,7 @@ namespace Vanara.PInvoke
 			public T[] ToArray<T>(int count, int prefixBytes = 0)
 			{
 				if (IsInvalid) return null;
-				//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
-				//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
-				if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
-				return handle.ToArray<T>(count, prefixBytes);
+				return handle.ToArray<T>(count, prefixBytes, Size == 0 ? (SizeT)(prefixBytes + InteropExtensions.SizeOf<T>() * count) : Size);
 			}
 
 			/// <summary>
@@ -3170,7 +3171,7 @@ namespace Vanara.PInvoke
 			public T ToStructure<T>()
 			{
 				if (IsInvalid) return default;
-				return handle.ToStructure<T>();
+				return handle.ToStructure<T>(Size == 0 ? InteropExtensions.SizeOf<T>() : Size);
 			}
 		}
 
