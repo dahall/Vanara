@@ -8047,19 +8047,46 @@ namespace Vanara.PInvoke
 		// RECT rcWindow; RECT rcClient; DWORD dwStyle; DWORD dwExStyle; DWORD dwWindowStatus; UINT cxWindowBorders; UINT cyWindowBorders;
 		// ATOM atomWindowType; WORD wCreatorVersion; } WINDOWINFO, *PWINDOWINFO, *LPWINDOWINFO;
 		[PInvokeData("winuser.h", MSDNShortId = "windowinfo")]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct WINDOWINFO
 		{
-			/// <summary>
-			/// <para>Type: <c>ATOM</c></para>
-			/// <para>The window class atom (see RegisterClass).</para>
-			/// </summary>
-			public ushort atomWindowType;
-
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
 			/// <para>The size of the structure, in bytes. The caller must set this member to .</para>
 			/// </summary>
 			public uint cbSize;
+
+			/// <summary>
+			/// <para>Type: <c>RECT</c></para>
+			/// <para>The coordinates of the window.</para>
+			/// </summary>
+			public RECT rcWindow;
+
+			/// <summary>
+			/// <para>Type: <c>RECT</c></para>
+			/// <para>The coordinates of the client area.</para>
+			/// </summary>
+			public RECT rcClient;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The window styles. For a table of window styles, see Window Styles.</para>
+			/// </summary>
+			public WindowStyles dwStyle;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The extended window styles. For a table of extended window styles, see Extended Window Styles.</para>
+			/// </summary>
+			public WindowStylesEx dwExStyle;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The window status. If this member is <c>WS_ACTIVECAPTION</c> (0x0001), the window is active. Otherwise, this member is zero.
+			/// </para>
+			/// </summary>
+			public uint dwWindowStatus;
 
 			/// <summary>
 			/// <para>Type: <c>UINT</c></para>
@@ -8074,36 +8101,10 @@ namespace Vanara.PInvoke
 			public uint cyWindowBorders;
 
 			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The extended window styles. For a table of extended window styles, see Extended Window Styles.</para>
+			/// <para>Type: <c>ATOM</c></para>
+			/// <para>The window class atom (see RegisterClass).</para>
 			/// </summary>
-			public WindowStylesEx dwExStyle;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The window styles. For a table of window styles, see Window Styles.</para>
-			/// </summary>
-			public WindowStyles dwStyle;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The window status. If this member is <c>WS_ACTIVECAPTION</c> (0x0001), the window is active. Otherwise, this member is zero.
-			/// </para>
-			/// </summary>
-			public uint dwWindowStatus;
-
-			/// <summary>
-			/// <para>Type: <c>RECT</c></para>
-			/// <para>The coordinates of the client area.</para>
-			/// </summary>
-			public RECT rcClient;
-
-			/// <summary>
-			/// <para>Type: <c>RECT</c></para>
-			/// <para>The coordinates of the window.</para>
-			/// </summary>
-			public RECT rcWindow;
+			public ushort atomWindowType;
 
 			/// <summary>
 			/// <para>Type: <c>WORD</c></para>
