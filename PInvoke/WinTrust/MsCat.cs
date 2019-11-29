@@ -1429,7 +1429,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/ns-mscat-catalog_info typedef struct CATALOG_INFO_ { DWORD cbStruct;
 		// WCHAR wszCatalogFile[MAX_PATH]; } CATALOG_INFO;
 		[PInvokeData("mscat.h", MSDNShortId = "f6e66412-3ed2-48d9-a377-5df11500db59")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct CATALOG_INFO
 		{
 			/// <summary>Specifies the size, in bytes, of this structure.</summary>
