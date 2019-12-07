@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Security;
 using System.Security.Permissions;
+using Vanara.Extensions.Reflection;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 
@@ -74,7 +76,7 @@ namespace Vanara.Extensions
 
 		/// <summary>Determines whether this type is formatted or blittable.</summary>
 		/// <param name="T">The type to check.</param>
-		/// <returns><c>true</c> if the specified type is blittable; otherwise, <c>false</c>.</returns>
+		/// <returns><see langword="true"/> if the specified type is blittable; otherwise, <see langword="false"/>.</returns>
 		public static bool IsBlittable(this Type T)
 		{
 			if (T is null) return false;
@@ -98,9 +100,18 @@ namespace Vanara.Extensions
 			try { Marshal.SizeOf(T); return true; } catch { return false; }
 		}
 
+		/// <summary>Determines whether this type is marshalable.</summary>
+		/// <param name="type">The type to check.</param>
+		/// <returns><see langword="true"/> if the specified type is marshalable; otherwise, <see langword="false"/>.</returns>
+		public static bool IsMarshalable(this Type type)
+		{
+			var t = type.IsNullable() ? type.GetGenericArguments()[0] : type;
+			return t.IsSerializable || VanaraMarshaler.CanMarshal(t, out _) || t.IsBlittable();
+		}
+
 		/// <summary>Determines whether this type is nullable (derived from <see cref="Nullable{T}"/>).</summary>
 		/// <param name="type">The type to check.</param>
-		/// <returns><c>true</c> if the specified type is nullable; otherwise, <c>false</c>.</returns>
+		/// <returns><see langword="true"/> if the specified type is nullable; otherwise, <see langword="false"/>.</returns>
 		public static bool IsNullable(this Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
 
 		/// <summary>Marshals an unmanaged linked list of structures to an <see cref="IEnumerable{T}"/> of that structure.</summary>
@@ -227,7 +238,7 @@ namespace Vanara.Extensions
 		/// <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
 		public static IntPtr MarshalToPtr<T>(this IEnumerable<T> items, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0)
 		{
-			if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
+			if (!typeof(T).IsMarshalable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 
 			bytesAllocated = prefixBytes;
 			var count = items?.Count() ?? 0;
@@ -255,7 +266,7 @@ namespace Vanara.Extensions
 		/// <returns>Pointer to the allocated native (unmanaged) array of items stored.</returns>
 		/// <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
 		public static IntPtr MarshalToPtr<T>(this T[] items, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0) =>
-			MarshalToPtr((IEnumerable<T>)items, memAlloc, out bytesAllocated, prefixBytes);
+			MarshalToPtr(items.Cast<T>(), memAlloc, out bytesAllocated, prefixBytes);
 
 		/// <summary>
 		/// Marshals data from a managed list of strings to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.
@@ -648,17 +659,17 @@ namespace Vanara.Extensions
 			var count = items?.Count() ?? 0;
 			if (count == 0) return 0;
 
-			if (!typeof(T).IsBlittable())
+			var ttype = TrueType(typeof(T), out var stSize);
+			if (!ttype.IsMarshalable())
 				throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 
-			var ttype = TrueType(typeof(T), out var stSize);
 			var bytesReq = stSize * count + offset;
 			if (allocatedBytes > 0 && bytesReq > allocatedBytes)
 				throw new InsufficientMemoryException();
 
 			var i = 0;
-			foreach (var item in items.Select(v => Convert.ChangeType(v, ttype)))
-				ptr.Write(item, offset + i++ * stSize, allocatedBytes);
+			foreach (var item in items.Select(v => Convert.ChangeType(v, ttype)).Where(v => v != null))
+				WriteNoChecks(ptr, item, offset + i++ * stSize, allocatedBytes);
 
 			return bytesReq - offset;
 		}
@@ -673,7 +684,7 @@ namespace Vanara.Extensions
 		public static int Write(this IntPtr ptr, object value, int offset = 0, SizeT allocatedBytes = default)
 		{
 			if (value is null) return 0;
-			if (!value.GetType().IsBlittable())
+			if (!value.GetType().IsMarshalable())
 				throw new ArgumentException(@"Value cannot be serialized to memory.", nameof(value));
 			return WriteNoChecks(ptr, value, offset, allocatedBytes);
 		}
