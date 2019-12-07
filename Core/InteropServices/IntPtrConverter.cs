@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Vanara.Extensions;
+using Vanara.Extensions.Reflection;
 using Vanara.PInvoke;
 
 namespace Vanara.InteropServices
@@ -52,7 +56,7 @@ namespace Vanara.InteropServices
 					{
 						return marshaler.MarshalNativeToManaged(ptr, sz);
 					}
-					if (typeof(ISerializable).IsAssignableFrom(destType))
+					if (destType.IsSerializable)
 					{
 						using var mem = new MemoryStream(ptr.ToArray<byte>((int)sz));
 						return new BinaryFormatter().Deserialize(mem);
@@ -100,6 +104,40 @@ namespace Vanara.InteropServices
 
 			object GetBlittable(Type retType) => InteropExtensions.GetValueType(ptr, retType);
 		}
+
+		/*public static IntPtr Convert(object value, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
+		{
+			bytesAllocated = 0;
+			if (value is null)
+				return IntPtr.Zero;
+
+			var type = value.GetType();
+
+			// Handle special cases
+			if (type.IsArray || type.InheritsFrom(typeof(IEnumerable<>)))
+			{
+				var elemType = type.FindElementType();
+				if (elemType == typeof(string))
+				{
+				}
+				else
+				{
+					var enumType = typeof(IEnumerable<>).MakeGenericType(new[] { elemType });
+					var mi = typeof(InteropExtensions).GetMethod("Write", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(IntPtr), enumType, typeof(int), typeof(SizeT) }, null);
+					var gmi = mi.MakeGenericMethod(new[] { elemType });
+					return gmi.Invoke(null, new object[] { x });
+				}
+			}
+			if (value is IEnumerable)
+			{
+				if ()
+				{
+
+				}
+			}
+
+			throw new NotImplementedException();
+		}*/
 
 		/// <summary>Converts the specified pointer to <typeparamref name="T"/>.</summary>
 		/// <typeparam name="T">The destination type.</typeparam>
