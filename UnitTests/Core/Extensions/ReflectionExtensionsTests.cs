@@ -6,6 +6,7 @@ using System.Drawing;
 using static Vanara.Extensions.ReflectionExtensions;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Vanara.Extensions.Tests
 {
@@ -15,6 +16,18 @@ namespace Vanara.Extensions.Tests
 		public class X
 		{
 			public string Str { get; set; }
+		}
+
+		[Test]
+		public void EnumInheritanceTest()
+		{
+			var a = typeof(FooInt).EnumInheritance().ToArray();
+			Assert.That(a, Has.Member(typeof(IFoo<int>)).And.Member(typeof(IFoo)));
+			TestContext.WriteLine(string.Join(",", a.Cast<Type>()));
+
+			a = typeof(Foo2).EnumInheritance().ToArray();
+			Assert.That(a, Has.Member(typeof(Foo)).And.Member(typeof(IFoo)));
+			TestContext.WriteLine(string.Join(",", a.Cast<Type>()));
 		}
 
 		[Test()]
@@ -96,6 +109,32 @@ namespace Vanara.Extensions.Tests
 		private class DerIGenEnum : IGenEnum
 		{
 
+		}
+
+		private interface IFoo { }
+		private interface IFoo<T> : IFoo { }
+		private interface IFoo<T, M> : IFoo<T> { }
+		private class Foo : IFoo { }
+		private class Foo<T> : IFoo { }
+		private class Foo<T, M> : IFoo<T> { }
+		private class FooInt : IFoo<int> { }
+		private class FooStringInt : IFoo<string, int> { }
+		private class Foo2 : Foo { }
+
+		[Test]
+		public void InhertisFromTest()
+		{
+			Assert.That(typeof(Foo).InheritsFrom<IFoo>());
+			Assert.That(typeof(FooInt).InheritsFrom<IFoo>());
+			Assert.That(typeof(FooInt).InheritsFrom(typeof(IFoo<>)));
+			Assert.That(typeof(FooInt).InheritsFrom<IFoo<int>>());
+			Assert.That(typeof(FooInt).InheritsFrom<IFoo<string>>());
+			Assert.That(typeof(FooInt).InheritsFrom(typeof(IFoo<,>)));
+			Assert.That(typeof(FooStringInt).InheritsFrom(typeof(IFoo<,>)));
+			Assert.That(typeof(FooStringInt).InheritsFrom<IFoo<string, int>>());
+			Assert.That(typeof(Foo<int, string>).InheritsFrom<IFoo<string>>());
+			Assert.That(typeof(Foo2).InheritsFrom<Foo>());
+			Assert.That(typeof(Foo2).InheritsFrom<IFoo>());
 		}
 
 		[Test()]

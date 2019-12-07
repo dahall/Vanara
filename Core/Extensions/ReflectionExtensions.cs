@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +11,17 @@ namespace Vanara.Extensions.Reflection
 	public static class ReflectionExtensions
 	{
 		private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
+
+		/// <summary>Get a sequence of types that represent all base types and interfaces.</summary>
+		/// <param name="type">The type to evaluate.</param>
+		/// <returns>A sequence of types that represent all base types and interfaces.</returns>
+		public static IEnumerable<Type> EnumInheritance(this Type type)
+		{
+			while (type.BaseType != null)
+				yield return type = type.BaseType;
+			foreach (var i in type.GetInterfaces())
+				yield return i;
+		}
 
 		/// <summary>Gets a named field value from an object.</summary>
 		/// <typeparam name="T">The expected type of the field to be returned.</typeparam>
@@ -57,6 +69,28 @@ namespace Vanara.Extensions.Reflection
 			try { return GetPropertyValue<T>(obj, propertyName); }
 			catch { return defaultValue; }
 		}
+
+		/// <summary>Determines if a type inherits from another type. The <paramref name="baseType"/> may be a generic type definition.</summary>
+		/// <param name="type">The type.</param>
+		/// <param name="baseType">The base type.</param>
+		/// <returns>
+		/// <see langword="true"/> if <paramref name="baseType"/> is found in the inheritance list for <paramref name="type"/>;
+		/// <see langword="false"/> otherwise.
+		/// </returns>
+		public static bool InheritsFrom(this Type type, Type baseType)
+		{
+			return !(type is null) && !(baseType is null) || type.BaseType != null && type.BaseType.IsGenericType && type.BaseType.GetGenericTypeDefinition().Equals(baseType) ||
+				type.BaseType.InheritsFrom(baseType) || baseType.IsAssignableFrom(type) || type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(baseType));
+		}
+
+		/// <summary>Determines if a type inherits from another type. The <typeparamref name="T"/> may be a generic type definition.</summary>
+		/// <typeparam name="T">The base type.</typeparam>
+		/// <param name="type">The type.</param>
+		/// <returns>
+		/// <see langword="true"/> if <typeparamref name="T"/> is found in the inheritance list for <paramref name="type"/>;
+		/// <see langword="false"/> otherwise.
+		/// </returns>
+		public static bool InheritsFrom<T>(this Type type) => type.InheritsFrom(typeof(T));
 
 		/// <summary>
 		/// Invokes a generic named method on an object with parameters and no return value.
@@ -177,7 +211,6 @@ namespace Vanara.Extensions
 	/// <summary>Extensions related to <c>System.Reflection</c></summary>
 	public static class ReflectionExtensions
 	{
-		private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
 		private const BindingFlags staticBindingFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
 
 		/// <summary>For a structure, gets either the result of the static Create method or the default.</summary>
@@ -303,7 +336,7 @@ namespace Vanara.Extensions
 			return (T)mi.Invoke(null, args);
 		}
 
-#if !(NETSTANDARD2_0)
+#if !NETSTANDARD2_0
 		/// <summary>Invokes a method from a derived base class.</summary>
 		/// <param name="methodInfo">The <see cref="MethodInfo"/> instance from the derived class for the method to invoke.</param>
 		/// <param name="targetObject">The target object.</param>
