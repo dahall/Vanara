@@ -1,5 +1,12 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using Vanara.InteropServices;
+using Vanara.PInvoke;
 
 namespace Vanara.PInvoke
 {
@@ -41,6 +48,7 @@ namespace Vanara.PInvoke
 		/// Unicode or ANSI string depending on whether you use the Unicode or ANSI functions. To expand the environment variable
 		/// references, use the ExpandEnvironmentStrings function.
 		/// </summary>
+		[CorrespondingType(typeof(string))]
 		REG_EXPAND_SZ = 2,
 
 		/// <summary>
@@ -58,6 +66,7 @@ namespace Vanara.PInvoke
 		/// the sequence.Note that the final terminator must be factored into the length of the string.
 		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(IEnumerable<string>))]
 		REG_MULTI_SZ = 7,
 
 		/// <summary>A 64-bit number.</summary>
@@ -77,6 +86,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// A null-terminated string. This will be either a Unicode or an ANSI string, depending on whether you use the Unicode or ANSI functions.
 		/// </summary>
+		[CorrespondingType(typeof(string))]
 		REG_SZ = 1,
 
 		/// <summary>Resource list in the resource map.</summary>
@@ -105,29 +115,65 @@ namespace Vanara.Extensions
 			switch (value)
 			{
 				case PInvoke.REG_VALUE_TYPE.REG_DWORD:
-					return IntPtrConverter.Convert<uint>(ptr, size);
 				case PInvoke.REG_VALUE_TYPE.REG_DWORD_BIG_ENDIAN:
 					var data = IntPtrConverter.Convert<byte[]>(ptr, 4);
-					return unchecked((uint)((data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3]));
+					if (BitConverter.IsLittleEndian && value == REG_VALUE_TYPE.REG_DWORD_BIG_ENDIAN || !BitConverter.IsLittleEndian && value == REG_VALUE_TYPE.REG_DWORD)
+						Array.Reverse(data);
+					return BitConverter.ToUInt32(data, 0);
 				case PInvoke.REG_VALUE_TYPE.REG_EXPAND_SZ:
-					return Environment.ExpandEnvironmentVariables(StringHelper.GetString(ptr));
-				case PInvoke.REG_VALUE_TYPE.REG_LINK:
-					return new Uri(StringHelper.GetString(ptr));
+					return Environment.ExpandEnvironmentVariables(StringHelper.GetString(ptr, System.Runtime.InteropServices.CharSet.Auto, size));
 				case PInvoke.REG_VALUE_TYPE.REG_MULTI_SZ:
-					return ptr.ToStringEnum();
+					return ptr.ToStringEnum(System.Runtime.InteropServices.CharSet.Auto, 0, size).ToArray();
 				case PInvoke.REG_VALUE_TYPE.REG_QWORD:
 					return IntPtrConverter.Convert<ulong>(ptr, size);
 				case PInvoke.REG_VALUE_TYPE.REG_SZ:
-					return StringHelper.GetString(ptr);
+					return StringHelper.GetString(ptr, System.Runtime.InteropServices.CharSet.Auto, size);
 				case PInvoke.REG_VALUE_TYPE.REG_RESOURCE_LIST:
 				case PInvoke.REG_VALUE_TYPE.REG_FULL_RESOURCE_DESCRIPTOR:
 				case PInvoke.REG_VALUE_TYPE.REG_RESOURCE_REQUIREMENTS_LIST:
 				case PInvoke.REG_VALUE_TYPE.REG_BINARY:
 					return IntPtrConverter.Convert<byte[]>(ptr, size);
+				case PInvoke.REG_VALUE_TYPE.REG_LINK:
+					throw new InvalidOperationException("Registry links cannot be retrived from a pointer. Please use RegOpenKeyEx.");
 				default:
 				case PInvoke.REG_VALUE_TYPE.REG_NONE:
 					return ptr;
 			}
 		}
+
+		/// <summary>Gets a <see cref="REG_VALUE_TYPE"/> given a system type.</summary>
+		/// <param name="type">The type.</param>
+		/// <returns>A compatible <see cref="REG_VALUE_TYPE"/>. If no good match is found, <see cref="REG_VALUE_TYPE.REG_SZ"/> is returned.</returns>
+		public static REG_VALUE_TYPE GetFromType(Type type)
+		{
+			if (typeof(IEnumerable<string>).IsAssignableFrom(type))
+				return REG_VALUE_TYPE.REG_MULTI_SZ;
+			switch (Type.GetTypeCode(type))
+			{
+				case TypeCode.SByte:
+				case TypeCode.Byte:
+				case TypeCode.Int16:
+				case TypeCode.UInt16:
+				case TypeCode.Int32:
+				case TypeCode.UInt32:
+					return REG_VALUE_TYPE.REG_DWORD;
+				case TypeCode.Int64:
+				case TypeCode.UInt64:
+					return REG_VALUE_TYPE.REG_QWORD;
+				case TypeCode.Char:
+				case TypeCode.String:
+					return REG_VALUE_TYPE.REG_SZ;
+				default:
+					break;
+			}
+			if (typeof(IEnumerable<byte>).IsAssignableFrom(type) || type.IsMarshalable())
+				return REG_VALUE_TYPE.REG_BINARY;
+			return REG_VALUE_TYPE.REG_SZ;
+		}
+
+		/// <summary>Gets a <see cref="REG_VALUE_TYPE"/> given a system type.</summary>
+		/// <typeparam name="T">The type.</typeparam>
+		/// <returns>A compatible <see cref="REG_VALUE_TYPE"/>. If no good match is found, <see cref="REG_VALUE_TYPE.REG_SZ"/> is returned.</returns>
+		public static REG_VALUE_TYPE GetFromType<T>() => GetFromType(typeof(T));
 	}
 }
