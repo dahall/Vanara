@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using Vanara.Extensions.Reflection;
 
 namespace Vanara.InteropServices
 {

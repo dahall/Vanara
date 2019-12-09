@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Security.Permissions;
 using Vanara.Extensions.Reflection;
@@ -725,6 +726,13 @@ namespace Vanara.Extensions
 
 		private static int WriteNoChecks(IntPtr ptr, object value, int offset, SizeT allocatedBytes)
 		{
+			if (value is IEnumerable<byte> b) value = b.ToArray();
+			if (value is byte[] ba)
+			{
+				if (allocatedBytes > 0 && offset + ba.Length > allocatedBytes)
+					throw new InsufficientMemoryException();
+				Marshal.Copy(ba, 0, ptr, ba.Length);
+			}
 			if (VanaraMarshaler.CanMarshal(value.GetType(), out var marshaler))
 			{
 				using var mem = marshaler.MarshalManagedToNative(value);
@@ -733,7 +741,7 @@ namespace Vanara.Extensions
 				mem.DangerousGetHandle().CopyTo(ptr.Offset(offset), mem.Size);
 				return mem.Size;
 			}
-			else
+			else if (value.GetType().IsBlittable())
 			{
 				var newVal = TrueValue(value, out var cbValue);
 				if (allocatedBytes > 0 && offset + cbValue > allocatedBytes)
@@ -741,6 +749,17 @@ namespace Vanara.Extensions
 				Marshal.StructureToPtr(newVal, ptr.Offset(offset), false);
 				return cbValue;
 			}
+			else if (value.GetType().IsSerializable)
+			{
+				using var str = new NativeMemoryStream();
+				var bf = new BinaryFormatter();
+				bf.Serialize(str, value);
+				str.Flush();
+				if (allocatedBytes > 0 && offset + str.Length > allocatedBytes)
+					throw new InsufficientMemoryException();
+				str.Pointer.CopyTo(ptr.Offset(offset), str.Length);
+			}
+			throw new ArgumentException("Unable to write object.");
 		}
 	}
 }

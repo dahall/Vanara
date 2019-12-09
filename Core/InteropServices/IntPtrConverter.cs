@@ -52,27 +52,29 @@ namespace Vanara.InteropServices
 			switch (typeCode)
 			{
 				case TypeCode.Object:
-					if (VanaraMarshaler.CanMarshal(destType, out var marshaler))
-					{
-						return marshaler.MarshalNativeToManaged(ptr, sz);
-					}
-					if (destType.IsSerializable)
-					{
-						using var mem = new MemoryStream(ptr.ToArray<byte>((int)sz));
-						return new BinaryFormatter().Deserialize(mem);
-					}
 					try
 					{
-						return GetBlittable(destType);
+						if (VanaraMarshaler.CanMarshal(destType, out var marshaler))
+						{
+							return marshaler.MarshalNativeToManaged(ptr, sz);
+						}
+						if (destType.IsBlittable())
+						{
+							return GetBlittable(destType);
+						}
+						if (destType.IsSerializable)
+						{
+							using var mem = new MemoryStream(ptr.ToArray<byte>((int)sz));
+							return new BinaryFormatter().Deserialize(mem);
+						}
 					}
 					catch (ArgumentOutOfRangeException e)
 					{
 						throw e;
 					}
-					catch
-					{
-						throw new NotSupportedException("Unsupported type parameter.");
-					}
+					catch { }
+					throw new NotSupportedException("Unsupported type parameter.");
+
 				case TypeCode.Boolean:
 					return System.Convert.ChangeType(GetBlittable(typeof(uint)), typeCode);
 
