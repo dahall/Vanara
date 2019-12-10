@@ -724,7 +724,7 @@ namespace Vanara.Extensions
 
 		private static object TrueValue(object value, out int size) => Convert.ChangeType(value, TrueType(value.GetType(), out size));
 
-		private static int WriteNoChecks(IntPtr ptr, object value, int offset, SizeT allocatedBytes)
+		internal static int WriteNoChecks(IntPtr ptr, object value, int offset, SizeT allocatedBytes)
 		{
 			if (value is IEnumerable<byte> b) value = b.ToArray();
 			if (value is byte[] ba)
@@ -732,6 +732,7 @@ namespace Vanara.Extensions
 				if (allocatedBytes > 0 && offset + ba.Length > allocatedBytes)
 					throw new InsufficientMemoryException();
 				Marshal.Copy(ba, 0, ptr, ba.Length);
+				return ba.Length;
 			}
 			if (VanaraMarshaler.CanMarshal(value.GetType(), out var marshaler))
 			{
@@ -741,7 +742,7 @@ namespace Vanara.Extensions
 				mem.DangerousGetHandle().CopyTo(ptr.Offset(offset), mem.Size);
 				return mem.Size;
 			}
-			else if (value.GetType().IsBlittable())
+			if (value.GetType().IsBlittable())
 			{
 				var newVal = TrueValue(value, out var cbValue);
 				if (allocatedBytes > 0 && offset + cbValue > allocatedBytes)
@@ -749,7 +750,7 @@ namespace Vanara.Extensions
 				Marshal.StructureToPtr(newVal, ptr.Offset(offset), false);
 				return cbValue;
 			}
-			else if (value.GetType().IsSerializable)
+			if (value.GetType().IsSerializable)
 			{
 				using var str = new NativeMemoryStream();
 				var bf = new BinaryFormatter();
@@ -758,8 +759,9 @@ namespace Vanara.Extensions
 				if (allocatedBytes > 0 && offset + str.Length > allocatedBytes)
 					throw new InsufficientMemoryException();
 				str.Pointer.CopyTo(ptr.Offset(offset), str.Length);
+				return (int)str.Length;
 			}
-			throw new ArgumentException("Unable to write object.");
+			throw new ArgumentException("Unable to convert object to its binary format.");
 		}
 	}
 }
