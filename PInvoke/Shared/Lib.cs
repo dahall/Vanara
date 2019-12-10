@@ -81,6 +81,9 @@
 		/// <summary>The power profiling DLL.</summary>
 		public const string PowrProf = "powrprof.dll";
 
+		/// <summary>The prntvpt.dll</summary>
+		public const string PrntvPt = "prntvpt.dll";
+
 		/// <summary>The property system</summary>
 		public const string PropSys = "propsys.dll";
 
@@ -119,6 +122,9 @@
 
 		/// <summary>The win inet</summary>
 		public const string WinInet = "wininet.dll";
+
+		/// <summary>The winspool.dll</summary>
+		public const string Winspool = "winspool.drv";
 
 		/// <summary>The wintrust.dll</summary>
 		public const string Wintrust = "wintrust.dll";
