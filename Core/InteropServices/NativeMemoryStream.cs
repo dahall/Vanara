@@ -407,7 +407,7 @@ namespace Vanara.InteropServices
 				if (value is IntPtr p)
 					Marshal.WriteIntPtr(PositionPtr, p);
 				else
-					PositionPtr.Write(value);
+					stSize = InteropExtensions.WriteNoChecks(PositionPtr, value, 0, Capacity - Position);
 				position += stSize;
 				length += stSize;
 			}
@@ -476,6 +476,9 @@ namespace Vanara.InteropServices
 
 				case IntPtr p:
 					return IntPtr.Size;
+
+				case IEnumerable<byte> b:
+					return b.Count();
 
 				case IEnumerable<string> es:
 					return es.Sum(s => s.GetByteCount(true, charSet));
