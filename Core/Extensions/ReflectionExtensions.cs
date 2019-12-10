@@ -17,10 +17,10 @@ namespace Vanara.Extensions.Reflection
 		/// <returns>A sequence of types that represent all base types and interfaces.</returns>
 		public static IEnumerable<Type> EnumInheritance(this Type type)
 		{
-			while (type.BaseType != null)
-				yield return type = type.BaseType;
 			foreach (var i in type.GetInterfaces())
 				yield return i;
+			while (type.BaseType != null)
+				yield return type = type.BaseType;
 		}
 
 		/// <summary>Gets a named field value from an object.</summary>
