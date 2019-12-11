@@ -1998,17 +1998,15 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-defaults typedef struct _PRINTER_DEFAULTS { LPTSTR pDatatype;
 		// LPDEVMODE pDevMode; ACCESS_MASK DesiredAccess; } PRINTER_DEFAULTS, *PPRINTER_DEFAULTS;
 		[PInvokeData("winspool.h", MSDNShortId = "df29c3a6-b1d1-4d40-887d-5ffc032a5871")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct PRINTER_DEFAULTS
+		public class PRINTER_DEFAULTS
 		{
 			/// <summary>Pointer to a null-terminated string that specifies the default data type for a printer.</summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
 			public string pDatatype;
 
 			/// <summary>
-			/// Pointer to a <c>DEVMODE</c> structure that identifies the default environment and initialization data for a printer.
+			/// A <c>DEVMODE</c> structure that identifies the default environment and initialization data for a printer.
 			/// </summary>
-			public IntPtr pDevMode;
+			public DEVMODE? pDevMode;
 
 			/// <summary>
 			/// <para>
@@ -2049,9 +2047,6 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </summary>
 			public ACCESS_MASK DesiredAccess;
-
-			/// <summary>A <c>DEVMODE</c> structure that contains device-initialization and environment data for the printer driver.</summary>
-			public DEVMODE DevMode => pDevMode.ToStructure<DEVMODE>();
 		}
 
 		/// <summary>
@@ -3483,6 +3478,9 @@ namespace Vanara.PInvoke
 			/// by other functions.
 			/// </summary>
 			public PRINTER_OPTION_FLAGS dwFlags;
+
+			/// <summary>An instance with the size preset.</summary>
+			public static readonly PRINTER_OPTIONS Default = new PRINTER_OPTIONS { cbSize = 8 };
 		}
 
 		/// <summary>
@@ -3702,7 +3700,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPRINTERCHANGENOTIFICATION"/> that is disposed using <see cref="FindClosePrinterChangeNotification"/>.</summary>
-		public class SafeHPRINTERCHANGENOTIFICATION : SafeHANDLE
+		public class SafeHPRINTERCHANGENOTIFICATION : SafeHANDLE, ISyncHandle
 		{
 			/// <summary>
 			/// Initializes a new instance of the <see cref="SafeHPRINTERCHANGENOTIFICATION"/> class and assigns an existing handle.
@@ -3777,6 +3775,38 @@ namespace Vanara.PInvoke
 			/// </summary>
 			/// <returns><c>true</c> to indicate successful release of the handle; <c>false</c> otherwise.</returns>
 			protected override bool InternalReleaseHandle() => FreePrinterNotifyInfo(handle);
+		}
+
+		internal class PRINTER_DEFAULTS_Marshaler : ICustomMarshaler
+		{
+			/// <summary>Gets the instance.</summary>
+			/// <param name="cookie">The cookie.</param>
+			/// <returns>An instance of this class.</returns>
+			public static ICustomMarshaler GetInstance(string _) => new PRINTER_DEFAULTS_Marshaler();
+
+			public void CleanUpManagedData(object ManagedObj) => throw new NotImplementedException();
+
+			public void CleanUpNativeData(IntPtr pNativeData) => Marshal.FreeCoTaskMem(pNativeData);
+
+			public int GetNativeDataSize() => -1;
+
+			public IntPtr MarshalManagedToNative(object ManagedObj)
+			{
+				if (!(ManagedObj is PRINTER_DEFAULTS pd)) throw new ArgumentException("Type of managed object must be PRINTER_DEFAULTS.");
+
+				var sz = IntPtr.Size * 2 + 4 + StringHelper.GetByteCount(pd.pDatatype) + (pd.pDevMode?.dmSize ?? 0);
+				var mem = new SafeCoTaskMemHandle(sz);
+				using (var str = new NativeMemoryStream(mem))
+				{
+					str.WriteReference(pd.pDatatype);
+					str.WriteReferenceObject(pd.pDevMode.HasValue ? (object)pd.pDevMode.Value : null);
+					str.Write((uint)pd.DesiredAccess);
+				}
+
+				return mem.TakeOwnership();
+			}
+
+			public object MarshalNativeToManaged(IntPtr pNativeData) => throw new NotImplementedException();
 		}
 
 		/*

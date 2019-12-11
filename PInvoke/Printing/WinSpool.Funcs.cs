@@ -2888,6 +2888,187 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FindNextPrinterChangeNotification(HPRINTERCHANGENOTIFICATION hChange, out PRINTER_CHANGE pdwChange, in PRINTER_NOTIFY_OPTIONS pPrinterNotifyOptions, out SafePRINTER_NOTIFY_INFO ppPrinterNotifyInfo);
 
+		/// <summary>
+		/// <para>
+		/// The <c>FindNextPrinterChangeNotification</c> function retrieves information about the most recent change notification for a
+		/// change notification object associated with a printer or print server. Call this function when a wait operation on the change
+		/// notification object is satisfied.
+		/// </para>
+		/// <para>
+		/// The function also resets the change notification object to the not-signaled state. You can then use the object in another wait
+		/// operation to continue monitoring the printer or print server. The operating system will set the object to the signaled state the
+		/// next time one of a specified set of changes occurs to the printer or print server. The <c>FindFirstPrinterChangeNotification</c>
+		/// function creates the change notification object and specifies the set of changes to be monitored.
+		/// </para>
+		/// </summary>
+		/// <param name="hChange">
+		/// A handle to a change notification object associated with a printer or print server. You obtain such a handle by calling the
+		/// <c>FindFirstPrinterChangeNotification</c> function. The operating system sets this change notification object to the signaled
+		/// state when it detects one of the changes specified in the object's change notification filter.
+		/// </param>
+		/// <param name="pdwChange">
+		/// <para>
+		/// A pointer to a variable whose bits are set to indicate the changes that occurred to cause the most recent notification. The bit
+		/// flags that might be set correspond to those specified in the fdwFilter parameter of the
+		/// <c>FindFirstPrinterChangeNotification</c> call. The system sets one or more of the following bit flags.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PRINTER_CHANGE_ADD_FORM</term>
+		/// <term>A form was added to the server.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_ADD_JOB</term>
+		/// <term>A print job was sent to the printer.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_ADD_PORT</term>
+		/// <term>A port or monitor was added to the server.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_ADD_PRINT_PROCESSOR</term>
+		/// <term>A print processor was added to the server.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_ADD_PRINTER</term>
+		/// <term>A printer was added to the server.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_ADD_PRINTER_DRIVER</term>
+		/// <term>A printer driver was added to the server.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_CONFIGURE_PORT</term>
+		/// <term>A port was configured on the server.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_DELETE_FORM</term>
+		/// <term>A form was deleted from the server.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_DELETE_JOB</term>
+		/// <term>A job was deleted.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_DELETE_PORT</term>
+		/// <term>A port or monitor was deleted from the server.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_DELETE_PRINT_PROCESSOR</term>
+		/// <term>A print processor was deleted from the server.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_DELETE_PRINTER</term>
+		/// <term>A printer was deleted.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_DELETE_PRINTER_DRIVER</term>
+		/// <term>A printer driver was deleted from the server.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_FAILED_CONNECTION_PRINTER</term>
+		/// <term>A printer connection has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_SET_FORM</term>
+		/// <term>A form was set on the server.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_SET_JOB</term>
+		/// <term>A job was set.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_SET_PRINTER</term>
+		/// <term>A printer was set.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_SET_PRINTER_DRIVER</term>
+		/// <term>A printer driver was set.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_WRITE_JOB</term>
+		/// <term>Job data was written.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_TIMEOUT</term>
+		/// <term>The job timed out.</term>
+		/// </item>
+		/// <item>
+		/// <term>PRINTER_CHANGE_SERVER</term>
+		/// <term>Windows 7: A change occurred on the server.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pPrinterNotifyOptions">
+		/// A pointer to a <c>PRINTER_NOTIFY_OPTIONS</c> structure. Set the <c>Flags</c> member of this structure to
+		/// <c>PRINTER_NOTIFY_OPTIONS_REFRESH</c>, to cause the function to return the current data for all monitored printer information
+		/// fields. The function ignores all other members of the structure. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="ppPrinterNotifyInfo">
+		/// <para>
+		/// A pointer to a pointer variable that receives a pointer to a system-allocated, read-only buffer. Call the
+		/// <c>FreePrinterNotifyInfo</c> function to free the buffer when you are finished with it. This parameter can be <c>NULL</c> if no
+		/// information is required.
+		/// </para>
+		/// <para>
+		/// The buffer contains a <c>PRINTER_NOTIFY_INFO</c> structure, which contains an array of <c>PRINTER_NOTIFY_INFO_DATA</c>
+		/// structures. Each element of the array contains information about one of the fields specified in the pPrinterNotifyOptions
+		/// parameter of the <c>FindFirstPrinterChangeNotification</c> call. Typically, the function provides data only for the fields that
+		/// changed to cause the most recent notification. However, if the structure pointed to by the pPrinterNotifyOptions parameter
+		/// specifies <c>PRINTER_NOTIFY_OPTIONS_REFRESH</c>, the function provides data for all monitored fields.
+		/// </para>
+		/// <para>
+		/// If the <c>PRINTER_NOTIFY_INFO_DISCARDED</c> bit is set in the <c>Flags</c> member of the <c>PRINTER_NOTIFY_INFO</c> structure,
+		/// an overflow or error occurred, and notifications may have been lost. In this case, no additional notifications will be sent
+		/// until you make a second <c>FindNextPrinterChangeNotification</c> call that specifies <c>PRINTER_NOTIFY_OPTIONS_REFRESH</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Call the <c>FindNextPrinterChangeNotification</c> function after a wait operation on a notification object created by
+		/// <c>FindFirstPrinterChangeNotification</c> has been satisfied. Calling <c>FindNextPrinterChangeNotification</c> lets you obtain
+		/// information about the change that satisfied the wait operation, and resets the notification object so it can be signaled when
+		/// the next change occurs.
+		/// </para>
+		/// <para>
+		/// With one exception, do not call the <c>FindNextPrinterChangeNotification</c> function if the change notification object is not
+		/// in the signaled state. If a wait function returns the value <c>WAIT_TIMEOUT</c>, the change object is not in the signaled state.
+		/// Call the <c>FindNextPrinterChangeNotification</c> function only if the wait function succeeds without timing out. The exception
+		/// is when <c>FindNextPrinterChangeNotification</c> is called with the <c>PRINTER_NOTIFY_OPTIONS_REFRESH</c> bit set in the
+		/// pPrinterNotifyOptions parameter. Note that even when this flag is set, it is still possible for the
+		/// <c>PRINTER_NOTIFY_INFO_DISCARDED</c> flag to be set in the ppPrinterNotifyInfo parameter.
+		/// </para>
+		/// <para>
+		/// To continue monitoring the printer or print server for changes, repeat the cycle of calling one of the wait functions , and then
+		/// calling the <c>FindNextPrinterChangeNotification</c> function to examine the change and reset the notification object.
+		/// </para>
+		/// <para>
+		/// <c>FindNextPrinterChangeNotification</c> may combine multiple changes to the same printer information field into a single
+		/// notification. When this occurs, the function typically collapses all changes for the field into a single entry in the array of
+		/// <c>PRINTER_NOTIFY_INFO_DATA</c> structures in ppPrinterNotifyInfo; the single entry reports only the most current information.
+		/// However, for some job and printer information fields, the function can return multiple array entries for the same field. In this
+		/// case, the last array entry for the field reports the current data, and the earlier entries contain the data for the intermediate stages.
+		/// </para>
+		/// <para>
+		/// When you no longer need the change notification object, close it by calling the <c>FindClosePrinterChangeNotification</c> function.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/printdocs/findnextprinterchangenotification BOOL
+		// FindNextPrinterChangeNotification( _In_ HANDLE hChange, _Out_opt_ PDWORD pdwChange, _In_opt_ LPVOID pPrinterNotifyOptions,
+		// _Out_opt_ LPVOID *ppPrinterNotifyInfo );
+		[DllImport(Lib.Winspool, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winspool.h", MSDNShortId = "ea7774ae-361f-41e4-bbc6-3f100028b22a")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool FindNextPrinterChangeNotification(HPRINTERCHANGENOTIFICATION hChange, out PRINTER_CHANGE pdwChange, [Optional] IntPtr pPrinterNotifyOptions, out SafePRINTER_NOTIFY_INFO ppPrinterNotifyInfo);
+
 		/// <summary>The <c>FlushPrinter</c> function sends a buffer to the printer in order to clear it from a transient state.</summary>
 		/// <param name="hPrinter">
 		/// A handle to the printer object. This should be the same handle that was used, in a prior <c>WritePrinter</c> call, by the
@@ -3008,7 +3189,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winspool.h", MSDNShortId = "8ec06743-43ce-4fac-83c4-f09eac7ee333")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetDefaultPrinter(StringBuilder pszBuffer, ref uint pcchBuffer);
+		public static extern bool GetDefaultPrinter(StringBuilder pszBuffer, ref int pcchBuffer);
 
 		/// <summary>The <c>GetForm</c> function retrieves information about a specified form.</summary>
 		/// <param name="hPrinter">
@@ -4482,104 +4663,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winspool.h", MSDNShortId = "96763220-d851-46f0-8be8-403f3356edb9")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool OpenPrinter(string pPrinterName, out SafeHPRINTER phPrinter, in PRINTER_DEFAULTS pDefault);
-
-		/// <summary>
-		/// The <c>OpenPrinter</c> function retrieves a handle to the specified printer or print server or other types of handles in the
-		/// print subsystem.
-		/// </summary>
-		/// <param name="pPrinterName">
-		/// <para>
-		/// A pointer to a null-terminated string that specifies the name of the printer or print server, the printer object, the
-		/// XcvMonitor, or the XcvPort.
-		/// </para>
-		/// <para>
-		/// For a printer object use: PrinterName, Job xxxx. For an XcvMonitor, use: ServerName, XcvMonitor MonitorName. For an XcvPort,
-		/// use: ServerName, XcvPort PortName.
-		/// </para>
-		/// <para>If <c>NULL</c>, it indicates the local printer server.</para>
-		/// </param>
-		/// <param name="phPrinter">
-		/// <para>A pointer to a variable that receives a handle (not thread safe) to the open printer or print server object.</para>
-		/// <para>
-		/// The phPrinter parameter can return an Xcv handle for use with the XcvData function. For more information about XcvData, see the DDK.
-		/// </para>
-		/// </param>
-		/// <param name="pDefault">A pointer to a <c>PRINTER_DEFAULTS</c> structure. This value can be <c>NULL</c>.</param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is a nonzero value.</para>
-		/// <para>If the function fails, the return value is zero.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>Do not call this method in <c>DllMain</c>.</para>
-		/// <para>
-		/// The handle pointed to by phPrinter is not thread safe. If callers need to use it concurrently on multiple threads, they must
-		/// provide custom synchronization access to the printer handle using the Synchronization Functions. To avoid writing custom code
-		/// the application can open a printer handle on each thread, as needed.
-		/// </para>
-		/// <para>
-		/// The pDefault parameter enables you to specify the data type and device mode values that are used for printing documents
-		/// submitted by the <c>StartDocPrinter</c> function. However, you can override these values by using the <c>SetJob</c> function
-		/// after a document has been started.
-		/// </para>
-		/// <para>
-		/// The <c>DEVMODE</c> settings defined in the <c>PRINTER_DEFAULTS</c> structure of the pDefault parameter are not used when the
-		/// value of the pDatatype member of the <c>DOC_INFO_1</c> structure that was passed in the pDocInfo parameter of the
-		/// <c>StartDocPrinter</c> call is "RAW". When a high-level document (such as an Adobe PDF or Microsoft Word file) or other printer
-		/// data (such PCL, PS, or HPGL) is sent directly to a printer with pDatatype set to "RAW", the document must fully describe the
-		/// <c>DEVMODE</c>-style print job settings in the language understood by the hardware.
-		/// </para>
-		/// <para>
-		/// You can call the <c>OpenPrinter</c> function to open a handle to a print server or to determine the access rights that a client
-		/// has to a print server. To do so, specify the name of the print server in the pPrinterName parameter, set the <c>pDatatype</c>
-		/// and <c>pDevMode</c> members of the <c>PRINTER_DEFAULTS</c> structure to <c>NULL</c>, and set the <c>DesiredAccess</c> member to
-		/// specify a server access mask value such as SERVER_ALL_ACCESS. When you finish with the handle, pass it to the
-		/// <c>ClosePrinter</c> function to close it.
-		/// </para>
-		/// <para>
-		/// Use the <c>DesiredAccess</c> member of the <c>PRINTER_DEFAULTS</c> structure to specify the access rights that you need to the
-		/// printer. The access rights can be one of the following. (If pDefault is <c>NULL</c>, then the access rights are PRINTER_ACCESS_USE.)
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Desired Access value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>PRINTER_ACCESS_ADMINISTER</term>
-		/// <term>To perform administrative tasks, such as those provided by SetPrinter.</term>
-		/// </item>
-		/// <item>
-		/// <term>PRINTER_ACCESS_USE</term>
-		/// <term>To perform basic printing operations.</term>
-		/// </item>
-		/// <item>
-		/// <term>PRINTER_ALL_ACCESS</term>
-		/// <term>To perform all administrative tasks and basic printing operations except for SYNCHRONIZE (see Standard Access Rights.</term>
-		/// </item>
-		/// <item>
-		/// <term>PRINTER_ACCESS_MANAGE_LIMITED</term>
-		/// <term>
-		/// To perform administrative tasks, such as those provided by SetPrinter and SetPrinterData. This value is available starting from
-		/// Windows 8.1.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>generic security values, such as WRITE_DAC</term>
-		/// <term>To allow specific control access rights. See Standard Access Rights.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// If a user does not have permission to open a specified printer or print server with the desired access, the <c>OpenPrinter</c>
-		/// call will fail with a return value of zero and <c>GetLastError</c> will return the value ERROR_ACCESS_DENIED.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/printdocs/openprinter BOOL OpenPrinter( _In_ LPTSTR pPrinterName, _Out_ LPHANDLE
-		// phPrinter, _In_ LPPRINTER_DEFAULTS pDefault );
-		[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("winspool.h", MSDNShortId = "96763220-d851-46f0-8be8-403f3356edb9")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool OpenPrinter(string pPrinterName, out SafeHPRINTER phPrinter, IntPtr pDefault = default);
+		public static extern bool OpenPrinter(string pPrinterName, out SafeHPRINTER phPrinter, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRINTER_DEFAULTS_Marshaler))] PRINTER_DEFAULTS pDefault);
 
 		/// <summary>
 		/// Retrieves a handle to the specified printer, print server, or other types of handles in the print subsystem, while setting some
@@ -4671,99 +4755,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winspool.h", MSDNShortId = "e2370ae4-4475-4ccc-a6f9-3d33d1370054")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool OpenPrinter2(string pPrinterName, out SafeHPRINTER phPrinter, in PRINTER_DEFAULTS pDefault, in PRINTER_OPTIONS pOptions);
-
-		/// <summary>
-		/// Retrieves a handle to the specified printer, print server, or other types of handles in the print subsystem, while setting some
-		/// of the printer options.
-		/// </summary>
-		/// <param name="pPrinterName">
-		/// <para>
-		/// A pointer to a constant null-terminated string that specifies the name of the printer or print server, the printer object, the
-		/// XcvMonitor, or the XcvPort.
-		/// </para>
-		/// <para>
-		/// For a printer object, use: PrinterName,Job xxxx. For an XcvMonitor, use: ServerName,XcvMonitor MonitorName. For an XcvPort, use:
-		/// ServerName,XcvPort PortName.
-		/// </para>
-		/// <para><c>Windows Vista:</c> If <c>NULL</c>, it indicates the local print server.</para>
-		/// </param>
-		/// <param name="phPrinter">A pointer to a variable that receives a handle to the open printer or print server object.</param>
-		/// <param name="pDefault">A pointer to a <c>PRINTER_DEFAULTS</c> structure. This value can be <c>NULL</c>.</param>
-		/// <param name="pOptions">A pointer to a <c>PRINTER_OPTIONS</c> structure. This value can be <c>NULL</c>.</param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is a nonzero value.</para>
-		/// <para>If the function fails, the return value is zero. For extended error information, call <c>GetLastError</c>.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>Do not call this method in <c>DllMain</c>.</para>
-		/// <para>The ANSI version of this function is not implemented and returns ERROR_NOT_SUPPORTED.</para>
-		/// <para>
-		/// The pDefault parameter enables you to specify the data type and device mode values that are used for printing documents
-		/// submitted by the <c>StartDocPrinter</c> function. However, you can override these values by using the <c>SetJob</c> function
-		/// after a document has been started.
-		/// </para>
-		/// <para>
-		/// You can call the <c>OpenPrinter2</c> function to open a handle to a print server or to determine client access rights to a print
-		/// server. To do this, specify the name of the print server in the pPrinterName parameter, set the <c>pDatatype</c> and
-		/// <c>pDevMode</c> members of the <c>PRINTER_DEFAULTS</c> structure to <c>NULL</c>, and set the <c>DesiredAccess</c> member to
-		/// specify a server access mask value such as SERVER_ALL_ACCESS. When you are finished with the handle, pass it to the
-		/// <c>ClosePrinter</c> function to close it.
-		/// </para>
-		/// <para>
-		/// Use the <c>DesiredAccess</c> member of the <c>PRINTER_DEFAULTS</c> structure to specify the necessary access rights. The access
-		/// rights can be one of the following.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Desired Access value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>PRINTER_ACCESS_ADMINISTER</term>
-		/// <term>To perform administrative tasks, such as those provided by SetPrinter.</term>
-		/// </item>
-		/// <item>
-		/// <term>PRINTER_ACCESS_USE</term>
-		/// <term>To perform basic printing operations.</term>
-		/// </item>
-		/// <item>
-		/// <term>PRINTER_ALL_ACCESS</term>
-		/// <term>To perform all administrative tasks and basic printing operations except SYNCHRONIZE. See Standard Access Rights.</term>
-		/// </item>
-		/// <item>
-		/// <term>PRINTER_ACCESS_MANAGE_LIMITED</term>
-		/// <term>
-		/// To perform administrative tasks, such as those provided by SetPrinter and SetPrinterData. This value is available starting from
-		/// Windows 8.1.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>generic security values, such as WRITE_DAC</term>
-		/// <term>To allow specific control access rights. See Standard Access Rights.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// If a user does not have permission to open a specified printer or print server with the desired access, the <c>OpenPrinter2</c>
-		/// call will fail, and <c>GetLastError</c> will return the value ERROR_ACCESS_DENIED.
-		/// </para>
-		/// <para>
-		/// When pPrinterName is a local printer, then <c>OpenPrinter2</c> ignores all values of the <c>dwFlags</c> that the
-		/// <c>PRINTER_OPTIONS</c> structure pointed to using pOptions, except PRINTER_OPTION_CLIENT_CHANGE. If the latter is passed, then
-		/// <c>OpenPrinter2</c> will return ERROR_ACCESS_DENIED. Accordingly, when opening a local printer, <c>OpenPrinter2</c> provides no
-		/// advantage over <c>OpenPrinter</c>.
-		/// </para>
-		/// <para>
-		/// <c>Windows Vista:</c> The printer data returned by <c>OpenPrinter2</c> is retrieved from a local cache unless the
-		/// <c>PRINTER_OPTION_NO_CACHE</c> flag is set in the <c>dwFlags</c> field of the <c>PRINTER_OPTIONS</c> structure referenced by pOptions.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/printdocs/openprinter2 BOOL OpenPrinter2( _In_ LPCTSTR pPrinterName, _Out_
-		// LPHANDLE phPrinter, _In_ LPPRINTER_DEFAULTS pDefault, _In_ PPRINTER_OPTIONS pOptions );
-		[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("winspool.h", MSDNShortId = "e2370ae4-4475-4ccc-a6f9-3d33d1370054")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool OpenPrinter2(string pPrinterName, out SafeHPRINTER phPrinter, [Optional] IntPtr pDefault, [Optional] IntPtr pOptions);
+		public static extern bool OpenPrinter2(string pPrinterName, out SafeHPRINTER phPrinter, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRINTER_DEFAULTS_Marshaler))] PRINTER_DEFAULTS pDefault, in PRINTER_OPTIONS pOptions);
 
 		/// <summary>The <c>PrinterProperties</c> function displays a printer-properties property sheet for the specified printer.</summary>
 		/// <param name="hWnd">A handle to the parent window of the property sheet.</param>
@@ -4857,7 +4849,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winspool.h", MSDNShortId = "9efc6629-dbb7-4320-90b9-07c66f0add47")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ResetPrinter(HPRINTER hPrinter, in PRINTER_DEFAULTS pDefault);
+		public static extern bool ResetPrinter(HPRINTER hPrinter, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRINTER_DEFAULTS_Marshaler))] PRINTER_DEFAULTS pDefault);
 
 		/// <summary>The <c>ScheduleJob</c> function requests that the print spooler schedule a specified print job for printing.</summary>
 		/// <param name="hPrinter">

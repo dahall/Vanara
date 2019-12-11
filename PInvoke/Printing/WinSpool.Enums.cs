@@ -8,6 +8,53 @@ namespace Vanara.PInvoke
 		/// <summary>Indicates that some notifications had to be discarded.</summary>
 		public const uint PRINTER_NOTIFY_INFO_DISCARDED = 0x01;
 
+		/// <summary>Printer, job and print server access rights.</summary>
+		[PInvokeData("winspool.h")]
+		[Flags]
+		public enum AccessRights : uint
+		{
+			/// <summary>Printing-specific authorization to cancel, pause, resume, or restart the job ([MS-DTYP] ACCESS_MASK Bit 27).</summary>
+			JOB_ACCESS_ADMINISTER = 0x00000010,
+			/// <summary>Printing-specific read rights for the spool file ([MS-DTYP] ACCESS_MASK Bit 26).<127></summary>
+			JOB_ACCESS_READ = 0x00000020,
+			/// <summary>Access rights for jobs combining RC (Read Control) of ACCESS_MASK with printing-specific JOB_ACCESS_ADMINISTER.
+			/// <para>This value MUST NOT be passed over the wire. If it is, the server SHOULD return ERROR_ACCESS_DENIED.</para></summary>
+			JOB_EXECUTE = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE | JOB_ACCESS_ADMINISTER,
+			/// <summary>Access rights for jobs combining RC (Read Control) of ACCESS_MASK with printing-specific JOB_ACCESS_READ.</summary>
+			JOB_READ = ACCESS_MASK.STANDARD_RIGHTS_READ | JOB_ACCESS_READ,
+			/// <summary>Access rights for jobs combining RC (Read Control) of ACCESS_MASK with printing-specific JOB_ACCESS_ADMINISTER.
+			/// <para>This value MUST NOT be passed over the wire. If it is, the server SHOULD return ERROR_ACCESS_DENIED.</para></summary>
+			JOB_WRITE = ACCESS_MASK.STANDARD_RIGHTS_WRITE | JOB_ACCESS_ADMINISTER,
+			/// <summary>Access rights for printers to perform all administrative tasks and basic printing operations except SYNCHRONIZE ([MS-DTYP] ACCESS_MASK Bit 'SY'). Combines STANDARD_RIGHTS_REQUIRED (ACCESS_MASK Bits 'RC', 'DE', 'WD', 'WO'), JOB_ACCESS_ADMINISTER (ACCESS_MASK Bit 27), and JOB_ACCESS_READ (ACCESS_MASK Bit 26).</summary>
+			JOB_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | JOB_ACCESS_ADMINISTER | JOB_ACCESS_READ,
+			/// <summary>Printing-specific access rights for printers to perform administrative tasks ([MS-DTYP] ACCESS_MASK Bit 29).</summary>
+			PRINTER_ACCESS_ADMINISTER = 0x00000004,
+			/// <summary>Printing-specific access rights for printers to perform basic printing operations ([MS-DTYP] ACCESS_MASK Bit 28).</summary>
+			PRINTER_ACCESS_USE = 0x00000008,
+			/// <summary>Printing-specific access rights for printers to perform printer data management operations ([MS-DTYP] ACCESS_MASK Bit 25).<128></summary>
+			PRINTER_ACCESS_MANAGE_LIMITED = 0x00000040,
+			/// <summary>Access rights for printers to perform all administrative tasks and basic printing operations except synchronization. Combines WO (Write Owner), WD (Write DACL), RC (Read Control), and DE (Delete) of ACCESS_MASK with printing-specific PRINTER_ACCESS_ADMINISTER and printing-specific PRINTER_ACCESS_USE.</summary>
+			PRINTER_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | PRINTER_ACCESS_ADMINISTER | PRINTER_ACCESS_USE,
+			/// <summary>Access rights for printers combining RC (Read Control) of ACCESS_MASK with printing-specific PRINTER_ACCESS_USE.</summary>
+			PRINTER_EXECUTE = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE | PRINTER_ACCESS_USE,
+			/// <summary>Access rights for printers combining RC (Read Control) of ACCESS_MASK with printing-specific PRINTER_ACCESS_USE.</summary>
+			PRINTER_READ = ACCESS_MASK.STANDARD_RIGHTS_READ | PRINTER_ACCESS_USE,
+			/// <summary>Access rights for printers combining RC (Read Control) of ACCESS_MASK with printing-specific PRINTER_ACCESS_USE.</summary>
+			PRINTER_WRITE = ACCESS_MASK.STANDARD_RIGHTS_WRITE | PRINTER_ACCESS_USE,
+			/// <summary>Printing-specific access rights to administer print servers ([MS-DTYP] ACCESS_MASK Bit 31).</summary>
+			SERVER_ACCESS_ADMINISTER = 0x00000001,
+			/// <summary>Printing-specific access rights to enumerate print servers ([MS-DTYP] ACCESS_MASK Bit 30).</summary>
+			SERVER_ACCESS_ENUMERATE = 0x00000002,
+			/// <summary>Access rights for print servers to perform all administrative tasks and basic printing operations except synchronization. Combines WO (Write Owner), WD (Write DACL), RC (Read Control), and DE (Delete) of ACCESS_MASK with printing-specific SERVER_ACCESS_ADMINISTER and printing-specific SERVER_ACCESS_ENUMERATE.</summary>
+			SERVER_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | SERVER_ACCESS_ADMINISTER | SERVER_ACCESS_ENUMERATE,
+			/// <summary>Access rights for print servers combining RC (Read Control) of ACCESS_MASK with printing-specific SERVER_ACCESS_ENUMERATE.</summary>
+			SERVER_EXECUTE = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE | SERVER_ACCESS_ENUMERATE,
+			/// <summary>Access rights for print servers combining RC (Read Control) of ACCESS_MASK with printing-specific SERVER_ACCESS_ENUMERATE.</summary>
+			SERVER_READ = ACCESS_MASK.STANDARD_RIGHTS_READ | SERVER_ACCESS_ENUMERATE,
+			/// <summary>Access rights for print servers combining RC (Read Control) of ACCESS_MASK with printing-specific SERVER_ACCESS_ADMINISTER and printing-specific SERVER_ACCESS_ENUMERATE.</summary>
+			SERVER_WRITE = ACCESS_MASK.STANDARD_RIGHTS_WRITE | SERVER_ACCESS_ADMINISTER | SERVER_ACCESS_ENUMERATE,
+		}
+
 		/// <summary>Specifies additional information about the print job.</summary>
 		[PInvokeData("wingdi.h", MSDNShortId = "329bf0d9-399b-4f64-a029-361ef7558aeb")]
 		public enum DI
@@ -891,7 +938,7 @@ namespace Vanara.PInvoke
 			PRINTER_CHANGE_TIMEOUT = 0x80000000,
 
 			/// <summary>Notify if any of the preceding changes occur.</summary>
-			PRINTER_CHANGE_ALL,
+			PRINTER_CHANGE_ALL = 0x7F77FFFF,
 		}
 
 		/// <summary>Specifies the caching of a handle for a printer opened with <c>OpenPrinter2</c>.</summary>

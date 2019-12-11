@@ -2,8 +2,13 @@
 using NUnit.Framework.Constraints;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.WinSpool;
 
 namespace Vanara.PInvoke.Tests
@@ -21,6 +26,21 @@ namespace Vanara.PInvoke.Tests
 
 		[OneTimeTearDown]
 		public void _TearDown() => hprnt?.Dispose();
+
+		[Test]
+		public void AddPrinterConnection2Test()
+		{
+			var drv = GetPrinter<PRINTER_INFO_2>(hprnt).pDriverName;
+			Assert.That(AddPrinterConnection2(default, connPtrName, PRINTER_CONNECTION_FLAGS.PRINTER_CONNECTION_MISMATCH, drv), ResultIs.Successful);
+			Assert.That(DeletePrinterConnection(connPtrName), ResultIs.Successful);
+		}
+
+		[Test]
+		public void AddPrinterConnectionTest()
+		{
+			Assert.That(AddPrinterConnection(connPtrName), ResultIs.Successful);
+			Assert.That(DeletePrinterConnection(connPtrName), ResultIs.Successful);
+		}
 
 		[Test]
 		public void AddPrinterTest()
@@ -71,22 +91,6 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(DeletePrinterKey(p2, key), ResultIs.Successful);
 			}
 		}
-
-		[Test]
-		public void AddPrinterConnectionTest()
-		{
-			Assert.That(AddPrinterConnection(connPtrName), ResultIs.Successful);
-			Assert.That(DeletePrinterConnection(connPtrName), ResultIs.Successful);
-		}
-
-		[Test]
-		public void AddPrinterConnection2Test()
-		{
-			var drv = GetPrinter<PRINTER_INFO_2>(hprnt).pDriverName;
-			Assert.That(AddPrinterConnection2(default, connPtrName, PRINTER_CONNECTION_FLAGS.PRINTER_CONNECTION_MISMATCH, drv), ResultIs.Successful);
-			Assert.That(DeletePrinterConnection(connPtrName), ResultIs.Successful);
-		}
-
 		[Test]
 		public void AdvancedDocumentPropertiesTest()
 		{
@@ -199,6 +203,22 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void GetDefaultPrinterTest()
+		{
+			var sz = 260;
+			var sb = new StringBuilder(sz);
+			Assert.That(GetDefaultPrinter(sb, ref sz), ResultIs.Successful);
+			TestContext.WriteLine(sb);
+		}
+
+		[Test]
+		public void GetPrintExecutionDataTest()
+		{
+			Assert.That(GetPrintExecutionData(out var data), ResultIs.Successful);
+			TestHelper.WriteValues(data);
+		}
+
+		[Test]
 		public void JobTest()
 		{
 			Assert.That(AddJob(hprnt, out var path, out var id), ResultIs.Successful);
@@ -223,6 +243,13 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void OpenPrinter2Test()
+		{
+			Assert.That(OpenPrinter2(defaultPrinterName, out var hprnt2, new PRINTER_DEFAULTS { DesiredAccess = (uint)AccessRights.PRINTER_ALL_ACCESS }, PRINTER_OPTIONS.Default), ResultIs.Successful);
+			hprnt2.Dispose();
+		}
+
+		[Test]
 		public void PortTest()
 		{
 			var port = GetPrinter<PRINTER_INFO_2>(hprnt).pPortName;
@@ -235,6 +262,12 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void PrinterPropertiesTest()
+		{
+			Assert.That(PrinterProperties(HWND.NULL, hprnt), ResultIs.Successful);
+		}
+
+		[Test]
 		public void SpoolFileTest()
 		{
 			var hspf = GetSpoolFileHandle(hprnt);
@@ -243,6 +276,52 @@ namespace Vanara.PInvoke.Tests
 			Kernel32.WriteFile(hspf, bytes, (uint)bytes.Length, out _);
 			Assert.That(CommitSpoolData(hprnt, hspf, (uint)bytes.Length), ResultIs.Successful);
 			Assert.That(() => hspf.Dispose(), Throws.Nothing);
+		}
+
+		[Test]
+		public void StartWriteEndDocPagePrinterTest()
+		{
+			var log = new List<string>();
+			var cancel = false;
+			new Thread(ChangeThread).Start();
+			var job = StartDocPrinter(hprnt, 1, new DOC_INFO_1 { pDatatype = "RAW", pDocName = "My Document" });
+			Assert.That(job, ResultIs.Not.Value(0U));
+			try
+			{
+				Assert.That(StartPagePrinter(hprnt), ResultIs.Successful);
+				try
+				{
+					using var s = new SafeCoTaskMemString("Testing this printer.", CharSet.Unicode);
+					Assert.That(WritePrinter(hprnt, s, s.Size, out var written), ResultIs.Successful);
+					Assert.That(written, Is.EqualTo((uint)s.Size));
+				}
+				finally
+				{
+					Assert.That(EndPagePrinter(hprnt), ResultIs.Successful);
+				}
+			}
+			finally
+			{
+				Assert.That(EndDocPrinter(hprnt), ResultIs.Successful);
+				cancel = true;
+				TestContext.WriteLine(string.Join("\r\n", log));
+			}
+
+			void ChangeThread()
+			{
+				using var hChange = FindFirstPrinterChangeNotification(hprnt, PRINTER_CHANGE.PRINTER_CHANGE_ALL, PRINTER_NOTIFY_CATEGORY.PRINTER_NOTIFY_CATEGORY_2D);
+				while (!cancel)
+				{
+					if (Kernel32.WaitForSingleObject(hChange, 200) == Kernel32.WAIT_STATUS.WAIT_OBJECT_0)
+					{
+						if (FindNextPrinterChangeNotification(hChange, out var chg, default, out var ppi) && !ppi.IsInvalid)
+						{
+							PRINTER_NOTIFY_INFO pi = ppi;
+							log.Add($"{chg}: {string.Join(",", pi.aData?.Select(d => d.Field))}");
+						}
+					}
+				}
+			}
 		}
 	}
 }
