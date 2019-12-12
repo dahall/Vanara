@@ -1,5 +1,5 @@
 ## Correlation report for virtdisk.dll  
-### Methods (100% complete, 27 of 27 functions)  
+### Methods (93% complete, 27 of 29 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AddVirtualDiskParent](https://www.google.com/search?num=5&q=AddVirtualDiskParent+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.AddVirtualDiskParent](https://github.com/dahall/Vanara/search?l=C%23&q=AddVirtualDiskParent)  
@@ -7,12 +7,14 @@ Native Method | Header | Managed Method
 [AttachVirtualDisk](https://www.google.com/search?num=5&q=AttachVirtualDisk+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.AttachVirtualDisk](https://github.com/dahall/Vanara/search?l=C%23&q=AttachVirtualDisk)  
 [BreakMirrorVirtualDisk](http://msdn2.microsoft.com/en-us/library/hh448676) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.BreakMirrorVirtualDisk](https://github.com/dahall/Vanara/search?l=C%23&q=BreakMirrorVirtualDisk)  
 [CompactVirtualDisk](https://www.google.com/search?num=5&q=CompactVirtualDisk+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.CompactVirtualDisk](https://github.com/dahall/Vanara/search?l=C%23&q=CompactVirtualDisk)  
+[CompleteForkVirtualDisk](https://www.google.com/search?num=5&q=CompleteForkVirtualDisk+site%3Amicrosoft.com) |  |   
 [CreateVirtualDisk](https://www.google.com/search?num=5&q=CreateVirtualDisk+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.CreateVirtualDisk](https://github.com/dahall/Vanara/search?l=C%23&q=CreateVirtualDisk)  
 [DeleteSnapshotVhdSet](https://www.google.com/search?num=5&q=DeleteSnapshotVhdSet+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.DeleteSnapshotVhdSet](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteSnapshotVhdSet)  
 [DeleteVirtualDiskMetadata](https://www.google.com/search?num=5&q=DeleteVirtualDiskMetadata+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.DeleteVirtualDiskMetadata](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteVirtualDiskMetadata)  
 [DetachVirtualDisk](https://www.google.com/search?num=5&q=DetachVirtualDisk+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.DetachVirtualDisk](https://github.com/dahall/Vanara/search?l=C%23&q=DetachVirtualDisk)  
 [EnumerateVirtualDiskMetadata](https://www.google.com/search?num=5&q=EnumerateVirtualDiskMetadata+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.EnumerateVirtualDiskMetadata](https://github.com/dahall/Vanara/search?l=C%23&q=EnumerateVirtualDiskMetadata)  
 [ExpandVirtualDisk](https://www.google.com/search?num=5&q=ExpandVirtualDisk+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.ExpandVirtualDisk](https://github.com/dahall/Vanara/search?l=C%23&q=ExpandVirtualDisk)  
+[ForkVirtualDisk](https://www.google.com/search?num=5&q=ForkVirtualDisk+site%3Amicrosoft.com) |  |   
 [GetAllAttachedVirtualDiskPhysicalPaths](https://www.google.com/search?num=5&q=GetAllAttachedVirtualDiskPhysicalPaths+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.GetAllAttachedVirtualDiskPhysicalPaths](https://github.com/dahall/Vanara/search?l=C%23&q=GetAllAttachedVirtualDiskPhysicalPaths)  
 [GetStorageDependencyInformation](https://www.google.com/search?num=5&q=GetStorageDependencyInformation+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.GetStorageDependencyInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetStorageDependencyInformation)  
 [GetVirtualDiskInformation](https://www.google.com/search?num=5&q=GetVirtualDiskInformation+site%3Amicrosoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.GetVirtualDiskInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetVirtualDiskInformation)  

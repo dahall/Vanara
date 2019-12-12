@@ -1,5 +1,5 @@
 ## Correlation report for advapi32.dll, secur32.dll, authz.dll, sspicli.dll, schannel.dll  
-### Methods (100% complete, 527 of 527 functions)  
+### Methods (99% complete, 527 of 528 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortSystemShutdown](http://msdn2.microsoft.com/en-us/library/aa376630) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.AbortSystemShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=AbortSystemShutdown)  
@@ -490,6 +490,7 @@ Native Method | Native DLL | Header | Managed Method
 [SslCrackCertificate](http://msdn2.microsoft.com/en-us/library/e5ffeebb-0b09-4f0a-b2dc-75fb2a3af7ed) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslCrackCertificate](https://github.com/dahall/Vanara/search?l=C%23&q=SslCrackCertificate)  
 [SslEmptyCache](http://msdn2.microsoft.com/en-us/library/c914d4e3-657e-45ef-ace8-2cea900a8a76) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslEmptyCache](https://github.com/dahall/Vanara/search?l=C%23&q=SslEmptyCache)  
 [SslFreeCertificate](http://msdn2.microsoft.com/en-us/library/bf643ece-fe79-4f6e-a216-108fce6757a4) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslFreeCertificate](https://github.com/dahall/Vanara/search?l=C%23&q=SslFreeCertificate)  
+[SslGetExtensions](https://www.google.com/search?num=5&q=SslGetExtensions+site%3Amicrosoft.com) | schannel.dll |  |   
 [SslGetServerIdentity](http://msdn2.microsoft.com/en-us/library/5FA7A0F5-187F-4CE6-AD62-44B71A40568D) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslGetServerIdentity](https://github.com/dahall/Vanara/search?l=C%23&q=SslGetServerIdentity)  
 [SspiCompareAuthIdentities](http://msdn2.microsoft.com/en-us/library/d2c4f363-3d86-48f0-bae1-4f9240d68bab) | secur32.dll | sspi.h | [Vanara.PInvoke.Secur32.SspiCompareAuthIdentities](https://github.com/dahall/Vanara/search?l=C%23&q=SspiCompareAuthIdentities)  
 [SspiCopyAuthIdentity](http://msdn2.microsoft.com/en-us/library/e53807bf-b5a1-4479-a73b-dd85c5da173e) | secur32.dll | sspi.h | [Vanara.PInvoke.Secur32.SspiCopyAuthIdentity](https://github.com/dahall/Vanara/search?l=C%23&q=SspiCopyAuthIdentity)  
@@ -654,8 +655,12 @@ Native Structure | Header | Managed Structure
 [KERB_EXTERNAL_NAME](http://msdn2.microsoft.com/en-us/library/8ed37546-6443-4010-a078-4359dd1c2861) | ntsecapi.h | [Vanara.PInvoke.Secur32.KERB_EXTERNAL_NAME](https://github.com/dahall/Vanara/search?l=C%23&q=KERB_EXTERNAL_NAME)  
 [KERB_EXTERNAL_TICKET](http://msdn2.microsoft.com/en-us/library/742e2795-ec74-4856-a680-7a1c233a2934) | ntsecapi.h | [Vanara.PInvoke.Secur32.KERB_EXTERNAL_TICKET](https://github.com/dahall/Vanara/search?l=C%23&q=KERB_EXTERNAL_TICKET)  
 [KERB_INTERACTIVE_LOGON](http://msdn2.microsoft.com/en-us/library/96aec0cc-b3e1-4b4b-aa0e-ecf05b9fabbe) | ntsecapi.h | [Vanara.PInvoke.Secur32.KERB_INTERACTIVE_LOGON](https://github.com/dahall/Vanara/search?l=C%23&q=KERB_INTERACTIVE_LOGON)  
+[KERB_PURGE_TKT_CACHE_REQUEST](http://msdn2.microsoft.com/en-us/library/4e5e944a-8163-42de-b534-3b0478d9f334) | ntsecapi.h | [Vanara.PInvoke.Secur32.KERB_PURGE_TKT_CACHE_REQUEST](https://github.com/dahall/Vanara/search?l=C%23&q=KERB_PURGE_TKT_CACHE_REQUEST)  
+[KERB_QUERY_TKT_CACHE_REQUEST](http://msdn2.microsoft.com/en-us/library/3c8e63b3-9ac4-4228-87e1-6802c3d12d6c) | ntsecapi.h | [Vanara.PInvoke.Secur32.KERB_QUERY_TKT_CACHE_REQUEST](https://github.com/dahall/Vanara/search?l=C%23&q=KERB_QUERY_TKT_CACHE_REQUEST)  
+[KERB_QUERY_TKT_CACHE_RESPONSE](http://msdn2.microsoft.com/en-us/library/2101c1de-f304-4d44-899f-f9f03cd50934) | ntsecapi.h | [Vanara.PInvoke.Secur32.KERB_QUERY_TKT_CACHE_RESPONSE](https://github.com/dahall/Vanara/search?l=C%23&q=KERB_QUERY_TKT_CACHE_RESPONSE)  
 [KERB_RETRIEVE_TKT_REQUEST](http://msdn2.microsoft.com/en-us/library/3b088c94-810b-44c7-887a-58e8dbd13603) | ntsecapi.h | [Vanara.PInvoke.Secur32.KERB_RETRIEVE_TKT_REQUEST](https://github.com/dahall/Vanara/search?l=C%23&q=KERB_RETRIEVE_TKT_REQUEST)  
 [KERB_RETRIEVE_TKT_RESPONSE](http://msdn2.microsoft.com/en-us/library/682d4076-dc65-4291-8a82-981f207ae432) | ntsecapi.h | [Vanara.PInvoke.Secur32.KERB_RETRIEVE_TKT_RESPONSE](https://github.com/dahall/Vanara/search?l=C%23&q=KERB_RETRIEVE_TKT_RESPONSE)  
+[KERB_TICKET_CACHE_INFO](http://msdn2.microsoft.com/en-us/library/e9ac70f0-65dc-4c5a-b41f-7c4659680333) | ntsecapi.h | [Vanara.PInvoke.Secur32.KERB_TICKET_CACHE_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=KERB_TICKET_CACHE_INFO)  
 [LM_OWF_PASSWORD](http://msdn2.microsoft.com/en-us/library/db155f34-fa57-4449-9319-d46561fd18c0) | mschapp.h | [Vanara.PInvoke.AdvApi32.LM_OWF_PASSWORD](https://github.com/dahall/Vanara/search?l=C%23&q=LM_OWF_PASSWORD)  
 [LOCALMANAGEDAPPLICATION](http://msdn2.microsoft.com/en-us/library/b2b7d209-76ee-4ba4-ac61-034d2c8e0689) | appmgmt.h | [Vanara.PInvoke.AdvApi32.LOCALMANAGEDAPPLICATION](https://github.com/dahall/Vanara/search?l=C%23&q=LOCALMANAGEDAPPLICATION)  
 [LOCKOBJECT](https://www.google.com/search?num=5&q=LOCKOBJECT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.AdvApi32.WAITCHAIN_NODE_INFO.LOCKOBJECT](https://github.com/dahall/Vanara/search?l=C%23&q=LOCKOBJECT)  

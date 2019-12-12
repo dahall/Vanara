@@ -1,5 +1,5 @@
 ## Correlation report for gdi32.dll  
-### Methods (46% complete, 286 of 610 functions)  
+### Methods (46% complete, 286 of 621 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AbortDoc](https://www.google.com/search?num=5&q=AbortDoc+site%3Amicrosoft.com) |  |   
@@ -65,6 +65,7 @@ Native Method | Header | Managed Method
 [CreateRectRgnIndirect](http://msdn2.microsoft.com/en-us/library/f32e0b94-ce9c-4098-81fe-b239a9544621) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateRectRgnIndirect](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRectRgnIndirect)  
 [CreateRoundRectRgn](http://msdn2.microsoft.com/en-us/library/16f387e1-b00c-4755-8b21-1ee0f25bc46b) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateRoundRectRgn](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRoundRectRgn)  
 [CreateScalableFontResource](http://msdn2.microsoft.com/en-us/library/9a43a254-4cf4-46de-80b2-a83838871fd7) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateScalableFontResource](https://github.com/dahall/Vanara/search?l=C%23&q=CreateScalableFontResource)  
+[CreateScaledCompatibleBitmap](https://www.google.com/search?num=5&q=CreateScaledCompatibleBitmap+site%3Amicrosoft.com) |  |   
 [CreateSolidBrush](http://msdn2.microsoft.com/en-us/library/e39b5f77-97d8-4ea6-8277-7da12b3367f3) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateSolidBrush](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSolidBrush)  
 [D3DKMTAbandonSwapChain](https://www.google.com/search?num=5&q=D3DKMTAbandonSwapChain+site%3Amicrosoft.com) |  |   
 [D3DKMTAcquireKeyedMutex](https://www.google.com/search?num=5&q=D3DKMTAcquireKeyedMutex+site%3Amicrosoft.com) |  |   
@@ -99,6 +100,7 @@ Native Method | Header | Managed Method
 [D3DKMTCreateSwapChain](https://www.google.com/search?num=5&q=D3DKMTCreateSwapChain+site%3Amicrosoft.com) |  |   
 [D3DKMTCreateSynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTCreateSynchronizationObject+site%3Amicrosoft.com) |  |   
 [D3DKMTCreateSynchronizationObject2](https://www.google.com/search?num=5&q=D3DKMTCreateSynchronizationObject2+site%3Amicrosoft.com) |  |   
+[D3DKMTCreateTrackedWorkload](https://www.google.com/search?num=5&q=D3DKMTCreateTrackedWorkload+site%3Amicrosoft.com) |  |   
 [D3DKMTDestroyAllocation](https://www.google.com/search?num=5&q=D3DKMTDestroyAllocation+site%3Amicrosoft.com) |  |   
 [D3DKMTDestroyAllocation2](https://www.google.com/search?num=5&q=D3DKMTDestroyAllocation2+site%3Amicrosoft.com) |  |   
 [D3DKMTDestroyContext](https://www.google.com/search?num=5&q=D3DKMTDestroyContext+site%3Amicrosoft.com) |  |   
@@ -112,6 +114,9 @@ Native Method | Header | Managed Method
 [D3DKMTDestroyPagingQueue](https://www.google.com/search?num=5&q=D3DKMTDestroyPagingQueue+site%3Amicrosoft.com) |  |   
 [D3DKMTDestroyProtectedSession](https://www.google.com/search?num=5&q=D3DKMTDestroyProtectedSession+site%3Amicrosoft.com) |  |   
 [D3DKMTDestroySynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTDestroySynchronizationObject+site%3Amicrosoft.com) |  |   
+[D3DKMTDestroyTrackedWorkload](https://www.google.com/search?num=5&q=D3DKMTDestroyTrackedWorkload+site%3Amicrosoft.com) |  |   
+[D3DKMTDispMgrOperation](https://www.google.com/search?num=5&q=D3DKMTDispMgrOperation+site%3Amicrosoft.com) |  |   
+[D3DKMTEndTrackedWorkload](https://www.google.com/search?num=5&q=D3DKMTEndTrackedWorkload+site%3Amicrosoft.com) |  |   
 [D3DKMTEnumAdapters](https://www.google.com/search?num=5&q=D3DKMTEnumAdapters+site%3Amicrosoft.com) |  |   
 [D3DKMTEnumAdapters2](https://www.google.com/search?num=5&q=D3DKMTEnumAdapters2+site%3Amicrosoft.com) |  |   
 [D3DKMTEscape](https://www.google.com/search?num=5&q=D3DKMTEscape+site%3Amicrosoft.com) |  |   
@@ -120,6 +125,7 @@ Native Method | Header | Managed Method
 [D3DKMTFlushHeapTransitions](https://www.google.com/search?num=5&q=D3DKMTFlushHeapTransitions+site%3Amicrosoft.com) |  |   
 [D3DKMTFreeGpuVirtualAddress](https://www.google.com/search?num=5&q=D3DKMTFreeGpuVirtualAddress+site%3Amicrosoft.com) |  |   
 [D3DKMTGetAllocationPriority](https://www.google.com/search?num=5&q=D3DKMTGetAllocationPriority+site%3Amicrosoft.com) |  |   
+[D3DKMTGetAvailableTrackedWorkloadIndex](https://www.google.com/search?num=5&q=D3DKMTGetAvailableTrackedWorkloadIndex+site%3Amicrosoft.com) |  |   
 [D3DKMTGetContextInProcessSchedulingPriority](https://www.google.com/search?num=5&q=D3DKMTGetContextInProcessSchedulingPriority+site%3Amicrosoft.com) |  |   
 [D3DKMTGetContextSchedulingPriority](https://www.google.com/search?num=5&q=D3DKMTGetContextSchedulingPriority+site%3Amicrosoft.com) |  |   
 [D3DKMTGetDeviceState](https://www.google.com/search?num=5&q=D3DKMTGetDeviceState+site%3Amicrosoft.com) |  |   
@@ -139,6 +145,7 @@ Native Method | Header | Managed Method
 [D3DKMTGetSetSwapChainMetadata](https://www.google.com/search?num=5&q=D3DKMTGetSetSwapChainMetadata+site%3Amicrosoft.com) |  |   
 [D3DKMTGetSharedPrimaryHandle](https://www.google.com/search?num=5&q=D3DKMTGetSharedPrimaryHandle+site%3Amicrosoft.com) |  |   
 [D3DKMTGetSharedResourceAdapterLuid](https://www.google.com/search?num=5&q=D3DKMTGetSharedResourceAdapterLuid+site%3Amicrosoft.com) |  |   
+[D3DKMTGetTrackedWorkloadStatistics](https://www.google.com/search?num=5&q=D3DKMTGetTrackedWorkloadStatistics+site%3Amicrosoft.com) |  |   
 [D3DKMTInvalidateActiveVidPn](https://www.google.com/search?num=5&q=D3DKMTInvalidateActiveVidPn+site%3Amicrosoft.com) |  |   
 [D3DKMTInvalidateCache](https://www.google.com/search?num=5&q=D3DKMTInvalidateCache+site%3Amicrosoft.com) |  |   
 [D3DKMTLock](https://www.google.com/search?num=5&q=D3DKMTLock+site%3Amicrosoft.com) |  |   
@@ -168,6 +175,7 @@ Native Method | Header | Managed Method
 [D3DKMTOutputDuplGetMetaData](https://www.google.com/search?num=5&q=D3DKMTOutputDuplGetMetaData+site%3Amicrosoft.com) |  |   
 [D3DKMTOutputDuplGetPointerShapeData](https://www.google.com/search?num=5&q=D3DKMTOutputDuplGetPointerShapeData+site%3Amicrosoft.com) |  |   
 [D3DKMTOutputDuplPresent](https://www.google.com/search?num=5&q=D3DKMTOutputDuplPresent+site%3Amicrosoft.com) |  |   
+[D3DKMTOutputDuplPresentToHwQueue](https://www.google.com/search?num=5&q=D3DKMTOutputDuplPresentToHwQueue+site%3Amicrosoft.com) |  |   
 [D3DKMTOutputDuplReleaseFrame](https://www.google.com/search?num=5&q=D3DKMTOutputDuplReleaseFrame+site%3Amicrosoft.com) |  |   
 [D3DKMTPollDisplayChildren](https://www.google.com/search?num=5&q=D3DKMTPollDisplayChildren+site%3Amicrosoft.com) |  |   
 [D3DKMTPresent](https://www.google.com/search?num=5&q=D3DKMTPresent+site%3Amicrosoft.com) |  |   
@@ -196,6 +204,7 @@ Native Method | Header | Managed Method
 [D3DKMTReleaseSwapChain](https://www.google.com/search?num=5&q=D3DKMTReleaseSwapChain+site%3Amicrosoft.com) |  |   
 [D3DKMTRender](https://www.google.com/search?num=5&q=D3DKMTRender+site%3Amicrosoft.com) |  |   
 [D3DKMTReserveGpuVirtualAddress](https://www.google.com/search?num=5&q=D3DKMTReserveGpuVirtualAddress+site%3Amicrosoft.com) |  |   
+[D3DKMTResetTrackedWorkload](https://www.google.com/search?num=5&q=D3DKMTResetTrackedWorkload+site%3Amicrosoft.com) |  |   
 [D3DKMTSetAllocationPriority](https://www.google.com/search?num=5&q=D3DKMTSetAllocationPriority+site%3Amicrosoft.com) |  |   
 [D3DKMTSetContextInProcessSchedulingPriority](https://www.google.com/search?num=5&q=D3DKMTSetContextInProcessSchedulingPriority+site%3Amicrosoft.com) |  |   
 [D3DKMTSetContextSchedulingPriority](https://www.google.com/search?num=5&q=D3DKMTSetContextSchedulingPriority+site%3Amicrosoft.com) |  |   
@@ -225,6 +234,7 @@ Native Method | Header | Managed Method
 [D3DKMTSubmitCommand](https://www.google.com/search?num=5&q=D3DKMTSubmitCommand+site%3Amicrosoft.com) |  |   
 [D3DKMTSubmitCommandToHwQueue](https://www.google.com/search?num=5&q=D3DKMTSubmitCommandToHwQueue+site%3Amicrosoft.com) |  |   
 [D3DKMTSubmitPresentBltToHwQueue](https://www.google.com/search?num=5&q=D3DKMTSubmitPresentBltToHwQueue+site%3Amicrosoft.com) |  |   
+[D3DKMTSubmitPresentToHwQueue](https://www.google.com/search?num=5&q=D3DKMTSubmitPresentToHwQueue+site%3Amicrosoft.com) |  |   
 [D3DKMTSubmitSignalSyncObjectsToHwQueue](https://www.google.com/search?num=5&q=D3DKMTSubmitSignalSyncObjectsToHwQueue+site%3Amicrosoft.com) |  |   
 [D3DKMTSubmitWaitForSyncObjectsToHwQueue](https://www.google.com/search?num=5&q=D3DKMTSubmitWaitForSyncObjectsToHwQueue+site%3Amicrosoft.com) |  |   
 [D3DKMTTrimProcessCommitment](https://www.google.com/search?num=5&q=D3DKMTTrimProcessCommitment+site%3Amicrosoft.com) |  |   
@@ -234,6 +244,7 @@ Native Method | Header | Managed Method
 [D3DKMTUpdateAllocationProperty](https://www.google.com/search?num=5&q=D3DKMTUpdateAllocationProperty+site%3Amicrosoft.com) |  |   
 [D3DKMTUpdateGpuVirtualAddress](https://www.google.com/search?num=5&q=D3DKMTUpdateGpuVirtualAddress+site%3Amicrosoft.com) |  |   
 [D3DKMTUpdateOverlay](https://www.google.com/search?num=5&q=D3DKMTUpdateOverlay+site%3Amicrosoft.com) |  |   
+[D3DKMTUpdateTrackedWorkload](https://www.google.com/search?num=5&q=D3DKMTUpdateTrackedWorkload+site%3Amicrosoft.com) |  |   
 [D3DKMTWaitForIdle](https://www.google.com/search?num=5&q=D3DKMTWaitForIdle+site%3Amicrosoft.com) |  |   
 [D3DKMTWaitForSynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTWaitForSynchronizationObject+site%3Amicrosoft.com) |  |   
 [D3DKMTWaitForSynchronizationObject2](https://www.google.com/search?num=5&q=D3DKMTWaitForSynchronizationObject2+site%3Amicrosoft.com) |  |   
@@ -628,7 +639,6 @@ Native Structure | Header | Managed Structure
 [CIEXYZTRIPLE](http://msdn2.microsoft.com/en-us/library/cf4473b0-7e54-42d1-a013-2442a540daee) | wingdi.h | [Vanara.PInvoke.Gdi32.CIEXYZTRIPLE](https://github.com/dahall/Vanara/search?l=C%23&q=CIEXYZTRIPLE)  
 [COLORADJUSTMENT](http://msdn2.microsoft.com/en-us/library/9a080f60-0bce-46b6-b8a8-f534ff83a0a8) | wingdi.h | [Vanara.PInvoke.Gdi32.COLORADJUSTMENT](https://github.com/dahall/Vanara/search?l=C%23&q=COLORADJUSTMENT)  
 [DESIGNVECTOR](http://msdn2.microsoft.com/en-us/library/aeff9901-2405-44aa-ba46-8d784afd6b76) | wingdi.h | [Vanara.PInvoke.Gdi32.DESIGNVECTOR](https://github.com/dahall/Vanara/search?l=C%23&q=DESIGNVECTOR)  
-[DEVMODE](http://msdn2.microsoft.com/en-us/library/85741025-9393-42ab-8a6d-27f1ae2c0f1b) | wingdi.h | [Vanara.PInvoke.Gdi32.DEVMODE](https://github.com/dahall/Vanara/search?l=C%23&q=DEVMODE)  
 [DIBSECTION](http://msdn2.microsoft.com/en-us/library/dd183567) | Wingdi.h | [Vanara.PInvoke.Gdi32.DIBSECTION](https://github.com/dahall/Vanara/search?l=C%23&q=DIBSECTION)  
 [DISPLAY_DEVICE](http://msdn2.microsoft.com/en-us/library/9a7813fe-358a-44eb-99da-c63f98d055c3) | wingdi.h | [Vanara.PInvoke.Gdi32.DISPLAY_DEVICE](https://github.com/dahall/Vanara/search?l=C%23&q=DISPLAY_DEVICE)  
 [DISPLAYCONFIG_2DREGION](http://msdn2.microsoft.com/en-us/library/ea306268-53fc-488b-afae-b8e9e5d09f2b) | wingdi.h | [Vanara.PInvoke.Gdi32.DISPLAYCONFIG_2DREGION](https://github.com/dahall/Vanara/search?l=C%23&q=DISPLAYCONFIG_2DREGION)  

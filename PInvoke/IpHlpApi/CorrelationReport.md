@@ -1,10 +1,12 @@
 ## Correlation report for iphlpapi.dll  
-### Methods (100% complete, 155 of 155 functions)  
+### Methods (93% complete, 155 of 166 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AddIPAddress](http://msdn2.microsoft.com/en-us/library/669264cd-a43c-4681-9416-2704d4232685) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.AddIPAddress](https://github.com/dahall/Vanara/search?l=C%23&q=AddIPAddress)  
+[CancelIfTimestampConfigChange](https://www.google.com/search?num=5&q=CancelIfTimestampConfigChange+site%3Amicrosoft.com) |  |   
 [CancelIPChangeNotify](http://msdn2.microsoft.com/en-us/library/10795401-003f-45ce-80f1-ccc31659298a) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.CancelIPChangeNotify](https://github.com/dahall/Vanara/search?l=C%23&q=CancelIPChangeNotify)  
 [CancelMibChangeNotify2](http://msdn2.microsoft.com/en-us/library/ff544864) | Netioapi.h | [Vanara.PInvoke.IpHlpApi.CancelMibChangeNotify2](https://github.com/dahall/Vanara/search?l=C%23&q=CancelMibChangeNotify2)  
+[CaptureInterfaceHardwareCrossTimestamp](https://www.google.com/search?num=5&q=CaptureInterfaceHardwareCrossTimestamp+site%3Amicrosoft.com) |  |   
 [ConvertInterfaceAliasToLuid](http://msdn2.microsoft.com/en-us/library/7fa80938-d475-4ace-b463-a53aac26e88b) | netioapi.h | [Vanara.PInvoke.IpHlpApi.ConvertInterfaceAliasToLuid](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertInterfaceAliasToLuid)  
 [ConvertInterfaceGuidToLuid](http://msdn2.microsoft.com/en-us/library/cae669dc-899b-4485-b70a-5f58207a07df) | netioapi.h | [Vanara.PInvoke.IpHlpApi.ConvertInterfaceGuidToLuid](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertInterfaceGuidToLuid)  
 [ConvertInterfaceIndexToLuid](http://msdn2.microsoft.com/en-us/library/c757228c-93f1-4545-8921-9d048bca580c) | netioapi.h | [Vanara.PInvoke.IpHlpApi.ConvertInterfaceIndexToLuid](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertInterfaceIndexToLuid)  
@@ -42,6 +44,8 @@ Native Method | Header | Managed Method
 [FlushIpNetTable](http://msdn2.microsoft.com/en-us/library/cf4dea10-552d-4730-a452-9302ef3761ff) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.FlushIpNetTable](https://github.com/dahall/Vanara/search?l=C%23&q=FlushIpNetTable)  
 [FlushIpNetTable2](http://msdn2.microsoft.com/en-us/library/6ebfca41-acc3-450c-a3c5-881b8c3fca5e) | netioapi.h | [Vanara.PInvoke.IpHlpApi.FlushIpNetTable2](https://github.com/dahall/Vanara/search?l=C%23&q=FlushIpNetTable2)  
 [FlushIpPathTable](http://msdn2.microsoft.com/en-us/library/3b28e0cd-9cab-41ca-b58c-7632768318c2) | netioapi.h | [Vanara.PInvoke.IpHlpApi.FlushIpPathTable](https://github.com/dahall/Vanara/search?l=C%23&q=FlushIpPathTable)  
+[FreeDnsSettings](https://www.google.com/search?num=5&q=FreeDnsSettings+site%3Amicrosoft.com) |  |   
+[FreeInterfaceDnsSettings](https://www.google.com/search?num=5&q=FreeInterfaceDnsSettings+site%3Amicrosoft.com) |  |   
 [FreeMibTable](http://msdn2.microsoft.com/en-us/library/31c8cdc4-73c7-4e82-8226-c90320046199) | netioapi.h | [Vanara.PInvoke.IpHlpApi.FreeMibTable](https://github.com/dahall/Vanara/search?l=C%23&q=FreeMibTable)  
 [GetAdapterIndex](http://msdn2.microsoft.com/en-us/library/aa365909) | IpHlpApi.h | [Vanara.PInvoke.IpHlpApi.GetAdapterIndex](https://github.com/dahall/Vanara/search?l=C%23&q=GetAdapterIndex)  
 [GetAdapterOrderMap](http://msdn2.microsoft.com/en-us/library/43d7429b-6874-4ea6-bbf0-67456af520bc) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetAdapterOrderMap](https://github.com/dahall/Vanara/search?l=C%23&q=GetAdapterOrderMap)  
@@ -53,6 +57,7 @@ Native Method | Header | Managed Method
 [GetBestInterfaceEx](http://msdn2.microsoft.com/en-us/library/cfd1108e-d7a0-4fe5-be3f-299189089d37) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetBestInterfaceEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetBestInterfaceEx)  
 [GetBestRoute](http://msdn2.microsoft.com/en-us/library/5e507d14-f603-467d-9c37-bb048658d0b1) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetBestRoute](https://github.com/dahall/Vanara/search?l=C%23&q=GetBestRoute)  
 [GetBestRoute2](http://msdn2.microsoft.com/en-us/library/7bc16824-c98f-4cd5-a589-e198b48b637c) | netioapi.h | [Vanara.PInvoke.IpHlpApi.GetBestRoute2](https://github.com/dahall/Vanara/search?l=C%23&q=GetBestRoute2)  
+[GetDnsSettings](https://www.google.com/search?num=5&q=GetDnsSettings+site%3Amicrosoft.com) |  |   
 [GetExtendedTcpTable](http://msdn2.microsoft.com/en-us/library/96356a0e-ae0d-4000-9223-a578cbdeaa8b) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetExtendedTcpTable](https://github.com/dahall/Vanara/search?l=C%23&q=GetExtendedTcpTable)  
 [GetExtendedUdpTable](http://msdn2.microsoft.com/en-us/library/c936d5a0-ca5e-487e-b304-bfd81403ab40) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetExtendedUdpTable](https://github.com/dahall/Vanara/search?l=C%23&q=GetExtendedUdpTable)  
 [GetFriendlyIfIndex](http://msdn2.microsoft.com/en-us/library/aa365931) | IpHlpApi.h | [Vanara.PInvoke.IpHlpApi.GetFriendlyIfIndex](https://github.com/dahall/Vanara/search?l=C%23&q=GetFriendlyIfIndex)  
@@ -65,6 +70,9 @@ Native Method | Header | Managed Method
 [GetIfTable](http://msdn2.microsoft.com/en-us/library/6a46c1df-b274-415e-b842-fc1adf6fa206) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetIfTable](https://github.com/dahall/Vanara/search?l=C%23&q=GetIfTable)  
 [GetIfTable2](http://msdn2.microsoft.com/en-us/library/0153c41c-b02b-4832-87b3-88dc3a9f4ff1) | netioapi.h | [Vanara.PInvoke.IpHlpApi.GetIfTable2](https://github.com/dahall/Vanara/search?l=C%23&q=GetIfTable2)  
 [GetIfTable2Ex](http://msdn2.microsoft.com/en-us/library/d8663894-50b1-4ca2-a1f4-6ca0970795a7) | netioapi.h | [Vanara.PInvoke.IpHlpApi.GetIfTable2Ex](https://github.com/dahall/Vanara/search?l=C%23&q=GetIfTable2Ex)  
+[GetInterfaceCurrentTimestampCapabilities](https://www.google.com/search?num=5&q=GetInterfaceCurrentTimestampCapabilities+site%3Amicrosoft.com) |  |   
+[GetInterfaceDnsSettings](https://www.google.com/search?num=5&q=GetInterfaceDnsSettings+site%3Amicrosoft.com) |  |   
+[GetInterfaceHardwareTimestampCapabilities](https://www.google.com/search?num=5&q=GetInterfaceHardwareTimestampCapabilities+site%3Amicrosoft.com) |  |   
 [GetInterfaceInfo](http://msdn2.microsoft.com/en-us/library/efc0d175-2c6d-4608-b385-1623a9e0375c) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetInterfaceInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetInterfaceInfo)  
 [GetInvertedIfStackTable](http://msdn2.microsoft.com/en-us/library/d1808ded-2798-46cc-8021-fdbcd3da60ea) | netioapi.h | [Vanara.PInvoke.IpHlpApi.GetInvertedIfStackTable](https://github.com/dahall/Vanara/search?l=C%23&q=GetInvertedIfStackTable)  
 [GetIpAddrTable](http://msdn2.microsoft.com/en-us/library/03bf5645-8237-4c78-a921-47315cab1c44) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetIpAddrTable](https://github.com/dahall/Vanara/search?l=C%23&q=GetIpAddrTable)  
@@ -130,6 +138,7 @@ Native Method | Header | Managed Method
 [LookupPersistentTcpPortReservation](http://msdn2.microsoft.com/en-us/library/5EBEB774-13A2-49C2-92ED-5271081615AA) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.LookupPersistentTcpPortReservation](https://github.com/dahall/Vanara/search?l=C%23&q=LookupPersistentTcpPortReservation)  
 [LookupPersistentUdpPortReservation](http://msdn2.microsoft.com/en-us/library/621C732E-9A42-455C-A1A8-F1997D6EF0D7) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.LookupPersistentUdpPortReservation](https://github.com/dahall/Vanara/search?l=C%23&q=LookupPersistentUdpPortReservation)  
 [NotifyAddrChange](http://msdn2.microsoft.com/en-us/library/22ac3b5b-452c-454b-8fbd-47a873675c6c) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.NotifyAddrChange](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyAddrChange)  
+[NotifyIfTimestampConfigChange](https://www.google.com/search?num=5&q=NotifyIfTimestampConfigChange+site%3Amicrosoft.com) |  |   
 [NotifyIpInterfaceChange](http://msdn2.microsoft.com/en-us/library/745128cf-7737-4f95-9712-26e0f6ae39b4) | netioapi.h | [Vanara.PInvoke.IpHlpApi.NotifyIpInterfaceChange](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyIpInterfaceChange)  
 [NotifyRouteChange](http://msdn2.microsoft.com/en-us/library/39f2ec4d-131a-4a0a-9740-0d96aaea2dc7) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.NotifyRouteChange](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyRouteChange)  
 [NotifyRouteChange2](http://msdn2.microsoft.com/en-us/library/f104dc0c-b3e0-4f22-ac5f-5dbf967be31b) | netioapi.h | [Vanara.PInvoke.IpHlpApi.NotifyRouteChange2](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyRouteChange2)  
@@ -141,7 +150,9 @@ Native Method | Header | Managed Method
 [RestoreMediaSense](http://msdn2.microsoft.com/en-us/library/1a959da7-5fdb-4749-a4be-5d44e80ca2ea) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.RestoreMediaSense](https://github.com/dahall/Vanara/search?l=C%23&q=RestoreMediaSense)  
 [SendARP](http://msdn2.microsoft.com/en-us/library/5cbaf45a-a64e-49fd-a920-01759b5c4f81) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.SendARP](https://github.com/dahall/Vanara/search?l=C%23&q=SendARP)  
 [SetCurrentThreadCompartmentId](http://msdn2.microsoft.com/en-us/library/15c634b5-c621-430d-99d7-c55ad8b6864e) | netioapi.h | [Vanara.PInvoke.IpHlpApi.SetCurrentThreadCompartmentId](https://github.com/dahall/Vanara/search?l=C%23&q=SetCurrentThreadCompartmentId)  
+[SetDnsSettings](https://www.google.com/search?num=5&q=SetDnsSettings+site%3Amicrosoft.com) |  |   
 [SetIfEntry](http://msdn2.microsoft.com/en-us/library/67a18ef2-a7af-4fc1-8416-053aa8388f9e) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.SetIfEntry](https://github.com/dahall/Vanara/search?l=C%23&q=SetIfEntry)  
+[SetInterfaceDnsSettings](https://www.google.com/search?num=5&q=SetInterfaceDnsSettings+site%3Amicrosoft.com) |  |   
 [SetIpForwardEntry](http://msdn2.microsoft.com/en-us/library/a98de796-8fa2-4835-8d15-07d86d89c348) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.SetIpForwardEntry](https://github.com/dahall/Vanara/search?l=C%23&q=SetIpForwardEntry)  
 [SetIpForwardEntry2](http://msdn2.microsoft.com/en-us/library/e11aab0b-6d6c-4e90-a60a-f7d68c09751b) | netioapi.h | [Vanara.PInvoke.IpHlpApi.SetIpForwardEntry2](https://github.com/dahall/Vanara/search?l=C%23&q=SetIpForwardEntry2)  
 [SetIpInterfaceEntry](http://msdn2.microsoft.com/en-us/library/8e6d2c14-29c3-47a7-9eb8-0989df9da68c) | netioapi.h | [Vanara.PInvoke.IpHlpApi.SetIpInterfaceEntry](https://github.com/dahall/Vanara/search?l=C%23&q=SetIpInterfaceEntry)  

@@ -1,5 +1,5 @@
 ## Correlation report for crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll  
-### Methods (38% complete, 135 of 350 functions)  
+### Methods (37% complete, 135 of 358 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BCryptAddContextFunction](http://msdn2.microsoft.com/en-us/library/4f5b6db0-775d-42de-b9d9-a99fb11c89f2) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptAddContextFunction](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptAddContextFunction)  
@@ -324,9 +324,16 @@ Native Method | Native DLL | Header | Managed Method
 [SslDecryptPacket](http://msdn2.microsoft.com/en-us/library/22a7dd2b-d023-47b9-8f76-1c17c2dd6466) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslDecryptPacket](https://github.com/dahall/Vanara/search?l=C%23&q=SslDecryptPacket)  
 [SslEncryptPacket](http://msdn2.microsoft.com/en-us/library/1002158b-1a4f-4461-978f-b221ef6332e0) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslEncryptPacket](https://github.com/dahall/Vanara/search?l=C%23&q=SslEncryptPacket)  
 [SslEnumCipherSuites](http://msdn2.microsoft.com/en-us/library/c12bc422-71c9-44f4-abf7-76902b19d3bd) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslEnumCipherSuites](https://github.com/dahall/Vanara/search?l=C%23&q=SslEnumCipherSuites)  
+[SslEnumCipherSuitesEx](https://www.google.com/search?num=5&q=SslEnumCipherSuitesEx+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslEnumProtocolProviders](http://msdn2.microsoft.com/en-us/library/a61ddcf5-b7e3-40b2-82fc-1cf87eb963ec) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslEnumProtocolProviders](https://github.com/dahall/Vanara/search?l=C%23&q=SslEnumProtocolProviders)  
+[SslExpandExporterMasterKey](https://www.google.com/search?num=5&q=SslExpandExporterMasterKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[SslExpandTrafficKeys](https://www.google.com/search?num=5&q=SslExpandTrafficKeys+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[SslExpandWriteKey](https://www.google.com/search?num=5&q=SslExpandWriteKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslExportKey](http://msdn2.microsoft.com/en-us/library/c978e6ac-a535-4625-8598-4aa16484dcad) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslExportKey](https://github.com/dahall/Vanara/search?l=C%23&q=SslExportKey)  
 [SslExportKeyingMaterial](http://msdn2.microsoft.com/en-us/library/19624852-B1A6-4BB4-96AF-0457834DA294) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslExportKeyingMaterial](https://github.com/dahall/Vanara/search?l=C%23&q=SslExportKeyingMaterial)  
+[SslExtractEarlyKey](https://www.google.com/search?num=5&q=SslExtractEarlyKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[SslExtractHandshakeKey](https://www.google.com/search?num=5&q=SslExtractHandshakeKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[SslExtractMasterKey](https://www.google.com/search?num=5&q=SslExtractMasterKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslFreeBuffer](http://msdn2.microsoft.com/en-us/library/75a85013-c745-43cb-85b5-e13a2778ec1d) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslFreeBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=SslFreeBuffer)  
 [SslFreeObject](http://msdn2.microsoft.com/en-us/library/73fa0a08-4654-4515-bdb2-9951936b689a) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslFreeObject](https://github.com/dahall/Vanara/search?l=C%23&q=SslFreeObject)  
 [SslGenerateMasterKey](http://msdn2.microsoft.com/en-us/library/c9408eb3-711d-42c3-a4ba-e388689da34e) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslGenerateMasterKey](https://github.com/dahall/Vanara/search?l=C%23&q=SslGenerateMasterKey)  
@@ -348,6 +355,7 @@ Native Method | Native DLL | Header | Managed Method
 [TokenBindingDeleteBinding](http://msdn2.microsoft.com/en-us/library/4258CC92-580E-403C-9AE4-4BB726255464) | tokenbinding.dll | tokenbinding.h | [Vanara.PInvoke.TokenBinding.TokenBindingDeleteBinding](https://github.com/dahall/Vanara/search?l=C%23&q=TokenBindingDeleteBinding)  
 [TokenBindingGenerateBinding](http://msdn2.microsoft.com/en-us/library/4289E3F0-17AC-485B-A326-2C8BECD5CABB) | tokenbinding.dll | tokenbinding.h | [Vanara.PInvoke.TokenBinding.TokenBindingGenerateBinding](https://github.com/dahall/Vanara/search?l=C%23&q=TokenBindingGenerateBinding)  
 [TokenBindingGenerateID](http://msdn2.microsoft.com/en-us/library/F3E30DF8-2A1D-445E-914B-62999428BB6F) | tokenbinding.dll | tokenbinding.h | [Vanara.PInvoke.TokenBinding.TokenBindingGenerateID](https://github.com/dahall/Vanara/search?l=C%23&q=TokenBindingGenerateID)  
+[TokenBindingGenerateIDForUri](https://www.google.com/search?num=5&q=TokenBindingGenerateIDForUri+site%3Amicrosoft.com) | tokenbinding.dll |  |   
 [TokenBindingGenerateMessage](http://msdn2.microsoft.com/en-us/library/7A268C6D-952B-482A-835D-89D6452D986D) | tokenbinding.dll | tokenbinding.h | [Vanara.PInvoke.TokenBinding.TokenBindingGenerateMessage](https://github.com/dahall/Vanara/search?l=C%23&q=TokenBindingGenerateMessage)  
 [TokenBindingGetKeyTypesClient](http://msdn2.microsoft.com/en-us/library/583687B6-5A87-4616-A5EE-4FECFF06749E) | tokenbinding.dll | tokenbinding.h | [Vanara.PInvoke.TokenBinding.TokenBindingGetKeyTypesClient](https://github.com/dahall/Vanara/search?l=C%23&q=TokenBindingGetKeyTypesClient)  
 [TokenBindingGetKeyTypesServer](http://msdn2.microsoft.com/en-us/library/8ABAC0AF-AF68-4742-9C36-3FB17D303409) | tokenbinding.dll | tokenbinding.h | [Vanara.PInvoke.TokenBinding.TokenBindingGetKeyTypesServer](https://github.com/dahall/Vanara/search?l=C%23&q=TokenBindingGetKeyTypesServer)  

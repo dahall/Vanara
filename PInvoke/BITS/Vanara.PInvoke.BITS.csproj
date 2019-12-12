@@ -7,7 +7,7 @@
     <Description>PInvoke API (interfaces, structures and constants) imported for Windows BITS (Background Intelligent Transfer Service).</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.5</VersionPrefix>
+    <VersionPrefix>3.1.6</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.BITS</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>

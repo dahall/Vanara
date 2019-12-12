@@ -1,5 +1,5 @@
 ## Correlation report for shell32.dll  
-### Methods (100% complete, 190 of 190 functions)  
+### Methods (98% complete, 190 of 192 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AssocCreateForClasses](http://msdn2.microsoft.com/en-us/library/43257507-dd5e-4622-8445-c132187fd1e5) | shellapi.h | [Vanara.PInvoke.Shell32.AssocCreateForClasses](https://github.com/dahall/Vanara/search?l=C%23&q=AssocCreateForClasses)  
@@ -103,6 +103,7 @@ Native Method | Header | Managed Method
 [Shell_MergeMenus](http://msdn2.microsoft.com/en-us/library/f9e005fd-b1f2-4a5f-ad36-9c44998dc4eb) | shlobj_core.h | [Vanara.PInvoke.Shell32.Shell_MergeMenus](https://github.com/dahall/Vanara/search?l=C%23&q=Shell_MergeMenus)  
 [Shell_NotifyIcon](https://www.google.com/search?num=5&q=Shell_NotifyIcon+site%3Amicrosoft.com) | shellapi.h | [Vanara.PInvoke.Shell32.Shell_NotifyIcon](https://github.com/dahall/Vanara/search?l=C%23&q=Shell_NotifyIcon)  
 [Shell_NotifyIconGetRect](http://msdn2.microsoft.com/en-us/library/81ad13be-a908-4079-b47c-6f983919700b) | shellapi.h | [Vanara.PInvoke.Shell32.Shell_NotifyIconGetRect](https://github.com/dahall/Vanara/search?l=C%23&q=Shell_NotifyIconGetRect)  
+[SHELL32_CNetFolderUI_CreateInstance](https://www.google.com/search?num=5&q=SHELL32_CNetFolderUI_CreateInstance+site%3Amicrosoft.com) |  |   
 [ShellAbout](http://msdn2.microsoft.com/en-us/library/0919e356-84e8-475e-8628-23097b19c50d) | shellapi.h | [Vanara.PInvoke.Shell32.ShellAbout](https://github.com/dahall/Vanara/search?l=C%23&q=ShellAbout)  
 [ShellExecute](http://msdn2.microsoft.com/en-us/library/8b1f3978-a0ee-4684-8a37-98e270b63897) | shellapi.h | [Vanara.PInvoke.Shell32.ShellExecute](https://github.com/dahall/Vanara/search?l=C%23&q=ShellExecute)  
 [ShellExecuteEx](https://www.google.com/search?num=5&q=ShellExecuteEx+site%3Amicrosoft.com) | Shellapi.h | [Vanara.PInvoke.Shell32.ShellExecuteEx](https://github.com/dahall/Vanara/search?l=C%23&q=ShellExecuteEx)  
@@ -188,6 +189,7 @@ Native Method | Header | Managed Method
 [SHUpdateImage](http://msdn2.microsoft.com/en-us/library/9df5860e-db65-4e43-aaf9-c1e0e33fc569) | shlobj_core.h | [Vanara.PInvoke.Shell32.SHUpdateImage](https://github.com/dahall/Vanara/search?l=C%23&q=SHUpdateImage)  
 [SHValidateUNC](http://msdn2.microsoft.com/en-us/library/42394650-5571-4165-84f1-19a26fb4a1b8) | shlobj_core.h | [Vanara.PInvoke.Shell32.SHValidateUNC](https://github.com/dahall/Vanara/search?l=C%23&q=SHValidateUNC)  
 [SignalFileOpen](http://msdn2.microsoft.com/en-us/library/b46bb06f-a183-4a39-89bd-457fa4fe728f) | shlobj_core.h | [Vanara.PInvoke.Shell32.SignalFileOpen](https://github.com/dahall/Vanara/search?l=C%23&q=SignalFileOpen)  
+[StateRepoNewMenuCache_RebuildCacheAsync](https://www.google.com/search?num=5&q=StateRepoNewMenuCache_RebuildCacheAsync+site%3Amicrosoft.com) |  |   
 [StgMakeUniqueName](http://msdn2.microsoft.com/en-us/library/d45ec25c-359b-46f8-b0f6-5888525c7349) | shlobj_core.h | [Vanara.PInvoke.Shell32.StgMakeUniqueName](https://github.com/dahall/Vanara/search?l=C%23&q=StgMakeUniqueName)  
 [VariantToStrRet](http://msdn2.microsoft.com/en-us/library/dfc1f52e-58c6-48fd-8da9-1d4d5115912c) | propvarutil.h | [Vanara.PInvoke.Shell32.VariantToStrRet](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToStrRet)  
 [Win32DeleteFile](http://msdn2.microsoft.com/en-us/library/e6b2ac77-a206-413e-aba7-0fd627799a95) | shlobj_core.h | [Vanara.PInvoke.Shell32.Win32DeleteFile](https://github.com/dahall/Vanara/search?l=C%23&q=Win32DeleteFile)  

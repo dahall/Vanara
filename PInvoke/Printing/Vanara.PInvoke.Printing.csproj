@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ProjectExtensions>
-    <SupportedDlls>Printing.dll</SupportedDlls>
+    <SupportedDlls>winspool.drv;prntvpt.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
-    <Description>PInvoke API (methods, structures and constants imported from Windows Printing.dll.</Description>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows winspool.drv and prntvpt.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.0</VersionPrefix>
+    <VersionPrefix>3.1.6</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Printing</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -25,7 +25,15 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+AbortPrinter, AddForm, AddJob, AddMonitor, AddPort, AddPortEx, AddPrinter, AddPrinterConnection, AddPrinterConnection2, AddPrinterDriver, AddPrinterDriverEx, AddPrintProcessor, AddPrintProvidor, AdvancedDocumentProperties, ADVANCEDSETUPDIALOG, AdvancedSetupDialog, BindPTProviderThunk, BindPTProviderThunkA, BindPTProviderThunkW, ClosePrinter, CloseSpoolFileHandle, CommitSpoolData, ConfigurePort, ConnectToPrinterDlg, ConvertAnsiDevModeToUnicodeDevmode, ConvertDevModeToPrintTicketThunk, ConvertDevModeToPrintTicketThunk2, ConvertPrintTicketToDevModeThunk, ConvertPrintTicketToDevModeThunk2, ConvertUnicodeDevModeToAnsiDevmode, CorePrinterDriverInstalled, CreatePrintAsyncNotifyChannel, CreatePrinterIC, DeleteForm, DeleteJobNamedProperty, DeleteMonitor, DeletePort, DeletePrinter, DeletePrinterConnection, DeletePrinterData, DeletePrinterDataEx, DeletePrinterDriver, DeletePrinterDriverEx, DeletePrinterDriverPackage, DeletePrinterIC, DeletePrinterKey, DeletePrintProcessor, DeletePrintProvidor, DeviceCapabilities, DEVICECAPABILITIES, DEVICEMODE, DeviceMode, DevicePropertySheets, DevQueryPrint, DevQueryPrintEx, DllMain, DocumentEvent, DocumentEventA, DocumentEventW, DocumentProperties, DocumentPropertySheets, EndDocPrinter, EndPagePrinter, EnumForms, EnumJobNamedProperties, EnumJobs, EnumMonitors, EnumPorts, EnumPrinterData, EnumPrinterDataEx, EnumPrinterDrivers, EnumPrinterKey, EnumPrinters, EnumPrintProcessorDatatypes, EnumPrintProcessors, EXTDEVICEMODE, ExtDeviceMode, FindClosePrinterChangeNotification, FindFirstPrinterChangeNotification, FindNextPrinterChangeNotification, FlushPrinter, FreePrinterNotifyInfo, FreePrintNamedPropertyArray, FreePrintPropertyValue, GetCorePrinterDrivers, GetDefaultPrinter, GetDeviceDefaultPrintTicketThunk, GetDeviceNamespacesThunk, GetForm, GetJob, GetJobNamedPropertyValue, GetPrintCapabilitiesThunk, GetPrintCapabilitiesThunk2, GetPrintDeviceCapabilitiesThunk, GetPrintDeviceCapabilitiesThunk2, GetPrintDeviceResourcesThunk, GetPrintDeviceResourcesThunk2, GetPrinter, GetPrinterData, GetPrinterDataEx, GetPrinterDriver, GetPrinterDriver2, GetPrinterDriverDirectory, GetPrinterDriverPackagePath, GetPrintExecutionData, GetPrintOutputInfo, GetPrintProcessorDirectory, GetSchemaVersionThunk, GetSpoolFileHandle, InstallPrinterDriverFromPackage, IsValidDevmode, MergeAndValidatePrintTicketThunk, MergeAndValidatePrintTicketThunk2, OpenPrinter, OpenPrinter2, PerfClose, PerfCollect, PerfOpen, PlayGdiScriptOnPrinterIC, PrinterMessageBox, PrinterProperties, PTCloseProvider, PTConvertDevModeToPrintTicket, PTConvertPrintTicketToDevMode, PTGetPrintCapabilities, PTGetPrintDeviceCapabilities, PTGetPrintDeviceResources, PTMergeAndValidatePrintTicket, PTOpenProvider, PTOpenProviderEx, PTQuerySchemaVersionSupport, PTReleaseMemory, QueryColorProfile, QueryRemoteFonts, QuerySpoolMode, ReadPrinter, RegisterForPrintAsyncNotifications, ReportJobProcessingProgress, ResetPrinter, ScheduleJob, SeekPrinter, SetDefaultPrinter, SetForm, SetJob, SetJobNamedProperty, SetPort, SetPrinter, SetPrinterData, SetPrinterDataEx, SetSplwow64AppCompat, SplDriverUnloadComplete, SpoolerDevQueryPrintW, SpoolerPrinterEvent, StartDocDlg, StartDocPrinter, StartPagePrinter, UnbindPTProviderThunk, UnRegisterForPrintAsyncNotifications, UploadPrinterDriverPackage, WaitForPrinterChange, WritePrinter, XcvDataW
+
+Structures
+HPTPROVIDER, ADDJOB_INFO_1, CORE_PRINTER_DRIVER, DATATYPES_INFO_1, DOC_INFO_1, DOC_INFO_2, DOC_INFO_3, DOCINFO, DRIVER_INFO_1, DRIVER_INFO_2, DRIVER_INFO_3, DRIVER_INFO_4, DRIVER_INFO_5, DRIVER_INFO_6, DRIVER_INFO_8, FORM_INFO_1, FORM_INFO_2, HPRINTER, HPRINTERCHANGENOTIFICATION, HSPOOLFILE, JOB_INFO_1, JOB_INFO_2, JOB_INFO_3, JOB_INFO_4, MONITOR_INFO_1, MONITOR_INFO_2, PORT_INFO_1, PORT_INFO_2, PORT_INFO_3, PRINT_EXECUTION_DATA, PRINTER_CONNECTION_INFO_1, PRINTER_ENUM_VALUES, PRINTER_INFO_1, PRINTER_INFO_2, PRINTER_INFO_3, PRINTER_INFO_4, PRINTER_INFO_5, PRINTER_INFO_6, PRINTER_INFO_7, PRINTER_INFO_8, PRINTER_INFO_9, PRINTER_NOTIFY_INFO, PRINTER_NOTIFY_INFO_DATA, PRINTER_NOTIFY_OPTIONS, PRINTER_NOTIFY_OPTIONS_TYPE, PRINTER_OPTIONS, PRINTPROCESSOR_CAPS_1, PRINTPROCESSOR_CAPS_2, PRINTPROCESSOR_INFO_1, PROVIDOR_INFO_1, PROVIDOR_INFO_2, NOTIFYDATA, DATA
+
+</PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
@@ -40,8 +48,7 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) ">
-  </ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) "></ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
