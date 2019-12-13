@@ -1834,7 +1834,7 @@ namespace Vanara.PInvoke
 		public static IEnumerable<(string valueName, REG_VALUE_TYPE valueType, object value)> EnumPrinterData(HPRINTER hPrinter)
 		{
 			var idx = 0U;
-			EnumPrinterData(hPrinter, idx, null, 0, out var valueNameSz, out var valueType, default, 0, out var dataSz).ThrowIfFailed();
+			EnumPrinterData(hPrinter, idx, null, 0, out var valueNameSz, out _, default, 0, out var dataSz).ThrowIfFailed();
 			if (valueNameSz == 0) yield break;
 			var name = new StringBuilder(1024);
 			using var mem = new SafeCoTaskMemHandle(dataSz);
@@ -1842,7 +1842,7 @@ namespace Vanara.PInvoke
 			{
 				name.EnsureCapacity((int)valueNameSz);
 				if (mem.Size < dataSz) mem.Size = dataSz;
-				var ret = EnumPrinterData(hPrinter, idx, name, (uint)name.Capacity, out valueNameSz, out valueType, mem, mem.Size, out dataSz);
+				var ret = EnumPrinterData(hPrinter, idx, name, (uint)name.Capacity, out valueNameSz, out var valueType, mem, mem.Size, out dataSz);
 				if (ret == Win32Error.ERROR_NO_MORE_ITEMS) break;
 				if (ret == Win32Error.ERROR_MORE_DATA) continue;
 				ret.ThrowIfFailed();
@@ -3997,9 +3997,9 @@ namespace Vanara.PInvoke
 		[PInvokeData("winspool.h", MSDNShortId = "b5a44b27-a4aa-4e58-9a64-05be87d12ab5")]
 		public static object GetPrinterData(HPRINTER hPrinter, string pValueName)
 		{
-			GetPrinterData(hPrinter, pValueName, out var type, default, 0, out var sz).ThrowUnless(Win32Error.ERROR_MORE_DATA);
+			GetPrinterData(hPrinter, pValueName, out _, default, 0, out var sz).ThrowUnless(Win32Error.ERROR_MORE_DATA);
 			using var mem = new SafeCoTaskMemHandle(sz);
-			GetPrinterData(hPrinter, pValueName, out type, mem, mem.Size, out sz).ThrowIfFailed();
+			GetPrinterData(hPrinter, pValueName, out var type, mem, mem.Size, out sz).ThrowIfFailed();
 			return type.GetValue(mem, mem.Size);
 		}
 
@@ -4487,9 +4487,9 @@ namespace Vanara.PInvoke
 		[PInvokeData("winspool.h", MSDNShortId = "5d9183a7-97cc-46de-848e-e37ce51396eb")]
 		public static object GetPrinterDataEx(HPRINTER hPrinter, string pKeyName, string pValueName)
 		{
-			GetPrinterDataEx(hPrinter, pKeyName, pValueName, out var type, default, 0, out var sz).ThrowUnless(Win32Error.ERROR_MORE_DATA);
+			GetPrinterDataEx(hPrinter, pKeyName, pValueName, out _, default, 0, out var sz).ThrowUnless(Win32Error.ERROR_MORE_DATA);
 			using var mem = new SafeCoTaskMemHandle(sz);
-			GetPrinterDataEx(hPrinter, pKeyName, pValueName, out type, mem, mem.Size, out sz).ThrowIfFailed();
+			GetPrinterDataEx(hPrinter, pKeyName, pValueName, out var type, mem, mem.Size, out sz).ThrowIfFailed();
 			return type.GetValue(mem, mem.Size);
 		}
 

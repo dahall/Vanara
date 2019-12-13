@@ -28,6 +28,23 @@ namespace Vanara.PInvoke.Tests
 		public void _TearDown() => hprnt?.Dispose();
 
 		[Test]
+		public void AddMonitorTest()
+		{
+			const string name = "mytestmon";
+			var mon = EnumMonitors<MONITOR_INFO_2>().First();
+			mon.pName = name;
+			Assert.That(AddMonitor(null, mon), ResultIs.Successful);
+			Assert.That(DeleteMonitor(null, mon.pEnvironment, mon.pName), ResultIs.Successful);
+		}
+
+		[Test]
+		public void AddPortTest()
+		{
+			var mon = EnumMonitors<MONITOR_INFO_1>().First().pName;
+			Assert.That(AddPort(null, HWND.NULL, mon), ResultIs.Successful);
+		}
+
+		[Test]
 		public void AddPrinterConnection2Test()
 		{
 			var drv = GetPrinter<PRINTER_INFO_2>(hprnt).pDriverName;
@@ -40,6 +57,17 @@ namespace Vanara.PInvoke.Tests
 		{
 			Assert.That(AddPrinterConnection(connPtrName), ResultIs.Successful);
 			Assert.That(DeletePrinterConnection(connPtrName), ResultIs.Successful);
+		}
+
+		[Test]
+		public void AddPrinterDriverExTest()
+		{
+			const string name = "mydriver";
+			var di2 = EnumPrinterDrivers<DRIVER_INFO_2>().First();
+			di2.pName = name;
+			using var priv = new ElevPriv("SeLoadDriverPrivilege");
+			Assert.That(AddPrinterDriverEx(null, di2), ResultIs.Successful);
+			Assert.That(DeletePrinterDriverEx(null, null, name, DPD.DPD_DELETE_UNUSED_FILES, 0), ResultIs.Successful);
 		}
 
 		[Test]
@@ -91,6 +119,23 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(DeletePrinterKey(p2, key), ResultIs.Successful);
 			}
 		}
+
+		[Test]
+		public void AddPrintProcessorTest()
+		{
+			using var priv = new ElevPriv("SeLoadDriverPrivilege");
+			Assert.That(AddPrintProcessor(null, null, "dummy.dll", "Dummy"), ResultIs.Successful);
+			Assert.That(DeletePrintProcessor(null, null, "Dummy"), ResultIs.Successful);
+		}
+
+		[Test]
+		public void AddPrintProvidorTest()
+		{
+			var pi1 = new PROVIDOR_INFO_1 { pName = "Dummy", pDLLName = "dummy.dll" };
+			Assert.That(AddPrintProvidor(null, pi1), ResultIs.Successful);
+			Assert.That(DeletePrintProvidor(null, null, pi1.pName), ResultIs.Successful);
+		}
+
 		[Test]
 		public void AdvancedDocumentPropertiesTest()
 		{
@@ -105,6 +150,12 @@ namespace Vanara.PInvoke.Tests
 			SafeHPRINTER p;
 			Assert.That(p = ConnectToPrinterDlg(HWND.NULL), ResultIs.ValidHandle);
 			p.Dispose();
+		}
+
+		[Test]
+		public void CorePrinterDriverInstalledTest()
+		{
+			//Assert.That(CorePrinterDriverInstalled(null, null, ), ResultIs.Successful);
 		}
 
 		[Test]
@@ -128,6 +179,28 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void EnumMonitorsTest()
+		{
+			MONITOR_INFO_1[] mon1;
+			Assert.That(mon1 = EnumMonitors<MONITOR_INFO_1>().ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", mon1.Select(v => v.pName)));
+			MONITOR_INFO_2[] mon2;
+			Assert.That(mon2 = EnumMonitors<MONITOR_INFO_2>().ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", mon2.Select(v => v.pEnvironment)));
+		}
+
+		[Test]
+		public void EnumPortsTest()
+		{
+			PORT_INFO_1[] port1;
+			Assert.That(port1 = EnumPorts<PORT_INFO_1>().ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", port1.Select(v => v.pName)));
+			PORT_INFO_2[] port2;
+			Assert.That(port2 = EnumPorts<PORT_INFO_2>().ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", port2.Select(v => v.fPortType)));
+		}
+
+		[Test]
 		public void EnumPrinterDataExTest()
 		{
 			var res1 = EnumPrinterDataEx(hprnt, defKey);
@@ -141,6 +214,32 @@ namespace Vanara.PInvoke.Tests
 			var res1 = EnumPrinterData(hprnt);
 			Assert.That(res1, Is.Not.Empty);
 			TestContext.WriteLine(string.Join(",", res1.Select(v => $"{v.valueName}={v.value} ({v.valueType})")));
+		}
+
+		[Test]
+		public void EnumPrinterDriversTest()
+		{
+			DRIVER_INFO_1[] res1;
+			Assert.That(res1 = EnumPrinterDrivers<DRIVER_INFO_1>().ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", res1.Select(v => v.pName)));
+			DRIVER_INFO_2[] res2;
+			Assert.That(res2 = EnumPrinterDrivers<DRIVER_INFO_2>().ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", res2.Select(v => v.pEnvironment)));
+			DRIVER_INFO_3[] res3;
+			Assert.That(res3 = EnumPrinterDrivers<DRIVER_INFO_3>().ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", res3.Select(v => v.pDriverPath)));
+			DRIVER_INFO_4[] res4;
+			Assert.That(res4 = EnumPrinterDrivers<DRIVER_INFO_4>().ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", res4.Select(v => v.pDataFile)));
+			DRIVER_INFO_5[] res5;
+			Assert.That(res5 = EnumPrinterDrivers<DRIVER_INFO_5>().ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", res5.Select(v => v.pConfigFile)));
+			DRIVER_INFO_6[] res6;
+			Assert.That(res6 = EnumPrinterDrivers<DRIVER_INFO_6>().ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", res6.Select(v => v.pHelpFile)));
+			DRIVER_INFO_8[] res8;
+			Assert.That(res8 = EnumPrinterDrivers<DRIVER_INFO_8>().ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", res8.Select(v => v.pszMfgName)));
 		}
 
 		[Test]
@@ -179,6 +278,23 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void EnumPrintProcessorDatatypesTest()
+		{
+			var proc = EnumPrintProcessors<PRINTPROCESSOR_INFO_1>().First().pName;
+			DATATYPES_INFO_1[] res1;
+			Assert.That(res1 = EnumPrintProcessorDatatypes<DATATYPES_INFO_1>(proc).ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", res1.Select(v => v.pName)));
+		}
+
+		[Test]
+		public void EnumPrintProcessorsTest()
+		{
+			PRINTPROCESSOR_INFO_1[] res1;
+			Assert.That(res1 = EnumPrintProcessors<PRINTPROCESSOR_INFO_1>().ToArray(), Is.Not.Empty);
+			TestContext.WriteLine(string.Join(",", res1.Select(v => v.pName)));
+		}
+
+		[Test]
 		public void FormTest()
 		{
 			const string name = "TestOnlyForm";
@@ -203,6 +319,12 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void GetCorePrinterDriversTest()
+		{
+			Assert.That(() => TestHelper.WriteValues(EnumCorePrinterDrivers(null, null)), Throws.Nothing);
+		}
+
+		[Test]
 		public void GetDefaultPrinterTest()
 		{
 			var sz = 260;
@@ -212,10 +334,50 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void GetPrinterDriverTest()
+		{
+			Assert.That(() => TestHelper.WriteValues(GetPrinterDriver<DRIVER_INFO_8>(hprnt)), Throws.Nothing);
+		}
+
+		[Test]
+		public void GetPrinterDriver2Test()
+		{
+			Assert.That(() => TestHelper.WriteValues(GetPrinterDriver2<DRIVER_INFO_8>(hprnt)), Throws.Nothing);
+		}
+
+		[Test]
+		public void GetPrinterDriverDirectoryTest()
+		{
+			Assert.That(GetPrinterDriverDirectory(null, null, 1, null, 0, out var req), ResultIs.Failure);
+			var sb = new StringBuilder(req);
+			Assert.That(GetPrinterDriverDirectory(null, null, 1, sb, sb.Capacity, out _), ResultIs.Successful);
+			TestContext.Write(sb);
+		}
+
+		[Test]
+		public void GetPrinterDriverPackagePathTest()
+		{
+			var pkg = EnumCorePrinterDrivers().First().szPackageID;
+			Assert.That(GetPrinterDriverPackagePath(null, null, null, pkg, null, 0, out var req), ResultIs.Successful);
+			var sb = new StringBuilder(req);
+			Assert.That(GetPrinterDriverPackagePath(null, null, null, pkg, sb, sb.Capacity, out _), ResultIs.Successful);
+			TestContext.Write(sb);
+		}
+
+		[Test]
 		public void GetPrintExecutionDataTest()
 		{
 			Assert.That(GetPrintExecutionData(out var data), ResultIs.Successful);
 			TestHelper.WriteValues(data);
+		}
+
+		[Test]
+		public void GetPrintProcessorDirectoryTest()
+		{
+			Assert.That(GetPrintProcessorDirectory(null, null, 1, null, 0, out var req), ResultIs.Failure);
+			var sb = new StringBuilder(req);
+			Assert.That(GetPrintProcessorDirectory(null, null, 1, sb, sb.Capacity, out _), ResultIs.Successful);
+			TestContext.Write(sb);
 		}
 
 		[Test]

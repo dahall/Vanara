@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using System.Text;
 using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
@@ -667,7 +670,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("winspool.h", MSDNShortId = "f34549c3-0474-48ba-9307-5b36f02dbe1c")]
 		public static bool AddPrintProvidor<T>([Optional] string pName, in T pProviderInfo) where T : struct
 		{
-			if (!TryGetLevel<T>("DRIVER_INFO_", out var lvl))
+			if (!TryGetLevel<T>("PROVIDOR_INFO_", out var lvl))
 				throw new ArgumentException($"{nameof(AddPrintProvidor)} cannot process a structure of type {typeof(T).Name}.");
 			using var mem = SafeCoTaskMemHandle.CreateFromStructure(pProviderInfo);
 			return AddPrintProvidor(pName, lvl, mem);
@@ -857,7 +860,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winspool.h", MSDNShortId = "1a3d7c7f-1d45-4877-a8f7-a77f40e3c319")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeletePrinterDriverEx([Optional] string pName, [Optional] string pEnvironment, string pDriverName, DPD dwDeleteFlag, uint dwVersionFlag);
+		public static extern bool DeletePrinterDriverEx([Optional] string pName, [Optional] string pEnvironment, string pDriverName, DPD dwDeleteFlag, uint dwVersionFlag = 0);
 
 		/// <summary>Deletes a printer driver package from the driver store.</summary>
 		/// <param name="pszServer">
@@ -931,6 +934,36 @@ namespace Vanara.PInvoke
 		[PInvokeData("winspool.h", MSDNShortId = "b7104f9a-111c-4904-a355-063bb4cc81f1")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DeletePrintProvidor([Optional] string pName, [Optional] string pEnvironment, string pPrintProviderName);
+
+		/// <summary>Retrieves GUID, version, and date of all core printer drivers and the path to their packages.</summary>
+		/// <param name="pszServer">
+		/// A pointer to a constant, null-terminated string that specifies the name of the print server. Use <c>NULL</c> for the local computer.
+		/// </param>
+		/// <param name="pszEnvironment">
+		/// A pointer to a constant, null-terminated string that specifies the processor architecture (for example, Windows NT x86). This
+		/// can be <c>NULL</c>.
+		/// </param>
+		/// <returns>A sequence of <c>CORE_PRINTER_DRIVER</c> structures.</returns>
+		/// <remarks>
+		/// This is a blocking or synchronous function and might not return immediately. How quickly this function returns depends on
+		/// run-time factors such as network status, print server configuration, and printer driver implementation factors that are
+		/// difficult to predict when writing an application. Calling this function from a thread that manages interaction with the user
+		/// interface could make the application appear to be unresponsive.
+		/// </remarks>
+		public static IEnumerable<CORE_PRINTER_DRIVER> EnumCorePrinterDrivers([Optional] string pszServer, [Optional] string pszEnvironment)
+		{
+			const string subKey32 = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Print\PackageInstallation\Windows NT x86\CorePrinterDrivers";
+			const string subKey64 = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Print\PackageInstallation\Windows x64\CorePrinterDrivers";
+
+			var is64bit = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"));
+			using var baseKey = string.IsNullOrEmpty(pszServer) ? null : RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, pszServer);
+			using var reg = (baseKey ?? Registry.LocalMachine).OpenSubKey(is64bit ? subKey64 : subKey32, false);// RegistryKeyPermissionCheck.ReadSubTree, RegistryRights.EnumerateSubKeys);
+			var keys = reg?.GetSubKeyNames();
+			if (keys?.Length == 0) return new CORE_PRINTER_DRIVER[0];
+			var drvs = new CORE_PRINTER_DRIVER[keys.Length];
+			GetCorePrinterDrivers(pszServer, pszEnvironment, keys, (uint)keys.Length, drvs).ThrowIfFailed();
+			return drvs;
+		}
 
 		/// <summary>The <c>EnumMonitors</c> function retrieves information about the port monitors installed on the specified server.</summary>
 		/// <param name="pName">
@@ -1244,7 +1277,7 @@ namespace Vanara.PInvoke
 		/// <returns>A sequence of <c>DATATYPES_INFO_1</c> structures.</returns>
 		/// <remarks>Starting with Windows Vista, the data type information from remote print servers is retrieved from a local cache.</remarks>
 		[PInvokeData("winspool.h", MSDNShortId = "27b6e074-d303-446b-9e5f-6cfa55c30d26")]
-		public static IEnumerable<T> EnumPrintProcessorDatatypes<T>([Optional] string pName, string pPrintProcessorName) where T : struct
+		public static IEnumerable<T> EnumPrintProcessorDatatypes<T>(string pPrintProcessorName, [Optional] string pName) where T : struct
 		{
 			if (!TryGetLevel<T>("DATATYPES_INFO_", out var lvl))
 				throw new ArgumentException($"{nameof(EnumPrintProcessorDatatypes)} cannot process a structure of type {typeof(T).Name}.");
@@ -1645,7 +1678,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winspool.h", MSDNShortId = "69c9cc87-d7e3-496a-b631-b3ae30cdb3fd")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetPrinterDriverDirectory([Optional] string pName, [Optional] string pEnvironment, uint Level, StringBuilder pDriverDirectory, uint cbBuf, out uint pcbNeeded);
+		public static extern bool GetPrinterDriverDirectory([Optional] string pName, [Optional] string pEnvironment, uint Level, StringBuilder pDriverDirectory, int cbBuf, out int pcbNeeded);
 
 		/// <summary>Retrieves the path to the specified printer driver package on a print server.</summary>
 		/// <param name="pszServer">
@@ -1682,7 +1715,7 @@ namespace Vanara.PInvoke
 		// pszDriverPackageCab, _In_ DWORD cchDriverPackageCab, _Out_ LPDWORD pcchRequiredSize );
 		[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winspool.h", MSDNShortId = "e88e984b-d2c0-43b4-8f70-b05ec202ab14")]
-		public static extern HRESULT GetPrinterDriverPackagePath([Optional] string pszServer, [Optional] string pszEnvironment, [Optional] string pszLanguage, string pszPackageID, StringBuilder pszDriverPackageCab, uint cchDriverPackageCab, out uint pcchRequiredSize);
+		public static extern HRESULT GetPrinterDriverPackagePath([Optional] string pszServer, [Optional] string pszEnvironment, [Optional] string pszLanguage, string pszPackageID, StringBuilder pszDriverPackageCab, int cchDriverPackageCab, out int pcchRequiredSize);
 
 		/// <summary>
 		/// The <c>GetPrintProcessorDirectory</c> function retrieves the path to the print processor directory on the specified server.
@@ -1717,7 +1750,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winspool.h", MSDNShortId = "a2443cfd-e5ba-41c6-aaf4-45051a3d0e26")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetPrintProcessorDirectory([Optional] string pName, [Optional] string pEnvironment, uint Level, StringBuilder pPrintProcessorInfo, uint cbBuf, out uint pcbNeeded);
+		public static extern bool GetPrintProcessorDirectory([Optional] string pName, [Optional] string pEnvironment, uint Level, StringBuilder pPrintProcessorInfo, int cbBuf, out int pcbNeeded);
 
 		/// <summary>Installs a printer driver from a driver package that is in the print server's driver store.</summary>
 		/// <param name="pszServer">

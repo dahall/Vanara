@@ -50,6 +50,10 @@
       <Project>{d3e1f2b8-d475-4922-b334-919795b858cb}</Project>
       <Name>Vanara.PInvoke.Printing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Security\Vanara.PInvoke.Security.csproj">
+      <Project>{392a14b0-1e10-4e88-9c13-0d965665ffb5}</Project>
+      <Name>Vanara.PInvoke.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
       <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
       <Name>Vanara.PInvoke.Shared</Name>
