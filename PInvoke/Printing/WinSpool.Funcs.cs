@@ -103,10 +103,10 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		[PInvokeData("winspool.h", MSDNShortId = "17b59019-f93a-4b57-86fb-91c61aecbac4")]
-		public static bool AddForm<T>(HPRINTER hPrinter, T pForm) where T : struct
+		public static bool AddForm<T>(HPRINTER hPrinter, in T pForm) where T : struct
 		{
 			if (!TryGetLevel<T>("FORM_INFO_", out var lvl))
-				throw new ArgumentException($"{nameof(SetPrinter)} cannot process a structure of type {typeof(T).Name}.");
+				throw new ArgumentException($"{nameof(AddForm)} cannot process a structure of type {typeof(T).Name}.");
 			using var mem = SafeCoTaskMemHandle.CreateFromStructure(pForm);
 			return AddForm(hPrinter, lvl, mem);
 		}
@@ -1802,7 +1802,8 @@ namespace Vanara.PInvoke
 		// _In_ DWORD cbData, _Out_ LPDWORD pcbData );
 		[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winspool.h", MSDNShortId = "0a4c8436-46fe-4e21-8d55-c5031a3d1b38")]
-		public static extern Win32Error EnumPrinterData(HPRINTER hPrinter, uint dwIndex, StringBuilder pValueName, uint cbValueName, out uint pcbValueName, out REG_VALUE_TYPE pType, IntPtr pData, uint cbData, out uint pcbData);
+		public static extern Win32Error EnumPrinterData(HPRINTER hPrinter, uint dwIndex, StringBuilder pValueName, uint cbValueName,
+			out uint pcbValueName, out REG_VALUE_TYPE pType, IntPtr pData, uint cbData, out uint pcbData);
 
 		/// <summary>
 		/// <para>The <c>EnumPrinterData</c> function enumerates configuration data for a specified printer.</para>
@@ -2539,7 +2540,8 @@ namespace Vanara.PInvoke
 		// pPrinterNotifyOptions );
 		[DllImport(Lib.Winspool, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winspool.h", MSDNShortId = "4155ef5c-cd96-4960-919b-d9a495bb73a5")]
-		public static extern SafeHPRINTERCHANGENOTIFICATION FindFirstPrinterChangeNotification(HPRINTER hPrinter, PRINTER_CHANGE fdwFilter, PRINTER_NOTIFY_CATEGORY fdwOptions, in PRINTER_NOTIFY_OPTIONS pPrinterNotifyOptions);
+		public static extern SafeHPRINTERCHANGENOTIFICATION FindFirstPrinterChangeNotification(HPRINTER hPrinter, PRINTER_CHANGE fdwFilter,
+			PRINTER_NOTIFY_CATEGORY fdwOptions, in PRINTER_NOTIFY_OPTIONS pPrinterNotifyOptions);
 
 		/// <summary>
 		/// <para>
@@ -2705,7 +2707,8 @@ namespace Vanara.PInvoke
 		// pPrinterNotifyOptions );
 		[DllImport(Lib.Winspool, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winspool.h", MSDNShortId = "4155ef5c-cd96-4960-919b-d9a495bb73a5")]
-		public static extern SafeHPRINTERCHANGENOTIFICATION FindFirstPrinterChangeNotification(HPRINTER hPrinter, PRINTER_CHANGE fdwFilter, PRINTER_NOTIFY_CATEGORY fdwOptions, [In, Optional] IntPtr pPrinterNotifyOptions);
+		public static extern SafeHPRINTERCHANGENOTIFICATION FindFirstPrinterChangeNotification(HPRINTER hPrinter, PRINTER_CHANGE fdwFilter,
+			PRINTER_NOTIFY_CATEGORY fdwOptions, [In, Optional] IntPtr pPrinterNotifyOptions);
 
 		/// <summary>
 		/// <para>
@@ -2886,7 +2889,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Winspool, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winspool.h", MSDNShortId = "ea7774ae-361f-41e4-bbc6-3f100028b22a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FindNextPrinterChangeNotification(HPRINTERCHANGENOTIFICATION hChange, out PRINTER_CHANGE pdwChange, in PRINTER_NOTIFY_OPTIONS pPrinterNotifyOptions, out SafePRINTER_NOTIFY_INFO ppPrinterNotifyInfo);
+		public static extern bool FindNextPrinterChangeNotification(HPRINTERCHANGENOTIFICATION hChange, out PRINTER_CHANGE pdwChange,
+			in PRINTER_NOTIFY_OPTIONS pPrinterNotifyOptions, out SafePRINTER_NOTIFY_INFO ppPrinterNotifyInfo);
 
 		/// <summary>
 		/// <para>
@@ -3067,7 +3071,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Winspool, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winspool.h", MSDNShortId = "ea7774ae-361f-41e4-bbc6-3f100028b22a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FindNextPrinterChangeNotification(HPRINTERCHANGENOTIFICATION hChange, out PRINTER_CHANGE pdwChange, [Optional] IntPtr pPrinterNotifyOptions, out SafePRINTER_NOTIFY_INFO ppPrinterNotifyInfo);
+		public static extern bool FindNextPrinterChangeNotification(HPRINTERCHANGENOTIFICATION hChange, out PRINTER_CHANGE pdwChange,
+			[Optional] IntPtr pPrinterNotifyOptions, out SafePRINTER_NOTIFY_INFO ppPrinterNotifyInfo);
 
 		/// <summary>The <c>FlushPrinter</c> function sends a buffer to the printer in order to clear it from a transient state.</summary>
 		/// <param name="hPrinter">
@@ -4246,7 +4251,8 @@ namespace Vanara.PInvoke
 		// LPCTSTR pKeyName, _In_ LPCTSTR pValueName, _Out_ LPDWORD pType, _Out_ LPBYTE pData, _In_ DWORD nSize, _Out_ LPDWORD pcbNeeded );
 		[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winspool.h", MSDNShortId = "5d9183a7-97cc-46de-848e-e37ce51396eb")]
-		public static extern Win32Error GetPrinterDataEx(HPRINTER hPrinter, string pKeyName, string pValueName, out REG_VALUE_TYPE pType, IntPtr pData, uint nSize, out uint pcbNeeded);
+		public static extern Win32Error GetPrinterDataEx(HPRINTER hPrinter, string pKeyName, string pValueName, out REG_VALUE_TYPE pType,
+			IntPtr pData, uint nSize, out uint pcbNeeded);
 
 		/// <summary>
 		/// The <c>GetPrinterDataEx</c> function retrieves configuration data for the specified printer or print server.
@@ -4663,7 +4669,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winspool.h", MSDNShortId = "96763220-d851-46f0-8be8-403f3356edb9")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool OpenPrinter(string pPrinterName, out SafeHPRINTER phPrinter, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRINTER_DEFAULTS_Marshaler))] PRINTER_DEFAULTS pDefault);
+		public static extern bool OpenPrinter(string pPrinterName, out SafeHPRINTER phPrinter,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRINTER_DEFAULTS_Marshaler))] PRINTER_DEFAULTS pDefault);
 
 		/// <summary>
 		/// Retrieves a handle to the specified printer, print server, or other types of handles in the print subsystem, while setting some
@@ -4755,7 +4762,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winspool.h", MSDNShortId = "e2370ae4-4475-4ccc-a6f9-3d33d1370054")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool OpenPrinter2(string pPrinterName, out SafeHPRINTER phPrinter, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRINTER_DEFAULTS_Marshaler))] PRINTER_DEFAULTS pDefault, in PRINTER_OPTIONS pOptions);
+		public static extern bool OpenPrinter2(string pPrinterName, out SafeHPRINTER phPrinter,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRINTER_DEFAULTS_Marshaler))] PRINTER_DEFAULTS pDefault, in PRINTER_OPTIONS pOptions);
 
 		/// <summary>The <c>PrinterProperties</c> function displays a printer-properties property sheet for the specified printer.</summary>
 		/// <param name="hWnd">A handle to the parent window of the property sheet.</param>
@@ -7361,35 +7369,5 @@ namespace Vanara.PInvoke
 			level = 0;
 			return typeof(T).Name.StartsWith(prefix) && uint.TryParse(typeof(T).Name.Substring(typeof(T).Name.LastIndexOf('_') + 1), out level);
 		}
-
-		/*
-		AddMonitor
-		AddPort
-		AddPrinterDriver
-		AddPrinterDriverEx
-		AddPrintProcessor
-		AddPrintProvidor
-		CorePrinterDriverInstalled
-		DeleteMonitor
-		DeletePort
-		DeletePrinterDriver
-		DeletePrinterDriverEx
-		DeletePrinterDriverPackage
-		DeletePrintProcessor
-		DeletePrintProvidor
-		EnumMonitors
-		EnumPorts
-		EnumPrinterDrivers
-		EnumPrintProcessorDatatypes
-		EnumPrintProcessors
-		GetCorePrinterDrivers
-		GetPrinterDriver
-		GetPrinterDriver2
-		GetPrinterDriverDirectory
-		GetPrinterDriverPackagePath
-		GetPrintProcessorDirectory
-		InstallPrinterDriverFromPackage
-		UploadPrinterDriverPackage
-		*/
 	}
 }
