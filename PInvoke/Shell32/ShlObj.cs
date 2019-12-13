@@ -4061,7 +4061,7 @@ namespace Vanara.PInvoke
 		// PCIDLIST_ABSOLUTE pidlFolder, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, IDataObject *pdtInner, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "d56cdafe-9463-43a5-8ef0-6cfaf0c524a8")]
-		public static extern HRESULT SHCreateDataObject(PIDL pidlFolder, uint cidl, [In, MarshalAs(UnmanagedType.LPArray)] PIDL[] apidl, IDataObject pdtInner, in Guid riid, out IDataObject ppv);
+		public static extern HRESULT SHCreateDataObject(PIDL pidlFolder, uint cidl, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] apidl, IDataObject pdtInner, in Guid riid, out IDataObject ppv);
 
 		/// <summary>
 		/// <para>Creates an object that represents the Shell's default context menu implementation.</para>

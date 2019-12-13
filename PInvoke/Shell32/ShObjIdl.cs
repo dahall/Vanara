@@ -1790,7 +1790,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "024ccbc7-97f1-4cb5-8588-9c9b1f747336")]
 		public static extern HRESULT SHCreateShellItemArray([In, Optional] PIDL pidlParent, [In, MarshalAs(UnmanagedType.Interface), Optional] IShellFolder psf,
-			[In, Optional] uint cidl, [In, Optional] PIDL[] ppidl, out IShellItemArray ppsiItemArray);
+			[In, Optional] uint cidl, [In, Optional] IntPtr[] ppidl, out IShellItemArray ppsiItemArray);
 
 		/// <summary>
 		/// <para>Creates a Shell item array object from a data object.</para>

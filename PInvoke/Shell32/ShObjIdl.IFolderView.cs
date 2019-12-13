@@ -347,7 +347,7 @@ namespace Vanara.PInvoke
 			/// name="apidl"/> should be positioned.
 			/// </param>
 			/// <param name="dwFlags">One of the _SVSIF constants that specifies the type of selection to apply.</param>
-			void SelectAndPositionItems([In] uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PIDL[] apidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Point[] apt, [In] SVSIF dwFlags);
+			void SelectAndPositionItems([In] uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Point[] apt, [In] SVSIF dwFlags);
 		}
 
 		/// <summary>
@@ -442,7 +442,7 @@ namespace Vanara.PInvoke
 			/// name="apidl"/> should be positioned.
 			/// </param>
 			/// <param name="dwFlags">One of the _SVSIF constants that specifies the type of selection to apply.</param>
-			new void SelectAndPositionItems([In] uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PIDL[] apidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Point[] apt, [In] SVSIF dwFlags);
+			new void SelectAndPositionItems([In] uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Point[] apt, [In] SVSIF dwFlags);
 
 			/// <summary>Groups the view by the given property key and direction.</summary>
 			/// <param name="key">
