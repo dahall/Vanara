@@ -835,6 +835,302 @@ namespace Vanara.PInvoke
 		[PInvokeData("winspool.h", MSDNShortId = "0bd81b43-5c1e-4989-8350-2ec0dc215f28")]
 		public static extern Win32Error DeletePrinterKey(HPRINTER hPrinter, string pKeyName);
 
+		/// <summary>The <c>DeviceCapabilities</c> function retrieves the capabilities of a printer driver.</summary>
+		/// <param name="pDevice">
+		/// A pointer to a null-terminated string that contains the name of the printer. Note that this is the name of the printer, not of
+		/// the printer driver.
+		/// </param>
+		/// <param name="pPort">
+		/// A pointer to a null-terminated string that contains the name of the port to which the device is connected, such as LPT1.
+		/// </param>
+		/// <param name="fwCapability">
+		/// <para>The capabilities to be queried. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DC_BINNAMES</term>
+		/// <term>
+		/// Retrieves the names of the printer's paper bins. The pOutput buffer receives an array of string buffers. Each string buffer is
+		/// 24 characters long and contains the name of a paper bin. The return value indicates the number of entries in the array. The name
+		/// strings are null-terminated unless the name is 24 characters long. If pOutput is NULL, the return value is the number of bin
+		/// entries required.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_BINS</term>
+		/// <term>
+		/// Retrieves a list of available paper bins. The pOutput buffer receives an array of WORD values that indicate the available paper
+		/// sources for the printer. The return value indicates the number of entries in the array. For a list of the possible array values,
+		/// see the description of the dmDefaultSource member of the DEVMODE structure. If pOutput is NULL, the return value indicates the
+		/// required number of entries in the array.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_COLLATE</term>
+		/// <term>
+		/// If the printer supports collating, the return value is 1; otherwise, the return value is zero. The pOutput parameter is not used.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_COLORDEVICE</term>
+		/// <term>
+		/// If the printer supports color printing, the return value is 1; otherwise, the return value is zero. The pOutput parameter is not used.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_COPIES</term>
+		/// <term>Returns the number of copies the device can print.</term>
+		/// </item>
+		/// <item>
+		/// <term>DC_DRIVER</term>
+		/// <term>Returns the version number of the printer driver.</term>
+		/// </item>
+		/// <item>
+		/// <term>DC_DUPLEX</term>
+		/// <term>
+		/// If the printer supports duplex printing, the return value is 1; otherwise, the return value is zero. The pOutput parameter is
+		/// not used.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_ENUMRESOLUTIONS</term>
+		/// <term>
+		/// Retrieves a list of the resolutions supported by the printer. The pOutput buffer receives an array of LONG values. For each
+		/// supported resolution, the array contains a pair of LONG values that specify the x and y dimensions of the resolution, in dots
+		/// per inch. The return value indicates the number of supported resolutions. If pOutput is NULL, the return value indicates the
+		/// number of supported resolutions.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_EXTRA</term>
+		/// <term>Returns the number of bytes required for the device-specific portion of the DEVMODE structure for the printer driver.</term>
+		/// </item>
+		/// <item>
+		/// <term>DC_FIELDS</term>
+		/// <term>
+		/// Returns the dmFields member of the printer driver's DEVMODE structure. The dmFields member indicates which members in the
+		/// device-independent portion of the structure are supported by the printer driver.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_FILEDEPENDENCIES</term>
+		/// <term>
+		/// Retrieves the names of any additional files that need to be loaded when a driver is installed. The pOutput buffer receives an
+		/// array of string buffers. Each string buffer is 64 characters long and contains the name of a file. The return value indicates
+		/// the number of entries in the array. The name strings are null-terminated unless the name is 64 characters long. If pOutput is
+		/// NULL, the return value is the number of files.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_MAXEXTENT</term>
+		/// <term>
+		/// Returns the maximum paper size that the dmPaperLength and dmPaperWidth members of the printer driver's DEVMODE structure can
+		/// specify. The LOWORD of the return value contains the maximum dmPaperWidth value, and the HIWORD contains the maximum
+		/// dmPaperLength value.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_MEDIAREADY</term>
+		/// <term>
+		/// Retrieves the names of the paper forms that are currently available for use. The pOutput buffer receives an array of string
+		/// buffers. Each string buffer is 64 characters long and contains the name of a paper form. The return value indicates the number
+		/// of entries in the array. The name strings are null-terminated unless the name is 64 characters long. If pOutput is NULL, the
+		/// return value is the number of paper forms.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_MEDIATYPENAMES</term>
+		/// <term>
+		/// Retrieves the names of the supported media types. The pOutput buffer receives an array of string buffers. Each string buffer is
+		/// 64 characters long and contains the name of a supported media type. The return value indicates the number of entries in the
+		/// array. The strings are null-terminated unless the name is 64 characters long. If pOutput is NULL, the return value is the number
+		/// of media type names required.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_MEDIATYPES</term>
+		/// <term>
+		/// Retrieves a list of supported media types. The pOutput buffer receives an array of DWORD values that indicate the supported
+		/// media types. The return value indicates the number of entries in the array. For a list of possible array values, see the
+		/// description of the dmMediaType member of the DEVMODE structure. If pOutput is NULL, the return value indicates the required
+		/// number of entries in the array.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_MINEXTENT</term>
+		/// <term>
+		/// Returns the minimum paper size that the dmPaperLength and dmPaperWidth members of the printer driver's DEVMODE structure can
+		/// specify. The LOWORD of the return value contains the minimum dmPaperWidth value, and the HIWORD contains the minimum
+		/// dmPaperLength value.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_ORIENTATION</term>
+		/// <term>
+		/// Returns the relationship between portrait and landscape orientations for a device, in terms of the number of degrees that
+		/// portrait orientation is rotated counterclockwise to produce landscape orientation. The return value can be one of the following:
+		/// 0 No landscape orientation. 90 Portrait is rotated 90 degrees to produce landscape. 270 Portrait is rotated 270 degrees to
+		/// produce landscape.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_NUP</term>
+		/// <term>
+		/// Retrieves an array of integers that indicate that printer's ability to print multiple document pages per printed page. The
+		/// pOutput buffer receives an array of DWORD values. Each value represents a supported number of document pages per printed page.
+		/// The return value indicates the number of entries in the array. If pOutput is NULL, the return value indicates the required
+		/// number of entries in the array.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_PAPERNAMES</term>
+		/// <term>
+		/// Retrieves a list of supported paper names (for example, Letter or Legal). The pOutput buffer receives an array of string
+		/// buffers. Each string buffer is 64 characters long and contains the name of a paper form. The return value indicates the number
+		/// of entries in the array. The name strings are null-terminated unless the name is 64 characters long. If pOutput is NULL, the
+		/// return value is the number of paper forms.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_PAPERS</term>
+		/// <term>
+		/// Retrieves a list of supported paper sizes. The pOutput buffer receives an array of WORD values that indicate the available paper
+		/// sizes for the printer. The return value indicates the number of entries in the array. For a list of the possible array values,
+		/// see the description of the dmPaperSize member of the DEVMODE structure. If pOutput is NULL, the return value indicates the
+		/// required number of entries in the array.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_PAPERSIZE</term>
+		/// <term>
+		/// Retrieves the dimensions, in tenths of a millimeter, of each supported paper size. The pOutput buffer receives an array of POINT
+		/// structures. Each structure contains the width (x-dimension) and length (y-dimension) of a paper size as if the paper were in the
+		/// DMORIENT_PORTRAIT orientation. The return value indicates the number of entries in the array.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_PERSONALITY</term>
+		/// <term>
+		/// Retrieves a list of printer description languages supported by the printer. The pOutput buffer receives an array of string
+		/// buffers. Each buffer is 32 characters long and contains the name of a printer description language. The return value indicates
+		/// the number of entries in the array. The name strings are null-terminated unless the name is 32 characters long. If pOutput is
+		/// NULL, the return value indicates the required number of array entries.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_PRINTERMEM</term>
+		/// <term>The return value is the amount of available printer memory, in kilobytes. The pOutput parameter is not used.</term>
+		/// </item>
+		/// <item>
+		/// <term>DC_PRINTRATE</term>
+		/// <term>
+		/// The return value indicates the printer's print rate. The value returned for DC_PRINTRATEUNIT indicates the units of the
+		/// DC_PRINTRATE value. The pOutput parameter is not used.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_PRINTRATEPPM</term>
+		/// <term>The return value indicates the printer's print rate, in pages per minute. The pOutput parameter is not used.</term>
+		/// </item>
+		/// <item>
+		/// <term>DC_PRINTRATEUNIT</term>
+		/// <term>
+		/// The return value is one of the following values that indicate the print rate units for the value returned for the DC_PRINTRATE
+		/// flag. The pOutput parameter is not used. PRINTRATEUNIT_CPS Characters per second. PRINTRATEUNIT_IPM Inches per minute.
+		/// PRINTRATEUNIT_LPM Lines per minute. PRINTRATEUNIT_PPM Pages per minute.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_SIZE</term>
+		/// <term>Returns the dmSize member of the printer driver's DEVMODE structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>DC_STAPLE</term>
+		/// <term>
+		/// If the printer supports stapling, the return value is a nonzero value; otherwise, the return value is zero. The pOutput
+		/// parameter is not used.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_TRUETYPE</term>
+		/// <term>
+		/// Retrieves the abilities of the driver to use TrueType fonts. For DC_TRUETYPE, the pOutput parameter should be NULL. The return
+		/// value can be one or more of the following: DCTT_BITMAP Device can print TrueType fonts as graphics. DCTT_DOWNLOAD Device can
+		/// download TrueType fonts. DCTT_SUBDEV Device can substitute device fonts for TrueType fonts.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DC_VERSION</term>
+		/// <term>Returns the specification version to which the printer driver conforms.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pOutput">
+		/// A pointer to an array. The format of the array depends on the setting of the fwCapability parameter. See each capability above
+		/// to find out what is returned if pOutput is <c>NULL</c>.
+		/// </param>
+		/// <param name="pDevMode">
+		/// A pointer to a DEVMODE structure. If this parameter is <c>NULL</c>, <c>DeviceCapabilities</c> retrieves the current default
+		/// initialization values for the specified printer driver. Otherwise, the function retrieves the values contained in the structure
+		/// to which pDevMode points.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value depends on the setting of the fwCapability parameter. A return value of zero
+		/// generally indicates that, while the function completed successfully, there was some type of failure, such as a capability that
+		/// is not supported. For more details, see the descriptions for the fwCapability values.
+		/// </para>
+		/// <para>
+		/// If the function returns -1, this may mean either that the capability is not supported or there was a general function failure.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>Note</c> This is a blocking or synchronous function and might not return immediately. How quickly this function returns
+		/// depends on run-time factors such as network status, print server configuration, and printer driver implementation—factors that
+		/// are difficult to predict when writing an application. Calling this function from a thread that manages interaction with the user
+		/// interface could make the application appear to be unresponsive.
+		/// </para>
+		/// <para>The DEVMODE structure pointed to by the pDevMode parameter may be obtained by calling the DocumentProperties function.</para>
+		/// <para>
+		/// If a printer driver supports custom device capabilities, the driver must call the SetPrinterData function for each custom
+		/// capability. The <c>SetPrinterData</c> function adds the appropriate printer data to the print system, which enables 32-bit
+		/// applications to access the custom capabilities on 64-bit Windows installations.
+		/// </para>
+		/// <para>
+		/// For each custom capability, you must first add printer data that describes the type of the capability. To do this, when you call
+		/// <c>SetPrinterData</c>, set the pValueName string to <c>CustomDeviceCapabilityType_Xxx</c>, where "Xxx" is the hexadecimal
+		/// representation of the capability. For example, you might have "CustomDeviceCapabilityType_1234". The registry data that you set
+		/// must be of the <c>REG_DWORD</c> type, and you must set its value to one of the following:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>0, if the custom capability is a <c>DWORD</c></term>
+		/// </item>
+		/// <item>
+		/// <term>1, if the custom capability is a buffer of bytes</term>
+		/// </item>
+		/// <item>
+		/// <term>2, if the custom capability is an array of items</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If the custom capability is an array of items, you must call <c>SetPinterData</c> a second time to provide information about the
+		/// size of an item in the array. To do this, when you call <c>SetPinterData</c>, the pValueName string that you provide must be
+		/// "CustomDeviceCapabilitySize_Xxx" where Xxx is the hexadecimal representation of the capability. For example, you might have
+		/// "CustomDeviceCapabilitySize_1234". The registry data that you set must be of the <c>REG_DWORD</c> type, and you must set its
+		/// value to the size in bytes of an item in the array.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-devicecapabilitiesa
+		// int DeviceCapabilitiesA( LPCSTR pDevice, LPCSTR pPort, WORD fwCapability, LPSTR pOutput, const DEVMODEA *pDevMode );
+		[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("wingdi.h", MSDNShortId = "d7f63ef7-0a2e-47c3-9e81-6e8a6dffe9af")]
+		public static extern int DeviceCapabilities(string pDevice, [Optional] string pPort, DC fwCapability, IntPtr pOutput, in DEVMODE pDevMode);
+
 		/// <summary>The <c>DocumentEvent</c> function is an event handler for events associated with printing a document.</summary>
 		/// <param name="hPrinter">
 		/// A handle to a printer object. Use the <c>OpenPrinter</c> or <c>AddPrinter</c> function to retrieve a printer handle.

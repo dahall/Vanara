@@ -155,57 +155,6 @@ namespace Vanara.PInvoke
 			public uint dwFlags;
 		}
 
-		/// <summary>
-		/// The <c>DOCINFO</c> structure contains the input and output file names and other information used by the StartDoc function.
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-docinfoa typedef struct _DOCINFOA { int cbSize; LPCSTR
-		// lpszDocName; LPCSTR lpszOutput; LPCSTR lpszDatatype; DWORD fwType; } DOCINFOA, *LPDOCINFOA;
-		[PInvokeData("wingdi.h", MSDNShortId = "329bf0d9-399b-4f64-a029-361ef7558aeb")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct DOCINFO
-		{
-			/// <summary>The size, in bytes, of the structure.</summary>
-			public int cbSize;
-
-			/// <summary>Pointer to a null-terminated string that specifies the name of the document.</summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpszDocName;
-
-			/// <summary>
-			/// Pointer to a null-terminated string that specifies the name of an output file. If this pointer is <c>NULL</c>, the output
-			/// will be sent to the device identified by the device context handle that was passed to the StartDoc function.
-			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpszOutput;
-
-			/// <summary>
-			/// Pointer to a null-terminated string that specifies the type of data used to record the print job. The legal values for this
-			/// member can be found by calling EnumPrintProcessorDatatypes and can include such values as raw, emf, or XPS_PASS. This member
-			/// can be <c>NULL</c>. Note that the requested data type might be ignored.
-			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpszDatatype;
-
-			/// <summary>
-			/// <para>Specifies additional information about the print job. This member must be zero or one of the following values.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>DI_APPBANDING</term>
-			/// <term>Applications that use banding should set this flag for optimal performance during printing.</term>
-			/// </item>
-			/// <item>
-			/// <term>DI_ROPS_READ_DESTINATION</term>
-			/// <term>The application will use raster operations that involve reading from the destination surface.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public DI fwType;
-		}
-
 		/// <summary>The <c>DRIVER_INFO_1</c> structure identifies a printer driver.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-1 typedef struct _DRIVER_INFO_1 { LPTSTR pName; }
 		// DRIVER_INFO_1, *PDRIVER_INFO_1;
@@ -1993,63 +1942,6 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// The <c>PRINTER_DEFAULTS</c> structure specifies the default data type, environment, initialization data, and access rights for a printer.
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-defaults typedef struct _PRINTER_DEFAULTS { LPTSTR pDatatype;
-		// LPDEVMODE pDevMode; ACCESS_MASK DesiredAccess; } PRINTER_DEFAULTS, *PPRINTER_DEFAULTS;
-		[PInvokeData("winspool.h", MSDNShortId = "df29c3a6-b1d1-4d40-887d-5ffc032a5871")]
-		public class PRINTER_DEFAULTS
-		{
-			/// <summary>Pointer to a null-terminated string that specifies the default data type for a printer.</summary>
-			public string pDatatype;
-
-			/// <summary>
-			/// A <c>DEVMODE</c> structure that identifies the default environment and initialization data for a printer.
-			/// </summary>
-			public DEVMODE? pDevMode;
-
-			/// <summary>
-			/// <para>
-			/// Specifies desired access rights for a printer. The <c>OpenPrinter</c> function uses this member to set access rights to the
-			/// printer. These rights can affect the operation of the <c>SetPrinter</c> and <c>DeletePrinter</c> functions. The access
-			/// rights can be one of the following.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>PRINTER_ACCESS_ADMINISTER</term>
-			/// <term>To perform administrative tasks, such as those provided by SetPrinter.</term>
-			/// </item>
-			/// <item>
-			/// <term>PRINTER_ACCESS_USE</term>
-			/// <term>To perform basic printing operations.</term>
-			/// </item>
-			/// <item>
-			/// <term>PRINTER_ACCESS_MANAGE_LIMITED</term>
-			/// <term>
-			/// To perform administrative tasks, such as those provided by SetPrinter and SetPrinterData. This value is available starting
-			/// from Windows 8.1.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PRINTER_ALL_ACCESS</term>
-			/// <term>
-			/// To perform all administrative tasks and basic printing operations except for SYNCHRONIZE (see Standard Access Rights ).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>generic security values, such as WRITE_DAC</term>
-			/// <term>To allow specific control access rights. See Standard Access Rights.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public ACCESS_MASK DesiredAccess;
-		}
-
-		/// <summary>
 		/// The <c>PRINTER_ENUM_VALUES</c> structure specifies the value name, type, and data for a printer configuration value returned by
 		/// the <c>EnumPrinterDataEx</c> function.
 		/// </summary>
@@ -3677,6 +3569,61 @@ namespace Vanara.PInvoke
 			public string pOrder;
 		}
 
+		/// <summary>
+		/// The <c>PRINTER_DEFAULTS</c> structure specifies the default data type, environment, initialization data, and access rights for a printer.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-defaults typedef struct _PRINTER_DEFAULTS { LPTSTR pDatatype;
+		// LPDEVMODE pDevMode; ACCESS_MASK DesiredAccess; } PRINTER_DEFAULTS, *PPRINTER_DEFAULTS;
+		[PInvokeData("winspool.h", MSDNShortId = "df29c3a6-b1d1-4d40-887d-5ffc032a5871")]
+		public class PRINTER_DEFAULTS
+		{
+			/// <summary>
+			/// <para>
+			/// Specifies desired access rights for a printer. The <c>OpenPrinter</c> function uses this member to set access rights to the
+			/// printer. These rights can affect the operation of the <c>SetPrinter</c> and <c>DeletePrinter</c> functions. The access
+			/// rights can be one of the following.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>PRINTER_ACCESS_ADMINISTER</term>
+			/// <term>To perform administrative tasks, such as those provided by SetPrinter.</term>
+			/// </item>
+			/// <item>
+			/// <term>PRINTER_ACCESS_USE</term>
+			/// <term>To perform basic printing operations.</term>
+			/// </item>
+			/// <item>
+			/// <term>PRINTER_ACCESS_MANAGE_LIMITED</term>
+			/// <term>
+			/// To perform administrative tasks, such as those provided by SetPrinter and SetPrinterData. This value is available starting
+			/// from Windows 8.1.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>PRINTER_ALL_ACCESS</term>
+			/// <term>
+			/// To perform all administrative tasks and basic printing operations except for SYNCHRONIZE (see Standard Access Rights ).
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>generic security values, such as WRITE_DAC</term>
+			/// <term>To allow specific control access rights. See Standard Access Rights.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ACCESS_MASK DesiredAccess;
+
+			/// <summary>Pointer to a null-terminated string that specifies the default data type for a printer.</summary>
+			public string pDatatype;
+
+			/// <summary>A <c>DEVMODE</c> structure that identifies the default environment and initialization data for a printer.</summary>
+			public DEVMODE? pDevMode;
+		}
+
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPRINTER"/> that is disposed using <see cref="ClosePrinter"/>.</summary>
 		public class SafeHPRINTER : SafeHANDLE
 		{
@@ -3739,15 +3686,15 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafeHSPOOLFILE"/> class.</summary>
 			private SafeHSPOOLFILE() : base() { }
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeHSPOOLFILE"/> to <see cref="HSPOOLFILE"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HSPOOLFILE(SafeHSPOOLFILE h) => h.handle;
-
 			/// <summary>Performs an implicit conversion from <see cref="SafeHSPOOLFILE"/> to <see cref="HFILE"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HFILE(SafeHSPOOLFILE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHSPOOLFILE"/> to <see cref="HSPOOLFILE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HSPOOLFILE(SafeHSPOOLFILE h) => h.handle;
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => CloseSpoolFileHandle(hPrinter, handle);

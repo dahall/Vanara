@@ -15,55 +15,293 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Printing-specific authorization to cancel, pause, resume, or restart the job ([MS-DTYP] ACCESS_MASK Bit 27).</summary>
 			JOB_ACCESS_ADMINISTER = 0x00000010,
+
 			/// <summary>Printing-specific read rights for the spool file ([MS-DTYP] ACCESS_MASK Bit 26).<127></summary>
 			JOB_ACCESS_READ = 0x00000020,
-			/// <summary>Access rights for jobs combining RC (Read Control) of ACCESS_MASK with printing-specific JOB_ACCESS_ADMINISTER.
-			/// <para>This value MUST NOT be passed over the wire. If it is, the server SHOULD return ERROR_ACCESS_DENIED.</para></summary>
+
+			/// <summary>
+			/// Access rights for jobs combining RC (Read Control) of ACCESS_MASK with printing-specific JOB_ACCESS_ADMINISTER.
+			/// <para>This value MUST NOT be passed over the wire. If it is, the server SHOULD return ERROR_ACCESS_DENIED.</para>
+			/// </summary>
 			JOB_EXECUTE = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE | JOB_ACCESS_ADMINISTER,
+
 			/// <summary>Access rights for jobs combining RC (Read Control) of ACCESS_MASK with printing-specific JOB_ACCESS_READ.</summary>
 			JOB_READ = ACCESS_MASK.STANDARD_RIGHTS_READ | JOB_ACCESS_READ,
-			/// <summary>Access rights for jobs combining RC (Read Control) of ACCESS_MASK with printing-specific JOB_ACCESS_ADMINISTER.
-			/// <para>This value MUST NOT be passed over the wire. If it is, the server SHOULD return ERROR_ACCESS_DENIED.</para></summary>
+
+			/// <summary>
+			/// Access rights for jobs combining RC (Read Control) of ACCESS_MASK with printing-specific JOB_ACCESS_ADMINISTER.
+			/// <para>This value MUST NOT be passed over the wire. If it is, the server SHOULD return ERROR_ACCESS_DENIED.</para>
+			/// </summary>
 			JOB_WRITE = ACCESS_MASK.STANDARD_RIGHTS_WRITE | JOB_ACCESS_ADMINISTER,
-			/// <summary>Access rights for printers to perform all administrative tasks and basic printing operations except SYNCHRONIZE ([MS-DTYP] ACCESS_MASK Bit 'SY'). Combines STANDARD_RIGHTS_REQUIRED (ACCESS_MASK Bits 'RC', 'DE', 'WD', 'WO'), JOB_ACCESS_ADMINISTER (ACCESS_MASK Bit 27), and JOB_ACCESS_READ (ACCESS_MASK Bit 26).</summary>
+
+			/// <summary>
+			/// Access rights for printers to perform all administrative tasks and basic printing operations except SYNCHRONIZE ([MS-DTYP]
+			/// ACCESS_MASK Bit 'SY'). Combines STANDARD_RIGHTS_REQUIRED (ACCESS_MASK Bits 'RC', 'DE', 'WD', 'WO'), JOB_ACCESS_ADMINISTER
+			/// (ACCESS_MASK Bit 27), and JOB_ACCESS_READ (ACCESS_MASK Bit 26).
+			/// </summary>
 			JOB_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | JOB_ACCESS_ADMINISTER | JOB_ACCESS_READ,
+
 			/// <summary>Printing-specific access rights for printers to perform administrative tasks ([MS-DTYP] ACCESS_MASK Bit 29).</summary>
 			PRINTER_ACCESS_ADMINISTER = 0x00000004,
-			/// <summary>Printing-specific access rights for printers to perform basic printing operations ([MS-DTYP] ACCESS_MASK Bit 28).</summary>
+
+			/// <summary>
+			/// Printing-specific access rights for printers to perform basic printing operations ([MS-DTYP] ACCESS_MASK Bit 28).
+			/// </summary>
 			PRINTER_ACCESS_USE = 0x00000008,
-			/// <summary>Printing-specific access rights for printers to perform printer data management operations ([MS-DTYP] ACCESS_MASK Bit 25).<128></summary>
+
+			/// <summary>Printing-specific access rights for printers to perform printer data management operations ([MS-DTYP] ACCESS_MASK
+			/// Bit 25).<128></summary>
 			PRINTER_ACCESS_MANAGE_LIMITED = 0x00000040,
-			/// <summary>Access rights for printers to perform all administrative tasks and basic printing operations except synchronization. Combines WO (Write Owner), WD (Write DACL), RC (Read Control), and DE (Delete) of ACCESS_MASK with printing-specific PRINTER_ACCESS_ADMINISTER and printing-specific PRINTER_ACCESS_USE.</summary>
+
+			/// <summary>
+			/// Access rights for printers to perform all administrative tasks and basic printing operations except synchronization.
+			/// Combines WO (Write Owner), WD (Write DACL), RC (Read Control), and DE (Delete) of ACCESS_MASK with printing-specific
+			/// PRINTER_ACCESS_ADMINISTER and printing-specific PRINTER_ACCESS_USE.
+			/// </summary>
 			PRINTER_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | PRINTER_ACCESS_ADMINISTER | PRINTER_ACCESS_USE,
+
 			/// <summary>Access rights for printers combining RC (Read Control) of ACCESS_MASK with printing-specific PRINTER_ACCESS_USE.</summary>
 			PRINTER_EXECUTE = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE | PRINTER_ACCESS_USE,
+
 			/// <summary>Access rights for printers combining RC (Read Control) of ACCESS_MASK with printing-specific PRINTER_ACCESS_USE.</summary>
 			PRINTER_READ = ACCESS_MASK.STANDARD_RIGHTS_READ | PRINTER_ACCESS_USE,
+
 			/// <summary>Access rights for printers combining RC (Read Control) of ACCESS_MASK with printing-specific PRINTER_ACCESS_USE.</summary>
 			PRINTER_WRITE = ACCESS_MASK.STANDARD_RIGHTS_WRITE | PRINTER_ACCESS_USE,
+
 			/// <summary>Printing-specific access rights to administer print servers ([MS-DTYP] ACCESS_MASK Bit 31).</summary>
 			SERVER_ACCESS_ADMINISTER = 0x00000001,
+
 			/// <summary>Printing-specific access rights to enumerate print servers ([MS-DTYP] ACCESS_MASK Bit 30).</summary>
 			SERVER_ACCESS_ENUMERATE = 0x00000002,
-			/// <summary>Access rights for print servers to perform all administrative tasks and basic printing operations except synchronization. Combines WO (Write Owner), WD (Write DACL), RC (Read Control), and DE (Delete) of ACCESS_MASK with printing-specific SERVER_ACCESS_ADMINISTER and printing-specific SERVER_ACCESS_ENUMERATE.</summary>
+
+			/// <summary>
+			/// Access rights for print servers to perform all administrative tasks and basic printing operations except synchronization.
+			/// Combines WO (Write Owner), WD (Write DACL), RC (Read Control), and DE (Delete) of ACCESS_MASK with printing-specific
+			/// SERVER_ACCESS_ADMINISTER and printing-specific SERVER_ACCESS_ENUMERATE.
+			/// </summary>
 			SERVER_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | SERVER_ACCESS_ADMINISTER | SERVER_ACCESS_ENUMERATE,
+
 			/// <summary>Access rights for print servers combining RC (Read Control) of ACCESS_MASK with printing-specific SERVER_ACCESS_ENUMERATE.</summary>
 			SERVER_EXECUTE = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE | SERVER_ACCESS_ENUMERATE,
+
 			/// <summary>Access rights for print servers combining RC (Read Control) of ACCESS_MASK with printing-specific SERVER_ACCESS_ENUMERATE.</summary>
 			SERVER_READ = ACCESS_MASK.STANDARD_RIGHTS_READ | SERVER_ACCESS_ENUMERATE,
-			/// <summary>Access rights for print servers combining RC (Read Control) of ACCESS_MASK with printing-specific SERVER_ACCESS_ADMINISTER and printing-specific SERVER_ACCESS_ENUMERATE.</summary>
+
+			/// <summary>
+			/// Access rights for print servers combining RC (Read Control) of ACCESS_MASK with printing-specific SERVER_ACCESS_ADMINISTER
+			/// and printing-specific SERVER_ACCESS_ENUMERATE.
+			/// </summary>
 			SERVER_WRITE = ACCESS_MASK.STANDARD_RIGHTS_WRITE | SERVER_ACCESS_ADMINISTER | SERVER_ACCESS_ENUMERATE,
 		}
 
-		/// <summary>Specifies additional information about the print job.</summary>
-		[PInvokeData("wingdi.h", MSDNShortId = "329bf0d9-399b-4f64-a029-361ef7558aeb")]
-		public enum DI
+		/// <summary>The capabilities to be queried.</summary>
+		[PInvokeData("wingdi.h", MSDNShortId = "d7f63ef7-0a2e-47c3-9e81-6e8a6dffe9af")]
+		public enum DC : uint
 		{
-			/// <summary>Applications that use banding should set this flag for optimal performance during printing.</summary>
-			DI_APPBANDING = 0x00000001,
+			/// <summary>
+			/// Returns the dmFields member of the printer driver's DEVMODE structure. The dmFields member indicates which members in the
+			/// device-independent portion of the structure are supported by the printer driver.
+			/// </summary>
+			DC_FIELDS = 1,
 
-			/// <summary>The application will use raster operations that involve reading from the destination surface.</summary>
-			DI_ROPS_READ_DESTINATION = 0x00000002
+			/// <summary>
+			/// Retrieves a list of supported paper sizes. The pOutput buffer receives an array of WORD values that indicate the available
+			/// paper sizes for the printer. The return value indicates the number of entries in the array. For a list of the possible array
+			/// values, see the description of the dmPaperSize member of the DEVMODE structure. If pOutput is NULL, the return value
+			/// indicates the required number of entries in the array.
+			/// </summary>
+			DC_PAPERS = 2,
+
+			/// <summary>
+			/// Retrieves the dimensions, in tenths of a millimeter, of each supported paper size. The pOutput buffer receives an array of
+			/// POINT structures. Each structure contains the width (x-dimension) and length (y-dimension) of a paper size as if the paper
+			/// were in the DMORIENT_PORTRAIT orientation. The return value indicates the number of entries in the array.
+			/// </summary>
+			DC_PAPERSIZE = 3,
+
+			/// <summary>
+			/// Returns the minimum paper size that the dmPaperLength and dmPaperWidth members of the printer driver's DEVMODE structure can
+			/// specify. The LOWORD of the return value contains the minimum dmPaperWidth value, and the HIWORD contains the minimum
+			/// dmPaperLength value.
+			/// </summary>
+			DC_MINEXTENT = 4,
+
+			/// <summary>
+			/// Returns the maximum paper size that the dmPaperLength and dmPaperWidth members of the printer driver's DEVMODE structure can
+			/// specify. The LOWORD of the return value contains the maximum dmPaperWidth value, and the HIWORD contains the maximum
+			/// dmPaperLength value.
+			/// </summary>
+			DC_MAXEXTENT = 5,
+
+			/// <summary>
+			/// Retrieves a list of available paper bins. The pOutput buffer receives an array of WORD values that indicate the available
+			/// paper sources for the printer. The return value indicates the number of entries in the array. For a list of the possible
+			/// array values, see the description of the dmDefaultSource member of the DEVMODE structure. If pOutput is NULL, the return
+			/// value indicates the required number of entries in the array.
+			/// </summary>
+			DC_BINS = 6,
+
+			/// <summary>
+			/// If the printer supports duplex printing, the return value is 1; otherwise, the return value is zero. The pOutput parameter
+			/// is not used.
+			/// </summary>
+			DC_DUPLEX = 7,
+
+			/// <summary>Returns the dmSize member of the printer driver's DEVMODE structure.</summary>
+			DC_SIZE = 8,
+
+			/// <summary>
+			/// Returns the number of bytes required for the device-specific portion of the DEVMODE structure for the printer driver.
+			/// </summary>
+			DC_EXTRA = 9,
+
+			/// <summary>Returns the specification version to which the printer driver conforms.</summary>
+			DC_VERSION = 10,
+
+			/// <summary>Returns the version number of the printer driver.</summary>
+			DC_DRIVER = 11,
+
+			/// <summary>
+			/// Retrieves the names of the printer's paper bins. The pOutput buffer receives an array of string buffers. Each string buffer
+			/// is 24 characters long and contains the name of a paper bin. The return value indicates the number of entries in the array.
+			/// The name strings are null-terminated unless the name is 24 characters long. If pOutput is NULL, the return value is the
+			/// number of bin entries required.
+			/// </summary>
+			DC_BINNAMES = 12,
+
+			/// <summary>
+			/// Retrieves a list of the resolutions supported by the printer. The pOutput buffer receives an array of LONG values. For each
+			/// supported resolution, the array contains a pair of LONG values that specify the x and y dimensions of the resolution, in
+			/// dots per inch. The return value indicates the number of supported resolutions. If pOutput is NULL, the return value
+			/// indicates the number of supported resolutions.
+			/// </summary>
+			DC_ENUMRESOLUTIONS = 13,
+
+			/// <summary>
+			/// Retrieves the names of any additional files that need to be loaded when a driver is installed. The pOutput buffer receives
+			/// an array of string buffers. Each string buffer is 64 characters long and contains the name of a file. The return value
+			/// indicates the number of entries in the array. The name strings are null-terminated unless the name is 64 characters long. If
+			/// pOutput is NULL, the return value is the number of files.
+			/// </summary>
+			DC_FILEDEPENDENCIES = 14,
+
+			/// <summary>
+			/// Retrieves the abilities of the driver to use TrueType fonts. For DC_TRUETYPE, the pOutput parameter should be NULL. The
+			/// return value can be one or more of the following: DCTT_BITMAP Device can print TrueType fonts as graphics. DCTT_DOWNLOAD
+			/// Device can download TrueType fonts. DCTT_SUBDEV Device can substitute device fonts for TrueType fonts.
+			/// </summary>
+			DC_TRUETYPE = 15,
+
+			/// <summary>
+			/// Retrieves a list of supported paper names (for example, Letter or Legal). The pOutput buffer receives an array of string
+			/// buffers. Each string buffer is 64 characters long and contains the name of a paper form. The return value indicates the
+			/// number of entries in the array. The name strings are null-terminated unless the name is 64 characters long. If pOutput is
+			/// NULL, the return value is the number of paper forms.
+			/// </summary>
+			DC_PAPERNAMES = 16,
+
+			/// <summary>
+			/// Returns the relationship between portrait and landscape orientations for a device, in terms of the number of degrees that
+			/// portrait orientation is rotated counterclockwise to produce landscape orientation. The return value can be one of the
+			/// following: 0 No landscape orientation. 90 Portrait is rotated 90 degrees to produce landscape. 270 Portrait is rotated 270
+			/// degrees to produce landscape.
+			/// </summary>
+			DC_ORIENTATION = 17,
+
+			/// <summary>Returns the number of copies the device can print.</summary>
+			DC_COPIES = 18,
+
+			/// <summary>Not used for NT-based operating systems.</summary>
+			DC_BINADJUST = 19,
+
+			/// <summary>Not used for NT-based operating systems.</summary>
+			DC_EMF_COMPLIANT = 20,
+
+			/// <summary>Not used for NT-based operating systems.</summary>
+			DC_DATATYPE_PRODUCED = 21,
+
+			/// <summary>
+			/// If the printer supports collating, the return value is 1; otherwise, the return value is zero. The pOutput parameter is not used.
+			/// </summary>
+			DC_COLLATE = 22,
+
+			/// <summary>Not used for NT-based operating systems.</summary>
+			DC_MANUFACTURER = 23,
+
+			/// <summary>Not used for NT-based operating systems.</summary>
+			DC_MODEL = 24,
+
+			/// <summary>
+			/// Retrieves a list of printer description languages supported by the printer. The pOutput buffer receives an array of string
+			/// buffers. Each buffer is 32 characters long and contains the name of a printer description language. The return value
+			/// indicates the number of entries in the array. The name strings are null-terminated unless the name is 32 characters long. If
+			/// pOutput is NULL, the return value indicates the required number of array entries.
+			/// </summary>
+			DC_PERSONALITY = 25,
+
+			/// <summary>
+			/// The return value indicates the printer's print rate. The value returned for DC_PRINTRATEUNIT indicates the units of the
+			/// DC_PRINTRATE value. The pOutput parameter is not used.
+			/// </summary>
+			DC_PRINTRATE = 26,
+
+			/// <summary>
+			/// The return value is one of the following values that indicate the print rate units for the value returned for the
+			/// DC_PRINTRATE flag. The pOutput parameter is not used. PRINTRATEUNIT_CPS Characters per second. PRINTRATEUNIT_IPM Inches per
+			/// minute. PRINTRATEUNIT_LPM Lines per minute. PRINTRATEUNIT_PPM Pages per minute.
+			/// </summary>
+			DC_PRINTRATEUNIT = 27,
+
+			/// <summary>The return value is the amount of available printer memory, in kilobytes. The pOutput parameter is not used.</summary>
+			DC_PRINTERMEM = 28,
+
+			/// <summary>
+			/// Retrieves the names of the paper forms that are currently available for use. The pOutput buffer receives an array of string
+			/// buffers. Each string buffer is 64 characters long and contains the name of a paper form. The return value indicates the
+			/// number of entries in the array. The name strings are null-terminated unless the name is 64 characters long. If pOutput is
+			/// NULL, the return value is the number of paper forms.
+			/// </summary>
+			DC_MEDIAREADY = 29,
+
+			/// <summary>
+			/// If the printer supports stapling, the return value is a nonzero value; otherwise, the return value is zero. The pOutput
+			/// parameter is not used.
+			/// </summary>
+			DC_STAPLE = 30,
+
+			/// <summary>The return value indicates the printer's print rate, in pages per minute. The pOutput parameter is not used.</summary>
+			DC_PRINTRATEPPM = 31,
+
+			/// <summary>
+			/// If the printer supports color printing, the return value is 1; otherwise, the return value is zero. The pOutput parameter is
+			/// not used.
+			/// </summary>
+			DC_COLORDEVICE = 32,
+
+			/// <summary>
+			/// Retrieves an array of integers that indicate that printer's ability to print multiple document pages per printed page. The
+			/// pOutput buffer receives an array of DWORD values. Each value represents a supported number of document pages per printed
+			/// page. The return value indicates the number of entries in the array. If pOutput is NULL, the return value indicates the
+			/// required number of entries in the array.
+			/// </summary>
+			DC_NUP = 33,
+
+			/// <summary>
+			/// Retrieves the names of the supported media types. The pOutput buffer receives an array of string buffers. Each string buffer
+			/// is 64 characters long and contains the name of a supported media type. The return value indicates the number of entries in
+			/// the array. The strings are null-terminated unless the name is 64 characters long. If pOutput is NULL, the return value is
+			/// the number of media type names required.
+			/// </summary>
+			DC_MEDIATYPENAMES = 34,
+
+			/// <summary>
+			/// Retrieves a list of supported media types. The pOutput buffer receives an array of DWORD values that indicate the supported
+			/// media types. The return value indicates the number of entries in the array. For a list of possible array values, see the
+			/// description of the dmMediaType member of the DEVMODE structure. If pOutput is NULL, the return value indicates the required
+			/// number of entries in the array.
+			/// </summary>
+			DC_MEDIATYPES = 35,
 		}
 
 		/// <summary>Device mode flags.</summary>
