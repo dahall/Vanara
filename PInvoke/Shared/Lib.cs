@@ -131,5 +131,8 @@
 
 		/// <summary>The Winsock2 dll</summary>
 		public const string Ws2_32 = "ws2_32.dll";
+
+		/// <summary>The XpsPrint dll</summary>
+		public const string XpsPrint = "xpsprint.dll";
 	}
 }
