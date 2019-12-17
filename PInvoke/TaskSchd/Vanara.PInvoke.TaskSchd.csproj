@@ -7,7 +7,7 @@
     <Description>PInvoke API (methods, structures and constants) imported for Windows Task Scheduler 1.0 and 2.0 COM objects.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.6</VersionPrefix>
+    <VersionPrefix>3.1.7</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.TaskSchd</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -67,6 +67,6 @@ ITask, ITaskScheduler, IAction, IActionCollection, IBootTrigger, IComHandlerActi
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

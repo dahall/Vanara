@@ -7,7 +7,7 @@
     <Description>PInvoke API (methods, structures and constants) imported from opcservices.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.6</VersionPrefix>
+    <VersionPrefix>3.1.7</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Opc</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -25,7 +25,8 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>
+    </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
@@ -50,6 +51,6 @@
     <ProjectReference Include="..\UrlMon\Vanara.PInvoke.UrlMon.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

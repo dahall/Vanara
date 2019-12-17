@@ -7,7 +7,7 @@
     <Description>PInvoke API (methods, structures and constants) imported from Windows winspool.drv and prntvpt.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.6</VersionPrefix>
+    <VersionPrefix>3.1.7</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Printing</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -50,7 +50,8 @@ HPTPROVIDER, ADDJOB_INFO_1, CORE_PRINTER_DRIVER, DATATYPES_INFO_1, DOC_INFO_1, D
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) "></ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) ">
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
@@ -58,6 +59,6 @@ HPTPROVIDER, ADDJOB_INFO_1, CORE_PRINTER_DRIVER, DATATYPES_INFO_1, DOC_INFO_1, D
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

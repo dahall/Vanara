@@ -7,7 +7,7 @@
     <Description>PInvoke API (methods, structures and constants) imported from Windows NetApi32.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.6</VersionPrefix>
+    <VersionPrefix>3.1.7</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.NetApi32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -87,6 +87,6 @@ DAV_CALLBACK_AUTH_BLOB, DAV_CALLBACK_AUTH_UNP, DAV_CALLBACK_CRED, DOMAIN_CONTROL
     <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>
