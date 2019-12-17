@@ -37,6 +37,8 @@ Interfaces
 ITask, ITaskScheduler, IAction, IActionCollection, IBootTrigger, IComHandlerAction, IDailyTrigger, IEmailAction, IEventTrigger, IExecAction, IIdleSettings, IIdleTrigger, ILogonTrigger, IMaintenanceSettings, IMonthlyDOWTrigger, IMonthlyTrigger, INetworkSettings, IPrincipal, IPrincipal2, IRegisteredTask, IRegisteredTaskCollection, IRegistrationInfo, IRegistrationTrigger, IRepetitionPattern, IRunningTask, IRunningTaskCollection, ISessionStateChangeTrigger, IShowMessageAction, ITaskDefinition, ITaskFolder, ITaskFolderCollection, ITaskHandler, ITaskHandlerStatus, ITaskNamedValueCollection, ITaskNamedValuePair, ITaskService, ITaskSettings, ITaskSettings2, ITaskSettings3, ITaskVariables, ITimeTrigger, ITrigger, ITriggerCollection, IWeeklyTrigger
 
 </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
@@ -63,5 +65,8 @@ ITask, ITaskScheduler, IAction, IActionCollection, IBootTrigger, IComHandlerActi
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>

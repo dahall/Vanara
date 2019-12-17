@@ -37,6 +37,8 @@ Structures
 COMPRESS_ALLOCATION_ROUTINES, COMPRESSOR_HANDLE, DECOMPRESSOR_HANDLE, CCAB, ERF, HFCI, FDICABINETINFO, FDIDECRYPT, FDINOTIFICATION, HFDI, Union, NEW_CABINET, NEW_FOLDER, DECRYPT
 
 </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -60,5 +62,8 @@ COMPRESS_ALLOCATION_ROUTINES, COMPRESSOR_HANDLE, DECOMPRESSOR_HANDLE, CCAB, ERF,
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>

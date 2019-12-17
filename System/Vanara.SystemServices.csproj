@@ -29,6 +29,8 @@ Enumerations
 BatteryStatus, EnergySaverStatus, JobLimit, NetworkInterfaceAccessType, NetworkInterfaceAdministrativeStatus, NetworkInterfaceConnectionType, NetworkInterfaceDirectionType, NetworkInterfaceMediaType, NetworkInterfacePhysicalMedium, PathCharType, PowerCapabilities, PowerSupplyStatus, ProcessIntegrityLevel, ServiceControllerAccessRights, ShareOfflineSettings
 
 </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Vanara.snk</AssemblyOriginatorKeyFile>
@@ -72,5 +74,8 @@ BatteryStatus, EnergySaverStatus, JobLimit, NetworkInterfaceAccessType, NetworkI
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
     <ProjectReference Include="..\Security\Vanara.Security.csproj" />
     <ProjectReference Include="..\VirtualDisk\Vanara.VirtualDisk.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>

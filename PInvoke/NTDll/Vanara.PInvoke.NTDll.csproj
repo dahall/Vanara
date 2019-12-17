@@ -34,6 +34,8 @@ Structures
 CLIENT_ID, IO_STATUS_BLOCK, KEY_BASIC_INFORMATION, KEY_FULL_INFORMATION, KEY_NAME_INFORMATION, KEY_NODE_INFORMATION, LDR_DLL_NOTIFICATION_DATA, OBJECT_ATTRIBUTES, SYSTEM_BASIC_INFORMATION, SYSTEM_PROCESS_INFORMATION, SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION, SYSTEM_REGISTRY_QUOTA_INFORMATION, SYSTEM_THREAD_INFORMATION, UNICODE_STRING
 
 </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
@@ -61,5 +63,8 @@ CLIENT_ID, IO_STATUS_BLOCK, KEY_BASIC_INFORMATION, KEY_FULL_INFORMATION, KEY_NAM
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>

@@ -29,6 +29,8 @@ Enumerations
 AccountLogonRights, DesiredAccess, SystemPrivilege
 
 </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Vanara.snk</AssemblyOriginatorKeyFile>
@@ -61,5 +63,8 @@ AccountLogonRights, DesiredAccess, SystemPrivilege
     <ProjectReference Include="..\PInvoke\NTDSApi\Vanara.PInvoke.NTDSApi.csproj" />
     <ProjectReference Include="..\PInvoke\Security\Vanara.PInvoke.Security.csproj" />
     <ProjectReference Include="..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>

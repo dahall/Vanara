@@ -34,6 +34,8 @@ Structures
 DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS, GLOBAL_MACHINE_POWER_POLICY, GLOBAL_POWER_POLICY, GLOBAL_USER_POWER_POLICY, MACHINE_POWER_POLICY, MACHINE_PROCESSOR_POWER_POLICY, POWER_POLICY, THERMAL_EVENT, USER_POWER_POLICY, BATTERY_REPORTING_SCALE, POWER_ACTION_POLICY, PROCESSOR_POWER_POLICY, PROCESSOR_POWER_POLICY_INFO, SYSTEM_POWER_CAPABILITIES, SYSTEM_POWER_LEVEL
 
 </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
@@ -61,5 +63,8 @@ DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS, GLOBAL_MACHINE_POWER_POLICY, GLOBAL_POWER_PO
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>

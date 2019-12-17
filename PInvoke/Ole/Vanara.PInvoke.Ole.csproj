@@ -37,6 +37,8 @@ Interfaces
 IInspectable, IMessageDispatcher, IActivationFilter, IAgileObject, IAgileReference, IBindCtxV, IContext, IDataAdviseHolder, IDirectWriterLock, IEnumContextProps, IEnumSTATSTG, IEnumUnknown, IFillLockBytes, IInitializeSpy, ILayoutStorage, ILockBytes, IMalloc, IMallocSpy, IMarshal, IMessageFilter, INoMarshal, IObjContext, IPersistStorage, IRunningObjectTable, ISequentialStream, IStorage, ISurrogate, IChannelHook, IDropSource, IDropTarget, IEnumOLEVERB, IOleAdviseHolder, IOleCache, IOleClientSite, IOleContainer, IOleInPlaceActiveObject, IOleInPlaceFrame, IOleInPlaceUIWindow, IOleObject, IOleWindow, IParseDisplayName, IPersist, IPersistStream, IPersistStreamInit, IEnumSTATPROPSETSTG, IEnumSTATPROPSTG, IPropertySetStorage, IPropertyStorage, IClassFactory, IClassFactory2, ICreateErrorInfo, ICreateTypeInfo, ICreateTypeInfo2, ICreateTypeLib, ICreateTypeLib2, IDispatch, IErrorInfo, IErrorLog, IPropertyBag, IRecordInfo, ISupportErrorInfo, ITypeChangeEvents, ICreateObject, IDelayedPropertyStoreFactory, IInitializeWithStream, IPropertyDescription, IPropertyDescription2, IPropertyDescriptionList, IPropertyEnumType, IPropertyEnumType2, IPropertyEnumTypeList, IPropertyStore, IPropertyStoreFactory, IPropertySystem, IObjectWithPropertyKey, IPropertyChange, IPropertyChangeArray
 
 </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
@@ -64,5 +66,8 @@ IInspectable, IMessageDispatcher, IActivationFilter, IAgileObject, IAgileReferen
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>

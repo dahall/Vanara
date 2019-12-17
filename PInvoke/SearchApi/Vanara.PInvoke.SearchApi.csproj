@@ -34,6 +34,8 @@ Interfaces
 IEnumSearchRoots, IEnumSearchScopeRules, IFilter, ILoadFilter, IOpLockStatus, IProtocolHandlerSite, IRowsetEvents, IRowsetPrioritization, ISearchCatalogManager, ISearchCatalogManager2, ISearchCrawlScopeManager, ISearchCrawlScopeManager2, ISearchItemsChangedSink, ISearchLanguageSupport, ISearchManager, ISearchManager2, ISearchNotifyInlineSite, ISearchPersistentItemsChangedSink, ISearchProtocol, ISearchProtocol2, ISearchProtocolThreadContext, ISearchQueryHelper, ISearchRoot, ISearchScopeRule, ISearchViewChangedSink, IUrlAccessor, IUrlAccessor2, IUrlAccessor3, IUrlAccessor4, ISearchFolderItemFactory, IConditionFactory, IConditionFactory2, IEntity, INamedEntity, IQueryParser, IQueryParserManager, IQuerySolution, IRelationship, ISchemaLocalizerSupport, ISchemaProvider, ITokenCollection, ICondition, ICondition2, IRichChunk
 
 </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
@@ -62,5 +64,8 @@ IEnumSearchRoots, IEnumSearchScopeRules, IFilter, ILoadFilter, IOpLockStatus, IP
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
     <ProjectReference Include="..\Shell32\Vanara.PInvoke.Shell32.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>

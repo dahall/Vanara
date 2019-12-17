@@ -31,6 +31,8 @@ Functions
 AccessibleChildren, AccessibleObjectFromEvent, AccessibleObjectFromPoint, AccessibleObjectFromWindow, AccNotifyTouchInteraction, AccSetRunningUtilityState, CreateStdAccessibleObject, CreateStdAccessibleProxy, GetOleaccVersionInfo, GetProcessHandleFromHwnd, GetRoleText, GetStateText, LresultFromObject, ObjectFromLresult, WindowFromAccessibleObject
 
 </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
@@ -61,5 +63,8 @@ AccessibleChildren, AccessibleObjectFromEvent, AccessibleObjectFromPoint, Access
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>

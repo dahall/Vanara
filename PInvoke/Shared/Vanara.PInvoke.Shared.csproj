@@ -41,6 +41,8 @@ Enumerations
 CharacterSet, CM_RESOURCE, CM_SHARE_DISPOSITION, CmResourceType, DMCOLLATE, DMCOLOR, DMDFO, DMDISPLAY, DMDITHER, DMDO, DMDUP, DMFIELDS, DMICM, DMICMMETHOD, DMMEDIA, DMNUP, DMORIENT, DMPAPER, DMRES, DMTT, DrawTextFlags, FacilityCode, FacilityCode, FileFlagsAndAttributes, FontFamily, FontPitch, INTERFACE_TYPE, LogFontClippingPrecision, LogFontOutputPrecision, LogFontOutputQuality, NTDDI, ObjectTypeListLevel, PInvokeClient, ProcessorArchitecture, REG_VALUE_TYPE, ResourceType, SECURITY_INFORMATION, SeverityLevel, SeverityLevel, ShowWindowCommand, STGM, SystemColorIndex, SystemShutDownReason, URLZONE, WIN32_WINNT
 
 </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
@@ -65,5 +67,8 @@ CharacterSet, CM_RESOURCE, CM_SHARE_DISPOSITION, CmResourceType, DMCOLLATE, DMCO
     <PackageReference Include="Microsoft.Win32.Registry">
       <Version>4.6.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>

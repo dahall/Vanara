@@ -34,6 +34,8 @@ Structures
 DTTOPTS, INTLIST, MARGINS, TA_TIMINGFUNCTION, TA_TRANSFORM, WTA_OPTIONS, DTBGOPTS, BP_ANIMATIONPARAMS, HANIMATIONBUFFER, HPAINTBUFFER, BP_PAINTPARAMS
 
 </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
@@ -62,5 +64,8 @@ DTTOPTS, INTLIST, MARGINS, TA_TIMINGFUNCTION, TA_TRANSFORM, WTA_OPTIONS, DTBGOPT
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
     <ProjectReference Include="..\User32\Vanara.PInvoke.User32.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>

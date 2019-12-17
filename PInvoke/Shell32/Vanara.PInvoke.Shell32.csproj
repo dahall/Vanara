@@ -37,6 +37,8 @@ Interfaces
 IOleCommandTarget, IShellWindows, IObjectArray, IObjectCollection, DFConstraint, DShellFolderViewEvents, Folder, Folder2, Folder3, FolderItem, FolderItem2, FolderItems, FolderItems2, FolderItems3, FolderItemVerb, FolderItemVerbs, IAutoComplete, IAutoComplete2, IFileSearchBand, IFolderViewOC, INewWDEvents, IShellDispatch, IShellDispatch2, IShellDispatch3, IShellDispatch4, IShellDispatch5, IShellDispatch6, IShellFolderViewDual, IShellFolderViewDual2, IShellFolderViewDual3, IShellLinkDual, IShellLinkDual2, IWebWizardHost, IWebWizardHost2, IExtractIcon, IProgressDialog, IOpenControlPanel, IApplicationAssociationRegistration, IApplicationDestinations, IApplicationDocumentLists, IDefaultExtractIconInit, IEnumAssocHandlers, IEnumIDList, IFileIsInUse, IFileSystemBindData, IFileSystemBindData2, IQueryInfo, IActionProgress, IActionProgressDialog, ICommDlgBrowser, ICommDlgBrowser3, IContextMenu, IContextMenu2, IContextMenu3, IContextMenuCB, ICopyHookA, ICopyHookW, IExecuteCommand, IInitializeCommand, IExplorerBrowser, IExplorerBrowserEvents, IExplorerPaneVisibility, IExtractImage, IFileDialog, IFileDialog2, IFileDialogControlEvents, IFileDialogCustomize, IFileDialogEvents, IFileOpenDialog, IFileOperationProgressSink, IFileSaveDialog, IModalWindow, IFileOperation, IColumnManager, IFolderView, IFolderView2, IResultsFolder, IInitializeWithFile, IInitializeWithItem, IInitializeWithStream, IInputObject, IInputObject2, IInputObjectSite, IKnownFolder, IKnownFolderManager, INamespaceWalk, INamespaceWalkCB, INamespaceWalkCB2, IObjectWithSelection, IObjectWithAppUserModelId, IObjectWithProgId, IObjectWithSite, IOperationsProgressDialog, IParentAndItem, IPreviewHandler, IPreviewHandlerFrame, IPreviewHandlerVisuals, IServiceProvider, IShellExtInit, IEnumExtraSearch, IShellFolder, IShellFolder2, IEnumShellItems, IShellItem, IShellItem2, IShellItemArray, IShellItemImageFactory, IShellLibrary, IShellLinkDataList, IShellLinkW, IShellPropSheetExt, IFolderViewOptions, IShellBrowser, IShellFolderViewCB, IShellView, IShellView2, IShellView3, IStartMenuPinnedList, ICustomDestinationList, ITaskbarList, ITaskbarList2, ITaskbarList3, ITaskbarList4, IThumbnailProvider
 
 </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
@@ -71,5 +73,8 @@ IOleCommandTarget, IShellWindows, IObjectArray, IObjectCollection, DFConstraint,
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CustomMarshalers" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>
