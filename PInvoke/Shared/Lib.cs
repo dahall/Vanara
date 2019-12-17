@@ -105,6 +105,9 @@
 		/// <summary>The tokenbinding</summary>
 		public const string Tokenbinding = "tokenbinding.dll";
 
+		/// <summary>The urlmon.dll</summary>
+		public const string UrlMon = "urlmon.dll";
+
 		/// <summary>The user32</summary>
 		public const string User32 = "user32.dll";
 
