@@ -54,6 +54,7 @@ HPTPROVIDER, ADDJOB_INFO_1, CORE_PRINTER_DRIVER, DATATYPES_INFO_1, DOC_INFO_1, D
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
     <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
     <ProjectReference Include="..\Opc\Vanara.PInvoke.Opc.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />

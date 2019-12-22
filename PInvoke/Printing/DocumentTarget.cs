@@ -36,7 +36,7 @@ namespace Vanara.PInvoke
 		/// <summary>Represents the progress of the print job.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/documenttarget/nn-documenttarget-iprintdocumentpackagestatusevent
 		[PInvokeData("documenttarget.h", MSDNShortId = "A2178E6A-04AD-4024-A083-5C76A5F60743")]
-		[ComImport, Guid("ED90C8AD-5C34-4D05-A1EC-0E8A9B3AD7AF"), TypeLibType(TypeLibTypeFlags.FDual | TypeLibTypeFlags.FNonExtensible | TypeLibTypeFlags.FDispatchable)]
+		[ComImport, Guid("ED90C8AD-5C34-4D05-A1EC-0E8A9B3AD7AF")]
 		public interface IPrintDocumentPackageStatusEvent
 		{
 			/// <summary>Updates the status of the package when the print job in progress raises an event, or the job completes.</summary>
