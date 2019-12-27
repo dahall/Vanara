@@ -51,7 +51,7 @@ namespace Vanara.PInvoke
 		// nIndex, UINT dpi );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "E95BB417-81FA-4824-BE68-A1E3E003F8E0")]
-		public static extern int GetSystemMetricsForDpi(int nIndex, uint dpi);
+		public static extern int GetSystemMetricsForDpi(SystemMetric nIndex, uint dpi);
 
 		/// <summary>Retrieves the value of one of the system-wide parameters, taking into account the provided DPI value.</summary>
 		/// <param name="uiAction">
