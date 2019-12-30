@@ -138,28 +138,100 @@ namespace Vanara.IO
 			return wp.IsInRole(WindowsBuiltInRole.Administrator);
 		}
 
+
 		private static void CopyTemplate(string destFileName, CancellationToken ct, Action<BackgroundCopyJobState, byte> report, Action<BackgroundCopyFileCollection> add)
 		{
 			var type = (Uri.TryCreate(destFileName, UriKind.Absolute, out var uri) && !uri.IsFile) ? BackgroundCopyJobType.Upload : BackgroundCopyJobType.Download;
-			using var job = Jobs.Add("Temp" + Guid.NewGuid().ToString(), "", type);
-			using var evt = new ManualResetEventSlim(false);
+
+			using var mainJob = Jobs.Add("Temp" + Guid.NewGuid().ToString(), string.Empty, type);
+
+			using var manualReset = new ManualResetEventSlim(false);
+
 			BackgroundCopyException err = null;
-			job.Completed += (s, e) => { ReportProgress(BackgroundCopyJobState.Transferred); job.Complete(); evt.Set(); };
-			job.Error += (s, e) => { err = job.LastError; job.Cancel(); evt.Set(); };
-			job.FileTransferred += (s, e) => ReportProgress(job.State);
-			job.FileRangesTransferred += (s, e) => ReportProgress(job.State);
-			add(job.Files);
-			job.Resume();
-			evt.Wait(ct);
+
+
+			// Set event handlers for job, these are weak references.
+			mainJob.Completed += OnCompleted;
+			mainJob.Error += OnError;
+			mainJob.FileTransferred += OnFileTransferred;
+			mainJob.FileRangesTransferred += OnFileRangesTransferred;
+
+			add(mainJob.Files);
+
+			mainJob.Resume();
+
+			manualReset.Wait(ct);
+
+
+			var raiseException = false;
+
 			if (ct.IsCancellationRequested)
 			{
-				job.Cancel();
-				throw new OperationCanceledException();
+				mainJob.Cancel();
+				raiseException = true;
 			}
-			if (err != null)
+
+
+			// Remove weak references to prevent memory leak.
+			mainJob.FileRangesTransferred -= OnFileRangesTransferred;
+			mainJob.FileTransferred -= OnFileTransferred;
+			mainJob.Completed -= OnCompleted;
+			mainJob.Error -= OnError;
+
+
+			if (raiseException)
+				throw new OperationCanceledException();
+
+			if (null != err)
 				throw err;
 
-			void ReportProgress(BackgroundCopyJobState state)
+
+
+
+			// Better performance when event methods are defined seperately, preferably static.
+
+
+			void OnCompleted(object s, BackgroundCopyJobEventArgs e)
+			{
+				if (s is BackgroundCopyJob job)
+				{
+					ReportProgress(job, BackgroundCopyJobState.Transferred);
+
+					job.Complete();
+
+					manualReset.Set();
+				}
+			}
+
+
+			void OnError(object s, BackgroundCopyJobEventArgs e)
+			{
+				if (s is BackgroundCopyJob job)
+				{
+					err = job.LastError;
+
+					job.Cancel();
+
+					manualReset.Set();
+				}
+			}
+
+
+			void OnFileTransferred(object s, BackgroundCopyFileTransferredEventArgs e)
+			{
+				if (s is BackgroundCopyJob job)
+					ReportProgress(job, job.State);
+			}
+
+
+			void OnFileRangesTransferred(object s, BackgroundCopyFileRangesTransferredEventArgs e)
+			{
+				if (s is BackgroundCopyJob job)
+					ReportProgress(job, job.State);
+			}
+
+
+			void ReportProgress(BackgroundCopyJob job, BackgroundCopyJobState state)
 			{
 				report?.Invoke(state, job.Progress.PercentComplete);
 			}

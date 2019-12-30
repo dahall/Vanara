@@ -91,6 +91,11 @@ namespace Vanara.IO
 		/// </remarks>
 		public void Add(string remoteFilePath, string localFilePath)
 		{
+			// remoteFilePath must not have a trailing backslash.
+			if (!string.IsNullOrEmpty(remoteFilePath))
+				remoteFilePath.TrimEnd('/');
+
+
 			try
 			{
 				m_ijob.AddFile(remoteFilePath, localFilePath);
@@ -161,6 +166,7 @@ namespace Vanara.IO
 			}
 		}
 
+
 		/// <summary>Add a list of files to download from a URL.</summary>
 		/// <param name="remoteUrlRoot">
 		/// Contains the name of the directory on the server (for example, http://[server]/[path]/). The format of the name must conform to
@@ -176,7 +182,15 @@ namespace Vanara.IO
 		/// <param name="files">
 		/// List of relative file names to retrieve from the remote directory. Filename will be appended to both the remoteUrlRoot and the localDirectory.
 		/// </param>
-		public void AddRange(string remoteUrlRoot, string localDirectory, IEnumerable<string> files) => AddRange(new Uri(remoteUrlRoot), new DirectoryInfo(localDirectory), files);
+		public void AddRange(string remoteUrlRoot, string localDirectory, IEnumerable<string> files)
+		{
+			// remoteUrlRoot must have a trailing backslash.
+			if (!string.IsNullOrEmpty(remoteUrlRoot) && !remoteUrlRoot.EndsWith("/", StringComparison.Ordinal))
+				remoteUrlRoot += "/";
+
+			AddRange(new Uri(remoteUrlRoot), new DirectoryInfo(localDirectory), files);
+		}
+
 
 		/// <summary>
 		/// Returns an object that implements the <see cref="IEnumerator"/> interface and that can iterate through the
