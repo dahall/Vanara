@@ -5,10 +5,10 @@ about: Create a report to help us improve
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+A clear and concise description of the bug. If an exception is involved, include the full output of the exception (stack trace, message, error code, etc.).
 
 **What code is involved**
-Describe the method and library causing the issue:
+The method and library causing the issue. If you have code that will reproduce the bug, please include it here.
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
