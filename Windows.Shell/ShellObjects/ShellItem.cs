@@ -336,6 +336,7 @@ namespace Vanara.Windows.Shell
 	{
 		internal static readonly bool IsMin7 = Environment.OSVersion.Version >= new Version(6, 1);
 		internal static readonly bool IsMinVista = Environment.OSVersion.Version.Major >= 6;
+		internal static readonly PROPERTYKEY pkItemType = PROPERTYKEY.System.ItemType;
 		internal IShellItem iShellItem;
 		internal IShellItem2 iShellItem2;
 		private static Dictionary<Type, BHID> bhidLookup;
@@ -476,29 +477,20 @@ namespace Vanara.Windows.Shell
 		/// <returns>A ShellItem derivative for the supplied IShellItem.</returns>
 		public static ShellItem Open(IShellItem iItem)
 		{
-			if (iItem.GetAttributes(SFGAO.SFGAO_LINK) != 0)
-				return new ShellLink(iItem);
+			string itemType = null;
+			try { itemType = (iItem as IShellItem2)?.GetString(pkItemType)?.ToString().ToLowerInvariant(); } catch { }
 
-			// If not a folder, get the ShellItem
-			if (iItem.GetAttributes(SFGAO.SFGAO_FOLDER) == 0)
-				return new ShellItem(iItem);
+			var isFolder = iItem.GetAttributes(SFGAO.SFGAO_FOLDER) != 0;
 
 			// Try to get specialized folder type from property
-			var pk = PROPERTYKEY.System.ItemType;
-			string itemType = null;
-			try { itemType = (iItem as IShellItem2)?.GetString(pk)?.ToString().ToLowerInvariant(); } catch { }
-			switch (itemType)
+			return itemType switch
 			{
-				case ".library-ms":
-					return new ShellLibrary(iItem);
-
-				case ".searchconnector-ms":
-				// TODO: Return a search connector
-				case ".search-ms":
-				// TODO: Return a saved search connection
-				default:
-					return new ShellFolder(iItem);
-			}
+				".lnk" => new ShellLink(iItem),
+				".library-ms" => new ShellLibrary(iItem),
+				// TODO: ".searchconnector-ms" => Return a search connector
+				// TODO: ".search-ms" => Return a saved search connection
+				_ => isFolder ? new ShellFolder(iItem) : new ShellItem(iItem),
+			};
 		}
 
 		/// <summary>Implements the operator !=.</summary>
@@ -780,10 +772,11 @@ namespace Vanara.Windows.Shell
 
 		private static Bitmap GetTransparentBitmap(HBITMAP hbitmap)
 		{
-			var dibsection = GetObject<DIBSECTION>(hbitmap);
-			var bitmap = new Bitmap(dibsection.dsBm.bmWidth, dibsection.dsBm.bmHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			using (var mstr = new NativeMemoryStream(dibsection.dsBm.bmBits, (long)dibsection.dsBmih.biSizeImage))
+			try
 			{
+				var dibsection = GetObject<DIBSECTION>(hbitmap);
+				var bitmap = new Bitmap(dibsection.dsBm.bmWidth, dibsection.dsBm.bmHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+				using var mstr = new NativeMemoryStream(dibsection.dsBm.bmBits, dibsection.dsBmih.biSizeImage);
 				for (var x = 0; x < dibsection.dsBmih.biWidth; x++)
 					for (var y = 0; y < dibsection.dsBmih.biHeight; y++)
 					{
@@ -791,8 +784,10 @@ namespace Vanara.Windows.Shell
 						if (rgbquad.rgbReserved != 0)
 							bitmap.SetPixel(x, y, rgbquad.Color);
 					}
+				return bitmap;
 			}
-			return bitmap;
+			catch { }
+			return Image.FromHbitmap((IntPtr)hbitmap);
 		}
 
 		/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 using Vanara.InteropServices;
@@ -209,6 +210,14 @@ namespace Vanara.Extensions
 		/// otherwise, this method returns null.
 		/// </returns>
 		public static string GetString(IntPtr ptr, int length, CharSet charSet = CharSet.Auto) => GetString(ptr, charSet, length * GetCharSize(charSet));
+
+		/// <summary>Indicates whether a specified string is <see langword="null"/>, empty, or consists only of white-space characters.</summary>
+		/// <param name="value">The string to test.</param>
+		/// <returns>
+		/// <see langword="true"/> if the <paramref name="value"/> parameter is <see langword="null"/> or <see cref="string.Empty"/>, or if
+		/// value consists exclusively of white-space characters.
+		/// </returns>
+		public static bool IsNullOrWhiteSpace(string value) => value is null || value.All(c => char.IsWhiteSpace(c));
 
 		/// <summary>Refreshes the memory block from the unmanaged COM task allocator and copies the contents of a new managed String.</summary>
 		/// <param name="ptr">The address of the first character.</param>
