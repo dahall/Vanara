@@ -41,7 +41,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="pidls">The list of child item IDs for which the array is being created. This value can be <see langword="null"/>.</param>
 		public ShellItemArray(IShellFolder parent, IEnumerable<PIDL> pidls)
 		{
-			var pa = pidls?.ToArray();
+			var pa = pidls?.Cast<IntPtr>().ToArray();
 			SHCreateShellItemArray(PIDL.Null, parent, (uint)(pa?.Length ?? 0), pa, out array).ThrowIfFailed();
 		}
 
