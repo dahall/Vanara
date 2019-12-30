@@ -185,9 +185,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Printing", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printing", "UnitTests\PInvoke\Printing\Printing.csproj", "{D2A4FD48-FCED-4E45-BBA0-C2D5CC536428}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.UrlMon", "PInvoke\UrlMon\Vanara.PInvoke.UrlMon.csproj", "{1A232558-F25A-4D9B-99DE-76F1B4E41F22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.UrlMon", "PInvoke\UrlMon\Vanara.PInvoke.UrlMon.csproj", "{1A232558-F25A-4D9B-99DE-76F1B4E41F22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Opc", "PInvoke\Opc\Vanara.PInvoke.Opc.csproj", "{E55F37CC-D24D-4EB9-8BD5-0E6D88EF1519}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Opc", "PInvoke\Opc\Vanara.PInvoke.Opc.csproj", "{E55F37CC-D24D-4EB9-8BD5-0E6D88EF1519}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.UserEnv", "PInvoke\UserEnv\Vanara.PInvoke.UserEnv.csproj", "{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -629,6 +631,12 @@ Global
 		{E55F37CC-D24D-4EB9-8BD5-0E6D88EF1519}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E55F37CC-D24D-4EB9-8BD5-0E6D88EF1519}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E55F37CC-D24D-4EB9-8BD5-0E6D88EF1519}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}.Debug (no Unit Tests)|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}.Debug (no Unit Tests)|Any CPU.Build.0 = Debug|Any CPU
+		{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -711,6 +719,7 @@ Global
 		{D2A4FD48-FCED-4E45-BBA0-C2D5CC536428} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{1A232558-F25A-4D9B-99DE-76F1B4E41F22} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{E55F37CC-D24D-4EB9-8BD5-0E6D88EF1519} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

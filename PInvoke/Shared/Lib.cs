@@ -114,6 +114,9 @@
 		/// <summary>The user32</summary>
 		public const string User32 = "user32.dll";
 
+		/// <summary>The userenv.dll</summary>
+		public const string Userenv = "userenv.dll";
+
 		/// <summary>The ux theme</summary>
 		public const string UxTheme = "uxtheme.dll";
 
