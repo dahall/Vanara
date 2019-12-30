@@ -780,10 +780,11 @@ namespace Vanara.Windows.Shell
 
 		private static Bitmap GetTransparentBitmap(HBITMAP hbitmap)
 		{
-			var dibsection = GetObject<DIBSECTION>(hbitmap);
-			var bitmap = new Bitmap(dibsection.dsBm.bmWidth, dibsection.dsBm.bmHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			using (var mstr = new NativeMemoryStream(dibsection.dsBm.bmBits, (long)dibsection.dsBmih.biSizeImage))
+			try
 			{
+				var dibsection = GetObject<DIBSECTION>(hbitmap);
+				var bitmap = new Bitmap(dibsection.dsBm.bmWidth, dibsection.dsBm.bmHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+				using var mstr = new NativeMemoryStream(dibsection.dsBm.bmBits, dibsection.dsBmih.biSizeImage);
 				for (var x = 0; x < dibsection.dsBmih.biWidth; x++)
 					for (var y = 0; y < dibsection.dsBmih.biHeight; y++)
 					{
@@ -791,8 +792,10 @@ namespace Vanara.Windows.Shell
 						if (rgbquad.rgbReserved != 0)
 							bitmap.SetPixel(x, y, rgbquad.Color);
 					}
+				return bitmap;
 			}
-			return bitmap;
+			catch { }
+			return Image.FromHbitmap((IntPtr)hbitmap);
 		}
 
 		/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
