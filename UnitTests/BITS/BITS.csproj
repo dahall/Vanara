@@ -12,15 +12,17 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <LangVersion>latest</LangVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -56,7 +59,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CopyAsyncCancelReportTest.cs" />
+    <Compile Include="CopyAsyncReportTest.cs" />
+    <Compile Include="JobPropTest.cs" />
+    <Compile Include="JobCollTest.cs" />
+    <Compile Include="JobCertificateTest.cs" />
+    <Compile Include="EnumJobTest.cs" />
+    <Compile Include="VersionTest.cs" />
+    <Compile Include="FileCollTest.cs" />
+    <Compile Include="CopyTest.cs" />
+    <Compile Include="CopyAsyncTest.cs" />
+    <Compile Include="UploadJobTest.cs" />
+    <Compile Include="DownloadJobTest.cs" />
     <Compile Include="BackgroundCopyTests.cs" />
+    <Compile Include="TemporaryDirectory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
