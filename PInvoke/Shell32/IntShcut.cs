@@ -6,7 +6,7 @@ using Vanara.InteropServices;
 namespace Vanara.PInvoke
 {
 	/// <summary>Interfaces and methods from Url.dll.</summary>
-	public static partial class IntShcut
+	public static partial class Url
 	{
 		/// <summary>Flags used by IUniformResourceLocator::InvokeCommand.</summary>
 		[PInvokeData("Intshcut.h")]
@@ -92,7 +92,7 @@ namespace Vanara.PInvoke
 			/// Address of a zero-terminated string that contains the URL to set. The protocol scheme may be included as part of the URL.
 			/// </param>
 			/// <param name="dwInFlags">The dw in flags.</param>
-			void SetUrl([MarshalAs(UnmanagedType.LPWStr)] string pcszUrl, IURL_SETURL_FLAGS dwInFlags);
+			void SetUrl([MarshalAs(UnmanagedType.LPWStr)] string pcszUrl, IURL_SETURL_FLAGS dwInFlags = 0);
 
 			/// <summary>Retrieves an object's URL.</summary>
 			/// <param name="ppszUrl">
@@ -325,6 +325,8 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct URLINVOKECOMMANDINFO
 		{
+			private static readonly uint size = (uint)Marshal.SizeOf(typeof(URLINVOKECOMMANDINFO));
+
 			/// <summary>Size of this structure, in bytes.</summary>
 			public uint dwcbSize;
 
@@ -341,8 +343,19 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pcszVerb;
 
+			/// <summary>Initializes a new instance of the <see cref="URLINVOKECOMMANDINFO"/> struct.</summary>
+			/// <param name="verb">The verb to be invoked by IUniformResourceLocator::InvokeCommand.</param>
+			/// <param name="parentHwnd">Handle to the parent window.</param>
+			public URLINVOKECOMMANDINFO(string verb = null, HWND? parentHwnd = null)
+			{
+				dwcbSize = size;
+				dwFlags = (verb is null ? 0 : IURL_INVOKECOMMAND_FLAGS.IURL_INVOKECOMMAND_FL_USE_DEFAULT_VERB) | (parentHwnd is null ? 0 : IURL_INVOKECOMMAND_FLAGS.IURL_INVOKECOMMAND_FL_ALLOW_UI);
+				hwndParent = parentHwnd.GetValueOrDefault();
+				pcszVerb = verb;
+			}
+
 			/// <summary>Gets a default instance of this structure with the size field set appropriately.</summary>
-			public static readonly URLINVOKECOMMANDINFO Default = new URLINVOKECOMMANDINFO { dwcbSize = (uint)Marshal.SizeOf(typeof(URLINVOKECOMMANDINFO)) };
+			public static readonly URLINVOKECOMMANDINFO Default = new URLINVOKECOMMANDINFO { dwcbSize = size };
 		}
 
 		/// <summary>CoClass for IUniformResourceLocator.</summary>
