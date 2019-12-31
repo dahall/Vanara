@@ -191,6 +191,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Opc", "PInvo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.UserEnv", "PInvoke\UserEnv\Vanara.PInvoke.UserEnv.csproj", "{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserEnv", "UnitTests\PInvoke\UserEnv\UserEnv.csproj", "{FFF69906-9EEC-4D01-879F-CE96DE2FFC6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug (no Unit Tests)|Any CPU = Debug (no Unit Tests)|Any CPU
@@ -637,6 +639,12 @@ Global
 		{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFF69906-9EEC-4D01-879F-CE96DE2FFC6A}.Debug (no Unit Tests)|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFF69906-9EEC-4D01-879F-CE96DE2FFC6A}.Debug (no Unit Tests)|Any CPU.Build.0 = Debug|Any CPU
+		{FFF69906-9EEC-4D01-879F-CE96DE2FFC6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFF69906-9EEC-4D01-879F-CE96DE2FFC6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFF69906-9EEC-4D01-879F-CE96DE2FFC6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFF69906-9EEC-4D01-879F-CE96DE2FFC6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -720,6 +728,7 @@ Global
 		{1A232558-F25A-4D9B-99DE-76F1B4E41F22} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{E55F37CC-D24D-4EB9-8BD5-0E6D88EF1519} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{FFF69906-9EEC-4D01-879F-CE96DE2FFC6A} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}
