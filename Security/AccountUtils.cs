@@ -1,12 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Principal;
+
+#if !NET20 && !NET35 && !NET40
+using System.Security.Claims;
+#endif
 
 namespace Vanara.Security
 {
 	/// <summary>Helper methods for working with <see cref="WindowsIdentity"/> and user names.</summary>
 	public static partial class AccountUtils
 	{
+#if NET20 || NET35 || NET40
 		public static bool IsAdmin(this WindowsIdentity id) => new WindowsPrincipal(id).IsInRole(WindowsBuiltInRole.Administrator);
+#else
+		/// <summary>Tests if the current Windows identity is a local Administrator.</summary>
+		public static bool IsAdmin(this WindowsIdentity id)
+		{
+			var adminSid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null).Value;
+
+			return null != new List<Claim>(new WindowsPrincipal(id).UserClaims).Find(claim => claim.Value.Contains(adminSid));
+		}
+#endif
+
 
 		public static bool IsServiceAccount(this WindowsIdentity id)
 		{
