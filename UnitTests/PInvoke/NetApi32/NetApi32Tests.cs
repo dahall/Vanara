@@ -149,7 +149,10 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(() => e.First(i => i.lgrpi0_name == val), Throws.Nothing);
 			var info = NetLocalGroupGetInfo<LOCALGROUP_INFO_1>(null, val);
 			Assert.That(info.lgrpi1_name, Is.EqualTo(val));
-			var sidmem = new SafeHGlobalHandle(System.Security.Principal.WindowsIdentity.GetCurrent().User.GetBytes());
+
+			using var identity = WindowsIdentity.GetCurrent();
+			var sidmem = new SafeHGlobalHandle(identity.User.GetBytes());
+
 			NetLocalGroupAddMembers(null, val, new[] { new LOCALGROUP_MEMBERS_INFO_0 { lgrmi0_sid = (IntPtr)sidmem } });
 			var m = NetLocalGroupGetMembers<LOCALGROUP_MEMBERS_INFO_3>(null, val);
 			Assert.That(m, Is.Not.Empty);

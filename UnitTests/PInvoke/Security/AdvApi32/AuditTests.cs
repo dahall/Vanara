@@ -17,7 +17,21 @@ namespace Vanara.PInvoke.Tests
 
 		public static IEnumerable<Guid> Categories => AuditEnumerateCategories();
 
-		public static SafePSID CurUserSid => pCurSid ?? (pCurSid = new SafePSID(WindowsIdentity.GetCurrent().User.GetBytes()));
+
+		public static SafePSID CurUserSid
+		{
+			get
+			{
+				if (null != pCurSid)
+					return pCurSid;
+
+
+				using var identity = WindowsIdentity.GetCurrent();
+
+				return pCurSid = new SafePSID(identity.User.GetBytes());
+			}
+		}
+
 
 		public static IEnumerable<PSID> PerUserPolicy => AuditEnumeratePerUserPolicy();
 
@@ -46,8 +60,11 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void AuditComputeEffectivePolicyByTokenTest()
 		{
-			using (var hTok = new SafeHTOKEN(WindowsIdentity.GetCurrent().Token))
-				Assert.That(AuditComputeEffectivePolicyByToken(hTok, new[] { regAudit }), Is.Not.Empty);
+			using var identity = WindowsIdentity.GetCurrent();
+
+			using var hTok = new SafeHTOKEN(identity.Token);
+
+			Assert.That(AuditComputeEffectivePolicyByToken(hTok, new[] { regAudit }), Is.Not.Empty);
 		}
 
 		[Test]

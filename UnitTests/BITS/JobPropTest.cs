@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Security.Principal;
 
 namespace Vanara.IO.Tests
 {
@@ -89,7 +90,9 @@ namespace Vanara.IO.Tests
 			Assert.That(() => job.OnDemand = true, Throws.Nothing);
 			Assert.That(job.OnDemand, Is.EqualTo(true));
 
-			Assert.That(job.Owner, Is.EqualTo(System.Security.Principal.WindowsIdentity.GetCurrent().User));
+
+			using var identity = WindowsIdentity.GetCurrent();
+			Assert.That(job.Owner, Is.EqualTo(identity.User));
 
 			Assert.That(job.OwnerIntegrityLevel, Is.EqualTo(8192));
 

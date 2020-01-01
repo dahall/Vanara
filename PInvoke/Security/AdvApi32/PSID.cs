@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
@@ -54,7 +55,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the SID for the current user</summary>
 			/// <value>The current user's SID.</value>
-			public static SafePSID Current => new SafePSID(System.Security.Principal.WindowsIdentity.GetCurrent().User);
+			public static SafePSID Current
+			{
+				get
+				{
+					using var identity = WindowsIdentity.GetCurrent();
+
+					return new SafePSID(identity.User);
+				}
+			}
 
 			/// <summary>A SID representing the Everyone Group (S-1-1-0).</summary>
 			public static SafePSID Everyone => CreateWellKnown(WELL_KNOWN_SID_TYPE.WinWorldSid);
