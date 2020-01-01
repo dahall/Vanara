@@ -308,7 +308,17 @@ namespace Vanara.Security.AccessControl
 			/// <param name="userName">Name of the user.</param>
 			public AccountPrivileges(SystemSecurity parent, string userName = null)
 			{
-				ctrl = parent; user = userName ?? WindowsIdentity.GetCurrent().Name;
+				ctrl = parent;
+
+				if (!string.IsNullOrEmpty(userName))
+					user = userName;
+
+				else
+				{
+					using var identity = WindowsIdentity.GetCurrent();
+
+					user = identity.Name;
+				}
 			}
 
 			/// <summary>Gets or sets the enablement of the specified privilege.</summary>
@@ -356,7 +366,18 @@ namespace Vanara.Security.AccessControl
 			/// <param name="userName">Name of the user.</param>
 			public LogonRights(SystemSecurity parent, string userName = null)
 			{
-				ctrl = parent; user = userName ?? WindowsIdentity.GetCurrent().Name;
+				ctrl = parent;
+
+				if (!string.IsNullOrEmpty(userName))
+					user = userName;
+
+				else
+				{
+					using var identity = WindowsIdentity.GetCurrent();
+
+					user = identity.Name;
+				}
+
 			}
 
 			/// <summary>Gets the logon rights for the current user.</summary>
