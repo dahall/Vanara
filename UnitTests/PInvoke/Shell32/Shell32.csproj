@@ -22,6 +22,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,6 +38,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UrlTests.cs" />
     <Compile Include="ExplorerTests.cs" />
     <Compile Include="KnownFolderIdExtTests.cs" />
     <Compile Include="IconTests.cs" />
@@ -51,6 +54,10 @@
     <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
       <Project>{842D436F-598C-47D7-B5AA-12399F8CCFE9}</Project>
       <Name>Vanara.PInvoke.Kernel32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj">
+      <Project>{BBE4A7D6-0B24-4F58-9726-E05F358C1256}</Project>
+      <Name>Vanara.PInvoke.Ole</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
       <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
