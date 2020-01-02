@@ -8,18 +8,21 @@ namespace Vanara.Security
 	{
 		public static bool IsAdmin(this WindowsIdentity id) => new WindowsPrincipal(id).IsInRole(WindowsBuiltInRole.Administrator);
 
+
 		public static bool IsServiceAccount(this WindowsIdentity id)
 		{
 			try
 			{
 				var acct = new NTAccount(id.Name);
-				var si = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
-				return (si.IsWellKnown(WellKnownSidType.LocalSystemSid) || si.IsWellKnown(WellKnownSidType.NetworkServiceSid) ||
-						si.IsWellKnown(WellKnownSidType.LocalServiceSid));
+
+				var si = (SecurityIdentifier) acct.Translate(typeof(SecurityIdentifier));
+
+				return si.IsWellKnown(WellKnownSidType.LocalSystemSid) || si.IsWellKnown(WellKnownSidType.NetworkServiceSid) || si.IsWellKnown(WellKnownSidType.LocalServiceSid) || si.IsWellKnown(WellKnownSidType.ServiceSid);
 			}
 			catch { }
 			return false;
 		}
+
 
 		/// <summary>Runs the specified function as the impersonated Windows identity.</summary>
 		/// <param name="identity">The impersonated identity under which to run the function.</param>
