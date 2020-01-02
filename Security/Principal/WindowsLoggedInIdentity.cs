@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using static Vanara.PInvoke.AdvApi32;
 
@@ -12,7 +13,7 @@ namespace Vanara.Security.Principal
 	public class WindowsLoggedInIdentity : IDisposable, IIdentity
 	{
 		private readonly SafeHTOKEN hToken;
-		private readonly bool ownId = true;
+		private readonly bool ownId;
 
 		/// <summary>
 		/// Provides an identity to a logged into user given the supplied credentials. Please note that the account that instantiates this
@@ -36,22 +37,35 @@ namespace Vanara.Security.Principal
 		/// The logon provider. This parameter can usually be left as the default. For more information, lookup more detail for the
 		/// dwLogonProvider parameter of the Windows LogonUser function.
 		/// </param>
-		public WindowsLoggedInIdentity(string userName, string domainName, string password, LogonUserType logonType = LogonUserType.LOGON32_LOGON_INTERACTIVE,
-			LogonUserProvider provider = LogonUserProvider.LOGON32_PROVIDER_DEFAULT)
+		public WindowsLoggedInIdentity(string userName, string domainName, string password, LogonUserType logonType = LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider provider = LogonUserProvider.LOGON32_PROVIDER_DEFAULT)
 		{
-			if (string.IsNullOrEmpty(userName)) throw new ArgumentNullException(nameof(userName));
-			if (string.IsNullOrEmpty(password)) throw new ArgumentNullException(nameof(password));
-			if (string.IsNullOrEmpty(domainName) && !userName.Contains("@")) throw new ArgumentNullException(nameof(domainName));
-			if (LogonUser(userName, domainName, password, logonType, provider, out hToken))
+			if (Extensions.StringHelper.IsNullOrWhiteSpace(userName))
+				throw new ArgumentNullException(nameof(userName));
+
+			if (Extensions.StringHelper.IsNullOrWhiteSpace(password))
+				throw new ArgumentNullException(nameof(password));
+
+			if (Extensions.StringHelper.IsNullOrWhiteSpace(domainName) && !userName.Contains("@"))
+				throw new ArgumentNullException(nameof(domainName));
+
+
+			var success = LogonUser(userName, domainName, password, logonType, provider, out hToken);
+
+			var lastError = Marshal.GetLastWin32Error();
+
+			if (success)
 			{
 				using (hToken)
 				{
 					AuthenticatedIdentity = new WindowsIdentity(hToken.DangerousGetHandle());
+					ownId = true;
 				}
 			}
+
 			else
-				throw new Win32Exception();
+				throw new Win32Exception(lastError);
 		}
+
 
 		/// <summary>
 		/// Starts the impersonation with the given <see cref="WindowsIdentity"/>. Please note that the account that instantiates this class
@@ -79,9 +93,13 @@ namespace Vanara.Security.Principal
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public virtual void Dispose()
 		{
-			if (ownId) AuthenticatedIdentity?.Dispose();
+			if (ownId)
+			{
+				AuthenticatedIdentity?.Dispose();
+				AuthenticatedIdentity = null;
+			}
+
 			hToken?.Dispose();
-			AuthenticatedIdentity = null;
 		}
 	}
 }
