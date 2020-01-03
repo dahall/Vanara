@@ -25,7 +25,12 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+AreThereVisibleLogoffScripts, AreThereVisibleShutdownScripts, CreateAppContainerProfile, CreateEnvironmentBlock, CreateProfile, DeleteAppContainerProfile, DeleteProfile, DeriveAppContainerSidFromAppContainerName, DeriveRestrictedAppContainerSidFromAppContainerSidAndRestrictedName, DestroyEnvironmentBlock, EnterCriticalPolicySection, ExpandEnvironmentStringsForUser, ForceSyncFgPolicy, FreeGPOList, GenerateGPNotification, GetAllUsersProfileDirectory, GetAppContainerFolderPath, GetAppContainerRegistryLocation, GetAppliedGPOList, GetDefaultUserProfileDirectory, GetGPOList, GetNextFgPolicyRefreshInfo, GetPreviousFgPolicyRefreshInfo, GetProfilesDirectory, GetProfileType, GetUserProfileDirectory, HasPolicyForegroundProcessingCompleted, LeaveCriticalPolicySection, LoadProfileExtender, LoadUserProfile, ProcessGroupPolicyCompleted, ProcessGroupPolicyCompletedEx, RefreshPolicy, RefreshPolicyEx, RegisterGPNotification, RsopAccessCheckByType, RsopFileAccessCheck, RsopLoggingEnabled, RsopResetPolicySettingStatus, RsopSetPolicySettingStatus, UnloadProfileExtender, UnloadUserProfile, UnregisterGPNotification, WaitForMachinePolicyForegroundProcessing, WaitForUserPolicyForegroundProcessing
+
+</PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
@@ -42,8 +47,7 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) ">
-  </ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) "></ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />

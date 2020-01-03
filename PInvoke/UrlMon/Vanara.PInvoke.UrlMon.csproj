@@ -25,8 +25,15 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <PackageReleaseNotes>
-    </PackageReleaseNotes>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+AsyncGetClassBits, AsyncInstallDistributionUnit, BindAsyncMoniker, CAuthenticateHostUI_CreateInstance, CDLGetLongPathName, CoGetClassObjectFromURL, CoInstall, CoInternetCanonicalizeIUri, CoInternetCombineIUri, CoInternetCombineUrl, CoInternetCombineUrlEx, CoInternetCompareUrl, CoInternetCreateSecurityManager, CoInternetCreateZoneManager, CoInternetFeatureSettingsChanged, CoInternetGetMobileBrowserAppCompatMode, CoInternetGetMobileBrowserForceDesktopMode, CoInternetGetProtocolFlags, CoInternetGetSecurityUrl, CoInternetGetSecurityUrlEx, CoInternetGetSession, CoInternetIsFeatureEnabled, CoInternetIsFeatureEnabledForIUri, CoInternetIsFeatureEnabledForUrl, CoInternetIsFeatureZoneElevationEnabled, CoInternetParseIUri, CoInternetParseUrl, CoInternetQueryInfo, CoInternetSetFeatureEnabled, CoInternetSetMobileBrowserAppCompatMode, CoInternetSetMobileBrowserForceDesktopMode, CompareSecurityIds, CompatFlagsFromClsid, CopyBindInfo, CopyStgMedium, CORPolicyProvider, CreateAsyncBindCtx, CreateAsyncBindCtxEx, CreateFormatEnumerator, CreateIUriBuilder, CreateUri, CreateUriFromMultiByteString, CreateUriPriv, CreateUriWithFragment, CreateURLMoniker, CreateURLMonikerEx, CreateURLMonikerEx2, DllRegisterServerEx, Extract, FaultInIEFeature, FileBearsMarkOfTheWeb, FindMediaType, FindMediaTypeClass, FindMimeFromData, GetAddSitesFileUrl, GetClassFileOrMime, GetClassURL, GetComponentIDFromCLSSPEC, GetIDNFlagsForUri, GetIUriPriv, GetIUriPriv2, GetLabelsFromNamedHost, GetMarkOfTheWeb, GetPortFromUrlScheme, GetPropertyFromName, GetPropertyName, GetSoftwareUpdateInfo, GetUrlmonThreadNotificationHwnd, GetZoneFromAlternateDataStreamEx, HlinkGoBack, HlinkGoForward, HlinkNavigateMoniker, HlinkNavigateString, HlinkSimpleNavigateToMoniker, HlinkSimpleNavigateToString, IECompatLogCSSFix, IEGetUserPrivateNamespaceName, IEInstallScope, IntlPercentEncodeNormalize, IsAsyncMoniker, IsDWORDProperty, IsIntranetAvailable, IsJITInProgress, IsLoggingEnabled, IsStringProperty, IsValidURL, LaunchEdgeForDebug, MkParseDisplayNameEx, ObtainUserAgentString, PrivateCoInstall, QueryAssociations, QueryClsidAssociation, RegisterBindStatusCallback, RegisterFormatEnumerator, RegisterMediaTypeClass, RegisterMediaTypes, RegisterWebPlatformPermanentSecurityManager, ReleaseBindInfo, RestrictHTTP2, RevokeBindStatusCallback, RevokeFormatEnumerator, SetAccessForIEAppContainer, SetSoftwareUpdateAdvertisementState, ShouldDisplayPunycodeForUri, ShouldShowIntranetWarningSecband, ShowTrustAlertDialog, UnregisterWebPlatformPermanentSecurityManager, URLDownload, URLDownloadToCacheFile, URLDownloadToFile, UrlMkBuildVersion, UrlMkGetSessionOption, UrlMkSetSessionOption, UrlmonCleanupCurrentThread, URLOpenBlockingStream, URLOpenPullStream, URLOpenStream, WriteHitLogging, ZonesReInit
+
+Interfaces
+IUri
+
+</PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>latest</LangVersion>
@@ -43,8 +50,7 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) ">
-  </ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) "></ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />

@@ -1,5 +1,5 @@
 ## Correlation report for advapi32.dll, secur32.dll, authz.dll, sspicli.dll, schannel.dll  
-### Methods (99% complete, 527 of 528 functions)  
+### Methods (100% complete, 527 of 527 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortSystemShutdown](http://msdn2.microsoft.com/en-us/library/aa376630) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.AbortSystemShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=AbortSystemShutdown)  
@@ -490,7 +490,6 @@ Native Method | Native DLL | Header | Managed Method
 [SslCrackCertificate](http://msdn2.microsoft.com/en-us/library/e5ffeebb-0b09-4f0a-b2dc-75fb2a3af7ed) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslCrackCertificate](https://github.com/dahall/Vanara/search?l=C%23&q=SslCrackCertificate)  
 [SslEmptyCache](http://msdn2.microsoft.com/en-us/library/c914d4e3-657e-45ef-ace8-2cea900a8a76) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslEmptyCache](https://github.com/dahall/Vanara/search?l=C%23&q=SslEmptyCache)  
 [SslFreeCertificate](http://msdn2.microsoft.com/en-us/library/bf643ece-fe79-4f6e-a216-108fce6757a4) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslFreeCertificate](https://github.com/dahall/Vanara/search?l=C%23&q=SslFreeCertificate)  
-[SslGetExtensions](https://www.google.com/search?num=5&q=SslGetExtensions+site%3Amicrosoft.com) | schannel.dll |  |   
 [SslGetServerIdentity](http://msdn2.microsoft.com/en-us/library/5FA7A0F5-187F-4CE6-AD62-44B71A40568D) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslGetServerIdentity](https://github.com/dahall/Vanara/search?l=C%23&q=SslGetServerIdentity)  
 [SspiCompareAuthIdentities](http://msdn2.microsoft.com/en-us/library/d2c4f363-3d86-48f0-bae1-4f9240d68bab) | secur32.dll | sspi.h | [Vanara.PInvoke.Secur32.SspiCompareAuthIdentities](https://github.com/dahall/Vanara/search?l=C%23&q=SspiCompareAuthIdentities)  
 [SspiCopyAuthIdentity](http://msdn2.microsoft.com/en-us/library/e53807bf-b5a1-4479-a73b-dd85c5da173e) | secur32.dll | sspi.h | [Vanara.PInvoke.Secur32.SspiCopyAuthIdentity](https://github.com/dahall/Vanara/search?l=C%23&q=SspiCopyAuthIdentity)  

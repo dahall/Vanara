@@ -1,14 +1,12 @@
 ## Correlation report for wintrust.dll  
-### Methods (90% complete, 59 of 65 functions)  
+### Methods (96% complete, 59 of 61 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[ConfigCiPackageFamilyNameCheck](https://www.google.com/search?num=5&q=ConfigCiPackageFamilyNameCheck+site%3Amicrosoft.com) |  |   
 [CryptCATAdminAcquireContext](http://msdn2.microsoft.com/en-us/library/693af055-fa93-4526-aa9c-3a659f8ff78f) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminAcquireContext](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminAcquireContext)  
 [CryptCATAdminAcquireContext2](http://msdn2.microsoft.com/en-us/library/B089217A-5C12-4C51-8E46-3A9243347B21) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminAcquireContext2](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminAcquireContext2)  
 [CryptCATAdminAddCatalog](https://www.google.com/search?num=5&q=CryptCATAdminAddCatalog+site%3Amicrosoft.com) |  | [Vanara.PInvoke.WinTrust.InternalCryptCATAdminAddCatalog](https://github.com/dahall/Vanara/search?l=C%23&q=InternalCryptCATAdminAddCatalog)  
 [CryptCATAdminCalcHashFromFileHandle](http://msdn2.microsoft.com/en-us/library/4dc5688f-4b7a-4baf-9671-868cac7f1896) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminCalcHashFromFileHandle](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminCalcHashFromFileHandle)  
 [CryptCATAdminCalcHashFromFileHandle2](http://msdn2.microsoft.com/en-us/library/CBFA60A8-5E5A-4FAD-8AD3-26539802CD53) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminCalcHashFromFileHandle2](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminCalcHashFromFileHandle2)  
-[CryptCATAdminCalcHashFromFileHandle3](https://www.google.com/search?num=5&q=CryptCATAdminCalcHashFromFileHandle3+site%3Amicrosoft.com) |  |   
 [CryptCATAdminEnumCatalogFromHash](https://www.google.com/search?num=5&q=CryptCATAdminEnumCatalogFromHash+site%3Amicrosoft.com) |  | [Vanara.PInvoke.WinTrust.InternalCryptCATAdminEnumCatalogFromHash](https://github.com/dahall/Vanara/search?l=C%23&q=InternalCryptCATAdminEnumCatalogFromHash)  
 [CryptCATAdminReleaseCatalogContext](http://msdn2.microsoft.com/en-us/library/6cc13013-2c0a-4934-a866-30b69cbcf934) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminReleaseCatalogContext](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminReleaseCatalogContext)  
 [CryptCATAdminReleaseContext](http://msdn2.microsoft.com/en-us/library/dff253dc-c444-46be-a383-41340d634cce) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminReleaseContext](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminReleaseContext)  
@@ -55,10 +53,8 @@ Native Method | Header | Managed Method
 [WintrustRemoveActionID](http://msdn2.microsoft.com/en-us/library/d1c84b69-4886-4cb4-99c5-294bd9d8228b) | wintrust.h | [Vanara.PInvoke.WinTrust.WintrustRemoveActionID](https://github.com/dahall/Vanara/search?l=C%23&q=WintrustRemoveActionID)  
 [WintrustSetDefaultIncludePEPageHashes](http://msdn2.microsoft.com/en-us/library/af48e570-e71d-488f-831c-35834242db3c) | wintrust.h | [Vanara.PInvoke.WinTrust.WintrustSetDefaultIncludePEPageHashes](https://github.com/dahall/Vanara/search?l=C%23&q=WintrustSetDefaultIncludePEPageHashes)  
 [WintrustSetRegPolicyFlags](http://msdn2.microsoft.com/en-us/library/8aaeecd0-3814-42a0-9e5b-82b0b220bc9a) | wintrust.h | [Vanara.PInvoke.WinTrust.WintrustSetRegPolicyFlags](https://github.com/dahall/Vanara/search?l=C%23&q=WintrustSetRegPolicyFlags)  
-[WintrustUserWriteabilityCheck](https://www.google.com/search?num=5&q=WintrustUserWriteabilityCheck+site%3Amicrosoft.com) |  |   
 [WinVerifyTrust](http://msdn2.microsoft.com/en-us/library/b7efac6a-ac9f-477a-aada-63fe32208e6f) | wintrust.h | [Vanara.PInvoke.WinTrust.WinVerifyTrust](https://github.com/dahall/Vanara/search?l=C%23&q=WinVerifyTrust)  
 [WinVerifyTrustEx](http://msdn2.microsoft.com/en-us/library/209c9953-a4a5-4ff0-961f-92e97ccce23d) | wintrust.h | [Vanara.PInvoke.WinTrust.WinVerifyTrustEx](https://github.com/dahall/Vanara/search?l=C%23&q=WinVerifyTrustEx)  
-[WTConvertCertCtxToChainInfo](https://www.google.com/search?num=5&q=WTConvertCertCtxToChainInfo+site%3Amicrosoft.com) |  |   
 [WTHelperCertCheckValidSignature](http://msdn2.microsoft.com/en-us/library/d46eea18-03cb-4199-873e-0e9e13061598) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperCertCheckValidSignature](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperCertCheckValidSignature)  
 [WTHelperCertFindIssuerCertificate](http://msdn2.microsoft.com/en-us/library/c724f602-fc73-4857-941f-0f22a9e472d1) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperCertFindIssuerCertificate](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperCertFindIssuerCertificate)  
 [WTHelperCertIsSelfSigned](http://msdn2.microsoft.com/en-us/library/456b8c8c-6ca3-469a-a415-e72109696bf5) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperCertIsSelfSigned](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperCertIsSelfSigned)  

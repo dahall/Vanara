@@ -1,169 +1,115 @@
 ## Correlation report for winspool.drv, prntvpt.dll  
-### Methods (40% complete, 65 of 162 functions)  
+### Methods (100% complete, 108 of 108 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortPrinter](http://msdn2.microsoft.com/en-us/library/b361fba5-e4e7-4c9e-ab32-b8ab88dcb1dc) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AbortPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=AbortPrinter)  
 [AddForm](http://msdn2.microsoft.com/en-us/library/17b59019-f93a-4b57-86fb-91c61aecbac4) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AddForm](https://github.com/dahall/Vanara/search?l=C%23&q=AddForm)  
 [AddJob](http://msdn2.microsoft.com/en-us/library/cfafa874-6022-4bf4-bf3d-096213eb0c98) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AddJob](https://github.com/dahall/Vanara/search?l=C%23&q=AddJob)  
-[AddMonitor](https://www.google.com/search?num=5&q=AddMonitorA+site%3Amicrosoft.com) | winspool.drv |  |   
-[AddPort](https://www.google.com/search?num=5&q=AddPortA+site%3Amicrosoft.com) | winspool.drv |  |   
-[AddPortEx](https://www.google.com/search?num=5&q=AddPortExA+site%3Amicrosoft.com) | winspool.drv |  |   
+[AddMonitor](http://msdn2.microsoft.com/en-us/library/6a556422-5360-42d2-b177-dba0498c06d8) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AddMonitor](https://github.com/dahall/Vanara/search?l=C%23&q=AddMonitor)  
+[AddPort](http://msdn2.microsoft.com/en-us/library/9191d507-9167-4488-a4b4-286590a8a62a) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AddPort](https://github.com/dahall/Vanara/search?l=C%23&q=AddPort)  
 [AddPrinter](http://msdn2.microsoft.com/en-us/library/ffc4fee8-46c6-47ad-803d-623bf8efdefd) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AddPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=AddPrinter)  
 [AddPrinterConnection](http://msdn2.microsoft.com/en-us/library/6decf89a-1411-4e7e-aa20-60e7068658c2) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AddPrinterConnection](https://github.com/dahall/Vanara/search?l=C%23&q=AddPrinterConnection)  
 [AddPrinterConnection2](https://www.google.com/search?num=5&q=AddPrinterConnection2A+site%3Amicrosoft.com) | winspool.drv |  | [Vanara.PInvoke.WinSpool.AddPrinterConnection2](https://github.com/dahall/Vanara/search?l=C%23&q=AddPrinterConnection2)  
-[AddPrinterDriver](https://www.google.com/search?num=5&q=AddPrinterDriverA+site%3Amicrosoft.com) | winspool.drv |  |   
-[AddPrinterDriverEx](https://www.google.com/search?num=5&q=AddPrinterDriverExA+site%3Amicrosoft.com) | winspool.drv |  |   
-[AddPrintProcessor](https://www.google.com/search?num=5&q=AddPrintProcessorA+site%3Amicrosoft.com) | winspool.drv |  |   
-[AddPrintProvidor](https://www.google.com/search?num=5&q=AddPrintProvidorA+site%3Amicrosoft.com) | winspool.drv |  |   
+[AddPrinterDriver](http://msdn2.microsoft.com/en-us/library/0f762800-f5a5-40ea-8be1-7fd8bda23788) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AddPrinterDriver](https://github.com/dahall/Vanara/search?l=C%23&q=AddPrinterDriver)  
+[AddPrinterDriverEx](http://msdn2.microsoft.com/en-us/library/472adb7d-39cc-4c76-b96c-610ff9d276ad) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AddPrinterDriverEx](https://github.com/dahall/Vanara/search?l=C%23&q=AddPrinterDriverEx)  
+[AddPrintProcessor](http://msdn2.microsoft.com/en-us/library/99899cee-f74d-4405-8ea5-616e3769aba9) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AddPrintProcessor](https://github.com/dahall/Vanara/search?l=C%23&q=AddPrintProcessor)  
+[AddPrintProvidor](http://msdn2.microsoft.com/en-us/library/f34549c3-0474-48ba-9307-5b36f02dbe1c) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AddPrintProvidor](https://github.com/dahall/Vanara/search?l=C%23&q=AddPrintProvidor)  
 [AdvancedDocumentProperties](http://msdn2.microsoft.com/en-us/library/29e33f34-f6ec-4989-b076-e1fef8eb5bc4) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AdvancedDocumentProperties](https://github.com/dahall/Vanara/search?l=C%23&q=AdvancedDocumentProperties)  
-[ADVANCEDSETUPDIALOG](https://www.google.com/search?num=5&q=ADVANCEDSETUPDIALOG+site%3Amicrosoft.com) | winspool.drv |  |   
-[AdvancedSetupDialog](https://www.google.com/search?num=5&q=AdvancedSetupDialog+site%3Amicrosoft.com) | winspool.drv |  |   
-[BindPTProviderThunk](https://www.google.com/search?num=5&q=BindPTProviderThunk+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[BindPTProviderThunkA](http://msdn2.microsoft.com/en-us/library/815cc360-8dcd-4c58-a64d-5d77436a8623) | prntvpt.dll |  | [Vanara.PInvoke.PrntvPt.BindPTProviderThunk](https://github.com/dahall/Vanara/search?l=C%23&q=BindPTProviderThunk)  
-[BindPTProviderThunkW](http://msdn2.microsoft.com/en-us/library/815cc360-8dcd-4c58-a64d-5d77436a8623) | prntvpt.dll |  | [Vanara.PInvoke.PrntvPt.BindPTProviderThunk](https://github.com/dahall/Vanara/search?l=C%23&q=BindPTProviderThunk)  
+[BindPTProviderThunkA](http://msdn2.microsoft.com/en-us/library/815cc360-8dcd-4c58-a64d-5d77436a8623) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.BindPTProviderThunk](https://github.com/dahall/Vanara/search?l=C%23&q=BindPTProviderThunk)  
+[BindPTProviderThunkW](http://msdn2.microsoft.com/en-us/library/815cc360-8dcd-4c58-a64d-5d77436a8623) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.BindPTProviderThunk](https://github.com/dahall/Vanara/search?l=C%23&q=BindPTProviderThunk)  
 [ClosePrinter](http://msdn2.microsoft.com/en-us/library/95cc3eca-e65c-4fa6-8975-479e8e728dca) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.ClosePrinter](https://github.com/dahall/Vanara/search?l=C%23&q=ClosePrinter)  
 [CloseSpoolFileHandle](http://msdn2.microsoft.com/en-us/library/e2c0e68f-b72e-4a97-ba18-8943bc5789c1) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.CloseSpoolFileHandle](https://github.com/dahall/Vanara/search?l=C%23&q=CloseSpoolFileHandle)  
 [CommitSpoolData](http://msdn2.microsoft.com/en-us/library/cb8899e0-2fdf-4928-adff-17ef5af39f63) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.CommitSpoolData](https://github.com/dahall/Vanara/search?l=C%23&q=CommitSpoolData)  
 [ConfigurePort](http://msdn2.microsoft.com/en-us/library/a65e9876-d6af-48c2-9e6b-8bd8695db130) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.ConfigurePort](https://github.com/dahall/Vanara/search?l=C%23&q=ConfigurePort)  
 [ConnectToPrinterDlg](http://msdn2.microsoft.com/en-us/library/7cb9108b-8b65-4af3-88c8-a69771ed8e3f) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.ConnectToPrinterDlg](https://github.com/dahall/Vanara/search?l=C%23&q=ConnectToPrinterDlg)  
-[ConvertAnsiDevModeToUnicodeDevmode](https://www.google.com/search?num=5&q=ConvertAnsiDevModeToUnicodeDevmode+site%3Amicrosoft.com) | winspool.drv |  |   
-[ConvertDevModeToPrintTicketThunk](https://www.google.com/search?num=5&q=ConvertDevModeToPrintTicketThunk+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[ConvertDevModeToPrintTicketThunk2](https://www.google.com/search?num=5&q=ConvertDevModeToPrintTicketThunk2+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[ConvertPrintTicketToDevModeThunk](https://www.google.com/search?num=5&q=ConvertPrintTicketToDevModeThunk+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[ConvertPrintTicketToDevModeThunk2](https://www.google.com/search?num=5&q=ConvertPrintTicketToDevModeThunk2+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[ConvertUnicodeDevModeToAnsiDevmode](https://www.google.com/search?num=5&q=ConvertUnicodeDevModeToAnsiDevmode+site%3Amicrosoft.com) | winspool.drv |  |   
-[CorePrinterDriverInstalled](https://www.google.com/search?num=5&q=CorePrinterDriverInstalledA+site%3Amicrosoft.com) | winspool.drv |  |   
-[CreatePrintAsyncNotifyChannel](https://www.google.com/search?num=5&q=CreatePrintAsyncNotifyChannel+site%3Amicrosoft.com) | winspool.drv |  |   
-[CreatePrinterIC](https://www.google.com/search?num=5&q=CreatePrinterIC+site%3Amicrosoft.com) | winspool.drv |  |   
+[ConvertDevModeToPrintTicketThunk2](http://msdn2.microsoft.com/en-us/library/c03371f8-a978-4fb7-82cc-f76a65f3904c) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.ConvertDevModeToPrintTicketThunk2](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertDevModeToPrintTicketThunk2)  
+[ConvertPrintTicketToDevModeThunk2](http://msdn2.microsoft.com/en-us/library/3b0a6afd-fa9d-434e-a95f-b051296d4567) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.ConvertPrintTicketToDevModeThunk2](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertPrintTicketToDevModeThunk2)  
+[CorePrinterDriverInstalled](http://msdn2.microsoft.com/en-us/library/fb859aca-bb7b-495d-bd38-16ffa084c240) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.CorePrinterDriverInstalled](https://github.com/dahall/Vanara/search?l=C%23&q=CorePrinterDriverInstalled)  
 [DeleteForm](http://msdn2.microsoft.com/en-us/library/a2d0345f-2469-46ab-935f-777f2b33b621) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeleteForm](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteForm)  
-[DeleteJobNamedProperty](https://www.google.com/search?num=5&q=DeleteJobNamedProperty+site%3Amicrosoft.com) | winspool.drv |  |   
-[DeleteMonitor](https://www.google.com/search?num=5&q=DeleteMonitorA+site%3Amicrosoft.com) | winspool.drv |  |   
-[DeletePort](https://www.google.com/search?num=5&q=DeletePortA+site%3Amicrosoft.com) | winspool.drv |  |   
+[DeleteMonitor](http://msdn2.microsoft.com/en-us/library/32548d4f-830a-471d-8a72-c0f62f43ffa2) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeleteMonitor](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteMonitor)  
+[DeletePort](http://msdn2.microsoft.com/en-us/library/5f5788c2-c781-4106-abd2-98556d0a22de) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeletePort](https://github.com/dahall/Vanara/search?l=C%23&q=DeletePort)  
 [DeletePrinter](http://msdn2.microsoft.com/en-us/library/04d9c073-b795-4307-ba89-d4984bc5b354) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeletePrinter](https://github.com/dahall/Vanara/search?l=C%23&q=DeletePrinter)  
 [DeletePrinterConnection](http://msdn2.microsoft.com/en-us/library/7b056eea-fbd9-4a08-a2dc-7326caeec387) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeletePrinterConnection](https://github.com/dahall/Vanara/search?l=C%23&q=DeletePrinterConnection)  
 [DeletePrinterData](http://msdn2.microsoft.com/en-us/library/03c0bd75-d6de-46e3-b8e9-5a55df5135ea) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeletePrinterData](https://github.com/dahall/Vanara/search?l=C%23&q=DeletePrinterData)  
 [DeletePrinterDataEx](http://msdn2.microsoft.com/en-us/library/bcc9cdb3-0fbf-40b6-9de2-1479c3c0ff55) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeletePrinterDataEx](https://github.com/dahall/Vanara/search?l=C%23&q=DeletePrinterDataEx)  
-[DeletePrinterDriver](https://www.google.com/search?num=5&q=DeletePrinterDriverA+site%3Amicrosoft.com) | winspool.drv |  |   
-[DeletePrinterDriverEx](https://www.google.com/search?num=5&q=DeletePrinterDriverExA+site%3Amicrosoft.com) | winspool.drv |  |   
-[DeletePrinterDriverPackage](https://www.google.com/search?num=5&q=DeletePrinterDriverPackageA+site%3Amicrosoft.com) | winspool.drv |  |   
-[DeletePrinterIC](https://www.google.com/search?num=5&q=DeletePrinterIC+site%3Amicrosoft.com) | winspool.drv |  |   
+[DeletePrinterDriver](http://msdn2.microsoft.com/en-us/library/b159bd8b-3416-44a5-91bf-c0447ed6b465) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeletePrinterDriver](https://github.com/dahall/Vanara/search?l=C%23&q=DeletePrinterDriver)  
+[DeletePrinterDriverEx](http://msdn2.microsoft.com/en-us/library/1a3d7c7f-1d45-4877-a8f7-a77f40e3c319) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeletePrinterDriverEx](https://github.com/dahall/Vanara/search?l=C%23&q=DeletePrinterDriverEx)  
+[DeletePrinterDriverPackage](http://msdn2.microsoft.com/en-us/library/a43a94d1-097e-457c-bce9-d4c434ecfa93) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeletePrinterDriverPackage](https://github.com/dahall/Vanara/search?l=C%23&q=DeletePrinterDriverPackage)  
 [DeletePrinterKey](http://msdn2.microsoft.com/en-us/library/0bd81b43-5c1e-4989-8350-2ec0dc215f28) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeletePrinterKey](https://github.com/dahall/Vanara/search?l=C%23&q=DeletePrinterKey)  
-[DeletePrintProcessor](https://www.google.com/search?num=5&q=DeletePrintProcessorA+site%3Amicrosoft.com) | winspool.drv |  |   
-[DeletePrintProvidor](https://www.google.com/search?num=5&q=DeletePrintProvidorA+site%3Amicrosoft.com) | winspool.drv |  |   
-[DeviceCapabilities](https://www.google.com/search?num=5&q=DeviceCapabilities+site%3Amicrosoft.com) | winspool.drv |  |   
-[DEVICECAPABILITIES](https://www.google.com/search?num=5&q=DEVICECAPABILITIES+site%3Amicrosoft.com) | winspool.drv |  |   
-[DEVICEMODE](https://www.google.com/search?num=5&q=DEVICEMODE+site%3Amicrosoft.com) | winspool.drv |  |   
-[DeviceMode](https://www.google.com/search?num=5&q=DeviceMode+site%3Amicrosoft.com) | winspool.drv |  |   
-[DevicePropertySheets](https://www.google.com/search?num=5&q=DevicePropertySheets+site%3Amicrosoft.com) | winspool.drv |  |   
-[DevQueryPrint](https://www.google.com/search?num=5&q=DevQueryPrint+site%3Amicrosoft.com) | winspool.drv |  |   
-[DevQueryPrintEx](https://www.google.com/search?num=5&q=DevQueryPrintEx+site%3Amicrosoft.com) | winspool.drv |  |   
-[DllMain](https://www.google.com/search?num=5&q=DllMain+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[DocumentEvent](https://www.google.com/search?num=5&q=DocumentEvent+site%3Amicrosoft.com) | winspool.drv |  |   
+[DeletePrintProcessor](http://msdn2.microsoft.com/en-us/library/65c77874-aa2c-4b4c-b218-fad361270a3e) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeletePrintProcessor](https://github.com/dahall/Vanara/search?l=C%23&q=DeletePrintProcessor)  
+[DeletePrintProvidor](http://msdn2.microsoft.com/en-us/library/b7104f9a-111c-4904-a355-063bb4cc81f1) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DeletePrintProvidor](https://github.com/dahall/Vanara/search?l=C%23&q=DeletePrintProvidor)  
+[DeviceCapabilities](https://www.google.com/search?num=5&q=DeviceCapabilities+site%3Amicrosoft.com) | winspool.drv | wingdi.h | [Vanara.PInvoke.WinSpool.DeviceCapabilities](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceCapabilities)  
 [DocumentEventA](http://msdn2.microsoft.com/en-us/library/1250116e-55c7-470f-97f6-36f27a31a841) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DocumentEvent](https://github.com/dahall/Vanara/search?l=C%23&q=DocumentEvent)  
 [DocumentEventW](http://msdn2.microsoft.com/en-us/library/1250116e-55c7-470f-97f6-36f27a31a841) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DocumentEvent](https://github.com/dahall/Vanara/search?l=C%23&q=DocumentEvent)  
 [DocumentProperties](http://msdn2.microsoft.com/en-us/library/e89a2f6f-2bac-4369-b526-f8e15028698b) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.DocumentProperties](https://github.com/dahall/Vanara/search?l=C%23&q=DocumentProperties)  
-[DocumentPropertySheets](https://www.google.com/search?num=5&q=DocumentPropertySheets+site%3Amicrosoft.com) | winspool.drv |  |   
 [EndDocPrinter](http://msdn2.microsoft.com/en-us/library/13c713e8-cc24-4191-8b1e-967b9e20e541) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EndDocPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=EndDocPrinter)  
 [EndPagePrinter](http://msdn2.microsoft.com/en-us/library/aceb88b9-375b-4cd2-996a-c369f590154e) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EndPagePrinter](https://github.com/dahall/Vanara/search?l=C%23&q=EndPagePrinter)  
 [EnumForms](http://msdn2.microsoft.com/en-us/library/b13b515a-c764-4a80-ab85-95fb4abb2a6b) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EnumForms](https://github.com/dahall/Vanara/search?l=C%23&q=EnumForms)  
-[EnumJobNamedProperties](https://www.google.com/search?num=5&q=EnumJobNamedProperties+site%3Amicrosoft.com) | winspool.drv |  |   
 [EnumJobs](http://msdn2.microsoft.com/en-us/library/1cf429ea-b40e-4063-b6de-c43b7b87f3d3) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EnumJobs](https://github.com/dahall/Vanara/search?l=C%23&q=EnumJobs)  
-[EnumMonitors](https://www.google.com/search?num=5&q=EnumMonitorsA+site%3Amicrosoft.com) | winspool.drv |  |   
-[EnumPorts](https://www.google.com/search?num=5&q=EnumPortsA+site%3Amicrosoft.com) | winspool.drv |  |   
+[EnumMonitors](http://msdn2.microsoft.com/en-us/library/4d4fbed2-193f-426c-8463-eeb6b1eaf316) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EnumMonitors](https://github.com/dahall/Vanara/search?l=C%23&q=EnumMonitors)  
+[EnumPorts](http://msdn2.microsoft.com/en-us/library/72ea0e35-bf26-4c12-9451-8f6941990d82) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EnumPorts](https://github.com/dahall/Vanara/search?l=C%23&q=EnumPorts)  
 [EnumPrinterData](http://msdn2.microsoft.com/en-us/library/0a4c8436-46fe-4e21-8d55-c5031a3d1b38) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EnumPrinterData](https://github.com/dahall/Vanara/search?l=C%23&q=EnumPrinterData)  
 [EnumPrinterDataEx](http://msdn2.microsoft.com/en-us/library/bc5ecc46-24a4-4b54-9431-0eaf6446e2d6) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EnumPrinterDataEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumPrinterDataEx)  
-[EnumPrinterDrivers](https://www.google.com/search?num=5&q=EnumPrinterDriversA+site%3Amicrosoft.com) | winspool.drv |  |   
+[EnumPrinterDrivers](http://msdn2.microsoft.com/en-us/library/fa3d8cf4-70bc-4362-833e-e4217ed5d43b) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EnumPrinterDrivers](https://github.com/dahall/Vanara/search?l=C%23&q=EnumPrinterDrivers)  
 [EnumPrinterKey](http://msdn2.microsoft.com/en-us/library/721b1d23-a594-4439-b8f9-9b11be5fe874) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EnumPrinterKey](https://github.com/dahall/Vanara/search?l=C%23&q=EnumPrinterKey)  
 [EnumPrinters](http://msdn2.microsoft.com/en-us/library/0d0cc726-c515-4146-9273-cdf1db3c76b7) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EnumPrinters](https://github.com/dahall/Vanara/search?l=C%23&q=EnumPrinters)  
-[EnumPrintProcessorDatatypes](https://www.google.com/search?num=5&q=EnumPrintProcessorDatatypesA+site%3Amicrosoft.com) | winspool.drv |  |   
-[EnumPrintProcessors](https://www.google.com/search?num=5&q=EnumPrintProcessorsA+site%3Amicrosoft.com) | winspool.drv |  |   
-[EXTDEVICEMODE](https://www.google.com/search?num=5&q=EXTDEVICEMODE+site%3Amicrosoft.com) | winspool.drv |  |   
-[ExtDeviceMode](https://www.google.com/search?num=5&q=ExtDeviceMode+site%3Amicrosoft.com) | winspool.drv |  |   
+[EnumPrintProcessorDatatypes](http://msdn2.microsoft.com/en-us/library/27b6e074-d303-446b-9e5f-6cfa55c30d26) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EnumPrintProcessorDatatypes](https://github.com/dahall/Vanara/search?l=C%23&q=EnumPrintProcessorDatatypes)  
+[EnumPrintProcessors](http://msdn2.microsoft.com/en-us/library/98c9185c-c89d-4b4e-8c1e-7e22b315f188) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.EnumPrintProcessors](https://github.com/dahall/Vanara/search?l=C%23&q=EnumPrintProcessors)  
 [FindClosePrinterChangeNotification](http://msdn2.microsoft.com/en-us/library/2b4758f8-af0a-494b-8f1b-8ea6ee73c79b) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.FindClosePrinterChangeNotification](https://github.com/dahall/Vanara/search?l=C%23&q=FindClosePrinterChangeNotification)  
 [FindFirstPrinterChangeNotification](http://msdn2.microsoft.com/en-us/library/4155ef5c-cd96-4960-919b-d9a495bb73a5) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.FindFirstPrinterChangeNotification](https://github.com/dahall/Vanara/search?l=C%23&q=FindFirstPrinterChangeNotification)  
 [FindNextPrinterChangeNotification](http://msdn2.microsoft.com/en-us/library/ea7774ae-361f-41e4-bbc6-3f100028b22a) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.FindNextPrinterChangeNotification](https://github.com/dahall/Vanara/search?l=C%23&q=FindNextPrinterChangeNotification)  
 [FlushPrinter](http://msdn2.microsoft.com/en-us/library/08e54175-da68-4ebd-91ec-8f4525f49d30) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.FlushPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=FlushPrinter)  
 [FreePrinterNotifyInfo](http://msdn2.microsoft.com/en-us/library/e50d4718-3682-486b-9d07-ddddd0b284dc) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.FreePrinterNotifyInfo](https://github.com/dahall/Vanara/search?l=C%23&q=FreePrinterNotifyInfo)  
-[FreePrintNamedPropertyArray](https://www.google.com/search?num=5&q=FreePrintNamedPropertyArray+site%3Amicrosoft.com) | winspool.drv |  |   
-[FreePrintPropertyValue](https://www.google.com/search?num=5&q=FreePrintPropertyValue+site%3Amicrosoft.com) | winspool.drv |  |   
-[GetCorePrinterDrivers](https://www.google.com/search?num=5&q=GetCorePrinterDriversA+site%3Amicrosoft.com) | winspool.drv |  |   
+[GetCorePrinterDrivers](http://msdn2.microsoft.com/en-us/library/98acad48-cd42-4d2b-be58-81c1366f6912) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetCorePrinterDrivers](https://github.com/dahall/Vanara/search?l=C%23&q=GetCorePrinterDrivers)  
 [GetDefaultPrinter](http://msdn2.microsoft.com/en-us/library/8ec06743-43ce-4fac-83c4-f09eac7ee333) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetDefaultPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=GetDefaultPrinter)  
-[GetDeviceDefaultPrintTicketThunk](https://www.google.com/search?num=5&q=GetDeviceDefaultPrintTicketThunk+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[GetDeviceNamespacesThunk](https://www.google.com/search?num=5&q=GetDeviceNamespacesThunk+site%3Amicrosoft.com) | prntvpt.dll |  |   
 [GetForm](http://msdn2.microsoft.com/en-us/library/10b25748-6d7c-46ab-bd2c-9b6126a1d7d1) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetForm](https://github.com/dahall/Vanara/search?l=C%23&q=GetForm)  
 [GetJob](http://msdn2.microsoft.com/en-us/library/57e59f84-d2a0-4722-b0fc-6673f7bb5c57) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetJob](https://github.com/dahall/Vanara/search?l=C%23&q=GetJob)  
-[GetJobNamedPropertyValue](https://www.google.com/search?num=5&q=GetJobNamedPropertyValue+site%3Amicrosoft.com) | winspool.drv |  |   
-[GetPrintCapabilitiesThunk](https://www.google.com/search?num=5&q=GetPrintCapabilitiesThunk+site%3Amicrosoft.com) | prntvpt.dll |  |   
 [GetPrintCapabilitiesThunk2](http://msdn2.microsoft.com/en-us/library/15219c19-b64c-4c51-9357-15a797557693) | prntvpt.dll | winspool.h | [Vanara.PInvoke.PrntvPt.GetPrintCapabilitiesThunk2](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrintCapabilitiesThunk2)  
-[GetPrintDeviceCapabilitiesThunk](https://www.google.com/search?num=5&q=GetPrintDeviceCapabilitiesThunk+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[GetPrintDeviceCapabilitiesThunk2](https://www.google.com/search?num=5&q=GetPrintDeviceCapabilitiesThunk2+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[GetPrintDeviceResourcesThunk](https://www.google.com/search?num=5&q=GetPrintDeviceResourcesThunk+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[GetPrintDeviceResourcesThunk2](https://www.google.com/search?num=5&q=GetPrintDeviceResourcesThunk2+site%3Amicrosoft.com) | prntvpt.dll |  |   
 [GetPrinter](http://msdn2.microsoft.com/en-us/library/f162edbb-83ee-40c3-8710-9c867301d652) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrinter)  
 [GetPrinterData](http://msdn2.microsoft.com/en-us/library/b5a44b27-a4aa-4e58-9a64-05be87d12ab5) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetPrinterData](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrinterData)  
 [GetPrinterDataEx](http://msdn2.microsoft.com/en-us/library/5d9183a7-97cc-46de-848e-e37ce51396eb) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetPrinterDataEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrinterDataEx)  
-[GetPrinterDriver](https://www.google.com/search?num=5&q=GetPrinterDriverA+site%3Amicrosoft.com) | winspool.drv |  |   
-[GetPrinterDriver2](https://www.google.com/search?num=5&q=GetPrinterDriver2A+site%3Amicrosoft.com) | winspool.drv |  |   
-[GetPrinterDriverDirectory](https://www.google.com/search?num=5&q=GetPrinterDriverDirectoryA+site%3Amicrosoft.com) | winspool.drv |  |   
-[GetPrinterDriverPackagePath](https://www.google.com/search?num=5&q=GetPrinterDriverPackagePathA+site%3Amicrosoft.com) | winspool.drv |  |   
+[GetPrinterDriver](http://msdn2.microsoft.com/en-us/library/93f859b4-1005-4359-8029-9536d6eeb7e7) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetPrinterDriver](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrinterDriver)  
+[GetPrinterDriver2](http://msdn2.microsoft.com/en-us/library/0d482d28-7668-4734-ba71-5b355c18ddec) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetPrinterDriver2](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrinterDriver2)  
+[GetPrinterDriverDirectory](http://msdn2.microsoft.com/en-us/library/69c9cc87-d7e3-496a-b631-b3ae30cdb3fd) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetPrinterDriverDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrinterDriverDirectory)  
+[GetPrinterDriverPackagePath](http://msdn2.microsoft.com/en-us/library/e88e984b-d2c0-43b4-8f70-b05ec202ab14) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetPrinterDriverPackagePath](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrinterDriverPackagePath)  
 [GetPrintExecutionData](http://msdn2.microsoft.com/en-us/library/bb9506aa-a0da-46bc-a86a-84a79587cd50) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetPrintExecutionData](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrintExecutionData)  
-[GetPrintOutputInfo](https://www.google.com/search?num=5&q=GetPrintOutputInfo+site%3Amicrosoft.com) | winspool.drv |  |   
-[GetPrintProcessorDirectory](https://www.google.com/search?num=5&q=GetPrintProcessorDirectoryA+site%3Amicrosoft.com) | winspool.drv |  |   
-[GetSchemaVersionThunk](https://www.google.com/search?num=5&q=GetSchemaVersionThunk+site%3Amicrosoft.com) | prntvpt.dll |  |   
+[GetPrintProcessorDirectory](http://msdn2.microsoft.com/en-us/library/a2443cfd-e5ba-41c6-aaf4-45051a3d0e26) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.GetPrintProcessorDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=GetPrintProcessorDirectory)  
 [GetSpoolFileHandle](https://www.google.com/search?num=5&q=GetSpoolFileHandle+site%3Amicrosoft.com) | winspool.drv |  | [Vanara.PInvoke.WinSpool.InternalGetSpoolFileHandle](https://github.com/dahall/Vanara/search?l=C%23&q=InternalGetSpoolFileHandle)  
-[InstallPrinterDriverFromPackage](https://www.google.com/search?num=5&q=InstallPrinterDriverFromPackageA+site%3Amicrosoft.com) | winspool.drv |  |   
+[InstallPrinterDriverFromPackage](http://msdn2.microsoft.com/en-us/library/5906d9c6-9fbf-4ec6-81ce-112a9ef6d7c0) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.InstallPrinterDriverFromPackage](https://github.com/dahall/Vanara/search?l=C%23&q=InstallPrinterDriverFromPackage)  
 [IsValidDevmode](http://msdn2.microsoft.com/en-us/library/8b4e32cc-5eeb-4a0d-a1b7-f6edb99ed8d8) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.IsValidDevmode](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidDevmode)  
-[MergeAndValidatePrintTicketThunk](https://www.google.com/search?num=5&q=MergeAndValidatePrintTicketThunk+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[MergeAndValidatePrintTicketThunk2](https://www.google.com/search?num=5&q=MergeAndValidatePrintTicketThunk2+site%3Amicrosoft.com) | prntvpt.dll |  |   
+[MergeAndValidatePrintTicketThunk2](http://msdn2.microsoft.com/en-us/library/4aa7b9de-abf2-4781-942e-0b992a6bffed) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.MergeAndValidatePrintTicketThunk2](https://github.com/dahall/Vanara/search?l=C%23&q=MergeAndValidatePrintTicketThunk2)  
 [OpenPrinter](http://msdn2.microsoft.com/en-us/library/96763220-d851-46f0-8be8-403f3356edb9) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.OpenPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=OpenPrinter)  
 [OpenPrinter2](http://msdn2.microsoft.com/en-us/library/e2370ae4-4475-4ccc-a6f9-3d33d1370054) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.OpenPrinter2](https://github.com/dahall/Vanara/search?l=C%23&q=OpenPrinter2)  
-[PerfClose](https://www.google.com/search?num=5&q=PerfClose+site%3Amicrosoft.com) | winspool.drv |  |   
-[PerfCollect](https://www.google.com/search?num=5&q=PerfCollect+site%3Amicrosoft.com) | winspool.drv |  |   
-[PerfOpen](https://www.google.com/search?num=5&q=PerfOpen+site%3Amicrosoft.com) | winspool.drv |  |   
-[PlayGdiScriptOnPrinterIC](https://www.google.com/search?num=5&q=PlayGdiScriptOnPrinterIC+site%3Amicrosoft.com) | winspool.drv |  |   
-[PrinterMessageBox](https://www.google.com/search?num=5&q=PrinterMessageBoxA+site%3Amicrosoft.com) | winspool.drv |  |   
 [PrinterProperties](http://msdn2.microsoft.com/en-us/library/1d4c961b-178b-47af-b983-5b7327919f93) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.PrinterProperties](https://github.com/dahall/Vanara/search?l=C%23&q=PrinterProperties)  
 [PTCloseProvider](http://msdn2.microsoft.com/en-us/library/28e85b53-fd0c-4210-ae2b-794efaf65bd4) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.PTCloseProvider](https://github.com/dahall/Vanara/search?l=C%23&q=PTCloseProvider)  
-[PTConvertDevModeToPrintTicket](https://www.google.com/search?num=5&q=PTConvertDevModeToPrintTicket+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[PTConvertPrintTicketToDevMode](https://www.google.com/search?num=5&q=PTConvertPrintTicketToDevMode+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[PTGetPrintCapabilities](https://www.google.com/search?num=5&q=PTGetPrintCapabilities+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[PTGetPrintDeviceCapabilities](https://www.google.com/search?num=5&q=PTGetPrintDeviceCapabilities+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[PTGetPrintDeviceResources](https://www.google.com/search?num=5&q=PTGetPrintDeviceResources+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[PTMergeAndValidatePrintTicket](https://www.google.com/search?num=5&q=PTMergeAndValidatePrintTicket+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[PTOpenProvider](https://www.google.com/search?num=5&q=PTOpenProvider+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[PTOpenProviderEx](https://www.google.com/search?num=5&q=PTOpenProviderEx+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[PTQuerySchemaVersionSupport](https://www.google.com/search?num=5&q=PTQuerySchemaVersionSupport+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[PTReleaseMemory](https://www.google.com/search?num=5&q=PTReleaseMemory+site%3Amicrosoft.com) | prntvpt.dll |  |   
-[QueryColorProfile](https://www.google.com/search?num=5&q=QueryColorProfile+site%3Amicrosoft.com) | winspool.drv |  |   
-[QueryRemoteFonts](https://www.google.com/search?num=5&q=QueryRemoteFonts+site%3Amicrosoft.com) | winspool.drv |  |   
-[QuerySpoolMode](https://www.google.com/search?num=5&q=QuerySpoolMode+site%3Amicrosoft.com) | winspool.drv |  |   
+[PTConvertDevModeToPrintTicket](http://msdn2.microsoft.com/en-us/library/22ebb9e7-10c6-4512-b749-d61f74bc82ed) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.PTConvertDevModeToPrintTicket](https://github.com/dahall/Vanara/search?l=C%23&q=PTConvertDevModeToPrintTicket)  
+[PTConvertPrintTicketToDevMode](http://msdn2.microsoft.com/en-us/library/5eec91b9-d554-4440-bc9e-6a26af34994b) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.PTConvertPrintTicketToDevMode](https://github.com/dahall/Vanara/search?l=C%23&q=PTConvertPrintTicketToDevMode)  
+[PTGetPrintCapabilities](http://msdn2.microsoft.com/en-us/library/925e314c-85ff-4c1b-b3c9-f36aa4b55e01) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.PTGetPrintCapabilities](https://github.com/dahall/Vanara/search?l=C%23&q=PTGetPrintCapabilities)  
+[PTGetPrintDeviceCapabilities](http://msdn2.microsoft.com/en-us/library/DB9D63B1-2703-47F7-8F31-30FA0110E1E9) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.PTGetPrintDeviceCapabilities](https://github.com/dahall/Vanara/search?l=C%23&q=PTGetPrintDeviceCapabilities)  
+[PTGetPrintDeviceResources](http://msdn2.microsoft.com/en-us/library/39F17562-B8EB-41AF-BA55-42FE35B4560F) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.PTGetPrintDeviceResources](https://github.com/dahall/Vanara/search?l=C%23&q=PTGetPrintDeviceResources)  
+[PTMergeAndValidatePrintTicket](http://msdn2.microsoft.com/en-us/library/97691930-d76a-48c9-80b9-8413d96322a9) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.PTMergeAndValidatePrintTicket](https://github.com/dahall/Vanara/search?l=C%23&q=PTMergeAndValidatePrintTicket)  
+[PTOpenProvider](http://msdn2.microsoft.com/en-us/library/6821b1b0-74b0-4caf-b8e6-a9df4d7693d7) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.PTOpenProvider](https://github.com/dahall/Vanara/search?l=C%23&q=PTOpenProvider)  
+[PTOpenProviderEx](http://msdn2.microsoft.com/en-us/library/0e65170b-66f6-4238-bdde-0a0b7108a686) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.PTOpenProviderEx](https://github.com/dahall/Vanara/search?l=C%23&q=PTOpenProviderEx)  
+[PTQuerySchemaVersionSupport](http://msdn2.microsoft.com/en-us/library/a3b5a92f-3a5b-4438-b788-91c9ac5a191f) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.PTQuerySchemaVersionSupport](https://github.com/dahall/Vanara/search?l=C%23&q=PTQuerySchemaVersionSupport)  
+[PTReleaseMemory](http://msdn2.microsoft.com/en-us/library/d568b3a9-7f13-4e4e-8bbc-f4ab0009fe83) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.PTReleaseMemory](https://github.com/dahall/Vanara/search?l=C%23&q=PTReleaseMemory)  
 [ReadPrinter](http://msdn2.microsoft.com/en-us/library/d7c3f186-c53e-424b-89bf-6742babb998f) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.ReadPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=ReadPrinter)  
-[RegisterForPrintAsyncNotifications](https://www.google.com/search?num=5&q=RegisterForPrintAsyncNotifications+site%3Amicrosoft.com) | winspool.drv |  |   
 [ReportJobProcessingProgress](http://msdn2.microsoft.com/en-us/library/66f7483d-be98-410d-b0c7-430743397de2) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.ReportJobProcessingProgress](https://github.com/dahall/Vanara/search?l=C%23&q=ReportJobProcessingProgress)  
 [ResetPrinter](http://msdn2.microsoft.com/en-us/library/9efc6629-dbb7-4320-90b9-07c66f0add47) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.ResetPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=ResetPrinter)  
 [ScheduleJob](http://msdn2.microsoft.com/en-us/library/a103a29c-be4d-491e-9b04-84571fe969a5) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.ScheduleJob](https://github.com/dahall/Vanara/search?l=C%23&q=ScheduleJob)  
-[SeekPrinter](https://www.google.com/search?num=5&q=SeekPrinter+site%3Amicrosoft.com) | winspool.drv |  |   
 [SetDefaultPrinter](http://msdn2.microsoft.com/en-us/library/55eec548-577f-422b-80e3-8b23aa4d2159) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.SetDefaultPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=SetDefaultPrinter)  
 [SetForm](http://msdn2.microsoft.com/en-us/library/05d5d495-952c-4a1d-8694-1004d0c2bcf6) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.SetForm](https://github.com/dahall/Vanara/search?l=C%23&q=SetForm)  
 [SetJob](http://msdn2.microsoft.com/en-us/library/21947c69-c517-4962-8eb7-b45ed4211d9a) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.SetJob](https://github.com/dahall/Vanara/search?l=C%23&q=SetJob)  
-[SetJobNamedProperty](https://www.google.com/search?num=5&q=SetJobNamedProperty+site%3Amicrosoft.com) | winspool.drv |  |   
 [SetPort](http://msdn2.microsoft.com/en-us/library/1b80ad93-aaa1-41ed-a668-a944fa62c3eb) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.SetPort](https://github.com/dahall/Vanara/search?l=C%23&q=SetPort)  
 [SetPrinter](http://msdn2.microsoft.com/en-us/library/ade367c5-20d6-4da9-bb52-ce6768cf7537) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.SetPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=SetPrinter)  
 [SetPrinterData](http://msdn2.microsoft.com/en-us/library/16072de9-98fb-4ada-8216-180b64cf44c8) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.SetPrinterData](https://github.com/dahall/Vanara/search?l=C%23&q=SetPrinterData)  
 [SetPrinterDataEx](http://msdn2.microsoft.com/en-us/library/b7faadfc-1c81-4ddf-8fe5-68f4cc0376f1) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.SetPrinterDataEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetPrinterDataEx)  
-[SetSplwow64AppCompat](https://www.google.com/search?num=5&q=SetSplwow64AppCompat+site%3Amicrosoft.com) | winspool.drv |  |   
-[SplDriverUnloadComplete](https://www.google.com/search?num=5&q=SplDriverUnloadComplete+site%3Amicrosoft.com) | winspool.drv |  |   
-[SpoolerDevQueryPrintW](https://www.google.com/search?num=5&q=SpoolerDevQueryPrintW+site%3Amicrosoft.com) | winspool.drv |  |   
-[SpoolerPrinterEvent](https://www.google.com/search?num=5&q=SpoolerPrinterEvent+site%3Amicrosoft.com) | winspool.drv |  |   
-[StartDocDlg](https://www.google.com/search?num=5&q=StartDocDlgA+site%3Amicrosoft.com) | winspool.drv |  |   
 [StartDocPrinter](http://msdn2.microsoft.com/en-us/library/caa2bd80-4af3-4968-a5b9-d12f16cac6fc) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.StartDocPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=StartDocPrinter)  
 [StartPagePrinter](http://msdn2.microsoft.com/en-us/library/8ac7c47b-b3a7-4642-bfb7-54e014139fbf) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.StartPagePrinter](https://github.com/dahall/Vanara/search?l=C%23&q=StartPagePrinter)  
-[UnbindPTProviderThunk](http://msdn2.microsoft.com/en-us/library/ce979c89-9f9d-4e89-b142-beed414caa3f) | prntvpt.dll |  | [Vanara.PInvoke.PrntvPt.UnbindPTProviderThunk](https://github.com/dahall/Vanara/search?l=C%23&q=UnbindPTProviderThunk)  
-[UnRegisterForPrintAsyncNotifications](https://www.google.com/search?num=5&q=UnRegisterForPrintAsyncNotifications+site%3Amicrosoft.com) | winspool.drv |  |   
-[UploadPrinterDriverPackage](https://www.google.com/search?num=5&q=UploadPrinterDriverPackageA+site%3Amicrosoft.com) | winspool.drv |  |   
-[WaitForPrinterChange](https://www.google.com/search?num=5&q=WaitForPrinterChange+site%3Amicrosoft.com) | winspool.drv |  |   
+[StartXpsPrintJob](http://msdn2.microsoft.com/en-us/library/d982ae2e-c68f-4197-b419-22a63e61db8a) | xpsprint.dll | xpsprint.h | [Vanara.PInvoke.XpsPrint.StartXpsPrintJob](https://github.com/dahall/Vanara/search?l=C%23&q=StartXpsPrintJob)  
+[StartXpsPrintJob1](http://msdn2.microsoft.com/en-us/library/91D0BA4D-60A6-43F8-8BD3-9183DC6CD50D) | xpsprint.dll | xpsprint.h | [Vanara.PInvoke.XpsPrint.StartXpsPrintJob1](https://github.com/dahall/Vanara/search?l=C%23&q=StartXpsPrintJob1)  
+[UnbindPTProviderThunk](http://msdn2.microsoft.com/en-us/library/ce979c89-9f9d-4e89-b142-beed414caa3f) | prntvpt.dll | prntvpt.h | [Vanara.PInvoke.PrntvPt.UnbindPTProviderThunk](https://github.com/dahall/Vanara/search?l=C%23&q=UnbindPTProviderThunk)  
+[UploadPrinterDriverPackage](http://msdn2.microsoft.com/en-us/library/dd3b3a3b-8ded-44ae-85dd-e630bc62e898) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.UploadPrinterDriverPackage](https://github.com/dahall/Vanara/search?l=C%23&q=UploadPrinterDriverPackage)  
 [WritePrinter](http://msdn2.microsoft.com/en-us/library/9411b71f-d686-44ed-9051-d410e5ab228e) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.WritePrinter](https://github.com/dahall/Vanara/search?l=C%23&q=WritePrinter)  
-[XcvDataW](https://www.google.com/search?num=5&q=XcvDataW+site%3Amicrosoft.com) | winspool.drv |  |   
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
@@ -174,7 +120,6 @@ Native Structure | Header | Managed Structure
 [DOC_INFO_1](http://msdn2.microsoft.com/en-us/library/142d988b-dd74-4312-8b27-331a7ec70344) | winspool.h | [Vanara.PInvoke.WinSpool.DOC_INFO_1](https://github.com/dahall/Vanara/search?l=C%23&q=DOC_INFO_1)  
 [DOC_INFO_2](http://msdn2.microsoft.com/en-us/library/d62333f3-cc39-4c9b-8fb3-02a2d24bbbad) | winspool.h | [Vanara.PInvoke.WinSpool.DOC_INFO_2](https://github.com/dahall/Vanara/search?l=C%23&q=DOC_INFO_2)  
 [DOC_INFO_3](http://msdn2.microsoft.com/en-us/library/6e7b6727-da04-4f67-af77-6b51c68a4eb3) | winspool.h | [Vanara.PInvoke.WinSpool.DOC_INFO_3](https://github.com/dahall/Vanara/search?l=C%23&q=DOC_INFO_3)  
-[DOCINFO](http://msdn2.microsoft.com/en-us/library/329bf0d9-399b-4f64-a029-361ef7558aeb) | wingdi.h | [Vanara.PInvoke.WinSpool.DOCINFO](https://github.com/dahall/Vanara/search?l=C%23&q=DOCINFO)  
 [DRIVER_INFO_1](http://msdn2.microsoft.com/en-us/library/9435192b-3eba-4937-8cd3-bff4e9eb84d3) | winspool.h | [Vanara.PInvoke.WinSpool.DRIVER_INFO_1](https://github.com/dahall/Vanara/search?l=C%23&q=DRIVER_INFO_1)  
 [DRIVER_INFO_2](http://msdn2.microsoft.com/en-us/library/cca1227d-69b9-44df-8dac-384c2f8843ae) | winspool.h | [Vanara.PInvoke.WinSpool.DRIVER_INFO_2](https://github.com/dahall/Vanara/search?l=C%23&q=DRIVER_INFO_2)  
 [DRIVER_INFO_3](http://msdn2.microsoft.com/en-us/library/ccf87319-0bcf-4f71-8de3-0190459d2b0e) | winspool.h | [Vanara.PInvoke.WinSpool.DRIVER_INFO_3](https://github.com/dahall/Vanara/search?l=C%23&q=DRIVER_INFO_3)  
@@ -199,6 +144,7 @@ Native Structure | Header | Managed Structure
 [PORT_INFO_2](http://msdn2.microsoft.com/en-us/library/93675294-61d4-40e4-b84c-f252978e0285) | winspool.h | [Vanara.PInvoke.WinSpool.PORT_INFO_2](https://github.com/dahall/Vanara/search?l=C%23&q=PORT_INFO_2)  
 [PORT_INFO_3](http://msdn2.microsoft.com/en-us/library/0939353f-284b-4dbb-89a2-04918c934430) | winspool.h | [Vanara.PInvoke.WinSpool.PORT_INFO_3](https://github.com/dahall/Vanara/search?l=C%23&q=PORT_INFO_3)  
 [PRINT_EXECUTION_DATA](http://msdn2.microsoft.com/en-us/library/1fd25ed9-6f28-48f9-8132-d48fffc956ec) | winspool.h | [Vanara.PInvoke.WinSpool.PRINT_EXECUTION_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=PRINT_EXECUTION_DATA)  
+[PrintDocumentPackageStatus](http://msdn2.microsoft.com/en-us/library/A499CB8D-B2E3-4343-A9AF-079C75EF1441) | documenttarget.h | [Vanara.PInvoke.DocumentTarget.PrintDocumentPackageStatus](https://github.com/dahall/Vanara/search?l=C%23&q=PrintDocumentPackageStatus)  
 [PRINTER_CONNECTION_INFO_1](http://msdn2.microsoft.com/en-us/library/afac3f91-74eb-46f7-94b4-d37b2b8a32a4) | winspool.h | [Vanara.PInvoke.WinSpool.PRINTER_CONNECTION_INFO_1](https://github.com/dahall/Vanara/search?l=C%23&q=PRINTER_CONNECTION_INFO_1)  
 [PRINTER_ENUM_VALUES](http://msdn2.microsoft.com/en-us/library/87eb1452-0d9d-46bd-8af8-0542a11a929b) | winspool.h | [Vanara.PInvoke.WinSpool.PRINTER_ENUM_VALUES](https://github.com/dahall/Vanara/search?l=C%23&q=PRINTER_ENUM_VALUES)  
 [PRINTER_INFO_1](http://msdn2.microsoft.com/en-us/library/0b0e2d0e-2625-4cab-a8f9-536185479443) | winspool.h | [Vanara.PInvoke.WinSpool.PRINTER_INFO_1](https://github.com/dahall/Vanara/search?l=C%23&q=PRINTER_INFO_1)  
@@ -220,3 +166,74 @@ Native Structure | Header | Managed Structure
 [PRINTPROCESSOR_INFO_1](http://msdn2.microsoft.com/en-us/library/49b272c8-156b-4996-b3fd-92cde831f4ae) | winspool.h | [Vanara.PInvoke.WinSpool.PRINTPROCESSOR_INFO_1](https://github.com/dahall/Vanara/search?l=C%23&q=PRINTPROCESSOR_INFO_1)  
 [PROVIDOR_INFO_1](http://msdn2.microsoft.com/en-us/library/0eff115a-b3d2-4c8f-b820-46e7f62dd295) | winspool.h | [Vanara.PInvoke.WinSpool.PROVIDOR_INFO_1](https://github.com/dahall/Vanara/search?l=C%23&q=PROVIDOR_INFO_1)  
 [PROVIDOR_INFO_2](http://msdn2.microsoft.com/en-us/library/840523ca-22d0-460f-81fb-e0a9e2d4f5d6) | winspool.h | [Vanara.PInvoke.WinSpool.PROVIDOR_INFO_2](https://github.com/dahall/Vanara/search?l=C%23&q=PROVIDOR_INFO_2)  
+[XPS_COLOR](http://msdn2.microsoft.com/en-us/library/76dcabb0-2407-4877-9f52-100883746695) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.XPS_COLOR](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_COLOR)  
+[XPS_COLOR_TYPE_CONTEXT](https://www.google.com/search?num=5&q=XPS_COLOR_TYPE_CONTEXT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.XpsObjectModel.XPS_COLOR.XPS_COLOR_TYPE_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_COLOR_TYPE_CONTEXT)  
+[XPS_COLOR_TYPE_SCRGB](https://www.google.com/search?num=5&q=XPS_COLOR_TYPE_SCRGB+site%3Amicrosoft.com) |  | [Vanara.PInvoke.XpsObjectModel.XPS_COLOR.XPS_COLOR_TYPE_SCRGB](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_COLOR_TYPE_SCRGB)  
+[XPS_COLOR_TYPE_SRGB](https://www.google.com/search?num=5&q=XPS_COLOR_TYPE_SRGB+site%3Amicrosoft.com) |  | [Vanara.PInvoke.XpsObjectModel.XPS_COLOR.XPS_COLOR_TYPE_SRGB](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_COLOR_TYPE_SRGB)  
+[XPS_DASH](http://msdn2.microsoft.com/en-us/library/c8f43f91-eefb-4025-8042-c2601e89d315) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.XPS_DASH](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_DASH)  
+[XPS_GLYPH_INDEX](http://msdn2.microsoft.com/en-us/library/0ea30e0f-f32b-4a38-9591-27cb1fe7f234) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.XPS_GLYPH_INDEX](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_GLYPH_INDEX)  
+[XPS_GLYPH_MAPPING](http://msdn2.microsoft.com/en-us/library/5cc76cba-66e4-4853-969b-a99ec7bb22f3) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.XPS_GLYPH_MAPPING](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_GLYPH_MAPPING)  
+[XPS_JOB_STATUS](http://msdn2.microsoft.com/en-us/library/c4e13960-4f26-460a-b47e-98b833fcdfd5) | xpsprint.h | [Vanara.PInvoke.XpsPrint.XPS_JOB_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_JOB_STATUS)  
+[XPS_MATRIX](http://msdn2.microsoft.com/en-us/library/0df75410-0e34-4962-8499-879d5153d9af) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.XPS_MATRIX](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_MATRIX)  
+### Interfaces  
+Native Interface | Header | Managed Interface  
+--- | --- | ---  
+[IPrintDocumentPackageStatusEvent](http://msdn2.microsoft.com/en-us/library/A2178E6A-04AD-4024-A083-5C76A5F60743) | documenttarget.h | [Vanara.PInvoke.DocumentTarget.IPrintDocumentPackageStatusEvent](https://github.com/dahall/Vanara/search?l=C%23&q=IPrintDocumentPackageStatusEvent)  
+[IPrintDocumentPackageTarget](http://msdn2.microsoft.com/en-us/library/0F63C626-DB58-4952-BBB3-7E3901429C35) | documenttarget.h | [Vanara.PInvoke.DocumentTarget.IPrintDocumentPackageTarget](https://github.com/dahall/Vanara/search?l=C%23&q=IPrintDocumentPackageTarget)  
+[IPrintDocumentPackageTargetFactory](http://msdn2.microsoft.com/en-us/library/631FBF5E-1DDF-49A9-8E1E-201BC6996EA5) | documenttarget.h | [Vanara.PInvoke.DocumentTarget.IPrintDocumentPackageTargetFactory](https://github.com/dahall/Vanara/search?l=C%23&q=IPrintDocumentPackageTargetFactory)  
+[IPrintDocumentPageSource](https://www.google.com/search?num=5&q=IPrintDocumentPageSource+site%3Amicrosoft.com) |  | [Vanara.PInvoke.DocumentSource.IPrintDocumentPageSource](https://github.com/dahall/Vanara/search?l=C%23&q=IPrintDocumentPageSource)  
+[IPrintPreviewPageCollection](https://www.google.com/search?num=5&q=IPrintPreviewPageCollection+site%3Amicrosoft.com) |  | [Vanara.PInvoke.DocumentSource.IPrintPreviewPageCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IPrintPreviewPageCollection)  
+[IXpsOMBrush](http://msdn2.microsoft.com/en-us/library/43cb56db-e09e-47cb-b50b-7827131659fd) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMBrush](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMBrush)  
+[IXpsOMCanvas](http://msdn2.microsoft.com/en-us/library/3cb0e1b3-88a8-4724-a3c5-0df416294e62) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMCanvas](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMCanvas)  
+[IXpsOMColorProfileResource](http://msdn2.microsoft.com/en-us/library/8a344300-c3fc-4225-bfa5-d5d33798a094) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMColorProfileResource](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMColorProfileResource)  
+[IXpsOMColorProfileResourceCollection](http://msdn2.microsoft.com/en-us/library/cb9253f3-461e-47a3-820b-bb6bf5e30210) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMColorProfileResourceCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMColorProfileResourceCollection)  
+[IXpsOMCoreProperties](http://msdn2.microsoft.com/en-us/library/705ec9c7-5aa9-4fc5-ad2c-441cb545d056) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMCoreProperties](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMCoreProperties)  
+[IXpsOMDashCollection](http://msdn2.microsoft.com/en-us/library/02a152a1-e117-42fb-8428-a2b28e6540a9) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMDashCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMDashCollection)  
+[IXpsOMDictionary](http://msdn2.microsoft.com/en-us/library/f887e3d3-973c-4267-a785-6bc190c13082) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMDictionary](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMDictionary)  
+[IXpsOMDocument](http://msdn2.microsoft.com/en-us/library/22d3c0a1-3ad5-4f48-9e1e-eaf3bd95b39f) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMDocument](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMDocument)  
+[IXpsOMDocumentCollection](http://msdn2.microsoft.com/en-us/library/4f3acae9-10a0-47ff-9170-a40abe230580) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMDocumentCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMDocumentCollection)  
+[IXpsOMDocumentSequence](http://msdn2.microsoft.com/en-us/library/472095a4-ecd8-406a-97c2-1a34b4e5184a) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMDocumentSequence](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMDocumentSequence)  
+[IXpsOMDocumentStructureResource](https://www.google.com/search?num=5&q=IXpsOMDocumentStructureResource+site%3Amicrosoft.com) |  | [Vanara.PInvoke.XpsObjectModel.IXpsOMDocumentStructureResource](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMDocumentStructureResource)  
+[IXpsOMFontResource](http://msdn2.microsoft.com/en-us/library/dd0ce1c0-1c04-46a8-9075-93de9b3e3062) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMFontResource](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMFontResource)  
+[IXpsOMFontResourceCollection](http://msdn2.microsoft.com/en-us/library/71153c4c-631b-4f7a-9dd5-8537dcaca150) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMFontResourceCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMFontResourceCollection)  
+[IXpsOMGeometry](http://msdn2.microsoft.com/en-us/library/d3f74c1e-49ef-40ee-a2f4-b6d198b57624) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMGeometry](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMGeometry)  
+[IXpsOMGeometryFigure](http://msdn2.microsoft.com/en-us/library/e76a14ce-cfc3-4a50-855e-f5779b9fc261) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMGeometryFigure](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMGeometryFigure)  
+[IXpsOMGeometryFigureCollection](http://msdn2.microsoft.com/en-us/library/24ed79ff-9160-4e9b-b322-c538b30f113b) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMGeometryFigureCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMGeometryFigureCollection)  
+[IXpsOMGlyphs](http://msdn2.microsoft.com/en-us/library/6d2cda65-c719-46f2-97c9-8aee7b5f84b9) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMGlyphs](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMGlyphs)  
+[IXpsOMGlyphsEditor](http://msdn2.microsoft.com/en-us/library/5bdf2892-ce6f-4560-b638-e441166fc309) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMGlyphsEditor](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMGlyphsEditor)  
+[IXpsOMGradientBrush](http://msdn2.microsoft.com/en-us/library/d381b813-5368-4ffe-a9a1-0f5027ae9d80) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMGradientBrush](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMGradientBrush)  
+[IXpsOMGradientStop](http://msdn2.microsoft.com/en-us/library/e115d806-70c1-4c6a-810e-e6a058628b44) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMGradientStop](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMGradientStop)  
+[IXpsOMGradientStopCollection](http://msdn2.microsoft.com/en-us/library/1f51f818-e9bb-4d88-9795-4e6890d24b8c) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMGradientStopCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMGradientStopCollection)  
+[IXpsOMImageBrush](http://msdn2.microsoft.com/en-us/library/f5478582-466b-496e-b7f3-42fb8caa6814) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMImageBrush](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMImageBrush)  
+[IXpsOMImageResource](http://msdn2.microsoft.com/en-us/library/89a1530e-fa87-45bf-a1da-c8656ec09ba3) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMImageResource](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMImageResource)  
+[IXpsOMImageResourceCollection](http://msdn2.microsoft.com/en-us/library/aed8b23e-71fd-49e6-aae9-006a59e0111b) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMImageResourceCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMImageResourceCollection)  
+[IXpsOMLinearGradientBrush](http://msdn2.microsoft.com/en-us/library/739bf088-0f09-47c1-9b49-6c279395f15b) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMLinearGradientBrush](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMLinearGradientBrush)  
+[IXpsOMMatrixTransform](http://msdn2.microsoft.com/en-us/library/d21457bc-9445-4ca2-ab9f-1e3f55e2e635) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMMatrixTransform](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMMatrixTransform)  
+[IXpsOMNameCollection](http://msdn2.microsoft.com/en-us/library/b27f83fc-0fcf-44e9-a6ce-c3612c5399ff) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMNameCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMNameCollection)  
+[IXpsOMObjectFactory](http://msdn2.microsoft.com/en-us/library/2444703e-4b89-4ef0-9ed7-aa937bc62e8c) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMObjectFactory](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMObjectFactory)  
+[IXpsOMPackage](http://msdn2.microsoft.com/en-us/library/7b0a36d6-1af1-4c2c-af14-d6139e9115c3) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMPackage](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMPackage)  
+[IXpsOMPackageWriter](http://msdn2.microsoft.com/en-us/library/cbbcc8bf-6172-41c8-9d74-27e5635ec167) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMPackageWriter](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMPackageWriter)  
+[IXpsOMPage](http://msdn2.microsoft.com/en-us/library/741deebd-9dce-4cd9-883e-4586c10a4609) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMPage](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMPage)  
+[IXpsOMPageReference](http://msdn2.microsoft.com/en-us/library/cdebab24-f918-4235-b4d5-5ee1007ade87) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMPageReference](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMPageReference)  
+[IXpsOMPageReferenceCollection](http://msdn2.microsoft.com/en-us/library/4b51bc29-c653-41fa-bbd3-9ff529f84e4e) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMPageReferenceCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMPageReferenceCollection)  
+[IXpsOMPart](http://msdn2.microsoft.com/en-us/library/71cd0155-6c95-42ca-bfc3-dffd43d95dc9) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMPart](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMPart)  
+[IXpsOMPartResources](http://msdn2.microsoft.com/en-us/library/9f706f23-25a0-40ee-93f4-3d7ac98ad6ed) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMPartResources](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMPartResources)  
+[IXpsOMPartUriCollection](http://msdn2.microsoft.com/en-us/library/05fe9700-19e6-4e63-9693-cfa4b019f643) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMPartUriCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMPartUriCollection)  
+[IXpsOMPath](http://msdn2.microsoft.com/en-us/library/93257a77-3fef-400e-bfe1-06e760ba4b93) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMPath](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMPath)  
+[IXpsOMPrintTicketResource](http://msdn2.microsoft.com/en-us/library/2f37dbd2-3078-4aa8-97e7-556a0ff2dd74) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMPrintTicketResource](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMPrintTicketResource)  
+[IXpsOMRadialGradientBrush](http://msdn2.microsoft.com/en-us/library/2f5b7b99-64a0-4156-8963-cfceb0d73503) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMRadialGradientBrush](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMRadialGradientBrush)  
+[IXpsOMRemoteDictionaryResource](http://msdn2.microsoft.com/en-us/library/dd757856-f16e-46ad-b865-8203c3428372) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMRemoteDictionaryResource](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMRemoteDictionaryResource)  
+[IXpsOMRemoteDictionaryResourceCollection](http://msdn2.microsoft.com/en-us/library/50c9bd7a-226f-4785-96b4-d0b5e861ae37) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMRemoteDictionaryResourceCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMRemoteDictionaryResourceCollection)  
+[IXpsOMResource](http://msdn2.microsoft.com/en-us/library/ed3d6ea0-efe5-4917-85fa-bd9ad1978b4e) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMResource](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMResource)  
+[IXpsOMShareable](http://msdn2.microsoft.com/en-us/library/2071292f-b898-4ec8-99f7-294c8d820965) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMShareable](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMShareable)  
+[IXpsOMSignatureBlockResource](http://msdn2.microsoft.com/en-us/library/f5052470-487d-4f47-8d42-70538a4a45a8) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMSignatureBlockResource](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMSignatureBlockResource)  
+[IXpsOMSignatureBlockResourceCollection](http://msdn2.microsoft.com/en-us/library/681bdb9c-69dd-4bf6-a4b3-c490f7a0363e) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMSignatureBlockResourceCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMSignatureBlockResourceCollection)  
+[IXpsOMSolidColorBrush](http://msdn2.microsoft.com/en-us/library/26580a25-09d1-4a9b-85c3-aa8ddcc97867) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMSolidColorBrush](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMSolidColorBrush)  
+[IXpsOMStoryFragmentsResource](http://msdn2.microsoft.com/en-us/library/83bc8017-c679-40a8-96a8-bff9aa2273af) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMStoryFragmentsResource](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMStoryFragmentsResource)  
+[IXpsOMThumbnailGenerator](http://msdn2.microsoft.com/en-us/library/cac794c0-bea2-417e-880f-15838f718ba7) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMThumbnailGenerator](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMThumbnailGenerator)  
+[IXpsOMTileBrush](http://msdn2.microsoft.com/en-us/library/fc9e1925-0dbc-447b-9acc-e7f719df62d1) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMTileBrush](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMTileBrush)  
+[IXpsOMVisual](http://msdn2.microsoft.com/en-us/library/f2ec412c-aece-4b20-a721-e6c17615e56b) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMVisual](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMVisual)  
+[IXpsOMVisualBrush](http://msdn2.microsoft.com/en-us/library/56c11e64-64a8-4c42-9547-4f1fcdc13a4b) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMVisualBrush](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMVisualBrush)  
+[IXpsOMVisualCollection](http://msdn2.microsoft.com/en-us/library/f373b437-3973-40aa-9cac-a6b196a3e5d1) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMVisualCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMVisualCollection)  
+[IXpsPrintJob](http://msdn2.microsoft.com/en-us/library/aa17e059-6208-4348-87f3-556a3818f2b9) | xpsprint.h | [Vanara.PInvoke.XpsPrint.IXpsPrintJob](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsPrintJob)  
+[IXpsPrintJobStream](http://msdn2.microsoft.com/en-us/library/a7855015-32db-48ff-8f8d-3d84d2843fde) | xpsprint.h | [Vanara.PInvoke.XpsPrint.IXpsPrintJobStream](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsPrintJobStream)  
