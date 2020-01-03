@@ -134,7 +134,10 @@ namespace Vanara.IO
 		/// <summary>Checks if the current user has administrator rights.</summary>
 		internal static bool IsCurrentUserAdministrator()
 		{
-			var wp = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+			using var identity = WindowsIdentity.GetCurrent();
+
+			var wp = new WindowsPrincipal(identity);
+
 			return wp.IsInRole(WindowsBuiltInRole.Administrator);
 		}
 

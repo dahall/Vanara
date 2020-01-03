@@ -62,7 +62,11 @@ namespace Vanara.Security.AccessControl.Tests
 			using (ss = new SystemSecurity(SystemSecurity.DesiredAccess.LookupNames))
 			{
 				IList<SystemSecurity.SystemAccountInfo> sa = null;
-				Assert.That(() => sa = ss.GetAccountInfo(false, false, WindowsIdentity.GetCurrent().User, new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null)), Throws.Nothing);
+
+				using var identity = WindowsIdentity.GetCurrent();
+
+				Assert.That(() => sa = ss.GetAccountInfo(false, false, identity.User, new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null)), Throws.Nothing);
+
 				foreach (var sai in sa)
 					TestContext.WriteLine($"{sai.SidType}:{sai.Name}");
 			}
