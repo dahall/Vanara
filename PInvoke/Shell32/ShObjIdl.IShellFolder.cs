@@ -775,11 +775,8 @@ namespace Vanara.PInvoke
 		/// silently fail.
 		/// </param>
 		/// <returns>An enumeration of the PIDL for the folder content items.</returns>
-		public static IEnumerable<PIDL> EnumObjects(this IShellFolder sf, SHCONTF grfFlags = SHCONTF.SHCONTF_FOLDERS | SHCONTF.SHCONTF_NONFOLDERS, HWND hwnd = default)
-		{
-			var eo = sf.EnumObjects(hwnd, grfFlags);
-			return new Collections.IEnumFromNext<PIDL>((out PIDL p) => { eo.Next(1, out var e, out var f); p = e; return f == 1; }, () => { try { eo.Reset(); } catch { } });
-		}
+		public static IEnumerable<PIDL> EnumObjects(this IShellFolder sf, SHCONTF grfFlags = SHCONTF.SHCONTF_FOLDERS | SHCONTF.SHCONTF_NONFOLDERS, HWND hwnd = default) =>
+			sf.EnumObjects(hwnd, grfFlags).Enumerate();
 
 		/// <summary>Extension method to simplify using the <see cref="IShellFolder.CreateViewObject"/> method.</summary>
 		/// <typeparam name="T">Type of the interface to get.</typeparam>

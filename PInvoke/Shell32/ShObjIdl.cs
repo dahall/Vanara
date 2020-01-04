@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
@@ -825,7 +827,7 @@ namespace Vanara.PInvoke
 			/// value will be 0 if there are no more items to retrieve.
 			/// </returns>
 			[PreserveSig]
-			HRESULT Next(uint celt, out IntPtr rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray)] IntPtr[] rgelt, out uint pceltFetched);
 
 			/// <summary>Skips the specified number of elements in the enumeration sequence.</summary>
 			/// <param name="celt">The number of item identifiers to skip.</param>
@@ -841,6 +843,27 @@ namespace Vanara.PInvoke
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IEnumIDList Clone();
+		}
+
+		/// <summary>Enumerates the specified <see cref="IEnumIDList"/> instance with an optional fetch size.</summary>
+		/// <param name="idList">The identifier list to enumerate. If this value is <see langword="null"/>, this will return an empty set.</param>
+		/// <param name="fetchSize">Size of the block of PIDL instances to fetch with a single call.</param>
+		/// <returns>A sequence of <see cref="PIDL"/> instances from <paramref name="idList"/>.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">fetchSize - You must specify a number greater than or equal to 1.</exception>
+		public static IEnumerable<PIDL> Enumerate(this IEnumIDList idList, int fetchSize = 1)
+		{
+			if (fetchSize < 1) throw new ArgumentOutOfRangeException(nameof(fetchSize), "You must specify a number greater than or equal to 1.");
+			if (idList is null) yield break;
+			var pidls = new IntPtr[fetchSize];
+			HRESULT hr;
+			while ((hr = idList.Next((uint)pidls.Length, pidls, out var cnt)).Succeeded && cnt > 0)
+			{
+				for (int i = 0; i < cnt; i++)
+					yield return new PIDL(pidls[i]);
+				if (hr == HRESULT.S_FALSE)
+					yield break;
+			}
+			hr.ThrowIfFailed();
 		}
 
 		/// <summary>

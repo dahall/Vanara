@@ -164,16 +164,13 @@ namespace Vanara.Windows.Shell
 				eo = iShellFolder.EnumObjects(IWin2Ptr(parentWindow, false), (SHCONTF)filter);
 			}
 			catch (Exception e) { Debug.WriteLine($"Unable to enum children in folder: {e.Message}"); }
-			if (eo != null)
+			foreach (var p in eo.Enumerate(20))
 			{
-				foreach (var p in new Collections.IEnumFromNext<IntPtr>((out IntPtr p) => eo.Next(1, out p, out var f).Succeeded && f == 1, () => { try { eo.Reset(); } catch { } }))
-				{
-					ShellItem i = null;
-					try { i = this[new PIDL(p)]; } catch (Exception e) { Debug.WriteLine($"Unable to open folder child: {e.Message}"); }
-					if (i != null) yield return i;
-				}
-				Marshal.ReleaseComObject(eo);
+				ShellItem i = null;
+				try { i = this[p]; } catch (Exception e) { Debug.WriteLine($"Unable to open folder child: {e.Message}"); }
+				if (i != null) yield return i;
 			}
+			Marshal.ReleaseComObject(eo);
 		}
 
 		/// <summary>Gets an object that can be used to carry out actions on the specified file objects or folders.</summary>
