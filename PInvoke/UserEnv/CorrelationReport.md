@@ -1,53 +1,38 @@
 ## Correlation report for userenv.dll  
-### Methods (35% complete)  
-Native Method | Native DLL | Header | Managed Method  
---- | --- | --- | ---  
-[AreThereVisibleLogoffScripts](https://www.google.com/search?num=5&q=AreThereVisibleLogoffScripts+site%3Amicrosoft.com) | userenv.dll |  |   
-[AreThereVisibleShutdownScripts](https://www.google.com/search?num=5&q=AreThereVisibleShutdownScripts+site%3Amicrosoft.com) | userenv.dll |  |   
-[CreateAppContainerProfile](http://msdn2.microsoft.com/en-us/library/73F5F30F-4083-4D33-B181-31B782AD40D6) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.CreateAppContainerProfile  
-[CreateEnvironmentBlock](http://msdn2.microsoft.com/en-us/library/bda8879d-d33a-48f4-8b08-e3a279126a07) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.CreateEnvironmentBlock  
-[CreateProfile](http://msdn2.microsoft.com/en-us/library/cab9e20b-d94c-42e5-ada9-27194f398bb3) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.CreateProfile  
-[DeleteAppContainerProfile](http://msdn2.microsoft.com/en-us/library/ED79D661-D087-4E44-8C32-14705ACA9D40) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.DeleteAppContainerProfile  
-[DeleteProfile](http://msdn2.microsoft.com/en-us/library/48a08d9a-4fdc-43ab-8323-c49bc2d0a58d) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.DeleteProfile  
-[DeriveAppContainerSidFromAppContainerName](http://msdn2.microsoft.com/en-us/library/233EFA95-289D-4D55-9D56-0630C015ABC7) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.DeriveAppContainerSidFromAppContainerName  
-[DeriveRestrictedAppContainerSidFromAppContainerSidAndRestrictedName](https://www.google.com/search?num=5&q=DeriveRestrictedAppContainerSidFromAppContainerSidAndRestrictedName+site%3Amicrosoft.com) | userenv.dll |  |   
-[DestroyEnvironmentBlock](http://msdn2.microsoft.com/en-us/library/8d03e102-3f8a-4aa7-b175-0a6781eedea7) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.DestroyEnvironmentBlock  
-[EnterCriticalPolicySection](http://msdn2.microsoft.com/en-us/library/d17578b3-3a71-456b-97ca-961b81572528) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.EnterCriticalPolicySection  
-[ExpandEnvironmentStringsForUser](http://msdn2.microsoft.com/en-us/library/d32fa6c8-035a-4c84-b210-5366f21b6c17) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.ExpandEnvironmentStringsForUser  
-[ForceSyncFgPolicy](https://www.google.com/search?num=5&q=ForceSyncFgPolicy+site%3Amicrosoft.com) | userenv.dll |  |   
-[FreeGPOList](http://msdn2.microsoft.com/en-us/library/96bd2b5b-c088-4eea-bbc2-31d83c13aa99) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.FreeGPOList  
-[GenerateGPNotification](https://www.google.com/search?num=5&q=GenerateGPNotification+site%3Amicrosoft.com) | userenv.dll |  |   
-[GetAllUsersProfileDirectory](http://msdn2.microsoft.com/en-us/library/bd08947a-df57-4dd9-b9ba-a01b315bfdf1) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.GetAllUsersProfileDirectory  
-[GetAppContainerFolderPath](http://msdn2.microsoft.com/en-us/library/7D3AB78D-C094-4F89-8032-13F3C137E910) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.GetAppContainerFolderPath  
-[GetAppContainerRegistryLocation](http://msdn2.microsoft.com/en-us/library/DAD7EC07-D57D-40F5-AA99-AD7579910294) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.GetAppContainerRegistryLocation  
-[GetAppliedGPOList](http://msdn2.microsoft.com/en-us/library/11e80a4e-acc4-4229-aa34-8f7d083c1041) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.GetAppliedGPOList  
-[GetDefaultUserProfileDirectory](https://www.google.com/search?num=5&q=GetDefaultUserProfileDirectoryA+site%3Amicrosoft.com) | userenv.dll |  |   
-[GetGPOList](http://msdn2.microsoft.com/en-us/library/26c54ac5-23d7-40ed-94a9-70d25e14431f) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.GetGPOList  
-[GetNextFgPolicyRefreshInfo](https://www.google.com/search?num=5&q=GetNextFgPolicyRefreshInfo+site%3Amicrosoft.com) | userenv.dll |  |   
-[GetPreviousFgPolicyRefreshInfo](https://www.google.com/search?num=5&q=GetPreviousFgPolicyRefreshInfo+site%3Amicrosoft.com) | userenv.dll |  |   
-[GetProfilesDirectory](https://www.google.com/search?num=5&q=GetProfilesDirectoryA+site%3Amicrosoft.com) | userenv.dll |  |   
-[GetProfileType](https://www.google.com/search?num=5&q=GetProfileType+site%3Amicrosoft.com) | userenv.dll |  |   
-[GetUserProfileDirectory](https://www.google.com/search?num=5&q=GetUserProfileDirectoryA+site%3Amicrosoft.com) | userenv.dll |  |   
-[HasPolicyForegroundProcessingCompleted](https://www.google.com/search?num=5&q=HasPolicyForegroundProcessingCompleted+site%3Amicrosoft.com) | userenv.dll |  |   
-[LeaveCriticalPolicySection](http://msdn2.microsoft.com/en-us/library/9e6a938f-c9cb-4baf-b7d0-4316e45f874c) | userenv.dll | userenv.h | Vanara.PInvoke.UserEnv.LeaveCriticalPolicySection  
-[LoadProfileExtender](https://www.google.com/search?num=5&q=LoadProfileExtender+site%3Amicrosoft.com) | userenv.dll |  |   
-[LoadUserProfile](https://www.google.com/search?num=5&q=LoadUserProfileA+site%3Amicrosoft.com) | userenv.dll |  |   
-[ProcessGroupPolicyCompleted](https://www.google.com/search?num=5&q=ProcessGroupPolicyCompleted+site%3Amicrosoft.com) | userenv.dll |  |   
-[ProcessGroupPolicyCompletedEx](https://www.google.com/search?num=5&q=ProcessGroupPolicyCompletedEx+site%3Amicrosoft.com) | userenv.dll |  |   
-[RefreshPolicy](https://www.google.com/search?num=5&q=RefreshPolicy+site%3Amicrosoft.com) | userenv.dll |  |   
-[RefreshPolicyEx](https://www.google.com/search?num=5&q=RefreshPolicyEx+site%3Amicrosoft.com) | userenv.dll |  |   
-[RegisterGPNotification](https://www.google.com/search?num=5&q=RegisterGPNotification+site%3Amicrosoft.com) | userenv.dll |  |   
-[RsopAccessCheckByType](https://www.google.com/search?num=5&q=RsopAccessCheckByType+site%3Amicrosoft.com) | userenv.dll |  |   
-[RsopFileAccessCheck](https://www.google.com/search?num=5&q=RsopFileAccessCheck+site%3Amicrosoft.com) | userenv.dll |  |   
-[RsopLoggingEnabled](https://www.google.com/search?num=5&q=RsopLoggingEnabled+site%3Amicrosoft.com) | userenv.dll |  |   
-[RsopResetPolicySettingStatus](https://www.google.com/search?num=5&q=RsopResetPolicySettingStatus+site%3Amicrosoft.com) | userenv.dll |  |   
-[RsopSetPolicySettingStatus](https://www.google.com/search?num=5&q=RsopSetPolicySettingStatus+site%3Amicrosoft.com) | userenv.dll |  |   
-[UnloadProfileExtender](https://www.google.com/search?num=5&q=UnloadProfileExtender+site%3Amicrosoft.com) | userenv.dll |  |   
-[UnloadUserProfile](https://www.google.com/search?num=5&q=UnloadUserProfile+site%3Amicrosoft.com) | userenv.dll |  |   
-[UnregisterGPNotification](https://www.google.com/search?num=5&q=UnregisterGPNotification+site%3Amicrosoft.com) | userenv.dll |  |   
-[WaitForMachinePolicyForegroundProcessing](https://www.google.com/search?num=5&q=WaitForMachinePolicyForegroundProcessing+site%3Amicrosoft.com) | userenv.dll |  |   
-[WaitForUserPolicyForegroundProcessing](https://www.google.com/search?num=5&q=WaitForUserPolicyForegroundProcessing+site%3Amicrosoft.com) | userenv.dll |  |   
+### Methods (100% complete, 29 of 29 functions)  
+Native Method | Header | Managed Method  
+--- | --- | ---  
+[CreateAppContainerProfile](http://msdn2.microsoft.com/en-us/library/73F5F30F-4083-4D33-B181-31B782AD40D6) | userenv.h | [Vanara.PInvoke.UserEnv.CreateAppContainerProfile](https://github.com/dahall/Vanara/search?l=C%23&q=CreateAppContainerProfile)  
+[CreateEnvironmentBlock](http://msdn2.microsoft.com/en-us/library/bda8879d-d33a-48f4-8b08-e3a279126a07) | userenv.h | [Vanara.PInvoke.UserEnv.CreateEnvironmentBlock](https://github.com/dahall/Vanara/search?l=C%23&q=CreateEnvironmentBlock)  
+[CreateProfile](http://msdn2.microsoft.com/en-us/library/cab9e20b-d94c-42e5-ada9-27194f398bb3) | userenv.h | [Vanara.PInvoke.UserEnv.CreateProfile](https://github.com/dahall/Vanara/search?l=C%23&q=CreateProfile)  
+[DeleteAppContainerProfile](http://msdn2.microsoft.com/en-us/library/ED79D661-D087-4E44-8C32-14705ACA9D40) | userenv.h | [Vanara.PInvoke.UserEnv.DeleteAppContainerProfile](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteAppContainerProfile)  
+[DeleteProfile](http://msdn2.microsoft.com/en-us/library/48a08d9a-4fdc-43ab-8323-c49bc2d0a58d) | userenv.h | [Vanara.PInvoke.UserEnv.DeleteProfile](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteProfile)  
+[DeriveAppContainerSidFromAppContainerName](http://msdn2.microsoft.com/en-us/library/233EFA95-289D-4D55-9D56-0630C015ABC7) | userenv.h | [Vanara.PInvoke.UserEnv.DeriveAppContainerSidFromAppContainerName](https://github.com/dahall/Vanara/search?l=C%23&q=DeriveAppContainerSidFromAppContainerName)  
+[DestroyEnvironmentBlock](http://msdn2.microsoft.com/en-us/library/8d03e102-3f8a-4aa7-b175-0a6781eedea7) | userenv.h | [Vanara.PInvoke.UserEnv.DestroyEnvironmentBlock](https://github.com/dahall/Vanara/search?l=C%23&q=DestroyEnvironmentBlock)  
+[EnterCriticalPolicySection](http://msdn2.microsoft.com/en-us/library/d17578b3-3a71-456b-97ca-961b81572528) | userenv.h | [Vanara.PInvoke.UserEnv.EnterCriticalPolicySection](https://github.com/dahall/Vanara/search?l=C%23&q=EnterCriticalPolicySection)  
+[ExpandEnvironmentStringsForUserA](http://msdn2.microsoft.com/en-us/library/d32fa6c8-035a-4c84-b210-5366f21b6c17) | userenv.h | [Vanara.PInvoke.UserEnv.ExpandEnvironmentStringsForUser](https://github.com/dahall/Vanara/search?l=C%23&q=ExpandEnvironmentStringsForUser)  
+[ExpandEnvironmentStringsForUserW](http://msdn2.microsoft.com/en-us/library/d32fa6c8-035a-4c84-b210-5366f21b6c17) | userenv.h | [Vanara.PInvoke.UserEnv.ExpandEnvironmentStringsForUser](https://github.com/dahall/Vanara/search?l=C%23&q=ExpandEnvironmentStringsForUser)  
+[FreeGPOList](http://msdn2.microsoft.com/en-us/library/96bd2b5b-c088-4eea-bbc2-31d83c13aa99) | userenv.h | [Vanara.PInvoke.UserEnv.FreeGPOList](https://github.com/dahall/Vanara/search?l=C%23&q=FreeGPOList)  
+[GetAllUsersProfileDirectory](http://msdn2.microsoft.com/en-us/library/bd08947a-df57-4dd9-b9ba-a01b315bfdf1) | userenv.h | [Vanara.PInvoke.UserEnv.GetAllUsersProfileDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=GetAllUsersProfileDirectory)  
+[GetAppContainerFolderPath](http://msdn2.microsoft.com/en-us/library/7D3AB78D-C094-4F89-8032-13F3C137E910) | userenv.h | [Vanara.PInvoke.UserEnv.GetAppContainerFolderPath](https://github.com/dahall/Vanara/search?l=C%23&q=GetAppContainerFolderPath)  
+[GetAppContainerRegistryLocation](http://msdn2.microsoft.com/en-us/library/DAD7EC07-D57D-40F5-AA99-AD7579910294) | userenv.h | [Vanara.PInvoke.UserEnv.GetAppContainerRegistryLocation](https://github.com/dahall/Vanara/search?l=C%23&q=GetAppContainerRegistryLocation)  
+[GetAppliedGPOList](http://msdn2.microsoft.com/en-us/library/11e80a4e-acc4-4229-aa34-8f7d083c1041) | userenv.h | [Vanara.PInvoke.UserEnv.GetAppliedGPOList](https://github.com/dahall/Vanara/search?l=C%23&q=GetAppliedGPOList)  
+[GetDefaultUserProfileDirectory](http://msdn2.microsoft.com/en-us/library/14ff99cb-838a-442b-9f51-414bd7c0a2ef) | userenv.h | [Vanara.PInvoke.UserEnv.GetDefaultUserProfileDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=GetDefaultUserProfileDirectory)  
+[GetGPOListA](http://msdn2.microsoft.com/en-us/library/26c54ac5-23d7-40ed-94a9-70d25e14431f) | userenv.h | [Vanara.PInvoke.UserEnv.GetGPOList](https://github.com/dahall/Vanara/search?l=C%23&q=GetGPOList)  
+[GetGPOListW](http://msdn2.microsoft.com/en-us/library/26c54ac5-23d7-40ed-94a9-70d25e14431f) | userenv.h | [Vanara.PInvoke.UserEnv.GetGPOList](https://github.com/dahall/Vanara/search?l=C%23&q=GetGPOList)  
+[GetProfilesDirectory](http://msdn2.microsoft.com/en-us/library/e21411fa-f7e1-4944-93ce-7d9314d79fbf) | userenv.h | [Vanara.PInvoke.UserEnv.GetProfilesDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=GetProfilesDirectory)  
+[GetProfileType](http://msdn2.microsoft.com/en-us/library/55ee76c8-1735-43eb-a98e-9e6c87ee1ba7) | userenv.h | [Vanara.PInvoke.UserEnv.GetProfileType](https://github.com/dahall/Vanara/search?l=C%23&q=GetProfileType)  
+[GetUserProfileDirectoryA](http://msdn2.microsoft.com/en-us/library/b5de762d-c9ee-42b0-bce0-e74bcc9c78f0) | userenv.h | [Vanara.PInvoke.UserEnv.GetUserProfileDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=GetUserProfileDirectory)  
+[GetUserProfileDirectoryW](http://msdn2.microsoft.com/en-us/library/b5de762d-c9ee-42b0-bce0-e74bcc9c78f0) | userenv.h | [Vanara.PInvoke.UserEnv.GetUserProfileDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=GetUserProfileDirectory)  
+[LeaveCriticalPolicySection](http://msdn2.microsoft.com/en-us/library/9e6a938f-c9cb-4baf-b7d0-4316e45f874c) | userenv.h | [Vanara.PInvoke.UserEnv.LeaveCriticalPolicySection](https://github.com/dahall/Vanara/search?l=C%23&q=LeaveCriticalPolicySection)  
+[LoadUserProfile](http://msdn2.microsoft.com/en-us/library/9ec1f8f2-8f20-4d38-9d41-70315b890336) | userenv.h | [Vanara.PInvoke.UserEnv.LoadUserProfile](https://github.com/dahall/Vanara/search?l=C%23&q=LoadUserProfile)  
+[RefreshPolicy](http://msdn2.microsoft.com/en-us/library/e08cb006-d174-4506-87f0-580660bd4023) | userenv.h | [Vanara.PInvoke.UserEnv.RefreshPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=RefreshPolicy)  
+[RefreshPolicyEx](http://msdn2.microsoft.com/en-us/library/905ab96b-a7f2-4bb4-a539-385f78284644) | userenv.h | [Vanara.PInvoke.UserEnv.RefreshPolicyEx](https://github.com/dahall/Vanara/search?l=C%23&q=RefreshPolicyEx)  
+[RegisterGPNotification](http://msdn2.microsoft.com/en-us/library/0a758da3-73a8-4d9b-8663-e6cab1a1bd3f) | userenv.h | [Vanara.PInvoke.UserEnv.RegisterGPNotification](https://github.com/dahall/Vanara/search?l=C%23&q=RegisterGPNotification)  
+[UnloadUserProfile](http://msdn2.microsoft.com/en-us/library/7ecb8a3f-c041-4133-b23a-101de8884882) | userenv.h | [Vanara.PInvoke.UserEnv.UnloadUserProfile](https://github.com/dahall/Vanara/search?l=C%23&q=UnloadUserProfile)  
+[UnregisterGPNotification](http://msdn2.microsoft.com/en-us/library/39ac1361-0160-44e3-8b99-ff50978cc425) | userenv.h | [Vanara.PInvoke.UserEnv.UnregisterGPNotification](https://github.com/dahall/Vanara/search?l=C%23&q=UnregisterGPNotification)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[GROUP_POLICY_OBJECT](http://msdn2.microsoft.com/en-us/library/7275a3cd-6b19-4eb9-9481-b73bd5af5753) | userenv.h | Vanara.PInvoke.UserEnv+GROUP_POLICY_OBJECT  
+[GROUP_POLICY_OBJECT](http://msdn2.microsoft.com/en-us/library/7275a3cd-6b19-4eb9-9481-b73bd5af5753) | userenv.h | [Vanara.PInvoke.UserEnv.GROUP_POLICY_OBJECT](https://github.com/dahall/Vanara/search?l=C%23&q=GROUP_POLICY_OBJECT)  
+[PROFILEINFO](http://msdn2.microsoft.com/en-us/library/09dae38c-3b2b-4f12-9c1e-90737cf0c7cc) | profinfo.h | [Vanara.PInvoke.UserEnv.PROFILEINFO](https://github.com/dahall/Vanara/search?l=C%23&q=PROFILEINFO)  

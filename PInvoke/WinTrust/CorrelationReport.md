@@ -1,5 +1,5 @@
 ## Correlation report for wintrust.dll  
-### Methods (96% complete, 59 of 61 functions)  
+### Methods (100% complete, 59 of 59 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CryptCATAdminAcquireContext](http://msdn2.microsoft.com/en-us/library/693af055-fa93-4526-aa9c-3a659f8ff78f) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminAcquireContext](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminAcquireContext)  
@@ -14,9 +14,7 @@ Native Method | Header | Managed Method
 [CryptCATAdminResolveCatalogPath](http://msdn2.microsoft.com/en-us/library/bdbfa02d-8801-40d4-84f4-bc5a449bce50) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminResolveCatalogPath](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminResolveCatalogPath)  
 [CryptCATCatalogInfoFromContext](http://msdn2.microsoft.com/en-us/library/ec195fcc-1cff-4dd6-9075-c4904b653da7) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATCatalogInfoFromContext](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATCatalogInfoFromContext)  
 [CryptCATCDFClose](http://msdn2.microsoft.com/en-us/library/9f2a1175-f9fe-4f4d-bf6f-e4f4c59739ec) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATCDFClose](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATCDFClose)  
-[CryptCATCDFEnumAttributesWithCDFTag](https://www.google.com/search?num=5&q=CryptCATCDFEnumAttributesWithCDFTag+site%3Amicrosoft.com) |  |   
 [CryptCATCDFEnumCatAttributes](http://msdn2.microsoft.com/en-us/library/01889cb9-7bf4-4591-9bb2-b263c4effe0c) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATCDFEnumCatAttributes](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATCDFEnumCatAttributes)  
-[CryptCATCDFEnumMembersByCDFTagEx](https://www.google.com/search?num=5&q=CryptCATCDFEnumMembersByCDFTagEx+site%3Amicrosoft.com) |  |   
 [CryptCATCDFOpen](http://msdn2.microsoft.com/en-us/library/d400d8bd-c0a0-41dc-9093-8e4fc758d82f) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATCDFOpen](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATCDFOpen)  
 [CryptCATClose](http://msdn2.microsoft.com/en-us/library/f6fa2d10-0049-4d5e-9688-566e5c11d64e) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATClose](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATClose)  
 [CryptCATEnumerateAttr](http://msdn2.microsoft.com/en-us/library/064e87db-4330-4b8b-9865-ba8b9714f6e4) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATEnumerateAttr](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATEnumerateAttr)  

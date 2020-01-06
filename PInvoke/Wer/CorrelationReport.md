@@ -1,16 +1,9 @@
 ## Correlation report for wer.dll  
-### Methods (65% complete, 15 of 23 functions)  
+### Methods (100% complete, 15 of 15 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [WerAddExcludedApplication](http://msdn2.microsoft.com/en-us/library/ac1ec373-868f-4634-8658-4253d4f5923a) | werapi.h | [Vanara.PInvoke.Wer.WerAddExcludedApplication](https://github.com/dahall/Vanara/search?l=C%23&q=WerAddExcludedApplication)  
 [WerFreeString](http://msdn2.microsoft.com/en-us/library/748AEFD4-3310-4BC1-A3DA-CFACBA31F2FC) | werapi.h | [Vanara.PInvoke.Wer.WerFreeString](https://github.com/dahall/Vanara/search?l=C%23&q=WerFreeString)  
-[WerpCancelResponseDownload](https://www.google.com/search?num=5&q=WerpCancelResponseDownload+site%3Amicrosoft.com) |  |   
-[WerpDownloadResponse](https://www.google.com/search?num=5&q=WerpDownloadResponse+site%3Amicrosoft.com) |  |   
-[WerpDownloadResponseOnly](https://www.google.com/search?num=5&q=WerpDownloadResponseOnly+site%3Amicrosoft.com) |  |   
-[WerpDownloadResponseTemplate](https://www.google.com/search?num=5&q=WerpDownloadResponseTemplate+site%3Amicrosoft.com) |  |   
-[WerpGetResponseUrl](https://www.google.com/search?num=5&q=WerpGetResponseUrl+site%3Amicrosoft.com) |  |   
-[WerpLaunchResponse](https://www.google.com/search?num=5&q=WerpLaunchResponse+site%3Amicrosoft.com) |  |   
-[WerpUpdateReportResponse](https://www.google.com/search?num=5&q=WerpUpdateReportResponse+site%3Amicrosoft.com) |  |   
 [WerRemoveExcludedApplication](http://msdn2.microsoft.com/en-us/library/e7bab01b-a09c-4b06-a233-34ed63f75857) | werapi.h | [Vanara.PInvoke.Wer.WerRemoveExcludedApplication](https://github.com/dahall/Vanara/search?l=C%23&q=WerRemoveExcludedApplication)  
 [WerReportAddDump](http://msdn2.microsoft.com/en-us/library/b40dac44-f7c5-43f0-876d-6f97c26bf461) | werapi.h | [Vanara.PInvoke.Wer.WerReportAddDump](https://github.com/dahall/Vanara/search?l=C%23&q=WerReportAddDump)  
 [WerReportAddFile](http://msdn2.microsoft.com/en-us/library/4b2c2060-a193-4168-90fc-afb95c160569) | werapi.h | [Vanara.PInvoke.Wer.WerReportAddFile](https://github.com/dahall/Vanara/search?l=C%23&q=WerReportAddFile)  
@@ -24,7 +17,6 @@ Native Method | Header | Managed Method
 [WerStoreGetNextReportKey](http://msdn2.microsoft.com/en-us/library/781D54A9-6F51-445E-89A8-A0C944081B81) | werapi.h | [Vanara.PInvoke.Wer.WerStoreGetNextReportKey](https://github.com/dahall/Vanara/search?l=C%23&q=WerStoreGetNextReportKey)  
 [WerStoreOpen](http://msdn2.microsoft.com/en-us/library/FA7E0EC6-00F1-45E2-BE34-D732965FBA15) | werapi.h | [Vanara.PInvoke.Wer.WerStoreOpen](https://github.com/dahall/Vanara/search?l=C%23&q=WerStoreOpen)  
 [WerStoreQueryReportMetadataV2](http://msdn2.microsoft.com/en-us/library/ADF6619C-1F3E-4AFF-9E25-4F6F83D1353C) | werapi.h | [Vanara.PInvoke.Wer.WerStoreQueryReportMetadataV2](https://github.com/dahall/Vanara/search?l=C%23&q=WerStoreQueryReportMetadataV2)  
-[WerSysprepSpecialize](https://www.google.com/search?num=5&q=WerSysprepSpecialize+site%3Amicrosoft.com) |  |   
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

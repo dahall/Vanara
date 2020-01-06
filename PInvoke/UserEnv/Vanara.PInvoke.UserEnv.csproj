@@ -28,10 +28,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-CreateAppContainerProfile, CreateEnvironmentBlock, CreateProfile, DeleteAppContainerProfile, DeleteProfileA, DeleteProfileW, DeriveAppContainerSidFromAppContainerName, DestroyEnvironmentBlock, EnterCriticalPolicySection, ExpandEnvironmentStringsForUserA, ExpandEnvironmentStringsForUserW, FreeGPOListA, FreeGPOListW, GetAllUsersProfileDirectoryA, GetAllUsersProfileDirectoryW, GetAppContainerFolderPath, GetAppContainerRegistryLocation, GetAppliedGPOListA, GetAppliedGPOListW, GetGPOListA, GetGPOListW, LeaveCriticalPolicySection
+CreateAppContainerProfile, CreateEnvironmentBlock, CreateProfile, DeleteAppContainerProfile, DeleteProfile, DeriveAppContainerSidFromAppContainerName, DestroyEnvironmentBlock, EnterCriticalPolicySection, ExpandEnvironmentStringsForUserA, ExpandEnvironmentStringsForUserW, FreeGPOList, GetAllUsersProfileDirectory, GetAppContainerFolderPath, GetAppContainerRegistryLocation, GetAppliedGPOList, GetDefaultUserProfileDirectory, GetGPOListA, GetGPOListW, GetProfilesDirectory, GetProfileType, GetUserProfileDirectoryA, GetUserProfileDirectoryW, LeaveCriticalPolicySection, LoadUserProfile, RefreshPolicy, RefreshPolicyEx, RegisterGPNotification, UnloadUserProfile, UnregisterGPNotification
 
 Structures
-GROUP_POLICY_OBJECT
+GROUP_POLICY_OBJECT, PROFILEINFO
 
 </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
