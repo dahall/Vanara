@@ -44,7 +44,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateEnvironmentBlockTest_And_DestroyEnvironmentBlockTest.cs" />
     <Compile Include="UserEnvTests.cs" />
   </ItemGroup>
   <ItemGroup>
