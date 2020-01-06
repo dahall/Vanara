@@ -4,7 +4,7 @@
 
 This project contains various .NET assemblies that contain P/Invoke functions, interfaces, enums and structures from Windows libraries. Each assembly is associated with one or a few tightly related libraries. For example, Shlwapi.dll has all the exported functions from shlwapi.lib; Kernel32.dll has all for both kernel32.lib and kernelbase.lib.
 
-All assemblies are available via NuGet and provide builds against .NET 2.0, 3.5, 4.0, 4.5, Core 3.0 and **Core 3.0** (new in v3.1.7). In all cases where a dependency doesn't disallow it, .NET Standard 2.0, .NET Core 2.0, and 2.1 builds are also included for use with UWP and other .NET Core and Standard projects.
+All assemblies are available via NuGet and provide builds against .NET 2.0, 3.5, 4.0, 4.5, Core 3.0 and **Core 3.1** (new in v3.1.7) and support [SourceLink](https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/sourcelink). In all cases where a dependency doesn't disallow it, .NET Standard 2.0, .NET Core 2.0, and 2.1 builds are also included for use with UWP and other .NET Core and Standard projects.
 
 ## Use
 1. Look for the function you need in Microsoft documentation. Note which library or DLL the function is in.
