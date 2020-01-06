@@ -228,11 +228,11 @@ namespace Vanara.PInvoke
 			/// <summary>Converts the value of this security identifier (SID) to its equivalent string representation according to the provided format specifier.</summary>
 			/// <param name="format">
 			/// A single format specifier that indicates how to format the value of this security identifier (SID). The format parameter can be
-			/// "B", "D", "N", or "P". If format is null or an empty string (""), "D" is used.
+			/// "B" (binary), "D" (sddl), "N" (name), or "P" (upn). If format is null or an empty string (""), "D" is used.
 			/// </param>
 			/// <returns>The value of this security identifier (SID), in the specified format.</returns>
 			/// <exception cref="ArgumentException">SID value is not a valid SID. - pSid</exception>
-			/// <exception cref="FormatException">The value of format is not null, an empty string (""), "B", "D", "N", or "P".</exception>
+			/// <exception cref="FormatException">The value of format is not null, an empty string (""), "B" (binary), "D" (sddl), "N" (name), or "P" (upn).</exception>
 			/// <remarks>
 			///   <para>The following table shows the accepted format specifiers for the format parameter.</para>
 			///   <list type="table">
@@ -401,7 +401,7 @@ namespace Vanara.PInvoke
 		/// <param name="pSid">A pointer to a valid SID structure.</param>
 		/// <param name="format">
 		/// A single format specifier that indicates how to format the value of this security identifier (SID). The format parameter can be
-		/// "B", "D", "N", or "P". If format is null or an empty string (""), "D" is used.
+		/// "B" (binary), "D" (sddl), "N" (name), or "P" (upn). If format is null or an empty string (""), "D" is used.
 		/// </param>
 		/// <returns>The value of this security identifier (SID), in the specified format.</returns>
 		/// <exception cref="ArgumentException">SID value is not a valid SID. - pSid</exception>
