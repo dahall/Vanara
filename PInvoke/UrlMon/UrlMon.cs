@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke
@@ -665,6 +665,59 @@ namespace Vanara.PInvoke
 			COMPAT_SAFEFOR_LOADING = 0x00800000
 		}
 
+		/// <summary>Flags for <see cref="FaultInIEFeature"/>.</summary>
+		[PInvokeData("Urlmon.h")]
+		[Flags]
+		public enum FIEF_FLAG
+		{
+			/// <summary>
+			/// Force JIT, even if the user has canceled a previous JIT in the same session, or has specified to this feature. Note: For
+			/// Internet Explorer 7, this flag is not respected; it is overridden by E_ACCESSDENIED.
+			/// </summary>
+			FIEF_FLAG_FORCE_JITUI = 0x1,
+
+			/// <summary>
+			/// Do not faultin, just peek. Note: Peek also returns the currently installed version in the QUERYCONTEXT. For Internet
+			/// Explorer 7, it disables the Java dialog box.
+			/// </summary>
+			FIEF_FLAG_PEEK = 0x2,
+
+			/// <summary>
+			/// Ignores local version as being satisfactory and forces JIT download. Typically, this is called by code download, or by
+			/// another caller after a CoCreateInstance call has failed with REGDB_E_CLASSNOTREG or ERROR_MOD_NOT_FOUND (missing a
+			/// dependency DLL). Note: The registry might show that this feature is installed when it is not, or when it is damaged. For
+			/// Internet Explorer 7, this flag is not respected; it is overridden by E_ACCESSDENIED.
+			/// </summary>
+			FIEF_FLAG_SKIP_INSTALLED_VERSION_CHECK = 0x4
+		}
+
+		/// <summary>Mime flags.</summary>
+		[PInvokeData("Urlmon.h")]
+		[Flags]
+		public enum FMFD
+		{
+			/// <summary>The FMFD default</summary>
+			FMFD_DEFAULT = 0x00000000,
+
+			/// <summary>The FMFD urlasfilename</summary>
+			FMFD_URLASFILENAME = 0x00000001,
+
+			/// <summary>The FMFD enablemimesniffing</summary>
+			FMFD_ENABLEMIMESNIFFING = 0x00000002,
+
+			/// <summary>The FMFD ignoremimetextplain</summary>
+			FMFD_IGNOREMIMETEXTPLAIN = 0x00000004,
+
+			/// <summary>The FMFD servermime</summary>
+			FMFD_SERVERMIME = 0x00000008,
+
+			/// <summary>The FMFD respecttextplain</summary>
+			FMFD_RESPECTTEXTPLAIN = 0x00000010,
+
+			/// <summary>The FMFD returnupdatedimgmimes</summary>
+			FMFD_RETURNUPDATEDIMGMIMES = 0x00000020,
+		}
+
 		/// <summary>
 		/// Contains options for URL parsing operations. Used by <c>CoInternetParseUrl</c>, <c>CoInternetParseIUri</c>, and implementations
 		/// of <c>IInternetProtocolInfo::ParseUrl</c>.
@@ -1136,7 +1189,7 @@ namespace Vanara.PInvoke
 			/// <summary>Use the updated URL parser.</summary>
 			URL_MK_UNIFORM = 1,
 
-			/// <summary>Undocumented.</summary>
+			/// <summary>Do not attempt to convert the URL moniker to the standard format.</summary>
 			URL_MK_NO_CANONICALIZE = 2,
 		}
 
@@ -1236,1290 +1289,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>The highest legitimate value in the enumeration, used for validation purposes.</summary>
 			URL_SCHEME_MAXVALUE,
-		}
-
-		/// <summary>
-		/// Provides methods that enable the client program that is using an asynchronous moniker to control the progress of the bind operation.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// An asynchronous moniker calls the client's <c>IBindStatusCallback::OnStartBinding</c> method to provide the client program with
-		/// a pointer to the <c>IBinding</c> interface.
-		/// </para>
-		/// <para>The IID for this interface is .</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775071(v%3Dvs.85)
-		[PInvokeData("Urlmon.h")]
-		[ComImport, Guid("79EAC9C0-BAF9-11CE-8C82-00AA004BA90B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IBinding
-		{
-			/// <summary>Ends the bind operation.</summary>
-			/// <remarks>
-			/// <para>This method cannot be called from an implementation of the <c>OnStartBinding</c> method.</para>
-			/// <para>
-			/// After it aborts the bind operation, the client must release any pointers that were obtained during the binding. No
-			/// <c>IBindStatusCallback</c> notifications are called, except <c>OnStopBinding</c>.
-			/// </para>
-			/// <para>The bind operation does not terminate by releasing the last <c>IBinding</c> interface.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775068(v=vs.85)
-			// HRESULT Abort();
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void Abort();
-
-			/// <summary>Suspends the bind operation.</summary>
-			/// <remarks>
-			/// This method is not currently implemented by the default asynchronous pluggable protocols provided by Windows Internet Explorer.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775074(v=vs.85)
-			// HRESULT Suspend();
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void Suspend();
-
-			/// <summary>
-			/// <para>This method resumes the bind operation.</para>
-			/// <para>Parameters</para>
-			/// <para>None.</para>
-			/// <para>Return Values</para>
-			/// <para>Returns S_OK if successful or an error value otherwise.</para>
-			/// <para>Remarks</para>
-			/// <para>
-			/// This method is not currently implemented by the default asynchronous pluggable protocols provided by Microsoft Internet Explorer.
-			/// </para>
-			/// <para>Requirements</para>
-			/// <para><c>OS Versions:</c> Windows CE .NET 4.0 and later. <c>Header:</c> Urlmon.h, Urlmon.idl. <c>Link Library:</c> Urlmon.lib.</para>
-			/// <para>Last updated on Saturday, April 10, 2004</para>
-			/// <para>© 1992-2003 Microsoft Corporation. All rights reserved.</para>
-			/// </summary>
-			/// <remarks>
-			/// <para>
-			/// This method is not currently implemented by the default asynchronous pluggable protocols provided by Microsoft Internet Explorer.
-			/// </para>
-			/// <para>Requirements</para>
-			/// <para><c>OS Versions:</c> Windows CE .NET 4.0 and later. <c>Header:</c> Urlmon.h, Urlmon.idl. <c>Link Library:</c> Urlmon.lib.</para>
-			/// <para>Last updated on Saturday, April 10, 2004</para>
-			/// <para>© 1992-2003 Microsoft Corporation. All rights reserved.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/embedded/ms928797(v=msdn.10)
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void Resume();
-
-			/// <summary>Sets the priority of the bind operation.</summary>
-			/// <param name="nPriority">
-			/// A long integer value that contains the priority to set. This can be one of the values used by GetThreadPriority and SetThreadPriority.
-			/// </param>
-			/// <remarks>
-			/// This method is not currently implemented by the default asynchronous pluggable protocols provided by Windows Internet Explorer.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775073(v=vs.85)
-			// HRESULT SetPriority( long nPriority );
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void SetPriority([In] int nPriority);
-
-			/// <summary>Gets the priority of the bind operation.</summary>
-			/// <returns>
-			/// The address of a long integer value that receives the current priority of the bind operation. This can be one of the values
-			/// used by GetThreadPriority and SetThreadPriority.
-			/// </returns>
-			/// <remarks>
-			/// This method is not currently implemented by the default asynchronous pluggable protocols that are provided by Windows
-			/// Internet Explorer.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775070(v=vs.85)
-			// HRESULT GetPriority( [out] long *pnPriority );
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			int GetPriority();
-
-			/// <summary>Gets the protocol-specific outcome of a bind operation.</summary>
-			/// <param name="pclsidProtocol">[out]A pointer to the <c>CLSID</c> variable for the protocol used.</param>
-			/// <param name="pdwResult">
-			/// [out]A pointer to an unsigned long integer variable that contains the protocol-specific bind result string.
-			/// </param>
-			/// <param name="pszResult">[out]A pointer to the string variable that contains the protocol-specific bind result.</param>
-			/// <param name="dwReserved">[in, out]Reserved. Must be set to 0.</param>
-			/// <returns>Returns S_OK if successful, or E_INVALIDARG if one of the parameters is not valid.</returns>
-			/// <remarks>
-			/// This method typically is called by the client of an asynchronous moniker when the client's <c>OnStopBinding</c> method is called.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775069(v=vs.85)
-			// HRESULT GetBindResult( [out] CLSID *pclsidProtocol, [out] DWORD *pdwResult, [out] LPOLESTR *pszResult, [in, out] DWORD
-			// *pdwReserved );
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void GetBindResult(out Guid pclsidProtocol, out uint pdwResult, [MarshalAs(UnmanagedType.LPWStr)] out string pszResult, [In, Out] ref uint dwReserved);
-		}
-
-		/// <summary>Accepts information on an asynchronous bind operation.</summary>
-		/// <remarks>
-		/// <para>
-		/// A client that requests an asynchronous bind operation must provide a notification object, which exposes the
-		/// <c>IBindStatusCallback</c> interface. The asynchronous moniker provides information on the bind operation to the client by
-		/// calling notification methods on the client's <c>IBindStatusCallback</c> interface. This interface enables the client to pass
-		/// additional bind information to the moniker by calling the <c>IBindStatusCallback::GetBindInfo</c> and
-		/// <c>IBindStatusCallback::GetPriority</c> methods after receiving a call from IMoniker::BindToObject or IMoniker::BindToStorage.
-		/// </para>
-		/// <para>Only the last <c>IBindStatusCallback</c> interface that was registered is called.</para>
-		/// <para>The IID for this interface is .</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775060%28v%3dvs.85%29
-		[PInvokeData("Urlmon.h")]
-		[ComImport, Guid("79eac9c1-baf9-11ce-8c82-00aa004ba90b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IBindStatusCallback
-		{
-			/// <summary>
-			/// Notifies the client about the callback methods that it is registered to receive. This notification is a response to the
-			/// flags the client requested in the <c>RegisterBindStatusCallback</c> function.
-			/// </summary>
-			/// <param name="dwReserved">Reserved. Must be set to 0.</param>
-			/// <param name="pib">
-			/// A pointer to the IBinding interface of the current bind operation. This cannot be NULL. The client can call AddRef on this
-			/// pointer to keep a reference to the binding object.
-			/// </param>
-			/// <remarks>
-			/// <para>
-			/// Typically, asynchronous monikers call this method before the call to the IMoniker::BindToStorage method or the
-			/// IMoniker::BindToObject method has returned.
-			/// </para>
-			/// <para>
-			/// In the call to this method, the moniker also provides the client with a pointer to the <c>IBinding</c> interface for the
-			/// binding object associated with the current bind operation. The client can use the <c>IBinding</c> interface to control the
-			/// progress of the bind operation.
-			/// </para>
-			/// <para>
-			/// To keep a reference to the binding object, the client must store the pointer to the <c>IBinding</c> interface and call
-			/// AddRef on it. When the client no longer requires the reference, it must call Release on it. Note that calling Release does
-			/// not cancel the bind operation; it frees the reference to the <c>IBinding</c> interface sent in the callback.
-			/// </para>
-			/// <para>
-			/// Client applications that implement the <c>IBindStatusCallback</c> interface can return E_NOTIMPL or S_OK, if they don't want
-			/// to receive this notification.
-			/// </para>
-			/// <para>
-			/// The <c>Abort</c> method does not work properly in an implementation of <c>IBindStatusCallback::OnStartBinding</c>. To abort
-			/// the binding, <c>IBindStatusCallback::OnStartBinding</c> should return E_FAIL.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775065%28v%3dvs.85%29
-			// HRESULT OnStartBinding( DWORD dwReserved, IBinding *pib );
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void OnStartBinding([Optional] uint dwReserved, [In, MarshalAs(UnmanagedType.Interface)] IBinding pib);
-
-			/// <summary>Gets the priority for the bind operation when it is called by an asynchronous moniker.</summary>
-			/// <returns>
-			/// A long integer value that indicates the priority of this bind operation. Priorities can be any of the constants defined for
-			/// prioritizing threads. For details, see the Win32 documentation for SetThreadPriority and GetThreadPriority.
-			/// </returns>
-			/// <remarks>
-			/// <para>
-			/// The moniker calls this method prior to initiating the bind operation, to get the priority for the bind operation. This
-			/// method can be called at any time during the bind operation, if the moniker has to make new priority decisions.
-			/// </para>
-			/// <para>
-			/// The moniker can use pnPriority to set the priority of a thread that is associated with a bind operation. Typically, it
-			/// interprets the priority to perform its own scheduling among multiple bind operations. Note that the policy for determining
-			/// priority for URL monikers is not yet determined. The moniker must not change the priority of the thread that is used to call
-			/// IMoniker::BindToStorage or IMoniker::BindToObject.
-			/// </para>
-			/// <para>
-			/// Applications that implement the <c>IBindStatusCallback</c> interface can return E_UNIMPL or S_OK, if they don't want to
-			/// receive this notification.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775059(v=vs.85)
-			// HRESULT GetPriority( [out] long *pnPriority );
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			int GetPriority();
-
-			/// <summary>This method is not implemented.</summary>
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void OnLowResource([Optional] uint reserved);
-
-			/// <summary>Indicates the progress of the bind operation.</summary>
-			/// <param name="ulProgress">
-			/// An unsigned long integer that contains the current progress of the bind operation relative to the expected maximum that is
-			/// indicated in the ulProgressMax parameter.
-			/// </param>
-			/// <param name="ulProgressMax">
-			/// An unsigned long integer that contains the expected maximum value of the ulProgress parameter for the duration of calls to
-			/// IBindStatusCallback::OnProgress for this bind operation. Note that this value might change across calls to this method. A
-			/// value of zero means that the maximum value of ulProgress is unknown; for example, in the IMoniker::BindToStorage method when
-			/// the data download size is unknown.
-			/// </param>
-			/// <param name="ulStatusCode">
-			/// An unsigned long integer that Additional information regarding the progress of the bind operation. This can be any of the
-			/// BINDSTATUS values.
-			/// </param>
-			/// <param name="szStatusText">
-			/// The address of a string value that contains the textual information that indicates the current progress of the bind
-			/// operation. The text reflects the BINDSTATUS value of the ulStatusCode parameter and is appropriate for display in the user
-			/// interface of the client.
-			/// </param>
-			/// <remarks>
-			/// <para>
-			/// The moniker calls this method repeatedly to indicate the current progress of the bind operation, typically, at reasonable
-			/// intervals during a lengthy operation.
-			/// </para>
-			/// <para>
-			/// The client can use the progress notification to provide progress information to the user from the ulProgress, ulProgressMax,
-			/// and szStatusText parameters, or to make programmatic decisions based on the ulStatusCode parameter.
-			/// </para>
-			/// <para>
-			/// Client applications that implement the <c>IBindStatusCallback</c> interface can return E_NOTIMPL or S_OK, if they don't have
-			/// to receive this notification.
-			/// </para>
-			/// <para>
-			/// Windows Internet Explorer 8. If ulStatusCode is set to <c>BINDSTATUS_64BIT_PROGRESS</c>, then szStatusText contains a string
-			/// representing the progress of the download as two 64-bit numbers (representing ulProgress and ulProgressMax) separated by a comma.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775064(v=vs.85)
-			// HRESULT OnProgress( unsigned long ulProgress, unsigned long ulProgressMax, unsigned long ulStatusCode, // LPCWSTR
-			// szStatusText );
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void OnProgress([In] uint ulProgress, [In] uint ulProgressMax, [In] BINDSTATUS ulStatusCode, [In, MarshalAs(UnmanagedType.LPWStr)] string szStatusText);
-
-			/// <summary>This method indicates the end of the bind operation.</summary>
-			/// <param name="hresult">Status code returned from the bind operation.</param>
-			/// <param name="szError">
-			/// Address of a string value that contains the status text. In case of error, this text describes the error. In the current
-			/// implementation of URL monikers, this string is empty.
-			/// </param>
-			/// <remarks>
-			/// <para>
-			/// This method is always called, whether the bind operation succeeded, failed, or was aborted by a client. At this point the
-			/// moniker client can use <c>IBinding::GetBindResult</c> to query for protocol-specific information about the outcome of the
-			/// bind operation. When this method has completed, the moniker client must call <c>Release</c> on the <c>IBinding</c> pointer
-			/// it received in <c>IBindStatusCallback::OnStartBinding</c>.
-			/// </para>
-			/// <para>
-			/// Because URL monikers work asynchronously, the status code returned by <c>IBindStatusCallback::OnStopBinding</c> and the
-			/// status code returned by the binding methods, such as <c>IMoniker::BindToStorage</c> and <c>IMoniker::BindToObject</c>, might differ.
-			/// </para>
-			/// <para>
-			/// Client applications that implement the <c>IBindStatusCallback</c> interface can return E_UNIMPL or S_OK if they are not
-			/// interested in receiving this notification.
-			/// </para>
-			/// </remarks>
-			/// https://docs.microsoft.com/en-us/previous-versions/windows/embedded/ms928805(v=msdn.10)
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void OnStopBinding([In] HRESULT hresult, [In, MarshalAs(UnmanagedType.LPWStr)] string szError);
-
-			/// <summary>Provides information about how the bind operation is handled when it is called by an asynchronous moniker.</summary>
-			/// <param name="grfBINDF">
-			/// [out]The address of an unsigned integer value that contains a combination of values that are taken from the <c>BINDF</c>
-			/// enumeration and indicate how the bind process is handled.
-			/// </param>
-			/// <param name="pbindinfo">
-			/// [in, out]The address of the <c>BINDINFO</c> structure, which describes the client application's requirements for binding.
-			/// </param>
-			/// <returns>Returns S_OK if successful, or E_INVALIDARG if one or more parameters are invalid.</returns>
-			/// <remarks>
-			/// <para>
-			/// The moniker calls this method in its implementations of the IMoniker::BindToObject method and the IMoniker::BindToStorage
-			/// method to get information about the specific bind operation.
-			/// </para>
-			/// <para>
-			/// Asynchronous moniker clients should be aware that a moniker might call this method more than one time during a bind
-			/// operation. A proper implementation of <c>IBindStatusCallback::GetBindInfo</c> prepares for this possibility. If data is
-			/// returned in the pbindinfo parameter, the implementation should allocate the appropriate data (szExtraInfo or stgmedData) at
-			/// the time of each call. In this way, if the callback isn't called, data isn't allocated; if the callback is called more than
-			/// one time, it works correctly. The first time this callback is received by the asynchronous moniker client is prior to the
-			/// call to IMoniker::BindToStorage or IMoniker::BindToObject.
-			/// </para>
-			/// <para>
-			/// Even when the value of grfBindInfoF is BINDF_ASYNCHRONOUS, it is possible that the original call to IMoniker::BindToStorage
-			/// or IMoniker::BindToObject might return synchronously, instead of returning the MK_S_ASYNCHRONOUS flag. Clients of
-			/// asynchronous monikers should always prepare for this possibility. Specifically, to avoid memory leaks, it is important to
-			/// make sure to release the pointer that is returned by a call to either method.
-			/// </para>
-			/// <para>
-			/// One way to deal with this issue is to call your own implementation of <c>IBindStatusCallback::OnDataAvailable</c> or
-			/// <c>IBindStatusCallback::OnObjectAvailable</c> to use the same code path (regardless of whether you bind synchronously or asynchronously).
-			/// </para>
-			/// <para>
-			/// If the <c>BINDF_PULLDATA</c> value is not set in the grfBindInfoF parameter, Urlmon.dll sets the <c>BINDF_NEEDFILE</c>
-			/// value. If BINDF_NEEDFILE is set, the binding of resources that cannot be cached (such as an HTTPS resource) fail.
-			/// </para>
-			/// <para>
-			/// <c>Warning</c> The size of the <c>BINDINFO</c> structure changed with the release of Microsoft Internet Explorer 4.0.
-			/// Developers must write code that checks the size of the <c>BINDINFO</c> structure that is passed into their implementation of
-			/// this method before it writes to members of the structure. For more information, see Handling BINDINFO Structures.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775058(v=vs.85)
-			// HRESULT GetBindInfo( [out] DWORD *grfBINDF, [in, out] BINDINFO *pbindinfo );
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void GetBindInfo(out BINDF grfBINDF, [In, Out] ref BINDINFO pbindinfo);
-
-			/// <summary>Provides data to the client as it becomes available during asynchronous bind operations.</summary>
-			/// <param name="grfBSCF">
-			/// [in]An unsigned long integer value from the <c>BSCF</c> enumeration that indicates the kind of data available.
-			/// </param>
-			/// <param name="dwSize">
-			/// [in]An unsigned long integer value that contains the size, in bytes, of the total data available from the current bind operation.
-			/// </param>
-			/// <param name="pFormatetc">
-			/// [in]The address of the FORMATETC structure that indicates the format of the available data. This parameter is used when the
-			/// bind operation results from the IMoniker::BindToStorage method. If there is no format associated with the available data,
-			/// pformatetc might contain CF_NULL. Each different call to <c>IBindStatusCallback::OnDataAvailable</c> can pass in a new value
-			/// for this parameter; every call always points to the same data.
-			/// </param>
-			/// <param name="pStgmed">
-			/// [in]The address of the STGMEDIUM structure that contains pointers to the interfaces (such as IStream and IStorage) that can
-			/// be used to access the data. In the asynchronous case, client applications might receive a second pointer to the IStream or
-			/// IStorage interface from the IMoniker::BindToStorage method. The client application must call Release on the interfaces to
-			/// avoid memory leaks.
-			/// </param>
-			/// <returns>Returns S_OK if successful, or E_INVALIDARG if one or more parameters are invalid.</returns>
-			/// <remarks>
-			/// <para>
-			/// During asynchronous IMoniker::BindToStorage bind operations, an asynchronous moniker calls this method to provide data to
-			/// the client as it becomes available.
-			/// </para>
-			/// <para>
-			/// Note that the behavior of the storage returned in pstgmed depends on the <c>BINDF</c> flags returned in the
-			/// <c>IBindStatusCallback::GetBindInfo</c> method. This storage can be asynchronous or blocking, and the bind operation can
-			/// follow a data pull model or a data push model. For <c>BINDF</c> bind operations, it is not possible to seek backward into
-			/// data streams that are provided in <c>IBindStatusCallback::OnDataAvailable</c>. On the other hand, for data push model bind
-			/// operations, it is possible to seek back into a data stream, and to read any data that has been downloaded for an ongoing
-			/// IMoniker::BindToStorage operation.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775061(v=vs.85)
-			// HRESULT OnDataAvailable( DWORD grfBSCF, DWORD dwSize, FORMATETC *pformatetc, STGMEDIUM *pstgmed );
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void OnDataAvailable([In] BSCF grfBSCF, [In] uint dwSize, in FORMATETC pFormatetc, in STGMEDIUM pStgmed);
-
-			/// <summary>Passes the requested object interface pointer to the client.</summary>
-			/// <param name="riid">[in]The interface identifier of the requested interface.</param>
-			/// <param name="punk">
-			/// [in]The address of the IUnknown interface on the object that is requested in the call to IMoniker::BindToObject. The client
-			/// should call AddRef on this pointer to maintain a reference to the object.
-			/// </param>
-			/// <returns>Returns S_OK if successful, or E_INVALIDARG if one or more parameters are invalid.</returns>
-			/// <remarks>
-			/// This method is called in response to an IMoniker::BindToObject operation. The method is never called for
-			/// IMoniker::BindToStorage operations.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775063(v=vs.85)
-			// HRESULT OnObjectAvailable( REFIID riid, IUnknown *punk );
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void OnObjectAvailable(in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown)] object punk);
-		}
-
-		/// <summary>Implemented by the client application to create temporary pluggable protocol handlers.</summary>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767757(v%3Dvs.85)
-		[PInvokeData("Urlmon.h")]
-		[ComImport, Guid("79eac9e7-baf9-11ce-8c82-00aa004ba90b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IInternetSession
-		{
-			/// <summary>Registers a temporary pluggable namespace handler on the current process.</summary>
-			/// <param name="pCF">
-			/// A pointer to an IClassFactory interface where an IInternetProtocol object can be created. The object's reference count is increased.
-			/// </param>
-			/// <param name="rclsid">A reference to the CLSID of the namespace. Passing CLSID_NULL is discouraged.</param>
-			/// <param name="pwzProtocol">A string value that contains the protocol to be handled.</param>
-			/// <param name="cPatterns">Unused. Set to 0.</param>
-			/// <param name="ppwzPatterns">Unused. Set to NULL.</param>
-			/// <param name="dwReserved">Reserved. Must be set to 0.</param>
-			/// <remarks>
-			/// <para>
-			/// The <c>IInternetSession::RegisterNameSpace</c> method enables an interface to handle requests for the specified protocol
-			/// namespace. A single interface can be registered multiple times for each namespace that it can handle. Because pluggable
-			/// protocol handlers are not chained, only the last handler to be registered will be active; therefore, it is better to create
-			/// a new namespace, rather than reuse an existing one.
-			/// </para>
-			/// <para>
-			/// This method registers a pluggable namespace handler only on the current process; no other processes are affected by this
-			/// method. An application can register a pluggable namespace handler for a particular period of time. When finished, it should
-			/// call <c>IInternetSession::UnregisterNameSpace</c> to remove the registration.
-			/// </para>
-			/// <para>
-			/// <c>Note</c> Registering namespace handlers for HTTP and HTTPS protocols is not recommended. Doing so within the Internet
-			/// Explorer process incurs a performance penalty when browsing.
-			/// </para>
-			/// <para>
-			/// The ppwzPatterns and cPatterns parameters are unused; the registered pluggable namespace handler is called for all protocol requests.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767759%28v%3dvs.85%29
-			// HRESULT retVal = object.RegisterNameSpace(pCF, rclsid, pwzProtocol, cPatterns, ppwzPatterns, dwReserved);
-			void RegisterNameSpace(IClassFactory pCF, in Guid rclsid, [MarshalAs(UnmanagedType.LPWStr)] string pwzProtocol, [Optional] uint cPatterns, [Optional, MarshalAs(UnmanagedType.LPWStr)] string ppwzPatterns, [Optional] uint dwReserved);
-
-			/// <summary>Unregisters a temporary pluggable namespace handler.</summary>
-			/// <param name="pCF">The address of the IClassFactory interface that created the handler.</param>
-			/// <param name="pszProtocol">The address of a string value that contains the protocol that was handled.</param>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767763(v=vs.85)
-			// HRESULT retVal = object.UnregisterNameSpace(pCF, pszProtocol);
-			void UnregisterNameSpace(IClassFactory pCF, [MarshalAs(UnmanagedType.LPWStr)] string pszProtocol);
-
-			/// <summary>Registers a temporary pluggable MIME filter on the current process.</summary>
-			/// <param name="pCF">The address of an IClassFactory interface where an IInternetProtocol object can be created.</param>
-			/// <param name="rclsid">A reference to the CLSID of the MIME handler.</param>
-			/// <param name="pwzType">A string value that contains the MIME to register.</param>
-			/// <remarks>
-			/// <para>
-			/// This method registers a pluggable MIME filter only on the current process. No other processes are affected by this method.
-			/// </para>
-			/// <para>
-			/// An application can register a pluggable MIME filter for a particular period of time so that it can handle requests for some
-			/// MIMEs by calling <c>IInternetSession::RegisterMimeFilter</c>. This method can be called multiple times by using the same
-			/// interface to register the different MIME types it can handle.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767758(v=vs.85)
-			// HRESULT retVal = object.RegisterMimeFilter(pCF, rclsid, pwzType);
-			void RegisterMimeFilter(IClassFactory pCF, in Guid rclsid, [MarshalAs(UnmanagedType.LPWStr)] string pwzType);
-
-			/// <summary>Unregisters a temporary pluggable MIME filter.</summary>
-			/// <param name="pCF">The address of the IClassFactory interface that created the filter.</param>
-			/// <param name="pwzType">A string value that indicates the MIME that the filter was handling.</param>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767762(v=vs.85)
-			// HRESULT retVal = object.UnregisterMimeFilter(pCF, pwzType);
-			void UnregisterMimeFilter(IClassFactory pCF, [MarshalAs(UnmanagedType.LPWStr)] string pwzType);
-
-			/// <summary>This method is not implemented.</summary>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767754(v=vs.85)
-			void CreateBinding(IntPtr pBC, [MarshalAs(UnmanagedType.LPWStr)] string szUrl, [MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnk, [MarshalAs(UnmanagedType.IUnknown)] out object ppOInetProt, uint dwOption);
-
-			/// <summary>This method is not implemented.</summary>
-			void SetSessionOption(uint dwOption, IntPtr pBuffer, uint dwBufferLength, uint dwReserved);
-
-			/// <summary>This method is not implemented.</summary>
-			void GetSessionOption(uint dwOption, IntPtr pBuffer, ref uint pdwBufferLength, uint dwReserved);
-		}
-
-		/// <summary>
-		/// Exposes methods and properties used to parse and build Uniform Resource Identifiers (URIs) in Windows Internet Explorer 7.
-		/// </summary>
-		/// <remarks>
-		/// Once an <c>IUri</c> has been created, it cannot change its properties. Property values do not change between calls to the same object.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775038(v=vs.85)?redirectedfrom=MSDN
-		[PInvokeData("Urlmon.h")]
-		[ComImport, Guid("A39EE748-6A27-4817-A6F2-13914BEF5890"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IUri
-		{
-			/// <summary>Returns the specified Uniform Resource Identifier (URI) property value in a new <c>BSTR</c>.</summary>
-			/// <param name="uriProp">
-			/// <para>[in]</para>
-			/// <para>A value from the <c>Uri_PROPERTY</c> enumeration.</para>
-			/// </param>
-			/// <param name="pbstrProperty">
-			/// <para>[out]</para>
-			/// <para>Address of a <c>BSTR</c> that receives the property value.</para>
-			/// </param>
-			/// <param name="dwFlags">
-			/// <para>[in]</para>
-			/// <para>One of the following property-specific flags, or zero.</para>
-			/// <para><c>Uri_DISPLAY_NO_FRAGMENT</c> (0x00000001)</para>
-			/// <para><c>Uri_PROPERTY_DISPLAY_URI</c>: Exclude the fragment portion of the URI, if any.</para>
-			/// <para><c>Uri_PUNYCODE_IDN_HOST</c> (0x00000002)</para>
-			/// <para>
-			/// <c>Uri_PROPERTY_ABSOLUTE_URI</c>, <c>Uri_PROPERTY_DOMAIN</c>, <c>Uri_PROPERTY_HOST</c>: If the URI is an IDN, always display
-			/// the hostname encoded as punycode.
-			/// </para>
-			/// <para><c>Uri_DISPLAY_IDN_HOST</c> (0x00000004)</para>
-			/// <para>
-			/// <c>Uri_PROPERTY_ABSOLUTE_URI</c>, <c>Uri_PROPERTY_DOMAIN</c>, <c>Uri_PROPERTY_HOST</c>: Display the hostname in punycode or
-			/// Unicode as it would appear in the <c>Uri_PROPERTY_DISPLAY_URI</c> property.
-			/// </para>
-			/// </param>
-			/// <remarks>
-			/// <para><c>IUri::GetPropertyBSTR</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// The uriProp parameter must be a string property. This method will fail if the specified property isn't a <c>BSTR</c> property.
-			/// </para>
-			/// <para>
-			/// The pbstrProperty parameter will be set to a new <c>BSTR</c> containing the value of the specified string property. The
-			/// caller should use SysFreeString to free the string.
-			/// </para>
-			/// <para>This method will return and set pbstrProperty to an empty string if the URI doesn't contain the specified property.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775026(v=vs.85)
-			// HRESULT GetPropertyBSTR( Uri_PROPERTY uriProp, [out] BSTR *pbstrProperty, DWORD dwFlags );
-			void GetPropertyBSTR([In] Uri_PROPERTY uriProp, [MarshalAs(UnmanagedType.BStr)] out string pbstrProperty, [In] Uri_DISPLAY dwFlags);
-
-			/// <summary>
-			/// Returns the string length of the specified Uniform Resource Identifier (URI) property. Call this function if you want the
-			/// length but don't necessarily want to create a new <c>BSTR</c>.
-			/// </summary>
-			/// <param name="uriProp">
-			/// <para>[in]</para>
-			/// <para>A value from the <c>Uri_PROPERTY</c> enumeration.</para>
-			/// </param>
-			/// <param name="pcchProperty">
-			/// <para>[out]</para>
-			/// <para>
-			/// Address of a <c>DWORD</c> that is set to the length of the value of the string property excluding the <c>NULL</c> terminator.
-			/// </para>
-			/// </param>
-			/// <param name="dwFlags">
-			/// <para>[in]</para>
-			/// <para>One of the following property-specific flags, or zero.</para>
-			/// <para><c>Uri_DISPLAY_NO_FRAGMENT</c> (0x00000001)</para>
-			/// <para><c>Uri_PROPERTY_DISPLAY_URI</c>: Exclude the fragment portion of the URI, if any.</para>
-			/// <para><c>Uri_PUNYCODE_IDN_HOST</c> (0x00000002)</para>
-			/// <para>
-			/// <c>Uri_PROPERTY_ABSOLUTE_URI</c>, <c>Uri_PROPERTY_DOMAIN</c>, <c>Uri_PROPERTY_HOST</c>: If the URI is an IDN, always display
-			/// the hostname encoded as punycode.
-			/// </para>
-			/// <para><c>Uri_DISPLAY_IDN_HOST</c> (0x00000004)</para>
-			/// <para>
-			/// <c>Uri_PROPERTY_ABSOLUTE_URI</c>, <c>Uri_PROPERTY_DOMAIN</c>, <c>Uri_PROPERTY_HOST</c>: Display the hostname in punycode or
-			/// Unicode as it would appear in the <c>Uri_PROPERTY_DISPLAY_URI</c> property.
-			/// </para>
-			/// </param>
-			/// <remarks>
-			/// <para><c>IUri::GetPropertyLength</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// The uriProp parameter must be a string property. This method will fail if the specified property isn't a <c>BSTR</c> property.
-			/// </para>
-			/// <para>This method will return and set pcchProperty to if the URI doesn't contain the specified property.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775028(v=vs.85)
-			// HRESULT GetPropertyLength( Uri_PROPERTY uriProp, [out] DWORD *pcchProperty, DWORD dwFlags );
-			void GetPropertyLength([In] Uri_PROPERTY uriProp, out uint pcchProperty, [In] Uri_DISPLAY dwFlags);
-
-			/// <summary>Returns the specified numeric Uniform Resource Identifier (URI) property value.</summary>
-			/// <param name="uriProp">
-			/// <para>[in]</para>
-			/// <para>A value from the <c>Uri_PROPERTY</c> enumeration.</para>
-			/// </param>
-			/// <param name="pdwProperty">Address of a DWORD that is set to the value of the specified property.</param>
-			/// <param name="dwFlags">Property-specific flags. Must be set to 0.</param>
-			/// <remarks>
-			/// <para><c>IUri::GetPropertyDWORD</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// The uriProp parameter must be a numeric property. This method will fail if the specified property isn't a <c>DWORD</c> property.
-			/// </para>
-			/// <para>This method will return and set pdwProperty to if the specified property doesn't exist in the URI.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775027(v=vs.85)
-			// HRESULT GetPropertyDWORD( Uri_PROPERTY uriProp, [out] DWORD *pdwProperty, DWORD dwFlags );
-			void GetPropertyDWORD([In] Uri_PROPERTY uriProp, out uint pdwProperty, [In] uint dwFlags);
-
-			/// <summary>Determines if the specified property exists in the Uniform Resource Identifier (URI).</summary>
-			/// <returns>Address of a BOOL value. Set to TRUE if the specified property exists in the URI.</returns>
-			/// <remarks><c>IUri::HasProperty</c> was introduced in Windows Internet Explorer 7.</remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775036(v=vs.85)
-			// HRESULT HasProperty( Uri_PROPERTY uriProp, [out] BOOL *pfHasProperty );
-			[return: MarshalAs(UnmanagedType.Bool)]
-			bool HasProperty([In] Uri_PROPERTY uriProp);
-
-			/// <summary>Returns the entire canonicalized Uniform Resource Identifier (URI).</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetAbsoluteUri</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the
-			/// <c>Uri_PROPERTY_ABSOLUTE_URI</c> property.
-			/// </para>
-			/// <para>This property is not defined for relative URIs.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775013%28v%3dvs.85%29
-			// HRESULT GetAbsoluteUri( [out] BSTR *pbstrAbsoluteUri );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetAbsoluteUri();
-
-			/// <summary>Returns the user name, password, domain, and port.</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetAuthority</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the
-			/// <c>Uri_PROPERTY_AUTHORITY</c> property.
-			/// </para>
-			/// <para>
-			/// If user name and password are not specified, the separator characters (: and @) are removed. The trailing colon is also
-			/// removed if the port number is not specified or is the default for the protocol scheme.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775014(v=vs.85)
-			// HRESULT GetAuthority( [out] BSTR *pbstrAuthority );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetAuthority();
-
-			/// <summary>Returns a Uniform Resource Identifier (URI) that can be used for display purposes.</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetDisplayUri</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// The display URI combines protocol scheme, fully qualified domain name, port number (if not the default for the scheme), full
-			/// resource path, query string, and fragment.
-			/// </para>
-			/// <para>
-			/// <c>Note</c> The display URI may have additional formatting applied to it, such that the string produced by
-			/// <c>IUri::GetDisplayUri</c> isn't necessarily a valid URI. For this reason, and since the userinfo is not present, the
-			/// display URI should be used for viewing only; it should not be used for edit by the user, or as a form of transfer for URIs
-			/// inside or between applications.
-			/// </para>
-			/// <para>
-			/// If the scheme is known (for example, http, ftp, or file) then the display URI will hide credentials. However, if the URI
-			/// uses an unknown scheme and supplies user name and password, the display URI will also contain the user name and password.
-			/// </para>
-			/// <para>
-			/// <c>Security Warning:</c> Storing sensitive information as clear text in a URI is not recommended. According to RFC3986:
-			/// Uniform Resource Identifier (URI), Generic Syntax, Section 7.5, "A password appearing within the userinfo component is
-			/// deprecated and should be considered an error except in those rare cases where the 'password' parameter is intended to be public."
-			/// </para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the
-			/// <c>Uri_PROPERTY_DISPLAY_URI</c> property and no flags.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775015(v=vs.85)
-			// HRESULT GetDisplayUri( [out] BSTR *pbstrDisplayString );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetDisplayUri();
-
-			/// <summary>Returns the domain name (including top-level domain) only.</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetDomain</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the <c>Uri_PROPERTY_DOMAIN</c> property.
-			/// </para>
-			/// <para>
-			/// If the URL contains only a plain hostname (for example, "http://example/") or a public suffix (for example,
-			/// "http://co.uk/"), then <c>IUri::GetDomain</c> returns <c>NULL</c>. Use <c>IUri::GetHost</c> instead.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775016(v=vs.85)
-			// HRESULT GetDomain( [out] BSTR *pbstrDomain );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetDomain();
-
-			/// <summary>Returns the file name extension of the resource.</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetExtension</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the
-			/// <c>Uri_PROPERTY_EXTENSION</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775017(v=vs.85)
-			// HRESULT GetExtension( [out] BSTR *pbstrExtension );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetExtension();
-
-			/// <summary>Returns the text following a fragment marker (#), including the fragment marker itself.</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetFragment</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the
-			/// <c>Uri_PROPERTY_FRAGMENT</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775018(v=vs.85)
-			// HRESULT GetFragment( [out] BSTR *pbstrFragment );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetFragment();
-
-			/// <summary>Returns the fully qualified domain name.</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetHost</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the <c>Uri_PROPERTY_HOST</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775019(v=vs.85)
-			// HRESULT GetHost( [out] BSTR *pbstrHost );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetHost();
-
-			/// <summary>Returns the password, as parsed from the Uniform Resource Identifier (URI).</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetPassword</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// <c>Security Warning:</c> Storing sensitive information as clear text in a URI is not recommended. According to RFC3986:
-			/// Uniform Resource Identifier (URI), Generic Syntax, Section 7.5, "A password appearing within the userinfo component is
-			/// deprecated and should be considered an error except in those rare cases where the 'password' parameter is intended to be public."
-			/// </para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the
-			/// <c>Uri_PROPERTY_PASSWORD</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775021(v=vs.85)
-			// HRESULT GetPassword( [out] BSTR *pbstrPassword );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetPassword();
-
-			/// <summary>Returns the path and resource name.</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetPath</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the <c>Uri_PROPERTY_PATH</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775022(v=vs.85)
-			// HRESULT GetPath( [out] BSTR *pbstrPath );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetPath();
-
-			/// <summary>Returns the path, resource name, and query string.</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetPathAndQuery</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the
-			/// <c>Uri_PROPERTY_PATH_AND_QUERY</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775023(v=vs.85)
-			// HRESULT GetPathAndQuery( [out] BSTR *pbstrPathAndQuery );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetPathAndQuery();
-
-			/// <summary>Returns the query string.</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetQuery</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the <c>Uri_PROPERTY_QUERY</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775029(v=vs.85)
-			// HRESULT GetQuery( [out] BSTR *pbstrQuery );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetQuery();
-
-			/// <summary>Returns the entire original Uniform Resource Identifier (URI) input string.</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetRawUri</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the
-			/// <c>Uri_PROPERTY_RAW_URI</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775030(v=vs.85)
-			// HRESULT GetRawUri( [out] BSTR *pbstrRawUri );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetRawUri();
-
-			/// <summary>Returns the protocol scheme name.</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetSchemeName</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the
-			/// <c>Uri_PROPERTY_SCHEME_NAME</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775032(v=vs.85)
-			// HRESULT GetSchemeName( [out] BSTR *pbstrSchemeName );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetSchemeName();
-
-			/// <summary>Returns the user name and password, as parsed from the Uniform Resource Identifier (URI).</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetUserInfo</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// <c>Security Warning:</c> Storing sensitive information as clear text in a URI is not recommended. According to RFC3986:
-			/// Uniform Resource Identifier (URI), Generic Syntax, Section 7.5, "A password appearing within the userinfo component is
-			/// deprecated and should be considered an error except in those rare cases where the 'password' parameter is intended to be public."
-			/// </para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the
-			/// <c>Uri_PROPERTY_USER_INFO</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775033(v=vs.85)
-			// HRESULT GetUserInfo( [out] BSTR *pbstrUserInfo );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetUserInfo();
-
-			/// <summary>Returns the user name as parsed from the Uniform Resource Identifier (URI).</summary>
-			/// <returns>Address of a string that receives the property value.</returns>
-			/// <remarks>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyBSTR</c> with the
-			/// <c>Uri_PROPERTY_USER_NAME</c> property.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775034(v=vs.85)
-			// HRESULT GetUserName( [out] BSTR *pbstrUserName );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string GetUserName();
-
-			/// <summary>Returns a value from the <c>Uri_HOST_TYPE</c> enumeration.</summary>
-			/// <returns>Address of a DWORD that receives a value from the Uri_HOST_TYPE enumeration.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetHostType</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyDWORD</c> with the
-			/// <c>Uri_PROPERTY_HOST_TYPE</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775020(v=vs.85)
-			// HRESULT GetHostType( [out] DWORD *pdwHostType );
-			Uri_HOST_TYPE GetHostType();
-
-			/// <summary>Returns the port number.</summary>
-			/// <returns>Address of a DWORD that receives the port number value.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetPort</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyDWORD</c> with the <c>Uri_PROPERTY_PORT</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775024(v=vs.85)
-			// HRESULT GetPort( [out] DWORD *pdwPort );
-			uint GetPort();
-
-			/// <summary>Returns a value from the URL_SCHEME enumeration.</summary>
-			/// <returns>Address of a DWORD that receives a value from the URL_SCHEME enumeration.</returns>
-			/// <remarks>
-			/// <para><c>IUri::GetScheme</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// This function is for convenience. It is the same as calling <c>IUri::GetPropertyDWORD</c> with the
-			/// <c>Uri_PROPERTY_SCHEME</c> property.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775031(v=vs.85)
-			// HRESULT GetScheme( [out] DWORD *pdwScheme );
-			URL_SCHEME GetScheme();
-
-			/// <summary>This method is not implemented.</summary>
-			/// <returns/>
-			URLZONE GetZone();
-
-			/// <summary>Returns a bitmap of flags that indicate which Uniform Resource Identifier (URI) properties have been set.</summary>
-			/// <returns>
-			/// <para>[out]</para>
-			/// <para>Address of a <c>DWORD</c> that receives a combination of the following flags:</para>
-			/// <para><c>Uri_HAS_ABSOLUTE_URI</c> (0x00000000)</para>
-			/// <para><c>Uri_PROPERTY_ABSOLUTE_URI</c> exists.</para>
-			/// <para><c>Uri_HAS_AUTHORITY</c> (0x00000001)</para>
-			/// <para><c>Uri_PROPERTY_AUTHORITY</c> exists.</para>
-			/// <para><c>Uri_HAS_DISPLAY_URI</c> (0x00000002)</para>
-			/// <para><c>Uri_PROPERTY_DISPLAY_URI</c> exists.</para>
-			/// <para><c>Uri_HAS_DOMAIN</c> (0x00000004)</para>
-			/// <para><c>Uri_PROPERTY_DOMAIN</c> exists.</para>
-			/// <para><c>Uri_HAS_EXTENSION</c> (0x00000008)</para>
-			/// <para><c>Uri_PROPERTY_EXTENSION</c> exists.</para>
-			/// <para><c>Uri_HAS_FRAGMENT</c> (0x00000010)</para>
-			/// <para><c>Uri_PROPERTY_FRAGMENT</c> exists.</para>
-			/// <para><c>Uri_HAS_HOST</c> (0x00000020)</para>
-			/// <para><c>Uri_PROPERTY_HOST</c> exists.</para>
-			/// <para><c>Uri_HAS_HOST_TYPE</c> (0x00004000)</para>
-			/// <para><c>Uri_PROPERTY_HOST_TYPE</c> exists.</para>
-			/// <para><c>Uri_HAS_PASSWORD</c> (0x00000040)</para>
-			/// <para><c>Uri_PROPERTY_PASSWORD</c> exists.</para>
-			/// <para><c>Uri_HAS_PATH</c> (0x00000080)</para>
-			/// <para><c>Uri_PROPERTY_PATH</c> exists.</para>
-			/// <para><c>Uri_HAS_PATH_AND_QUERY</c> (0x00001000)</para>
-			/// <para><c>Uri_PROPERTY_PATH_AND_QUERY</c> exists.</para>
-			/// <para><c>Uri_HAS_PORT</c> (0x00008000)</para>
-			/// <para><c>Uri_PROPERTY_PORT</c> exists.</para>
-			/// <para><c>Uri_HAS_QUERY</c> (0x00000100)</para>
-			/// <para><c>Uri_PROPERTY_QUERY</c> exists.</para>
-			/// <para><c>Uri_HAS_RAW_URI</c> (0x00000200)</para>
-			/// <para><c>Uri_PROPERTY_RAW_URI</c> exists.</para>
-			/// <para><c>Uri_HAS_SCHEME</c> (0x00010000)</para>
-			/// <para><c>Uri_PROPERTY_SCHEME</c> exists.</para>
-			/// <para><c>Uri_HAS_SCHEME_NAME</c> (0x00000400)</para>
-			/// <para><c>Uri_PROPERTY_SCHEME_NAME</c> exists.</para>
-			/// <para><c>Uri_HAS_USER_NAME</c> (0x00000800)</para>
-			/// <para><c>Uri_PROPERTY_USER_NAME</c> exists.</para>
-			/// <para><c>Uri_HAS_USER_INFO</c> (0x00002000)</para>
-			/// <para><c>Uri_PROPERTY_USER_INFO</c> exists.</para>
-			/// <para><c>Uri_HAS_ZONE</c> (0x00020000)</para>
-			/// <para><c>Uri_PROPERTY_ZONE</c> exists.</para>
-			/// </returns>
-			/// <remarks><c>IUri::GetProperties</c> was introduced in Windows Internet Explorer 7.</remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775025(v=vs.85)
-			// HRESULT GetProperties( [out] LPDWORD pdwFlags );
-			Uri_HAS GetProperties();
-
-			/// <summary>Compares the logical content of two <c>IUri</c> objects.</summary>
-			/// <returns>Address of a BOOL that is set to TRUE if the logical content of pUri is the same.</returns>
-			/// <remarks>
-			/// <para><c>IUri::IsEqual</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>The comparison is case-insensitive. Comparing an <c>IUri</c> to itself will always return <c>TRUE</c>.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775037(v=vs.85)
-			// HRESULT IsEqual( IUri *pUri, [out] BOOL *pfEqual );
-			[return: MarshalAs(UnmanagedType.Bool)]
-			bool IsEqual([In] IUri pUri);
-		}
-
-		/// <summary>Exposes methods used to create a new <c>IUri</c> from an existing one.</summary>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775002(v=vs.85)
-		[PInvokeData("Urlmon.h")]
-		[ComImport, Guid("4221B2E1-8955-46c0-BD5B-DE9897565DE7"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IUriBuilder
-		{
-			/// <summary>Returns a new <c>IUri</c> object based on modifications to the original <c>IUri</c>, using the original flags.</summary>
-			/// <param name="dwAllowEncodingPropertyMask">
-			/// <para>[in]</para>
-			/// <para>
-			/// <c>DWORD</c> that may contain a combination of the following flags, or zero. Reserved characters in these properties may be
-			/// percent encoded, if required.
-			/// </para>
-			/// <para><c>Uri_HAS_USER_NAME</c> (0x00000800)</para>
-			/// <para>Allow encoding of <c>Uri_PROPERTY_USER_NAME</c>.</para>
-			/// <para><c>Uri_HAS_PASSWORD</c> (0x00000040)</para>
-			/// <para>Allow encoding of <c>Uri_PROPERTY_PASSWORD</c>.</para>
-			/// <para><c>Uri_HAS_HOST</c> (0x00000020)</para>
-			/// <para>Allow encoding of <c>Uri_PROPERTY_HOST</c>.</para>
-			/// <para><c>Uri_HAS_PATH</c> (0x00000080)</para>
-			/// <para>Allow encoding of <c>Uri_PROPERTY_PATH</c>.</para>
-			/// <para><c>Uri_HAS_QUERY</c> (0x00000100)</para>
-			/// <para>Allow encoding of <c>Uri_PROPERTY_QUERY</c>.</para>
-			/// <para><c>Uri_HAS_FRAGMENT</c> (0x00000010)</para>
-			/// <para>Allow encoding of <c>Uri_PROPERTY_FRAGMENT</c>.</para>
-			/// </param>
-			/// <param name="dwReserved">
-			/// <para>[in]</para>
-			/// <para>Reserved. Must be set to 0.</para>
-			/// </param>
-			/// <returns>
-			/// <para>[out]</para>
-			/// <para>Address of pointer variable of type <c>IUri</c> that receives the new object.</para>
-			/// </returns>
-			/// <remarks>
-			/// <para><c>CreateUriSimple</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// If no changes are made, this method may return a pointer to the original <c>IUri</c> object (after incrementing the
-			/// reference count).
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774988(v=vs.85)
-			// HRESULT CreateUriSimple( [in] DWORD dwAllowEncodingPropertyMask, [in] DWORD_PTR dwReserved, [out] IUri **ppIUri );
-			IUri CreateUriSimple(Uri_HAS dwAllowEncodingPropertyMask, IntPtr dwReserved = default);
-
-			/// <summary>Returns a new <c>IUri</c> object based on modifications to the original <c>IUri</c>.</summary>
-			/// <param name="dwCreateFlags">
-			/// [in] <c>DWORD</c> that combines flags, which control the creation of the <c>IUri</c> object. Refer to the <c>CreateUri</c>
-			/// function for a description of these flags. Pass the value of to use the same flags as were specified when the original
-			/// <c>IUri</c> object was created.
-			/// </param>
-			/// <param name="dwAllowEncodingPropertyMask">[in]Reserved. Must be set to 0.</param>
-			/// <param name="dwReserved">[in]Reserved. Must be set to 0.</param>
-			/// <returns>[out]Address of pointer variable of type <c>IUri</c> that receives the new object.</returns>
-			/// <remarks>
-			/// <para><c>CreateUri</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// If no changes are made, this method may return a pointer to the original <c>IUri</c> object (after incrementing the
-			/// reference count).
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774987(v=vs.85)
-			// HRESULT CreateUri( [in] DWORD dwCreateFlags, [in] DWORD dwAllowEncodingPropertyMask, [in] DWORD_PTR dwReserved, [out] IUri
-			// **ppIUri );
-			IUri CreateUri(Uri_CREATE dwCreateFlags, uint dwAllowEncodingPropertyMask = 0, IntPtr dwReserved = default);
-
-			/// <summary>Returns a new <c>IUri</c> object based on modifications to the original <c>IUri</c>.</summary>
-			/// <param name="dwCreateFlags">
-			/// <para>[in]</para>
-			/// <para>
-			/// <c>DWORD</c> that combines flags, which control the creation of the <c>IUri</c> object. Refer to the <c>CreateUri</c>
-			/// function for a description of these flags.
-			/// </para>
-			/// </param>
-			/// <param name="dwUriBuilderFlags">
-			/// <para>[in]</para>
-			/// <para><c>DWORD</c> for flags specific to <c>IUriBuilder</c>, or zero.</para>
-			/// <para><c>UriBuilder_USE_ORIGINAL_FLAGS</c> (0x00000001)</para>
-			/// <para>Use the create flags from the original <c>IUri</c>, if they are available.</para>
-			/// </param>
-			/// <param name="dwAllowEncodingPropertyMask">
-			/// <para>[in]</para>
-			/// <para>
-			/// <c>DWORD</c> that may contain a combination of the following flags, or zero. Reserved characters in the specified properties
-			/// may be percent encoded, if required.
-			/// </para>
-			/// <para><c>Uri_HAS_USER_NAME</c> (0x00000800)</para>
-			/// <para>Allow encoding of <c>Uri_PROPERTY_USER_NAME</c>.</para>
-			/// <para><c>Uri_HAS_PASSWORD</c> (0x00000040)</para>
-			/// <para>Allow encoding of <c>Uri_PROPERTY_PASSWORD</c>.</para>
-			/// <para><c>Uri_HAS_HOST</c> (0x00000020)</para>
-			/// <para>Allow encoding of <c>Uri_PROPERTY_HOST</c>.</para>
-			/// <para><c>Uri_HAS_PATH</c> (0x00000080)</para>
-			/// <para>Allow encoding of <c>Uri_PROPERTY_PATH</c>.</para>
-			/// <para><c>Uri_HAS_QUERY</c> (0x00000100)</para>
-			/// <para>Allow encoding of <c>Uri_PROPERTY_QUERY</c>.</para>
-			/// <para><c>Uri_HAS_FRAGMENT</c> (0x00000010)</para>
-			/// <para>Allow encoding of <c>Uri_PROPERTY_FRAGMENT</c>.</para>
-			/// </param>
-			/// <param name="dwReserved">
-			/// <para>[in]</para>
-			/// <para>Reserved. Must be set to 0.</para>
-			/// </param>
-			/// <returns>
-			/// <para>[out]</para>
-			/// <para>Address of pointer variable of type <c>IUri</c> that receives the new object.</para>
-			/// </returns>
-			/// <remarks>
-			/// <para><c>CreateUriWithFlags</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// If no changes are made, this method may return a pointer to the original <c>IUri</c> object (after incrementing the
-			/// reference count).
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774989(v=vs.85)
-			// HRESULT CreateUriWithFlags( [in] DWORD dwCreateFlags, [in] DWORD dwUriBuilderFlags, [in] DWORD dwAllowEncodingPropertyMask,
-			// [in] DWORD_PTR dwReserved, [out] IUri **ppIUri );
-			IUri CreateUriWithFlags(Uri_CREATE dwCreateFlags, uint dwUriBuilderFlags, Uri_HAS dwAllowEncodingPropertyMask, IntPtr dwReserved = default);
-
-			/// <summary>Returns the original <c>IUri</c>.</summary>
-			/// <returns>
-			/// Address to a pointer variable that receives the original IUri. The calling context must Release the interface when it is no
-			/// longer needed.
-			/// </returns>
-			/// <remarks><c>GetIUri</c> was introduced in Windows Internet Explorer 7.</remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774992(v=vs.85)
-			// HRESULT GetIUri( [out] IUri **ppIUri );
-			IUri GetIUri();
-
-			/// <summary>Sets the current <c>IUri</c>.</summary>
-			/// <param name="pIUri">Pointer to an existing IUri interface.</param>
-			/// <remarks>
-			/// <para><c>SetIUri</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>Setting the current <c>IUri</c> invalidates all properties.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775006(v=vs.85)
-			// HRESULT SetIUri( [in] IUri *pIUri );
-			void SetIUri([In] IUri pIUri);
-
-			/// <summary>Retrieves the value of the fragment component.</summary>
-			/// <param name="pcchFragment">
-			/// [out]Address of a variable of type <c>DWORD</c> that receives the length of the string returned in ppwzFragment.
-			/// </param>
-			/// <param name="ppwzFragment">[out]Address of a string variable that receives the current value.</param>
-			/// <remarks>
-			/// <para><c>GetFragment</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>The calling context must not free the returned pointer.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774990(v=vs.85)
-			// HRESULT GetFragment( [out] DWORD *pcchFragment, [out] LPCWSTR *ppwzFragment );
-			void GetFragment(out uint pcchFragment, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzFragment);
-
-			/// <summary>Retrieves the value of the host component.</summary>
-			/// <param name="pcchHost">
-			/// [out]Address of a variable of type <c>DWORD</c> that receives the length of the string returned in ppwzHost.
-			/// </param>
-			/// <param name="ppwzHost">[out]Address of a string variable that receives the current value.</param>
-			/// <remarks>
-			/// <para><c>GetHost</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>The calling context must not free the returned pointer.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774991(v=vs.85)
-			// HRESULT GetHost( [out] DWORD *pcchHost, [out] LPCWSTR *ppwzHost );
-			void GetHost(out uint pcchHost, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzHost);
-
-			/// <summary>Retrieves the value of the password component.</summary>
-			/// <param name="pcchPassword">
-			/// [out]Address of a variable of type <c>DWORD</c> that receives the length of the string returned in ppwzPassword.
-			/// </param>
-			/// <param name="ppwzPassword">[out]Address of a string variable that receives the current value.</param>
-			/// <remarks>
-			/// <para><c>GetPassword</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>The calling context must not free the returned pointer.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774993(v=vs.85)
-			// HRESULT GetPassword( [out] DWORD *pcchPassword, [out] LPCWSTR *ppwzPassword );
-			void GetPassword(out uint pcchPassword, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzPassword);
-
-			/// <summary>Retrieves the value of the path component.</summary>
-			/// <param name="pcchPath">
-			/// [out]Address of a variable of type <c>DWORD</c> that receives the length of the string returned in ppwzPath.
-			/// </param>
-			/// <param name="ppwzPath">[out]Address of a string variable that receives the current value.</param>
-			/// <remarks>
-			/// <para><c>GetPath</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>The calling context must not free the returned pointer.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774994(v=vs.85)
-			// HRESULT GetPath( [out] DWORD *pcchPath, [out] LPCWSTR *ppwzPath );
-			void GetPath(out uint pcchPath, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzPath);
-
-			/// <summary>Retrieves the value of the port component.</summary>
-			/// <param name="pfHasPort">
-			/// [out]Address of a variable of type <c>BOOL</c> that receives <c>TRUE</c> if the port property has been set, or <c>FALSE</c> otherwise.
-			/// </param>
-			/// <param name="pdwPort">[out]Address of a variable of type <c>DWORD</c> that receives the current value.</param>
-			/// <remarks><c>GetPort</c> was introduced in Windows Internet Explorer 7.</remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774995(v=vs.85)
-			// HRESULT GetPort( [out] BOOL *pfHasPort, [out] DWORD *pdwPort );
-			void GetPort([MarshalAs(UnmanagedType.Bool)] out bool pfHasPort, out uint pdwPort);
-
-			/// <summary>Retrieves the value of the query component.</summary>
-			/// <param name="pcchQuery">
-			/// [out]Address of a variable of type <c>DWORD</c> that receives the length of the string returned in ppwzQuery.
-			/// </param>
-			/// <param name="ppwzQuery">[out]Address of a string variable that receives the current value.</param>
-			/// <remarks>
-			/// <para><c>GetQuery</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>The calling context must not free the returned pointer.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774996(v=vs.85)
-			// HRESULT GetQuery( [out] DWORD *pcchQuery, [out] LPCWSTR *ppwzQuery );
-			void GetQuery(out uint pcchQuery, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzQuery);
-
-			/// <summary>Retrieves the value of the protocol scheme name.</summary>
-			/// <param name="pcchSchemeName">
-			/// [out]Address of a variable of type <c>DWORD</c> that receives the length of the string returned in ppwzSchemeName.
-			/// </param>
-			/// <param name="ppwzSchemeName">[out]Address of a string variable that receives the current value.</param>
-			/// <remarks>
-			/// <para><c>GetSchemeName</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>The calling context must not free the returned pointer.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774997(v=vs.85)
-			// HRESULT GetSchemeName( [out] DWORD *pcchSchemeName, [out] LPCWSTR *ppwzSchemeName );
-			void GetSchemeName(out uint pcchSchemeName, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzSchemeName);
-
-			/// <summary>Retrieves the value of the username component.</summary>
-			/// <param name="pcchUserName">
-			/// [out]Address of a variable of type <c>DWORD</c> that receives the length of the string returned in ppwzUserName.
-			/// </param>
-			/// <param name="ppwzUserName">[out]Address of a string variable that receives the current value.</param>
-			/// <remarks>
-			/// <para><c>GetUserName</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>The calling context must not free the returned pointer.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774998(v=vs.85)
-			// HRESULT GetUserName( [out] DWORD *pcchUserName, [out] LPCWSTR *ppwzUserName );
-			void GetUserName(out uint pcchUserName, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzUserName);
-
-			/// <summary>Sets the fragment component.</summary>
-			/// <param name="pwzNewValue">String variable that contains the new value, or NULL to remove the fragment component.</param>
-			/// <remarks>
-			/// <para><c>SetFragment</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>Setting the fragment component invalidates <c>Uri_PROPERTY_ABSOLUTE_URI</c> and <c>Uri_PROPERTY_DISPLAY_URI</c>.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775004(v=vs.85)
-			// HRESULT SetFragment( [in] LPCWSTR pwzNewValue );
-			void SetFragment([Optional, MarshalAs(UnmanagedType.LPWStr)] string pwzNewValue);
-
-			/// <summary>Sets the host (fully qualify domain) component.</summary>
-			/// <param name="pwzNewValue">String variable that contains the new value. Must be neither empty nor NULL.</param>
-			/// <remarks>
-			/// <para><c>SetHost</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>Setting the host component invalidates <c>Uri_PROPERTY_ABSOLUTE_URI</c>, <c>Uri_PROPERTY_AUTHORITY</c>, and <c>Uri_PROPERTY_DOMAIN</c>.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775005(v=vs.85)
-			// HRESULT SetHost( [in] LPCWSTR pwzNewValue );
-			void SetHost([MarshalAs(UnmanagedType.LPWStr)] string pwzNewValue);
-
-			/// <summary>Sets the password component.</summary>
-			/// <param name="pwzNewValue">String variable the contains the new value, or NULL to remove the password component.</param>
-			/// <remarks>
-			/// <para><c>SetPassword</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>Setting the password component invalidates <c>Uri_PROPERTY_ABSOLUTE_URI</c> and <c>Uri_PROPERTY_AUTHORITY</c>.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775007(v=vs.85)
-			// HRESULT SetPassword( [in] LPCWSTR pwzNewValue );
-			void SetPassword([Optional, MarshalAs(UnmanagedType.LPWStr)] string pwzNewValue);
-
-			/// <summary>Sets the path component.</summary>
-			/// <param name="pwzNewValue">
-			/// String variable that contains the new value, or NULL to remove the path component. Must specify an absolute path if not NULL.
-			/// </param>
-			/// <remarks>
-			/// <para><c>SetPath</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>The path component also includes the resource (filename and extension).</para>
-			/// <para>To specify a relative path, use <c>CoInternetCombineIUri</c>.</para>
-			/// <para>Setting the path component invalidates <c>Uri_PROPERTY_ABSOLUTE_URI</c>, <c>Uri_PROPERTY_DISPLAY_URI</c>, and <c>Uri_PROPERTY_PATH_AND_QUERY</c>.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775008(v=vs.85)
-			// HRESULT SetPath( [in] LPCWSTR pwzNewValue );
-			void SetPath([Optional, MarshalAs(UnmanagedType.LPWStr)] string pwzNewValue);
-
-			/// <summary>Sets the port component.</summary>
-			/// <param name="fHasPort">
-			/// [in] <c>BOOL</c> that contains <c>TRUE</c> if a new port number is specified, or <c>FALSE</c> to use the default port for
-			/// the protocol scheme.
-			/// </param>
-			/// <param name="dwNewValue">[in] <c>DWORD</c> that contains the new port value.</param>
-			/// <remarks>
-			/// <para><c>SetPort</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>Setting the port number invalidates <c>Uri_PROPERTY_ABSOLUTE_URI</c>, <c>Uri_PROPERTY_DISPLAY_URI</c>, and <c>Uri_PROPERTY_AUTHORITY</c>.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775009(v=vs.85)
-			// HRESULT SetPort( [in] BOOL fHasPort, [in] DWORD dwNewValue );
-			void SetPort([MarshalAs(UnmanagedType.Bool)] bool fHasPort, uint dwNewValue);
-
-			/// <summary>Sets the query component.</summary>
-			/// <param name="pwzNewValue">String variable that contains the new value, or NULL to remove the query component.</param>
-			/// <remarks>
-			/// <para><c>SetQuery</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>Setting the query component invalidates <c>Uri_PROPERTY_ABSOLUTE_URI</c>, <c>Uri_PROPERTY_DISPLAY_URI</c>, and <c>Uri_PROPERTY_PATH_AND_QUERY</c>.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775010(v=vs.85)
-			// HRESULT SetQuery( [in] LPCWSTR pwzNewValue );
-			void SetQuery([Optional, MarshalAs(UnmanagedType.LPWStr)] string pwzNewValue);
-
-			/// <summary>Sets the protocol scheme name.</summary>
-			/// <param name="pwzNewValue">String variable that contains the new value. Must be neither empty nor NULL.</param>
-			/// <remarks>
-			/// <para><c>SetSchemeName</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>Setting the scheme name component invalidates <c>Uri_PROPERTY_ABSOLUTE_URI</c> and <c>Uri_PROPERTY_DISPLAY_URI</c>.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775011(v=vs.85)
-			// HRESULT SetSchemeName( [in] LPCWSTR pwzNewValue );
-			void SetSchemeName([MarshalAs(UnmanagedType.LPWStr)] string pwzNewValue);
-
-			/// <summary>Sets the username component.</summary>
-			/// <param name="pwzNewValue">String variable that contains the new value, or NULL to remove the username component.</param>
-			/// <remarks>
-			/// <para><c>SetUserName</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>Setting the username component invalidates <c>Uri_PROPERTY_ABSOLUTE_URI</c> and <c>Uri_PROPERTY_AUTHORITY</c>.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775012(v=vs.85)
-			// HRESULT SetUserName( [in] LPCWSTR pwzNewValue );
-			void SetUserName([Optional, MarshalAs(UnmanagedType.LPWStr)] string pwzNewValue);
-
-			/// <summary>Removes the specified properties as well as any derived properties.</summary>
-			/// <param name="dwPropertyMask">
-			/// <para>[in]</para>
-			/// <para><c>DWORD</c> that contains a combination of the following flags:</para>
-			/// <para><c>Uri_HAS_USER_NAME</c> (0x00000800)</para>
-			/// <para>Remove <c>Uri_PROPERTY_USER_NAME</c>.</para>
-			/// <para><c>Uri_HAS_PASSWORD</c> (0x00000040)</para>
-			/// <para>Remove <c>Uri_PROPERTY_PASSWORD</c>.</para>
-			/// <para><c>Uri_HAS_HOST</c> (0x00000020)</para>
-			/// <para>Remove <c>Uri_PROPERTY_HOST</c>.</para>
-			/// <para><c>Uri_HAS_PORT</c> (0x00008000)</para>
-			/// <para>Remove <c>Uri_PROPERTY_PORT</c>.</para>
-			/// <para><c>Uri_HAS_PATH</c> (0x00000080)</para>
-			/// <para>Remove <c>Uri_PROPERTY_PATH</c>.</para>
-			/// <para><c>Uri_HAS_QUERY</c> (0x00000100)</para>
-			/// <para>Remove <c>Uri_PROPERTY_QUERY</c>.</para>
-			/// <para><c>Uri_HAS_FRAGMENT</c> (0x00000010)</para>
-			/// <para>Remove <c>Uri_PROPERTY_FRAGMENT</c>.</para>
-			/// </param>
-			/// <remarks>
-			/// <para><c>RemoveProperties</c> was introduced in Windows Internet Explorer 7.</para>
-			/// <para>
-			/// Compound properties (such as <c>Uri_PROPERTY_AUTHORITY</c>, <c>Uri_PROPERTY_USER_INFO</c>, and
-			/// <c>Uri_PROPERTY_PATH_AND_QUERY</c>) and sub-properties (such as <c>Uri_PROPERTY_DOMAIN</c> and
-			/// <c>Uri_PROPERTY_EXTENSION</c>) are also removed when their associated property primitives are removed.
-			/// <c>Uri_PROPERTY_ABSOLUTE_URI</c> and <c>Uri_PROPERTY_DISPLAY_URI</c> are also invalidated when subcomponents are modified.
-			/// </para>
-			/// <para>
-			/// <c>Uri_PROPERTY_SCHEME</c> and <c>Uri_PROPERTY_SCHEME_NAME</c> cannot be removed. Use <c>SetSchemeName</c> to modify the
-			/// scheme component.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775003(v=vs.85)
-			// HRESULT RemoveProperties( [in] DWORD dwPropertyMask );
-			void RemoveProperties(Uri_HAS dwPropertyMask);
-
-			/// <summary>Returns <c>TRUE</c> if component values have been modified.</summary>
-			/// <returns>A variable of type BOOL that receives TRUE if components have been modified, or FALSE otherwise.</returns>
-			/// <remarks><c>HasBeenModified</c> was introduced in Windows Internet Explorer 7.</remarks>
-			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775001(v=vs.85)
-			// HRESULT HasBeenModified( [out] BOOL *pfModified );
-			[return: MarshalAs(UnmanagedType.Bool)]
-			bool HasBeenModified();
 		}
 
 		/// <summary>Installs the specified component.</summary>
@@ -3749,6 +2518,1036 @@ namespace Vanara.PInvoke
 		public static extern HRESULT CreateURLMonikerEx(IMoniker pMkCtx, [MarshalAs(UnmanagedType.LPWStr)] string szURL, out IMoniker ppmk, URL_MK dwFlags);
 
 		/// <summary>
+		/// Creates a new URL moniker from a full Uniform Resource Identifier (URI), or from a base context URL moniker and a relative URI.
+		/// </summary>
+		/// <param name="pMkCtx">
+		/// A pointer to an IMoniker interface of the URL moniker to use as the base context. The pMkCtx parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="pUri">A pointer to an <c>IUri</c> interface that contains a full or relative URI.</param>
+		/// <param name="ppmk">A pointer to an IMoniker interface for the new URL moniker.</param>
+		/// <param name="dwFlags">
+		/// <para>An unsigned long integer value that contains a combination of the following flags.</para>
+		/// <para><c>URL_MK_LEGACY</c> (0)</para>
+		/// <para>Create legacy file URLs. Equivalent to <c>Uri_CREATE_FILE_USE_DOS_PATH</c>.</para>
+		/// <para><c>URL_MK_UNIFORM</c> (1)</para>
+		/// <para>Use the updated URL parser.</para>
+		/// <para><c>URL_MK_NO_CANONICALIZE</c> (2)</para>
+		/// <para>Do not attempt to convert the URL moniker to the standard format.</para>
+		/// </param>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		/// <remarks>
+		/// Any two URIs can be combined. The base URI and context URI can be any combination of relative and absolute. This is also true
+		/// for the <c>CoInternetCombineUrl</c> function, the <c>CoInternetCombineUrlEx</c> function, and the <c>CoInternetCombineIUri</c> function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775104(v=vs.85) HRESULT
+		// CreateURLMonikerEx2( IMoniker *pMkCtx, IUri *pUri, IMoniker **ppmk, DWORD dwFlags );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT CreateURLMonikerEx2(IMoniker pMkCtx, IUri pUri, out IMoniker ppmk, URL_MK dwFlags);
+
+		/// <summary>
+		/// This synchronous function is invoked by the client of a Windows Internet Explorer feature before the client accesses the feature.
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>[in]</para>
+		/// <para>A handle to the parent window of the HTML dialog box.</para>
+		/// </param>
+		/// <param name="pClassSpec">
+		/// <para>[in]</para>
+		/// <para>A pointer to a union that provides ways of mapping to a CLSID. Note that is defined in .</para>
+		/// </param>
+		/// <param name="pQuery">
+		/// <para>[in, out]</para>
+		/// <para>
+		/// A ointer to a structure that contains a list of attributes used to look up a class implementation. The installed version number
+		/// is returned in , which is passed in.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>[in]</para>
+		/// <para>The control behavior. The following values are valid.</para>
+		/// <para><c>FIEF_FLAG_FORCE_JITUI (0x0001)</c></para>
+		/// <para>
+		/// Force JIT, even if the user has canceled a previous JIT in the same session, or has specified to this feature. Note: For
+		/// Internet Explorer 7, this flag is not respected; it is overridden by E_ACCESSDENIED.
+		/// </para>
+		/// <para><c>FIEF_FLAG_PEEK (0x0002)</c></para>
+		/// <para>
+		/// Do not faultin, just peek. Note: Peek also returns the currently installed version in the QUERYCONTEXT. For Internet Explorer 7,
+		/// it disables the Java dialog box.
+		/// </para>
+		/// <para><c>FIEF_FLAG_SKIP_INSTALLED_VERSION_CHECK (0x0004)</c></para>
+		/// <para>
+		/// Ignores local version as being satisfactory and forces JIT download. Typically, this is called by code download, or by another
+		/// caller after a CoCreateInstance call has failed with or (missing a dependency DLL). Note: The registry might show that this
+		/// feature is installed when it is not, or when it is damaged. For Internet Explorer 7, this flag is not respected; it is
+		/// overridden by .
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>
+		/// Behavior is installed. Call CoCreateInstance or IMoniker::BindToObject or another system service to invoke the class or MIME handler.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>S_FALSE</term>
+		/// <term>
+		/// The class or MIME handler is not part of an Internet Explorer feature. Call CoCreateInstance, IMoniker::BindToObject, or some
+		/// other system service to invoke the class or MIME handler. Active setup settings are not found in registry.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>E_ACCESSDENIED</term>
+		/// <term>The administrator has turned off the JIT feature.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If the feature is already installed, then the function succeeds and the client should attempt to access the feature. Successful
+		/// return does not guarantee that the feature is fully installed, or that the feature will work. The client should still provide
+		/// access to the feature with proper error checking.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The importance of this function degraded significantly after Microsoft Internet Explorer 6 SP1b and Windows XP, due
+		/// to a lack of dependence on JIT in components.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa359663(v=vs.85) HRESULT
+		// FaultInIEFeature( _In_ HWND hWnd, _In_ uCLSSPEC *pClassSpec, _Inout_ QUERYCONTEXT *pQuery, _In_ DWORD dwFlags );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT FaultInIEFeature(HWND hWnd, in uCLSSPEC pClassSpec, ref QUERYCONTEXT pQuery, FIEF_FLAG dwFlags);
+
+		/// <summary>Retrieves the 32-bit value assigned to the specified media type.</summary>
+		/// <param name="rgszTypes">The address of a string value that identifies the media type.</param>
+		/// <param name="rgcfTypes">The address of the CLIPFORMAT value assigned to the specified media type.</param>
+		/// <returns>Returns S_OK if successful, or an error value otherwise.</returns>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775105(v=vs.85) HRESULT
+		// FindMediaType( LPCSTR rgszTypes, CLIPFORMAT *rgcfTypes );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT FindMediaType([MarshalAs(UnmanagedType.LPStr)] string rgszTypes, out CLIPFORMAT rgcfTypes);
+
+		/// <summary>Retrieves the <c>CLSID</c> for the specified media type.</summary>
+		/// <param name="pbc">[in]A pointer to the bind context on which the media type is registered.</param>
+		/// <param name="szType">[in]A string identifying the media types. This parameter cannot be <c>NULL</c>.</param>
+		/// <param name="pclsID">[out]A pointer to the <c>CLSID</c> corresponding to the specified media types in szType.</param>
+		/// <param name="dwReserved">[in]Reserved. Must be set to 0.</param>
+		/// <returns>Returns S_OK if successful, or E_INVALIDARG if one or more parameters are invalid.</returns>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775106(v=vs.85) HRESULT
+		// FindMediaTypeClass( _In_ LPBC pbc, _In_ LPCSTR szType, _Out_ CLSID *pclsID, _Reserved_ DWORD dwReserved );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT FindMediaTypeClass([In] IBindCtx pbc, [MarshalAs(UnmanagedType.LPStr)] string szType, out Guid pclsID, uint dwReserved = 0);
+
+		/// <summary>Determines the MIME type from the data provided.</summary>
+		/// <param name="pBC">A pointer to the IBindCtx interface. Can be set to <c>NULL</c>.</param>
+		/// <param name="pwzUrl">
+		/// A pointer to a string value that contains the URL of the data. Can be set to <c>NULL</c> if pBuffer contains the data to be sniffed.
+		/// </param>
+		/// <param name="pBuffer">
+		/// A pointer to the buffer that contains the data to be sniffed. Can be set to <c>NULL</c> if pwzUrl contains a valid URL.
+		/// </param>
+		/// <param name="cbSize">An unsigned long integer value that contains the size of the buffer.</param>
+		/// <param name="pwzMimeProposed">
+		/// A pointer to a string value that contains the proposed MIME type. This value is authoritative if type cannot be determined from
+		/// the data. If the proposed type contains a semi-colon (;) it is removed. This parameter can be set to <c>NULL</c>.
+		/// </param>
+		/// <param name="dwMimeFlags">
+		/// <para><c>FMFD_DEFAULT</c> (0x00000000)</para>
+		/// <para>No flags specified. Use default behavior for the function.</para>
+		/// <para><c>FMFD_URLASFILENAME</c> (0x00000001)</para>
+		/// <para>Treat the specified pwzUrl as a file name.</para>
+		/// <para><c>FMFD_ENABLEMIMESNIFFING</c> (0x00000002)</para>
+		/// <para>
+		/// Internet Explorer 6 for Windows XP SP2 and later. Use MIME-type detection even if <c>FEATURE_MIME_SNIFFING</c> is detected.
+		/// Usually, this feature control key would disable MIME-type detection.
+		/// </para>
+		/// <para><c>FMFD_IGNOREMIMETEXTPLAIN</c> (0x00000004)</para>
+		/// <para>
+		/// Internet Explorer 6 for Windows XP SP2 and later. Perform MIME-type detection if "text/plain" is proposed, even if data sniffing
+		/// is otherwise disabled. Plain text may be converted to if HTML tags are detected.
+		/// </para>
+		/// <para><c>FMFD_SERVERMIME</c> (0x00000008)</para>
+		/// <para>
+		/// Internet Explorer 8. Use the authoritative MIME type specified in pwzMimeProposed. Unless <c>FMFD_IGNOREMIMETEXTPLAIN</c> is
+		/// specified, no data sniffing is performed.
+		/// </para>
+		/// <para><c>FMFD_RESPECTTEXTPLAIN</c> (0x00000010)</para>
+		/// <para>Internet Explorer 9. Do not perform detection if "text/plain" is specified in pwzMimeProposed.</para>
+		/// <para><c>FMFD_RETURNUPDATEDIMGMIMES</c> (0x00000020)</para>
+		/// <para>Internet Explorer 9. Returns and instead of and .</para>
+		/// </param>
+		/// <param name="ppwzMimeOut">The address of a string value that receives the suggested MIME type.</param>
+		/// <param name="dwReserved">Reserved. Must be set to 0.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The operation completed successfully.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>The operation failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One or more arguments are invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>There is insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// MIME type detection, or "data sniffing," refers to the process of determining an appropriate MIME type from binary data. The
+		/// final result depends on a combination of server-supplied MIME type headers, file name extension, and/or the data itself.
+		/// Usually, only the first 256 bytes of data are significant. For more information and a complete list of recognized MIME types,
+		/// see MIME Type Detection in Internet Explorer.
+		/// </para>
+		/// <para>
+		/// If pwzUrl is specified without data to be sniffed (pBuffer), the file name extension determines the MIME type. If the file name
+		/// extension cannot be mapped to a MIME type, this method returns E_FAIL unless a proposed MIME type is supplied in pwzMimeProposed.
+		/// </para>
+		/// <para>After ppwzMimeOut returns and is read, the memory allocated for it should be freed with the operator delete function.</para>
+		/// <para>
+		/// Internet Explorer 8 and later. <c>FindMimeFromData</c> will not promote image types to "text/html" even if the data lacks
+		/// signature bytes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775107(v=vs.85) HRESULT
+		// FindMimeFromData( LPBC pBC, LPCWSTR pwzUrl, LPVOID pBuffer, DWORD cbSize, LPCWSTR pwzMimeProposed, DWORD dwMimeFlags, LPWSTR
+		// *ppwzMimeOut, _Reserved_ DWORD dwReserved );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT FindMimeFromData([In] IBindCtx pBC, [MarshalAs(UnmanagedType.LPWStr)] string pwzUrl, IntPtr pBuffer, uint cbSize,
+			[MarshalAs(UnmanagedType.LPWStr)] string pwzMimeProposed, FMFD dwMimeFlags, out SafeCoTaskMemString ppwzMimeOut, uint dwReserved = 0);
+
+		/// <summary>Gets the <c>CLSID</c> of the object to instantiate for the specified file.</summary>
+		/// <param name="pBC">
+		/// A pointer to a bind context that can affect the mapping to a <c>CLSID</c>. This parameter is usually <c>NULL</c>. It can be used
+		/// to override system <c>CLSID</c> mappings when it is used with <c>RegisterMediaTypeClass</c>.
+		/// </param>
+		/// <param name="szFilename">A pointer to a string variable that contains the file name. Can be set to <c>NULL</c>.</param>
+		/// <param name="pBuffer">A pointer to a buffer that contains data from the beginning of the file. Can be set to <c>NULL</c>.</param>
+		/// <param name="cbSize">An unsigned long integer value that contains the size of pBuffer.</param>
+		/// <param name="szMime">A pointer to a string variable that contains the MIME type of the file. Can be set to <c>NULL</c>.</param>
+		/// <param name="dwReserved">Reserved. Must be set to 0.</param>
+		/// <param name="pclsid">
+		/// A pointer to a <c>CLSID</c> that receives the <c>CLSID</c> of the object to instantiate for the specified file.
+		/// </param>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		/// <remarks>
+		/// Windows Internet Explorer 9. This function can also return a class identifier (CLSID) from structured storage files if sniffing
+		/// is allowed for the security zone ( <c>URLACTION_ALLOW_STRUCTURED_STORAGE_SNIFFING</c> is enabled) and sniffing is not disabled
+		/// for the process by using . Structured storage sniffing is enabled by default in the Local intranet and Trusted sites zones.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775108(v=vs.85) HRESULT
+		// GetClassFileOrMime( LPBC pBC, LPCWSTR szFilename, LPVOID pBuffer, DWORD cbSize, LPCWSTR szMime, _Reserved_ DWORD dwReserved,
+		// CLSID *pclsid );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT GetClassFileOrMime([In, Optional] IBindCtx pBC, [Optional, MarshalAs(UnmanagedType.LPWStr)] string szFilename, IntPtr pBuffer, uint cbSize,
+			[Optional, MarshalAs(UnmanagedType.LPWStr)] string szMime, [Optional] uint dwReserved, out Guid pclsid);
+
+		/// <summary>Gets a string component ID from information contained in a union .</summary>
+		/// <param name="pClassSpec">[in]A pointer to a union that provides ways of mapping to a CLSID.</param>
+		/// <param name="ppszComponentID">
+		/// [out]A pointer to a string containing a component ID that is based on a , which is defined in .
+		/// </param>
+		/// <returns>
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The component ID was successfuly retrieved.</term>
+		/// </item>
+		/// <item>
+		/// <term>S_FALSE</term>
+		/// <term>The class or Mime is not part of an Internet Explorer feature.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>The parameter contains invalid data.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>The program does not have enough memory for successful operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <c>Note</c> The importance of this function degraded significantly after Microsoft Internet Explorer 6 SP1b and Windows XP, due
+		/// to a lack of dependence on just-in-time (JIT) in components.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa359665(v=vs.85) HRESULT
+		// GetComponentIDFromCLSSPEC( _In_ uCLSSPEC *pClassSpec, _Out_ LPSTR *ppszComponentID );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT GetComponentIDFromCLSSPEC(in uCLSSPEC pClassSpec, out SafeCoTaskMemHandle ppszComponentID);
+
+		/// <summary>This function provides the current Install Scope to a Microsoft ActiveX DLL.</summary>
+		/// <param name="pdwScope">
+		/// <para>[out]</para>
+		/// <para>A pointer to a <c>DWORD</c> which contains one of the Install Scope values.</para>
+		/// <para>(INSTALL_SCOPE_USER)</para>
+		/// <para>The ActiveX control should register in the current user profile.</para>
+		/// <para>(INSTALL_SCOPE_MACHINE)</para>
+		/// <para>The ActiveX control should register machine-wide.</para>
+		/// <para>(INSTALL_SCOPE_INVALID)</para>
+		/// <para>The Install Scope could not be retrieved. The ActiveX control should not install.</para>
+		/// </param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The Install Scope was successfully retrieved.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>An error occurred.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function call is intended to be used by an ActiveX DLL during its install-time registration. It provides the current
+		/// Install Scope to the ActiveX DLL. The ActiveX package developer can choose to install or not, depending on the returned scope.
+		/// For example, if the ActiveX package requires machine scope, but only user scope is available, the developer can choose not to
+		/// install the package.
+		/// </para>
+		/// <para>Registration is done using DllRegisterServer or DllUnregisterServer.</para>
+		/// <para>
+		/// <c>Important</c> The ActiveX package should install and register only if both S_OK and a valid value for pdwScope have been returned.
+		/// </para>
+		/// <para>
+		/// S_OK is also returned when the configuration does not support Windows Internet Explorer Install Scope. Therefore, when Windows
+		/// Internet Explorer 8 is running on an operating system that is earlier than Windows Vista, the function will return
+		/// INSTALL_SCOPE_MACHINE. The ActiveX control should install machine-wide in this case.
+		/// </para>
+		/// <para>Only one Install Scopes value will be returned by this function.</para>
+		/// <para>The ActiveX templates in Active Template Library (ATL) 7 and earlier do not support per-user ActiveX Install Scope.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/cc197030(v=vs.85) HRESULT
+		// IEInstallScope( _Out_ LPDWORD pdwScope );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT IEInstallScope(out uint pdwScope);
+
+		/// <summary>Tests to determine whether a moniker supports asynchronous binding.</summary>
+		/// <param name="pmk">The PMK.</param>
+		/// <returns>
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>The pmk parameter is invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>S_FALSE</term>
+		/// <term>The specified moniker is not asynchronous.</term>
+		/// </item>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The specified moniker is asynchronous.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A moniker implementation is asynchronous if it supports the interface, which is an empty interface that is an implementation of
+		/// IUnknown. The <c>IsAsyncMoniker</c> function tests for support of and handles composite monikers correctly.
+		/// </para>
+		/// <para>
+		/// No public headers define the interface; however, you can support the interface by returning a pointer to your object in response
+		/// to QueryInterface for , which is defined as follows:
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775110(v=vs.85) HRESULT
+		// IsAsyncMoniker( _In_ IMoniker *pmk );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT IsAsyncMoniker(IMoniker pmk);
+
+		/// <summary>Determines if a specified string is a valid URL.</summary>
+		/// <param name="pBC">[in]A pointer to the IBindCtx interface. This parameter is currently ignored. It should be set to <c>NULL</c>.</param>
+		/// <param name="szURL">[in]A pointer to a string value that contains the full URL to check.</param>
+		/// <param name="dwReserved">[in]Reserved. Must be set to 0.</param>
+		/// <returns>
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The szURL parameter contains a valid URL.</term>
+		/// </item>
+		/// <item>
+		/// <term>S_FALSE</term>
+		/// <term>The szURL parameter does not contain a valid URL.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the parameters is invalid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775112(v=vs.85) HRESULT
+		// IsValidURL( _In_ LPBC pBC, _In_ LPCWSTR szURL, _Reserved_ DWORD dwReserved );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT IsValidURL([Optional] IBindCtx pBC, [MarshalAs(UnmanagedType.LPWStr)] string szURL, uint dwReserved = 0);
+
+		/// <summary>Creates a moniker to the object that is specified by the given string.</summary>
+		/// <param name="pbc">[in]The address of the IBindCtx interface of the bind context in which to accumulate bound objects.</param>
+		/// <param name="szDisplayName">[in]The address of the string value to parse.</param>
+		/// <param name="pcchEaten">
+		/// [out]The address of an unsigned long integer value that indicates the number of characters successfully parsed.
+		/// </param>
+		/// <param name="ppmk">[out]A pointer to the IMoniker interface of the resulting moniker.</param>
+		/// <returns>
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>There is insufficient memory to complete the operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>INET_E_UNKNOWN_PROTOCOL</term>
+		/// <term>The szDisplayName parameter contains a protocol (other than telnet) that does not have a valid protocol handler assigned.</term>
+		/// </item>
+		/// <item>
+		/// <term>MK_E_SYNTAX</term>
+		/// <term>
+		/// Parsing failed because szDisplayName can only be partially resolved into a moniker. In this case, pcchEaten receives the number
+		/// of characters that are successfully parsed into a moniker prefix.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>NOERROR</term>
+		/// <term>The szDisplayName uses a telnet protocol, for which the function does not have a valid protocol handler.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When MK_E_SYNTAX is returned and pcchEaten contains a nonzero value, a subsequent call to <c>MkParseDisplayNameEx</c> with the
+		/// same pbc parameter and a shortened szDisplayName parameter returns a valid moniker.
+		/// </para>
+		/// <para>
+		/// <c>Security Warning:</c> Calling MkParseDisplayName or <c>MkParseDisplayNameEx</c> with a szDisplayName parameter from a
+		/// non-trusted source is unsafe. Not only can an arbitrary class be instantiated but some moniker implementations might act on the
+		/// string during parsing instead of deferring this to binding.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775113(v=vs.85) HRESULT
+		// MkParseDisplayNameEx( _In_ IBindCtx *pbc, _In_ LPWSTR szDisplayName, _Out_ unsigned long *pcchEaten, _Out_ IMoniker **ppmk );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT MkParseDisplayNameEx(IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string szDisplayName, out uint pcchEaten, out IMoniker ppmk);
+
+		/// <summary>Retrieves the User-Agent HTTP request header string that is currently being used.</summary>
+		/// <param name="dwOption">
+		/// <para>[in]</para>
+		/// <para><c>7 | UAS_EXACTLEGACY</c> (0x1000)</para>
+		/// <para>Internet Explorer 7 in exact legacy mode.</para>
+		/// <para><c>7</c></para>
+		/// <para>Internet Explorer 7 in compatible mode.</para>
+		/// <para><c>8</c></para>
+		/// <para>Internet Explorer 8.</para>
+		/// <para><c>0</c></para>
+		/// <para>Default. As currently set.</para>
+		/// </param>
+		/// <param name="pcszUAOut">
+		/// <para>[out]</para>
+		/// <para>Pointer to a string value that contains the User-Agent request header string that is currently being used.</para>
+		/// </param>
+		/// <param name="cbSize">
+		/// <para>[out]</para>
+		/// <para>Pointer to an unsigned long integer value that contains the length of the User-Agent request header string.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Returns one of the following values:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the parameters is invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>The operation ran out of memory.</term>
+		/// </item>
+		/// <item>
+		/// <term>NOERROR</term>
+		/// <term>The function completed successfully.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Passing a bitwise OR of <c>7 | UAS_EXACTLEGACY</c> to dwOption specifies Internet Explorer 7 running in exact legacy mode, as
+		/// opposed to compatible mode.
+		/// </para>
+		/// <para>Internet Explorer 8. dwOption is no longer reserved and must have one of the required values.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775114(v=vs.85) HRESULT
+		// ObtainUserAgentString( _In_ DWORD dwOption = 0, _Out_ LPCSTR *pcszUAOut, _Out_ DWORD *cbSize );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT ObtainUserAgentString(uint dwOption, [MarshalAs(UnmanagedType.LPStr)] StringBuilder pcszUAOut, ref uint cbSize);
+
+		/// <summary>Registers a callback interface with an existing bind context.</summary>
+		/// <param name="pbc">[in]A pointer to the IBindCtx interface from which to receive callbacks.</param>
+		/// <param name="pbsc">[in]A pointer to the <c>IBindStatusCallback</c> interface implementation to be registered.</param>
+		/// <param name="ppbscPrevious">[out]A pointer to a previously registered instance of <c>IBindStatusCallback</c>. May be <c>NULL</c>.</param>
+		/// <param name="dwReserved">[in]Reserved. Must be set to 0.</param>
+		/// <returns>
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>No new callbacks allowed after binding has started.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One or more parameters is invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>There is insufficient memory to register the callback with the bind context.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>IBindStatusCallback</c> interface passed into the pbsc parameter receives callbacks on any binding operations that uses
+		/// the bind context passed into the pbc parameter.
+		/// </para>
+		/// <para>
+		/// More than one <c>IBindStatusCallback</c> can be registered at a time. Each callback is notified in sequence. If the
+		/// ppbscPrevious parameter is specified, the previously registered <c>IBindStatusCallback</c> interface is removed from the list
+		/// and returned. The caller would then be responsible for forwarding any binding events it receives to the previous handler, if wanted.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775115(v=vs.85) HRESULT
+		// RegisterBindStatusCallback( _In_ IBindCtx *pbc, _In_ IBindStatusCallback *pbsc, _Out_ IBindStatusCallback **ppbscPrevious,
+		// _Reserved_ DWORD dwReserved );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT RegisterBindStatusCallback(IBindCtx pbc, IBindStatusCallback pbsc, out IBindStatusCallback ppbscPrevious, uint dwReserved = 0);
+
+		/// <summary>Registers a FORMATETC enumerator object on the given bind context.</summary>
+		/// <param name="pBC">[in]A pointer to the IBindCtx interface for the bind context on which to register the enumerator.</param>
+		/// <param name="pEFetc">[in]A pointer to the IEnumFORMATETC interface for the enumerator to register.</param>
+		/// <param name="reserved">[in]Reserved. Must be set to 0.</param>
+		/// <returns>Returns S_OK if successful, or E_INVALIDARG if one or more parameters is invalid.</returns>
+		/// <remarks>
+		/// The enumerator is used to determine the format types that are preferred for the bind operation. Typically, the pEFetc parameter
+		/// is the pointer obtained through a call to <c>CreateFormatEnumerator</c>.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775116(v=vs.85) HRESULT
+		// RegisterFormatEnumerator( _In_ LPBC pBC, _In_ IEnumFORMATETC *pEFetc, _Reserved_ DWORD reserved );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT RegisterFormatEnumerator(IBindCtx pBC, IEnumFORMATETC pEFetc, uint reserved = 0);
+
+		/// <summary>Registers a mapping of media types to <c>CLSID</c> s to override the default mapping specified in the registry.</summary>
+		/// <param name="pbc">[in]A pointer to the IBindCtx interface for the bind context on which the media types are registered.</param>
+		/// <param name="ctypes">
+		/// [in]An unsigned integer value that contains the number of media type strings in the rgszTypes array. This parameter cannot be zero.
+		/// </param>
+		/// <param name="rgszTypes">
+		/// [in]A pointer to an array of strings that identify the media types to register. None of these strings can be <c>NULL</c>. See
+		/// <c>Clipboard Formats</c> for a list of valid values.
+		/// </param>
+		/// <param name="rgclsID">
+		/// [in]A pointer to an array of <c>CLSID</c> s to associate with the media type strings in the rgszTypes array.
+		/// </param>
+		/// <param name="dwReserved">[in]Reserved. Must be set to 0.</param>
+		/// <returns>Returns S_OK if successful, or E_INVALIDARG if one or more parameters is invalid.</returns>
+		/// <remarks>
+		/// <para>The new mapping is used in calls to IMoniker::BindToObject when binding objects on the specified bind context.</para>
+		/// <para>
+		/// This function is used by moniker clients calling IMoniker::BindToObject to override the default registry mapping between MIME
+		/// types and <c>CLSID</c> s. Typically, the default mapping provided in the registry is used. However, a browser might require the
+		/// <c>CLSID</c> for its HTML viewer to be associated with .txt files, without changing the default registry association for text
+		/// files. The override is used for all bind operations using the specified bind context.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775117(v=vs.85) HRESULT
+		// RegisterMediaTypeClass( _In_ LPBC pbc, _In_ UINT ctypes, _In_ LPCSTR *rgszTypes, _In_ CLSID *rgclsID, _Reserved_ DWORD dwReserved );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT RegisterMediaTypeClass(IBindCtx pbc, uint ctypes, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string[] rgszTypes, [MarshalAs(UnmanagedType.LPArray)] Guid[] rgclsID, uint dwReserved = 0);
+
+		/// <summary>Registers media type strings.</summary>
+		/// <param name="ctypes">[in]The number of media type strings in the rgszTypes array. This parameter cannot be zero.</param>
+		/// <param name="rgszTypes">
+		/// [in]The address of an array of strings identifying the media types to be registered. None of the strings in the array can be
+		/// <c>NULL</c>. See <c>Clipboard Formats</c> for a list of valid values.
+		/// </param>
+		/// <param name="rgcfTypes">
+		/// [out]The address of an array of the 32-bit values assigned to corresponding media types in rgszTypes. See the following Remarks
+		/// section for the definition of CLIPFORMAT.
+		/// </param>
+		/// <returns>Returns S_OK if successful, or E_INVALIDARG if one or more parameters are invalid.</returns>
+		/// <remarks/>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775118(v=vs.85) HRESULT
+		// RegisterMediaTypes( _In_ UINT ctypes, _In_ LPCSTR *rgszTypes, _Out_ CLIPFORMAT *rgcfTypes );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT RegisterMediaTypes(uint ctypes, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string[] rgszTypes, [Out] CLIPFORMAT[] rgcfTypes);
+
+		/// <summary>Releases the resources used by the specified <c>BINDINFO</c> structure.</summary>
+		/// <returns>This function does not return a value.</returns>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775119(v=vs.85) void
+		// ReleaseBindInfo( BINDINFO *pbindinfo );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern void ReleaseBindInfo(ref BINDINFO pbindinfo);
+
+		/// <summary>Revokes a bind status callback interface previously registered on a bind context.</summary>
+		/// <param name="pbc">[in]The address of the IBindCtx interface for the bind context from which the callback interface is revoked.</param>
+		/// <param name="pbsc">[in]The address of the <c>IBindStatusCallback</c> interface to revoke.</param>
+		/// <returns>
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>The callback interface specified is not registered on the specified bind context.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One or more parameters is invalid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>This function will not succeed if it is made during a bind operation.</para>
+		/// <para>
+		/// <c>Note</c> You don't have to make this call for every use of a bind context. Although it is not recommended, it is possible to
+		/// reuse the same bind context and the same callback for several bind operations. After the Release method is called, all
+		/// registered objects on that bind context are revoked, including the callback interfaces. Releasing a bind context implicitly
+		/// releases all registered callbacks. If you want to reuse a bind context, you can use <c>RevokeBindStatusCallback</c> to remove a
+		/// registered callback so that it is not reused.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775120(v=vs.85) HRESULT
+		// RevokeBindStatusCallback( _In_ IBindCtx *pbc, _In_ IBindStatusCallback *pbsc );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT RevokeBindStatusCallback(IBindCtx pbc, IBindStatusCallback pbsc);
+
+		/// <summary>Removes a format enumerator from the given bind context.</summary>
+		/// <param name="pbc">[in]The address of the IBindCtx interface for the bind context from which the enumerator is to be revoked.</param>
+		/// <param name="pEFetc">[in]The address of the IEnumFORMATETC interface for the enumerator to revoke.</param>
+		/// <returns>Returns S_OK if the enumerator is successfully removed, or E_INVALIDARG if one or more parameters is invalid.</returns>
+		/// <remarks>
+		/// <para>
+		/// This function removes a format enumerator from the bind context specified in pbc. The format enumerator must have been
+		/// registered previously with a call to <c>RegisterFormatEnumerator</c>.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> You don't have to make this call for every use of a bind context. Although it is not recommended it is possible to
+		/// reuse the same bind context and the same format enumerator for several bind operations. After the Release method is called, all
+		/// registered objects on that bind context are revoked, including the format enumerator interfaces. Releasing a bind context
+		/// implicitly releases all registered format enumerators. If you want to reuse a bind context, you can use
+		/// <c>RevokeFormatEnumerator</c> to remove a registered format enumerator so that it is not reused.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775121(v=vs.85) HRESULT
+		// RevokeFormatEnumerator( _In_ LPBC pbc, _In_ IEnumFORMATETC *pEFetc );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT RevokeFormatEnumerator(IBindCtx pbc, IEnumFORMATETC pEFetc);
+
+		/// <summary>Downloads data to the Internet cache and returns the file name of the cache location for retrieving the bits.</summary>
+		/// <param name="lpUnkcaller">
+		/// [in]A pointer to the controlling IUnknown interface of the calling ActiveX component, if the caller is an ActiveX component. If
+		/// the caller is not an ActiveX component, this value can be set to <c>NULL</c>. Otherwise, the caller is a COM object that is
+		/// contained in another component, such as an ActiveX control in the context of an HTML page. This parameter represents the
+		/// outermost IUnknown of the calling component. The function attempts the download in the context of the ActiveX client framework,
+		/// and allows the caller container to receive callbacks on the progress of the download.
+		/// </param>
+		/// <param name="szURL">[in]A pointer to a string value that contains the URL to download. Cannot be set to <c>NULL</c>.</param>
+		/// <param name="szFileName">[out]A pointer to a string value that contains the name of the downloaded file. Cannot be set to <c>NULL</c>.</param>
+		/// <param name="cchFileName">[in]An unsigned long integer value that contains the number of characters of the szFileName value.</param>
+		/// <param name="dwReserved">Reserved. Must be set to 0.</param>
+		/// <param name="pBSC">
+		/// [in, optional]A pointer to the <c>IBindStatusCallback</c> interface of the caller. By using
+		/// <c>IBindStatusCallback::OnProgress</c>, a caller can receive download status. <c>URLDownloadToCacheFile</c> calls the
+		/// <c>IBindStatusCallback::OnProgress</c> and <c>IBindStatusCallback::OnDataAvailable</c> methods as data is received. The download
+		/// operation can be canceled by returning E_ABORT from any callback. This parameter can be set to <c>NULL</c> if status is not required.
+		/// </param>
+		/// <returns>
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>The operation failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>The buffer length is invalid, or there is insufficient memory to complete the operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The operation succeeded.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>The client can choose to be notified of progress through a notification callback.</para>
+		/// <para>
+		/// This function always returns a file name, if the download operation succeeds. If the given URL is a "file:" URL,
+		/// <c>URLDownloadToCacheFile</c> directly returns the file name for the "file:" URL, instead of making a copy to the cache. If the
+		/// given URL is an Internet URL, such as "http:" or "ftp:," <c>URLDownloadToCacheFile</c> downloads this file and returns the local
+		/// file name of the cached copy. Use this function to ensure that a file name is returned without unnecessary copying of data.
+		/// </para>
+		/// <para>
+		/// Windows Internet Explorer 8. <c>URLDownloadToCacheFile</c> does not support <c>IBindStatusCallbackEx</c> and cannot be used to
+		/// download files over 4 gigabytes (GB) in size. Refer instead to <c>IBindStatusCallbackEx::GetBindInfoEx</c> for a code example.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775122(v=vs.85) HRESULT
+		// URLDownloadToCacheFile( _In_ LPUNKNOWN lpUnkcaller, _In_ LPCSTR szURL, _Out_ LPTSTR szFileName, _In_ DWORD cchFileName,
+		// _Reserved_ DWORD dwReserved, _In_opt_ IBindStatusCallback *pBSC );
+		[DllImport(Lib.UrlMon, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT URLDownloadToCacheFile([Optional, MarshalAs(UnmanagedType.IUnknown)] object lpUnkcaller, [MarshalAs(UnmanagedType.LPTStr)] string szURL, StringBuilder szFileName, uint cchFileName, [Optional] uint dwReserved, [Optional] IBindStatusCallback pBSC);
+
+		/// <summary>Downloads bits from the Internet and saves them to a file.</summary>
+		/// <param name="pCaller">
+		/// A pointer to the controlling IUnknown interface of the calling ActiveX component, if the caller is an ActiveX component. If the
+		/// calling application is not an ActiveX component, this value can be set to <c>NULL</c>. Otherwise, the caller is a COM object
+		/// that is contained in another component, such as an ActiveX control in the context of an HTML page. This parameter represents the
+		/// outermost IUnknown of the calling component. The function attempts the download in the context of the ActiveX client framework,
+		/// and allows the caller container to receive callbacks on the progress of the download.
+		/// </param>
+		/// <param name="szURL">
+		/// A pointer to a string value that contains the URL to download. Cannot be set to <c>NULL</c>. If the URL is invalid,
+		/// INET_E_DOWNLOAD_FAILURE is returned.
+		/// </param>
+		/// <param name="szFileName">
+		/// A pointer to a string value containing the name or full path of the file to create for the download. If szFileName includes a
+		/// path, the target directory must already exist.
+		/// </param>
+		/// <param name="dwReserved">Reserved. Must be set to 0.</param>
+		/// <param name="lpfnCB">
+		/// A pointer to the <c>IBindStatusCallback</c> interface of the caller. By using <c>IBindStatusCallback::OnProgress</c>, a caller
+		/// can receive download status. <c>URLDownloadToFile</c> calls the <c>IBindStatusCallback::OnProgress</c> and
+		/// <c>IBindStatusCallback::OnDataAvailable</c> methods as data is received. The download operation can be canceled by returning
+		/// E_ABORT from any callback. This parameter can be set to <c>NULL</c> if status is not required.
+		/// </param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The download started successfully.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>The buffer length is invalid, or there is insufficient memory to complete the operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>INET_E_DOWNLOAD_FAILURE</term>
+		/// <term>The specified resource or callback interface was invalid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>URLDownloadToFile</c> binds to a host that supports <c>IBindHost</c> to perform the download. To do this, it first queries
+		/// the controlling IUnknown passed as pCaller for <c>IServiceProvider</c>, then calls <c>IServiceProvider::QueryService</c> with
+		/// SID_SBindHost. If pCaller does not support <c>IServiceProvider</c>, IOleObject or <c>IObjectWithSite</c> is used to query the
+		/// object's host container. If no <c>IBindHost</c> interface is supported, or pCaller is <c>NULL</c>, <c>URLDownloadToFile</c>
+		/// creates its own bind context to intercept download notifications.
+		/// </para>
+		/// <para>
+		/// <c>URLDownloadToFile</c> returns S_OK even if the file cannot be created and the download is canceled. If the szFileName
+		/// parameter contains a file path, ensure that the destination directory exists before calling <c>URLDownloadToFile</c>. For best
+		/// control over the download and its progress, an <c>IBindStatusCallback</c> interface is recommended.
+		/// </para>
+		/// <para>
+		/// Windows Internet Explorer 8. <c>URLDownloadToFile</c> does not support <c>IBindStatusCallbackEx</c> and cannot be used to
+		/// download files over 4 gigabytes (GB) in size. Refer instead to <c>IBindStatusCallbackEx::GetBindInfoEx</c> for a code example.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775123(v=vs.85) HRESULT
+		// URLDownloadToFile( LPUNKNOWN pCaller, LPCTSTR szURL, LPCTSTR szFileName, _Reserved_ DWORD dwReserved, LPBINDSTATUSCALLBACK lpfnCB );
+		[DllImport(Lib.UrlMon, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT URLDownloadToFile([Optional, MarshalAs(UnmanagedType.IUnknown)] object pCaller, string szURL, StringBuilder szFileName, [Optional] uint dwReserved, [Optional] IBindStatusCallback lpfnCB);
+
+		/// <summary>Gets options for the current Internet session.</summary>
+		/// <param name="dwOption">
+		/// <para>[in]</para>
+		/// <para>An unsigned long integer value containing the session options to retrieve. This can be one of the following values.</para>
+		/// <para><c>URLMON_OPTION_URL_ENCODING</c></para>
+		/// <para>Gets the Internet Explorer default encoding policy. This value was introduced in Internet Explorer 5.</para>
+		/// <para><c>URLMON_OPTION_USERAGENT</c></para>
+		/// <para>Gets the current user agent string.</para>
+		/// <para><c>URLMON_OPTION_USE_BINDSTRINGCREDS</c></para>
+		/// <para>Gets a value that indicates whether it is safe to pass credentials to URLMON. Always returns 1.</para>
+		/// <para><c>URLMON_OPTION_USE_BROWSERAPPSDOCUMENTS</c></para>
+		/// <para>Gets a value that indicates whether URLMON accepts browser application documents. Always returns 1.</para>
+		/// </param>
+		/// <param name="pBuffer">
+		/// <para>[in]</para>
+		/// <para>A pointer to the buffer containing the new session settings.</para>
+		/// </param>
+		/// <param name="dwBufferLength">
+		/// <para>[in]</para>
+		/// <para>An unsigned long integer value containing the size of pBuffer.</para>
+		/// </param>
+		/// <param name="pdwBufferLengthOut">
+		/// <para>[out]</para>
+		/// <para>
+		/// A pointer to an unsigned long integer value containing the size of the data stored in the buffer, or the size required to store
+		/// the data, if the buffer size is insufficient.
+		/// </para>
+		/// </param>
+		/// <param name="dwReserved">
+		/// <para>[in]</para>
+		/// <para>Reserved. Must be set to 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The option was successfully set.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>The option is not supported, or there is an invalid parameter.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>The option cannot be set.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775124(v=vs.85) HRESULT
+		// UrlMkGetSessionOption( _In_ DWORD dwOption, _In_ __out_bcount_part_opt(dwBufferLength,*pdwBufferLengthOut) LPVOID pBuffer, _In_
+		// DWORD dwBufferLength, _Out_ __out DWORD *pdwBufferLengthOut, _Reserved_ __reserved DWORD dwReserved );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT UrlMkGetSessionOption(uint dwOption, IntPtr pBuffer, uint dwBufferLength, out uint pdwBufferLengthOut, uint dwReserved = 0);
+
+		/// <summary>Sets options for the current Internet session.</summary>
+		/// <param name="dwOption">
+		/// <para>[in]</para>
+		/// <para>An unsigned long integer value that contains the option to set. This can be one of the following values.</para>
+		/// <para><c>INTERNET_OPTION_PROXY</c></para>
+		/// <para>
+		/// Sets the proxy settings. pBuffer must contain an INTERNET_PROXY_INFO structure. INTERNET_OPTION_PROXY and INTERNET_PROXY_INFO
+		/// are defined in the file. For more information, see Introduction to the Microsoft Win32 Internet Functions.
+		/// </para>
+		/// <para><c>INTERNET_OPTION_REFRESH</c></para>
+		/// <para>
+		/// Sets the value that determines if the proxy information can be reread from the registry. The value <c>TRUE</c> indicates that
+		/// the proxy information can be reread from the registry. For more information, see Introduction to the Microsoft Win32 Internet Functions.
+		/// </para>
+		/// <para><c>URLMON_OPTION_USERAGENT</c></para>
+		/// <para>Sets the user agent string for this process.</para>
+		/// <para><c>URLMON_OPTION_USERAGENT_REFRESH</c></para>
+		/// <para>Refreshes the user agent string from the registry for this process.</para>
+		/// </param>
+		/// <param name="pBuffer">
+		/// <para>[in]</para>
+		/// <para>A pointer to the buffer containing the new session settings.</para>
+		/// </param>
+		/// <param name="dwBufferLength">
+		/// <para>[in]</para>
+		/// <para>An unsigned long integer value that contains the size of pBuffer.</para>
+		/// </param>
+		/// <param name="dwReserved">
+		/// <para>[in]</para>
+		/// <para>Reserved. Must be set to 0.</para>
+		/// </param>
+		/// <returns>Returns S_OK if options are successfully set, or E_INVALIDARG if one of the parameters is invalid.</returns>
+		/// <remarks>
+		/// <para>
+		/// This function maps directly to the Windows Internet function InternetSetOption, although <c>UrlMkSetSessionOption</c> allows
+		/// only global options to be set.
+		/// </para>
+		/// <para>
+		/// To use this function, the client code must include the header file, which declares values for the dwOption parameter and
+		/// structures for the pBuffer parameter.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775125(v=vs.85) HRESULT
+		// UrlMkSetSessionOption( _In_ DWORD dwOption, _In_ __in_bcount_opt(dwBufferLength) LPVOID pBuffer, _In_ DWORD dwBufferLength,
+		// _Reserved_ __reserved DWORD dwReserved );
+		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT UrlMkSetSessionOption(uint dwOption, IntPtr pBuffer, uint dwBufferLength, uint dwReserved = 0);
+
+		/// <summary>
+		/// Creates a blocking type stream object from a URL and downloads the data from the Internet. When the data is downloaded, the
+		/// client application or control can read it by using the IStream::Read method.
+		/// </summary>
+		/// <param name="pCaller">
+		/// A pointer to the controlling IUnknown interface. If the client application or control is not a COM object or a ActiveX control,
+		/// the parameter can be set to <c>NULL</c>.
+		/// </param>
+		/// <param name="szURL">A pointer to a string value containing the URL to convert to a stream object. Cannot be set to <c>NULL</c>.</param>
+		/// <param name="ppStream">
+		/// A pointer to the IStream interface on the stream object created by this function. The caller can read from the stream as soon as
+		/// it has this pointer.
+		/// </param>
+		/// <param name="dwReserved">Reserved. Must be set to 0.</param>
+		/// <param name="lpfnCB">A pointer to the caller <c>IBindStatusCallback</c> interface. Can be set to <c>NULL</c>.</param>
+		/// <returns>Returns S_OK if the operation succeeded, or E_OUTOFMEMORY if there is insufficient memory to complete the operation.</returns>
+		/// <remarks>
+		/// <para>This function is synchronous and returns only after all the data has been downloaded from the Internet.</para>
+		/// <para>
+		/// If the <c>IBindStatusCallback::OnProgress</c> method is provided, <c>URLOpenBlockingStream</c> calls the method on a connection
+		/// activity, including the arrival of data. <c>IBindStatusCallback::OnDataAvailable</c> is never called. By using
+		/// <c>IBindStatusCallback::OnProgress</c>, a caller can implement a user interface or other progress monitoring functionality. The
+		/// download operation can be canceled by returning E_ABORT from the <c>IBindStatusCallback::OnProgress</c> call.
+		/// </para>
+		/// <para><c>Note</c><c>URLOpenBlockingStream</c> should not be used with protocols that do not return content, such as <c>mailto</c>.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775127(v=vs.85) HRESULT
+		// URLOpenBlockingStream( LPUNKNOWN pCaller, LPCSTR szURL, LPSTREAM *ppStream, _Reserved_ DWORD dwReserved, LPBINDSTATUSCALLBACK
+		// lpfnCB );
+		[DllImport(Lib.UrlMon, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT URLOpenBlockingStream([Optional, MarshalAs(UnmanagedType.IUnknown)] object pCaller, [MarshalAs(UnmanagedType.LPTStr)] string szURL, out IStream ppStream, [Optional] uint dwReserved, [Optional] IBindStatusCallback lpfnCB);
+
+		/// <summary>Creates a pull type stream object from a URL.</summary>
+		/// <param name="pCaller">
+		/// A pointer to the controlling IUnknown interface of the calling ActiveX component, if the caller is an ActiveX component. If the
+		/// caller is not an ActiveX component, this value can be set to <c>NULL</c>. Otherwise, the caller is a COM object that is
+		/// contained in another component, such as an ActiveX control in the context of an HTML page. This parameter represents the
+		/// outermost IUnknown of the calling component. The function attempts the download in the context of the ActiveX client framework,
+		/// and allows the caller container to receive callbacks on the progress of the download.
+		/// </param>
+		/// <param name="szURL">A string containing the URL to be converted to a stream object. Cannot be set to <c>NULL</c>.</param>
+		/// <param name="dwReserved">Reserved. Must be set to 0.</param>
+		/// <param name="lpfnCB">
+		/// A pointer to the caller <c>IBindStatusCallback</c> interface, on which <c>URLOpenPullStream</c> calls
+		/// <c>IBindStatusCallback::OnDataAvailable</c> when data arrives from the Internet. The download operation can be canceled by
+		/// returning E_ABORT from the <c>IBindStatusCallback::OnDataAvailable</c> call.
+		/// </param>
+		/// <returns>Returns S_OK if the operation succeeded, or E_OUTOFMEMORY if there is insufficient memory to complete the operation.</returns>
+		/// <remarks>
+		/// <para>
+		/// The pull model is more cumbersome than the push model, but it allows the client to control the amount of Internet access for the download.
+		/// </para>
+		/// <para>
+		/// The data is downloaded from the Internet on demand. If not enough data is available locally to satisfy the requests, the
+		/// IStream::Read call will not block until enough data arrives. Instead, IStream::Read immediately returns E_PENDING, and
+		/// <c>URLOpenPullStream</c> requests the next packet of data from the Internet server.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775128(v=vs.85) HRESULT
+		// URLOpenPullStream( LPUNKNOWN pCaller, LPCSTR szURL, _Reserved_ DWORD dwReserved, LPBINDSTATUSCALLBACK lpfnCB );
+		[DllImport(Lib.UrlMon, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT URLOpenPullStream([Optional, MarshalAs(UnmanagedType.IUnknown)] object pCaller, [MarshalAs(UnmanagedType.LPTStr)] string szURL, [Optional] uint dwReserved, [Optional] IBindStatusCallback lpfnCB);
+
+		/// <summary>Creates a push type stream object from a URL.</summary>
+		/// <param name="pCaller">
+		/// A pointer to the controlling IUnknown interface of the calling ActiveX component, if the caller is an ActiveX component. If the
+		/// caller is not an ActiveX component, this value can be set to <c>NULL</c>. Otherwise, the caller is a COM object that is
+		/// contained in another component, such as an ActiveX control in the context of an HTML page). This parameter represents the
+		/// outermost IUnknown of the calling component. The function attempts the download in the context of the ActiveX client framework,
+		/// and allows the caller container to receive callbacks on the progress of the download.
+		/// </param>
+		/// <param name="szURL">A string containing the URL to be converted to a stream object. Cannot be set to <c>NULL</c>.</param>
+		/// <param name="dwReserved">Reserved. Must be set to 0.</param>
+		/// <param name="lpfnCB">
+		/// A pointer to the caller <c>IBindStatusCallback</c> interface, on which <c>URLOpenStream</c> calls
+		/// <c>IBindStatusCallback::OnDataAvailable</c> when data arrives from the Internet. The download operation can be canceled by
+		/// returning E_ABORT from the <c>IBindStatusCallback::OnDataAvailable</c> call.
+		/// </param>
+		/// <returns>Returns S_OK if the operation succeeded, or E_OUTOFMEMORY if there is insufficient memory to complete the operation.</returns>
+		/// <remarks>
+		/// The data is downloaded from the Internet as fast as possible. When data is available, it is pushed at the client through a
+		/// notification callback.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775129(v=vs.85) HRESULT
+		// URLOpenStream( LPUNKNOWN pCaller, LPCSTR szURL, _Reserved_ DWORD dwReserved, LPBINDSTATUSCALLBACK lpfnCB );
+		[DllImport(Lib.UrlMon, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Urlmon.h")]
+		public static extern HRESULT URLOpenStream([Optional, MarshalAs(UnmanagedType.IUnknown)] object pCaller, [MarshalAs(UnmanagedType.LPTStr)] string szURL, [Optional] uint dwReserved, [Optional] IBindStatusCallback lpfnCB);
+
+		/// <summary>
 		/// Contains additional information on the requested binding operation. The meaning of this structure is specific to the type of
 		/// asynchronous moniker.
 		/// </summary>
@@ -3826,61 +3625,5 @@ namespace Vanara.PInvoke
 			/// <summary>A default instance of this structure with the size set.</summary>
 			public static readonly BINDINFO Default = new BINDINFO { cbSize = (uint)Marshal.SizeOf(typeof(BINDINFO)), securityAttributes = tagSECURITY_ATTRIBUTES.Default };
 		}
-
-		/*		CreateURLMonikerEx2
-		FaultInIEFeature
-		FindMediaType
-		FindMediaTypeClass
-		FindMimeFromData
-		GetClassFileOrMime
-		GetClassURL
-		GetComponentIDFromCLSSPEC
-		IEInstallScope
-		IsAsyncMoniker
-		IsValidURL
-		MkParseDisplayNameEx
-		ObtainUserAgentString
-		RegisterBindStatusCallback
-		RegisterFormatEnumerator
-		RegisterMediaTypeClass
-		RegisterMediaTypes
-		ReleaseBindInfo
-		RevokeBindStatusCallback
-		RevokeFormatEnumerator
-		URLDownloadToCacheFile
-		URLDownloadToFile
-		UrlMkGetSessionOption
-		UrlMkSetSessionOption
-		URLOpenBlockingStream
-		URLOpenPullStream
-		URLOpenStream
-
-		IAuthenticate
-		IAuthenticateEx
-		IBindHost
-		IBinding
-		IBindProtocol
-		IBindStatusCallback
-		IBindStatusCallbackEx
-		ICatalogFileInfo
-		ICodeInstall
-		IHttpNegotiate
-		IHttpNegotiate2
-		IHttpNegotiate3
-		IHttpSecurity
-		IMonikerProp
-		IPersistMoniker
-		ISoftDistExt
-		IUri
-		IUriBuilderFactory
-		IUriContainer
-		IWindowForBindingUI
-		IWinInetCacheAccess
-		IWinInetCacheHints
-		IWinInetCacheHints2
-		IWinInetFileStream
-		IWinInetHttpInfo
-		IWinInetInfo
-		*/
 	}
 }
