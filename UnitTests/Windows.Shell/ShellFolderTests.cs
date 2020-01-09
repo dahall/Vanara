@@ -95,6 +95,25 @@ namespace Vanara.Windows.Shell.Tests
 		}
 
 		[Test]
+		public void GetDisplayNameTest()
+		{
+			using (var i = new ShellFolder(PInvoke.Tests.TestCaseSources.TempDir))
+			{
+				Assert.That(i.GetDisplayName(ShellItemDisplayString.FileSysPath), Is.EqualTo(PInvoke.Tests.TestCaseSources.TempDir).IgnoreCase);
+				foreach (ShellItemDisplayString e in Enum.GetValues(typeof(ShellItemDisplayString)))
+					Assert.That(() => TestContext.WriteLine($"{e}={i.GetDisplayName(e)}"), Throws.Nothing);
+				Assert.That(i.GetDisplayName((ShellItemDisplayString)0x8fffffff), Is.EqualTo(i.GetDisplayName(0)));
+			}
+
+			using (var i = new ShellFolder(KNOWNFOLDERID.FOLDERID_DocumentsLibrary))
+			{
+				foreach (ShellItemDisplayString e in Enum.GetValues(typeof(ShellItemDisplayString)))
+					Assert.That(() => TestContext.WriteLine($"{e}={i.GetDisplayName(e)}"), Throws.Nothing);
+				Assert.That(i.GetDisplayName((ShellItemDisplayString)0x8fffffff), Is.EqualTo(i.GetDisplayName(0)));
+			}
+		}
+
+		[Test]
 		public void GetObjectTest()
 		{
 			using var f = new ShellFolder(testFld);
