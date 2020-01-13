@@ -50,7 +50,8 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ne-winuser-tagpointer_button_change_type typedef enum
 		// tagPOINTER_BUTTON_CHANGE_TYPE { POINTER_CHANGE_NONE, POINTER_CHANGE_FIRSTBUTTON_DOWN, POINTER_CHANGE_FIRSTBUTTON_UP,
 		// POINTER_CHANGE_SECONDBUTTON_DOWN, POINTER_CHANGE_SECONDBUTTON_UP, POINTER_CHANGE_THIRDBUTTON_DOWN, POINTER_CHANGE_THIRDBUTTON_UP,
-		// POINTER_CHANGE_FOURTHBUTTON_DOWN, POINTER_CHANGE_FOURTHBUTTON_UP, POINTER_CHANGE_FIFTHBUTTON_DOWN, POINTER_CHANGE_FIFTHBUTTON_UP } POINTER_BUTTON_CHANGE_TYPE;
+		// POINTER_CHANGE_FOURTHBUTTON_DOWN, POINTER_CHANGE_FOURTHBUTTON_UP, POINTER_CHANGE_FIFTHBUTTON_DOWN, POINTER_CHANGE_FIFTHBUTTON_UP
+		// } POINTER_BUTTON_CHANGE_TYPE;
 		[PInvokeData("winuser.h", MSDNShortId = "DF5F60F6-8FD9-41EB-AF2A-09A17513659C")]
 		public enum POINTER_BUTTON_CHANGE_TYPE
 		{
@@ -130,6 +131,23 @@ namespace Vanara.PInvoke
 			POINTER_DEVICE_TYPE_TOUCH_PAD,
 		}
 
+		/// <summary>Identifies the visual feedback behaviors available to CreateSyntheticPointerDevice.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ne-winuser-pointer_feedback_mode typedef enum {
+		// POINTER_FEEDBACK_DEFAULT, POINTER_FEEDBACK_INDIRECT, POINTER_FEEDBACK_NONE } ;
+		[PInvokeData("winuser.h", MSDNShortId = "73D024E9-F83B-408F-BC96-6851AB4603AE")]
+		public enum POINTER_FEEDBACK_MODE
+		{
+			/// <summary>Visual feedback might be suppressed by the user's pen (Settings -> Devices -> Pen & Windows Ink) and touch
+			/// (Settings -> Ease of Access -> Cursor & pointer size) settings.</summary>
+			POINTER_FEEDBACK_DEFAULT = 1,
+
+			/// <summary>Visual feedback overrides the user's pen and touch settings.</summary>
+			POINTER_FEEDBACK_INDIRECT,
+
+			/// <summary>Visual feedback is disabled.</summary>
+			POINTER_FEEDBACK_NONE
+		}
+
 		/// <summary>Values that can appear in the <c>pointerFlags</c> field of the <c>POINTER_INFO</c> structure.</summary>
 		/// <remarks>
 		/// XBUTTON1 and XBUTTON2 are additional buttons used on many mouse devices. They return the same data as standard mouse buttons.
@@ -205,24 +223,24 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// The primary pointer is identified from all current user interactions on the system(mouse, touch, pen, and so on). As such,
 			/// the primary pointer might not be associated with your app.The first contact in a multi-touch interaction is set as the
-			/// primary pointer.Once a primary pointer is identified, all contacts must be lifted before a new contact can be identified as a
-			/// primary pointer.For apps that don't process pointer input, only the primary pointer's events are promoted to mouse events.
+			/// primary pointer.Once a primary pointer is identified, all contacts must be lifted before a new contact can be identified as
+			/// a primary pointer.For apps that don't process pointer input, only the primary pointer's events are promoted to mouse events.
 			/// </para>
 			/// </summary>
 			POINTER_FLAG_PRIMARY = 0x00002000,
 
 			/// <summary>
-			/// Confidence is a suggestion from the source device about whether the pointer represents an intended or accidental interaction,
-			/// which is especially relevant for PT_TOUCH pointers where an accidental interaction (such as with the palm of the hand) can
-			/// trigger input. The presence of this flag indicates that the source device has high confidence that this input is part of an
-			/// intended interaction.
+			/// Confidence is a suggestion from the source device about whether the pointer represents an intended or accidental
+			/// interaction, which is especially relevant for PT_TOUCH pointers where an accidental interaction (such as with the palm of
+			/// the hand) can trigger input. The presence of this flag indicates that the source device has high confidence that this input
+			/// is part of an intended interaction.
 			/// </summary>
 			POINTER_FLAG_CONFIDENCE = 0x000004000,
 
 			/// <summary>
-			/// Indicates that the pointer is departing in an abnormal manner, such as when the system receives invalid input for the pointer
-			/// or when a device with active pointers departs abruptly. If the application receiving the input is in a position to do so, it
-			/// should treat the interaction as not completed and reverse any effects of the concerned pointer.
+			/// Indicates that the pointer is departing in an abnormal manner, such as when the system receives invalid input for the
+			/// pointer or when a device with active pointers departs abruptly. If the application receiving the input is in a position to
+			/// do so, it should treat the interaction as not completed and reverse any effects of the concerned pointer.
 			/// </summary>
 			POINTER_FLAG_CANCELED = 0x000008000,
 
@@ -257,15 +275,15 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Identifies the pointer input types.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ne-winuser-tagpointer_input_type typedef enum tagPOINTER_INPUT_TYPE {
-		// PT_POINTER, PT_TOUCH, PT_PEN, PT_MOUSE, PT_TOUCHPAD } ;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ne-winuser-tagpointer_input_type typedef enum tagPOINTER_INPUT_TYPE
+		// { PT_POINTER, PT_TOUCH, PT_PEN, PT_MOUSE, PT_TOUCHPAD } ;
 		[PInvokeData("winuser.h", MSDNShortId = "3334DCD0-DAE1-4AC2-AB36-23D114803100")]
 		public enum POINTER_INPUT_TYPE
 		{
 			/// <summary>
-			/// Generic pointer type. This type never appears in pointer messages or pointer data. Some data query functions allow the caller
-			/// to restrict the query to specific pointer type. The PT_POINTER type can be used in these functions to specify that the query
-			/// is to include pointers of all types
+			/// Generic pointer type. This type never appears in pointer messages or pointer data. Some data query functions allow the
+			/// caller to restrict the query to specific pointer type. The PT_POINTER type can be used in these functions to specify that
+			/// the query is to include pointers of all types
 			/// </summary>
 			PT_POINTER,
 
@@ -283,8 +301,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Values that can appear in the touchFlags field of the POINTER_TOUCH_INFO structure.</summary>
-		// https://docs.microsoft.com/en-us/previous-versions/hh454914(v%3dvs.85) typedef enum tagTOUCH_FLAGS { TOUCH_FLAGS_NONE = 0x00000000
-		// } TOUCH_FLAGS;
+		// https://docs.microsoft.com/en-us/previous-versions/hh454914(v%3dvs.85) typedef enum tagTOUCH_FLAGS { TOUCH_FLAGS_NONE =
+		// 0x00000000 } TOUCH_FLAGS;
 		[PInvokeData("Winuser.h", MSDNShortId = "")]
 		public enum TOUCH_FLAGS
 		{
@@ -309,6 +327,36 @@ namespace Vanara.PInvoke
 			/// <summary>pressure of the POINTER_TOUCH_INFO structure is valid.</summary>
 			TOUCH_MASK_PRESSURE = 0x00000004,
 		}
+
+		/// <summary>
+		/// Configures the pointer injection device for the calling application, and initializes the maximum number of simultaneous pointers
+		/// that the app can inject.
+		/// </summary>
+		/// <param name="pointerType">The pointer injection device type. Must be either PT_TOUCH or <c>PT_PEN</c>.</param>
+		/// <param name="maxCount">
+		/// <para>The maximum number of contacts.</para>
+		/// <para>For PT_TOUCH this value must be greater than 0 and less than or equal to MAX_TOUCH_COUNT.</para>
+		/// <para>For PT_PEN this value must be 1.</para>
+		/// </param>
+		/// <param name="mode">The contact visualization mode.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is a handle to the pointer injection device. Otherwise, it returns null. To retrieve
+		/// extended error information, call the GetLastError function.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createsyntheticpointerdevice HSYNTHETICPOINTERDEVICE
+		// CreateSyntheticPointerDevice( POINTER_INPUT_TYPE pointerType, ULONG maxCount, POINTER_FEEDBACK_MODE mode );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "251F837F-DF9A-4A94-B790-73AA7196E4A9")]
+		public static extern SafeHSYNTHETICPOINTERDEVICE CreateSyntheticPointerDevice(POINTER_INPUT_TYPE pointerType, uint maxCount, POINTER_FEEDBACK_MODE mode);
+
+		/// <summary>Destroys the specified pointer injection device.</summary>
+		/// <param name="device">A handle to the pointer injection device.</param>
+		/// <returns>This function does not return a value.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-destroysyntheticpointerdevice void
+		// DestroySyntheticPointerDevice( HSYNTHETICPOINTERDEVICE device );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "236484FC-D552-45CE-A968-B928D020A4C8")]
+		public static extern void DestroySyntheticPointerDevice(HSYNTHETICPOINTERDEVICE device);
 
 		/// <summary>Enables the mouse to act as a pointer input device and send WM_POINTER messages.</summary>
 		/// <param name="fEnable"><c>TRUE</c> to turn on mouse input support in WM_POINTER.</param>
@@ -378,8 +426,8 @@ namespace Vanara.PInvoke
 		/// <param name="device">The device handle.</param>
 		/// <param name="cursorCount">The number of cursors associated with the pointer device.</param>
 		/// <param name="deviceCursors">
-		/// An array of POINTER_DEVICE_CURSOR_INFO structures that contain info about the cursors. If NULL, cursorCount returns the number of
-		/// cursors associated with the pointer device.
+		/// An array of POINTER_DEVICE_CURSOR_INFO structures that contain info about the cursors. If NULL, cursorCount returns the number
+		/// of cursors associated with the pointer device.
 		/// </param>
 		/// <returns>
 		/// TRUE if the function succeeds; otherwise, FALSE. If the function fails, call the GetLastError function for more information.
@@ -434,8 +482,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets information about the pointer devices attached to the system.</summary>
 		/// <param name="deviceCount">
-		/// If pointerDevices is NULL, deviceCount returns the total number of attached pointer devices. Otherwise, deviceCount specifies the
-		/// number of POINTER_DEVICE_INFO structures pointed to by pointerDevices.
+		/// If pointerDevices is NULL, deviceCount returns the total number of attached pointer devices. Otherwise, deviceCount specifies
+		/// the number of POINTER_DEVICE_INFO structures pointed to by pointerDevices.
 		/// </param>
 		/// <param name="pointerDevices">
 		/// Array of POINTER_DEVICE_INFO structures for the pointer devices attached to the system. If NULL, the total number of attached
@@ -504,9 +552,9 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// Having retrieved the entire frame of information, the application can then call the SkipPointerFrameMessages function to skip
 		/// remaining pointer messages associated with this frame that are pending retrieval. This saves the application the overhead of
-		/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be used
-		/// with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the remaining
-		/// pointer messages one by one as they are retrieved.
+		/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be
+		/// used with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the
+		/// remaining pointer messages one by one as they are retrieved.
 		/// </para>
 		/// <para>
 		/// Note that the information retrieved is associated with the pointer frame most recently retrieved by the calling thread. Once the
@@ -540,8 +588,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking info
-		/// to determine whether the input is client or non-client.
+		/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking
+		/// info to determine whether the input is client or non-client.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -601,9 +649,9 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// Having retrieved the entire frame of information, the application can then call the SkipPointerFrameMessages function to skip
 		/// remaining pointer messages associated with this frame that are pending retrieval. This saves the application the overhead of
-		/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be used
-		/// with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the remaining
-		/// pointer messages one by one as they are retrieved.
+		/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be
+		/// used with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the
+		/// remaining pointer messages one by one as they are retrieved.
 		/// </para>
 		/// <para>The frame contains only pointers that are currently owned by the same window as the specified pointer.</para>
 		/// <para>
@@ -646,8 +694,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking info
-		/// to determine whether the input is client or non-client.
+		/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking
+		/// info to determine whether the input is client or non-client.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -705,9 +753,9 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// Having retrieved the entire frame of information, the application can then call the SkipPointerFrameMessages function to skip
 		/// remaining pointer messages associated with this frame that are pending retrieval. This saves the application the overhead of
-		/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be used
-		/// with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the remaining
-		/// pointer messages one by one as they are retrieved.
+		/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be
+		/// used with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the
+		/// remaining pointer messages one by one as they are retrieved.
 		/// </para>
 		/// <para>
 		/// Note that the information retrieved is associated with the pointer frame most recently retrieved by the calling thread. Once the
@@ -742,8 +790,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking info
-		/// to determine whether the input is client or non-client.
+		/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking
+		/// info to determine whether the input is client or non-client.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -754,8 +802,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getpointerframepeninfo BOOL GetPointerFramePenInfo( UINT32
-		// pointerId, UINT32 *pointerCount, POINTER_PEN_INFO *penInfo );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getpointerframepeninfo BOOL GetPointerFramePenInfo(
+		// UINT32 pointerId, UINT32 *pointerCount, POINTER_PEN_INFO *penInfo );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "52db9b96-7f9e-41d7-88f7-b9c7691a6511")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -804,9 +852,9 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// Having retrieved the entire frame of information, the application can then call the SkipPointerFrameMessages function to skip
 		/// remaining pointer messages associated with this frame that are pending retrieval. This saves the application the overhead of
-		/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be used
-		/// with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the remaining
-		/// pointer messages one by one as they are retrieved.
+		/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be
+		/// used with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the
+		/// remaining pointer messages one by one as they are retrieved.
 		/// </para>
 		/// <para>The frame contains only pointers that are currently owned by the same window as the specified pointer.</para>
 		/// <para>
@@ -850,8 +898,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking info
-		/// to determine whether the input is client or non-client.
+		/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking
+		/// info to determine whether the input is client or non-client.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -909,9 +957,9 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// Having retrieved the entire frame of information, the application can then call the SkipPointerFrameMessages function to skip
 		/// remaining pointer messages associated with this frame that are pending retrieval. This saves the application the overhead of
-		/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be used
-		/// with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the remaining
-		/// pointer messages one by one as they are retrieved.
+		/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be
+		/// used with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the
+		/// remaining pointer messages one by one as they are retrieved.
 		/// </para>
 		/// <para>
 		/// Note that the information retrieved is associated with the pointer frame most recently retrieved by the calling thread. Once the
@@ -946,8 +994,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking info
-		/// to determine whether the input is client or non-client.
+		/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking
+		/// info to determine whether the input is client or non-client.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -966,8 +1014,8 @@ namespace Vanara.PInvoke
 		public static extern bool GetPointerFrameTouchInfo(uint pointerId, ref uint pointerCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_TOUCH_INFO[] touchInfo);
 
 		/// <summary>
-		/// Gets the entire frame of touch-based information (including coalesced input frames) for the specified pointers (of type PT_TOUCH)
-		/// associated with the current message.
+		/// Gets the entire frame of touch-based information (including coalesced input frames) for the specified pointers (of type
+		/// PT_TOUCH) associated with the current message.
 		/// </summary>
 		/// <param name="pointerId">An identifier of the pointer for which to retrieve frame information.</param>
 		/// <param name="entriesCount">
@@ -1008,9 +1056,9 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// Having retrieved the entire frame of information, the application can then call the SkipPointerFrameMessages function to skip
 		/// remaining pointer messages associated with this frame that are pending retrieval. This saves the application the overhead of
-		/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be used
-		/// with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the remaining
-		/// pointer messages one by one as they are retrieved.
+		/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be
+		/// used with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the
+		/// remaining pointer messages one by one as they are retrieved.
 		/// </para>
 		/// <para>The frame contains only pointers that are currently owned by the same window as the specified pointer.</para>
 		/// <para>
@@ -1054,8 +1102,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking info
-		/// to determine whether the input is client or non-client.
+		/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking
+		/// info to determine whether the input is client or non-client.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1113,8 +1161,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// Gets the information associated with the individual inputs, if any, that were coalesced into the current message for the
-		/// specified pointer. The most recent input is included in the returned history and is the same as the most recent input returned by
-		/// the GetPointerInfo function.
+		/// specified pointer. The most recent input is included in the returned history and is the same as the most recent input returned
+		/// by the GetPointerInfo function.
 		/// </summary>
 		/// <param name="pointerId">An identifier of the pointer for which to retrieve information.</param>
 		/// <param name="entriesCount">
@@ -1123,7 +1171,8 @@ namespace Vanara.PInvoke
 		/// structures available is the same as the <c>historyCount</c> field of the POINTER_INFO structure returned by a call to GetPointerInfo.
 		/// </param>
 		/// <param name="pointerInfo">
-		/// Address of an array of POINTER_INFO structures to receive the pointer information. This parameter can be NULL if *entriesCount is zero.
+		/// Address of an array of POINTER_INFO structures to receive the pointer information. This parameter can be NULL if *entriesCount
+		/// is zero.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is non-zero.</para>
@@ -1191,8 +1240,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// If a transform is applied on the message consumer, use <c>GetPointerInputTransform</c> to retrieve the transform on the message
-		/// consumer at the time the input occurred. The inverse of this transform can then be used to convert pointer input coordinates from
-		/// screen coordinates to the client coordinates of the message consumer.
+		/// consumer at the time the input occurred. The inverse of this transform can then be used to convert pointer input coordinates
+		/// from screen coordinates to the client coordinates of the message consumer.
 		/// </para>
 		/// <para>
 		/// If an input transform is not associated with the input, the <c>GetPointerInputTransform</c> function fails with the last error
@@ -1214,12 +1263,13 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// If an application calls GetPointerFrameInfo, it can call <c>GetPointerInputTransform</c> with the same pointer Id and a single
-		/// INPUT_TRANSFORM output buffer to get the input transform associated with the data. The same input transform applies to the entire frame.
+		/// INPUT_TRANSFORM output buffer to get the input transform associated with the data. The same input transform applies to the
+		/// entire frame.
 		/// </para>
 		/// <para>
-		/// If an application calls GetPointerInfoHistory, it can call <c>GetPointerInputTransform</c> with the same pointer Id and an output
-		/// buffer to hold the entries retrieved using <c>GetPointerInfoHistory</c>. Each input transform in the returned array can be used
-		/// with the corresponding entry in the array returned by <c>GetPointerInfoHistory</c>.
+		/// If an application calls GetPointerInfoHistory, it can call <c>GetPointerInputTransform</c> with the same pointer Id and an
+		/// output buffer to hold the entries retrieved using <c>GetPointerInfoHistory</c>. Each input transform in the returned array can
+		/// be used with the corresponding entry in the array returned by <c>GetPointerInfoHistory</c>.
 		/// </para>
 		/// <para>
 		/// If an application calls GetPointerFrameInfoHistory, it can call <c>GetPointerInputTransform</c> with the same pointer Id and an
@@ -1303,8 +1353,8 @@ namespace Vanara.PInvoke
 		/// If the application does not process pointer input messages as fast as they are generated, some moves may be coalesced. When an
 		/// application receives a coalescable pointer (of type PT_PEN) message, it can use the <c>GetPointerPenInfoHistory</c> function to
 		/// retrieve information for all the individual inputs, if any, that were coalesced into the message. Note that the information
-		/// retrieved is associated with the pointer message most recently retrieved by the calling thread. Once the calling thread retrieves
-		/// its next message, the information associated with the previous message may no longer be available.
+		/// retrieved is associated with the pointer message most recently retrieved by the calling thread. Once the calling thread
+		/// retrieves its next message, the information associated with the previous message may no longer be available.
 		/// </para>
 		/// <para>
 		/// The information retrieved appears in reverse chronological order, with the most recent entry in the first row of the returned
@@ -1379,9 +1429,9 @@ namespace Vanara.PInvoke
 		/// <param name="pointerId">An identifier of the pointer for which to retrieve information.</param>
 		/// <param name="entriesCount">
 		/// A pointer to a variable that specifies the count of structures in the buffer to which touchInfo points. If
-		/// <c>GetPointerTouchInfoHistory</c> succeeds, entriesCount is updated with the total count of structures available. The total count
-		/// of structures available is the same as the historyCount field in the POINTER_INFO structure returned by a call to GetPointerInfo
-		/// or GetPointerTouchInfo.
+		/// <c>GetPointerTouchInfoHistory</c> succeeds, entriesCount is updated with the total count of structures available. The total
+		/// count of structures available is the same as the historyCount field in the POINTER_INFO structure returned by a call to
+		/// GetPointerInfo or GetPointerTouchInfo.
 		/// </param>
 		/// <param name="touchInfo">
 		/// Address of an array of POINTER_TOUCH_INFO structures to receive the pointer information. This parameter can be NULL if
@@ -1396,8 +1446,8 @@ namespace Vanara.PInvoke
 		/// If the application does not process pointer input messages as fast as they are generated, some moves may be coalesced. When an
 		/// application receives a coalescable pointer (of type PT_TOUCH) message, it can use the <c>GetPointerTouchInfoHistory</c> function
 		/// to retrieve information for all the individual inputs, if any, that were coalesced into the message. Note that the information
-		/// retrieved is associated with the pointer message most recently retrieved by the calling thread. Once the calling thread retrieves
-		/// its next message, the information associated with the previous message may no longer be available.
+		/// retrieved is associated with the pointer message most recently retrieved by the calling thread. Once the calling thread
+		/// retrieves its next message, the information associated with the previous message may no longer be available.
 		/// </para>
 		/// <para>
 		/// The information retrieved appears in reverse chronological order, with the most recent entry in the first row of the returned
@@ -1472,6 +1522,29 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "5BE2748B-0124-4647-A77E-EA2937C7B1AD")]
 		public static extern uint GetUnpredictedMessagePos();
 
+		/// <summary>Simulates pointer input (pen or touch).</summary>
+		/// <param name="device">A handle to the pointer injection device created by CreateSyntheticPointerDevice.</param>
+		/// <param name="pointerInfo">
+		/// <para>Array of injected pointers.</para>
+		/// <para>The type must match the pointerType parameter of the CreateSyntheticPointerDevice call that created the injection device.</para>
+		/// <para>The ptPixelLocation for each POINTER_TYPE_INFO is specified relative to top left of the virtual screen:</para>
+		/// </param>
+		/// <param name="count">
+		/// <para>The number of contacts.</para>
+		/// <para>For PT_TOUCH this value must be greater than 0 and less than or equal to MAX_TOUCH_COUNT.</para>
+		/// <para>For PT_PEN this value must be 1.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If this function succeeds, it returns TRUE.</para>
+		/// <para>Otherwise, it returns FALSE. To retrieve extended error information, call the GetLastError function.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-injectsyntheticpointerinput BOOL
+		// InjectSyntheticPointerInput( HSYNTHETICPOINTERDEVICE device, const POINTER_TYPE_INFO *pointerInfo, UINT32 count );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "9F7FC5E2-F4B8-42C2-A4BE-240E36AFC13B")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool InjectSyntheticPointerInput(HSYNTHETICPOINTERDEVICE device, [In, MarshalAs(UnmanagedType.LPArray)] POINTER_TYPE_INFO[] pointerInfo, uint count);
+
 		/// <summary>
 		/// Indicates whether EnableMouseInPointer is set for the mouse to act as a pointer input device and send WM_POINTER messages.
 		/// </summary>
@@ -1487,8 +1560,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>On the first call to EnableMouseInPointer in the process lifetime, the state is changed as specified and the call succeeds.</para>
 		/// <para>
-		/// On subsequent calls to EnableMouseInPointer, the state will not change. If the current state is not equal to the specified state,
-		/// the call fails.
+		/// On subsequent calls to EnableMouseInPointer, the state will not change. If the current state is not equal to the specified
+		/// state, the call fails.
 		/// </para>
 		/// <para>Call <c>IsMouseInPointerEnabled</c> to verify the mouse-in-pointer state.</para>
 		/// </remarks>
@@ -1523,13 +1596,13 @@ namespace Vanara.PInvoke
 		/// <param name="hwnd">
 		/// <para>The window to register as a global redirection target.</para>
 		/// <para>
-		/// Redirection can cause the foreground window to lose activation (focus). To avoid this, ensure the window is a message-only window
-		/// or has the WS_EX_NOACTIVATE style set.
+		/// Redirection can cause the foreground window to lose activation (focus). To avoid this, ensure the window is a message-only
+		/// window or has the WS_EX_NOACTIVATE style set.
 		/// </para>
 		/// </param>
 		/// <param name="pointerType">
-		/// Type of pointer input to be redirected to the specified window. This is any valid and supported value from the POINTER_INPUT_TYPE
-		/// enumeration. Note that the generic <c>PT_POINTER</c> type and the <c>PT_MOUSE</c> type are not valid in this parameter.
+		/// Type of pointer input to be redirected to the specified window. This is any valid and supported value from the
+		/// POINTER_INPUT_TYPE enumeration. Note that the generic <c>PT_POINTER</c> type and the <c>PT_MOUSE</c> type are not valid in this parameter.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is non-zero.</para>
@@ -1607,18 +1680,19 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// When an application sees a pointer message, it can use the GetPointerFrameInfo function to retrieve the entire pointer input
-		/// frame to which the pointer message belongs, hence obtaining an updated view of all of the pointers currently owned by the window.
-		/// Note that the returned frame contains only pointers that are currently owned by the same window as the specified pointer.
+		/// frame to which the pointer message belongs, hence obtaining an updated view of all of the pointers currently owned by the
+		/// window. Note that the returned frame contains only pointers that are currently owned by the same window as the specified pointer.
 		/// </para>
 		/// <para>
 		/// Having retrieved the entire frame of information, the application can then call the <c>SkipPointerFrameMessages</c> function to
-		/// skip remaining pointer messages associated with this frame that are pending retrieval. This saves the application the overhead of
-		/// retrieving and processing the remaining messages one by one.
+		/// skip remaining pointer messages associated with this frame that are pending retrieval. This saves the application the overhead
+		/// of retrieving and processing the remaining messages one by one.
 		/// </para>
 		/// <para>
 		/// <c>Warning</c> The <c>SkipPointerFrameMessages</c> function should be used only when the caller can be sure that no other entity
 		/// on the caller’s thread (such as Direct Manipulation) is expecting to retrieve pending pointer messages. For this reason,
-		/// <c>SkipPointerFrameMessages</c> should not be used in conjunction with Direct Manipulation when processing multiple, simultaneous interactions.
+		/// <c>SkipPointerFrameMessages</c> should not be used in conjunction with Direct Manipulation when processing multiple,
+		/// simultaneous interactions.
 		/// </para>
 		/// <para>
 		/// Note that the information retrieved is associated with the pointer frame most recently retrieved by the calling thread. Once the
@@ -1661,8 +1735,8 @@ namespace Vanara.PInvoke
 		/// <para>If the specified pointer input type is not valid, this function fails with the last error set to <c>ERROR_INVALID_PARAMETER</c>.</para>
 		/// <para>If the calling thread does not own the specified window, this function fails with the last error set to <c>ERROR_ACCESS_DENIED</c>.</para>
 		/// <para>
-		/// If the specified window is not the registered global redirection target for the specified pointer input type on its desktop, this
-		/// function takes no action and returns success.
+		/// If the specified window is not the registered global redirection target for the specified pointer input type on its desktop,
+		/// this function takes no action and returns success.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-unregisterpointerinputtarget BOOL
@@ -1671,6 +1745,54 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "75faea24-91cd-448b-b67a-09fe530f1800")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool UnregisterPointerInputTarget(HWND hwnd, POINTER_INPUT_TYPE pointerType);
+
+		/// <summary>Provides a handle to a synthetic pointer device.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HSYNTHETICPOINTERDEVICE : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HSYNTHETICPOINTERDEVICE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HSYNTHETICPOINTERDEVICE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HSYNTHETICPOINTERDEVICE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HSYNTHETICPOINTERDEVICE NULL => new HSYNTHETICPOINTERDEVICE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HSYNTHETICPOINTERDEVICE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HSYNTHETICPOINTERDEVICE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HSYNTHETICPOINTERDEVICE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HSYNTHETICPOINTERDEVICE(IntPtr h) => new HSYNTHETICPOINTERDEVICE(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HSYNTHETICPOINTERDEVICE h1, HSYNTHETICPOINTERDEVICE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HSYNTHETICPOINTERDEVICE h1, HSYNTHETICPOINTERDEVICE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HSYNTHETICPOINTERDEVICE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
 
 		/// <summary>
 		/// Defines the matrix that represents a transform on a message consumer. This matrix can be used to transform pointer input data
@@ -1880,10 +2002,10 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>The predicted screen coordinates of the pointer, in pixels.</para>
 			/// <para>
-			/// The predicted value is based on the pointer position reported by the digitizer and the motion of the pointer. This correction
-			/// can compensate for visual lag due to inherent delays in sensing and processing the pointer location on the digitizer. This is
-			/// applicable to pointers of type PT_TOUCH. For other pointer types, the predicted value will be the same as the non-predicted
-			/// value (see <c>ptPixelLocationRaw</c>).
+			/// The predicted value is based on the pointer position reported by the digitizer and the motion of the pointer. This
+			/// correction can compensate for visual lag due to inherent delays in sensing and processing the pointer location on the
+			/// digitizer. This is applicable to pointers of type PT_TOUCH. For other pointer types, the predicted value will be the same as
+			/// the non-predicted value (see <c>ptPixelLocationRaw</c>).
 			/// </para>
 			/// </summary>
 			public System.Drawing.Point ptPixelLocation;
@@ -1892,10 +2014,10 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>The predicted screen coordinates of the pointer, in HIMETRIC units.</para>
 			/// <para>
-			/// The predicted value is based on the pointer position reported by the digitizer and the motion of the pointer. This correction
-			/// can compensate for visual lag due to inherent delays in sensing and processing the pointer location on the digitizer. This is
-			/// applicable to pointers of type PT_TOUCH. For other pointer types, the predicted value will be the same as the non-predicted
-			/// value (see <c>ptHimetricLocationRaw</c>).
+			/// The predicted value is based on the pointer position reported by the digitizer and the motion of the pointer. This
+			/// correction can compensate for visual lag due to inherent delays in sensing and processing the pointer location on the
+			/// digitizer. This is applicable to pointers of type PT_TOUCH. For other pointer types, the predicted value will be the same as
+			/// the non-predicted value (see <c>ptHimetricLocationRaw</c>).
 			/// </para>
 			/// </summary>
 			public System.Drawing.Point ptHimetricLocation;
@@ -1916,11 +2038,11 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>DWORD</c></para>
 			/// <para>0 or the time stamp of the message, based on the system tick count when the message was received.</para>
 			/// <para>
-			/// The application can specify the input time stamp in either <c>dwTime</c> or <c>PerformanceCount</c>. The value cannot be more
-			/// recent than the current tick count or <c>QueryPerformanceCount (QPC)</c> value of the injection thread. Once a frame is
-			/// injected with a time stamp, all subsequent frames must include a timestamp until all contacts in the frame go to an UP state.
-			/// The custom timestamp value must also be provided for the first element in the contacts array. The time stamp values after the
-			/// first element are ignored. The custom timestamp value must increment in every injection frame.
+			/// The application can specify the input time stamp in either <c>dwTime</c> or <c>PerformanceCount</c>. The value cannot be
+			/// more recent than the current tick count or <c>QueryPerformanceCount (QPC)</c> value of the injection thread. Once a frame is
+			/// injected with a time stamp, all subsequent frames must include a timestamp until all contacts in the frame go to an UP
+			/// state. The custom timestamp value must also be provided for the first element in the contacts array. The time stamp values
+			/// after the first element are ignored. The custom timestamp value must increment in every injection frame.
 			/// </para>
 			/// <para>
 			/// When <c>PerformanceCount</c> is specified, the time stamp will be converted to the current time in .1 millisecond resolution
@@ -1933,9 +2055,9 @@ namespace Vanara.PInvoke
 			/// <para>InjectTouchInput cannot switch between <c>dwTime</c> and <c>PerformanceCount</c> once injection has started.</para>
 			/// <para>
 			/// If neither <c>dwTime</c> and <c>PerformanceCount</c> are specified, InjectTouchInput allocates the timestamp based on the
-			/// timing of the call. If <c>InjectTouchInput</c> calls are repeatedly less than 0.1 millisecond apart, ERROR_NOT_READY might be
-			/// returned. The error will not invalidate the input immediately, but the injection application needs to retry the same frame
-			/// again for injection to succeed.
+			/// timing of the call. If <c>InjectTouchInput</c> calls are repeatedly less than 0.1 millisecond apart, ERROR_NOT_READY might
+			/// be returned. The error will not invalidate the input immediately, but the injection application needs to retry the same
+			/// frame again for injection to succeed.
 			/// </para>
 			/// </summary>
 			public uint dwTime;
@@ -2044,9 +2166,9 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Defines basic touch information common to all pointer types.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagpointer_touch_info typedef struct tagPOINTER_TOUCH_INFO
-		// { POINTER_INFO pointerInfo; TOUCH_FLAGS touchFlags; TOUCH_MASK touchMask; RECT rcContact; RECT rcContactRaw; UINT32 orientation;
-		// UINT32 pressure; } POINTER_TOUCH_INFO;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagpointer_touch_info typedef struct
+		// tagPOINTER_TOUCH_INFO { POINTER_INFO pointerInfo; TOUCH_FLAGS touchFlags; TOUCH_MASK touchMask; RECT rcContact; RECT
+		// rcContactRaw; UINT32 orientation; UINT32 pressure; } POINTER_TOUCH_INFO;
 		[PInvokeData("winuser.h", MSDNShortId = "fee176ba-ad07-3141-ab4d-1b8c335fd102")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct POINTER_TOUCH_INFO
@@ -2066,8 +2188,8 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>Type: <c>Touch Mask</c></para>
 			/// <para>
-			/// Indicates which of the optional fields contain valid values. The member can be zero or any combination of the values from the
-			/// Touch Mask constants.
+			/// Indicates which of the optional fields contain valid values. The member can be zero or any combination of the values from
+			/// the Touch Mask constants.
 			/// </para>
 			/// </summary>
 			public TOUCH_MASK touchMask;
@@ -2079,9 +2201,9 @@ namespace Vanara.PInvoke
 			/// this field defaults to a 0-by-0 rectangle centered around the pointer location.
 			/// </para>
 			/// <para>
-			/// The predicted value is based on the pointer position reported by the digitizer and the motion of the pointer. This correction
-			/// can compensate for visual lag due to inherent delays in sensing and processing the pointer location on the digitizer. This is
-			/// applicable to pointers of type PT_TOUCH.
+			/// The predicted value is based on the pointer position reported by the digitizer and the motion of the pointer. This
+			/// correction can compensate for visual lag due to inherent delays in sensing and processing the pointer location on the
+			/// digitizer. This is applicable to pointers of type PT_TOUCH.
 			/// </para>
 			/// </summary>
 			public RECT rcContact;
@@ -2095,8 +2217,8 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>Type: <c>UINT32</c></para>
 			/// <para>
-			/// A pointer orientation, with a value between 0 and 359, where 0 indicates a touch pointer aligned with the x-axis and pointing
-			/// from left to right; increasing values indicate degrees of rotation in the clockwise direction.
+			/// A pointer orientation, with a value between 0 and 359, where 0 indicates a touch pointer aligned with the x-axis and
+			/// pointing from left to right; increasing values indicate degrees of rotation in the clockwise direction.
 			/// </para>
 			/// <para>This field defaults to 0 if the device does not report orientation.</para>
 			/// </summary>
@@ -2107,6 +2229,48 @@ namespace Vanara.PInvoke
 			/// <para>A pen pressure normalized to a range between 0 and 1024. The default is 0 if the device does not report pressure.</para>
 			/// </summary>
 			public uint pressure;
+		}
+
+		/// <summary>Contains information about the pointer input type.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-pointer_type_info typedef struct tagPOINTER_TYPE_INFO {
+		// POINTER_INPUT_TYPE type; union { POINTER_TOUCH_INFO touchInfo; POINTER_PEN_INFO penInfo; } DUMMYUNIONNAME; } POINTER_TYPE_INFO, *PPOINTER_TYPE_INFO;
+		[PInvokeData("winuser.h", MSDNShortId = "5EA8012C-CF0C-4771-9A9C-A9DC218DC9AB")]
+		[StructLayout(LayoutKind.Explicit)]
+		public struct POINTER_TYPE_INFO
+		{
+			/// <summary>The pointer input device.</summary>
+			[FieldOffset(0)]
+			public POINTER_INPUT_TYPE type;
+
+			/// <summary>Basic touch information common to all pointer types.</summary>
+			[FieldOffset(4)]
+			public POINTER_TOUCH_INFO touchInfo;
+
+			/// <summary>Basic pen information common to all pointer types.</summary>
+			[FieldOffset(4)]
+			public POINTER_PEN_INFO penInfo;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HSYNTHETICPOINTERDEVICE"/> that is disposed using <see cref="DestroySyntheticPointerDevice"/>.</summary>
+		public class SafeHSYNTHETICPOINTERDEVICE : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHSYNTHETICPOINTERDEVICE"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHSYNTHETICPOINTERDEVICE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHSYNTHETICPOINTERDEVICE"/> class.</summary>
+			private SafeHSYNTHETICPOINTERDEVICE() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHSYNTHETICPOINTERDEVICE"/> to <see cref="HSYNTHETICPOINTERDEVICE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HSYNTHETICPOINTERDEVICE(SafeHSYNTHETICPOINTERDEVICE h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { DestroySyntheticPointerDevice(handle); return true; }
 		}
 
 		/*
