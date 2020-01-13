@@ -19,7 +19,10 @@ namespace Vanara.PInvoke
 	[PInvokeData("wingdi.h", MSDNShortId = "85741025-9393-42ab-8a6d-27f1ae2c0f1b")]
 	public enum DMCOLOR : short
 	{
+		/// <summary>Monochrome.</summary>
 		DMCOLOR_MONOCHROME = 1,
+
+		/// <summary>Color.</summary>
 		DMCOLOR_COLOR = 2
 	}
 
@@ -126,39 +129,70 @@ namespace Vanara.PInvoke
 		DMDUP_HORIZONTAL = 3,
 	}
 
+	/// <summary>Specifies whether certain members of the DEVMODE structure have been initialized.</summary>
 	[PInvokeData("wingdi.h", MSDNShortId = "85741025-9393-42ab-8a6d-27f1ae2c0f1b")]
 	[Flags]
 	public enum DMFIELDS : uint
 	{
+		/// <summary/>
 		DM_ORIENTATION = 0x00000001,
+		/// <summary/>
 		DM_PAPERSIZE = 0x00000002,
+		/// <summary/>
 		DM_PAPERLENGTH = 0x00000004,
+		/// <summary/>
 		DM_PAPERWIDTH = 0x00000008,
+		/// <summary/>
 		DM_SCALE = 0x00000010,
+		/// <summary/>
 		DM_POSITION = 0x00000020,
+		/// <summary/>
 		DM_NUP = 0x00000040,
+		/// <summary/>
 		DM_DISPLAYORIENTATION = 0x00000080,
+		/// <summary/>
 		DM_COPIES = 0x00000100,
+		/// <summary/>
 		DM_DEFAULTSOURCE = 0x00000200,
+		/// <summary/>
 		DM_PRINTQUALITY = 0x00000400,
+		/// <summary/>
 		DM_COLOR = 0x00000800,
+		/// <summary/>
 		DM_DUPLEX = 0x00001000,
+		/// <summary/>
 		DM_YRESOLUTION = 0x00002000,
+		/// <summary/>
 		DM_TTOPTION = 0x00004000,
+		/// <summary/>
 		DM_COLLATE = 0x00008000,
+		/// <summary/>
 		DM_FORMNAME = 0x00010000,
+		/// <summary/>
 		DM_LOGPIXELS = 0x00020000,
+		/// <summary/>
 		DM_BITSPERPEL = 0x00040000,
+		/// <summary/>
 		DM_PELSWIDTH = 0x00080000,
+		/// <summary/>
 		DM_PELSHEIGHT = 0x00100000,
+		/// <summary/>
 		DM_DISPLAYFLAGS = 0x00200000,
+		/// <summary/>
 		DM_DISPLAYFREQUENCY = 0x00400000,
+		/// <summary/>
 		DM_ICMMETHOD = 0x00800000,
+		/// <summary/>
 		DM_ICMINTENT = 0x01000000,
+		/// <summary/>
 		DM_MEDIATYPE = 0x02000000,
+		/// <summary/>
 		DM_DITHERTYPE = 0x04000000,
+		/// <summary/>
 		DM_PANNINGWIDTH = 0x08000000,
+		/// <summary/>
 		DM_PANNINGHEIGHT = 0x10000000,
+		/// <summary/>
 		DM_DISPLAYFIXEDOUTPUT = 0x20000000,
 	}
 
@@ -622,9 +656,16 @@ namespace Vanara.PInvoke
 	[PInvokeData("wingdi.h", MSDNShortId = "85741025-9393-42ab-8a6d-27f1ae2c0f1b")]
 	public enum DMRES : short
 	{
+		/// <summary>Use draft resolution (96 DPI).</summary>
 		DMRES_DRAFT = -1,
+
+		/// <summary>Use low resolution (150 DPI).</summary>
 		DMRES_LOW = -2,
+
+		/// <summary>Use medium resolution (300 DPI).</summary>
 		DMRES_MEDIUM = -3,
+
+		/// <summary>Use high resolution (600 DPI).</summary>
 		DMRES_HIGH = -4,
 	}
 
