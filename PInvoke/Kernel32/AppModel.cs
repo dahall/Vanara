@@ -204,6 +204,35 @@ namespace Vanara.PInvoke
 			PackageOrigin_LineOfBusiness,
 		}
 
+		/// <summary>Indicates the type of folder path to retrieve in a query for the path or other info about a package.</summary>
+		/// <remarks>
+		/// An application has a mutable install folder if it uses the windows.mutablePackageDirectories extension in its package manifest.
+		/// This extension specifies a folder under the %ProgramFiles%\ModifiableWindowsApps path where the contents of the application's
+		/// install folder are projected so that users can modify the installation files. This feature is currently available only for
+		/// certain types of desktop PC games that are published by Microsoft and our partners, and it enables these types of games to
+		/// support mods.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/ne-appmodel-packagepathtype typedef enum PackagePathType {
+		// PackagePathType_Install, PackagePathType_Mutable, PackagePathType_Effective } ;
+		[PInvokeData("appmodel.h")]
+		public enum PackagePathType
+		{
+			/// <summary>Retrieve the package path in the original install folder for the application.</summary>
+			PackagePathType_Install,
+
+			/// <summary>
+			/// Retrieve the package path in the mutable install folder for the application, if the application is declared as mutable in
+			/// the package manifest.
+			/// </summary>
+			PackagePathType_Mutable,
+
+			/// <summary>
+			/// Retrieve the package path in the mutable folder if the application is declared as mutable in the package manifest, or in the
+			/// original install folder if the application is not mutable.
+			/// </summary>
+			PackagePathType_Effective
+		}
+
 		/// <summary>
 		/// Retrieves a value indicating whether a process has full or restricted access to the IO devices (file, file stream, directory,
 		/// physical disk, volume, console buffer, tape drive, communications resource, mailslot, and pipe).
@@ -739,6 +768,63 @@ namespace Vanara.PInvoke
 		public static extern Win32Error GetCurrentPackageInfo(PACKAGE_FLAGS flags, ref uint bufferLength, IntPtr buffer, out uint count);
 
 		/// <summary>
+		/// Gets the package information for the calling process, with the option to specify the type of folder path to retrieve for the package.
+		/// </summary>
+		/// <param name="flags">
+		/// <para>Type: <c>const UINT32</c></para>
+		/// <para>The package constants that specify how package information is retrieved. The <c>PACKAGE_FILTER_*</c> flags are supported.</para>
+		/// </param>
+		/// <param name="packagePathType">
+		/// <para>Type: <c>PackagePathType</c></para>
+		/// <para>Indicates the type of folder path to retrieve for the package (the original install folder or the mutable folder).</para>
+		/// </param>
+		/// <param name="bufferLength">
+		/// <para>Type: <c>UINT32*</c></para>
+		/// <para>On input, the size of buffer, in bytes. On output, the size of the array of structures returned, in bytes.</para>
+		/// </param>
+		/// <param name="buffer">
+		/// <para>Type: <c>BYTE*</c></para>
+		/// <para>The package information, represented as an array of PACKAGE_INFO structures.</para>
+		/// </param>
+		/// <param name="count">
+		/// <para>Type: <c>UINT32*</c></para>
+		/// <para>The number of structures in the buffer.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>
+		/// If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code. The possible error
+		/// codes include the following.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>APPMODEL_ERROR_NO_PACKAGE</term>
+		/// <term>The process has no package identity.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+		/// <term>The buffer is not large enough to hold the data. The required size is specified by bufferLength.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The packagePathType parameter is useful for applications that use the windows.mutablePackageDirectories extension in their
+		/// package manifest. This extension specifies a folder under the %ProgramFiles%\ModifiableWindowsApps path where the contents of
+		/// the application's install folder are projected so that users can modify the installation files. This feature is currently
+		/// available only for certain types of desktop PC games that are published by Microsoft and our partners, and it enables these
+		/// types of games to support mods.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getcurrentpackageinfo2
+		// LONG GetCurrentPackageInfo2( const UINT32 flags, PackagePathType packagePathType, UINT32 *bufferLength, BYTE *buffer, UINT32 *count );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("appmodel.h")]
+		public static extern Win32Error GetCurrentPackageInfo2(PACKAGE_FLAGS flags, PackagePathType packagePathType, ref uint bufferLength, IntPtr buffer, out uint count);
+
+		/// <summary>
 		/// <para>Gets the package path for the calling process.</para>
 		/// </summary>
 		/// <param name="pathLength">
@@ -778,6 +864,58 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "46CE81DF-A9D5-492E-AB5E-4F043DC326E2")]
 		public static extern Win32Error GetCurrentPackagePath(ref uint pathLength, StringBuilder path);
+
+		/// <summary>
+		/// Gets the package path for the calling process, with the option to specify the type of folder path to retrieve for the package.
+		/// </summary>
+		/// <param name="packagePathType">
+		/// <para>Type: <c>PackagePathType</c></para>
+		/// <para>Indicates the type of folder path to retrieve for the package (the original install folder or the mutable folder).</para>
+		/// </param>
+		/// <param name="pathLength">
+		/// <para>Type: <c>UINT32*</c></para>
+		/// <para>
+		/// On input, the size of the path buffer, in characters. On output, the size of the package path returned, in characters, including
+		/// the null terminator.
+		/// </para>
+		/// </param>
+		/// <param name="path">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>The package path.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>
+		/// If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code. The possible error
+		/// codes include the following.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>APPMODEL_ERROR_NO_PACKAGE</term>
+		/// <term>The process has no package identity.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+		/// <term>The buffer is not large enough to hold the data. The required size is specified by pathLength.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The packagePathType parameter is useful for applications that use the windows.mutablePackageDirectories extension in their
+		/// package manifest. This extension specifies a folder under the %ProgramFiles%\ModifiableWindowsApps path where the contents of
+		/// the application's install folder are projected so that users can modify the installation files. This feature is currently
+		/// available only for certain types of desktop PC games that are published by Microsoft and our partners, and it enables these
+		/// types of games to support mods.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getcurrentpackagepath2
+		// LONG GetCurrentPackagePath2( PackagePathType packagePathType, UINT32 *pathLength, PWSTR path );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("appmodel.h")]
+		public static extern Win32Error GetCurrentPackagePath2(PackagePathType packagePathType, ref uint pathLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
 
 		/// <summary>
 		/// <para>Gets the IDs of apps in the specified package.</para>
@@ -1018,6 +1156,63 @@ namespace Vanara.PInvoke
 		public static extern Win32Error GetPackageInfo(PACKAGE_INFO_REFERENCE packageInfoReference, uint flags, ref uint bufferLength, IntPtr buffer, out uint count);
 
 		/// <summary>
+		/// Gets the package information for the specified package, with the option to specify the type of folder path to retrieve for the package.
+		/// </summary>
+		/// <param name="packageInfoReference">
+		/// <para>Type: <c>PACKAGE_INFO_REFERENCE</c></para>
+		/// <para>A reference to package information.</para>
+		/// </param>
+		/// <param name="flags">
+		/// <para>Type: <c>const UINT32</c></para>
+		/// <para>The package constants that specify how package information is retrieved.</para>
+		/// </param>
+		/// <param name="packagePathType">
+		/// <para>Type: <c>PackagePathType</c></para>
+		/// <para>Indicates the type of folder path to retrieve for the package (the original install folder or the mutable folder).</para>
+		/// </param>
+		/// <param name="bufferLength">
+		/// <para>Type: <c>UINT32*</c></para>
+		/// <para>On input, the size of buffer, in bytes. On output, the size of the package information returned, in bytes.</para>
+		/// </param>
+		/// <param name="buffer">
+		/// <para>Type: <c>BYTE*</c></para>
+		/// <para>The package information, represented as an array of PACKAGE_INFO structures.</para>
+		/// </param>
+		/// <param name="count">
+		/// <para>Type: <c>UINT32*</c></para>
+		/// <para>The number of packages in the buffer.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>
+		/// If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code. The possible error
+		/// codes include the following.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+		/// <term>The buffer is not large enough to hold the data. The required size is specified by bufferLength.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The packagePathType parameter is useful for applications that use the windows.mutablePackageDirectories extension in their
+		/// package manifest. This extension specifies a folder under the %ProgramFiles%\ModifiableWindowsApps path where the contents of
+		/// the application's install folder are projected so that users can modify the installation files. This feature is currently
+		/// available only for certain types of desktop PC games that are published by Microsoft and our partners, and it enables these
+		/// types of games to support mods.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getpackageinfo2
+		// LONG GetPackageInfo2( PACKAGE_INFO_REFERENCE packageInfoReference, const UINT32 flags, PackagePathType packagePathType, UINT32 *bufferLength, BYTE *buffer, UINT32 *count );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("appmodel.h")]
+		public static extern Win32Error GetPackageInfo2(PACKAGE_INFO_REFERENCE packageInfoReference, uint flags, PackagePathType packagePathType, ref uint bufferLength, IntPtr buffer, out uint count);
+
+		/// <summary>
 		/// <para>Gets the path for the specified package.</para>
 		/// </summary>
 		/// <param name="packageId">
@@ -1060,7 +1255,7 @@ namespace Vanara.PInvoke
 		// *packageId, const UINT32 reserved, UINT32 *pathLength, PWSTR path );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "BDA0DD87-A36D-486B-BF89-EA5CC105C742")]
-		public static extern int GetPackagePath(ref PACKAGE_ID packageId, uint reserved, ref uint pathLength, StringBuilder path);
+		public static extern Win32Error GetPackagePath(ref PACKAGE_ID packageId, uint reserved, ref uint pathLength, StringBuilder path);
 
 		/// <summary>
 		/// <para>Gets the path of the specified package.</para>
@@ -1105,6 +1300,59 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "9C25708C-1464-4C59-9740-E9F105116385")]
 		public static extern Win32Error GetPackagePathByFullName(string packageFullName, ref uint pathLength, StringBuilder path);
+
+		/// <summary>Gets the path of the specified package, with the option to specify the type of folder path to retrieve for the package.</summary>
+		/// <param name="packageFullName">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>The full name of the package.</para>
+		/// </param>
+		/// <param name="packagePathType">
+		/// <para>Type: <c>PackagePathType</c></para>
+		/// <para>Indicates the type of folder path to retrieve for the package (the original install folder or the mutable folder).</para>
+		/// </param>
+		/// <param name="pathLength">
+		/// <para>Type: <c>UINT32*</c></para>
+		/// <para>
+		/// A pointer to a variable that holds the number of characters ( <c>WCHAR</c> s) in the package path string, which includes the null-terminator.
+		/// </para>
+		/// <para>
+		/// First you pass <c>NULL</c> to path to get the number of characters. You use this number to allocate memory space for path. Then
+		/// you pass the address of this memory space to fill path.
+		/// </para>
+		/// </param>
+		/// <param name="path">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>A pointer to memory space that receives the package path string, which includes the null-terminator.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>
+		/// If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code. The possible error
+		/// codes include the following.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+		/// <term>The buffer specified by path is not large enough to hold the data. The required size is specified by pathLength.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The packagePathType parameter is useful for applications that use the windows.mutablePackageDirectories extension in their
+		/// package manifest. This extension specifies a folder under the %ProgramFiles%\ModifiableWindowsApps path where the contents of
+		/// the application's install folder are projected so that users can modify the installation files. This feature is currently
+		/// available only for certain types of desktop PC games that are published by Microsoft and our partners, and it enables these
+		/// types of games to support mods.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getpackagepathbyfullname2
+		// LONG GetPackagePathByFullName2( PCWSTR packageFullName, PackagePathType packagePathType, UINT32 *pathLength, PWSTR path );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("appmodel.h")]
+		public static extern Win32Error GetPackagePathByFullName2([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, PackagePathType packagePathType, ref uint pathLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
 
 		/// <summary>
 		/// <para>Gets the packages with the specified family name for the current user.</para>
@@ -1245,6 +1493,61 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("appmodel.h", MSDNShortId = "F0A37D77-6262-44B1-BEC5-083E41BDE139")]
 		public static extern Win32Error GetStagedPackagePathByFullName([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, ref uint pathLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
+
+		/// <summary>
+		/// Gets the path of the specified staged package, with the option to specify the type of folder path to retrieve for the package.
+		/// </summary>
+		/// <param name="packageFullName">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>The full name of the staged package.</para>
+		/// </param>
+		/// <param name="packagePathType">
+		/// <para>Type: <c>PackagePathType</c></para>
+		/// <para>Indicates the type of folder path to retrieve for the package (the original install folder or the mutable folder).</para>
+		/// </param>
+		/// <param name="pathLength">
+		/// <para>Type: <c>UINT32*</c></para>
+		/// <para>
+		/// A pointer to a variable that holds the number of characters ( <c>WCHAR</c> s) in the package path string, which includes the null-terminator.
+		/// </para>
+		/// <para>
+		/// First you pass <c>NULL</c> to path to get the number of characters. You use this number to allocate memory space for path. Then
+		/// you pass the address of this memory space to fill path.
+		/// </para>
+		/// </param>
+		/// <param name="path">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>A pointer to memory space that receives the package path string, which includes the null-terminator.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>
+		/// If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code. The possible error
+		/// codes include the following.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+		/// <term>The buffer specified by path is not large enough to hold the data. The required size is specified by pathLength.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The packagePathType parameter is useful for applications that use the windows.mutablePackageDirectories extension in their
+		/// package manifest. This extension specifies a folder under the %ProgramFiles%\ModifiableWindowsApps path where the contents of
+		/// the application's install folder are projected so that users can modify the installation files. This feature is currently
+		/// available only for certain types of desktop PC games that are published by Microsoft and our partners, and it enables these
+		/// types of games to support mods.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getstagedpackagepathbyfullname2
+		// LONG GetStagedPackagePathByFullName2( PCWSTR packageFullName, PackagePathType packagePathType, UINT32 *pathLength, PWSTR path );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("appmodel.h")]
+		public static extern Win32Error GetStagedPackagePathByFullName2([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, PackagePathType packagePathType, ref uint pathLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
 
 		/// <summary>
 		/// <para>Opens the package information of the specified package.</para>
@@ -1693,6 +1996,33 @@ namespace Vanara.PInvoke
 			/// <para>The publisher identifier (ID) of the package. If there is no publisher ID for the package, this member is <c>NULL</c>.</para>
 			/// </summary>
 			public string publisherId;
+		}
+
+		/// <summary>Represents package identification information that includes the package identifier, full name, and install location.</summary>
+		/// <remarks>For info about string size limits, see Identity constants.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/ns-appmodel-package_info
+		// typedef struct PACKAGE_INFO { UINT32 reserved; UINT32 flags; PWSTR path; PWSTR packageFullName; PWSTR packageFamilyName; PACKAGE_ID packageId; } PACKAGE_INFO;
+		[PInvokeData("appmodel.h", MSDNShortId = "0DDE00D1-9C5F-4F2B-8110-A92B1FFA1B64")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct PACKAGE_INFO
+		{
+			/// <summary>Reserved; do not use.</summary>
+			public uint reserved;
+
+			/// <summary>Properties of the package.</summary>
+			public uint flags;
+
+			/// <summary>The location of the package.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)] public string path;
+
+			/// <summary>The package full name/</summary>
+			[MarshalAs(UnmanagedType.LPWStr)] public string packageFullName;
+
+			/// <summary>The package family name.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)] public string packageFamilyName;
+
+			/// <summary>The package identifier (ID).</summary>
+			public PACKAGE_ID packageId;
 		}
 
 		/// <summary>A reference to package information.</summary>
