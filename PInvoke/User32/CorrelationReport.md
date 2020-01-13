@@ -1,5 +1,5 @@
 ## Correlation report for user32.dll  
-### Methods (99% complete, 556 of 557 functions)  
+### Methods (99% complete, 556 of 559 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Amicrosoft.com) | winuser.h | [Vanara.PInvoke.User32.ActivateKeyboardLayout](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateKeyboardLayout)  
@@ -67,6 +67,7 @@ Native Method | Header | Managed Method
 [CreateIconIndirect](http://msdn2.microsoft.com/en-us/library/createiconindirect) | winuser.h | [Vanara.PInvoke.User32.CreateIconIndirect](https://github.com/dahall/Vanara/search?l=C%23&q=CreateIconIndirect)  
 [CreateMenu](http://msdn2.microsoft.com/en-us/library/createmenu.htm) | winuser.h | [Vanara.PInvoke.User32.CreateMenu](https://github.com/dahall/Vanara/search?l=C%23&q=CreateMenu)  
 [CreatePopupMenu](http://msdn2.microsoft.com/en-us/library/createpopupmenu.htm) | winuser.h | [Vanara.PInvoke.User32.CreatePopupMenu](https://github.com/dahall/Vanara/search?l=C%23&q=CreatePopupMenu)  
+[CreateSyntheticPointerDevice](https://www.google.com/search?num=5&q=CreateSyntheticPointerDevice+site%3Amicrosoft.com) |  |   
 [CreateWindowEx](http://msdn2.microsoft.com/en-us/library/createwindowex) | winuser.h | [Vanara.PInvoke.User32.CreateWindowEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateWindowEx)  
 [CreateWindowStation](http://msdn2.microsoft.com/en-us/library/c1aee546-decd-46c9-8d02-d6792f5a6a0d) | winuser.h | [Vanara.PInvoke.User32.CreateWindowStation](https://github.com/dahall/Vanara/search?l=C%23&q=CreateWindowStation)  
 [DefDlgProc](http://msdn2.microsoft.com/en-us/library/defdlgproc) | winuser.h | [Vanara.PInvoke.User32.DefDlgProc](https://github.com/dahall/Vanara/search?l=C%23&q=DefDlgProc)  
@@ -82,6 +83,7 @@ Native Method | Header | Managed Method
 [DestroyCursor](http://msdn2.microsoft.com/en-us/library/destroycursor) | winuser.h | [Vanara.PInvoke.User32.DestroyCursor](https://github.com/dahall/Vanara/search?l=C%23&q=DestroyCursor)  
 [DestroyIcon](http://msdn2.microsoft.com/en-us/library/destroyicon) | winuser.h | [Vanara.PInvoke.User32.DestroyIcon](https://github.com/dahall/Vanara/search?l=C%23&q=DestroyIcon)  
 [DestroyMenu](http://msdn2.microsoft.com/en-us/library/destroymenu.htm) | winuser.h | [Vanara.PInvoke.User32.DestroyMenu](https://github.com/dahall/Vanara/search?l=C%23&q=DestroyMenu)  
+[DestroySyntheticPointerDevice](https://www.google.com/search?num=5&q=DestroySyntheticPointerDevice+site%3Amicrosoft.com) |  |   
 [DestroyWindow](http://msdn2.microsoft.com/en-us/library/destroywindow) | winuser.h | [Vanara.PInvoke.User32.DestroyWindow](https://github.com/dahall/Vanara/search?l=C%23&q=DestroyWindow)  
 [DialogBoxIndirectParam](http://msdn2.microsoft.com/en-us/library/dialogboxindirectparam) | winuser.h | [Vanara.PInvoke.User32.DialogBoxIndirectParam](https://github.com/dahall/Vanara/search?l=C%23&q=DialogBoxIndirectParam)  
 [DialogBoxParam](http://msdn2.microsoft.com/en-us/library/dialogboxparam) | winuser.h | [Vanara.PInvoke.User32.DialogBoxParam](https://github.com/dahall/Vanara/search?l=C%23&q=DialogBoxParam)  
@@ -308,6 +310,7 @@ Native Method | Header | Managed Method
 [ImpersonateDdeClientWindow](https://www.google.com/search?num=5&q=ImpersonateDdeClientWindow+site%3Amicrosoft.com) | dde.h | [Vanara.PInvoke.User32.ImpersonateDdeClientWindow](https://github.com/dahall/Vanara/search?l=C%23&q=ImpersonateDdeClientWindow)  
 [InflateRect](http://msdn2.microsoft.com/en-us/library/9a52fb7f-cd35-4426-8753-c26cebef30d5) | winuser.h | [Vanara.PInvoke.User32.InflateRect](https://github.com/dahall/Vanara/search?l=C%23&q=InflateRect)  
 [InitializeTouchInjection](http://msdn2.microsoft.com/en-us/library/79cc2a05-d8ee-4d87-9c7b-fa7d5354b04f) | winuser.h | [Vanara.PInvoke.User32.InitializeTouchInjection](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeTouchInjection)  
+[InjectSyntheticPointerInput](https://www.google.com/search?num=5&q=InjectSyntheticPointerInput+site%3Amicrosoft.com) |  |   
 [InjectTouchInput](http://msdn2.microsoft.com/en-us/library/c3c1425e-2af6-4ecb-a0b2-a456654f7a53) | winuser.h | [Vanara.PInvoke.User32.InjectTouchInput](https://github.com/dahall/Vanara/search?l=C%23&q=InjectTouchInput)  
 [InSendMessage](https://www.google.com/search?num=5&q=InSendMessage+site%3Amicrosoft.com) | winuser.h | [Vanara.PInvoke.User32.InSendMessage](https://github.com/dahall/Vanara/search?l=C%23&q=InSendMessage)  
 [InSendMessageEx](https://www.google.com/search?num=5&q=InSendMessageEx+site%3Amicrosoft.com) | winuser.h | [Vanara.PInvoke.User32.InSendMessageEx](https://github.com/dahall/Vanara/search?l=C%23&q=InSendMessageEx)  
@@ -370,7 +373,6 @@ Native Method | Header | Managed Method
 [MessageBeep](http://msdn2.microsoft.com/en-us/library/70681472-36a5-4ae3-b769-0421cf97ff2a) | winuser.h | [Vanara.PInvoke.User32.MessageBeep](https://github.com/dahall/Vanara/search?l=C%23&q=MessageBeep)  
 [MessageBox](http://msdn2.microsoft.com/en-us/library/messagebox) | winuser.h | [Vanara.PInvoke.User32.MessageBox](https://github.com/dahall/Vanara/search?l=C%23&q=MessageBox)  
 [MessageBoxIndirect](https://www.google.com/search?num=5&q=MessageBoxIndirectA+site%3Amicrosoft.com) | Winuser.h | [Vanara.PInvoke.User32.MessageBoxIndirect](https://github.com/dahall/Vanara/search?l=C%23&q=MessageBoxIndirect)  
-[MITGetCursorUpdateHandlee](https://www.google.com/search?num=5&q=MITGetCursorUpdateHandlee+site%3Amicrosoft.com) |  |   
 [ModifyMenu](http://msdn2.microsoft.com/en-us/library/modifymenu.htm) | winuser.h | [Vanara.PInvoke.User32.ModifyMenu](https://github.com/dahall/Vanara/search?l=C%23&q=ModifyMenu)  
 [MonitorFromPoint](http://msdn2.microsoft.com/en-us/library/c46281bf-7e45-4628-be92-736850225a9e) | winuser.h | [Vanara.PInvoke.User32.MonitorFromPoint](https://github.com/dahall/Vanara/search?l=C%23&q=MonitorFromPoint)  
 [MonitorFromRect](http://msdn2.microsoft.com/en-us/library/81c3fffb-bbc9-4adb-bb6b-edd59f7a77b4) | winuser.h | [Vanara.PInvoke.User32.MonitorFromRect](https://github.com/dahall/Vanara/search?l=C%23&q=MonitorFromRect)  

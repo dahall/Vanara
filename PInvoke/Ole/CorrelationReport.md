@@ -1,5 +1,5 @@
 ## Correlation report for ole32.dll, oleaut32.dll, propsys.dll  
-### Methods (79% complete, 554 of 696 functions)  
+### Methods (80% complete, 562 of 697 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindMoniker](http://msdn2.microsoft.com/en-us/library/5a022c39-fc2c-458b-9dfe-fed1255d49a4) | ole32.dll | objbase.h | [Vanara.PInvoke.Ole32.BindMoniker](https://github.com/dahall/Vanara/search?l=C%23&q=BindMoniker)  
@@ -191,13 +191,14 @@ Native Method | Native DLL | Header | Managed Method
 [LoadRegTypeLib](http://msdn2.microsoft.com/en-us/library/444b7768-2a4e-4de3-9f28-ef63ac23e8bc) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.LoadRegTypeLib](https://github.com/dahall/Vanara/search?l=C%23&q=LoadRegTypeLib)  
 [LoadTypeLib](http://msdn2.microsoft.com/en-us/library/155b48e5-5438-409e-9342-630a6a500f60) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.LoadTypeLib](https://github.com/dahall/Vanara/search?l=C%23&q=LoadTypeLib)  
 [LoadTypeLibEx](http://msdn2.microsoft.com/en-us/library/56a7f9e1-810b-4a42-aa4d-691f4304f5ef) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.LoadTypeLibEx](https://github.com/dahall/Vanara/search?l=C%23&q=LoadTypeLibEx)  
-[LPSAFEARRAY_UserFree](https://www.google.com/search?num=5&q=LPSAFEARRAY_UserFree+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[LPSAFEARRAY_UserFree64](https://www.google.com/search?num=5&q=LPSAFEARRAY_UserFree64+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[LPSAFEARRAY_UserMarshal](https://www.google.com/search?num=5&q=LPSAFEARRAY_UserMarshal+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[LPSAFEARRAY_UserMarshal64](https://www.google.com/search?num=5&q=LPSAFEARRAY_UserMarshal64+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[LPSAFEARRAY_UserSize](https://www.google.com/search?num=5&q=LPSAFEARRAY_UserSize+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[LPSAFEARRAY_UserSize64](https://www.google.com/search?num=5&q=LPSAFEARRAY_UserSize64+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[LPSAFEARRAY_UserUnmarshal](https://www.google.com/search?num=5&q=LPSAFEARRAY_UserUnmarshal+site%3Amicrosoft.com) | oleaut32.dll |  |   
+[LPSAFEARRAY_UserFree](http://msdn2.microsoft.com/en-us/library/87dc42de-70dc-4ae7-9bd0-89add31a5976) | oleaut32.dll | wia_xp.h | [Vanara.PInvoke.OleAut32.LPSAFEARRAY_UserFree](https://github.com/dahall/Vanara/search?l=C%23&q=LPSAFEARRAY_UserFree)  
+[LPSAFEARRAY_UserFree64](http://msdn2.microsoft.com/en-us/library/79D73C90-4F31-4F18-B47D-2FBB4D9ED45C) | oleaut32.dll | wia_xp.h | [Vanara.PInvoke.OleAut32.LPSAFEARRAY_UserFree64](https://github.com/dahall/Vanara/search?l=C%23&q=LPSAFEARRAY_UserFree64)  
+[LPSAFEARRAY_UserMarshal](http://msdn2.microsoft.com/en-us/library/8255d1a0-b102-443d-a10f-8c6bd9047703) | oleaut32.dll | wia_xp.h | [Vanara.PInvoke.OleAut32.LPSAFEARRAY_UserMarshal](https://github.com/dahall/Vanara/search?l=C%23&q=LPSAFEARRAY_UserMarshal)  
+[LPSAFEARRAY_UserMarshal64](http://msdn2.microsoft.com/en-us/library/532CE1FB-FDE0-491A-90D2-CC6F45DB7FDF) | oleaut32.dll | wia_xp.h | [Vanara.PInvoke.OleAut32.LPSAFEARRAY_UserMarshal64](https://github.com/dahall/Vanara/search?l=C%23&q=LPSAFEARRAY_UserMarshal64)  
+[LPSAFEARRAY_UserSize](http://msdn2.microsoft.com/en-us/library/85cb5bc1-5dab-4b50-950e-0d18c403f996) | oleaut32.dll | wia_xp.h | [Vanara.PInvoke.OleAut32.LPSAFEARRAY_UserSize](https://github.com/dahall/Vanara/search?l=C%23&q=LPSAFEARRAY_UserSize)  
+[LPSAFEARRAY_UserSize64](http://msdn2.microsoft.com/en-us/library/5F41D197-027E-4640-833A-4F6239F0DFB0) | oleaut32.dll | wia_xp.h | [Vanara.PInvoke.OleAut32.LPSAFEARRAY_UserSize64](https://github.com/dahall/Vanara/search?l=C%23&q=LPSAFEARRAY_UserSize64)  
+[LPSAFEARRAY_UserUnmarshal](http://msdn2.microsoft.com/en-us/library/8798b8c1-d1c0-4729-b7bd-0329e8b71b0d) | oleaut32.dll | wia_xp.h | [Vanara.PInvoke.OleAut32.LPSAFEARRAY_UserUnmarshal](https://github.com/dahall/Vanara/search?l=C%23&q=LPSAFEARRAY_UserUnmarshal)  
+[LPSAFEARRAY_UserUnmarshal64](https://www.google.com/search?num=5&q=LPSAFEARRAY_UserUnmarshal64+site%3Amicrosoft.com) | oleaut32.dll | wia_xp.h | [Vanara.PInvoke.OleAut32.LPSAFEARRAY_UserUnmarshal64](https://github.com/dahall/Vanara/search?l=C%23&q=LPSAFEARRAY_UserUnmarshal64)  
 [MkParseDisplayName](http://msdn2.microsoft.com/en-us/library/ada46dd3-e2c5-4ff5-89bd-3805f98b247b) | ole32.dll | objbase.h | [Vanara.PInvoke.Ole32.MkParseDisplayName](https://github.com/dahall/Vanara/search?l=C%23&q=MkParseDisplayName)  
 [MonikerCommonPrefixWith](http://msdn2.microsoft.com/en-us/library/6caa8c2e-c3d6-45d5-8efe-74d6a2c4a926) | ole32.dll | objbase.h | [Vanara.PInvoke.Ole32.MonikerCommonPrefixWith](https://github.com/dahall/Vanara/search?l=C%23&q=MonikerCommonPrefixWith)  
 [MonikerRelativePathTo](http://msdn2.microsoft.com/en-us/library/55ab4db3-a94e-48ba-abe3-44963c35e062) | ole32.dll | objbase.h | [Vanara.PInvoke.Ole32.MonikerRelativePathTo](https://github.com/dahall/Vanara/search?l=C%23&q=MonikerRelativePathTo)  
@@ -705,6 +706,8 @@ Native Structure | Header | Managed Structure
 [BIND_OPTS2](http://msdn2.microsoft.com/en-us/library/fb2aa8c1-dddc-480e-b544-61a1074125ef) | objidl.h | [Vanara.PInvoke.Ole32.BIND_OPTS2](https://github.com/dahall/Vanara/search?l=C%23&q=BIND_OPTS2)  
 [BIND_OPTS3](http://msdn2.microsoft.com/en-us/library/7e668313-229a-4d04-b8a2-d5072c87a5b5) | objidl.h | [Vanara.PInvoke.Ole32.BIND_OPTS3](https://github.com/dahall/Vanara/search?l=C%23&q=BIND_OPTS3)  
 [BLOB](https://www.google.com/search?num=5&q=BLOB+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.BLOB](https://github.com/dahall/Vanara/search?l=C%23&q=BLOB)  
+[BYNAME](https://www.google.com/search?num=5&q=BYNAME+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.uCLSSPEC.SpecUnion.BYNAME](https://github.com/dahall/Vanara/search?l=C%23&q=BYNAME)  
+[BYOBJECTID](https://www.google.com/search?num=5&q=BYOBJECTID+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.uCLSSPEC.SpecUnion.BYOBJECTID](https://github.com/dahall/Vanara/search?l=C%23&q=BYOBJECTID)  
 [CLIPDATA](https://www.google.com/search?num=5&q=CLIPDATA+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.CLIPDATA](https://github.com/dahall/Vanara/search?l=C%23&q=CLIPDATA)  
 [CO_MTA_USAGE_COOKIE](https://www.google.com/search?num=5&q=CO_MTA_USAGE_COOKIE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.CO_MTA_USAGE_COOKIE](https://github.com/dahall/Vanara/search?l=C%23&q=CO_MTA_USAGE_COOKIE)  
 [ContextProperty](http://msdn2.microsoft.com/en-us/library/64591e45-5478-4360-8c1f-08b09b5aef8e) | objidl.h | [Vanara.PInvoke.Ole32.ContextProperty](https://github.com/dahall/Vanara/search?l=C%23&q=ContextProperty)  
@@ -744,6 +747,12 @@ Native Structure | Header | Managed Structure
 [STGOPTIONS](http://msdn2.microsoft.com/en-us/library/aa380344) | Objbase.h | [Vanara.PInvoke.Ole32.STGOPTIONS](https://github.com/dahall/Vanara/search?l=C%23&q=STGOPTIONS)  
 [StorageLayout](http://msdn2.microsoft.com/en-us/library/1e4fb36d-077b-44bd-ab6e-8c122ec95a46) | objidl.h | [Vanara.PInvoke.Ole32.StorageLayout](https://github.com/dahall/Vanara/search?l=C%23&q=StorageLayout)  
 [VARIANT](https://www.google.com/search?num=5&q=VARIANT+site%3Amicrosoft.com) | oaidl.h | [Vanara.PInvoke.OleAut32.VARIANT](https://github.com/dahall/Vanara/search?l=C%23&q=VARIANT)  
+[WIA_DATA_CALLBACK_HEADER](https://www.google.com/search?num=5&q=WIA_DATA_CALLBACK_HEADER+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.WIA_DATA_CALLBACK_HEADER](https://github.com/dahall/Vanara/search?l=C%23&q=WIA_DATA_CALLBACK_HEADER)  
+[WIA_DATA_TRANSFER_INFO](https://www.google.com/search?num=5&q=WIA_DATA_TRANSFER_INFO+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.WIA_DATA_TRANSFER_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WIA_DATA_TRANSFER_INFO)  
+[WIA_DEV_CAP](https://www.google.com/search?num=5&q=WIA_DEV_CAP+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.WIA_DEV_CAP](https://github.com/dahall/Vanara/search?l=C%23&q=WIA_DEV_CAP)  
+[WIA_DITHER_PATTERN_DATA](https://www.google.com/search?num=5&q=WIA_DITHER_PATTERN_DATA+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.WIA_DITHER_PATTERN_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=WIA_DITHER_PATTERN_DATA)  
+[WIA_EXTENDED_TRANSFER_INFO](https://www.google.com/search?num=5&q=WIA_EXTENDED_TRANSFER_INFO+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.WIA_EXTENDED_TRANSFER_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WIA_EXTENDED_TRANSFER_INFO)  
+[WIA_FORMAT_INFO](https://www.google.com/search?num=5&q=WIA_FORMAT_INFO+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.WIA_FORMAT_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WIA_FORMAT_INFO)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  
@@ -773,6 +782,10 @@ Native Interface | Header | Managed Interface
 [IEnumSTATPROPSTG](http://msdn2.microsoft.com/en-us/library/e625e52a-5628-4d18-9282-aa1c141c83af) | propidlbase.h | [Vanara.PInvoke.Ole32.IEnumSTATPROPSTG](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumSTATPROPSTG)  
 [IEnumSTATSTG](http://msdn2.microsoft.com/en-us/library/aa379217) | Objidl.h | [Vanara.PInvoke.Ole32.IEnumSTATSTG](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumSTATSTG)  
 [IEnumUnknown](http://msdn2.microsoft.com/en-us/library/5aaed96f-39c1-4201-80d0-a2a8a177b65e) | objidl.h | [Vanara.PInvoke.Ole32.IEnumUnknown](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumUnknown)  
+[IEnumWIA_DEV_CAPS](https://www.google.com/search?num=5&q=IEnumWIA_DEV_CAPS+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.IEnumWIA_DEV_CAPS](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumWIA_DEV_CAPS)  
+[IEnumWIA_DEV_INFO](https://www.google.com/search?num=5&q=IEnumWIA_DEV_INFO+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.IEnumWIA_DEV_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumWIA_DEV_INFO)  
+[IEnumWIA_FORMAT_INFO](https://www.google.com/search?num=5&q=IEnumWIA_FORMAT_INFO+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.IEnumWIA_FORMAT_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumWIA_FORMAT_INFO)  
+[IEnumWiaItem](https://www.google.com/search?num=5&q=IEnumWiaItem+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.IEnumWiaItem](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumWiaItem)  
 [IErrorInfo](http://msdn2.microsoft.com/en-us/library/4dda6909-2d9a-4727-ae0c-b5f90dcfa447) | oaidl.h | [Vanara.PInvoke.OleAut32.IErrorInfo](https://github.com/dahall/Vanara/search?l=C%23&q=IErrorInfo)  
 [IErrorLog](https://www.google.com/search?num=5&q=IErrorLog+site%3Amicrosoft.com) | OAIdl.h | [Vanara.PInvoke.OleAut32.IErrorLog](https://github.com/dahall/Vanara/search?l=C%23&q=IErrorLog)  
 [IFillLockBytes](http://msdn2.microsoft.com/en-us/library/99caf010-415e-11cf-8814-00aa00b569f5) | objidl.h | [Vanara.PInvoke.Ole32.IFillLockBytes](https://github.com/dahall/Vanara/search?l=C%23&q=IFillLockBytes)  
@@ -824,3 +837,10 @@ Native Interface | Header | Managed Interface
 [ISupportErrorInfo](http://msdn2.microsoft.com/en-us/library/42d33066-36b4-4a5b-aa5d-46682e560f32) | oaidl.h | [Vanara.PInvoke.OleAut32.ISupportErrorInfo](https://github.com/dahall/Vanara/search?l=C%23&q=ISupportErrorInfo)  
 [ISurrogate](http://msdn2.microsoft.com/en-us/library/fbed0514-3646-4744-aa7a-4a98f1a12cc0) | objidl.h | [Vanara.PInvoke.Ole32.ISurrogate](https://github.com/dahall/Vanara/search?l=C%23&q=ISurrogate)  
 [ITypeChangeEvents](http://msdn2.microsoft.com/en-us/library/5e286a4b-b36b-40d6-9a39-d572086e5a2d) | oaidl.h | [Vanara.PInvoke.OleAut32.ITypeChangeEvents](https://github.com/dahall/Vanara/search?l=C%23&q=ITypeChangeEvents)  
+[IWiaDataCallback](https://www.google.com/search?num=5&q=IWiaDataCallback+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.IWiaDataCallback](https://github.com/dahall/Vanara/search?l=C%23&q=IWiaDataCallback)  
+[IWiaDataTransfer](https://www.google.com/search?num=5&q=IWiaDataTransfer+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.IWiaDataTransfer](https://github.com/dahall/Vanara/search?l=C%23&q=IWiaDataTransfer)  
+[IWiaDevMgr](https://www.google.com/search?num=5&q=IWiaDevMgr+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.IWiaDevMgr](https://github.com/dahall/Vanara/search?l=C%23&q=IWiaDevMgr)  
+[IWiaEventCallback](https://www.google.com/search?num=5&q=IWiaEventCallback+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.IWiaEventCallback](https://github.com/dahall/Vanara/search?l=C%23&q=IWiaEventCallback)  
+[IWiaItem](https://www.google.com/search?num=5&q=IWiaItem+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.IWiaItem](https://github.com/dahall/Vanara/search?l=C%23&q=IWiaItem)  
+[IWiaItemExtras](https://www.google.com/search?num=5&q=IWiaItemExtras+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.IWiaItemExtras](https://github.com/dahall/Vanara/search?l=C%23&q=IWiaItemExtras)  
+[IWiaPropertyStorage](https://www.google.com/search?num=5&q=IWiaPropertyStorage+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.IWiaPropertyStorage](https://github.com/dahall/Vanara/search?l=C%23&q=IWiaPropertyStorage)  

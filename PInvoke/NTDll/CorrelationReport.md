@@ -1,8 +1,9 @@
 ## Correlation report for ntdll.dll  
-### Methods (4% complete, 23 of 473 functions)  
+### Methods (4% complete, 23 of 515 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Amicrosoft.com) |  |   
+[ApiSetQueryApiSetPresenceEx](https://www.google.com/search?num=5&q=ApiSetQueryApiSetPresenceEx+site%3Amicrosoft.com) |  |   
 [DbgBreakPoint](http://msdn2.microsoft.com/en-us/library/deeac910-2cc3-4a54-bf3b-aeb56d0004dc) | wdm.h | [Vanara.PInvoke.NtDll.DbgBreakPoint](https://github.com/dahall/Vanara/search?l=C%23&q=DbgBreakPoint)  
 [DbgPrint](https://www.google.com/search?num=5&q=DbgPrint+site%3Amicrosoft.com) |  |   
 [DbgPrintEx](https://www.google.com/search?num=5&q=DbgPrintEx+site%3Amicrosoft.com) |  |   
@@ -14,16 +15,19 @@ Native Method | Header | Managed Method
 [LdrDeleteEnclave](https://www.google.com/search?num=5&q=LdrDeleteEnclave+site%3Amicrosoft.com) |  |   
 [LdrFastFailInLoaderCallout](http://msdn2.microsoft.com/en-us/library/5C10BF04-B7C7-4481-A184-FDD418FE5F52) | ntldr.h | [Vanara.PInvoke.NtDll.LdrFastFailInLoaderCallout](https://github.com/dahall/Vanara/search?l=C%23&q=LdrFastFailInLoaderCallout)  
 [LdrInitializeEnclave](https://www.google.com/search?num=5&q=LdrInitializeEnclave+site%3Amicrosoft.com) |  |   
+[LdrIsModuleSxsRedirected](https://www.google.com/search?num=5&q=LdrIsModuleSxsRedirected+site%3Amicrosoft.com) |  |   
 [LdrLoadEnclaveModule](https://www.google.com/search?num=5&q=LdrLoadEnclaveModule+site%3Amicrosoft.com) |  |   
 [LdrRegisterDllNotification](http://msdn2.microsoft.com/en-us/library/c2757aa0-76fa-427a-a4f6-cb26e7f7d0d1) |  | [Vanara.PInvoke.NtDll.LdrRegisterDllNotification](https://github.com/dahall/Vanara/search?l=C%23&q=LdrRegisterDllNotification)  
 [LdrUnregisterDllNotification](http://msdn2.microsoft.com/en-us/library/18c3a027-e3cb-4083-afdc-00f416a70d8c) | ntldr.h | [Vanara.PInvoke.NtDll.LdrUnregisterDllNotification](https://github.com/dahall/Vanara/search?l=C%23&q=LdrUnregisterDllNotification)  
 [NtAllocateVirtualMemory](http://msdn2.microsoft.com/en-us/library/bb82c90d-9bd3-4a23-b171-06a3208e424b) | ntifs.h | [Vanara.PInvoke.NtDll.NtAllocateVirtualMemory](https://github.com/dahall/Vanara/search?l=C%23&q=NtAllocateVirtualMemory)  
+[NtAllocateVirtualMemoryEx](https://www.google.com/search?num=5&q=NtAllocateVirtualMemoryEx+site%3Amicrosoft.com) |  |   
 [NtCallEnclave](https://www.google.com/search?num=5&q=NtCallEnclave+site%3Amicrosoft.com) |  |   
 [NtClose](https://www.google.com/search?num=5&q=NtClose+site%3Amicrosoft.com) | winternl.h | [Vanara.PInvoke.NtDll.NtClose](https://github.com/dahall/Vanara/search?l=C%23&q=NtClose)  
 [NtCommitComplete](http://msdn2.microsoft.com/en-us/library/d0b968bc-bbab-4b6f-bb1f-9e36ac7c1e05) | wdm.h | [Vanara.PInvoke.NtDll.NtCommitComplete](https://github.com/dahall/Vanara/search?l=C%23&q=NtCommitComplete)  
 [NtCommitEnlistment](http://msdn2.microsoft.com/en-us/library/9c7f3e24-1d7c-450e-bbef-df0479911bc6) | wdm.h | [Vanara.PInvoke.NtDll.NtCommitEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=NtCommitEnlistment)  
 [NtCommitTransaction](http://msdn2.microsoft.com/en-us/library/145646f3-ff90-41d6-bf76-947cdf93b489) | wdm.h | [Vanara.PInvoke.NtDll.NtCommitTransaction](https://github.com/dahall/Vanara/search?l=C%23&q=NtCommitTransaction)  
 [NtCompareTokens](http://msdn2.microsoft.com/en-us/library/3a07ddc6-9748-4f96-a597-2af6b4282e56) |  | [Vanara.PInvoke.NtDll.NtCompareTokens](https://github.com/dahall/Vanara/search?l=C%23&q=NtCompareTokens)  
+[NtCreateCrossVmEvent](https://www.google.com/search?num=5&q=NtCreateCrossVmEvent+site%3Amicrosoft.com) |  |   
 [NtCreateEnlistment](http://msdn2.microsoft.com/en-us/library/5ffd8262-10b3-4c40-bd3e-050271338508) | wdm.h | [Vanara.PInvoke.NtDll.NtCreateEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateEnlistment)  
 [NtCreateFile](https://www.google.com/search?num=5&q=NtCreateFile+site%3Amicrosoft.com) |  |   
 [NtCreateFileA](http://msdn2.microsoft.com/en-us/library/c40b99be-5627-44f3-9853-c3ae31a8035c) | ntifs.h | [Vanara.PInvoke.NtDll.NtCreateFile](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateFile)  
@@ -31,6 +35,7 @@ Native Method | Header | Managed Method
 [NtCreateResourceManager](http://msdn2.microsoft.com/en-us/library/4812eeb4-134f-4ecb-870b-dbab04c1137b) | wdm.h | [Vanara.PInvoke.NtDll.NtCreateResourceManager](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateResourceManager)  
 [NtCreateSection](https://www.google.com/search?num=5&q=NtCreateSection+site%3Amicrosoft.com) |  |   
 [NtCreateSectionA](http://msdn2.microsoft.com/en-us/library/805d7eff-19be-47a1-acc9-1b97e5493031) | ntifs.h | [Vanara.PInvoke.NtDll.NtCreateSection](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateSection)  
+[NtCreateSectionEx](https://www.google.com/search?num=5&q=NtCreateSectionEx+site%3Amicrosoft.com) |  |   
 [NtCreateSectionW](http://msdn2.microsoft.com/en-us/library/805d7eff-19be-47a1-acc9-1b97e5493031) | ntifs.h | [Vanara.PInvoke.NtDll.NtCreateSection](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateSection)  
 [NtCreateTransaction](https://www.google.com/search?num=5&q=NtCreateTransaction+site%3Amicrosoft.com) |  |   
 [NtCreateTransactionA](http://msdn2.microsoft.com/en-us/library/b4c2dd68-3c1a-46d3-ab9c-be2291ed80f4) | wdm.h | [Vanara.PInvoke.NtDll.NtCreateTransaction](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateTransaction)  
@@ -47,6 +52,8 @@ Native Method | Header | Managed Method
 [NtGetCurrentProcessorNumber](https://www.google.com/search?num=5&q=NtGetCurrentProcessorNumber+site%3Amicrosoft.com) |  |   
 [NtGetNotificationResourceManager](https://www.google.com/search?num=5&q=NtGetNotificationResourceManager+site%3Amicrosoft.com) |  |   
 [NtLockFile](https://www.google.com/search?num=5&q=NtLockFile+site%3Amicrosoft.com) |  |   
+[NtManageHotPatch](https://www.google.com/search?num=5&q=NtManageHotPatch+site%3Amicrosoft.com) |  |   
+[NtMapViewOfSectionEx](https://www.google.com/search?num=5&q=NtMapViewOfSectionEx+site%3Amicrosoft.com) |  |   
 [NtNotifyChangeDirectoryFileEx](https://www.google.com/search?num=5&q=NtNotifyChangeDirectoryFileEx+site%3Amicrosoft.com) |  |   
 [NtNotifyChangeMultipleKeys](https://www.google.com/search?num=5&q=NtNotifyChangeMultipleKeys+site%3Amicrosoft.com) |  |   
 [NtOpenDirectoryObject](https://www.google.com/search?num=5&q=NtOpenDirectoryObject+site%3Amicrosoft.com) |  |   
@@ -143,6 +150,7 @@ Native Method | Header | Managed Method
 [RtlCompareString](https://www.google.com/search?num=5&q=RtlCompareString+site%3Amicrosoft.com) |  |   
 [RtlCompareUnicodeString](https://www.google.com/search?num=5&q=RtlCompareUnicodeString+site%3Amicrosoft.com) |  |   
 [RtlCompressBuffer](https://www.google.com/search?num=5&q=RtlCompressBuffer+site%3Amicrosoft.com) |  |   
+[RtlConstructCrossVmEventPath](https://www.google.com/search?num=5&q=RtlConstructCrossVmEventPath+site%3Amicrosoft.com) |  |   
 [RtlConvertSidToUnicodeString](https://www.google.com/search?num=5&q=RtlConvertSidToUnicodeString+site%3Amicrosoft.com) |  |   
 [RtlCopyLuid](https://www.google.com/search?num=5&q=RtlCopyLuid+site%3Amicrosoft.com) |  |   
 [RtlCopyMemoryNonTemporal](https://www.google.com/search?num=5&q=RtlCopyMemoryNonTemporal+site%3Amicrosoft.com) |  |   
@@ -151,10 +159,12 @@ Native Method | Header | Managed Method
 [RtlCopyUnicodeString](https://www.google.com/search?num=5&q=RtlCopyUnicodeString+site%3Amicrosoft.com) |  |   
 [RtlCreateAcl](https://www.google.com/search?num=5&q=RtlCreateAcl+site%3Amicrosoft.com) |  |   
 [RtlCreateHeap](https://www.google.com/search?num=5&q=RtlCreateHeap+site%3Amicrosoft.com) |  |   
+[RtlCreateProcessParametersWithTemplate](https://www.google.com/search?num=5&q=RtlCreateProcessParametersWithTemplate+site%3Amicrosoft.com) |  |   
 [RtlCreateRegistryKey](https://www.google.com/search?num=5&q=RtlCreateRegistryKey+site%3Amicrosoft.com) |  |   
 [RtlCreateSecurityDescriptor](https://www.google.com/search?num=5&q=RtlCreateSecurityDescriptor+site%3Amicrosoft.com) |  |   
 [RtlCreateSystemVolumeInformationFolder](https://www.google.com/search?num=5&q=RtlCreateSystemVolumeInformationFolder+site%3Amicrosoft.com) |  |   
 [RtlCreateUnicodeString](https://www.google.com/search?num=5&q=RtlCreateUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlCreateUserFiberShadowStack](https://www.google.com/search?num=5&q=RtlCreateUserFiberShadowStack+site%3Amicrosoft.com) |  |   
 [RtlCustomCPToUnicodeN](https://www.google.com/search?num=5&q=RtlCustomCPToUnicodeN+site%3Amicrosoft.com) |  |   
 [RtlDecompressBuffer](https://www.google.com/search?num=5&q=RtlDecompressBuffer+site%3Amicrosoft.com) |  |   
 [RtlDecompressBufferEx](https://www.google.com/search?num=5&q=RtlDecompressBufferEx+site%3Amicrosoft.com) |  |   
@@ -168,6 +178,7 @@ Native Method | Header | Managed Method
 [RtlDeleteNoSplay](https://www.google.com/search?num=5&q=RtlDeleteNoSplay+site%3Amicrosoft.com) |  |   
 [RtlDeleteRegistryValue](https://www.google.com/search?num=5&q=RtlDeleteRegistryValue+site%3Amicrosoft.com) |  |   
 [RtlDestroyHeap](https://www.google.com/search?num=5&q=RtlDestroyHeap+site%3Amicrosoft.com) |  |   
+[RtlDoesNameContainWildCards](https://www.google.com/search?num=5&q=RtlDoesNameContainWildCards+site%3Amicrosoft.com) |  |   
 [RtlDosLongPathNameToNtPathName_U_WithStatus](https://www.google.com/search?num=5&q=RtlDosLongPathNameToNtPathName_U_WithStatus+site%3Amicrosoft.com) |  |   
 [RtlDosLongPathNameToRelativeNtPathName_U_WithStatus](https://www.google.com/search?num=5&q=RtlDosLongPathNameToRelativeNtPathName_U_WithStatus+site%3Amicrosoft.com) |  |   
 [RtlDowncaseUnicodeString](https://www.google.com/search?num=5&q=RtlDowncaseUnicodeString+site%3Amicrosoft.com) |  |   
@@ -185,6 +196,8 @@ Native Method | Header | Managed Method
 [RtlEthernetAddressToString](https://www.google.com/search?num=5&q=RtlEthernetAddressToStringA+site%3Amicrosoft.com) |  |   
 [RtlEthernetStringToAddress](https://www.google.com/search?num=5&q=RtlEthernetStringToAddressA+site%3Amicrosoft.com) |  |   
 [RtlExtendCorrelationVector](https://www.google.com/search?num=5&q=RtlExtendCorrelationVector+site%3Amicrosoft.com) |  |   
+[RtlFillMemoryNonTemporal](https://www.google.com/search?num=5&q=RtlFillMemoryNonTemporal+site%3Amicrosoft.com) |  |   
+[RtlFillNonVolatileMemory](https://www.google.com/search?num=5&q=RtlFillNonVolatileMemory+site%3Amicrosoft.com) |  |   
 [RtlFindClearBits](https://www.google.com/search?num=5&q=RtlFindClearBits+site%3Amicrosoft.com) |  |   
 [RtlFindClearBitsAndSet](https://www.google.com/search?num=5&q=RtlFindClearBitsAndSet+site%3Amicrosoft.com) |  |   
 [RtlFindClearRuns](https://www.google.com/search?num=5&q=RtlFindClearRuns+site%3Amicrosoft.com) |  |   
@@ -196,6 +209,8 @@ Native Method | Header | Managed Method
 [RtlFindSetBits](https://www.google.com/search?num=5&q=RtlFindSetBits+site%3Amicrosoft.com) |  |   
 [RtlFindSetBitsAndClear](https://www.google.com/search?num=5&q=RtlFindSetBitsAndClear+site%3Amicrosoft.com) |  |   
 [RtlFirstEntrySList](https://www.google.com/search?num=5&q=RtlFirstEntrySList+site%3Amicrosoft.com) |  |   
+[RtlFlsGetValue](https://www.google.com/search?num=5&q=RtlFlsGetValue+site%3Amicrosoft.com) |  |   
+[RtlFlsSetValue](https://www.google.com/search?num=5&q=RtlFlsSetValue+site%3Amicrosoft.com) |  |   
 [RtlFlushNonVolatileMemory](https://www.google.com/search?num=5&q=RtlFlushNonVolatileMemory+site%3Amicrosoft.com) |  |   
 [RtlFlushNonVolatileMemoryRanges](https://www.google.com/search?num=5&q=RtlFlushNonVolatileMemoryRanges+site%3Amicrosoft.com) |  |   
 [RtlFreeAnsiString](https://www.google.com/search?num=5&q=RtlFreeAnsiString+site%3Amicrosoft.com) |  |   
@@ -203,6 +218,7 @@ Native Method | Header | Managed Method
 [RtlFreeNonVolatileToken](https://www.google.com/search?num=5&q=RtlFreeNonVolatileToken+site%3Amicrosoft.com) |  |   
 [RtlFreeOemString](https://www.google.com/search?num=5&q=RtlFreeOemString+site%3Amicrosoft.com) |  |   
 [RtlFreeUnicodeString](https://www.google.com/search?num=5&q=RtlFreeUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlFreeUserFiberShadowStack](https://www.google.com/search?num=5&q=RtlFreeUserFiberShadowStack+site%3Amicrosoft.com) |  |   
 [RtlGenerate8dot3Name](https://www.google.com/search?num=5&q=RtlGenerate8dot3Name+site%3Amicrosoft.com) |  |   
 [RtlGetAce](https://www.google.com/search?num=5&q=RtlGetAce+site%3Amicrosoft.com) |  |   
 [RtlGetCompressionWorkSpaceSize](https://www.google.com/search?num=5&q=RtlGetCompressionWorkSpaceSize+site%3Amicrosoft.com) |  |   
@@ -210,10 +226,13 @@ Native Method | Header | Managed Method
 [RtlGetElementGenericTable](https://www.google.com/search?num=5&q=RtlGetElementGenericTable+site%3Amicrosoft.com) |  |   
 [RtlGetElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlGetElementGenericTableAvl+site%3Amicrosoft.com) |  |   
 [RtlGetEnabledExtendedFeatures](https://www.google.com/search?num=5&q=RtlGetEnabledExtendedFeatures+site%3Amicrosoft.com) |  |   
+[RtlGetExtendedContextLength2](https://www.google.com/search?num=5&q=RtlGetExtendedContextLength2+site%3Amicrosoft.com) |  |   
 [RtlGetFunctionTableListHead](https://www.google.com/search?num=5&q=RtlGetFunctionTableListHead+site%3Amicrosoft.com) |  |   
 [RtlGetGroupSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetGroupSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlGetMultiTimePrecise](https://www.google.com/search?num=5&q=RtlGetMultiTimePrecise+site%3Amicrosoft.com) |  |   
 [RtlGetNonVolatileToken](https://www.google.com/search?num=5&q=RtlGetNonVolatileToken+site%3Amicrosoft.com) |  |   
 [RtlGetOwnerSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetOwnerSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlGetPersistedStateLocation](https://www.google.com/search?num=5&q=RtlGetPersistedStateLocation+site%3Amicrosoft.com) |  |   
 [RtlGetSaclSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetSaclSecurityDescriptor+site%3Amicrosoft.com) |  |   
 [RtlGetSystemBootStatus](https://www.google.com/search?num=5&q=RtlGetSystemBootStatus+site%3Amicrosoft.com) |  |   
 [RtlGetSystemBootStatusEx](https://www.google.com/search?num=5&q=RtlGetSystemBootStatusEx+site%3Amicrosoft.com) |  |   
@@ -229,6 +248,7 @@ Native Method | Header | Managed Method
 [RtlInitializeBitMap](https://www.google.com/search?num=5&q=RtlInitializeBitMap+site%3Amicrosoft.com) |  |   
 [RtlInitializeBitMapEx](https://www.google.com/search?num=5&q=RtlInitializeBitMapEx+site%3Amicrosoft.com) |  |   
 [RtlInitializeCorrelationVector](https://www.google.com/search?num=5&q=RtlInitializeCorrelationVector+site%3Amicrosoft.com) |  |   
+[RtlInitializeExtendedContext2](https://www.google.com/search?num=5&q=RtlInitializeExtendedContext2+site%3Amicrosoft.com) |  |   
 [RtlInitializeGenericTable](https://www.google.com/search?num=5&q=RtlInitializeGenericTable+site%3Amicrosoft.com) |  |   
 [RtlInitializeGenericTableAvl](https://www.google.com/search?num=5&q=RtlInitializeGenericTableAvl+site%3Amicrosoft.com) |  |   
 [RtlInitializeSid](https://www.google.com/search?num=5&q=RtlInitializeSid+site%3Amicrosoft.com) |  |   
@@ -261,6 +281,7 @@ Native Method | Header | Managed Method
 [RtlIsGenericTableEmpty](https://www.google.com/search?num=5&q=RtlIsGenericTableEmpty+site%3Amicrosoft.com) |  |   
 [RtlIsGenericTableEmptyAvl](https://www.google.com/search?num=5&q=RtlIsGenericTableEmptyAvl+site%3Amicrosoft.com) |  |   
 [RtlIsNameInExpression](https://www.google.com/search?num=5&q=RtlIsNameInExpression+site%3Amicrosoft.com) |  |   
+[RtlIsNameInUnUpcasedExpression](https://www.google.com/search?num=5&q=RtlIsNameInUnUpcasedExpression+site%3Amicrosoft.com) |  |   
 [RtlIsNameLegalDOS8Dot3](https://www.google.com/search?num=5&q=RtlIsNameLegalDOS8Dot3+site%3Amicrosoft.com) |  |   
 [RtlIsPartialPlaceholder](https://www.google.com/search?num=5&q=RtlIsPartialPlaceholder+site%3Amicrosoft.com) |  |   
 [RtlIsPartialPlaceholderFileHandle](https://www.google.com/search?num=5&q=RtlIsPartialPlaceholderFileHandle+site%3Amicrosoft.com) |  |   
@@ -289,10 +310,19 @@ Native Method | Header | Managed Method
 [RtlOemToUnicodeN](https://www.google.com/search?num=5&q=RtlOemToUnicodeN+site%3Amicrosoft.com) |  |   
 [RtlPcToFileHeader](https://www.google.com/search?num=5&q=RtlPcToFileHeader+site%3Amicrosoft.com) |  |   
 [RtlPrefixUnicodeString](https://www.google.com/search?num=5&q=RtlPrefixUnicodeString+site%3Amicrosoft.com) |  |   
+[RtlpTimeFieldsToTime](https://www.google.com/search?num=5&q=RtlpTimeFieldsToTime+site%3Amicrosoft.com) |  |   
+[RtlpTimeToTimeFields](https://www.google.com/search?num=5&q=RtlpTimeToTimeFields+site%3Amicrosoft.com) |  |   
+[RtlpWow64CtxFromAmd64](https://www.google.com/search?num=5&q=RtlpWow64CtxFromAmd64+site%3Amicrosoft.com) |  |   
+[RtlpWow64GetContextOnAmd64](https://www.google.com/search?num=5&q=RtlpWow64GetContextOnAmd64+site%3Amicrosoft.com) |  |   
+[RtlpWow64SetContextOnAmd64](https://www.google.com/search?num=5&q=RtlpWow64SetContextOnAmd64+site%3Amicrosoft.com) |  |   
 [RtlQueryDepthSList](https://www.google.com/search?num=5&q=RtlQueryDepthSList+site%3Amicrosoft.com) |  |   
 [RtlQueryImageMitigationPolicy](https://www.google.com/search?num=5&q=RtlQueryImageMitigationPolicy+site%3Amicrosoft.com) |  |   
+[RtlQueryProcessPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlQueryProcessPlaceholderCompatibilityMode+site%3Amicrosoft.com) |  |   
 [RtlQueryRegistryValues](https://www.google.com/search?num=5&q=RtlQueryRegistryValues+site%3Amicrosoft.com) |  |   
+[RtlQueryRegistryValueWithFallback](https://www.google.com/search?num=5&q=RtlQueryRegistryValueWithFallback+site%3Amicrosoft.com) |  |   
 [RtlQueryThreadPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlQueryThreadPlaceholderCompatibilityMode+site%3Amicrosoft.com) |  |   
+[RtlQueryTokenHostIdAsUlong64](https://www.google.com/search?num=5&q=RtlQueryTokenHostIdAsUlong64+site%3Amicrosoft.com) |  |   
+[RtlRaiseCustomSystemEventTrigger](https://www.google.com/search?num=5&q=RtlRaiseCustomSystemEventTrigger+site%3Amicrosoft.com) |  |   
 [RtlRaiseException](https://www.google.com/search?num=5&q=RtlRaiseException+site%3Amicrosoft.com) |  |   
 [RtlRandom](https://www.google.com/search?num=5&q=RtlRandom+site%3Amicrosoft.com) |  |   
 [RtlRandomEx](https://www.google.com/search?num=5&q=RtlRandomEx+site%3Amicrosoft.com) |  |   
@@ -313,6 +343,7 @@ Native Method | Header | Managed Method
 [RtlSetGroupSecurityDescriptor](https://www.google.com/search?num=5&q=RtlSetGroupSecurityDescriptor+site%3Amicrosoft.com) |  |   
 [RtlSetImageMitigationPolicy](https://www.google.com/search?num=5&q=RtlSetImageMitigationPolicy+site%3Amicrosoft.com) |  |   
 [RtlSetOwnerSecurityDescriptor](https://www.google.com/search?num=5&q=RtlSetOwnerSecurityDescriptor+site%3Amicrosoft.com) |  |   
+[RtlSetProcessPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlSetProcessPlaceholderCompatibilityMode+site%3Amicrosoft.com) |  |   
 [RtlSetProxiedProcessId](https://www.google.com/search?num=5&q=RtlSetProxiedProcessId+site%3Amicrosoft.com) |  |   
 [RtlSetSystemBootStatus](https://www.google.com/search?num=5&q=RtlSetSystemBootStatus+site%3Amicrosoft.com) |  |   
 [RtlSetSystemBootStatusEx](https://www.google.com/search?num=5&q=RtlSetSystemBootStatusEx+site%3Amicrosoft.com) |  |   
@@ -328,6 +359,7 @@ Native Method | Header | Managed Method
 [RtlTimeToSecondsSince1970](https://www.google.com/search?num=5&q=RtlTimeToSecondsSince1970+site%3Amicrosoft.com) |  |   
 [RtlTimeToSecondsSince1980](https://www.google.com/search?num=5&q=RtlTimeToSecondsSince1980+site%3Amicrosoft.com) |  |   
 [RtlTimeToTimeFields](https://www.google.com/search?num=5&q=RtlTimeToTimeFields+site%3Amicrosoft.com) |  |   
+[RtlUdiv128](https://www.google.com/search?num=5&q=RtlUdiv128+site%3Amicrosoft.com) |  |   
 [RtlUnicodeStringToAnsiString](https://www.google.com/search?num=5&q=RtlUnicodeStringToAnsiString+site%3Amicrosoft.com) |  |   
 [RtlUnicodeStringToCountedOemString](https://www.google.com/search?num=5&q=RtlUnicodeStringToCountedOemString+site%3Amicrosoft.com) |  |   
 [RtlUnicodeStringToInteger](https://www.google.com/search?num=5&q=RtlUnicodeStringToInteger+site%3Amicrosoft.com) |  |   
@@ -348,6 +380,7 @@ Native Method | Header | Managed Method
 [RtlUpcaseUnicodeToOemN](https://www.google.com/search?num=5&q=RtlUpcaseUnicodeToOemN+site%3Amicrosoft.com) |  |   
 [RtlUpperChar](https://www.google.com/search?num=5&q=RtlUpperChar+site%3Amicrosoft.com) |  |   
 [RtlUpperString](https://www.google.com/search?num=5&q=RtlUpperString+site%3Amicrosoft.com) |  |   
+[RtlUserFiberStart](https://www.google.com/search?num=5&q=RtlUserFiberStart+site%3Amicrosoft.com) |  |   
 [RtlUTF8ToUnicodeN](https://www.google.com/search?num=5&q=RtlUTF8ToUnicodeN+site%3Amicrosoft.com) |  |   
 [RtlValidateCorrelationVector](https://www.google.com/search?num=5&q=RtlValidateCorrelationVector+site%3Amicrosoft.com) |  |   
 [RtlValidRelativeSecurityDescriptor](https://www.google.com/search?num=5&q=RtlValidRelativeSecurityDescriptor+site%3Amicrosoft.com) |  |   
@@ -355,21 +388,27 @@ Native Method | Header | Managed Method
 [RtlVirtualUnwind](https://www.google.com/search?num=5&q=RtlVirtualUnwind+site%3Amicrosoft.com) |  |   
 [RtlWow64GetEquivalentMachineCHPE](https://www.google.com/search?num=5&q=RtlWow64GetEquivalentMachineCHPE+site%3Amicrosoft.com) |  |   
 [RtlWow64GetSharedInfoProcess](https://www.google.com/search?num=5&q=RtlWow64GetSharedInfoProcess+site%3Amicrosoft.com) |  |   
-[RtlWow64PopAllCrossProcessWork](https://www.google.com/search?num=5&q=RtlWow64PopAllCrossProcessWork+site%3Amicrosoft.com) |  |   
-[RtlWow64PopCrossProcessWork](https://www.google.com/search?num=5&q=RtlWow64PopCrossProcessWork+site%3Amicrosoft.com) |  |   
-[RtlWow64PushCrossProcessWork](https://www.google.com/search?num=5&q=RtlWow64PushCrossProcessWork+site%3Amicrosoft.com) |  |   
+[RtlWow64PopAllCrossProcessWorkFromWorkList](https://www.google.com/search?num=5&q=RtlWow64PopAllCrossProcessWorkFromWorkList+site%3Amicrosoft.com) |  |   
+[RtlWow64PopCrossProcessWorkFromFreeList](https://www.google.com/search?num=5&q=RtlWow64PopCrossProcessWorkFromFreeList+site%3Amicrosoft.com) |  |   
+[RtlWow64PushCrossProcessWorkOntoFreeList](https://www.google.com/search?num=5&q=RtlWow64PushCrossProcessWorkOntoFreeList+site%3Amicrosoft.com) |  |   
+[RtlWow64PushCrossProcessWorkOntoWorkList](https://www.google.com/search?num=5&q=RtlWow64PushCrossProcessWorkOntoWorkList+site%3Amicrosoft.com) |  |   
+[RtlWow64RequestCrossProcessHeavyFlush](https://www.google.com/search?num=5&q=RtlWow64RequestCrossProcessHeavyFlush+site%3Amicrosoft.com) |  |   
+[RtlWow64SuspendProcess](https://www.google.com/search?num=5&q=RtlWow64SuspendProcess+site%3Amicrosoft.com) |  |   
 [RtlWriteNonVolatileMemory](https://www.google.com/search?num=5&q=RtlWriteNonVolatileMemory+site%3Amicrosoft.com) |  |   
 [RtlWriteRegistryValue](https://www.google.com/search?num=5&q=RtlWriteRegistryValue+site%3Amicrosoft.com) |  |   
+[TpSetPoolThreadCpuSets](https://www.google.com/search?num=5&q=TpSetPoolThreadCpuSets+site%3Amicrosoft.com) |  |   
 [vDbgPrintEx](https://www.google.com/search?num=5&q=vDbgPrintEx+site%3Amicrosoft.com) |  |   
 [vDbgPrintExWithPrefix](https://www.google.com/search?num=5&q=vDbgPrintExWithPrefix+site%3Amicrosoft.com) |  |   
 [VerSetConditionMask](https://www.google.com/search?num=5&q=VerSetConditionMask+site%3Amicrosoft.com) |  |   
 [ZwAllocateLocallyUniqueId](https://www.google.com/search?num=5&q=ZwAllocateLocallyUniqueId+site%3Amicrosoft.com) |  |   
 [ZwAllocateVirtualMemory](https://www.google.com/search?num=5&q=ZwAllocateVirtualMemory+site%3Amicrosoft.com) |  |   
+[ZwAllocateVirtualMemoryEx](https://www.google.com/search?num=5&q=ZwAllocateVirtualMemoryEx+site%3Amicrosoft.com) |  |   
 [ZwCallEnclave](https://www.google.com/search?num=5&q=ZwCallEnclave+site%3Amicrosoft.com) |  |   
 [ZwClose](https://www.google.com/search?num=5&q=ZwClose+site%3Amicrosoft.com) |  |   
 [ZwCommitComplete](https://www.google.com/search?num=5&q=ZwCommitComplete+site%3Amicrosoft.com) |  |   
 [ZwCommitEnlistment](https://www.google.com/search?num=5&q=ZwCommitEnlistment+site%3Amicrosoft.com) |  |   
 [ZwCommitTransaction](https://www.google.com/search?num=5&q=ZwCommitTransaction+site%3Amicrosoft.com) |  |   
+[ZwCreateCrossVmEvent](https://www.google.com/search?num=5&q=ZwCreateCrossVmEvent+site%3Amicrosoft.com) |  |   
 [ZwCreateDirectoryObject](https://www.google.com/search?num=5&q=ZwCreateDirectoryObject+site%3Amicrosoft.com) |  |   
 [ZwCreateEnlistment](https://www.google.com/search?num=5&q=ZwCreateEnlistment+site%3Amicrosoft.com) |  |   
 [ZwCreateEvent](https://www.google.com/search?num=5&q=ZwCreateEvent+site%3Amicrosoft.com) |  |   
@@ -378,6 +417,7 @@ Native Method | Header | Managed Method
 [ZwCreateKeyTransacted](https://www.google.com/search?num=5&q=ZwCreateKeyTransacted+site%3Amicrosoft.com) |  |   
 [ZwCreateResourceManager](https://www.google.com/search?num=5&q=ZwCreateResourceManager+site%3Amicrosoft.com) |  |   
 [ZwCreateSection](https://www.google.com/search?num=5&q=ZwCreateSection+site%3Amicrosoft.com) |  |   
+[ZwCreateSectionEx](https://www.google.com/search?num=5&q=ZwCreateSectionEx+site%3Amicrosoft.com) |  |   
 [ZwCreateTransaction](https://www.google.com/search?num=5&q=ZwCreateTransaction+site%3Amicrosoft.com) |  |   
 [ZwCreateTransactionManager](https://www.google.com/search?num=5&q=ZwCreateTransactionManager+site%3Amicrosoft.com) |  |   
 [ZwDeleteFile](https://www.google.com/search?num=5&q=ZwDeleteFile+site%3Amicrosoft.com) |  |   
@@ -398,7 +438,9 @@ Native Method | Header | Managed Method
 [ZwLoadDriver](https://www.google.com/search?num=5&q=ZwLoadDriver+site%3Amicrosoft.com) |  |   
 [ZwLockFile](https://www.google.com/search?num=5&q=ZwLockFile+site%3Amicrosoft.com) |  |   
 [ZwMakeTemporaryObject](https://www.google.com/search?num=5&q=ZwMakeTemporaryObject+site%3Amicrosoft.com) |  |   
+[ZwManageHotPatch](https://www.google.com/search?num=5&q=ZwManageHotPatch+site%3Amicrosoft.com) |  |   
 [ZwMapViewOfSection](https://www.google.com/search?num=5&q=ZwMapViewOfSection+site%3Amicrosoft.com) |  |   
+[ZwMapViewOfSectionEx](https://www.google.com/search?num=5&q=ZwMapViewOfSectionEx+site%3Amicrosoft.com) |  |   
 [ZwNotifyChangeDirectoryFileEx](https://www.google.com/search?num=5&q=ZwNotifyChangeDirectoryFileEx+site%3Amicrosoft.com) |  |   
 [ZwNotifyChangeKey](https://www.google.com/search?num=5&q=ZwNotifyChangeKey+site%3Amicrosoft.com) |  |   
 [ZwOpenDirectoryObject](https://www.google.com/search?num=5&q=ZwOpenDirectoryObject+site%3Amicrosoft.com) |  |   

@@ -7,7 +7,7 @@
     <Description>PInvoke API (methods, structures and constants imported from UrlMon.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.7</VersionPrefix>
+    <VersionPrefix>3.1.8</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.UrlMon</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -28,10 +28,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-AsyncGetClassBits, AsyncInstallDistributionUnit, BindAsyncMoniker, CAuthenticateHostUI_CreateInstance, CDLGetLongPathName, CoGetClassObjectFromURL, CoInstall, CoInternetCanonicalizeIUri, CoInternetCombineIUri, CoInternetCombineUrl, CoInternetCombineUrlEx, CoInternetCompareUrl, CoInternetCreateSecurityManager, CoInternetCreateZoneManager, CoInternetFeatureSettingsChanged, CoInternetGetMobileBrowserAppCompatMode, CoInternetGetMobileBrowserForceDesktopMode, CoInternetGetProtocolFlags, CoInternetGetSecurityUrl, CoInternetGetSecurityUrlEx, CoInternetGetSession, CoInternetIsFeatureEnabled, CoInternetIsFeatureEnabledForIUri, CoInternetIsFeatureEnabledForUrl, CoInternetIsFeatureZoneElevationEnabled, CoInternetParseIUri, CoInternetParseUrl, CoInternetQueryInfo, CoInternetSetFeatureEnabled, CoInternetSetMobileBrowserAppCompatMode, CoInternetSetMobileBrowserForceDesktopMode, CompareSecurityIds, CompatFlagsFromClsid, CopyBindInfo, CopyStgMedium, CORPolicyProvider, CreateAsyncBindCtx, CreateAsyncBindCtxEx, CreateFormatEnumerator, CreateIUriBuilder, CreateUri, CreateUriFromMultiByteString, CreateUriPriv, CreateUriWithFragment, CreateURLMoniker, CreateURLMonikerEx, CreateURLMonikerEx2, DllRegisterServerEx, Extract, FaultInIEFeature, FileBearsMarkOfTheWeb, FindMediaType, FindMediaTypeClass, FindMimeFromData, GetAddSitesFileUrl, GetClassFileOrMime, GetClassURL, GetComponentIDFromCLSSPEC, GetIDNFlagsForUri, GetIUriPriv, GetIUriPriv2, GetLabelsFromNamedHost, GetMarkOfTheWeb, GetPortFromUrlScheme, GetPropertyFromName, GetPropertyName, GetSoftwareUpdateInfo, GetUrlmonThreadNotificationHwnd, GetZoneFromAlternateDataStreamEx, HlinkGoBack, HlinkGoForward, HlinkNavigateMoniker, HlinkNavigateString, HlinkSimpleNavigateToMoniker, HlinkSimpleNavigateToString, IECompatLogCSSFix, IEGetUserPrivateNamespaceName, IEInstallScope, IntlPercentEncodeNormalize, IsAsyncMoniker, IsDWORDProperty, IsIntranetAvailable, IsJITInProgress, IsLoggingEnabled, IsStringProperty, IsValidURL, LaunchEdgeForDebug, MkParseDisplayNameEx, ObtainUserAgentString, PrivateCoInstall, QueryAssociations, QueryClsidAssociation, RegisterBindStatusCallback, RegisterFormatEnumerator, RegisterMediaTypeClass, RegisterMediaTypes, RegisterWebPlatformPermanentSecurityManager, ReleaseBindInfo, RestrictHTTP2, RevokeBindStatusCallback, RevokeFormatEnumerator, SetAccessForIEAppContainer, SetSoftwareUpdateAdvertisementState, ShouldDisplayPunycodeForUri, ShouldShowIntranetWarningSecband, ShowTrustAlertDialog, UnregisterWebPlatformPermanentSecurityManager, URLDownload, URLDownloadToCacheFile, URLDownloadToFile, UrlMkBuildVersion, UrlMkGetSessionOption, UrlMkSetSessionOption, UrlmonCleanupCurrentThread, URLOpenBlockingStream, URLOpenPullStream, URLOpenStream, WriteHitLogging, ZonesReInit
+AsyncInstallDistributionUnit, CoGetClassObjectFromURL, CoInternetCombineIUri, CoInternetCombineUrl, CoInternetCombineUrlEx, CoInternetCompareUrl, CoInternetGetSession, CoInternetParseIUri, CoInternetParseUrl, CoInternetQueryInfo, CompareSecurityIds, CompatFlagsFromClsid, CopyBindInfo, CopyStgMedium, CreateAsyncBindCtx, CreateAsyncBindCtxEx, CreateFormatEnumerator, CreateIUriBuilder, CreateUri, CreateUriFromMultiByteString, CreateUriWithFragment, CreateURLMoniker, CreateURLMonikerEx, CreateURLMonikerEx2, FaultInIEFeature, FindMediaType, FindMediaTypeClass, FindMimeFromData, GetClassFileOrMime, GetComponentIDFromCLSSPEC, IEInstallScope, IsAsyncMoniker, IsValidURL, MkParseDisplayNameEx, ObtainUserAgentString, RegisterBindStatusCallback, RegisterFormatEnumerator, RegisterMediaTypeClass, RegisterMediaTypes, ReleaseBindInfo, RevokeBindStatusCallback, RevokeFormatEnumerator, URLDownloadToCacheFile, URLDownloadToFile, UrlMkGetSessionOption, UrlMkSetSessionOption, URLOpenBlockingStream, URLOpenPullStream, URLOpenStream
+
+Structures
+BINDINFO
 
 Interfaces
-IUri
+IBinding, IBindStatusCallback, IInternetSession, IUri, IUriBuilder
 
 </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

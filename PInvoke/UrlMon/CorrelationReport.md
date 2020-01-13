@@ -1,127 +1,65 @@
 ## Correlation report for urlmon.dll  
-### Methods (0% complete, 1 of 119 functions)  
+### Methods (100% complete, 49 of 49 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[AsyncGetClassBits](https://www.google.com/search?num=5&q=AsyncGetClassBits+site%3Amicrosoft.com) |  |   
-[AsyncInstallDistributionUnit](https://www.google.com/search?num=5&q=AsyncInstallDistributionUnit+site%3Amicrosoft.com) |  |   
-[BindAsyncMoniker](https://www.google.com/search?num=5&q=BindAsyncMoniker+site%3Amicrosoft.com) |  |   
-[CAuthenticateHostUI_CreateInstance](https://www.google.com/search?num=5&q=CAuthenticateHostUI_CreateInstance+site%3Amicrosoft.com) |  |   
-[CDLGetLongPathName](https://www.google.com/search?num=5&q=CDLGetLongPathNameA+site%3Amicrosoft.com) |  |   
-[CoGetClassObjectFromURL](https://www.google.com/search?num=5&q=CoGetClassObjectFromURL+site%3Amicrosoft.com) |  |   
-[CoInstall](https://www.google.com/search?num=5&q=CoInstall+site%3Amicrosoft.com) |  |   
-[CoInternetCanonicalizeIUri](https://www.google.com/search?num=5&q=CoInternetCanonicalizeIUri+site%3Amicrosoft.com) |  |   
-[CoInternetCombineIUri](https://www.google.com/search?num=5&q=CoInternetCombineIUri+site%3Amicrosoft.com) |  |   
-[CoInternetCombineUrl](https://www.google.com/search?num=5&q=CoInternetCombineUrl+site%3Amicrosoft.com) |  |   
-[CoInternetCombineUrlEx](https://www.google.com/search?num=5&q=CoInternetCombineUrlEx+site%3Amicrosoft.com) |  |   
-[CoInternetCompareUrl](https://www.google.com/search?num=5&q=CoInternetCompareUrl+site%3Amicrosoft.com) |  |   
-[CoInternetCreateSecurityManager](https://www.google.com/search?num=5&q=CoInternetCreateSecurityManager+site%3Amicrosoft.com) |  |   
-[CoInternetCreateZoneManager](https://www.google.com/search?num=5&q=CoInternetCreateZoneManager+site%3Amicrosoft.com) |  |   
-[CoInternetFeatureSettingsChanged](https://www.google.com/search?num=5&q=CoInternetFeatureSettingsChanged+site%3Amicrosoft.com) |  |   
-[CoInternetGetMobileBrowserAppCompatMode](https://www.google.com/search?num=5&q=CoInternetGetMobileBrowserAppCompatMode+site%3Amicrosoft.com) |  |   
-[CoInternetGetMobileBrowserForceDesktopMode](https://www.google.com/search?num=5&q=CoInternetGetMobileBrowserForceDesktopMode+site%3Amicrosoft.com) |  |   
-[CoInternetGetProtocolFlags](https://www.google.com/search?num=5&q=CoInternetGetProtocolFlags+site%3Amicrosoft.com) |  |   
-[CoInternetGetSecurityUrl](https://www.google.com/search?num=5&q=CoInternetGetSecurityUrl+site%3Amicrosoft.com) |  |   
-[CoInternetGetSecurityUrlEx](https://www.google.com/search?num=5&q=CoInternetGetSecurityUrlEx+site%3Amicrosoft.com) |  |   
-[CoInternetGetSession](https://www.google.com/search?num=5&q=CoInternetGetSession+site%3Amicrosoft.com) |  |   
-[CoInternetIsFeatureEnabled](https://www.google.com/search?num=5&q=CoInternetIsFeatureEnabled+site%3Amicrosoft.com) |  |   
-[CoInternetIsFeatureEnabledForIUri](https://www.google.com/search?num=5&q=CoInternetIsFeatureEnabledForIUri+site%3Amicrosoft.com) |  |   
-[CoInternetIsFeatureEnabledForUrl](https://www.google.com/search?num=5&q=CoInternetIsFeatureEnabledForUrl+site%3Amicrosoft.com) |  |   
-[CoInternetIsFeatureZoneElevationEnabled](https://www.google.com/search?num=5&q=CoInternetIsFeatureZoneElevationEnabled+site%3Amicrosoft.com) |  |   
-[CoInternetParseIUri](https://www.google.com/search?num=5&q=CoInternetParseIUri+site%3Amicrosoft.com) |  |   
-[CoInternetParseUrl](https://www.google.com/search?num=5&q=CoInternetParseUrl+site%3Amicrosoft.com) |  |   
-[CoInternetQueryInfo](https://www.google.com/search?num=5&q=CoInternetQueryInfo+site%3Amicrosoft.com) |  |   
-[CoInternetSetFeatureEnabled](https://www.google.com/search?num=5&q=CoInternetSetFeatureEnabled+site%3Amicrosoft.com) |  |   
-[CoInternetSetMobileBrowserAppCompatMode](https://www.google.com/search?num=5&q=CoInternetSetMobileBrowserAppCompatMode+site%3Amicrosoft.com) |  |   
-[CoInternetSetMobileBrowserForceDesktopMode](https://www.google.com/search?num=5&q=CoInternetSetMobileBrowserForceDesktopMode+site%3Amicrosoft.com) |  |   
-[CompareSecurityIds](https://www.google.com/search?num=5&q=CompareSecurityIds+site%3Amicrosoft.com) |  |   
-[CompatFlagsFromClsid](https://www.google.com/search?num=5&q=CompatFlagsFromClsid+site%3Amicrosoft.com) |  |   
-[CopyBindInfo](https://www.google.com/search?num=5&q=CopyBindInfo+site%3Amicrosoft.com) |  |   
-[CopyStgMedium](https://www.google.com/search?num=5&q=CopyStgMedium+site%3Amicrosoft.com) |  |   
-[CORPolicyProvider](https://www.google.com/search?num=5&q=CORPolicyProvider+site%3Amicrosoft.com) |  |   
-[CreateAsyncBindCtx](https://www.google.com/search?num=5&q=CreateAsyncBindCtx+site%3Amicrosoft.com) |  |   
-[CreateAsyncBindCtxEx](https://www.google.com/search?num=5&q=CreateAsyncBindCtxEx+site%3Amicrosoft.com) |  |   
-[CreateFormatEnumerator](https://www.google.com/search?num=5&q=CreateFormatEnumerator+site%3Amicrosoft.com) |  |   
-[CreateIUriBuilder](https://www.google.com/search?num=5&q=CreateIUriBuilder+site%3Amicrosoft.com) |  |   
+[AsyncInstallDistributionUnit](https://www.google.com/search?num=5&q=AsyncInstallDistributionUnit+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.AsyncInstallDistributionUnit](https://github.com/dahall/Vanara/search?l=C%23&q=AsyncInstallDistributionUnit)  
+[CoGetClassObjectFromURL](https://www.google.com/search?num=5&q=CoGetClassObjectFromURL+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CoGetClassObjectFromURL](https://github.com/dahall/Vanara/search?l=C%23&q=CoGetClassObjectFromURL)  
+[CoInternetCombineIUri](https://www.google.com/search?num=5&q=CoInternetCombineIUri+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CoInternetCombineIUri](https://github.com/dahall/Vanara/search?l=C%23&q=CoInternetCombineIUri)  
+[CoInternetCombineUrl](https://www.google.com/search?num=5&q=CoInternetCombineUrl+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CoInternetCombineUrl](https://github.com/dahall/Vanara/search?l=C%23&q=CoInternetCombineUrl)  
+[CoInternetCombineUrlEx](https://www.google.com/search?num=5&q=CoInternetCombineUrlEx+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CoInternetCombineUrlEx](https://github.com/dahall/Vanara/search?l=C%23&q=CoInternetCombineUrlEx)  
+[CoInternetCompareUrl](https://www.google.com/search?num=5&q=CoInternetCompareUrl+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CoInternetCompareUrl](https://github.com/dahall/Vanara/search?l=C%23&q=CoInternetCompareUrl)  
+[CoInternetGetSession](https://www.google.com/search?num=5&q=CoInternetGetSession+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CoInternetGetSession](https://github.com/dahall/Vanara/search?l=C%23&q=CoInternetGetSession)  
+[CoInternetParseIUri](https://www.google.com/search?num=5&q=CoInternetParseIUri+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CoInternetParseIUri](https://github.com/dahall/Vanara/search?l=C%23&q=CoInternetParseIUri)  
+[CoInternetParseUrl](https://www.google.com/search?num=5&q=CoInternetParseUrl+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CoInternetParseUrl](https://github.com/dahall/Vanara/search?l=C%23&q=CoInternetParseUrl)  
+[CoInternetQueryInfo](https://www.google.com/search?num=5&q=CoInternetQueryInfo+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CoInternetQueryInfo](https://github.com/dahall/Vanara/search?l=C%23&q=CoInternetQueryInfo)  
+[CompareSecurityIds](https://www.google.com/search?num=5&q=CompareSecurityIds+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CompareSecurityIds](https://github.com/dahall/Vanara/search?l=C%23&q=CompareSecurityIds)  
+[CompatFlagsFromClsid](https://www.google.com/search?num=5&q=CompatFlagsFromClsid+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CompatFlagsFromClsid](https://github.com/dahall/Vanara/search?l=C%23&q=CompatFlagsFromClsid)  
+[CopyBindInfo](https://www.google.com/search?num=5&q=CopyBindInfo+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CopyBindInfo](https://github.com/dahall/Vanara/search?l=C%23&q=CopyBindInfo)  
+[CopyStgMedium](https://www.google.com/search?num=5&q=CopyStgMedium+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CopyStgMedium](https://github.com/dahall/Vanara/search?l=C%23&q=CopyStgMedium)  
+[CreateAsyncBindCtx](http://msdn2.microsoft.com/en-us/library/0c79b61b-d3d6-48fd-aaee-21cddad09208) | urlmon.h | [Vanara.PInvoke.UrlMon.CreateAsyncBindCtx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateAsyncBindCtx)  
+[CreateAsyncBindCtxEx](https://www.google.com/search?num=5&q=CreateAsyncBindCtxEx+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CreateAsyncBindCtxEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateAsyncBindCtxEx)  
+[CreateFormatEnumerator](http://msdn2.microsoft.com/en-us/library/302418e5-48b6-46ee-bb96-2a8170c4af5e) | urlmon.h | [Vanara.PInvoke.UrlMon.CreateFormatEnumerator](https://github.com/dahall/Vanara/search?l=C%23&q=CreateFormatEnumerator)  
+[CreateIUriBuilder](https://www.google.com/search?num=5&q=CreateIUriBuilder+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CreateIUriBuilder](https://github.com/dahall/Vanara/search?l=C%23&q=CreateIUriBuilder)  
 [CreateUri](https://www.google.com/search?num=5&q=CreateUri+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CreateUri](https://github.com/dahall/Vanara/search?l=C%23&q=CreateUri)  
-[CreateUriFromMultiByteString](https://www.google.com/search?num=5&q=CreateUriFromMultiByteString+site%3Amicrosoft.com) |  |   
-[CreateUriPriv](https://www.google.com/search?num=5&q=CreateUriPriv+site%3Amicrosoft.com) |  |   
-[CreateUriWithFragment](https://www.google.com/search?num=5&q=CreateUriWithFragment+site%3Amicrosoft.com) |  |   
-[CreateURLMoniker](https://www.google.com/search?num=5&q=CreateURLMoniker+site%3Amicrosoft.com) |  |   
-[CreateURLMonikerEx](https://www.google.com/search?num=5&q=CreateURLMonikerEx+site%3Amicrosoft.com) |  |   
-[CreateURLMonikerEx2](https://www.google.com/search?num=5&q=CreateURLMonikerEx2+site%3Amicrosoft.com) |  |   
-[DllRegisterServerEx](https://www.google.com/search?num=5&q=DllRegisterServerEx+site%3Amicrosoft.com) |  |   
-[Extract](https://www.google.com/search?num=5&q=Extract+site%3Amicrosoft.com) |  |   
-[FaultInIEFeature](https://www.google.com/search?num=5&q=FaultInIEFeature+site%3Amicrosoft.com) |  |   
-[FileBearsMarkOfTheWeb](https://www.google.com/search?num=5&q=FileBearsMarkOfTheWeb+site%3Amicrosoft.com) |  |   
-[FindMediaType](https://www.google.com/search?num=5&q=FindMediaType+site%3Amicrosoft.com) |  |   
-[FindMediaTypeClass](https://www.google.com/search?num=5&q=FindMediaTypeClass+site%3Amicrosoft.com) |  |   
-[FindMimeFromData](https://www.google.com/search?num=5&q=FindMimeFromData+site%3Amicrosoft.com) |  |   
-[GetAddSitesFileUrl](https://www.google.com/search?num=5&q=GetAddSitesFileUrl+site%3Amicrosoft.com) |  |   
-[GetClassFileOrMime](https://www.google.com/search?num=5&q=GetClassFileOrMime+site%3Amicrosoft.com) |  |   
-[GetClassURL](https://www.google.com/search?num=5&q=GetClassURL+site%3Amicrosoft.com) |  |   
-[GetComponentIDFromCLSSPEC](https://www.google.com/search?num=5&q=GetComponentIDFromCLSSPEC+site%3Amicrosoft.com) |  |   
-[GetIDNFlagsForUri](https://www.google.com/search?num=5&q=GetIDNFlagsForUri+site%3Amicrosoft.com) |  |   
-[GetIUriPriv](https://www.google.com/search?num=5&q=GetIUriPriv+site%3Amicrosoft.com) |  |   
-[GetIUriPriv2](https://www.google.com/search?num=5&q=GetIUriPriv2+site%3Amicrosoft.com) |  |   
-[GetLabelsFromNamedHost](https://www.google.com/search?num=5&q=GetLabelsFromNamedHost+site%3Amicrosoft.com) |  |   
-[GetMarkOfTheWeb](https://www.google.com/search?num=5&q=GetMarkOfTheWeb+site%3Amicrosoft.com) |  |   
-[GetPortFromUrlScheme](https://www.google.com/search?num=5&q=GetPortFromUrlScheme+site%3Amicrosoft.com) |  |   
-[GetPropertyFromName](https://www.google.com/search?num=5&q=GetPropertyFromName+site%3Amicrosoft.com) |  |   
-[GetPropertyName](https://www.google.com/search?num=5&q=GetPropertyName+site%3Amicrosoft.com) |  |   
-[GetSoftwareUpdateInfo](https://www.google.com/search?num=5&q=GetSoftwareUpdateInfo+site%3Amicrosoft.com) |  |   
-[GetUrlmonThreadNotificationHwnd](https://www.google.com/search?num=5&q=GetUrlmonThreadNotificationHwnd+site%3Amicrosoft.com) |  |   
-[GetZoneFromAlternateDataStreamEx](https://www.google.com/search?num=5&q=GetZoneFromAlternateDataStreamEx+site%3Amicrosoft.com) |  |   
-[HlinkGoBack](https://www.google.com/search?num=5&q=HlinkGoBack+site%3Amicrosoft.com) |  |   
-[HlinkGoForward](https://www.google.com/search?num=5&q=HlinkGoForward+site%3Amicrosoft.com) |  |   
-[HlinkNavigateMoniker](https://www.google.com/search?num=5&q=HlinkNavigateMoniker+site%3Amicrosoft.com) |  |   
-[HlinkNavigateString](https://www.google.com/search?num=5&q=HlinkNavigateString+site%3Amicrosoft.com) |  |   
-[HlinkSimpleNavigateToMoniker](https://www.google.com/search?num=5&q=HlinkSimpleNavigateToMoniker+site%3Amicrosoft.com) |  |   
-[HlinkSimpleNavigateToString](https://www.google.com/search?num=5&q=HlinkSimpleNavigateToString+site%3Amicrosoft.com) |  |   
-[IECompatLogCSSFix](https://www.google.com/search?num=5&q=IECompatLogCSSFix+site%3Amicrosoft.com) |  |   
-[IEGetUserPrivateNamespaceName](https://www.google.com/search?num=5&q=IEGetUserPrivateNamespaceName+site%3Amicrosoft.com) |  |   
-[IEInstallScope](https://www.google.com/search?num=5&q=IEInstallScope+site%3Amicrosoft.com) |  |   
-[IntlPercentEncodeNormalize](https://www.google.com/search?num=5&q=IntlPercentEncodeNormalize+site%3Amicrosoft.com) |  |   
-[IsAsyncMoniker](https://www.google.com/search?num=5&q=IsAsyncMoniker+site%3Amicrosoft.com) |  |   
-[IsDWORDProperty](https://www.google.com/search?num=5&q=IsDWORDProperty+site%3Amicrosoft.com) |  |   
-[IsIntranetAvailable](https://www.google.com/search?num=5&q=IsIntranetAvailable+site%3Amicrosoft.com) |  |   
-[IsJITInProgress](https://www.google.com/search?num=5&q=IsJITInProgress+site%3Amicrosoft.com) |  |   
-[IsLoggingEnabled](https://www.google.com/search?num=5&q=IsLoggingEnabledA+site%3Amicrosoft.com) |  |   
-[IsStringProperty](https://www.google.com/search?num=5&q=IsStringProperty+site%3Amicrosoft.com) |  |   
-[IsValidURL](https://www.google.com/search?num=5&q=IsValidURL+site%3Amicrosoft.com) |  |   
-[LaunchEdgeForDebug](https://www.google.com/search?num=5&q=LaunchEdgeForDebug+site%3Amicrosoft.com) |  |   
-[MkParseDisplayNameEx](https://www.google.com/search?num=5&q=MkParseDisplayNameEx+site%3Amicrosoft.com) |  |   
-[ObtainUserAgentString](https://www.google.com/search?num=5&q=ObtainUserAgentString+site%3Amicrosoft.com) |  |   
-[PrivateCoInstall](https://www.google.com/search?num=5&q=PrivateCoInstall+site%3Amicrosoft.com) |  |   
-[QueryAssociations](https://www.google.com/search?num=5&q=QueryAssociations+site%3Amicrosoft.com) |  |   
-[QueryClsidAssociation](https://www.google.com/search?num=5&q=QueryClsidAssociation+site%3Amicrosoft.com) |  |   
-[RegisterBindStatusCallback](https://www.google.com/search?num=5&q=RegisterBindStatusCallback+site%3Amicrosoft.com) |  |   
-[RegisterFormatEnumerator](https://www.google.com/search?num=5&q=RegisterFormatEnumerator+site%3Amicrosoft.com) |  |   
-[RegisterMediaTypeClass](https://www.google.com/search?num=5&q=RegisterMediaTypeClass+site%3Amicrosoft.com) |  |   
-[RegisterMediaTypes](https://www.google.com/search?num=5&q=RegisterMediaTypes+site%3Amicrosoft.com) |  |   
-[RegisterWebPlatformPermanentSecurityManager](https://www.google.com/search?num=5&q=RegisterWebPlatformPermanentSecurityManager+site%3Amicrosoft.com) |  |   
-[ReleaseBindInfo](https://www.google.com/search?num=5&q=ReleaseBindInfo+site%3Amicrosoft.com) |  |   
-[RestrictHTTP2](https://www.google.com/search?num=5&q=RestrictHTTP2+site%3Amicrosoft.com) |  |   
-[RevokeBindStatusCallback](https://www.google.com/search?num=5&q=RevokeBindStatusCallback+site%3Amicrosoft.com) |  |   
-[RevokeFormatEnumerator](https://www.google.com/search?num=5&q=RevokeFormatEnumerator+site%3Amicrosoft.com) |  |   
-[SetAccessForIEAppContainer](https://www.google.com/search?num=5&q=SetAccessForIEAppContainer+site%3Amicrosoft.com) |  |   
-[SetSoftwareUpdateAdvertisementState](https://www.google.com/search?num=5&q=SetSoftwareUpdateAdvertisementState+site%3Amicrosoft.com) |  |   
-[ShouldDisplayPunycodeForUri](https://www.google.com/search?num=5&q=ShouldDisplayPunycodeForUri+site%3Amicrosoft.com) |  |   
-[ShouldShowIntranetWarningSecband](https://www.google.com/search?num=5&q=ShouldShowIntranetWarningSecband+site%3Amicrosoft.com) |  |   
-[ShowTrustAlertDialog](https://www.google.com/search?num=5&q=ShowTrustAlertDialog+site%3Amicrosoft.com) |  |   
-[UnregisterWebPlatformPermanentSecurityManager](https://www.google.com/search?num=5&q=UnregisterWebPlatformPermanentSecurityManager+site%3Amicrosoft.com) |  |   
-[URLDownload](https://www.google.com/search?num=5&q=URLDownloadA+site%3Amicrosoft.com) |  |   
-[URLDownloadToCacheFile](https://www.google.com/search?num=5&q=URLDownloadToCacheFileA+site%3Amicrosoft.com) |  |   
-[URLDownloadToFile](https://www.google.com/search?num=5&q=URLDownloadToFileA+site%3Amicrosoft.com) |  |   
-[UrlMkBuildVersion](https://www.google.com/search?num=5&q=UrlMkBuildVersion+site%3Amicrosoft.com) |  |   
-[UrlMkGetSessionOption](https://www.google.com/search?num=5&q=UrlMkGetSessionOption+site%3Amicrosoft.com) |  |   
-[UrlMkSetSessionOption](https://www.google.com/search?num=5&q=UrlMkSetSessionOption+site%3Amicrosoft.com) |  |   
-[UrlmonCleanupCurrentThread](https://www.google.com/search?num=5&q=UrlmonCleanupCurrentThread+site%3Amicrosoft.com) |  |   
-[URLOpenBlockingStream](https://www.google.com/search?num=5&q=URLOpenBlockingStreamA+site%3Amicrosoft.com) |  |   
-[URLOpenPullStream](https://www.google.com/search?num=5&q=URLOpenPullStreamA+site%3Amicrosoft.com) |  |   
-[URLOpenStream](https://www.google.com/search?num=5&q=URLOpenStreamA+site%3Amicrosoft.com) |  |   
-[WriteHitLogging](https://www.google.com/search?num=5&q=WriteHitLogging+site%3Amicrosoft.com) |  |   
-[ZonesReInit](https://www.google.com/search?num=5&q=ZonesReInit+site%3Amicrosoft.com) |  |   
+[CreateUriFromMultiByteString](https://www.google.com/search?num=5&q=CreateUriFromMultiByteString+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CreateUriFromMultiByteString](https://github.com/dahall/Vanara/search?l=C%23&q=CreateUriFromMultiByteString)  
+[CreateUriWithFragment](https://www.google.com/search?num=5&q=CreateUriWithFragment+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CreateUriWithFragment](https://github.com/dahall/Vanara/search?l=C%23&q=CreateUriWithFragment)  
+[CreateURLMoniker](https://www.google.com/search?num=5&q=CreateURLMoniker+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CreateURLMoniker](https://github.com/dahall/Vanara/search?l=C%23&q=CreateURLMoniker)  
+[CreateURLMonikerEx](https://www.google.com/search?num=5&q=CreateURLMonikerEx+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CreateURLMonikerEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateURLMonikerEx)  
+[CreateURLMonikerEx2](https://www.google.com/search?num=5&q=CreateURLMonikerEx2+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.CreateURLMonikerEx2](https://github.com/dahall/Vanara/search?l=C%23&q=CreateURLMonikerEx2)  
+[FaultInIEFeature](https://www.google.com/search?num=5&q=FaultInIEFeature+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.FaultInIEFeature](https://github.com/dahall/Vanara/search?l=C%23&q=FaultInIEFeature)  
+[FindMediaType](https://www.google.com/search?num=5&q=FindMediaType+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.FindMediaType](https://github.com/dahall/Vanara/search?l=C%23&q=FindMediaType)  
+[FindMediaTypeClass](https://www.google.com/search?num=5&q=FindMediaTypeClass+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.FindMediaTypeClass](https://github.com/dahall/Vanara/search?l=C%23&q=FindMediaTypeClass)  
+[FindMimeFromData](https://www.google.com/search?num=5&q=FindMimeFromData+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.FindMimeFromData](https://github.com/dahall/Vanara/search?l=C%23&q=FindMimeFromData)  
+[GetClassFileOrMime](https://www.google.com/search?num=5&q=GetClassFileOrMime+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.GetClassFileOrMime](https://github.com/dahall/Vanara/search?l=C%23&q=GetClassFileOrMime)  
+[GetComponentIDFromCLSSPEC](https://www.google.com/search?num=5&q=GetComponentIDFromCLSSPEC+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.GetComponentIDFromCLSSPEC](https://github.com/dahall/Vanara/search?l=C%23&q=GetComponentIDFromCLSSPEC)  
+[IEInstallScope](https://www.google.com/search?num=5&q=IEInstallScope+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IEInstallScope](https://github.com/dahall/Vanara/search?l=C%23&q=IEInstallScope)  
+[IsAsyncMoniker](https://www.google.com/search?num=5&q=IsAsyncMoniker+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IsAsyncMoniker](https://github.com/dahall/Vanara/search?l=C%23&q=IsAsyncMoniker)  
+[IsValidURL](https://www.google.com/search?num=5&q=IsValidURL+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IsValidURL](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidURL)  
+[MkParseDisplayNameEx](https://www.google.com/search?num=5&q=MkParseDisplayNameEx+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.MkParseDisplayNameEx](https://github.com/dahall/Vanara/search?l=C%23&q=MkParseDisplayNameEx)  
+[ObtainUserAgentString](https://www.google.com/search?num=5&q=ObtainUserAgentString+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.ObtainUserAgentString](https://github.com/dahall/Vanara/search?l=C%23&q=ObtainUserAgentString)  
+[RegisterBindStatusCallback](https://www.google.com/search?num=5&q=RegisterBindStatusCallback+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.RegisterBindStatusCallback](https://github.com/dahall/Vanara/search?l=C%23&q=RegisterBindStatusCallback)  
+[RegisterFormatEnumerator](https://www.google.com/search?num=5&q=RegisterFormatEnumerator+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.RegisterFormatEnumerator](https://github.com/dahall/Vanara/search?l=C%23&q=RegisterFormatEnumerator)  
+[RegisterMediaTypeClass](https://www.google.com/search?num=5&q=RegisterMediaTypeClass+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.RegisterMediaTypeClass](https://github.com/dahall/Vanara/search?l=C%23&q=RegisterMediaTypeClass)  
+[RegisterMediaTypes](https://www.google.com/search?num=5&q=RegisterMediaTypes+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.RegisterMediaTypes](https://github.com/dahall/Vanara/search?l=C%23&q=RegisterMediaTypes)  
+[ReleaseBindInfo](https://www.google.com/search?num=5&q=ReleaseBindInfo+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.ReleaseBindInfo](https://github.com/dahall/Vanara/search?l=C%23&q=ReleaseBindInfo)  
+[RevokeBindStatusCallback](https://www.google.com/search?num=5&q=RevokeBindStatusCallback+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.RevokeBindStatusCallback](https://github.com/dahall/Vanara/search?l=C%23&q=RevokeBindStatusCallback)  
+[RevokeFormatEnumerator](https://www.google.com/search?num=5&q=RevokeFormatEnumerator+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.RevokeFormatEnumerator](https://github.com/dahall/Vanara/search?l=C%23&q=RevokeFormatEnumerator)  
+[URLDownloadToCacheFile](https://www.google.com/search?num=5&q=URLDownloadToCacheFileA+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.URLDownloadToCacheFile](https://github.com/dahall/Vanara/search?l=C%23&q=URLDownloadToCacheFile)  
+[URLDownloadToFile](https://www.google.com/search?num=5&q=URLDownloadToFileA+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.URLDownloadToFile](https://github.com/dahall/Vanara/search?l=C%23&q=URLDownloadToFile)  
+[UrlMkGetSessionOption](https://www.google.com/search?num=5&q=UrlMkGetSessionOption+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.UrlMkGetSessionOption](https://github.com/dahall/Vanara/search?l=C%23&q=UrlMkGetSessionOption)  
+[UrlMkSetSessionOption](https://www.google.com/search?num=5&q=UrlMkSetSessionOption+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.UrlMkSetSessionOption](https://github.com/dahall/Vanara/search?l=C%23&q=UrlMkSetSessionOption)  
+[URLOpenBlockingStream](https://www.google.com/search?num=5&q=URLOpenBlockingStreamA+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.URLOpenBlockingStream](https://github.com/dahall/Vanara/search?l=C%23&q=URLOpenBlockingStream)  
+[URLOpenPullStream](https://www.google.com/search?num=5&q=URLOpenPullStreamA+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.URLOpenPullStream](https://github.com/dahall/Vanara/search?l=C%23&q=URLOpenPullStream)  
+[URLOpenStream](https://www.google.com/search?num=5&q=URLOpenStreamA+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.URLOpenStream](https://github.com/dahall/Vanara/search?l=C%23&q=URLOpenStream)  
+### Structures  
+Native Structure | Header | Managed Structure  
+--- | --- | ---  
+[BINDINFO](https://www.google.com/search?num=5&q=BINDINFO+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.BINDINFO](https://github.com/dahall/Vanara/search?l=C%23&q=BINDINFO)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  
+[IBinding](https://www.google.com/search?num=5&q=IBinding+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IBinding](https://github.com/dahall/Vanara/search?l=C%23&q=IBinding)  
+[IBindStatusCallback](https://www.google.com/search?num=5&q=IBindStatusCallback+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IBindStatusCallback](https://github.com/dahall/Vanara/search?l=C%23&q=IBindStatusCallback)  
+[IInternetSession](https://www.google.com/search?num=5&q=IInternetSession+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IInternetSession](https://github.com/dahall/Vanara/search?l=C%23&q=IInternetSession)  
 [IUri](https://www.google.com/search?num=5&q=IUri+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IUri](https://github.com/dahall/Vanara/search?l=C%23&q=IUri)  
+[IUriBuilder](https://www.google.com/search?num=5&q=IUriBuilder+site%3Amicrosoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IUriBuilder](https://github.com/dahall/Vanara/search?l=C%23&q=IUriBuilder)  
