@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using Vanara.Extensions.Reflection;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Crypt32;
 using static Vanara.PInvoke.UrlMon;
@@ -59,10 +63,10 @@ namespace Vanara.PInvoke
 		public enum OPC_COMPRESSION_OPTIONS
 		{
 			/// <summary>Compression is turned off.</summary>
-			OPC_COMPRESSION_NONE,
+			OPC_COMPRESSION_NONE = -1,
 
 			/// <summary>Compression is optimized for a balance between size and performance.</summary>
-			OPC_COMPRESSION_NORMAL,
+			OPC_COMPRESSION_NORMAL = 0,
 
 			/// <summary>Compression is optimized for size.</summary>
 			OPC_COMPRESSION_MAXIMUM,
@@ -261,7 +265,7 @@ namespace Vanara.PInvoke
 			/// The signature is not valid.Signature markup or signed package components might have been altered. Alternatively, the
 			/// signature might not exist in the current package.
 			/// </summary>
-			OPC_SIGNATURE_INVALID,
+			OPC_SIGNATURE_INVALID = -1,
 		}
 
 		/// <summary>Describes the read/write status of a stream.</summary>
@@ -272,7 +276,7 @@ namespace Vanara.PInvoke
 		public enum OPC_STREAM_IO_MODE
 		{
 			/// <summary>Creates a read-only stream for loading an existing package.</summary>
-			OPC_STREAM_IO_READ,
+			OPC_STREAM_IO_READ = 1,
 
 			/// <summary>Creates a write-only stream for saving a new package.</summary>
 			OPC_STREAM_IO_WRITE,
@@ -1670,7 +1674,7 @@ namespace Vanara.PInvoke
 			// LPCWSTR filename, OPC_STREAM_IO_MODE ioMode, LPSECURITY_ATTRIBUTES securityAttributes, DWORD dwFlagsAndAttributes, IStream
 			// **stream );
 			[PreserveSig]
-			HRESULT CreateStreamOnFile([MarshalAs(UnmanagedType.LPWStr)] string filename, OPC_STREAM_IO_MODE ioMode, SECURITY_ATTRIBUTES securityAttributes, FileFlagsAndAttributes dwFlagsAndAttributes, out IStream stream);
+			HRESULT CreateStreamOnFile([MarshalAs(UnmanagedType.LPWStr)] string filename, OPC_STREAM_IO_MODE ioMode, [Optional] SECURITY_ATTRIBUTES securityAttributes, FileFlagsAndAttributes dwFlagsAndAttributes, out IStream stream);
 
 			/// <summary>Creates a package object that represents an empty package.</summary>
 			/// <returns>A pointer to the IOpcPackage interface of the package object that represents an empty package.</returns>
@@ -6798,5 +6802,67 @@ namespace Vanara.PInvoke
 		[PInvokeData("msopc.h", MSDNShortId = "0a265a0a-c109-4afc-a0ad-d3ee31757aa1")]
 		[ComImport, ClassInterface(ClassInterfaceType.None), Guid("6B2D6BA0-9F3E-4f27-920B-313CC426A39E")]
 		public class OpcFactory { }
+
+		/// <summary>Creates an <see cref="IEnumerator{T}"/> instance from one of the IOpcXXXEnumerator interface instances.</summary>
+		/// <typeparam name="TEnum">
+		/// The type of the enumerator interface. This interface must support the MoveNext, GetCurrent and Clone methods.
+		/// </typeparam>
+		/// <typeparam name="TElem">The type of the elemement interface returned as the parameter in TElem.GetCurrent.</typeparam>
+		/// <seealso cref="IEnumerator{T}"/>
+		public class OpcEnumerator<TEnum, TElem> : IEnumerator<TElem>
+		{
+			private MethodInfo getCurrent;
+			private MethodInfo moveNext;
+			private TEnum opcEnum;
+
+			/// <summary>Initializes a new instance of the <see cref="OpcEnumerator{TEnum, TElem}"/> class.</summary>
+			/// <param name="opcEnumerator">The opc enumerator.</param>
+			/// <exception cref="ArgumentNullException">opcEnumerator</exception>
+			/// <exception cref="ArgumentException">The type specified for TEnum is not a valid Opc Enumerator instance.</exception>
+			public OpcEnumerator(TEnum opcEnumerator)
+			{
+				opcEnum = opcEnumerator ?? throw new ArgumentNullException(nameof(opcEnumerator));
+				moveNext = typeof(TEnum).GetMethod("MoveNext");
+				getCurrent = typeof(TEnum).GetMethod("GetCurrent");
+				if (moveNext is null || getCurrent is null) throw new ArgumentException("The type specified for TEnum is not a valid Opc Enumerator instance.");
+			}
+
+			/// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+			public TElem Current
+			{
+				get
+				{
+					var p = new object[] { default(TElem) };
+					((HRESULT)getCurrent.Invoke(opcEnum, p)).ThrowIfFailed();
+					return (TElem)p[0];
+				}
+			}
+
+			/// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+			object IEnumerator.Current => Current;
+
+			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+			public void Dispose() => Marshal.ReleaseComObject(opcEnum);
+
+			/// <summary>Advances the enumerator to the next element of the collection.</summary>
+			/// <returns>
+			/// <see langword="true"/> if the enumerator was successfully advanced to the next element; <see langword="false"/> if the
+			/// enumerator has passed the end of the collection.
+			/// </returns>
+			public bool MoveNext()
+			{
+				var p = new object[] { false };
+				((HRESULT)moveNext.Invoke(opcEnum, p)).ThrowIfFailed();
+				return (bool)p[0];
+			}
+
+			/// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
+			public void Reset()
+			{
+				var clone = opcEnum.InvokeMethod<TEnum>("Clone");
+				Marshal.ReleaseComObject(opcEnum);
+				opcEnum = clone;
+			}
+		}
 	}
 }
