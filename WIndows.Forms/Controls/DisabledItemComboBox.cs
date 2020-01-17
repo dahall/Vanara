@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Vanara.Drawing;
@@ -14,9 +13,7 @@ using ComboBoxStyle = System.Windows.Forms.ComboBoxStyle;
 
 namespace Vanara.Windows.Forms
 {
-	/// <summary>
-	/// Interface that exposes an <c>Enabled</c> property for an item supplied to <see cref="DisabledItemComboBox"/>.
-	/// </summary>
+	/// <summary>Interface that exposes an <c>Enabled</c> property for an item supplied to <see cref="DisabledItemComboBox"/>.</summary>
 	public interface IEnableable
 	{
 		/// <summary>Gets a value indicating whether an item is enabled.</summary>
@@ -24,68 +21,51 @@ namespace Vanara.Windows.Forms
 		bool Enabled { get; }
 	}
 
-	/// <summary>
-	/// A version of <see cref="ComboBox"/> that allows for disabled items.
-	/// </summary>
+	/// <summary>A version of <see cref="ComboBox"/> that allows for disabled items.</summary>
 	[ToolboxBitmap(typeof(DisabledItemComboBox), "Control")]
 	public class DisabledItemComboBox : ComboBox
 	{
 		private const TextFormatFlags tff = TextFormatFlags.Default | TextFormatFlags.VerticalCenter | TextFormatFlags.SingleLine | TextFormatFlags.NoPadding;
+
 		private bool animationsNeedCleanup;
 		private ComboBoxState currentState = ComboBoxState.Normal, newState = ComboBoxState.Normal;
 		private ListBoxNativeWindow dropDownWindow;
 		private readonly VisualStyleRenderer vsr;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="DisabledItemComboBox"/> class.
-		/// </summary>
+		/// <summary>Initializes a new instance of the <see cref="DisabledItemComboBox"/> class.</summary>
 		public DisabledItemComboBox()
 		{
 			SetStyle(/*ControlStyles.Opaque |*/ ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
 			DrawMode = DrawMode.OwnerDrawFixed;
 			DropDownStyle = ComboBoxStyle.DropDownList;
-			if ((Environment.OSVersion.Version.Major >= 6) && VisualStyleRenderer.IsSupported && Application.RenderWithVisualStyles)
+			if (Environment.OSVersion.Version.Major >= 6 && VisualStyleRenderer.IsSupported && Application.RenderWithVisualStyles)
 				vsr = new VisualStyleRenderer("COMBOBOX", 5, 0);
 		}
 
 		/// <summary>
 		/// Gets or sets a value indicating whether your code or the operating system will handle drawing of elements in the list.
 		/// </summary>
-		/// <returns>One of the <see cref="T:System.Windows.Forms.DrawMode" /> enumeration values. The default is <see cref="F:System.Windows.Forms.DrawMode.Normal" />.</returns>
-		///   <PermissionSet>
-		///   <IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
-		///   <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
-		///   <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
-		///   <IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
-		///   </PermissionSet>
+		/// <returns>One of the <see cref="T:System.Windows.Forms.DrawMode"/> enumeration values. The default is <see cref="F:System.Windows.Forms.DrawMode.Normal"/>.</returns>
+		/// <PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence"/><IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/></PermissionSet>
 		[DefaultValue(DrawMode.OwnerDrawFixed), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
 		public new DrawMode DrawMode
 		{
-			get => base.DrawMode; set => base.DrawMode = value;
+			get => base.DrawMode;
+			set => base.DrawMode = value;
 		}
 
-		/// <summary>
-		/// Gets or sets a value specifying the style of the combo box.
-		/// </summary>
-		/// <returns>One of the <see cref="T:System.Windows.Forms.ComboBoxStyle" /> values. The default is DropDown.</returns>
-		///   <PermissionSet>
-		///   <IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
-		///   <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
-		///   <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
-		///   <IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
-		///   </PermissionSet>
+		/// <summary>Gets or sets a value specifying the style of the combo box.</summary>
+		/// <returns>One of the <see cref="T:System.Windows.Forms.ComboBoxStyle"/> values. The default is DropDown.</returns>
+		/// <PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence"/><IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/></PermissionSet>
 		[DefaultValue(ComboBoxStyle.DropDownList), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
 		public new ComboBoxStyle DropDownStyle
 		{
-			get => base.DropDownStyle; set => base.DropDownStyle = value;
+			get => base.DropDownStyle;
+			set => base.DropDownStyle = value;
 		}
 
-		/// <summary>
-		/// Gets or sets the state of the combobox.
-		/// </summary>
-		/// <value>
-		/// The state.
-		/// </value>
+		/// <summary>Gets or sets the state of the combobox.</summary>
+		/// <value>The state.</value>
 		private ComboBoxState State
 		{
 			get => currentState;
@@ -95,28 +75,25 @@ namespace Vanara.Windows.Forms
 				newState = value;
 				if (diff)
 				{
-					if (animationsNeedCleanup && IsHandleCreated) BufferedPaintStopAllAnimations(Handle);
+					if (animationsNeedCleanup && IsHandleCreated && !IsDisposed)
+						BufferedPaintStopAllAnimations(Handle);
 					Invalidate();
 				}
 			}
 		}
 
-		/// <summary>
-		/// Determines whether an item is enabled.
-		/// </summary>
+		/// <summary>Determines whether an item is enabled.</summary>
 		/// <param name="idx">The index of the item.</param>
-		/// <returns>
-		///   <c>true</c> if enabled; otherwise, <c>false</c>.
-		/// </returns>
+		/// <returns><c>true</c> if enabled; otherwise, <c>false</c>.</returns>
 		public bool IsItemEnabled(int idx) => !(idx > -1 && idx < Items.Count && Items[idx] is IEnableable && !((IEnableable)Items[idx]).Enabled);
 
 		/// <summary>
-		/// Releases the unmanaged resources used by the <see cref="T:System.Windows.Forms.ComboBox" /> and optionally releases the managed resources.
+		/// Releases the unmanaged resources used by the <see cref="T:System.Windows.Forms.ComboBox"/> and optionally releases the managed resources.
 		/// </summary>
 		/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (animationsNeedCleanup)
+			if (animationsNeedCleanup && !IsDisposed)
 			{
 				BufferedPaintUnInit();
 				animationsNeedCleanup = false;
@@ -124,10 +101,8 @@ namespace Vanara.Windows.Forms
 			base.Dispose(disposing);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.ComboBox.DrawItem" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.ComboBox.DrawItem"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
 		protected override void OnDrawItem(DrawItemEventArgs e)
 		{
 			var itemString = e.Index >= 0 ? GetItemText(Items[e.Index]) : string.Empty;
@@ -153,51 +128,45 @@ namespace Vanara.Windows.Forms
 			base.OnDrawItem(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.ComboBox.DropDown" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.ComboBox.DropDown"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnDropDown(EventArgs e)
 		{
 			base.OnDropDown(e);
 			State = ComboBoxState.Pressed;
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.ComboBox.DropDownClosed" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.ComboBox.DropDownClosed"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnDropDownClosed(EventArgs e)
 		{
 			base.OnDropDownClosed(e);
 			State = ComboBoxState.Normal;
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.HandleCreated" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.HandleCreated"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnHandleCreated(EventArgs e)
 		{
 			base.OnHandleCreated(e);
 			if (vsr != null)
+			{
+				BufferedPaintInit();
 				animationsNeedCleanup = true;
+			}
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.HandleDestroyed" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.HandleDestroyed"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnHandleDestroyed(EventArgs e)
 		{
-			dropDownWindow?.DestroyHandle();
+			dropDownWindow?.ReleaseHandle();
+			dropDownWindow = null;
 			base.OnHandleDestroyed(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.KeyPress" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.KeyPressEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.KeyPress"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.KeyPressEventArgs"/> that contains the event data.</param>
 		protected override void OnKeyPress(KeyPressEventArgs e)
 		{
 			var idx = FindEnabledString(e.KeyChar.ToString(), SelectedIndex);
@@ -206,40 +175,32 @@ namespace Vanara.Windows.Forms
 			base.OnKeyPress(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.LostFocus" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.LostFocus"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnLostFocus(EventArgs e)
 		{
 			base.OnLostFocus(e);
 			Invalidate();
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.MouseDown" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseDown"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
 			State = ComboBoxState.Pressed;
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.MouseEnter" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseEnter"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnMouseEnter(EventArgs e)
 		{
 			base.OnMouseEnter(e);
 			State = ComboBoxState.Hot;
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.MouseLeave" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseLeave"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnMouseLeave(EventArgs e)
 		{
 			base.OnMouseLeave(e);
@@ -247,10 +208,8 @@ namespace Vanara.Windows.Forms
 				State = ComboBoxState.Normal;
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			base.OnMouseMove(e);
@@ -258,28 +217,26 @@ namespace Vanara.Windows.Forms
 				State = ComboBoxState.Hot;
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.Paint" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.Paint"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.</param>
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
-			BufferedPaint.PaintAnimation(e.Graphics, this, ClientRectangle, PaintControl, currentState, Enabled ? newState : ComboBoxState.Disabled, (a,b) => (int)vsr.GetTransitionDuration((int)a, (int)b));
+
+			if (IsDisposed)
+				return;
+
+			BufferedPaint.PaintAnimation(e.Graphics, this, ClientRectangle, PaintControl, currentState, Enabled ? newState : ComboBoxState.Disabled, (a, b) => (int)vsr.GetTransitionDuration((int)a, (int)b));
 		}
 
-		/// <summary>
-		/// Paints the background of the control.
-		/// </summary>
-		/// <param name="pevent">A <see cref="T:System.Windows.Forms.PaintEventArgs" /> that contains information about the control to paint.</param>
+		/// <summary>Paints the background of the control.</summary>
+		/// <param name="pevent">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains information about the control to paint.</param>
 		protected override void OnPaintBackground(PaintEventArgs pevent)
 		{
 			// don't paint the control's background
 		}
 
-		/// <summary>
-		/// Paints the control.
-		/// </summary>
+		/// <summary>Paints the control.</summary>
 		/// <param name="dc">The dc.</param>
 		/// <param name="bounds">The bounds.</param>
 		/// <param name="state">State of the current.</param>
@@ -348,14 +305,12 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		/// <summary>
-		/// Processes a command key.
-		/// </summary>
-		/// <param name="msg">A <see cref="T:System.Windows.Forms.Message" />, passed by reference, that represents the window message to process.</param>
-		/// <param name="keyData">One of the <see cref="T:System.Windows.Forms.Keys" /> values that represents the key to process.</param>
-		/// <returns>
-		/// true if the character was processed by the control; otherwise, false.
-		/// </returns>
+		/// <summary>Processes a command key.</summary>
+		/// <param name="msg">
+		/// A <see cref="T:System.Windows.Forms.Message"/>, passed by reference, that represents the window message to process.
+		/// </param>
+		/// <param name="keyData">One of the <see cref="T:System.Windows.Forms.Keys"/> values that represents the key to process.</param>
+		/// <returns>true if the character was processed by the control; otherwise, false.</returns>
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
 			var visItems = DropDownHeight / ItemHeight;
@@ -372,11 +327,17 @@ namespace Vanara.Windows.Forms
 					return true;
 
 				case Keys.PageDown:
-					SelectedIndex = SelectedIndex + visItems > Items.Count ? GetNextEnabledItemIndex(Items.Count, false) : GetNextEnabledItemIndex(SelectedIndex + visItems, true);
+					if (SelectedIndex + visItems > Items.Count)
+						SelectedIndex = GetNextEnabledItemIndex(Items.Count, false);
+					else
+						SelectedIndex = GetNextEnabledItemIndex(SelectedIndex + visItems, true);
 					return true;
 
 				case Keys.PageUp:
-					SelectedIndex = SelectedIndex - visItems < 0 ? GetNextEnabledItemIndex(-1, true) : GetNextEnabledItemIndex(SelectedIndex - visItems, false);
+					if (SelectedIndex - visItems < 0)
+						SelectedIndex = GetNextEnabledItemIndex(-1, true);
+					else
+						SelectedIndex = GetNextEnabledItemIndex(SelectedIndex - visItems, false);
 					return true;
 
 				case Keys.Home:
@@ -388,8 +349,8 @@ namespace Vanara.Windows.Forms
 					return true;
 
 				case Keys.Enter:
-					var pt = dropDownWindow.MapPointToClient(Cursor.Position);
-					var idx = dropDownWindow.IndexFromPoint(pt.X, pt.Y);
+					var pt = dropDownWindow?.MapPointToClient(Cursor.Position) ?? default;
+					var idx = dropDownWindow?.IndexFromPoint(pt.X, pt.Y) ?? default;
 					if (idx >= 0 && IsItemEnabled(idx))
 						return false;
 					DroppedDown = false;
@@ -402,14 +363,12 @@ namespace Vanara.Windows.Forms
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
 
-		/// <summary>
-		/// Processes Windows messages.
-		/// </summary>
-		/// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message" /> to process.</param>
+		/// <summary>Processes Windows messages.</summary>
+		/// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message"/> to process.</param>
 		protected override void WndProc(ref Message m)
 		{
 			base.WndProc(ref m);
-			if ((int)(long)m.WParam == 0x3e80001)
+			if ((int)(long)m.WParam == 0x3e80001 && !IsDisposed)
 			{
 				dropDownWindow = new ListBoxNativeWindow(m.LParam, this);
 			}
@@ -419,7 +378,7 @@ namespace Vanara.Windows.Forms
 		{
 			if (str != null)
 			{
-				if ((startIndex < -1) || (startIndex >= Items.Count))
+				if (startIndex < -1 || startIndex >= Items.Count)
 					return -1;
 				var length = str.Length;
 				var num2 = 0;
@@ -475,7 +434,7 @@ namespace Vanara.Windows.Forms
 
 			protected override void WndProc(ref Message m)
 			{
-				if (m.Msg == 0x0202 || m.Msg == 0x0201 || m.Msg == 0x0203) /* WM_LBUTTONUP or WM_LBUTTONDOWN or WM_LBUTTONDBLCLK */
+				if (!Parent.IsDisposed && m.Msg == 0x0202 || m.Msg == 0x0201 || m.Msg == 0x0203) /* WM_LBUTTONUP or WM_LBUTTONDOWN or WM_LBUTTONDBLCLK */
 				{
 					var idx = IndexFromPoint(SignedLOWORD(m.LParam), SignedHIWORD(m.LParam));
 					if (idx >= 0 && !Parent.IsItemEnabled(idx))
