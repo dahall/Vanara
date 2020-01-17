@@ -1,5 +1,5 @@
 ## Correlation report for user32.dll  
-### Methods (99% complete, 556 of 559 functions)  
+### Methods (100% complete, 559 of 559 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Amicrosoft.com) | winuser.h | [Vanara.PInvoke.User32.ActivateKeyboardLayout](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateKeyboardLayout)  
@@ -67,7 +67,7 @@ Native Method | Header | Managed Method
 [CreateIconIndirect](http://msdn2.microsoft.com/en-us/library/createiconindirect) | winuser.h | [Vanara.PInvoke.User32.CreateIconIndirect](https://github.com/dahall/Vanara/search?l=C%23&q=CreateIconIndirect)  
 [CreateMenu](http://msdn2.microsoft.com/en-us/library/createmenu.htm) | winuser.h | [Vanara.PInvoke.User32.CreateMenu](https://github.com/dahall/Vanara/search?l=C%23&q=CreateMenu)  
 [CreatePopupMenu](http://msdn2.microsoft.com/en-us/library/createpopupmenu.htm) | winuser.h | [Vanara.PInvoke.User32.CreatePopupMenu](https://github.com/dahall/Vanara/search?l=C%23&q=CreatePopupMenu)  
-[CreateSyntheticPointerDevice](https://www.google.com/search?num=5&q=CreateSyntheticPointerDevice+site%3Amicrosoft.com) |  |   
+[CreateSyntheticPointerDevice](http://msdn2.microsoft.com/en-us/library/251F837F-DF9A-4A94-B790-73AA7196E4A9) | winuser.h | [Vanara.PInvoke.User32.CreateSyntheticPointerDevice](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSyntheticPointerDevice)  
 [CreateWindowEx](http://msdn2.microsoft.com/en-us/library/createwindowex) | winuser.h | [Vanara.PInvoke.User32.CreateWindowEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateWindowEx)  
 [CreateWindowStation](http://msdn2.microsoft.com/en-us/library/c1aee546-decd-46c9-8d02-d6792f5a6a0d) | winuser.h | [Vanara.PInvoke.User32.CreateWindowStation](https://github.com/dahall/Vanara/search?l=C%23&q=CreateWindowStation)  
 [DefDlgProc](http://msdn2.microsoft.com/en-us/library/defdlgproc) | winuser.h | [Vanara.PInvoke.User32.DefDlgProc](https://github.com/dahall/Vanara/search?l=C%23&q=DefDlgProc)  
@@ -83,7 +83,7 @@ Native Method | Header | Managed Method
 [DestroyCursor](http://msdn2.microsoft.com/en-us/library/destroycursor) | winuser.h | [Vanara.PInvoke.User32.DestroyCursor](https://github.com/dahall/Vanara/search?l=C%23&q=DestroyCursor)  
 [DestroyIcon](http://msdn2.microsoft.com/en-us/library/destroyicon) | winuser.h | [Vanara.PInvoke.User32.DestroyIcon](https://github.com/dahall/Vanara/search?l=C%23&q=DestroyIcon)  
 [DestroyMenu](http://msdn2.microsoft.com/en-us/library/destroymenu.htm) | winuser.h | [Vanara.PInvoke.User32.DestroyMenu](https://github.com/dahall/Vanara/search?l=C%23&q=DestroyMenu)  
-[DestroySyntheticPointerDevice](https://www.google.com/search?num=5&q=DestroySyntheticPointerDevice+site%3Amicrosoft.com) |  |   
+[DestroySyntheticPointerDevice](http://msdn2.microsoft.com/en-us/library/236484FC-D552-45CE-A968-B928D020A4C8) | winuser.h | [Vanara.PInvoke.User32.DestroySyntheticPointerDevice](https://github.com/dahall/Vanara/search?l=C%23&q=DestroySyntheticPointerDevice)  
 [DestroyWindow](http://msdn2.microsoft.com/en-us/library/destroywindow) | winuser.h | [Vanara.PInvoke.User32.DestroyWindow](https://github.com/dahall/Vanara/search?l=C%23&q=DestroyWindow)  
 [DialogBoxIndirectParam](http://msdn2.microsoft.com/en-us/library/dialogboxindirectparam) | winuser.h | [Vanara.PInvoke.User32.DialogBoxIndirectParam](https://github.com/dahall/Vanara/search?l=C%23&q=DialogBoxIndirectParam)  
 [DialogBoxParam](http://msdn2.microsoft.com/en-us/library/dialogboxparam) | winuser.h | [Vanara.PInvoke.User32.DialogBoxParam](https://github.com/dahall/Vanara/search?l=C%23&q=DialogBoxParam)  
@@ -286,7 +286,7 @@ Native Method | Header | Managed Method
 [GetUserObjectInformationA](http://msdn2.microsoft.com/en-us/library/64f7361d-1a94-4d5b-86f1-a2a21737668a) | winuser.h | [Vanara.PInvoke.User32.GetUserObjectInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetUserObjectInformation)  
 [GetUserObjectInformationW](http://msdn2.microsoft.com/en-us/library/64f7361d-1a94-4d5b-86f1-a2a21737668a) | winuser.h | [Vanara.PInvoke.User32.GetUserObjectInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetUserObjectInformation)  
 [GetUserObjectSecurity](http://msdn2.microsoft.com/en-us/library/998c2520-7833-4efd-a794-b13b528f0485) | winuser.h | [Vanara.PInvoke.User32.GetUserObjectSecurity](https://github.com/dahall/Vanara/search?l=C%23&q=GetUserObjectSecurity)  
-[GetWindow](https://www.google.com/search?num=5&q=GetWindow+site%3Amicrosoft.com) | winuser.h | [Vanara.PInvoke.User32.GetWindow](https://github.com/dahall/Vanara/search?l=C%23&q=GetWindow)  
+[GetWindow](http://msdn2.microsoft.com/en-us/library/getwindow) | winuser.h | [Vanara.PInvoke.User32.GetWindow](https://github.com/dahall/Vanara/search?l=C%23&q=GetWindow)  
 [GetWindowContextHelpId](http://msdn2.microsoft.com/en-us/library/28e57c01-0327-4f64-9ef4-ca13c3c32b0c) | winuser.h | [Vanara.PInvoke.User32.GetWindowContextHelpId](https://github.com/dahall/Vanara/search?l=C%23&q=GetWindowContextHelpId)  
 [GetWindowDC](http://msdn2.microsoft.com/en-us/library/9e6a135e-e337-4129-a3ad-faf9a8ac9b2d) | winuser.h | [Vanara.PInvoke.User32.GetWindowDC](https://github.com/dahall/Vanara/search?l=C%23&q=GetWindowDC)  
 [GetWindowDisplayAffinity](http://msdn2.microsoft.com/en-us/library/getwindowdisplayaffinity) | winuser.h | [Vanara.PInvoke.User32.GetWindowDisplayAffinity](https://github.com/dahall/Vanara/search?l=C%23&q=GetWindowDisplayAffinity)  
@@ -310,7 +310,7 @@ Native Method | Header | Managed Method
 [ImpersonateDdeClientWindow](https://www.google.com/search?num=5&q=ImpersonateDdeClientWindow+site%3Amicrosoft.com) | dde.h | [Vanara.PInvoke.User32.ImpersonateDdeClientWindow](https://github.com/dahall/Vanara/search?l=C%23&q=ImpersonateDdeClientWindow)  
 [InflateRect](http://msdn2.microsoft.com/en-us/library/9a52fb7f-cd35-4426-8753-c26cebef30d5) | winuser.h | [Vanara.PInvoke.User32.InflateRect](https://github.com/dahall/Vanara/search?l=C%23&q=InflateRect)  
 [InitializeTouchInjection](http://msdn2.microsoft.com/en-us/library/79cc2a05-d8ee-4d87-9c7b-fa7d5354b04f) | winuser.h | [Vanara.PInvoke.User32.InitializeTouchInjection](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeTouchInjection)  
-[InjectSyntheticPointerInput](https://www.google.com/search?num=5&q=InjectSyntheticPointerInput+site%3Amicrosoft.com) |  |   
+[InjectSyntheticPointerInput](http://msdn2.microsoft.com/en-us/library/9F7FC5E2-F4B8-42C2-A4BE-240E36AFC13B) | winuser.h | [Vanara.PInvoke.User32.InjectSyntheticPointerInput](https://github.com/dahall/Vanara/search?l=C%23&q=InjectSyntheticPointerInput)  
 [InjectTouchInput](http://msdn2.microsoft.com/en-us/library/c3c1425e-2af6-4ecb-a0b2-a456654f7a53) | winuser.h | [Vanara.PInvoke.User32.InjectTouchInput](https://github.com/dahall/Vanara/search?l=C%23&q=InjectTouchInput)  
 [InSendMessage](https://www.google.com/search?num=5&q=InSendMessage+site%3Amicrosoft.com) | winuser.h | [Vanara.PInvoke.User32.InSendMessage](https://github.com/dahall/Vanara/search?l=C%23&q=InSendMessage)  
 [InSendMessageEx](https://www.google.com/search?num=5&q=InSendMessageEx+site%3Amicrosoft.com) | winuser.h | [Vanara.PInvoke.User32.InSendMessageEx](https://github.com/dahall/Vanara/search?l=C%23&q=InSendMessageEx)  
@@ -609,6 +609,7 @@ Native Structure | Header | Managed Structure
 [HIGHCONTRAST](https://www.google.com/search?num=5&q=HIGHCONTRAST+site%3Amicrosoft.com) | Winuser.h | [Vanara.PInvoke.User32.HIGHCONTRAST](https://github.com/dahall/Vanara/search?l=C%23&q=HIGHCONTRAST)  
 [HKL](https://www.google.com/search?num=5&q=HKL+site%3Amicrosoft.com) |  | [Vanara.PInvoke.User32.HKL](https://github.com/dahall/Vanara/search?l=C%23&q=HKL)  
 [HRAWINPUT](https://www.google.com/search?num=5&q=HRAWINPUT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.User32.HRAWINPUT](https://github.com/dahall/Vanara/search?l=C%23&q=HRAWINPUT)  
+[HSYNTHETICPOINTERDEVICE](https://www.google.com/search?num=5&q=HSYNTHETICPOINTERDEVICE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.User32.HSYNTHETICPOINTERDEVICE](https://github.com/dahall/Vanara/search?l=C%23&q=HSYNTHETICPOINTERDEVICE)  
 [HTOUCHINPUT](https://www.google.com/search?num=5&q=HTOUCHINPUT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.User32.HTOUCHINPUT](https://github.com/dahall/Vanara/search?l=C%23&q=HTOUCHINPUT)  
 [HWINEVENTHOOK](https://www.google.com/search?num=5&q=HWINEVENTHOOK+site%3Amicrosoft.com) |  | [Vanara.PInvoke.User32.HWINEVENTHOOK](https://github.com/dahall/Vanara/search?l=C%23&q=HWINEVENTHOOK)  
 [ICONINFO](https://www.google.com/search?num=5&q=ICONINFO+site%3Amicrosoft.com) |  | [Vanara.PInvoke.User32.ICONINFO](https://github.com/dahall/Vanara/search?l=C%23&q=ICONINFO)  
@@ -651,6 +652,7 @@ Native Structure | Header | Managed Structure
 [POINTER_INFO](http://msdn2.microsoft.com/en-us/library/fee176ba-ad07-4145-0b4d-1b8c335fd102) | winuser.h | [Vanara.PInvoke.User32.POINTER_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=POINTER_INFO)  
 [POINTER_PEN_INFO](http://msdn2.microsoft.com/en-us/library/fee176ba-ad07-4141-ab4d-1b8c335fd111) | winuser.h | [Vanara.PInvoke.User32.POINTER_PEN_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=POINTER_PEN_INFO)  
 [POINTER_TOUCH_INFO](http://msdn2.microsoft.com/en-us/library/fee176ba-ad07-3141-ab4d-1b8c335fd102) | winuser.h | [Vanara.PInvoke.User32.POINTER_TOUCH_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=POINTER_TOUCH_INFO)  
+[POINTER_TYPE_INFO](http://msdn2.microsoft.com/en-us/library/5EA8012C-CF0C-4771-9A9C-A9DC218DC9AB) | winuser.h | [Vanara.PInvoke.User32.POINTER_TYPE_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=POINTER_TYPE_INFO)  
 [RAWHID](https://www.google.com/search?num=5&q=RAWHID+site%3Amicrosoft.com) | winuser.h | [Vanara.PInvoke.User32.RAWHID](https://github.com/dahall/Vanara/search?l=C%23&q=RAWHID)  
 [RAWINPUT](https://www.google.com/search?num=5&q=RAWINPUT+site%3Amicrosoft.com) | winuser.h | [Vanara.PInvoke.User32.RAWINPUT](https://github.com/dahall/Vanara/search?l=C%23&q=RAWINPUT)  
 [RAWINPUTDEVICE](https://www.google.com/search?num=5&q=RAWINPUTDEVICE+site%3Amicrosoft.com) | winuser.h | [Vanara.PInvoke.User32.RAWINPUTDEVICE](https://github.com/dahall/Vanara/search?l=C%23&q=RAWINPUTDEVICE)  

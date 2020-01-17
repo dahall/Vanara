@@ -1,5 +1,5 @@
 ## Correlation report for gdi32.dll  
-### Methods (47% complete, 294 of 619 functions)  
+### Methods (54% complete, 294 of 541 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AbortDoc](http://msdn2.microsoft.com/en-us/library/4ecc371c-34fa-4073-96fe-0de03b84d7e3) | wingdi.h | [Vanara.PInvoke.Gdi32.AbortDoc](https://github.com/dahall/Vanara/search?l=C%23&q=AbortDoc)  
@@ -13,17 +13,10 @@ Native Method | Header | Managed Method
 [ArcTo](http://msdn2.microsoft.com/en-us/library/5e358a14-9f39-4267-9a44-c8bf05b5dfbb) | wingdi.h | [Vanara.PInvoke.Gdi32.ArcTo](https://github.com/dahall/Vanara/search?l=C%23&q=ArcTo)  
 [BeginPath](http://msdn2.microsoft.com/en-us/library/88be3405-a420-4eb1-935b-099dc3067530) | wingdi.h | [Vanara.PInvoke.Gdi32.BeginPath](https://github.com/dahall/Vanara/search?l=C%23&q=BeginPath)  
 [BitBlt](http://msdn2.microsoft.com/en-us/library/dd183370) | Wingdi.h | [Vanara.PInvoke.Gdi32.BitBlt](https://github.com/dahall/Vanara/search?l=C%23&q=BitBlt)  
-[BRUSHOBJ_hGetColorTransform](https://www.google.com/search?num=5&q=BRUSHOBJ_hGetColorTransform+site%3Amicrosoft.com) |  |   
-[BRUSHOBJ_pvAllocRbrush](https://www.google.com/search?num=5&q=BRUSHOBJ_pvAllocRbrush+site%3Amicrosoft.com) |  |   
-[BRUSHOBJ_pvGetRbrush](https://www.google.com/search?num=5&q=BRUSHOBJ_pvGetRbrush+site%3Amicrosoft.com) |  |   
-[BRUSHOBJ_ulGetBrushColor](https://www.google.com/search?num=5&q=BRUSHOBJ_ulGetBrushColor+site%3Amicrosoft.com) |  |   
 [CancelDC](http://msdn2.microsoft.com/en-us/library/1dcb3dfe-0ab0-4bf5-ac2f-7a9c11712eef) | wingdi.h | [Vanara.PInvoke.Gdi32.CancelDC](https://github.com/dahall/Vanara/search?l=C%23&q=CancelDC)  
 [CheckColorsInGamut](http://msdn2.microsoft.com/en-us/library/87bee1a6-e3dd-4d0b-ad8a-9584833d9463) | wingdi.h | [Vanara.PInvoke.Gdi32.CheckColorsInGamut](https://github.com/dahall/Vanara/search?l=C%23&q=CheckColorsInGamut)  
 [ChoosePixelFormat](http://msdn2.microsoft.com/en-us/library/17bd0a2c-5257-4ae3-80f4-a5ad536169fb) | wingdi.h | [Vanara.PInvoke.Gdi32.ChoosePixelFormat](https://github.com/dahall/Vanara/search?l=C%23&q=ChoosePixelFormat)  
 [Chord](http://msdn2.microsoft.com/en-us/library/d6752c47-96a5-4fac-a1bb-0611a91f03f9) | wingdi.h | [Vanara.PInvoke.Gdi32.Chord](https://github.com/dahall/Vanara/search?l=C%23&q=Chord)  
-[CLIPOBJ_bEnum](https://www.google.com/search?num=5&q=CLIPOBJ_bEnum+site%3Amicrosoft.com) |  |   
-[CLIPOBJ_cEnumStart](https://www.google.com/search?num=5&q=CLIPOBJ_cEnumStart+site%3Amicrosoft.com) |  |   
-[CLIPOBJ_ppoGetPath](https://www.google.com/search?num=5&q=CLIPOBJ_ppoGetPath+site%3Amicrosoft.com) |  |   
 [CloseEnhMetaFile](http://msdn2.microsoft.com/en-us/library/3c4a0d8b-75a5-4729-8c64-476c36d01a90) | wingdi.h | [Vanara.PInvoke.Gdi32.CloseEnhMetaFile](https://github.com/dahall/Vanara/search?l=C%23&q=CloseEnhMetaFile)  
 [CloseFigure](http://msdn2.microsoft.com/en-us/library/2532227c-35c9-4a46-b4eb-4a156ef28219) | wingdi.h | [Vanara.PInvoke.Gdi32.CloseFigure](https://github.com/dahall/Vanara/search?l=C%23&q=CloseFigure)  
 [CloseMetaFile](http://msdn2.microsoft.com/en-us/library/8e50457a-8ef8-4e71-8c56-38cfb277f57d) | wingdi.h | [Vanara.PInvoke.Gdi32.CloseMetaFile](https://github.com/dahall/Vanara/search?l=C%23&q=CloseMetaFile)  
@@ -270,51 +263,6 @@ Native Method | Header | Managed Method
 [EndDoc](http://msdn2.microsoft.com/en-us/library/bf63ea0f-cc73-4943-9c84-52b3b77e141c) | wingdi.h | [Vanara.PInvoke.Gdi32.EndDoc](https://github.com/dahall/Vanara/search?l=C%23&q=EndDoc)  
 [EndPage](http://msdn2.microsoft.com/en-us/library/33e6d005-f00d-4b87-bf7c-fc79c1d05514) | wingdi.h | [Vanara.PInvoke.Gdi32.EndPage](https://github.com/dahall/Vanara/search?l=C%23&q=EndPage)  
 [EndPath](http://msdn2.microsoft.com/en-us/library/0b4daf81-d1d6-45c1-b081-855b7cd8527a) | wingdi.h | [Vanara.PInvoke.Gdi32.EndPath](https://github.com/dahall/Vanara/search?l=C%23&q=EndPath)  
-[EngAcquireSemaphore](https://www.google.com/search?num=5&q=EngAcquireSemaphore+site%3Amicrosoft.com) |  |   
-[EngAlphaBlend](https://www.google.com/search?num=5&q=EngAlphaBlend+site%3Amicrosoft.com) |  |   
-[EngAssociateSurface](https://www.google.com/search?num=5&q=EngAssociateSurface+site%3Amicrosoft.com) |  |   
-[EngBitBlt](https://www.google.com/search?num=5&q=EngBitBlt+site%3Amicrosoft.com) |  |   
-[EngCheckAbort](https://www.google.com/search?num=5&q=EngCheckAbort+site%3Amicrosoft.com) |  |   
-[EngComputeGlyphSet](https://www.google.com/search?num=5&q=EngComputeGlyphSet+site%3Amicrosoft.com) |  |   
-[EngCopyBits](https://www.google.com/search?num=5&q=EngCopyBits+site%3Amicrosoft.com) |  |   
-[EngCreateBitmap](https://www.google.com/search?num=5&q=EngCreateBitmap+site%3Amicrosoft.com) |  |   
-[EngCreateClip](https://www.google.com/search?num=5&q=EngCreateClip+site%3Amicrosoft.com) |  |   
-[EngCreateDeviceBitmap](https://www.google.com/search?num=5&q=EngCreateDeviceBitmap+site%3Amicrosoft.com) |  |   
-[EngCreateDeviceSurface](https://www.google.com/search?num=5&q=EngCreateDeviceSurface+site%3Amicrosoft.com) |  |   
-[EngCreatePalette](https://www.google.com/search?num=5&q=EngCreatePalette+site%3Amicrosoft.com) |  |   
-[EngCreateSemaphore](https://www.google.com/search?num=5&q=EngCreateSemaphore+site%3Amicrosoft.com) |  |   
-[EngDeleteClip](https://www.google.com/search?num=5&q=EngDeleteClip+site%3Amicrosoft.com) |  |   
-[EngDeletePalette](https://www.google.com/search?num=5&q=EngDeletePalette+site%3Amicrosoft.com) |  |   
-[EngDeletePath](https://www.google.com/search?num=5&q=EngDeletePath+site%3Amicrosoft.com) |  |   
-[EngDeleteSemaphore](https://www.google.com/search?num=5&q=EngDeleteSemaphore+site%3Amicrosoft.com) |  |   
-[EngDeleteSurface](https://www.google.com/search?num=5&q=EngDeleteSurface+site%3Amicrosoft.com) |  |   
-[EngEraseSurface](https://www.google.com/search?num=5&q=EngEraseSurface+site%3Amicrosoft.com) |  |   
-[EngFillPath](https://www.google.com/search?num=5&q=EngFillPath+site%3Amicrosoft.com) |  |   
-[EngFindResource](https://www.google.com/search?num=5&q=EngFindResource+site%3Amicrosoft.com) |  |   
-[EngFreeModule](https://www.google.com/search?num=5&q=EngFreeModule+site%3Amicrosoft.com) |  |   
-[EngGetCurrentCodePage](https://www.google.com/search?num=5&q=EngGetCurrentCodePage+site%3Amicrosoft.com) |  |   
-[EngGetDriverName](https://www.google.com/search?num=5&q=EngGetDriverName+site%3Amicrosoft.com) |  |   
-[EngGetPrinterDataFileName](https://www.google.com/search?num=5&q=EngGetPrinterDataFileName+site%3Amicrosoft.com) |  |   
-[EngGradientFill](https://www.google.com/search?num=5&q=EngGradientFill+site%3Amicrosoft.com) |  |   
-[EngLineTo](https://www.google.com/search?num=5&q=EngLineTo+site%3Amicrosoft.com) |  |   
-[EngLoadModule](https://www.google.com/search?num=5&q=EngLoadModule+site%3Amicrosoft.com) |  |   
-[EngLockSurface](https://www.google.com/search?num=5&q=EngLockSurface+site%3Amicrosoft.com) |  |   
-[EngMarkBandingSurface](https://www.google.com/search?num=5&q=EngMarkBandingSurface+site%3Amicrosoft.com) |  |   
-[EngMultiByteToUnicodeN](https://www.google.com/search?num=5&q=EngMultiByteToUnicodeN+site%3Amicrosoft.com) |  |   
-[EngMultiByteToWideChar](https://www.google.com/search?num=5&q=EngMultiByteToWideChar+site%3Amicrosoft.com) |  |   
-[EngPaint](https://www.google.com/search?num=5&q=EngPaint+site%3Amicrosoft.com) |  |   
-[EngPlgBlt](https://www.google.com/search?num=5&q=EngPlgBlt+site%3Amicrosoft.com) |  |   
-[EngQueryLocalTime](https://www.google.com/search?num=5&q=EngQueryLocalTime+site%3Amicrosoft.com) |  |   
-[EngReleaseSemaphore](https://www.google.com/search?num=5&q=EngReleaseSemaphore+site%3Amicrosoft.com) |  |   
-[EngStretchBlt](https://www.google.com/search?num=5&q=EngStretchBlt+site%3Amicrosoft.com) |  |   
-[EngStretchBltROP](https://www.google.com/search?num=5&q=EngStretchBltROP+site%3Amicrosoft.com) |  |   
-[EngStrokeAndFillPath](https://www.google.com/search?num=5&q=EngStrokeAndFillPath+site%3Amicrosoft.com) |  |   
-[EngStrokePath](https://www.google.com/search?num=5&q=EngStrokePath+site%3Amicrosoft.com) |  |   
-[EngTextOut](https://www.google.com/search?num=5&q=EngTextOut+site%3Amicrosoft.com) |  |   
-[EngTransparentBlt](https://www.google.com/search?num=5&q=EngTransparentBlt+site%3Amicrosoft.com) |  |   
-[EngUnicodeToMultiByteN](https://www.google.com/search?num=5&q=EngUnicodeToMultiByteN+site%3Amicrosoft.com) |  |   
-[EngUnlockSurface](https://www.google.com/search?num=5&q=EngUnlockSurface+site%3Amicrosoft.com) |  |   
-[EngWideCharToMultiByte](https://www.google.com/search?num=5&q=EngWideCharToMultiByte+site%3Amicrosoft.com) |  |   
 [EnumEnhMetaFile](http://msdn2.microsoft.com/en-us/library/bef5f43e-219a-4f8a-986d-290e29e17c4e) | wingdi.h | [Vanara.PInvoke.Gdi32.EnumEnhMetaFile](https://github.com/dahall/Vanara/search?l=C%23&q=EnumEnhMetaFile)  
 [EnumFontFamilies](http://msdn2.microsoft.com/en-us/library/4960afbb-eeba-4030-ac89-d1ff077bb2f3) | wingdi.h | [Vanara.PInvoke.Gdi32.EnumFontFamilies](https://github.com/dahall/Vanara/search?l=C%23&q=EnumFontFamilies)  
 [EnumFontFamiliesEx](http://msdn2.microsoft.com/en-us/library/4d70906d-8005-4c4a-869e-16dd3e6fa3f2) | wingdi.h | [Vanara.PInvoke.Gdi32.EnumFontFamiliesEx](https://github.com/dahall/Vanara/search?l=C%23&q=EnumFontFamiliesEx)  
@@ -335,14 +283,6 @@ Native Method | Header | Managed Method
 [FillRgn](http://msdn2.microsoft.com/en-us/library/c4e0eca5-442b-462b-a4f2-0c628b6d3d38) | wingdi.h | [Vanara.PInvoke.Gdi32.FillRgn](https://github.com/dahall/Vanara/search?l=C%23&q=FillRgn)  
 [FlattenPath](http://msdn2.microsoft.com/en-us/library/267b0c9a-25d4-4b04-95d3-6b0856bed022) | wingdi.h | [Vanara.PInvoke.Gdi32.FlattenPath](https://github.com/dahall/Vanara/search?l=C%23&q=FlattenPath)  
 [FloodFill](http://msdn2.microsoft.com/en-us/library/e53bebb5-4e46-4ea4-8d41-c12f4c6645ef) | wingdi.h | [Vanara.PInvoke.Gdi32.FloodFill](https://github.com/dahall/Vanara/search?l=C%23&q=FloodFill)  
-[FONTOBJ_cGetAllGlyphHandles](https://www.google.com/search?num=5&q=FONTOBJ_cGetAllGlyphHandles+site%3Amicrosoft.com) |  |   
-[FONTOBJ_cGetGlyphs](https://www.google.com/search?num=5&q=FONTOBJ_cGetGlyphs+site%3Amicrosoft.com) |  |   
-[FONTOBJ_pfdg](https://www.google.com/search?num=5&q=FONTOBJ_pfdg+site%3Amicrosoft.com) |  |   
-[FONTOBJ_pifi](https://www.google.com/search?num=5&q=FONTOBJ_pifi+site%3Amicrosoft.com) |  |   
-[FONTOBJ_pQueryGlyphAttrs](https://www.google.com/search?num=5&q=FONTOBJ_pQueryGlyphAttrs+site%3Amicrosoft.com) |  |   
-[FONTOBJ_pvTrueTypeFontFile](https://www.google.com/search?num=5&q=FONTOBJ_pvTrueTypeFontFile+site%3Amicrosoft.com) |  |   
-[FONTOBJ_pxoGetXform](https://www.google.com/search?num=5&q=FONTOBJ_pxoGetXform+site%3Amicrosoft.com) |  |   
-[FONTOBJ_vGetInfo](https://www.google.com/search?num=5&q=FONTOBJ_vGetInfo+site%3Amicrosoft.com) |  |   
 [FrameRgn](http://msdn2.microsoft.com/en-us/library/d2c95392-7950-4963-8f10-2387daf23e93) | wingdi.h | [Vanara.PInvoke.Gdi32.FrameRgn](https://github.com/dahall/Vanara/search?l=C%23&q=FrameRgn)  
 [GdiAlphaBlend](http://msdn2.microsoft.com/en-us/library/dd183351) | Wingdi.h | [Vanara.PInvoke.Gdi32.AlphaBlend](https://github.com/dahall/Vanara/search?l=C%23&q=AlphaBlend)  
 [GdiComment](http://msdn2.microsoft.com/en-us/library/80ed11fc-89f8-47ab-8b3b-c817733bd385) | wingdi.h | [Vanara.PInvoke.Gdi32.GdiComment](https://github.com/dahall/Vanara/search?l=C%23&q=GdiComment)  
@@ -456,8 +396,6 @@ Native Method | Header | Managed Method
 [GetWinMetaFileBits](http://msdn2.microsoft.com/en-us/library/db61ea3a-44d0-4769-acb4-05a982d3f06f) | wingdi.h | [Vanara.PInvoke.Gdi32.GetWinMetaFileBits](https://github.com/dahall/Vanara/search?l=C%23&q=GetWinMetaFileBits)  
 [GetWorldTransform](http://msdn2.microsoft.com/en-us/library/72945b1e-144e-4724-bf08-6f971f8adb43) | wingdi.h | [Vanara.PInvoke.Gdi32.GetWorldTransform](https://github.com/dahall/Vanara/search?l=C%23&q=GetWorldTransform)  
 [GradientFillA](http://msdn2.microsoft.com/en-us/library/c88c1137-5690-4139-9d10-90d036e8f31c) | wingdi.h | [Vanara.PInvoke.Gdi32.GradientFill](https://github.com/dahall/Vanara/search?l=C%23&q=GradientFill)  
-[HT_Get8BPPFormatPalette](https://www.google.com/search?num=5&q=HT_Get8BPPFormatPalette+site%3Amicrosoft.com) |  |   
-[HT_Get8BPPMaskPalette](https://www.google.com/search?num=5&q=HT_Get8BPPMaskPalette+site%3Amicrosoft.com) |  |   
 [IntersectClipRect](http://msdn2.microsoft.com/en-us/library/9b3f9bfb-337b-45f0-b9ec-399e5f563638) | wingdi.h | [Vanara.PInvoke.Gdi32.IntersectClipRect](https://github.com/dahall/Vanara/search?l=C%23&q=IntersectClipRect)  
 [InvertRgn](http://msdn2.microsoft.com/en-us/library/94704c44-796a-4ca7-97f3-6676d7f94078) | wingdi.h | [Vanara.PInvoke.Gdi32.InvertRgn](https://github.com/dahall/Vanara/search?l=C%23&q=InvertRgn)  
 [LineDDA](http://msdn2.microsoft.com/en-us/library/1400d947-324a-4921-9f65-f5d3a11005da) | wingdi.h | [Vanara.PInvoke.Gdi32.LineDDA](https://github.com/dahall/Vanara/search?l=C%23&q=LineDDA)  
@@ -472,11 +410,6 @@ Native Method | Header | Managed Method
 [OffsetWindowOrgEx](http://msdn2.microsoft.com/en-us/library/085f40ac-d91f-4853-8ad1-1fc5da08b981) | wingdi.h | [Vanara.PInvoke.Gdi32.OffsetWindowOrgEx](https://github.com/dahall/Vanara/search?l=C%23&q=OffsetWindowOrgEx)  
 [PaintRgn](http://msdn2.microsoft.com/en-us/library/7656fb67-d865-459e-b379-4f2e44c76fd0) | wingdi.h | [Vanara.PInvoke.Gdi32.PaintRgn](https://github.com/dahall/Vanara/search?l=C%23&q=PaintRgn)  
 [PatBlt](http://msdn2.microsoft.com/en-us/library/6deea8ef-b55d-4086-a54e-3f89bb17c6cd) | wingdi.h | [Vanara.PInvoke.Gdi32.PatBlt](https://github.com/dahall/Vanara/search?l=C%23&q=PatBlt)  
-[PATHOBJ_bEnum](https://www.google.com/search?num=5&q=PATHOBJ_bEnum+site%3Amicrosoft.com) |  |   
-[PATHOBJ_bEnumClipLines](https://www.google.com/search?num=5&q=PATHOBJ_bEnumClipLines+site%3Amicrosoft.com) |  |   
-[PATHOBJ_vEnumStart](https://www.google.com/search?num=5&q=PATHOBJ_vEnumStart+site%3Amicrosoft.com) |  |   
-[PATHOBJ_vEnumStartClipLines](https://www.google.com/search?num=5&q=PATHOBJ_vEnumStartClipLines+site%3Amicrosoft.com) |  |   
-[PATHOBJ_vGetBounds](https://www.google.com/search?num=5&q=PATHOBJ_vGetBounds+site%3Amicrosoft.com) |  |   
 [PathToRegion](http://msdn2.microsoft.com/en-us/library/9fe31925-3d5d-42e5-aa9b-405610f13de4) | wingdi.h | [Vanara.PInvoke.Gdi32.PathToRegion](https://github.com/dahall/Vanara/search?l=C%23&q=PathToRegion)  
 [Pie](http://msdn2.microsoft.com/en-us/library/86daa936-b483-4432-aa32-0b9328ff76f9) | wingdi.h | [Vanara.PInvoke.Gdi32.Pie](https://github.com/dahall/Vanara/search?l=C%23&q=Pie)  
 [PlayEnhMetaFile](http://msdn2.microsoft.com/en-us/library/51e8937b-0c42-49fe-8930-7af303fce788) | wingdi.h | [Vanara.PInvoke.Gdi32.PlayEnhMetaFile](https://github.com/dahall/Vanara/search?l=C%23&q=PlayEnhMetaFile)  
@@ -602,11 +535,6 @@ Native Method | Header | Managed Method
 [StartPage](http://msdn2.microsoft.com/en-us/library/b2bc0593-5eaf-40af-aa38-fbdfa1ea5f76) | wingdi.h | [Vanara.PInvoke.Gdi32.StartPage](https://github.com/dahall/Vanara/search?l=C%23&q=StartPage)  
 [StretchBlt](http://msdn2.microsoft.com/en-us/library/5130c88e-08e8-4faa-a1cb-a8106c86cea0) | wingdi.h | [Vanara.PInvoke.Gdi32.StretchBlt](https://github.com/dahall/Vanara/search?l=C%23&q=StretchBlt)  
 [StretchDIBits](http://msdn2.microsoft.com/en-us/library/3d57a79a-338d-48ab-8161-3ce17739bf20) | wingdi.h | [Vanara.PInvoke.Gdi32.StretchDIBits](https://github.com/dahall/Vanara/search?l=C%23&q=StretchDIBits)  
-[STROBJ_bEnum](https://www.google.com/search?num=5&q=STROBJ_bEnum+site%3Amicrosoft.com) |  |   
-[STROBJ_bEnumPositionsOnly](https://www.google.com/search?num=5&q=STROBJ_bEnumPositionsOnly+site%3Amicrosoft.com) |  |   
-[STROBJ_bGetAdvanceWidths](https://www.google.com/search?num=5&q=STROBJ_bGetAdvanceWidths+site%3Amicrosoft.com) |  |   
-[STROBJ_dwGetCodePage](https://www.google.com/search?num=5&q=STROBJ_dwGetCodePage+site%3Amicrosoft.com) |  |   
-[STROBJ_vEnumStart](https://www.google.com/search?num=5&q=STROBJ_vEnumStart+site%3Amicrosoft.com) |  |   
 [StrokeAndFillPath](http://msdn2.microsoft.com/en-us/library/936af9e5-707d-4d43-9035-e8239e3759a2) | wingdi.h | [Vanara.PInvoke.Gdi32.StrokeAndFillPath](https://github.com/dahall/Vanara/search?l=C%23&q=StrokeAndFillPath)  
 [StrokePath](http://msdn2.microsoft.com/en-us/library/5a9f1509-0a69-4db8-8d74-9bf360aca64d) | wingdi.h | [Vanara.PInvoke.Gdi32.StrokePath](https://github.com/dahall/Vanara/search?l=C%23&q=StrokePath)  
 [SwapBuffers](http://msdn2.microsoft.com/en-us/library/2c9728e4-c5be-4b14-a6f7-2899c792ec3d) | wingdi.h | [Vanara.PInvoke.Gdi32.SwapBuffers](https://github.com/dahall/Vanara/search?l=C%23&q=SwapBuffers)  
@@ -615,12 +543,6 @@ Native Method | Header | Managed Method
 [UnrealizeObject](http://msdn2.microsoft.com/en-us/library/b84cd0b3-fdf1-4f12-bc45-308032d6d698) | wingdi.h | [Vanara.PInvoke.Gdi32.UnrealizeObject](https://github.com/dahall/Vanara/search?l=C%23&q=UnrealizeObject)  
 [UpdateColors](http://msdn2.microsoft.com/en-us/library/61dfd579-3fc9-4e0a-bfd9-d04c6f918fd8) | wingdi.h | [Vanara.PInvoke.Gdi32.UpdateColors](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateColors)  
 [WidenPath](http://msdn2.microsoft.com/en-us/library/c994bd1b-c5e8-46e6-a6a6-59e2d9106d75) | wingdi.h | [Vanara.PInvoke.Gdi32.WidenPath](https://github.com/dahall/Vanara/search?l=C%23&q=WidenPath)  
-[XFORMOBJ_bApplyXform](https://www.google.com/search?num=5&q=XFORMOBJ_bApplyXform+site%3Amicrosoft.com) |  |   
-[XFORMOBJ_iGetXform](https://www.google.com/search?num=5&q=XFORMOBJ_iGetXform+site%3Amicrosoft.com) |  |   
-[XLATEOBJ_cGetPalette](https://www.google.com/search?num=5&q=XLATEOBJ_cGetPalette+site%3Amicrosoft.com) |  |   
-[XLATEOBJ_hGetColorTransform](https://www.google.com/search?num=5&q=XLATEOBJ_hGetColorTransform+site%3Amicrosoft.com) |  |   
-[XLATEOBJ_iXlate](https://www.google.com/search?num=5&q=XLATEOBJ_iXlate+site%3Amicrosoft.com) |  |   
-[XLATEOBJ_piVector](https://www.google.com/search?num=5&q=XLATEOBJ_piVector+site%3Amicrosoft.com) |  |   
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

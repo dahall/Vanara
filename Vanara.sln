@@ -189,7 +189,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.UrlMon", "PI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Opc", "PInvoke\Opc\Vanara.PInvoke.Opc.csproj", "{E55F37CC-D24D-4EB9-8BD5-0E6D88EF1519}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.UserEnv", "PInvoke\UserEnv\Vanara.PInvoke.UserEnv.csproj", "{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.UserEnv", "PInvoke\UserEnv\Vanara.PInvoke.UserEnv.csproj", "{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserEnv", "UnitTests\PInvoke\UserEnv\UserEnv.csproj", "{FFF69906-9EEC-4D01-879F-CE96DE2FFC6A}"
 EndProject
@@ -198,6 +198,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		LICENSE = LICENSE
 		README.md = README.md
+		Vanara.Library.nuspec = Vanara.Library.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opc", "UnitTests\PInvoke\Opc\Opc.csproj", "{9783BAFF-8388-44FA-882B-A92142CC20F5}"

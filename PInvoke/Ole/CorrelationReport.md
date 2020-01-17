@@ -1,5 +1,5 @@
 ## Correlation report for ole32.dll, oleaut32.dll, propsys.dll  
-### Methods (80% complete, 562 of 697 functions)  
+### Methods (82% complete, 576 of 699 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindMoniker](http://msdn2.microsoft.com/en-us/library/5a022c39-fc2c-458b-9dfe-fed1255d49a4) | ole32.dll | objbase.h | [Vanara.PInvoke.Ole32.BindMoniker](https://github.com/dahall/Vanara/search?l=C%23&q=BindMoniker)  
@@ -134,6 +134,8 @@ Native Method | Native DLL | Header | Managed Method
 [DispInvoke](http://msdn2.microsoft.com/en-us/library/69b89e5c-2a04-4a6a-beb0-18e68f8866ac) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.DispInvoke](https://github.com/dahall/Vanara/search?l=C%23&q=DispInvoke)  
 [DllCanUnloadNow](http://msdn2.microsoft.com/en-us/library/a47df9eb-97cb-4875-a121-1dabe7bc9db6) | ole32.dll | combaseapi.h | [Vanara.PInvoke.Ole32.DllCanUnloadNow](https://github.com/dahall/Vanara/search?l=C%23&q=DllCanUnloadNow)  
 [DllGetClassObject](http://msdn2.microsoft.com/en-us/library/42c08149-c251-47f7-a81f-383975d7081c) | ole32.dll | combaseapi.h | [Vanara.PInvoke.Ole32.DllGetClassObject](https://github.com/dahall/Vanara/search?l=C%23&q=DllGetClassObject)  
+[DllRegisterServer](http://msdn2.microsoft.com/en-us/library/4442206b-b2ad-47d7-8add-18002c44c5a2) | ole32.dll | olectl.h | [Vanara.PInvoke.Ole32.DllRegisterServer](https://github.com/dahall/Vanara/search?l=C%23&q=DllRegisterServer)  
+[DllUnregisterServer](http://msdn2.microsoft.com/en-us/library/b71137a7-284e-4521-a3b2-9dad9c9d3c54) | ole32.dll | olectl.h | [Vanara.PInvoke.Ole32.DllUnregisterServer](https://github.com/dahall/Vanara/search?l=C%23&q=DllUnregisterServer)  
 [DoDragDrop](http://msdn2.microsoft.com/en-us/library/095172ac-9e08-4797-b9da-41a4e5a61315) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.DoDragDrop](https://github.com/dahall/Vanara/search?l=C%23&q=DoDragDrop)  
 [DosDateTimeToVariantTime](http://msdn2.microsoft.com/en-us/library/61b029cb-8b60-400a-a6bb-a3f6839dc9d2) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.DosDateTimeToVariantTime](https://github.com/dahall/Vanara/search?l=C%23&q=DosDateTimeToVariantTime)  
 [FmtIdToPropStgName](http://msdn2.microsoft.com/en-us/library/044f8883-bbd2-4cd3-b9dc-739ecb711bdd) | ole32.dll | coml2api.h | [Vanara.PInvoke.Ole32.FmtIdToPropStgName](https://github.com/dahall/Vanara/search?l=C%23&q=FmtIdToPropStgName)  
@@ -212,7 +214,7 @@ Native Method | Native DLL | Header | Managed Method
 [OleCreateDefaultHandler](http://msdn2.microsoft.com/en-us/library/ffe87012-b000-4ed7-b0b2-78ffdc794d3b) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateDefaultHandler](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateDefaultHandler)  
 [OleCreateEmbeddingHelper](http://msdn2.microsoft.com/en-us/library/5c67b513-0692-4e0a-beab-8b514089699c) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateEmbeddingHelper](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateEmbeddingHelper)  
 [OleCreateEx](http://msdn2.microsoft.com/en-us/library/11f2703c-b596-4cb9-855a-d8cf4b947fae) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateEx](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateEx)  
-[OleCreateFontIndirect](https://www.google.com/search?num=5&q=OleCreateFontIndirect+site%3Amicrosoft.com) | oleaut32.dll |  |   
+[OleCreateFontIndirect](http://msdn2.microsoft.com/en-us/library/9ab384d6-fc21-4152-a0cf-744948f2f72c) | oleaut32.dll | olectl.h | [Vanara.PInvoke.OleAut32.OleCreateFontIndirect](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateFontIndirect)  
 [OleCreateFromData](http://msdn2.microsoft.com/en-us/library/aa5e997e-60d4-472d-9c81-5359c277bde3) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateFromData](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateFromData)  
 [OleCreateFromDataEx](http://msdn2.microsoft.com/en-us/library/10091a24-6a50-4eb2-a518-b92a572daa6c) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateFromDataEx](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateFromDataEx)  
 [OleCreateFromFile](http://msdn2.microsoft.com/en-us/library/98c63646-6617-46b6-8c3e-82d1c4d0adb6) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateFromFile](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateFromFile)  
@@ -224,9 +226,9 @@ Native Method | Native DLL | Header | Managed Method
 [OleCreateLinkToFile](http://msdn2.microsoft.com/en-us/library/06b013db-0554-4dbc-b19d-28314fb4fee0) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateLinkToFile](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateLinkToFile)  
 [OleCreateLinkToFileEx](http://msdn2.microsoft.com/en-us/library/9a333bac-8ee3-4941-8e4b-78a2befceff8) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateLinkToFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateLinkToFileEx)  
 [OleCreateMenuDescriptor](http://msdn2.microsoft.com/en-us/library/b4a6b3f1-aee9-4b68-8ffe-24bd497db0a0) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateMenuDescriptor](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateMenuDescriptor)  
-[OleCreatePictureIndirect](https://www.google.com/search?num=5&q=OleCreatePictureIndirect+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleCreatePropertyFrame](https://www.google.com/search?num=5&q=OleCreatePropertyFrame+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleCreatePropertyFrameIndirect](https://www.google.com/search?num=5&q=OleCreatePropertyFrameIndirect+site%3Amicrosoft.com) | oleaut32.dll |  |   
+[OleCreatePictureIndirect](http://msdn2.microsoft.com/en-us/library/fb021348-07d4-4974-a71e-abb1b8d760c4) | oleaut32.dll | olectl.h | [Vanara.PInvoke.OleAut32.OleCreatePictureIndirect](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreatePictureIndirect)  
+[OleCreatePropertyFrame](http://msdn2.microsoft.com/en-us/library/06f75ac2-3ee6-4209-83cf-a4e5244a18bd) | oleaut32.dll | olectl.h | [Vanara.PInvoke.OleAut32.OleCreatePropertyFrame](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreatePropertyFrame)  
+[OleCreatePropertyFrameIndirect](http://msdn2.microsoft.com/en-us/library/ccd01d38-2d8e-4509-b44f-fef6ff718558) | oleaut32.dll | olectl.h | [Vanara.PInvoke.OleAut32.OleCreatePropertyFrameIndirect](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreatePropertyFrameIndirect)  
 [OleCreateStaticFromData](http://msdn2.microsoft.com/en-us/library/847d82f5-149d-48a4-a228-f5551a07a790) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateStaticFromData](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateStaticFromData)  
 [OleDestroyMenuDescriptor](http://msdn2.microsoft.com/en-us/library/dc347d39-a7bb-4bbf-8957-c3fbcff461bf) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleDestroyMenuDescriptor](https://github.com/dahall/Vanara/search?l=C%23&q=OleDestroyMenuDescriptor)  
 [OleDoAutoConvert](http://msdn2.microsoft.com/en-us/library/fe470f8a-b2f0-48a4-a270-77420bd1472a) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleDoAutoConvert](https://github.com/dahall/Vanara/search?l=C%23&q=OleDoAutoConvert)  
@@ -238,16 +240,16 @@ Native Method | Native DLL | Header | Managed Method
 [OleGetClipboardWithEnterpriseInfo](http://msdn2.microsoft.com/en-us/library/1DAD2A9A-EDA2-49D2-90F7-2A9022988177) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleGetClipboardWithEnterpriseInfo](https://github.com/dahall/Vanara/search?l=C%23&q=OleGetClipboardWithEnterpriseInfo)  
 [OleGetIconOfClass](http://msdn2.microsoft.com/en-us/library/88ac1c14-b5a8-4100-9fa5-d7af35052b48) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleGetIconOfClass](https://github.com/dahall/Vanara/search?l=C%23&q=OleGetIconOfClass)  
 [OleGetIconOfFile](http://msdn2.microsoft.com/en-us/library/2fa9cd75-4dc6-45a3-aa62-e82bd28289a5) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleGetIconOfFile](https://github.com/dahall/Vanara/search?l=C%23&q=OleGetIconOfFile)  
-[OleIconToCursor](https://www.google.com/search?num=5&q=OleIconToCursor+site%3Amicrosoft.com) | oleaut32.dll |  |   
+[OleIconToCursor](http://msdn2.microsoft.com/en-us/library/f5de0b9e-6e3d-424c-aeeb-1c272606aea0) | oleaut32.dll | olectl.h | [Vanara.PInvoke.OleAut32.OleIconToCursor](https://github.com/dahall/Vanara/search?l=C%23&q=OleIconToCursor)  
 [OleInitialize](http://msdn2.microsoft.com/en-us/library/9a13e7a0-f2e2-466b-98f5-38d5972fa391) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleInitialize](https://github.com/dahall/Vanara/search?l=C%23&q=OleInitialize)  
 [OleIsCurrentClipboard](http://msdn2.microsoft.com/en-us/library/12844504-ef47-4a4d-b31b-f765e0f2ace6) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleIsCurrentClipboard](https://github.com/dahall/Vanara/search?l=C%23&q=OleIsCurrentClipboard)  
 [OleIsRunning](http://msdn2.microsoft.com/en-us/library/9392666f-c269-4667-aeac-67c68bcc5f06) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleIsRunning](https://github.com/dahall/Vanara/search?l=C%23&q=OleIsRunning)  
 [OleLoad](http://msdn2.microsoft.com/en-us/library/f2d8bb2e-5bd1-4991-a80c-ed06bfd5c9f9) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleLoad](https://github.com/dahall/Vanara/search?l=C%23&q=OleLoad)  
-[OleLoadPicture](https://www.google.com/search?num=5&q=OleLoadPicture+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleLoadPictureEx](https://www.google.com/search?num=5&q=OleLoadPictureEx+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleLoadPictureFile](https://www.google.com/search?num=5&q=OleLoadPictureFile+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleLoadPictureFileEx](https://www.google.com/search?num=5&q=OleLoadPictureFileEx+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[OleLoadPicturePath](https://www.google.com/search?num=5&q=OleLoadPicturePath+site%3Amicrosoft.com) | oleaut32.dll |  |   
+[OleLoadPicture](http://msdn2.microsoft.com/en-us/library/de1847cd-ecc0-4941-9dbc-a60b8ef0b1c1) | oleaut32.dll | olectl.h | [Vanara.PInvoke.OleAut32.OleLoadPicture](https://github.com/dahall/Vanara/search?l=C%23&q=OleLoadPicture)  
+[OleLoadPictureEx](http://msdn2.microsoft.com/en-us/library/c903096f-f15f-4a36-8efc-20cf7102e77d) | oleaut32.dll | olectl.h | [Vanara.PInvoke.OleAut32.OleLoadPictureEx](https://github.com/dahall/Vanara/search?l=C%23&q=OleLoadPictureEx)  
+[OleLoadPictureFile](http://msdn2.microsoft.com/en-us/library/ecfbf297-88fa-42bf-afa7-f7884be17b15) | oleaut32.dll | olectl.h | [Vanara.PInvoke.OleAut32.OleLoadPictureFile](https://github.com/dahall/Vanara/search?l=C%23&q=OleLoadPictureFile)  
+[OleLoadPictureFileEx](http://msdn2.microsoft.com/en-us/library/39a2c814-97f6-4157-8884-8b3f268d3f7f) | oleaut32.dll | olectl.h | [Vanara.PInvoke.OleAut32.OleLoadPictureFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=OleLoadPictureFileEx)  
+[OleLoadPicturePath](http://msdn2.microsoft.com/en-us/library/08bad900-815a-4b6d-b977-92d5fdd7d9e8) | oleaut32.dll | olectl.h | [Vanara.PInvoke.OleAut32.OleLoadPicturePath](https://github.com/dahall/Vanara/search?l=C%23&q=OleLoadPicturePath)  
 [OleLockRunning](http://msdn2.microsoft.com/en-us/library/84941a59-6880-4824-b4b9-cd1b52d2bffb) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleLockRunning](https://github.com/dahall/Vanara/search?l=C%23&q=OleLockRunning)  
 [OleMetafilePictFromIconAndLabel](http://msdn2.microsoft.com/en-us/library/627a79eb-46dd-4df7-a0d6-cab37b73387a) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleMetafilePictFromIconAndLabel](https://github.com/dahall/Vanara/search?l=C%23&q=OleMetafilePictFromIconAndLabel)  
 [OleNoteObjectVisible](http://msdn2.microsoft.com/en-us/library/f140f068-3115-4389-b67b-6d41d12f7525) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleNoteObjectVisible](https://github.com/dahall/Vanara/search?l=C%23&q=OleNoteObjectVisible)  
@@ -259,14 +261,14 @@ Native Method | Native DLL | Header | Managed Method
 [OleRegGetUserType](http://msdn2.microsoft.com/en-us/library/492a4084-494e-4d78-8f3a-853ec486a2d6) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleRegGetUserType](https://github.com/dahall/Vanara/search?l=C%23&q=OleRegGetUserType)  
 [OleRun](http://msdn2.microsoft.com/en-us/library/9035f996-b163-4855-aa9d-184b77072ead) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleRun](https://github.com/dahall/Vanara/search?l=C%23&q=OleRun)  
 [OleSave](http://msdn2.microsoft.com/en-us/library/b8d8e1af-05a3-42f5-8672-910a2606e613) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleSave](https://github.com/dahall/Vanara/search?l=C%23&q=OleSave)  
-[OleSavePictureFile](https://www.google.com/search?num=5&q=OleSavePictureFile+site%3Amicrosoft.com) | oleaut32.dll |  |   
+[OleSavePictureFile](http://msdn2.microsoft.com/en-us/library/ac46d390-9e08-4f79-a621-60ea75f4acff) | oleaut32.dll | olectl.h | [Vanara.PInvoke.OleAut32.OleSavePictureFile](https://github.com/dahall/Vanara/search?l=C%23&q=OleSavePictureFile)  
 [OleSaveToStream](http://msdn2.microsoft.com/en-us/library/0085c6a8-1a94-4379-9937-c8d792d130da) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleSaveToStream](https://github.com/dahall/Vanara/search?l=C%23&q=OleSaveToStream)  
 [OleSetAutoConvert](http://msdn2.microsoft.com/en-us/library/39abf385-962a-4b20-b319-501c8130e050) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleSetAutoConvert](https://github.com/dahall/Vanara/search?l=C%23&q=OleSetAutoConvert)  
 [OleSetClipboard](http://msdn2.microsoft.com/en-us/library/741def10-d2b5-4395-8049-1eba2e29b0e8) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleSetClipboard](https://github.com/dahall/Vanara/search?l=C%23&q=OleSetClipboard)  
 [OleSetContainedObject](http://msdn2.microsoft.com/en-us/library/154aa6f0-3c02-4139-8c8e-c2112b015fe0) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleSetContainedObject](https://github.com/dahall/Vanara/search?l=C%23&q=OleSetContainedObject)  
 [OleSetMenuDescriptor](http://msdn2.microsoft.com/en-us/library/c80fe36d-5093-4814-83a9-0c11c5a7cf5f) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleSetMenuDescriptor](https://github.com/dahall/Vanara/search?l=C%23&q=OleSetMenuDescriptor)  
 [OleTranslateAccelerator](http://msdn2.microsoft.com/en-us/library/c590efef-7f03-4ae6-a35f-eff2fc4da3d9) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleTranslateAccelerator](https://github.com/dahall/Vanara/search?l=C%23&q=OleTranslateAccelerator)  
-[OleTranslateColor](https://www.google.com/search?num=5&q=OleTranslateColor+site%3Amicrosoft.com) | oleaut32.dll |  |   
+[OleTranslateColor](http://msdn2.microsoft.com/en-us/library/f4b407c3-e88a-47b4-bb43-8f691629d2f3) | oleaut32.dll | olectl.h | [Vanara.PInvoke.OleAut32.OleTranslateColor](https://github.com/dahall/Vanara/search?l=C%23&q=OleTranslateColor)  
 [OleUninitialize](http://msdn2.microsoft.com/en-us/library/ms691326) | ole32.dll | Ole2.h | [Vanara.PInvoke.Ole32.OleUninitialize](https://github.com/dahall/Vanara/search?l=C%23&q=OleUninitialize)  
 [ProgIDFromCLSID](http://msdn2.microsoft.com/en-us/library/a863cbc2-f8ab-468a-8254-b273077a6a2b) | ole32.dll | combaseapi.h | [Vanara.PInvoke.Ole32.ProgIDFromCLSID](https://github.com/dahall/Vanara/search?l=C%23&q=ProgIDFromCLSID)  
 [PropStgNameToFmtId](http://msdn2.microsoft.com/en-us/library/bbbaf5a3-df17-42fd-ba2b-ad5b572c8a3f) | ole32.dll | coml2api.h | [Vanara.PInvoke.Ole32.PropStgNameToFmtId](https://github.com/dahall/Vanara/search?l=C%23&q=PropStgNameToFmtId)  
@@ -706,6 +708,7 @@ Native Structure | Header | Managed Structure
 [BIND_OPTS2](http://msdn2.microsoft.com/en-us/library/fb2aa8c1-dddc-480e-b544-61a1074125ef) | objidl.h | [Vanara.PInvoke.Ole32.BIND_OPTS2](https://github.com/dahall/Vanara/search?l=C%23&q=BIND_OPTS2)  
 [BIND_OPTS3](http://msdn2.microsoft.com/en-us/library/7e668313-229a-4d04-b8a2-d5072c87a5b5) | objidl.h | [Vanara.PInvoke.Ole32.BIND_OPTS3](https://github.com/dahall/Vanara/search?l=C%23&q=BIND_OPTS3)  
 [BLOB](https://www.google.com/search?num=5&q=BLOB+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.BLOB](https://github.com/dahall/Vanara/search?l=C%23&q=BLOB)  
+[BMP](https://www.google.com/search?num=5&q=BMP+site%3Amicrosoft.com) |  | [Vanara.PInvoke.OleAut32.PICTDESC.PICTDEC_UNION.BMP](https://github.com/dahall/Vanara/search?l=C%23&q=BMP)  
 [BYNAME](https://www.google.com/search?num=5&q=BYNAME+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.uCLSSPEC.SpecUnion.BYNAME](https://github.com/dahall/Vanara/search?l=C%23&q=BYNAME)  
 [BYOBJECTID](https://www.google.com/search?num=5&q=BYOBJECTID+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.uCLSSPEC.SpecUnion.BYOBJECTID](https://github.com/dahall/Vanara/search?l=C%23&q=BYOBJECTID)  
 [CLIPDATA](https://www.google.com/search?num=5&q=CLIPDATA+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.CLIPDATA](https://github.com/dahall/Vanara/search?l=C%23&q=CLIPDATA)  
@@ -716,19 +719,25 @@ Native Structure | Header | Managed Structure
 [CUSTDATA](http://msdn2.microsoft.com/en-us/library/992199f2-1bac-428e-9699-0740654e1922) | oaidl.h | [Vanara.PInvoke.OleAut32.CUSTDATA](https://github.com/dahall/Vanara/search?l=C%23&q=CUSTDATA)  
 [CUSTDATAITEM](http://msdn2.microsoft.com/en-us/library/dae0f1be-0b77-4af6-9983-d8cb313e5276) | oaidl.h | [Vanara.PInvoke.OleAut32.CUSTDATAITEM](https://github.com/dahall/Vanara/search?l=C%23&q=CUSTDATAITEM)  
 [DVTARGETDEVICE](http://msdn2.microsoft.com/en-us/library/724ff714-c170-4d06-92cb-e042e41c0af2) | objidl.h | [Vanara.PInvoke.Ole32.DVTARGETDEVICE](https://github.com/dahall/Vanara/search?l=C%23&q=DVTARGETDEVICE)  
+[EMF](https://www.google.com/search?num=5&q=EMF+site%3Amicrosoft.com) |  | [Vanara.PInvoke.OleAut32.PICTDESC.PICTDEC_UNION.EMF](https://github.com/dahall/Vanara/search?l=C%23&q=EMF)  
+[FONTDESC](http://msdn2.microsoft.com/en-us/library/c677b0ba-fd52-40e8-b7c3-b80a01c9fb26) | olectl.h | [Vanara.PInvoke.OleAut32.FONTDESC](https://github.com/dahall/Vanara/search?l=C%23&q=FONTDESC)  
 [HOLEMENU](https://www.google.com/search?num=5&q=HOLEMENU+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.HOLEMENU](https://github.com/dahall/Vanara/search?l=C%23&q=HOLEMENU)  
+[ICON](https://www.google.com/search?num=5&q=ICON+site%3Amicrosoft.com) |  | [Vanara.PInvoke.OleAut32.PICTDESC.PICTDEC_UNION.ICON](https://github.com/dahall/Vanara/search?l=C%23&q=ICON)  
 [INTERFACEDATA](http://msdn2.microsoft.com/en-us/library/3eafe5ba-45d9-4b0d-b3f8-68f5e99df5bb) | oleauto.h | [Vanara.PInvoke.OleAut32.INTERFACEDATA](https://github.com/dahall/Vanara/search?l=C%23&q=INTERFACEDATA)  
 [INTERFACEINFO](http://msdn2.microsoft.com/en-us/library/5c2c07bf-1c15-4f21-baef-103837ea24d0) | objidl.h | [Vanara.PInvoke.Ole32.INTERFACEINFO](https://github.com/dahall/Vanara/search?l=C%23&q=INTERFACEINFO)  
 [LICINFO](http://msdn2.microsoft.com/en-us/library/a90d82f3-8dc4-4b1d-81f7-9d3a19e74314) | ocidl.h | [Vanara.PInvoke.Ole32.LICINFO](https://github.com/dahall/Vanara/search?l=C%23&q=LICINFO)  
 [METHODDATA](http://msdn2.microsoft.com/en-us/library/85fd7121-3eed-4a83-9ba2-caa81fa1e048) | oleauto.h | [Vanara.PInvoke.OleAut32.METHODDATA](https://github.com/dahall/Vanara/search?l=C%23&q=METHODDATA)  
 [MULTI_QI](http://msdn2.microsoft.com/en-us/library/845040c9-fad4-4ac8-856d-d35edbf48ec9) | objidl.h | [Vanara.PInvoke.Ole32.MULTI_QI](https://github.com/dahall/Vanara/search?l=C%23&q=MULTI_QI)  
 [NUMPARSE](http://msdn2.microsoft.com/en-us/library/d55034ff-4407-40ba-bee3-8e82cd5c497e) | oleauto.h | [Vanara.PInvoke.OleAut32.NUMPARSE](https://github.com/dahall/Vanara/search?l=C%23&q=NUMPARSE)  
+[OCPFIPARAMS](http://msdn2.microsoft.com/en-us/library/d65d8239-495c-4eee-bd9c-8e803fd09a06) | olectl.h | [Vanara.PInvoke.OleAut32.OCPFIPARAMS](https://github.com/dahall/Vanara/search?l=C%23&q=OCPFIPARAMS)  
 [OIFI](http://msdn2.microsoft.com/en-us/library/e09445d2-61e5-4691-b51e-746e0cc91c00) | oleidl.h | [Vanara.PInvoke.Ole32.OIFI](https://github.com/dahall/Vanara/search?l=C%23&q=OIFI)  
 [OLEMENUGROUPWIDTHS](http://msdn2.microsoft.com/en-us/library/ms693766) | Oleidl.h | [Vanara.PInvoke.Ole32.OLEMENUGROUPWIDTHS](https://github.com/dahall/Vanara/search?l=C%23&q=OLEMENUGROUPWIDTHS)  
 [OLESTREAM](https://www.google.com/search?num=5&q=OLESTREAM+site%3Amicrosoft.com) | ole2.h | [Vanara.PInvoke.Ole32.OLESTREAM](https://github.com/dahall/Vanara/search?l=C%23&q=OLESTREAM)  
 [OLEVERB](http://msdn2.microsoft.com/en-us/library/657e3cc3-67fb-4458-8dad-f2a31df1b631) | oleidl.h | [Vanara.PInvoke.Ole32.OLEVERB](https://github.com/dahall/Vanara/search?l=C%23&q=OLEVERB)  
 [PACKEDMETA](https://www.google.com/search?num=5&q=PACKEDMETA+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.PACKEDMETA](https://github.com/dahall/Vanara/search?l=C%23&q=PACKEDMETA)  
 [PARAMDATA](http://msdn2.microsoft.com/en-us/library/3166eac0-7e07-47e1-9bca-60b15cbdf971) | oleauto.h | [Vanara.PInvoke.OleAut32.PARAMDATA](https://github.com/dahall/Vanara/search?l=C%23&q=PARAMDATA)  
+[PICTDEC_UNION](https://www.google.com/search?num=5&q=PICTDEC_UNION+site%3Amicrosoft.com) |  | [Vanara.PInvoke.OleAut32.PICTDESC.PICTDEC_UNION](https://github.com/dahall/Vanara/search?l=C%23&q=PICTDEC_UNION)  
+[PICTDESC](http://msdn2.microsoft.com/en-us/library/eb1f1de7-dcfe-4c1c-8737-f5ab4d7977d6) | olectl.h | [Vanara.PInvoke.OleAut32.PICTDESC](https://github.com/dahall/Vanara/search?l=C%23&q=PICTDESC)  
 [PROPERTYKEY](http://msdn2.microsoft.com/en-us/library/bb773381) | Wtypes.h | [Vanara.PInvoke.Ole32.PROPERTYKEY](https://github.com/dahall/Vanara/search?l=C%23&q=PROPERTYKEY)  
 [PROPSPEC](http://msdn2.microsoft.com/en-us/library/5bb3b9c6-ab82-498c-94f9-13a9ffa7452b) | propidl.h | [Vanara.PInvoke.Ole32.PROPSPEC](https://github.com/dahall/Vanara/search?l=C%23&q=PROPSPEC)  
 [PROPSPECunion](https://www.google.com/search?num=5&q=PROPSPECunion+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.PROPSPEC.PROPSPECunion](https://github.com/dahall/Vanara/search?l=C%23&q=PROPSPECunion)  
@@ -753,6 +762,7 @@ Native Structure | Header | Managed Structure
 [WIA_DITHER_PATTERN_DATA](https://www.google.com/search?num=5&q=WIA_DITHER_PATTERN_DATA+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.WIA_DITHER_PATTERN_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=WIA_DITHER_PATTERN_DATA)  
 [WIA_EXTENDED_TRANSFER_INFO](https://www.google.com/search?num=5&q=WIA_EXTENDED_TRANSFER_INFO+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.WIA_EXTENDED_TRANSFER_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WIA_EXTENDED_TRANSFER_INFO)  
 [WIA_FORMAT_INFO](https://www.google.com/search?num=5&q=WIA_FORMAT_INFO+site%3Amicrosoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.WIA_FORMAT_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WIA_FORMAT_INFO)  
+[WMF](https://www.google.com/search?num=5&q=WMF+site%3Amicrosoft.com) |  | [Vanara.PInvoke.OleAut32.PICTDESC.PICTDEC_UNION.WMF](https://github.com/dahall/Vanara/search?l=C%23&q=WMF)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  

@@ -2,9 +2,9 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <Description>Classes for Windows Shell items derived from the Vanara PInvoke libraries. Includes shell items, files, icons, links, and taskbar lists.</Description>
-    <Copyright>Copyright © 2017-2019</Copyright>
+    <Copyright>Copyright © 2017-2020</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.8</VersionPrefix>
+    <VersionPrefix>3.1.9</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>Vanara.Windows.Shell</AssemblyName>
