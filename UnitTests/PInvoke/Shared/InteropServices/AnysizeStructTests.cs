@@ -29,7 +29,7 @@ namespace Vanara.InteropServices.Tests
 		[Test]
 		public void ConvertTest()
 		{
-			var array = new[] { long.MinValue, 0L, long.MaxValue };
+			var array = new[] { long.MinValue, 1L, long.MaxValue };
 			var ts = new TestStruct { iVal = array.Length, array = array };
 
 			using var mem = new SafeAnysizeStruct<TestStruct>(ts);

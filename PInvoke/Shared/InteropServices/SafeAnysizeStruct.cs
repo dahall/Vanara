@@ -123,9 +123,9 @@ namespace Vanara.InteropServices
 			Size = memSz;
 			// Marshal base structure - don't use Write to prevent loops
 			Marshal.StructureToPtr(value, handle, false);
-			// Push each element of the array into memory
-			for (var i = 0; i < arrLen; i++)
-				handle.Write(((Array)arrVal).GetValue(i), baseSz - arrElemSz * (i - 1), memSz);
+			// Push each element of the array into memory, starting with second item in array since first was pushed by StructureToPtr
+			for (var i = 1; i < arrLen; i++)
+				handle.Write(((Array)arrVal).GetValue(i), baseSz + arrElemSz * (i - 1), memSz);
 		}
 	}
 
