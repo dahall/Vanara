@@ -19,9 +19,12 @@ namespace Vanara.Configuration
 	[DefaultEvent(nameof(RecentFileMenuItemClick))]
 	public class MRUManager : Component
 	{
+		/// <summary>This value should contain the appropriate image for the clear list menu item in derived classes.</summary>
+		protected object clearListMenuItemImage;
+
 		private const string defClearListMenuItemText = "Clear List";
 		private const int defMaxHistoryCount = 10;
-
+		private MenuPlacement clearListMenuItemPlacement;
 		private string clearListMenuItemText = defClearListMenuItemText;
 		private string[] exts;
 		private IFileListStorage storage;
@@ -42,9 +45,23 @@ namespace Vanara.Configuration
 		[Category("Behavior"), Description("Occurs when the clear recent files menu item is clicked.")]
 		public event Action<StringCollection> ClearListMenuItemClick;
 
+		/// <summary>Occurs when [get menu image for file].</summary>
+		[Category("Behavior"), Description("Occurs when a file menu item is about to be drawn and is requesting an image.")]
+		public event Func<string, object> GetMenuImageForFile;
+
 		/// <summary>Occurs when one of the automatically added recent file menu items is clicked.</summary>
 		[Category("Behavior"), Description("Occurs when one of the automatically added recent file menu items is clicked.")]
 		public event Action<string> RecentFileMenuItemClick;
+
+		/// <summary>The placement of a menu item in a list.</summary>
+		public enum MenuPlacement
+		{
+			/// <summary>The bottom of the list, after all items.</summary>
+			Bottom,
+
+			/// <summary>The top of the list, before all items.</summary>
+			Top
+		}
 
 		/// <summary>Defines a class that implements storage for an MRU file list.</summary>
 		public interface IFileListStorage
@@ -74,9 +91,25 @@ namespace Vanara.Configuration
 			/// <summary>Rebuilds the menus.</summary>
 			/// <param name="files">The file listing.</param>
 			/// <param name="fileMenuItemClick">The handler for when one of the automatically added recent file menu items is clicked..</param>
-			/// <param name="clearListMenuItemText">The clear list menu item text. A <c>null</c> value indicates that this menu items should not be shown.</param>
+			/// <param name="clearListMenuItemText">
+			/// The clear list menu item text. A <c>null</c> value indicates that this menu item should not be shown.
+			/// </param>
 			/// <param name="clearListMenuItemClick">The handler for when the clear recent files menu item is clicked.</param>
-			void RebuildMenus(IEnumerable<string> files, Action<string> fileMenuItemClick, string clearListMenuItemText = null, Action clearListMenuItemClick = null);
+			/// <param name="clearListMenuItemImage">
+			/// The clear list menu item image. A <c>null</c> value indicates that this menu item's image should not be shown.
+			/// </param>
+			/// <param name="clearListMenuItemOnTop">if set to <see langword="true"/>, the clear list menu item precedes the files.</param>
+			/// <param name="menuImageCallback">The menu image callback delegate.</param>
+			void RebuildMenus(IEnumerable<string> files, Action<string> fileMenuItemClick, string clearListMenuItemText = null, Action clearListMenuItemClick = null, object clearListMenuItemImage = null, bool clearListMenuItemOnTop = false, Func<string, object> menuImageCallback = null);
+		}
+
+		/// <summary>Gets or sets the clear list menu item placement relative to the MRU items.</summary>
+		/// <value>The clear list menu item placement.</value>
+		[Category("Appearance"), DefaultValue(typeof(MenuPlacement), "Bottom"), Description("The clear list menu item text."), Localizable(true)]
+		public MenuPlacement ClearListMenuItemPlacement
+		{
+			get => clearListMenuItemPlacement;
+			set { clearListMenuItemPlacement = value; RefreshRecentFilesMenu(); }
 		}
 
 		/// <summary>Gets or sets the clear list menu item text.</summary>
@@ -219,7 +252,7 @@ namespace Vanara.Configuration
 		protected void RefreshRecentFilesMenu()
 		{
 			if (!DesignMode)
-				MenuBuilderHandler?.RebuildMenus(Files, OnRecentFileMenuItemClick, ClearListMenuItemText, OnClearListMenuItemClick);
+				MenuBuilderHandler?.RebuildMenus(Files, OnRecentFileMenuItemClick, ClearListMenuItemText, OnClearListMenuItemClick, clearListMenuItemImage, clearListMenuItemPlacement == MenuPlacement.Top, GetMenuImageForFile);
 		}
 
 		[DllImport("shell32.dll", CharSet = CharSet.Ansi)]
@@ -258,7 +291,9 @@ namespace Vanara.Configuration
 			private ApplicationSettingsBase settings;
 
 			/// <summary>Initializes a new instance of the <see cref="AppSettingsFileListStorage"/> class.</summary>
-			/// <param name="settings">The settings object to use. If <see langword="null"/>, the component will search all loaded assemblies for an instance.</param>
+			/// <param name="settings">
+			/// The settings object to use. If <see langword="null"/>, the component will search all loaded assemblies for an instance.
+			/// </param>
 			public AppSettingsFileListStorage(ApplicationSettingsBase settings = null)
 			{
 				if (settings != null) Settings = settings;
@@ -371,12 +406,10 @@ namespace Vanara.Configuration
 			{
 				try
 				{
-					using (var rK = GetKey())
-					{
-						var l = new List<string>(GetFiles(rK));
-						l.Insert(0, fileNameWithFullPath);
-						SetFiles(rK, l.Distinct());
-					}
+					using var rK = GetKey();
+					var l = new List<string>(GetFiles(rK));
+					l.Insert(0, fileNameWithFullPath);
+					SetFiles(rK, l.Distinct());
 				}
 				catch (Exception ex)
 				{
@@ -410,12 +443,10 @@ namespace Vanara.Configuration
 			{
 				try
 				{
-					using (var rK = GetKey())
-					{
-						var l = new List<string>(GetFiles(rK));
-						l.RemoveAll(s => string.Equals(s, fileNameWithFullPath, StringComparison.InvariantCultureIgnoreCase));
-						SetFiles(rK, l.Distinct());
-					}
+					using var rK = GetKey();
+					var l = new List<string>(GetFiles(rK));
+					l.RemoveAll(s => string.Equals(s, fileNameWithFullPath, StringComparison.InvariantCultureIgnoreCase));
+					SetFiles(rK, l.Distinct());
 				}
 				catch (Exception ex)
 				{
@@ -470,17 +501,16 @@ namespace Vanara.Configuration
 	}
 }
 
-#if !WPF
-
 namespace Vanara.Windows.Forms
 {
-	using Vanara.Configuration;
 	using System.Drawing;
 	using System.Windows.Forms;
+	using Vanara.Configuration;
 
 	/// <summary>
-	/// A class that manages a Most Recently Used file listing and interacts with a MenuStrip to display a menu list of the files. By default, the application
-	/// settings are used to store the history. Optionally a constructor can be used to provide an alternate class to handle that work.
+	/// A class that manages a Most Recently Used file listing and interacts with a MenuStrip to display a menu list of the files. By
+	/// default, the application settings are used to store the history. Optionally a constructor can be used to provide an alternate class
+	/// to handle that work.
 	/// </summary>
 	[DefaultProperty("RecentFileMenuItem")]
 	public class MenuStripMRUManager : MRUManager
@@ -508,6 +538,21 @@ namespace Vanara.Windows.Forms
 				ClearListMenuItemClick += onClearRecentFilesClick;
 
 			RefreshRecentFilesMenu();
+		}
+
+		/// <summary>Gets or sets the clear list menu item image.</summary>
+		/// <value>The clear list menu item image.</value>
+		[Category("Appearance"), DefaultValue(null), Description("The clear list menu item icon."), Localizable(true)]
+		public Image ClearListMenuItemImage
+		{
+			get => clearListMenuItemImage as Image;
+			set
+			{
+				if (!(value is Image))
+					throw new ArgumentException("Must be of type Image.");
+				clearListMenuItemImage = value;
+				RefreshRecentFilesMenu();
+			}
 		}
 
 		/// <summary>Gets or sets the recent file menu item.</summary>
@@ -549,30 +594,45 @@ namespace Vanara.Windows.Forms
 			}
 
 			/// <summary>Rebuilds the menus.</summary>
-			/// <param name="files">The files.</param>
-			/// <param name="fileMenuItemClick">The file menu item click.</param>
-			/// <param name="clearListMenuItemText">The clear list menu item text.</param>
-			/// <param name="clearListMenuItemClick">The clear list menu item click.</param>
-			public void RebuildMenus(IEnumerable<string> files, Action<string> fileMenuItemClick, string clearListMenuItemText = null, Action clearListMenuItemClick = null)
+			/// <param name="files">The file listing.</param>
+			/// <param name="fileMenuItemClick">The handler for when one of the automatically added recent file menu items is clicked..</param>
+			/// <param name="clearListMenuItemText">
+			/// The clear list menu item text. A <c>null</c> value indicates that this menu item should not be shown.
+			/// </param>
+			/// <param name="clearListMenuItemClick">The handler for when the clear recent files menu item is clicked.</param>
+			/// <param name="clearListMenuItemImage">
+			/// The clear list menu item image. A <c>null</c> value indicates that this menu item's image should not be shown.
+			/// </param>
+			/// <param name="clearListMenuItemOnTop">if set to <see langword="true"/>, the clear list menu item precedes the files.</param>
+			/// <param name="menuImageCallback">The menu image callback delegate.</param>
+			public void RebuildMenus(IEnumerable<string> files, Action<string> fileMenuItemClick, string clearListMenuItemText = null, Action clearListMenuItemClick = null, object clearListMenuItemImage = null, bool clearListMenuItemOnTop = false, Func<string, object> menuImageCallback = null)
 			{
 				if (RecentFileMenuItem == null) return;
 
 				RecentFileMenuItem.DropDownItems.Clear();
 
-				fileMenuItemClickAction = fileMenuItemClick;
-				foreach (var f in files)
-					RecentFileMenuItem.DropDownItems.Add(new ToolStripMenuItem(CompactPath(f, RecentFileMenuItem.Font, RecentFileMenuItem.Width), null, OnFileMenuItemClick) { Tag = f });
-
-				if (RecentFileMenuItem.DropDownItems.Count == 0)
+				if (files is null || !files.Any())
 				{
 					RecentFileMenuItem.Enabled = false;
 					return;
 				}
 
-				if (!string.IsNullOrEmpty(clearListMenuItemText))
+				if (clearListMenuItemOnTop && !string.IsNullOrEmpty(clearListMenuItemText))
+				{
+					RecentFileMenuItem.DropDownItems.Add(clearListMenuItemText, clearListMenuItemImage as Image, (o, e) => clearListMenuItemClick?.Invoke());
+					RecentFileMenuItem.DropDownItems.Add("-");
+				}
+
+				fileMenuItemClickAction = fileMenuItemClick;
+				foreach (var f in files)
+				{
+					RecentFileMenuItem.DropDownItems.Add(new ToolStripMenuItem(CompactPath(f, RecentFileMenuItem.Font, RecentFileMenuItem.Width), menuImageCallback?.Invoke(f) as Image, OnFileMenuItemClick) { Tag = f });
+				}
+
+				if (!clearListMenuItemOnTop && !string.IsNullOrEmpty(clearListMenuItemText))
 				{
 					RecentFileMenuItem.DropDownItems.Add("-");
-					RecentFileMenuItem.DropDownItems.Add(clearListMenuItemText, null, (o, e) => clearListMenuItemClick?.Invoke());
+					RecentFileMenuItem.DropDownItems.Add(clearListMenuItemText, clearListMenuItemImage as Image, (o, e) => clearListMenuItemClick?.Invoke());
 				}
 				RecentFileMenuItem.Enabled = true;
 			}
@@ -586,111 +646,81 @@ namespace Vanara.Windows.Forms
 	}
 }
 
-#else
-namespace Vanara.Windows.Controls
-{
-	using Vanara.Configuration;
-	using System.Windows;
+//namespace Vanara.Windows.Controls
+//{
+//	using Vanara.Configuration;
+//	using System.Windows.Controls;
 
-	/// <summary>
-	/// A class that manages a Most Recently Used file listing and interacts with a MenuStrip to display a menu list of the files. By default, the application
-	/// settings are used to store the history. Optionally a constructor can be used to provide an alternate class to handle that work.
-	/// </summary>
-	[DefaultProperty("RecentFileMenuItem")]
-	public class MenuMRUManager : MRUManager
-	{
-		/// <summary>Initializes a new instance of the <see cref="MenuMRUManager"/> class.</summary>
-		public MenuMRUManager() : base(new AppSettingsFileListStorage(), new MenuBuilder())
-		{
-		}
+// ///
+// <summary>
+// /// A class that manages a Most Recently Used file listing and interacts with a MenuStrip to display a menu list of the files. By
+// default, the application /// settings are used to store the history. Optionally a constructor can be used to provide an alternate class
+// to handle that work. ///
+// </summary>
+// [DefaultProperty("RecentFileMenuItem")] public class MenuMRUManager : MRUManager { ///
+// <summary>Initializes a new instance of the <see cref="MenuMRUManager"/> class.</summary>
+// public MenuMRUManager() : base(new AppSettingsFileListStorage(), new MenuBuilder()) { }
 
-		/// <summary>Initializes a new instance of the <see cref="MenuMRUManager"/> class.</summary>
-		/// <param name="extensions">The extensions of files to find in system MRU list.</param>
-		/// <param name="parentMenuItem">The parent "Recent Files" menu item.</param>
-		/// <param name="onRecentFileClick">Action to run when The on recent file click.</param>
-		/// <param name="onClearRecentFilesClick">Optional. The on clear recent files click.</param>
-		/// <param name="storageHandler">Optional. The storage handler.</param>
-		public MenuMRUManager(string extensions, MenuItem parentMenuItem, Action<string> onRecentFileClick, Action<StringCollection> onClearRecentFilesClick = null, IFileListStorage storageHandler = null)
-			: base(storageHandler ?? new AppSettingsFileListStorage(), new MenuBuilder())
-		{
-			FileExtensions = extensions;
-			((MenuBuilder)MenuBuilderHandler).RecentFileMenuItem = parentMenuItem;
-			if (onRecentFileClick != null)
-				RecentFileMenuItemClick += onRecentFileClick;
-			if (onClearRecentFilesClick != null)
-				ClearListMenuItemClick += onClearRecentFilesClick;
+// /// <summary>Initializes a new instance of the <see cref="MenuMRUManager"/> class.</summary> /// <param name="extensions">The extensions
+// of files to find in system MRU list.</param> /// <param name="parentMenuItem">The parent "Recent Files" menu item.</param> /// <param
+// name="onRecentFileClick">Action to run when The on recent file click.</param> /// <param name="onClearRecentFilesClick">Optional. The on
+// clear recent files click.</param> /// <param name="storageHandler">Optional. The storage handler.</param> public MenuMRUManager(string
+// extensions, MenuItem parentMenuItem, Action<string> onRecentFileClick, Action<StringCollection> onClearRecentFilesClick = null,
+// IFileListStorage storageHandler = null) : base(storageHandler ?? new AppSettingsFileListStorage(), new MenuBuilder()) { FileExtensions =
+// extensions; ((MenuBuilder)MenuBuilderHandler).RecentFileMenuItem = parentMenuItem; if (onRecentFileClick != null) RecentFileMenuItemClick
+// += onRecentFileClick; if (onClearRecentFilesClick != null) ClearListMenuItemClick += onClearRecentFilesClick;
 
-			RefreshRecentFilesMenu();
-		}
+// RefreshRecentFilesMenu(); }
 
-		/// <summary>Gets or sets the recent file menu item.</summary>
-		/// <value>The recent file menu item.</value>
-		[DefaultValue(null), Category("Behavior"), Description("The recent file menu item.")]
-		public MenuItem RecentFileMenuItem
-		{
-			get => ((MenuBuilder)MenuBuilderHandler).RecentFileMenuItem;
-			set { ((MenuBuilder)MenuBuilderHandler).RecentFileMenuItem = value; RefreshRecentFilesMenu(); }
-		}
+// ///
+// <summary>Gets or sets the recent file menu item.</summary>
+// ///
+// <value>The recent file menu item.</value>
+// [DefaultValue(null), Category("Behavior"), Description("The recent file menu item.")] public MenuItem RecentFileMenuItem { get =&gt;
+// ((MenuBuilder)MenuBuilderHandler).RecentFileMenuItem; set { ((MenuBuilder)MenuBuilderHandler).RecentFileMenuItem = value;
+// RefreshRecentFilesMenu(); } }
 
-		/// <summary>Builds a menu within a MenuStrip.</summary>
-		private class MenuBuilder : IMenuBuilder
-		{
-			private Action<string> fileMenuItemClickAction;
+// /// <summary>Builds a menu within a MenuStrip.</summary> private class MenuBuilder : IMenuBuilder { private Action<string> fileMenuItemClickAction;
 
-			/// <summary>Gets or sets the recent file menu item.</summary>
-			/// <value>The recent file menu item.</value>
-			public MenuItem RecentFileMenuItem { get; set; }
+// ///
+// <summary>Gets or sets the recent file menu item.</summary>
+// ///
+// <value>The recent file menu item.</value>
+// public MenuItem RecentFileMenuItem { get; set; }
 
-			/// <summary>Clears the recent files.</summary>
-			public void ClearRecentFiles()
-			{
-				if (RecentFileMenuItem == null) return;
-				RecentFileMenuItem.Items.Clear();
-				RecentFileMenuItem.IsEnabled = false;
-			}
+// ///
+// <summary>Clears the recent files.</summary>
+// public void ClearRecentFiles() { if (RecentFileMenuItem == null) return; RecentFileMenuItem.Items.Clear(); RecentFileMenuItem.IsEnabled =
+// false; }
 
-			/// <summary>Rebuilds the menus.</summary>
-			/// <param name="files">The files.</param>
-			/// <param name="fileMenuItemClick">The file menu item click.</param>
-			/// <param name="clearListMenuItemText">The clear list menu item text.</param>
-			/// <param name="clearListMenuItemClick">The clear list menu item click.</param>
-			public void RebuildMenus(IEnumerable<string> files, Action<string> fileMenuItemClick, string clearListMenuItemText, Action clearListMenuItemClick)
-			{
-				if (RecentFileMenuItem == null) return;
+// /// <summary>Rebuilds the menus.</summary> /// <param name="files">The file listing.</param> /// <param name="fileMenuItemClick">The
+// handler for when one of the automatically added recent file menu items is clicked..</param> /// <param name="clearListMenuItemText">The
+// clear list menu item text. A <c>null</c> value indicates that this menu item should not be shown.</param> /// <param
+// name="clearListMenuItemClick">The handler for when the clear recent files menu item is clicked.</param> /// <param
+// name="clearListMenuItemImage">The clear list menu item image. A <c>null</c> value indicates that this menu item's image should not be
+// shown.</param> /// <param name="clearListMenuItemOnTop">if set to <see langword="true" />, the clear list menu item precedes the
+// files.</param> /// <param name="menuImageCallback">The menu image callback delegate.</param> public void RebuildMenus(IEnumerable<string>
+// files, Action<string> fileMenuItemClick, string clearListMenuItemText = null, Action clearListMenuItemClick = null, object
+// clearListMenuItemImage = null, bool clearListMenuItemOnTop = false, Func<string, object> menuImageCallback = null) { if
+// (RecentFileMenuItem == null) return;
 
-				RecentFileMenuItem.Items.Clear();
+// RecentFileMenuItem.Items.Clear();
 
-				fileMenuItemClickAction = fileMenuItemClick;
-				foreach (var f in files)
-					AddMenuItem(f, OnFileMenuItemClick);
+// fileMenuItemClickAction = fileMenuItemClick; foreach (var f in files) AddMenuItem(f, OnFileMenuItemClick);
 
-				if (RecentFileMenuItem.Items.Count == 0)
-				{
-					RecentFileMenuItem.IsEnabled = false;
-					return;
-				}
+// if (RecentFileMenuItem.Items.Count == 0) { RecentFileMenuItem.IsEnabled = false; return; }
 
-				if (!string.IsNullOrEmpty(clearListMenuItemText))
-				{
-					RecentFileMenuItem.Items.Add(new Separator());
-					AddMenuItem(clearListMenuItemText, (o, e) => clearListMenuItemClick());
-				}
-				RecentFileMenuItem.IsEnabled = true;
-			}
+// if (!string.IsNullOrEmpty(clearListMenuItemText)) { RecentFileMenuItem.Items.Add(new Separator()); AddMenuItem(clearListMenuItemText, (o,
+// e) => clearListMenuItemClick()); } RecentFileMenuItem.IsEnabled = true; }
 
-			private void AddMenuItem(string f, System.Windows.RoutedEventHandler handler)
-			{
-				var m = new MenuItem() { Header = f, Tag = f };
-				m.Click += handler;
-				RecentFileMenuItem.Items.Add(m);
-			}
+// private void AddMenuItem(string f, System.Windows.RoutedEventHandler handler) { var m = new MenuItem() { Header = f, Tag = f }; m.Click
+// += handler; RecentFileMenuItem.Items.Add(m); }
 
-			private void OnFileMenuItemClick(object sender, RoutedEventArgs e)
-			{
-				if (sender is MenuItem item)
-					fileMenuItemClickAction(item.Tag.ToString());
-			}
-		}
-	}
-}
-#endif
+//			private void OnFileMenuItemClick(object sender, RoutedEventArgs e)
+//			{
+//				if (sender is MenuItem item)
+//					fileMenuItemClickAction(item.Tag.ToString());
+//			}
+//		}
+//	}
+//}
