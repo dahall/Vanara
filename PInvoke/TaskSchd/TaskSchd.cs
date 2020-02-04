@@ -19,15 +19,19 @@ namespace Vanara.PInvoke
 			/// This action performs a command-line operation. For example, the action can run a script, launch an executable, or, if the
 			/// name of a document is provided, find its associated application and launch the application with the document.
 			/// </summary>
+			[CorrespondingType(typeof(IExecAction))]
 			TASK_ACTION_EXEC = 0,
 
 			/// <summary>This action fires a handler. This action can only be used if the task Compatibility property is set to TASK_COMPATIBILITY_V2.</summary>
+			[CorrespondingType(typeof(IComHandlerAction))]
 			TASK_ACTION_COM_HANDLER = 5,
 
 			/// <summary>This action sends email message. This action can only be used if the task Compatibility property is set to TASK_COMPATIBILITY_V2.</summary>
+			[CorrespondingType(typeof(IEmailAction))]
 			TASK_ACTION_SEND_EMAIL = 6,
 
 			/// <summary>This action shows a message box. This action can only be used if the task Compatibility property is set to TASK_COMPATIBILITY_V2.</summary>
+			[CorrespondingType(typeof(IShowMessageAction))]
 			TASK_ACTION_SHOW_MESSAGE = 7
 		}
 
@@ -289,50 +293,61 @@ namespace Vanara.PInvoke
 		public enum TASK_TRIGGER_TYPE2
 		{
 			/// <summary>Triggers the task when a specific event occurs. For more information about event triggers, see IEventTrigger.</summary>
+			[CorrespondingType(typeof(IEventTrigger))]
 			TASK_TRIGGER_EVENT = 0,
 
 			/// <summary>Triggers the task at a specific time of day. For more information about time triggers, see ITimeTrigger.</summary>
+			[CorrespondingType(typeof(ITimeTrigger))]
 			TASK_TRIGGER_TIME = 1,
 
 			/// <summary>
 			/// Triggers the task on a daily schedule. For example, the task starts at a specific time every day, every other day, or every
 			/// third day. For more information about daily triggers, see IDailyTrigger.
 			/// </summary>
+			[CorrespondingType(typeof(IDailyTrigger))]
 			TASK_TRIGGER_DAILY = 2,
 
 			/// <summary>
 			/// Triggers the task on a weekly schedule. For example, the task starts at 8:00 AM on a specific day every week or other week.
 			/// For more information about weekly triggers, see IWeeklyTrigger.
 			/// </summary>
+			[CorrespondingType(typeof(IWeeklyTrigger))]
 			TASK_TRIGGER_WEEKLY = 3,
 
 			/// <summary>
 			/// Triggers the task on a monthly schedule. For example, the task starts on specific days of specific months. For more
 			/// information about monthly triggers, see IMonthlyTrigger.
 			/// </summary>
+			[CorrespondingType(typeof(IMonthlyTrigger))]
 			TASK_TRIGGER_MONTHLY = 4,
 
 			/// <summary>
 			/// Triggers the task on a monthly day-of-week schedule. For example, the task starts on a specific days of the week, weeks of
 			/// the month, and months of the year. For more information about monthly day-of-week triggers, see IMonthlyDOWTrigger.
 			/// </summary>
+			[CorrespondingType(typeof(IMonthlyDOWTrigger))]
 			TASK_TRIGGER_MONTHLYDOW = 5,
 
 			/// <summary>Triggers the task when the computer goes into an idle state. For more information about idle triggers, see IIdleTrigger.</summary>
+			[CorrespondingType(typeof(IIdleTrigger))]
 			TASK_TRIGGER_IDLE = 6,
 
 			/// <summary>Triggers the task when the task is registered. For more information about registration triggers, see IRegistrationTrigger.</summary>
+			[CorrespondingType(typeof(IRegistrationTrigger))]
 			TASK_TRIGGER_REGISTRATION = 7,
 
 			/// <summary>Triggers the task when the computer boots. For more information about boot triggers, see IBootTrigger.</summary>
+			[CorrespondingType(typeof(IBootTrigger))]
 			TASK_TRIGGER_BOOT = 8,
 
 			/// <summary>Triggers the task when a specific user logs on. For more information about logon triggers, see ILogonTrigger.</summary>
+			[CorrespondingType(typeof(ILogonTrigger))]
 			TASK_TRIGGER_LOGON = 9,
 
 			/// <summary>
 			/// Triggers the task when a specific user session state changes. For more information about session state change triggers, see ISessionStateChangeTrigger.
 			/// </summary>
+			[CorrespondingType(typeof(ISessionStateChangeTrigger))]
 			TASK_TRIGGER_SESSION_STATE_CHANGE = 11,
 
 			/// <summary>Custom triggers defined by the operating system. User defined custom triggers are not supported.</summary>
@@ -1539,7 +1554,7 @@ namespace Vanara.PInvoke
 			/// An IRunningTaskCollection interface that contains all currently running instances of the task under the user's context.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IRunningTaskCollection GetInstances(int flags);
+			IRunningTaskCollection GetInstances([Optional] int flags);
 
 			/// <summary>Gets the time the registered task was last run.</summary>
 			/// <value>The time the registered task was last run.</value>
@@ -2058,7 +2073,7 @@ namespace Vanara.PInvoke
 			/// <param name="flags">This parameter is reserved for future use and must be set to 0.</param>
 			/// <returns>The collection of subfolders in the folder.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			ITaskFolderCollection GetFolders(int flags);
+			ITaskFolderCollection GetFolders([Optional] int flags);
 
 			/// <summary>Creates a folder for related tasks.</summary>
 			/// <param name="subFolderName">
@@ -2082,7 +2097,7 @@ namespace Vanara.PInvoke
 			/// specify the parent task folder in the path.
 			/// </param>
 			/// <param name="flags">Not supported.</param>
-			void DeleteFolder([MarshalAs(UnmanagedType.BStr)] string subFolderName, [In] int flags);
+			void DeleteFolder([MarshalAs(UnmanagedType.BStr)] string subFolderName, [In, Optional] int flags);
 
 			/// <summary>Gets a task at a specified location in a folder.</summary>
 			/// <param name="Path">
@@ -2109,7 +2124,7 @@ namespace Vanara.PInvoke
 			/// task folder and the '..' characters cannot be used to specify the parent task folder in the path.
 			/// </param>
 			/// <param name="flags">Not supported.</param>
-			void DeleteTask([In, MarshalAs(UnmanagedType.BStr)] string Name, [In] int flags);
+			void DeleteTask([In, MarshalAs(UnmanagedType.BStr)] string Name, [In, Optional] int flags);
 
 			/// <summary>Registers (creates) a new task in the folder using XML to define the task.</summary>
 			/// <param name="path">
@@ -2174,7 +2189,7 @@ namespace Vanara.PInvoke
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IRegisteredTask RegisterTaskDefinition([In, MarshalAs(UnmanagedType.BStr)] string path,
 				[In, MarshalAs(UnmanagedType.Interface)] ITaskDefinition pDefinition, [In] TASK_CREATION flags,
-				[In, MarshalAs(UnmanagedType.Struct)] object userId, [In, MarshalAs(UnmanagedType.Struct)] object password,
+				[In, Optional, MarshalAs(UnmanagedType.Struct)] object userId, [In, Optional, MarshalAs(UnmanagedType.Struct)] object password,
 				[In] TASK_LOGON_TYPE logonType, [In, Optional, MarshalAs(UnmanagedType.Struct)] object sddl);
 
 			/// <summary>Gets the security descriptor for the folder.</summary>
@@ -2364,7 +2379,7 @@ namespace Vanara.PInvoke
 			/// <returns>The task definition that specifies all the information required to create a new task.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)]
-			ITaskDefinition NewTask([In] uint flags);
+			ITaskDefinition NewTask([In, Optional] uint flags);
 
 			/// <summary>
 			/// Connects to a remote computer and associates all subsequent calls on this interface with a remote session. If the serverName
