@@ -67,7 +67,7 @@ namespace Vanara.Windows.Shell
 			internal readonly IOpenControlPanel icp;
 			private bool disposedValue = false;
 
-			public SafeCP() => icp = (IOpenControlPanel)new OpenControlPanel();
+			public SafeCP() => icp = new IOpenControlPanel();
 
 			~SafeCP()
 			{
@@ -86,11 +86,10 @@ namespace Vanara.Windows.Shell
 			{
 				const int cchPath = 128;
 				var pszPath = new StringBuilder(cchPath, cchPath);
-				icp.GetPath(pszName, pszPath, cchPath);
-				return pszPath.ToString();
+				return icp.GetPath(pszName, pszPath, cchPath).Succeeded ? pszPath.ToString() : string.Empty;
 			}
 
-			public bool Open(string pszName = null, string page = null, object punkSite = null) { try { icp.Open(pszName, page, punkSite); return true; } catch { return false; } }
+			public bool Open(string pszName = null, string page = null, object punkSite = null) => icp.Open(pszName, page, punkSite).Succeeded;
 
 			protected virtual void Dispose(bool disposing)
 			{
