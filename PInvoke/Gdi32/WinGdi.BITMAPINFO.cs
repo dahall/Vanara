@@ -101,7 +101,7 @@ namespace Vanara.PInvoke
 			/// <para>The number of entries in the array depends on the values of the biBitCount and biClrUsed members of the BITMAPINFOHEADER structure.</para>
 			/// <para>The colors in the bmiColors table appear in order of importance. For more information, see the Remarks section.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1, ArraySubType = UnmanagedType.Struct)]
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public RGBQUAD[] bmiColors;
 
 			/// <summary>Initializes a new instance of the <see cref="BITMAPINFO"/> structure.</summary>
@@ -307,7 +307,9 @@ namespace Vanara.PInvoke
 			/// Specifies three color masks for the DIB. This field is only valid when the BitCount member of the BITMAPINFOHEADER structure has a value greater
 			/// than 8. Each color mask indicates the bits that are used to encode one of the three color channels (red, green, and blue).
 			/// </summary>
+#pragma warning disable IDE1006 // Naming Styles
 			public uint[] dsBitFields
+#pragma warning restore IDE1006 // Naming Styles
 			{
 				get => new[] { dsBitField1, dsBitField2, dsBitField3 };
 				set { dsBitField1 = value[0]; dsBitField2 = value[1]; dsBitField3 = value[2]; }

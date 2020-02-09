@@ -4294,7 +4294,7 @@ namespace Vanara.PInvoke
 
 			internal class Marshaler : ICustomMarshaler
 			{
-				public static ICustomMarshaler GetInstance(string cookie) => new Marshaler();
+				public static ICustomMarshaler GetInstance(string _) => new Marshaler();
 
 				public void CleanUpManagedData(object ManagedObj)
 				{
@@ -4406,7 +4406,7 @@ namespace Vanara.PInvoke
 				{
 					long nAuthority = 0;
 					for (var i = 0; i <= 5; i++)
-						nAuthority |= (Value[i] << (8 * i));
+						nAuthority |= (long)Value[i] << (8 * i);
 					return nAuthority;
 				}
 				set
@@ -4441,6 +4441,9 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public override bool Equals(object obj) => obj is PSID_IDENTIFIER_AUTHORITY h ? h.LongValue == h.LongValue : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => LongValue.GetHashCode();
 		}
 
 		/// <summary>A SafeHandle for access control lists. If owned, will call LocalFree on the pointer when disposed.</summary>
@@ -4449,8 +4452,6 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The null value for a SafePACL.</summary>
 			public static readonly SafePACL Null = new SafePACL();
-
-			private const SECURITY_INFORMATION defSecInfo = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.SACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION;
 
 			/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class.</summary>
 			public SafePACL() : base(IntPtr.Zero, 0, true) { }
