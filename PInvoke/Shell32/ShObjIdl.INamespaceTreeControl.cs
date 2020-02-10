@@ -574,7 +574,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-appendroot HRESULT
 			// AppendRoot( IShellItem *psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, IShellItemFilter *pif );
 			[PreserveSig]
-			HRESULT AppendRoot(IShellItem psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, [In] IShellItemFilter pif);
+			HRESULT AppendRoot(IShellItem psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, [In, Optional] IShellItemFilter pif);
 
 			/// <summary>Inserts a Shell item on a root item in a tree.</summary>
 			/// <param name="iIndex">
@@ -1387,7 +1387,7 @@ namespace Vanara.PInvoke
 		/// to return the desired drop effect.
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nn-shobjidl-inamespacetreecontroldrophandler
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("F9C665D6-C2F2-4c19-BF33-8322D7352F51"), CoClass(typeof(NameSpaceTreeControl))]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("F9C665D6-C2F2-4c19-BF33-8322D7352F51")]
 		public interface INameSpaceTreeControlDropHandler
 		{
 			/// <summary>Called on drag enter to set drag effect, as specified.</summary>
@@ -1556,7 +1556,7 @@ namespace Vanara.PInvoke
 		/// events so that the client may process these events and if not, allow the namespace control to process them.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nn-shobjidl-inamespacetreecontrolevents
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("93D77985-B3D8-4484-8318-672CDDA002CE"), CoClass(typeof(NameSpaceTreeControl))]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("93D77985-B3D8-4484-8318-672CDDA002CE")]
 		public interface INameSpaceTreeControlEvents
 		{
 			/// <summary>Called when the user clicks a button on the mouse.</summary>
@@ -1869,7 +1869,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-inamespacetreecontrolevents-onbeforecontextmenu
 			// HRESULT OnBeforeContextMenu( IShellItem *psi, REFIID riid, void **ppv );
 			[PreserveSig]
-			HRESULT OnBeforeContextMenu([In, Optional] IShellItem psi, in Guid riid, out IntPtr ppv);
+			HRESULT OnBeforeContextMenu([In, Optional] IShellItem psi, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
 
 			/// <summary>Called after a context menu is displayed.</summary>
 			/// <param name="psi">
@@ -1902,7 +1902,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-inamespacetreecontrolevents-onaftercontextmenu
 			// HRESULT OnAfterContextMenu( IShellItem *psi, IContextMenu *pcmIn, REFIID riid, void **ppv );
 			[PreserveSig]
-			HRESULT OnAfterContextMenu([In, Optional] IShellItem psi, [In] IContextMenu pcmIn, [In] in Guid riid, out IntPtr ppv);
+			HRESULT OnAfterContextMenu([In, Optional] IShellItem psi, [In] IContextMenu pcmIn, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppv);
 
 			/// <summary>Called before the state icon of the given IShellItem is changed.</summary>
 			/// <param name="psi">
@@ -1944,7 +1944,7 @@ namespace Vanara.PInvoke
 		/// <para>Use this interface to retrieve the filtering support status of a shell folder.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-inamespacetreecontrolfoldercapabilities
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("e9701183-e6b3-4ff2-8568-813615fec7be"), CoClass(typeof(NameSpaceTreeControl))]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("e9701183-e6b3-4ff2-8568-813615fec7be")]
 		public interface INameSpaceTreeControlFolderCapabilities
 		{
 			/// <summary>
@@ -1989,7 +1989,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Exposes methods that enable the user to draw a custom namespace tree control and its items.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nn-shobjidl-inamespacetreecontrolcustomdraw
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("2D3BA758-33EE-42d5-BB7B-5F3431D86C78"), CoClass(typeof(NameSpaceTreeControl))]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("2D3BA758-33EE-42d5-BB7B-5F3431D86C78")]
 		internal interface INameSpaceTreeControlCustomDraw
 		{
 			/// <summary>Called before the namespace tree control is drawn.</summary>
