@@ -3882,7 +3882,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>ULONG_PTR</c></para>
 			/// <para>An application-defined value associated with the menu item. Set <c>fMask</c> to <c>MIIM_DATA</c> to use <c>dwItemData</c>.</para>
 			/// </summary>
-			public UIntPtr dwItemData;
+			public IntPtr dwItemData;
 
 			/// <summary>
 			/// <para>Type: <c>LPTSTR</c></para>
@@ -3981,6 +3981,27 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </summary>
 			public HBITMAP hbmpItem;
+
+			/// <summary>Initializes a new instance of the <see cref="MENUITEMINFO"/> struct.</summary>
+			/// <param name="id">An application-defined value that identifies the menu item.</param>
+			/// <param name="type">The menu type.</param>
+			/// <param name="state">The menu state.</param>
+			/// <param name="subMenu">
+			/// A handle to the drop-down menu or submenu associated with the menu item. If the menu item is not an item that opens a
+			/// drop-down menu or submenu, this member is <see cref="HMENU.NULL"/>.
+			/// </param>
+			public MENUITEMINFO(uint id, MenuItemType type = MenuItemType.MFT_STRING, MenuItemState state = MenuItemState.MFS_ENABLED, HMENU subMenu = default) : this()
+			{
+				cbSize = (uint)Marshal.SizeOf(typeof(MENUITEMINFO));
+				wID = id;
+				fMask = MenuItemInfoMask.MIIM_ID;
+				fType = type;
+				if (type != 0) fMask |= MenuItemInfoMask.MIIM_TYPE;
+				fState = state;
+				if (state != 0) fMask |= MenuItemInfoMask.MIIM_STATE;
+				hSubMenu = subMenu;
+				if (subMenu != default) fMask |= MenuItemInfoMask.MIIM_SUBMENU;
+			}
 		}
 
 		/// <summary>
