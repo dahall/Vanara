@@ -615,7 +615,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-insertroot HRESULT
 			// InsertRoot( int iIndex, IShellItem *psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, IShellItemFilter *pif );
 			[PreserveSig]
-			HRESULT InsertRoot(int iIndex, IShellItem psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, [In] IShellItemFilter pif);
+			HRESULT InsertRoot(int iIndex, IShellItem psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, [In, Optional] IShellItemFilter pif);
 
 			/// <summary>Removes a root and its children from a tree.</summary>
 			/// <param name="psiRoot">
