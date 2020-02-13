@@ -81,6 +81,28 @@ namespace Vanara.Extensions
 		/// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="TreeNode"/> instances in this <see cref="TreeView"/>.</returns>
 		public static IEnumerable<TreeNode> EnumerateAllNodes(this TreeView treeView) => AsEnumerable(treeView.Nodes, true);
 
+		/// <summary>Sets the <see cref="TVITEM"/> values.</summary>
+		/// <param name="node">The <see cref="TreeNode"/> instance for which to set details.</param>
+		/// <param name="tvItem">The <see cref="TVITEMEX"/> instance.</param>
+		public static bool SetItem(this TreeNode node, ref TVITEMEX tvItem) => SendMessage(node.TreeView.Handle, TreeViewMessage.TVM_SETITEM, default, ref tvItem).ToInt32() != 0;
+
+		/// <summary>Gets the node values.</summary>
+		/// <param name="node">The <see cref="TreeNode"/> instance for which to get details.</param>
+		/// <param name="mask">The mask of items to get.</param>
+		/// <param name="stateMask">The mask of states to get.</param>
+		/// <returns>A <see cref="TVITEMEX"/> structure with the information.</returns>
+		public static TVITEMEX GetItem(this TreeNode node, TreeViewItemMask mask = (TreeViewItemMask)0x13FF, TreeViewItemStates stateMask = (TreeViewItemStates)0xFFFF)
+		{
+			var tvItem = new TVITEMEX
+			{
+				hItem = node.Handle,
+				mask = mask.SetFlags(TreeViewItemMask.TVIF_HANDLE).SetFlags(TreeViewItemMask.TVIF_TEXT, false),
+				stateMask = stateMask
+			};
+			SendMessage(node.TreeView.Handle, TreeViewMessage.TVM_GETITEM, default, ref tvItem);
+			return tvItem;
+		}
+
 		private static IconSize GetIconSizeFromSize(Size sz)
 		{
 			switch (sz.Height)
