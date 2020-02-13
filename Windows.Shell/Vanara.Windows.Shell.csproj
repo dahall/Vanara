@@ -58,15 +58,6 @@ ChangeFilters, ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryVie
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="TaskBar\AssocUtil.cs" />
-    <Compile Remove="TaskBar\ImageIndexer.cs" />
-    <Compile Remove="TaskBar\JumpList.cs" />
-    <Compile Remove="TaskBar\TaskbarButton.cs" />
-    <Compile Remove="TaskBar\TaskbarButtonThumbnail.cs" />
-    <Compile Remove="TaskBar\TaskbarButtonThumbnails.cs" />
-    <Compile Remove="TaskBar\ThumbnailToolbar.cs" />
-    <Compile Remove="TaskBar\ThumbnailToolbarButton.cs" />
-    <Compile Remove="TaskBar\ThumbnailToolbarButtonCollection.cs" />
     <Compile Remove="TaskBar\~AssocUtil.cs" />
     <Compile Remove="TaskBar\~ImageIndexer.cs" />
     <Compile Remove="TaskBar\~JumpList.cs" />
