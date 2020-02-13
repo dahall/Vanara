@@ -2148,12 +2148,12 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, IntPtr wParam, TLP lParam)
+		public static IntPtr SendMessage<TEnum, TLP>(HWND hWnd, TEnum msg, IntPtr wParam, TLP lParam)
 			where TEnum : struct, IConvertible where TLP : class
 		{
 			var m = Convert.ToUInt32(msg);
-			using (var lp = new PinnedObject(lParam))
-				return SendMessage(hWnd, m, wParam, (IntPtr)lp);
+			using var lp = new PinnedObject(lParam);
+			return SendMessage(hWnd, m, wParam, (IntPtr)lp);
 		}
 
 		/// <summary>
@@ -2172,15 +2172,13 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, IntPtr wParam, ref TLP lParam)
+		public static IntPtr SendMessage<TEnum, TLP>(HWND hWnd, TEnum msg, IntPtr wParam, ref TLP lParam)
 			where TEnum : struct, IConvertible where TLP : struct
 		{
-			using (var lp = GetPtr(lParam))
-			{
-				var lr = SendMessage(hWnd, Convert.ToUInt32(msg), wParam, (IntPtr)lp);
-				lParam = lp.ToStructure<TLP>();
-				return lr;
-			}
+			using var lp = GetPtr(lParam);
+			var lr = SendMessage(hWnd, Convert.ToUInt32(msg), wParam, (IntPtr)lp);
+			lParam = lp.ToStructure<TLP>();
+			return lr;
 		}
 
 		/// <summary>
@@ -2202,8 +2200,8 @@ namespace Vanara.PInvoke
 		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, TWP wParam, TLP lParam)
 			where TEnum : struct, IConvertible where TWP : struct, IConvertible where TLP : class
 		{
-			using (var lp = new PinnedObject(lParam))
-				return SendMessage(hWnd, Convert.ToUInt32(msg), new IntPtr(Convert.ToInt64(wParam)), (IntPtr)lp);
+			using var lp = new PinnedObject(lParam);
+			return SendMessage(hWnd, Convert.ToUInt32(msg), new IntPtr(Convert.ToInt64(wParam)), (IntPtr)lp);
 		}
 
 		/// <summary>
@@ -2225,12 +2223,10 @@ namespace Vanara.PInvoke
 		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, TWP wParam, ref TLP lParam)
 			where TEnum : struct, IConvertible where TWP : struct, IConvertible where TLP : struct
 		{
-			using (var lp = GetPtr(lParam))
-			{
-				var lr = SendMessage(hWnd, Convert.ToUInt32(msg), new IntPtr(Convert.ToInt64(wParam)), (IntPtr)lp);
-				lParam = lp.ToStructure<TLP>();
-				return lr;
-			}
+			using var lp = GetPtr(lParam);
+			var lr = SendMessage(hWnd, Convert.ToUInt32(msg), new IntPtr(Convert.ToInt64(wParam)), (IntPtr)lp);
+			lParam = lp.ToStructure<TLP>();
+			return lr;
 		}
 
 		/// <summary>
@@ -2252,8 +2248,8 @@ namespace Vanara.PInvoke
 		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, in TWP wParam, TLP lParam)
 			where TEnum : struct, IConvertible where TWP : struct where TLP : class
 		{
-			using (PinnedObject wp = new PinnedObject(wParam), lp = new PinnedObject(lParam))
-				return SendMessage(hWnd, Convert.ToUInt32(msg), wp, lp);
+			using PinnedObject wp = new PinnedObject(wParam), lp = new PinnedObject(lParam);
+			return SendMessage(hWnd, Convert.ToUInt32(msg), wp, lp);
 		}
 
 		/// <summary>
@@ -2275,12 +2271,10 @@ namespace Vanara.PInvoke
 		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, in TWP wParam, ref TLP lParam)
 			where TEnum : struct, IConvertible where TWP : struct where TLP : struct
 		{
-			using (var lp = GetPtr(lParam))
-			{
-				var lr = SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)GetPtr(wParam), (IntPtr)lp);
-				lParam = lp.ToStructure<TLP>();
-				return lr;
-			}
+			using var lp = GetPtr(lParam);
+			var lr = SendMessage(hWnd, Convert.ToUInt32(msg), GetPtr(wParam), (IntPtr)lp);
+			lParam = lp.ToStructure<TLP>();
+			return lr;
 		}
 
 		/// <summary>
