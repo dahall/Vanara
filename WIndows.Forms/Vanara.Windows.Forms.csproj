@@ -45,7 +45,6 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
-    <None Include="Controls\ShellContextMenuStrip.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="_InProgress_\**\*" />
