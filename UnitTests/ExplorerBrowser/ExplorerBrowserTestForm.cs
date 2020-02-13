@@ -30,16 +30,16 @@ namespace Microsoft.WindowsAPICodePack.Samples
 			propertyGrid.SelectedObject = explorerBrowser;
 
 			// setup ExplorerBrowser navigation events
-			explorerBrowser.Navigating += new EventHandler<ExplorerBrowser.NavigatingEventArgs>(explorerBrowser_Navigating);
-			explorerBrowser.NavigationFailed += new EventHandler<ExplorerBrowser.NavigationFailedEventArgs>(explorerBrowser_NavigationFailed);
-			explorerBrowser.Navigated += new EventHandler<ExplorerBrowser.NavigatedEventArgs>(explorerBrowser_Navigated);
+			explorerBrowser.Navigating += new EventHandler<Vanara.Windows.Forms.ExplorerBrowser.NavigatingEventArgs>(explorerBrowser_Navigating);
+			explorerBrowser.NavigationFailed += new EventHandler<Vanara.Windows.Forms.ExplorerBrowser.NavigationFailedEventArgs>(explorerBrowser_NavigationFailed);
+			explorerBrowser.Navigated += new EventHandler<Vanara.Windows.Forms.ExplorerBrowser.NavigatedEventArgs>(explorerBrowser_Navigated);
 			explorerBrowser.ItemsChanged += new EventHandler(explorerBrowser_ItemsChanged);
 			explorerBrowser.SelectionChanged += new EventHandler(explorerBrowser_SelectionChanged);
 			explorerBrowser.ItemsEnumerated += new EventHandler(explorerBrowser_ItemsEnumerated);
 			explorerBrowser.Navigate(ShellFolder.Desktop);
 
 			// set up Navigation log event and button state
-			explorerBrowser.History.NavigationLogChanged += new EventHandler<ExplorerBrowser.NavigationLogEventArgs>(NavigationLog_NavigationLogChanged);
+			explorerBrowser.History.NavigationLogChanged += new EventHandler<Vanara.Windows.Forms.ExplorerBrowser.NavigationLogEventArgs>(NavigationLog_NavigationLogChanged);
 			backButton.Enabled = false;
 			forwardButton.Enabled = false;
 
@@ -72,7 +72,7 @@ namespace Microsoft.WindowsAPICodePack.Samples
 			itemsChanged.Set();
 		}
 
-		private void explorerBrowser_Navigated(object sender, ExplorerBrowser.NavigatedEventArgs args) =>
+		private void explorerBrowser_Navigated(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigatedEventArgs args) =>
 			// This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
 			BeginInvoke(new MethodInvoker(delegate ()
 			{
@@ -83,7 +83,7 @@ namespace Microsoft.WindowsAPICodePack.Samples
 					"Navigation completed. New Location = " + location + "\n";
 			}));
 
-		private void explorerBrowser_Navigating(object sender, ExplorerBrowser.NavigatingEventArgs args)
+		private void explorerBrowser_Navigating(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigatingEventArgs args)
 		{
 			// fail navigation if check selected (this must be synchronous)
 			args.Cancel = failNavigationCheckBox.Checked;
@@ -107,7 +107,7 @@ namespace Microsoft.WindowsAPICodePack.Samples
 			}));
 		}
 
-		private void explorerBrowser_NavigationFailed(object sender, ExplorerBrowser.NavigationFailedEventArgs args) =>
+		private void explorerBrowser_NavigationFailed(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigationFailedEventArgs args) =>
 			// This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
 			BeginInvoke(new MethodInvoker(delegate ()
 			{
@@ -176,7 +176,7 @@ namespace Microsoft.WindowsAPICodePack.Samples
 			// navigating to specific index in navigation log
 			explorerBrowser.NavigateToHistoryIndex(navigationHistoryCombo.SelectedIndex);
 
-		private void NavigationLog_NavigationLogChanged(object sender, ExplorerBrowser.NavigationLogEventArgs args) =>
+		private void NavigationLog_NavigationLogChanged(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigationLogEventArgs args) =>
 			// This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
 			BeginInvoke(new MethodInvoker(delegate ()
 			{

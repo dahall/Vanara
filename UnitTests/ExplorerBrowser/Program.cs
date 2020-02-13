@@ -1,5 +1,6 @@
 ﻿//Copyright (c) Microsoft Corporation.  All rights reserved.
 
+using ExplorerBrowser;
 using System;
 using System.Windows.Forms;
 
@@ -15,7 +16,7 @@ namespace Microsoft.WindowsAPICodePack.Samples
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ExplorerBrowserTestForm());
+            Application.Run(new ShellNamespaceTreeControlTestForm()); // ExplorerBrowserTestForm());
         }
     }
 }

@@ -95,9 +95,18 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShellNamespaceTreeControlTestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShellNamespaceTreeControlTestForm.Designer.cs">
+      <DependentUpon>ShellNamespaceTreeControlTestForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ExplorerBrowserTestForm.resx">
       <DependentUpon>ExplorerBrowserTestForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ShellNamespaceTreeControlTestForm.resx">
+      <DependentUpon>ShellNamespaceTreeControlTestForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
   </ItemGroup>
