@@ -60,12 +60,6 @@ PACKAGE_ID, PACKAGE_INFO, PACKAGE_INFO_REFERENCE, PACKAGE_VERSION, DEBUG_EVENT, 
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="LzExpand.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LzExpand.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
