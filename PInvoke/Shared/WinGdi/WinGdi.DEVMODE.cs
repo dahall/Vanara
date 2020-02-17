@@ -650,6 +650,9 @@ namespace Vanara.PInvoke
 
 		/// <summary>PRC Envelope #10 Rotated 458 x 324 mm</summary>
 		DMPAPER_PENV_10_ROTATED = 118,
+
+		/// <summary>User-defined lower bounds.</summary>
+		DMPAPER_USER = 256,
 	}
 
 	/// <summary>The printer resolution.</summary>
