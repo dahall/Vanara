@@ -29,7 +29,7 @@ namespace Vanara.PInvoke
 		/// <param name="ptr">The pointer to be tested whether it contains an integer resource identifier.</param>
 		/// <returns>If the value is a resource identifier, the return value is TRUE. Otherwise, the return value is FALSE.</returns>
 		[PInvokeData("WinBase.h", MSDNShortId = "ms648028")]
-		public static bool IS_INTRESOURCE(IntPtr ptr) => ptr.ToInt64() >> 16 == 0;
+		public static bool IS_INTRESOURCE(IntPtr ptr) => unchecked((ulong)ptr.ToInt64()) >> 16 == 0;
 
 		/// <summary>Retrieves the low-order byte from the given 16-bit value.</summary>
 		/// <param name="wValue">The value to be converted.</param>

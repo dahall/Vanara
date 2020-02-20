@@ -331,11 +331,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Initializes a new instance of the <see cref="SafeResourceId"/> class.</summary>
 		/// <param name="resId">The resource identifier.</param>
-		public SafeResourceId(int resId)
-		{
-			if (resId > ushort.MaxValue || resId <= 0) throw new ArgumentOutOfRangeException(nameof(resId));
-			SetHandle((IntPtr)(ushort)resId);
-		}
+		public SafeResourceId(int resId) => id = resId;
 
 		/// <summary>Initializes a new instance of the <see cref="SafeResourceId"/> class.</summary>
 		/// <param name="resType">Type of the resource.</param>
@@ -371,9 +367,9 @@ namespace Vanara.PInvoke
 			get => IsIntResource ? (ushort)handle.ToInt32() : 0;
 			set
 			{
-				if (value > ushort.MaxValue || value <= 0) throw new ArgumentOutOfRangeException(nameof(id));
+				if (value > short.MaxValue || value < short.MinValue) throw new ArgumentOutOfRangeException(nameof(id));
 				InternalCloseMethod(handle);
-				SetHandle((IntPtr)(ushort)value);
+				SetHandle((IntPtr)unchecked((ushort)value));
 			}
 		}
 
