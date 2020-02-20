@@ -11,6 +11,8 @@ namespace Vanara.PInvoke.Tests
 	{
 		public const string BmpFile = @"C:\Temp\Vanara.bmp";
 
+		public const string DummyFile = @"C:\Temp\test.dmy";
+
 		public const string EventFile = @"C:\Temp\TestLogFile.etl";
 
 		public const string IcoFile = @"C:\Temp\Vanara.ico";
