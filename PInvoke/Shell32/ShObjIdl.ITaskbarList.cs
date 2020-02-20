@@ -6,6 +6,30 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary>
+		/// When a button in a thumbnail toolbar is clicked, the window associated with that thumbnail is sent a WM_COMMAND message with the
+		/// HIWORD of its wParam parameter set to THBN_CLICKED and the LOWORD to the button ID.
+		/// </summary>
+		public const uint THBN_CLICKED = 0x1800;
+
+		/// <summary>DESTS_E_NO_MATCHING_ASSOC_HANDLER.  Win7 internal error code for Jump Lists.</summary>
+		/// <remarks>There is no Assoc Handler for the given item registered by the specified application.</remarks>
+		public static readonly HRESULT DESTS_E_NO_MATCHING_ASSOC_HANDLER = new HRESULT(0x80040F03);
+
+		/// <summary>DESTS_E_NORECDOCS.  Win7 internal error code for Jump Lists.</summary>
+		/// <remarks>The given item is excluded from the recent docs folder by the NoRecDocs bit on its registration.</remarks>
+		public static readonly HRESULT DESTS_E_NORECDOCS = new HRESULT(0x80040F04);
+
+		/// <summary>DESTS_E_NOTALLCLEARED.  Win7 internal error code for Jump Lists.</summary>
+		/// <remarks>Not all of the items were successfully cleared</remarks>
+		public static readonly HRESULT DESTS_E_NOTALLCLEARED = new HRESULT(0x80040F05);
+
+		/// <summary>Windows message indicating that the taskbar was created.</summary>
+		public static readonly uint WM_TASKBARCREATED = User32.RegisterWindowMessage("TaskbarCreated");
+
+		/// <summary>Windows message indicating that the taskbar button was created for the application window.</summary>
+		public static readonly uint WM_TASKBARBUTTONCREATED = User32.RegisterWindowMessage("TaskbarButtonCreated");
+
 		/// <summary>Used by the ITaskbarList4::SetTabProperties method to specify tab properties.</summary>
 		[PInvokeData("Shobjidl.h", MSDNShortId = "dd562320")]
 		[Flags]
@@ -231,7 +255,7 @@ namespace Vanara.PInvoke
 			/// uninstaller, which runs in a separate process. Because it is in a separate process, the system cannot reliably deduce the
 			/// AppUserModelID. This restriction is expected to be removed in later releases.
 			/// </param>
-			void DeleteList([MarshalAs(UnmanagedType.LPWStr)] string pszAppID);
+			void DeleteList([Optional, MarshalAs(UnmanagedType.LPWStr)] string pszAppID);
 
 			/// <summary>
 			/// Discontinues a Jump List building session initiated by ICustomDestinationList::BeginList without committing any changes.
