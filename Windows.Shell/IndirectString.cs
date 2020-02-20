@@ -16,7 +16,7 @@ namespace Vanara.Windows.Shell
 		public IndirectString() { }
 
 		/// <summary>Initializes a new instance of the <see cref="IndirectString"/> class.</summary>
-		public IndirectString(string value) : base(value, 0) { }
+		public IndirectString(string value) : base(value) { }
 
 		/// <summary>Initializes a new instance of the <see cref="IndirectString"/> class.</summary>
 		/// <param name="module">The module file name.</param>
@@ -27,7 +27,7 @@ namespace Vanara.Windows.Shell
 		public IndirectString(string module, int resourceIdOrIndex) : base(module, resourceIdOrIndex) { }
 
 		/// <summary>Gets the raw value of the string.</summary>
-		/// <value>Returns a <see cref="String"/> value.</value>
+		/// <value>Returns a <see cref="string"/> value.</value>
 		[Browsable(false)]
 		public string RawValue => IsValid ? $"@{ModuleFileName},{ResourceId}" : ModuleFileName;
 
@@ -38,24 +38,22 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (ResourceId == 0) return ModuleFileName;
-				using (var lib = LoadLibraryEx(ModuleFileName, Kernel32.LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
-				{
-					if (ResourceId >= 0) throw new NotSupportedException();
-					const int sz = 2048;
-					var sb = new System.Text.StringBuilder(sz, sz);
-					LoadString(lib, -ResourceId, sb, sz);
-					return sb.ToString();
-				}
+				if (ResourceId is null) return ModuleFileName;
+				using var lib = LoadLibraryEx(ModuleFileName, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
+				if (ResourceId >= 0) throw new NotSupportedException();
+				const int sz = 2048;
+				var sb = new System.Text.StringBuilder(sz, sz);
+				LoadString(lib, -ResourceId, sb, sz);
+				return sb.ToString();
 			}
 		}
 
-		/// <summary>Performs an implicit conversion from <see cref="IndirectString"/> to <see cref="System.String"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="IndirectString"/> to <see cref="string"/>.</summary>
 		/// <param name="ind">The ind.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator string(IndirectString ind) => ind.RawValue;
 
-		/// <summary>Performs an implicit conversion from <see cref="System.String"/> to <see cref="IndirectString"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="string"/> to <see cref="IndirectString"/>.</summary>
 		/// <param name="s">The s.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator IndirectString(string s) => TryParse(s, out var loc) ? loc : null;
@@ -76,8 +74,8 @@ namespace Vanara.Windows.Shell
 			return !string.IsNullOrEmpty(value);
 		}
 
-		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString() => RawValue ?? "";
 	}
 

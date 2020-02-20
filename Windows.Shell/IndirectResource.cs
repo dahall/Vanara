@@ -18,10 +18,10 @@ namespace Vanara.Windows.Shell
 		/// is the resource ID of the resource in the module file.
 		/// </param>
 		/// <param name="versionModifier">The version modifier. This value can be, and usually is, <see langword="null"/>.</param>
-		public IndirectResource(string module, int resourceIdOrIndex, string versionModifier = null)
+		public IndirectResource(string module, int? resourceIdOrIndex = null, string versionModifier = null)
 		{
 			ModuleFileName = module;
-			ResourceId = resourceIdOrIndex;
+			ResourceId = resourceIdOrIndex.HasValue ? (SafeResourceId)resourceIdOrIndex.Value : null;
 			VersionModifier = versionModifier;
 		}
 
