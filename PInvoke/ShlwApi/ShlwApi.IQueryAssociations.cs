@@ -438,9 +438,7 @@ namespace Vanara.PInvoke
 			void GetEnum(ASSOCF flags, ASSOCENUM assocenum, [MarshalAs(UnmanagedType.LPWStr)] string pszExtra, in Guid riid, out IntPtr ppvOut);
 		}
 
-		/// <summary>
-		/// <para>Returns a pointer to an IQueryAssociations object.</para>
-		/// </summary>
+		/// <summary>Returns a pointer to an IQueryAssociations object.</summary>
 		/// <param name="clsid">
 		/// <para>Type: <c>CLSID</c></para>
 		/// <para>
@@ -467,6 +465,10 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "33099e0e-73e3-4047-804f-765a59e42e3f")]
 		public static extern HRESULT AssocCreate([In] Guid clsid, in Guid riid, out IQueryAssociations ppv);
+
+		/// <summary>Returns a pointer to an IQueryAssociations object.</summary>
+		/// <returns>The requested IQueryAssociations interface pointer.</returns>
+		public static IQueryAssociations AssocCreate() { AssocCreate(CLSID_QueryAssociations, typeof(IQueryAssociations).GUID, out var qa).ThrowIfFailed(); return qa; }
 
 		/// <summary>
 		/// <para>Retrieves a file's perceived type based on its extension.</para>
