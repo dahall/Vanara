@@ -176,6 +176,19 @@ namespace Vanara.IO
 		/// </returns>
 		public static string GetRootFromDriveNumber(int drive) => SBAllocCallRet((s, sz) => PathBuildRoot(s, drive), "", 4);
 
+		/// <summary>Gets the short path form of the specified path.</summary>
+		/// <param name="path">The path to convert.</param>
+		/// <returns>The short form of <paramref name="path"/>.</returns>
+		public static string GetShortPath(string path)
+		{
+			if (string.IsNullOrEmpty(path)) return path;
+			var shortPath = path;
+			var l = path.Length + 5;
+			var sb = new StringBuilder(l, l);
+			var rl = GetShortPathName(path.Length > MAX_PATH ? @"\\?\" + path : path, sb, (uint)sb.Capacity);
+			if (rl > 0 && rl <= l) shortPath = sb.ToString();
+			return shortPath;
+		}
 
 		/// <summary>
 		/// Determines if a path string is a valid Universal Naming Convention (UNC) path and extract the name of the server from the path.
