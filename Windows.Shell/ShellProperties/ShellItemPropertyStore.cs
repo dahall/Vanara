@@ -22,7 +22,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="propChangedHandler">The optional property changed handler.</param>
 		internal ShellItemPropertyStore(ShellItem item, PropertyChangedEventHandler propChangedHandler = null)
 		{
-			item.ThrowIfNoShellItem2();
+			//item.ThrowIfNoShellItem2();
 			shellItem = item;
 			if (propChangedHandler != null)
 				PropertyChanged += propChangedHandler;
@@ -108,11 +108,16 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>The IPropertyStore instance. This can be null.</summary>
-		protected override IPropertyStore IPropStoreInst => shellItem.iShellItem2.GetPropertyStore(flags, typeof(IPropertyStore).GUID);
+		protected override IPropertyStore GetIPropertyStore()
+		{
+			if (shellItem is ShellLink lnk)
+				return (IPropertyStore)lnk.link;
+			return shellItem?.iShellItem2?.GetPropertyStore(flags, typeof(IPropertyStore).GUID);
+		}
 
 		/// <summary>Gets the CLSID of a supplied property key.</summary>
 		/// <param name="propertyKey">The property key.</param>
 		/// <returns>The CLSID related to the property key.</returns>
-		public Guid GetCLSID(PROPERTYKEY propertyKey) => shellItem.iShellItem2.GetCLSID(propertyKey);
+		public Guid GetCLSID(PROPERTYKEY propertyKey) => shellItem?.iShellItem2?.GetCLSID(propertyKey) ?? Guid.Empty;
 	}
 }
