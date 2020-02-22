@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -399,7 +400,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the attributes for the Shell item.</summary>
 		/// <value>The attributes of the Shell item.</value>
-		public ShellItemAttribute Attributes => (ShellItemAttribute)iShellItem.GetAttributes((SFGAO)0xFFFFFFFF);
+		public ShellItemAttribute Attributes => (ShellItemAttribute)(iShellItem?.GetAttributes((SFGAO)0xFFFFFFFF) ?? 0);
 
 		/// <summary>Gets the <see cref="ShellFileInfo"/> corresponding to this instance.</summary>
 		public ShellFileInfo FileInfo => IsFileSystem ? new ShellFileInfo(PIDL) : null;
@@ -410,18 +411,18 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets a value indicating whether this instance is part of the file system.</summary>
 		/// <value><c>true</c> if this instance is part of the file system; otherwise, <c>false</c>.</value>
-		public bool IsFileSystem => iShellItem.GetAttributes(SFGAO.SFGAO_FILESYSTEM) != 0;
+		public bool IsFileSystem => (iShellItem?.GetAttributes(SFGAO.SFGAO_FILESYSTEM) ?? 0) != 0;
 
 		/// <summary>Gets a value indicating whether this instance is folder.</summary>
 		/// <value><c>true</c> if this instance is folder; otherwise, <c>false</c>.</value>
-		public bool IsFolder => iShellItem.GetAttributes(SFGAO.SFGAO_FOLDER) != 0;
+		public bool IsFolder => (iShellItem?.GetAttributes(SFGAO.SFGAO_FOLDER) ?? 0) != 0;
 
 		/// <summary>Gets the IShellItem instance of the current ShellItem.</summary>
 		public IShellItem IShellItem => iShellItem;
 
 		/// <summary>Gets a value indicating whether this instance is link.</summary>
 		/// <value><c>true</c> if this instance is link; otherwise, <c>false</c>.</value>
-		public bool IsLink => iShellItem.GetAttributes(SFGAO.SFGAO_LINK) != 0;
+		public virtual bool IsLink => (iShellItem?.GetAttributes(SFGAO.SFGAO_LINK) ?? 0) != 0;
 
 		/// <summary>Gets the name relative to the parent for the item.</summary>
 		public virtual string Name
@@ -451,6 +452,7 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
+				if (iShellItem is null) return null;
 				SHGetIDListFromObject(iShellItem, out var pidl).ThrowIfFailed();
 				return pidl;
 			}
@@ -458,7 +460,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the property store for the item.</summary>
 		/// <value>The dictionary of properties.</value>
-		public ShellItemPropertyStore Properties => props ?? (props = new ShellItemPropertyStore(this));
+		public ShellItemPropertyStore Properties => props ?? (props = new ShellItemPropertyStore(this) { ReadOnly = false });
 
 		/// <summary>Gets a property description list object containing descriptions of all properties.</summary>
 		/// <returns>A complete <see cref="PropertyDescriptionList"/> instance.</returns>
@@ -763,11 +765,11 @@ namespace Vanara.Windows.Shell
 			iShellItem2 = si as IShellItem2;
 		}
 
-		private static bool Equals(IShellItem left, IShellItem right)
+		internal static bool Equals(IShellItem left, IShellItem right)
 		{
 			if (ReferenceEquals(left, right)) return true;
 			if (left is null || right is null) return false;
-			return left.Compare(right, SICHINTF.SICHINT_TEST_FILESYSPATH_IF_NOT_EQUAL) == 0;
+			return left.Compare(right, SICHINTF.SICHINT_CANONICAL | SICHINTF.SICHINT_TEST_FILESYSPATH_IF_NOT_EQUAL) == 0;
 		}
 
 		private static Bitmap GetTransparentBitmap(HBITMAP hbitmap)
