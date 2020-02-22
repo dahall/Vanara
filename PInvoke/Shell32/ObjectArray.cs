@@ -25,7 +25,9 @@ namespace Vanara.PInvoke
 			/// <returns>The number of objects in the collection.</returns>
 			uint GetCount();
 
-			/// <summary>Provides a pointer to a specified object's interface. The object and interface are specified by index and interface ID.</summary>
+			/// <summary>
+			/// Provides a pointer to a specified object's interface. The object and interface are specified by index and interface ID.
+			/// </summary>
 			/// <param name="uiIndex">The index of the object</param>
 			/// <param name="riid">Reference to the desired interface ID.</param>
 			/// <returns>Receives the interface pointer requested in riid.</returns>
@@ -52,7 +54,9 @@ namespace Vanara.PInvoke
 			/// <returns>The number of objects in the collection.</returns>
 			new uint GetCount();
 
-			/// <summary>Provides a pointer to a specified object's interface. The object and interface are specified by index and interface ID.</summary>
+			/// <summary>
+			/// Provides a pointer to a specified object's interface. The object and interface are specified by index and interface ID.
+			/// </summary>
 			/// <param name="uiIndex">The index of the object</param>
 			/// <param name="riid">Reference to the desired interface ID.</param>
 			/// <returns>Receives the interface pointer requested in riid.</returns>
@@ -81,5 +85,20 @@ namespace Vanara.PInvoke
 		/// <param name="uiIndex">The index of the object</param>
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
 		public static T GetAt<T>(this IObjectArray a, uint uiIndex) where T : class => (T)a.GetAt(uiIndex, typeof(T).GUID);
+
+		/// <summary>Extension method to convert an <see cref="IObjectArray"/> instance to an array of <typeparamref name="T"/>.</summary>
+		/// <typeparam name="T">Type of the interface to get. Supplying a type <see cref="object"/> will get the <c>IUnknown</c> reference.</typeparam>
+		/// <param name="a">An <see cref="IObjectArray"/> instance.</param>
+		/// <returns>An array of <typeparamref name="T"/>.</returns>
+		public static T[] ToArray<T>(this IObjectArray a) where T : class
+		{
+			const string IID_IUnknown = "00000000-0000-0000-C000-000000000046";
+			var gIUnk = typeof(T) == typeof(object) ? new Guid(IID_IUnknown) : typeof(T).GUID;
+			var c = a.GetCount();
+			var ret = new T[c];
+			for (var i = 0U; i < c; i++)
+				ret[i] = (T)a.GetAt(i, gIUnk);
+			return ret;
+		}
 	}
 }
