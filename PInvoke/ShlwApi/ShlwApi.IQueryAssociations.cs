@@ -309,7 +309,7 @@ namespace Vanara.PInvoke
 			/// <summary>Windows Vista and later. The file's perceived type is "gamemedia".</summary>
 			PERCEIVED_TYPE_GAMEMEDIA = 9,
 
-			/// <summary>Windows Vista and later.The file's perceived type is "contacts"</summary>
+			/// <summary>Windows Vista and later. The file's perceived type is "contacts"</summary>
 			PERCEIVED_TYPE_CONTACTS = 10,
 		}
 
