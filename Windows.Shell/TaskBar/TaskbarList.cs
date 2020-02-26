@@ -2,7 +2,10 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Vanara.InteropServices;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.PropSys;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
 
@@ -44,10 +47,6 @@ namespace Vanara.Windows.Shell
 			taskbar2.HrInit();
 			taskbar4 = taskbar2 as ITaskbarList4;
 		}
-
-		/// <summary>Gets the taskbar button created MSG identifier.</summary>
-		/// <value>The taskbar button created MSG identifier.</value>
-		public static uint TaskbarButtonCreatedWinMsgId => RegisterWindowMessage("TaskbarButtonCreated");
 
 		/// <summary>
 		/// Activates an item on the taskbar. The window is not actually activated; the window's item on the taskbar is merely displayed as active.
@@ -465,6 +464,33 @@ namespace Vanara.Windows.Shell
 		{
 			Validate7OrLater();
 			taskbar4?.UnregisterTab(hwnd);
+		}
+
+		internal static IPropertyStore GetWindowPropertyStore(HWND hwnd) => SHGetPropertyStoreForWindow<IPropertyStore>(hwnd);
+
+		internal static void SetWindowAppId(HWND hwnd, string appId) => SetWindowProperty(hwnd, PROPERTYKEY.System.AppUserModel.ID, appId);
+
+		internal static string GetWindowAppId(HWND hwnd) => GetWindowProperty(hwnd, PROPERTYKEY.System.AppUserModel.ID);
+
+		internal static void SetWindowProperty(HWND hwnd, PROPERTYKEY propkey, string value)
+		{
+			// Get the IPropertyStore for the given window handle
+			using var pPropStore = ComReleaserFactory.Create(GetWindowPropertyStore(hwnd));
+
+			// Set the value
+			using var pv = new PROPVARIANT(value);
+			pPropStore.Item.SetValue(propkey, pv);
+		}
+
+		internal static string GetWindowProperty(HWND hwnd, PROPERTYKEY propkey)
+		{
+			// Get the IPropertyStore for the given window handle
+			using var pPropStore = ComReleaserFactory.Create(GetWindowPropertyStore(hwnd));
+
+			// Get the value
+			using var pv = new PROPVARIANT();
+			pPropStore.Item.GetValue(propkey, pv);
+			return pv.Value.ToString();
 		}
 
 		private static void Validate7OrLater()
