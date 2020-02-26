@@ -18,6 +18,10 @@ namespace Vanara.Windows.Shell
 			ReadOnly = readOnly;
 		}
 
+		/// <summary>Gets a value indicating whether this instance is system wide.</summary>
+		/// <value><see langword="true"/> if this instance is system wide; otherwise, <see langword="false"/>.</value>
+		public bool IsSystemWide => !key.Name.StartsWith("HKEY_CURRENT_USER");
+
 		/// <summary>Gets or sets a value indicating whether these settings are read-only.</summary>
 		public bool ReadOnly { get; }
 
@@ -34,20 +38,21 @@ namespace Vanara.Windows.Shell
 		int IComparable<RegBasedSettings>.CompareTo(RegBasedSettings other) => string.Compare(key.Name, other?.key.Name, StringComparison.InvariantCulture);
 
 		/// <inheritdoc/>
-		void IDisposable.Dispose()
+		public virtual void Dispose()
 		{
 			key?.Close();
+			ShellRegistrar.NotifyShell();
 		}
 
 		/// <summary>Checks the ReadOnly flag and throws an exception if it is true.</summary>
-		protected void CheckRW() { if (ReadOnly) throw new InvalidOperationException("Object is read only and its values cannot be changed."); }
+		protected void EnsureWritable() { if (ReadOnly) throw new InvalidOperationException("Object is read only and its values cannot be changed."); }
 
 		/// <summary>Toggles the value identified by having a named subkey present.</summary>
 		/// <param name="name">The name of the subkey.</param>
 		/// <param name="set">if set to <c>true</c>, creates a subkey named <paramref name="name"/>; otherwise deletes that subkey.</param>
 		protected void ToggleKeyValue(string name, bool set)
 		{
-			CheckRW();
+			EnsureWritable();
 			if (!set)
 				key.DeleteSubKey(name, false);
 			else
@@ -59,7 +64,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="set">if set to <c>true</c>, creates a value named <paramref name="name"/>; otherwise deletes that value.</param>
 		protected void ToggleValue(string name, bool set)
 		{
-			CheckRW();
+			EnsureWritable();
 			if (!set)
 				key.DeleteValue(name, false);
 			else
@@ -70,9 +75,9 @@ namespace Vanara.Windows.Shell
 		/// <param name="name">The name of the subkey.</param>
 		/// <param name="value">The value of the default value.</param>
 		/// <param name="deleteIfValue">The value that, if equal to <paramref name="value"/>, causes the removal of the subkey.</param>
-		protected void UpdateKeyValue(string name, string value, string deleteIfValue = null)
+		protected internal void UpdateKeyValue(string name, string value, string deleteIfValue = null)
 		{
-			CheckRW();
+			EnsureWritable();
 			if (Equals(value, deleteIfValue))
 				key.DeleteSubKey(name, false);
 			else
@@ -85,15 +90,15 @@ namespace Vanara.Windows.Shell
 		/// <param name="value">The value of the value.</param>
 		/// <param name="valueKind">Kind of the value.</param>
 		/// <param name="deleteIfValue">The value that, if equal to <paramref name="value"/>, causes the removal of the value.</param>
-		protected void UpdateValue<T>(string name, T value, RegistryValueKind valueKind = RegistryValueKind.Unknown, T deleteIfValue = default)
+		protected internal void UpdateValue<T>(string name, T value, RegistryValueKind valueKind = RegistryValueKind.Unknown, T deleteIfValue = default)
 		{
-			CheckRW();
+			EnsureWritable();
 			if (Equals(value, deleteIfValue))
 				key.DeleteValue(name, false);
 			else
 			{
 				var o = value is Guid g ? (object)g.ToRegString() : value;
-				key.SetValue(name, value, valueKind == RegistryValueKind.Unknown && o is string ? RegistryValueKind.String : valueKind);
+				key.SetValue(name, value, valueKind == RegistryValueKind.Unknown && o is string ? RegistryValueKind.ExpandString : valueKind);
 			}
 		}
 	}

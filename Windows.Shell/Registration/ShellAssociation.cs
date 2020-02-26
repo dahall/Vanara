@@ -60,7 +60,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>
 		/// The ProgID provided by the app associated with the file type or URI scheme. This if configured by users in their default program settings.
 		/// </summary>
-		public ProgId ProgId => new ProgId(GetString(ASSOCSTR.ASSOCSTR_PROGID), true, true, true);
+		public ProgId ProgId => ProgId.Open(GetString(ASSOCSTR.ASSOCSTR_PROGID), true, true, true);
 
 		/// <summary>
 		/// Introduced in Internet Explorer 6. For an object that has a Shell extension associated with it, you can use this to retrieve the
@@ -104,9 +104,20 @@ namespace Vanara.Windows.Shell
 
 		#endregion AllPropLists // TODO: Enhance
 
-		//public static ShellAssociation CreateFromAppExeName(string appExeName) {  }
-		//public static ShellAssociation CreateFromCLSID(Guid classId) {  }
-		//public static ShellAssociation CreateFromProgId(string progId) {  }
+		/// <summary>Initializes a new instance of the <see cref="ShellAssociation"/> class based on the supplied executable name.</summary>
+		/// <param name="appExeName">The full path of the application executable.</param>
+		/// <returns>A <see cref="ShellAssociation"/> instance if <paramref name="appExeName"/> exists; <see langword="null"/> otherwise.</returns>
+		public static ShellAssociation CreateFromAppExeName(string appExeName) => CreateAndInit(ASSOCF.ASSOCF_INIT_BYEXENAME, appExeName);
+
+		/// <summary>Initializes a new instance of the <see cref="ShellAssociation"/> class based on the supplied CLSID.</summary>
+		/// <param name="classId">The CLSID.</param>
+		/// <returns>A <see cref="ShellAssociation"/> instance if <paramref name="classId"/> exists; <see langword="null"/> otherwise.</returns>
+		public static ShellAssociation CreateFromCLSID(Guid classId) => CreateAndInit(0, classId.ToString("B"));
+
+		/// <summary>Initializes a new instance of the <see cref="ShellAssociation"/> class based on the supplied programmatic identifier (ProgId).</summary>
+		/// <param name="progId">The ProgId.</param>
+		/// <returns>A <see cref="ShellAssociation"/> instance if <paramref name="progId"/> exists; <see langword="null"/> otherwise.</returns>
+		public static ShellAssociation CreateFromProgId(string progId) => CreateAndInit(0, progId);
 
 		/// <summary>Initializes a new instance of the <see cref="ShellAssociation"/> class based on the supplied file extension.</summary>
 		/// <param name="ext">The file extension. This should be in the ".ext" format.</param>
@@ -115,17 +126,20 @@ namespace Vanara.Windows.Shell
 		{
 			if (ext is null) throw new ArgumentNullException(nameof(ext));
 			if (!ext.StartsWith(".")) throw new ArgumentException("The value must be in the format \".ext\"", nameof(ext));
+			return CreateAndInit(ASSOCF.ASSOCF_INIT_DEFAULTTOSTAR, ext);
+		}
 
+		private static ShellAssociation CreateAndInit(ASSOCF flags, string assoc)
+		{
 			// if (Environment.OSVersion.Version.Major >= 6)
 			//var elements = new[] { new ASSOCIATIONELEMENT { ac = ASSOCCLASS.ASSOCCLASS_PROGID_STR, pszClass = progId } };
 			//AssocCreateForClasses(elements, (uint)elements.Length, typeof(IQueryAssociations).GUID, out var iq).ThrowIfFailed();
 			//ret.qassoc = (IQueryAssociations)iq;
 
-			var ret = new ShellAssociation(ext);
-			AssocCreate(CLSID_QueryAssociations, typeof(IQueryAssociations).GUID, out ret.qassoc).ThrowIfFailed();
+			var ret = new ShellAssociation(assoc) { qassoc = AssocCreate() };
 			try
 			{
-				ret.qassoc.Init(ASSOCF.ASSOCF_INIT_DEFAULTTOSTAR, ext);
+				ret.qassoc.Init(flags, assoc);
 				return ret;
 			}
 			catch
