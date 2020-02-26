@@ -49,10 +49,12 @@
 			this.themedPanel1 = new Vanara.Windows.Forms.ThemedPanel();
 			this.themedImageDraw1 = new Vanara.Windows.Forms.ThemedImageDraw();
 			this.ipAddressBox1 = new Vanara.Windows.Forms.IPAddressBox();
+			this.taskbarButton1 = new Vanara.Windows.Shell.TaskbarButton(this.components);
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarEx1)).BeginInit();
 			this.contextMenuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.vistaControlExtender1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.taskbarButton1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -135,24 +137,24 @@
             this.twoToolStripMenuItem,
             this.threeToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(105, 70);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(104, 70);
 			// 
 			// oneToolStripMenuItem
 			// 
 			this.oneToolStripMenuItem.Name = "oneToolStripMenuItem";
-			this.oneToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+			this.oneToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
 			this.oneToolStripMenuItem.Text = "One";
 			// 
 			// twoToolStripMenuItem
 			// 
 			this.twoToolStripMenuItem.Name = "twoToolStripMenuItem";
-			this.twoToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+			this.twoToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
 			this.twoToolStripMenuItem.Text = "Two";
 			// 
 			// threeToolStripMenuItem
 			// 
 			this.threeToolStripMenuItem.Name = "threeToolStripMenuItem";
-			this.threeToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+			this.threeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
 			this.threeToolStripMenuItem.Text = "Three";
 			// 
 			// enumComboBox1
@@ -246,11 +248,14 @@
 			this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.glassExtenderProvider1.SetGlassMargins(this, new System.Windows.Forms.Padding(0, 85, 0, 0));
 			this.Name = "Form1";
-			this.Text = "Form1";
+			this.Text = "Vanara.Windows.Forms Test App";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+			this.Load += new System.EventHandler(this.Form1_Load);
 			this.groupBox1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.trackBarEx1)).EndInit();
 			this.contextMenuStrip1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.vistaControlExtender1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.taskbarButton1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -277,6 +282,7 @@
 		private Vanara.Windows.Forms.ThemedPanel themedPanel1;
 		private Vanara.Windows.Forms.ThemedImageDraw themedImageDraw1;
 		private Vanara.Windows.Forms.IPAddressBox ipAddressBox1;
+		private Vanara.Windows.Shell.TaskbarButton taskbarButton1;
 	}
 }
 
