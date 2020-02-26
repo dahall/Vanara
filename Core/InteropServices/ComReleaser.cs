@@ -60,7 +60,7 @@ namespace Vanara.InteropServices
 		public void Dispose()
 		{
 			if (Item == null) return;
-			Marshal.FinalReleaseComObject(Item);
+			Marshal.ReleaseComObject(Item);
 			Item = null;
 		}
 	}
