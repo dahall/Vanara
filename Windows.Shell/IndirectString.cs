@@ -29,7 +29,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the raw value of the string.</summary>
 		/// <value>Returns a <see cref="string"/> value.</value>
 		[Browsable(false)]
-		public string RawValue => IsValid ? $"@{ModuleFileName},{ResourceId}" : ModuleFileName;
+		public string RawValue => IsValid ? $"@{ModuleFileName},{ResourceId}" : PackageName;
 
 		/// <summary>Gets the localized string referred to by this instance.</summary>
 		/// <value>The referenced localized string.</value>
