@@ -4,7 +4,7 @@
     <Description>Classes for Windows Shell items derived from the Vanara PInvoke libraries. Includes shell items, files, icons, links, and taskbar lists.</Description>
     <Copyright>Copyright © 2017-2020</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.1.9</VersionPrefix>
+    <VersionPrefix>3.2.0</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>Vanara.Windows.Shell</AssemblyName>
@@ -24,10 +24,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-IComObject, ComClassFactory, CommandVerb, CommandVerbDictionary, ComObject, ControlPanel, IconLocation, IndirectResource, IndirectString, MessageEventArgs, MessageLoop, ProgId, PropertyBag, PropertyDescription, PropertyDescriptionList, PropertyStore, PropertyType, PropertyTypeList, RegBasedSettings, RegistryBasedVirtualDictionary&lt;T&gt;, SearchCondition, ShellAssociation, ShellCommand, ShellDropTarget, ShellExecuteCommand, ShellFileInfo, ShellFileNewOpEventArgs, ShellFileOperations, ShellFileOpEventArgs, ShellFolder, ShellImageList, ShellItem, ShellItemArray, ShellItemChangeEventArgs, ShellItemChangeWatcher, ShellItemPropertyStore, ShellItemPropertyUpdates, ShellLibrary, ShellLibraryFolders, ShellLink, ShellRegistrar, ShellSearch, ShellSearchViewSettings, TaskbarList
+IComObject, IJumpListItem, AddExtenderEventArgs, AppRegistration, ComClassFactory, CommandVerb, CommandVerbDictionary, ComObject, ControlPanel, ExtenderProviderBase&lt;T&gt;, FileTypeAssociation, IconLocation, IndirectResource, IndirectString, JumpList, JumpListDestination, JumpListItem, JumpListSeparator, JumpListTask, MessageEventArgs, MessageLoop, ProgId, PropertyBag, PropertyDescription, PropertyDescriptionList, PropertyStore, PropertyType, PropertyTypeList, RegBasedDictionary&lt;T&gt;, RegBasedSettings, SearchCondition, ShellAssociation, ShellCommand, ShellDropTarget, ShellExecuteCommand, ShellFileInfo, ShellFileNewOpEventArgs, ShellFileOperations, ShellFileOpEventArgs, ShellFolder, ShellImageList, ShellItem, ShellItemArray, ShellItemChangeEventArgs, ShellItemChangeWatcher, ShellItemPropertyStore, ShellItemPropertyUpdates, ShellLibrary, ShellLibraryFolders, ShellLink, ShellRegistrar, ShellSearch, ShellSearchViewSettings, TaskbarButton, TaskbarButtonThumbnail, TaskbarButtonThumbnails, TaskbarList, ThumbnailToolbar, ThumbnailToolbarButton, ThumbnailToolbarButtonCollection
 
 Enumerations
-ChangeFilters, ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryViewTemplate, LinkResolution, OperationFlags, ShellIconType, ShellImageSize, ShellItemAttribute, ShellItemComparison, ShellItemDisplayString, ShellItemGetImageOptions, ShellItemToolTipOptions, TaskbarButtonProgressState, TransferFlags, VerbMultiSelectModel, VerbPosition, VerbSelectionModel
+ChangeFilters, ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryViewTemplate, LinkResolution, OperationFlags, ShellIconType, ShellImageSize, ShellItemAttribute, ShellItemComparison, ShellItemDisplayString, ShellItemGetImageOptions, ShellItemToolTipOptions, TaskbarButtonProgressState, TaskbarItemTabThumbnailOption, TransferFlags, VerbMultiSelectModel, VerbPosition, VerbSelectionModel, Visibility
 
 </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

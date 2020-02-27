@@ -17,25 +17,37 @@ Enum | Description | Values
 [Vanara.Windows.Shell.ShellItemGetImageOptions](https://github.com/dahall/Vanara/search?l=C%23&q=ShellItemGetImageOptions) | Options for retrieving images from a `Vanara.Windows.Shell.ShellItem`. | ResizeToFit, BiggerSizeOk, MemoryOnly, IconOnly, ThumbnailOnly, InCacheOnly, CropToSquare, WideThumbnails, IconBackground, ScaleUp
 [Vanara.Windows.Shell.ShellItemToolTipOptions](https://github.com/dahall/Vanara/search?l=C%23&q=ShellItemToolTipOptions) | Flags that direct the handling of the item from which you're retrieving the info tip text. | Default, Name, LinkNotTarget, LinkTarget, AllowDelay, SingleLine
 [Vanara.Windows.Shell.TaskbarButtonProgressState](https://github.com/dahall/Vanara/search?l=C%23&q=TaskbarButtonProgressState) | State of the progress shown on a taskbar button. | None, Indeterminate, Normal, Error, Paused
+[Vanara.Windows.Shell.TaskbarItemTabThumbnailOption](https://github.com/dahall/Vanara/search?l=C%23&q=TaskbarItemTabThumbnailOption) | Specifies taskbar button thumbnail tab properties. | TabWindow, MainWindow, MainWindowWhenActive
 [Vanara.Windows.Shell.ShellFileOperations.TransferFlags](https://github.com/dahall/Vanara/search?l=C%23&q=TransferFlags) | Used by methods of the ITransferSource and ITransferDestination interfaces to control their file operations. | Normal, FailExist, RenameExist, OverwriteExist, AllowDecryption, NoSecurity, CopyCreationTime, CopyWriteTime, UseFullAccess, DeleteRecycleIfPossible, CopyHardLink, CopyLocalizedName, MoveAsCopyDelete, SuspendShellEvents
-[Vanara.Windows.Shell.VerbMultiSelectModel](https://github.com/dahall/Vanara/search?l=C%23&q=VerbMultiSelectModel) |  | Unset, Player, Single, Document
-[Vanara.Windows.Shell.VerbPosition](https://github.com/dahall/Vanara/search?l=C%23&q=VerbPosition) |  | Unset, Top, Bottom
-[Vanara.Windows.Shell.VerbSelectionModel](https://github.com/dahall/Vanara/search?l=C%23&q=VerbSelectionModel) |  | Item, BackgroundShortcutMenu
+[Vanara.Windows.Shell.VerbMultiSelectModel](https://github.com/dahall/Vanara/search?l=C%23&q=VerbMultiSelectModel) | A value that determines if a user can select a single item, multiple items, or a selection from an item. | Unset, Player, Single, Document
+[Vanara.Windows.Shell.VerbPosition](https://github.com/dahall/Vanara/search?l=C%23&q=VerbPosition) | Determines the placement of a verb in a menu. | Undefined, Top, Bottom
+[Vanara.Windows.Shell.VerbSelectionModel](https://github.com/dahall/Vanara/search?l=C%23&q=VerbSelectionModel) | Determines menu location. | Item, BackgroundShortcutMenu
+[Vanara.Windows.Shell.Visibility](https://github.com/dahall/Vanara/search?l=C%23&q=Visibility) |  | Visible, Hidden, Collapsed
 ### Interfaces
 Interface | Description
 ---- | ----
 [Vanara.Windows.Shell.IComObject](https://github.com/dahall/Vanara/search?l=C%23&q=IComObject) | Exposed methods from `Vanara.Windows.Shell.ComObject`.
+[Vanara.Windows.Shell.IJumpListItem](https://github.com/dahall/Vanara/search?l=C%23&q=IJumpListItem) | Represents a Jump List item.
 ### Classes
 Class | Description
 ---- | ----
+[Vanara.Windows.ExtenderProviderBase<T>.AddExtenderEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=AddExtenderEventArgs) | Arguments for the `Vanara.Windows.ExtenderProviderBase`1.AddingExtender` event.
+[Vanara.Windows.Shell.Registration.AppRegistration](https://github.com/dahall/Vanara/search?l=C%23&q=AppRegistration) | Represents the registration entries for an application.
 [Vanara.Windows.Shell.ComClassFactory](https://github.com/dahall/Vanara/search?l=C%23&q=ComClassFactory) | An implementation of `Vanara.PInvoke.Ole32.IClassFactory` to be used in conjunction with `Vanara.Windows.Shell.IComObject` derivatives.
 [Vanara.Windows.Shell.CommandVerb](https://github.com/dahall/Vanara/search?l=C%23&q=CommandVerb) | Encapsulates a shortcut menu verb in the registry.
 [Vanara.Windows.Shell.CommandVerbDictionary](https://github.com/dahall/Vanara/search?l=C%23&q=CommandVerbDictionary) | A dictionary of Command Verbs defined in the Windows Registry.
 [Vanara.Windows.Shell.ComObject](https://github.com/dahall/Vanara/search?l=C%23&q=ComObject) | Base class for all COM objects which handles calling AddRef and Release for the assembly, connection to IClassFactory, implements IObjectWithSite, using an internal message loop, and a mechanism to issue a non-blocking call to itself. Once implemented, you only need to implement your own interfaces. The IClassFactory implementation can get any derived interfaces through casting for calls to its QueryInterface method. If you want more control, override the QueryInterface method in this class.
 [Vanara.Windows.Shell.ControlPanel](https://github.com/dahall/Vanara/search?l=C%23&q=ControlPanel) | Provides a means to open Control Panel items and get their paths.
+[Vanara.Windows.ExtenderProviderBase<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ExtenderProviderBase<T>) | A generic base to implement `System.ComponentModel.IExtenderProvider` for a single extender type.
+[Vanara.Windows.Shell.Registration.FileTypeAssociation](https://github.com/dahall/Vanara/search?l=C%23&q=FileTypeAssociation) | Manages registry entries related to file types and file associations.
 [Vanara.Windows.Shell.IconLocation](https://github.com/dahall/Vanara/search?l=C%23&q=IconLocation) | Wraps the icon location string used by some Shell classes.
 [Vanara.Windows.Shell.IndirectResource](https://github.com/dahall/Vanara/search?l=C%23&q=IndirectResource) | Wraps a resource reference used by some Shell classes.
 [Vanara.Windows.Shell.IndirectString](https://github.com/dahall/Vanara/search?l=C%23&q=IndirectString) | Wraps a string resource reference used by some Shell classes.
+[Vanara.Windows.Shell.JumpList](https://github.com/dahall/Vanara/search?l=C%23&q=JumpList) | Provides access to the jump list on the application's task bar icon.
+[Vanara.Windows.Shell.JumpListDestination](https://github.com/dahall/Vanara/search?l=C%23&q=JumpListDestination) | A file-based destination for a jumplist with an associated category.
+[Vanara.Windows.Shell.JumpListItem](https://github.com/dahall/Vanara/search?l=C%23&q=JumpListItem) | An item in a Jump List.
+[Vanara.Windows.Shell.JumpListSeparator](https://github.com/dahall/Vanara/search?l=C%23&q=JumpListSeparator) | A separator which can be inserted into a custom list or task list.
+[Vanara.Windows.Shell.JumpListTask](https://github.com/dahall/Vanara/search?l=C%23&q=JumpListTask) | A task for a jumplist.
 [Vanara.PInvoke.MessageLoop.MessageEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=MessageEventArgs) | Holds a copy of the MSG instance retrieved by GetMessage.
 [Vanara.PInvoke.MessageLoop](https://github.com/dahall/Vanara/search?l=C%23&q=MessageLoop) | <para> This class encapsulates the management of a message loop for an application. It supports queuing a callback to the application via the message loop to enable the app to return from a call and continue processing that call later. This behavior is needed when implementing a shell verb as verbs must not block the caller. </para> <note type="note">The ComObject derived class should call QueueNonBlockingCallback in its invoke function, for example IExecuteCommand::Execute() or IDropTarget::Drop() passing a method that will complete the initialization work.</note>
 [Vanara.Windows.Shell.ProgId](https://github.com/dahall/Vanara/search?l=C%23&q=ProgId) | Represents a programmatic identifier in the registry for an application.
@@ -45,8 +57,8 @@ Class | Description
 [Vanara.Windows.Shell.PropertyStore](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyStore) | Encapsulates the IPropertyStore object.
 [Vanara.Windows.Shell.PropertyType](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyType) | Exposes methods that extract data from enumeration information.
 [Vanara.Windows.Shell.PropertyTypeList](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyTypeList) | Exposes methods that enumerate the possible values for a property.
+[Vanara.Windows.Shell.RegBasedDictionary<T>](https://github.com/dahall/Vanara/search?l=C%23&q=RegBasedDictionary<T>) | A virtual dictionary that is based on values in the Windows Registry.
 [Vanara.Windows.Shell.RegBasedSettings](https://github.com/dahall/Vanara/search?l=C%23&q=RegBasedSettings) | Base class for registry based settings.
-[Vanara.Windows.Shell.RegistryBasedVirtualDictionary<T>](https://github.com/dahall/Vanara/search?l=C%23&q=RegistryBasedVirtualDictionary<T>) | A virtual dictionary that is based on values in the Windows Registry.
 [Vanara.Windows.Shell.SearchCondition](https://github.com/dahall/Vanara/search?l=C%23&q=SearchCondition) | Provides properties and methods for retrieving information about a search condition.
 [Vanara.Windows.Shell.ShellAssociation](https://github.com/dahall/Vanara/search?l=C%23&q=ShellAssociation) | Represents a Shell file association defined in the Windows Registry. Wraps `Vanara.PInvoke.ShlwApi.IQueryAssociations`.
 [Vanara.Windows.Shell.ShellCommand](https://github.com/dahall/Vanara/search?l=C%23&q=ShellCommand) | Wraps the functionality of IInitializeCommand. When deriving, handling the `Vanara.Windows.Shell.ShellCommand.InitializeCommand` event is optional.
@@ -70,4 +82,10 @@ Class | Description
 [Vanara.Windows.Shell.ShellRegistrar](https://github.com/dahall/Vanara/search?l=C%23&q=ShellRegistrar) | Contains static methods used to register and unregister shell items in the Windows Registry.
 [Vanara.Windows.Shell.ShellSearch](https://github.com/dahall/Vanara/search?l=C%23&q=ShellSearch) | Represents functionality of the Windows Search Service.
 [Vanara.Windows.Shell.ShellSearchViewSettings](https://github.com/dahall/Vanara/search?l=C%23&q=ShellSearchViewSettings) | Settings that change the folder view of a search.
+[Vanara.Windows.Shell.TaskbarButton](https://github.com/dahall/Vanara/search?l=C%23&q=TaskbarButton) | Provides access to the functionality of the taskbar button.
+[Vanara.Windows.Shell.TaskbarButtonThumbnail](https://github.com/dahall/Vanara/search?l=C%23&q=TaskbarButtonThumbnail) | 
+[Vanara.Windows.Shell.TaskbarButtonThumbnails](https://github.com/dahall/Vanara/search?l=C%23&q=TaskbarButtonThumbnails) | The list of thumbnails to be displayed on the taskbar button.
 [Vanara.Windows.Shell.TaskbarList](https://github.com/dahall/Vanara/search?l=C%23&q=TaskbarList) | Methods that control the Windows taskbar. It allows you to dynamically add, remove, and activate items on the taskbar. This wraps all of the ITaskbarListX interfaces.
+[Vanara.Windows.Shell.ThumbnailToolbar](https://github.com/dahall/Vanara/search?l=C%23&q=ThumbnailToolbar) | The toolbar associated with thumbnails shown when hovering over an application's taskbar button.
+[Vanara.Windows.Shell.ThumbnailToolbarButton](https://github.com/dahall/Vanara/search?l=C%23&q=ThumbnailToolbarButton) | A button in the toolbar associated with thumbnails displayed on a taskbar button.
+[Vanara.Windows.Shell.ThumbnailToolbarButtonCollection](https://github.com/dahall/Vanara/search?l=C%23&q=ThumbnailToolbarButtonCollection) | A collection of thumbnail toolbar buttons.

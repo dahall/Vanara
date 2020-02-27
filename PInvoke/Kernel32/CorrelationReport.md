@@ -1,5 +1,5 @@
 ## Correlation report for kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
-### Methods (99% complete, 1100 of 1103 functions)  
+### Methods (99% complete, 1107 of 1110 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](http://msdn2.microsoft.com/en-us/library/ms681930) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  
@@ -366,6 +366,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetErrorMode](http://msdn2.microsoft.com/en-us/library/ms679355) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetErrorMode](https://github.com/dahall/Vanara/search?l=C%23&q=GetErrorMode)  
 [GetExitCodeProcess](http://msdn2.microsoft.com/en-us/library/ms683189) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetExitCodeProcess](https://github.com/dahall/Vanara/search?l=C%23&q=GetExitCodeProcess)  
 [GetExitCodeThread](http://msdn2.microsoft.com/en-us/library/ms683190) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetExitCodeThread](https://github.com/dahall/Vanara/search?l=C%23&q=GetExitCodeThread)  
+[GetExpandedName](http://msdn2.microsoft.com/en-us/library/aa364941) | kernel32.dll | LzExpand.h | [Vanara.PInvoke.Kernel32.GetExpandedName](https://github.com/dahall/Vanara/search?l=C%23&q=GetExpandedName)  
 [GetFileAttributes](http://msdn2.microsoft.com/en-us/library/aa364944) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetFileAttributes](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileAttributes)  
 [GetFileAttributesEx](http://msdn2.microsoft.com/en-us/library/aa364946) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetFileAttributesEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileAttributesEx)  
 [GetFileAttributesTransacted](http://msdn2.microsoft.com/en-us/library/dd1435da-93e5-440a-913a-9e40e39b4a01) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.GetFileAttributesTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileAttributesTransacted)  
@@ -685,6 +686,12 @@ Native Method | Native DLL | Header | Managed Method
 [lstrcmpi](https://www.google.com/search?num=5&q=lstrcmpi+site%3Amicrosoft.com) | kernelbase.dll | winbase.h | [Vanara.PInvoke.Kernel32.lstrcmpi](https://github.com/dahall/Vanara/search?l=C%23&q=lstrcmpi)  
 [lstrcpyn](https://www.google.com/search?num=5&q=lstrcpyn+site%3Amicrosoft.com) | kernelbase.dll | winbase.h | [Vanara.PInvoke.Kernel32.lstrcpyn](https://github.com/dahall/Vanara/search?l=C%23&q=lstrcpyn)  
 [lstrlen](https://www.google.com/search?num=5&q=lstrlen+site%3Amicrosoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.lstrlen](https://github.com/dahall/Vanara/search?l=C%23&q=lstrlen)  
+[LZClose](http://msdn2.microsoft.com/en-us/library/aa365221) | kernel32.dll | LzExpand.h | [Vanara.PInvoke.Kernel32.LZClose](https://github.com/dahall/Vanara/search?l=C%23&q=LZClose)  
+[LZCopy](http://msdn2.microsoft.com/en-us/library/aa365223) | kernel32.dll | LzExpand.h | [Vanara.PInvoke.Kernel32.LZCopy](https://github.com/dahall/Vanara/search?l=C%23&q=LZCopy)  
+[LZInit](http://msdn2.microsoft.com/en-us/library/aa365224) | kernel32.dll | LzExpand.h | [Vanara.PInvoke.Kernel32.LZInit](https://github.com/dahall/Vanara/search?l=C%23&q=LZInit)  
+[LZOpenFile](http://msdn2.microsoft.com/en-us/library/aa365225) | kernel32.dll | LzExpand.h | [Vanara.PInvoke.Kernel32.LZOpenFile](https://github.com/dahall/Vanara/search?l=C%23&q=LZOpenFile)  
+[LZRead](http://msdn2.microsoft.com/en-us/library/aa365226) | kernel32.dll | LzExpand.h | [Vanara.PInvoke.Kernel32.LZRead](https://github.com/dahall/Vanara/search?l=C%23&q=LZRead)  
+[LZSeek](http://msdn2.microsoft.com/en-us/library/aa365227) | kernel32.dll | LzExpand.h | [Vanara.PInvoke.Kernel32.LZSeek](https://github.com/dahall/Vanara/search?l=C%23&q=LZSeek)  
 [MapUserPhysicalPages](http://msdn2.microsoft.com/en-us/library/aa366753) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.MapUserPhysicalPages](https://github.com/dahall/Vanara/search?l=C%23&q=MapUserPhysicalPages)  
 [MapUserPhysicalPagesScatter](http://msdn2.microsoft.com/en-us/library/aa366755) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.MapUserPhysicalPagesScatter](https://github.com/dahall/Vanara/search?l=C%23&q=MapUserPhysicalPagesScatter)  
 [MapViewOfFile](http://msdn2.microsoft.com/en-us/library/aa366761) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.MapViewOfFile](https://github.com/dahall/Vanara/search?l=C%23&q=MapViewOfFile)  
