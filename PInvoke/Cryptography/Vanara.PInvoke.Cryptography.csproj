@@ -50,19 +50,7 @@ BCRYPT_ALG_HANDLE, BCRYPT_ALGORITHM_IDENTIFIER, BCRYPT_HANDLE, BCRYPT_HASH_HANDL
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\..\docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
