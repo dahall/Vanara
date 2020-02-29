@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ArgumentNull_Buffer" xml:space="preserve">
+    <value>Le tampon ne peut pas être null.</value>
+  </data>
+  <data name="ArgumentOutOfRange_AddressSpace" xml:space="preserve">
+    <value>Le nombre d'octets ne peut pas dépasser l'espace d'adressage virtuel sur un ordinateur 32 bits.</value>
+  </data>
+  <data name="ArgumentOutOfRange_NeedNonNegNum" xml:space="preserve">
+    <value>Nombre non négatif requis.</value>
+  </data>
+  <data name="ArgumentOutOfRange_PositionLessThanCapacityRequired" xml:space="preserve">
+    <value>La position ne peut pas être supérieure ou égale à la capacité de l'accesseur.</value>
+  </data>
+  <data name="ArgumentOutOfRange_UIntPtrMax-1" xml:space="preserve">
+    <value>La longueur de la mémoire tampon doit être inférieure à la valeur maximale UIntPtr pour votre plateforme.</value>
+  </data>
+  <data name="Argument_InvalidOffLen" xml:space="preserve">
+    <value>Offset et length étaient hors limites pour ce tableau, ou bien le nombre est supérieur au nombre d'éléments de l'index à la fin de la collection source.</value>
+  </data>
+  <data name="Argument_NotEnoughBytesToRead" xml:space="preserve">
+    <value>Il ne reste pas suffisamment d'octets dans l'accesseur pour lire à cette position.</value>
+  </data>
+  <data name="Argument_NotEnoughBytesToWrite" xml:space="preserve">
+    <value>Il ne reste pas suffisamment d'octets dans l'accesseur pour écrire à cette position.</value>
+  </data>
+  <data name="Argument_OffsetAndCapacityOutOfBounds" xml:space="preserve">
+    <value>L'offset et la capacité étaient supérieurs à la taille de la vue.</value>
+  </data>
+  <data name="Argument_OffsetAndLengthOutOfBounds" xml:space="preserve">
+    <value>Offset et length étaient hors limites pour ce tableau, ou bien le nombre est supérieur au nombre d'éléments de l'index à la fin de la collection source.</value>
+  </data>
+  <data name="Argument_UnmanagedMemAccessorWrapAround" xml:space="preserve">
+    <value>La capacité et l'offset UnmanagedMemoryAccessor seraient renvoyés à la ligne à l'extrémité supérieure de l'espace d'adressage.</value>
+  </data>
+  <data name="Arg_BufferTooSmall" xml:space="preserve">
+    <value>Espace disponible insuffisant dans la mémoire tampon.</value>
+  </data>
+  <data name="InvalidOperation_CalledTwice" xml:space="preserve">
+    <value>Impossible d'appeler deux fois la méthode sur la même instance.</value>
+  </data>
+  <data name="InvalidOperation_MustCallInitialize" xml:space="preserve">
+    <value>Vous devez appeler Initialize dans l'instance de cet objet avant de l'utiliser.</value>
+  </data>
+  <data name="NotSupported_Reading" xml:space="preserve">
+    <value>L'accesseur ne prend pas en charge la lecture.</value>
+  </data>
+  <data name="NotSupported_Writing" xml:space="preserve">
+    <value>L'accesseur ne prend pas en charge l'écriture.</value>
+  </data>
+  <data name="ObjectDisposed_ViewAccessorClosed" xml:space="preserve">
+    <value>Impossible d'accéder à un accesseur fermé.</value>
+  </data>
+</root>
