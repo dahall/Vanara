@@ -71,9 +71,9 @@ IOleCommandTarget, IShellWindows, IObjectArray, IObjectCollection, DFConstraint,
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\ShlwApi\Vanara.PInvoke.ShlwApi.csproj" />
   </ItemGroup>
-  <ItemGroup>
+  <!--<ItemGroup>
     <Reference Include="CustomMarshalers" />
-  </ItemGroup>
+  </ItemGroup>-->
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
