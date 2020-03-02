@@ -484,7 +484,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint dwForwardIfIndex;
 
+			/// <summary/>
 			public MIB_IPFORWARD_TYPE dwForwardType;
+
+			/// <summary/>
 			public MIB_IPFORWARD_PROTO dwForwardProto;
 
 			/// <summary>

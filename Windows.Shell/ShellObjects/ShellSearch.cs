@@ -20,6 +20,12 @@ namespace Vanara.Windows.Shell
 
 		static ShellSearch() => catMgr = mgr.GetCatalog(systemCatalog);
 
+		/// <summary>Gets search results for a supplied condition against a list of folders.</summary>
+		/// <param name="condition">The search condition.</param>
+		/// <param name="displayName">The display name for the search folder.</param>
+		/// <param name="searchFolders">The folders in which to perform the search.</param>
+		/// <param name="settings">Optional settings for the output view.</param>
+		/// <returns>A <see cref="ShellItem"/> which contains the search results.</returns>
 		public static ShellItem GetSearchResults(SearchCondition condition, string displayName, IEnumerable<ShellFolder> searchFolders, ShellSearchViewSettings settings = null)
 		{
 			using var cfactory = ComReleaserFactory.Create(new ISearchFolderItemFactory());
@@ -27,6 +33,12 @@ namespace Vanara.Windows.Shell
 			return GetSearchResults(cfactory.Item, condition, displayName, settings);
 		}
 
+		/// <summary>Gets search results for a supplied condition against a list of folders.</summary>
+		/// <param name="condition">The search condition.</param>
+		/// <param name="displayName">The display name for the search folder.</param>
+		/// <param name="searchFolders">The folder paths in which to perform the search.</param>
+		/// <param name="settings">Optional settings for the output view.</param>
+		/// <returns>A <see cref="ShellItem"/> which contains the search results.</returns>
 		public static ShellItem GetSearchResults(SearchCondition condition, string displayName, IEnumerable<string> searchFolders, ShellSearchViewSettings settings = null)
 		{
 			using var cfactory = ComReleaserFactory.Create(new ISearchFolderItemFactory());

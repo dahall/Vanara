@@ -7,6 +7,7 @@ using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Functions, structures, constants and interfaces from wintrust.dll.</summary>
 	public static partial class WinTrust
 	{
 		/// <summary>Confidence values.</summary>
@@ -68,6 +69,7 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum WT_TRUSTDBDIALOG
 		{
+			/// <summary/>
 			WT_TRUSTDBDIALOG_NO_UI_FLAG = 0x00000001,
 
 			/// <summary>
@@ -76,7 +78,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			WT_TRUSTDBDIALOG_ONLY_PUB_TAB_FLAG = 0x00000002,
 
+			/// <summary/>
 			WT_TRUSTDBDIALOG_WRITE_LEGACY_REG_FLAG = 0x00000100,
+
+			/// <summary/>
 			WT_TRUSTDBDIALOG_WRITE_IEAK_STORE_FLAG = 0x00000200,
 		}
 
@@ -2396,7 +2401,7 @@ namespace Vanara.PInvoke
 			/// <summary>Specifies the union member to be used and, thus, the type of object for which trust will be verified.</summary>
 			private WTD_CHOICE _dwUnionChoice;
 
-			/// <summary>Pointer to the structure specified by <see cref="dwUnionChoice"/>.</summary>
+			/// <summary>Pointer to the structure specified by <see cref="_dwUnionChoice"/>.</summary>
 			private IntPtr _pInfoStruct;
 
 			/// <summary>Specifies the action to be taken.</summary>

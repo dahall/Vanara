@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Functions, structures and constants from powrprof.dll.</summary>
 	public static partial class PowrProf
 	{
 		/// <summary>Indicates power level information.</summary>

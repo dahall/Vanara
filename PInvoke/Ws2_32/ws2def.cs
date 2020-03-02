@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -61,8 +62,8 @@ namespace Vanara.PInvoke
 			AI_RETURN_PREFERRED_NAMES = 0x010000,
 
 			/// <summary>
-			/// If a flat name (single label) is specified, GetAddrInfoW will return the fully qualified domain name that the name eventually
-			/// resolved to. The fully qualified domain name is returned in the ai_canonname member.
+			/// If a flat name (single label) is specified, GetAddrInfoW will return the fully qualified domain name that the name
+			/// eventually resolved to. The fully qualified domain name is returned in the ai_canonname member.
 			/// <para>
 			/// This is different than AI_CANONNAME bit flag that returns the canonical name registered in DNS which may be different than
 			/// the fully qualified domain name that the flat name resolved to.
@@ -95,6 +96,35 @@ namespace Vanara.PInvoke
 			AI_RESOLUTION_HANDLE = 0x40000000,
 		}
 
+		/// <summary>The scope of the IPv6 transport address.</summary>
+		[PInvokeData("ws2def.h")]
+		public enum SCOPE_LEVEL
+		{
+			/// <summary>The transport address has interface-local scope.</summary>
+			ScopeLevelInterface = 1,
+
+			/// <summary>The transport address has link-local scope.</summary>
+			ScopeLevelLink = 2,
+
+			/// <summary>The transport address has subnet-local scope.</summary>
+			ScopeLevelSubnet = 3,
+
+			/// <summary>The transport address has admin-local scope.</summary>
+			ScopeLevelAdmin = 4,
+
+			/// <summary>The transport address has site-local scope.</summary>
+			ScopeLevelSite = 5,
+
+			/// <summary>The transport address has organization-local scope.</summary>
+			ScopeLevelOrganization = 8,
+
+			/// <summary>The transport address has global scope.</summary>
+			ScopeLevelGlobal = 14,
+
+			/// <summary>The scope level count.</summary>
+			ScopeLevelCount = 16
+		}
+
 		/// <summary>The <c>addrinfoW</c> structure is used by the GetAddrInfoW function to hold host address information.</summary>
 		/// <remarks>
 		/// <para>The <c>addrinfoW</c> structure is used by the Unicode GetAddrInfoW function to hold host address information.</para>
@@ -108,12 +138,12 @@ namespace Vanara.PInvoke
 		/// is defined to getaddrinfo, the ANSI version of this function.
 		/// </para>
 		/// <para>
-		/// Upon a successful call to GetAddrInfoW, a linked list of ADDRINFOW structures is returned in the ppResult parameter passed to the
-		/// <c>GetAddrInfoW</c> function. The list can be processed by following the pointer provided in the <c>ai_next</c> member of each
-		/// returned <c>ADDRINFOW</c> structure until a <c>NULL</c> pointer is encountered. In each returned <c>ADDRINFOW</c> structure, the
-		/// <c>ai_family</c>, <c>ai_socktype</c>, and <c>ai_protocol</c> members correspond to respective arguments in a socket or WSASocket
-		/// function call. Also, the <c>ai_addr</c> member in each returned <c>ADDRINFOW</c> structure points to a filled-in socket address
-		/// structure, the length of which is specified in its <c>ai_addrlen</c> member.
+		/// Upon a successful call to GetAddrInfoW, a linked list of ADDRINFOW structures is returned in the ppResult parameter passed to
+		/// the <c>GetAddrInfoW</c> function. The list can be processed by following the pointer provided in the <c>ai_next</c> member of
+		/// each returned <c>ADDRINFOW</c> structure until a <c>NULL</c> pointer is encountered. In each returned <c>ADDRINFOW</c>
+		/// structure, the <c>ai_family</c>, <c>ai_socktype</c>, and <c>ai_protocol</c> members correspond to respective arguments in a
+		/// socket or WSASocket function call. Also, the <c>ai_addr</c> member in each returned <c>ADDRINFOW</c> structure points to a
+		/// filled-in socket address structure, the length of which is specified in its <c>ai_addrlen</c> member.
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>The following code example shows how to use the <c>addrinfoW</c> structure.</para>
@@ -193,11 +223,12 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>AI_FQDN 0x00020000</term>
 			/// <term>
-			/// If a flat name (single label) is specified, GetAddrInfoW will return the fully qualified domain name that the name eventually
-			/// resolved to. The fully qualified domain name is returned in the ai_canonname member. This is different than AI_CANONNAME bit
-			/// flag that returns the canonical name registered in DNS which may be different than the fully qualified domain name that the
-			/// flat name resolved to. Only one of the AI_FQDN and AI_CANONNAME bits can be set. The GetAddrInfoW function will fail if both
-			/// flags are present with EAI_BADFLAGS. This option is supported on Windows 7, Windows Server 2008 R2, and later.
+			/// If a flat name (single label) is specified, GetAddrInfoW will return the fully qualified domain name that the name
+			/// eventually resolved to. The fully qualified domain name is returned in the ai_canonname member. This is different than
+			/// AI_CANONNAME bit flag that returns the canonical name registered in DNS which may be different than the fully qualified
+			/// domain name that the flat name resolved to. Only one of the AI_FQDN and AI_CANONNAME bits can be set. The GetAddrInfoW
+			/// function will fail if both flags are present with EAI_BADFLAGS. This option is supported on Windows 7, Windows Server 2008
+			/// R2, and later.
 			/// </term>
 			/// </item>
 			/// <item>
@@ -302,8 +333,8 @@ namespace Vanara.PInvoke
 			/// <term>SOCK_RAW 3</term>
 			/// <term>
 			/// Provides a raw socket that allows an application to manipulate the next upper-layer protocol header. To manipulate the IPv4
-			/// header, the IP_HDRINCL socket option must be set on the socket. To manipulate the IPv6 header, the IPV6_HDRINCL socket option
-			/// must be set on the socket.
+			/// header, the IP_HDRINCL socket option must be set on the socket. To manipulate the IPv6 header, the IPV6_HDRINCL socket
+			/// option must be set on the socket.
 			/// </term>
 			/// </item>
 			/// <item>
@@ -322,8 +353,8 @@ namespace Vanara.PInvoke
 			/// In Windows Sockets 2, new socket types were introduced. An application can dynamically discover the attributes of each
 			/// available transport protocol through the WSAEnumProtocols function. So an application can determine the possible socket type
 			/// and protocol options for an address family and use this information when specifying this parameter. Socket type definitions
-			/// in the Winsock2.h and Ws2def.h header files will be periodically updated as new socket types, address families, and protocols
-			/// are defined.
+			/// in the Winsock2.h and Ws2def.h header files will be periodically updated as new socket types, address families, and
+			/// protocols are defined.
 			/// </para>
 			/// <para>In Windows Sockets 1.1, the only possible socket types are <c>SOCK_DATAGRAM</c> and <c>SOCK_STREAM</c>.</para>
 			/// </summary>
@@ -332,13 +363,13 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
 			/// <para>
-			/// The protocol type. The possible options are specific to the address family and socket type specified. Possible values for the
-			/// <c>ai_protocol</c> are defined in Winsock2.h and the Wsrm.h header files.
+			/// The protocol type. The possible options are specific to the address family and socket type specified. Possible values for
+			/// the <c>ai_protocol</c> are defined in Winsock2.h and the Wsrm.h header files.
 			/// </para>
 			/// <para>
-			/// On the Windows SDK released for Windows Vista and later,, the organization of header files has changed and this member can be
-			/// one of the values from the <c>IPPROTO</c> enumeration type defined in the Ws2def.h header file. Note that the Ws2def.h header
-			/// file is automatically included in Winsock2.h, and should never be used directly.
+			/// On the Windows SDK released for Windows Vista and later,, the organization of header files has changed and this member can
+			/// be one of the values from the <c>IPPROTO</c> enumeration type defined in the Ws2def.h header file. Note that the Ws2def.h
+			/// header file is automatically included in Winsock2.h, and should never be used directly.
 			/// </para>
 			/// <para>
 			/// If a value of 0 is specified for <c>ai_protocol</c>, the caller does not wish to specify a protocol and the service provider
@@ -401,8 +432,8 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>Type: <c>struct addrinfoW*</c></para>
 			/// <para>
-			/// A pointer to the next structure in a linked list. This parameter is set to <c>NULL</c> in the last <c>addrinfoW</c> structure
-			/// of a linked list.
+			/// A pointer to the next structure in a linked list. This parameter is set to <c>NULL</c> in the last <c>addrinfoW</c>
+			/// structure of a linked list.
 			/// </para>
 			/// </summary>
 			public IntPtr ai_next;
@@ -416,6 +447,62 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public SOCKADDR addr => new SOCKADDR(ai_addr, false, ai_addrlen);
+		}
+
+		/// <summary>The scope identifier for the IPv6 transport address.</summary>
+		[PInvokeData("ws2def.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SCOPE_ID
+		{
+			/// <summary>A ULONG representation of the IPv6 scope identifier.</summary>
+			public uint Value;
+
+			/// <summary>
+			/// <para>
+			/// The zone index that identifies the zone to which the transport address pertains. Zones of the different scopes are
+			/// instantiated as follows:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>Each interface on a node comprises a single zone of interface-local scope.</item>
+			/// <item>Each link, and the interfaces attached to that link, comprise a single zone of link-local scope.</item>
+			/// <item>There is a single zone of global scope that comprises all of the links and interfaces in the Internet.</item>
+			/// <item>The boundaries of zones of scope other than interface-local, link-local, and global are defined by network administrators.</item>
+			/// </list>
+			/// <para>A value of zero specifies the default zone.</para>
+			/// </summary>
+			/// <value>The zone index.</value>
+			public uint Zone
+			{
+				get => BitHelper.GetBits(Value, 0, 28);
+				set => BitHelper.SetBits(ref Value, 0, 28, value);
+			}
+
+			/// <summary>
+			/// <para>
+			/// The scope of the IPv6 transport address. This scope must be the same as the IPv6 scope value that is embedded in the IPv6
+			/// transport address. This member can be one of the following:
+			/// </para>
+			/// <para><strong>ScopeLevelInterface</strong></para>
+			/// <para>The transport address has interface-local scope.</para>
+			/// <para><strong>ScopeLevelLink</strong></para>
+			/// <para>The transport address has link-local scope.</para>
+			/// <para><strong>ScopeLevelSubnet</strong></para>
+			/// <para>The transport address has subnet-local scope.</para>
+			/// <para><strong>ScopeLevelAdmin</strong></para>
+			/// <para>The transport address has admin-local scope.</para>
+			/// <para><strong>ScopeLevelSite</strong></para>
+			/// <para>The transport address has site-local scope.</para>
+			/// <para><strong>ScopeLevelOrganization</strong></para>
+			/// <para>The transport address has organization-local scope.</para>
+			/// <para><strong>ScopeLevelGlobal</strong></para>
+			/// <para>The transport address has global scope.</para>
+			/// </summary>
+			/// <value>The level.</value>
+			public byte Level
+			{
+				get => (byte)BitHelper.GetBits(Value, 28, 4);
+				set => BitHelper.SetBits(ref Value, 28, 4, value);
+			}
 		}
 
 		/// <summary>The SOCKADDR_STORAGE structure is a generic structure that specifies a transport address.</summary>

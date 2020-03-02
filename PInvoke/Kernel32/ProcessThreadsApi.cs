@@ -670,23 +670,139 @@ namespace Vanara.PInvoke
 			PROCESS_POWER_THROTTLING_EXECUTION_SPEED = 1
 		}
 
+		/// <summary>
+		/// <para>The Microsoft Windows security model enables you to control access to process objects. For more information about security, see Access-Control Model.</para>
+		/// <para>When a user logs in, the system collects a set of data that uniquely identifies the user during the authentication process, and stores it in an access token. This access token describes the security context of all processes associated with the user. The security context of a process is the set of credentials given to the process or the user account that created the process.</para>
+		/// <para>You can use a token to specify the current security context for a process using the <c>CreateProcessWithTokenW</c> function. You can specify a security descriptor for a process when you call the <c>CreateProcess</c>, <c>CreateProcessAsUser</c>, or <c>CreateProcessWithLogonW</c> function. If you specify <c>NULL</c>, the process gets a default security descriptor. The ACLs in the default security descriptor for a process come from the primary or impersonation token of the creator.</para>
+		/// <para>To retrieve a process's security descriptor, call the <c>GetSecurityInfo</c> function. To change a process's security descriptor, call the <c>SetSecurityInfo</c> function.</para>
+		/// <para>The valid access rights for process objects include the standard access rights and some process-specific access rights. The following table lists the standard access rights used by all objects.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DELETE (0x00010000L)</term>
+		/// <term>Required to delete the object.</term>
+		/// </item>
+		/// <item>
+		/// <term>READ_CONTROL (0x00020000L)</term>
+		/// <term>Required to read information in the security descriptor for the object, not including the information in the SACL. To read or write the SACL, you must request the ACCESS_SYSTEM_SECURITY access right. For more information, see SACL Access Right.</term>
+		/// </item>
+		/// <item>
+		/// <term>SYNCHRONIZE (0x00100000L)</term>
+		/// <term>The right to use the object for synchronization. This enables a thread to wait until the object is in the signaled state.</term>
+		/// </item>
+		/// <item>
+		/// <term>WRITE_DAC (0x00040000L)</term>
+		/// <term>Required to modify the DACL in the security descriptor for the object.</term>
+		/// </item>
+		/// <item>
+		/// <term>WRITE_OWNER (0x00080000L)</term>
+		/// <term>Required to change the owner in the security descriptor for the object.</term>
+		/// </item>
+		/// </list>
+		/// <para>The following table lists the process-specific access rights.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PROCESS_ALL_ACCESS</term>
+		/// <term>All possible access rights for a process object.Windows Server 2003 and Windows XP: The size of the PROCESS_ALL_ACCESS flag increased on Windows Server 2008 and Windows Vista. If an application compiled for Windows Server 2008 and Windows Vista is run on Windows Server 2003 or Windows XP, the PROCESS_ALL_ACCESS flag is too large and the function specifying this flag fails with ERROR_ACCESS_DENIED. To avoid this problem, specify the minimum set of access rights required for the operation. If PROCESS_ALL_ACCESS must be used, set _WIN32_WINNT to the minimum operating system targeted by your application (for example, ). For more information, see Using the Windows Headers.</term>
+		/// </item>
+		/// <item>
+		/// <term>PROCESS_CREATE_PROCESS (0x0080)</term>
+		/// <term>Required to create a process.</term>
+		/// </item>
+		/// <item>
+		/// <term>PROCESS_CREATE_THREAD (0x0002)</term>
+		/// <term>Required to create a thread.</term>
+		/// </item>
+		/// <item>
+		/// <term>PROCESS_DUP_HANDLE (0x0040)</term>
+		/// <term>Required to duplicate a handle using DuplicateHandle.</term>
+		/// </item>
+		/// <item>
+		/// <term>PROCESS_QUERY_INFORMATION (0x0400)</term>
+		/// <term>Required to retrieve certain information about a process, such as its token, exit code, and priority class (see OpenProcessToken).</term>
+		/// </item>
+		/// <item>
+		/// <term>PROCESS_QUERY_LIMITED_INFORMATION (0x1000)</term>
+		/// <term>Required to retrieve certain information about a process (see GetExitCodeProcess, GetPriorityClass, IsProcessInJob, QueryFullProcessImageName). A handle that has the PROCESS_QUERY_INFORMATION access right is automatically granted PROCESS_QUERY_LIMITED_INFORMATION.Windows Server 2003 and Windows XP: This access right is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>PROCESS_SET_INFORMATION (0x0200)</term>
+		/// <term>Required to set certain information about a process, such as its priority class (see SetPriorityClass).</term>
+		/// </item>
+		/// <item>
+		/// <term>PROCESS_SET_QUOTA (0x0100)</term>
+		/// <term>Required to set memory limits using SetProcessWorkingSetSize.</term>
+		/// </item>
+		/// <item>
+		/// <term>PROCESS_SUSPEND_RESUME (0x0800)</term>
+		/// <term>Required to suspend or resume a process.</term>
+		/// </item>
+		/// <item>
+		/// <term>PROCESS_TERMINATE (0x0001)</term>
+		/// <term>Required to terminate a process using TerminateProcess.</term>
+		/// </item>
+		/// <item>
+		/// <term>PROCESS_VM_OPERATION (0x0008)</term>
+		/// <term>Required to perform an operation on the address space of a process (see VirtualProtectEx and WriteProcessMemory).</term>
+		/// </item>
+		/// <item>
+		/// <term>PROCESS_VM_READ (0x0010)</term>
+		/// <term>Required to read memory in a process using ReadProcessMemory.</term>
+		/// </item>
+		/// <item>
+		/// <term>PROCESS_VM_WRITE (0x0020)</term>
+		/// <term>Required to write to memory in a process using WriteProcessMemory.</term>
+		/// </item>
+		/// <item>
+		/// <term>SYNCHRONIZE (0x00100000L)</term>
+		/// <term>Required to wait for the process to terminate using the wait functions.</term>
+		/// </item>
+		/// </list>
+		/// <para>To open a handle to another process and obtain full access rights, you must enable the <c>SeDebugPrivilege</c> privilege. For more information, see Changing Privileges in a Token.</para>
+		/// <para>The handle returned by the <c>CreateProcess</c> function has <c>PROCESS_ALL_ACCESS</c> access to the process object. When you call the <c>OpenProcess</c> function, the system checks the requested access rights against the DACL in the process's security descriptor. When you call the <c>GetCurrentProcess</c> function, the system returns a pseudohandle with the maximum access that the DACL allows to the caller.</para>
+		/// <para>You can request the <c>ACCESS_SYSTEM_SECURITY</c> access right to a process object if you want to read or write the object's SACL. For more information, see Access-Control Lists (ACLs) and SACL Access Right.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/procthread/process-security-and-access-rights
+		[PInvokeData("ntpsapi.h", MSDNShortId = "508a17c4-88cd-431a-a102-00180a7f7ab5")]
 		[Flags]
 		public enum ProcessAccess : uint
 		{
+			/// <summary>Required to terminate a process using TerminateProcess.</summary>
 			PROCESS_TERMINATE = 0x0001,
+			/// <summary>Required to create a thread.</summary>
 			PROCESS_CREATE_THREAD = 0x0002,
+			/// <summary/>
 			PROCESS_SET_SESSIONID = 0x0004,
+			/// <summary>Required to perform an operation on the address space of a process (see VirtualProtectEx and WriteProcessMemory).</summary>
 			PROCESS_VM_OPERATION = 0x0008,
+			/// <summary>Required to read memory in a process using ReadProcessMemory.</summary>
 			PROCESS_VM_READ = 0x0010,
+			/// <summary>Required to write to memory in a process using WriteProcessMemory.</summary>
 			PROCESS_VM_WRITE = 0x0020,
+			/// <summary>Required to duplicate a handle using DuplicateHandle.</summary>
 			PROCESS_DUP_HANDLE = 0x0040,
+			/// <summary>Required to create a process.</summary>
 			PROCESS_CREATE_PROCESS = 0x0080,
+			/// <summary>Required to set memory limits using SetProcessWorkingSetSize.</summary>
 			PROCESS_SET_QUOTA = 0x0100,
+			/// <summary>Required to set certain information about a process, such as its priority class (see SetPriorityClass).</summary>
 			PROCESS_SET_INFORMATION = 0x0200,
+			/// <summary>Required to retrieve certain information about a process, such as its token, exit code, and priority class (see OpenProcessToken).</summary>
 			PROCESS_QUERY_INFORMATION = 0x0400,
+			/// <summary>Required to suspend or resume a process.</summary>
 			PROCESS_SUSPEND_RESUME = 0x0800,
+			/// <summary>Required to retrieve certain information about a process (see GetExitCodeProcess, GetPriorityClass, IsProcessInJob, QueryFullProcessImageName). A handle that has the PROCESS_QUERY_INFORMATION access right is automatically granted PROCESS_QUERY_LIMITED_INFORMATION.Windows Server 2003 and Windows XP: This access right is not supported.</summary>
 			PROCESS_QUERY_LIMITED_INFORMATION = 0x1000,
+			/// <summary/>
 			PROCESS_SET_LIMITED_INFORMATION = 0x2000,
+			/// <summary>All possible access rights for a process object.Windows Server 2003 and Windows XP: The size of the PROCESS_ALL_ACCESS flag increased on Windows Server 2008 and Windows Vista. If an application compiled for Windows Server 2008 and Windows Vista is run on Windows Server 2003 or Windows XP, the PROCESS_ALL_ACCESS flag is too large and the function specifying this flag fails with ERROR_ACCESS_DENIED. To avoid this problem, specify the minimum set of access rights required for the operation. If PROCESS_ALL_ACCESS must be used, set _WIN32_WINNT to the minimum operating system targeted by your application (for example, ). For more information, see Using the Windows Headers.</summary>
 			PROCESS_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | ACCESS_MASK.SYNCHRONIZE | 0xFFFF,
 		}
 
@@ -1036,21 +1152,129 @@ namespace Vanara.PInvoke
 			THREAD_MODE_BACKGROUND_END = 0x00020000,
 		}
 
+		/// <summary>
+		/// <para>Microsoft Windows enables you to control access to thread objects. For more information about security, see Access-Control Model.</para>
+		/// <para>You can specify a security descriptor for a thread when you call the <c>CreateProcess</c>, <c>CreateProcessAsUser</c>, <c>CreateProcessWithLogonW</c>, <c>CreateThread</c>, or <c>CreateRemoteThread</c> function. If you specify <c>NULL</c>, the thread gets a default security descriptor. The ACLs in the default security descriptor for a thread come from the primary or impersonation token of the creator.</para>
+		/// <para>To retrieve a thread's security descriptor, call the <c>GetSecurityInfo</c> function. To change a thread's security descriptor, call the <c>SetSecurityInfo</c> function.</para>
+		/// <para>The handle returned by the <c>CreateThread</c> function has <c>THREAD_ALL_ACCESS</c> access to the thread object. When you call the <c>GetCurrentThread</c> function, the system returns a pseudohandle with the maximum access that the thread's security descriptor allows the caller.</para>
+		/// <para>The valid access rights for thread objects include the standard access rights and some thread-specific access rights. The following table lists the standard access rights used by all objects.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DELETE (0x00010000L)</term>
+		/// <term>Required to delete the object.</term>
+		/// </item>
+		/// <item>
+		/// <term>READ_CONTROL (0x00020000L)</term>
+		/// <term>Required to read information in the security descriptor for the object, not including the information in the SACL. To read or write the SACL, you must request the ACCESS_SYSTEM_SECURITY access right. For more information, see SACL Access Right.</term>
+		/// </item>
+		/// <item>
+		/// <term>SYNCHRONIZE (0x00100000L)</term>
+		/// <term>The right to use the object for synchronization. This enables a thread to wait until the object is in the signaled state.</term>
+		/// </item>
+		/// <item>
+		/// <term>WRITE_DAC (0x00040000L)</term>
+		/// <term>Required to modify the DACL in the security descriptor for the object.</term>
+		/// </item>
+		/// <item>
+		/// <term>WRITE_OWNER (0x00080000L)</term>
+		/// <term>Required to change the owner in the security descriptor for the object.</term>
+		/// </item>
+		/// </list>
+		/// <para>The following table lists the thread-specific access rights.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SYNCHRONIZE (0x00100000L)</term>
+		/// <term>Enables the use of the thread handle in any of the wait functions.</term>
+		/// </item>
+		/// <item>
+		/// <term>THREAD_ALL_ACCESS</term>
+		/// <term>All possible access rights for a thread object.Windows Server 2003 and Windows XP: The value of the THREAD_ALL_ACCESS flag increased on Windows Server 2008 and Windows Vista. If an application compiled for Windows Server 2008 and Windows Vista is run on Windows Server 2003 or Windows XP, the THREAD_ALL_ACCESS flag contains access bits that are not supported and the function specifying this flag fails with ERROR_ACCESS_DENIED. To avoid this problem, specify the minimum set of access rights required for the operation. If THREAD_ALL_ACCESS must be used, set _WIN32_WINNT to the minimum operating system targeted by your application (for example, ). For more information, see Using the Windows Headers.</term>
+		/// </item>
+		/// <item>
+		/// <term>THREAD_DIRECT_IMPERSONATION (0x0200)</term>
+		/// <term>Required for a server thread that impersonates a client.</term>
+		/// </item>
+		/// <item>
+		/// <term>THREAD_GET_CONTEXT (0x0008)</term>
+		/// <term>Required to read the context of a thread using GetThreadContext.</term>
+		/// </item>
+		/// <item>
+		/// <term>THREAD_IMPERSONATE (0x0100)</term>
+		/// <term>Required to use a thread's security information directly without calling it by using a communication mechanism that provides impersonation services.</term>
+		/// </item>
+		/// <item>
+		/// <term>THREAD_QUERY_INFORMATION (0x0040)</term>
+		/// <term>Required to read certain information from the thread object, such as the exit code (see GetExitCodeThread).</term>
+		/// </item>
+		/// <item>
+		/// <term>THREAD_QUERY_LIMITED_INFORMATION (0x0800)</term>
+		/// <term>Required to read certain information from the thread objects (see GetProcessIdOfThread). A handle that has the THREAD_QUERY_INFORMATION access right is automatically granted THREAD_QUERY_LIMITED_INFORMATION.Windows Server 2003 and Windows XP: This access right is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>THREAD_SET_CONTEXT (0x0010)</term>
+		/// <term>Required to write the context of a thread using SetThreadContext.</term>
+		/// </item>
+		/// <item>
+		/// <term>THREAD_SET_INFORMATION (0x0020)</term>
+		/// <term>Required to set certain information in the thread object.</term>
+		/// </item>
+		/// <item>
+		/// <term>THREAD_SET_LIMITED_INFORMATION (0x0400)</term>
+		/// <term>Required to set certain information in the thread object. A handle that has the THREAD_SET_INFORMATION access right is automatically granted THREAD_SET_LIMITED_INFORMATION.Windows Server 2003 and Windows XP: This access right is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>THREAD_SET_THREAD_TOKEN (0x0080)</term>
+		/// <term>Required to set the impersonation token for a thread using SetThreadToken.</term>
+		/// </item>
+		/// <item>
+		/// <term>THREAD_SUSPEND_RESUME (0x0002)</term>
+		/// <term>Required to suspend or resume a thread (see SuspendThread and ResumeThread).</term>
+		/// </item>
+		/// <item>
+		/// <term>THREAD_TERMINATE (0x0001)</term>
+		/// <term>Required to terminate a thread using TerminateThread.</term>
+		/// </item>
+		/// </list>
+		/// <para>You can request the <c>ACCESS_SYSTEM_SECURITY</c> access right to a thread object if you want to read or write the object's SACL. For more information, see Access-Control Lists (ACLs) and SACL Access Right.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/procthread/thread-security-and-access-rights
+		[PInvokeData("", MSDNShortId = "72709446-5c59-4fac-8dc8-7912906ecc85")]
 		[Flags]
 		public enum ThreadAccess : uint
 		{
+			/// <term>Required to terminate a thread using TerminateThread.</term>
 			THREAD_TERMINATE = 0x0001,
+			/// <term>Required to suspend or resume a thread (see SuspendThread and ResumeThread).</term>
 			THREAD_SUSPEND_RESUME = 0x0002,
+			/// <term>Required to read the context of a thread using GetThreadContext.</term>
 			THREAD_GET_CONTEXT = 0x0008,
+			/// <term>Required to write the context of a thread using SetThreadContext.</term>
 			THREAD_SET_CONTEXT = 0x0010,
+			/// <term>Required to read certain information from the thread object, such as the exit code (see GetExitCodeThread).</term>
 			THREAD_QUERY_INFORMATION = 0x0040,
+			/// <term>Required to set certain information in the thread object.</term>
 			THREAD_SET_INFORMATION = 0x0020,
+			/// <term>Required to set the impersonation token for a thread using SetThreadToken.</term>
 			THREAD_SET_THREAD_TOKEN = 0x0080,
+			/// <term>Required to use a thread's security information directly without calling it by using a communication mechanism that provides impersonation services.</term>
 			THREAD_IMPERSONATE = 0x0100,
+			/// <term>Required for a server thread that impersonates a client.</term>
 			THREAD_DIRECT_IMPERSONATION = 0x0200,
+			/// <term>Required to set certain information in the thread object. A handle that has the THREAD_SET_INFORMATION access right is automatically granted THREAD_SET_LIMITED_INFORMATION.Windows Server 2003 and Windows XP: This access right is not supported.</term>
 			THREAD_SET_LIMITED_INFORMATION = 0x0400,
+			/// <term>Required to read certain information from the thread objects (see GetProcessIdOfThread). A handle that has the THREAD_QUERY_INFORMATION access right is automatically granted THREAD_QUERY_LIMITED_INFORMATION.Windows Server 2003 and Windows XP: This access right is not supported.</term>
 			THREAD_QUERY_LIMITED_INFORMATION = 0x0800,
+			/// <term>Required to resume a thread (see ResumeThread).</term>
 			THREAD_RESUME = 0x1000,
+			/// <term>All possible access rights for a thread object.Windows Server 2003 and Windows XP: The value of the THREAD_ALL_ACCESS flag increased on Windows Server 2008 and Windows Vista. If an application compiled for Windows Server 2008 and Windows Vista is run on Windows Server 2003 or Windows XP, the THREAD_ALL_ACCESS flag contains access bits that are not supported and the function specifying this flag fails with ERROR_ACCESS_DENIED. To avoid this problem, specify the minimum set of access rights required for the operation. If THREAD_ALL_ACCESS must be used, set _WIN32_WINNT to the minimum operating system targeted by your application (for example, ). For more information, see Using the Windows Headers.</term>
 			THREAD_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | ACCESS_MASK.SYNCHRONIZE | 0xFFFF
 		}
 
@@ -5560,23 +5784,13 @@ namespace Vanara.PInvoke
 			/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
 			/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
 			/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-			public override bool Equals(object obj)
+			public override bool Equals(object obj) => obj switch
 			{
-				switch (obj)
-				{
-					case PROC_THREAD_ATTRIBUTE pta:
-						return Equals(pta);
-
-					case UIntPtr up:
-						return Equals(up);
-
-					case uint ui:
-						return ui.Equals(this);
-
-					default:
-						return base.Equals(obj);
-				}
-			}
+				PROC_THREAD_ATTRIBUTE pta => Equals(pta),
+				UIntPtr up => Equals(up),
+				uint ui => ui.Equals(this),
+				_ => base.Equals(obj),
+			};
 
 			/// <summary>Returns a hash code for this instance.</summary>
 			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -5590,20 +5804,114 @@ namespace Vanara.PInvoke
 			/// <summary>A type specifier for an attribute.</summary>
 			public enum AttrType : uint
 			{
+				/// <summary>
+				/// The lpValue parameter is a pointer to a handle to a process to use instead of the calling process as the parent for the
+				/// process being created. The process to use must have the PROCESS_CREATE_PROCESS access right.
+				/// <para>
+				/// Attributes inherited from the specified process include handles, the device map, processor affinity, priority, quotas,
+				/// the process token, and job object. (Note that some attributes such as the debug port will come from the creating
+				/// process, not the process specified by this handle.)
+				/// </para>
+				/// </summary>
+				[CorrespondingType(typeof(HPROCESS))]
 				ProcThreadAttributeParentProcess = 0,
+				/// <summary>
+				/// The lpValue parameter is a pointer to a list of handles to be inherited by the child process.
+				/// <para>
+				/// These handles must be created as inheritable handles and must not include pseudo handles such as those returned by the
+				/// GetCurrentProcess or GetCurrentThread function.
+				/// </para>
+				/// <para>
+				/// Note if you use this attribute, pass in a value of TRUE for the bInheritHandles parameter of the CreateProcess function.
+				/// </para>
+				/// </summary>
+				[CorrespondingType(typeof(HANDLE[]))]
 				ProcThreadAttributeHandleList = 2,
+				/// <summary>
+				/// The lpValue parameter is a pointer to a GROUP_AFFINITY structure that specifies the processor group affinity for the new thread.
+				/// <para>Windows Server 2008 and Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.</para>
+				/// </summary>
+				[CorrespondingType(typeof(GROUP_AFFINITY))]
 				ProcThreadAttributeGroupAffinity = 3,
+				/// <summary>
+				/// The lpValue parameter is a pointer to the node number of the preferred NUMA node for the new process.
+				/// <para>Windows Server 2008 and Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.</para>
+				/// </summary>
+				[CorrespondingType(typeof(uint))]
 				ProcThreadAttributePreferredNode = 4,
+				/// <summary>
+				/// The lpValue parameter is a pointer to a PROCESSOR_NUMBER structure that specifies the ideal processor for the new thread.
+				/// <para>Windows Server 2008 and Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.</para>
+				/// </summary>
+				[CorrespondingType(typeof(PROCESSOR_NUMBER))]
 				ProcThreadAttributeIdealProcessor = 5,
+				/// <summary>
+				/// The lpValue parameter is a pointer to a UMS_CREATE_THREAD_ATTRIBUTES structure that specifies a user-mode scheduling
+				/// (UMS) thread context and a UMS completion list to associate with the thread.
+				/// <para>
+				/// After the UMS thread is created, the system queues it to the specified completion list. The UMS thread runs only when an
+				/// application's UMS scheduler retrieves the UMS thread from the completion list and selects it to run. For more
+				/// information, see User-Mode Scheduling.
+				/// </para>
+				/// <para>Windows Server 2008 and Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.</para>
+				/// </summary>
+				[CorrespondingType(typeof(UMS_CREATE_THREAD_ATTRIBUTES))]
 				ProcThreadAttributeUmsThread = 6,
+				/// <summary>
+				/// The lpValue parameter is a pointer to a DWORD or DWORD64 that specifies the exploit mitigation policy for the child
+				/// process. Starting in Windows 10, version 1703, this parameter can also be a pointer to a two-element DWORD64 array.
+				/// <para>
+				/// The specified policy overrides the policies set for the application and the system and cannot be changed after the child
+				/// process starts running.
+				/// </para>
+				/// <para>Windows Server 2008 and Windows Vista: This value is not supported until Windows 7 and Windows Server 2008 R2.</para>
+				/// <para>The DWORD or DWORD64 pointed to by lpValue can be one or more of the values listed in the remarks.</para>
+				/// </summary>
+				[CorrespondingType(typeof(uint))]
+				[CorrespondingType(typeof(uint[]))]
+				[CorrespondingType(typeof(ulong))]
 				ProcThreadAttributeMitigationPolicy = 7,
+				/// <summary>
+				/// The lpValue parameter is a pointer to a SECURITY_CAPABILITIES structure that defines the security capabilities of an app
+				/// container. If this attribute is set the new process will be created as an AppContainer process.
+				/// <para>
+				/// Windows 7, Windows Server 2008 R2, Windows Server 2008 and Windows Vista: This value is not supported until Windows 8
+				/// and Windows Server 2012.
+				/// </para>
+				/// </summary>
+				[CorrespondingType(typeof(SECURITY_CAPABILITIES))]
 				ProcThreadAttributeSecurityCapabilities = 9,
+				/// <summary>
+				/// The lpValue parameter is a pointer to a DWORD value of PROTECTION_LEVEL_SAME. This specifies the protection level of the
+				/// child process to be the same as the protection level of its parent process.
+				/// </summary>
+				[CorrespondingType(typeof(uint))]
 				ProcThreadAttributeProtectionLevel = 11,
+				/// <summary/>
 				ProcThreadAttributeJobList = 13,
+				/// <summary>
+				/// The lpValue parameter is a pointer to a DWORD or DWORD64 value that specifies the child process policy. THe policy
+				/// specifies whether to allow a child process to be created.
+				/// <para>For information on the possible values for the DWORD or DWORD64 to which lpValue points, see Remarks.</para>
+				/// </summary>
+				[CorrespondingType(typeof(uint))]
+				[CorrespondingType(typeof(ulong))]
 				ProcThreadAttributeChildProcessPolicy = 14,
+				/// <summary/>
 				ProcThreadAttributeAllApplicationPackagesPolicy = 15,
+				/// <summary/>
 				ProcThreadAttributeWin32kFilter = 16,
+				/// <summary/>
 				ProcThreadAttributeSafeOpenPromptOriginClaim = 17,
+				/// <summary>
+				/// This attribute is relevant only to win32 applications that have been converted to UWP packages by using the Desktop Bridge.
+				/// <para>
+				/// The lpValue parameter is a pointer to a DWORD value that specifies the desktop app policy. The policy specifies whether
+				/// descendant processes should continue to run in the desktop environment.
+				/// </para>
+				/// <para>For information about the possible values for the DWORD to which lpValue points, see Remarks.</para>
+				/// </summary>
+				[CorrespondingType(typeof(uint))]
 				ProcThreadAttributeDesktopAppPolicy = 18,
 			}
 
@@ -5969,6 +6277,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct PROCESS_POWER_THROTTLING_STATE
 		{
+			/// <summary/>
 			public const uint PROCESS_POWER_THROTTLING_CURRENT_VERSION = 1;
 
 			/// <summary>
@@ -6596,7 +6905,9 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct THREAD_POWER_THROTTLING_STATE
 		{
+			/// <summary/>
 			public const uint THREAD_POWER_THROTTLING_CURRENT_VERSION = 1;
+			/// <summary/>
 			public const uint THREAD_POWER_THROTTLING_EXECUTION_SPEED = 0x1;
 
 			/// <summary>

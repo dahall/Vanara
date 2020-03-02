@@ -94,6 +94,8 @@ namespace Vanara.IO
 			}
 		}
 
+		/// <summary>Gets or sets the full set of HTTP response headers from the server's last HTTP response packet.</summary>
+		/// <value>The response headers.</value>
 		public string ResponseHeaders
 		{
 			get

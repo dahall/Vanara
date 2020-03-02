@@ -1644,6 +1644,7 @@ namespace Vanara.PInvoke
 		/// <param name="PolicyHandle">
 		/// A handle to a Policy object. The required access rights for this handle depend on the value of the InformationClass parameter.
 		/// For more information, see Opening a Policy Object Handle.
+		/// </param>
 		/// <returns>
 		/// The structure containing the requested information.
 		/// </returns>

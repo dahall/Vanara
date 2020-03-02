@@ -6,6 +6,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary/>
 		public const uint UMS_VERSION = 0x0100;
 
 		/// <summary>Flags used by UMS_SYSTEM_THREAD_INFORMATION.</summary>

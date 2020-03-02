@@ -8,8 +8,12 @@ namespace Vanara.PInvoke
 {
 	public static partial class NetApi32
 	{
+		/// <summary>The units per day</summary>
 		public const uint UNITS_PER_DAY = 24;
+
+		/// <summary>The units per week</summary>
 		public const uint UNITS_PER_WEEK = UNITS_PER_DAY * 7;
+
 		private const int ENCRYPTED_PWLEN = 16;
 
 		/// <summary>A bitmask of flags that affect the operation.</summary>

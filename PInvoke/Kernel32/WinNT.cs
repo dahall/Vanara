@@ -8,9 +8,13 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary/>
 		public const uint ACL_REVISION = 2;
+		/// <summary/>
 		public const uint ACL_REVISION_DS = 4;
+		/// <summary/>
 		public const string OUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK_EXPORT_NAME = "OutOfProcessFunctionTableCallback";
+		/// <summary/>
 		public const byte PERFORMANCE_DATA_VERSION = 1;
 
 		/// <summary>Retrieves the function table entries for the functions in the specified region of memory.</summary>
@@ -21,6 +25,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinNT.h")]
 		public delegate IntPtr GetRuntimeFunctionCallback(IntPtr ControlPc, IntPtr Context);
 
+		/// <summary/>
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("WinNT.h")]
 		public delegate uint OutOfProcessFunctionTableCallback(HPROCESS Process, IntPtr TableAddress, out uint Entries, [Out] IMAGE_RUNTIME_FUNCTION_ENTRY[] Functions);
@@ -432,43 +437,84 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CONTEXT
 		{
+			/// <summary/>
 			public uint ContextFlags;
+			
+			/// <summary/>
 			public uint Dr0;
+			
+			/// <summary/>
 			public uint Dr1;
+			
+			/// <summary/>
 			public uint Dr2;
+			
+			/// <summary/>
 			public uint Dr3;
+			
+			/// <summary/>
 			public uint Dr6;
+			
+			/// <summary/>
 			public uint Dr7;
 
 			// Retrieved by CONTEXT_FLOATING_POINT
+			/// <summary/>
 			public FLOATING_SAVE_AREA FloatSave;
 
 			// Retrieved by CONTEXT_SEGMENTS
+			/// <summary/>
 			public uint SegGs;
-
+			
+			/// <summary/>
 			public uint SegFs;
+			
+			/// <summary/>
 			public uint SegEs;
+			
+			/// <summary/>
 			public uint SegDs;
 
 			// Retrieved by CONTEXT_INTEGER
+			/// <summary/>
 			public uint Edi;
-
+		
+			/// <summary/>
 			public uint Esi;
+			
+			/// <summary/>
 			public uint Ebx;
+			
+			/// <summary/>
 			public uint Edx;
+			
+			/// <summary/>
 			public uint Ecx;
+			
+			/// <summary/>
 			public uint Eax;
 
 			// Retrieved by CONTEXT_CONTROL
+			/// <summary/>
 			public uint Ebp;
-
+			
+			/// <summary/>
 			public uint Eip;
+			
+			/// <summary/>
 			public uint SegCs;
+			
+			/// <summary/>
 			public uint EFlags;
+			
+			/// <summary/>
 			public uint Esp;
+			
+			/// <summary/>
 			public uint SegSs;
 
 			// Retrieved by CONTEXT_EXTENDED_REGISTERS
+			/// <summary/>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 512)]
 			public byte[] ExtendedRegisters;
 
@@ -478,14 +524,33 @@ namespace Vanara.PInvoke
 			[StructLayout(LayoutKind.Sequential)]
 			public struct FLOATING_SAVE_AREA
 			{
+
+				/// <summary/>
 				public int ControlWord;
+
+				/// <summary/>
 				public int StatusWord;
+
+				/// <summary/>
 				public int TagWord;
+
+				/// <summary/>
 				public int ErrorOffset;
+
+				/// <summary/>
 				public int ErrorSelector;
+
+				/// <summary/>
 				public int DataOffset;
+
+				/// <summary/>
 				public int DataSelector;
-				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)] public byte[] RegisterArea;
+
+				/// <summary/>
+				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)]
+				public byte[] RegisterArea;
+
+				/// <summary/>
 				public int Cr0NpxState;
 			}
 
@@ -494,95 +559,212 @@ namespace Vanara.PInvoke
 			public CONTEXT(uint flags) : this() { ContextFlags = flags; }
 		}
 
+		/// <summary/>
 		[StructLayout(LayoutKind.Sequential, Pack = 16)]
 		public struct CONTEXT64
 		{
+			/// <summary/>
 			public ulong P1Home;
+
+			/// <summary/>
 			public ulong P2Home;
+
+			/// <summary/>
 			public ulong P3Home;
+
+			/// <summary/>
 			public ulong P4Home;
+
+			/// <summary/>
 			public ulong P5Home;
+
+			/// <summary/>
 			public ulong P6Home;
 
+			/// <summary/>
 			public uint ContextFlags;
+
+			/// <summary/>
 			public uint MxCsr;
 
+			/// <summary/>
 			public ushort SegCs;
+
+			/// <summary/>
 			public ushort SegDs;
+
+			/// <summary/>
 			public ushort SegEs;
+
+			/// <summary/>
 			public ushort SegFs;
+
+			/// <summary/>
 			public ushort SegGs;
+
+			/// <summary/>
 			public ushort SegSs;
+
+			/// <summary/>
 			public uint EFlags;
 
+			/// <summary/>
 			public ulong Dr0;
+
+			/// <summary/>
 			public ulong Dr1;
+
+			/// <summary/>
 			public ulong Dr2;
+
+			/// <summary/>
 			public ulong Dr3;
+
+			/// <summary/>
 			public ulong Dr6;
+
+			/// <summary/>
 			public ulong Dr7;
 
+			/// <summary/>
 			public ulong Rax;
+
+			/// <summary/>
 			public ulong Rcx;
+
+			/// <summary/>
 			public ulong Rdx;
+
+			/// <summary/>
 			public ulong Rbx;
+
+			/// <summary/>
 			public ulong Rsp;
+
+			/// <summary/>
 			public ulong Rbp;
+
+			/// <summary/>
 			public ulong Rsi;
+
+			/// <summary/>
 			public ulong Rdi;
+
+			/// <summary/>
 			public ulong R8;
+
+			/// <summary/>
 			public ulong R9;
+
+			/// <summary/>
 			public ulong R10;
+
+			/// <summary/>
 			public ulong R11;
+
+			/// <summary/>
 			public ulong R12;
+
+			/// <summary/>
 			public ulong R13;
+
+			/// <summary/>
 			public ulong R14;
+
+			/// <summary/>
 			public ulong R15;
+
+			/// <summary/>
 			public ulong Rip;
 
+			/// <summary/>
 			public XSAVE_FORMAT64 DUMMYUNIONNAME;
 
+			/// <summary/>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 26)]
 			public M128A[] VectorRegister;
 
+			/// <summary/>
 			public ulong VectorControl;
 
+			/// <summary/>
 			public ulong DebugControl;
+
+			/// <summary/>
 			public ulong LastBranchToRip;
+
+			/// <summary/>
 			public ulong LastBranchFromRip;
+
+			/// <summary/>
 			public ulong LastExceptionToRip;
+
+			/// <summary/>
 			public ulong LastExceptionFromRip;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct M128A
 			{
+				/// <summary/>
 				public ulong High;
+
+				/// <summary/>
 				public long Low;
 			}
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential, Pack = 16)]
 			public struct XSAVE_FORMAT64
 			{
+				/// <summary/>
 				public ushort ControlWord;
+
+				/// <summary/>
 				public ushort StatusWord;
+
+				/// <summary/>
 				public byte TagWord;
+
+				/// <summary/>
 				public byte Reserved1;
+
+				/// <summary/>
 				public ushort ErrorOpcode;
+
+				/// <summary/>
 				public uint ErrorOffset;
+
+				/// <summary/>
 				public ushort ErrorSelector;
+
+				/// <summary/>
 				public ushort Reserved2;
+
+				/// <summary/>
 				public uint DataOffset;
+
+				/// <summary/>
 				public ushort DataSelector;
+
+				/// <summary/>
 				public ushort Reserved3;
+
+				/// <summary/>
 				public uint MxCsr;
+
+				/// <summary/>
 				public uint MxCsr_Mask;
 
+				/// <summary/>
 				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
 				public M128A[] FloatRegisters;
 
+				/// <summary/>
 				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
 				public M128A[] XmmRegisters;
 
+				/// <summary/>
 				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 96)]
 				public byte[] Reserved4;
 			}
@@ -739,27 +921,46 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		/// <summary/>
 		[PInvokeData("winnt.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct UNWIND_HISTORY_TABLE
 		{
+			/// <summary/>
 			public uint Count;
+
+			/// <summary/>
 			public byte LocalHint;
+
+			/// <summary/>
 			public byte GlobalHint;
+
+			/// <summary/>
 			public byte Search;
+
+			/// <summary/>
 			public byte Once;
+
+			/// <summary/>
 			public ulong LowAddress;
+
+			/// <summary/>
 			public ulong HighAddress;
 
+			/// <summary/>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 12)]
 			public UNWIND_HISTORY_TABLE_ENTRY[] Entry;
 		}
 
+		/// <summary/>
 		[PInvokeData("winnt.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct UNWIND_HISTORY_TABLE_ENTRY
 		{
+			/// <summary/>
 			public ulong ImageBase;
+
+			/// <summary/>
 			public IMAGE_RUNTIME_FUNCTION_ENTRY FunctionEntry;
 		}
 

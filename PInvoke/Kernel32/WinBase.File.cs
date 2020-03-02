@@ -4812,6 +4812,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public GenericReserved_ GenericReserved;
 
+			/// <summary/>
 			public ProtocolSpecific_ ProtocolSpecific;
 
 			/// <summary>
@@ -4827,29 +4828,39 @@ namespace Vanara.PInvoke
 				public uint[] Reserved;
 			}
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential, Size = 64)]
 			public struct ProtocolSpecific_
 			{
+				/// <summary/>
 				public Smb2 Smb2;
 			}
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct Smb2
 			{
+				/// <summary/>
 				public Server Server;
+				/// <summary/>
 				public Share Share;
 			}
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct Server
 			{
+				/// <summary/>
 				public uint Capabilities;
 			}
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct Share
 			{
+				/// <summary/>
 				public uint Capabilities;
+				/// <summary/>
 				public uint CachingFlags;
 			}
 
@@ -5150,6 +5161,7 @@ namespace Vanara.PInvoke
 			{
 			}
 
+			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => FindVolumeMountPointClose(handle);
 		}
 	}

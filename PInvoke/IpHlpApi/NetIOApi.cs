@@ -132,10 +132,20 @@ namespace Vanara.PInvoke
 			EndPointInterface = 1 << 7
 		}
 
+		/// <summary>The level of interface information to retrieve.</summary>
 		[PInvokeData("netioapi.h")]
 		public enum MIB_IF_ENTRY_LEVEL
 		{
+			/// <summary>
+			/// The values of statistics and state returned in members of the MIB_IF_ROW2 structure pointed to by the Row parameter are
+			/// returned from the top of the filter stack.
+			/// </summary>
 			MibIfEntryNormal = 0,
+
+			/// <summary>
+			/// The values of state (without statistics) returned in members of the MIB_IF_ROW2 structure pointed to by the Row parameter
+			/// are returned from the top of the filter stack.
+			/// </summary>
 			MibIfEntryNormalWithoutStatistics = 2
 		}
 
@@ -5928,12 +5938,18 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public byte PrefixLength;
 
+			/// <summary>Initializes a new instance of the <see cref="IP_ADDRESS_PREFIX"/> struct.</summary>
+			/// <param name="prefix">The prefix or network part of IP the address represented as an IP address.</param>
+			/// <param name="prefixLength">The length, in bits, of the prefix or network part of the IP address.</param>
 			public IP_ADDRESS_PREFIX(SOCKADDR_INET prefix, byte prefixLength)
 			{
 				Prefix = prefix;
 				PrefixLength = prefixLength;
 			}
 
+			/// <summary>Determines whether the specified value is equal to this instance.</summary>
+			/// <param name="other">The value to compare with this instance.</param>
+			/// <returns><see langword="true"/> if the specified value is equal to this instance; otherwise, <see langword="false"/>.</returns>
 			public bool Equals(IP_ADDRESS_PREFIX other) => Prefix.Equals(other.Prefix) && PrefixLength == other.PrefixLength;
 		}
 
@@ -5954,56 +5970,63 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, Pack = 8)]
 		public struct MIB_ANYCASTIPADDRESS_ROW : IEquatable<MIB_ANYCASTIPADDRESS_ROW>
 		{
-			/// <summary>
-			/// <para>The anycast IP address. This member can be an IPv6 address or an IPv4 address.</para>
-			/// </summary>
+			/// <summary>The anycast IP address. This member can be an IPv6 address or an IPv4 address.</summary>
 			public SOCKADDR_INET Address;
 
-			/// <summary>
-			/// <para>The locally unique identifier (LUID) for the network interface associated with this IP address.</para>
-			/// </summary>
+			/// <summary>The locally unique identifier (LUID) for the network interface associated with this IP address.</summary>
 			public NET_LUID InterfaceLuid;
 
 			/// <summary>
-			/// <para>
 			/// The local index value for the network interface associated with this IP address. This index value may change when a network
 			/// adapter is disabled and then enabled, or under other circumstances, and should not be considered persistent.
-			/// </para>
 			/// </summary>
 			public uint InterfaceIndex;
 
 			/// <summary>
-			/// <para>
 			/// The scope ID of the anycast IP address. This member is applicable only to an IPv6 address. This member cannot be set. It is
 			/// automatically determined by the interface on which the address was added.
-			/// </para>
 			/// </summary>
 			public SCOPE_ID ScopeId;
 
+			/// <summary>Initializes a new instance of the <see cref="MIB_ANYCASTIPADDRESS_ROW"/> struct.</summary>
+			/// <param name="ipv4">The ipv4 address.</param>
+			/// <param name="interfaceLuid">The interface luid.</param>
 			public MIB_ANYCASTIPADDRESS_ROW(SOCKADDR_IN ipv4, NET_LUID interfaceLuid) : this()
 			{
 				Address.Ipv4 = ipv4;
 				InterfaceLuid = interfaceLuid;
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="MIB_ANYCASTIPADDRESS_ROW"/> struct.</summary>
+			/// <param name="ipv4">The ipv4 address.</param>
+			/// <param name="interfaceIndex">Index of the interface.</param>
 			public MIB_ANYCASTIPADDRESS_ROW(SOCKADDR_IN ipv4, uint interfaceIndex) : this()
 			{
 				Address.Ipv4 = ipv4;
 				InterfaceIndex = interfaceIndex;
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="MIB_ANYCASTIPADDRESS_ROW"/> struct.</summary>
+			/// <param name="ipv6">The ipv6 address.</param>
+			/// <param name="interfaceLuid">The interface luid.</param>
 			public MIB_ANYCASTIPADDRESS_ROW(SOCKADDR_IN6 ipv6, NET_LUID interfaceLuid) : this()
 			{
 				Address.Ipv6 = ipv6;
 				InterfaceLuid = interfaceLuid;
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="MIB_ANYCASTIPADDRESS_ROW"/> struct.</summary>
+			/// <param name="ipv6">The ipv6 address.</param>
+			/// <param name="interfaceIndex">Index of the interface.</param>
 			public MIB_ANYCASTIPADDRESS_ROW(SOCKADDR_IN6 ipv6, uint interfaceIndex) : this()
 			{
 				Address.Ipv6 = ipv6;
 				InterfaceIndex = interfaceIndex;
 			}
 
+			/// <summary>Determines whether the specified value is equal to this instance.</summary>
+			/// <param name="other">The value to compare with this instance.</param>
+			/// <returns><see langword="true"/> if the specified value is equal to this instance; otherwise, <see langword="false"/>.</returns>
 			public bool Equals(MIB_ANYCASTIPADDRESS_ROW other) => Address.Equals(other.Address) && (InterfaceLuid.Value == other.InterfaceLuid.Value || InterfaceIndex == other.InterfaceIndex);
 		}
 
@@ -6579,6 +6602,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public NL_ROUTE_ORIGIN Origin;
 
+			/// <summary>Initializes a new instance of the <see cref="MIB_IPFORWARD_ROW2"/> struct.</summary>
+			/// <param name="destinationPrefix">The destination prefix.</param>
+			/// <param name="nextHop">The next hop.</param>
+			/// <param name="interfaceLuid">The interface luid.</param>
 			public MIB_IPFORWARD_ROW2(IP_ADDRESS_PREFIX destinationPrefix, SOCKADDR_INET nextHop, NET_LUID interfaceLuid) : this()
 			{
 				InitializeIpForwardEntry(out this);
@@ -6587,6 +6614,10 @@ namespace Vanara.PInvoke
 				InterfaceLuid = interfaceLuid;
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="MIB_IPFORWARD_ROW2"/> struct.</summary>
+			/// <param name="destinationPrefix">The destination prefix.</param>
+			/// <param name="nextHop">The next hop.</param>
+			/// <param name="interfaceIndex">Index of the interface.</param>
 			public MIB_IPFORWARD_ROW2(IP_ADDRESS_PREFIX destinationPrefix, SOCKADDR_INET nextHop, uint interfaceIndex) : this()
 			{
 				InitializeIpForwardEntry(out this);
@@ -6595,6 +6626,9 @@ namespace Vanara.PInvoke
 				InterfaceIndex = interfaceIndex;
 			}
 
+			/// <summary>Determines whether the specified value is equal to this instance.</summary>
+			/// <param name="other">The value to compare with this instance.</param>
+			/// <returns><see langword="true"/> if the specified value is equal to this instance; otherwise, <see langword="false"/>.</returns>
 			public bool Equals(MIB_IPFORWARD_ROW2 other) => DestinationPrefix.Equals(other.DestinationPrefix) && NextHop.Equals(other.NextHop) && (InterfaceLuid.Value == other.InterfaceLuid.Value || InterfaceIndex == other.InterfaceIndex);
 		}
 
@@ -6784,6 +6818,11 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.U1)] public bool DisableDefaultRoutes;
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MIB_IPINTERFACE_ROW"/> struct.
+			/// </summary>
+			/// <param name="family">The family.</param>
+			/// <param name="interfaceLuid">The interface luid.</param>
 			public MIB_IPINTERFACE_ROW(ADDRESS_FAMILY family, NET_LUID interfaceLuid) : this()
 			{
 				InitializeIpInterfaceEntry(out this);
@@ -6791,6 +6830,11 @@ namespace Vanara.PInvoke
 				InterfaceLuid = interfaceLuid;
 			}
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MIB_IPINTERFACE_ROW"/> struct.
+			/// </summary>
+			/// <param name="family">The family.</param>
+			/// <param name="interfaceIndex">Index of the interface.</param>
 			public MIB_IPINTERFACE_ROW(ADDRESS_FAMILY family, uint interfaceIndex) : this()
 			{
 				InitializeIpInterfaceEntry(out this);
@@ -6798,6 +6842,9 @@ namespace Vanara.PInvoke
 				InterfaceIndex = interfaceIndex;
 			}
 
+			/// <summary>Determines whether the specified value is equal to this instance.</summary>
+			/// <param name="other">The value to compare with this instance.</param>
+			/// <returns><see langword="true"/> if the specified value is equal to this instance; otherwise, <see langword="false"/>.</returns>
 			public bool Equals(MIB_IPINTERFACE_ROW other) => Family.Equals(other.Family) && (InterfaceLuid.Value == other.InterfaceLuid.Value || InterfaceIndex == other.InterfaceIndex);
 		}
 
@@ -7136,30 +7183,53 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public SCOPE_ID ScopeId;
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MIB_MULTICASTIPADDRESS_ROW"/> struct.
+			/// </summary>
+			/// <param name="ipv4">The ipv4.</param>
+			/// <param name="interfaceLuid">The interface luid.</param>
 			public MIB_MULTICASTIPADDRESS_ROW(SOCKADDR_IN ipv4, NET_LUID interfaceLuid) : this()
 			{
 				Address.Ipv4 = ipv4;
 				InterfaceLuid = interfaceLuid;
 			}
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MIB_MULTICASTIPADDRESS_ROW"/> struct.
+			/// </summary>
+			/// <param name="ipv4">The ipv4.</param>
+			/// <param name="interfaceIndex">Index of the interface.</param>
 			public MIB_MULTICASTIPADDRESS_ROW(SOCKADDR_IN ipv4, uint interfaceIndex) : this()
 			{
 				Address.Ipv4 = ipv4;
 				InterfaceIndex = interfaceIndex;
 			}
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MIB_MULTICASTIPADDRESS_ROW"/> struct.
+			/// </summary>
+			/// <param name="ipv6">The ipv6.</param>
+			/// <param name="interfaceLuid">The interface luid.</param>
 			public MIB_MULTICASTIPADDRESS_ROW(SOCKADDR_IN6 ipv6, NET_LUID interfaceLuid) : this()
 			{
 				Address.Ipv6 = ipv6;
 				InterfaceLuid = interfaceLuid;
 			}
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MIB_MULTICASTIPADDRESS_ROW"/> struct.
+			/// </summary>
+			/// <param name="ipv6">The ipv6.</param>
+			/// <param name="interfaceIndex">Index of the interface.</param>
 			public MIB_MULTICASTIPADDRESS_ROW(SOCKADDR_IN6 ipv6, uint interfaceIndex) : this()
 			{
 				Address.Ipv6 = ipv6;
 				InterfaceIndex = interfaceIndex;
 			}
 
+			/// <summary>Determines whether the specified value is equal to this instance.</summary>
+			/// <param name="other">The value to compare with this instance.</param>
+			/// <returns><see langword="true"/> if the specified value is equal to this instance; otherwise, <see langword="false"/>.</returns>
 			public bool Equals(MIB_MULTICASTIPADDRESS_ROW other) => Address.Equals(other.Address) && (InterfaceLuid.Value == other.InterfaceLuid.Value || InterfaceIndex == other.InterfaceIndex);
 		}
 
@@ -7429,6 +7499,11 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public long CreationTimeStamp;
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MIB_UNICASTIPADDRESS_ROW"/> struct.
+			/// </summary>
+			/// <param name="ipv4">The ipv4.</param>
+			/// <param name="interfaceLuid">The interface luid.</param>
 			public MIB_UNICASTIPADDRESS_ROW(SOCKADDR_IN ipv4, NET_LUID interfaceLuid) : this()
 			{
 				InitializeUnicastIpAddressEntry(out this);
@@ -7436,6 +7511,11 @@ namespace Vanara.PInvoke
 				InterfaceLuid = interfaceLuid;
 			}
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MIB_UNICASTIPADDRESS_ROW"/> struct.
+			/// </summary>
+			/// <param name="ipv4">The ipv4.</param>
+			/// <param name="interfaceIndex">Index of the interface.</param>
 			public MIB_UNICASTIPADDRESS_ROW(SOCKADDR_IN ipv4, uint interfaceIndex) : this()
 			{
 				InitializeUnicastIpAddressEntry(out this);
@@ -7443,6 +7523,11 @@ namespace Vanara.PInvoke
 				InterfaceIndex = interfaceIndex;
 			}
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MIB_UNICASTIPADDRESS_ROW"/> struct.
+			/// </summary>
+			/// <param name="ipv6">The ipv6.</param>
+			/// <param name="interfaceLuid">The interface luid.</param>
 			public MIB_UNICASTIPADDRESS_ROW(SOCKADDR_IN6 ipv6, NET_LUID interfaceLuid) : this()
 			{
 				InitializeUnicastIpAddressEntry(out this);
@@ -7450,6 +7535,11 @@ namespace Vanara.PInvoke
 				InterfaceLuid = interfaceLuid;
 			}
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MIB_UNICASTIPADDRESS_ROW"/> struct.
+			/// </summary>
+			/// <param name="ipv6">The ipv6.</param>
+			/// <param name="interfaceIndex">Index of the interface.</param>
 			public MIB_UNICASTIPADDRESS_ROW(SOCKADDR_IN6 ipv6, uint interfaceIndex) : this()
 			{
 				InitializeUnicastIpAddressEntry(out this);
@@ -7457,6 +7547,9 @@ namespace Vanara.PInvoke
 				InterfaceIndex = interfaceIndex;
 			}
 
+			/// <summary>Determines whether the specified value is equal to this instance.</summary>
+			/// <param name="other">The value to compare with this instance.</param>
+			/// <returns><see langword="true"/> if the specified value is equal to this instance; otherwise, <see langword="false"/>.</returns>
 			public bool Equals(MIB_UNICASTIPADDRESS_ROW other) => Address.Equals(other.Address) && (InterfaceLuid.Value == other.InterfaceLuid.Value || InterfaceIndex == other.InterfaceIndex);
 		}
 
@@ -7579,25 +7672,6 @@ namespace Vanara.PInvoke
 				/// </para>
 				/// </summary>
 				TlGiantSendOffloadSupported = 1 << 7,
-			}
-		}
-
-		[PInvokeData("ws2def.h")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct SCOPE_ID
-		{
-			public uint Value;
-
-			public uint Zone
-			{
-				get => BitHelper.GetBits(Value, 0, 28);
-				set => BitHelper.SetBits(ref Value, 0, 28, value);
-			}
-
-			public byte Level
-			{
-				get => (byte)BitHelper.GetBits(Value, 28, 4);
-				set => BitHelper.SetBits(ref Value, 28, 4, value);
 			}
 		}
 

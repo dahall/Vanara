@@ -88,7 +88,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets a set of flags that describe the uses and capabilities of the property.</summary>
 		public PROPDESC_TYPE_FLAGS TypeFlags => iDesc?.GetTypeFlags(PROPDESC_TYPE_FLAGS.PDTF_MASK_ALL) ?? 0;
 
-		// /// <summary>Gets an instance of an PropertyTypeList, which can be used to enumerate the possible values for a property.</summary>
+		/// <summary>Gets an instance of an PropertyTypeList, which can be used to enumerate the possible values for a property.</summary>
 		public PropertyTypeList TypeList => typeList ?? (typeList = new PropertyTypeList(iDesc?.GetEnumTypeList(typeof(IPropertyEnumTypeList).GUID)));
 
 		/// <summary>Gets the current set of flags governing the property's view.</summary>
@@ -159,6 +159,7 @@ namespace Vanara.Windows.Shell
 		/// <returns>A <see cref="System.String" /> that represents this instance.</returns>
 		public override string ToString() => CanonicalName;
 
+		/// <summary>Gets the raw interface object wrapped by this object.</summary>
 		public IPropertyDescription Raw => iDesc;
 	}
 

@@ -153,6 +153,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public FILETIME liCreateTimestamp;
 
+			/// <summary/>
 			public int SpecificPortBind;
 
 			/// <summary>

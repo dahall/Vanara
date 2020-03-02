@@ -596,7 +596,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "d0705997-0dc7-443b-a43f-611301cc9169")]
 		public static extern int inet_pton([MarshalAs(UnmanagedType.U4)] ADDRESS_FAMILY Family, string pszAddrString, out IN6_ADDR pAddrBuf);
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="ADDRINFOWArray"/> that is disposed using <see cref="FreeAddrInfoW"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for an array of <see cref="ADDRINFOW"/> that is disposed using <see cref="FreeAddrInfoW"/>.</summary>
 		public class SafeADDRINFOWArray : SafeHANDLE, IEnumerable<ADDRINFOW>
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeADDRINFOWArray"/> class.</summary>
@@ -609,17 +609,17 @@ namespace Vanara.PInvoke
 			/// <returns>An enumeration of values from the pointer.</returns>
 			protected virtual IEnumerable<ADDRINFOW> Items => handle.LinkedListToIEnum<ADDRINFOW>(ai => ai.ai_next);
 
-			/// <summary>Gets or sets the <typeparamref name="TElem"/> value at the specified index.</summary>
-			/// <value>The <typeparamref name="TElem"/> value.</value>
-			/// <param name="index">The index.</param>
-			/// <returns></returns>
+			/// <summary>Gets or sets the <see cref="ADDRINFOW"/> value at the specified index.</summary>
+			/// <param name="index">The index of the info within the array.</param>
+			/// <returns>The <see cref="ADDRINFOW"/> value.</returns>
 			/// <exception cref="ArgumentOutOfRangeException">index or index</exception>
 			public ADDRINFOW this[int index] => Items.ElementAt(index);
 
 			/// <summary>Determines whether this instance contains the object.</summary>
 			/// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
 			/// <returns>
-			/// true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false.
+			/// <see langword="true"/> if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>;
+			/// otherwise, <see langword="false"/>.
 			/// </returns>
 			public bool Contains(ADDRINFOW item) => Items.Contains(item);
 

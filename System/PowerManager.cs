@@ -41,6 +41,7 @@ namespace Vanara.Diagnostics
 		On
 	}
 
+	/// <summary>Specifies the power capabilities of a device.</summary>
 	[Flags]
 	public enum PowerCapabilities
 	{
@@ -149,24 +150,12 @@ namespace Vanara.Diagnostics
 
 		/// <summary>Gets the device's battery status.</summary>
 		/// <value>Returns a <see cref="BatteryStatus"/> value.</value>
-		public static BatteryStatus BatteryStatus
+		public static BatteryStatus BatteryStatus => GetStatus().BatteryFlag switch
 		{
-			get
-			{
-				var s = GetStatus();
-				switch (s.BatteryFlag)
-				{
-					case BATTERY_STATUS.BATTERY_CHARGING:
-						return BatteryStatus.Charging;
-
-					case BATTERY_STATUS.BATTERY_NONE:
-						return BatteryStatus.NotPresent;
-
-					default:
-						return s.ACLineStatus == AC_STATUS.AC_OFFLINE ? BatteryStatus.Discharging : BatteryStatus.Idle;
-				}
-			}
-		}
+			BATTERY_STATUS.BATTERY_CHARGING => BatteryStatus.Charging,
+			BATTERY_STATUS.BATTERY_NONE => BatteryStatus.NotPresent,
+			_ => GetStatus().ACLineStatus == AC_STATUS.AC_OFFLINE ? BatteryStatus.Discharging : BatteryStatus.Idle,
+		};
 
 		/// <summary>Gets flags indicating the system's power capabilities.</summary>
 		/// <value>Returns a <see cref="PowerCapabilities"/> value.</value>
@@ -227,24 +216,12 @@ namespace Vanara.Diagnostics
 
 		/// <summary>Gets the device's power supply status.</summary>
 		/// <value>Returns a <see cref="PowerSupplyStatus"/> value.</value>
-		public static PowerSupplyStatus PowerSupplyStatus
+		public static PowerSupplyStatus PowerSupplyStatus => GetStatus().ACLineStatus switch
 		{
-			get
-			{
-				var s = GetStatus();
-				switch (s.ACLineStatus)
-				{
-					case AC_STATUS.AC_ONLINE:
-						return PowerSupplyStatus.Adequate;
-
-					case AC_STATUS.AC_LINE_BACKUP_POWER:
-						return PowerSupplyStatus.Inadequate;
-
-					default:
-						return PowerSupplyStatus.NotPresent;
-				}
-			}
-		}
+			AC_STATUS.AC_ONLINE => PowerSupplyStatus.Adequate,
+			AC_STATUS.AC_LINE_BACKUP_POWER => PowerSupplyStatus.Inadequate,
+			_ => PowerSupplyStatus.NotPresent,
+		};
 
 		/// <summary>Gets the total percentage of charge remaining from all batteries connected to the device.</summary>
 		/// <value>Returns a <c>int?</c> value from 0 to 100, or <see langword="null"/> if the status is unknown.</value>
@@ -511,7 +488,11 @@ namespace Vanara.Diagnostics
 	/// <summary>Represents a subgroup of a system power scheme (power plan).</summary>
 	public class PowerSchemeGroup
 	{
-		protected Guid scheme, subgroup;
+		/// <summary>The scheme's guid.</summary>
+		protected Guid scheme;
+
+		/// <summary>The scheme's subgroup's guid.</summary>
+		protected Guid subgroup;
 
 		internal PowerSchemeGroup(Guid scheme, Guid group)
 		{
@@ -548,6 +529,7 @@ namespace Vanara.Diagnostics
 	/// <summary>Represents a collection of all the subgroups available under a power scheme on the system.</summary>
 	public class PowerSchemeGroupCollection : VirtualDictionary<Guid, PowerSchemeGroup>
 	{
+		/// <summary>The scheme's guid.</summary>
 		protected Guid scheme;
 
 		internal PowerSchemeGroupCollection(Guid scheme) : base(false) => this.scheme = scheme;
@@ -565,7 +547,12 @@ namespace Vanara.Diagnostics
 	/// <summary>Represents a setting on a subgroup.</summary>
 	public class PowerSchemeSetting
 	{
-		protected Guid scheme, subgroup, setting;
+		/// <summary>The scheme's guid.</summary>
+		protected Guid scheme;
+		/// <summary>The scheme's setting guid.</summary>
+		protected Guid setting;
+		/// <summary>The scheme's subgroup guid.</summary>
+		protected Guid subgroup;
 
 		internal PowerSchemeSetting(Guid scheme, Guid group, Guid setting)
 		{
@@ -583,12 +570,11 @@ namespace Vanara.Diagnostics
 			get
 			{
 				var sz = 0U;
-				PowerReadACValue(default, scheme, subgroup, setting, out var regType, IntPtr.Zero, ref sz).ThrowIfFailed();
-				using (var mem = new SafeHGlobalHandle((int)sz))
-				{
-					PowerReadACValue(default, scheme, subgroup, setting, out regType, (IntPtr)mem, ref sz).ThrowIfFailed();
-					return regType.GetValue((IntPtr)mem, sz);
-				}
+				PowerReadACValue(default, scheme, subgroup, setting, out _, IntPtr.Zero, ref sz).ThrowIfFailed();
+				using var mem = new SafeHGlobalHandle((int)sz);
+				REG_VALUE_TYPE regType;
+				PowerReadACValue(default, scheme, subgroup, setting, out regType, mem, ref sz).ThrowIfFailed();
+				return regType.GetValue(mem, sz);
 			}
 		}
 
@@ -619,12 +605,11 @@ namespace Vanara.Diagnostics
 			get
 			{
 				var sz = 0U;
-				PowerReadDCValue(default, scheme, subgroup, setting, out var regType, IntPtr.Zero, ref sz).ThrowIfFailed();
-				using (var mem = new SafeHGlobalHandle((int)sz))
-				{
-					PowerReadDCValue(default, scheme, subgroup, setting, out regType, (IntPtr)mem, ref sz).ThrowIfFailed();
-					return regType.GetValue((IntPtr)mem, sz);
-				}
+				PowerReadDCValue(default, scheme, subgroup, setting, out _, IntPtr.Zero, ref sz).ThrowIfFailed();
+				using var mem = new SafeHGlobalHandle((int)sz);
+				REG_VALUE_TYPE regType;
+				PowerReadDCValue(default, scheme, subgroup, setting, out regType, mem, ref sz).ThrowIfFailed();
+				return regType.GetValue(mem, sz);
 			}
 		}
 
@@ -652,6 +637,8 @@ namespace Vanara.Diagnostics
 			set { PowerWriteDescription(scheme, subgroup, setting, value).ThrowIfFailed(); PowerSetActiveScheme(default, scheme).ThrowIfFailed(); }
 		}
 
+		/// <summary>Gets a value indicating whether a range is defined.</summary>
+		/// <value><see langword="true"/> if a range is defined; otherwise, <see langword="false"/>.</value>
 		public bool IsRange => PowerIsSettingRangeDefined(subgroup, setting);
 
 		/// <summary>Gets or sets the friendly name of the setting.</summary>
@@ -682,13 +669,11 @@ namespace Vanara.Diagnostics
 					err = PowerReadPossibleValue(default, subgroup, setting, out var regType, i, IntPtr.Zero, ref sz);
 					if (err.Succeeded)
 					{
-						using (var mem = new SafeHGlobalHandle((int)sz))
-						{
-							err = PowerReadPossibleValue(default, subgroup, setting, out regType, i, (IntPtr)mem, ref sz);
-							if (err.Failed)
-								break;
-							obj = regType.GetValue((IntPtr)mem, sz);
-						}
+						using var mem = new SafeHGlobalHandle((int)sz);
+						err = PowerReadPossibleValue(default, subgroup, setting, out regType, i, mem, ref sz);
+						if (err.Failed)
+							break;
+						obj = regType.GetValue(mem, sz);
 					}
 					yield return (obj, name, desc);
 				}
@@ -737,7 +722,10 @@ namespace Vanara.Diagnostics
 	/// <summary>Represents a collection of all settings for a subgroup and power scheme on the system.</summary>
 	public class PowerSchemeSettingCollection : VirtualDictionary<Guid, PowerSchemeSetting>
 	{
-		protected Guid scheme, subgroup;
+		/// <summary>The scheme's guid.</summary>
+		protected Guid scheme;
+		/// <summary>The scheme's subgroup guid.</summary>
+		protected Guid subgroup;
 
 		internal PowerSchemeSettingCollection(Guid scheme, Guid subgroup) : base(false)
 		{

@@ -1595,6 +1595,7 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public MFTWRITESUSERLEVEL MftWritesUserLevel;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct MFTWRITESUSERLEVEL
 			{
@@ -1629,6 +1630,7 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public MFT2WRITESUSERLEVEL Mft2WritesUserLevel;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct MFT2WRITESUSERLEVEL
 			{
@@ -1690,6 +1692,7 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public BITMAPWRITESUSERLEVEL BitmapWritesUserLevel;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct BITMAPWRITESUSERLEVEL
 			{
@@ -1727,6 +1730,7 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public MFTBITMAPWRITESUSERLEVEL MftBitmapWritesUserLevel;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct MFTBITMAPWRITESUSERLEVEL
 			{
@@ -1770,6 +1774,7 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public ALLOCATE Allocate;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct ALLOCATE
 			{
@@ -1870,6 +1875,7 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public MFTWRITESUSERLEVEL MftWritesUserLevel;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct MFTWRITESUSERLEVEL
 			{
@@ -1904,6 +1910,7 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public MFT2WRITESUSERLEVEL Mft2WritesUserLevel;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct MFT2WRITESUSERLEVEL
 			{
@@ -1965,6 +1972,7 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public BITMAPWRITESUSERLEVEL BitmapWritesUserLevel;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct BITMAPWRITESUSERLEVEL
 			{
@@ -2005,6 +2013,7 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public MFTBITMAPWRITESUSERLEVEL MftBitmapWritesUserLevel;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct MFTBITMAPWRITESUSERLEVEL
 			{
@@ -2048,6 +2057,7 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public ALLOCATE Allocate;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct ALLOCATE
 			{

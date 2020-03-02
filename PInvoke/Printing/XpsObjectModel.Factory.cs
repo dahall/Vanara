@@ -99,7 +99,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomobjectfactory-createpackagefromfile
 			// HRESULT CreatePackageFromFile( LPCWSTR filename, BOOL reuseObjects, IXpsOMPackage **package );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			IXpsOMPackage CreatePackageFromFile([In, MarshalAs(UnmanagedType.LPWStr)] string fileName, [In, MarshalAs(UnmanagedType.Bool)] bool reuseObjects);
+			IXpsOMPackage CreatePackageFromFile([In, MarshalAs(UnmanagedType.LPWStr)] string filename, [In, MarshalAs(UnmanagedType.Bool)] bool reuseObjects);
 
 			/// <summary>Opens a stream that contains an XPS package, and returns an instantiated XPS document object tree.</summary>
 			/// <param name="stream">The stream that contains an XPS package.</param>
@@ -930,7 +930,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomobjectfactory-createreadonlystreamonfile
 			// HRESULT CreateReadOnlyStreamOnFile( LPCWSTR filename, IStream **stream );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			IStream CreateReadOnlyStreamOnFile([In, MarshalAs(UnmanagedType.LPWStr)] string fileName);
+			IStream CreateReadOnlyStreamOnFile([In, MarshalAs(UnmanagedType.LPWStr)] string filename);
 		}
 
 		/// <summary>CoClass for IXpsOMObjectFactory.</summary>

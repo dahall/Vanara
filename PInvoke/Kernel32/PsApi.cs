@@ -1865,11 +1865,12 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint Protection => GetBits(Flags.ToUInt32(), 0, 5);
 
+			/// <summary/>
 			public IntPtr VirtualPage => new IntPtr((long)Flags.ToUInt64() & ~0xFFFL);
 		}
 
 		/// <summary>Contains extended working set information for a page.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-_psapi_working_set_ex_block
+		// https://https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-psapi_working_set_ex_block
 		// typedef union _PSAPI_WORKING_SET_EX_BLOCK { ULONG_PTR Flags; union { struct { ULONG_PTR Valid : 1; ULONG_PTR ShareCount : 3; ULONG_PTR Win32Protection : 11; ULONG_PTR Shared : 1; ULONG_PTR Node : 6; ULONG_PTR Locked : 1; ULONG_PTR LargePage : 1; ULONG_PTR Reserved : 7; ULONG_PTR Bad : 1; ULONG_PTR ReservedUlong : 32; }; struct { ULONG_PTR Valid : 1; ULONG_PTR Reserved0 : 14; ULONG_PTR Shared : 1; ULONG_PTR Reserved1 : 15; ULONG_PTR Bad : 1; ULONG_PTR ReservedUlong : 32; } Invalid; }; } PSAPI_WORKING_SET_EX_BLOCK, *PPSAPI_WORKING_SET_EX_BLOCK;
 		[PInvokeData("psapi.h", MSDNShortId = "4ba17fa0-2aed-4099-9380-fc13f1b826ca")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -1881,10 +1882,13 @@ namespace Vanara.PInvoke
 			/// <summary>If <see langword="true"/>, the page is valid; otherwise, the page is not valid.</summary>
 			public bool Valid => GetBit(Flags.ToUInt32(), 0);
 
+			/// <summary>Gets a value indicating whether the virtual page is locked in physical memory.</summary>
 			public bool Locked => Valid ? GetBit(Flags.ToUInt32(), 22) : false;
 
+			/// <summary>Gets a value indicating whether this page is a large page.</summary>
 			public bool LargePage => Valid ? GetBit(Flags.ToUInt32(), 23) : false;
 
+			/// <summary>Gets a value indicating whether the page is has been reported as bad.</summary>
 			public bool Bad => GetBit(Flags.ToUInt32(), 31);
 
 			/// <summary>If <see langword="true"/>, the page is sharable; otherwise, the page is not sharable.</summary>
@@ -1894,145 +1898,146 @@ namespace Vanara.PInvoke
 			public uint ShareCount => Valid ? GetBits(Flags.ToUInt32(), 1, 3) : 0U;
 
 			/// <summary>
-			///   <para>The protection attributes of the page. This member can be one of the following values.</para>
-			///   <list type="table">
-			///     <listheader>
-			///       <term>Value</term>
-			///       <term>Meaning</term>
-			///     </listheader>
-			///     <item>
-			///       <term>0</term>
-			///       <term>The page is not accessed.</term>
-			///     </item>
-			///     <item>
-			///       <term>1</term>
-			///       <term>Read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>2</term>
-			///       <term>Executable.</term>
-			///     </item>
-			///     <item>
-			///       <term>3</term>
-			///       <term>Executable and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>4</term>
-			///       <term>Read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>5</term>
-			///       <term>Copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>6</term>
-			///       <term>Executable and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>7</term>
-			///       <term>Executable and copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>8</term>
-			///       <term>The page is not accessed.</term>
-			///     </item>
-			///     <item>
-			///       <term>9</term>
-			///       <term>Non-cacheable and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>10</term>
-			///       <term>Non-cacheable and executable.</term>
-			///     </item>
-			///     <item>
-			///       <term>11</term>
-			///       <term>Non-cacheable, executable, and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>12</term>
-			///       <term>Non-cacheable and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>13</term>
-			///       <term>Non-cacheable and copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>14</term>
-			///       <term>Non-cacheable, executable, and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>15</term>
-			///       <term>Non-cacheable, executable, and copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>16</term>
-			///       <term>The page is not accessed.</term>
-			///     </item>
-			///     <item>
-			///       <term>17</term>
-			///       <term>Guard page and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>18</term>
-			///       <term>Guard page and executable.</term>
-			///     </item>
-			///     <item>
-			///       <term>19</term>
-			///       <term>Guard page, executable, and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>20</term>
-			///       <term>Guard page and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>21</term>
-			///       <term>Guard page and copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>22</term>
-			///       <term>Guard page, executable, and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>23</term>
-			///       <term>Guard page, executable, and copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>24</term>
-			///       <term>The page is not accessed.</term>
-			///     </item>
-			///     <item>
-			///       <term>25</term>
-			///       <term>Non-cacheable, guard page, and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>26</term>
-			///       <term>Non-cacheable, guard page, and executable.</term>
-			///     </item>
-			///     <item>
-			///       <term>27</term>
-			///       <term>Non-cacheable, guard page, executable, and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>28</term>
-			///       <term>Non-cacheable, guard page, and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>29</term>
-			///       <term>Non-cacheable, guard page, and copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>30</term>
-			///       <term>Non-cacheable, guard page, executable, and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>31</term>
-			///       <term>Non-cacheable, guard page, executable, and copy-on-write.</term>
-			///     </item>
-			///   </list>
+			/// <para>The protection attributes of the page. This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>The page is not accessed.</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>Executable.</term>
+			/// </item>
+			/// <item>
+			/// <term>3</term>
+			/// <term>Executable and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>4</term>
+			/// <term>Read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>5</term>
+			/// <term>Copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>6</term>
+			/// <term>Executable and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>7</term>
+			/// <term>Executable and copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>8</term>
+			/// <term>The page is not accessed.</term>
+			/// </item>
+			/// <item>
+			/// <term>9</term>
+			/// <term>Non-cacheable and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>10</term>
+			/// <term>Non-cacheable and executable.</term>
+			/// </item>
+			/// <item>
+			/// <term>11</term>
+			/// <term>Non-cacheable, executable, and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>12</term>
+			/// <term>Non-cacheable and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>13</term>
+			/// <term>Non-cacheable and copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>14</term>
+			/// <term>Non-cacheable, executable, and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>15</term>
+			/// <term>Non-cacheable, executable, and copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>16</term>
+			/// <term>The page is not accessed.</term>
+			/// </item>
+			/// <item>
+			/// <term>17</term>
+			/// <term>Guard page and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>18</term>
+			/// <term>Guard page and executable.</term>
+			/// </item>
+			/// <item>
+			/// <term>19</term>
+			/// <term>Guard page, executable, and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>20</term>
+			/// <term>Guard page and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>21</term>
+			/// <term>Guard page and copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>22</term>
+			/// <term>Guard page, executable, and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>23</term>
+			/// <term>Guard page, executable, and copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>24</term>
+			/// <term>The page is not accessed.</term>
+			/// </item>
+			/// <item>
+			/// <term>25</term>
+			/// <term>Non-cacheable, guard page, and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>26</term>
+			/// <term>Non-cacheable, guard page, and executable.</term>
+			/// </item>
+			/// <item>
+			/// <term>27</term>
+			/// <term>Non-cacheable, guard page, executable, and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>28</term>
+			/// <term>Non-cacheable, guard page, and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>29</term>
+			/// <term>Non-cacheable, guard page, and copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>30</term>
+			/// <term>Non-cacheable, guard page, executable, and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>31</term>
+			/// <term>Non-cacheable, guard page, executable, and copy-on-write.</term>
+			/// </item>
+			/// </list>
 			/// </summary>
 			public uint Protection => Valid ? GetBits(Flags.ToUInt32(), 4, 11) : 0U;
 
-			public uint Node => Valid ? GetBits(Flags.ToUInt32(), 0, 5) : 0U;
+			/// <summary>Gets the NUMA node. The maximum value of this member is 63.</summary>
+			public uint Node => Valid ? GetBits(Flags.ToUInt32(), 16, 6) : 0U;
 		}
 
 		/// <summary>Contains working set information for a process.</summary>

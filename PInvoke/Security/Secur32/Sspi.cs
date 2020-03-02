@@ -7109,7 +7109,6 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>Adds the specified type and value as a new SecBuffer item.</summary>
-			/// <typeparam name="T">The type of the element to add</typeparam>
 			/// <param name="type">The type of the SecBuffer.</param>
 			/// <param name="value">The list to add.</param>
 			public virtual void Add(SecBufferType type, string value)

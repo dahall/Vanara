@@ -8,13 +8,18 @@ namespace Vanara.PInvoke
 	/// <summary>Methods and data types found in Crypt32.dll.</summary>
 	public static partial class Crypt32
 	{
+		/// <summary/>
 		public const uint CERT_SYSTEM_STORE_LOCATION_MASK = 0x00FF0000;
+
+		/// <summary/>
 		public const uint CERT_SYSTEM_STORE_RELOCATE_FLAG = 0x80000000;
+
 		private const int CERT_COMPARE_SHIFT = 16;
 		private const int CERT_SYSTEM_STORE_LOCATION_SHIFT = 16;
 
 		/// <summary>
-		/// The <c>CertEnumSystemStoreCallback</c> callback function formats and presents information on each system store found by a call to CertEnumSystemStore.
+		/// The <c>CertEnumSystemStoreCallback</c> callback function formats and presents information on each system store found by a call
+		/// to CertEnumSystemStore.
 		/// </summary>
 		/// <param name="pvSystemStore">
 		/// A pointer to information on the system store found by a call to CertEnumSystemStore. Where appropriate, this argument will
@@ -26,8 +31,8 @@ namespace Vanara.PInvoke
 		/// <param name="pvArg">A pointer to information passed to the callback function in the pvArg passed to CertEnumSystemStore.</param>
 		/// <returns>If the function succeeds, the function returns TRUE. To stop the enumeration, the function must return FALSE.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nc-wincrypt-pfn_cert_enum_system_store PFN_CERT_ENUM_SYSTEM_STORE
-		// PfnCertEnumSystemStore; BOOL PfnCertEnumSystemStore( const void *pvSystemStore, DWORD dwFlags, PCERT_SYSTEM_STORE_INFO pStoreInfo,
-		// void *pvReserved, void *pvArg ) {...}
+		// PfnCertEnumSystemStore; BOOL PfnCertEnumSystemStore( const void *pvSystemStore, DWORD dwFlags, PCERT_SYSTEM_STORE_INFO
+		// pStoreInfo, void *pvReserved, void *pvArg ) {...}
 		[PInvokeData("wincrypt.h", MSDNShortId = "f070a9bd-be0b-49d0-9cab-a5d6f05d4e22")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public delegate bool CertEnumSystemStoreCallback(IntPtr pvSystemStore, uint dwFlags, in CERT_SYSTEM_STORE_INFO pStoreInfo, [Optional] IntPtr pvReserved, [Optional] IntPtr pvArg);
@@ -242,31 +247,139 @@ namespace Vanara.PInvoke
 			CERT_CLOSE_STORE_CHECK_FLAG = 0x00000002
 		}
 
+		/// <summary>Values used by CertFindType.</summary>
 		public enum CertCompareFunction : ushort
 		{
+			/// <summary>No search criteria used. Returns the next certificate in the store.</summary>
 			CERT_COMPARE_ANY = 0,
+
+			/// <summary>Searches for a certificate with a SHA1 hash that matches the hash in the CRYPT_HASH_BLOB structure.</summary>
 			CERT_COMPARE_SHA1_HASH = 1,
+
+			/// <summary>
+			/// Searches for a certificate with an exact match of the entire subject name with the name in the CERT_NAME_BLOB structure. The
+			/// search is restricted to certificates that match the value of dwCertEncodingType.
+			/// </summary>
 			CERT_COMPARE_NAME = 2,
+
+			/// <summary>
+			/// Searches for a certificate with specified subject attributes that match attributes in the CERT_RDN structure. If RDN values
+			/// are set, the function compares attributes of the subject in a certificate with elements of the CERT_RDN_ATTR array in this
+			/// CERT_RDN structure. Comparisons iterate through the CERT_RDN_ATTR attributes looking for a match with the certificate's
+			/// subject's attributes.
+			/// <para>If the pszObjId member of CERT_RDN_ATTR is NULL, the attribute object identifier is ignored.</para>
+			/// <para>If the dwValueType member of CERT_RDN_ATTR is CERT_RDN_ANY_TYPE, the value type is ignored.</para>
+			/// <para>If the pbData member of CERT_RDN_VALUE_BLOB is NULL, any value is a match.</para>
+			/// <para>Currently only an exact, case-sensitive match is supported.</para>
+			/// <para>
+			/// For information about Unicode options, see Remarks. When these values are set, the search is restricted to certificates
+			/// whose encoding type matches dwCertEncodingType.
+			/// </para>
+			/// </summary>
 			CERT_COMPARE_ATTR = 3,
+
+			/// <summary>Searches for a certificate with an MD5 hash that matches the hash in CRYPT_HASH_BLOB.</summary>
 			CERT_COMPARE_MD5_HASH = 4,
+
+			/// <summary>
+			/// Searches for a certificate with a property that matches the property identifier specified by the DWORD value in pvFindPara.
+			/// </summary>
 			CERT_COMPARE_PROPERTY = 5,
+
+			/// <summary>Searches for a certificate with a public key that matches the public key in the CERT_PUBLIC_KEY_INFO structure.</summary>
 			CERT_COMPARE_PUBLIC_KEY = 6,
+
+			/// <summary>Searches for a certificate with a SHA1 hash that matches the hash in the CRYPT_HASH_BLOB structure.</summary>
 			CERT_COMPARE_HASH = CERT_COMPARE_SHA1_HASH,
+
+			/// <summary>
+			/// Searches for a certificate that contains the specified subject name string. The certificate's subject member is converted to
+			/// a name string of the appropriate type using the appropriate form of CertNameToStr formatted as CERT_SIMPLE_NAME_STR. Then a
+			/// case-insensitive substring-within-a-string match is performed. When this value is set, the search is restricted to
+			/// certificates whose encoding type matches dwCertEncodingType.
+			/// </summary>
 			CERT_COMPARE_NAME_STR_A = 7,
+
+			/// <summary>
+			/// Searches for a certificate that contains the specified subject name string. The certificate's subject member is converted to
+			/// a name string of the appropriate type using the appropriate form of CertNameToStr formatted as CERT_SIMPLE_NAME_STR. Then a
+			/// case-insensitive substring-within-a-string match is performed. When this value is set, the search is restricted to
+			/// certificates whose encoding type matches dwCertEncodingType.
+			/// </summary>
 			CERT_COMPARE_NAME_STR_W = 8,
+
+			/// <summary>Searches for a certificate that has a CERT_KEY_SPEC_PROP_ID property that matches the key specification in pvFindPara.</summary>
 			CERT_COMPARE_KEY_SPEC = 9,
+
+			/// <summary>
+			/// Searches for a certificate in the store that has either an enhanced key usage extension or an enhanced key usage property
+			/// and a usage identifier that matches the cUsageIdentifier member in the CERT_ENHKEY_USAGE structure.
+			/// <para>
+			/// A certificate has an enhanced key usage extension if it has a CERT_EXTENSION structure with the pszObjId member set to szOID_ENHANCED_KEY_USAGE.
+			/// </para>
+			/// <para>A certificate has an enhanced key usage property if its CERT_ENHKEY_USAGE_PROP_ID identifier is set.</para>
+			/// <para>
+			/// If CERT_FIND_OPTIONAL_ENHKEY_USAGE_FLAG is set in dwFindFlags, certificates without the key usage extension or property are
+			/// also matches. Setting this flag takes precedence over passing NULL in pvFindPara.
+			/// </para>
+			/// <para>If CERT_FIND_EXT_ONLY_ENHKEY_USAGE_FLAG is set, a match is done only on the key usage extension.</para>
+			/// </summary>
 			CERT_COMPARE_ENHKEY_USAGE = 10,
+
+			/// <summary>
+			/// Searches for a certificate in the store that has either an enhanced key usage extension or an enhanced key usage property
+			/// and a usage identifier that matches the cUsageIdentifier member in the CERT_ENHKEY_USAGE structure.
+			/// <para>
+			/// A certificate has an enhanced key usage extension if it has a CERT_EXTENSION structure with the pszObjId member set to szOID_ENHANCED_KEY_USAGE.
+			/// </para>
+			/// <para>A certificate has an enhanced key usage property if its CERT_ENHKEY_USAGE_PROP_ID identifier is set.</para>
+			/// <para>
+			/// If CERT_FIND_OPTIONAL_ENHKEY_USAGE_FLAG is set in dwFindFlags, certificates without the key usage extension or property are
+			/// also matches. Setting this flag takes precedence over passing NULL in pvFindPara.
+			/// </para>
+			/// <para>If CERT_FIND_EXT_ONLY_ENHKEY_USAGE_FLAG is set, a match is done only on the key usage extension.</para>
+			/// </summary>
 			CERT_COMPARE_CTL_USAGE = CERT_COMPARE_ENHKEY_USAGE,
+
+			/// <summary>
+			/// Searches for a certificate with both an issuer and a serial number that match the issuer and serial number in the CERT_INFO structure.
+			/// </summary>
 			CERT_COMPARE_SUBJECT_CERT = 11,
+
+			/// <summary>
+			/// Searches for a certificate with an subject that matches the issuer in CERT_CONTEXT. Instead of using
+			/// CertFindCertificateInStore with this value, use the CertGetCertificateChain function.
+			/// </summary>
 			CERT_COMPARE_ISSUER_OF = 12,
+
+			/// <summary>Searches for a certificate that is an exact match of the specified certificate context.</summary>
 			CERT_COMPARE_EXISTING = 13,
+
+			/// <summary>Searches for a certificate with a signature hash that matches the signature hash in the CRYPT_HASH_BLOB structure.</summary>
 			CERT_COMPARE_SIGNATURE_HASH = 14,
+
+			/// <summary>Searches for a certificate with a CERT_KEY_IDENTIFIER_PROP_ID property that matches the key identifier in CRYPT_HASH_BLOB.</summary>
 			CERT_COMPARE_KEY_IDENTIFIER = 15,
+
+			/// <summary>Find the certificate identified by the specified CERT_ID.</summary>
 			CERT_COMPARE_CERT_ID = 16,
+
+			/// <summary>Find a certificate that has either a cross certificate distribution point extension or property.</summary>
 			CERT_COMPARE_CROSS_CERT_DIST_POINTS = 17,
+
+			/// <summary>Find a certificate whose MD5-hashed public key matches the specified hash.</summary>
 			CERT_COMPARE_PUBKEY_MD5_HASH = 18,
+
+			/// <summary></summary>
 			CERT_COMPARE_SUBJECT_INFO_ACCESS = 19,
+
+			/// <summary></summary>
 			CERT_COMPARE_HASH_STR = 20,
+
+			/// <summary>
+			/// Searches for a certificate that has a private key. The key can be ephemeral or saved on disk. The key can be a legacy
+			/// Cryptography API (CAPI) key or a CNG key.
+			/// </summary>
 			CERT_COMPARE_HAS_PRIVATE_KEY = 21,
 		}
 
@@ -293,133 +406,338 @@ namespace Vanara.PInvoke
 			PKCS_7_NDR_ENCODING = 0x00020000
 		}
 
+		/// <summary>Values used by <see cref="CertFindCertificateInStore "/>.</summary>
 		[PInvokeData("wincrypt.h", MSDNShortId = "20b3fcfb-55df-46ff-80a5-70f31a3d03b2")]
 		public enum CertFindType : uint
 		{
+			/// <summary>No search criteria used. Returns the next certificate in the store.</summary>
 			CERT_FIND_ANY = (uint)CertCompareFunction.CERT_COMPARE_ANY << CERT_COMPARE_SHIFT,
 
+			/// <summary>Searches for a certificate with a SHA1 hash that matches the hash in the CRYPT_HASH_BLOB structure.</summary>
 			[CorrespondingType(typeof(CRYPTOAPI_BLOB))]
 			CERT_FIND_SHA1_HASH = (uint)CertCompareFunction.CERT_COMPARE_SHA1_HASH << CERT_COMPARE_SHIFT,
 
+			/// <summary>Searches for a certificate with an MD5 hash that matches the hash in CRYPT_HASH_BLOB.</summary>
 			[CorrespondingType(typeof(CRYPTOAPI_BLOB))]
 			CERT_FIND_MD5_HASH = (uint)CertCompareFunction.CERT_COMPARE_MD5_HASH << CERT_COMPARE_SHIFT,
 
+			/// <summary>Searches for a certificate with a signature hash that matches the signature hash in the CRYPT_HASH_BLOB structure.</summary>
 			[CorrespondingType(typeof(CRYPTOAPI_BLOB))]
 			CERT_FIND_SIGNATURE_HASH = (uint)CertCompareFunction.CERT_COMPARE_SIGNATURE_HASH << CERT_COMPARE_SHIFT,
 
+			/// <summary>Searches for a certificate with a CERT_KEY_IDENTIFIER_PROP_ID property that matches the key identifier in CRYPT_HASH_BLOB.</summary>
 			[CorrespondingType(typeof(CRYPTOAPI_BLOB))]
 			CERT_FIND_KEY_IDENTIFIER = (uint)CertCompareFunction.CERT_COMPARE_KEY_IDENTIFIER << CERT_COMPARE_SHIFT,
 
+			/// <summary>Searches for a certificate with a SHA1 hash that matches the hash in the CRYPT_HASH_BLOB structure.</summary>
 			[CorrespondingType(typeof(CRYPTOAPI_BLOB))]
 			CERT_FIND_HASH = CERT_FIND_SHA1_HASH,
 
+			/// <summary>
+			/// Searches for a certificate with a property that matches the property identifier specified by the DWORD value in pvFindPara.
+			/// </summary>
 			[CorrespondingType(typeof(uint))]
 			CERT_FIND_PROPERTY = (uint)CertCompareFunction.CERT_COMPARE_PROPERTY << CERT_COMPARE_SHIFT,
 
+			/// <summary>Searches for a certificate with a public key that matches the public key in the CERT_PUBLIC_KEY_INFO structure.</summary>
 			[CorrespondingType(typeof(CERT_PUBLIC_KEY_INFO))]
 			CERT_FIND_PUBLIC_KEY = (uint)CertCompareFunction.CERT_COMPARE_PUBLIC_KEY << CERT_COMPARE_SHIFT,
 
+			/// <summary>
+			/// Searches for a certificate with an exact match of the entire subject name with the name in the CERT_NAME_BLOB structure. The
+			/// search is restricted to certificates that match the value of dwCertEncodingType.
+			/// </summary>
 			[CorrespondingType(typeof(CRYPTOAPI_BLOB))]
 			CERT_FIND_SUBJECT_NAME = (uint)CertCompareFunction.CERT_COMPARE_NAME << CERT_COMPARE_SHIFT | CertInfoFlags.CERT_INFO_SUBJECT_FLAG,
 
+			/// <summary>
+			/// Searches for a certificate with specified subject attributes that match attributes in the CERT_RDN structure. If RDN values
+			/// are set, the function compares attributes of the subject in a certificate with elements of the CERT_RDN_ATTR array in this
+			/// CERT_RDN structure. Comparisons iterate through the CERT_RDN_ATTR attributes looking for a match with the certificate's
+			/// subject's attributes.
+			/// <para>If the pszObjId member of CERT_RDN_ATTR is NULL, the attribute object identifier is ignored.</para>
+			/// <para>If the dwValueType member of CERT_RDN_ATTR is CERT_RDN_ANY_TYPE, the value type is ignored.</para>
+			/// <para>If the pbData member of CERT_RDN_VALUE_BLOB is NULL, any value is a match.</para>
+			/// <para>Currently only an exact, case-sensitive match is supported.</para>
+			/// <para>
+			/// For information about Unicode options, see Remarks. When these values are set, the search is restricted to certificates
+			/// whose encoding type matches dwCertEncodingType.
+			/// </para>
+			/// </summary>
 			[CorrespondingType(typeof(CERT_RDN))]
 			CERT_FIND_SUBJECT_ATTR = (uint)CertCompareFunction.CERT_COMPARE_ATTR << CERT_COMPARE_SHIFT | CertInfoFlags.CERT_INFO_SUBJECT_FLAG,
 
+			/// <summary>
+			/// Search for a certificate with an exact match of the entire issuer name with the name in CERT_NAME_BLOB The search is
+			/// restricted to certificates that match the dwCertEncodingType.
+			/// </summary>
 			[CorrespondingType(typeof(CRYPTOAPI_BLOB))]
 			CERT_FIND_ISSUER_NAME = (uint)CertCompareFunction.CERT_COMPARE_NAME << CERT_COMPARE_SHIFT | CertInfoFlags.CERT_INFO_ISSUER_FLAG,
 
+			/// <summary>
+			/// Searches for a certificate with specified issuer attributes that match attributes in the CERT_RDN structure. If these values
+			/// are set, the function compares attributes of the issuer in a certificate with elements of the CERT_RDN_ATTR array in this
+			/// CERT_RDN structure. Comparisons iterate through the CERT_RDN_ATTR attributes looking for a match with the certificate's
+			/// issuer attributes.
+			/// <para>If the pszObjId member of CERT_RDN_ATTR is NULL, the attribute object identifier is ignored.</para>
+			/// <para>If the dwValueType member of CERT_RDN_ATTR is CERT_RDN_ANY_TYPE, the value type is ignored.</para>
+			/// <para>If the pbData member of CERT_RDN_VALUE_BLOB is NULL, any value is a match.</para>
+			/// <para>
+			/// Currently only an exact, case-sensitive match is supported.For information about Unicode options, see Remarks. When these
+			/// values are set, the search is restricted to certificates whose encoding type matches dwCertEncodingType.
+			/// </para>
+			/// </summary>
 			[CorrespondingType(typeof(CERT_RDN))]
 			CERT_FIND_ISSUER_ATTR = (uint)CertCompareFunction.CERT_COMPARE_ATTR << CERT_COMPARE_SHIFT | CertInfoFlags.CERT_INFO_ISSUER_FLAG,
 
+			/// <summary>
+			/// Searches for a certificate that contains the specified subject name string. The certificate's subject member is converted to
+			/// a name string of the appropriate type using the appropriate form of CertNameToStr formatted as CERT_SIMPLE_NAME_STR. Then a
+			/// case-insensitive substring-within-a-string match is performed. When this value is set, the search is restricted to
+			/// certificates whose encoding type matches dwCertEncodingType.
+			/// </summary>
 			[CorrespondingType(typeof(string))]
 			CERT_FIND_SUBJECT_STR_A = (uint)CertCompareFunction.CERT_COMPARE_NAME_STR_A << CERT_COMPARE_SHIFT | CertInfoFlags.CERT_INFO_SUBJECT_FLAG,
 
+			/// <summary>
+			/// Searches for a certificate that contains the specified subject name string. The certificate's subject member is converted to
+			/// a name string of the appropriate type using the appropriate form of CertNameToStr formatted as CERT_SIMPLE_NAME_STR. Then a
+			/// case-insensitive substring-within-a-string match is performed. When this value is set, the search is restricted to
+			/// certificates whose encoding type matches dwCertEncodingType.
+			/// </summary>
 			[CorrespondingType(typeof(string))]
 			CERT_FIND_SUBJECT_STR_W = (uint)CertCompareFunction.CERT_COMPARE_NAME_STR_W << CERT_COMPARE_SHIFT | CertInfoFlags.CERT_INFO_SUBJECT_FLAG,
 
+			/// <summary>
+			/// Searches for a certificate that contains the specified subject name string. The certificate's subject member is converted to
+			/// a name string of the appropriate type using the appropriate form of CertNameToStr formatted as CERT_SIMPLE_NAME_STR. Then a
+			/// case-insensitive substring-within-a-string match is performed. When this value is set, the search is restricted to
+			/// certificates whose encoding type matches dwCertEncodingType.
+			/// </summary>
 			[CorrespondingType(typeof(string))]
 			CERT_FIND_SUBJECT_STR = CERT_FIND_SUBJECT_STR_W,
 
+			/// <summary>
+			/// Searches for a certificate that contains the specified subject name string. The certificate's subject member is converted to
+			/// a name string of the appropriate type using the appropriate form of CertNameToStr formatted as CERT_SIMPLE_NAME_STR. Then a
+			/// case-insensitive substring-within-a-string match is performed. When this value is set, the search is restricted to
+			/// certificates whose encoding type matches dwCertEncodingType.
+			/// </summary>
 			[CorrespondingType(typeof(string))]
 			CERT_FIND_ISSUER_STR_A = (uint)CertCompareFunction.CERT_COMPARE_NAME_STR_A << CERT_COMPARE_SHIFT | CertInfoFlags.CERT_INFO_ISSUER_FLAG,
 
+			/// <summary>
+			/// Searches for a certificate that contains the specified subject name string. The certificate's subject member is converted to
+			/// a name string of the appropriate type using the appropriate form of CertNameToStr formatted as CERT_SIMPLE_NAME_STR. Then a
+			/// case-insensitive substring-within-a-string match is performed. When this value is set, the search is restricted to
+			/// certificates whose encoding type matches dwCertEncodingType.
+			/// </summary>
 			[CorrespondingType(typeof(string))]
 			CERT_FIND_ISSUER_STR_W = (uint)CertCompareFunction.CERT_COMPARE_NAME_STR_W << CERT_COMPARE_SHIFT | CertInfoFlags.CERT_INFO_ISSUER_FLAG,
 
+			/// <summary>
+			/// Searches for a certificate that contains the specified issuer name string. The certificate's issuer member is converted to a
+			/// name string of the appropriate type using the appropriate form of CertNameToStr formatted as CERT_SIMPLE_NAME_STR. Then a
+			/// case-insensitive substring-within-a-string match is performed. When this value is set, the search is restricted to
+			/// certificates whose encoding type matches dwCertEncodingType.
+			/// <para>
+			/// If the substring match fails and the subject contains an email RDN with Punycode encoded string,
+			/// CERT_NAME_STR_ENABLE_PUNYCODE_FLAG is used to convert the subject to a Unicode string and the substring match is performed again.
+			/// </para>
+			/// </summary>
 			[CorrespondingType(typeof(string))]
 			CERT_FIND_ISSUER_STR = CERT_FIND_ISSUER_STR_W,
 
+			/// <summary>Searches for a certificate that has a CERT_KEY_SPEC_PROP_ID property that matches the key specification in pvFindPara.</summary>
 			[CorrespondingType(typeof(uint))]
 			CERT_FIND_KEY_SPEC = (uint)CertCompareFunction.CERT_COMPARE_KEY_SPEC << CERT_COMPARE_SHIFT,
 
+			/// <summary>
+			/// Searches for a certificate in the store that has either an enhanced key usage extension or an enhanced key usage property
+			/// and a usage identifier that matches the cUsageIdentifier member in the CERT_ENHKEY_USAGE structure.
+			/// <para>
+			/// A certificate has an enhanced key usage extension if it has a CERT_EXTENSION structure with the pszObjId member set to szOID_ENHANCED_KEY_USAGE.
+			/// </para>
+			/// <para>A certificate has an enhanced key usage property if its CERT_ENHKEY_USAGE_PROP_ID identifier is set.</para>
+			/// <para>
+			/// If CERT_FIND_OPTIONAL_ENHKEY_USAGE_FLAG is set in dwFindFlags, certificates without the key usage extension or property are
+			/// also matches. Setting this flag takes precedence over passing NULL in pvFindPara.
+			/// </para>
+			/// <para>If CERT_FIND_EXT_ONLY_ENHKEY_USAGE_FLAG is set, a match is done only on the key usage extension.</para>
+			/// </summary>
 			[CorrespondingType(typeof(CTL_USAGE))]
 			CERT_FIND_ENHKEY_USAGE = (uint)CertCompareFunction.CERT_COMPARE_ENHKEY_USAGE << CERT_COMPARE_SHIFT,
 
+			/// <summary>
+			/// Searches for a certificate that has a szOID_ENHANCED_KEY_USAGE extension or a CERT_CTL_PROP_ID that matches the
+			/// pszUsageIdentifier member of the CTL_USAGE structure.
+			/// </summary>
 			[CorrespondingType(typeof(CTL_USAGE))]
 			CERT_FIND_CTL_USAGE = CERT_FIND_ENHKEY_USAGE,
 
+			/// <summary>
+			/// Searches for a certificate with both an issuer and a serial number that match the issuer and serial number in the CERT_INFO structure.
+			/// </summary>
 			[CorrespondingType(typeof(CERT_INFO))]
 			CERT_FIND_SUBJECT_CERT = (uint)CertCompareFunction.CERT_COMPARE_SUBJECT_CERT << CERT_COMPARE_SHIFT,
 
+			/// <summary>
+			/// Searches for a certificate with an subject that matches the issuer in CERT_CONTEXT. Instead of using
+			/// CertFindCertificateInStore with this value, use the CertGetCertificateChain function.
+			/// </summary>
 			[CorrespondingType(typeof(CERT_CONTEXT))]
 			CERT_FIND_ISSUER_OF = (uint)CertCompareFunction.CERT_COMPARE_ISSUER_OF << CERT_COMPARE_SHIFT,
 
+			/// <summary>Searches for a certificate that is an exact match of the specified certificate context.</summary>
 			[CorrespondingType(typeof(CERT_CONTEXT))]
 			CERT_FIND_EXISTING = (uint)CertCompareFunction.CERT_COMPARE_EXISTING << CERT_COMPARE_SHIFT,
 
+			/// <summary>Find the certificate identified by the specified CERT_ID.</summary>
 			[CorrespondingType(typeof(CERT_ID))]
 			CERT_FIND_CERT_ID = (uint)CertCompareFunction.CERT_COMPARE_CERT_ID << CERT_COMPARE_SHIFT,
 
+			/// <summary>Find a certificate that has either a cross certificate distribution point extension or property.</summary>
 			CERT_FIND_CROSS_CERT_DIST_POINTS = (uint)CertCompareFunction.CERT_COMPARE_CROSS_CERT_DIST_POINTS << CERT_COMPARE_SHIFT,
 
+			/// <summary>Find a certificate whose MD5-hashed public key matches the specified hash.</summary>
 			CERT_FIND_PUBKEY_MD5_HASH = (uint)CertCompareFunction.CERT_COMPARE_PUBKEY_MD5_HASH << CERT_COMPARE_SHIFT,
 
+			/// <summary></summary>
 			CERT_FIND_SUBJECT_INFO_ACCESS = (uint)CertCompareFunction.CERT_COMPARE_SUBJECT_INFO_ACCESS << CERT_COMPARE_SHIFT,
 
+			/// <summary></summary>
 			CERT_FIND_HASH_STR = (uint)CertCompareFunction.CERT_COMPARE_HASH_STR << CERT_COMPARE_SHIFT,
 
+			/// <summary>
+			/// Searches for a certificate that has a private key. The key can be ephemeral or saved on disk. The key can be a legacy
+			/// Cryptography API (CAPI) key or a CNG key.
+			/// </summary>
 			CERT_FIND_HAS_PRIVATE_KEY = (uint)CertCompareFunction.CERT_COMPARE_HAS_PRIVATE_KEY << CERT_COMPARE_SHIFT
 		}
 
+		/// <summary>Flags used by <see cref="CertFindType"/>.</summary>
 		public enum CertInfoFlags : uint
 		{
+			/// <summary>Gets the version.</summary>
 			CERT_INFO_VERSION_FLAG = 1,
+
+			/// <summary>Gets the serial number.</summary>
 			CERT_INFO_SERIAL_NUMBER_FLAG = 2,
+
+			/// <summary>Gets the signature.</summary>
 			CERT_INFO_SIGNATURE_ALGORITHM_FLAG = 3,
+
+			/// <summary>Gets the issuer.</summary>
 			CERT_INFO_ISSUER_FLAG = 4,
+
+			/// <summary>Gets values before.</summary>
 			CERT_INFO_NOT_BEFORE_FLAG = 5,
+
+			/// <summary>Gets values after.</summary>
 			CERT_INFO_NOT_AFTER_FLAG = 6,
+
+			/// <summary>Gets the subject.</summary>
 			CERT_INFO_SUBJECT_FLAG = 7,
+
+			/// <summary>Gets the subject's public key.</summary>
 			CERT_INFO_SUBJECT_PUBLIC_KEY_INFO_FLAG = 8,
+
+			/// <summary>Gets the issuer's UID.</summary>
 			CERT_INFO_ISSUER_UNIQUE_ID_FLAG = 9,
+
+			/// <summary>Gets the subject's UID.</summary>
 			CERT_INFO_SUBJECT_UNIQUE_ID_FLAG = 10,
+
+			/// <summary>Gets the extended info.</summary>
 			CERT_INFO_EXTENSION_FLAG = 11,
 		}
 
+		/// <summary>
+		/// A system store is a collection that consists of one or more physical sibling stores. For each system store, there are predefined
+		/// physical sibling stores. After opening a system store such as MY at CERT_SYSTEM_STORE_CURRENT_USER, the store provider calls
+		/// CertOpenStore to open each of the physical stores in the system store collection. In the open process, each of these physical
+		/// stores is added to the system store collection using CertAddStoreToCollection. All certificates in those physical stores are
+		/// available through the logical system store collection.
+		/// </summary>
 		[PInvokeData("wincrypt.h", MSDNShortId = "fd9cb23b-e4a3-41cb-8f0a-30f4e813c6ac")]
 		public enum CertSystemStore : uint
 		{
+			/// <summary>Stores at the registry location <c>HKEY_CURRENT_USER\Software\Microsoft\SystemCertificates</c>.</summary>
 			CERT_SYSTEM_STORE_CURRENT_USER = CertSystemStoreId.CERT_SYSTEM_STORE_CURRENT_USER_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
+
+			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Microsoft\SystemCertificates</c>.</summary>
 			CERT_SYSTEM_STORE_LOCAL_MACHINE = CertSystemStoreId.CERT_SYSTEM_STORE_LOCAL_MACHINE_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
+
+			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Microsoft\Cryptography\Services\ServiceName\SystemCertificates</c>.</summary>
 			CERT_SYSTEM_STORE_CURRENT_SERVICE = CertSystemStoreId.CERT_SYSTEM_STORE_CURRENT_SERVICE_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
+
+			/// <summary>
+			/// Stores at the registry location
+			/// <c>HKEY_LOCAL_MACHINE\Software\Microsoft\Cryptography\Services\ServiceName\SystemCertificates</c> and with keys starting
+			/// with [ServiceName].
+			/// </summary>
 			CERT_SYSTEM_STORE_SERVICES = CertSystemStoreId.CERT_SYSTEM_STORE_SERVICES_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
+
+			/// <summary>
+			/// Stores at the registry location <c>HKEY_USERS\UserName\Software\Microsoft\SystemCertificates</c> and with keys starting with [userid].
+			/// </summary>
 			CERT_SYSTEM_STORE_USERS = CertSystemStoreId.CERT_SYSTEM_STORE_USERS_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
+
+			/// <summary>Stores at the registry location <c>HKEY_CURRENT_USER\Software\Policy\Microsoft\SystemCertificates</c>.</summary>
 			CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY = CertSystemStoreId.CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
+
+			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Policy\Microsoft\SystemCertificates</c>.</summary>
 			CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY = CertSystemStoreId.CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
+
+			/// <summary>
+			/// CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE contains certificates shared across domains in the enterprise and downloaded from
+			/// the global enterprise directory. To synchronize the client's enterprise store, the enterprise directory is polled every
+			/// eight hours and certificates are downloaded automatically in the background.
+			/// </summary>
 			CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE = CertSystemStoreId.CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
+
+			/// <summary/>
 			CERT_SYSTEM_STORE_LOCAL_MACHINE_WCOS = CertSystemStoreId.CERT_SYSTEM_STORE_LOCAL_MACHINE_WCOS_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
 		}
 
+		/// <summary>Values used by <see cref="CertSystemStore"/>.</summary>
 		public enum CertSystemStoreId : uint
 		{
+			/// <summary>Stores at the registry location <c>HKEY_CURRENT_USER\Software\Microsoft\SystemCertificates</c>.</summary>
 			CERT_SYSTEM_STORE_CURRENT_USER_ID = 1,
+
+			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Microsoft\SystemCertificates</c>.</summary>
 			CERT_SYSTEM_STORE_LOCAL_MACHINE_ID = 2,
+
+			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Microsoft\Cryptography\Services\ServiceName\SystemCertificates</c>.</summary>
 			CERT_SYSTEM_STORE_CURRENT_SERVICE_ID = 4,
+
+			/// <summary>
+			/// Stores at the registry location
+			/// <c>HKEY_LOCAL_MACHINE\Software\Microsoft\Cryptography\Services\ServiceName\SystemCertificates</c> and with keys starting
+			/// with [ServiceName].
+			/// </summary>
 			CERT_SYSTEM_STORE_SERVICES_ID = 5,
+
+			/// <summary>
+			/// Stores at the registry location <c>HKEY_USERS\UserName\Software\Microsoft\SystemCertificates</c> and with keys starting with [userid].
+			/// </summary>
 			CERT_SYSTEM_STORE_USERS_ID = 6,
+
+			/// <summary>Stores at the registry location <c>HKEY_CURRENT_USER\Software\Policy\Microsoft\SystemCertificates</c>.</summary>
 			CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY_ID = 7,
+
+			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Policy\Microsoft\SystemCertificates</c>.</summary>
 			CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY_ID = 8,
+
+			/// <summary>
+			/// CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE contains certificates shared across domains in the enterprise and downloaded from
+			/// the global enterprise directory. To synchronize the client's enterprise store, the enterprise directory is polled every
+			/// eight hours and certificates are downloaded automatically in the background.
+			/// </summary>
 			CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE_ID = 9,
+
+			/// <summary/>
 			CERT_SYSTEM_STORE_LOCAL_MACHINE_WCOS_ID = 10,
 		}
 
@@ -435,8 +753,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// The <c>CertCloseStore</c> function closes a certificate store handle and reduces the reference count on the store. There needs to
-		/// be a corresponding call to <c>CertCloseStore</c> for each successful call to the CertOpenStore or CertDuplicateStore functions.
+		/// The <c>CertCloseStore</c> function closes a certificate store handle and reduces the reference count on the store. There needs
+		/// to be a corresponding call to <c>CertCloseStore</c> for each successful call to the CertOpenStore or CertDuplicateStore functions.
 		/// </summary>
 		/// <param name="hCertStore">Handle of the certificate store to be closed.</param>
 		/// <param name="dwFlags">
@@ -446,8 +764,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// Set flags can force the freeing of memory for all of a store's certificate, certificate revocation list (CRL), and certificate
-		/// trust list (CTL) contexts when the store is closed. Flags can also be set that check whether all of the store's certificate, CRL,
-		/// and CTL contexts have been freed. The following values are defined.
+		/// trust list (CTL) contexts when the store is closed. Flags can also be set that check whether all of the store's certificate,
+		/// CRL, and CTL contexts have been freed. The following values are defined.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -478,8 +796,8 @@ namespace Vanara.PInvoke
 		/// value is <c>TRUE</c>.
 		/// </para>
 		/// <para>
-		/// If CERT_CLOSE_STORE_CHECK_FLAG is set and memory for one or more contexts associated with the store remains allocated, the return
-		/// value is <c>FALSE</c>. The store is always closed even when the function returns <c>FALSE</c>. For details, see Remarks.
+		/// If CERT_CLOSE_STORE_CHECK_FLAG is set and memory for one or more contexts associated with the store remains allocated, the
+		/// return value is <c>FALSE</c>. The store is always closed even when the function returns <c>FALSE</c>. For details, see Remarks.
 		/// </para>
 		/// <para>
 		/// GetLastError is set to CRYPT_E_PENDING_CLOSE if memory for contexts associated with the store remains allocated. Any existing
@@ -495,9 +813,9 @@ namespace Vanara.PInvoke
 		/// memory allocated for a context has been freed, any pointers to that context become not valid.
 		/// </para>
 		/// <para>
-		/// By default, memory used to store contexts with reference count greater than zero is not freed when a certificate store is closed.
-		/// References to those contexts remain valid; however, this can cause memory leaks. Also, any changes made to the properties of a
-		/// context after the store has been closed are not persisted.
+		/// By default, memory used to store contexts with reference count greater than zero is not freed when a certificate store is
+		/// closed. References to those contexts remain valid; however, this can cause memory leaks. Also, any changes made to the
+		/// properties of a context after the store has been closed are not persisted.
 		/// </para>
 		/// <para>
 		/// To force the freeing of memory for all contexts associated with a store, set CERT_CLOSE_STORE_FORCE_FLAG. With this flag set,
@@ -513,8 +831,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If CERT_STORE_NO_CRYPT_RELEASE_FLAG was not set when the store was opened, closing a store releases its CSP handle.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certclosestore BOOL CertCloseStore( HCERTSTORE hCertStore,
-		// DWORD dwFlags );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certclosestore BOOL CertCloseStore( HCERTSTORE
+		// hCertStore, DWORD dwFlags );
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "a93fdd65-359e-4046-910d-347c3af01280")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -573,8 +891,8 @@ namespace Vanara.PInvoke
 		/// that contains a remote computer name and, if available, a service/user name, for example, "service_name", "\computer_name", or "computer_name".
 		/// </para>
 		/// <para>
-		/// If only the computer_name is specified, it must have either the leading backslashes (\) or a trailing backslash (). Otherwise, it
-		/// is interpreted as the service_name or user_name.
+		/// If only the computer_name is specified, it must have either the leading backslashes (\) or a trailing backslash (). Otherwise,
+		/// it is interpreted as the service_name or user_name.
 		/// </para>
 		/// </param>
 		/// <param name="pvArg">
@@ -583,8 +901,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="pfnEnum">
 		/// A pointer to the callback function used to show the details for each system store. This callback function determines the content
-		/// and format for the presentation of information on each system store. The application must provide the CertEnumSystemStoreCallback
-		/// callback function.
+		/// and format for the presentation of information on each system store. The application must provide the
+		/// CertEnumSystemStoreCallback callback function.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
@@ -658,8 +976,8 @@ namespace Vanara.PInvoke
 		/// that contains a remote computer name and, if available, a service/user name, for example, "service_name", "\computer_name", or "computer_name".
 		/// </para>
 		/// <para>
-		/// If only the computer_name is specified, it must have either the leading backslashes (\) or a trailing backslash (). Otherwise, it
-		/// is interpreted as the service_name or user_name.
+		/// If only the computer_name is specified, it must have either the leading backslashes (\) or a trailing backslash (). Otherwise,
+		/// it is interpreted as the service_name or user_name.
 		/// </para>
 		/// </param>
 		/// <param name="pvArg">
@@ -668,8 +986,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="pfnEnum">
 		/// A pointer to the callback function used to show the details for each system store. This callback function determines the content
-		/// and format for the presentation of information on each system store. The application must provide the CertEnumSystemStoreCallback
-		/// callback function.
+		/// and format for the presentation of information on each system store. The application must provide the
+		/// CertEnumSystemStoreCallback callback function.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
@@ -712,8 +1030,8 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </param>
 		/// <param name="dwFindFlags">
-		/// Used with some dwFindType values to modify the search criteria. For most dwFindType values, dwFindFlags is not used and should be
-		/// set to zero. For detailed information, see Remarks.
+		/// Used with some dwFindType values to modify the search criteria. For most dwFindType values, dwFindFlags is not used and should
+		/// be set to zero. For detailed information, see Remarks.
 		/// </param>
 		/// <param name="dwFindType">
 		/// <para>
@@ -776,14 +1094,14 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CERT_FIND_ISSUER_ATTR</term>
 		/// <term>
-		/// Data type of pvFindPara: CERT_RDN structure. Searches for a certificate with specified issuer attributes that match attributes in
-		/// the CERT_RDN structure. If these values are set, the function compares attributes of the issuer in a certificate with elements of
-		/// the CERT_RDN_ATTR array in this CERT_RDN structure. Comparisons iterate through the CERT_RDN_ATTR attributes looking for a match
-		/// with the certificate's issuer attributes. If the pszObjId member of CERT_RDN_ATTR is NULL, the attribute object identifier is
-		/// ignored. If the dwValueType member of CERT_RDN_ATTR is CERT_RDN_ANY_TYPE, the value type is ignored. If the pbData member of
-		/// CERT_RDN_VALUE_BLOB is NULL, any value is a match. Currently only an exact, case-sensitive match is supported. For information
-		/// about Unicode options, see Remarks. When these values are set, the search is restricted to certificates whose encoding type
-		/// matches dwCertEncodingType.
+		/// Data type of pvFindPara: CERT_RDN structure. Searches for a certificate with specified issuer attributes that match attributes
+		/// in the CERT_RDN structure. If these values are set, the function compares attributes of the issuer in a certificate with
+		/// elements of the CERT_RDN_ATTR array in this CERT_RDN structure. Comparisons iterate through the CERT_RDN_ATTR attributes looking
+		/// for a match with the certificate's issuer attributes. If the pszObjId member of CERT_RDN_ATTR is NULL, the attribute object
+		/// identifier is ignored. If the dwValueType member of CERT_RDN_ATTR is CERT_RDN_ANY_TYPE, the value type is ignored. If the pbData
+		/// member of CERT_RDN_VALUE_BLOB is NULL, any value is a match. Currently only an exact, case-sensitive match is supported. For
+		/// information about Unicode options, see Remarks. When these values are set, the search is restricted to certificates whose
+		/// encoding type matches dwCertEncodingType.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -841,8 +1159,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CERT_FIND_PUBLIC_KEY</term>
 		/// <term>
-		/// Data type of pvFindPara: CERT_PUBLIC_KEY_INFO structure. Searches for a certificate with a public key that matches the public key
-		/// in the CERT_PUBLIC_KEY_INFO structure.
+		/// Data type of pvFindPara: CERT_PUBLIC_KEY_INFO structure. Searches for a certificate with a public key that matches the public
+		/// key in the CERT_PUBLIC_KEY_INFO structure.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -882,8 +1200,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CERT_FIND_SUBJECT_NAME</term>
 		/// <term>
-		/// Data type of pvFindPara: CERT_NAME_BLOB structure. Searches for a certificate with an exact match of the entire subject name with
-		/// the name in the CERT_NAME_BLOB structure. The search is restricted to certificates that match the value of dwCertEncodingType.
+		/// Data type of pvFindPara: CERT_NAME_BLOB structure. Searches for a certificate with an exact match of the entire subject name
+		/// with the name in the CERT_NAME_BLOB structure. The search is restricted to certificates that match the value of dwCertEncodingType.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -953,13 +1271,13 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// The CERT_UNICODE_IS_RDN_ATTRS_FLAG dwFindFlags value is used only with the CERT_FIND_SUBJECT_ATTR and CERT_FIND_ISSUER_ATTR
 		/// values for dwFindType. CERT_UNICODE_IS_RDN_ATTRS_FLAG must be set if the CERT_RDN_ATTR structure pointed to by pvFindPara was
-		/// initialized with Unicode strings. Before any comparison is made, the string to be matched is converted by using X509_UNICODE_NAME
-		/// to provide for Unicode comparisons.
+		/// initialized with Unicode strings. Before any comparison is made, the string to be matched is converted by using
+		/// X509_UNICODE_NAME to provide for Unicode comparisons.
 		/// </para>
 		/// <para>The following dwFindFlags values are used only with the CERT_FIND_ENKEY_USAGE value for dwFindType:</para>
 		/// <para>
-		/// CertDuplicateCertificateContext can be called to make a duplicate of the returned context. The returned context can be added to a
-		/// different certificate store by using CertAddCertificateContextToStore, or a link to that certificate context can be added to a
+		/// CertDuplicateCertificateContext can be called to make a duplicate of the returned context. The returned context can be added to
+		/// a different certificate store by using CertAddCertificateContextToStore, or a link to that certificate context can be added to a
 		/// store that is not a collection store by using CertAddCertificateLinkToStore.
 		/// </para>
 		/// <para>
@@ -1065,8 +1383,8 @@ namespace Vanara.PInvoke
 		public static extern SafeHCERTSTORE CertOpenSystemStore([Optional] IntPtr hProv, string szSubsystemProtocol);
 
 		/// <summary>
-		/// The CERT_CONTEXT structure contains both the encoded and decoded representations of a certificate. A certificate context returned
-		/// by one of the functions defined in Wincrypt.h must be freed by calling the CertFreeCertificateContext function. The
+		/// The CERT_CONTEXT structure contains both the encoded and decoded representations of a certificate. A certificate context
+		/// returned by one of the functions defined in Wincrypt.h must be freed by calling the CertFreeCertificateContext function. The
 		/// CertDuplicateCertificateContext function can be called to make a duplicate copy (which also must be freed by calling CertFreeCertificateContext).
 		/// </summary>
 		[PInvokeData("wincrypt.h")]
@@ -1190,9 +1508,9 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Date and time before which the certificate is not valid. For dates between 1950 and 2049 inclusive, the date and time is
 			/// encoded Coordinated Universal Time (Greenwich Mean Time) format in the form YYMMDDHHMMSS. This member uses a two-digit year
-			/// and is precise to seconds. For dates before 1950 or after 2049, encoded generalized time is used. Encoded generalized time is
-			/// in the form YYYYMMDDHHMMSSMMM, using a four-digit year, and is precise to milliseconds. Even though generalized time supports
-			/// millisecond resolution, the NotBefore time is only precise to seconds.
+			/// and is precise to seconds. For dates before 1950 or after 2049, encoded generalized time is used. Encoded generalized time
+			/// is in the form YYYYMMDDHHMMSSMMM, using a four-digit year, and is precise to milliseconds. Even though generalized time
+			/// supports millisecond resolution, the NotBefore time is only precise to seconds.
 			/// </summary>
 			public FILETIME NotBefore;
 
@@ -1200,8 +1518,8 @@ namespace Vanara.PInvoke
 			/// Date and time after which the certificate is not valid. For dates between 1950 and 2049 inclusive, the date and time is
 			/// encoded Coordinated Universal Time format in the form YYMMDDHHMMSS. This member uses a two-digit year and is precise to
 			/// seconds. For dates before 1950 or after 2049, encoded generalized time is used. Encoded generalized time is in the form
-			/// YYYYMMDDHHMMSSMMM, using a four-digit year, and is precise to milliseconds. Even though generalized time supports millisecond
-			/// resolution, the NotAfter time is only precise to seconds.
+			/// YYYYMMDDHHMMSSMMM, using a four-digit year, and is precise to milliseconds. Even though generalized time supports
+			/// millisecond resolution, the NotAfter time is only precise to seconds.
 			/// </summary>
 			public FILETIME NotAfter;
 
@@ -1242,8 +1560,8 @@ namespace Vanara.PInvoke
 			public CRYPTOAPI_BLOB Issuer;
 
 			/// <summary>
-			/// A CRYPT_INTEGER_BLOB structure that contains the serial number of the certificate. The combination of the issuer name and the
-			/// serial number is a unique identifier of a certificate.
+			/// A CRYPT_INTEGER_BLOB structure that contains the serial number of the certificate. The combination of the issuer name and
+			/// the serial number is a unique identifier of a certificate.
 			/// </summary>
 			public CRYPTOAPI_BLOB SerialNumber;
 		}
@@ -1486,8 +1804,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>CERT_TRUST_INVALID_POLICY_CONSTRAINTS 0x00000200</term>
 			/// <term>
-			/// The certificate or one of the certificates in the certificate chain has a policy constraints extension, and one of the issued
-			/// certificates has a disallowed policy mapping extension or does not have a required issuance policies extension.
+			/// The certificate or one of the certificates in the certificate chain has a policy constraints extension, and one of the
+			/// issued certificates has a disallowed policy mapping extension or does not have a required issuance policies extension.
 			/// </term>
 			/// </item>
 			/// <item>
@@ -1512,8 +1830,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>CERT_TRUST_HAS_NOT_DEFINED_NAME_CONSTRAINT 0x00002000</term>
 			/// <term>
-			/// The certificate or one of the certificates in the certificate chain has a name constraints extension and a name constraint is
-			/// missing for one of the name choices in the end certificate.
+			/// The certificate or one of the certificates in the certificate chain has a name constraints extension and a name constraint
+			/// is missing for one of the name choices in the end certificate.
 			/// </term>
 			/// </item>
 			/// <item>
@@ -1651,8 +1969,8 @@ namespace Vanara.PInvoke
 			/// <term>CERT_TRUST_IS_CA_TRUSTED 0x00004000</term>
 			/// <term>
 			/// A non-self-signed intermediate CA certificate was found in the store pointed to by the hExclusiveRoot member of the
-			/// CERT_CHAIN_ENGINE_CONFIG structure. The CA certificate is treated as a trust anchor for the certificate chain. This flag will
-			/// only be set if the CERT_CHAIN_EXCLUSIVE_ENABLE_CA_FLAG value is set in the dwExclusiveFlags member of the
+			/// CERT_CHAIN_ENGINE_CONFIG structure. The CA certificate is treated as a trust anchor for the certificate chain. This flag
+			/// will only be set if the CERT_CHAIN_EXCLUSIVE_ENABLE_CA_FLAG value is set in the dwExclusiveFlags member of the
 			/// CERT_CHAIN_ENGINE_CONFIG structure. If this flag is set, the CERT_TRUST_IS_SELF_SIGNED and the
 			/// CERT_TRUST_IS_PARTIAL_CHAINdwErrorStatus flags will not be set. Windows 8 and Windows Server 2012: Support for this flag begins.
 			/// </term>
@@ -1780,79 +2098,46 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCERTSTORE"/> that is disposed using <see cref="CertCloseStore"/>.</summary>
-		public class SafeHCERTSTORE : SafeHANDLE
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeHCERTSTORE"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeHCERTSTORE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeHCERTSTORE"/> class.</summary>
-			private SafeHCERTSTORE() : base() { }
-
-			/// <summary>
-			/// Typically, this property uses the default value zero. The default is to close the store with memory remaining allocated for
-			/// contexts that have not been freed. In this case, no check is made to determine whether memory for contexts remains allocated.
-			/// <para>
-			/// Set flags can force the freeing of memory for all of a store's certificate, certificate revocation list (CRL), and
-			/// certificate trust list (CTL) contexts when the store is closed. Flags can also be set that check whether all of the store's
-			/// certificate, CRL, and CTL contexts have been freed.The following values are defined.
-			/// </para>
-			/// </summary>
-			public CertCloseStoreFlags Flag { get; set; } = 0;
-
-			/// <summary>Performs an implicit conversion from <see cref="SafeHCERTSTORE"/> to <see cref="HCERTSTORE"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HCERTSTORE(SafeHCERTSTORE h) => h.handle;
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => CertCloseStore(handle, Flag);
-		}
-
-		/// <summary>Provides a handle to a CryptoAPI provider.</summary>
+		/// <summary>Provides a handle to a CryptoApi hash.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct HCRYPTPROV : IHandle
+		public struct HCRYPTHASH : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
-			/// <summary>Initializes a new instance of the <see cref="HCRYPTPROV"/> struct.</summary>
+			/// <summary>Initializes a new instance of the <see cref="HCRYPTHASH"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			public HCRYPTPROV(IntPtr preexistingHandle) => handle = preexistingHandle;
+			public HCRYPTHASH(IntPtr preexistingHandle) => handle = preexistingHandle;
 
-			/// <summary>Returns an invalid handle by instantiating a <see cref="HCRYPTPROV"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HCRYPTPROV NULL => new HCRYPTPROV(IntPtr.Zero);
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HCRYPTHASH"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HCRYPTHASH NULL => new HCRYPTHASH(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
 
-			/// <summary>Performs an explicit conversion from <see cref="HCRYPTPROV"/> to <see cref="IntPtr"/>.</summary>
+			/// <summary>Performs an explicit conversion from <see cref="HCRYPTHASH"/> to <see cref="IntPtr"/>.</summary>
 			/// <param name="h">The handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static explicit operator IntPtr(HCRYPTPROV h) => h.handle;
+			public static explicit operator IntPtr(HCRYPTHASH h) => h.handle;
 
-			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCRYPTPROV"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCRYPTHASH"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HCRYPTPROV(IntPtr h) => new HCRYPTPROV(h);
+			public static implicit operator HCRYPTHASH(IntPtr h) => new HCRYPTHASH(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
 			/// <param name="h2">The second handle.</param>
 			/// <returns>The result of the operator.</returns>
-			public static bool operator !=(HCRYPTPROV h1, HCRYPTPROV h2) => !(h1 == h2);
+			public static bool operator !=(HCRYPTHASH h1, HCRYPTHASH h2) => !(h1 == h2);
 
 			/// <summary>Implements the operator ==.</summary>
 			/// <param name="h1">The first handle.</param>
 			/// <param name="h2">The second handle.</param>
 			/// <returns>The result of the operator.</returns>
-			public static bool operator ==(HCRYPTPROV h1, HCRYPTPROV h2) => h1.Equals(h2);
+			public static bool operator ==(HCRYPTHASH h1, HCRYPTHASH h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HCRYPTPROV h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HCRYPTHASH h ? handle == h.handle : false;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -1865,7 +2150,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HCRYPTKEY : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HCRYPTKEY"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1909,52 +2194,85 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
-		/// <summary>Provides a handle to a CryptoApi hash.</summary>
+		/// <summary>Provides a handle to a CryptoAPI provider.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct HCRYPTHASH : IHandle
+		public struct HCRYPTPROV : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
-			/// <summary>Initializes a new instance of the <see cref="HCRYPTHASH"/> struct.</summary>
+			/// <summary>Initializes a new instance of the <see cref="HCRYPTPROV"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			public HCRYPTHASH(IntPtr preexistingHandle) => handle = preexistingHandle;
+			public HCRYPTPROV(IntPtr preexistingHandle) => handle = preexistingHandle;
 
-			/// <summary>Returns an invalid handle by instantiating a <see cref="HCRYPTHASH"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HCRYPTHASH NULL => new HCRYPTHASH(IntPtr.Zero);
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HCRYPTPROV"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HCRYPTPROV NULL => new HCRYPTPROV(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
 
-			/// <summary>Performs an explicit conversion from <see cref="HCRYPTHASH"/> to <see cref="IntPtr"/>.</summary>
+			/// <summary>Performs an explicit conversion from <see cref="HCRYPTPROV"/> to <see cref="IntPtr"/>.</summary>
 			/// <param name="h">The handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static explicit operator IntPtr(HCRYPTHASH h) => h.handle;
+			public static explicit operator IntPtr(HCRYPTPROV h) => h.handle;
 
-			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCRYPTHASH"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCRYPTPROV"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HCRYPTHASH(IntPtr h) => new HCRYPTHASH(h);
+			public static implicit operator HCRYPTPROV(IntPtr h) => new HCRYPTPROV(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
 			/// <param name="h2">The second handle.</param>
 			/// <returns>The result of the operator.</returns>
-			public static bool operator !=(HCRYPTHASH h1, HCRYPTHASH h2) => !(h1 == h2);
+			public static bool operator !=(HCRYPTPROV h1, HCRYPTPROV h2) => !(h1 == h2);
 
 			/// <summary>Implements the operator ==.</summary>
 			/// <param name="h1">The first handle.</param>
 			/// <param name="h2">The second handle.</param>
 			/// <returns>The result of the operator.</returns>
-			public static bool operator ==(HCRYPTHASH h1, HCRYPTHASH h2) => h1.Equals(h2);
+			public static bool operator ==(HCRYPTPROV h1, HCRYPTPROV h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HCRYPTHASH h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HCRYPTPROV h ? handle == h.handle : false;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
 
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCERTSTORE"/> that is disposed using <see cref="CertCloseStore"/>.</summary>
+		public class SafeHCERTSTORE : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHCERTSTORE"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHCERTSTORE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHCERTSTORE"/> class.</summary>
+			private SafeHCERTSTORE() : base() { }
+
+			/// <summary>
+			/// Typically, this property uses the default value zero. The default is to close the store with memory remaining allocated for
+			/// contexts that have not been freed. In this case, no check is made to determine whether memory for contexts remains allocated.
+			/// <para>
+			/// Set flags can force the freeing of memory for all of a store's certificate, certificate revocation list (CRL), and
+			/// certificate trust list (CTL) contexts when the store is closed. Flags can also be set that check whether all of the store's
+			/// certificate, CRL, and CTL contexts have been freed.The following values are defined.
+			/// </para>
+			/// </summary>
+			public CertCloseStoreFlags Flag { get; set; } = 0;
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHCERTSTORE"/> to <see cref="HCERTSTORE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HCERTSTORE(SafeHCERTSTORE h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => CertCloseStore(handle, Flag);
 		}
 
 		/*CertAddCertificateContextToStore

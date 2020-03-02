@@ -112,34 +112,63 @@ namespace Vanara.PInvoke
 		/// <summary>Magic numbers for the various blobs.</summary>
 		public enum BlobMagicNumber
 		{
+			/// <summary/>
 			BCRYPT_DH_PARAMETERS_MAGIC = 0x4d504844,
+			/// <summary/>
 			BCRYPT_DH_PRIVATE_MAGIC = 0x56504844,
+			/// <summary/>
 			BCRYPT_DH_PUBLIC_MAGIC = 0x42504844,
+			/// <summary/>
 			BCRYPT_DSA_PARAMETERS_MAGIC_V2 = 0x324d5044,
+			/// <summary/>
 			BCRYPT_DSA_PRIVATE_MAGIC = 0x56505344,
+			/// <summary/>
 			BCRYPT_DSA_PRIVATE_MAGIC_V2 = 0x32565044,
+			/// <summary/>
 			BCRYPT_DSA_PUBLIC_MAGIC = 0x42505344,
+			/// <summary/>
 			BCRYPT_DSA_PUBLIC_MAGIC_V2 = 0x32425044,
+			/// <summary/>
 			BCRYPT_ECC_PARAMETERS_MAGIC = 0x50434345,
+			/// <summary/>
 			BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC = 0x564B4345,
+			/// <summary/>
 			BCRYPT_ECDH_PRIVATE_P256_MAGIC = 0x324B4345,
+			/// <summary/>
 			BCRYPT_ECDH_PRIVATE_P384_MAGIC = 0x344B4345,
+			/// <summary/>
 			BCRYPT_ECDH_PRIVATE_P521_MAGIC = 0x364B4345,
+			/// <summary/>
 			BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC = 0x504B4345,
+			/// <summary/>
 			BCRYPT_ECDH_PUBLIC_P256_MAGIC = 0x314B4345,
+			/// <summary/>
 			BCRYPT_ECDH_PUBLIC_P384_MAGIC = 0x334B4345,
+			/// <summary/>
 			BCRYPT_ECDH_PUBLIC_P521_MAGIC = 0x354B4345,
+			/// <summary/>
 			BCRYPT_ECDSA_PRIVATE_GENERIC_MAGIC = 0x56444345,
+			/// <summary/>
 			BCRYPT_ECDSA_PRIVATE_P256_MAGIC = 0x32534345,
+			/// <summary/>
 			BCRYPT_ECDSA_PRIVATE_P384_MAGIC = 0x34534345,
+			/// <summary/>
 			BCRYPT_ECDSA_PRIVATE_P521_MAGIC = 0x36534345,
+			/// <summary/>
 			BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC = 0x50444345,
+			/// <summary/>
 			BCRYPT_ECDSA_PUBLIC_P256_MAGIC = 0x31534345,
+			/// <summary/>
 			BCRYPT_ECDSA_PUBLIC_P384_MAGIC = 0x33534345,
+			/// <summary/>
 			BCRYPT_ECDSA_PUBLIC_P521_MAGIC = 0x35534345,
+			/// <summary/>
 			BCRYPT_KEY_DATA_BLOB_MAGIC = 0x4d42444b,
+			/// <summary/>
 			BCRYPT_RSAFULLPRIVATE_MAGIC = 0x33415352,
+			/// <summary/>
 			BCRYPT_RSAPRIVATE_MAGIC = 0x32415352,
+			/// <summary/>
 			BCRYPT_RSAPUBLIC_MAGIC = 0x31415352,
 		}
 
@@ -330,6 +359,7 @@ namespace Vanara.PInvoke
 			BCRYPT_CAPI_AES_FLAG = 0,
 		}
 
+		/// <summary>The padding scheme.</summary>
 		[Flags]
 		public enum PaddingScheme : uint
 		{
@@ -4129,7 +4159,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("bcrypt.h", MSDNShortId = "81bdfd47-7001-4e63-a8b3-33dae99f2c66")]
 		public static string[] BCryptEnumContextFunctions(ContextConfigTable dwTable, string pszContext, InterfaceId dwInterface)
 		{
-			BCryptEnumContextFunctions(dwTable, pszContext, dwInterface, out var sz, out var buf).ThrowIfFailed();
+			BCryptEnumContextFunctions(dwTable, pszContext, dwInterface, out _, out var buf).ThrowIfFailed();
 			return buf.ToStructure<CRYPT_CONTEXT_FUNCTIONS>()._rgpszFunctions.ToArray();
 		}
 
@@ -4250,7 +4280,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("bcrypt.h", MSDNShortId = "02646a80-6e93-4169-83da-0488ff3da56f")]
 		public static string[] BCryptEnumContexts(ContextConfigTable dwTable)
 		{
-			BCryptEnumContexts(dwTable, out var sz, out var buf).ThrowIfFailed();
+			BCryptEnumContexts(dwTable, out _, out var buf).ThrowIfFailed();
 			return buf.ToStructure<CRYPT_CONTEXTS>()._rgpszContexts.ToArray();
 		}
 
@@ -4400,7 +4430,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("bcrypt.h", MSDNShortId = "a01adfec-dbe0-4817-af97-63163760fafc")]
 		public static string[] BCryptEnumRegisteredProviders()
 		{
-			BCryptEnumRegisteredProviders(out var sz, out var buf).ThrowIfFailed();
+			BCryptEnumRegisteredProviders(out _, out var buf).ThrowIfFailed();
 			return buf.ToStructure<CRYPT_PROVIDERS>()._rgpszProviders.ToArray();
 		}
 
@@ -5651,12 +5681,10 @@ namespace Vanara.PInvoke
 		[PInvokeData("bcrypt.h", MSDNShortId = "5c62ca3a-843e-41a7-9340-41785fbb15f4")]
 		public static T BCryptGetProperty<T>(BCRYPT_HANDLE hObject, string pszProperty)
 		{
-			using (var mem = SafeCoTaskMemHandle.CreateFromStructure<T>())
-			{
-				BCryptGetProperty(hObject, pszProperty, mem, (uint)mem.Size, out var sz).ThrowIfFailed();
-				if (mem.Size != sz) throw new InvalidCastException("Requested type and system defined sizes do not match.");
-				return mem.ToStructure<T>();
-			}
+			using var mem = SafeCoTaskMemHandle.CreateFromStructure<T>();
+			BCryptGetProperty(hObject, pszProperty, mem, (uint)mem.Size, out var sz).ThrowIfFailed();
+			if (mem.Size != sz) throw new InvalidCastException("Requested type and system defined sizes do not match.");
+			return mem.ToStructure<T>();
 		}
 
 		/// <summary>
@@ -9285,8 +9313,10 @@ namespace Vanara.PInvoke
 			internal IEnumerable<string> _rgpszProviders => rgpszProviders.ToStringEnum((int)cProviders, CharSet.Unicode);
 		}
 
+		/// <summary>Blob type string references.</summary>
 		public static class BlobType
 		{
+			/// <summary/>
 			public const string BCRYPT_AES_WRAP_KEY_BLOB = "Rfc3565KeyWrapBlob";
 
 			/// <summary>
@@ -9317,8 +9347,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public const string BCRYPT_DSA_PUBLIC_BLOB = "DSAPUBLICBLOB";
 
+			/// <summary/>
 			public const string BCRYPT_ECCFULLPRIVATE_BLOB = "ECCFULLPRIVATEBLOB";
 
+			/// <summary/>
 			public const string BCRYPT_ECCFULLPUBLIC_BLOB = "ECCFULLPUBLICBLOB";
 
 			/// <summary>
@@ -9332,8 +9364,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public const string BCRYPT_ECCPUBLIC_BLOB = "ECCPUBLICBLOB";
 
+			/// <summary/>
 			public const string BCRYPT_KEY_DATA_BLOB = "KeyDataBlob";
 
+			/// <summary/>
 			public const string BCRYPT_OPAQUE_KEY_BLOB = "OpaqueKeyBlob";
 
 			/// <summary>
@@ -9348,6 +9382,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public const string BCRYPT_PUBLIC_KEY_BLOB = "PUBLICBLOB";
 
+			/// <summary/>
 			public const string BCRYPT_RSAFULLPRIVATE_BLOB = "RSAFULLPRIVATEBLOB";
 
 			/// <summary>
@@ -9398,9 +9433,11 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public const string LEGACY_RSAPUBLIC_BLOB = "CAPIPUBLICBLOB";
 
+			/// <summary/>
 			public const string SSL_ECCPUBLIC_BLOB = "SSLECCPUBLICBLOB";
 		}
 
+		/// <summary>Chain mode string references.</summary>
 		public static class ChainingMode
 		{
 			/// <summary>Undocumented</summary>

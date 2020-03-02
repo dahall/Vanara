@@ -57,6 +57,7 @@ namespace Vanara.PInvoke
 			ACCESS_PERM = 0x40,
 		}
 
+		/// <summary>A bitmask of flags that specify information about the shared resource.</summary>
 		[PInvokeData("lmshare.h", MSDNShortId = "9fb3e0ae-76b5-4432-80dd-f3361738aa7c")]
 		[Flags]
 		public enum SHI1005_FLAGS

@@ -331,7 +331,10 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct IP_ADAPTER_ADDRESSES : ILinkedListElement<IP_ADAPTER_ADDRESSES>
 		{
+			/// <summary/>
 			public uint Length;
+
+			/// <summary/>
 			public uint IfIndex;
 
 			/// <summary>
@@ -422,6 +425,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint PhysicalAddressLength;
 
+			/// <summary/>
 			public IP_ADAPTER_FLAGS Flags;
 
 			/// <summary>
@@ -812,15 +816,32 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public IntPtr FirstDnsSuffix;
 
+			/// <summary>A sequence of IP_ADAPTER_UNICAST_ADDRESS structures for the adapter.</summary>
 			public IEnumerable<IP_ADAPTER_UNICAST_ADDRESS> UnicastAddresses => FirstUnicastAddress.LinkedListToIEnum<IP_ADAPTER_UNICAST_ADDRESS>(t => t.Next);
+
+			/// <summary>A sequence of IP_ADAPTER_ANYCAST_ADDRESS structures for the adapter.</summary>
 			public IEnumerable<IP_ADAPTER_ANYCAST_ADDRESS> AnycastAddresses => FirstAnycastAddress.LinkedListToIEnum<IP_ADAPTER_ANYCAST_ADDRESS>(t => t.Next);
+
+			/// <summary>A sequence of IP_ADAPTER_MULTICAST_ADDRESS structures for the adapter.</summary>
 			public IEnumerable<IP_ADAPTER_MULTICAST_ADDRESS> MulticastAddresses => FirstMulticastAddress.LinkedListToIEnum<IP_ADAPTER_MULTICAST_ADDRESS>(t => t.Next);
+
+			/// <summary>A sequence of IP_ADAPTER_DNS_SERVER_ADDRESS structures for the adapter.</summary>
 			public IEnumerable<IP_ADAPTER_DNS_SERVER_ADDRESS> DnsServerAddresses => FirstDnsServerAddress.LinkedListToIEnum<IP_ADAPTER_DNS_SERVER_ADDRESS>(t => t.Next);
+
+			/// <summary>A sequence of IP_ADAPTER_PREFIX structures for the adapter.</summary>
 			public IEnumerable<IP_ADAPTER_PREFIX> Prefixes => FirstPrefix.LinkedListToIEnum<IP_ADAPTER_PREFIX>(t => t.Next);
+
+			/// <summary>A sequence of IP_ADAPTER_WINS_SERVER_ADDRESS structures for the adapter.</summary>
 			public IEnumerable<IP_ADAPTER_WINS_SERVER_ADDRESS> WinsServerAddresses => FirstWinsServerAddress.LinkedListToIEnum<IP_ADAPTER_WINS_SERVER_ADDRESS>(t => t.Next);
+
+			/// <summary>A sequence of IP_ADAPTER_GATEWAY_ADDRESS structures for the adapter.</summary>
 			public IEnumerable<IP_ADAPTER_GATEWAY_ADDRESS> GatewayAddresses => FirstGatewayAddress.LinkedListToIEnum<IP_ADAPTER_GATEWAY_ADDRESS>(t => t.Next);
+
+			/// <summary>A sequence of IP_ADAPTER_DNS_SUFFIX structures for the adapter.</summary>
 			public IEnumerable<IP_ADAPTER_DNS_SUFFIX> DnsSuffixes => FirstDnsSuffix.LinkedListToIEnum<IP_ADAPTER_DNS_SUFFIX>(t => t.Next);
 
+			/// <summary>Gets the next element in the linked list.</summary>
+			/// <returns>A nullable type. A <see langword="null"/> value indicates the end of the list.</returns>
 			public IP_ADAPTER_ADDRESSES? GetNext() => Next.ToNullableStructure<IP_ADAPTER_ADDRESSES>();
 		}
 
@@ -1221,8 +1242,13 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint LeaseExpires;
 
+			/// <summary>Gets a sequence of IP_ADDR_STRING values representing IP addresses.</summary>
 			public IEnumerable<IP_ADDR_STRING> IpAddresses => IpAddressList.GetLinkedList(s => s.IpAddress != null);
+
+			/// <summary>Gets a sequence of IP_ADDR_STRING values representing gateways.</summary>
 			public IEnumerable<IP_ADDR_STRING> Gateways => GatewayList.GetLinkedList(s => s.IpAddress != null);
+
+			/// <summary>Gets a sequence of IP_ADDR_STRING values representing secondary WINS servers.</summary>
 			public IEnumerable<IP_ADDR_STRING> SecondaryWinsServers => SecondaryWinsServer.GetLinkedList(s => s.IpAddress != null);
 
 			/// <summary>

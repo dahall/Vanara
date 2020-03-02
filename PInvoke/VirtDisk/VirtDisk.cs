@@ -1613,6 +1613,10 @@ namespace Vanara.PInvoke
 				Version1.SectorSizeInBytes = logicalSectorSize;
 			}
 
+			/// <summary>
+			/// Contains virtual hard disk (VHD) creation parameters, providing control over, and information about, the newly created
+			/// virtual disk.
+			/// </summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 			[StructLayout(LayoutKind.Sequential)]
 			public struct CREATE_VIRTUAL_DISK_PARAMETERS_Version1
@@ -1651,6 +1655,10 @@ namespace Vanara.PInvoke
 				public IntPtr SourcePath;
 			}
 
+			/// <summary>
+			/// Contains virtual hard disk (VHD) creation parameters, providing control over, and information about, the newly created
+			/// virtual disk.
+			/// </summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 			[StructLayout(LayoutKind.Sequential)]
 			public struct CREATE_VIRTUAL_DISK_PARAMETERS_Version2
@@ -1704,6 +1712,10 @@ namespace Vanara.PInvoke
 				public Guid ResiliencyGuid;
 			}
 
+			/// <summary>
+			/// Contains virtual hard disk (VHD) creation parameters, providing control over, and information about, the newly created
+			/// virtual disk.
+			/// </summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
 			[StructLayout(LayoutKind.Sequential)]
 			public struct CREATE_VIRTUAL_DISK_PARAMETERS_Version3
@@ -1807,6 +1819,7 @@ namespace Vanara.PInvoke
 				Version1.NewSize = newSize;
 			}
 
+			/// <summary>New size, in bytes, for the expansion request.</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 			[StructLayout(LayoutKind.Sequential)]
 			public struct EXPAND_VIRTUAL_DISK_PARAMETERS_Version1
@@ -1991,12 +2004,21 @@ namespace Vanara.PInvoke
 			[FieldOffset(4)]
 			public MERGE_VIRTUAL_DISK_PARAMETERS_V2 Version2;
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MERGE_VIRTUAL_DISK_PARAMETERS"/> struct.
+			/// </summary>
+			/// <param name="mergeDepth">The merge depth.</param>
 			public MERGE_VIRTUAL_DISK_PARAMETERS(uint mergeDepth) : this()
 			{
 				Version = MERGE_VIRTUAL_DISK_VERSION.MERGE_VIRTUAL_DISK_VERSION_1;
 				Version1.MergeDepth = mergeDepth;
 			}
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MERGE_VIRTUAL_DISK_PARAMETERS"/> struct.
+			/// </summary>
+			/// <param name="mergeSourceDepth">The merge source depth.</param>
+			/// <param name="mergeTargetDepth">The merge target depth.</param>
 			public MERGE_VIRTUAL_DISK_PARAMETERS(uint mergeSourceDepth, uint mergeTargetDepth) : this()
 			{
 				Version = MERGE_VIRTUAL_DISK_VERSION.MERGE_VIRTUAL_DISK_VERSION_2;
@@ -2004,6 +2026,7 @@ namespace Vanara.PInvoke
 				Version2.MergeTargetDepth = mergeTargetDepth;
 			}
 
+			/// <summary>This structure is used when the Version member is MERGE_VIRTUAL_DISK_VERSION_1 (1).</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 			[StructLayout(LayoutKind.Sequential)]
 			public struct MERGE_VIRTUAL_DISK_PARAMETERS_V1
@@ -2015,6 +2038,7 @@ namespace Vanara.PInvoke
 				public uint MergeDepth;
 			}
 
+			/// <summary>This structure is used when the Version member is MERGE_VIRTUAL_DISK_VERSION_2 (2).</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 			[StructLayout(LayoutKind.Sequential)]
 			public struct MERGE_VIRTUAL_DISK_PARAMETERS_V2

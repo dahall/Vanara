@@ -635,9 +635,107 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362519")]
 		public static extern Win32Error CreateTapePartition([In] HFILE hDevice, TAPE_PARTITION_METHOD dwPartitionMethod, uint dwCount, uint dwSize);
 
-		// DWORD EraseTape( _In_ HANDLE hDevice, _In_ DWORD dwEraseType, _In_ BOOL bImmediate ); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362523(v=vs.85).aspx
+		/// <summary>The <c>EraseTape</c> function erases all or part of a tape.</summary>
+		/// <param name="hDevice">Handle to the device where the tape is to be erased. This handle is created by using the CreateFile function.</param>
+		/// <param name="dwEraseType">
+		/// <para>Erasing technique. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TAPE_ERASE_LONG 1L</term>
+		/// <term>Erases the tape from the current position to the end of the current partition.</term>
+		/// </item>
+		/// <item>
+		/// <term>TAPE_ERASE_SHORT 0L</term>
+		/// <term>Writes an erase gap or end-of-data marker at the current position.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="bImmediate">
+		/// If this parameter is <c>TRUE</c>, the function returns immediately; if it is <c>FALSE</c>, the function does not return until
+		/// the erase operation has been completed.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is NO_ERROR.</para>
+		/// <para>If the function fails, it can return one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_BEGINNING_OF_MEDIA 1102L</term>
+		/// <term>An attempt to access data before the beginning-of-medium marker failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_BUS_RESET 1111L</term>
+		/// <term>A reset condition was detected on the bus.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_DEVICE_NOT_PARTITIONED 1107L</term>
+		/// <term>The partition information could not be found when a tape was being loaded.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_END_OF_MEDIA 1100L</term>
+		/// <term>The end-of-tape marker was reached during an operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_FILEMARK_DETECTED 1101L</term>
+		/// <term>A filemark was reached during an operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_BLOCK_LENGTH 1106L</term>
+		/// <term>The block size is incorrect on a new tape in a multivolume partition.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_MEDIA_CHANGED 1110L</term>
+		/// <term>The tape that was in the drive has been replaced or removed.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NO_DATA_DETECTED 1104L</term>
+		/// <term>The end-of-data marker was reached during an operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NO_MEDIA_IN_DRIVE 1112L</term>
+		/// <term>There is no media in the drive.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_SUPPORTED 50L</term>
+		/// <term>The tape driver does not support a requested function.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_PARTITION_FAILURE 1105L</term>
+		/// <term>The tape could not be partitioned.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_SETMARK_DETECTED 1103L</term>
+		/// <term>A setmark was reached during an operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_UNABLE_TO_LOCK_MEDIA 1108L</term>
+		/// <term>An attempt to lock the ejection mechanism failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_UNABLE_TO_UNLOAD_MEDIA 1109L</term>
+		/// <term>An attempt to unload the tape failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_WRITE_PROTECT 19L</term>
+		/// <term>The media is write protected.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// Some tape devices do not support certain tape operations. To determine your tape device's capabilities, see your tape device
+		/// documentation and use the GetTapeParameters function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-erasetape
+		// DWORD EraseTape( HANDLE hDevice, DWORD dwEraseType, BOOL bImmediate );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa362523")]
+		[PInvokeData("winbase.h", MSDNShortId = "af262e79-ebdb-4ec5-9b59-ed6725a48bdf")]
 		public static extern Win32Error EraseTape([In] HFILE hDevice, TAPE_ERASE_TYPE dwEraseType, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
 
 		/// <summary>The <c>GetTapeParameters</c> function retrieves information that describes the tape or the tape drive.</summary>

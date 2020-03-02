@@ -110,16 +110,34 @@ namespace Vanara.PInvoke
 			/// </summary>
 			HEAP_CREATE_ENABLE_EXECUTE = 0x00040000,
 
+			/// <summary/>
 			HEAP_TAIL_CHECKING_ENABLED = 0x00000020,
+
+			/// <summary/>
 			HEAP_FREE_CHECKING_ENABLED = 0x00000040,
+
+			/// <summary/>
 			HEAP_DISABLE_COALESCE_ON_FREE = 0x00000080,
+
+			/// <summary/>
 			HEAP_CREATE_ALIGN_16 = 0x00010000,
+
+			/// <summary/>
 			HEAP_CREATE_ENABLE_TRACING = 0x00020000,
 
+			/// <summary/>
 			HEAP_MAXIMUM_TAG = 0x0FFF,
+
+			/// <summary/>
 			HEAP_PSEUDO_TAG_FLAG = 0x8000,
+
+			/// <summary/>
 			HEAP_TAG_SHIFT = 18,
+
+			/// <summary/>
 			HEAP_CREATE_SEGMENT_HEAP = 0x00000100,
+
+			/// <summary/>
 			HEAP_CREATE_HARDENED = 0x00000200,
 		}
 
@@ -603,12 +621,10 @@ namespace Vanara.PInvoke
 		public static T HeapQueryInformation<T>(HHEAP HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass) where T : unmanaged
 		{
 			if (!CorrespondingTypeAttribute.CanGet(HeapInformationClass, typeof(T))) throw new InvalidOperationException("Type mismatch");
-			using (var mem = SafeHGlobalHandle.CreateFromStructure<T>())
-			{
-				if (!HeapQueryInformation(HeapHandle, HeapInformationClass, (IntPtr)mem, mem.Size, out _))
-					Win32Error.ThrowLastError();
-				return mem.ToStructure<T>();
-			}
+			using var mem = SafeHGlobalHandle.CreateFromStructure<T>();
+			if (!HeapQueryInformation(HeapHandle, HeapInformationClass, (IntPtr)mem, mem.Size, out _))
+				Win32Error.ThrowLastError();
+			return mem.ToStructure<T>();
 		}
 
 		/// <summary>
@@ -856,9 +872,9 @@ namespace Vanara.PInvoke
 		public static void HeapSetInformation<T>([In] HHEAP HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, in T HeapInformation) where T : unmanaged
 		{
 			if (!CorrespondingTypeAttribute.CanSet(HeapInformationClass, typeof(T))) throw new InvalidOperationException("Type mismatch");
-			using (var mem = SafeHGlobalHandle.CreateFromStructure(HeapInformation))
-				if (!HeapSetInformation(HeapHandle, HeapInformationClass, (IntPtr)mem, mem.Size))
-					Win32Error.ThrowLastError();
+			using var mem = SafeHGlobalHandle.CreateFromStructure(HeapInformation);
+			if (!HeapSetInformation(HeapHandle, HeapInformationClass, mem, mem.Size))
+				Win32Error.ThrowLastError();
 		}
 
 		/// <summary>Retrieves the size of a memory block allocated from a heap by the HeapAlloc or HeapReAlloc function.</summary>
@@ -1092,17 +1108,26 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		[PInvokeData("winnt.h")]
+		/// <summary>Represents a heap summary retrieved with a call to HeapSummary</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/heapapi/ns-heapapi-heap_summary
+		// typedef struct _HEAP_SUMMARY { DWORD cb; SIZE_T cbAllocated; SIZE_T cbCommitted; SIZE_T cbReserved; SIZE_T cbMaxReserve; } HEAP_SUMMARY, *PHEAP_SUMMARY;
+		[PInvokeData("heapapi.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HEAP_SUMMARY
 		{
+			/// <summary>Address of a continuous block of memory.</summary>
 			public uint cb;
+			/// <summary>The size of the allocated memory.</summary>
 			public SizeT cbAllocated;
+			/// <summary>The size of the committed memory.</summary>
 			public SizeT cbCommitted;
+			/// <summary>The size of the reserved memory.</summary>
 			public SizeT cbReserved;
+			/// <summary>The size of the maximum reserved memory.</summary>
 			public SizeT cbMaxReserve;
 
-			public static HEAP_SUMMARY Default => new HEAP_SUMMARY { cb = (uint)Marshal.SizeOf(typeof(HEAP_SUMMARY)) };
+			/// <summary>Gets this structure with the size field set appropriately.</summary>
+			public static readonly HEAP_SUMMARY Default = new HEAP_SUMMARY { cb = (uint)Marshal.SizeOf(typeof(HEAP_SUMMARY)) };
 		}
 
 		/// <summary>Provides a handle to a heap.</summary>

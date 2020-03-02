@@ -222,7 +222,9 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, Size = 16)]
 		public struct SLIST_HEADER
 		{
+			/// <summary/>
 			public ulong Alignment;
+			/// <summary/>
 			public ulong Region;
 		}
 	}

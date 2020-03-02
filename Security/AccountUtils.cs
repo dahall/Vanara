@@ -6,9 +6,14 @@ namespace Vanara.Security
 	/// <summary>Helper methods for working with <see cref="WindowsIdentity"/> and user names.</summary>
 	public static partial class AccountUtils
 	{
+		/// <summary>Returns a value indicating if the Windows identity is an administrator.</summary>
+		/// <param name="id">The identity to evaluate.</param>
+		/// <returns><see langword="true"/> if the identity is in an Administrator role.</returns>
 		public static bool IsAdmin(this WindowsIdentity id) => new WindowsPrincipal(id).IsInRole(WindowsBuiltInRole.Administrator);
 
-
+		/// <summary>Returns a value indicating if the Windows identity is a service account.</summary>
+		/// <param name="id">The identity to evaluate.</param>
+		/// <returns><see langword="true"/> if the identity is in a service account.</returns>
 		public static bool IsServiceAccount(this WindowsIdentity id)
 		{
 			try
@@ -30,7 +35,7 @@ namespace Vanara.Security
 		public static void Run(this WindowsIdentity identity, Action func)
 		{
 			if (identity is null) func();
-#if NET20 || NET35 || NET40 || NET45
+#if NETFRAMEWORK
 			using (new Principal.WindowsImpersonatedIdentity(identity))
 				func();
 #else
@@ -45,7 +50,7 @@ namespace Vanara.Security
 		public static T Run<T>(this WindowsIdentity identity, Func<T> func)
 		{
 			if (identity is null) return func();
-#if NET20 || NET35 || NET40 || NET45
+#if NETFRAMEWORK
 			using (new Principal.WindowsImpersonatedIdentity(identity))
 				return func();
 #else
@@ -53,6 +58,9 @@ namespace Vanara.Security
 #endif
 		}
 
+		/// <summary>Gets the SDDL formatted SID value from a user name.</summary>
+		/// <param name="userName">Name of the user.</param>
+		/// <returns>The SDDL SID string.</returns>
 		public static string SidStringFromUserName(string userName)
 		{
 			var acct = new NTAccount(userName);
@@ -65,6 +73,9 @@ namespace Vanara.Security
 			return null;
 		}
 
+		/// <summary>Get a user name for a supplied SDDL SID string.</summary>
+		/// <param name="sid">The SID string in SDDL format.</param>
+		/// <returns>The full user name of the identity referred to by <paramref name="sid"/>.</returns>
 		public static string UserNameFromSidString(string sid)
 		{
 			try

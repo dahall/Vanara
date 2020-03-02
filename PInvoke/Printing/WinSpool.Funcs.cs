@@ -1286,7 +1286,7 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </param>
-		/// <param name="*cbOut*">
+		/// <param name="cbOut">
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Value</term>

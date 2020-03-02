@@ -1,4 +1,6 @@
-﻿using System;
+﻿#pragma warning disable IDE1006 // Naming Styles
+
+using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -6,8 +8,10 @@ using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Functions, structures and constants from ws2_32.h.</summary>
 	public static partial class Ws2_32
 	{
+		/// <summary>Maximum queue length specifiable by listen.</summary>
 		public const int SOMAXCONN = 0x7fffffff;
 
 		/// <summary>The application-specified callback function for <see cref="WSAAccept"/>.</summary>
@@ -80,6 +84,7 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 		public delegate CF ConditionFunc(in WSABUF lpCallerId, in WSABUF lpCallerData, IntPtr lpSQOS, IntPtr lpGQOS, in WSABUF lpCalleeId, in WSABUF lpCalleeData, out GROUP g, IntPtr dwCallbackData);
 
+		/// <summary>The address family specification.</summary>
 		[PInvokeData("winsock2.h")]
 		public enum ADDRESS_FAMILY : ushort
 		{
@@ -240,6 +245,7 @@ namespace Vanara.PInvoke
 		/// <summary>Protocols. The IPv6 defines are specified in RFC 2292.</summary>
 		public enum IPPROTO
 		{
+			/// <summary/>
 			IPPROTO_HOPOPTS = 0,
 
 			/// <summary>
@@ -263,7 +269,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			IPPROTO_GGP = 3,
 
+			/// <summary/>
 			IPPROTO_IPV4 = 4,
+
+			/// <summary/>
 			IPPROTO_ST = 5,
 
 			/// <summary>
@@ -272,9 +281,16 @@ namespace Vanara.PInvoke
 			/// </summary>
 			IPPROTO_TCP = 6,
 
+			/// <summary/>
 			IPPROTO_CBT = 7,
+
+			/// <summary/>
 			IPPROTO_EGP = 8,
+
+			/// <summary/>
 			IPPROTO_IGP = 9,
+
+			/// <summary/>
 			IPPROTO_PUP = 12,
 
 			/// <summary>
@@ -283,12 +299,25 @@ namespace Vanara.PInvoke
 			/// </summary>
 			IPPROTO_UDP = 17,
 
+			/// <summary/>
 			IPPROTO_IDP = 22,
+
+			/// <summary/>
 			IPPROTO_RDP = 27,
+
+			/// <summary/>
 			IPPROTO_IPV6 = 41,
+
+			/// <summary/>
 			IPPROTO_ROUTING = 43,
+
+			/// <summary/>
 			IPPROTO_FRAGMENT = 44,
+
+			/// <summary/>
 			IPPROTO_ESP = 50,
+
+			/// <summary/>
 			IPPROTO_AH = 51,
 
 			/// <summary>
@@ -298,10 +327,19 @@ namespace Vanara.PInvoke
 			/// </summary>
 			IPPROTO_ICMPV6 = 58,
 
+			/// <summary/>
 			IPPROTO_NONE = 59,
+
+			/// <summary/>
 			IPPROTO_DSTOPTS = 60,
+
+			/// <summary/>
 			IPPROTO_ND = 77,
+
+			/// <summary/>
 			IPPROTO_ICLFXBM = 78,
+
+			/// <summary/>
 			IPPROTO_PIM = 103,
 
 			/// <summary>
@@ -311,14 +349,31 @@ namespace Vanara.PInvoke
 			/// </summary>
 			IPPROTO_PGM = 113,
 
+			/// <summary/>
 			IPPROTO_L2TP = 115,
+
+			/// <summary/>
 			IPPROTO_SCTP = 132,
+
+			/// <summary/>
 			IPPROTO_RAW = 255,
+
+			/// <summary/>
 			IPPROTO_MAX = 256,
+
+			/// <summary/>
 			IPPROTO_RESERVED_RAW = 257,
+
+			/// <summary/>
 			IPPROTO_RESERVED_IPSEC = 258,
+
+			/// <summary/>
 			IPPROTO_RESERVED_IPSECOFFLOAD = 259,
+
+			/// <summary/>
 			IPPROTO_RESERVED_WNV = 260,
+
+			/// <summary/>
 			IPPROTO_RESERVED_MAX = 261
 		}
 
@@ -2338,6 +2393,9 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsock2.h", MSDNShortId = "6bf6e6c4-6268-479c-86a6-52e90cf317db")]
 		public static SafeSOCKET socket(ADDRESS_FAMILY af, SOCK type, IPPROTO protocol) => socket((uint)af, type, protocol);
 
+		/// <summary/>
+		/// <param name="b"/>
+		/// <returns/>
 		public static int SOMAXCONN_HINT(int b) => -b;
 
 		/// <summary>
@@ -3546,8 +3604,16 @@ namespace Vanara.PInvoke
 			/// <value>An IPv4 address formatted as four u_chars.</value>
 			public byte[] S_un_b => BitConverter.GetBytes(S_addr);
 
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="left">The left.</param>
+			/// <param name="right">The right.</param>
+			/// <returns>The result of the operator.</returns>
 			public static bool operator ==(IN_ADDR left, IN_ADDR right) => left.Equals(right);
 
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="left">The left.</param>
+			/// <param name="right">The right.</param>
+			/// <returns>The result of the operator.</returns>
 			public static bool operator !=(IN_ADDR left, IN_ADDR right) => !left.Equals(right);
 
 			/// <summary>Performs an implicit conversion from <see cref="IN_ADDR"/> to <see cref="System.UInt32"/>.</summary>
@@ -3575,6 +3641,22 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator IN_ADDR(long a) => new IN_ADDR((uint)a);
 
+			/// <summary>Determines equality between this instance and <paramref name="other"/>.</summary>
+			/// <param name="other">The other value to compare.</param>
+			/// <returns><see langword="true"/> if <paramref name="other"/> is equal to this instance.</returns>
+			public bool Equals(IN_ADDR other) => S_addr == other.S_addr;
+
+			/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+			/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+			/// <returns>
+			/// <see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.
+			/// </returns>
+			public override bool Equals(object obj) => obj is IN_ADDR i ? Equals(i) : base.Equals(obj);
+
+			/// <summary>Returns a hash code for this instance.</summary>
+			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+			public override int GetHashCode() => S_addr.GetHashCode();
+
 			/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 			public override string ToString()
@@ -3582,10 +3664,9 @@ namespace Vanara.PInvoke
 				var b = S_un_b;
 				return $"{b[0]}.{b[1]}.{b[2]}.{b[3]}";
 			}
-
-			public bool Equals(IN_ADDR other) => S_addr == other.S_addr;
 		}
 
+		/// <summary>The IN6_ADDR structure represents an IPv6 address.</summary>
 		[PInvokeData("winsock2.h")]
 		[StructLayout(LayoutKind.Sequential, Size = IN6_ADDR_SIZE)]
 		public struct IN6_ADDR : IEquatable<IN6_ADDR>
@@ -3595,15 +3676,23 @@ namespace Vanara.PInvoke
 			private ulong lower;
 			private ulong upper;
 
+			/// <summary>The IPv6 standard loopback address.</summary>
 			public static readonly IN6_ADDR Loopback = new IN6_ADDR { lower = 0xff_01_00_00_00_00_00_00, upper = 0x00_00_00_00_00_00_00_01 };
+
+			/// <summary>The IPv6 standard unspecified address.</summary>
 			public static readonly IN6_ADDR Unspecified = new IN6_ADDR { lower = 0, upper = 0 };
 
+			/// <summary>Initializes a new instance of the <see cref="IN6_ADDR"/> struct.</summary>
+			/// <param name="v6addr">The IPv6 address as an array of bytes.</param>
 			public IN6_ADDR(byte[] v6addr)
 			{
 				lower = upper = 0;
 				bytes = v6addr;
 			}
 
+			/// <summary>Gets or sets the byte array representing the IPv6 address.</summary>
+			/// <value>The bytes.</value>
+			/// <exception cref="ArgumentException">Byte array must have 16 items. - value</exception>
 			public unsafe byte[] bytes
 			{
 				get
@@ -3631,6 +3720,9 @@ namespace Vanara.PInvoke
 				}
 			}
 
+			/// <summary>Gets or sets the array of WORD (ushort) values representing the IPv6 address.</summary>
+			/// <value>The array of WORD values.</value>
+			/// <exception cref="ArgumentException">UInt16 array must have 8 items. - value</exception>
 			public unsafe ushort[] words
 			{
 				get
@@ -3658,14 +3750,41 @@ namespace Vanara.PInvoke
 				}
 			}
 
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="left">The left.</param>
+			/// <param name="right">The right.</param>
+			/// <returns>The result of the operator.</returns>
 			public static bool operator ==(IN6_ADDR left, IN6_ADDR right) => left.Equals(right);
 
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="left">The left.</param>
+			/// <param name="right">The right.</param>
+			/// <returns>The result of the operator.</returns>
 			public static bool operator !=(IN6_ADDR left, IN6_ADDR right) => !left.Equals(right);
 
+			/// <summary>Performs an implicit conversion from <see cref="byte"/>[] to <see cref="IN6_ADDR"/>.</summary>
+			/// <param name="a">The byte array.</param>
+			/// <returns>The resulting <see cref="IN6_ADDR"/> instance from the conversion.</returns>
 			public static implicit operator IN6_ADDR(byte[] a) => new IN6_ADDR(a);
 
+			/// <summary>Performs an implicit conversion from <see cref="IN6_ADDR"/> to <see cref="byte"/>[].</summary>
+			/// <param name="a">The <see cref="IN6_ADDR"/> instance.</param>
+			/// <returns>The resulting <see cref="byte"/>[] instance from the conversion.</returns>
 			public static implicit operator byte[] (IN6_ADDR a) => a.bytes;
 
+			/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+			/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+			/// <returns>
+			/// <see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.
+			/// </returns>
+			public override bool Equals(object obj) => obj is IN6_ADDR i ? Equals(i) : base.Equals(obj);
+
+			/// <summary>Returns a hash code for this instance.</summary>
+			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+			public override int GetHashCode() => (lower, upper).GetHashCode();
+
+			/// <summary>Converts to string.</summary>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString()
 			{
 				const string numberFormat = "{0:x4}:{1:x4}:{2:x4}:{3:x4}:{4:x4}:{5:x4}:{6}.{7}.{8}.{9}";
@@ -3675,6 +3794,9 @@ namespace Vanara.PInvoke
 					((m_Numbers[6] >> 8) & 0xFF), (m_Numbers[6] & 0xFF), ((m_Numbers[7] >> 8) & 0xFF), (m_Numbers[7] & 0xFF));
 			}
 
+			/// <summary>Determines whether the specified <paramref name="other"/> value is equal to this instance.</summary>
+			/// <param name="other">The value to compare with this instance.</param>
+			/// <returns><see langword="true"/> if the specified value is equal to this instance; otherwise, <see langword="false"/>.</returns>
 			public bool Equals(IN6_ADDR other) => lower == other.lower && upper == other.upper;
 		}
 
@@ -3711,15 +3833,29 @@ namespace Vanara.PInvoke
 			public WSABUF ProviderSpecific;
 		}
 
-		[PInvokeData("winsock2.h")]
+		/// <summary>The SOCKADDR_IN structure specifies a transport address and port for the AF_INET address family.</summary>
+		/// <remarks>All of the data in the SOCKADDR_IN structure, except for the address family, must be specified in network-byte-order (big-endian).</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-sockaddr_in
+		// typedef struct sockaddr_in { #if ... short sin_family; #else ADDRESS_FAMILY sin_family; #endif USHORT sin_port; IN_ADDR sin_addr; CHAR sin_zero[8]; } SOCKADDR_IN, *PSOCKADDR_IN;
+		[PInvokeData("ws2def.h", MSDNShortId = "96379562-403f-451c-ac7a-f0eec34bfe5e")]
 		[StructLayout(LayoutKind.Sequential, Pack = 2)]
 		public struct SOCKADDR_IN
 		{
+			/// <summary>The address family for the transport address. This member should always be set to AF_INET.</summary>
 			public ADDRESS_FAMILY sin_family;
+
+			/// <summary>A transport protocol port number.</summary>
 			public ushort sin_port;
+
+			/// <summary>An IN_ADDR structure that contains an IPv4 transport address.</summary>
 			public IN_ADDR sin_addr;
+
+			/// <summary>Reserved for system use. A WSK application should set the contents of this array to zero.</summary>
 			public ulong sin_zero;
 
+			/// <summary>Initializes a new instance of the <see cref="SOCKADDR_IN"/> struct.</summary>
+			/// <param name="addr">An IN_ADDR structure that contains an IPv4 transport address.</param>
+			/// <param name="port">A transport protocol port number.</param>
 			public SOCKADDR_IN(IN_ADDR addr, ushort port = 0)
 			{
 				sin_family = ADDRESS_FAMILY.AF_INET;
@@ -3728,25 +3864,63 @@ namespace Vanara.PInvoke
 				sin_zero = 0;
 			}
 
+			/// <summary>Performs an implicit conversion from <see cref="IN_ADDR"/> to <see cref="SOCKADDR_IN"/>.</summary>
+			/// <param name="addr">The addr.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_IN"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR_IN(IN_ADDR addr) => new SOCKADDR_IN(addr);
 
+			/// <summary>Converts to string.</summary>
+			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 			public override string ToString() => $"{sin_addr}:{sin_port}";
 		}
 
-		[PInvokeData("winsock2.h")]
+		/// <summary>The SOCKADDR_IN6 structure specifies a transport address and port for the AF_INET6 address family.</summary>
+		/// <remarks>
+		/// <para>
+		/// All of the data in the SOCKADDR_IN6 structure, except for the address family, must be specified in network-byte-order (big-endian).
+		/// </para>
+		/// <para>
+		/// The size of the SOCKADDR_IN6 structure is too large to fit in the memory space that is provided by a SOCKADDR structure. For a
+		/// structure that is guaranteed to be large enough to contain a transport address for all possible address families, see SOCKADDR_STORAGEa&gt;.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2ipdef/ns-ws2ipdef-sockaddr_in6_lh
+		// typedef struct sockaddr_in6 { ADDRESS_FAMILY sin6_family; USHORT sin6_port; ULONG sin6_flowinfo; IN6_ADDR sin6_addr; union { ULONG sin6_scope_id; SCOPE_ID sin6_scope_struct; }; } SOCKADDR_IN6_LH, *PSOCKADDR_IN6_LH, *LPSOCKADDR_IN6_LH;
+		[PInvokeData("ws2ipdef.h", MSDNShortId = "ef2955d2-5dc1-420b-a9e0-32a584059d5a")]
 		[StructLayout(LayoutKind.Sequential, Pack = 2)]
 		public struct SOCKADDR_IN6
 		{
+			/// <summary>The address family for the transport address. This member should always be set to AF_INET6.</summary>
 			public ADDRESS_FAMILY sin6_family;
+
+			/// <summary>A transport protocol port number.</summary>
 			public ushort sin6_port;
+
+			/// <summary>The IPv6 flow information.</summary>
 			public uint sin6_flowinfo;
+
+			/// <summary>An IN6_ADDR structure that contains an IPv6 transport address.</summary>
 			public IN6_ADDR sin6_addr;
+
+			/// <summary>A ULONG representation of the IPv6 scope identifier that is defined in the <c>sin6_scope_struct</c> member.</summary>
 			public uint sin6_scope_id;
 
+			/// <summary>Initializes a new instance of the <see cref="SOCKADDR_IN6"/> struct.</summary>
+			/// <param name="addr">A byte array that contains an IPv6 transport address.</param>
+			/// <param name="scope_id">
+			/// A ULONG representation of the IPv6 scope identifier that is defined in the <c>sin6_scope_struct</c> member.
+			/// </param>
+			/// <param name="port">A transport protocol port number.</param>
 			public SOCKADDR_IN6(byte[] addr, uint scope_id, ushort port = 0) : this(new IN6_ADDR(addr), scope_id, port)
 			{
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="SOCKADDR_IN6"/> struct.</summary>
+			/// <param name="addr">An IN6_ADDR structure that contains an IPv6 transport address.</param>
+			/// <param name="scope_id">
+			/// A ULONG representation of the IPv6 scope identifier that is defined in the <c>sin6_scope_struct</c> member.
+			/// </param>
+			/// <param name="port">A transport protocol port number.</param>
 			public SOCKADDR_IN6(IN6_ADDR addr, uint scope_id, ushort port = 0)
 			{
 				sin6_family = ADDRESS_FAMILY.AF_INET6;
@@ -3756,6 +3930,9 @@ namespace Vanara.PInvoke
 				sin6_scope_id = scope_id;
 			}
 
+			/// <summary>Performs an implicit conversion from <see cref="IN6_ADDR"/> to <see cref="SOCKADDR_IN6"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_IN6"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR_IN6(IN6_ADDR addr) => new SOCKADDR_IN6(addr, 0);
 
 			/// <inheritdoc />
@@ -3801,6 +3978,9 @@ namespace Vanara.PInvoke
 			/// <value>The destination address.</value>
 			public SOCKADDR_IN6 DestinationAddress => _DestinationAddress.ToStructure<SOCKADDR_IN6>();
 
+			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN6_PAIR"/> to <see cref="SOCKADDR_IN6_PAIR_NATIVE"/>.</summary>
+			/// <param name="unmgd">The unmanaged value.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_IN6_PAIR_NATIVE"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR_IN6_PAIR_NATIVE(SOCKADDR_IN6_PAIR unmgd) =>
 				new SOCKADDR_IN6_PAIR_NATIVE { SourceAddress = unmgd.SourceAddress, DestinationAddress = unmgd.DestinationAddress };
 
@@ -3848,29 +4028,81 @@ namespace Vanara.PInvoke
 			public override string ToString() => $"{SourceAddress} : {DestinationAddress}";
 		}
 
-		[PInvokeData("winsock2.h")]
+		/// <summary>The <c>SOCKADDR_INET</c> union contains an IPv4, an IPv6 address, or an address family.</summary>
+		/// <remarks>
+		/// <para>The <c>SOCKADDR_INET</c> union is defined on Windows Vista and later.</para>
+		/// <para>The <c>SOCKADDR_INET</c> union is a convenience structure for accessing an IPv4 address, an IPv6 address, or the IP address family without having to cast the sockaddr structure.</para>
+		/// <para>The <c>SOCKADDR_INET</c> union is the data type of the <c>Prefix</c> member in the IP_ADDRESS_PREFIX structure</para>
+		/// <para>Note that the Ws2ipdef.h header file is automatically included in Ws2tcpip.h header file, and should never be used directly.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2ipdef/ns-ws2ipdef-sockaddr_inet
+		// typedef union _SOCKADDR_INET { SOCKADDR_IN Ipv4; SOCKADDR_IN6 Ipv6; ADDRESS_FAMILY si_family; } SOCKADDR_INET, *PSOCKADDR_INET;
+		[PInvokeData("ws2ipdef.h", MSDNShortId = "7278dcb4-65c6-4aea-a474-cb7fae4d7672")]
 		[StructLayout(LayoutKind.Explicit)]
 		public struct SOCKADDR_INET : IEquatable<SOCKADDR_INET>, IEquatable<SOCKADDR_IN>, IEquatable<SOCKADDR_IN6>
 		{
+			/// <summary>
+			/// An IPv4 address represented as a SOCKADDR_IN structure containing the address family and the IPv4 address. The address
+			/// family is in host byte order and the IPv4 address is in network byte order.
+			/// <para>
+			/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed and the SOCKADDR_IN
+			/// structure is defined in the Ws2def.h header file. Note that the Ws2def.h header file is automatically included in
+			/// Winsock2.h, and should never be used directly.
+			/// </para>
+			/// </summary>
 			[FieldOffset(0)]
 			public SOCKADDR_IN Ipv4;
 
+			/// <summary>
+			/// An IPv6 address represented as a SOCKADDR_IN6 structure containing the address family and the IPv6 address. The address
+			/// family is in host byte order and the IPv6 address is in network byte order.
+			/// <para>
+			/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed and the SOCKADDR_IN6
+			/// structure is defined in the Ws2def.h header file. Note that the Ws2def.h header file is automatically included in
+			/// Winsock2.h, and should never be used directly.
+			/// </para>
+			/// </summary>
 			[FieldOffset(0)]
 			public SOCKADDR_IN6 Ipv6;
 
+			/// <summary>
+			/// The address family.
+			/// <para>
+			/// Possible values for the address family are listed in the Ws2def.h header file. Note that the values for the AF_ address
+			/// family and PF_ protocol family constants are identical (for example, AF_INET and PF_INET), so either constant can be
+			/// used.The Ws2def.h header file is automatically included in Winsock2.h, and should never be used directly.
+			/// </para>
+			/// </summary>
 			[FieldOffset(0)]
 			public ADDRESS_FAMILY si_family;
 
+			/// <summary>Specifies whether this instance is equal to the specified object.</summary>
+			/// <param name="other">The object to test for equality.</param>
+			/// <returns><see langword="true"/> if <paramref name="other"/> is equal to this instance.</returns>
 			public bool Equals(SOCKADDR_INET other) => (si_family == ADDRESS_FAMILY.AF_INET && Ipv4.Equals(other.Ipv4)) || (si_family == ADDRESS_FAMILY.AF_INET6 && Ipv6.Equals(other.Ipv6));
 
+			/// <summary>Specifies whether this instance is equal to the specified object.</summary>
+			/// <param name="other">The object to test for equality.</param>
+			/// <returns><see langword="true"/> if <paramref name="other"/> is equal to this instance.</returns>
 			public bool Equals(SOCKADDR_IN other) => si_family == ADDRESS_FAMILY.AF_INET && Ipv4.Equals(other);
 
+			/// <summary>Specifies whether this instance is equal to the specified object.</summary>
+			/// <param name="other">The object to test for equality.</param>
+			/// <returns><see langword="true"/> if <paramref name="other"/> is equal to this instance.</returns>
 			public bool Equals(SOCKADDR_IN6 other) => si_family == ADDRESS_FAMILY.AF_INET6 && Ipv6.Equals(other);
 
+			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR_INET"/>.</summary>
+			/// <param name="address">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_INET"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR_INET(SOCKADDR_IN address) => new SOCKADDR_INET { Ipv4 = address };
 
+			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN6"/> to <see cref="SOCKADDR_INET"/>.</summary>
+			/// <param name="address">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_INET"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR_INET(SOCKADDR_IN6 address) => new SOCKADDR_INET { Ipv6 = address };
 
+			/// <summary>Converts to string.</summary>
+			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 			public override string ToString()
 			{
 				var sb = new System.Text.StringBuilder($"{si_family}");
@@ -3974,15 +4206,38 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => closesocket(this) == 0;
 		}
 
-		[PInvokeData("winsock2.h")]
+		/// <summary>The <c>SOCKET_ADDRESS</c> structure stores protocol-specific address information.</summary>
+		/// <remarks>
+		/// <para>
+		/// The SOCKADDR structure pointed to by the <c>lpSockaddr</c> member varies depending on the protocol or address family selected.
+		/// For example, the <c>sockaddr_in6</c> structure is used for an IPv6 socket address while the <c>sockaddr_in4</c> structure is
+		/// used for an IPv4 socket address. The address family is the first member of all of the <c>SOCKADDR</c> structures. The address
+		/// family is used to determine which structure is used.
+		/// </para>
+		/// <para>
+		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+		/// has changed and the <c>SOCKET_ADDRESS</c> structure is defined in the Ws2def.h header file. Note that the Ws2def.h header file
+		/// is automatically included in Winsock2.h, and should never be used directly.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-socket_address
+		// typedef struct _SOCKET_ADDRESS { LPSOCKADDR lpSockaddr; INT iSockaddrLength; } SOCKET_ADDRESS, *PSOCKET_ADDRESS, *LPSOCKET_ADDRESS;
+		[PInvokeData("ws2def.h", MSDNShortId = "37fbcb96-a859-4eca-8928-8051f95407b9")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct SOCKET_ADDRESS
 		{
+			/// <summary>A pointer to a socket address represented as a SOCKADDR structure.</summary>
 			public IntPtr lpSockAddr;
+
+			/// <summary>The length, in bytes, of the socket address.</summary>
 			public int iSockaddrLength;
 
+			/// <summary>Gets the <see cref="SOCKADDR_INET"/> from this instance.</summary>
+			/// <returns>The <see cref="SOCKADDR_INET"/> value pointed to by this instance.</returns>
 			public SOCKADDR_INET GetSOCKADDR() => lpSockAddr.ToStructure<SOCKADDR_INET>();
 
+			/// <summary>Converts to string.</summary>
+			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 			public override string ToString() => GetSOCKADDR().ToString();
 		}
 
@@ -4670,15 +4925,58 @@ namespace Vanara.PInvoke
 			public uint[] ChainEntries;
 		}
 
-		[PInvokeData("winsock2.h")]
+		/// <summary>
+		/// <para>
+		/// The sockaddr structure varies depending on the protocol selected. Except for the sin*_family parameter, sockaddr contents are
+		/// expressed in network byte order.
+		/// </para>
+		/// <para>
+		/// Winsock functions using sockaddr are not strictly interpreted to be pointers to a sockaddr structure. The structure is
+		/// interpreted differently in the context of different address families. The only requirements are that the first <c>u_short</c> is
+		/// the address family and the total size of the memory buffer in bytes is namelen.
+		/// </para>
+		/// <para>
+		/// The <c>SOCKADDR_STORAGE</c> structure also stores socket address information and the structure is sufficiently large to store
+		/// IPv4 or IPv6 address information. The use of the <c>SOCKADDR_STORAGE</c> structure promotes protocol-family and protocol-version
+		/// independence, and simplifies development. It is recommended that the <c>SOCKADDR_STORAGE</c> structure be used in place of the
+		/// sockaddr structure. The <c>SOCKADDR_STORAGE</c> structure is supported on Windows Server 2003 and later.
+		/// </para>
+		/// <para>The sockaddr structure and sockaddr_in structures below are used with IPv4. Other protocols use similar structures.</para>
+		/// <para>The sockaddr_in6 and sockaddr_in6_old structures below are used with IPv6.</para>
+		/// <para>
+		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, <c>SOCKADDR</c> and
+		/// <c>SOCKADDR_IN</c> typedef tags are defined for sockaddr and sockaddr_in structures as follows:
+		/// </para>
+		/// <para>
+		/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed and the sockaddr and
+		/// sockaddr_in structures are defined in the Ws2def.h header file, not the Winsock2.h header file. The Ws2def.h header file is
+		/// automatically included by the Winsock2.h header file. The sockaddr_in6 structure is defined in the Ws2ipdef.h header file, not
+		/// the Ws2tcpip.h header file. The Ws2ipdef.h header file is automatically included by the Ws2tcpip.h header file. The Ws2def.h and
+		/// Ws2ipdef.h header files should never be used directly.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/winsock/sockaddr-2
+		[PInvokeData("winsock2.h", MSDNShortId = "d1392e1c-2b20-425a-8adf-38e665fb6275")]
 		public class SOCKADDR : SafeMemoryHandle<CoTaskMemoryMethods>
 		{
+			/// <summary>Initializes a new instance of the <see cref="SOCKADDR"/> class.</summary>
+			/// <param name="handle">The handle to the memory with the address.</param>
+			/// <param name="ownsHandle">if set to <see langword="true"/> this class with dispose the memory.</param>
+			/// <param name="size">The size of the memory pointed to by <paramref name="handle"/>.</param>
 			public SOCKADDR(IntPtr handle, bool ownsHandle = false, int size = 0) : base(handle, size, ownsHandle) { }
 
+			/// <summary>Initializes a new instance of the <see cref="SOCKADDR"/> class.</summary>
+			/// <param name="addr">The IPv4 address value.</param>
+			/// <param name="port">The port.</param>
 			public SOCKADDR(uint addr, ushort port = 0) : this(BitConverter.GetBytes(addr), port)
 			{
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="SOCKADDR"/> class.</summary>
+			/// <param name="addr">The IPv4 or IPv6 address as a byte array.</param>
+			/// <param name="port">The port.</param>
+			/// <param name="scopeId">The scope identifier for IPv6 addresses.</param>
+			/// <exception cref="ArgumentOutOfRangeException">addr</exception>
 			public SOCKADDR(byte[] addr, ushort port = 0, uint scopeId = 0) :
 				base(addr.Length == 4 ? Marshal.SizeOf(typeof(SOCKADDR_IN)) : Marshal.SizeOf(typeof(SOCKADDR_IN6)))
 			{
@@ -4696,22 +4994,45 @@ namespace Vanara.PInvoke
 					throw new ArgumentOutOfRangeException(nameof(addr));
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="SOCKADDR"/> class.</summary>
+			/// <param name="addr">The <see cref="SOCKADDR_IN"/> value to assign.</param>
 			public SOCKADDR(SOCKADDR_IN addr) : base(Marshal.SizeOf(typeof(SOCKADDR_IN))) => Marshal.StructureToPtr(addr, handle, false);
 
+			/// <summary>Initializes a new instance of the <see cref="SOCKADDR"/> class.</summary>
+			/// <param name="addr">The <see cref="SOCKADDR_IN6"/> value to assign.</param>
 			public SOCKADDR(SOCKADDR_IN6 addr) : base(Marshal.SizeOf(typeof(SOCKADDR_IN6))) => Marshal.StructureToPtr(addr, handle, false);
 
+			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR(SOCKADDR_IN addr) => new SOCKADDR(addr);
 
+			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN6"/> to <see cref="SOCKADDR"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR(SOCKADDR_IN6 addr) => new SOCKADDR(addr);
 
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR"/> to <see cref="SOCKADDR_IN"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_IN"/> instance from the conversion.</returns>
+			/// <exception cref="InvalidCastException"></exception>
 			public static explicit operator SOCKADDR_IN(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET ? addr.handle.ToStructure<SOCKADDR_IN>() : throw new InvalidCastException();
 
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR"/> to <see cref="SOCKADDR_IN6"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_IN6"/> instance from the conversion.</returns>
+			/// <exception cref="InvalidCastException"></exception>
 			public static explicit operator SOCKADDR_IN6(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET6 ? addr.handle.ToStructure<SOCKADDR_IN6>() : throw new InvalidCastException();
 
+			/// <summary>Gets the data behind this address as a byte array.</summary>
+			/// <value>The address data.</value>
 			public byte[] sa_data => GetBytes(2, 14);
 
+			/// <summary>Gets the <see cref="ADDRESS_FAMILY"/> of this address.</summary>
+			/// <value>The address family.</value>
 			public ADDRESS_FAMILY sa_family => (ADDRESS_FAMILY)handle.ToStructure<ushort>();
 
+			/// <summary>Gets an instance that represents an empty address.</summary>
 			public static SOCKADDR Empty => new SOCKADDR(new byte[Marshal.SizeOf(typeof(IN6_ADDR))]);
 		}
 	}

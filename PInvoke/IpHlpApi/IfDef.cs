@@ -4,15 +4,23 @@ namespace Vanara.PInvoke
 {
 	public static partial class IpHlpApi
 	{
+		/// <summary>The primary compartment.</summary>
 		public const uint NET_IF_COMPARTMENT_ID_PRIMARY = 1;
 
+		/// <summary>The unspecified compartment.</summary>
 		public const uint NET_IF_COMPARTMENT_ID_UNSPECIFIED = 0;
 
+		/// <summary>Datalink Interface Administrative State. Indicates whether the interface has been administratively enabled.</summary>
 		[PInvokeData("ifdef.h")]
 		public enum IF_ADMINISTRATIVE_STATE
 		{
+			/// <summary>If disabled.</summary>
 			IF_ADMINISTRATIVE_DISABLED,
+
+			/// <summary>If enabled.</summary>
 			IF_ADMINISTRATIVE_ENABLED,
+
+			/// <summary>If dial on demand.</summary>
 			IF_ADMINISTRATIVE_DEMANDDIAL,
 		}
 
@@ -235,10 +243,22 @@ namespace Vanara.PInvoke
 			NET_IF_OPER_STATUS_LOWER_LAYER_DOWN,
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public enum NET_IF_RCV_ADDRESS_TYPE
 		{
+			/// <summary>
+			/// The net if RCV address type other
+			/// </summary>
 			NET_IF_RCV_ADDRESS_TYPE_OTHER = 1,
+			/// <summary>
+			/// The net if RCV address type volatile
+			/// </summary>
 			NET_IF_RCV_ADDRESS_TYPE_VOLATILE = 2,
+			/// <summary>
+			/// The net if RCV address type non volatile
+			/// </summary>
 			NET_IF_RCV_ADDRESS_TYPE_NON_VOLATILE = 3
 		}
 
@@ -301,6 +321,7 @@ namespace Vanara.PInvoke
 			public string[] String;
 		}
 
+		/// <summary/>
 		[PInvokeData("ifdef.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct IF_PHYSICAL_ADDRESS
@@ -308,6 +329,7 @@ namespace Vanara.PInvoke
 			/// <summary>A USHORT value that contains the length, in bytes, of the string.</summary>
 			public ushort Length;
 
+			/// <summary/>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
 			public string[] Address;
 		}
@@ -526,20 +548,27 @@ namespace Vanara.PInvoke
 			public uint SupportedStatistics;
 		}
 
+		/// <summary/>
 		[PInvokeData("ifdef.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct NET_IF_ALIAS
 		{
+			/// <summary/>
 			public ushort ifAliasLength;
+			/// <summary/>
 			public ushort ifAliasOffset;
 		}
 
+		/// <summary/>
 		[PInvokeData("ifdef.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct NET_IF_RCV_ADDRESS
 		{
+			/// <summary/>
 			public NET_IF_RCV_ADDRESS_TYPE ifRcvAddressType;
+			/// <summary/>
 			public ushort ifRcvAddressLength;
+			/// <summary/>
 			public ushort ifRcvAddressOffset;
 		}
 
@@ -595,12 +624,16 @@ namespace Vanara.PInvoke
 			public override string ToString() => $"{NetLuidIndex}:{IfType}";
 		}
 
+		/// <summary/>
 		[PInvokeData("Ifdef.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct NET_PHYSICAL_LOCATION
 		{
+			/// <summary/>
 			public uint BusNumber;
+			/// <summary/>
 			public uint SlotNumber;
+			/// <summary/>
 			public uint FunctionNumber;
 		}
 	}

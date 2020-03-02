@@ -1167,6 +1167,7 @@ namespace Vanara.PInvoke
 			public EventCode EventCode;
 		}
 
+		/// <summary>Action to perform on a power event.</summary>
 		[PInvokeData("winnt.h", MSDNShortId = "70739f46-54be-4748-8993-ffee3b2a8b6c")]
 		[Flags]
 		public enum PowerActionFlags : uint

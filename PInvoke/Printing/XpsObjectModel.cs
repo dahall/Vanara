@@ -1525,6 +1525,25 @@ namespace Vanara.PInvoke
 			IXpsOMDictionary Clone();
 		}
 
+		/// <summary>
+		/// Provides access to the XML content of the resource stream of the DocumentStructure part.The
+		/// <c>IXpsOMDocumentStructureResource</c> interface enables a program to read and replace the XML content of the DocumentStructure part.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The DocumentStructure part of an XPS document contains the document outline, which, along with the StoryFragments parts, defines
+		/// the reading order of every element that appears in the fixed pages of the document.
+		/// </para>
+		/// <para>
+		/// The reading order of an XPS document is organized into semantic blocks called stories. Stories are logical units of the
+		/// document, in the same way that articles are units in a magazine. Stories are made up of one or more StoryFragments parts;
+		/// StoryFragments parts contain the XML markup that defines the story's semantic blocks, which describe the structure of the
+		/// document's content. Examples of a story's semantic blocks include paragraphs and tables.
+		/// </para>
+		/// <para>The XML markup in the DocumentStructure and StoryFragments parts is described in the XML Paper Specification.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nn-xpsobjectmodel-ixpsomdocumentstructureresource
+		[PInvokeData("xpsobjectmodel.h", MSDNShortId = "a0cc8748-08b2-4471-9961-603786e983a4")]
 		[ComImport, Guid("85FEBC8A-6B63-48A9-AF07-7064E4ECFF30"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		public interface IXpsOMDocumentStructureResource : IXpsOMResource
 		{

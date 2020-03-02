@@ -14,6 +14,7 @@ namespace Vanara.IO
 	/// </summary>
 	public static class PathEx
 	{
+		/// <summary>The type of character retrieved from <see cref="GetCharType(char)"/>.</summary>
 		[Flags]
 		public enum PathCharType : uint
 		{

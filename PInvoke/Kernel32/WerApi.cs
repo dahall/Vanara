@@ -44,17 +44,29 @@ namespace Vanara.PInvoke
 			WER_FAULT_REPORTING_DURABLE = 1024,
 		}
 
+		/// <summary>The type of WER file.</summary>
+		[PInvokeData("werapi.h", MSDNShortId = "4b2c2060-a193-4168-90fc-afb95c160569")]
 		public enum WER_FILE_TYPE
 		{
+			/// <summary>A limited minidump that contains only a stack trace.</summary>
 			WerFileTypeMicrodump = 1,
+			/// <summary>A minidump file.</summary>
 			WerFileTypeMinidump = 2,
+			/// <summary>An extended minidump that contains additional data such as the process memory.</summary>
 			WerFileTypeHeapdump = 3,
+			/// <summary>The document in use by the application at the time of the event. The document is added only if the server is asks for this type of document.</summary>
 			WerFileTypeUserDocument = 4,
+			/// <summary>Any other type of file. This file will always get added to the cab (but only if the server asks for a cab).</summary>
 			WerFileTypeOther = 5,
+			/// <summary/>
 			WerFileTypeTriagedump = 6,
+			/// <summary/>
 			WerFileTypeCustomDump = 7,
+			/// <summary/>
 			WerFileTypeAuxiliaryDump = 8,
+			/// <summary/>
 			WerFileTypeEtlTrace = 9,
+			/// <summary/>
 			WerFileTypeMax
 		}
 
@@ -90,45 +102,114 @@ namespace Vanara.PInvoke
 			WerRegFileTypeMax
 		}
 
+		/// <summary>The type of report.</summary>
+		[PInvokeData("werapi.h")]
 		public enum WER_REPORT_TYPE
 		{
+			/// <summary>
+			/// An error that is not critical has occurred. This type of report shows no UI; the report is silently queued. It may then be
+			/// sent silently to the server in the background if adequate user consent is available.
+			/// </summary>
 			WerReportNonCritical = 0,
+
+			/// <summary>
+			/// A critical error, such as a crash or non-response, has occurred. By default, processes that experience a critical error are
+			/// terminated or restarted.
+			/// </summary>
 			WerReportCritical = 1,
+
+			/// <summary>An error that has caused the application to stop running has occurred.</summary>
 			WerReportApplicationCrash = 2,
+
+			/// <summary>An error that has caused the application to stop responding has occurred.</summary>
 			WerReportApplicationHang = 3,
+
+			/// <summary>An error in the kernel has occurred.</summary>
 			WerReportKernel = 4,
+
+			/// <summary>An error that has called out a return that is not valid has occurred.</summary>
 			WerReportInvalid
 		}
 
+		/// <summary>The user interface element to be customized.</summary>
+		[PInvokeData("werapi.h")]
 		public enum WER_REPORT_UI
 		{
+			/// <summary>The instructions for the additional data dialog box.</summary>
 			WerUIAdditionalDataDlgHeader = 1,
+
+			/// <summary>The icon to be displayed in the consent dialog box.</summary>
 			WerUIIconFilePath = 2,
+
+			/// <summary>The main instructions for the consent dialog box.</summary>
 			WerUIConsentDlgHeader = 3,
+
+			/// <summary>The contents of the consent dialog box.</summary>
 			WerUIConsentDlgBody = 4,
+
+			/// <summary>The text for the link to check for a solution when online.</summary>
 			WerUIOnlineSolutionCheckText = 5,
+
+			/// <summary>The text for the link to check for a solution when offline.</summary>
 			WerUIOfflineSolutionCheckText = 6,
+
+			/// <summary>The text for the link to just terminate the application.</summary>
 			WerUICloseText = 7,
+
+			/// <summary>The main instructions for the close dialog box.</summary>
 			WerUICloseDlgHeader = 8,
+
+			/// <summary>The wer UI close dialog body</summary>
 			WerUICloseDlgBody = 9,
+
+			/// <summary>The text for the button in the close dialog box.</summary>
 			WerUICloseDlgButtonText = 10,
+
+			/// <summary/>
 			WerUIMax
 		}
 
+		/// <summary>The result of the submission.</summary>
+		[PInvokeData("werapi.h")]
 		public enum WER_SUBMIT_RESULT
 		{
+			/// <summary>The report was queued.</summary>
 			WerReportQueued = 1,
+
+			/// <summary>The report was uploaded.</summary>
 			WerReportUploaded = 2,
+
+			/// <summary>The Debug button was clicked.</summary>
 			WerReportDebug = 3,
+
+			/// <summary>The report submission failed.</summary>
 			WerReportFailed = 4,
+
+			/// <summary>Error reporting was disabled.</summary>
 			WerDisabled = 5,
+
+			/// <summary>The report was cancelled.</summary>
 			WerReportCancelled = 6,
+
+			/// <summary>Queuing was disabled.</summary>
 			WerDisabledQueue = 7,
+
+			/// <summary>The report was asynchronous.</summary>
 			WerReportAsync = 8,
+
+			/// <summary>Error reporting can be customized.</summary>
 			WerCustomAction = 9,
+
+			/// <summary/>
 			WerThrottled = 10,
+
+			/// <summary/>
 			WerReportUploadedCab = 11,
+
+			/// <summary/>
 			WerStorageLocationNotFound = 12,
+
+			/// <summary/>
 			WerSubmitResultMax
 		}
 

@@ -4351,6 +4351,7 @@ namespace Vanara.PInvoke
 			public ulong Uint64;
 		}
 
+		/// <summary>Class supporting CLSID_BackgroundCopyManager.</summary>
 		[ComImport, ClassInterface(ClassInterfaceType.None), Guid("4991D34B-80A1-4291-83B6-3328366B9097")]
 		public class BackgroundCopyManager
 		{

@@ -12,27 +12,49 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the IpHlpApi.dll</summary>
 	public static partial class IpHlpApi
 	{
+		/// <summary/>
 		public const int IF_MAX_PHYS_ADDRESS_LENGTH = 32;
+		/// <summary/>
 		public const int IF_MAX_STRING_SIZE = 256;
+		/// <summary/>
 		public const int MAX_ADAPTER_ADDRESS_LENGTH = 8;
+		/// <summary/>
 		public const int MAX_ADAPTER_DESCRIPTION_LENGTH = 128;
+		/// <summary/>
 		public const int MAX_ADAPTER_NAME = 128;
+		/// <summary/>
 		public const int MAX_ADAPTER_NAME_LENGTH = 256;
+		/// <summary/>
 		public const int MAX_DHCPV6_DUID_LENGTH = 130;
+		/// <summary/>
 		public const int MAX_DNS_SUFFIX_STRING_LENGTH = 256;
+		/// <summary/>
 		public const int MAX_DOMAIN_NAME_LEN = 128;
+		/// <summary/>
 		public const int MAX_HOSTNAME_LEN = 128;
+		/// <summary/>
 		public const int MAX_INTERFACE_NAME_LEN = 256;
+		/// <summary/>
 		public const int MAX_SCOPE_ID_LEN = 256;
+		/// <summary/>
 		public const int MAXLEN_IFDESCR = 256;
+		/// <summary/>
 		public const int MAXLEN_PHYSADDR = 8;
+		/// <summary/>
 		public const int MIB_IF_TYPE_ETHERNET = 6;
+		/// <summary/>
 		public const int MIB_IF_TYPE_FDDI = 15;
+		/// <summary/>
 		public const int MIB_IF_TYPE_LOOPBACK = 24;
+		/// <summary/>
 		public const int MIB_IF_TYPE_OTHER = 1;
+		/// <summary/>
 		public const int MIB_IF_TYPE_PPP = 23;
+		/// <summary/>
 		public const int MIB_IF_TYPE_SLIP = 28;
+		/// <summary/>
 		public const int MIB_IF_TYPE_TOKENRING = 9;
+		/// <summary/>
 		public const int TCPIP_OWNING_MODULE_SIZE = 16;
 
 		/// <summary>The type of addresses to retrieve in <see cref="GetAdaptersAddresses(GetAdaptersAddressesFlags, ADDRESS_FAMILY)"/>.</summary>
@@ -97,30 +119,43 @@ namespace Vanara.PInvoke
 			/// <summary>Some other type of network interface.</summary>
 			IF_TYPE_OTHER = 1,
 
+			/// <summary/>
 			IF_TYPE_REGULAR_1822 = 2,
+			/// <summary/>
 			IF_TYPE_HDH_1822 = 3,
+			/// <summary/>
 			IF_TYPE_DDN_X25 = 4,
+			/// <summary/>
 			IF_TYPE_RFC877_X25 = 5,
 
 			/// <summary>An Ethernet network interface.</summary>
 			IF_TYPE_ETHERNET_CSMACD = 6,
 
+			/// <summary/>
 			IF_TYPE_IS088023_CSMACD = 7,
+			/// <summary/>
 			IF_TYPE_ISO88024_TOKENBUS = 8,
 
 			/// <summary>A token ring network interface.</summary>
 			IF_TYPE_ISO88025_TOKENRING = 9,
 
+			/// <summary/>
 			IF_TYPE_ISO88026_MAN = 10,
+			/// <summary/>
 			IF_TYPE_STARLAN = 11,
+			/// <summary/>
 			IF_TYPE_PROTEON_10MBIT = 12,
+			/// <summary/>
 			IF_TYPE_PROTEON_80MBIT = 13,
+			/// <summary/>
 			IF_TYPE_HYPERCHANNEL = 14,
 
 			/// <summary>A Fiber Distributed Data Interface (FDDI) network interface.</summary>
 			IF_TYPE_FDDI = 15,
 
+			/// <summary/>
 			IF_TYPE_LAP_B = 16,
+			/// <summary/>
 			IF_TYPE_SDLC = 17,
 
 			/// <summary>DS1-MIB</summary>
@@ -129,7 +164,9 @@ namespace Vanara.PInvoke
 			/// <summary>Obsolete; see DS1-MIB</summary>
 			IF_TYPE_E1 = 19,
 
+			/// <summary/>
 			IF_TYPE_BASIC_ISDN = 20,
+			/// <summary/>
 			IF_TYPE_PRIMARY_ISDN = 21,
 
 			/// <summary>proprietary serial</summary>
@@ -144,6 +181,7 @@ namespace Vanara.PInvoke
 			/// <summary>CLNP over IP</summary>
 			IF_TYPE_EON = 25,
 
+			/// <summary/>
 			IF_TYPE_ETHERNET_3MBIT = 26,
 
 			/// <summary>XNS over IP</summary>
@@ -164,32 +202,43 @@ namespace Vanara.PInvoke
 			/// <summary>DTE only</summary>
 			IF_TYPE_FRAMERELAY = 32,
 
+			/// <summary/>
 			IF_TYPE_RS232 = 33,
 
 			/// <summary>Parallel port</summary>
 			IF_TYPE_PARA = 34,
 
+			/// <summary/>
 			IF_TYPE_ARCNET = 35,
+			/// <summary/>
 			IF_TYPE_ARCNET_PLUS = 36,
 
 			/// <summary>An ATM network interface.</summary>
 			IF_TYPE_ATM = 37,
 
+			/// <summary/>
 			IF_TYPE_MIO_X25 = 38,
 
 			/// <summary>SONET or SDH</summary>
 			IF_TYPE_SONET = 39,
 
+			/// <summary/>
 			IF_TYPE_X25_PLE = 40,
+			/// <summary/>
 			IF_TYPE_ISO88022_LLC = 41,
+			/// <summary/>
 			IF_TYPE_LOCALTALK = 42,
+			/// <summary/>
 			IF_TYPE_SMDS_DXI = 43,
 
 			/// <summary>FRNETSERV-MIB</summary>
 			IF_TYPE_FRAMERELAY_SERVICE = 44,
 
+			/// <summary/>
 			IF_TYPE_V35 = 45,
+			/// <summary/>
 			IF_TYPE_HSSI = 46,
+			/// <summary/>
 			IF_TYPE_HIPPI = 47,
 
 			/// <summary>Generic Modem</summary>
@@ -198,7 +247,9 @@ namespace Vanara.PInvoke
 			/// <summary>AAL5 over ATM</summary>
 			IF_TYPE_AAL5 = 49,
 
+			/// <summary/>
 			IF_TYPE_SONET_PATH = 50,
+			/// <summary/>
 			IF_TYPE_SONET_VT = 51,
 
 			/// <summary>SMDS InterCarrier Interface</summary>
@@ -213,7 +264,9 @@ namespace Vanara.PInvoke
 			/// <summary>100BaseVG</summary>
 			IF_TYPE_IEEE80212 = 55,
 
+			/// <summary/>
 			IF_TYPE_FIBRECHANNEL = 56,
+			/// <summary/>
 			IF_TYPE_HIPPIINTERFACE = 57,
 
 			/// <summary>Obsolete, use 32 or 44</summary>
@@ -252,6 +305,7 @@ namespace Vanara.PInvoke
 			/// <summary>Fast Ethernet (100BaseFX)</summary>
 			IF_TYPE_FASTETHER_FX = 69,
 
+			/// <summary/>
 			IF_TYPE_CHANNEL = 70,
 
 			/// <summary>An IEEE 802.11 wireless network interface.</summary>
@@ -392,9 +446,13 @@ namespace Vanara.PInvoke
 			/// <summary>IBM twinaxial data link control</summary>
 			IF_TYPE_TDLC = 116,
 
+			/// <summary/>
 			IF_TYPE_GIGABITETHERNET = 117,
+			/// <summary/>
 			IF_TYPE_HDLC = 118,
+			/// <summary/>
 			IF_TYPE_LAP_F = 119,
+			/// <summary/>
 			IF_TYPE_V37 = 120,
 
 			/// <summary>Multi-Link Protocol</summary>
@@ -403,6 +461,7 @@ namespace Vanara.PInvoke
 			/// <summary>X.25 Hunt Group</summary>
 			IF_TYPE_X25_HUNTGROUP = 122,
 
+			/// <summary/>
 			IF_TYPE_TRANSPHDLC = 123,
 
 			/// <summary>Interleave channel</summary>
@@ -468,57 +527,109 @@ namespace Vanara.PInvoke
 			/// <summary>An IEEE 1394 (Firewire) high performance serial bus network interface.</summary>
 			IF_TYPE_IEEE1394 = 144, // IEEE1394 High Perf Serial Bus
 
+			/// <summary/>
 			IF_TYPE_IF_GSN = 145,
+			/// <summary/>
 			IF_TYPE_DVBRCC_MACLAYER = 146,
+			/// <summary/>
 			IF_TYPE_DVBRCC_DOWNSTREAM = 147,
+			/// <summary/>
 			IF_TYPE_DVBRCC_UPSTREAM = 148,
+			/// <summary/>
 			IF_TYPE_ATM_VIRTUAL = 149,
+			/// <summary/>
 			IF_TYPE_MPLS_TUNNEL = 150,
+			/// <summary/>
 			IF_TYPE_SRP = 151,
+			/// <summary/>
 			IF_TYPE_VOICEOVERATM = 152,
+			/// <summary/>
 			IF_TYPE_VOICEOVERFRAMERELAY = 153,
+			/// <summary/>
 			IF_TYPE_IDSL = 154,
+			/// <summary/>
 			IF_TYPE_COMPOSITELINK = 155,
+			/// <summary/>
 			IF_TYPE_SS7_SIGLINK = 156,
+			/// <summary/>
 			IF_TYPE_PROP_WIRELESS_P2P = 157,
+			/// <summary/>
 			IF_TYPE_FR_FORWARD = 158,
+			/// <summary/>
 			IF_TYPE_RFC1483 = 159,
+			/// <summary/>
 			IF_TYPE_USB = 160,
+			/// <summary/>
 			IF_TYPE_IEEE8023AD_LAG = 161,
+			/// <summary/>
 			IF_TYPE_BGP_POLICY_ACCOUNTING = 162,
+			/// <summary/>
 			IF_TYPE_FRF16_MFR_BUNDLE = 163,
+			/// <summary/>
 			IF_TYPE_H323_GATEKEEPER = 164,
+			/// <summary/>
 			IF_TYPE_H323_PROXY = 165,
+			/// <summary/>
 			IF_TYPE_MPLS = 166,
+			/// <summary/>
 			IF_TYPE_MF_SIGLINK = 167,
+			/// <summary/>
 			IF_TYPE_HDSL2 = 168,
+			/// <summary/>
 			IF_TYPE_SHDSL = 169,
+			/// <summary/>
 			IF_TYPE_DS1_FDL = 170,
+			/// <summary/>
 			IF_TYPE_POS = 171,
+			/// <summary/>
 			IF_TYPE_DVB_ASI_IN = 172,
+			/// <summary/>
 			IF_TYPE_DVB_ASI_OUT = 173,
+			/// <summary/>
 			IF_TYPE_PLC = 174,
+			/// <summary/>
 			IF_TYPE_NFAS = 175,
+			/// <summary/>
 			IF_TYPE_TR008 = 176,
+			/// <summary/>
 			IF_TYPE_GR303_RDT = 177,
+			/// <summary/>
 			IF_TYPE_GR303_IDT = 178,
+			/// <summary/>
 			IF_TYPE_ISUP = 179,
+			/// <summary/>
 			IF_TYPE_PROP_DOCS_WIRELESS_MACLAYER = 180,
+			/// <summary/>
 			IF_TYPE_PROP_DOCS_WIRELESS_DOWNSTREAM = 181,
+			/// <summary/>
 			IF_TYPE_PROP_DOCS_WIRELESS_UPSTREAM = 182,
+			/// <summary/>
 			IF_TYPE_HIPERLAN2 = 183,
+			/// <summary/>
 			IF_TYPE_PROP_BWA_P2MP = 184,
+			/// <summary/>
 			IF_TYPE_SONET_OVERHEAD_CHANNEL = 185,
+			/// <summary/>
 			IF_TYPE_DIGITAL_WRAPPER_OVERHEAD_CHANNEL = 186,
+			/// <summary/>
 			IF_TYPE_AAL2 = 187,
+			/// <summary/>
 			IF_TYPE_RADIO_MAC = 188,
+			/// <summary/>
 			IF_TYPE_ATM_RADIO = 189,
+			/// <summary/>
 			IF_TYPE_IMT = 190,
+			/// <summary/>
 			IF_TYPE_MVL = 191,
+			/// <summary/>
 			IF_TYPE_REACH_DSL = 192,
+			/// <summary/>
 			IF_TYPE_FR_DLCI_ENDPT = 193,
+			/// <summary/>
 			IF_TYPE_ATM_VCI_ENDPT = 194,
+			/// <summary/>
 			IF_TYPE_OPTICAL_CHANNEL = 195,
+			/// <summary/>
 			IF_TYPE_OPTICAL_TRANSPORT = 196,
 
 			/// <summary>
@@ -542,6 +653,7 @@ namespace Vanara.PInvoke
 			/// <summary>IEEE 802.15.4 WPAN interface</summary>
 			IF_TYPE_IEEE802154 = 259,
 
+			/// <summary/>
 			IF_TYPE_XBOX_WIRELESS = 281,
 		}
 

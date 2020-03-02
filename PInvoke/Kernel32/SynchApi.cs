@@ -12,6 +12,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary/>
 		public const int INIT_ONCE_CTX_RESERVED_BITS = 2;
 
 		// PINIT_ONCE_FN PTIMERAPCROUTINE
@@ -106,10 +107,19 @@ namespace Vanara.PInvoke
 			/// <summary>The critical section is created without debug information.</summary>
 			CRITICAL_SECTION_FLAG_NO_DEBUG_INFO = 0x01000000,
 
+			/// <summary/>
 			CRITICAL_SECTION_FLAG_DYNAMIC_SPIN = 0x02000000,
+
+			/// <summary/>
 			CRITICAL_SECTION_FLAG_STATIC_INIT = 0x04000000,
+
+			/// <summary/>
 			CRITICAL_SECTION_FLAG_RESOURCE_TYPE = 0x08000000,
+
+			/// <summary/>
 			CRITICAL_SECTION_FLAG_FORCE_DEBUG_INFO = 0x10000000,
+
+			/// <summary/>
 			CRITICAL_SECTION_ALL_FLAG_BITS = 0xFF000000,
 		}
 
@@ -2235,6 +2245,7 @@ namespace Vanara.PInvoke
 		{
 			private readonly IntPtr ptr;
 
+			/// <summary/>
 			public static readonly INIT_ONCE INIT_ONCE_STATIC_INIT = new INIT_ONCE();
 		}
 
@@ -2293,6 +2304,8 @@ namespace Vanara.PInvoke
 				public IntPtr ReasonStrings;
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="REASON_CONTEXT"/> class.</summary>
+			/// <param name="reason">The reason.</param>
 			public REASON_CONTEXT(string reason)
 			{
 				Version = DIAGNOSTIC_REASON_VERSION.DIAGNOSTIC_REASON_VERSION;
@@ -2300,6 +2313,10 @@ namespace Vanara.PInvoke
 				_reason.LocalizedReasonModule = Marshal.StringToHGlobalUni(reason);
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="REASON_CONTEXT"/> class.</summary>
+			/// <param name="localizedReasonModule">The localized reason module.</param>
+			/// <param name="reasonId">The reason identifier.</param>
+			/// <param name="substituionValues">The substituion values.</param>
 			public REASON_CONTEXT(HINSTANCE localizedReasonModule, uint reasonId, string[] substituionValues = null)
 			{
 				Version = DIAGNOSTIC_REASON_VERSION.DIAGNOSTIC_REASON_VERSION;

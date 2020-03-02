@@ -221,6 +221,7 @@ namespace Vanara.Windows.Shell
 			set { if (value == opFlags) return; op.SetOperationFlags((FILEOP_FLAGS)value); opFlags = value; }
 		}
 
+		/// <summary>Gets the number of queued operations.</summary>
 		public int QueuedOperations { get; protected set; }
 
 		// TODO: public Form CustomProgressDialog { get; set; }
@@ -235,24 +236,22 @@ namespace Vanara.Windows.Shell
 		/// <param name="options">Options that control file operations.</param>
 		public static void Copy(ShellItem source, ShellFolder dest, string newName = null, OperationFlags options = defaultOptions)
 		{
-			using (var sop = new ShellFileOperations())
+			using var sop = new ShellFileOperations();
+			sop.Options = options;
+			HRESULT hr = HRESULT.S_OK;
+			sop.PostCopyItem += OnPost;
+			try
 			{
-				sop.Options = options;
-				HRESULT hr = HRESULT.S_OK;
-				sop.PostCopyItem += OnPost;
-				try
-				{
-					sop.QueueCopyOperation(source, dest, newName);
-					sop.PerformOperations();
-					hr.ThrowIfFailed();
-				}
-				finally
-				{
-					sop.PostCopyItem -= OnPost;
-				}
-
-				void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
+				sop.QueueCopyOperation(source, dest, newName);
+				sop.PerformOperations();
+				hr.ThrowIfFailed();
 			}
+			finally
+			{
+				sop.PostCopyItem -= OnPost;
+			}
+
+			void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
 		}
 
 		/// <summary>Copies a set of items to a specified destination using the Shell to provide progress and error dialogs.</summary>
@@ -261,24 +260,22 @@ namespace Vanara.Windows.Shell
 		/// <param name="options">Options that control file operations.</param>
 		public static void Copy(IEnumerable<ShellItem> sourceItems, ShellFolder dest, OperationFlags options = defaultOptions)
 		{
-			using (var sop = new ShellFileOperations())
+			using var sop = new ShellFileOperations();
+			sop.Options = options;
+			HRESULT hr = HRESULT.S_OK;
+			sop.PostCopyItem += OnPost;
+			try
 			{
-				sop.Options = options;
-				HRESULT hr = HRESULT.S_OK;
-				sop.PostCopyItem += OnPost;
-				try
-				{
-					sop.QueueCopyOperation(sourceItems, dest);
-					sop.PerformOperations();
-					hr.ThrowIfFailed();
-				}
-				finally
-				{
-					sop.PostCopyItem -= OnPost;
-				}
-
-				void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
+				sop.QueueCopyOperation(sourceItems, dest);
+				sop.PerformOperations();
+				hr.ThrowIfFailed();
 			}
+			finally
+			{
+				sop.PostCopyItem -= OnPost;
+			}
+
+			void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
 		}
 
 		/// <summary>Deletes a single item using the Shell to provide progress and error dialogs.</summary>
@@ -286,24 +283,22 @@ namespace Vanara.Windows.Shell
 		/// <param name="options">Options that control file operations.</param>
 		public static void Delete(ShellItem source, OperationFlags options = defaultOptions)
 		{
-			using (var sop = new ShellFileOperations())
+			using var sop = new ShellFileOperations();
+			sop.Options = options;
+			HRESULT hr = HRESULT.S_OK;
+			sop.PostDeleteItem += OnPost;
+			try
 			{
-				sop.Options = options;
-				HRESULT hr = HRESULT.S_OK;
-				sop.PostDeleteItem += OnPost;
-				try
-				{
-					sop.QueueDeleteOperation(source);
-					sop.PerformOperations();
-					hr.ThrowIfFailed();
-				}
-				finally
-				{
-					sop.PostDeleteItem -= OnPost;
-				}
-
-				void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
+				sop.QueueDeleteOperation(source);
+				sop.PerformOperations();
+				hr.ThrowIfFailed();
 			}
+			finally
+			{
+				sop.PostDeleteItem -= OnPost;
+			}
+
+			void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
 		}
 
 		/// <summary>Deletes a set of items using the Shell to provide progress and error dialogs.</summary>
@@ -311,24 +306,22 @@ namespace Vanara.Windows.Shell
 		/// <param name="options">Options that control file operations.</param>
 		public static void Delete(IEnumerable<ShellItem> sourceItems, OperationFlags options = defaultOptions)
 		{
-			using (var sop = new ShellFileOperations())
+			using var sop = new ShellFileOperations();
+			sop.Options = options;
+			HRESULT hr = HRESULT.S_OK;
+			sop.PostDeleteItem += OnPost;
+			try
 			{
-				sop.Options = options;
-				HRESULT hr = HRESULT.S_OK;
-				sop.PostDeleteItem += OnPost;
-				try
-				{
-					sop.QueueDeleteOperation(sourceItems);
-					sop.PerformOperations();
-					hr.ThrowIfFailed();
-				}
-				finally
-				{
-					sop.PostDeleteItem -= OnPost;
-				}
-
-				void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
+				sop.QueueDeleteOperation(sourceItems);
+				sop.PerformOperations();
+				hr.ThrowIfFailed();
 			}
+			finally
+			{
+				sop.PostDeleteItem -= OnPost;
+			}
+
+			void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
 		}
 
 		/// <summary>Moves a single item to a specified destination using the Shell to provide progress and error dialogs.</summary>
@@ -341,24 +334,22 @@ namespace Vanara.Windows.Shell
 		/// <param name="options">Options that control file operations.</param>
 		public static void Move(ShellItem source, ShellFolder dest, string newName = null, OperationFlags options = defaultOptions)
 		{
-			using (var sop = new ShellFileOperations())
+			using var sop = new ShellFileOperations();
+			sop.Options = options;
+			HRESULT hr = HRESULT.S_OK;
+			sop.PostMoveItem += OnPost;
+			try
 			{
-				sop.Options = options;
-				HRESULT hr = HRESULT.S_OK;
-				sop.PostMoveItem += OnPost;
-				try
-				{
-					sop.QueueMoveOperation(source, dest, newName);
-					sop.PerformOperations();
-					hr.ThrowIfFailed();
-				}
-				finally
-				{
-					sop.PostMoveItem -= OnPost;
-				}
-
-				void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
+				sop.QueueMoveOperation(source, dest, newName);
+				sop.PerformOperations();
+				hr.ThrowIfFailed();
 			}
+			finally
+			{
+				sop.PostMoveItem -= OnPost;
+			}
+
+			void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
 		}
 
 		/// <summary>Moves a set of items to a specified destination using the Shell to provide progress and error dialogs.</summary>
@@ -367,24 +358,22 @@ namespace Vanara.Windows.Shell
 		/// <param name="options">Options that control file operations.</param>
 		public static void Move(IEnumerable<ShellItem> sourceItems, ShellFolder dest, OperationFlags options = defaultOptions)
 		{
-			using (var sop = new ShellFileOperations())
+			using var sop = new ShellFileOperations();
+			sop.Options = options;
+			HRESULT hr = HRESULT.S_OK;
+			sop.PostMoveItem += OnPost;
+			try
 			{
-				sop.Options = options;
-				HRESULT hr = HRESULT.S_OK;
-				sop.PostMoveItem += OnPost;
-				try
-				{
-					sop.QueueMoveOperation(sourceItems, dest);
-					sop.PerformOperations();
-					hr.ThrowIfFailed();
-				}
-				finally
-				{
-					sop.PostMoveItem -= OnPost;
-				}
-
-				void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
+				sop.QueueMoveOperation(sourceItems, dest);
+				sop.PerformOperations();
+				hr.ThrowIfFailed();
 			}
+			finally
+			{
+				sop.PostMoveItem -= OnPost;
+			}
+
+			void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
 		}
 
 		/// <summary>Creates a new item in a specified location using the Shell to provide progress and error dialogs.</summary>
@@ -407,24 +396,22 @@ namespace Vanara.Windows.Shell
 		/// <param name="options">Options that control file operations.</param>
 		public static void NewItem(ShellFolder dest, string name, System.IO.FileAttributes attr = System.IO.FileAttributes.Normal, string template = null, OperationFlags options = defaultOptions)
 		{
-			using (var sop = new ShellFileOperations())
+			using var sop = new ShellFileOperations();
+			sop.Options = options;
+			HRESULT hr = HRESULT.S_OK;
+			sop.PostNewItem += OnPost;
+			try
 			{
-				sop.Options = options;
-				HRESULT hr = HRESULT.S_OK;
-				sop.PostNewItem += OnPost;
-				try
-				{
-					sop.QueueNewItemOperation(dest, name, attr, template);
-					sop.PerformOperations();
-					hr.ThrowIfFailed();
-				}
-				finally
-				{
-					sop.PostRenameItem -= OnPost;
-				}
-
-				void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
+				sop.QueueNewItemOperation(dest, name, attr, template);
+				sop.PerformOperations();
+				hr.ThrowIfFailed();
 			}
+			finally
+			{
+				sop.PostRenameItem -= OnPost;
+			}
+
+			void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
 		}
 
 		/// <summary>Renames a single item to a new display name using the Shell to provide progress and error dialogs.</summary>
@@ -433,24 +420,22 @@ namespace Vanara.Windows.Shell
 		/// <param name="options">Options that control file operations.</param>
 		public static void Rename(ShellItem source, string newName = null, OperationFlags options = defaultOptions)
 		{
-			using (var sop = new ShellFileOperations())
+			using var sop = new ShellFileOperations();
+			sop.Options = options;
+			HRESULT hr = HRESULT.S_OK;
+			sop.PostRenameItem += OnPost;
+			try
 			{
-				sop.Options = options;
-				HRESULT hr = HRESULT.S_OK;
-				sop.PostRenameItem += OnPost;
-				try
-				{
-					sop.QueueRenameOperation(source, newName);
-					sop.PerformOperations();
-					hr.ThrowIfFailed();
-				}
-				finally
-				{
-					sop.PostRenameItem -= OnPost;
-				}
-
-				void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
+				sop.QueueRenameOperation(source, newName);
+				sop.PerformOperations();
+				hr.ThrowIfFailed();
 			}
+			finally
+			{
+				sop.PostRenameItem -= OnPost;
+			}
+
+			void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
 		}
 
 		/// <summary>
@@ -461,24 +446,22 @@ namespace Vanara.Windows.Shell
 		/// <param name="options">Options that control file operations.</param>
 		public static void Rename(IEnumerable<ShellItem> sourceItems, string newName, OperationFlags options = defaultOptions)
 		{
-			using (var sop = new ShellFileOperations())
+			using var sop = new ShellFileOperations();
+			sop.Options = options;
+			HRESULT hr = HRESULT.S_OK;
+			sop.PostRenameItem += OnPost;
+			try
 			{
-				sop.Options = options;
-				HRESULT hr = HRESULT.S_OK;
-				sop.PostRenameItem += OnPost;
-				try
-				{
-					sop.QueueRenameOperation(sourceItems, newName);
-					sop.PerformOperations();
-					hr.ThrowIfFailed();
-				}
-				finally
-				{
-					sop.PostRenameItem -= OnPost;
-				}
-
-				void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
+				sop.QueueRenameOperation(sourceItems, newName);
+				sop.PerformOperations();
+				hr.ThrowIfFailed();
 			}
+			finally
+			{
+				sop.PostRenameItem -= OnPost;
+			}
+
+			void OnPost(object sender, ShellFileOpEventArgs e) => hr = e.Result;
 		}
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
@@ -786,8 +769,8 @@ namespace Vanara.Windows.Shell
 				var l = new List<PROPERTYKEY>(Count);
 				for (uint i = 0; i < Count; i++)
 				{
-					using (var p = new ComReleaser<IPropertyChange>(changes.GetAt<IPropertyChange>(i)))
-						l.Add(p.Item.GetPropertyKey());
+					using var p = new ComReleaser<IPropertyChange>(changes.GetAt<IPropertyChange>(i));
+					l.Add(p.Item.GetPropertyKey());
 				}
 				return l;
 			}
@@ -823,11 +806,9 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				using (var p = new ComReleaser<IPropertyChange>(changes.GetAt<IPropertyChange>((uint)index)))
-				{
-					p.Item.ApplyToPropVariant(new PROPVARIANT(), out var pv);
-					return new KeyValuePair<PROPERTYKEY, object>(p.Item.GetPropertyKey(), pv.Value);
-				}
+				using var p = new ComReleaser<IPropertyChange>(changes.GetAt<IPropertyChange>((uint)index));
+				p.Item.ApplyToPropVariant(new PROPVARIANT(), out var pv);
+				return new KeyValuePair<PROPERTYKEY, object>(p.Item.GetPropertyKey(), pv.Value);
 			}
 		}
 		/// <summary>Adds an element with the provided key and value to the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</summary>
@@ -919,16 +900,16 @@ namespace Vanara.Windows.Shell
 		{
 			for (uint i = 0; i < Count; i++)
 			{
-				using (var p = new ComReleaser<IPropertyChange>(changes.GetAt<IPropertyChange>(i)))
-					if (key == p.Item.GetPropertyKey())
-						return (int)i;
+				using var p = new ComReleaser<IPropertyChange>(changes.GetAt<IPropertyChange>(i));
+				if (key == p.Item.GetPropertyKey())
+					return (int)i;
 			}
 			return -1;
 		}
 
 		private IPropertyChange ToPC(PROPERTYKEY key, object value, PKA_FLAGS flags = PKA_FLAGS.PKA_SET)
 		{
-			PSCreateSimplePropertyChange(PKA_FLAGS.PKA_SET, key, new PROPVARIANT(value), typeof(IPropertyChange).GUID, out var pc).ThrowIfFailed();
+			PSCreateSimplePropertyChange(flags, key, new PROPVARIANT(value), typeof(IPropertyChange).GUID, out var pc).ThrowIfFailed();
 			return pc;
 		}
 	}

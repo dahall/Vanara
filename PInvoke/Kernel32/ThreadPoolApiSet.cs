@@ -80,11 +80,15 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		public delegate void WorkCallback(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, PTP_WORK Work);
 
+		/// <summary/>
 		[Flags]
 		public enum TP_CALLBACK_ENV_FLAGS
 		{
+			/// <summary/>
 			None = 0,
+			/// <summary/>
 			LongFunction = 1,
+			/// <summary/>
 			Persistent = 2,
 		}
 
@@ -979,9 +983,11 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682478")]
 		internal static extern PTP_WORK InternalCreateThreadpoolWork(WorkCallback pfnwk, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
 
+		/// <summary/>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct PTP_CALLBACK_INSTANCE
 		{
+			/// <summary/>
 			private readonly IntPtr handle;
 		}
 

@@ -75,12 +75,25 @@ namespace Vanara.PInvoke
 			/// </summary>
 			EXCEPTION_EXECUTE_HANDLER = 0x0001,
 
+			/// <summary/>
 			EXCEPTION_UNWINDING = 0x0002,
+
+			/// <summary/>
 			EXCEPTION_EXIT_UNWIND = 0x0004,
+
+			/// <summary/>
 			EXCEPTION_STACK_INVALID = 0x0008,
+
+			/// <summary/>
 			EXCEPTION_NESTED_CALL = 0x0010,
+
+			/// <summary/>
 			EXCEPTION_TARGET_UNWIND = 0x0020,
+
+			/// <summary/>
 			EXCEPTION_COLLIDED_UNWIND = 0x0040,
+
+			/// <summary/>
 			EXCEPTION_UNWIND = 0x0066,
 
 			/// <summary>
@@ -89,6 +102,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			EXCEPTION_CONTINUE_EXECUTION = 0xFFFFFFFF,
 
+			/// <summary/>
 			EXCEPTION_CHAIN_END = 0xFFFFFFFF,
 		}
 
@@ -98,17 +112,28 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		public enum ExceptionCode : uint
 		{
+			/// <summary/>
 			None = 0x0,
+
+			/// <summary/>
 			STATUS_BREAKPOINT = 0x80000003,
+
+			/// <summary/>
 			STATUS_SINGLESTEP = 0x80000004,
 
+			/// <summary/>
 			EXCEPTION_INT_DIVIDE_BY_ZERO = 0xC0000094,
 
 			/// <summary>Fired when debuggee gets a Control-C.</summary>
 			DBG_CONTROL_C = 0x40010005,
 
+			/// <summary/>
 			EXCEPTION_STACK_OVERFLOW = 0xC00000FD,
+
+			/// <summary/>
 			EXCEPTION_NONCONTINUABLE_EXCEPTION = 0xC0000025,
+
+			/// <summary/>
 			EXCEPTION_ACCESS_VIOLATION = 0xc0000005,
 		}
 
@@ -691,15 +716,15 @@ namespace Vanara.PInvoke
 				flags |= FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS;
 			Win32Error lastError;
 			var buf = new StringBuilder(1024);
-			using (var pargs = new SafeHGlobalHandle(InteropExtensions.MarshalObjectsToPtr(args, Marshal.AllocHGlobal, out var sz, true), sz, true))
-				do
-				{
-					if (0 != FormatMessage(flags, hLib, id, langId, buf, (uint)buf.Capacity, (IntPtr)pargs))
-						return buf.ToString();
-					else if (Win32Error.ERROR_INSUFFICIENT_BUFFER != (lastError = Marshal.GetLastWin32Error()))
-						lastError.ThrowIfFailed();
-					buf.Capacity = buf.Capacity * 2;
-				} while (true);
+			using var pargs = new SafeHGlobalHandle(InteropExtensions.MarshalObjectsToPtr(args, Marshal.AllocHGlobal, out var sz, true), sz, true);
+			do
+			{
+				if (0 != FormatMessage(flags, hLib, id, langId, buf, (uint)buf.Capacity, (IntPtr)pargs))
+					return buf.ToString();
+				else if (Win32Error.ERROR_INSUFFICIENT_BUFFER != (lastError = Marshal.GetLastWin32Error()))
+					lastError.ThrowIfFailed();
+				buf.Capacity = buf.Capacity * 2;
+			} while (true);
 		}
 
 		/// <summary>
@@ -736,15 +761,15 @@ namespace Vanara.PInvoke
 				flags |= FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS;
 			Win32Error lastError;
 			var buf = new StringBuilder(1024);
-			using (var pargs = new SafeHGlobalHandle(InteropExtensions.MarshalObjectsToPtr(args, Marshal.AllocHGlobal, out var sz, true), sz, true))
-				do
-				{
-					if (0 != FormatMessage(flags, formatString, 0, 0, buf, (uint)buf.Capacity, (IntPtr)pargs))
-						return buf.ToString();
-					else if (Win32Error.ERROR_INSUFFICIENT_BUFFER != (lastError = Marshal.GetLastWin32Error()))
-						lastError.ThrowIfFailed();
-					buf.Capacity = buf.Capacity * 2;
-				} while (true);
+			using var pargs = new SafeHGlobalHandle(InteropExtensions.MarshalObjectsToPtr(args, Marshal.AllocHGlobal, out var sz, true), sz, true);
+			do
+			{
+				if (0 != FormatMessage(flags, formatString, 0, 0, buf, (uint)buf.Capacity, (IntPtr)pargs))
+					return buf.ToString();
+				else if (Win32Error.ERROR_INSUFFICIENT_BUFFER != (lastError = Marshal.GetLastWin32Error()))
+					lastError.ThrowIfFailed();
+				buf.Capacity = buf.Capacity * 2;
+			} while (true);
 		}
 
 		/// <summary>Retrieves the error mode for the current process.</summary>
@@ -1309,6 +1334,7 @@ namespace Vanara.PInvoke
 		}
 	}
 
+	/// <summary>Extension methods for <see cref="IErrorProvider"/>.</summary>
 	public static class WinErrExtensions
 	{
 		/// <summary>Gets the system message for the provided system error with optional parameters.</summary>

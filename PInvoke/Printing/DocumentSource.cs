@@ -38,19 +38,31 @@ namespace Vanara.PInvoke
 		[ComImport, Guid("0b31cc62-d7ec-4747-9d6e-f2537d870f2b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		public interface IPrintPreviewPageCollection
 		{
-			/// <summary> This method is called whenever the system detects that the physical dimensions of the page has changed or when the
-			/// app has requested pagination via a call to IPrintPreviewDxgiPreviewTarget::InvalidatePreview. </summary> <param
-			/// name="currentJobPage">The current page being displayed to the user.</param> <param name="printTaskOptions">The print
-			/// options.</param> <returns>If the Paginate method completes successfully, it returns an S_OK. Otherwise it returns an
-			/// appropriate HRESULT error code.</returns> <remarks>For standard options which result in changes to the physical layout of
-			/// the page, the system will automatically generate a Paginate call. The app does not need to call
-			/// IPrintPreviewDxgiPackageTarget::InvalidatePreview in these scenarios; e.g. portrait changed to landscape. For custom options
-			/// such as handling greyscale and color, apps should call InvalidatePreview to trigger a pagination. <para><c>Note</c> A
-			/// Pagination request does not have to require a new pagination to occur.</para> <para>Apps should examine the state of the
-			/// provided printTaskOptions and determine if the changes warrant a repagination.For example, if the imageable area changes and
-			/// the content already fits within the new imageable area there is no need to perform a new pagination.</para> <para>An app may
-			/// use the currentJobPage parameter to determine what page is visible if it wants to maintain user context when the layout
-			/// changes.For example, keeping the same content on the screen when orientation switches from portrait to landscape.</remarks></para>
+			/// <summary>
+			/// This method is called whenever the system detects that the physical dimensions of the page has changed or when the app has
+			/// requested pagination via a call to IPrintPreviewDxgiPreviewTarget::InvalidatePreview.
+			/// </summary>
+			/// <param name="currentJobPage">The current page being displayed to the user.</param>
+			/// <param name="printTaskOptions">The print options.</param>
+			/// <returns>
+			/// If the Paginate method completes successfully, it returns an S_OK. Otherwise it returns an appropriate HRESULT error code.
+			/// </returns>
+			/// <remarks>
+			/// For standard options which result in changes to the physical layout of the page, the system will automatically generate a
+			/// Paginate call. The app does not need to call IPrintPreviewDxgiPackageTarget::InvalidatePreview in these scenarios; e.g.
+			/// portrait changed to landscape. For custom options such as handling greyscale and color, apps should call InvalidatePreview
+			/// to trigger a pagination.
+			/// <para><c>Note</c> A Pagination request does not have to require a new pagination to occur.</para>
+			/// <para>
+			/// Apps should examine the state of the provided printTaskOptions and determine if the changes warrant a repagination.For
+			/// example, if the imageable area changes and the content already fits within the new imageable area there is no need to
+			/// perform a new pagination.
+			/// </para>
+			/// <para>
+			/// An app may use the currentJobPage parameter to determine what page is visible if it wants to maintain user context when the
+			/// layout changes.For example, keeping the same content on the screen when orientation switches from portrait to landscape.
+			/// </para>
+			/// </remarks>
 			[PreserveSig]
 			HRESULT Paginate(uint currentJobPage, IInspectable printTaskOptions);
 

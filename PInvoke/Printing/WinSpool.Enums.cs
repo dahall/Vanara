@@ -17,7 +17,7 @@ namespace Vanara.PInvoke
 			/// <summary>Printing-specific authorization to cancel, pause, resume, or restart the job ([MS-DTYP] ACCESS_MASK Bit 27).</summary>
 			JOB_ACCESS_ADMINISTER = 0x00000010,
 
-			/// <summary>Printing-specific read rights for the spool file ([MS-DTYP] ACCESS_MASK Bit 26).<127></summary>
+			/// <summary>Printing-specific read rights for the spool file ([MS-DTYP] ACCESS_MASK Bit 26).</summary>
 			JOB_ACCESS_READ = 0x00000020,
 
 			/// <summary>
@@ -51,7 +51,7 @@ namespace Vanara.PInvoke
 			PRINTER_ACCESS_USE = 0x00000008,
 
 			/// <summary>Printing-specific access rights for printers to perform printer data management operations ([MS-DTYP] ACCESS_MASK
-			/// Bit 25).<128></summary>
+			/// Bit 25).</summary>
 			PRINTER_ACCESS_MANAGE_LIMITED = 0x00000040,
 
 			/// <summary>
@@ -998,19 +998,19 @@ namespace Vanara.PInvoke
 			PRINTER_ATTRIBUTE_DIRECT = 0x00000002,
 
 			/// <summary>If set and printer is set for print-while-spooling, any jobs that have completed spooling are scheduled to print
-			/// before jobs that have not completed spooling.<185></summary>
+			/// before jobs that have not completed spooling.</summary>
 			PRINTER_ATTRIBUTE_DO_COMPLETE_FIRST = 0x00000200,
 
-			/// <summary>Indicates whether bidirectional communications are enabled for the printer.<186></summary>
+			/// <summary>Indicates whether bidirectional communications are enabled for the printer.</summary>
 			PRINTER_ATTRIBUTE_ENABLE_BIDI = 0x00000800,
 
-			/// <summary>Setting this flag causes mismatched documents to be held in the queue.<187></summary>
+			/// <summary>Setting this flag causes mismatched documents to be held in the queue.</summary>
 			PRINTER_ATTRIBUTE_ENABLE_DEVQ = 0x00000080,
 
 			/// <summary>If set, printer is a fax printer.</summary>
 			PRINTER_ATTRIBUTE_FAX = 0x00004000,
 
-			/// <summary>If set, jobs are kept after they are printed. If cleared, jobs are deleted.<188></summary>
+			/// <summary>If set, jobs are kept after they are printed. If cleared, jobs are deleted.</summary>
 			PRINTER_ATTRIBUTE_KEEPPRINTEDJOBS = 0x00000100,
 
 			/// <summary>Printer is a local printer.</summary>
@@ -1019,7 +1019,7 @@ namespace Vanara.PInvoke
 			/// <summary>Printer is a network printer connection.</summary>
 			PRINTER_ATTRIBUTE_NETWORK = 0x00000010,
 
-			/// <summary>Indicates whether the printer is published in the directory service (DS).<189></summary>
+			/// <summary>Indicates whether the printer is published in the directory service (DS).</summary>
 			PRINTER_ATTRIBUTE_PUBLISHED = 0x00002000,
 
 			/// <summary>
@@ -1028,7 +1028,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			PRINTER_ATTRIBUTE_QUEUED = 0x00000001,
 
-			/// <summary>Indicates that only RAW data type print jobs MUST be spooled.<190></summary>
+			/// <summary>Indicates that only RAW data type print jobs MUST be spooled.</summary>
 			PRINTER_ATTRIBUTE_RAW_ONLY = 0x00001000,
 
 			/// <summary>Printer is shared.</summary>
@@ -1038,7 +1038,7 @@ namespace Vanara.PInvoke
 			PRINTER_ATTRIBUTE_TS = 0x00008000,
 
 			/// <summary>Indicates whether the printer is currently connected. If the printer is not currently connected, print jobs
-			/// continue to spool.<191></summary>
+			/// continue to spool.</summary>
 			PRINTER_ATTRIBUTE_WORK_OFFLINE = 0x00000400,
 
 			/// <summary>Reserved.</summary>
@@ -1201,6 +1201,7 @@ namespace Vanara.PInvoke
 			PRINTER_CONNECTION_NO_UI = 0x00000040,
 		}
 
+		/// <summary>The action to perform.</summary>
 		public enum PRINTER_CONTROL
 		{
 			/// <summary>Pause the printer.</summary>
@@ -1456,6 +1457,7 @@ namespace Vanara.PInvoke
 			PRINTER_NOTIFY_OPTIONS_REFRESH = 1
 		}
 
+		/// <summary>Specifies the caching of a handle for a printer opened with OpenPrinter2.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-option-flags typedef enum tagPRINTER_OPTION_FLAGS {
 		// PRINTER_OPTION_NO_CACHE, PRINTER_OPTION_CACHE, PRINTER_OPTION_CLIENT_CHANGE } PRINTER_OPTION_FLAGS;
 		[PInvokeData("Winspool.h", MSDNShortId = "e5a62322-723c-490d-8de1-f74dcac9e22d")]
@@ -1533,7 +1535,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			PRINTER_STATUS_PENDING_DELETION = 0x00000004,
 
-			/// <summary>The printer is in power-save mode.<182></summary>
+			/// <summary>The printer is in power-save mode.</summary>
 			PRINTER_STATUS_POWER_SAVE = 0x01000000,
 
 			/// <summary>The printer is printing.</summary>
@@ -1542,10 +1544,10 @@ namespace Vanara.PInvoke
 			/// <summary>The printer is processing a print job.</summary>
 			PRINTER_STATUS_PROCESSING = 0x00004000,
 
-			/// <summary>The printer is offline.<183></summary>
+			/// <summary>The printer is offline.</summary>
 			PRINTER_STATUS_SERVER_OFFLINE = 0x02000000,
 
-			/// <summary>The printer status is unknown.<184></summary>
+			/// <summary>The printer status is unknown.</summary>
 			PRINTER_STATUS_SERVER_UNKNOWN = 0x00800000,
 
 			/// <summary>The printer is low on toner.</summary>
@@ -1573,11 +1575,11 @@ namespace Vanara.PInvoke
 			PRINTER_DRIVER_PACKAGE_AWARE = 0x00000001,
 
 			/// <summary>The printer driver supports the Microsoft XPS format described in the XML Paper Specification: Overview, and also
-			/// in Product Behavior, section <27>. Windows 8, Windows Server 2012</summary>
+			/// in Product Behavior, section 27. Windows 8, Windows Server 2012</summary>
 			PRINTER_DRIVER_XPS = 0x00000002,
 
 			/// <summary>The printer driver is compatible with printer driver isolation. For more information, see Product Behavior, section
-			/// <28>. Windows 7, Windows Server 2008 R2</summary>
+			/// 28. Windows 7, Windows Server 2008 R2</summary>
 			PRINTER_DRIVER_SANDBOX_ENABLED = 0x00000004,
 
 			/// <summary>The printer driver is a class printer driver. Windows 8, Windows Server 2012</summary>
@@ -1602,7 +1604,7 @@ namespace Vanara.PInvoke
 			PRINTER_DRIVER_CATEGORY_SERVICE = 0x00000200,
 
 			/// <summary>Printers that use this printer driver should follow the guidelines outlined in the USB Device Class Definition. For
-			/// more information, see Product Behavior, section <36> Windows 8, Windows Server 2012</summary>
+			/// more information, see Product Behavior, section 36 Windows 8, Windows Server 2012</summary>
 			PRINTER_DRIVER_SOFT_RESET_REQUIRED = 0x00000400,
 		}
 	}

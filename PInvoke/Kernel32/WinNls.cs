@@ -16,7 +16,10 @@ namespace Vanara.PInvoke
 		/// <summary>Indicates that no geographical location identifier has been set for the user.</summary>
 		public const int GEOID_NOT_AVAILABLE = -1;
 
+		/// <summary/>
 		public const ushort LANG_INVARIANT = 0x7f;
+
+		/// <summary/>
 		public const ushort LANG_NEUTRAL = 0;
 
 		/// <summary>Name of an invariant locale that provides stable locale and calendar data.</summary>
@@ -35,23 +38,53 @@ namespace Vanara.PInvoke
 		/// locale can be different from the locale for the current user interface language.
 		/// </summary>
 		public const string LOCALE_NAME_USER_DEFAULT = null;
-
+		
+		/// <summary/>
 		public const ushort SORT_DEFAULT = 0;
+		
+		/// <summary/>
 		public const ushort SUBLANG_CUSTOM_DEFAULT = 0x03;
+		
+		/// <summary/>
 		public const ushort SUBLANG_CUSTOM_UNSPECIFIED = 0x04;
+		
+		/// <summary/>
 		public const ushort SUBLANG_DEFAULT = 0x01;
+		
+		/// <summary/>
 		public const ushort SUBLANG_NEUTRAL = 0;
+		
+		/// <summary/>
 		public const ushort SUBLANG_SYS_DEFAULT = 0x02;
+		
+		/// <summary/>
 		public const ushort SUBLANG_UI_CUSTOM_DEFAULT = 0x05;
-
+		
+		/// <summary/>
 		public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
+		
+		/// <summary/>
 		public static readonly ushort LANG_USER_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT);
+		
+		/// <summary/>
 		public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
+		
+		/// <summary/>
 		public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
+		
+		/// <summary/>
 		public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
+		
+		/// <summary/>
 		public static readonly LCID LOCALE_INVARIANT = MAKELCID(MAKELANGID(LANG_INVARIANT, SUBLANG_NEUTRAL), SORT_DEFAULT);
+		
+		/// <summary/>
 		public static readonly LCID LOCALE_NEUTRAL = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), SORT_DEFAULT);
+		
+		/// <summary/>
 		public static readonly LCID LOCALE_SYSTEM_DEFAULT = MAKELCID(LANG_SYSTEM_DEFAULT, SORT_DEFAULT);
+		
+		/// <summary/>
 		public static readonly LCID LOCALE_USER_DEFAULT = MAKELCID(LANG_USER_DEFAULT, SORT_DEFAULT);
 
 		/// <summary>
@@ -626,12 +659,25 @@ namespace Vanara.PInvoke
 			/// <summary>Windows Me/98, Windows 2000: An integer value indicating the upper boundary of the two-digit year range.</summary>
 			CAL_ITWODIGITYEARMAX = 0x00000030,
 
+			/// <summary/>
 			CAL_SSHORTESTDAYNAME1 = 0x00000031,
+
+			/// <summary/>
 			CAL_SSHORTESTDAYNAME2 = 0x00000032,
+
+			/// <summary/>
 			CAL_SSHORTESTDAYNAME3 = 0x00000033,
+
+			/// <summary/>
 			CAL_SSHORTESTDAYNAME4 = 0x00000034,
+
+			/// <summary/>
 			CAL_SSHORTESTDAYNAME5 = 0x00000035,
+
+			/// <summary/>
 			CAL_SSHORTESTDAYNAME6 = 0x00000036,
+
+			/// <summary/>
 			CAL_SSHORTESTDAYNAME7 = 0x00000037,
 
 			/// <summary>
@@ -3858,6 +3904,12 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool EnumSystemLocalesEx(EnumLocalesProcEx lpLocaleEnumProcEx, LOCALE_FLAGS dwFlags, [Optional] IntPtr lParam, [Optional] IntPtr lpReserved);
 
+		/// <summary>Enumerates the locales that are either installed on or supported by an operating system.</summary>
+		/// <param name="dwFlags">
+		/// Flags identifying the locales to enumerate. The flags can be used singly or combined using a binary OR. If the application
+		/// specifies 0 for this parameter, the function behaves as for LOCALE_ALL.
+		/// </param>
+		/// <returns>A sequence of locale string and flags.</returns>
 		public static IEnumerable<(string lpLocaleString, LOCALE_FLAGS dwFlags)> EnumSystemLocalesEx(LOCALE_FLAGS dwFlags)
 		{
 			var list = new List<(string, LOCALE_FLAGS)>();

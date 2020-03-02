@@ -60,8 +60,8 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </param>
 		/// <param name="bufptr">
-		/// Pointer to the buffer that receives the data. The format of this data depends on the value of the level parameter. This buffer is
-		/// allocated by the system and must be freed using the NetApiBufferFree function. For more information, see Network Management
+		/// Pointer to the buffer that receives the data. The format of this data depends on the value of the level parameter. This buffer
+		/// is allocated by the system and must be freed using the NetApiBufferFree function. For more information, see Network Management
 		/// Function Buffers and Network Management Function Buffer Lengths.
 		/// </param>
 		/// <returns>
@@ -209,8 +209,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// If the <c>NetWkstaSetInfo</c> function returns ERROR_INVALID_PARAMETER, you can use the parm_err parameter to indicate the first
-		/// member of the workstation information structure that is invalid. (A workstation information structure begins with WKSTA_INFO_ and
-		/// its format is specified by the level parameter.) The following table lists the values that can be returned in the parm_err
+		/// member of the workstation information structure that is invalid. (A workstation information structure begins with WKSTA_INFO_
+		/// and its format is specified by the level parameter.) The following table lists the values that can be returned in the parm_err
 		/// parameter and the corresponding structure member that is in error. (The prefix wki*_ indicates that the member can begin with
 		/// multiple prefixes, for example, wki100_ or wki402_.)
 		/// </para>
@@ -341,11 +341,11 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>
-		/// The workstation service parameter settings are stored in the registry, not in the LanMan.ini file used prveiously by LAN Manager.
-		/// The <c>NetWkstaSetInfo</c> function does not change the values in the LanMan.ini file. When the workstation service is stopped
-		/// and restarted, workstation parameters are reset to the default values specified in the registry (unless they are overwritten by
-		/// command-line parameters). Values set by previous calls to <c>NetWkstaSetInfo</c> can be overwritten when workstation parameters
-		/// are reset.
+		/// The workstation service parameter settings are stored in the registry, not in the LanMan.ini file used prveiously by LAN
+		/// Manager. The <c>NetWkstaSetInfo</c> function does not change the values in the LanMan.ini file. When the workstation service is
+		/// stopped and restarted, workstation parameters are reset to the default values specified in the registry (unless they are
+		/// overwritten by command-line parameters). Values set by previous calls to <c>NetWkstaSetInfo</c> can be overwritten when
+		/// workstation parameters are reset.
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>
@@ -574,8 +574,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ERROR_INVALID_LEVEL</term>
 		/// <term>
-		/// The level parameter, which indicates what level of data structure information is available, is invalid. This error is returned if
-		/// the level parameter is specified as a value other than zero.
+		/// The level parameter, which indicates what level of data structure information is available, is invalid. This error is returned
+		/// if the level parameter is specified as a value other than zero.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -611,8 +611,8 @@ namespace Vanara.PInvoke
 		public static extern Win32Error NetWkstaTransportEnum([Optional] string servername, uint level, out SafeNetApiBuffer bufptr, uint prefmaxlen, out uint entriesread, out uint totalentries, ref uint resume_handle);
 
 		/// <summary>
-		/// The <c>NetWkstaUserEnum</c> function lists information about all users currently logged on to the workstation. This list includes
-		/// interactive, service and batch logons.
+		/// The <c>NetWkstaUserEnum</c> function lists information about all users currently logged on to the workstation. This list
+		/// includes interactive, service and batch logons.
 		/// </summary>
 		/// <param name="servername">
 		/// Pointer to a string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If this
@@ -641,15 +641,15 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </param>
 		/// <param name="bufptr">
-		/// Pointer to the buffer that receives the data. The format of this data depends on the value of the level parameter. This buffer is
-		/// allocated by the system and must be freed using the NetApiBufferFree function. Note that you must free the buffer even if the
+		/// Pointer to the buffer that receives the data. The format of this data depends on the value of the level parameter. This buffer
+		/// is allocated by the system and must be freed using the NetApiBufferFree function. Note that you must free the buffer even if the
 		/// function fails with ERROR_MORE_DATA.
 		/// </param>
 		/// <param name="prefmaxlen">
 		/// Specifies the preferred maximum length of returned data, in bytes. If you specify MAX_PREFERRED_LENGTH, the function allocates
 		/// the amount of memory required for the data. If you specify another value in this parameter, it can restrict the number of bytes
-		/// that the function returns. If the buffer size is insufficient to hold all entries, the function returns ERROR_MORE_DATA. For more
-		/// information, see Network Management Function Buffers and Network Management Function Buffer Lengths.
+		/// that the function returns. If the buffer size is insufficient to hold all entries, the function returns ERROR_MORE_DATA. For
+		/// more information, see Network Management Function Buffers and Network Management Function Buffer Lengths.
 		/// </param>
 		/// <param name="entriesread">Pointer to a value that receives the count of elements actually enumerated.</param>
 		/// <param name="totalentries">
@@ -697,8 +697,8 @@ namespace Vanara.PInvoke
 		/// Anonymous access is also permitted if the RestrictAnonymous policy setting permits anonymous access. If the RestrictAnonymous
 		/// policy setting does not permit anonymous access, only an administrator can successfully execute the function. Members of the
 		/// Administrators, and the Server, System and Print Operator local groups can also view information. For more information about
-		/// restricting anonymous access, see Security Requirements for the Network Management Functions. For more information on ACLs, ACEs,
-		/// and access tokens, see Access Control Model.
+		/// restricting anonymous access, see Security Requirements for the Network Management Functions. For more information on ACLs,
+		/// ACEs, and access tokens, see Access Control Model.
 		/// </para>
 		/// <para>
 		/// <c>Windows 2000:</c> If you call this function on a domain controller that is running Active Directory, access is allowed or
@@ -748,8 +748,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>1</term>
 		/// <term>
-		/// Return information about the workstation, including the name of the current user and the domains accessed by the workstation. The
-		/// bufptr parameter points to a WKSTA_USER_INFO_1 structure.
+		/// Return information about the workstation, including the name of the current user and the domains accessed by the workstation.
+		/// The bufptr parameter points to a WKSTA_USER_INFO_1 structure.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -865,9 +865,9 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// If the <c>NetWkstaUserSetInfo</c> function returns ERROR_INVALID_PARAMETER, you can use the parm_err parameter to indicate the
 		/// member of the workstation user information structure that is invalid. (A workstation user information structure begins with
-		/// WKSTA_USER_INFO_ and its format is specified by the level parameter.) The following table lists the value that can be returned in
-		/// the parm_err parameter and the corresponding structure member that is in error. (The prefix wkui*_ indicates that the member can
-		/// begin with multiple prefixes, for example, wkui0_ or wkui1_.)
+		/// WKSTA_USER_INFO_ and its format is specified by the level parameter.) The following table lists the value that can be returned
+		/// in the parm_err parameter and the corresponding structure member that is in error. (The prefix wkui*_ indicates that the member
+		/// can begin with multiple prefixes, for example, wkui0_ or wkui1_.)
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -1040,38 +1040,48 @@ namespace Vanara.PInvoke
 			public string wki101_lanroot;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1010
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1010_char_wait;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1011
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1011_collection_time;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1012
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1012_maximum_collection_count;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1013
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1013_keep_conn;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1018
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1018_sess_timeout;
 		}
 
@@ -1159,192 +1169,246 @@ namespace Vanara.PInvoke
 			public uint wki102_logged_on_users;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1023
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1023_siz_char_buf;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1027
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1027_errlog_sz;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1028
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1028_print_buf_time;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1032
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1032_wrk_heuristics;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1033
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1033_max_threads;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1041
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1041_lock_quota;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1042
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1042_lock_increment;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1043
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1043_lock_maximum;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1044
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1044_pipe_increment;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1045
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1045_pipe_maximum;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1046
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1046_dormant_file_limit;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1047
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1047_cache_file_timeout;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1048
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1048_use_opportunistic_locking;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1049
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1049_use_unlock_behind;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1050
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1050_use_close_behind;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1051
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1051_buf_named_pipes;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1052
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1052_use_lock_read_unlock;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1053
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1053_utilize_nt_caching;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1054
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1054_use_raw_read;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1055
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1055_use_raw_write;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1056
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1056_use_write_raw_data;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1057
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1057_use_encryption;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1058
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1058_buf_files_deny_write;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1059
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1059_buf_read_only_files;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1060
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1060_force_core_create_mode;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1061
 		{
+			/// <summary>Undocumented.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1061_use_512_byte_max_transfer;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("lmwksta.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1062
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki1062_read_ahead_throughput;
 		}
 
@@ -1355,25 +1419,64 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_302
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki302_char_wait;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_collection_time;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_maximum_collection_count;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_keep_conn;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_keep_search;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_max_cmds;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_num_work_buf;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_siz_work_buf;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_max_wrk_cache;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_sess_timeout;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_siz_error;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_num_alerts;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_num_services;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_errlog_sz;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_print_buf_time;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_num_char_buf;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_siz_char_buf;
+
+			/// <summary>Undocumented.</summary>
 			public string wki302_wrk_heuristics;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_mailslots;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki302_num_dgram_buf;
 		}
 
@@ -1384,26 +1487,67 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_402
 		{
+			/// <summary>Undocumented.</summary>
 			public uint wki402_char_wait;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_collection_time;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_maximum_collection_count;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_keep_conn;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_keep_search;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_max_cmds;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_num_work_buf;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_siz_work_buf;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_max_wrk_cache;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_sess_timeout;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_siz_error;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_num_alerts;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_num_services;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_errlog_sz;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_print_buf_time;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_num_char_buf;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_siz_char_buf;
+
+			/// <summary>Undocumented.</summary>
 			public string wki402_wrk_heuristics;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_mailslots;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_num_dgram_buf;
+
+			/// <summary>Undocumented.</summary>
 			public uint wki402_max_threads;
 		}
 
@@ -1412,13 +1556,13 @@ namespace Vanara.PInvoke
 		// wki502_char_wait; DWORD wki502_collection_time; DWORD wki502_maximum_collection_count; DWORD wki502_keep_conn; DWORD
 		// wki502_max_cmds; DWORD wki502_sess_timeout; DWORD wki502_siz_char_buf; DWORD wki502_max_threads; DWORD wki502_lock_quota; DWORD
 		// wki502_lock_increment; DWORD wki502_lock_maximum; DWORD wki502_pipe_increment; DWORD wki502_pipe_maximum; DWORD
-		// wki502_cache_file_timeout; DWORD wki502_dormant_file_limit; DWORD wki502_read_ahead_throughput; DWORD wki502_num_mailslot_buffers;
-		// DWORD wki502_num_srv_announce_buffers; DWORD wki502_max_illegal_datagram_events; DWORD
+		// wki502_cache_file_timeout; DWORD wki502_dormant_file_limit; DWORD wki502_read_ahead_throughput; DWORD
+		// wki502_num_mailslot_buffers; DWORD wki502_num_srv_announce_buffers; DWORD wki502_max_illegal_datagram_events; DWORD
 		// wki502_illegal_datagram_event_reset_frequency; BOOL wki502_log_election_packets; BOOL wki502_use_opportunistic_locking; BOOL
 		// wki502_use_unlock_behind; BOOL wki502_use_close_behind; BOOL wki502_buf_named_pipes; BOOL wki502_use_lock_read_unlock; BOOL
 		// wki502_utilize_nt_caching; BOOL wki502_use_raw_read; BOOL wki502_use_raw_write; BOOL wki502_use_write_raw_data; BOOL
-		// wki502_use_encryption; BOOL wki502_buf_files_deny_write; BOOL wki502_buf_read_only_files; BOOL wki502_force_core_create_mode; BOOL
-		// wki502_use_512_byte_max_transfer; } WKSTA_INFO_502, *PWKSTA_INFO_502, *LPWKSTA_INFO_502;
+		// wki502_use_encryption; BOOL wki502_buf_files_deny_write; BOOL wki502_buf_read_only_files; BOOL wki502_force_core_create_mode;
+		// BOOL wki502_use_512_byte_max_transfer; } WKSTA_INFO_502, *PWKSTA_INFO_502, *LPWKSTA_INFO_502;
 		[PInvokeData("lmwksta.h", MSDNShortId = "716e700a-e464-47ec-a2df-74c03597ac6d")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_502
@@ -1432,9 +1576,9 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
 			/// <para>
-			/// The number of milliseconds the computer collects data before sending the data to a character device resource. The workstation
-			/// waits the specified time or collects the number of characters specified by the <c>wki502_maximum_collection_count</c> member,
-			/// whichever comes first.
+			/// The number of milliseconds the computer collects data before sending the data to a character device resource. The
+			/// workstation waits the specified time or collects the number of characters specified by the
+			/// <c>wki502_maximum_collection_count</c> member, whichever comes first.
 			/// </para>
 			/// </summary>
 			public uint wki502_collection_time;
@@ -1443,8 +1587,8 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>DWORD</c></para>
 			/// <para>
 			/// The number of bytes of information the computer collects before sending the data to a character device resource. The
-			/// workstation collects the specified number of bytes or waits the period of time specified by the <c>wki502_collection_time</c>
-			/// member, whichever comes first.
+			/// workstation collects the specified number of bytes or waits the period of time specified by the
+			/// <c>wki502_collection_time</c> member, whichever comes first.
 			/// </para>
 			/// </summary>
 			public uint wki502_maximum_collection_count;
@@ -1736,8 +1880,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The <c>WKSTA_USER_INFO_1101</c> structure contains information about the domains accessed by a workstation.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/lmwksta/ns-lmwksta-_wksta_user_info_1101 typedef struct _WKSTA_USER_INFO_1101
-		// { LMSTR wkui1101_oth_domains; } WKSTA_USER_INFO_1101, *PWKSTA_USER_INFO_1101, *LPWKSTA_USER_INFO_1101;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/lmwksta/ns-lmwksta-_wksta_user_info_1101 typedef struct
+		// _WKSTA_USER_INFO_1101 { LMSTR wkui1101_oth_domains; } WKSTA_USER_INFO_1101, *PWKSTA_USER_INFO_1101, *LPWKSTA_USER_INFO_1101;
 		[PInvokeData("lmwksta.h", MSDNShortId = "88772ba2-046b-4b03-ae02-d851075e4363")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_USER_INFO_1101

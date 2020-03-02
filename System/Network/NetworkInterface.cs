@@ -244,6 +244,7 @@ namespace Vanara.Extensions
 		Other = 19,
 	}
 
+	/// <summary>Extension methods for various network related interfaces methods.</summary>
 	public static class NetworkInterfaceExt
 	{
 		private static Dictionary<int, MIB_IF_ROW2> adapters = new Dictionary<int, MIB_IF_ROW2>();

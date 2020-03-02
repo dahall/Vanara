@@ -1838,7 +1838,6 @@ namespace Vanara.PInvoke
 		/// <param name="pvBuffer">The pv buffer.</param>
 		/// <param name="cbBuffer">The cb buffer.</param>
 		/// <param name="pcbBuffer">The PCB buffer.</param>
-		/// <param name="">The .</param>
 		/// <param name="dwReserved">The dw reserved.</param>
 		/// <returns>
 		/// <para>Returns one of the following values.</para>

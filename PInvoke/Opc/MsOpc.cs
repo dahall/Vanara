@@ -1053,7 +1053,7 @@ namespace Vanara.PInvoke
 			HRESULT MovePrevious([MarshalAs(UnmanagedType.Bool)] out bool hasPrevious);
 
 			/// <summary>Gets the IOpcDigitalSignature interface pointer at the current position of the enumerator.</summary>
-			/// <param name="digitalSignature">An IOpcDigitalSignature interface pointer.</param>
+			/// <param name="certificate">An IOpcDigitalSignature interface pointer.</param>
 			/// <returns>
 			/// <para>The method returns an <c>HRESULT</c>. Possible values include, but are not limited to, those in the following table.</para>
 			/// <list type="table">
@@ -1866,7 +1866,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcfactory-createdigitalsignaturemanager HRESULT
 			// CreateDigitalSignatureManager( IOpcPackage *package, IOpcDigitalSignatureManager **signatureManager );
-			IOpcDigitalSignatureManager CreateDigitalSignatureManager(IOpcPackage package, out IOpcDigitalSignatureManager signatureManager);
+			IOpcDigitalSignatureManager CreateDigitalSignatureManager(IOpcPackage package);
 		}
 
 		/// <summary>Represents a package and provides methods to access the package's parts and relationships.</summary>
@@ -2213,31 +2213,10 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcpartenumerator-getcurrent HRESULT GetCurrent( IOpcPart
 			// **part );
 			[PreserveSig]
-			HRESULT GetCurrent(out IOpcPart certificate);
+			HRESULT GetCurrent(out IOpcPart part);
 
 			/// <summary>Creates a copy of the current enumerator and all its descendants.</summary>
-			/// <param name="copy">A pointer to the IOpcPartEnumerator interface of the new enumerator.</param>
-			/// <returns>
-			/// <para>The method returns an <c>HRESULT</c>. Possible values include, but are not limited to, those in the following table.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Return code/value</term>
-			/// <term>Description</term>
-			/// </listheader>
-			/// <item>
-			/// <term>S_OK</term>
-			/// <term>The method succeeded.</term>
-			/// </item>
-			/// <item>
-			/// <term>E_POINTER</term>
-			/// <term>The copy parameter is NULL.</term>
-			/// </item>
-			/// <item>
-			/// <term>OPC_E_ENUM_COLLECTION_CHANGED 0x80510050</term>
-			/// <term>The enumerator is invalid because the underlying set has changed.</term>
-			/// </item>
-			/// </list>
-			/// </returns>
+			/// <returns>A pointer to the IOpcPartEnumerator interface of the new enumerator.</returns>
 			/// <remarks>
 			/// <para>
 			/// When an enumerator is created, the current position precedes the first pointer. To set the current position to the first
@@ -2828,7 +2807,7 @@ namespace Vanara.PInvoke
 			new URLZONE GetZone();
 
 			/// <summary>Returns a bitmap of flags that indicate which Uniform Resource Identifier (URI) properties have been set.</summary>
-			/// <param name="pdwFlags">
+			/// <returns>
 			/// <para>[out]</para>
 			/// <para>Address of a <c>DWORD</c> that receives a combination of the following flags:</para>
 			/// <para><c>Uri_HAS_ABSOLUTE_URI</c> (0x00000000)</para>
@@ -2869,8 +2848,7 @@ namespace Vanara.PInvoke
 			/// <para><c>Uri_PROPERTY_USER_INFO</c> exists.</para>
 			/// <para><c>Uri_HAS_ZONE</c> (0x00020000)</para>
 			/// <para><c>Uri_PROPERTY_ZONE</c> exists.</para>
-			/// </param>
-			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			/// </returns>
 			/// <remarks><c>IUri::GetProperties</c> was introduced in Windows Internet Explorer 7.</remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775025(v=vs.85)
 			// HRESULT GetProperties( [out] LPDWORD pdwFlags );
@@ -3152,15 +3130,36 @@ namespace Vanara.PInvoke
 			// **sourceUri );
 			IOpcUri GetSourceUri();
 
-			/// <summary>Returns a value that indicates whether the current part URI object represents the part name of a Relationships
-			/// part.</summary> <returns> <para>Receives a value that indicates whether the current part URI object represents the part name
-			/// of a Relationships part.</para> <list type="table"> <listheader> <term>Value</term> <term>Meaning</term> </listheader>
-			/// <item> <term>TRUE</term> <term>The current part URI object represents the part name of a Relationships part.</term> </item>
-			/// <item> <term>FALSE</term> <term>The current part URI object does not represent the part name of a Relationships part.</term>
-			/// </item> </list> </param> </returns> <remarks> <para>Support on Previous Windows Versions</para> <para>The behavior and
-			/// performance of this method is the same on all supported Windows versions. For more information, see Getting Started with the
-			/// Packaging API, and Platform Update for Windows Vista.</para> <para>Thread Safety</para> <para>Packaging objects are not
-			/// thread-safe.</para> <para>For more information, see the Getting Started with the Packaging API.</para> </remarks>
+			/// <summary>
+			/// Returns a value that indicates whether the current part URI object represents the part name of a Relationships part.
+			/// </summary>
+			/// <returns>
+			/// <para>Receives a value that indicates whether the current part URI object represents the part name of a Relationships part.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>TRUE</term>
+			/// <term>The current part URI object represents the part name of a Relationships part.</term>
+			/// </item>
+			/// <item>
+			/// <term>FALSE</term>
+			/// <term>The current part URI object does not represent the part name of a Relationships part.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Support on Previous Windows Versions</para>
+			/// <para>
+			/// The behavior and performance of this method is the same on all supported Windows versions. For more information, see Getting
+			/// Started with the Packaging API, and Platform Update for Windows Vista.
+			/// </para>
+			/// <para>Thread Safety</para>
+			/// <para>Packaging objects are not thread-safe.</para>
+			/// <para>For more information, see the Getting Started with the Packaging API.</para>
+			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcparturi-isrelationshipsparturi HRESULT
 			// IsRelationshipsPartUri( BOOL *isRelationshipUri );
 			[return: MarshalAs(UnmanagedType.Bool)]
@@ -3551,7 +3550,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationshipenumerator-getcurrent HRESULT GetCurrent(
 			// IOpcRelationship **relationship );
 			[PreserveSig]
-			HRESULT GetCurrent(out IOpcRelationship certificate);
+			HRESULT GetCurrent(out IOpcRelationship relationship);
 
 			/// <summary>Creates a copy of the current enumerator and all its descendants.</summary>
 			/// <returns>A pointer to the IOpcRelationshipEnumerator interface of the new enumerator.</returns>
@@ -3841,7 +3840,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationshipselectorenumerator-getcurrent HRESULT
 			// GetCurrent( IOpcRelationshipSelector **relationshipSelector );
 			[PreserveSig]
-			HRESULT GetCurrent(out IOpcRelationshipSelector certificate);
+			HRESULT GetCurrent(out IOpcRelationshipSelector relationshipSelector);
 
 			/// <summary>Creates a copy of the current IOpcRelationshipSelectorEnumeratorinterface pointer and all its descendants.</summary>
 			/// <returns>A pointer to a copy of the IOpcRelationshipSelectorEnumeratorinterface pointer.</returns>
@@ -4448,7 +4447,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturecustomobjectenumerator-getcurrent HRESULT
 			// GetCurrent( IOpcSignatureCustomObject **customObject );
 			[PreserveSig]
-			HRESULT GetCurrent(out IOpcSignatureCustomObject certificate);
+			HRESULT GetCurrent(out IOpcSignatureCustomObject customObject);
 
 			/// <summary>Creates a copy of the current IOpcSignatureCustomObjectEnumerator interface pointer and all its descendants.</summary>
 			/// <returns>A pointer to a copy of the IOpcSignatureCustomObjectEnumeratorinterface pointer.</returns>
@@ -4812,7 +4811,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturepartreferenceenumerator-getcurrent HRESULT
 			// GetCurrent( IOpcSignaturePartReference **partReference );
 			[PreserveSig]
-			HRESULT GetCurrent(out IOpcSignaturePartReference certificate);
+			HRESULT GetCurrent(out IOpcSignaturePartReference partReference);
 
 			/// <summary>Creates a copy of the current IOpcSignaturePartReferenceEnumerator interface pointer and all its descendants.</summary>
 			/// <returns>A pointer to a copy of the IOpcSignaturePartReferenceEnumerator interface pointer.</returns>
@@ -5210,7 +5209,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereferenceenumerator-getcurrent HRESULT
 			// GetCurrent( IOpcSignatureReference **reference );
 			[PreserveSig]
-			HRESULT GetCurrent(out IOpcSignatureReference certificate);
+			HRESULT GetCurrent(out IOpcSignatureReference reference);
 
 			/// <summary>Creates a copy of the current IOpcSignatureReferenceEnumerator interface pointer and all its descendants.</summary>
 			/// <returns>A pointer to a copy of the IOpcSignatureReferenceEnumerator interface pointer.</returns>
@@ -5614,7 +5613,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturerelationshipreferenceenumerator-getcurrent
 			// HRESULT GetCurrent( IOpcSignatureRelationshipReference **relationshipReference );
 			[PreserveSig]
-			HRESULT GetCurrent(out IOpcSignatureRelationshipReference certificate);
+			HRESULT GetCurrent(out IOpcSignatureRelationshipReference relationshipReference);
 
 			/// <summary>Creates a copy of the current IOpcSignatureRelationshipReferenceEnumerator interface pointer and all its descendants.</summary>
 			/// <returns>A pointer to a copy of the IOpcSignatureRelationshipReferenceEnumerator interface pointer.</returns>
@@ -6589,7 +6588,7 @@ namespace Vanara.PInvoke
 			new URLZONE GetZone();
 
 			/// <summary>Returns a bitmap of flags that indicate which Uniform Resource Identifier (URI) properties have been set.</summary>
-			/// <param name="pdwFlags">
+			/// <returns>
 			/// <para>[out]</para>
 			/// <para>Address of a <c>DWORD</c> that receives a combination of the following flags:</para>
 			/// <para><c>Uri_HAS_ABSOLUTE_URI</c> (0x00000000)</para>
@@ -6630,8 +6629,7 @@ namespace Vanara.PInvoke
 			/// <para><c>Uri_PROPERTY_USER_INFO</c> exists.</para>
 			/// <para><c>Uri_HAS_ZONE</c> (0x00020000)</para>
 			/// <para><c>Uri_PROPERTY_ZONE</c> exists.</para>
-			/// </param>
-			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			/// </returns>
 			/// <remarks><c>IUri::GetProperties</c> was introduced in Windows Internet Explorer 7.</remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775025(v=vs.85)
 			// HRESULT GetProperties( [out] LPDWORD pdwFlags );

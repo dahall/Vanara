@@ -3702,7 +3702,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// Represents the system allocated pointer to <see cref="PRINTER_NOTIFY_INFO"/> created by the
-		/// <see cref="FindNextPrinterChangeNotification"/> function.
+		/// <see cref="FindNextPrinterChangeNotification(HPRINTERCHANGENOTIFICATION, out PRINTER_CHANGE, in PRINTER_NOTIFY_OPTIONS, out SafePRINTER_NOTIFY_INFO)"/> function.
 		/// </summary>
 		/// <seealso cref="Vanara.PInvoke.SafeHANDLE"/>
 		public class SafePRINTER_NOTIFY_INFO : SafeHANDLE
@@ -3727,7 +3727,7 @@ namespace Vanara.PInvoke
 		internal class PRINTER_DEFAULTS_Marshaler : ICustomMarshaler
 		{
 			/// <summary>Gets the instance.</summary>
-			/// <param name="cookie">The cookie.</param>
+			/// <param name="_">The cookie.</param>
 			/// <returns>An instance of this class.</returns>
 			public static ICustomMarshaler GetInstance(string _) => new PRINTER_DEFAULTS_Marshaler();
 

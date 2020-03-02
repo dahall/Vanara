@@ -7,6 +7,7 @@ using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Functions, structures, constants and interfaces from Windows Search API.</summary>
 	public static partial class SearchApi
 	{
 		/// <summary>Describes authentication types for content access.</summary>
@@ -6593,15 +6594,19 @@ namespace Vanara.PInvoke
 			public uint dwDataTimeout;
 		}
 
+		/// <summary>CLSID_SearchManager.</summary>
 		[ComImport, ClassInterface(ClassInterfaceType.None), Guid("7D096C5F-AC08-4F1F-BEB7-5C22C517CE39")]
 		public class CSearchManager { }
 
+		/// <summary>CLSID_SearchRoot.</summary>
 		[ComImport, ClassInterface(ClassInterfaceType.None), Guid("30766BD2-EA1C-4F28-BF27-0B44E2F68DB7")]
 		public class CSearchRoot { }
 
+		/// <summary>CLSID_SearchScopeRule.</summary>
 		[ComImport, ClassInterface(ClassInterfaceType.None), Guid("E63DE750-3BD7-4BE5-9C84-6B4281988C44")]
 		public class CSearchScopeRule { }
 
+		/// <summary>CLSID_FilterRegistration.</summary>
 		[ComImport, ClassInterface(ClassInterfaceType.None), Guid("9E175B8D-F52A-11D8-B9A5-505054503030")]
 		public class FilterRegistration { }
 	}

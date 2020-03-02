@@ -1,15 +1,14 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Security.AccessControl;
 using System.Text;
 using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Contains functions, structures and constants from winspool.h.</summary>
 	public static partial class WinSpool
 	{
 		/// <summary>

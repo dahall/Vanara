@@ -121,6 +121,7 @@ namespace Vanara.PInvoke
 			SV_TYPE_ALL = 0xFFFFFFFF,
 		}
 
+		/// <summary>Flags used by <see cref="SERVER_TRANSPORT_INFO_2"/>.</summary>
 		[Flags]
 		[PInvokeData("lmserver.h")]
 		public enum SERVER_TRANSPORT_FLAGS : uint

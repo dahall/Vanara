@@ -40,7 +40,8 @@ namespace Vanara.InteropServices
 		/// <summary>Gets the reallocation method.</summary>
 		public Func<IntPtr, int, IntPtr> ReAllocMem => (p, i) => { var o = LocalReAlloc(p, i, LMEM.LMEM_MOVEABLE); return !o.IsNull ? (IntPtr)o : throw Win32Error.GetLastError().GetException(); };
 
-		public static IMemoryMethods Instance { get; } = new LocalMemoryMethods();
+		/// <summary>Gets a static instance of these methods.</summary>
+		public static readonly IMemoryMethods Instance = new LocalMemoryMethods();
 	}
 
 	/// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>

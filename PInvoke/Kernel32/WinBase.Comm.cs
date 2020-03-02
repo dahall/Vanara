@@ -210,6 +210,7 @@ namespace Vanara.PInvoke
 			PURGE_TXCLEAR = 0x0004,
 		}
 
+		/// <summary/>
 		[Flags]
 		public enum COMM_SET_DATA : ushort
 		{
@@ -232,6 +233,7 @@ namespace Vanara.PInvoke
 			DATABITS_16X = 0x0020,
 		}
 
+		/// <summary/>
 		[Flags]
 		public enum COMM_SET_PARAMS : uint
 		{
@@ -257,6 +259,7 @@ namespace Vanara.PInvoke
 			SP_STOPBITS = 0x0008,
 		}
 
+		/// <summary/>
 		[Flags]
 		public enum COMM_STOP_PARITY : ushort
 		{

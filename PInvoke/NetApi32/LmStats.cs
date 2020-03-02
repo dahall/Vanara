@@ -4,7 +4,10 @@ namespace Vanara.PInvoke
 {
 	public static partial class NetApi32
 	{
+		/// <summary/>
 		public const string SERVICE_SERVER = "LanmanServer";
+
+		/// <summary/>
 		public const string SERVICE_WORKSTATION = "LanmanWorkstation";
 
 		/// <summary>Retrieves operating statistics for a service. Currently, only the workstation and server services are supported.</summary>
@@ -33,8 +36,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="Options">This parameter must be zero.</param>
 		/// <param name="Buffer">
-		/// Pointer to the buffer that receives the data. The format of this data depends on the value of the level parameter. This buffer is
-		/// allocated by the system and must be freed using the NetApiBufferFree function. For more information, see Network Management
+		/// Pointer to the buffer that receives the data. The format of this data depends on the value of the level parameter. This buffer
+		/// is allocated by the system and must be freed using the NetApiBufferFree function. For more information, see Network Management
 		/// Function Buffers and Network Management Function Buffer Lengths.
 		/// </param>
 		/// <returns>
@@ -162,50 +165,156 @@ namespace Vanara.PInvoke
 			public uint sts0_bigbufneed;
 		}
 
-		/// <summary>
-		/// <para>Contains statistical information about the specified workstation.</para>
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/lmstats/ns-lmstats-_stat_workstation_0 typedef struct _STAT_WORKSTATION_0 {
-		// DWORD stw0_start; DWORD stw0_numNCB_r; DWORD stw0_numNCB_s; DWORD stw0_numNCB_a; DWORD stw0_fiNCB_r; DWORD stw0_fiNCB_s; DWORD
-		// stw0_fiNCB_a; DWORD stw0_fcNCB_r; DWORD stw0_fcNCB_s; DWORD stw0_fcNCB_a; DWORD stw0_sesstart; DWORD stw0_sessfailcon; DWORD
-		// stw0_sessbroke; DWORD stw0_uses; DWORD stw0_usefail; DWORD stw0_autorec; DWORD stw0_bytessent_r_lo; DWORD stw0_bytessent_r_hi;
-		// DWORD stw0_bytesrcvd_r_lo; DWORD stw0_bytesrcvd_r_hi; DWORD stw0_bytessent_s_lo; DWORD stw0_bytessent_s_hi; DWORD
-		// stw0_bytesrcvd_s_lo; DWORD stw0_bytesrcvd_s_hi; DWORD stw0_bytessent_a_lo; DWORD stw0_bytessent_a_hi; DWORD stw0_bytesrcvd_a_lo;
-		// DWORD stw0_bytesrcvd_a_hi; DWORD stw0_reqbufneed; DWORD stw0_bigbufneed; } STAT_WORKSTATION_0, *PSTAT_WORKSTATION_0, *LPSTAT_WORKSTATION_0;
-		[PInvokeData("lmstats.h", MSDNShortId = "7a29fe54-fd15-499d-b255-f49025421861")]
+		/// <summary>Contains statistical information about the specified workstation.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/lmstats/ns-lmstats-stat_workstation_0~r1 typedef struct _STAT_WORKSTATION_0 {
+		// LARGE_INTEGER StatisticsStartTime; LARGE_INTEGER BytesReceived; LARGE_INTEGER SmbsReceived; LARGE_INTEGER
+		// PagingReadBytesRequested; LARGE_INTEGER NonPagingReadBytesRequested; LARGE_INTEGER CacheReadBytesRequested; LARGE_INTEGER
+		// NetworkReadBytesRequested; LARGE_INTEGER BytesTransmitted; LARGE_INTEGER SmbsTransmitted; LARGE_INTEGER
+		// PagingWriteBytesRequested; LARGE_INTEGER NonPagingWriteBytesRequested; LARGE_INTEGER CacheWriteBytesRequested; LARGE_INTEGER
+		// NetworkWriteBytesRequested; DWORD InitiallyFailedOperations; DWORD FailedCompletionOperations; DWORD ReadOperations; DWORD
+		// RandomReadOperations; DWORD ReadSmbs; DWORD LargeReadSmbs; DWORD SmallReadSmbs; DWORD WriteOperations; DWORD
+		// RandomWriteOperations; DWORD WriteSmbs; DWORD LargeWriteSmbs; DWORD SmallWriteSmbs; DWORD RawReadsDenied; DWORD RawWritesDenied;
+		// DWORD NetworkErrors; DWORD Sessions; DWORD FailedSessions; DWORD Reconnects; DWORD CoreConnects; DWORD Lanman20Connects; DWORD
+		// Lanman21Connects; DWORD LanmanNtConnects; DWORD ServerDisconnects; DWORD HungSessions; DWORD UseCount; DWORD FailedUseCount;
+		// DWORD CurrentCommands; } STAT_WORKSTATION_0, *PSTAT_WORKSTATION_0, *LPSTAT_WORKSTATION_0;
+		[PInvokeData("lmstats.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct STAT_WORKSTATION_0
 		{
-			public uint stw0_start;
-			public uint stw0_numNCB_r;
-			public uint stw0_numNCB_s;
-			public uint stw0_numNCB_a;
-			public uint stw0_fiNCB_r;
-			public uint stw0_fiNCB_s;
-			public uint stw0_fiNCB_a;
-			public uint stw0_fcNCB_r;
-			public uint stw0_fcNCB_s;
-			public uint stw0_fcNCB_a;
-			public uint stw0_sesstart;
-			public uint stw0_sessfailcon;
-			public uint stw0_sessbroke;
-			public uint stw0_uses;
-			public uint stw0_usefail;
-			public uint stw0_autorec;
-			public uint stw0_bytessent_r_lo;
-			public uint stw0_bytessent_r_hi;
-			public uint stw0_bytesrcvd_r_lo;
-			public uint stw0_bytesrcvd_r_hi;
-			public uint stw0_bytessent_s_lo;
-			public uint stw0_bytessent_s_hi;
-			public uint stw0_bytesrcvd_s_lo;
-			public uint stw0_bytesrcvd_s_hi;
-			public uint stw0_bytessent_a_lo;
-			public uint stw0_bytessent_a_hi;
-			public uint stw0_bytesrcvd_a_lo;
-			public uint stw0_bytesrcvd_a_hi;
-			public uint stw0_reqbufneed;
-			public uint stw0_bigbufneed;
+			/// <summary>
+			/// Specifies the time statistics collection started. This member also indicates when statistics for the workstations were last
+			/// cleared. The value is stored as the number of seconds elapsed since 00:00:00, January 1, 1970.
+			/// </summary>
+			public long StatisticsStartTime;
+
+			/// <summary>Specifies the total number of bytes received by the workstation.</summary>
+			public long BytesReceived;
+
+			/// <summary>Specifies the total number of server message blocks (SMBs) received by the workstation.</summary>
+			public long SmbsReceived;
+
+			/// <summary>Specifies the total number of bytes that have been read by paging I/O requests.</summary>
+			public long PagingReadBytesRequested;
+
+			/// <summary>Specifies the total number of bytes that have been read by non-paging I/O requests.</summary>
+			public long NonPagingReadBytesRequested;
+
+			/// <summary>Specifies the total number of bytes that have been read by cache I/O requests.</summary>
+			public long CacheReadBytesRequested;
+
+			/// <summary>Specifies the total amount of bytes that have been read by disk I/O requests.</summary>
+			public long NetworkReadBytesRequested;
+
+			/// <summary>Specifies the total number of bytes transmitted by the workstation.</summary>
+			public long BytesTransmitted;
+
+			/// <summary>Specifies the total number of SMBs transmitted by the workstation.</summary>
+			public long SmbsTransmitted;
+
+			/// <summary>Specifies the total number of bytes that have been written by paging I/O requests.</summary>
+			public long PagingWriteBytesRequested;
+
+			/// <summary>Specifies the total number of bytes that have been written by non-paging I/O requests.</summary>
+			public long NonPagingWriteBytesRequested;
+
+			/// <summary>Specifies the total number of bytes that have been written by cache I/O requests.</summary>
+			public long CacheWriteBytesRequested;
+
+			/// <summary>Specifies the total number of bytes that have been written by disk I/O requests.</summary>
+			public long NetworkWriteBytesRequested;
+
+			/// <summary>Specifies the total number of network operations that failed to begin.</summary>
+			public uint InitiallyFailedOperations;
+
+			/// <summary>Specifies the total number of network operations that failed to complete.</summary>
+			public uint FailedCompletionOperations;
+
+			/// <summary>Specifies the total number of read operations initiated by the workstation.</summary>
+			public uint ReadOperations;
+
+			/// <summary>Specifies the total number of random access reads initiated by the workstation.</summary>
+			public uint RandomReadOperations;
+
+			/// <summary>Specifies the total number of read requests the workstation has sent to servers.</summary>
+			public uint ReadSmbs;
+
+			/// <summary>
+			/// Specifies the total number of read requests the workstation has sent to servers that are greater than twice the size of the
+			/// server's negotiated buffer size.
+			/// </summary>
+			public uint LargeReadSmbs;
+
+			/// <summary>
+			/// Specifies the total number of read requests the workstation has sent to servers that are less than 1/4 of the size of the
+			/// server's negotiated buffer size.
+			/// </summary>
+			public uint SmallReadSmbs;
+
+			/// <summary>Specifies the total number of write operations initiated by the workstation.</summary>
+			public uint WriteOperations;
+
+			/// <summary>Specifies the total number of random access writes initiated by the workstation.</summary>
+			public uint RandomWriteOperations;
+
+			/// <summary/>
+			public uint WriteSmbs;
+
+			/// <summary>
+			/// Specifies the total number of write requests the workstation has sent to servers that are greater than twice the size of the
+			/// server's negotiated buffer size.
+			/// </summary>
+			public uint LargeWriteSmbs;
+
+			/// <summary>
+			/// Specifies the total number of write requests the workstation has sent to servers that are less than 1/4 of the size of the
+			/// server's negotiated buffer size.
+			/// </summary>
+			public uint SmallWriteSmbs;
+
+			/// <summary/>
+			public uint RawReadsDenied;
+
+			/// <summary>Specifies the total number of raw write requests made by the workstation that have been denied.</summary>
+			public uint RawWritesDenied;
+
+			/// <summary>Specifies the total number of network errors received by the workstation.</summary>
+			public uint NetworkErrors;
+
+			/// <summary/>
+			public uint Sessions;
+
+			/// <summary>Specifies the number of times the workstation attempted to create a session but failed.</summary>
+			public uint FailedSessions;
+
+			/// <summary>Specifies the total number of connections that have failed.</summary>
+			public uint Reconnects;
+
+			/// <summary>Specifies the total number of connections to servers supporting the PCNET dialect that have succeeded.</summary>
+			public uint CoreConnects;
+
+			/// <summary>Specifies the total number of connections to servers supporting the LanManager 2.0 dialect that have succeeded.</summary>
+			public uint Lanman20Connects;
+
+			/// <summary>Specifies the total number of connections to servers supporting the LanManager 2.1 dialect that have succeeded.</summary>
+			public uint Lanman21Connects;
+
+			/// <summary>Specifies the total number of connections to servers supporting the NTLM dialect that have succeeded.</summary>
+			public uint LanmanNtConnects;
+
+			/// <summary>Specifies the number of times the workstation was disconnected by a network server.</summary>
+			public uint ServerDisconnects;
+
+			/// <summary>Specifies the total number of sessions that have expired on the workstation.</summary>
+			public uint HungSessions;
+
+			/// <summary>Specifies the total number of network connections established by the workstation.</summary>
+			public uint UseCount;
+
+			/// <summary>Specifies the total number of failed network connections for the workstation.</summary>
+			public uint FailedUseCount;
+
+			/// <summary>Specifies the number of current requests that have not been completed.</summary>
+			public uint CurrentCommands;
 		}
 	}
 }

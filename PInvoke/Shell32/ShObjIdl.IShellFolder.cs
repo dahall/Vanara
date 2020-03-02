@@ -643,8 +643,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains a pointer to a STRRET structure in which to return the display name. The type of name
 			/// returned in this structure can be the requested type, but the Shell folder might return a different type.
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(STRRETMarshaler))]
-			new string GetDisplayNameOf([In] PIDL pidl, SHGDNF uFlags);
+			new void GetDisplayNameOf([In] PIDL pidl, SHGDNF uFlags, out STRRET pName);
 
 			/// <summary>Sets the display name of a file object or subfolder, changing the item identifier in the process.</summary>
 			/// <param name="hwnd">A handle to the owner window of any dialog or message box that the client displays.</param>

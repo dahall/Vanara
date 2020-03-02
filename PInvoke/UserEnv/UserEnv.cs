@@ -1622,7 +1622,7 @@ namespace Vanara.PInvoke
 			public static readonly PROFILEINFO Default = new PROFILEINFO { dwSize = (uint)Marshal.SizeOf(typeof(PROFILEINFO)) };
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="CriticalPolicySectionHandle"/> that is disposed using <see cref="LeaveCriticalPolicySection"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="EnterCriticalPolicySection"/> that is disposed using <see cref="LeaveCriticalPolicySection"/>.</summary>
 		public class SafeCriticalPolicySectionHandle : SafeHANDLE
 		{
 			/// <summary>
