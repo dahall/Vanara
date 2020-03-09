@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -8,34 +9,7 @@ namespace Vanara.PInvoke
 	/// <summary>Methods and data types found in Crypt32.dll.</summary>
 	public static partial class Crypt32
 	{
-		/// <summary/>
-		public const uint CERT_SYSTEM_STORE_LOCATION_MASK = 0x00FF0000;
-
-		/// <summary/>
-		public const uint CERT_SYSTEM_STORE_RELOCATE_FLAG = 0x80000000;
-
 		private const int CERT_COMPARE_SHIFT = 16;
-		private const int CERT_SYSTEM_STORE_LOCATION_SHIFT = 16;
-
-		/// <summary>
-		/// The <c>CertEnumSystemStoreCallback</c> callback function formats and presents information on each system store found by a call
-		/// to CertEnumSystemStore.
-		/// </summary>
-		/// <param name="pvSystemStore">
-		/// A pointer to information on the system store found by a call to CertEnumSystemStore. Where appropriate, this argument will
-		/// contain a leading computer name or service name prefix.
-		/// </param>
-		/// <param name="dwFlags">Flag used to call for an alteration of the presentation.</param>
-		/// <param name="pStoreInfo">A pointer to a CERT_SYSTEM_STORE_INFO structure that contains information about the store.</param>
-		/// <param name="pvReserved">Reserved for future use.</param>
-		/// <param name="pvArg">A pointer to information passed to the callback function in the pvArg passed to CertEnumSystemStore.</param>
-		/// <returns>If the function succeeds, the function returns TRUE. To stop the enumeration, the function must return FALSE.</returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nc-wincrypt-pfn_cert_enum_system_store PFN_CERT_ENUM_SYSTEM_STORE
-		// PfnCertEnumSystemStore; BOOL PfnCertEnumSystemStore( const void *pvSystemStore, DWORD dwFlags, PCERT_SYSTEM_STORE_INFO
-		// pStoreInfo, void *pvReserved, void *pvArg ) {...}
-		[PInvokeData("wincrypt.h", MSDNShortId = "f070a9bd-be0b-49d0-9cab-a5d6f05d4e22")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool CertEnumSystemStoreCallback(IntPtr pvSystemStore, uint dwFlags, in CERT_SYSTEM_STORE_INFO pStoreInfo, [Optional] IntPtr pvReserved, [Optional] IntPtr pvArg);
 
 		/// <summary>
 		/// The ALG_ID data type specifies an algorithm identifier. Parameters of this data type are passed to most of the functions in CryptoAPI.
@@ -229,24 +203,6 @@ namespace Vanara.PInvoke
 			CALG_TLS1PRF = 0x0000800a,
 		}
 
-		/// <summary>Flags for <see cref="CertCloseStore"/>.</summary>
-		[Flags]
-		public enum CertCloseStoreFlags
-		{
-			/// <summary>
-			/// Forces the freeing of memory for all contexts associated with the store. This flag can be safely used only when the store is
-			/// opened in a function and neither the store handle nor any of its contexts are passed to any called functions. For details,
-			/// see Remarks.
-			/// </summary>
-			CERT_CLOSE_STORE_FORCE_FLAG = 0x00000001,
-
-			/// <summary>
-			/// Checks for nonfreed certificate, CRL, and CTL contexts. A returned error code indicates that one or more store elements is
-			/// still in use. This flag should only be used as a diagnostic tool in the development of applications.
-			/// </summary>
-			CERT_CLOSE_STORE_CHECK_FLAG = 0x00000002
-		}
-
 		/// <summary>Values used by CertFindType.</summary>
 		public enum CertCompareFunction : ushort
 		{
@@ -347,7 +303,7 @@ namespace Vanara.PInvoke
 			CERT_COMPARE_SUBJECT_CERT = 11,
 
 			/// <summary>
-			/// Searches for a certificate with an subject that matches the issuer in CERT_CONTEXT. Instead of using
+			/// Searches for a certificate with an subject that matches the issuer [In] PCCERT_CONTEXT. Instead of using
 			/// CertFindCertificateInStore with this value, use the CertGetCertificateChain function.
 			/// </summary>
 			CERT_COMPARE_ISSUER_OF = 12,
@@ -582,7 +538,7 @@ namespace Vanara.PInvoke
 			CERT_FIND_SUBJECT_CERT = (uint)CertCompareFunction.CERT_COMPARE_SUBJECT_CERT << CERT_COMPARE_SHIFT,
 
 			/// <summary>
-			/// Searches for a certificate with an subject that matches the issuer in CERT_CONTEXT. Instead of using
+			/// Searches for a certificate with an subject that matches the issuer [In] PCCERT_CONTEXT. Instead of using
 			/// CertFindCertificateInStore with this value, use the CertGetCertificateChain function.
 			/// </summary>
 			[CorrespondingType(typeof(CERT_CONTEXT))]
@@ -652,93 +608,147 @@ namespace Vanara.PInvoke
 			CERT_INFO_EXTENSION_FLAG = 11,
 		}
 
-		/// <summary>
-		/// A system store is a collection that consists of one or more physical sibling stores. For each system store, there are predefined
-		/// physical sibling stores. After opening a system store such as MY at CERT_SYSTEM_STORE_CURRENT_USER, the store provider calls
-		/// CertOpenStore to open each of the physical stores in the system store collection. In the open process, each of these physical
-		/// stores is added to the system store collection using CertAddStoreToCollection. All certificates in those physical stores are
-		/// available through the logical system store collection.
-		/// </summary>
-		[PInvokeData("wincrypt.h", MSDNShortId = "fd9cb23b-e4a3-41cb-8f0a-30f4e813c6ac")]
-		public enum CertSystemStore : uint
+		/// <summary>The specification of the private key to retrieve.</summary>
+		public enum CertKeySpec : uint
 		{
-			/// <summary>Stores at the registry location <c>HKEY_CURRENT_USER\Software\Microsoft\SystemCertificates</c>.</summary>
-			CERT_SYSTEM_STORE_CURRENT_USER = CertSystemStoreId.CERT_SYSTEM_STORE_CURRENT_USER_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
+			/// <summary>Keys used to encrypt/decrypt session keys. The handle to the CSP is contained in the hCryptProv member.</summary>
+			AT_KEYEXCHANGE = 1,
 
-			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Microsoft\SystemCertificates</c>.</summary>
-			CERT_SYSTEM_STORE_LOCAL_MACHINE = CertSystemStoreId.CERT_SYSTEM_STORE_LOCAL_MACHINE_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
-
-			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Microsoft\Cryptography\Services\ServiceName\SystemCertificates</c>.</summary>
-			CERT_SYSTEM_STORE_CURRENT_SERVICE = CertSystemStoreId.CERT_SYSTEM_STORE_CURRENT_SERVICE_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
+			/// <summary>Keys used to create and verify digital signatures. The handle to the CSP is contained in the hCryptProv member.</summary>
+			AT_SIGNATURE = 2,
 
 			/// <summary>
-			/// Stores at the registry location
-			/// <c>HKEY_LOCAL_MACHINE\Software\Microsoft\Cryptography\Services\ServiceName\SystemCertificates</c> and with keys starting
-			/// with [ServiceName].
+			/// Keys associated with a CNG CSP. The handle to the CNG CSP is set in the hNCryptProv member. Windows Server 2003 and Windows
+			/// XP: This value is not used.
 			/// </summary>
-			CERT_SYSTEM_STORE_SERVICES = CertSystemStoreId.CERT_SYSTEM_STORE_SERVICES_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
-
-			/// <summary>
-			/// Stores at the registry location <c>HKEY_USERS\UserName\Software\Microsoft\SystemCertificates</c> and with keys starting with [userid].
-			/// </summary>
-			CERT_SYSTEM_STORE_USERS = CertSystemStoreId.CERT_SYSTEM_STORE_USERS_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
-
-			/// <summary>Stores at the registry location <c>HKEY_CURRENT_USER\Software\Policy\Microsoft\SystemCertificates</c>.</summary>
-			CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY = CertSystemStoreId.CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
-
-			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Policy\Microsoft\SystemCertificates</c>.</summary>
-			CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY = CertSystemStoreId.CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
-
-			/// <summary>
-			/// CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE contains certificates shared across domains in the enterprise and downloaded from
-			/// the global enterprise directory. To synchronize the client's enterprise store, the enterprise directory is polled every
-			/// eight hours and certificates are downloaded automatically in the background.
-			/// </summary>
-			CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE = CertSystemStoreId.CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
-
-			/// <summary/>
-			CERT_SYSTEM_STORE_LOCAL_MACHINE_WCOS = CertSystemStoreId.CERT_SYSTEM_STORE_LOCAL_MACHINE_WCOS_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT,
+			CERT_NCRYPT_KEY_SPEC = 0xFFFFFFFF
 		}
 
-		/// <summary>Values used by <see cref="CertSystemStore"/>.</summary>
-		public enum CertSystemStoreId : uint
+		/// <summary>A set of flags that modify the behavior of <see cref="CryptAcquireCertificatePrivateKey"/>.</summary>
+		[PInvokeData("wincrypt.h", MSDNShortId = "53c9aec9-701d-4c21-9814-d344a8dde0c1")]
+		[Flags]
+		public enum CryptAcquireFlags
 		{
-			/// <summary>Stores at the registry location <c>HKEY_CURRENT_USER\Software\Microsoft\SystemCertificates</c>.</summary>
-			CERT_SYSTEM_STORE_CURRENT_USER_ID = 1,
-
-			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Microsoft\SystemCertificates</c>.</summary>
-			CERT_SYSTEM_STORE_LOCAL_MACHINE_ID = 2,
-
-			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Microsoft\Cryptography\Services\ServiceName\SystemCertificates</c>.</summary>
-			CERT_SYSTEM_STORE_CURRENT_SERVICE_ID = 4,
+			/// <summary>
+			/// If a handle is already acquired and cached, that same handle is returned. Otherwise, a new handle is acquired and cached by
+			/// using the certificate's CERT_KEY_CONTEXT_PROP_ID property.
+			/// <para>
+			/// When this flag is set, the pfCallerFreeProvOrNCryptKey parameter receives FALSE and the calling application must not release
+			/// the handle. The handle is freed when the certificate context is freed; however, you must retain the certificate context
+			/// referenced by the pCert parameter as long as the key is in use, otherwise operations that rely on the key will fail.
+			/// </para>
+			/// </summary>
+			CRYPT_ACQUIRE_CACHE_FLAG = 0x00000001,
 
 			/// <summary>
-			/// Stores at the registry location
-			/// <c>HKEY_LOCAL_MACHINE\Software\Microsoft\Cryptography\Services\ServiceName\SystemCertificates</c> and with keys starting
-			/// with [ServiceName].
+			/// Uses the certificate's CERT_KEY_PROV_INFO_PROP_ID property to determine whether caching should be accomplished. For more
+			/// information about the CERT_KEY_PROV_INFO_PROP_ID property, see CertSetCertificateContextProperty.
+			/// <para>
+			/// This function will only use caching if during a previous call, the dwFlags member of the CRYPT_KEY_PROV_INFO structure
+			/// contained CERT_SET_KEY_CONTEXT_PROP.
+			/// </para>
 			/// </summary>
-			CERT_SYSTEM_STORE_SERVICES_ID = 5,
+			CRYPT_ACQUIRE_USE_PROV_INFO_FLAG = 0x00000002,
 
 			/// <summary>
-			/// Stores at the registry location <c>HKEY_USERS\UserName\Software\Microsoft\SystemCertificates</c> and with keys starting with [userid].
+			/// The public key in the certificate is compared with the public key returned by the cryptographic service provider (CSP). If
+			/// the keys do not match, the acquisition operation fails and the last error code is set to NTE_BAD_PUBLIC_KEY. If a cached
+			/// handle is returned, no comparison is made.
 			/// </summary>
-			CERT_SYSTEM_STORE_USERS_ID = 6,
-
-			/// <summary>Stores at the registry location <c>HKEY_CURRENT_USER\Software\Policy\Microsoft\SystemCertificates</c>.</summary>
-			CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY_ID = 7,
-
-			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Policy\Microsoft\SystemCertificates</c>.</summary>
-			CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY_ID = 8,
+			CRYPT_ACQUIRE_COMPARE_KEY_FLAG = 0x00000004,
 
 			/// <summary>
-			/// CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE contains certificates shared across domains in the enterprise and downloaded from
-			/// the global enterprise directory. To synchronize the client's enterprise store, the enterprise directory is polled every
-			/// eight hours and certificates are downloaded automatically in the background.
+			/// This function will not attempt to re-create the CERT_KEY_PROV_INFO_PROP_ID property in the certificate context if this
+			/// property cannot be retrieved.
 			/// </summary>
-			CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE_ID = 9,
+			CRYPT_ACQUIRE_NO_HEALING = 0x00000008,
+
+			/// <summary>
+			/// The CSP should not display any user interface (UI) for this context. If the CSP must display UI to operate, the call fails
+			/// and the NTE_SILENT_CONTEXT error code is set as the last error.
+			/// </summary>
+			CRYPT_ACQUIRE_SILENT_FLAG = 0x00000040,
+
+			/// <summary>
+			/// Any UI that is needed by the CSP or KSP will be a child of the HWND that is supplied in the pvParameters parameter. For a
+			/// CSP key, using this flag will cause the CryptSetProvParam function with the flag PP_CLIENT_HWND using this HWND to be called
+			/// with NULL for HCRYPTPROV. For a KSP key, using this flag will cause the NCryptSetProperty function with the
+			/// NCRYPT_WINDOW_HANDLE_PROPERTY flag to be called using the HWND.
+			/// <para>Do not use this flag with CRYPT_ACQUIRE_SILENT_FLAG.</para>
+			/// </summary>
+			CRYPT_ACQUIRE_WINDOW_HANDLE_FLAG = 0x00000080,
 
 			/// <summary/>
-			CERT_SYSTEM_STORE_LOCAL_MACHINE_WCOS_ID = 10,
+			CRYPT_ACQUIRE_NCRYPT_KEY_FLAGS_MASK = 0x00070000,
+
+			/// <summary>
+			/// This function will attempt to obtain the key by using CryptoAPI. If that fails, this function will attempt to obtain the key
+			/// by using the Cryptography API: Next Generation (CNG).
+			/// <para>The pdwKeySpec variable receives the CERT_NCRYPT_KEY_SPEC flag if CNG is used to obtain the key.</para>
+			/// </summary>
+			CRYPT_ACQUIRE_ALLOW_NCRYPT_KEY_FLAG = 0x00010000,
+
+			/// <summary>
+			/// This function will attempt to obtain the key by using CNG. If that fails, this function will attempt to obtain the key by
+			/// using CryptoAPI.
+			/// <para>The pdwKeySpec variable receives the CERT_NCRYPT_KEY_SPEC flag if CNG is used to obtain the key.</para>
+			/// <note>CryptoAPI does not support the CNG Diffie-Hellman or DSA asymmetric algorithms. CryptoAPI only supports Diffie-Hellman
+			/// and DSA public keys through the legacy CSPs.If this flag is set for a certificate that contains a Diffie-Hellman or DSA
+			/// public key, this function will implicitly change this flag to CRYPT_ACQUIRE_ALLOW_NCRYPT_KEY_FLAG to first attempt to use
+			/// CryptoAPI to obtain the key.</note>
+			/// </summary>
+			CRYPT_ACQUIRE_PREFER_NCRYPT_KEY_FLAG = 0x00020000,
+
+			/// <summary>
+			/// This function will only attempt to obtain the key by using CNG and will not use CryptoAPI to obtain the key.
+			/// <para>The pdwKeySpec variable receives the CERT_NCRYPT_KEY_SPEC flag if CNG is used to obtain the key.</para>
+			/// </summary>
+			CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG = 0x00040000,
+		}
+
+		/// <summary>A set of flags that modify the behavior of <see cref="CryptInstallDefaultContext"/>.</summary>
+		[PInvokeData("wincrypt.h", MSDNShortId = "79d121df-0699-424e-a8de-5fc2b396afc2")]
+		[Flags]
+		public enum CryptDefaultContextFlags
+		{
+			/// <summary>
+			/// The provider handle specified by the hCryptProv parameter is released automatically when the process or thread ends. If this
+			/// flag is not specified, it is the caller's responsibility to release the provider handle by using the CryptReleaseContext
+			/// function when the handle is no longer needed. The provider handle is not released if the CryptUninstallDefaultContext
+			/// function is called before the process or thread exits.
+			/// </summary>
+			CRYPT_DEFAULT_CONTEXT_AUTO_RELEASE_FLAG = 0x00000001,
+
+			/// <summary>
+			/// The provider applies to all threads in the process. If this flag is not specified, the provider only applies to the calling
+			/// thread. The pvDefaultPara parameter cannot be NULL when this flag is set.
+			/// </summary>
+			CRYPT_DEFAULT_CONTEXT_PROCESS_FLAG = 0x00000002,
+		}
+
+		/// <summary>Specifies the type of context to install.</summary>
+		[PInvokeData("wincrypt.h", MSDNShortId = "79d121df-0699-424e-a8de-5fc2b396afc2")]
+		public enum CryptDefaultContextType
+		{
+			/// <summary>
+			/// Installs the default provider used to verify a single certificate signature type.
+			/// <para>
+			/// The pvDefaultPara parameter is the address of a null-terminated ANSI string that contains the object identifier of the
+			/// certificate signature algorithm to install the provider for, for example, szOID_OIWSEC_md5RSA.If the pvDefaultPara parameter
+			/// is NULL, the specified provider is used to verify all certificate signatures.The pvDefaultPara parameter cannot be NULL when
+			/// the CRYPT_DEFAULT_CONTEXT_PROCESS_FLAG flag is set.
+			/// </para>
+			/// </summary>
+			CRYPT_DEFAULT_CONTEXT_CERT_SIGN_OID = 1,
+
+			/// <summary>
+			/// Installs the default provider used to verify multiple certificate signature types.
+			/// <para>
+			/// The pvDefaultPara parameter is the address of a CRYPT_DEFAULT_CONTEXT_MULTI_OID_PARA structure that contains an array of
+			/// object identifiers that identify the certificate signature algorithms to install the specified provider for.
+			/// </para>
+			/// </summary>
+			CRYPT_DEFAULT_CONTEXT_MULTI_CERT_SIGN_OID = 2,
 		}
 
 		/// <summary>Private key pair type.</summary>
@@ -752,552 +762,82 @@ namespace Vanara.PInvoke
 			AT_SIGNATURE = 2
 		}
 
+		/// <summary>A set of flags that specify how the time stamp is retrieved.</summary>
+		[PInvokeData("wincrypt.h", MSDNShortId = "68ba3d40-08b0-4261-ab2f-6deb1795f830")]
+		[Flags]
+		public enum TimeStampRetrivalFlags
+		{
+			/// <summary>Inhibit hash calculation on the array of bytes pointed to by the pbData parameter.</summary>
+			TIMESTAMP_DONT_HASH_DATA = 0x00000001,
+
+			/// <summary>
+			/// Enforce signature validation on the retrieved time stamp. <note>The TIMESTAMP_VERIFY_CONTEXT_SIGNATURE flag is valid only if
+			/// the fRequestCerts member of the CRYPT_TIMESTAMP_PARA pointed to by the pPara parameter is set to TRUE.</note>
+			/// </summary>
+			TIMESTAMP_VERIFY_CONTEXT_SIGNATURE = 0x00000020,
+
+			/// <summary>Set this flag to inhibit automatic authentication handling.</summary>
+			TIMESTAMP_NO_AUTH_RETRIEVAL = 0x00020000,
+		}
+
 		/// <summary>
-		/// The <c>CertCloseStore</c> function closes a certificate store handle and reduces the reference count on the store. There needs
-		/// to be a corresponding call to <c>CertCloseStore</c> for each successful call to the CertOpenStore or CertDuplicateStore functions.
+		/// The <c>CertAddEncodedCertificateToSystemStore</c> function opens the specified system store and adds the encoded certificate to it.
 		/// </summary>
-		/// <param name="hCertStore">Handle of the certificate store to be closed.</param>
-		/// <param name="dwFlags">
+		/// <param name="szCertStoreName">A null-terminated string that contains the name of the system store for the encoded certificate.</param>
+		/// <param name="pbCertEncoded">A pointer to a buffer that contains the encoded certificate to add.</param>
+		/// <param name="cbCertEncoded">The size, in bytes, of the pbCertEncoded buffer.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
 		/// <para>
-		/// Typically, this parameter uses the default value zero. The default is to close the store with memory remaining allocated for
-		/// contexts that have not been freed. In this case, no check is made to determine whether memory for contexts remains allocated.
+		/// If the function fails, the return value is <c>FALSE</c>. <c>CertAddEncodedCertificateToSystemStore</c> depends on the functions
+		/// listed in the following remarks for error handling. Refer to those function topics for their respective error handling
+		/// behaviors. For extended error information, call GetLastError.
 		/// </para>
+		/// </returns>
+		/// <remarks>
 		/// <para>
-		/// Set flags can force the freeing of memory for all of a store's certificate, certificate revocation list (CRL), and certificate
-		/// trust list (CTL) contexts when the store is closed. Flags can also be set that check whether all of the store's certificate,
-		/// CRL, and CTL contexts have been freed. The following values are defined.
+		/// Internally, <c>CertAddEncodedCertificateToSystemStore</c> calls CertOpenSystemStore and CertAddEncodedCertificateToStore with
+		/// the following parameters.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
+		/// <term>CertOpenSystemStore Parameter</term>
 		/// <term>Value</term>
-		/// <term>Meaning</term>
 		/// </listheader>
 		/// <item>
-		/// <term>CERT_CLOSE_STORE_CHECK_FLAG</term>
-		/// <term>
-		/// Checks for nonfreed certificate, CRL, and CTL contexts. A returned error code indicates that one or more store elements is still
-		/// in use. This flag should only be used as a diagnostic tool in the development of applications.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_CLOSE_STORE_FORCE_FLAG</term>
-		/// <term>
-		/// Forces the freeing of memory for all contexts associated with the store. This flag can be safely used only when the store is
-		/// opened in a function and neither the store handle nor any of its contexts are passed to any called functions. For details, see Remarks.
-		/// </term>
+		/// <term>szSubsystemProtocol</term>
+		/// <term>szCertStoreName</term>
 		/// </item>
 		/// </list>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
-		/// <para>If the function fails, the return value is <c>FALSE</c>. For extended error information, call GetLastError.</para>
 		/// <para>
-		/// If CERT_CLOSE_STORE_CHECK_FLAG is not set or if it is set and all contexts associated with the store have been freed, the return
-		/// value is <c>TRUE</c>.
+		/// If <c>CertAddEncodedCertificateToSystemStore</c> obtains a handle to the specified system store, it calls CertCloseStore to
+		/// close the handle before it returns.
 		/// </para>
-		/// <para>
-		/// If CERT_CLOSE_STORE_CHECK_FLAG is set and memory for one or more contexts associated with the store remains allocated, the
-		/// return value is <c>FALSE</c>. The store is always closed even when the function returns <c>FALSE</c>. For details, see Remarks.
-		/// </para>
-		/// <para>
-		/// GetLastError is set to CRYPT_E_PENDING_CLOSE if memory for contexts associated with the store remains allocated. Any existing
-		/// value returned by <c>GetLastError</c> is preserved unless CERT_CLOSE_STORE_CHECK_FLAG is set.
-		/// </para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// While a certificate store is open, contexts from that store can be retrieved or duplicated. When a context is retrieved or
-		/// duplicated, its reference count is incremented. When a context is freed by passing it to a search or enumeration function as a
-		/// previous context or by using CertFreeCertificateContext, CertFreeCRLContext, or CertFreeCTLContext, its reference count is
-		/// decremented. When a context's reference count reaches zero, memory allocated for that context is automatically freed. When the
-		/// memory allocated for a context has been freed, any pointers to that context become not valid.
-		/// </para>
-		/// <para>
-		/// By default, memory used to store contexts with reference count greater than zero is not freed when a certificate store is
-		/// closed. References to those contexts remain valid; however, this can cause memory leaks. Also, any changes made to the
-		/// properties of a context after the store has been closed are not persisted.
-		/// </para>
-		/// <para>
-		/// To force the freeing of memory for all contexts associated with a store, set CERT_CLOSE_STORE_FORCE_FLAG. With this flag set,
-		/// memory for all contexts associated with the store is freed and all pointers to certificate, CRL, or CTL contexts associated with
-		/// the store become not valid. This flag should only be set when the store is opened in a function and neither the store handle nor
-		/// any of its contexts were ever passed to any called functions.
-		/// </para>
-		/// <para>
-		/// The status of reference counts on contexts associated with a store can be checked when the store is closed by using
-		/// CERT_CLOSE_STORE_CHECK_FLAG. When this flag is set, and all certificate, CRL, or CTL contexts have not been released, the
-		/// function returns <c>FALSE</c> and GetLastError returns CRYPT_E_PENDING_CLOSE. Note that the store is still closed when
-		/// <c>FALSE</c> is returned and the memory for any active contexts is not freed.
-		/// </para>
-		/// <para>If CERT_STORE_NO_CRYPT_RELEASE_FLAG was not set when the store was opened, closing a store releases its CSP handle.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certclosestore BOOL CertCloseStore( HCERTSTORE
-		// hCertStore, DWORD dwFlags );
-		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("wincrypt.h", MSDNShortId = "a93fdd65-359e-4046-910d-347c3af01280")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CertCloseStore(HCERTSTORE hCertStore, CertCloseStoreFlags dwFlags);
-
-		/// <summary>
-		/// The <c>CertEnumSystemStore</c> function retrieves the system stores available. The function calls the provided callback function
-		/// for each system store found.
-		/// </summary>
-		/// <param name="dwFlags">
-		/// <para>Specifies the location of the system store. This parameter can be one of the following flags:</para>
-		/// <list type="bullet">
+		/// <list type="table">
+		/// <listheader>
+		/// <term>CertAddEncodedCertificateToStore Parameter</term>
+		/// <term>Value</term>
+		/// </listheader>
 		/// <item>
-		/// <term>CERT_SYSTEM_STORE_CURRENT_USER</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_CURRENT_SERVICE</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_LOCAL_MACHINE</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_SERVICES</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_USERS</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE</term>
-		/// </item>
-		/// </list>
-		/// <para>In addition, the CERT_SYSTEM_STORE_RELOCATE_FLAG can be combined, by using a bitwise-</para>
-		/// <para>OR</para>
-		/// <para>operation, with any of the high-word location flags.</para>
-		/// </param>
-		/// <param name="pvSystemStoreLocationPara">
-		/// <para>
-		/// If CERT_SYSTEM_STORE_RELOCATE_FLAG is set in the dwFlags parameter, pvSystemStoreLocationPara points to a
-		/// CERT_SYSTEM_STORE_RELOCATE_PARA structure that indicates both the name and the location of the system store. Otherwise,
-		/// pvSystemStoreLocationPara is a pointer to a Unicode string that names the system store.
-		/// </para>
-		/// <para>
-		/// For CERT_SYSTEM_STORE_LOCAL_MACHINE or CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY, pvSystemStoreLocationPara can optionally be
-		/// set to a Unicode computer name for enumerating local computer stores on a remote computer, for example "\computer_name" or
-		/// "computer_name". The leading backslashes (\) are optional in the computer_name.
-		/// </para>
-		/// <para>
-		/// For CERT_SYSTEM_STORE_SERVICES or CERT_SYSTEM_STORE_USERS, if pvSystemStoreLocationPara is <c>NULL</c>, the function enumerates
-		/// both the service/user names and the stores for each service/user name. Otherwise, pvSystemStoreLocationPara is a Unicode string
-		/// that contains a remote computer name and, if available, a service/user name, for example, "service_name", "\computer_name", or "computer_name".
-		/// </para>
-		/// <para>
-		/// If only the computer_name is specified, it must have either the leading backslashes (\) or a trailing backslash (). Otherwise,
-		/// it is interpreted as the service_name or user_name.
-		/// </para>
-		/// </param>
-		/// <param name="pvArg">
-		/// A pointer to a <c>void</c> that allows the application to declare, define, and initialize a structure to hold any information to
-		/// be passed to the callback enumeration function.
-		/// </param>
-		/// <param name="pfnEnum">
-		/// A pointer to the callback function used to show the details for each system store. This callback function determines the content
-		/// and format for the presentation of information on each system store. The application must provide the
-		/// CertEnumSystemStoreCallback callback function.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
-		/// <para>If the function fails, it returns <c>FALSE</c>.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// To use <c>CertEnumSystemStore</c>, the application must declare and define the <c>ENUM_ARG</c> structure and the
-		/// CertEnumSystemStoreCallback callback function.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>For an example that uses this function, see Example C Program: Listing System and Physical Stores.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumsystemstore BOOL CertEnumSystemStore( DWORD
-		// dwFlags, void *pvSystemStoreLocationPara, void *pvArg, PFN_CERT_ENUM_SYSTEM_STORE pfnEnum );
-		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wincrypt.h", MSDNShortId = "fd9cb23b-e4a3-41cb-8f0a-30f4e813c6ac")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CertEnumSystemStore(CertSystemStore dwFlags, IntPtr pvSystemStoreLocationPara, IntPtr pvArg, CertEnumSystemStoreCallback pfnEnum);
-
-		/// <summary>
-		/// The <c>CertEnumSystemStore</c> function retrieves the system stores available. The function calls the provided callback function
-		/// for each system store found.
-		/// </summary>
-		/// <param name="dwFlags">
-		/// <para>Specifies the location of the system store. This parameter can be one of the following flags:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_CURRENT_USER</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_CURRENT_SERVICE</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_LOCAL_MACHINE</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_SERVICES</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_USERS</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE</term>
-		/// </item>
-		/// </list>
-		/// <para>In addition, the CERT_SYSTEM_STORE_RELOCATE_FLAG can be combined, by using a bitwise-</para>
-		/// <para>OR</para>
-		/// <para>operation, with any of the high-word location flags.</para>
-		/// </param>
-		/// <param name="pvSystemStoreLocationPara">
-		/// <para>
-		/// If CERT_SYSTEM_STORE_RELOCATE_FLAG is set in the dwFlags parameter, pvSystemStoreLocationPara points to a
-		/// CERT_SYSTEM_STORE_RELOCATE_PARA structure that indicates both the name and the location of the system store. Otherwise,
-		/// pvSystemStoreLocationPara is a pointer to a Unicode string that names the system store.
-		/// </para>
-		/// <para>
-		/// For CERT_SYSTEM_STORE_LOCAL_MACHINE or CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY, pvSystemStoreLocationPara can optionally be
-		/// set to a Unicode computer name for enumerating local computer stores on a remote computer, for example "\computer_name" or
-		/// "computer_name". The leading backslashes (\) are optional in the computer_name.
-		/// </para>
-		/// <para>
-		/// For CERT_SYSTEM_STORE_SERVICES or CERT_SYSTEM_STORE_USERS, if pvSystemStoreLocationPara is <c>NULL</c>, the function enumerates
-		/// both the service/user names and the stores for each service/user name. Otherwise, pvSystemStoreLocationPara is a Unicode string
-		/// that contains a remote computer name and, if available, a service/user name, for example, "service_name", "\computer_name", or "computer_name".
-		/// </para>
-		/// <para>
-		/// If only the computer_name is specified, it must have either the leading backslashes (\) or a trailing backslash (). Otherwise,
-		/// it is interpreted as the service_name or user_name.
-		/// </para>
-		/// </param>
-		/// <param name="pvArg">
-		/// A pointer to a <c>void</c> that allows the application to declare, define, and initialize a structure to hold any information to
-		/// be passed to the callback enumeration function.
-		/// </param>
-		/// <param name="pfnEnum">
-		/// A pointer to the callback function used to show the details for each system store. This callback function determines the content
-		/// and format for the presentation of information on each system store. The application must provide the
-		/// CertEnumSystemStoreCallback callback function.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
-		/// <para>If the function fails, it returns <c>FALSE</c>.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// To use <c>CertEnumSystemStore</c>, the application must declare and define the <c>ENUM_ARG</c> structure and the
-		/// CertEnumSystemStoreCallback callback function.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>For an example that uses this function, see Example C Program: Listing System and Physical Stores.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumsystemstore BOOL CertEnumSystemStore( DWORD
-		// dwFlags, void *pvSystemStoreLocationPara, void *pvArg, PFN_CERT_ENUM_SYSTEM_STORE pfnEnum );
-		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wincrypt.h", MSDNShortId = "fd9cb23b-e4a3-41cb-8f0a-30f4e813c6ac")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CertEnumSystemStore(CertSystemStore dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string pvSystemStoreLocationPara, IntPtr pvArg, CertEnumSystemStoreCallback pfnEnum);
-
-		/// <summary>
-		/// The <c>CertFindCertificateInStore</c> function finds the first or next certificate context in a certificate store that matches a
-		/// search criteria established by the dwFindType and its associated pvFindPara. This function can be used in a loop to find all of
-		/// the certificates in a certificate store that match the specified find criteria.
-		/// </summary>
-		/// <param name="hCertStore">A handle of the certificate store to be searched.</param>
-		/// <param name="dwCertEncodingType">
-		/// <para>
-		/// Specifies the type of encoding used. Both the certificate and message encoding types must be specified by combining them with a
-		/// bitwise- <c>OR</c> operation as shown in the following example:
-		/// </para>
-		/// <para>X509_ASN_ENCODING | PKCS_7_ASN_ENCODING Currently defined encoding types are:</para>
-		/// <list type="bullet">
-		/// <item>
+		/// <term>dwCertEncodingType</term>
 		/// <term>X509_ASN_ENCODING</term>
 		/// </item>
 		/// <item>
-		/// <term>PKCS_7_ASN_ENCODING</term>
+		/// <term>dwAddDisposition</term>
+		/// <term>CERT_STORE_ADD_USE_EXISTING</term>
+		/// </item>
+		/// <item>
+		/// <term>ppCertContext</term>
+		/// <term>NULL</term>
 		/// </item>
 		/// </list>
-		/// </param>
-		/// <param name="dwFindFlags">
-		/// Used with some dwFindType values to modify the search criteria. For most dwFindType values, dwFindFlags is not used and should
-		/// be set to zero. For detailed information, see Remarks.
-		/// </param>
-		/// <param name="dwFindType">
-		/// <para>
-		/// Specifies the type of search being made. The search type determines the data type, contents, and the use of pvFindPara. This
-		/// parameter can be one of the following values.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>CERT_FIND_ANY</term>
-		/// <term>Data type of pvFindPara: NULL, not used. No search criteria used. Returns the next certificate in the store.</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_CERT_ID</term>
-		/// <term>Data type of pvFindPara: CERT_ID structure. Find the certificate identified by the specified CERT_ID.</term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_CTL_USAGE</term>
-		/// <term>
-		/// Data type of pvFindPara: CTL_USAGE structure. Searches for a certificate that has a szOID_ENHANCED_KEY_USAGE extension or a
-		/// CERT_CTL_PROP_ID that matches the pszUsageIdentifier member of the CTL_USAGE structure.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_ENHKEY_USAGE</term>
-		/// <term>
-		/// Data type of pvFindPara: CERT_ENHKEY_USAGE structure. Searches for a certificate in the store that has either an enhanced key
-		/// usage extension or an enhanced key usage property and a usage identifier that matches the cUsageIdentifier member in the
-		/// CERT_ENHKEY_USAGE structure. A certificate has an enhanced key usage extension if it has a CERT_EXTENSION structure with the
-		/// pszObjId member set to szOID_ENHANCED_KEY_USAGE. A certificate has an enhanced key usage property if its
-		/// CERT_ENHKEY_USAGE_PROP_ID identifier is set. If CERT_FIND_OPTIONAL_ENHKEY_USAGE_FLAG is set in dwFindFlags, certificates without
-		/// the key usage extension or property are also matches. Setting this flag takes precedence over passing NULL in pvFindPara. If
-		/// CERT_FIND_EXT_ONLY_ENHKEY_USAGE_FLAG is set, a match is done only on the key usage extension. For information about flag
-		/// modifications to search criteria, see Remarks.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_EXISTING</term>
-		/// <term>
-		/// Data type of pvFindPara: CERT_CONTEXT structure. Searches for a certificate that is an exact match of the specified certificate context.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_HASH</term>
-		/// <term>
-		/// Data type of pvFindPara: CRYPT_HASH_BLOB structure. Searches for a certificate with a SHA1 hash that matches the hash in the
-		/// CRYPT_HASH_BLOB structure.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_HAS_PRIVATE_KEY</term>
-		/// <term>
-		/// Data type of pvFindPara: NULL, not used. Searches for a certificate that has a private key. The key can be ephemeral or saved on
-		/// disk. The key can be a legacy Cryptography API (CAPI) key or a CNG key. Windows 8 and Windows Server 2012: Support for this flag begins.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_ISSUER_ATTR</term>
-		/// <term>
-		/// Data type of pvFindPara: CERT_RDN structure. Searches for a certificate with specified issuer attributes that match attributes
-		/// in the CERT_RDN structure. If these values are set, the function compares attributes of the issuer in a certificate with
-		/// elements of the CERT_RDN_ATTR array in this CERT_RDN structure. Comparisons iterate through the CERT_RDN_ATTR attributes looking
-		/// for a match with the certificate's issuer attributes. If the pszObjId member of CERT_RDN_ATTR is NULL, the attribute object
-		/// identifier is ignored. If the dwValueType member of CERT_RDN_ATTR is CERT_RDN_ANY_TYPE, the value type is ignored. If the pbData
-		/// member of CERT_RDN_VALUE_BLOB is NULL, any value is a match. Currently only an exact, case-sensitive match is supported. For
-		/// information about Unicode options, see Remarks. When these values are set, the search is restricted to certificates whose
-		/// encoding type matches dwCertEncodingType.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_ISSUER_NAME</term>
-		/// <term>
-		/// Data type of pvFindPara: CERT_NAME_BLOB structure. Search for a certificate with an exact match of the entire issuer name with
-		/// the name in CERT_NAME_BLOB The search is restricted to certificates that match the dwCertEncodingType.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_ISSUER_OF</term>
-		/// <term>
-		/// Data type of pvFindPara: CERT_CONTEXT structure. Searches for a certificate with an subject that matches the issuer in
-		/// CERT_CONTEXT. Instead of using CertFindCertificateInStore with this value, use the CertGetCertificateChain function.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_ISSUER_STR</term>
-		/// <term>
-		/// Data type of pvFindPara: Null-terminated Unicode string. Searches for a certificate that contains the specified issuer name
-		/// string. The certificate's issuer member is converted to a name string of the appropriate type using the appropriate form of
-		/// CertNameToStr formatted as CERT_SIMPLE_NAME_STR. Then a case-insensitive substring-within-a-string match is performed. When this
-		/// value is set, the search is restricted to certificates whose encoding type matches dwCertEncodingType. If the substring match
-		/// fails and the subject contains an email RDN with Punycode encoded string, CERT_NAME_STR_ENABLE_PUNYCODE_FLAG is used to convert
-		/// the subject to a Unicode string and the substring match is performed again.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_KEY_IDENTIFIER</term>
-		/// <term>
-		/// Data type of pvFindPara: CRYPT_HASH_BLOB structure. Searches for a certificate with a CERT_KEY_IDENTIFIER_PROP_ID property that
-		/// matches the key identifier in CRYPT_HASH_BLOB.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_KEY_SPEC</term>
-		/// <term>
-		/// Data type of pvFindPara: DWORD variable that contains a key specification. Searches for a certificate that has a
-		/// CERT_KEY_SPEC_PROP_ID property that matches the key specification in pvFindPara.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_MD5_HASH</term>
-		/// <term>
-		/// Data type of pvFindPara: CRYPT_HASH_BLOB structure. Searches for a certificate with an MD5 hash that matches the hash in CRYPT_HASH_BLOB.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_PROPERTY</term>
-		/// <term>
-		/// Data type of pvFindPara: DWORD variable that contains a property identifier. Searches for a certificate with a property that
-		/// matches the property identifier specified by the DWORD value in pvFindPara.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_PUBLIC_KEY</term>
-		/// <term>
-		/// Data type of pvFindPara: CERT_PUBLIC_KEY_INFO structure. Searches for a certificate with a public key that matches the public
-		/// key in the CERT_PUBLIC_KEY_INFO structure.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_SHA1_HASH</term>
-		/// <term>
-		/// Data type of pvFindPara: CRYPT_HASH_BLOB structure. Searches for a certificate with a SHA1 hash that matches the hash in the
-		/// CRYPT_HASH_BLOB structure.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_SIGNATURE_HASH</term>
-		/// <term>
-		/// Data type of pvFindPara: CRYPT_HASH_BLOB structure. Searches for a certificate with a signature hash that matches the signature
-		/// hash in the CRYPT_HASH_BLOB structure.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_SUBJECT_ATTR</term>
-		/// <term>
-		/// Data type of pvFindPara: CERT_RDN structure. Searches for a certificate with specified subject attributes that match attributes
-		/// in the CERT_RDN structure. If RDN values are set, the function compares attributes of the subject in a certificate with elements
-		/// of the CERT_RDN_ATTR array in this CERT_RDN structure. Comparisons iterate through the CERT_RDN_ATTR attributes looking for a
-		/// match with the certificate's subject's attributes. If the pszObjId member of CERT_RDN_ATTR is NULL, the attribute object
-		/// identifier is ignored. If the dwValueType member of CERT_RDN_ATTR is CERT_RDN_ANY_TYPE, the value type is ignored. If the pbData
-		/// member of CERT_RDN_VALUE_BLOB is NULL, any value is a match. Currently only an exact, case-sensitive match is supported. For
-		/// information about Unicode options, see Remarks. When these values are set, the search is restricted to certificates whose
-		/// encoding type matches dwCertEncodingType.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_SUBJECT_CERT</term>
-		/// <term>
-		/// Data type of pvFindPara: CERT_INFO structure. Searches for a certificate with both an issuer and a serial number that match the
-		/// issuer and serial number in the CERT_INFO structure.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_SUBJECT_NAME</term>
-		/// <term>
-		/// Data type of pvFindPara: CERT_NAME_BLOB structure. Searches for a certificate with an exact match of the entire subject name
-		/// with the name in the CERT_NAME_BLOB structure. The search is restricted to certificates that match the value of dwCertEncodingType.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_SUBJECT_STR</term>
-		/// <term>
-		/// Data type of pvFindPara: Null-terminated Unicode string. Searches for a certificate that contains the specified subject name
-		/// string. The certificate's subject member is converted to a name string of the appropriate type using the appropriate form of
-		/// CertNameToStr formatted as CERT_SIMPLE_NAME_STR. Then a case-insensitive substring-within-a-string match is performed. When this
-		/// value is set, the search is restricted to certificates whose encoding type matches dwCertEncodingType.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_CROSS_CERT_DIST_POINTS</term>
-		/// <term>
-		/// Data type of pvFindPara: Not used. Find a certificate that has either a cross certificate distribution point extension or property.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>CERT_FIND_PUBKEY_MD5_HASH</term>
-		/// <term>
-		/// Data type of pvFindPara: CRYPT_HASH_BLOB structure. Find a certificate whose MD5-hashed public key matches the specified hash.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// <c>Note</c> There are alternate forms of the value of dwFindType that pass a string in pvFindPara. One form uses a Unicode
-		/// string, and the other an ASCII string. Values that end in "_W" or without a suffix use Unicode. Values that end with "_A" use
-		/// ASCII strings.
-		/// </para>
-		/// </param>
-		/// <param name="pvFindPara">Points to a data item or structure used with dwFindType.</param>
-		/// <param name="pPrevCertContext">
-		/// A pointer to the last CERT_CONTEXT structure returned by this function. This parameter must be <c>NULL</c> on the first call of
-		/// the function. To find successive certificates meeting the search criteria, set pPrevCertContext to the pointer returned by the
-		/// previous call to the function. This function frees the <c>CERT_CONTEXT</c> referenced by non- <c>NULL</c> values of this parameter.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the function returns a pointer to a read-only CERT_CONTEXT structure.</para>
-		/// <para>If the function fails and a certificate that matches the search criteria is not found, the return value is <c>NULL</c>.</para>
-		/// <para>
-		/// A non- <c>NULL</c> CERT_CONTEXT that <c>CertFindCertificateInStore</c> returns must be freed by CertFreeCertificateContext or by
-		/// being passed as the pPrevCertContext parameter on a subsequent call to <c>CertFindCertificateInStore</c>.
-		/// </para>
-		/// <para>For extended error information, call GetLastError. Some possible error codes follow.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>CRYPT_E_NOT_FOUND</term>
-		/// <term>
-		/// No certificate was found matching the search criteria. This can happen if the store is empty or the end of the store's list is reached.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>E_INVALIDARG</term>
-		/// <term>
-		/// The handle in the hCertStore parameter is not the same as that in the certificate context pointed to by the pPrevCertContext
-		/// parameter, or a value that is not valid was specified in the dwFindType parameter.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>The dwFindFlags parameter is used to modify the criteria of some search types.</para>
-		/// <para>
-		/// The CERT_UNICODE_IS_RDN_ATTRS_FLAG dwFindFlags value is used only with the CERT_FIND_SUBJECT_ATTR and CERT_FIND_ISSUER_ATTR
-		/// values for dwFindType. CERT_UNICODE_IS_RDN_ATTRS_FLAG must be set if the CERT_RDN_ATTR structure pointed to by pvFindPara was
-		/// initialized with Unicode strings. Before any comparison is made, the string to be matched is converted by using
-		/// X509_UNICODE_NAME to provide for Unicode comparisons.
-		/// </para>
-		/// <para>The following dwFindFlags values are used only with the CERT_FIND_ENKEY_USAGE value for dwFindType:</para>
-		/// <para>
-		/// CertDuplicateCertificateContext can be called to make a duplicate of the returned context. The returned context can be added to
-		/// a different certificate store by using CertAddCertificateContextToStore, or a link to that certificate context can be added to a
-		/// store that is not a collection store by using CertAddCertificateLinkToStore.
-		/// </para>
-		/// <para>
-		/// The returned pointer is freed when passed as the pPrevCertContext parameter on a subsequent call to the function. Otherwise, the
-		/// pointer must be explicitly freed by calling CertFreeCertificateContext. A pPrevCertContext that is not <c>NULL</c> is always
-		/// freed by <c>CertFindCertificateInStore</c> using a call to <c>CertFreeCertificateContext</c>, even if there is an error in the function.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>
-		/// The following example shows finding a certificate context in the certificate store meeting a search criterion. For a complete
-		/// example that includes the context for this example, see Example C Program: Certificate Store Operations.
-		/// </para>
-		/// <para>For another example that uses this function, see Example C Program: Collection and Sibling Certificate Store Operations.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore PCCERT_CONTEXT
-		// CertFindCertificateInStore( HCERTSTORE hCertStore, DWORD dwCertEncodingType, DWORD dwFindFlags, DWORD dwFindType, const void
-		// *pvFindPara, PCCERT_CONTEXT pPrevCertContext );
-		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("wincrypt.h", MSDNShortId = "20b3fcfb-55df-46ff-80a5-70f31a3d03b2")]
-		public static extern IntPtr CertFindCertificateInStore(HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType, uint dwFindFlags, CertFindType dwFindType, IntPtr pvFindPara, IntPtr pPrevCertContext);
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddencodedcertificatetosystemstorea BOOL
+		// CertAddEncodedCertificateToSystemStoreA( LPCSTR szCertStoreName, const BYTE *pbCertEncoded, DWORD cbCertEncoded );
+		[DllImport(Lib.Crypt32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "72ff1bcc-eb94-4d97-89fa-d95ed9eb460e")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CertAddEncodedCertificateToSystemStore([MarshalAs(UnmanagedType.LPTStr)] string szCertStoreName, [In] IntPtr pbCertEncoded, uint cbCertEncoded);
 
 		/// <summary>
 		/// <para>
@@ -1317,25 +857,39 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "7d2f3237-3f8b-4234-b6db-3057384cd89b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CertFreeCertificateContext(IntPtr pCertContext);
+		public static extern bool CertFreeCertificateContext(PCCERT_CONTEXT pCertContext);
 
 		/// <summary>
-		/// The <c>CertOpenSystemStore</c> function is a simplified function that opens the most common system certificate store. To open
-		/// certificate stores with more complex requirements, such as file-based or memory-based stores, use CertOpenStore.
+		/// Resyncs the certificate chain engine, which resynchronizes the stores the store's engine and updates the engine caches.
 		/// </summary>
-		/// <param name="hProv">
-		/// <para>This parameter is not used and should be set to <c>NULL</c>.</para>
+		/// <param name="hChainEngine">The chain engine to resynchronize.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero.</para>
+		/// <para>If the function fails, it returns zero. For extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certresynccertificatechainengine BOOL
+		// CertResyncCertificateChainEngine( HCERTCHAINENGINE hChainEngine );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "D8674AD1-0407-4D1E-9E21-60CAC6D01FC5")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CertResyncCertificateChainEngine(HCERTCHAINENGINE hChainEngine);
+
+		/// <summary>
 		/// <para>
-		/// <c>Windows Server 2003 and Windows XP:</c> A handle of a cryptographic service provider (CSP). Set hProv to <c>NULL</c> to use
-		/// the default CSP. If hProv is not <c>NULL</c>, it must be a CSP handle created by using the CryptAcquireContext function.This
-		/// parameter's data type is <c>HCRYPTPROV</c>.
+		/// The <c>CryptAcquireCertificatePrivateKey</c> function obtains the private key for a certificate. This function is used to obtain
+		/// access to a user's private key when the user's certificate is available, but the handle of the user's key container is not
+		/// available. This function can only be used by the owner of a private key and not by any other user.
 		/// </para>
-		/// </param>
-		/// <param name="szSubsystemProtocol">
 		/// <para>
-		/// A string that names a system store. If the system store name provided in this parameter is not the name of an existing system
-		/// store, a new system store will be created and used. CertEnumSystemStore can be used to list the names of existing system stores.
-		/// Some example system stores are listed in the following table.
+		/// If a CSP handle and the key container containing a user's private key are available, the CryptGetUserKey function should be used instead.
+		/// </para>
+		/// </summary>
+		/// <param name="pCert">
+		/// The address of a CERT_CONTEXT structure that contains the certificate context for which a private key will be obtained.
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>
+		/// A set of flags that modify the behavior of this function. This can be zero or a combination of one or more of the following values.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -1343,44 +897,502 @@ namespace Vanara.PInvoke
 		/// <term>Meaning</term>
 		/// </listheader>
 		/// <item>
-		/// <term>CA</term>
-		/// <term>Certification authority certificates.</term>
+		/// <term>CRYPT_ACQUIRE_CACHE_FLAG</term>
+		/// <term>
+		/// If a handle is already acquired and cached, that same handle is returned. Otherwise, a new handle is acquired and cached by
+		/// using the certificate's CERT_KEY_CONTEXT_PROP_ID property. When this flag is set, the pfCallerFreeProvOrNCryptKey parameter
+		/// receives FALSE and the calling application must not release the handle. The handle is freed when the certificate context is
+		/// freed; however, you must retain the certificate context referenced by the pCert parameter as long as the key is in use,
+		/// otherwise operations that rely on the key will fail.
+		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>MY</term>
-		/// <term>A certificate store that holds certificates with associated private keys.</term>
+		/// <term>CRYPT_ACQUIRE_COMPARE_KEY_FLAG</term>
+		/// <term>
+		/// The public key in the certificate is compared with the public key returned by the cryptographic service provider (CSP). If the
+		/// keys do not match, the acquisition operation fails and the last error code is set to NTE_BAD_PUBLIC_KEY. If a cached handle is
+		/// returned, no comparison is made.
+		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>ROOT</term>
-		/// <term>Root certificates.</term>
+		/// <term>CRYPT_ACQUIRE_NO_HEALING</term>
+		/// <term>
+		/// This function will not attempt to re-create the CERT_KEY_PROV_INFO_PROP_ID property in the certificate context if this property
+		/// cannot be retrieved.
+		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>SPC</term>
-		/// <term>Software Publisher Certificate.</term>
+		/// <term>CRYPT_ACQUIRE_SILENT_FLAG</term>
+		/// <term>
+		/// The CSP should not display any user interface (UI) for this context. If the CSP must display UI to operate, the call fails and
+		/// the NTE_SILENT_CONTEXT error code is set as the last error.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_ACQUIRE_USE_PROV_INFO_FLAG</term>
+		/// <term>
+		/// Uses the certificate's CERT_KEY_PROV_INFO_PROP_ID property to determine whether caching should be accomplished. For more
+		/// information about the CERT_KEY_PROV_INFO_PROP_ID property, see CertSetCertificateContextProperty. This function will only use
+		/// caching if during a previous call, the dwFlags member of the CRYPT_KEY_PROV_INFO structure contained CERT_SET_KEY_CONTEXT_PROP.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_ACQUIRE_ WINDOWS_HANDLE_FLAG</term>
+		/// <term>
+		/// Any UI that is needed by the CSP or KSP will be a child of the HWND that is supplied in the pvParameters parameter. For a CSP
+		/// key, using this flag will cause the CryptSetProvParam function with the flag PP_CLIENT_HWND using this HWND to be called with
+		/// NULL for HCRYPTPROV. For a KSP key, using this flag will cause the NCryptSetProperty function with the
+		/// NCRYPT_WINDOW_HANDLE_PROPERTY flag to be called using the HWND. Do not use this flag with CRYPT_ACQUIRE_SILENT_FLAG.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The following flags determine which technology is used to obtain the key. If none of these flags is present, this function will
+		/// only attempt to obtain the key by using CryptoAPI.
+		/// </para>
+		/// <para><c>Windows Server 2003 and Windows XP:</c> These flags are not supported.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_ACQUIRE_ALLOW_NCRYPT_KEY_FLAG</term>
+		/// <term>
+		/// This function will attempt to obtain the key by using CryptoAPI. If that fails, this function will attempt to obtain the key by
+		/// using the Cryptography API: Next Generation (CNG). The pdwKeySpec variable receives the CERT_NCRYPT_KEY_SPEC flag if CNG is used
+		/// to obtain the key.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG</term>
+		/// <term>
+		/// This function will only attempt to obtain the key by using CNG and will not use CryptoAPI to obtain the key. The pdwKeySpec
+		/// variable receives the CERT_NCRYPT_KEY_SPEC flag if CNG is used to obtain the key.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_ACQUIRE_PREFER_NCRYPT_KEY_FLAG</term>
+		/// <term>
+		/// This function will attempt to obtain the key by using CNG. If that fails, this function will attempt to obtain the key by using
+		/// CryptoAPI. The pdwKeySpec variable receives the CERT_NCRYPT_KEY_SPEC flag if CNG is used to obtain the key.
+		/// </term>
 		/// </item>
 		/// </list>
 		/// </param>
+		/// <param name="pvParameters">
+		/// <para>
+		/// If the <c>CRYPT_ACQUIRE_WINDOWS_HANDLE_FLAG</c> is set, then this is the address of an <c>HWND</c>. If the
+		/// <c>CRYPT_ACQUIRE_WINDOWS_HANDLE_FLAG</c> is not set, then this parameter must be <c>NULL</c>.
+		/// </para>
+		/// <para>
+		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This parameter
+		/// was named pvReserved and reserved for future use and must be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="phCryptProvOrNCryptKey">
+		/// <para>
+		/// The address of an HCRYPTPROV_OR_NCRYPT_KEY_HANDLE variable that receives the handle of either the CryptoAPI provider or the CNG
+		/// key. If the pdwKeySpec variable receives the <c>CERT_NCRYPT_KEY_SPEC</c> flag, this is a CNG key handle of type
+		/// <c>NCRYPT_KEY_HANDLE</c>; otherwise, this is a CryptoAPI provider handle of type HCRYPTPROV.
+		/// </para>
+		/// <para>
+		/// For more information about when and how to release this handle, see the description of the pfCallerFreeProvOrNCryptKey parameter.
+		/// </para>
+		/// </param>
+		/// <param name="pdwKeySpec">
+		/// <para>
+		/// The address of a <c>DWORD</c> variable that receives additional information about the key. This can be one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>AT_KEYEXCHANGE</term>
+		/// <term>The key pair is a key exchange pair.</term>
+		/// </item>
+		/// <item>
+		/// <term>AT_SIGNATURE</term>
+		/// <term>The key pair is a signature pair.</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_NCRYPT_KEY_SPEC</term>
+		/// <term>The key is a CNG key. Windows Server 2003 and Windows XP: This value is not supported.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pfCallerFreeProvOrNCryptKey">
+		/// <para>
+		/// The address of a <c>BOOL</c> variable that receives a value that indicates whether the caller must free the handle returned in
+		/// the phCryptProvOrNCryptKey variable. This receives <c>FALSE</c> if any of the following is true:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Public key acquisition or comparison fails.</term>
+		/// </item>
+		/// <item>
+		/// <term>The dwFlags parameter contains the <c>CRYPT_ACQUIRE_CACHE_FLAG</c> flag.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The dwFlags parameter contains the <c>CRYPT_ACQUIRE_USE_PROV_INFO_FLAG</c> flag, the certificate context property is set to
+		/// <c>CERT_KEY_PROV_INFO_PROP_ID</c> with the CRYPT_KEY_PROV_INFO structure, and the dwFlags member of the
+		/// <c>CRYPT_KEY_PROV_INFO</c> structure is set to <c>CERT_SET_KEY_CONTEXT_PROP_ID</c>.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>If this variable receives</para>
+		/// <para>FALSE</para>
+		/// <para>, the calling application must not release the handle returned in the</para>
+		/// <para>phCryptProvOrNCryptKey</para>
+		/// <para>variable. The handle will be released on the last free action of the</para>
+		/// <para>certificate context</para>
+		/// <para>.</para>
+		/// <para>
+		/// If this variable receives <c>TRUE</c>, the caller is responsible for releasing the handle returned in the phCryptProvOrNCryptKey
+		/// variable. If the pdwKeySpec variable receives the <c>CERT_NCRYPT_KEY_SPEC</c> flag, the handle must be released by passing it to
+		/// the NCryptFreeObject function; otherwise, the handle is released by passing it to the CryptReleaseContext function.
+		/// </para>
+		/// </param>
 		/// <returns>
-		/// <para>If the function succeeds, the function returns a handle to the certificate store.</para>
-		/// <para>If the function fails, it returns <c>NULL</c>. For extended error information, call GetLastError.</para>
-		/// <para><c>Note</c> Errors from the called function CertOpenStore are propagated to this function.</para>
+		/// <para>If the function succeeds, the return value is nonzero ( <c>TRUE</c>).</para>
+		/// <para>
+		/// If the function fails, the return value is zero ( <c>FALSE</c>). For extended error information, call GetLastError. One possible
+		/// error code is the following.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>NTE_BAD_PUBLIC_KEY</term>
+		/// <term>
+		/// The public key in the certificate does not match the public key returned by the CSP. This error code is returned if the
+		/// CRYPT_ACQUIRE_COMPARE_KEY_FLAG is set and the public key in the certificate does not match the public key returned by the
+		/// cryptographic provider.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>NTE_SILENT_CONTEXT</term>
+		/// <term>
+		/// The dwFlags parameter contained the CRYPT_ACQUIRE_SILENT_FLAG flag and the CSP could not continue an operation without
+		/// displaying a user interface.
+		/// </term>
+		/// </item>
+		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <para>Only current user certificates are accessible using this method, not the local machine store.</para>
-		/// <para>After the system store is opened, all the standard certificate store functions can be used to manipulate the certificates.</para>
-		/// <para>After use, the store should be closed by using CertCloseStore.</para>
-		/// <para>For more information about the stores that are automatically migrated, see Certificate Store Migration.</para>
-		/// <para>Examples</para>
 		/// <para>
-		/// The following example shows a simplified method for opening the most common system certificate stores. For another example that
-		/// uses this function, see Example C Program: Certificate Store Operations.
+		/// When <c>CRYPT_ACQUIRE_WINDOWS_HANDLE_FLAG</c> is set, the caller must ensure the <c>HWND</c> is valid. If the <c>HWND</c> is no
+		/// longer valid, for CSP the caller should call CryptSetProvParam using flag PP_CLIENT_HWND with <c>NULL</c> for the <c>HWND</c>
+		/// and <c>NULL</c> for the HCRYPTPROV. For KSP, the caller should set the NCRYPT_WINDOW_HANDLE_PROPERTY of the ncrypt key to be
+		/// <c>NULL</c>. When <c>CRYPT_ACQUIRE_WINDOWS_HANDLE_FLAG</c> flag is set for KSP, the NCRYPT_WINDOW_HANDLE_PROPERTY is set on the
+		/// storage provider and the key. If both calls fail, then the function fails. If only one fails, the function succeeds. Note that
+		/// setting <c>HWND</c> to <c>NULL</c> effectively removes <c>HWND</c> from the HCRYPTPROV or ncrypt key.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example that uses this function, see Example C Program: Sending and Receiving a Signed and Encrypted Message.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptacquirecertificateprivatekey BOOL
+		// CryptAcquireCertificatePrivateKey( PCCERT_CONTEXT pCert, DWORD dwFlags, void *pvParameters, HCRYPTPROV_OR_NCRYPT_KEY_HANDLE
+		// *phCryptProvOrNCryptKey, DWORD *pdwKeySpec, BOOL *pfCallerFreeProvOrNCryptKey );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "53c9aec9-701d-4c21-9814-d344a8dde0c1")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptAcquireCertificatePrivateKey([In] PCCERT_CONTEXT pCert, CryptAcquireFlags dwFlags, [In, Optional] IntPtr pvParameters, out IntPtr phCryptProvOrNCryptKey,
+			out CertKeySpec pdwKeySpec, [MarshalAs(UnmanagedType.Bool)] out bool pfCallerFreeProvOrNCryptKey);
+
+		/// <summary>
+		/// <para>
+		/// The handle of the cryptographic service provider to be used as the default context. This handle is obtained by using the
+		/// CryptAcquireContext function.
+		/// </para>
+		/// <para>Specifies the type of context to install. This must be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_DEFAULT_CONTEXT_CERT_SIGN_OID</term>
+		/// <term>
+		/// Installs the default provider used to verify a single certificate signature type. The pvDefaultPara parameter is the address of
+		/// a null-terminated ANSI string that contains the object identifier of the certificate signature algorithm to install the provider
+		/// for, for example, szOID_OIWSEC_md5RSA. If the pvDefaultPara parameter is NULL, the specified provider is used to verify all
+		/// certificate signatures. The pvDefaultPara parameter cannot be NULL when the CRYPT_DEFAULT_CONTEXT_PROCESS_FLAG flag is set.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_DEFAULT_CONTEXT_MULTI_CERT_SIGN_OID</term>
+		/// <term>
+		/// Installs the default provider used to verify multiple certificate signature types. The pvDefaultPara parameter is the address of
+		/// a CRYPT_DEFAULT_CONTEXT_MULTI_OID_PARA structure that contains an array of object identifiers that identify the certificate
+		/// signature algorithms to install the specified provider for.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Specifies the object or objects to install the default context provider for. The format of this parameter depends on the
+		/// contents of the dwDefaultType parameter.
+		/// </para>
+		/// <para>
+		/// A set of flags that modify the behavior of this function. This can be zero or a combination of one or more of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_DEFAULT_CONTEXT_AUTO_RELEASE_FLAG</term>
+		/// <term>
+		/// The provider handle specified by the hCryptProv parameter is released automatically when the process or thread ends. If this
+		/// flag is not specified, it is the caller's responsibility to release the provider handle by using the CryptReleaseContext
+		/// function when the handle is no longer needed. The provider handle is not released if the CryptUninstallDefaultContext function
+		/// is called before the process or thread exits.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_DEFAULT_CONTEXT_PROCESS_FLAG</term>
+		/// <term>
+		/// The provider applies to all threads in the process. If this flag is not specified, the provider only applies to the calling
+		/// thread. The pvDefaultPara parameter cannot be NULL when this flag is set.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>This parameter is reserved for future use.</para>
+		/// <para>
+		/// The address of an <c>HCRYPTDEFAULTCONTEXT</c> variable that receives the default context handle. This handle is passed to the
+		/// CryptUninstallDefaultContext function to uninstall the default context provider.
+		/// </para>
+		/// </summary>
+		/// <param name="hCryptProv">
+		/// The handle of the cryptographic service provider to be used as the default context. This handle is obtained by using the
+		/// CryptAcquireContext function.
+		/// </param>
+		/// <param name="dwDefaultType">
+		/// <para>Specifies the type of context to install. This must be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_DEFAULT_CONTEXT_CERT_SIGN_OID</term>
+		/// <term>
+		/// Installs the default provider used to verify a single certificate signature type. The pvDefaultPara parameter is the address of
+		/// a null-terminated ANSI string that contains the object identifier of the certificate signature algorithm to install the provider
+		/// for, for example, szOID_OIWSEC_md5RSA. If the pvDefaultPara parameter is NULL, the specified provider is used to verify all
+		/// certificate signatures. The pvDefaultPara parameter cannot be NULL when the CRYPT_DEFAULT_CONTEXT_PROCESS_FLAG flag is set.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_DEFAULT_CONTEXT_MULTI_CERT_SIGN_OID</term>
+		/// <term>
+		/// Installs the default provider used to verify multiple certificate signature types. The pvDefaultPara parameter is the address of
+		/// a CRYPT_DEFAULT_CONTEXT_MULTI_OID_PARA structure that contains an array of object identifiers that identify the certificate
+		/// signature algorithms to install the specified provider for.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pvDefaultPara">
+		/// Specifies the object or objects to install the default context provider for. The format of this parameter depends on the
+		/// contents of the dwDefaultType parameter.
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>
+		/// A set of flags that modify the behavior of this function. This can be zero or a combination of one or more of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_DEFAULT_CONTEXT_AUTO_RELEASE_FLAG</term>
+		/// <term>
+		/// The provider handle specified by the hCryptProv parameter is released automatically when the process or thread ends. If this
+		/// flag is not specified, it is the caller's responsibility to release the provider handle by using the CryptReleaseContext
+		/// function when the handle is no longer needed. The provider handle is not released if the CryptUninstallDefaultContext function
+		/// is called before the process or thread exits.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_DEFAULT_CONTEXT_PROCESS_FLAG</term>
+		/// <term>
+		/// The provider applies to all threads in the process. If this flag is not specified, the provider only applies to the calling
+		/// thread. The pvDefaultPara parameter cannot be NULL when this flag is set.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pvReserved">This parameter is reserved for future use.</param>
+		/// <param name="phDefaultContext">
+		/// The address of an <c>HCRYPTDEFAULTCONTEXT</c> variable that receives the default context handle. This handle is passed to the
+		/// CryptUninstallDefaultContext function to uninstall the default context provider.
+		/// </param>
+		/// <returns>
+		/// If the function succeeds, the return value is nonzero (TRUE). If the function fails, the return value is zero (FALSE). For
+		/// extended error information, call GetLastError.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The installed default context providers are stack ordered, thus when searching for a default context provider, the system starts
+		/// with the most recently installed provider. The per-thread list of providers is searched before the per-process list of
+		/// providers. After a match is found, the system does not continue to search for other matches.
+		/// </para>
+		/// <para>
+		/// The installed provider handle must remain available for use until CryptUninstallDefaultContext is called, or the thread or
+		/// process exits.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certopensystemstorea HCERTSTORE CertOpenSystemStoreA(
-		// HCRYPTPROV_LEGACY hProv, LPCSTR szSubsystemProtocol );
-		[DllImport(Lib.Crypt32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("wincrypt.h", MSDNShortId = "23699439-1a6c-4907-93fa-651024856be7")]
-		public static extern SafeHCERTSTORE CertOpenSystemStore([Optional] IntPtr hProv, string szSubsystemProtocol);
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptinstalldefaultcontext BOOL
+		// CryptInstallDefaultContext( HCRYPTPROV hCryptProv, DWORD dwDefaultType, const void *pvDefaultPara, DWORD dwFlags, void
+		// *pvReserved, HCRYPTDEFAULTCONTEXT *phDefaultContext );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "79d121df-0699-424e-a8de-5fc2b396afc2")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptInstallDefaultContext(HCRYPTPROV hCryptProv, CryptDefaultContextType dwDefaultType, [In] IntPtr pvDefaultPara,
+			CryptDefaultContextFlags dwFlags, [Optional] IntPtr pvReserved, out HCRYPTDEFAULTCONTEXT phDefaultContext);
+
+		/// <summary>
+		/// The <c>CryptRetrieveTimeStamp</c> function encodes a time stamp request and retrieves the time stamp token from a location
+		/// specified by a URL to a Time Stamping Authority (TSA).
+		/// </summary>
+		/// <param name="wszUrl">
+		/// A pointer to a null-terminated wide character string that contains the URL of the TSA to which to send the request.
+		/// </param>
+		/// <param name="dwRetrievalFlags">
+		/// <para>A set of flags that specify how the time stamp is retrieved.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TIMESTAMP_DONT_HASH_DATA 0x00000001</term>
+		/// <term>Inhibit hash calculation on the array of bytes pointed to by the pbData parameter.</term>
+		/// </item>
+		/// <item>
+		/// <term>TIMESTAMP_VERIFY_CONTEXT_SIGNATURE 0x00000020</term>
+		/// <term>Enforce signature validation on the retrieved time stamp.</term>
+		/// </item>
+		/// <item>
+		/// <term>TIMESTAMP_NO_AUTH_RETRIEVAL 0x00020000</term>
+		/// <term>Set this flag to inhibit automatic authentication handling.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwTimeout">
+		/// A <c>DWORD</c> value that specifies the maximum number of milliseconds to wait for retrieval. If this parameter is set to zero,
+		/// this function does not time out.
+		/// </param>
+		/// <param name="pszHashId">
+		/// A pointer to a null-terminated character string that contains the hash algorithm object identifier (OID).
+		/// </param>
+		/// <param name="pPara">A pointer to a CRYPT_TIMESTAMP_PARA structure that contains additional parameters for the request.</param>
+		/// <param name="pbData">A pointer to an array of bytes to be time stamped.</param>
+		/// <param name="cbData">The size, in bytes, of the array pointed to by the pbData parameter.</param>
+		/// <param name="ppTsContext">
+		/// A pointer to a PCRYPT_TIMESTAMP_CONTEXT structure. When you have finished using the context, you must free it by calling the
+		/// CryptMemFree function.
+		/// </param>
+		/// <param name="ppTsSigner">
+		/// <para>
+		/// A pointer to a PCERT_CONTEXT that receives the certificate of the signer. When you have finished using this structure, you must
+		/// free it by passing this pointer to the CertFreeCertificateContext function.
+		/// </para>
+		/// <para>Set this parameter to <c>NULL</c> if the TSA signer's certificate is not needed.</para>
+		/// </param>
+		/// <param name="phStore">
+		/// <para>
+		/// The handle of a certificate store initialized with certificates from the time stamp response. This store can be used for
+		/// validating the signer certificate of the time stamp response.
+		/// </para>
+		/// <para>
+		/// This parameter can be <c>NULL</c> if the TSA supporting certificates are not needed. When you have finished using this handle,
+		/// release it by passing it to the CertCloseStore function.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// If the function is unable to retrieve, decode, and validate the time stamp context, it returns <c>FALSE</c>. For extended error
+		/// information, call the GetLastError function.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptretrievetimestamp BOOL CryptRetrieveTimeStamp(
+		// LPCWSTR wszUrl, DWORD dwRetrievalFlags, DWORD dwTimeout, LPCSTR pszHashId, const CRYPT_TIMESTAMP_PARA *pPara, const BYTE *pbData,
+		// DWORD cbData, PCRYPT_TIMESTAMP_CONTEXT *ppTsContext, PCCERT_CONTEXT *ppTsSigner, HCERTSTORE *phStore );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "68ba3d40-08b0-4261-ab2f-6deb1795f830")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptRetrieveTimeStamp([MarshalAs(UnmanagedType.LPWStr)] string wszUrl, TimeStampRetrivalFlags dwRetrievalFlags, uint dwTimeout, [MarshalAs(UnmanagedType.LPStr)] string pszHashId,
+			in CRYPT_TIMESTAMP_PARA pPara, [In] IntPtr pbData, uint cbData, out SafeCryptMem ppTsContext, out SafePCCERT_CONTEXT ppTsSigner, out SafeHCERTSTORE phStore);
+
+		/// <summary>
+		/// <para>Handle of the context to be released.</para>
+		/// <para>Reserved for future use.</para>
+		/// <para>Reserved for future use.</para>
+		/// </summary>
+		/// <param name="hDefaultContext">Handle of the context to be released.</param>
+		/// <param name="dwFlags">Reserved for future use.</param>
+		/// <param name="pvReserved">Reserved for future use.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is nonzero (TRUE) .If the function fails, the return value is zero (FALSE). For
+		/// extended error information, call GetLastError.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptuninstalldefaultcontext BOOL
+		// CryptUninstallDefaultContext( HCRYPTDEFAULTCONTEXT hDefaultContext, DWORD dwFlags, void *pvReserved );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "ad7be5cf-f078-4a9f-81c4-959e4203dba8")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptUninstallDefaultContext(HCRYPTDEFAULTCONTEXT hDefaultContext, uint dwFlags = 0, IntPtr pvReserved = default);
+
+		/// <summary>The <c>CryptVerifyTimeStampSignature</c> function validates the time stamp signature on a specified array of bytes.</summary>
+		/// <param name="pbTSContentInfo">A pointer to a buffer that contains time stamp content.</param>
+		/// <param name="cbTSContentInfo">The size, in bytes, of the buffer pointed to by the pbTSContentInfo parameter.</param>
+		/// <param name="pbData">A pointer to an array of bytes on which to validate the time stamp signature.</param>
+		/// <param name="cbData">The size, in bytes, of the array pointed to by the pbData parameter.</param>
+		/// <param name="hAdditionalStore">
+		/// The handle of an additional store to search for supporting Time Stamping Authority (TSA) signing certificates and certificate
+		/// trust lists (CTLs). This parameter can be <c>NULL</c> if no additional store is to be searched.
+		/// </param>
+		/// <param name="ppTsContext">
+		/// A pointer to a PCRYPT_TIMESTAMP_CONTEXT structure. When you have finished using the context, you must free it by calling the
+		/// CryptMemFree function.
+		/// </param>
+		/// <param name="ppTsSigner">
+		/// <para>
+		/// A pointer to a PCERT_CONTEXT that receives the certificate of the signer. When you have finished using this structure, you must
+		/// free it by passing this pointer to the CertFreeCertificateContext function.
+		/// </para>
+		/// <para>Set this parameter to <c>NULL</c> if the TSA signer's certificate is not needed.</para>
+		/// </param>
+		/// <param name="phStore">
+		/// <para>A pointer to a handle that receives the certificate store opened on CMS to search for supporting certificates.</para>
+		/// <para>
+		/// This parameter can be <c>NULL</c> if the TSA supporting certificates are not needed. When you have finished using this handle,
+		/// you must release it by passing it to the CertCloseStore function.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// If the function succeeds, the function returns <c>TRUE</c>. For extended error information, call the GetLastError function.
+		/// </returns>
+		/// <remarks>
+		/// The caller should validate the <c>pszTSAPolicyId</c> member of the CRYPT_TIMESTAMP_INFO structure when it is returned by the
+		/// CryptRetrieveTimeStamp function. If a TSA policy was specified in the request and the <c>ftTime</c> member contains a valid
+		/// value, the caller should build a certificate context chain with which to populate the ppTsSigner parameter and validate the trust.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptverifytimestampsignature BOOL
+		// CryptVerifyTimeStampSignature( const BYTE *pbTSContentInfo, DWORD cbTSContentInfo, const BYTE *pbData, DWORD cbData, HCERTSTORE
+		// hAdditionalStore, PCRYPT_TIMESTAMP_CONTEXT *ppTsContext, PCCERT_CONTEXT *ppTsSigner, HCERTSTORE *phStore );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "791b1500-98e3-49d5-97aa-be91f5edb7c2")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptVerifyTimeStampSignature([In] IntPtr pbTSContentInfo, uint cbTSContentInfo, [In, Optional] IntPtr pbData, uint cbData,
+			[In, Optional] HCERTSTORE hAdditionalStore, out SafeCryptMem ppTsContext, out SafePCCERT_CONTEXT ppTsSigner, out SafeHCERTSTORE phStore);
 
 		/// <summary>
 		/// The CERT_CONTEXT structure contains both the encoded and decoded representations of a certificate. A certificate context
@@ -1411,31 +1423,46 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// The CERT_EXTENSION structure contains the extension information for a certificate, Certificate Revocation List (CRL) or
+		/// The <c>CERT_EXTENSION</c> structure contains the extension information for a certificate, Certificate Revocation List (CRL) or
 		/// Certificate Trust List (CTL).
 		/// </summary>
-		[PInvokeData("wincrypt.h")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_extension typedef struct _CERT_EXTENSION { LPSTR
+		// pszObjId; BOOL fCritical; CRYPT_OBJID_BLOB Value; } CERT_EXTENSION, *PCERT_EXTENSION;
+		[PInvokeData("wincrypt.h", MSDNShortId = "787a4df0-c0e3-46b9-a7e6-eb3bee3ed717")]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct CERT_EXTENSION
 		{
 			/// <summary>
-			/// Object identifier (OID) that specifies the structure of the extension data contained in the Value member. For specifics on
-			/// extension OIDs and their related structures, see X.509 Certificate Extension Structures.
+			/// Object identifier (OID) that specifies the structure of the extension data contained in the <c>Value</c> member. For
+			/// specifics on extension OIDs and their related structures, see X.509 Certificate Extension Structures.
 			/// </summary>
-			public StrPtrAnsi pszObjId;
+			[MarshalAs(UnmanagedType.LPStr)] public string pszObjId;
 
 			/// <summary>
-			/// If TRUE, any limitations specified by the extension in the Value member of this structure are imperative. If FALSE,
-			/// limitations set by this extension can be ignored.
+			/// If <c>TRUE</c>, any limitations specified by the extension in the <c>Value</c> member of this structure are imperative. If
+			/// <c>FALSE</c>, limitations set by this extension can be ignored.
 			/// </summary>
-			[MarshalAs(UnmanagedType.Bool)]
-			public bool fCritical;
+			[MarshalAs(UnmanagedType.Bool)] public bool fCritical;
 
 			/// <summary>
-			/// A CRYPT_OBJID_BLOB structure that contains the encoded extension data. The cbData member of Value indicates the length in
-			/// bytes of the pbData member. The pbData member byte string is the encoded extension.e
+			/// A CRYPT_OBJID_BLOB structure that contains the encoded extension data. The <c>cbData</c> member of <c>Value</c> indicates
+			/// the length in bytes of the <c>pbData</c> member. The <c>pbData</c> member byte string is the encoded extension.
 			/// </summary>
 			public CRYPTOAPI_BLOB Value;
+		}
+
+		/// <summary>The <c>CERT_EXTENSIONS</c> structure contains an array of extensions.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_extensions typedef struct _CERT_EXTENSIONS { DWORD
+		// cExtension; PCERT_EXTENSION rgExtension; } CERT_EXTENSIONS, *PCERT_EXTENSIONS;
+		[PInvokeData("wincrypt.h", MSDNShortId = "b393ef08-cedb-4840-a427-10ead315d6ea")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CERT_EXTENSIONS
+		{
+			/// <summary>Number of elements in the array <c>rgExtension</c>.</summary>
+			public uint cExtension;
+
+			/// <summary>Array of structures, each holding information of type CERT_EXTENSION about a certificate or CRL.</summary>
+			public IntPtr rgExtension;
 		}
 
 		/// <summary>The <c>CERT_ID</c> structure is used as a flexible means of uniquely identifying a certificate.</summary>
@@ -1564,6 +1591,31 @@ namespace Vanara.PInvoke
 			/// the serial number is a unique identifier of a certificate.
 			/// </summary>
 			public CRYPTOAPI_BLOB SerialNumber;
+		}
+
+		/// <summary>The <c>CERT_KEY_CONTEXT</c> structure contains data associated with a CERT_KEY_CONTEXT_PROP_ID property.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_key_context typedef struct _CERT_KEY_CONTEXT { DWORD
+		// cbSize; union { HCRYPTPROV hCryptProv; NCRYPT_KEY_HANDLE hNCryptKey; } DUMMYUNIONNAME; DWORD dwKeySpec; } CERT_KEY_CONTEXT, *PCERT_KEY_CONTEXT;
+		[PInvokeData("wincrypt.h", MSDNShortId = "796adb9c-ec38-41d0-8f8b-ea1053e9f9f0")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CERT_KEY_CONTEXT
+		{
+			/// <summary>The size, in bytes, of this structure.</summary>
+			public uint cbSize;
+
+			/// <summary>
+			/// A cryptographic service provider (CSP) handle. This member is used when the <c>dwKeySpec</c> member contains
+			/// <c>AT_KEYEXCHANGE</c> or <c>AT_SIGNATURE</c>.
+			/// <para><strong>OR</strong></para>
+			/// <para>A CNG CSP handle. This member is used when the <c>dwKeySpec</c> member contains <c>CERT_NCRYPT_KEY_SPEC</c>.</para>
+			/// <para><c>Windows Server 2003 and Windows XP:</c> This member is not available.</para>
+			/// </summary>
+			public IntPtr hCryptProv_or_hNCryptKey;
+
+			/// <summary>
+			/// <para>The specification of the private key to retrieve.</para>
+			/// </summary>
+			public CertKeySpec dwKeySpec;
 		}
 
 		/// <summary>The CERT_PUBLIC_KEY_INFO structure contains a public key and its algorithm.</summary>
@@ -1731,21 +1783,6 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[FieldOffset(8)]
 			public StrPtrAnsi pszOID;
-		}
-
-		/// <summary>
-		/// The <c>CERT_SYSTEM_STORE_INFO</c> structure contains information used by functions that work with system stores. Currently, no
-		/// essential information is contained in this structure.
-		/// </summary>
-		/// <remarks>Currently, no system store information is persisted.</remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_system_store_info typedef struct
-		// _CERT_SYSTEM_STORE_INFO { DWORD cbSize; } CERT_SYSTEM_STORE_INFO, *PCERT_SYSTEM_STORE_INFO;
-		[PInvokeData("wincrypt.h", MSDNShortId = "9c17ebd9-423b-4063-bdc3-6be70ceb8623")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct CERT_SYSTEM_STORE_INFO
-		{
-			/// <summary>Size of this structure in bytes.</summary>
-			public uint cbSize;
 		}
 
 		/// <summary>
@@ -1981,6 +2018,141 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// The <c>CRL_CONTEXT</c> structure contains both the encoded and decoded representations of a certificate revocation list (CRL).
+		/// CRL contexts returned by any CryptoAPI function must be freed by calling the CertFreeCRLContext function.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crl_context typedef struct _CRL_CONTEXT { DWORD
+		// dwCertEncodingType; BYTE *pbCrlEncoded; DWORD cbCrlEncoded; PCRL_INFO pCrlInfo; HCERTSTORE hCertStore; } CRL_CONTEXT, *PCRL_CONTEXT;
+		[PInvokeData("wincrypt.h", MSDNShortId = "cf7cabcd-b469-492a-b855-8870465ea1cc")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CRL_CONTEXT
+		{
+			/// <summary>
+			/// <para>
+			/// Type of encoding used. It is always acceptable to specify both the certificate and message encoding types by combining them
+			/// with a bitwise- <c>OR</c> operation as shown in the following example:
+			/// </para>
+			/// <para>X509_ASN_ENCODING | PKCS_7_ASN_ENCODING</para>
+			/// <para>Currently defined encoding types are:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>X509_ASN_ENCODING</term>
+			/// </item>
+			/// <item>
+			/// <term>PKCS_7_ASN_ENCODING</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public CertEncodingType dwCertEncodingType;
+
+			/// <summary>A pointer to the encoded CRL information.</summary>
+			public IntPtr pbCrlEncoded;
+
+			/// <summary>The size, in bytes, of the encoded CRL information.</summary>
+			public uint cbCrlEncoded;
+
+			/// <summary>A pointer to CRL_INFO structure containing the CRL information.</summary>
+			public IntPtr pCrlInfo;
+
+			/// <summary>A handle to the certificate store.</summary>
+			public HCERTSTORE hCertStore;
+
+			/// <summary>A CRL_INFO structure containing the CRL information.</summary>
+			public CRL_INFO CrlInfo => pCrlInfo.ToStructure<CRL_INFO>();
+		}
+
+		/// <summary>
+		/// The <c>CRL_ENTRY</c> structure contains information about a single revoked certificate. It is a member of a CRL_INFO structure.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crl_entry typedef struct _CRL_ENTRY { CRYPT_INTEGER_BLOB
+		// SerialNumber; FILETIME RevocationDate; DWORD cExtension; PCERT_EXTENSION rgExtension; } CRL_ENTRY, *PCRL_ENTRY;
+		[PInvokeData("wincrypt.h", MSDNShortId = "30e7952a-a408-404f-9058-8197539387f6")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CRL_ENTRY
+		{
+			/// <summary>
+			/// <para>A BLOB that contains the serial number of a revoked certificate.</para>
+			/// <para>Leading 0x00 or 0xFF bytes are removed. For more information, see CertCompareIntegerBlob.</para>
+			/// </summary>
+			public CRYPTOAPI_BLOB SerialNumber;
+
+			/// <summary>
+			/// Date that the certificate was revoked. Time is UTC-time encoded as an eight-byte date/time precise to seconds with a two
+			/// digit year (that is, YYMMDDHHMMSS plus 2 bytes). The date is interpreted as a date between the years 1968 and 2067.
+			/// </summary>
+			public FILETIME RevocationDate;
+
+			/// <summary>Number of elements in the <c>rgExtension</c> member array of extensions.</summary>
+			public uint cExtension;
+
+			/// <summary>Array of pointers to CERT_EXTENSION structures, each providing information about the revoked certificate.</summary>
+			public IntPtr rgExtension;
+		}
+
+		/// <summary>The <c>CRL_INFO</c> structure contains the information of a certificate revocation list (CRL).</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crl_info typedef struct _CRL_INFO { DWORD dwVersion;
+		// CRYPT_ALGORITHM_IDENTIFIER SignatureAlgorithm; CERT_NAME_BLOB Issuer; FILETIME ThisUpdate; FILETIME NextUpdate; DWORD cCRLEntry;
+		// PCRL_ENTRY rgCRLEntry; DWORD cExtension; PCERT_EXTENSION rgExtension; } CRL_INFO, *PCRL_INFO;
+		[PInvokeData("wincrypt.h", MSDNShortId = "06a28de3-dd7c-4efe-9baa-20aac69d63f3")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CRL_INFO
+		{
+			/// <summary>
+			/// <para>Version number of the CRL. Currently defined version numbers are shown in the following table.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CRL_V1</term>
+			/// <term>version 1</term>
+			/// </item>
+			/// <item>
+			/// <term>CRL_V2</term>
+			/// <term>version 2</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint dwVersion;
+
+			/// <summary>
+			/// CRYPT_ALGORITHM_IDENTIFIER structure that contains the object identifier (OID) of a signature algorithm and any associated
+			/// additional parameters.
+			/// </summary>
+			public CRYPT_ALGORITHM_IDENTIFIER SignatureAlgorithm;
+
+			/// <summary>A BLOB structure that contains an encoded certificate issuer's name.</summary>
+			public CRYPTOAPI_BLOB Issuer;
+
+			/// <summary>
+			/// Indication of the date and time of the CRL's published. If the time is after 1950 and before 2050, it is UTC-time encoded as
+			/// an 8-byte date/time precise to seconds with a 2-digit year (that is, YYMMDDHHMMSS plus 2 bytes). Otherwise, it is
+			/// generalized-time encoded as an 8-byte year precise to milliseconds with a 4-byte year.
+			/// </summary>
+			public FILETIME ThisUpdate;
+
+			/// <summary>
+			/// Indication of the date and time for the CRL's next available scheduled update. If the time is after 1950 and before 2050, it
+			/// is UTC-time encoded as an 8-byte date/time precise to seconds with a 2-digit year (that is, YYMMDDHHMMSS plus 2 bytes).
+			/// Otherwise, it is generalized-time encoded as an 8-byte date time precise to milliseconds with a 4-byte year.
+			/// </summary>
+			public FILETIME NextUpdate;
+
+			/// <summary>Number of elements in the <c>rgCRLEntry</c> array.</summary>
+			public uint cCRLEntry;
+
+			/// <summary>Array of pointers to CRL_ENTRY structures. Each of these structures represents a revoked certificate.</summary>
+			public IntPtr rgCRLEntry;
+
+			/// <summary>Number of elements in the <c>rgExtension</c> array.</summary>
+			public uint cExtension;
+
+			/// <summary>Array of pointers to CERT_EXTENSION structures, each holding information about the CRL.</summary>
+			public IntPtr rgExtension;
+		}
+
+		/// <summary>
 		/// The CRYPT_ALGORITHM_IDENTIFIER structure specifies an algorithm used to encrypt a private key. The structure includes the object
 		/// identifier (OID) of the algorithm and any needed parameters for that algorithm. The parameters contained in its CRYPT_OBJID_BLOB
 		/// are encoded.
@@ -1997,6 +2169,26 @@ namespace Vanara.PInvoke
 			/// setting the cbData member of the Parameters BLOB to zero.
 			/// </summary>
 			public CRYPTOAPI_BLOB Parameters;
+		}
+
+		/// <summary>The <c>CRYPT_ATTRIBUTE</c> structure specifies an attribute that has one or more values.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_attribute typedef struct _CRYPT_ATTRIBUTE { LPSTR
+		// pszObjId; DWORD cValue; PCRYPT_ATTR_BLOB rgValue; } CRYPT_ATTRIBUTE, *PCRYPT_ATTRIBUTE;
+		[PInvokeData("wincrypt.h", MSDNShortId = "cdbaf38d-ddbe-4be0-afbc-f8bd76ef4847")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CRYPT_ATTRIBUTE
+		{
+			/// <summary>An object identifier (OID) that specifies the type of data contained in the <c>rgValue</c> array.</summary>
+			[MarshalAs(UnmanagedType.LPStr)] public string pszObjId;
+
+			/// <summary>A <c>DWORD</c> value that indicates the number of elements in the <c>rgValue</c> array.</summary>
+			public uint cValue;
+
+			/// <summary>
+			/// Pointer to an array of CRYPT_INTEGER_BLOB structures. The <c>cbData</c> member of the <c>CRYPT_INTEGER_BLOB</c> structure
+			/// indicates the length of the <c>pbData</c> member. The <c>pbData</c> member contains the attribute information.
+			/// </summary>
+			public IntPtr rgValue;
 		}
 
 		/// <summary>
@@ -2019,6 +2211,280 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// The <c>CRYPT_KEY_PROV_INFO</c> structure contains information about a key container within a cryptographic service provider (CSP).
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_key_prov_info typedef struct _CRYPT_KEY_PROV_INFO {
+		// LPWSTR pwszContainerName; LPWSTR pwszProvName; DWORD dwProvType; DWORD dwFlags; DWORD cProvParam; PCRYPT_KEY_PROV_PARAM
+		// rgProvParam; DWORD dwKeySpec; } CRYPT_KEY_PROV_INFO, *PCRYPT_KEY_PROV_INFO;
+		[PInvokeData("wincrypt.h", MSDNShortId = "6aea2f47-9d4a-4069-ac6d-f28907df00be")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CRYPT_KEY_PROV_INFO
+		{
+			/// <summary>
+			/// <para>A pointer to a null-terminated Unicode string that contains the name of the key container.</para>
+			/// <para>
+			/// When the <c>dwProvType</c> member is zero, this string contains the name of a key within a CNG key storage provider. This
+			/// string is passed as the pwszKeyName parameter to the NCryptOpenKey function.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)] public string pwszContainerName;
+
+			/// <summary>
+			/// <para>A pointer to a null-terminated Unicode string that contains the name of the CSP.</para>
+			/// <para>
+			/// When the <c>dwProvType</c> member is zero, this string contains the name of a CNG key storage provider. This string is
+			/// passed as the pwszProviderName parameter to the NCryptOpenStorageProvider function.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)] public string pwszProvName;
+
+			/// <summary>
+			/// <para>Specifies the CSP type. This can be zero or one of the Cryptographic Provider Types.</para>
+			/// <para>If this member is zero, the key container is one of the CNG key storage providers.</para>
+			/// </summary>
+			public uint dwProvType;
+
+			/// <summary>
+			/// <para>A set of flags that indicate additional information about the provider. This can be zero or one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CERT_SET_KEY_PROV_HANDLE_PROP_ID / CERT_SET_KEY_CONTEXT_PROP_ID</term>
+			/// <term>Enables the handle to the key provider to be kept open for subsequent calls to the cryptographic functions.</term>
+			/// </item>
+			/// <item>
+			/// <term>CRYPT_MACHINE_KEYSET / NCRYPT_MACHINE_KEY_FLAG</term>
+			/// <term>The key container contains machine keys. If this flag is not present, the key container contains user keys.</term>
+			/// </item>
+			/// <item>
+			/// <term>CRYPT_SILENT / NCRYPT_SILENT_FLAG</term>
+			/// <term>The key container will attempt to open any keys silently without any user interface prompts.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// The cryptographic functions CryptDecryptMessage, CryptSignMessage, CryptDecryptAndVerifyMessageSignature, and
+			/// CryptSignAndEncryptMessage internally perform CryptAcquireContext operations using the <c>CRYPT_KEY_PROV_INFO</c> from a
+			/// certificate. When the <c>CERT_SET_KEY_CONTEXT_PROP_ID</c> or <c>CERT_SET_KEY_PROV_HANDLE_PROP_ID</c> flag is set, these
+			/// cryptographic functions then can call CertSetCertificateContextProperty with <c>CERT_KEY_CONTEXT_PROP_ID</c>. This call
+			/// enables the handle to the key provider to be kept open for subsequent calls to the cryptographic functions mentioned that
+			/// use that same certificate, which eliminates the need to perform additional calls to <c>CryptAcquireContext</c>, improving
+			/// efficiency. Also, because some providers can require that a password be entered for calls to <c>CryptAcquireContext</c>, it
+			/// is desirable for applications to minimize the number of <c>CryptAcquireContext</c> calls made. Handles to key providers that
+			/// were kept open are automatically released when the store is closed.
+			/// </para>
+			/// <para>
+			/// For example, consider an email application where five encrypted messages have been received, all encrypted with the public
+			/// key from the same certificate. If the handle to the key provider is kept open after the first message is processed, calls to
+			/// CryptAcquireContext are not required for the four remaining messages.
+			/// </para>
+			/// </summary>
+			public uint dwFlags;
+
+			/// <summary>
+			/// <para>The number of elements in the <c>rgProvParam</c> array.</para>
+			/// <para>When the <c>dwProvType</c> member is zero, this member is not used and must be zero.</para>
+			/// </summary>
+			public uint cProvParam;
+
+			/// <summary>
+			/// <para>
+			/// An array of CRYPT_KEY_PROV_PARAM structures that contain the parameters for the key container. The <c>cProvParam</c> member
+			/// contains the number of elements in this array.
+			/// </para>
+			/// <para>When the <c>dwProvType</c> member is zero, this member is not used and must be <c>NULL</c>.</para>
+			/// </summary>
+			public IntPtr rgProvParam;
+
+			/// <summary>
+			/// <para>The specification of the private key to retrieve.</para>
+			/// <para>The following values are defined for the default provider.</para>
+			/// <para>
+			/// When the <c>dwProvType</c> member is zero, this value is passed as the dwLegacyKeySpec parameter to the NCryptOpenKey function.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>AT_KEYEXCHANGE</term>
+			/// <term>Keys used to encrypt/decrypt session keys.</term>
+			/// </item>
+			/// <item>
+			/// <term>AT_SIGNATURE</term>
+			/// <term>Keys used to create and verify digital signatures.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public CertKeySpec dwKeySpec;
+		}
+
+		/// <summary>
+		/// The <c>CRYPT_TIMESTAMP_ACCURACY</c> structure is used by the CRYPT_TIMESTAMP_INFO structure to represent the accuracy of the
+		/// time deviation around the UTC time at which the time stamp token was created by the Time Stamp Authority (TSA).
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_timestamp_accuracy typedef struct
+		// _CRYPT_TIMESTAMP_ACCURACY { DWORD dwSeconds; DWORD dwMillis; DWORD dwMicros; } CRYPT_TIMESTAMP_ACCURACY, *PCRYPT_TIMESTAMP_ACCURACY;
+		[PInvokeData("wincrypt.h", MSDNShortId = "9115db8a-7cc1-4360-b89b-6c33ddb67fe9")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CRYPT_TIMESTAMP_ACCURACY
+		{
+			/// <summary>
+			/// Optional. Specifies, in seconds, the accuracy of the upper limit of the time at which the time stamp token was created by
+			/// the TSA.
+			/// </summary>
+			public uint dwSeconds;
+
+			/// <summary>
+			/// Optional. Specifies, in milliseconds, the accuracy of the upper limit of the time at which the time stamp token was created
+			/// by the TSA.
+			/// </summary>
+			public uint dwMillis;
+
+			/// <summary>
+			/// Optional. Specifies, in microseconds, the accuracy of the upper limit of the time at which the time-stamp token was created
+			/// by the TSA.
+			/// </summary>
+			public uint dwMicros;
+		}
+
+		/// <summary>
+		/// The <c>CRYPT_TIMESTAMP_CONTEXT</c> structure contains both the encoded and decoded representations of a time stamp token.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_timestamp_context typedef struct
+		// _CRYPT_TIMESTAMP_CONTEXT { DWORD cbEncoded; BYTE *pbEncoded; PCRYPT_TIMESTAMP_INFO pTimeStamp; } CRYPT_TIMESTAMP_CONTEXT, *PCRYPT_TIMESTAMP_CONTEXT;
+		[PInvokeData("wincrypt.h", MSDNShortId = "2831b2a9-0f84-4e41-a666-5903fc882965")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CRYPT_TIMESTAMP_CONTEXT
+		{
+			/// <summary>The size, in bytes, of the buffer pointed to by the <c>pbEncoded</c> member.</summary>
+			public uint cbEncoded;
+
+			/// <summary>
+			/// A pointer to a buffer that contains an Abstract Syntax Notation One (ASN.1) encoded content information sequence. This value
+			/// should be stored for future time stamp validations on the signature. Applications can use the CertOpenStore function with
+			/// the <c>CERT_STORE_PROV_PKCS7</c> flag to find additional certificates or certificate revocation lists (CRLs) related to the
+			/// TSA time stamp signature.
+			/// </summary>
+			public IntPtr pbEncoded;
+
+			/// <summary>
+			/// A pointer to a CRYPT_TIMESTAMP_INFO structure that contains a signed data content type in Cryptographic Message Syntax (CMS) format.
+			/// </summary>
+			public IntPtr pTimeStamp;
+		}
+
+		/// <summary>
+		/// The <c>CRYPT_TIMESTAMP_INFO</c> structure contains a signed data content type in Cryptographic Message Syntax (CMS) format.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_timestamp_info typedef struct _CRYPT_TIMESTAMP_INFO
+		// { DWORD dwVersion; LPSTR pszTSAPolicyId; CRYPT_ALGORITHM_IDENTIFIER HashAlgorithm; CRYPT_DER_BLOB HashedMessage;
+		// CRYPT_INTEGER_BLOB SerialNumber; FILETIME ftTime; PCRYPT_TIMESTAMP_ACCURACY pvAccuracy; BOOL fOrdering; CRYPT_DER_BLOB Nonce;
+		// CRYPT_DER_BLOB Tsa; DWORD cExtension; PCERT_EXTENSION rgExtension; } CRYPT_TIMESTAMP_INFO, *PCRYPT_TIMESTAMP_INFO;
+		[PInvokeData("wincrypt.h", MSDNShortId = "05ca0877-5e9d-4b21-9fca-a1eef2cb4626")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CRYPT_TIMESTAMP_INFO
+		{
+			/// <summary>
+			/// <para>A <c>DWORD</c> value that specifies the version of the time stamp request.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>TIMESTAMP_VERSION 1</term>
+			/// <term>Specifies that this is a version 1 time stamp request.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint dwVersion;
+
+			/// <summary>
+			/// Optional. A pointer to a null-terminated string that specifies the Time Stamping Authority (TSA) policy under which the time
+			/// stamp token was provided. This value must correspond with the value passed in the CRYPT_TIMESTAMP_REQUEST structure.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPStr)] public string pszTSAPolicyId;
+
+			/// <summary>
+			/// A CRYPT_ALGORITHM_IDENTIFIER structure that contains information about the algorithm used to calculate the hash. This value
+			/// must correspond with the value passed in the CRYPT_TIMESTAMP_REQUEST structure.
+			/// </summary>
+			public CRYPT_ALGORITHM_IDENTIFIER HashAlgorithm;
+
+			/// <summary>A CRYPT_DER_BLOB structure that specifies the hash values to be time stamped.</summary>
+			public CRYPTOAPI_BLOB HashedMessage;
+
+			/// <summary>A CRYPT_INTEGER_BLOB structure that contains the serial number assigned by the TSA to each time stamp token.</summary>
+			public CRYPTOAPI_BLOB SerialNumber;
+
+			/// <summary>A FILETIME value that specifies the time at which the time stamp token was produced by the TSA.</summary>
+			public FILETIME ftTime;
+
+			/// <summary>
+			/// Optional. A pointer to a CRYPT_TIMESTAMP_ACCURACY structure that contains the time deviation around the UTC time at which
+			/// the time stamp token was created by the TSA.
+			/// </summary>
+			public IntPtr pvAccuracy;
+
+			/// <summary>This member is reserved.</summary>
+			[MarshalAs(UnmanagedType.Bool)] public bool fOrdering;
+
+			/// <summary>
+			/// Optional. A CRYPT_DER_BLOB structure that contains the nonce value used by the client to verify the timeliness of the
+			/// response when no local clock is available. This value must correspond with the value passed in the CRYPT_TIMESTAMP_REQUEST structure.
+			/// </summary>
+			public CRYPTOAPI_BLOB Nonce;
+
+			/// <summary>Optional. A CRYPT_DER_BLOB structure that contains the subject name of the TSA certificate.</summary>
+			public CRYPTOAPI_BLOB Tsa;
+
+			/// <summary>The number of elements in the array pointed to by the <c>rgExtension</c> member.</summary>
+			public uint cExtension;
+
+			/// <summary>A pointer to an array of CERT_EXTENSION structures that contain extension information returned from the request.</summary>
+			public IntPtr rgExtension;
+		}
+
+		/// <summary>The <c>CRYPT_TIMESTAMP_PARA</c> structure defines additional parameters for the time stamp request.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_timestamp_para typedef struct _CRYPT_TIMESTAMP_PARA
+		// { LPCSTR pszTSAPolicyId; BOOL fRequestCerts; CRYPT_INTEGER_BLOB Nonce; DWORD cExtension; PCERT_EXTENSION rgExtension; }
+		// CRYPT_TIMESTAMP_PARA, *PCRYPT_TIMESTAMP_PARA;
+		[PInvokeData("wincrypt.h", MSDNShortId = "26a6e9d3-b35e-47ae-9cea-a37ca6297c28")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CRYPT_TIMESTAMP_PARA
+		{
+			/// <summary>
+			/// Optional. A pointer to a null-terminated character string that contains the Time Stamping Authority (TSA) policy under which
+			/// the time stamp token should be provided.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPStr)] public string pszTSAPolicyId;
+
+			/// <summary>
+			/// A Boolean value that specifies whether the TSA must include the certificates used to sign the time stamp token in the
+			/// response .
+			/// </summary>
+			[MarshalAs(UnmanagedType.Bool)] public bool fRequestCerts;
+
+			/// <summary>
+			/// Optional. A CRYPT_INTEGER_BLOB structure that contains the nonce value used by the client to verify the timeliness of the
+			/// response when no local clock is available.
+			/// </summary>
+			public CRYPTOAPI_BLOB Nonce;
+
+			/// <summary>The number of elements in the array pointed to by the <c>rgExtension</c> member.</summary>
+			public uint cExtension;
+
+			/// <summary>
+			/// A pointer to an array of CERT_EXTENSION structures that contain extension information that is passed in the request.
+			/// </summary>
+			public IntPtr rgExtension;
+		}
+
+		/// <summary>
 		/// The BLOB structure contains an arbitrary array of bytes. The structure definition includes aliases appropriate to the various
 		/// functions that use it.
 		/// </summary>
@@ -2031,6 +2497,152 @@ namespace Vanara.PInvoke
 
 			/// <summary>A pointer to the data buffer.</summary>
 			public IntPtr pbData;
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>CTL_CONTEXT</c> structure contains both the encoded and decoded representations of a CTL. It also contains an opened
+		/// <c>HCRYPTMSG</c> handle to the decoded, cryptographically signed message containing the CTL_INFO as its inner content.
+		/// </para>
+		/// <para>CryptoAPI low-level message functions can be used to extract additional signer information.</para>
+		/// <para>A <c>CTL_CONTEXT</c> returned by any CryptoAPI function must be freed by calling the CertFreeCTLContext function.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-ctl_context typedef struct _CTL_CONTEXT { DWORD
+		// dwMsgAndCertEncodingType; BYTE *pbCtlEncoded; DWORD cbCtlEncoded; PCTL_INFO pCtlInfo; HCERTSTORE hCertStore; HCRYPTMSG hCryptMsg;
+		// BYTE *pbCtlContent; DWORD cbCtlContent; } CTL_CONTEXT, *PCTL_CONTEXT;
+		[PInvokeData("wincrypt.h", MSDNShortId = "780edddf-1b44-4292-9156-4dfd5100adb8")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CTL_CONTEXT
+		{
+			/// <summary>
+			/// <para>
+			/// Type of encoding used. It is always acceptable to specify both the certificate and message encoding types by combining them
+			/// with a bitwise- <c>OR</c> operation as shown in the following example:
+			/// </para>
+			/// <para>X509_ASN_ENCODING | PKCS_7_ASN_ENCODING</para>
+			/// <para>Currently defined encoding types are:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>X509_ASN_ENCODING</term>
+			/// </item>
+			/// <item>
+			/// <term>PKCS_7_ASN_ENCODING</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public CertEncodingType dwMsgAndCertEncodingType;
+
+			/// <summary>A pointer to the encoded CTL.</summary>
+			public IntPtr pbCtlEncoded;
+
+			/// <summary>The size, in bytes, of the encoded CTL.</summary>
+			public uint cbCtlEncoded;
+
+			/// <summary>A pointer to CTL_INFO structure contain the CTL information.</summary>
+			public IntPtr pCtlInfo;
+
+			/// <summary>A handle to the certificate store.</summary>
+			public HCERTSTORE hCertStore;
+
+			/// <summary>
+			/// Open <c>HCRYPTMSG</c> handle to a decoded, cryptographic-signed message containing the CTL_INFO as its inner content.
+			/// </summary>
+			public HCRYPTMSG hCryptMsg;
+
+			/// <summary>The encoded inner content of the signed message.</summary>
+			public IntPtr pbCtlContent;
+
+			/// <summary>Count, in bytes, of <c>pbCtlContent</c>.</summary>
+			public uint cbCtlContent;
+		}
+
+		/// <summary>The <c>CTL_ENTRY</c> structure is an element of a certificate trust list (CTL).</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-ctl_entry typedef struct _CTL_ENTRY { CRYPT_DATA_BLOB
+		// SubjectIdentifier; DWORD cAttribute; PCRYPT_ATTRIBUTE rgAttribute; } CTL_ENTRY, *PCTL_ENTRY;
+		[PInvokeData("wincrypt.h", MSDNShortId = "ebc63847-b641-4205-b15c-7b32c1426c21")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CTL_ENTRY
+		{
+			/// <summary>BLOB containing a unique identifier of a subject. It can be a hash or any unique byte sequence.</summary>
+			public CRYPTOAPI_BLOB SubjectIdentifier;
+
+			/// <summary>Count of elements in the <c>rgAttribute</c> member array.</summary>
+			public uint cAttribute;
+
+			/// <summary>Array of CRYPT_ATTRIBUTE structures, each holding information about the subject.</summary>
+			public IntPtr rgAttribute;
+		}
+
+		/// <summary>The <c>CTL_INFO</c> structure contains the information stored in a Certificate Trust List (CTL).</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-ctl_info typedef struct _CTL_INFO { DWORD dwVersion;
+		// CTL_USAGE SubjectUsage; CRYPT_DATA_BLOB ListIdentifier; CRYPT_INTEGER_BLOB SequenceNumber; FILETIME ThisUpdate; FILETIME
+		// NextUpdate; CRYPT_ALGORITHM_IDENTIFIER SubjectAlgorithm; DWORD cCTLEntry; PCTL_ENTRY rgCTLEntry; DWORD cExtension;
+		// PCERT_EXTENSION rgExtension; } CTL_INFO, *PCTL_INFO;
+		[PInvokeData("wincrypt.h", MSDNShortId = "83b015b5-a650-4a81-a9f0-c3e8a9805c81")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CTL_INFO
+		{
+			/// <summary>
+			/// <para>The CTL's version number. Currently defined version numbers are shown in the following table.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CTL_V1</term>
+			/// <term>Version 1</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint dwVersion;
+
+			/// <summary>
+			/// CTL_USAGE structure identifying the intended usage of the list as a sequence of object identifiers. This is the same as in
+			/// the Enhanced Key Usage extension.
+			/// </summary>
+			public CTL_USAGE SubjectUsage;
+
+			/// <summary>
+			/// A CRYPT_DATA_BLOB structure that includes a byte string that uniquely identifies the list. This member is used to augment
+			/// the <c>SubjectUsage</c> and further specifies the list when desired.
+			/// </summary>
+			public CRYPTOAPI_BLOB ListIdentifier;
+
+			/// <summary>A BLOB that contains a monotonically increasing number for each update of the CTL.</summary>
+			public CRYPTOAPI_BLOB SequenceNumber;
+
+			/// <summary>
+			/// Indication of the date and time of the certificate revocation lists (CRLs) published. If the time is after 1950 and before
+			/// 2050, it is UTC-time encoded as an 8-byte date/time precise to seconds with a 2-digit year (that is, YYMMDDHHMMSS plus 2
+			/// bytes). Otherwise, it is generalized-time encoded as an 8-byte year precise to milliseconds with a 4-byte year.
+			/// </summary>
+			public FILETIME ThisUpdate;
+
+			/// <summary>
+			/// Indication of the date and time for the CRL's next available scheduled update. If the time is after 1950 and before 2050, it
+			/// is UTC-time encoded as an 8-byte date/time precise to seconds with a 2-digit year (that is, YYMMDDHHMMSS plus 2 bytes).
+			/// Otherwise, it is generalized-time encoded as an 8-byte date time precise to milliseconds with a 4-byte year.
+			/// </summary>
+			public FILETIME NextUpdate;
+
+			/// <summary>
+			/// CRYPT_ALGORITHM_IDENTIFIER structure that contains the algorithm type of the <c>SubjectIdentifier</c> in CTL_ENTRY members
+			/// of the <c>rgCTLEntry</c> member array. The structure also includes additional parameters used by the algorithm.
+			/// </summary>
+			public CRYPT_ALGORITHM_IDENTIFIER SubjectAlgorithm;
+
+			/// <summary>Number of elements in the <c>rgCTLEntry</c> member array.</summary>
+			public uint cCTLEntry;
+
+			/// <summary>Array of CTL_ENTRY structures.</summary>
+			public IntPtr rgCTLEntry;
+
+			/// <summary>Number of elements in the <c>rgExtension</c> array.</summary>
+			public uint cExtension;
+
+			/// <summary>Array of CERT_EXTENSION structures.</summary>
+			public IntPtr rgExtension;
 		}
 
 		/// <summary>
@@ -2050,46 +2662,46 @@ namespace Vanara.PInvoke
 			public IntPtr rgpszUsageIdentifier;
 		}
 
-		/// <summary>Provides a handle to a certificate store.</summary>
+		/// <summary>Provides a handle to a cryptographic default context.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct HCERTSTORE : IHandle
+		public struct HCRYPTDEFAULTCONTEXT : IHandle
 		{
-			private readonly IntPtr handle;
+			private IntPtr handle;
 
-			/// <summary>Initializes a new instance of the <see cref="HCERTSTORE"/> struct.</summary>
+			/// <summary>Initializes a new instance of the <see cref="HCRYPTDEFAULTCONTEXT"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			public HCERTSTORE(IntPtr preexistingHandle) => handle = preexistingHandle;
+			public HCRYPTDEFAULTCONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
-			/// <summary>Returns an invalid handle by instantiating a <see cref="HCERTSTORE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HCERTSTORE NULL => new HCERTSTORE(IntPtr.Zero);
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HCRYPTDEFAULTCONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HCRYPTDEFAULTCONTEXT NULL => new HCRYPTDEFAULTCONTEXT(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
 
-			/// <summary>Performs an explicit conversion from <see cref="HCERTSTORE"/> to <see cref="IntPtr"/>.</summary>
+			/// <summary>Performs an explicit conversion from <see cref="HCRYPTDEFAULTCONTEXT"/> to <see cref="IntPtr"/>.</summary>
 			/// <param name="h">The handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static explicit operator IntPtr(HCERTSTORE h) => h.handle;
+			public static explicit operator IntPtr(HCRYPTDEFAULTCONTEXT h) => h.handle;
 
-			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCERTSTORE"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCRYPTDEFAULTCONTEXT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HCERTSTORE(IntPtr h) => new HCERTSTORE(h);
+			public static implicit operator HCRYPTDEFAULTCONTEXT(IntPtr h) => new HCRYPTDEFAULTCONTEXT(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
 			/// <param name="h2">The second handle.</param>
 			/// <returns>The result of the operator.</returns>
-			public static bool operator !=(HCERTSTORE h1, HCERTSTORE h2) => !(h1 == h2);
+			public static bool operator !=(HCRYPTDEFAULTCONTEXT h1, HCRYPTDEFAULTCONTEXT h2) => !(h1 == h2);
 
 			/// <summary>Implements the operator ==.</summary>
 			/// <param name="h1">The first handle.</param>
 			/// <param name="h2">The second handle.</param>
 			/// <returns>The result of the operator.</returns>
-			public static bool operator ==(HCERTSTORE h1, HCERTSTORE h2) => h1.Equals(h2);
+			public static bool operator ==(HCRYPTDEFAULTCONTEXT h1, HCRYPTDEFAULTCONTEXT h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HCERTSTORE h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HCRYPTDEFAULTCONTEXT h ? handle == h.handle : false;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -2242,238 +2854,158 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCERTSTORE"/> that is disposed using <see cref="CertCloseStore"/>.</summary>
-		public class SafeHCERTSTORE : SafeHANDLE
+		/// <summary>Provides a handle to a CERT_CONTEXT.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PCCERT_CONTEXT : IHandle
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeHCERTSTORE"/> class and assigns an existing handle.</summary>
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="PCCERT_CONTEXT"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeHCERTSTORE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+			public PCCERT_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
-			/// <summary>Initializes a new instance of the <see cref="SafeHCERTSTORE"/> class.</summary>
-			private SafeHCERTSTORE() : base() { }
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PCCERT_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static PCCERT_CONTEXT NULL => new PCCERT_CONTEXT(IntPtr.Zero);
 
-			/// <summary>
-			/// Typically, this property uses the default value zero. The default is to close the store with memory remaining allocated for
-			/// contexts that have not been freed. In this case, no check is made to determine whether memory for contexts remains allocated.
-			/// <para>
-			/// Set flags can force the freeing of memory for all of a store's certificate, certificate revocation list (CRL), and
-			/// certificate trust list (CTL) contexts when the store is closed. Flags can also be set that check whether all of the store's
-			/// certificate, CRL, and CTL contexts have been freed.The following values are defined.
-			/// </para>
-			/// </summary>
-			public CertCloseStoreFlags Flag { get; set; } = 0;
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeHCERTSTORE"/> to <see cref="HCERTSTORE"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
+			/// <summary>Performs an explicit conversion from <see cref="PCCERT_CONTEXT"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HCERTSTORE(SafeHCERTSTORE h) => h.handle;
+			public static explicit operator IntPtr(PCCERT_CONTEXT h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PCCERT_CONTEXT"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PCCERT_CONTEXT(IntPtr h) => new PCCERT_CONTEXT(h);
+
+			/// <summary>Performs an explicit conversion from <see cref="PCCERT_CONTEXT"/> to <see cref="CERT_CONTEXT"/>.</summary>
+			/// <param name="h">The <see cref="PCCERT_CONTEXT"/> instance.</param>
+			/// <returns>The resulting <see cref="CERT_CONTEXT"/> instance from the conversion.</returns>
+			public static explicit operator CERT_CONTEXT(PCCERT_CONTEXT h) => h.DangerousGetHandle().ToStructure<CERT_CONTEXT>();
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PCCERT_CONTEXT h1, PCCERT_CONTEXT h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PCCERT_CONTEXT h1, PCCERT_CONTEXT h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => CertCloseStore(handle, Flag);
+			public override bool Equals(object obj) => obj is PCCERT_CONTEXT h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
 		}
 
-		/*CertAddCertificateContextToStore
-		CertAddCertificateLinkToStore
-		CertAddCRLContextToStore
-		CertAddCRLLinkToStore
-		CertAddCTLContextToStore
-		CertAddCTLLinkToStore
-		CertAddEncodedCertificateToStore
-		CertAddEncodedCertificateToSystemStore
-		CertAddEncodedCRLToStore
-		CertAddEncodedCTLToStore
-		CertAddEnhancedKeyUsageIdentifier
-		CertAddRefServerOcspResponse
-		CertAddRefServerOcspResponseContext
-		CertAddSerializedElementToStore
-		CertAddStoreToCollection
-		CertAlgIdToOID
-		CertCloseServerOcspResponse
-		CertCompareCertificate
-		CertCompareCertificateName
-		CertCompareIntegerBlob
-		CertComparePublicKeyInfo
-		CertControlStore
-		CertCreateCertificateChainEngine
-		CertCreateCertificateContext
-		CertCreateContext
-		CertCreateCRLContext
-		CertCreateCTLContext
-		CertCreateCTLEntryFromCertificateContextProperties
-		CertCreateSelfSignCertificate
-		CertDeleteCertificateFromStore
-		CertDeleteCRLFromStore
-		CertDeleteCTLFromStore
-		CertDuplicateCertificateChain
-		CertDuplicateCertificateContext
-		CertDuplicateCRLContext
-		CertDuplicateCTLContext
-		CertDuplicateStore
-		CertEnumCertificateContextProperties
-		CertEnumCertificatesInStore
-		CertEnumCRLContextProperties
-		CertEnumCRLsInStore
-		CertEnumCTLContextProperties
-		CertEnumCTLsInStore
-		CertEnumPhysicalStore
-		CertEnumSubjectInSortedCTL
-		CertEnumSystemStore
-		CertEnumSystemStoreLocation
-		CertFindAttribute
-		CertFindCertificateInCRL
-		CertFindChainInStore
-		CertFindCRLInStore
-		CertFindCTLInStore
-		CertFindExtension
-		CertFindRDNAttr
-		CertFindSubjectInCTL
-		CertFindSubjectInSortedCTL
-		CertFreeCertificateChain
-		CertFreeCertificateChainEngine
-		CertFreeCertificateChainList
-		CertFreeCRLContext
-		CertFreeCTLContext
-		CertFreeServerOcspResponseContext
-		CertGetCertificateChain
-		CertGetCertificateContextProperty
-		CertGetCRLContextProperty
-		CertGetCRLFromStore
-		CertGetCTLContextProperty
-		CertGetEnhancedKeyUsage
-		CertGetIntendedKeyUsage
-		CertGetIssuerCertificateFromStore
-		CertGetNameString
-		CertGetPublicKeyLength
-		CertGetServerOcspResponseContext
-		CertGetStoreProperty
-		CertGetSubjectCertificateFromStore
-		CertGetValidUsages
-		CertIsRDNAttrsInCertificateName
-		CertIsStrongHashToSign
-		CertIsValidCRLForCertificate
-		CertNameToStr
-		CertOIDToAlgId
-		CertOpenServerOcspResponse
-		CertOpenStore
-		CertRDNValueToStr
-		CertRegisterPhysicalStore
-		CertRegisterSystemStore
-		CertRemoveEnhancedKeyUsageIdentifier
-		CertRemoveStoreFromCollection
-		CertResyncCertificateChainEngine
-		CertRetrieveLogoOrBiometricInfo
-		CertSaveStore
-		CertSelectCertificateChains
-		CertSerializeCertificateStoreElement
-		CertSerializeCRLStoreElement
-		CertSerializeCTLStoreElement
-		CertSetCertificateContextPropertiesFromCTLEntry
-		CertSetCertificateContextProperty
-		CertSetCRLContextProperty
-		CertSetCTLContextProperty
-		CertSetEnhancedKeyUsage
-		CertSetStoreProperty
-		CertStrToName
-		CertUnregisterPhysicalStore
-		CertUnregisterSystemStore
-		CertVerifyCertificateChainPolicy
-		CertVerifyCRLRevocation
-		CertVerifyCRLTimeValidity
-		CertVerifyCTLUsage
-		CertVerifyRevocation
-		CertVerifySubjectCertificateContext
-		CertVerifyTimeValidity
-		CertVerifyValidityNesting
-		CryptAcquireCertificatePrivateKey
-		CryptBinaryToString
-		CryptCreateKeyIdentifierFromCSP
-		CryptDecodeMessage
-		CryptDecodeObject
-		CryptDecodeObjectEx
-		CryptDecryptAndVerifyMessageSignature
-		CryptDecryptMessage
-		CryptEncodeObject
-		CryptEncodeObjectEx
-		CryptEncryptMessage
-		CryptEnumKeyIdentifierProperties
-		CryptEnumOIDFunction
-		CryptEnumOIDInfo
-		CryptExportPublicKeyInfo
-		CryptExportPublicKeyInfoEx
-		CryptExportPublicKeyInfoFromBCryptKeyHandle
-		CryptFindCertificateKeyProvInfo
-		CryptFindLocalizedName
-		CryptFindOIDInfo
-		CryptFormatObject
-		CryptFreeOIDFunctionAddress
-		CryptGetDefaultOIDDllList
-		CryptGetDefaultOIDFunctionAddress
-		CryptGetKeyIdentifierProperty
-		CryptGetMessageCertificates
-		CryptGetMessageSignerCount
-		CryptGetOIDFunctionAddress
-		CryptGetOIDFunctionValue
-		CryptHashCertificate
-		CryptHashCertificate2
-		CryptHashMessage
-		CryptHashPublicKeyInfo
-		CryptHashToBeSigned
-		CryptImportPublicKeyInfo
-		CryptImportPublicKeyInfoEx
-		CryptImportPublicKeyInfoEx2
-		CryptInitOIDFunctionSet
-		CryptInstallDefaultContext
-		CryptInstallOIDFunctionAddress
-		CryptMemAlloc
-		CryptMemFree
-		CryptMemRealloc
-		CryptMsgCalculateEncodedLength
-		CryptMsgClose
-		CryptMsgControl
-		CryptMsgCountersign
-		CryptMsgCountersignEncoded
-		CryptMsgDuplicate
-		CryptMsgEncodeAndSignCTL
-		CryptMsgGetAndVerifySigner
-		CryptMsgGetParam
-		CryptMsgOpenToDecode
-		CryptMsgOpenToEncode
-		CryptMsgSignCTL
-		CryptMsgUpdate
-		CryptMsgVerifyCountersignatureEncoded
-		CryptMsgVerifyCountersignatureEncodedEx
-		CryptQueryObject
-		CryptRegisterDefaultOIDFunction
-		CryptRegisterOIDFunction
-		CryptRegisterOIDInfo
-		CryptRetrieveTimeStamp
-		CryptSetKeyIdentifierProperty
-		CryptSetOIDFunctionValue
-		CryptSignAndEncodeCertificate
-		CryptSignAndEncryptMessage
-		CryptSignCertificate
-		CryptSignMessage
-		CryptSignMessageWithKey
-		CryptStringToBinary
-		CryptUninstallDefaultContext
-		CryptUnregisterDefaultOIDFunction
-		CryptUnregisterOIDFunction
-		CryptUnregisterOIDInfo
-		CryptVerifyCertificateSignature
-		CryptVerifyCertificateSignatureEx
-		CryptVerifyDetachedMessageHash
-		CryptVerifyDetachedMessageSignature
-		CryptVerifyMessageHash
-		CryptVerifyMessageSignature
-		CryptVerifyMessageSignatureWithKey
-		CryptVerifyTimeStampSignature
-		PFXExportCertStore
-		PFXExportCertStoreEx
-		PFXImportCertStore
-		PFXIsPFXBlob
-		PFXVerifyPassword*/
+		/// <summary>Provides a handle to a CLR_CONTEXT.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PCCRL_CONTEXT : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="PCCRL_CONTEXT"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public PCCRL_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PCCRL_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static PCCRL_CONTEXT NULL => new PCCRL_CONTEXT(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="PCCRL_CONTEXT"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(PCCRL_CONTEXT h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PCCRL_CONTEXT"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PCCRL_CONTEXT(IntPtr h) => new PCCRL_CONTEXT(h);
+
+			/// <summary>Performs an implicit conversion from <see cref="PCCRL_CONTEXT"/> to <see cref="CRL_CONTEXT"/>.</summary>
+			/// <param name="ctx">The <see cref="PCCRL_CONTEXT"/> instance.</param>
+			/// <returns>The resulting <see cref="CRL_CONTEXT"/> instance from the conversion.</returns>
+			public static explicit operator CRL_CONTEXT(PCCRL_CONTEXT ctx) => ctx.DangerousGetHandle().ToStructure<CRL_CONTEXT>();
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PCCRL_CONTEXT h1, PCCRL_CONTEXT h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PCCRL_CONTEXT h1, PCCRL_CONTEXT h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PCCRL_CONTEXT h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a handle to a CTL_CONTEXT.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PCCTL_CONTEXT : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="PCCTL_CONTEXT"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public PCCTL_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PCCTL_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static PCCTL_CONTEXT NULL => new PCCTL_CONTEXT(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="PCCTL_CONTEXT"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(PCCTL_CONTEXT h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PCCTL_CONTEXT"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PCCTL_CONTEXT(IntPtr h) => new PCCTL_CONTEXT(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PCCTL_CONTEXT h1, PCCTL_CONTEXT h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PCCTL_CONTEXT h1, PCCTL_CONTEXT h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PCCTL_CONTEXT h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
 	}
 }

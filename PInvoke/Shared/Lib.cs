@@ -27,6 +27,15 @@
 		/// <summary>The crypt32.dll</summary>
 		public const string Crypt32 = "crypt32.dll";
 
+		/// <summary>The cryptdlg.dll</summary>
+		public const string CryptDlg = "cryptdlg.dll";
+
+		/// <summary>The cryptnet.dll</summary>
+		public const string Cryptnet = "cryptnet.dll";
+
+		/// <summary>The cryptui.dll</summary>
+		public const string CryptUI = "cryptui.dll";
+
 		/// <summary>The DWM API</summary>
 		public const string DwmApi = "dwmapi.dll";
 
