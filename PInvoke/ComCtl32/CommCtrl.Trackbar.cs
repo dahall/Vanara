@@ -21,6 +21,7 @@ namespace Vanara.PInvoke
 			TBCD_TICS = 0x0001,
 		}
 
+		/// <summary>Messages for trackbar.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "ff486075")]
 		public enum TrackBarMessage
 		{
@@ -182,18 +183,23 @@ namespace Vanara.PInvoke
 			TBM_GETUNICODEFORMAT = CommonControlMessage.CCM_GETUNICODEFORMAT
 		}
 
+		/// <summary>Notification messages for trackbar.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760172")]
 		public enum TrackBarNotification
 		{
 			/// <summary>
 			/// Notifies that the thumb position on a trackbar is changing. This notification code is sent in the form of a WM_NOTIFY message.
 			/// </summary>
-			/// <remarks>Send this notification to clients that do not listen for WM_HSCROLL or WM_VSCROLL messages.</remarks>
-			/// <paramref name="lParam">
+			/// <remarks>
+			/// Send this notification to clients that do not listen for WM_HSCROLL or WM_VSCROLL messages.
+			/// <para>lPara value</para>
+			/// <para>
 			/// Pointer to a NMTRBTHUMBPOSCHANGING structure. The caller is responsible for allocating this structure and setting its
 			/// members, including the members of the contained NMHDR structure.
-			/// </paramref>
-			/// <returns>The return value is ignored.</returns>
+			/// </para>
+			/// <para>Return value</para>
+			/// <para>The return value is ignored.</para>
+			/// </remarks>
 			TRBN_THUMBPOSCHANGING = TRBN_FIRST
 		}
 

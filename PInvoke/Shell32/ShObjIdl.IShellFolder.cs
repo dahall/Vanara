@@ -635,14 +635,54 @@ namespace Vanara.PInvoke
 			new object GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid, IntPtr rgfReserved = default);
 
 			/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
-			/// <param name="pidl">PIDL that uniquely identifies the file object or subfolder relative to the parent folder.</param>
+			/// <param name="pidl">
+			/// <para>Type: <c>PCUITEMID_CHILD</c></para>
+			/// <para>PIDL that uniquely identifies the file object or subfolder relative to the parent folder.</para>
+			/// </param>
 			/// <param name="uFlags">
+			/// <para>Type: <c>SHGDNF</c></para>
+			/// <para>
 			/// Flags used to request the type of display name to return. For a list of possible values, see the SHGDNF enumerated type.
+			/// </para>
+			/// </param>
+			/// <param name="pName">
+			/// <para>
+			/// When this method returns, contains the display name. The type of name returned in this structure can be the requested type,
+			/// but the Shell folder might return a different type.
+			/// </para>
 			/// </param>
 			/// <returns>
-			/// When this method returns, contains a pointer to a STRRET structure in which to return the display name. The type of name
-			/// returned in this structure can be the requested type, but the Shell folder might return a different type.
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Normally, pidl can refer only to items contained by the parent folder. The PIDL must be single-level and contain exactly one
+			/// SHITEMID structure followed by a terminating zero. If you want to retrieve the display name of an item that is deeper than
+			/// one level away from the parent folder, use SHBindToParent to bind with the item's immediate parent folder and then pass the
+			/// item's single-level PIDL to <c>IShellFolder::GetDisplayNameOf</c>.
+			/// </para>
+			/// <para>
+			/// Also, if the SHGDN_FORPARSING flag is set in uFlags and the SHGDN_INFOLDER flag is not set, pidl can refer to an object at
+			/// any level below the parent folder in the namespace hierarchy. At one time, pidl could be a multilevel PIDL, relative to the
+			/// parent folder, and could contain multiple SHITEMID structures. However, this is no longer supported and pidl should now
+			/// refer only to a single child item.
+			/// </para>
+			/// <para>
+			/// The flags specified in uFlags are hints about the intended use of the name. They do not guarantee that IShellFolder will
+			/// return the requested form of the name. If that form is not available, a different one might be returned. In particular,
+			/// there is no guarantee that the name returned by the SHGDN_FORPARSING flag will be successfully parsed by
+			/// IShellFolder::ParseDisplayName. There are also some combinations of flags that might cause the <c>GetDisplayNameOf</c>/
+			/// <c>ParseDisplayName</c> round trip to not return the original identifier list. This occurrence is exceptional, but you
+			/// should check to be sure.
+			/// </para>
+			/// <para>
+			/// <c>Note</c> The parsing name that is returned when uFlags has the SHGDN_FORPARSING flag set is not necessarily a normal text
+			/// string. Virtual folders such as My Computer might return a string containing the folder object's GUID in the form
+			/// "::{GUID}". Developers who implement <c>IShellFolder::GetDisplayNameOf</c> are encouraged to return parse names that are as
+			/// close to the display names as possible, because the end user often needs to type or edit these names.
+			/// </para>
+			/// </remarks>
 			new void GetDisplayNameOf([In] PIDL pidl, SHGDNF uFlags, out STRRET pName);
 
 			/// <summary>Sets the display name of a file object or subfolder, changing the item identifier in the process.</summary>

@@ -52,6 +52,7 @@ namespace Vanara.PInvoke
 			SYMMETRICWRAPKEYBLOB = 0xB,
 		}
 
+		/// <summary>Flags for CertFindUsage functions.</summary>
 		[PInvokeData("wincrypt.h", MSDNShortId = "eda6d875-df62-4f40-8734-a91666dba289")]
 		[Flags]
 		public enum CertFindUsageFlags : uint

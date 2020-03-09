@@ -57,7 +57,7 @@ namespace Vanara.PInvoke
 			CERT_CHAIN_DISABLE_AIA = 0x00002000,
 		}
 
-		/// <summary>Flags used by <see cref="CertGetCertificateChain"/>.</summary>
+		/// <summary>Flags used by <see cref="CertGetCertificateChain(HCERTCHAINENGINE, PCCERT_CONTEXT, in FILETIME, HCERTSTORE, in CERT_CHAIN_PARA, CertChainFlags, IntPtr, out SafePCCERT_CHAIN_CONTEXT)"/>.</summary>
 		[PInvokeData("wincrypt.h", MSDNShortId = "8c93036c-0b93-40d4-b0e3-ba1f2fc72db1")]
 		[Flags]
 		public enum CertChainFlags : uint

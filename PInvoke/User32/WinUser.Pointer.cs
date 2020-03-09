@@ -137,8 +137,8 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "73D024E9-F83B-408F-BC96-6851AB4603AE")]
 		public enum POINTER_FEEDBACK_MODE
 		{
-			/// <summary>Visual feedback might be suppressed by the user's pen (Settings -> Devices -> Pen & Windows Ink) and touch
-			/// (Settings -> Ease of Access -> Cursor & pointer size) settings.</summary>
+			/// <summary>Visual feedback might be suppressed by the user's pen (Settings -> Devices -> Pen &amp; Windows Ink) and touch
+			/// (Settings -> Ease of Access -> Cursor &amp; pointer size) settings.</summary>
 			POINTER_FEEDBACK_DEFAULT = 1,
 
 			/// <summary>Visual feedback overrides the user's pen and touch settings.</summary>

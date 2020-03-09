@@ -5883,7 +5883,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Safe handle for crypto memory.</summary>
-		/// <seealso cref="Vanara.InteropServices.SafeMemoryHandle{Vanara.PInvoke.Crypt32.CryptMemMethods}"/>
+		/// <seealso cref="Vanara.InteropServices.SafeMemoryHandle{T}"/>
 		public class SafeCryptMem : SafeMemoryHandleExt<CryptMemMethods>
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>

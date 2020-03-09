@@ -696,9 +696,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>CERT_CTL_USAGE_PROP_ID</para>
 		/// <para>Data type of pvData: A pointer to an array of <c>BYTE</c> values. The size of this array is specified in the pcbData parameter.</para>
-		/// <para>Returns an array of bytes that contain an</para>
-		/// </param>
-		/// <param name="&#x9;&#x9; ASN.1-encoded &amp;lt;a href=&amp;quot;https://docs.microsoft.com/windows/desktop/api/wincrypt/ns-wincrypt-ctl_usage&amp;quot;&amp;gt;CTL_USAGE&amp;lt;/a&amp;gt; structure.&#xA;">
+		/// <para>Returns an array of bytes that contain an ASN.1-encoded <see cref="CTL_USAGE"/> structure.</para>
 		/// <para>CERT_DATE_STAMP_PROP_ID</para>
 		/// <para>Data type of pvData: A pointer to a <c>FILETIME</c> structure.</para>
 		/// <para>Time when the certificate was added to the store.</para>

@@ -1995,7 +1995,7 @@ namespace Vanara.PInvoke
 		/// <param name="pkey">The key whose value to set.</param>
 		/// <param name="value">The value to set or <see langword="null"/> to remove an existing value.</param>
 		/// <param name="commit">
-		/// If <see langword="true"/>, the <see cref="IPropertyStore.Commit"/> method is called after setting the value.
+		/// If <see langword="true"/>, the <see cref="PropSys.IPropertyStore.Commit"/> method is called after setting the value.
 		/// </param>
 		public static void SetValue(this PropSys.IPropertyStore ps, in PROPERTYKEY pkey, object value, bool commit = true)
 		{

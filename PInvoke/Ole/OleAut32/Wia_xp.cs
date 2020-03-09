@@ -3051,13 +3051,9 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </param>
-			/// <param name="ppIEnumWIA_DEV_CAPS">
+			/// <returns>
 			/// <para>Type: <c>IEnumWIA_DEV_CAPS**</c></para>
 			/// <para>Pointer to IEnumWIA_DEV_CAPS interface created by <c>IWiaItem::EnumDeviceCapabilities</c>.</para>
-			/// </param>
-			/// <returns>
-			/// <para>Type: <c>HRESULT</c></para>
-			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
 			/// <remarks>
 			/// <para>
@@ -4167,15 +4163,19 @@ namespace Vanara.PInvoke
 		[PInvokeData("wia_xp.h")]
 		public static extern IntPtr LPSAFEARRAY_UserUnmarshal64(IntPtr arg1, IntPtr arg2, IntPtr arg3);
 
-		/// <summary>The <c>WIA_DATA_CALLBACK_HEADER</c> is transmitted to an application during a series of calls by the Windows Image
-		/// Acquisition (WIA) run-time system to the IWiaDataCallback::BandedDataCallback method.</summary> <summary> <para>Type:
-		/// <c>int</c></para> <para>Must contain the size of this structure in bytes. Should be initialized to <c>sizeof(WIA_DATA_CALLBACK_HEADER)</c>.</para>
+		/// <summary>
+		/// The <c>WIA_DATA_CALLBACK_HEADER</c> is transmitted to an application during a series of calls by the Windows Image Acquisition
+		/// (WIA) run-time system to the IWiaDataCallback::BandedDataCallback method.
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/ns-wia_xp-wia_data_callback_header typedef struct
 		// _WIA_DATA_CALLBACK_HEADER { int lSize; GUID guidFormatID; int lBufferSize; int lPageCount; } WIA_DATA_CALLBACK_HEADER, *PWIA_DATA_CALLBACK_HEADER;
 		[PInvokeData("wia_xp.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct WIA_DATA_CALLBACK_HEADER
 		{
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>Must contain the size of this structure in bytes. Should be initialized to <c>sizeof(WIA_DATA_CALLBACK_HEADER)</c>.</para>
 			/// </summary>
 			public int lSize;
 

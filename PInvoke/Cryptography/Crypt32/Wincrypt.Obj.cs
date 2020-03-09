@@ -102,7 +102,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			CRYPT_ENCODE_ALLOC_FLAG = 0x8000,
 
-			/// <summary> This flag is applicable when encoding X509_UNICODE_NAME. If this flag is set and all the Unicode characters are <=
+			/// <summary> This flag is applicable when encoding X509_UNICODE_NAME. If this flag is set and all the Unicode characters are &lt;=
 			/// 0xFF, the CERT_RDN_T61_STRING is selected instead of the CERT_RDN_UNICODE_STRING. </summary>
 			CRYPT_UNICODE_NAME_ENCODE_ENABLE_T61_UNICODE_FLAG = 0x80000000,
 

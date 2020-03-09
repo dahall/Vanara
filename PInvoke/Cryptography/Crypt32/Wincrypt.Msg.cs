@@ -247,9 +247,14 @@ namespace Vanara.PInvoke
 			CMSG_CRYPT_RELEASE_CONTEXT_FLAG = 0x00008000,
 		}
 
+		/// <summary>Flags used by CMSG_KEY_AGREE_RECIPIENT_INFO.</summary>
+		[PInvokeData("wincrypt.h")]
 		public enum CryptMsgKeyOriginator
 		{
+			/// <summary>OriginatorCertId</summary>
 			CMSG_KEY_AGREE_ORIGINATOR_CERT = 1,
+
+			/// <summary>OriginatorPublicKeyInfo</summary>
 			CMSG_KEY_AGREE_ORIGINATOR_PUBLIC_KEY = 2,
 		}
 
@@ -4131,9 +4136,9 @@ namespace Vanara.PInvoke
 			[StructLayout(LayoutKind.Explicit)]
 			public struct CMSG_CTRL_DECRYPT_PARA_HANDLES
 			{
-				// <summary>
-				// Cryptographic service provider (CSP) handle. The CNG function NCryptIsKeyHandle is called to determine the union choice.
-				// </summary>
+				/// <summary>
+				/// Cryptographic service provider (CSP) handle. The CNG function NCryptIsKeyHandle is called to determine the union choice.
+				/// </summary>
 				[FieldOffset(0)]
 				public HCRYPTPROV hCryptProv;
 

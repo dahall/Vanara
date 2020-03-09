@@ -2137,7 +2137,6 @@ namespace Vanara.PInvoke
 		/// and does not return until the window procedure has processed the message.
 		/// </summary>
 		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
-		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
 		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
 		/// <param name="hWnd">
 		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
@@ -2161,7 +2160,6 @@ namespace Vanara.PInvoke
 		/// and does not return until the window procedure has processed the message.
 		/// </summary>
 		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
-		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
 		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
 		/// <param name="hWnd">
 		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
