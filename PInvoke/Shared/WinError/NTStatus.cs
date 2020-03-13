@@ -317,11 +317,7 @@ namespace Vanara.PInvoke
 		public Exception GetException(string message = null)
 		{
 			if (!Failed) return null;
-
-			Win32Error werr = RtlNtStatusToDosError(_value);
-			return werr != Win32Error.ERROR_MR_MID_NOT_FOUND
-				? werr.GetException(message)
-				: new HRESULT(HRESULT_FROM_NT(_value)).GetException(message);
+			return ToHRESULT().GetException();
 		}
 
 		private const uint FACILITY_NT_BIT = 0x10000000;
@@ -383,7 +379,11 @@ namespace Vanara.PInvoke
 
 		/// <summary>Converts this error to an <see cref="T:Vanara.PInvoke.HRESULT" />.</summary>
 		/// <returns>An equivalent <see cref="T:Vanara.PInvoke.HRESULT" />.</returns>
-		HRESULT IErrorProvider.ToHRESULT() => HRESULT_FROM_NT(_value);
+		public HRESULT ToHRESULT()
+		{
+			Win32Error werr = RtlNtStatusToDosError(_value);
+			return werr != Win32Error.ERROR_MR_MID_NOT_FOUND ? (HRESULT)werr : new HRESULT(HRESULT_FROM_NT(_value));
+		}
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -429,6 +429,11 @@ namespace Vanara.PInvoke
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator uint(NTStatus value) => value._value;
+
+		/// <summary>Performs an explicit conversion from <see cref="NTStatus"/> to <see cref="HRESULT"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The resulting <see cref="HRESULT"/> instance from the conversion.</returns>
+		public static explicit operator HRESULT(NTStatus value) => value.ToHRESULT();
 
 		private static uint? ValueFromObj(object obj)
 		{
