@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -8,6 +11,9 @@ namespace Vanara.PInvoke
 	/// <summary>Methods and data types found in Crypt32.dll.</summary>
 	public static partial class Crypt32
 	{
+		/// <summary>Number of bits to shift byte len into an OID Group ID.</summary>
+		public const int CRYPT_OID_INFO_OID_GROUP_BIT_LEN_SHIFT = 16;
+
 		/// <summary>The <c>CRYPT_ENUM_OID_FUNCTION</c> callback function is used with the CryptEnumOIDFunction function.</summary>
 		/// <param name="dwEncodingType">
 		/// <para>Specifies the encoding type to match. Setting this parameter to CRYPT_MATCH_ANY_ENCODING_TYPE matches any encoding type.</para>
@@ -48,7 +54,7 @@ namespace Vanara.PInvoke
 		// rgdwValueType[], LPCWSTR const rgpwszValueName[], const BYTE * const rgpbValueData[], const DWORD rgcbValueData[], void *pvArg ) {...}
 		[PInvokeData("wincrypt.h", MSDNShortId = "f29a3454-fa64-4305-ba4e-027d45014024")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool PFN_CRYPT_ENUM_OID_FUNC(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, [MarshalAs(UnmanagedType.LPStr)] string pszOID,
+		public delegate bool PFN_CRYPT_ENUM_OID_FUNC(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, [In] SafeOID pszOID,
 			uint cValue, uint[] rgdwValueType, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] rgpwszValueName, IntPtr[] rgpbValueData, uint[] rgcbValueData, IntPtr pvArg);
 
 		/// <summary>The <c>CRYPT_ENUM_OID_INFO</c> callback function is used with the CryptEnumOIDInfo function.</summary>
@@ -62,7 +68,7 @@ namespace Vanara.PInvoke
 		// PfnCryptEnumOidInfo; BOOL PfnCryptEnumOidInfo( PCCRYPT_OID_INFO pInfo, void *pvArg ) {...}
 		[PInvokeData("wincrypt.h", MSDNShortId = "30ae4274-631d-4c6a-96c5-18f096607cad")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool PFN_CRYPT_ENUM_OID_INFO(in CRYPT_OID_INFO pInfo, [In, Out, Optional] IntPtr pvArg);
+		public delegate bool PFN_CRYPT_ENUM_OID_INFO(PCCRYPT_OID_INFO pInfo, [In, Out, Optional] IntPtr pvArg);
 
 		/// <summary>Flags for <see cref="CryptInstallOIDFunctionAddress"/>.</summary>
 		[PInvokeData("wincrypt.h", MSDNShortId = "934e8278-0e0b-4402-a2b6-ff1e913d54c9")]
@@ -176,7 +182,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "aa2fba03-183b-4b74-b306-8f4592995897")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptEnumOIDFunction(CertEncodingType dwEncodingType, [Optional, MarshalAs(UnmanagedType.LPStr)] string pszFuncName, [Optional, MarshalAs(UnmanagedType.LPStr)] string pszOID,
+		public static extern bool CryptEnumOIDFunction(CertEncodingType dwEncodingType, [Optional, MarshalAs(UnmanagedType.LPStr)] string pszFuncName, [Optional, In] SafeOID pszOID,
 			[Optional] uint dwFlags, [In, Out, Optional] IntPtr pvArg, PFN_CRYPT_ENUM_OID_FUNC pfnEnumOIDFunc);
 
 		/// <summary>
@@ -405,7 +411,162 @@ namespace Vanara.PInvoke
 		// dwKeyType, void *pvKey, DWORD dwGroupId );
 		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "87acf207-d109-4173-9530-8cbbebb473b2")]
-		public static extern IntPtr CryptFindOIDInfo(CryptOIDInfoFlags dwKeyType, [In] IntPtr pvKey, OIDGroupId dwGroupId);
+		public static extern PCCRYPT_OID_INFO CryptFindOIDInfo(CryptOIDInfoFlags dwKeyType, [In] IntPtr pvKey, OIDGroupId dwGroupId);
+
+		/// <summary>
+		/// <para>
+		/// The <c>CryptFindOIDInfo</c> function retrieves the first predefined or registered CRYPT_OID_INFO structure that matches a
+		/// specified key type and key. The search can be limited to object identifiers (OIDs) within a specified OID group.
+		/// </para>
+		/// <para>
+		/// Use CryptEnumOIDInfo to list all or selected subsets of CRYPT_OID_INFO structures. New <c>CRYPT_OID_INFO</c> structures can be
+		/// registered by using CryptRegisterOIDInfo. User-registered OIDs can be removed from the list of registered OIDs by using CryptUnregisterOIDInfo.
+		/// </para>
+		/// <para>
+		/// New OIDs can be placed in the list of registered OIDs either before or after the predefined entries. Because
+		/// <c>CryptFindOIDInfo</c> returns the first key on the list that matches the search criteria, a newly registered OID placed before
+		/// a predefined OID entry with the same key overrides a predefined entry.
+		/// </para>
+		/// </summary>
+		/// <param name="dwKeyType">
+		/// <para>Specifies the key type to use when finding OID information.</para>
+		/// <para>This parameter can be one of the following key types.</para>
+		/// <para>CRYPT_OID_INFO_OID_KEY</para>
+		/// <para>pvKey is the address of a null-terminated ANSI string that contains the OID string to find.</para>
+		/// <para>CRYPT_OID_INFO_NAME_KEY</para>
+		/// <para>pvKey is the address of a null-terminated Unicode string that contains the name to find.</para>
+		/// <para>CRYPT_OID_INFO_ALGID_KEY</para>
+		/// <para>pvKey is the address of an ALG_IDvariable. The following <c>ALG_ID</c> s are supported:</para>
+		/// <para>Hash Algorithms:</para>
+		/// <para>Symmetric Encryption Algorithms:</para>
+		/// <para>Public Key Algorithms:</para>
+		/// <para>Algorithms that are not listed are supported by using Cryptography API: Next Generation (CNG) only; instead, use <c>CRYPT_OID_INFO_CNG_ALGID_KEY</c>.</para>
+		/// <para>CRYPT_OID_INFO_SIGN_KEY</para>
+		/// <para>
+		/// pvKey is the address of an array of two ALG_IDs where the first element contains the hash algorithm identifier and the second
+		/// element contains the public key algorithm identifier.
+		/// </para>
+		/// <para>The following <c>ALG_ID</c> combinations are supported.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Signature algorithm identifier</term>
+		/// <term>Hash algorithm identifier</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CALG_RSA_SIGN</term>
+		/// <term>CALG_SHA1 CALG_MD5 CALG_MD4 CALG_MD2</term>
+		/// </item>
+		/// <item>
+		/// <term>CALG_DSS_SIGN</term>
+		/// <term>CALG_SHA1</term>
+		/// </item>
+		/// <item>
+		/// <term>CALG_NO_SIGN</term>
+		/// <term>CALG_SHA1 CALG_NO_SIGN</term>
+		/// </item>
+		/// </list>
+		/// <para>Algorithms that are not listed are supported through CNG only; instead, use <c>CRYPT_OID_INFO_CNG_SIGN_KEY</c>.</para>
+		/// <para>CRYPT_OID_INFO_CNG_ALGID_KEY</para>
+		/// <para>
+		/// pvKey is the address of a null-terminated Unicode string that contains the CNG algorithm identifier to find. This can be one of
+		/// the predefined CNG Algorithm Identifiers or another registered algorithm identifier.
+		/// </para>
+		/// <para>Windows Server 2003 R2 Windows Server 2003 :</para>
+		/// <para>This key type is not supported.</para>
+		/// <para>CRYPT_OID_INFO_CNG_SIGN_KEY</para>
+		/// <para>
+		/// pvKey is the address of an array of two null-terminated Unicode string pointers where the first string contains the hash CNG
+		/// algorithm identifier and the second string contains the public key CNG algorithm identifier. These can be from the predefined
+		/// CNG Algorithm Identifiers or another registered algorithm identifier.
+		/// </para>
+		/// <para>Windows Server 2003 R2 Windows Server 2003 :</para>
+		/// <para>This key type is not supported.</para>
+		/// <para>
+		/// Optionally, the following key types can be specified in the dwKeyType parameter by using the logical <c>OR</c> operator (|).
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_OID_INFO_PUBKEY_SIGN_KEY_FLAG</term>
+		/// <term>
+		/// Skips public keys in the CRYPT_PUBKEY_ALG_OID_GROUP_ID group that are explicitly flagged with the
+		/// CRYPT_OID_PUBKEY_ENCRYPT_ONLY_FLAG flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_OID_INFO_PUBKEY_ENCRYPT_KEY_FLAG</term>
+		/// <term>
+		/// Skips public keys in the CRYPT_PUBKEY_ALG_OID_GROUP_ID group that are explicitly flagged with the
+		/// CRYPT_OID_PUBKEY_SIGN_ONLY_FLAG flag.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pvKey">
+		/// The address of a buffer that contains additional search information. This parameter depends on the value of the dwKeyType
+		/// parameter. For more information, see the table under dwKeyType.
+		/// </param>
+		/// <param name="dwGroupId">
+		/// <para>
+		/// The group identifier to use when finding OID information. Setting this parameter to zero searches all groups according to the
+		/// dwKeyType parameter. Otherwise, only the indicated dwGroupId is searched.
+		/// </para>
+		/// <para>For information about code that lists the OID information by group identifier, see CryptEnumOIDInfo.</para>
+		/// <para>Optionally, the following flag can be specified in the dwGroupId parameter by using the logical <c>OR</c> operator (|).</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_OID_DISABLE_SEARCH_DS_FLAG</term>
+		/// <term>Disables searching the directory server.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The bit length shifted left 16 bits can be specified in the dwGroupId parameter by using the logical <c>OR</c> operator (|). For
+		/// more information, see Remarks.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// Returns a pointer to a constant structure of type CRYPT_OID_INFO. The returned pointer must not be freed. When the specified key
+		/// and group is not found, <c>NULL</c> is returned.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>CryptFindOIDInfo</c> function performs a lookup in the active directory to retrieve the friendly names of OIDs under the
+		/// following conditions:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The key type in the dwKeyType parameter is set to <c>CRYPT_OID_INFO_OID_KEY</c> or <c>CRYPT_OID_INFO_NAME_KEY</c>.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// No group identifier is specified in the dwGroupId parameter or the GroupID refers to EKU OIDs, policy OIDs or template OIDs.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Network retrieval of the friendly name can be suppressed by calling the function with the
+		/// <c>CRYPT_OID_DISABLE_SEARCH_DS_FLAG</c> flag.
+		/// </para>
+		/// <para>
+		/// The bit length shifted left 16 bits can be specified in the dwGroupId parameter by using the logical <c>OR</c> operator (|).
+		/// This is only applicable to the <c>CRYPT_ENCRYPT_ALG_OID_GROUP_ID</c> group entries that have a bit length specified in the
+		/// <c>ExtraInfo</c> member of the CRYPT_OID_INFO structure. Currently, only the AES encryption algorithms have this. The constant
+		/// <c>CRYPT_OID_INFO_OID_GROUP_BIT_LEN_SHIFT</c> can be used for doing the shift. For example, to find the OID information for
+		/// <c>BCRYPT_AES_ALGORITHM</c> with bit length equal to 192, call <c>CryptFindOIDInfo</c> as follows.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptfindoidinfo PCCRYPT_OID_INFO CryptFindOIDInfo( DWORD
+		// dwKeyType, void *pvKey, DWORD dwGroupId );
+		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "87acf207-d109-4173-9530-8cbbebb473b2")]
+		public static extern PCCRYPT_OID_INFO CryptFindOIDInfo(CryptOIDInfoFlags dwKeyType, [In, MarshalAs(UnmanagedType.LPWStr)] string pvKey, OIDGroupId dwGroupId);
 
 		/// <summary>
 		/// The <c>CryptFreeOIDFunctionAddress</c> function releases a handle returned by CryptGetOIDFunctionAddress or
@@ -619,7 +780,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "2eef6109-a840-48c6-936c-ec0875039c39")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptGetOIDFunctionAddress([In] HCRYPTOIDFUNCSET hFuncSet, CertEncodingType dwEncodingType, [Optional, MarshalAs(UnmanagedType.LPStr)] string pszOID,
+		public static extern bool CryptGetOIDFunctionAddress([In] HCRYPTOIDFUNCSET hFuncSet, CertEncodingType dwEncodingType, [Optional, In] SafeOID pszOID,
 			OIDFuncFlags dwFlags, out IntPtr ppvFuncAddr, ref HCRYPTOIDFUNCADDR phFuncAddr);
 
 		/// <summary>
@@ -722,7 +883,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("wincrypt.h", MSDNShortId = "14eb7f10-f42a-4496-9699-62eeb9878ea2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CryptGetOIDFunctionValue(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName,
-			[MarshalAs(UnmanagedType.LPStr)] string pszOID, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszValueName, out REG_VALUE_TYPE pdwValueType,
+			[In] SafeOID pszOID, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszValueName, out REG_VALUE_TYPE pdwValueType,
 			[Out] IntPtr pbValueData, ref uint pcbValueData);
 
 		/// <summary>
@@ -856,7 +1017,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "b625597d-28fd-4a40-afbe-a09201d36512")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptRegisterOIDFunction(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, StrPtrAnsi pszOID,
+		public static extern bool CryptRegisterOIDFunction(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, SafeOID pszOID,
 			[MarshalAs(UnmanagedType.LPWStr)] string pwszDll, [Optional, MarshalAs(UnmanagedType.LPStr)] string pszOverrideFuncName);
 
 		/// <summary>
@@ -963,7 +1124,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("wincrypt.h", MSDNShortId = "3e167c5d-0000-4359-a7b0-9b3e4e64c50c")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CryptSetOIDFunctionValue(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName,
-			StrPtrAnsi pszOID, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszValueName, REG_VALUE_TYPE dwValueType, [In, Optional] IntPtr pbValueData, uint cbValueData);
+			SafeOID pszOID, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszValueName, REG_VALUE_TYPE dwValueType, [In, Optional] IntPtr pbValueData, uint cbValueData);
 
 		/// <summary>
 		/// The <c>CryptUnregisterDefaultOIDFunction</c> removes the registration of a DLL containing the default function to be called for
@@ -1016,7 +1177,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "c06ffda5-df7c-4e0e-bf4f-8b8c968fcd4c")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptUnregisterOIDFunction(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, StrPtrAnsi pszOID);
+		public static extern bool CryptUnregisterOIDFunction(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, SafeOID pszOID);
 
 		/// <summary>
 		/// The <c>CryptUnregisterOIDInfo</c> function removes the registration of a specified CRYPT_OID_INFO OID information structure. The
@@ -1074,7 +1235,7 @@ namespace Vanara.PInvoke
 			public uint cbSize;
 
 			/// <summary>The OID associated with this OID information.</summary>
-			[MarshalAs(UnmanagedType.LPStr)] public string pszOID;
+			public StrPtrAnsi pszOID;
 
 			/// <summary>The display name associated with an OID.</summary>
 			[MarshalAs(UnmanagedType.LPWStr)] public string pwszName;
@@ -1400,6 +1561,59 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public override bool Equals(object obj) => obj is HCRYPTOIDFUNCSET h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a pointer to a CRYPT_OID_INFO.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PCCRYPT_OID_INFO : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="PCCRYPT_OID_INFO"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public PCCRYPT_OID_INFO(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="PCCRYPT_OID_INFO"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static PCCRYPT_OID_INFO NULL => new PCCRYPT_OID_INFO(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="PCCRYPT_OID_INFO"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(PCCRYPT_OID_INFO h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PCCRYPT_OID_INFO"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PCCRYPT_OID_INFO(IntPtr h) => new PCCRYPT_OID_INFO(h);
+
+			/// <summary>Performs an explicit conversion from <see cref="PCCRYPT_OID_INFO"/> to <see cref="CRYPT_OID_INFO"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The resulting <see cref="CRYPT_OID_INFO"/> instance from the conversion.</returns>
+			public static explicit operator CRYPT_OID_INFO(PCCRYPT_OID_INFO h) => h.handle.ToStructure<CRYPT_OID_INFO>();
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PCCRYPT_OID_INFO h1, PCCRYPT_OID_INFO h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PCCRYPT_OID_INFO h1, PCCRYPT_OID_INFO h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PCCRYPT_OID_INFO h ? handle == h.handle : false;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
@@ -153,6 +154,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>Setting this flag explicitly turns off Authority Information Access (AIA) retrievals.</summary>
 			CERT_CHAIN_DISABLE_AIA = 0x00002000,
+
+			/// <summary>Revocation checking is done on the end certificate and only the end certificate.</summary>
+			CERT_CHAIN_REVOCATION_CHECK_END_CERT = 0x10000000,
+
+			/// <summary>Revocation checking is done on all of the certificates in every chain.</summary>
+			CERT_CHAIN_REVOCATION_CHECK_CHAIN = 0x20000000,
+
+			/// <summary>Revocation checking is done on all certificates in all of the chains except the root certificate.</summary>
+			CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT = 0x40000000,
 		}
 
 		/// <summary>Flags used by <see cref="CERT_CHAIN_POLICY_PARA"/></summary>
@@ -1225,7 +1235,149 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "19c37f77-1072-4740-b244-764b816a2a1f")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CertVerifyCertificateChainPolicy([MarshalAs(UnmanagedType.LPStr)] string pszPolicyOID, [In] PCCERT_CHAIN_CONTEXT pChainContext,
+		public static extern bool CertVerifyCertificateChainPolicy([In] SafeOID pszPolicyOID, [In] PCCERT_CHAIN_CONTEXT pChainContext,
+			in CERT_CHAIN_POLICY_PARA pPolicyPara, ref CERT_CHAIN_POLICY_STATUS pPolicyStatus);
+
+		/// <summary>
+		/// The <c>CertVerifyCertificateChainPolicy</c> function checks a certificate chain to verify its validity, including its compliance
+		/// with any specified validity policy criteria.
+		/// </summary>
+		/// <param name="pszPolicyOID">
+		/// <para>Current predefined verify chain policy structures are listed in the following table.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_CHAIN_POLICY_BASE (LPCSTR) 1</term>
+		/// <term>
+		/// Implements the base chain policy verification checks. The dwFlags member of the structure pointed to by pPolicyPara can be set
+		/// to alter the default policy checking behavior.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CHAIN_POLICY_AUTHENTICODE (LPCSTR) 2</term>
+		/// <term>
+		/// Implements the Authenticode chain policy verification checks. The pvExtraPolicyPara member of the structure pointed to by
+		/// pPolicyPara can be set to point to an AUTHENTICODE_EXTRA_CERT_CHAIN_POLICY_PARA structure. The pvExtraPolicyStatus member of the
+		/// structure pointed to by pPolicyStatus can be set to point to an AUTHENTICODE_EXTRA_CERT_CHAIN_POLICY_STATUS structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CHAIN_POLICY_AUTHENTICODE_TS (LPCSTR) 3</term>
+		/// <term>
+		/// Implements Authenticode Time Stamp chain policy verification checks. The pvExtraPolicyPara member of the data structure pointed
+		/// to by pPolicyPara can be set to point to an AUTHENTICODE_TS_EXTRA_CERT_CHAIN_POLICY_PARA structure. The pvExtraPolicyStatus
+		/// member of the data structure pointed to by pPolicyStatus is not used and must be set to NULL
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CHAIN_POLICY_SSL (LPCSTR) 4</term>
+		/// <term>
+		/// Implements the SSL client/server chain policy verification checks. The pvExtraPolicyPara member in the data structure pointed to
+		/// by pPolicyPara can be set to point to an SSL_EXTRA_CERT_CHAIN_POLICY_PARA structure initialized with additional policy criteria.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CHAIN_POLICY_BASIC_CONSTRAINTS (LPCSTR) 5</term>
+		/// <term>
+		/// Implements the basic constraints chain policy. Iterates through all the certificates in the chain checking for either a
+		/// szOID_BASIC_CONSTRAINTS or a szOID_BASIC_CONSTRAINTS2 extension. If neither extension is present, the certificate is assumed to
+		/// have valid policy. Otherwise, for the first certificate element, checks if it matches the expected CA_FLAG or END_ENTITY_FLAG
+		/// specified in the dwFlags member of the CERT_CHAIN_POLICY_PARA structure pointed to by the pPolicyPara parameter. If neither or
+		/// both flags are set, then, the first element can be either a CA or END_ENTITY. All other elements must be a certification
+		/// authority (CA). If the PathLenConstraint is present in the extension, it is checked. The first elements in the remaining simple
+		/// chains (that is, the certificates used to sign the CTL) are checked to be an END_ENTITY. If this verification fails, dwError
+		/// will be set to TRUST_E_BASIC_CONSTRAINTS.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CHAIN_POLICY_NT_AUTH (LPCSTR) 6</term>
+		/// <term>
+		/// Implements the Windows NT Authentication chain policy, which consists of three distinct chain verifications in the following order:
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CHAIN_POLICY_MICROSOFT_ROOT (LPCSTR) 7</term>
+		/// <term>
+		/// Checks the last element of the first simple chain for a Microsoft root public key. If that element does not contain a Microsoft
+		/// root public key, the dwError member of the CERT_CHAIN_POLICY_STATUS structure pointed to by the pPolicyStatus parameter is set
+		/// to CERT_E_UNTRUSTEDROOT. The dwFlags member of the CERT_CHAIN_POLICY_PARA structure pointed to by the pPolicyStatus parameter
+		/// can contain the MICROSOFT_ROOT_CERT_CHAIN_POLICY_CHECK_APPLICATION_ROOT_FLAG flag, which causes this function to also check for
+		/// the Microsoft application root "Microsoft Root Certificate Authority 2011". The dwFlags member of the CERT_CHAIN_POLICY_PARA
+		/// structure pointed to by the pPolicyPara parameter can contain the MICROSOFT_ROOT_CERT_CHAIN_POLICY_ENABLE_TEST_ROOT_FLAG flag,
+		/// which causes this function to also check for the Microsoft test roots.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CHAIN_POLICY_EV (LPCSTR) 8</term>
+		/// <term>
+		/// Specifies that extended validation of certificates is performed. Windows Server 2008, Windows Vista, Windows Server 2003 and
+		/// Windows XP: This value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_CHAIN_POLICY_SSL_F12 (LPCSTR) 9</term>
+		/// <term>
+		/// Checks if any certificates in the chain have weak crypto or if third party root certificate compliance and provide an error
+		/// string. The pvExtraPolicyStatus member of the CERT_CHAIN_POLICY_STATUS structure pointed to by the pPolicyStatus parameter must
+		/// point to SSL_F12_EXTRA_CERT_CHAIN_POLICY_STATUS, which is updated with the results of the weak crypto and root program
+		/// compliance checks. Before calling, the cbSize member of the CERT_CHAIN_POLICY_STATUS structure pointed to by the pPolicyStatus
+		/// parameter must be set to a value greater than or equal to sizeof(SSL_F12_EXTRA_CERT_CHAIN_POLICY_STATUS). The dwError member in
+		/// CERT_CHAIN_POLICY_STATUS structure pointed to by the pPolicyStatus parameter will be set to TRUST_E_CERT_SIGNATURE for potential
+		/// weak crypto and set to CERT_E_UNTRUSTEDROOT for Third Party Roots not in compliance with the Microsoft Root Program. Windows 10,
+		/// version 1607, Windows Server 2016, Windows 10, version 1511 with KB3172985, Windows 10 RTM with KB3163912, Windows 8.1 and
+		/// Windows Server 2012 R2 with KB3163912, and Windows 7 with SP1 and Windows Server 2008 R2 SP1 with KB3161029
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pChainContext">A pointer to a CERT_CHAIN_CONTEXT structure that contains a chain to be verified.</param>
+		/// <param name="pPolicyPara">
+		/// <para>
+		/// A pointer to a CERT_CHAIN_POLICY_PARA structure that provides the policy verification criteria for the chain. The <c>dwFlags</c>
+		/// member of that structure can be set to change the default policy checking behavior.
+		/// </para>
+		/// <para>In addition, policy-specific parameters can also be passed in the <c>pvExtraPolicyPara</c> member of the structure.</para>
+		/// </param>
+		/// <param name="pPolicyStatus">
+		/// A pointer to a CERT_CHAIN_POLICY_STATUS structure where status information on the chain is returned. OID-specific extra status
+		/// can be returned in the <c>pvExtraPolicyStatus</c> member of this structure.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// The return value indicates whether the function was able to check for the policy, it does not indicate whether the policy check
+		/// failed or passed.
+		/// </para>
+		/// <para>
+		/// If the chain can be verified for the specified policy, <c>TRUE</c> is returned and the <c>dwError</c> member of the
+		/// pPolicyStatus is updated. A <c>dwError</c> of 0 (ERROR_SUCCESS or S_OK) indicates the chain satisfies the specified policy.
+		/// </para>
+		/// <para>
+		/// If the chain cannot be validated, the return value is <c>TRUE</c> and you need to verify the pPolicyStatus parameter for the
+		/// actual error.
+		/// </para>
+		/// <para>A value of <c>FALSE</c> indicates that the function wasn't able to check for the policy.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A <c>dwError</c> member of the CERT_CHAIN_POLICY_STATUS structure pointed to by pPolicyStatus can apply to a single chain
+		/// element, to a simple chain, or to an entire chain context. If <c>dwError</c> applies to the entire chain context, both the
+		/// <c>lChainIndex</c> and the <c>lElementIndex</c> members of the <c>CERT_CHAIN_POLICY_STATUS</c> structure are set to –1. If
+		/// <c>dwError</c> applies to a complete simple chain, <c>lElementIndex</c> is set to –1 and <c>lChainIndex</c> is set to the index
+		/// of the first chain that has an error. If <c>dwError</c> applies to a single certificate element, <c>lChainIndex</c> and
+		/// <c>lElementIndex</c> index the first certificate that has the error.
+		/// </para>
+		/// <para>To get the certificate element use this syntax:</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certverifycertificatechainpolicy BOOL
+		// CertVerifyCertificateChainPolicy( LPCSTR pszPolicyOID, PCCERT_CHAIN_CONTEXT pChainContext, PCERT_CHAIN_POLICY_PARA pPolicyPara,
+		// PCERT_CHAIN_POLICY_STATUS pPolicyStatus );
+		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "19c37f77-1072-4740-b244-764b816a2a1f")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CertVerifyCertificateChainPolicy(IntPtr pszPolicyOID, [In] PCCERT_CHAIN_CONTEXT pChainContext,
 			in CERT_CHAIN_POLICY_PARA pPolicyPara, ref CERT_CHAIN_POLICY_STATUS pPolicyStatus);
 
 		/// <summary>
@@ -2644,8 +2796,42 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator PCCERT_CHAIN_CONTEXT(SafePCCERT_CHAIN_CONTEXT h) => h.handle;
 
+			/// <summary>Performs an explicit conversion from <see cref="SafePCCERT_CHAIN_CONTEXT"/> to <see cref="CERT_CHAIN_CONTEXT"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The resulting <see cref="CERT_CHAIN_CONTEXT"/> instance from the conversion.</returns>
+			public static explicit operator CERT_CHAIN_CONTEXT(SafePCCERT_CHAIN_CONTEXT h) => h.handle.ToStructure<CERT_CHAIN_CONTEXT>();
+
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() { CertFreeCertificateChain(handle); return true; }
+		}
+
+		/// <summary>Predefined verify chain policies.</summary>
+		public static class CertVerifyChainPolicy
+		{
+			/// <summary/>
+			public const int CERT_CHAIN_POLICY_BASE = 1;
+			/// <summary/>
+			public const int CERT_CHAIN_POLICY_AUTHENTICODE = 2;
+			/// <summary/>
+			public const int CERT_CHAIN_POLICY_AUTHENTICODE_TS = 3;
+			/// <summary/>
+			public const int CERT_CHAIN_POLICY_SSL = 4;
+			/// <summary/>
+			public const int CERT_CHAIN_POLICY_BASIC_CONSTRAINTS = 5;
+			/// <summary/>
+			public const int CERT_CHAIN_POLICY_NT_AUTH = 6;
+			/// <summary/>
+			public const int CERT_CHAIN_POLICY_MICROSOFT_ROOT = 7;
+			/// <summary/>
+			public const int CERT_CHAIN_POLICY_EV = 8;
+			/// <summary/>
+			public const int CERT_CHAIN_POLICY_SSL_F12 = 9;
+			/// <summary/>
+			public const int CERT_CHAIN_POLICY_SSL_HPKP_HEADER = 10;
+			/// <summary/>
+			public const int CERT_CHAIN_POLICY_THIRD_PARTY_ROOT = 11;
+			/// <summary/>
+			public const int CERT_CHAIN_POLICY_SSL_KEY_PIN = 12;
 		}
 	}
 }

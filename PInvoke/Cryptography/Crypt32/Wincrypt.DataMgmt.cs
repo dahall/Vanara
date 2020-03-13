@@ -795,7 +795,7 @@ namespace Vanara.PInvoke
 		// LPCSTR pszObjId, DWORD cAttr, CRYPT_ATTRIBUTE [] rgAttr );
 		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "99d690fb-ea85-4cb1-9fb0-bdb02e4ac50a")]
-		public static extern IntPtr CertFindAttribute([MarshalAs(UnmanagedType.LPStr)] string pszObjId, uint cAttr, [MarshalAs(UnmanagedType.LPArray)] CRYPT_ATTRIBUTE[] rgAttr);
+		public static extern IntPtr CertFindAttribute(SafeOID pszObjId, uint cAttr, [MarshalAs(UnmanagedType.LPArray)] CRYPT_ATTRIBUTE[] rgAttr);
 
 		/// <summary>
 		/// The <c>CertFindAttribute</c> function finds the first attribute in the CRYPT_ATTRIBUTE array, as identified by its object
@@ -823,7 +823,7 @@ namespace Vanara.PInvoke
 		// LPCSTR pszObjId, DWORD cExtensions, CERT_EXTENSION [] rgExtensions );
 		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "489c58b6-a704-4f54-bc64-34eacafc347c")]
-		public static extern IntPtr CertFindExtension([MarshalAs(UnmanagedType.LPStr)] string pszObjId, uint cExtensions, [MarshalAs(UnmanagedType.LPArray)] CERT_EXTENSION[] rgExtensions);
+		public static extern IntPtr CertFindExtension(SafeOID pszObjId, uint cExtensions, [MarshalAs(UnmanagedType.LPArray)] CERT_EXTENSION[] rgExtensions);
 
 		/// <summary>
 		/// The <c>CertFindExtension</c> function finds the first extension in the CERT_EXTENSION array, as identified by its object
@@ -848,7 +848,7 @@ namespace Vanara.PInvoke
 		// pszObjId, PCERT_NAME_INFO pName );
 		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "31f82a02-e90a-48de-857a-9fbb03048b5c")]
-		public static extern IntPtr CertFindRDNAttr([MarshalAs(UnmanagedType.LPStr)] string pszObjId, in CERT_NAME_INFO pName);
+		public static extern IntPtr CertFindRDNAttr(SafeOID pszObjId, in CERT_NAME_INFO pName);
 
 		/// <summary>
 		/// The <c>CertGetIntendedKeyUsage</c> function acquires the intended key usage bytes from a certificate. The intended key usage can
@@ -1413,7 +1413,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "defd0b23-d9c2-4b28-a6a6-1be7487ae656")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptExportPKCS8(HCRYPTPROV hCryptProv, CertKeySpec dwKeySpec, [MarshalAs(UnmanagedType.LPStr)] string pszPrivateKeyObjId, uint dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional] IntPtr pbPrivateKeyBlob, ref uint pcbPrivateKeyBlob);
+		public static extern bool CryptExportPKCS8(HCRYPTPROV hCryptProv, CertKeySpec dwKeySpec, SafeOID pszPrivateKeyObjId, uint dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional] IntPtr pbPrivateKeyBlob, ref uint pcbPrivateKeyBlob);
 
 		/// <summary>
 		/// <para>
@@ -1767,7 +1767,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "38274222-90b3-4038-86d3-6b2813100ce2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptExportPublicKeyInfoEx(HCRYPTPROV hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszPublicKeyObjId,
+		public static extern bool CryptExportPublicKeyInfoEx(HCRYPTPROV hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, SafeOID pszPublicKeyObjId,
 			CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional] IntPtr pInfo, ref uint pcbInfo);
 
 		/// <summary>
@@ -1889,7 +1889,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "38274222-90b3-4038-86d3-6b2813100ce2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptExportPublicKeyInfoEx(NCrypt.NCRYPT_KEY_HANDLE hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszPublicKeyObjId,
+		public static extern bool CryptExportPublicKeyInfoEx(NCrypt.NCRYPT_KEY_HANDLE hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, SafeOID pszPublicKeyObjId,
 			CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional] IntPtr pInfo, ref uint pcbInfo);
 
 		/// <summary>
@@ -1961,7 +1961,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "f96bff4a-d354-4231-907a-383aff5cfacc")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptExportPublicKeyInfoFromBCryptKeyHandle(BCrypt.BCRYPT_KEY_HANDLE hBCryptKey, CertEncodingType dwCertEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszPublicKeyObjId,
+		public static extern bool CryptExportPublicKeyInfoFromBCryptKeyHandle(BCrypt.BCRYPT_KEY_HANDLE hBCryptKey, CertEncodingType dwCertEncodingType, SafeOID pszPublicKeyObjId,
 			CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional] IntPtr pInfo, ref uint pcbInfo);
 
 		/// <summary>
@@ -5081,7 +5081,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("wincrypt.h", MSDNShortId = "ee138918-ed7c-4980-8b18-64004a0dd7df")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CryptSignAndEncodeCertificate(BCrypt.BCRYPT_KEY_HANDLE hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
-			[MarshalAs(UnmanagedType.LPStr)] string lpszStructType, [In] IntPtr pvStructInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
+			[In] SafeOID lpszStructType, [In] IntPtr pvStructInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
 			[In, Optional] IntPtr pvHashAuxInfo, [Out] IntPtr pbEncoded, ref uint pcbEncoded);
 
 		/// <summary>The <c>CryptSignCertificate</c> function signs the "to be signed" information in the encoded signed content.</summary>
@@ -5757,7 +5757,7 @@ namespace Vanara.PInvoke
 			public CertKeySpec dwKeySpec;
 
 			/// <summary>An <c>LPSTR</c> variable that contains the object identifier (OID) of the private key to be exported.</summary>
-			[MarshalAs(UnmanagedType.LPStr)] public string pszPrivateKeyObjId;
+			public StrPtrAnsi pszPrivateKeyObjId;
 
 			/// <summary>
 			/// A PCRYPT_ENCRYPT_PRIVATE_KEY_FUNC pointer that points to a callback to a function that encrypts the private key. If this is

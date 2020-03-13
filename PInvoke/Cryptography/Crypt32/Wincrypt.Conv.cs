@@ -371,8 +371,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certalgidtooid LPCSTR CertAlgIdToOID( DWORD dwAlgId );
 		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "2a66c6da-22dd-4192-9f3d-2fb85f8032e0")]
-		[return: MarshalAs(UnmanagedType.LPStr)]
-		public static extern string CertAlgIdToOID(uint dwAlgId);
+		public static extern StrPtrAnsi CertAlgIdToOID(uint dwAlgId);
 
 		/// <summary>
 		/// The <c>CertGetNameString</c> function obtains the subject or issuer name from a certificate CERT_CONTEXT structure and converts
@@ -725,7 +724,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certoidtoalgid DWORD CertOIDToAlgId( LPCSTR pszObjId );
 		[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "920b2642-ce7c-4098-8720-5a6f24128787")]
-		public static extern uint CertOIDToAlgId([MarshalAs(UnmanagedType.LPStr)] string pszObjId);
+		public static extern uint CertOIDToAlgId(SafeOID pszObjId);
 
 		/// <summary>
 		/// The <c>CertRDNValueToStr</c> function converts a name in a CERT_RDN_VALUE_BLOB to a <c>null</c>-terminated character string.
@@ -1360,7 +1359,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("wincrypt.h", MSDNShortId = "307e0bd5-b8a6-4d85-9775-65aae99e8dc6")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CryptFormatObject(CertEncodingType dwCertEncodingType, [Optional] uint dwFormatType, CryptFormatStr dwFormatStrType, [Optional] IntPtr pFormatStruct,
-			[MarshalAs(UnmanagedType.LPStr)] string lpszStructType, [In] IntPtr pbEncoded, uint cbEncoded, [In] IntPtr pbFormat, ref uint pcbFormat);
+			[In] SafeOID lpszStructType, [In] IntPtr pbEncoded, uint cbEncoded, [In] IntPtr pbFormat, ref uint pcbFormat);
 
 		/// <summary>The <c>CryptStringToBinary</c> function converts a formatted string into an array of bytes.</summary>
 		/// <param name="pszString">A pointer to a string that contains the formatted string to be converted.</param>

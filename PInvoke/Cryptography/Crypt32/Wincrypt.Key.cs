@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -147,7 +148,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "1bec8d2f-aa43-4a8b-9414-c3a4e5fcb470")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CertAddEnhancedKeyUsageIdentifier([In] PCCERT_CONTEXT pCertContext, [MarshalAs(UnmanagedType.LPStr)] string pszUsageIdentifier);
+		public static extern bool CertAddEnhancedKeyUsageIdentifier([In] PCCERT_CONTEXT pCertContext, SafeOID pszUsageIdentifier);
 
 		/// <summary>
 		/// The <c>CertGetEnhancedKeyUsage</c> function returns information from the enhanced key usage (EKU) extension or the EKU extended
@@ -247,7 +248,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "4fb27073-674c-4bac-9a62-6e33e1a5785e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CertRemoveEnhancedKeyUsageIdentifier(PCCERT_CONTEXT pCertContext, [MarshalAs(UnmanagedType.LPStr)] string pszUsageIdentifier);
+		public static extern bool CertRemoveEnhancedKeyUsageIdentifier(PCCERT_CONTEXT pCertContext, SafeOID pszUsageIdentifier);
 
 		/// <summary>
 		/// The <c>CertSetEnhancedKeyUsage</c> function sets the enhanced key usage (EKU) property for the certificate. Use of this function
@@ -322,7 +323,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "628e1995-8207-4daa-a445-cb21a755ffa6")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptCreateKeyIdentifierFromCSP(CertEncodingType dwCertEncodingType, [Optional, MarshalAs(UnmanagedType.LPStr)] string pszPubKeyOID,
+		public static extern bool CryptCreateKeyIdentifierFromCSP(CertEncodingType dwCertEncodingType, [Optional] SafeOID pszPubKeyOID,
 			in PUBLICKEYSTRUC pPubKeyStruc, uint cbPubKeyStruc, uint dwFlags, [Optional] IntPtr pvReserved, [Out] IntPtr pbHash, ref uint pcbHash);
 
 		/// <summary>

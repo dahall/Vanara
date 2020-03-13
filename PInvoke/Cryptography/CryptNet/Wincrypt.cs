@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 
 using static Vanara.PInvoke.Crypt32;
 
@@ -216,7 +217,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Cryptnet, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "a92117b8-9144-4480-b88a-b9ffe1026d63")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptGetObjectUrl([MarshalAs(UnmanagedType.LPStr)] string pszUrlOid, [In] IntPtr pvPara, CryptGetUrlFromFlags dwFlags,
+		public static extern bool CryptGetObjectUrl([In] SafeOID pszUrlOid, [In] IntPtr pvPara, CryptGetUrlFromFlags dwFlags,
 			IntPtr pUrlArray, ref uint pcbUrlArray, IntPtr pUrlInfo, ref uint pcbUrlInfo, IntPtr pvReserved = default);
 
 		/// <summary>

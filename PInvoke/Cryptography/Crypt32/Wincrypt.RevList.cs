@@ -1250,7 +1250,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an explicit conversion from <see cref="SafePCCRL_CONTEXT"/> to <see cref="CRL_CONTEXT"/>.</summary>
 			/// <param name="ctx">The <see cref="SafePCCRL_CONTEXT"/> instance.</param>
 			/// <returns>The resulting <see cref="CRL_CONTEXT"/> instance from the conversion.</returns>
-			public static explicit operator CRL_CONTEXT(SafePCCRL_CONTEXT ctx) => ctx.DangerousGetHandle().ToStructure<CRL_CONTEXT>();
+			public static unsafe explicit operator CRL_CONTEXT*(SafePCCRL_CONTEXT ctx) => (CRL_CONTEXT*)(void*)ctx.handle;
 
 			/// <summary>Performs an implicit conversion from <see cref="SafePCCRL_CONTEXT"/> to <see cref="PCCRL_CONTEXT"/>.</summary>
 			/// <param name="ctx">The <see cref="SafePCCRL_CONTEXT"/> instance.</param>

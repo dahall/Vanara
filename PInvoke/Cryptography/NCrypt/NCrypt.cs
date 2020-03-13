@@ -4069,7 +4069,7 @@ namespace Vanara.PInvoke
 		// *pcbResult, DWORD dwFlags );
 		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ncrypt.h", MSDNShortId = "7404e37a-d7c6-49ed-b951-6081dd2b921a")]
-		public static extern HRESULT NCryptSignHash(NCRYPT_KEY_HANDLE hKey, [In, Optional] IntPtr pPaddingInfo, [In] IntPtr pbHashValue, uint cbHashValue, [In, Out] IntPtr pbSignature, uint cbSignature, out uint pcbResult, NCryptDecryptFlag dwFlags);
+		public static extern HRESULT NCryptSignHash(NCRYPT_KEY_HANDLE hKey, [In, Optional] IntPtr pPaddingInfo, [In] IntPtr pbHashValue, uint cbHashValue, [In, Out] IntPtr pbSignature, uint cbSignature, out uint pcbResult, BCrypt.EncryptFlags dwFlags);
 
 		/// <summary>The <c>NCryptTranslateHandle</c> function translates a CryptoAPI handle into a CNG key handle.</summary>
 		/// <param name="phProvider">

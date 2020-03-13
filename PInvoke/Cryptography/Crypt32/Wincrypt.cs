@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -10,6 +11,26 @@ namespace Vanara.PInvoke
 	public static partial class Crypt32
 	{
 		private const int CERT_COMPARE_SHIFT = 16;
+
+		/// <summary>The class of an ALG_ID.</summary>
+		[PInvokeData("wincrypt.h")]
+		public enum ALG_CLASS
+		{
+			/// <summary/>
+			ALG_CLASS_ANY = (0),
+			/// <summary/>
+			ALG_CLASS_SIGNATURE = (1 << 13),
+			/// <summary/>
+			ALG_CLASS_MSG_ENCRYPT = (2 << 13),
+			/// <summary/>
+			ALG_CLASS_DATA_ENCRYPT = (3 << 13),
+			/// <summary/>
+			ALG_CLASS_HASH = (4 << 13),
+			/// <summary/>
+			ALG_CLASS_KEY_EXCHANGE = (5 << 13),
+			/// <summary/>
+			ALG_CLASS_ALL = (7 << 13),
+		}
 
 		/// <summary>
 		/// The ALG_ID data type specifies an algorithm identifier. Parameters of this data type are passed to most of the functions in CryptoAPI.
@@ -203,6 +224,30 @@ namespace Vanara.PInvoke
 			CALG_TLS1PRF = 0x0000800a,
 		}
 
+		/// <summary>The type of an ALG_ID.</summary>
+		[PInvokeData("wincrypt.h")]
+		public enum ALG_TYPE
+		{
+			/// <summary/>
+			ALG_TYPE_ANY = (0),
+			/// <summary/>
+			ALG_TYPE_DSS = (1 << 9),
+			/// <summary/>
+			ALG_TYPE_RSA = (2 << 9),
+			/// <summary/>
+			ALG_TYPE_BLOCK = (3 << 9),
+			/// <summary/>
+			ALG_TYPE_STREAM = (4 << 9),
+			/// <summary/>
+			ALG_TYPE_DH = (5 << 9),
+			/// <summary/>
+			ALG_TYPE_SECURECHANNEL = (6 << 9),
+			/// <summary/>
+			ALG_TYPE_ECDH = (7 << 9),
+			/// <summary/>
+			ALG_TYPE_THIRDPARTY = (8 << 9),
+		}
+
 		/// <summary>Values used by CertFindType.</summary>
 		public enum CertCompareFunction : ushort
 		{
@@ -362,7 +407,7 @@ namespace Vanara.PInvoke
 			PKCS_7_NDR_ENCODING = 0x00020000
 		}
 
-		/// <summary>Values used by <see cref="CertFindCertificateInStore "/>.</summary>
+		/// <summary>Values used by <see cref="CertFindCertificateInStore(HCERTSTORE, CertEncodingType, CertFindUsageFlags, CertFindType, IntPtr, PCCERT_CONTEXT)"/>.</summary>
 		[PInvokeData("wincrypt.h", MSDNShortId = "20b3fcfb-55df-46ff-80a5-70f31a3d03b2")]
 		public enum CertFindType : uint
 		{
@@ -779,6 +824,26 @@ namespace Vanara.PInvoke
 			/// <summary>Set this flag to inhibit automatic authentication handling.</summary>
 			TIMESTAMP_NO_AUTH_RETRIEVAL = 0x00020000,
 		}
+
+		/// <summary>Gets the ALG_CLASS from an ALG_ID.</summary>
+		/// <param name="algId">The ALG_ID.</param>
+		/// <returns>The associated ALG_CLASS.</returns>
+		public static ALG_CLASS GET_ALG_CLASS(ALG_ID algId) => (ALG_CLASS)((int)algId & (7 << 13));
+
+		/// <summary>Gets the ALG_TYPE from an ALG_ID.</summary>
+		/// <param name="algId">The ALG_ID.</param>
+		/// <returns>The associated ALG_TYPE.</returns>
+		public static ALG_TYPE GET_ALG_TYPE(ALG_ID algId) => (ALG_TYPE)((int)algId & (15 << 9));
+
+		/// <summary>Gets the ALG_CLASS from an ALG_ID.</summary>
+		/// <param name="algId">The ALG_ID.</param>
+		/// <returns>The associated ALG_CLASS.</returns>
+		public static ALG_CLASS GetClass(this ALG_ID algId) => GET_ALG_CLASS(algId);
+
+		/// <summary>Gets the ALG_TYPE from an ALG_ID.</summary>
+		/// <param name="algId">The ALG_ID.</param>
+		/// <returns>The associated ALG_TYPE.</returns>
+		public static ALG_TYPE GetType(this ALG_ID algId) => GET_ALG_TYPE(algId);
 
 		/// <summary>
 		/// The <c>CertAddEncodedCertificateToSystemStore</c> function opens the specified system store and adds the encoded certificate to it.
@@ -1328,7 +1393,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "68ba3d40-08b0-4261-ab2f-6deb1795f830")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptRetrieveTimeStamp([MarshalAs(UnmanagedType.LPWStr)] string wszUrl, TimeStampRetrivalFlags dwRetrievalFlags, uint dwTimeout, [MarshalAs(UnmanagedType.LPStr)] string pszHashId,
+		public static extern bool CryptRetrieveTimeStamp([MarshalAs(UnmanagedType.LPWStr)] string wszUrl, TimeStampRetrivalFlags dwRetrievalFlags, uint dwTimeout, SafeOID pszHashId,
 			in CRYPT_TIMESTAMP_PARA pPara, [In] IntPtr pbData, uint cbData, out SafeCryptMem ppTsContext, out SafePCCERT_CONTEXT ppTsSigner, out SafeHCERTSTORE phStore);
 
 		/// <summary>
@@ -1394,6 +1459,11 @@ namespace Vanara.PInvoke
 		public static extern bool CryptVerifyTimeStampSignature([In] IntPtr pbTSContentInfo, uint cbTSContentInfo, [In, Optional] IntPtr pbData, uint cbData,
 			[In, Optional] HCERTSTORE hAdditionalStore, out SafeCryptMem ppTsContext, out SafePCCERT_CONTEXT ppTsSigner, out SafeHCERTSTORE phStore);
 
+		/// <summary>Determines whether a cryptography algorithm is only supported by using the CNG functions.</summary>
+		/// <param name="Algid">The cryptography algorithm.</param>
+		/// <returns><see langword="true"/> if algorithm is only supported by using the CNG functions; otherwise, <see langword="false"/>.</returns>
+		public static bool IS_SPECIAL_OID_INFO_ALGID(ALG_ID Algid) => Algid >= ALG_ID.CALG_OID_INFO_PARAMETERS;
+
 		/// <summary>
 		/// The CERT_CONTEXT structure contains both the encoded and decoded representations of a certificate. A certificate context
 		/// returned by one of the functions defined in Wincrypt.h must be freed by calling the CertFreeCertificateContext function. The
@@ -1420,6 +1490,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>A handle to the certificate store that contains the certificate context.</summary>
 			public HCERTSTORE hCertStore;
+
+			/// <summary>The address of a CERT_INFO structure that contains the certificate information.</summary>
+			public unsafe CERT_INFO* pUnsafeCertInfo => (CERT_INFO*)(void*)pCertInfo;
 		}
 
 		/// <summary>
@@ -1436,7 +1509,7 @@ namespace Vanara.PInvoke
 			/// Object identifier (OID) that specifies the structure of the extension data contained in the <c>Value</c> member. For
 			/// specifics on extension OIDs and their related structures, see X.509 Certificate Extension Structures.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPStr)] public string pszObjId;
+			public StrPtrAnsi pszObjId;
 
 			/// <summary>
 			/// If <c>TRUE</c>, any limitations specified by the extension in the <c>Value</c> member of this structure are imperative. If
@@ -2057,8 +2130,8 @@ namespace Vanara.PInvoke
 			/// <summary>A handle to the certificate store.</summary>
 			public HCERTSTORE hCertStore;
 
-			/// <summary>A CRL_INFO structure containing the CRL information.</summary>
-			public CRL_INFO CrlInfo => pCrlInfo.ToStructure<CRL_INFO>();
+			/// <summary>A pointer to CRL_INFO structure containing the CRL information.</summary>
+			public unsafe CRL_INFO* pUnsafeCrlInfo => (CRL_INFO*)(void*)pCrlInfo;
 		}
 
 		/// <summary>
@@ -2179,7 +2252,7 @@ namespace Vanara.PInvoke
 		public struct CRYPT_ATTRIBUTE
 		{
 			/// <summary>An object identifier (OID) that specifies the type of data contained in the <c>rgValue</c> array.</summary>
-			[MarshalAs(UnmanagedType.LPStr)] public string pszObjId;
+			public StrPtrAnsi pszObjId;
 
 			/// <summary>A <c>DWORD</c> value that indicates the number of elements in the <c>rgValue</c> array.</summary>
 			public uint cValue;
@@ -2407,7 +2480,7 @@ namespace Vanara.PInvoke
 			/// Optional. A pointer to a null-terminated string that specifies the Time Stamping Authority (TSA) policy under which the time
 			/// stamp token was provided. This value must correspond with the value passed in the CRYPT_TIMESTAMP_REQUEST structure.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPStr)] public string pszTSAPolicyId;
+			public StrPtrAnsi pszTSAPolicyId;
 
 			/// <summary>
 			/// A CRYPT_ALGORITHM_IDENTIFIER structure that contains information about the algorithm used to calculate the hash. This value
@@ -2461,7 +2534,7 @@ namespace Vanara.PInvoke
 			/// Optional. A pointer to a null-terminated character string that contains the Time Stamping Authority (TSA) policy under which
 			/// the time stamp token should be provided.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPStr)] public string pszTSAPolicyId;
+			public StrPtrAnsi pszTSAPolicyId;
 
 			/// <summary>
 			/// A Boolean value that specifies whether the TSA must include the certificates used to sign the time stamp token in the
@@ -2489,7 +2562,7 @@ namespace Vanara.PInvoke
 		/// functions that use it.
 		/// </summary>
 		[PInvokeData("wincrypt.h")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct CRYPTOAPI_BLOB
 		{
 			/// <summary>A DWORD variable that contains the count, in bytes, of data.</summary>
@@ -2497,6 +2570,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>A pointer to the data buffer.</summary>
 			public IntPtr pbData;
+
+			/// <summary>Gets the bytes associated with this blob.</summary>
+			public byte[] GetBytes() => pbData.ToArray<byte>((int)cbData);
 		}
 
 		/// <summary>
@@ -2554,6 +2630,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>Count, in bytes, of <c>pbCtlContent</c>.</summary>
 			public uint cbCtlContent;
+
+			/// <summary>A pointer to CTL_INFO structure contain the CTL information.</summary>
+			public unsafe CTL_INFO* pUnsafeCtlInfo => (CTL_INFO*)(void*)pCtlInfo;
 		}
 
 		/// <summary>The <c>CTL_ENTRY</c> structure is an element of a certificate trust list (CTL).</summary>
@@ -2883,7 +2962,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an explicit conversion from <see cref="PCCERT_CONTEXT"/> to <see cref="CERT_CONTEXT"/>.</summary>
 			/// <param name="h">The <see cref="PCCERT_CONTEXT"/> instance.</param>
 			/// <returns>The resulting <see cref="CERT_CONTEXT"/> instance from the conversion.</returns>
-			public static explicit operator CERT_CONTEXT(PCCERT_CONTEXT h) => h.DangerousGetHandle().ToStructure<CERT_CONTEXT>();
+			public static unsafe explicit operator CERT_CONTEXT*(PCCERT_CONTEXT h) => (CERT_CONTEXT*)(void*)h.handle;
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2934,9 +3013,9 @@ namespace Vanara.PInvoke
 			public static implicit operator PCCRL_CONTEXT(IntPtr h) => new PCCRL_CONTEXT(h);
 
 			/// <summary>Performs an implicit conversion from <see cref="PCCRL_CONTEXT"/> to <see cref="CRL_CONTEXT"/>.</summary>
-			/// <param name="ctx">The <see cref="PCCRL_CONTEXT"/> instance.</param>
+			/// <param name="h">The <see cref="PCCRL_CONTEXT"/> instance.</param>
 			/// <returns>The resulting <see cref="CRL_CONTEXT"/> instance from the conversion.</returns>
-			public static explicit operator CRL_CONTEXT(PCCRL_CONTEXT ctx) => ctx.DangerousGetHandle().ToStructure<CRL_CONTEXT>();
+			public static unsafe explicit operator CRL_CONTEXT*(PCCRL_CONTEXT h) => (CRL_CONTEXT*)(void*)h.handle;
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2986,6 +3065,11 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator PCCTL_CONTEXT(IntPtr h) => new PCCTL_CONTEXT(h);
 
+			/// <summary>Performs an explicit conversion from <see cref="PCCTL_CONTEXT"/> to <see cref="CTL_CONTEXT"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The resulting <see cref="CTL_CONTEXT"/> instance from the conversion.</returns>
+			public static unsafe explicit operator CTL_CONTEXT*(PCCTL_CONTEXT h) => (CTL_CONTEXT*)(void*)h.handle;
+
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
 			/// <param name="h2">The second handle.</param>
@@ -3006,6 +3090,173 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>
+		/// The BLOB structure contains an arbitrary array of bytes. The structure definition includes aliases appropriate to the various
+		/// functions that use it.
+		/// </summary>
+		[PInvokeData("wincrypt.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		public class SafeCRYPTOAPI_BLOB : IDisposable
+		{
+			/// <summary>A DWORD variable that contains the count, in bytes, of data.</summary>
+			private uint cbData;
+
+			/// <summary>A pointer to the data buffer.</summary>
+			private IntPtr pbData;
+
+			/// <summary>Initializes a new instance of the <see cref="SafeCRYPTOAPI_BLOB"/> class.</summary>
+			/// <param name="size">The size, in bytes, to allocate.</param>
+			public SafeCRYPTOAPI_BLOB(int size)
+			{
+				cbData = (uint)size;
+				if (size > 0)
+					pbData = MemMethods.AllocMem(size);
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="SafeCRYPTOAPI_BLOB"/> class.</summary>
+			/// <param name="bytes">The bytes to copy into the blob.</param>
+			public SafeCRYPTOAPI_BLOB(byte[] bytes) : this(bytes?.Length ?? 0)
+			{
+				Marshal.Copy(bytes, 0, pbData, bytes.Length);
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="SafeCRYPTOAPI_BLOB"/> class with a string.</summary>
+			/// <param name="value">The string value.</param>
+			/// <param name="charSet">The character set to use.</param>
+			public SafeCRYPTOAPI_BLOB(string value, CharSet charSet = CharSet.Unicode) : this(StringHelper.GetBytes(value, true, charSet))
+			{
+			}
+
+			private SafeCRYPTOAPI_BLOB(IntPtr handle, int size)
+			{
+				pbData = handle;
+				cbData = (uint)size;
+			}
+
+			/// <summary>Represents an empty instance of a blob.</summary>
+			public static readonly SafeCRYPTOAPI_BLOB Empty = new SafeCRYPTOAPI_BLOB(IntPtr.Zero, 0);
+
+			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+			public void Dispose()
+			{
+				MemMethods.FreeMem(pbData);
+				pbData = IntPtr.Zero;
+				cbData = 0;
+			}
+
+			/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
+			/// <typeparam name="T">Native type</typeparam>
+			/// <param name="value">The value.</param>
+			/// <returns><see cref="SafeCRYPTOAPI_BLOB"/> object to an native (unmanaged) memory block the size of T.</returns>
+			public static SafeCRYPTOAPI_BLOB CreateFromStructure<T>(in T value = default) => new SafeCRYPTOAPI_BLOB(InteropExtensions.MarshalToPtr(value, MemMethods.AllocMem, out int s), s);
+
+			/// <summary>
+			/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
+			/// elements. It is the callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY
+			/// structures with attribute StructLayout of LayoutKind.Sequential are supported.
+			/// </summary>
+			/// <typeparam name="T">Type of the trailing array of structures</typeparam>
+			/// <param name="values">Collection of structure objects</param>
+			/// <param name="count">
+			/// Number of items in <paramref name="values"/>. Setting this value to -1 will cause the method to get the count by iterating
+			/// through <paramref name="values"/>.
+			/// </param>
+			/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
+			/// <returns><see cref="SafeCRYPTOAPI_BLOB"/> object to an native (unmanaged) structure with a trail array of structures</returns>
+			public static SafeCRYPTOAPI_BLOB CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) =>
+				new SafeCRYPTOAPI_BLOB(InteropExtensions.MarshalToPtr(values, MemMethods.AllocMem, out int s, prefixBytes), s);
+
+			/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
+			/// <param name="values">The list of strings.</param>
+			/// <param name="packing">The packing type for the strings.</param>
+			/// <param name="charSet">The character set to use for the strings.</param>
+			/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+			/// <returns>
+			/// <see cref="SafeCRYPTOAPI_BLOB"/> object to an native (unmanaged) array of strings stored using the <paramref
+			/// name="packing"/> model and the character set defined by <paramref name="charSet"/>.
+			/// </returns>
+			public static SafeCRYPTOAPI_BLOB CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
+				new SafeCRYPTOAPI_BLOB(InteropExtensions.MarshalToPtr(values, packing, MemMethods.AllocMem, out int s, charSet, prefixBytes), s);
+
+			private static IMemoryMethods MemMethods => HGlobalMemoryMethods.Instance;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for an object identifier that can be either a string or an integer.</summary>
+		public class SafeOID : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeOID"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeOID(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeOID"/> class.</summary>
+			/// <param name="value">The value.</param>
+			public SafeOID(int value) { SetHandle((IntPtr)unchecked((ushort)value)); }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeOID"/> class.</summary>
+			/// <param name="value">The value.</param>
+			public SafeOID(uint value) { SetHandle((IntPtr)unchecked((ushort)value)); }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeOID"/> class.</summary>
+			/// <param name="value">The value.</param>
+			public SafeOID(string value) : base(Marshal.StringToCoTaskMemAnsi(value)) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeOID"/> class.</summary>
+			private SafeOID() : base() { }
+
+			/// <summary>Gets a value indicating whether this instance is string.</summary>
+			/// <value><see langword="true"/> if this instance is string; otherwise, <see langword="false"/>.</value>
+			private bool IsString => !Macros.IS_INTRESOURCE(handle);
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeOID"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="value">The value.</param>
+			/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
+			public static implicit operator IntPtr(SafeOID value) => value.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="System.String"/> to <see cref="SafeOID"/>.</summary>
+			/// <param name="value">The value.</param>
+			/// <returns>The resulting <see cref="SafeOID"/> instance from the conversion.</returns>
+			public static implicit operator SafeOID(string value) => new SafeOID(value);
+
+			/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="SafeOID"/>.</summary>
+			/// <param name="value">The value.</param>
+			/// <returns>The resulting <see cref="SafeOID"/> instance from the conversion.</returns>
+			public static implicit operator SafeOID(int value) => new SafeOID(value);
+
+			/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="SafeOID"/>.</summary>
+			/// <param name="value">The value.</param>
+			/// <returns>The resulting <see cref="SafeOID"/> instance from the conversion.</returns>
+			public static implicit operator SafeOID(uint value) => new SafeOID(value);
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeOID"/> to <see cref="StrPtrAnsi"/>.</summary>
+			/// <param name="value">The value.</param>
+			/// <returns>The resulting <see cref="StrPtrAnsi"/> instance from the conversion.</returns>
+			public static implicit operator StrPtrAnsi(SafeOID value) => value.handle;
+
+			/// <summary>Gets the integer value, if possible.</summary>
+			/// <returns>The integer value, if set; otherwise <see langword="null"/>.</returns>
+			public int? GetInt32Value() => IsString ? null : (int?)handle.ToInt32();
+
+			/// <summary>Gets the string value, if possible.</summary>
+			/// <returns>The string value, if set; otherwise <see langword="null"/>.</returns>
+			public string GetStringValue() => IsString ? Marshal.PtrToStringAnsi(handle) : null;
+
+			/// <summary>
+			/// Internal method that actually releases the handle. This is called by <see cref="M:Vanara.PInvoke.SafeHANDLE.ReleaseHandle"/>
+			/// for valid handles and afterwards zeros the handle.
+			/// </summary>
+			/// <returns><c>true</c> to indicate successful release of the handle; <c>false</c> otherwise.</returns>
+			protected override bool InternalReleaseHandle()
+			{
+				if (IsString)
+					Marshal.FreeCoTaskMem(handle);
+				handle = IntPtr.Zero;
+				return true;
+			}
 		}
 	}
 }

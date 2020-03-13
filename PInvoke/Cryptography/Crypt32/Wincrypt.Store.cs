@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -519,6 +520,43 @@ namespace Vanara.PInvoke
 			/// The system will unbind the LDAP session by using the ldap_unbind function when the store is closed.
 			/// </summary>
 			CERT_LDAP_STORE_UNBIND_FLAG = 0x80000,
+
+			/// <summary>Stores at the registry location <c>HKEY_CURRENT_USER\Software\Microsoft\SystemCertificates</c>.</summary>
+			CERT_SYSTEM_STORE_CURRENT_USER = CertSystemStore.CERT_SYSTEM_STORE_CURRENT_USER,
+
+			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Microsoft\SystemCertificates</c>.</summary>
+			CERT_SYSTEM_STORE_LOCAL_MACHINE = CertSystemStore.CERT_SYSTEM_STORE_LOCAL_MACHINE,
+
+			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Microsoft\Cryptography\Services\ServiceName\SystemCertificates</c>.</summary>
+			CERT_SYSTEM_STORE_CURRENT_SERVICE = CertSystemStore.CERT_SYSTEM_STORE_CURRENT_SERVICE,
+
+			/// <summary>
+			/// Stores at the registry location
+			/// <c>HKEY_LOCAL_MACHINE\Software\Microsoft\Cryptography\Services\ServiceName\SystemCertificates</c> and with keys starting
+			/// with [ServiceName].
+			/// </summary>
+			CERT_SYSTEM_STORE_SERVICES = CertSystemStore.CERT_SYSTEM_STORE_SERVICES,
+
+			/// <summary>
+			/// Stores at the registry location <c>HKEY_USERS\UserName\Software\Microsoft\SystemCertificates</c> and with keys starting with [userid].
+			/// </summary>
+			CERT_SYSTEM_STORE_USERS = CertSystemStore.CERT_SYSTEM_STORE_USERS,
+
+			/// <summary>Stores at the registry location <c>HKEY_CURRENT_USER\Software\Policy\Microsoft\SystemCertificates</c>.</summary>
+			CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY = CertSystemStore.CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY,
+
+			/// <summary>Stores at the registry location <c>HKEY_LOCAL_MACHINE\Software\Policy\Microsoft\SystemCertificates</c>.</summary>
+			CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY = CertSystemStore.CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY,
+
+			/// <summary>
+			/// CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE contains certificates shared across domains in the enterprise and downloaded from
+			/// the global enterprise directory. To synchronize the client's enterprise store, the enterprise directory is polled every
+			/// eight hours and certificates are downloaded automatically in the background.
+			/// </summary>
+			CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE = CertSystemStore.CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE,
+
+			/// <summary/>
+			CERT_SYSTEM_STORE_LOCAL_MACHINE_WCOS = CertSystemStore.CERT_SYSTEM_STORE_LOCAL_MACHINE_WCOS,
 		}
 
 		/// <summary>Specifies how to save the certificate store.</summary>
@@ -871,7 +909,184 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "2726cd34-51ba-4f68-9a3c-7cd505eb32a1")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CertAddSerializedElementToStore(HCERTSTORE hCertStore, [In] IntPtr pbElement, uint cbElement, CertStoreAdd dwAddDisposition, [Optional] uint dwFlags, CertStoreContextFlags dwContextTypeFlags, out CertStoreContextType pdwContextType, [Optional] IntPtr ppvContext);
+		public static extern bool CertAddSerializedElementToStore([Optional] HCERTSTORE hCertStore, [In] IntPtr pbElement, uint cbElement, CertStoreAdd dwAddDisposition, [Optional] uint dwFlags, CertStoreContextFlags dwContextTypeFlags, out CertStoreContextType pdwContextType, out IntPtr ppvContext);
+
+		/// <summary>
+		/// The <c>CertAddSerializedElementToStore</c> function adds a serialized certificate, certificate revocation list (CRL), or
+		/// certificate trust list (CTL) element to the store. The serialized element contains the encoded certificate, CRL, or CTL and its
+		/// extended properties. Extended properties are associated with a certificate and are not part of a certificate as issued by a
+		/// certification authority. Extended properties are not available on a certificate when it is used on a non-Microsoft platform.
+		/// </summary>
+		/// <param name="hCertStore">
+		/// The handle of a certificate store where the created certificate will be stored. If hCertStore is <c>NULL</c>, the function
+		/// creates a copy of a certificate, CRL, or CTL context with its extended properties, but the certificate, CRL, or CTL is not
+		/// persisted in any store.
+		/// </param>
+		/// <param name="pbElement">
+		/// A pointer to a buffer that contains the certificate, CRL, or CTL information to be serialized and added to the certificate store.
+		/// </param>
+		/// <param name="cbElement">The size, in bytes, of the pbElement buffer.</param>
+		/// <param name="dwAddDisposition">
+		/// <para>
+		/// Specifies the action to take if the certificate, CRL, or CTL already exists in the store. Currently defined disposition values
+		/// are shown in the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_STORE_ADD_NEW</term>
+		/// <term>
+		/// If the certificate, CRL, or CTL is new, it is created and persisted to the store. The operation fails if an identical
+		/// certificate, CRL, or CTL already exists in the store. The last error code is set to CRYPT_E_EXISTS.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_USE_EXISTING</term>
+		/// <term>
+		/// If the certificate, CRL, or CTL is new, it is added to the store. If an identical certificate, CRL, or CTL already exists, the
+		/// existing element is used. If ppvContext is not NULL, the existing context is duplicated. The function only adds properties that
+		/// do not already exist. The SHA-1 and MD5 hash properties are not copied.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_REPLACE_EXISTING</term>
+		/// <term>
+		/// If an identical certificate, CRL, or CTL already exists in the store, the existing certificate, CRL, or CTL context is deleted
+		/// before creating and adding the new context.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_ALWAYS</term>
+		/// <term>
+		/// No check is made to determine whether an identical certificate, CRL, or CTL already exists. A new element is always created.
+		/// This can lead to duplicates in the store. To determine whether the element already exists in the store, call CertGetCRLFromStore
+		/// or CertGetSubjectCertificateFromStore.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_NEWER</term>
+		/// <term>
+		/// If a matching CRL or CTL or a link to a matching CRL or CTL exists, the function compares the NotBefore times on the CRL or CTL.
+		/// If the existing CRL or CTL has a NotBefore time less than the NotBefore time on the new element, the old element or link is
+		/// replaced just as with CERT_STORE_ADD_REPLACE_EXISTING. If the existing element has a NotBefore time greater than or equal to the
+		/// NotBefore time on the element to be added, the function fails with GetLastError returning the CRYPT_E_EXISTS code. If a matching
+		/// CRL or CTL or a link to a matching CRL or CTL is not found in the store, a new element is added to the store.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_NEWER_INHERIT_PROPERTIES</term>
+		/// <term>
+		/// The action is the same as for CERT_STORE_ADD_NEWER. However, if an older CRL or CTL is replaced, the properties of the older
+		/// element are incorporated into the replacement.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_REPLACE_EXISTING_INHERIT_PROPERTIES</term>
+		/// <term>
+		/// If a matching certificate exists in the store, the existing context is deleted before creating and adding the new context. The
+		/// new added context inherits properties from the existing certificate.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwFlags">Reserved for future use and must be zero.</param>
+		/// <param name="dwContextTypeFlags">
+		/// <para>
+		/// Specifics the contexts that can be added. For example, to add either a certificate, CRL, or CTL, set dwContextTypeFlags to
+		/// <c>CERT_STORE_CERTIFICATE_CONTEXT_FLAG</c> or <c>CERT_STORE_CRL_CONTEXT_FLAG</c>.
+		/// </para>
+		/// <para>Currently defined context type flags are shown in the following table.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_STORE_ALL_CONTEXT_FLAG</term>
+		/// <term>Adds any context.</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_CERTIFICATE_CONTEXT_FLAG</term>
+		/// <term>Adds only a certificate context.</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_CRL_CONTEXT_FLAG</term>
+		/// <term>Adds only a CRL context.</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_CTL_CONTEXT_FLAG</term>
+		/// <term>Adds only a CTL context.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pdwContextType">
+		/// <para>
+		/// A pointer to the context type of the added serialized element. This is an optional parameter and can be <c>NULL</c>, which
+		/// indicates that the calling application does not require the context type.
+		/// </para>
+		/// <para>Currently defined context types are shown in the following table.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_STORE_CERTIFICATE_CONTEXT</term>
+		/// <term>Certificates</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_CRL_CONTEXT</term>
+		/// <term>CRLs</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_CTL_CONTEXT</term>
+		/// <term>CTLs</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="ppvContext">
+		/// <para>
+		/// A pointer to a pointer to the decoded certificate, CRL, or CTL context. This is an optional parameter and can be <c>NULL</c>,
+		/// which indicates that the calling application does not require the context of the added or existing certificate, CRL, or CTL.
+		/// </para>
+		/// <para>
+		/// If ppvContext is not <c>NULL</c>, it must be the address of a pointer to a CERT_CONTEXT, CRL_CONTEXT, or CTL_CONTEXT. When the
+		/// application is finished with the context, the context must be freed by using CertFreeCertificateContext for a certificate,
+		/// CertFreeCRLContext for a CRL, or CertFreeCTLContext for a CTL.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero.</para>
+		/// <para>If the function fails, it returns zero. For extended error information, call GetLastError. Some possible error codes follow.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_E_EXISTS</term>
+		/// <term>If the dwAddDisposition parameter is set to CERT_STORE_ADD_NEW, the certificate, CRL, or CTL already exists in the store.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>A disposition value that is not valid was specified in the dwAddDisposition parameter.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If the function fails, GetLastError may return an Abstract Syntax Notation One (ASN.1) encoding/decoding error. For information
+		/// about these errors, see ASN.1 Encoding/Decoding Return Values.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddserializedelementtostore BOOL
+		// CertAddSerializedElementToStore( HCERTSTORE hCertStore, const BYTE *pbElement, DWORD cbElement, DWORD dwAddDisposition, DWORD
+		// dwFlags, DWORD dwContextTypeFlags, DWORD *pdwContextType, const void **ppvContext );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "2726cd34-51ba-4f68-9a3c-7cd505eb32a1")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CertAddSerializedElementToStore([Optional] HCERTSTORE hCertStore, [In] IntPtr pbElement, uint cbElement, CertStoreAdd dwAddDisposition, [Optional] uint dwFlags, CertStoreContextFlags dwContextTypeFlags, IntPtr pdwContextType = default, IntPtr ppvContext = default);
 
 		/// <summary>
 		/// The <c>CertAddStoreToCollection</c> function adds a sibling certificate store to a collection certificate store. When a
@@ -2332,7 +2547,518 @@ namespace Vanara.PInvoke
 		// lpszStoreProvider, DWORD dwEncodingType, HCRYPTPROV_LEGACY hCryptProv, DWORD dwFlags, const void *pvPara );
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "4edccbfe-c0a8-442b-b6b7-51ef598e7c90")]
-		public static extern SafeHCERTSTORE CertOpenStore([MarshalAs(UnmanagedType.LPStr)] string lpszStoreProvider, CertEncodingType dwEncodingType, [Optional] HCRYPTPROV hCryptProv, CertStoreFlags dwFlags, [Optional] IntPtr pvPara);
+		public static extern SafeHCERTSTORE CertOpenStore([In] SafeOID lpszStoreProvider, CertEncodingType dwEncodingType, [Optional] HCRYPTPROV hCryptProv, CertStoreFlags dwFlags, [Optional] IntPtr pvPara);
+
+		/// <summary>
+		/// The <c>CertOpenStore</c> function opens a certificate store by using a specified store provider type. While this function can
+		/// open a certificate store for most purposes, CertOpenSystemStore is recommended to open the most common certificate stores.
+		/// <c>CertOpenStore</c> is required for more complex options and special cases.
+		/// </summary>
+		/// <param name="lpszStoreProvider">
+		/// <para>A pointer to a null-terminated ANSI string that contains the store provider type.</para>
+		/// <para>
+		/// The following values represent the predefined store types. The store provider type determines the contents of the pvPara
+		/// parameter and the use and meaning of the high word of the dwFlags parameter. Additional store providers can be installed or
+		/// registered by using the CryptInstallOIDFunctionAddress or CryptRegisterOIDFunction function. For more information about adding
+		/// store providers, see Extending CertOpenStore Functionality.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_STORE_PROV_COLLECTION sz_CERT_STORE_PROV_COLLECTION</term>
+		/// <term>
+		/// Opens a store that will be a collection of other stores. Stores are added to or removed from the collection by using
+		/// CertAddStoreToCollection and CertRemoveStoreFromCollection. When a store is added to a collection, all certificates, CRLs, and
+		/// CTLs in that store become available to searches or enumerations of the collection store. The high word of dwFlags is set to
+		/// zero. pvPara value: The pvPara parameter must be NULL.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_FILE</term>
+		/// <term>
+		/// Initializes the store with certificates, CRLs, and CTLs read from a specified open file. This provider expects the file to
+		/// contain only a serialized store and not either PKCS #7 signed messages or a single encoded certificate. The file pointer must be
+		/// positioned at the beginning of the serialized store information. After the data in the serialized store has been loaded into the
+		/// certificate store, the file pointer is positioned at the beginning of any data that can follow the serialized store data in the
+		/// file. If CERT_FILE_STORE_COMMIT_ENABLE is set in dwFlags, the file handle is duplicated and the store is always committed as a
+		/// serialized store. The file is not closed when the store is closed. pvPara value: The pvPara parameter must contain a pointer to
+		/// the handle of a file opened by using CreateFile.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_FILENAME_A</term>
+		/// <term>
+		/// Initializes the store with certificates, CRLs, and CTLs from a file. The provider opens the file and first attempts to read the
+		/// file as a serialized store, then as a PKCS #7 signed message, and finally as a single encoded certificate. The dwEncodingType
+		/// parameter must contain the encoding types to be used with both messages and certificates. If the file contains an X.509 encoded
+		/// certificate, the open operation fails and a call to the GetLastError function will return ERROR_ACCESS_DENIED. If the
+		/// CERT_FILE_STORE_COMMIT_ENABLE flag is set in dwFlags, the dwCreationDisposition value passed to CreateFile is as follows: If
+		/// dwFlags includes CERT_FILE_STORE_COMMIT_ENABLE, the file is committed as either a PKCS #7 or a serialized store depending on the
+		/// file type opened. If the file was empty or if the file name has either a .p7c or .spc extension, the file is committed as a PKCS
+		/// #7. Otherwise, the file is committed as a serialized store. pvPara value: The pvPara parameter must contain a pointer to
+		/// null-terminated ANSI string that contains the name of an existing, unopened file.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_FILENAME(_W) sz_CERT_STORE_PROV_FILENAME(_W)</term>
+		/// <term>
+		/// Same as CERT_STORE_PROV_FILENAME_A. pvPara value: The pvPara parameter must contain a pointer to null-terminated Unicode string
+		/// that contains the name of an existing, unopened file.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_LDAP(_W) sz_CERT_STORE_PROV_LDAP(_W)</term>
+		/// <term>
+		/// Initializes the store with certificates, CRLs, and CTLs from the results of an LDAP query. To perform write operations on the
+		/// store, the query string must specify a BASE query with no filter and a single attribute. pvPara value: If the dwFlags parameter
+		/// contains CERT_LDAP_STORE_OPENED_FLAG, set pvPara to the address of a CERT_LDAP_STORE_OPENED_PARA structure that specifies the
+		/// established LDAP session to use. Otherwise, set pvPara to point to a null-terminated Unicode string that contains the LDAP query
+		/// string. For more information about LDAP query strings, see LDAP Dialect.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_MEMORY sz_CERT_STORE_PROV_MEMORY</term>
+		/// <term>
+		/// Creates a certificate store in cached memory. No certificates, certificate revocation lists (CRLs), or certificate trust lists
+		/// (CTLs) are initially loaded into the store. Typically used to create a temporary store. Any addition of certificates, CRLs, or
+		/// CTLs or changes in properties of certificates, CRLs, or CTLs in a memory store are not automatically saved. They can be saved to
+		/// a file or to a memory BLOB by using CertSaveStore. pvPara value: The pvPara parameter is not used.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_MSG</term>
+		/// <term>
+		/// Initializes the store with certificates, CRLs, and CTLs from the specified cryptographic message. The dwEncodingType parameter
+		/// must contain the encoding types used with both messages and certificates. pvPara value: The pvPara parameter contains an
+		/// HCRYPTMSG handle of the encoded message, returned by a call to CryptMsgOpenToDecode.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_PHYSICAL(_W) sz_CERT_STORE_PROV_PHYSICAL(_W)</term>
+		/// <term>
+		/// Initializes the store with certificates, CRLs, and CTLs from a specified physical store that is a member of a logical system
+		/// store. Two names are separated with an intervening backslash (), for example "Root.Default". Here, "Root" is the name of the
+		/// system store and ".Default" is the name of the physical store. The system and physical store names cannot contain any
+		/// backslashes. The high word of dwFlags indicates the system store location, usually CERT_SYSTEM_STORE_CURRENT_USER. For more
+		/// information, see dwFlags later in this topic and see System Store Locations. Some physical store locations can be opened
+		/// remotely. pvPara value: The pvPara parameter points to a null-terminated Unicode string that contains both the system store name
+		/// and physical names.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_PKCS7 sz_CERT_STORE_PROV_PKCS7</term>
+		/// <term>
+		/// Initializes the store with certificates, CRLs, and CTLs from an encoded PKCS #7 signed message. The dwEncodingType parameter
+		/// must specify the encoding types to be used with both messages and certificates. pvPara value: The pvPara parameter points to a
+		/// CRYPT_DATA_BLOB structure that represents the encoded message.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_PKCS12 sz_CERT_STORE_PROV_PKCS12</term>
+		/// <term>
+		/// Initializes the store with the contents of a PKCS #12 packet. If the PKCS #12 packet is protected with a NULL or empty password,
+		/// this function will succeed in opening the store. Beginning with Windows 8 and Windows Server 2012, if the password embedded in
+		/// the PFX packet was protected to an Active Directory (AD) principal and the current user, as a member of that principal, has
+		/// permission to decrypt the password, this function will succeed in opening the store. For more information, see the pvPara
+		/// parameter and the PKCS12_PROTECT_TO_DOMAIN_SIDS flag of the PFXExportCertStoreEx function. You can protect PFX passwords to an
+		/// AD principal beginning in Windows 8 and Windows Server 2012. pvPara value: The pvPara parameter points to a CRYPT_DATA_BLOB
+		/// structure that represents the PKCS #12 packet.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_REG</term>
+		/// <term>
+		/// Initializes the store with certificates, CRLs, and CTLs from a registry subkey. This provider opens or creates the registry
+		/// subkeys Certificates, CRLs, and CTLs under the key passed in pvPara. The input key is not closed by the provider. Before
+		/// returning, the provider opens its own copy of the key passed in pvPara. If CERT_STORE_READONLY_FLAG is set in the low word of
+		/// dwFlags, registry subkeys are opened by using the RegOpenKey with KEY_READ_ACCESS. Otherwise, registry subkeys are created by
+		/// using RegCreateKey with KEY_ALL_ACCESS. Any changes to the contents of the opened store are immediately persisted to the
+		/// registry. However, if CERT_STORE_READONLY_FLAG is set in the low word of dwFlags, any attempt to add to the contents of the
+		/// store or to change a context's property results in an error with GetLastError returning the E_ACCESSDENIED code. pvPara value:
+		/// The pvPara parameter contains the handle of an open registry key.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_SERIALIZED sz_CERT_STORE_PROV_SERIALIZED</term>
+		/// <term>
+		/// Initializes the store with certificates, CRLs, and CTLs from a memory location that contains a serialized store. pvPara value:
+		/// The pvPara parameter points to a CRYPT_DATA_BLOB structure that contains the serialized memory BLOB.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_SMART_CARD(_W) sz_CERT_STORE_PROV_SMART_CARD(_W)</term>
+		/// <term>Not currently used.</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_SYSTEM_A</term>
+		/// <term>
+		/// Initializes the store with certificates, CRLs, and CTLs from the specified system store. The system store is a logical,
+		/// collection store that consists of one or more physical stores. A physical store associated with a system store is registered
+		/// with the CertRegisterPhysicalStore function. After the system store is opened, all of the physical stores that are associated
+		/// with it are also opened by calls to CertOpenStore and are added to the system store collection by using the
+		/// CertAddStoreToCollection function. The high word of dwFlags indicates the system store location, usually set to
+		/// CERT_SYSTEM_STORE_CURRENT_USER. For details about registry locations, see dwFlags later in this topic and System Store
+		/// Locations. Some system store locations can be opened remotely; for more information, see System Store Locations. pvPara value:
+		/// The pvPara parameter points to a null-terminated ANSI string that contains a system store name, such as "My" or "Root".
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_SYSTEM(_W) sz_CERT_STORE_PROV_SYSTEM(_W)</term>
+		/// <term>
+		/// Same as CERT_STORE_PROV_SYSTEM_A. pvPara value: The pvPara parameter points to a null-terminated Unicode string that contains a
+		/// system store name, such as "My" or "Root".
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_SYSTEM_REGISTRY_A</term>
+		/// <term>
+		/// Initializes the store with certificates, CRLs, and CTLs from a physical registry store. The physical store is not opened as a
+		/// collection store. Enumerations and searches go through only the certificates, CRLs, and CTLs in that one physical store. The
+		/// high word of dwFlags indicates the system store location, usually set to CERT_SYSTEM_STORE_CURRENT_USER. For more information,
+		/// see dwFlags later in this topic. Some system store locations can be open remotely; for more information, see System Store
+		/// Locations. pvPara value: The pvPara parameter points to a null-terminated ANSI string that contains a system store name, such as
+		/// "My" or "Root".
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_PROV_SYSTEM_REGISTRY(_W) sz_CERT_STORE_PROV_SYSTEM_REGISTRY(_W)</term>
+		/// <term>
+		/// Same as CERT_STORE_PROV_SYSTEM_REGISTRY_A. pvPara value: The pvPara parameter points to a null-terminated Unicode string that
+		/// contains a system store name, such as "My" or "Root".
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwEncodingType">
+		/// <para>
+		/// Specifies the certificate encoding type and message encoding type. Encoding is used only when the dwSaveAs parameter of the
+		/// CertSaveStore function contains <c>CERT_STORE_SAVE_AS_PKCS7</c>. Otherwise, the dwMsgAndCertEncodingType parameter is not used.
+		/// </para>
+		/// <para>
+		/// This parameter is only applicable when the <c>CERT_STORE_PROV_MSG</c>, <c>CERT_STORE_PROV_PKCS7</c>, or
+		/// <c>CERT_STORE_PROV_FILENAME</c> provider type is specified in the lpszStoreProvider parameter. For all other provider types,
+		/// this parameter is unused and should be set to zero.
+		/// </para>
+		/// <para>This parameter can be a combination of one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PKCS_7_ASN_ENCODING 65536 (0x10000)</term>
+		/// <term>Specifies PKCS #7 message encoding.</term>
+		/// </item>
+		/// <item>
+		/// <term>X509_ASN_ENCODING 1 (0x1)</term>
+		/// <term>Specifies X.509 certificate encoding.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="hCryptProv">
+		/// <para>This parameter is not used and should be set to <c>NULL</c>.</para>
+		/// <para>
+		/// <c>Windows Server 2003 and Windows XP:</c> A handle to a cryptographic provider. Passing <c>NULL</c> for this parameter causes
+		/// an appropriate, default provider to be used. Using the default provider is recommended. The default or specified cryptographic
+		/// provider is used for all store functions that verify the signature of a subject certificate or CRL.This parameter's data type is <c>HCRYPTPROV</c>.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>These values consist of high-word and low-word values combined by using a bitwise- <c>OR</c> operation.</para>
+		/// <para>
+		/// The low-word portion of dwFlags controls a variety of general characteristics of the certificate store opened. This portion can
+		/// be used with all store provider types. The low-word portion of dwFlags can be one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_STORE_BACKUP_RESTORE_FLAG</term>
+		/// <term>
+		/// Use the thread's SE_BACKUP_NAME and SE_RESTORE_NAME privileges to open registry or file-based system stores. If the thread does
+		/// not have these privileges, this function must fail with an access denied error.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_CREATE_NEW_FLAG</term>
+		/// <term>
+		/// A new store is created if one did not exist. The function fails if the store already exists. If neither
+		/// CERT_STORE_OPEN_EXISTING_FLAG nor CERT_STORE_CREATE_NEW_FLAG is set, a store is opened if it exists or is created and opened if
+		/// it did not already exist.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_DEFER_CLOSE_UNTIL_LAST_FREE_FLAG</term>
+		/// <term>
+		/// Defer closing of the store's provider until all certificates, CRLs, or CTLs obtained from the store are no longer in use. The
+		/// store is actually closed when the last certificate, CRL, or CTL obtained from the store is freed. Any changes made to properties
+		/// of these certificates, CRLs, and CTLs, even after the call to CertCloseStore, are persisted. If this flag is not set and
+		/// certificates, CRLs, or CTLs obtained from the store are still in use, any changes to the properties of those certificates, CRLs,
+		/// and CTLs will not be persisted. If this function is called with CERT_CLOSE_STORE_FORCE_FLAG,
+		/// CERT_STORE_DEFER_CLOSE_UNTIL_LAST_FREE_FLAG is ignored. When this flag is set and a non-NULL hCryptProv parameter value is
+		/// passed, that provider will continue to be used even after the call to this function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_DELETE_FLAG</term>
+		/// <term>
+		/// The store is deleted instead of being opened. This function returns NULL for both success and failure of the deletion. To
+		/// determine the success of the deletion, call GetLastError, which returns zero if the store was deleted and a nonzero value if it
+		/// was not deleted.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ENUM_ARCHIVED_FLAG</term>
+		/// <term>
+		/// Normally, an enumeration of all certificates in the store will ignore any certificate with the CERT_ARCHIVED_PROP_ID property
+		/// set. If this flag is set, an enumeration of the certificates in the store will contain all of the certificates in the store,
+		/// including those that have the CERT_ARCHIVED_PROP_ID property.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_MAXIMUM_ALLOWED_FLAG</term>
+		/// <term>
+		/// Open the store with the maximum set of allowed permissions. If this flag is specified, registry stores are first opened with
+		/// write access and if that fails, they are reopened with read-only access.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_NO_CRYPT_RELEASE_FLAG</term>
+		/// <term>
+		/// This flag is not used when the hCryptProv parameter is NULL. This flag is only valid when a non-NULL CSP handle is passed as the
+		/// hCryptProv parameter. Setting this flag prevents the automatic release of a nondefault CSP when the certificate store is closed.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_OPEN_EXISTING_FLAG</term>
+		/// <term>Only open an existing store. If the store does not exist, the function fails.</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_READONLY_FLAG</term>
+		/// <term>
+		/// Open the store in read-only mode. Any attempt to change the contents of the store will result in an error. When this flag is set
+		/// and a registry based store provider is being used, the registry subkeys are opened by using RegOpenKey with KEY_READ_ACCESS.
+		/// Otherwise, the registry subkeys are created by using RegCreateKey with KEY_ALL_ACCESS.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_SET_LOCALIZED_NAME_FLAG</term>
+		/// <term>
+		/// If this flag is supported, the provider sets the store's CERT_STORE_LOCALIZED_NAME_PROP_ID property. The localized name can be
+		/// retrieved by calling the CertGetStoreProperty function with dwPropID set to CERT_STORE_LOCALIZED_NAME_PROP_ID. This flag is
+		/// supported for providers of types CERT_STORE_PROV_FILENAME, CERT_STORE_PROV_SYSTEM, CERT_STORE_PROV_SYSTEM_REGISTRY, and CERT_STORE_PROV_PHYSICAL_W.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_SHARE_CONTEXT_FLAG</term>
+		/// <term>
+		/// When opening a store multiple times, you can set this flag to ensure efficient memory usage by reusing the memory for the
+		/// encoded parts of a certificate, CRL, or CTL context across the opened instances of the stores.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_UPDATE_KEYID_FLAG</term>
+		/// <term>
+		/// Lists of key identifiers exist within CurrentUser and LocalMachine. These key identifiers have properties much like the
+		/// properties of certificates. If the CERT_STORE_UPDATE_KEYID_FLAG is set, then for every key identifier in the store's location
+		/// that has a CERT_KEY_PROV_INFO_PROP_ID property, that property is automatically updated from the key identifier property
+		/// CERT_KEY_PROV_INFO_PROP_ID or the CERT_KEY_IDENTIFIER_PROP_ID of the certificate related to that key identifier.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The <c>CERT_STORE_PROV_SYSTEM</c>, <c>CERT_STORE_PROV_SYSTEM_REGISTRY</c>, and <c>CERT_STORE_PROV_PHYSICAL</c> provider types
+		/// use the following high words of dwFlags to specify system store registry locations:
+		/// </para>
+		/// <para>CERT_SYSTEM_STORE_CURRENT_SERVICE</para>
+		/// <para>CERT_SYSTEM_STORE_CURRENT_USER</para>
+		/// <para>CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY</para>
+		/// <para>CERT_SYSTEM_STORE_LOCAL_MACHINE</para>
+		/// <para>CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE</para>
+		/// <para>CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY</para>
+		/// <para>CERT_SYSTEM_STORE_SERVICES</para>
+		/// <para>CERT_SYSTEM_STORE_USERS</para>
+		/// <para>
+		/// By default, a system store location is opened relative to the <c>HKEY_CURRENT_USER</c>, <c>HKEY_LOCAL_MACHINE</c>, or
+		/// <c>HKEY_USERS</c> predefined registry key. For more information, see System Store Locations.
+		/// </para>
+		/// <para>The following high-word flags override this default behavior.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_SYSTEM_STORE_RELOCATE_FLAG</term>
+		/// <term>
+		/// When set, pvPara must contain a pointer to a CERT_SYSTEM_STORE_RELOCATE_PARA structure rather than a string. The structure
+		/// indicates both the name of the store and its location in the registry.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_SYSTEM_STORE_UNPROTECTED_FLAG</term>
+		/// <term>
+		/// By default, when the CurrentUser "Root" store is opened, any SystemRegistry roots not on the protected root list are deleted
+		/// from the cache before this function returns. When this flag is set, this default is overridden and all of the roots in the
+		/// SystemRegistry are returned and no check of the protected root list is made.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>The <c>CERT_STORE_PROV_REGISTRY</c> provider uses the following high-word flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_REGISTRY_STORE_REMOTE_FLAG</term>
+		/// <term>
+		/// pvPara contains a handle to a registry key on a remote computer. To access a registry key on a remote computer, security
+		/// permissions on the remote computer must be set to allow access. For more information, see Remarks.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_REGISTRY_STORE_SERIALIZED_FLAG</term>
+		/// <term>
+		/// The CERT_STORE_PROV_REG provider saves certificates, CRLs, and CTLs in a single serialized store subkey instead of performing
+		/// the default save operation. The default is that each certificate, CRL, or CTL is saved as a separate registry subkey under the
+		/// appropriate subkey. This flag is mainly used for stores downloaded from the group policy template (GPT), such as the
+		/// CurrentUserGroupPolicy and LocalMachineGroupPolicy stores. When CERT_REGISTRY_STORE_SERIALIZED_FLAG is set, store additions,
+		/// deletions, or property changes are not persisted until there is a call to either CertCloseStore or CertControlStore using CERT_STORE_CTRL_COMMIT.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>The <c>CERT_STORE_PROV_FILE</c> and <c>CERT_STORE_PROV_FILENAME</c> provider types use the following high-word flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_FILE_STORE_COMMIT_ENABLE</term>
+		/// <term>
+		/// Setting this flag commits any additions to the store or any changes made to properties of contexts in the store to the file
+		/// store either when CertCloseStore is called or when CertControlStore is called with CERT_STORE_CONTROL_COMMIT. CertOpenStore
+		/// fails with E_INVALIDARG if both CERT_FILE_STORE_COMMIT_ENABLE and CERT_STORE_READONLY_FLAG are set in dwFlags.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>The <c>CERT_STORE_PROV_LDAP</c> provider type uses the following high-word flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_LDAP_STORE_AREC_EXCLUSIVE_FLAG</term>
+		/// <term>
+		/// Performs an A-Record-only DNS lookup on the URL named in the pvPara parameter. This prevents false DNS queries from being
+		/// generated when resolving URL host names. Use this flag when passing a host name as opposed to a domain name for the pvPara parameter.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_LDAP_STORE_OPENED_FLAG</term>
+		/// <term>
+		/// Use this flag to use an existing LDAP session. When this flag is specified, the pvPara parameter is the address of a
+		/// CERT_LDAP_STORE_OPENED_PARA structure that contains information about the LDAP session to use.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_LDAP_STORE_SIGN_FLAG</term>
+		/// <term>
+		/// To provide integrity required by some applications, digitally sign all LDAP traffic to and from an LDAP server by using the
+		/// Kerberos authentication protocol.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_LDAP_STORE_UNBIND_FLAG</term>
+		/// <term>
+		/// Use this flag with the CERT_LDAP_STORE_OPENED_FLAG flag to cause the LDAP session to be unbound when the store is closed. The
+		/// system will unbind the LDAP session by using the ldap_unbind function when the store is closed.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pvPara">
+		/// A 32-bit value that can contain additional information for this function. The contents of this parameter depends on the value of
+		/// the lpszStoreProvider and other parameters.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the function returns a handle to the certificate store. When you have finished using the store,
+		/// release the handle by calling the CertCloseStore function.
+		/// </para>
+		/// <para>If the function fails, it returns <c>NULL</c>. For extended error information, call GetLastError.</para>
+		/// <para>
+		/// <c>Note</c> CreateFile, ReadFile, or registry errors might be propagated and their error codes returned. <c>CertOpenStore</c>
+		/// has a single error code of its own, the ERROR_FILE_NOT_FOUND code, which indicates that the function was unable to find the
+		/// provider specified by the lpszStoreProvider parameter.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A system store is a collection that consists of one or more physical sibling stores. For each system store, there are predefined
+		/// physical sibling stores. After opening a system store such as "My" at CERT_SYSTEM_STORE_CURRENT_USER, <c>CertOpenStore</c> is
+		/// called to open all of the physical stores in the system store collection. Each of these physical stores is added to the system
+		/// store collection by using the CertAddStoreToCollection function. All certificates, CRLs, and CTLs in those physical stores are
+		/// available through the logical system store collection.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The order of the certificate context may not be preserved within the store. To access a specific certificate you
+		/// must iterate across the certificates in the store.
+		/// </para>
+		/// <para>The following system store locations can be opened remotely:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>CERT_SYSTEM_STORE_LOCAL_MACHINE</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_SYSTEM_STORE_SERVICES</term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_SYSTEM_STORE_USERS</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// System store locations are opened remotely by prefixing the store name in the string passed to pvPara with the computer name.
+		/// Examples of remote system store names are:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>ComputerName\CA</term>
+		/// </item>
+		/// <item>
+		/// <term>\\ComputerName\CA</term>
+		/// </item>
+		/// <item>
+		/// <term>ComputerName\ServiceName\Trust</term>
+		/// </item>
+		/// <item>
+		/// <term>\\ComputerName\ServiceName\Trust</term>
+		/// </item>
+		/// </list>
+		/// <para>For more information about system stores, see System Store Locations.</para>
+		/// <para>For more information about the stores that are automatically migrated, see Certificate Store Migration.</para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example shows opening several certificate stores of different store provider types. The example uses the
+		/// <c>CreateMyDACL</c> function, defined in the Creating a DACL topic, to ensure the open file is created with a proper DACL. For
+		/// more examples of opening other store provider types, see Example C Code for Opening Certificate Stores.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certopenstore HCERTSTORE CertOpenStore( LPCSTR
+		// lpszStoreProvider, DWORD dwEncodingType, HCRYPTPROV_LEGACY hCryptProv, DWORD dwFlags, const void *pvPara );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "4edccbfe-c0a8-442b-b6b7-51ef598e7c90")]
+		public static extern SafeHCERTSTORE CertOpenStore([In] SafeOID lpszStoreProvider, CertEncodingType dwEncodingType, [Optional] HCRYPTPROV hCryptProv, CertStoreFlags dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string pvPara);
 
 		/// <summary>
 		/// The <c>CertOpenSystemStore</c> function is a simplified function that opens the most common system certificate store. To open
@@ -3098,7 +3824,7 @@ namespace Vanara.PInvoke
 			/// CryptInstallOIDFunctionAddress or CryptRegisterOIDFunction. For more information, see CertOpenStore.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPStr)] public string pszOpenStoreProvider;
+			public StrPtrAnsi pszOpenStoreProvider;
 
 			/// <summary>
 			/// <para>
@@ -3347,6 +4073,61 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => CertCloseStore(handle, Flag);
+		}
+
+		/// <summary>Certificate Store Provider constants.</summary>
+		public static class CertStoreProvider
+		{
+			/// <summary/>
+			public const int CERT_STORE_PROV_MSG = 1;
+			/// <summary/>
+			public const int CERT_STORE_PROV_MEMORY = 2;
+			/// <summary/>
+			public const int CERT_STORE_PROV_FILE = 3;
+			/// <summary/>
+			public const int CERT_STORE_PROV_REG = 4;
+			/// <summary/>
+			public const int CERT_STORE_PROV_PKCS7 = 5;
+			/// <summary/>
+			public const int CERT_STORE_PROV_SERIALIZED = 6;
+			/// <summary/>
+			public const int CERT_STORE_PROV_FILENAME = 8;
+			/// <summary/>
+			public const int CERT_STORE_PROV_SYSTEM = 10;
+			/// <summary/>
+			public const int CERT_STORE_PROV_COLLECTION = 11;
+			/// <summary/>
+			public const int CERT_STORE_PROV_SYSTEM_REGISTRY = 13;
+			/// <summary/>
+			public const int CERT_STORE_PROV_PHYSICAL = 14;
+			/// <summary/>
+			public const int CERT_STORE_PROV_SMART_CARD = 15;
+			/// <summary/>
+			public const int CERT_STORE_PROV_LDAP = 16;
+			/// <summary/>
+			public const int CERT_STORE_PROV_PKCS12 = 17;
+			/// <summary/>
+			public const string sz_CERT_STORE_PROV_MEMORY = "Memory";
+			/// <summary/>
+			public const string sz_CERT_STORE_PROV_FILENAME = "File";
+			/// <summary/>
+			public const string sz_CERT_STORE_PROV_SYSTEM = "System";
+			/// <summary/>
+			public const string sz_CERT_STORE_PROV_PKCS7 = "PKCS7";
+			/// <summary/>
+			public const string sz_CERT_STORE_PROV_PKCS12 = "PKCS12";
+			/// <summary/>
+			public const string sz_CERT_STORE_PROV_SERIALIZED = "Serialized";
+			/// <summary/>
+			public const string sz_CERT_STORE_PROV_COLLECTION = "Collection";
+			/// <summary/>
+			public const string sz_CERT_STORE_PROV_SYSTEM_REGISTRY = "SystemRegistry";
+			/// <summary/>
+			public const string sz_CERT_STORE_PROV_PHYSICAL = "Physical";
+			/// <summary/>
+			public const string sz_CERT_STORE_PROV_SMART_CARD = "SmartCard";
+			/// <summary/>
+			public const string sz_CERT_STORE_PROV_LDAP = "Ldap";
 		}
 	}
 }

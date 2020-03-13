@@ -851,6 +851,93 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In] IntPtr pbEncryptedBlob, uint cbEncryptedBlob, [Out] IntPtr pbDecrypted, ref uint pcbDecrypted, out SafePCCERT_CONTEXT ppXchgCert);
 
+		/// <summary>The <c>CryptDecryptMessage</c> function decodes and decrypts a message.</summary>
+		/// <param name="pDecryptPara">A pointer to a CRYPT_DECRYPT_MESSAGE_PARA structure that contains decryption parameters.</param>
+		/// <param name="pbEncryptedBlob">A pointer to a buffer that contains the encoded and encrypted message to be decrypted.</param>
+		/// <param name="cbEncryptedBlob">The size, in bytes, of the encoded and encrypted message.</param>
+		/// <param name="pbDecrypted">
+		/// <para>A pointer to a buffer that receives the decrypted message.</para>
+		/// <para>
+		/// To set the size of this information for memory allocation purposes, this parameter can be <c>NULL</c>. A decrypted message will
+		/// not be returned if this parameter is <c>NULL</c>. For more information, see Retrieving Data of Unknown Length.
+		/// </para>
+		/// </param>
+		/// <param name="pcbDecrypted">
+		/// <para>
+		/// A pointer to a <c>DWORD</c> that specifies the size, in bytes, of the buffer pointed to by the pbDecrypted parameter. When the
+		/// function returns, this variable contains the size, in bytes, of the decrypted message copied to pbDecrypted.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When processing the data returned in the pbDecrypted buffer, applications must use the actual size of the data
+		/// returned. The actual size can be slightly smaller than the size of the buffer specified in pcbDecrypted on input. On input,
+		/// buffer sizes are usually specified large enough to ensure that the largest possible output data will fit in the buffer. On
+		/// output, the <c>DWORD</c> is updated to the actual size of the data copied to the buffer.
+		/// </para>
+		/// </param>
+		/// <param name="ppXchgCert">
+		/// A pointer to a CERT_CONTEXT structure of a certificate that corresponds to the private exchange key needed to decrypt the
+		/// message. To indicate that the function should not return the certificate context used to decrypt, set this parameter to <c>NULL</c>.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero ( <c>TRUE</c>).</para>
+		/// <para>If the function fails, it returns zero ( <c>FALSE</c>). For extended error information, call GetLastError.</para>
+		/// <para><c>Note</c> Errors from calls to CryptImportKey and CryptDecrypt might be propagated to this function.</para>
+		/// <para>The GetLastError function returns the following error codes most often.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_MORE_DATA</term>
+		/// <term>
+		/// If the buffer specified by the pbDecrypted parameter is not large enough to hold the returned data, the function sets the
+		/// ERROR_MORE_DATA code, and stores the required buffer size, in bytes, in the variable pointed to by pcbDecrypted.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>
+		/// Invalid message and certificate encoding types. Currently only PKCS_7_ASN_ENCODING and X509_ASN_ENCODING_TYPE are supported.
+		/// Invalid cbSize in *pDecryptPara.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_E_UNEXPECTED_MSG_TYPE</term>
+		/// <term>Not an enveloped cryptographic message.</term>
+		/// </item>
+		/// <item>
+		/// <term>NTE_BAD_ALGID</term>
+		/// <term>The message was encrypted by using an unknown or unsupported algorithm.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_E_NO_DECRYPT_CERT</term>
+		/// <term>No certificate was found having a private key property to use for decrypting.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If the function fails, GetLastError may return an Abstract Syntax Notation One (ASN.1) encoding/decoding error. For information
+		/// about these errors, see ASN.1 Encoding/Decoding Return Values.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When <c>NULL</c> is passed for pbDecrypted, and pcbDecrypted is not <c>NULL</c>, <c>NULL</c> is returned for the address passed
+		/// in ppXchgCert; otherwise, a pointer to a CERT_CONTEXT is returned. For a successfully decrypted message, this pointer to a
+		/// <c>CERT_CONTEXT</c> points to the certificate context used to decrypt the message. It must be freed by calling
+		/// CertFreeCertificateContext. If the function fails, the value at ppXchgCert is set to <c>NULL</c>.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example that uses this function, see Example C Program: Using CryptEncryptMessage and CryptDecryptMessage.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptdecryptmessage BOOL CryptDecryptMessage(
+		// PCRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, const BYTE *pbEncryptedBlob, DWORD cbEncryptedBlob, BYTE *pbDecrypted, DWORD
+		// *pcbDecrypted, PCCERT_CONTEXT *ppXchgCert );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "e540b816-64e1-4c78-9020-2b221e813acc")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In] IntPtr pbEncryptedBlob, uint cbEncryptedBlob, [Out] IntPtr pbDecrypted, ref uint pcbDecrypted, IntPtr ppXchgCert = default);
+
 		/// <summary>The <c>CryptEncryptMessage</c> function encrypts and encodes a message.</summary>
 		/// <param name="pEncryptPara">
 		/// <para>A pointer to a CRYPT_ENCRYPT_MESSAGE_PARA structure that contains the encryption parameters.</para>
@@ -1278,7 +1365,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "1c12003a-c2f3-4069-8bd6-b8f2875b0c98")]
 		public static extern uint CryptMsgCalculateEncodedLength(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType, [In] IntPtr pvMsgEncodeInfo,
-			[Optional, MarshalAs(UnmanagedType.LPStr)] string pszInnerContentObjID, uint cbData);
+			[Optional] SafeOID pszInnerContentObjID, uint cbData);
 
 		/// <summary>
 		/// The <c>CryptMsgClose</c> function closes a cryptographic message handle. At each call to this function, the reference count on
@@ -2745,7 +2832,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "b0d2610b-05ba-4fb6-8f38-10f970a52091")]
 		public static extern SafeHCRYPTMSG CryptMsgOpenToEncode(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType, [In] IntPtr pvMsgEncodeInfo,
-			[Optional, MarshalAs(UnmanagedType.LPStr)] string pszInnerContentObjID, in CMSG_STREAM_INFO pStreamInfo);
+			[Optional] SafeOID pszInnerContentObjID, in CMSG_STREAM_INFO pStreamInfo);
 
 		/// <summary>
 		/// The <c>CryptMsgOpenToEncode</c> function opens a cryptographic message for encoding and returns a handle of the opened message.
@@ -2976,7 +3063,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "b0d2610b-05ba-4fb6-8f38-10f970a52091")]
 		public static extern SafeHCRYPTMSG CryptMsgOpenToEncode(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType, [In] IntPtr pvMsgEncodeInfo,
-			[Optional, MarshalAs(UnmanagedType.LPStr)] string pszInnerContentObjID, IntPtr pStreamInfo = default);
+			[Optional] SafeOID pszInnerContentObjID, IntPtr pStreamInfo = default);
 
 		/// <summary>
 		/// The <c>CryptMsgUpdate</c> function adds contents to a cryptographic message. The use of this function allows messages to be
@@ -4433,23 +4520,12 @@ namespace Vanara.PInvoke
 			[StructLayout(LayoutKind.Explicit)]
 			public struct CMSG_KEY_AGREE_RECIPIENT_INFO_UNION
 			{
-				/// <summary>
-				/// A handle to the cryptographic service provider (CSP) used to do the recipient key encryption and export. If <c>NULL</c>,
-				/// the provider specified in CMSG_ENVELOPED_ENCODE_INFO is used. The CNG function NCryptIsKeyHandle is called to determine
-				/// the union choice.
-				/// </summary>
-				[FieldOffset(0)]
 				/// <summary>A CERT_ID that identifies the public key of the message originator.</summary>
+				[FieldOffset(0)]
 				public CERT_ID OriginatorCertId;
 
-				/// <summary>
-				/// A handle to the CNG CSP used to do the recipient key encryption and export. The CNG function NCryptIsKeyHandle is called
-				/// to determine the union choice. New encrypt algorithms are only supported in CNG functions. The CNG function
-				/// NCryptTranslateHandle will be called to convert the CryptoAPI CSP hCryptProv choice where necessary. We recommend that
-				/// applications pass, to the hNCryptKey member, the CNG CSP handle that is returned from the NCryptOpenKey function.
-				/// </summary>
-				[FieldOffset(0)]
 				/// <summary>A CERT_PUBLIC_KEY_INFO structure that contains the public key of the message originator.</summary>
+				[FieldOffset(0)]
 				public CERT_PUBLIC_KEY_INFO OriginatorPublicKeyInfo;
 			}
 

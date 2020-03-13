@@ -704,6 +704,11 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator PCCTL_CONTEXT(SafePCCTL_CONTEXT h) => h.handle;
 
+			/// <summary>Performs an explicit conversion from <see cref="SafePCCTL_CONTEXT"/> to <see cref="CTL_CONTEXT"/>.</summary>
+			/// <param name="ctx">The handle.</param>
+			/// <returns>The resulting <see cref="CTL_CONTEXT"/> instance from the conversion.</returns>
+			public static unsafe explicit operator CTL_CONTEXT*(SafePCCTL_CONTEXT ctx) => (CTL_CONTEXT*)(void*)ctx.handle;
+
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => CertFreeCTLContext(handle);
 		}
