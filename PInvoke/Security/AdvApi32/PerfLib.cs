@@ -7,6 +7,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		/// <summary/>
 		public const uint PERF_WILDCARD_COUNTER = uint.MaxValue;
 
 		/// <summary>

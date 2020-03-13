@@ -57,12 +57,16 @@ namespace Vanara.PInvoke
 			/// <summary>The CREDSPP_SUBMIT_TYPE enumeration value that specifies the type of credentials contained in this structure.</summary>
 			public CREDSSP_SUBMIT_TYPE Type;
 
+			/// <summary/>
 			public uint Version;
 
+			/// <summary/>
 			public uint Flags;
 
+			/// <summary/>
 			public uint Reserved;
 
+			/// <summary/>
 			public CREDSSP_CRED Cred;
 		}
 

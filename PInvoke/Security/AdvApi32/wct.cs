@@ -7,6 +7,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		/// <summary/>
 		public const uint WCT_MAX_NODE_COUNT = 16;
 
 		/// <summary>
@@ -77,16 +78,27 @@ namespace Vanara.PInvoke
 		[PInvokeData("wct.h", MSDNShortId = "7a333924-79a3-4522-aa5a-4fc60690667d")]
 		public enum WCT_OBJECT_STATUS
 		{
+			/// <summary/>
 			WctStatusNoAccess = 1,
+			/// <summary/>
 			WctStatusRunning,
+			/// <summary/>
 			WctStatusBlocked,
+			/// <summary/>
 			WctStatusPidOnly,
+			/// <summary/>
 			WctStatusPidOnlyRpcss,
+			/// <summary/>
 			WctStatusOwned,
+			/// <summary/>
 			WctStatusNotOwned,
+			/// <summary/>
 			WctStatusAbandoned,
+			/// <summary/>
 			WctStatusUnknown,
+			/// <summary/>
 			WctStatusError,
+			/// <summary/>
 			WctStatusMax
 		}
 
@@ -94,18 +106,31 @@ namespace Vanara.PInvoke
 		[PInvokeData("wct.h", MSDNShortId = "7a333924-79a3-4522-aa5a-4fc60690667d")]
 		public enum WCT_OBJECT_TYPE
 		{
+			/// <summary/>
 			WctCriticalSectionType = 1,
+			/// <summary/>
 			WctSendMessageType,
+			/// <summary/>
 			WctMutexType,
+			/// <summary/>
 			WctAlpcType,
+			/// <summary/>
 			WctComType,
+			/// <summary/>
 			WctThreadWaitType,
+			/// <summary/>
 			WctProcessWaitType,
+			/// <summary/>
 			WctThreadType,
+			/// <summary/>
 			WctComActivationType,
+			/// <summary/>
 			WctUnknownType,
+			/// <summary/>
 			WctSocketIoType,
+			/// <summary/>
 			WctSmbIoType,
+			/// <summary/>
 			WctMaxType
 		}
 

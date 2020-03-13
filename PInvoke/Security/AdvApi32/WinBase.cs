@@ -18,8 +18,10 @@ namespace Vanara.PInvoke
 		/// <summary>Computer name length</summary>
 		public const int CNLEN = 15;
 
+		/// <summary/>
 		public const int CRYPT_KEY_LEN = 7;
 
+		/// <summary/>
 		public const int CRYPT_TXT_LEN = 8;
 
 		/// <summary>Device name length</summary>
@@ -28,6 +30,7 @@ namespace Vanara.PInvoke
 		/// <summary>Maximum domain name length</summary>
 		public const int DNLEN = CNLEN;
 
+		/// <summary/>
 		public const int ENCRYPTED_PWLEN = 16;
 
 		/// <summary>Event name length</summary>
@@ -78,6 +81,7 @@ namespace Vanara.PInvoke
 		/// <summary>LM 2.0 Maximum user name length</summary>
 		public const int LM20_UNLEN = 20;
 
+		/// <summary/>
 		public const uint MAX_PREFERRED_LENGTH = uint.MaxValue;
 
 		/// <summary>Multipurpose comment length</summary>
@@ -89,6 +93,7 @@ namespace Vanara.PInvoke
 		/// <summary>Net name length (share name)</summary>
 		public const int NNLEN = 80;
 
+		/// <summary/>
 		public const uint OPERATION_API_VERSION = 1;
 
 		/// <summary>Max. path (not including drive name)</summary>
@@ -103,8 +108,10 @@ namespace Vanara.PInvoke
 		/// <summary>Max remote name length</summary>
 		public const int RMLEN = (UNCLEN + 1 + NNLEN);
 
+		/// <summary/>
 		public const int SESSION_CRYPT_KLEN = 21;
 
+		/// <summary/>
 		public const int SESSION_PWLEN = 24;
 
 		/// <summary>Share password length (bytes)</summary>

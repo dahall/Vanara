@@ -2719,6 +2719,7 @@ namespace Vanara.PInvoke
 			public AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET ObjectTypeNames;
 		}
 
+		/// <summary/>
 		public class SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION : IDisposable
 		{
 			private List<SafeHGlobalHandle> mem = new List<SafeHGlobalHandle>(7);
@@ -2830,6 +2831,7 @@ namespace Vanara.PInvoke
 				}
 			}
 
+			/// <inheritdoc/>
 			public void Dispose() { foreach (var m in mem) m.Dispose(); mem.Clear(); }
 		}
 
@@ -3207,8 +3209,10 @@ namespace Vanara.PInvoke
 
 				// Pack it all behind a pointer
 				var retPtr = Marshal.AllocHGlobal((int)(sz1 + sz2));
+#pragma warning disable CS0618 // Type or member is obsolete
 				var ms = new MarshalingStream(retPtr, (int)sz1);
 				var ms2 = new MarshalingStream(retPtr.Offset(sz1), (int)sz2);
+#pragma warning restore CS0618 // Type or member is obsolete
 				var iV1s = new Internal_AUTHZ_SECURITY_ATTRIBUTE_V1[attrInfo.AttributeCount];
 				for (var i = 0; i < attrInfo.AttributeCount; i++)
 				{

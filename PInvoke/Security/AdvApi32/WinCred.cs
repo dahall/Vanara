@@ -55,6 +55,7 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum CRED_FLAGS
 		{
+			/// <summary/>
 			CRED_FLAGS_PASSWORD_FOR_CERT = 0x1,
 
 			/// <summary>
@@ -81,12 +82,19 @@ namespace Vanara.PInvoke
 			/// </summary>
 			CRED_FLAGS_USERNAME_TARGET = 0x4,
 
+			/// <summary/>
 			CRED_FLAGS_OWF_CRED_BLOB = 0x0008,
+			/// <summary/>
 			CRED_FLAGS_REQUIRE_CONFIRMATION = 0x0010,
+			/// <summary/>
 			CRED_FLAGS_WILDCARD_MATCH = 0x0020,
+			/// <summary/>
 			CRED_FLAGS_VSM_PROTECTED = 0x0040,
+			/// <summary/>
 			CRED_FLAGS_NGC_CERT = 0x0080,
+			/// <summary/>
 			CRED_FLAGS_VALID_FLAGS = 0xF0FF,
+			/// <summary/>
 			CRED_FLAGS_VALID_INPUT_FLAGS = 0xF09F,
 		}
 
@@ -1877,12 +1885,24 @@ namespace Vanara.PInvoke
 			/// <param name="own">if set to <c>true</c> release the memory when out of scope.</param>
 			public SafeCredMemoryHandle(IntPtr ptr, bool own = true) : base(ptr, h => { CredFree(h); return true; }, own) { }
 
+			/// <summary>Performs an implicit conversion from <see cref="SafeCredMemoryHandle"/> to <see cref="CREDENTIAL"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The resulting <see cref="CREDENTIAL"/> instance from the conversion.</returns>
 			public static implicit operator CREDENTIAL(SafeCredMemoryHandle h) => h.ToStructure<CREDENTIAL>();
 
+			/// <summary>Performs an implicit conversion from <see cref="SafeCredMemoryHandle"/> to <see cref="CREDENTIAL_MGD"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The resulting <see cref="CREDENTIAL_MGD"/> instance from the conversion.</returns>
 			public static implicit operator CREDENTIAL_MGD(SafeCredMemoryHandle h) => new CREDENTIAL_MGD(h.ToStructure<CREDENTIAL>());
 
+			/// <summary>Performs an implicit conversion from <see cref="SafeCredMemoryHandle"/> to <see cref="CREDENTIAL_TARGET_INFORMATION"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The resulting <see cref="CREDENTIAL_TARGET_INFORMATION"/> instance from the conversion.</returns>
 			public static implicit operator CREDENTIAL_TARGET_INFORMATION(SafeCredMemoryHandle h) => h.ToStructure<CREDENTIAL_TARGET_INFORMATION>();
 
+			/// <summary>Performs an implicit conversion from <see cref="SafeCredMemoryHandle"/> to <see cref="System.String"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The resulting <see cref="System.String"/> instance from the conversion.</returns>
 			public static implicit operator string(SafeCredMemoryHandle h) => Marshal.PtrToStringAuto(h.handle);
 
 			/// <summary>Marshals data to the type specified by a generic type parameter.</summary>

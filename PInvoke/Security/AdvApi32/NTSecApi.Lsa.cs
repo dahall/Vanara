@@ -18,13 +18,29 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum CollisionFlags
 		{
+			/// <summary>The top-level name trust record is disabled during initial creation.</summary>
 			LSA_TLN_DISABLED_NEW = 0x00000001,
+
+			/// <summary>The top-level name trust record is disabled by the domain administrator.</summary>
 			LSA_TLN_DISABLED_ADMIN = 0x00000002,
+
+			/// <summary>The top-level name trust record is disabled due to a conflict.</summary>
 			LSA_TLN_DISABLED_CONFLICT = 0x00000004,
+
+			/// <summary>The domain information trust record is disabled by the domain administrator.</summary>
 			LSA_SID_DISABLED_ADMIN = 0x00000001,
+
+			/// <summary>The domain information trust record is disabled due to a conflict.</summary>
 			LSA_SID_DISABLED_CONFLICT = 0x00000002,
+
+			/// <summary>The domain information trust record is disabled by the domain administrator.</summary>
 			LSA_NB_DISABLED_ADMIN = 0x00000004,
+
+			/// <summary>The domain information trust record is disabled due to a conflict.</summary>
 			LSA_NB_DISABLED_CONFLICT = 0x00000008,
+
+			/// <summary>The domain information trust record is disabled.</summary>
+			LSA_FTRECORD_DISABLED_REASONS = 0x0000FFFF,
 		}
 
 		/// <summary>

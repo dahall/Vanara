@@ -47,6 +47,7 @@ namespace Vanara.PInvoke
 			/// <summary>A new session key must be negotiated. This value is supported only by the Kerberos security package.</summary>
 			ASC_REQ_USE_SESSION_KEY = 0x00000020,
 
+			/// <summary/>
 			ASC_REQ_SESSION_TICKET = 0x00000040,
 
 			/// <summary>
@@ -55,13 +56,17 @@ namespace Vanara.PInvoke
 			/// </summary>
 			ASC_REQ_ALLOCATE_MEMORY = 0x00000100,
 
+			/// <summary/>
 			ASC_REQ_USE_DCE_STYLE = 0x00000200,
+			/// <summary/>
 			ASC_REQ_DATAGRAM = 0x00000400,
 
 			/// <summary>The security context will not handle formatting messages.</summary>
 			ASC_REQ_CONNECTION = 0x00000800,
 
+			/// <summary/>
 			ASC_REQ_CALL_LEVEL = 0x00001000,
+			/// <summary/>
 			ASC_REQ_FRAGMENT_SUPPLIED = 0x00002000,
 
 			/// <summary>When errors occur, the remote party will be notified.</summary>
@@ -73,14 +78,23 @@ namespace Vanara.PInvoke
 			/// <summary>Sign messages and verify signatures by using the EncryptMessage and MakeSignature functions.</summary>
 			ASC_REQ_INTEGRITY = 0x00020000,
 
+			/// <summary/>
 			ASC_REQ_LICENSING = 0x00040000,
+			/// <summary/>
 			ASC_REQ_IDENTIFY = 0x00080000,
+			/// <summary/>
 			ASC_REQ_ALLOW_NULL_SESSION = 0x00100000,
+			/// <summary/>
 			ASC_REQ_ALLOW_NON_USER_LOGONS = 0x00200000,
+			/// <summary/>
 			ASC_REQ_ALLOW_CONTEXT_REPLAY = 0x00400000,
+			/// <summary/>
 			ASC_REQ_FRAGMENT_TO_FIT = 0x00800000,
+			/// <summary/>
 			ASC_REQ_NO_TOKEN = 0x01000000,
+			/// <summary/>
 			ASC_REQ_PROXY_BINDINGS = 0x04000000,
+			/// <summary/>
 			ASC_REQ_ALLOW_MISSING_BINDINGS = 0x10000000,
 		}
 
@@ -323,6 +337,7 @@ namespace Vanara.PInvoke
 			SEC_WINNT_AUTH_IDENTITY_FLAGS_ID_PROVIDER = 0x80000,
 		}
 
+		/// <summary/>
 		[Flags]
 		public enum SecBufferType : uint
 		{
@@ -3159,6 +3174,399 @@ namespace Vanara.PInvoke
 		public static extern HRESULT InitializeSecurityContext(in CredHandle phCredential, [In, Optional] IntPtr phContext, string pszTargetName, [In] ASC_REQ fContextReq, [Optional] int Reserved1, [In] DREP TargetDataRep,
 			[In, Optional] IntPtr pInput, [Optional] int Reserved2, ref CtxtHandle phNewContext, ref SecBufferDesc pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry);
 
+		/// <summary>
+		/// <para>
+		/// The <c>InitializeSecurityContext (General)</c> function initiates the client side, outbound security context from a credential
+		/// handle. The function is used to build a security context between the client application and a remote peer.
+		/// <c>InitializeSecurityContext (General)</c> returns a token that the client must pass to the remote peer, which the peer in turn
+		/// submits to the local security implementation through the AcceptSecurityContext (General) call. The token generated should be
+		/// considered opaque by all callers.
+		/// </para>
+		/// <para>
+		/// Typically, the <c>InitializeSecurityContext (General)</c> function is called in a loop until a sufficient security context is established.
+		/// </para>
+		/// <para>For information about using this function with a specific security support provider (SSP), see the following topics.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Topic</term>
+		///     <term>Description</term>
+		///   </listheader>
+		///   <item>
+		///     <term>InitializeSecurityContext (CredSSP)</term>
+		///     <term>
+		/// Initiates the client side, outbound security context from a credential handle by using the Credential Security Support Provider (CredSSP).
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>InitializeSecurityContext (Digest)</term>
+		///     <term>Initiates the client side, outbound security context from a credential handle by using the Digest security package.</term>
+		///   </item>
+		///   <item>
+		///     <term>InitializeSecurityContext (Kerberos)</term>
+		///     <term>Initiates the client side, outbound security context from a credential handle by using the Kerberos security package.</term>
+		///   </item>
+		///   <item>
+		///     <term>InitializeSecurityContext (Negotiate)</term>
+		///     <term>Initiates the client side, outbound security context from a credential handle by using the Negotiate security package.</term>
+		///   </item>
+		///   <item>
+		///     <term>InitializeSecurityContext (NTLM)</term>
+		///     <term>Initiates the client side, outbound security context from a credential handle by using the NTLM security package.</term>
+		///   </item>
+		///   <item>
+		///     <term>InitializeSecurityContext (Schannel)</term>
+		///     <term>Initiates the client side, outbound security context from a credential handle by using the Schannel security package.</term>
+		///   </item>
+		/// </list>
+		/// </summary>
+		/// <param name="phCredential">A handle to the credentials returned by AcquireCredentialsHandle (General). This handle is used to build the security context.
+		/// The <c>InitializeSecurityContext (General)</c> function requires at least OUTBOUND credentials.</param>
+		/// <param name="phContext"><para>
+		/// A pointer to a CtxtHandle structure. On the first call to <c>InitializeSecurityContext (General)</c>, this pointer is
+		/// <c>NULL</c>. On the second call, this parameter is a pointer to the handle to the partially formed context returned in the
+		/// phNewContext parameter by the first call.
+		/// </para>
+		/// <para>This parameter is optional with the Microsoft Digest SSP and can be set to <c>NULL</c>.</para>
+		/// <para>
+		/// When using the Schannel SSP, on the first call to <c>InitializeSecurityContext (General)</c>, specify <c>NULL</c>. On future
+		/// calls, specify the token received in the phNewContext parameter after the first call to this function.
+		/// </para></param>
+		/// <param name="pszTargetName">TBD</param>
+		/// <param name="fContextReq"><para>
+		/// Bit flags that indicate requests for the context. Not all packages can support all requirements. Flags used for this parameter
+		/// are prefixed with ISC_REQ_, for example, ISC_REQ_DELEGATE. This parameter can be one or more of the following attributes flags.
+		/// </para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Value</term>
+		///     <term>Meaning</term>
+		///   </listheader>
+		///   <item>
+		///     <term>ISC_REQ_ALLOCATE_MEMORY</term>
+		///     <term>
+		/// The security package allocates output buffers for you. When you have finished using the output buffers, free them by calling the
+		/// FreeContextBuffer function.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_CONFIDENTIALITY</term>
+		///     <term>Encrypt messages by using the EncryptMessage function.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_CONNECTION</term>
+		///     <term>
+		/// The security context will not handle formatting messages. This value is the default for the Kerberos, Negotiate, and NTLM
+		/// security packages.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_DELEGATE</term>
+		///     <term>
+		/// The server can use the context to authenticate to other servers as the client. The ISC_REQ_MUTUAL_AUTH flag must be set for this
+		/// flag to work. Valid for Kerberos. Ignore this flag for constrained delegation.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_EXTENDED_ERROR</term>
+		///     <term>When errors occur, the remote party will be notified.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_HTTP</term>
+		///     <term>Use Digest for HTTP. Omit this flag to use Digest as a SASL mechanism.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_INTEGRITY</term>
+		///     <term>Sign messages and verify signatures by using the EncryptMessage and MakeSignature functions.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_MANUAL_CRED_VALIDATION</term>
+		///     <term>Schannel must not authenticate the server automatically.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_MUTUAL_AUTH</term>
+		///     <term>The mutual authentication policy of the service will be satisfied.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_NO_INTEGRITY</term>
+		///     <term>
+		/// If this flag is set, the ISC_REQ_INTEGRITY flag is ignored. This value is supported only by the Negotiate and Kerberos security packages.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_REPLAY_DETECT</term>
+		///     <term>Detect replayed messages that have been encoded by using the EncryptMessage or MakeSignature functions.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_SEQUENCE_DETECT</term>
+		///     <term>Detect messages received out of sequence.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_STREAM</term>
+		///     <term>Support a stream-oriented connection.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_USE_SESSION_KEY</term>
+		///     <term>A new session key must be negotiated. This value is supported only by the Kerberos security package.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_USE_SUPPLIED_CREDS</term>
+		///     <term>Schannel must not attempt to supply credentials for the client automatically.</term>
+		///   </item>
+		/// </list>
+		/// <para>The requested attributes may not be supported by the client. For more information, see the pfContextAttr parameter.</para>
+		/// <para>For further descriptions of the various attributes, see Context Requirements.</para></param>
+		/// <param name="TargetDataRep"><para>The data representation, such as byte ordering, on the target. This parameter can be either SECURITY_NATIVE_DREP or SECURITY_NETWORK_DREP.</para>
+		/// <para>This parameter is not used with Digest or Schannel. Set it to zero.</para></param>
+		/// <param name="pInput">A pointer to a SecBufferDesc structure that contains pointers to the buffers supplied as input to the package. Unless the client
+		/// context was initiated by the server, the value of this parameter must be <c>NULL</c> on the first call to the function. On
+		/// subsequent calls to the function or when the client context was initiated by the server, the value of this parameter is a pointer
+		/// to a buffer allocated with enough memory to hold the token returned by the remote computer.</param>
+		/// <param name="outputType">Type of the output.</param>
+		/// <param name="pOutput"><para>
+		/// A pointer to a SecBufferDesc structure that contains pointers to the SecBuffer structure that receives the output data. If a
+		/// buffer was typed as SEC_READWRITE in the input, it will be there on output. The system will allocate a buffer for the security
+		/// token if requested (through ISC_REQ_ALLOCATE_MEMORY) and fill in the address in the buffer descriptor for the security token.
+		/// </para>
+		/// <para>When using the Microsoft Digest SSP, this parameter receives the challenge response that must be sent to the server.</para>
+		/// <para>
+		/// When using the Schannel SSP, if the ISC_REQ_ALLOCATE_MEMORY flag is specified, the Schannel SSP will allocate memory for the
+		/// buffer and put the appropriate information in the SecBufferDesc. In addition, the caller must pass in a buffer of type
+		/// <c>SECBUFFER_ALERT</c>. On output, if an alert is generated, this buffer contains information about that alert, and the function fails.
+		/// </para></param>
+		/// <param name="pfContextAttr"><para>
+		/// A pointer to a variable to receive a set of bit flags that indicate the attributes of the established context. For a description
+		/// of the various attributes, see Context Requirements.
+		/// </para>
+		/// <para>Flags used for this parameter are prefixed with ISC_RET, such as ISC_RET_DELEGATE.</para>
+		/// <para>For a list of valid values, see the fContextReq parameter.</para>
+		/// <para>
+		/// Do not check for security-related attributes until the final function call returns successfully. Attribute flags that are not
+		/// related to security, such as the ASC_RET_ALLOCATED_MEMORY flag, can be checked before the final return.
+		/// </para>
+		/// <para>
+		///   <c>Note</c> Particular context attributes can change during negotiation with a remote peer.</para></param>
+		/// <param name="ptsExpiry"><para>
+		/// A pointer to a TimeStamp structure that receives the expiration time of the context. It is recommended that the security package
+		/// always return this value in local time. This parameter is optional and <c>NULL</c> should be passed for short-lived clients.
+		/// </para>
+		/// <para>There is no expiration time for Microsoft Digest SSP security contexts or credentials.</para></param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns one of the following success codes.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Return code</term>
+		///     <term>Description</term>
+		///   </listheader>
+		///   <item>
+		///     <term>SEC_I_COMPLETE_AND_CONTINUE</term>
+		///     <term>
+		/// The client must call CompleteAuthToken and then pass the output to the server. The client then waits for a returned token and
+		/// passes it, in another call, to InitializeSecurityContext (General).
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_I_COMPLETE_NEEDED</term>
+		///     <term>The client must finish building the message and then call the CompleteAuthToken function.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_I_CONTINUE_NEEDED</term>
+		///     <term>
+		/// The client must send the output token to the server and wait for a return token. The returned token is then passed in another
+		/// call to InitializeSecurityContext (General). The output token can be empty.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_I_INCOMPLETE_CREDENTIALS</term>
+		///     <term>
+		/// Use with Schannel. The server has requested client authentication, and the supplied credentials either do not include a
+		/// certificate or the certificate was not issued by a certification authority that is trusted by the server. For more information,
+		/// see Remarks.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_INCOMPLETE_MESSAGE</term>
+		///     <term>
+		/// Use with Schannel. Data for the whole message was not read from the wire. When this value is returned, the pInput buffer contains
+		/// a SecBuffer structure with a BufferType member of SECBUFFER_MISSING. The cbBuffer member of SecBuffer contains a value that
+		/// indicates the number of additional bytes that the function must read from the client before this function succeeds. While this
+		/// number is not always accurate, using it can help improve performance by avoiding multiple calls to this function.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_OK</term>
+		///     <term>
+		/// The security context was successfully initialized. There is no need for another InitializeSecurityContext (General) call. If the
+		/// function returns an output token, that is, if the SECBUFFER_TOKEN in pOutput is of nonzero length, that token must be sent to the server.
+		/// </term>
+		///   </item>
+		/// </list>
+		/// <para>If the function fails, the function returns one of the following error codes.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Return code</term>
+		///     <term>Description</term>
+		///   </listheader>
+		///   <item>
+		///     <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		///     <term>There is not enough memory available to complete the requested action.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_INTERNAL_ERROR</term>
+		///     <term>An error occurred that did not map to an SSPI error code.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_INVALID_HANDLE</term>
+		///     <term>The handle passed to the function is not valid.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_INVALID_TOKEN</term>
+		///     <term>
+		/// The error is due to a malformed input token, such as a token corrupted in transit, a token of incorrect size, or a token passed
+		/// into the wrong security package. Passing a token to the wrong package can happen if the client and server did not negotiate the
+		/// proper security package.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_LOGON_DENIED</term>
+		///     <term>The logon failed.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_NO_AUTHENTICATING_AUTHORITY</term>
+		///     <term>
+		/// No authority could be contacted for authentication. The domain name of the authenticating party could be wrong, the domain could
+		/// be unreachable, or there might have been a trust relationship failure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_NO_CREDENTIALS</term>
+		///     <term>No credentials are available in the security package.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_TARGET_UNKNOWN</term>
+		///     <term>The target was not recognized.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_UNSUPPORTED_FUNCTION</term>
+		///     <term>
+		/// A context attribute flag that is not valid (ISC_REQ_DELEGATE or ISC_REQ_PROMPT_FOR_CREDS) was specified in the fContextReq parameter.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_WRONG_PRINCIPAL</term>
+		///     <term>
+		/// The principal that received the authentication request is not the same as the one passed into the pszTargetName parameter. This
+		/// indicates a failure in mutual authentication.
+		/// </term>
+		///   </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The caller is responsible for determining whether the final context attributes are sufficient. If, for example, confidentiality
+		/// was requested, but could not be established, some applications may choose to shut down the connection immediately.
+		/// </para>
+		/// <para>
+		/// If attributes of the security context are not sufficient, the client must free the partially created context by calling the
+		/// DeleteSecurityContext function.
+		/// </para>
+		/// <para>The <c>InitializeSecurityContext (General)</c> function is used by a client to initialize an outbound context.</para>
+		/// <para>For a two-leg security context, the calling sequence is as follows:</para>
+		/// <list type="number">
+		///   <item>
+		///     <term>The client calls the function with phContext set to <c>NULL</c> and fills in the buffer descriptor with the input message.</term>
+		///   </item>
+		///   <item>
+		///     <term>
+		/// The security package examines the parameters and constructs an opaque token, placing it in the TOKEN element in the buffer array.
+		/// If the fContextReq parameter includes the ISC_REQ_ALLOCATE_MEMORY flag, the security package allocates the memory and returns the
+		/// pointer in the TOKEN element.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>
+		/// The client sends the token returned in the pOutput buffer to the target server. The server then passes the token as an input
+		/// argument in a call to the AcceptSecurityContext (General) function.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>
+		/// AcceptSecurityContext (General) may return a token, which the server sends to the client for a second call to
+		/// <c>InitializeSecurityContext (General)</c> if the first call returned SEC_I_CONTINUE_NEEDED.
+		/// </term>
+		///   </item>
+		/// </list>
+		/// <para>For multiple-leg security contexts, such as mutual authentication, the calling sequence is as follows:</para>
+		/// <list type="number">
+		///   <item>
+		///     <term>The client calls the function as described earlier, but the package returns the SEC_I_CONTINUE_NEEDED success code.</term>
+		///   </item>
+		///   <item>
+		///     <term>The client sends the output token to the server and waits for the server's reply.</term>
+		///   </item>
+		///   <item>
+		///     <term>
+		/// Upon receipt of the server's response, the client calls <c>InitializeSecurityContext (General)</c> again, with phContext set to
+		/// the handle that was returned from the last call. The token received from the server is supplied in the pInput parameter.
+		/// </term>
+		///   </item>
+		/// </list>
+		/// <para>If the server has successfully responded, the security package returns SEC_E_OK and a secure session is established.</para>
+		/// <para>If the function returns one of the error responses, the server's response is not accepted, and the session is not established.</para>
+		/// <para>
+		/// If the function returns SEC_I_CONTINUE_NEEDED, SEC_I_COMPLETE_NEEDED, or SEC_I_COMPLETE_AND_CONTINUE, steps 2 and 3 are repeated.
+		/// </para>
+		/// <para>
+		/// To initialize a security context, more than one call to this function may be required, depending on the underlying authentication
+		/// mechanism as well as the choices specified in the fContextReq parameter.
+		/// </para>
+		/// <para>
+		/// The fContextReq and pfContextAttributes parameters are bitmasks that represent various context attributes. For a description of
+		/// the various attributes, see Context Requirements. The pfContextAttributes parameter is valid on any successful return, but only
+		/// on the final successful return should you examine the flags that pertain to security aspects of the context. Intermediate returns
+		/// can set, for example, the ISC_RET_ALLOCATED_MEMORY flag.
+		/// </para>
+		/// <para>
+		/// If the ISC_REQ_USE_SUPPLIED_CREDS flag is set, the security package must look for a SECBUFFER_PKG_PARAMS buffer type in the
+		/// pInput input buffer. This is not a generic solution, but it allows for a strong pairing of security package and application when appropriate.
+		/// </para>
+		/// <para>If ISC_REQ_ALLOCATE_MEMORY was specified, the caller must free the memory by calling the FreeContextBuffer function.</para>
+		/// <para>
+		/// For example, the input token could be the challenge from a LAN Manager. In this case, the output token would be the
+		/// NTLM-encrypted response to the challenge.
+		/// </para>
+		/// <para>
+		/// The action the client takes depends on the return code from this function. If the return code is SEC_E_OK, there will be no
+		/// second <c>InitializeSecurityContext (General)</c> call, and no response from the server is expected. If the return code is
+		/// SEC_I_CONTINUE_NEEDED, the client expects a token in response from the server and passes it in a second call to
+		/// <c>InitializeSecurityContext (General)</c>. The SEC_I_COMPLETE_NEEDED return code indicates that the client must finish building
+		/// the message and call the CompleteAuthToken function. The SEC_I_COMPLETE_AND_CONTINUE code incorporates both of these actions.
+		/// </para>
+		/// <para>
+		/// If <c>InitializeSecurityContext (General)</c> returns success on the first (or only) call, then the caller must eventually call
+		/// the DeleteSecurityContext function on the returned handle, even if the call fails on a later leg of the authentication exchange.
+		/// </para>
+		/// <para>
+		/// The client may call <c>InitializeSecurityContext (General)</c> again after it has completed successfully. This indicates to the
+		/// security package that a reauthentication is wanted.
+		/// </para>
+		/// <para>
+		/// Kernel mode callers have the following differences: the target name is a Unicode string that must be allocated in virtual memory
+		/// by using VirtualAlloc; it must not be allocated from the pool. Buffers passed and supplied in pInput and pOutput must be in
+		/// virtual memory, not in the pool.
+		/// </para>
+		/// <para>
+		/// When using the Schannel SSP, if the function returns SEC_I_INCOMPLETE_CREDENTIALS, check that you specified a valid and trusted
+		/// certificate in your credentials. The certificate is specified when calling the AcquireCredentialsHandle (General) function. The
+		/// certificate must be a client authentication certificate issued by a certification authority (CA) trusted by the server. To obtain
+		/// a list of the CAs trusted by the server, call the QueryContextAttributes (General) function and specify the
+		/// SECPKG_ATTR_ISSUER_LIST_EX attribute.
+		/// </para>
+		/// <para>
+		/// When using the Schannel SSP, after a client application receives an authentication certificate from a CA that is trusted by the
+		/// server, the application creates a new credential by calling the AcquireCredentialsHandle (General) function and then calling
+		/// <c>InitializeSecurityContext (General)</c> again, specifying the new credential in the phCredential parameter.
+		/// </para>
+		/// </remarks>
 		public static HRESULT InitializeSecurityContext(in CredHandle phCredential, [In, Out] SafeCtxtHandle phContext, string pszTargetName, ASC_REQ fContextReq, DREP TargetDataRep,
 			[In, Optional] SecBufferDesc? pInput, SecBufferType outputType, out SafeSecBufferDesc pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry)
 		{
@@ -3166,6 +3574,399 @@ namespace Vanara.PInvoke
 			return InitializeSecurityContext(phCredential, phContext, pszTargetName, fContextReq, TargetDataRep, pInput, pOutput, out pfContextAttr, out ptsExpiry);
 		}
 
+		/// <summary>
+		/// <para>
+		/// The <c>InitializeSecurityContext (General)</c> function initiates the client side, outbound security context from a credential
+		/// handle. The function is used to build a security context between the client application and a remote peer.
+		/// <c>InitializeSecurityContext (General)</c> returns a token that the client must pass to the remote peer, which the peer in turn
+		/// submits to the local security implementation through the AcceptSecurityContext (General) call. The token generated should be
+		/// considered opaque by all callers.
+		/// </para>
+		/// <para>
+		/// Typically, the <c>InitializeSecurityContext (General)</c> function is called in a loop until a sufficient security context is established.
+		/// </para>
+		/// <para>For information about using this function with a specific security support provider (SSP), see the following topics.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Topic</term>
+		///     <term>Description</term>
+		///   </listheader>
+		///   <item>
+		///     <term>InitializeSecurityContext (CredSSP)</term>
+		///     <term>
+		/// Initiates the client side, outbound security context from a credential handle by using the Credential Security Support Provider (CredSSP).
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>InitializeSecurityContext (Digest)</term>
+		///     <term>Initiates the client side, outbound security context from a credential handle by using the Digest security package.</term>
+		///   </item>
+		///   <item>
+		///     <term>InitializeSecurityContext (Kerberos)</term>
+		///     <term>Initiates the client side, outbound security context from a credential handle by using the Kerberos security package.</term>
+		///   </item>
+		///   <item>
+		///     <term>InitializeSecurityContext (Negotiate)</term>
+		///     <term>Initiates the client side, outbound security context from a credential handle by using the Negotiate security package.</term>
+		///   </item>
+		///   <item>
+		///     <term>InitializeSecurityContext (NTLM)</term>
+		///     <term>Initiates the client side, outbound security context from a credential handle by using the NTLM security package.</term>
+		///   </item>
+		///   <item>
+		///     <term>InitializeSecurityContext (Schannel)</term>
+		///     <term>Initiates the client side, outbound security context from a credential handle by using the Schannel security package.</term>
+		///   </item>
+		/// </list>
+		/// </summary>
+		/// <param name="phCredential">A handle to the credentials returned by AcquireCredentialsHandle (General). This handle is used to build the security context.
+		/// The <c>InitializeSecurityContext (General)</c> function requires at least OUTBOUND credentials.</param>
+		/// <param name="phContext"><para>
+		/// A pointer to a CtxtHandle structure. On the first call to <c>InitializeSecurityContext (General)</c>, this pointer is
+		/// <c>NULL</c>. On the second call, this parameter is a pointer to the handle to the partially formed context returned in the
+		/// phNewContext parameter by the first call.
+		/// </para>
+		/// <para>This parameter is optional with the Microsoft Digest SSP and can be set to <c>NULL</c>.</para>
+		/// <para>
+		/// When using the Schannel SSP, on the first call to <c>InitializeSecurityContext (General)</c>, specify <c>NULL</c>. On future
+		/// calls, specify the token received in the phNewContext parameter after the first call to this function.
+		/// </para></param>
+		/// <param name="pszTargetName">TBD</param>
+		/// <param name="fContextReq"><para>
+		/// Bit flags that indicate requests for the context. Not all packages can support all requirements. Flags used for this parameter
+		/// are prefixed with ISC_REQ_, for example, ISC_REQ_DELEGATE. This parameter can be one or more of the following attributes flags.
+		/// </para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Value</term>
+		///     <term>Meaning</term>
+		///   </listheader>
+		///   <item>
+		///     <term>ISC_REQ_ALLOCATE_MEMORY</term>
+		///     <term>
+		/// The security package allocates output buffers for you. When you have finished using the output buffers, free them by calling the
+		/// FreeContextBuffer function.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_CONFIDENTIALITY</term>
+		///     <term>Encrypt messages by using the EncryptMessage function.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_CONNECTION</term>
+		///     <term>
+		/// The security context will not handle formatting messages. This value is the default for the Kerberos, Negotiate, and NTLM
+		/// security packages.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_DELEGATE</term>
+		///     <term>
+		/// The server can use the context to authenticate to other servers as the client. The ISC_REQ_MUTUAL_AUTH flag must be set for this
+		/// flag to work. Valid for Kerberos. Ignore this flag for constrained delegation.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_EXTENDED_ERROR</term>
+		///     <term>When errors occur, the remote party will be notified.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_HTTP</term>
+		///     <term>Use Digest for HTTP. Omit this flag to use Digest as a SASL mechanism.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_INTEGRITY</term>
+		///     <term>Sign messages and verify signatures by using the EncryptMessage and MakeSignature functions.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_MANUAL_CRED_VALIDATION</term>
+		///     <term>Schannel must not authenticate the server automatically.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_MUTUAL_AUTH</term>
+		///     <term>The mutual authentication policy of the service will be satisfied.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_NO_INTEGRITY</term>
+		///     <term>
+		/// If this flag is set, the ISC_REQ_INTEGRITY flag is ignored. This value is supported only by the Negotiate and Kerberos security packages.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_REPLAY_DETECT</term>
+		///     <term>Detect replayed messages that have been encoded by using the EncryptMessage or MakeSignature functions.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_SEQUENCE_DETECT</term>
+		///     <term>Detect messages received out of sequence.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_STREAM</term>
+		///     <term>Support a stream-oriented connection.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_USE_SESSION_KEY</term>
+		///     <term>A new session key must be negotiated. This value is supported only by the Kerberos security package.</term>
+		///   </item>
+		///   <item>
+		///     <term>ISC_REQ_USE_SUPPLIED_CREDS</term>
+		///     <term>Schannel must not attempt to supply credentials for the client automatically.</term>
+		///   </item>
+		/// </list>
+		/// <para>The requested attributes may not be supported by the client. For more information, see the pfContextAttr parameter.</para>
+		/// <para>For further descriptions of the various attributes, see Context Requirements.</para></param>
+		/// <param name="TargetDataRep"><para>The data representation, such as byte ordering, on the target. This parameter can be either SECURITY_NATIVE_DREP or SECURITY_NETWORK_DREP.</para>
+		/// <para>This parameter is not used with Digest or Schannel. Set it to zero.</para></param>
+		/// <param name="pInput">A pointer to a SecBufferDesc structure that contains pointers to the buffers supplied as input to the package. Unless the client
+		/// context was initiated by the server, the value of this parameter must be <c>NULL</c> on the first call to the function. On
+		/// subsequent calls to the function or when the client context was initiated by the server, the value of this parameter is a pointer
+		/// to a buffer allocated with enough memory to hold the token returned by the remote computer.</param>
+		/// <param name="pOutput"><para>
+		/// A pointer to a SecBufferDesc structure that contains pointers to the SecBuffer structure that receives the output data. If a
+		/// buffer was typed as SEC_READWRITE in the input, it will be there on output. The system will allocate a buffer for the security
+		/// token if requested (through ISC_REQ_ALLOCATE_MEMORY) and fill in the address in the buffer descriptor for the security token.
+		/// </para>
+		/// <para>When using the Microsoft Digest SSP, this parameter receives the challenge response that must be sent to the server.</para>
+		/// <para>
+		/// When using the Schannel SSP, if the ISC_REQ_ALLOCATE_MEMORY flag is specified, the Schannel SSP will allocate memory for the
+		/// buffer and put the appropriate information in the SecBufferDesc. In addition, the caller must pass in a buffer of type
+		/// <c>SECBUFFER_ALERT</c>. On output, if an alert is generated, this buffer contains information about that alert, and the function fails.
+		/// </para></param>
+		/// <param name="pfContextAttr"><para>
+		/// A pointer to a variable to receive a set of bit flags that indicate the attributes of the established context. For a description
+		/// of the various attributes, see Context Requirements.
+		/// </para>
+		/// <para>Flags used for this parameter are prefixed with ISC_RET, such as ISC_RET_DELEGATE.</para>
+		/// <para>For a list of valid values, see the fContextReq parameter.</para>
+		/// <para>
+		/// Do not check for security-related attributes until the final function call returns successfully. Attribute flags that are not
+		/// related to security, such as the ASC_RET_ALLOCATED_MEMORY flag, can be checked before the final return.
+		/// </para>
+		/// <para>
+		///   <c>Note</c> Particular context attributes can change during negotiation with a remote peer.</para></param>
+		/// <param name="ptsExpiry"><para>
+		/// A pointer to a TimeStamp structure that receives the expiration time of the context. It is recommended that the security package
+		/// always return this value in local time. This parameter is optional and <c>NULL</c> should be passed for short-lived clients.
+		/// </para>
+		/// <para>There is no expiration time for Microsoft Digest SSP security contexts or credentials.</para></param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns one of the following success codes.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Return code</term>
+		///     <term>Description</term>
+		///   </listheader>
+		///   <item>
+		///     <term>SEC_I_COMPLETE_AND_CONTINUE</term>
+		///     <term>
+		/// The client must call CompleteAuthToken and then pass the output to the server. The client then waits for a returned token and
+		/// passes it, in another call, to InitializeSecurityContext (General).
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_I_COMPLETE_NEEDED</term>
+		///     <term>The client must finish building the message and then call the CompleteAuthToken function.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_I_CONTINUE_NEEDED</term>
+		///     <term>
+		/// The client must send the output token to the server and wait for a return token. The returned token is then passed in another
+		/// call to InitializeSecurityContext (General). The output token can be empty.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_I_INCOMPLETE_CREDENTIALS</term>
+		///     <term>
+		/// Use with Schannel. The server has requested client authentication, and the supplied credentials either do not include a
+		/// certificate or the certificate was not issued by a certification authority that is trusted by the server. For more information,
+		/// see Remarks.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_INCOMPLETE_MESSAGE</term>
+		///     <term>
+		/// Use with Schannel. Data for the whole message was not read from the wire. When this value is returned, the pInput buffer contains
+		/// a SecBuffer structure with a BufferType member of SECBUFFER_MISSING. The cbBuffer member of SecBuffer contains a value that
+		/// indicates the number of additional bytes that the function must read from the client before this function succeeds. While this
+		/// number is not always accurate, using it can help improve performance by avoiding multiple calls to this function.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_OK</term>
+		///     <term>
+		/// The security context was successfully initialized. There is no need for another InitializeSecurityContext (General) call. If the
+		/// function returns an output token, that is, if the SECBUFFER_TOKEN in pOutput is of nonzero length, that token must be sent to the server.
+		/// </term>
+		///   </item>
+		/// </list>
+		/// <para>If the function fails, the function returns one of the following error codes.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Return code</term>
+		///     <term>Description</term>
+		///   </listheader>
+		///   <item>
+		///     <term>SEC_E_INSUFFICIENT_MEMORY</term>
+		///     <term>There is not enough memory available to complete the requested action.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_INTERNAL_ERROR</term>
+		///     <term>An error occurred that did not map to an SSPI error code.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_INVALID_HANDLE</term>
+		///     <term>The handle passed to the function is not valid.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_INVALID_TOKEN</term>
+		///     <term>
+		/// The error is due to a malformed input token, such as a token corrupted in transit, a token of incorrect size, or a token passed
+		/// into the wrong security package. Passing a token to the wrong package can happen if the client and server did not negotiate the
+		/// proper security package.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_LOGON_DENIED</term>
+		///     <term>The logon failed.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_NO_AUTHENTICATING_AUTHORITY</term>
+		///     <term>
+		/// No authority could be contacted for authentication. The domain name of the authenticating party could be wrong, the domain could
+		/// be unreachable, or there might have been a trust relationship failure.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_NO_CREDENTIALS</term>
+		///     <term>No credentials are available in the security package.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_TARGET_UNKNOWN</term>
+		///     <term>The target was not recognized.</term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_UNSUPPORTED_FUNCTION</term>
+		///     <term>
+		/// A context attribute flag that is not valid (ISC_REQ_DELEGATE or ISC_REQ_PROMPT_FOR_CREDS) was specified in the fContextReq parameter.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>SEC_E_WRONG_PRINCIPAL</term>
+		///     <term>
+		/// The principal that received the authentication request is not the same as the one passed into the pszTargetName parameter. This
+		/// indicates a failure in mutual authentication.
+		/// </term>
+		///   </item>
+		/// </list>
+		/// </returns>
+		/// <exception cref="System.ArgumentNullException">phContext</exception>
+		/// <remarks>
+		/// <para>
+		/// The caller is responsible for determining whether the final context attributes are sufficient. If, for example, confidentiality
+		/// was requested, but could not be established, some applications may choose to shut down the connection immediately.
+		/// </para>
+		/// <para>
+		/// If attributes of the security context are not sufficient, the client must free the partially created context by calling the
+		/// DeleteSecurityContext function.
+		/// </para>
+		/// <para>The <c>InitializeSecurityContext (General)</c> function is used by a client to initialize an outbound context.</para>
+		/// <para>For a two-leg security context, the calling sequence is as follows:</para>
+		/// <list type="number">
+		///   <item>
+		///     <term>The client calls the function with phContext set to <c>NULL</c> and fills in the buffer descriptor with the input message.</term>
+		///   </item>
+		///   <item>
+		///     <term>
+		/// The security package examines the parameters and constructs an opaque token, placing it in the TOKEN element in the buffer array.
+		/// If the fContextReq parameter includes the ISC_REQ_ALLOCATE_MEMORY flag, the security package allocates the memory and returns the
+		/// pointer in the TOKEN element.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>
+		/// The client sends the token returned in the pOutput buffer to the target server. The server then passes the token as an input
+		/// argument in a call to the AcceptSecurityContext (General) function.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>
+		/// AcceptSecurityContext (General) may return a token, which the server sends to the client for a second call to
+		/// <c>InitializeSecurityContext (General)</c> if the first call returned SEC_I_CONTINUE_NEEDED.
+		/// </term>
+		///   </item>
+		/// </list>
+		/// <para>For multiple-leg security contexts, such as mutual authentication, the calling sequence is as follows:</para>
+		/// <list type="number">
+		///   <item>
+		///     <term>The client calls the function as described earlier, but the package returns the SEC_I_CONTINUE_NEEDED success code.</term>
+		///   </item>
+		///   <item>
+		///     <term>The client sends the output token to the server and waits for the server's reply.</term>
+		///   </item>
+		///   <item>
+		///     <term>
+		/// Upon receipt of the server's response, the client calls <c>InitializeSecurityContext (General)</c> again, with phContext set to
+		/// the handle that was returned from the last call. The token received from the server is supplied in the pInput parameter.
+		/// </term>
+		///   </item>
+		/// </list>
+		/// <para>If the server has successfully responded, the security package returns SEC_E_OK and a secure session is established.</para>
+		/// <para>If the function returns one of the error responses, the server's response is not accepted, and the session is not established.</para>
+		/// <para>
+		/// If the function returns SEC_I_CONTINUE_NEEDED, SEC_I_COMPLETE_NEEDED, or SEC_I_COMPLETE_AND_CONTINUE, steps 2 and 3 are repeated.
+		/// </para>
+		/// <para>
+		/// To initialize a security context, more than one call to this function may be required, depending on the underlying authentication
+		/// mechanism as well as the choices specified in the fContextReq parameter.
+		/// </para>
+		/// <para>
+		/// The fContextReq and pfContextAttributes parameters are bitmasks that represent various context attributes. For a description of
+		/// the various attributes, see Context Requirements. The pfContextAttributes parameter is valid on any successful return, but only
+		/// on the final successful return should you examine the flags that pertain to security aspects of the context. Intermediate returns
+		/// can set, for example, the ISC_RET_ALLOCATED_MEMORY flag.
+		/// </para>
+		/// <para>
+		/// If the ISC_REQ_USE_SUPPLIED_CREDS flag is set, the security package must look for a SECBUFFER_PKG_PARAMS buffer type in the
+		/// pInput input buffer. This is not a generic solution, but it allows for a strong pairing of security package and application when appropriate.
+		/// </para>
+		/// <para>If ISC_REQ_ALLOCATE_MEMORY was specified, the caller must free the memory by calling the FreeContextBuffer function.</para>
+		/// <para>
+		/// For example, the input token could be the challenge from a LAN Manager. In this case, the output token would be the
+		/// NTLM-encrypted response to the challenge.
+		/// </para>
+		/// <para>
+		/// The action the client takes depends on the return code from this function. If the return code is SEC_E_OK, there will be no
+		/// second <c>InitializeSecurityContext (General)</c> call, and no response from the server is expected. If the return code is
+		/// SEC_I_CONTINUE_NEEDED, the client expects a token in response from the server and passes it in a second call to
+		/// <c>InitializeSecurityContext (General)</c>. The SEC_I_COMPLETE_NEEDED return code indicates that the client must finish building
+		/// the message and call the CompleteAuthToken function. The SEC_I_COMPLETE_AND_CONTINUE code incorporates both of these actions.
+		/// </para>
+		/// <para>
+		/// If <c>InitializeSecurityContext (General)</c> returns success on the first (or only) call, then the caller must eventually call
+		/// the DeleteSecurityContext function on the returned handle, even if the call fails on a later leg of the authentication exchange.
+		/// </para>
+		/// <para>
+		/// The client may call <c>InitializeSecurityContext (General)</c> again after it has completed successfully. This indicates to the
+		/// security package that a reauthentication is wanted.
+		/// </para>
+		/// <para>
+		/// Kernel mode callers have the following differences: the target name is a Unicode string that must be allocated in virtual memory
+		/// by using VirtualAlloc; it must not be allocated from the pool. Buffers passed and supplied in pInput and pOutput must be in
+		/// virtual memory, not in the pool.
+		/// </para>
+		/// <para>
+		/// When using the Schannel SSP, if the function returns SEC_I_INCOMPLETE_CREDENTIALS, check that you specified a valid and trusted
+		/// certificate in your credentials. The certificate is specified when calling the AcquireCredentialsHandle (General) function. The
+		/// certificate must be a client authentication certificate issued by a certification authority (CA) trusted by the server. To obtain
+		/// a list of the CAs trusted by the server, call the QueryContextAttributes (General) function and specify the
+		/// SECPKG_ATTR_ISSUER_LIST_EX attribute.
+		/// </para>
+		/// <para>
+		/// When using the Schannel SSP, after a client application receives an authentication certificate from a CA that is trusted by the
+		/// server, the application creates a new credential by calling the AcquireCredentialsHandle (General) function and then calling
+		/// <c>InitializeSecurityContext (General)</c> again, specifying the new credential in the phCredential parameter.
+		/// </para>
+		/// </remarks>
 		public static HRESULT InitializeSecurityContext(in CredHandle phCredential, [In, Out] SafeCtxtHandle phContext, string pszTargetName, ASC_REQ fContextReq, DREP TargetDataRep,
 			SecBufferDesc? pInput, [In, Out] SafeSecBufferDesc pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry)
 		{

@@ -6094,7 +6094,10 @@ namespace Vanara.PInvoke
 			return sz;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HTOKEN instance at disposal using CloseHandle.</summary>
+		/// <summary>
+		/// Provides a <see cref="SafeHandle" /> to a that releases a created HTOKEN instance at disposal using CloseHandle.
+		/// </summary>
+		/// <seealso cref="Vanara.PInvoke.Kernel32.SafeKernelHandle" />
 		public class SafeHTOKEN : SafeKernelHandle
 		{
 			/// <summary>
@@ -6216,6 +6219,8 @@ namespace Vanara.PInvoke
 			public static implicit operator HTOKEN(SafeHTOKEN h) => h.handle;
 
 #if NETSTANDARD2_0 || NETCOREAPP2_0 || NETCOREAPP2_1
+			/// <summary>Conversion operator from SafeHTOKEN to SafeAccessTokenHandle.</summary>
+			/// <param name="h">The handle.</param>
 			public static explicit operator Microsoft.Win32.SafeHandles.SafeAccessTokenHandle(SafeHTOKEN h)
 			{
 				var dup = h.DuplicatePrimary();

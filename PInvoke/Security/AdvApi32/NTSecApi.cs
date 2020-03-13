@@ -199,13 +199,21 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntsecapi.h")]
 		public enum POLICY_QOS : uint
 		{
+			/// <summary/>
 			POLICY_QOS_SCHANNEL_REQUIRED = 0x00000001,
+			/// <summary/>
 			POLICY_QOS_OUTBOUND_INTEGRITY = 0x00000002,
+			/// <summary/>
 			POLICY_QOS_OUTBOUND_CONFIDENTIALITY = 0x00000004,
+			/// <summary/>
 			POLICY_QOS_INBOUND_INTEGRITY = 0x00000008,
+			/// <summary/>
 			POLICY_QOS_INBOUND_CONFIDENTIALITY = 0x00000010,
+			/// <summary/>
 			POLICY_QOS_ALLOW_LOCAL_ROOT_CERT_STORE = 0x00000020,
+			/// <summary/>
 			POLICY_QOS_RAS_SERVER_ALLOWED = 0x00000040,
+			/// <summary/>
 			POLICY_QOS_DHCP_SERVER_ALLOWED = 0x00000080,
 		}
 

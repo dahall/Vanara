@@ -42,48 +42,88 @@ namespace Vanara.PInvoke
 		/// <summary>Digest Authentication for Windows.</summary>
 		[PInvokeData("wdigest.h")]
 		public const string WDIGEST_SP_NAME = "WDigest";
+
 		/// <summary>Kerberos encryption types.</summary>
 		[PInvokeData("Ntsecapi.h", MSDNShortId = "3b088c94-810b-44c7-887a-58e8dbd13603")]
 		public enum KERB_ETYPE
 		{
+			/// <summary/>
 			KERB_ETYPE_NULL = 0,
+			/// <summary/>
 			KERB_ETYPE_DES_CBC_CRC = 1,
+			/// <summary/>
 			KERB_ETYPE_DES_CBC_MD4 = 2,
+			/// <summary/>
 			KERB_ETYPE_DES_CBC_MD5 = 3,
+			/// <summary/>
 			KERB_ETYPE_AES128_CTS_HMAC_SHA1_96 = 17,
+			/// <summary/>
 			KERB_ETYPE_AES256_CTS_HMAC_SHA1_96 = 18,
+			/// <summary/>
 			KERB_ETYPE_RC4_MD4 = -128,
+			/// <summary/>
 			KERB_ETYPE_RC4_PLAIN2 = -129,
+			/// <summary/>
 			KERB_ETYPE_RC4_LM = -130,
+			/// <summary/>
 			KERB_ETYPE_RC4_SHA = -131,
+			/// <summary/>
 			KERB_ETYPE_DES_PLAIN = -132,
+			/// <summary/>
 			KERB_ETYPE_RC4_HMAC_OLD = -133,
+			/// <summary/>
 			KERB_ETYPE_RC4_PLAIN_OLD = -134,
+			/// <summary/>
 			KERB_ETYPE_RC4_HMAC_OLD_EXP = -135,
+			/// <summary/>
 			KERB_ETYPE_RC4_PLAIN_OLD_EXP = -136,
+			/// <summary/>
 			KERB_ETYPE_RC4_PLAIN = -140,
+			/// <summary/>
 			KERB_ETYPE_RC4_PLAIN_EXP = -141,
+			/// <summary/>
 			KERB_ETYPE_AES128_CTS_HMAC_SHA1_96_PLAIN = -148,
+			/// <summary/>
 			KERB_ETYPE_AES256_CTS_HMAC_SHA1_96_PLAIN = -149,
+			/// <summary/>
 			KERB_ETYPE_NTLM_HASH = -150,
+			/// <summary/>
 			KERB_ETYPE_DSA_SHA1_CMS = 9,
+			/// <summary/>
 			KERB_ETYPE_RSA_MD5_CMS = 10,
+			/// <summary/>
 			KERB_ETYPE_RSA_SHA1_CMS = 11,
+			/// <summary/>
 			KERB_ETYPE_RC2_CBC_ENV = 12,
+			/// <summary/>
 			KERB_ETYPE_RSA_ENV = 13,
+			/// <summary/>
 			KERB_ETYPE_RSA_ES_OEAP_ENV = 14,
+			/// <summary/>
 			KERB_ETYPE_DES_EDE3_CBC_ENV = 15,
+			/// <summary/>
 			KERB_ETYPE_DSA_SIGN = 8,
+			/// <summary/>
 			KERB_ETYPE_RSA_PRIV = 9,
+			/// <summary/>
 			KERB_ETYPE_RSA_PUB = 10,
+			/// <summary/>
 			KERB_ETYPE_RSA_PUB_MD5 = 11,
+			/// <summary/>
 			KERB_ETYPE_RSA_PUB_SHA1 = 12,
+			/// <summary/>
 			KERB_ETYPE_PKCS7_PUB = 13,
+			/// <summary/>
 			KERB_ETYPE_DES3_CBC_MD5 = 5,
+			/// <summary/>
 			KERB_ETYPE_DES3_CBC_SHA1 = 7,
+			/// <summary/>
 			KERB_ETYPE_DES3_CBC_SHA1_KD = 16,
+			/// <summary/>
 			KERB_ETYPE_DES_CBC_MD5_NT = 20,
+			/// <summary/>
 			KERB_ETYPE_RC4_HMAC_NT = 23,
+			/// <summary/>
 			KERB_ETYPE_RC4_HMAC_NT_EXP = 24
 		}
 
@@ -215,6 +255,7 @@ namespace Vanara.PInvoke
 			/// <summary>This message is a request to refresh the smart card credentials.</summary>
 			KerbRefreshSmartcardCredentialsMessage,
 
+			/// <summary/>
 			KerbAddExtraCredentialsMessage,
 
 			/// <summary>This constant is reserved.</summary>
@@ -226,6 +267,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			KerbTransferCredentialsMessage,
 
+			/// <summary/>
 			KerbQueryTicketCacheEx2Message,
 
 			/// <summary>
@@ -234,6 +276,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			KerbSubmitTicketMessage,
 
+			/// <summary/>
 			KerbAddExtraCredentialsExMessage,
 
 			/// <summary>
@@ -242,6 +285,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			KerbQueryKdcProxyCacheMessage,
 
+			/// <summary/>
 			KerbPurgeKdcProxyCacheMessage,
 
 			/// <summary>
@@ -251,6 +295,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			KerbQueryTicketCacheEx3Message,
 
+			/// <summary/>
 			KerbCleanupMachinePkinitCredsMessage,
 
 			/// <summary>
@@ -259,6 +304,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			KerbAddBindingCacheEntryExMessage,
 
+			/// <summary/>
 			KerbQueryBindingCacheMessage,
 
 			/// <summary>
@@ -267,8 +313,11 @@ namespace Vanara.PInvoke
 			/// </summary>
 			KerbPurgeBindingCacheMessage,
 
+			/// <summary/>
 			KerbPinKdcMessage,
+			/// <summary/>
 			KerbUnpinAllKdcsMessage,
+			/// <summary/>
 			KerbQueryDomainExtendedPoliciesMessage,
 
 			/// <summary>
@@ -351,6 +400,7 @@ namespace Vanara.PInvoke
 			KERB_TICKET_FLAGS_reserved1 = 0x00000001,
 		}
 
+		/// <summary>Kerberos name type.</summary>
 		[PInvokeData("ntsecapi.h", MSDNShortId = "8ed37546-6443-4010-a078-4359dd1c2861")]
 		public enum KRB_NT : short
 		{

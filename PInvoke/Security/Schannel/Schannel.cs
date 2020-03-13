@@ -6,15 +6,24 @@ using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Functions, structures and constants for schannel.dll</summary>
 	public static partial class Schannel
 	{
+		/// <summary/>
 		public const uint CF_CERT_FROM_FILE = 2;
+		/// <summary/>
 		public const string DEFAULT_TLS_SSP_NAME = "Default TLS SSP";
+		/// <summary/>
 		public const string PCT1SP_NAME = "Microsoft PCT 1.0";
+		/// <summary/>
 		public const string SCHANNEL_NAME = "Schannel";
+		/// <summary/>
 		public const string SSL2SP_NAME = "Microsoft SSL 2.0";
+		/// <summary/>
 		public const string SSL3SP_NAME = "Microsoft SSL 3.0";
+		/// <summary/>
 		public const string TLS1SP_NAME = "Microsoft TLS 1.0";
+		/// <summary/>
 		public const string UNISP_NAME = "Microsoft Unified Security Protocol Provider";
 
 		private const int SECPKGCONTEXT_CONNECTION_INFO_EX_V1 = 1;

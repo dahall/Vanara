@@ -9,6 +9,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		/// <summary/>
 		public const uint SERVICE_DYNAMIC_INFORMATION_LEVEL_START_REASON = 1;
 
 		/// <summary>
@@ -520,6 +521,7 @@ namespace Vanara.PInvoke
 		/// <summary>Info levels for <see cref="QueryServiceStatusEx"/></summary>
 		public enum SC_STATUS_TYPE
 		{
+			/// <summary/>
 			[CorrespondingType(typeof(SERVICE_STATUS_PROCESS))]
 			SC_STATUS_PROCESS_INFO = 0
 		}
@@ -648,62 +650,109 @@ namespace Vanara.PInvoke
 			SERVICE_STATE_ALL = 0x00000003,
 		}
 
+		/// <summary/>
 		[Flags]
 		public enum SERVICE_STOP_REASON : uint
 		{
 			// Stop reason flags. Update SERVICE_STOP_REASON_FLAG_MAX when new flags are added.
+			/// <summary/>
 			SERVICE_STOP_REASON_FLAG_MIN = 0x00000000,
 
+			/// <summary/>
 			SERVICE_STOP_REASON_FLAG_UNPLANNED = 0x10000000,
+			/// <summary/>
 			SERVICE_STOP_REASON_FLAG_CUSTOM = 0x20000000,
+			/// <summary/>
 			SERVICE_STOP_REASON_FLAG_PLANNED = 0x40000000,
+			/// <summary/>
 			SERVICE_STOP_REASON_FLAG_MAX = 0x80000000,
 
 			// Microsoft major reasons. Update SERVICE_STOP_REASON_MAJOR_MAX when new codes are added.
+
+			/// <summary/>
 			SERVICE_STOP_REASON_MAJOR_MIN = 0x00000000,
 
+			/// <summary/>
 			SERVICE_STOP_REASON_MAJOR_OTHER = 0x00010000,
+			/// <summary/>
 			SERVICE_STOP_REASON_MAJOR_HARDWARE = 0x00020000,
+			/// <summary/>
 			SERVICE_STOP_REASON_MAJOR_OPERATINGSYSTEM = 0x00030000,
+			/// <summary/>
 			SERVICE_STOP_REASON_MAJOR_SOFTWARE = 0x00040000,
+			/// <summary/>
 			SERVICE_STOP_REASON_MAJOR_APPLICATION = 0x00050000,
+			/// <summary/>
 			SERVICE_STOP_REASON_MAJOR_NONE = 0x00060000,
+			/// <summary/>
 			SERVICE_STOP_REASON_MAJOR_MAX = 0x00070000,
+			/// <summary/>
 			SERVICE_STOP_REASON_MAJOR_MIN_CUSTOM = 0x00400000,
+			/// <summary/>
 			SERVICE_STOP_REASON_MAJOR_MAX_CUSTOM = 0x00ff0000,
 
 			// Microsoft minor reasons. Update SERVICE_STOP_REASON_MINOR_MAX when new codes are added.
+
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_MIN = 0x00000000,
 
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_OTHER = 0x00000001,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_MAINTENANCE = 0x00000002,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_INSTALLATION = 0x00000003,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_UPGRADE = 0x00000004,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_RECONFIG = 0x00000005,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_HUNG = 0x00000006,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_UNSTABLE = 0x00000007,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_DISK = 0x00000008,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_NETWORKCARD = 0x00000009,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_ENVIRONMENT = 0x0000000a,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_HARDWARE_DRIVER = 0x0000000b,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_OTHERDRIVER = 0x0000000c,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_SERVICEPACK = 0x0000000d,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_SOFTWARE_UPDATE = 0x0000000e,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_SECURITYFIX = 0x0000000f,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_SECURITY = 0x00000010,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_NETWORK_CONNECTIVITY = 0x00000011,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_WMI = 0x00000012,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_SERVICEPACK_UNINSTALL = 0x00000013,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_SOFTWARE_UPDATE_UNINSTALL = 0x00000014,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_SECURITYFIX_UNINSTALL = 0x00000015,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_MMC = 0x00000016,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_NONE = 0x00000017,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_MEMOTYLIMIT = 0x00000018,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_MAX = 0x00000019,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_MIN_CUSTOM = 0x00000100,
+			/// <summary/>
 			SERVICE_STOP_REASON_MINOR_MAX_CUSTOM = 0x0000FFFF
 		}
 
+		/// <summary>Service control codes.</summary>
 		[PInvokeData("winsvc.h", MSDNShortId = "d268609b-d442-4d0f-9d49-ed23fee84961")]
 		[Flags]
 		public enum ServiceAcceptedControlCodes : uint
@@ -788,6 +837,7 @@ namespace Vanara.PInvoke
 			SERVICE_ACCEPT_SYSTEMLOWRESOURCES = 0x00004000,
 		}
 
+		/// <summary>Service access rights.</summary>
 		[Flags]
 		public enum ServiceAccessRights : uint
 		{
@@ -851,8 +901,11 @@ namespace Vanara.PInvoke
 			/// </summary>
 			WRITE_OWNER = ACCESS_MASK.WRITE_OWNER,
 
+			/// <summary/>
 			GENERIC_READ = ACCESS_MASK.STANDARD_RIGHTS_READ | SERVICE_QUERY_CONFIG | SERVICE_QUERY_STATUS | SERVICE_INTERROGATE | SERVICE_ENUMERATE_DEPENDENTS,
+			/// <summary/>
 			GENERIC_WRITE = ACCESS_MASK.STANDARD_RIGHTS_WRITE | SERVICE_CHANGE_CONFIG,
+			/// <summary/>
 			GENERIC_EXECUTE = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE | SERVICE_START | SERVICE_STOP | SERVICE_PAUSE_CONTINUE | SERVICE_USER_DEFINED_CONTROL,
 		}
 
@@ -1132,17 +1185,24 @@ namespace Vanara.PInvoke
 		/// <summary>Info levels for <see cref="ControlServiceEx"/></summary>
 		public enum ServiceInfoLevels : uint
 		{
+			/// <summary/>
 			[CorrespondingType(typeof(SERVICE_CONTROL_STATUS_REASON_PARAMS))]
 			SERVICE_CONTROL_STATUS_REASON_INFO = 1
 		}
 
+		/// <summary/>
 		[Flags]
 		public enum ServiceStartReason : uint
 		{
+			/// <summary/>
 			SERVICE_START_REASON_DEMAND = 1 << 0,
+			/// <summary/>
 			SERVICE_START_REASON_AUTO = 1 << 1,
+			/// <summary/>
 			SERVICE_START_REASON_TRIGGER = 1 << 2,
+			/// <summary/>
 			SERVICE_START_REASON_RESTART_ON_FAILURE = 1 << 3,
+			/// <summary/>
 			SERVICE_START_REASON_DELAYEDAUTO = 1 << 4,
 		}
 
@@ -4961,6 +5021,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public string lpDisplayName;
 
+			/// <summary/>
 			public IEnumerable<string> Dependencies => lpDependencies.ToStringEnum();
 		}
 
@@ -5460,6 +5521,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public IntPtr lpsaActions;
 
+			/// <summary/>
 			public SC_ACTION[] Actions => lpsaActions.ToArray<SC_ACTION>((int)cActions);
 		}
 
@@ -5753,9 +5815,11 @@ namespace Vanara.PInvoke
 			public uint dwServiceSidType;
 		}
 
+		/// <summary/>
 		[StructLayout(LayoutKind.Sequential)]
 		public readonly struct SERVICE_START_REASON
 		{
+			/// <summary/>
 			public readonly ServiceStartReason dwReason;
 		}
 
@@ -6599,8 +6663,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public IntPtr pDataItems;
 
+			/// <summary/>
 			public Guid TriggerSubType => pTriggerSubtype.ToStructure<Guid>();
 
+			/// <summary/>
 			public SERVICE_TRIGGER_SPECIFIC_DATA_ITEM[] DataItems => pDataItems.ToArray<SERVICE_TRIGGER_SPECIFIC_DATA_ITEM>((int)cDataItems);
 		}
 
@@ -6637,6 +6703,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public IntPtr pReserved;
 
+			/// <summary/>
 			public SERVICE_TRIGGER[] Triggers => pTriggers.ToArray<SERVICE_TRIGGER>((int)cTriggers);
 		}
 

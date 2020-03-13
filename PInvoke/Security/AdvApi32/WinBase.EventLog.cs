@@ -5,6 +5,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		/// <summary/>
 		public const uint ELF_LOG_SIGNATURE = 0x654c664c;
 
 		/// <summary>Saves the specified event log to a backup file. The function does not clear the event log.</summary>

@@ -12,10 +12,15 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		/// <summary/>
 		public const uint SECURITY_DESCRIPTOR_REVISION = 1;
+		/// <summary/>
 		public const uint SECURITY_DESCRIPTOR_REVISION1 = 1;
+		/// <summary/>
 		public const int SID_MAX_SUB_AUTHORITIES = 15;
+		/// <summary/>
 		public const int SID_RECOMMENDED_SUB_AUTHORITIES = 1; // Will change to around 6
+		/// <summary/>
 		public const uint SID_REVISION = 1; // Current revision level
 
 		/// <summary>Indicates whether the ObjectTypeName and InheritedObjectTypeName members contain strings.</summary>
@@ -2530,6 +2535,7 @@ namespace Vanara.PInvoke
 			/// <summary>An array of security attribute values of the type specified in the <c>ValueType</c> member.</summary>
 			public VALUESUNION Values;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Explicit)]
 			public struct VALUESUNION
 			{
@@ -4167,10 +4173,13 @@ namespace Vanara.PInvoke
 		/// <summary>Known RIDs</summary>
 		public static class KnownSIDRelativeID
 		{
+			/// <summary/>
 			public const int SECURITY_APP_PACKAGE_BASE_RID = 0x00000002;
 
+			/// <summary/>
 			public const int SECURITY_CAPABILITY_APP_RID = 0x00000040;
 
+			/// <summary/>
 			public const int SECURITY_CAPABILITY_BASE_RID = 0x00000003;
 
 			/// <summary>The security creator group rid</summary>

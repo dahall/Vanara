@@ -27,6 +27,7 @@ namespace Vanara.PInvoke
 		/// <summary>Specifies the default event tracing security</summary>
 		public static readonly Guid DefaultTraceSecurityGuid = new Guid("0811c1af-7a07-4a06-82ed-869455cdf713");
 
+		/// <summary/>
 		public static readonly Guid Dummy = new Guid("3595ab5c-042a-4c8e-b942-2d059bfeb1b1");
 
 		/// <summary>Used to report system configuration records</summary>
@@ -1089,13 +1090,17 @@ namespace Vanara.PInvoke
 			/// <summary>Include a time stamp in the message.</summary>
 			TRACE_MESSAGE_TIMESTAMP = 8,
 
+			/// <summary/>
 			TRACE_MESSAGE_PERFORMANCE_TIMESTAMP = 16,
 
 			/// <summary>Include the thread identifier and process identifier in the message.</summary>
 			TRACE_MESSAGE_SYSTEMINFO = 32,
 
+			/// <summary/>
 			TRACE_MESSAGE_POINTER32 = 0x0040,
+			/// <summary/>
 			TRACE_MESSAGE_POINTER64 = 0x0080,
+			/// <summary/>
 			TRACE_MESSAGE_FLAG_MASK = 0xFFFF,
 		}
 
@@ -1183,6 +1188,7 @@ namespace Vanara.PInvoke
 			// - TraceSetInformation Sets a list of provider GUIDs that should not be enabled via Provider Groups on the specified logging session.
 			//
 			// Input Format: An array of GUIDs.
+			/// <summary/>
 			[CorrespondingType(typeof(Guid[]), CorrespondingAction.Set)]
 			TraceSetDisallowList = 10,
 
@@ -1198,6 +1204,7 @@ namespace Vanara.PInvoke
 			// - EnumerateTraceGuidsEx. Returns a list of Group GUIDs that are currently known to the kernel.
 			//
 			// Input Format: None. Output Format: An array of GUIDs.
+			/// <summary/>
 			[CorrespondingType(typeof(Guid[]), CorrespondingAction.Get)]
 			TraceGroupQueryList,
 
@@ -1211,6 +1218,7 @@ namespace Vanara.PInvoke
 			//
 			// PseudoStructure - struct TRACE_GROUP_INFO { ULONG TraceEnableInfoSize; TRACE_ENABLE_INFO
 			// TraceEnableInfos[TraceEnableInfoSize]; ULONG GuidArraySize; GUID UniqueProviders[GuidArraySize]; }
+			/// <summary/>
 			[CorrespondingType(typeof(IntPtr), CorrespondingAction.Get)]
 			TraceGroupQueryInfo,
 
@@ -1219,9 +1227,11 @@ namespace Vanara.PInvoke
 			// logging session.
 			//
 			// Output Format: An array of GUIDs.
+			/// <summary/>
 			[CorrespondingType(typeof(Guid[]), CorrespondingAction.Get)]
 			TraceDisallowListQuery,
 
+			/// <summary/>
 			TraceInfoReserved15,
 
 			// TracePeriodicCaptureStateListInfo:
@@ -1229,6 +1239,7 @@ namespace Vanara.PInvoke
 			// specified logging session. If a NULL input buffer is specified, then the current periodic capture state settings are cleared.
 			//
 			// Input Format: TRACE_PERIODIC_CAPTURE_STATE_INFO followed by an array of ProviderCount Provider GUIDs. Or a NULL Buffer.
+			/// <summary/>
 			[CorrespondingType(typeof(TRACE_PERIODIC_CAPTURE_STATE_INFO), CorrespondingAction.Set)]
 			TracePeriodicCaptureStateListInfo,
 
@@ -1237,6 +1248,7 @@ namespace Vanara.PInvoke
 			// and the maximum number of providers that can be enabled for periodic capture state.
 			//
 			// Output Format: TRACE_PERIODIC_CAPTURE_STATE_INFO
+			/// <summary/>
 			[CorrespondingType(typeof(TRACE_PERIODIC_CAPTURE_STATE_INFO), CorrespondingAction.Get)]
 			TracePeriodicCaptureStateInfo,
 
@@ -1254,6 +1266,7 @@ namespace Vanara.PInvoke
 			// The binary tracking events will come from the EventTraceGuid provider, with an opcode of WMI_LOG_TYPE_BINARY_PATH.
 			//
 			// Input Format: BOOLEAN (The 1-byte type, rather than the 4-byte BOOL.) True to turn tracking on. False to turn tracking off.
+			/// <summary/>
 			[CorrespondingType(typeof(byte), CorrespondingAction.Set)]
 			TraceProviderBinaryTracking,
 
@@ -1272,6 +1285,7 @@ namespace Vanara.PInvoke
 			// - TraceSetInformation Sets a bitfield of configuration options for Last Branch Record tracing.
 			//
 			// Input Format: ULONG
+			/// <summary/>
 			[CorrespondingType(typeof(uint), CorrespondingAction.Set)]
 			TraceLbrConfigurationInfo,
 
@@ -1279,6 +1293,7 @@ namespace Vanara.PInvoke
 			// - TraceSetInformation Provides a list of kernel events to collect Last Branch Records on. The events are specified by their HookIds.
 			//
 			// Input Format: An array of ULONGs
+			/// <summary/>
 			[CorrespondingType(typeof(uint[]), CorrespondingAction.Set)]
 			TraceLbrEventListInfo,
 
@@ -1286,6 +1301,7 @@ namespace Vanara.PInvoke
 			// - TraceQueryInformation Queries the maximum number of PMC counters supported on this platform
 			//
 			// Output Format: ULONG
+			/// <summary/>
 			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			TraceMaxPmcCounterQuery,
 		}
@@ -1347,9 +1363,13 @@ namespace Vanara.PInvoke
 		[PInvokeData("wmistr.h")]
 		public enum WMIDPREQUESTCODE
 		{
+			/// <summary/>
 			WMI_GET_ALL_DATA = 0,
+			/// <summary/>
 			WMI_GET_SINGLE_INSTANCE = 1,
+			/// <summary/>
 			WMI_SET_SINGLE_INSTANCE = 2,
+			/// <summary/>
 			WMI_SET_SINGLE_ITEM = 3,
 
 			/// <summary>Enables the provider.</summary>
@@ -1358,38 +1378,67 @@ namespace Vanara.PInvoke
 			/// <summary>Disables the provider.</summary>
 			WMI_DISABLE_EVENTS = 5,
 
+			/// <summary/>
 			WMI_ENABLE_COLLECTION = 6,
+			/// <summary/>
 			WMI_DISABLE_COLLECTION = 7,
+			/// <summary/>
 			WMI_REGINFO = 8,
+			/// <summary/>
 			WMI_EXECUTE_METHOD = 9,
+			/// <summary/>
 			WMI_CAPTURE_STATE = 10
 		}
 
+		/// <summary/>
 		[Flags]
 		public enum WNODE_FLAG : uint
 		{
+			/// <summary/>
 			WNODE_FLAG_ALL_DATA = 0x00000001,
+			/// <summary/>
 			WNODE_FLAG_SINGLE_INSTANCE = 0x00000002,
+			/// <summary/>
 			WNODE_FLAG_SINGLE_ITEM = 0x00000004,
+			/// <summary/>
 			WNODE_FLAG_EVENT_ITEM = 0x00000008,
+			/// <summary/>
 			WNODE_FLAG_FIXED_INSTANCE_SIZE = 0x00000010,
+			/// <summary/>
 			WNODE_FLAG_TOO_SMALL = 0x00000020,
+			/// <summary/>
 			WNODE_FLAG_INSTANCES_SAME = 0x00000040,
+			/// <summary/>
 			WNODE_FLAG_STATIC_INSTANCE_NAMES = 0x00000080,
+			/// <summary/>
 			WNODE_FLAG_INTERNAL = 0x00000100,
+			/// <summary/>
 			WNODE_FLAG_USE_TIMESTAMP = 0x00000200,
+			/// <summary/>
 			WNODE_FLAG_PERSIST_EVENT = 0x00000400,
+			/// <summary/>
 			WNODE_FLAG_EVENT_REFERENCE = 0x00002000,
+			/// <summary/>
 			WNODE_FLAG_ANSI_INSTANCENAMES = 0x00004000,
+			/// <summary/>
 			WNODE_FLAG_METHOD_ITEM = 0x00008000,
+			/// <summary/>
 			WNODE_FLAG_PDO_INSTANCE_NAMES = 0x00010000,
+			/// <summary/>
 			WNODE_FLAG_TRACED_GUID = 0x00020000,
+			/// <summary/>
 			WNODE_FLAG_LOG_WNODE = 0x00040000,
+			/// <summary/>
 			WNODE_FLAG_USE_GUID_PTR = 0x00080000,
+			/// <summary/>
 			WNODE_FLAG_USE_MOF_PTR = 0x00100000,
+			/// <summary/>
 			WNODE_FLAG_NO_HEADER = 0x00200000,
+			/// <summary/>
 			WNODE_FLAG_SEND_DATA_BLOCK = 0x00400000,
+			/// <summary/>
 			WNODE_FLAG_VERSIONED_PROPERTIES = 0x00800000,
+			/// <summary/>
 			WNODE_FLAG_SEVERITY_MASK = 0xff000000,
 		}
 
@@ -6093,6 +6142,7 @@ namespace Vanara.PInvoke
 			[FieldOffset(20)]
 			public uint Tags;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct NONSTRUCTTYPE
 			{
@@ -6119,6 +6169,7 @@ namespace Vanara.PInvoke
 				public uint MapNameOffset;
 			}
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct STRUCTTYPE
 			{
@@ -6132,6 +6183,7 @@ namespace Vanara.PInvoke
 				public uint padding;
 			}
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct CUSTOMSCHEMATYPE
 			{
@@ -6363,6 +6415,7 @@ namespace Vanara.PInvoke
 			[FieldOffset(40)]
 			public ulong ProcessorTime;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct CLASS
 			{
@@ -6535,6 +6588,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public IntPtr Context;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Auto)]
 			public struct CALLBACK_UNION
 			{
@@ -6597,7 +6651,9 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct EVENT_TRACE_PROPERTIES
 		{
+			/// <summary/>
 			public const int MaxLoggerNameLength = 1024;
+			/// <summary/>
 			public const int MaxLogFileNameLength = 1024;
 
 			private static readonly uint SizeOf = (uint)Marshal.SizeOf(typeof(EVENT_TRACE_PROPERTIES));
@@ -6814,7 +6870,7 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MaxLogFileNameLength)]
 			public string LogFileName;
 
-			// Reserve buffer space so the ETW system can fill this with the logger name
+			/// <summary>Reserve buffer space so the ETW system can fill this with the logger name</summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MaxLoggerNameLength)]
 			public string LoggerName;
 
@@ -7422,13 +7478,20 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct PROFILE_SOURCE_INFO
 		{
+			/// <summary/>
 			public uint NextEntryOffset;
+			/// <summary/>
 			public uint Source;
+			/// <summary/>
 			public uint MinInterval;
+			/// <summary/>
 			public uint MaxInterval;
+			/// <summary/>
 			public ulong Reserved;
+			/// <summary/>
 			public ushort _Description;
 
+			/// <summary/>
 			public string Description
 			{
 				get
@@ -8126,7 +8189,9 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct TRACE_PROFILE_INTERVAL
 		{
+			/// <summary/>
 			public uint Source;
+			/// <summary/>
 			public uint Interval;
 		}
 
@@ -8389,15 +8454,19 @@ namespace Vanara.PInvoke
 			public WNODE_FLAG Flags;
 		}
 
+		/// <summary/>
 		[StructLayout(LayoutKind.Sequential)]
 		public abstract class PEVENT_INSTANCE_HEADER
 		{
+			/// <summary/>
 			public EVENT_INSTANCE_HEADER Header;
 		}
 
+		/// <summary/>
 		[StructLayout(LayoutKind.Sequential)]
 		public abstract class PEVENT_TRACE_HEADER
 		{
+			/// <summary/>
 			public EVENT_TRACE_HEADER Header;
 		}
 

@@ -69,42 +69,55 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Explicit, Size = 32, CharSet = CharSet.Unicode)]
 		public struct AUDIT_PARAM
 		{
+			/// <summary/>
 			[FieldOffset(0)]
 			public AUDIT_PARAM_TYPE Type;
 
+			/// <summary/>
 			[FieldOffset(4)]
 			public uint Length;
 
+			/// <summary/>
 			[FieldOffset(8)]
 			public uint Flags;
 
+			/// <summary/>
 			[FieldOffset(16)]
 			public IntPtr Data0;
 
+			/// <summary/>
 			[FieldOffset(16)]
 			public StrPtrUni String;
 
+			/// <summary/>
 			[FieldOffset(16)]
 			public IntPtr u;
 
+			/// <summary/>
 			[FieldOffset(16)]
 			public PSID psid;
 
+			/// <summary/>
 			[FieldOffset(16)]
 			public IntPtr pguid;
 
+			/// <summary/>
 			[FieldOffset(16)]
 			public int LogonId_LowPart;
 
+			/// <summary/>
 			[FieldOffset(16)]
 			public IntPtr pObjectTypes;
 
+			/// <summary/>
 			[FieldOffset(16)]
 			public IntPtr pIpAddress;
 
+			/// <summary/>
 			[FieldOffset(24)]
 			public IntPtr Data1;
 
+			/// <summary/>
 			[FieldOffset(24)]
 			public int LogonId_HighPart;
 		}
@@ -114,12 +127,16 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct AUDIT_PARAMS
 		{
+			/// <summary/>
 			public uint Length;
 
+			/// <summary/>
 			public uint Flags;
 
+			/// <summary/>
 			public ushort Count;
 
+			/// <summary/>
 			public IntPtr Parameters;
 		}
 	}
