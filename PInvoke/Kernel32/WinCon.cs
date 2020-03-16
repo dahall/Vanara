@@ -656,6 +656,22 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetConsoleAlias(string lpSource, StringBuilder lpTargetBuffer, uint TargetBufferLength, string lpExeName);
 
+		/// <summary>Retrieves the text for the specified console alias and executable.</summary>
+		/// <param name="lpSource">The console alias whose text is to be retrieved.</param>
+		/// <param name="lpTargetBuffer">A pointer to a buffer that receives the text associated with the console alias.</param>
+		/// <param name="TargetBufferLength">The size of the buffer pointed to by lpTargetBuffer, in bytes.</param>
+		/// <param name="lpExeName">The name of the executable file.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// DWORD WINAPI GetConsoleAlias( _In_ LPTSTR lpSource, _Out_ LPTSTR lpTargetBuffer, _In_ DWORD TargetBufferLength, _In_ LPTSTR
+		// lpExeName );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetConsoleAlias(string lpSource, IntPtr lpTargetBuffer, uint TargetBufferLength, string lpExeName);
+
 		/// <summary>Retrieves all defined console aliases for the specified executable.</summary>
 		/// <param name="lpAliasBuffer">
 		/// <para>[out] A pointer to a buffer that receives the aliases.</para>
@@ -1270,6 +1286,25 @@ namespace Vanara.PInvoke
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		public static extern uint GetConsoleOriginalTitle(StringBuilder lpConsoleTitle, uint nSize);
 
+		/// <summary>Retrieves the original title for the current console window.</summary>
+		/// <param name="lpConsoleTitle">
+		/// <para>A pointer to a buffer that receives a null-terminated string containing the original title.</para>
+		/// <para>
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
+		/// will depend on heap usage.
+		/// </para>
+		/// </param>
+		/// <param name="nSize">The size of the lpConsoleTitle buffer, in characters.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is the length of the string copied to the buffer, in characters.</para>
+		/// <para>If the buffer is not large enough to store the title, the return value is zero and <c>GetLastError</c> returns <c>ERROR_SUCCESS</c>.</para>
+		/// <para>If the function fails, the return value is zero and <c>GetLastError</c> returns the error code.</para>
+		/// </returns>
+		// DWORD WINAPI GetConsoleOriginalTitle( _Out_ LPTSTR lpConsoleTitle, _In_ DWORD nSize );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		public static extern uint GetConsoleOriginalTitle(IntPtr lpConsoleTitle, uint nSize);
+
 		/// <summary>
 		/// Retrieves the output code page used by the console associated with the calling process. A console uses its output code page to
 		/// translate the character values written by the various output functions into the images displayed in the console window.
@@ -1394,6 +1429,27 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		public static extern uint GetConsoleTitle(StringBuilder lpConsoleTitle, uint nSize);
+
+		/// <summary>Retrieves the title for the current console window.</summary>
+		/// <param name="lpConsoleTitle">
+		/// <para>
+		/// A pointer to a buffer that receives a null-terminated string containing the title. If the buffer is too small to store the title,
+		/// the function stores as many characters of the title as will fit in the buffer, ending with a null terminator.
+		/// </para>
+		/// <para>
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
+		/// will depend on heap usage.
+		/// </para>
+		/// </param>
+		/// <param name="nSize">The size of the buffer pointed to by the lpConsoleTitle parameter, in characters.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is the length of the console window's title, in characters.</para>
+		/// <para>If the function fails, the return value is zero and <c>GetLastError</c> returns the error code.</para>
+		/// </returns>
+		// DWORD WINAPI GetConsoleTitle( _Out_ LPTSTR lpConsoleTitle, _In_ DWORD nSize );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		public static extern uint GetConsoleTitle(IntPtr lpConsoleTitle, uint nSize);
 
 		/// <summary>Retrieves the window handle used by the console associated with the calling process.</summary>
 		/// <returns>
@@ -1588,6 +1644,74 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ReadConsole(HFILE hConsoleInput, StringBuilder lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, in CONSOLE_READCONSOLE_CONTROL pInputControl);
 
+		/// <summary>Reads character input from the console input buffer and removes it from the buffer.</summary>
+		/// <param name="hConsoleInput">
+		/// A handle to the console input buffer. The handle must have the <c>GENERIC_READ</c> access right. For more information, see
+		/// Console Buffer Security and Access Rights.
+		/// </param>
+		/// <param name="lpBuffer">
+		/// <para>A pointer to a buffer that receives the data read from the console input buffer.</para>
+		/// <para>
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
+		/// will depend on heap usage.
+		/// </para>
+		/// </param>
+		/// <param name="nNumberOfCharsToRead">
+		/// The number of characters to be read. The size of the buffer pointed to by the lpBuffer parameter should be at least bytes.
+		/// </param>
+		/// <param name="lpNumberOfCharsRead">A pointer to a variable that receives the number of characters actually read.</param>
+		/// <param name="pInputControl">
+		/// <para>
+		/// A pointer to a <c>CONSOLE_READCONSOLE_CONTROL</c> structure that specifies a control character to signal the end of the read
+		/// operation. This parameter can be <c>NULL</c>.
+		/// </para>
+		/// <para>This parameter requires Unicode input by default. For ANSI mode, set this parameter to <c>NULL</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI ReadConsole( _In_ HANDLE hConsoleInput, _Out_ LPVOID lpBuffer, _In_ DWORD nNumberOfCharsToRead, _Out_ LPDWORD
+		// lpNumberOfCharsRead, _In_opt_ LPVOID pInputControl );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ReadConsole(HFILE hConsoleInput, IntPtr lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, IntPtr pInputControl = default);
+
+		/// <summary>Reads character input from the console input buffer and removes it from the buffer.</summary>
+		/// <param name="hConsoleInput">
+		/// A handle to the console input buffer. The handle must have the <c>GENERIC_READ</c> access right. For more information, see
+		/// Console Buffer Security and Access Rights.
+		/// </param>
+		/// <param name="lpBuffer">
+		/// <para>A pointer to a buffer that receives the data read from the console input buffer.</para>
+		/// <para>
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
+		/// will depend on heap usage.
+		/// </para>
+		/// </param>
+		/// <param name="nNumberOfCharsToRead">
+		/// The number of characters to be read. The size of the buffer pointed to by the lpBuffer parameter should be at least bytes.
+		/// </param>
+		/// <param name="lpNumberOfCharsRead">A pointer to a variable that receives the number of characters actually read.</param>
+		/// <param name="pInputControl">
+		/// <para>
+		/// A pointer to a <c>CONSOLE_READCONSOLE_CONTROL</c> structure that specifies a control character to signal the end of the read
+		/// operation. This parameter can be <c>NULL</c>.
+		/// </para>
+		/// <para>This parameter requires Unicode input by default. For ANSI mode, set this parameter to <c>NULL</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI ReadConsole( _In_ HANDLE hConsoleInput, _Out_ LPVOID lpBuffer, _In_ DWORD nNumberOfCharsToRead, _Out_ LPDWORD
+		// lpNumberOfCharsRead, _In_opt_ LPVOID pInputControl );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ReadConsole(HFILE hConsoleInput, IntPtr lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, in CONSOLE_READCONSOLE_CONTROL pInputControl);
+
 		/// <summary>Reads data from a console input buffer and removes it from the buffer.</summary>
 		/// <param name="hConsoleInput">
 		/// A handle to the console input buffer. The handle must have the <c>GENERIC_READ</c> access right. For more information, see
@@ -1721,6 +1845,38 @@ namespace Vanara.PInvoke
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ReadConsoleOutputCharacter(HFILE hConsoleOutput, StringBuilder lpCharacter, uint nLength, COORD dwReadCoord, out uint lpNumberOfCharsRead);
+
+		/// <summary>Copies a number of characters from consecutive cells of a console screen buffer, beginning at a specified location.</summary>
+		/// <param name="hConsoleOutput">
+		/// A handle to the console screen buffer. The handle must have the <c>GENERIC_READ</c> access right. For more information, see
+		/// Console Buffer Security and Access Rights.
+		/// </param>
+		/// <param name="lpCharacter">
+		/// A pointer to a buffer that receives the characters read from the console screen buffer.
+		/// <para>
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size.The maximum size of the buffer
+		/// will depend on heap usage.
+		/// </para>
+		/// </param>
+		/// <param name="nLength">
+		/// The number of screen buffer character cells from which to read. The size of the buffer pointed to by the lpCharacter parameter
+		/// should be nLength * sizeof(TCHAR).
+		/// </param>
+		/// <param name="dwReadCoord">
+		/// The coordinates of the first cell in the console screen buffer from which to read, in characters. The X member of the COORD
+		/// structure is the column, and the Y member is the row.
+		/// </param>
+		/// <param name="lpNumberOfCharsRead">A pointer to a variable that receives the number of characters actually read.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI ReadConsoleOutputCharacter(_In_ HANDLE hConsoleOutput, _Out_ LPTSTR lpCharacter, _In_ DWORD nLength, _In_ COORD
+		// dwReadCoord, _Out_ LPDWORD lpNumberOfCharsRead);
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ReadConsoleOutputCharacter(HFILE hConsoleOutput, IntPtr lpCharacter, uint nLength, COORD dwReadCoord, out uint lpNumberOfCharsRead);
 
 		/// <summary>
 		/// Moves a block of data in a screen buffer. The effects of the move can be limited by specifying a clipping rectangle, so the
