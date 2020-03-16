@@ -6907,7 +6907,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-prov_enumalgs
 		// typedef struct _PROV_ENUMALGS { ALG_ID aiAlgid; DWORD dwBitLen; DWORD dwNameLen; CHAR szName[20]; } PROV_ENUMALGS;
 		[PInvokeData("wincrypt.h", MSDNShortId = "8301d07f-88aa-49b4-9091-8f515b585c57")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Size = 32, Pack = 4)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct PROV_ENUMALGS
 		{
 			/// <summary>One of the ALG_ID values that identifies the algorithm.</summary>
@@ -6920,7 +6920,8 @@ namespace Vanara.PInvoke
 			public uint dwNameLen;
 
 			/// <summary>A null-terminated ANSI string that contains the name of the algorithm.</summary>
-			public StrPtrAnsi szName;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)]
+			public string szName;
 		}
 
 		/// <summary>
@@ -7000,6 +7001,51 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => CryptReleaseContext(handle);
+		}
+
+		/// <summary>
+		/// The following cryptographic service provider (CSP) names are defined in Wincrypt.h. These constants are used with the
+		/// <c>CryptAcquireContext</c> and <c>CryptSetProvider</c> functions.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/seccrypto/cryptographic-provider-names
+		[PInvokeData("wincrypt.h", MSDNShortId = "97e9a708-83b5-48b3-9d16-f7b54367dc4e")]
+		public static class CryptProviderName
+		{
+			/// <summary>The Microsoft DSS and Diffie-Hellman/Schannel Cryptographic Provider.</summary>
+			public const string MS_DEF_DH_SCHANNEL_PROV = "Microsoft DH Schannel Cryptographic Provider";
+
+			/// <summary>The Microsoft Base DSS and Diffie-Hellman Cryptographic Provider.</summary>
+			public const string MS_DEF_DSS_DH_PROV = "Microsoft Base DSS and Diffie-Hellman Cryptographic Provider";
+
+			/// <summary>The Microsoft DSS Cryptographic Provider.</summary>
+			public const string MS_DEF_DSS_PROV = "Microsoft Base DSS Cryptographic Provider";
+
+			/// <summary>The Microsoft Base Cryptographic Provider.</summary>
+			public const string MS_DEF_PROV = "Microsoft Base Cryptographic Provider v1.0";
+
+			/// <summary>The Microsoft RSA/Schannel Cryptographic Provider.</summary>
+			public const string MS_DEF_RSA_SCHANNEL_PROV = "Microsoft RSA Schannel Cryptographic Provider";
+
+			/// <summary>The Microsoft RSA Signature Cryptographic Provider is not supported.</summary>
+			public const string MS_DEF_RSA_SIG_PROV = "Microsoft RSA Signature Cryptographic Provider";
+
+			/// <summary>The Microsoft Enhanced DSS and Diffie-Hellman Cryptographic Provider.</summary>
+			public const string MS_ENH_DSS_DH_PROV = "Microsoft Enhanced DSS and Diffie-Hellman Cryptographic Provider";
+
+			/// <summary>
+			/// The Microsoft AES Cryptographic Provider.
+			/// <para>**Windows XP: **"Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"</para>
+			/// </summary>
+			public const string MS_ENH_RSA_AES_PROV = "Microsoft Enhanced RSA and AES Cryptographic Provider";
+
+			/// <summary>The Microsoft Enhanced Cryptographic Provider.</summary>
+			public const string MS_ENHANCED_PROV = "Microsoft Enhanced Cryptographic Provider v1.0";
+
+			/// <summary>The Microsoft Base Smart Card Cryptographic Service Provider.</summary>
+			public const string MS_SCARD_PROV = "Microsoft Base Smart Card Crypto Provider";
+
+			/// <summary>The Microsoft Strong Cryptographic Provider.</summary>
+			public const string MS_STRONG_PROV = "Microsoft Strong Cryptographic Provider";
 		}
 	}
 }
