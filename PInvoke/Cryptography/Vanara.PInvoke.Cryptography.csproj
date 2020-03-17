@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ProjectExtensions>
-    <SupportedDlls>crypt32.dll;bcrypt.dll;ncrypt.dll;tokenbinding.dll;cryptui.dll</SupportedDlls>
-    <!--;cryptnet.dll;cryptdlg.dll-->
+    <SupportedDlls>crypt32.dll;bcrypt.dll;ncrypt.dll;tokenbinding.dll;cryptui.dll;cryptnet.dll;cryptdlg.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptnet.dll, cryptdlg.dll and cryptui.dll.</Description>
