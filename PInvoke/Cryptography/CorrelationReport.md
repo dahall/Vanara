@@ -1,5 +1,5 @@
 ## Correlation report for crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptui.dll  
-### Methods (100% complete, 367 of 367 functions)  
+### Methods (100% complete, 365 of 365 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BCryptAddContextFunction](http://msdn2.microsoft.com/en-us/library/4f5b6db0-775d-42de-b9d9-a99fb11c89f2) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptAddContextFunction](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptAddContextFunction)  
@@ -178,12 +178,10 @@ Native Method | Native DLL | Header | Managed Method
 [CryptDecodeMessage](http://msdn2.microsoft.com/en-us/library/25ffd058-8f75-4ba5-b075-e3efc09f5d9d) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptDecodeMessage](https://github.com/dahall/Vanara/search?l=C%23&q=CryptDecodeMessage)  
 [CryptDecodeObject](http://msdn2.microsoft.com/en-us/library/7d5ed4f4-9d76-4a16-9059-27b0edd83459) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptDecodeObject](https://github.com/dahall/Vanara/search?l=C%23&q=CryptDecodeObject)  
 [CryptDecodeObjectEx](http://msdn2.microsoft.com/en-us/library/bf1935f0-1ab0-4068-9ed5-8fbb2c286b8a) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptDecodeObjectEx](https://github.com/dahall/Vanara/search?l=C%23&q=CryptDecodeObjectEx)  
-[CryptDecrypt](http://msdn2.microsoft.com/en-us/library/7c3d2838-6fd1-4f6c-9586-8b94b459a31a) | advapi32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptDecrypt](https://github.com/dahall/Vanara/search?l=C%23&q=CryptDecrypt)  
 [CryptDecryptAndVerifyMessageSignature](http://msdn2.microsoft.com/en-us/library/0864a187-617f-4a21-9809-d2dbbc54ab9c) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptDecryptAndVerifyMessageSignature](https://github.com/dahall/Vanara/search?l=C%23&q=CryptDecryptAndVerifyMessageSignature)  
 [CryptDecryptMessage](http://msdn2.microsoft.com/en-us/library/e540b816-64e1-4c78-9020-2b221e813acc) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptDecryptMessage](https://github.com/dahall/Vanara/search?l=C%23&q=CryptDecryptMessage)  
 [CryptEncodeObject](http://msdn2.microsoft.com/en-us/library/9576a2a7-4379-4c1b-8ad5-284720cf7ccc) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptEncodeObject](https://github.com/dahall/Vanara/search?l=C%23&q=CryptEncodeObject)  
 [CryptEncodeObjectEx](http://msdn2.microsoft.com/en-us/library/45134db8-059b-43d3-90c2-9b6cc970fca0) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptEncodeObjectEx](https://github.com/dahall/Vanara/search?l=C%23&q=CryptEncodeObjectEx)  
-[CryptEncrypt](http://msdn2.microsoft.com/en-us/library/697c4960-552b-4c3a-95cf-4632af56945b) | advapi32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptEncrypt](https://github.com/dahall/Vanara/search?l=C%23&q=CryptEncrypt)  
 [CryptEncryptMessage](http://msdn2.microsoft.com/en-us/library/927f2e9a-96cf-4744-bd57-420b5034d28d) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptEncryptMessage](https://github.com/dahall/Vanara/search?l=C%23&q=CryptEncryptMessage)  
 [CryptEnumKeyIdentifierProperties](http://msdn2.microsoft.com/en-us/library/6e57d935-4cfb-44af-b1c6-6c399c959452) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptEnumKeyIdentifierProperties](https://github.com/dahall/Vanara/search?l=C%23&q=CryptEnumKeyIdentifierProperties)  
 [CryptEnumOIDFunction](http://msdn2.microsoft.com/en-us/library/aa2fba03-183b-4b74-b306-8f4592995897) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptEnumOIDFunction](https://github.com/dahall/Vanara/search?l=C%23&q=CryptEnumOIDFunction)  
@@ -524,9 +522,11 @@ Native Structure | Header | Managed Structure
 [PCCERT_CONTEXT](https://www.google.com/search?num=5&q=PCCERT_CONTEXT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Crypt32.PCCERT_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=PCCERT_CONTEXT)  
 [PCCERT_SERVER_OCSP_RESPONSE_CONTEXT](https://www.google.com/search?num=5&q=PCCERT_SERVER_OCSP_RESPONSE_CONTEXT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Crypt32.PCCERT_SERVER_OCSP_RESPONSE_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=PCCERT_SERVER_OCSP_RESPONSE_CONTEXT)  
 [PCCRL_CONTEXT](https://www.google.com/search?num=5&q=PCCRL_CONTEXT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Crypt32.PCCRL_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=PCCRL_CONTEXT)  
+[PCCRYPT_OID_INFO](https://www.google.com/search?num=5&q=PCCRYPT_OID_INFO+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Crypt32.PCCRYPT_OID_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=PCCRYPT_OID_INFO)  
 [PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT](https://www.google.com/search?num=5&q=PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.CryptUI.PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT)  
 [PCCTL_CONTEXT](https://www.google.com/search?num=5&q=PCCTL_CONTEXT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Crypt32.PCCTL_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=PCCTL_CONTEXT)  
 [PUBLICKEYSTRUC](http://msdn2.microsoft.com/en-us/library/99d41222-b4ca-40f3-a240-52b0a9b3a9aa) | wincrypt.h | [Vanara.PInvoke.Crypt32.PUBLICKEYSTRUC](https://github.com/dahall/Vanara/search?l=C%23&q=PUBLICKEYSTRUC)  
+[SafeCRYPTOAPI_BLOB](https://www.google.com/search?num=5&q=SafeCRYPTOAPI_BLOB+site%3Amicrosoft.com) | wincrypt.h | [Vanara.PInvoke.Crypt32.SafeCRYPTOAPI_BLOB](https://github.com/dahall/Vanara/search?l=C%23&q=SafeCRYPTOAPI_BLOB)  
 [SIP_ADD_NEWPROVIDER](http://msdn2.microsoft.com/en-us/library/5ca88c0c-a7c9-4517-a874-49d38c1bc7c3) | mssip.h | [Vanara.PInvoke.Crypt32.SIP_ADD_NEWPROVIDER](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_ADD_NEWPROVIDER)  
 [SIP_CAP_SET_V2](http://msdn2.microsoft.com/en-us/library/0B6D173B-0183-4A7C-BB92-2D451F746164) | mssip.h | [Vanara.PInvoke.Crypt32.SIP_CAP_SET_V2](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_CAP_SET_V2)  
 [SIP_CAP_SET_V3](http://msdn2.microsoft.com/en-us/library/0B6D173B-0183-4A7C-BB92-2D451F746164) | mssip.h | [Vanara.PInvoke.Crypt32.SIP_CAP_SET_V3](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_CAP_SET_V3)  

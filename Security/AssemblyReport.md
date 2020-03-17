@@ -12,7 +12,7 @@ Class | Description
 [Vanara.Extensions.AccessExtension](https://github.com/dahall/Vanara/search?l=C%23&q=AccessExtension) | Extension methods for native and .NET access control objects.
 [Vanara.Security.AccessControl.SystemSecurity.AccountPrivileges](https://github.com/dahall/Vanara/search?l=C%23&q=AccountPrivileges) | Allows for the privileges of a user to be retrieved, enumerated and set.
 [Vanara.Security.AccountUtils](https://github.com/dahall/Vanara/search?l=C%23&q=AccountUtils) | Helper methods for working with `System.Security.Principal.WindowsIdentity` and user names.
-[Vanara.Extensions.ActiveDirectoryExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ActiveDirectoryExtension) | 
+[Vanara.Extensions.ActiveDirectoryExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ActiveDirectoryExtension) | Extensions for AD objects (e.g. DomainController).
 [Microsoft.Samples.DynamicAccessControl.BadValueException](https://github.com/dahall/Vanara/search?l=C%23&q=BadValueException) | Exception raised when value(s) of a claim value type is invalid.
 [Microsoft.Samples.DynamicAccessControl.ClaimValue](https://github.com/dahall/Vanara/search?l=C%23&q=ClaimValue) | Class to represent the type of claims values held, the value(s) and obtain native (unmanaged) pointers to the value as they are stored in the union members of AUTHZ_SECURITY_ATTRIBUTE_V1 structure's 'Values' field.
 [Vanara.Security.AccessControl.SystemSecurity.LogonRights](https://github.com/dahall/Vanara/search?l=C%23&q=LogonRights) | Allows for the privileges of a user to be retrieved, enumerated and set.
