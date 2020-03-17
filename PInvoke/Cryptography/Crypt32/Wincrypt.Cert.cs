@@ -417,6 +417,138 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CertAddCertificateContextToStore(HCERTSTORE hCertStore, PCCERT_CONTEXT pCertContext, CertStoreAdd dwAddDisposition, out SafePCCERT_CONTEXT ppStoreContext);
 
+		/// <summary>The <c>CertAddCertificateContextToStore</c> function adds a certificate context to the certificate store.</summary>
+		/// <param name="hCertStore">Handle of a certificate store.</param>
+		/// <param name="pCertContext">A pointer to the CERT_CONTEXT structure to be added to the store.</param>
+		/// <param name="dwAddDisposition">
+		/// <para>
+		/// Specifies the action to take if a matching certificate or a link to a matching certificate already exists in the store.
+		/// Currently defined disposition values and their uses are as follows.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_STORE_ADD_ALWAYS</term>
+		/// <term>
+		/// The function makes no check for an existing matching certificate or link to a matching certificate. A new certificate is always
+		/// added to the store. This can lead to duplicates in a store.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_NEW</term>
+		/// <term>
+		/// If a matching certificate or a link to a matching certificate exists, the operation fails. GetLastError returns the
+		/// CRYPT_E_EXISTS code.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_NEWER</term>
+		/// <term>
+		/// If a matching certificate or a link to a matching certificate exists and the NotBefore time of the existing context is equal to
+		/// or greater than the NotBefore time of the new context being added, the operation fails and GetLastError returns the
+		/// CRYPT_E_EXISTS code. If the NotBefore time of the existing context is less than the NotBefore time of the new context being
+		/// added, the existing certificate or link is deleted and a new certificate is created and added to the store. If a matching
+		/// certificate or a link to a matching certificate does not exist, a new link is added. If certificate revocation lists (CRLs) or
+		/// certificate trust list (CTLs) are being compared, the ThisUpdate time is used.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_NEWER_INHERIT_PROPERTIES</term>
+		/// <term>
+		/// If a matching certificate or a link to a matching certificate exists and the NotBefore time of the existing context is equal to
+		/// or greater than the NotBefore time of the new context being added, the operation fails and GetLastError returns the
+		/// CRYPT_E_EXISTS code. If the NotBefore time of the existing context is less than the NotBefore time of the new context being
+		/// added, the existing context is deleted before creating and adding the new context. The new added context inherits properties
+		/// from the existing certificate. If CRLs or CTLs are being compared, the ThisUpdate time is used.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_REPLACE_EXISTING</term>
+		/// <term>
+		/// If a link to a matching certificate exists, that existing certificate or link is deleted and a new certificate is created and
+		/// added to the store. If a matching certificate or a link to a matching certificate does not exist, a new link is added.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_REPLACE_EXISTING_INHERIT_PROPERTIES</term>
+		/// <term>
+		/// If a matching certificate exists in the store, the existing context is not replaced. The existing context inherits properties
+		/// from the new certificate.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_USE_EXISTING</term>
+		/// <term>
+		/// If a matching certificate or a link to a matching certificate exists, that existing certificate or link is used and properties
+		/// from the new certificate are added. The function does not fail, but it does not add a new context. If pCertContext is not NULL,
+		/// the existing context is duplicated. If a matching certificate or a link to a matching certificate does not exist, a new
+		/// certificate is added.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="ppStoreContext">
+		/// <para>A pointer to a pointer to the copy to be made of the certificate that was added to the store.</para>
+		/// <para>
+		/// The ppStoreContext parameter can be <c>NULL</c>, indicating that the calling application does not require a copy of the added
+		/// certificate. If a copy is made, it must be freed by using CertFreeCertificateContext.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+		/// <para>
+		/// If the function fails, the return value is <c>FALSE</c>. For extended error information, call GetLastError. Some possible error
+		/// codes follow.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_E_EXISTS</term>
+		/// <term>
+		/// This value is returned if CERT_STORE_ADD_NEW is set and the certificate already exists in the store, or if CERT_STORE_ADD_NEWER
+		/// is set and a certificate exists in the store with a NotBefore date greater than or equal to the NotBefore date on the
+		/// certificate to be added.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>A disposition value that is not valid was specified in the dwAddDisposition parameter.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Errors from the called functions, CertAddEncodedCertificateToStore and CertSetCertificateContextProperty, can be propagated to
+		/// this function.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The certificate context is not duplicated using CertDuplicateCertificateContext. Instead, the function creates a new copy of the
+		/// context and adds it to the store.
+		/// </para>
+		/// <para>
+		/// In addition to the encoded certificate, CertDuplicateCertificateContext also copies the context's properties, with the exception
+		/// of the CERT_KEY_PROV_HANDLE_PROP_ID and CERT_KEY_CONTEXT_PROP_ID properties.
+		/// </para>
+		/// <para>To remove the certificate context from the certificate store, use the CertDeleteCertificateFromStore function.</para>
+		/// <para>
+		/// <c>Note</c> The order of the certificate context may not be preserved within the store. To access a specific certificate you
+		/// must iterate across the certificates in the store.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcertificatecontexttostore BOOL
+		// CertAddCertificateContextToStore( HCERTSTORE hCertStore, PCCERT_CONTEXT pCertContext, DWORD dwAddDisposition, PCCERT_CONTEXT
+		// *ppStoreContext );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "5e4d8cae-1096-491f-9a04-92b7e9c020bb")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CertAddCertificateContextToStore(HCERTSTORE hCertStore, PCCERT_CONTEXT pCertContext, CertStoreAdd dwAddDisposition, [Optional] IntPtr ppStoreContext);
+
 		/// <summary>
 		/// The <c>CertAddCertificateLinkToStore</c> function adds a link in a certificate store to a certificate context in a different
 		/// store. Instead of creating and adding a duplicate of the certificate context, this function adds a link to the original certificate.
@@ -516,6 +648,106 @@ namespace Vanara.PInvoke
 		[PInvokeData("wincrypt.h", MSDNShortId = "bcbf7755-d0ce-4dd5-8462-72760364fdc3")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CertAddCertificateLinkToStore(HCERTSTORE hCertStore, PCCERT_CONTEXT pCertContext, CertStoreAdd dwAddDisposition, out SafePCCERT_CONTEXT ppStoreContext);
+
+		/// <summary>
+		/// The <c>CertAddCertificateLinkToStore</c> function adds a link in a certificate store to a certificate context in a different
+		/// store. Instead of creating and adding a duplicate of the certificate context, this function adds a link to the original certificate.
+		/// </summary>
+		/// <param name="hCertStore">A handle to the certificate store where the link is to be added.</param>
+		/// <param name="pCertContext">A pointer to the CERT_CONTEXT structure to be linked.</param>
+		/// <param name="dwAddDisposition">
+		/// <para>
+		/// Specifies the action if a matching certificate or a link to a matching certificate already exists in the store. Currently
+		/// defined disposition values and their uses are as follows.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_STORE_ADD_ALWAYS</term>
+		/// <term>
+		/// The function makes no check for an existing matching certificate or link to a matching certificate. A new certificate is always
+		/// added to the store. This can lead to duplicates in a store.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_NEW</term>
+		/// <term>
+		/// If a matching certificate or a link to a matching certificate exists, the operation fails. GetLastError returns the
+		/// CRYPT_E_EXISTS code.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_REPLACE_EXISTING</term>
+		/// <term>
+		/// If a link to a matching certificate exists, that existing link is deleted and a new link is created and added to the store. If
+		/// no matching certificate or link to a matching certificate exists, one is added.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_USE_EXISTING</term>
+		/// <term>
+		/// If a matching certificate or a link to a matching certificate exists, the existing certificate is used. The function does not
+		/// fail, but no new link is added. If no matching certificate or link to a matching certificate exists, a new link is added.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="ppStoreContext">
+		/// A pointer to a pointer to a copy of the link created. The ppStoreContext parameter can be <c>NULL</c> to indicate that a copy of
+		/// the link is not needed. If a copy of the link is created, that copy must be freed using the CertFreeCertificateContext function.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+		/// <para>
+		/// If the function fails, the return value is <c>FALSE</c>. For extended error information, call GetLastError. Some possible error
+		/// codes follow.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_E_EXISTS</term>
+		/// <term>For a dwAddDisposition parameter of CERT_STORE_ADD_NEW, the certificate already exists in the store.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>A disposition value that is not valid was specified in the dwAddDisposition parameter.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Because the link provides access to the original certificate context, setting an extended property in the linked certificate
+		/// context changes that extended property in the certificate's original location and in any other links to that certificate.
+		/// </para>
+		/// <para>
+		/// Links cannot be added to a store opened as a collection. Stores opened as collections include all stores opened with
+		/// CertOpenSystemStore or CertOpenStore using CERT_STORE_PROV_SYSTEM or CERT_STORE_PROV_COLLECTION. For more information, see CertAddStoreToCollection.
+		/// </para>
+		/// <para>
+		/// If links are used and CertCloseStore is called with CERT_CLOSE_STORE_FORCE_FLAG, the store that uses links must be closed before
+		/// the store that contains the original contexts is closed. If CERT_CLOSE_STORE_FORCE_FLAG is not used, the two stores can be
+		/// closed in either order.
+		/// </para>
+		/// <para>To remove the certificate context link from the certificate store, use the CertDeleteCertificateFromStore function.</para>
+		/// <para>Examples</para>
+		/// <para>
+		/// For an example that uses this function, see Example C Program: Certificate Store Operations. For additional code that uses this
+		/// function, see Example C Program: Collection and Sibling Certificate Store Operations.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcertificatelinktostore BOOL
+		// CertAddCertificateLinkToStore( HCERTSTORE hCertStore, PCCERT_CONTEXT pCertContext, DWORD dwAddDisposition, PCCERT_CONTEXT
+		// *ppStoreContext );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "bcbf7755-d0ce-4dd5-8462-72760364fdc3")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CertAddCertificateLinkToStore(HCERTSTORE hCertStore, PCCERT_CONTEXT pCertContext, CertStoreAdd dwAddDisposition, [Optional] IntPtr ppStoreContext);
 
 		/// <summary>
 		/// <para>
@@ -641,6 +873,131 @@ namespace Vanara.PInvoke
 		[PInvokeData("wincrypt.h", MSDNShortId = "7c092bf5-f8b2-47d0-94ee-c8e0f4bca62d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CertAddEncodedCertificateToStore(HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType, [In] IntPtr pbCertEncoded, uint cbCertEncoded, CertStoreAdd dwAddDisposition, out SafePCCERT_CONTEXT ppCertContext);
+
+		/// <summary>
+		/// <para>
+		/// The <c>CertAddEncodedCertificateToStore</c> function creates a certificate context from an encoded certificate and adds it to
+		/// the certificate store. The context created does not include any extended properties.
+		/// </para>
+		/// <para>
+		/// The <c>CertAddEncodedCertificateToStore</c> function also makes a copy of the encoded certificate before adding the certificate
+		/// to the store.
+		/// </para>
+		/// </summary>
+		/// <param name="hCertStore">A handle to the certificate store.</param>
+		/// <param name="dwCertEncodingType">
+		/// <para>
+		/// Specifies the type of encoding used. It is always acceptable to specify both the certificate and message encoding types by
+		/// combining them with a bitwise- <c>OR</c> operation as shown in the following example:
+		/// </para>
+		/// <para>X509_ASN_ENCODING | PKCS_7_ASN_ENCODING Currently defined encoding types are:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>X509_ASN_ENCODING</term>
+		/// </item>
+		/// <item>
+		/// <term>PKCS_7_ASN_ENCODING</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbCertEncoded">
+		/// A pointer to a buffer containing the encoded certificate that is to be added to the certificate store.
+		/// </param>
+		/// <param name="cbCertEncoded">The size, in bytes, of the pbCertEncoded buffer.</param>
+		/// <param name="dwAddDisposition">
+		/// <para>
+		/// Specifies the action to take if a matching certificate or link to a matching certificate exists in the store. Currently defined
+		/// disposition values and their uses are as follows.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CERT_STORE_ADD_ALWAYS</term>
+		/// <term>
+		/// The function makes no check for an existing matching certificate or link to a matching certificate. A new certificate is always
+		/// added to the store. This can lead to duplicates in a store.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_NEW</term>
+		/// <term>
+		/// If a matching certificate or a link to a matching certificate exists in the store, the operation fails. GetLastError returns the
+		/// CRYPT_E_EXISTS code.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_REPLACE_EXISTING</term>
+		/// <term>
+		/// If a matching certificate or link to a matching certificate exists in the store, the existing certificate or link is deleted and
+		/// a new certificate is created and added to the store. If a matching certificate or link to a matching certificate does not exist,
+		/// a new certificate is created and added to the store.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_REPLACE_EXISTING_INHERIT_PROPERTIES</term>
+		/// <term>
+		/// If a matching certificate exists in the store, that existing context is deleted before creating and adding the new context. The
+		/// new context inherits properties from the existing certificate.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CERT_STORE_ADD_USE_EXISTING</term>
+		/// <term>
+		/// If a matching certificate or a link to a matching certificate exists, that existing certificate or link is used and properties
+		/// from the new certificate are added. The function does not fail, but it does not add a new context. If ppCertContext is not NULL,
+		/// the existing context is duplicated. If a matching certificate or link to a matching certificate does not exist, a new
+		/// certificate is added.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="ppCertContext">
+		/// A pointer to a pointer to the decoded certificate context. This is an optional parameter that can be <c>NULL</c>, indicating
+		/// that the calling application does not require a copy of the new or existing certificate. When a copy is made, its context must
+		/// be freed by using CertFreeCertificateContext.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+		/// <para>
+		/// If the function fails, the return value is <c>FALSE</c>. For extended error information, call GetLastError. Some possible error
+		/// codes follow.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_E_EXISTS</term>
+		/// <term>
+		/// This code is returned if CERT_STORE_ADD_NEW is set and the certificate already exists in the store, or if CERT_STORE_ADD_NEWER
+		/// is set and there is a certificate in the store with a NotBefore date greater than or equal to the NotBefore date on the
+		/// certificate to be added.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>
+		/// A disposition value that is not valid was specified in the dwAddDisposition parameter, or a certificate encoding type that is
+		/// not valid was specified. Currently, only the X509_ASN_ENCODING type is supported.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If the function fails, GetLastError returns an Abstract Syntax Notation One (ASN.1) encoding/decoding error. For information
+		/// about these errors, see ASN.1 Encoding/Decoding Return Values.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddencodedcertificatetostore BOOL
+		// CertAddEncodedCertificateToStore( HCERTSTORE hCertStore, DWORD dwCertEncodingType, const BYTE *pbCertEncoded, DWORD
+		// cbCertEncoded, DWORD dwAddDisposition, PCCERT_CONTEXT *ppCertContext );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "7c092bf5-f8b2-47d0-94ee-c8e0f4bca62d")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CertAddEncodedCertificateToStore(HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType, [In] IntPtr pbCertEncoded, uint cbCertEncoded, CertStoreAdd dwAddDisposition, [Optional] IntPtr ppCertContext);
 
 		/// <summary>
 		/// The <c>CertAddRefServerOcspResponse</c> function increments the reference count for an <c>HCERT_SERVER_OCSP_RESPONSE</c> handle.
@@ -1124,7 +1481,7 @@ namespace Vanara.PInvoke
 		// CertEnumCertificatesInStore( HCERTSTORE hCertStore, PCCERT_CONTEXT pPrevCertContext );
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "c5ab5b4c-dc0c-416b-aa9e-b939398cfa6d")]
-		public static extern SafePCCERT_CONTEXT CertEnumCertificatesInStore(HCERTSTORE hCertStore, PCCERT_CONTEXT pPrevCertContext);
+		public static extern PCCERT_CONTEXT CertEnumCertificatesInStore(HCERTSTORE hCertStore, PCCERT_CONTEXT pPrevCertContext);
 
 		/// <summary>
 		/// The <c>CertFindCertificateInStore</c> function finds the first or next certificate context in a certificate store that matches a
