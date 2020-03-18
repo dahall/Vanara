@@ -5,6 +5,8 @@ namespace Vanara.PInvoke
 {
 	public static partial class Gdi32
 	{
+		/*
+
 		/// <summary>Applies the specified digit substitution settings to the specified script control and script state structures.</summary>
 		/// <param name="psds">
 		/// Pointer to a SCRIPT_DIGITSUBSTITUTE structure. The application sets this parameter to <c>NULL</c> if the function is to call
@@ -1015,8 +1017,19 @@ namespace Vanara.PInvoke
 			public ushort fShapeReserved { get => GetBits(bits, 8, 8); set => SetBits(ref bits, 8, 8, value); }
 		}
 
-		/*
-		ScriptCacheGetHeight Retrieves the height of the currently cached font.
+		/// <summary>Retrieves the height of the currently cached font.</summary>
+		/// <param name="hdc">Optional. Handle to the device context. For more information, see Caching.</param>
+		/// <param name="psc">Pointer to a SCRIPT_CACHE structure identifying the script cache.</param>
+		/// <param name="tmHeight">Pointer to a buffer in which the function retrieves the font height.</param>
+		/// <returns>Returns 0 if successful. The function returns a nonzero HRESULT value if it does not succeed. The application can test the return value with the <c>SUCCEEDED</c> and <c>FAILED</c> macros.</returns>
+		/// <remarks><c>Important</c> Starting with Windows 8: To maintain the ability to run on Windows 7, a module that uses Uniscribe must specify Usp10.lib before gdi32.lib in its library list.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/usp10/nf-usp10-scriptcachegetheight
+		// HRESULT ScriptCacheGetHeight( HDC hdc, SCRIPT_CACHE *psc, long *tmHeight );
+		[DllImport(Lib.Usp10, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("usp10.h", MSDNShortId = "e147b0c4-7d9f-4961-8bce-25dab716f7a2")]
+		public static extern HRESULT ScriptCacheGetHeight(HDC hdc, ref SCRIPT_CACHE psc, out int tmHeight);
+
+
 		ScriptCPtoX Generates the x offset from the left end or leading edge of a run to either the leading or trailing edge of a logical character cluster.
 		ScriptFreeCache Frees a script cache.
 		ScriptGetCMap Retrieves the glyph indexes of the Unicode characters in a string according to either the TrueType cmap table or the standard cmap table implemented for old-style fonts.
