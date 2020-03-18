@@ -832,6 +832,32 @@ namespace Vanara.PInvoke
 		public static extern HCOLORSPACE SetColorSpace(HDC hdc, HCOLORSPACE hcs);
 
 		/// <summary>
+		/// The <c>SetDeviceGammaRamp</c> function sets the gamma ramp on direct color display boards having drivers that support
+		/// downloadable gamma ramps in hardware.
+		/// </summary>
+		/// <param name="hdc">Specifies the device context of the direct color display board in question.</param>
+		/// <param name="lpRamp">
+		/// Pointer to a buffer containing the gamma ramp to be set. The gamma ramp is specified in three arrays of 256 <c>WORD</c> elements
+		/// each, which contain the mapping between RGB values in the frame buffer and digital-analog-converter (DAC ) values. The sequence
+		/// of the arrays is red, green, blue. The RGB values must be stored in the most significant bits of each WORD to increase DAC independence.
+		/// </param>
+		/// <returns>
+		/// <para>If this function succeeds, the return value is <c>TRUE</c>.</para>
+		/// <para>If this function fails, the return value is <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// Direct color display modes do not use color lookup tables and are usually 16, 24, or 32 bit. Not all direct color video boards
+		/// support loadable gamma ramps. <c>SetDeviceGammaRamp</c> succeeds only for devices with drivers that support downloadable gamma
+		/// ramps in hardware.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setdevicegammaramp
+		// BOOL SetDeviceGammaRamp( HDC hdc, LPVOID lpRamp );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "8e4cc9a4-f292-47a1-a12a-43a479326ca7")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetDeviceGammaRamp(HDC hdc, IntPtr lpRamp);
+
+		/// <summary>
 		/// The <c>SetICMMode</c> function causes Image Color Management to be enabled, disabled, or queried on a given device context (DC).
 		/// </summary>
 		/// <param name="hdc">Identifies handle to the device context.</param>

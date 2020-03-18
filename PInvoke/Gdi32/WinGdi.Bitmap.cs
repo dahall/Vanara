@@ -2087,6 +2087,35 @@ namespace Vanara.PInvoke
 		public static extern bool TransparentBlt(HDC hdcDest, int xoriginDest, int yoriginDest, int wDest, int hDest, HDC hdcSrc, int xoriginSrc, int yoriginSrc, int wSrc, int hSrc, uint crTransparent);
 
 		/// <summary>
+		/// The <c>GRADIENT_RECT</c> structure specifies the index of two vertices in the pVertex array in the <c>GradientFill</c> function.
+		/// These two vertices form the upper-left and lower-right boundaries of a rectangle.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>GRADIENT_RECT</c> structure specifies the values of the pVertex array that are used when the dwMode parameter of the
+		/// GradientFill function is GRADIENT_FILL_RECT_H or GRADIENT_FILL_RECT_V. For related <c>GradientFill</c> structures, see
+		/// GRADIENT_TRIANGLE and TRIVERTEX.
+		/// </para>
+		/// <para>
+		/// The following images shows examples of a rectangle with a gradient fill - one in horizontal mode, the other in vertical mode.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Drawing a Shaded Rectangle.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-gradient_rect
+		// typedef struct _GRADIENT_RECT { ULONG UpperLeft; ULONG LowerRight; } GRADIENT_RECT, *PGRADIENT_RECT, *LPGRADIENT_RECT;
+		[PInvokeData("wingdi.h", MSDNShortId = "8660114a-423f-40a8-b113-e0304bb0f383")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct GRADIENT_RECT
+		{
+			/// <summary>The upper-left corner of a rectangle.</summary>
+			public uint UpperLeft;
+
+			/// <summary>The lower-right corner of a rectangle.</summary>
+			public uint LowerRight;
+		}
+
+		/// <summary>
 		/// The <c>GRADIENT_TRIANGLE</c> structure specifies the index of three vertices in the pVertex array in the <c>GradientFill</c>
 		/// function. These three vertices form one triangle.
 		/// </summary>

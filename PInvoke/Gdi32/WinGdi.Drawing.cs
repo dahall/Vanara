@@ -179,6 +179,243 @@ namespace Vanara.PInvoke
 		[PInvokeData("wingdi.h", MSDNShortId = "aafe7635-1a71-42a9-90b7-11179e245af4")]
 		public static extern uint GdiGetBatchLimit();
 
+		/// <summary>The <c>GdiGradientFill</c> function fills rectangle and triangle structures.</summary>
+		/// <param name="hdc">A handle to the destination device context.</param>
+		/// <param name="pVertex">A pointer to an array of TRIVERTEX structures that each define a triangle vertex.</param>
+		/// <param name="nVertex">The number of vertices in pVertex.</param>
+		/// <param name="pMesh">
+		/// An array of GRADIENT_TRIANGLE structures in triangle mode, or an array of GRADIENT_RECT structures in rectangle mode.
+		/// </param>
+		/// <param name="nCount">The number of elements (triangles or rectangles) in pMesh.</param>
+		/// <param name="ulMode">
+		/// <para>The gradient fill mode. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>GRADIENT_FILL_RECT_H</term>
+		/// <term>
+		/// In this mode, two endpoints describe a rectangle. The rectangle is defined to have a constant color (specified by the TRIVERTEX
+		/// structure) for the left and right edges. GDI interpolates the color from the left to right edge and fills the interior.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GRADIENT_FILL_RECT_V</term>
+		/// <term>
+		/// In this mode, two endpoints describe a rectangle. The rectangle is defined to have a constant color (specified by the TRIVERTEX
+		/// structure) for the top and bottom edges. GDI interpolates the color from the top to bottom edge and fills the interior.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GRADIENT_FILL_TRIANGLE</term>
+		/// <term>
+		/// In this mode, an array of TRIVERTEX structures is passed to GDI along with a list of array indexes that describe separate
+		/// triangles. GDI performs linear interpolation between triangle vertices and fills the interior. Drawing is done directly in 24-
+		/// and 32-bpp modes. Dithering is performed in 16-, 8-, 4-, and 1-bpp mode.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+		/// <para>If the function fails, the return value is <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para><c>Note</c> This function is the same as GradientFill.</para>
+		/// <para>
+		/// To add smooth shading to a triangle, call the <c>GdiGradientFill</c> function with the three triangle endpoints. GDI will
+		/// linearly interpolate and fill the triangle. Here is the drawing output of a shaded triangle.
+		/// </para>
+		/// <para>
+		/// To add smooth shading to a rectangle, call <c>GdiGradientFill</c> with the upper-left and lower-right coordinates of the
+		/// rectangle. There are two shading modes used when drawing a rectangle. In horizontal mode, the rectangle is shaded from
+		/// left-to-right. In vertical mode, the rectangle is shaded from top-to-bottom. Here is the drawing output of two shaded rectangles
+		/// - one in horizontal mode, the other in vertical mode.
+		/// </para>
+		/// <para>
+		/// The <c>GdiGradientFill</c> function uses a mesh method to specify the endpoints of the object to draw. All vertices are passed
+		/// to <c>GdiGradientFill</c> in the pVertex array. The pMesh parameter specifies how these vertices are connected to form an
+		/// object. When filling a rectangle, pMesh points to an array of GRADIENT_RECT structures. Each <c>GRADIENT_RECT</c> structure
+		/// specifies the index of two vertices in the pVertex array. These two vertices form the upper-left and lower-right boundary of one rectangle.
+		/// </para>
+		/// <para>
+		/// In the case of filling a triangle, pMesh points to an array of GRADIENT_TRIANGLE structures. Each <c>GRADIENT_TRIANGLE</c>
+		/// structure specifies the index of three vertices in the pVertex array. These three vertices form one triangle.
+		/// </para>
+		/// <para>To simplify hardware acceleration, this routine is not required to be pixel-perfect in the triangle interior.</para>
+		/// <para>
+		/// Note that <c>GdiGradientFill</c> does not use the Alpha member of the TRIVERTEX structure. To use <c>GdiGradientFill</c> with
+		/// transparency, call <c>GdiGradientFill</c> and then call GdiAlphaBlend with the desired values for the alpha channel of each vertex.
+		/// </para>
+		/// <para>For more information, see Smooth Shading, Drawing a Shaded Triangle, and Drawing a Shaded Rectangle.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gdigradientfill
+		// BOOL GdiGradientFill( HDC hdc, PTRIVERTEX pVertex, ULONG nVertex, PVOID pMesh, ULONG nCount, ULONG ulMode );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "c88c1137-5690-4139-9d10-90d036e8f31c")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GdiGradientFill(HDC hdc, in TRIVERTEX pVertex, uint nVertex, IntPtr pMesh, uint nCount, GradientFillMode ulMode);
+
+		/// <summary>The <c>GdiGradientFill</c> function fills rectangle and triangle structures.</summary>
+		/// <param name="hdc">A handle to the destination device context.</param>
+		/// <param name="pVertex">A pointer to an array of TRIVERTEX structures that each define a triangle vertex.</param>
+		/// <param name="nVertex">The number of vertices in pVertex.</param>
+		/// <param name="pMesh">
+		/// An array of GRADIENT_TRIANGLE structures in triangle mode, or an array of GRADIENT_RECT structures in rectangle mode.
+		/// </param>
+		/// <param name="nCount">The number of elements (triangles or rectangles) in pMesh.</param>
+		/// <param name="ulMode">
+		/// <para>The gradient fill mode. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>GRADIENT_FILL_RECT_H</term>
+		/// <term>
+		/// In this mode, two endpoints describe a rectangle. The rectangle is defined to have a constant color (specified by the TRIVERTEX
+		/// structure) for the left and right edges. GDI interpolates the color from the left to right edge and fills the interior.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GRADIENT_FILL_RECT_V</term>
+		/// <term>
+		/// In this mode, two endpoints describe a rectangle. The rectangle is defined to have a constant color (specified by the TRIVERTEX
+		/// structure) for the top and bottom edges. GDI interpolates the color from the top to bottom edge and fills the interior.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GRADIENT_FILL_TRIANGLE</term>
+		/// <term>
+		/// In this mode, an array of TRIVERTEX structures is passed to GDI along with a list of array indexes that describe separate
+		/// triangles. GDI performs linear interpolation between triangle vertices and fills the interior. Drawing is done directly in 24-
+		/// and 32-bpp modes. Dithering is performed in 16-, 8-, 4-, and 1-bpp mode.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+		/// <para>If the function fails, the return value is <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para><c>Note</c> This function is the same as GradientFill.</para>
+		/// <para>
+		/// To add smooth shading to a triangle, call the <c>GdiGradientFill</c> function with the three triangle endpoints. GDI will
+		/// linearly interpolate and fill the triangle. Here is the drawing output of a shaded triangle.
+		/// </para>
+		/// <para>
+		/// To add smooth shading to a rectangle, call <c>GdiGradientFill</c> with the upper-left and lower-right coordinates of the
+		/// rectangle. There are two shading modes used when drawing a rectangle. In horizontal mode, the rectangle is shaded from
+		/// left-to-right. In vertical mode, the rectangle is shaded from top-to-bottom. Here is the drawing output of two shaded rectangles
+		/// - one in horizontal mode, the other in vertical mode.
+		/// </para>
+		/// <para>
+		/// The <c>GdiGradientFill</c> function uses a mesh method to specify the endpoints of the object to draw. All vertices are passed
+		/// to <c>GdiGradientFill</c> in the pVertex array. The pMesh parameter specifies how these vertices are connected to form an
+		/// object. When filling a rectangle, pMesh points to an array of GRADIENT_RECT structures. Each <c>GRADIENT_RECT</c> structure
+		/// specifies the index of two vertices in the pVertex array. These two vertices form the upper-left and lower-right boundary of one rectangle.
+		/// </para>
+		/// <para>
+		/// In the case of filling a triangle, pMesh points to an array of GRADIENT_TRIANGLE structures. Each <c>GRADIENT_TRIANGLE</c>
+		/// structure specifies the index of three vertices in the pVertex array. These three vertices form one triangle.
+		/// </para>
+		/// <para>To simplify hardware acceleration, this routine is not required to be pixel-perfect in the triangle interior.</para>
+		/// <para>
+		/// Note that <c>GdiGradientFill</c> does not use the Alpha member of the TRIVERTEX structure. To use <c>GdiGradientFill</c> with
+		/// transparency, call <c>GdiGradientFill</c> and then call GdiAlphaBlend with the desired values for the alpha channel of each vertex.
+		/// </para>
+		/// <para>For more information, see Smooth Shading, Drawing a Shaded Triangle, and Drawing a Shaded Rectangle.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gdigradientfill
+		// BOOL GdiGradientFill( HDC hdc, PTRIVERTEX pVertex, ULONG nVertex, PVOID pMesh, ULONG nCount, ULONG ulMode );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "c88c1137-5690-4139-9d10-90d036e8f31c")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GdiGradientFill(HDC hdc, in TRIVERTEX pVertex, uint nVertex, [In, MarshalAs(UnmanagedType.LPArray)] GRADIENT_TRIANGLE[] pMesh, uint nCount, GradientFillMode ulMode);
+
+		/// <summary>The <c>GdiGradientFill</c> function fills rectangle and triangle structures.</summary>
+		/// <param name="hdc">A handle to the destination device context.</param>
+		/// <param name="pVertex">A pointer to an array of TRIVERTEX structures that each define a triangle vertex.</param>
+		/// <param name="nVertex">The number of vertices in pVertex.</param>
+		/// <param name="pMesh">
+		/// An array of GRADIENT_TRIANGLE structures in triangle mode, or an array of GRADIENT_RECT structures in rectangle mode.
+		/// </param>
+		/// <param name="nCount">The number of elements (triangles or rectangles) in pMesh.</param>
+		/// <param name="ulMode">
+		/// <para>The gradient fill mode. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>GRADIENT_FILL_RECT_H</term>
+		/// <term>
+		/// In this mode, two endpoints describe a rectangle. The rectangle is defined to have a constant color (specified by the TRIVERTEX
+		/// structure) for the left and right edges. GDI interpolates the color from the left to right edge and fills the interior.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GRADIENT_FILL_RECT_V</term>
+		/// <term>
+		/// In this mode, two endpoints describe a rectangle. The rectangle is defined to have a constant color (specified by the TRIVERTEX
+		/// structure) for the top and bottom edges. GDI interpolates the color from the top to bottom edge and fills the interior.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GRADIENT_FILL_TRIANGLE</term>
+		/// <term>
+		/// In this mode, an array of TRIVERTEX structures is passed to GDI along with a list of array indexes that describe separate
+		/// triangles. GDI performs linear interpolation between triangle vertices and fills the interior. Drawing is done directly in 24-
+		/// and 32-bpp modes. Dithering is performed in 16-, 8-, 4-, and 1-bpp mode.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+		/// <para>If the function fails, the return value is <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para><c>Note</c> This function is the same as GradientFill.</para>
+		/// <para>
+		/// To add smooth shading to a triangle, call the <c>GdiGradientFill</c> function with the three triangle endpoints. GDI will
+		/// linearly interpolate and fill the triangle. Here is the drawing output of a shaded triangle.
+		/// </para>
+		/// <para>
+		/// To add smooth shading to a rectangle, call <c>GdiGradientFill</c> with the upper-left and lower-right coordinates of the
+		/// rectangle. There are two shading modes used when drawing a rectangle. In horizontal mode, the rectangle is shaded from
+		/// left-to-right. In vertical mode, the rectangle is shaded from top-to-bottom. Here is the drawing output of two shaded rectangles
+		/// - one in horizontal mode, the other in vertical mode.
+		/// </para>
+		/// <para>
+		/// The <c>GdiGradientFill</c> function uses a mesh method to specify the endpoints of the object to draw. All vertices are passed
+		/// to <c>GdiGradientFill</c> in the pVertex array. The pMesh parameter specifies how these vertices are connected to form an
+		/// object. When filling a rectangle, pMesh points to an array of GRADIENT_RECT structures. Each <c>GRADIENT_RECT</c> structure
+		/// specifies the index of two vertices in the pVertex array. These two vertices form the upper-left and lower-right boundary of one rectangle.
+		/// </para>
+		/// <para>
+		/// In the case of filling a triangle, pMesh points to an array of GRADIENT_TRIANGLE structures. Each <c>GRADIENT_TRIANGLE</c>
+		/// structure specifies the index of three vertices in the pVertex array. These three vertices form one triangle.
+		/// </para>
+		/// <para>To simplify hardware acceleration, this routine is not required to be pixel-perfect in the triangle interior.</para>
+		/// <para>
+		/// Note that <c>GdiGradientFill</c> does not use the Alpha member of the TRIVERTEX structure. To use <c>GdiGradientFill</c> with
+		/// transparency, call <c>GdiGradientFill</c> and then call GdiAlphaBlend with the desired values for the alpha channel of each vertex.
+		/// </para>
+		/// <para>For more information, see Smooth Shading, Drawing a Shaded Triangle, and Drawing a Shaded Rectangle.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gdigradientfill
+		// BOOL GdiGradientFill( HDC hdc, PTRIVERTEX pVertex, ULONG nVertex, PVOID pMesh, ULONG nCount, ULONG ulMode );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "c88c1137-5690-4139-9d10-90d036e8f31c")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GdiGradientFill(HDC hdc, in TRIVERTEX pVertex, uint nVertex, [In, MarshalAs(UnmanagedType.LPArray)] GRADIENT_RECT[] pMesh, uint nCount, GradientFillMode ulMode);
+
 		/// <summary>
 		/// The <c>GdiSetBatchLimit</c> function sets the maximum number of function calls that can be accumulated in the calling thread's
 		/// current batch. The system flushes the current batch whenever this limit is exceeded.

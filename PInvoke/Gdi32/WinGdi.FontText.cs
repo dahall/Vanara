@@ -56,6 +56,24 @@ namespace Vanara.PInvoke
 		/// <summary>Represents a generic GDI error.</summary>
 		public const uint GDI_ERROR = 0xFFFFFFFF;
 
+		/// <summary>This function enables or disables support for end-user-defined characters (EUDC).</summary>
+		/// <param name="fEnableEUDC">Boolean that is set to <c>TRUE</c> to enable EUDC, and to <c>FALSE</c> to disable EUDC.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>If EUDC is disabled, trying to display EUDC characters will result in missing or bad glyphs.</para>
+		/// <para>During multi-session, this function affects the current session only.</para>
+		/// <para>It is recommended that you use this function with Windows XP SP2 or later.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/gdi/enableeudc
+		// BOOL EnableEUDC( _In_ HDC BOOL fEnableEUDC );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("", MSDNShortId = "9e531d8c-6008-4189-ae25-cda707be5e2c")]
+		[return: MarshalAs(UnmanagedType.Bool)] 
+		public static extern bool EnableEUDC([MarshalAs(UnmanagedType.Bool)] bool fEnableEUDC);
+
 		/// <summary>
 		/// The <c>EnumFontFamExProc</c> function is an application defined callback function used with the <c>EnumFontFamiliesEx</c>
 		/// function. It is used to process the fonts. It is called once for each enumerated font. The <c>FONTENUMPROC</c> type defines a

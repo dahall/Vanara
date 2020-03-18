@@ -1017,60 +1017,59 @@ namespace Vanara.PInvoke
 
 		/*
 		ScriptCacheGetHeight Retrieves the height of the currently cached font.
-	 ScriptCPtoX Generates the x offset from the left end or leading edge of a run to either the leading or trailing edge of a logical character cluster.
-	 ScriptFreeCache Frees a script cache.
-	 ScriptGetCMap Retrieves the glyph indexes of the Unicode characters in a string according to either the TrueType cmap table or the standard cmap table implemented for old-style fonts.
-   ScriptGetFontAlternateGlyphs    Retrieves a list of alternate glyphs for a specified character that can be accessed through a specified OpenType feature.
+		ScriptCPtoX Generates the x offset from the left end or leading edge of a run to either the leading or trailing edge of a logical character cluster.
+		ScriptFreeCache Frees a script cache.
+		ScriptGetCMap Retrieves the glyph indexes of the Unicode characters in a string according to either the TrueType cmap table or the standard cmap table implemented for old-style fonts.
+		ScriptGetFontAlternateGlyphs    Retrieves a list of alternate glyphs for a specified character that can be accessed through a specified OpenType feature.
 
-   ScriptGetFontFeatureTags Retrieves a list of typographic features for the defined writing system for OpenType processing. The typographic feature tags comprising the list are retrieved from the font in the supplied device context or cache.
+		ScriptGetFontFeatureTags Retrieves a list of typographic features for the defined writing system for OpenType processing. The typographic feature tags comprising the list are retrieved from the font in the supplied device context or cache.
 
-   ScriptGetFontLanguageTags Retrieves a list of language tags that are available for the specified item and are supported by a specified script tag for OpenType processing. The tags comprising the list are retrieved from the font in the specified device context or cache.
+		ScriptGetFontLanguageTags Retrieves a list of language tags that are available for the specified item and are supported by a specified script tag for OpenType processing. The tags comprising the list are retrieved from the font in the specified device context or cache.
 
-   ScriptGetFontProperties Retrieves information from the font cache on the special glyphs used by a font.
-   ScriptGetFontScriptTags Retrieves a list of scripts available in the font for OpenType processing. Scripts comprising the list are retrieved from the font located in the supplied device context or from the script shaping engine that processes the font of the current run.
+		ScriptGetFontProperties Retrieves information from the font cache on the special glyphs used by a font.
+		ScriptGetFontScriptTags Retrieves a list of scripts available in the font for OpenType processing. Scripts comprising the list are retrieved from the font located in the supplied device context or from the script shaping engine that processes the font of the current run.
 
-   ScriptGetGlyphABCWidth Retrieves the ABC width of a given glyph.
-   ScriptGetLogicalWidths Converts the glyph advance widths for a specific font into logical widths.
+		ScriptGetGlyphABCWidth Retrieves the ABC width of a given glyph.
+		ScriptGetLogicalWidths Converts the glyph advance widths for a specific font into logical widths.
 
-   ScriptGetProperties Retrieves information about the current scripts.
-   ScriptIsComplex Determines whether a Unicode string requires complex script processing.
-   ScriptItemize Breaks a Unicode string into individually shapeable items.
-   ScriptItemizeOpenType Breaks a Unicode string into individually shapeable items and provides an array of feature tags for each shapeable item for OpenType processing.
+		ScriptGetProperties Retrieves information about the current scripts.
+		ScriptIsComplex Determines whether a Unicode string requires complex script processing.
+		ScriptItemize Breaks a Unicode string into individually shapeable items.
+		ScriptItemizeOpenType Breaks a Unicode string into individually shapeable items and provides an array of feature tags for each shapeable item for OpenType processing.
 
-   ScriptJustify Creates an advance widths table to allow text justification when passed to the ScriptTextOut function.
+		ScriptJustify Creates an advance widths table to allow text justification when passed to the ScriptTextOut function.
 
-   ScriptLayout Converts an array of run embedding levels to a map of visual-to-logical position and/or logical-to-visual position.
+		ScriptLayout Converts an array of run embedding levels to a map of visual-to-logical position and/or logical-to-visual position.
 
-   ScriptPlace Generates glyph advance width and two-dimensional offset information from the output of ScriptShape.
+		ScriptPlace Generates glyph advance width and two-dimensional offset information from the output of ScriptShape.
 
-   ScriptPlaceOpenType Generates glyphs and visual attributes for a Unicode run with OpenType information from the output of ScriptShapeOpenType.
-   ScriptPositionSingleGlyph Positions a single glyph with a single adjustment using a specified feature provided in the font for OpenType processing.Most often, applications use this function to align a glyph optically at the beginning or end of a line.
+		ScriptPlaceOpenType Generates glyphs and visual attributes for a Unicode run with OpenType information from the output of ScriptShapeOpenType.
+		ScriptPositionSingleGlyph Positions a single glyph with a single adjustment using a specified feature provided in the font for OpenType processing.Most often, applications use this function to align a glyph optically at the beginning or end of a line.
 
- ScriptRecordDigitSubstitution Reads the National Language Support (NLS) native digit and digit substitution settings and records them in a SCRIPT_DIGITSUBSTITUTE structure.For more information, see Digit Shapes.
- ScriptShape Generates glyphs and visual attributes for a Unicode run.
- ScriptShapeOpenType Generates glyphs and visual attributes for a Unicode run with OpenType information. Each run consists of one call to this function.
- ScriptString_pcOutChars Returns a pointer to the length of a string after clipping.
- ScriptString_pLogAttr Returns a pointer to a logical attributes buffer for an analyzed string.
+		ScriptRecordDigitSubstitution Reads the National Language Support (NLS) native digit and digit substitution settings and records them in a SCRIPT_DIGITSUBSTITUTE structure.For more information, see Digit Shapes.
+		ScriptShape Generates glyphs and visual attributes for a Unicode run.
+		ScriptShapeOpenType Generates glyphs and visual attributes for a Unicode run with OpenType information. Each run consists of one call to this function.
+		ScriptString_pcOutChars Returns a pointer to the length of a string after clipping.
+		ScriptString_pLogAttr Returns a pointer to a logical attributes buffer for an analyzed string.
 
- ScriptString_pSize Returns a pointer to a SIZE structure for an analyzed string.
+		ScriptString_pSize Returns a pointer to a SIZE structure for an analyzed string.
 
- ScriptStringAnalyse Analyzes a plain text string.
+		ScriptStringAnalyse Analyzes a plain text string.
 
- ScriptStringCPtoX Retrieves the x coordinate for the leading or trailing edge of a character position.
- ScriptStringFree Frees a SCRIPT_STRING_ANALYSIS structure.
- ScriptStringGetLogicalWidths Converts visual widths into logical widths.
- ScriptStringGetOrder Creates an array that maps an original character position to a glyph position.
+		ScriptStringCPtoX Retrieves the x coordinate for the leading or trailing edge of a character position.
+		ScriptStringFree Frees a SCRIPT_STRING_ANALYSIS structure.
+		ScriptStringGetLogicalWidths Converts visual widths into logical widths.
+		ScriptStringGetOrder Creates an array that maps an original character position to a glyph position.
 
- ScriptStringOut Displays a string generated by a prior call to ScriptStringAnalyse and optionally adds highlighting.
+		ScriptStringOut Displays a string generated by a prior call to ScriptStringAnalyse and optionally adds highlighting.
 
- ScriptStringValidate Checks a SCRIPT_STRING_ANALYSIS structure for invalid sequences.
+		ScriptStringValidate Checks a SCRIPT_STRING_ANALYSIS structure for invalid sequences.
 
- ScriptStringXtoCP Converts an x coordinate to a character position.
- ScriptSubstituteSingleGlyph Enables substitution of a single glyph with one alternate form of the same glyph for OpenType processing.
+		ScriptStringXtoCP Converts an x coordinate to a character position.
+		ScriptSubstituteSingleGlyph Enables substitution of a single glyph with one alternate form of the same glyph for OpenType processing.
 
- ScriptTextOut Displays text for the specified script shape and place information.
- ScriptXtoCP Generates the leading or trailing edge of a logical character cluster from the x offset of a run.
-
- */
+		ScriptTextOut Displays text for the specified script shape and place information.
+		ScriptXtoCP Generates the leading or trailing edge of a logical character cluster from the x offset of a run.
+		*/
 	}
 }
