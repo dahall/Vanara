@@ -3,7 +3,7 @@
   <metadata>
     <id>Vanara.Library</id>
     <title>Vanara Libraries Metapackage</title>
-    <version>3.2.1</version>
+    <version>3.2.2</version>
     <description>The full set of packages associated with the Vanara PInvoke Libraries.</description>
     <tags>pinvoke;vanara;net-extensions;interop</tags>
     <copyright>Copyright © 2017-2020</copyright>
