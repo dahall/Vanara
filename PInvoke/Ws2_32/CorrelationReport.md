@@ -1,162 +1,159 @@
 ## Correlation report for ws2_32.dll  
-### Methods (13% complete, 20 of 146 functions)  
+### Methods (100% complete, 133 of 133 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[__WSAFDIsSet](https://www.google.com/search?num=5&q=__WSAFDIsSet+site%3Amicrosoft.com) |  |   
+[__WSAFDIsSet](http://msdn2.microsoft.com/en-us/library/ca420136-0b3b-45a1-85ce-83ab6ba1a70a) | winsock.h | [Vanara.PInvoke.Ws2_32.__WSAFDIsSet](https://github.com/dahall/Vanara/search?l=C%23&q=__WSAFDIsSet)  
 [accept](http://msdn2.microsoft.com/en-us/library/72246263-4806-4ab2-9b26-89a1782a954b) | winsock2.h | [Vanara.PInvoke.Ws2_32.accept](https://github.com/dahall/Vanara/search?l=C%23&q=accept)  
 [bind](http://msdn2.microsoft.com/en-us/library/3a651daa-7404-4ef7-8cff-0d3dff41a8e8) | winsock.h | [Vanara.PInvoke.Ws2_32.bind](https://github.com/dahall/Vanara/search?l=C%23&q=bind)  
 [closesocket](http://msdn2.microsoft.com/en-us/library/2f357aa8-389b-4c92-8a9f-289e048cc41c) | winsock.h | [Vanara.PInvoke.Ws2_32.closesocket](https://github.com/dahall/Vanara/search?l=C%23&q=closesocket)  
 [connect](http://msdn2.microsoft.com/en-us/library/13468139-dc03-45bd-850c-7ac2dbcb6e60) | winsock2.h | [Vanara.PInvoke.Ws2_32.connect](https://github.com/dahall/Vanara/search?l=C%23&q=connect)  
-[freeaddrinfo](https://www.google.com/search?num=5&q=freeaddrinfo+site%3Amicrosoft.com) |  |   
-[FreeAddrInfoEx](https://www.google.com/search?num=5&q=FreeAddrInfoEx+site%3Amicrosoft.com) |  |   
+[FreeAddrInfoExW](http://msdn2.microsoft.com/en-us/library/bc3d7ba7-ec00-4ee0-ad7d-d46641043a7b) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.FreeAddrInfoExW](https://github.com/dahall/Vanara/search?l=C%23&q=FreeAddrInfoExW)  
 [FreeAddrInfoW](http://msdn2.microsoft.com/en-us/library/0a2a226c-2068-4538-b499-04cfbfd65b8a) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.FreeAddrInfoW](https://github.com/dahall/Vanara/search?l=C%23&q=FreeAddrInfoW)  
-[getaddrinfo](https://www.google.com/search?num=5&q=getaddrinfo+site%3Amicrosoft.com) |  |   
-[GetAddrInfoEx](https://www.google.com/search?num=5&q=GetAddrInfoExA+site%3Amicrosoft.com) |  |   
-[GetAddrInfoExCancel](https://www.google.com/search?num=5&q=GetAddrInfoExCancel+site%3Amicrosoft.com) |  |   
-[GetAddrInfoExOverlappedResult](https://www.google.com/search?num=5&q=GetAddrInfoExOverlappedResult+site%3Amicrosoft.com) |  |   
+[GetAddrInfoExCancel](http://msdn2.microsoft.com/en-us/library/A4DE552D-DEA7-44F5-865F-5B02C9BB4AB6) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.GetAddrInfoExCancel](https://github.com/dahall/Vanara/search?l=C%23&q=GetAddrInfoExCancel)  
+[GetAddrInfoExOverlappedResult](http://msdn2.microsoft.com/en-us/library/BBA6E407-561C-4B3C-9218-0047477E82DE) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.GetAddrInfoExOverlappedResult](https://github.com/dahall/Vanara/search?l=C%23&q=GetAddrInfoExOverlappedResult)  
+[GetAddrInfoExW](http://msdn2.microsoft.com/en-us/library/cc4ccb2d-ea5a-48bd-a3ae-f70432ab2c39) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.GetAddrInfoExW](https://github.com/dahall/Vanara/search?l=C%23&q=GetAddrInfoExW)  
 [GetAddrInfoW](http://msdn2.microsoft.com/en-us/library/82436a88-5b37-4758-a5c9-b60dd1cbc36c) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.GetAddrInfoW](https://github.com/dahall/Vanara/search?l=C%23&q=GetAddrInfoW)  
-[gethostbyaddr](https://www.google.com/search?num=5&q=gethostbyaddr+site%3Amicrosoft.com) |  |   
-[gethostbyname](https://www.google.com/search?num=5&q=gethostbyname+site%3Amicrosoft.com) |  |   
-[gethostname](https://www.google.com/search?num=5&q=gethostname+site%3Amicrosoft.com) |  |   
-[GetHostNameW](https://www.google.com/search?num=5&q=GetHostNameW+site%3Amicrosoft.com) |  |   
-[getnameinfo](https://www.google.com/search?num=5&q=getnameinfo+site%3Amicrosoft.com) |  |   
-[GetNameInfoW](https://www.google.com/search?num=5&q=GetNameInfoW+site%3Amicrosoft.com) |  |   
-[getpeername](https://www.google.com/search?num=5&q=getpeername+site%3Amicrosoft.com) |  |   
-[getprotobyname](https://www.google.com/search?num=5&q=getprotobyname+site%3Amicrosoft.com) |  |   
-[getprotobynumber](https://www.google.com/search?num=5&q=getprotobynumber+site%3Amicrosoft.com) |  |   
-[getservbyname](https://www.google.com/search?num=5&q=getservbyname+site%3Amicrosoft.com) |  |   
-[getservbyport](https://www.google.com/search?num=5&q=getservbyport+site%3Amicrosoft.com) |  |   
+[gethostname](http://msdn2.microsoft.com/en-us/library/8fa40b60-0e93-493b-aee1-cea6cf595707) | winsock.h | [Vanara.PInvoke.Ws2_32.gethostname](https://github.com/dahall/Vanara/search?l=C%23&q=gethostname)  
+[GetHostNameW](http://msdn2.microsoft.com/en-us/library/787EB209-5944-4F0A-8550-FE1115C2298A) | winsock2.h | [Vanara.PInvoke.Ws2_32.GetHostNameW](https://github.com/dahall/Vanara/search?l=C%23&q=GetHostNameW)  
+[GetNameInfoW](http://msdn2.microsoft.com/en-us/library/5630a49a-c182-440c-ad54-6ff3ba4274c6) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.GetNameInfoW](https://github.com/dahall/Vanara/search?l=C%23&q=GetNameInfoW)  
+[getpeername](http://msdn2.microsoft.com/en-us/library/df2679a5-cdd9-468b-823a-f98044189f65) | winsock.h | [Vanara.PInvoke.Ws2_32.getpeername](https://github.com/dahall/Vanara/search?l=C%23&q=getpeername)  
+[getprotobyname](http://msdn2.microsoft.com/en-us/library/00669525-d477-4607-beaa-61ef5a8dbd4f) | winsock.h | [Vanara.PInvoke.Ws2_32.getprotobyname_unsafe](https://github.com/dahall/Vanara/search?l=C%23&q=getprotobyname_unsafe)  
+[getprotobynumber](http://msdn2.microsoft.com/en-us/library/f1f55ab7-01ca-4ed7-b8f9-e7ddbaa95855) | winsock2.h | [Vanara.PInvoke.Ws2_32.getprotobynumber_unsafe](https://github.com/dahall/Vanara/search?l=C%23&q=getprotobynumber_unsafe)  
+[getservbyname](http://msdn2.microsoft.com/en-us/library/730fa372-f620-4d21-99b9-3e7b79932792) | winsock.h | [Vanara.PInvoke.Ws2_32.getservbyname_unsafe](https://github.com/dahall/Vanara/search?l=C%23&q=getservbyname_unsafe)  
+[getservbyport](http://msdn2.microsoft.com/en-us/library/afd63c2d-4f77-49df-aeff-bfe56598fcbf) | winsock.h | [Vanara.PInvoke.Ws2_32.getservbyport_unsafe](https://github.com/dahall/Vanara/search?l=C%23&q=getservbyport_unsafe)  
 [getsockname](http://msdn2.microsoft.com/en-us/library/be20a731-cdfc-48ae-90b2-43f2cf9ecf6d) | winsock.h | [Vanara.PInvoke.Ws2_32.getsockname](https://github.com/dahall/Vanara/search?l=C%23&q=getsockname)  
-[getsockopt](https://www.google.com/search?num=5&q=getsockopt+site%3Amicrosoft.com) |  |   
-[htonl](https://www.google.com/search?num=5&q=htonl+site%3Amicrosoft.com) |  |   
-[htons](https://www.google.com/search?num=5&q=htons+site%3Amicrosoft.com) |  |   
-[inet_addr](https://www.google.com/search?num=5&q=inet_addr+site%3Amicrosoft.com) |  |   
+[getsockopt](http://msdn2.microsoft.com/en-us/library/25bc511d-7a9f-41c1-8983-1af1e3f8bf2d) | winsock.h | [Vanara.PInvoke.Ws2_32.getsockopt](https://github.com/dahall/Vanara/search?l=C%23&q=getsockopt)  
+[htonl](http://msdn2.microsoft.com/en-us/library/e3a18c5e-7efb-43d9-9abc-9d573bbb1923) | winsock.h | [Vanara.PInvoke.Ws2_32.htonl](https://github.com/dahall/Vanara/search?l=C%23&q=htonl)  
+[htons](http://msdn2.microsoft.com/en-us/library/3dae2655-2b3c-41d9-9650-125ac393d64a) | winsock.h | [Vanara.PInvoke.Ws2_32.htons](https://github.com/dahall/Vanara/search?l=C%23&q=htons)  
+[inet_addr](http://msdn2.microsoft.com/en-us/library/7d6df658-9d83-45c7-97e7-b2a016a73847) | winsock2.h | [Vanara.PInvoke.Ws2_32.inet_addr](https://github.com/dahall/Vanara/search?l=C%23&q=inet_addr)  
 [inet_ntoa](http://msdn2.microsoft.com/en-us/library/01cd32e7-a01d-40e8-afb5-69223d643a0e) | wsipv6ok.h | [Vanara.PInvoke.Ws2_32.inet_ntoa](https://github.com/dahall/Vanara/search?l=C%23&q=inet_ntoa)  
-[inet_ntop](https://www.google.com/search?num=5&q=inet_ntop+site%3Amicrosoft.com) |  |   
-[inet_ntopA](http://msdn2.microsoft.com/en-us/library/1e26b88c-808f-4807-8641-e5c6b10853ad) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.inet_ntop](https://github.com/dahall/Vanara/search?l=C%23&q=inet_ntop)  
-[inet_ntopW](http://msdn2.microsoft.com/en-us/library/1e26b88c-808f-4807-8641-e5c6b10853ad) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.inet_ntop](https://github.com/dahall/Vanara/search?l=C%23&q=inet_ntop)  
-[inet_pton](https://www.google.com/search?num=5&q=inet_pton+site%3Amicrosoft.com) |  |   
-[inet_ptonA](http://msdn2.microsoft.com/en-us/library/d0705997-0dc7-443b-a43f-611301cc9169) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.inet_pton](https://github.com/dahall/Vanara/search?l=C%23&q=inet_pton)  
-[inet_ptonW](http://msdn2.microsoft.com/en-us/library/d0705997-0dc7-443b-a43f-611301cc9169) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.inet_pton](https://github.com/dahall/Vanara/search?l=C%23&q=inet_pton)  
-[InetNtopW](https://www.google.com/search?num=5&q=InetNtopW+site%3Amicrosoft.com) |  |   
-[InetPtonW](https://www.google.com/search?num=5&q=InetPtonW+site%3Amicrosoft.com) |  |   
-[ioctlsocket](https://www.google.com/search?num=5&q=ioctlsocket+site%3Amicrosoft.com) |  |   
+[inet_ntop](http://msdn2.microsoft.com/en-us/library/1e26b88c-808f-4807-8641-e5c6b10853ad) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.inet_ntop](https://github.com/dahall/Vanara/search?l=C%23&q=inet_ntop)  
+[inet_pton](http://msdn2.microsoft.com/en-us/library/d0705997-0dc7-443b-a43f-611301cc9169) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.inet_pton](https://github.com/dahall/Vanara/search?l=C%23&q=inet_pton)  
+[InetNtopW](http://msdn2.microsoft.com/en-us/library/1e26b88c-808f-4807-8641-e5c6b10853ad) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.InetNtopW](https://github.com/dahall/Vanara/search?l=C%23&q=InetNtopW)  
+[InetPtonW](http://msdn2.microsoft.com/en-us/library/d0705997-0dc7-443b-a43f-611301cc9169) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.InetPtonW](https://github.com/dahall/Vanara/search?l=C%23&q=InetPtonW)  
+[ioctlsocket](http://msdn2.microsoft.com/en-us/library/048fcb8d-acd3-4917-a997-dd133db399f8) | winsock.h | [Vanara.PInvoke.Ws2_32.ioctlsocket](https://github.com/dahall/Vanara/search?l=C%23&q=ioctlsocket)  
 [listen](http://msdn2.microsoft.com/en-us/library/1233feeb-a8c1-49ac-ab34-82af224ecf00) | winsock2.h | [Vanara.PInvoke.Ws2_32.listen](https://github.com/dahall/Vanara/search?l=C%23&q=listen)  
-[ntohl](https://www.google.com/search?num=5&q=ntohl+site%3Amicrosoft.com) |  |   
-[ntohs](https://www.google.com/search?num=5&q=ntohs+site%3Amicrosoft.com) |  |   
-[recv](https://www.google.com/search?num=5&q=recv+site%3Amicrosoft.com) |  |   
-[recvfrom](https://www.google.com/search?num=5&q=recvfrom+site%3Amicrosoft.com) |  |   
-[send](https://www.google.com/search?num=5&q=send+site%3Amicrosoft.com) |  |   
-[sendto](https://www.google.com/search?num=5&q=sendto+site%3Amicrosoft.com) |  |   
-[SetAddrInfoEx](https://www.google.com/search?num=5&q=SetAddrInfoExA+site%3Amicrosoft.com) |  |   
-[setsockopt](https://www.google.com/search?num=5&q=setsockopt+site%3Amicrosoft.com) |  |   
-[shutdown](https://www.google.com/search?num=5&q=shutdown+site%3Amicrosoft.com) |  |   
+[ntohl](http://msdn2.microsoft.com/en-us/library/04673bef-22c6-424f-a5ae-689fb648b54e) | winsock.h | [Vanara.PInvoke.Ws2_32.ntohl](https://github.com/dahall/Vanara/search?l=C%23&q=ntohl)  
+[ntohs](http://msdn2.microsoft.com/en-us/library/9946df13-3b40-4bcb-91ca-10684b3fc9a5) | winsock.h | [Vanara.PInvoke.Ws2_32.ntohs](https://github.com/dahall/Vanara/search?l=C%23&q=ntohs)  
+[recv](http://msdn2.microsoft.com/en-us/library/8c247cd3-479f-45d0-a038-a24e80cc7c73) | winsock.h | [Vanara.PInvoke.Ws2_32.recv](https://github.com/dahall/Vanara/search?l=C%23&q=recv)  
+[recvfrom](http://msdn2.microsoft.com/en-us/library/3e4282e0-3ed0-43e7-9b27-72ec36b9cfa1) | winsock.h | [Vanara.PInvoke.Ws2_32.recvfrom](https://github.com/dahall/Vanara/search?l=C%23&q=recvfrom)  
+[send](http://msdn2.microsoft.com/en-us/library/902bb9cf-d847-43fc-8282-394d619b8f1b) | winsock2.h | [Vanara.PInvoke.Ws2_32.send](https://github.com/dahall/Vanara/search?l=C%23&q=send)  
+[sendto](http://msdn2.microsoft.com/en-us/library/a1c89c6b-d11d-4d3e-a664-af2beed0cd09) | winsock.h | [Vanara.PInvoke.Ws2_32.sendto](https://github.com/dahall/Vanara/search?l=C%23&q=sendto)  
+[SetAddrInfoEx](http://msdn2.microsoft.com/en-us/library/6d3c5b97-32ce-4eb5-a047-d9b37c37cdda) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.SetAddrInfoEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetAddrInfoEx)  
+[setsockopt](http://msdn2.microsoft.com/en-us/library/3a6960c9-0c04-4403-aee1-ce250459dc30) | winsock.h | [Vanara.PInvoke.Ws2_32.setsockopt](https://github.com/dahall/Vanara/search?l=C%23&q=setsockopt)  
+[shutdown](http://msdn2.microsoft.com/en-us/library/6998f0c6-adc9-481f-b9fb-75f9c9f5caaf) | winsock.h | [Vanara.PInvoke.Ws2_32.shutdown](https://github.com/dahall/Vanara/search?l=C%23&q=shutdown)  
 [socket](http://msdn2.microsoft.com/en-us/library/6bf6e6c4-6268-479c-86a6-52e90cf317db) | winsock2.h | [Vanara.PInvoke.Ws2_32.socket](https://github.com/dahall/Vanara/search?l=C%23&q=socket)  
-[WEP](https://www.google.com/search?num=5&q=WEP+site%3Amicrosoft.com) |  |   
-[WPUCompleteOverlappedRequest](https://www.google.com/search?num=5&q=WPUCompleteOverlappedRequest+site%3Amicrosoft.com) |  |   
+[WPUCompleteOverlappedRequest](http://msdn2.microsoft.com/en-us/library/b0e5015f-d23f-46da-91b1-f646111f70f9) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WPUCompleteOverlappedRequest](https://github.com/dahall/Vanara/search?l=C%23&q=WPUCompleteOverlappedRequest)  
 [WSAAccept](http://msdn2.microsoft.com/en-us/library/f385f63f-49b2-4eb7-8717-ad4cca1a2252) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAAccept](https://github.com/dahall/Vanara/search?l=C%23&q=WSAAccept)  
 [WSAAddressToString](http://msdn2.microsoft.com/en-us/library/d72e55e6-79a9-4386-9e1a-24a322f13426) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAAddressToString](https://github.com/dahall/Vanara/search?l=C%23&q=WSAAddressToString)  
-[WSAAdvertiseProvider](https://www.google.com/search?num=5&q=WSAAdvertiseProvider+site%3Amicrosoft.com) |  |   
-[WSAAsyncGetHostByAddr](https://www.google.com/search?num=5&q=WSAAsyncGetHostByAddr+site%3Amicrosoft.com) |  |   
-[WSAAsyncGetHostByName](https://www.google.com/search?num=5&q=WSAAsyncGetHostByName+site%3Amicrosoft.com) |  |   
-[WSAAsyncGetProtoByName](https://www.google.com/search?num=5&q=WSAAsyncGetProtoByName+site%3Amicrosoft.com) |  |   
-[WSAAsyncGetProtoByNumber](https://www.google.com/search?num=5&q=WSAAsyncGetProtoByNumber+site%3Amicrosoft.com) |  |   
-[WSAAsyncGetServByName](https://www.google.com/search?num=5&q=WSAAsyncGetServByName+site%3Amicrosoft.com) |  |   
-[WSAAsyncGetServByPort](https://www.google.com/search?num=5&q=WSAAsyncGetServByPort+site%3Amicrosoft.com) |  |   
-[WSAAsyncSelect](https://www.google.com/search?num=5&q=WSAAsyncSelect+site%3Amicrosoft.com) |  |   
-[WSACancelAsyncRequest](https://www.google.com/search?num=5&q=WSACancelAsyncRequest+site%3Amicrosoft.com) |  |   
-[WSACancelBlockingCall](https://www.google.com/search?num=5&q=WSACancelBlockingCall+site%3Amicrosoft.com) |  |   
+[WSAAdvertiseProvider](http://msdn2.microsoft.com/en-us/library/574ebfa4-d7f2-43c2-b1ec-35ce3db9151f) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSAAdvertiseProvider](https://github.com/dahall/Vanara/search?l=C%23&q=WSAAdvertiseProvider)  
+[WSAAsyncGetHostByAddr](http://msdn2.microsoft.com/en-us/library/814cbb2e-8dd2-44b0-b8be-cfc5491bdc49) | winsock.h | [Vanara.PInvoke.Ws2_32.WSAAsyncGetHostByAddr](https://github.com/dahall/Vanara/search?l=C%23&q=WSAAsyncGetHostByAddr)  
+[WSAAsyncGetHostByName](http://msdn2.microsoft.com/en-us/library/1a2b9c76-6e84-4ac2-b5c1-a2268edd0c49) | wsipv6ok.h | [Vanara.PInvoke.Ws2_32.WSAAsyncGetHostByName](https://github.com/dahall/Vanara/search?l=C%23&q=WSAAsyncGetHostByName)  
+[WSAAsyncGetProtoByName](http://msdn2.microsoft.com/en-us/library/747c40fd-5dc1-4533-896e-bc1c4368d7bd) | winsock.h | [Vanara.PInvoke.Ws2_32.WSAAsyncGetProtoByName](https://github.com/dahall/Vanara/search?l=C%23&q=WSAAsyncGetProtoByName)  
+[WSAAsyncGetProtoByNumber](http://msdn2.microsoft.com/en-us/library/10f28345-c178-47c0-9d0f-87f6743131d9) | winsock.h | [Vanara.PInvoke.Ws2_32.WSAAsyncGetProtoByNumber](https://github.com/dahall/Vanara/search?l=C%23&q=WSAAsyncGetProtoByNumber)  
+[WSAAsyncGetServByName](http://msdn2.microsoft.com/en-us/library/d3524197-cd7a-4863-8fbb-a05e6f5d38e0) | winsock.h | [Vanara.PInvoke.Ws2_32.WSAAsyncGetServByName](https://github.com/dahall/Vanara/search?l=C%23&q=WSAAsyncGetServByName)  
+[WSAAsyncGetServByPort](http://msdn2.microsoft.com/en-us/library/0d0bd09c-ea97-46fb-b7b0-6e3e0a41dbc1) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAAsyncGetServByPort](https://github.com/dahall/Vanara/search?l=C%23&q=WSAAsyncGetServByPort)  
+[WSAAsyncSelect](http://msdn2.microsoft.com/en-us/library/a4d3f599-358c-4a94-91eb-7e1c80244250) | winsock.h | [Vanara.PInvoke.Ws2_32.WSAAsyncSelect](https://github.com/dahall/Vanara/search?l=C%23&q=WSAAsyncSelect)  
+[WSACancelAsyncRequest](http://msdn2.microsoft.com/en-us/library/0e53eccf-ef85-43ec-a02c-12896471a7a9) | winsock.h | [Vanara.PInvoke.Ws2_32.WSACancelAsyncRequest](https://github.com/dahall/Vanara/search?l=C%23&q=WSACancelAsyncRequest)  
+[WSACancelBlockingCall](http://msdn2.microsoft.com/en-us/library/b3597d29-51a5-410f-9925-4d678dd641c1) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSACancelBlockingCall](https://github.com/dahall/Vanara/search?l=C%23&q=WSACancelBlockingCall)  
 [WSACleanup](http://msdn2.microsoft.com/en-us/library/72b7cc3e-be34-41e7-acbf-61742149ec8b) | winsock.h | [Vanara.PInvoke.Ws2_32.WSACleanup](https://github.com/dahall/Vanara/search?l=C%23&q=WSACleanup)  
-[WSACloseEvent](https://www.google.com/search?num=5&q=WSACloseEvent+site%3Amicrosoft.com) |  |   
-[WSAConnect](https://www.google.com/search?num=5&q=WSAConnect+site%3Amicrosoft.com) |  |   
-[WSAConnectByList](https://www.google.com/search?num=5&q=WSAConnectByList+site%3Amicrosoft.com) |  |   
-[WSAConnectByName](https://www.google.com/search?num=5&q=WSAConnectByNameA+site%3Amicrosoft.com) |  |   
-[WSACreateEvent](https://www.google.com/search?num=5&q=WSACreateEvent+site%3Amicrosoft.com) |  |   
-[WSADuplicateSocket](https://www.google.com/search?num=5&q=WSADuplicateSocketA+site%3Amicrosoft.com) |  |   
-[WSAEnumNameSpaceProviders](https://www.google.com/search?num=5&q=WSAEnumNameSpaceProvidersA+site%3Amicrosoft.com) |  |   
-[WSAEnumNameSpaceProvidersEx](https://www.google.com/search?num=5&q=WSAEnumNameSpaceProvidersExA+site%3Amicrosoft.com) |  |   
-[WSAEnumNetworkEvents](https://www.google.com/search?num=5&q=WSAEnumNetworkEvents+site%3Amicrosoft.com) |  |   
-[WSAEnumProtocols](https://www.google.com/search?num=5&q=WSAEnumProtocolsA+site%3Amicrosoft.com) |  |   
-[WSAEventSelect](https://www.google.com/search?num=5&q=WSAEventSelect+site%3Amicrosoft.com) |  |   
+[WSACloseEvent](http://msdn2.microsoft.com/en-us/library/40cefe46-10a3-4b6a-8c89-3e16237fc685) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSACloseEvent](https://github.com/dahall/Vanara/search?l=C%23&q=WSACloseEvent)  
+[WSAConnect](http://msdn2.microsoft.com/en-us/library/3b32cc6e-3df7-4104-a0d4-317fd445c7b2) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAConnect](https://github.com/dahall/Vanara/search?l=C%23&q=WSAConnect)  
+[WSAConnectByList](http://msdn2.microsoft.com/en-us/library/7323d814-e96e-44b9-8ade-a9317e4fbf17) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAConnectByList](https://github.com/dahall/Vanara/search?l=C%23&q=WSAConnectByList)  
+[WSAConnectByName](http://msdn2.microsoft.com/en-us/library/6d87699f-03bd-4579-9907-ae3c29b7332b) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAConnectByName](https://github.com/dahall/Vanara/search?l=C%23&q=WSAConnectByName)  
+[WSACreateEvent](http://msdn2.microsoft.com/en-us/library/cff3bc31-f34c-4bb2-9004-5ec31d0a704a) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSACreateEvent](https://github.com/dahall/Vanara/search?l=C%23&q=WSACreateEvent)  
+[WSADuplicateSocket](http://msdn2.microsoft.com/en-us/library/d4028461-bfa6-4074-9460-5d1371790d41) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSADuplicateSocket](https://github.com/dahall/Vanara/search?l=C%23&q=WSADuplicateSocket)  
+[WSAEnumNameSpaceProviders](https://www.google.com/search?num=5&q=WSAEnumNameSpaceProvidersA+site%3Amicrosoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAEnumNameSpaceProviders](https://github.com/dahall/Vanara/search?l=C%23&q=WSAEnumNameSpaceProviders)  
+[WSAEnumNameSpaceProvidersEx](https://www.google.com/search?num=5&q=WSAEnumNameSpaceProvidersExA+site%3Amicrosoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAEnumNameSpaceProvidersEx](https://github.com/dahall/Vanara/search?l=C%23&q=WSAEnumNameSpaceProvidersEx)  
+[WSAEnumNetworkEvents](http://msdn2.microsoft.com/en-us/library/2e6abccd-c82c-4a6b-8720-259986ac9984) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAEnumNetworkEvents](https://github.com/dahall/Vanara/search?l=C%23&q=WSAEnumNetworkEvents)  
+[WSAEnumProtocols](http://msdn2.microsoft.com/en-us/library/928b6937-41a3-4268-a3bc-14c9e04870e4) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAEnumProtocols](https://github.com/dahall/Vanara/search?l=C%23&q=WSAEnumProtocols)  
+[WSAEventSelect](http://msdn2.microsoft.com/en-us/library/f98a71e4-47fb-47a4-b37e-e4cc801a8f98) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAEventSelect](https://github.com/dahall/Vanara/search?l=C%23&q=WSAEventSelect)  
 [WSAGetLastError](http://msdn2.microsoft.com/en-us/library/39e41b66-44ed-46dc-bfc2-65228b669992) | winsock.h | [Vanara.PInvoke.Ws2_32.WSAGetLastError](https://github.com/dahall/Vanara/search?l=C%23&q=WSAGetLastError)  
-[WSAGetOverlappedResult](https://www.google.com/search?num=5&q=WSAGetOverlappedResult+site%3Amicrosoft.com) |  |   
-[WSAGetQOSByName](https://www.google.com/search?num=5&q=WSAGetQOSByName+site%3Amicrosoft.com) |  |   
-[WSAGetServiceClassInfo](https://www.google.com/search?num=5&q=WSAGetServiceClassInfoA+site%3Amicrosoft.com) |  |   
-[WSAGetServiceClassNameByClassId](https://www.google.com/search?num=5&q=WSAGetServiceClassNameByClassIdA+site%3Amicrosoft.com) |  |   
-[WSAHtonl](https://www.google.com/search?num=5&q=WSAHtonl+site%3Amicrosoft.com) |  |   
-[WSAHtons](https://www.google.com/search?num=5&q=WSAHtons+site%3Amicrosoft.com) |  |   
-[WSAInstallServiceClass](https://www.google.com/search?num=5&q=WSAInstallServiceClassA+site%3Amicrosoft.com) |  |   
+[WSAGetOverlappedResult](http://msdn2.microsoft.com/en-us/library/3c43ccfd-0fe7-4ecc-9517-e0a1c448f7e4) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAGetOverlappedResult](https://github.com/dahall/Vanara/search?l=C%23&q=WSAGetOverlappedResult)  
+[WSAGetQOSByName](http://msdn2.microsoft.com/en-us/library/9b586856-5441-414b-8b91-298c952c351b) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAGetQOSByName](https://github.com/dahall/Vanara/search?l=C%23&q=WSAGetQOSByName)  
+[WSAGetServiceClassInfo](http://msdn2.microsoft.com/en-us/library/e177bb7d-c7d3-43a4-a809-ab8212feea2e) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAGetServiceClassInfo](https://github.com/dahall/Vanara/search?l=C%23&q=WSAGetServiceClassInfo)  
+[WSAGetServiceClassNameByClassId](http://msdn2.microsoft.com/en-us/library/0a61751e-10e5-4f91-a0b2-8c1baf477653) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAGetServiceClassNameByClassId](https://github.com/dahall/Vanara/search?l=C%23&q=WSAGetServiceClassNameByClassId)  
+[WSAHtonl](http://msdn2.microsoft.com/en-us/library/33512f49-d576-4439-ad8d-5c87387d6214) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAHtonl](https://github.com/dahall/Vanara/search?l=C%23&q=WSAHtonl)  
+[WSAHtons](http://msdn2.microsoft.com/en-us/library/95fb103b-f7dd-4fa4-bf68-ed8e87cdd96b) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAHtons](https://github.com/dahall/Vanara/search?l=C%23&q=WSAHtons)  
+[WSAInstallServiceClass](http://msdn2.microsoft.com/en-us/library/06760319-aeeb-4ad7-b77a-01efea7ed904) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAInstallServiceClass](https://github.com/dahall/Vanara/search?l=C%23&q=WSAInstallServiceClass)  
 [WSAIoctl](http://msdn2.microsoft.com/en-us/library/038aeca6-d7b7-4f74-ac69-4536c2e5118b) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAIoctl](https://github.com/dahall/Vanara/search?l=C%23&q=WSAIoctl)  
-[WSAIsBlocking](https://www.google.com/search?num=5&q=WSAIsBlocking+site%3Amicrosoft.com) |  |   
-[WSAJoinLeaf](https://www.google.com/search?num=5&q=WSAJoinLeaf+site%3Amicrosoft.com) |  |   
-[WSALookupServiceBegin](https://www.google.com/search?num=5&q=WSALookupServiceBeginA+site%3Amicrosoft.com) |  |   
-[WSALookupServiceEnd](https://www.google.com/search?num=5&q=WSALookupServiceEnd+site%3Amicrosoft.com) |  |   
-[WSALookupServiceNext](https://www.google.com/search?num=5&q=WSALookupServiceNextA+site%3Amicrosoft.com) |  |   
-[WSANSPIoctl](https://www.google.com/search?num=5&q=WSANSPIoctl+site%3Amicrosoft.com) |  |   
-[WSANtohl](https://www.google.com/search?num=5&q=WSANtohl+site%3Amicrosoft.com) |  |   
-[WSANtohs](https://www.google.com/search?num=5&q=WSANtohs+site%3Amicrosoft.com) |  |   
-[WSAPoll](https://www.google.com/search?num=5&q=WSAPoll+site%3Amicrosoft.com) |  |   
-[WSAProviderCompleteAsyncCall](https://www.google.com/search?num=5&q=WSAProviderCompleteAsyncCall+site%3Amicrosoft.com) |  |   
-[WSAProviderConfigChange](https://www.google.com/search?num=5&q=WSAProviderConfigChange+site%3Amicrosoft.com) |  |   
-[WSARecv](https://www.google.com/search?num=5&q=WSARecv+site%3Amicrosoft.com) |  |   
-[WSARecvDisconnect](https://www.google.com/search?num=5&q=WSARecvDisconnect+site%3Amicrosoft.com) |  |   
-[WSARecvFrom](https://www.google.com/search?num=5&q=WSARecvFrom+site%3Amicrosoft.com) |  |   
-[WSARemoveServiceClass](https://www.google.com/search?num=5&q=WSARemoveServiceClass+site%3Amicrosoft.com) |  |   
-[WSAResetEvent](https://www.google.com/search?num=5&q=WSAResetEvent+site%3Amicrosoft.com) |  |   
-[WSASend](https://www.google.com/search?num=5&q=WSASend+site%3Amicrosoft.com) |  |   
-[WSASendDisconnect](https://www.google.com/search?num=5&q=WSASendDisconnect+site%3Amicrosoft.com) |  |   
-[WSASendMsg](https://www.google.com/search?num=5&q=WSASendMsg+site%3Amicrosoft.com) |  |   
-[WSASendTo](https://www.google.com/search?num=5&q=WSASendTo+site%3Amicrosoft.com) |  |   
-[WSASetBlockingHook](https://www.google.com/search?num=5&q=WSASetBlockingHook+site%3Amicrosoft.com) |  |   
-[WSASetEvent](https://www.google.com/search?num=5&q=WSASetEvent+site%3Amicrosoft.com) |  |   
-[WSASetLastError](https://www.google.com/search?num=5&q=WSASetLastError+site%3Amicrosoft.com) |  |   
-[WSASetService](https://www.google.com/search?num=5&q=WSASetServiceA+site%3Amicrosoft.com) |  |   
-[WSASocket](https://www.google.com/search?num=5&q=WSASocketA+site%3Amicrosoft.com) |  |   
+[WSAJoinLeaf](http://msdn2.microsoft.com/en-us/library/ef9efa03-feed-4f0d-b874-c646cce745c9) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAJoinLeaf](https://github.com/dahall/Vanara/search?l=C%23&q=WSAJoinLeaf)  
+[WSALookupServiceBegin](http://msdn2.microsoft.com/en-us/library/448309ef-b9dd-4960-8016-d26691df59ec) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSALookupServiceBegin](https://github.com/dahall/Vanara/search?l=C%23&q=WSALookupServiceBegin)  
+[WSALookupServiceEnd](http://msdn2.microsoft.com/en-us/library/f9d2ac54-a818-464d-918e-80ebb5b1b106) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSALookupServiceEnd](https://github.com/dahall/Vanara/search?l=C%23&q=WSALookupServiceEnd)  
+[WSALookupServiceNext](http://msdn2.microsoft.com/en-us/library/ab4f1830-b38d-4224-a6a9-6d4512245ad6) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSALookupServiceNext](https://github.com/dahall/Vanara/search?l=C%23&q=WSALookupServiceNext)  
+[WSANSPIoctl](http://msdn2.microsoft.com/en-us/library/6ecaedf0-0038-46d3-9916-c9cb069c5e92) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSANSPIoctl](https://github.com/dahall/Vanara/search?l=C%23&q=WSANSPIoctl)  
+[WSANtohl](http://msdn2.microsoft.com/en-us/library/7e3b42eb-3b93-459f-828a-c19e277882c7) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSANtohl](https://github.com/dahall/Vanara/search?l=C%23&q=WSANtohl)  
+[WSANtohs](http://msdn2.microsoft.com/en-us/library/0a4bc3a9-9919-4dcb-8a37-af37e0243c8f) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSANtohs](https://github.com/dahall/Vanara/search?l=C%23&q=WSANtohs)  
+[WSAPoll](http://msdn2.microsoft.com/en-us/library/3f6f872c-5cee-49f3-bf22-2e8a5d147987) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAPoll](https://github.com/dahall/Vanara/search?l=C%23&q=WSAPoll)  
+[WSAProviderCompleteAsyncCall](http://msdn2.microsoft.com/en-us/library/2bbc20ae-ad6d-47f6-8ca9-dd5559236fbe) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSAProviderCompleteAsyncCall](https://github.com/dahall/Vanara/search?l=C%23&q=WSAProviderCompleteAsyncCall)  
+[WSAProviderConfigChange](http://msdn2.microsoft.com/en-us/library/abaf367a-8f99-478c-a58c-d57e9f9cd8a1) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAProviderConfigChange](https://github.com/dahall/Vanara/search?l=C%23&q=WSAProviderConfigChange)  
+[WSARecv](http://msdn2.microsoft.com/en-us/library/bfe66e11-e9a7-4321-ad55-3141113e9a03) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSARecv](https://github.com/dahall/Vanara/search?l=C%23&q=WSARecv)  
+[WSARecvDisconnect](http://msdn2.microsoft.com/en-us/library/33e0fb8e-3ece-427f-b3ef-43a0f5cf0cc8) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSARecvDisconnect](https://github.com/dahall/Vanara/search?l=C%23&q=WSARecvDisconnect)  
+[WSARecvFrom](http://msdn2.microsoft.com/en-us/library/8617dbb8-0e4e-4cd3-9597-5d20de6778f6) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSARecvFrom](https://github.com/dahall/Vanara/search?l=C%23&q=WSARecvFrom)  
+[WSARemoveServiceClass](http://msdn2.microsoft.com/en-us/library/7d72f727-cca9-4a07-beb4-d64f23c1f0c1) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSARemoveServiceClass](https://github.com/dahall/Vanara/search?l=C%23&q=WSARemoveServiceClass)  
+[WSAResetEvent](http://msdn2.microsoft.com/en-us/library/99a8b0f3-977f-44cd-a224-0819d7513c90) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAResetEvent](https://github.com/dahall/Vanara/search?l=C%23&q=WSAResetEvent)  
+[WSASend](http://msdn2.microsoft.com/en-us/library/764339e6-a1ac-455d-8ebd-ad0fa50dc3b0) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSASend](https://github.com/dahall/Vanara/search?l=C%23&q=WSASend)  
+[WSASendDisconnect](http://msdn2.microsoft.com/en-us/library/c05fc719-e35a-4194-ac01-a294b19ccce9) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSASendDisconnect](https://github.com/dahall/Vanara/search?l=C%23&q=WSASendDisconnect)  
+[WSASendMsg](http://msdn2.microsoft.com/en-us/library/3b2ba645-6a70-4ba2-b4a2-5bde0c7f8d08) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSASendMsg](https://github.com/dahall/Vanara/search?l=C%23&q=WSASendMsg)  
+[WSASendTo](http://msdn2.microsoft.com/en-us/library/e3a11522-871c-4d6b-a2e6-ca91ffc2b698) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSASendTo](https://github.com/dahall/Vanara/search?l=C%23&q=WSASendTo)  
+[WSASetEvent](http://msdn2.microsoft.com/en-us/library/8a3f41fe-77da-4e4e-975d-00eec7c11446) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSASetEvent](https://github.com/dahall/Vanara/search?l=C%23&q=WSASetEvent)  
+[WSASetLastError](http://msdn2.microsoft.com/en-us/library/596155ee-3dcc-4ae3-97ab-0653e019cbee) | winsock.h | [Vanara.PInvoke.Ws2_32.WSASetLastError](https://github.com/dahall/Vanara/search?l=C%23&q=WSASetLastError)  
+[WSASetService](http://msdn2.microsoft.com/en-us/library/21a8ff26-4c9e-4846-a75a-1a27c746edab) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSASetService](https://github.com/dahall/Vanara/search?l=C%23&q=WSASetService)  
+[WSASocket](http://msdn2.microsoft.com/en-us/library/dcf2e543-de54-43d9-9e45-4cb935da3548) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSASocket](https://github.com/dahall/Vanara/search?l=C%23&q=WSASocket)  
 [WSAStartup](http://msdn2.microsoft.com/en-us/library/08299592-867c-491d-9769-d16602133659) | winsock.h | [Vanara.PInvoke.Ws2_32.WSAStartup](https://github.com/dahall/Vanara/search?l=C%23&q=WSAStartup)  
-[WSAStringToAddress](https://www.google.com/search?num=5&q=WSAStringToAddressA+site%3Amicrosoft.com) |  |   
-[WSAUnadvertiseProvider](https://www.google.com/search?num=5&q=WSAUnadvertiseProvider+site%3Amicrosoft.com) |  |   
-[WSAUnhookBlockingHook](https://www.google.com/search?num=5&q=WSAUnhookBlockingHook+site%3Amicrosoft.com) |  |   
-[WSAWaitForMultipleEvents](https://www.google.com/search?num=5&q=WSAWaitForMultipleEvents+site%3Amicrosoft.com) |  |   
-[WSCDeinstallProvider](https://www.google.com/search?num=5&q=WSCDeinstallProvider+site%3Amicrosoft.com) |  |   
-[WSCDeinstallProvider32](https://www.google.com/search?num=5&q=WSCDeinstallProvider32+site%3Amicrosoft.com) |  |   
-[WSCEnableNSProvider](https://www.google.com/search?num=5&q=WSCEnableNSProvider+site%3Amicrosoft.com) |  |   
-[WSCEnableNSProvider32](https://www.google.com/search?num=5&q=WSCEnableNSProvider32+site%3Amicrosoft.com) |  |   
-[WSCEnumNameSpaceProviders32](https://www.google.com/search?num=5&q=WSCEnumNameSpaceProviders32+site%3Amicrosoft.com) |  |   
-[WSCEnumNameSpaceProvidersEx32](https://www.google.com/search?num=5&q=WSCEnumNameSpaceProvidersEx32+site%3Amicrosoft.com) |  |   
-[WSCEnumProtocols](https://www.google.com/search?num=5&q=WSCEnumProtocols+site%3Amicrosoft.com) |  |   
-[WSCEnumProtocols32](https://www.google.com/search?num=5&q=WSCEnumProtocols32+site%3Amicrosoft.com) |  |   
-[WSCGetApplicationCategory](https://www.google.com/search?num=5&q=WSCGetApplicationCategory+site%3Amicrosoft.com) |  |   
-[WSCGetProviderInfo](https://www.google.com/search?num=5&q=WSCGetProviderInfo+site%3Amicrosoft.com) |  |   
-[WSCGetProviderInfo32](https://www.google.com/search?num=5&q=WSCGetProviderInfo32+site%3Amicrosoft.com) |  |   
-[WSCGetProviderPath](https://www.google.com/search?num=5&q=WSCGetProviderPath+site%3Amicrosoft.com) |  |   
-[WSCGetProviderPath32](https://www.google.com/search?num=5&q=WSCGetProviderPath32+site%3Amicrosoft.com) |  |   
-[WSCInstallNameSpace](https://www.google.com/search?num=5&q=WSCInstallNameSpace+site%3Amicrosoft.com) |  |   
-[WSCInstallNameSpace32](https://www.google.com/search?num=5&q=WSCInstallNameSpace32+site%3Amicrosoft.com) |  |   
-[WSCInstallNameSpaceEx](https://www.google.com/search?num=5&q=WSCInstallNameSpaceEx+site%3Amicrosoft.com) |  |   
-[WSCInstallNameSpaceEx32](https://www.google.com/search?num=5&q=WSCInstallNameSpaceEx32+site%3Amicrosoft.com) |  |   
-[WSCInstallProvider](https://www.google.com/search?num=5&q=WSCInstallProvider+site%3Amicrosoft.com) |  |   
-[WSCInstallProvider64_32](https://www.google.com/search?num=5&q=WSCInstallProvider64_32+site%3Amicrosoft.com) |  |   
-[WSCInstallProviderAndChains64_32](https://www.google.com/search?num=5&q=WSCInstallProviderAndChains64_32+site%3Amicrosoft.com) |  |   
-[WSCSetApplicationCategory](https://www.google.com/search?num=5&q=WSCSetApplicationCategory+site%3Amicrosoft.com) |  |   
-[WSCSetProviderInfo](https://www.google.com/search?num=5&q=WSCSetProviderInfo+site%3Amicrosoft.com) |  |   
-[WSCSetProviderInfo32](https://www.google.com/search?num=5&q=WSCSetProviderInfo32+site%3Amicrosoft.com) |  |   
-[WSCUnInstallNameSpace](https://www.google.com/search?num=5&q=WSCUnInstallNameSpace+site%3Amicrosoft.com) |  |   
-[WSCUnInstallNameSpace32](https://www.google.com/search?num=5&q=WSCUnInstallNameSpace32+site%3Amicrosoft.com) |  |   
-[WSCUpdateProvider](https://www.google.com/search?num=5&q=WSCUpdateProvider+site%3Amicrosoft.com) |  |   
-[WSCUpdateProvider32](https://www.google.com/search?num=5&q=WSCUpdateProvider32+site%3Amicrosoft.com) |  |   
-[WSCWriteNameSpaceOrder](https://www.google.com/search?num=5&q=WSCWriteNameSpaceOrder+site%3Amicrosoft.com) |  |   
-[WSCWriteNameSpaceOrder32](https://www.google.com/search?num=5&q=WSCWriteNameSpaceOrder32+site%3Amicrosoft.com) |  |   
-[WSCWriteProviderOrder](https://www.google.com/search?num=5&q=WSCWriteProviderOrder+site%3Amicrosoft.com) |  |   
-[WSCWriteProviderOrder32](https://www.google.com/search?num=5&q=WSCWriteProviderOrder32+site%3Amicrosoft.com) |  |   
+[WSAStringToAddress](http://msdn2.microsoft.com/en-us/library/7b9946c3-c8b3-45ae-9bde-03faaf604bba) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAStringToAddress](https://github.com/dahall/Vanara/search?l=C%23&q=WSAStringToAddress)  
+[WSAUnadvertiseProvider](http://msdn2.microsoft.com/en-us/library/5975b496-53a7-4f8a-8efc-27ef447596c2) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSAUnadvertiseProvider](https://github.com/dahall/Vanara/search?l=C%23&q=WSAUnadvertiseProvider)  
+[WSAWaitForMultipleEvents](http://msdn2.microsoft.com/en-us/library/7a978ade-6323-455b-b655-f372f4bcadc8) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAWaitForMultipleEvents](https://github.com/dahall/Vanara/search?l=C%23&q=WSAWaitForMultipleEvents)  
+[WSCDeinstallProvider](http://msdn2.microsoft.com/en-us/library/9a2afd11-1944-491f-9c92-9dbac6b3b28e) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCDeinstallProvider](https://github.com/dahall/Vanara/search?l=C%23&q=WSCDeinstallProvider)  
+[WSCDeinstallProvider32](http://msdn2.microsoft.com/en-us/library/3de74059-dbfb-49b9-830b-7b2f81f8b68c) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCDeinstallProvider32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCDeinstallProvider32)  
+[WSCEnableNSProvider](http://msdn2.microsoft.com/en-us/library/2dff5af6-3011-4e3f-b812-fffaca8fa2d9) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCEnableNSProvider](https://github.com/dahall/Vanara/search?l=C%23&q=WSCEnableNSProvider)  
+[WSCEnableNSProvider32](http://msdn2.microsoft.com/en-us/library/5ab4f8bd-d32d-4962-aac7-2d92847d0e03) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCEnableNSProvider32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCEnableNSProvider32)  
+[WSCEnumNameSpaceProviders32](http://msdn2.microsoft.com/en-us/library/792737d9-231d-4524-b1a6-b9904951d5b4) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCEnumNameSpaceProviders32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCEnumNameSpaceProviders32)  
+[WSCEnumNameSpaceProvidersEx32](http://msdn2.microsoft.com/en-us/library/544120b2-7575-4deb-8429-2bd4582eceef) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCEnumNameSpaceProvidersEx32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCEnumNameSpaceProvidersEx32)  
+[WSCEnumProtocols](http://msdn2.microsoft.com/en-us/library/c2e5332f-3327-4624-96b4-8e321795961d) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCEnumProtocols](https://github.com/dahall/Vanara/search?l=C%23&q=WSCEnumProtocols)  
+[WSCEnumProtocols32](http://msdn2.microsoft.com/en-us/library/f46042f6-0b14-4a14-abc1-4e40c34b1599) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCEnumProtocols32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCEnumProtocols32)  
+[WSCGetApplicationCategory](http://msdn2.microsoft.com/en-us/library/c4e149ce-dff9-401a-8488-23676992c04d) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCGetApplicationCategory](https://github.com/dahall/Vanara/search?l=C%23&q=WSCGetApplicationCategory)  
+[WSCGetProviderInfo](http://msdn2.microsoft.com/en-us/library/5880f3dd-2a74-4af8-b0d8-2a8eedccc1e6) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCGetProviderInfo](https://github.com/dahall/Vanara/search?l=C%23&q=WSCGetProviderInfo)  
+[WSCGetProviderInfo32](http://msdn2.microsoft.com/en-us/library/91686b38-3cde-4979-8bf6-45e805dd37ff) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCGetProviderInfo32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCGetProviderInfo32)  
+[WSCGetProviderPath](http://msdn2.microsoft.com/en-us/library/fe60c8c4-e2d0-48cc-9fdf-e58e408fb1b3) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCGetProviderPath](https://github.com/dahall/Vanara/search?l=C%23&q=WSCGetProviderPath)  
+[WSCGetProviderPath32](http://msdn2.microsoft.com/en-us/library/fd4ef7da-344d-4825-93b2-f0cd5622aeac) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCGetProviderPath32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCGetProviderPath32)  
+[WSCInstallNameSpace](http://msdn2.microsoft.com/en-us/library/f17f6174-879e-45e7-a250-975d1ee24fe0) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCInstallNameSpace](https://github.com/dahall/Vanara/search?l=C%23&q=WSCInstallNameSpace)  
+[WSCInstallNameSpace32](http://msdn2.microsoft.com/en-us/library/b107fbe6-bbfb-45be-8419-4d85d3c4e80c) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCInstallNameSpace32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCInstallNameSpace32)  
+[WSCInstallNameSpaceEx](http://msdn2.microsoft.com/en-us/library/13dde602-c958-4312-a16f-a393dd6fb829) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCInstallNameSpaceEx](https://github.com/dahall/Vanara/search?l=C%23&q=WSCInstallNameSpaceEx)  
+[WSCInstallNameSpaceEx32](http://msdn2.microsoft.com/en-us/library/222ebfcc-8854-4224-b464-28098c84b750) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCInstallNameSpaceEx32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCInstallNameSpaceEx32)  
+[WSCInstallProvider](http://msdn2.microsoft.com/en-us/library/c0736018-2bcf-4281-aa73-3e1ff9eac92e) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCInstallProvider](https://github.com/dahall/Vanara/search?l=C%23&q=WSCInstallProvider)  
+[WSCInstallProvider64_32](http://msdn2.microsoft.com/en-us/library/50d3a5d1-18f2-439e-a16c-6f31becb1e65) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCInstallProvider64_32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCInstallProvider64_32)  
+[WSCInstallProviderAndChains64_32](http://msdn2.microsoft.com/en-us/library/592f48b4-5826-449f-b5cc-b0990679fe9f) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCInstallProviderAndChains64_32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCInstallProviderAndChains64_32)  
+[WSCSetApplicationCategory](http://msdn2.microsoft.com/en-us/library/266c9424-f6ab-4630-843d-bc0833d74e4f) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCSetApplicationCategory](https://github.com/dahall/Vanara/search?l=C%23&q=WSCSetApplicationCategory)  
+[WSCSetProviderInfo](http://msdn2.microsoft.com/en-us/library/10eed3e6-d5a0-4ba4-964e-3d924a231afb) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCSetProviderInfo](https://github.com/dahall/Vanara/search?l=C%23&q=WSCSetProviderInfo)  
+[WSCSetProviderInfo32](http://msdn2.microsoft.com/en-us/library/adb2737f-5327-4306-bd57-f165f339f911) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCSetProviderInfo32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCSetProviderInfo32)  
+[WSCUnInstallNameSpace](http://msdn2.microsoft.com/en-us/library/5267f986-99fc-4e53-9fbb-3850bb9d24cf) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCUnInstallNameSpace](https://github.com/dahall/Vanara/search?l=C%23&q=WSCUnInstallNameSpace)  
+[WSCUnInstallNameSpace32](http://msdn2.microsoft.com/en-us/library/a2a08159-6ac0-493d-8f9f-d19aa199a65f) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCUnInstallNameSpace32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCUnInstallNameSpace32)  
+[WSCUpdateProvider](http://msdn2.microsoft.com/en-us/library/7777a2ff-2ece-4f28-88af-87fc96fdda9f) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCUpdateProvider](https://github.com/dahall/Vanara/search?l=C%23&q=WSCUpdateProvider)  
+[WSCUpdateProvider32](http://msdn2.microsoft.com/en-us/library/803ef58a-853b-491c-bed1-e02275fef258) | ws2spi.h | [Vanara.PInvoke.Ws2_32.WSCUpdateProvider32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCUpdateProvider32)  
+[WSCWriteNameSpaceOrder](http://msdn2.microsoft.com/en-us/library/00a06104-570f-4cd5-9520-bc73516ac7a5) | sporder.h | [Vanara.PInvoke.Ws2_32.WSCWriteNameSpaceOrder](https://github.com/dahall/Vanara/search?l=C%23&q=WSCWriteNameSpaceOrder)  
+[WSCWriteNameSpaceOrder32](http://msdn2.microsoft.com/en-us/library/a5b15d28-8137-42bf-8f2a-7c6b5a8a63c2) | sporder.h | [Vanara.PInvoke.Ws2_32.WSCWriteNameSpaceOrder32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCWriteNameSpaceOrder32)  
+[WSCWriteProviderOrder](http://msdn2.microsoft.com/en-us/library/459a2fc9-fa05-4ebc-8cc7-3f4915b4b800) | sporder.h | [Vanara.PInvoke.Ws2_32.WSCWriteProviderOrder](https://github.com/dahall/Vanara/search?l=C%23&q=WSCWriteProviderOrder)  
+[WSCWriteProviderOrder32](http://msdn2.microsoft.com/en-us/library/03ce09b4-d80e-480d-9219-d226df055f18) | sporder.h | [Vanara.PInvoke.Ws2_32.WSCWriteProviderOrder32](https://github.com/dahall/Vanara/search?l=C%23&q=WSCWriteProviderOrder32)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[ADDRINFOW](http://msdn2.microsoft.com/en-us/library/a4896eac-68ae-4a08-8647-36be65fe4478) | ws2def.h | [Vanara.PInvoke.Ws2_32.ADDRINFOW](https://github.com/dahall/Vanara/search?l=C%23&q=ADDRINFOW)  
+[ADDRINFOEX2W](http://msdn2.microsoft.com/en-us/library/9CB33347-A838-473D-B5CD-1149D6632CF2) | ws2def.h | [Vanara.PInvoke.Ws2_32.ADDRINFOEX2W](https://github.com/dahall/Vanara/search?l=C%23&q=ADDRINFOEX2W)  
+[ADDRINFOEXW](http://msdn2.microsoft.com/en-us/library/1077e03d-a1a4-45ab-a5d2-29a67e03f5df) | ws2def.h | [Vanara.PInvoke.Ws2_32.ADDRINFOEXW](https://github.com/dahall/Vanara/search?l=C%23&q=ADDRINFOEXW)  
+[ADDRINFOW](http://msdn2.microsoft.com/en-us/library/4df914ab-59b0-4110-bc81-59e5f6722b8d) | ws2def.h | [Vanara.PInvoke.Ws2_32.ADDRINFOW](https://github.com/dahall/Vanara/search?l=C%23&q=ADDRINFOW)  
+[AFPROTOCOLS](http://msdn2.microsoft.com/en-us/library/ffd43aa1-bbc4-46f1-ad77-26c48f9ac0b7) | winsock2.h | [Vanara.PInvoke.Ws2_32.AFPROTOCOLS](https://github.com/dahall/Vanara/search?l=C%23&q=AFPROTOCOLS)  
+[BLOB](http://msdn2.microsoft.com/en-us/library/eb1ff7d1-79db-478f-9f3e-48507d333c76) | nspapi.h | [Vanara.PInvoke.Ws2_32.BLOB](https://github.com/dahall/Vanara/search?l=C%23&q=BLOB)  
+[fd_set](http://msdn2.microsoft.com/en-us/library/2af5d69d-190e-4814-8d8b-438431808625) | winsock.h | [Vanara.PInvoke.Ws2_32.fd_set](https://github.com/dahall/Vanara/search?l=C%23&q=fd_set)  
 [FLOWSPEC](http://msdn2.microsoft.com/en-us/library/268e0d3a-2b04-40fd-91eb-f1780236b3e4) | qos.h | [Vanara.PInvoke.Ws2_32.FLOWSPEC](https://github.com/dahall/Vanara/search?l=C%23&q=FLOWSPEC)  
+[GROUP_FILTER](http://msdn2.microsoft.com/en-us/library/09aa1f67-c858-4bef-9a98-ce25ebcc1d4e) | ws2ipdef.h | [Vanara.PInvoke.Ws2_32.GROUP_FILTER](https://github.com/dahall/Vanara/search?l=C%23&q=GROUP_FILTER)  
 [IN_ADDR](https://www.google.com/search?num=5&q=IN_ADDR+site%3Amicrosoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.IN_ADDR](https://github.com/dahall/Vanara/search?l=C%23&q=IN_ADDR)  
 [IN6_ADDR](https://www.google.com/search?num=5&q=IN6_ADDR+site%3Amicrosoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.IN6_ADDR](https://github.com/dahall/Vanara/search?l=C%23&q=IN6_ADDR)  
+[IP_MSFILTER](http://msdn2.microsoft.com/en-us/library/8d9d515e-9369-4d71-9614-6cbeb5557a5d) | ws2ipdef.h | [Vanara.PInvoke.Ws2_32.IP_MSFILTER](https://github.com/dahall/Vanara/search?l=C%23&q=IP_MSFILTER)  
+[NSPV2_ROUTINE](http://msdn2.microsoft.com/en-us/library/22a4ee47-030b-4aee-b9b1-c9e33b3e4fce) | ws2spi.h | [Vanara.PInvoke.Ws2_32.NSPV2_ROUTINE](https://github.com/dahall/Vanara/search?l=C%23&q=NSPV2_ROUTINE)  
+[PROTOENT](http://msdn2.microsoft.com/en-us/library/8fc729dd-5a73-42a1-9c3f-adc68d83d863) | winsock.h | [Vanara.PInvoke.Ws2_32.PROTOENT](https://github.com/dahall/Vanara/search?l=C%23&q=PROTOENT)  
 [QOS](http://msdn2.microsoft.com/en-us/library/859faa13-bd66-46ee-8452-6ff5d53d66c9) | winsock2.h | [Vanara.PInvoke.Ws2_32.QOS](https://github.com/dahall/Vanara/search?l=C%23&q=QOS)  
 [SCOPE_ID](https://www.google.com/search?num=5&q=SCOPE_ID+site%3Amicrosoft.com) | ws2def.h | [Vanara.PInvoke.Ws2_32.SCOPE_ID](https://github.com/dahall/Vanara/search?l=C%23&q=SCOPE_ID)  
+[SERVENT](http://msdn2.microsoft.com/en-us/library/8696b854-4d37-4d1b-8383-169b5dc7a2ae) | winsock.h | [Vanara.PInvoke.Ws2_32.SERVENT](https://github.com/dahall/Vanara/search?l=C%23&q=SERVENT)  
 [SOCKADDR_IN](http://msdn2.microsoft.com/en-us/library/96379562-403f-451c-ac7a-f0eec34bfe5e) | ws2def.h | [Vanara.PInvoke.Ws2_32.SOCKADDR_IN](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKADDR_IN)  
 [SOCKADDR_IN6](http://msdn2.microsoft.com/en-us/library/ef2955d2-5dc1-420b-a9e0-32a584059d5a) | ws2ipdef.h | [Vanara.PInvoke.Ws2_32.SOCKADDR_IN6](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKADDR_IN6)  
 [SOCKADDR_IN6_PAIR](http://msdn2.microsoft.com/en-us/library/0265f8e0-8b35-4d9d-bf22-e98e9ff36a17) | ws2ipdef.h | [Vanara.PInvoke.Ws2_32.SOCKADDR_IN6_PAIR](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKADDR_IN6_PAIR)  
@@ -165,7 +162,22 @@ Native Structure | Header | Managed Structure
 [SOCKADDR_STORAGE](http://msdn2.microsoft.com/en-us/library/27e56c1a-ce11-4cdb-9be8-25ed2f94fb37) | ws2def.h | [Vanara.PInvoke.Ws2_32.SOCKADDR_STORAGE](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKADDR_STORAGE)  
 [SOCKET](https://www.google.com/search?num=5&q=SOCKET+site%3Amicrosoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.SOCKET](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKET)  
 [SOCKET_ADDRESS](http://msdn2.microsoft.com/en-us/library/37fbcb96-a859-4eca-8928-8051f95407b9) | ws2def.h | [Vanara.PInvoke.Ws2_32.SOCKET_ADDRESS](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKET_ADDRESS)  
+[SOCKET_ADDRESS_LIST](http://msdn2.microsoft.com/en-us/library/b005200b-b0c2-4f19-8765-cd26fbfc0cff) | ws2def.h | [Vanara.PInvoke.Ws2_32.SOCKET_ADDRESS_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKET_ADDRESS_LIST)  
+[TIMEVAL](http://msdn2.microsoft.com/en-us/library/3024c961-bb47-40ac-a49c-b12cd431e4e7) | winsock.h | [Vanara.PInvoke.Ws2_32.TIMEVAL](https://github.com/dahall/Vanara/search?l=C%23&q=TIMEVAL)  
 [WSABUF](http://msdn2.microsoft.com/en-us/library/a012c3ba-67fd-4fcf-84d1-85e9d495c29c) | ws2def.h | [Vanara.PInvoke.Ws2_32.WSABUF](https://github.com/dahall/Vanara/search?l=C%23&q=WSABUF)  
 [WSADATA](http://msdn2.microsoft.com/en-us/library/c3c4c0d6-c8b3-4991-bedb-f45816cc8160) | winsock.h | [Vanara.PInvoke.Ws2_32.WSADATA](https://github.com/dahall/Vanara/search?l=C%23&q=WSADATA)  
+[WSAEVENT](https://www.google.com/search?num=5&q=WSAEVENT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ws2_32.WSAEVENT](https://github.com/dahall/Vanara/search?l=C%23&q=WSAEVENT)  
+[WSAMSG](http://msdn2.microsoft.com/en-us/library/105a6e2c-1edf-4ec0-a1c2-ac0bcafeda30) | ws2def.h | [Vanara.PInvoke.Ws2_32.WSAMSG](https://github.com/dahall/Vanara/search?l=C%23&q=WSAMSG)  
+[WSANAMESPACE_INFOEXW](http://msdn2.microsoft.com/en-us/library/3f4a8916-9db9-4b65-982f-4cb4ec2205ed) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSANAMESPACE_INFOEXW](https://github.com/dahall/Vanara/search?l=C%23&q=WSANAMESPACE_INFOEXW)  
+[WSANAMESPACE_INFOW](http://msdn2.microsoft.com/en-us/library/a5c76657-df62-471a-95e9-8017cad47b00) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSANAMESPACE_INFOW](https://github.com/dahall/Vanara/search?l=C%23&q=WSANAMESPACE_INFOW)  
+[WSANETWORKEVENTS](http://msdn2.microsoft.com/en-us/library/72ae4aa8-4e15-4215-8dcb-45e394ac1313) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSANETWORKEVENTS](https://github.com/dahall/Vanara/search?l=C%23&q=WSANETWORKEVENTS)  
+[WSANSCLASSINFO](http://msdn2.microsoft.com/en-us/library/b4f811ad-7967-45bd-b563-a28bb1633596) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSANSCLASSINFO](https://github.com/dahall/Vanara/search?l=C%23&q=WSANSCLASSINFO)  
+[WSAOVERLAPPED](http://msdn2.microsoft.com/en-us/library/91004241-e0ea-4bda-a0f5-71688ac83038) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAOVERLAPPED](https://github.com/dahall/Vanara/search?l=C%23&q=WSAOVERLAPPED)  
+[WSAPOLLFD](http://msdn2.microsoft.com/en-us/library/88f122ce-e2ca-44ce-bd53-d73d0962e7ef) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAPOLLFD](https://github.com/dahall/Vanara/search?l=C%23&q=WSAPOLLFD)  
 [WSAPROTOCOL_INFO](http://msdn2.microsoft.com/en-us/library/758c5553-056f-4ea5-a851-30ef641ffb14) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAPROTOCOL_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WSAPROTOCOL_INFO)  
+[WSAPROTOCOL_INFOW](http://msdn2.microsoft.com/en-us/library/be5f3e81-1442-43c7-9e4e-9eb2b2a05132) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAPROTOCOL_INFOW](https://github.com/dahall/Vanara/search?l=C%23&q=WSAPROTOCOL_INFOW)  
 [WSAPROTOCOLCHAIN](http://msdn2.microsoft.com/en-us/library/c0676f45-e3e3-45f2-9b34-d7318fddc282) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAPROTOCOLCHAIN](https://github.com/dahall/Vanara/search?l=C%23&q=WSAPROTOCOLCHAIN)  
+[WSAQUERYSET](http://msdn2.microsoft.com/en-us/library/6c81fbba-aaf4-49ca-ab79-b6fe5dfb0076) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAQUERYSET](https://github.com/dahall/Vanara/search?l=C%23&q=WSAQUERYSET)  
+[WSAQUERYSET2W](http://msdn2.microsoft.com/en-us/library/ffe71de0-3561-481f-b81f-835c6c3a3ee4) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAQUERYSET2W](https://github.com/dahall/Vanara/search?l=C%23&q=WSAQUERYSET2W)  
+[WSASERVICECLASSINFO](http://msdn2.microsoft.com/en-us/library/02422c24-34a6-4e34-a795-66b0b687ac44) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSASERVICECLASSINFO](https://github.com/dahall/Vanara/search?l=C%23&q=WSASERVICECLASSINFO)  
+[WSAVERSION](http://msdn2.microsoft.com/en-us/library/27af3b20-9460-466d-bc58-5e31e08bb6c8) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAVERSION](https://github.com/dahall/Vanara/search?l=C%23&q=WSAVERSION)  

@@ -1,5 +1,5 @@
 ## Correlation report for gdi32.dll  
-### Methods (54% complete, 294 of 541 functions)  
+### Methods (98% complete, 306 of 312 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AbortDoc](http://msdn2.microsoft.com/en-us/library/4ecc371c-34fa-4073-96fe-0de03b84d7e3) | wingdi.h | [Vanara.PInvoke.Gdi32.AbortDoc](https://github.com/dahall/Vanara/search?l=C%23&q=AbortDoc)  
@@ -59,190 +59,6 @@ Native Method | Header | Managed Method
 [CreateRoundRectRgn](http://msdn2.microsoft.com/en-us/library/16f387e1-b00c-4755-8b21-1ee0f25bc46b) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateRoundRectRgn](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRoundRectRgn)  
 [CreateScalableFontResource](http://msdn2.microsoft.com/en-us/library/9a43a254-4cf4-46de-80b2-a83838871fd7) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateScalableFontResource](https://github.com/dahall/Vanara/search?l=C%23&q=CreateScalableFontResource)  
 [CreateSolidBrush](http://msdn2.microsoft.com/en-us/library/e39b5f77-97d8-4ea6-8277-7da12b3367f3) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateSolidBrush](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSolidBrush)  
-[D3DKMTAbandonSwapChain](https://www.google.com/search?num=5&q=D3DKMTAbandonSwapChain+site%3Amicrosoft.com) |  |   
-[D3DKMTAcquireKeyedMutex](https://www.google.com/search?num=5&q=D3DKMTAcquireKeyedMutex+site%3Amicrosoft.com) |  |   
-[D3DKMTAcquireKeyedMutex2](https://www.google.com/search?num=5&q=D3DKMTAcquireKeyedMutex2+site%3Amicrosoft.com) |  |   
-[D3DKMTAcquireSwapChain](https://www.google.com/search?num=5&q=D3DKMTAcquireSwapChain+site%3Amicrosoft.com) |  |   
-[D3DKMTAdjustFullscreenGamma](https://www.google.com/search?num=5&q=D3DKMTAdjustFullscreenGamma+site%3Amicrosoft.com) |  |   
-[D3DKMTChangeVideoMemoryReservation](https://www.google.com/search?num=5&q=D3DKMTChangeVideoMemoryReservation+site%3Amicrosoft.com) |  |   
-[D3DKMTCheckExclusiveOwnership](https://www.google.com/search?num=5&q=D3DKMTCheckExclusiveOwnership+site%3Amicrosoft.com) |  |   
-[D3DKMTCheckMonitorPowerState](https://www.google.com/search?num=5&q=D3DKMTCheckMonitorPowerState+site%3Amicrosoft.com) |  |   
-[D3DKMTCheckMultiPlaneOverlaySupport](https://www.google.com/search?num=5&q=D3DKMTCheckMultiPlaneOverlaySupport+site%3Amicrosoft.com) |  |   
-[D3DKMTCheckMultiPlaneOverlaySupport2](https://www.google.com/search?num=5&q=D3DKMTCheckMultiPlaneOverlaySupport2+site%3Amicrosoft.com) |  |   
-[D3DKMTCheckMultiPlaneOverlaySupport3](https://www.google.com/search?num=5&q=D3DKMTCheckMultiPlaneOverlaySupport3+site%3Amicrosoft.com) |  |   
-[D3DKMTCheckOcclusion](https://www.google.com/search?num=5&q=D3DKMTCheckOcclusion+site%3Amicrosoft.com) |  |   
-[D3DKMTCheckSharedResourceAccess](https://www.google.com/search?num=5&q=D3DKMTCheckSharedResourceAccess+site%3Amicrosoft.com) |  |   
-[D3DKMTCheckVidPnExclusiveOwnership](https://www.google.com/search?num=5&q=D3DKMTCheckVidPnExclusiveOwnership+site%3Amicrosoft.com) |  |   
-[D3DKMTCloseAdapter](https://www.google.com/search?num=5&q=D3DKMTCloseAdapter+site%3Amicrosoft.com) |  |   
-[D3DKMTConfigureSharedResource](https://www.google.com/search?num=5&q=D3DKMTConfigureSharedResource+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateAllocation](https://www.google.com/search?num=5&q=D3DKMTCreateAllocation+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateAllocation2](https://www.google.com/search?num=5&q=D3DKMTCreateAllocation2+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateContext](https://www.google.com/search?num=5&q=D3DKMTCreateContext+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateContextVirtual](https://www.google.com/search?num=5&q=D3DKMTCreateContextVirtual+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateDCFromMemory](https://www.google.com/search?num=5&q=D3DKMTCreateDCFromMemory+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateDevice](https://www.google.com/search?num=5&q=D3DKMTCreateDevice+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateHwContext](https://www.google.com/search?num=5&q=D3DKMTCreateHwContext+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateHwQueue](https://www.google.com/search?num=5&q=D3DKMTCreateHwQueue+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateKeyedMutex](https://www.google.com/search?num=5&q=D3DKMTCreateKeyedMutex+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateKeyedMutex2](https://www.google.com/search?num=5&q=D3DKMTCreateKeyedMutex2+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateOutputDupl](https://www.google.com/search?num=5&q=D3DKMTCreateOutputDupl+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateOverlay](https://www.google.com/search?num=5&q=D3DKMTCreateOverlay+site%3Amicrosoft.com) |  |   
-[D3DKMTCreatePagingQueue](https://www.google.com/search?num=5&q=D3DKMTCreatePagingQueue+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateProtectedSession](https://www.google.com/search?num=5&q=D3DKMTCreateProtectedSession+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateSwapChain](https://www.google.com/search?num=5&q=D3DKMTCreateSwapChain+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateSynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTCreateSynchronizationObject+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateSynchronizationObject2](https://www.google.com/search?num=5&q=D3DKMTCreateSynchronizationObject2+site%3Amicrosoft.com) |  |   
-[D3DKMTCreateTrackedWorkload](https://www.google.com/search?num=5&q=D3DKMTCreateTrackedWorkload+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyAllocation](https://www.google.com/search?num=5&q=D3DKMTDestroyAllocation+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyAllocation2](https://www.google.com/search?num=5&q=D3DKMTDestroyAllocation2+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyContext](https://www.google.com/search?num=5&q=D3DKMTDestroyContext+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyDCFromMemory](https://www.google.com/search?num=5&q=D3DKMTDestroyDCFromMemory+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyDevice](https://www.google.com/search?num=5&q=D3DKMTDestroyDevice+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyHwContext](https://www.google.com/search?num=5&q=D3DKMTDestroyHwContext+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyHwQueue](https://www.google.com/search?num=5&q=D3DKMTDestroyHwQueue+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyKeyedMutex](https://www.google.com/search?num=5&q=D3DKMTDestroyKeyedMutex+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyOutputDupl](https://www.google.com/search?num=5&q=D3DKMTDestroyOutputDupl+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyOverlay](https://www.google.com/search?num=5&q=D3DKMTDestroyOverlay+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyPagingQueue](https://www.google.com/search?num=5&q=D3DKMTDestroyPagingQueue+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyProtectedSession](https://www.google.com/search?num=5&q=D3DKMTDestroyProtectedSession+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroySynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTDestroySynchronizationObject+site%3Amicrosoft.com) |  |   
-[D3DKMTDestroyTrackedWorkload](https://www.google.com/search?num=5&q=D3DKMTDestroyTrackedWorkload+site%3Amicrosoft.com) |  |   
-[D3DKMTEndTrackedWorkload](https://www.google.com/search?num=5&q=D3DKMTEndTrackedWorkload+site%3Amicrosoft.com) |  |   
-[D3DKMTEnumAdapters](https://www.google.com/search?num=5&q=D3DKMTEnumAdapters+site%3Amicrosoft.com) |  |   
-[D3DKMTEnumAdapters2](https://www.google.com/search?num=5&q=D3DKMTEnumAdapters2+site%3Amicrosoft.com) |  |   
-[D3DKMTEscape](https://www.google.com/search?num=5&q=D3DKMTEscape+site%3Amicrosoft.com) |  |   
-[D3DKMTEvict](https://www.google.com/search?num=5&q=D3DKMTEvict+site%3Amicrosoft.com) |  |   
-[D3DKMTFlipOverlay](https://www.google.com/search?num=5&q=D3DKMTFlipOverlay+site%3Amicrosoft.com) |  |   
-[D3DKMTFlushHeapTransitions](https://www.google.com/search?num=5&q=D3DKMTFlushHeapTransitions+site%3Amicrosoft.com) |  |   
-[D3DKMTFreeGpuVirtualAddress](https://www.google.com/search?num=5&q=D3DKMTFreeGpuVirtualAddress+site%3Amicrosoft.com) |  |   
-[D3DKMTGetAllocationPriority](https://www.google.com/search?num=5&q=D3DKMTGetAllocationPriority+site%3Amicrosoft.com) |  |   
-[D3DKMTGetAvailableTrackedWorkloadIndex](https://www.google.com/search?num=5&q=D3DKMTGetAvailableTrackedWorkloadIndex+site%3Amicrosoft.com) |  |   
-[D3DKMTGetContextInProcessSchedulingPriority](https://www.google.com/search?num=5&q=D3DKMTGetContextInProcessSchedulingPriority+site%3Amicrosoft.com) |  |   
-[D3DKMTGetContextSchedulingPriority](https://www.google.com/search?num=5&q=D3DKMTGetContextSchedulingPriority+site%3Amicrosoft.com) |  |   
-[D3DKMTGetDeviceState](https://www.google.com/search?num=5&q=D3DKMTGetDeviceState+site%3Amicrosoft.com) |  |   
-[D3DKMTGetDisplayModeList](https://www.google.com/search?num=5&q=D3DKMTGetDisplayModeList+site%3Amicrosoft.com) |  |   
-[D3DKMTGetDWMVerticalBlankEvent](https://www.google.com/search?num=5&q=D3DKMTGetDWMVerticalBlankEvent+site%3Amicrosoft.com) |  |   
-[D3DKMTGetMultiPlaneOverlayCaps](https://www.google.com/search?num=5&q=D3DKMTGetMultiPlaneOverlayCaps+site%3Amicrosoft.com) |  |   
-[D3DKMTGetMultisampleMethodList](https://www.google.com/search?num=5&q=D3DKMTGetMultisampleMethodList+site%3Amicrosoft.com) |  |   
-[D3DKMTGetOverlayState](https://www.google.com/search?num=5&q=D3DKMTGetOverlayState+site%3Amicrosoft.com) |  |   
-[D3DKMTGetPostCompositionCaps](https://www.google.com/search?num=5&q=D3DKMTGetPostCompositionCaps+site%3Amicrosoft.com) |  |   
-[D3DKMTGetPresentHistory](https://www.google.com/search?num=5&q=D3DKMTGetPresentHistory+site%3Amicrosoft.com) |  |   
-[D3DKMTGetPresentQueueEvent](https://www.google.com/search?num=5&q=D3DKMTGetPresentQueueEvent+site%3Amicrosoft.com) |  |   
-[D3DKMTGetProcessDeviceRemovalSupport](https://www.google.com/search?num=5&q=D3DKMTGetProcessDeviceRemovalSupport+site%3Amicrosoft.com) |  |   
-[D3DKMTGetProcessSchedulingPriorityClass](https://www.google.com/search?num=5&q=D3DKMTGetProcessSchedulingPriorityClass+site%3Amicrosoft.com) |  |   
-[D3DKMTGetResourcePresentPrivateDriverData](https://www.google.com/search?num=5&q=D3DKMTGetResourcePresentPrivateDriverData+site%3Amicrosoft.com) |  |   
-[D3DKMTGetRuntimeData](https://www.google.com/search?num=5&q=D3DKMTGetRuntimeData+site%3Amicrosoft.com) |  |   
-[D3DKMTGetScanLine](https://www.google.com/search?num=5&q=D3DKMTGetScanLine+site%3Amicrosoft.com) |  |   
-[D3DKMTGetSetSwapChainMetadata](https://www.google.com/search?num=5&q=D3DKMTGetSetSwapChainMetadata+site%3Amicrosoft.com) |  |   
-[D3DKMTGetSharedPrimaryHandle](https://www.google.com/search?num=5&q=D3DKMTGetSharedPrimaryHandle+site%3Amicrosoft.com) |  |   
-[D3DKMTGetSharedResourceAdapterLuid](https://www.google.com/search?num=5&q=D3DKMTGetSharedResourceAdapterLuid+site%3Amicrosoft.com) |  |   
-[D3DKMTGetTrackedWorkloadStatistics](https://www.google.com/search?num=5&q=D3DKMTGetTrackedWorkloadStatistics+site%3Amicrosoft.com) |  |   
-[D3DKMTInvalidateActiveVidPn](https://www.google.com/search?num=5&q=D3DKMTInvalidateActiveVidPn+site%3Amicrosoft.com) |  |   
-[D3DKMTInvalidateCache](https://www.google.com/search?num=5&q=D3DKMTInvalidateCache+site%3Amicrosoft.com) |  |   
-[D3DKMTLock](https://www.google.com/search?num=5&q=D3DKMTLock+site%3Amicrosoft.com) |  |   
-[D3DKMTLock2](https://www.google.com/search?num=5&q=D3DKMTLock2+site%3Amicrosoft.com) |  |   
-[D3DKMTMakeResident](https://www.google.com/search?num=5&q=D3DKMTMakeResident+site%3Amicrosoft.com) |  |   
-[D3DKMTMapGpuVirtualAddress](https://www.google.com/search?num=5&q=D3DKMTMapGpuVirtualAddress+site%3Amicrosoft.com) |  |   
-[D3DKMTMarkDeviceAsError](https://www.google.com/search?num=5&q=D3DKMTMarkDeviceAsError+site%3Amicrosoft.com) |  |   
-[D3DKMTOfferAllocations](https://www.google.com/search?num=5&q=D3DKMTOfferAllocations+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenAdapterFromDeviceName](https://www.google.com/search?num=5&q=D3DKMTOpenAdapterFromDeviceName+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenAdapterFromGdiDisplayName](https://www.google.com/search?num=5&q=D3DKMTOpenAdapterFromGdiDisplayName+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenAdapterFromHdc](https://www.google.com/search?num=5&q=D3DKMTOpenAdapterFromHdc+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenAdapterFromLuid](https://www.google.com/search?num=5&q=D3DKMTOpenAdapterFromLuid+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenKeyedMutex](https://www.google.com/search?num=5&q=D3DKMTOpenKeyedMutex+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenKeyedMutex2](https://www.google.com/search?num=5&q=D3DKMTOpenKeyedMutex2+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenKeyedMutexFromNtHandle](https://www.google.com/search?num=5&q=D3DKMTOpenKeyedMutexFromNtHandle+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenNtHandleFromName](https://www.google.com/search?num=5&q=D3DKMTOpenNtHandleFromName+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenProtectedSessionFromNtHandle](https://www.google.com/search?num=5&q=D3DKMTOpenProtectedSessionFromNtHandle+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenResource](https://www.google.com/search?num=5&q=D3DKMTOpenResource+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenResource2](https://www.google.com/search?num=5&q=D3DKMTOpenResource2+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenResourceFromNtHandle](https://www.google.com/search?num=5&q=D3DKMTOpenResourceFromNtHandle+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenSwapChain](https://www.google.com/search?num=5&q=D3DKMTOpenSwapChain+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenSynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTOpenSynchronizationObject+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenSyncObjectFromNtHandle](https://www.google.com/search?num=5&q=D3DKMTOpenSyncObjectFromNtHandle+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenSyncObjectFromNtHandle2](https://www.google.com/search?num=5&q=D3DKMTOpenSyncObjectFromNtHandle2+site%3Amicrosoft.com) |  |   
-[D3DKMTOpenSyncObjectNtHandleFromName](https://www.google.com/search?num=5&q=D3DKMTOpenSyncObjectNtHandleFromName+site%3Amicrosoft.com) |  |   
-[D3DKMTOutputDuplGetFrameInfo](https://www.google.com/search?num=5&q=D3DKMTOutputDuplGetFrameInfo+site%3Amicrosoft.com) |  |   
-[D3DKMTOutputDuplGetMetaData](https://www.google.com/search?num=5&q=D3DKMTOutputDuplGetMetaData+site%3Amicrosoft.com) |  |   
-[D3DKMTOutputDuplGetPointerShapeData](https://www.google.com/search?num=5&q=D3DKMTOutputDuplGetPointerShapeData+site%3Amicrosoft.com) |  |   
-[D3DKMTOutputDuplPresent](https://www.google.com/search?num=5&q=D3DKMTOutputDuplPresent+site%3Amicrosoft.com) |  |   
-[D3DKMTOutputDuplPresentToHwQueue](https://www.google.com/search?num=5&q=D3DKMTOutputDuplPresentToHwQueue+site%3Amicrosoft.com) |  |   
-[D3DKMTOutputDuplReleaseFrame](https://www.google.com/search?num=5&q=D3DKMTOutputDuplReleaseFrame+site%3Amicrosoft.com) |  |   
-[D3DKMTPollDisplayChildren](https://www.google.com/search?num=5&q=D3DKMTPollDisplayChildren+site%3Amicrosoft.com) |  |   
-[D3DKMTPresent](https://www.google.com/search?num=5&q=D3DKMTPresent+site%3Amicrosoft.com) |  |   
-[D3DKMTPresentMultiPlaneOverlay](https://www.google.com/search?num=5&q=D3DKMTPresentMultiPlaneOverlay+site%3Amicrosoft.com) |  |   
-[D3DKMTPresentMultiPlaneOverlay2](https://www.google.com/search?num=5&q=D3DKMTPresentMultiPlaneOverlay2+site%3Amicrosoft.com) |  |   
-[D3DKMTPresentMultiPlaneOverlay3](https://www.google.com/search?num=5&q=D3DKMTPresentMultiPlaneOverlay3+site%3Amicrosoft.com) |  |   
-[D3DKMTPresentRedirected](https://www.google.com/search?num=5&q=D3DKMTPresentRedirected+site%3Amicrosoft.com) |  |   
-[D3DKMTQueryAdapterInfo](https://www.google.com/search?num=5&q=D3DKMTQueryAdapterInfo+site%3Amicrosoft.com) |  |   
-[D3DKMTQueryAllocationResidency](https://www.google.com/search?num=5&q=D3DKMTQueryAllocationResidency+site%3Amicrosoft.com) |  |   
-[D3DKMTQueryClockCalibration](https://www.google.com/search?num=5&q=D3DKMTQueryClockCalibration+site%3Amicrosoft.com) |  |   
-[D3DKMTQueryFSEBlock](https://www.google.com/search?num=5&q=D3DKMTQueryFSEBlock+site%3Amicrosoft.com) |  |   
-[D3DKMTQueryProcessOfferInfo](https://www.google.com/search?num=5&q=D3DKMTQueryProcessOfferInfo+site%3Amicrosoft.com) |  |   
-[D3DKMTQueryProtectedSessionInfoFromNtHandle](https://www.google.com/search?num=5&q=D3DKMTQueryProtectedSessionInfoFromNtHandle+site%3Amicrosoft.com) |  |   
-[D3DKMTQueryProtectedSessionStatus](https://www.google.com/search?num=5&q=D3DKMTQueryProtectedSessionStatus+site%3Amicrosoft.com) |  |   
-[D3DKMTQueryRemoteVidPnSourceFromGdiDisplayName](https://www.google.com/search?num=5&q=D3DKMTQueryRemoteVidPnSourceFromGdiDisplayName+site%3Amicrosoft.com) |  |   
-[D3DKMTQueryResourceInfo](https://www.google.com/search?num=5&q=D3DKMTQueryResourceInfo+site%3Amicrosoft.com) |  |   
-[D3DKMTQueryResourceInfoFromNtHandle](https://www.google.com/search?num=5&q=D3DKMTQueryResourceInfoFromNtHandle+site%3Amicrosoft.com) |  |   
-[D3DKMTQueryVideoMemoryInfo](https://www.google.com/search?num=5&q=D3DKMTQueryVideoMemoryInfo+site%3Amicrosoft.com) |  |   
-[D3DKMTQueryVidPnExclusiveOwnership](https://www.google.com/search?num=5&q=D3DKMTQueryVidPnExclusiveOwnership+site%3Amicrosoft.com) |  |   
-[D3DKMTReclaimAllocations](https://www.google.com/search?num=5&q=D3DKMTReclaimAllocations+site%3Amicrosoft.com) |  |   
-[D3DKMTReclaimAllocations2](https://www.google.com/search?num=5&q=D3DKMTReclaimAllocations2+site%3Amicrosoft.com) |  |   
-[D3DKMTRegisterTrimNotification](https://www.google.com/search?num=5&q=D3DKMTRegisterTrimNotification+site%3Amicrosoft.com) |  |   
-[D3DKMTReleaseKeyedMutex](https://www.google.com/search?num=5&q=D3DKMTReleaseKeyedMutex+site%3Amicrosoft.com) |  |   
-[D3DKMTReleaseKeyedMutex2](https://www.google.com/search?num=5&q=D3DKMTReleaseKeyedMutex2+site%3Amicrosoft.com) |  |   
-[D3DKMTReleaseProcessVidPnSourceOwners](https://www.google.com/search?num=5&q=D3DKMTReleaseProcessVidPnSourceOwners+site%3Amicrosoft.com) |  |   
-[D3DKMTReleaseSwapChain](https://www.google.com/search?num=5&q=D3DKMTReleaseSwapChain+site%3Amicrosoft.com) |  |   
-[D3DKMTRender](https://www.google.com/search?num=5&q=D3DKMTRender+site%3Amicrosoft.com) |  |   
-[D3DKMTReserveGpuVirtualAddress](https://www.google.com/search?num=5&q=D3DKMTReserveGpuVirtualAddress+site%3Amicrosoft.com) |  |   
-[D3DKMTResetTrackedWorkload](https://www.google.com/search?num=5&q=D3DKMTResetTrackedWorkload+site%3Amicrosoft.com) |  |   
-[D3DKMTSetAllocationPriority](https://www.google.com/search?num=5&q=D3DKMTSetAllocationPriority+site%3Amicrosoft.com) |  |   
-[D3DKMTSetContextInProcessSchedulingPriority](https://www.google.com/search?num=5&q=D3DKMTSetContextInProcessSchedulingPriority+site%3Amicrosoft.com) |  |   
-[D3DKMTSetContextSchedulingPriority](https://www.google.com/search?num=5&q=D3DKMTSetContextSchedulingPriority+site%3Amicrosoft.com) |  |   
-[D3DKMTSetDisplayMode](https://www.google.com/search?num=5&q=D3DKMTSetDisplayMode+site%3Amicrosoft.com) |  |   
-[D3DKMTSetDisplayPrivateDriverFormat](https://www.google.com/search?num=5&q=D3DKMTSetDisplayPrivateDriverFormat+site%3Amicrosoft.com) |  |   
-[D3DKMTSetDodIndirectSwapchain](https://www.google.com/search?num=5&q=D3DKMTSetDodIndirectSwapchain+site%3Amicrosoft.com) |  |   
-[D3DKMTSetFSEBlock](https://www.google.com/search?num=5&q=D3DKMTSetFSEBlock+site%3Amicrosoft.com) |  |   
-[D3DKMTSetGammaRamp](https://www.google.com/search?num=5&q=D3DKMTSetGammaRamp+site%3Amicrosoft.com) |  |   
-[D3DKMTSetHwProtectionTeardownRecovery](https://www.google.com/search?num=5&q=D3DKMTSetHwProtectionTeardownRecovery+site%3Amicrosoft.com) |  |   
-[D3DKMTSetMonitorColorSpaceTransform](https://www.google.com/search?num=5&q=D3DKMTSetMonitorColorSpaceTransform+site%3Amicrosoft.com) |  |   
-[D3DKMTSetProcessSchedulingPriorityClass](https://www.google.com/search?num=5&q=D3DKMTSetProcessSchedulingPriorityClass+site%3Amicrosoft.com) |  |   
-[D3DKMTSetQueuedLimit](https://www.google.com/search?num=5&q=D3DKMTSetQueuedLimit+site%3Amicrosoft.com) |  |   
-[D3DKMTSetStablePowerState](https://www.google.com/search?num=5&q=D3DKMTSetStablePowerState+site%3Amicrosoft.com) |  |   
-[D3DKMTSetSyncRefreshCountWaitTarget](https://www.google.com/search?num=5&q=D3DKMTSetSyncRefreshCountWaitTarget+site%3Amicrosoft.com) |  |   
-[D3DKMTSetVidPnSourceHwProtection](https://www.google.com/search?num=5&q=D3DKMTSetVidPnSourceHwProtection+site%3Amicrosoft.com) |  |   
-[D3DKMTSetVidPnSourceOwner](https://www.google.com/search?num=5&q=D3DKMTSetVidPnSourceOwner+site%3Amicrosoft.com) |  |   
-[D3DKMTSetVidPnSourceOwner1](https://www.google.com/search?num=5&q=D3DKMTSetVidPnSourceOwner1+site%3Amicrosoft.com) |  |   
-[D3DKMTSetVidPnSourceOwner2](https://www.google.com/search?num=5&q=D3DKMTSetVidPnSourceOwner2+site%3Amicrosoft.com) |  |   
-[D3DKMTSharedPrimaryLockNotification](https://www.google.com/search?num=5&q=D3DKMTSharedPrimaryLockNotification+site%3Amicrosoft.com) |  |   
-[D3DKMTSharedPrimaryUnLockNotification](https://www.google.com/search?num=5&q=D3DKMTSharedPrimaryUnLockNotification+site%3Amicrosoft.com) |  |   
-[D3DKMTShareObjects](https://www.google.com/search?num=5&q=D3DKMTShareObjects+site%3Amicrosoft.com) |  |   
-[D3DKMTSignalSynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTSignalSynchronizationObject+site%3Amicrosoft.com) |  |   
-[D3DKMTSignalSynchronizationObject2](https://www.google.com/search?num=5&q=D3DKMTSignalSynchronizationObject2+site%3Amicrosoft.com) |  |   
-[D3DKMTSignalSynchronizationObjectFromCpu](https://www.google.com/search?num=5&q=D3DKMTSignalSynchronizationObjectFromCpu+site%3Amicrosoft.com) |  |   
-[D3DKMTSignalSynchronizationObjectFromGpu](https://www.google.com/search?num=5&q=D3DKMTSignalSynchronizationObjectFromGpu+site%3Amicrosoft.com) |  |   
-[D3DKMTSignalSynchronizationObjectFromGpu2](https://www.google.com/search?num=5&q=D3DKMTSignalSynchronizationObjectFromGpu2+site%3Amicrosoft.com) |  |   
-[D3DKMTSubmitCommand](https://www.google.com/search?num=5&q=D3DKMTSubmitCommand+site%3Amicrosoft.com) |  |   
-[D3DKMTSubmitCommandToHwQueue](https://www.google.com/search?num=5&q=D3DKMTSubmitCommandToHwQueue+site%3Amicrosoft.com) |  |   
-[D3DKMTSubmitPresentBltToHwQueue](https://www.google.com/search?num=5&q=D3DKMTSubmitPresentBltToHwQueue+site%3Amicrosoft.com) |  |   
-[D3DKMTSubmitPresentToHwQueue](https://www.google.com/search?num=5&q=D3DKMTSubmitPresentToHwQueue+site%3Amicrosoft.com) |  |   
-[D3DKMTSubmitSignalSyncObjectsToHwQueue](https://www.google.com/search?num=5&q=D3DKMTSubmitSignalSyncObjectsToHwQueue+site%3Amicrosoft.com) |  |   
-[D3DKMTSubmitWaitForSyncObjectsToHwQueue](https://www.google.com/search?num=5&q=D3DKMTSubmitWaitForSyncObjectsToHwQueue+site%3Amicrosoft.com) |  |   
-[D3DKMTTrimProcessCommitment](https://www.google.com/search?num=5&q=D3DKMTTrimProcessCommitment+site%3Amicrosoft.com) |  |   
-[D3DKMTUnlock](https://www.google.com/search?num=5&q=D3DKMTUnlock+site%3Amicrosoft.com) |  |   
-[D3DKMTUnlock2](https://www.google.com/search?num=5&q=D3DKMTUnlock2+site%3Amicrosoft.com) |  |   
-[D3DKMTUnregisterTrimNotification](https://www.google.com/search?num=5&q=D3DKMTUnregisterTrimNotification+site%3Amicrosoft.com) |  |   
-[D3DKMTUpdateAllocationProperty](https://www.google.com/search?num=5&q=D3DKMTUpdateAllocationProperty+site%3Amicrosoft.com) |  |   
-[D3DKMTUpdateGpuVirtualAddress](https://www.google.com/search?num=5&q=D3DKMTUpdateGpuVirtualAddress+site%3Amicrosoft.com) |  |   
-[D3DKMTUpdateOverlay](https://www.google.com/search?num=5&q=D3DKMTUpdateOverlay+site%3Amicrosoft.com) |  |   
-[D3DKMTUpdateTrackedWorkload](https://www.google.com/search?num=5&q=D3DKMTUpdateTrackedWorkload+site%3Amicrosoft.com) |  |   
-[D3DKMTWaitForIdle](https://www.google.com/search?num=5&q=D3DKMTWaitForIdle+site%3Amicrosoft.com) |  |   
-[D3DKMTWaitForSynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTWaitForSynchronizationObject+site%3Amicrosoft.com) |  |   
-[D3DKMTWaitForSynchronizationObject2](https://www.google.com/search?num=5&q=D3DKMTWaitForSynchronizationObject2+site%3Amicrosoft.com) |  |   
-[D3DKMTWaitForSynchronizationObjectFromCpu](https://www.google.com/search?num=5&q=D3DKMTWaitForSynchronizationObjectFromCpu+site%3Amicrosoft.com) |  |   
-[D3DKMTWaitForSynchronizationObjectFromGpu](https://www.google.com/search?num=5&q=D3DKMTWaitForSynchronizationObjectFromGpu+site%3Amicrosoft.com) |  |   
-[D3DKMTWaitForVerticalBlankEvent](https://www.google.com/search?num=5&q=D3DKMTWaitForVerticalBlankEvent+site%3Amicrosoft.com) |  |   
-[D3DKMTWaitForVerticalBlankEvent2](https://www.google.com/search?num=5&q=D3DKMTWaitForVerticalBlankEvent2+site%3Amicrosoft.com) |  |   
 [DDCCIGetCapabilitiesString](https://www.google.com/search?num=5&q=DDCCIGetCapabilitiesString+site%3Amicrosoft.com) |  |   
 [DDCCIGetCapabilitiesStringLength](https://www.google.com/search?num=5&q=DDCCIGetCapabilitiesStringLength+site%3Amicrosoft.com) |  |   
 [DDCCIGetTimingReport](https://www.google.com/search?num=5&q=DDCCIGetTimingReport+site%3Amicrosoft.com) |  |   
@@ -255,11 +71,10 @@ Native Method | Header | Managed Method
 [DeleteMetaFile](http://msdn2.microsoft.com/en-us/library/51766282-f185-4e29-a36e-1069d9d61f7c) | wingdi.h | [Vanara.PInvoke.Gdi32.DeleteMetaFile](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteMetaFile)  
 [DeleteObject](http://msdn2.microsoft.com/en-us/library/dd183539) | Wingdi.h | [Vanara.PInvoke.Gdi32.DeleteObject](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteObject)  
 [DescribePixelFormat](http://msdn2.microsoft.com/en-us/library/9692a30d-c7d4-40c7-a265-72c4ebabd5f2) | wingdi.h | [Vanara.PInvoke.Gdi32.DescribePixelFormat](https://github.com/dahall/Vanara/search?l=C%23&q=DescribePixelFormat)  
-[DestroyPhysicalMonitorInternal](https://www.google.com/search?num=5&q=DestroyPhysicalMonitorInternal+site%3Amicrosoft.com) |  |   
 [DPtoLP](http://msdn2.microsoft.com/en-us/library/0106867c-e8c5-4826-8cba-60c29e1d021a) | wingdi.h | [Vanara.PInvoke.Gdi32.DPtoLP](https://github.com/dahall/Vanara/search?l=C%23&q=DPtoLP)  
 [DrawEscape](http://msdn2.microsoft.com/en-us/library/306eec06-6d29-43bc-aff0-a267efa52ccd) | wingdi.h | [Vanara.PInvoke.Gdi32.DrawEscape](https://github.com/dahall/Vanara/search?l=C%23&q=DrawEscape)  
 [Ellipse](http://msdn2.microsoft.com/en-us/library/9bec59dd-6bcb-498e-9ed2-ac641ecd7fa5) | wingdi.h | [Vanara.PInvoke.Gdi32.Ellipse](https://github.com/dahall/Vanara/search?l=C%23&q=Ellipse)  
-[EnableEUDC](https://www.google.com/search?num=5&q=EnableEUDC+site%3Amicrosoft.com) |  |   
+[EnableEUDC](http://msdn2.microsoft.com/en-us/library/9e531d8c-6008-4189-ae25-cda707be5e2c) |  | [Vanara.PInvoke.Gdi32.EnableEUDC](https://github.com/dahall/Vanara/search?l=C%23&q=EnableEUDC)  
 [EndDoc](http://msdn2.microsoft.com/en-us/library/bf63ea0f-cc73-4943-9c84-52b3b77e141c) | wingdi.h | [Vanara.PInvoke.Gdi32.EndDoc](https://github.com/dahall/Vanara/search?l=C%23&q=EndDoc)  
 [EndPage](http://msdn2.microsoft.com/en-us/library/33e6d005-f00d-4b87-bf7c-fc79c1d05514) | wingdi.h | [Vanara.PInvoke.Gdi32.EndPage](https://github.com/dahall/Vanara/search?l=C%23&q=EndPage)  
 [EndPath](http://msdn2.microsoft.com/en-us/library/0b4daf81-d1d6-45c1-b081-855b7cd8527a) | wingdi.h | [Vanara.PInvoke.Gdi32.EndPath](https://github.com/dahall/Vanara/search?l=C%23&q=EndPath)  
@@ -286,22 +101,22 @@ Native Method | Header | Managed Method
 [FrameRgn](http://msdn2.microsoft.com/en-us/library/d2c95392-7950-4963-8f10-2387daf23e93) | wingdi.h | [Vanara.PInvoke.Gdi32.FrameRgn](https://github.com/dahall/Vanara/search?l=C%23&q=FrameRgn)  
 [GdiAlphaBlend](http://msdn2.microsoft.com/en-us/library/dd183351) | Wingdi.h | [Vanara.PInvoke.Gdi32.AlphaBlend](https://github.com/dahall/Vanara/search?l=C%23&q=AlphaBlend)  
 [GdiComment](http://msdn2.microsoft.com/en-us/library/80ed11fc-89f8-47ab-8b3b-c817733bd385) | wingdi.h | [Vanara.PInvoke.Gdi32.GdiComment](https://github.com/dahall/Vanara/search?l=C%23&q=GdiComment)  
-[GdiDeleteSpoolFileHandle](https://www.google.com/search?num=5&q=GdiDeleteSpoolFileHandle+site%3Amicrosoft.com) |  |   
-[GdiEndDocEMF](https://www.google.com/search?num=5&q=GdiEndDocEMF+site%3Amicrosoft.com) |  |   
-[GdiEndPageEMF](https://www.google.com/search?num=5&q=GdiEndPageEMF+site%3Amicrosoft.com) |  |   
+[GdiDeleteSpoolFileHandle](http://msdn2.microsoft.com/en-us/library/ff22498e-404f-42f6-82fd-f0178f6c7789) | winppi.h | [Vanara.PInvoke.Gdi32.GdiDeleteSpoolFileHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GdiDeleteSpoolFileHandle)  
+[GdiEndDocEMF](http://msdn2.microsoft.com/en-us/library/e58403d4-aacc-4d22-98e5-86db1a69c54a) | winppi.h | [Vanara.PInvoke.Gdi32.GdiEndDocEMF](https://github.com/dahall/Vanara/search?l=C%23&q=GdiEndDocEMF)  
+[GdiEndPageEMF](http://msdn2.microsoft.com/en-us/library/e15344a5-32ed-43a8-93c2-d5201617d595) | winppi.h | [Vanara.PInvoke.Gdi32.GdiEndPageEMF](https://github.com/dahall/Vanara/search?l=C%23&q=GdiEndPageEMF)  
 [GdiFlush](http://msdn2.microsoft.com/en-us/library/6d2f398d-7a30-4b14-81de-23ab10e1749c) | wingdi.h | [Vanara.PInvoke.Gdi32.GdiFlush](https://github.com/dahall/Vanara/search?l=C%23&q=GdiFlush)  
 [GdiGetBatchLimit](http://msdn2.microsoft.com/en-us/library/aafe7635-1a71-42a9-90b7-11179e245af4) | wingdi.h | [Vanara.PInvoke.Gdi32.GdiGetBatchLimit](https://github.com/dahall/Vanara/search?l=C%23&q=GdiGetBatchLimit)  
-[GdiGetDC](https://www.google.com/search?num=5&q=GdiGetDC+site%3Amicrosoft.com) |  |   
-[GdiGetDevmodeForPage](https://www.google.com/search?num=5&q=GdiGetDevmodeForPage+site%3Amicrosoft.com) |  |   
-[GdiGetPageCount](https://www.google.com/search?num=5&q=GdiGetPageCount+site%3Amicrosoft.com) |  |   
-[GdiGetPageHandle](https://www.google.com/search?num=5&q=GdiGetPageHandle+site%3Amicrosoft.com) |  |   
-[GdiGetSpoolFileHandle](https://www.google.com/search?num=5&q=GdiGetSpoolFileHandle+site%3Amicrosoft.com) |  |   
-[GdiGradientFill](https://www.google.com/search?num=5&q=GdiGradientFill+site%3Amicrosoft.com) |  |   
-[GdiPlayPageEMF](https://www.google.com/search?num=5&q=GdiPlayPageEMF+site%3Amicrosoft.com) |  |   
-[GdiResetDCEMF](https://www.google.com/search?num=5&q=GdiResetDCEMF+site%3Amicrosoft.com) |  |   
+[GdiGetDC](http://msdn2.microsoft.com/en-us/library/f8aacb6d-4e8a-4fdb-902c-3d0efbc40f08) | winppi.h | [Vanara.PInvoke.Gdi32.GdiGetDC](https://github.com/dahall/Vanara/search?l=C%23&q=GdiGetDC)  
+[GdiGetDevmodeForPage](http://msdn2.microsoft.com/en-us/library/3410e8b1-820f-4892-8d26-d803e3f943da) | winppi.h | [Vanara.PInvoke.Gdi32.GdiGetDevmodeForPage](https://github.com/dahall/Vanara/search?l=C%23&q=GdiGetDevmodeForPage)  
+[GdiGetPageCount](http://msdn2.microsoft.com/en-us/library/0a101b59-c610-4158-97a8-002222a94309) | winppi.h | [Vanara.PInvoke.Gdi32.GdiGetPageCount](https://github.com/dahall/Vanara/search?l=C%23&q=GdiGetPageCount)  
+[GdiGetPageHandle](http://msdn2.microsoft.com/en-us/library/7eaed9d2-20fa-4cf1-b924-fbe1443535e9) | winppi.h | [Vanara.PInvoke.Gdi32.GdiGetPageHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GdiGetPageHandle)  
+[GdiGetSpoolFileHandle](http://msdn2.microsoft.com/en-us/library/c820ee94-29c2-4478-884c-49dd68cd713a) | winppi.h | [Vanara.PInvoke.Gdi32.GdiGetSpoolFileHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GdiGetSpoolFileHandle)  
+[GdiGradientFill](http://msdn2.microsoft.com/en-us/library/c88c1137-5690-4139-9d10-90d036e8f31c) | wingdi.h | [Vanara.PInvoke.Gdi32.GdiGradientFill](https://github.com/dahall/Vanara/search?l=C%23&q=GdiGradientFill)  
+[GdiPlayPageEMF](http://msdn2.microsoft.com/en-us/library/e0122858-0c9d-4aa8-a394-89d65fb98fda) | winppi.h | [Vanara.PInvoke.Gdi32.GdiPlayPageEMF](https://github.com/dahall/Vanara/search?l=C%23&q=GdiPlayPageEMF)  
+[GdiResetDCEMF](http://msdn2.microsoft.com/en-us/library/ea97cc22-6057-427d-90c1-4f23ced932aa) | winppi.h | [Vanara.PInvoke.Gdi32.GdiResetDCEMF](https://github.com/dahall/Vanara/search?l=C%23&q=GdiResetDCEMF)  
 [GdiSetBatchLimit](http://msdn2.microsoft.com/en-us/library/53bf0dfe-e93c-401d-ac5d-6717bad2625e) | wingdi.h | [Vanara.PInvoke.Gdi32.GdiSetBatchLimit](https://github.com/dahall/Vanara/search?l=C%23&q=GdiSetBatchLimit)  
-[GdiStartDocEMF](https://www.google.com/search?num=5&q=GdiStartDocEMF+site%3Amicrosoft.com) |  |   
-[GdiStartPageEMF](https://www.google.com/search?num=5&q=GdiStartPageEMF+site%3Amicrosoft.com) |  |   
+[GdiStartDocEMF](http://msdn2.microsoft.com/en-us/library/aca4534a-871e-4d86-b329-cb4f84611a29) | winppi.h | [Vanara.PInvoke.Gdi32.GdiStartDocEMF](https://github.com/dahall/Vanara/search?l=C%23&q=GdiStartDocEMF)  
+[GdiStartPageEMF](http://msdn2.microsoft.com/en-us/library/963c809f-da89-4f27-ba8b-3de8cdcec179) | winppi.h | [Vanara.PInvoke.Gdi32.GdiStartPageEMF](https://github.com/dahall/Vanara/search?l=C%23&q=GdiStartPageEMF)  
 [GdiTransparentBlt](http://msdn2.microsoft.com/en-us/library/82f6db79-f364-480a-ad9d-acf2ad94a295) | wingdi.h | [Vanara.PInvoke.Gdi32.TransparentBlt](https://github.com/dahall/Vanara/search?l=C%23&q=TransparentBlt)  
 [GetArcDirection](http://msdn2.microsoft.com/en-us/library/6bf426cd-e028-4568-9e9a-aca58dd69732) | wingdi.h | [Vanara.PInvoke.Gdi32.GetArcDirection](https://github.com/dahall/Vanara/search?l=C%23&q=GetArcDirection)  
 [GetAspectRatioFilterEx](http://msdn2.microsoft.com/en-us/library/3f2dd47d-08bf-4848-897f-5ae506fba342) | wingdi.h | [Vanara.PInvoke.Gdi32.GetAspectRatioFilterEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetAspectRatioFilterEx)  
@@ -356,14 +171,11 @@ Native Method | Header | Managed Method
 [GetMiterLimit](http://msdn2.microsoft.com/en-us/library/51b1fb95-dd44-47f8-9311-2c6dc9c57bbc) | wingdi.h | [Vanara.PInvoke.Gdi32.GetMiterLimit](https://github.com/dahall/Vanara/search?l=C%23&q=GetMiterLimit)  
 [GetNearestColor](http://msdn2.microsoft.com/en-us/library/89e4e19b-47be-442e-8eb4-c867bb78f36a) | wingdi.h | [Vanara.PInvoke.Gdi32.GetNearestColor](https://github.com/dahall/Vanara/search?l=C%23&q=GetNearestColor)  
 [GetNearestPaletteIndex](https://www.google.com/search?num=5&q=GetNearestPaletteIndex+site%3Amicrosoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.GetNearestPaletteIndex](https://github.com/dahall/Vanara/search?l=C%23&q=GetNearestPaletteIndex)  
-[GetNumberOfPhysicalMonitors](https://www.google.com/search?num=5&q=GetNumberOfPhysicalMonitors+site%3Amicrosoft.com) |  |   
 [GetObject](http://msdn2.microsoft.com/en-us/library/555ab876-d990-426d-915c-f98df82a10aa) | wingdi.h | [Vanara.PInvoke.Gdi32.GetObject](https://github.com/dahall/Vanara/search?l=C%23&q=GetObject)  
 [GetObjectType](http://msdn2.microsoft.com/en-us/library/334a2c95-3bf4-44dc-abce-df3a3a2d37a8) | wingdi.h | [Vanara.PInvoke.Gdi32.GetObjectType](https://github.com/dahall/Vanara/search?l=C%23&q=GetObjectType)  
 [GetOutlineTextMetrics](http://msdn2.microsoft.com/en-us/library/b8c7a557-ca35-41a4-9043-8496e5b01564) | wingdi.h | [Vanara.PInvoke.Gdi32.GetOutlineTextMetrics](https://github.com/dahall/Vanara/search?l=C%23&q=GetOutlineTextMetrics)  
 [GetPaletteEntries](http://msdn2.microsoft.com/en-us/library/5e72e881-32e1-458e-a09e-91fa13abe178) | wingdi.h | [Vanara.PInvoke.Gdi32.GetPaletteEntries](https://github.com/dahall/Vanara/search?l=C%23&q=GetPaletteEntries)  
 [GetPath](http://msdn2.microsoft.com/en-us/library/2dc7736a-03fc-4623-a566-6c3e368da174) | wingdi.h | [Vanara.PInvoke.Gdi32.GetPath](https://github.com/dahall/Vanara/search?l=C%23&q=GetPath)  
-[GetPhysicalMonitorDescription](https://www.google.com/search?num=5&q=GetPhysicalMonitorDescription+site%3Amicrosoft.com) |  |   
-[GetPhysicalMonitors](https://www.google.com/search?num=5&q=GetPhysicalMonitors+site%3Amicrosoft.com) |  |   
 [GetPixel](http://msdn2.microsoft.com/en-us/library/46d17e95-93ce-4a43-b86c-489d6e3afe12) | wingdi.h | [Vanara.PInvoke.Gdi32.GetPixel](https://github.com/dahall/Vanara/search?l=C%23&q=GetPixel)  
 [GetPixelFormat](http://msdn2.microsoft.com/en-us/library/e9a65f3a-6932-462f-b342-a993d222fae8) | wingdi.h | [Vanara.PInvoke.Gdi32.GetPixelFormat](https://github.com/dahall/Vanara/search?l=C%23&q=GetPixelFormat)  
 [GetPolyFillMode](http://msdn2.microsoft.com/en-us/library/febf96fb-bf2e-4eb2-ab5f-89741a1decad) | wingdi.h | [Vanara.PInvoke.Gdi32.GetPolyFillMode](https://github.com/dahall/Vanara/search?l=C%23&q=GetPolyFillMode)  
@@ -388,7 +200,6 @@ Native Method | Header | Managed Method
 [GetTextExtentPointI](http://msdn2.microsoft.com/en-us/library/d06a48dd-3f38-4c60-a4c6-954e43f718d1) | wingdi.h | [Vanara.PInvoke.Gdi32.GetTextExtentPointI](https://github.com/dahall/Vanara/search?l=C%23&q=GetTextExtentPointI)  
 [GetTextFace](http://msdn2.microsoft.com/en-us/library/c4c8c8f5-3651-481b-a55f-da7f49d92f3a) | wingdi.h | [Vanara.PInvoke.Gdi32.GetTextFace](https://github.com/dahall/Vanara/search?l=C%23&q=GetTextFace)  
 [GetTextMetrics](http://msdn2.microsoft.com/en-us/library/92d45a3b-12df-42ff-8d87-5c27b44dc481) | wingdi.h | [Vanara.PInvoke.Gdi32.GetTextMetrics](https://github.com/dahall/Vanara/search?l=C%23&q=GetTextMetrics)  
-[GetTransform](https://www.google.com/search?num=5&q=GetTransform+site%3Amicrosoft.com) |  |   
 [GetViewportExtEx](http://msdn2.microsoft.com/en-us/library/e3fc188a-3796-497d-9d86-f116e9e48e30) | wingdi.h | [Vanara.PInvoke.Gdi32.GetViewportExtEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetViewportExtEx)  
 [GetViewportOrgEx](http://msdn2.microsoft.com/en-us/library/6e6c7090-edf4-46a3-8bcd-10a00c0cf847) | wingdi.h | [Vanara.PInvoke.Gdi32.GetViewportOrgEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetViewportOrgEx)  
 [GetWindowExtEx](http://msdn2.microsoft.com/en-us/library/17f41fcb-c9a4-4b7e-acde-73450044413e) | wingdi.h | [Vanara.PInvoke.Gdi32.GetWindowExtEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetWindowExtEx)  
@@ -442,46 +253,6 @@ Native Method | Header | Managed Method
 [SaveDC](http://msdn2.microsoft.com/en-us/library/f438cd7f-436f-436c-b32e-67f5558740cb) | wingdi.h | [Vanara.PInvoke.Gdi32.SaveDC](https://github.com/dahall/Vanara/search?l=C%23&q=SaveDC)  
 [ScaleViewportExtEx](http://msdn2.microsoft.com/en-us/library/8dde1322-82d7-4069-9655-a7bd3a324cb0) | wingdi.h | [Vanara.PInvoke.Gdi32.ScaleViewportExtEx](https://github.com/dahall/Vanara/search?l=C%23&q=ScaleViewportExtEx)  
 [ScaleWindowExtEx](http://msdn2.microsoft.com/en-us/library/c34f0978-74dd-4839-99f2-a106f3d2c0f9) | wingdi.h | [Vanara.PInvoke.Gdi32.ScaleWindowExtEx](https://github.com/dahall/Vanara/search?l=C%23&q=ScaleWindowExtEx)  
-[ScriptApplyDigitSubstitution](http://msdn2.microsoft.com/en-us/library/486b8a56-eb14-48c3-b2f0-f5494f79baea) | usp10.h | [Vanara.PInvoke.Gdi32.ScriptApplyDigitSubstitution](https://github.com/dahall/Vanara/search?l=C%23&q=ScriptApplyDigitSubstitution)  
-[ScriptApplyLogicalWidth](http://msdn2.microsoft.com/en-us/library/964634f4-700b-47a7-a86f-071f1c97bcbe) | usp10.h | [Vanara.PInvoke.Gdi32.ScriptApplyLogicalWidth](https://github.com/dahall/Vanara/search?l=C%23&q=ScriptApplyLogicalWidth)  
-[ScriptBreak](http://msdn2.microsoft.com/en-us/library/1613819f-9473-4d9f-8a65-a109c9ef3f43) | usp10.h | [Vanara.PInvoke.Gdi32.ScriptBreak](https://github.com/dahall/Vanara/search?l=C%23&q=ScriptBreak)  
-[ScriptCacheGetHeight](https://www.google.com/search?num=5&q=ScriptCacheGetHeight+site%3Amicrosoft.com) |  |   
-[ScriptCPtoX](https://www.google.com/search?num=5&q=ScriptCPtoX+site%3Amicrosoft.com) |  |   
-[ScriptFreeCache](https://www.google.com/search?num=5&q=ScriptFreeCache+site%3Amicrosoft.com) |  |   
-[ScriptGetCMap](https://www.google.com/search?num=5&q=ScriptGetCMap+site%3Amicrosoft.com) |  |   
-[ScriptGetFontAlternateGlyphs](https://www.google.com/search?num=5&q=ScriptGetFontAlternateGlyphs+site%3Amicrosoft.com) |  |   
-[ScriptGetFontFeatureTags](https://www.google.com/search?num=5&q=ScriptGetFontFeatureTags+site%3Amicrosoft.com) |  |   
-[ScriptGetFontLanguageTags](https://www.google.com/search?num=5&q=ScriptGetFontLanguageTags+site%3Amicrosoft.com) |  |   
-[ScriptGetFontProperties](https://www.google.com/search?num=5&q=ScriptGetFontProperties+site%3Amicrosoft.com) |  |   
-[ScriptGetFontScriptTags](https://www.google.com/search?num=5&q=ScriptGetFontScriptTags+site%3Amicrosoft.com) |  |   
-[ScriptGetGlyphABCWidth](https://www.google.com/search?num=5&q=ScriptGetGlyphABCWidth+site%3Amicrosoft.com) |  |   
-[ScriptGetLogicalWidths](https://www.google.com/search?num=5&q=ScriptGetLogicalWidths+site%3Amicrosoft.com) |  |   
-[ScriptGetProperties](https://www.google.com/search?num=5&q=ScriptGetProperties+site%3Amicrosoft.com) |  |   
-[ScriptIsComplex](https://www.google.com/search?num=5&q=ScriptIsComplex+site%3Amicrosoft.com) |  |   
-[ScriptItemize](https://www.google.com/search?num=5&q=ScriptItemize+site%3Amicrosoft.com) |  |   
-[ScriptItemizeOpenType](https://www.google.com/search?num=5&q=ScriptItemizeOpenType+site%3Amicrosoft.com) |  |   
-[ScriptJustify](https://www.google.com/search?num=5&q=ScriptJustify+site%3Amicrosoft.com) |  |   
-[ScriptLayout](https://www.google.com/search?num=5&q=ScriptLayout+site%3Amicrosoft.com) |  |   
-[ScriptPlace](https://www.google.com/search?num=5&q=ScriptPlace+site%3Amicrosoft.com) |  |   
-[ScriptPlaceOpenType](https://www.google.com/search?num=5&q=ScriptPlaceOpenType+site%3Amicrosoft.com) |  |   
-[ScriptPositionSingleGlyph](https://www.google.com/search?num=5&q=ScriptPositionSingleGlyph+site%3Amicrosoft.com) |  |   
-[ScriptRecordDigitSubstitution](https://www.google.com/search?num=5&q=ScriptRecordDigitSubstitution+site%3Amicrosoft.com) |  |   
-[ScriptShape](https://www.google.com/search?num=5&q=ScriptShape+site%3Amicrosoft.com) |  |   
-[ScriptShapeOpenType](https://www.google.com/search?num=5&q=ScriptShapeOpenType+site%3Amicrosoft.com) |  |   
-[ScriptString_pcOutChars](https://www.google.com/search?num=5&q=ScriptString_pcOutChars+site%3Amicrosoft.com) |  |   
-[ScriptString_pLogAttr](https://www.google.com/search?num=5&q=ScriptString_pLogAttr+site%3Amicrosoft.com) |  |   
-[ScriptString_pSize](https://www.google.com/search?num=5&q=ScriptString_pSize+site%3Amicrosoft.com) |  |   
-[ScriptStringAnalyse](https://www.google.com/search?num=5&q=ScriptStringAnalyse+site%3Amicrosoft.com) |  |   
-[ScriptStringCPtoX](https://www.google.com/search?num=5&q=ScriptStringCPtoX+site%3Amicrosoft.com) |  |   
-[ScriptStringFree](https://www.google.com/search?num=5&q=ScriptStringFree+site%3Amicrosoft.com) |  |   
-[ScriptStringGetLogicalWidths](https://www.google.com/search?num=5&q=ScriptStringGetLogicalWidths+site%3Amicrosoft.com) |  |   
-[ScriptStringGetOrder](https://www.google.com/search?num=5&q=ScriptStringGetOrder+site%3Amicrosoft.com) |  |   
-[ScriptStringOut](https://www.google.com/search?num=5&q=ScriptStringOut+site%3Amicrosoft.com) |  |   
-[ScriptStringValidate](https://www.google.com/search?num=5&q=ScriptStringValidate+site%3Amicrosoft.com) |  |   
-[ScriptStringXtoCP](https://www.google.com/search?num=5&q=ScriptStringXtoCP+site%3Amicrosoft.com) |  |   
-[ScriptSubstituteSingleGlyph](https://www.google.com/search?num=5&q=ScriptSubstituteSingleGlyph+site%3Amicrosoft.com) |  |   
-[ScriptTextOut](https://www.google.com/search?num=5&q=ScriptTextOut+site%3Amicrosoft.com) |  |   
-[ScriptXtoCP](https://www.google.com/search?num=5&q=ScriptXtoCP+site%3Amicrosoft.com) |  |   
 [SelectClipPath](http://msdn2.microsoft.com/en-us/library/c5102e1b-ba33-4cce-a4e5-93cf10c1c0bb) | wingdi.h | [Vanara.PInvoke.Gdi32.SelectClipPath](https://github.com/dahall/Vanara/search?l=C%23&q=SelectClipPath)  
 [SelectClipRgn](http://msdn2.microsoft.com/en-us/library/7a4f0b9c-8588-4da8-a030-ed9d8b4ee08d) | wingdi.h | [Vanara.PInvoke.Gdi32.SelectClipRgn](https://github.com/dahall/Vanara/search?l=C%23&q=SelectClipRgn)  
 [SelectObject](http://msdn2.microsoft.com/en-us/library/dd162957) | Wingdi.h | [Vanara.PInvoke.Gdi32.SelectObject](https://github.com/dahall/Vanara/search?l=C%23&q=SelectObject)  
@@ -498,7 +269,7 @@ Native Method | Header | Managed Method
 [SetColorSpace](http://msdn2.microsoft.com/en-us/library/037c864f-f8ec-4467-9236-74ea4493d743) | wingdi.h | [Vanara.PInvoke.Gdi32.SetColorSpace](https://github.com/dahall/Vanara/search?l=C%23&q=SetColorSpace)  
 [SetDCBrushColor](http://msdn2.microsoft.com/en-us/library/4feed536-2f1d-4a25-8311-7cae303167ca) | wingdi.h | [Vanara.PInvoke.Gdi32.SetDCBrushColor](https://github.com/dahall/Vanara/search?l=C%23&q=SetDCBrushColor)  
 [SetDCPenColor](http://msdn2.microsoft.com/en-us/library/057608eb-7209-4714-bf02-660a13d59016) | wingdi.h | [Vanara.PInvoke.Gdi32.SetDCPenColor](https://github.com/dahall/Vanara/search?l=C%23&q=SetDCPenColor)  
-[SetDeviceGammaRamp](https://www.google.com/search?num=5&q=SetDeviceGammaRamp+site%3Amicrosoft.com) |  |   
+[SetDeviceGammaRamp](http://msdn2.microsoft.com/en-us/library/8e4cc9a4-f292-47a1-a12a-43a479326ca7) | wingdi.h | [Vanara.PInvoke.Gdi32.SetDeviceGammaRamp](https://github.com/dahall/Vanara/search?l=C%23&q=SetDeviceGammaRamp)  
 [SetDIBColorTable](http://msdn2.microsoft.com/en-us/library/f301c34d-6e8e-4dc8-b3f3-0fdc658d09e3) | wingdi.h | [Vanara.PInvoke.Gdi32.SetDIBColorTable](https://github.com/dahall/Vanara/search?l=C%23&q=SetDIBColorTable)  
 [SetDIBits](http://msdn2.microsoft.com/en-us/library/706f4532-4073-4d5c-ae2d-e33aea9163e9) | wingdi.h | [Vanara.PInvoke.Gdi32.SetDIBits](https://github.com/dahall/Vanara/search?l=C%23&q=SetDIBits)  
 [SetDIBitsToDevice](http://msdn2.microsoft.com/en-us/library/41225400-12e3-47ba-8b88-ac1d5b0fa90f) | wingdi.h | [Vanara.PInvoke.Gdi32.SetDIBitsToDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SetDIBitsToDevice)  
@@ -595,9 +366,11 @@ Native Structure | Header | Managed Structure
 [GCP_RESULTS](http://msdn2.microsoft.com/en-us/library/7692637e-963a-4e0a-8a04-e05a6d01c417) | wingdi.h | [Vanara.PInvoke.Gdi32.GCP_RESULTS](https://github.com/dahall/Vanara/search?l=C%23&q=GCP_RESULTS)  
 [GLYPHMETRICS](http://msdn2.microsoft.com/en-us/library/a6fa3813-56f7-4b54-b21d-8aabc2309a34) | wingdi.h | [Vanara.PInvoke.Gdi32.GLYPHMETRICS](https://github.com/dahall/Vanara/search?l=C%23&q=GLYPHMETRICS)  
 [GLYPHSET](http://msdn2.microsoft.com/en-us/library/b8ac8d3f-b062-491c-966f-02f3d4c11419) | wingdi.h | [Vanara.PInvoke.Gdi32.GLYPHSET](https://github.com/dahall/Vanara/search?l=C%23&q=GLYPHSET)  
+[GRADIENT_RECT](http://msdn2.microsoft.com/en-us/library/8660114a-423f-40a8-b113-e0304bb0f383) | wingdi.h | [Vanara.PInvoke.Gdi32.GRADIENT_RECT](https://github.com/dahall/Vanara/search?l=C%23&q=GRADIENT_RECT)  
 [GRADIENT_TRIANGLE](http://msdn2.microsoft.com/en-us/library/71f3a4bd-5823-47ae-aa7a-f3058f18c591) | wingdi.h | [Vanara.PInvoke.Gdi32.GRADIENT_TRIANGLE](https://github.com/dahall/Vanara/search?l=C%23&q=GRADIENT_TRIANGLE)  
 [HANDLETABLE](http://msdn2.microsoft.com/en-us/library/c0c03c7d-baac-4b59-ba2f-8f6330651b49) | wingdi.h | [Vanara.PInvoke.Gdi32.HANDLETABLE](https://github.com/dahall/Vanara/search?l=C%23&q=HANDLETABLE)  
 [HSECTION](https://www.google.com/search?num=5&q=HSECTION+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Gdi32.HSECTION](https://github.com/dahall/Vanara/search?l=C%23&q=HSECTION)  
+[HSPOOLFILE](https://www.google.com/search?num=5&q=HSPOOLFILE+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Gdi32.HSPOOLFILE](https://github.com/dahall/Vanara/search?l=C%23&q=HSPOOLFILE)  
 [KERNINGPAIR](http://msdn2.microsoft.com/en-us/library/af7bfcf7-467b-4ea9-87c5-3622303b1d8b) | wingdi.h | [Vanara.PInvoke.Gdi32.KERNINGPAIR](https://github.com/dahall/Vanara/search?l=C%23&q=KERNINGPAIR)  
 [LOGBRUSH](http://msdn2.microsoft.com/en-us/library/ded2c7a4-2248-4d01-95c6-ab4050719094) | wingdi.h | [Vanara.PInvoke.Gdi32.LOGBRUSH](https://github.com/dahall/Vanara/search?l=C%23&q=LOGBRUSH)  
 [LOGCOLORSPACE](http://msdn2.microsoft.com/en-us/library/b08aec07-6ac0-47be-8dc9-d604d94dedde) | wingdi.h | [Vanara.PInvoke.Gdi32.LOGCOLORSPACE](https://github.com/dahall/Vanara/search?l=C%23&q=LOGCOLORSPACE)  
@@ -620,12 +393,6 @@ Native Structure | Header | Managed Structure
 [RGBTRIPLE](http://msdn2.microsoft.com/en-us/library/bc1467a5-0027-4f22-bfc9-1deab562c573) | wingdi.h | [Vanara.PInvoke.Gdi32.RGBTRIPLE](https://github.com/dahall/Vanara/search?l=C%23&q=RGBTRIPLE)  
 [RGNDATA](http://msdn2.microsoft.com/en-us/library/3eac0b23-3138-4b34-9c16-6cc185e4de22) | wingdi.h | [Vanara.PInvoke.Gdi32.RGNDATA](https://github.com/dahall/Vanara/search?l=C%23&q=RGNDATA)  
 [RGNDATAHEADER](http://msdn2.microsoft.com/en-us/library/15990903-8a48-4c47-b527-269d775255a5) | wingdi.h | [Vanara.PInvoke.Gdi32.RGNDATAHEADER](https://github.com/dahall/Vanara/search?l=C%23&q=RGNDATAHEADER)  
-[SCRIPT_ANALYSIS](http://msdn2.microsoft.com/en-us/library/c673d5cc-c4ca-4238-8090-55abe3db324b) | usp10.h | [Vanara.PInvoke.Gdi32.SCRIPT_ANALYSIS](https://github.com/dahall/Vanara/search?l=C%23&q=SCRIPT_ANALYSIS)  
-[SCRIPT_CONTROL](http://msdn2.microsoft.com/en-us/library/4623f606-f67e-48ad-8c1d-d27da5ba556c) | usp10.h | [Vanara.PInvoke.Gdi32.SCRIPT_CONTROL](https://github.com/dahall/Vanara/search?l=C%23&q=SCRIPT_CONTROL)  
-[SCRIPT_DIGITSUBSTITUTE](http://msdn2.microsoft.com/en-us/library/e96bf8b4-7456-4e16-a623-48320104dd66) | usp10.h | [Vanara.PInvoke.Gdi32.SCRIPT_DIGITSUBSTITUTE](https://github.com/dahall/Vanara/search?l=C%23&q=SCRIPT_DIGITSUBSTITUTE)  
-[SCRIPT_LOGATTR](http://msdn2.microsoft.com/en-us/library/24131b04-870a-4841-b9cd-7a09497bd2e6) | usp10.h | [Vanara.PInvoke.Gdi32.SCRIPT_LOGATTR](https://github.com/dahall/Vanara/search?l=C%23&q=SCRIPT_LOGATTR)  
-[SCRIPT_STATE](http://msdn2.microsoft.com/en-us/library/4b1724f7-7773-42c0-9c19-fbded5aef14e) | usp10.h | [Vanara.PInvoke.Gdi32.SCRIPT_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=SCRIPT_STATE)  
-[SCRIPT_VISATTR](http://msdn2.microsoft.com/en-us/library/83b77f60-2520-49ee-bc7f-27cb3db02ac8) | usp10.h | [Vanara.PInvoke.Gdi32.SCRIPT_VISATTR](https://github.com/dahall/Vanara/search?l=C%23&q=SCRIPT_VISATTR)  
 [TEXTMETRIC](http://msdn2.microsoft.com/en-us/library/0a46da58-5d0f-4db4-bba6-9e1b6c1f892c) | wingdi.h | [Vanara.PInvoke.Gdi32.TEXTMETRIC](https://github.com/dahall/Vanara/search?l=C%23&q=TEXTMETRIC)  
 [TRIVERTEX](http://msdn2.microsoft.com/en-us/library/47b700aa-3410-4610-ba06-dab2b2662f5e) | wingdi.h | [Vanara.PInvoke.Gdi32.TRIVERTEX](https://github.com/dahall/Vanara/search?l=C%23&q=TRIVERTEX)  
 [Union](https://www.google.com/search?num=5&q=Union+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Gdi32.DISPLAYCONFIG_PATH_SOURCE_INFO.Union](https://github.com/dahall/Vanara/search?l=C%23&q=Union)  
