@@ -4555,7 +4555,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint dwNameSpace;
+			public NS dwNameSpace;
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -4666,7 +4666,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint dwNameSpace;
+			public NS dwNameSpace;
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
