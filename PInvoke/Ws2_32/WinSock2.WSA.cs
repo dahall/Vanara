@@ -2233,25 +2233,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsock.h", MSDNShortId = "0e53eccf-ef85-43ec-a02c-12896471a7a9")]
 		public static extern int WSACancelAsyncRequest(HANDLE hAsyncTaskHandle);
 
-		/// <summary>
-		/// <para>
-		/// The <c>WSACancelBlockingCall</c> function has been removed in compliance with the Windows Sockets 2 specification, revision 2.2.0.
-		/// </para>
-		/// <para>
-		/// The function is not exported directly by WS2_32.DLL and Windows Sockets 2 applications should not use this function. Windows
-		/// Sockets 1.1 applications that call this function are still supported through the WINSOCK.DLL and WSOCK32.DLL.
-		/// </para>
-		/// <para>
-		/// Blocking hooks are generally used to keep a single-threaded GUI application responsive during calls to blocking functions.
-		/// Instead of using blocking hooks, an applications should use a separate thread (separate from the main GUI thread) for network activity.
-		/// </para>
-		/// </summary>
-		/// <returns>None</returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsacancelblockingcall int WSAAPI WSACancelBlockingCall();
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winsock2.h", MSDNShortId = "b3597d29-51a5-410f-9925-4d678dd641c1")]
-		public static extern int WSACancelBlockingCall();
-
 		/// <summary>The <c>WSACleanup</c> function terminates use of the Winsock 2 DLL (Ws2_32.dll).</summary>
 		/// <returns>
 		/// <para>
@@ -3499,7 +3480,7 @@ namespace Vanara.PInvoke
 		// SOCKET s, WSAEVENT hEventObject, LPWSANETWORKEVENTS lpNetworkEvents );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "2e6abccd-c82c-4a6b-8720-259986ac9984")]
-		public static extern int WSAEnumNetworkEvents(SOCKET s, WSAEVENT hEventObject, out WSANETWORKEVENTS lpNetworkEvents);
+		public static extern int WSAEnumNetworkEvents(SOCKET s, [Optional] WSAEVENT hEventObject, out WSANETWORKEVENTS lpNetworkEvents);
 
 		/// <summary>The <c>WSAEnumProtocols</c> function retrieves information about available transport protocols.</summary>
 		/// <param name="lpiProtocols">
