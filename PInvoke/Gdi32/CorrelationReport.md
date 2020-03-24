@@ -1,5 +1,5 @@
 ## Correlation report for gdi32.dll  
-### Methods (98% complete, 306 of 312 functions)  
+### Methods (100% complete, 306 of 306 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AbortDoc](http://msdn2.microsoft.com/en-us/library/4ecc371c-34fa-4073-96fe-0de03b84d7e3) | wingdi.h | [Vanara.PInvoke.Gdi32.AbortDoc](https://github.com/dahall/Vanara/search?l=C%23&q=AbortDoc)  
@@ -59,12 +59,6 @@ Native Method | Header | Managed Method
 [CreateRoundRectRgn](http://msdn2.microsoft.com/en-us/library/16f387e1-b00c-4755-8b21-1ee0f25bc46b) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateRoundRectRgn](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRoundRectRgn)  
 [CreateScalableFontResource](http://msdn2.microsoft.com/en-us/library/9a43a254-4cf4-46de-80b2-a83838871fd7) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateScalableFontResource](https://github.com/dahall/Vanara/search?l=C%23&q=CreateScalableFontResource)  
 [CreateSolidBrush](http://msdn2.microsoft.com/en-us/library/e39b5f77-97d8-4ea6-8277-7da12b3367f3) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateSolidBrush](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSolidBrush)  
-[DDCCIGetCapabilitiesString](https://www.google.com/search?num=5&q=DDCCIGetCapabilitiesString+site%3Amicrosoft.com) |  |   
-[DDCCIGetCapabilitiesStringLength](https://www.google.com/search?num=5&q=DDCCIGetCapabilitiesStringLength+site%3Amicrosoft.com) |  |   
-[DDCCIGetTimingReport](https://www.google.com/search?num=5&q=DDCCIGetTimingReport+site%3Amicrosoft.com) |  |   
-[DDCCIGetVCPFeature](https://www.google.com/search?num=5&q=DDCCIGetVCPFeature+site%3Amicrosoft.com) |  |   
-[DDCCISaveCurrentSettings](https://www.google.com/search?num=5&q=DDCCISaveCurrentSettings+site%3Amicrosoft.com) |  |   
-[DDCCISetVCPFeature](https://www.google.com/search?num=5&q=DDCCISetVCPFeature+site%3Amicrosoft.com) |  |   
 [DeleteColorSpace](http://msdn2.microsoft.com/en-us/library/5b241224-2994-4533-9629-d2a4b129ce86) | wingdi.h | [Vanara.PInvoke.Gdi32.DeleteColorSpace](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteColorSpace)  
 [DeleteDC](http://msdn2.microsoft.com/en-us/library/dd183533) | Wingdi.h | [Vanara.PInvoke.Gdi32.DeleteDC](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteDC)  
 [DeleteEnhMetaFile](http://msdn2.microsoft.com/en-us/library/d3b93b3b-fa0b-4480-8348-19919c9e904d) | wingdi.h | [Vanara.PInvoke.Gdi32.DeleteEnhMetaFile](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteEnhMetaFile)  
