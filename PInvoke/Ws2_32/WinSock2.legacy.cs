@@ -1089,7 +1089,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-gethostname int gethostname( char *name, int namelen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("winsock.h", MSDNShortId = "8fa40b60-0e93-493b-aee1-cea6cf595707")]
-		public static extern int gethostname(string name, int namelen);
+		public static extern int gethostname(StringBuilder name, int namelen);
 
 		/// <summary>The <c>GetHostNameW</c> function retrieves the standard host name for the local computer as a Unicode string.</summary>
 		/// <param name="name">A pointer to a buffer that receives the local host name as a <c>null</c>-terminated Unicode string.</param>
@@ -1165,7 +1165,7 @@ namespace Vanara.PInvoke
 		// namelen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("winsock2.h", MSDNShortId = "787EB209-5944-4F0A-8550-FE1115C2298A")]
-		public static extern int GetHostNameW(string name, int namelen);
+		public static extern int GetHostNameW(StringBuilder name, int namelen);
 
 		/// <summary>The <c>getpeername</c> function retrieves the address of the peer to which a socket is connected.</summary>
 		/// <param name="s">A descriptor identifying a connected socket.</param>
@@ -1576,155 +1576,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-getservbyname servent * getservbyname( const char *name,
 		// const char *proto );
-		[DllImport(Lib.Ws2_32, SetLastError = true, EntryPoint = "getservbyname", CharSet = CharSet.Ansi)]
-		[PInvokeData("winsock.h", MSDNShortId = "730fa372-f620-4d21-99b9-3e7b79932792")]
-		public static extern unsafe SERVENT* getservbyname_unsafe(string name, [Optional] string proto);
-
-		/// <summary>The <c>getservbyname</c> function retrieves service information corresponding to a service name and protocol.</summary>
-		/// <param name="name">A pointer to a <c>null</c>-terminated service name.</param>
-		/// <param name="proto">
-		/// A pointer to a <c>null</c>-terminated protocol name. If this pointer is <c>NULL</c>, the <c>getservbyname</c> function returns
-		/// the first service entry where name matches the <c>s_name</c> member of the servent structure or the <c>s_aliases</c> member of
-		/// the <c>servent</c> structure. Otherwise, <c>getservbyname</c> matches both the name and the proto.
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// If no error occurs, <c>getservbyname</c> returns a pointer to the servent structure. Otherwise, it returns a <c>null</c> pointer
-		/// and a specific error number can be retrieved by calling WSAGetLastError.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Error code</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>WSANOTINITIALISED</term>
-		/// <term>A successful WSAStartup call must occur before using this function.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAENETDOWN</term>
-		/// <term>The network subsystem has failed.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAHOST_NOT_FOUND</term>
-		/// <term>Authoritative Answer Service not found.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSATRY_AGAIN</term>
-		/// <term>A nonauthoritative Service not found, or server failure.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSANO_RECOVERY</term>
-		/// <term>Nonrecoverable errors, the services database is not accessible.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSANO_DATA</term>
-		/// <term>Valid name, no data record of requested type.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEINPROGRESS</term>
-		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEINTR</term>
-		/// <term>A blocking Windows Socket 1.1 call was canceled through WSACancelBlockingCall.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The <c>getservbyname</c> function returns a pointer to the servent structure containing the name(s) and service number that
-		/// match the string in the name parameter. All strings are <c>null</c>-terminated.
-		/// </para>
-		/// <para>
-		/// The pointer that is returned points to the <c>servent</c> structure allocated by the Windows Sockets library. The application
-		/// must never attempt to modify this structure or to free any of its components. Furthermore, only one copy of this structure is
-		/// allocated per thread, so the application should copy any information it needs before issuing any other Windows Sockets function calls.
-		/// </para>
-		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
-		/// <para>
-		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
-		/// Server 2012 R2, and later.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-getservbyname servent * getservbyname( const char *name,
-		// const char *proto );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("winsock.h", MSDNShortId = "730fa372-f620-4d21-99b9-3e7b79932792")]
 		public static extern IntPtr getservbyname(string name, [Optional] string proto);
-
-		/// <summary>The <c>getservbyport</c> function retrieves service information corresponding to a port and protocol.</summary>
-		/// <param name="port">Port for a service, in network byte order.</param>
-		/// <param name="proto">
-		/// Optional pointer to a protocol name. If this is null, <c>getservbyport</c> returns the first service entry for which the port
-		/// matches the <c>s_port</c> of the servent structure. Otherwise, <c>getservbyport</c> matches both the port and the proto parameters.
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// If no error occurs, <c>getservbyport</c> returns a pointer to the servent structure. Otherwise, it returns a null pointer and a
-		/// specific error number can be retrieved by calling WSAGetLastError.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Error code</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>WSANOTINITIALISED</term>
-		/// <term>A successful WSAStartup call must occur before using this function.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAENETDOWN</term>
-		/// <term>The network subsystem has failed.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAHOST_NOT_FOUND</term>
-		/// <term>Authoritative Answer Service not found.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSATRY_AGAIN</term>
-		/// <term>A nonauthoritative Service not found, or server failure.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSANO_RECOVERY</term>
-		/// <term>Nonrecoverable errors, the services database is not accessible.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSANO_DATA</term>
-		/// <term>Valid name, no data record of requested type.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEINPROGRESS</term>
-		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEFAULT</term>
-		/// <term>The proto parameter is not a valid part of the user address space.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEINTR</term>
-		/// <term>A blocking Windows Socket 1.1 call was canceled through WSACancelBlockingCall.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>The <c>getservbyport</c> function returns a pointer to a servent structure as it does in the getservbyname function.</para>
-		/// <para>
-		/// The <c>servent</c> structure is allocated by Windows Sockets. The application must never attempt to modify this structure or to
-		/// free any of its components. Furthermore, only one copy of this structure is allocated per thread, so the application should copy
-		/// any information it needs before issuing any other Windows Sockets function calls.
-		/// </para>
-		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
-		/// <para>
-		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
-		/// Server 2012 R2, and later.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-getservbyport servent * getservbyport( int port, const char
-		// *proto );
-		[DllImport(Lib.Ws2_32, SetLastError = true, EntryPoint = "getservbyport", CharSet = CharSet.Ansi)]
-		[PInvokeData("winsock.h", MSDNShortId = "afd63c2d-4f77-49df-aeff-bfe56598fcbf")]
-		public static extern unsafe SERVENT* getservbyport_unsafe(int port, [Optional] string proto);
 
 		/// <summary>The <c>getservbyport</c> function retrieves service information corresponding to a port and protocol.</summary>
 		/// <param name="port">Port for a service, in network byte order.</param>
@@ -2302,7 +2156,7 @@ namespace Vanara.PInvoke
 		// optname, char *optval, int *optlen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("winsock.h", MSDNShortId = "25bc511d-7a9f-41c1-8983-1af1e3f8bf2d")]
-		public static extern int getsockopt(SOCKET s, int level, int optname, [Optional] StringBuilder optval, ref int optlen);
+		public static extern int getsockopt(SOCKET s, int level, int optname, [Optional] IntPtr optval, ref int optlen);
 
 		/// <summary>The <c>htonl</c> function converts a <c>u_long</c> from host to TCP/IP network byte order (which is big-endian).</summary>
 		/// <param name="hostlong">A 32-bit number in host byte order.</param>
@@ -2496,7 +2350,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/wsipv6ok/nf-wsipv6ok-inet_ntoa void inet_ntoa( a );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("wsipv6ok.h", MSDNShortId = "01cd32e7-a01d-40e8-afb5-69223d643a0e")]
-		public static extern string inet_ntoa(IN_ADDR a);
+		public static extern StrPtrAnsi inet_ntoa(IN_ADDR a);
 
 		/// <summary>The <c>ioctlsocket</c> function controls the I/O mode of a socket.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -4490,381 +4344,7 @@ namespace Vanara.PInvoke
 		// protocol );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "6bf6e6c4-6268-479c-86a6-52e90cf317db")]
-		public static extern SafeSOCKET socket(uint af, SOCK type, IPPROTO protocol);
-
-		/// <summary>The <c>socket</c> function creates a socket that is bound to a specific transport service provider.</summary>
-		/// <param name="af">
-		/// <para>The address family specification. Possible values for the address family are defined in the Winsock2.h header file.</para>
-		/// <para>
-		/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed and the possible values
-		/// for the address family are defined in the Ws2def.h header file. Note that the Ws2def.h header file is automatically included in
-		/// Winsock2.h, and should never be used directly.
-		/// </para>
-		/// <para>
-		/// The values currently supported are AF_INET or AF_INET6, which are the Internet address family formats for IPv4 and IPv6. Other
-		/// options for address family (AF_NETBIOS for use with NetBIOS, for example) are supported if a Windows Sockets service provider
-		/// for the address family is installed. Note that the values for the AF_ address family and PF_ protocol family constants are
-		/// identical (for example, <c>AF_INET</c> and <c>PF_INET</c>), so either constant can be used.
-		/// </para>
-		/// <para>The table below lists common values for address family although many other values are possible.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Af</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>AF_UNSPEC 0</term>
-		/// <term>The address family is unspecified.</term>
-		/// </item>
-		/// <item>
-		/// <term>AF_INET 2</term>
-		/// <term>The Internet Protocol version 4 (IPv4) address family.</term>
-		/// </item>
-		/// <item>
-		/// <term>AF_IPX 6</term>
-		/// <term>
-		/// The IPX/SPX address family. This address family is only supported if the NWLink IPX/SPX NetBIOS Compatible Transport protocol is
-		/// installed. This address family is not supported on Windows Vista and later.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AF_APPLETALK 16</term>
-		/// <term>
-		/// The AppleTalk address family. This address family is only supported if the AppleTalk protocol is installed. This address family
-		/// is not supported on Windows Vista and later.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AF_NETBIOS 17</term>
-		/// <term>
-		/// The NetBIOS address family. This address family is only supported if the Windows Sockets provider for NetBIOS is installed. The
-		/// Windows Sockets provider for NetBIOS is supported on 32-bit versions of Windows. This provider is installed by default on 32-bit
-		/// versions of Windows. The Windows Sockets provider for NetBIOS is not supported on 64-bit versions of windows including Windows
-		/// 7, Windows Server 2008, Windows Vista, Windows Server 2003, or Windows XP. The Windows Sockets provider for NetBIOS only
-		/// supports sockets where the type parameter is set to SOCK_DGRAM. The Windows Sockets provider for NetBIOS is not directly related
-		/// to the NetBIOS programming interface. The NetBIOS programming interface is not supported on Windows Vista, Windows Server 2008,
-		/// and later.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AF_INET6 23</term>
-		/// <term>The Internet Protocol version 6 (IPv6) address family.</term>
-		/// </item>
-		/// <item>
-		/// <term>AF_IRDA 26</term>
-		/// <term>
-		/// The Infrared Data Association (IrDA) address family. This address family is only supported if the computer has an infrared port
-		/// and driver installed.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AF_BTH 32</term>
-		/// <term>
-		/// The Bluetooth address family. This address family is supported on Windows XP with SP2 or later if the computer has a Bluetooth
-		/// adapter and driver installed.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="type">
-		/// <para>The type specification for the new socket.</para>
-		/// <para>Possible values for the socket type are defined in the Winsock2.h header file.</para>
-		/// <para>The following table lists the possible values for the type parameter supported for Windows Sockets 2:</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Type</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>SOCK_STREAM 1</term>
-		/// <term>
-		/// A socket type that provides sequenced, reliable, two-way, connection-based byte streams with an OOB data transmission mechanism.
-		/// This socket type uses the Transmission Control Protocol (TCP) for the Internet address family (AF_INET or AF_INET6).
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>SOCK_DGRAM 2</term>
-		/// <term>
-		/// A socket type that supports datagrams, which are connectionless, unreliable buffers of a fixed (typically small) maximum length.
-		/// This socket type uses the User Datagram Protocol (UDP) for the Internet address family (AF_INET or AF_INET6).
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>SOCK_RAW 3</term>
-		/// <term>
-		/// A socket type that provides a raw socket that allows an application to manipulate the next upper-layer protocol header. To
-		/// manipulate the IPv4 header, the IP_HDRINCL socket option must be set on the socket. To manipulate the IPv6 header, the
-		/// IPV6_HDRINCL socket option must be set on the socket.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>SOCK_RDM 4</term>
-		/// <term>
-		/// A socket type that provides a reliable message datagram. An example of this type is the Pragmatic General Multicast (PGM)
-		/// multicast protocol implementation in Windows, often referred to as reliable multicast programming. This type value is only
-		/// supported if the Reliable Multicast Protocol is installed.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>SOCK_SEQPACKET 5</term>
-		/// <term>A socket type that provides a pseudo-stream packet based on datagrams.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// In Windows Sockets 2, new socket types were introduced. An application can dynamically discover the attributes of each available
-		/// transport protocol through the WSAEnumProtocols function. So an application can determine the possible socket type and protocol
-		/// options for an address family and use this information when specifying this parameter. Socket type definitions in the Winsock2.h
-		/// and Ws2def.h header files will be periodically updated as new socket types, address families, and protocols are defined.
-		/// </para>
-		/// <para>In Windows Sockets 1.1, the only possible socket types are <c>SOCK_DGRAM</c> and <c>SOCK_STREAM</c>.</para>
-		/// </param>
-		/// <param name="protocol">
-		/// <para>
-		/// The protocol to be used. The possible options for the protocol parameter are specific to the address family and socket type
-		/// specified. Possible values for the protocol are defined in the Winsock2.h and Wsrm.h header files.
-		/// </para>
-		/// <para>
-		/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed and this parameter can be
-		/// one of the values from the <c>IPPROTO</c> enumeration type defined in the Ws2def.h header file. Note that the Ws2def.h header
-		/// file is automatically included in Winsock2.h, and should never be used directly.
-		/// </para>
-		/// <para>
-		/// If a value of 0 is specified, the caller does not wish to specify a protocol and the service provider will choose the protocol
-		/// to use.
-		/// </para>
-		/// <para>
-		/// When the af parameter is AF_INET or AF_INET6 and the type is <c>SOCK_RAW</c>, the value specified for the protocol is set in the
-		/// protocol field of the IPv6 or IPv4 packet header.
-		/// </para>
-		/// <para>The table below lists common values for the protocol although many other values are possible.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>protocol</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>IPPROTO_ICMP 1</term>
-		/// <term>
-		/// The Internet Control Message Protocol (ICMP). This is a possible value when the af parameter is AF_UNSPEC, AF_INET, or AF_INET6
-		/// and the type parameter is SOCK_RAW or unspecified. This protocol value is supported on Windows XP and later.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>IPPROTO_IGMP 2</term>
-		/// <term>
-		/// The Internet Group Management Protocol (IGMP). This is a possible value when the af parameter is AF_UNSPEC, AF_INET, or AF_INET6
-		/// and the type parameter is SOCK_RAW or unspecified. This protocol value is supported on Windows XP and later.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>BTHPROTO_RFCOMM 3</term>
-		/// <term>
-		/// The Bluetooth Radio Frequency Communications (Bluetooth RFCOMM) protocol. This is a possible value when the af parameter is
-		/// AF_BTH and the type parameter is SOCK_STREAM. This protocol value is supported on Windows XP with SP2 or later.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>IPPROTO_TCP 6</term>
-		/// <term>
-		/// The Transmission Control Protocol (TCP). This is a possible value when the af parameter is AF_INET or AF_INET6 and the type
-		/// parameter is SOCK_STREAM.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>IPPROTO_UDP 17</term>
-		/// <term>
-		/// The User Datagram Protocol (UDP). This is a possible value when the af parameter is AF_INET or AF_INET6 and the type parameter
-		/// is SOCK_DGRAM.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>IPPROTO_ICMPV6 58</term>
-		/// <term>
-		/// The Internet Control Message Protocol Version 6 (ICMPv6). This is a possible value when the af parameter is AF_UNSPEC, AF_INET,
-		/// or AF_INET6 and the type parameter is SOCK_RAW or unspecified. This protocol value is supported on Windows XP and later.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>IPPROTO_RM 113</term>
-		/// <term>
-		/// The PGM protocol for reliable multicast. This is a possible value when the af parameter is AF_INET and the type parameter is
-		/// SOCK_RDM. On the Windows SDK released for Windows Vista and later, this protocol is also called IPPROTO_PGM. This protocol value
-		/// is only supported if the Reliable Multicast Protocol is installed.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// If no error occurs, <c>socket</c> returns a descriptor referencing the new socket. Otherwise, a value of INVALID_SOCKET is
-		/// returned, and a specific error code can be retrieved by calling WSAGetLastError.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Error code</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>WSANOTINITIALISED</term>
-		/// <term>A successful WSAStartup call must occur before using this function.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAENETDOWN</term>
-		/// <term>The network subsystem or the associated service provider has failed.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEAFNOSUPPORT</term>
-		/// <term>
-		/// The specified address family is not supported. For example, an application tried to create a socket for the AF_IRDA address
-		/// family but an infrared adapter and device driver is not installed on the local computer.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEINPROGRESS</term>
-		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEMFILE</term>
-		/// <term>No more socket descriptors are available.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEINVAL</term>
-		/// <term>
-		/// An invalid argument was supplied. This error is returned if the af parameter is set to AF_UNSPEC and the type and protocol
-		/// parameter are unspecified.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEINVALIDPROVIDER</term>
-		/// <term>The service provider returned a version other than 2.2.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEINVALIDPROCTABLE</term>
-		/// <term>The service provider returned an invalid or incomplete procedure table to the WSPStartup.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAENOBUFS</term>
-		/// <term>No buffer space is available. The socket cannot be created.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEPROTONOSUPPORT</term>
-		/// <term>The specified protocol is not supported.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEPROTOTYPE</term>
-		/// <term>The specified protocol is the wrong type for this socket.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEPROVIDERFAILEDINIT</term>
-		/// <term>
-		/// The service provider failed to initialize. This error is returned if a layered service provider (LSP) or namespace provider was
-		/// improperly installed or the provider fails to operate correctly.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>WSAESOCKTNOSUPPORT</term>
-		/// <term>The specified socket type is not supported in this address family.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The <c>socket</c> function causes a socket descriptor and any related resources to be allocated and bound to a specific
-		/// transport-service provider. Winsock will utilize the first available service provider that supports the requested combination of
-		/// address family, socket type and protocol parameters. The socket that is created will have the overlapped attribute as a default.
-		/// For Windows, the Microsoft-specific socket option, SO_OPENTYPE, defined in Mswsock.h can affect this default. See
-		/// Microsoft-specific documentation for a detailed description of SO_OPENTYPE.
-		/// </para>
-		/// <para>
-		/// Sockets without the overlapped attribute can be created by using WSASocket. All functions that allow overlapped operation
-		/// (WSASend, WSARecv, WSASendTo, WSARecvFrom, and WSAIoctl) also support nonoverlapped usage on an overlapped socket if the values
-		/// for parameters related to overlapped operation are <c>NULL</c>.
-		/// </para>
-		/// <para>
-		/// When selecting a protocol and its supporting service provider this procedure will only choose a base protocol or a protocol
-		/// chain, not a protocol layer by itself. Unchained protocol layers are not considered to have partial matches on type or af
-		/// either. That is, they do not lead to an error code of WSAEAFNOSUPPORT or WSAEPROTONOSUPPORT if no suitable protocol is found.
-		/// </para>
-		/// <para>
-		/// <c>Note</c> The manifest constant <c>AF_UNSPEC</c> continues to be defined in the header file but its use is strongly
-		/// discouraged, as this can cause ambiguity in interpreting the value of the protocol parameter.
-		/// </para>
-		/// <para>
-		/// Applications are encouraged to use <c>AF_INET6</c> for the af parameter and create a dual-mode socket that can be used with both
-		/// IPv4 and IPv6.
-		/// </para>
-		/// <para>
-		/// Connection-oriented sockets such as <c>SOCK_STREAM</c> provide full-duplex connections, and must be in a connected state before
-		/// any data can be sent or received on it. A connection to another socket is created with a connect call. Once connected, data can
-		/// be transferred using send and recv calls. When a session has been completed, a closesocket must be performed.
-		/// </para>
-		/// <para>
-		/// The communications protocols used to implement a reliable, connection-oriented socket ensure that data is not lost or
-		/// duplicated. If data for which the peer protocol has buffer space cannot be successfully transmitted within a reasonable length
-		/// of time, the connection is considered broken and subsequent calls will fail with the error code set to WSAETIMEDOUT.
-		/// </para>
-		/// <para>
-		/// Connectionless, message-oriented sockets allow sending and receiving of datagrams to and from arbitrary peers using sendto and
-		/// recvfrom. If such a socket is connected to a specific peer, datagrams can be sent to that peer using send and can be received
-		/// only from this peer using recv.
-		/// </para>
-		/// <para>
-		/// IPv6 and IPv4 operate differently when receiving a socket with a type of <c>SOCK_RAW</c>. The IPv4 receive packet includes the
-		/// packet payload, the next upper-level header (for example, the IP header for a TCP or UDP packet), and the IPv4 packet header.
-		/// The IPv6 receive packet includes the packet payload and the next upper-level header. The IPv6 receive packet never includes the
-		/// IPv6 packet header.
-		/// </para>
-		/// <para><c>Note</c> On Windows NT, raw socket support requires administrative privileges.</para>
-		/// <para>
-		/// A socket with a type parameter of <c>SOCK_SEQPACKET</c> is based on datagrams, but functions as a pseudo-stream protocol. For
-		/// both send and receive packets, separate datagrams are used. However, Windows Sockets can coalesce multiple receive packets into
-		/// a single packet. So an application can issue a receive call (for example, recv or WSARecvEx) and retrieve the data from several
-		/// coalesced multiple packets in single call. The AF_NETBIOS address family supports a type parameter of <c>SOCK_SEQPACKET</c>.
-		/// </para>
-		/// <para>
-		/// When the af parameter is <c>AF_NETBIOS</c> for NetBIOS over TCP/IP, the type parameter can be <c>SOCK_DGRAM</c> or
-		/// <c>SOCK_SEQPACKET</c>. For the <c>AF_NETBIOS</c> address family, the protocol parameter is the LAN adapter number represented as
-		/// a negative number.
-		/// </para>
-		/// <para>
-		/// On Windows XP and later, the following command can be used to list the Windows Sockets catalog to determine the service
-		/// providers installed and the address family, socket type, and protocols that are supported.
-		/// </para>
-		/// <para><c>netsh winsock show catalog</c></para>
-		/// <para>
-		/// Support for sockets with type <c>SOCK_RAW</c> is not required, but service providers are encouraged to support raw sockets as practicable.
-		/// </para>
-		/// <para>Notes for IrDA Sockets</para>
-		/// <para>Keep the following in mind:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>The Af_irda.h header file must be explicitly included.</term>
-		/// </item>
-		/// <item>
-		/// <term>Only <c>SOCK_STREAM</c> is supported; the <c>SOCK_DGRAM</c> type is not supported by IrDA.</term>
-		/// </item>
-		/// <item>
-		/// <term>The protocol parameter is always set to 0 for IrDA.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// A socket for use with the AF_IRDA address family can only be created if the local computer has an infrared port and driver
-		/// installed. Otherwise, a call to the <c>socket</c> function with af parameter set to AF_IRDA will fail and WSAGetLastError
-		/// returns WSAEPROTONOSUPPORT.
-		/// </para>
-		/// <para>Example Code</para>
-		/// <para>
-		/// The following example demonstrates the use of the <c>socket</c> function to create a socket that is bound to a specific
-		/// transport service provider..
-		/// </para>
-		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
-		/// <para>
-		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
-		/// Server 2012 R2, and later.
-		/// </para>
-		/// </remarks>
-		[PInvokeData("winsock2.h", MSDNShortId = "6bf6e6c4-6268-479c-86a6-52e90cf317db")]
-		public static SafeSOCKET socket(ADDRESS_FAMILY af, SOCK type, IPPROTO protocol) => socket((uint)af, type, protocol);
+		public static extern SafeSOCKET socket(ADDRESS_FAMILY af, SOCK type, IPPROTO protocol);
 
 		/// <summary>
 		/// The <c>protoent</c> structure contains the name and protocol numbers that correspond to a given protocol name. Applications must
@@ -4896,23 +4376,81 @@ namespace Vanara.PInvoke
 		// **s_aliases; #if ... char *s_proto; #if ... short s_port; #else short s_port; #endif #else char *s_proto; #endif } SERVENT,
 		// *PSERVENT, *LPSERVENT;
 		[PInvokeData("winsock.h", MSDNShortId = "8696b854-4d37-4d1b-8383-169b5dc7a2ae")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-		public struct SERVENT
+		[VanaraMarshaler(typeof(SERVENT))]
+		public struct SERVENT : IVanaraMarshaler
 		{
 			/// <summary>The official name of the service.</summary>
-			public StrPtrAnsi s_name;
+			public string s_name;
 
 			/// <summary>A <c>NULL</c>-terminated array of alternate names.</summary>
-			public IntPtr s_aliases;
-
-			/// <summary>The name of the protocol to use when contacting the service.</summary>
-			public StrPtrAnsi s_proto;
+			public string[] s_aliases;
 
 			/// <summary>The port number at which the service can be contacted. Port numbers are returned in network byte order.</summary>
 			public short s_port;
 
-			/// <summary>Array of alternate names extracted from <see cref="p_aliases"/>.</summary>
-			public string[] Aliases => s_aliases.ToStringEnum(s_aliases.GetNulledPtrArrayLength(), CharSet.Ansi).ToArray();
+			/// <summary>The name of the protocol to use when contacting the service.</summary>
+			public string s_proto;
+
+			/// <summary>Use this method to address different structure layouts on 64-bit systems.</summary>
+			/// <param name="ptr">The ptr to convert.</param>
+			/// <returns>A SERVENT structure aligned correctly.</returns>
+			public SERVENT FromIntPtr(IntPtr ptr)
+			{
+				if (IntPtr.Size == 8)
+				{
+					var x = ptr.ToStructure<SERVENTx64>();
+					return new SERVENT { s_name = x.s_name, s_aliases = x.s_aliases.ToStringEnum(x.s_aliases.GetNulledPtrArrayLength(), CharSet.Ansi).ToArray(), s_port = x.s_port, s_proto = x.s_proto };
+				}
+				var s = ptr.ToStructure<SERVENTx32>();
+				return new SERVENT { s_name = s.s_name, s_aliases = s.s_aliases.ToStringEnum(s.s_aliases.GetNulledPtrArrayLength(), CharSet.Ansi).ToArray(), s_port = s.s_port, s_proto = s.s_proto };
+			}
+
+			SizeT IVanaraMarshaler.GetNativeSize() => IntPtr.Size == 8 ? Marshal.SizeOf(typeof(SERVENTx64)) : Marshal.SizeOf(typeof(SERVENT));
+
+			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject)
+			{
+				if (managedObject is SERVENT s)
+				{
+					var mem = new SafeHGlobalHandle(64);
+					using (var str = new NativeMemoryStream(mem, 64L))
+					{
+						str.WriteReference(s.s_name);
+						str.WriteReferenceObject(s.s_aliases);
+						if (IntPtr.Size == 8)
+						{
+							str.WriteReference(s.s_proto);
+							str.Write((int)s.s_port);
+						}
+						else
+						{
+							str.WriteReference(s.s_proto);
+							str.Write((int)s.s_port);
+						}
+					}
+					return mem;
+				}
+				throw new ArgumentException("Object must be of type SERVENT.", nameof(managedObject));
+			}
+
+			object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes) => FromIntPtr(pNativeData);
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+			private struct SERVENTx32
+			{
+				public StrPtrAnsi s_name;
+				public IntPtr s_aliases;
+				public short s_port;
+				public StrPtrAnsi s_proto;
+			}
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+			private struct SERVENTx64
+			{
+				public StrPtrAnsi s_name;
+				public IntPtr s_aliases;
+				public StrPtrAnsi s_proto;
+				public short s_port;
+			}
 		}
 	}
 }
