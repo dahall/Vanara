@@ -1,8 +1,8 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
 
 using System;
+using System.Net;
 using System.Runtime.InteropServices;
-using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 
@@ -11,11 +11,189 @@ namespace Vanara.PInvoke
 	/// <summary>Functions, structures and constants from ws2_32.h.</summary>
 	public static partial class Ws2_32
 	{
+		/// <summary>
+		/// An opaque data structure object from the service provider associated with socket s. This object stores the current configuration
+		/// information of the service provider. The exact format of this data structure is service provider specific.
+		/// </summary>
+		public const int PVD_CONFIG = 0x3001;
+
+		/// <summary>The socket is listening.</summary>
+		[CorrespondingType(typeof(BOOL))]
+		public const int SO_ACCEPTCONN = 0x0002;
+
+		/// <summary>The socket is configured for the transmission and receipt of broadcast messages.</summary>
+		[CorrespondingType(typeof(BOOL))]
+		public const int SO_BROADCAST = 0x0020;
+
+		/// <summary>Returns the local address, local port, remote address, remote port, socket type, and protocol used by a socket.</summary>
+		[CorrespondingType(typeof(CSADDR_INFO))]
+		public const int SO_BSP_STATE = 0x1009;
+
+		/// <summary>Returns current socket state, either from a previous call to setsockopt or the system default.</summary>
+		[CorrespondingType(typeof(BOOL))]
+		public const int SO_CONDITIONAL_ACCEPT = 0x3002;
+
+		/// <summary></summary>
+		public const int SO_CONNDATA = 0x7000;
+
+		/// <summary></summary>
+		public const int SO_CONNDATALEN = 0x7004;
+
+		/// <summary>
+		/// Returns the number of seconds a socket has been connected. This socket option is valid for connection oriented protocols only.
+		/// </summary>
+		[CorrespondingType(typeof(uint))]
+		public const int SO_CONNECT_TIME = 0x700C;
+
+		/// <summary></summary>
+		public const int SO_CONNOPT = 0x7001;
+
+		/// <summary></summary>
+		public const int SO_CONNOPTLEN = 0x7005;
+
+		/// <summary>Debugging is enabled.</summary>
+		[CorrespondingType(typeof(BOOL))]
+		public const int SO_DEBUG = 0x0001;
+
+		/// <summary></summary>
+		public const int SO_DISCDATA = 0x7002;
+
+		/// <summary></summary>
+		public const int SO_DISCDATALEN = 0x7006;
+
+		/// <summary></summary>
+		public const int SO_DISCOPT = 0x7003;
+
+		/// <summary></summary>
+		public const int SO_DISCOPTLEN = 0x7007;
+
+		/// <summary>If TRUE, the SO_LINGER option is disabled.</summary>
+		[CorrespondingType(typeof(BOOL))]
+		public const int SO_DONTLINGER = (int)(~SO_LINGER);
+
+		/// <summary>
+		/// Routing is disabled. Setting this succeeds but is ignored on AF_INET sockets; fails on AF_INET6 sockets with WSAENOPROTOOPT.
+		/// This option is not supported on ATM sockets.
+		/// </summary>
+		[CorrespondingType(typeof(BOOL))]
+		public const int SO_DONTROUTE = 0x0010;
+
+		/// <summary>Retrieves error status and clear.</summary>
+		[CorrespondingType(typeof(int))]
+		public const int SO_ERROR = 0x1007;
+
+		/// <summary>
+		/// Prevents any other socket from binding to the same address and port. This option must be set before calling the bind function.
+		/// </summary>
+		[CorrespondingType(typeof(BOOL))]
+		public const int SO_EXCLUSIVEADDRUSE = ((int)(~SO_REUSEADDR));
+
+		/// <summary>Reserved.</summary>
+		[CorrespondingType(typeof(GROUP))]
+		public const int SO_GROUP_ID = 0x2001;
+
+		/// <summary>Reserved.</summary>
+		[CorrespondingType(typeof(int))]
+		public const int SO_GROUP_PRIORITY = 0x2002;
+
+		/// <summary>Keep-alives are being sent. Not supported on ATM sockets.</summary>
+		[CorrespondingType(typeof(BOOL))]
+		public const int SO_KEEPALIVE = 0x0008;
+
+		/// <summary>Returns the current linger options.</summary>
+		[CorrespondingType(typeof(LINGER))]
+		public const int SO_LINGER = 0x0080;
+
+		/// <summary>
+		/// The maximum size of a message for message-oriented socket types (for example, SOCK_DGRAM). Has no meaning for stream oriented sockets.
+		/// </summary>
+		[CorrespondingType(typeof(uint))]
+		public const int SO_MAX_MSG_SIZE = 0x2003;
+
+		/// <summary></summary>
+		public const int SO_MAXDG = 0x7009;
+
+		/// <summary></summary>
+		public const int SO_MAXPATHDG = 0x700A;
+
+		/// <summary>
+		/// OOB data is being received in the normal data stream. (See section Windows Sockets 1.1 Blocking Routines and EINPROGRESS for a
+		/// discussion of this topic.)
+		/// </summary>
+		[CorrespondingType(typeof(BOOL))]
+		public const int SO_OOBINLINE = 0x0100;
+
+		/// <summary>A description of the protocol information for the protocol that is bound to this socket.</summary>
+		[CorrespondingType(typeof(WSAPROTOCOL_INFO))]
+		public const int SO_PROTOCOL_INFO = SO_PROTOCOL_INFOW;
+
+		/// <summary>A description of the protocol information for the protocol that is bound to this socket.</summary>
+		[CorrespondingType(typeof(WSAPROTOCOL_INFO))]
+		public const int SO_PROTOCOL_INFOA = 0x2004;
+
+		/// <summary>A description of the protocol information for the protocol that is bound to this socket.</summary>
+		[CorrespondingType(typeof(WSAPROTOCOL_INFO))]
+		public const int SO_PROTOCOL_INFOW = 0x2005;
+
+		/// <summary>
+		/// The total per-socket buffer space reserved for receives. This is unrelated to SO_MAX_MSG_SIZE and does not necessarily
+		/// correspond to the size of the TCP receive window.
+		/// </summary>
+		[CorrespondingType(typeof(int))]
+		public const int SO_RCVBUF = 0x1002;
+
+		/// <summary>Receives low watermark.</summary>
+		[CorrespondingType(typeof(int))]
+		public const int SO_RCVLOWAT = 0x1004;
+
+		/// <summary>Receives time-out.</summary>
+		[CorrespondingType(typeof(int))]
+		public const int SO_RCVTIMEO = 0x1006;
+
+		/// <summary>The socket can be bound to an address which is already in use. Not applicable for ATM sockets.</summary>
+		[CorrespondingType(typeof(BOOL))]
+		public const int SO_REUSEADDR = 0x0004;
+
+		/// <summary>
+		/// The total per-socket buffer space reserved for sends. This is unrelated to SO_MAX_MSG_SIZE and does not necessarily correspond
+		/// to the size of a TCP send window.
+		/// </summary>
+		[CorrespondingType(typeof(int))]
+		public const int SO_SNDBUF = 0x1001;
+
+		/// <summary>Sends low watermark.</summary>
+		[CorrespondingType(typeof(int))]
+		public const int SO_SNDLOWAT = 0x1003;
+
+		/// <summary>Sends time-out.</summary>
+		[CorrespondingType(typeof(int))]
+		public const int SO_SNDTIMEO = 0x1005;
+
+		/// <summary>The type of the socket (for example, SOCK_STREAM).</summary>
+		[CorrespondingType(typeof(int))]
+		public const int SO_TYPE = 0x1008;
+
+		/// <summary></summary>
+		public const int SO_UPDATE_ACCEPT_CONTEXT = 0x700B;
+
+		/// <summary></summary>
+		public const int SO_USELOOPBACK = 0x0040;
+
 		/// <summary>A value that indicates a function failure.</summary>
 		public const int SOCKET_ERROR = -1;
 
+		/// <summary>The socket option level.</summary>
+		public const int SOL_SOCKET = 0xffff;
+
 		/// <summary>Maximum queue length specifiable by listen.</summary>
 		public const int SOMAXCONN = 0x7fffffff;
+
+		/// <summary></summary>
+		public const int TCP_BSDURGENT = 0x7000;
+
+		/// <summary>Disables the Nagle algorithm for send coalescing.</summary>
+		[CorrespondingType(typeof(BOOL))]
+		public const int TCP_NODELAY = 0x0001;
 
 		/// <summary>The application-specified callback function for <see cref="WSAAccept"/>.</summary>
 		/// <param name="lpCallerId">
@@ -677,6 +855,136 @@ namespace Vanara.PInvoke
 		/// <returns/>
 		public static int SOMAXCONN_HINT(int b) => -b;
 
+		/// <summary>
+		/// The <c>CSADDR_INFO</c> structure contains Windows Sockets address information for a socket, network service, or namespace provider.
+		/// </summary>
+		/// <remarks>
+		/// <para>The GetAddressByName function obtains Windows Sockets address information using <c>CSADDR_INFO</c> structures.</para>
+		/// <para>
+		/// The getsockopt function called with the SO_BSP_STATE socket option retrieves a <c>CSADDR_INFO</c> structure for the specified socket.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/nspapi/ns-nspapi-csaddr_info typedef struct _CSADDR_INFO { SOCKET_ADDRESS
+		// LocalAddr; SOCKET_ADDRESS RemoteAddr; INT iSocketType; INT iProtocol; } CSADDR_INFO, *PCSADDR_INFO, *LPCSADDR_INFO;
+		[PInvokeData("nspapi.h", MSDNShortId = "9cad3586-e315-4f6f-9045-7c95502bb768")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CSADDR_INFO
+		{
+			/// <summary>
+			/// <para>Type: <c>SOCKET_ADDRESS</c></para>
+			/// <para>The Windows Sockets local address.</para>
+			/// <para>In a client application, pass this address to the <c>bind</c> function to obtain access to a network service.</para>
+			/// <para>
+			/// In a network service, pass this address to the <c>bind</c> function so that the service is bound to the appropriate local address.
+			/// </para>
+			/// </summary>
+			public SOCKET_ADDRESS LocalAddr;
+
+			/// <summary>
+			/// <para>Type: <c>SOCKET_ADDRESS</c></para>
+			/// <para>Windows Sockets remote address.</para>
+			/// <para>There are several uses for this remote address:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>
+			/// You can use this remote address to connect to the service through the connect function. This is useful if an application
+			/// performs send/receive operations that involve connection-oriented protocols.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// You can use this remote address with the sendto function when you are communicating over a connectionless (datagram)
+			/// protocol. If you are using a connectionless protocol, such as UDP, <c>sendto</c> is typically the way you pass data to the
+			/// remote system.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public SOCKET_ADDRESS RemoteAddr;
+
+			/// <summary>
+			/// <para>Type: <c>INT</c></para>
+			/// <para>The type of Windows socket. Possible values for the socket type are defined in the Winsock2.h header file.</para>
+			/// <para>The following table lists the possible values supported for Windows Sockets 2:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>SOCK_STREAM</term>
+			/// <term>
+			/// A stream socket. This is a protocol that sends data as a stream of bytes, with no message boundaries. This socket type
+			/// provides sequenced, reliable, two-way, connection-based byte streams with an OOB data transmission mechanism. This socket
+			/// type uses the Transmission Control Protocol (TCP) for the Internet address family (AF_INET or AF_INET6).
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>SOCK_DGRAM</term>
+			/// <term>
+			/// A datagram socket. This socket type supports datagrams, which are connectionless, unreliable buffers of a fixed (typically
+			/// small) maximum length. This socket type uses the User Datagram Protocol (UDP) for the Internet address family (AF_INET or
+			/// AF_INET6). Services use recvfrom function to obtain datagrams. The listen and accept functions do not work with datagrams.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>SOCK_RDM</term>
+			/// <term>
+			/// A reliable message datagram socket. This socket type preserves message boundaries in data. An example of this type is the
+			/// Pragmatic General Multicast (PGM) multicast protocol implementation in Windows, often referred to as reliable multicast programming.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>SOCK_SEQPACKET</term>
+			/// <term>A sequenced packet stream socket. This socket type provides a pseudo-stream packet based on datagrams.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public SOCK iSocketType;
+
+			/// <summary>
+			/// <para>Type: <c>INT</c></para>
+			/// <para>
+			/// The protocol used. The possible options for the protocol parameter are specific to the address family and socket type
+			/// specified. Possible values are defined in the Winsock2.h and Wsrm.h header files.
+			/// </para>
+			/// <para>
+			/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed and this parameter can
+			/// be one of the values from the <c>IPPROTO</c> enumeration type defined in the Ws2def.h header file. Note that the Ws2def.h
+			/// header file is automatically included in Winsock2.h, and should never be used directly.
+			/// </para>
+			/// <para>The table below lists common values for the protocol although many other values are possible.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>protocol</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>IPPROTO_TCP 6</term>
+			/// <term>
+			/// The Transmission Control Protocol (TCP). This is a possible value when the address family is AF_INET or AF_INET6 and the
+			/// iSocketType member is SOCK_STREAM.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>IPPROTO_UDP 17</term>
+			/// <term>
+			/// The User Datagram Protocol (UDP). This is a possible value when the address family is AF_INET or AF_INET6 and the
+			/// iSocketType member is SOCK_DGRAM.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>IPPROTO_RM 113</term>
+			/// <term>
+			/// The PGM protocol for reliable multicast. This is a possible value when the address family is AF_INET and the iSocketType
+			/// member is SOCK_RDM. On the Windows SDK released for Windows Vista and later, this value is also called IPPROTO_PGM.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public IPPROTO iProtocol;
+		}
+
 		/// <summary>The IN_ADDR structure represents an IPv4 address.</summary>
 		[PInvokeData("winsock2.h")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -709,6 +1017,18 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the address represented as four bytes.</summary>
 			/// <value>An IPv4 address formatted as four u_chars.</value>
 			public byte[] S_un_b => BitConverter.GetBytes(S_addr);
+
+			/// <summary/>
+			public static readonly IN_ADDR INADDR_ANY = new IN_ADDR(0U);
+
+			/// <summary/>
+			public static readonly IN_ADDR INADDR_LOOPBACK = new IN_ADDR(0x7f000001);
+
+			/// <summary/>
+			public static readonly IN_ADDR INADDR_BROADCAST = new IN_ADDR(0xffffffff);
+
+			/// <summary/>
+			public static readonly IN_ADDR INADDR_NONE = new IN_ADDR(0xffffffff);
 
 			/// <summary>Implements the operator ==.</summary>
 			/// <param name="left">The left.</param>
@@ -900,6 +1220,105 @@ namespace Vanara.PInvoke
 			/// <param name="other">The value to compare with this instance.</param>
 			/// <returns><see langword="true"/> if the specified value is equal to this instance; otherwise, <see langword="false"/>.</returns>
 			public bool Equals(IN6_ADDR other) => lower == other.lower && upper == other.upper;
+		}
+
+		/// <summary>
+		/// The <c>linger</c> structure maintains information about a specific socket that specifies how that socket should behave when data
+		/// is queued to be sent and the closesocket function is called on the socket.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>l_onoff</c> member of the <c>linger</c> structure determines whether a socket should remain open for a specified amount
+		/// of time after a closesocket function call to enable queued data to be sent. Somewhat confusing is that this member can be
+		/// modified in two ways:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// Call the setsockopt function with the optname parameter set to <c>SO_DONTLINGER</c>. The optval parameter determines how the
+		/// <c>l_onoff</c> member is modified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Call the setsockopt function with the optname parameter set to <c>SO_LINGER</c>. The optval parameter specifies how both the
+		/// <c>l_onoff</c> and <c>l_linger</c> members are modified.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The <c>l_linger</c> member of the <c>linger</c> structure determines the amount of time, in seconds, a socket should remain
+		/// open. This member is only applicable if the <c>l_onoff</c> member of the <c>linger</c> structure is nonzero.
+		/// </para>
+		/// <para>
+		/// To enable a socket to remain open, an application should set the <c>l_onoff</c> member to a nonzero value and set the
+		/// <c>l_linger</c> member to the desired time-out in seconds. To disable a socket from remaining open, an application only needs to
+		/// set the <c>l_onoff</c> member of the <c>linger</c> structure to zero.
+		/// </para>
+		/// <para>
+		/// If an application calls the setsockopt function with the optname parameter set to <c>SO_DONTLINGER</c> to set the <c>l_onoff</c>
+		/// member to a nonzero value, the value for the <c>l_linger</c> member is not specified. In this case, the time-out used is
+		/// implementation dependent. If a previous time-out has been established for a socket (by enabling SO_LINGER), this time-out value
+		/// should be reinstated by the service provider.
+		/// </para>
+		/// <para>Note that enabling a nonzero timeout on a nonblocking socket is not recommended.</para>
+		/// <para>
+		/// The getsockopt function can be called with the optname parameter set to <c>SO_LINGER</c> to retrieve the current value of the
+		/// <c>linger</c> structure associated with a socket.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/ns-winsock-linger typedef struct linger { u_short l_onoff; u_short
+		// l_linger; } LINGER, *PLINGER, *LPLINGER;
+		[PInvokeData("winsock.h", MSDNShortId = "c1dbabcf-b5cd-4a9d-9bf9-b04c62117d74")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct LINGER
+		{
+			/// <summary>
+			/// <para>Type: <c>u_short</c></para>
+			/// <para>
+			/// Specifies whether a socket should remain open for a specified amount of time after a closesocket function call to enable
+			/// queued data to be sent. This member can have one of the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>
+			/// The socket will not remain open. This is the value set if the setsockopt function is called with the optname parameter set
+			/// to SO_DONTLINGER and the optval parameter is zero. This value is also set if the setsockopt function is called with the
+			/// optname parameter set to SO_LINGER and the linger structure passed in the optval parameter has the l_onoff member set to 0.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>nonzero</term>
+			/// <term>
+			/// The socket will remain open for a specified amount of time. This value is set if the setsockopt function is called with the
+			/// optname parameter set to SO_DONTLINGER and the optval parameter is nonzero. This value is also set if the setsockopt
+			/// function is called with the optname parameter set to SO_LINGER and the linger structure passed in the optval parameter has
+			/// the l_onoff member set to a nonzero value.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ushort l_onoff;
+
+			/// <summary>
+			/// <para>Type: <c>u_short</c></para>
+			/// <para>
+			/// The linger time in seconds. This member specifies how long to remain open after a closesocket function call to enable queued
+			/// data to be sent. This member is only applicable if the <c>l_onoff</c> member of the <c>linger</c> structure is set to a
+			/// nonzero value.
+			/// </para>
+			/// <para>
+			/// This value is set if the setsockopt function is called with the optname parameter set to <c>SO_LINGER</c>. The optval
+			/// parameter passed to the <c>setsockopt</c> function must contain a <c>linger</c> structure that is copied to the internal
+			/// <c>linger</c> structure maintained for the socket.
+			/// </para>
+			/// </summary>
+			public ushort l_linger;
 		}
 
 		/// <summary>
@@ -1634,7 +2053,7 @@ namespace Vanara.PInvoke
 			/// direction, two WSAPROTOCOL_INFOW structures should be used. When neither bit is set, the protocol is considered to be bidirectional.
 			/// </para>
 			/// </summary>
-			public uint dwServiceFlags1;
+			public XP1 dwServiceFlags1;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -1877,7 +2296,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public int iSocketType;
+			public SOCK iSocketType;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
@@ -1935,7 +2354,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public int iProtocol;
+			public IPPROTO iProtocol;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
@@ -2154,6 +2573,14 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SOCKADDR"/> class.</summary>
 			/// <param name="addr">The <see cref="SOCKADDR_IN6"/> value to assign.</param>
 			public SOCKADDR(SOCKADDR_IN6 addr) : base(Marshal.SizeOf(typeof(SOCKADDR_IN6))) => Marshal.StructureToPtr(addr, handle, false);
+
+			/// <summary>Initializes a new instance of the <see cref="SOCKADDR"/> class.</summary>
+			/// <param name="ipAddress">The ip address.</param>
+			public SOCKADDR(IPAddress ipAddress) : this(ipAddress.GetAddressBytes()) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SOCKADDR"/> class.</summary>
+			/// <param name="socketAddress">The socket address.</param>
+			public SOCKADDR(IPEndPoint endPoint) : this(endPoint.Address.GetAddressBytes(), (ushort)endPoint.Port) { }
 
 			/// <summary>Gets an instance that represents an empty address.</summary>
 			public static SOCKADDR Empty => new SOCKADDR(new byte[Marshal.SizeOf(typeof(IN6_ADDR))]);
