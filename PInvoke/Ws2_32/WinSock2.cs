@@ -2582,7 +2582,7 @@ namespace Vanara.PInvoke
 			public SOCKADDR(IPAddress ipAddress) : this(ipAddress.GetAddressBytes()) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SOCKADDR"/> class.</summary>
-			/// <param name="socketAddress">The socket address.</param>
+			/// <param name="endPoint">The socket address.</param>
 			public SOCKADDR(IPEndPoint endPoint) : this(endPoint.Address.GetAddressBytes(), (ushort)endPoint.Port) { }
 
 			/// <summary>Gets an instance that represents an empty address.</summary>
@@ -2595,6 +2595,12 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the <see cref="ADDRESS_FAMILY"/> of this address.</summary>
 			/// <value>The address family.</value>
 			public ADDRESS_FAMILY sa_family => (ADDRESS_FAMILY)handle.ToStructure<ushort>();
+
+			/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
+			/// <typeparam name="T">Native type</typeparam>
+			/// <param name="value">The value.</param>
+			/// <returns><see cref="SOCKADDR"/> object to an native (unmanaged) memory block the size of T.</returns>
+			public static SOCKADDR CreateFromStructure<T>(T value = default) => new SOCKADDR(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), true, s);
 
 			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR"/> to <see cref="SOCKADDR_IN"/>.</summary>
 			/// <param name="addr">The address.</param>
