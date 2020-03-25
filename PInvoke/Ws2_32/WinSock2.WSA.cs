@@ -10125,7 +10125,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint dwNameSpace;
+			public NS dwNameSpace;
 
 			/// <summary>
 			/// <para>Type: <c>LPGUID</c></para>
@@ -10191,6 +10191,14 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public IntPtr lpBlob;
+
+			/// <summary>Initializes a new instance of the <see cref="WSAQUERYSET"/> struct.</summary>
+			/// <param name="nameSpace">The name space.</param>
+			public WSAQUERYSET(NS nameSpace) : this()
+			{
+				dwSize = (uint)Marshal.SizeOf(this);
+				dwNameSpace = nameSpace;
+			}
 		}
 
 		/// <summary>
