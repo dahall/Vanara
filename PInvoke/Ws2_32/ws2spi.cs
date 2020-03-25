@@ -5278,7 +5278,7 @@ namespace Vanara.PInvoke
 			/// the string are not defined, but can be supported by certain namespace providers.
 			/// </para>
 			/// </summary>
-			public StrPtrUni lpszServiceInstanceName;
+			[MarshalAs(UnmanagedType.LPTStr)] public string lpszServiceInstanceName;
 
 			/// <summary>
 			/// <para>Type: <c>LPWSAVERSION</c></para>
@@ -5293,7 +5293,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>LPTSTR</c></para>
 			/// <para>This member is ignored for queries.</para>
 			/// </summary>
-			public StrPtrUni lpszComment;
+			[MarshalAs(UnmanagedType.LPTStr)] public string lpszComment;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -5363,7 +5363,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>LPTSTR</c></para>
 			/// <para>A pointer to an optional starting point of the query in a hierarchical namespace.</para>
 			/// </summary>
-			public StrPtrUni lpszContext;
+			[MarshalAs(UnmanagedType.LPTStr)] public string lpszContext;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -5384,7 +5384,7 @@ namespace Vanara.PInvoke
 			/// queries that are contained in a simple text string. This parameter is used to specify that string.
 			/// </para>
 			/// </summary>
-			public StrPtrUni lpszQueryString;
+			[MarshalAs(UnmanagedType.LPTStr)] public string lpszQueryString;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
