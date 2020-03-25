@@ -1706,6 +1706,9 @@ namespace Vanara.PInvoke
 			/// <returns>An IntPtr representing the value of the handle field.</returns>
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+
+			/// <inheritdoc/>
+			public override string ToString() => handle.ToString();
 		}
 
 		/// <summary>The <c>SOCKET_ADDRESS</c> structure stores protocol-specific address information.</summary>
@@ -2614,6 +2617,11 @@ namespace Vanara.PInvoke
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR(SOCKADDR_IN6 addr) => new SOCKADDR(addr);
+
+			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
+			public static implicit operator IntPtr(SOCKADDR addr) => addr.DangerousGetHandle();
 
 			/// <inheritdoc/>
 			public override string ToString() => sa_family == ADDRESS_FAMILY.AF_INET ? ((SOCKADDR_IN)this).ToString() : ((SOCKADDR_IN6)this).ToString();
