@@ -59,10 +59,10 @@ namespace Vanara.IO
 		OvercapCharged = BITS_COST_STATE.BITS_COST_STATE_OVERCAP_CHARGED,
 
 		/// <summary>Overcap throttled.</summary>
-		OstStateOvercapThrottled = BITS_COST_STATE.BITS_COST_STATE_OVERCAP_THROTTLED,
+		OvercapThrottled = BITS_COST_STATE.BITS_COST_STATE_OVERCAP_THROTTLED,
 
 		/// <summary>Usage-based.</summary>
-		OstStateUsageBased = BITS_COST_STATE.BITS_COST_STATE_USAGE_BASED,
+		UsageBased = BITS_COST_STATE.BITS_COST_STATE_USAGE_BASED,
 
 		/// <summary>Roaming</summary>
 		Roaming = BITS_COST_STATE.BITS_COST_STATE_ROAMING,
