@@ -4700,7 +4700,7 @@ namespace Vanara.PInvoke
 			private const SECURITY_INFORMATION defSecInfo = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.SACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION;
 
 			/// <summary>Initializes a new instance of the <see cref="SafePSECURITY_DESCRIPTOR"/> class.</summary>
-			public SafePSECURITY_DESCRIPTOR() : base(IntPtr.Zero, 0, false) { }
+			public SafePSECURITY_DESCRIPTOR() : base(IntPtr.Zero, 0, true) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafePSECURITY_DESCRIPTOR"/> class from an existing pointer.</summary>
 			/// <param name="pSecurityDescriptor">The security descriptor pointer.</param>
