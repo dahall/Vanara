@@ -80,6 +80,14 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void GetNamedSecurityInfoTest()
+		{
+			using var priv = new ElevPriv("SeSecurityPrivilege");
+			Assert.That(GetNamedSecurityInfo(AdvApi32Tests.fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, out var pOwnSid, out var pGrpSid, out var dacl, out var sacl, out var plsd), ResultIs.Successful);
+			Assert.That(() => plsd?.Dispose(), Throws.Nothing);
+		}
+
+		[Test]
 		public void GetSetSecurityInfoTest()
 		{
 			using (var tmp = new TempFile(Kernel32.FileAccess.FILE_ALL_ACCESS, System.IO.FileShare.Read))
