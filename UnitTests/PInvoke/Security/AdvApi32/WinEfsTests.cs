@@ -19,7 +19,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(EncryptFile(tmp.FullName), ResultIs.Successful);
 			using var hStore = CertOpenSystemStore(default, "TrustedPeople");
 			Assert.That(hStore, ResultIs.ValidHandle);
-			using var pCertContext = CertFindCertificateInStore(hStore, CertEncodingType.X509_ASN_ENCODING | CertEncodingType.PKCS_7_ASN_ENCODING, 0, CertFindType.CERT_FIND_SUBJECT_STR, new SafeCoTaskMemString(Environment.UserName), default);
+			using var pCertContext = CertFindCertificateInStore(hStore, CertEncodingType.X509_ASN_ENCODING | CertEncodingType.PKCS_7_ASN_ENCODING, 0, CertFindType.CERT_FIND_SUBJECT_STR, Environment.UserName, default);
 			Assert.That(pCertContext, ResultIs.ValidHandle);
 			var ctx = pCertContext.DangerousGetHandle().ToStructure<CERT_CONTEXT>();
 			var ecblob = new EFS_CERTIFICATE_BLOB { dwCertEncodingType = ctx.dwCertEncodingType, cbData = ctx.cbCertEncoded, pbData = ctx.pbCertEncoded };
@@ -92,7 +92,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			using var hStore = CertOpenSystemStore(default, "My");
 			Assert.That(hStore, ResultIs.ValidHandle);
-			using var pCertContext = CertFindCertificateInStore(hStore, CertEncodingType.X509_ASN_ENCODING | CertEncodingType.PKCS_7_ASN_ENCODING, 0, CertFindType.CERT_FIND_SUBJECT_STR, new SafeCoTaskMemString(Environment.UserName), default);
+			using var pCertContext = CertFindCertificateInStore(hStore, CertEncodingType.X509_ASN_ENCODING | CertEncodingType.PKCS_7_ASN_ENCODING, 0, CertFindType.CERT_FIND_SUBJECT_STR, Environment.UserName, default);
 			Assert.That(pCertContext, ResultIs.ValidHandle);
 			var ctx = pCertContext.DangerousGetHandle().ToStructure<CERT_CONTEXT>();
 			var ec = new ENCRYPTION_CERTIFICATE { cbTotalLength = (uint)Marshal.SizeOf<ENCRYPTION_CERTIFICATE>(), pCertBlob = ctx.pbCertEncoded };
