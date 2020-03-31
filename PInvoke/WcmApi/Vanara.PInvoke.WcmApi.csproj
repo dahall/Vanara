@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>WcmApi.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants imported from Windows WcmApi.dll.</Description>
+    <Copyright>Copyright © 2017-2020</Copyright>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <VersionPrefix>3.2.2</VersionPrefix>
+    <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <AssemblyName>Vanara.PInvoke.WcmApi</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <RootNamespace>Vanara.PInvoke</RootNamespace>
+    <Authors>David Hall</Authors>
+    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>Vanara64x64.png</PackageIcon>
+    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;WcmApi;windows connection manager</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <IncludeSource>true</IncludeSource>
+    <IncludeSymbols>true</IncludeSymbols>
+    <Company>GitHub Community</Company>
+    <Product>Vanara</Product>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+WcmFreeMemory, WcmGetProfileList, WcmQueryProperty, WcmSetProfileList, WcmSetProperty
+
+Structures
+WCM_BILLING_CYCLE_INFO, WCM_CONNECTION_COST_DATA, WCM_DATAPLAN_STATUS, WCM_POLICY_VALUE, WCM_PROFILE_INFO, WCM_PROFILE_INFO_LIST, WCM_TIME_INTERVAL, WCM_USAGE_DATA
+
+</PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) "></ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

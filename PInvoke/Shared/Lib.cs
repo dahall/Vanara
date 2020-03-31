@@ -135,6 +135,9 @@
 		/// <summary>The virt disk</summary>
 		public const string VirtDisk = "virtdisk.dll";
 
+		/// <summary>The dll for Windows Connection Management.</summary>
+		public const string Wcmapi = "wcmapi.dll";
+
 		/// <summary>The dll for Windows Error Reporting.</summary>
 		public const string Wer = "wer.dll";
 
@@ -146,6 +149,12 @@
 
 		/// <summary>The wintrust.dll</summary>
 		public const string Wintrust = "wintrust.dll";
+
+		/// <summary>The dll for Native Wifi</summary>
+		public const string Wlanapi = "wlanapi.dll";
+
+		/// <summary>The dll for Native Wifi UI</summary>
+		public const string Wlanui = "wlanui.dll";
 
 		/// <summary>The Winsock2 dll</summary>
 		public const string Ws2_32 = "ws2_32.dll";
