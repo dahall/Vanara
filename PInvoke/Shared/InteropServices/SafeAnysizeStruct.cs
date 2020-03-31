@@ -12,7 +12,7 @@ namespace Vanara.InteropServices
 	/// automatically marshals the correct structure to memory.
 	/// </summary>
 	/// <typeparam name="T">The type of the structure.</typeparam>
-	public class SafeAnysizeStruct<T> : SafeMemoryHandle<CoTaskMemoryMethods> where T : struct
+	public class SafeAnysizeStruct<T> : SafeMemoryHandle<CoTaskMemoryMethods>
 	{
 		private static readonly int baseSz;
 		private static readonly Type elemType, structType;
@@ -51,7 +51,7 @@ namespace Vanara.InteropServices
 		/// The name of the field in <typeparamref name="T"/> that holds the length of the array. If <see langword="null"/>, the first
 		/// public field will be selected.
 		/// </param>
-		public SafeAnysizeStruct(IntPtr allocatedMemory, int size, string sizeFieldName = null) : base(allocatedMemory, size, false)
+		public SafeAnysizeStruct(IntPtr allocatedMemory, SizeT size, string sizeFieldName = null) : base(allocatedMemory, size, false)
 		{
 			if (allocatedMemory == IntPtr.Zero) throw new ArgumentNullException(nameof(allocatedMemory));
 			if (baseSz > size) throw new OutOfMemoryException();
@@ -85,7 +85,7 @@ namespace Vanara.InteropServices
 		/// <summary>Performs an explicit conversion from <see cref="SafeAnysizeStruct{T}"/> to <typeparamref name="T"/>.</summary>
 		/// <param name="s">The <see cref="SafeAnysizeStruct{T}"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator T(SafeAnysizeStruct<T> s) => s?.Value ?? default;
+		public static implicit operator T(SafeAnysizeStruct<T> s) => s is null ? default : s.Value;
 
 		private T FromNative(IntPtr allocatedMemory, int size)
 		{
@@ -137,7 +137,7 @@ namespace Vanara.InteropServices
 	/// </summary>
 	/// <typeparam name="T">The structure type to be marshaled.</typeparam>
 	/// <seealso cref="Vanara.InteropServices.IVanaraMarshaler"/>
-	public class SafeAnysizeStructMarshaler<T> : IVanaraMarshaler where T : struct
+	public class SafeAnysizeStructMarshaler<T> : IVanaraMarshaler
 	{
 		private string sizeFieldName;
 
