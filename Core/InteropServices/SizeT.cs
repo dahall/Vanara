@@ -58,17 +58,17 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="System.Int32"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator int(SizeT value) => (int)value.val.ToUInt32();
+		public static implicit operator int(SizeT value) => ((IConvertible)value).ToInt32(null);
 
 		/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="System.UInt32"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator uint(SizeT value) => value.val.ToUInt32();
+		public static implicit operator uint(SizeT value) => ((IConvertible)value).ToUInt32(null);
 
 		/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="System.Int64"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator long(SizeT value) => (long)value.Value;
+		public static implicit operator long(SizeT value) => ((IConvertible)value).ToInt64(null);
 
 		/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="System.UInt64"/>.</summary>
 		/// <param name="value">The value.</param>
@@ -153,7 +153,15 @@ namespace Vanara.PInvoke
 		bool IConvertible.ToBoolean(IFormatProvider provider) => ((IConvertible)Value).ToBoolean(provider);
 
 		/// <inheritdoc/>
-		byte IConvertible.ToByte(IFormatProvider provider) => ((IConvertible)Value).ToByte(provider);
+		byte IConvertible.ToByte(IFormatProvider provider)
+		{
+			var ul = Value;
+			if (ul < (ulong)byte.MaxValue)
+				return (byte)ul;
+			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+				return byte.MaxValue;
+			throw new OverflowException();
+		}
 
 		/// <inheritdoc/>
 		char IConvertible.ToChar(IFormatProvider provider) => ((IConvertible)Value).ToChar(provider);
@@ -162,37 +170,109 @@ namespace Vanara.PInvoke
 		DateTime IConvertible.ToDateTime(IFormatProvider provider) => ((IConvertible)Value).ToDateTime(provider);
 
 		/// <inheritdoc/>
-		decimal IConvertible.ToDecimal(IFormatProvider provider) => ((IConvertible)Value).ToDecimal(provider);
+		decimal IConvertible.ToDecimal(IFormatProvider provider)
+		{
+			var ul = Value;
+			if (ul < decimal.MaxValue)
+				return (decimal)ul;
+			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+				return decimal.MaxValue;
+			throw new OverflowException();
+		}
 
 		/// <inheritdoc/>
-		double IConvertible.ToDouble(IFormatProvider provider) => ((IConvertible)Value).ToDouble(provider);
+		double IConvertible.ToDouble(IFormatProvider provider)
+		{
+			var ul = Value;
+			if (ul < double.MaxValue)
+				return ul;
+			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+				return double.MaxValue;
+			throw new OverflowException();
+		}
 
 		/// <inheritdoc/>
-		short IConvertible.ToInt16(IFormatProvider provider) => ((IConvertible)Value).ToInt16(provider);
+		short IConvertible.ToInt16(IFormatProvider provider)
+		{
+			var ul = Value;
+			if (ul < (ulong)short.MaxValue)
+				return (short)ul;
+			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+				return short.MaxValue;
+			throw new OverflowException();
+		}
 
 		/// <inheritdoc/>
-		int IConvertible.ToInt32(IFormatProvider provider) => ((IConvertible)Value).ToInt32(provider);
+		int IConvertible.ToInt32(IFormatProvider provider)
+		{
+			var ul = Value;
+			if (ul < int.MaxValue)
+				return (int)ul;
+			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+				return int.MaxValue;
+			throw new OverflowException();
+		}
 
 		/// <inheritdoc/>
-		long IConvertible.ToInt64(IFormatProvider provider) => ((IConvertible)Value).ToInt64(provider);
+		long IConvertible.ToInt64(IFormatProvider provider)
+		{
+			var ul = Value;
+			if (ul < long.MaxValue)
+				return (long)ul;
+			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+				return long.MaxValue;
+			throw new OverflowException();
+		}
 
 		/// <inheritdoc/>
-		sbyte IConvertible.ToSByte(IFormatProvider provider) => ((IConvertible)Value).ToSByte(provider);
+		sbyte IConvertible.ToSByte(IFormatProvider provider)
+		{
+			var ul = Value;
+			if (ul < (ulong)sbyte.MaxValue)
+				return (sbyte)ul;
+			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+				return sbyte.MaxValue;
+			throw new OverflowException();
+		}
 
 		/// <inheritdoc/>
-		float IConvertible.ToSingle(IFormatProvider provider) => ((IConvertible)Value).ToSingle(provider);
+		float IConvertible.ToSingle(IFormatProvider provider)
+		{
+			var ul = Value;
+			if (ul < float.MaxValue)
+				return ul;
+			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+				return float.MaxValue;
+			throw new OverflowException();
+		}
 
 		/// <inheritdoc/>
-		object IConvertible.ToType(Type conversionType, IFormatProvider provider) => ((IConvertible)Value).ToBoolean(provider);
+		object IConvertible.ToType(Type conversionType, IFormatProvider provider) => ((IConvertible)Value).ToType(conversionType, provider);
 
 		/// <inheritdoc/>
-		ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)Value).ToUInt16(provider);
+		ushort IConvertible.ToUInt16(IFormatProvider provider)
+		{
+			var ul = Value;
+			if (ul < (ulong)ushort.MaxValue)
+				return (ushort)ul;
+			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+				return ushort.MaxValue;
+			throw new OverflowException();
+		}
 
 		/// <inheritdoc/>
-		uint IConvertible.ToUInt32(IFormatProvider provider) => ((IConvertible)Value).ToUInt32(provider);
+		uint IConvertible.ToUInt32(IFormatProvider provider)
+		{
+			var ul = Value;
+			if (ul < uint.MaxValue)
+				return (uint)ul;
+			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+				return uint.MaxValue;
+			throw new OverflowException();
+		}
 
 		/// <inheritdoc/>
-		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)Value).ToUInt64(provider);
+		ulong IConvertible.ToUInt64(IFormatProvider provider) => Value;
 
 		internal class SizeTTypeConverter : UInt64Converter
 		{
