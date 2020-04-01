@@ -154,6 +154,10 @@ namespace Vanara.PInvoke
 			ScopeLevelCount = 16
 		}
 
+		/// <summary>
+		/// The addrinfoex2 structure is used by the GetAddrInfoEx function to hold host address information when both a canonical name and
+		/// a fully qualified domain name have been requested.
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-addrinfoex2w typedef struct addrinfoex2W { int ai_flags; int
 		// ai_family; int ai_socktype; int ai_protocol; size_t ai_addrlen; PWSTR ai_canonname; struct sockaddr *ai_addr; void *ai_blob;
 		// size_t ai_bloblen; LPGUID ai_provider; struct addrinfoex2W *ai_next; int ai_version; PWSTR ai_fqdn; } ADDRINFOEX2W,

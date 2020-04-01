@@ -275,6 +275,7 @@ namespace Vanara.PInvoke
 			/// <summary>Normal data may be written without blocking.</summary>
 			POLLOUT = (POLLWRNORM),
 
+			/// <summary/>
 			POLLWRBAND = 0x0020,
 
 			/// <summary>An error has occurred.</summary>
@@ -2824,8 +2825,8 @@ namespace Vanara.PInvoke
 		/// Engineering Task Force (IETF) as the default port used by web servers for the HTTP protocol. Possible values for the servicename
 		/// parameter when a port number is not specified are listed in the following file:
 		/// </para>
+		/// <para>%WINDIR%\system32\drivers\etc\services</para>
 		/// </param>
-		/// <param name="%WINDIR%\system32\drivers\etc\services"/>
 		/// <param name="LocalAddressLength">
 		/// On input, a pointer to the size, in bytes, of the LocalAddress buffer provided by the caller. On output, a pointer to the size,
 		/// in bytes, of the <c>SOCKADDR</c> for the local address stored in the LocalAddress buffer filled in by the system upon successful
