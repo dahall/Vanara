@@ -4,7 +4,7 @@
     <Description>Classes for security related items derived from the Vanara PInvoke libraries. Includes extension methods for Active Directory and access control classes, methods for working with accounts, UAC, privileges, system access, impersonation and SIDs, and a full LSA wrapper.</Description>
     <Copyright>Copyright © 2017-2020</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.2.2</VersionPrefix>
+    <VersionPrefix>3.2.3</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.Security</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>

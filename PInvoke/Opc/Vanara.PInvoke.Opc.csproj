@@ -7,7 +7,7 @@
     <Description>PInvoke API (methods, structures and constants) imported from opcservices.dll.</Description>
     <Copyright>Copyright © 2017-2020</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.2.2</VersionPrefix>
+    <VersionPrefix>3.2.3</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Opc</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -47,7 +47,8 @@ IOpcCertificateEnumerator, IOpcCertificateSet, IOpcDigitalSignature, IOpcDigital
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) "></ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) ">
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
