@@ -7,7 +7,7 @@
     <Description>PInvoke API (methods, structures and constants) imported from Windows ComCtl32.dll.</Description>
     <Copyright>Copyright © 2017-2020</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.2.3</VersionPrefix>
+    <VersionPrefix>3.2.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.ComCtl32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
