@@ -5,25 +5,11 @@
   </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows ComCtl32.dll.</Description>
-    <Copyright>Copyright © 2017-2020</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.2.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.ComCtl32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
-    <RootNamespace>Vanara.PInvoke</RootNamespace>
-    <Authors>David Hall</Authors>
-    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>Vanara64x64.png</PackageIcon>
-    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <IncludeSource>true</IncludeSource>
-    <IncludeSymbols>true</IncludeSymbols>
-    <Company>GitHub Community</Company>
-    <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
@@ -37,41 +23,16 @@ Interfaces
 IImageList, IImageList2
 
 </PackageReleaseNotes>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <LangVersion>latest</LangVersion>
     <ApplicationManifest>Library.manifest</ApplicationManifest>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\..\docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\User32\Vanara.PInvoke.User32.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

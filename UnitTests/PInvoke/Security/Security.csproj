@@ -7,11 +7,9 @@
     <ProjectGuid>{C580868E-D913-454C-BF9B-CAFE3BD28DF0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Vanara.PInvoke.Tests</RootNamespace>
     <AssemblyName>UnitTest.PInvoke.Security</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <LangVersion>latest</LangVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -39,7 +37,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>

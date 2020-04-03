@@ -5,25 +5,11 @@
   </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows WinTrust.dll.</Description>
-    <Copyright>Copyright © 2017-2020</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.2.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.WinTrust</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
-    <RootNamespace>Vanara.PInvoke</RootNamespace>
-    <Authors>David Hall</Authors>
-    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>Vanara64x64.png</PackageIcon>
-    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
     <PackageTags>pinvoke;vanara;net-extensions;interop;wintrust</PackageTags>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <IncludeSource>true</IncludeSource>
-    <IncludeSymbols>true</IncludeSymbols>
-    <Company>GitHub Community</Company>
-    <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
@@ -34,37 +20,10 @@ Structures
 CATALOG_INFO, CRYPTCATATTRIBUTE, CRYPTCATCDF, CRYPTCATMEMBER, CRYPTCATSTORE, HCATALOG, HCATINFO, MS_ADDINFO_BLOB, MS_ADDINFO_CATALOGMEMBER, MS_ADDINFO_FLAT, SIP_ADD_NEWPROVIDER, SIP_CAP_SET_V2, SIP_CAP_SET_V3, SIP_DISPATCH_INFO, SIP_INDIRECT_DATA, SIP_SUBJECTINFO, CRYPT_PROVIDER_CERT, CRYPT_PROVIDER_DATA, CRYPT_PROVIDER_DEFUSAGE, CRYPT_PROVIDER_FUNCTIONS, CRYPT_PROVIDER_PRIVDATA, CRYPT_PROVIDER_REGDEFUSAGE, CRYPT_PROVIDER_SGNR, CRYPT_PROVIDER_SIGSTATE, CRYPT_PROVUI_DATA, CRYPT_PROVUI_FUNCS, CRYPT_REGISTER_ACTIONID, CRYPT_TRUST_REG_ENTRY, HCATADMIN, HCRYPTMSG, SPC_INDIRECT_DATA_CONTENT, WIN_CERTIFICATE, WINTRUST_BLOB_INFO, WINTRUST_CATALOG_INFO, WINTRUST_CERT_INFO, WINTRUST_FILE_INFO, WINTRUST_SGNR_INFO, WINTRUST_SIGNATURE_SETTINGS, WINTRUST_DATA
 
 </PackageReleaseNotes>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <LangVersion>latest</LangVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\..\docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Cryptography\Vanara.PInvoke.Cryptography.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

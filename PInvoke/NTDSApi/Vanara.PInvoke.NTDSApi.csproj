@@ -5,25 +5,11 @@
   </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows NTDSApi.dll.</Description>
-    <Copyright>Copyright © 2017-2020</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.2.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.NTDSApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
-    <RootNamespace>Vanara.PInvoke</RootNamespace>
-    <Authors>David Hall</Authors>
-    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>Vanara64x64.png</PackageIcon>
-    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <IncludeSource>true</IncludeSource>
-    <IncludeSymbols>true</IncludeSymbols>
-    <Company>GitHub Community</Company>
-    <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
@@ -34,36 +20,9 @@ Structures
 DCInfoHandle, DS_DOMAIN_CONTROLLER_INFO_1, DS_DOMAIN_CONTROLLER_INFO_2, DS_DOMAIN_CONTROLLER_INFO_3, DS_NAME_RESULT, DS_NAME_RESULT_ITEM, DS_REPL_ATTR_META_DATA, DS_REPL_ATTR_META_DATA_2, DS_REPL_ATTR_META_DATA_BLOB, DS_REPL_ATTR_VALUE_META_DATA, DS_REPL_ATTR_VALUE_META_DATA_2, DS_REPL_ATTR_VALUE_META_DATA_EXT, DS_REPL_CURSOR, DS_REPL_CURSOR_2, DS_REPL_CURSOR_3W, DS_REPL_CURSOR_BLOB, DS_REPL_CURSORS, DS_REPL_CURSORS_2, DS_REPL_CURSORS_3W, DS_REPL_KCC_DSA_FAILURESW, DS_REPL_KCC_DSA_FAILUREW, DS_REPL_KCC_DSA_FAILUREW_BLOB, DS_REPL_NEIGHBOR, DS_REPL_NEIGHBORS, DS_REPL_NEIGHBORW_BLOB, DS_REPL_OBJ_META_DATA, DS_REPL_OBJ_META_DATA_2, DS_REPL_OPW, DS_REPL_OPW_BLOB, DS_REPL_PENDING_OPSW, DS_REPL_QUEUE_STATISTICSW, DS_REPL_VALUE_META_DATA, DS_REPL_VALUE_META_DATA_2, DS_REPL_VALUE_META_DATA_BLOB, DS_REPL_VALUE_META_DATA_BLOB_EXT, DS_REPL_VALUE_META_DATA_EXT, DS_REPSYNCALL_ERRINFO, DS_REPSYNCALL_UPDATE, DS_SCHEMA_GUID_MAP, DS_SITE_COST_INFO, SCHEDULE_HEADER, SpnArrayHandle, SCHEDULE
 
 </PackageReleaseNotes>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <LangVersion>latest</LangVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\..\docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

@@ -2,25 +2,12 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <Description>Classes for user interface related items derived from the Vanara PInvoke libraries. Includes extensions for almost all common controls to give post Vista capabilities, WinForms controls (panel, commandlink, enhanced combo boxes, IPAddress, split button, trackbar and themed controls), shutdown/restart/lock control, buffered painting, resource files, access control editor, simplifed designer framework for Windows.Forms.</Description>
-    <Copyright>Copyright © 2017-2020</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.2.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>Vanara.Windows.Forms</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <RootNamespace>Vanara.Windows.Forms</RootNamespace>
-    <Authors>David Hall</Authors>
-    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>Vanara64x64.png</PackageIcon>
-    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <IncludeSource>true</IncludeSource>
     <PackageReleaseNotes>Currently implements:
 
 Classes
@@ -33,20 +20,10 @@ Enumerations
 BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, CollapsiblePanelHeaderState, ColorProperty, ControlState, Corners, EnumProperty, ExplorerBrowserContentSectionOptions, ExplorerBrowserLoadFlags, ExplorerBrowserNavigateOptions, ExplorerBrowserNavigationItemCategory, ExplorerBrowserViewMode, FilenameProperty, Flip3DWindowPolicy, FolderBrowserDialogOptions, FontProperty, IconSize, IntProperty, ItemHitLocation, KnownFolder, MarginsProperty, MenuPlacement, MetricProperty, NavigationLogDirection, NonClientRenderingPolicy, PaneVisibilityState, PartSize, PositionProperty, ProgressBarState, PropertyOrigin, RectangleProperty, RenderStyle, SecurityPageType, ShellNamespaceTreeControlAction, ShellProgressDialogStyle, ShellTreeItemButton, ShellTreeItemCheckBoxStyle, ShellTreeItemState, SizeMode, StringProperty, TaskDialogButtonDisplay, TaskDialogCommonButtons, TaskDialogIcon
 
 </PackageReleaseNotes>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <LangVersion>latest</LangVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\Vanara.snk</AssemblyOriginatorKeyFile>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NoWarn>0618</NoWarn>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Remove="_InProgress_\**\*" />
   </ItemGroup>
@@ -62,7 +39,6 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\ShellNamespaceTreeControl.bmp" />
@@ -156,8 +132,5 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
     <Compile Update="Extenders\VistaControlExtender.cs">
       <SubType>Component</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

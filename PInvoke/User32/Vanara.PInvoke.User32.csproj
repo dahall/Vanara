@@ -5,25 +5,11 @@
   </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows User32.dll.</Description>
-    <Copyright>Copyright © 2017-2020</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.2.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.User32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
-    <RootNamespace>Vanara.PInvoke</RootNamespace>
-    <Authors>David Hall</Authors>
-    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>Vanara64x64.png</PackageIcon>
-    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <IncludeSource>true</IncludeSource>
-    <IncludeSymbols>true</IncludeSymbols>
-    <Company>GitHub Community</Company>
-    <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
@@ -34,22 +20,7 @@ Structures
 ICONINFO, VIDEOPARAMETERS, NMHDR, ACCEL, METAFILEPICT, CURSORINFO, DEV_BROADCAST_DEVICEINTERFACE, DEV_BROADCAST_DEVNODE, DEV_BROADCAST_HANDLE, DEV_BROADCAST_HDR, DEV_BROADCAST_NET, DEV_BROADCAST_OEM, DEV_BROADCAST_PORT, DEV_BROADCAST_USERDEFINED, DEV_BROADCAST_VOLUME, HDEVNOTIFY, VolLockBroadcast, USEROBJECTFLAGS, DLGITEMTEMPLATE, DLGTEMPLATE, MINMAXINFO, WINDOWPOS, DRAWTEXTPARAMS, HELPWININFO, MULTIKEYHELP, DPI_AWARENESS_CONTEXT, CBT_CREATEWND, CBTACTIVATESTRUCT, CWPRETSTRUCT, CWPSTRUCT, DEBUGHOOKINFO, EVENTMSG, HHOOK, HWINEVENTHOOK, KBDLLHOOKSTRUCT, MOUSEHOOKSTRUCT, MOUSEHOOKSTRUCTEX, MSLLHOOKSTRUCT, ICONINFOEX, HARDWAREINPUT, HRAWINPUT, INPUT, INPUT_MESSAGE_SOURCE, LASTINPUTINFO, MOUSEINPUT, RAWHID, RAWINPUT, RAWINPUTDEVICE, RAWINPUTDEVICELIST, RAWINPUTHEADER, RAWKEYBOARD, RAWMOUSE, RID_DEVICE_INFO, RID_DEVICE_INFO_HID, RID_DEVICE_INFO_KEYBOARD, RID_DEVICE_INFO_MOUSE, HKL, KEYBDINPUT, MDINEXTMENU, MENUBARINFO, MENUEX_TEMPLATE_HEADER, MENUEX_TEMPLATE_ITEM, MENUGETOBJECTINFO, MENUINFO, MENUITEMINFO, MENUITEMTEMPLATE, MENUITEMTEMPLATEHEADER, TPMPARAMS, BSMINFO, MONITORINFO, MONITORINFOEX, MOUSEMOVEPOINT, TRACKMOUSEEVENT, PAINTSTRUCT, HSYNTHETICPOINTERDEVICE, INPUT_TRANSFORM, POINTER_DEVICE_CURSOR_INFO, POINTER_DEVICE_INFO, POINTER_DEVICE_PROPERTY, POINTER_INFO, POINTER_PEN_INFO, POINTER_TOUCH_INFO, POINTER_TYPE_INFO, GRPICONDIR, GRPICONDIRENTRY, SCROLLBARINFO, SCROLLINFO, ACCESSTIMEOUT, ANIMATIONINFO, AUDIODESCRIPTION, FILTERKEYS, HELPINFO, HIGHCONTRAST, ICONMETRICS, MINIMIZEDMETRICS, MOUSEKEYS, MSGBOXPARAMS, NONCLIENTMETRICS, SERIALKEYS, SOUNDSENTRY, STICKYKEYS, TOGGLEKEYS, TOUCHPREDICTIONPARAMETERS, GESTURECONFIG, GESTUREINFO, GESTURENOTIFYSTRUCT, HGESTUREINFO, HTOUCHINPUT, TOUCH_HIT_TESTING_INPUT, TOUCH_HIT_TESTING_PROXIMITY_EVALUATION, TOUCHINPUT, ALTTABINFO, CHANGEFILTERSTRUCT, FLASHWINFO, GUITHREADINFO, TITLEBARINFO, UPDATELAYEREDWINDOWINFO, WINDOWINFO, WINDOWPLACEMENT, WNDCLASS, WNDCLASSEX, DATA
 
 </PackageReleaseNotes>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <LangVersion>latest</LangVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\..\docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
-    <Reference Include="System" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
@@ -63,8 +34,5 @@ ICONINFO, VIDEOPARAMETERS, NMHDR, ACCEL, METAFILEPICT, CURSORINFO, DEV_BROADCAST
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

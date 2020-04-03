@@ -5,25 +5,11 @@
   </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants imported from Windows WlanApi.dll.</Description>
-    <Copyright>Copyright © 2017-2020</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>3.2.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.WlanApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
-    <RootNamespace>Vanara.PInvoke</RootNamespace>
-    <Authors>David Hall</Authors>
-    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>Vanara64x64.png</PackageIcon>
-    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
     <PackageTags>pinvoke;vanara;net-extensions;interop;WlanApi</PackageTags>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <IncludeSource>true</IncludeSource>
-    <IncludeSymbols>true</IncludeSymbols>
-    <Company>GitHub Community</Company>
-    <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
@@ -34,29 +20,9 @@ Structures
 HWFDSERVICE, HWFDSESSION, HWLANSESSION, DOT11_AUTH_CIPHER_PAIR, DOT11_BSSID_LIST, DOT11_COUNTRY_OR_REGION_STRING, DOT11_MAC_ADDRESS, DOT11_NETWORK, DOT11_SSID, EAP_METHOD_TYPE, EAP_TYPE, NDIS_OBJECT_HEADER, ONEX_AUTH_PARAMS, ONEX_CONNECTION_PROFILE, ONEX_EAP_ERROR, ONEX_RESULT_UPDATE_DATA, ONEX_STATUS, ONEX_VARIABLE_BLOB, WLAN_ASSOCIATION_ATTRIBUTES, WLAN_AUTH_CIPHER_PAIR_LIST, WLAN_AVAILABLE_NETWORK, WLAN_BSS_ENTRY, WLAN_CONNECTION_ATTRIBUTES, WLAN_CONNECTION_NOTIFICATION_DATA, WLAN_CONNECTION_PARAMETERS, WLAN_COUNTRY_OR_REGION_STRING_LIST, WLAN_DEVICE_SERVICE_NOTIFICATION_DATA, WLAN_HOSTED_NETWORK_CONNECTION_SETTINGS, WLAN_HOSTED_NETWORK_DATA_PEER_STATE_CHANGE, WLAN_HOSTED_NETWORK_PEER_STATE, WLAN_HOSTED_NETWORK_RADIO_STATE, WLAN_HOSTED_NETWORK_SECURITY_SETTINGS, WLAN_HOSTED_NETWORK_STATE_CHANGE, WLAN_INTERFACE_INFO, WLAN_MAC_FRAME_STATISTICS, WLAN_MSM_NOTIFICATION_DATA, WLAN_NOTIFICATION_DATA, WLAN_PHY_FRAME_STATISTICS, WLAN_PHY_RADIO_STATE, WLAN_PROFILE_INFO, WLAN_RADIO_STATE, WLAN_RATE_SET, WLAN_RAW_DATA, WLAN_RAW_DATA_LIST, WLAN_SECURITY_ATTRIBUTES, WLAN_STATISTICS, DOT11_NETWORK_LIST, WLAN_AVAILABLE_NETWORK_LIST, WLAN_BSS_LIST, WLAN_DEVICE_SERVICE_GUID_LIST, WLAN_HOSTED_NETWORK_STATUS, WLAN_INTERFACE_CAPABILITY, WLAN_INTERFACE_INFO_LIST, WLAN_PROFILE_INFO_LIST, WLAN_RAW_DATA_INFO
 
 </PackageReleaseNotes>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <LangVersion>latest</LangVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\..\docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) ">
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>
