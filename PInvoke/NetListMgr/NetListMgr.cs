@@ -115,6 +115,7 @@ namespace Vanara.PInvoke.NetListMgr
 		NLM_ENUM_NETWORK_ALL = 0x03
 	}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	[Flags]
 	[PInvokeData("Netlistmgr.h")]
 	public enum NLM_INTERNET_CONNECTIVITY
@@ -123,6 +124,7 @@ namespace Vanara.PInvoke.NetListMgr
 		NLM_INTERNET_CONNECTIVITY_PROXIED = 0x2,
 		NLM_INTERNET_CONNECTIVITY_CORPORATE = 0x4
 	}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>The NLM_NETWORK_CATEGORY enumeration is a set of flags that specify the category type of a network.</summary>
 	[PInvokeData("Netlistmgr.h")]
@@ -138,6 +140,7 @@ namespace Vanara.PInvoke.NetListMgr
 		NLM_NETWORK_CATEGORY_DOMAIN_AUTHENTICATED
 	}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	[Flags]
 	[PInvokeData("Netlistmgr.h")]
 	public enum NLM_NETWORK_CLASS
@@ -146,6 +149,7 @@ namespace Vanara.PInvoke.NetListMgr
 		NLM_NETWORK_IDENTIFIED = 0x2,
 		NLM_NETWORK_UNIDENTIFIED = 0x3
 	}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>The NLM_NETWORK_PROPERTY_CHANGE enumeration is a set of flags that define changes made to the properties of a network.</summary>
 	[PInvokeData("Netlistmgr.h")]
@@ -176,6 +180,8 @@ namespace Vanara.PInvoke.NetListMgr
 	[PInvokeData("Netlistmgr.h", MSDNShortId = "aa370706")]
 	public interface IEnumNetworkConnections : IEnumerable
 	{
+		/// <summary>Returns an enumerator that iterates through a collection.</summary>
+		/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		[DispId(-4)]
 #if (NET20 || NET35 || NET40 || NET45)
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "", MarshalTypeRef = typeof(System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler), MarshalCookie = "")]
@@ -213,6 +219,8 @@ namespace Vanara.PInvoke.NetListMgr
 	[PInvokeData("Netlistmgr.h", MSDNShortId = "aa370735")]
 	public interface IEnumNetworks : IEnumerable
 	{
+		/// <summary>Returns an enumerator that iterates through a collection.</summary>
+		/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		[DispId(-4)]
 #if (NET20 || NET35 || NET40 || NET45)
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "", MarshalTypeRef = typeof(System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler), MarshalCookie = "")]
