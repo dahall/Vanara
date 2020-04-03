@@ -5,26 +5,44 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using Vanara.Extensions;
-using ContentAlignment = System.Drawing.ContentAlignment;
-using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.User32;
+using ContentAlignment = System.Drawing.ContentAlignment;
 
 namespace Vanara.Windows.Forms
 {
+	/// <summary>State flags for controls derived from <see cref="CustomDrawBase"/>.</summary>
 	[Flags]
 	public enum ControlState
 	{
+		/// <summary>A mouse is hovering over the control.</summary>
 		Hot = 1 << 0,
+
+		/// <summary>The control has been pressed or clicked.</summary>
 		Pressed = 1 << 1,
+
+		/// <summary>The control is disabled.</summary>
 		Disabled = 1 << 2,
+
+		/// <summary>The control is in the process of animating.</summary>
 		Animating = 1 << 3,
+
+		/// <summary>The mouse button is down.</summary>
 		MouseDown = 1 << 4,
+
+		/// <summary>The mouse button is up.</summary>
 		InButtonUp = 1 << 5,
+
+		/// <summary>The control is defaulted (used primarily by buttons).</summary>
 		Defaulted = 1 << 6,
+
+		/// <summary>The control has the focus.</summary>
 		Focused = 1 << 7,
 	}
 
-	/// <summary>Abstract class for implementing a custom-drawn control that tracks mouse movement and has text and/or an image. It exposes all property changes.</summary>
+	/// <summary>
+	/// Abstract class for implementing a custom-drawn control that tracks mouse movement and has text and/or an image. It exposes all
+	/// property changes.
+	/// </summary>
 	/// <seealso cref="System.Windows.Forms.Control"/>
 	/// <seealso cref="System.Windows.Forms.IButtonControl"/>
 	/// <seealso cref="System.ComponentModel.INotifyPropertyChanged"/>
@@ -33,8 +51,10 @@ namespace Vanara.Windows.Forms
 		private readonly ControlImage image;
 		private bool autoEllipsis;
 		private ContentAlignment imageAlign = ContentAlignment.MiddleCenter;
+
 		//private bool keyPressed;
 		private ControlState lastState;
+
 		private EnumFlagIndexer<ControlState> state;
 		private ContentAlignment textAlign = ContentAlignment.MiddleCenter;
 		private TextImageRelation textImageRelation = TextImageRelation.Overlay;
@@ -49,9 +69,7 @@ namespace Vanara.Windows.Forms
 			SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
 		}
 
-		/// <summary>
-		/// Occurs when the control is double-clicked.
-		/// </summary>
+		/// <summary>Occurs when the control is double-clicked.</summary>
 		[Browsable(false), EditorBrowsable(EditorBrowsableState.Advanced)]
 		public new event EventHandler DoubleClick
 		{
@@ -59,9 +77,7 @@ namespace Vanara.Windows.Forms
 			remove { base.DoubleClick -= value; }
 		}
 
-		/// <summary>
-		/// Occurs when the control is double clicked by the mouse.
-		/// </summary>
+		/// <summary>Occurs when the control is double clicked by the mouse.</summary>
 		[Browsable(false), EditorBrowsable(EditorBrowsableState.Advanced)]
 		public new event MouseEventHandler MouseDoubleClick
 		{
@@ -73,10 +89,12 @@ namespace Vanara.Windows.Forms
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		/// <summary>
-		/// Gets or sets a value indicating whether the ellipsis character (...) appears at the right edge of the control, denoting that the control text extends
-		/// beyond the specified length of the control.
+		/// Gets or sets a value indicating whether the ellipsis character (...) appears at the right edge of the control, denoting that the
+		/// control text extends beyond the specified length of the control.
 		/// </summary>
-		/// <value><c>true</c> if the additional label text is to be indicated by an ellipsis; otherwise, <c>false</c>. The default is <c>true</c>.</value>
+		/// <value>
+		/// <c>true</c> if the additional label text is to be indicated by an ellipsis; otherwise, <c>false</c>. The default is <c>true</c>.
+		/// </value>
 		[Category("Behavior"), DefaultValue(true), Browsable(true), EditorBrowsable(EditorBrowsableState.Always), Description("")]
 		public bool AutoEllipsis
 		{
@@ -148,14 +166,22 @@ namespace Vanara.Windows.Forms
 			get => textImageRelation; set => SetField(ref textImageRelation, value, nameof(TextImageRelation));
 		}
 
-		/// <summary>Gets or sets a value indicating whether the first character that is preceded by an ampersand (&amp;) is used as the mnemonic key of the control.</summary>
-		/// <value><c>true</c> if the first character that is preceded by an ampersand (&amp;) is used as the mnemonic key of the control; otherwise, <c>false</c>. The default is <c>true</c>.</value>
+		/// <summary>
+		/// Gets or sets a value indicating whether the first character that is preceded by an ampersand (&amp;) is used as the mnemonic key
+		/// of the control.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if the first character that is preceded by an ampersand (&amp;) is used as the mnemonic key of the control;
+		/// otherwise, <c>false</c>. The default is <c>true</c>.
+		/// </value>
 		[DefaultValue(true), Description(""), Category("Appearance")]
 		public bool UseMnemonic
 		{
 			get => useMnemonic; set => SetField(ref useMnemonic, value, nameof(UseMnemonic));
 		}
 
+		/// <summary>Gets or sets a value indicating whether this <see cref="CustomDrawBase"/> is animating.</summary>
+		/// <value><see langword="true"/> if animating; otherwise, <see langword="false"/>.</value>
 		[Browsable(false)]
 		protected virtual bool Animating
 		{
@@ -173,15 +199,17 @@ namespace Vanara.Windows.Forms
 			get => state[ControlState.Defaulted]; set => SetState(ControlState.Defaulted, value);
 		}
 
+		/// <summary>Gets the last state of the control.</summary>
+		/// <value>The last state.</value>
 		protected virtual ControlState LastState => lastState;
 
+		/// <summary>Gets the current state of the control.</summary>
+		/// <value>The state.</value>
 		protected virtual ControlState State => state;
 
 		private bool ShowToolTip => !DesignMode && AutoEllipsis && textToolTip != null;
 
-		/// <summary>
-		/// Notifies a control that it is the default button so that its appearance and behavior is adjusted accordingly.
-		/// </summary>
+		/// <summary>Notifies a control that it is the default button so that its appearance and behavior is adjusted accordingly.</summary>
 		/// <param name="value">true if the control should behave as a default button; otherwise false.</param>
 		public virtual void NotifyDefault(bool value)
 		{
@@ -190,19 +218,15 @@ namespace Vanara.Windows.Forms
 			Invalidate();
 		}
 
-		/// <summary>
-		/// Generates a <see cref="E:System.Windows.Forms.Control.Click" /> event for the control.
-		/// </summary>
+		/// <summary>Generates a <see cref="E:System.Windows.Forms.Control.Click"/> event for the control.</summary>
 		public void PerformClick()
 		{
 			if (CanSelect)
 				OnClick(EventArgs.Empty);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.EnabledChanged" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.EnabledChanged"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnEnabledChanged(EventArgs e)
 		{
 			base.OnEnabledChanged(e);
@@ -211,10 +235,8 @@ namespace Vanara.Windows.Forms
 			SetState(ControlState.MouseDown | ControlState.Pressed | ControlState.Hot, false);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.GotFocus" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.GotFocus"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnGotFocus(EventArgs e)
 		{
 			System.Diagnostics.Debug.WriteLine($"GotFocus[{Name}]");
@@ -222,10 +244,8 @@ namespace Vanara.Windows.Forms
 			SetState(ControlState.Focused, true);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			if (e.KeyData == Keys.Space)
@@ -236,10 +256,8 @@ namespace Vanara.Windows.Forms
 			base.OnKeyDown(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.KeyUp" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.KeyUp"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
 		protected override void OnKeyUp(KeyEventArgs e)
 		{
 			if (state[ControlState.MouseDown])
@@ -253,10 +271,8 @@ namespace Vanara.Windows.Forms
 			base.OnKeyUp(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.LostFocus" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.LostFocus"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnLostFocus(EventArgs e)
 		{
 			System.Diagnostics.Debug.WriteLine($"LostFocus[{Name}]");
@@ -265,10 +281,8 @@ namespace Vanara.Windows.Forms
 			SetState(ControlState.MouseDown | ControlState.Pressed | ControlState.Focused, false);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.MouseDown" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseDown"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
@@ -276,10 +290,8 @@ namespace Vanara.Windows.Forms
 			base.OnMouseDown(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.MouseEnter" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseEnter"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnMouseEnter(EventArgs e)
 		{
 			SetState(ControlState.Hot, true);
@@ -288,10 +300,8 @@ namespace Vanara.Windows.Forms
 			base.OnMouseEnter(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.MouseLeave" /> event.
-		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseLeave"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnMouseLeave(EventArgs e)
 		{
 			System.Diagnostics.Debug.WriteLine($"OnMouseLeave[{Name}]");
@@ -300,10 +310,8 @@ namespace Vanara.Windows.Forms
 			base.OnMouseLeave(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			if (e.Button != MouseButtons.None && state[ControlState.Pressed])
@@ -321,10 +329,8 @@ namespace Vanara.Windows.Forms
 			base.OnMouseMove(e);
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left && state[ControlState.Pressed])
@@ -342,9 +348,10 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.BackColorChanged" /> event when the <see cref="P:System.Windows.Forms.Control.BackColor" /> property value of the control's container changes.
+		/// Raises the <see cref="E:System.Windows.Forms.Control.BackColorChanged"/> event when the <see
+		/// cref="P:System.Windows.Forms.Control.BackColor"/> property value of the control's container changes.
 		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnParentBackColorChanged(EventArgs e)
 		{
 			base.OnParentBackColorChanged(e);
@@ -352,9 +359,10 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.BackgroundImageChanged" /> event when the <see cref="P:System.Windows.Forms.Control.BackgroundImage" /> property value of the control's container changes.
+		/// Raises the <see cref="E:System.Windows.Forms.Control.BackgroundImageChanged"/> event when the <see
+		/// cref="P:System.Windows.Forms.Control.BackgroundImage"/> property value of the control's container changes.
 		/// </summary>
-		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnParentBackgroundImageChanged(EventArgs e)
 		{
 			base.OnParentBackgroundImageChanged(e);
@@ -376,13 +384,9 @@ namespace Vanara.Windows.Forms
 			Invalidate();
 		}
 
-		/// <summary>
-		/// Processes a mnemonic character.
-		/// </summary>
+		/// <summary>Processes a mnemonic character.</summary>
 		/// <param name="charCode">The character to process.</param>
-		/// <returns>
-		/// true if the character was processed as a mnemonic by the control; otherwise, false.
-		/// </returns>
+		/// <returns>true if the character was processed as a mnemonic by the control; otherwise, false.</returns>
 		protected override bool ProcessMnemonic(char charCode)
 		{
 			if (!IsMnemonic(charCode, Text))
@@ -392,7 +396,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Sets a field value to the new value. If the value has changed, the <see cref="PropertyChanged"/> event is raised and the control will optionally be invalidated.
+		/// Sets a field value to the new value. If the value has changed, the <see cref="PropertyChanged"/> event is raised and the control
+		/// will optionally be invalidated.
 		/// </summary>
 		/// <typeparam name="T">The type of the field.</typeparam>
 		/// <param name="field">A reference to the field.</param>
@@ -414,6 +419,13 @@ namespace Vanara.Windows.Forms
 			return true;
 		}
 
+		/// <summary>Sets the state of the control.</summary>
+		/// <param name="stateVal">The state value.</param>
+		/// <param name="value">
+		/// if set to <see langword="true"/> sets the flag in <paramref name="stateVal"/> on; otherwise it removes the state.
+		/// </param>
+		/// <param name="invalidateOnSet">if set to <see langword="true"/>, invalidate the control once set.</param>
+		/// <returns></returns>
 		protected virtual bool SetState(ControlState stateVal, bool value, bool invalidateOnSet = true)
 		{
 			if (state[stateVal] == value) return false;
@@ -425,6 +437,8 @@ namespace Vanara.Windows.Forms
 			return true;
 		}
 
+		/// <summary>Processes Windows messages.</summary>
+		/// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message"/> to process.</param>
 		protected override void WndProc(ref Message m)
 		{
 			switch (m.Msg)

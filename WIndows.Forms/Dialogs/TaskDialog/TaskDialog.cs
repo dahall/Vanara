@@ -82,8 +82,8 @@ namespace Vanara.Windows.Forms
 		No = TASKDIALOG_COMMON_BUTTON_FLAGS.TDCBF_NO_BUTTON,
 
 		/// <summary>
-		/// Cancel common button. If selected Task Dialog will return DialogResult.Cancel. If this button is specified, the dialog box will respond to typical
-		/// cancel actions (Alt-F4 and Escape).
+		/// Cancel common button. If selected Task Dialog will return DialogResult.Cancel. If this button is specified, the dialog box will
+		/// respond to typical cancel actions (Alt-F4 and Escape).
 		/// </summary>
 		Cancel = TASKDIALOG_COMMON_BUTTON_FLAGS.TDCBF_CANCEL_BUTTON,
 
@@ -130,10 +130,17 @@ namespace Vanara.Windows.Forms
 	}
 
 	/// <summary>
-	/// A Task Dialog. This is like a MessageBox but with many more features. For Windows version prior to Vista, an emulated version of the system dialog is displayed.
+	/// A Task Dialog. This is like a MessageBox but with many more features. For Windows version prior to Vista, an emulated version of the
+	/// system dialog is displayed.
 	/// </summary>
 	public class TaskDialog : CommonDialog, IWin32Window
 	{
+		/// <summary>
+		/// Returns true if the current operating system supports TaskDialog. If false TaskDialog.Show should not be called as the results
+		/// are undefined but often results in a crash.
+		/// </summary>
+		private static readonly bool IsAvailable = Environment.OSVersion.Platform == PlatformID.Win32NT && (Environment.OSVersion.Version.CompareTo(requiredOsVersion) >= 0);
+
 		// The minimum Windows version needed to support TaskDialog.
 		private static readonly Version requiredOsVersion = new Version(6, 0, 5243);
 
@@ -141,12 +148,16 @@ namespace Vanara.Windows.Forms
 		private Icon customFooterIcon;
 		private Icon customMainIcon;
 		private string expandedInformation;
+
 		// The otherFlags passed to TaskDialogIndirect.
 		private EnumFlagIndexer<TASKDIALOG_FLAGS> flags;
+
 		private string footer;
 		private TaskDialogIcon footerIcon;
+
 		// When active, holds the handle of the current window.
 		private HWND handle = HWND.NULL;
+
 		private TaskDialogIcon mainIcon;
 		private string mainInstruction;
 
@@ -190,8 +201,8 @@ namespace Vanara.Windows.Forms
 		public event EventHandler<VerificationClickedEventArgs> VerificationClicked;
 
 		/// <summary>
-		/// Indicates that the dialog should be able to be closed using Alt-F4, Escape and the title bar’s close button even if no cancel button is specified in
-		/// either the CommonButtons or Buttons members.
+		/// Indicates that the dialog should be able to be closed using Alt-F4, Escape and the title bar’s close button even if no cancel
+		/// button is specified in either the CommonButtons or Buttons members.
 		/// </summary>
 		[DefaultValue(false)]
 		[Category("Behavior"), Description("Dialog can be closed by keys with no Cancel button.")]
@@ -238,8 +249,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Specifies the custom push buttons to display in the dialog. Use CommonButtons member for common buttons; OK, Yes, No, Retry and Cancel, and Buttons
-		/// when you want different text on the push buttons.
+		/// Specifies the custom push buttons to display in the dialog. Use CommonButtons member for common buttons; OK, Yes, No, Retry and
+		/// Cancel, and Buttons when you want different text on the push buttons.
 		/// </summary>
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
 		[Category("Appearance"), Description("Custom push buttons.")]
@@ -254,7 +265,9 @@ namespace Vanara.Windows.Forms
 			set => flags[TASKDIALOG_FLAGS.TDF_CALLBACK_TIMER] = value;
 		}
 
-		/// <summary>Indicates that the TaskDialog can be minimized. Works only if there if parent window is null. Will enable cancellation also.</summary>
+		/// <summary>
+		/// Indicates that the TaskDialog can be minimized. Works only if there if parent window is null. Will enable cancellation also.
+		/// </summary>
 		[DefaultValue(false)]
 		[Category("Behavior"), Description("TaskDialog can be minimized.")]
 		public bool CanBeMinimized
@@ -264,8 +277,9 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// The string to be used to label the button for expanding the expanded information. This member is ignored when the ExpandedInformation member is null.
-		/// If this member is null and the ExpandedControlText is specified, then the ExpandedControlText value will be used for this member as well.
+		/// The string to be used to label the button for expanding the expanded information. This member is ignored when the
+		/// ExpandedInformation member is null. If this member is null and the ExpandedControlText is specified, then the
+		/// ExpandedControlText value will be used for this member as well.
 		/// </summary>
 		[DefaultValue(null), Localizable(true),
 		 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
@@ -273,8 +287,8 @@ namespace Vanara.Windows.Forms
 		public string CollapsedControlText { get; set; }
 
 		/// <summary>
-		/// Specifies the push buttons displayed in the dialog box. This parameter may be a combination of otherFlags. If no common buttons are specified and no
-		/// custom buttons are specified using the Buttons member, the dialog box will contain the OK button by default.
+		/// Specifies the push buttons displayed in the dialog box. This parameter may be a combination of otherFlags. If no common buttons
+		/// are specified and no custom buttons are specified using the Buttons member, the dialog box will contain the OK button by default.
 		/// </summary>
 		[DefaultValue(typeof(TaskDialogCommonButtons), "None")]
 		[Category("Appearance"), Description("Specifies common buttons to display.")]
@@ -282,8 +296,8 @@ namespace Vanara.Windows.Forms
 		public TaskDialogCommonButtons CommonButtons { get; set; }
 
 		/// <summary>
-		/// The string to be used for the dialog’s primary content. If the EnableHyperlinks member is true, then this string may contain hyper-links in the form:
-		/// <A HREF="executablestring">Hyper-link Text</A>.
+		/// The string to be used for the dialog’s primary content. If the EnableHyperlinks member is true, then this string may contain
+		/// hyper-links in the form: <A HREF="executablestring">Hyper-link Text</A>.
 		/// WARNING: Enabling hyper-links when using content from an unsafe source may cause security vulnerabilities.
 		/// </summary>
 		[DefaultValue(null), Localizable(true),
@@ -302,8 +316,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Specifies a custom icon for the icon to be displayed in the footer area of the dialog box. If this is set to none and the CustomFooterIcon member is
-		/// null then no footer icon will be displayed.
+		/// Specifies a custom icon for the icon to be displayed in the footer area of the dialog box. If this is set to none and the
+		/// CustomFooterIcon member is null then no footer icon will be displayed.
 		/// </summary>
 		[DefaultValue(null)]
 		[Category("Appearance"), Description("")]
@@ -321,7 +335,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Specifies a custom in icon for the main icon in the dialog. If this is set to none and the CustomMainIcon member is null then no main icon will be displayed.
+		/// Specifies a custom in icon for the main icon in the dialog. If this is set to none and the CustomMainIcon member is null then no
+		/// main icon will be displayed.
 		/// </summary>
 		[DefaultValue(null)]
 		[Category("Appearance"), Description("")]
@@ -339,28 +354,31 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Indicates the default button for the dialog. This may be any of the values specified in ButtonId members of one of the TaskDialogButton structures in
-		/// the Buttons array, or one a DialogResult value that corresponds to a buttons specified in the CommonButtons Member. If this member is zero or its
-		/// value does not correspond to any button ID in the dialog, then the first button in the dialog will be the default.
+		/// Indicates the default button for the dialog. This may be any of the values specified in ButtonId members of one of the
+		/// TaskDialogButton structures in the Buttons array, or one a DialogResult value that corresponds to a buttons specified in the
+		/// CommonButtons Member. If this member is zero or its value does not correspond to any button ID in the dialog, then the first
+		/// button in the dialog will be the default.
 		/// </summary>
 		[DefaultValue(0)]
 		[Category("Behavior"), Description("")]
 		public int DefaultButton { get; set; }
 
 		/// <summary>
-		/// Indicates the default radio button for the dialog. This may be any of the values specified in ButtonId members of one of the TaskDialogButton
-		/// structures in the RadioButtons array. If this member is zero or its value does not correspond to any radio button ID in the dialog, then the first
-		/// button in RadioButtons will be the default. The property NoDefaultRadioButton can be set to have no default.
+		/// Indicates the default radio button for the dialog. This may be any of the values specified in ButtonId members of one of the
+		/// TaskDialogButton structures in the RadioButtons array. If this member is zero or its value does not correspond to any radio
+		/// button ID in the dialog, then the first button in RadioButtons will be the default. The property NoDefaultRadioButton can be set
+		/// to have no default.
 		/// </summary>
 		[DefaultValue(0)]
 		[Category("Behavior"), Description("")]
 		public int DefaultRadioButton { get; set; }
 
 		/// <summary>
-		/// Enables hyper-link processing for the strings specified in the Content, ExpandedInformation and FooterText members. When enabled, these members may
-		/// be strings that contain hyper-links in the form: <A HREF="executablestring">Hyper-link Text</A>.
+		/// Enables hyper-link processing for the strings specified in the Content, ExpandedInformation and FooterText members. When
+		/// enabled, these members may be strings that contain hyper-links in the form: <A HREF="executablestring">Hyper-link Text</A>.
 		/// WARNING: Enabling hyper-links when using content from an unsafe source may cause security vulnerabilities.
-		/// Note: Task Dialog will not actually execute any hyper-links. Hyper-link execution must be handled in the callback function specified by Callback member.
+		/// Note: Task Dialog will not actually execute any hyper-links. Hyper-link execution must be handled in the callback function
+		///       specified by Callback member.
 		/// </summary>
 		[DefaultValue(false)]
 		[Category("Behavior"), Description("")]
@@ -371,8 +389,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Indicates that the string specified by the ExpandedInformation member should be displayed when the dialog is initially displayed. This flag is
-		/// ignored if the ExpandedInformation member is null.
+		/// Indicates that the string specified by the ExpandedInformation member should be displayed when the dialog is initially
+		/// displayed. This flag is ignored if the ExpandedInformation member is null.
 		/// </summary>
 		[DefaultValue(false)]
 		[Category("Appearance"), Description("")]
@@ -383,8 +401,9 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// The string to be used to label the button for collapsing the expanded information. This member is ignored when the ExpandedInformation member is
-		/// null. If this member is null and the CollapsedControlText is specified, then the CollapsedControlText value will be used for this member as well.
+		/// The string to be used to label the button for collapsing the expanded information. This member is ignored when the
+		/// ExpandedInformation member is null. If this member is null and the CollapsedControlText is specified, then the
+		/// CollapsedControlText value will be used for this member as well.
 		/// </summary>
 		[DefaultValue(null), Localizable(true),
 		 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
@@ -392,9 +411,9 @@ namespace Vanara.Windows.Forms
 		public string ExpandedControlText { get; set; }
 
 		/// <summary>
-		/// The string to be used for displaying additional information. The additional information is displayed either immediately below the content or below
-		/// the footer text depending on whether the ExpandFooterArea member is true. If the EnameHyperlinks member is true, then this string may contain
-		/// hyper-links in the form: <A HREF="executablestring">Hyper-link Text</A>.
+		/// The string to be used for displaying additional information. The additional information is displayed either immediately below
+		/// the content or below the footer text depending on whether the ExpandFooterArea member is true. If the EnameHyperlinks member is
+		/// true, then this string may contain hyper-links in the form: <A HREF="executablestring">Hyper-link Text</A>.
 		/// WARNING: Enabling hyper-links when using content from an unsafe source may cause security vulnerabilities.
 		/// </summary>
 		[DefaultValue(null), Localizable(true),
@@ -414,8 +433,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Indicates that the string specified by the ExpandedInformation member should be displayed at the bottom of the dialog’s footer area instead of
-		/// immediately after the dialog’s content. This flag is ignored if the ExpandedInformation member is null.
+		/// Indicates that the string specified by the ExpandedInformation member should be displayed at the bottom of the dialog’s footer
+		/// area instead of immediately after the dialog’s content. This flag is ignored if the ExpandedInformation member is null.
 		/// </summary>
 		[DefaultValue(false)]
 		[Category("Appearance"), Description("")]
@@ -426,8 +445,9 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// The string to be used in the footer area of the dialog box. If the EnableHyperlinks member is true, then this string may contain hyper-links in the
-		/// form: <A HREF="executablestring"> Hyper-link Text</A>.
+		/// The string to be used in the footer area of the dialog box. If the EnableHyperlinks member is true, then this string may contain
+		/// hyper-links in the
+		/// form: <A HREF="executablestring">Hyper-link Text</A>.
 		/// WARNING: Enabling hyper-links when using content from an unsafe source may cause security vulnerabilities.
 		/// </summary>
 		[DefaultValue(null), Localizable(true),
@@ -446,8 +466,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Specifies a built in icon for the icon to be displayed in the footer area of the dialog box. If this is set to none and the CustomFooterIcon member
-		/// is null then no footer icon will be displayed.
+		/// Specifies a built in icon for the icon to be displayed in the footer area of the dialog box. If this is set to none and the
+		/// CustomFooterIcon member is null then no footer icon will be displayed.
 		/// </summary>
 		[DefaultValue(typeof(TaskDialogIcon), "None")]
 		[Category("Appearance"), Description("")]
@@ -475,7 +495,8 @@ namespace Vanara.Windows.Forms
 		public IntPtr Handle => (IntPtr)handle;
 
 		/// <summary>
-		/// Specifies a built in icon for the main icon in the dialog. If this is set to none and the CustomMainIcon is null then no main icon will be displayed.
+		/// Specifies a built in icon for the main icon in the dialog. If this is set to none and the CustomMainIcon is null then no main
+		/// icon will be displayed.
 		/// </summary>
 		[DefaultValue(typeof(TaskDialogIcon), "None")]
 		[Category("Appearance"), Description("")]
@@ -528,8 +549,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Indicates that the TaskDialog should be positioned (centered) relative to the owner window passed when calling Show. If not set (or no owner window
-		/// is passed), the TaskDialog is positioned (centered) relative to the monitor.
+		/// Indicates that the TaskDialog should be positioned (centered) relative to the owner window passed when calling Show. If not set
+		/// (or no owner window is passed), the TaskDialog is positioned (centered) relative to the monitor.
 		/// </summary>
 		[DefaultValue(false)]
 		[Category("Window Style"), Description("")]
@@ -540,7 +561,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// The progress bar for the <see cref="TaskDialog"/>. This will only be visible if the <see cref="TaskDialogProgressBar.Visible"/> property is set to <c>true</c>.
+		/// The progress bar for the <see cref="TaskDialog"/>. This will only be visible if the <see cref="TaskDialogProgressBar.Visible"/>
+		/// property is set to <c>true</c>.
 		/// </summary>
 		/// <value>The progress bar.</value>
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -568,7 +590,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Indicates that the width of the task dialog is determined by the width of its content area. This flag is ignored if <see cref="Width"/> is not set to 0.
+		/// Indicates that the width of the task dialog is determined by the width of its content area. This flag is ignored if <see
+		/// cref="Width"/> is not set to 0.
 		/// </summary>
 		[DefaultValue(false)]
 		[Category("Layout"), Description("")]
@@ -588,8 +611,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Indicates that the verification checkbox in the dialog should be checked when the dialog is initially displayed. This flag is ignored if the
-		/// VerificationText parameter is null.
+		/// Indicates that the verification checkbox in the dialog should be checked when the dialog is initially displayed. This flag is
+		/// ignored if the VerificationText parameter is null.
 		/// </summary>
 		[DefaultValue(false)]
 		[Category("Appearance"), Description("")]
@@ -600,7 +623,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// The string to be used to label the verification checkbox. If this member is null, the verification checkbox is not displayed in the dialog box.
+		/// The string to be used to label the verification checkbox. If this member is null, the verification checkbox is not displayed in
+		/// the dialog box.
 		/// </summary>
 		[DefaultValue(null), Localizable(true),
 		 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
@@ -612,7 +636,9 @@ namespace Vanara.Windows.Forms
 		[Category("Layout"), Description("")]
 		public int Width { get; set; }
 
-		/// <summary>The string to be used for the dialog box title. If this parameter is NULL, the filename of the executable program is used.</summary>
+		/// <summary>
+		/// The string to be used for the dialog box title. If this parameter is NULL, the filename of the executable program is used.
+		/// </summary>
 		[DefaultValue(null), Localizable(true),
 		 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
 		[Category("Appearance"), Description("")]
@@ -634,10 +660,11 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Indicates that the buttons specified in the Buttons member should be displayed as command links (using a standard task dialog glyph) instead of push
-		/// buttons. When using command links, all characters up to the first new line character in the ButtonText member (of the TaskDialogButton
-		/// structure) will be treated as the command link’s main text, and the remainder will be treated as the command link’s note. This flag is ignored if the
-		/// Buttons member has no entires.
+		/// Indicates that the buttons specified in the Buttons member should be displayed as command links (using a standard task dialog
+		/// glyph) instead of push buttons. When using command links, all characters up to the first new line character in the ButtonText
+		/// member (of the TaskDialogButton
+		/// structure) will be treated as the command link’s main text, and the remainder will be treated as the command link’s note. This
+		///            flag is ignored if the Buttons member has no entires.
 		/// </summary>
 		[DefaultValue(false), Browsable(false), EditorBrowsable(EditorBrowsableState.Never),
 		 DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -648,9 +675,10 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Indicates that the buttons specified in the Buttons member should be displayed as command links (without a glyph) instead of push buttons. When using
-		/// command links, all characters up to the first new line character in the ButtonText member (of the TaskDialogButton structure) will be treated as the
-		/// command link’s main text, and the remainder will be treated as the command link’s note. This flag is ignored if the Buttons member has no entires.
+		/// Indicates that the buttons specified in the Buttons member should be displayed as command links (without a glyph) instead of
+		/// push buttons. When using command links, all characters up to the first new line character in the ButtonText member (of the
+		/// TaskDialogButton structure) will be treated as the command link’s main text, and the remainder will be treated as the command
+		/// link’s note. This flag is ignored if the Buttons member has no entires.
 		/// </summary>
 		[DefaultValue(false), Browsable(false), EditorBrowsable(EditorBrowsableState.Never),
 		 DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -665,17 +693,15 @@ namespace Vanara.Windows.Forms
 		protected override bool CanRaiseEvents => true;
 
 		/// <summary>
-		/// Returns true if the current operating system supports TaskDialog. If false TaskDialog.Show should not be called as the results are undefined but
-		/// often results in a crash.
+		/// Displays a task dialog in front of the specified window and with the specified main instruction, content, caption, buttons, and icon.
 		/// </summary>
-		private static readonly bool IsAvailable = Environment.OSVersion.Platform == PlatformID.Win32NT && (Environment.OSVersion.Version.CompareTo(requiredOsVersion) >= 0);
-
-		/// <summary>Displays a task dialog in front of the specified window and with the specified main instruction, content, caption, buttons, and icon.</summary>
 		/// <param name="win32Window">An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.</param>
 		/// <param name="mainInstruction">The text to display as the main instruction.</param>
 		/// <param name="content">The text to show as content below the main instruction. Value can be <c>null</c>.</param>
 		/// <param name="caption">The text to display in the title bar.</param>
-		/// <param name="buttons">One or more of the <see cref="TaskDialogCommonButtons"/> values that specifies which buttons to display in the task dialog.</param>
+		/// <param name="buttons">
+		/// One or more of the <see cref="TaskDialogCommonButtons"/> values that specifies which buttons to display in the task dialog.
+		/// </param>
 		/// <param name="icon">One of the <see cref="TaskDialogIcon"/> values that specifies which icon to display in the task dialog.</param>
 		/// <returns>One of the <see cref="DialogResult"/> values.</returns>
 		public static int Show(IWin32Window win32Window, string mainInstruction, string content = null, string caption = "",
@@ -694,15 +720,21 @@ namespace Vanara.Windows.Forms
 			return dlg.Result.DialogResult;
 		}
 
-		/// <summary>Displays a task dialog in front of the specified window and with the specified main instruction, content, caption, buttons, and icon.</summary>
+		/// <summary>
+		/// Displays a task dialog in front of the specified window and with the specified main instruction, content, caption, buttons, and icon.
+		/// </summary>
 		/// <param name="win32Window">An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.</param>
 		/// <param name="mainInstruction">The text to display as the main instruction.</param>
 		/// <param name="content">The text to show as content below the main instruction. Value can be <c>null</c>.</param>
 		/// <param name="caption">The text to display in the title bar.</param>
 		/// <param name="radioButtons">Array of labels for radio buttons.</param>
-		/// <param name="buttons">One or more of the <see cref="TaskDialogCommonButtons"/> values that specifies which buttons to display in the task dialog.</param>
+		/// <param name="buttons">
+		/// One or more of the <see cref="TaskDialogCommonButtons"/> values that specifies which buttons to display in the task dialog.
+		/// </param>
 		/// <param name="icon">One of the <see cref="TaskDialogIcon"/> values that specifies which icon to display in the task dialog.</param>
-		/// <returns>The 1-based index of the selected radio button, or <c>0</c> if no radio button was selected or the task dialog was cancelled.</returns>
+		/// <returns>
+		/// The 1-based index of the selected radio button, or <c>0</c> if no radio button was selected or the task dialog was cancelled.
+		/// </returns>
 		public static int Show(IWin32Window win32Window, string mainInstruction, string content, string caption,
 			string[] radioButtons, TaskDialogCommonButtons buttons = TaskDialogCommonButtons.Ok | TaskDialogCommonButtons.Cancel,
 			TaskDialogIcon icon = TaskDialogIcon.None)
@@ -726,25 +758,29 @@ namespace Vanara.Windows.Forms
 		/// <param name="mainInstruction">The text to display as the main instruction.</param>
 		/// <param name="content">The text to show as content below the main instruction. Value can be <c>null</c>.</param>
 		/// <param name="caption">The text to display in the title bar.</param>
-		/// <param name="buttons">One or more of the <see cref="TaskDialogCommonButtons"/> values that specifies which buttons to display in the task dialog.</param>
+		/// <param name="buttons">
+		/// One or more of the <see cref="TaskDialogCommonButtons"/> values that specifies which buttons to display in the task dialog.
+		/// </param>
 		/// <param name="icon">One of the <see cref="TaskDialogIcon"/> values that specifies which icon to display in the task dialog.</param>
 		/// <returns>One of the <see cref="DialogResult"/> values.</returns>
 		public static int Show(string mainInstruction, string content = null, string caption = "",
 			TaskDialogCommonButtons buttons = TaskDialogCommonButtons.Ok, TaskDialogIcon icon = TaskDialogIcon.None) =>
 				Show(null, mainInstruction, content, caption, buttons, icon);
 
-		/// <summary>Displays a task dialog in front of the specified window and with the specified main instruction, caption, custom buttons, and icon.</summary>
+		/// <summary>
+		/// Displays a task dialog in front of the specified window and with the specified main instruction, caption, custom buttons, and icon.
+		/// </summary>
 		/// <param name="win32Window">An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.</param>
 		/// <param name="mainInstruction">The text to display as the main instruction.</param>
 		/// <param name="caption">The text to display in the title bar.</param>
 		/// <param name="buttons">
-		/// One or more strings to display on separate Command Link buttons in the task dialog. To specify a secondary string within a button string, include a
-		/// line-feed "\n" character.
+		/// One or more strings to display on separate Command Link buttons in the task dialog. To specify a secondary string within a
+		/// button string, include a line-feed "\n" character.
 		/// </param>
 		/// <param name="icon">One of the <see cref="TaskDialogIcon"/> values that specifies which icon to display in the task dialog.</param>
 		/// <returns>
-		/// The value of the button clicked starting with 101. Each subsequent button's id will increment by 1. (e.g. Three strings for buttons would have the
-		/// identifiers of 101, 102, and 103.).
+		/// The value of the button clicked starting with 101. Each subsequent button's id will increment by 1. (e.g. Three strings for
+		/// buttons would have the identifiers of 101, 102, and 103.).
 		/// </returns>
 		public static int Show(IWin32Window win32Window, string mainInstruction, string caption, string[] buttons,
 			TaskDialogIcon icon = TaskDialogIcon.None)
@@ -771,20 +807,21 @@ namespace Vanara.Windows.Forms
 		/// <param name="mainInstruction">The text to display as the main instruction.</param>
 		/// <param name="caption">The text to display in the title bar.</param>
 		/// <param name="buttons">
-		/// One or more strings to display on separate Command Link buttons in the task dialog. To specify a secondary string within a button string, include a
-		/// line-feed "\n" character.
+		/// One or more strings to display on separate Command Link buttons in the task dialog. To specify a secondary string within a
+		/// button string, include a line-feed "\n" character.
 		/// </param>
 		/// <param name="icon">One of the <see cref="TaskDialogIcon"/> values that specifies which icon to display in the task dialog.</param>
 		/// <returns>
-		/// The value of the button clicked starting with 101. Each subsequent button's id will increment by 1. (e.g. Three strings for buttons would have the
-		/// identifiers of 101, 102, and 103.).
+		/// The value of the button clicked starting with 101. Each subsequent button's id will increment by 1. (e.g. Three strings for
+		/// buttons would have the identifiers of 101, 102, and 103.).
 		/// </returns>
 		public static int Show(string mainInstruction, string caption, string[] buttons,
 			TaskDialogIcon icon = TaskDialogIcon.None) =>
 				Show(null, mainInstruction, caption, buttons, icon);
 
 		/// <summary>
-		/// Simulate the action of a button click in the TaskDialog. This can be a DialogResult value or the ButtonID set on a TasDialogButton set on TaskDialog.Buttons.
+		/// Simulate the action of a button click in the TaskDialog. This can be a DialogResult value or the ButtonID set on a
+		/// TasDialogButton set on TaskDialog.Buttons.
 		/// </summary>
 		/// <param name="buttonId">Indicates the button ID to be selected.</param>
 		/// <returns>If the function succeeds the return value is true.</returns>
@@ -853,18 +890,25 @@ namespace Vanara.Windows.Forms
 				{
 					case TaskDialogIcon.None:
 						return null;
+
 					case TaskDialogIcon.Warning:
 						return ie.GroupIcons[79];
+
 					case TaskDialogIcon.Error:
 						return ie.GroupIcons[93];
+
 					case TaskDialogIcon.Information:
 						return ie.GroupIcons[76];
+
 					case TaskDialogIcon.SecurityWarning:
 						return ie.GroupIcons[102];
+
 					case TaskDialogIcon.SecurityError:
 						return ie.GroupIcons[100];
+
 					case TaskDialogIcon.SecuritySuccess:
 						return ie.GroupIcons[101];
+
 					default:
 						return ie.GroupIcons[73];
 				}
@@ -874,20 +918,24 @@ namespace Vanara.Windows.Forms
 			{
 				case TaskDialogIcon.None:
 					return null;
+
 				case TaskDialogIcon.Warning:
 					return SystemIcons.Warning;
+
 				case TaskDialogIcon.Error:
 					return SystemIcons.Error;
+
 				case TaskDialogIcon.Information:
 					return SystemIcons.Information;
+
 				default:
 					return SystemIcons.Shield;
 			}
 		}
 
 		/// <summary>
-		/// Enable or disable a button in the TaskDialog. The passed buttonID is the ButtonID set on a TaskDialogButton set on TaskDialog.Buttons or a common
-		/// button ID.
+		/// Enable or disable a button in the TaskDialog. The passed buttonID is the ButtonID set on a TaskDialogButton set on
+		/// TaskDialog.Buttons or a common button ID.
 		/// </summary>
 		/// <param name="buttonId">Indicates the button ID to be enabled or disabled.</param>
 		/// <param name="enable">Enable the button if true. Disable the button if false.</param>
@@ -898,7 +946,9 @@ namespace Vanara.Windows.Forms
 				SendMessage(handle, (uint)TaskDialogMessage.TDM_ENABLE_BUTTON, (IntPtr)buttonId, (IntPtr)(enable ? 1 : 0));
 		}
 
-		/// <summary>Enable or disable a radio button in the TaskDialog. The passed buttonID is the ButtonID set on a TaskDialogButton set on TaskDialog.RadioButtons.</summary>
+		/// <summary>
+		/// Enable or disable a radio button in the TaskDialog. The passed buttonID is the ButtonID set on a TaskDialogButton set on TaskDialog.RadioButtons.
+		/// </summary>
 		/// <param name="buttonId">Indicates the button ID to be enabled or disabled.</param>
 		/// <param name="enable">Enable the button if true. Disable the button if false.</param>
 		internal void EnableRadioButton(int buttonId, bool enable)
@@ -969,7 +1019,8 @@ namespace Vanara.Windows.Forms
 		internal virtual void OnVerificationClicked(bool verificationChecked) => VerificationClicked?.Invoke(this, new VerificationClickedEventArgs(verificationChecked));
 
 		/// <summary>
-		/// Simulate the action of a radio button click in the TaskDialog. The passed buttonID is the ButtonID set on a TaskDialogButton set on TaskDialog.RadioButtons.
+		/// Simulate the action of a radio button click in the TaskDialog. The passed buttonID is the ButtonID set on a TaskDialogButton set
+		/// on TaskDialog.RadioButtons.
 		/// </summary>
 		/// <param name="buttonId">Indicates the button ID to be selected.</param>
 		internal void PerformRadioButtonClick(int buttonId)
@@ -982,23 +1033,28 @@ namespace Vanara.Windows.Forms
 		/// <summary>Designate whether a given Task Dialog button or command link should have a User Account Control (UAC) shield icon.</summary>
 		/// <param name="buttonId">ID of the push button or command link to be updated.</param>
 		/// <param name="elevationRequired">
-		/// False to designate that the action invoked by the button does not require elevation; true to designate that the action does require elevation.
+		/// False to designate that the action invoked by the button does not require elevation; true to designate that the action does
+		/// require elevation.
 		/// </param>
 		internal void SetButtonElevationRequiredState(int buttonId, bool elevationRequired)
 		{
-			// TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE = WM_USER+115, // wParam = Button ID, lParam = 0 (elevation not required), lParam != 0 (elevation required)
+			// TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE = WM_USER+115, // wParam = Button ID, lParam = 0 (elevation not required), lParam !=
+			// 0 (elevation required)
 			if (!handle.IsNull)
 				SendMessage(handle, (uint)TaskDialogMessage.TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE, (IntPtr)buttonId,
 					(IntPtr)(elevationRequired ? 1 : 0));
 		}
 
-		/// <summary>Defines the common dialog box hook procedure that is overridden to add specific functionality to a common dialog box.</summary>
+		/// <summary>
+		/// Defines the common dialog box hook procedure that is overridden to add specific functionality to a common dialog box.
+		/// </summary>
 		/// <param name="hWnd">The handle to the dialog box window.</param>
 		/// <param name="msg">The message being received.</param>
 		/// <param name="wparam">Additional information about the message.</param>
 		/// <param name="lparam">Additional information about the message.</param>
 		/// <returns>
-		/// A zero value if the default dialog box procedure processes the message; a nonzero value if the default dialog box procedure ignores the message.
+		/// A zero value if the default dialog box procedure processes the message; a nonzero value if the default dialog box procedure
+		/// ignores the message.
 		/// </returns>
 		protected override IntPtr HookProc(IntPtr hWnd, int msg, IntPtr wparam, IntPtr lparam)
 		{
@@ -1049,8 +1105,8 @@ namespace Vanara.Windows.Forms
 		/// <summary>The required implementation of CommonDialog that shows the Task Dialog.</summary>
 		/// <param name="hwndOwner">Owner window. This can be null.</param>
 		/// <returns>
-		/// If this method returns true, then ShowDialog will return DialogResult.OK. If this method returns false, then ShowDialog will return
-		/// DialogResult.Cancel. The user of this class must use the TaskDialogResult member to get more information.
+		/// If this method returns true, then ShowDialog will return DialogResult.OK. If this method returns false, then ShowDialog will
+		/// return DialogResult.Cancel. The user of this class must use the TaskDialogResult member to get more information.
 		/// </returns>
 		protected override bool RunDialog(IntPtr hwndOwner)
 		{
@@ -1061,16 +1117,21 @@ namespace Vanara.Windows.Forms
 		/// <summary>The callback from the native Task Dialog. This prepares the friendlier arguments and calls the simpler callback.</summary>
 		/// <param name="hwnd">The window handle of the Task Dialog that is active.</param>
 		/// <param name="msg">The notification. A TaskDialogNotification value.</param>
-		/// <param name="wparam">Specifies additional notification information. The contents of this parameter depends on the value of the msg parameter.</param>
-		/// <param name="lparam">Specifies additional notification information. The contents of this parameter depends on the value of the msg parameter.</param>
+		/// <param name="wparam">
+		/// Specifies additional notification information. The contents of this parameter depends on the value of the msg parameter.
+		/// </param>
+		/// <param name="lparam">
+		/// Specifies additional notification information. The contents of this parameter depends on the value of the msg parameter.
+		/// </param>
 		/// <param name="refData">Specifies the application-defined value given in the call to TaskDialogIndirect.</param>
 		/// <returns>A HRESULT. It's not clear in the spec what a failed result will do.</returns>
 		private HRESULT PrivateCallback([In] HWND hwnd, [In] TaskDialogNotification msg, [In] IntPtr wparam, [In] IntPtr lparam,
 			[In] IntPtr refData) => HookProc((IntPtr)hwnd, (int)msg, wparam, lparam).ToInt32();
 
 		/// <summary>
-		/// Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title, verification check box, command links
-		/// and push buttons, plus any combination of predefined icons and push buttons as specified on the other members of the class before calling Show.
+		/// Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title, verification check
+		/// box, command links and push buttons, plus any combination of predefined icons and push buttons as specified on the other members
+		/// of the class before calling Show.
 		/// </summary>
 		/// <param name="hwndOwner">Owner window the task Dialog will modal to.</param>
 		/// <returns>The set of results of the dialog.</returns>
@@ -1100,7 +1161,6 @@ namespace Vanara.Windows.Forms
 				dwFlags = flags,
 				dwCommonButtons = (TASKDIALOG_COMMON_BUTTON_FLAGS)CommonButtons
 			};
-
 
 			if (!string.IsNullOrEmpty(WindowTitle))
 				config.WindowTitle = WindowTitle;
@@ -1187,14 +1247,16 @@ namespace Vanara.Windows.Forms
 			}
 
 			/// <summary>
-			/// Gets the dialog result. This is the value of one of the <see cref="TaskDialogCommonButtons"/> enumerate type or the ID of a <see
-			/// cref="TaskDialogButton"/> that has been clicked.
+			/// Gets the dialog result. This is the value of one of the <see cref="TaskDialogCommonButtons"/> enumerate type or the ID of a
+			/// <see cref="TaskDialogButton"/> that has been clicked.
 			/// </summary>
 			/// <value>The task dialog result.</value>
 			public int DialogResult => dialogResult;
 
 			/// <summary>If a radio button was supplied and selected, gets the value of the selected radio button's identifier.</summary>
-			/// <value>The selected radio button id. A value of <c>0</c> indicates that no radio button was selected or the task dialog was cancelled.</value>
+			/// <value>
+			/// The selected radio button id. A value of <c>0</c> indicates that no radio button was selected or the task dialog was cancelled.
+			/// </value>
 			public int SelectedRadioButton => selectedRadioButton;
 
 			/// <summary>Gets a value indicating whether the verification flag was checked.</summary>
@@ -1210,8 +1272,13 @@ namespace Vanara.Windows.Forms
 		/// <summary>Provides data for the <see cref="ButtonClicked"/> and the <see cref="RadioButtonClicked"/> events.</summary>
 		public class ButtonClickedEventArgs : CancelEventArgs
 		{
-			internal ButtonClickedEventArgs(int id, TaskDialogButtonBase button) { ButtonId = id; Button = button; }
+			internal ButtonClickedEventArgs(int id, TaskDialogButtonBase button)
+			{
+				ButtonId = id; Button = button;
+			}
 
+			/// <summary>Gets the button that was clicked.</summary>
+			/// <value>The button.</value>
 			public TaskDialogButtonBase Button { get; }
 
 			/// <summary>Gets the id of the button clicked.</summary>
@@ -1242,7 +1309,8 @@ namespace Vanara.Windows.Forms
 
 			/// <summary>Initialize the custom button.</summary>
 			/// <param name="id">
-			/// The ID of the button. This value is returned by TaskDialog.Show when the button is clicked. Typically this will be a value in the DialogResult enum.
+			/// The ID of the button. This value is returned by TaskDialog.Show when the button is clicked. Typically this will be a value
+			/// in the DialogResult enum.
 			/// </param>
 			/// <param name="text">The string that appears on the button.</param>
 			protected TaskDialogButtonBase(string text, int id = -1)
@@ -1320,7 +1388,8 @@ namespace Vanara.Windows.Forms
 			/// <summary>Explicitly converts the <see cref="TaskDialogButtonCollection{T}"/> to an in-memory array.</summary>
 			/// <param name="c">The <see cref="TaskDialogButtonCollection{T}"/> instance.</param>
 			/// <returns>
-			/// An IntPtr pointing to a marshaled memory pointer of the array created with AllocHGlobal. This does not need to be freed as the class maintains it.
+			/// An IntPtr pointing to a marshaled memory pointer of the array created with AllocHGlobal. This does not need to be freed as
+			/// the class maintains it.
 			/// </returns>
 			public static explicit operator IntPtr(TaskDialogButtonCollection<T> c)
 			{
@@ -1366,6 +1435,7 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
+		/// <summary>Represents the progress bar that can be displayed in a task dialog.</summary>
 		[TypeConverter(typeof(BetterExpandableObjectConverter)), Serializable]
 		public class TaskDialogProgressBar
 		{
@@ -1377,12 +1447,16 @@ namespace Vanara.Windows.Forms
 
 			internal TaskDialogProgressBar(TaskDialog td) => taskDialog = td;
 
+			/// <summary>Gets or sets the marquee animation speed.</summary>
+			/// <value>The marquee animation speed.</value>
 			[DefaultValue(100)]
 			public int MarqueeAnimationSpeed
 			{
 				get => mSpeed; set { if (mSpeed != value) SetMarqueeSpeed(mSpeed = value); }
 			}
 
+			/// <summary>Gets or sets the maximum progress value.</summary>
+			/// <value>The maximum.</value>
 			[DefaultValue((short)100)]
 			public short Maximum
 			{
@@ -1394,6 +1468,8 @@ namespace Vanara.Windows.Forms
 				}
 			}
 
+			/// <summary>Gets or sets the minimum progress value.</summary>
+			/// <value>The minimum.</value>
 			[DefaultValue((short)0)]
 			public short Minimum
 			{
@@ -1405,12 +1481,17 @@ namespace Vanara.Windows.Forms
 				}
 			}
 
+			/// <summary>Gets or sets the current state of the progress bar.</summary>
+			/// <value>The state.</value>
 			[DefaultValue(typeof(ProgressBarState), "Normal")]
 			public ProgressBarState State
 			{
 				get => state; set { if (state != value) SetState(state = value); }
 			}
 
+			/// <summary>Gets or sets the style of the progress bar.</summary>
+			/// <value>The style.</value>
+			/// <exception cref="System.NotSupportedException">TaskDialog does not support Block style progress bars.</exception>
 			[DefaultValue(typeof(ProgressBarStyle), "Continuous")]
 			public ProgressBarStyle Style
 			{
@@ -1432,12 +1513,16 @@ namespace Vanara.Windows.Forms
 				}
 			}
 
+			/// <summary>Gets or sets the value of the progress bar.</summary>
+			/// <value>The value.</value>
 			[DefaultValue(0)]
 			public int Value
 			{
 				get => val; set { if (val != value) SetValue(val = value); }
 			}
 
+			/// <summary>Gets or sets a value indicating whether this <see cref="TaskDialogProgressBar"/> is visible.</summary>
+			/// <value><see langword="true"/> if visible; otherwise, <see langword="false"/>.</value>
 			[DefaultValue(false)]
 			public bool Visible
 			{
@@ -1528,6 +1613,8 @@ namespace Vanara.Windows.Forms
 		}
 	}
 
+	/// <summary>Represents a button on a task dialog.</summary>
+	/// <seealso cref="Vanara.Windows.Forms.TaskDialog.TaskDialogButtonBase"/>
 	public class TaskDialogButton : TaskDialog.TaskDialogButtonBase
 	{
 		private bool shield;
@@ -1538,8 +1625,8 @@ namespace Vanara.Windows.Forms
 		/// <summary>Initialize the custom button.</summary>
 		/// <param name="text">The string that appears on the button.</param>
 		/// <param name="id">
-		/// The ID of the button. This value is returned by TaskDialog.Show when the button is clicked. Typically this will be a value in the DialogResult enum.
-		/// Specifying a value of (-1) will insert a potentially non-unique value.
+		/// The ID of the button. This value is returned by TaskDialog.Show when the button is clicked. Typically this will be a value in
+		/// the DialogResult enum. Specifying a value of (-1) will insert a potentially non-unique value.
 		/// </param>
 		public TaskDialogButton(string text, int id = -1) : base(text, id)
 		{
@@ -1565,7 +1652,8 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("")]
 		public bool ElevatedStateRequired
 		{
-			get => shield; set
+			get => shield;
+			set
 			{
 				if (shield != value)
 				{
@@ -1602,6 +1690,8 @@ namespace Vanara.Windows.Forms
 		public void PerformClick() => parent?.PerformButtonClick(ButtonId);
 	}
 
+	/// <summary>Represents a radio button on a task dialog.</summary>
+	/// <seealso cref="Vanara.Windows.Forms.TaskDialog.TaskDialogButtonBase"/>
 	public class TaskDialogRadioButton : TaskDialog.TaskDialogButtonBase
 	{
 		/// <summary>Initializes a new instance of the <see cref="TaskDialogButton"/> class.</summary>
@@ -1610,8 +1700,8 @@ namespace Vanara.Windows.Forms
 		/// <summary>Initialize the custom radio button.</summary>
 		/// <param name="text">The string that appears on the radio button.</param>
 		/// <param name="id">
-		/// The ID of the readio button. This value is returned by TaskDialog.Show when the button is clicked. Specifying a value of (-1) will insert a
-		/// potentially non-unique value.
+		/// The ID of the readio button. This value is returned by TaskDialog.Show when the button is clicked. Specifying a value of (-1)
+		/// will insert a potentially non-unique value.
 		/// </param>
 		public TaskDialogRadioButton(string text, int id = -1) : base(text, id)
 		{

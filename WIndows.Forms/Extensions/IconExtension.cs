@@ -54,6 +54,7 @@ namespace Vanara.Extensions
 		Jumbo = SHIL.SHIL_JUMBO
 	}
 
+	/// <summary>Extension methods for <see cref="Icon"/>.</summary>
 	public static class IconExtension
 	{
 		private delegate byte[] GetIconDataDelegate(Icon icon);

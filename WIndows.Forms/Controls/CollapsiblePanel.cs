@@ -8,22 +8,44 @@ using Vanara.Extensions;
 
 namespace Vanara.Windows.Forms
 {
+	/// <summary>Determines when a border will be displayed.</summary>
 	public enum CollapsiblePanelBorderCondition
 	{
+		/// <summary>Always.</summary>
 		Always,
+
+		/// <summary>Only when the panel is expanded.</summary>
 		OnlyExpanded,
+
+		/// <summary>Never.</summary>
 		Never
 	}
 
+	/// <summary>Determines the state of the panel's header.</summary>
 	public enum CollapsiblePanelHeaderState
 	{
+		/// <summary>Normal</summary>
 		Normal = 0,
+
+		/// <summary>The mouse is over the header.</summary>
 		Hot = 1,
+
+		/// <summary>The header is being clicked.</summary>
 		Pressed = 2,
+
+		/// <summary>The header is in the normal expanded state.</summary>
 		ExpandedNormal = 3,
+
+		/// <summary>The header is in the hot expanded state.</summary>
 		ExpandedHot = 4,
+
+		/// <summary>The header is in the pressed expanded state.</summary>
 		ExpandedPressed = 5,
+
+		/// <summary>The header is disabled.</summary>
 		Disabled = 6,
+
+		/// <summary>The header is disabled and expanded.</summary>
 		ExpandedDisabled = 7
 	}
 
@@ -35,19 +57,16 @@ namespace Vanara.Windows.Forms
 		Button = 4
 	}
 
-	/// <summary>
-	/// Control providing a panel that can be collapsed.
-	/// </summary>
+	/// <summary>Control providing a panel that can be collapsed.</summary>
 	[Designer(typeof(Design.CollapsiblePanelDesigner))]
 	[ToolboxItem(true), ToolboxBitmap(typeof(CollapsiblePanel), "CollapsiblePanel.bmp")]
 	[Description("Provides a panel that can be collapsed.")]
 	public class CollapsiblePanel : Control, ISupportInitialize
 	{
-		private const int padding = 12;
 		internal CollapsiblePanelHeaderState buttonState = CollapsiblePanelHeaderState.Normal;
 		internal EmbeddedContainer contentPanel;
 		internal bool headerHot;
-
+		private const int padding = 12;
 		private ThemedTableLayoutPanel backgroundPanel;
 		private ThemedPanel bottomBorder;
 		private bool buttonDown;
@@ -56,6 +75,7 @@ namespace Vanara.Windows.Forms
 		private BaseRenderer renderer;
 		private ThemedPanel topBorder;
 
+		/// <summary>Initializes a new instance of the <see cref="CollapsiblePanel"/> class.</summary>
 		public CollapsiblePanel()
 		{
 			InitializeComponent();
@@ -63,22 +83,34 @@ namespace Vanara.Windows.Forms
 			CustomStyle = new Style();
 		}
 
+		/// <summary>Gets or sets the bottom border condition.</summary>
+		/// <value>The bottom border condition.</value>
 		[DefaultValue(typeof(CollapsiblePanelBorderCondition), "Always")]
 		public CollapsiblePanelBorderCondition BottomBorderCondition { get; set; } = CollapsiblePanelBorderCondition.Always;
 
+		/// <summary>Gets or sets a value indicating whether this <see cref="CollapsiblePanel"/> is collapsed.</summary>
+		/// <value><see langword="true"/> if collapsed; otherwise, <see langword="false"/>.</value>
 		[DefaultValue(false)]
 		public bool Collapsed { get; set; }
 
+		/// <summary>Gets the control that holds the content.</summary>
+		/// <value>The content control.</value>
 		public Control Content => contentPanel;
 
+		/// <summary>Gets the custom style.</summary>
+		/// <value>The custom style.</value>
 		public Style CustomStyle { get; internal set; }
 
+		/// <summary>Gets or sets the header text.</summary>
+		/// <value>The header text.</value>
 		[DefaultValue("")]
 		public string HeaderText
 		{
 			get => headerPanel.Text; set => headerPanel.Text = value;
 		}
 
+		/// <summary>Gets or sets the render style.</summary>
+		/// <value>The render style.</value>
 		[DefaultValue(typeof(RenderStyle), "SystemTheme")]
 		public RenderStyle RenderStyle
 		{
@@ -91,30 +123,43 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
+		/// <summary>Gets or sets the top border condition.</summary>
+		/// <value>The top border condition.</value>
 		[DefaultValue(typeof(CollapsiblePanelBorderCondition), "Always")]
 		public CollapsiblePanelBorderCondition TopBorderCondition { get; set; } = CollapsiblePanelBorderCondition.Always;
 
-		public void BeginInit()
+		/// <summary>Signals the object that initialization is starting.</summary>
+		public virtual void BeginInit()
 		{
 		}
 
-		public void EndInit()
+		/// <summary>Signals the object that initialization is complete.</summary>
+		public virtual void EndInit()
 		{
 		}
 
+		/// <summary>Retrieves the size of a rectangular area into which a control can be fitted.</summary>
+		/// <param name="proposedSize">The custom-sized area for a control.</param>
+		/// <returns>An ordered pair of type <see cref="T:System.Drawing.Size"/> representing the width and height of a rectangle.</returns>
 		public override Size GetPreferredSize(Size proposedSize) => renderer.GetPreferredSize(proposedSize);
 
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.Click"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnClick(EventArgs e)
 		{
 			base.OnClick(e);
 			Collapsed = !Collapsed;
 		}
 
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.HandleCreated"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnHandleCreated(EventArgs e)
 		{
 			base.OnHandleCreated(e);
 		}
 
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseDown"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			HandleMouseEvent(e);
@@ -126,6 +171,8 @@ namespace Vanara.Windows.Forms
 			base.OnMouseDown(e);
 		}
 
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseLeave"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
 		protected override void OnMouseLeave(EventArgs e)
 		{
 			base.OnMouseLeave(e);
@@ -134,12 +181,16 @@ namespace Vanara.Windows.Forms
 			Refresh();
 		}
 
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			HandleMouseEvent(e);
 			base.OnMouseMove(e);
 		}
 
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
 			HandleMouseEvent(e);
@@ -148,6 +199,8 @@ namespace Vanara.Windows.Forms
 			base.OnMouseUp(e);
 		}
 
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.Paint"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.</param>
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			// Draw header
@@ -179,6 +232,18 @@ namespace Vanara.Windows.Forms
 			Refresh();
 		}
 
+		private void HeaderPanel_Click(object sender, EventArgs e)
+		{
+			bool collapsed = headerPanel.Collapsed;
+			contentBackground.Visible = !collapsed;
+			var h = collapsed ? headerPanel.Height : headerPanel.Height + contentBackground.Height;
+			if (TopBorderCondition == CollapsiblePanelBorderCondition.Always || (TopBorderCondition == CollapsiblePanelBorderCondition.OnlyExpanded && !collapsed))
+				h++;
+			if (BottomBorderCondition == CollapsiblePanelBorderCondition.Always || (BottomBorderCondition == CollapsiblePanelBorderCondition.OnlyExpanded && !collapsed))
+				h++;
+			Height = h;
+		}
+
 		private void InitializeComponent()
 		{
 			backgroundPanel = new ThemedTableLayoutPanel();
@@ -190,9 +255,7 @@ namespace Vanara.Windows.Forms
 			backgroundPanel.SuspendLayout();
 			contentBackground.SuspendLayout();
 			SuspendLayout();
-			// 
 			// backgroundPanel
-			// 
 			backgroundPanel.ColumnCount = 1;
 			backgroundPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
 			backgroundPanel.Controls.Add(topBorder, 0, 0);
@@ -208,9 +271,7 @@ namespace Vanara.Windows.Forms
 			backgroundPanel.RowStyles.Add(new RowStyle());
 			backgroundPanel.StyleClass = "CONTROLPANEL";
 			backgroundPanel.StylePart = 2;
-			// 
 			// topBorder
-			// 
 			topBorder.BackColor = SystemColors.Control;
 			topBorder.Dock = DockStyle.Top;
 			topBorder.Height = 1;
@@ -218,18 +279,14 @@ namespace Vanara.Windows.Forms
 			topBorder.Name = "topBorder";
 			topBorder.StyleClass = "CONTROLPANEL";
 			topBorder.StylePart = 17;
-			// 
 			// headerPanel
-			// 
 			headerPanel.Dock = DockStyle.Top;
 			headerPanel.HorzPadding = padding;
 			headerPanel.Margin = new Padding(0);
 			headerPanel.Name = "headerPanel";
 			headerPanel.Size = new Size(200, 37);
 			headerPanel.Click += HeaderPanel_Click;
-			// 
 			// contentBackground
-			// 
 			contentBackground.ColumnCount = 3;
 			contentBackground.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, padding));
 			contentBackground.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -244,16 +301,12 @@ namespace Vanara.Windows.Forms
 			contentBackground.RowStyles.Add(new RowStyle(SizeType.Absolute, padding));
 			contentBackground.StyleClass = "CONTROLPANEL";
 			contentBackground.StylePart = 2;
-			// 
 			// contentPanel
-			// 
 			contentPanel.Dock = DockStyle.Fill;
 			contentPanel.Margin = new Padding(0);
 			contentPanel.Name = "contentPanel";
 			contentPanel.TabIndex = 0;
-			// 
 			// bottomBorder
-			// 
 			bottomBorder.BackColor = SystemColors.Control;
 			bottomBorder.Dock = DockStyle.Bottom;
 			bottomBorder.Height = 1;
@@ -261,29 +314,17 @@ namespace Vanara.Windows.Forms
 			bottomBorder.Name = "bottomBorder";
 			bottomBorder.StyleClass = "CONTROLPANEL";
 			bottomBorder.StylePart = 17;
-			// 
 			// CollapsiblePanel
-			// 
 			Controls.Add(backgroundPanel);
 			backgroundPanel.ResumeLayout(false);
 			contentBackground.ResumeLayout(false);
 			ResumeLayout(false);
 		}
 
-		private void HeaderPanel_Click(object sender, EventArgs e)
-		{
-			bool collapsed = headerPanel.Collapsed;
-			contentBackground.Visible = !collapsed;
-			var h = collapsed ? headerPanel.Height : headerPanel.Height + contentBackground.Height;
-			if (TopBorderCondition == CollapsiblePanelBorderCondition.Always || (TopBorderCondition == CollapsiblePanelBorderCondition.OnlyExpanded && !collapsed))
-				h++;
-			if (BottomBorderCondition == CollapsiblePanelBorderCondition.Always || (BottomBorderCondition == CollapsiblePanelBorderCondition.OnlyExpanded && !collapsed))
-				h++;
-			Height = h;
-		}
-
+		/// <summary>The panel's style.</summary>
 		public class Style
 		{
+			/// <summary>Initializes a new instance of the <see cref="Style"/> class.</summary>
 			public Style()
 			{
 				BackColor = Color.White;
@@ -297,45 +338,73 @@ namespace Vanara.Windows.Forms
 				Padding = new Padding(12);
 			}
 
+			/// <summary>Gets or sets the backgroun color.</summary>
+			/// <value>The backgroun color.</value>
 			[DefaultValue(typeof(Color), "White")]
 			public Color BackColor { get; set; }
 
+			/// <summary>Gets or sets the expando images.</summary>
+			/// <value>The expando images.</value>
 			public Image[] ExpandoImages { get; set; }
 
+			/// <summary>Gets or sets the font.</summary>
+			/// <value>The font.</value>
 			public Font Font { get; set; }
 
+			/// <summary>Gets or sets the foreground color.</summary>
+			/// <value>The foreground color.</value>
 			[DefaultValue(typeof(Color), "Black")]
 			public Color ForeColor { get; set; }
 
+			/// <summary>Gets or sets the color of the header background.</summary>
+			/// <value>The color of the header background.</value>
 			[DefaultValue(typeof(Color), "White")]
 			public Color HeaderBackColor { get; set; }
 
+			/// <summary>Gets or sets the header font.</summary>
+			/// <value>The header font.</value>
 			public Font HeaderFont { get; set; }
 
+			/// <summary>Gets or sets the height of the header.</summary>
+			/// <value>The height of the header.</value>
 			[DefaultValue(30)]
 			public int HeaderHeight { get; set; }
 
+			/// <summary>Gets or sets the color of the header hot background.</summary>
+			/// <value>The color of the header hot background.</value>
 			[DefaultValue(typeof(Color), "LightSkyBlue")]
 			public Color HeaderHotBackColor { get; set; }
 
+			/// <summary>Gets or sets the color of the header text.</summary>
+			/// <value>The color of the header text.</value>
 			[DefaultValue(typeof(Color), "DarkBlue")]
 			public Color HeaderTextColor { get; set; }
 
+			/// <summary>Gets or sets the padding.</summary>
+			/// <value>The padding.</value>
 			[DefaultValue(typeof(Padding), "12,12,12,12")]
 			public Padding Padding { get; set; }
 
+			/// <summary>Converts to string.</summary>
+			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 			public override string ToString() => @"Style: " + string.Join("; ", GetType().GetProperties().Select(p => $"{p.Name}={p.GetValue(this, null)}").ToArray());
 		}
 
 		internal abstract class BaseRenderer
 		{
-			protected BaseRenderer(CollapsiblePanel ctrl) { Control = ctrl; }
+			protected BaseRenderer(CollapsiblePanel ctrl)
+			{
+				Control = ctrl;
+			}
 
 			public CollapsiblePanel Control { get; }
 
 			public abstract CollapsiblePanelMousePosition GetMousePosition(MouseEventArgs e);
 
-			public virtual Size GetPreferredSize(Size proposedSize) { return proposedSize; }
+			public virtual Size GetPreferredSize(Size proposedSize)
+			{
+				return proposedSize;
+			}
 
 			public abstract void Layout(PaintEventArgs e);
 
@@ -344,8 +413,8 @@ namespace Vanara.Windows.Forms
 
 		internal class CustomRenderer : BaseRenderer
 		{
-			private Rectangle buttonBounds;
 			private readonly ImageList headerImages;
+			private Rectangle buttonBounds;
 
 			public CustomRenderer(CollapsiblePanel ctrl) : base(ctrl)
 			{
@@ -389,7 +458,9 @@ namespace Vanara.Windows.Forms
 			private Size imgSz;
 			private Rectangle textBounds;
 
-			public SystemRenderer(CollapsiblePanel ctrl) : base(ctrl) { }
+			public SystemRenderer(CollapsiblePanel ctrl) : base(ctrl)
+			{
+			}
 
 			public override CollapsiblePanelMousePosition GetMousePosition(MouseEventArgs e)
 			{
@@ -404,7 +475,7 @@ namespace Vanara.Windows.Forms
 				using (var g = Control.CreateGraphics())
 				{
 					Layout(new PaintEventArgs(g, new Rectangle(Point.Empty, proposedSize)));
-					int minW = (imgSz.Width*2) + (lrpadding*3);
+					int minW = (imgSz.Width * 2) + (lrpadding * 3);
 					if (proposedSize.Width < minW) proposedSize.Width = minW;
 					if (proposedSize.Height < headerHeight) proposedSize.Height = headerHeight;
 					return proposedSize;

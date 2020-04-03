@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 namespace Vanara.Windows.Forms
 {
+	/// <summary>Represents an image used within a control.</summary>
 	public class ControlImage
 	{
 		private Image image;
@@ -12,8 +13,12 @@ namespace Vanara.Windows.Forms
 		private int index = -1;
 		private bool useIntegerIndex = true;
 
+		/// <summary>Initializes a new instance of the <see cref="ControlImage"/> class.</summary>
+		/// <param name="parent">The parent.</param>
 		public ControlImage(Control parent) { Control = parent; }
 
+		/// <summary>Gets or sets the image.</summary>
+		/// <value>The image.</value>
 		public virtual Image Image
 		{
 			get
@@ -41,6 +46,9 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
+		/// <summary>Gets or sets the index of the image.</summary>
+		/// <value>The index of the image.</value>
+		/// <exception cref="System.ArgumentOutOfRangeException">ImageIndex</exception>
 		public virtual int ImageIndex
 		{
 			get
@@ -61,6 +69,8 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
+		/// <summary>Gets or sets the image key.</summary>
+		/// <value>The image key.</value>
 		public virtual string ImageKey
 		{
 			get => imageKey; set
@@ -74,6 +84,8 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
+		/// <summary>Gets or sets the image list.</summary>
+		/// <value>The image list.</value>
 		public virtual ImageList ImageList
 		{
 			get => imageList; set
@@ -90,6 +102,8 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
+		/// <summary>Gets the actual index.</summary>
+		/// <value>The actual index.</value>
 		protected virtual int ActualIndex
 		{
 			get
@@ -102,8 +116,13 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
+		/// <summary>Gets or sets the control.</summary>
+		/// <value>The control.</value>
 		protected Control Control { get; set; }
 
-		private void ImageListOnRecreateHandle(object sender, EventArgs eventArgs) { if (Control?.IsHandleCreated ?? false) Control.Invalidate(); }
+		private void ImageListOnRecreateHandle(object sender, EventArgs eventArgs)
+		{
+			if (Control?.IsHandleCreated ?? false) Control.Invalidate();
+		}
 	}
 }

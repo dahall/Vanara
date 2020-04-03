@@ -5,26 +5,12 @@ using static Vanara.PInvoke.User32;
 
 namespace Vanara.Extensions
 {
+	/// <summary>Extension methods for <see cref="Cursor"/>.</summary>
 	public static partial class CursorExtension
 	{
-		public static Size GetSize(this Cursor cursor)
-		{
-			var size = Size.Empty;
-			var info = new ICONINFO();
-			GetIconInfo(new SafeHICON(cursor.Handle, false), info);
-			if (!info.hbmColor.IsNull)
-			{
-				using (var bm = Image.FromHbitmap((IntPtr)info.hbmColor))
-					size = bm.Size;
-			}
-			else if (!info.hbmMask.IsNull)
-			{
-				using (var bm = Image.FromHbitmap((IntPtr)info.hbmMask))
-					size = new Size(bm.Width, bm.Height / 2);
-			}
-			return size;
-		}
-
+		/// <summary>Gets the bounds in desktop coordinates of the specified cursor.</summary>
+		/// <param name="cursor">The cursor.</param>
+		/// <returns></returns>
 		public static Rectangle Bounds(this Cursor cursor)
 		{
 			using (var bmp = new Bitmap(cursor.Size.Width, cursor.Size.Height))
@@ -55,6 +41,27 @@ namespace Vanara.Extensions
 					return new Rectangle(new Point(xMin, yMin), new Size((xMax - xMin) + 1, (yMax - yMin) + 1));
 				}
 			}
+		}
+
+		/// <summary>Gets the size of the cursor.</summary>
+		/// <param name="cursor">The cursor.</param>
+		/// <returns>The size, in pixels.</returns>
+		public static Size GetSize(this Cursor cursor)
+		{
+			var size = Size.Empty;
+			var info = new ICONINFO();
+			GetIconInfo(new SafeHICON(cursor.Handle, false), info);
+			if (!info.hbmColor.IsNull)
+			{
+				using (var bm = Image.FromHbitmap((IntPtr)info.hbmColor))
+					size = bm.Size;
+			}
+			else if (!info.hbmMask.IsNull)
+			{
+				using (var bm = Image.FromHbitmap((IntPtr)info.hbmMask))
+					size = new Size(bm.Width, bm.Height / 2);
+			}
+			return size;
 		}
 	}
 }

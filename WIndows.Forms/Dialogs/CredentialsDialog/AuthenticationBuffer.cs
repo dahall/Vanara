@@ -17,6 +17,9 @@ namespace Vanara.Security
 	{
 		private SafeCoTaskMemHandle buffer;
 
+		/// <summary>Initializes a new instance of the <see cref="AuthenticationBuffer"/> class.</summary>
+		/// <param name="userName">Name of the user.</param>
+		/// <param name="password">The password.</param>
 		public AuthenticationBuffer(string userName, string password)
 		{
 			var pUserName = new SafeCoTaskMemString(userName ?? "");
@@ -24,6 +27,9 @@ namespace Vanara.Security
 			Init(0, pUserName, pPassword);
 		}
 
+		/// <summary>Initializes a new instance of the <see cref="AuthenticationBuffer"/> class.</summary>
+		/// <param name="userName">Name of the user.</param>
+		/// <param name="password">The password.</param>
 		public AuthenticationBuffer(SecureString userName, SecureString password)
 		{
 			var pUserName = new SafeCoTaskMemString(userName);
@@ -31,14 +37,25 @@ namespace Vanara.Security
 			Init(0, pUserName, pPassword);
 		}
 
+		/// <summary>Initializes a new instance of the <see cref="AuthenticationBuffer"/> class.</summary>
+		/// <param name="authBuffer">The authentication buffer.</param>
+		/// <param name="authBufferSize">Size of the authentication buffer.</param>
 		public AuthenticationBuffer(IntPtr authBuffer, int authBufferSize) => buffer = new SafeCoTaskMemHandle(authBuffer, authBufferSize);
 
+		/// <summary>Gets the dangerous handle.</summary>
+		/// <value>The dangerous handle.</value>
 		public IntPtr DangerousHandle => buffer?.DangerousGetHandle() ?? IntPtr.Zero;
 
+		/// <summary>Gets the size.</summary>
+		/// <value>The size.</value>
 		public int Size => buffer?.Size ?? 0;
 
+		/// <summary>Performs an implicit conversion from <see cref="AuthenticationBuffer"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="b">The b.</param>
+		/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
 		public static implicit operator IntPtr(AuthenticationBuffer b) => b.DangerousHandle;
 
+		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose()
 		{
 			if (buffer is null) return;
@@ -46,6 +63,12 @@ namespace Vanara.Security
 			buffer = null;
 		}
 
+		/// <summary>Unpacks the credentials.</summary>
+		/// <param name="decryptProtectedCredentials">if set to <see langword="true"/> decrypt protected credentials.</param>
+		/// <param name="userName">Name of the user.</param>
+		/// <param name="domainName">Name of the domain.</param>
+		/// <param name="password">The password.</param>
+		/// <exception cref="Win32Exception"></exception>
 		public void UnPack(bool decryptProtectedCredentials, out string userName, out string domainName, out string password)
 		{
 			var pUserName = new StringBuilder(CRED_MAX_USERNAME_LENGTH);
@@ -64,6 +87,12 @@ namespace Vanara.Security
 			password = pPassword.ToString();
 		}
 
+		/// <summary>Unpacks the credentials.</summary>
+		/// <param name="decryptProtectedCredentials">if set to <see langword="true"/> decrypt protected credentials.</param>
+		/// <param name="userName">Name of the user.</param>
+		/// <param name="domainName">Name of the domain.</param>
+		/// <param name="password">The password.</param>
+		/// <exception cref="Win32Exception"></exception>
 		public void UnPack(bool decryptProtectedCredentials, out SecureString userName, out SecureString domainName, out SecureString password)
 		{
 			var pUserName = new SafeCoTaskMemString(CRED_MAX_USERNAME_LENGTH);

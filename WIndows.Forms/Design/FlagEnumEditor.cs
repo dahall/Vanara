@@ -1,8 +1,7 @@
 using System;
 using System.ComponentModel;
-using System.Windows.Forms;
 using System.Drawing.Design;
-using System.Globalization;
+using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Vanara.Extensions;
 
@@ -15,8 +14,21 @@ namespace Vanara.Windows.Forms.Design
 	{
 		private readonly FlagCheckedListBox listBox;
 
-		public FlagEnumUIEditor() { listBox = new FlagCheckedListBox {BorderStyle = BorderStyle.None}; }
+		/// <summary>Initializes a new instance of the <see cref="FlagEnumUIEditor{TE}"/> class.</summary>
+		public FlagEnumUIEditor() { listBox = new FlagCheckedListBox { BorderStyle = BorderStyle.None }; }
 
+		/// <summary>
+		/// Edits the specified object's value using the editor style indicated by the <see
+		/// cref="M:System.Drawing.Design.UITypeEditor.GetEditStyle"/> method.
+		/// </summary>
+		/// <param name="context">
+		/// An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that can be used to gain additional context information.
+		/// </param>
+		/// <param name="provider">An <see cref="T:System.IServiceProvider"/> that this editor can use to obtain services.</param>
+		/// <param name="value">The object to edit.</param>
+		/// <returns>
+		/// The new value of the object. If the value of the object has not changed, this should return the same object it was passed.
+		/// </returns>
 		public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
 		{
 			if (context?.Instance != null && provider != null)
@@ -31,16 +43,34 @@ namespace Vanara.Windows.Forms.Design
 			return null;
 		}
 
+		/// <summary>
+		/// Gets the editor style used by the <see
+		/// cref="M:System.Drawing.Design.UITypeEditor.EditValue(System.IServiceProvider,System.Object)"/> method.
+		/// </summary>
+		/// <param name="context">
+		/// An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that can be used to gain additional context information.
+		/// </param>
+		/// <returns>
+		/// A <see cref="T:System.Drawing.Design.UITypeEditorEditStyle"/> value that indicates the style of editor used by the <see
+		/// cref="M:System.Drawing.Design.UITypeEditor.EditValue(System.IServiceProvider,System.Object)"/> method. If the <see
+		/// cref="T:System.Drawing.Design.UITypeEditor"/> does not support this method, then <see
+		/// cref="M:System.Drawing.Design.UITypeEditor.GetEditStyle"/> will return <see cref="F:System.Drawing.Design.UITypeEditorEditStyle.None"/>.
+		/// </returns>
 		public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context) => UITypeEditorEditStyle.DropDown;
 
+		/// <summary>A checked list box to use as the editor.</summary>
+		/// <seealso cref="System.Drawing.Design.UITypeEditor"/>
 		public class FlagCheckedListBox : CheckedListBox
 		{
 			private readonly Container components = null;
 			private TE enumValue;
 			private bool isUpdatingCheckStates;
 
+			/// <summary>Initializes a new instance of the <see cref="FlagCheckedListBox"/> class.</summary>
 			public FlagCheckedListBox() { CheckOnClick = true; }
 
+			/// <summary>Gets or sets the value.</summary>
+			/// <value>The value.</value>
 			[DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Hidden)]
 			public TE Value
 			{
@@ -65,10 +95,15 @@ namespace Vanara.Windows.Forms.Design
 				}
 			}
 
+			/// <summary>Adds the specified v.</summary>
+			/// <param name="v">The v.</param>
 			public void Add(TE v) => Items.Add(new FlagCheckedListBoxItem(v));
 
-			private static TE FromLong(long val) => (TE)Enum.ToObject(typeof(TE), val);
-
+			/// <summary>
+			/// Releases the unmanaged resources used by the <see cref="T:System.Windows.Forms.Control"/> and its child controls and
+			/// optionally releases the managed resources.
+			/// </summary>
+			/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
 			protected override void Dispose(bool disposing)
 			{
 				if (disposing)
@@ -76,6 +111,8 @@ namespace Vanara.Windows.Forms.Design
 				base.Dispose(disposing);
 			}
 
+			/// <summary>Raises the <see cref="E:ItemCheck"/> event.</summary>
+			/// <param name="e">The <see cref="ItemCheckEventArgs"/> instance containing the event data.</param>
 			protected override void OnItemCheck(ItemCheckEventArgs e)
 			{
 				base.OnItemCheck(e);
@@ -85,6 +122,8 @@ namespace Vanara.Windows.Forms.Design
 				if (item != null) UpdateCheckedItems(item, e.NewValue);
 			}
 
+			/// <summary>Updates the checked items.</summary>
+			/// <param name="value">The value.</param>
 			protected void UpdateCheckedItems(TE value)
 			{
 				isUpdatingCheckStates = true;
@@ -100,9 +139,9 @@ namespace Vanara.Windows.Forms.Design
 				isUpdatingCheckStates = false;
 			}
 
-			// Updates items in the CheckListBox
-			// composite = The item that was checked/unchecked
-			// cs = The check state of that item
+			/// <summary>Updates items in the CheckListBox.</summary>
+			/// <param name="composite">The item that was checked/unchecked.</param>
+			/// <param name="cs">The check state of that item.</param>
 			protected void UpdateCheckedItems(FlagCheckedListBoxItem composite, CheckState cs)
 			{
 				long sum = 0;
@@ -119,15 +158,26 @@ namespace Vanara.Windows.Forms.Design
 				UpdateCheckedItems(FromLong(sum));
 			}
 
-			// Represents an item in the CheckListBox
+			private static TE FromLong(long val) => (TE)Enum.ToObject(typeof(TE), val);
+
+			/// <summary>Represents an item in the CheckListBox</summary>
+			/// <seealso cref="System.Drawing.Design.UITypeEditor"/>
 			public class FlagCheckedListBoxItem
 			{
+				/// <summary>Initializes a new instance of the <see cref="FlagCheckedListBoxItem"/> class.</summary>
+				/// <param name="value">The value.</param>
 				public FlagCheckedListBoxItem(TE value) { Value = value; }
 
-				public TE Value { get; }
-
+				/// <summary>Gets the long value.</summary>
+				/// <value>The long value.</value>
 				public long LongVal => Convert.ToInt64(Value);
 
+				/// <summary>Gets the value.</summary>
+				/// <value>The value.</value>
+				public TE Value { get; }
+
+				/// <summary>Converts to string.</summary>
+				/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 				public override string ToString() => Value.ToString();
 			}
 		}

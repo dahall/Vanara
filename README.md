@@ -1,6 +1,6 @@
 ![Vanara](/docs/icons/VanaraHeading.png)
 
-[![Version](https://img.shields.io/github/release/dahall/Vanara.svg?style=flat-square)](https://github.com/dahall/Vanara/releases) [![Downloads](https://img.shields.io/nuget/dt/Vanara.Core.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.Core/) 
+[![Version](https://img.shields.io/github/release/dahall/Vanara.svg?style=flat-square)](https://github.com/dahall/Vanara/releases) [![Downloads](https://img.shields.io/nuget/dt/Vanara.Core.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.Core/) [![Build status](https://ci.appveyor.com/api/projects/status/p6jj1j3sbt95opdr?svg=true)](https://ci.appveyor.com/project/dahall/vanara)
 
 This project contains various .NET assemblies that contain P/Invoke functions, interfaces, enums and structures from Windows libraries. Each assembly is associated with one or a few tightly related libraries. For example, Shlwapi.dll has all the exported functions from shlwapi.lib; Kernel32.dll has all for both kernel32.lib and kernelbase.lib.
 
