@@ -13,7 +13,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Initializes a new instance of the <see cref="ThumbnailToolbar"/> class.</summary>
 		public ThumbnailToolbar()
 		{
-			Buttons = new ThumbnailToolbarButtonCollection();
+			Buttons = new ThumbnailToolbarButtonCollection(this);
 			Buttons.CollectionChanged += (s, e) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Buttons)));
 		}
 

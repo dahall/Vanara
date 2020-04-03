@@ -11,9 +11,11 @@ namespace Vanara.Windows.Shell
 	public class ThumbnailToolbarButtonCollection : ObservableCollection<ThumbnailToolbarButton>
 	{
 		private const int maxBtns = 7;
+		private readonly ThumbnailToolbar Parent;
 
-		internal ThumbnailToolbarButtonCollection()
+		internal ThumbnailToolbarButtonCollection(ThumbnailToolbar parent)
 		{
+			Parent = parent;
 			CollectionChanged += OnCollectionChanged;
 		}
 
