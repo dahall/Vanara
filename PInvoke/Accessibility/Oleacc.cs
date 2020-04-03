@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Vanara.PInvoke
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public static partial class Oleacc
 	{
 		// Input to DISPID_ACC_NAVIGATE

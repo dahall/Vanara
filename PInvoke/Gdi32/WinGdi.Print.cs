@@ -69,6 +69,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("wingdi.h", MSDNShortId = "5ca74f61-75dd-4a8c-9f0f-9c1b4719c75f")]
 		public enum EscapeFunction
 		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 			NEWFRAME = 1,
 			ABORTDOC = 2,
 			NEXTBAND = 3,
@@ -729,6 +730,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </summary>
 			SPCLPASSTHROUGH2 = 4568,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
 		/// <summary>Specifies where to inject the raw data in the PostScript output.</summary>

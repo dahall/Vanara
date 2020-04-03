@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Accessibility
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	[StructLayout(LayoutKind.Explicit, Size = 4, Pack = 4)]
 	public struct __MIDL_IWinTypes_0009
 	{

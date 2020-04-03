@@ -211,6 +211,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WlanApi", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WlanApi", "UnitTests\PInvoke\WlanApi\WlanApi.csproj", "{F8E02C7E-99E9-4C99-B63D-E678BC43C734}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcmApi", "UnitTests\PInvoke\WcmApi\WcmApi.csproj", "{35B95D64-CC7E-48B4-B104-4886411531AC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug (no Unit Tests)|Any CPU = Debug (no Unit Tests)|Any CPU
@@ -675,6 +677,12 @@ Global
 		{F8E02C7E-99E9-4C99-B63D-E678BC43C734}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8E02C7E-99E9-4C99-B63D-E678BC43C734}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8E02C7E-99E9-4C99-B63D-E678BC43C734}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35B95D64-CC7E-48B4-B104-4886411531AC}.Debug (no Unit Tests)|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B95D64-CC7E-48B4-B104-4886411531AC}.Debug (no Unit Tests)|Any CPU.Build.0 = Debug|Any CPU
+		{35B95D64-CC7E-48B4-B104-4886411531AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B95D64-CC7E-48B4-B104-4886411531AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B95D64-CC7E-48B4-B104-4886411531AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B95D64-CC7E-48B4-B104-4886411531AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -764,6 +772,7 @@ Global
 		{7508C4E0-D14B-45DF-B644-9236B0B83607} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{141B6B19-6F07-4644-B72D-B189E49030BF} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{F8E02C7E-99E9-4C99-B63D-E678BC43C734} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
+		{35B95D64-CC7E-48B4-B104-4886411531AC} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

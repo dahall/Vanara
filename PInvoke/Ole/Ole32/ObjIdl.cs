@@ -3906,8 +3906,11 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct ContextProperty
 		{
+			/// <summary/>
 			public Guid policyId;
+			/// <summary/>
 			public uint flags;
+			/// <summary/>
 			public IntPtr pUnk;
 		}
 

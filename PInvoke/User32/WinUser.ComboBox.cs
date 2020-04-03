@@ -4,7 +4,10 @@ namespace Vanara.PInvoke
 {
 	public static partial class User32
 	{
+		/// <summary/>
 		public const int CBEN_FIRST = -800;
+
+		/// <summary/>
 		public const int CBM_FIRST = 0x1700;
 
 		/// <summary>Contains combo box status information.</summary>
@@ -22,8 +25,10 @@ namespace Vanara.PInvoke
 			STATE_SYSTEM_PRESSED = 0x00000008
 		}
 
+		/// <summary>Windows messages for combo-boxes.</summary>
 		public enum ComboBoxMessage
 		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 			CB_GETEDITSEL = 0x0140,
 			CB_LIMITTEXT = 0x0141,
 			CB_SETEDITSEL = 0x0142,
@@ -80,6 +85,7 @@ namespace Vanara.PInvoke
 			CBEM_SETITEM = WindowMessage.WM_USER + 12,
 			CBEM_GETITEM = WindowMessage.WM_USER + 13,
 			CBEM_SETWINDOWTHEME = 0x200B,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
 		/// <summary>Combo Box Notification Codes</summary>

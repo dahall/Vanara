@@ -371,6 +371,7 @@ namespace Vanara.PInvoke
 		[System.Security.SecurityCritical]
 		public static extern int LoadString(HINSTANCE hInstance, int uID, out IntPtr lpBuffer, int nBufferMax);
 
+		/// <summary/>
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		public struct GRPICONDIR
 		{

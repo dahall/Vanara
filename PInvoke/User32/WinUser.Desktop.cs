@@ -1008,6 +1008,38 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetUserObjectInformation(IntPtr hObj, UserObjectInformationType nIndex, IntPtr pvInfo, uint nLength);
 
+		/// <summary>Sets information about the specified window station or desktop object.</summary>
+		/// <typeparam name="T">The type being set.</typeparam>
+		/// <param name="hObj">
+		/// A handle to the window station, desktop object or a current process pseudo handle. This handle can be returned by the
+		/// CreateWindowStation, OpenWindowStation, CreateDesktop, OpenDesktop or GetCurrentProcess function.
+		/// </param>
+		/// <param name="nIndex">
+		/// <para>The object information to be set. This parameter can be the following value.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>UOI_FLAGS 1</term>
+		/// <term>Sets the object's handle flags. The pvInfo parameter must point to a USEROBJECTFLAGS structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>UOI_TIMERPROC_EXCEPTION_SUPPRESSION 7</term>
+		/// <term>
+		/// Sets the exception handling behavior when calling TimerProc. hObj must be the process handle returned by the GetCurrentProcess
+		/// function. The pvInfo parameter must point to a BOOL. If TRUE, Windows will enclose its calls to TimerProc with an exception
+		/// handler that consumes and discards all exceptions. This has been the default behavior since Windows 2000, although that may
+		/// change in future versions of Windows. If pvInfo points to FALSE, Windows will not enclose its calls to TimerProc with an
+		/// exception handler. A setting of FALSE is recommended. Otherwise, the application could behave unpredictably, and could be more
+		/// vulnerable to security exploits.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="info">A buffer containing the object information, or a BOOL.</param>
+		/// <exception cref="System.ArgumentException">Type mismatch</exception>
 		public static void SetUserObjectInformation<T>(IntPtr hObj, UserObjectInformationType nIndex, T info)
 		{
 			if (!CorrespondingTypeAttribute.CanSet(nIndex, typeof(T))) throw new ArgumentException("Type mismatch");

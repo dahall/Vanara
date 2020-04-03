@@ -1161,9 +1161,11 @@ namespace Vanara.PInvoke
 			public TaskDaysOfTheWeek rgfDaysOfTheWeek;
 		}
 
+		/// <summary>CoClass for ITask</summary>
 		[ComImport, Guid("148BD520-A2AB-11CE-B11F-00AA00530503"), System.Security.SuppressUnmanagedCodeSecurity, ClassInterface(ClassInterfaceType.None)]
 		public class CTask { }
 
+		/// <summary>CoClass for ITaskScheduler</summary>
 		[ComImport, Guid("148BD52A-A2AB-11CE-B11F-00AA00530503"), System.Security.SuppressUnmanagedCodeSecurity, ClassInterface(ClassInterfaceType.None)]
 		public class CTaskScheduler { }
 	}

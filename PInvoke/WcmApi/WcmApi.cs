@@ -157,35 +157,8 @@ namespace Vanara.PInvoke
 		// WCM_PROFILE_INFO_LIST **ppProfileList );
 		[DllImport(Lib.Wcmapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wcmapi.h", MSDNShortId = "ceef4e74-3c67-4267-a82a-9912c039f41c")]
-		public static extern Win32Error WcmGetProfileList([Optional] IntPtr pReserved, out SafeWcmMemory ppProfileList);
-
-		/// <summary>
-		/// The <c>WcmGetProfileList</c> function retrieves a list of profiles in preferred order, descending from the most preferred to the
-		/// least preferred. The list includes all WCM-managed auto-connect profiles across all WCM-managed media types.
-		/// </summary>
-		/// <param name="ppProfileList">
-		/// <para>Type: <c>PWCM_PROFILE_INFO_LIST</c></para>
-		/// <para>The list of profiles.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>DWORD</c></para>
-		/// <para>Returns ERROR_SUCCESS if successful, or an error value otherwise.</para>
-		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wcmapi/nf-wcmapi-wcmgetprofilelist DWORD WcmGetProfileList( PVOID pReserved,
-		// WCM_PROFILE_INFO_LIST **ppProfileList );
-		[PInvokeData("wcmapi.h", MSDNShortId = "ceef4e74-3c67-4267-a82a-9912c039f41c")]
-		public static Win32Error WcmGetProfileList(out WCM_PROFILE_INFO[] ppProfileList)
-		{
-			var res = WcmGetProfileList(default, out var list);
-			if (res.Succeeded)
-			{
-				var sz = list.DangerousGetHandle().ToStructure<uint>() * Marshal.SizeOf(typeof(WCM_PROFILE_INFO)) + 4;
-				ppProfileList = list.ToStructure<WCM_PROFILE_INFO_LIST>(sz).ProfileInfo;
-			}
-			else
-				ppProfileList = default;
-			return res;
-		}
+		public static extern Win32Error WcmGetProfileList([Optional] IntPtr pReserved,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(WcmMarshaler<WCM_PROFILE_INFO_LIST>))] out WCM_PROFILE_INFO_LIST ppProfileList);
 
 		/// <summary>The <c>WcmQueryProperty</c> function retrieves the value of a specified WCM property.</summary>
 		/// <param name="pInterface">
@@ -263,7 +236,8 @@ namespace Vanara.PInvoke
 		// *pInterface, LPCWSTR strProfileName, WCM_PROPERTY Property, PVOID pReserved, PDWORD pdwDataSize, PBYTE *ppData );
 		[DllImport(Lib.Wcmapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wcmapi.h", MSDNShortId = "07c0993e-2892-4908-be3f-d24210ccc300")]
-		public static extern Win32Error WcmQueryProperty(in Guid pInterface, [Optional, MarshalAs(UnmanagedType.LPWStr)] string strProfileName, WCM_PROPERTY Property, [Optional] IntPtr pReserved, out uint pdwDataSize, out SafeWcmMemory ppData);
+		public static extern Win32Error WcmQueryProperty(in Guid pInterface, [Optional, MarshalAs(UnmanagedType.LPWStr)] string strProfileName,
+			WCM_PROPERTY Property, [Optional] IntPtr pReserved, out uint pdwDataSize, out SafeWcmMemory ppData);
 
 		/// <summary>The <c>WcmQueryProperty</c> function retrieves the value of a specified WCM property.</summary>
 		/// <param name="pInterface">
@@ -341,7 +315,8 @@ namespace Vanara.PInvoke
 		// *pInterface, LPCWSTR strProfileName, WCM_PROPERTY Property, PVOID pReserved, PDWORD pdwDataSize, PBYTE *ppData );
 		[DllImport(Lib.Wcmapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wcmapi.h", MSDNShortId = "07c0993e-2892-4908-be3f-d24210ccc300")]
-		public static extern Win32Error WcmQueryProperty([Optional] IntPtr pInterface, [Optional, MarshalAs(UnmanagedType.LPWStr)] string strProfileName, WCM_PROPERTY Property, [Optional] IntPtr pReserved, out uint pdwDataSize, out SafeWcmMemory ppData);
+		public static extern Win32Error WcmQueryProperty([Optional] IntPtr pInterface, [Optional] IntPtr strProfileName,
+			WCM_PROPERTY Property, [Optional] IntPtr pReserved, out uint pdwDataSize, out SafeWcmMemory ppData);
 
 		/// <summary>The <c>WcmQueryProperty</c> function retrieves the value of a specified WCM property.</summary>
 		/// <typeparam name="T">The type of the requested property.</typeparam>
@@ -406,7 +381,7 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </remarks>
 		[PInvokeData("wcmapi.h", MSDNShortId = "07c0993e-2892-4908-be3f-d24210ccc300")]
-		public static Win32Error WcmQueryProperty<T>([Optional] Guid? pInterface, [Optional] string strProfileName, WCM_PROPERTY Property, out T ppData)
+		public static Win32Error WcmQueryProperty<T>(WCM_PROPERTY Property, [Optional] Guid? pInterface, [Optional] string strProfileName, out T ppData)
 		{
 			ppData = default;
 			if (!CorrespondingTypeAttribute.CanGet(Property, typeof(T)))
@@ -418,7 +393,7 @@ namespace Vanara.PInvoke
 			if (pInterface.HasValue)
 				res = WcmQueryProperty(pInterface.Value, strProfileName, Property, default, out sz, out mem);
 			else
-				res = WcmQueryProperty(IntPtr.Zero, strProfileName, Property, default, out sz, out mem);
+				res = WcmQueryProperty(IntPtr.Zero, IntPtr.Zero, Property, default, out sz, out mem);
 			using (mem)
 			{
 				if (res.Succeeded)
@@ -464,7 +439,8 @@ namespace Vanara.PInvoke
 		// WCM_PROFILE_INFO_LIST *pProfileList, DWORD dwPosition, BOOL fIgnoreUnknownProfiles, PVOID pReserved );
 		[DllImport(Lib.Wcmapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wcmapi.h", MSDNShortId = "c5efb2e8-c4c4-4e13-9f7a-ea2a40744655")]
-		public static extern Win32Error WcmSetProfileList(in WCM_PROFILE_INFO_LIST pProfileList, uint dwPosition, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreUnknownProfiles, [Optional] IntPtr pReserved);
+		public static extern Win32Error WcmSetProfileList([In] WCM_PROFILE_INFO_LIST pProfileList, uint dwPosition,
+			[MarshalAs(UnmanagedType.Bool)] bool fIgnoreUnknownProfiles, [Optional] IntPtr pReserved);
 
 		/// <summary>The <c>WcmSetProperty</c> function sets the value of a WCM property.</summary>
 		/// <param name="pInterface">
@@ -539,7 +515,8 @@ namespace Vanara.PInvoke
 		// LPCWSTR strProfileName, WCM_PROPERTY Property, PVOID pReserved, DWORD dwDataSize, const BYTE *pbData );
 		[DllImport(Lib.Wcmapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wcmapi.h", MSDNShortId = "79985d5e-a6a1-447c-b12e-11c6022c19a6")]
-		public static extern Win32Error WcmSetProperty(in Guid pInterface, [Optional, MarshalAs(UnmanagedType.LPWStr)] string strProfileName, WCM_PROPERTY Property, [Optional] IntPtr pReserved, uint dwDataSize, [In, Optional] IntPtr pbData);
+		public static extern Win32Error WcmSetProperty(in Guid pInterface, [Optional, MarshalAs(UnmanagedType.LPWStr)] string strProfileName,
+			WCM_PROPERTY Property, [Optional] IntPtr pReserved, uint dwDataSize, [In, Optional] IntPtr pbData);
 
 		/// <summary>The <c>WcmSetProperty</c> function sets the value of a WCM property.</summary>
 		/// <param name="pInterface">
@@ -614,7 +591,8 @@ namespace Vanara.PInvoke
 		// LPCWSTR strProfileName, WCM_PROPERTY Property, PVOID pReserved, DWORD dwDataSize, const BYTE *pbData );
 		[DllImport(Lib.Wcmapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wcmapi.h", MSDNShortId = "79985d5e-a6a1-447c-b12e-11c6022c19a6")]
-		public static extern Win32Error WcmSetProperty([Optional] IntPtr pInterface, [Optional, MarshalAs(UnmanagedType.LPWStr)] string strProfileName, WCM_PROPERTY Property, [Optional] IntPtr pReserved, uint dwDataSize, [In, Optional] IntPtr pbData);
+		public static extern Win32Error WcmSetProperty([Optional] IntPtr pInterface, [Optional, MarshalAs(UnmanagedType.LPWStr)] string strProfileName,
+			WCM_PROPERTY Property, [Optional] IntPtr pReserved, uint dwDataSize, [In, Optional] IntPtr pbData);
 
 		/// <summary>The <c>WcmSetProperty</c> function sets the value of a WCM property.</summary>
 		/// <typeparam name="T">The type of the value to set.</typeparam>
@@ -679,7 +657,7 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </remarks>
 		[PInvokeData("wcmapi.h", MSDNShortId = "79985d5e-a6a1-447c-b12e-11c6022c19a6")]
-		public static Win32Error WcmSetProperty<T>([Optional] Guid? pInterface, [Optional] string strProfileName, WCM_PROPERTY Property, in T data)
+		public static Win32Error WcmSetProperty<T>(WCM_PROPERTY Property, [Optional] Guid? pInterface, [Optional] string strProfileName, in T data)
 		{
 			using var mem = data is string s ? new SafeCoTaskMemHandle(s) : SafeCoTaskMemHandle.CreateFromStructure(data);
 			if (pInterface.HasValue)
@@ -883,7 +861,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("wcmapi.h", MSDNShortId = "73ddb610-233a-470b-900d-ae62a1e7121a")]
 		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<WCM_PROFILE_INFO_LIST>), nameof(dwNumberOfItems))]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct WCM_PROFILE_INFO_LIST
+		public class WCM_PROFILE_INFO_LIST
 		{
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -995,8 +973,35 @@ namespace Vanara.PInvoke
 			/// <returns>A managed object that contains the requested data.</returns>
 			public T ToStructure<T>(SizeT allocatedBytes = default) => handle.ToStructure<T>(allocatedBytes);
 
+			/// <summary>Performs an implicit conversion from <see cref="SafeWcmMemory"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="mem">The memory.</param>
+			/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
+			public static implicit operator IntPtr(SafeWcmMemory mem) => mem.handle;
+
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() { WcmFreeMemory(handle); return true; }
+		}
+
+		internal class WcmMarshaler<T> : ICustomMarshaler
+		{
+			private WcmMarshaler(string _)
+			{
+			}
+
+			/// <summary>Gets the instance.</summary>
+			/// <param name="cookie">The cookie.</param>
+			/// <returns></returns>
+			public static ICustomMarshaler GetInstance(string cookie) => new WcmMarshaler<T>(cookie);
+
+			void ICustomMarshaler.CleanUpManagedData(object ManagedObj) => throw new NotImplementedException();
+
+			void ICustomMarshaler.CleanUpNativeData(IntPtr pNativeData) => WcmFreeMemory(pNativeData);
+
+			int ICustomMarshaler.GetNativeDataSize() => -1;
+
+			IntPtr ICustomMarshaler.MarshalManagedToNative(object ManagedObj) => throw new NotImplementedException();
+
+			object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) => typeof(T) == typeof(string) ? StringHelper.GetString(pNativeData, CharSet.Unicode) : (object)pNativeData.ToStructure<T>();
 		}
 	}
 }

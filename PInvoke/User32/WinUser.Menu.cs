@@ -4145,6 +4145,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public RECT rcExclude;
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="TPMPARAMS"/> class.
+			/// </summary>
+			/// <param name="rExclude">The rectangle to exclude.</param>
 			public TPMPARAMS(RECT rExclude)
 			{
 				cbSize = (uint)Marshal.SizeOf(typeof(TPMPARAMS));

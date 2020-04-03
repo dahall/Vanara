@@ -11,6 +11,7 @@ namespace Vanara.PInvoke
 	/// <summary>User32.dll function with GDI params.</summary>
 	public static partial class User32
 	{
+		/// <summary/>
 		public const int OCM_NOTIFY = 0x204E; // WM_NOTIFY + WM_REFLECT
 
 		/// <summary>Flags used by <see cref="ChangeDisplaySettings(in DEVMODE, ChangeDisplaySettingsFlags)"/>.</summary>
@@ -64,6 +65,7 @@ namespace Vanara.PInvoke
 			CDS_NORESET = 0x10000000,
 		}
 
+		/// <summary>Options for CopyImage.</summary>
 		[Flags]
 		public enum CopyImageOptions
 		{

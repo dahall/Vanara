@@ -112,6 +112,7 @@ namespace Vanara.PInvoke
 			WS_VSCROLL = 0x200000
 		}
 
+		/// <summary>Extended window styles.</summary>
 		[Flags]
 		public enum WindowStylesEx : uint
 		{

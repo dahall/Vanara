@@ -2314,6 +2314,19 @@ namespace Vanara.PInvoke
 		[PInvokeData("wingdi.h", MSDNShortId = "4d70906d-8005-4c4a-869e-16dd3e6fa3f2")]
 		public static extern int EnumFontFamiliesEx(HDC hdc, in LOGFONT lpLogfont, EnumFontFamExProc lpProc, [Optional] IntPtr lParam, uint dwFlags = 0);
 
+		/// <summary>
+		/// The <c>EnumFontFamiliesEx</c> function enumerates all uniquely-named fonts in the system that match the font characteristics
+		/// specified by the LOGFONT structure. <c>EnumFontFamiliesEx</c> enumerates fonts based on typeface name, character set, or both.
+		/// </summary>
+		/// <param name="hdc">A handle to the device context from which to enumerate the fonts.</param>
+		/// <param name="lfCharSet">The character set.</param>
+		/// <param name="lfFaceName">
+		/// A null-terminated string that specifies the typeface name of the font. The length of this string must not exceed 32 TCHAR
+		/// values, including the terminating NULL. The EnumFontFamiliesEx function can be used to enumerate the typeface names of all
+		/// currently available fonts. If lfFaceName is an empty string, GDI uses the first font that matches the other specified attributes.
+		/// </param>
+		/// <returns>A sequence of tuples that contain the ENUMLOGFONTEXDV, ENUMTEXTMETRIC and FontType for each font family.</returns>
+		[PInvokeData("wingdi.h", MSDNShortId = "4d70906d-8005-4c4a-869e-16dd3e6fa3f2")]
 		public static IEnumerable<(ENUMLOGFONTEXDV lpelfe, ENUMTEXTMETRIC lpntme, FontType FontType)> EnumFontFamiliesEx(HDC hdc, PInvoke.CharacterSet lfCharSet = PInvoke.CharacterSet.ANSI_CHARSET, string lfFaceName = "")
 		{
 			var lf = default(LOGFONT);

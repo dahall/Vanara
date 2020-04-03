@@ -5,9 +5,11 @@ namespace Vanara.PInvoke
 {
 	public static partial class Gdi32
 	{
+		/// <summary/>
 		[PInvokeData("Wingdi.h")]
 		public const int LF_FACESIZE = 32;
 
+		/// <summary/>
 		[PInvokeData("Wingdi.h")]
 		public const int LF_FULLFACESIZE = 64;
 

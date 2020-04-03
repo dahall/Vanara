@@ -3420,6 +3420,14 @@ namespace Vanara.PInvoke
 			return mem.ToStructure<T>();
 		}
 
+		/// <summary>
+		/// <para>
+		/// [ <c>NtQuerySystemInformation</c> may be altered or unavailable in future versions of Windows. Applications should use the
+		/// alternate functions listed in this topic.]
+		/// </para>
+		/// <para>Retrieves the specified system information.</para>
+		/// </summary>
+		/// <returns>The list of results from calling NtQuerySystemInformation with SystemProcessInformation.</returns>
 		public static IList<Tuple<SYSTEM_PROCESS_INFORMATION, SYSTEM_THREAD_INFORMATION[]>> NtQuerySystemInformation_Process()
 		{
 			var status = NtQuerySystemInformation(SYSTEM_INFORMATION_CLASS.SystemProcessInformation, SafeHGlobalHandle.Null, 0, out var len);
@@ -3715,15 +3723,25 @@ namespace Vanara.PInvoke
 			public StrPtrUni Name;
 		}
 
+		/// <summary>Used by <see cref="LdrDllNotification"/>.</summary>
 		[PInvokeData("ntldr.h", MSDNShortId = "12202797-c80c-4fa3-9cc4-dcb1a9f01551")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct LDR_DLL_NOTIFICATION_DATA
 		{
-			public uint Flags;           //Reserved.
-			public IntPtr FullDllName;   //The full path name of the DLL module.
-			public IntPtr BaseDllName;   //The base file name of the DLL module.
-			public IntPtr DllBase;       //A pointer to the base address for the DLL in memory.
-			public uint SizeOfImage;     //The size of the DLL image, in bytes.
+			/// <summary>Reserved.</summary>
+			public uint Flags;
+
+			/// <summary>The full path name of the DLL module.</summary>
+			public IntPtr FullDllName;
+
+			/// <summary>The base file name of the DLL module.</summary>
+			public IntPtr BaseDllName;
+
+			/// <summary>A pointer to the base address for the DLL in memory.</summary>
+			public IntPtr DllBase;
+
+			/// <summary>The size of the DLL image, in bytes.</summary>
+			public uint SizeOfImage;
 		}
 
 		/// <summary>
@@ -4131,6 +4149,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public ushort MaximumLength;
 
+			/// <summary>Pointer to a wide-character string.</summary>
 			[MarshalAs(UnmanagedType.LPWStr)]
 			public string Buffer;
 		}

@@ -2835,6 +2835,7 @@ namespace Vanara.PInvoke
 		public class ShellUIHelper { }
 		*/
 
+		/// <summary>CoClass for IShellWindows</summary>
 		[ComImport, Guid("9BA05972-F6A8-11CF-A442-00A0C90A8F39"), ClassInterface(ClassInterfaceType.None)]
 		public class ShellWindows { }
 

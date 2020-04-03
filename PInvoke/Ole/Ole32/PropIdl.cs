@@ -1121,6 +1121,7 @@ namespace Vanara.PInvoke
 			/// <summary>PROPSPECunion</summary>
 			public PROPSPECunion union;
 
+			/// <summary>PROPSPECunion</summary>
 			[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
 			public struct PROPSPECunion
 			{

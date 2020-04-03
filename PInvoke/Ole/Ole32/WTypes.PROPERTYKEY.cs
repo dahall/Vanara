@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Vanara.PInvoke
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public static partial class Ole32
 	{
 		/// <summary>Specifies the FMTID/PID identifier that programmatically identifies a property. Replaces SHCOLUMNID.</summary>

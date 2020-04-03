@@ -40,6 +40,7 @@ AccessibleChildren, AccessibleObjectFromEvent, AccessibleObjectFromPoint, Access
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>0618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />

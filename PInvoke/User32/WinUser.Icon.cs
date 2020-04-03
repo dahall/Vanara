@@ -1142,6 +1142,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint cbSize;
 
+			/// <summary/>
 			[MarshalAs(UnmanagedType.Bool)]
 			public bool fIcon;
 

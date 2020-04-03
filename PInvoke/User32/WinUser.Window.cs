@@ -7,8 +7,10 @@ namespace Vanara.PInvoke
 {
 	public static partial class User32
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		public const int CCHILDREN_SCROLLBAR = 5;
 		public const int CCHILDREN_TITLEBAR = 5;
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 		/// <summary>
 		/// An application-defined callback function used with the <c>EnumChildWindows</c> function. It receives the child window handles.

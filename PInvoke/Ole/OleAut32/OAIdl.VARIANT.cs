@@ -6,6 +6,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class OleAut32
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		/// <summary>Flags used by <see cref="VariantChangeType"/>.</summary>
 		[PInvokeData("oleauto.h", MSDNShortId = "48a51e32-95d7-4eeb-8106-f5043ffa2fd1")]
 		[Flags]
@@ -63,6 +64,7 @@ namespace Vanara.PInvoke
 			VTBIT_CY = 1 << VARTYPE.VT_CY,
 			VTBIT_DECIMAL = 1 << VARTYPE.VT_DECIMAL,
 		}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 		/// <summary>Returns the absolute value of a variant.</summary>
 		/// <param name="pvarIn">The variant.</param>

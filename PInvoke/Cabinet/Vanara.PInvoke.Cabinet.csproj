@@ -43,7 +43,8 @@ COMPRESS_ALLOCATION_ROUTINES, COMPRESSOR_HANDLE, DECOMPRESSOR_HANDLE, CCAB, ERF,
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
+     <NoWarn>1701;1702;1591</NoWarn>
+ </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
   </ItemGroup>

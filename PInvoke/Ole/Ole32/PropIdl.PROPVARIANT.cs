@@ -66,12 +66,16 @@ namespace Vanara.PInvoke
 				cbSize = ulClipFmt * Marshal.SystemDefaultCharSize + Marshal.SizeOf(typeof(int));
 			}
 
+			/// <summary>The clipboard format.</summary>
 			public uint ClipboardFormat => ulClipFmt == -1 || ulClipFmt == -2 ? (uint)Marshal.ReadInt32(pClipData) : 0;
 
+			/// <summary>The clipboard name.</summary>
 			public string ClipboardFormatName => ulClipFmt > 0 ? Marshal.PtrToStringUni(pClipData) : null;
 
+			/// <summary>The clipboard format id.</summary>
 			public Guid FMTID => ulClipFmt == -3 ? pClipData.ToStructure<Guid>() : Guid.Empty;
 
+			/// <inheritdoc/>
 			public override string ToString()
 			{
 				switch (ulClipFmt)
@@ -92,6 +96,7 @@ namespace Vanara.PInvoke
 			}
 		}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		[StructLayout(LayoutKind.Sequential, Pack = 2)]
 		public struct PACKEDMETA
 		{
@@ -100,6 +105,7 @@ namespace Vanara.PInvoke
 			public ushort yExt;
 			public ushort reserved;
 		}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 		/// <summary>
 		/// The PROPVARIANT structure is used in the ReadMultiple and WriteMultiple methods of IPropertyStorage to define the type tag and

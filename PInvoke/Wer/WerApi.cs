@@ -8,6 +8,7 @@ using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Functions, structures and constants from wer.dll.</summary>
 	public static partial class Wer
 	{
 		/// <summary>The type of report store to open.</summary>
@@ -59,6 +60,7 @@ namespace Vanara.PInvoke
 			WER_DUMP_AUXILIARY = 2
 		}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		/// <summary>A mask that controls which options are valid in <see cref="WER_DUMP_CUSTOM_OPTIONS"/>.</summary>
 		[PInvokeData("werapi.h", MSDNShortId = "6ea32573-ac1a-4f9b-b4ba-b5767927924f")]
 		[Flags]
@@ -100,6 +102,7 @@ namespace Vanara.PInvoke
 			WER_P8 = 8,
 			WER_P9 = 9,
 		}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 		/// <summary>Flags for <see cref="WerReportSubmit"/>.</summary>
 		[PInvokeData("werapi.h", MSDNShortId = "1433862e-5cf6-4d31-9fd9-137b7b86ec57")]
@@ -1252,6 +1255,7 @@ namespace Vanara.PInvoke
 			public IEnumerable<string> FileNames => _FileNames.ToStringEnum(CharSet.Unicode, 0, (int)SizeOfFileNames);
 		}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		[PInvokeData("werapi.h", MSDNShortId = "037170B1-B2DF-402F-A9E6-48C7693C9A93")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct WER_REPORT_PARAMETER
@@ -1273,6 +1277,7 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
 			public WER_REPORT_PARAMETER[] Parameters;
 		}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HREPORT"/> that is disposed using <see cref="WerReportCloseHandle"/>.</summary>
 		public class SafeHREPORT : SafeHANDLE

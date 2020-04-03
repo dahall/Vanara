@@ -2,6 +2,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class User32
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		public const int ECM_FIRST = 0x1500;
 
 		public enum EditMessage

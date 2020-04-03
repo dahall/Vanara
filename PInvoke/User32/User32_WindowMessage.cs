@@ -628,6 +628,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			WM_IME_COMPOSITION = 0x010F,
 
+			/// <summary/>
 			WM_IME_KEYLAST = 0x010F,
 
 			/// <summary>
@@ -1096,7 +1097,10 @@ namespace Vanara.PInvoke
 			/// <summary>The WM_WTSSESSION_CHANGE message notifies applications of changes in session state.</summary>
 			WM_WTSSESSION_CHANGE = 0x02B1,
 
+			/// <summary/>
 			WM_TABLET_FIRST = 0x02c0,
+
+			/// <summary/>
 			WM_TABLET_LAST = 0x02df,
 
 			/// <summary>
@@ -1272,11 +1276,22 @@ namespace Vanara.PInvoke
 			/// <summary>Sent to request extended title bar information. A window receives this message through its WindowProc function.</summary>
 			WM_GETTITLEBARINFOEX = 0x033F,
 
+			/// <summary/>
 			WM_HANDHELDFIRST = 0x0358,
+
+			/// <summary/>
 			WM_HANDHELDLAST = 0x035F,
+
+			/// <summary/>
 			WM_AFXFIRST = 0x0360,
+
+			/// <summary/>
 			WM_AFXLAST = 0x037F,
+
+			/// <summary/>
 			WM_PENWINFIRST = 0x0380,
+
+			/// <summary/>
 			WM_PENWINLAST = 0x038F,
 
 			/// <summary>

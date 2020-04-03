@@ -670,16 +670,169 @@ namespace Vanara.PInvoke
 		[ComImport, Guid("4e530b0a-e611-4c77-a3ac-9031d022281b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(ApplicationAssociationRegistration))]
 		public interface IApplicationAssociationRegistration
 		{
+			/// <summary>
+			/// Determines the default application for a given association type. This is the default application launched by ShellExecute
+			/// for that type. Not intended for use in Windows 8.
+			/// </summary>
+			/// <param name="pszQuery">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>
+			/// A pointer to a null-terminated, Unicode string that contains the file name extension or protocol, such as .mp3 or http.
+			/// </para>
+			/// </param>
+			/// <param name="atQueryType">
+			/// <para>Type: <c>ASSOCIATIONTYPE</c></para>
+			/// <para>One of the ASSOCIATIONTYPE enumeration values that specifies the type of association, such as extension or MIME type.</para>
+			/// </param>
+			/// <param name="alQueryLevel">
+			/// <para>Type: <c>ASSOCIATIONLEVEL</c></para>
+			/// <para>
+			/// One of the ASSOCIATIONLEVEL enumeration values that specifies the level of association, such as per-user or machine. This is
+			/// typically AL_EFFECTIVE.
+			/// </para>
+			/// </param>
+			/// <param name="ppszAssociation">
+			/// <para>Type: <c>LPWSTR*</c></para>
+			/// <para>When this method returns, contains the address of a pointer to the ProgID that identifies the current default association.</para>
+			/// <para><c>Note</c> It is the responsibility of the calling application to release the string through CoTaskMemFree.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// The string produced is typically a ProgID matching one of the ProgIDs associated with a registered application, but there
+			/// are a few exceptions: If the string returned is a machine default protocol, it is a legacy string indicating a command line
+			/// to a .exe handler instead of a ProgID. Similarly, if returning a machine default MIME type, it returns a legacy class
+			/// identifier (CLSID) string instead of a ProgID.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iapplicationassociationregistration-querycurrentdefault
+			// HRESULT QueryCurrentDefault( LPCWSTR pszQuery, ASSOCIATIONTYPE atQueryType, ASSOCIATIONLEVEL alQueryLevel, LPWSTR
+			// *ppszAssociation );
 			void QueryCurrentDefault([MarshalAs(UnmanagedType.LPWStr)] string pszQuery, ASSOCIATIONTYPE atQueryType, ASSOCIATIONLEVEL alQueryLevel, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszAssociation);
 
+			/// <summary>
+			/// Determines whether an application owns the registered default association for a given application level and type. Not
+			/// intended for use in Windows 8.
+			/// </summary>
+			/// <param name="pszQuery">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>
+			/// A pointer to a <c>null</c>-terminated Unicode string that contains the file name extension or protocol of the application,
+			/// such as .mp3 or http.
+			/// </para>
+			/// </param>
+			/// <param name="atQueryType">
+			/// <para>Type: <c>ASSOCIATIONTYPE</c></para>
+			/// <para>
+			/// One of the ASSOCIATIONTYPE enumeration values that specifies the type of the application named in pszQuery, such as file
+			/// name extension or MIME type.
+			/// </para>
+			/// </param>
+			/// <param name="alQueryLevel">
+			/// <para>Type: <c>ASSOCIATIONLEVEL</c></para>
+			/// <para>
+			/// One of the ASSOCIATIONLEVEL enumeration values that specifies the level of association, such as per-user or machine. This is
+			/// typically AL_EFFECTIVE.
+			/// </para>
+			/// </param>
+			/// <param name="pszAppRegistryName">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to a <c>null</c>-terminated Unicode string that specifies the registered name of the application.</para>
+			/// </param>
+			/// <param name="pfDefault">
+			/// <para>Type: <c>BOOL*</c></para>
+			/// <para>When this method returns, contains <c>TRUE</c> if the application is the default; or <c>FALSE</c> otherwise.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iapplicationassociationregistration-queryappisdefault
+			// HRESULT QueryAppIsDefault( LPCWSTR pszQuery, ASSOCIATIONTYPE atQueryType, ASSOCIATIONLEVEL alQueryLevel, LPCWSTR
+			// pszAppRegistryName, BOOL *pfDefault );
 			void QueryAppIsDefault([MarshalAs(UnmanagedType.LPWStr)] string pszQuery, ASSOCIATIONTYPE atQueryType, ASSOCIATIONLEVEL alQueryLevel, [MarshalAs(UnmanagedType.LPWStr)] string pszAppRegistryName, [MarshalAs(UnmanagedType.Bool)] out bool pfDefault);
 
+			/// <summary>
+			/// Determines whether an application owns all of the registered default associations for a given application level. Not
+			/// intended for use in Windows 8.
+			/// </summary>
+			/// <param name="alQueryLevel">
+			/// <para>Type: <c>ASSOCIATIONLEVEL</c></para>
+			/// <para>
+			/// One of the ASSOCIATIONLEVEL enumeration values that specifies the level of association, such as per-user or machine. This is
+			/// typically AL_EFFECTIVE.
+			/// </para>
+			/// </param>
+			/// <param name="pszAppRegistryName">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to a <c>null</c>-terminated Unicode string that specifies the registered name of the application.</para>
+			/// </param>
+			/// <param name="pfDefault">
+			/// <para>Type: <c>BOOL*</c></para>
+			/// <para>
+			/// When this method returns, contains <c>TRUE</c> if the application is the default for all association types at the specified
+			/// ASSOCIATIONLEVEL; or <c>FALSE</c> otherwise.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iapplicationassociationregistration-queryappisdefaultall
+			// HRESULT QueryAppIsDefaultAll( ASSOCIATIONLEVEL alQueryLevel, LPCWSTR pszAppRegistryName, BOOL *pfDefault );
 			void QueryAppIsDefaultAll(ASSOCIATIONLEVEL alQueryLevel, [MarshalAs(UnmanagedType.LPWStr)] string pszAppRegistryName, [MarshalAs(UnmanagedType.Bool)] out bool pfDefault);
 
+			/// <summary>
+			/// Sets an application as the default for a given extension or protocol, provided that the application's publisher matches the
+			/// current default's. For more information, see Default Programs. Not intended for use in Windows 8.
+			/// </summary>
+			/// <param name="pszAppRegistryName"/>
+			/// <param name="pszSet"/>
+			/// <param name="atSetType">
+			/// <para>Type: <c>ASSOCIATIONTYPE</c></para>
+			/// <para>
+			/// One of the ASSOCIATIONTYPE enumeration values that specifies the type of the application named in extOrUriScheme, such as
+			/// file name extension or MIME type.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>
+			/// If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code. In particular, if the
+			/// application's publisher doesn't match the default's, this method returns <c>E_ACCESSDENIED</c>.
+			/// </para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iapplicationassociationregistration-setappasdefault
+			// HRESULT SetAppAsDefault( LPCWSTR pszAppRegistryName, LPCWSTR pszSet, ASSOCIATIONTYPE atSetType );
 			void SetAppAsDefault([MarshalAs(UnmanagedType.LPWStr)] string pszAppRegistryName, [MarshalAs(UnmanagedType.LPWStr)] string pszSet, ASSOCIATIONTYPE atSetType);
 
+			/// <summary>
+			/// Sets an application as the default for all of the registered associations of any type for that application. Not intended for
+			/// use in Windows 8.
+			/// </summary>
+			/// <param name="pszAppRegistryName">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to a null-terminated Unicode string that specifies the registered name of the application.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iapplicationassociationregistration-setappasdefaultall
+			// HRESULT SetAppAsDefaultAll( LPCWSTR pszAppRegistryName );
 			void SetAppAsDefaultAll([MarshalAs(UnmanagedType.LPWStr)] string pszAppRegistryName);
 
+			/// <summary>
+			/// Removes all per-user associations for the current user. This results in a reversion to machine defaults, if they exist. Not
+			/// intended for use in Windows 8.
+			/// </summary>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iapplicationassociationregistration-clearuserassociations
+			// HRESULT ClearUserAssociations();
 			void ClearUserAssociations();
 		}
 

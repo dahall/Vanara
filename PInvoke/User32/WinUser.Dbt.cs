@@ -6,6 +6,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class User32
 	{
+		/// <summary>A message indicating a device change.</summary>
 		public const uint WM_DEVICECHANGE = 0x0219;
 
 		/// <summary>The device type, which determines the event-specific information that follows the first three members.</summary>

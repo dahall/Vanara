@@ -84,6 +84,7 @@ namespace Vanara.PInvoke
 			BCM_SETSHIELD = BCM_FIRST + 0x000C,
 		}
 
+		/// <summary>Notifications for buttons.</summary>
 		[PInvokeData("winuser.h")]
 		public enum ButtonNotification
 		{
@@ -201,6 +202,7 @@ namespace Vanara.PInvoke
 			NM_GETCUSTOMSPLITRECT = BCN_FIRST + 0x0003,
 		}
 
+		/// <summary>Flags indicating the state of buttons.</summary>
 		[PInvokeData("winuser.h")]
 		[Flags]
 		public enum ButtonStateFlags

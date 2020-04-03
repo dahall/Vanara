@@ -82,8 +82,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			CONNECT_PROMPT = 0x00000010,
 
+			/// <summary/>
 			CONNECT_NEED_DRIVE = 0x00000020,
 
+			/// <summary/>
 			CONNECT_REFCOUNT = 0x00000040,
 
 			/// <summary>
@@ -118,6 +120,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			CONNECT_CURRENT_MEDIA = 0x00000200,
 
+			/// <summary/>
 			CONNECT_DEFERRED = 0x00000400,
 
 			/// <summary>
@@ -143,7 +146,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			CONNECT_CRED_RESET = 0x00002000,
 
+			/// <summary/>
 			CONNECT_REQUIRE_INTEGRITY = 0x00004000,
+			
+			/// <summary/>
 			CONNECT_REQUIRE_PRIVACY = 0x00008000
 		}
 
@@ -342,6 +348,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("wnnc.h")]
 		public enum WNNC_NET
 		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 			WNNC_NET_MSNET       = 0x00010000,
 			WNNC_NET_SMB         = 0x00020000,
 			WNNC_NET_NETWARE     = 0x00030000,
@@ -412,6 +419,7 @@ namespace Vanara.PInvoke
 			WNNC_NET_DOCUSHARE   = 0x00450000,
 			WNNC_NET_AURISTOR_FS = 0x00460000,
 			WNNC_NET_SECUREAGENT = 0x00470000,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
 		/// <summary>

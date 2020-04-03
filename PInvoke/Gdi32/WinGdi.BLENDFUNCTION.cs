@@ -51,6 +51,8 @@ namespace Vanara.PInvoke
 				AlphaFormat = 1;
 			}
 
+			/// <summary>Gets a value indicating whether this instance is empty.</summary>
+			/// <value><see langword="true"/> if this instance is empty; otherwise, <see langword="false"/>.</value>
 			public bool IsEmpty => BlendOp == 0 && BlendFlags == 0 && AlphaFormat == 0 && SourceConstantAlpha == 0;
 		}
 	}

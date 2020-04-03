@@ -662,12 +662,16 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public IntPtr elpStyleEntry;
 
+			/// <summary>Gets or sets the style of the pen.</summary>
 			public PenStyle Style { get => (PenStyle)(elpPenStyle & 0xF); set => elpPenStyle = elpPenStyle & 0xFFFF0 | (uint)value; }
 
+			/// <summary>Gets or sets the end cap style of the pen.</summary>
 			public PenEndCap EndCap { get => (PenEndCap)(elpPenStyle & 0xF00); set => elpPenStyle = elpPenStyle & 0xFF0FF | (uint)value; }
 
+			/// <summary>Gets or sets the join style for the pen.</summary>
 			public PenJoin Join { get => (PenJoin)(elpPenStyle & 0xF000); set => elpPenStyle = elpPenStyle & 0xF0FFF | (uint)value; }
 
+			/// <summary>Gets or sets the pen type.</summary>
 			public PenType Type { get => (PenType)(elpPenStyle & 0xF0000); set => elpPenStyle = elpPenStyle & 0xFFFF | (uint)value; }
 		}
 

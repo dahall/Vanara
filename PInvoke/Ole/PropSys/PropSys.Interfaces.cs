@@ -688,7 +688,7 @@ namespace Vanara.PInvoke
 			void Initialize(IStream pstream, STGM grfMode);
 		}
 
-		// <summary>Exposes methods that enumerate and retrieve individual property description details.</summary>
+		/// <summary>Exposes methods that enumerate and retrieve individual property description details.</summary>
 		[ComImport, Guid("6F79D558-3E96-4549-A1D1-7D75D2288814"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb761561")]
 		public interface IPropertyDescription
@@ -838,6 +838,7 @@ namespace Vanara.PInvoke
 			HRESULT IsValueCanonical([In] PROPVARIANT propvar);
 		}
 
+		/// <summary>Exposes methods that enumerate and retrieve individual property description details.</summary>
 		[ComImport, Guid("57d2eded-5062-400e-b107-5dae79fe57a6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb761561")]
 		public interface IPropertyDescription2 : IPropertyDescription
@@ -997,12 +998,36 @@ namespace Vanara.PInvoke
 			HRESULT GetImageReferenceForValue([In] PROPVARIANT propvar, out SafeCoTaskMemString ppszImageRes);
 		}
 
+		/// <summary>Exposes methods that enumerate and retrieve property description list details.</summary>
 		[ComImport, Guid("1F9FC1D0-C39B-4B26-817F-011967D3440E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb761511")]
 		public interface IPropertyDescriptionList
 		{
+			/// <summary>Gets the number of properties included in the property list.</summary>
+			/// <returns>
+			/// <para>Type: <c>UINT*</c></para>
+			/// <para>When this method returns, contains a pointer to the count of properties.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-ipropertydescriptionlist-getcount
+			// HRESULT GetCount( UINT *pcElem );
 			uint GetCount();
 
+			/// <summary>Gets the property description at the specified index in a property description list.</summary>
+			/// <param name="iElem">
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The number of the property in the list string.</para>
+			/// </param>
+			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>A reference to the IID of the requested property description interface, typically IID_IPropertyDescription.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>void**</c></para>
+			/// <para>When this method returns, contains the interface pointer requested in riid. Typically, this is IPropertyDescription.</para>
+			/// </returns>
+			/// <remarks>It is recommended that you use the IID_PPV_ARGS macro, defined in objbase.h, to package the riid and ppv parameters. This macro provides the correct IID based on the interface pointed to by the value in ppv, eliminating the possibility of a coding error.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-ipropertydescriptionlist-getat
+			// HRESULT GetAt( UINT iElem, REFIID riid, void **ppv );
 			IPropertyDescription GetAt([In] uint iElem, in Guid riid);
 		}
 

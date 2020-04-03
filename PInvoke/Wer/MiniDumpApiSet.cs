@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Functions, structures and constants from minidumpapiset.h.</summary>
 	public static class DbgHelp
 	{
 		/// <summary>

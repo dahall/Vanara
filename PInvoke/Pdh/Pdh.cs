@@ -12,6 +12,7 @@ namespace Vanara.PInvoke
 	/// <summary>Pdh Performance Counter functions and structures.</summary>
 	public static partial class Pdh
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		public const uint PDH_CVERSION_WIN40 = 0x0400;
 		public const uint PDH_CVERSION_WIN50 = 0x0500;
 		public const int PDH_MAX_COUNTER_PATH = 2048;
@@ -19,6 +20,7 @@ namespace Vanara.PInvoke
 		// v1.1 revision of PDH -- basic log functions v1.2 of the PDH -- adds variable instance counters v1.3 of the PDH -- adds log service
 		// control & stubs for NT5/PDH v2 fn's v2.0 of the PDH -- is the NT v 5.0 B2 version
 		public const uint PDH_VERSION = PDH_CVERSION_WIN50 + 0x0003;
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 		/// <summary>
 		/// Applications implement the <c>CounterPathCallBack</c> function to process the counter path strings returned by the <c>Browse</c>
@@ -138,6 +140,7 @@ namespace Vanara.PInvoke
 			bShowObjectBrowser = 1 << 9,
 		}
 
+		/// <summary>Performance counter type.</summary>
 		[Flags]
 		public enum CounterType : uint
 		{
@@ -368,6 +371,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			PERF_RAW_FRACTION = PERF_SIZE_DWORD | PERF_TYPE_COUNTER | PERF_COUNTER_FRACTION | PERF_DISPLAY_PERCENT,
 
+			/// <summary>
+			/// Indicates the data is a fraction of the following counter which should not be time averaged on display (such as free space
+			/// over total space.) Display as is. Display the quotient as "%".
+			/// </summary>
 			PERF_LARGE_RAW_FRACTION = PERF_SIZE_LARGE | PERF_TYPE_COUNTER | PERF_COUNTER_FRACTION | PERF_DISPLAY_PERCENT,
 
 			/// <summary>
@@ -376,6 +383,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			PERF_RAW_BASE = PERF_SIZE_DWORD | PERF_TYPE_COUNTER | PERF_COUNTER_BASE | PERF_DISPLAY_NOSHOW | 0x00000003,  // for compatibility with pre-beta version,
 
+			/// <summary>
+			/// Indicates the data is a base for the preceding counter which should not be time averaged on display (such as free space over
+			/// total space.)
+			/// </summary>
 			PERF_LARGE_RAW_BASE = PERF_SIZE_LARGE | PERF_TYPE_COUNTER | PERF_COUNTER_BASE | PERF_DISPLAY_NOSHOW,
 
 			/// <summary>
@@ -398,6 +409,11 @@ namespace Vanara.PInvoke
 			/// </summary>
 			PERF_COUNTER_DELTA = PERF_SIZE_DWORD | PERF_TYPE_COUNTER | PERF_COUNTER_VALUE | PERF_DELTA_COUNTER | PERF_DISPLAY_NO_SUFFIX,
 
+			/// <summary>
+			/// This counter is used to display the difference from one sample to the next. The counter value is a constantly increasing
+			/// number and the value displayed is the difference between the current value and the previous value. Negative numbers are not
+			/// allowed which shouldn't be a problem as long as the counter value is increasing or unchanged.
+			/// </summary>
 			PERF_COUNTER_LARGE_DELTA = PERF_SIZE_LARGE | PERF_TYPE_COUNTER | PERF_COUNTER_VALUE | PERF_DELTA_COUNTER | PERF_DISPLAY_NO_SUFFIX,
 
 			/// <summary>The timer used has the same frequency as the System Performance Timer</summary>
