@@ -1,11 +1,8 @@
 using NUnit.Framework;
 using System;
 using System.Linq;
-using System.Text;
-using Vanara;
 using Vanara.Extensions;
 using Vanara.InteropServices;
-using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.WcmApi;
 using static Vanara.PInvoke.WlanApi;
@@ -14,12 +11,12 @@ namespace WcmApi
 {
 	public class Tests
 	{
+		private bool? conn;
 		private SafeHWLANSESSION hWlan = null;
 		private Guid? intf;
-		private bool? conn;
 		private string profName;
 
-		Guid PrimaryInterface
+		private Guid PrimaryInterface
 		{
 			get
 			{
@@ -35,7 +32,7 @@ namespace WcmApi
 			}
 		}
 
-		string ProfileName
+		private string ProfileName
 		{
 			get
 			{
@@ -50,7 +47,7 @@ namespace WcmApi
 			}
 		}
 
-		bool WlanConnected
+		private bool WlanConnected
 		{
 			get
 			{
@@ -74,13 +71,6 @@ namespace WcmApi
 			Assert.That(WcmGetProfileList(default, out var list), ResultIs.Successful);
 			Assert.That(list.dwNumberOfItems, Is.EqualTo(list.ProfileInfo.Length));
 			list.WriteValues();
-		}
-
-		[Test]
-		public void WcmSetProfileListTest()
-		{
-			var list = new WCM_PROFILE_INFO_LIST { dwNumberOfItems = 1, ProfileInfo = new[] { new WCM_PROFILE_INFO { AdapterGUID = PrimaryInterface, strProfileName = ProfileName, Media = WCM_MEDIA_TYPE.wcm_media_wlan } } };
-			Assert.That(WcmSetProfileList(list, 0, true), ResultIs.Successful);
 		}
 
 		[Test]
@@ -117,14 +107,23 @@ namespace WcmApi
 		}
 
 		[Test]
+		public void WcmSetProfileListTest()
+		{
+			var list = new WCM_PROFILE_INFO_LIST { dwNumberOfItems = 1, ProfileInfo = new[] { new WCM_PROFILE_INFO { AdapterGUID = PrimaryInterface, strProfileName = ProfileName, Media = WCM_MEDIA_TYPE.wcm_media_wlan } } };
+			Assert.That(WcmSetProfileList(list, 0, true), ResultIs.Successful);
+		}
+
+		[Test]
 		public void WcmSetPropertyTest()
 		{
-			var data = new WCM_DATAPLAN_STATUS {
+			var data = new WCM_DATAPLAN_STATUS
+			{
 				InboundBandwidthInKbps = WCM_UNKNOWN_DATAPLAN_STATUS,
 				MaxTransferSizeInMegabytes = WCM_UNKNOWN_DATAPLAN_STATUS,
 				OutboundBandwidthInKbps = WCM_UNKNOWN_DATAPLAN_STATUS,
 				DataLimitInMegabytes = 10240,
-				BillingCycle = new WCM_BILLING_CYCLE_INFO {
+				BillingCycle = new WCM_BILLING_CYCLE_INFO
+				{
 					Duration = new WCM_TIME_INTERVAL { wMonth = 1 },
 					Reset = true,
 					StartDate = DateTime.Now.ToFileTimeStruct()

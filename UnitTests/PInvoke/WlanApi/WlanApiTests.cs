@@ -144,7 +144,7 @@ namespace WlanApi
 			TestContext.WriteLine($"Size: {list.dwTotalSize}");
 			Assert.That(list.dwNumberOfItems, Is.GreaterThan(0U));
 			Assert.That(list.wlanBssEntries.Length, Is.EqualTo(list.dwNumberOfItems));
-			TestContext.Write(string.Join("\n", list.wlanBssEntries.Select(e => $"{e.uPhyId}\t{e.dot11BssType}\t{e.dot11BssPhyType}\tstr={e.lRssi}\tper={e.usBeaconPeriod}\tfrq={e.ulChCenterFrequency}\t{e.ulIeOffset}:{e.ulIeSize}")));
+			TestContext.Write(string.Join("\n", list.wlanBssEntries.Select(e => $"{e.uPhyId}\t{e.dot11Bssid}\t{e.dot11BssType}\t{e.dot11BssPhyType}\tstr={e.lRssi}\tper={e.usBeaconPeriod}\tfrq={e.ulChCenterFrequency}\t{e.ulIeOffset}:{e.ulIeSize}")));
 		}
 
 		[Test]
