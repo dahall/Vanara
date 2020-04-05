@@ -14,7 +14,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/notificationactivationcallback/nn-notificationactivationcallback-inotificationactivationcallback
 		[PInvokeData("notificationactivationcallback.h", MSDNShortId = "9DB90C47-6FFA-44CA-8D33-709DD8CDDA29")]
-		[ComImport, Guid("53E31837-6600-4A81-9395-75CFFE746F94"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown))]
+		[ComImport, Guid("53E31837-6600-4A81-9395-75CFFE746F94"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		public interface INotificationActivationCallback
 		{
 			/// <summary>
