@@ -1425,6 +1425,23 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ResetEvent([In] SafeEventHandle hEvent);
 
+		/// <summary>Sets the specified event object to the nonsignaled state.</summary>
+		/// <param name="hEvent">
+		/// <para>A handle to the event object. The <c>CreateEvent</c> or <c>OpenEvent</c> function returns this handle.</para>
+		/// <para>
+		/// The handle must have the EVENT_MODIFY_STATE access right. For more information, see Synchronization Object Security and Access Rights.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI ResetEvent( _In_ HANDLE hEvent); https://msdn.microsoft.com/en-us/library/windows/desktop/ms685081(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms685081")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ResetEvent([In] IntPtr hEvent);
+
 		/// <summary>
 		/// Sets the spin count for the specified critical section. Spinning means that when a thread tries to acquire a critical section
 		/// that is locked, the thread enters a loop, checks to see if the lock is released, and if the lock is not released, the thread goes
@@ -1459,6 +1476,23 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686211")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetEvent([In] SafeEventHandle hEvent);
+
+		/// <summary>Sets the specified event object to the signaled state.</summary>
+		/// <param name="hEvent">
+		/// <para>A handle to the event object. The <c>CreateEvent</c> or <c>OpenEvent</c> function returns this handle.</para>
+		/// <para>
+		/// The handle must have the EVENT_MODIFY_STATE access right. For more information, see Synchronization Object Security and Access Rights.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI SetEvent( _In_ HANDLE hEvent); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686211(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms686211")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetEvent([In] IntPtr hEvent);
 
 		/// <summary>
 		/// Activates the specified waitable timer. When the due time arrives, the timer is signaled and the thread that set the timer calls
@@ -2393,6 +2427,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets a null event handle.</summary>
 			public static SafeEventHandle Null => new SafeEventHandle(IntPtr.Zero, false);
+
+			/// <summary>Performs an explicit conversion from <see cref="SafeEventHandle"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The event handle.</param>
+			/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
+			public static explicit operator IntPtr(SafeEventHandle h) => h.handle;
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a mutex that is automatically disposed using CloseHandle.</summary>
