@@ -200,7 +200,7 @@ namespace Vanara.Windows.Shell
 				case CONDITION_TYPE.CT_LEAF_CONDITION:
 					var propvar = new PROPVARIANT();
 					((ICondition2)pc).GetLeafConditionInfo(out var propkey, out _, propvar);
-					yield return (l, propkey.GetCononicalName(), pc.GetValueType() ?? "", propvar.Value);
+					yield return (l, propkey.GetCanonicalName(), pc.GetValueType() ?? "", propvar.Value);
 					break;
 
 				default:

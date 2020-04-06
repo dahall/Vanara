@@ -60,7 +60,7 @@ namespace Vanara.PInvoke
 			public uint Id => pid;
 
 			/// <inheritdoc/>
-			public override string ToString() => GetCononicalName() ?? ReverseLookup(this) ?? $"{Key:B} {Id}";
+			public override string ToString() => GetCanonicalName() ?? ReverseLookup(this) ?? $"{Key:B} {Id}";
 
 			/// <inheritdoc/>
 			public override bool Equals(object obj) => obj is PROPERTYKEY other && Equals(other);
