@@ -10,37 +10,92 @@ namespace Vanara.PInvoke
 	public static partial class Ole32
 	{
 		/// <summary>Specifies the FMTID/PID identifier that programmatically identifies a property. Replaces SHCOLUMNID.</summary>
-		[PInvokeData("Wtypes.h", MSDNShortId = "bb773381")]
+		/// <remarks>
+		/// <para>As of Windows Vista, the SHCOLUMNID structure is simply an alias for PROPERTYKEY, as shown in this declaration from Shobjidl.h.</para>
+		/// <para>SHCOLUMNID can be considered a legacy structure with PROPERTYKEY being the new, preferred form. <c>PROPERTYKEY</c> has a broader purpose than <c>SHCOLUMNID</c>, and the new name is more descriptive of its uses.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wtypes/ns-wtypes-propertykey
+		// typedef struct _tagpropertykey { GUID fmtid; DWORD pid; } PROPERTYKEY;
+		[PInvokeData("wtypes.h", MSDNShortId = "3f5f31af-f040-443b-9045-9761055381ea")]
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public partial struct PROPERTYKEY : IComparable<PROPERTYKEY>, IEquatable<PROPERTYKEY>
 		{
 			private static Dictionary<PROPERTYKEY, string> revIndex;
 
+			/// <summary>
+			///   <para>Type: <c>GUID</c></para>
+			///   <para>A unique GUID for the property.</para>
+			/// </summary>
 			public Guid fmtid;
+
+			/// <summary>
+			///   <para>Type: <c>DWORD</c></para>
+			///   <para>A property identifier (PID). This parameter is not used as in SHCOLUMNID. It is recommended that you set this value to PID_FIRST_USABLE. Any value greater than or equal to 2 is acceptable.</para>
+			///   <para>
+			///     <c>Note</c> Values of 0 and 1 are reserved and should not be used.</para>
+			/// </summary>
 			public uint pid;
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="PROPERTYKEY" /> struct.
+			/// </summary>
+			/// <param name="key">The key.</param>
+			/// <param name="id">The identifier.</param>
 			public PROPERTYKEY(Guid key, uint id)
 			{
 				fmtid = key;
 				pid = id;
 			}
 
+			/// <summary>
+			/// A unique GUID for the property.
+			/// </summary>
 			public Guid Key => fmtid;
 
+			/// <summary>
+			/// <para>A property identifier (PID). This parameter is not used as in SHCOLUMNID. It is recommended that you set this value to PID_FIRST_USABLE. Any value greater than or equal to 2 is acceptable.</para>
+			/// <para>
+			///   <c>Note</c> Values of 0 and 1 are reserved and should not be used.</para>
+			/// </summary>
 			public uint Id => pid;
 
+			/// <inheritdoc/>
 			public override string ToString() => GetCononicalName() ?? ReverseLookup(this) ?? $"{Key:B} {Id}";
 
+			/// <inheritdoc/>
 			public override bool Equals(object obj) => obj is PROPERTYKEY other && Equals(other);
 
+			/// <summary>
+			/// Indicates whether the current object is equal to another object of the same type.
+			/// </summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
+			/// </returns>
 			public bool Equals(PROPERTYKEY other) => Equals(Key, other.Key) && Id == other.Id;
 
+			/// <summary>Implements the equality operator.</summary>
+			/// <param name="pk1">The first key.</param>
+			/// <param name="pk2">The second key.</param>
+			/// <returns>The result of the operator.</returns>
 			public static bool operator ==(PROPERTYKEY pk1, PROPERTYKEY pk2) => pk1.Equals(pk2);
 
+			/// <summary>Implements the inequality operator.</summary>
+			/// <param name="pk1">The first key.</param>
+			/// <param name="pk2">The second key.</param>
+			/// <returns>The result of the operator.</returns>
 			public static bool operator !=(PROPERTYKEY pk1, PROPERTYKEY pk2) => !pk1.Equals(pk2);
 
+			/// <inheritdoc/>
 			public override int GetHashCode() => new { Key, Id }.GetHashCode();
 
+			/// <summary>
+			/// Compares the current object with another object of the same type.
+			/// </summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other" /> parameter.Zero This object is equal to <paramref name="other" />. Greater than zero This object is greater than <paramref name="other" />.
+			/// </returns>
 			int IComparable<PROPERTYKEY>.CompareTo(PROPERTYKEY other)
 			{
 				var ret = Key.GetHashCode() - other.Key.GetHashCode();
@@ -49,7 +104,11 @@ namespace Vanara.PInvoke
 				return ret;
 			}
 
-			public string GetCononicalName()
+			/// <summary>
+			/// Gets the canonical name of the key.
+			/// </summary>
+			/// <returns>The name returned from PSGetNameFromPropertyKey.</returns>
+			public string GetCanonicalName()
 			{
 				try
 				{
@@ -61,6 +120,9 @@ namespace Vanara.PInvoke
 				return null;
 			}
 
+			/// <summary>Provided a key, use reflection to do a reverse lookup and find the string value.</summary>
+			/// <param name="key">The key.</param>
+			/// <returns>The string value of the name.</returns>
 			public static string ReverseLookup(PROPERTYKEY key)
 			{
 				if (revIndex == null)
@@ -1384,6 +1446,15 @@ namespace Vanara.PInvoke
 						=> new PROPERTYKEY(new Guid("{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}"), 6);
 
 					/// <summary>
+					/// <para>Name:     System.AppUserModel.IsDualMode -- PKEY_AppUserModel_IsDualMode</para>
+					/// <para>Description:</para>
+					/// <para>Type:     Boolean -- VT_BOOL</para>
+					/// <para>FormatID: {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}, 11</para>
+					/// </summary>
+					public static PROPERTYKEY IsDualMode
+						=> new PROPERTYKEY(new Guid("{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}"), 11);
+
+					/// <summary>
 					/// <para>Name:     System.AppUserModel.PreventPinning -- PKEY_AppUserModel_PreventPinning</para>
 					/// <para>Description:</para>
 					/// <para>Type:     Boolean -- VT_BOOL</para>
@@ -1418,6 +1489,33 @@ namespace Vanara.PInvoke
 					/// </summary>
 					public static PROPERTYKEY RelaunchIconResource
 						=> new PROPERTYKEY(new Guid("{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}"), 3);
+
+					/// <summary>
+					/// <para>Name:     System.AppUserModel.StartPinOption -- PKEY_AppUserModel_StartPinOption</para>
+					/// <para>Description:</para>
+					/// <para>Type:     UInt32 -- VT_UI4</para>
+					/// <para>FormatID: {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}, 12</para>
+					/// </summary>
+					public static PROPERTYKEY StartPinOption
+						=> new PROPERTYKEY(new Guid(0x9F4C2855, 0x9F79, 0x4B39, 0xA8, 0xD0, 0xE1, 0xD4, 0x2D, 0xE1, 0xD5, 0xF3), 12);
+
+					/// <summary>
+					/// <para>Name:     System.AppUserModel.ToastActivatorCLSID -- PKEY_AppUserModel_ToastActivatorCLSID</para>
+					/// <para>Description:</para>
+					/// <para>Type:     Guid -- VT_CLSID</para>
+					/// <para>FormatID: {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}, 26</para>
+					/// </summary>
+					public static PROPERTYKEY ToastActivatorCLSID
+						=> new PROPERTYKEY(new Guid(0x9F4C2855, 0x9F79, 0x4B39, 0xA8, 0xD0, 0xE1, 0xD4, 0x2D, 0xE1, 0xD5, 0xF3), 26);
+
+					/// <summary>
+					/// <para>Name:     System.AppUserModel.VisualElementsManifestHintPath -- PKEY_AppUserModel_VisualElementsManifestHintPath</para>
+					/// <para>Description:</para>
+					/// <para>Type:     String -- VT_LPWSTR  (For variants: VT_BSTR)</para>
+					/// <para>FormatID: {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}, 31</para>
+					/// </summary>
+					public static PROPERTYKEY VisualElementsManifestHintPath
+						=> new PROPERTYKEY(new Guid(0x9F4C2855, 0x9F79, 0x4B39, 0xA8, 0xD0, 0xE1, 0xD4, 0x2D, 0xE1, 0xD5, 0xF3), 31);
 				}
 
 				/// <summary>Audio Properties</summary>
