@@ -5,6 +5,22 @@ namespace Vanara.PInvoke
 	/// <summary>Platform invokable enumerated types, constants and functions from windows.h</summary>
 	public static partial class Macros
 	{
+		/// <summary>Retrieves the signed x-coordinate from the specified <c>LPARAM</c> value.</summary>
+		/// <param name="lp">The value to be converted.</param>
+		/// <returns>The signed x-coordinate.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/windowsx/nf-windowsx-get_x_lparam
+		// void GET_X_LPARAM( lp );
+		[PInvokeData("windowsx.h")]
+		public static int GET_X_LPARAM(IntPtr lp) => unchecked((short)(long)lp);
+
+		/// <summary>Retrieves the signed y-coordinate from the given <c>LPARAM</c> value.</summary>
+		/// <param name="lp">The value to be converted.</param>
+		/// <returns>The signed y-coordinate.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/windowsx/nf-windowsx-get_y_lparam
+		// void GET_Y_LPARAM( lp );
+		[PInvokeData("windowsx.h")]
+		public static int GET_Y_LPARAM(IntPtr lp) => unchecked((short)((long)lp >> 16));
+
 		/// <summary>Retrieves the high-order byte from the given 16-bit value.</summary>
 		/// <param name="wValue">The value to be converted.</param>
 		/// <returns>The return value is the high-order byte of the specified value.</returns>
@@ -18,12 +34,12 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the high-order word from the specified 32-bit value.</summary>
 		/// <param name="dwValue">The value to be converted.</param>
 		/// <returns>The return value is the high-order word of the specified value.</returns>
-		public static ushort HIWORD(IntPtr dwValue) => HIWORD((uint)Convert.ToUInt64(dwValue.ToInt64()));
+		public static ushort HIWORD(IntPtr dwValue) => unchecked((ushort)((long)dwValue >> 16));
 
 		/// <summary>Retrieves the high-order word from the specified 32-bit value.</summary>
 		/// <param name="dwValue">The value to be converted.</param>
 		/// <returns>The return value is the high-order word of the specified value.</returns>
-		public static ushort HIWORD(UIntPtr dwValue) => HIWORD((uint)dwValue.ToUInt64());
+		public static ushort HIWORD(UIntPtr dwValue) => unchecked((ushort)((ulong)dwValue >> 16));
 
 		/// <summary>Determines whether a value is an integer identifier for a resource.</summary>
 		/// <param name="ptr">The pointer to be tested whether it contains an integer resource identifier.</param>
@@ -44,12 +60,12 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the low-order word from the specified 32-bit value.</summary>
 		/// <param name="dwValue">The value to be converted.</param>
 		/// <returns>The return value is the low-order word of the specified value.</returns>
-		public static ushort LOWORD(IntPtr dwValue) => LOWORD((uint)Convert.ToUInt64(dwValue.ToInt64()));
+		public static ushort LOWORD(IntPtr dwValue) => unchecked((ushort)(long)dwValue);
 
 		/// <summary>Retrieves the low-order word from the specified 32-bit value.</summary>
 		/// <param name="dwValue">The value to be converted.</param>
 		/// <returns>The return value is the low-order word of the specified value.</returns>
-		public static ushort LOWORD(UIntPtr dwValue) => LOWORD((uint)dwValue.ToUInt64());
+		public static ushort LOWORD(UIntPtr dwValue) => unchecked((ushort)(ulong)dwValue);
 
 		/// <summary>
 		/// Converts an integer value to a resource type compatible with the resource-management functions. This macro is used in place of a
