@@ -12,24 +12,9 @@ namespace Vanara.InteropServices
 	/// automatically marshals the correct structure to memory.
 	/// </summary>
 	/// <typeparam name="T">The type of the structure.</typeparam>
-	public class SafeAnysizeStruct<T> : SafeMemoryHandle<CoTaskMemoryMethods>
+	public class SafeAnysizeStruct<T> : SafeAnysizeStructBase<T>
 	{
-		private static readonly int baseSz;
-		private static readonly Type elemType, structType;
-		private static readonly FieldInfo fiArray;
 		private FieldInfo fiCount;
-
-		static SafeAnysizeStruct()
-		{
-			structType = typeof(T);
-			if (!structType.IsLayoutSequential)
-				throw new InvalidOperationException("This class can only manange sequential layout structures.");
-			baseSz = Marshal.SizeOf(structType);
-			fiArray = structType.GetOrderedFields().Last();
-			if (!fiArray.FieldType.IsArray)
-				throw new ArgumentException("The field information must be for an array.", nameof(fiArray));
-			elemType = fiArray.FieldType.FindElementType();
-		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStruct{T}"/> class.</summary>
 		/// <param name="value">The initial value of the structure, if provided.</param>
@@ -66,46 +51,104 @@ namespace Vanara.InteropServices
 		/// </param>
 		public SafeAnysizeStruct(SizeT size, string sizeFieldName = null) : base(size) => InitCountField(sizeFieldName);
 
-		/// <summary>Gets or sets the structure value.</summary>
-		public T Value { get => FromNative(handle, Size); set => ToNative(value); }
-
-		/// <summary>
-		/// Performs an explicit conversion from <see cref="SafeAnysizeStruct{T}"/> to <see cref="IntPtr"/>. The <c>IntPtr</c> is the memory
-		/// location of the fully marshaled structure with the full final field array.
-		/// </summary>
-		/// <param name="s">The <see cref="SafeAnysizeStruct{T}"/> instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator IntPtr(SafeAnysizeStruct<T> s) => s?.handle ?? IntPtr.Zero;
-
-		/// <summary>Performs an implicit conversion from <typeparamref name="T"/> to <see cref="SafeAnysizeStruct{T}"/>.</summary>
+		/// <summary>Performs an implicit conversion from <typeparamref name="T"/> to <see cref="SafeAnysizeStructBase{T}"/>.</summary>
 		/// <param name="s">The <typeparamref name="T"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SafeAnysizeStruct<T>(in T s) => new SafeAnysizeStruct<T>(s);
-
-		/// <summary>Performs an explicit conversion from <see cref="SafeAnysizeStruct{T}"/> to <typeparamref name="T"/>.</summary>
-		/// <param name="s">The <see cref="SafeAnysizeStruct{T}"/> instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator T(SafeAnysizeStruct<T> s) => s is null ? default : s.Value;
-
-		private T FromNative(IntPtr allocatedMemory, int size)
-		{
-			var local = (T)Marshal.PtrToStructure(allocatedMemory, structType); // Can't use Convert or get circular ref.
-			var cnt = Convert.ToInt32(fiCount.GetValue(local));
-			var arrOffset = Marshal.OffsetOf(structType, fiArray.Name).ToInt32();
-			fiArray.SetValueDirect(__makeref(local), allocatedMemory.ToArray(elemType, cnt, arrOffset, size));
-			return local;
-		}
-
 #if !(NET20 || NET35 || NET40)
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
+		public static implicit operator SafeAnysizeStruct<T>(in T s) => new SafeAnysizeStruct<T>(s);
+
+		/// <summary>Gets the length of the array from the structure.</summary>
+		/// <param name="local">The local, system marshaled, structure instance extracted from the pointer.</param>
+		/// <returns>The element length of the 'anysize' array.</returns>
+#if !(NET20 || NET35 || NET40)
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+#endif
+		protected override int GetArrayLength(in T local) => Convert.ToInt32(fiCount.GetValue(local));
+
 		private void InitCountField(string sizeFieldName)
 		{
 			fiCount = string.IsNullOrEmpty(sizeFieldName) ? structType.GetOrderedFields().First() : structType.GetField(sizeFieldName, BindingFlags.Public | BindingFlags.Instance);
 			if (fiCount is null) throw new ArgumentException("Invalid size field name.", nameof(sizeFieldName));
 		}
+	}
 
-		private void ToNative(T value)
+	/// <summary>
+	/// For structures with a single array as the last field that are intended to be variable length, this class manages the structure and
+	/// automatically marshals the correct structure to memory.
+	/// </summary>
+	/// <typeparam name="T">The type of the structure.</typeparam>
+	public abstract class SafeAnysizeStructBase<T> : SafeMemoryHandle<CoTaskMemoryMethods>
+	{
+		/// <summary>The base, unextended size of T.</summary>
+		protected static readonly int baseSz;
+
+		/// <summary>The type of the structure and type of the anysize array's elements.</summary>
+		protected static readonly Type elemType, structType;
+
+		/// <summary>The reflected field of the array.</summary>
+		protected static readonly FieldInfo fiArray;
+
+		static SafeAnysizeStructBase()
+		{
+			structType = typeof(T);
+			if (!structType.IsLayoutSequential)
+				throw new InvalidOperationException("This class can only manange sequential layout structures.");
+			baseSz = Marshal.SizeOf(structType);
+			fiArray = structType.GetOrderedFields().Last();
+			if (!fiArray.FieldType.IsArray)
+				throw new ArgumentException("The field information must be for an array.", nameof(fiArray));
+			elemType = fiArray.FieldType.FindElementType();
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStructBase{T}"/> class.</summary>
+		/// <param name="size">The size of memory to allocate, in bytes.</param>
+		protected SafeAnysizeStructBase(SizeT size) : base(size) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStructBase{T}"/> class.</summary>
+		/// <param name="allocatedMemory">The allocated memory.</param>
+		/// <param name="size">The size.</param>
+		/// <param name="ownsHandle">if set to <see langword="true"/> [owns handle].</param>
+		protected SafeAnysizeStructBase(IntPtr allocatedMemory, SizeT size, bool ownsHandle) : base(allocatedMemory, size, ownsHandle) { }
+
+		/// <summary>Gets or sets the structure value.</summary>
+		public T Value { get => FromNative(handle, Size); set => ToNative(value); }
+
+		/// <summary>
+		/// Performs an explicit conversion from <see cref="SafeAnysizeStructBase{T}"/> to <see cref="IntPtr"/>. The <c>IntPtr</c> is the
+		/// memory location of the fully marshaled structure with the full final field array.
+		/// </summary>
+		/// <param name="s">The <see cref="SafeAnysizeStructBase{T}"/> instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator IntPtr(SafeAnysizeStructBase<T> s) => s?.handle ?? IntPtr.Zero;
+
+		/// <summary>Performs an explicit conversion from <see cref="SafeAnysizeStructBase{T}"/> to <typeparamref name="T"/>.</summary>
+		/// <param name="s">The <see cref="SafeAnysizeStructBase{T}"/> instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator T(SafeAnysizeStructBase<T> s) => s is null ? default : s.Value;
+
+		/// <summary>Converts the native memory to <typeparamref name="T"/>.</summary>
+		/// <param name="allocatedMemory">The allocated memory.</param>
+		/// <param name="size">The size.</param>
+		/// <returns></returns>
+		protected virtual T FromNative(IntPtr allocatedMemory, int size)
+		{
+			var local = (T)Marshal.PtrToStructure(allocatedMemory, structType); // Can't use Convert or get circular ref.
+			var cnt = GetArrayLength(local);
+			var arrOffset = Marshal.OffsetOf(structType, fiArray.Name).ToInt32();
+			fiArray.SetValueDirect(__makeref(local), allocatedMemory.ToArray(elemType, cnt, arrOffset, size));
+			return local;
+		}
+
+		/// <summary>Gets the length of the array from the structure.</summary>
+		/// <param name="local">The local, system marshaled, structure instance extracted from the pointer.</param>
+		/// <returns>The element length of the 'anysize' array.</returns>
+		protected abstract int GetArrayLength(in T local);
+
+		/// <summary>Converts the managed instance to native.</summary>
+		/// <param name="value">The managed value.</param>
+		protected virtual void ToNative(T value)
 		{
 			// Get the current array for the last field (or create one if needed)
 			var arrVal = fiArray.GetValue(value);
@@ -130,10 +173,10 @@ namespace Vanara.InteropServices
 	}
 
 	/// <summary>
-	/// A marshaler implementation of <see cref="IVanaraMarshaler"/> to set the marshaler as an attribute using
-	/// <see cref="SafeAnysizeStruct{T}"/>. Use the cookie paramter of
-	/// <see cref="SafeAnysizeStructMarshaler{T}.SafeAnysizeStructMarshaler(string)"/> to specify the name of the field in
-	/// <typeparamref name="T"/> that specifies the number of elements in the last field of <typeparamref name="T"/>.
+	/// A marshaler implementation of <see cref="IVanaraMarshaler"/> to set the marshaler as an attribute using <see
+	/// cref="SafeAnysizeStruct{T}"/>. Use the cookie paramter of <see
+	/// cref="SafeAnysizeStructMarshaler{T}.SafeAnysizeStructMarshaler(string)"/> to specify the name of the field in <typeparamref
+	/// name="T"/> that specifies the number of elements in the last field of <typeparamref name="T"/>.
 	/// </summary>
 	/// <typeparam name="T">The structure type to be marshaled.</typeparam>
 	/// <seealso cref="Vanara.InteropServices.IVanaraMarshaler"/>
