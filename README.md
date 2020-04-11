@@ -10,7 +10,7 @@ This project releases new versions every few weeks after sufficient testing. New
 
 ## Use
 1. Look for the function you need in Microsoft documentation. Note which library or DLL the function is in.
-2. Confirm the Vanara library exists and has your function by looking at the Supported Libraries table below. Clicking on the Assembly link will take you to a drill down of that assembly's coverage. Find your function and if there is a matching implementation it will appear to the right.
+2. Confirm the Vanara library exists and has your function by looking at the Supported Libraries table below. Clicking on the Assembly link will take you to a drill down of that assembly's coverage. Find your function and if there is a matching implementation it will appear to the right. You can also use GitHub's project search (upper left of page) to search for your function, method or constant. Make sure to select "In this repository".
 3. Add the assembly to your project via NuGet.
 4. To use the function, you can:
    1. Call it directly `var bret = Vanara.PInvoke.Kernel32.GetComputerName(sb, ref sbSz);`
@@ -54,6 +54,7 @@ Cabinet.dll | [Vanara.PInvoke.Cabinet](https://github.com/dahall/Vanara/blob/mas
 ComCtl32.dll | [Vanara.PInvoke.ComCtl32](https://github.com/dahall/Vanara/blob/master/PInvoke/ComCtl32/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.ComCtl32)](https://www.nuget.org/packages/Vanara.PInvoke.ComCtl32)
 CredUI.dll | [Vanara.PInvoke.CredUI](https://github.com/dahall/Vanara/blob/master/PInvoke/CredUI/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.CredUI)](https://www.nuget.org/packages/Vanara.PInvoke.CredUI)
 BCrypt.dll, Crypt32.dll and NCrypt.dll | [Vanara.PInvoke.Cryptography](https://github.com/dahall/Vanara/blob/master/PInvoke/Cryptography/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.Cryptography)](https://www.nuget.org/packages/Vanara.PInvoke.Cryptography)
+DnsApi.dll | [Vanara.PInvoke.DnsApi](https://github.com/dahall/Vanara/blob/master/PInvoke/DnsApi/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.DnsApi)](https://www.nuget.org/packages/Vanara.PInvoke.DnsApi)
 DwmApi.dll | [Vanara.PInvoke.DwmApi](https://github.com/dahall/Vanara/blob/master/PInvoke/DwmApi/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.DwmApi)](https://www.nuget.org/packages/Vanara.PInvoke.DwmApi)
 Gdi32.dll | [Vanara.PInvoke.Gdi32](https://github.com/dahall/Vanara/blob/master/PInvoke/Gdi32/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/98%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.Gdi32)](https://www.nuget.org/packages/Vanara.PInvoke.Gdi32)
 IpHlpApi.dll | [Vanara.PInvoke.IpHlpApi](https://github.com/dahall/Vanara/blob/master/PInvoke/IpHlpApi/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.IpHlpApi)](https://www.nuget.org/packages/Vanara.PInvoke.IpHlpApi)
