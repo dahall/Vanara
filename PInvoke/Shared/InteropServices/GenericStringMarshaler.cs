@@ -12,7 +12,7 @@ namespace Vanara.InteropServices
 	/// <typeparam name="TMem">The type of the memory allocator.</typeparam>
 	/// <seealso cref="Vanara.InteropServices.GenericStringMarshalerBase{TMem}"/>
 	/// <seealso cref="System.Runtime.InteropServices.ICustomMarshaler"/>
-	public class GenericStringMarshaler<TMem> : GenericStringMarshalerBase<TMem> where TMem : IMemoryMethods, new()
+	public class GenericStringMarshaler<TMem> : GenericStringMarshalerBase<TMem> where TMem : ISimpleMemoryMethods, new()
 	{
 		private GenericStringMarshaler(CharSet charSet) : base(charSet) { }
 
@@ -29,7 +29,7 @@ namespace Vanara.InteropServices
 	/// <see cref="CharSet.Unicode"/> is used.
 	/// </remarks>
 	/// <seealso cref="System.Runtime.InteropServices.ICustomMarshaler"/>
-	public abstract class GenericStringMarshalerBase<TMem> : ICustomMarshaler where TMem : IMemoryMethods, new()
+	public abstract class GenericStringMarshalerBase<TMem> : ICustomMarshaler where TMem : ISimpleMemoryMethods, new()
 	{
 		private static TMem mem = new TMem();
 		private readonly CharSet charSet;
