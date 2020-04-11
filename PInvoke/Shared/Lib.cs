@@ -36,6 +36,9 @@
 		/// <summary>The cryptui.dll</summary>
 		public const string CryptUI = "cryptui.dll";
 
+		/// <summary>The dnsapi.dll</summary>
+		public const string Dnsapi = "dnsapi.dll";
+
 		/// <summary>The DWM API</summary>
 		public const string DwmApi = "dwmapi.dll";
 
