@@ -1,48 +1,48 @@
 ﻿<Project>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Vanara.snk</AssemblyOriginatorKeyFile>
-    <Authors>David Hall</Authors>
-    <Company>GitHub Community</Company>
-    <Copyright>Copyright © 2017-2020</Copyright>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+	<PropertyGroup>
+		<AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Vanara.snk</AssemblyOriginatorKeyFile>
+		<Authors>David Hall</Authors>
+		<Company>GitHub Community</Company>
+		<Copyright>Copyright © 2017-2020</Copyright>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
 	<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-    <IncludeSource>true</IncludeSource>
-    <LangVersion>latest</LangVersion>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageIcon>Vanara64x64.png</PackageIcon>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
-    <Product>Vanara</Product>
-    <RepositoryType>Git</RepositoryType>
-    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
-    <RootNamespace>Vanara.PInvoke</RootNamespace>
-    <SignAssembly>true</SignAssembly>
-    <Version>3.2.4</Version>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-  
-  <!-- BEGIN: Source Link configuration. -->
-  <PropertyGroup>
-    <IncludeSymbols>true</IncludeSymbols>
+		<IncludeSource>true</IncludeSource>
+		<LangVersion>latest</LangVersion>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<PackageIcon>Vanara64x64.png</PackageIcon>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
+		<Product>Vanara</Product>
+		<RepositoryType>Git</RepositoryType>
+		<RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
+		<RootNamespace>Vanara.PInvoke</RootNamespace>
+		<SignAssembly>true</SignAssembly>
+		<Version>3.2.5</Version>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+	
+	<!-- BEGIN: Source Link configuration. -->
+	<PropertyGroup>
+		<IncludeSymbols>true</IncludeSymbols>
 	<EmbedAllSources>true</EmbedAllSources>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	<CIBuild Condition="'$(CIBUILD)' == ''">false</CIBuild>
 	<ContinuousIntegrationBuild>$(CIBUILD)</ContinuousIntegrationBuild>
 	<DeterministicSourcePaths>$(CIBUILD)</DeterministicSourcePaths>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-    <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
-  </ItemGroup>
-  <!-- END: Source Link configuration. -->
-  
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+		<SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
+	</ItemGroup>
+	<!-- END: Source Link configuration. -->
+	
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
+		<Reference Include="System" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
 </Project>
