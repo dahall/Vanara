@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ole32\Ole32Tests.cs" />

@@ -36,6 +36,7 @@
     <Win32Resource>C:\Users\dahall\Documents\Visual Studio 2017\Projects\Windows-classic-samples\Win7Samples\winbase\PerfCounters\Basic\CPP\ucsCounters.res</Win32Resource>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
