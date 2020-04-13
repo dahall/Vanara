@@ -1466,7 +1466,8 @@ namespace Vanara.PInvoke
 				/// A pointer to a null-terminated Unicode string that contains the path and file name of the file to sign. This member is
 				/// used if <c>CRYPTUI_WIZ_DIGITAL_SIGN_SUBJECT_FILE</c> is specified for the <c>dwSubjectChoice</c> member.
 				/// </summary>
-				[MarshalAs(UnmanagedType.LPWStr), FieldOffset(0)] public string pwszFileName;
+				[FieldOffset(0)]
+				public StrPtrUni pwszFileName;
 
 				/// <summary>
 				/// A pointer to a CRYPTUI_WIZ_DIGITAL_SIGN_BLOB_INFO structure that contains the BLOB to sign. This member is used if
