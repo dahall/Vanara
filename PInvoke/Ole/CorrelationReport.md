@@ -738,7 +738,7 @@ Native Structure | Header | Managed Structure
 [PARAMDATA](http://msdn2.microsoft.com/en-us/library/3166eac0-7e07-47e1-9bca-60b15cbdf971) | oleauto.h | [Vanara.PInvoke.OleAut32.PARAMDATA](https://github.com/dahall/Vanara/search?l=C%23&q=PARAMDATA)  
 [PICTDEC_UNION](https://www.google.com/search?num=5&q=PICTDEC_UNION+site%3Amicrosoft.com) |  | [Vanara.PInvoke.OleAut32.PICTDESC.PICTDEC_UNION](https://github.com/dahall/Vanara/search?l=C%23&q=PICTDEC_UNION)  
 [PICTDESC](http://msdn2.microsoft.com/en-us/library/eb1f1de7-dcfe-4c1c-8737-f5ab4d7977d6) | olectl.h | [Vanara.PInvoke.OleAut32.PICTDESC](https://github.com/dahall/Vanara/search?l=C%23&q=PICTDESC)  
-[PROPERTYKEY](http://msdn2.microsoft.com/en-us/library/bb773381) | Wtypes.h | [Vanara.PInvoke.Ole32.PROPERTYKEY](https://github.com/dahall/Vanara/search?l=C%23&q=PROPERTYKEY)  
+[PROPERTYKEY](http://msdn2.microsoft.com/en-us/library/3f5f31af-f040-443b-9045-9761055381ea) | wtypes.h | [Vanara.PInvoke.Ole32.PROPERTYKEY](https://github.com/dahall/Vanara/search?l=C%23&q=PROPERTYKEY)  
 [PROPSPEC](http://msdn2.microsoft.com/en-us/library/5bb3b9c6-ab82-498c-94f9-13a9ffa7452b) | propidl.h | [Vanara.PInvoke.Ole32.PROPSPEC](https://github.com/dahall/Vanara/search?l=C%23&q=PROPSPEC)  
 [PROPSPECunion](https://www.google.com/search?num=5&q=PROPSPECunion+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.PROPSPEC.PROPSPECunion](https://github.com/dahall/Vanara/search?l=C%23&q=PROPSPECunion)  
 [PROPVARIANT](https://www.google.com/search?num=5&q=PROPVARIANT+site%3Amicrosoft.com) |  | [Vanara.PInvoke.Ole32.PROPVARIANT](https://github.com/dahall/Vanara/search?l=C%23&q=PROPVARIANT)  

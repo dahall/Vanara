@@ -5,10 +5,10 @@ Enum | Description | Values
 [Vanara.Windows.Forms.VisualTheme.BitmapProperty](https://github.com/dahall/Vanara/search?l=C%23&q=BitmapProperty) | Properties accessible via `Vanara.Windows.Forms.VisualTheme.GetBitmap(System.Int32,System.Int32,Vanara.Windows.Forms.VisualTheme.BitmapProperty)`. | BackgroundImage, GlyphImage, Handle
 [Vanara.Windows.Forms.VisualTheme.BoolProperty](https://github.com/dahall/Vanara/search?l=C%23&q=BoolProperty) | Properties accessible via `Vanara.Windows.Forms.VisualTheme.GetBool(System.Int32,System.Int32,Vanara.Windows.Forms.VisualTheme.BoolProperty)`. | FlatMenus, Transparent, AutoSize, BorderOnly, Composited, BackgroundFill, GlyphTransparent, GlyphOnly, AlwaysShowSizingBar, MirrorImage, UniformSizing, IntegralSizing, SourceGrow, SourceShrink, DrawBorders, NoEtchedEffect, TextApplyOverlay, TextGlow, TextItalic, CompositedOpaque, LocalizedMirrorImage, UserPicture, ScaledBackground
 [Vanara.Windows.Forms.DesktopWindowManager.CloakingSource](https://github.com/dahall/Vanara/search?l=C%23&q=CloakingSource) | Use with GetWindowAttr and WindowAttribute.Cloaked. If the window is cloaked, provides one of the following values explaining why. | App, Shell, Inherited
-[Vanara.Windows.Forms.CollapsiblePanelBorderCondition](https://github.com/dahall/Vanara/search?l=C%23&q=CollapsiblePanelBorderCondition) |  | Always, OnlyExpanded, Never
-[Vanara.Windows.Forms.CollapsiblePanelHeaderState](https://github.com/dahall/Vanara/search?l=C%23&q=CollapsiblePanelHeaderState) |  | Normal, Hot, Pressed, ExpandedNormal, ExpandedHot, ExpandedPressed, Disabled, ExpandedDisabled
+[Vanara.Windows.Forms.CollapsiblePanelBorderCondition](https://github.com/dahall/Vanara/search?l=C%23&q=CollapsiblePanelBorderCondition) | Determines when a border will be displayed. | Always, OnlyExpanded, Never
+[Vanara.Windows.Forms.CollapsiblePanelHeaderState](https://github.com/dahall/Vanara/search?l=C%23&q=CollapsiblePanelHeaderState) | Determines the state of the panel's header. | Normal, Hot, Pressed, ExpandedNormal, ExpandedHot, ExpandedPressed, Disabled, ExpandedDisabled
 [Vanara.Windows.Forms.VisualTheme.ColorProperty](https://github.com/dahall/Vanara/search?l=C%23&q=ColorProperty) | Properties accessible via `Vanara.Windows.Forms.VisualTheme.GetColor(System.Int32,System.Int32,Vanara.Windows.Forms.VisualTheme.ColorProperty)`. | ScrollBar, Background, ActiveCaption, InactiveCaption, Menu, Window, WindowFrame, MenuText, WindowText, CaptionText, ActiveBorder, InactiveBorder, AppWorkspace, Highlight, HighlightText, ButtonFace, ButtonShadow, GrayText, ButtonText, InactiveCaptionText, ButtonHighlight, DarkShadow3D, Light3D, InfoText, InfoBackground, ButtonAlternateFace, HotTracking, GradientActiveCaption, GradientInactiveCaption, MenuHilight, MenuBar, FromColor1, FromColor2, FromColor3, FromColor4, FromColor5, BorderColor, FillColor, TextColor, EdgeLightColor, EdgeHighlightColor, EdgeShadowColor, EdgeDarkShadowColor, EdgeFillColor, TransparentColor, GradientColor1, GradientColor2, GradientColor3, GradientColor4, GradientColor5, ShadowColor, GlowColor, TextBorderColor, TextShadowColor, GlyphTextColor, GlyphTransparentColor, FillColorHint, BorderColorHint, AccentColorHint, TextColorHint, Heading1TextColor, Heading2TextColor, BodyTextColor, BlendColor
-[Vanara.Windows.Forms.ControlState](https://github.com/dahall/Vanara/search?l=C%23&q=ControlState) |  | Hot, Pressed, Disabled, Animating, MouseDown, InButtonUp, Defaulted, Focused
+[Vanara.Windows.Forms.ControlState](https://github.com/dahall/Vanara/search?l=C%23&q=ControlState) | State flags for controls derived from `Vanara.Windows.Forms.CustomDrawBase`. | Hot, Pressed, Disabled, Animating, MouseDown, InButtonUp, Defaulted, Focused
 [Vanara.Extensions.Corners](https://github.com/dahall/Vanara/search?l=C%23&q=Corners) | Used to define which corners of `System.Drawing.Rectangle` are effected by an operation. | None, TopLeft, TopRight, BottomLeft, BottomRight, All
 [Vanara.Windows.Forms.VisualTheme.EnumProperty](https://github.com/dahall/Vanara/search?l=C%23&q=EnumProperty) | Properties accessible via <c>GetEnumValue</c>. | BackgroundType, BorderType, FillType, SizingType, HAlign, ContentAlignment, VAlign, OffsetType, IconEffect, TextShadowType, ImageLayout, GlyphType, ImageSelectType, GlyphFontSizingType, TrueSizeScalingType
 [Vanara.Windows.Forms.ExplorerBrowserContentSectionOptions](https://github.com/dahall/Vanara/search?l=C%23&q=ExplorerBrowserContentSectionOptions) | Indicates the content options of the explorer browser. Typically use one, or a bitwise combination of these flags to specify how content should appear in the explorer browser control | None, AutoArrange, Desktop, SingleSelection, NoSubfolders, Transparent, NoScrollBars, AlignLeft, NoIcons, SingleClickActivate, NoWebView, HideFileNames, CheckSelect, NoEnumOnRefresh, NoGrouping, FullRowSelect, NoFilters, NoColumnHeader, NoHeaderInAllViews, ExtendedTiles, AutoCheckSelect, NoBrowserViewState, SubsetGroup, UseSearchFolder, AllowRtlReading
@@ -35,7 +35,7 @@ Enum | Description | Values
 [Vanara.Windows.Forms.ProgressBarState](https://github.com/dahall/Vanara/search?l=C%23&q=ProgressBarState) | Progress bar state. | Normal, Error, Paused
 [Vanara.Windows.Forms.VisualTheme.PropertyOrigin](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyOrigin) | Returned by <c>GetPropertyOrigin</c> to specify where a property was found. | State, Part, Class, Global, NotFound
 [Vanara.Windows.Forms.VisualTheme.RectangleProperty](https://github.com/dahall/Vanara/search?l=C%23&q=RectangleProperty) | Properties accessible via `Vanara.Windows.Forms.VisualTheme.GetRect(System.Int32,System.Int32,Vanara.Windows.Forms.VisualTheme.RectangleProperty)`. | DefaultPane, CustomSplit, AnimationButton, Atlas
-[Vanara.Windows.Forms.RenderStyle](https://github.com/dahall/Vanara/search?l=C%23&q=RenderStyle) |  | SystemTheme, Custom
+[Vanara.Windows.Forms.RenderStyle](https://github.com/dahall/Vanara/search?l=C%23&q=RenderStyle) | Style used to render the theme. | SystemTheme, Custom
 [Vanara.Windows.Forms.SecurityPageType](https://github.com/dahall/Vanara/search?l=C%23&q=SecurityPageType) | Values that indicate the types of property pages in an access control editor property sheet. | BasicPermissions, AdvancedPermissions, Audit, Owner, EffectiveRights, TakeOwnership, Share
 [Vanara.Windows.Forms.ShellNamespaceTreeControlAction](https://github.com/dahall/Vanara/search?l=C%23&q=ShellNamespaceTreeControlAction) | Actions on a `Vanara.Windows.Forms.ShellNamespaceTreeControl` exposed through `Vanara.Windows.Forms.ShellNamespaceTreeControlEventArgs`. | Unknown, ByKeyboard, ByMouse, AfterAdd, AfterDelete, BeforeDelete, Collapse, Expand
 [Vanara.Windows.Forms.ShellProgressDialogStyle](https://github.com/dahall/Vanara/search?l=C%23&q=ShellProgressDialogStyle) | Display style for a `Vanara.Windows.Forms.ShellProgressDialog`. | Normal, Marquee, Hidden
@@ -55,7 +55,7 @@ Struct | Description
 Interface | Description
 ---- | ----
 [Vanara.Security.AccessControl.IAccessControlEditorDialogProvider](https://github.com/dahall/Vanara/search?l=C%23&q=IAccessControlEditorDialogProvider) | An interface for defining an information provider for object types supplied to the `Vanara.Windows.Forms.AccessControlEditorDialog`.
-[Vanara.Windows.Forms.Design.IActionGetItem](https://github.com/dahall/Vanara/search?l=C%23&q=IActionGetItem) | 
+[Vanara.Windows.Forms.Design.IActionGetItem](https://github.com/dahall/Vanara/search?l=C%23&q=IActionGetItem) | Interface for an action that has items and a category.
 [Vanara.Windows.Forms.IDrawingStyle<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IDrawingStyle<T>) | 
 [Vanara.Windows.Forms.IEnableable](https://github.com/dahall/Vanara/search?l=C%23&q=IEnableable) | Interface that exposes an <c>Enabled</c> property for an item supplied to `Vanara.Windows.Forms.DisabledItemComboBox`.
 [Vanara.Configuration.MRUManager.IFileListStorage](https://github.com/dahall/Vanara/search?l=C%23&q=IFileListStorage) | Defines a class that implements storage for an MRU file list.
@@ -66,13 +66,13 @@ Class | Description
 [Vanara.Windows.Forms.AccessControlEditorDialog](https://github.com/dahall/Vanara/search?l=C%23&q=AccessControlEditorDialog) | Displays a property sheet that contains a basic security property page. This property page enables the user to view and edit the access rights allowed or denied by the ACEs in an object's DACL.
 [Vanara.Windows.Forms.ActivationContext](https://github.com/dahall/Vanara/search?l=C%23&q=ActivationContext) | Provides an activation context for a manifest file or PE image. On disposal, the context is deactivated.
 [Vanara.Configuration.MRUManager.AppSettingsFileListStorage](https://github.com/dahall/Vanara/search?l=C%23&q=AppSettingsFileListStorage) | Storage in the local application settings.
-[Vanara.Windows.Forms.Design.AttributedComponentDesigner<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedComponentDesigner<T>) | 
-[Vanara.Windows.Forms.Design.AttributedComponentDesignerEx<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedComponentDesignerEx<T>) | 
-[Vanara.Windows.Forms.Design.AttributedControlDesigner<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedControlDesigner<T>) | 
-[Vanara.Windows.Forms.Design.AttributedControlDesignerEx<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedControlDesignerEx<T>) | 
-[Vanara.Windows.Forms.Design.AttributedDesignerActionList](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedDesignerActionList) | 
-[Vanara.Windows.Forms.Design.AttributedParentControlDesigner<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedParentControlDesigner<T>) | 
-[Vanara.Windows.Forms.Design.AttributedParentControlDesignerEx<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedParentControlDesignerEx<T>) | 
+[Vanara.Windows.Forms.Design.AttributedComponentDesigner<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedComponentDesigner<T>) | A designer for components that support attributes.
+[Vanara.Windows.Forms.Design.AttributedComponentDesignerEx<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedComponentDesignerEx<T>) | An extended designer for components that support attributes.
+[Vanara.Windows.Forms.Design.AttributedControlDesigner<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedControlDesigner<T>) | A designer for controls that support attributes.
+[Vanara.Windows.Forms.Design.AttributedControlDesignerEx<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedControlDesignerEx<T>) | An extended designer for controls that support attributes.
+[Vanara.Windows.Forms.Design.AttributedDesignerActionList](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedDesignerActionList) | A designer action list pulled from attributes.
+[Vanara.Windows.Forms.Design.AttributedParentControlDesigner<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedParentControlDesigner<T>) | A designer for parent controls supported by attributes.
+[Vanara.Windows.Forms.Design.AttributedParentControlDesignerEx<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AttributedParentControlDesignerEx<T>) | An extended designer for parent controls supported by attributes.
 [Vanara.Security.AuthenticationBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=AuthenticationBuffer) | Safe container for an authentication buffer. Allows for creation using native <c>CredPackAuthenticationBuffer</c> method or assignment from an existing <c>IntPtr</c>. Can unpack to `System.String` or `System.Security.SecureString` values.
 [Vanara.Drawing.BufferedAnimationPainter](https://github.com/dahall/Vanara/search?l=C%23&q=BufferedAnimationPainter) | Use to paint a buffered animation.
 [Vanara.Drawing.BufferedPaint](https://github.com/dahall/Vanara/search?l=C%23&q=BufferedPaint) | Buffered painting helper class.
@@ -84,24 +84,24 @@ Class | Description
 [Vanara.Windows.Forms.CommandLink](https://github.com/dahall/Vanara/search?l=C%23&q=CommandLink) | Represents a Windows Command Link control.
 [Vanara.Windows.Forms.Design.ComponentDesignerExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ComponentDesignerExtension) | Methods to assist when using designer code.
 [Vanara.Extensions.ControlExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ControlExtension) | Control extension methods.
-[Vanara.Windows.Forms.ControlImage](https://github.com/dahall/Vanara/search?l=C%23&q=ControlImage) | 
+[Vanara.Windows.Forms.ControlImage](https://github.com/dahall/Vanara/search?l=C%23&q=ControlImage) | Represents an image used within a control.
 [Vanara.Windows.Forms.CredentialsDialog](https://github.com/dahall/Vanara/search?l=C%23&q=CredentialsDialog) | Dialog box which prompts for user credentials using the Win32 CREDUI methods.
-[Vanara.Extensions.CursorExtension](https://github.com/dahall/Vanara/search?l=C%23&q=CursorExtension) | 
-[Vanara.Windows.Forms.CustomButton](https://github.com/dahall/Vanara/search?l=C%23&q=CustomButton) | 
+[Vanara.Extensions.CursorExtension](https://github.com/dahall/Vanara/search?l=C%23&q=CursorExtension) | Extension methods for `System.Windows.Forms.Cursor`.
+[Vanara.Windows.Forms.CustomButton](https://github.com/dahall/Vanara/search?l=C%23&q=CustomButton) | A custom drawn button.
 [Vanara.Windows.Forms.CustomComboBox](https://github.com/dahall/Vanara/search?l=C%23&q=CustomComboBox) | <c>CustomComboBox</c> is an extension of `System.Windows.Forms.ComboBox` which provides drop-down customization.
 [Vanara.Windows.Forms.CustomDrawBase](https://github.com/dahall/Vanara/search?l=C%23&q=CustomDrawBase) | Abstract class for implementing a custom-drawn control that tracks mouse movement and has text and/or an image. It exposes all property changes.
-[Vanara.Windows.Forms.Design.DesignerActionMethodAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=DesignerActionMethodAttribute) | 
-[Vanara.Windows.Forms.Design.DesignerActionPropertyAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=DesignerActionPropertyAttribute) | 
-[Vanara.Windows.Forms.Design.DesignerVerbAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=DesignerVerbAttribute) | 
+[Vanara.Windows.Forms.Design.DesignerActionMethodAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=DesignerActionMethodAttribute) | Attribute placed on methods that indicate they support a designer action.
+[Vanara.Windows.Forms.Design.DesignerActionPropertyAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=DesignerActionPropertyAttribute) | Attribute placed on properties that indicate they support a designer action.
+[Vanara.Windows.Forms.Design.DesignerVerbAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=DesignerVerbAttribute) | Attribute placed on methods that indicate they support a designer attribute.
 [Vanara.Windows.Forms.DesktopWindowManager](https://github.com/dahall/Vanara/search?l=C%23&q=DesktopWindowManager) | Main DWM class, provides glass sheet effect and blur behind.
 [Vanara.Windows.Forms.DisabledItemComboBox](https://github.com/dahall/Vanara/search?l=C%23&q=DisabledItemComboBox) | A version of `System.Windows.Forms.ComboBox` that allows for disabled items.
-[Vanara.Windows.Forms.CustomButton.DrawPattern](https://github.com/dahall/Vanara/search?l=C%23&q=DrawPattern) | 
-[Vanara.Windows.Forms.Design.EditorServiceContext](https://github.com/dahall/Vanara/search?l=C%23&q=EditorServiceContext) | 
+[Vanara.Windows.Forms.CustomButton.DrawPattern](https://github.com/dahall/Vanara/search?l=C%23&q=DrawPattern) | A pattern to use for drawing the button.
+[Vanara.Windows.Forms.Design.EditorServiceContext](https://github.com/dahall/Vanara/search?l=C%23&q=EditorServiceContext) | A service context implementation for an editor.
 [Vanara.Windows.Forms.EnumComboBox](https://github.com/dahall/Vanara/search?l=C%23&q=EnumComboBox) | A combo box that displays the items of an `System.Enum` type. If the Enum type has a `System.FlagsAttribute`, then the drop-down will be checked list of the values.
 [Vanara.Windows.Forms.TaskDialog.ExpandedEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=ExpandedEventArgs) | Provides data for the `Vanara.Windows.Forms.TaskDialog.ExpandedEventArgs.Expanded` event.
 [Vanara.Windows.Forms.ExplorerBrowser](https://github.com/dahall/Vanara/search?l=C%23&q=ExplorerBrowser) | <c>ExplorerBrowser</c> is a browser object that can be either navigated or that can host a view of a data object. As a full-featured browser object, it also supports an automatic travel log.
 [Vanara.Windows.Forms.ExplorerBrowser.ExplorerBrowserPaneVisibility](https://github.com/dahall/Vanara/search?l=C%23&q=ExplorerBrowserPaneVisibility) | Controls the visibility of the various ExplorerBrowser panes on subsequent navigation
-[Vanara.Windows.Forms.Design.FlagEnumUIEditor<T>.FlagCheckedListBox](https://github.com/dahall/Vanara/search?l=C%23&q=FlagCheckedListBox) | 
+[Vanara.Windows.Forms.Design.FlagEnumUIEditor<T>.FlagCheckedListBox](https://github.com/dahall/Vanara/search?l=C%23&q=FlagCheckedListBox) | A checked list box to use as the editor.
 [Vanara.Windows.Forms.Design.FlagEnumUIEditor<T>.FlagCheckedListBox.FlagCheckedListBoxItem](https://github.com/dahall/Vanara/search?l=C%23&q=FlagCheckedListBoxItem) | 
 [Vanara.Windows.Forms.Design.FlagEnumUIEditor<T>](https://github.com/dahall/Vanara/search?l=C%23&q=FlagEnumUIEditor<T>) | A `System.Drawing.Design.UITypeEditor` for editing flag enums.
 [Vanara.Windows.Forms.FolderBrowserDialog](https://github.com/dahall/Vanara/search?l=C%23&q=FolderBrowserDialog) | Class to let the user browse for a folder.
@@ -110,20 +110,20 @@ Class | Description
 [Vanara.Drawing.BufferedPaint.GetDuration<T>](https://github.com/dahall/Vanara/search?l=C%23&q=GetDuration<T>) | A method delegate that retrieves a duration, in milliseconds, to use as the time over which buffered painting occurs.
 [Vanara.Windows.Forms.GlassExtenderProvider](https://github.com/dahall/Vanara/search?l=C%23&q=GlassExtenderProvider) | GlassExtenderProvider extends a `System.Windows.Forms.Form` and provides glass margins.
 [Vanara.Extensions.GraphicsExtension](https://github.com/dahall/Vanara/search?l=C%23&q=GraphicsExtension) | Extensions to <c>Graphics</c> related classes.
-[Vanara.Resources.ResourceFile.GroupIconResIndexer](https://github.com/dahall/Vanara/search?l=C%23&q=GroupIconResIndexer) | 
-[Vanara.Extensions.IconExtension](https://github.com/dahall/Vanara/search?l=C%23&q=IconExtension) | 
+[Vanara.Resources.ResourceFile.GroupIconResIndexer](https://github.com/dahall/Vanara/search?l=C%23&q=GroupIconResIndexer) | An indexer for group icons.
+[Vanara.Extensions.IconExtension](https://github.com/dahall/Vanara/search?l=C%23&q=IconExtension) | Extension methods for `System.Drawing.Icon`.
 [Vanara.Extensions.ImageListExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ImageListExtension) | Extension methods for `System.Windows.Forms.ImageList`.
-[Vanara.Resources.ResourceFile.ImageResIndexer<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ImageResIndexer<T>) | 
+[Vanara.Resources.ResourceFile.ImageResIndexer<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ImageResIndexer<T>) | An indexer for images.
 [Vanara.Windows.Forms.InputDialog](https://github.com/dahall/Vanara/search?l=C%23&q=InputDialog) | An input dialog that automatically creates controls to collect the values of the object supplied via the `Vanara.Windows.Forms.InputDialog.Data` property.
 [Vanara.Windows.Forms.InputDialogItemAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=InputDialogItemAttribute) | Allows a developer to attribute a property or field with text that gets shown instead of the field or property name in an `Vanara.Windows.Forms.InputDialog`.
 [Vanara.Windows.Forms.InvalidFolderEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=InvalidFolderEventArgs) | Event arguments for when an invalid folder is selected.
 [Vanara.Windows.Forms.IPAddressBox](https://github.com/dahall/Vanara/search?l=C%23&q=IPAddressBox) | An Internet Protocol (IP) address control allows the user to enter an IP address in an easily understood format.
 [Vanara.Windows.Forms.IPAddressFieldChangedEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=IPAddressFieldChangedEventArgs) | Contains the arguments needed to handle the `Vanara.Windows.Forms.IPAddressBox.FieldChanged` event.
-[Vanara.Extensions.LabelExtension](https://github.com/dahall/Vanara/search?l=C%23&q=LabelExtension) | 
-[Vanara.Extensions.ListViewExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ListViewExtension) | 
+[Vanara.Extensions.LabelExtension](https://github.com/dahall/Vanara/search?l=C%23&q=LabelExtension) | Extension methods for `System.Windows.Forms.Label`.
+[Vanara.Extensions.ListViewExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ListViewExtension) | Extension methods for `System.Windows.Forms.ListView`.
 [Vanara.Extensions.ListViewGroupingSet<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ListViewGroupingSet<T>) | Takes a list of groups and matching predicates to be used by the ApplyGroupingSet extension method.
 [Vanara.Windows.Forms.LiveThumbnail](https://github.com/dahall/Vanara/search?l=C%23&q=LiveThumbnail) | Extracts all or a portion of a window and renders it as a thumbnail on another portion of the desktop.
-[Vanara.Extensions.MapPointExtension](https://github.com/dahall/Vanara/search?l=C%23&q=MapPointExtension) | 
+[Vanara.Extensions.MapPointExtension](https://github.com/dahall/Vanara/search?l=C%23&q=MapPointExtension) | Extension methods for windows to process points in the coordinate space.
 [Vanara.Windows.Forms.MenuStripMRUManager](https://github.com/dahall/Vanara/search?l=C%23&q=MenuStripMRUManager) | A class that manages a Most Recently Used file listing and interacts with a MenuStrip to display a menu list of the files. By default, the application settings are used to store the history. Optionally a constructor can be used to provide an alternate class to handle that work.
 [Vanara.Configuration.MRUManager](https://github.com/dahall/Vanara/search?l=C%23&q=MRUManager) | A class that manages a Most Recently Used file listing.
 [Vanara.Windows.Forms.ExplorerBrowser.NavigatedEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=NavigatedEventArgs) | Event argument for The Navigated event
@@ -138,10 +138,10 @@ Class | Description
 [Vanara.Windows.Forms.Forms.PreventShutdownContext](https://github.com/dahall/Vanara/search?l=C%23&q=PreventShutdownContext) | Used to define a set of operations within which any shutdown request will be met with a reason why this application is blocking it.
 [Vanara.Windows.Forms.ProgressDialog](https://github.com/dahall/Vanara/search?l=C%23&q=ProgressDialog) | Multi-level, auto-sizing, progress dialog supporting asyncronous tasks. The background activities are provided as asyncronous methods who have a `System.Threading.CancellationToken` and an `System.IProgress`1` instance passed as parameters. The method uses the `System.Threading.CancellationToken` instance to determine if the user has pressed the "Cancel" button and the `System.IProgress`1.Report(`0)` method to report progress.
 [Vanara.Windows.Forms.ProgressEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=ProgressEventArgs) | Updates progress on a `Vanara.Windows.Forms.ProgressDialog`.
-[Vanara.Windows.Forms.Design.RedirectedDesignerPropertyAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=RedirectedDesignerPropertyAttribute) | 
+[Vanara.Windows.Forms.Design.RedirectedDesignerPropertyAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=RedirectedDesignerPropertyAttribute) | Attribute placed on properties that indicate they support a designer redirected property.
 [Vanara.Configuration.MRUManager.RegistryFileListStorage](https://github.com/dahall/Vanara/search?l=C%23&q=RegistryFileListStorage) | 
-[Vanara.Resources.ResourceFile](https://github.com/dahall/Vanara/search?l=C%23&q=ResourceFile) | 
-[Vanara.Windows.Forms.Design.ServiceProviderExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ServiceProviderExtension) | 
+[Vanara.Resources.ResourceFile](https://github.com/dahall/Vanara/search?l=C%23&q=ResourceFile) | Represents a file that contains resources.
+[Vanara.Windows.Forms.Design.ServiceProviderExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ServiceProviderExtension) | Extension methods for IServiceProvider.
 [Vanara.Windows.Forms.ShellNamespaceTreeControl](https://github.com/dahall/Vanara/search?l=C%23&q=ShellNamespaceTreeControl) | A control used to view and manipulate nodes in a tree of Shell items.
 [Vanara.Windows.Forms.ShellNamespaceTreeControlEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=ShellNamespaceTreeControlEventArgs) | Event arguments for actions against `Vanara.Windows.Forms.ShellNamespaceTreeControl`.
 [Vanara.Windows.Forms.ShellNamespaceTreeControlItemLabelEditEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=ShellNamespaceTreeControlItemLabelEditEventArgs) | Arguments for item label edit events in a `Vanara.Windows.Forms.ShellNamespaceTreeControl`.
@@ -151,14 +151,14 @@ Class | Description
 [Vanara.Extensions.GraphicsExtension.SmartBitmapLock](https://github.com/dahall/Vanara/search?l=C%23&q=SmartBitmapLock) | A self-disposing LockBits class for Bitmaps.
 [Vanara.Windows.Forms.SplitButton](https://github.com/dahall/Vanara/search?l=C%23&q=SplitButton) | The SplitButton is a composite control with which the user can select from a drop-down list bound to the button.
 [Vanara.Windows.Forms.SplitButton.SplitMenuEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=SplitMenuEventArgs) | Provides data for the clicking of split buttons and the opening of context menus.
-[Vanara.Resources.ResourceFile.StringResIndexer](https://github.com/dahall/Vanara/search?l=C%23&q=StringResIndexer) | 
-[Vanara.Windows.Forms.CollapsiblePanel.Style](https://github.com/dahall/Vanara/search?l=C%23&q=Style) | 
+[Vanara.Resources.ResourceFile.StringResIndexer](https://github.com/dahall/Vanara/search?l=C%23&q=StringResIndexer) | An indexer for strings.
+[Vanara.Windows.Forms.CollapsiblePanel.Style](https://github.com/dahall/Vanara/search?l=C%23&q=Style) | The panel's style.
 [Vanara.Windows.Forms.TaskDialog](https://github.com/dahall/Vanara/search?l=C%23&q=TaskDialog) | A Task Dialog. This is like a MessageBox but with many more features. For Windows version prior to Vista, an emulated version of the system dialog is displayed.
-[Vanara.Windows.Forms.TaskDialogButton](https://github.com/dahall/Vanara/search?l=C%23&q=TaskDialogButton) | 
+[Vanara.Windows.Forms.TaskDialogButton](https://github.com/dahall/Vanara/search?l=C%23&q=TaskDialogButton) | Represents a button on a task dialog.
 [Vanara.Windows.Forms.TaskDialog.TaskDialogButtonBase](https://github.com/dahall/Vanara/search?l=C%23&q=TaskDialogButtonBase) | A custom button for the TaskDialog.
 [Vanara.Windows.Forms.TaskDialog.TaskDialogButtonCollection<T>](https://github.com/dahall/Vanara/search?l=C%23&q=TaskDialogButtonCollection<T>) | A collection of `Vanara.Windows.Forms.TaskDialogButton` elements.
-[Vanara.Windows.Forms.TaskDialog.TaskDialogProgressBar](https://github.com/dahall/Vanara/search?l=C%23&q=TaskDialogProgressBar) | 
-[Vanara.Windows.Forms.TaskDialogRadioButton](https://github.com/dahall/Vanara/search?l=C%23&q=TaskDialogRadioButton) | 
+[Vanara.Windows.Forms.TaskDialog.TaskDialogProgressBar](https://github.com/dahall/Vanara/search?l=C%23&q=TaskDialogProgressBar) | Represents the progress bar that can be displayed in a task dialog.
+[Vanara.Windows.Forms.TaskDialogRadioButton](https://github.com/dahall/Vanara/search?l=C%23&q=TaskDialogRadioButton) | Represents a radio button on a task dialog.
 [Vanara.Extensions.TextBoxExtension](https://github.com/dahall/Vanara/search?l=C%23&q=TextBoxExtension) | Extension methods for `System.Windows.Forms.TextBox`.
 [Vanara.Windows.Forms.ThemedImageDraw](https://github.com/dahall/Vanara/search?l=C%23&q=ThemedImageDraw) | A button that displays an image and no text.
 [Vanara.Windows.Forms.ThemedLabel](https://github.com/dahall/Vanara/search?l=C%23&q=ThemedLabel) | A Label containing some text that will be drawn with glowing border on top of the Glass Sheet effect.
@@ -167,9 +167,9 @@ Class | Description
 [Vanara.Windows.Forms.TaskDialog.TimerEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=TimerEventArgs) | Provides data for the `Vanara.Windows.Forms.TaskDialog.Timer` event.
 [Vanara.Windows.Forms.TrackBarEx](https://github.com/dahall/Vanara/search?l=C%23&q=TrackBarEx) | Extends the `System.Windows.Forms.TrackBar` class to provide full native-control functionality, including tick marks and value, and custom drawing.
 [Vanara.Extensions.TreeViewExtension](https://github.com/dahall/Vanara/search?l=C%23&q=TreeViewExtension) | Extension methods for `System.Windows.Forms.TreeView` controls.
-[Vanara.Windows.Forms.Design.TypedBehavior<T>](https://github.com/dahall/Vanara/search?l=C%23&q=TypedBehavior<T>) | 
-[Vanara.Windows.Forms.Design.TypedDesignerActionList<T>](https://github.com/dahall/Vanara/search?l=C%23&q=TypedDesignerActionList<T>) | 
-[Vanara.Windows.Forms.Design.TypedGlyph<T>](https://github.com/dahall/Vanara/search?l=C%23&q=TypedGlyph<T>) | 
+[Vanara.Windows.Forms.Design.TypedBehavior<T>](https://github.com/dahall/Vanara/search?l=C%23&q=TypedBehavior<T>) | A behavior derivative for a supplied type.
+[Vanara.Windows.Forms.Design.TypedDesignerActionList<T>](https://github.com/dahall/Vanara/search?l=C%23&q=TypedDesignerActionList<T>) | An action list for a generic designer.
+[Vanara.Windows.Forms.Design.TypedGlyph<T>](https://github.com/dahall/Vanara/search?l=C%23&q=TypedGlyph<T>) | A glyph associated with a designer.
 [Vanara.Windows.Forms.TaskDialog.VerificationClickedEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=VerificationClickedEventArgs) | Provides data for the `Vanara.Windows.Forms.TaskDialog.VerificationClicked` event.
 [Vanara.Windows.Forms.ExplorerBrowser.ViewEvents](https://github.com/dahall/Vanara/search?l=C%23&q=ViewEvents) | This provides a connection point container compatible dispatch interface for hooking into the ExplorerBrowser view.
 [Vanara.Windows.Forms.VistaButtonBase](https://github.com/dahall/Vanara/search?l=C%23&q=VistaButtonBase) | Implements a CommandLink button that can be used in WinForms user interfaces.

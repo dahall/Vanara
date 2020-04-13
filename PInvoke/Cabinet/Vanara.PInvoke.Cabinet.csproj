@@ -22,7 +22,7 @@ COMPRESS_ALLOCATION_ROUTINES, COMPRESSOR_HANDLE, DECOMPRESSOR_HANDLE, CCAB, ERF,
 </PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-     <NoWarn>1701;1702;1591</NoWarn>
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
