@@ -21,7 +21,8 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nc-windns-dns_query_completion_routine DNS_QUERY_COMPLETION_ROUTINE
 		// DnsQueryCompletionRoutine; void DnsQueryCompletionRoutine( PVOID pQueryContext, PDNS_QUERY_RESULT pQueryResults ) {...}
 		[PInvokeData("windns.h", MSDNShortId = "35D78208-FFC1-48B0-8267-EE583DE2D783")]
-		public delegate void DNS_QUERY_COMPLETION_ROUTINE([In] HDNSCONTEXT pQueryContext, in DNS_QUERY_RESULT pQueryResults);
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void DNS_QUERY_COMPLETION_ROUTINE([In] IntPtr pQueryContext, ref DNS_QUERY_RESULT pQueryResults);
 
 		/// <summary>Used to asynchronously return the results of a DNS-SD query.</summary>
 		/// <param name="Status">A value that contains the status associated with this particular set of results.</param>
@@ -34,7 +35,8 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nc-windns-dns_service_browse_callback DNS_SERVICE_BROWSE_CALLBACK
 		// DnsServiceBrowseCallback; void DnsServiceBrowseCallback( DWORD Status, PVOID pQueryContext, PDNS_RECORD pDnsRecord ) {...}
 		[PInvokeData("windns.h")]
-		public delegate void DNS_SERVICE_BROWSE_CALLBACK(uint Status, [In] HDNSCONTEXT pQueryContext, in DNS_RECORD pDnsRecord);
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void DNS_SERVICE_BROWSE_CALLBACK(uint Status, [In] IntPtr pQueryContext, IntPtr pDnsRecord);
 
 		/// <summary>Used to notify your application that service registration has completed.</summary>
 		/// <param name="Status">A value that contains the status of the registration.</param>
@@ -47,7 +49,8 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nc-windns-dns_service_register_complete DNS_SERVICE_REGISTER_COMPLETE
 		// DnsServiceRegisterComplete; void DnsServiceRegisterComplete( DWORD Status, PVOID pQueryContext, PDNS_SERVICE_INSTANCE pInstance ) {...}
 		[PInvokeData("windns.h")]
-		public delegate void DNS_SERVICE_REGISTER_COMPLETE(uint Status, [In] HDNSCONTEXT pQueryContext, in DNS_SERVICE_INSTANCE pInstance);
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void DNS_SERVICE_REGISTER_COMPLETE(uint Status, [In] IntPtr pQueryContext, [In] IntPtr pInstance);
 
 		/// <summary>Used to asynchronously return the results of a service resolve operation.</summary>
 		/// <param name="Status">A value that contains the status associated with this particular set of results.</param>
@@ -60,7 +63,8 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nc-windns-dns_service_resolve_complete DNS_SERVICE_RESOLVE_COMPLETE
 		// DnsServiceResolveComplete; void DnsServiceResolveComplete( DWORD Status, PVOID pQueryContext, PDNS_SERVICE_INSTANCE pInstance ) {...}
 		[PInvokeData("windns.h")]
-		public delegate void DNS_SERVICE_RESOLVE_COMPLETE(uint Status, [In] HDNSCONTEXT pQueryContext, in DNS_SERVICE_INSTANCE pInstance);
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void DNS_SERVICE_RESOLVE_COMPLETE(uint Status, [In] IntPtr pQueryContext, [In] IntPtr pInstance);
 
 		/// <summary>Used to asynchronously return the results of an mDNS query.</summary>
 		/// <param name="pQueryContext">A pointer to the user context that was passed to DnsServiceBrowse.</param>
@@ -73,7 +77,8 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nc-windns-mdns_query_callback MDNS_QUERY_CALLBACK MdnsQueryCallback;
 		// void MdnsQueryCallback( PVOID pQueryContext, PMDNS_QUERY_HANDLE pQueryHandle, PDNS_QUERY_RESULT pQueryResults ) {...}
 		[PInvokeData("windns.h")]
-		public delegate void MDNS_QUERY_CALLBACK(HDNSCONTEXT pQueryContext, in MDNS_QUERY_HANDLE pQueryHandle, in DNS_QUERY_RESULT pQueryResults);
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void MDNS_QUERY_CALLBACK(IntPtr pQueryContext, IntPtr pQueryHandle, IntPtr pQueryResults);
 
 		/// <summary>Byte flip DNS header to\from host order.</summary>
 		/// <param name="mBuf">The DNS_MESSAGE_BUFFER instance whose values are to be flipped.</param>
@@ -1377,6 +1382,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="SafeHDNSCONTEXT"/> class.</summary>
 			private SafeHDNSCONTEXT() : base() { }
+
+			/// <summary>Performs an explicit conversion from <see cref="SafeHDNSCONTEXT"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
+			public static explicit operator IntPtr(SafeHDNSCONTEXT h) => h.handle;
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHDNSCONTEXT"/> to <see cref="HDNSCONTEXT"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>

@@ -6749,6 +6749,9 @@ namespace Vanara.PInvoke
 		/// <summary>Unsecured DNS packet.</summary>
 		public const int DNS_ERROR_UNSECURE_PACKET = 0x00002521;
 
+		/// <summary>DNS query request is pending.</summary>
+		public const int DNS_REQUEST_PENDING = 0x00002522;
+
 		/// <summary>Invalid DNS type.</summary>
 		public const int DNS_ERROR_INVALID_TYPE = 0x0000254F;
 

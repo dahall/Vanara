@@ -28,6 +28,9 @@ namespace Vanara.PInvoke
 		/// <summary/>
 		public const uint DNS_QUERY_REQUEST_VERSION2 = 0x2;
 
+		/// <summary/>
+		public const uint DNS_QUERY_RESULTS_VERSION1 = 0x1;
+
 		/// <summary>The format of the ATM address in <c>Address</c>.</summary>
 		[PInvokeData("windns.h", MSDNShortId = "09df3990-36bd-4656-b5cd-792e521adf9d")]
 		public enum ATMA : byte
@@ -1711,7 +1714,7 @@ namespace Vanara.PInvoke
 			public DNS_QUERY_COMPLETION_ROUTINE pQueryCompletionCallback;
 
 			/// <summary>A pointer to a user context.</summary>
-			public HDNSCONTEXT pQueryContext;
+			public IntPtr pQueryContext;
 		}
 
 		/// <summary>A <c>DNS_QUERY_RESULT</c> structure contains the DNS query results returned from a call to DnsQueryEx.</summary>
@@ -2198,7 +2201,7 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>A pointer to a user context.</summary>
-			public HDNSCONTEXT pQueryContext;
+			public IntPtr pQueryContext;
 		}
 
 		/// <summary>Used to cancel an asynchronous DNS-SD operation.</summary>
@@ -2290,7 +2293,7 @@ namespace Vanara.PInvoke
 			public DNS_SERVICE_REGISTER_COMPLETE pRegisterCompletionCallback;
 
 			/// <summary>A pointer to a user context.</summary>
-			public HDNSCONTEXT pQueryContext;
+			public IntPtr pQueryContext;
 
 			/// <summary>Not used.</summary>
 			public HANDLE hCredentials;
@@ -2333,7 +2336,7 @@ namespace Vanara.PInvoke
 			public DNS_SERVICE_RESOLVE_COMPLETE pResolveCompletionCallback;
 
 			/// <summary>A pointer to a user context.</summary>
-			public HDNSCONTEXT pQueryContext;
+			public IntPtr pQueryContext;
 		}
 
 		/// <summary>
@@ -3011,7 +3014,7 @@ namespace Vanara.PInvoke
 			public MDNS_QUERY_CALLBACK pQueryCallback;
 
 			/// <summary>A pointer to a user context.</summary>
-			public HDNSCONTEXT pQueryContext;
+			public IntPtr pQueryContext;
 
 			/// <summary>Reserved. Do not use.</summary>
 			[MarshalAs(UnmanagedType.Bool)] public bool fAnswerReceived;

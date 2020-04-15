@@ -1,4 +1,4 @@
-using ICSharpCode.Decompiler.IL;
+using Microsoft.Win32.SafeHandles;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -6,14 +6,12 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
-using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.DnsApi;
 
 namespace Vanara.PInvoke.Tests
 {
 	public class DnsApiTests
 	{
-		const int DNS_REQUEST_PENDING = 0x00002522;
 		private const string dnsSvr = "c1dns.cableone.net";
 		private const string dnsSvrIp = "24.116.0.53";
 
@@ -49,21 +47,13 @@ namespace Vanara.PInvoke.Tests
 		{
 			Assert.That(DnsQuery(dnsSvr, DNS_TYPE.DNS_TYPE_ALL, 0, default, out var results), ResultIs.Successful);
 			Assert.That(results, ResultIs.ValidHandle);
-			Assert.That(DnsModifyRecordsInSet(results, default, DNS_UPDATE.DNS_UPDATE_SECURITY_USE_DEFAULT), ResultIs.Successful);
+			Assert.That(DnsModifyRecordsInSet(results, results, DNS_UPDATE.DNS_UPDATE_SECURITY_USE_DEFAULT), ResultIs.Value(Win32Error.ERROR_TIMEOUT));
 		}
 
 		[Test]
 		public void DnsNameCompareTest()
 		{
 			Assert.That(DnsNameCompare(dnsSvr, dnsSvr), Is.True);
-		}
-
-		[Test]
-		public void DnsQueryTest()
-		{
-			Assert.That(DnsQuery(dnsSvr, DNS_TYPE.DNS_TYPE_ALL, 0, default, out var results), ResultIs.Successful);
-			Assert.That(results, ResultIs.ValidHandle);
-			results.ToArray().WriteValues();
 		}
 
 		[Test]
@@ -80,7 +70,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void DnsQueryExTest()
 		{
-			bool callbackCalled = false;
+			using var evt = new System.Threading.AutoResetEvent(false);
 			var req = new DNS_QUERY_REQUEST
 			{
 				Version = DNS_QUERY_REQUEST_VERSION1,
@@ -90,18 +80,27 @@ namespace Vanara.PInvoke.Tests
 				pQueryCompletionCallback = Callback
 			};
 			var res = new DNS_QUERY_RESULT { Version = DNS_QUERY_REQUEST_VERSION1 };
-			Assert.That(DnsQueryEx(req, ref res, out var cancel), ResultIs.Value((Win32Error)DNS_REQUEST_PENDING));
-			Thread.Sleep(500);
-			if (!callbackCalled)
+			Assert.That(DnsQueryEx(req, ref res, out var cancel), ResultIs.Value(Win32Error.DNS_REQUEST_PENDING));
+			if (!evt.WaitOne(20000))
+			{
 				Assert.That(DnsCancelQuery(cancel), ResultIs.Successful);
-			Assert.That(callbackCalled, Is.True);
+				Assert.Fail("Completion callback not called.");
+			}
 			if (res.pQueryRecords != default)
 				DnsRecordListFree(res.pQueryRecords);
 
-			void Callback(HDNSCONTEXT pQueryContext, in DNS_QUERY_RESULT pQueryResults)
+			void Callback(IntPtr pQueryContext, ref DNS_QUERY_RESULT pQueryResults)
 			{
-				callbackCalled = true;
+				evt.Set();
 			}
+		}
+
+		[Test]
+		public void DnsQueryTest()
+		{
+			Assert.That(DnsQuery(dnsSvr, DNS_TYPE.DNS_TYPE_ALL, 0, default, out var results), ResultIs.Successful);
+			Assert.That(results, ResultIs.ValidHandle);
+			results.ToArray().WriteValues();
 		}
 
 		[Test]
@@ -121,19 +120,21 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void DnsServiceBrowseTest()
 		{
-			bool callbackCalled = false, qcallbackCalled = false, rcallbackCalled = false;
-			Assert.That(DnsAcquireContextHandle(true, default, out var ctx), ResultIs.Successful);
+			using var evt = Kernel32.CreateEvent(null, false, true);
+
 			var br = new DNS_SERVICE_BROWSE_REQUEST
 			{
 				Version = DNS_QUERY_REQUEST_VERSION1,
 				QueryName = "_windns-example._udp",
-				pQueryContext = ctx
+				pQueryContext = (IntPtr)evt
 			};
 			br.Callback.pBrowseCallback = Callback;
-			Assert.That(DnsServiceBrowse(br, out var cancel), ResultIs.Value((Win32Error)DNS_REQUEST_PENDING));
-			//Thread.Sleep(500);
-			//if (!callbackCalled)
-			//	Assert.That(DnsServiceBrowseCancel(cancel), ResultIs.Successful);
+			Assert.That(DnsServiceBrowse(br, out var cancel), ResultIs.Value(Win32Error.DNS_REQUEST_PENDING));
+			if (Kernel32.WaitForSingleObject(evt, 20000) != Kernel32.WAIT_STATUS.WAIT_OBJECT_0)
+			{
+				Assert.That(DnsServiceBrowseCancel(cancel), ResultIs.Successful);
+				Assert.Fail("Browse callback not called.");
+			}
 
 			var queryRequest = new MDNS_QUERY_REQUEST
 			{
@@ -141,24 +142,31 @@ namespace Vanara.PInvoke.Tests
 				Query = "_windns-example._udp.local",
 				QueryType = DNS_TYPE.DNS_TYPE_PTR,
 				QueryOptions = DNS_QUERY_OPTIONS.DNS_QUERY_STANDARD,
-				pQueryCallback = QueryCallback
+				pQueryCallback = QueryCallback,
+				pQueryContext = (IntPtr)evt
 			};
 			Assert.That(DnsStartMulticastQuery(queryRequest, out var queryHandle), ResultIs.Successful);
-			Thread.Sleep(5000);
-			if (!qcallbackCalled)
-				DnsStopMulticastQuery(queryHandle);
-			Assert.IsTrue(qcallbackCalled);
-			Assert.IsTrue(rcallbackCalled);
-
-			void Callback(uint Status, HDNSCONTEXT pQueryContext, in DNS_RECORD pDnsRecord)
+			if (Kernel32.WaitForSingleObject(evt, 20000) != Kernel32.WAIT_STATUS.WAIT_OBJECT_0)
 			{
-				callbackCalled = true;
+				Assert.That(DnsStopMulticastQuery(queryHandle), ResultIs.Successful);
+				Assert.Fail("Multicast callback not called.");
 			}
 
-			void QueryCallback(HDNSCONTEXT pQueryContext, in MDNS_QUERY_HANDLE pQueryHandle, in DNS_QUERY_RESULT pQueryResults)
+			void Callback(uint Status, IntPtr pQueryContext, IntPtr pDnsRecord)
 			{
-				qcallbackCalled = true;
-				using var recs = new SafeDnsRecordList(pQueryResults.pQueryRecords);
+				Kernel32.SetEvent(pQueryContext);
+			}
+
+			void QueryCallback(IntPtr pQueryContext, IntPtr pQueryHandle, IntPtr pQueryResults)
+			{
+				var pQueryRecs = IntPtr.Zero;
+				unsafe
+				{
+					var pQR = (DNS_QUERY_RESULT*)(void*)pQueryResults;
+					pQueryResults = pQR->pQueryRecords;
+				}
+				using var recs = new SafeDnsRecordList(pQueryRecs);
+				using var qevt = Kernel32.CreateEvent(null, false, true);
 				var rec = recs.FirstOrDefault();
 				if (rec.wDataLength == 0)
 					return;
@@ -167,16 +175,20 @@ namespace Vanara.PInvoke.Tests
 					Version = DNS_QUERY_REQUEST_VERSION1,
 					QueryName = rec.Data is DNS_PTR_DATA d ? d.pNameHost : null,
 					pResolveCompletionCallback = ResolveCallback,
+					pQueryContext = (IntPtr)qevt
 				};
-				Assert.That(DnsServiceResolve(resolveRequest, out var cancel), ResultIs.Value((Win32Error)DNS_REQUEST_PENDING));
-				Thread.Sleep(5000);
-				if (!rcallbackCalled)
+				Assert.That(DnsServiceResolve(resolveRequest, out var cancel), ResultIs.Value(Win32Error.DNS_REQUEST_PENDING));
+				if (Kernel32.WaitForSingleObject(qevt, 20000) != Kernel32.WAIT_STATUS.WAIT_OBJECT_0)
+				{
 					Assert.That(DnsServiceResolveCancel(cancel), ResultIs.Successful);
+					Assert.Fail("Resolve callback not called.");
+				}
+				Kernel32.SetEvent(pQueryContext);
 			}
 
-			void ResolveCallback(uint Status, HDNSCONTEXT pQueryContext, in DNS_SERVICE_INSTANCE pInstance)
+			void ResolveCallback(uint Status, IntPtr pQueryContext, IntPtr pInstance)
 			{
-				rcallbackCalled = true;
+				Kernel32.SetEvent(pQueryContext);
 			}
 		}
 
@@ -185,23 +197,21 @@ namespace Vanara.PInvoke.Tests
 		{
 			SafePDNS_SERVICE_INSTANCE si;
 			Assert.That(si = DnsServiceConstructInstance("initial._windns-example._udp.local", "example.com", IntPtr.Zero, IntPtr.Zero, 1, 0, 0, 0, null, null), ResultIs.ValidHandle);
-			
+
 			var callbackCalled = false;
-			Assert.That(DnsAcquireContextHandle(true, default, out var ctx), ResultIs.Successful);
 			var sr = new DNS_SERVICE_REGISTER_REQUEST
 			{
 				Version = DNS_QUERY_REQUEST_VERSION1,
-				pQueryContext = ctx,
 				pRegisterCompletionCallback = Callback,
 				pServiceInstance = si,
 			};
-			Assert.That(DnsServiceRegister(sr, out var cancel), ResultIs.Value((Win32Error)DNS_REQUEST_PENDING));
+			Assert.That(DnsServiceRegister(sr, out var cancel), ResultIs.Value(Win32Error.DNS_REQUEST_PENDING));
 			Thread.Sleep(500);
 			if (!callbackCalled)
 				Assert.That(DnsServiceRegisterCancel(cancel), ResultIs.Successful);
-			Assert.That(DnsServiceDeRegister(sr, cancel), ResultIs.Value((Win32Error)DNS_REQUEST_PENDING));
+			Assert.That(DnsServiceDeRegister(sr, cancel), ResultIs.Value(Win32Error.DNS_REQUEST_PENDING));
 
-			void Callback(uint Status, HDNSCONTEXT pQueryContext, in DNS_SERVICE_INSTANCE pInstance) => callbackCalled = true;
+			void Callback(uint Status, IntPtr pQueryContext, IntPtr pInstance) => callbackCalled = true;
 		}
 
 		[Test]
@@ -222,11 +232,12 @@ namespace Vanara.PInvoke.Tests
 		{
 			var sz = 64U;
 			using var mem = new SafeHGlobalHandle(sz);
-			Assert.That(DnsWriteQuestionToBuffer(mem, ref sz, "microsoft", DNS_TYPE.DNS_TYPE_A, 1, true), Is.True);
+			Assert.That(DnsWriteQuestionToBuffer(mem, ref sz, "microsoft", DNS_TYPE.DNS_TYPE_A, 1, true), ResultIs.Successful);
 			var buf = mem.ToStructure<DNS_MESSAGE_BUFFER>();
 			DNS_BYTE_FLIP_HEADER_COUNTS(ref buf);
 			buf.WriteValues();
-			TestContext.Write(string.Join(":", mem.ToArray<byte>((int)sz - 12, 12)));
+			if (sz <= mem.Size)
+				TestContext.Write(string.Join(":", mem.ToArray<byte>((int)sz - 12, 12)));
 		}
 	}
 }
