@@ -2588,6 +2588,10 @@ namespace Vanara.PInvoke
 			/// <summary>Gets an instance that represents an empty address.</summary>
 			public static SOCKADDR Empty => new SOCKADDR(new byte[Marshal.SizeOf(typeof(IN6_ADDR))]);
 
+			/// <summary>Provides a copy of <see cref="SOCKADDR"/> as an array of bytes.</summary>
+			/// <value>The array of bytes from this instance.</value>
+			public byte[] GetAddressBytes() => GetBytes(0, Size);
+
 			/// <summary>Gets the data behind this address as a byte array.</summary>
 			/// <value>The address data.</value>
 			public byte[] sa_data => GetBytes(2, 14);
