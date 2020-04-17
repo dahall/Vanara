@@ -402,7 +402,7 @@ namespace Vanara.PInvoke.NetListMgr
 	}
 
 	/// <summary>Use this interface to notify an application of cost and data plan status change events for a connection.</summary>
-	[ComImport, Guid("DCB0000B-570F-4A9B-8D69-199FDBA5723B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(NetworkListManager))]
+	[ComImport, Guid("DCB0000B-570F-4A9B-8D69-199FDBA5723B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[PInvokeData("Netlistmgr.h")]
 	public interface INetworkConnectionCostEvents
 	{
@@ -412,18 +412,20 @@ namespace Vanara.PInvoke.NetListMgr
 		/// A DWORD value that represents the new cost of the connection. The lowest 16 bits represent the cost level, and the highest 16 bits represent the
 		/// flags. Possible values are defined by the <see cref="NLM_CONNECTION_COST"/> enumeration.
 		/// </param>
-		void ConnectionCostChanged([In] Guid connectionId, [In] NLM_CONNECTION_COST newCost);
+		[PreserveSig]
+		HRESULT ConnectionCostChanged([In] Guid connectionId, [In] NLM_CONNECTION_COST newCost);
 
 		/// <summary>The ConnectionDataPlanStatusChanged method notifies an application of a data plan status change on a connection.</summary>
 		/// <param name="connectionId">A unique ID that identifies the connection on which the data plan status change event occurred.</param>
-		void ConnectionDataPlanStatusChanged([In] Guid connectionId);
+		[PreserveSig]
+		HRESULT ConnectionDataPlanStatusChanged([In] Guid connectionId);
 	}
 
 	/// <summary>
 	/// The INetworkConnectionEvents interface is a message sink interface that a client implements to get network connection-related events. Applications
 	/// that are interested in lower-level events (such as authentication changes) must implement this interface.
 	/// </summary>
-	[ComImport, Guid("DCB00007-570F-4A9B-8D69-199FDBA5723B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), TypeLibType(TypeLibTypeFlags.FOleAutomation), CoClass(typeof(NetworkListManager))]
+	[ComImport, Guid("DCB00007-570F-4A9B-8D69-199FDBA5723B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), TypeLibType(TypeLibTypeFlags.FOleAutomation)]
 	[PInvokeData("Netlistmgr.h")]
 	public interface INetworkConnectionEvents
 	{
@@ -432,14 +434,16 @@ namespace Vanara.PInvoke.NetListMgr
 		/// </summary>
 		/// <param name="connectionId">A GUID that identifies the network connection on which the event occurred.</param>
 		/// <param name="newConnectivity">NLM_CONNECTIVITY enumeration value that specifies the new connectivity for this network connection.</param>
-		void NetworkConnectionConnectivityChanged([In] Guid connectionId, [In] NLM_CONNECTIVITY newConnectivity);
+		[PreserveSig]
+		HRESULT NetworkConnectionConnectivityChanged([In] Guid connectionId, [In] NLM_CONNECTIVITY newConnectivity);
 
 		/// <summary>
 		/// The NetworkConnectionPropertyChanged method notifies a client when property change events related to a specific network connection occur.
 		/// </summary>
 		/// <param name="connectionId">A GUID that identifies the network connection on which the event occurred.</param>
 		/// <param name="Flags">The NLM_CONNECTION_PROPERTY_CHANGE flags for this connection.</param>
-		void NetworkConnectionPropertyChanged([In] Guid connectionId, [In] NLM_CONNECTION_PROPERTY_CHANGE Flags);
+		[PreserveSig]
+		HRESULT NetworkConnectionPropertyChanged([In] Guid connectionId, [In] NLM_CONNECTION_PROPERTY_CHANGE Flags);
 	}
 
 	/// <summary>
@@ -463,7 +467,7 @@ namespace Vanara.PInvoke.NetListMgr
 		/// An <see cref="NLM_SOCKADDR"/> structure containing the destination IPv4/IPv6 address. If NULL, this method will instead return the cost associated with the
 		/// preferred connection used for machine Internet connectivity.
 		/// </param>
-		void GetCost(out NLM_CONNECTION_COST pCost, [In] IntPtr pDestIPAddr);
+		void GetCost(out NLM_CONNECTION_COST pCost, [In, Optional] NLM_SOCKADDR pDestIPAddr);
 
 		/// <summary>
 		/// The GetDataPlanStatus retrieves the data plan status for either a machine-wide internet connection , or the first-hop of routing to a specific
@@ -478,7 +482,7 @@ namespace Vanara.PInvoke.NetListMgr
 		/// An <see cref="NLM_SOCKADDR"/> structure containing the destination IPv4/IPv6 or tunnel address. If NULL, this method returns the cost associated with the
 		/// preferred connection used for machine Internet connectivity.
 		/// </param>
-		void GetDataPlanStatus(out NLM_DATAPLAN_STATUS pDataPlanStatus, [In] IntPtr pDestIPAddr);
+		void GetDataPlanStatus(out NLM_DATAPLAN_STATUS pDataPlanStatus, [In, Optional] NLM_SOCKADDR pDestIPAddr);
 
 		/// <summary>
 		/// The SetDestinationAddresses method registers specified destination IPv4/IPv6 addresses to receive cost or data plan status change notifications.
@@ -488,11 +492,11 @@ namespace Vanara.PInvoke.NetListMgr
 		/// A <see cref="NLM_SOCKADDR"/> structure containing a list of destination IPv4/IPv6 addresses to register for cost or data plan status change notification.
 		/// </param>
 		/// <param name="bAppend">If true, pDestIPAddrList will be appended to the existing address list; otherwise the existing list will be overwritten.</param>
-		void SetDestinationAddresses([In] uint length, [In] IntPtr pDestIPAddrList, [In] bool bAppend);
+		void SetDestinationAddresses([In] uint length, [In, Optional, MarshalAs(UnmanagedType.LPArray)] NLM_SOCKADDR[] pDestIPAddrList, [In] bool bAppend);
 	}
 
 	/// <summary>Use this interface to notify an application of machine-wide cost and data plan related events.</summary>
-	[ComImport, Guid("DCB00009-570F-4A9B-8D69-199FDBA5723B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(NetworkListManager))]
+	[ComImport, Guid("DCB00009-570F-4A9B-8D69-199FDBA5723B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[PInvokeData("Netlistmgr.h")]
 	public interface INetworkCostManagerEvents
 	{
@@ -508,7 +512,8 @@ namespace Vanara.PInvoke.NetListMgr
 		/// An <see cref="NLM_SOCKADDR"/> structure containing an IPv4/IPv6 address that identifies the destination on which the event occurred. If destAddr is NULL, the
 		/// change is a machine-wide Internet connectivity change.
 		/// </param>
-		void CostChanged([In] NLM_CONNECTION_COST newCost, in NLM_SOCKADDR pDestAddr);
+		[PreserveSig]
+		HRESULT CostChanged([In] NLM_CONNECTION_COST newCost, [In, Optional] NLM_SOCKADDR pDestAddr);
 
 		/// <summary>
 		/// The DataPlanStatusChanged method is called to indicate a change to the status of a data plan associated with either a connection used for
@@ -518,34 +523,39 @@ namespace Vanara.PInvoke.NetListMgr
 		/// An <see cref="NLM_SOCKADDR"/> structure containing an IPv4/IPv6 address that identifies the destination for which the event occurred. If destAddr is NULL, the
 		/// change is a machine-wide Internet connectivity change.
 		/// </param>
-		void DataPlanStatusChanged(in NLM_SOCKADDR pDestAddr);
+		[PreserveSig]
+		HRESULT DataPlanStatusChanged([In, Optional] NLM_SOCKADDR pDestAddr);
 	}
 
 	/// <summary>
 	/// INetworkEvents is a notification sink interface that a client implements to get network related events. These APIs are all callback functions that
 	/// are called automatically when the respective events are raised.
 	/// </summary>
-	[ComImport, Guid("DCB00004-570F-4A9B-8D69-199FDBA5723B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), TypeLibType(TypeLibTypeFlags.FOleAutomation), CoClass(typeof(NetworkListManager))]
+	[ComImport, Guid("DCB00004-570F-4A9B-8D69-199FDBA5723B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), TypeLibType(TypeLibTypeFlags.FOleAutomation)]
 	[PInvokeData("Netlistmgr.h")]
 	public interface INetworkEvents
 	{
 		/// <summary>The NetworkAdded method is called when a new network is added. The GUID of the new network is provided.</summary>
 		/// <param name="networkId">A GUID that specifies the new network that was added.</param>
-		void NetworkAdded([In] Guid networkId);
+		[PreserveSig]
+		HRESULT NetworkAdded([In] Guid networkId);
 
 		/// <summary>The NetworkDeleted method is called when a network is deleted.</summary>
 		/// <param name="networkId">GUID that contains the network ID of the network that was deleted.</param>
-		void NetworkDeleted([In] Guid networkId);
+		[PreserveSig]
+		HRESULT NetworkDeleted([In] Guid networkId);
 
 		/// <summary>The NetworkConnectivityChanged method is called when network connectivity related changes occur.</summary>
 		/// <param name="networkId">A GUID that specifies the new network that was added.</param>
 		/// <param name="newConnectivity">NLM_CONNECTIVITY enumeration value that contains the new connectivity of this network</param>
-		void NetworkConnectivityChanged([In] Guid networkId, [In] NLM_CONNECTIVITY newConnectivity);
+		[PreserveSig]
+		HRESULT NetworkConnectivityChanged([In] Guid networkId, [In] NLM_CONNECTIVITY newConnectivity);
 
 		/// <summary>The NetworkPropertyChanged method is called when a network property change is detected.</summary>
 		/// <param name="networkId">GUID that specifies the network on which this event occurred.</param>
 		/// <param name="Flags">NLM_NETWORK_PROPERTY_CHANGE enumeration value that specifies the network property that changed.</param>
-		void NetworkPropertyChanged([In] Guid networkId, [In] NLM_NETWORK_PROPERTY_CHANGE Flags);
+		[PreserveSig]
+		HRESULT NetworkPropertyChanged([In] Guid networkId, [In] NLM_NETWORK_PROPERTY_CHANGE Flags);
 	}
 
 	/// <summary>The INetworkListManager interface provides a set of methods to perform network list management functions.</summary>
@@ -626,13 +636,14 @@ namespace Vanara.PInvoke.NetListMgr
 	/// INetworkListManagerEvents is a message sink interface that a client implements to get overall machine state related events. Applications that are
 	/// interested on higher-level events, for example internet connectivity, implement this interface.
 	/// </summary>
-	[ComImport, Guid("DCB00001-570F-4A9B-8D69-199FDBA5723B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(NetworkListManager)), TypeLibType(TypeLibTypeFlags.FOleAutomation)]
+	[ComImport, Guid("DCB00001-570F-4A9B-8D69-199FDBA5723B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), TypeLibType(TypeLibTypeFlags.FOleAutomation)]
 	[PInvokeData("Netlistmgr.h")]
 	public interface INetworkListManagerEvents
 	{
 		/// <summary>Called when network connectivity related changes occur.</summary>
 		/// <param name="newConnectivity">An NLM_CONNECTIVITY enumeration value that contains the new connectivity settings of the machine.</param>
-		void ConnectivityChanged([In] NLM_CONNECTIVITY newConnectivity);
+		[PreserveSig]
+		HRESULT ConnectivityChanged([In] NLM_CONNECTIVITY newConnectivity);
 	}
 
 	/// <summary>The NetworkListManager class is the base CoClass for all interfaces.</summary>
@@ -755,12 +766,12 @@ namespace Vanara.PInvoke.NetListMgr
 	/// <summary>The <see cref="NLM_SOCKADDR"/> structure contains the IPv4/IPv6 destination address.</summary>
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	[PInvokeData("Netlistmgr.h", MSDNShortId = "hh448266")]
-	public struct NLM_SOCKADDR
+	public sealed class NLM_SOCKADDR
 	{
 		private const int dataSize = 128;
 
 		/// <summary>An IPv4/IPv6 destination address.</summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = dataSize)] public byte[] data;
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = dataSize)] public byte[] data = new byte[dataSize];
 
 		/// <summary>Creates a <see cref="NLM_SOCKADDR"/> from an <see cref="IPAddress"/> instance.</summary>
 		/// <param name="address">The IP address to encapsulate.</param>
@@ -770,7 +781,7 @@ namespace Vanara.PInvoke.NetListMgr
 			const ushort AF_INET = 2;
 			const ushort AF_INET6 = 23;
 
-			if (address == null) throw new ArgumentNullException(nameof(address));
+			if (address == null) return null;
 
 			var sockAddr = new NLM_SOCKADDR { data = new byte[dataSize] };
 

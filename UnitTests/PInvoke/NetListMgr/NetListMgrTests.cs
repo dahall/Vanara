@@ -20,7 +20,6 @@ namespace Vanara.PInvoke.Tests
 		{
 			mgr = new INetworkListManager();
 			coster = new INetworkCostManager();
-			//mgr = new NetworkListManagerClass();
 		}
 
 		[Test]
@@ -128,11 +127,11 @@ namespace Vanara.PInvoke.Tests
 		public void GetCostTest()
 		{
 			NLM_CONNECTION_COST ret = 0;
-			Assert.That(() => coster.GetCost(out ret, IntPtr.Zero), Throws.Nothing);
+			Assert.That(() => coster.GetCost(out ret), Throws.Nothing);
 			TestContext.WriteLine($"Cost:{ret}");
 			Assert.That((int)ret, Is.GreaterThan(0));
 			var status = new NLM_DATAPLAN_STATUS();
-			Assert.That(() => coster.GetDataPlanStatus(out status, IntPtr.Zero), Throws.Nothing);
+			Assert.That(() => coster.GetDataPlanStatus(out status), Throws.Nothing);
 			Assert.That(status.InterfaceGuid, Is.Not.EqualTo(Guid.Empty));
 			TestContext.WriteLine($"Guid:{status.InterfaceGuid}; Limit:{status.DataLimitInMegabytes:X}; Xfer:{status.MaxTransferSizeInMegabytes:X}");
 		}

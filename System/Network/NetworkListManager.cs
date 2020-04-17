@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using Vanara.InteropServices;
 using Vanara.PInvoke.NetListMgr;
 
 namespace Vanara.Network
@@ -65,9 +63,9 @@ namespace Vanara.Network
 		/// <returns>The cost of the connection.</returns>
 		public static NLM_CONNECTION_COST GetConnectionCost(IPAddress destIPAddr = null)
 		{
-			var ptr = destIPAddr != null ? new SafeCoTaskMemHandle(destIPAddr.GetAddressBytes()) : SafeCoTaskMemHandle.Null;
+			var addr = NLM_SOCKADDR.FromIPAddress(destIPAddr);
 			var cost = NLM_CONNECTION_COST.NLM_CONNECTION_COST_UNKNOWN;
-			(costmgr ?? (costmgr = (INetworkCostManager)Manager))?.GetCost(out cost, (IntPtr)ptr);
+			(costmgr ?? (costmgr = (INetworkCostManager)Manager))?.GetCost(out cost, addr);
 			return cost;
 		}
 
@@ -86,9 +84,9 @@ namespace Vanara.Network
 		/// </returns>
 		public static NLM_DATAPLAN_STATUS GetConnectionDataPlanStatus(IPAddress destIPAddr = null)
 		{
-			var ptr = destIPAddr != null ? new SafeCoTaskMemHandle(destIPAddr.GetAddressBytes()) : SafeCoTaskMemHandle.Null;
+			var addr = NLM_SOCKADDR.FromIPAddress(destIPAddr);
 			var cost = new NLM_DATAPLAN_STATUS();
-			(costmgr ?? (costmgr = (INetworkCostManager)Manager))?.GetDataPlanStatus(out cost, (IntPtr)ptr);
+			(costmgr ?? (costmgr = (INetworkCostManager)Manager))?.GetDataPlanStatus(out cost, addr);
 			return cost;
 		}
 
