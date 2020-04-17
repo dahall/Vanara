@@ -46,6 +46,10 @@
       <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
       <Name>Vanara.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
+      <Project>{842d436f-598c-47d7-b5aa-12399f8ccfe9}</Project>
+      <Name>Vanara.PInvoke.Kernel32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
       <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
       <Name>Vanara.PInvoke.Shared</Name>

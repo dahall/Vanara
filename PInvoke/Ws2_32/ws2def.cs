@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -1317,6 +1318,54 @@ namespace Vanara.PInvoke
 			/// <summary>A padding of an additional 112 bytes that brings the total size of the SOCKADDR_STORAGE structure to 128 bytes.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 112)]
 			public byte[] __ss_pad2;
+
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_IN6"/> to <see cref="SOCKADDR_STORAGE"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_STORAGE"/> instance from the conversion.</returns>
+			public static explicit operator SOCKADDR_STORAGE(in SOCKADDR_IN6 addr)
+			{
+				using var mem = SafeHGlobalHandle.CreateFromStructure(addr);
+				mem.Size = Marshal.SizeOf(typeof(SOCKADDR_STORAGE));
+				return mem.ToStructure<SOCKADDR_STORAGE>();
+			}
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR_STORAGE"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_STORAGE"/> instance from the conversion.</returns>
+			public static explicit operator SOCKADDR_STORAGE(in SOCKADDR_IN addr)
+			{
+				using var mem = SafeHGlobalHandle.CreateFromStructure(addr);
+				mem.Size = Marshal.SizeOf(typeof(SOCKADDR_STORAGE));
+				return mem.ToStructure<SOCKADDR_STORAGE>();
+			}
+
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR"/> to <see cref="SOCKADDR_STORAGE"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_STORAGE"/> instance from the conversion.</returns>
+			public static explicit operator SOCKADDR_STORAGE(SOCKADDR addr)
+			{
+				using var mem = new SafeHGlobalHandle(addr.GetAddressBytes());
+				mem.Size = Marshal.SizeOf(typeof(SOCKADDR_STORAGE));
+				return mem.ToStructure<SOCKADDR_STORAGE>();
+			}
+
+			/// <summary>Performs an explicit conversion from <see cref="IPAddress"/> to <see cref="SOCKADDR_STORAGE"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_STORAGE"/> instance from the conversion.</returns>
+			public static explicit operator SOCKADDR_STORAGE(IPAddress addr)
+			{
+				using var mem = new SafeHGlobalHandle(addr.GetAddressBytes());
+				mem.Size = Marshal.SizeOf(typeof(SOCKADDR_STORAGE));
+				return mem.ToStructure<SOCKADDR_STORAGE>();
+			}
+
+			/// <summary>
+			/// Performs an explicit conversion from <see cref="SOCKADDR_STORAGE"/> to <see cref="SOCKADDR"/>.
+			/// </summary>
+			/// <param name="addr">The addr.</param>
+			/// <returns>
+			/// The resulting <see cref="SOCKADDR"/> instance from the conversion.
+			/// </returns>
+			public static explicit operator SOCKADDR(SOCKADDR_STORAGE addr) => SOCKADDR.CreateFromStructure(addr);
 		}
 	}
 }

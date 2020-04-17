@@ -1,6 +1,7 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
 
 using System;
+using System.Data;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -779,7 +780,7 @@ namespace Vanara.PInvoke
 		// lpdwAddressStringLength );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
-		public static extern int WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, in WSAPROTOCOL_INFO lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
+		public static extern Win32Error WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, in WSAPROTOCOL_INFO lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
 
 		/// <summary>
 		/// <para>
@@ -885,7 +886,7 @@ namespace Vanara.PInvoke
 		// lpdwAddressStringLength );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
-		public static extern int WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, [Optional] IntPtr lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
+		public static extern Win32Error WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, [Optional] IntPtr lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
 
 		/// <summary>
 		/// <para>The <c>WSAAsyncGetHostByAddr</c> function asynchronously retrieves host information that corresponds to an address.</para>
@@ -2172,7 +2173,7 @@ namespace Vanara.PInvoke
 		// u_int wMsg, long lEvent );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "a4d3f599-358c-4a94-91eb-7e1c80244250")]
-		public static extern int WSAAsyncSelect(SOCKET s, HWND hWnd, uint wMsg, int lEvent);
+		public static extern Win32Error WSAAsyncSelect(SOCKET s, HWND hWnd, uint wMsg, int lEvent);
 
 		/// <summary>The <c>WSACancelAsyncRequest</c> function cancels an incomplete asynchronous operation.</summary>
 		/// <param name="hAsyncTaskHandle">Handle that specifies the asynchronous operation to be canceled.</param>
@@ -2232,7 +2233,7 @@ namespace Vanara.PInvoke
 		// hAsyncTaskHandle );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "0e53eccf-ef85-43ec-a02c-12896471a7a9")]
-		public static extern int WSACancelAsyncRequest(HANDLE hAsyncTaskHandle);
+		public static extern Win32Error WSACancelAsyncRequest(HANDLE hAsyncTaskHandle);
 
 		/// <summary>The <c>WSACleanup</c> function terminates use of the Winsock 2 DLL (Ws2_32.dll).</summary>
 		/// <returns>
@@ -2310,7 +2311,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock/nf-winsock-wsacleanup int WSACleanup( );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "72b7cc3e-be34-41e7-acbf-61742149ec8b")]
-		public static extern int WSACleanup();
+		public static extern Win32Error WSACleanup();
 
 		/// <summary>The <c>WSACloseEvent</c> function closes an open event object handle.</summary>
 		/// <param name="hEvent">Object handle identifying the open event.</param>
@@ -2623,7 +2624,7 @@ namespace Vanara.PInvoke
 		// sockaddr *name, int namelen, LPWSABUF lpCallerData, LPWSABUF lpCalleeData, LPQOS lpSQOS, LPQOS lpGQOS );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "3b32cc6e-3df7-4104-a0d4-317fd445c7b2")]
-		public static extern int WSAConnect(SOCKET s, [In] SOCKADDR name, int namelen, [In, Optional] IntPtr lpCallerData,
+		public static extern Win32Error WSAConnect(SOCKET s, [In] SOCKADDR name, int namelen, [In, Optional] IntPtr lpCallerData,
 			[Out, Optional] IntPtr lpCalleeData, [Optional] IntPtr lpSQOS, [Optional] IntPtr lpGQOS);
 
 		/// <summary>
@@ -3163,7 +3164,7 @@ namespace Vanara.PInvoke
 		// SOCKET s, DWORD dwProcessId, LPWSAPROTOCOL_INFOA lpProtocolInfo );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "d4028461-bfa6-4074-9460-5d1371790d41")]
-		public static extern int WSADuplicateSocket(SOCKET s, uint dwProcessId, out WSAPROTOCOL_INFO lpProtocolInfo);
+		public static extern Win32Error WSADuplicateSocket(SOCKET s, uint dwProcessId, out WSAPROTOCOL_INFO lpProtocolInfo);
 
 		/// <summary>The <c>WSAEnumNameSpaceProviders</c> function retrieves information on available namespace providers.</summary>
 		/// <param name="lpdwBufferLength">
@@ -3935,7 +3936,7 @@ namespace Vanara.PInvoke
 		// WSAEVENT hEventObject, long lNetworkEvents );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "f98a71e4-47fb-47a4-b37e-e4cc801a8f98")]
-		public static extern int WSAEventSelect(SOCKET s, WSAEVENT hEventObject, FD lNetworkEvents);
+		public static extern Win32Error WSAEventSelect(SOCKET s, WSAEVENT hEventObject, FD lNetworkEvents);
 
 		/// <summary>The <c>WSAGetLastError</c> function returns the error status for the last Windows Sockets operation that failed.</summary>
 		/// <returns>The return value indicates the error code for this thread's last Windows Sockets operation that failed.</returns>
@@ -4246,7 +4247,7 @@ namespace Vanara.PInvoke
 		// lpServiceClassInfo );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "e177bb7d-c7d3-43a4-a809-ab8212feea2e")]
-		public static extern int WSAGetServiceClassInfo(in Guid lpProviderId, in Guid lpServiceClassId, ref uint lpdwBufSize, IntPtr lpServiceClassInfo);
+		public static extern Win32Error WSAGetServiceClassInfo(in Guid lpProviderId, in Guid lpServiceClassId, ref uint lpdwBufSize, IntPtr lpServiceClassInfo);
 
 		/// <summary>
 		/// The <c>WSAGetServiceClassNameByClassId</c> function retrieves the name of the service associated with the specified type. This
@@ -4311,7 +4312,7 @@ namespace Vanara.PInvoke
 		// WSAGetServiceClassNameByClassIdA( LPGUID lpServiceClassId, LPSTR lpszServiceClassName, LPDWORD lpdwBufferLength );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "0a61751e-10e5-4f91-a0b2-8c1baf477653")]
-		public static extern int WSAGetServiceClassNameByClassId(in Guid lpServiceClassId, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszServiceClassName, ref uint lpdwBufferLength);
+		public static extern Win32Error WSAGetServiceClassNameByClassId(in Guid lpServiceClassId, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszServiceClassName, ref uint lpdwBufferLength);
 
 		/// <summary>The <c>WSAHtonl</c> function converts a <c>u_long</c> from host byte order to network byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -4373,7 +4374,7 @@ namespace Vanara.PInvoke
 		// hostlong, OUT u_long *lpnetlong );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "33512f49-d576-4439-ad8d-5c87387d6214")]
-		public static extern int WSAHtonl([In] SOCKET s, [In] uint hostlong, out uint lpnetlong);
+		public static extern Win32Error WSAHtonl([In] SOCKET s, [In] uint hostlong, out uint lpnetlong);
 
 		/// <summary>The <c>WSAHtons</c> function converts a <c>u_short</c> from host byte order to network byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -4434,7 +4435,7 @@ namespace Vanara.PInvoke
 		// hostshort, OUT u_short *lpnetshort );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "95fb103b-f7dd-4fa4-bf68-ed8e87cdd96b")]
-		public static extern int WSAHtons([In] SOCKET s, [In] ushort hostshort, out ushort lpnetshort);
+		public static extern Win32Error WSAHtons([In] SOCKET s, [In] ushort hostshort, out ushort lpnetshort);
 
 		/// <summary>
 		/// The <c>WSAInstallServiceClass</c> function registers a service class schema within a namespace. This schema includes the class
@@ -4501,7 +4502,7 @@ namespace Vanara.PInvoke
 		// WSAInstallServiceClassA( LPWSASERVICECLASSINFOA lpServiceClassInfo );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "06760319-aeeb-4ad7-b77a-01efea7ed904")]
-		public static extern int WSAInstallServiceClass(in WSASERVICECLASSINFO lpServiceClassInfo);
+		public static extern Win32Error WSAInstallServiceClass(in WSASERVICECLASSINFO lpServiceClassInfo);
 
 		/// <summary>The <c>WSAIoctl</c> function controls the mode of a socket.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -4740,7 +4741,7 @@ namespace Vanara.PInvoke
 		// LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "038aeca6-d7b7-4f74-ac69-4536c2e5118b")]
-		public static extern int WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [Optional] IntPtr lpOverlapped, [Optional] IntPtr lpCompletionRoutine);
+		public static extern Win32Error WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [Optional] IntPtr lpOverlapped, [Optional] IntPtr lpCompletionRoutine);
 
 		/// <summary>
 		/// The <c>WSAJoinLeaf</c> function joins a leaf node into a multipoint session, exchanges connect data, and specifies needed
@@ -5255,7 +5256,7 @@ namespace Vanara.PInvoke
 		// LPWSAQUERYSETA lpqsRestrictions, DWORD dwControlFlags, LPHANDLE lphLookup );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "448309ef-b9dd-4960-8016-d26691df59ec")]
-		public static extern int WSALookupServiceBegin(in WSAQUERYSET lpqsRestrictions, LUP dwControlFlags, out HANDLE lphLookup);
+		public static extern Win32Error WSALookupServiceBegin(in WSAQUERYSET lpqsRestrictions, LUP dwControlFlags, out HANDLE lphLookup);
 
 		/// <summary>
 		/// <para>
@@ -5304,7 +5305,7 @@ namespace Vanara.PInvoke
 		// HANDLE hLookup );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "f9d2ac54-a818-464d-918e-80ebb5b1b106")]
-		public static extern int WSALookupServiceEnd(HANDLE hLookup);
+		public static extern Win32Error WSALookupServiceEnd(HANDLE hLookup);
 
 		/// <summary>
 		/// <para>
@@ -5590,7 +5591,7 @@ namespace Vanara.PInvoke
 		// HANDLE hLookup, DWORD dwControlFlags, LPDWORD lpdwBufferLength, LPWSAQUERYSETA lpqsResults );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "ab4f1830-b38d-4224-a6a9-6d4512245ad6")]
-		public static extern int WSALookupServiceNext(HANDLE hLookup, LUP dwControlFlags, ref uint lpdwBufferLength, [Out] IntPtr lpqsResults);
+		public static extern Win32Error WSALookupServiceNext(HANDLE hLookup, LUP dwControlFlags, ref uint lpdwBufferLength, [Out] IntPtr lpqsResults);
 
 		/// <summary>The Windows Sockets <c>WSANSPIoctl</c> function enables developers to make I/O control calls to a registered namespace.</summary>
 		/// <param name="hLookup">The lookup handle returned from a previous call to the WSALookupServiceBegin function.</param>
@@ -5722,7 +5723,7 @@ namespace Vanara.PInvoke
 		// LPWSACOMPLETION lpCompletion );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "6ecaedf0-0038-46d3-9916-c9cb069c5e92")]
-		public static extern int WSANSPIoctl(HANDLE hLookup, uint dwControlCode, [In, Optional] IntPtr lpvInBuffer, uint cbInBuffer, [Out, Optional] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [In, Optional] IntPtr lpCompletion);
+		public static extern Win32Error WSANSPIoctl(HANDLE hLookup, uint dwControlCode, [In, Optional] IntPtr lpvInBuffer, uint cbInBuffer, [Out, Optional] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [In, Optional] IntPtr lpCompletion);
 
 		/// <summary>The <c>WSANtohl</c> function converts a <c>u_long</c> from network byte order to host byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -5784,7 +5785,7 @@ namespace Vanara.PInvoke
 		// u_long *lphostlong );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7e3b42eb-3b93-459f-828a-c19e277882c7")]
-		public static extern int WSANtohl(SOCKET s, uint netlong, out uint lphostlong);
+		public static extern Win32Error WSANtohl(SOCKET s, uint netlong, out uint lphostlong);
 
 		/// <summary>The <c>WSANtohs</c> function converts a <c>u_short</c> from network byte order to host byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -5845,7 +5846,7 @@ namespace Vanara.PInvoke
 		// u_short *lphostshort );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "0a4bc3a9-9919-4dcb-8a37-af37e0243c8f")]
-		public static extern int WSANtohs(SOCKET s, ushort netshort, out ushort lphostshort);
+		public static extern Win32Error WSANtohs(SOCKET s, ushort netshort, out ushort lphostshort);
 
 		/// <summary>The <c>WSAPoll</c> function determines status of one or more sockets.</summary>
 		/// <param name="fdArray">
@@ -6039,7 +6040,7 @@ namespace Vanara.PInvoke
 		// fds, INT timeout );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "3f6f872c-5cee-49f3-bf22-2e8a5d147987")]
-		public static extern int WSAPoll([In, Out, MarshalAs(UnmanagedType.LPArray)] WSAPOLLFD[] fdArray, uint fds, int timeout);
+		public static extern Win32Error WSAPoll([In, Out, MarshalAs(UnmanagedType.LPArray)] WSAPOLLFD[] fdArray, uint fds, int timeout);
 
 		/// <summary>The <c>WSAProviderConfigChange</c> function notifies the application when the provider configuration is changed.</summary>
 		/// <param name="lpNotificationHandle">
@@ -6123,7 +6124,7 @@ namespace Vanara.PInvoke
 		// lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "abaf367a-8f99-478c-a58c-d57e9f9cd8a1")]
-		public static extern int WSAProviderConfigChange(ref HANDLE lpNotificationHandle, [In, Out, Optional] IntPtr lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		public static extern Win32Error WSAProviderConfigChange(ref HANDLE lpNotificationHandle, [In, Out, Optional] IntPtr lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>The <c>WSARecv</c> function receives data from a connected socket or a bound connectionless socket.</summary>
 		/// <param name="s">A descriptor identifying a connected socket.</param>
@@ -6516,7 +6517,7 @@ namespace Vanara.PInvoke
 		// LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "bfe66e11-e9a7-4321-ad55-3141113e9a03")]
-		public static extern int WSARecv(SOCKET s, [In] IntPtr lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags, [In, Out, Optional] IntPtr lpOverlapped,
+		public static extern Win32Error WSARecv(SOCKET s, [In] IntPtr lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags, [In, Out, Optional] IntPtr lpOverlapped,
 			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>
@@ -6611,7 +6612,7 @@ namespace Vanara.PInvoke
 		// LPWSABUF lpInboundDisconnectData );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "33e0fb8e-3ece-427f-b3ef-43a0f5cf0cc8")]
-		public static extern int WSARecvDisconnect(SOCKET s, [In, Out, Optional] IntPtr lpInboundDisconnectData);
+		public static extern Win32Error WSARecvDisconnect(SOCKET s, [In, Out, Optional] IntPtr lpInboundDisconnectData);
 
 		/// <summary>The <c>WSARecvFrom</c> function receives a datagram and stores the source address.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -6911,7 +6912,7 @@ namespace Vanara.PInvoke
 		// lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "8617dbb8-0e4e-4cd3-9597-5d20de6778f6")]
-		public static extern int WSARecvFrom(SOCKET s, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags,
+		public static extern Win32Error WSARecvFrom(SOCKET s, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags,
 			[Out] SOCKADDR lpFrom, ref int lpFromlen, [In, Out, Optional] IntPtr lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>The <c>WSARemoveServiceClass</c> function permanently removes the service class schema from the registry.</summary>
@@ -6958,7 +6959,7 @@ namespace Vanara.PInvoke
 		// LPGUID lpServiceClassId );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7d72f727-cca9-4a07-beb4-d64f23c1f0c1")]
-		public static extern int WSARemoveServiceClass(in Guid lpServiceClassId);
+		public static extern Win32Error WSARemoveServiceClass(in Guid lpServiceClassId);
 
 		/// <summary>The <c>WSAResetEvent</c> function resets the state of the specified event object to nonsignaled.</summary>
 		/// <param name="hEvent">A handle that identifies an open event object handle.</param>
@@ -7302,7 +7303,7 @@ namespace Vanara.PInvoke
 		// lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "764339e6-a1ac-455d-8ebd-ad0fa50dc3b0")]
-		public static extern int WSASend(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
+		public static extern Win32Error WSASend(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
 			MsgFlags dwFlags, [In, Out, Optional] IntPtr lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>
@@ -7386,7 +7387,7 @@ namespace Vanara.PInvoke
 		// LPWSABUF lpOutboundDisconnectData );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "c05fc719-e35a-4194-ac01-a294b19ccce9")]
-		public static extern int WSASendDisconnect(SOCKET s, in WSABUF lpOutboundDisconnectData);
+		public static extern Win32Error WSASendDisconnect(SOCKET s, in WSABUF lpOutboundDisconnectData);
 
 		/// <summary>
 		/// The <c>WSASendDisconnect</c> function initiates termination of the connection for the socket and sends disconnect data.
@@ -7469,7 +7470,7 @@ namespace Vanara.PInvoke
 		// LPWSABUF lpOutboundDisconnectData );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "c05fc719-e35a-4194-ac01-a294b19ccce9")]
-		public static extern int WSASendDisconnect(SOCKET s, [In, Optional] IntPtr lpOutboundDisconnectData);
+		public static extern Win32Error WSASendDisconnect(SOCKET s, [In, Optional] IntPtr lpOutboundDisconnectData);
 
 		/// <summary>The <c>WSASendMsg</c> function sends data and optional control information from connected and unconnected sockets.</summary>
 		/// <param name="Handle">A descriptor identifying the socket.</param>
@@ -7776,7 +7777,7 @@ namespace Vanara.PInvoke
 		// lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "3b2ba645-6a70-4ba2-b4a2-5bde0c7f8d08")]
-		public static extern int WSASendMsg(SOCKET Handle, in WSAMSG lpMsg, MsgFlags dwFlags, out uint lpNumberOfBytesSent, [In, Out, Optional] IntPtr lpOverlapped,
+		public static extern Win32Error WSASendMsg(SOCKET Handle, in WSAMSG lpMsg, MsgFlags dwFlags, out uint lpNumberOfBytesSent, [In, Out, Optional] IntPtr lpOverlapped,
 			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>The <c>WSASendTo</c> function sends data to a specific destination, using overlapped I/O where applicable.</summary>
@@ -8082,7 +8083,7 @@ namespace Vanara.PInvoke
 		// lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "e3a11522-871c-4d6b-a2e6-ca91ffc2b698")]
-		public static extern int WSASendTo(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
+		public static extern Win32Error WSASendTo(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
 			MsgFlags dwFlags, [In, Optional] SOCKADDR lpTo, int iTolen, [In, Out, Optional] IntPtr lpOverlapped,
 			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
@@ -8439,7 +8440,7 @@ namespace Vanara.PInvoke
 		// lpqsRegInfo, WSAESETSERVICEOP essoperation, DWORD dwControlFlags );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "21a8ff26-4c9e-4846-a75a-1a27c746edab")]
-		public static extern int WSASetService(in WSAQUERYSET lpqsRegInfo, WSAESETSERVICEOP essoperation, ServiceInstallFlags dwControlFlags);
+		public static extern Win32Error WSASetService(in WSAQUERYSET lpqsRegInfo, WSAESETSERVICEOP essoperation, ServiceInstallFlags dwControlFlags);
 
 		/// <summary>The <c>WSASocket</c> function creates a socket that is bound to a specific transport-service provider.</summary>
 		/// <param name="af">
@@ -8998,6 +8999,563 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsock2.h", MSDNShortId = "dcf2e543-de54-43d9-9e45-4cb935da3548")]
 		public static extern SOCKET WSASocket(ADDRESS_FAMILY af, SOCK type, IPPROTO protocol, in WSAPROTOCOL_INFO lpProtocolInfo, GROUP g, WSA_FLAG dwFlags);
 
+		/// <summary>The <c>WSASocket</c> function creates a socket that is bound to a specific transport-service provider.</summary>
+		/// <param name="af">
+		/// <para>The address family specification. Possible values for the address family are defined in the Winsock2.h header file.</para>
+		/// <para>
+		/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed and the possible values
+		/// for the address family are defined in the Ws2def.h header file. Note that the Ws2def.h header file is automatically included in
+		/// Winsock2.h, and should never be used directly.
+		/// </para>
+		/// <para>
+		/// The values currently supported are AF_INET or AF_INET6, which are the Internet address family formats for IPv4 and IPv6. Other
+		/// options for address family (AF_NETBIOS for use with NetBIOS, for example) are supported if a Windows Sockets service provider
+		/// for the address family is installed. Note that the values for the AF_ address family and PF_ protocol family constants are
+		/// identical (for example, <c>AF_INET</c> and <c>PF_INET</c>), so either constant can be used.
+		/// </para>
+		/// <para>The table below lists common values for address family although many other values are possible.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Af</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>AF_UNSPEC 0</term>
+		/// <term>The address family is unspecified.</term>
+		/// </item>
+		/// <item>
+		/// <term>AF_INET 2</term>
+		/// <term>The Internet Protocol version 4 (IPv4) address family.</term>
+		/// </item>
+		/// <item>
+		/// <term>AF_IPX 6</term>
+		/// <term>
+		/// The IPX/SPX address family. This address family is only supported if the NWLink IPX/SPX NetBIOS Compatible Transport protocol is
+		/// installed. This address family is not supported on Windows Vista and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AF_APPLETALK 16</term>
+		/// <term>
+		/// The AppleTalk address family. This address family is only supported if the AppleTalk protocol is installed. This address family
+		/// is not supported on Windows Vista and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AF_NETBIOS 17</term>
+		/// <term>
+		/// The NetBIOS address family. This address family is only supported if the Windows Sockets provider for NetBIOS is installed. The
+		/// Windows Sockets provider for NetBIOS is supported on 32-bit versions of Windows. This provider is installed by default on 32-bit
+		/// versions of Windows. The Windows Sockets provider for NetBIOS is not supported on 64-bit versions of windows including Windows
+		/// 7, Windows Server 2008, Windows Vista, Windows Server 2003, or Windows XP. The Windows Sockets provider for NetBIOS only
+		/// supports sockets where the type parameter is set to SOCK_DGRAM. The Windows Sockets provider for NetBIOS is not directly related
+		/// to the NetBIOS programming interface. The NetBIOS programming interface is not supported on Windows Vista, Windows Server 2008,
+		/// and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AF_INET6 23</term>
+		/// <term>The Internet Protocol version 6 (IPv6) address family.</term>
+		/// </item>
+		/// <item>
+		/// <term>AF_IRDA 26</term>
+		/// <term>
+		/// The Infrared Data Association (IrDA) address family. This address family is only supported if the computer has an infrared port
+		/// and driver installed.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AF_BTH 32</term>
+		/// <term>
+		/// The Bluetooth address family. This address family is supported on Windows XP with SP2 or later if the computer has a Bluetooth
+		/// adapter and driver installed.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="type">
+		/// <para>The type specification for the new socket.</para>
+		/// <para>Possible values for the socket type are defined in the Winsock2.h header file.</para>
+		/// <para>The following table lists the possible values for the type parameter supported for Windows Sockets 2:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Type</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SOCK_STREAM 1</term>
+		/// <term>
+		/// A socket type that provides sequenced, reliable, two-way, connection-based byte streams with an OOB data transmission mechanism.
+		/// This socket type uses the Transmission Control Protocol (TCP) for the Internet address family (AF_INET or AF_INET6).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SOCK_DGRAM 2</term>
+		/// <term>
+		/// A socket type that supports datagrams, which are connectionless, unreliable buffers of a fixed (typically small) maximum length.
+		/// This socket type uses the User Datagram Protocol (UDP) for the Internet address family (AF_INET or AF_INET6).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SOCK_RAW 3</term>
+		/// <term>
+		/// A socket type that provides a raw socket that allows an application to manipulate the next upper-layer protocol header. To
+		/// manipulate the IPv4 header, the IP_HDRINCL socket option must be set on the socket. To manipulate the IPv6 header, the
+		/// IPV6_HDRINCL socket option must be set on the socket.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SOCK_RDM 4</term>
+		/// <term>
+		/// A socket type that provides a reliable message datagram. An example of this type is the Pragmatic General Multicast (PGM)
+		/// multicast protocol implementation in Windows, often referred to as reliable multicast programming. This type value is only
+		/// supported if the Reliable Multicast Protocol is installed.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SOCK_SEQPACKET 5</term>
+		/// <term>A socket type that provides a pseudo-stream packet based on datagrams.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// In Windows Sockets 2, new socket types were introduced. An application can dynamically discover the attributes of each available
+		/// transport protocol through the WSAEnumProtocols function. So an application can determine the possible socket type and protocol
+		/// options for an address family and use this information when specifying this parameter. Socket type definitions in the Winsock2.h
+		/// and Ws2def.h header files will be periodically updated as new socket types, address families, and protocols are defined.
+		/// </para>
+		/// <para>In Windows Sockets 1.1, the only possible socket types are <c>SOCK_DGRAM</c> and <c>SOCK_STREAM</c>.</para>
+		/// </param>
+		/// <param name="protocol">
+		/// <para>
+		/// The protocol to be used. The possible options for the protocol parameter are specific to the address family and socket type
+		/// specified. Possible values for the protocol are defined are defined in the Winsock2.h and Wsrm.h header files.
+		/// </para>
+		/// <para>
+		/// On the Windows SDK released for Windows Vista and later,, the organization of header files has changed and this parameter can be
+		/// one of the values from the <c>IPPROTO</c> enumeration type defined in the Ws2def.h header file. Note that the Ws2def.h header
+		/// file is automatically included in Winsock2.h, and should never be used directly.
+		/// </para>
+		/// <para>
+		/// If a value of 0 is specified, the caller does not wish to specify a protocol and the service provider will choose the protocol
+		/// to use.
+		/// </para>
+		/// <para>
+		/// When the af parameter is AF_INET or AF_INET6 and the type is <c>SOCK_RAW</c>, the value specified for the protocol is set in the
+		/// protocol field of the IPv6 or IPv4 packet header.
+		/// </para>
+		/// <para>The table below lists common values for the protocol although many other values are possible.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>protocol</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>IPPROTO_ICMP 1</term>
+		/// <term>
+		/// The Internet Control Message Protocol (ICMP). This is a possible value when the af parameter is AF_UNSPEC, AF_INET, or AF_INET6
+		/// and the type parameter is SOCK_RAW or unspecified. This protocol value is supported on Windows XP and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IPPROTO_IGMP 2</term>
+		/// <term>
+		/// The Internet Group Management Protocol (IGMP). This is a possible value when the af parameter is AF_UNSPEC, AF_INET, or AF_INET6
+		/// and the type parameter is SOCK_RAW or unspecified. This protocol value is supported on Windows XP and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>BTHPROTO_RFCOMM 3</term>
+		/// <term>
+		/// The Bluetooth Radio Frequency Communications (Bluetooth RFCOMM) protocol. This is a possible value when the af parameter is
+		/// AF_BTH and the type parameter is SOCK_STREAM. This protocol value is supported on Windows XP with SP2 or later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IPPROTO_TCP 6</term>
+		/// <term>
+		/// The Transmission Control Protocol (TCP). This is a possible value when the af parameter is AF_INET or AF_INET6 and the type
+		/// parameter is SOCK_STREAM.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IPPROTO_UDP 17</term>
+		/// <term>
+		/// The User Datagram Protocol (UDP). This is a possible value when the af parameter is AF_INET or AF_INET6 and the type parameter
+		/// is SOCK_DGRAM.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IPPROTO_ICMPV6 58</term>
+		/// <term>
+		/// The Internet Control Message Protocol Version 6 (ICMPv6). This is a possible value when the af parameter is AF_UNSPEC, AF_INET,
+		/// or AF_INET6 and the type parameter is SOCK_RAW or unspecified. This protocol value is supported on Windows XP and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IPPROTO_RM 113</term>
+		/// <term>
+		/// The PGM protocol for reliable multicast. This is a possible value when the af parameter is AF_INET and the type parameter is
+		/// SOCK_RDM. On the Windows SDK released for Windows Vista and later, this protocol is also called IPPROTO_PGM. This protocol value
+		/// is only supported if the Reliable Multicast Protocol is installed.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpProtocolInfo">
+		/// A pointer to a WSAPROTOCOL_INFO structure that defines the characteristics of the socket to be created. If this parameter is not
+		/// <c>NULL</c>, the socket will be bound to the provider associated with the indicated <c>WSAPROTOCOL_INFO</c> structure.
+		/// </param>
+		/// <param name="g">
+		/// <para>An existing socket group ID or an appropriate action to take when creating a new socket and a new socket group.</para>
+		/// <para>
+		/// If g is an existing socket group ID, join the new socket to this socket group, provided all the requirements set by this group
+		/// are met.
+		/// </para>
+		/// <para>If g is not an existing socket group ID, then the following values are possible.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>g</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>No group operation is performed.</term>
+		/// </item>
+		/// <item>
+		/// <term>SG_UNCONSTRAINED_GROUP 0x01</term>
+		/// <term>
+		/// Create an unconstrained socket group and have the new socket be the first member. For an unconstrained group, Winsock does not
+		/// constrain all sockets in the socket group to have been created with the same value for the type and protocol parameters.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SG_CONSTRAINED_GROUP 0x02</term>
+		/// <term>
+		/// Create a constrained socket group and have the new socket be the first member. For a contrained socket group, Winsock constrains
+		/// all sockets in the socket group to have been created with the same value for the type and protocol parameters. A constrained
+		/// socket group may consist only of connection-oriented sockets, and requires that connections on all grouped sockets be to the
+		/// same address on the same host.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> The SG_UNCONSTRAINED_GROUP and SG_CONSTRAINED_GROUP constants are not currently defined in a public header file.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>A set of flags used to specify additional socket attributes.</para>
+		/// <para>A combination of these flags may be set, although some combinations are not allowed.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSA_FLAG_OVERLAPPED 0x01</term>
+		/// <term>
+		/// Create a socket that supports overlapped I/O operations. Most sockets should be created with this flag set. Overlapped sockets
+		/// can utilize WSASend, WSASendTo, WSARecv, WSARecvFrom, and WSAIoctl for overlapped I/O operations, which allow multiple
+		/// operations to be initiated and in progress simultaneously. All functions that allow overlapped operation (WSASend, WSARecv,
+		/// WSASendTo, WSARecvFrom, WSAIoctl) also support nonoverlapped usage on an overlapped socket if the values for parameters related
+		/// to overlapped operations are NULL.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_FLAG_MULTIPOINT_C_ROOT 0x02</term>
+		/// <term>
+		/// Create a socket that will be a c_root in a multipoint session. This attribute is only allowed if the WSAPROTOCOL_INFO structure
+		/// for the transport provider that creates the socket supports a multipoint or multicast mechanism and the control plane for a
+		/// multipoint session is rooted. This would be indicated by the dwServiceFlags1 member of the WSAPROTOCOL_INFO structure with the
+		/// XP1_SUPPORT_MULTIPOINT and XP1_MULTIPOINT_CONTROL_PLANE flags set. When the lpProtocolInfo parameter is not NULL, the
+		/// WSAPROTOCOL_INFO structure for the transport provider is pointed to by the lpProtocolInfo parameter. When the lpProtocolInfo
+		/// parameter is NULL, the WSAPROTOCOL_INFO structure is based on the transport provider selected by the values specified for the
+		/// af, type, and protocol parameters. Refer to Multipoint and Multicast Semantics for additional information on a multipoint session.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_FLAG_MULTIPOINT_C_LEAF 0x04</term>
+		/// <term>
+		/// Create a socket that will be a c_leaf in a multipoint session. This attribute is only allowed if the WSAPROTOCOL_INFO structure
+		/// for the transport provider that creates the socket supports a multipoint or multicast mechanism and the control plane for a
+		/// multipoint session is non-rooted. This would be indicated by the dwServiceFlags1 member of the WSAPROTOCOL_INFO structure with
+		/// the XP1_SUPPORT_MULTIPOINT flag set and the XP1_MULTIPOINT_CONTROL_PLANE flag not set. When the lpProtocolInfo parameter is not
+		/// NULL, the WSAPROTOCOL_INFO structure for the transport provider is pointed to by the lpProtocolInfo parameter. When the
+		/// lpProtocolInfo parameter is NULL, the WSAPROTOCOL_INFO structure is based on the transport provider selected by the values
+		/// specified for the af, type, and protocol parameters. Refer to Multipoint and Multicast Semantics for additional information on a
+		/// multipoint session.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_FLAG_MULTIPOINT_D_ROOT 0x08</term>
+		/// <term>
+		/// Create a socket that will be a d_root in a multipoint session. This attribute is only allowed if the WSAPROTOCOL_INFO structure
+		/// for the transport provider that creates the socket supports a multipoint or multicast mechanism and the data plane for a
+		/// multipoint session is rooted. This would be indicated by the dwServiceFlags1 member of the WSAPROTOCOL_INFO structure with the
+		/// XP1_SUPPORT_MULTIPOINT and XP1_MULTIPOINT_DATA_PLANE flags set. When the lpProtocolInfo parameter is not NULL, the
+		/// WSAPROTOCOL_INFO structure for the transport provider is pointed to by the lpProtocolInfo parameter. When the lpProtocolInfo
+		/// parameter is NULL, the WSAPROTOCOL_INFO structure is based on the transport provider selected by the values specified for the
+		/// af, type, and protocol parameters. Refer to Multipoint and Multicast Semantics for additional information on a multipoint session.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_FLAG_MULTIPOINT_D_LEAF 0x10</term>
+		/// <term>
+		/// Create a socket that will be a d_leaf in a multipoint session. This attribute is only allowed if the WSAPROTOCOL_INFO structure
+		/// for the transport provider that creates the socket supports a multipoint or multicast mechanism and the data plane for a
+		/// multipoint session is non-rooted. This would be indicated by the dwServiceFlags1 member of the WSAPROTOCOL_INFO structure with
+		/// the XP1_SUPPORT_MULTIPOINT flag set and the XP1_MULTIPOINT_DATA_PLANE flag not set. When the lpProtocolInfo parameter is not
+		/// NULL, the WSAPROTOCOL_INFO structure for the transport provider is pointed to by the lpProtocolInfo parameter. When the
+		/// lpProtocolInfo parameter is NULL, the WSAPROTOCOL_INFO structure is based on the transport provider selected by the values
+		/// specified for the af, type, and protocol parameters. Refer to Multipoint and Multicast Semantics for additional information on a
+		/// multipoint session.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_FLAG_ACCESS_SYSTEM_SECURITY 0x40</term>
+		/// <term>
+		/// Create a socket that allows the the ability to set a security descriptor on the socket that contains a security access control
+		/// list (SACL) as opposed to just a discretionary access control list (DACL). SACLs are used for generating audits and alarms when
+		/// an access check occurs on the object. For a socket, an access check occurs to determine whether the socket should be allowed to
+		/// bind to a specific address specified to the bind function. The ACCESS_SYSTEM_SECURITY access right controls the ability to get
+		/// or set the SACL in an object's security descriptor. The system grants this access right only if the SE_SECURITY_NAME privilege
+		/// is enabled in the access token of the requesting thread.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_FLAG_NO_HANDLE_INHERIT 0x80</term>
+		/// <term>
+		/// Create a socket that is non-inheritable. A socket handle created by the WSASocket or the socket function is inheritable by
+		/// default. When this flag is set, the socket handle is non-inheritable. The GetHandleInformation function can be used to determine
+		/// if a socket handle was created with the WSA_FLAG_NO_HANDLE_INHERIT flag set. The GetHandleInformation function will return that
+		/// the HANDLE_FLAG_INHERIT value is set. This flag is supported on Windows 7 with SP1, Windows Server 2008 R2 with SP1, and later
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Important</c> For multipoint sockets, only one of <c>WSA_FLAG_MULTIPOINT_C_ROOT</c> or <c>WSA_FLAG_MULTIPOINT_C_LEAF</c>
+		/// flags can be specified, and only one of <c>WSA_FLAG_MULTIPOINT_D_ROOT</c> or <c>WSA_FLAG_MULTIPOINT_D_LEAF</c> flags can be
+		/// specified. Refer to Multipoint and Multicast Semantics for additional information.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs, <c>WSASocket</c> returns a descriptor referencing the new socket. Otherwise, a value of INVALID_SOCKET is
+		/// returned, and a specific error code can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <para><c>Note</c> This error code description is Microsoft-specific.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEAFNOSUPPORT</term>
+		/// <term>The specified address family is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>The lpProtocolInfo parameter is not in a valid part of the process address space.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>This value is true for any of the following conditions.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVALIDPROVIDER</term>
+		/// <term>The service provider returned a version other than 2.2.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVALIDPROCTABLE</term>
+		/// <term>The service provider returned an invalid or incomplete procedure table to the WSPStartup.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMFILE</term>
+		/// <term>No more socket descriptors are available.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOBUFS</term>
+		/// <term>No buffer space is available. The socket cannot be created.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEPROTONOSUPPORT</term>
+		/// <term>The specified protocol is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEPROTOTYPE</term>
+		/// <term>The specified protocol is the wrong type for this socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEPROVIDERFAILEDINIT</term>
+		/// <term>
+		/// The service provider failed to initialize. This error is returned if a layered service provider (LSP) or namespace provider was
+		/// improperly installed or the provider fails to operate correctly.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAESOCKTNOSUPPORT</term>
+		/// <term>The specified socket type is not supported in this address family.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSASocket</c> function causes a socket descriptor and any related resources to be allocated and associated with a
+		/// transport-service provider. Most sockets should be created with the <c>WSA_FLAG_OVERLAPPED</c> attribute set in the dwFlags
+		/// parameter. A socket created with this attribute supports the use of overlapped I/O operations which provide higher performance.
+		/// By default, a socket created with the <c>WSASocket</c> function will not have this overlapped attribute set. In contrast, the
+		/// socket function creates a socket that supports overlapped I/O operations as the default behavior.
+		/// </para>
+		/// <para>
+		/// If the lpProtocolInfo parameter is <c>NULL</c>, Winsock will utilize the first available transport-service provider that
+		/// supports the requested combination of address family, socket type and protocol specified in the af, type, and protocol parameters.
+		/// </para>
+		/// <para>
+		/// If the lpProtocolInfo parameter is not <c>NULL</c>, the socket will be bound to the provider associated with the indicated
+		/// WSAPROTOCOL_INFO structure. In this instance, the application can supply the manifest constant <c>FROM_PROTOCOL_INFO</c> as the
+		/// value for any of af, type, or protocol parameters. This indicates that the corresponding values from the indicated
+		/// <c>WSAPROTOCOL_INFO</c> structure ( <c>iAddressFamily</c>, <c>iSocketType</c>, <c>iProtocol</c>) are to be assumed. In any case,
+		/// the values specified for af, type, and protocol are passed unmodified to the transport-service provider.
+		/// </para>
+		/// <para>
+		/// When selecting a protocol and its supporting service provider based on af, type, and protocol, this procedure will only choose a
+		/// base protocol or a protocol chain, not a protocol layer by itself. Unchained protocol layers are not considered to have partial
+		/// matches on type or af, either. That is, they do not lead to an error code of WSAEAFNOSUPPORT or WSAEPROTONOSUPPORT, if no
+		/// suitable protocol is found.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The manifest constant <c>AF_UNSPEC</c> continues to be defined in the header file but its use is strongly
+		/// discouraged, as this can cause ambiguity in interpreting the value of the protocol parameter.
+		/// </para>
+		/// <para>
+		/// Applications are encouraged to use <c>AF_INET6</c> for the af parameter and create a dual-mode socket that can be used with both
+		/// IPv4 and IPv6.
+		/// </para>
+		/// <para>
+		/// If a socket is created using the <c>WSASocket</c> function, then the dwFlags parameter must have the <c>WSA_FLAG_OVERLAPPED</c>
+		/// attribute set for the <c>SO_RCVTIMEO</c> or <c>SO_SNDTIMEO</c> socket options to function properly. Otherwise the timeout never
+		/// takes effect on the socket.
+		/// </para>
+		/// <para>
+		/// Connection-oriented sockets such as <c>SOCK_STREAM</c> provide full-duplex connections, and must be in a connected state before
+		/// any data can be sent or received on them. A connection to a specified socket is established with a connect or WSAConnect
+		/// function call. Once connected, data can be transferred using send/WSASend and recv/WSARecv calls. When a session has been
+		/// completed, the closesocket function should be called to release the resources associated with the socket. For
+		/// connection-oriented sockets, the shutdown function should be called to stop data transfer on the socket before calling the
+		/// <c>closesocket</c> function.
+		/// </para>
+		/// <para>
+		/// The communications protocols used to implement a reliable, connection-oriented socket ensure that data is not lost or
+		/// duplicated. If data for which the peer protocol has buffer space cannot be successfully transmitted within a reasonable length
+		/// of time, the connection is considered broken and subsequent calls will fail with the error code set to WSAETIMEDOUT.
+		/// </para>
+		/// <para>
+		/// Connectionless, message-oriented sockets allow sending and receiving of datagrams to and from arbitrary peers using
+		/// sendto/WSASendTo and recvfrom/WSARecvFrom. If such a socket is connected to a specific peer, datagrams can be sent to that peer
+		/// using send/WSASend and can be received from (only) this peer using recv/WSARecv.
+		/// </para>
+		/// <para>
+		/// Support for sockets with type <c>SOCK_RAW</c> is not required, but service providers are encouraged to support raw sockets
+		/// whenever possible.
+		/// </para>
+		/// <para>
+		/// The <c>WSASocket</c> function can be used to create a socket to be used by a service so that if another socket tries to bind to
+		/// the same port used by the service, and audit record is generared. To enable this option, an application would need to do the following:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// Call the AdjustTokenPrivileges function to enable the <c>SE_SECURITY_NAME</c> privilege in the access token for the process.
+		/// This privilege is required to set the <c>ACCESS_SYSTEM_SECURITY</c> access rights on the security descriptor for an object.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Call the <c>WSASocket</c> function to create a socket with dwFlag with the <c>WSA_FLAG_ACCESS_SYSTEM_SECURITY</c> option set.
+		/// The <c>WSASocket</c> function will fail if the AdjustTokenPrivileges function is not called first to enable the
+		/// <c>SE_SECURITY_NAME</c> privilege needed for this operation.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Call the SetSecurityInfo function to set a security descriptor with a System Access Control List (SACL) on the socket. The
+		/// socket handle returned by the <c>WSASocket</c> function is passed in the handle parameter. If the function succeeds, this will
+		/// set the the <c>ACCESS_SYSTEM_SECURITY</c> access right on the security descriptor for the socket.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Call the bindfunction to bind the socket to a specific port. If the <c>bind</c> function succeeds, then an audit entry is
+		/// generated if another socket tries to bind to the same port.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Call the AdjustTokenPrivileges function to remove the <c>SE_SECURITY_NAME</c> privilege in the access token for the process,
+		/// since this is no longer needed.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// For more information on <c>ACCESS_SYSTEM_SECURITY</c>, see SACL Access Right and Audit Generation in the Authorization documentation.
+		/// </para>
+		/// <para>Socket Groups</para>
+		/// <para>
+		/// WinSock 2 introduced the notion of a socket group as a means for an application, or cooperating set of applications, to indicate
+		/// to an underlying service provider that a particular set of sockets are related and that the group thus formed has certain
+		/// attributes. Group attributes include relative priorities of the individual sockets within the group and a group quality of
+		/// service specification.
+		/// </para>
+		/// <para>
+		/// Applications that need to exchange multimedia streams over the network are an example where being able to establish a specific
+		/// relationship among a set of sockets could be beneficial. It is up to the transport on how to treat socket groups.
+		/// </para>
+		/// <para>
+		/// The <c>WSASocket</c> and WSAAccept functions can be used to explicitly create and join a socket group when creating a new
+		/// socket. The socket group ID for a socket can be retrieved by using the getsockopt function with level parameter set to
+		/// SOL_SOCKET and the optname parameter set to <c>SO_GROUP_ID</c>. A socket group and its associated socket group ID remain valid
+		/// until the last socket belonging to this socket group is closed. Socket group IDs are unique across all processes for a given
+		/// service provider. A socket group of zero indicates that the socket is not member of a socket group.
+		/// </para>
+		/// <para>
+		/// The relative group priority of a socket group can be accessed by using the getsockopt function with the level parameter set to
+		/// SOL_SOCKET and the optname parameter set to <c>SO_GROUP_PRIORITY</c>. The relative group priority of a socket group can be set
+		/// by using setsockopt with the level parameter set to SOL_SOCKET and the optname parameter set to <c>SO_GROUP_PRIORITY</c>.
+		/// </para>
+		/// <para>
+		/// The Winsock provider included with Windows allows the creation of socket groups and it enforces the SG_CONSTRAINED_GROUP. All
+		/// sockets in a constrained socket group must be created with the same value for the type and protocol parameters. A constrained
+		/// socket group may consist only of connection-oriented sockets, and requires that connections on all grouped sockets be to the
+		/// same address on the same host. This is the only restriction applied to a socket group by the Winsock provider included with
+		/// Windows. The socket group priority is not currently used by the Winsock provider or the TCP/IP stack included with Windows.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following example demonstrates the use of the <c>WSASocket</c> function.</para>
+		/// <para>
+		/// <c>Windows Phone 8:</c> The <c>WSASocketW</c> function is supported for Windows Phone Store apps on Windows Phone 8 and later.
+		/// </para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: The <c>WSASocketW</c> function is supported for Windows Store apps on
+		/// Windows 8.1, Windows Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasocketa SOCKET WSAAPI WSASocketA( int af, int type,
+		// int protocol, LPWSAPROTOCOL_INFOA lpProtocolInfo, GROUP g, DWORD dwFlags );
+		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winsock2.h", MSDNShortId = "dcf2e543-de54-43d9-9e45-4cb935da3548")]
+		public static extern SOCKET WSASocket(ADDRESS_FAMILY af, SOCK type, IPPROTO protocol, [Optional] IntPtr lpProtocolInfo, GROUP g, WSA_FLAG dwFlags);
+
 		/// <summary>The <c>WSAStartup</c> function initiates use of the Winsock DLL by a process.</summary>
 		/// <param name="wVersionRequired">TBD</param>
 		/// <param name="lpWSAData">A pointer to the WSADATA data structure that is to receive details of the Windows Sockets implementation.</param>
@@ -9255,7 +9813,7 @@ namespace Vanara.PInvoke
 		// LPWSADATA lpWSAData );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "08299592-867c-491d-9769-d16602133659")]
-		public static extern int WSAStartup(ushort wVersionRequired, out WSADATA lpWSAData);
+		public static extern Win32Error WSAStartup(ushort wVersionRequired, out WSADATA lpWSAData);
 
 		/// <summary>
 		/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary
@@ -9336,7 +9894,7 @@ namespace Vanara.PInvoke
 		// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
-		public static extern int WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, in WSAPROTOCOL_INFO lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
+		public static extern Win32Error WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, in WSAPROTOCOL_INFO lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
 
 		/// <summary>
 		/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary
@@ -9417,7 +9975,7 @@ namespace Vanara.PInvoke
 		// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
-		public static extern int WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
+		public static extern Win32Error WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
 
 		/// <summary>
 		/// The <c>WSAWaitForMultipleEvents</c> function returns when one or all of the specified event objects are in the signaled state,
@@ -9578,7 +10136,7 @@ namespace Vanara.PInvoke
 		// WSAWaitForMultipleEvents( DWORD cEvents, const WSAEVENT *lphEvents, BOOL fWaitAll, DWORD dwTimeout, BOOL fAlertable );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7a978ade-6323-455b-b655-f372f4bcadc8")]
-		public static extern uint WSAWaitForMultipleEvents(uint cEvents, [In, MarshalAs(UnmanagedType.LPArray)] WSAEVENT[] lphEvents, [MarshalAs(UnmanagedType.Bool)] bool fWaitAll, uint dwTimeout, [MarshalAs(UnmanagedType.Bool)] bool fAlertable);
+		public static extern Kernel32.WAIT_STATUS WSAWaitForMultipleEvents(uint cEvents, [In, MarshalAs(UnmanagedType.LPArray)] WSAEVENT[] lphEvents, [MarshalAs(UnmanagedType.Bool)] bool fWaitAll, uint dwTimeout, [MarshalAs(UnmanagedType.Bool)] bool fAlertable);
 
 		/// <summary>
 		/// The <c>fd_set</c> structure is used by various Windows Sockets functions and service providers, such as the select function, to
@@ -10250,6 +10808,63 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => WSACloseEvent(handle);
+		}
+
+		/// <summary>
+		/// A disposable class to manage initialization of the WSA library. See remarks for use.
+		/// </summary>
+		/// <example>
+		/// <code>
+		/// using (var wsa = SafeWSA.Initialize())
+		/// {
+		///    // Call WSA functions...
+		/// }
+		/// </code>
+		/// Or, if you must have a certain version of the library, use the <c>InitDemandVersion</c> static method.
+		/// <code>
+		/// using (var wsa = SafeWSA.InitDemandVersion(Macros.MAKEWORD(1, 1)))
+		/// {
+		///    // Call WSA functions.
+		///    // The above call with throw a VersionNotFoundException if that version is not supported.
+		/// }
+		/// </code>
+		/// </example>
+		/// <seealso cref="System.IDisposable" />
+		public class SafeWSA : IDisposable
+		{
+			private WSADATA data;
+
+			private SafeWSA() { }
+
+			/// <summary>Initiates use of the Winsock DLL by a process.</summary>
+			/// <param name="wVersionRequired">The requested version of the WinSock library.</param>
+			/// <returns>An object that holds the WinSock library while in scope. Upon disposal, <c>WSACleanup</c> is called.</returns>
+			public static SafeWSA Initialize(ushort wVersionRequired = 0x0202)
+			{
+				var ret = new SafeWSA();
+				WSAStartup(wVersionRequired, out ret.data).ThrowIfFailed();
+				return ret;
+			}
+
+			/// <summary>
+			/// Initiates use of the Winsock DLL by a process and throws an exception if <paramref name="wVersionRequired"/> isn't available.
+			/// </summary>
+			/// <param name="wVersionRequired">The required version of the WinSock library.</param>
+			/// <returns>An object that holds the WinSock library while in scope. Upon disposal, <c>WSACleanup</c> is called.</returns>
+			/// <exception cref="VersionNotFoundException"></exception>
+			public static SafeWSA DemandVersion(ushort wVersionRequired)
+			{
+				var ret = Initialize(wVersionRequired);
+				if (ret.Data.wVersion != wVersionRequired)
+					throw new VersionNotFoundException();
+				return ret;
+			}
+
+			/// <summary>Gets the WSADATA value returned by <c>WSAStartup</c>.</summary>
+			/// <value>The data.</value>
+			public WSADATA Data { get => data; private set => data = value; }
+
+			void IDisposable.Dispose() => WSACleanup();
 		}
 	}
 }
