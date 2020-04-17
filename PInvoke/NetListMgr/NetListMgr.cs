@@ -485,13 +485,79 @@ namespace Vanara.PInvoke.NetListMgr
 		void GetDataPlanStatus(out NLM_DATAPLAN_STATUS pDataPlanStatus, [In, Optional] NLM_SOCKADDR pDestIPAddr);
 
 		/// <summary>
-		/// The SetDestinationAddresses method registers specified destination IPv4/IPv6 addresses to receive cost or data plan status change notifications.
+		/// The <c>SetDestinationAddresses</c> method registers specified destination IPv4/IPv6 addresses to receive cost or data plan
+		/// status change notifications.
 		/// </summary>
 		/// <param name="length">The number of destination IPv4/IPv6 addresses in the list.</param>
 		/// <param name="pDestIPAddrList">
-		/// A <see cref="NLM_SOCKADDR"/> structure containing a list of destination IPv4/IPv6 addresses to register for cost or data plan status change notification.
+		/// A NLM_SOCKADDR structure containing a list of destination IPv4/IPv6 addresses to register for cost or data plan status change notification.
 		/// </param>
-		/// <param name="bAppend">If true, pDestIPAddrList will be appended to the existing address list; otherwise the existing list will be overwritten.</param>
+		/// <param name="bAppend">
+		/// If true, pDestIPAddrList will be appended to the existing address list; otherwise the existing list will be overwritten.
+		/// </param>
+		/// <returns>
+		/// <para>Returns S_OK on success, otherwise an HRESULT error code is returned.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>
+		/// <para>Returned if one of the following occurs:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>length is 0.</term>
+		/// </item>
+		/// <item>
+		/// <term>length is larger than NLM_MAX_ADDRESS_LIST_SIZE(10)</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// bAppend is VARIANT_TRUE, but including the number of subscribed destinations in the existing list with the value of length
+		/// exceeds NLM_MAX_ADDRESS_SIZE.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>A destination address in the supplied list is invalid.</term>
+		/// </item>
+		/// </list>
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>E_POINTER</term>
+		/// <term>destIPAddrList is NULL.</term>
+		/// </item>
+		/// <item>
+		/// <term>HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED)</term>
+		/// <term>
+		/// The request is not supported. This error is returned if either an IPv4 or IPv6 stack is not present on the local computer but
+		/// either an IPv4 or IPv6 address was specified bydestIPAddr.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>HRESULT_FROM_WIN32(ERROR_ALREADY_INITIALIZED)</term>
+		/// <term>
+		/// This method was called after registering for INetworkCostManagerEvents by calling IConnectionPoint::Advise. See Remark for more information.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method must be called before IConnectionPoint::Advise. Once <c>IConnectionPoint::Advise</c> is called, this method will not
+		/// complete successfully until last sink calls IConnectionPoint::UnAdvise. However, this method can be called multiple times prior
+		/// to the call to <c>IConnectionPoint::Advise</c>.
+		/// </para>
+		/// <para>
+		/// If a list of destination addresses indicated by pDestIPAddrList contains duplicate addresses, only one of each will be used to
+		/// notify cost changes. Callers can clear a list of destinations by calling this function with length set to 0, destIPAddrList set
+		/// NULL, and bAppend set FALSE.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/netlistmgr/nf-netlistmgr-inetworkcostmanager-setdestinationaddresses
+		// HRESULT SetDestinationAddresses( UINT32 length, NLM_SOCKADDR *pDestIPAddrList, VARIANT_BOOL bAppend );
 		void SetDestinationAddresses([In] uint length, [In, Optional, MarshalAs(UnmanagedType.LPArray)] NLM_SOCKADDR[] pDestIPAddrList, [In] bool bAppend);
 	}
 
@@ -700,6 +766,9 @@ namespace Vanara.PInvoke.NetListMgr
 	[PInvokeData("Netlistmgr.h", MSDNShortId = "hh448265")]
 	public struct NLM_DATAPLAN_STATUS
 	{
+		/// <summary>Default value for unavailable field in data plan status structure.</summary>
+		public const uint NLM_UNKNOWN_DATAPLAN_STATUS = 0xFFFFFFFF;
+
 		/// <summary>
 		/// The unique ID of the interface associated with the data plan. This GUID is determined by the system when a data plan is first used by a system connection.
 		/// </summary>
