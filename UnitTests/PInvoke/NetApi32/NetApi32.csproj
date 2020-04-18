@@ -66,6 +66,10 @@
       <Project>{74d00c4c-da94-4046-b3cd-318fecde3794}</Project>
       <Name>Vanara.PInvoke.Ws2_32</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\CSharpRunner\Shared.csproj">
+      <Project>{a96cff10-0967-429a-8700-4a86c97c5603}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -3008,49 +3009,45 @@ namespace Vanara.PInvoke
 		// pszJoinUserEmail; LPWSTR pszTenantDisplayName; LPWSTR pszMdmEnrollmentUrl; LPWSTR pszMdmTermsOfUseUrl; LPWSTR pszMdmComplianceUrl;
 		// LPWSTR pszUserSettingSyncUrl; DSREG_USER_INFO *pUserInfo; } DSREG_JOIN_INFO, *PDSREG_JOIN_INFO;
 		[PInvokeData("lmjoin.h", MSDNShortId = "9B0F7BE3-BDCD-437E-9157-9A646A2A20E2")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public class DSREG_JOIN_INFO : SafeHANDLE
 		{
 			/// <summary>An enumeration value that specifies the type of the join.</summary>
-			public DSREG_JOIN_TYPE joinType;
+			public DSREG_JOIN_TYPE joinType => Value.joinType;
 
 			/// <summary>
 			/// Representations of the certification for the join. This is a pointer to <c>CERT_CONTEXT</c> structure which can be found in <c>Vanara.PInvoke.Cryptography</c>.
 			/// </summary>
-			public IntPtr pJoinCertificate;
+			public Crypt32.CERT_CONTEXT? pJoinCertificate => Value.pJoinCertificate.ToNullableStructure<Crypt32.CERT_CONTEXT>();
 
 			/// <summary>The PSZ device identifier</summary>
-			public string pszDeviceId;
+			public string pszDeviceId => Value.pszDeviceId;
 
 			/// <summary>A string that represents Azure Active Directory (Azure AD).</summary>
-			public string pszIdpDomain;
+			public string pszIdpDomain => Value.pszIdpDomain;
 
 			/// <summary>The identifier of the joined Azure AD tenant.</summary>
-			public string pszTenantId;
+			public string pszTenantId => Value.pszTenantId;
 
 			/// <summary>The email address for the joined account.</summary>
-			public string pszJoinUserEmail;
+			public string pszJoinUserEmail => Value.pszJoinUserEmail;
 
 			/// <summary>The display name for the joined account.</summary>
-			public string pszTenantDisplayName;
+			public string pszTenantDisplayName => Value.pszTenantDisplayName;
 
 			/// <summary>The URL to use to enroll in the Mobile Device Management (MDM) service.</summary>
-			public string pszMdmEnrollmentUrl;
+			public string pszMdmEnrollmentUrl => Value.pszMdmEnrollmentUrl;
 
 			/// <summary>The URL that provides information about the terms of use for the MDM service.</summary>
-			public string pszMdmTermsOfUseUrl;
+			public string pszMdmTermsOfUseUrl => Value.pszMdmTermsOfUseUrl;
 
 			/// <summary>The URL that provides information about compliance for the MDM service.</summary>
-			public string pszMdmComplianceUrl;
+			public string pszMdmComplianceUrl => Value.pszMdmComplianceUrl;
 
 			/// <summary>The URL for synchronizing user settings.</summary>
-			public string pszUserSettingSyncUrl;
+			public string pszUserSettingSyncUrl => Value.pszUserSettingSyncUrl;
 
 			/// <summary>Information about the user account that was used to join a device to Azure AD.</summary>
-			public IntPtr _pUserInfo;
-
-			/// <summary>Information about the user account that was used to join a device to Azure AD.</summary>
-			public DSREG_USER_INFO pUserInfo => _pUserInfo.ToStructure<DSREG_USER_INFO>();
+			public DSREG_USER_INFO? pUserInfo => Value.pUserInfo.ToNullableStructure<DSREG_USER_INFO>();
 
 			/// <summary>
 			/// Internal method that actually releases the handle. This is called by <see cref="M:Vanara.PInvoke.SafeHANDLE.ReleaseHandle"/>
@@ -3058,6 +3055,25 @@ namespace Vanara.PInvoke
 			/// </summary>
 			/// <returns><c>true</c> to indicate successful release of the handle; <c>false</c> otherwise.</returns>
 			protected override bool InternalReleaseHandle() { NetFreeAadJoinInformation(handle); return true; }
+
+			private _DSREG_JOIN_INFO Value => handle.ToStructure<_DSREG_JOIN_INFO>();
+
+			[StructLayout(LayoutKind.Sequential)]
+			struct _DSREG_JOIN_INFO
+			{
+				public DSREG_JOIN_TYPE joinType; 
+				public IntPtr pJoinCertificate;
+				public StrPtrUni pszDeviceId;
+				public StrPtrUni pszIdpDomain;
+				public StrPtrUni pszTenantId;
+				public StrPtrUni pszJoinUserEmail;
+				public StrPtrUni pszTenantDisplayName;
+				public StrPtrUni pszMdmEnrollmentUrl;
+				public StrPtrUni pszMdmTermsOfUseUrl;
+				public StrPtrUni pszMdmComplianceUrl;
+				public StrPtrUni pszUserSettingSyncUrl;
+				public IntPtr pUserInfo;
+			}
 		}
 	}
 }

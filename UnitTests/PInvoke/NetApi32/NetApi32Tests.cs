@@ -58,6 +58,13 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void NetGetAadJoinInformationTest()
+		{
+			Assert.That(NetGetAadJoinInformation(null, out var joinInfo), ResultIs.Successful);
+			joinInfo.WriteValues();
+		}
+
+		[Test]
 		public void NetServerDiskEnumTest()
 		{
 			Assert.That(NetServerDiskEnum(), Contains.Item("C:"));
