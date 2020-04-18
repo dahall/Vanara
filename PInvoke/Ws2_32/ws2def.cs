@@ -1290,6 +1290,49 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		/// <summary>The SOCKADDR_IN structure specifies a transport address and port for the AF_INET address family.</summary>
+		/// <remarks>
+		/// All of the data in the SOCKADDR_IN structure, except for the address family, must be specified in network-byte-order (big-endian).
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-sockaddr_in typedef struct sockaddr_in { #if ... short
+		// sin_family; #else ADDRESS_FAMILY sin_family; #endif USHORT sin_port; IN_ADDR sin_addr; CHAR sin_zero[8]; } SOCKADDR_IN, *PSOCKADDR_IN;
+		[PInvokeData("ws2def.h", MSDNShortId = "96379562-403f-451c-ac7a-f0eec34bfe5e")]
+		[StructLayout(LayoutKind.Sequential, Pack = 2)]
+		public struct SOCKADDR_IN
+		{
+			/// <summary>The address family for the transport address. This member should always be set to AF_INET.</summary>
+			public ADDRESS_FAMILY sin_family;
+
+			/// <summary>A transport protocol port number.</summary>
+			public ushort sin_port;
+
+			/// <summary>An IN_ADDR structure that contains an IPv4 transport address.</summary>
+			public IN_ADDR sin_addr;
+
+			/// <summary>Reserved for system use. A WSK application should set the contents of this array to zero.</summary>
+			public ulong sin_zero;
+
+			/// <summary>Initializes a new instance of the <see cref="SOCKADDR_IN"/> struct.</summary>
+			/// <param name="addr">An IN_ADDR structure that contains an IPv4 transport address.</param>
+			/// <param name="port">A transport protocol port number.</param>
+			public SOCKADDR_IN(IN_ADDR addr, ushort port = 0)
+			{
+				sin_family = ADDRESS_FAMILY.AF_INET;
+				sin_port = port;
+				sin_addr = addr;
+				sin_zero = 0;
+			}
+
+			/// <summary>Performs an implicit conversion from <see cref="IN_ADDR"/> to <see cref="SOCKADDR_IN"/>.</summary>
+			/// <param name="addr">The addr.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_IN"/> instance from the conversion.</returns>
+			public static implicit operator SOCKADDR_IN(IN_ADDR addr) => new SOCKADDR_IN(addr);
+
+			/// <summary>Converts to string.</summary>
+			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			public override string ToString() => $"{sin_addr}:{sin_port}";
+		}
+
 		/// <summary>The SOCKADDR_STORAGE structure is a generic structure that specifies a transport address.</summary>
 		/// <remarks>
 		/// A WSK application typically does not directly access any of the members of the SOCKADDR_STORAGE structure except for the
@@ -1328,6 +1371,7 @@ namespace Vanara.PInvoke
 				mem.Size = Marshal.SizeOf(typeof(SOCKADDR_STORAGE));
 				return mem.ToStructure<SOCKADDR_STORAGE>();
 			}
+
 			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR_STORAGE"/>.</summary>
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_STORAGE"/> instance from the conversion.</returns>
@@ -1358,14 +1402,456 @@ namespace Vanara.PInvoke
 				return mem.ToStructure<SOCKADDR_STORAGE>();
 			}
 
-			/// <summary>
-			/// Performs an explicit conversion from <see cref="SOCKADDR_STORAGE"/> to <see cref="SOCKADDR"/>.
-			/// </summary>
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_STORAGE"/> to <see cref="SOCKADDR"/>.</summary>
 			/// <param name="addr">The addr.</param>
-			/// <returns>
-			/// The resulting <see cref="SOCKADDR"/> instance from the conversion.
-			/// </returns>
+			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
 			public static explicit operator SOCKADDR(SOCKADDR_STORAGE addr) => SOCKADDR.CreateFromStructure(addr);
+		}
+
+		/// <summary>The <c>SOCKET_ADDRESS</c> structure stores protocol-specific address information.</summary>
+		/// <remarks>
+		/// <para>
+		/// The SOCKADDR structure pointed to by the <c>lpSockaddr</c> member varies depending on the protocol or address family selected.
+		/// For example, the <c>sockaddr_in6</c> structure is used for an IPv6 socket address while the <c>sockaddr_in4</c> structure is
+		/// used for an IPv4 socket address. The address family is the first member of all of the <c>SOCKADDR</c> structures. The address
+		/// family is used to determine which structure is used.
+		/// </para>
+		/// <para>
+		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+		/// has changed and the <c>SOCKET_ADDRESS</c> structure is defined in the Ws2def.h header file. Note that the Ws2def.h header file
+		/// is automatically included in Winsock2.h, and should never be used directly.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-socket_address typedef struct _SOCKET_ADDRESS { LPSOCKADDR
+		// lpSockaddr; INT iSockaddrLength; } SOCKET_ADDRESS, *PSOCKET_ADDRESS, *LPSOCKET_ADDRESS;
+		[PInvokeData("ws2def.h", MSDNShortId = "37fbcb96-a859-4eca-8928-8051f95407b9")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SOCKET_ADDRESS
+		{
+			/// <summary>A pointer to a socket address represented as a SOCKADDR structure.</summary>
+			public IntPtr lpSockaddr;
+
+			/// <summary>The length, in bytes, of the socket address.</summary>
+			public int iSockaddrLength;
+
+			/// <summary>Gets the <see cref="SOCKADDR_INET"/> from this instance.</summary>
+			/// <returns>The <see cref="SOCKADDR_INET"/> value pointed to by this instance.</returns>
+			public SOCKADDR_INET GetSOCKADDR() => lpSockaddr.ToStructure<SOCKADDR_INET>();
+
+			/// <summary>Converts to string.</summary>
+			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			public override string ToString() => GetSOCKADDR().ToString();
+		}
+
+		/// <summary>The SOCKET_ADDRESS_LIST structure defines a variable-sized list of transport addresses.</summary>
+		/// <remarks>
+		/// <para>
+		/// A WSK application passes a buffer to the WskControlSocket function when the WSK application queries the current list of local
+		/// transport addresses that match a socket's address family. If the call to the <c>WskControlSocket</c> function succeeds, the
+		/// buffer contains a SOCKET_ADDRESS_LIST structure followed by the SOCKADDR structures for each of the local transport addresses
+		/// that match the socket's address family. The WSK subsystem fills in the <c>Address</c> array and sets the <c>iAddressCount</c>
+		/// member to the number of entries in the array. The <c>lpSockaddr</c> pointers in each of the SOCKET_ADDRESS structures in the
+		/// array point to the specific SOCKADDR structure type that corresponds to the address family that the WSK application specified
+		/// when it created the socket.
+		/// </para>
+		/// <para>For more information about querying the current list of local transport addresses, see SIO_ADDRESS_LIST_QUERY.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-socket_address_list typedef struct _SOCKET_ADDRESS_LIST { INT
+		// iAddressCount; SOCKET_ADDRESS Address[1]; } SOCKET_ADDRESS_LIST, *PSOCKET_ADDRESS_LIST, *LPSOCKET_ADDRESS_LIST;
+		[PInvokeData("ws2def.h", MSDNShortId = "b005200b-b0c2-4f19-8765-cd26fbfc0cff")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<SOCKET_ADDRESS_LIST>), nameof(iAddressCount))]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SOCKET_ADDRESS_LIST
+		{
+			/// <summary>The number of transport addresses in the list.</summary>
+			public int iAddressCount;
+
+			/// <summary>A variable-sized array of SOCKET_ADDRESS structures. The SOCKET_ADDRESS structure is defined as follows:</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public SOCKET_ADDRESS[] Address;
+		}
+
+		/// <summary>
+		/// The <c>SOCKET_PROCESSOR_AFFINITY</c> structure contains the association between a socket and an RSS processor core and NUMA node..
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>SOCKET_PROCESSOR_AFFINITY</c> structure is supported on Windows 8, and Windows Server 2012, and later versions of the
+		/// operating system.
+		/// </para>
+		/// <para>
+		/// The SIO_QUERY_RSS_PROCESSOR_INFO IOCTL is used to determine the association between a socket and an RSS processor core and NUMA
+		/// node. This IOCTL returns a <c>SOCKET_PROCESSOR_AFFINITY</c> structure that contains the processor number and the NUMA node ID.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-socket_processor_affinity typedef struct
+		// _SOCKET_PROCESSOR_AFFINITY { PROCESSOR_NUMBER Processor; USHORT NumaNodeId; USHORT Reserved; } SOCKET_PROCESSOR_AFFINITY, *PSOCKET_PROCESSOR_AFFINITY;
+		[PInvokeData("ws2def.h", MSDNShortId = "CB1E9F79-C6BD-40C2-8D0F-36B24B1BBBF4")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SOCKET_PROCESSOR_AFFINITY
+		{
+			/// <summary>
+			/// A structure to represent a system wide processor number. This PROCESSOR_NUMBER structure contains a group number and
+			/// relative processor number within the group.
+			/// </summary>
+			public Kernel32.PROCESSOR_NUMBER Processor;
+
+			/// <summary>The NUMA node ID.</summary>
+			public ushort NumaNodeId;
+
+			/// <summary>A value reserved for future use.</summary>
+			public ushort Reserved;
+		}
+
+		/// <summary>The <c>WSABUF</c> structure enables the creation or manipulation of a data buffer used by some Winsock functions.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ws2def/ns-ws2def-_wsabuf typedef struct _WSABUF { ULONG len; CHAR *buf; }
+		// WSABUF, *LPWSABUF;
+		[PInvokeData("ws2def.h", MSDNShortId = "a012c3ba-67fd-4fcf-84d1-85e9d495c29c")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct WSABUF
+		{
+			/// <summary>The length of the buffer, in bytes.</summary>
+			public uint len;
+
+			/// <summary>A pointer to the buffer.</summary>
+			public IntPtr buf;
+		}
+
+		/// <summary>
+		/// The <c>WSAMSG</c> structure is used with the WSARecvMsg and WSASendMsg functions to store address and optional control
+		/// information about connected and unconnected sockets as well as an array of buffers used to store message data.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// In the Microsoft Windows Software Development Kit (SDK), the version of this structure for use on Windows Vistais defined with
+		/// the data type for the <c>dwBufferCount</c> and <c>dwFlags</c> members as a <c>ULONG</c>. When compiling an application if the
+		/// target platform is Windows Vista and later ( <c>NTDDI_VERSION &gt;= NTDDI_LONGHORN, _WIN32_WINNT &gt;= 0x0600</c>, or <c>WINVER
+		/// &gt;= 0x0600</c>), the data type for the <c>dwBufferCount</c> and <c>dwFlags</c> members is a <c>ULONG</c>.
+		/// </para>
+		/// <para>
+		/// <c>Windows Server 2003 and Windows XP:</c> When compiling an application, the data type for the <c>dwBufferCount</c> and
+		/// <c>dwFlags</c> members is a <c>DWORD</c>.
+		/// </para>
+		/// <para>
+		/// On the Windows SDK released for Windows Vista and later, the <c>WSAMSG</c> structure is defined in the Ws2def.h header file.
+		/// Note that the Ws2def.h header file is automatically included in Winsock2.h, and should never be used directly
+		/// </para>
+		/// <para>
+		/// If the datagram or control data is truncated during the transmission, the function being used in association with the
+		/// <c>WSAMSG</c> structure returns SOCKET_ERROR and a call to the WSAGetLastError function returns WSAEMSGSIZE. It is up to the
+		/// application to determine what was truncated by checking for MSG_TRUNC and/or MSG_CTRUNC flags.
+		/// </para>
+		/// <para>Use of the Control Member</para>
+		/// <para>
+		/// The following table summarizes the various uses of control data available for use in the <c>Control</c> member for IPv4 and IPv6.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Protocol</term>
+		/// <term>cmsg_level</term>
+		/// <term>cmsg_type</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>IPv4</term>
+		/// <term>IPPROTO_IP</term>
+		/// <term>IP_ORIGINAL_ARRIVAL_IF</term>
+		/// <term>
+		/// Receives the original IPv4 arrival interface where the packet was received for datagram sockets. This control data is used by
+		/// firewalls when a Teredo, 6to4, or ISATAP tunnel is used for IPv4 NAT traversal. The cmsg_data[] member in the WSAMSG structure
+		/// is a ULONG that contains the IF_INDEX defined in the Ifdef.h header file. For more information, see the IPPROTO_IP Socket
+		/// Options for the IP_ORIGINAL_ARRIVAL_IF socket option. Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:
+		/// The IP_ORIGINAL_ARRIVAL_IF cmsg_type is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IPv4</term>
+		/// <term>IPPROTO_IP</term>
+		/// <term>IP_PKTINFO</term>
+		/// <term>Specifies/receives packet information for an IPv4 socket. For more information, see the IP_PKTINFO socket option.</term>
+		/// </item>
+		/// <item>
+		/// <term>IPv6</term>
+		/// <term>IPPROTO_IPV6</term>
+		/// <term>IPV6_DSTOPTS</term>
+		/// <term>Specifies/receives destination options.</term>
+		/// </item>
+		/// <item>
+		/// <term>IPv6</term>
+		/// <term>IPPROTO_IPV6</term>
+		/// <term>IPV6_HOPLIMIT</term>
+		/// <term>Specifies/receives hop limit. For more information, see the IPPROTO_IPV6 Socket Options for the IPV6_HOPLIMIT socket option.</term>
+		/// </item>
+		/// <item>
+		/// <term>IPv6</term>
+		/// <term>IPPROTO_IPV6</term>
+		/// <term>IPV6_HOPOPTS</term>
+		/// <term>Specifies/receives hop-by-hop options.</term>
+		/// </item>
+		/// <item>
+		/// <term>IPv6</term>
+		/// <term>IPPROTO_IPV6</term>
+		/// <term>IPV6_NEXTHOP</term>
+		/// <term>Specifies next-hop address.</term>
+		/// </item>
+		/// <item>
+		/// <term>IPv6</term>
+		/// <term>IPPROTO_IPV6</term>
+		/// <term>IPV6_PKTINFO</term>
+		/// <term>Specifies/receives packet information for an IPv6 socket. For more information, see the IPV6_PKTINFO socket option.</term>
+		/// </item>
+		/// <item>
+		/// <term>IPv6</term>
+		/// <term>IPPROTO_IPV6</term>
+		/// <term>IPV6_RTHDR</term>
+		/// <term>Specifies/receives routing header.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Control data is made up of one or more control data objects, each beginning with a <c>WSACMSGHDR</c> structure, defined as the following.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The transport, not the application, fills out the header information in the <c>WSACMSGHDR</c> structure. The
+		/// application simply sets the needed socket options and provides the adequate buffer size.
+		/// </para>
+		/// <para>The members of the <c>WSACMSGHDR</c> structure are as follows:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Term</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>cmsg_len</term>
+		/// <term>
+		/// The number of bytes of data starting from the beginning of the WSACMSGHDR to the end of data (excluding padding bytes that may
+		/// follow data).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>cmsg_level</term>
+		/// <term>The protocol that originated the control information.</term>
+		/// </item>
+		/// <item>
+		/// <term>cmsg_type</term>
+		/// <term>The protocol-specific type of control information.</term>
+		/// </item>
+		/// </list>
+		/// <para>The following macros are used to navigate the data objects:</para>
+		/// <para>
+		/// Returns a pointer to the first control data object. Returns a <c>NULL</c> pointer if there is no control data in the
+		/// <c>WSAMSG</c> structure, such as when the <c>Control</c> member is a <c>NULL</c> pointer.
+		/// </para>
+		/// <para>
+		/// Returns a pointer to the next control data object, or <c>NULL</c> if there are no more data objects. If the pcmsg parameter is
+		/// <c>NULL</c>, a pointer to the first control data object is returned.
+		/// </para>
+		/// <para>
+		/// Returns a pointer to the first byte of data (referred to as the <c>cmsg_data</c> member, though it is not defined in the structure).
+		/// </para>
+		/// <para>
+		/// Returns the total size of a control data object, given the amount of data. Used to allocate the correct amount of buffer space.
+		/// Includes alignment padding.
+		/// </para>
+		/// <para>Returns the value in <c>cmsg_len</c> given the amount of data. Includes alignment padding.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-wsamsg typedef struct _WSAMSG { LPSOCKADDR name; INT namelen;
+		// LPWSABUF lpBuffers; #if ... ULONG dwBufferCount; #else DWORD dwBufferCount; #endif WSABUF Control; #if ... ULONG dwFlags; #else
+		// DWORD dwFlags; #endif } WSAMSG, *PWSAMSG, *LPWSAMSG;
+		[PInvokeData("ws2def.h", MSDNShortId = "105a6e2c-1edf-4ec0-a1c2-ac0bcafeda30")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct WSAMSG
+		{
+			/// <summary>
+			/// <para>Type: <c>LPSOCKADDR</c></para>
+			/// <para>
+			/// A pointer to a SOCKET_ADDRESS structure that stores information about the remote address. Used only with unconnected sockets.
+			/// </para>
+			/// </summary>
+			public IntPtr name;
+
+			/// <summary>
+			/// <para>Type: <c>INT</c></para>
+			/// <para>
+			/// The length, in bytes, of the SOCKET_ADDRESS structure pointed to in the <c>pAddr</c> member. Used only with unconnected sockets.
+			/// </para>
+			/// </summary>
+			public int namelen;
+
+			/// <summary>
+			/// <para>Type: <c>LPWSABUF</c></para>
+			/// <para>
+			/// An array of WSABUF structures used to receive the message data. The capability of the <c>lpBuffers</c> member to contain
+			/// multiple buffers enables the use of scatter/gather I/O.
+			/// </para>
+			/// </summary>
+			public IntPtr lpBuffers;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of buffers pointed to in the <c>lpBuffers</c> member.</para>
+			/// </summary>
+			public uint dwBufferCount;
+
+			/// <summary>
+			/// <para>Type: <c>WSABUF</c></para>
+			/// <para>A structure of WSABUF type used to specify optional control data. See Remarks.</para>
+			/// </summary>
+			public WSABUF Control;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// One or more control flags, specified as the logical <c>OR</c> of values. The possible values for <c>dwFlags</c> member on
+			/// input are defined in the Winsock2.h header file. The possible values for <c>dwFlags</c> member on output are defined in the
+			/// Ws2def.h header file which is automatically included by the Winsock2.h header file.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Flags on input</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>MSG_PEEK</term>
+			/// <term>
+			/// Peek at the incoming data. The data is copied into the buffer, but is not removed from the input queue. This flag is valid
+			/// only for non-overlapped sockets.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Flag returned</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>MSG_BCAST</term>
+			/// <term>The datagram was received as a link-layer broadcast or with a destination IP address that is a broadcast address.</term>
+			/// </item>
+			/// <item>
+			/// <term>MSG_MCAST</term>
+			/// <term>The datagram was received with a destination IP address that is a multicast address.</term>
+			/// </item>
+			/// <item>
+			/// <term>MSG_TRUNC</term>
+			/// <term>The datagram was truncated. More data was present than the process allocated room for.</term>
+			/// </item>
+			/// <item>
+			/// <term>MSG_CTRUNC</term>
+			/// <term>The control (ancillary) data was truncated. More control data was present than the process allocated room for.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public MsgFlags dwFlags;
+		}
+
+		/// <summary>
+		/// <para>
+		/// Some of the socket IOCTL opcodes for Windows Sockets 2 are summarized in the following table. More detailed information is in
+		/// the Winsock reference on <c>Winsock IOCTLs</c> and the <c>WSPIoctl</c> function. There are other new protocol-specific IOCTL
+		/// opcodes that can be found in the protocol-specific annex.
+		/// </para>
+		/// <para>A complete list of <c>Winsock IOCTLs</c> are available in the Winsock reference.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/winsock/summary-of-socket-ioctl-opcodes-2
+		[PInvokeData("ws2def.h", MSDNShortId = "fb6447b4-28f5-4ab7-bbdc-5a57ed38a994")]
+		public static class WinSockIOControlCode
+		{
+			/// <summary>Requests notification of changes in information reported through SIO_ADDRESS_LIST_QUERY</summary>
+			public static readonly uint SIO_ADDRESS_LIST_CHANGE = _WSAIO(IOC_WS2, 23);
+
+			/// <summary>
+			/// Obtains a list of local transport addresses of the socket's protocol family to which the application can bind. The list of
+			/// addresses varies based on address family and some addresses are excluded from the list.
+			/// </summary>
+			[CorrespondingType(typeof(SOCKET_ADDRESS), CorrespondingAction.Get)]
+			public static readonly uint SIO_ADDRESS_LIST_QUERY = _WSAIOR(IOC_WS2, 22);
+
+			/// <summary>
+			/// Allows application developers to sort a list of IPv6 and IPv4 destination addresses to determine the best available address
+			/// for making a connection.
+			/// </summary>
+			[CorrespondingType(typeof(SOCKET_ADDRESS_LIST), CorrespondingAction.GetSet)]
+			public static readonly uint SIO_ADDRESS_LIST_SORT = _WSAIORW(IOC_WS2, 25);
+
+			/// <summary>Associates the socket with the specified handle of a companion interface.</summary>
+			public static readonly uint SIO_ASSOCIATE_HANDLE = _WSAIOW(IOC_WS2, 1);
+
+			/// <summary>Enables circular queuing.</summary>
+			public static readonly uint SIO_ENABLE_CIRCULAR_QUEUEING = _WSAIO(IOC_WS2, 2);
+
+			/// <summary>Requests the route to the specified address to be discovered.</summary>
+			[CorrespondingType(typeof(SOCKADDR), CorrespondingAction.Set)]
+			public static readonly uint SIO_FIND_ROUTE = _WSAIOR(IOC_WS2, 3);
+
+			/// <summary>Discards current contents of the sending queue.</summary>
+			public static readonly uint SIO_FLUSH = _WSAIO(IOC_WS2, 4);
+
+			/// <summary>Retrieves the protocol-specific broadcast address to be used in WSPSendTo.</summary>
+			[CorrespondingType(typeof(SOCKADDR), CorrespondingAction.Get)]
+			public static readonly uint SIO_GET_BROADCAST_ADDRESS = _WSAIOR(IOC_WS2, 5);
+
+			/// <summary>Gets the function pointer for the WSASendMsg function obtained at run time.</summary>
+			public static readonly uint SIO_GET_EXTENSION_FUNCTION_POINTER = _WSAIORW(IOC_WS2, 6);
+
+			/// <summary>Reserved.</summary>
+			[CorrespondingType(typeof(QOS), CorrespondingAction.Get)]
+			public static readonly uint SIO_GET_GROUP_QOS = _WSAIORW(IOC_WS2, 8);
+
+			/// <summary>Retrieves current flow specifications for the socket.</summary>
+			[CorrespondingType(typeof(QOS), CorrespondingAction.Get)]
+			public static readonly uint SIO_GET_QOS = _WSAIORW(IOC_WS2, 7);
+
+			/// <summary>Specifies the scope over which multicast transmissions will occur.</summary>
+			[CorrespondingType(typeof(int), CorrespondingAction.Set)]
+			public static readonly uint SIO_MULTICAST_SCOPE = _WSAIOW(IOC_WS2, 10);
+
+			/// <summary>Controls whether data sent in a multipoint session will also be received by the same socket on the local host.</summary>
+			[CorrespondingType(typeof(BOOL), CorrespondingAction.Set)]
+			public static readonly uint SIO_MULTIPOINT_LOOPBACK = _WSAIOW(IOC_WS2, 9);
+
+			/// <summary>Queries the association between a socket and an RSS processor core and NUMA node.</summary>
+			[CorrespondingType(typeof(SOCKET_PROCESSOR_AFFINITY), CorrespondingAction.Get)]
+			public static readonly uint SIO_QUERY_RSS_PROCESSOR_INFO = _WSAIOR(IOC_WS2, 37);
+
+			/// <summary>Obtains socket descriptor of the next provider in the chain on which current socket depends in regards to PnP.</summary>
+			[CorrespondingType(typeof(SOCKET), CorrespondingAction.Get)]
+			public static readonly uint SIO_QUERY_TARGET_PNP_HANDLE = _WSAIOR(IOC_WS2, 24);
+
+			/// <summary>
+			/// Requests notification of changes in information reported through SIO_ROUTING_INTERFACE_QUERY for the specified address.
+			/// </summary>
+			[CorrespondingType(typeof(SOCKADDR), CorrespondingAction.Set)]
+			public static readonly uint SIO_ROUTING_INTERFACE_CHANGE = _WSAIOW(IOC_WS2, 21);
+
+			/// <summary>Obtains the address of the local interface that should be used to send to the specified address.</summary>
+			[CorrespondingType(typeof(SOCKADDR), CorrespondingAction.GetSet)]
+			public static readonly uint SIO_ROUTING_INTERFACE_QUERY = _WSAIORW(IOC_WS2, 20);
+
+			/// <summary>Reserved.</summary>
+			[CorrespondingType(typeof(QOS), CorrespondingAction.Set)]
+			public static readonly uint SIO_SET_GROUP_QOS = _WSAIOW(IOC_WS2, 12);
+
+			/// <summary>Establishes new flow specifications for the socket.</summary>
+			[CorrespondingType(typeof(QOS), CorrespondingAction.Set)]
+			public static readonly uint SIO_SET_QOS = _WSAIOW(IOC_WS2, 11);
+
+			/// <summary>Obtains a corresponding handle for socket s that is valid in the context of a companion interface.</summary>
+			[CorrespondingType(typeof(int), CorrespondingAction.Set)]
+			public static readonly uint SIO_TRANSLATE_HANDLE = _WSAIORW(IOC_WS2, 13);
+
+			private const uint IOC_PROTOCOL = 0x10000000;
+			private const uint IOC_UNIX = 0x00000000;
+			private const uint IOC_VENDOR = 0x18000000;
+			private const uint IOC_WS2 = 0x08000000;
+			private const uint IOC_WSK = IOC_WS2 | 0x07000000;
+
+			private static uint _WSAIO(uint x, uint y) => (IOC_VOID | (x) | (y));
+
+			private static uint _WSAIOR(uint x, uint y) => (IOC_OUT | (x) | (y));
+
+			private static uint _WSAIORW(uint x, uint y) => (IOC_INOUT | (x) | (y));
+
+			private static uint _WSAIOW(uint x, uint y) => (IOC_IN | (x) | (y));
 		}
 	}
 }
