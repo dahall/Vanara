@@ -144,7 +144,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var chkAddr = IPAddress.Parse(saddr4);
 			var addr = new SOCKADDR(new SOCKADDR_IN(new IN_ADDR(chkAddr.GetAddressBytes())));
-			var saddr = new SOCKET_ADDRESS { lpSockAddr = addr, iSockaddrLength = addr.Size };
+			var saddr = new SOCKET_ADDRESS { lpSockaddr = addr, iSockaddrLength = addr.Size };
 			Assert.That(SetAddrInfoEx("Temp", null, new[] { saddr }, 1), ResultIs.Value(0));
 			Assert.That(SetAddrInfoEx("Temp"), ResultIs.Value(0));
 		}
