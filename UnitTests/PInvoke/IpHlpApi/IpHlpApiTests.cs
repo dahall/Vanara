@@ -15,13 +15,13 @@ namespace Vanara.PInvoke.Tests
 	{
 		public static System.Net.IPAddress Convert(this SOCKET_ADDRESS sockAddr)
 		{
-			switch ((ADDRESS_FAMILY)Marshal.ReadInt16(sockAddr.lpSockAddr))
+			switch ((ADDRESS_FAMILY)Marshal.ReadInt16(sockAddr.lpSockaddr))
 			{
 				case ADDRESS_FAMILY.AF_INET:
-					return new System.Net.IPAddress((long)sockAddr.lpSockAddr.ToStructure<SOCKADDR_IN>().sin_addr);
+					return new System.Net.IPAddress((long)sockAddr.lpSockaddr.ToStructure<SOCKADDR_IN>().sin_addr);
 
 				case ADDRESS_FAMILY.AF_INET6:
-					return new System.Net.IPAddress(sockAddr.lpSockAddr.ToStructure<SOCKADDR_IN6>().sin6_addr);
+					return new System.Net.IPAddress(sockAddr.lpSockaddr.ToStructure<SOCKADDR_IN6>().sin6_addr);
 
 				default:
 					throw new Exception("Non-IP address family");
