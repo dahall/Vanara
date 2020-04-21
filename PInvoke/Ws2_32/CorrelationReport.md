@@ -164,6 +164,7 @@ Native Structure | Header | Managed Structure
 [SOCKET](https://www.google.com/search?num=5&q=SOCKET+site%3Amicrosoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.SOCKET](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKET)  
 [SOCKET_ADDRESS](http://msdn2.microsoft.com/en-us/library/37fbcb96-a859-4eca-8928-8051f95407b9) | ws2def.h | [Vanara.PInvoke.Ws2_32.SOCKET_ADDRESS](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKET_ADDRESS)  
 [SOCKET_ADDRESS_LIST](http://msdn2.microsoft.com/en-us/library/b005200b-b0c2-4f19-8765-cd26fbfc0cff) | ws2def.h | [Vanara.PInvoke.Ws2_32.SOCKET_ADDRESS_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKET_ADDRESS_LIST)  
+[SOCKET_PROCESSOR_AFFINITY](http://msdn2.microsoft.com/en-us/library/CB1E9F79-C6BD-40C2-8D0F-36B24B1BBBF4) | ws2def.h | [Vanara.PInvoke.Ws2_32.SOCKET_PROCESSOR_AFFINITY](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKET_PROCESSOR_AFFINITY)  
 [TIMEVAL](http://msdn2.microsoft.com/en-us/library/3024c961-bb47-40ac-a49c-b12cd431e4e7) | winsock.h | [Vanara.PInvoke.Ws2_32.TIMEVAL](https://github.com/dahall/Vanara/search?l=C%23&q=TIMEVAL)  
 [WSABUF](http://msdn2.microsoft.com/en-us/library/a012c3ba-67fd-4fcf-84d1-85e9d495c29c) | ws2def.h | [Vanara.PInvoke.Ws2_32.WSABUF](https://github.com/dahall/Vanara/search?l=C%23&q=WSABUF)  
 [WSADATA](http://msdn2.microsoft.com/en-us/library/c3c4c0d6-c8b3-4991-bedb-f45816cc8160) | winsock.h | [Vanara.PInvoke.Ws2_32.WSADATA](https://github.com/dahall/Vanara/search?l=C%23&q=WSADATA)  
