@@ -453,7 +453,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760544")]
 		[DllImport(Lib.ComCtl32, CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public static extern HRESULT TaskDialogIndirect(TASKDIALOGCONFIG pTaskConfig, out int pnButton, out int pnRadioButton, [MarshalAs(UnmanagedType.Bool)] out bool pfVerificationFlagChecked);
+		public static extern HRESULT TaskDialogIndirect([In] TASKDIALOGCONFIG pTaskConfig, out int pnButton, out int pnRadioButton, [MarshalAs(UnmanagedType.Bool)] out bool pfVerificationFlagChecked);
 
 		/// <summary>
 		/// The TASKDIALOG_BUTTON structure contains information used to display a button in a task dialog. The TASKDIALOGCONFIG structure
@@ -480,7 +480,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/commctrl/ns-commctrl-_taskdialogconfig
 		[PInvokeData("commctrl.h", MSDNShortId = "bb787473")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
 		public class TASKDIALOGCONFIG : IDisposable
 		{
 			/// <summary>Specifies the structure size, in bytes.</summary>
@@ -642,17 +642,17 @@ namespace Vanara.PInvoke
 			public IntPtr lpCallbackData;
 
 			/// <summary>
+			/// The width of the task dialog's client area, in dialog units. If 0, the task dialog manager will calculate the ideal width.
+			/// </summary>
+			public uint cxWidth;
+
+			/// <summary>
 			/// Initializes a new instance of the <see cref="TASKDIALOGCONFIG"/> class setting the <see cref="cbSize"/> field properly.
 			/// </summary>
 			public TASKDIALOGCONFIG()
 			{
 				cbSize = (uint)Marshal.SizeOf(typeof(TASKDIALOGCONFIG));
 			}
-
-			/// <summary>
-			/// The width of the task dialog's client area, in dialog units. If 0, the task dialog manager will calculate the ideal width.
-			/// </summary>
-			public uint cxWidth;
 
 			/// <summary>
 			/// The string to be used for the task dialog title. If this parameter is NULL, the filename of the executable program is used.
