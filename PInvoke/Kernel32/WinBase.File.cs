@@ -3735,48 +3735,6 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>Contains the basic information for a file. Used for file handles.</para>
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_basic_info typedef struct _FILE_BASIC_INFO {
-		// LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER LastWriteTime; LARGE_INTEGER ChangeTime; DWORD
-		// FileAttributes; } FILE_BASIC_INFO, *PFILE_BASIC_INFO;
-		[PInvokeData("winbase.h", MSDNShortId = "7765e430-cf6b-4ccf-b5e7-9fb6e15ca6d6")]
-		[StructLayout(LayoutKind.Sequential, Size = 40)]
-		public struct FILE_BASIC_INFO
-		{
-			/// <summary>
-			/// <para>
-			/// The time the file was created in FILETIME format, which is a 64-bit value representing the number of 100-nanosecond intervals
-			/// since January 1, 1601 (UTC).
-			/// </para>
-			/// </summary>
-			public FILETIME CreationTime;
-
-			/// <summary>
-			/// <para>The time the file was last accessed in FILETIME format.</para>
-			/// </summary>
-			public FILETIME LastAccessTime;
-
-			/// <summary>
-			/// <para>The time the file was last written to in FILETIME format.</para>
-			/// </summary>
-			public FILETIME LastWriteTime;
-
-			/// <summary>
-			/// <para>The time the file was changed in FILETIME format.</para>
-			/// </summary>
-			public FILETIME ChangeTime;
-
-			/// <summary>
-			/// <para>
-			/// The file attributes. For a list of attributes, see File Attribute Constants. If this is set to 0 in a <c>FILE_BASIC_INFO</c>
-			/// structure passed to SetFileInformationByHandle then none of the attributes are changed.
-			/// </para>
-			/// </summary>
-			public FileFlagsAndAttributes FileAttributes;
-		}
-
-		/// <summary>
 		/// <para>Receives file compression information. Used for any handles. Use only when calling GetFileInformationByHandleEx.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_compression_info typedef struct
