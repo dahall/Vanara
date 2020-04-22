@@ -1,4 +1,4 @@
-﻿<Project>
+<Project>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Vanara.snk</AssemblyOriginatorKeyFile>
     <Authors>David Hall</Authors>
@@ -17,12 +17,11 @@
     <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
     <RootNamespace>Vanara.PInvoke</RootNamespace>
     <SignAssembly>true</SignAssembly>
-    <Version>3.2.6</Version>
+    <Version>3.2.7</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
   <!-- BEGIN: Source Link configuration. -->
   <PropertyGroup>
     <IncludeSymbols>true</IncludeSymbols>
@@ -35,10 +34,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-    <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
+    <SourceRoot Include="$(MSBuildThisFileDirectory)/" />
   </ItemGroup>
   <!-- END: Source Link configuration. -->
-
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System" />
   </ItemGroup>
