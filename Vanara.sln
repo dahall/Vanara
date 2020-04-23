@@ -713,7 +713,6 @@ Global
 		{CCEE0CAA-27BF-43B3-8609-2279BEDA3F61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CCEE0CAA-27BF-43B3-8609-2279BEDA3F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCEE0CAA-27BF-43B3-8609-2279BEDA3F61}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCEE0CAA-27BF-43B3-8609-2279BEDA3F61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
