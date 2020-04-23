@@ -176,6 +176,78 @@ namespace Vanara.PInvoke
 		public static unsafe extern HRESULT CfConvertToPlaceholder(HFILE FileHandle, [In, Optional] IntPtr FileIdentity, uint FileIdentityLength, CF_CONVERT_FLAGS ConvertFlags,
 			[Out, Optional] int* ConvertUsn, [In, Out, Optional] NativeOverlapped* Overlapped);
 
+		/// <summary>
+		/// Dehydrates a placeholder file by ensuring that the specified byte range is not present on-disk in the placeholder. This is valid
+		/// for files only.
+		/// </summary>
+		/// <param name="FileHandle">[in] A handle to the placeholder file.</param>
+		/// <param name="StartingOffset">[in] The starting point offset of the placeholder file data.</param>
+		/// <param name="Length">
+		/// [in] The length, in bytes, of the placeholder file whose data must be invalidated locally on the disk after the API completes
+		/// successfully. A length of -1 signifies end of file.
+		/// </param>
+		/// <param name="DehydrateFlags">[in] Placeholder dehydration flags.</param>
+		/// <param name="Overlapped">
+		/// <para>
+		/// [in, out, optional] When specified and combined with an asynchronous FileHandle, Overlapped allows the platform to perform the
+		/// <c>CfDehydratePlaceholder</c> call asynchronously. See the Remarks for more details.
+		/// </para>
+		/// <para>If not specified, the platform will perform the API call synchronously, regardless of how the handle was created.</para>
+		/// </param>
+		/// <returns>This function does not return a value.</returns>
+		/// <remarks>
+		/// <para>
+		/// The caller must acquire an exclusive handle to the file or data corruption can occur. To minimize the impact on user
+		/// applications it is highly recommended that the caller obtain the exclusiveness using proper oplocks (via
+		/// <c>CfOpenFileWithOplock</c>) as opposed to using a share-nothing handle.
+		/// </para>
+		/// <para>
+		/// If the API returns HRESULT_FROM_WIN32(ERROR_IO_PENDING) when using Overlapped asynchronously, the caller can then wait using <c>GetOverlappedResult</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/mt827480(v=vs.85) void STDAPI CfDehydratePlaceholder( _In_ HANDLE FileHandle,
+		// _In_ LARGE_INTEGER StartingOffset, _In_ LARGE_INTEGER Length, _In_ CF_HYDRATE_FLAGS DehydrateFlags, _Inout_opt_ LPOVERLAPPED
+		// Overlapped );
+		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("CfApi.h")]
+		public static extern HRESULT CfDehydratePlaceholder(HFILE FileHandle, long StartingOffset, long Length, CF_DEHYDRATE_FLAGS DehydrateFlags, [In, Out, Optional] IntPtr Overlapped);
+
+		/// <summary>
+		/// Dehydrates a placeholder file by ensuring that the specified byte range is not present on-disk in the placeholder. This is valid
+		/// for files only.
+		/// </summary>
+		/// <param name="FileHandle">[in] A handle to the placeholder file.</param>
+		/// <param name="StartingOffset">[in] The starting point offset of the placeholder file data.</param>
+		/// <param name="Length">
+		/// [in] The length, in bytes, of the placeholder file whose data must be invalidated locally on the disk after the API completes
+		/// successfully. A length of -1 signifies end of file.
+		/// </param>
+		/// <param name="DehydrateFlags">[in] Placeholder dehydration flags.</param>
+		/// <param name="Overlapped">
+		/// <para>
+		/// [in, out, optional] When specified and combined with an asynchronous FileHandle, Overlapped allows the platform to perform the
+		/// <c>CfDehydratePlaceholder</c> call asynchronously. See the Remarks for more details.
+		/// </para>
+		/// <para>If not specified, the platform will perform the API call synchronously, regardless of how the handle was created.</para>
+		/// </param>
+		/// <returns>This function does not return a value.</returns>
+		/// <remarks>
+		/// <para>
+		/// The caller must acquire an exclusive handle to the file or data corruption can occur. To minimize the impact on user
+		/// applications it is highly recommended that the caller obtain the exclusiveness using proper oplocks (via
+		/// <c>CfOpenFileWithOplock</c>) as opposed to using a share-nothing handle.
+		/// </para>
+		/// <para>
+		/// If the API returns HRESULT_FROM_WIN32(ERROR_IO_PENDING) when using Overlapped asynchronously, the caller can then wait using <c>GetOverlappedResult</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/mt827480(v=vs.85) void STDAPI CfDehydratePlaceholder( _In_ HANDLE FileHandle,
+		// _In_ LARGE_INTEGER StartingOffset, _In_ LARGE_INTEGER Length, _In_ CF_HYDRATE_FLAGS DehydrateFlags, _Inout_opt_ LPOVERLAPPED
+		// Overlapped );
+		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("CfApi.h")]
+		public static unsafe extern HRESULT CfDehydratePlaceholder(HFILE FileHandle, long StartingOffset, long Length, CF_DEHYDRATE_FLAGS DehydrateFlags, [In, Out] NativeOverlapped* Overlapped);
+
 		/// <summary>Creates one or more new placeholder files or directories under a sync root tree.</summary>
 		/// <param name="BaseDirectoryPath">Local directory path under which placeholders are created.</param>
 		/// <param name="PlaceholderArray">

@@ -1577,6 +1577,9 @@ namespace Vanara.PInvoke
 			/// <summary>A pointer to the callback function.</summary>
 			[MarshalAs(UnmanagedType.FunctionPtr)]
 			public CF_CALLBACK Callback;
+
+			/// <summary>An instance of <c>CF_CALLBACK_REGISTRATION</c> that indicates the end of the registration list.</summary>
+			public static readonly CF_CALLBACK_REGISTRATION CF_CALLBACK_REGISTRATION_END = new CF_CALLBACK_REGISTRATION { Type = CF_CALLBACK_TYPE.CF_CALLBACK_TYPE_NONE };
 		}
 
 		/// <summary>Opaque handle to a connection key.</summary>
