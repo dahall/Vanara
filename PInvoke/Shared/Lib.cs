@@ -18,6 +18,9 @@
 		/// <summary>cabinet.dll</summary>
 		public const string Cabinet = "cabinet.dll";
 
+		/// <summary>cldapi.dll</summary>
+		public const string CldApi = "cldapi.dll";
+
 		/// <summary>The COM CTL32</summary>
 		public const string ComCtl32 = "comctl32.dll";
 
