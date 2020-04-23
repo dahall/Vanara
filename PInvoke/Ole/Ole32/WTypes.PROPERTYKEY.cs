@@ -1366,6 +1366,15 @@ namespace Vanara.PInvoke
 					=> new PROPERTYKEY(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 3);
 
 				/// <summary>
+				/// <para>Name:     System.SyncTransferStatus -- PKEY_SyncTransferStatus</para>
+				/// <para>Description:</para>
+				/// <para>Type:     UInt32 -- VT_UI4</para>
+				/// <para>FormatID: {FCEFF153-E839-4CF3-A9E7-EA22832094B8}, 103</para>
+				/// </summary>
+				public static PROPERTYKEY SyncTransferStatus
+					=> new PROPERTYKEY(new Guid(0xFCEFF153, 0xE839, 0x4CF3, 0xA9, 0xE7, 0xEA, 0x22, 0x83, 0x20, 0x94, 0xB8), 103);
+
+				/// <summary>
 				/// <para>Name:     System.ThumbnailCacheId -- PKEY_ThumbnailCacheId</para>
 				/// <para>
 				/// Description: Unique value that can be used as a key to cache thumbnails. The value changes when the name, volume, or data

@@ -97,8 +97,33 @@ namespace Vanara.PInvoke
 		/// </summary>
 		FILE_ATTRIBUTE_NO_SCRUB_DATA = 0x00020000,
 
-		/// <summary>The file attribute ea</summary>
+		/// <summary/>
 		FILE_ATTRIBUTE_EA = 0x00040000,
+
+		/// <summary>Used to prevent the file from being purged from local storage when running low on disk space.</summary>
+		FILE_ATTRIBUTE_PINNED = 0x00080000,
+
+		/// <summary>Indicate that the file is not stored locally.</summary>
+		FILE_ATTRIBUTE_UNPINNED = 0x00100000,
+
+		/// <summary>
+		/// This attribute only appears in directory enumeration classes (FILE_DIRECTORY_INFORMATION, FILE_BOTH_DIR_INFORMATION, etc.). When
+		/// this attribute is set, it means that the file or directory has no physical representation on the local system; the item is
+		/// virtual. Opening the item will be more expensive than normal, e.g. it will cause at least some of it to be fetched from a remote store.
+		/// </summary>
+		FILE_ATTRIBUTE_RECALL_ON_OPEN = 0x00040000,
+
+		/// <summary>
+		/// When this attribute is set, it means that the file or directory is not fully present locally. For a file that means that not all
+		/// of its data is on local storage (e.g. it may be sparse with some data still in remote storage). For a directory it means that
+		/// some of the directory contents are being virtualized from another location. Reading the file / enumerating the directory will be
+		/// more expensive than normal, e.g. it will cause at least some of the file/directory content to be fetched from a remote store.
+		/// Only kernel-mode callers can set this bit.
+		/// </summary>
+		FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS = 0x00400000,
+
+		/// <summary/>
+		FILE_ATTRIBUTE_STRICTLY_SEQUENTIAL = 0x20000000,
 
 		/// <summary>
 		/// Write operations will not go through any intermediate cache, they will go directly to disk.

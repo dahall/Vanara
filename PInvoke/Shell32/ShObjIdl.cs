@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -29,8 +28,8 @@ namespace Vanara.PInvoke
 		public const string STR_AVOID_DRIVE_RESTRICTION_POLICY = "Avoid Drive Restriction Policy";
 
 		/// <summary>
-		/// Introduced in Windows Vista. Specify this bind context to cause the IShellFolder::BindToObject method to use the object specified
-		/// by the pbc parameter to create the target object; in this case, the object specified by the punk parameter in the
+		/// Introduced in Windows Vista. Specify this bind context to cause the IShellFolder::BindToObject method to use the object
+		/// specified by the pbc parameter to create the target object; in this case, the object specified by the punk parameter in the
 		/// IBindCtx::RegisterObjectParam call must implement the ICreateObject interface.
 		/// <para>Used with IShellFolder::BindToObject or IShellItem::BindToHandler.</para>
 		/// </summary>
@@ -44,8 +43,8 @@ namespace Vanara.PInvoke
 		/// of items.
 		/// </para>
 		/// <para>
-		/// If an item doesn't support the enumeration mode (because it isn't a folder or it doesn't provide the enumeration mode) then it is
-		/// created in the default enumeration mode.
+		/// If an item doesn't support the enumeration mode (because it isn't a folder or it doesn't provide the enumeration mode) then it
+		/// is created in the default enumeration mode.
 		/// </para>
 		/// </summary>
 		public const string STR_BIND_FOLDER_ENUM_MODE = "Folder Enum Mode";
@@ -72,8 +71,8 @@ namespace Vanara.PInvoke
 		public const string STR_BIND_FORCE_FOLDER_SHORTCUT_RESOLVE = "Force Folder Shortcut Resolve";
 
 		/// <summary>
-		/// Introduced in Windows XP. Specify this bind context to prevent a call to the IShellFolder::ParseDisplayName method on the Desktop
-		/// folder from treating relative paths as relative to the desktop; in such a case, parsing fails when this bind context is specified.
+		/// Introduced in Windows XP. Specify this bind context to prevent a call to the IShellFolder::ParseDisplayName method on the
+		/// Desktop folder from treating relative paths as relative to the desktop; in such a case, parsing fails when this bind context is specified.
 		/// </summary>
 		public const string STR_DONT_PARSE_RELATIVE = "Don't Parse Relative";
 
@@ -165,17 +164,18 @@ namespace Vanara.PInvoke
 		public const string STR_INTERNAL_NAVIGATE = "Internal Navigation";
 
 		/// <summary>
-		/// Introduced in Windows 7. Specify this bind context with STR_PARSE_PREFER_FOLDER_BROWSING when the client wants the Internet Shell
-		/// folder handlers to generate an IDList for any valid URL if a DAV-type folder cannot be created for that URL. The URL is not
-		/// verified to exist; only its syntax is checked and that it has a registered protocol handler.
+		/// Introduced in Windows 7. Specify this bind context with STR_PARSE_PREFER_FOLDER_BROWSING when the client wants the Internet
+		/// Shell folder handlers to generate an IDList for any valid URL if a DAV-type folder cannot be created for that URL. The URL is
+		/// not verified to exist; only its syntax is checked and that it has a registered protocol handler.
 		/// </summary>
 		public const string STR_INTERNETFOLDER_PARSE_ONLY_URLMON_BINDABLE = "Validate URL";
 
 		/// <summary>
 		/// Introduced in Windows 7. Specify this bind context to instruct implementations of IShellFolder::ParseDisplayName and
 		/// IPersistFolder3::InitializeEx to cache memory-intensive helper objects that can exist across instantiations of Shell items
-		/// instead of recreating these objects each time that a Shell item is created. The associated object is another bind context object,
-		/// initially empty. This should result in a separate bind context object, which is accessed through IBindCtx::GetObjectParam or IBindCtx::Register.ObjectParam.
+		/// instead of recreating these objects each time that a Shell item is created. The associated object is another bind context
+		/// object, initially empty. This should result in a separate bind context object, which is accessed through
+		/// IBindCtx::GetObjectParam or IBindCtx::Register.ObjectParam.
 		/// <para>
 		/// A caller must opt into this behavior by providing this bind context parameter when calling SHCreateItemFromParsingName. By doing
 		/// so, you optimize the behavior of binding to multiple parsing names in succession.The lifetime of the bind context object should
@@ -185,9 +185,9 @@ namespace Vanara.PInvoke
 		public const string STR_ITEM_CACHE_CONTEXT = "ItemCacheContext";
 
 		/// <summary>
-		/// Introduced in Windows Vista. Specify this bind context to allow invalid file name characters to appear in file names. By default,
-		/// a call to the IShellFolder::ParseDisplayName method rejects characters that are illegal in file names. This bind context is
-		/// meaningful only in conjunction with the STR_FILE_SYS_FIND_DATA bind context.
+		/// Introduced in Windows Vista. Specify this bind context to allow invalid file name characters to appear in file names. By
+		/// default, a call to the IShellFolder::ParseDisplayName method rejects characters that are illegal in file names. This bind
+		/// context is meaningful only in conjunction with the STR_FILE_SYS_FIND_DATA bind context.
 		/// </summary>
 		public const string STR_NO_VALIDATE_FILENAME_CHARS = "NoValidateFilenameChars";
 
@@ -202,8 +202,8 @@ namespace Vanara.PInvoke
 		/// to optimize the behavior of SHCreateItemFromParsingName.
 		/// <para>
 		/// Normally, SHCreateItemFromParsingName performs two binding operations on the name to be parsed: one through and one to
-		/// IShellFolder::ParseDisplayName and one to create the Shell item.When the STR_PARSE_AND_CREATE_ITEM bind context is supported, the
-		/// second bind is avoided by creating the Shell item during the IShellFolder::ParseDisplayName bind and storing the Shell item
+		/// IShellFolder::ParseDisplayName and one to create the Shell item.When the STR_PARSE_AND_CREATE_ITEM bind context is supported,
+		/// the second bind is avoided by creating the Shell item during the IShellFolder::ParseDisplayName bind and storing the Shell item
 		/// through IParseAndCreateItem::SetItem.SHCreateItemFromParsingName then uses the stored Shell item rather than creating one.
 		/// </para>
 		/// <para>
@@ -221,18 +221,18 @@ namespace Vanara.PInvoke
 		public const string STR_PARSE_DONT_REQUIRE_VALIDATED_URLS = "Do not require validated URLs";
 
 		/// <summary>
-		/// Introduced in Windows 7. The IShellFolder::ParseDisplayName method sets this property to tell the caller that the returned IDList
-		/// was bound to the ProgID specified with STR_PARSE_WITH_EXPLICIT_PROGID or the application specified with
+		/// Introduced in Windows 7. The IShellFolder::ParseDisplayName method sets this property to tell the caller that the returned
+		/// IDList was bound to the ProgID specified with STR_PARSE_WITH_EXPLICIT_PROGID or the application specified with
 		/// STR_PARSE_WITH_EXPLICIT_ASSOCAPP. When STR_PARSE_EXPLICIT_ASSOCIATION_SUCCESSFUL is absent, the ProgID or application was not
 		/// bound into the IDList.
 		/// </summary>
 		public const string STR_PARSE_EXPLICIT_ASSOCIATION_SUCCESSFUL = "ExplicitAssociationSuccessful";
 
 		/// <summary>
-		/// Introduced in Windows Vista. Specify this bind context to pass the original item that is being re-parsed when that item is stored
-		/// as a IShellItem object that also implements the IParentAndItem interface. Before Windows 7 this value was not defined in a header
-		/// file. It could be defined by the caller or passed as its string value of L"ParseOriginalItem". As of Windows 7, the value is
-		/// defined in Shlobj.h. Note that this is a different header than the other STR constants.
+		/// Introduced in Windows Vista. Specify this bind context to pass the original item that is being re-parsed when that item is
+		/// stored as a IShellItem object that also implements the IParentAndItem interface. Before Windows 7 this value was not defined in
+		/// a header file. It could be defined by the caller or passed as its string value of L"ParseOriginalItem". As of Windows 7, the
+		/// value is defined in Shlobj.h. Note that this is a different header than the other STR constants.
 		/// </summary>
 		public const string STR_PARSE_PARTIAL_IDLIST = "ParseOriginalItem";
 
@@ -297,8 +297,8 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// DBFolder is a Shell data source that represents items in search results and query-based views.DBFolder retrieves these items by
 		/// querying the Windows Search system.Items in the search results are identified through a protocol scheme, for example "file:" or
-		/// "mapi:". DBFolder provides the behavior for these items by delegating to Shell data sources that are created for these protocols.
-		/// See Developing Protocol Handler Add-ins for more information.
+		/// "mapi:". DBFolder provides the behavior for these items by delegating to Shell data sources that are created for these
+		/// protocols. See Developing Protocol Handler Add-ins for more information.
 		/// </para>
 		/// <para>
 		/// When DBFolder delegates its parsing operation to the Shell data sources that support Windows Search protocols, this bind context
@@ -319,8 +319,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>
-		/// This bind context can also be used to parse a DBFolder item if a client has a set of properties that define the item.In this case
-		/// an empty name should be passed to IShellFolder::ParseDisplayName.
+		/// This bind context can also be used to parse a DBFolder item if a client has a set of properties that define the item.In this
+		/// case an empty name should be passed to IShellFolder::ParseDisplayName.
 		/// </para>
 		/// <para>
 		/// Before Windows 7, this value was not defined in a header file.It could be defined by the caller or passed as its string value:
@@ -474,8 +474,8 @@ namespace Vanara.PInvoke
 		/// IApplicationAssociationRegistration interface.
 		/// </para>
 		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ne-shobjidl_core-associationlevel typedef enum ASSOCIATIONLEVEL
-		// { AL_MACHINE , AL_EFFECTIVE , AL_USER } ;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ne-shobjidl_core-associationlevel typedef enum
+		// ASSOCIATIONLEVEL { AL_MACHINE , AL_EFFECTIVE , AL_USER } ;
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "846ce9f4-092a-420d-be73-0951efc4368f")]
 		public enum ASSOCIATIONLEVEL
 		{
@@ -552,8 +552,8 @@ namespace Vanara.PInvoke
 		/// would refer to a media file while "editing" can refer to any file being altered in an application. However, the application
 		/// itself best knows how to map these terms to its actions.
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ne-shobjidl_core-file_usage_type
-		// typedef enum FILE_USAGE_TYPE { FUT_PLAYING, FUT_EDITING, FUT_GENERIC } ;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ne-shobjidl_core-file_usage_type typedef enum FILE_USAGE_TYPE
+		// { FUT_PLAYING, FUT_EDITING, FUT_GENERIC } ;
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "32b0e148-499a-401d-837c-8cea74cf9cac")]
 		public enum FILE_USAGE_TYPE
 		{
@@ -563,7 +563,9 @@ namespace Vanara.PInvoke
 			/// <summary>The file is being edited by the process that has it open.</summary>
 			FUT_EDITING,
 
-			/// <summary>The file is open in the process for an unspecified action or an action that does not readily fit into the other two categories.</summary>
+			/// <summary>
+			/// The file is open in the process for an unspecified action or an action that does not readily fit into the other two categories.
+			/// </summary>
 			FUT_GENERIC,
 		}
 
@@ -588,6 +590,63 @@ namespace Vanara.PInvoke
 
 			/// <summary>The file can be closed.</summary>
 			OF_CAP_CANCLOSE = 0x0002
+		}
+
+		/// <summary>Provides operation status flags.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/ne-shobjidl_core-pdopstatus typedef enum PDOPSTATUS {
+		// PDOPS_RUNNING, PDOPS_PAUSED, PDOPS_CANCELLED, PDOPS_STOPPED, PDOPS_ERRORS } ;
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "f9fd5cbe-2cb7-4ae7-9cf2-f8545095eec8")]
+		public enum PDOPSTATUS
+		{
+			/// <summary>Operation is running, no user intervention.</summary>
+			PDOPS_RUNNING = 1,
+
+			/// <summary>Operation has been paused by the user.</summary>
+			PDOPS_PAUSED,
+
+			/// <summary>Operation has been canceled by the user - now go undo.</summary>
+			PDOPS_CANCELLED,
+
+			/// <summary>Operation has been stopped by the user - terminate completely.</summary>
+			PDOPS_STOPPED,
+
+			/// <summary>Operation has gone as far as it can go without throwing error dialogs.</summary>
+			PDOPS_ERRORS,
+		}
+
+		/// <summary>
+		/// Specifies the states that a placeholder file can have. Retrieve this value through the System.FilePlaceholderStatus
+		/// (PKEY_FilePlaceholderStatus) property.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/ne-shobjidl_core-placeholder_states typedef enum
+		// PLACEHOLDER_STATES { PS_NONE, PS_MARKED_FOR_OFFLINE_AVAILABILITY, PS_FULL_PRIMARY_STREAM_AVAILABLE, PS_CREATE_FILE_ACCESSIBLE,
+		// PS_CLOUDFILE_PLACEHOLDER, PS_DEFAULT, PS_ALL } ;
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "BF4E0A9F-CD78-4D29-AD0C-7DF14AE88447")]
+		[Flags]
+		public enum PLACEHOLDER_STATES
+		{
+			/// <summary>None of the other states apply at this time.</summary>
+			PS_NONE = 0,
+
+			/// <summary>May already be or eventually will be available offline.</summary>
+			PS_MARKED_FOR_OFFLINE_AVAILABILITY = 0x1,
+
+			/// <summary>The primary stream has been made fully available.</summary>
+			PS_FULL_PRIMARY_STREAM_AVAILABLE = 0x2,
+
+			/// <summary>
+			/// The file is accessible through a call to the CreateFile function, without requesting the opening of reparse points.
+			/// </summary>
+			PS_CREATE_FILE_ACCESSIBLE = 0x4,
+
+			/// <summary/>
+			PS_CLOUDFILE_PLACEHOLDER = 0x8,
+
+			/// <summary/>
+			PS_DEFAULT = PS_MARKED_FOR_OFFLINE_AVAILABILITY | PS_FULL_PRIMARY_STREAM_AVAILABLE | PS_CREATE_FILE_ACCESSIBLE,
+
+			/// <summary>A bitmask value for all valid PLACEHOLDER_STATES flags.</summary>
+			PS_ALL = PS_MARKED_FOR_OFFLINE_AVAILABILITY | PS_FULL_PRIMARY_STREAM_AVAILABLE | PS_CREATE_FILE_ACCESSIBLE | PS_CLOUDFILE_PLACEHOLDER,
 		}
 
 		/// <summary>
@@ -649,6 +708,51 @@ namespace Vanara.PInvoke
 			/// Returns the items in the order they appear in the view. If this flag is not set, the selected item will be listed first.
 			/// </summary>
 			SVGIO_FLAG_VIEWORDER = 0x80000000,
+		}
+
+		/// <summary>Specifies possible status values used in the System.SyncTransferStatus property.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/ne-shobjidl_core-sync_transfer_status typedef enum
+		// SYNC_TRANSFER_STATUS { STS_NONE, STS_NEEDSUPLOAD, STS_NEEDSDOWNLOAD, STS_TRANSFERRING, STS_PAUSED, STS_HASERROR,
+		// STS_FETCHING_METADATA, STS_USER_REQUESTED_REFRESH, STS_HASWARNING, STS_EXCLUDED, STS_INCOMPLETE, STS_PLACEHOLDER_IFEMPTY } ;
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "B772BF05-0E82-48E6-9A0B-A3C53FBC5F60")]
+		[Flags]
+		public enum SYNC_TRANSFER_STATUS : uint
+		{
+			/// <summary>There is no current sync activity.</summary>
+			STS_NONE = 0,
+
+			/// <summary>The file is pending upload.</summary>
+			STS_NEEDSUPLOAD = 0x1,
+
+			/// <summary>The file is pending download.</summary>
+			STS_NEEDSDOWNLOAD = 0x2,
+
+			/// <summary>The file is currently being uploaded or downloaded.</summary>
+			STS_TRANSFERRING = 0x4,
+
+			/// <summary>The current transfer is paused.</summary>
+			STS_PAUSED = 0x8,
+
+			/// <summary>An error was encountered during the last sync operation.</summary>
+			STS_HASERROR = 0x10,
+
+			/// <summary>The sync engine is retrieving metadata from the cloud.</summary>
+			STS_FETCHING_METADATA = 0x20,
+
+			/// <summary/>
+			STS_USER_REQUESTED_REFRESH = 0x40,
+
+			/// <summary/>
+			STS_HASWARNING = 0x80,
+
+			/// <summary/>
+			STS_EXCLUDED = 0x100,
+
+			/// <summary/>
+			STS_INCOMPLETE = 0x200,
+
+			/// <summary/>
+			STS_PLACEHOLDER_IFEMPTY = 0x400
 		}
 
 		/// <summary>
@@ -876,7 +980,8 @@ namespace Vanara.PInvoke
 			void SetAppID([MarshalAs(UnmanagedType.LPWStr)] string pszAppID);
 
 			/// <summary>
-			/// Retrieve an IEnumObjects or IObjectArray for IShellItems and/or IShellLinks. Items may appear in both the frequent and recent lists.
+			/// Retrieve an IEnumObjects or IObjectArray for IShellItems and/or IShellLinks. Items may appear in both the frequent and
+			/// recent lists.
 			/// </summary>
 			/// <param name="listtype">Which of the known list types to retrieve</param>
 			/// <param name="cItemsDesired">The number of items desired.</param>
@@ -949,9 +1054,9 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Exposes a standard set of methods used to enumerate the pointers to item identifier lists (PIDLs) of the items in a Shell folder.
-		/// When a folder's IShellFolder::EnumObjects method is called, it creates an enumeration object and passes a pointer to the object's
-		/// IEnumIDList interface back to the calling application.
+		/// Exposes a standard set of methods used to enumerate the pointers to item identifier lists (PIDLs) of the items in a Shell
+		/// folder. When a folder's IShellFolder::EnumObjects method is called, it creates an enumeration object and passes a pointer to the
+		/// object's IEnumIDList interface back to the calling application.
 		/// </summary>
 		[SuppressUnmanagedCodeSecurity]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("000214F2-0000-0000-C000-000000000046")]
@@ -965,8 +1070,8 @@ namespace Vanara.PInvoke
 			/// <param name="celt">The number of elements in the array referenced by the rgelt parameter.</param>
 			/// <param name="rgelt">
 			/// The address of a pointer to an array of ITEMIDLIST pointers that receive the item identifiers. The implementation must
-			/// allocate these item identifiers using CoTaskMemAlloc. The calling application is responsible for freeing the item identifiers
-			/// using CoTaskMemFree.
+			/// allocate these item identifiers using CoTaskMemAlloc. The calling application is responsible for freeing the item
+			/// identifiers using CoTaskMemFree.
 			/// </param>
 			/// <param name="pceltFetched">
 			/// A pointer to a value that receives a count of the item identifiers actually returned in rgelt. The count can be smaller than
@@ -998,27 +1103,6 @@ namespace Vanara.PInvoke
 			IEnumIDList Clone();
 		}
 
-		/// <summary>Enumerates the specified <see cref="IEnumIDList"/> instance with an optional fetch size.</summary>
-		/// <param name="idList">The identifier list to enumerate. If this value is <see langword="null"/>, this will return an empty set.</param>
-		/// <param name="fetchSize">Size of the block of PIDL instances to fetch with a single call.</param>
-		/// <returns>A sequence of <see cref="PIDL"/> instances from <paramref name="idList"/>.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">fetchSize - You must specify a number greater than or equal to 1.</exception>
-		public static IEnumerable<PIDL> Enumerate(this IEnumIDList idList, int fetchSize = 1)
-		{
-			if (fetchSize < 1) throw new ArgumentOutOfRangeException(nameof(fetchSize), "You must specify a number greater than or equal to 1.");
-			if (idList is null) yield break;
-			var pidls = new IntPtr[fetchSize];
-			HRESULT hr;
-			while ((hr = idList.Next((uint)pidls.Length, pidls, out var cnt)).Succeeded && cnt > 0)
-			{
-				for (int i = 0; i < cnt; i++)
-					yield return new PIDL(pidls[i]);
-				if (hr == HRESULT.S_FALSE)
-					yield break;
-			}
-			hr.ThrowIfFailed();
-		}
-
 		/// <summary>
 		/// Exposes methods that can be called to get information on or close a file that is in use by another application. When an
 		/// application attempts to access a file and finds that file already in use, it can use the methods of this interface to gather
@@ -1035,10 +1119,10 @@ namespace Vanara.PInvoke
 		/// <para>The Running Object Table</para>
 		/// <para>
 		/// When an application opens a file, that application registers the file by inserting the instantiated <c>IFileIsInUse</c> object
-		/// into the running object table (ROT). The ROT is a globally accessible lookup table that keeps track of currently running objects.
-		/// These objects can be identified by a moniker. When a client attempts to bind a moniker to an object, the moniker checks the ROT
-		/// to determine whether the object is already running. This allows the moniker to bind to the current instance rather than loading a
-		/// new instance.
+		/// into the running object table (ROT). The ROT is a globally accessible lookup table that keeps track of currently running
+		/// objects. These objects can be identified by a moniker. When a client attempts to bind a moniker to an object, the moniker checks
+		/// the ROT to determine whether the object is already running. This allows the moniker to bind to the current instance rather than
+		/// loading a new instance.
 		/// </para>
 		/// <para>Perform these steps to add a file to the ROT:</para>
 		/// <list type="number">
@@ -1069,9 +1153,9 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>When to Implement</para>
 		/// <para>
-		/// Applications that open file types that can be opened by other applications should implement <c>IFileIsInUse</c>. An application's
-		/// implementation of this interface enables Windows Explorer to discover the source of sharing errors, which enables users to
-		/// address and retry operations that fail due to those errors.
+		/// Applications that open file types that can be opened by other applications should implement <c>IFileIsInUse</c>. An
+		/// application's implementation of this interface enables Windows Explorer to discover the source of sharing errors, which enables
+		/// users to address and retry operations that fail due to those errors.
 		/// </para>
 		/// <para>When to Use</para>
 		/// <para>
@@ -1105,8 +1189,8 @@ namespace Vanara.PInvoke
 			/// This information can be passed to the user in a dialog box so that the user knows the source of the conflict and can act
 			/// accordingly. For instance "File.txt is in use by Litware."
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getappname
-			// HRESULT GetAppName( LPWSTR *ppszName );
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getappname HRESULT
+			// GetAppName( LPWSTR *ppszName );
 			[PreserveSig]
 			HRESULT GetAppName([MarshalAs(UnmanagedType.LPWStr)] out string ppszName);
 
@@ -1119,19 +1203,20 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>HRESULT</c></para>
 			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getusage
-			// HRESULT GetUsage( FILE_USAGE_TYPE *pfut );
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getusage HRESULT GetUsage(
+			// FILE_USAGE_TYPE *pfut );
 			[PreserveSig]
 			HRESULT GetUsage(out FILE_USAGE_TYPE pfut);
 
 			/// <summary>
-			/// Determines whether the file can be closed and whether the UI is capable of switching to the window of the application that is
-			/// using the file.
+			/// Determines whether the file can be closed and whether the UI is capable of switching to the window of the application that
+			/// is using the file.
 			/// </summary>
 			/// <param name="pdwCapFlags">
 			/// <para>Type: <c>DWORD*</c></para>
 			/// <para>
-			/// A pointer to a value that, when this method returns successfully, receives the capability flags. One or both of the following values:
+			/// A pointer to a value that, when this method returns successfully, receives the capability flags. One or both of the
+			/// following values:
 			/// </para>
 			/// <para>OF_CAP_CANSWITCHTO (0x0001)</para>
 			/// <para>0x0001. The UI can switch to the top-level window of the application that is using the file.</para>
@@ -1149,8 +1234,8 @@ namespace Vanara.PInvoke
 			/// IFileIsInUse::GetSwitchToHWND) so that the user can address the situation as they see fit. If the OF_CAP_CANCLOSE flag is
 			/// retrieved, the dialog box can present a <c>Close</c> button that calls the CloseFile method.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getcapabilities
-			// HRESULT GetCapabilities( DWORD *pdwCapFlags );
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getcapabilities HRESULT
+			// GetCapabilities( DWORD *pdwCapFlags );
 			[PreserveSig]
 			HRESULT GetCapabilities(out OF_CAP pdwCapFlags);
 
@@ -1164,8 +1249,8 @@ namespace Vanara.PInvoke
 			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
 			/// <remarks>Only files that return the capability flag OF_CAP_CANSWITCHTO can be switched to.</remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getswitchtohwnd
-			// HRESULT GetSwitchToHWND( HWND *phwnd );
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getswitchtohwnd HRESULT
+			// GetSwitchToHWND( HWND *phwnd );
 			[PreserveSig]
 			HRESULT GetSwitchToHWND(out HWND phwnd);
 
@@ -1178,8 +1263,7 @@ namespace Vanara.PInvoke
 			/// Only files that return the capability flag OF_CAP_CANCLOSE can be closed by this method. If that flag is returned, the user
 			/// can be presented with a dialog box that includes a <c>Close</c> option that calls this method.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-closefile
-			// HRESULT CloseFile( );
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-closefile HRESULT CloseFile( );
 			[PreserveSig]
 			HRESULT CloseFile();
 		}
@@ -1229,11 +1313,11 @@ namespace Vanara.PInvoke
 			/// <para>Always returns <c>S_OK</c>.</para>
 			/// </returns>
 			/// <remarks>
-			/// After the client stores the file information, the instance of the object itself must be stored in a bind context by using the
-			/// IBindCtx::RegisterObjectParam method with the pszKey parameter set to .
+			/// After the client stores the file information, the instance of the object itself must be stored in a bind context by using
+			/// the IBindCtx::RegisterObjectParam method with the pszKey parameter set to .
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata-setfinddata
-			// HRESULT SetFindData( const WIN32_FIND_DATAW *pfd );
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata-setfinddata HRESULT
+			// SetFindData( const WIN32_FIND_DATAW *pfd );
 			[PreserveSig]
 			HRESULT SetFindData(in WIN32_FIND_DATA pfd);
 
@@ -1250,8 +1334,8 @@ namespace Vanara.PInvoke
 			/// This method provides bind context information to IShellFolder::ParseDisplayName. The client accesses the object by calling
 			/// IBindCtx::GetObjectParam with the pszKey parameter set to the string "File System Bind Data".
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata-getfinddata
-			// HRESULT GetFindData( WIN32_FIND_DATAW *pfd );
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata-getfinddata HRESULT
+			// GetFindData( WIN32_FIND_DATAW *pfd );
 			[PreserveSig]
 			HRESULT GetFindData(out WIN32_FIND_DATA pfd);
 		}
@@ -1285,11 +1369,11 @@ namespace Vanara.PInvoke
 			/// <para>Always returns <c>S_OK</c>.</para>
 			/// </returns>
 			/// <remarks>
-			/// After the client stores the file information, the instance of the object itself must be stored in a bind context by using the
-			/// IBindCtx::RegisterObjectParam method with the pszKey parameter set to .
+			/// After the client stores the file information, the instance of the object itself must be stored in a bind context by using
+			/// the IBindCtx::RegisterObjectParam method with the pszKey parameter set to .
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata-setfinddata
-			// HRESULT SetFindData( const WIN32_FIND_DATAW *pfd );
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata-setfinddata HRESULT
+			// SetFindData( const WIN32_FIND_DATAW *pfd );
 			[PreserveSig]
 			new HRESULT SetFindData(in WIN32_FIND_DATA pfd);
 
@@ -1306,8 +1390,8 @@ namespace Vanara.PInvoke
 			/// This method provides bind context information to IShellFolder::ParseDisplayName. The client accesses the object by calling
 			/// IBindCtx::GetObjectParam with the pszKey parameter set to the string "File System Bind Data".
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata-getfinddata
-			// HRESULT GetFindData( WIN32_FIND_DATAW *pfd );
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata-getfinddata HRESULT
+			// GetFindData( WIN32_FIND_DATAW *pfd );
 			[PreserveSig]
 			new HRESULT GetFindData(out WIN32_FIND_DATA pfd);
 
@@ -1323,8 +1407,8 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>HRESULT</c></para>
 			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata2-setfileid
-			// HRESULT SetFileID( LARGE_INTEGER liFileID );
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata2-setfileid HRESULT
+			// SetFileID( LARGE_INTEGER liFileID );
 			[PreserveSig]
 			HRESULT SetFileID(long liFileID);
 
@@ -1340,8 +1424,8 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>HRESULT</c></para>
 			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata2-getfileid
-			// HRESULT GetFileID( LARGE_INTEGER *pliFileID );
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesystembinddata2-getfileid HRESULT
+			// GetFileID( LARGE_INTEGER *pliFileID );
 			[PreserveSig]
 			HRESULT GetFileID(out long pliFileID);
 
@@ -1406,6 +1490,27 @@ namespace Vanara.PInvoke
 			/// A pointer to a value that receives the flags for the item. If no flags are to be returned, this value should be set to zero.
 			/// </returns>
 			uint GetInfoFlags();
+		}
+
+		/// <summary>Enumerates the specified <see cref="IEnumIDList"/> instance with an optional fetch size.</summary>
+		/// <param name="idList">The identifier list to enumerate. If this value is <see langword="null"/>, this will return an empty set.</param>
+		/// <param name="fetchSize">Size of the block of PIDL instances to fetch with a single call.</param>
+		/// <returns>A sequence of <see cref="PIDL"/> instances from <paramref name="idList"/>.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">fetchSize - You must specify a number greater than or equal to 1.</exception>
+		public static IEnumerable<PIDL> Enumerate(this IEnumIDList idList, int fetchSize = 1)
+		{
+			if (fetchSize < 1) throw new ArgumentOutOfRangeException(nameof(fetchSize), "You must specify a number greater than or equal to 1.");
+			if (idList is null) yield break;
+			var pidls = new IntPtr[fetchSize];
+			HRESULT hr;
+			while ((hr = idList.Next((uint)pidls.Length, pidls, out var cnt)).Succeeded && cnt > 0)
+			{
+				for (int i = 0; i < cnt; i++)
+					yield return new PIDL(pidls[i]);
+				if (hr == HRESULT.S_FALSE)
+					yield break;
+			}
+			hr.ThrowIfFailed();
 		}
 
 		/// <summary>Retrieves the User Model AppID that has been explicitly set for the current process via SetCurrentProcessExplicitAppUserModelID</summary>
@@ -1641,10 +1746,12 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets an enumeration interface that provides access to handlers associated with a given protocol.</summary>
 		/// <typeparam name="TIntf">The type of the interface to retrieve, typically IID_IEnumAssocHandlers.</typeparam>
-		/// <param name="protocol"><para>Type: <c>PCWSTR</c></para>
-		/// <para>Pointer to a string that specifies the protocol.</para></param>
+		/// <param name="protocol">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>Pointer to a string that specifies the protocol.</para>
+		/// </param>
 		/// <returns>
-		/// When this method returns, contains the interface pointer requested in <typeparamref name="TIntf" />. This is typically IEnumAssocHandlers.
+		/// When this method returns, contains the interface pointer requested in <typeparamref name="TIntf"/>. This is typically IEnumAssocHandlers.
 		/// </returns>
 		/// <remarks>
 		/// It is recommended that you use the <c>IID_PPV_ARGS</c> macro, defined in Objbase.h, to package the and parameters. This macro
@@ -1657,10 +1764,14 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Creates an IApplicationAssociationRegistration object based on the stock implementation of the interface provided by Windows.
 		/// </summary>
-		/// <param name="riid"><para>Type: <c>REFIID</c></para>
-		/// <para>A reference to the IID of the requested interface.</para></param>
-		/// <param name="ppv"><para>Type: <c>void**</c></para>
-		/// <para>When this function returns, contains the address of a pointer to the IApplicationAssociationRegistration object.</para></param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>A reference to the IID of the requested interface.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>When this function returns, contains the address of a pointer to the IApplicationAssociationRegistration object.</para>
+		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HRESULT</c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
@@ -1674,9 +1785,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Creates an IApplicationAssociationRegistration object based on the stock implementation of the interface provided by Windows.
 		/// </summary>
-		/// <returns>
-		/// When this function returns, contains the address of a pointer to the IApplicationAssociationRegistration object.
-		/// </returns>
+		/// <returns>When this function returns, contains the address of a pointer to the IApplicationAssociationRegistration object.</returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shcreateassociationregistration SHSTDAPI
 		// SHCreateAssociationRegistration( REFIID riid, void **ppv );
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "7998f49d-2515-4c77-991e-62c0fefa43df")]
@@ -1728,10 +1837,10 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// The list of properties to set a default value comes from the <c>SetDefaultsFor</c> registry entry under the ProgID for the file
-		/// association of the item. The list is prefixed by and contains the canonical names of the properties to set the default value, for
-		/// example, . The possible properties for this list are System.Author, System.Document.DateCreated, and System.Photo.DateTaken. If
-		/// the <c>SetDefaultsFor</c> entry does not exist on the ProgID, this function uses the default found on the <c>SetDefaultsFor</c>
-		/// entry of <c>HKEY_CLASSES_ROOT</c>&lt;b&gt;*.
+		/// association of the item. The list is prefixed by and contains the canonical names of the properties to set the default value,
+		/// for example, . The possible properties for this list are System.Author, System.Document.DateCreated, and System.Photo.DateTaken.
+		/// If the <c>SetDefaultsFor</c> entry does not exist on the ProgID, this function uses the default found on the
+		/// <c>SetDefaultsFor</c> entry of <c>HKEY_CLASSES_ROOT</c>&lt;b&gt;*.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl/nf-shobjidl-shcreatedefaultpropertiesop SHSTDAPI
@@ -1760,9 +1869,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
 		/// <param name="pidl">The source PIDL.</param>
-		/// <returns>
-		/// When this function returns, contains the interface pointer requested.
-		/// </returns>
+		/// <returns>When this function returns, contains the interface pointer requested.</returns>
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762133")]
 		public static TIntf SHCreateItemFromIDList<TIntf>(PIDL pidl) where TIntf : class =>
 			IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemFromIDList(pidl, g, out o));
@@ -1808,7 +1915,8 @@ namespace Vanara.PInvoke
 		/// <para>If no data is being passed to or received from the parsing function, this value can be NULL.</para>
 		/// </param>
 		/// <returns>
-		/// When this method returns successfully, contains the interface pointer requested in <typeparamref name="T"/>. This is typically IShellItem or IShellItem2.
+		/// When this method returns successfully, contains the interface pointer requested in <typeparamref name="T"/>. This is typically
+		/// IShellItem or IShellItem2.
 		/// </returns>
 		[PInvokeData("Shlobjidl.h", MSDNShortId = "bb762134")]
 		public static T SHCreateItemFromParsingName<T>(string pszPath, IBindCtx pbc = null) where T : class =>
@@ -1851,8 +1959,8 @@ namespace Vanara.PInvoke
 		/// Flags that specify special options in the object retrieval. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
 		/// </param>
 		/// <param name="pszItem">
-		/// A pointer to a null-terminated buffer that contains the file name of the new item as a Unicode string. This parameter can also be
-		/// NULL. In this case, an IShellItem that represents the known folder itself is created.
+		/// A pointer to a null-terminated buffer that contains the file name of the new item as a Unicode string. This parameter can also
+		/// be NULL. In this case, an IShellItem that represents the known folder itself is created.
 		/// </param>
 		/// <param name="riid">A reference to an interface ID.</param>
 		/// <param name="ppv">
@@ -1871,8 +1979,8 @@ namespace Vanara.PInvoke
 		/// Flags that specify special options in the object retrieval. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
 		/// </param>
 		/// <param name="pszItem">
-		/// A pointer to a null-terminated buffer that contains the file name of the new item as a Unicode string. This parameter can also be
-		/// NULL. In this case, an IShellItem that represents the known folder itself is created.
+		/// A pointer to a null-terminated buffer that contains the file name of the new item as a Unicode string. This parameter can also
+		/// be NULL. In this case, an IShellItem that represents the known folder itself is created.
 		/// </param>
 		/// <returns>
 		/// When this function returns, contains the interface pointer requested in riid. This will usually be IShellItem or IShellItem2.
@@ -1934,15 +2042,15 @@ namespace Vanara.PInvoke
 		/// <param name="pidlParent">
 		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
 		/// <para>
-		/// The ID list of the parent folder of the items specified in ppidl. If psf is specified, this parameter can be <c>NULL</c>. If this
-		/// pidlParent is not specified, it is computed from the psf parameter using IPersistFolder2.
+		/// The ID list of the parent folder of the items specified in ppidl. If psf is specified, this parameter can be <c>NULL</c>. If
+		/// this pidlParent is not specified, it is computed from the psf parameter using IPersistFolder2.
 		/// </para>
 		/// </param>
 		/// <param name="psf">
 		/// <para>Type: <c>IShellFolder*</c></para>
 		/// <para>
-		/// The Shell data source object that is the parent of the child items specified in ppidl. If pidlParent is specified, this parameter
-		/// can be <c>NULL</c>.
+		/// The Shell data source object that is the parent of the child items specified in ppidl. If pidlParent is specified, this
+		/// parameter can be <c>NULL</c>.
 		/// </para>
 		/// </param>
 		/// <param name="cidl">
@@ -1961,8 +2069,9 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>HRESULT</c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shcreateshellitemarray
-		// SHSTDAPI SHCreateShellItemArray( PCIDLIST_ABSOLUTE pidlParent, IShellFolder *psf, UINT cidl, PCUITEMID_CHILD_ARRAY ppidl, IShellItemArray **ppsiItemArray );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shcreateshellitemarray SHSTDAPI
+		// SHCreateShellItemArray( PCIDLIST_ABSOLUTE pidlParent, IShellFolder *psf, UINT cidl, PCUITEMID_CHILD_ARRAY ppidl, IShellItemArray
+		// **ppsiItemArray );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "024ccbc7-97f1-4cb5-8588-9c9b1f747336")]
 		public static extern HRESULT SHCreateShellItemArray([In, Optional] PIDL pidlParent, [In, MarshalAs(UnmanagedType.Interface), Optional] IShellFolder psf,
@@ -1994,12 +2103,12 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// This API lets you convert the data object into a Shell item that the handler can consume. It is recommend that handlers use a
-		/// Shell item array rather than clipboard formats like <c>CF_HDROP</c> and <c>CFSTR_SHELLIDLIST</c> (also known as HIDA) as it leads
-		/// to simpler code and allows some performance improvements.
+		/// Shell item array rather than clipboard formats like <c>CF_HDROP</c> and <c>CFSTR_SHELLIDLIST</c> (also known as HIDA) as it
+		/// leads to simpler code and allows some performance improvements.
 		/// </para>
 		/// <para>
-		/// The resulting shell item array holds a reference to the source data object. Therefore, that data object must remain valid for the
-		/// lifetime of the shell item array. Notably, the data objects passed to IDropTarget methods are no longer valid after the drop
+		/// The resulting shell item array holds a reference to the source data object. Therefore, that data object must remain valid for
+		/// the lifetime of the shell item array. Notably, the data objects passed to IDropTarget methods are no longer valid after the drop
 		/// operation completes.
 		/// </para>
 		/// </remarks>
@@ -2010,11 +2119,11 @@ namespace Vanara.PInvoke
 		public static extern HRESULT SHCreateShellItemArrayFromDataObject(IDataObject pdo, in Guid riid, out IShellItemArray ppv);
 
 		/// <summary>Creates a Shell item array object from a data object.</summary>
-		/// <param name="pdo"><para>Type: <c>IDataObject*</c></para>
-		/// <para>A pointer to IDataObject interface.</para></param>
-		/// <returns>
-		/// When this method returns, contains the interface pointer requested. This is typically IShellItemArray.
-		/// </returns>
+		/// <param name="pdo">
+		/// <para>Type: <c>IDataObject*</c></para>
+		/// <para>A pointer to IDataObject interface.</para>
+		/// </param>
+		/// <returns>When this method returns, contains the interface pointer requested. This is typically IShellItemArray.</returns>
 		/// <remarks>
 		/// <para>
 		/// This function is useful for Shell extensions that implement IShellExtInit and are passed a data object to the
@@ -2022,12 +2131,12 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// This API lets you convert the data object into a Shell item that the handler can consume. It is recommend that handlers use a
-		/// Shell item array rather than clipboard formats like <c>CF_HDROP</c> and <c>CFSTR_SHELLIDLIST</c> (also known as HIDA) as it leads
-		/// to simpler code and allows some performance improvements.
+		/// Shell item array rather than clipboard formats like <c>CF_HDROP</c> and <c>CFSTR_SHELLIDLIST</c> (also known as HIDA) as it
+		/// leads to simpler code and allows some performance improvements.
 		/// </para>
 		/// <para>
-		/// The resulting shell item array holds a reference to the source data object. Therefore, that data object must remain valid for the
-		/// lifetime of the shell item array. Notably, the data objects passed to IDropTarget methods are no longer valid after the drop
+		/// The resulting shell item array holds a reference to the source data object. Therefore, that data object must remain valid for
+		/// the lifetime of the shell item array. Notably, the data objects passed to IDropTarget methods are no longer valid after the drop
 		/// operation completes.
 		/// </para>
 		/// </remarks>
@@ -2116,12 +2225,16 @@ namespace Vanara.PInvoke
 
 		/// <summary>Creates an IShellItem or related object based on an item specified by an IDataObject.</summary>
 		/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
-		/// <param name="pdtobj"><para>Type: <c>IDataObject*</c></para>
-		/// <para>A pointer to the source IDataObject instance.</para></param>
-		/// <param name="dwFlags"><para>Type: <c>DATAOBJ_GET_ITEM_FLAGS</c></para>
+		/// <param name="pdtobj">
+		/// <para>Type: <c>IDataObject*</c></para>
+		/// <para>A pointer to the source IDataObject instance.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>Type: <c>DATAOBJ_GET_ITEM_FLAGS</c></para>
 		/// <para>
 		/// One or more values from the DATAOBJ_GET_ITEM_FLAGS enumeration to specify options regarding the target object. This value can be 0.
-		/// </para></param>
+		/// </para>
+		/// </param>
 		/// <returns>When this method returns, contains the interface pointer requested. This is typically IShellItem.</returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shgetitemfromdataobject HRESULT
 		// SHGetItemFromDataObject( IDataObject *pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags, REFIID riid, void **ppv );
@@ -2162,11 +2275,11 @@ namespace Vanara.PInvoke
 
 		/// <summary>Retrieves an IShellItem for an object.</summary>
 		/// <typeparam name="TIntf">The type of the requested interface. This is typically IShellItem or a related interface.</typeparam>
-		/// <param name="punk"><para>Type: <c>IUnknown*</c></para>
-		/// <para>A pointer to the IUnknown of the object.</para></param>
-		/// <returns>
-		/// When this method returns, contains the interface pointer requested. This is typically IShellItem or a related interface.
-		/// </returns>
+		/// <param name="punk">
+		/// <para>Type: <c>IUnknown*</c></para>
+		/// <para>A pointer to the IUnknown of the object.</para>
+		/// </param>
+		/// <returns>When this method returns, contains the interface pointer requested. This is typically IShellItem or a related interface.</returns>
 		/// <remarks>
 		/// From the standpoint of performance, this method is preferred to SHGetIDListFromObject in those cases where the IDList is already
 		/// bound to a folder.
@@ -2211,10 +2324,14 @@ namespace Vanara.PInvoke
 		/// Retrieves an object that supports IPropertyStore or related interfaces from a pointer to an item identifier list (PIDL).
 		/// </summary>
 		/// <typeparam name="TIntf">The type of the requested interface. This is typically IPropertyStore or a related interface.</typeparam>
-		/// <param name="pidl"><para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
-		/// <para>A pointer to an item ID list.</para></param>
-		/// <param name="flags"><para>Type: <c>GETPROPERTYSTOREFLAGS</c></para>
-		/// <para>One or more values from the GETPROPERTYSTOREFLAGS constants. This parameter can also be <c>NULL</c>.</para></param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>A pointer to an item ID list.</para>
+		/// </param>
+		/// <param name="flags">
+		/// <para>Type: <c>GETPROPERTYSTOREFLAGS</c></para>
+		/// <para>One or more values from the GETPROPERTYSTOREFLAGS constants. This parameter can also be <c>NULL</c>.</para>
+		/// </param>
 		/// <returns>
 		/// When this function returns, contains the interface pointer requested. This is typically IPropertyStore or a related interface.
 		/// </returns>
