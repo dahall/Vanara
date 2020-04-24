@@ -26,6 +26,11 @@ namespace Vanara.PInvoke
 		/// <returns>The return value is the high-order byte of the specified value.</returns>
 		public static byte HIBYTE(ushort wValue) => (byte)((wValue >> 8) & 0xff);
 
+		/// <summary>Gets the high 8-bytes from a <see cref="long"/> value.</summary>
+		/// <param name="lValue">The <see cref="long"/> value.</param>
+		/// <returns>The high 8-bytes as a <see cref="int"/>.</returns>
+		public static int HighPart(this long lValue) => unchecked((int)(lValue >> 32));
+
 		/// <summary>Retrieves the high-order word from the specified 32-bit value.</summary>
 		/// <param name="dwValue">The value to be converted.</param>
 		/// <returns>The return value is the high-order word of the specified value.</returns>
@@ -51,6 +56,11 @@ namespace Vanara.PInvoke
 		/// <param name="wValue">The value to be converted.</param>
 		/// <returns>The return value is the low-order byte of the specified value.</returns>
 		public static byte LOBYTE(ushort wValue) => (byte)(wValue & 0xff);
+
+		/// <summary>Gets the lower 8-bytes from a <see cref="long"/> value.</summary>
+		/// <param name="lValue">The <see cref="long"/> value.</param>
+		/// <returns>The lower 8-bytes as a <see cref="uint"/>.</returns>
+		public static uint LowPart(this long lValue) => (uint)(lValue & 0xffffffff);
 
 		/// <summary>Retrieves the low-order word from the specified 32-bit value.</summary>
 		/// <param name="dwValue">The value to be converted.</param>
@@ -87,6 +97,12 @@ namespace Vanara.PInvoke
 		/// <param name="dwHigh">The high-order double word of the new value.</param>
 		/// <returns>The return value is a LONG64 value.</returns>
 		public static ulong MAKELONG64(uint dwLow, uint dwHigh) => ((ulong)dwHigh << 32) | ((ulong)dwLow & 0xffffffff);
+
+		/// <summary>Creates a LONG64 value by concatenating the specified values.</summary>
+		/// <param name="dwLow">The low-order double word of the new value.</param>
+		/// <param name="dwHigh">The high-order double word of the new value.</param>
+		/// <returns>The return value is a LONG64 value.</returns>
+		public static long MAKELONG64(uint dwLow, int dwHigh) => ((long)dwHigh << 32) | ((long)dwLow & 0xffffffff);
 
 		/// <summary>Creates a value for use as an lParam parameter in a message. The macro concatenates the specified values.</summary>
 		/// <param name="wLow">The low-order word of the new value.</param>
