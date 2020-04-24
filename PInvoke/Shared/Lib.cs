@@ -99,6 +99,9 @@
 		/// <summary>The prntvpt.dll</summary>
 		public const string PrntvPt = "prntvpt.dll";
 
+		/// <summary>projectedfslib.dll</summary>
+		public const string ProjectedFSLib = "projectedfslib.dll";
+
 		/// <summary>The property system</summary>
 		public const string PropSys = "propsys.dll";
 
