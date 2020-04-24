@@ -592,28 +592,6 @@ namespace Vanara.PInvoke
 			OF_CAP_CANCLOSE = 0x0002
 		}
 
-		/// <summary>Provides operation status flags.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/ne-shobjidl_core-pdopstatus typedef enum PDOPSTATUS {
-		// PDOPS_RUNNING, PDOPS_PAUSED, PDOPS_CANCELLED, PDOPS_STOPPED, PDOPS_ERRORS } ;
-		[PInvokeData("shobjidl_core.h", MSDNShortId = "f9fd5cbe-2cb7-4ae7-9cf2-f8545095eec8")]
-		public enum PDOPSTATUS
-		{
-			/// <summary>Operation is running, no user intervention.</summary>
-			PDOPS_RUNNING = 1,
-
-			/// <summary>Operation has been paused by the user.</summary>
-			PDOPS_PAUSED,
-
-			/// <summary>Operation has been canceled by the user - now go undo.</summary>
-			PDOPS_CANCELLED,
-
-			/// <summary>Operation has been stopped by the user - terminate completely.</summary>
-			PDOPS_STOPPED,
-
-			/// <summary>Operation has gone as far as it can go without throwing error dialogs.</summary>
-			PDOPS_ERRORS,
-		}
-
 		/// <summary>
 		/// Specifies the states that a placeholder file can have. Retrieve this value through the System.FilePlaceholderStatus
 		/// (PKEY_FilePlaceholderStatus) property.
