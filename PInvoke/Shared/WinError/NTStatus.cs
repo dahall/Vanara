@@ -369,6 +369,11 @@ namespace Vanara.PInvoke
 				throw exception;
 		}
 
+		/// <summary>Converts a Win32 error to an NTSTATUS.</summary>
+		/// <param name="x">The Win32 error codex.</param>
+		/// <returns>The equivalent NTSTATUS value.</returns>
+		public static NTStatus NTSTATUS_FROM_WIN32(int x) => x <= 0 ? unchecked((uint)x) : (NTStatus)(((x) & 0x0000FFFF) | ((uint)FacilityCode.FACILITY_NTWIN32 << 16) | 0xC0000000);
+
 		/// <summary>
 		/// If the supplied raw NTStatus value represents a failure, throw the associated <see cref="Exception"/> with the optionally
 		/// supplied message.
@@ -424,6 +429,11 @@ namespace Vanara.PInvoke
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator NTStatus(uint value) => new NTStatus(value);
+
+		/// <summary>Performs an implicit conversion from <see cref="Win32Error"/> to <see cref="NTStatus"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The resulting <see cref="NTStatus"/> instance from the conversion.</returns>
+		public static implicit operator NTStatus(Win32Error value) => NTSTATUS_FROM_WIN32((int)value);
 
 		/// <summary>Performs an explicit conversion from <see cref="NTStatus"/> to <see cref="System.Int32"/>.</summary>
 		/// <param name="value">The value.</param>
