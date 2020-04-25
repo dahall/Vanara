@@ -50,8 +50,8 @@ namespace Vanara.PInvoke
 		// CF_CONNECTION_KEY *ConnectionKey );
 		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfapi.h", MSDNShortId = "287DA978-9797-48DF-9C90-BA53BB82475C")]
-		public static extern HRESULT CfConnectSyncRoot([MarshalAs(UnmanagedType.LPWStr)] string SyncRootPath, in CF_CALLBACK_REGISTRATION CallbackTable, [In, Optional] IntPtr CallbackContext,
-			CF_CONNECT_FLAGS ConnectFlags, out CF_CONNECTION_KEY ConnectionKey);
+		public static extern HRESULT CfConnectSyncRoot([MarshalAs(UnmanagedType.LPWStr)] string SyncRootPath, [In, MarshalAs(UnmanagedType.LPArray)] CF_CALLBACK_REGISTRATION[] CallbackTable,
+			[In, Optional] IntPtr CallbackContext, CF_CONNECT_FLAGS ConnectFlags, out CF_CONNECTION_KEY ConnectionKey);
 
 		/// <summary>Converts a normal file/directory to a placeholder file/directory.</summary>
 		/// <param name="FileHandle">Handle to the file or directory to be converted.</param>
