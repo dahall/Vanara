@@ -12,7 +12,7 @@ namespace Vanara.PInvoke
 		/// <param name="CallbackInfo">The callback information.</param>
 		/// <param name="CallbackParameters">The callback parameters.</param>
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void CF_CALLBACK(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters);
+		public delegate void CF_CALLBACK(in CF_CALLBACK_INFO CallbackInfo, IntPtr CallbackParameters);
 
 		/// <summary>
 		/// Closes the file or directory handle returned by CfOpenFileWithOplock. This should not be used with standard Win32 file handles,
