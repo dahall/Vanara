@@ -20,8 +20,17 @@ namespace Vanara.PInvoke
 		{
 			var tt = (typeof(TType), typeof(TFieldType));
 			if (!cache.TryGetValue(tt, out var hash))
-				cache.Add(tt, hash = typeof(TType).GetFields(BindingFlags.Public | BindingFlags.Static).Where(fi => fi.FieldType == typeof(TFieldType)).ToDictionary(fi => fi.GetValue(null).GetHashCode(), fi => fi.Name));
+				cache.Add(tt, hash = typeof(TType).GetFields(BindingFlags.Public | BindingFlags.Static).Where(fi => fi.FieldType == typeof(TFieldType)).Distinct(FIValueComp<TFieldType>.Default).ToDictionary(fi => fi.GetValue(null).GetHashCode(), fi => fi.Name));
 			return hash.TryGetValue(value.GetHashCode(), out fieldName);
+		}
+
+		private class FIValueComp<TFieldType> : IEqualityComparer<FieldInfo>
+		{
+			bool IEqualityComparer<FieldInfo>.Equals(FieldInfo x, FieldInfo y) => Comparer<TFieldType>.Default.Compare((TFieldType)x.GetValue(null), (TFieldType)y.GetValue(null)) == 0;
+
+			int IEqualityComparer<FieldInfo>.GetHashCode(FieldInfo obj) => ((TFieldType)obj.GetValue(null)).GetHashCode();
+
+			public static readonly FIValueComp<TFieldType> Default = new FIValueComp<TFieldType>();
 		}
 	}
 }
