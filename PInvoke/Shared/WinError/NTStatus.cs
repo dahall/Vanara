@@ -331,7 +331,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-		public override int GetHashCode() => _value.GetHashCode();
+		public override int GetHashCode() => _value;
 
 		/// <summary>Gets the severity value from a 32-bit value.</summary>
 		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>

@@ -78,7 +78,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-		public override int GetHashCode() => value.GetHashCode();
+		public override int GetHashCode() => unchecked((int)value);
 
 		/// <summary>Tries to extract a Win32Error from an exception.</summary>
 		/// <param name="exception">The exception.</param>
