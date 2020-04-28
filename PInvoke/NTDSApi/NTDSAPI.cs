@@ -1485,8 +1485,7 @@ namespace Vanara.PInvoke
 			DS_NAME_FORMAT formatOffered = DS_NAME_FORMAT.DS_UNKNOWN_NAME,
 			DS_NAME_FLAGS flags = DS_NAME_FLAGS.DS_NAME_NO_FLAGS)
 		{
-			var err = DsCrackNames(hSafeDs, flags, formatOffered, formatDesired, (uint)(names?.Length ?? 0), names, out var pResult);
-			new Win32Error((int)err).ThrowIfFailed();
+			DsCrackNames(hSafeDs, flags, formatOffered, formatDesired, (uint)(names?.Length ?? 0), names, out var pResult).ThrowIfFailed();
 			return pResult.Items;
 		}
 

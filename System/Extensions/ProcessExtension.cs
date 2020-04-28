@@ -369,7 +369,7 @@ namespace Vanara.Extensions
 							startupInfo,        // pointer to STARTUPINFO
 							out processInfo);   // pointer to PROCESS_INFORMATION
 					if (!retVal)
-						errorCode = Marshal.GetLastWin32Error();
+						errorCode = Win32Error.GetLastError();
 				}
 				if (!retVal)
 				{

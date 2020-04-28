@@ -94,9 +94,9 @@ namespace Vanara.PInvoke.Tests
 			Sleep(2000);
 			using (var hPipe = CreateFile(pipeName, FileAccess.GENERIC_WRITE, 0, null, System.IO.FileMode.Open, 0))
 			{
-				if (hPipe.IsInvalid) return (int)Win32Error.GetLastError();
+				if (hPipe.IsInvalid) return (int)(uint)Win32Error.GetLastError();
 				if (!WriteFile(hPipe, bytesToWrite, (uint)bytesToWrite.Length, out var written) || written != bytesToWrite.Length)
-					return (int)Win32Error.GetLastError();
+					return (int)(uint)Win32Error.GetLastError();
 			}
 			return 0;
 		}

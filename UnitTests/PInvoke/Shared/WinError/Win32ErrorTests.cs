@@ -13,12 +13,12 @@ namespace Vanara.PInvoke.Tests
 		[TestCase(Win32Error.ERROR_ACCESS_DENIED, 2U, ExpectedResult = 1)]
 		[TestCase(Win32Error.ERROR_ACCESS_DENIED, Win32Error.ERROR_INVALID_PARAMETER, ExpectedResult = -1)]
 		[TestCase(Win32Error.ERROR_INVALID_PARAMETER, Win32Error.ERROR_ACCESS_DENIED, ExpectedResult = 1)]
-		public int CompareToTest(int c, object obj) => new Win32Error(c).CompareTo(obj);
+		public int CompareToTest(uint c, object obj) => new Win32Error(c).CompareTo(obj);
 
 		[TestCase(Win32Error.ERROR_ACCESS_DENIED, Win32Error.ERROR_INVALID_PARAMETER, ExpectedResult = -1)]
 		[TestCase(Win32Error.ERROR_INVALID_PARAMETER, Win32Error.ERROR_ACCESS_DENIED, ExpectedResult = 1)]
 		[TestCase(Win32Error.ERROR_INVALID_PARAMETER, Win32Error.ERROR_INVALID_PARAMETER, ExpectedResult = 0)]
-		public int CompareToTest1(int c1, int c2) => new Win32Error(c1).CompareTo(new Win32Error(c2));
+		public int CompareToTest1(uint c1, uint c2) => new Win32Error(c1).CompareTo(new Win32Error(c2));
 
 		[Test]
 		public void ComparisonTest()
@@ -35,13 +35,13 @@ namespace Vanara.PInvoke.Tests
 		[TestCase(Win32Error.ERROR_ACCESS_DENIED, Win32Error.ERROR_INVALID_PARAMETER, ExpectedResult = false)]
 		[TestCase(Win32Error.ERROR_INVALID_PARAMETER, Win32Error.ERROR_ACCESS_DENIED, ExpectedResult = false)]
 		[TestCase(Win32Error.ERROR_ACCESS_DENIED, "A", ExpectedResult = false)]
-		[TestCase(Win32Error.ERROR_ACCESS_DENIED, int.MaxValue, ExpectedResult = false)]
-		public bool EqualsTest(int c, object obj) => new Win32Error(c).Equals(obj);
+		[TestCase(Win32Error.ERROR_ACCESS_DENIED, uint.MaxValue, ExpectedResult = false)]
+		public bool EqualsTest(uint c, object obj) => new Win32Error(c).Equals(obj);
 
 		[TestCase(Win32Error.ERROR_ACCESS_DENIED, Win32Error.ERROR_INVALID_PARAMETER, ExpectedResult = false)]
 		[TestCase(Win32Error.ERROR_INVALID_PARAMETER, Win32Error.ERROR_ACCESS_DENIED, ExpectedResult = false)]
 		[TestCase(Win32Error.ERROR_INVALID_PARAMETER, Win32Error.ERROR_INVALID_PARAMETER, ExpectedResult = true)]
-		public bool EqualsTest1(int c1, int c2) => new Win32Error(c1).Equals(new Win32Error(c2));
+		public bool EqualsTest1(uint c1, uint c2) => new Win32Error(c1).Equals(new Win32Error(c2));
 
 		[Test]
 		public void GetExceptionTest()
@@ -82,7 +82,7 @@ namespace Vanara.PInvoke.Tests
 		public void OpTest()
 		{
 			Win32Error err = Win32Error.ERROR_ACCESS_DENIED;
-			Assert.That((int)err, Is.EqualTo(0x5));
+			Assert.That((uint)err, Is.EqualTo(0x5));
 			Assert.That((Win32Error)0x5, Is.EqualTo(err));
 			Assert.That(err != (Win32Error)0x41307);
 			Assert.That(err != 0x41307);
@@ -110,7 +110,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(() => hr.ThrowIfFailed("Bad"), Throws.TypeOf<UnauthorizedAccessException>().With.Message.EqualTo("Bad"));
 			Assert.That(() => Win32Error.ThrowIfFailed(0), Throws.Nothing);
 			var err = Win32Error.GetLastError();
-			Assert.That((int)err, Is.GreaterThanOrEqualTo(0));
+			Assert.That((uint)err, Is.GreaterThanOrEqualTo(0));
 			if (err.Succeeded)
 				Assert.That(() => Win32Error.ThrowLastError(), Throws.Nothing);
 			else
@@ -121,7 +121,7 @@ namespace Vanara.PInvoke.Tests
 		[TestCase(Win32Error.ERROR_ACCESS_DENIED, ExpectedResult = "ERROR_ACCESS_DENIED")]
 		[TestCase(0x00000003, ExpectedResult = "ERROR_PATH_NOT_FOUND")]
 		[TestCase(0x00990003, ExpectedResult = "0x00990003")]
-		public string ToStringTest(int c) => new Win32Error(c).ToString();
+		public string ToStringTest(uint c) => new Win32Error(c).ToString();
 
 		[Test]
 		public void TypeConverterTest()
@@ -129,12 +129,12 @@ namespace Vanara.PInvoke.Tests
 			Win32Error hr = Win32Error.ERROR_ACCESS_DENIED;
 			var conv = TypeDescriptor.GetConverter(typeof(Win32Error));
 
-			Assert.That(conv.CanConvertFrom(null, typeof(int)), Is.True);
+			Assert.That(conv.CanConvertFrom(null, typeof(uint)), Is.True);
 			Assert.That(conv.CanConvertFrom(null, typeof(char)), Is.False);
 			Assert.That(conv.CanConvertFrom(null, typeof(DateTime)), Is.False);
 
 			Assert.That(conv.CanConvertTo(null, typeof(string)), Is.True);
-			Assert.That(conv.CanConvertFrom(null, typeof(int)), Is.True);
+			Assert.That(conv.CanConvertFrom(null, typeof(uint)), Is.True);
 			Assert.That(conv.CanConvertFrom(null, typeof(char)), Is.False);
 			Assert.That(conv.CanConvertTo(null, typeof(DateTime)), Is.False);
 
@@ -148,7 +148,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(conv.ConvertTo(hr, typeof(string)), Is.TypeOf<string>());
 			Assert.That(conv.ConvertTo(hr, typeof(bool)), Is.EqualTo(false));
 			Assert.That(conv.ConvertTo(hr, typeof(uint)), Is.EqualTo(Win32Error.ERROR_ACCESS_DENIED));
-			Assert.That(() => conv.ConvertTo("s", typeof(int)), Throws.TypeOf<NotSupportedException>());
+			Assert.That(() => conv.ConvertTo("s", typeof(uint)), Throws.TypeOf<NotSupportedException>());
 			Assert.That(() => conv.ConvertTo(hr, typeof(char)), Throws.TypeOf<NotSupportedException>());
 			Assert.That(() => conv.ConvertTo(hr, typeof(DateTime)), Throws.TypeOf<NotSupportedException>());
 		}

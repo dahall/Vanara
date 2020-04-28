@@ -9646,7 +9646,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("iphlpapi.h", MSDNShortId = "95f0387f-24e8-4382-b78e-e59bcec0f2ed")]
 		public static extern unsafe Win32Error UnenableRouter(System.Threading.NativeOverlapped* pOverlapped, out uint lpdwEnableCount);
 
-		private static TRet GetTable<TRet>(FunctionHelper.PtrFunc<uint> func, Func<uint, TRet> make, int memErr = Win32Error.ERROR_INSUFFICIENT_BUFFER) where TRet : SafeHandle
+		private static TRet GetTable<TRet>(FunctionHelper.PtrFunc<uint> func, Func<uint, TRet> make, uint memErr = Win32Error.ERROR_INSUFFICIENT_BUFFER) where TRet : SafeHandle
 		{
 			uint len = 0;
 			var e = func(IntPtr.Zero, ref len);

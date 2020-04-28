@@ -1046,7 +1046,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntsecapi.h", MSDNShortId = "fe219070-6a00-4b8c-b2e4-2ad290a1cb9c")]
 		// public static extern NTSTATUS LsaLookupNames2(LSA_HANDLE PolicyHandle, uint Flags, uint Count, PLSA_UNICODE_STRING Names, ref
 		// PLSA_REFERENCED_DOMAIN_LIST ReferencedDomains, ref PLSA_TRANSLATED_SID2 Sids);
-		public static extern uint LsaLookupNames2(
+		public static extern NTStatus LsaLookupNames2(
 			LSA_HANDLE PolicyHandle,
 			LsaLookupNamesFlags Flags,
 			uint Count,

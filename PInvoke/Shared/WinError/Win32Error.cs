@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -11,13 +10,13 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
 	[TypeConverter(typeof(Win32ErrorTypeConverter))]
 	[PInvokeData("winerr.h")]
-	public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<int>, IConvertible, IComparable<Win32Error>, IComparable, IErrorProvider
+	public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, IConvertible, IComparable<Win32Error>, IComparable, IErrorProvider
 	{
-		internal readonly int value;
+		internal readonly uint value;
 
 		/// <summary>Initializes a new instance of the <see cref="Win32Error"/> struct with an error value.</summary>
 		/// <param name="i">The i.</param>
-		public Win32Error(int i) => value = i;
+		public Win32Error(uint i) => value = i;
 
 		/// <summary>Gets a value indicating whether this <see cref="Win32Error"/> is a failure.</summary>
 		/// <value><c>true</c> if failed; otherwise, <c>false</c>.</value>
@@ -31,8 +30,8 @@ namespace Vanara.PInvoke
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>
 		/// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value
-		/// Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to
-		/// <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
+		/// Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref
+		/// name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 		/// </returns>
 		public int CompareTo(Win32Error other) => value.CompareTo(other.value);
 
@@ -58,7 +57,7 @@ namespace Vanara.PInvoke
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		/// <exception cref="System.NotImplementedException"></exception>
-		public bool Equals(int other) => other == value;
+		public bool Equals(uint other) => other == value;
 
 		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
@@ -87,13 +86,13 @@ namespace Vanara.PInvoke
 		public static Win32Error FromException(Exception exception)
 		{
 			if (exception is Win32Exception we)
-				return we.NativeErrorCode;
+				return unchecked((uint)we.NativeErrorCode);
 			if (exception.InnerException is Win32Exception iwe)
-				return iwe.NativeErrorCode;
+				return unchecked((uint)iwe.NativeErrorCode);
 #if !(NET20 || NET35 || NET40)
-			var hr = (HRESULT)exception.HResult;
+			var hr = new HRESULT(exception.HResult);
 			if (hr.Facility == HRESULT.FacilityCode.FACILITY_WIN32)
-				return hr.Code;
+				return unchecked((uint)hr.Code);
 #endif
 			return ERROR_UNIDENTIFIED_ERROR;
 		}
@@ -102,7 +101,7 @@ namespace Vanara.PInvoke
 		/// <returns></returns>
 		[SecurityCritical]
 		[System.Diagnostics.DebuggerStepThrough]
-		public static Win32Error GetLastError() => new Win32Error(Marshal.GetLastWin32Error());
+		public static Win32Error GetLastError() => new Win32Error(unchecked((uint)Marshal.GetLastWin32Error()));
 
 		/// <summary>Throws the last error.</summary>
 		/// <param name="message">The message to associate with the exception.</param>
@@ -119,12 +118,9 @@ namespace Vanara.PInvoke
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public override string ToString()
 		{
-			foreach (var info2 in typeof(Win32Error).GetFields(BindingFlags.Public | BindingFlags.Static))
-			{
-				if (info2.FieldType == typeof(int) && (int)info2.GetValue(null) == value)
-					return info2.Name;
-			}
-			return string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", value);
+			StaticFieldValueHash.TryGetFieldName<Win32Error, uint>(value, out var err);
+			var msg = HRESULT.FormatMessage(value);
+			return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", value)) + (msg == null ? "" : ": " + msg);
 		}
 
 		/// <summary>Converts this error to an <see cref="HRESULT"/>.</summary>
@@ -146,7 +142,7 @@ namespace Vanara.PInvoke
 		[System.Diagnostics.DebuggerStepThrough]
 		public void ThrowUnless(Win32Error exception, string message = null)
 		{
-			if (value != ERROR_SUCCESS && value != (int)exception) throw GetException(message);
+			if (value != ERROR_SUCCESS && value != (uint)exception) throw GetException(message);
 		}
 
 		/// <summary>Throws if failed.</summary>
@@ -158,21 +154,18 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an explicit conversion from <see cref="System.Int32"/> to <see cref="Win32Error"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator Win32Error(int value) => new Win32Error(value);
+		public static implicit operator Win32Error(uint value) => new Win32Error(value);
 
 		/// <summary>Performs an explicit conversion from <see cref="Win32Error"/> to <see cref="System.Int32"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator int(Win32Error value) => value.value;
+		public static explicit operator uint(Win32Error value) => value.value;
 
 		/// <summary>Performs an explicit conversion from <see cref="Win32Error"/> to <see cref="HRESULT"/>.</summary>
 		/// <param name="error">The error.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator HRESULT(Win32Error error)
-			=>
-				error.value <= 0
-					? new HRESULT((uint)error.value)
-					: HRESULT.Make(true, HRESULT.FacilityCode.FACILITY_WIN32, (uint)error.value & 0xffff);
+		public static explicit operator HRESULT(Win32Error error) =>
+			unchecked((int)error.value) <= 0 ? unchecked((int)error.value) : HRESULT.Make(true, HRESULT.FacilityCode.FACILITY_WIN32, error.value & 0xffff);
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="errLeft">The error left.</param>
@@ -184,7 +177,7 @@ namespace Vanara.PInvoke
 		/// <param name="errLeft">The error left.</param>
 		/// <param name="errRight">The error right.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(Win32Error errLeft, int errRight) => errLeft.value == errRight;
+		public static bool operator ==(Win32Error errLeft, uint errRight) => errLeft.value == errRight;
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="errLeft">The error left.</param>
@@ -196,13 +189,13 @@ namespace Vanara.PInvoke
 		/// <param name="errLeft">The error left.</param>
 		/// <param name="errRight">The error right.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(Win32Error errLeft, int errRight) => errLeft.value != errRight;
+		public static bool operator !=(Win32Error errLeft, uint errRight) => errLeft.value != errRight;
 
-		private static int? ValueFromObj(object obj)
+		private static uint? ValueFromObj(object obj)
 		{
 			if (obj == null) return null;
 			var c = TypeDescriptor.GetConverter(obj);
-			return c.CanConvertTo(typeof(int)) ? (int?)c.ConvertTo(obj, typeof(int)) : null;
+			return c.CanConvertTo(typeof(uint)) ? (uint?)c.ConvertTo(obj, typeof(uint)) : null;
 		}
 
 		TypeCode IConvertible.GetTypeCode() => value.GetTypeCode();
@@ -260,7 +253,7 @@ namespace Vanara.PInvoke
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
 			if (value != null && value.GetType().IsPrimitive && !(value is char) && !(value is bool))
-				return new Win32Error((int)Convert.ChangeType(value, TypeCode.Int32));
+				return new Win32Error((uint)Convert.ChangeType(value, TypeCode.UInt32));
 			return base.ConvertFrom(context, culture, value);
 		}
 

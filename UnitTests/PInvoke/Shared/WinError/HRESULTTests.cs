@@ -13,12 +13,12 @@ namespace Vanara.PInvoke.Tests
 		[TestCase(HRESULT.E_ACCESSDENIED, 5U, ExpectedResult = 1)]
 		[TestCase(HRESULT.E_ACCESSDENIED, HRESULT.E_INVALIDARG, ExpectedResult = -1)]
 		[TestCase(HRESULT.E_INVALIDARG, HRESULT.E_ACCESSDENIED, ExpectedResult = 1)]
-		public int CompareToTest(uint c, object obj) => new HRESULT(c).CompareTo(obj);
+		public int CompareToTest(int c, object obj) => new HRESULT(c).CompareTo(obj);
 
 		[TestCase(HRESULT.E_ACCESSDENIED, HRESULT.E_INVALIDARG, ExpectedResult = -1)]
 		[TestCase(HRESULT.E_INVALIDARG, HRESULT.E_ACCESSDENIED, ExpectedResult = 1)]
 		[TestCase(HRESULT.E_INVALIDARG, HRESULT.E_INVALIDARG, ExpectedResult = 0)]
-		public int CompareToTest1(uint c1, uint c2) => new HRESULT(c1).CompareTo(new HRESULT(c2));
+		public int CompareToTest1(int c1, int c2) => new HRESULT(c1).CompareTo(new HRESULT(c2));
 
 		[Test]
 		public void ComparisonTest()
@@ -36,12 +36,12 @@ namespace Vanara.PInvoke.Tests
 		[TestCase(HRESULT.E_INVALIDARG, HRESULT.E_ACCESSDENIED, ExpectedResult = false)]
 		[TestCase(HRESULT.E_ACCESSDENIED, "A", ExpectedResult = false)]
 		[TestCase(HRESULT.E_ACCESSDENIED, int.MaxValue, ExpectedResult = false)]
-		public bool EqualsTest(uint c, object obj) => new HRESULT(c).Equals(obj);
+		public bool EqualsTest(int c, object obj) => new HRESULT(c).Equals(obj);
 
 		[TestCase(HRESULT.E_ACCESSDENIED, HRESULT.E_INVALIDARG, ExpectedResult = false)]
 		[TestCase(HRESULT.E_INVALIDARG, HRESULT.E_ACCESSDENIED, ExpectedResult = false)]
 		[TestCase(HRESULT.E_INVALIDARG, HRESULT.E_INVALIDARG, ExpectedResult = true)]
-		public bool EqualsTest1(uint c1, uint c2) => new HRESULT(c1).Equals(new HRESULT(c2));
+		public bool EqualsTest1(int c1, int c2) => new HRESULT(c1).Equals(new HRESULT(c2));
 
 		[Test]
 		public void GetExceptionTest()
@@ -87,7 +87,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(c.ToDecimal(f), Is.EqualTo(cv.ToDecimal(f)));
 			Assert.That(() => c.ToDateTime(f), Throws.Exception);
 			Assert.That(c.ToString(f), Is.EqualTo("E_ACCESSDENIED"));
-			Assert.That(c.ToType(typeof(uint), f), Is.EqualTo(cv.ToType(typeof(uint), f)));
+			Assert.That(c.ToType(typeof(int), f), Is.EqualTo(cv.ToType(typeof(int), f)));
 		}
 
 		[Test]
@@ -105,8 +105,8 @@ namespace Vanara.PInvoke.Tests
 			Assert.That((int)hr, Is.EqualTo(0x41308));
 			Assert.That((HRESULT)0x41308, Is.EqualTo(hr));
 			Assert.That(hr != (HRESULT)0x41307);
-			Assert.That(hr != 0x41307U);
-			Assert.That(hr == 0x41308U);
+			Assert.That(hr != 0x41307);
+			Assert.That(hr == 0x41308);
 			Assert.That(hr.GetHashCode(), Is.GreaterThan(0));
 			Assert.That(new HRESULT(HRESULT.S_OK).GetHashCode(), Is.Zero);
 		}
@@ -125,7 +125,7 @@ namespace Vanara.PInvoke.Tests
 		[TestCase(0x80070003, ExpectedResult = "HRESULT_FROM_WIN32(ERROR_PATH_NOT_FOUND)")]
 		[TestCase(0x80990003, ExpectedResult = "0x80990003")]
 		[TestCase(0x80079254, ExpectedResult = "0x80079254")]
-		public string ToStringTest(uint c) => new HRESULT(c).ToString();
+		public string ToStringTest(int c) => new HRESULT(c).ToString();
 
 		[Test]
 		public void TypeConverterTest()
@@ -153,7 +153,7 @@ namespace Vanara.PInvoke.Tests
 
 			Assert.That(conv.ConvertTo(hr, typeof(string)), Is.TypeOf<string>());
 			Assert.That(conv.ConvertTo(hr, typeof(bool)), Is.EqualTo(false));
-			Assert.That(conv.ConvertTo(hr, typeof(uint)), Is.EqualTo(HRESULT.E_ACCESSDENIED));
+			Assert.That(conv.ConvertTo(hr, typeof(int)), Is.EqualTo(HRESULT.E_ACCESSDENIED));
 			Assert.That(() => conv.ConvertTo("s", typeof(int)), Throws.TypeOf<NotSupportedException>());
 			Assert.That(() => conv.ConvertTo(hr, typeof(char)), Throws.TypeOf<NotSupportedException>());
 			Assert.That(() => conv.ConvertTo(hr, typeof(DateTime)), Throws.TypeOf<NotSupportedException>());

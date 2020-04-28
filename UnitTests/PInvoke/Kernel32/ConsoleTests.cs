@@ -615,7 +615,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			if (!err.HasValue) err = Win32Error.GetLastError();
 			ShowMsg(msg + "\r\n" + err.ToString());
-			return (int)err;
+			return unchecked((int)(uint)err);
 		}
 
 		private static void ShowMsg(string msg)

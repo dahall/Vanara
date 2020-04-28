@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -42,7 +43,7 @@ namespace Vanara.PInvoke
 	[PInvokeData("winerr.h")]
 	public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HRESULT>, IConvertible, IErrorProvider
 	{
-		internal readonly uint _value;
+		internal readonly int _value;
 
 		private const int codeMask = 0xFFFF;
 		private const uint facilityMask = 0x7FF0000;
@@ -224,27 +225,31 @@ namespace Vanara.PInvoke
 
 		/// <summary>Initializes a new instance of the <see cref="HRESULT"/> structure.</summary>
 		/// <param name="rawValue">The raw HRESULT value.</param>
-		public HRESULT(uint rawValue) => _value = rawValue;
+		public HRESULT(int rawValue) => _value = rawValue;
+
+		/// <summary>Initializes a new instance of the <see cref="HRESULT"/> structure.</summary>
+		/// <param name="rawValue">The raw HRESULT value.</param>
+		public HRESULT(uint rawValue) => _value = unchecked((int)rawValue);
 
 		/// <summary>Gets the code portion of the <see cref="HRESULT"/>.</summary>
 		/// <value>The code value (bits 0-15).</value>
-		public int Code => GetCode((int)_value);
+		public int Code => GetCode(_value);
 
 		/// <summary>Gets the facility portion of the <see cref="HRESULT"/>.</summary>
 		/// <value>The facility value (bits 16-26).</value>
-		public FacilityCode Facility => GetFacility((int)_value);
+		public FacilityCode Facility => GetFacility(_value);
 
 		/// <summary>Gets a value indicating whether this <see cref="HRESULT"/> is a failure (Severity bit 31 equals 1).</summary>
 		/// <value><c>true</c> if failed; otherwise, <c>false</c>.</value>
-		public bool Failed => Severity == SeverityLevel.Fail;
+		public bool Failed => _value < 0;
 
 		/// <summary>Gets the severity level of the <see cref="HRESULT"/>.</summary>
 		/// <value>The severity level.</value>
-		public SeverityLevel Severity => GetSeverity((int)_value);
+		public SeverityLevel Severity => GetSeverity(_value);
 
 		/// <summary>Gets a value indicating whether this <see cref="HRESULT"/> is a success (Severity bit 31 equals 0).</summary>
 		/// <value><c>true</c> if succeeded; otherwise, <c>false</c>.</value>
-		public bool Succeeded => Severity == SeverityLevel.Success;
+		public bool Succeeded => _value >= 0;
 
 		/// <summary>Compares the current object with another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
@@ -296,12 +301,12 @@ namespace Vanara.PInvoke
 		{
 			if (!Failed) return null;
 
-			var exceptionForHR = Marshal.GetExceptionForHR((int)_value, new IntPtr(-1));
+			var exceptionForHR = Marshal.GetExceptionForHR(_value, new IntPtr(-1));
 			if (exceptionForHR.GetType() == typeof(COMException))
 			{
 				if (Facility == FacilityCode.FACILITY_WIN32)
 					return string.IsNullOrEmpty(message) ? new Win32Exception(Code) : new Win32Exception(Code, message);
-				return new COMException(message ?? exceptionForHR.Message, (int)_value);
+				return new COMException(message ?? exceptionForHR.Message, _value);
 			}
 			if (!string.IsNullOrEmpty(message))
 			{
@@ -343,8 +348,8 @@ namespace Vanara.PInvoke
 		/// <param name="facility">The facility.</param>
 		/// <param name="code">The code.</param>
 		/// <returns>The resulting <see cref="HRESULT"/>.</returns>
-		public static HRESULT Make(bool severe, uint facility, uint code) => new HRESULT(
-			(severe ? severityMask : 0) | (facility << facilityShift) | code);
+		public static HRESULT Make(bool severe, uint facility, uint code) =>
+			new HRESULT(unchecked((int)((severe ? severityMask : 0) | (facility << facilityShift) | code)));
 
 		/// <summary>
 		/// If this <see cref="HRESULT"/> represents a failure, throw the associated <see cref="Exception"/> with the optionally supplied message.
@@ -360,37 +365,37 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// If the supplied raw HRESULT value represents a failure, throw the associated <see cref="Exception"/> with the optionally supplied message.
+		/// If the supplied raw HRESULT value represents a failure, throw the associated <see cref="Exception"/> with the optionally
+		/// supplied message.
 		/// </summary>
 		/// <param name="hresult">The 32-bit raw HRESULT value.</param>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 		[System.Diagnostics.DebuggerStepThrough]
-		public static void ThrowIfFailed(int hresult, string message = null) => new HRESULT((uint)hresult).ThrowIfFailed(message);
+		public static void ThrowIfFailed(int hresult, string message = null) => new HRESULT(hresult).ThrowIfFailed(message);
 
-		/// <summary>Converts this error to an <see cref="T:Vanara.PInvoke.HRESULT" />.</summary>
-		/// <returns>An equivalent <see cref="T:Vanara.PInvoke.HRESULT" />.</returns>
+		/// <summary>Converts this error to an <see cref="T:Vanara.PInvoke.HRESULT"/>.</summary>
+		/// <returns>An equivalent <see cref="T:Vanara.PInvoke.HRESULT"/>.</returns>
 		HRESULT IErrorProvider.ToHRESULT() => this;
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString()
 		{
+			string err = null;
 			// Check for defined HRESULT value
-			foreach (var info in typeof(HRESULT).GetFields(BindingFlags.Public | BindingFlags.Static))
+			if (!StaticFieldValueHash.TryGetFieldName<HRESULT, int>(_value, out err) && Facility == FacilityCode.FACILITY_WIN32)
 			{
-				if (info.FieldType == typeof(uint) && (uint)info.GetValue(null) == _value)
-					return info.Name;
-			}
-			// Check for Win32Error defined value
-			if (Facility == FacilityCode.FACILITY_WIN32)
-			{
-				foreach (var info2 in typeof(Win32Error).GetFields(BindingFlags.Public | BindingFlags.Static))
+				foreach (var info2 in typeof(Win32Error).GetFields(BindingFlags.Public | BindingFlags.Static).Where(fi => fi.FieldType == typeof(uint)))
 				{
-					if (info2.FieldType == typeof(int) && (HRESULT)(Win32Error)(int)info2.GetValue(null) == this)
-						return $"HRESULT_FROM_WIN32({info2.Name})";
+					if ((HRESULT)(Win32Error)(uint)info2.GetValue(null) == this)
+					{
+						err = $"HRESULT_FROM_WIN32({info2.Name})";
+						break;
+					}
 				}
 			}
-			return string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", _value);
+			var msg = FormatMessage(unchecked((uint)_value));
+			return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", _value)) + (msg == null ? "" : ": " + msg);
 		}
 
 		/// <summary>Implements the operator ==.</summary>
@@ -401,15 +406,27 @@ namespace Vanara.PInvoke
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
+		/// <param name="hrRight">The second <see cref="int"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HRESULT hrLeft, int hrRight) => hrLeft._value == hrRight;
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
 		/// <param name="hrRight">The second <see cref="uint"/>.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HRESULT hrLeft, uint hrRight) => hrLeft._value == hrRight;
+		public static bool operator ==(HRESULT hrLeft, uint hrRight) => hrLeft._value == unchecked((int)hrRight);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
 		/// <param name="hrRight">The second <see cref="HRESULT"/>.</param>
 		/// <returns>The result of the operator.</returns>
 		public static bool operator !=(HRESULT hrLeft, HRESULT hrRight) => !(hrLeft == hrRight);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
+		/// <param name="hrRight">The second <see cref="int"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HRESULT hrLeft, int hrRight) => !(hrLeft == hrRight);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
@@ -420,33 +437,28 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="HRESULT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HRESULT(int value) => new HRESULT((uint)value);
+		public static implicit operator HRESULT(int value) => new HRESULT(value);
 
-		/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="HRESULT"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="HRESULT"/>.</summary>
 		/// <param name="value">The value.</param>
-		/// <returns>The result of the conversion.</returns>
+		/// <returns>The resulting <see cref="HRESULT"/> instance from the conversion.</returns>
 		public static implicit operator HRESULT(uint value) => new HRESULT(value);
 
 		/// <summary>Performs an explicit conversion from <see cref="HRESULT"/> to <see cref="System.Int32"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator int(HRESULT value) => unchecked((int)value._value);
-
-		/// <summary>Performs an explicit conversion from <see cref="HRESULT"/> to <see cref="System.UInt32"/>.</summary>
-		/// <param name="value">The value.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator uint(HRESULT value) => value._value;
+		public static explicit operator int(HRESULT value) => value._value;
 
 		/// <summary>Performs an explicit conversion from <see cref="System.Boolean"/> to <see cref="HRESULT"/>.</summary>
-		/// <param name="value">if set to <see langword="true" /> returns S_OK; otherwise S_FALSE.</param>
+		/// <param name="value">if set to <see langword="true"/> returns S_OK; otherwise S_FALSE.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator HRESULT(bool value) => value ? S_OK : S_FALSE;
 
-		private static uint? ValueFromObj(object obj)
+		private static int? ValueFromObj(object obj)
 		{
 			if (obj == null) return null;
 			var c = TypeDescriptor.GetConverter(obj);
-			return c.CanConvertTo(typeof(uint)) ? (uint?)c.ConvertTo(obj, typeof(uint)) : null;
+			return c.CanConvertTo(typeof(int)) ? (int?)c.ConvertTo(obj, typeof(int)) : null;
 		}
 
 		TypeCode IConvertible.GetTypeCode() => _value.GetTypeCode();
@@ -483,6 +495,28 @@ namespace Vanara.PInvoke
 
 		object IConvertible.ToType(Type conversionType, IFormatProvider provider) =>
 			((IConvertible)_value).ToType(conversionType, provider);
+
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		private static extern int FormatMessage(uint dwFlags, HINSTANCE lpSource, uint dwMessageId, uint dwLanguageId, System.Text.StringBuilder lpBuffer, uint nSize, IntPtr Arguments);
+
+		/// <summary>Formats the message.</summary>
+		/// <param name="id">The error.</param>
+		/// <returns>The string.</returns>
+		internal static string FormatMessage(uint id)
+		{
+			var flags = 0x1200U; // FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM
+			Win32Error lastError;
+			var buf = new System.Text.StringBuilder(1024);
+			do
+			{
+				if (0 != FormatMessage(flags, default, id, 0, buf, (uint)buf.Capacity, default))
+					return buf.ToString();
+				else if (Win32Error.ERROR_INSUFFICIENT_BUFFER != (lastError = Win32Error.GetLastError()))
+					lastError.ThrowIfFailed();
+				buf.Capacity = buf.Capacity * 2;
+			} while (true && buf.Capacity < 1024 * 16); // Don't go crazy
+			throw lastError.GetException();
+		}
 	}
 
 	internal class HRESULTTypeConverter : TypeConverter
@@ -510,7 +544,7 @@ namespace Vanara.PInvoke
 				if (value is bool b)
 					return b ? HRESULT.S_OK : HRESULT.S_FALSE;
 				if (!(value is char))
-					return new HRESULT((uint)Convert.ChangeType(value, TypeCode.UInt32));
+					return new HRESULT((int)Convert.ChangeType(value, TypeCode.Int32));
 			}
 			return base.ConvertFrom(context, culture, value);
 		}

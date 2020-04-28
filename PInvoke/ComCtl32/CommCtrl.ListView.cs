@@ -1002,7 +1002,7 @@ namespace Vanara.PInvoke
 		// void ListView_SetItemIndexState( hwndLV, plvii, data, mask );
 		[PInvokeData("commctrl.h", MSDNShortId = "listview_setitemindexstate")]
 		public static HRESULT ListView_SetItemIndexState(HWND hwndLV, in LVITEMINDEX plvii, uint data, ListViewItemState mask) =>
-			new HRESULT((uint)SendMessage(hwndLV, (uint)ListViewMessage.LVM_SETITEMINDEXSTATE, in plvii, new LVITEM(0) { stateMask = mask, state = data }).ToInt32());
+			new HRESULT(SendMessage(hwndLV, (uint)ListViewMessage.LVM_SETITEMINDEXSTATE, in plvii, new LVITEM(0) { stateMask = mask, state = data }).ToInt32());
 
 		/// <summary>
 		/// Contains information used when searching for a list-view item. This structure is identical to LV_FINDINFO but has been renamed to

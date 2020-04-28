@@ -98,9 +98,9 @@ namespace Vanara.PInvoke.Tests
 		public void GetSetLastErrorTest()
 		{
 			SetLastError(Win32Error.ERROR_INVALID_PARAMETER);
-			Assert.That((int)GetLastError(), Is.EqualTo(Win32Error.ERROR_INVALID_PARAMETER));
+			Assert.That(GetLastError(), Is.EqualTo(Win32Error.ERROR_INVALID_PARAMETER));
 			RestoreLastError(Win32Error.ERROR_SUCCESS);
-			Assert.That((int)GetLastError(), Is.EqualTo(Win32Error.ERROR_SUCCESS));
+			Assert.That(GetLastError(), Is.EqualTo(Win32Error.ERROR_SUCCESS));
 		}
 
 		[Test]

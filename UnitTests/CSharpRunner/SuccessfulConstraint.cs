@@ -37,11 +37,11 @@ namespace Vanara.PInvoke.Tests
 				case null:
 					break;
 
-				case int i:
+				case uint i:
 					Expected = new Win32Error(i);
 					break;
 
-				case uint i:
+				case int i:
 					Expected = new HRESULT(i);
 					break;
 
@@ -89,14 +89,14 @@ namespace Vanara.PInvoke.Tests
 					Description = Expected?.ToString() ?? nameof(NTStatus.STATUS_SUCCESS);
 					break;
 
-				case int i:
+				case uint i:
 					var e = new Win32Error(i);
 					success = Expected is null ? e.Failed : e.Failed && ((IErrorProvider)Expected).ToHRESULT().Equals(e.ToHRESULT());
 					updActual = e;
 					Description = Expected?.ToString() ?? nameof(Win32Error.ERROR_SUCCESS);
 					break;
 
-				case uint ui:
+				case int ui:
 					var h = new HRESULT(ui);
 					success = Expected is null ? h.Failed : h.Failed && ((IErrorProvider)Expected).ToHRESULT().Equals(h);
 					updActual = h;
@@ -148,14 +148,14 @@ namespace Vanara.PInvoke.Tests
 					Description = nameof(NTStatus.STATUS_SUCCESS);
 					break;
 
-				case int i:
+				case uint i:
 					var e = new Win32Error(i);
 					success = e.Succeeded;
 					updActual = e;
 					Description = nameof(Win32Error.ERROR_SUCCESS);
 					break;
 
-				case uint ui:
+				case int ui:
 					var h = new HRESULT(ui);
 					success = h.Succeeded;
 					updActual = h;

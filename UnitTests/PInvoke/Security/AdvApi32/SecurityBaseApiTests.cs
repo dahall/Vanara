@@ -432,7 +432,7 @@ namespace Vanara.PInvoke.Tests
 				}
 
 				BuildTrusteeWithName(out var pTrustee, fun);
-				Assert.That((int)GetEffectiveRightsFromAcl(pAcl, pTrustee, out var accessRights), Is.EqualTo(Win32Error.ERROR_NONE_MAPPED).Or.Zero);
+				Assert.That((uint)GetEffectiveRightsFromAcl(pAcl, pTrustee, out var accessRights), Is.EqualTo(Win32Error.ERROR_NONE_MAPPED).Or.Zero);
 				var ifArray = new SafeInheritedFromArray(hardAcl.AceCount);
 				Assert.That(GetInheritanceSource(AdvApi32Tests.fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, false, null,
 					0, pAcl, IntPtr.Zero, GENERIC_MAPPING.GenericFileMapping, ifArray), ResultIs.Successful);

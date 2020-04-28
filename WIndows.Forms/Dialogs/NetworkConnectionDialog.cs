@@ -99,7 +99,7 @@ namespace Vanara.Windows.Forms
 					opts.dwFlags |= CONN_DLG.CONNDLG_RO_PATH;
 				var ret = WNetConnectionDialog1(opts);
 				opts.lpConnRes = IntPtr.Zero;
-				if (ret == -1) return false;
+				if (ret == unchecked((uint)-1)) return false;
 				ret.ThrowIfFailed();
 				return true;
 			}

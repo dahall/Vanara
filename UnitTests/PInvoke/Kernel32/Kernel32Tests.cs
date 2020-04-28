@@ -120,9 +120,9 @@ namespace Vanara.PInvoke.Tests
 		public void SetLastErrorTest()
 		{
 			SetLastError(0);
-			Assert.That((int)Win32Error.GetLastError(), Is.EqualTo(0));
+			Assert.That((uint)Win32Error.GetLastError(), Is.EqualTo(0U));
 			SetLastError(Win32Error.ERROR_AUDIT_FAILED);
-			Assert.That((int)Win32Error.GetLastError(), Is.EqualTo(Win32Error.ERROR_AUDIT_FAILED));
+			Assert.That((uint)Win32Error.GetLastError(), Is.EqualTo(Win32Error.ERROR_AUDIT_FAILED));
 		}
 	}
 }

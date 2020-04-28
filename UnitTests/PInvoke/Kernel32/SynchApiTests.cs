@@ -456,7 +456,7 @@ namespace Vanara.PInvoke.Tests
 				// Request ownership of mutex.
 				using (var hMut = OpenMutex((uint)SynchronizationObjectAccess.MUTEX_ALL_ACCESS, false, name))
 				{
-					if (hMut.IsNull) return (uint)(int)Win32Error.GetLastError();
+					if (hMut.IsNull) return (uint)Win32Error.GetLastError();
 					for (int i = 0; i < 20; i++)
 					{
 						switch (WaitForSingleObject(hMut, INFINITE))
@@ -464,7 +464,7 @@ namespace Vanara.PInvoke.Tests
 							// The thread got ownership of the mutex
 							case WAIT_STATUS.WAIT_OBJECT_0:
 								TestContext.Write("Thread {0} writing to database...\n", id);
-								if (!ReleaseMutex(hMut)) return (uint)(int)Win32Error.GetLastError();
+								if (!ReleaseMutex(hMut)) return (uint)Win32Error.GetLastError();
 								break;
 
 							// The thread got ownership of an abandoned mutex The database is in an indeterminate state
@@ -514,7 +514,7 @@ namespace Vanara.PInvoke.Tests
 				// Request ownership of mutex.
 				using (var hMut = OpenMutex((uint)SynchronizationObjectAccess.MUTEX_ALL_ACCESS, false, name))
 				{
-					if (hMut.IsNull) return (uint)(int)Win32Error.GetLastError();
+					if (hMut.IsNull) return (uint)Win32Error.GetLastError();
 					for (int i = 0; i < 20; i++)
 					{
 						switch (WaitForSingleObject(hMut, INFINITE))
@@ -522,7 +522,7 @@ namespace Vanara.PInvoke.Tests
 							// The thread got ownership of the mutex
 							case WAIT_STATUS.WAIT_OBJECT_0:
 								TestContext.Write("Thread {0} writing to database...\n", id);
-								if (!ReleaseMutex(hMut)) return (uint)(int)Win32Error.GetLastError();
+								if (!ReleaseMutex(hMut)) return (uint)Win32Error.GetLastError();
 								break;
 
 							// The thread got ownership of an abandoned mutex The database is in an indeterminate state
@@ -571,7 +571,7 @@ namespace Vanara.PInvoke.Tests
 
 				using (var hSem = OpenSemaphore((uint)SynchronizationObjectAccess.SEMAPHORE_ALL_ACCESS, false, name))
 				{
-					if (hSem.IsNull) return (uint)(int)Win32Error.GetLastError();
+					if (hSem.IsNull) return (uint)Win32Error.GetLastError();
 					var loop = true;
 					while (loop)
 					{
@@ -585,7 +585,7 @@ namespace Vanara.PInvoke.Tests
 								// Simulate thread spending time on task
 								Sleep(5);
 								// Release the semaphore when task is finished
-								if (!ReleaseSemaphore(hSem, 1, out var _)) return (uint)(int)Win32Error.GetLastError();
+								if (!ReleaseSemaphore(hSem, 1, out var _)) return (uint)Win32Error.GetLastError();
 								break;
 
 							// The semaphore was nonsignaled, so a time-out occurred.
@@ -634,7 +634,7 @@ namespace Vanara.PInvoke.Tests
 
 				using (var hSem = OpenSemaphore((uint)SynchronizationObjectAccess.SEMAPHORE_ALL_ACCESS, false, name))
 				{
-					if (hSem.IsNull) return (uint)(int)Win32Error.GetLastError();
+					if (hSem.IsNull) return (uint)Win32Error.GetLastError();
 					var loop = true;
 					while (loop)
 					{
@@ -648,7 +648,7 @@ namespace Vanara.PInvoke.Tests
 								// Simulate thread spending time on task
 								Sleep(5);
 								// Release the semaphore when task is finished
-								if (!ReleaseSemaphore(hSem, 1, out var _)) return (uint)(int)Win32Error.GetLastError();
+								if (!ReleaseSemaphore(hSem, 1, out var _)) return (uint)Win32Error.GetLastError();
 								break;
 
 							// The semaphore was nonsignaled, so a time-out occurred.

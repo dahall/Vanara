@@ -684,7 +684,7 @@ namespace Vanara.IO
 						break;
 
 					default:
-						new Win32Error((int)prog.OperationStatus).ThrowIfFailed();
+						new Win32Error(prog.OperationStatus).ThrowIfFailed();
 						break;
 				}
 				if (prog.CurrentValue == prog.CompletionValue) return true;

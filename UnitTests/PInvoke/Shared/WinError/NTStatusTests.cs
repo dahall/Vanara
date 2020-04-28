@@ -18,9 +18,9 @@ namespace Vanara.PInvoke.Tests
 			var nts = new NTStatus();
 			Assert.That(nts.Succeeded);
 			nts = new NTStatus(0);
-			Assert.That((uint)nts, Is.Zero);
+			Assert.That((int)nts, Is.Zero);
 			nts = new NTStatus(NTStatus.STATUS_CANCELLED);
-			Assert.That((uint)nts, Is.EqualTo(0xC0000120));
+			Assert.That((int)nts, Is.EqualTo(0xC0000120));
 			Assert.That(nts.Failed);
 			Assert.That(nts.CustomerDefined, Is.False);
 			Assert.That(nts.Code, Is.EqualTo(0x120));
@@ -33,12 +33,12 @@ namespace Vanara.PInvoke.Tests
 		[TestCase(NTStatus.STATUS_ACCESS_DENIED, 0x22U, ExpectedResult = 1)]
 		[TestCase(NTStatus.STATUS_ACCESS_DENIED, NTStatus.STATUS_ACPI_INVALID_ARGUMENT, ExpectedResult = -1)]
 		[TestCase(NTStatus.STATUS_ACPI_INVALID_ARGUMENT, NTStatus.STATUS_ACCESS_DENIED, ExpectedResult = 1)]
-		public int CompareToTest(uint c, object obj) => new NTStatus(c).CompareTo(obj);
+		public int CompareToTest(int c, object obj) => new NTStatus(c).CompareTo(obj);
 
 		[TestCase(NTStatus.STATUS_ACCESS_DENIED, NTStatus.STATUS_ACPI_INVALID_ARGUMENT, ExpectedResult = -1)]
 		[TestCase(NTStatus.STATUS_ACPI_INVALID_ARGUMENT, NTStatus.STATUS_ACCESS_DENIED, ExpectedResult = 1)]
 		[TestCase(NTStatus.STATUS_ACPI_INVALID_ARGUMENT, NTStatus.STATUS_ACPI_INVALID_ARGUMENT, ExpectedResult = 0)]
-		public int CompareToTest1(uint c1, uint c2) => new NTStatus(c1).CompareTo(new NTStatus(c2));
+		public int CompareToTest1(int c1, int c2) => new NTStatus(c1).CompareTo(new NTStatus(c2));
 
 		[Test]
 		public void ComparisonTest()
@@ -56,12 +56,12 @@ namespace Vanara.PInvoke.Tests
 		[TestCase(NTStatus.STATUS_ACPI_INVALID_ARGUMENT, NTStatus.STATUS_ACCESS_DENIED, ExpectedResult = false)]
 		[TestCase(NTStatus.STATUS_ACCESS_DENIED, "A", ExpectedResult = false)]
 		[TestCase(NTStatus.STATUS_ACCESS_DENIED, int.MaxValue, ExpectedResult = false)]
-		public bool EqualsTest(uint c, object obj) => new NTStatus(c).Equals(obj);
+		public bool EqualsTest(int c, object obj) => new NTStatus(c).Equals(obj);
 
 		[TestCase(NTStatus.STATUS_ACCESS_DENIED, NTStatus.STATUS_ACPI_INVALID_ARGUMENT, ExpectedResult = false)]
 		[TestCase(NTStatus.STATUS_ACPI_INVALID_ARGUMENT, NTStatus.STATUS_ACCESS_DENIED, ExpectedResult = false)]
 		[TestCase(NTStatus.STATUS_ACPI_INVALID_ARGUMENT, NTStatus.STATUS_ACPI_INVALID_ARGUMENT, ExpectedResult = true)]
-		public bool EqualsTest1(uint c1, uint c2) => new NTStatus(c1).Equals(new NTStatus(c2));
+		public bool EqualsTest1(int c1, int c2) => new NTStatus(c1).Equals(new NTStatus(c2));
 
 		[Test]
 		public void GetExceptionTest()
@@ -97,7 +97,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(c.ToBoolean(f), Is.EqualTo(nts.Succeeded));
 			Assert.That(() => c.ToDateTime(f), Throws.Exception);
 			Assert.That(c.ToString(f), Is.EqualTo("STATUS_ACCESS_DENIED"));
-			Assert.That(c.ToType(typeof(uint), f), Is.EqualTo(cv.ToType(typeof(uint), f)));
+			Assert.That(c.ToType(typeof(int), f), Is.EqualTo(cv.ToType(typeof(int), f)));
 		}
 
 		[Test]
@@ -112,11 +112,11 @@ namespace Vanara.PInvoke.Tests
 		public void OpTest()
 		{
 			NTStatus nts = NTStatus.STATUS_ACCESS_DENIED;
-			Assert.That((uint)nts, Is.EqualTo(0xC0000022));
-			Assert.That((NTStatus)0xC0000022, Is.EqualTo(nts));
-			Assert.That(nts != (NTStatus)0xC0000021);
-			Assert.That(nts != 0x22U);
-			Assert.That(nts == 0xC0000022U);
+			Assert.That((int)nts, Is.EqualTo(unchecked((int)0xC0000022)));
+			Assert.That((NTStatus)unchecked((int)0xC0000022), Is.EqualTo(nts));
+			Assert.That(nts != (NTStatus)unchecked((int)0xC0000021));
+			Assert.That(nts != 0x22);
+			Assert.That(nts == unchecked((int)0xC0000022));
 			Assert.That(nts.GetHashCode(), Is.Not.Zero);
 			Assert.That(new NTStatus(NTStatus.STATUS_SUCCESS).GetHashCode(), Is.Zero);
 		}
@@ -135,6 +135,6 @@ namespace Vanara.PInvoke.Tests
 		[TestCase(0xC0000022, ExpectedResult = "STATUS_ACCESS_DENIED")]
 		[TestCase(0x80990003, ExpectedResult = "0x80990003")]
 		[TestCase(0x80079254, ExpectedResult = "0x80079254")]
-		public string ToStringTest(uint c) => new NTStatus(c).ToString();
+		public string ToStringTest(int c) => new NTStatus(c).ToString();
 	}
 }

@@ -23,7 +23,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void gai_strerrorTest()
 		{
-			Assert.That(gai_strerror(Win32Error.WSAEINVAL), Is.Not.Null);
+			Assert.That(gai_strerror((int)Win32Error.WSAEINVAL), Is.Not.Null);
 		}
 
 		[Test]

@@ -93,7 +93,7 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(ResumeThread(hThread), Is.LessThanOrEqualTo(1));
 				Assert.That(WaitForSingleObject(hThread, INFINITE), Is.EqualTo(WAIT_STATUS.WAIT_OBJECT_0));
 				Assert.That(GetExitCodeThread(hThread, out var exitCode), Is.True);
-				Assert.That((HRESULT)exitCode, Is.EqualTo((HRESULT)0));
+				Assert.That(exitCode, Is.EqualTo(0U));
 			}
 
 			uint ThreadProc(IntPtr param)

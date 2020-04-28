@@ -1425,7 +1425,7 @@ namespace Vanara.PInvoke
 
 			if (SourceCount > (SourceList?.Length ?? 0))
 			{
-				WSASetLastError(Win32Error.WSAENOBUFS);
+				WSASetLastError(unchecked((int)Win32Error.WSAENOBUFS));
 				return SOCKET_ERROR;
 			}
 
@@ -1715,7 +1715,7 @@ namespace Vanara.PInvoke
 
 			if (SourceCount > SourceList.Length || GroupLength > Group.Size)
 			{
-				WSASetLastError(Win32Error.WSAENOBUFS);
+				WSASetLastError(unchecked((int)Win32Error.WSAENOBUFS));
 				return SOCKET_ERROR;
 			}
 
@@ -3285,7 +3285,7 @@ namespace Vanara.PInvoke
 		{
 			if (SourceCount > SourceList.Length)
 			{
-				WSASetLastError(Win32Error.WSAENOBUFS);
+				WSASetLastError(unchecked((int)Win32Error.WSAENOBUFS));
 				return SOCKET_ERROR;
 			}
 
@@ -3349,7 +3349,7 @@ namespace Vanara.PInvoke
 		{
 			if (SourceCount > SourceList.Length || GroupLength > Group.Size)
 			{
-				WSASetLastError(Win32Error.WSAENOBUFS);
+				WSASetLastError(unchecked((int)Win32Error.WSAENOBUFS));
 				return SOCKET_ERROR;
 			}
 

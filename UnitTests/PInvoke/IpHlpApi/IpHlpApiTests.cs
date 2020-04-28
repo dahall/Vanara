@@ -655,29 +655,29 @@ namespace Vanara.PInvoke.Tests
 				if (serviceSocket == SOCKET.INVALID_SOCKET || clientSocket == SOCKET.INVALID_SOCKET)
 					goto bail;
 
-				status = bind(serviceSocket, localhost.addr, localhost.ai_addrlen);
+				status = (uint)bind(serviceSocket, localhost.addr, localhost.ai_addrlen);
 				if (status.Failed)
 					goto bail;
 			}
 
 			var serverSockName = SOCKADDR.Empty;
 			int nameLen = serverSockName.Size;
-			status = getsockname(serviceSocket, serverSockName, ref nameLen);
+			status = (uint)getsockname(serviceSocket, serverSockName, ref nameLen);
 			if (status.Failed)
 				goto bail;
 			serverPort = v6 ? ((SOCKADDR_IN6)serverSockName).sin6_port : ((SOCKADDR_IN)serverSockName).sin_port;
 
-			status = listen(serviceSocket, SOMAXCONN);
+			status = (uint)listen(serviceSocket, SOMAXCONN);
 			if (status.Failed)
 				goto bail;
 
-			status = connect(clientSocket, serverSockName, nameLen);
+			status = (uint)connect(clientSocket, serverSockName, nameLen);
 			if (status.Failed)
 				goto bail;
 
 			var clientSockName = SOCKADDR.Empty;
 			nameLen = clientSockName.Size;
-			status = getsockname(clientSocket, clientSockName, ref nameLen);
+			status = (uint)getsockname(clientSocket, clientSockName, ref nameLen);
 			if (status.Failed)
 				goto bail;
 
@@ -690,7 +690,7 @@ namespace Vanara.PInvoke.Tests
 			return Win32Error.ERROR_SUCCESS;
 
 		bail:
-			return status == -1 ? WSAGetLastError() : status;
+			return status == SOCKET_ERROR ? WSAGetLastError() : status;
 		}
 
 		private static SafeAllocatedMemoryHandle GetRwForType(TCP_ESTATS_TYPE type, bool enable)

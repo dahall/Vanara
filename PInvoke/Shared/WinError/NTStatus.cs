@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -39,7 +38,7 @@ namespace Vanara.PInvoke
 	[PInvokeData("winerr.h")]
 	public partial struct NTStatus : IComparable, IComparable<NTStatus>, IEquatable<NTStatus>, IConvertible, IErrorProvider
 	{
-		internal readonly uint _value;
+		internal readonly int _value;
 
 		private const int codeMask = 0xFFFF;
 		private const uint customerMask = 0x20000000;
@@ -236,7 +235,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Initializes a new instance of the <see cref="NTStatus"/> structure.</summary>
 		/// <param name="rawValue">The raw NTStatus value.</param>
-		public NTStatus(uint rawValue) => _value = rawValue;
+		public NTStatus(int rawValue) => _value = rawValue;
 
 		/// <summary>Gets the code portion of the <see cref="NTStatus"/>.</summary>
 		/// <value>The code value (bits 0-15).</value>
@@ -267,7 +266,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// A value that indicates the relative order of the objects being compared. The return value has the following
 		/// meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal
-		///           to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
+		/// to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 		/// </returns>
 		public int CompareTo(NTStatus other) => _value.CompareTo(other._value);
 
@@ -302,12 +301,12 @@ namespace Vanara.PInvoke
 		/// <summary>Gets the code value from a 32-bit value.</summary>
 		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
 		/// <returns>The code value (bits 0-15).</returns>
-		public static ushort GetCode(uint ntstatus) => (ushort)(ntstatus & codeMask);
+		public static ushort GetCode(int ntstatus) => (ushort)(ntstatus & codeMask);
 
 		/// <summary>Gets the customer defined bit from a 32-bit value.</summary>
 		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
 		/// <returns><c>true</c> if the customer defined bit is set; otherwise, <c>false</c>.</returns>
-		public static bool IsCustomerDefined(uint ntstatus) => (ntstatus & customerMask) > 0;
+		public static bool IsCustomerDefined(int ntstatus) => (ntstatus & customerMask) > 0;
 
 		/// <summary>Gets the .NET <see cref="Exception"/> associated with the NTStatus value and optionally adds the supplied message.</summary>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
@@ -320,15 +319,15 @@ namespace Vanara.PInvoke
 			return ToHRESULT().GetException();
 		}
 
-		private const uint FACILITY_NT_BIT = 0x10000000;
+		private const int FACILITY_NT_BIT = 0x10000000;
 
 		[ExcludeFromCodeCoverage]
-		private static uint HRESULT_FROM_NT(uint ntStatus) => ntStatus | FACILITY_NT_BIT;
+		private static HRESULT HRESULT_FROM_NT(int ntStatus) => ntStatus | FACILITY_NT_BIT;
 
 		/// <summary>Gets the facility value from a 32-bit value.</summary>
 		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
 		/// <returns>The facility value (bits 16-26).</returns>
-		public static FacilityCode GetFacility(uint ntstatus) => (FacilityCode)((ntstatus & facilityMask) >> facilityShift);
+		public static FacilityCode GetFacility(int ntstatus) => (FacilityCode)((ntstatus & facilityMask) >> facilityShift);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -337,7 +336,7 @@ namespace Vanara.PInvoke
 		/// <summary>Gets the severity value from a 32-bit value.</summary>
 		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
 		/// <returns>The severity value (bit 31).</returns>
-		public static SeverityLevel GetSeverity(uint ntstatus) => (SeverityLevel)((ntstatus & severityMask) >> severityShift);
+		public static SeverityLevel GetSeverity(int ntstatus) => (SeverityLevel)((ntstatus & severityMask) >> severityShift);
 
 		/// <summary>Creates a new <see cref="NTStatus"/> from provided values.</summary>
 		/// <param name="severity">The severity level.</param>
@@ -354,7 +353,7 @@ namespace Vanara.PInvoke
 		/// <param name="code">The code.</param>
 		/// <returns>The resulting <see cref="NTStatus"/>.</returns>
 		public static NTStatus Make(SeverityLevel severity, bool customerDefined, ushort facility, ushort code) =>
-			new NTStatus(((uint)severity << severityShift) | (customerDefined ? customerMask : 0) | ((uint)facility << facilityShift) | code);
+			new NTStatus(unchecked((int)(((uint)severity << severityShift) | (customerDefined ? customerMask : 0U) | ((uint)facility << facilityShift) | code)));
 
 		/// <summary>
 		/// If this <see cref="NTStatus"/> represents a failure, throw the associated <see cref="Exception"/> with the optionally supplied message.
@@ -372,7 +371,7 @@ namespace Vanara.PInvoke
 		/// <summary>Converts a Win32 error to an NTSTATUS.</summary>
 		/// <param name="x">The Win32 error codex.</param>
 		/// <returns>The equivalent NTSTATUS value.</returns>
-		public static NTStatus NTSTATUS_FROM_WIN32(int x) => x <= 0 ? unchecked((uint)x) : (NTStatus)(((x) & 0x0000FFFF) | ((uint)FacilityCode.FACILITY_NTWIN32 << 16) | 0xC0000000);
+		public static NTStatus NTSTATUS_FROM_WIN32(uint x) => unchecked((int)x) <= 0 ? unchecked((int)x) : unchecked((int)(((x) & 0x0000FFFF) | ((uint)FacilityCode.FACILITY_NTWIN32 << 16) | 0xC0000000U));
 
 		/// <summary>
 		/// If the supplied raw NTStatus value represents a failure, throw the associated <see cref="Exception"/> with the optionally
@@ -380,14 +379,14 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
-		public static void ThrowIfFailed(uint ntstatus, string message = null) => new NTStatus(ntstatus).ThrowIfFailed(message);
+		public static void ThrowIfFailed(int ntstatus, string message = null) => new NTStatus(ntstatus).ThrowIfFailed(message);
 
-		/// <summary>Converts this error to an <see cref="T:Vanara.PInvoke.HRESULT" />.</summary>
-		/// <returns>An equivalent <see cref="T:Vanara.PInvoke.HRESULT" />.</returns>
+		/// <summary>Converts this error to an <see cref="T:Vanara.PInvoke.HRESULT"/>.</summary>
+		/// <returns>An equivalent <see cref="T:Vanara.PInvoke.HRESULT"/>.</returns>
 		public HRESULT ToHRESULT()
 		{
 			Win32Error werr = RtlNtStatusToDosError(_value);
-			return werr != Win32Error.ERROR_MR_MID_NOT_FOUND ? (HRESULT)werr : new HRESULT(HRESULT_FROM_NT(_value));
+			return werr != Win32Error.ERROR_MR_MID_NOT_FOUND ? (HRESULT)werr : HRESULT_FROM_NT(_value);
 		}
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
@@ -395,10 +394,9 @@ namespace Vanara.PInvoke
 		public override string ToString()
 		{
 			// Check for defined NTStatus value
-			foreach (var info in typeof(NTStatus).GetFields(BindingFlags.Public | BindingFlags.Static))
-				if (info.FieldType == typeof(uint) && (uint)info.GetValue(null) == _value)
-					return info.Name;
-			return string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", _value);
+			StaticFieldValueHash.TryGetFieldName<NTStatus, int>(_value, out var err);
+			var msg = HRESULT.FormatMessage(unchecked((uint)_value));
+			return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", _value)) + (msg == null ? "" : ": " + msg);
 		}
 
 		/// <summary>Implements the operator ==.</summary>
@@ -409,9 +407,9 @@ namespace Vanara.PInvoke
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
-		/// <param name="hrRight">The second <see cref="uint"/>.</param>
+		/// <param name="hrRight">The second <see cref="int"/>.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(NTStatus hrLeft, uint hrRight) => hrLeft._value == hrRight;
+		public static bool operator ==(NTStatus hrLeft, int hrRight) => hrLeft._value == hrRight;
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
@@ -421,35 +419,35 @@ namespace Vanara.PInvoke
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
-		/// <param name="hrRight">The second <see cref="uint"/>.</param>
+		/// <param name="hrRight">The second <see cref="int"/>.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(NTStatus hrLeft, uint hrRight) => !(hrLeft == hrRight);
+		public static bool operator !=(NTStatus hrLeft, int hrRight) => !(hrLeft == hrRight);
 
 		/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="NTStatus"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator NTStatus(uint value) => new NTStatus(value);
+		public static implicit operator NTStatus(int value) => new NTStatus(value);
 
 		/// <summary>Performs an implicit conversion from <see cref="Win32Error"/> to <see cref="NTStatus"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The resulting <see cref="NTStatus"/> instance from the conversion.</returns>
-		public static implicit operator NTStatus(Win32Error value) => NTSTATUS_FROM_WIN32((int)value);
+		public static implicit operator NTStatus(Win32Error value) => NTSTATUS_FROM_WIN32((uint)value);
 
 		/// <summary>Performs an explicit conversion from <see cref="NTStatus"/> to <see cref="System.Int32"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator uint(NTStatus value) => value._value;
+		public static explicit operator int(NTStatus value) => value._value;
 
 		/// <summary>Performs an explicit conversion from <see cref="NTStatus"/> to <see cref="HRESULT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The resulting <see cref="HRESULT"/> instance from the conversion.</returns>
 		public static explicit operator HRESULT(NTStatus value) => value.ToHRESULT();
 
-		private static uint? ValueFromObj(object obj)
+		private static int? ValueFromObj(object obj)
 		{
 			if (obj == null) return null;
 			var c = TypeDescriptor.GetConverter(obj);
-			return c.CanConvertTo(typeof(uint)) ? (uint?)c.ConvertTo(obj, typeof(uint)) : null;
+			return c.CanConvertTo(typeof(int)) ? (int?)c.ConvertTo(obj, typeof(int)) : null;
 		}
 
 		TypeCode IConvertible.GetTypeCode() => _value.GetTypeCode();
@@ -494,7 +492,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.NtDll, ExactSpelling = true)]
 		[PInvokeData("Winternl.h", MSDNShortId = "ms680600")]
-		public static extern int RtlNtStatusToDosError(uint status);
+		public static extern uint RtlNtStatusToDosError(int status);
 	}
 
 	internal class NTStatusTypeConverter : TypeConverter
@@ -520,7 +518,7 @@ namespace Vanara.PInvoke
 				if (value is bool b)
 					return b ? NTStatus.STATUS_SUCCESS : NTStatus.STATUS_UNSUCCESSFUL;
 				if (!(value is char))
-					return new NTStatus((uint)Convert.ChangeType(value, TypeCode.UInt32));
+					return new NTStatus((int)Convert.ChangeType(value, TypeCode.Int32));
 			}
 			return base.ConvertFrom(context, culture, value);
 		}

@@ -721,10 +721,11 @@ namespace Vanara.PInvoke
 			{
 				if (0 != FormatMessage(flags, hLib, id, langId, buf, (uint)buf.Capacity, (IntPtr)pargs))
 					return buf.ToString();
-				else if (Win32Error.ERROR_INSUFFICIENT_BUFFER != (lastError = Marshal.GetLastWin32Error()))
+				else if (Win32Error.ERROR_INSUFFICIENT_BUFFER != (lastError = GetLastError()))
 					lastError.ThrowIfFailed();
 				buf.Capacity = buf.Capacity * 2;
-			} while (true);
+			} while (true && buf.Capacity <= 1024 * 16); // Donn't go insane
+			throw lastError.GetException();
 		}
 
 		/// <summary>
@@ -766,7 +767,7 @@ namespace Vanara.PInvoke
 			{
 				if (0 != FormatMessage(flags, formatString, 0, 0, buf, (uint)buf.Capacity, (IntPtr)pargs))
 					return buf.ToString();
-				else if (Win32Error.ERROR_INSUFFICIENT_BUFFER != (lastError = Marshal.GetLastWin32Error()))
+				else if (Win32Error.ERROR_INSUFFICIENT_BUFFER != (lastError = GetLastError()))
 					lastError.ThrowIfFailed();
 				buf.Capacity = buf.Capacity * 2;
 			} while (true);
@@ -1343,7 +1344,7 @@ namespace Vanara.PInvoke
 		/// <returns>The formatted system message.</returns>
 		public static string FormatMessage(this IErrorProvider err, params object[] args)
 		{
-			try { return Kernel32.FormatMessage((uint)err.ToHRESULT(), args); }
+			try { return Kernel32.FormatMessage(unchecked((uint)(int)err.ToHRESULT()), args); }
 			catch { return string.Empty; }
 		}
 
@@ -1354,7 +1355,7 @@ namespace Vanara.PInvoke
 		/// <returns>The formatted system message.</returns>
 		public static string FormatMessage(this IErrorProvider err, HINSTANCE hLib, params object[] args)
 		{
-			try { return Kernel32.FormatMessage((uint)err.ToHRESULT(), args, hLib); }
+			try { return Kernel32.FormatMessage(unchecked((uint)(int)err.ToHRESULT()), args, hLib); }
 			catch { return string.Empty; }
 		}
 	}

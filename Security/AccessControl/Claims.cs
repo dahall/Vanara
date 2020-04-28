@@ -152,7 +152,7 @@ namespace Microsoft.Samples.DynamicAccessControl
 				return Marshal.GetLastWin32Error();
 			}
 
-			return Win32Error.ERROR_SUCCESS;
+			return 0;
 		}
 
 		/// <summary>

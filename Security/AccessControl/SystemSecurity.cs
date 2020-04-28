@@ -224,7 +224,7 @@ namespace Vanara.Security.AccessControl
 		/// <returns>An enumeration of CAPIDs.</returns>
 		public IEnumerable<SecurityIdentifier> GetAvailableCAPIDs()
 		{
-			ThrowIfLsaError((uint)LsaGetAppliedCAPIDs(svr, out var capIdArray, out var capCount));
+			ThrowIfLsaError(LsaGetAppliedCAPIDs(svr, out var capIdArray, out var capCount));
 			return capCount == 0 || capIdArray.IsInvalid ? new SecurityIdentifier[0] : capIdArray.DangerousGetHandle().ToIEnum<IntPtr>((int)capCount).Select(p => new SecurityIdentifier(p));
 		}
 

@@ -67,7 +67,7 @@ namespace Vanara.Windows.Forms
 		{
 			opts.hwndOwner = hwndOwner;
 			var ret = WNetDisconnectDialog1(opts);
-			if (ret == -1) return false;
+			if (ret == unchecked((uint)-1)) return false;
 			ret.ThrowIfFailed();
 			return true;
 		}

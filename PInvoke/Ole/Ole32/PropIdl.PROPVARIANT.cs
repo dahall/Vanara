@@ -366,7 +366,7 @@ namespace Vanara.PInvoke
 			{
 				get
 				{
-					var r = GetRawValue<int>();
+					var r = GetRawValue<uint>();
 					return r.HasValue ? new Win32Error(r.Value) : (Win32Error?)null;
 				}
 			}
@@ -405,7 +405,7 @@ namespace Vanara.PInvoke
 			public string pwszVal => GetString(VarType);
 
 			/// <summary>Gets the Win32Error value.</summary>
-			public Win32Error scode => new Win32Error(GetRawValue<int>().GetValueOrDefault());
+			public Win32Error scode => new Win32Error(GetRawValue<uint>().GetValueOrDefault());
 
 			/// <summary>Gets the ulong value.</summary>
 			public ulong uhVal => GetRawValue<ulong>().GetValueOrDefault();
@@ -886,8 +886,8 @@ namespace Vanara.PInvoke
 
 					case VARTYPE.VT_HRESULT:
 						return isRef
-							? (pulVal.HasValue ? new HRESULT(pulVal.Value) : (HRESULT?)null)
-							: (isVector ? caul.Select(u => new HRESULT(u)) : (object)new HRESULT(ulVal));
+							? (pulVal.HasValue ? new HRESULT(plVal.Value) : (HRESULT?)null)
+							: (isVector ? cal.Select(u => new HRESULT(u)) : (object)new HRESULT(lVal));
 
 					case VARTYPE.VT_CY:
 						return isRef ? pcyVal : (isVector ? cacy : (object)cyVal);
@@ -1096,7 +1096,7 @@ namespace Vanara.PInvoke
 						break;
 
 					case VARTYPE.VT_ERROR:
-						Init(InitPropVariantFromUInt32Vector, o => o is Win32Error err ? (uint)(int)err : (uint)Convert.ChangeType(o, typeof(uint)));
+						Init(InitPropVariantFromUInt32Vector, o => o is Win32Error err ? (uint)err : (uint)Convert.ChangeType(o, typeof(uint)));
 						vt = newVT;
 						break;
 

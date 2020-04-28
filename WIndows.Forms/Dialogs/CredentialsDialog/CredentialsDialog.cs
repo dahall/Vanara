@@ -190,12 +190,12 @@ namespace Vanara.Windows.Forms
 
 					if (string.IsNullOrEmpty(Target)) Target = DefaultTarget;
 					var ret = CredUIPromptForCredentials(info, Target, IntPtr.Zero,
-						AuthenticationError, userName, CREDUI_MAX_USERNAME_LENGTH, password, CREDUI_MAX_PASSWORD_LENGTH, ref saveChecked,
+						unchecked((uint)AuthenticationError), userName, CREDUI_MAX_USERNAME_LENGTH, password, CREDUI_MAX_PASSWORD_LENGTH, ref saveChecked,
 						CredentialsDialogOptions.CREDUI_FLAGS_DEFAULT | (ShowSaveCheckBox ? CredentialsDialogOptions.CREDUI_FLAGS_SHOW_SAVE_CHECK_BOX : 0));
 					if (ret == Win32Error.ERROR_CANCELLED)
 						return false;
 					if (ret != Win32Error.ERROR_SUCCESS)
-						throw new InvalidOperationException($"Unknown error in {nameof(CredentialsDialog)}. Error: 0x{(int)ret:X}");
+						throw new InvalidOperationException($"Unknown error in {nameof(CredentialsDialog)}. Error: 0x{(uint)ret:X}");
 
 					if (EncryptPassword)
 					{

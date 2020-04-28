@@ -180,7 +180,7 @@ namespace Vanara.PInvoke
 		public const int SO_USELOOPBACK = 0x0040;
 
 		/// <summary>A value that indicates a function failure.</summary>
-		public const int SOCKET_ERROR = -1;
+		public const uint SOCKET_ERROR = unchecked((uint)-1);
 
 		/// <summary>The socket option level.</summary>
 		public const int SOL_SOCKET = 0xffff;
