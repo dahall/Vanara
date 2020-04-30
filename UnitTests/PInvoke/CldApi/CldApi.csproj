@@ -46,6 +46,10 @@
       <Project>{842d436f-598c-47d7-b5aa-12399f8ccfe9}</Project>
       <Name>Vanara.PInvoke.Kernel32</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\SearchApi\Vanara.PInvoke.SearchApi.csproj">
+      <Project>{07cd630d-a4bd-45cb-bf1b-90e981f4de81}</Project>
+      <Name>Vanara.PInvoke.SearchApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
       <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
       <Name>Vanara.PInvoke.Shared</Name>
@@ -56,6 +60,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts">
+      <Version>10.0.18362.2005</Version>
+    </PackageReference>
     <PackageReference Include="NUnit">
       <Version>3.12.0</Version>
     </PackageReference>
@@ -68,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CldApiTests.cs" />
+    <Compile Include="CloudSyncProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

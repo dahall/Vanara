@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
@@ -12,7 +13,9 @@ namespace Vanara.PInvoke
 		/// <param name="CallbackInfo">The callback information.</param>
 		/// <param name="CallbackParameters">The callback parameters.</param>
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void CF_CALLBACK(in CF_CALLBACK_INFO CallbackInfo, IntPtr CallbackParameters);
+		public delegate void CF_CALLBACK(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters);
+
+		private delegate HRESULT GetInfoFunc<TParam, TEnum>(TParam p1, TEnum InfoClass, IntPtr InfoBuffer, uint InfoBufferLength, out uint ReturnedLength) where TEnum : Enum;
 
 		/// <summary>
 		/// Closes the file or directory handle returned by CfOpenFileWithOplock. This should not be used with standard Win32 file handles,
@@ -176,6 +179,35 @@ namespace Vanara.PInvoke
 		public static unsafe extern HRESULT CfConvertToPlaceholder(HFILE FileHandle, [In, Optional] IntPtr FileIdentity, uint FileIdentityLength, CF_CONVERT_FLAGS ConvertFlags,
 			[Out, Optional] int* ConvertUsn, [In, Out, Optional] NativeOverlapped* Overlapped);
 
+		/// <summary>Creates one or more new placeholder files or directories under a sync root tree.</summary>
+		/// <param name="BaseDirectoryPath">Local directory path under which placeholders are created.</param>
+		/// <param name="PlaceholderArray">
+		/// On successful creation, the PlaceholderArray contains the final USN value and a STATUS_OK message. On return, this array
+		/// contains an HRESULT value describing whether the placeholder was created or not.
+		/// </param>
+		/// <param name="PlaceholderCount">The count of placeholders in the PlaceholderArray.</param>
+		/// <param name="CreateFlags">Flags for configuring the creation of a placeholder.</param>
+		/// <param name="EntriesProcessed">The number of entries processed, including failed entries.</param>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		/// <remarks>
+		/// <para>
+		/// Creating a placeholder with this function is preferred compared to creating a new file with CreateFile and then converting it to
+		/// a placeholder with CfConvertToPlaceholder; both for efficiency and because it eliminates the time window where the file is not a
+		/// placeholder. The function can also create multiple files or directories in a batch, which can also be more efficient.
+		/// </para>
+		/// <para>
+		/// This function is useful when performing an initial sync of files or directories from the cloud down to the client, or when
+		/// syncing down a newly created single file or directory from the cloud.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/cfapi/nf-cfapi-cfcreateplaceholders HRESULT CfCreatePlaceholders( LPCWSTR
+		// BaseDirectoryPath, CF_PLACEHOLDER_CREATE_INFO *PlaceholderArray, DWORD PlaceholderCount, CF_CREATE_FLAGS CreateFlags, PDWORD
+		// EntriesProcessed );
+		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("cfapi.h", MSDNShortId = "96A6F62E-7F14-40B5-AB57-260DC9B1DF89")]
+		public static extern HRESULT CfCreatePlaceholders([MarshalAs(UnmanagedType.LPWStr)] string BaseDirectoryPath, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CF_PLACEHOLDER_CREATE_INFO[] PlaceholderArray,
+			uint PlaceholderCount, CF_CREATE_FLAGS CreateFlags, out uint EntriesProcessed);
+
 		/// <summary>
 		/// Dehydrates a placeholder file by ensuring that the specified byte range is not present on-disk in the placeholder. This is valid
 		/// for files only.
@@ -248,35 +280,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("CfApi.h")]
 		public static unsafe extern HRESULT CfDehydratePlaceholder(HFILE FileHandle, long StartingOffset, long Length, CF_DEHYDRATE_FLAGS DehydrateFlags, [In, Out] NativeOverlapped* Overlapped);
 
-		/// <summary>Creates one or more new placeholder files or directories under a sync root tree.</summary>
-		/// <param name="BaseDirectoryPath">Local directory path under which placeholders are created.</param>
-		/// <param name="PlaceholderArray">
-		/// On successful creation, the PlaceholderArray contains the final USN value and a STATUS_OK message. On return, this array
-		/// contains an HRESULT value describing whether the placeholder was created or not.
-		/// </param>
-		/// <param name="PlaceholderCount">The count of placeholders in the PlaceholderArray.</param>
-		/// <param name="CreateFlags">Flags for configuring the creation of a placeholder.</param>
-		/// <param name="EntriesProcessed">The number of entries processed, including failed entries.</param>
-		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
-		/// <remarks>
-		/// <para>
-		/// Creating a placeholder with this function is preferred compared to creating a new file with CreateFile and then converting it to
-		/// a placeholder with CfConvertToPlaceholder; both for efficiency and because it eliminates the time window where the file is not a
-		/// placeholder. The function can also create multiple files or directories in a batch, which can also be more efficient.
-		/// </para>
-		/// <para>
-		/// This function is useful when performing an initial sync of files or directories from the cloud down to the client, or when
-		/// syncing down a newly created single file or directory from the cloud.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/cfapi/nf-cfapi-cfcreateplaceholders HRESULT CfCreatePlaceholders( LPCWSTR
-		// BaseDirectoryPath, CF_PLACEHOLDER_CREATE_INFO *PlaceholderArray, DWORD PlaceholderCount, CF_CREATE_FLAGS CreateFlags, PDWORD
-		// EntriesProcessed );
-		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("cfapi.h", MSDNShortId = "96A6F62E-7F14-40B5-AB57-260DC9B1DF89")]
-		public static extern HRESULT CfCreatePlaceholders([MarshalAs(UnmanagedType.LPWStr)] string BaseDirectoryPath, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CF_PLACEHOLDER_CREATE_INFO[] PlaceholderArray,
-			uint PlaceholderCount, CF_CREATE_FLAGS CreateFlags, out uint EntriesProcessed);
-
 		/// <summary>Disconnects a communication channel created by CfConnectSyncRoot.</summary>
 		/// <param name="ConnectionKey">The connection key returned from CfConnectSyncRoot that is now used to disconnect the sync root.</param>
 		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
@@ -348,6 +351,13 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfapi.h", MSDNShortId = "D82269CF-8056-46CF-9832-AAE8767A854B")]
 		public static extern HRESULT CfGetPlaceholderInfo(HFILE FileHandle, CF_PLACEHOLDER_INFO_CLASS InfoClass, [Out] IntPtr InfoBuffer, uint InfoBufferLength, out uint ReturnedLength);
+
+		/// <summary>Gets various characteristics of a placeholder file or folder.</summary>
+		/// <typeparam name="T">The type of information to retrieve.</typeparam>
+		/// <param name="FileHandle">A handle to the placeholder whose information will be queried.</param>
+		/// <returns>The requested information.</returns>
+		[PInvokeData("cfapi.h", MSDNShortId = "D82269CF-8056-46CF-9832-AAE8767A854B")]
+		public static T CfGetPlaceholderInfo<T>(HFILE FileHandle) where T : struct => GetInfo<T, CF_PLACEHOLDER_INFO_CLASS, HFILE>(CfGetPlaceholderInfo, FileHandle);
 
 		/// <summary>Gets range information about a placeholder file or folder.</summary>
 		/// <param name="FileHandle">The handle of the placeholder file to be queried.</param>
@@ -440,6 +450,13 @@ namespace Vanara.PInvoke
 		[PInvokeData("cfapi.h", MSDNShortId = "EC96CB4E-6BCE-49D9-9CDA-A24A9303B5CF")]
 		public static extern HRESULT CfGetSyncRootInfoByHandle(HFILE FileHandle, CF_SYNC_ROOT_INFO_CLASS InfoClass, [Out] IntPtr InfoBuffer, uint InfoBufferLength, out uint ReturnedLength);
 
+		/// <summary>Gets various characteristics of the sync root containing a given file specified by a file handle.</summary>
+		/// <typeparam name="T">The type of information to retrieve.</typeparam>
+		/// <param name="FileHandle">Handle of the file under the sync root whose information is to be queried.</param>
+		/// <returns>The requested sync root information.</returns>
+		[PInvokeData("cfapi.h", MSDNShortId = "EC96CB4E-6BCE-49D9-9CDA-A24A9303B5CF")]
+		public static T CfGetSyncRootInfoByHandle<T>(HFILE FileHandle) where T : struct => GetInfo<T, CF_SYNC_ROOT_INFO_CLASS, HFILE>(CfGetSyncRootInfoByHandle, FileHandle);
+
 		/// <summary>Gets various sync root information given a file under the sync root.</summary>
 		/// <param name="FilePath">A fully qualified path to a file whose sync root information is to be queried</param>
 		/// <param name="InfoClass">Types of sync root information.</param>
@@ -454,6 +471,14 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfapi.h", MSDNShortId = "0FEEF910-3545-4D94-BFF9-88AEE084F454")]
 		public static extern HRESULT CfGetSyncRootInfoByPath([MarshalAs(UnmanagedType.LPWStr)] string FilePath, CF_SYNC_ROOT_INFO_CLASS InfoClass, [Out] IntPtr InfoBuffer, uint InfoBufferLength, out uint ReturnedLength);
+
+		/// <summary>Gets various sync root information given a file under the sync root.</summary>
+		/// <typeparam name="T">The type of information to retrieve.</typeparam>
+		/// <param name="FilePath">A fully qualified path to a file whose sync root information is to be queried</param>
+		/// <returns>The requested sync root information.</returns>
+		/// <exception cref="ArgumentException">Supplied type parameter is not supported. - T</exception>
+		[PInvokeData("cfapi.h", MSDNShortId = "0FEEF910-3545-4D94-BFF9-88AEE084F454")]
+		public static T CfGetSyncRootInfoByPath<T>(string FilePath) where T : struct => GetInfo<T, CF_SYNC_ROOT_INFO_CLASS, string>(CfGetSyncRootInfoByPath, FilePath);
 
 		/// <summary>Initiates a transfer of data into a placeholder file or folder.</summary>
 		/// <param name="FileHandle">The file handle of the placeholder.</param>
@@ -1083,6 +1108,21 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfapi.h", MSDNShortId = "E0CB6CA2-439A-4919-95EF-B519ABBBB085")]
 		public static extern HRESULT CfUpdateSyncProviderStatus(CF_CONNECTION_KEY ConnectionKey, CF_SYNC_PROVIDER_STATUS ProviderStatus);
+
+		private static T GetInfo<T, TEnum, TParam>(GetInfoFunc<TParam, TEnum> func, TParam firstParam) where TEnum : struct, Enum where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanGet<TEnum>(typeof(T), out var infoClass))
+				throw new ArgumentException("Supplied type parameter is not supported.", nameof(T));
+			using var mem = SafeHGlobalHandle.CreateFromStructure<T>();
+			var hr = func(firstParam, infoClass, mem, mem.Size, out var len);
+			while (hr == (HRESULT)(Win32Error)Win32Error.ERROR_MORE_DATA && mem.Size < 1024 * 32)
+			{
+				mem.Size = len * 4;
+				hr = func(firstParam, infoClass, mem, mem.Size, out len);
+			}
+			hr.ThrowIfFailed();
+			return mem.ToStructure<T>();
+		}
 
 		/// <summary>Provides a handle to a CF opened file.</summary>
 		[StructLayout(LayoutKind.Sequential)]
