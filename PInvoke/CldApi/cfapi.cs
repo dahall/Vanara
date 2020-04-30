@@ -1352,6 +1352,42 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 56)]
 			public byte[] Content;
 
+			/// <summary/>
+			public CF_CALLBACK_PARAMETERS_CANCEL Cancel => GetParam<CF_CALLBACK_PARAMETERS_CANCEL>();
+
+			/// <summary/>
+			public CF_CALLBACK_PARAMETERS_FETCHDATA FetchData => GetParam<CF_CALLBACK_PARAMETERS_FETCHDATA>();
+
+			/// <summary/>
+			public CF_CALLBACK_PARAMETERS_VALIDATEDATA ValidateData => GetParam<CF_CALLBACK_PARAMETERS_VALIDATEDATA>();
+
+			/// <summary/>
+			public CF_CALLBACK_PARAMETERS_FETCHPLACEHOLDERS FetchPlaceholders => GetParam<CF_CALLBACK_PARAMETERS_FETCHPLACEHOLDERS>();
+
+			/// <summary/>
+			public CF_CALLBACK_PARAMETERS_OPENCOMPLETION OpenCompletion => GetParam<CF_CALLBACK_PARAMETERS_OPENCOMPLETION>();
+
+			/// <summary/>
+			public CF_CALLBACK_PARAMETERS_CLOSECOMPLETION CloseCompletion => GetParam<CF_CALLBACK_PARAMETERS_CLOSECOMPLETION>();
+
+			/// <summary/>
+			public CF_CALLBACK_PARAMETERS_DEHYDRATE Dehydrate => GetParam<CF_CALLBACK_PARAMETERS_DEHYDRATE>();
+
+			/// <summary/>
+			public CF_CALLBACK_PARAMETERS_DEHYDRATECOMPLETION DehydrateCompletion => GetParam<CF_CALLBACK_PARAMETERS_DEHYDRATECOMPLETION>();
+
+			/// <summary/>
+			public CF_CALLBACK_PARAMETERS_DELETE Delete => GetParam<CF_CALLBACK_PARAMETERS_DELETE>();
+
+			/// <summary/>
+			public CF_CALLBACK_PARAMETERS_DELETECOMPLETION DeleteCompletion => GetParam<CF_CALLBACK_PARAMETERS_DELETECOMPLETION>();
+
+			/// <summary/>
+			public CF_CALLBACK_PARAMETERS_RENAME Rename => GetParam<CF_CALLBACK_PARAMETERS_RENAME>();
+
+			/// <summary/>
+			public CF_CALLBACK_PARAMETERS_RENAMECOMPLETION RenameCompletion => GetParam<CF_CALLBACK_PARAMETERS_RENAMECOMPLETION>();
+
 			/// <summary>Gets the parameter value for this structure.</summary>
 			/// <typeparam name="T">The type of the structure to retrieve.</typeparam>
 			/// <returns>The requested structure.</returns>
