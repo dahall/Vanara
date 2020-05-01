@@ -147,7 +147,7 @@ namespace Vanara.PInvoke
 			CF_CALLBACK_FETCH_DATA_FLAG_RECOVERY = 1,
 
 			/// <summary>
-			/// Note This value is new for Windows 10, version 1803.Flag to be used if the callback is invoked as a result of a call to CfHydratePlaceholder.
+			/// Note This value is new for Windows 10, version 1803. Flag to be used if the callback is invoked as a result of a call to CfHydratePlaceholder.
 			/// </summary>
 			CF_CALLBACK_FETCH_DATA_FLAG_EXPLICIT_HYDRATION = 2,
 		}
@@ -1342,51 +1342,53 @@ namespace Vanara.PInvoke
 		// CF_CALLBACK_DELETE_COMPLETION_FLAGS Flags; } DeleteCompletion; struct { CF_CALLBACK_RENAME_FLAGS Flags; PCWSTR TargetPath; }
 		// Rename; struct { CF_CALLBACK_RENAME_COMPLETION_FLAGS Flags; PCWSTR SourcePath; } RenameCompletion; } DUMMYUNIONNAME; } CF_CALLBACK_PARAMETERS;
 		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct CF_CALLBACK_PARAMETERS
 		{
 			/// <summary/>
 			public uint ParamSize;
+
+			private uint pad;
 
 			/// <summary/>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 56)]
 			public byte[] Content;
 
 			/// <summary/>
-			public CF_CALLBACK_PARAMETERS_CANCEL Cancel => GetParam<CF_CALLBACK_PARAMETERS_CANCEL>();
+			public CANCEL Cancel => GetParam<CANCEL>();
 
 			/// <summary/>
-			public CF_CALLBACK_PARAMETERS_FETCHDATA FetchData => GetParam<CF_CALLBACK_PARAMETERS_FETCHDATA>();
+			public FETCHDATA FetchData => GetParam<FETCHDATA>();
 
 			/// <summary/>
-			public CF_CALLBACK_PARAMETERS_VALIDATEDATA ValidateData => GetParam<CF_CALLBACK_PARAMETERS_VALIDATEDATA>();
+			public VALIDATEDATA ValidateData => GetParam<VALIDATEDATA>();
 
 			/// <summary/>
-			public CF_CALLBACK_PARAMETERS_FETCHPLACEHOLDERS FetchPlaceholders => GetParam<CF_CALLBACK_PARAMETERS_FETCHPLACEHOLDERS>();
+			public FETCHPLACEHOLDERS FetchPlaceholders => GetParam<FETCHPLACEHOLDERS>();
 
 			/// <summary/>
-			public CF_CALLBACK_PARAMETERS_OPENCOMPLETION OpenCompletion => GetParam<CF_CALLBACK_PARAMETERS_OPENCOMPLETION>();
+			public OPENCOMPLETION OpenCompletion => GetParam<OPENCOMPLETION>();
 
 			/// <summary/>
-			public CF_CALLBACK_PARAMETERS_CLOSECOMPLETION CloseCompletion => GetParam<CF_CALLBACK_PARAMETERS_CLOSECOMPLETION>();
+			public CLOSECOMPLETION CloseCompletion => GetParam<CLOSECOMPLETION>();
 
 			/// <summary/>
-			public CF_CALLBACK_PARAMETERS_DEHYDRATE Dehydrate => GetParam<CF_CALLBACK_PARAMETERS_DEHYDRATE>();
+			public DEHYDRATE Dehydrate => GetParam<DEHYDRATE>();
 
 			/// <summary/>
-			public CF_CALLBACK_PARAMETERS_DEHYDRATECOMPLETION DehydrateCompletion => GetParam<CF_CALLBACK_PARAMETERS_DEHYDRATECOMPLETION>();
+			public DEHYDRATECOMPLETION DehydrateCompletion => GetParam<DEHYDRATECOMPLETION>();
 
 			/// <summary/>
-			public CF_CALLBACK_PARAMETERS_DELETE Delete => GetParam<CF_CALLBACK_PARAMETERS_DELETE>();
+			public DELETE Delete => GetParam<DELETE>();
 
 			/// <summary/>
-			public CF_CALLBACK_PARAMETERS_DELETECOMPLETION DeleteCompletion => GetParam<CF_CALLBACK_PARAMETERS_DELETECOMPLETION>();
+			public DELETECOMPLETION DeleteCompletion => GetParam<DELETECOMPLETION>();
 
 			/// <summary/>
-			public CF_CALLBACK_PARAMETERS_RENAME Rename => GetParam<CF_CALLBACK_PARAMETERS_RENAME>();
+			public RENAME Rename => GetParam<RENAME>();
 
 			/// <summary/>
-			public CF_CALLBACK_PARAMETERS_RENAMECOMPLETION RenameCompletion => GetParam<CF_CALLBACK_PARAMETERS_RENAMECOMPLETION>();
+			public RENAMECOMPLETION RenameCompletion => GetParam<RENAMECOMPLETION>();
 
 			/// <summary>Gets the parameter value for this structure.</summary>
 			/// <typeparam name="T">The type of the structure to retrieve.</typeparam>
@@ -1396,180 +1398,180 @@ namespace Vanara.PInvoke
 				using var ptr = new SafeHGlobalHandle(Content);
 				return ptr.ToStructure<T>();
 			}
-		}
 
-		/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
-		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8)]
-		public struct CF_CALLBACK_PARAMETERS_CANCEL
-		{
-			/// <summary>Cancel data flags.</summary>
-			public CF_CALLBACK_CANCEL_FLAGS Flags;
-
-			/// <summary/>
-			public CANCELFETCHDATA FetchData;
-
-			/// <summary/>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct CANCELFETCHDATA
+			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
+			[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
+			[StructLayout(LayoutKind.Sequential, Pack = 8)]
+			public struct CANCEL
 			{
-				/// <summary>Offset, in bytes, for specifying the range of data.</summary>
-				public long FileOffset;
+				/// <summary>Cancel data flags.</summary>
+				public CF_CALLBACK_CANCEL_FLAGS Flags;
 
-				/// <summary>Length of the data in bytes.</summary>
-				public long Length;
+				/// <summary/>
+				public CANCELFETCHDATA FetchData;
+
+				/// <summary/>
+				[StructLayout(LayoutKind.Sequential)]
+				public struct CANCELFETCHDATA
+				{
+					/// <summary>Offset, in bytes, for specifying the range of data.</summary>
+					public long FileOffset;
+
+					/// <summary>Length of the data in bytes.</summary>
+					public long Length;
+				}
 			}
-		}
 
-		/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
-		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct CF_CALLBACK_PARAMETERS_CLOSECOMPLETION
-		{
-			/// <summary>Placeholder close completion flags.</summary>
-			public CF_CALLBACK_CLOSE_COMPLETION_FLAGS Flags;
-		}
+			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
+			[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct CLOSECOMPLETION
+			{
+				/// <summary>Placeholder close completion flags.</summary>
+				public CF_CALLBACK_CLOSE_COMPLETION_FLAGS Flags;
+			}
 
-		/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
-		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct CF_CALLBACK_PARAMETERS_DEHYDRATE
-		{
-			/// <summary>Placeholder dehydration flags.</summary>
-			public CF_CALLBACK_DEHYDRATE_FLAGS Flags;
+			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
+			[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct DEHYDRATE
+			{
+				/// <summary>Placeholder dehydration flags.</summary>
+				public CF_CALLBACK_DEHYDRATE_FLAGS Flags;
 
-			/// <summary/>
-			public CF_CALLBACK_DEHYDRATION_REASON Reason;
-		}
+				/// <summary/>
+				public CF_CALLBACK_DEHYDRATION_REASON Reason;
+			}
 
-		/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
-		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct CF_CALLBACK_PARAMETERS_DEHYDRATECOMPLETION
-		{
-			/// <summary/>
-			public CF_CALLBACK_DEHYDRATE_COMPLETION_FLAGS Flags;
+			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
+			[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct DEHYDRATECOMPLETION
+			{
+				/// <summary/>
+				public CF_CALLBACK_DEHYDRATE_COMPLETION_FLAGS Flags;
 
-			/// <summary/>
-			public CF_CALLBACK_DEHYDRATION_REASON Reason;
-		}
+				/// <summary/>
+				public CF_CALLBACK_DEHYDRATION_REASON Reason;
+			}
 
-		/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
-		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct CF_CALLBACK_PARAMETERS_DELETE
-		{
-			/// <summary>Placeholder deletion flags.</summary>
-			public CF_CALLBACK_DELETE_FLAGS Flags;
-		}
+			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
+			[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct DELETE
+			{
+				/// <summary>Placeholder deletion flags.</summary>
+				public CF_CALLBACK_DELETE_FLAGS Flags;
+			}
 
-		/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
-		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential, Pack = 4)]
-		public struct CF_CALLBACK_PARAMETERS_DELETECOMPLETION
-		{
-			/// <summary>Placeholder deletion complete flags.</summary>
-			public CF_CALLBACK_DELETE_COMPLETION_FLAGS Flags;
-		}
+			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
+			[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct DELETECOMPLETION
+			{
+				/// <summary>Placeholder deletion complete flags.</summary>
+				public CF_CALLBACK_DELETE_COMPLETION_FLAGS Flags;
+			}
 
-		/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
-		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential, Pack = 4, Size = 56)]
-		public struct CF_CALLBACK_PARAMETERS_FETCHDATA
-		{
-			/// <summary>Fetch data flags.</summary>
-			public CF_CALLBACK_FETCH_DATA_FLAGS Flags;
+			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
+			[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct FETCHDATA
+			{
+				/// <summary>Fetch data flags.</summary>
+				public CF_CALLBACK_FETCH_DATA_FLAGS Flags;
 
-			/// <summary>Offset, in bytes, for specifying the required range of data.</summary>
-			public long RequiredFileOffset;
+				/// <summary>Offset, in bytes, for specifying the required range of data.</summary>
+				public long RequiredFileOffset;
 
-			/// <summary>Length of the required data to retrieve, in bytes.</summary>
-			public long RequiredLength;
+				/// <summary>Length of the required data to retrieve, in bytes.</summary>
+				public long RequiredLength;
 
-			/// <summary>
-			/// Offset, in bytes, of a broader piece of data to provide to a sync provider. This is optional and can be used if the sync
-			/// provider prefers to work with larger segments of data.
-			/// </summary>
-			public long OptionalFileOffset;
+				/// <summary>
+				/// Offset, in bytes, of a broader piece of data to provide to a sync provider. This is optional and can be used if the sync
+				/// provider prefers to work with larger segments of data.
+				/// </summary>
+				public long OptionalFileOffset;
 
-			/// <summary>
-			/// Length, in bytes, of a broader piece of data to provide to a sync provider. This is optional and can be used if the sync
-			/// provider prefers to work with larger segments of data.
-			/// </summary>
-			public long OptionalLength;
+				/// <summary>
+				/// Length, in bytes, of a broader piece of data to provide to a sync provider. This is optional and can be used if the sync
+				/// provider prefers to work with larger segments of data.
+				/// </summary>
+				public long OptionalLength;
 
-			/// <summary/>
-			public long LastDehydrationTime;
+				/// <summary/>
+				public long LastDehydrationTime;
 
-			/// <summary/>
-			public CF_CALLBACK_DEHYDRATION_REASON LastDehydrationReason;
-		}
+				/// <summary/>
+				public CF_CALLBACK_DEHYDRATION_REASON LastDehydrationReason;
+			}
 
-		/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
-		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8)]
-		public struct CF_CALLBACK_PARAMETERS_FETCHPLACEHOLDERS
-		{
-			/// <summary>Flags for fetching placeholder metadata.</summary>
-			public CF_CALLBACK_FETCH_PLACEHOLDERS_FLAGS Flags;
+			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
+			[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct FETCHPLACEHOLDERS
+			{
+				/// <summary>Flags for fetching placeholder metadata.</summary>
+				public CF_CALLBACK_FETCH_PLACEHOLDERS_FLAGS Flags;
 
-			/// <summary>
-			/// A standard Windows file pattern which may contain wildcard characters (‘?’, ‘*’). All placeholders information matching the
-			/// pattern must be transferred, but not necessarily in one-shot, as a minimum requirement. Alternatively, a sync provider may
-			/// choose to not transfer placeholders matching the pattern.
-			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string Pattern;
-		}
+				/// <summary>
+				/// A standard Windows file pattern which may contain wildcard characters (‘?’, ‘*’). All placeholders information matching the
+				/// pattern must be transferred, but not necessarily in one-shot, as a minimum requirement. Alternatively, a sync provider may
+				/// choose to not transfer placeholders matching the pattern.
+				/// </summary>
+				[MarshalAs(UnmanagedType.LPWStr)]
+				public string Pattern;
+			}
 
-		/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
-		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct CF_CALLBACK_PARAMETERS_OPENCOMPLETION
-		{
-			/// <summary>Placeholder open completion flags.</summary>
-			public CF_CALLBACK_OPEN_COMPLETION_FLAGS Flags;
-		}
+			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
+			[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct OPENCOMPLETION
+			{
+				/// <summary>Placeholder open completion flags.</summary>
+				public CF_CALLBACK_OPEN_COMPLETION_FLAGS Flags;
+			}
 
-		/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
-		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8)]
-		public struct CF_CALLBACK_PARAMETERS_RENAME
-		{
-			/// <summary>Rename placeholder flags.</summary>
-			public CF_CALLBACK_RENAME_FLAGS Flags;
+			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
+			[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct RENAME
+			{
+				/// <summary>Rename placeholder flags.</summary>
+				public CF_CALLBACK_RENAME_FLAGS Flags;
 
-			/// <summary>The full rename/move target path relative to the volume.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string TargetPath;
-		}
+				/// <summary>The full rename/move target path relative to the volume.</summary>
+				[MarshalAs(UnmanagedType.LPWStr)]
+				public string TargetPath;
+			}
 
-		/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
-		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8)]
-		public struct CF_CALLBACK_PARAMETERS_RENAMECOMPLETION
-		{
-			/// <summary>Rename completion placeholder flags.</summary>
-			public CF_CALLBACK_RENAME_COMPLETION_FLAGS Flags;
+			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
+			[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct RENAMECOMPLETION
+			{
+				/// <summary>Rename completion placeholder flags.</summary>
+				public CF_CALLBACK_RENAME_COMPLETION_FLAGS Flags;
 
-			/// <summary>The full source link path relative to the volume.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string SourcePath;
-		}
+				/// <summary>The full source link path relative to the volume.</summary>
+				[MarshalAs(UnmanagedType.LPWStr)]
+				public string SourcePath;
+			}
 
-		/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
-		[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8)]
-		public struct CF_CALLBACK_PARAMETERS_VALIDATEDATA
-		{
-			/// <summary>Data validation flags.</summary>
-			public CF_CALLBACK_VALIDATE_DATA_FLAGS Flags;
+			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
+			[PInvokeData("cfapi.h", MSDNShortId = "FA403E9E-5EFA-4285-9619-614DB0044FFB")]
+			[StructLayout(LayoutKind.Sequential)]
+			public struct VALIDATEDATA
+			{
+				/// <summary>Data validation flags.</summary>
+				public CF_CALLBACK_VALIDATE_DATA_FLAGS Flags;
 
-			/// <summary>Offset, in bytes, for specifying the range of data to validate.</summary>
-			public long RequiredFileOffset;
+				/// <summary>Offset, in bytes, for specifying the range of data to validate.</summary>
+				public long RequiredFileOffset;
 
-			/// <summary>Length, in bytes, of the data to validate.</summary>
-			public long RequiredLength;
+				/// <summary>Length, in bytes, of the data to validate.</summary>
+				public long RequiredLength;
+			}
 		}
 
 		/// <summary>The callbacks to be registered by the sync provider.</summary>
@@ -1721,12 +1723,82 @@ namespace Vanara.PInvoke
 		// FileIdentityLength; } AckDehydrate; struct { CF_OPERATION_ACK_RENAME_FLAGS Flags; NTSTATUS CompletionStatus; } AckRename; struct
 		// { CF_OPERATION_ACK_DELETE_FLAGS Flags; NTSTATUS CompletionStatus; } AckDelete; } DUMMYUNIONNAME; } CF_OPERATION_PARAMETERS;
 		[PInvokeData("cfapi.h", MSDNShortId = "668C682E-47C2-41BC-A4F9-AA2F2B516F54")]
-		[StructLayout(LayoutKind.Explicit)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct CF_OPERATION_PARAMETERS
 		{
 			/// <summary/>
-			[FieldOffset(0)]
 			public uint ParamSize;
+
+			// Yes, this is strange, but needed to deal with struct size changing based on pointer size (40/48).
+			private uint pad4_8;
+			private ulong pad8_16;
+			private ulong pad16_24;
+			private ulong pad24_32;
+			private IntPtr padp1;
+			private IntPtr padp2;
+
+			/// <summary/>
+			public TRANSFERDATA TransferData { get => GetParam<TRANSFERDATA>(); set => SetParam(value); }
+
+			/// <summary/>
+			public RETRIEVEDATA RetrieveData { get => GetParam<RETRIEVEDATA>(); set => SetParam(value); }
+
+			/// <summary/>
+			public ACKDATA AckData { get => GetParam<ACKDATA>(); set => SetParam(value); }
+
+			/// <summary/>
+			public RESTARTHYDRATION RestartHydration { get => GetParam<RESTARTHYDRATION>(); set => SetParam(value); }
+
+			/// <summary/>
+			public TRANSFERPLACEHOLDERS TransferPlaceholders { get => GetParam<TRANSFERPLACEHOLDERS>(); set => SetParam(value); }
+
+			/// <summary/>
+			public ACKDEHYDRATE AckDehydrate { get => GetParam<ACKDEHYDRATE>(); set => SetParam(value); }
+
+			/// <summary/>
+			public ACKRENAME AckRename { get => GetParam<ACKRENAME>(); set => SetParam(value); }
+
+			/// <summary/>
+			public ACKDELETE AckDelete { get => GetParam<ACKDELETE>(); set => SetParam(value); }
+
+			/// <summary>Gets the parameter value for this structure.</summary>
+			/// <typeparam name="T">The type of the structure to retrieve.</typeparam>
+			/// <returns>The requested structure.</returns>
+			public unsafe T GetParam<T>() where T : struct
+			{
+				using var ptr = new PinnedObject(this);
+				return ((IntPtr)ptr).ToStructure<T>(Marshal.SizeOf(typeof(CF_OPERATION_PARAMETERS)), 8);
+			}
+
+			/// <summary>Sets the parameter value for this structure.</summary>
+			/// <typeparam name="T">The type of the structure to set.</typeparam>
+			/// <param name="value">The value to set.</param>
+			public void SetParam<T>(T value) where T : struct
+			{
+				unsafe
+				{
+					fixed (ulong* p = &pad8_16)
+					{
+						((IntPtr)(void*)p).Write(value, 0, Marshal.SizeOf(typeof(CF_OPERATION_PARAMETERS)) - 8);
+					}
+				}
+			}
+
+			/// <summary>Creates a CF_OPERATION_PARAMETERS instance with the specified parameter value.</summary>
+			/// <typeparam name="T">The parameter type.</typeparam>
+			/// <param name="paramValue">The parameter value.</param>
+			/// <returns>A CF_OPERATION_PARAMETERS instance initialized with <paramref name="paramValue"/> and the correct ParamSize.</returns>
+			public static CF_OPERATION_PARAMETERS Create<T>(T paramValue = default) where T : struct
+			{
+				var op = new CF_OPERATION_PARAMETERS { ParamSize = CF_SIZE_OF_OP_PARAM<T>() };
+				op.SetParam(paramValue);
+				return op;
+			}
+
+			/// <summary>Gets the size value used in ParamSize given a specific parameter type.</summary>
+			/// <typeparam name="T">The parameter type.</typeparam>
+			/// <returns>The size of the structure.</returns>
+			public static uint CF_SIZE_OF_OP_PARAM<T>() where T : struct => (uint)(Marshal.OffsetOf(typeof(CF_OPERATION_PARAMETERS), nameof(pad8_16)).ToInt32() + Marshal.SizeOf(typeof(T)));
 
 			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
@@ -1749,10 +1821,6 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary/>
-			[FieldOffset(4)]
-			public TRANSFERDATA TransferData;
-
-			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct RETRIEVEDATA
 			{
@@ -1771,10 +1839,6 @@ namespace Vanara.PInvoke
 				/// <summary>The number of bytes retrieved on successful completion.</summary>
 				public long ReturnedLength;
 			}
-
-			/// <summary/>
-			[FieldOffset(4)]
-			public RETRIEVEDATA RetrieveData;
 
 			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
@@ -1797,10 +1861,6 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary/>
-			[FieldOffset(4)]
-			public ACKDATA AckData;
-
-			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct RESTARTHYDRATION
 			{
@@ -1816,10 +1876,6 @@ namespace Vanara.PInvoke
 				/// <summary>Optional. This specifies the length of the <c>FileIdentity</c>.</summary>
 				public uint FileIdentityLength;
 			}
-
-			/// <summary/>
-			[FieldOffset(4)]
-			public RESTARTHYDRATION RestartHydration;
 
 			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
@@ -1845,10 +1901,6 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary/>
-			[FieldOffset(4)]
-			public TRANSFERPLACEHOLDERS TransferPlaceholders;
-
-			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct ACKDEHYDRATE
 			{
@@ -1866,10 +1918,6 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary/>
-			[FieldOffset(4)]
-			public ACKDEHYDRATE AckDehydrate;
-
-			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct ACKRENAME
 			{
@@ -1881,10 +1929,6 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary/>
-			[FieldOffset(4)]
-			public ACKRENAME AckRename;
-
-			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct ACKDELETE
 			{
@@ -1894,10 +1938,6 @@ namespace Vanara.PInvoke
 				/// <summary>The completion status of the operation.</summary>
 				public NTStatus CompletionStatus;
 			}
-
-			/// <summary/>
-			[FieldOffset(4)]
-			public ACKDELETE AckDelete;
 		}
 
 		/// <summary>Basic placeholder information.</summary>

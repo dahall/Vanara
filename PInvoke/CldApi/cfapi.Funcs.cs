@@ -377,7 +377,7 @@ namespace Vanara.PInvoke
 		// InfoBuffer, DWORD InfoBufferLength, PDWORD ReturnedLength );
 		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfapi.h", MSDNShortId = "B7FE94BC-DC59-407D-85A6-9657E38975AB")]
-		public static extern HRESULT CfGetPlaceholderRangeInfo(HFILE FileHandle, CF_PLACEHOLDER_RANGE_INFO_CLASS InfoClass, long StartingOffset, long Length, [Out] IntPtr InfoBuffer, uint InfoBufferLength, ref uint ReturnedLength);
+		public static extern HRESULT CfGetPlaceholderRangeInfo(HFILE FileHandle, CF_PLACEHOLDER_RANGE_INFO_CLASS InfoClass, long StartingOffset, long Length, [Out] IntPtr InfoBuffer, uint InfoBufferLength, out uint ReturnedLength);
 
 		/// <summary>Gets a set of placeholder states based on the FileAttributes and ReparseTag values of the file.</summary>
 		/// <param name="FileAttributes">The file attribute information.</param>
@@ -679,7 +679,7 @@ namespace Vanara.PInvoke
 		// FileHandle, CF_TRANSFER_KEY *TransferKey );
 		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfapi.h", MSDNShortId = "53B40C34-EB1F-445B-B1B3-B539C2FADECE")]
-		public static extern void CfReleaseTransferKey(HFILE FileHandle, out CF_TRANSFER_KEY TransferKey);
+		public static extern void CfReleaseTransferKey(HFILE FileHandle, in CF_TRANSFER_KEY TransferKey);
 
 		/// <summary>Allows a sync provider to report progress out-of-band.</summary>
 		/// <param name="ConnectionKey">A connection key representing a communication channel with the sync filter.</param>

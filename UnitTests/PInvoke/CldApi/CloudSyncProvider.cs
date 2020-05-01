@@ -1,7 +1,9 @@
-﻿using System;
+﻿using ICSharpCode.Decompiler.IL;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +22,7 @@ namespace Vanara.PInvoke.Tests
 	{
 		public CloudSyncCallbackArgs(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters)
 		{
+			//System.Diagnostics.Debug.WriteLine($"CloudSyncCallbackArgs<{typeof(T).Name}> : {string.Join(" ", CallbackParameters.Content.Select(b => b.ToString("X2")))}");
 			ConnectionKey = CallbackInfo.ConnectionKey;
 			CallbackContext = CallbackInfo.CallbackContext;
 			VolumeGuidName = CallbackInfo.VolumeGuidName;
@@ -33,10 +36,11 @@ namespace Vanara.PInvoke.Tests
 			NormalizedPath = CallbackInfo.NormalizedPath;
 			TransferKey = CallbackInfo.TransferKey;
 			PriorityHint = CallbackInfo.PriorityHint;
-			CorrelationVector = CallbackInfo.CorrelationVector.ToNullableStructure<CORRELATION_VECTOR>();
+			pCorrelationVector = CallbackInfo.CorrelationVector;
 			ProcessInfo = CallbackInfo.ProcessInfo.ToNullableStructure<CF_PROCESS_INFO>();
 			RequestKey = CallbackInfo.RequestKey;
-			ParamData = CallbackParameters.GetParam<T>();
+			try { ParamData = CallbackParameters.GetParam<T>(); } catch { }
+			//catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"{ex.Message}"); }
 		}
 
 		/// <summary>points to an opaque blob that the sync provider provides at the sync root connect time.</summary>
@@ -46,7 +50,10 @@ namespace Vanara.PInvoke.Tests
 		public CF_CONNECTION_KEY ConnectionKey { get; }
 
 		/// <summary>An optional correlation vector.</summary>
-		public CORRELATION_VECTOR? CorrelationVector { get; }
+		public IntPtr pCorrelationVector { get; }
+
+		/// <summary>An optional correlation vector.</summary>
+		public CORRELATION_VECTOR? CorrelationVector => pCorrelationVector.ToNullableStructure<CORRELATION_VECTOR>();
 
 		/// <summary>A 64 bit file system maintained, volume-wide unique ID of the placeholder file/directory to be serviced.</summary>
 		public long FileId { get; }
@@ -65,6 +72,9 @@ namespace Vanara.PInvoke.Tests
 
 		/// <summary>Contains callback specific parameters for this action.</summary>
 		public T ParamData { get; }
+
+		/// <summary>Parameters of an operation on a placeholder file or folder.</summary>
+		public CF_OPERATION_PARAMETERS? OpParam { get; set; }
 
 		/// <summary>
 		/// A numeric scale given to the sync provider to describe the relative priority of one fetch compared to another fetch, in order to
@@ -95,11 +105,40 @@ namespace Vanara.PInvoke.Tests
 		/// <summary>DOS drive letter of the volume in the form of “X:” where X is the drive letter.</summary>
 		public string VolumeDosName { get; }
 
-		/// <summary>GUID name of the volume on which the placeholder file/directory to be serviced resides. It is in the form: “\?\Volume{GUID}”.</summary>
+		/// <summary>GUID name of the volume on which the placeholder file/directory to be serviced resides. It is in the form: "\?\Volume{GUID}".</summary>
 		public string VolumeGuidName { get; }
 
 		/// <summary>The serial number of the volume.</summary>
 		public uint VolumeSerialNumber { get; }
+
+		/// <summary>The type of operation performed.</summary>
+		public CF_OPERATION_TYPE OperationType { get; set; }
+
+		/// <summary>
+		/// <note>This member is new for Windows 10, version 1803.</note>
+		/// <para>The current sync status of the platform.</para>
+		/// <para>
+		/// The platform queries this information upon any failed operations on a cloud file placeholder. If a structure is available, the
+		/// platform will use the information provided to construct a more meaningful and actionable message to the user. The platform will
+		/// keep this information on the file until the last handle on it goes away. If <see langword="null"/>, the platform will clear the
+		/// previously set sync status, if there is one.
+		/// </para>
+		/// </summary>
+		public IntPtr SyncStatus { get; set; }
+
+		/// <summary>Makes a CF_OPERATION_INFO instance from the properties.</summary>
+		/// <param name="opType">Type of the operation to set.</param>
+		/// <returns>A CF_OPERATION_INFO instance.</returns>
+		public CF_OPERATION_INFO MakeOpInfo(CF_OPERATION_TYPE opType, IntPtr syncStatus = default) => new CF_OPERATION_INFO
+		{
+			StructSize = (uint)Marshal.SizeOf<CF_OPERATION_INFO>(),
+			Type = opType,
+			ConnectionKey = ConnectionKey,
+			TransferKey = TransferKey,
+			CorrelationVector = pCorrelationVector,
+			RequestKey = RequestKey,
+			SyncStatus = syncStatus
+		};
 	}
 
 	public class PlaceHolderDirectoryInfo : PlaceholderInfo
@@ -197,31 +236,31 @@ namespace Vanara.PInvoke.Tests
 			ConnectSyncRootTransferCallbacks();
 		}
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_CANCEL>> CancelFetchData;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.CANCEL>> CancelFetchData;
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_CANCEL>> CancelFetchPlaceholders;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.CANCEL>> CancelFetchPlaceholders;
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_FETCHDATA>> FetchData;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.FETCHDATA>> FetchData;
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_FETCHPLACEHOLDERS>> FetchPlaceholders;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.FETCHPLACEHOLDERS>> FetchPlaceholders;
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_DEHYDRATE>> NotifyDehydrate;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.DEHYDRATE>> NotifyDehydrate;
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_DEHYDRATECOMPLETION>> NotifyDehydrateCompletion;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.DEHYDRATECOMPLETION>> NotifyDehydrateCompletion;
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_DELETE>> NotifyDelete;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.DELETE>> NotifyDelete;
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_DELETECOMPLETION>> NotifyDeleteCompletion;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.DELETECOMPLETION>> NotifyDeleteCompletion;
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_CLOSECOMPLETION>> NotifyFileCloseCompletion;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.CLOSECOMPLETION>> NotifyFileCloseCompletion;
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_OPENCOMPLETION>> NotifyFileOpenCompletion;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.OPENCOMPLETION>> NotifyFileOpenCompletion;
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_RENAME>> NotifyRename;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.RENAME>> NotifyRename;
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_RENAMECOMPLETION>> NotifyRenameCompletion;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.RENAMECOMPLETION>> NotifyRenameCompletion;
 
-		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_VALIDATEDATA>> ValidateData;
+		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.VALIDATEDATA>> ValidateData;
 
 		public string DisplayName { get; }
 
@@ -230,6 +269,12 @@ namespace Vanara.PInvoke.Tests
 		public IEnumerable<StorageProviderItemPropertyDefinition> PropertyDefinitions { get; }
 
 		public Uri RecycleBinUri { get; }
+
+		public CF_SYNC_PROVIDER_STATUS Status
+		{
+			get => CfQuerySyncProviderStatus(key.Value, out var stat).Succeeded ? stat : CF_SYNC_PROVIDER_STATUS.CF_PROVIDER_STATUS_ERROR;
+			set => CfUpdateSyncProviderStatus(key.Value, value);
+		}
 
 		public string SyncRootId { get; }
 
@@ -341,44 +386,46 @@ namespace Vanara.PInvoke.Tests
 			UnregisterWithShell();
 		}
 
-		protected virtual void OnCancelFetchData(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			CancelFetchData?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_CANCEL>(CallbackInfo, CallbackParameters));
+		protected virtual void OnCancelFetchData(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(CancelFetchData, CallbackInfo, CallbackParameters);
 
-		protected virtual void OnCancelFetchPlaceholders(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			CancelFetchPlaceholders?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_CANCEL>(CallbackInfo, CallbackParameters));
+		protected virtual void OnCancelFetchPlaceholders(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(CancelFetchPlaceholders, CallbackInfo, CallbackParameters);
 
-		protected virtual void OnFetchData(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			FetchData?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_FETCHDATA>(CallbackInfo, CallbackParameters));
+		protected virtual void OnFetchData(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(FetchData, CallbackInfo, CallbackParameters);
 
-		protected virtual void OnFetchPlaceholders(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			FetchPlaceholders?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_FETCHPLACEHOLDERS>(CallbackInfo, CallbackParameters));
+		protected virtual void OnFetchPlaceholders(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(FetchPlaceholders, CallbackInfo, CallbackParameters);
 
-		protected virtual void OnNotifyDehydrate(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			NotifyDehydrate?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_DEHYDRATE>(CallbackInfo, CallbackParameters));
+		protected virtual void OnNotifyDehydrate(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyDehydrate, CallbackInfo, CallbackParameters);
 
-		protected virtual void OnNotifyDehydrateCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			NotifyDehydrateCompletion?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_DEHYDRATECOMPLETION>(CallbackInfo, CallbackParameters));
+		protected virtual void OnNotifyDehydrateCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyDehydrateCompletion, CallbackInfo, CallbackParameters);
 
-		protected virtual void OnNotifyDelete(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			NotifyDelete?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_DELETE>(CallbackInfo, CallbackParameters));
+		protected virtual void OnNotifyDelete(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyDelete, CallbackInfo, CallbackParameters);
 
-		protected virtual void OnNotifyDeleteCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			NotifyDeleteCompletion?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_DELETECOMPLETION>(CallbackInfo, CallbackParameters));
+		protected virtual void OnNotifyDeleteCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyDeleteCompletion, CallbackInfo, CallbackParameters);
 
-		protected virtual void OnNotifyFileCloseCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			NotifyFileCloseCompletion?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_CLOSECOMPLETION>(CallbackInfo, CallbackParameters));
+		protected virtual void OnNotifyFileCloseCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyFileCloseCompletion, CallbackInfo, CallbackParameters);
 
-		protected virtual void OnNotifyFileOpenCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			NotifyFileOpenCompletion?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_OPENCOMPLETION>(CallbackInfo, CallbackParameters));
+		protected virtual void OnNotifyFileOpenCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyFileOpenCompletion, CallbackInfo, CallbackParameters);
 
-		protected virtual void OnNotifyRename(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			NotifyRename?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_RENAME>(CallbackInfo, CallbackParameters));
+		protected virtual void OnNotifyRename(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyRename, CallbackInfo, CallbackParameters);
 
-		protected virtual void OnNotifyRenameCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			NotifyRenameCompletion?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_RENAMECOMPLETION>(CallbackInfo, CallbackParameters));
+		protected virtual void OnNotifyRenameCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyRenameCompletion, CallbackInfo, CallbackParameters);
 
-		protected virtual void OnValidateData(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) =>
-			ValidateData?.Invoke(this, new CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS_VALIDATEDATA>(CallbackInfo, CallbackParameters));
+		protected virtual void OnValidateData(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(ValidateData, CallbackInfo, CallbackParameters);
+
+		protected virtual void HandleEvent<T>(EventHandler<CloudSyncCallbackArgs<T>> handler, in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) where T : struct
+		{
+			if (handler != null)
+			{
+				var args = new CloudSyncCallbackArgs<T>(CallbackInfo, CallbackParameters);
+				handler.Invoke(this, args);
+				if (args.OperationType != 0 && args.OpParam.HasValue)
+				{
+					var opInfo = args.MakeOpInfo(args.OperationType, args.SyncStatus);
+					var opParam = args.OpParam.Value;
+					CfExecute(opInfo, ref opParam).ThrowIfFailed();
+				}
+			}
+		}
 
 		private static void AddFolderToSearchIndexer(string folder)
 		{
