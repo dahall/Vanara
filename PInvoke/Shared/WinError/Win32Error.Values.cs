@@ -9130,5 +9130,221 @@ namespace Vanara.PInvoke
 
 		/// <summary>The URL specified a scheme other than "http:" or "https:".</summary>
 		public const uint ERROR_WINHTTP_UNRECOGNIZED_SCHEME = 12006;
+
+		/// <summary>The cloud sync root metadata is corrupted.</summary>
+		public const uint ERROR_CLOUD_FILE_SYNC_ROOT_METADATA_CORRUPT = 358;
+
+		/// <summary>The device is in maintenance mode.</summary>
+		public const uint ERROR_DEVICE_IN_MAINTENANCE = 359;
+
+		/// <summary>This operation is not supported on a DAX volume.</summary>
+		public const uint ERROR_NOT_SUPPORTED_ON_DAX = 360;
+
+		/// <summary>The volume has active DAX mappings.</summary>
+		public const uint ERROR_DAX_MAPPING_EXISTS = 361;
+
+		/// <summary>The cloud file provider is not running.</summary>
+		public const uint ERROR_CLOUD_FILE_PROVIDER_NOT_RUNNING = 362;
+
+		/// <summary>The cloud file metadata is corrupt and unreadable.</summary>
+		public const uint ERROR_CLOUD_FILE_METADATA_CORRUPT = 363;
+
+		/// <summary>The cloud file metadata is too large.</summary>
+		public const uint ERROR_CLOUD_FILE_METADATA_TOO_LARGE = 364;
+
+		/// <summary>The cloud file property is too large.</summary>
+		public const uint ERROR_CLOUD_FILE_PROPERTY_BLOB_TOO_LARGE = 365;
+
+		/// <summary>The cloud file property is possibly corrupt. The on-disk checksum does not match the computed checksum.</summary>
+		public const uint ERROR_CLOUD_FILE_PROPERTY_BLOB_CHECKSUM_MISMATCH = 366;
+
+		/// <summary>The process creation has been blocked.</summary>
+		public const uint ERROR_CHILD_PROCESS_BLOCKED = 367;
+
+		/// <summary>The storage device has lost data or persistence.</summary>
+		public const uint ERROR_STORAGE_LOST_DATA_PERSISTENCE = 368;
+
+		/// <summary>The provider that supports file system virtualization is temporarily unavailable.</summary>
+		public const uint ERROR_FILE_SYSTEM_VIRTUALIZATION_UNAVAILABLE = 369;
+
+		/// <summary>The metadata for file system virtualization is corrupt and unreadable.</summary>
+		public const uint ERROR_FILE_SYSTEM_VIRTUALIZATION_METADATA_CORRUPT = 370;
+
+		/// <summary>The provider that supports file system virtualization is too busy to complete this operation.</summary>
+		public const uint ERROR_FILE_SYSTEM_VIRTUALIZATION_BUSY = 371;
+
+		/// <summary>The provider that supports file system virtualization is unknown.</summary>
+		public const uint ERROR_FILE_SYSTEM_VIRTUALIZATION_PROVIDER_UNKNOWN = 372;
+
+		/// <summary>GDI handles were potentially leaked by the application.</summary>
+		public const uint ERROR_GDI_HANDLE_LEAK = 373;
+
+		/// <summary>The maximum number of cloud file properties has been reached.</summary>
+		public const uint ERROR_CLOUD_FILE_TOO_MANY_PROPERTY_BLOBS = 374;
+
+		/// <summary>The version of the cloud file property store is not supported.</summary>
+		public const uint ERROR_CLOUD_FILE_PROPERTY_VERSION_NOT_SUPPORTED = 375;
+
+		/// <summary>The file is not a cloud file.</summary>
+		public const uint ERROR_NOT_A_CLOUD_FILE = 376;
+
+		/// <summary>The file is not in sync with the cloud.</summary>
+		public const uint ERROR_CLOUD_FILE_NOT_IN_SYNC = 377;
+
+		/// <summary>The cloud sync root is already connected with another cloud sync provider.</summary>
+		public const uint ERROR_CLOUD_FILE_ALREADY_CONNECTED = 378;
+
+		/// <summary>The operation is not supported by the cloud sync provider.</summary>
+		public const uint ERROR_CLOUD_FILE_NOT_SUPPORTED = 379;
+
+		/// <summary>The cloud operation is invalid.</summary>
+		public const uint ERROR_CLOUD_FILE_INVALID_REQUEST = 380;
+
+		/// <summary>The cloud operation is not supported on a read-only volume.</summary>
+		public const uint ERROR_CLOUD_FILE_READ_ONLY_VOLUME = 381;
+
+		/// <summary>The operation is reserved for a connected cloud sync provider.</summary>
+		public const uint ERROR_CLOUD_FILE_CONNECTED_PROVIDER_ONLY = 382;
+
+		/// <summary>The cloud sync provider failed to validate the downloaded data.</summary>
+		public const uint ERROR_CLOUD_FILE_VALIDATION_FAILED = 383;
+
+		/// <summary>You can't connect to the file share because it's not secure. This share requires the obsolete SMB1 protocol, which is unsafe and could expose your system to attack.</summary>
+		public const uint ERROR_SMB1_NOT_AVAILABLE = 384;
+
+		/// <summary>The virtualization operation is not allowed on the file in its current state.</summary>
+		public const uint ERROR_FILE_SYSTEM_VIRTUALIZATION_INVALID_OPERATION = 385;
+
+		/// <summary>The cloud sync provider failed user authentication.</summary>
+		public const uint ERROR_CLOUD_FILE_AUTHENTICATION_FAILED = 386;
+
+		/// <summary>The cloud sync provider failed to perform the operation due to low system resources.</summary>
+		public const uint ERROR_CLOUD_FILE_INSUFFICIENT_RESOURCES = 387;
+
+		/// <summary>The cloud sync provider failed to perform the operation due to network being unavailable.</summary>
+		public const uint ERROR_CLOUD_FILE_NETWORK_UNAVAILABLE = 388;
+
+		/// <summary>The cloud operation was unsuccessful.</summary>
+		public const uint ERROR_CLOUD_FILE_UNSUCCESSFUL = 389;
+
+		/// <summary>The operation is only supported on files under a cloud sync root.</summary>
+		public const uint ERROR_CLOUD_FILE_NOT_UNDER_SYNC_ROOT = 390;
+
+		/// <summary>The operation cannot be performed on cloud files in use.</summary>
+		public const uint ERROR_CLOUD_FILE_IN_USE = 391;
+
+		/// <summary>The operation cannot be performed on pinned cloud files.</summary>
+		public const uint ERROR_CLOUD_FILE_PINNED = 392;
+
+		/// <summary>The cloud operation was aborted.</summary>
+		public const uint ERROR_CLOUD_FILE_REQUEST_ABORTED = 393;
+
+		/// <summary>The cloud file's property store is corrupt.</summary>
+		public const uint ERROR_CLOUD_FILE_PROPERTY_CORRUPT = 394;
+
+		/// <summary>Access to the cloud file is denied.</summary>
+		public const uint ERROR_CLOUD_FILE_ACCESS_DENIED = 395;
+
+		/// <summary>The cloud operation cannot be performed on a file with incompatible hardlinks.</summary>
+		public const uint ERROR_CLOUD_FILE_INCOMPATIBLE_HARDLINKS = 396;
+
+		/// <summary>The operation failed due to a conflicting cloud file property lock.</summary>
+		public const uint ERROR_CLOUD_FILE_PROPERTY_LOCK_CONFLICT = 397;
+
+		/// <summary>The cloud operation was canceled by user.</summary>
+		public const uint ERROR_CLOUD_FILE_REQUEST_CANCELED = 398;
+
+		/// <summary>An externally encrypted syskey has been configured, but the system no longer supports this feature.  Please see https://go.microsoft.com/fwlink/?linkid=851152 for more information.</summary>
+		public const uint ERROR_EXTERNAL_SYSKEY_NOT_SUPPORTED = 399;
+
+		/// <summary>The cloud file provider exited unexpectedly.</summary>
+		public const uint ERROR_CLOUD_FILE_PROVIDER_TERMINATED = 404;
+
+		/// <summary>The file is not a cloud sync root.</summary>
+		public const uint ERROR_NOT_A_CLOUD_SYNC_ROOT = 405;
+
+		/// <summary>The read or write operation to an encrypted file could not be completed because the file can only be accessed when the device is unlocked.</summary>
+		public const uint ERROR_FILE_PROTECTED_UNDER_DPL = 406;
+
+		/// <summary>The volume is not cluster aligned on the disk.</summary>
+		public const uint ERROR_VOLUME_NOT_CLUSTER_ALIGNED = 407;
+
+		/// <summary>No physically aligned free space was found on the volume.</summary>
+		public const uint ERROR_NO_PHYSICALLY_ALIGNED_FREE_SPACE_FOUND = 408;
+
+		/// <summary>The APPX file can not be accessed because it is not encrypted as expected.</summary>
+		public const uint ERROR_APPX_FILE_NOT_ENCRYPTED = 409;
+
+		/// <summary>A read or write of raw encrypted data cannot be performed because the file is not encrypted.</summary>
+		public const uint ERROR_RWRAW_ENCRYPTED_FILE_NOT_ENCRYPTED = 410;
+
+		/// <summary>An invalid file offset in the encrypted data info block was passed for read or write operation of file's raw encrypted data.</summary>
+		public const uint ERROR_RWRAW_ENCRYPTED_INVALID_EDATAINFO_FILEOFFSET = 411;
+
+		/// <summary>An invalid offset and length combination in the encrypted data info block was passed for read or write operation of file's raw encrypted data.</summary>
+		public const uint ERROR_RWRAW_ENCRYPTED_INVALID_EDATAINFO_FILERANGE = 412;
+
+		/// <summary>An invalid parameter in the encrypted data info block was passed for read or write operation of file's raw encrypted data.</summary>
+		public const uint ERROR_RWRAW_ENCRYPTED_INVALID_EDATAINFO_PARAMETER = 413;
+
+		/// <summary>The Windows Subsystem for Linux has not been enabled.</summary>
+		public const uint ERROR_LINUX_SUBSYSTEM_NOT_PRESENT = 414;
+
+		/// <summary>The specified data could not be read from any of the copies.</summary>
+		public const uint ERROR_FT_READ_FAILURE = 415;
+
+		/// <summary>The specified storage reserve ID is invalid.</summary>
+		public const uint ERROR_STORAGE_RESERVE_ID_INVALID = 416;
+
+		/// <summary>The specified storage reserve does not exist.</summary>
+		public const uint ERROR_STORAGE_RESERVE_DOES_NOT_EXIST = 417;
+
+		/// <summary>The specified storage reserve already exists.</summary>
+		public const uint ERROR_STORAGE_RESERVE_ALREADY_EXISTS = 418;
+
+		/// <summary>The specified storage reserve is not empty.</summary>
+		public const uint ERROR_STORAGE_RESERVE_NOT_EMPTY = 419;
+
+		/// <summary>This operation requires a DAX volume.</summary>
+		public const uint ERROR_NOT_A_DAX_VOLUME = 420;
+
+		/// <summary>This stream is not DAX mappable.</summary>
+		public const uint ERROR_NOT_DAX_MAPPABLE = 421;
+
+		/// <summary>Operation cannot be performed on a time critical thread.</summary>
+		public const uint ERROR_TIME_SENSITIVE_THREAD = 422;
+
+		/// <summary>User data protection is not supported for the current or provided user.</summary>
+		public const uint ERROR_DPL_NOT_SUPPORTED_FOR_USER = 423;
+
+		/// <summary>This directory contains entries whose names differ only in case.</summary>
+		public const uint ERROR_CASE_DIFFERING_NAMES_IN_DIR = 424;
+
+		/// <summary>The file cannot be safely opened because it is not supported by this version of Windows.</summary>
+		public const uint ERROR_FILE_NOT_SUPPORTED = 425;
+
+		/// <summary>The cloud operation was not completed before the time-out period expired.</summary>
+		public const uint ERROR_CLOUD_FILE_REQUEST_TIMEOUT = 426;
+
+		/// <summary>A task queue is required for this operation but none is available.</summary>
+		public const uint ERROR_NO_TASK_QUEUE = 427;
+
+		/// <summary>Failed loading a valid version of srcsrv.dll.</summary>
+		public const uint ERROR_SRC_SRV_DLL_LOAD_FAILED = 428;
+
+		/// <summary>This operation is not supported with BTT enabled.</summary>
+		public const uint ERROR_NOT_SUPPORTED_WITH_BTT = 429;
+
+		/// <summary>This operation cannot be performed because encryption is currently disabled.</summary>
+		public const uint ERROR_ENCRYPTION_DISABLED = 430;
+
+		/// <summary>This encryption operation cannot be performed on filesystem metadata.</summary>
+		public const uint ERROR_ENCRYPTING_METADATA_DISALLOWED = 431;
+
+		/// <summary>Encryption cannot be cleared on this file/directory because it still has an encrypted attribute.</summary>
+		public const uint ERROR_CANT_CLEAR_ENCRYPTION_FLAG = 432;
+
+		/// <summary>A device which does not exist was specified.</summary>
+		public const uint ERROR_NO_SUCH_DEVICE = 433;
 	}
 }
