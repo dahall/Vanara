@@ -41,7 +41,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential)]
 	[TypeConverter(typeof(HRESULTTypeConverter))]
 	[PInvokeData("winerr.h")]
-	public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HRESULT>, IEquatable<int>, IConvertible, IErrorProvider
+	public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HRESULT>, IEquatable<int>, IEquatable<uint>, IConvertible, IErrorProvider
 	{
 		internal readonly int _value;
 
@@ -261,6 +261,11 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator int(HRESULT value) => value._value;
 
+		/// <summary>Performs an explicit conversion from <see cref="HRESULT"/> to <see cref="System.UInt32"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator uint(HRESULT value) => unchecked((uint)value._value);
+
 		/// <summary>Tries to extract a HRESULT from an exception.</summary>
 		/// <param name="exception">The exception.</param>
 		/// <returns>The error. If undecipherable, E_FAIL is returned.</returns>
@@ -352,19 +357,19 @@ namespace Vanara.PInvoke
 		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
 		/// <param name="hrRight">The second <see cref="HRESULT"/>.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HRESULT hrLeft, HRESULT hrRight) => hrLeft._value == hrRight._value;
+		public static bool operator ==(HRESULT hrLeft, HRESULT hrRight) => hrLeft.Equals(hrRight);
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
 		/// <param name="hrRight">The second <see cref="int"/>.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HRESULT hrLeft, int hrRight) => hrLeft._value == hrRight;
+		public static bool operator ==(HRESULT hrLeft, int hrRight) => hrLeft.Equals(hrRight);
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
 		/// <param name="hrRight">The second <see cref="uint"/>.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HRESULT hrLeft, uint hrRight) => hrLeft._value == unchecked((int)hrRight);
+		public static bool operator ==(HRESULT hrLeft, uint hrRight) => hrLeft.Equals(hrRight);
 
 		/// <summary>
 		/// If the supplied raw HRESULT value represents a failure, throw the associated <see cref="Exception"/> with the optionally
@@ -407,10 +412,22 @@ namespace Vanara.PInvoke
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		public bool Equals(int other) => other == _value;
 
+		/// <summary>Indicates whether the current object is equal to an <see cref="uint"/>.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(uint other) => unchecked((int)other) == _value;
+
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj) => Equals(_value, ValueFromObj(obj));
+		public override bool Equals(object obj) => obj switch
+		{
+			null => false,
+			HRESULT h => Equals(h),
+			int i => Equals(i),
+			uint u => Equals(u),
+			_ => Equals(_value, ValueFromObj(obj)),
+		};
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
@@ -503,7 +520,7 @@ namespace Vanara.PInvoke
 
 		short IConvertible.ToInt16(IFormatProvider provider) => ((IConvertible)_value).ToInt16(provider);
 
-		int IConvertible.ToInt32(IFormatProvider provider) => ((IConvertible)_value).ToInt32(provider);
+		int IConvertible.ToInt32(IFormatProvider provider) => _value;
 
 		long IConvertible.ToInt64(IFormatProvider provider) => ((IConvertible)_value).ToInt64(provider);
 
@@ -516,11 +533,11 @@ namespace Vanara.PInvoke
 		object IConvertible.ToType(Type conversionType, IFormatProvider provider) =>
 			((IConvertible)_value).ToType(conversionType, provider);
 
-		ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)_value).ToUInt16(provider);
+		ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)unchecked((uint)_value)).ToUInt16(provider);
 
-		uint IConvertible.ToUInt32(IFormatProvider provider) => ((IConvertible)_value).ToUInt32(provider);
+		uint IConvertible.ToUInt32(IFormatProvider provider) => unchecked((uint)_value);
 
-		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)_value).ToUInt64(provider);
+		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)unchecked((uint)_value)).ToUInt64(provider);
 
 		/// <summary>Formats the message.</summary>
 		/// <param name="id">The error.</param>
@@ -528,17 +545,19 @@ namespace Vanara.PInvoke
 		internal static string FormatMessage(uint id)
 		{
 			var flags = 0x1200U; // FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM
-			Win32Error lastError;
 			var buf = new System.Text.StringBuilder(1024);
 			do
 			{
 				if (0 != FormatMessage(flags, default, id, 0, buf, (uint)buf.Capacity, default))
 					return buf.ToString();
-				else if (Win32Error.ERROR_INSUFFICIENT_BUFFER != (lastError = Win32Error.GetLastError()))
+				var lastError = Win32Error.GetLastError();
+				if (lastError == Win32Error.ERROR_MR_MID_NOT_FOUND)
+					break;
+				if (lastError != Win32Error.ERROR_INSUFFICIENT_BUFFER)
 					lastError.ThrowIfFailed();
 				buf.Capacity = buf.Capacity * 2;
 			} while (true && buf.Capacity < 1024 * 16); // Don't go crazy
-			throw lastError.GetException();
+			return string.Empty;
 		}
 
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
@@ -546,9 +565,18 @@ namespace Vanara.PInvoke
 
 		private static int? ValueFromObj(object obj)
 		{
-			if (obj == null) return null;
-			var c = TypeDescriptor.GetConverter(obj);
-			return c.CanConvertTo(typeof(int)) ? (int?)c.ConvertTo(obj, typeof(int)) : null;
+			switch (obj)
+			{
+				case null:
+					return null;
+				case int i:
+					return i;
+				case uint u:
+					return unchecked((int)u);
+				default:
+					var c = TypeDescriptor.GetConverter(obj);
+					return c.CanConvertTo(typeof(int)) ? (int?)c.ConvertTo(obj, typeof(int)) : null;
+			}
 		}
 	}
 

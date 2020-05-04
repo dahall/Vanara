@@ -36,7 +36,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential)]
 	[TypeConverter(typeof(NTStatusTypeConverter))]
 	[PInvokeData("winerr.h")]
-	public partial struct NTStatus : IComparable, IComparable<NTStatus>, IEquatable<NTStatus>, IEquatable<int>, IConvertible, IErrorProvider
+	public partial struct NTStatus : IComparable, IComparable<NTStatus>, IEquatable<NTStatus>, IEquatable<int>, IEquatable<uint>, IConvertible, IErrorProvider
 	{
 		internal readonly int _value;
 
@@ -51,6 +51,10 @@ namespace Vanara.PInvoke
 		/// <summary>Initializes a new instance of the <see cref="NTStatus"/> structure.</summary>
 		/// <param name="rawValue">The raw NTStatus value.</param>
 		public NTStatus(int rawValue) => _value = rawValue;
+
+		/// <summary>Initializes a new instance of the <see cref="NTStatus"/> structure.</summary>
+		/// <param name="rawValue">The raw NTStatus value.</param>
+		public NTStatus(uint rawValue) => _value = unchecked((int)rawValue);
 
 		/// <summary>Enumeration of facility codes</summary>
 		[PInvokeData("winerr.h")]
@@ -272,6 +276,11 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator int(NTStatus value) => value._value;
 
+		/// <summary>Performs an explicit conversion from <see cref="NTStatus"/> to <see cref="System.UInt32"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator uint(NTStatus value) => unchecked((uint)value._value);
+
 		/// <summary>Gets the code value from a 32-bit value.</summary>
 		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
 		/// <returns>The code value (bits 0-15).</returns>
@@ -291,6 +300,11 @@ namespace Vanara.PInvoke
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator NTStatus(int value) => new NTStatus(value);
+
+		/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="NTStatus"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator NTStatus(uint value) => new NTStatus(value);
 
 		/// <summary>Performs an implicit conversion from <see cref="Win32Error"/> to <see cref="NTStatus"/>.</summary>
 		/// <param name="value">The value.</param>
@@ -336,17 +350,29 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the operator.</returns>
 		public static bool operator !=(NTStatus hrLeft, int hrRight) => !(hrLeft == hrRight);
 
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
+		/// <param name="hrRight">The second <see cref="uint"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(NTStatus hrLeft, uint hrRight) => !(hrLeft == hrRight);
+
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
 		/// <param name="hrRight">The second <see cref="NTStatus"/>.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(NTStatus hrLeft, NTStatus hrRight) => hrLeft._value == hrRight._value;
+		public static bool operator ==(NTStatus hrLeft, NTStatus hrRight) => hrLeft.Equals(hrRight);
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
 		/// <param name="hrRight">The second <see cref="int"/>.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(NTStatus hrLeft, int hrRight) => hrLeft._value == hrRight;
+		public static bool operator ==(NTStatus hrLeft, int hrRight) => hrLeft.Equals(hrRight);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
+		/// <param name="hrRight">The second <see cref="uint"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(NTStatus hrLeft, uint hrRight) => hrLeft.Equals(hrRight);
 
 		/// <summary>Converts the specified NTSTATUS code to its equivalent system error code.</summary>
 		/// <param name="status">The NTSTATUS code to be converted.</param>
@@ -398,10 +424,22 @@ namespace Vanara.PInvoke
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		public bool Equals(int other) => other == _value;
 
+		/// <summary>Indicates whether the current object is equal to an <see cref="uint"/>.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(uint other) => unchecked((int)other) == _value;
+
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj) => Equals(_value, ValueFromObj(obj));
+		public override bool Equals(object obj) => obj switch
+		{
+			null => false,
+			NTStatus n => Equals(n),
+			int i => Equals(i),
+			uint u => Equals(u),
+			_ => Equals(_value, ValueFromObj(obj)),
+		};
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
@@ -413,7 +451,7 @@ namespace Vanara.PInvoke
 		/// <returns>The associated <see cref="Exception"/> or <c>null</c> if this NTStatus is not a failure.</returns>
 		[SecurityCritical]
 		[SecuritySafeCritical]
-		public Exception GetException(string message = null) => !Failed ? null : ToHRESULT().GetException();
+		public Exception GetException(string message = null) => !Failed ? null : ToHRESULT().GetException(message);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -466,7 +504,7 @@ namespace Vanara.PInvoke
 
 		short IConvertible.ToInt16(IFormatProvider provider) => ((IConvertible)_value).ToInt16(provider);
 
-		int IConvertible.ToInt32(IFormatProvider provider) => ((IConvertible)_value).ToInt32(provider);
+		int IConvertible.ToInt32(IFormatProvider provider) => _value;
 
 		long IConvertible.ToInt64(IFormatProvider provider) => ((IConvertible)_value).ToInt64(provider);
 
@@ -476,22 +514,32 @@ namespace Vanara.PInvoke
 
 		string IConvertible.ToString(IFormatProvider provider) => ToString();
 
-		object IConvertible.ToType(Type conversionType, IFormatProvider provider) => ((IConvertible)_value).ToType(conversionType, provider);
+		object IConvertible.ToType(Type conversionType, IFormatProvider provider) =>
+			((IConvertible)_value).ToType(conversionType, provider);
 
-		ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)_value).ToUInt16(provider);
+		ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)unchecked((uint)_value)).ToUInt16(provider);
 
-		uint IConvertible.ToUInt32(IFormatProvider provider) => ((IConvertible)_value).ToUInt32(provider);
+		uint IConvertible.ToUInt32(IFormatProvider provider) => unchecked((uint)_value);
 
-		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)_value).ToUInt64(provider);
+		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)unchecked((uint)_value)).ToUInt64(provider);
 
 		[ExcludeFromCodeCoverage]
 		private static HRESULT HRESULT_FROM_NT(int ntStatus) => ntStatus | FACILITY_NT_BIT;
 
 		private static int? ValueFromObj(object obj)
 		{
-			if (obj == null) return null;
-			var c = TypeDescriptor.GetConverter(obj);
-			return c.CanConvertTo(typeof(int)) ? (int?)c.ConvertTo(obj, typeof(int)) : null;
+			switch (obj)
+			{
+				case null:
+					return null;
+				case int i:
+					return i;
+				case uint u:
+					return unchecked((int)u);
+				default:
+					var c = TypeDescriptor.GetConverter(obj);
+					return c.CanConvertTo(typeof(int)) ? (int?)c.ConvertTo(obj, typeof(int)) : null;
+			}
 		}
 	}
 
