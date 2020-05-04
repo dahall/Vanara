@@ -51,6 +51,14 @@ namespace Vanara.PInvoke
 		private const uint severityMask = 0x80000000;
 		private const int severityShift = 31;
 
+		/// <summary>Initializes a new instance of the <see cref="HRESULT"/> structure.</summary>
+		/// <param name="rawValue">The raw HRESULT value.</param>
+		public HRESULT(int rawValue) => _value = rawValue;
+
+		/// <summary>Initializes a new instance of the <see cref="HRESULT"/> structure.</summary>
+		/// <param name="rawValue">The raw HRESULT value.</param>
+		public HRESULT(uint rawValue) => _value = unchecked((int)rawValue);
+
 		/// <summary>Enumeration of facility codes</summary>
 		[PInvokeData("winerr.h")]
 		public enum FacilityCode
@@ -223,14 +231,6 @@ namespace Vanara.PInvoke
 			Fail = 1
 		}
 
-		/// <summary>Initializes a new instance of the <see cref="HRESULT"/> structure.</summary>
-		/// <param name="rawValue">The raw HRESULT value.</param>
-		public HRESULT(int rawValue) => _value = rawValue;
-
-		/// <summary>Initializes a new instance of the <see cref="HRESULT"/> structure.</summary>
-		/// <param name="rawValue">The raw HRESULT value.</param>
-		public HRESULT(uint rawValue) => _value = unchecked((int)rawValue);
-
 		/// <summary>Gets the code portion of the <see cref="HRESULT"/>.</summary>
 		/// <value>The code value (bits 0-15).</value>
 		public int Code => GetCode(_value);
@@ -250,6 +250,102 @@ namespace Vanara.PInvoke
 		/// <summary>Gets a value indicating whether this <see cref="HRESULT"/> is a success (Severity bit 31 equals 0).</summary>
 		/// <value><c>true</c> if succeeded; otherwise, <c>false</c>.</value>
 		public bool Succeeded => _value >= 0;
+
+		/// <summary>Performs an explicit conversion from <see cref="System.Boolean"/> to <see cref="HRESULT"/>.</summary>
+		/// <param name="value">if set to <see langword="true"/> returns S_OK; otherwise S_FALSE.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator HRESULT(bool value) => value ? S_OK : S_FALSE;
+
+		/// <summary>Performs an explicit conversion from <see cref="HRESULT"/> to <see cref="System.Int32"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator int(HRESULT value) => value._value;
+
+		/// <summary>Gets the code value from a 32-bit value.</summary>
+		/// <param name="hresult">The 32-bit raw HRESULT value.</param>
+		/// <returns>The code value (bits 0-15).</returns>
+		public static int GetCode(int hresult) => hresult & codeMask;
+
+		/// <summary>Gets the facility value from a 32-bit value.</summary>
+		/// <param name="hresult">The 32-bit raw HRESULT value.</param>
+		/// <returns>The facility value (bits 16-26).</returns>
+		public static FacilityCode GetFacility(int hresult) => (FacilityCode)((hresult & facilityMask) >> facilityShift);
+
+		/// <summary>Gets the severity value from a 32-bit value.</summary>
+		/// <param name="hresult">The 32-bit raw HRESULT value.</param>
+		/// <returns>The severity value (bit 31).</returns>
+		public static SeverityLevel GetSeverity(int hresult)
+			=> (SeverityLevel)((hresult & severityMask) >> severityShift);
+
+		/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="HRESULT"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HRESULT(int value) => new HRESULT(value);
+
+		/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="HRESULT"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The resulting <see cref="HRESULT"/> instance from the conversion.</returns>
+		public static implicit operator HRESULT(uint value) => new HRESULT(value);
+
+		/// <summary>Creates a new <see cref="HRESULT"/> from provided values.</summary>
+		/// <param name="severe">if set to <c>false</c>, sets the severity bit to 1.</param>
+		/// <param name="facility">The facility.</param>
+		/// <param name="code">The code.</param>
+		/// <returns>The resulting <see cref="HRESULT"/>.</returns>
+		public static HRESULT Make(bool severe, FacilityCode facility, uint code) => Make(severe, (uint)facility, code);
+
+		/// <summary>Creates a new <see cref="HRESULT"/> from provided values.</summary>
+		/// <param name="severe">if set to <c>false</c>, sets the severity bit to 1.</param>
+		/// <param name="facility">The facility.</param>
+		/// <param name="code">The code.</param>
+		/// <returns>The resulting <see cref="HRESULT"/>.</returns>
+		public static HRESULT Make(bool severe, uint facility, uint code) =>
+			new HRESULT(unchecked((int)((severe ? severityMask : 0) | (facility << facilityShift) | code)));
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
+		/// <param name="hrRight">The second <see cref="HRESULT"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HRESULT hrLeft, HRESULT hrRight) => !(hrLeft == hrRight);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
+		/// <param name="hrRight">The second <see cref="int"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HRESULT hrLeft, int hrRight) => !(hrLeft == hrRight);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
+		/// <param name="hrRight">The second <see cref="uint"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HRESULT hrLeft, uint hrRight) => !(hrLeft == hrRight);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
+		/// <param name="hrRight">The second <see cref="HRESULT"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HRESULT hrLeft, HRESULT hrRight) => hrLeft._value == hrRight._value;
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
+		/// <param name="hrRight">The second <see cref="int"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HRESULT hrLeft, int hrRight) => hrLeft._value == hrRight;
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
+		/// <param name="hrRight">The second <see cref="uint"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HRESULT hrLeft, uint hrRight) => hrLeft._value == unchecked((int)hrRight);
+
+		/// <summary>
+		/// If the supplied raw HRESULT value represents a failure, throw the associated <see cref="Exception"/> with the optionally
+		/// supplied message.
+		/// </summary>
+		/// <param name="hresult">The 32-bit raw HRESULT value.</param>
+		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
+		[System.Diagnostics.DebuggerStepThrough]
+		public static void ThrowIfFailed(int hresult, string message = null) => new HRESULT(hresult).ThrowIfFailed(message);
 
 		/// <summary>Compares the current object with another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
@@ -288,11 +384,6 @@ namespace Vanara.PInvoke
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		public bool Equals(HRESULT other) => other._value == _value;
 
-		/// <summary>Gets the code value from a 32-bit value.</summary>
-		/// <param name="hresult">The 32-bit raw HRESULT value.</param>
-		/// <returns>The code value (bits 0-15).</returns>
-		public static int GetCode(int hresult) => hresult & codeMask;
-
 		/// <summary>Gets the .NET <see cref="Exception"/> associated with the HRESULT value and optionally adds the supplied message.</summary>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 		/// <returns>The associated <see cref="Exception"/> or <c>null</c> if this HRESULT is not a failure.</returns>
@@ -321,35 +412,9 @@ namespace Vanara.PInvoke
 			return exceptionForHR;
 		}
 
-		/// <summary>Gets the facility value from a 32-bit value.</summary>
-		/// <param name="hresult">The 32-bit raw HRESULT value.</param>
-		/// <returns>The facility value (bits 16-26).</returns>
-		public static FacilityCode GetFacility(int hresult) => (FacilityCode)((hresult & facilityMask) >> facilityShift);
-
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => _value;
-
-		/// <summary>Gets the severity value from a 32-bit value.</summary>
-		/// <param name="hresult">The 32-bit raw HRESULT value.</param>
-		/// <returns>The severity value (bit 31).</returns>
-		public static SeverityLevel GetSeverity(int hresult)
-			=> (SeverityLevel)((hresult & severityMask) >> severityShift);
-
-		/// <summary>Creates a new <see cref="HRESULT"/> from provided values.</summary>
-		/// <param name="severe">if set to <c>false</c>, sets the severity bit to 1.</param>
-		/// <param name="facility">The facility.</param>
-		/// <param name="code">The code.</param>
-		/// <returns>The resulting <see cref="HRESULT"/>.</returns>
-		public static HRESULT Make(bool severe, FacilityCode facility, uint code) => Make(severe, (uint)facility, code);
-
-		/// <summary>Creates a new <see cref="HRESULT"/> from provided values.</summary>
-		/// <param name="severe">if set to <c>false</c>, sets the severity bit to 1.</param>
-		/// <param name="facility">The facility.</param>
-		/// <param name="code">The code.</param>
-		/// <returns>The resulting <see cref="HRESULT"/>.</returns>
-		public static HRESULT Make(bool severe, uint facility, uint code) =>
-			new HRESULT(unchecked((int)((severe ? severityMask : 0) | (facility << facilityShift) | code)));
 
 		/// <summary>
 		/// If this <see cref="HRESULT"/> represents a failure, throw the associated <see cref="Exception"/> with the optionally supplied message.
@@ -363,19 +428,6 @@ namespace Vanara.PInvoke
 			if (exception != null)
 				throw exception;
 		}
-
-		/// <summary>
-		/// If the supplied raw HRESULT value represents a failure, throw the associated <see cref="Exception"/> with the optionally
-		/// supplied message.
-		/// </summary>
-		/// <param name="hresult">The 32-bit raw HRESULT value.</param>
-		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
-		[System.Diagnostics.DebuggerStepThrough]
-		public static void ThrowIfFailed(int hresult, string message = null) => new HRESULT(hresult).ThrowIfFailed(message);
-
-		/// <summary>Converts this error to an <see cref="T:Vanara.PInvoke.HRESULT"/>.</summary>
-		/// <returns>An equivalent <see cref="T:Vanara.PInvoke.HRESULT"/>.</returns>
-		HRESULT IErrorProvider.ToHRESULT() => this;
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -398,106 +450,44 @@ namespace Vanara.PInvoke
 			return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", _value)) + (msg == null ? "" : ": " + msg);
 		}
 
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
-		/// <param name="hrRight">The second <see cref="HRESULT"/>.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HRESULT hrLeft, HRESULT hrRight) => hrLeft._value == hrRight._value;
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
-		/// <param name="hrRight">The second <see cref="int"/>.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HRESULT hrLeft, int hrRight) => hrLeft._value == hrRight;
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
-		/// <param name="hrRight">The second <see cref="uint"/>.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HRESULT hrLeft, uint hrRight) => hrLeft._value == unchecked((int)hrRight);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
-		/// <param name="hrRight">The second <see cref="HRESULT"/>.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HRESULT hrLeft, HRESULT hrRight) => !(hrLeft == hrRight);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
-		/// <param name="hrRight">The second <see cref="int"/>.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HRESULT hrLeft, int hrRight) => !(hrLeft == hrRight);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
-		/// <param name="hrRight">The second <see cref="uint"/>.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HRESULT hrLeft, uint hrRight) => !(hrLeft == hrRight);
-
-		/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="HRESULT"/>.</summary>
-		/// <param name="value">The value.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HRESULT(int value) => new HRESULT(value);
-
-		/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="HRESULT"/>.</summary>
-		/// <param name="value">The value.</param>
-		/// <returns>The resulting <see cref="HRESULT"/> instance from the conversion.</returns>
-		public static implicit operator HRESULT(uint value) => new HRESULT(value);
-
-		/// <summary>Performs an explicit conversion from <see cref="HRESULT"/> to <see cref="System.Int32"/>.</summary>
-		/// <param name="value">The value.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator int(HRESULT value) => value._value;
-
-		/// <summary>Performs an explicit conversion from <see cref="System.Boolean"/> to <see cref="HRESULT"/>.</summary>
-		/// <param name="value">if set to <see langword="true"/> returns S_OK; otherwise S_FALSE.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator HRESULT(bool value) => value ? S_OK : S_FALSE;
-
-		private static int? ValueFromObj(object obj)
-		{
-			if (obj == null) return null;
-			var c = TypeDescriptor.GetConverter(obj);
-			return c.CanConvertTo(typeof(int)) ? (int?)c.ConvertTo(obj, typeof(int)) : null;
-		}
-
 		TypeCode IConvertible.GetTypeCode() => _value.GetTypeCode();
 
 		bool IConvertible.ToBoolean(IFormatProvider provider) => Succeeded;
 
-		char IConvertible.ToChar(IFormatProvider provider) => throw new NotSupportedException();
-
-		sbyte IConvertible.ToSByte(IFormatProvider provider) => ((IConvertible)_value).ToSByte(provider);
-
 		byte IConvertible.ToByte(IFormatProvider provider) => ((IConvertible)_value).ToByte(provider);
 
-		short IConvertible.ToInt16(IFormatProvider provider) => ((IConvertible)_value).ToInt16(provider);
+		char IConvertible.ToChar(IFormatProvider provider) => throw new NotSupportedException();
 
-		ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)_value).ToUInt16(provider);
-
-		int IConvertible.ToInt32(IFormatProvider provider) => ((IConvertible)_value).ToInt32(provider);
-
-		uint IConvertible.ToUInt32(IFormatProvider provider) => ((IConvertible)_value).ToUInt32(provider);
-
-		long IConvertible.ToInt64(IFormatProvider provider) => ((IConvertible)_value).ToInt64(provider);
-
-		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)_value).ToUInt64(provider);
-
-		float IConvertible.ToSingle(IFormatProvider provider) => ((IConvertible)_value).ToSingle(provider);
-
-		double IConvertible.ToDouble(IFormatProvider provider) => ((IConvertible)_value).ToDouble(provider);
+		DateTime IConvertible.ToDateTime(IFormatProvider provider) => throw new NotSupportedException();
 
 		decimal IConvertible.ToDecimal(IFormatProvider provider) => ((IConvertible)_value).ToDecimal(provider);
 
-		DateTime IConvertible.ToDateTime(IFormatProvider provider) => throw new NotSupportedException();
+		double IConvertible.ToDouble(IFormatProvider provider) => ((IConvertible)_value).ToDouble(provider);
+
+		/// <summary>Converts this error to an <see cref="T:Vanara.PInvoke.HRESULT"/>.</summary>
+		/// <returns>An equivalent <see cref="T:Vanara.PInvoke.HRESULT"/>.</returns>
+		HRESULT IErrorProvider.ToHRESULT() => this;
+
+		short IConvertible.ToInt16(IFormatProvider provider) => ((IConvertible)_value).ToInt16(provider);
+
+		int IConvertible.ToInt32(IFormatProvider provider) => ((IConvertible)_value).ToInt32(provider);
+
+		long IConvertible.ToInt64(IFormatProvider provider) => ((IConvertible)_value).ToInt64(provider);
+
+		sbyte IConvertible.ToSByte(IFormatProvider provider) => ((IConvertible)_value).ToSByte(provider);
+
+		float IConvertible.ToSingle(IFormatProvider provider) => ((IConvertible)_value).ToSingle(provider);
 
 		string IConvertible.ToString(IFormatProvider provider) => ToString();
 
 		object IConvertible.ToType(Type conversionType, IFormatProvider provider) =>
 			((IConvertible)_value).ToType(conversionType, provider);
 
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		private static extern int FormatMessage(uint dwFlags, HINSTANCE lpSource, uint dwMessageId, uint dwLanguageId, System.Text.StringBuilder lpBuffer, uint nSize, IntPtr Arguments);
+		ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)_value).ToUInt16(provider);
+
+		uint IConvertible.ToUInt32(IFormatProvider provider) => ((IConvertible)_value).ToUInt32(provider);
+
+		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)_value).ToUInt64(provider);
 
 		/// <summary>Formats the message.</summary>
 		/// <param name="id">The error.</param>
@@ -516,6 +506,16 @@ namespace Vanara.PInvoke
 				buf.Capacity = buf.Capacity * 2;
 			} while (true && buf.Capacity < 1024 * 16); // Don't go crazy
 			throw lastError.GetException();
+		}
+
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		private static extern int FormatMessage(uint dwFlags, HINSTANCE lpSource, uint dwMessageId, uint dwLanguageId, System.Text.StringBuilder lpBuffer, uint nSize, IntPtr Arguments);
+
+		private static int? ValueFromObj(object obj)
+		{
+			if (obj == null) return null;
+			var c = TypeDescriptor.GetConverter(obj);
+			return c.CanConvertTo(typeof(int)) ? (int?)c.ConvertTo(obj, typeof(int)) : null;
 		}
 	}
 

@@ -42,10 +42,15 @@ namespace Vanara.PInvoke
 
 		private const int codeMask = 0xFFFF;
 		private const uint customerMask = 0x20000000;
+		private const int FACILITY_NT_BIT = 0x10000000;
 		private const uint facilityMask = 0x0FFF0000;
 		private const int facilityShift = 16;
 		private const uint severityMask = 0xC0000000;
 		private const int severityShift = 30;
+
+		/// <summary>Initializes a new instance of the <see cref="NTStatus"/> structure.</summary>
+		/// <param name="rawValue">The raw NTStatus value.</param>
+		public NTStatus(int rawValue) => _value = rawValue;
 
 		/// <summary>Enumeration of facility codes</summary>
 		[PInvokeData("winerr.h")]
@@ -233,10 +238,6 @@ namespace Vanara.PInvoke
 			STATUS_SEVERITY_ERROR = 0x3
 		}
 
-		/// <summary>Initializes a new instance of the <see cref="NTStatus"/> structure.</summary>
-		/// <param name="rawValue">The raw NTStatus value.</param>
-		public NTStatus(int rawValue) => _value = rawValue;
-
 		/// <summary>Gets the code portion of the <see cref="NTStatus"/>.</summary>
 		/// <value>The code value (bits 0-15).</value>
 		public ushort Code => GetCode(_value);
@@ -260,6 +261,110 @@ namespace Vanara.PInvoke
 		/// <summary>Gets a value indicating whether this <see cref="NTStatus"/> is a success (Severity bit 31 equals 0).</summary>
 		/// <value><c>true</c> if succeeded; otherwise, <c>false</c>.</value>
 		public bool Succeeded => !Failed;
+
+		/// <summary>Performs an explicit conversion from <see cref="NTStatus"/> to <see cref="HRESULT"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The resulting <see cref="HRESULT"/> instance from the conversion.</returns>
+		public static explicit operator HRESULT(NTStatus value) => value.ToHRESULT();
+
+		/// <summary>Performs an explicit conversion from <see cref="NTStatus"/> to <see cref="System.Int32"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator int(NTStatus value) => value._value;
+
+		/// <summary>Gets the code value from a 32-bit value.</summary>
+		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
+		/// <returns>The code value (bits 0-15).</returns>
+		public static ushort GetCode(int ntstatus) => (ushort)(ntstatus & codeMask);
+
+		/// <summary>Gets the facility value from a 32-bit value.</summary>
+		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
+		/// <returns>The facility value (bits 16-26).</returns>
+		public static FacilityCode GetFacility(int ntstatus) => (FacilityCode)((ntstatus & facilityMask) >> facilityShift);
+
+		/// <summary>Gets the severity value from a 32-bit value.</summary>
+		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
+		/// <returns>The severity value (bit 31).</returns>
+		public static SeverityLevel GetSeverity(int ntstatus) => (SeverityLevel)((ntstatus & severityMask) >> severityShift);
+
+		/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="NTStatus"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator NTStatus(int value) => new NTStatus(value);
+
+		/// <summary>Performs an implicit conversion from <see cref="Win32Error"/> to <see cref="NTStatus"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The resulting <see cref="NTStatus"/> instance from the conversion.</returns>
+		public static implicit operator NTStatus(Win32Error value) => NTSTATUS_FROM_WIN32((uint)value);
+
+		/// <summary>Gets the customer defined bit from a 32-bit value.</summary>
+		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
+		/// <returns><c>true</c> if the customer defined bit is set; otherwise, <c>false</c>.</returns>
+		public static bool IsCustomerDefined(int ntstatus) => (ntstatus & customerMask) > 0;
+
+		/// <summary>Creates a new <see cref="NTStatus"/> from provided values.</summary>
+		/// <param name="severity">The severity level.</param>
+		/// <param name="customerDefined">The bit is set for customer-defined values and clear for Microsoft-defined values.</param>
+		/// <param name="facility">The facility.</param>
+		/// <param name="code">The code.</param>
+		/// <returns>The resulting <see cref="NTStatus"/>.</returns>
+		public static NTStatus Make(SeverityLevel severity, bool customerDefined, FacilityCode facility, ushort code) => Make(severity, customerDefined, (ushort)facility, code);
+
+		/// <summary>Creates a new <see cref="NTStatus"/> from provided values.</summary>
+		/// <param name="severity">The severity level.</param>
+		/// <param name="customerDefined">The bit is set for customer-defined values and clear for Microsoft-defined values.</param>
+		/// <param name="facility">The facility.</param>
+		/// <param name="code">The code.</param>
+		/// <returns>The resulting <see cref="NTStatus"/>.</returns>
+		public static NTStatus Make(SeverityLevel severity, bool customerDefined, ushort facility, ushort code) =>
+			new NTStatus(unchecked((int)(((uint)severity << severityShift) | (customerDefined ? customerMask : 0U) | ((uint)facility << facilityShift) | code)));
+
+		/// <summary>Converts a Win32 error to an NTSTATUS.</summary>
+		/// <param name="x">The Win32 error codex.</param>
+		/// <returns>The equivalent NTSTATUS value.</returns>
+		public static NTStatus NTSTATUS_FROM_WIN32(uint x) => unchecked((int)x) <= 0 ? unchecked((int)x) : unchecked((int)(((x) & 0x0000FFFF) | ((uint)FacilityCode.FACILITY_NTWIN32 << 16) | 0xC0000000U));
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
+		/// <param name="hrRight">The second <see cref="NTStatus"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(NTStatus hrLeft, NTStatus hrRight) => !(hrLeft == hrRight);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
+		/// <param name="hrRight">The second <see cref="int"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(NTStatus hrLeft, int hrRight) => !(hrLeft == hrRight);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
+		/// <param name="hrRight">The second <see cref="NTStatus"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(NTStatus hrLeft, NTStatus hrRight) => hrLeft._value == hrRight._value;
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
+		/// <param name="hrRight">The second <see cref="int"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(NTStatus hrLeft, int hrRight) => hrLeft._value == hrRight;
+
+		/// <summary>Converts the specified NTSTATUS code to its equivalent system error code.</summary>
+		/// <param name="status">The NTSTATUS code to be converted.</param>
+		/// <returns>
+		/// The function returns the corresponding system error code. ERROR_MR_MID_NOT_FOUND is returned when the specified NTSTATUS code
+		/// does not have a corresponding system error code.
+		/// </returns>
+		[DllImport(Lib.NtDll, ExactSpelling = true)]
+		[PInvokeData("Winternl.h", MSDNShortId = "ms680600")]
+		public static extern uint RtlNtStatusToDosError(int status);
+
+		/// <summary>
+		/// If the supplied raw NTStatus value represents a failure, throw the associated <see cref="Exception"/> with the optionally
+		/// supplied message.
+		/// </summary>
+		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
+		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
+		public static void ThrowIfFailed(int ntstatus, string message = null) => new NTStatus(ntstatus).ThrowIfFailed(message);
 
 		/// <summary>Compares the current object with another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
@@ -298,16 +403,6 @@ namespace Vanara.PInvoke
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		public bool Equals(NTStatus other) => other._value == _value;
 
-		/// <summary>Gets the code value from a 32-bit value.</summary>
-		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
-		/// <returns>The code value (bits 0-15).</returns>
-		public static ushort GetCode(int ntstatus) => (ushort)(ntstatus & codeMask);
-
-		/// <summary>Gets the customer defined bit from a 32-bit value.</summary>
-		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
-		/// <returns><c>true</c> if the customer defined bit is set; otherwise, <c>false</c>.</returns>
-		public static bool IsCustomerDefined(int ntstatus) => (ntstatus & customerMask) > 0;
-
 		/// <summary>Gets the .NET <see cref="Exception"/> associated with the NTStatus value and optionally adds the supplied message.</summary>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 		/// <returns>The associated <see cref="Exception"/> or <c>null</c> if this NTStatus is not a failure.</returns>
@@ -319,41 +414,9 @@ namespace Vanara.PInvoke
 			return ToHRESULT().GetException();
 		}
 
-		private const int FACILITY_NT_BIT = 0x10000000;
-
-		[ExcludeFromCodeCoverage]
-		private static HRESULT HRESULT_FROM_NT(int ntStatus) => ntStatus | FACILITY_NT_BIT;
-
-		/// <summary>Gets the facility value from a 32-bit value.</summary>
-		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
-		/// <returns>The facility value (bits 16-26).</returns>
-		public static FacilityCode GetFacility(int ntstatus) => (FacilityCode)((ntstatus & facilityMask) >> facilityShift);
-
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => _value;
-
-		/// <summary>Gets the severity value from a 32-bit value.</summary>
-		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
-		/// <returns>The severity value (bit 31).</returns>
-		public static SeverityLevel GetSeverity(int ntstatus) => (SeverityLevel)((ntstatus & severityMask) >> severityShift);
-
-		/// <summary>Creates a new <see cref="NTStatus"/> from provided values.</summary>
-		/// <param name="severity">The severity level.</param>
-		/// <param name="customerDefined">The bit is set for customer-defined values and clear for Microsoft-defined values.</param>
-		/// <param name="facility">The facility.</param>
-		/// <param name="code">The code.</param>
-		/// <returns>The resulting <see cref="NTStatus"/>.</returns>
-		public static NTStatus Make(SeverityLevel severity, bool customerDefined, FacilityCode facility, ushort code) => Make(severity, customerDefined, (ushort)facility, code);
-
-		/// <summary>Creates a new <see cref="NTStatus"/> from provided values.</summary>
-		/// <param name="severity">The severity level.</param>
-		/// <param name="customerDefined">The bit is set for customer-defined values and clear for Microsoft-defined values.</param>
-		/// <param name="facility">The facility.</param>
-		/// <param name="code">The code.</param>
-		/// <returns>The resulting <see cref="NTStatus"/>.</returns>
-		public static NTStatus Make(SeverityLevel severity, bool customerDefined, ushort facility, ushort code) =>
-			new NTStatus(unchecked((int)(((uint)severity << severityShift) | (customerDefined ? customerMask : 0U) | ((uint)facility << facilityShift) | code)));
 
 		/// <summary>
 		/// If this <see cref="NTStatus"/> represents a failure, throw the associated <see cref="Exception"/> with the optionally supplied message.
@@ -367,19 +430,6 @@ namespace Vanara.PInvoke
 			if (exception != null)
 				throw exception;
 		}
-
-		/// <summary>Converts a Win32 error to an NTSTATUS.</summary>
-		/// <param name="x">The Win32 error codex.</param>
-		/// <returns>The equivalent NTSTATUS value.</returns>
-		public static NTStatus NTSTATUS_FROM_WIN32(uint x) => unchecked((int)x) <= 0 ? unchecked((int)x) : unchecked((int)(((x) & 0x0000FFFF) | ((uint)FacilityCode.FACILITY_NTWIN32 << 16) | 0xC0000000U));
-
-		/// <summary>
-		/// If the supplied raw NTStatus value represents a failure, throw the associated <see cref="Exception"/> with the optionally
-		/// supplied message.
-		/// </summary>
-		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
-		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
-		public static void ThrowIfFailed(int ntstatus, string message = null) => new NTStatus(ntstatus).ThrowIfFailed(message);
 
 		/// <summary>Converts this error to an <see cref="T:Vanara.PInvoke.HRESULT"/>.</summary>
 		/// <returns>An equivalent <see cref="T:Vanara.PInvoke.HRESULT"/>.</returns>
@@ -399,49 +449,42 @@ namespace Vanara.PInvoke
 			return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", _value)) + (msg == null ? "" : ": " + msg);
 		}
 
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
-		/// <param name="hrRight">The second <see cref="NTStatus"/>.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(NTStatus hrLeft, NTStatus hrRight) => hrLeft._value == hrRight._value;
+		TypeCode IConvertible.GetTypeCode() => _value.GetTypeCode();
 
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
-		/// <param name="hrRight">The second <see cref="int"/>.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(NTStatus hrLeft, int hrRight) => hrLeft._value == hrRight;
+		bool IConvertible.ToBoolean(IFormatProvider provider) => Succeeded;
 
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
-		/// <param name="hrRight">The second <see cref="NTStatus"/>.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(NTStatus hrLeft, NTStatus hrRight) => !(hrLeft == hrRight);
+		byte IConvertible.ToByte(IFormatProvider provider) => ((IConvertible)_value).ToByte(provider);
 
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="hrLeft">The first <see cref="NTStatus"/>.</param>
-		/// <param name="hrRight">The second <see cref="int"/>.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(NTStatus hrLeft, int hrRight) => !(hrLeft == hrRight);
+		char IConvertible.ToChar(IFormatProvider provider) => throw new NotSupportedException();
 
-		/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="NTStatus"/>.</summary>
-		/// <param name="value">The value.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator NTStatus(int value) => new NTStatus(value);
+		DateTime IConvertible.ToDateTime(IFormatProvider provider) => throw new NotSupportedException();
 
-		/// <summary>Performs an implicit conversion from <see cref="Win32Error"/> to <see cref="NTStatus"/>.</summary>
-		/// <param name="value">The value.</param>
-		/// <returns>The resulting <see cref="NTStatus"/> instance from the conversion.</returns>
-		public static implicit operator NTStatus(Win32Error value) => NTSTATUS_FROM_WIN32((uint)value);
+		decimal IConvertible.ToDecimal(IFormatProvider provider) => ((IConvertible)_value).ToDecimal(provider);
 
-		/// <summary>Performs an explicit conversion from <see cref="NTStatus"/> to <see cref="System.Int32"/>.</summary>
-		/// <param name="value">The value.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator int(NTStatus value) => value._value;
+		double IConvertible.ToDouble(IFormatProvider provider) => ((IConvertible)_value).ToDouble(provider);
 
-		/// <summary>Performs an explicit conversion from <see cref="NTStatus"/> to <see cref="HRESULT"/>.</summary>
-		/// <param name="value">The value.</param>
-		/// <returns>The resulting <see cref="HRESULT"/> instance from the conversion.</returns>
-		public static explicit operator HRESULT(NTStatus value) => value.ToHRESULT();
+		short IConvertible.ToInt16(IFormatProvider provider) => ((IConvertible)_value).ToInt16(provider);
+
+		int IConvertible.ToInt32(IFormatProvider provider) => ((IConvertible)_value).ToInt32(provider);
+
+		long IConvertible.ToInt64(IFormatProvider provider) => ((IConvertible)_value).ToInt64(provider);
+
+		sbyte IConvertible.ToSByte(IFormatProvider provider) => ((IConvertible)_value).ToSByte(provider);
+
+		float IConvertible.ToSingle(IFormatProvider provider) => ((IConvertible)_value).ToSingle(provider);
+
+		string IConvertible.ToString(IFormatProvider provider) => ToString();
+
+		object IConvertible.ToType(Type conversionType, IFormatProvider provider) => ((IConvertible)_value).ToType(conversionType, provider);
+
+		ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)_value).ToUInt16(provider);
+
+		uint IConvertible.ToUInt32(IFormatProvider provider) => ((IConvertible)_value).ToUInt32(provider);
+
+		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)_value).ToUInt64(provider);
+
+		[ExcludeFromCodeCoverage]
+		private static HRESULT HRESULT_FROM_NT(int ntStatus) => ntStatus | FACILITY_NT_BIT;
 
 		private static int? ValueFromObj(object obj)
 		{
@@ -449,50 +492,6 @@ namespace Vanara.PInvoke
 			var c = TypeDescriptor.GetConverter(obj);
 			return c.CanConvertTo(typeof(int)) ? (int?)c.ConvertTo(obj, typeof(int)) : null;
 		}
-
-		TypeCode IConvertible.GetTypeCode() => _value.GetTypeCode();
-
-		bool IConvertible.ToBoolean(IFormatProvider provider) => Succeeded;
-
-		char IConvertible.ToChar(IFormatProvider provider) => throw new NotSupportedException();
-
-		sbyte IConvertible.ToSByte(IFormatProvider provider) => ((IConvertible)_value).ToSByte(provider);
-
-		byte IConvertible.ToByte(IFormatProvider provider) => ((IConvertible)_value).ToByte(provider);
-
-		short IConvertible.ToInt16(IFormatProvider provider) => ((IConvertible)_value).ToInt16(provider);
-
-		ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)_value).ToUInt16(provider);
-
-		int IConvertible.ToInt32(IFormatProvider provider) => ((IConvertible)_value).ToInt32(provider);
-
-		uint IConvertible.ToUInt32(IFormatProvider provider) => ((IConvertible)_value).ToUInt32(provider);
-
-		long IConvertible.ToInt64(IFormatProvider provider) => ((IConvertible)_value).ToInt64(provider);
-
-		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)_value).ToUInt64(provider);
-
-		float IConvertible.ToSingle(IFormatProvider provider) => ((IConvertible)_value).ToSingle(provider);
-
-		double IConvertible.ToDouble(IFormatProvider provider) => ((IConvertible)_value).ToDouble(provider);
-
-		decimal IConvertible.ToDecimal(IFormatProvider provider) => ((IConvertible)_value).ToDecimal(provider);
-
-		DateTime IConvertible.ToDateTime(IFormatProvider provider) => throw new NotSupportedException();
-
-		string IConvertible.ToString(IFormatProvider provider) => ToString();
-
-		object IConvertible.ToType(Type conversionType, IFormatProvider provider) => ((IConvertible)_value).ToType(conversionType, provider);
-
-		/// <summary>Converts the specified NTSTATUS code to its equivalent system error code.</summary>
-		/// <param name="status">The NTSTATUS code to be converted.</param>
-		/// <returns>
-		/// The function returns the corresponding system error code. ERROR_MR_MID_NOT_FOUND is returned when the specified NTSTATUS code
-		/// does not have a corresponding system error code.
-		/// </returns>
-		[DllImport(Lib.NtDll, ExactSpelling = true)]
-		[PInvokeData("Winternl.h", MSDNShortId = "ms680600")]
-		public static extern uint RtlNtStatusToDosError(int status);
 	}
 
 	internal class NTStatusTypeConverter : TypeConverter
