@@ -4,6 +4,7 @@ Native Structure | Header | Managed Structure
 --- | --- | ---  
 [NLM_DATAPLAN_STATUS](http://msdn2.microsoft.com/en-us/library/hh448265) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_DATAPLAN_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_DATAPLAN_STATUS)  
 [NLM_SIMULATED_PROFILE_INFO](http://msdn2.microsoft.com/en-us/library/dn280985) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_SIMULATED_PROFILE_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_SIMULATED_PROFILE_INFO)  
+[NLM_SOCKADDR](http://msdn2.microsoft.com/en-us/library/hh448266) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_SOCKADDR](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_SOCKADDR)  
 [NLM_USAGE_DATA](http://msdn2.microsoft.com/en-us/library/hh448268) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_USAGE_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_USAGE_DATA)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
