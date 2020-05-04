@@ -36,7 +36,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential)]
 	[TypeConverter(typeof(NTStatusTypeConverter))]
 	[PInvokeData("winerr.h")]
-	public partial struct NTStatus : IComparable, IComparable<NTStatus>, IEquatable<NTStatus>, IConvertible, IErrorProvider
+	public partial struct NTStatus : IComparable, IComparable<NTStatus>, IEquatable<NTStatus>, IEquatable<int>, IConvertible, IErrorProvider
 	{
 		internal readonly int _value;
 
@@ -393,6 +393,11 @@ namespace Vanara.PInvoke
 				: throw new ArgumentException(@"Object cannot be converted to a UInt32 value for comparison.", nameof(obj));
 		}
 
+		/// <summary>Indicates whether the current object is equal to an <see cref="int"/>.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(int other) => other == _value;
+
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
@@ -408,11 +413,7 @@ namespace Vanara.PInvoke
 		/// <returns>The associated <see cref="Exception"/> or <c>null</c> if this NTStatus is not a failure.</returns>
 		[SecurityCritical]
 		[SecuritySafeCritical]
-		public Exception GetException(string message = null)
-		{
-			if (!Failed) return null;
-			return ToHRESULT().GetException();
-		}
+		public Exception GetException(string message = null) => !Failed ? null : ToHRESULT().GetException();
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
