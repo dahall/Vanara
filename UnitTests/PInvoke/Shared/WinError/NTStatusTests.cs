@@ -20,7 +20,7 @@ namespace Vanara.PInvoke.Tests
 			nts = new NTStatus(0);
 			Assert.That((int)nts, Is.Zero);
 			nts = new NTStatus(NTStatus.STATUS_CANCELLED);
-			Assert.That((int)nts, Is.EqualTo(0xC0000120));
+			Assert.That((uint)nts, Is.EqualTo(0xC0000120));
 			Assert.That(nts.Failed);
 			Assert.That(nts.CustomerDefined, Is.False);
 			Assert.That(nts.Code, Is.EqualTo(0x120));
@@ -29,8 +29,8 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[TestCase(NTStatus.STATUS_ACCESS_DENIED, 0xC0000022, ExpectedResult = 0)]
-		[TestCase(NTStatus.STATUS_ACCESS_DENIED, 0, ExpectedResult = 1)]
-		[TestCase(NTStatus.STATUS_ACCESS_DENIED, 0x22U, ExpectedResult = 1)]
+		[TestCase(NTStatus.STATUS_ACCESS_DENIED, 0, ExpectedResult = -1)]
+		[TestCase(NTStatus.STATUS_ACCESS_DENIED, 0x22U, ExpectedResult = -1)]
 		[TestCase(NTStatus.STATUS_ACCESS_DENIED, NTStatus.STATUS_ACPI_INVALID_ARGUMENT, ExpectedResult = -1)]
 		[TestCase(NTStatus.STATUS_ACPI_INVALID_ARGUMENT, NTStatus.STATUS_ACCESS_DENIED, ExpectedResult = 1)]
 		public int CompareToTest(int c, object obj) => new NTStatus(c).CompareTo(obj);
@@ -87,16 +87,16 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(() => c.ToByte(f), Throws.Exception);
 			Assert.That(() => c.ToInt16(f), Throws.Exception);
 			Assert.That(() => c.ToUInt16(f), Throws.Exception);
-			Assert.That(() => c.ToInt32(f), Throws.Exception);
-			Assert.That(c.ToUInt32(f), Is.EqualTo(cv.ToUInt32(f)));
+			Assert.That(c.ToInt32(f), Is.EqualTo(cv.ToInt32(f)));
+			Assert.That(c.ToUInt32(f), Is.EqualTo((uint)nts));
 			Assert.That(c.ToInt64(f), Is.EqualTo(cv.ToInt64(f)));
-			Assert.That(c.ToUInt64(f), Is.EqualTo(cv.ToUInt64(f)));
+			Assert.That(c.ToUInt64(f), Is.EqualTo((ulong)(uint)nts));
 			Assert.That(c.ToSingle(f), Is.EqualTo(cv.ToSingle(f)));
 			Assert.That(c.ToDouble(f), Is.EqualTo(cv.ToDouble(f)));
 			Assert.That(c.ToDecimal(f), Is.EqualTo(cv.ToDecimal(f)));
 			Assert.That(c.ToBoolean(f), Is.EqualTo(nts.Succeeded));
 			Assert.That(() => c.ToDateTime(f), Throws.Exception);
-			Assert.That(c.ToString(f), Is.EqualTo("STATUS_ACCESS_DENIED"));
+			Assert.That(c.ToString(f), Does.StartWith("STATUS_ACCESS_DENIED"));
 			Assert.That(c.ToType(typeof(int), f), Is.EqualTo(cv.ToType(typeof(int), f)));
 		}
 
@@ -130,11 +130,11 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(() => NTStatus.ThrowIfFailed(0), Throws.Nothing);
 		}
 
-		[TestCase(NTStatus.STATUS_ACPI_INVALID_ARGUMENT, ExpectedResult = "STATUS_ACPI_INVALID_ARGUMENT")]
-		[TestCase(NTStatus.STATUS_ACCESS_DENIED, ExpectedResult = "STATUS_ACCESS_DENIED")]
-		[TestCase(0xC0000022, ExpectedResult = "STATUS_ACCESS_DENIED")]
-		[TestCase(0x80990003, ExpectedResult = "0x80990003")]
-		[TestCase(0x80079254, ExpectedResult = "0x80079254")]
-		public string ToStringTest(int c) => new NTStatus(c).ToString();
+		[TestCase(NTStatus.STATUS_ACPI_INVALID_ARGUMENT, "STATUS_ACPI_INVALID_ARGUMENT")]
+		[TestCase(NTStatus.STATUS_ACCESS_DENIED, "STATUS_ACCESS_DENIED")]
+		[TestCase(unchecked((int)0xC0000022), "STATUS_ACCESS_DENIED")]
+		[TestCase(unchecked((int)0x80990003), "0x80990003")]
+		[TestCase(unchecked((int)0x80079254), "0x80079254")]
+		public void ToStringTest(int c, string val) => Assert.That(new NTStatus(c).ToString(), Does.StartWith(val));
 	}
 }

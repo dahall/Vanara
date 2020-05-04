@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
@@ -9,10 +10,11 @@ namespace Vanara.PInvoke.Tests
 	public class HRESULTTests
 	{
 		[TestCase(HRESULT.E_ACCESSDENIED, 0x80070005, ExpectedResult = 0)]
-		[TestCase(HRESULT.E_ACCESSDENIED, 0, ExpectedResult = 1)]
-		[TestCase(HRESULT.E_ACCESSDENIED, 5U, ExpectedResult = 1)]
+		[TestCase(HRESULT.E_ACCESSDENIED, 0, ExpectedResult = -1)]
+		[TestCase(HRESULT.E_ACCESSDENIED, 5U, ExpectedResult = -1)]
 		[TestCase(HRESULT.E_ACCESSDENIED, HRESULT.E_INVALIDARG, ExpectedResult = -1)]
 		[TestCase(HRESULT.E_INVALIDARG, HRESULT.E_ACCESSDENIED, ExpectedResult = 1)]
+		[TestCase(HRESULT.S_OK, HRESULT.E_ACCESSDENIED, ExpectedResult = 1)]
 		public int CompareToTest(int c, object obj) => new HRESULT(c).CompareTo(obj);
 
 		[TestCase(HRESULT.E_ACCESSDENIED, HRESULT.E_INVALIDARG, ExpectedResult = -1)]
@@ -78,15 +80,15 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(() => c.ToByte(f), Throws.Exception);
 			Assert.That(() => c.ToInt16(f), Throws.Exception);
 			Assert.That(() => c.ToUInt16(f), Throws.Exception);
-			Assert.That(() => c.ToInt32(f), Throws.Exception);
-			Assert.That(c.ToUInt32(f), Is.EqualTo(cv.ToUInt32(f)));
+			Assert.That(c.ToUInt32(f), Is.EqualTo(unchecked((uint)HRESULT.E_ACCESSDENIED)));
+			Assert.That(c.ToInt32(f), Is.EqualTo(cv.ToInt32(f)));
 			Assert.That(c.ToInt64(f), Is.EqualTo(cv.ToInt64(f)));
-			Assert.That(c.ToUInt64(f), Is.EqualTo(cv.ToUInt64(f)));
+			Assert.That(c.ToUInt64(f), Is.EqualTo((ulong)unchecked((uint)HRESULT.E_ACCESSDENIED)));
 			Assert.That(c.ToSingle(f), Is.EqualTo(cv.ToSingle(f)));
 			Assert.That(c.ToDouble(f), Is.EqualTo(cv.ToDouble(f)));
 			Assert.That(c.ToDecimal(f), Is.EqualTo(cv.ToDecimal(f)));
 			Assert.That(() => c.ToDateTime(f), Throws.Exception);
-			Assert.That(c.ToString(f), Is.EqualTo("E_ACCESSDENIED"));
+			Assert.That(c.ToString(f), Does.StartWith("E_ACCESSDENIED"));
 			Assert.That(c.ToType(typeof(int), f), Is.EqualTo(cv.ToType(typeof(int), f)));
 		}
 
@@ -120,12 +122,14 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(() => HRESULT.ThrowIfFailed(0), Throws.Nothing);
 		}
 
-		[TestCase(HRESULT.E_INVALIDARG, ExpectedResult = "E_INVALIDARG")]
-		[TestCase(HRESULT.E_ACCESSDENIED, ExpectedResult = "E_ACCESSDENIED")]
-		[TestCase(0x80070003, ExpectedResult = "HRESULT_FROM_WIN32(ERROR_PATH_NOT_FOUND)")]
-		[TestCase(0x80990003, ExpectedResult = "0x80990003")]
-		[TestCase(0x80079254, ExpectedResult = "0x80079254")]
-		public string ToStringTest(int c) => new HRESULT(c).ToString();
+		[TestCase(HRESULT.E_INVALIDARG, "E_INVALIDARG")]
+		[TestCase(HRESULT.E_ACCESSDENIED, "E_ACCESSDENIED")]
+		public void ToStringTest(int c, string res) => Assert.That(new HRESULT(c).ToString(), Does.StartWith(res));
+
+		[TestCase(0x80070003, "HRESULT_FROM_WIN32(ERROR_PATH_NOT_FOUND)")]
+		[TestCase(0x80990003, "0x80990003")]
+		[TestCase(0x80079254, "0x80079254")]
+		public void ToStringTestU(uint c, string res) => Assert.That(new HRESULT(c).ToString(), Does.StartWith(res));
 
 		[Test]
 		public void TypeConverterTest()

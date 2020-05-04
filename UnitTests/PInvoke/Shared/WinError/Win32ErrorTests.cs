@@ -74,7 +74,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(c.ToDouble(f), Is.EqualTo(cv.ToDouble(f)));
 			Assert.That(c.ToDecimal(f), Is.EqualTo(cv.ToDecimal(f)));
 			Assert.That(() => c.ToDateTime(f), Throws.Exception);
-			Assert.That(c.ToString(f), Is.EqualTo("ERROR_ACCESS_DENIED"));
+			Assert.That(c.ToString(f), Does.StartWith("ERROR_ACCESS_DENIED"));
 			Assert.That(c.ToType(typeof(uint), f), Is.EqualTo(cv.ToType(typeof(uint), f)));
 		}
 
@@ -117,11 +117,11 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(() => Win32Error.ThrowLastError(), Throws.Exception);
 		}
 
-		[TestCase(Win32Error.ERROR_INVALID_PARAMETER, ExpectedResult = "ERROR_INVALID_PARAMETER")]
-		[TestCase(Win32Error.ERROR_ACCESS_DENIED, ExpectedResult = "ERROR_ACCESS_DENIED")]
-		[TestCase(0x00000003, ExpectedResult = "ERROR_PATH_NOT_FOUND")]
-		[TestCase(0x00990003, ExpectedResult = "0x00990003")]
-		public string ToStringTest(uint c) => new Win32Error(c).ToString();
+		[TestCase(Win32Error.ERROR_INVALID_PARAMETER, "ERROR_INVALID_PARAMETER")]
+		[TestCase(Win32Error.ERROR_ACCESS_DENIED, "ERROR_ACCESS_DENIED")]
+		[TestCase(0x00000003U, "ERROR_PATH_NOT_FOUND")]
+		[TestCase(0x00990003U, "0x00990003")]
+		public void ToStringTest(uint c, string val) => Assert.That(new Win32Error(c).ToString(), Does.StartWith(val));
 
 		[Test]
 		public void TypeConverterTest()
