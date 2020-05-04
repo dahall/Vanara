@@ -41,7 +41,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential)]
 	[TypeConverter(typeof(HRESULTTypeConverter))]
 	[PInvokeData("winerr.h")]
-	public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HRESULT>, IConvertible, IErrorProvider
+	public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HRESULT>, IEquatable<int>, IConvertible, IErrorProvider
 	{
 		internal readonly int _value;
 
@@ -261,6 +261,24 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator int(HRESULT value) => value._value;
 
+		/// <summary>Tries to extract a HRESULT from an exception.</summary>
+		/// <param name="exception">The exception.</param>
+		/// <returns>The error. If undecipherable, E_FAIL is returned.</returns>
+		public static HRESULT FromException(Exception exception)
+		{
+			if (exception is Win32Exception we)
+				return new Win32Error(unchecked((uint)we.NativeErrorCode)).ToHRESULT();
+			if (exception.InnerException is Win32Exception iwe)
+				return new Win32Error(unchecked((uint)iwe.NativeErrorCode)).ToHRESULT();
+#if !(NET20 || NET35 || NET40)
+			if (exception.HResult != 0)
+				return new HRESULT(exception.HResult);
+			else if (exception.InnerException != null && exception.InnerException.HResult != 0)
+				return new HRESULT(exception.InnerException.HResult);
+#endif
+			return E_FAIL;
+		}
+
 		/// <summary>Gets the code value from a 32-bit value.</summary>
 		/// <param name="hresult">The 32-bit raw HRESULT value.</param>
 		/// <returns>The code value (bits 0-15).</returns>
@@ -286,6 +304,16 @@ namespace Vanara.PInvoke
 		/// <param name="value">The value.</param>
 		/// <returns>The resulting <see cref="HRESULT"/> instance from the conversion.</returns>
 		public static implicit operator HRESULT(uint value) => new HRESULT(value);
+
+		/// <summary>Maps an NT Status value to an HRESULT value.</summary>
+		/// <param name="err">The NT Status value.</param>
+		/// <returns>The HRESULT value.</returns>
+		public static HRESULT HRESULT_FROM_NT(NTStatus err) => err.ToHRESULT();
+
+		/// <summary>Maps a system error code to an HRESULT value.</summary>
+		/// <param name="err">The system error code.</param>
+		/// <returns>The HRESULT value.</returns>
+		public static HRESULT HRESULT_FROM_WIN32(Win32Error err) => err.ToHRESULT();
 
 		/// <summary>Creates a new <see cref="HRESULT"/> from provided values.</summary>
 		/// <param name="severe">if set to <c>false</c>, sets the severity bit to 1.</param>
@@ -373,6 +401,11 @@ namespace Vanara.PInvoke
 				? _value.CompareTo(v.Value)
 				: throw new ArgumentException(@"Object cannot be converted to a UInt32 value for comparison.", nameof(obj));
 		}
+
+		/// <summary>Indicates whether the current object is equal to an <see cref="int"/>.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(int other) => other == _value;
 
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
