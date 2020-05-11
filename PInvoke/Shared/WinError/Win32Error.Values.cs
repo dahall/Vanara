@@ -6,6 +6,9 @@ namespace Vanara.PInvoke
 		public const uint ERROR_SUCCESS = 0x00000000;
 
 		/// <summary>The operation completed successfully.</summary>
+		public const uint NO_ERROR = 0x00000000;
+
+		/// <summary>The operation completed successfully.</summary>
 		public const uint NERR_Success = 0x00000000;
 
 		/// <summary>Incorrect function.</summary>
@@ -6275,7 +6278,7 @@ namespace Vanara.PInvoke
 		/// <summary>Another operation that requires exclusive access to the PDC FSMO is already in progress.</summary>
 		public const uint ERROR_DS_PDC_OPERATION_IN_PROGRESS = 0x0000212A;
 
-		/// <summary>A cross-domain move operation failed because two versions of the moved object exist—one each in the source and destination domains. The destination object needs to be removed to restore the system to a consistent state.</summary>
+		/// <summary>A cross-domain move operation failed because two versions of the moved object exist - one each in the source and destination domains. The destination object needs to be removed to restore the system to a consistent state.</summary>
 		public const uint ERROR_DS_CROSS_DOMAIN_CLEANUP_REQD = 0x0000212B;
 
 		/// <summary>This object cannot be moved across domain boundaries either because cross-domain moves for this class are not allowed, or the object has some special characteristics, for example, a trust account or a restricted relative identifier (RID), that prevent its move.</summary>
@@ -7184,7 +7187,7 @@ namespace Vanara.PInvoke
 		/// <summary>Error due to lack of resources.</summary>
 		public const uint WSA_QOS_ADMISSION_FAILURE = 0x00002B02;
 
-		/// <summary>Rejected for administrative reasons—bad credentials.</summary>
+		/// <summary>Rejected for administrative reasons - bad credentials.</summary>
 		public const uint WSA_QOS_POLICY_FAILURE = 0x00002B03;
 
 		/// <summary>Unknown or conflicting style.</summary>
