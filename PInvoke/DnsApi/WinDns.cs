@@ -925,6 +925,26 @@ namespace Vanara.PInvoke
 			public byte[] Address;
 		}
 
+		/// <summary>Undocumented.</summary>
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct DNS_CACHE_ENTRY
+		{
+			/// <summary>Pointer to next entry.</summary>
+			public IntPtr pNext;
+
+			/// <summary>DNS Record Name.</summary>
+		    public StrPtrUni pszName;
+
+			/// <summary>DNS Record Type.</summary>
+			public DNS_TYPE wType;
+
+			/// <summary>Undocumented.</summary>
+			public ushort wDataLength;
+
+			/// <summary>Undocumented.</summary>
+			public DNS_RECORD_FLAGS dwFlags;
+		}
+
 		/// <summary>
 		/// The <c>DNS_DHCID_DATA</c> structure represents a DNS Dynamic Host Configuration Protocol Information (DHCID) resource record
 		/// (RR) as specified in section 3 of RFC 4701.

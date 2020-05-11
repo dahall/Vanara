@@ -200,6 +200,16 @@ namespace Vanara.PInvoke
 		[PInvokeData("windns.h", MSDNShortId = "4c69d548-3bb5-4609-9fc5-3a829a285956")]
 		public static extern void DnsFreeProxyName(IntPtr proxyName);
 
+		/// <summary>Gets a list of cached domain names in the DNS client.</summary>
+		/// <param name="ppCacheData">The cached data list.</param>
+		/// <returns>
+		/// Returns success confirmation upon successful completion. Otherwise, returns the appropriate DNS-specific error code as defined
+		/// in Winerror.h.
+		/// </returns>
+		[DllImport(Lib.Dnsapi, SetLastError = true, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool DnsGetCacheDataTable(out SafeDnsCacheDataTable ppCacheData);
+
 		/// <summary>
 		/// The <c>DnsGetProxyInformation</c> function returns the proxy information for a DNS server's name resolution policy table.
 		/// </summary>
@@ -1325,6 +1335,41 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for a list of allocated <c>DNS_CACHE_ENTRY</c> values that is disposed using <see cref="DnsFree"/>.</summary>
+		public class SafeDnsCacheDataTable : SafeHANDLE, IEnumerable<DNS_CACHE_ENTRY>
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeDnsCacheDataTable"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeDnsCacheDataTable(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeDnsCacheDataTable"/> class.</summary>
+			private SafeDnsCacheDataTable() : base() { }
+
+			/// <summary>Returns an enumerator that iterates through the collection.</summary>
+			/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
+			public IEnumerator<DNS_CACHE_ENTRY> GetEnumerator() => handle.LinkedListToIEnum<DNS_CACHE_ENTRY>(r => r.pNext).GetEnumerator();
+
+			/// <summary>Returns an enumerator that iterates through a collection.</summary>
+			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle()
+			{
+				// From https://stackoverflow.com/questions/31889957/memory-leak-when-using-dnsgetcachedatatable
+				var p = handle;
+				while (p != IntPtr.Zero)
+				{
+					var s = p.ToStructure<DNS_CACHE_ENTRY>();
+					DnsFree((IntPtr)s.pszName, DNS_FREE_TYPE.DnsFreeFlat);
+					DnsFree(p, DNS_FREE_TYPE.DnsFreeFlat);
+					p = s.pNext;
+				}
+				return true;
+			}
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for a DNS record list that is disposed using <see cref="DnsRecordListFree"/>.</summary>

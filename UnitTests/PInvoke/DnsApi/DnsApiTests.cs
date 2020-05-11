@@ -31,6 +31,15 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void DnsGetCacheDataTableTest()
+		{
+			Assert.That(DnsGetCacheDataTable(out var table), ResultIs.Successful);
+			foreach (var d in table)
+				TestContext.WriteLine($"{d.pszName} => {d.wType}");
+			Assert.That(() => table.Dispose(), Throws.Nothing);
+		}
+
+		[Test]
 		public void DnsGetProxyInformationTest()
 		{
 			var pi = new DNS_PROXY_INFORMATION { version = 1 };
