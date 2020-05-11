@@ -9003,5 +9003,168 @@ namespace Vanara.PInvoke
 		public const int COPYENGINE_E_NEWFOLDER_NAME_TOO_LONG = unchecked((int)0x8027003C);
 		/// <summary>The directory being processed is not empty</summary>
 		public const int COPYENGINE_E_DIR_NOT_EMPTY = unchecked((int)0x8027003D);
+
+
+		/// <summary>The IAudioClient object is already initialized.</summary>
+		public static readonly HRESULT AUDCLNT_E_ALREADY_INITIALIZED = AUDCLNT_ERR(0x002);
+
+		/// <summary>The AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag is set but parameters hnsBufferDuration and hnsPeriodicity are not equal.</summary>
+		public static readonly HRESULT AUDCLNT_E_BUFDURATION_PERIOD_NOT_EQUAL = AUDCLNT_ERR(0x013);
+
+		/// <summary>GetBuffer failed to retrieve a data buffer and *ppData points to NULL. For more information, see Remarks.</summary>
+		public static readonly HRESULT AUDCLNT_E_BUFFER_ERROR = AUDCLNT_ERR(0x018);
+
+		/// <summary>Buffer cannot be accessed because a stream reset is in progress.</summary>
+		public static readonly HRESULT AUDCLNT_E_BUFFER_OPERATION_PENDING = AUDCLNT_ERR(0x00b);
+
+		/// <summary>
+		/// Indicates that the buffer duration value requested by an exclusive-mode client is out of range. The requested duration value for
+		/// pull mode must not be greater than 500 milliseconds; for push mode the duration value must not be greater than 2 seconds.
+		/// </summary>
+		public static readonly HRESULT AUDCLNT_E_BUFFER_SIZE_ERROR = AUDCLNT_ERR(0x016);
+
+		/// <summary>
+		/// The requested buffer size is not aligned. This code can be returned for a render or a capture device if the caller specified
+		/// AUDCLNT_SHAREMODE_EXCLUSIVE and the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flags. The caller must call Initialize again with the
+		/// aligned buffer size. For more information, see Remarks.
+		/// </summary>
+		public static readonly HRESULT AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED = AUDCLNT_ERR(0x019);
+
+		/// <summary>The NumFramesRequested value exceeds the available buffer space (buffer size minus padding size).</summary>
+		public static readonly HRESULT AUDCLNT_E_BUFFER_TOO_LARGE = AUDCLNT_ERR(0x006);
+
+		/// <summary>
+		/// Indicates that the process-pass duration exceeded the maximum CPU usage. The audio engine keeps track of CPU usage by
+		/// maintaining the number of times the process-pass duration exceeds the maximum CPU usage. The maximum CPU usage is calculated as
+		/// a percent of the engine's periodicity. The percentage value is the system's CPU throttle value (within the range of 10% and
+		/// 90%). If this value is not found, then the default value of 40% is used to calculate the maximum CPU usage.
+		/// </summary>
+		public static readonly HRESULT AUDCLNT_E_CPUUSAGE_EXCEEDED = AUDCLNT_ERR(0x017);
+
+		/// <summary>
+		/// The endpoint device is already in use. Either the device is being used in exclusive mode, or the device is being used in shared
+		/// mode and the caller asked to use the device in exclusive mode.
+		/// </summary>
+		public static readonly HRESULT AUDCLNT_E_DEVICE_IN_USE = AUDCLNT_ERR(0x00a);
+
+		/// <summary>
+		/// The audio endpoint device has been unplugged, or the audio hardware or associated hardware resources have been reconfigured,
+		/// disabled, removed, or otherwise made unavailable for use.
+		/// </summary>
+		public static readonly HRESULT AUDCLNT_E_DEVICE_INVALIDATED = AUDCLNT_ERR(0x004);
+
+		/// <summary>
+		/// The method failed to create the audio endpoint for the render or the capture device. This can occur if the audio endpoint device
+		/// has been unplugged, or the audio hardware or associated hardware resources have been reconfigured, disabled, removed, or
+		/// otherwise made unavailable for use.
+		/// </summary>
+		public static readonly HRESULT AUDCLNT_E_ENDPOINT_CREATE_FAILED = AUDCLNT_ERR(0x00f);
+
+		/// <summary>The endpoint does not support offloading.</summary>
+		public static readonly HRESULT AUDCLNT_E_ENDPOINT_OFFLOAD_NOT_CAPABLE = AUDCLNT_ERR(0x022);
+
+		/// <summary>
+		/// The client specified AUDCLNT_STREAMOPTIONS_MATCH_FORMAT when calling IAudioClient2::SetClientProperties, but the format of the
+		/// audio engine has been locked by another client. In this case, you can call IAudioClient2::SetClientProperties without specifying
+		/// the match format option and then use audio engine's current format.
+		/// </summary>
+		public static readonly HRESULT AUDCLNT_E_ENGINE_FORMAT_LOCKED = AUDCLNT_ERR(0x029);
+
+		/// <summary>
+		/// The client specified AUDCLNT_STREAMOPTIONS_MATCH_FORMAT when calling IAudioClient2::SetClientProperties, but the periodicity of
+		/// the audio engine has been locked by another client. In this case, you can call IAudioClient2::SetClientProperties without
+		/// specifying the match format option and then use audio engine's current periodicity.
+		/// </summary>
+		public static readonly HRESULT AUDCLNT_E_ENGINE_PERIODICITY_LOCKED = AUDCLNT_ERR(0x028);
+
+		/// <summary>The audio stream was not initialized for event-driven buffering.</summary>
+		public static readonly HRESULT AUDCLNT_E_EVENTHANDLE_NOT_EXPECTED = AUDCLNT_ERR(0x011);
+
+		/// <summary>
+		/// The audio stream is configured to use event-driven buffering, but the caller has not called IAudioClient::SetEventHandle to set
+		/// the event handle on the stream.
+		/// </summary>
+		public static readonly HRESULT AUDCLNT_E_EVENTHANDLE_NOT_SET = AUDCLNT_ERR(0x014);
+
+		/// <summary>
+		/// The caller is requesting exclusive-mode use of the endpoint device, but the user has disabled exclusive-mode use of the device.
+		/// </summary>
+		public static readonly HRESULT AUDCLNT_E_EXCLUSIVE_MODE_NOT_ALLOWED = AUDCLNT_ERR(0x00e);
+
+		/// <summary>Exclusive mode only.</summary>
+		public static readonly HRESULT AUDCLNT_E_EXCLUSIVE_MODE_ONLY = AUDCLNT_ERR(0x012);
+
+		/// <summary/>
+		public static readonly HRESULT AUDCLNT_E_HEADTRACKING_ENABLED = AUDCLNT_ERR(0x030);
+
+		/// <summary/>
+		public static readonly HRESULT AUDCLNT_E_HEADTRACKING_UNSUPPORTED = AUDCLNT_ERR(0x040);
+
+		/// <summary/>
+		public static readonly HRESULT AUDCLNT_E_INCORRECT_BUFFER_SIZE = AUDCLNT_ERR(0x015);
+
+		/// <summary>
+		/// Indicates that the requested device period specified with the PeriodInFrames is not an integral multiple of the fundamental
+		/// periodicity of the audio engine, is shorter than the engine's minimum period, or is longer than the engine's maximum period. Get
+		/// the supported periodicity values of the engine by calling IAudioClient3::GetSharedModeEnginePeriod.
+		/// </summary>
+		public static readonly HRESULT AUDCLNT_E_INVALID_DEVICE_PERIOD = AUDCLNT_ERR(0x020);
+
+		/// <summary>
+		/// The NumFramesWritten value exceeds the NumFramesRequested value specified in the previous IAudioRenderClient::GetBuffer call.
+		/// </summary>
+		public static readonly HRESULT AUDCLNT_E_INVALID_SIZE = AUDCLNT_ERR(0x009);
+
+		/// <summary/>
+		public static readonly HRESULT AUDCLNT_E_INVALID_STREAM_FLAG = AUDCLNT_ERR(0x021);
+
+		/// <summary/>
+		public static readonly HRESULT AUDCLNT_E_NONOFFLOAD_MODE_ONLY = AUDCLNT_ERR(0x025);
+
+		/// <summary>The audio stream has not been successfully initialized.</summary>
+		public static readonly HRESULT AUDCLNT_E_NOT_INITIALIZED = AUDCLNT_ERR(0x001);
+
+		/// <summary>The audio stream was not stopped at the time of the Start call.</summary>
+		public static readonly HRESULT AUDCLNT_E_NOT_STOPPED = AUDCLNT_ERR(0x005);
+
+		/// <summary/>
+		public static readonly HRESULT AUDCLNT_E_OFFLOAD_MODE_ONLY = AUDCLNT_ERR(0x024);
+
+		/// <summary/>
+		public static readonly HRESULT AUDCLNT_E_OUT_OF_OFFLOAD_RESOURCES = AUDCLNT_ERR(0x023);
+
+		/// <summary>A previous IAudioRenderClient::GetBuffer call is still in effect.</summary>
+		public static readonly HRESULT AUDCLNT_E_OUT_OF_ORDER = AUDCLNT_ERR(0x007);
+
+		/// <summary/>
+		public static readonly HRESULT AUDCLNT_E_RAW_MODE_UNSUPPORTED = AUDCLNT_ERR(0x027);
+
+		/// <summary>A resource associated with the spatial audio stream is no longer valid.</summary>
+		public static readonly HRESULT AUDCLNT_E_RESOURCES_INVALIDATED = AUDCLNT_ERR(0x026);
+
+		/// <summary>The Windows audio service is not running.</summary>
+		public static readonly HRESULT AUDCLNT_E_SERVICE_NOT_RUNNING = AUDCLNT_ERR(0x010);
+
+		/// <summary/>
+		public static readonly HRESULT AUDCLNT_E_THREAD_NOT_REGISTERED = AUDCLNT_ERR(0x00c);
+
+		/// <summary>The audio engine (shared mode) or audio endpoint device (exclusive mode) does not support the specified format.</summary>
+		public static readonly HRESULT AUDCLNT_E_UNSUPPORTED_FORMAT = AUDCLNT_ERR(0x008);
+
+		/// <summary>The AUDCLNT_STREAMFLAGS_LOOPBACK flag is set but the endpoint device is a capture device, not a rendering device.</summary>
+		public static readonly HRESULT AUDCLNT_E_WRONG_ENDPOINT_TYPE = AUDCLNT_ERR(0x003);
+
+		/// <summary>The call succeeded and *pNumFramesToRead is 0, indicating that no capture data is available to be read.</summary>
+		public static readonly HRESULT AUDCLNT_S_BUFFER_EMPTY = AUDCLNT_SUCCESS(0x001);
+
+		/// <summary>The IAudioClient::Start method has not been called for this stream.</summary>
+		public static readonly HRESULT AUDCLNT_S_POSITION_STALLED = AUDCLNT_SUCCESS(0x003);
+
+		/// <summary/>
+		public static readonly HRESULT AUDCLNT_S_THREAD_ALREADY_REGISTERED = AUDCLNT_SUCCESS(0x002);
+
+		private static HRESULT AUDCLNT_ERR(uint n) => Make(false, FacilityCode.FACILITY_AUDCLNT, n);
+
+		private static HRESULT AUDCLNT_SUCCESS(uint n) => Make(true, FacilityCode.FACILITY_AUDCLNT, n);
 	}
 }
