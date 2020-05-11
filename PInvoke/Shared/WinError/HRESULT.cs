@@ -218,6 +218,240 @@ namespace Vanara.PInvoke
 
 			/// <summary>The source of the error code is the open connectivity service.</summary>
 			FACILITY_OPC = 81,
+
+			/// <summary/>
+			FACILITY_XPS = 82,
+
+			/// <summary/>
+			FACILITY_MBN = 84,
+
+			/// <summary/>
+			FACILITY_POWERSHELL = 84,
+
+			/// <summary/>
+			FACILITY_RAS = 83,
+
+			/// <summary/>
+			FACILITY_P2P_INT = 98,
+
+			/// <summary/>
+			FACILITY_P2P = 99,
+
+			/// <summary/>
+			FACILITY_DAF = 100,
+
+			/// <summary/>
+			FACILITY_BLUETOOTH_ATT = 101,
+
+			/// <summary/>
+			FACILITY_AUDIO = 102,
+
+			/// <summary/>
+			FACILITY_STATEREPOSITORY = 103,
+
+			/// <summary/>
+			FACILITY_VISUALCPP = 109,
+
+			/// <summary/>
+			FACILITY_SCRIPT = 112,
+
+			/// <summary/>
+			FACILITY_PARSE = 113,
+
+			/// <summary/>
+			FACILITY_BLB = 120,
+
+			/// <summary/>
+			FACILITY_BLB_CLI = 121,
+
+			/// <summary/>
+			FACILITY_WSBAPP = 122,
+
+			/// <summary/>
+			FACILITY_BLBUI = 128,
+
+			/// <summary/>
+			FACILITY_USN = 129,
+
+			/// <summary/>
+			FACILITY_USERMODE_VOLSNAP = 130,
+
+			/// <summary/>
+			FACILITY_TIERING = 131,
+
+			/// <summary/>
+			FACILITY_WSB_ONLINE = 133,
+
+			/// <summary/>
+			FACILITY_ONLINE_ID = 134,
+
+			/// <summary/>
+			FACILITY_DEVICE_UPDATE_AGENT = 135,
+
+			/// <summary/>
+			FACILITY_DRVSERVICING = 136,
+
+			/// <summary/>
+			FACILITY_DLS = 153,
+
+			/// <summary/>
+			FACILITY_DELIVERY_OPTIMIZATION = 208,
+
+			/// <summary/>
+			FACILITY_USERMODE_SPACES = 231,
+
+			/// <summary/>
+			FACILITY_USER_MODE_SECURITY_CORE = 232,
+
+			/// <summary/>
+			FACILITY_USERMODE_LICENSING = 234,
+
+			/// <summary/>
+			FACILITY_SOS = 160,
+
+			/// <summary/>
+			FACILITY_DEBUGGERS = 176,
+
+			/// <summary/>
+			FACILITY_SPP = 256,
+
+			/// <summary/>
+			FACILITY_RESTORE = 256,
+
+			/// <summary/>
+			FACILITY_DMSERVER = 256,
+
+			/// <summary/>
+			FACILITY_DEPLOYMENT_SERVICES_SERVER = 257,
+
+			/// <summary/>
+			FACILITY_DEPLOYMENT_SERVICES_IMAGING = 258,
+
+			/// <summary/>
+			FACILITY_DEPLOYMENT_SERVICES_MANAGEMENT = 259,
+
+			/// <summary/>
+			FACILITY_DEPLOYMENT_SERVICES_UTIL = 260,
+
+			/// <summary/>
+			FACILITY_DEPLOYMENT_SERVICES_BINLSVC = 261,
+
+			/// <summary/>
+			FACILITY_DEPLOYMENT_SERVICES_PXE = 263,
+
+			/// <summary/>
+			FACILITY_DEPLOYMENT_SERVICES_TFTP = 264,
+
+			/// <summary/>
+			FACILITY_DEPLOYMENT_SERVICES_TRANSPORT_MANAGEMENT = 272,
+
+			/// <summary/>
+			FACILITY_DEPLOYMENT_SERVICES_DRIVER_PROVISIONING = 278,
+
+			/// <summary/>
+			FACILITY_DEPLOYMENT_SERVICES_MULTICAST_SERVER = 289,
+
+			/// <summary/>
+			FACILITY_DEPLOYMENT_SERVICES_MULTICAST_CLIENT = 290,
+
+			/// <summary/>
+			FACILITY_DEPLOYMENT_SERVICES_CONTENT_PROVIDER = 293,
+
+			/// <summary/>
+			FACILITY_LINGUISTIC_SERVICES = 305,
+
+			/// <summary/>
+			FACILITY_AUDIOSTREAMING = 1094,
+
+			/// <summary/>
+			FACILITY_ACCELERATOR = 1536,
+
+			/// <summary/>
+			FACILITY_WMAAECMA = 1996,
+
+			/// <summary/>
+			FACILITY_DIRECTMUSIC = 2168,
+
+			/// <summary/>
+			FACILITY_DIRECT3D10 = 2169,
+
+			/// <summary/>
+			FACILITY_DXGI = 2170,
+
+			/// <summary/>
+			FACILITY_DXGI_DDI = 2171,
+
+			/// <summary/>
+			FACILITY_DIRECT3D11 = 2172,
+
+			/// <summary/>
+			FACILITY_DIRECT3D11_DEBUG = 2173,
+
+			/// <summary/>
+			FACILITY_DIRECT3D12 = 2174,
+
+			/// <summary/>
+			FACILITY_DIRECT3D12_DEBUG = 2175,
+
+			/// <summary/>
+			FACILITY_LEAP = 2184,
+
+			/// <summary/>
+			FACILITY_AUDCLNT = 2185,
+
+			/// <summary/>
+			FACILITY_WINCODEC_DWRITE_DWM = 2200,
+
+			/// <summary/>
+			FACILITY_WINML = 2192,
+
+			/// <summary/>
+			FACILITY_DIRECT2D = 2201,
+
+			/// <summary/>
+			FACILITY_DEFRAG = 2304,
+
+			/// <summary/>
+			FACILITY_USERMODE_SDBUS = 2305,
+
+			/// <summary/>
+			FACILITY_JSCRIPT = 2306,
+
+			/// <summary/>
+			FACILITY_PIDGENX = 2561,
+
+			/// <summary/>
+			FACILITY_EAS = 85,
+
+			/// <summary/>
+			FACILITY_WEB = 885,
+
+			/// <summary/>
+			FACILITY_WEB_SOCKET = 886,
+
+			/// <summary/>
+			FACILITY_MOBILE = 1793,
+
+			/// <summary/>
+			FACILITY_SQLITE = 1967,
+
+			/// <summary/>
+			FACILITY_UTC = 1989,
+
+			/// <summary/>
+			FACILITY_WEP = 2049,
+
+			/// <summary/>
+			FACILITY_SYNCENGINE = 2050,
+
+			/// <summary/>
+			FACILITY_XBOX = 2339,
+
+			/// <summary/>
+			FACILITY_GAME = 2340,
+
+			/// <summary/>
+			FACILITY_PIX = 2748
 		}
 
 		/// <summary>A value indicating whether an <see cref="HRESULT"/> is a success (Severity bit 31 equals 0).</summary>
@@ -569,10 +803,13 @@ namespace Vanara.PInvoke
 			{
 				case null:
 					return null;
+
 				case int i:
 					return i;
+
 				case uint u:
 					return unchecked((int)u);
+
 				default:
 					var c = TypeDescriptor.GetConverter(obj);
 					return c.CanConvertTo(typeof(int)) ? (int?)c.ConvertTo(obj, typeof(int)) : null;
