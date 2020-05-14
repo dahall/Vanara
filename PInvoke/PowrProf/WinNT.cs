@@ -783,7 +783,6 @@ namespace Vanara.PInvoke
 		public static readonly Guid GUID_VIDEO_SUBGROUP = new Guid("{7516B95F-F776-4464-8C53-06167F40CC99}");
 
 		/// <summary>Specifies if the operating system should use ambient light sensor to change adaptively the display's brightness.</summary>
-		/// <summary>Specifies (in seconds) how long we wait after the last user input has been received before we power off the video.</summary>
 		public static readonly Guid GUID_VIDEO_POWERDOWN_TIMEOUT = new Guid("{3C0BC021-C8A8-4E07-A973-6B14CBCB2B7E}");
 
 		/// <summary>
