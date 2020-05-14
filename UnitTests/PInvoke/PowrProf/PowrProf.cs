@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Vanara.Extensions;
 using static Vanara.PInvoke.PowrProf;
 
 namespace Vanara.PInvoke.Tests
@@ -53,6 +55,30 @@ namespace Vanara.PInvoke.Tests
 			TestContext.WriteLine($"DefGuid={attr}");
 			attr = PowerReadSettingAttributes(GUID_SYSTEM_BUTTON_SUBGROUP, default);
 			TestContext.WriteLine($"GUID_SYSTEM_BUTTON_SUBGROUP={attr}");
+		}
+
+		[Test]
+		public void PowerSettingRegisterNotificationTest()
+		{
+			uint timeOut = 0;
+			var evt = new AutoResetEvent(false);
+			Assert.That(PowerSettingRegisterNotification(GUID_VIDEO_POWERDOWN_TIMEOUT, DEVICE_NOTIFY.DEVICE_NOTIFY_CALLBACK, new DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS { Callback = PowerSettingFunc }, out var powerNotification), ResultIs.Successful);
+			evt.WaitOne(1000);
+			Assert.That(PowerSettingUnregisterNotification(powerNotification), ResultIs.Successful);
+			Assert.That(timeOut, Is.Not.Zero);
+			TestContext.Write($"timeout={timeOut}");
+
+			Win32Error PowerSettingFunc(IntPtr Context, uint Type, IntPtr Setting)
+			{
+				if (Type == (uint)User32.PowerBroadcastType.PBT_POWERSETTINGCHANGE && Setting != IntPtr.Zero)
+				{
+					var pbSetting = Setting.ToStructure<User32.POWERBROADCAST_SETTING>();
+					if (pbSetting.DataLength == Marshal.SizeOf(typeof(uint)))
+						timeOut = BitConverter.ToUInt32(pbSetting.Data, 0);
+				}
+				evt.Set();
+				return Win32Error.ERROR_SUCCESS;
+			}
 		}
 	}
 }
