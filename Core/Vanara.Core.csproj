@@ -39,6 +39,11 @@ CorrespondingAction, StringListPackMethod
       <Version>4.5.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'netcoreapp2.0' Or $(TargetFramework.StartsWith('netstandard')) ">
+    <PackageReference Include="System.Memory">
+      <Version>4.5.4</Version>
+    </PackageReference>
+  </ItemGroup>
   <ItemGroup>
     <Compile Remove="InteropServices\SafeIDispatch.cs" />
     <Compile Remove="InteropServices\StructMarshaler.cs" />
