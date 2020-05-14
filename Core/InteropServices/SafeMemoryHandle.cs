@@ -188,16 +188,15 @@ namespace Vanara.InteropServices
 		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
 		protected SafeAllocatedMemoryHandle(IntPtr handle, bool ownsHandle) : base(IntPtr.Zero, ownsHandle) => SetHandle(handle);
 
+#if DEBUG
 		/// <summary>Dumps memory to byte string.</summary>
 		[ExcludeFromCodeCoverage]
 		public string Dump => Size == 0 ? "" : string.Join(" ", GetBytes(0, Size).Select(b => b.ToString("X2")).ToArray());
+#endif
 
 		/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
 		/// <value>The size in bytes of the allocated memory block.</value>
 		public abstract SizeT Size { get; set; }
-
-#if DEBUG
-#endif
 
 		/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="byte"/> pointer.</summary>
 		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandle"/> instance.</param>
@@ -213,6 +212,16 @@ namespace Vanara.InteropServices
 		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandle"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator IntPtr(SafeAllocatedMemoryHandle hMem) => hMem.handle;
+
+#if ALLOWSPAN
+		/// <summary>Creates a new span over this allocated memory.</summary>
+		/// <returns>The span representation of the structure.</returns>
+		public virtual Span<T> AsSpan<T>(int length) { unsafe { return new Span<T>(handle.ToPointer(), length); } }
+
+		/// <summary>Casts this allocated memory to a <c>Span&lt;Byte&gt;</c>.</summary>
+		/// <returns>A span of type <see cref="byte"/>.</returns>
+		public virtual Span<byte> AsBytes() => AsSpan<byte>(Size);
+#endif
 
 		/// <summary>Fills the allocated memory with a specific byte value.</summary>
 		/// <param name="value">The byte value.</param>
@@ -577,5 +586,11 @@ namespace Vanara.InteropServices
 			handle = IntPtr.Zero;
 			return released;
 		}
+
+#if ALLOWSPAN
+		/// <summary>Gets a reference to a structure based on this allocated memory.</summary>
+		/// <returns>A referenced structure.</returns>
+		public virtual ref T AsRef<T>() => ref MemoryMarshal.GetReference(AsSpan<T>(1));
+#endif
 	}
 }
