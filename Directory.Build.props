@@ -37,9 +37,6 @@
     <SourceRoot Include="$(MSBuildThisFileDirectory)/" />
   </ItemGroup>
   <!-- END: Source Link configuration. -->
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
-    <Reference Include="System" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
   </ItemGroup>
