@@ -58,6 +58,7 @@
     <Compile Include="InteropServices\SafeCoTaskMemHandleTests.cs" />
     <Compile Include="InteropServices\SafeCoTaskMemStringTests.cs" />
     <Compile Include="InteropServices\SafeHGlobalHandleTests.cs" />
+    <Compile Include="InteropServices\SafeMemStructTests.cs" />
     <Compile Include="InteropServices\StrPtrTests.cs" />
     <None Include="InteropServices\StructMarshalerTests.cs" />
   </ItemGroup>
