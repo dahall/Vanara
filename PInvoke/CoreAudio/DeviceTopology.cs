@@ -2770,6 +2770,68 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// The <c>Activate</c> method activates a function-specific interface on a connector or subunit.
+		/// </summary>
+		/// <typeparam name="T">The type of the interface for the requested control function.</typeparam>
+		/// <param name="part">The part.</param>
+		/// <param name="dwClsContext">The execution context in which the code that manages the newly created object will run. The caller can restrict the context
+		/// by setting this parameter to the bitwise <c>OR</c> of one or more <c>CLSCTX</c> enumeration values. The client can avoid
+		/// imposing any context restrictions by specifying CLSCTX_ALL. For more information about <c>CLSCTX</c>, see the Windows SDK documentation.</param>
+		/// <returns>
+		/// The interface that is specified by <typeparamref name="T"/>. Through this method, the caller obtains a counted reference to the
+		/// interface. The caller is responsible for releasing the interface, when it is no longer needed, by calling the interface's
+		/// <c>Release</c> method. If the <c>Activate</c> call fails, *ppObject is <c>NULL</c>.
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>Activate</c> method supports the following function-specific control interfaces:</para>
+		/// <list type="bullet">
+		///   <item>
+		///     <term>IAudioAutoGainControl</term>
+		///   </item>
+		///   <item>
+		///     <term>IAudioBass</term>
+		///   </item>
+		///   <item>
+		///     <term>IAudioChannelConfig</term>
+		///   </item>
+		///   <item>
+		///     <term>IAudioInputSelector</term>
+		///   </item>
+		///   <item>
+		///     <term>IAudioLoudness</term>
+		///   </item>
+		///   <item>
+		///     <term>IAudioMidrange</term>
+		///   </item>
+		///   <item>
+		///     <term>IAudioMute</term>
+		///   </item>
+		///   <item>
+		///     <term>IAudioOutputSelector</term>
+		///   </item>
+		///   <item>
+		///     <term>IAudioPeakMeter</term>
+		///   </item>
+		///   <item>
+		///     <term>IAudioTreble</term>
+		///   </item>
+		///   <item>
+		///     <term>IAudioVolumeLevel</term>
+		///   </item>
+		///   <item>
+		///     <term>IDeviceSpecificProperty</term>
+		///   </item>
+		///   <item>
+		///     <term>IKsFormatSupport</term>
+		///   </item>
+		///   <item>
+		///     <term>IKsJackDescription</term>
+		///   </item>
+		/// </list>
+		/// </remarks>
+		public static T Activate<T>(this IPart part, [In] CLSCTX dwClsContext = CLSCTX.CLSCTX_ALL) where T : class => part.Activate(dwClsContext, typeof(T).GUID) as T;
+
+		/// <summary>
 		/// <para>
 		/// The <c>IPartsList</c> interface represents a list of parts, each of which is an object with an IPart interface that represents a
 		/// connector or subunit. A client obtains a reference to an <c>IPartsList</c> interface by calling the IPart::EnumPartsIncoming,

@@ -587,7 +587,6 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/mmdeviceapi/nf-mmdeviceapi-immdevice-openpropertystore HRESULT
 			// OpenPropertyStore( DWORD stgmAccess, IPropertyStore **ppProperties );
-			[return: MarshalAs(UnmanagedType.IUnknown)]
 			IPropertyStore OpenPropertyStore(STGM stgmAccess);
 
 			/// <summary>The <c>GetId</c> method retrieves an endpoint ID string that identifies the audio endpoint device.</summary>
@@ -633,6 +632,154 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/mmdeviceapi/nf-mmdeviceapi-immdevice-getstate HRESULT GetState( DWORD
 			// *pdwState );
 			DEVICE_STATE GetState();
+		}
+
+		/// <summary>The <c>Activate</c> method creates a COM object with the specified interface.</summary>
+		/// <typeparam name="T">
+		/// Can be one of the following interfaces:
+		/// <list type="bullet">
+		/// <item>
+		/// <term>IAudioClient</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioEndpointVolume</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioMeterInformation</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioSessionManager</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioSessionManager2</term>
+		/// </item>
+		/// <item>
+		/// <term>IBaseFilter</term>
+		/// </item>
+		/// <item>
+		/// <term>IDeviceTopology</term>
+		/// </item>
+		/// <item>
+		/// <term>IDirectSound</term>
+		/// </item>
+		/// <item>
+		/// <term>IDirectSound8</term>
+		/// </item>
+		/// <item>
+		/// <term>IDirectSoundCapture</term>
+		/// </item>
+		/// <item>
+		/// <term>IDirectSoundCapture8</term>
+		/// </item>
+		/// <item>
+		/// <term>IMFTrustedOutput</term>
+		/// </item>
+		/// </list>
+		/// </typeparam>
+		/// <param name="device">The <see cref="IMMDevice"/> instance.</param>
+		/// <param name="dwClsCtx">
+		/// The execution context in which the code that manages the newly created object will run. The caller can restrict the context by
+		/// setting this parameter to the bitwise <c>OR</c> of one or more <c>CLSCTX</c> enumeration values. Alternatively, the client can
+		/// avoid imposing any context restrictions by specifying CLSCTX_ALL. For more information about <c>CLSCTX</c>, see the Windows SDK documentation.
+		/// </param>
+		/// <param name="pActivationParams">
+		/// Set to <c>NULL</c> to activate an IAudioClient, IAudioEndpointVolume, IAudioMeterInformation, IAudioSessionManager, or
+		/// IDeviceTopology interface on an audio endpoint device. When activating an <c>IBaseFilter</c>, <c>IDirectSound</c>,
+		/// <c>IDirectSound8</c>, <c>IDirectSoundCapture</c>, or <c>IDirectSoundCapture8</c> interface on the device, the caller can specify
+		/// a pointer to a <c>PROPVARIANT</c> structure that contains stream-initialization information. For more information, see Remarks.
+		/// </param>
+		/// <returns>
+		/// The interface specified by <typeparamref name="T"/>. Through this method, the caller obtains a counted reference to the
+		/// interface. The caller is responsible for releasing the interface, when it is no longer needed, by calling the interface's
+		/// <c>Release</c> method. If the <c>Activate</c> call fails, this value is <c>NULL</c>.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method creates a COM object with an interface that is specified by the iid parameter. The method is similar to the Windows
+		/// <c>CoCreateInstance</c> function, except that the caller does not supply a CLSID as a parameter. For more information about
+		/// <c>CoCreateInstance</c>, see the Windows SDK documentation.
+		/// </para>
+		/// <para>
+		/// A client can call the <c>Activate</c> method of the <c>IMMDevice</c> interface for a particular audio endpoint device to obtain
+		/// a counted reference to an interface on that device. The method can activate the following interfaces:
+		/// </para>
+		/// <para>
+		/// To obtain the interface ID for an interface, use the <c>__uuidof</c> operator. For example, the interface ID of
+		/// <c>IAudioCaptureClient</c> is defined as follows:
+		/// </para>
+		/// <para>
+		/// For information about the <c>__uuidof</c> operator, see the Windows SDK documentation. For information about <c>IBaseFilter</c>,
+		/// <c>IDirectSound</c>, <c>IDirectSound8</c>, <c>IDirectSoundCapture</c>, <c>IDirectSoundCapture8</c>, and <c>IMFTrustedOutput</c>
+		/// see the Windows SDK documentation.
+		/// </para>
+		/// <para>
+		/// The pActivationParams parameter should be <c>NULL</c> for an <c>Activate</c> call to create an <c>IAudioClient</c>,
+		/// <c>IAudioEndpointVolume</c>, <c>IAudioMeterInformation</c>, <c>IAudioSessionManager</c>, or <c>IDeviceTopology</c> interface for
+		/// an audio endpoint device.
+		/// </para>
+		/// <para>
+		/// For an <c>Activate</c> call to create an <c>IBaseFilter</c>, <c>IDirectSound</c>, <c>IDirectSound8</c>,
+		/// <c>IDirectSoundCapture</c>, or <c>IDirectSoundCapture8</c> interface, the caller can, as an option, specify a non- <c>NULL</c>
+		/// value for pActivationParams. In this case, pActivationParams points to a <c>PROPVARIANT</c> structure that contains
+		/// stream-initialization information. Set the <c>vt</c> member of the structure to VT_BLOB. Set the <c>blob.pBlobData</c> member to
+		/// point to a DIRECTX_AUDIO_ACTIVATION_PARAMS structure that contains an audio session GUID and stream-initialization flags. Set
+		/// the <c>blob.cbSize</c> member to <c>sizeof</c>( <c>DIRECTX_AUDIO_ACTIVATION_PARAMS</c>). For a code example, see Device Roles
+		/// for DirectShow Applications. For more information about <c>PROPVARIANT</c>, see the Windows SDK documentation.
+		/// </para>
+		/// <para>
+		/// An <c>IBaseFilter</c>, <c>IDirectSound</c>, <c>IDirectSound8</c>, <c>IDirectSoundCapture</c>, or <c>IDirectSoundCapture8</c>
+		/// interface instance that is created by the <c>Activate</c> method encapsulates a stream on the audio endpoint device. During the
+		/// <c>Activate</c> call, the DirectSound system module creates the stream by calling the IAudioClient::Initialize method. If
+		/// pActivationParams is non- <c>NULL</c>, DirectSound supplies the audio session GUID and stream-initialization flags from the
+		/// <c>DIRECTX_AUDIO_ACTIVATION_PARAMS</c> structure as input parameters to the <c>Initialize</c> call. If pActivationParams is
+		/// <c>NULL</c>, DirectSound sets the <c>Initialize</c> method's AudioSessionGuid and StreamFlags parameters to their respective
+		/// default values, <c>NULL</c> and 0. These values instruct the method to assign the stream to the process-specific session that is
+		/// identified by the session GUID value GUID_NULL.
+		/// </para>
+		/// <para>
+		/// <c>Activate</c> can activate an <c>IDirectSound</c> or <c>IDirectSound8</c> interface only on a rendering endpoint device. It
+		/// can activate an <c>IDirectSoundCapture</c> or <c>IDirectSoundCapture8</c> interface only on a capture endpoint device. An
+		/// <c>Activate</c> call to activate an <c>IDirectSound</c> or <c>IDirectSoundCapture8</c> interface on a capture device or an
+		/// <c>IDirectSoundCapture</c> or <c>IDirectSoundCapture8</c> interface on a rendering device fails and returns error code E_NOINTERFACE.
+		/// </para>
+		/// <para>
+		/// In Windows 7, a client can call <c>IMMDevice::Activate</c> and specify, <c>IID_IMFTrustedOutput</c>, to create an output trust
+		/// authorities (OTA) object and retrieve a pointer to the object's IMFTrustedOutput interface. OTAs can operate inside or outside
+		/// the Media Foundation's protected media path (PMP) and send content outside the Media Foundation pipeline. If the caller is
+		/// outside PMP, then the OTA may not operate in the PMP, and the protection settings are less robust. For information about using
+		/// protected objects for audio and example code, see Protected User Mode Audio (PUMA).
+		/// </para>
+		/// <para>For general information about protected objects and IMFTrustedOutput, see "Protected Media Path" in Media Foundation documentation.</para>
+		/// <para>
+		/// <c>Note</c> When using the ISpatialAudioClient interfaces on an Xbox One Development Kit (XDK) title, you must first call
+		/// <c>EnableSpatialAudio</c> before calling IMMDeviceEnumerator::EnumAudioEndpoints or
+		/// IMMDeviceEnumerator::GetDefaultAudioEndpoint. Failure to do so will result in an E_NOINTERFACE error being returned from the
+		/// call to Activate. <c>EnableSpatialAudio</c> is only available for XDK titles, and does not need to be called for Universal
+		/// Windows Platform apps running on Xbox One, nor for any non-Xbox One devices.
+		/// </para>
+		/// <para>For code examples that call the <c>Activate</c> method, see the following topics:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Rendering a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Device Topologies</term>
+		/// </item>
+		/// <item>
+		/// <term>Using the IKsControl Interface to Access Audio Properties</term>
+		/// </item>
+		/// <item>
+		/// <term>Audio Events for Legacy Audio Applications</term>
+		/// </item>
+		/// <item>
+		/// <term>Render Spatial Sound Using Spatial Audio Objects</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		public static T Activate<T>(this IMMDevice device, [In] CLSCTX dwClsCtx = CLSCTX.CLSCTX_ALL, [In] PROPVARIANT pActivationParams = null) where T : class
+		{
+			device.Activate(typeof(T).GUID, dwClsCtx, pActivationParams, out var intf).ThrowIfFailed();
+			return intf as T;
 		}
 
 		/// <summary>
@@ -731,7 +878,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/mmdeviceapi/nn-mmdeviceapi-immdeviceenumerator
 		[PInvokeData("mmdeviceapi.h", MSDNShortId = "1abdeac1-c156-40b8-8b8c-5ddb51e410aa")]
-		[ComImport, Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[ComImport, Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(MMDeviceEnumerator))]
 		public interface IMMDeviceEnumerator
 		{
 			/// <summary>
@@ -1354,6 +1501,11 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint dwAudioStreamFlags;
 		}
+
+		/// <summary>CoClass for <see cref="IMMDeviceEnumerator"/>.</summary>
+		[ComImport, Guid("BCDE0395-E52F-467C-8E3D-C4579291692E"), ClassInterface(ClassInterfaceType.None)]
+		[PInvokeData("mmdeviceapi.h")]
+		public class MMDeviceEnumerator { }
 
 		/// <summary>The DEVINTERFACE_XXX GUIDs are used to represent the GUIDs for device interfaces.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/coreaudio/devinterface-xxx-guids
