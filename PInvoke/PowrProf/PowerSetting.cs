@@ -305,7 +305,7 @@ namespace Vanara.PInvoke
 		// PowerSettingRegisterNotification( LPCGUID SettingGuid, DWORD Flags, HANDLE Recipient, PHPOWERNOTIFY RegistrationHandle );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("powersetting.h", MSDNShortId = "0fbca717-2367-4407-8094-3eb2b717b59c")]
-		public static extern Win32Error PowerSettingRegisterNotification(in Guid SettingGuid, DEVICE_NOTIFY Flags, IntPtr Recipient, out SafeHPOWERNOTIFY RegistrationHandle);
+		public static extern Win32Error PowerSettingRegisterNotification(in Guid SettingGuid, DEVICE_NOTIFY Flags, in DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS Recipient, out SafeHPOWERNOTIFY RegistrationHandle);
 
 		/// <summary>Cancels a registration to receive notification when a power setting changes.</summary>
 		/// <param name="RegistrationHandle">A handle to a registration obtained by calling the PowerSettingRegisterNotification function.</param>

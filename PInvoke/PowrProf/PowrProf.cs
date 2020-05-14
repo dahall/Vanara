@@ -18,7 +18,7 @@ namespace Vanara.PInvoke
 		// Setting ) {...}
 		[PInvokeData("powrprof.h", MSDNShortId = "5734FDEE-E330-4115-AFA5-725114023A5A")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate uint DeviceNotifyCallbackRoutine(IntPtr Context, uint Type, IntPtr Setting);
+		public delegate Win32Error DeviceNotifyCallbackRoutine(IntPtr Context, uint Type, IntPtr Setting);
 
 		/// <summary>A callback function to be called for each power scheme enumerated in <see cref="EnumPwrSchemes"/>.</summary>
 		/// <param name="uiIndex"/>
@@ -3801,7 +3801,8 @@ namespace Vanara.PInvoke
 		public struct DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS
 		{
 			/// <summary>Indicates the callback function that will be called when the application receives the notification.</summary>
-			public IntPtr Callback;
+			[MarshalAs(UnmanagedType.FunctionPtr)]
+			public DeviceNotifyCallbackRoutine Callback;
 
 			/// <summary>The context of the application registering for the notification.</summary>
 			public IntPtr Context;
