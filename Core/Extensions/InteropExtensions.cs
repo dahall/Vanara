@@ -9,6 +9,7 @@ using System.Security.Permissions;
 using Vanara.Extensions.Reflection;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
+using Vanara.PInvoke.Collections;
 
 namespace Vanara.Extensions
 {
@@ -95,6 +96,26 @@ namespace Vanara.Extensions
 			for (var ofs = length - (length % 8); ofs < length; ofs++)
 				Marshal.WriteByte(ptr.Offset(ofs), 0, value);
 		}
+
+		/// <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into an <see cref="IEnumerator{T}"/>.</summary>
+		/// <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
+		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+		/// <param name="count">The number of items in the native array.</param>
+		/// <param name="prefixBytes">Bytes to skip before reading the array.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
+		public static IEnumerator<T> GetEnumerator<T>(this IntPtr ptr, int count, int prefixBytes = 0, SizeT allocatedBytes = default) =>
+			new NativeMemoryEnumerator<T>(ptr, count, prefixBytes, allocatedBytes);
+
+		/// <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into an <see cref="System.Collections.IEnumerator"/>.</summary>
+		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+		/// <param name="type">Type of native structure used by the C-style array.</param>
+		/// <param name="count">The number of items in the native array.</param>
+		/// <param name="prefixBytes">Bytes to skip before reading the array.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
+		public static System.Collections.IEnumerator GetEnumerator(this IntPtr ptr, Type type, int count, int prefixBytes = 0, SizeT allocatedBytes = default) =>
+			new UntypedNativeMemoryEnumerator(ptr, type, count, prefixBytes, allocatedBytes);
 
 		/// <summary>
 		/// Gets the length of a null terminated array of pointers. <note type="warning">This is a very dangerous function and can result in
@@ -471,7 +492,7 @@ namespace Vanara.Extensions
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
 		public static IEnumerable<T> ToIEnum<T>(this IntPtr ptr, int count, int prefixBytes = 0, SizeT allocatedBytes = default) =>
-			ToIEnum(ptr, typeof(T), count, prefixBytes, allocatedBytes).Cast<T>();
+			new NativeMemoryEnumerator<T>(ptr, count, prefixBytes, allocatedBytes);
 
 		/// <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
 		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
@@ -480,20 +501,8 @@ namespace Vanara.Extensions
 		/// <param name="prefixBytes">Bytes to skip before reading the array.</param>
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
-		public static IEnumerable<object> ToIEnum(this IntPtr ptr, Type type, int count, int prefixBytes = 0, SizeT allocatedBytes = default)
-		{
-			if (type is null) throw new ArgumentNullException(nameof(type));
-			if (count == 0 || ptr == IntPtr.Zero) yield break;
-			var stSize = SizeOf(type);
-			if (allocatedBytes > 0 && stSize * count + prefixBytes > allocatedBytes)
-				throw new InsufficientMemoryException();
-			if (allocatedBytes == default) allocatedBytes = uint.MaxValue;
-			for (var i = 0; i < count; i++)
-			{
-				var offset = prefixBytes + i * stSize;
-				yield return ptr.Offset(offset).Convert(allocatedBytes - (uint)offset - (uint)prefixBytes, type);
-			}
-		}
+		public static System.Collections.IEnumerable ToIEnum(this IntPtr ptr, Type type, int count, int prefixBytes = 0, SizeT allocatedBytes = default) =>
+			new UntypedNativeMemoryEnumerator(ptr, type, count, prefixBytes, allocatedBytes);
 
 		/// <summary>Converts a <see cref="SecureString"/> to a string.</summary>
 		/// <param name="s">The <see cref="SecureString"/> value.</param>
