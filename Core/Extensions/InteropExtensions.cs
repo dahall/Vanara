@@ -15,6 +15,44 @@ namespace Vanara.Extensions
 	/// <summary>Extension methods for System.Runtime.InteropServices.</summary>
 	public static partial class InteropExtensions
 	{
+#if ALLOWSPAN
+		/// <summary>Returns the pointer as a <see cref="ReadOnlySpan{T}"/>.</summary>
+		/// <typeparam name="T">The type of items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
+		/// <param name="ptr">A pointer to the starting address of a specified number of <typeparamref name="T"/> elements in memory.</param>
+		/// <param name="length">The number of <typeparamref name="T"/> elements to be included in the <see cref="ReadOnlySpan{T}"/>.</param>
+		/// <param name="prefixBytes">Bytes to skip before starting the span.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		/// <returns>A <see cref="ReadOnlySpan{T}"/> that represents the memory.</returns>
+		/// <exception cref="System.InsufficientMemoryException"></exception>
+		public static unsafe ReadOnlySpan<T> AsReadOnlySpan<T>(this IntPtr ptr, int length, int prefixBytes = 0, SizeT allocatedBytes = default)
+		{
+			if (ptr == IntPtr.Zero) return null;
+			if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+			if (allocatedBytes > 0 && SizeOf<T>() * length + prefixBytes > allocatedBytes)
+				throw new InsufficientMemoryException();
+
+			return new ReadOnlySpan<T>((ptr + prefixBytes).ToPointer(), length);
+		}
+
+		/// <summary>Returns the pointer as a <see cref="Span{T}"/>.</summary>
+		/// <typeparam name="T">The type of items in the <see cref="Span{T}"/>.</typeparam>
+		/// <param name="ptr">A pointer to the starting address of a specified number of <typeparamref name="T"/> elements in memory.</param>
+		/// <param name="length">The number of <typeparamref name="T"/> elements to be included in the <see cref="Span{T}"/>.</param>
+		/// <param name="prefixBytes">Bytes to skip before starting the span.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		/// <returns>A <see cref="Span{T}"/> that represents the memory.</returns>
+		/// <exception cref="System.InsufficientMemoryException"></exception>
+		public static unsafe Span<T> AsSpan<T>(this IntPtr ptr, int length, int prefixBytes = 0, SizeT allocatedBytes = default)
+		{
+			if (ptr == IntPtr.Zero) return null;
+			if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+			if (allocatedBytes > 0 && SizeOf<T>() * length + prefixBytes > allocatedBytes)
+				throw new InsufficientMemoryException();
+
+			return new Span<T>((ptr + prefixBytes).ToPointer(), length);
+		}
+#endif
+
 		/// <summary>Copies the number of specified bytes from one unmanaged memory block to another.</summary>
 		/// <param name="ptr">The allocated memory pointer.</param>
 		/// <param name="dest">The allocated memory pointer to copy to.</param>
