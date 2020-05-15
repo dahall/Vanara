@@ -7816,8 +7816,13 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the array of <typeparamref name="T"/> structures containing interface entries.</summary>
 			public virtual T[] Table => ToArray<T>((int)NumEntries, Marshal.SizeOf(typeof(ulong)));
 
+#if ALLOWSPAN
+			/// <summary>Gets the <see cref="Span{T}"/> containing interface entries.</summary>
+			public virtual ReadOnlySpan<T> TableAsSpan => AsReadOnlySpan<T>((int)NumEntries, Marshal.SizeOf(typeof(ulong)));
+#endif
+
 			/// <summary>Gets the enumerator.</summary>
-			public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>)Table).GetEnumerator();
+			public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>) Table).GetEnumerator();
 
 			/// <summary>Gets the enumerator.</summary>
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -7838,6 +7843,14 @@ namespace Vanara.PInvoke
 			public SafeMibTableHandle(IntPtr bufferPtr, bool own = true) : base(bufferPtr, h => { FreeMibTable(h); return true; }, own)
 			{
 			}
+
+#if ALLOWSPAN
+			/// <summary>Exposes a <see cref="ReadOnlySpan{T}"/> from the pointer.</summary>
+			/// <typeparam name="T">The structure type of the array.</typeparam>
+			/// <param name="length">The number of span elements.</param>
+			/// <param name="prefixBytes">The number of bytes to skip before processing the array.</param>
+			public ReadOnlySpan<T> AsReadOnlySpan<T>(int length, int prefixBytes = 0) => IsInvalid ? null : handle.AsReadOnlySpan<T>(length, prefixBytes);
+#endif
 
 			/// <summary>Extracts the array from the pointer.</summary>
 			/// <typeparam name="T">The structure type of the array.</typeparam>
