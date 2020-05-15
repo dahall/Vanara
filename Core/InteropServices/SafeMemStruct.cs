@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
@@ -14,7 +15,7 @@ namespace Vanara.InteropServices
 	/// <typeparam name="TStruct">The type of the structure.</typeparam>
 	/// <typeparam name="TMem">The type of the memory.</typeparam>
 	/// <seealso cref="Vanara.InteropServices.SafeMemoryHandle{TMem}"/>
-	public abstract class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem> where TMem : IMemoryMethods, new() where TStruct : struct
+	public abstract class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEquatable<TStruct> where TMem : IMemoryMethods, new() where TStruct : struct
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeMemStruct{TStruct, TMem}"/> class.</summary>
 		/// <param name="s">The TStruct value.</param>
@@ -89,10 +90,15 @@ namespace Vanara.InteropServices
 				{
 					null => false,
 					SafeMemStruct<TStruct, TMem> ms => Equals((TStruct?)this, (TStruct?)ms),
-					TStruct s => Equals((TStruct?)this, (TStruct?)s),
+					TStruct s => Equals(s),
 					SafeAllocatedMemoryHandle m => m.DangerousGetHandle() == handle,
 					_ => false,
 				});
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(TStruct other) => !HasValue ? false : EqualityComparer<TStruct>.Default.Equals(handle.ToStructure<TStruct>(Size), other);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
