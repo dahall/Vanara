@@ -216,7 +216,11 @@ namespace Vanara.InteropServices
 #if ALLOWSPAN
 		/// <summary>Creates a new span over this allocated memory.</summary>
 		/// <returns>The span representation of the structure.</returns>
-		public virtual Span<T> AsSpan<T>(int length) { unsafe { return new Span<T>(handle.ToPointer(), length); } }
+		public virtual ReadOnlySpan<T> AsReadOnlySpan<T>(int length) => handle.AsReadOnlySpan<T>(length, 0, Size);
+
+		/// <summary>Creates a new span over this allocated memory.</summary>
+		/// <returns>The span representation of the structure.</returns>
+		public virtual Span<T> AsSpan<T>(int length) => handle.AsSpan<T>(length, 0, Size);
 
 		/// <summary>Casts this allocated memory to a <c>Span&lt;Byte&gt;</c>.</summary>
 		/// <returns>A span of type <see cref="byte"/>.</returns>
