@@ -130,7 +130,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Returns a hash code for this instance.</summary>
 			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-			public override int GetHashCode() => new Collections.EnumerableEqualityComparer<byte>().GetHashCode(handle.ToIEnum<byte>((int)Size));
+			public override int GetHashCode() => new Vanara.Collections.EnumerableEqualityComparer<byte>().GetHashCode(handle.ToIEnum<byte>((int)Size));
 
 			/// <summary>Inserts the specified <see cref="PIDL"/> before the existing list.</summary>
 			/// <param name="insertPidl">The <see cref="PIDL"/> to insert.</param>

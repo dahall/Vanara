@@ -3882,17 +3882,17 @@ namespace Vanara.PInvoke
 		/// <summary>Enumerates the values in a <see cref="IEnumContextProps"/> instance.</summary>
 		/// <param name="e">The <see cref="IEnumContextProps"/> instance.</param>
 		/// <returns>The enumerated values.</returns>
-		public static IEnumerable<ContextProperty> Enumerate(this IEnumContextProps e) => new Collections.IEnumFromCom<ContextProperty>(e.Next, e.Reset);
+		public static IEnumerable<ContextProperty> Enumerate(this IEnumContextProps e) => new Vanara.Collections.IEnumFromCom<ContextProperty>(e.Next, e.Reset);
 
 		/// <summary>Enumerates the values in a <see cref="IEnumSTATSTG"/> instance.</summary>
 		/// <param name="e">The <see cref="IEnumSTATSTG"/> instance.</param>
 		/// <returns>The enumerated values.</returns>
-		public static IEnumerable<STATSTG> Enumerate(this IEnumSTATSTG e) => new Collections.IEnumFromCom<STATSTG>(e.Next, e.Reset);
+		public static IEnumerable<STATSTG> Enumerate(this IEnumSTATSTG e) => new Vanara.Collections.IEnumFromCom<STATSTG>(e.Next, e.Reset);
 
 		/// <summary>Enumerates the values in a <see cref="IEnumUnknown"/> instance.</summary>
 		/// <param name="e">The <see cref="IEnumUnknown"/> instance.</param>
 		/// <returns>The enumerated values.</returns>
-		public static IEnumerable<IntPtr> Enumerate(this IEnumUnknown e) => new Collections.IEnumFromCom<IntPtr>(e.Next, e.Reset);
+		public static IEnumerable<IntPtr> Enumerate(this IEnumUnknown e) => new Vanara.Collections.IEnumFromCom<IntPtr>(e.Next, e.Reset);
 
 		/// <summary>Enumerates the values in a <see cref="IEnumUnknown"/> instance.</summary>
 		/// <typeparam name="T">The COM interface type to query for from each item in the collection. Note that if this type cannot be retrieved, an exception will be thrown.</typeparam>
