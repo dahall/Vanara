@@ -830,7 +830,7 @@ namespace Vanara.PInvoke
 		// dwMaximumSizeHigh, _In_ DWORD dwMaximumSizeLow, _In_opt_ LPCTSTR lpName);
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366537")]
-		public static extern IntPtr CreateFileMapping([In] HFILE hFile, [In] SECURITY_ATTRIBUTES lpAttributes, MEM_PROTECTION flProtect,
+		public static extern SafeHSECTION CreateFileMapping([In] HFILE hFile, [In] SECURITY_ATTRIBUTES lpAttributes, MEM_PROTECTION flProtect,
 			uint dwMaximumSizeHigh, uint dwMaximumSizeLow, string lpName);
 
 		/// <summary>Creates or opens a named or unnamed file mapping object for a specified file from a Windows Store app.</summary>
@@ -1006,7 +1006,7 @@ namespace Vanara.PInvoke
 		// PageProtection, _In_ ULONG64 MaximumSize, _In_opt_ PCWSTR Name);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("MemoryApi.h", MSDNShortId = "hh994453")]
-		public static extern IntPtr CreateFileMappingFromApp([In] HFILE hFile, [In] SECURITY_ATTRIBUTES SecurityAttributes,
+		public static extern SafeHSECTION CreateFileMappingFromApp([In] HFILE hFile, [In] SECURITY_ATTRIBUTES SecurityAttributes,
 			MEM_PROTECTION PageProtection, ulong MaximumSize, string Name);
 
 		/// <summary>
@@ -1225,7 +1225,7 @@ namespace Vanara.PInvoke
 		// flProtect, _In_ DWORD dwMaximumSizeHigh, _In_ DWORD dwMaximumSizeLow, _In_opt_ LPCTSTR lpName, _In_ DWORD nndPreferred);
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366539")]
-		public static extern SafeHFILE CreateFileMappingNuma([In] HFILE hFile, [In, Optional] SECURITY_ATTRIBUTES lpFileMappingAttributes, MEM_PROTECTION flProtect,
+		public static extern SafeHSECTION CreateFileMappingNuma([In] HFILE hFile, [In, Optional] SECURITY_ATTRIBUTES lpFileMappingAttributes, MEM_PROTECTION flProtect,
 			uint dwMaximumSizeHigh, uint dwMaximumSizeLow, string lpName, uint nndPreferred);
 
 		/// <summary>
@@ -1666,7 +1666,7 @@ namespace Vanara.PInvoke
 		// dwFileOffsetLow, _In_ SIZE_T dwNumberOfBytesToMap);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366761")]
-		public static extern IntPtr MapViewOfFile([In] HFILE hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, uint dwNumberOfBytesToMap);
+		public static extern IntPtr MapViewOfFile([In] HSECTION hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, uint dwNumberOfBytesToMap);
 
 		/// <summary>
 		/// <para>Maps a view of a file or a pagefile-backed section into the address space of the specified process.</para>
@@ -1747,7 +1747,7 @@ namespace Vanara.PInvoke
 		// PVOID MapViewOfFile3( HANDLE FileMapping, HANDLE Process, PVOID BaseAddress, ULONG64 Offset, SIZE_T ViewSize, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER *ExtendedParameters, ULONG ParameterCount );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("memoryapi.h", MSDNShortId = "585D7BA1-688F-4F24-8D8D-46A2FC137193")]
-		public static extern IntPtr MapViewOfFile3([In] HFILE FileMapping, [In] HPROCESS Process, [In] IntPtr BaseAddress, ulong Offset, SizeT ViewSize, MEM_ALLOCATION_TYPE AllocationType,
+		public static extern IntPtr MapViewOfFile3([In] HSECTION FileMapping, [In] HPROCESS Process, [In] IntPtr BaseAddress, ulong Offset, SizeT ViewSize, MEM_ALLOCATION_TYPE AllocationType,
 			MEM_PROTECTION PageProtection, [In] MEM_EXTENDED_PARAMETER[] ExtendedParameters, uint ParameterCount);
 
 		/// <summary>
@@ -1866,7 +1866,7 @@ namespace Vanara.PInvoke
 		// dwFileOffsetLow, _In_ SIZE_T dwNumberOfBytesToMap, _In_opt_ LPVOID lpBaseAddress);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366763")]
-		public static extern IntPtr MapViewOfFileEx([In] HFILE hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, uint dwNumberOfBytesToMap,
+		public static extern IntPtr MapViewOfFileEx([In] HSECTION hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, uint dwNumberOfBytesToMap,
 			[In] IntPtr lpBaseAddress);
 
 		/// <summary>Maps a view of a file mapping into the address space of a calling Windows Store app.</summary>
@@ -1938,7 +1938,7 @@ namespace Vanara.PInvoke
 		// PVOID WINAPI MapViewOfFileFromApp( _In_ HANDLE hFileMappingObject, _In_ ULONG DesiredAccess, _In_ ULONG64 FileOffset, _In_ SIZE_T NumberOfBytesToMap);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("MemoryApi.h", MSDNShortId = "hh994454")]
-		public static extern IntPtr MapViewOfFileFromApp([In] HFILE hFileMappingObject, FILE_MAP DesiredAccess, ulong FileOffset, SizeT NumberOfBytesToMap);
+		public static extern IntPtr MapViewOfFileFromApp([In] HSECTION hFileMappingObject, FILE_MAP DesiredAccess, ulong FileOffset, SizeT NumberOfBytesToMap);
 
 		/// <summary>
 		/// <para>Maps a view of a file mapping into the address space of a calling Windows Store app.</para>
@@ -2029,7 +2029,7 @@ namespace Vanara.PInvoke
 		// PVOID MapViewOfFile3FromApp( HANDLE FileMapping, HANDLE Process, PVOID BaseAddress, ULONG64 Offset, SIZE_T ViewSize, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER *ExtendedParameters, ULONG ParameterCount );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("memoryapi.h", MSDNShortId = "5E10E1B2-69D9-4F68-8F06-D411CF7FE2ED")]
-		public static extern IntPtr MapViewOfFile3FromApp([In] HFILE FileMapping, [In] HPROCESS Process, [In] IntPtr BaseAddress, ulong Offset, SizeT ViewSize, MEM_ALLOCATION_TYPE AllocationType,
+		public static extern IntPtr MapViewOfFile3FromApp([In] HSECTION FileMapping, [In] HPROCESS Process, [In] IntPtr BaseAddress, ulong Offset, SizeT ViewSize, MEM_ALLOCATION_TYPE AllocationType,
 			MEM_PROTECTION PageProtection, [In] MEM_EXTENDED_PARAMETER[] ExtendedParameters, uint ParameterCount);
 
 		/// <summary>Maps a view of a file or a pagefile-backed section into the address space of the specified process.</summary>
@@ -2052,7 +2052,7 @@ namespace Vanara.PInvoke
 		// BaseAddress, _In_ SIZE_T ViewSize, _In_ ULONG AllocationType, _In_ ULONG PageProtection, _In_ ULONG PreferredNode);
 		[DllImport("Api-ms-win-core-memory-l1-1-5.dll", SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "mt492558")]
-		public static extern IntPtr MapViewOfFileNuma2([In] HFILE FileMappingHandle, [In] HPROCESS ProcessHandle, ulong Offset, IntPtr BaseAddress, SizeT ViewSize,
+		public static extern IntPtr MapViewOfFileNuma2([In] HSECTION FileMappingHandle, [In] HPROCESS ProcessHandle, ulong Offset, IntPtr BaseAddress, SizeT ViewSize,
 			MEM_ALLOCATION_TYPE AllocationType, MEM_PROTECTION PageProtection, uint PreferredNode);
 
 		/// <summary>
@@ -2129,7 +2129,7 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI OpenFileMapping( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ LPCTSTR lpName);
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366791")]
-		public static extern SafeHFILE OpenFileMapping(FILE_MAP dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
+		public static extern SafeHSECTION OpenFileMapping(FILE_MAP dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
 
 		/// <summary>Opens a named file mapping object.</summary>
 		/// <param name="DesiredAccess">
@@ -2157,7 +2157,7 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI OpenFileMappingFromApp( _In_ ULONG DesiredAccess, _In_ BOOL InheritHandle, _In_ PCWSTR Name);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("MemoryApi.h", MSDNShortId = "mt169844")]
-		public static extern SafeHFILE OpenFileMappingFromApp(FILE_MAP DesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool InheritHandle, string Name);
+		public static extern SafeHSECTION OpenFileMappingFromApp(FILE_MAP DesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool InheritHandle, string Name);
 
 		/// <summary>
 		/// Provides an efficient mechanism to bring into memory potentially discontiguous virtual address ranges in a process address space.
@@ -4088,6 +4088,23 @@ namespace Vanara.PInvoke
 
 			/// <summary></summary>
 			public IntPtr VirtualAddress;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HSECTION"/> that is disposed using <see cref="CloseHandle"/>.</summary>
+		public class SafeHSECTION : SafeKernelHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHSECTION"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHSECTION(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHSECTION"/> class.</summary>
+			private SafeHSECTION() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHSECTION"/> to <see cref="HSECTION"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HSECTION(SafeHSECTION h) => h.handle;
 		}
 
 		/// <summary>
