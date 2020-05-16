@@ -7818,7 +7818,7 @@ namespace Vanara.PInvoke
 
 #if ALLOWSPAN
 			/// <summary>Gets the <see cref="Span{T}"/> containing interface entries.</summary>
-			public virtual ReadOnlySpan<T> TableAsSpan => AsReadOnlySpan<T>((int)NumEntries, Marshal.SizeOf(typeof(ulong)));
+			public virtual Span<T> TableAsSpan => AsSpan<T>((int)NumEntries, Marshal.SizeOf(typeof(ulong)));
 #endif
 
 			/// <summary>Gets the enumerator.</summary>
@@ -7845,11 +7845,11 @@ namespace Vanara.PInvoke
 			}
 
 #if ALLOWSPAN
-			/// <summary>Exposes a <see cref="ReadOnlySpan{T}"/> from the pointer.</summary>
+			/// <summary>Exposes a <see cref="Span{T}"/> from the pointer.</summary>
 			/// <typeparam name="T">The structure type of the array.</typeparam>
 			/// <param name="length">The number of span elements.</param>
 			/// <param name="prefixBytes">The number of bytes to skip before processing the array.</param>
-			public ReadOnlySpan<T> AsReadOnlySpan<T>(int length, int prefixBytes = 0) => IsInvalid ? null : handle.AsReadOnlySpan<T>(length, prefixBytes);
+			public Span<T> AsSpan<T>(int length, int prefixBytes = 0) => IsInvalid ? null : handle.AsSpan<T>(length, prefixBytes);
 #endif
 
 			/// <summary>Extracts the array from the pointer.</summary>
