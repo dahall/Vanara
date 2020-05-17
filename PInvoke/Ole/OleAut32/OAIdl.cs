@@ -74,6 +74,35 @@ namespace Vanara.PInvoke
 			CHANGEKIND_MAX
 		}
 
+		/// <summary>Identifies the type of data contained in a <c>PROPBAG2</c> structure.</summary>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa751953(v=vs.85) typedef
+		// enum _tagPROPBAG2_TYPE { PROPBAG2_TYPE_UNDEFINED = 0, PROPBAG2_TYPE_DATA = 1, PROPBAG2_TYPE_URL = 2, PROPBAG2_TYPE_OBJECT = 3,
+		// PROPBAG2_TYPE_STREAM = 4, PROPBAG2_TYPE_STORAGE = 5, PROPBAG2_TYPE_MONIKER = 6 } PROPBAG2_TYPE;
+		[PInvokeData("Ocidl.h")]
+		public enum PROPBAG2_TYPE
+		{
+			/// <summary>Value type is unknown or undefined.</summary>
+			PROPBAG2_TYPE_UNDEFINED,
+
+			/// <summary>Value type is simple data.</summary>
+			PROPBAG2_TYPE_DATA,
+
+			/// <summary>Value type is a URL reference.</summary>
+			PROPBAG2_TYPE_URL,
+
+			/// <summary>Value type is an object.</summary>
+			PROPBAG2_TYPE_OBJECT,
+
+			/// <summary>Value type is a stream.</summary>
+			PROPBAG2_TYPE_STREAM,
+
+			/// <summary>Value type is storage.</summary>
+			PROPBAG2_TYPE_STORAGE,
+
+			/// <summary>Value type is a moniker.</summary>
+			PROPBAG2_TYPE_MONIKER,
+		}
+
 		/// <summary>Frees resources on the server side when called by RPC stub files.</summary>
 		/// <param name="arg1">The data used by RPC.</param>
 		/// <param name="arg2">The object.</param>
@@ -421,6 +450,41 @@ namespace Vanara.PInvoke
 
 			/// <summary>The value of the data item.</summary>
 			public VARIANT varValue;
+		}
+
+		/// <summary>Contains or receives property information.</summary>
+		/// <remarks>
+		/// The <c>PROPBAG2</c> structure is used with the <c>IPropertyBag2::GetPropertyInfo</c>, <c>IPropertyBag2::Read</c>, and
+		/// <c>IPropertyBag2::Write</c> methods.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa768188(v=vs.85) typedef
+		// struct _tagPROPBAG2 { DWORD dwType; VARTYPE vt; CLIPFORMAT cfType; DWORD dwHint; LPOLESTR pstrName; CLSID clsid; } PROPBAG2;
+		[PInvokeData("Ocidl.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PROPBAG2
+		{
+			/// <summary>Type of property. This will be one of the PROPBAG2_TYPE values.</summary>
+			public PROPBAG2_TYPE dwType;
+
+			/// <summary>VARIANT type of the property.</summary>
+			public Ole32.VARTYPE vt;
+
+			/// <summary>Clipboard format or MIME type of the property.</summary>
+			public CLIPFORMAT cfType;
+
+			/// <summary>
+			/// Property name integer. If possible, this member will be filled by IPropertyBag2::GetPropertyInfo and can be used with
+			/// IPropertyBag2::Read and IPropertyBag2::Write to accelerate the read or write operation. These values are not valid outside
+			/// the property bag that created them.
+			/// </summary>
+			public uint dwHint;
+
+			/// <summary>Pointer to a string that specifies the property name.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string pstrName;
+
+			/// <summary>CLSID of the object. This member is valid only if dwType is PROPBAG2_TYPE_OBJECT.</summary>
+			public Guid clsid;
 		}
 	}
 }

@@ -3731,6 +3731,182 @@ namespace Vanara.PInvoke
 			void Write([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropName, in object pVar);
 		}
 
+		/// <summary>Provides an object with a property bag in which the object can save its properties persistently.</summary>
+		/// <remarks>
+		/// <para>
+		/// When a client wants to control how the individually named properties of an object are saved, it uses an object's
+		/// <c>IPersistPropertyBag2</c> interface as a persistence mechanism. The client supplies a property bag to the object in the form
+		/// of an <c>IPropertyBag2</c> interface.
+		/// </para>
+		/// <para>
+		/// <c>IPropertyBag2</c> is an enhancement of the <c>IPropertyBag</c> interface. <c>IPropertyBag2</c> allows the object to obtain
+		/// type information for each property by using the <c>CountProperties</c> method and the <c>GetPropertyInfo</c> method. A property
+		/// bag that implements <c>IPropertyBag2</c> must also support <c>IPropertyBag</c>, so that objects that only support
+		/// <c>IPropertyBag</c> can access their properties. Also, an object that supports <c>IPropertyBag2</c> must also support
+		/// <c>IPropertyBag</c> so that the object can communicate with property bags that only support <c>IPropertyBag</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa768192(v=vs.85)
+		[PInvokeData("Ocidl.h")]
+		[ComImport, Guid("22F55882-280B-11d0-A8A9-00A0C90C2004"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IPropertyBag2
+		{
+			/// <summary>Causes one or more properties to be read from the property bag.</summary>
+			/// <param name="cProperties">
+			/// <para>[in]Type: <c>unsigned long</c></para>
+			/// <para>
+			/// The number of properties to read. This argument specifies the number of elements in the arrays at pPropBag, pvarValue, and phrError.
+			/// </para>
+			/// </param>
+			/// <param name="pPropBag">
+			/// <para>[in]Type: <c>[</c> PROPBAG2 <c>]</c></para>
+			/// <para>
+			/// The address of an array of <c>PROPBAG2</c> structures that specify the properties that are requested. The <c>vt</c> member
+			/// and the <c>pstrName</c> member of these structures must be filled in before this method can be called. The <c>dwHint</c>
+			/// member of these structures is optional. There must be at least cProperties elements in this array. This argument cannot be NULL.
+			/// </para>
+			/// </param>
+			/// <param name="pErrLog">
+			/// <para>[in]Type: <c>IErrorLog</c></para>
+			/// <para>
+			/// The address of an <c>IErrorlog</c> interface in which the property bag stores any errors that occur during the reads. This
+			/// argument can be NULL; in which case, the caller receives no logging errors.
+			/// </para>
+			/// </param>
+			/// <param name="pvarValue">
+			/// <para>[out]Type: <c>VARIANT</c></para>
+			/// <para>
+			/// The address of an array of <c>VARIANT</c> structures that receive the property values. The caller does not have to
+			/// initialize these structures before calling <c>IPropertyBag2::Read</c>. The <c>IPropertyBag2::Read</c> method fills the type
+			/// field and the value field in these structures before it returns. There must be at least cProperties elements in this array.
+			/// The calling application is responsible for freeing any allocations that are contained in these structures. This argument
+			/// cannot be NULL.
+			/// </para>
+			/// </param>
+			/// <param name="phrError">
+			/// <para>[out]Type: <c>HRESULT</c></para>
+			/// <para>
+			/// The address of an array of <c>HRESULT</c> values that receives the result of each property read. There must be at least
+			/// cProperties elements in this array. This argument cannot be NULL.
+			/// </para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa768194%28v%3dvs.85%29
+			// HRESULT retVal = object.Read(cProperties, pPropBag, pErrLog, pvarValue, phrError);
+			void Read(uint cProperties, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPBAG2[] pPropBag, [Optional] IErrorLog pErrLog,
+				[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] object[] pvarValue, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HRESULT[] phrError);
+
+			/// <summary>Causes one or more properties to be saved into the property bag.</summary>
+			/// <param name="cProperties">
+			/// <para>[in]Type: <c>unsigned long</c></para>
+			/// <para>The number of properties to save. This argument specifies the number of elements in the arrays at pPropBag and pvarValue.</para>
+			/// </param>
+			/// <param name="pPropBag">
+			/// <para>[in]Type: <c>[</c> PROPBAG2 <c>](aa768188(v=vs.85).md)</c></para>
+			/// <para>
+			/// The address of an array of <c>PROPBAG2</c> structures that specify the properties saved. The <c>pstrName</c> member of these
+			/// structures must be filled in before this method is called. The <c>dwHint</c> member of these structures is optional. There
+			/// must be at least cProperties elements in this array. This argument cannot be NULL.
+			/// </para>
+			/// </param>
+			/// <param name="pvarValue">
+			/// <para>[in]Type: <c>VARIANT</c></para>
+			/// <para>
+			/// The address of an array of <c>VARIANT</c> structures that contain the property values to save. There must be at least
+			/// cProperties elements in this array. This argument cannot be NULL.
+			/// </para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa768195(v=vs.85)
+			// HRESULT retVal = object.Write(cProperties, pPropBag, pvarValue);
+			void Write(uint cProperties, PROPBAG2[] pPropBag, VARIANT[] pvarValue);
+
+			/// <summary>Gets the number of properties in the property bag.</summary>
+			/// <returns>
+			/// <para>[out]Type: <c>unsigned long</c></para>
+			/// <para>The address of a <c>unsigned long</c> that receives the number of properties in the property bag.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa768190(v=vs.85)
+			// HRESULT retVal = object.CountProperties(pcProperties);
+			uint CountProperties();
+
+			/// <summary>Gets information for properties in a property bag without actually getting those properties.</summary>
+			/// <param name="iProperty">
+			/// <para>[in]Type: <c>unsigned long</c></para>
+			/// <para>
+			/// The zero-based index of the first property for which information is requested. This argument must be less than the number of
+			/// properties retrieved by <c>IPropertyBag2::CountProperties</c>.
+			/// </para>
+			/// </param>
+			/// <param name="cProperties">
+			/// <para>[in]Type: <c>unsigned long</c></para>
+			/// <para>The number of properties to get information for. This argument specifies the number of array elements in pPropBag.</para>
+			/// </param>
+			/// <param name="pPropBag">
+			/// <para>[out]Type: <c>[</c> PROPBAG2 <c>](aa768188(v=vs.85).md)</c></para>
+			/// <para>
+			/// The address of an array of <c>PROPBAG2</c> structures that receive the information for the properties. There must be at
+			/// least cProperties elements in this array. This argument cannot be NULL.
+			/// </para>
+			/// </param>
+			/// <param name="pcProperties">
+			/// <para>[out]Type: <c>unsigned long</c></para>
+			/// <para>
+			/// The address of a <c>unsigned long</c> that receives the number of properties for which information was retrieved. This
+			/// argument cannot be NULL.
+			/// </para>
+			/// </param>
+			/// <remarks>
+			/// <para>When you implement this method, use CoTaskMemAlloc to allocate memory for the <c>pstrName</c> member of pPropBag.</para>
+			/// <para>When you call this method, use CoTaskMemFree to free the <c>pstrName</c> member of pPropBag.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa768191(v=vs.85)
+			// HRESULT retVal = object.GetPropertyInfo(iProperty, cProperties, pPropBag, pcProperties);
+			void GetPropertyInfo( uint iProperty, uint cProperties, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPBAG2[] pPropBag, out uint pcProperties);
+
+			/// <summary>
+			/// Causes the property bag to instruct a property object that was previously created and initialized to read its persistent properties.
+			/// </summary>
+			/// <param name="pstrName">
+			/// <para>[in]Type: <c>LPCOLESTR</c></para>
+			/// <para>The address of the name of the property object.</para>
+			/// </param>
+			/// <param name="dwHint">
+			/// <para>[in]Type: <c>DWORD</c></para>
+			/// <para>
+			/// An integer value that was retrieved by using <c>IPropertyBag2::GetPropertyInfo</c>. This argument is optional and must be
+			/// zero, if the value is not known or used.
+			/// </para>
+			/// </param>
+			/// <param name="pUnkObject">
+			/// <para>[in]Type: <c>IUnknown</c></para>
+			/// <para>The address of the object's IUnknown interface. This argument cannot be NULL.</para>
+			/// </param>
+			/// <param name="pErrLog">
+			/// <para>[in]Type: <c>IErrorLog</c></para>
+			/// <para>
+			/// The address of an <c>IErrorlog</c> interface in which the property bag stores any errors that occur during the load. This
+			/// argument can be NULL; in which case, the caller does not receive logging errors.
+			/// </para>
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// The <c>IPropertyBag2::LoadObject</c> method enables the calling application to participate in the creation and
+			/// initialization of a property object. When the <c>IPropertyBag</c> interface is used, a property object can be loaded by
+			/// using the <c>IPropertyBag::Read</c> method with <c>VT_UNKNOWN</c>. The <c>IPropertyBag</c> interface does not allow the
+			/// property object to be initialized by the calling application before the property object reads its own persistent data.
+			/// <c>IPropertyBag2::LoadObject</c> allows the property object to be created and initialized by the calling application,
+			/// instead of using the property bag to create and initialize the property object.
+			/// </para>
+			/// <para>
+			/// To use <c>IPropertyBag2::LoadObject</c>, get the property object's name and CLSID by using
+			/// <c>IPropertyBag2::GetPropertyInfo</c>. The property object is created and initialized. <c>IPropertyBag2::LoadObject</c> is
+			/// used instead of <c>IPropertyBag2::Read</c> to cause the property object to read its persistent data.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa768193(v=vs.85)
+			// HRESULT retVal = object.LoadObject(pstrName, dwHint, pUnkObject, pErrLog);
+			void LoadObject([MarshalAs(UnmanagedType.LPWStr)] string pstrName, uint dwHint, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkObject, [Optional] IErrorLog pErrLog);
+		}
+
 		/// <summary>
 		/// Describes the structure of a particular UDT. You can use IRecordInfo any time you need to access the description of UDTs
 		/// contained in type libraries. IRecordInfo can be reused as needed; there can be many instances of the UDT for a single
