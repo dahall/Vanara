@@ -24,7 +24,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemStruct{TStruct, TMem}"/> class.</summary>
 		/// <param name="capacity">The capacity of the buffer, in bytes.</param>
-		protected SafeMemStruct(SizeT capacity = default) : base(capacity) { }
+		protected SafeMemStruct(SizeT capacity = default) : base(Math.Max((ulong)SizeOf<TStruct>(), (ulong)capacity)) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemStruct{TStruct, TMem}"/> class.</summary>
 		/// <param name="ptr">The PTR.</param>
@@ -116,7 +116,7 @@ namespace Vanara.InteropServices
 		/// <returns>A <see cref="System.String"/> value held by this instance or <c>null</c> if the handle is invalid.</returns>
 		public override string ToString() => ((TStruct?)this).ToString();
 
-		private static SizeT SizeOf<T>() => VanaraMarshaler.CanMarshal<T>(out var marshaler) ? marshaler.GetNativeSize() : (SizeT)Marshal.SizeOf(typeof(T));
+		private static SizeT SizeOf<T>() => InteropExtensions.SizeOf<T>();
 
 #if ALLOWSPAN
 		/// <summary>Gets a reference to a structure based on this allocated memory.</summary>
