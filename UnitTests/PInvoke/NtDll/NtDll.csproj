@@ -32,6 +32,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WinternlTests.cs" />
     <Compile Include="NtDllTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +41,9 @@
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter">
       <Version>3.15.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Memory">
+      <Version>4.5.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +58,10 @@
     <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
       <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
       <Name>Vanara.PInvoke.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CSharpRunner\Shared.csproj">
+      <Project>{a96cff10-0967-429a-8700-4a86c97c5603}</Project>
+      <Name>Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
