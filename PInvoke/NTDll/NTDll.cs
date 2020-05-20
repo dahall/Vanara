@@ -4152,6 +4152,9 @@ namespace Vanara.PInvoke
 			/// <summary>Pointer to a wide-character string.</summary>
 			[MarshalAs(UnmanagedType.LPWStr)]
 			public string Buffer;
+
+			/// <inheritdoc/>
+			public override string ToString() => Buffer ?? string.Empty;
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to an object that releases a created handle at disposal using NtClose.</summary>
