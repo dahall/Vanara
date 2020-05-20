@@ -311,4 +311,28 @@ namespace Vanara.InteropServices
 		/// <inheritdoc/>
 		public override string ToString() => Value?.ToString("B") ?? "";
 	}
+
+	/// <summary>
+	/// <para>Represents a GUID point, or REFGUID, that will automatically dispose the memory to which it points at the end of scope.</para>
+	/// <note>You must use the <see cref="Null"/> value, or the parameter-less constructor to pass the equivalent of <see langword="null"/>.</note>
+	/// </summary>
+	public class SafeGuidPtr : SafeMemStruct<Guid, CoTaskMemoryMethods>
+	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SafeGuidPtr"/> class. This value is equivalent to a <see langword="null"/> pointer.
+		/// </summary>
+		public SafeGuidPtr() : base(IntPtr.Zero, true, 0) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeGuidPtr"/> class.</summary>
+		/// <param name="guid">The unique identifier to assign to the pointer.</param>
+		public SafeGuidPtr(in Guid guid) : base(guid) { }
+
+		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{Guid}"/> to <see cref="SafeGuidPtr"/>.</summary>
+		/// <param name="guid">The unique identifier.</param>
+		/// <returns>The resulting <see cref="SafeGuidPtr"/> instance from the conversion.</returns>
+		public static implicit operator SafeGuidPtr(Guid? guid) => guid.HasValue ? new SafeGuidPtr(guid.Value) : Null;
+
+		/// <summary>The equivalent of a <see langword="null"/> pointer to a GUID value.</summary>
+		public static readonly SafeGuidPtr Null = new SafeGuidPtr();
+	}
 }
