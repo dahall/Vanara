@@ -276,8 +276,8 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>The LOGFONT structure defines the attributes of a font.</summary>
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	[PInvokeData("Wingdi.h", MSDNShortId = "dd145037")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct LOGFONT
 	{
 		/// <summary>
@@ -387,7 +387,8 @@ namespace Vanara.PInvoke
 		/// <value>The font family.</value>
 		public FontFamily FontFamily
 		{
-			get => (FontFamily)(lfPitchAndFamily & 0xF0); set => lfPitchAndFamily = (byte)((lfPitchAndFamily & 0x0F) | (byte)value);
+			get => (FontFamily)(lfPitchAndFamily & 0xF0);
+			set => lfPitchAndFamily = (byte)((lfPitchAndFamily & 0x0F) | (byte)value);
 		}
 
 		/// <summary>
@@ -398,12 +399,8 @@ namespace Vanara.PInvoke
 		/// <value>The face name of the font.</value>
 		public string lfFaceName
 		{
-			get => _lfFaceName; set
-			{
-				if (value?.Length > 31)
-					throw new ArgumentException(@"The face name may not have more than 31 characters.", nameof(lfFaceName));
-				_lfFaceName = value;
-			}
+			get => _lfFaceName;
+			set => _lfFaceName = value?.Length <= 31 ? value : throw new ArgumentException(@"The face name may not have more than 31 characters.", nameof(lfFaceName));
 		}
 
 		/// <summary>
@@ -412,19 +409,16 @@ namespace Vanara.PInvoke
 		/// </summary>
 		public short lfWeight
 		{
-			get => (short)_lfWeight; set
-			{
-				if (value < 0 || value > 1000)
-					throw new ArgumentOutOfRangeException(nameof(lfWeight), @"Font weight must be a value in the range 0 through 1000.");
-				_lfWeight = value;
-			}
+			get => (short)_lfWeight;
+			set => _lfWeight = value >= 0 && value <= 1000 ? value : throw new ArgumentOutOfRangeException(nameof(lfWeight), @"Font weight must be a value in the range 0 through 1000.");
 		}
 
 		/// <summary>Gets or sets the font pitch.</summary>
 		/// <value>The pitch.</value>
 		public FontPitch Pitch
 		{
-			get => (FontPitch)(lfPitchAndFamily & 0x0F); set => lfPitchAndFamily = (byte)((lfPitchAndFamily & 0xF0) | (byte)value);
+			get => (FontPitch)(lfPitchAndFamily & 0x0F);
+			set => lfPitchAndFamily = (byte)((lfPitchAndFamily & 0xF0) | (byte)value);
 		}
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
