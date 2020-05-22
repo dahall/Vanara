@@ -1258,5 +1258,47 @@ namespace Vanara.PInvoke
 				}
 			}
 		}
+
+		/// <summary>
+		/// The PROPVARIANT structure is used in the ReadMultiple and WriteMultiple methods of IPropertyStorage to define the type tag and
+		/// the value of a property in a property set.
+		/// <para>
+		/// The PROPVARIANT structure is also used by the GetValue and SetValue methods of IPropertyStore, which replaces
+		/// IPropertySetStorage as the primary way to program item properties in Windows Vista. For more information, see Property Handlers.
+		/// </para>
+		/// <para>
+		/// There are five members. The first member, the value-type tag, and the last member, the value of the property, are significant.
+		/// The middle three members are reserved for future use.
+		/// </para>
+		/// <note>This structure is mostly used for arrays where the fixed structure size is critical for interop.</note>
+		/// </summary>
+		[StructLayout(LayoutKind.Sequential, Size = 16, Pack = 8)]
+		public struct PROPVARIANT_IMMUTABLE
+		{
+			/// <summary>Value type tag.</summary>
+			public VARTYPE vt;
+
+			/// <summary>Reserved for future use.</summary>
+			private ushort wReserved1;
+
+			/// <summary>Reserved for future use.</summary>
+			private ushort wReserved2;
+
+			/// <summary>Reserved for future use.</summary>
+			private ushort wReserved3;
+
+			/// <summary>The value when a numeric value less than 8 bytes.</summary>
+			private ulong _ulong;
+
+			/// <summary>Performs an implicit conversion from <see cref="PROPVARIANT"/> to <see cref="PROPVARIANT_IMMUTABLE"/>.</summary>
+			/// <param name="pv">The PROPVARIANT instance.</param>
+			/// <returns>The resulting <see cref="PROPVARIANT_IMMUTABLE"/> instance from the conversion.</returns>
+			public static implicit operator PROPVARIANT_IMMUTABLE(PROPVARIANT pv) => new PROPVARIANT_IMMUTABLE { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, _ulong = pv._ulong };
+
+			/// <summary>Performs an implicit conversion from <see cref="PROPVARIANT_IMMUTABLE"/> to <see cref="PROPVARIANT"/>.</summary>
+			/// <param name="pv">The PROPVARIANT_IMMUTABLE instance.</param>
+			/// <returns>The resulting <see cref="PROPVARIANT"/> instance from the conversion.</returns>
+			public static explicit operator PROPVARIANT(in PROPVARIANT_IMMUTABLE pv) => new PROPVARIANT { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, _ulong = pv._ulong };
+		}
 	}
 }
