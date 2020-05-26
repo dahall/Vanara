@@ -1,7 +1,10 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.NtDll;
 
 namespace Vanara.PInvoke.Tests
@@ -53,6 +56,31 @@ namespace Vanara.PInvoke.Tests
 			//Assert.That(psi, Is.Not.Null);
 			//Assert.That(Enum.IsDefined(typeof(SUBSYSTEM_INFORMATION_TYPE), psi.Value), Is.True);
 			//TestContext.WriteLine($"SubSys: {psi.Value}");
+		}
+
+		[Test]
+		public void GetCommandLineTest()
+		{
+			var randProc = System.Diagnostics.Process.GetProcesses().Where(p => p.ProcessName.StartsWith("devenv")).First();
+			using var hProc = Kernel32.OpenProcess((uint)(Kernel32.ProcessAccess.PROCESS_QUERY_INFORMATION | Kernel32.ProcessAccess.PROCESS_VM_READ), false, (uint)randProc.Id);
+			Assert.That(hProc, ResultIs.ValidHandle);
+
+			NtQueryResult<PROCESS_BASIC_INFORMATION> info = null;
+			Assert.That(() => info = NtQueryInformationProcess<PROCESS_BASIC_INFORMATION>(hProc, PROCESSINFOCLASS.ProcessBasicInformation), Throws.Nothing);
+			Assert.That(info, Is.Not.Null);
+			Assert.That(info.AsRef().PebBaseAddress, Is.Not.EqualTo(IntPtr.Zero));
+
+			using var pebPtr = new SafeHGlobalStruct<PEB>();
+			Assert.That(Kernel32.ReadProcessMemory(hProc, info.AsRef().PebBaseAddress, pebPtr, pebPtr.Size, out var pebSzRead), ResultIs.Successful);
+			Assert.That(pebSzRead, Is.LessThanOrEqualTo(pebPtr.Size));
+
+			using var rtlUserParamsPtr = new SafeHGlobalStruct<RTL_USER_PROCESS_PARAMETERS>();
+			Assert.That(Kernel32.ReadProcessMemory(hProc, pebPtr.Value.ProcessParameters, rtlUserParamsPtr, rtlUserParamsPtr.Size, out var rtlUserParamsRead), ResultIs.Successful);
+			Assert.That(rtlUserParamsRead, Is.LessThanOrEqualTo(rtlUserParamsPtr.Size));
+			var rtlUser = rtlUserParamsPtr.Value;
+			Assert.That(rtlUser.ImagePathName.Length, Is.GreaterThan(0));
+			StringAssert.StartsWith("C:\\", rtlUser.ImagePathName.ToString());
+			TestContext.WriteLine($"Img: {rtlUser.ImagePathName}; CmdLine: {rtlUser.CommandLine}");
 		}
 	}
 }
