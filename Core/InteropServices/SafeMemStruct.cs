@@ -128,4 +128,52 @@ namespace Vanara.InteropServices
 		public Span<TStruct> AsSpan() => base.AsSpan<TStruct>(1);
 #endif
 	}
+
+	/// <summary>
+	/// A structure handler based on unmanaged memory allocated by AllocCoTaskMem.
+	/// </summary>
+	/// <typeparam name="TStruct">The type of the structure.</typeparam>
+	/// <seealso cref="Vanara.InteropServices.SafeMemStruct{TStruct, TMem}" />
+	public class SafeCoTaskMemStruct<TStruct> : SafeMemStruct<TStruct, CoTaskMemoryMethods> where TStruct : struct
+	{
+		/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemStruct{TStruct}"/> class.</summary>
+		/// <param name="s">The TStruct value.</param>
+		/// <param name="capacity">The capacity of the buffer, in bytes.</param>
+		public SafeCoTaskMemStruct(in TStruct s, SizeT capacity = default) : base(s, capacity) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemStruct{TStruct}"/> class.</summary>
+		/// <param name="capacity">The capacity of the buffer, in bytes.</param>
+		public SafeCoTaskMemStruct(SizeT capacity = default) : base(capacity) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemStruct{TStruct}"/> class.</summary>
+		/// <param name="ptr">The PTR.</param>
+		/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
+		/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
+		[ExcludeFromCodeCoverage]
+		public SafeCoTaskMemStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, ownsHandle, allocatedBytes) { }
+	}
+
+	/// <summary>
+	/// A structure handler based on unmanaged memory allocated by AllocHGlobal.
+	/// </summary>
+	/// <typeparam name="TStruct">The type of the structure.</typeparam>
+	/// <seealso cref="Vanara.InteropServices.SafeMemStruct{TStruct, TMem}" />
+	public class SafeHGlobalStruct<TStruct> : SafeMemStruct<TStruct, HGlobalMemoryMethods> where TStruct : struct
+	{
+		/// <summary>Initializes a new instance of the <see cref="SafeHGlobalStruct{TStruct}"/> class.</summary>
+		/// <param name="s">The TStruct value.</param>
+		/// <param name="capacity">The capacity of the buffer, in bytes.</param>
+		public SafeHGlobalStruct(in TStruct s, SizeT capacity = default) : base(s, capacity) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeHGlobalStruct{TStruct}"/> class.</summary>
+		/// <param name="capacity">The capacity of the buffer, in bytes.</param>
+		public SafeHGlobalStruct(SizeT capacity = default) : base(capacity) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeHGlobalStruct{TStruct}"/> class.</summary>
+		/// <param name="ptr">The PTR.</param>
+		/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
+		/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
+		[ExcludeFromCodeCoverage]
+		public SafeHGlobalStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, ownsHandle, allocatedBytes) { }
+	}
 }
