@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Design;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 
@@ -168,6 +172,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Occurs when a shell folder or item is changed.</summary>
+		[Category("Behavior"), Description("Occurs when a shell folder or item is changed.")]
 		public event EventHandler<ShellItemChangeEventArgs> Changed;
 
 		/// <summary>Gets or sets a value indicating whether the component is enabled.</summary>
@@ -205,7 +210,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets or sets the shell item to watch.</summary>
 		/// <value>The shell item to monitor. The default is <see langword="null"/>.</value>
 		/// <exception cref="ArgumentNullException">Item</exception>
-		[DefaultValue(null), Category("Data"), Description("The shell item to watch.")]
+		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), DefaultValue(null), Category("Data"), Description("The shell item to watch.")]
 		public ShellItem Item
 		{
 			get => item;
@@ -230,6 +235,15 @@ namespace Vanara.Windows.Shell
 				notifyFilter = value;
 				Restart();
 			}
+		}
+
+		/// <summary>Gets or sets the path of the shell item to watch.</summary>
+		/// <value>The path of the shell item to monitor. The default is <see langword="null"/>.</value>
+		[DefaultValue(null), Category("Data"), Description("The shell item to watch."), Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
+		public string Path
+		{
+			get => item is null ? null : (item.IsFileSystem ? item.FileSystemPath : item.GetDisplayName(ShellItemDisplayString.DesktopAbsoluteParsing));
+			set => Item = value is null ? null : new ShellItem(value);
 		}
 
 		private bool IsSuspended => initializing || DesignMode;
@@ -298,6 +312,7 @@ namespace Vanara.Windows.Shell
 			SHGetIDListFromObject(Item.IShellItem, out var pidlWatch).ThrowIfFailed();
 			SHChangeNotifyEntry[] entries = { new SHChangeNotifyEntry { pidl = pidlWatch.DangerousGetHandle(), fRecursive = IncludeChildren } };
 			ulRegister = SHChangeNotifyRegister(hPump.Handle, sources, (SHCNE)NotifyFilter, hPump.MessageId, entries.Length, entries);
+			if (ulRegister == 0) throw new InvalidOperationException("Unable to register shell notifications.");
 		}
 
 		private void StopWatching()
@@ -317,7 +332,18 @@ namespace Vanara.Windows.Shell
 			internal ShellItemChangeEventArgs(SHCNE levent, IntPtr rgpidl)
 			{
 				ChangeType = (ChangeFilters)levent;
-				ChangedItems = new PIDL(rgpidl, true).Select(p => new ShellItem(p)).ToArray();
+				ChangedItems = GetPidls().Select(p => new ShellItem(new PIDL(p, false, false))).ToArray();
+
+				IEnumerable<IntPtr> GetPidls()
+				{
+					var offset = 0;
+					var ptr = IntPtr.Zero;
+					while ((ptr = Marshal.ReadIntPtr(rgpidl, offset)) != IntPtr.Zero)
+					{
+						yield return ptr;
+						offset += IntPtr.Size;
+					}
+				}
 			}
 
 			/// <summary>Gets the items affected by the change.</summary>
@@ -351,7 +377,7 @@ namespace Vanara.Windows.Shell
 					try
 					{
 						hNotifyLock = SHChangeNotification_Lock(m.WParam, (uint)m.LParam.ToInt32(), out var rgpidl, out var lEvent);
-						if (hNotifyLock != IntPtr.Zero) //  && (lEvent & (int)(SHCNE.SHCNE_UPDATEIMAGE | SHCNE.SHCNE_ASSOCCHANGED | SHCNE.SHCNE_EXTENDED_EVENT | SHCNE.SHCNE_FREESPACE | SHCNE.SHCNE_DRIVEADDGUI | SHCNE.SHCNE_SERVERDISCONNECT)) != 0
+						if (hNotifyLock != IntPtr.Zero && rgpidl != IntPtr.Zero) //  && (lEvent & (int)(SHCNE.SHCNE_UPDATEIMAGE | SHCNE.SHCNE_ASSOCCHANGED | SHCNE.SHCNE_EXTENDED_EVENT | SHCNE.SHCNE_FREESPACE | SHCNE.SHCNE_DRIVEADDGUI | SHCNE.SHCNE_SERVERDISCONNECT)) != 0
 							p.OnChanged(new ShellItemChangeEventArgs(lEvent, rgpidl));
 					}
 					finally
