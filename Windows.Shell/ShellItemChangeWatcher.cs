@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing.Design;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 
@@ -154,6 +156,8 @@ namespace Vanara.Windows.Shell
 	[DefaultProperty(nameof(Item)), DefaultEvent(nameof(Changed))]
 	public class ShellItemChangeWatcher : Component, ISupportInitialize
 	{
+		private const SHCNE NoParamEvent = SHCNE.SHCNE_ASSOCCHANGED |  SHCNE.SHCNE_DRIVEADDGUI | SHCNE.SHCNE_EXTENDED_EVENT | SHCNE.SHCNE_FREESPACE | SHCNE.SHCNE_UPDATEIMAGE;
+		private const SHCNE TwoParamEvent = SHCNE.SHCNE_RENAMEFOLDER | SHCNE.SHCNE_RENAMEITEM;
 		private readonly WatcherNativeWindow hPump;
 		private bool enabled;
 		private bool initializing;
@@ -338,22 +342,10 @@ namespace Vanara.Windows.Shell
 		/// <seealso cref="System.EventArgs"/>
 		public class ShellItemChangeEventArgs : EventArgs
 		{
-			internal ShellItemChangeEventArgs(SHCNE levent, IntPtr rgpidl)
+			internal ShellItemChangeEventArgs(SHCNE levent, IntPtr pidl1 = default, IntPtr pidl2 = default)
 			{
 				ChangeType = (ChangeFilters)levent;
-				ChangedItems = GetItems().ToArray();
-
-				IEnumerable<ShellItem> GetItems()
-				{
-					var offset = 0;
-					IntPtr ptr;
-					while ((ptr = Marshal.ReadIntPtr(rgpidl, offset)) != IntPtr.Zero)
-					{
-						if (SHCreateItemFromIDList(new PIDL(ptr, false, false), typeof(IShellItem).GUID, out var shi).Succeeded)
-							yield return ShellItem.Open((IShellItem)shi);
-						offset += IntPtr.Size;
-					}
-				}
+				ChangedItems = new[] { pidl1, pidl2 }.Where(p => p != IntPtr.Zero).Select(p => new ShellItem(new PIDL(p, false, false))).ToArray();
 			}
 
 			/// <summary>Gets the items affected by the change.</summary>
@@ -387,8 +379,17 @@ namespace Vanara.Windows.Shell
 					try
 					{
 						hNotifyLock = SHChangeNotification_Lock(m.WParam, (uint)m.LParam.ToInt32(), out var rgpidl, out var lEvent);
-						if (hNotifyLock != IntPtr.Zero && rgpidl != IntPtr.Zero) //  && (lEvent & (int)(SHCNE.SHCNE_UPDATEIMAGE | SHCNE.SHCNE_ASSOCCHANGED | SHCNE.SHCNE_EXTENDED_EVENT | SHCNE.SHCNE_FREESPACE | SHCNE.SHCNE_DRIVEADDGUI | SHCNE.SHCNE_SERVERDISCONNECT)) != 0
-							p.OnChanged(new ShellItemChangeEventArgs(lEvent, rgpidl));
+						if (hNotifyLock != IntPtr.Zero && rgpidl != IntPtr.Zero && p.NotifyFilter.IsFlagSet((ChangeFilters)lEvent))
+						{
+							ShellItemChangeEventArgs args;
+							if (NoParamEvent.IsFlagSet(lEvent))
+								args = new ShellItemChangeEventArgs(lEvent);
+							else if (TwoParamEvent.IsFlagSet(lEvent))
+								args = new ShellItemChangeEventArgs(lEvent, Marshal.ReadIntPtr(rgpidl, 0), Marshal.ReadIntPtr(rgpidl, IntPtr.Size));
+							else
+								args = new ShellItemChangeEventArgs(lEvent, Marshal.ReadIntPtr(rgpidl, 0));
+							p.OnChanged(args);
+						}
 					}
 					finally
 					{
