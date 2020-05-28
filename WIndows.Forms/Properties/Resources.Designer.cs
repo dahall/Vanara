@@ -19,7 +19,7 @@ namespace Vanara.Windows.Forms.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -39,7 +39,7 @@ namespace Vanara.Windows.Forms.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Vanara.Windows.Forms.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Vanara.PInvoke.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -81,40 +81,40 @@ namespace Vanara.Windows.Forms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static global::System.Drawing.Bitmap ArrowDisabled {
+        internal static System.Drawing.Bitmap ArrowDisabled {
             get {
                 object obj = ResourceManager.GetObject("ArrowDisabled", resourceCulture);
-                return ((global::System.Drawing.Bitmap)(obj));
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static global::System.Drawing.Bitmap ArrowHovered {
+        internal static System.Drawing.Bitmap ArrowHovered {
             get {
                 object obj = ResourceManager.GetObject("ArrowHovered", resourceCulture);
-                return ((global::System.Drawing.Bitmap)(obj));
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static global::System.Drawing.Bitmap ArrowNormal {
+        internal static System.Drawing.Bitmap ArrowNormal {
             get {
                 object obj = ResourceManager.GetObject("ArrowNormal", resourceCulture);
-                return ((global::System.Drawing.Bitmap)(obj));
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static global::System.Drawing.Bitmap ExpandoButtonV {
+        internal static System.Drawing.Bitmap ExpandoButtonV {
             get {
                 object obj = ResourceManager.GetObject("ExpandoButtonV", resourceCulture);
-                return ((global::System.Drawing.Bitmap)(obj));
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -481,20 +481,20 @@ namespace Vanara.Windows.Forms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static global::System.Drawing.Bitmap SmallSecurity {
+        internal static System.Drawing.Bitmap SmallSecurity {
             get {
                 object obj = ResourceManager.GetObject("SmallSecurity", resourceCulture);
-                return ((global::System.Drawing.Bitmap)(obj));
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static global::System.Drawing.Bitmap SmallSecurityDisabled {
+        internal static System.Drawing.Bitmap SmallSecurityDisabled {
             get {
                 object obj = ResourceManager.GetObject("SmallSecurityDisabled", resourceCulture);
-                return ((global::System.Drawing.Bitmap)(obj));
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
