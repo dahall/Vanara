@@ -151,6 +151,11 @@ namespace Vanara.InteropServices
 		/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 		[ExcludeFromCodeCoverage]
 		public SafeCoTaskMemStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, ownsHandle, allocatedBytes) { }
+
+		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{TStruct}"/> to <see cref="SafeCoTaskMemStruct{TStruct}"/>.</summary>
+		/// <param name="s">The value of the <typeparamref name="TStruct"/> instance or <see langword="null"/>.</param>
+		/// <returns>The resulting <see cref="SafeCoTaskMemStruct{TStruct}"/> instance from the conversion.</returns>
+		public static implicit operator SafeCoTaskMemStruct<TStruct>(TStruct? s) => s.HasValue ? new SafeCoTaskMemStruct<TStruct>(s.Value) : new SafeCoTaskMemStruct<TStruct>(IntPtr.Zero);
 	}
 
 	/// <summary>
@@ -175,5 +180,10 @@ namespace Vanara.InteropServices
 		/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 		[ExcludeFromCodeCoverage]
 		public SafeHGlobalStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, ownsHandle, allocatedBytes) { }
+
+		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{TStruct}"/> to <see cref="SafeHGlobalStruct{TStruct}"/>.</summary>
+		/// <param name="s">The value of the <typeparamref name="TStruct"/> instance or <see langword="null"/>.</param>
+		/// <returns>The resulting <see cref="SafeHGlobalStruct{TStruct}"/> instance from the conversion.</returns>
+		public static implicit operator SafeHGlobalStruct<TStruct>(TStruct? s) => s.HasValue ? new SafeHGlobalStruct<TStruct>(s.Value) : new SafeHGlobalStruct<TStruct>(IntPtr.Zero);
 	}
 }
