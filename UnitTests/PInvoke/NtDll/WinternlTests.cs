@@ -79,8 +79,17 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(rtlUserParamsRead, Is.LessThanOrEqualTo(rtlUserParamsPtr.Size));
 			var rtlUser = rtlUserParamsPtr.Value;
 			Assert.That(rtlUser.ImagePathName.Length, Is.GreaterThan(0));
-			StringAssert.StartsWith("C:\\", rtlUser.ImagePathName.ToString());
-			TestContext.WriteLine($"Img: {rtlUser.ImagePathName}; CmdLine: {rtlUser.CommandLine}");
+
+			var sImage = GetString(rtlUser.ImagePathName);
+			StringAssert.StartsWith("C:\\", sImage);
+			TestContext.WriteLine($"Img: {sImage}; CmdLine: {GetString(rtlUser.CommandLine)}");
+
+			string GetString(in UNICODE_STRING us)
+			{
+				using var mem = new SafeCoTaskMemString(us.MaximumLength);
+				Assert.That(Kernel32.ReadProcessMemory(hProc, us.Buffer, mem, mem.Size, out _), ResultIs.Successful);
+				return mem;
+			}
 		}
 	}
 }

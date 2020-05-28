@@ -4150,11 +4150,10 @@ namespace Vanara.PInvoke
 			public ushort MaximumLength;
 
 			/// <summary>Pointer to a wide-character string.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string Buffer;
+			public IntPtr Buffer;
 
 			/// <inheritdoc/>
-			public override string ToString() => Buffer ?? string.Empty;
+			public override string ToString() => StringHelper.GetString(Buffer, CharSet.Unicode, MaximumLength) ?? string.Empty;
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to an object that releases a created handle at disposal using NtClose.</summary>
