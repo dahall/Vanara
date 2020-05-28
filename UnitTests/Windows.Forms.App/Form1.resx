@@ -123,10 +123,33 @@
   <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>366, 17</value>
   </metadata>
-  <metadata name="vistaControlExtender1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+  <metadata name="taskbarButton1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>521, 17</value>
+  </metadata>
+  <metadata name="shellItemChangeWatcher1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>656, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="themedImageDraw1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAF
+        iQAABYkBbWid+gAAA1RJREFUWEedlzFIHEEUhq1FcSux8PBABRHF4wq7QyuRKKeNGLRQEFIIIrESDPG4
+        RkFE4TywUhsxNtqm0kPSmMLDWBghcEESCAixCBaGyGb+IW+Znf33duPAx+38O/Pemzez73ZrXNf9X5xC
+        ofB6bGysdHh4+PPo6OhbNpt9PzEx8YKMjYSKYRwcHKx1d3f/qVHTQC6X00i/q6vrR29vb4bNDYOKjHw+
+        /0EcCXYAQlNT0yyzwaCiTalUyjc0NAQchQVQV1eHLCWZLRsqWjhDQ0O/bScgLADQ3Nz8mdgKQEWTm5ub
+        WeYAVAvgH5FZoKLJ6urqBTGsiQqgtbU1z2yaUNFkZGQkYFiICqC9vf2C2TShosEoMyxEBQAsewGoKGxt
+        bZ0wo0KcABSjzLZARWFycvKRGPSIE0BHR8cJsy1QUdGv2F5ZWfGcMFR90LB7wvr6+qOylTNs+6Ciov/2
+        9vYTM/gcrq+vt4kPDRXBzMzMHUvpc0gmk/vMB6CiItnT0+MZwPXu7q57enrqHh8fu319fd69OGMSicQd
+        8aGhImq/TG5paXHPzs60weXlZc3GxoY7Pz/vOZiamnKLxaJ3H7WjXC7bgdKqGBDA4uLilUyEIzjE9ebm
+        pjs9Pa2vERh0rBoOVZrdvb09/Yv7EqjYCauKAUHhmNUPq4MxXKdSKQ2uMcZcseM4XnAAupmlzs7OK+JL
+        3QmKgeoHY/f39zqt2F/82g2anIFKpaJ/yV+4o4b6/Pk6IKz6wRj2FKtCMKwhAIzB9jAb7EXF1wHj4+O/
+        2GSTy8tLLxCAbYLGxpqwqujrAOvkBoAzpBjXePTQxzW2QM5KGG1tbV9tf74OqBYAHEpDEHIesN/SJCCG
+        ekK+qCE+f74OUC+f39lkAKdRDVtiFjGTdDq9pob4/Pk64Pz8fJi9gGJlcRsyYs+vra3Fe2X0UwB2dnbe
+        2kGYaY7TzCzgLTnseyEgCMjE4ODggxhBVYvbsA2yABw89RtYuUBFA2dhYeEjjIGw599u2K76+vontuc2
+        VLRRp/0VPslQYFBs2GHEFiFLGIN/v7ifaFQMwZmbm0M6dWrDyGQy78jcUKhYDXygqhU+2Y4bGxsfVKUb
+        ZnOqQcUYOEtLS2/wiY5P84GBgZdkTAzcmr9rHX1M8zEnawAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="customButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAI
@@ -155,28 +178,5 @@
   </data>
   <metadata name="glassExtenderProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>188, 17</value>
-  </metadata>
-  <data name="themedImageDraw1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAF
-        iQAABYkBbWid+gAAA1RJREFUWEedlzFIHEEUhq1FcSux8PBABRHF4wq7QyuRKKeNGLRQEFIIIrESDPG4
-        RkFE4TywUhsxNtqm0kPSmMLDWBghcEESCAixCBaGyGb+IW+Znf33duPAx+38O/Pemzez73ZrXNf9X5xC
-        ofB6bGysdHh4+PPo6OhbNpt9PzEx8YKMjYSKYRwcHKx1d3f/qVHTQC6X00i/q6vrR29vb4bNDYOKjHw+
-        /0EcCXYAQlNT0yyzwaCiTalUyjc0NAQchQVQV1eHLCWZLRsqWjhDQ0O/bScgLADQ3Nz8mdgKQEWTm5ub
-        WeYAVAvgH5FZoKLJ6urqBTGsiQqgtbU1z2yaUNFkZGQkYFiICqC9vf2C2TShosEoMyxEBQAsewGoKGxt
-        bZ0wo0KcABSjzLZARWFycvKRGPSIE0BHR8cJsy1QUdGv2F5ZWfGcMFR90LB7wvr6+qOylTNs+6Ciov/2
-        9vYTM/gcrq+vt4kPDRXBzMzMHUvpc0gmk/vMB6CiItnT0+MZwPXu7q57enrqHh8fu319fd69OGMSicQd
-        8aGhImq/TG5paXHPzs60weXlZc3GxoY7Pz/vOZiamnKLxaJ3H7WjXC7bgdKqGBDA4uLilUyEIzjE9ebm
-        pjs9Pa2vERh0rBoOVZrdvb09/Yv7EqjYCauKAUHhmNUPq4MxXKdSKQ2uMcZcseM4XnAAupmlzs7OK+JL
-        3QmKgeoHY/f39zqt2F/82g2anIFKpaJ/yV+4o4b6/Pk6IKz6wRj2FKtCMKwhAIzB9jAb7EXF1wHj4+O/
-        2GSTy8tLLxCAbYLGxpqwqujrAOvkBoAzpBjXePTQxzW2QM5KGG1tbV9tf74OqBYAHEpDEHIesN/SJCCG
-        ekK+qCE+f74OUC+f39lkAKdRDVtiFjGTdDq9pob4/Pk64Pz8fJi9gGJlcRsyYs+vra3Fe2X0UwB2dnbe
-        2kGYaY7TzCzgLTnseyEgCMjE4ODggxhBVYvbsA2yABw89RtYuUBFA2dhYeEjjIGw599u2K76+vontuc2
-        VLRRp/0VPslQYFBs2GHEFiFLGIN/v7ifaFQMwZmbm0M6dWrDyGQy78jcUKhYDXygqhU+2Y4bGxsfVKUb
-        ZnOqQcUYOEtLS2/wiY5P84GBgZdkTAzcmr9rHX1M8zEnawAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <metadata name="taskbarButton1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>521, 17</value>
   </metadata>
 </root>

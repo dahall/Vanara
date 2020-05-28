@@ -34,27 +34,29 @@
 			this.dlgCombo = new System.Windows.Forms.ComboBox();
 			this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
 			this.button1 = new System.Windows.Forms.Button();
-			this.trackBarEx1 = new Vanara.Windows.Forms.TrackBarEx();
-			this.splitButton1 = new Vanara.Windows.Forms.SplitButton();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.oneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.twoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.threeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.taskbarButton1 = new Vanara.Windows.Shell.TaskbarButton(this.components);
+			this.shellItemChangeWatcher1 = new Vanara.Windows.Shell.ShellItemChangeWatcher();
+			this.ipAddressBox1 = new Vanara.Windows.Forms.IPAddressBox();
+			this.themedImageDraw1 = new Vanara.Windows.Forms.ThemedImageDraw();
+			this.themedLabel1 = new Vanara.Windows.Forms.ThemedLabel();
+			this.themedPanel1 = new Vanara.Windows.Forms.ThemedPanel();
+			this.splitButton1 = new Vanara.Windows.Forms.SplitButton();
 			this.enumComboBox1 = new Vanara.Windows.Forms.EnumComboBox();
 			this.customButton1 = new Vanara.Windows.Forms.CustomButton();
 			this.commandLink1 = new Vanara.Windows.Forms.CommandLink();
 			this.vistaControlExtender1 = new Vanara.Windows.Forms.VistaControlExtender(this.components);
 			this.glassExtenderProvider1 = new Vanara.Windows.Forms.GlassExtenderProvider();
-			this.themedLabel1 = new Vanara.Windows.Forms.ThemedLabel();
-			this.themedPanel1 = new Vanara.Windows.Forms.ThemedPanel();
-			this.themedImageDraw1 = new Vanara.Windows.Forms.ThemedImageDraw();
-			this.ipAddressBox1 = new Vanara.Windows.Forms.IPAddressBox();
-			this.taskbarButton1 = new Vanara.Windows.Shell.TaskbarButton(this.components);
+			this.trackBarEx1 = new Vanara.Windows.Forms.TrackBarEx();
 			this.groupBox1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.trackBarEx1)).BeginInit();
 			this.contextMenuStrip1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.vistaControlExtender1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.taskbarButton1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.shellItemChangeWatcher1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.vistaControlExtender1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.trackBarEx1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -76,7 +78,7 @@
 			this.dlgCombo.Location = new System.Drawing.Point(7, 23);
 			this.vistaControlExtender1.SetMinVisibleItems(this.dlgCombo, 0);
 			this.dlgCombo.Name = "dlgCombo";
-			this.dlgCombo.Size = new System.Drawing.Size(243, 23);
+			this.dlgCombo.Size = new System.Drawing.Size(243, 24);
 			this.dlgCombo.TabIndex = 3;
 			this.dlgCombo.SelectedIndexChanged += new System.EventHandler(this.dlgCombo_SelectedIndexChanged);
 			// 
@@ -101,34 +103,6 @@
 			this.button1.Text = "Go";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
-			// 
-			// trackBarEx1
-			// 
-			this.trackBarEx1.Location = new System.Drawing.Point(12, 336);
-			this.trackBarEx1.Name = "trackBarEx1";
-			this.trackBarEx1.Size = new System.Drawing.Size(332, 33);
-			this.trackBarEx1.TabIndex = 5;
-			this.trackBarEx1.TickPositions = new int[] {
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9};
-			// 
-			// splitButton1
-			// 
-			this.splitButton1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.splitButton1.Location = new System.Drawing.Point(12, 269);
-			this.splitButton1.Name = "splitButton1";
-			this.splitButton1.Size = new System.Drawing.Size(131, 23);
-			this.splitButton1.SplitMenuStrip = this.contextMenuStrip1;
-			this.splitButton1.TabIndex = 4;
-			this.splitButton1.Text = "splitButton1";
-			this.splitButton1.UseVisualStyleBackColor = true;
 			// 
 			// contextMenuStrip1
 			// 
@@ -157,37 +131,31 @@
 			this.threeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
 			this.threeToolStripMenuItem.Text = "Three";
 			// 
-			// enumComboBox1
+			// shellItemChangeWatcher1
 			// 
-			this.enumComboBox1.ControlSize = new System.Drawing.Size(187, 105);
-			this.enumComboBox1.DropSize = new System.Drawing.Size(121, 106);
-			this.enumComboBox1.EnumTypeString = "System.AttributeTargets";
-			this.enumComboBox1.FormattingEnabled = true;
-			this.enumComboBox1.Location = new System.Drawing.Point(12, 302);
-			this.vistaControlExtender1.SetMinVisibleItems(this.enumComboBox1, 0);
-			this.enumComboBox1.Name = "enumComboBox1";
-			this.enumComboBox1.Size = new System.Drawing.Size(332, 23);
-			this.enumComboBox1.TabIndex = 3;
+			this.shellItemChangeWatcher1.EnableRaisingEvents = true;
+			this.shellItemChangeWatcher1.IncludeChildren = true;
+			this.shellItemChangeWatcher1.Path = "C:\\Temp";
 			// 
-			// customButton1
+			// ipAddressBox1
 			// 
-			this.customButton1.AutoEllipsis = false;
-			this.customButton1.Image = ((System.Drawing.Image)(resources.GetObject("customButton1.Image")));
-			this.customButton1.Location = new System.Drawing.Point(12, 178);
-			this.customButton1.Name = "customButton1";
-			this.customButton1.Size = new System.Drawing.Size(102, 85);
-			this.customButton1.TabIndex = 2;
-			this.customButton1.Text = "customButton1";
-			this.customButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.ipAddressBox1.Location = new System.Drawing.Point(12, 452);
+			this.ipAddressBox1.Name = "ipAddressBox1";
+			this.ipAddressBox1.Size = new System.Drawing.Size(102, 23);
+			this.ipAddressBox1.TabIndex = 9;
+			this.ipAddressBox1.Text = "255.255.255.255";
 			// 
-			// commandLink1
+			// themedImageDraw1
 			// 
-			this.commandLink1.Location = new System.Drawing.Point(12, 96);
-			this.commandLink1.Name = "commandLink1";
-			this.commandLink1.NoteText = "This is the subtext that goes underneath.";
-			this.commandLink1.Size = new System.Drawing.Size(200, 76);
-			this.commandLink1.TabIndex = 1;
-			this.commandLink1.Text = "Command Link";
+			this.themedImageDraw1.AutoEllipsis = false;
+			this.themedImageDraw1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("themedImageDraw1.BackgroundImage")));
+			this.themedImageDraw1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+			this.themedImageDraw1.Location = new System.Drawing.Point(132, 48);
+			this.themedImageDraw1.Name = "themedImageDraw1";
+			this.themedImageDraw1.Size = new System.Drawing.Size(32, 32);
+			this.themedImageDraw1.StyleClass = "Button";
+			this.themedImageDraw1.SupportGlass = true;
+			this.themedImageDraw1.TabIndex = 8;
 			// 
 			// themedLabel1
 			// 
@@ -210,36 +178,67 @@
 			this.themedPanel1.StylePart = 1;
 			this.themedPanel1.TabIndex = 7;
 			// 
-			// themedImageDraw1
+			// splitButton1
 			// 
-			this.themedImageDraw1.AutoEllipsis = false;
-			this.themedImageDraw1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("themedImageDraw1.BackgroundImage")));
-			this.themedImageDraw1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.themedImageDraw1.Location = new System.Drawing.Point(132, 48);
-			this.themedImageDraw1.Name = "themedImageDraw1";
-			this.themedImageDraw1.Size = new System.Drawing.Size(32, 32);
-			this.themedImageDraw1.StyleClass = "Button";
-			this.themedImageDraw1.SupportGlass = true;
-			this.themedImageDraw1.TabIndex = 8;
+			this.splitButton1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.splitButton1.Location = new System.Drawing.Point(12, 269);
+			this.splitButton1.Name = "splitButton1";
+			this.splitButton1.Size = new System.Drawing.Size(131, 23);
+			this.splitButton1.SplitMenuStrip = this.contextMenuStrip1;
+			this.splitButton1.TabIndex = 4;
+			this.splitButton1.Text = "splitButton1";
+			this.splitButton1.UseVisualStyleBackColor = true;
 			// 
-			// ipAddressBox1
+			// enumComboBox1
 			// 
-			this.ipAddressBox1.Location = new System.Drawing.Point(12, 452);
-			this.ipAddressBox1.Name = "ipAddressBox1";
-			this.ipAddressBox1.Size = new System.Drawing.Size(102, 23);
-			this.ipAddressBox1.TabIndex = 9;
-			this.ipAddressBox1.Text = "255.255.255.255";
+			this.enumComboBox1.ControlSize = new System.Drawing.Size(187, 105);
+			this.enumComboBox1.DropSize = new System.Drawing.Size(121, 106);
+			this.enumComboBox1.EnumTypeString = "System.AttributeTargets";
+			this.enumComboBox1.FormattingEnabled = true;
+			this.enumComboBox1.Location = new System.Drawing.Point(12, 302);
+			this.vistaControlExtender1.SetMinVisibleItems(this.enumComboBox1, 0);
+			this.enumComboBox1.Name = "enumComboBox1";
+			this.enumComboBox1.Size = new System.Drawing.Size(332, 24);
+			this.enumComboBox1.TabIndex = 3;
+			// 
+			// customButton1
+			// 
+			this.customButton1.AutoEllipsis = false;
+			this.customButton1.Image = ((System.Drawing.Image)(resources.GetObject("customButton1.Image")));
+			this.customButton1.Location = new System.Drawing.Point(12, 178);
+			this.customButton1.Name = "customButton1";
+			this.customButton1.Size = new System.Drawing.Size(102, 85);
+			this.customButton1.TabIndex = 2;
+			this.customButton1.Text = "customButton1";
+			this.customButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			// 
+			// commandLink1
+			// 
+			this.commandLink1.Location = new System.Drawing.Point(12, 96);
+			this.commandLink1.Name = "commandLink1";
+			this.commandLink1.NoteText = "This is the subtext that goes underneath.";
+			this.commandLink1.Size = new System.Drawing.Size(200, 76);
+			this.commandLink1.TabIndex = 1;
+			this.commandLink1.Text = "Command Link";
+			// 
+			// trackBarEx1
+			// 
+			this.trackBarEx1.Location = new System.Drawing.Point(13, 333);
+			this.trackBarEx1.Name = "trackBarEx1";
+			this.trackBarEx1.Size = new System.Drawing.Size(331, 33);
+			this.trackBarEx1.TabIndex = 10;
+			this.trackBarEx1.TickPositions = new int[0];
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(695, 519);
+			this.Controls.Add(this.trackBarEx1);
 			this.Controls.Add(this.ipAddressBox1);
 			this.Controls.Add(this.themedImageDraw1);
 			this.Controls.Add(this.themedLabel1);
 			this.Controls.Add(this.themedPanel1);
-			this.Controls.Add(this.trackBarEx1);
 			this.Controls.Add(this.splitButton1);
 			this.Controls.Add(this.enumComboBox1);
 			this.Controls.Add(this.customButton1);
@@ -252,10 +251,11 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.groupBox1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.trackBarEx1)).EndInit();
 			this.contextMenuStrip1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.vistaControlExtender1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.taskbarButton1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.shellItemChangeWatcher1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.vistaControlExtender1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.trackBarEx1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -271,7 +271,6 @@
 		private Vanara.Windows.Forms.CustomButton customButton1;
 		private Vanara.Windows.Forms.EnumComboBox enumComboBox1;
 		private Vanara.Windows.Forms.SplitButton splitButton1;
-		private Vanara.Windows.Forms.TrackBarEx trackBarEx1;
 		private System.Windows.Forms.ComboBox dlgCombo;
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem oneToolStripMenuItem;
@@ -283,6 +282,8 @@
 		private Vanara.Windows.Forms.ThemedImageDraw themedImageDraw1;
 		private Vanara.Windows.Forms.IPAddressBox ipAddressBox1;
 		private Vanara.Windows.Shell.TaskbarButton taskbarButton1;
+		private Vanara.Windows.Shell.ShellItemChangeWatcher shellItemChangeWatcher1;
+		private Vanara.Windows.Forms.TrackBarEx trackBarEx1;
 	}
 }
 
