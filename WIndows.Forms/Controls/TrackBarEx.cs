@@ -204,6 +204,7 @@ namespace Vanara.Windows.Forms
 		/// maximum slider positions.
 		/// </value>
 		[DefaultValue(null), Category("Appearance"), Description("Indicates the logical values of the trackbar where ticks are drawn.")]
+		[TypeConverter(typeof(ArrayConverter))]
 		public int[] TickPositions
 		{
 			get
