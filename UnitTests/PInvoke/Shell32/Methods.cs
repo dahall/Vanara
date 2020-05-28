@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.PInvoke.Tests
@@ -48,6 +49,26 @@ namespace Vanara.PInvoke.Tests
 				TestContext.WriteLine(name);
 			}
 			Marshal.ReleaseComObject(sf);
+		}
+
+		[Test]
+		public void EnumRecycleBinTest()
+		{
+			// Get IShellFolder for Desktop
+			SHGetDesktopFolder(out var iDesktop).ThrowIfFailed();
+			using var pDesktop = ComReleaserFactory.Create(iDesktop);
+
+			// Get IShellFolder for Recycle Bin
+			SHGetKnownFolderIDList(KNOWNFOLDERID.FOLDERID_RecycleBinFolder.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, default, out var pIDL).ThrowIfFailed();
+			using var pBin = ComReleaserFactory.Create(pDesktop.Item.BindToObject<IShellFolder>(pIDL));
+
+			// Enum all items in bin
+			foreach (var childPidl in pBin.Item.EnumObjects())
+			{
+				using var pItem = ComReleaserFactory.Create(SHCreateItemFromIDList<IShellItem>(childPidl));
+				// use pItem.Item to access methods of IShellItem
+				TestContext.WriteLine(pItem.Item.GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY).ToString());
+			}
 		}
 
 		/*
