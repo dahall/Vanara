@@ -143,6 +143,9 @@ namespace Vanara.Windows.Shell
 		/// <summary>All global events.</summary>
 		AllGlobalEvents = SHCNE.SHCNE_GLOBALEVENTS,
 
+		/// <summary>System event.</summary>
+		ExtendedEvent = SHCNE.SHCNE_EXTENDED_EVENT,
+
 		/// <summary>All events.</summary>
 		AllEvents = SHCNE.SHCNE_ALLEVENTS,
 	}
@@ -287,8 +290,14 @@ namespace Vanara.Windows.Shell
 		/// </param>
 		protected override void Dispose(bool disposing)
 		{
-			base.Dispose(disposing);
-			if (disposing) StopWatching();
+			try
+			{
+				StopWatching();
+			}
+			finally
+			{
+				base.Dispose(disposing);
+			}
 		}
 
 		/// <summary>Raises the <see cref="Changed"/> event.</summary>
@@ -332,15 +341,16 @@ namespace Vanara.Windows.Shell
 			internal ShellItemChangeEventArgs(SHCNE levent, IntPtr rgpidl)
 			{
 				ChangeType = (ChangeFilters)levent;
-				ChangedItems = GetPidls().Select(p => new ShellItem(new PIDL(p, false, false))).ToArray();
+				ChangedItems = GetItems().ToArray();
 
-				IEnumerable<IntPtr> GetPidls()
+				IEnumerable<ShellItem> GetItems()
 				{
 					var offset = 0;
-					var ptr = IntPtr.Zero;
+					IntPtr ptr;
 					while ((ptr = Marshal.ReadIntPtr(rgpidl, offset)) != IntPtr.Zero)
 					{
-						yield return ptr;
+						if (SHCreateItemFromIDList(new PIDL(ptr, false, false), typeof(IShellItem).GUID, out var shi).Succeeded)
+							yield return ShellItem.Open((IShellItem)shi);
 						offset += IntPtr.Size;
 					}
 				}
@@ -371,7 +381,7 @@ namespace Vanara.Windows.Shell
 
 			protected override void WndProc(ref Message m)
 			{
-				if (m.Msg == MessageId)
+				if (m.Msg == MessageId && p.enabled && !p.IsSuspended)
 				{
 					HLOCK hNotifyLock = default;
 					try
