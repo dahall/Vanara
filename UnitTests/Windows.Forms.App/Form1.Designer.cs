@@ -51,6 +51,7 @@
 			this.vistaControlExtender1 = new Vanara.Windows.Forms.VistaControlExtender(this.components);
 			this.glassExtenderProvider1 = new Vanara.Windows.Forms.GlassExtenderProvider();
 			this.trackBarEx1 = new Vanara.Windows.Forms.TrackBarEx();
+			this.logDisplay = new System.Windows.Forms.TextBox();
 			this.groupBox1.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.taskbarButton1)).BeginInit();
@@ -78,7 +79,7 @@
 			this.dlgCombo.Location = new System.Drawing.Point(7, 23);
 			this.vistaControlExtender1.SetMinVisibleItems(this.dlgCombo, 0);
 			this.dlgCombo.Name = "dlgCombo";
-			this.dlgCombo.Size = new System.Drawing.Size(243, 24);
+			this.dlgCombo.Size = new System.Drawing.Size(243, 23);
 			this.dlgCombo.TabIndex = 3;
 			this.dlgCombo.SelectedIndexChanged += new System.EventHandler(this.dlgCombo_SelectedIndexChanged);
 			// 
@@ -133,9 +134,8 @@
 			// 
 			// shellItemChangeWatcher1
 			// 
-			this.shellItemChangeWatcher1.EnableRaisingEvents = true;
 			this.shellItemChangeWatcher1.IncludeChildren = true;
-			this.shellItemChangeWatcher1.Path = "C:\\Temp";
+			this.shellItemChangeWatcher1.Changed += new System.EventHandler<Vanara.Windows.Shell.ShellItemChangeWatcher.ShellItemChangeEventArgs>(this.ShellItemChangeWatcher1_Changed);
 			// 
 			// ipAddressBox1
 			// 
@@ -198,7 +198,7 @@
 			this.enumComboBox1.Location = new System.Drawing.Point(12, 302);
 			this.vistaControlExtender1.SetMinVisibleItems(this.enumComboBox1, 0);
 			this.enumComboBox1.Name = "enumComboBox1";
-			this.enumComboBox1.Size = new System.Drawing.Size(332, 24);
+			this.enumComboBox1.Size = new System.Drawing.Size(332, 23);
 			this.enumComboBox1.TabIndex = 3;
 			// 
 			// customButton1
@@ -223,17 +223,31 @@
 			// 
 			// trackBarEx1
 			// 
-			this.trackBarEx1.Location = new System.Drawing.Point(13, 333);
+			this.trackBarEx1.Location = new System.Drawing.Point(12, 331);
 			this.trackBarEx1.Name = "trackBarEx1";
-			this.trackBarEx1.Size = new System.Drawing.Size(331, 33);
-			this.trackBarEx1.TabIndex = 10;
-			this.trackBarEx1.TickPositions = new int[0];
+			this.trackBarEx1.SelectionEnd = 8;
+			this.trackBarEx1.SelectionStart = 2;
+			this.trackBarEx1.ShowSelection = true;
+			this.trackBarEx1.Size = new System.Drawing.Size(332, 33);
+			this.trackBarEx1.TabIndex = 12;
+			// 
+			// logDisplay
+			// 
+			this.logDisplay.Location = new System.Drawing.Point(160, 178);
+			this.logDisplay.Multiline = true;
+			this.logDisplay.Name = "logDisplay";
+			this.logDisplay.ReadOnly = true;
+			this.logDisplay.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+			this.logDisplay.Size = new System.Drawing.Size(184, 114);
+			this.logDisplay.TabIndex = 11;
+			this.logDisplay.WordWrap = false;
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(695, 519);
+			this.Controls.Add(this.logDisplay);
 			this.Controls.Add(this.trackBarEx1);
 			this.Controls.Add(this.ipAddressBox1);
 			this.Controls.Add(this.themedImageDraw1);
@@ -284,6 +298,7 @@
 		private Vanara.Windows.Shell.TaskbarButton taskbarButton1;
 		private Vanara.Windows.Shell.ShellItemChangeWatcher shellItemChangeWatcher1;
 		private Vanara.Windows.Forms.TrackBarEx trackBarEx1;
+		private System.Windows.Forms.TextBox logDisplay;
 	}
 }
 

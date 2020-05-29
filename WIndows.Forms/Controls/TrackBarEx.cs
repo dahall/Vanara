@@ -1,7 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
+using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Design;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -13,7 +17,9 @@ using static Vanara.PInvoke.User32;
 
 namespace Vanara.Windows.Forms
 {
-	/// <summary>Extends the <see cref="TrackBar"/> class to provide full native-control functionality, including tick marks and value, and custom drawing.</summary>
+	/// <summary>
+	/// Extends the <see cref="TrackBar"/> class to provide full native-control functionality, including tick marks and value, and custom drawing.
+	/// </summary>
 	/// <seealso cref="System.Windows.Forms.TrackBar"/>
 	public class TrackBarEx : TrackBar
 	{
@@ -36,16 +42,19 @@ namespace Vanara.Windows.Forms
 		/// <summary>
 		/// Occurs when the channel for a <see cref="TrackBarEx"/> needs to be drawn and the <see cref="OwnerDraw"/> property is set to <c>true</c>.
 		/// </summary>
+		[Category("Drawing")]
 		public event PaintEventHandler DrawChannel;
 
 		/// <summary>
 		/// Occurs when the thumb for a <see cref="TrackBarEx"/> needs to be drawn and the <see cref="OwnerDraw"/> property is set to <c>true</c>.
 		/// </summary>
+		[Category("Drawing")]
 		public event PaintEventHandler DrawThumb;
 
 		/// <summary>
 		/// Occurs when the ticks for a <see cref="TrackBarEx"/> need to be drawn and the <see cref="OwnerDraw"/> property is set to <c>true</c>.
 		/// </summary>
+		[Category("Drawing")]
 		public event PaintEventHandler DrawTics;
 
 		/// <summary>Gets or sets a value indicating whether to draw ticks based on the <see cref="TrackBar.TickFrequency"/> interval.</summary>
@@ -130,8 +139,8 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Gets or sets the upper limit of the selection range this TrackBar is working with.</summary>
 		/// <value>
-		/// The logical position at which the selection ends. This value must be less than or equal to the value of the
-		/// <see cref="TrackBar.Maximum"/> property.
+		/// The logical position at which the selection ends. This value must be less than or equal to the value of the <see
+		/// cref="TrackBar.Maximum"/> property.
 		/// </value>
 		[DefaultValue(0), Category("Behavior"), Description("The ending logical position of the current selection range in a trackbar.")]
 		public int SelectionEnd
@@ -142,8 +151,8 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Gets or sets the lower limit of the selection range this TrackBar is working with.</summary>
 		/// <value>
-		/// The logical position at which the selection starts. This value must be greater than or equal to the value of the
-		/// <see cref="TrackBar.Minimum"/> property.
+		/// The logical position at which the selection starts. This value must be greater than or equal to the value of the <see
+		/// cref="TrackBar.Minimum"/> property.
 		/// </value>
 		[DefaultValue(0), Category("Behavior"), Description("The starting logical position of the current selection range in a trackbar.")]
 		public int SelectionStart
@@ -152,7 +161,9 @@ namespace Vanara.Windows.Forms
 			set => SetSelectionRange(value, selMax);
 		}
 
-		/// <summary>Gets or sets a value indicating whether to show the selection area defined by <see cref="SelectionStart"/> and <see cref="SelectionEnd"/>.</summary>
+		/// <summary>
+		/// Gets or sets a value indicating whether to show the selection area defined by <see cref="SelectionStart"/> and <see cref="SelectionEnd"/>.
+		/// </summary>
 		/// <value><c>true</c> if showing selection area; otherwise, <c>false</c>.</value>
 		[DefaultValue(false), Category("Appearance"), Description("Indicates if the TaskBar shows a selection range.")]
 		public bool ShowSelection
@@ -203,26 +214,29 @@ namespace Vanara.Windows.Forms
 		/// marks created by the trackbar. The logical positions can be any of the integer values in the trackbar's range of minimum to
 		/// maximum slider positions.
 		/// </value>
-		[DefaultValue(null), Category("Appearance"), Description("Indicates the logical values of the trackbar where ticks are drawn.")]
-		[TypeConverter(typeof(ArrayConverter))]
+		[Category("Appearance"), Description("Indicates the logical values of the trackbar where ticks are drawn.")]
+		[Browsable(false)]
+		//[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+		//[Editor(typeof(ArrayEditor), typeof(UITypeEditor))]
+		//[TypeConverter(typeof(ArrayConverter))]
 		public int[] TickPositions
 		{
 			get
 			{
-				if (!IsHandleCreated || TickStyle == TickStyle.None) return null;
-				var tickCnt = SendMsg(TrackBarMessage.TBM_GETNUMTICS).ToInt32();
-				if (tickCnt == 0) return new int[0];
+				var tickCnt = 0;
+				if (!IsHandleCreated || TickStyle == TickStyle.None || 0 == (tickCnt = SendMsg(TrackBarMessage.TBM_GETNUMTICS).ToInt32()))
+					return new int[0];
 				var ptr = SendMsg(TrackBarMessage.TBM_GETPTICS);
 				return ptr.ToIEnum<int>(tickCnt - 2).OrderBy(i => i).Distinct().ToArray();
 			}
 			set
 			{
-				if (value != null)
+				if (value != null && value.Length > 0)
 				{
 					if (TickStyle == TickStyle.None) throw new ArgumentException("Tick positions cannot be set when TickStyle is None.");
 					if (value.Min() < Minimum || value.Max() > Maximum) throw new ArgumentOutOfRangeException(nameof(TickPositions), "All values must be between Minimum and Maximum range values.");
 				}
-				ticks = value;
+				ticks = value ?? new int[0];
 				if (IsHandleCreated)
 					RecreateHandle();
 			}
@@ -350,8 +364,13 @@ namespace Vanara.Windows.Forms
 		protected override void OnHandleCreated(EventArgs e)
 		{
 			base.OnHandleCreated(e);
-			if (showSel) SetSelectionRange(selMin, selMax);
-			if (thumbLength >= 0) SendMsg(TrackBarMessage.TBM_SETTHUMBLENGTH, thumbLength);
+			if (showSel)
+			{
+				SendMsg(TrackBarMessage.TBM_SETSELEND, 0, selMax);
+				SendMsg(TrackBarMessage.TBM_SETSELSTART, 1, selMin);
+			}
+			if (thumbLength >= 0)
+				SendMsg(TrackBarMessage.TBM_SETTHUMBLENGTH, thumbLength);
 			SendMsg(TrackBarMessage.TBM_CLEARTICS);
 			if (ticks != null && TickStyle != TickStyle.None)
 				foreach (var t in ticks)
@@ -535,6 +554,8 @@ namespace Vanara.Windows.Forms
 			thumbLength = -1;
 			if (IsHandleCreated) RecreateHandle();
 		}
+
+		private void ResetTickPositions() => TickPositions = new int[0];
 
 		private IntPtr SendMsg(TrackBarMessage msg, ref RECT rect) => SendMessage(Handle, (uint)msg, IntPtr.Zero, ref rect);
 

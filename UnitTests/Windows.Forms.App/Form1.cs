@@ -22,6 +22,20 @@ namespace Windows.Forms.App
 		{
 			InitializeComponent();
 			FillComboWithDialogs(dlgCombo);
+			shellItemChangeWatcher1.Item = new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_RecycleBinFolder);
+			shellItemChangeWatcher1.EnableRaisingEvents = true;
+		}
+
+		private void ShellItemChangeWatcher1_Changed(object sender, Vanara.Windows.Shell.ShellItemChangeWatcher.ShellItemChangeEventArgs e)
+		{
+			foreach (var i in e.ChangedItems)
+				logDisplay.AppendText($"{e.ChangeType}={i.Name}{Environment.NewLine}");
+		}
+
+		protected override void OnHandleDestroyed(EventArgs e)
+		{
+			shellItemChangeWatcher1.EnableRaisingEvents = false;
+			base.OnHandleDestroyed(e);
 		}
 
 		private static void FillComboWithDialogs(ComboBox cb) => cb.Items.AddRange(Assembly.GetAssembly(typeof(Vanara.Windows.Forms.AccessControlEditorDialog)).GetTypes().Where(t => t.IsPublic && !t.IsNested && typeof(CommonDialog).IsAssignableFrom(t) || typeof(Form).IsAssignableFrom(t)).ToArray());
