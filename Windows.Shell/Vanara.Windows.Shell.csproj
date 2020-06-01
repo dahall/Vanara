@@ -17,6 +17,7 @@ Enumerations
 ChangeFilters, ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryViewTemplate, LinkResolution, OperationFlags, ShellIconType, ShellImageSize, ShellItemAttribute, ShellItemComparison, ShellItemDisplayString, ShellItemGetImageOptions, ShellItemToolTipOptions, TaskbarButtonProgressState, TaskbarItemTabThumbnailOption, TransferFlags, VerbMultiSelectModel, VerbPosition, VerbSelectionModel, Visibility
 
 </PackageReleaseNotes>
+    <RootNamespace>Vanara.Windows.Shell</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="_InProgress_\**\*" />

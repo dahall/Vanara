@@ -3,6 +3,9 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
+using Vanara.PInvoke.Tests;
+using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.Windows.Shell.Tests
 {
@@ -14,9 +17,9 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void DescriptionTest()
 		{
-			using var i = new ShellItem(testDoc);
+			using var i = new ShellItem(TestCaseSources.LogFile);
 			var c = 0;
-			foreach (var d in i.Properties.Descriptions)
+			foreach (var d in i.PropertyDescriptions)
 			{
 				c++;
 				Assert.That(d, Is.Not.Null);
@@ -73,6 +76,22 @@ namespace Vanara.Windows.Shell.Tests
 				TestContext.WriteLine("");
 			}
 			Assert.That(c, Is.EqualTo(i.Properties.Count));
+		}
+
+		[Test]
+		public void WritableTest()
+		{
+			// Try accessing a text file's writable properties and assert a failure.
+			using (var i = new ShellItem(TestCaseSources.LogFile))
+			{
+				i.Properties.ReadOnly = false;
+				Assert.That(() => i.Properties.TryGetValue(PROPERTYKEY.System.Size, out var val), Throws.TypeOf<InvalidOperationException>());
+			}
+
+			// Try accessing a Word file's writable properties and assert successs.
+			using var w = new ShellItem(testDoc);
+			w.Properties.ReadOnly = false;
+			Assert.That(w.Properties.TryGetValue(PROPERTYKEY.System.Size, out _), Is.True);
 		}
 
 		[Test]

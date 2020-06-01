@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
-using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -458,13 +457,21 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		/// <summary>Gets the property store for the item.</summary>
+		/// <summary>
+		/// <para>Gets the property store for the item.</para>
+		/// <note>Initially, this property store is the read-only store (change from R/W in v3.2.9) and should always have properties.
+		/// However, setting any of the properties of this value change the function of all subsequent uses. For example, if you set the
+		/// <see cref="ShellItemPropertyStore.ReadOnly"/> value to <see langword="false"/>, all subsequent calls to <see
+		/// cref="ShellItem.Properties"/> will access the read-write property store. If this <see cref="ShellItem"/> does not support
+		/// properties directly, your use of this property will fail. It is important that you check for exceptions when changing the
+		/// properties of this value to prevent unexpected failures.</note>
+		/// </summary>
 		/// <value>The dictionary of properties.</value>
-		public ShellItemPropertyStore Properties => props ?? (props = new ShellItemPropertyStore(this) { ReadOnly = false });
+		public ShellItemPropertyStore Properties => props ??= new ShellItemPropertyStore(this);
 
-		/// <summary>Gets a property description list object containing descriptions of all properties.</summary>
+		/// <summary>Gets a property description list object containing descriptions of all properties suitable to be shown in the UI.</summary>
 		/// <returns>A complete <see cref="PropertyDescriptionList"/> instance.</returns>
-		public PropertyDescriptionList PropertyDescriptions => propDescList ?? (propDescList = GetPropertyDescriptionList(PROPERTYKEY.System.PropList.FullDetails));
+		public PropertyDescriptionList PropertyDescriptions => propDescList ??= GetPropertyDescriptionList(PROPERTYKEY.System.PropList.FullDetails);
 
 		/// <summary>Gets the normal tool tip text associated with this item.</summary>
 		/// <value>The tool tip text.</value>
