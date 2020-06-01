@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
@@ -27,10 +29,6 @@ namespace Vanara.Windows.Shell
 			if (propChangedHandler != null)
 				PropertyChanged += propChangedHandler;
 		}
-
-		/// <summary>Gets a property description list object containing descriptions of all properties.</summary>
-		/// <returns>A complete <see cref="PropertyDescriptionList"/> instance.</returns>
-		public PropertyDescriptionList Descriptions => shellItem.PropertyDescriptions;
 
 		/// <summary>Gets or sets a value indicating whether to include slow properties.</summary>
 		/// <value><c>true</c> if including slow properties; otherwise, <c>false</c>.</value>
@@ -112,7 +110,14 @@ namespace Vanara.Windows.Shell
 		{
 			if (shellItem is ShellLink lnk)
 				return (IPropertyStore)lnk.link;
-			return shellItem?.iShellItem2?.GetPropertyStore(flags, typeof(IPropertyStore).GUID);
+			try
+			{
+				return shellItem?.iShellItem2?.GetPropertyStore(flags, typeof(IPropertyStore).GUID);
+			}
+			catch (COMException comex) when (comex.ErrorCode == HRESULT.E_FAIL)
+			{
+				throw new InvalidOperationException($"The ShellItem does not support a property store with the flags: {flags}", comex);
+			}
 		}
 
 		/// <summary>Gets the CLSID of a supplied property key.</summary>
