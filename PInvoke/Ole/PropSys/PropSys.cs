@@ -151,6 +151,25 @@ namespace Vanara.PInvoke
 			GPS_VOLATILEPROPERTIESONLY = 0x1000,
 		}
 
+		/// <summary>Set options for the behavior of the property storage.</summary>
+		[PInvokeData("propsys.h")]
+		[Flags]
+		public enum PERSIST_SPROPSTORE_FLAGS
+		{
+			/// <summary>Windows 7 and later. The property store object is read/write.</summary>
+			FPSPS_DEFAULT = 0x00000000,
+
+			/// <summary>The property store object is read-only.</summary>
+			FPSPS_READONLY = 0x00000001,
+
+			/// <summary>
+			/// Introduced in Windows 8. New property values that are added to the property store through the IPropertyStore::SetValue
+			/// method will cause the IPersistStream::IsDirty method to return S_OK. If this flag is not set, the addition of new property
+			/// values to the property store does not affect the value returned by IPersistStream::IsDirty.
+			/// </summary>
+			FPSPS_TREAT_NEW_VALUES_AS_DIRTY = 0x00000002,
+		}
+
 		/// <summary>
 		/// <para>Converts the value of a property to the canonical value, according to the property description.</para>
 		/// </summary>
