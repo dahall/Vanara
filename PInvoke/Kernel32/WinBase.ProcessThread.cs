@@ -678,7 +678,7 @@ namespace Vanara.PInvoke
 		// lpBaseAddress, DWORD nndPreferred );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "1e28c8db-112d-481d-b470-8ca618e125ce")]
-		public static extern IntPtr MapViewOfFileExNuma(HFILE hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, SizeT dwNumberOfBytesToMap, IntPtr lpBaseAddress, uint nndPreferred);
+		public static extern IntPtr MapViewOfFileExNuma(HSECTION hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, SizeT dwNumberOfBytesToMap, IntPtr lpBaseAddress, uint nndPreferred);
 
 		/// <summary>Sets a processor affinity mask for the threads of the specified process.</summary>
 		/// <param name="hProcess">
