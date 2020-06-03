@@ -736,7 +736,6 @@ Global
 		{AD003766-998F-4969-8632-A9CD0E3A21F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD003766-998F-4969-8632-A9CD0E3A21F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD003766-998F-4969-8632-A9CD0E3A21F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD003766-998F-4969-8632-A9CD0E3A21F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
