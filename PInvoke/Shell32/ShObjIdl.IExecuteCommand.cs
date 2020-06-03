@@ -28,7 +28,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-iexecutecommand
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "a3432f1a-dd33-4e0d-8b26-1312bb5151f7")]
-		[ComImport, Guid("7F9185B0-CB92-43c5-80A9-92277A4F7B54"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[ComImport, Guid("7F9185B0-CB92-43c5-80A9-92277A4F7B54"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(ExecuteFolder))]
 		public interface IExecuteCommand
 		{
 			/// <summary>Sets a value based on the current state of the keys CTRL and SHIFT.</summary>
@@ -223,5 +223,10 @@ namespace Vanara.PInvoke
 			[PreserveSig]
 			HRESULT Initialize([In, MarshalAs(UnmanagedType.LPWStr)] string pszCommandName, [In] IPropertyBag ppb);
 		}
+
+		/// <summary>CoClass for IExecuteCommand</summary>
+		[PInvokeData("shobjidl.h")]
+		[ComImport, Guid("11dbb47c-a525-400b-9e80-a54615a090c0"), ClassInterface(ClassInterfaceType.None)]
+		public class ExecuteFolder { }
 	}
 }

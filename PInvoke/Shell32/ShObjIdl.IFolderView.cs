@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke
@@ -864,6 +865,30 @@ namespace Vanara.PInvoke
 			void DoRename();
 		}
 
+		/// <summary>Exposes a method that hosts an IFolderView object in a window.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nn-shobjidl-ifolderviewhost
+		[PInvokeData("shobjidl.h", MSDNShortId = "NN:shobjidl.IFolderViewHost")]
+		[ComImport, Guid("1ea58f02-d55a-411d-b09e-9e65ac21605b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(FolderViewHost))]
+		public interface IFolderViewHost
+		{
+			/// <summary>Initializes the object that hosts an IFolderView object.</summary>
+			/// <param name="hwndParent">
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>The handle of the window that contains the IFolderViewHost object.</para>
+			/// </param>
+			/// <param name="pdo">
+			/// <para>Type: <c>IDataObject*</c></para>
+			/// <para>The address of a pointer to a data object.</para>
+			/// </param>
+			/// <param name="prc">
+			/// <para>Type: <c>RECT*</c></para>
+			/// <para>The address of a pointer to a <c>RECT</c> structure that specifies the dimensions of the folder view.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-ifolderviewhost-initialize
+			// HRESULT Initialize( HWND hwndParent, IDataObject *pdo, RECT *prc );
+			void Initialize([In] HWND hwndParent, [In] IDataObject pdo, in RECT prc);
+		}
+
 		/// <summary>
 		/// <para>Exposes methods that hold items from a data object.</para>
 		/// <para>
@@ -1054,5 +1079,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public SORTDIRECTION direction;
 		}
+
+		/// <summary>CoClass for IFolderViewHost</summary>
+		[PInvokeData("shobjidl.h")]
+		[ComImport, Guid("20b1cb23-6968-4eb9-b7d4-a66d00d07cee"), ClassInterface(ClassInterfaceType.None)]
+		public class FolderViewHost { }
 	}
 }
