@@ -29,6 +29,7 @@
       <dependency id="Vanara.PInvoke.DnsApi" version="3.2.9" />
       <dependency id="Vanara.PInvoke.DwmApi" version="3.2.9" />
       <dependency id="Vanara.PInvoke.Gdi32" version="3.2.9" />
+      <dependency id="Vanara.PInvoke.Graphics" version="3.2.9" />
       <dependency id="Vanara.PInvoke.IpHlpApi" version="3.2.9" />
       <dependency id="Vanara.PInvoke.Kernel32" version="3.2.9" />
       <dependency id="Vanara.PInvoke.KtmW32" version="3.2.9" />
