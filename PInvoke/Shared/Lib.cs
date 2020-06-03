@@ -39,11 +39,17 @@
 		/// <summary>The cryptui.dll</summary>
 		public const string CryptUI = "cryptui.dll";
 
+		/// <summary>The d2d1.dll for Direct2D</summary>
+		public const string D2d1 = "d2d1.dll";
+
 		/// <summary>The dnsapi.dll</summary>
 		public const string Dnsapi = "dnsapi.dll";
 
 		/// <summary>The DWM API</summary>
 		public const string DwmApi = "dwmapi.dll";
+
+		/// <summary>The dxgi.dll</summary>
+		public const string DXGI = "dxgi.dll";
 
 		/// <summary>The gdi32</summary>
 		public const string Gdi32 = "gdi32.dll";
@@ -149,6 +155,9 @@
 
 		/// <summary>The dll for Windows Error Reporting.</summary>
 		public const string Wer = "wer.dll";
+
+		/// <summary>The dll for WIC.</summary>
+		public const string Windowscodecs = "windowscodecs.dll";
 
 		/// <summary>The win inet</summary>
 		public const string WinInet = "wininet.dll";
