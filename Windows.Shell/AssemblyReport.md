@@ -2,7 +2,7 @@
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----
-[Vanara.Windows.Shell.ChangeFilters](https://github.com/dahall/Vanara/search?l=C%23&q=ChangeFilters) | Changes that might occur to a shell item or folder. | ItemRenamed, ItemCreated, ItemDeleted, FolderCreated, FolderDeleted, MediaInserted, MediaRemoved, DriveRemoved, DriveAdded, FolderShared, FolderUnshared, Attributes, FolderUpdated, ItemUpdated, ServerDisconnected, SystemImageUpdated, DriveAddedInteractive, FolderRenamed, AllDiskEvents, DriveFreeSpaceChanged, FileAssociationChanged, AllGlobalEvents, AllEvents
+[Vanara.Windows.Shell.ChangeFilters](https://github.com/dahall/Vanara/search?l=C%23&q=ChangeFilters) | Changes that might occur to a shell item or folder. | ItemRenamed, ItemCreated, ItemDeleted, FolderCreated, FolderDeleted, MediaInserted, MediaRemoved, DriveRemoved, DriveAdded, FolderShared, FolderUnshared, Attributes, FolderUpdated, ItemUpdated, ServerDisconnected, SystemImageUpdated, DriveAddedInteractive, FolderRenamed, AllDiskEvents, DriveFreeSpaceChanged, ExtendedEvent, FileAssociationChanged, AllGlobalEvents, AllEvents
 [Vanara.Windows.Shell.ExecutableType](https://github.com/dahall/Vanara/search?l=C%23&q=ExecutableType) | Specifies the executable file type. | Nonexecutable, DOS, Win32Console, Windows
 [Vanara.Windows.Shell.FolderItemFilter](https://github.com/dahall/Vanara/search?l=C%23&q=FolderItemFilter) | A filter for the types of children to enumerate. | Folders, NonFolders, IncludeHidden, Printers, Shareable, Storage, FastItems, FlatList, IncludeSuperHidden
 [Vanara.Windows.Shell.LibraryFolderFilter](https://github.com/dahall/Vanara/search?l=C%23&q=LibraryFolderFilter) | Defines options for filtering folder items. | FileSystemOnly, StorageObjects, AllItems
@@ -48,6 +48,7 @@ Class | Description
 [Vanara.Windows.Shell.JumpListItem](https://github.com/dahall/Vanara/search?l=C%23&q=JumpListItem) | An item in a Jump List.
 [Vanara.Windows.Shell.JumpListSeparator](https://github.com/dahall/Vanara/search?l=C%23&q=JumpListSeparator) | A separator which can be inserted into a custom list or task list.
 [Vanara.Windows.Shell.JumpListTask](https://github.com/dahall/Vanara/search?l=C%23&q=JumpListTask) | A task for a jumplist.
+[Vanara.Windows.Shell.MemoryPropertyStore](https://github.com/dahall/Vanara/search?l=C%23&q=MemoryPropertyStore) | An in-memory property store.
 [Vanara.PInvoke.MessageLoop.MessageEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=MessageEventArgs) | Holds a copy of the MSG instance retrieved by GetMessage.
 [Vanara.PInvoke.MessageLoop](https://github.com/dahall/Vanara/search?l=C%23&q=MessageLoop) | <para> This class encapsulates the management of a message loop for an application. It supports queuing a callback to the application via the message loop to enable the app to return from a call and continue processing that call later. This behavior is needed when implementing a shell verb as verbs must not block the caller. </para> <note type="note">The ComObject derived class should call QueueNonBlockingCallback in its invoke function, for example IExecuteCommand::Execute() or IDropTarget::Drop() passing a method that will complete the initialization work.</note>
 [Vanara.Windows.Shell.ProgId](https://github.com/dahall/Vanara/search?l=C%23&q=ProgId) | Represents a programmatic identifier in the registry for an application.
@@ -57,6 +58,7 @@ Class | Description
 [Vanara.Windows.Shell.PropertyStore](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyStore) | Encapsulates the IPropertyStore object.
 [Vanara.Windows.Shell.PropertyType](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyType) | Exposes methods that extract data from enumeration information.
 [Vanara.Windows.Shell.PropertyTypeList](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyTypeList) | Exposes methods that enumerate the possible values for a property.
+[Vanara.Windows.Shell.ReadOnlyPropertyStore](https://github.com/dahall/Vanara/search?l=C%23&q=ReadOnlyPropertyStore) | Encapsulates the IPropertyStore object.
 [Vanara.Windows.Shell.RegBasedDictionary<T>](https://github.com/dahall/Vanara/search?l=C%23&q=RegBasedDictionary<T>) | A virtual dictionary that is based on values in the Windows Registry.
 [Vanara.Windows.Shell.RegBasedSettings](https://github.com/dahall/Vanara/search?l=C%23&q=RegBasedSettings) | Base class for registry based settings.
 [Vanara.Windows.Shell.SearchCondition](https://github.com/dahall/Vanara/search?l=C%23&q=SearchCondition) | Provides properties and methods for retrieving information about a search condition.
