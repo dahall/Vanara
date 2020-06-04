@@ -362,8 +362,7 @@ namespace Vanara.Windows.Shell
 				resolveFlags = (SLR_FLAGS)MAKELONG((ushort)resolveFlags, timeOut);
 
 			new FileIOPermission(FileIOPermissionAccess.Read, fullPath).Demand();
-			using (var pIPF = ComReleaserFactory.Create((IPersistFile)link))
-				pIPF.Item.Load(fullPath, (int)STGM.STGM_DIRECT);
+			((IPersistFile)link).Load(fullPath, (int)STGM.STGM_DIRECT);
 			link.Resolve(hWin, resolveFlags);
 
 			InitBaseFromPath(linkFile);
