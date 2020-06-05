@@ -1225,7 +1225,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nn-wia_xp-ienumwia_dev_caps
 		[PInvokeData("wia_xp.h")]
 		[ComImport, Guid("1fcc4287-aca6-11d2-a093-00c04f72dc3c"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumWIA_DEV_CAPS
+		public interface IEnumWIA_DEV_CAPS : IComEnumerator<WIA_DEV_CAP>
 		{
 			/// <summary>The <c>IEnumWIA_DEV_CAPS::Next</c> method fills an array of pointers to WIA_DEV_CAP structures.</summary>
 			/// <param name="celt">Specifies the number of array elements in the array indicated by the rgelt parameter.</param>
@@ -1254,7 +1254,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-ienumwia_dev_caps-next HRESULT Next( ULONG celt,
 			// WIA_DEV_CAP *rgelt, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] WIA_DEV_CAP[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] WIA_DEV_CAP[] rgelt, out uint pceltFetched);
 
 			/// <summary>
 			/// The <c>IEnumWIA_DEV_CAPS::Skip</c> method skips the specified number of hardware device capabilities during an enumeration
@@ -1329,7 +1329,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-ienumwia_dev_info-next HRESULT Next( ULONG celt,
 			// IWiaPropertyStorage **rgelt, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IWiaPropertyStorage[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IWiaPropertyStorage[] rgelt, out uint pceltFetched);
 
 			/// <summary>
 			/// The <c>IEnumWIA_DEV_INFO::Skip</c> method skips the specified number of hardware devices during an enumeration of available devices.
@@ -1380,7 +1380,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nn-wia_xp-ienumwia_format_info
 		[PInvokeData("wia_xp.h")]
 		[ComImport, Guid("81BEFC5B-656D-44f1-B24C-D41D51B4DC81"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumWIA_FORMAT_INFO
+		public interface IEnumWIA_FORMAT_INFO : IComEnumerator<WIA_FORMAT_INFO>
 		{
 			/// <summary>The <c>IEnumWIA_FORMAT_INFO::Next</c> method returns an array of WIA_FORMAT_INFO structures.</summary>
 			/// <param name="celt">Specifies the number of elements requested.</param>
@@ -1397,7 +1397,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-ienumwia_format_info-next HRESULT Next( ULONG celt,
 			// WIA_FORMAT_INFO *rgelt, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] WIA_FORMAT_INFO[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] WIA_FORMAT_INFO[] rgelt, out uint pceltFetched);
 
 			/// <summary>The <c>IEnumWIA_FORMAT_INFO::Skip</c> method skips the specified number of structures in the enumeration.</summary>
 			/// <param name="celt">Specifies the number of structures to skip.</param>
@@ -1488,7 +1488,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-ienumwiaitem-next HRESULT Next( ULONG celt, IWiaItem
 			// **ppIWiaItem, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IWiaItem[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IWiaItem[] rgelt, out uint pceltFetched);
 
 			/// <summary>
 			/// The <c>IEnumWiaItem::Skip</c> method skips the specified number of items during an enumeration of available IWiaItem objects.

@@ -894,7 +894,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-ienumoleverb
 		[PInvokeData("oleidl.h", MSDNShortId = "fc9b3474-6f56-4274-af7d-72e0920c0457")]
 		[ComImport, Guid("00000104-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumOLEVERB
+		public interface IEnumOLEVERB : IComEnumerator<OLEVERB>
 		{
 			/// <summary>Retrieves the specified number of items in the enumeration sequence.</summary>
 			/// <param name="celt">
@@ -918,7 +918,7 @@ namespace Vanara.PInvoke
 			[PInvokeData("oleidl.h", MSDNShortId = "bb934017-9054-42b5-89d4-a24f12829503")]
 			[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			HRESULT Next([In] uint celt,
-				[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] OLEVERB[] rgelt,
+				[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] OLEVERB[] rgelt,
 				out uint pceltFetched);
 
 			/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>

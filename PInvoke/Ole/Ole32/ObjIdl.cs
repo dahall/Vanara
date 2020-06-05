@@ -1085,7 +1085,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-ienumcontextprops
 		[PInvokeData("objidl.h", MSDNShortId = "64591e45-5478-4360-8c1f-08b09b5aef8e")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("000001c1-0000-0000-C000-000000000046")]
-		public interface IEnumContextProps
+		public interface IEnumContextProps : IComEnumerator<ContextProperty>
 		{
 			/// <summary>Retrieves the specified number of items in the enumeration sequence.</summary>
 			/// <param name="celt">
@@ -1106,7 +1106,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumcontextprops-next HRESULT Next( ULONG celt,
 			// ContextProperty *pContextProperties, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] ContextProperty[] pContextProperties,
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ContextProperty[] pContextProperties,
 				 out uint pceltFetched);
 
 			/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
@@ -1156,7 +1156,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		[ComImport, Guid("0000000D-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Objidl.h", MSDNShortId = "aa379217")]
-		public interface IEnumSTATSTG
+		public interface IEnumSTATSTG : IComEnumerator<STATSTG>
 		{
 			/// <summary>
 			/// The Next method retrieves a specified number of STATSTG structures, that follow in the enumeration sequence. If there are
@@ -1173,7 +1173,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			HRESULT Next([In] uint celt,
-				[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] STATSTG[] rgelt,
+				[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] STATSTG[] rgelt,
 				out uint pceltFetched);
 
 			/// <summary>Skips a specified number of STATSTG structures in the enumeration sequence.</summary>
@@ -1225,7 +1225,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumunknown-next HRESULT Next( ULONG celt, IUnknown
 			// **rgelt, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] rgelt, out uint pceltFetched);
 
 			/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
 			/// <param name="celt">The number of items to be skipped.</param>

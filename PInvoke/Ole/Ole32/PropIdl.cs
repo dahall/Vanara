@@ -115,7 +115,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nn-propidl-ienumstatpropsetstg
 		[PInvokeData("propidl.h", MSDNShortId = "0000013B-0000-0000-C000-000000000046")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0e6d4d92-6738-11cf-9608-00aa00680db4")]
-		public interface IEnumSTATPROPSETSTG
+		public interface IEnumSTATPROPSETSTG : IComEnumerator<STATPROPSETSTG>
 		{
 			/// <summary>
 			/// The <c>Next</c> method retrieves a specified number of STATPROPSETSTG structures that follow subsequently in the enumeration
@@ -146,7 +146,7 @@ namespace Vanara.PInvoke
 			// STATPROPSETSTG *rgelt, ULONG *pceltFetched );
 			[PInvokeData("propidl.h", MSDNShortId = "3af3c518-3db4-4436-b1c1-86587ce8fbf3")]
 			[PreserveSig]
-			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] STATPROPSETSTG[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] STATPROPSETSTG[] rgelt, out uint pceltFetched);
 
 			/// <summary>The <c>Skip</c> method skips a specified number of STATPROPSETSTG structures in the enumeration sequence.</summary>
 			/// <param name="celt">The number of STATPROPSETSTG structures to skip.</param>
@@ -201,7 +201,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidlbase/nn-propidlbase-ienumstatpropstg
 		[PInvokeData("propidlbase.h", MSDNShortId = "e625e52a-5628-4d18-9282-aa1c141c83af")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000139-0000-0000-C000-000000000046")]
-		public interface IEnumSTATPROPSTG
+		public interface IEnumSTATPROPSTG : IComEnumerator<STATPROPSTG>
 		{
 			/// <summary>
 			/// The <c>Next</c> method retrieves a specified number of STATPROPSTG structures, that follow subsequently in the enumeration
@@ -232,7 +232,7 @@ namespace Vanara.PInvoke
 			// STATPROPSTG *rgelt, ULONG *pceltFetched );
 			[PInvokeData("propidl.h", MSDNShortId = "8e911da9-0056-4267-b9d0-c4ba929ddb94")]
 			[PreserveSig]
-			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] STATPROPSTG[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] STATPROPSTG[] rgelt, out uint pceltFetched);
 
 			/// <summary>The <c>Skip</c> method skips the specified number of STATPROPSTG structures in the enumeration sequence.</summary>
 			/// <param name="celt">The number of STATPROPSTG structures to skip.</param>
