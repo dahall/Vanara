@@ -1225,7 +1225,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nn-wia_xp-ienumwia_dev_caps
 		[PInvokeData("wia_xp.h")]
 		[ComImport, Guid("1fcc4287-aca6-11d2-a093-00c04f72dc3c"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumWIA_DEV_CAPS : IComEnumerator<WIA_DEV_CAP>
+		public interface IEnumWIA_DEV_CAPS
 		{
 			/// <summary>The <c>IEnumWIA_DEV_CAPS::Next</c> method fills an array of pointers to WIA_DEV_CAP structures.</summary>
 			/// <param name="celt">Specifies the number of array elements in the array indicated by the rgelt parameter.</param>
@@ -1380,7 +1380,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nn-wia_xp-ienumwia_format_info
 		[PInvokeData("wia_xp.h")]
 		[ComImport, Guid("81BEFC5B-656D-44f1-B24C-D41D51B4DC81"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumWIA_FORMAT_INFO : IComEnumerator<WIA_FORMAT_INFO>
+		public interface IEnumWIA_FORMAT_INFO
 		{
 			/// <summary>The <c>IEnumWIA_FORMAT_INFO::Next</c> method returns an array of WIA_FORMAT_INFO structures.</summary>
 			/// <param name="celt">Specifies the number of elements requested.</param>

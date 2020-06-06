@@ -894,7 +894,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-ienumoleverb
 		[PInvokeData("oleidl.h", MSDNShortId = "fc9b3474-6f56-4274-af7d-72e0920c0457")]
 		[ComImport, Guid("00000104-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumOLEVERB : IComEnumerator<OLEVERB>
+		public interface IEnumOLEVERB
 		{
 			/// <summary>Retrieves the specified number of items in the enumeration sequence.</summary>
 			/// <param name="celt">
