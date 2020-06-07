@@ -229,6 +229,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Graphics", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphics", "UnitTests\PInvoke\Graphics\Graphics.csproj", "{AD003766-998F-4969-8632-A9CD0E3A21F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreConsoleApp", "UnitTests\CoreConsoleApp\CoreConsoleApp.csproj", "{3E14800D-4E2D-43A0-8C15-B64C6F4469CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug (no Unit Tests)|Any CPU = Debug (no Unit Tests)|Any CPU
@@ -736,6 +738,12 @@ Global
 		{AD003766-998F-4969-8632-A9CD0E3A21F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD003766-998F-4969-8632-A9CD0E3A21F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD003766-998F-4969-8632-A9CD0E3A21F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E14800D-4E2D-43A0-8C15-B64C6F4469CA}.Debug (no Unit Tests)|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E14800D-4E2D-43A0-8C15-B64C6F4469CA}.Debug (no Unit Tests)|Any CPU.Build.0 = Debug|Any CPU
+		{3E14800D-4E2D-43A0-8C15-B64C6F4469CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E14800D-4E2D-43A0-8C15-B64C6F4469CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E14800D-4E2D-43A0-8C15-B64C6F4469CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E14800D-4E2D-43A0-8C15-B64C6F4469CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -833,6 +841,7 @@ Global
 		{30F2727D-0B8E-4364-8F0E-9EEB4CD9CB0E} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{FAF09C42-66CA-4765-910A-2A9A2EF399D0} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{AD003766-998F-4969-8632-A9CD0E3A21F8} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
+		{3E14800D-4E2D-43A0-8C15-B64C6F4469CA} = {3EC6B40D-71D3-4E59-A0E0-544EC605FE11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

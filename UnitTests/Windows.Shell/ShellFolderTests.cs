@@ -6,7 +6,7 @@ using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell.Tests
 {
-	[TestFixture]
+	[TestFixture, SingleThreaded]
 	public class ShellFolderTests
 	{
 		private const string testFile = ShellItemTests.testDoc;
@@ -92,6 +92,17 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(lnk, Is.Not.Null.And.InstanceOf<ShellLink>());
 			}, Throws.Nothing);
 			Assert.That(() => new ShellFolder(KNOWNFOLDERID.FOLDERID_Windows).EnumerateChildren((FolderItemFilter)0x80000), Is.Empty);
+		}
+
+		[Test]
+		public void EnumComputerTest()
+		{
+			using var computer = new ShellFolder(KNOWNFOLDERID.FOLDERID_ComputerFolder);
+			foreach (var si in computer)
+			{
+				TestContext.WriteLine(si.ParsingName);
+				si.Dispose();
+			}
 		}
 
 		[Test]
