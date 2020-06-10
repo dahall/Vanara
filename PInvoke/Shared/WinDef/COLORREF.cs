@@ -51,7 +51,11 @@ namespace Vanara.PInvoke
 
 		/// <summary>Initializes a new instance of the <see cref="COLORREF"/> struct.</summary>
 		/// <param name="color">The color.</param>
-		public COLORREF(System.Drawing.Color color) : this(color == System.Drawing.Color.Transparent ? CLR_NONE : (uint)color.ToArgb()) { }
+		public COLORREF(System.Drawing.Color color) : this(color.R, color.G, color.B)
+		{
+			if (color == System.Drawing.Color.Transparent)
+				Value = CLR_NONE;
+		}
 
 		/// <summary>Performs an implicit conversion from <see cref="COLORREF"/> to <see cref="System.Drawing.Color"/>.</summary>
 		/// <param name="cr">The <see cref="COLORREF"/> value.</param>
