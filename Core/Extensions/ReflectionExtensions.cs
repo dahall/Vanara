@@ -378,6 +378,16 @@ namespace Vanara.Extensions
 		}
 #endif
 
+		/// <summary>Determines whether the specified method is compatible with a delegate.</summary>
+		/// <typeparam name="TDel">The type of the delegate.</typeparam>
+		/// <param name="method">The method information.</param>
+		/// <returns><see langword="true"/> if method is compatible with the delegate; otherwise, <see langword="false"/>.</returns>
+		public static bool IsMethodCompatibleWithDelegate<TDel>(this MethodInfo method) where TDel : Delegate
+		{
+			var delegateSignature = typeof(TDel).GetMethod("Invoke");
+			return delegateSignature.ReturnType == method.ReturnType && delegateSignature.GetParameters().Select(x => x.ParameterType).SequenceEqual(method.GetParameters().Select(x => x.ParameterType));
+		}
+
 		/// <summary>Loads a type from a named assembly.</summary>
 		/// <param name="typeName">Name of the type.</param>
 		/// <param name="asmRef">The name or path of the file that contains the manifest of the assembly.</param>
