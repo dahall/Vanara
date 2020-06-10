@@ -74,7 +74,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-isearchfolderitemfactory-setvisiblecolumns
 			// HRESULT SetVisibleColumns( UINT cVisibleColumns, const PROPERTYKEY *rgKey );
-			void SetVisibleColumns(uint cVisibleColumns, [In] PROPERTYKEY[] rgKey);
+			void SetVisibleColumns(uint cVisibleColumns, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPERTYKEY[] rgKey);
 
 			/// <summary>Creates a list of sort column directions, as specified.</summary>
 			/// <param name="cSortColumns">
@@ -87,7 +87,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-isearchfolderitemfactory-setsortcolumns
 			// HRESULT SetSortColumns( UINT cSortColumns, SORTCOLUMN *rgSortColumns );
-			void SetSortColumns(uint cSortColumns, [In] SORTCOLUMN[] rgSortColumns);
+			void SetSortColumns(uint cSortColumns, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] SORTCOLUMN[] rgSortColumns);
 
 			/// <summary>Sets a group column, as specified. If no group column is specified, no grouping occurs.</summary>
 			/// <param name="keyGroup">
@@ -111,7 +111,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-isearchfolderitemfactory-setstacks HRESULT
 			// SetStacks( UINT cStackKeys, PROPERTYKEY *rgStackKeys );
-			void SetStacks(uint cStackKeys, [In] PROPERTYKEY[] rgStackKeys);
+			void SetStacks(uint cStackKeys, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPERTYKEY[] rgStackKeys);
 
 			/// <summary>Sets search scope, as specified.</summary>
 			/// <param name="psiaScope">
