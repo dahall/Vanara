@@ -402,6 +402,39 @@ namespace Vanara.PInvoke
 			IEnumShellItems Clone();
 		}
 
+		/// <summary>When the <c>STR_PARSE_AND_CREATE_ITEM</c> binding context is specified, this interface gets or sets the stored Shell items that SHCreateItemFromParsingName creates from a parsing name.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-iparseandcreateitem
+		[ComImport, Guid("67efed0e-e827-4408-b493-78f3982b685c"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IParseAndCreateItem
+		{
+			/// <summary>Sets a Shell item that SHCreateItemFromParsingName created from a parsing name.</summary>
+			/// <param name="psi">
+			/// <para>Type: <c>IShellItem*</c></para>
+			/// <para>Pointer to an IShellItem object.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iparseandcreateitem-setitem
+			// HRESULT SetItem( IShellItem *psi );
+			void SetItem(IShellItem psi);
+
+			/// <summary>Gets a stored Shell item that SHCreateItemFromParsingName created from a parsing name.</summary>
+			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>A reference to the IID of the interface to retrieve through ppv, typically IID_IShellItem.</para>
+			/// </param>
+			/// <param name="ppv">
+			/// <para>Type: <c>void**</c></para>
+			/// <para>When this method returns successfully, contains the interface pointer requested in riid. This is typically IShellItem.</para>
+			/// </param>
+			/// <remarks>
+			/// We recommend that you use the <c>IID_PPV_ARGS</c> macro, defined in Objbase.h, to package the riid and ppv parameters. This
+			/// macro provides the correct IID based on the interface pointed to by the value in ppv, which eliminates the possibility of a
+			/// coding error in riid that could lead to unexpected results.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iparseandcreateitem-getitem
+			// HRESULT GetItem( REFIID riid, void **ppv );
+			void GetItem(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppv);
+		}
+
 		/// <summary>
 		/// Exposes methods that retrieve information about a Shell item. IShellItem and IShellItem2 are the preferred representations of
 		/// items in any new code.

@@ -1093,6 +1093,23 @@ namespace Vanara.PInvoke
 			/// photographs). This value is a GUID.
 			/// </summary>
 			public Guid ftidType;
+
+			/// <summary>Frees the allocated fields in the result from IKnownFolder::GetFolderDefinition.</summary>
+			/// <remarks>This is an inline helper function that calls CoTaskMemFree on the fields in the structure that need to be freed. Its implementation can be seen in the header file.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-freeknownfolderdefinitionfields
+			// void FreeKnownFolderDefinitionFields( KNOWNFOLDER_DEFINITION *pKFD );
+			[PInvokeData("shobjidl_core.h", MSDNShortId = "NF:shobjidl_core.FreeKnownFolderDefinitionFields")]
+			public void FreeKnownFolderDefinitionFields()
+			{
+				Marshal.FreeCoTaskMem((IntPtr)pszName);
+				Marshal.FreeCoTaskMem((IntPtr)pszDescription);
+				Marshal.FreeCoTaskMem((IntPtr)pszRelativePath);
+				Marshal.FreeCoTaskMem((IntPtr)pszParsingName);
+				Marshal.FreeCoTaskMem((IntPtr)pszTooltip);
+				Marshal.FreeCoTaskMem((IntPtr)pszLocalizedName);
+				Marshal.FreeCoTaskMem((IntPtr)pszIcon);
+				Marshal.FreeCoTaskMem((IntPtr)pszSecurity);
+			}
 		}
 
 		/// <summary>Class interface for IKnownFolderManager.</summary>

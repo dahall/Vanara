@@ -9,6 +9,87 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary>Used with method IBrowserFrameOptions::GetFrameOptions.</summary>
+		/// <remarks>These constants are defined in the Shobjidl.h file beginning in Windows Vista.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/ne-shobjidl_core-_browserframeoptions typedef enum
+		// _BROWSERFRAMEOPTIONS { BFO_NONE, BFO_BROWSER_PERSIST_SETTINGS, BFO_RENAME_FOLDER_OPTIONS_TOINTERNET, BFO_BOTH_OPTIONS,
+		// BIF_PREFER_INTERNET_SHORTCUT, BFO_BROWSE_NO_IN_NEW_PROCESS, BFO_ENABLE_HYPERLINK_TRACKING, BFO_USE_IE_OFFLINE_SUPPORT,
+		// BFO_SUBSTITUE_INTERNET_START_PAGE, BFO_USE_IE_LOGOBANDING, BFO_ADD_IE_TOCAPTIONBAR, BFO_USE_DIALUP_REF, BFO_USE_IE_TOOLBAR,
+		// BFO_NO_PARENT_FOLDER_SUPPORT, BFO_NO_REOPEN_NEXT_RESTART, BFO_GO_HOME_PAGE, BFO_PREFER_IEPROCESS, BFO_SHOW_NAVIGATION_CANCELLED,
+		// BFO_USE_IE_STATUSBAR, BFO_QUERY_ALL } ;
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "NE:shobjidl_core._BROWSERFRAMEOPTIONS")]
+		[Flags]
+		public enum BROWSERFRAMEOPTIONS : uint
+		{
+			/// <summary>Do nothing.</summary>
+			BFO_NONE = 0,
+
+			/// <summary>Use the browser stream for this item. (Same window position as IE browser windows.)</summary>
+			BFO_BROWSER_PERSIST_SETTINGS = 0x1,
+
+			/// <summary>Rename Folder Options to Internet Options in the Tools or View menu.</summary>
+			BFO_RENAME_FOLDER_OPTIONS_TOINTERNET = 0x2,
+
+			/// <summary>Keep both Folder Options and Internet Options in the Tools or View menu.</summary>
+			BFO_BOTH_OPTIONS = 0x4,
+
+			/// <summary>This namespace extension prefers a .url shortcut over a .lnk shortcut.</summary>
+			BIF_PREFER_INTERNET_SHORTCUT = 0x8,
+
+			/// <summary>Do not use "Browse in New Process" by invoking a shortcut.</summary>
+			BFO_BROWSE_NO_IN_NEW_PROCESS = 0x10,
+
+			/// <summary>Track display name to determine when hyperlinks should be tagged as previously used.</summary>
+			BFO_ENABLE_HYPERLINK_TRACKING = 0x20,
+
+			/// <summary>Use Internet Explorer's offline support.</summary>
+			BFO_USE_IE_OFFLINE_SUPPORT = 0x40,
+
+			/// <summary>Use Start Page support for this namespace extension.</summary>
+			BFO_SUBSTITUE_INTERNET_START_PAGE = 0x80,
+
+			/// <summary>Use the Brand block in the Toolbar.</summary>
+			BFO_USE_IE_LOGOBANDING = 0x100,
+
+			/// <summary>Append to display name in the caption bar.</summary>
+			BFO_ADD_IE_TOCAPTIONBAR = 0x200,
+
+			/// <summary>
+			/// Reference the DialUp reference count while the browser is navigated to this location. This will also enable the ICW and
+			/// Software update.
+			/// </summary>
+			BFO_USE_DIALUP_REF = 0x400,
+
+			/// <summary>Use the Internet Explorer toolbar.</summary>
+			BFO_USE_IE_TOOLBAR = 0x800,
+
+			/// <summary>
+			/// Disable navigation to parent folders. Used for the button that navigates to parent folder or the View.GoTo.ParentFolder feature.
+			/// </summary>
+			BFO_NO_PARENT_FOLDER_SUPPORT = 0x1000,
+
+			/// <summary>
+			/// Browser windows are not reopened after a reboot of the system, regardless of whether they were open before the reboot. Use
+			/// the same behavior for the namespace extension.
+			/// </summary>
+			BFO_NO_REOPEN_NEXT_RESTART = 0x2000,
+
+			/// <summary>Add Home Page to menu (Go).</summary>
+			BFO_GO_HOME_PAGE = 0x4000,
+
+			/// <summary>Prefer use of Iexplore.exe over Explorer.exe.</summary>
+			BFO_PREFER_IEPROCESS = 0x8000,
+
+			/// <summary>If navigation is terminated, show the Action Canceled HTML page.</summary>
+			BFO_SHOW_NAVIGATION_CANCELLED = 0x10000,
+
+			/// <summary>Use the persisted Internet Explorer status bar settings.</summary>
+			BFO_USE_IE_STATUSBAR = 0x20000,
+
+			/// <summary>Return all values.</summary>
+			BFO_QUERY_ALL = 0xffffffff,
+		}
+
 		/// <summary>Flags specifying where the toolbar buttons should go.</summary>
 		[PInvokeData("shobjidl.h")]
 		[Flags]
@@ -231,8 +312,8 @@ namespace Vanara.PInvoke
 			FVO_CUSTOMPOSITION = 0x00000002,
 
 			/// <summary>
-			/// Items require custom ordering within the view. This option is not active by default in the Windows 7 view. When it is active,
-			/// the user can reorder the view by dragging items to their desired locations.
+			/// Items require custom ordering within the view. This option is not active by default in the Windows 7 view. When it is
+			/// active, the user can reorder the view by dragging items to their desired locations.
 			/// </summary>
 			FVO_CUSTOMORDERING = 0x00000004,
 
@@ -355,8 +436,8 @@ namespace Vanara.PInvoke
 			SBSP_TRUSTFIRSTDOWNLOAD = 0x01000000,
 
 			/// <summary>
-			/// Microsoft Internet Explorer 6 Service Pack 2 (SP2) and later. The window is navigating to an untrusted, non-HTML file. If the
-			/// user attempts to download the file, do not allow the download.
+			/// Microsoft Internet Explorer 6 Service Pack 2 (SP2) and later. The window is navigating to an untrusted, non-HTML file. If
+			/// the user attempts to download the file, do not allow the download.
 			/// </summary>
 			SBSP_UNTRUSTEDFORDOWNLOAD = 0x02000000,
 
@@ -406,8 +487,8 @@ namespace Vanara.PInvoke
 			SFVM_GETBUTTONS = 6,
 
 			/// <summary>
-			/// Allows the callback object to provide the details for an item in a Shell folder. Use only if a call to GetDetailsOf fails and
-			/// there is no GetDetailsOf method available to call.
+			/// Allows the callback object to provide the details for an item in a Shell folder. Use only if a call to GetDetailsOf fails
+			/// and there is no GetDetailsOf method available to call.
 			/// </summary>
 			SFVM_GETDETAILSOF = 23,
 
@@ -516,7 +597,8 @@ namespace Vanara.PInvoke
 			SVSI_DESELECTOTHERS = 0x00000004,
 
 			/// <summary>
-			/// In the case of a folder that cannot display all of its contents on one screen, display the portion that contains the selected item.
+			/// In the case of a folder that cannot display all of its contents on one screen, display the portion that contains the
+			/// selected item.
 			/// </summary>
 			SVSI_ENSUREVISIBLE = 0x00000008,
 
@@ -582,6 +664,37 @@ namespace Vanara.PInvoke
 			/// The Shell view is active without focus. This flag is only used when UIActivate is exposed through the IShellView2 interface.
 			/// </summary>
 			SVUIA_INPLACEACTIVATE = 3
+		}
+
+		/// <summary>Allows a browser or host to ask IShellView what kind of view behavior is supported.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-ibrowserframeoptions
+		[ComImport, Guid("10DF43C8-1DBE-11d3-8B34-006097DF5BD4"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IBrowserFrameOptions
+		{
+			/// <summary>Retrieves the available browser frame view options.</summary>
+			/// <param name="dwMask">
+			/// <para>Type: <c>BROWSERFRAMEOPTIONS</c></para>
+			/// <para>Specifies the options requested as a bitwise combination of one or more of the constants of enumeration type BROWSERFRAMEOPTIONS.</para>
+			/// </param>
+			/// <param name="pdwOptions">
+			/// <para>Type: <c>BROWSERFRAMEOPTIONS*</c></para>
+			/// <para>
+			/// When this method returns, contains the options that the view can enable (for example, IShellView ). This value is not
+			/// optional and is always equal to, or a subset of, the options specified by dwMask.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// If the method succeeds, the return value is S_OK and pdwOptions contains the subset of available view options. If the method
+			/// fails, pdwOptions is set to BFO_NONE.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ibrowserframeoptions-getframeoptions
+			// HRESULT GetFrameOptions( BROWSERFRAMEOPTIONS dwMask, BROWSERFRAMEOPTIONS *pdwOptions );
+			[PreserveSig]
+			HRESULT GetFrameOptions([In] BROWSERFRAMEOPTIONS dwMask, out BROWSERFRAMEOPTIONS pdwOptions);
 		}
 
 		/// <summary>
@@ -693,8 +806,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>Informs Windows Explorer to browse to another folder.</summary>
 			/// <param name="pidl">
-			/// The address of an ITEMIDLIST (item identifier list) structure that specifies an object's location. This value is dependent on
-			/// the flag or flags set in the wFlags parameter.
+			/// The address of an ITEMIDLIST (item identifier list) structure that specifies an object's location. This value is dependent
+			/// on the flag or flags set in the wFlags parameter.
 			/// </param>
 			/// <param name="wFlags">Flags specifying the folder to be browsed.</param>
 			void BrowseObject(IntPtr pidl, SBSP wFlags);
@@ -728,8 +841,8 @@ namespace Vanara.PInvoke
 			void OnViewWindowActive(IShellView ppshv);
 
 			/// <summary>
-			/// <note type="note">This method has no effect on Windows Vista or later operating systems.</note> Adds toolbar items to Windows
-			/// Explorer's toolbar.
+			/// <note type="note">This method has no effect on Windows Vista or later operating systems.</note> Adds toolbar items to
+			/// Windows Explorer's toolbar.
 			/// </summary>
 			/// <param name="lpButtons">The address of an array of TBBUTTON structures.</param>
 			/// <param name="nButtons">The number of TBBUTTON structures in the lpButtons array.</param>
@@ -1112,9 +1225,7 @@ namespace Vanara.PInvoke
 		/// <typeparam name="T">The type of the COM interface being requested.</typeparam>
 		/// <param name="sv">The <see cref="IShellView"/> instance.</param>
 		/// <param name="uItem">The constants that refer to an aspect of the view.</param>
-		/// <returns>
-		/// The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.
-		/// </returns>
+		/// <returns>The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.</returns>
 		public static T GetItemObject<T>(this IShellView sv, SVGIO uItem) where T : class => (T)sv.GetItemObject(uItem, typeof(T).GUID);
 
 		/// <summary>Contains folder view information.</summary>
@@ -1174,9 +1285,9 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// <para>Holds the parameters for the IShellView2::CreateViewWindow2 method.</para>
 		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ns-shobjidl_core-_sv2cvw2_params typedef struct _SV2CVW2_PARAMS
-		// { DWORD cbSize; IShellView *psvPrev; LPCFOLDERSETTINGS pfs; IShellBrowser *psbOwner; RECT *prcView; const SHELLVIEWID *pvid; HWND
-		// hwndView; } SV2CVW2_PARAMS, *LPSV2CVW2_PARAMS;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ns-shobjidl_core-_sv2cvw2_params typedef struct
+		// _SV2CVW2_PARAMS { DWORD cbSize; IShellView *psvPrev; LPCFOLDERSETTINGS pfs; IShellBrowser *psbOwner; RECT *prcView; const
+		// SHELLVIEWID *pvid; HWND hwndView; } SV2CVW2_PARAMS, *LPSV2CVW2_PARAMS;
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "7e165654-74ea-4d8b-81b7-11257f87af53")]
 		[StructLayout(LayoutKind.Sequential)]
 		public class SV2CVW2_PARAMS : IDisposable
@@ -1196,8 +1307,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// A pointer to the current instance of the IShellBrowser interface of the parent Shell browser. IShellView2::CreateViewWindow2
-			/// should call this interface's AddRef method and store the interface pointer. It can be used for communication with the Windows
-			/// Explorer window.
+			/// should call this interface's AddRef method and store the interface pointer. It can be used for communication with the
+			/// Windows Explorer window.
 			/// </summary>
 			public IShellBrowser psbOwner;
 
@@ -1246,8 +1357,8 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>
-			/// A view ID. The view ID can be one of the Windows-defined VIDs or a custom, view-defined VID. This value takes precedence over
-			/// the view mode designated in the FOLDERSETTINGS structure pointed to by pfs.
+			/// A view ID. The view ID can be one of the Windows-defined VIDs or a custom, view-defined VID. This value takes precedence
+			/// over the view mode designated in the FOLDERSETTINGS structure pointed to by pfs.
 			/// </summary>
 			public Guid pvid => _pvid.ToStructure<Guid>();
 

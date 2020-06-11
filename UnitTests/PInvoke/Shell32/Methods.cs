@@ -71,6 +71,13 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
+		[Test]
+		public void IShellMenuTest()
+		{
+			using var ishmenu = ComReleaserFactory.Create(new IShellMenu());
+			Assert.IsNotNull(ishmenu.Item);
+		}
+
 		/*
 		AssocCreateForClasses
 		AssocGetDetailsOfPropKey

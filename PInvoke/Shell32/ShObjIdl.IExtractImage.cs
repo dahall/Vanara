@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
@@ -48,10 +49,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Passed to the IExtractImage::Extract method to indicate that a higher quality image is requested. If this flag is not set,
-			/// IExtractImage retrieves an embedded thumbnail if the file has one, no matter what size the user requests. For example, if the
-			/// file is 2000x2000 pixels but the embedded thumbnail is only 100x100 pixels and the user does not set this flag, yet requests
-			/// a 1000x1000 pixel thumbnail, IExtractImage always returns the 100x100 pixel thumbnail. This is by design, since IExtractImage
-			/// does not scale up. If a larger thumbnail is desired (usually embedded thumbnails are 160x160), this flag must be set.
+			/// IExtractImage retrieves an embedded thumbnail if the file has one, no matter what size the user requests. For example, if
+			/// the file is 2000x2000 pixels but the embedded thumbnail is only 100x100 pixels and the user does not set this flag, yet
+			/// requests a 1000x1000 pixel thumbnail, IExtractImage always returns the 100x100 pixel thumbnail. This is by design, since
+			/// IExtractImage does not scale up. If a larger thumbnail is desired (usually embedded thumbnails are 160x160), this flag must
+			/// be set.
 			/// </summary>
 			IEIFLAG_QUALITY = 0x0200,
 
@@ -90,8 +92,8 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// <item>
 			/// <term>E_PENDING</term>
-			/// <definition>Windows XP and earlier: If the IEIFLAG_ASYNC flag is set, this return value is used to indicate to the Shell that
-			/// the object is free-threaded.</definition>
+			/// <definition>Windows XP and earlier: If the IEIFLAG_ASYNC flag is set, this return value is used to indicate to the Shell
+			/// that the object is free-threaded.</definition>
 			/// </item>
 			/// </list>
 			/// </returns>
@@ -101,6 +103,69 @@ namespace Vanara.PInvoke
 			/// <summary>Requests an image from an object, such as an item in a Shell folder.</summary>
 			/// <returns>The HBITMAP of the image.</returns>
 			HBITMAP Extract();
+		}
+
+		/// <summary>Extends the capabilities of IExtractImage.</summary>
+		/// <remarks>
+		/// <para>Implement <c>IExtractImage2</c> to provide date stamps for your thumbnail images.</para>
+		/// <para>
+		/// You do not call this interface directly. <c>IExtractImage2</c> is used by the operating system only when it has confirmed that
+		/// your application is aware of this interface.
+		/// </para>
+		/// <para>
+		/// <c>IExtractImage2</c> implements all the IExtractImage methods as well as <c>IUnknown</c>. The listed method is specific to <c>IExtractImage2</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-iextractimage2
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "NN:shobjidl_core.IExtractImage2")]
+		[ComImport, Guid("953BB1EE-93B4-11d1-98A3-00C04FB687DA"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IExtractImage2 : IExtractImage
+		{
+			/// <summary>Gets a path to the image that is to be extracted.</summary>
+			/// <param name="pszPathBuffer">
+			/// The buffer used to return the path description. This value identifies the image so you can avoid loading the same one more
+			/// than once.
+			/// </param>
+			/// <param name="cchMax">The size of pszPathBuffer in characters.</param>
+			/// <param name="pdwPriority">Not used.</param>
+			/// <param name="prgSize">A pointer to a SIZE structure with the desired width and height of the image. Must not be NULL.</param>
+			/// <param name="dwRecClrDepth">The recommended color depth in units of bits per pixel. Must not be NULL.</param>
+			/// <param name="pdwFlags">Flags that specify how the image is to be handled.</param>
+			/// <returns>
+			/// This method may return a COM-defined error code or one of the following:
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <definition>Success</definition>
+			/// </item>
+			/// <item>
+			/// <term>E_PENDING</term>
+			/// <definition>Windows XP and earlier: If the IEIFLAG_ASYNC flag is set, this return value is used to indicate to the Shell
+			/// that the object is free-threaded.</definition>
+			/// </item>
+			/// </list>
+			/// </returns>
+			[PreserveSig]
+			new HRESULT GetLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPathBuffer, uint cchMax, [Optional] IntPtr pdwPriority, ref SIZE prgSize, uint dwRecClrDepth, ref IEIFLAG pdwFlags);
+
+			/// <summary>Requests an image from an object, such as an item in a Shell folder.</summary>
+			/// <returns>The HBITMAP of the image.</returns>
+			new HBITMAP Extract();
+
+			/// <summary>
+			/// Requests the date the image was last modified. This method allows the Shell to determine whether cached images are out-of-date.
+			/// </summary>
+			/// <returns>
+			/// <para>Type: <c>FILETIME*</c></para>
+			/// <para>A pointer to a FILETIME structure used to return the last time the image was modified.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iextractimage2-getdatestamp HRESULT
+			// GetDateStamp( FILETIME *pDateStamp );
+			FILETIME GetDateStamp();
 		}
 	}
 }

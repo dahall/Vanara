@@ -131,6 +131,64 @@ namespace Vanara.PInvoke
 			SPACTION_COPY_MOVING,
 		}
 
+		/// <summary>
+		/// <para>Exposes methods for posting a cancel window message to the process thread from the Progress Dialog.</para>
+		/// <para>
+		/// This interface enables the progress dialog to post a thread message through PostThreadMessage to the worker thread to cancel its
+		/// operations. The worker thread must periodically check the message queue through GetMessage, PeekMessage or MsgWaitForMultipleObjectsEx.
+		/// </para>
+		/// <para>
+		/// The IIOCancelInformation::SetCancelInformation method tells the progress dialog which thread ID and what message to
+		/// PostThreadMessage when the user clicks <c>Cancel</c>. A thread ID of "zero" disables the sending operation for the cancel message.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-iiocancelinformation
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "NN:shobjidl_core.IIOCancelInformation")]
+		[ComImport, Guid("f5b0bf81-8cb5-4b1b-9449-1a159e0c733c"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IIOCancelInformation
+		{
+			/// <summary>
+			/// Sets information that is posted when a user selects <c>Cancel</c> from the progress UI. Allows the main object to tell the
+			/// progress dialog thread about the process thread so that the progress dialog can send the process thread the message id when
+			/// the user clicks <c>Cancel</c>.
+			/// </summary>
+			/// <param name="dwThreadID">
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The ID of the process thread to be canceled.</para>
+			/// </param>
+			/// <param name="uMsgCancel">
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The cancel message to be posted to the thread.</para>
+			/// </param>
+			/// <remarks>
+			/// When the user selects <c>Cancel</c> from the progress UI, the dwThreadID will cancel any pending or future input/output
+			/// (I/O) requests. Also the uMsgCancel message, received from the progress dialog, will be posted to the thread to tell it to
+			/// exit a wait state, if asynchronous I/O is pending.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iiocancelinformation-setcancelinformation
+			// HRESULT SetCancelInformation( DWORD dwThreadID, UINT uMsgCancel );
+			void SetCancelInformation(uint dwThreadID, uint uMsgCancel);
+
+			/// <summary>
+			/// Returns information that is posted when a user selects <c>Cancel</c> from the progress UI. The process thread uses this
+			/// method to find out which message the progress dialog will send to the process thread when the user hits cancel. The process
+			/// thread then listens for this message and does its own cleanup upon receipt.
+			/// </summary>
+			/// <param name="pdwThreadID">
+			/// <para>Type: <c>DWORD*</c></para>
+			/// <para>When this method returns, contains a pointer to the ID of the process thread.</para>
+			/// </param>
+			/// <param name="puMsgCancel">
+			/// <para>Type: <c>UINT*</c></para>
+			/// <para>
+			/// When this method returns, contains a pointer to uMsgCancel that the process thread should post if the operation is canceled.
+			/// </para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iiocancelinformation-getcancelinformation
+			// HRESULT GetCancelInformation( DWORD *pdwThreadID, UINT *puMsgCancel );
+			void GetCancelInformation(out uint pdwThreadID, out uint puMsgCancel);
+		}
+
 		/// <summary>Exposes methods to get, set, and query a progress dialog.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-ioperationsprogressdialog
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "0d95f407-0e09-441d-b9e2-665995ea1362")]

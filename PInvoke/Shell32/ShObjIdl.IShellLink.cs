@@ -218,6 +218,92 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// Exposes a method that enables an application to request that a Shell folder object resolve a link for one of its items.
+		/// </summary>
+		/// <remarks>
+		/// <para>Namespace extensions implement this object to support link resolution.</para>
+		/// <para>This interface is not typically used by applications.</para>
+		/// <para>
+		/// With namespace extensions, shortcut objects (.lnk files) implement the essential functionality of IShellLink::Resolve by calling
+		/// IResolveShellLink::ResolveShellLink. <c>IResolveShellLink</c> is exported by a link resolution object that is created on request
+		/// by the Shell folder.
+		/// </para>
+		/// <para>To retrieve a pointer to a link resolution object's <c>IResolveShellLink</c> interface:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// For an object that is contained by a folder, call the folder's IShellFolder::GetUIObjectOf method and request an
+		/// <c>IResolveShellLink</c> pointer (IID_IResolveShellLink).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// For the folder object itself, call the folder's IShellFolder::CreateViewObject method and request an <c>IResolveShellLink</c>
+		/// pointer (IID_IResolveShellLink).
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para><c>Note</c> Prior to Windows Vista this interface was declared in Shlobj.h.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-iresolveshelllink
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "NN:shobjidl_core.IResolveShellLink")]
+		[ComImport, Guid("5cd52983-9449-11d2-963a-00c04f79adf0"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IResolveShellLink
+		{
+			/// <summary>Requests that a folder object resolve a Shell link.</summary>
+			/// <param name="punkLink">
+			/// <para>Type: <c>IUnknown*</c></para>
+			/// <para>
+			/// Pointer to the object's IShellLink interface. This interface can then be queried to determine the contents of the link.
+			/// </para>
+			/// </param>
+			/// <param name="hwnd">
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>
+			/// Handle to the window that the Shell uses as the parent for a dialog box. The Shell displays the dialog box if it needs to
+			/// prompt the user for more information while resolving the link.
+			/// </para>
+			/// </param>
+			/// <param name="fFlags">
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>Action flags. This parameter can be a combination of the following values.</para>
+			/// <para>SLR_INVOKE_MSI</para>
+			/// <para>Call the Windows Installer.</para>
+			/// <para>SLR_NOLINKINFO</para>
+			/// <para>
+			/// Disable distributed link tracking. By default, distributed link tracking tracks removable media across multiple devices
+			/// based on the volume name. It also uses the UNC path to track remote file systems whose drive letter has changed. Setting
+			/// <c>SLR_NOLINKINFO</c> disables both types of tracking.
+			/// </para>
+			/// <para>SLR_NO_UI</para>
+			/// <para>
+			/// Do not display a dialog box if the link cannot be resolved. When <c>SLR_NO_UI</c> is set, the high-order word of fFlags
+			/// specifies a time-out duration, in milliseconds. The function returns if the link cannot be resolved within the time-out
+			/// duration. If the high-order word is set to zero, the time-out duration defaults to 3000 milliseconds (3 seconds).
+			/// </para>
+			/// <para>SLR_NOUPDATE</para>
+			/// <para>Do not update the link information.</para>
+			/// <para>SLR_NOSEARCH</para>
+			/// <para>Do not execute the search heuristics.</para>
+			/// <para>SLR_NOTRACK</para>
+			/// <para>Do not use distributed link tracking.</para>
+			/// <para>SLR_UPDATE</para>
+			/// <para>
+			/// If the link object has changed, update its path and list of identifiers. If <c>SLR_UPDATE</c> is set, you do not need to
+			/// call IPersistFile::IsDirty to determine whether the link object has changed.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>This method should attempt to find the target of a Shell link, even if the target has been moved or renamed.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iresolveshelllink-resolveshelllink
+			// HRESULT ResolveShellLink( IUnknown *punkLink, HWND hwnd, DWORD fFlags );
+			void ResolveShellLink([In] IShellLinkW punkLink, HWND hwnd, SLR_FLAGS fFlags);
+		}
+
+		/// <summary>
 		/// Exposes methods that allow an application to attach extra data blocks to a Shell link. These methods add, copy, or remove data blocks.
 		/// </summary>
 		[SuppressUnmanagedCodeSecurity]

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.PropSys;
 
 namespace Vanara.PInvoke
 {
@@ -237,7 +238,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-icolumnmanager-getcolumns HRESULT
 			// GetColumns( CM_ENUM_FLAGS dwFlags, PROPERTYKEY *rgkeyOrder, UINT cColumns );
-			void GetColumns(CM_ENUM_FLAGS dwFlags, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPERTYKEY[] rgkeyOrder, uint cColumns);
+			void GetColumns(CM_ENUM_FLAGS dwFlags, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPERTYKEY[] rgkeyOrder, uint cColumns);
 
 			/// <summary>Sets the collection of columns for the view to display.</summary>
 			/// <param name="rgkeyOrder">
@@ -249,12 +250,12 @@ namespace Vanara.PInvoke
 			/// <para>The size of the rgkeyOrder array.</para>
 			/// </param>
 			/// <remarks>
-			/// <c>Note</c><c>IColumnManager::SetColumns</c> clears the state of all columns, so IColumnManager::SetColumnInfo must be called
-			/// afterward to set the state of individual columns.
+			/// <c>Note</c><c>IColumnManager::SetColumns</c> clears the state of all columns, so IColumnManager::SetColumnInfo must be
+			/// called afterward to set the state of individual columns.
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-icolumnmanager-setcolumns HRESULT
 			// SetColumns( const PROPERTYKEY *rgkeyOrder, UINT cVisible );
-			void SetColumns([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPERTYKEY[] rgkeyOrder, uint cVisible);
+			void SetColumns([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPERTYKEY[] rgkeyOrder, uint cVisible);
 		}
 
 		/// <summary>
@@ -276,8 +277,8 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the folder object.</summary>
 			/// <param name="riid">Reference to the desired IID to represent the folder.</param>
 			/// <returns>
-			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically IShellFolder
-			/// or a related interface. This can also be an IShellItemArray with a single element.
+			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically
+			/// IShellFolder or a related interface. This can also be an IShellItemArray with a single element.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
 			object GetFolder(in Guid riid);
@@ -371,8 +372,8 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the folder object.</summary>
 			/// <param name="riid">Reference to the desired IID to represent the folder.</param>
 			/// <returns>
-			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically IShellFolder
-			/// or a related interface. This can also be an IShellItemArray with a single element.
+			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically
+			/// IShellFolder or a related interface. This can also be an IShellItemArray with a single element.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
 			new object GetFolder(in Guid riid);
@@ -473,10 +474,10 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>
-			/// [This method is still implemented, but should be considered deprecated as of Windows 7. It might not be implemented in future
-			/// versions of Windows. It cannot be used with items in search results or library views, so consider using the item's existing
-			/// properties or, if applicable, emitting properties from your namespace or property handler. See Developing Property Handlers
-			/// for Windows Search for more information.]
+			/// [This method is still implemented, but should be considered deprecated as of Windows 7. It might not be implemented in
+			/// future versions of Windows. It cannot be used with items in search results or library views, so consider using the item's
+			/// existing properties or, if applicable, emitting properties from your namespace or property handler. See Developing Property
+			/// Handlers for Windows Search for more information.]
 			/// </para>
 			/// <para>Caches a property for an item in the view's property cache.</para>
 			/// </summary>
@@ -500,10 +501,10 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>
-			/// [This method is still implemented, but should be considered deprecated as of Windows 7. It might not be implemented in future
-			/// versions of Windows. It cannot be used with items in search results or library views, so consider using the item's existing
-			/// properties or, if applicable, emitting properties from your namespace or property handler. See Developing Property Handlers
-			/// for Windows Search for more information.]
+			/// [This method is still implemented, but should be considered deprecated as of Windows 7. It might not be implemented in
+			/// future versions of Windows. It cannot be used with items in search results or library views, so consider using the item's
+			/// existing properties or, if applicable, emitting properties from your namespace or property handler. See Developing Property
+			/// Handlers for Windows Search for more information.]
 			/// </para>
 			/// <para>Gets a property value for a given property key from the view's cache.</para>
 			/// </summary>
@@ -526,10 +527,10 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>
-			/// [This method is still implemented, but should be considered deprecated as of Windows 7. It might not be implemented in future
-			/// versions of Windows. It cannot be used with items in search results or library views, so consider using the item's existing
-			/// properties or, if applicable, emitting properties from your namespace or property handler. See Developing Property Handlers
-			/// for Windows Search for more information.]
+			/// [This method is still implemented, but should be considered deprecated as of Windows 7. It might not be implemented in
+			/// future versions of Windows. It cannot be used with items in search results or library views, so consider using the item's
+			/// existing properties or, if applicable, emitting properties from your namespace or property handler. See Developing Property
+			/// Handlers for Windows Search for more information.]
 			/// </para>
 			/// <para>Set the list of tile properties for an item.</para>
 			/// </summary>
@@ -553,10 +554,10 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>
-			/// [This method is still implemented, but should be considered deprecated as of Windows 7. It might not be implemented in future
-			/// versions of Windows. It cannot be used with items in search results or library views, so consider using the item's existing
-			/// properties or, if applicable, emitting properties from your namespace or property handler. See Developing Property Handlers
-			/// for Windows Search for more information.]
+			/// [This method is still implemented, but should be considered deprecated as of Windows 7. It might not be implemented in
+			/// future versions of Windows. It cannot be used with items in search results or library views, so consider using the item's
+			/// existing properties or, if applicable, emitting properties from your namespace or property handler. See Developing Property
+			/// Handlers for Windows Search for more information.]
 			/// </para>
 			/// <para>Sets the list of extended tile properties for an item.</para>
 			/// </summary>
@@ -605,8 +606,8 @@ namespace Vanara.PInvoke
 			/// <c>For Windows 7 or later:</c> This method must be used in combination with the FVO_CUSTOMPOSITION flag from the
 			/// FOLDERVIEWOPTIONS enumeration.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-setcurrentfolderflags HRESULT
-			// SetCurrentFolderFlags( DWORD dwMask, DWORD dwFlags );
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-setcurrentfolderflags
+			// HRESULT SetCurrentFolderFlags( DWORD dwMask, DWORD dwFlags );
 			void SetCurrentFolderFlags([In] FOLDERFLAGS dwMask, [In] FOLDERFLAGS dwFlags);
 
 			/// <summary>Gets the currently applied folder flags.</summary>
@@ -614,8 +615,8 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>DWORD*</c></para>
 			/// <para>A pointer to a <c>DWORD</c> with any FOLDERFLAGS that have been applied to the folder.</para>
 			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-getcurrentfolderflags HRESULT
-			// GetCurrentFolderFlags( DWORD *pdwFlags );
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-getcurrentfolderflags
+			// HRESULT GetCurrentFolderFlags( DWORD *pdwFlags );
 			FOLDERFLAGS GetCurrentFolderFlags();
 
 			/// <summary>Gets the count of sort columns currently applied to the view.</summary>
@@ -723,8 +724,8 @@ namespace Vanara.PInvoke
 			/// <term>S_FALSE</term>
 			/// <term>
 			/// Item not found. Note that this is a success code. The operation was successful in searching the view, it simply did not find
-			/// a currently selected item after the given index (iStart). It is possible that no item was selected, or that the selected item
-			/// had an index less than iStart.
+			/// a currently selected item after the given index (iStart). It is possible that no item was selected, or that the selected
+			/// item had an index less than iStart.
 			/// </term>
 			/// </item>
 			/// </list>
@@ -788,8 +789,8 @@ namespace Vanara.PInvoke
 			/// <para>A pointer to a Unicode string containing a verb.</para>
 			/// </param>
 			/// <remarks>If pszVerb is <c>NULL</c>, then the default verb is invoked on the selection.</remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-invokeverbonselection HRESULT
-			// InvokeVerbOnSelection( LPCSTR pszVerb );
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-invokeverbonselection
+			// HRESULT InvokeVerbOnSelection( LPCSTR pszVerb );
 			void InvokeVerbOnSelection([In, MarshalAs(UnmanagedType.LPWStr)] string pszVerb);
 
 			/// <summary>Sets and applies the view mode and image size.</summary>
@@ -884,9 +885,95 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>RECT*</c></para>
 			/// <para>The address of a pointer to a <c>RECT</c> structure that specifies the dimensions of the folder view.</para>
 			/// </param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-ifolderviewhost-initialize
-			// HRESULT Initialize( HWND hwndParent, IDataObject *pdo, RECT *prc );
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-ifolderviewhost-initialize HRESULT Initialize( HWND
+			// hwndParent, IDataObject *pdo, RECT *prc );
 			void Initialize([In] HWND hwndParent, [In] IDataObject pdo, in RECT prc);
+		}
+
+		/// <summary>Exposes methods to obtain folder view settings.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-ifolderviewsettings
+		[ComImport, Guid("ae8c987d-8797-4ed3-be72-2a47dd938db0"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IFolderViewSettings
+		{
+			/// <summary>Gets an ordered list of columns that corresponds to the column enumerated.</summary>
+			/// <param name="riid">A reference to the interface identifier (IID) of the IPropertyDescriptionList.</param>
+			/// <returns>
+			/// <para>Type: <c>IPropertyDescriptionList**</c></para>
+			/// <para>The address of an IPropertyDescriptionList interface pointer.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifolderviewsettings-getcolumnpropertylist
+			// HRESULT GetColumnPropertyList( REFIID riid, void **ppv );
+			IPropertyDescriptionList GetColumnPropertyList(in Guid riid);
+
+			/// <summary>Gets a grouping property.</summary>
+			/// <param name="pkey">
+			/// <para>Type: <c>PROPERTYKEY*</c></para>
+			/// <para>A pointer to a PROPERTYKEY structure indicating the key by which content is grouped.</para>
+			/// </param>
+			/// <param name="pfGroupAscending">
+			/// <para>Type: <c>BOOL*</c></para>
+			/// <para>A pointer to a value indicating whether grouping order is ascending.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifolderviewsettings-getgroupbyproperty
+			// HRESULT GetGroupByProperty( PROPERTYKEY *pkey, BOOL *pfGroupAscending );
+			void GetGroupByProperty(out PROPERTYKEY pkey, [MarshalAs(UnmanagedType.Bool)] out bool pfGroupAscending);
+
+			/// <summary>Gets a folder's logical view mode.</summary>
+			/// <returns>
+			/// <para>Type: <c>FOLDERLOGICALVIEWMODE*</c></para>
+			/// <para>A pointer to a FOLDERLOGICALVIEWMODE value.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifolderviewsettings-getviewmode HRESULT
+			// GetViewMode( FOLDERLOGICALVIEWMODE *plvm );
+			FOLDERLOGICALVIEWMODE GetViewMode();
+
+			/// <summary>Gets the folder icon size.</summary>
+			/// <returns>
+			/// <para>Type: <c>UINT*</c></para>
+			/// <para>A pointer to the icon size.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifolderviewsettings-geticonsize HRESULT
+			// GetIconSize( UINT *puIconSize );
+			uint GetIconSize();
+
+			/// <summary>Gets folder view options flags.</summary>
+			/// <param name="pfolderMask">
+			/// <para>Type: <c>FOLDERFLAGS*</c></para>
+			/// <para>A pointer to a mask for folder view options.</para>
+			/// </param>
+			/// <param name="pfolderFlags">
+			/// <para>Type: <c>FOLDERFLAGS*</c></para>
+			/// <para>A pointer to a flag for folder view options.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifolderviewsettings-getfolderflags HRESULT
+			// GetFolderFlags( FOLDERFLAGS *pfolderMask, FOLDERFLAGS *pfolderFlags );
+			void GetFolderFlags(out FOLDERFLAGS pfolderMask, out FOLDERFLAGS pfolderFlags);
+
+			/// <summary>Gets sort column information.</summary>
+			/// <param name="rgSortColumns">
+			/// <para>Type: <c>SORTCOLUMN*</c></para>
+			/// <para>A pointer to an array of SORTCOLUMN structures.</para>
+			/// </param>
+			/// <param name="cColumnsIn">
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The source column count.</para>
+			/// </param>
+			/// <param name="pcColumnsOut">
+			/// <para>Type: <c>UINT*</c></para>
+			/// <para>A pointer to the rgSortColumns array length.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifolderviewsettings-getsortcolumns HRESULT
+			// GetSortColumns( SORTCOLUMN *rgSortColumns, UINT cColumnsIn, UINT *pcColumnsOut );
+			void GetSortColumns([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] SORTCOLUMN[] rgSortColumns, uint cColumnsIn, out uint pcColumnsOut);
+
+			/// <summary>Gets group count for visible rows.</summary>
+			/// <returns>
+			/// <para>Type: <c>UINT*</c></para>
+			/// <para>A pointer to group count.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifolderviewsettings-getgroupsubsetcount
+			// HRESULT GetGroupSubsetCount( UINT *pcVisibleRows );
+			uint GetGroupSubsetCount();
 		}
 
 		/// <summary>
@@ -973,14 +1060,16 @@ namespace Vanara.PInvoke
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
 		public static T Items<T>(this IFolderView fv, SVGIO uFlags) where T : class => (T)fv.Items(uFlags, typeof(T).GUID);
 
-		/// <summary>Extension method to simplify using the <see cref="IFolderView2.GetItem" /> method.</summary>
+		/// <summary>Extension method to simplify using the <see cref="IFolderView2.GetItem"/> method.</summary>
 		/// <typeparam name="T">Type of the interface to get.</typeparam>
-		/// <param name="fv">An <see cref="IFolderView2" /> instance.</param>
-		/// <param name="iItem"><para>Type: <c>int</c></para>
-		/// <para>The zero-based index of the item to retrieve.</para></param>
-		/// <param name="item">The interface pointer requested in <typeparamref name="T" />.</param>
+		/// <param name="fv">An <see cref="IFolderView2"/> instance.</param>
+		/// <param name="iItem">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The zero-based index of the item to retrieve.</para>
+		/// </param>
+		/// <param name="item">The interface pointer requested in <typeparamref name="T"/>.</param>
 		/// <returns><see langword="true"/> if the item is found; <see langword="false"/> otherwise.</returns>
-		public static bool TryGetItem<T>(this IFolderView2 fv, int iItem, out T item) where T : class { try { item = (T)fv.GetItem(iItem, typeof(T).GUID); return true; } catch { item = null;  return false; } }
+		public static bool TryGetItem<T>(this IFolderView2 fv, int iItem, out T item) where T : class { try { item = (T)fv.GetItem(iItem, typeof(T).GUID); return true; } catch { item = null; return false; } }
 
 		/// <summary>
 		/// <para>Defines column information. Used by members of the IColumnManager interface.</para>
@@ -1045,8 +1134,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>Stores information about how to sort a column that is displayed in the folder view.</summary>
 		/// <remarks>
-		/// Each column displayed in the folder view (for example, "details" view mode), is associated with a property that has a PROPERTYKEY
-		/// ID. When you want to sort the view by a particular property, you specify the property key for that property.
+		/// Each column displayed in the folder view (for example, "details" view mode), is associated with a property that has a
+		/// PROPERTYKEY ID. When you want to sort the view by a particular property, you specify the property key for that property.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ns-shobjidl_core-sortcolumn typedef struct SORTCOLUMN {
 		// PROPERTYKEY propkey; SORTDIRECTION direction; } SORTCOLUMN;

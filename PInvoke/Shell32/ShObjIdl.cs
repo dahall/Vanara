@@ -1015,22 +1015,6 @@ namespace Vanara.PInvoke
 			void SetDefaultIcon([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
 		}
 
-		/// <summary>Exposes a method that allows enumeration of a collection of handlers associated with particular file name extensions.</summary>
-		[ComImport, Guid("973810ae-9599-4b88-9e4d-6ee98c9552da"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		[PInvokeData("shobjidl_core.h", MSDNShortId = "9e173cb3-bd73-437c-8853-c13c8b6f216f")]
-		public interface IEnumAssocHandlers
-		{
-			/// <summary>Retrieves a specified number of elements.</summary>
-			/// <param name="celt">The number of elements to retrieve.</param>
-			/// <param name="rgelt">
-			/// When this method returns, contains the address of an array of IAssocHandler pointers. Each IAssocHandler represents a single handler.
-			/// </param>
-			/// <param name="pceltFetched">When this method returns, contains a pointer to the number of elements retrieved.</param>
-			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-			[PreserveSig]
-			HRESULT Next(uint celt, out IntPtr rgelt, out uint pceltFetched);
-		}
-
 		/// <summary>
 		/// Exposes a standard set of methods used to enumerate the pointers to item identifier lists (PIDLs) of the items in a Shell
 		/// folder. When a folder's IShellFolder::EnumObjects method is called, it creates an enumeration object and passes a pointer to the
@@ -1079,6 +1063,75 @@ namespace Vanara.PInvoke
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IEnumIDList Clone();
+		}
+
+		/// <summary>
+		/// Exposes a standard set of methods that enumerate the pointers to item identifier lists (PIDLs) of the items in a Shell folder.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-ienumfullidlist
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "NN:shobjidl_core.IEnumFullIDList")]
+		[ComImport, Guid("d0191542-7954-4908-bc06-b2360bbe45ba"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IEnumFullIDList
+		{
+			/// <summary>Retrieves a specified number of IDLIST_ABSOLUTE items.</summary>
+			/// <param name="celt">
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>The number of items referenced in the array referenced by the rgelt parameter.</para>
+			/// </param>
+			/// <param name="rgelt">
+			/// <para>Type: <c>PIDLIST_ABSOLUTE*</c></para>
+			/// <para>
+			/// On success, contains a PIDL array. The implementation must allocate these item identifiers using CoTaskMemAlloc. The calling
+			/// application is responsible for freeing the item identifiers using CoTaskMemFree.
+			/// </para>
+			/// </param>
+			/// <param name="pceltFetched">
+			/// <para>Type: <c>ULONG*</c></para>
+			/// <para>
+			/// On success, contains a pointer to a value that receives a count of the absolute item identifiers actually returned in rgelt.
+			/// The count can be smaller than the value specified in the celt parameter. This parameter can be <c>NULL</c> on entry only if
+			/// celt is 1, because in that case the method can only retrieve one (S_OK) or zero (S_FALSE) items.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>
+			/// Returns S_OK if the method successfully retrieved the requested celt elements. This method only returns S_OK if the full
+			/// count of requested items are successfully retrieved.
+			/// </para>
+			/// <para>
+			/// S_FALSE indicates that more items were requested than remained in the enumeration. The value pointed to by the pceltFetched
+			/// parameter specifies the actual number of items retrieved. Note that the value will be 0 if there are no more items to retrieve.
+			/// </para>
+			/// <para>Returns a COM-defined error value otherwise.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ienumfullidlist-next HRESULT Next( ULONG
+			// celt, PIDLIST_ABSOLUTE *rgelt, ULONG *pceltFetched );
+			[PreserveSig]
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] rgelt, out uint pceltFetched);
+
+			/// <summary>Skips a specified number of IDLIST_ABSOLUTE items.</summary>
+			/// <param name="celt">
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>The number of items to skip.</para>
+			/// </param>
+			/// <remarks>The enumeration index is advanced by the number of items skipped.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ienumfullidlist-skip HRESULT Skip( ULONG
+			// celt );
+			void Skip(uint celt);
+
+			/// <summary>Returns the enumerator to the beginning of the enumeration sequence.</summary>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ienumfullidlist-reset HRESULT Reset();
+			void Reset();
+
+			/// <summary>Creates a new item enumeration object with the same contents and state as the current one.</summary>
+			/// <returns>
+			/// <para>Type: <c>IEnumFullIDList**</c></para>
+			/// <para>On success, contains the address of an IEnumFullIDList interface pointer.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ienumfullidlist-clone HRESULT Clone(
+			// IEnumFullIDList **ppenum );
+			IEnumFullIDList Clone();
 		}
 
 		/// <summary>
@@ -1441,6 +1494,80 @@ namespace Vanara.PInvoke
 			// HRESULT GetJunctionCLSID( CLSID *pclsid );
 			[PreserveSig]
 			HRESULT GetJunctionCLSID(out Guid pclsid);
+		}
+
+		/// <summary>Exposes methods that are used to persist item identifier lists.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-ipersistidlist
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "NN:shobjidl_core.IPersistIDList")]
+		[ComImport, Guid("1079acfc-29bd-11d3-8e0d-00c04f6837d5"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IPersistIDList : IPersist
+		{
+			/// <summary>Retrieves the class identifier (CLSID) of the object.</summary>
+			/// <returns>
+			/// <para>
+			/// A pointer to the location that receives the CLSID on return. The CLSID is a globally unique identifier (GUID) that uniquely
+			/// represents an object class that defines the code that can manipulate the object's data.
+			/// </para>
+			/// <para>If the method succeeds, the return value is S_OK. Otherwise, it is E_FAIL.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>GetClassID</c> method retrieves the class identifier (CLSID) for an object, used in later operations to load
+			/// object-specific code into the caller's context.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// A container application might call this method to retrieve the original CLSID of an object that it is treating as a
+			/// different class. Such a call would be necessary if a user performed an editing operation that required the object to be
+			/// saved. If the container were to save it using the treat-as CLSID, the original application would no longer be able to edit
+			/// the object. Typically, in this case, the container calls the OleSave helper function, which performs all the necessary
+			/// steps. For this reason, most container applications have no need to call this method directly.
+			/// </para>
+			/// <para>
+			/// The exception would be a container that provides an object handler for certain objects. In particular, a container
+			/// application should not get an object's CLSID and then use it to retrieve class specific information from the registry.
+			/// Instead, the container should use IOleObject and IDataObject interfaces to retrieve such class-specific information directly
+			/// from the object.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Typically, implementations of this method simply supply a constant CLSID for an object. If, however, the object's
+			/// <c>TreatAs</c> registry key has been set by an application that supports emulation (and so is treating the object as one of
+			/// a different class), a call to <c>GetClassID</c> must supply the CLSID specified in the <c>TreatAs</c> key. For more
+			/// information on emulation, see CoTreatAsClass.
+			/// </para>
+			/// <para>
+			/// When an object is in the running state, the default handler calls an implementation of <c>GetClassID</c> that delegates the
+			/// call to the implementation in the object. When the object is not running, the default handler instead calls the ReadClassStg
+			/// function to read the CLSID that is saved in the object's storage.
+			/// </para>
+			/// <para>
+			/// If you are writing a custom object handler for your object, you might want to simply delegate this method to the default
+			/// handler implementation (see OleCreateDefaultHandler).
+			/// </para>
+			/// <para>URL Moniker Notes</para>
+			/// <para>This method returns CLSID_StdURLMoniker.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersist-getclassid HRESULT GetClassID( CLSID *pClassID );
+			new Guid GetClassID();
+
+			/// <summary>Sets a persisted item identifier list.</summary>
+			/// <param name="pidl">
+			/// <para>Type: <c>LPCITEMIDLIST</c></para>
+			/// <para>A pointer to the item identifier list to set.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ipersistidlist-setidlist HRESULT SetIDList(
+			// PCIDLIST_ABSOLUTE pidl );
+			void SetIDList([In] PIDL pidl);
+
+			/// <summary>Gets an item identifier list.</summary>
+			/// <param name="ppidl">
+			/// <para>Type: <c>LPITEMIDLIST*</c></para>
+			/// <para>The address of a pointer to the item identifier list to get.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ipersistidlist-getidlist HRESULT GetIDList(
+			// PIDLIST_ABSOLUTE *ppidl );
+			void GetIDList(ref PIDL ppidl);
 		}
 
 		/// <summary>

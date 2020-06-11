@@ -7,6 +7,31 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary>Indicates the current host environment.</summary>
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "NN:shobjidl_core.IExecuteCommandApplicationHostEnvironment")]
+		public enum AHE_TYPE
+		{
+			/// <summary>Desktop.</summary>
+			AHE_DESKTOP = 0,
+
+			/// <summary>Immersive mode.</summary>
+			AHE_IMMERSIVE = 1
+		}
+
+		/// <summary>The UI mode of the host component from which the application was invoked.</summary>
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "NF:shobjidl_core.IExecuteCommandHost.GetUIMode")]
+		public enum EC_HOST_UI_MODE
+		{
+			/// <summary>The application is running in the desktop environment.</summary>
+			ECHUIM_DESKTOP = 0,
+
+			/// <summary>The application is running in the immersive environment.</summary>
+			ECHUIM_IMMERSIVE = (ECHUIM_DESKTOP + 1),
+
+			/// <summary>The application is running in the system launcher environment.</summary>
+			ECHUIM_SYSTEM_LAUNCHER = (ECHUIM_IMMERSIVE + 1)
+		}
+
 		/// <summary>
 		/// Exposes methods that set a given state or parameter related to the command verb, as well as a method to invoke that verb.
 		/// </summary>
@@ -103,8 +128,9 @@ namespace Vanara.PInvoke
 			/// <para>Activates the window and displays it in its current size and position.</para>
 			/// <para>SW_SHOWDEFAULT</para>
 			/// <para>
-			/// Sets the show state based on the information specified in the STARTUPINFO structure passed to the CreateProcess function that
-			/// started the application. An application should call ShowWindow with this flag to set the initial visual state of its main window.
+			/// Sets the show state based on the information specified in the STARTUPINFO structure passed to the CreateProcess function
+			/// that started the application. An application should call ShowWindow with this flag to set the initial visual state of its
+			/// main window.
 			/// </para>
 			/// <para>SW_SHOWMAXIMIZED</para>
 			/// <para>Activates the window and displays it as a maximized window.</para>
@@ -149,8 +175,8 @@ namespace Vanara.PInvoke
 			/// <param name="pszDirectory">
 			/// <para>Type: <c>LPCWSTR</c></para>
 			/// <para>
-			/// Pointer to a null-terminated string with the fully qualified path of the new working directory. If this value is <c>NULL</c>,
-			/// the current working directory is used.
+			/// Pointer to a null-terminated string with the fully qualified path of the new working directory. If this value is
+			/// <c>NULL</c>, the current working directory is used.
 			/// </para>
 			/// </param>
 			/// <returns>
@@ -173,6 +199,76 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// Provides a method that enables an IExplorerCommand-based Shell verb handler to query the UI mode of the host component from
+		/// which the application was invoked.
+		/// </summary>
+		/// <remarks>
+		/// <para>When to implement</para>
+		/// <para>
+		/// A software component (either an OS component or an application) taat can launch a dual-mode application such as a browser should
+		/// implement this interface. The interface should be implemented on an object that can be reached through the site chain provided
+		/// to ShellExecuteEx or the context menu and retrieved through the IServiceProvider::QueryService method.
+		/// </para>
+		/// <para>When to use</para>
+		/// <para>
+		/// Typically, an application that is capable of launching as both a desktop application and a Windows Store app app will use this
+		/// interface to query which mode the host is currently in. The application can then launch in the UI mode that is compatible with
+		/// the host.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-iexecutecommandhost
+		[ComImport, Guid("4b6832a2-5f04-4c9d-b89d-727a15d103e7"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IExecuteCommandHost
+		{
+			/// <summary>
+			/// Enables an IExplorerCommand-based Shell verb handler to query the UI mode of the host component from which the application
+			/// was invoked.
+			/// </summary>
+			/// <param name="pUIMode">
+			/// <para>Type: <c>EC_HOST_UI_MODE*</c></para>
+			/// <para>ECHUIM_DESKTOP (0)</para>
+			/// <para>The application is running in the desktop environment.</para>
+			/// <para>ECHUIM_IMMERSIVE (1)</para>
+			/// <para>The application is running in the immersive environment.</para>
+			/// <para>ECHUIM_SYSTEM_LAUNCHER (2)</para>
+			/// <para>The application is running in the system launcher environment.</para>
+			/// </param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexecutecommandhost-getuimode HRESULT
+			// GetUIMode( EC_HOST_UI_MODE *pUIMode );
+			[PreserveSig]
+			HRESULT GetUIMode(out EC_HOST_UI_MODE pUIMode);
+		}
+
+		/// <summary>Provides a single method that enables an application to determine whether its host is in desktop or immersive mode.</summary>
+		/// <remarks>
+		/// <para>When to implement</para>
+		/// <para>An application must implement this interface together with the DelegateExecute handler (IExecuteCommand).</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-iexecutecommandapplicationhostenvironment
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "NN:shobjidl_core.IExecuteCommandApplicationHostEnvironment")]
+		[ComImport, Guid("18B21AA9-E184-4FF0-9F5E-F882D03771B3"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IExecuteCommandApplicationHostEnvironment
+		{
+			/// <summary>Determines whether the current application host environment is in the desktop or immersive mode.</summary>
+			/// <param name="pahe">
+			/// <para>
+			/// A pointer to a <c>AHE_TYPE</c> value that, when this method returns successfully, receives one of the following values to
+			/// indicate the current host environment.
+			/// </para>
+			/// <para>AHE_DESKTOP (0)</para>
+			/// <para>Desktop.</para>
+			/// <para>AHE_IMMERSIVE (1)</para>
+			/// <para>Immersive mode.</para>
+			/// </param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexecutecommandapplicationhostenvironment-getvalue
+			// HRESULT GetValue( AHE_TYPE *pahe );
+			[PreserveSig]
+			HRESULT GetValue(out AHE_TYPE pahe);
+		}
+
+		/// <summary>
 		/// Exposes a single method used to initialize objects that implement IExplorerCommandState, IExecuteCommand or IDropTarget with the
 		/// application-specified command name and its registered properties.
 		/// </summary>
@@ -180,14 +276,14 @@ namespace Vanara.PInvoke
 		/// <para>When to Implement</para>
 		/// <para>Implement <c>IInitializeCommand</c> in the following situations.</para>
 		/// <list type="bullet">
-		///   <item>
-		///     <term>
+		/// <item>
+		/// <term>
 		/// Implement this interface to differentiate between related commands that share implementations of IExplorerCommandState,
 		/// IDropTarget or IExecuteCommand. Differentiation is made through the command name passed in IInitializeCommand::Initialize.
 		/// Commands can also use <c>Initialize</c> to pass a specific property bag for the command, using properties the command has placed
 		/// in the registry.
 		/// </term>
-		///   </item>
+		/// </item>
 		/// </list>
 		/// <para>When to Use</para>
 		/// <para>
@@ -204,29 +300,43 @@ namespace Vanara.PInvoke
 			/// Initialize objects that share an implementation of IExplorerCommandState, IExecuteCommand or IDropTarget with the
 			/// application-specified command name and its registered properties.
 			/// </summary>
-			/// <param name="pszCommandName"><para>Type: <c>LPCWSTR</c></para>
+			/// <param name="pszCommandName">
+			/// <para>Type: <c>LPCWSTR</c></para>
 			/// <para>
 			/// Pointer to a string that contains the command name (the name of the command key as found in the registry). For instance, if
 			/// the command is registered under <c>...</c>&lt;b&gt;shell&lt;b&gt;MyCommand, pszCommandName points to "MyCommand".
-			/// </para></param>
-			/// <param name="ppb"><para>Type: <c>IPropertyBag*</c></para>
+			/// </para>
+			/// </param>
+			/// <param name="ppb">
+			/// <para>Type: <c>IPropertyBag*</c></para>
 			/// <para>
 			/// Pointer to an IPropertyBag instance that can be used to read the properties related to the command in the registry. For
 			/// example, a command may registry a string property under its <c>...</c>&lt;b&gt;shell&lt;b&gt;MyCommand subkey.
-			/// </para></param>
+			/// </para>
+			/// </param>
 			/// <returns>
 			/// <para>Type: <c>HRESULT</c></para>
 			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iinitializecommand-initialize
-			// HRESULT Initialize( LPCWSTR pszCommandName, IPropertyBag *ppb );
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iinitializecommand-initialize HRESULT
+			// Initialize( LPCWSTR pszCommandName, IPropertyBag *ppb );
 			[PreserveSig]
 			HRESULT Initialize([In, MarshalAs(UnmanagedType.LPWStr)] string pszCommandName, [In] IPropertyBag ppb);
 		}
+
+		/// <summary>CLSID_AppShellVerbHandler</summary>
+		[PInvokeData("shobjidl.h")]
+		[ComImport, Guid("4ED3A719-CEA8-4BD9-910D-E252F997AFC2"), ClassInterface(ClassInterfaceType.None)]
+		public class AppShellVerbHandler { }
 
 		/// <summary>CoClass for IExecuteCommand</summary>
 		[PInvokeData("shobjidl.h")]
 		[ComImport, Guid("11dbb47c-a525-400b-9e80-a54615a090c0"), ClassInterface(ClassInterfaceType.None)]
 		public class ExecuteFolder { }
+
+		/// <summary>CLSID_ExecuteUnknown</summary>
+		[PInvokeData("shobjidl.h")]
+		[ComImport, Guid("e44e9428-bdbc-4987-a099-40dc8fd255e7"), ClassInterface(ClassInterfaceType.None)]
+		public class ExecuteUnknown { }
 	}
 }

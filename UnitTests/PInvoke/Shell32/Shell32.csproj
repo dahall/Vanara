@@ -36,6 +36,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PkgDbgSettingsTests.cs" />
     <Compile Include="UrlTests.cs" />
     <Compile Include="ExplorerTests.cs" />
     <Compile Include="KnownFolderIdExtTests.cs" />

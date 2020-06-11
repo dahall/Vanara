@@ -145,6 +145,9 @@ namespace Vanara.PInvoke
 		[PInvokeData("shlguid.h")]
 		public static readonly Guid SID_ShellFolderViewCB = typeof(IShellFolderViewCB).GUID;
 
+		/// <summary>SID for IShellTaskScheduler.</summary>
+		public static readonly Guid SID_ShellTaskScheduler = typeof(IShellTaskScheduler).GUID;
+
 		/// <summary>Undocumented.</summary>
 		[PInvokeData("shlguid.h")]
 		public static readonly Guid SID_SInPlaceBrowser = new Guid(0x1D2AE02B, 0x3655, 0x46CC, 0xB6, 0x3A, 0x28, 0x59, 0x88, 0x15, 0x3B, 0xCA);

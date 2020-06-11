@@ -174,6 +174,20 @@ namespace Vanara.PInvoke
 			FOS_SUPPORTSTREAMABLEITEMS = 0x80000000
 		}
 
+		/// <summary>Indicates status of the merge process.</summary>
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "NF:shobjidl_core.IFileSyncMergeHandler.Merge")]
+		public enum MERGE_UPDATE_STATUS
+		{
+			/// <summary>Indicates that the process has completed successfully.</summary>
+			MUS_COMPLETE = 0,
+
+			/// <summary>Indicates that additional input is required by the user for the process to complete.</summary>
+			MUS_USERINPUTNEEDED = (MUS_COMPLETE + 1),
+
+			/// <summary>Indicates that the process has failed.</summary>
+			MUS_FAILED = (MUS_USERINPUTNEEDED + 1)
+		}
+
 		/// <summary>Used by methods of the ITransferSource and ITransferDestination interfaces to control their file operations.</summary>
 		[Flags]
 		public enum TRANSFER_SOURCE_FLAGS
@@ -303,8 +317,8 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the user's current selection in the dialog.</summary>
 			/// <returns>
 			/// The address of a pointer to the interface that represents the item currently selected in the dialog. This item can be a file
-			/// or folder selected in the view window, or something that the user has entered into the dialog's edit box. The latter case may
-			/// require a parsing operation (cancelable by the user) that blocks the current thread.
+			/// or folder selected in the view window, or something that the user has entered into the dialog's edit box. The latter case
+			/// may require a parsing operation (cancelable by the user) that blocks the current thread.
 			/// </returns>
 			IShellItem GetCurrentSelection();
 
@@ -444,8 +458,8 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the user's current selection in the dialog.</summary>
 			/// <returns>
 			/// The address of a pointer to the interface that represents the item currently selected in the dialog. This item can be a file
-			/// or folder selected in the view window, or something that the user has entered into the dialog's edit box. The latter case may
-			/// require a parsing operation (cancelable by the user) that blocks the current thread.
+			/// or folder selected in the view window, or something that the user has entered into the dialog's edit box. The latter case
+			/// may require a parsing operation (cancelable by the user) that blocks the current thread.
 			/// </returns>
 			new IShellItem GetCurrentSelection();
 
@@ -515,8 +529,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Exposes methods that allow an application to be notified of events that are related to controls that the application has added to
-		/// a common file dialog.
+		/// Exposes methods that allow an application to be notified of events that are related to controls that the application has added
+		/// to a common file dialog.
 		/// </summary>
 		[SuppressUnmanagedCodeSecurity]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("36116642-D713-4b97-9B83-7484A9D00433")]
@@ -729,8 +743,8 @@ namespace Vanara.PInvoke
 			/// <param name="pfd">A pointer to the interface that represents the dialog.</param>
 			/// <param name="psiFolder">A pointer to an interface that represents the folder to which the dialog is about to navigate.</param>
 			/// <returns>
-			/// Returns S_OK if successful, or an error value otherwise. A return value of S_OK or E_NOTIMPL indicates that the folder change
-			/// can proceed.
+			/// Returns S_OK if successful, or an error value otherwise. A return value of S_OK or E_NOTIMPL indicates that the folder
+			/// change can proceed.
 			/// </returns>
 			/// <remarks>
 			/// The calling application can call IFileDialog::SetFolder during this callback to redirect navigation to an alternate folder.
@@ -780,8 +794,8 @@ namespace Vanara.PInvoke
 			/// <remarks>
 			/// This method is called when the dialog is opened to notify the application of the initially chosen filetype. If the
 			/// application has code in IFileDialogEvents that responds to type changes, it can respond to the type. For example, it could
-			/// hide certain controls. The application controls the initial file type and could do its own checks, so this method is provided
-			/// as a convenience.
+			/// hide certain controls. The application controls the initial file type and could do its own checks, so this method is
+			/// provided as a convenience.
 			/// </remarks>
 			[PreserveSig]
 			HRESULT OnTypeChange(IFileDialog pfd);
@@ -879,8 +893,8 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the user's current selection in the dialog.</summary>
 			/// <returns>
 			/// The address of a pointer to the interface that represents the item currently selected in the dialog. This item can be a file
-			/// or folder selected in the view window, or something that the user has entered into the dialog's edit box. The latter case may
-			/// require a parsing operation (cancelable by the user) that blocks the current thread.
+			/// or folder selected in the view window, or something that the user has entered into the dialog's edit box. The latter case
+			/// may require a parsing operation (cancelable by the user) that blocks the current thread.
 			/// </returns>
 			new IShellItem GetCurrentSelection();
 
@@ -1008,8 +1022,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>Performs caller-implemented actions after the move process for each item is complete.</summary>
 			/// <param name="dwFlags">
-			/// bitwise value that contains flags that were used during the move operation. Some values can be set or changed during the move
-			/// operation. See TRANSFER_SOURCE_FLAGS for flag descriptions.
+			/// bitwise value that contains flags that were used during the move operation. Some values can be set or changed during the
+			/// move operation. See TRANSFER_SOURCE_FLAGS for flag descriptions.
 			/// </param>
 			/// <param name="psiItem">Pointer to an IShellItem that specifies the source item.</param>
 			/// <param name="psiDestinationFolder">
@@ -1042,8 +1056,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>Performs caller-implemented actions after the copy process for each item is complete.</summary>
 			/// <param name="dwFlags">
-			/// bitwise value that contains flags that were used during the copy operation. Some values can be set or changed during the copy
-			/// operation. See TRANSFER_SOURCE_FLAGS for flag descriptions.
+			/// bitwise value that contains flags that were used during the copy operation. Some values can be set or changed during the
+			/// copy operation. See TRANSFER_SOURCE_FLAGS for flag descriptions.
 			/// </param>
 			/// <param name="psiItem">Pointer to an IShellItem that specifies the source item.</param>
 			/// <param name="psiDestinationFolder">
@@ -1079,8 +1093,8 @@ namespace Vanara.PInvoke
 			/// delete operation. Instead, this is the result of the actual deletion.
 			/// </param>
 			/// <param name="psiNewlyCreated">
-			/// A pointer to an IShellItem that specifies the deleted item, now in the Recycle Bin. If the item was fully deleted, this value
-			/// is NULL.
+			/// A pointer to an IShellItem that specifies the deleted item, now in the Recycle Bin. If the item was fully deleted, this
+			/// value is NULL.
 			/// </param>
 			void PostDeleteItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, HRESULT hrDelete, IShellItem psiNewlyCreated);
 
@@ -1155,8 +1169,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Extends the IFileDialog interface by adding methods specific to the save dialog, which include those that provide support for the
-		/// collection of metadata to be persisted with the file.
+		/// Extends the IFileDialog interface by adding methods specific to the save dialog, which include those that provide support for
+		/// the collection of metadata to be persisted with the file.
 		/// </summary>
 		/// <seealso cref="IFileDialog"/>
 		[SuppressUnmanagedCodeSecurity]
@@ -1236,8 +1250,8 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the user's current selection in the dialog.</summary>
 			/// <returns>
 			/// The address of a pointer to the interface that represents the item currently selected in the dialog. This item can be a file
-			/// or folder selected in the view window, or something that the user has entered into the dialog's edit box. The latter case may
-			/// require a parsing operation (cancelable by the user) that blocks the current thread.
+			/// or folder selected in the view window, or something that the user has entered into the dialog's edit box. The latter case
+			/// may require a parsing operation (cancelable by the user) that blocks the current thread.
 			/// </returns>
 			new IShellItem GetCurrentSelection();
 
@@ -1328,6 +1342,48 @@ namespace Vanara.PInvoke
 			/// progress of the property stamping. This value may be NULL.
 			/// </param>
 			void ApplyProperties(IShellItem psi, PropSys.IPropertyStore pStore, HWND hwnd, IFileOperationProgressSink pSink);
+		}
+
+		/// <summary>Exposed methods to handle file sync operations between a local copy and a server copy of a file.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-ifilesyncmergehandler
+		[ComImport, Guid("d97b5aac-c792-433c-975d-35c4eadc7a9d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IFileSyncMergeHandler
+		{
+			/// <summary>Merges changes between the local copy and server copy of a file.</summary>
+			/// <param name="localFilePath">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to a string containing the path to the local copy of the file.</para>
+			/// </param>
+			/// <param name="serverFilePath">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to a string containing the network path to the server copy of the file.</para>
+			/// </param>
+			/// <param name="updateStatus">
+			/// <para>Type: <c>MERGE_UPDATE_STATUS*</c></para>
+			/// <para>When this method returns, contains a pointer to one of the following values indicating status of the merge process.</para>
+			/// <para>MUS_COMPLETE</para>
+			/// <para>Indicates that the process has completed successfully.</para>
+			/// <para>MUS_USERINPUTNEEDED</para>
+			/// <para>Indicates that additional input is required by the user for the process to complete.</para>
+			/// <para>MUS_FAILED</para>
+			/// <para>Indicates that the process has failed.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesyncmergehandler-merge HRESULT Merge(
+			// LPCWSTR localFilePath, LPCWSTR serverFilePath, MERGE_UPDATE_STATUS *updateStatus );
+			void Merge([MarshalAs(UnmanagedType.LPWStr)] string localFilePath, [MarshalAs(UnmanagedType.LPWStr)] string serverFilePath, out MERGE_UPDATE_STATUS updateStatus);
+
+			/// <summary>Displays a UI to resolve conflicts between the local copy and server copy of a file.</summary>
+			/// <param name="localFilePath">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>The path of the file with the merge conflict.</para>
+			/// </param>
+			/// <param name="monitorToDisplayOn">
+			/// <para>Type: <c>HMONITOR</c></para>
+			/// <para>Indicates the monitor on which to display the UI.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifilesyncmergehandler-showresolveconflictuiasync
+			// HRESULT ShowResolveConflictUIAsync( LPCWSTR localFilePath, HMONITOR monitorToDisplayOn );
+			void ShowResolveConflictUIAsync([MarshalAs(UnmanagedType.LPWStr)] string localFilePath, HMONITOR monitorToDisplayOn);
 		}
 
 		/// <summary>Exposes a method that represents a modal window. This interface is used in the Windows XP Passport Wizard.</summary>

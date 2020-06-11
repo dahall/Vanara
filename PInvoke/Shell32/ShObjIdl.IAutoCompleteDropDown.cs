@@ -40,7 +40,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-iautocompletedropdown-getdropdownstatus HRESULT
 			// GetDropDownStatus( DWORD *pdwFlags, LPWSTR *ppwszString );
-			void GetDropDownStatus(ref uint pdwFlags, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppwszString);
+			void GetDropDownStatus(ref uint pdwFlags, out string ppwszString);
 
 			/// <summary>Forces the autocomplete object to refresh its list of suggestions when the list is visible.</summary>
 			/// <remarks>
