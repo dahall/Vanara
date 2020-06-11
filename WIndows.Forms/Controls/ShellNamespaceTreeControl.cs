@@ -697,7 +697,7 @@ namespace Vanara.Windows.Forms
 			return HRESULT.S_OK;
 		}
 
-		HRESULT Shell32.IServiceProvider.QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject)
+		HRESULT Shell32.IServiceProvider.QueryService(in Guid guidService, in Guid riid, out object ppvObject)
 		{
 			ppvObject = default;
 			return HRESULT.E_NOINTERFACE;

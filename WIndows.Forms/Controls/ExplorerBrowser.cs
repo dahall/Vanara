@@ -915,16 +915,16 @@ namespace Vanara.Windows.Forms
 			return ((IInputObject_WinForms)explorerBrowserControl).TranslateAcceleratorIO(m) == HRESULT.S_OK;
 		}
 
-		HRESULT IServiceProvider.QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject)
+		HRESULT IServiceProvider.QueryService(in Guid guidService, in Guid riid, out object ppvObject)
 		{
 			if (guidService.Equals(typeof(IExplorerPaneVisibility).GUID))
 			{
-				ppvObject = Marshal.GetComInterfaceForObject(this, typeof(IExplorerPaneVisibility));
+				ppvObject = this;
 				return HRESULT.S_OK;
 			}
 			else if (guidService.Equals(IID_ICommDlgBrowser) && (riid.Equals(IID_ICommDlgBrowser) || riid.Equals(typeof(ICommDlgBrowser3).GUID)))
 			{
-				ppvObject = Marshal.GetComInterfaceForObject(this, typeof(ICommDlgBrowser3));
+				ppvObject = this;
 				return HRESULT.S_OK;
 			}
 			ppvObject = default;
