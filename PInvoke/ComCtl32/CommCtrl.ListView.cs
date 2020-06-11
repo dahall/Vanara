@@ -11,19 +11,34 @@ namespace Vanara.PInvoke
 {
 	public static partial class ComCtl32
 	{
+		/// <summary>
+		/// Specifies that the size of the column array and the array itself (puColumns) are obtained by sending a LVN_GETDISPINFO notification.
+		/// </summary>
 		public const int I_COLUMNSCALLBACK = -1;
+
+		/// <summary>The listview control sends the parent an LVN_GETDISPINFO notification code to retrieve the index of the group.</summary>
 		public const int I_GROUPIDCALLBACK = -1;
+
+		/// <summary>The item does not belong to a group.</summary>
 		public const int I_GROUPIDNONE = -2;
 
 		private const uint LVM_FIRST = 0x1000;
 		private const int LVN_FIRST = -0x100;
 
-		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
+		/// <summary>Values that specify alignment for LVM_ARRANGE.</summary>
+		[PInvokeData("Commctrl.h")]
 		public enum ListViewArrange
 		{
+			/// <summary>Aligns items according to the list-view control's current alignment styles (the default value).</summary>
 			LVA_DEFAULT = 0x0000,
+
+			/// <summary>Not implemented. Apply the LVS_ALIGNLEFT style instead.</summary>
 			LVA_ALIGNLEFT = 0x0001,
+
+			/// <summary>Not implemented. Apply the LVS_ALIGNTOP style instead.</summary>
 			LVA_ALIGNTOP = 0x0002,
+
+			/// <summary>Snaps all icons to the nearest grid position.</summary>
 			LVA_SNAPTOGRID = 0x0005,
 		}
 
@@ -58,9 +73,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Specify the coordinates of the first tile. This flag is valid only if the LVBKIF_STYLE_TILE flag is also specified. If this
-			/// flag is not specified, the first tile begins at the upper-left corner of the client area. If you use ComCtl32.dll Version 6.0
-			/// the xOffsetPercent and yOffsetPercent fields contain pixels, not percentage values, to specify the coordinates of the first
-			/// tile. Comctl32.dll version 6 is not redistributable but it is included in Windows or later. Also, you must specify
+			/// flag is not specified, the first tile begins at the upper-left corner of the client area. If you use ComCtl32.dll Version
+			/// 6.0 the xOffsetPercent and yOffsetPercent fields contain pixels, not percentage values, to specify the coordinates of the
+			/// first tile. Comctl32.dll version 6 is not redistributable but it is included in Windows or later. Also, you must specify
 			/// Comctl32.dll version 6 in a manifest. For more information on manifests, see Enabling Visual Styles.
 			/// </summary>
 			LVBKIF_FLAG_TILEOFFSET = 0X00000100,
@@ -112,8 +127,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Alignment of the column header and the subitem text in the column. The alignment of the leftmost column is always LVCFMT_LEFT; it
-		/// cannot be changed. This member can be a combination of the following values. Note that not all combinations are valid.
+		/// Alignment of the column header and the subitem text in the column. The alignment of the leftmost column is always LVCFMT_LEFT;
+		/// it cannot be changed. This member can be a combination of the following values. Note that not all combinations are valid.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774743")]
 		[Flags]
@@ -172,8 +187,8 @@ namespace Vanara.PInvoke
 			LVCFMT_TILE_PLACEMENTMASK = LVCFMT_LINE_BREAK | LVCFMT_FILL,
 
 			/// <summary>
-			/// Version 6.00 and Windows Vista. Column is a split button (same as HDF_SPLITBUTTON). The header of the column displays a split
-			/// button (same as HDF_SPLITBUTTON).
+			/// Version 6.00 and Windows Vista. Column is a split button (same as HDF_SPLITBUTTON). The header of the column displays a
+			/// split button (same as HDF_SPLITBUTTON).
 			/// </summary>
 			LVCFMT_SPLITBUTTON = 0X1000000,
 		}
@@ -207,21 +222,36 @@ namespace Vanara.PInvoke
 			LVFI_WRAP = 0X0020,
 
 			/// <summary>
-			/// Finds the item nearest to the position specified in the pt member, in the direction specified by the vkDirection member. This
-			/// flag is supported only by large icon and small icon modes. If LVFI_NEARESTXY is specified, all other flags are ignored.
+			/// Finds the item nearest to the position specified in the pt member, in the direction specified by the vkDirection member.
+			/// This flag is supported only by large icon and small icon modes. If LVFI_NEARESTXY is specified, all other flags are ignored.
 			/// </summary>
 			LVFI_NEARESTXY = 0X0040,
 		}
 
+		/// <summary>
+		/// Indicates the alignment of the header or footer text for the group. It can have one or more of the following values. Use one of
+		/// the header flags. Footer flags are optional.
+		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 		[Flags]
 		public enum ListViewGroupAlignment
 		{
+			/// <summary>Header text is aligned at the left of the window.</summary>
 			LVGA_HEADER_LEFT = 0x00000001,
+
+			/// <summary>Header text is centered horizontally in the window.</summary>
 			LVGA_HEADER_CENTER = 0x00000002,
+
+			/// <summary>Header text is aligned at the right of the window.</summary>
 			LVGA_HEADER_RIGHT = 0x00000004,  // Don't forget to validate exclusivity
+
+			/// <summary>Footer text is aligned at the left of the window.</summary>
 			LVGA_FOOTER_LEFT = 0x00000008,
+
+			/// <summary>Footer text is centered horizontally in the window.</summary>
 			LVGA_FOOTER_CENTER = 0x00000010,
+
+			/// <summary>Footer text is aligned at the right of the window.</summary>
 			LVGA_FOOTER_RIGHT = 0x00000020,  // Don't forget to validate exclusivity
 		}
 
@@ -294,13 +324,26 @@ namespace Vanara.PInvoke
 			LVGMF_TEXTCOLOR = 0x00000004,
 		}
 
+		/// <summary>Value used in LVM_GETGROUPRECT lparam value to specify coordinates of the rectangle to get.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 		public enum ListViewGroupRect
 		{
-			LVGGR_GROUP = 0, // Entire expanded group
-			LVGGR_HEADER = 1, // Header only (collapsed group)
-			LVGGR_LABEL = 2, // Label only
-			LVGGR_SUBSETLINK = 3, // subset link only
+			/// <summary>Coordinates of the entire expanded group.</summary>
+			LVGGR_GROUP = 0,
+
+			/// <summary>Coordinates of the header only (collapsed group).</summary>
+			LVGGR_HEADER = 1,
+
+			/// <summary>Coordinates of the label only.</summary>
+			LVGGR_LABEL = 2,
+
+			/// <summary>
+			/// Coordinates of the subset link only (markup subset). A list-view control can limit the number of visible items displayed in
+			/// each group. A link is presented to the user to allow the user to expand the group. This flag will return the bounding
+			/// rectangle of the subset link if the group is a subset (group state of LVGS_SUBSETED, see structure LVGROUP, member state).
+			/// This flag is provided so that accessibility applications can located the link.
+			/// </summary>
+			LVGGR_SUBSETLINK = 3,
 		}
 
 		/// <summary></summary>
@@ -399,12 +442,20 @@ namespace Vanara.PInvoke
 			LVHT_EX_FOOTER = 0X08000000,
 		}
 
+		/// <summary>Type of image list.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 		public enum ListViewImageList
 		{
+			/// <summary>Image list with large icons.</summary>
 			LVSIL_NORMAL,
+
+			/// <summary>Image list with small icons.</summary>
 			LVSIL_SMALL,
+
+			/// <summary>Image list with state images.</summary>
 			LVSIL_STATE,
+
+			/// <summary>Image list for group header.</summary>
 			LVSIL_GROUPHEADER
 		}
 
@@ -539,6 +590,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 		public enum ListViewMessage : uint
 		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 			LVM_SETUNICODEFORMAT = 0X2005,        // CCM_SETUNICODEFORMAT,
 			LVM_GETUNICODEFORMAT = 0X2006,        // CCM_GETUNICODEFORMAT,
 			LVM_GETBKCOLOR = LVM_FIRST + 0,
@@ -668,112 +720,377 @@ namespace Vanara.PInvoke
 			LVM_SETPRESERVEALPHA = LVM_FIRST + 212,
 			/*LVM_SetBkImage               = SETBKIMAGEW,
 			LVM_GetBkImage               = GETBKIMAGEW,*/
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
+		/// <summary>Specifies the relationship to the item listed in parameter wParam in LVM_GETNEXTITEMINDEX.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 		[Flags]
 		public enum ListViewNextItemFlag
 		{
+			/// <summary>Searches for a subsequent item by index, the default value.</summary>
 			LVNI_ALL = 0X0000,
+
+			/// <summary>The item has the LVIS_FOCUSED state flag set.</summary>
 			LVNI_FOCUSED = 0X0001,
+
+			/// <summary>The item has the LVIS_SELECTED state flag set.</summary>
 			LVNI_SELECTED = 0X0002,
+
+			/// <summary>The item has the LVIS_CUT state flag set.</summary>
 			LVNI_CUT = 0X0004,
+
+			/// <summary>The item has the LVIS_DROPHILITED state flag set</summary>
 			LVNI_DROPHILITED = 0X0008,
+
+			/// <summary>
+			/// Windows Vista and later: A state flag mask with value as follows: LVNI_FOCUSED | LVNI_SELECTED | LVNI_CUT | LVNI_DROPHILITED.
+			/// </summary>
 			LVNI_STATEMASK = LVNI_FOCUSED | LVNI_SELECTED | LVNI_CUT | LVNI_DROPHILITED,
+
+			/// <summary>Windows Vista and later: Search the visible order.</summary>
 			LVNI_VISIBLEORDER = 0X0010,
+
+			/// <summary>
+			/// Windows Vista and later: Searches for an item that is ordered before the item specified in wParam. The LVNI_PREVIOUS flag is
+			/// not directional (LVNI_ABOVE will find the item positioned above, while LVNI_PREVIOUS will find the item ordered before.) The
+			/// LVNI_PREVIOUS flag basically reverses the logic of the search performed by the LVM_GETNEXTITEM or LVM_GETNEXTITEMINDEX messages.
+			/// </summary>
 			LVNI_PREVIOUS = 0X0020,
+
+			/// <summary>Windows Vista and later: Search the visible items.</summary>
 			LVNI_VISIBLEONLY = 0X0040,
+
+			/// <summary>Windows Vista and later: Search the current group.</summary>
 			LVNI_SAMEGROUPONLY = 0X0080,
+
+			/// <summary>Searches for an item that is above the specified item.</summary>
 			LVNI_ABOVE = 0X0100,
+
+			/// <summary>Searches for an item that is below the specified item.</summary>
 			LVNI_BELOW = 0X0200,
+
+			/// <summary>Searches for an item to the left of the specified item.</summary>
 			LVNI_TOLEFT = 0X0400,
+
+			/// <summary>Searches for an item to the right of the specified item.</summary>
 			LVNI_TORIGHT = 0X0800,
+
+			/// <summary>
+			/// Windows Vista and later: A directional flag mask with value as follows: LVNI_ABOVE | LVNI_BELOW | LVNI_TOLEFT | LVNI_TORIGHT.
+			/// </summary>
 			LVNI_DIRECTIONMASK = LVNI_ABOVE | LVNI_BELOW | LVNI_TOLEFT | LVNI_TORIGHT,
 		}
 
+		/// <summary>ListView notification identifiers.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 		public enum ListViewNotification
 		{
-			LVN_BEGINDRAG = -109,
-			LVN_BEGINLABELEDIT = -175,
-			LVN_BEGINRDRAG = -111,
-			LVN_COLUMNCLICK = -108,
-			LVN_ENDLABELEDIT = -176,
-			LVN_GETDISPINFO = -177,
-			LVN_GETINFOTIP = -158,
-			LVN_ITEMACTIVATE = -114,
-			LVN_ITEMCHANGED = -101,
-			LVN_ITEMCHANGING = -100,
-			LVN_KEYDOWN = -155,
-			LVN_ODCACHEHINT = -113,
-			LVN_ODFINDITEM = -179,
-			LVN_ODSTATECHANGED = -115,
-			LVN_SETDISPINFO = -178,
-			LVN_COLUMNDROPDOWN = -164,
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+			LVN_BEGINDRAG = (LVN_FIRST - 9),
+			LVN_BEGINLABELEDIT = LVN_BEGINLABELEDITW,
+			LVN_BEGINLABELEDITA = (LVN_FIRST - 5),
+			LVN_BEGINLABELEDITW = (LVN_FIRST - 75),
+			LVN_BEGINRDRAG = (LVN_FIRST - 11),
+			LVN_BEGINSCROLL = (LVN_FIRST - 80),
+			LVN_COLUMNCLICK = (LVN_FIRST - 8),
+			LVN_COLUMNDROPDOWN = (LVN_FIRST - 64),
+			LVN_COLUMNOVERFLOWCLICK = (LVN_FIRST - 66),
+			LVN_DELETEALLITEMS = (LVN_FIRST - 4),
+			LVN_DELETEITEM = (LVN_FIRST - 3),
+			LVN_ENDLABELEDIT = LVN_ENDLABELEDITW,
+			LVN_ENDLABELEDITA = (LVN_FIRST - 6),
+			LVN_ENDLABELEDITW = (LVN_FIRST - 76),
+			LVN_ENDSCROLL = (LVN_FIRST - 81),
+			LVN_GETDISPINFO = LVN_GETDISPINFOW,
+			LVN_GETDISPINFOA = (LVN_FIRST - 50),
+			LVN_GETDISPINFOW = (LVN_FIRST - 77),
+			LVN_GETEMPTYMARKUP = (LVN_FIRST - 87),
+			LVN_GETINFOTIP = LVN_GETINFOTIPW,
+			LVN_GETINFOTIPA = (LVN_FIRST - 57),
+			LVN_GETINFOTIPW = (LVN_FIRST - 58),
+			LVN_HOTTRACK = (LVN_FIRST - 21),
+			LVN_INCREMENTALSEARCH = LVN_INCREMENTALSEARCHW,
+			LVN_INCREMENTALSEARCHA = (LVN_FIRST - 62),
+			LVN_INCREMENTALSEARCHW = (LVN_FIRST - 63),
+			LVN_INSERTITEM = (LVN_FIRST - 2),
+			LVN_ITEMACTIVATE = (LVN_FIRST - 14),
+			LVN_ITEMCHANGED = (LVN_FIRST - 1),
+			LVN_ITEMCHANGING = (LVN_FIRST - 0),
+			LVN_KEYDOWN = (LVN_FIRST - 55),
+			LVN_LINKCLICK = (LVN_FIRST - 84),
+			LVN_MARQUEEBEGIN = (LVN_FIRST - 56),
+			LVN_ODCACHEHINT = (LVN_FIRST - 13),
+			LVN_ODFINDITEM = LVN_ODFINDITEMW,
+			LVN_ODFINDITEMA = (LVN_FIRST - 52),
+			LVN_ODFINDITEMW = (LVN_FIRST - 79),
+			LVN_ODSTATECHANGED = (LVN_FIRST - 15),
+			LVN_SETDISPINFO = LVN_SETDISPINFOW,
+			LVN_SETDISPINFOA = (LVN_FIRST - 51),
+			LVN_SETDISPINFOW = (LVN_FIRST - 78),
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
+		/// <summary>The following window styles are specific to list-view controls.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 		[Flags]
-		public enum ListViewStyle
+		public enum ListViewStyle : uint
 		{
-			LVS_ICON = 0x0000,
-			LVS_REPORT = 0x0001,
-			LVS_SMALLICON = 0x0002,
-			LVS_LIST = 0x0003,
-			LVS_TYPEMASK = 0x0003,
-			LVS_SINGLESEL = 0x0004,
-			LVS_SHOWSELALWAYS = 0x0008,
-			LVS_SORTASCENDING = 0x0010,
-			LVS_SORTDESCENDING = 0x0020,
-			LVS_SHAREIMAGELISTS = 0x0040,
-			LVS_NOLABELWRAP = 0x0080,
-			LVS_AUTOARRANGE = 0x0100,
-			LVS_EDITLABELS = 0x0200,
-			LVS_OWNERDATA = 0x1000,
-			LVS_NOSCROLL = 0x2000,
-			LVS_TYPESTYLEMASK = 0xfc00,
-			LVS_ALIGNTOP = 0x0000,
+			/// <summary>Items are left-aligned in icon and small icon view.</summary>
 			LVS_ALIGNLEFT = 0x0800,
+
+			/// <summary>The control's current alignment.</summary>
 			LVS_ALIGNMASK = 0x0c00,
-			LVS_OWNERDRAWFIXED = 0x0400,
+
+			/// <summary>Items are aligned with the top of the list-view control in icon and small icon view.</summary>
+			LVS_ALIGNTOP = 0x0000,
+
+			/// <summary>Icons are automatically kept arranged in icon and small icon view.</summary>
+			LVS_AUTOARRANGE = 0x0100,
+
+			/// <summary>Item text can be edited in place. The parent window must process the LVN_ENDLABELEDIT notification code.</summary>
+			LVS_EDITLABELS = 0x0200,
+
+			/// <summary>This style specifies icon view.</summary>
+			LVS_ICON = 0x0000,
+
+			/// <summary>This style specifies list view.</summary>
+			LVS_LIST = 0x0003,
+
+			/// <summary>Column headers are not displayed in report view. By default, columns have headers in report view.</summary>
 			LVS_NOCOLUMNHEADER = 0x4000,
+
+			/// <summary>Item text is displayed on a single line in icon view. By default, item text may wrap in icon view.</summary>
+			LVS_NOLABELWRAP = 0x0080,
+
+			/// <summary>
+			/// Scrolling is disabled. All items must be within the client area. This style is not compatible with the LVS_LIST or
+			/// LVS_REPORT styles. See Knowledge Base Article Q137520 for further discussion.
+			/// </summary>
+			LVS_NOSCROLL = 0x2000,
+
+			/// <summary>
+			/// Column headers do not work like buttons. This style can be used if clicking a column header in report view does not carry
+			/// out an action, such as sorting.
+			/// </summary>
 			LVS_NOSORTHEADER = 0x8000,
+
+			/// <summary>
+			/// Version 4.70. This style specifies a virtual list-view control. For more information about this list control style, see
+			/// About List-View Controls.
+			/// </summary>
+			LVS_OWNERDATA = 0x1000,
+
+			/// <summary>
+			/// The owner window can paint items in report view. The list-view control sends a WM_DRAWITEM message to paint each item; it
+			/// does not send separate messages for each subitem. The iItemData member of the DRAWITEMSTRUCT structure contains the item
+			/// data for the specified list-view item.
+			/// </summary>
+			LVS_OWNERDRAWFIXED = 0x0400,
+
+			/// <summary>
+			/// This style specifies report view. When using the LVS_REPORT style with a list-view control, the first column is always
+			/// left-aligned. You cannot use LVCFMT_RIGHT to change this alignment. See LVCOLUMN for further information on column alignment.
+			/// </summary>
+			LVS_REPORT = 0x0001,
+
+			/// <summary>
+			/// The image list will not be deleted when the control is destroyed. This style enables the use of the same image lists with
+			/// multiple list-view controls.
+			/// </summary>
+			LVS_SHAREIMAGELISTS = 0x0040,
+
+			/// <summary>The selection, if any, is always shown, even if the control does not have the focus.</summary>
+			LVS_SHOWSELALWAYS = 0x0008,
+
+			/// <summary>Only one item at a time can be selected. By default, multiple items may be selected.</summary>
+			LVS_SINGLESEL = 0x0004,
+
+			/// <summary>This style specifies small icon view.</summary>
+			LVS_SMALLICON = 0x0002,
+
+			/// <summary>Item indexes are sorted based on item text in ascending order.</summary>
+			LVS_SORTASCENDING = 0x0010,
+
+			/// <summary>Item indexes are sorted based on item text in descending order.</summary>
+			LVS_SORTDESCENDING = 0x0020,
+
+			/// <summary>Determines the control's current window style.</summary>
+			LVS_TYPEMASK = 0x0003,
+
+			/// <summary>Determines the window styles that control item alignment and header appearance and behavior.</summary>
+			LVS_TYPESTYLEMASK = 0xfc00,
 		}
 
+		/// <summary>
+		/// Extended List-View Styles. Use the LVM_SETEXTENDEDLISTVIEWSTYLE message or one of the ListView_SetExtendedListViewStyle or
+		/// ListView_SetExtendedListViewStyleEx macros to employ these extended list-view control styles.
+		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 		[Flags]
 		public enum ListViewStyleEx : uint
 		{
-			LVS_EX_GRIDLINES = 0X00000001,
-			LVS_EX_SUBITEMIMAGES = 0X00000002,
-			LVS_EX_CHECKBOXES = 0X00000004,
-			LVS_EX_TRACKSELECT = 0X00000008,
-			LVS_EX_HEADERDRAGDROP = 0X00000010,
-			LVS_EX_FULLROWSELECT = 0X00000020,
-			LVS_EX_ONECLICKACTIVATE = 0X00000040,
-			LVS_EX_TWOCLICKACTIVATE = 0X00000080,
-			LVS_EX_FLATSB = 0X00000100,
-			LVS_EX_REGIONAL = 0X00000200,
-			LVS_EX_INFOTIP = 0X00000400,
-			LVS_EX_UNDERLINEHOT = 0X00000800,
-			LVS_EX_UNDERLINECOLD = 0X00001000,
-			LVS_EX_MULTIWORKAREAS = 0X00002000,
-			LVS_EX_LABELTIP = 0X00004000,
-			LVS_EX_BORDERSELECT = 0X00008000,
-			LVS_EX_DOUBLEBUFFER = 0X00010000,
-			LVS_EX_HIDELABELS = 0X00020000,
-			LVS_EX_SINGLEROW = 0X00040000,
-			LVS_EX_SNAPTOGRID = 0X00080000,
-			LVS_EX_SIMPLESELECT = 0X00100000,
-			LVS_EX_JUSTIFYCOLUMNS = 0X00200000,
-			LVS_EX_TRANSPARENTBKGND = 0X00400000,
-			LVS_EX_TRANSPARENTSHADOWTEXT = 0X00800000,
+			/// <summary>Windows Vista and later. Automatically arrange icons if no icon positions have been set (Similar to LVS_AUTOARRANGE).</summary>
 			LVS_EX_AUTOAUTOARRANGE = 0X01000000,
-			LVS_EX_HEADERINALLVIEWS = 0X02000000,
+
+			/// <summary>Windows Vista and later. Automatically select check boxes on single click.</summary>
 			LVS_EX_AUTOCHECKSELECT = 0X08000000,
+
+			/// <summary>Windows Vista and later. Automatically size listview columns.</summary>
 			LVS_EX_AUTOSIZECOLUMNS = 0X10000000,
-			LVS_EX_COLUMNSNAPPOINTS = 0X40000000,
+
+			/// <summary>Version 4.71 and later. Changes border color when an item is selected, instead of highlighting the item.</summary>
+			LVS_EX_BORDERSELECT = 0X00008000,
+
+			/// <summary>
+			/// Version 4.70. Enables check boxes for items in a list-view control. When set to this style, the control creates and sets a
+			/// state image list with two images using DrawFrameControl. State image 1 is the unchecked box, and state image 2 is the
+			/// checked box. Setting the state image to zero removes the check box.
+			/// <para>
+			/// Version 6.00 and later Check boxes are visible and functional with all list view modes except the tile view mode introduced
+			/// in ComCtl32.dll version 6. Clicking a checkbox in tile view mode only selects the item; the state does not change.
+			/// </para>
+			/// <para>
+			/// You can obtain the state of the check box for a given item with ListView_GetCheckState. To set the check state, use
+			/// ListView_SetCheckState. If this style is set, the list-view control automatically toggles the check state when the user
+			/// clicks the check box or presses the space bar.
+			/// </para>
+			/// </summary>
+			LVS_EX_CHECKBOXES = 0X00000004,
+
+			/// <summary>
+			/// Indicates that an overflow button should be displayed in icon/tile view if there is not enough client width to display the
+			/// complete set of header items. The list-view control sends the LVN_COLUMNOVERFLOWCLICK notification when the overflow button
+			/// is clicked. This flag is only valid when LVS_EX_HEADERINALLVIEWS is also specified.
+			/// </summary>
 			LVS_EX_COLUMNOVERFLOW = 0X80000000,
+
+			/// <summary>Windows Vista and later. Snap to minimum column width when the user resizes a column.</summary>
+			LVS_EX_COLUMNSNAPPOINTS = 0X40000000,
+
+			/// <summary>
+			/// Version 6.00 and later. Paints via double-buffering, which reduces flicker. This extended style also enables alpha-blended
+			/// marquee selection on systems where it is supported.
+			/// </summary>
+			LVS_EX_DOUBLEBUFFER = 0X00010000,
+
+			/// <summary>
+			/// Enables flat scroll bars in the list view. If you need more control over the appearance of the list view's scroll bars, you
+			/// should manipulate the list view's scroll bars directly using the Flat Scroll Bar APIs. If the system metrics change, you are
+			/// responsible for adjusting the scroll bar metrics with FlatSB_SetScrollProp. See Flat Scroll Bars for further details.
+			/// </summary>
+			LVS_EX_FLATSB = 0X00000100,
+
+			/// <summary>
+			/// When an item is selected, the item and all its subitems are highlighted. This style is available only in conjunction with
+			/// the LVS_REPORT style.
+			/// </summary>
+			LVS_EX_FULLROWSELECT = 0X00000020,
+
+			/// <summary>
+			/// Displays gridlines around items and subitems. This style is available only in conjunction with the LVS_REPORT style.
+			/// </summary>
+			LVS_EX_GRIDLINES = 0X00000001,
+
+			/// <summary>
+			/// Enables drag-and-drop reordering of columns in a list-view control. This style is only available to list-view controls that
+			/// use the LVS_REPORT style.
+			/// </summary>
+			LVS_EX_HEADERDRAGDROP = 0X00000010,
+
+			/// <summary>Windows Vista and later. Show column headers in all view modes.</summary>
+			LVS_EX_HEADERINALLVIEWS = 0X02000000,
+
+			/// <summary>Version 6.00 and later. Hides the labels in icon and small icon view.</summary>
+			LVS_EX_HIDELABELS = 0X00020000,
+
+			/// <summary>
+			/// When a list-view control uses the LVS_EX_INFOTIP style, the LVN_GETINFOTIP notification code is sent to the parent window
+			/// before displaying an item's tooltip.
+			/// </summary>
+			LVS_EX_INFOTIP = 0X00000400,
+
+			/// <summary>Windows Vista and later. Icons are lined up in columns that use up the whole view.</summary>
+			LVS_EX_JUSTIFYCOLUMNS = 0X00200000,
+
+			/// <summary>
+			/// If a partially hidden label in any list view mode lacks tooltip text, the list-view control will unfold the label. If this
+			/// style is not set, the list-view control will unfold partly hidden labels only for the large icon mode.
+			/// </summary>
+			LVS_EX_LABELTIP = 0X00004000,
+
+			/// <summary>
+			/// If the list-view control has the LVS_AUTOARRANGE style, the control will not autoarrange its icons until one or more work
+			/// areas are defined (see LVM_SETWORKAREAS). To be effective, this style must be set before any work areas are defined and any
+			/// items have been added to the control.
+			/// </summary>
+			LVS_EX_MULTIWORKAREAS = 0X00002000,
+
+			/// <summary>
+			/// The list-view control sends an LVN_ITEMACTIVATE notification code to the parent window when the user clicks an item. This
+			/// style also enables hot tracking in the list-view control. Hot tracking means that when the cursor moves over an item, it is
+			/// highlighted but not selected. See the Extended List-View Styles Remarks section for a discussion of item activation.
+			/// </summary>
+			LVS_EX_ONECLICKACTIVATE = 0X00000040,
+
+			/// <summary>
+			/// Version 4.71 through Version 5.80 only. Not supported on Windows Vista and later. Sets the list view window region to
+			/// include only the item icons and text using SetWindowRgn. Any area that is not part of an item is excluded from the window
+			/// region. This style is only available to list-view controls that use the LVS_ICON style.
+			/// </summary>
+			LVS_EX_REGIONAL = 0X00000200,
+
+			/// <summary>
+			/// Version 6.00 and later. In icon view, moves the state image of the control to the top right of the large icon rendering. In
+			/// views other than icon view there is no change. When the user changes the state by using the space bar, all selected items
+			/// cycle over, not the item with the focus.
+			/// </summary>
+			LVS_EX_SIMPLESELECT = 0X00100000,
+
+			/// <summary>Version 6.00 and later. Not used.</summary>
+			LVS_EX_SINGLEROW = 0X00040000,
+
+			/// <summary>Version 6.00 and later. In icon view, icons automatically snap into a grid.</summary>
+			LVS_EX_SNAPTOGRID = 0X00080000,
+
+			/// <summary>
+			/// Allows images to be displayed for subitems. This style is available only in conjunction with the LVS_REPORT style.
+			/// </summary>
+			LVS_EX_SUBITEMIMAGES = 0X00000002,
+
+			/// <summary>
+			/// Enables hot-track selection in a list-view control. Hot track selection means that an item is automatically selected when
+			/// the cursor remains over the item for a certain period of time. The delay can be changed from the default system setting with
+			/// a LVM_SETHOVERTIME message. This style applies to all styles of list-view control. You can check whether hot-track selection
+			/// is enabled by calling SystemParametersInfo.
+			/// </summary>
+			LVS_EX_TRACKSELECT = 0X00000008,
+
+			/// <summary>Windows Vista and later. Background is painted by the parent via WM_PRINTCLIENT.</summary>
+			LVS_EX_TRANSPARENTBKGND = 0X00400000,
+
+			/// <summary>Windows Vista and later. Enable shadow text on transparent backgrounds only.</summary>
+			LVS_EX_TRANSPARENTSHADOWTEXT = 0X00800000,
+
+			/// <summary>
+			/// The list-view control sends an LVN_ITEMACTIVATE notification code to the parent window when the user double-clicks an item.
+			/// This style also enables hot tracking in the list-view control. Hot tracking means that when the cursor moves over an item,
+			/// it is highlighted but not selected. See the Extended List-View Styles Remarks section for a discussion of item activation.
+			/// </summary>
+			LVS_EX_TWOCLICKACTIVATE = 0X00000080,
+
+			/// <summary>
+			/// Causes those non-hot items that may be activated to be displayed with underlined text. This style requires that
+			/// LVS_EX_TWOCLICKACTIVATE be set also. See the Extended List-View Styles Remarks section for a discussion of item activation.
+			/// </summary>
+			LVS_EX_UNDERLINECOLD = 0X00001000,
+
+			/// <summary>
+			/// Causes those hot items that may be activated to be displayed with underlined text. This style requires that
+			/// LVS_EX_ONECLICKACTIVATE or LVS_EX_TWOCLICKACTIVATE also be set. See the Extended List-View Styles Remarks section for a
+			/// discussion of item activation.
+			/// </summary>
+			LVS_EX_UNDERLINEHOT = 0X00000800,
 		}
 
 		/// <summary>Flags that determines how the tiles are sized in tile view.</summary>
@@ -858,9 +1175,7 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </param>
 		/// <param name="prc">
-		/// <para>
-		/// A Rectangle structure to receive the coordinates.
-		/// </para>
+		/// <para>A Rectangle structure to receive the coordinates.</para>
 		/// </param>
 		/// <returns>Returns TRUE if successful, or FALSE otherwise.</returns>
 		/// <remarks>
@@ -991,22 +1306,46 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </param>
 		/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
-		// BOOL ListView_GetNextItemIndex( [in] HWND hwnd, [in, out] LVITEMINDEX *plvii, LPARAM flags);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb774986(v=vs.85).aspx
+		// BOOL ListView_GetNextItemIndex( [in] HWND hwnd, [in, out] LVITEMINDEX *plvii, LPARAM flags); https://msdn.microsoft.com/en-us/library/windows/desktop/bb774986(v=vs.85).aspx
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774986")]
 		public static bool ListView_GetNextItemIndex(HWND hwnd, in LVITEMINDEX plvii, ListViewNextItemFlag flags) =>
 			SendMessage(hwnd, (uint)ListViewMessage.LVM_GETNEXTITEMINDEX, (IntPtr)SafeCoTaskMemHandle.CreateFromStructure(plvii), (IntPtr)(int)flags) != IntPtr.Zero;
 
-		/// <summary><para>Sets the state of a specified list-view item. Use this macro or send the LVM_SETITEMINDEXSTATE message explicitly.</para></summary><param name="hwndLV"><para>Type: <c>HWND</c></para><para>A handle to the list-view control.</para></param><param name="plvii"><para>Type: <c>LVITEMINDEX*</c></para><para>A pointer to an LVITEMINDEX structure for the item. The caller is responsible for allocating this structure and setting the members.</para></param><param name="data"><para>Type: <c>UINT</c></para><para>The state to set on the item as one or more (as a bitwise combination) of the List-View Item States flags.</para></param><param name="mask"><para>Type: <c>UINT</c></para><para>The valid bits of the state specified by parameter data. For more information, see the stateMask member of the LVITEM) structure.</para></param><returns><para>None</para></returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/commctrl/nf-commctrl-listview_setitemindexstate
-		// void ListView_SetItemIndexState( hwndLV, plvii, data, mask );
+		/// <summary>
+		/// <para>Sets the state of a specified list-view item. Use this macro or send the LVM_SETITEMINDEXSTATE message explicitly.</para>
+		/// </summary>
+		/// <param name="hwndLV">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the list-view control.</para>
+		/// </param>
+		/// <param name="plvii">
+		/// <para>Type: <c>LVITEMINDEX*</c></para>
+		/// <para>
+		/// A pointer to an LVITEMINDEX structure for the item. The caller is responsible for allocating this structure and setting the members.
+		/// </para>
+		/// </param>
+		/// <param name="data">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The state to set on the item as one or more (as a bitwise combination) of the List-View Item States flags.</para>
+		/// </param>
+		/// <param name="mask">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// The valid bits of the state specified by parameter data. For more information, see the stateMask member of the LVITEM) structure.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>None</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/commctrl/nf-commctrl-listview_setitemindexstate void
+		// ListView_SetItemIndexState( hwndLV, plvii, data, mask );
 		[PInvokeData("commctrl.h", MSDNShortId = "listview_setitemindexstate")]
 		public static HRESULT ListView_SetItemIndexState(HWND hwndLV, in LVITEMINDEX plvii, uint data, ListViewItemState mask) =>
 			new HRESULT(SendMessage(hwndLV, (uint)ListViewMessage.LVM_SETITEMINDEXSTATE, in plvii, new LVITEM(0) { stateMask = mask, state = data }).ToInt32());
 
 		/// <summary>
-		/// Contains information used when searching for a list-view item. This structure is identical to LV_FINDINFO but has been renamed to
-		/// fit standard naming conventions.
+		/// Contains information used when searching for a list-view item. This structure is identical to LV_FINDINFO but has been renamed
+		/// to fit standard naming conventions.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774745")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -1330,8 +1669,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Contains information about a list-view notification message. This structure is the same as the NM_LISTVIEW structure but has been
-		/// renamed to fit standard naming conventions.
+		/// Contains information about a list-view notification message. This structure is the same as the NM_LISTVIEW structure but has
+		/// been renamed to fit standard naming conventions.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774773")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -1404,17 +1743,17 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Percentage of the control's client area that the image should be offset horizontally. For example, at 0 percent, the image
-			/// will be displayed against the left edge of the control's client area. At 50 percent, the image will be displayed horizontally
-			/// centered in the control's client area. At 100 percent, the image will be displayed against the right edge of the control's
-			/// client area. This member is valid only when LVBKIF_STYLE_NORMAL is specified in ulFlags. If both LVBKIF_FLAG_TILEOFFSET and
-			/// LVBKIF_STYLE_TILE are specified in ulFlags, then the value specifies the pixel, not percentage offset, of the first tile.
-			/// Otherwise, the value is ignored.
+			/// will be displayed against the left edge of the control's client area. At 50 percent, the image will be displayed
+			/// horizontally centered in the control's client area. At 100 percent, the image will be displayed against the right edge of
+			/// the control's client area. This member is valid only when LVBKIF_STYLE_NORMAL is specified in ulFlags. If both
+			/// LVBKIF_FLAG_TILEOFFSET and LVBKIF_STYLE_TILE are specified in ulFlags, then the value specifies the pixel, not percentage
+			/// offset, of the first tile. Otherwise, the value is ignored.
 			/// </summary>
 			public int xOffset;
 
 			/// <summary>
-			/// Percentage of the control's client area that the image should be offset vertically. For example, at 0 percent, the image will
-			/// be displayed against the top edge of the control's client area. At 50 percent, the image will be displayed vertically
+			/// Percentage of the control's client area that the image should be offset vertically. For example, at 0 percent, the image
+			/// will be displayed against the top edge of the control's client area. At 50 percent, the image will be displayed vertically
 			/// centered in the control's client area. At 100 percent, the image will be displayed against the bottom edge of the control's
 			/// client area. This member is valid only when LVBKIF_STYLE_NORMAL is specified in ulFlags. If both LVBKIF_FLAG_TILEOFFSET and
 			/// LVBKIF_STYLE_TILE are specified in ulFlags, then the value specifies the pixel, not percentage offset, of the first tile.
@@ -1516,8 +1855,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// If column information is being set, this member is the address of a null-terminated string that contains the column header
-			/// text. If the structure is receiving information about a column, this member specifies the address of the buffer that receives
-			/// the column header text.
+			/// text. If the structure is receiving information about a column, this member specifies the address of the buffer that
+			/// receives the column header text.
 			/// </summary>
 			public StrPtrAuto pszText;
 
@@ -1647,26 +1986,26 @@ namespace Vanara.PInvoke
 			public ListViewGroupMask mask;
 
 			/// <summary>
-			/// Pointer to a null-terminated string that contains the header text when item information is being set. If group information is
-			/// being retrieved, this member specifies the address of the buffer that receives the header text.
+			/// Pointer to a null-terminated string that contains the header text when item information is being set. If group information
+			/// is being retrieved, this member specifies the address of the buffer that receives the header text.
 			/// </summary>
 			public StrPtrAuto pszHeader;
 
 			/// <summary>
-			/// Size in TCHARs of the buffer pointed to by the pszHeader member. If the structure is not receiving information about a group,
-			/// this member is ignored.
+			/// Size in TCHARs of the buffer pointed to by the pszHeader member. If the structure is not receiving information about a
+			/// group, this member is ignored.
 			/// </summary>
 			public uint cchHeader;
 
 			/// <summary>
-			/// Pointer to a null-terminated string that contains the footer text when item information is being set. If group information is
-			/// being retrieved, this member specifies the address of the buffer that receives the footer text.
+			/// Pointer to a null-terminated string that contains the footer text when item information is being set. If group information
+			/// is being retrieved, this member specifies the address of the buffer that receives the footer text.
 			/// </summary>
 			public StrPtrAuto pszFooter;
 
 			/// <summary>
-			/// Size in TCHARs of the buffer pointed to by the pszFooter member. If the structure is not receiving information about a group,
-			/// this member is ignored.
+			/// Size in TCHARs of the buffer pointed to by the pszFooter member. If the structure is not receiving information about a
+			/// group, this member is ignored.
 			/// </summary>
 			public uint cchFooter;
 
@@ -1942,10 +2281,10 @@ namespace Vanara.PInvoke
 			/// Indicates the item's state, state image, and overlay image. The stateMask member indicates the valid bits of this member.
 			/// <para>Bits 0 through 7 of this member contain the item state flags. This can be one or more of the item state values.</para>
 			/// <para>
-			/// Bits 8 through 11 of this member specify the one-based overlay image index. Both the full-sized icon image list and the small
-			/// icon image list can have overlay images. The overlay image is superimposed over the item's icon image. If these bits are
-			/// zero, the item has no overlay image. To isolate these bits, use the LVIS_OVERLAYMASK mask. To set the overlay image index in
-			/// this member, you should use the INDEXTOOVERLAYMASK macro. The image list's overlay images are set with the
+			/// Bits 8 through 11 of this member specify the one-based overlay image index. Both the full-sized icon image list and the
+			/// small icon image list can have overlay images. The overlay image is superimposed over the item's icon image. If these bits
+			/// are zero, the item has no overlay image. To isolate these bits, use the LVIS_OVERLAYMASK mask. To set the overlay image
+			/// index in this member, you should use the INDEXTOOVERLAYMASK macro. The image list's overlay images are set with the
 			/// ImageList_SetOverlayImage function.
 			/// </para>
 			/// <para>
@@ -1962,9 +2301,9 @@ namespace Vanara.PInvoke
 			/// Value specifying which bits of the state member will be retrieved or modified. For example, setting this member to
 			/// LVIS_SELECTED will cause only the item's selection state to be retrieved.
 			/// <para>
-			/// This member allows you to modify one or more item states without having to retrieve all of the item states first.For example,
-			/// setting this member to LVIS_SELECTED and state to zero will cause the item's selection state to be cleared, but none of the
-			/// other states will be affected.
+			/// This member allows you to modify one or more item states without having to retrieve all of the item states first.For
+			/// example, setting this member to LVIS_SELECTED and state to zero will cause the item's selection state to be cleared, but
+			/// none of the other states will be affected.
 			/// </para>
 			/// <para>To retrieve or modify all of the states, set this member to(UINT)-1.</para>
 			/// <para>You can use the macro ListView_SetItemState both to set and to clear bits.</para>
@@ -1981,7 +2320,8 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>
 			/// If the value of pszText is LPSTR_TEXTCALLBACK, the item is a callback item.If the callback text changes, you must explicitly
-			/// set pszText to LPSTR_TEXTCALLBACK and notify the list-view control of the change by sending an LVM_SETITEM or LVM_SETITEMTEXT message.
+			/// set pszText to LPSTR_TEXTCALLBACK and notify the list-view control of the change by sending an LVM_SETITEM or
+			/// LVM_SETITEMTEXT message.
 			/// </para>
 			/// <para>
 			/// Do not set pszText to LPSTR_TEXTCALLBACK if the list-view control has the LVS_SORTASCENDING or LVS_SORTDESCENDING style.
@@ -2017,8 +2357,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Version 4.70. Number of image widths to indent the item. A single indentation equals the width of an item image. Therefore,
-			/// the value 1 indents the item by the width of one image, the value 2 indents by two images, and so on. Note that this field is
-			/// supported only for items. Attempting to set subitem indentation will cause the calling function to fail.
+			/// the value 1 indents the item by the width of one image, the value 2 indents by two images, and so on. Note that this field
+			/// is supported only for items. Attempting to set subitem indentation will cause the calling function to fail.
 			/// </summary>
 			public int iIndent;
 
@@ -2031,7 +2371,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Version 6.0 Number of data columns (subitems) to display for this item in tile view. The maximum value is 20. If this value
-			/// is I_COLUMNSCALLBACK, the size of the column array and the array itself (puColumns) are obtained by sending a LVN_GETDISPINFO notification.
+			/// is I_COLUMNSCALLBACK, the size of the column array and the array itself (puColumns) are obtained by sending a
+			/// LVN_GETDISPINFO notification.
 			/// </summary>
 			public uint cColumns;
 

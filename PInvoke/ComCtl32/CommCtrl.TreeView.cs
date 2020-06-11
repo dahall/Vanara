@@ -9,7 +9,10 @@ namespace Vanara.PInvoke
 {
 	public static partial class ComCtl32
 	{
+		/// <summary/>
 		public const int I_CHILDRENAUTO = -2;
+
+		/// <summary/>
 		public const int I_CHILDRENCALLBACK = -1;
 
 		/// <summary>TreeView's custom draw return meaning don't draw images. valid on CDRF_NOTIFYITEMPREPAINT</summary>
@@ -326,9 +329,13 @@ namespace Vanara.PInvoke
 			TVIS_EX_HWND = 0x0004,
 		}
 
+		/// <summary>
+		/// Tree View Messages
+		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "ff486106")]
 		public enum TreeViewMessage
 		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 			TVM_DELETEITEM = TV_FIRST + 1,
 			TVM_EXPAND = TV_FIRST + 2,
 			TVM_GETITEMRECT = TV_FIRST + 4,
@@ -380,11 +387,14 @@ namespace Vanara.PInvoke
 			TVM_GETSELECTEDCOUNT = TV_FIRST + 70,
 			TVM_SHOWINFOTIP = TV_FIRST + 71,
 			TVM_GETITEMPARTRECT = TV_FIRST + 72,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
+		/// <summary>Tree View Notifications</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "ff486107")]
 		public enum TreeViewNotification
 		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 			TVN_ASYNCDRAW = TVN_FIRST - 20,
 			TVN_BEGINDRAG = TVN_FIRST - 56,
 			TVN_BEGINLABELEDIT = TVN_FIRST - 59,
@@ -402,6 +412,7 @@ namespace Vanara.PInvoke
 			TVN_SELCHANGING = TVN_FIRST - 50,
 			TVN_SETDISPINFO = TVN_FIRST - 53,
 			TVN_SINGLEEXPAND = TVN_FIRST - 15,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
 		/// <summary>Used as return values to the TVN_SINGLEEXPAND notification.</summary>
@@ -652,7 +663,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HTREEITEM h1, HTREEITEM h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HTREEITEM h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HTREEITEM h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
