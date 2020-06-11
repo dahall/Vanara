@@ -386,7 +386,7 @@ namespace Vanara.Security.AccessControl
 			// var acl = RawAclFromPtr(pAcl);
 			// for (int i = 0; i < acl.Count; i++) { }
 
-			return new INHERITED_FROM[pAcl.GetAceCount()];
+			return new INHERITED_FROM[pAcl.AceCount()];
 		}
 	}
 }
