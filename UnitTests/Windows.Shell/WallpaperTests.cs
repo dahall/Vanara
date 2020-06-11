@@ -131,9 +131,9 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(() => WallpaperManager.SetSolidBackground(Color.Black), Throws.Nothing);
 				Assert.That(WallpaperManager.Enabled, Is.False);
 				Assert.That(WallpaperManager.Monitors[0].ImagePath, Is.Empty);
-				Assert.That(() => WallpaperManager.SetPicture(TestCaseSources.ImageFile, DESKTOP_WALLPAPER_POSITION.DWPOS_CENTER, 0), Throws.Nothing);
+				Assert.That(() => WallpaperManager.SetPicture(TestCaseSources.ImageFile, WallpaperFit.Center, 0), Throws.Nothing);
 				Assert.That(WallpaperManager.Slideshow.Images, Is.Empty);
-				Assert.That(() => WallpaperManager.SetSlideshow(TestCaseSources.TempDir, DESKTOP_WALLPAPER_POSITION.DWPOS_SPAN), Throws.Nothing);
+				Assert.That(() => WallpaperManager.SetSlideshow(TestCaseSources.TempDir, WallpaperFit.Span), Throws.Nothing);
 				Assert.That(WallpaperManager.Monitors[0].ImagePath, Is.Not.Empty);
 			}
 			finally

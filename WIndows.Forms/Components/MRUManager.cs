@@ -580,9 +580,8 @@ namespace Vanara.Windows.Forms
 			/// <returns></returns>
 			public static string CompactPath(string stringToCompact, Font font, int maxWidthInPts)
 			{
-				var compactedString = string.Copy(stringToCompact);
-				TextRenderer.MeasureText(compactedString, font, new Size(maxWidthInPts, 0), TextFormatFlags.PathEllipsis | TextFormatFlags.ModifyString);
-				return string.Concat(compactedString.TakeWhile(c => c != '\0'));
+				TextRenderer.MeasureText(stringToCompact, font, new Size(maxWidthInPts, 0), TextFormatFlags.PathEllipsis | TextFormatFlags.ModifyString);
+				return string.Concat(stringToCompact.TakeWhile(c => c != '\0'));
 			}
 
 			/// <summary>Clears the recent files.</summary>
