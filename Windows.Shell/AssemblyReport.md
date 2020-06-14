@@ -23,6 +23,7 @@ Enum | Description | Values
 [Vanara.Windows.Shell.VerbPosition](https://github.com/dahall/Vanara/search?l=C%23&q=VerbPosition) | Determines the placement of a verb in a menu. | Undefined, Top, Bottom
 [Vanara.Windows.Shell.VerbSelectionModel](https://github.com/dahall/Vanara/search?l=C%23&q=VerbSelectionModel) | Determines menu location. | Item, BackgroundShortcutMenu
 [Vanara.Windows.Shell.Visibility](https://github.com/dahall/Vanara/search?l=C%23&q=Visibility) |  | Visible, Hidden, Collapsed
+[Vanara.Windows.Shell.WallpaperFit](https://github.com/dahall/Vanara/search?l=C%23&q=WallpaperFit) | Specifies how the desktop wallpaper should be displayed. | Center, Tile, Stretch, Fit, Fill, Span
 ### Interfaces
 Interface | Description
 ---- | ----
@@ -91,3 +92,6 @@ Class | Description
 [Vanara.Windows.Shell.ThumbnailToolbar](https://github.com/dahall/Vanara/search?l=C%23&q=ThumbnailToolbar) | The toolbar associated with thumbnails shown when hovering over an application's taskbar button.
 [Vanara.Windows.Shell.ThumbnailToolbarButton](https://github.com/dahall/Vanara/search?l=C%23&q=ThumbnailToolbarButton) | A button in the toolbar associated with thumbnails displayed on a taskbar button.
 [Vanara.Windows.Shell.ThumbnailToolbarButtonCollection](https://github.com/dahall/Vanara/search?l=C%23&q=ThumbnailToolbarButtonCollection) | A collection of thumbnail toolbar buttons.
+[Vanara.Windows.Shell.WallpaperManager](https://github.com/dahall/Vanara/search?l=C%23&q=WallpaperManager) | Provides methods for managing the desktop wallpaper.
+[Vanara.Windows.Shell.WallpaperManager.WallpaperMonitor](https://github.com/dahall/Vanara/search?l=C%23&q=WallpaperMonitor) | Represents the wallpaper settings on a single monitor.
+[Vanara.Windows.Shell.WallpaperManager.WallpaperSlideshow](https://github.com/dahall/Vanara/search?l=C%23&q=WallpaperSlideshow) | Represents the settings for a wallpaper slideshow.
