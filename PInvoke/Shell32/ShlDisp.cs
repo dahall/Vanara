@@ -1451,7 +1451,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-namespace
 			[return: MarshalAs(UnmanagedType.Interface)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
-			Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] ShellFolderViewOptions vDir);
+			Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
 
 			/// <summary>
 			/// Creates a dialog box that enables the user to select a folder and then returns the selected folder's <c>Folder</c> object.
@@ -1851,7 +1851,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-namespace
 			[return: MarshalAs(UnmanagedType.Interface)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
-			new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] ShellFolderViewOptions vDir);
+			new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
 
 			/// <summary>
 			/// Creates a dialog box that enables the user to select a folder and then returns the selected folder's <c>Folder</c> object.
@@ -2636,7 +2636,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-namespace
 			[return: MarshalAs(UnmanagedType.Interface)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
-			new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] ShellFolderViewOptions vDir);
+			new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
 
 			/// <summary>
 			/// Creates a dialog box that enables the user to select a folder and then returns the selected folder's <c>Folder</c> object.
@@ -3432,7 +3432,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-namespace
 			[return: MarshalAs(UnmanagedType.Interface)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
-			new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] ShellFolderViewOptions vDir);
+			new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
 
 			/// <summary>
 			/// Creates a dialog box that enables the user to select a folder and then returns the selected folder's <c>Folder</c> object.
@@ -4277,7 +4277,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-namespace
 			[return: MarshalAs(UnmanagedType.Interface)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
-			new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] ShellFolderViewOptions vDir);
+			new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
 
 			/// <summary>
 			/// Creates a dialog box that enables the user to select a folder and then returns the selected folder's <c>Folder</c> object.
@@ -5127,7 +5127,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-namespace
 			[return: MarshalAs(UnmanagedType.Interface)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
-			new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] ShellFolderViewOptions vDir);
+			new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
 
 			/// <summary>
 			/// Creates a dialog box that enables the user to select a folder and then returns the selected folder's <c>Folder</c> object.
