@@ -44,6 +44,24 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		public delegate void PIPINTERFACE_CHANGE_CALLBACK(IntPtr CallerContext, IntPtr Row, MIB_NOTIFICATION_TYPE NotificationType);
 
+		/// <summary>
+		/// <para>
+		/// The <c>PNETWORK_CONNECTIVITY_HINT_CHANGE_CALLBACK</c> type is a pointer to a function that you define in your application. The
+		/// function is called whenever there's a change in the network aggregate connectivity level and cost hints.
+		/// </para>
+		/// <para>Register your callback with a call to NotifyNetworkConnectivityHintChange.</para>
+		/// </summary>
+		/// <param name="CallerContext">The user-specific caller context.</param>
+		/// <param name="ConnectivityHint">
+		/// A value of type NL_NETWORK_CONNECTIVITY_HINT representing the aggregate connectivity level and cost hints.
+		/// </param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/netioapi/nc-netioapi-pnetwork_connectivity_hint_change_callback
+		// PNETWORK_CONNECTIVITY_HINT_CHANGE_CALLBACK PnetworkConnectivityHintChangeCallback; void PnetworkConnectivityHintChangeCallback( PVOID CallerContext, NL_NETWORK_CONNECTIVITY_HINT ConnectivityHint ) {...}
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		[PInvokeData("netioapi.h", MSDNShortId = "NC:netioapi.PNETWORK_CONNECTIVITY_HINT_CHANGE_CALLBACK")]
+		public delegate void PNETWORK_CONNECTIVITY_HINT_CHANGE_CALLBACK(IntPtr CallerContext, NL_NETWORK_CONNECTIVITY_HINT ConnectivityHint);
+
 		/// <summary>Called if NotifyStableUnicastIpAddressTable returns ERROR_IO_PENDING, which indicates that the I/O request is pending.</summary>
 		/// <param name="CallerContext">
 		/// The CallerContext parameter that is passed to the NotifyStableUnicastIpAddressTable function when it is registering the driver
@@ -214,162 +232,6 @@ namespace Vanara.PInvoke
 			/// confirmation that the callback function is properly registered.
 			/// </summary>
 			MibInitialNotification,
-		}
-
-		/// <summary>The NL_DAD_STATE enumeration type defines the duplicate address detection (DAD) state.</summary>
-		// typedef enum { NldsInvalid, NldsTentative, NldsDuplicate, NldsDeprecated, NldsPreferred, IpDadStateInvalid = 0,
-		// IpDadStateTentative, IpDadStateDuplicate, IpDadStateDeprecated, IpDadStatePreferred} NL_DAD_STATE; https://msdn.microsoft.com/en-us/library/windows/hardware/ff568758(v=vs.85).aspx
-		[PInvokeData("Nldef.h", MSDNShortId = "ff568758")]
-		public enum NL_DAD_STATE
-		{
-			/// <summary>The DAD state is invalid.</summary>
-			IpDadStateInvalid,
-
-			/// <summary>The DAD state is tentative.</summary>
-			IpDadStateTentative,
-
-			/// <summary>A duplicate IP address has been detected.</summary>
-			IpDadStateDuplicate,
-
-			/// <summary>The IP address has been deprecated.</summary>
-			IpDadStateDeprecated,
-
-			/// <summary>The IP address is the preferred address.</summary>
-			IpDadStatePreferred,
-		}
-
-		/// <summary>
-		/// <para>The NL_LINK_LOCAL_ADDRESS_BEHAVIOR enumeration type defines the link local address behavior.</para>
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/nldef/ne-nldef-_nl_link_local_address_behavior typedef enum
-		// _NL_LINK_LOCAL_ADDRESS_BEHAVIOR { LinkLocalAlwaysOff , LinkLocalDelayed , LinkLocalAlwaysOn , LinkLocalUnchanged } NL_LINK_LOCAL_ADDRESS_BEHAVIOR;
-		[PInvokeData("nldef.h", MSDNShortId = "d3010b6a-445b-44eb-8ebb-101664f3f835")]
-		public enum NL_LINK_LOCAL_ADDRESS_BEHAVIOR
-		{
-			/// <summary>A link local IP address should never be used.</summary>
-			LinkLocalAlwaysOff = 0,
-
-			/// <summary>
-			/// A link local IP address should be used only if no other address is available. This setting is the default setting for an IPv4 interface.
-			/// </summary>
-			LinkLocalDelayed,
-
-			/// <summary>A link local IP address should always be used. This setting is the default setting for an IPv6 interface.</summary>
-			LinkLocalAlwaysOn,
-
-			/// <summary>When the properties of an IP interface are being set, the value for link local address behavior should be unchanged.</summary>
-			LinkLocalUnchanged = -1,
-		}
-
-		/// <summary>The NL_PREFIX_ORIGIN enumeration type defines the origin of the prefix or network part of the IP address.</summary>
-		// typedef enum { IpPrefixOriginOther = 0, IpPrefixOriginManual, IpPrefixOriginWellKnown, IpPrefixOriginDhcp,
-		// IpPrefixOriginRouterAdvertisement, IpPrefixOriginUnchanged = 1 &lt;&lt; 4} NL_PREFIX_ORIGIN; https://msdn.microsoft.com/en-us/library/windows/hardware/ff568762(v=vs.85).aspx
-		[PInvokeData("Nldef.h", MSDNShortId = "ff568762")]
-		public enum NL_PREFIX_ORIGIN
-		{
-			/// <summary>
-			/// The IP address prefix was configured by using a source other than those that are defined in this enumeration. This value
-			/// applies to an IPv6 or IPv4 address.
-			/// </summary>
-			IpPrefixOriginOther = 0,
-
-			/// <summary>The IP address prefix was configured manually. This value applies to an IPv6 or IPv4 address.</summary>
-			IpPrefixOriginManual,
-
-			/// <summary>
-			/// The IP address prefix was configured by using a well-known address. This value applies to an IPv6 link-local address or an
-			/// IPv6 loopback address.
-			/// </summary>
-			IpPrefixOriginWellKnown,
-
-			/// <summary>
-			/// The IP address prefix was configured by using DHCP. This value applies to an IPv4 address configured by using DHCP or an IPv6
-			/// address configured by using DHCPv6.
-			/// </summary>
-			IpPrefixOriginDhcp,
-
-			/// <summary>
-			/// The IP address prefix was configured by using router advertisement. This value applies to an anonymous IPv6 address that was
-			/// generated after receiving a router advertisement.
-			/// </summary>
-			IpPrefixOriginRouterAdvertisement,
-
-			/// <summary>
-			/// The IP address prefix should be unchanged. This value is used when setting the properties for a unicast IP interface when the
-			/// value for the IP prefix origin should be unchanged.
-			/// </summary>
-			IpPrefixOriginUnchanged = 1 << 4,
-		}
-
-		/// <summary>
-		/// <para>The NL_ROUTER_DISCOVERY_BEHAVIOR enumeration type defines the router discovery behavior, as described in RFC 2461.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>For more information about RFC 2461, see the Neighbor Discovery for IP Version 6 (IPv6) memo by the Network Working Group.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/nldef/ne-nldef-_nl_router_discovery_behavior typedef enum
-		// _NL_ROUTER_DISCOVERY_BEHAVIOR { RouterDiscoveryDisabled , RouterDiscoveryEnabled , RouterDiscoveryDhcp , RouterDiscoveryUnchanged
-		// } NL_ROUTER_DISCOVERY_BEHAVIOR;
-		[PInvokeData("nldef.h", MSDNShortId = "d3a0d872-c90a-4eb5-9011-c5913b9912c6")]
-		public enum NL_ROUTER_DISCOVERY_BEHAVIOR
-		{
-			/// <summary>Router discovery is disabled.</summary>
-			RouterDiscoveryDisabled = 0,
-
-			/// <summary>Router discovery is enabled. This setting is the default value for IPv6.</summary>
-			RouterDiscoveryEnabled,
-
-			/// <summary>Router discovery is configured based on DHCP. This setting is the default value for IPv4.</summary>
-			RouterDiscoveryDhcp,
-
-			/// <summary>When the properties of an IP interface are being set, the value for router discovery should be unchanged.</summary>
-			RouterDiscoveryUnchanged = -1,
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>IP_SUFFIX_ORIGIN</c> enumeration specifies the origin of an IPv4 or IPv6 address suffix, and is used with the
-		/// IP_ADAPTER_UNICAST_ADDRESS structure.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>The <c>IP_SUFFIX_ORIGIN</c> enumeration is used in the <c>SuffixOrigin</c> member of the IP_ADAPTER_UNICAST_ADDRESS structure.</para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>IP_SUFFIX_ORIGIN</c> enumeration is defined in the Nldef.h header file which is automatically included by
-		/// the Iptypes.h header file. In order to use the <c>IP_SUFFIX_ORIGIN</c> enumeration, the Winsock2.h header file must be included
-		/// before the Iptypes.h header file.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/nldef/ne-nldef-nl_suffix_origin typedef enum NL_SUFFIX_ORIGIN { NlsoOther ,
-		// NlsoManual , NlsoWellKnown , NlsoDhcp , NlsoLinkLayerAddress , NlsoRandom , IpSuffixOriginOther , IpSuffixOriginManual ,
-		// IpSuffixOriginWellKnown , IpSuffixOriginDhcp , IpSuffixOriginLinkLayerAddress , IpSuffixOriginRandom , IpSuffixOriginUnchanged } ;
-		[PInvokeData("nldef.h", MSDNShortId = "0ffeae3d-cfc4-472e-87f8-ae6d584fb869")]
-		public enum NL_SUFFIX_ORIGIN
-		{
-			/// <summary>The IP address suffix was provided by a source other than those defined in this enumeration.</summary>
-			IpSuffixOriginOther = 0,
-
-			/// <summary>The IP address suffix was manually specified.</summary>
-			IpSuffixOriginManual,
-
-			/// <summary>The IP address suffix is from a well-known source.</summary>
-			IpSuffixOriginWellKnown,
-
-			/// <summary>The IP address suffix was provided by DHCP settings.</summary>
-			IpSuffixOriginDhcp,
-
-			/// <summary>The IP address suffix was obtained from the link-layer address.</summary>
-			IpSuffixOriginLinkLayerAddress,
-
-			/// <summary>The IP address suffix was obtained from a random source.</summary>
-			IpSuffixOriginRandom,
-
-			/// <summary>
-			/// The IP address suffix should be unchanged. This value is used when setting the properties for a unicast IP interface when the
-			/// value for the IP suffix origin should be left unchanged.
-			/// </summary>
-			IpSuffixOriginUnchanged = 1 << 4,
 		}
 
 		/// <summary>
@@ -3994,6 +3856,39 @@ namespace Vanara.PInvoke
 		[PInvokeData("netioapi.h", MSDNShortId = "0958e92e-12ed-42e0-aa04-b8c4544f6642")]
 		public static extern Win32Error GetMulticastIpAddressTable(ADDRESS_FAMILY Family, out MIB_MULTICASTIPADDRESS_TABLE Table);
 
+		/// <summary>Retrieves the aggregate level and cost of network connectivity that an application or service is likely to experience.</summary>
+		/// <param name="ConnectivityHint">
+		/// A pointer to a value of type NL_NETWORK_CONNECTIVITY_HINT. The function sets this value to the aggregate connectivity level and
+		/// cost hints.
+		/// </param>
+		/// <returns>
+		/// In user mode, returns <c>NO_ERROR</c> on success, and an error code on failure. In kernel mode, returns <c>STATUS_SUCCESS</c> on
+		/// success, and an error code on failure.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/netioapi/nf-netioapi-getnetworkconnectivityhint
+		// IPHLPAPI_DLL_LINKAGE _NETIOAPI_SUCCESS_ NETIOAPI_API GetNetworkConnectivityHint( NL_NETWORK_CONNECTIVITY_HINT *ConnectivityHint );
+		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("netioapi.h", MSDNShortId = "NF:netioapi.GetNetworkConnectivityHint")]
+		public static extern Win32Error GetNetworkConnectivityHint(out NL_NETWORK_CONNECTIVITY_HINT ConnectivityHint);
+
+		/// <summary>Retrieves the level and cost of network connectivity for the specified interface.</summary>
+		/// <param name="InterfaceIndex">
+		/// A value of type <c>NET_IFINDEX</c> representing the index of the interface for which to retrieve connectivity information.
+		/// </param>
+		/// <param name="ConnectivityHint">
+		/// A pointer to a value of type NL_NETWORK_CONNECTIVITY_HINT. The function sets this value to the connectivity level and cost hints
+		/// for the specified interface.
+		/// </param>
+		/// <returns>
+		/// In user mode, returns <c>NO_ERROR</c> on success, and an error code on failure. In kernel mode, returns <c>STATUS_SUCCESS</c> on
+		/// success, and an error code on failure.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/netioapi/nf-netioapi-getnetworkconnectivityhintforinterface
+		// IPHLPAPI_DLL_LINKAGE _NETIOAPI_SUCCESS_ NETIOAPI_API GetNetworkConnectivityHintForInterface( NET_IFINDEX InterfaceIndex, NL_NETWORK_CONNECTIVITY_HINT *ConnectivityHint );
+		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("netioapi.h", MSDNShortId = "NF:netioapi.GetNetworkConnectivityHintForInterface")]
+		public static extern Win32Error GetNetworkConnectivityHintForInterface(uint InterfaceIndex, out NL_NETWORK_CONNECTIVITY_HINT ConnectivityHint);
+
 		/// <summary>
 		/// <para>The <c>GetTeredoPort</c> function retrieves the dynamic UDP port number used by the Teredo client on the local computer.</para>
 		/// </summary>
@@ -4594,6 +4489,28 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "745128cf-7737-4f95-9712-26e0f6ae39b4")]
 		public static extern Win32Error NotifyIpInterfaceChange(ADDRESS_FAMILY Family, PIPINTERFACE_CHANGE_CALLBACK Callback, [Optional] IntPtr CallerContext, [MarshalAs(UnmanagedType.U1)] bool InitialNotification, out IntPtr NotificationHandle);
+
+		/// <summary>
+		/// Registers an application-defined callback function, to be called when the aggregate network connectivity level and cost hints change.
+		/// </summary>
+		/// <param name="Callback">
+		/// A function pointer of type PNETWORK_CONNECTIVITY_HINT_CHANGE_CALLBACK, which points to your application-defined callback
+		/// function. The callback function will be invoked when a network connectivity level or cost change occurs.
+		/// </param>
+		/// <param name="CallerContext">The user-specific caller context. This context will be supplied to the callback function.</param>
+		/// <param name="InitialNotification">
+		/// <see langword="true"/> if an initialization notification should be provided, otherwise <see langword="false"/>.
+		/// </param>
+		/// <param name="NotificationHandle">
+		/// A pointer to a <c>HANDLE</c>. The function sets the value to a handle to the notification registration.
+		/// </param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/netioapi/nf-netioapi-notifynetworkconnectivityhintchange
+		// IPHLPAPI_DLL_LINKAGE _NETIOAPI_SUCCESS_ NETIOAPI_API NotifyNetworkConnectivityHintChange( PNETWORK_CONNECTIVITY_HINT_CHANGE_CALLBACK Callback, PVOID CallerContext, BOOLEAN InitialNotification, PHANDLE NotificationHandle );
+		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("netioapi.h", MSDNShortId = "NF:netioapi.NotifyNetworkConnectivityHintChange")]
+		public static extern Win32Error NotifyNetworkConnectivityHintChange(PNETWORK_CONNECTIVITY_HINT_CHANGE_CALLBACK Callback, [In, Optional] IntPtr CallerContext,
+			[MarshalAs(UnmanagedType.U1)] bool InitialNotification, out IntPtr NotificationHandle);
 
 		/// <summary>
 		/// <para>The <c>NotifyRouteChange2</c> function registers to be notified for changes to IP route entries on a local computer.</para>
@@ -7551,128 +7468,6 @@ namespace Vanara.PInvoke
 			/// <param name="other">The value to compare with this instance.</param>
 			/// <returns><see langword="true"/> if the specified value is equal to this instance; otherwise, <see langword="false"/>.</returns>
 			public bool Equals(MIB_UNICASTIPADDRESS_ROW other) => Address.Equals(other.Address) && (InterfaceLuid.Value == other.InterfaceLuid.Value || InterfaceIndex == other.InterfaceIndex);
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>NL_BANDWIDTH_INFORMATION</c> structure contains read-only information on the available bandwidth estimates and associated
-		/// variance as determined by the TCP/IP stack.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The <c>NL_BANDWIDTH_INFORMATION</c> structure is defined in the Nldef.h header file which is automatically included by the
-		/// Iptypes.h header file which is automatically included in the Iphlpapi.h header file. The Nldef.h and Iptypes.h header files
-		/// should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/nldef/ns-nldef-_nl_bandwidth_information typedef struct
-		// _NL_BANDWIDTH_INFORMATION { ULONG64 Bandwidth; ULONG64 Instability; BOOLEAN BandwidthPeaked; } NL_BANDWIDTH_INFORMATION, *PNL_BANDWIDTH_INFORMATION;
-		[PInvokeData("nldef.h", MSDNShortId = "F5D7238A-EAE0-4D60-A0A4-D839F738EF48")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8)]
-		public struct NL_BANDWIDTH_INFORMATION
-		{
-			/// <summary>
-			/// <para>The estimated maximum available bandwidth, in bits per second.</para>
-			/// </summary>
-			public ulong Bandwidth;
-
-			/// <summary>
-			/// <para>A measure of the variation based on recent bandwidth samples, in bits per second.</para>
-			/// </summary>
-			public ulong Instability;
-
-			/// <summary>
-			/// <para>
-			/// A value that indicates if the bandwidth estimate in the <c>Bandwidth</c> member has peaked and reached its maximum value for
-			/// the given network conditions.
-			/// </para>
-			/// <para>
-			/// The TCP/IP stack uses a heuristic to set this variable. Until this variable is set, there is no guarantee that the true
-			/// available maximum bandwidth is not higher than the estimated bandwidth in the <c>Bandwidth</c> member. However, it is safe to
-			/// assume that maximum available bandwidth is not lower than the estimate reported in the <c>Bandwidth</c> member.
-			/// </para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.U1)] public bool BandwidthPeaked;
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>NL_INTERFACE_OFFLOAD_ROD</c> structure specifies a set of flags that indicate the offload capabilities for an IP interface.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>The <c>NL_INTERFACE_OFFLOAD_ROD</c> structure is defined on Windows Vista and later.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/nldef/ns-nldef-_nl_interface_offload_rod typedef struct
-		// _NL_INTERFACE_OFFLOAD_ROD { BOOLEAN NlChecksumSupported : 1; BOOLEAN NlOptionsSupported : 1; BOOLEAN TlDatagramChecksumSupported :
-		// 1; BOOLEAN TlStreamChecksumSupported : 1; BOOLEAN TlStreamOptionsSupported : 1; BOOLEAN FastPathCompatible : 1; BOOLEAN
-		// TlLargeSendOffloadSupported : 1; BOOLEAN TlGiantSendOffloadSupported : 1; } NL_INTERFACE_OFFLOAD_ROD, *PNL_INTERFACE_OFFLOAD_ROD;
-		[PInvokeData("nldef.h", MSDNShortId = "764c7f5a-00df-461d-99ee-07f9e1f77ec7")]
-		[StructLayout(LayoutKind.Sequential, Pack = 1, Size = 1)]
-		public struct NL_INTERFACE_OFFLOAD_ROD
-		{
-			/// <summary>The flags.</summary>
-			public SupportedFlags Flags;
-
-			/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-			public override string ToString() => Flags.ToString();
-
-			/// <summary>The flags.</summary>
-			public enum SupportedFlags : byte
-			{
-				/// <summary>
-				/// <para>The network adapter for this network interface supports the offload of IP checksum calculations.</para>
-				/// </summary>
-				NlChecksumSupported = 1 << 0,
-
-				/// <summary>
-				/// <para>
-				/// The network adapter for this network interface supports the offload of IP checksum calculations for IPv4 packets with IP options.
-				/// </para>
-				/// </summary>
-				NlOptionsSupported = 1 << 1,
-
-				/// <summary>
-				/// <para>The network adapter for this network interface supports the offload of UDP checksum calculations.</para>
-				/// </summary>
-				TlDatagramChecksumSupported = 1 << 2,
-
-				/// <summary>
-				/// <para>The network adapter for this network interface supports the offload of TCP checksum calculations.</para>
-				/// </summary>
-				TlStreamChecksumSupported = 1 << 3,
-
-				/// <summary>
-				/// <para>
-				/// The network adapter for this network interface supports the offload of TCP checksum calculations for IPv4 packets
-				/// containing IP options.
-				/// </para>
-				/// </summary>
-				TlStreamOptionsSupported = 1 << 4,
-
-				/// <summary/>
-				FastPathCompatible = 1 << 5,
-
-				/// <summary>
-				/// <para>
-				/// The network adapter for this network interface supports TCP Large Send Offload Version 1. With this capability, TCP can
-				/// pass a buffer to be transmitted that is bigger than the maximum transmission unit (MTU) supported by the medium. Version
-				/// 1 allows TCP to pass a buffer up to 64K to be transmitted.
-				/// </para>
-				/// </summary>
-				TlLargeSendOffloadSupported = 1 << 6,
-
-				/// <summary>
-				/// <para>
-				/// The network adapter for this network interface supports TCP Large Send Offload Version 2. With this capability, TCP can
-				/// pass a buffer to be transmitted that is bigger than the maximum transmission unit (MTU) supported by the medium. Version
-				/// 2 allows TCP to pass a buffer up to 256K to be transmitted.
-				/// </para>
-				/// </summary>
-				TlGiantSendOffloadSupported = 1 << 7,
-			}
 		}
 
 		/// <summary>The MIB_ANYCASTIPADDRESS_TABLE structure contains a table of anycast IP address entries.</summary>
