@@ -411,6 +411,16 @@ namespace Vanara.PInvoke
 			PRJ_COMPLETE_COMMAND_TYPE_ENUMERATION,
 		}
 
+		/// <summary>Specifies extended information types for PRJ_EXTENDED_INFO.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/projectedfslib/ne-projectedfslib-prj_ext_info_type typedef enum
+		// PRJ_EXT_INFO_TYPE { PRJ_EXT_INFO_TYPE_SYMLINK } ;
+		[PInvokeData("projectedfslib.h", MSDNShortId = "NE:projectedfslib.PRJ_EXT_INFO_TYPE")]
+		public enum PRJ_EXT_INFO_TYPE
+		{
+			/// <summary>This PRJ_EXTENDED_INFO specifies the target of a symbolic link.</summary>
+			PRJ_EXT_INFO_TYPE_SYMLINK = 1
+		}
+
 		/// <summary>The state of an item.</summary>
 		/// <remarks>
 		/// The PRJ_FILE_STATE_FULL and PRJ_FILE_STATE_TOMBSTONE bits will not appear in combination with each other or any other bit.
@@ -1026,6 +1036,108 @@ namespace Vanara.PInvoke
 		public static extern HRESULT PrjFillDirEntryBuffer([MarshalAs(UnmanagedType.LPWStr)] string fileName, [Optional] IntPtr fileBasicInfo,
 			PRJ_DIR_ENTRY_BUFFER_HANDLE dirEntryBufferHandle);
 
+		/// <summary>Provides information for one file or directory to an enumeration and allows the caller to specify extended information.</summary>
+		/// <param name="dirEntryBufferHandle">An opaque handle to a structure that receives information about the filled entries.</param>
+		/// <param name="fileName">A pointer to a null-terminated string that contains the name of the entry</param>
+		/// <param name="fileBasicInfo">Basic information about the entry to be filled.</param>
+		/// <param name="extendedInfo">A pointer to a PRJ_EXTENDED_INFO struct specifying extended information about the entry to be filled.</param>
+		/// <returns>
+		/// <para>
+		/// HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER) indicates that dirEntryBufferHandle doesn't have enough space for the new entry.
+		/// </para>
+		/// <para>E_INVALIDARG indicates that extendedInfo.InfoType is unrecognized.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The provider uses this routine to service a PRJ_GET_DIRECTORY_ENUMERATION_CB callback. When processing the callback, the
+		/// provider calls this routine for each matching file or directory in the enumeration. This routine allows the provider to specify
+		/// extended information about the file or directory, such as whether it is a symbolic link.
+		/// </para>
+		/// <para>
+		/// If this routine returns HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER) when adding an entry to the enumeration, the provider
+		/// returns S_OK from the callback and waits for the next PRJ_GET_DIRECTORY_ENUMERATION_CB callback.
+		/// </para>
+		/// <para>The provider resumes filling the enumeration with the entry it was trying to add when it got HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER).</para>
+		/// <para>
+		/// If this routine returns HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER) for the first file or directory in the enumeration, the
+		/// provider must return HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER) from its PRJ_GET_DIRECTORY_ENUMERATION_CB callback.
+		/// </para>
+		/// <para>Symbolic Links</para>
+		/// <para>
+		/// To specify that this directory entry is for a symbolic link, the provider formats a buffer with a single PRJ_EXTENDED_INFO
+		/// struct and passes a pointer to it in the parameter. The provider sets the struct's fields as follows:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <code>extendedInfo.InfoType = PRJ_EXT_INFO_TYPE_SYMLINK</code>
+		/// </item>
+		/// <item>
+		/// <code>extendedInfo.NextInfoOffset = 0</code>
+		/// </item>
+		/// <item>
+		/// <code>extendedInfo.Symlink.TargetName = &lt;path to the target of the symbolic link&gt;</code>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/projectedfslib/nf-projectedfslib-prjfilldirentrybuffer2 HRESULT
+		// PrjFillDirEntryBuffer2( PRJ_DIR_ENTRY_BUFFER_HANDLE dirEntryBufferHandle, PCWSTR fileName, PRJ_FILE_BASIC_INFO *fileBasicInfo,
+		// PRJ_EXTENDED_INFO *extendedInfo );
+		[DllImport(Lib.ProjectedFSLib, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("projectedfslib.h", MSDNShortId = "NF:projectedfslib.PrjFillDirEntryBuffer2")]
+		public static extern HRESULT PrjFillDirEntryBuffer2(PRJ_DIR_ENTRY_BUFFER_HANDLE dirEntryBufferHandle, [MarshalAs(UnmanagedType.LPWStr)] string fileName,
+			in PRJ_FILE_BASIC_INFO fileBasicInfo, in PRJ_EXTENDED_INFO extendedInfo);
+
+		/// <summary>Provides information for one file or directory to an enumeration and allows the caller to specify extended information.</summary>
+		/// <param name="dirEntryBufferHandle">An opaque handle to a structure that receives information about the filled entries.</param>
+		/// <param name="fileName">A pointer to a null-terminated string that contains the name of the entry</param>
+		/// <param name="fileBasicInfo">Basic information about the entry to be filled.</param>
+		/// <param name="extendedInfo">A pointer to a PRJ_EXTENDED_INFO struct specifying extended information about the entry to be filled.</param>
+		/// <returns>
+		/// <para>
+		/// HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER) indicates that dirEntryBufferHandle doesn't have enough space for the new entry.
+		/// </para>
+		/// <para>E_INVALIDARG indicates that extendedInfo.InfoType is unrecognized.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The provider uses this routine to service a PRJ_GET_DIRECTORY_ENUMERATION_CB callback. When processing the callback, the
+		/// provider calls this routine for each matching file or directory in the enumeration. This routine allows the provider to specify
+		/// extended information about the file or directory, such as whether it is a symbolic link.
+		/// </para>
+		/// <para>
+		/// If this routine returns HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER) when adding an entry to the enumeration, the provider
+		/// returns S_OK from the callback and waits for the next PRJ_GET_DIRECTORY_ENUMERATION_CB callback.
+		/// </para>
+		/// <para>The provider resumes filling the enumeration with the entry it was trying to add when it got HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER).</para>
+		/// <para>
+		/// If this routine returns HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER) for the first file or directory in the enumeration, the
+		/// provider must return HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER) from its PRJ_GET_DIRECTORY_ENUMERATION_CB callback.
+		/// </para>
+		/// <para>Symbolic Links</para>
+		/// <para>
+		/// To specify that this directory entry is for a symbolic link, the provider formats a buffer with a single PRJ_EXTENDED_INFO
+		/// struct and passes a pointer to it in the parameter. The provider sets the struct's fields as follows:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <code>extendedInfo.InfoType = PRJ_EXT_INFO_TYPE_SYMLINK</code>
+		/// </item>
+		/// <item>
+		/// <code>extendedInfo.NextInfoOffset = 0</code>
+		/// </item>
+		/// <item>
+		/// <code>extendedInfo.Symlink.TargetName = &lt;path to the target of the symbolic link&gt;</code>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/projectedfslib/nf-projectedfslib-prjfilldirentrybuffer2 HRESULT
+		// PrjFillDirEntryBuffer2( PRJ_DIR_ENTRY_BUFFER_HANDLE dirEntryBufferHandle, PCWSTR fileName, PRJ_FILE_BASIC_INFO *fileBasicInfo,
+		// PRJ_EXTENDED_INFO *extendedInfo );
+		[DllImport(Lib.ProjectedFSLib, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("projectedfslib.h", MSDNShortId = "NF:projectedfslib.PrjFillDirEntryBuffer2")]
+		public static extern HRESULT PrjFillDirEntryBuffer2(PRJ_DIR_ENTRY_BUFFER_HANDLE dirEntryBufferHandle, [MarshalAs(UnmanagedType.LPWStr)] string fileName,
+			[In, Optional] IntPtr fileBasicInfo, [In, Optional] IntPtr extendedInfo);
+
 		/// <summary>Frees an allocated buffer.</summary>
 		/// <param name="buffer">The buffer to free.</param>
 		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
@@ -1600,6 +1712,124 @@ namespace Vanara.PInvoke
 		public static extern HRESULT PrjWritePlaceholderInfo(PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT namespaceVirtualizationContext,
 			[MarshalAs(UnmanagedType.LPWStr)] string destinationFileName, in PRJ_PLACEHOLDER_INFO placeholderInfo, uint placeholderInfoSize);
 
+		/// <summary>Sends file or directory metadata to ProjFS and allows the caller to specify extended information.</summary>
+		/// <param name="namespaceVirtualizationContext">
+		/// Opaque handle for the virtualization instance. This must be the value from the VirtualizationInstanceHandle member of the
+		/// callbackData passed to the provider in the PRJ_GET_PLACEHOLDER_INFO_CB callback.
+		/// </param>
+		/// <param name="destinationFileName">
+		/// <para>
+		/// A null-terminated Unicode string specifying the path, relative to the virtualization root, to the file or directory for which to
+		/// create a placeholder.
+		/// </para>
+		/// <para>
+		/// This must be a match to the FilePathName member of the callbackData parameter passed to the provider in the
+		/// PRJ_GET_PLACEHOLDER_INFO_CB callback. The provider should use the PrjFileNameCompare function to determine whether the two names match.
+		/// </para>
+		/// <para>
+		/// For example, if the PRJ_GET_PLACEHOLDER_INFO_CB callback specifies “dir1\dir1\FILE.TXT” in callbackData-&gt;FilePathName, and
+		/// the provider’s backing store contains a file called “File.txt” in the dir1\dir2 directory, and PrjFileNameCompare returns 0 when
+		/// comparing the names “FILE.TXT” and “File.txt”, then the provider specifies “dir1\dir2\File.txt” as the value of this parameter.
+		/// </para>
+		/// </param>
+		/// <param name="placeholderInfo">A pointer to the metadata for the file or directory. Type: <see cref="PRJ_PLACEHOLDER_INFO"/>.</param>
+		/// <param name="placeholderInfoSize">Size in bytes of the buffer pointed to by placeholderInfo.</param>
+		/// <param name="ExtendedInfo"/>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		/// <remarks>
+		/// <para>
+		/// The provider uses this routine to provide the data requested in an invocation of its PRJ_GET_PLACEHOLDER_INFO_CB callback, or it
+		/// may use it to proactively lay down a placeholder.
+		/// </para>
+		/// <para>
+		/// The EaInformation, SecurityInformation, and StreamsInformation members of PRJ_PLACEHOLDER_INFO are optional. If the provider
+		/// does not wish to provide extended attributes, custom security descriptors, or alternate data streams, it must set these fields
+		/// to 0.
+		/// </para>
+		/// <para>Symbolic Links</para>
+		/// <para>
+		/// To specify that this placeholder is to be a symbolic link, the provider formats a buffer with a single PRJ_EXTENDED_INFO struct
+		/// and passes a pointer to it in the parameter. The provider sets the struct's fields as follows:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <code>extendedInfo.InfoType = PRJ_EXT_INFO_TYPE_SYMLINK</code>
+		/// </item>
+		/// <item>
+		/// <code>extendedInfo.NextInfoOffset = 0</code>
+		/// </item>
+		/// <item>
+		/// <code>extendedInfo.Symlink.TargetName = &lt;path to the target of the symbolic link&gt;</code>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/projectedfslib/nf-projectedfslib-prjwriteplaceholderinfo2 HRESULT
+		// PrjWritePlaceholderInfo2( PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT namespaceVirtualizationContext, PCWSTR destinationFileName, const
+		// PRJ_PLACEHOLDER_INFO *placeholderInfo, UINT32 placeholderInfoSize, const PRJ_EXTENDED_INFO *ExtendedInfo );
+		[DllImport(Lib.ProjectedFSLib, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("projectedfslib.h", MSDNShortId = "NF:projectedfslib.PrjWritePlaceholderInfo2")]
+		public static extern HRESULT PrjWritePlaceholderInfo2(PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT namespaceVirtualizationContext,
+			[MarshalAs(UnmanagedType.LPWStr)] string destinationFileName, IntPtr placeholderInfo, uint placeholderInfoSize, in PRJ_EXTENDED_INFO ExtendedInfo);
+
+		/// <summary>Sends file or directory metadata to ProjFS and allows the caller to specify extended information.</summary>
+		/// <param name="namespaceVirtualizationContext">
+		/// Opaque handle for the virtualization instance. This must be the value from the VirtualizationInstanceHandle member of the
+		/// callbackData passed to the provider in the PRJ_GET_PLACEHOLDER_INFO_CB callback.
+		/// </param>
+		/// <param name="destinationFileName">
+		/// <para>
+		/// A null-terminated Unicode string specifying the path, relative to the virtualization root, to the file or directory for which to
+		/// create a placeholder.
+		/// </para>
+		/// <para>
+		/// This must be a match to the FilePathName member of the callbackData parameter passed to the provider in the
+		/// PRJ_GET_PLACEHOLDER_INFO_CB callback. The provider should use the PrjFileNameCompare function to determine whether the two names match.
+		/// </para>
+		/// <para>
+		/// For example, if the PRJ_GET_PLACEHOLDER_INFO_CB callback specifies “dir1\dir1\FILE.TXT” in callbackData-&gt;FilePathName, and
+		/// the provider’s backing store contains a file called “File.txt” in the dir1\dir2 directory, and PrjFileNameCompare returns 0 when
+		/// comparing the names “FILE.TXT” and “File.txt”, then the provider specifies “dir1\dir2\File.txt” as the value of this parameter.
+		/// </para>
+		/// </param>
+		/// <param name="placeholderInfo">A pointer to the metadata for the file or directory. Type: <see cref="PRJ_PLACEHOLDER_INFO"/>.</param>
+		/// <param name="placeholderInfoSize">Size in bytes of the buffer pointed to by placeholderInfo.</param>
+		/// <param name="ExtendedInfo"/>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		/// <remarks>
+		/// <para>
+		/// The provider uses this routine to provide the data requested in an invocation of its PRJ_GET_PLACEHOLDER_INFO_CB callback, or it
+		/// may use it to proactively lay down a placeholder.
+		/// </para>
+		/// <para>
+		/// The EaInformation, SecurityInformation, and StreamsInformation members of PRJ_PLACEHOLDER_INFO are optional. If the provider
+		/// does not wish to provide extended attributes, custom security descriptors, or alternate data streams, it must set these fields
+		/// to 0.
+		/// </para>
+		/// <para>Symbolic Links</para>
+		/// <para>
+		/// To specify that this placeholder is to be a symbolic link, the provider formats a buffer with a single PRJ_EXTENDED_INFO struct
+		/// and passes a pointer to it in the parameter. The provider sets the struct's fields as follows:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <code>extendedInfo.InfoType = PRJ_EXT_INFO_TYPE_SYMLINK</code>
+		/// </item>
+		/// <item>
+		/// <code>extendedInfo.NextInfoOffset = 0</code>
+		/// </item>
+		/// <item>
+		/// <code>extendedInfo.Symlink.TargetName = &lt;path to the target of the symbolic link&gt;</code>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/projectedfslib/nf-projectedfslib-prjwriteplaceholderinfo2 HRESULT
+		// PrjWritePlaceholderInfo2( PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT namespaceVirtualizationContext, PCWSTR destinationFileName, const
+		// PRJ_PLACEHOLDER_INFO *placeholderInfo, UINT32 placeholderInfoSize, const PRJ_EXTENDED_INFO *ExtendedInfo );
+		[DllImport(Lib.ProjectedFSLib, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("projectedfslib.h", MSDNShortId = "NF:projectedfslib.PrjWritePlaceholderInfo2")]
+		public static extern HRESULT PrjWritePlaceholderInfo2(PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT namespaceVirtualizationContext,
+			[MarshalAs(UnmanagedType.LPWStr)] string destinationFileName, [In] IntPtr placeholderInfo, uint placeholderInfoSize, [In, Optional] IntPtr ExtendedInfo);
+
 		/// <summary>Defines the standard information passed to a provider for every operation callback.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/projectedfslib/ns-projectedfslib-prj_callback_data typedef struct
 		// PRJ_CALLBACK_DATA { UINT32 Size; PRJ_CALLBACK_DATA_FLAGS Flags; PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT
@@ -1823,6 +2053,38 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>
+		/// A provider uses PRJ_EXTENDED_INFO to provide extended information about a file when calling PrjFillDirEntryBuffer2 or PrjWritePlaceholderInfo2.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/projectedfslib/ns-projectedfslib-prj_extended_info typedef struct
+		// PRJ_EXTENDED_INFO { PRJ_EXT_INFO_TYPE InfoType; ULONG NextInfoOffset; union { struct { PCWSTR TargetName; } Symlink; }
+		// DUMMYUNIONNAME; } PRJ_EXTENDED_INFO;
+		[PInvokeData("projectedfslib.h", MSDNShortId = "NS:projectedfslib.PRJ_EXTENDED_INFO")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PRJ_EXTENDED_INFO
+		{
+			/// <summary>A PRJ_EXT_INFO value describing what kind of extended information this structure contains.</summary>
+			public PRJ_EXT_INFO_TYPE InfoType;
+
+			/// <summary>
+			/// Offset in bytes from the beginning of this structure to the next PRJ_EXTENDED_INFO structure. If this is the last structure
+			/// in the buffer this value must be 0.
+			/// </summary>
+			public uint NextInfoOffset;
+
+			/// <summary>This PRJ_EXTENDED_INFO specifies the target of a symbolic link.</summary>
+			public SYMLINK Symlink;
+
+			/// <summary>This PRJ_EXTENDED_INFO specifies the target of a symbolic link.</summary>
+			[StructLayout(LayoutKind.Sequential)]
+			public struct SYMLINK
+			{
+				/// <summary>Specifies the name of the target of a symbolic link.</summary>
+				[MarshalAs(UnmanagedType.LPWStr)]
+				public string TargetName;
+			}
 		}
 
 		/// <summary>Basic information about an item.</summary>
