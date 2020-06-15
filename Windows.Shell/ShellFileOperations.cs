@@ -227,6 +227,21 @@ namespace Vanara.Windows.Shell
 		// TODO: public Form CustomProgressDialog { get; set; }
 
 		/// <summary>Copies a single item to a specified destination using the Shell to provide progress and error dialogs.</summary>
+		/// <param name="source">A string that specifies the source item's full file path.</param>
+		/// <param name="dest">A string that specifies the full path of the destination folder to contain the copy of the item.</param>
+		/// <param name="newName">
+		/// An optional new name for the item after it has been copied. This can be <see langword="null"/>. If <see langword="null"/>, the
+		/// name of the destination item is the same as the source.
+		/// </param>
+		/// <param name="options">Options that control file operations.</param>
+		public static void Copy(string source, string dest, string newName = null, OperationFlags options = defaultOptions)
+		{
+			using var shfile = new ShellItem(source);
+			using var shfld = new ShellFolder(dest);
+			Copy(shfile, shfld, newName, options);
+		}
+
+		/// <summary>Copies a single item to a specified destination using the Shell to provide progress and error dialogs.</summary>
 		/// <param name="source">A <see cref="ShellItem"/> that specifies the source item.</param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the copy of the item.</param>
 		/// <param name="newName">
@@ -279,6 +294,15 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Deletes a single item using the Shell to provide progress and error dialogs.</summary>
+		/// <param name="source">A string that specifies the full path of the item to be deleted.</param>
+		/// <param name="options">Options that control file operations.</param>
+		public static void Delete(string source, OperationFlags options = defaultOptions)
+		{
+			using var shfile = new ShellItem(source);
+			Delete(shfile, options);
+		}
+
+		/// <summary>Deletes a single item using the Shell to provide progress and error dialogs.</summary>
 		/// <param name="source">A <see cref="ShellItem"/> that specifies the item to be deleted.</param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Delete(ShellItem source, OperationFlags options = defaultOptions)
@@ -325,6 +349,21 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Moves a single item to a specified destination using the Shell to provide progress and error dialogs.</summary>
+		/// <param name="source">A string that specifies the source item's full file path.</param>
+		/// <param name="dest">A string that specifies the full path of the destination folder to contain the copy of the item.</param>
+		/// <param name="newName">
+		/// An optional new name for the item in its new location. This can be <see langword="null"/>. If <see langword="null"/>, the name of the destination
+		/// item is the same as the source.
+		/// </param>
+		/// <param name="options">Options that control file operations.</param>
+		public static void Move(string source, string dest, string newName = null, OperationFlags options = defaultOptions)
+		{
+			using var shfile = new ShellItem(source);
+			using var shfld = new ShellFolder(dest);
+			Move(shfile, shfld, newName, options);
+		}
+
+		/// <summary>Moves a single item to a specified destination using the Shell to provide progress and error dialogs.</summary>
 		/// <param name="source">A <see cref="ShellItem"/> that specifies the source item.</param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the moved item.</param>
 		/// <param name="newName">
@@ -334,8 +373,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="options">Options that control file operations.</param>
 		public static void Move(ShellItem source, ShellFolder dest, string newName = null, OperationFlags options = defaultOptions)
 		{
-			using var sop = new ShellFileOperations();
-			sop.Options = options;
+			using var sop = new ShellFileOperations { Options = options };
 			HRESULT hr = HRESULT.S_OK;
 			sop.PostMoveItem += OnPost;
 			try

@@ -52,6 +52,13 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void SHEmptyRecycleBinTest()
+		{
+			// TODO: Find way to move files to RB before starting
+			Assert.That(SHEmptyRecycleBin(default, "C:\\", SHERB.SHERB_NOCONFIRMATION | SHERB.SHERB_NOPROGRESSUI | SHERB.SHERB_NOSOUND), ResultIs.Successful);
+		}
+
+		[Test]
 		public void EnumRecycleBinTest()
 		{
 			// Get IShellFolder for Desktop

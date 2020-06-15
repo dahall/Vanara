@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Vanara.PInvoke.Tests;
 using Vanara.Windows.Shell;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
@@ -30,6 +31,24 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(File.Exists(fn), Is.True);
 				File.Delete(fn);
 			}
+		}
+
+		[Test]
+		public void MoveItemTest()
+		{
+			// Delete item to Recycle Bin
+			using var tmp = new TempFile();
+			Assert.That(() => ShellFileOperations.Delete(tmp.FullName), Throws.Nothing);
+
+			// Find deleted item
+			using var bin = new ShellFolder(KNOWNFOLDERID.FOLDERID_RecycleBinFolder);
+			var item = bin.FirstOrDefault(si => si.Name == tmp.FullName);
+			Assert.NotNull(item);
+
+			// Restore item
+			using var dest = new ShellFolder(Path.GetDirectoryName(tmp.FullName));
+			Assert.That(() => ShellFileOperations.Move(item, dest, null, ShellFileOperations.OperationFlags.NoConfirmation), Throws.Nothing);
+			Assert.IsTrue(File.Exists(tmp.FullName));
 		}
 
 		[Test]
