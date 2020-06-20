@@ -3335,6 +3335,17 @@ namespace Vanara.PInvoke
 		public static extern bool SHTestTokenMembership(HTOKEN hToken, uint ulRID);
 
 		/// <summary>
+		/// UNDOCUMENTED: Use at your own risk.
+		/// <para>Updates the icon status for the Recycle Bin.</para>
+		/// </summary>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		public static extern HRESULT SHUpdateRecycleBinIcon();
+
+		/// <summary>
 		/// <para>Contains information about a system appbar message.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/ns-shellapi-_appbardata typedef struct _AppBarData { DWORD cbSize;

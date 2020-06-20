@@ -18,11 +18,13 @@ namespace Vanara.Windows.Shell
 		/// <value>The number of items.</value>
 		public static long Count => GetInfo().i64NumItems;
 
+		/// <summary>Gets the underlying <see cref="ShellFolder"/> instance.</summary>
+		/// <value>The <see cref="ShellFolder"/> instance.</value>
+		public static ShellFolder ShellFolderInstance => recycleBin ??= new ShellFolder(KNOWNFOLDERID.FOLDERID_RecycleBinFolder);
+
 		/// <summary>Gets the total size of all items in the Recycle Bin.</summary>
 		/// <value>The total size of all items in the Recycle Bin.</value>
 		public static long Size => GetInfo().i64Size;
-
-		private static ShellFolder ShellFolder => recycleBin ??= new ShellFolder(KNOWNFOLDERID.FOLDERID_RecycleBinFolder);
 
 		/// <summary>Deletes the specified file or directory to the Recycle Bin.</summary>
 		/// <param name="path">The full path of the file or directory.</param>
@@ -56,7 +58,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets all the <see cref="ShellItem"/> references at the top level of the Recycle Bin.</summary>
 		/// <returns>A sequence of <see cref="ShellItem"/> objects at the top level of the Recycle Bin.</returns>
-		public static IEnumerable<ShellItem> GetItems() => ShellFolder;
+		public static IEnumerable<ShellItem> GetItems() => ShellFolderInstance;
 
 		/// <summary>Restores the specified deleted item to it's original location.</summary>
 		/// <param name="deletedItem">
@@ -79,7 +81,7 @@ namespace Vanara.Windows.Shell
 			{
 				foreach (var item in deletedItems)
 				{
-					if (item.Parent != ShellFolder) throw new InvalidOperationException("Unable to restore a ShellItem that is not in the Recycle Bin.");
+					if (item.Parent != ShellFolderInstance) throw new InvalidOperationException("Unable to restore a ShellItem that is not in the Recycle Bin.");
 					using var sf = new ShellFolder(Path.GetDirectoryName(item.Name));
 					sop.QueueMoveOperation(item, sf, Path.GetFileName(item.Name));
 				}
@@ -89,6 +91,8 @@ namespace Vanara.Windows.Shell
 			finally
 			{
 				sop.PostMoveItem -= OnPost;
+				// Call the undocumented function to reset the icon. On Win10, it won't do it on its own.
+				try { SHUpdateRecycleBinIcon(); } catch { }
 			}
 
 			void OnPost(object sender, ShellFileOperations.ShellFileOpEventArgs e) => hr = e.Result;

@@ -15,12 +15,12 @@ namespace Vanara.Windows.Shell.Tests
 	[TestFixture]
 	public class RecycleBinTests
 	{
+		const string tempDir = "C:\\Temp";
+		const string tempDir2 = "D:\\";
+
 		[Test]
 		public void RecycleBinEnumTest()
 		{
-			const string tempDir = "C:\\Temp";
-			const string tempDir2 = "D:\\";
-
 			// Setup files to delete
 			var paths = new Stack<string>();
 			var sb = new StringBuilder(Kernel32.MAX_PATH);
@@ -58,13 +58,33 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void DelRestoreFolderTest()
 		{
-			const string dir = @"C:\Temp\";
+			const string dir = @"C:\Temp\Fonts\";
 			RecycleBin.DeleteToRecycleBin(dir);
 			Assert.That(RecycleBin.Count, Is.GreaterThan(0L));
 			TestContext.WriteLine($"cnt={RecycleBin.Count}; sz={RecycleBin.Size}");
 			RecycleBin.RestoreAll();
 			Assert.That(RecycleBin.Count, Is.EqualTo(0L));
 			Assert.IsTrue(Directory.Exists(dir));
+		}
+
+		[Test]
+		public void EmptyTest()
+		{
+			Assert.That(RecycleBin.Count, Is.EqualTo(0L));
+
+			// Setup files to delete
+			for (int i = 0; i < 5; i++)
+				RecycleBin.DeleteToRecycleBin(Path.GetTempFileName());
+
+			Assert.That(() => RecycleBin.Empty(false, false, false), Throws.Nothing);
+			Assert.That(RecycleBin.Count, Is.EqualTo(0L));
+
+			// Setup files to delete
+			for (int i = 0; i < 5; i++)
+				RecycleBin.DeleteToRecycleBin(Path.GetTempFileName());
+
+			Assert.That(() => RecycleBin.Empty(), Throws.Nothing);
+			Assert.That(RecycleBin.Count, Is.EqualTo(0L));
 		}
 	}
 }
