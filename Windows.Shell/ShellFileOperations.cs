@@ -82,98 +82,144 @@ namespace Vanara.Windows.Shell
 		public enum OperationFlags : uint
 		{
 			/// <summary>
-			/// The pTo member specifies multiple destination files (one for each source file in pFrom) rather than one directory where all source files are to
-			/// be deposited.
+			/// The pTo member specifies multiple destination files (one for each source file in pFrom) rather than one directory where all
+			/// source files are to be deposited.
 			/// </summary>
 			MultiDestFiles = FILEOP_FLAGS.FOF_MULTIDESTFILES,
+
 			/// <summary>Do not display a progress dialog box.</summary>
 			Silent = FILEOP_FLAGS.FOF_SILENT,
-			/// <summary>Give the item being operated on a new name in a move, copy, or rename operation if an item with the target name already exists.</summary>
+
+			/// <summary>
+			/// Give the item being operated on a new name in a move, copy, or rename operation if an item with the target name already exists.
+			/// </summary>
 			RenameOnCollision = FILEOP_FLAGS.FOF_RENAMEONCOLLISION,
+
 			/// <summary>Respond with Yes to All for any dialog box that is displayed.</summary>
 			NoConfirmation = FILEOP_FLAGS.FOF_NOCONFIRMATION,
+
 			/// <summary>
-			/// If FOF_RENAMEONCOLLISION is specified and any files were renamed, assign a name mapping object that contains their old and new names to the
-			/// hNameMappings member. This object must be freed using SHFreeNameMappings when it is no longer needed.
+			/// If FOF_RENAMEONCOLLISION is specified and any files were renamed, assign a name mapping object that contains their old and
+			/// new names to the hNameMappings member. This object must be freed using SHFreeNameMappings when it is no longer needed.
 			/// </summary>
 			WantMappingHandle = FILEOP_FLAGS.FOF_WANTMAPPINGHANDLE,
+
 			/// <summary>
 			/// Preserve undo information, if possible.
 			/// <para>Prior to Windows Vista, operations could be undone only from the same process that performed the original operation.</para>
 			/// <para>
-			/// In Windows Vista and later systems, the scope of the undo is a user session. Any process running in the user session can undo another operation.
-			/// The undo state is held in the Explorer.exe process, and as long as that process is running, it can coordinate the undo functions.
+			/// In Windows Vista and later systems, the scope of the undo is a user session. Any process running in the user session can
+			/// undo another operation. The undo state is held in the Explorer.exe process, and as long as that process is running, it can
+			/// coordinate the undo functions.
 			/// </para>
 			/// <para>If the source file parameter does not contain fully qualified path and file names, this flag is ignored.</para>
 			/// </summary>
 			AllowUndo = FILEOP_FLAGS.FOF_ALLOWUNDO,
+
 			/// <summary>Perform the operation only on files (not on folders) if a wildcard file name (*.*) is specified.</summary>
 			FilesOnly = FILEOP_FLAGS.FOF_FILESONLY,
+
 			/// <summary>Display a progress dialog box but do not show individual file names as they are operated on.</summary>
 			SimpleProgress = FILEOP_FLAGS.FOF_SIMPLEPROGRESS,
+
 			/// <summary>Do not confirm the creation of a new folder if the operation requires one to be created.</summary>
 			NoConfirmMkDir = FILEOP_FLAGS.FOF_NOCONFIRMMKDIR,
+
 			/// <summary>
-			/// Do not display a message to the user if an error occurs. If this flag is set without FOFX_EARLYFAILURE, any error is treated as if the user had
-			/// chosen Ignore or Continue in a dialog box. It halts the current action, sets a flag to indicate that an action was aborted, and proceeds with the
-			/// rest of the operation.
+			/// Do not display a message to the user if an error occurs. If this flag is set without FOFX_EARLYFAILURE, any error is treated
+			/// as if the user had chosen Ignore or Continue in a dialog box. It halts the current action, sets a flag to indicate that an
+			/// action was aborted, and proceeds with the rest of the operation.
 			/// </summary>
 			NoErrorUI = FILEOP_FLAGS.FOF_NOERRORUI,
+
 			/// <summary>Do not copy the security attributes of the item.</summary>
 			NoCopySecurityAttribs = FILEOP_FLAGS.FOF_NOCOPYSECURITYATTRIBS,
+
 			/// <summary>Only operate in the local folder. Do not operate recursively into subdirectories.</summary>
 			NoRecursion = FILEOP_FLAGS.FOF_NORECURSION,
+
 			/// <summary>Do not move connected items as a group. Only move the specified files.</summary>
 			NoConnectedElements = FILEOP_FLAGS.FOF_NO_CONNECTED_ELEMENTS,
+
 			/// <summary>
-			/// Send a warning if a file or folder is being destroyed during a delete operation rather than recycled. This flag partially overrides FOF_NOCONFIRMATION.
+			/// Send a warning if a file or folder is being destroyed during a delete operation rather than recycled. This flag partially
+			/// overrides FOF_NOCONFIRMATION.
 			/// </summary>
 			WantNukeWarning = FILEOP_FLAGS.FOF_WANTNUKEWARNING,
+
+			/// <summary>Don't display any UI at all.</summary>
+			NoUI = FILEOP_FLAGS.FOF_NO_UI,
+
 			/// <summary>
-			/// Walk into Shell namespace junctions. By default, junctions are not entered. For more information on junctions, see Specifying a Namespace
-			/// Extension's Location.
+			/// Walk into Shell namespace junctions. By default, junctions are not entered. For more information on junctions, see
+			/// Specifying a Namespace Extension's Location.
 			/// </summary>
 			NoSkipJunctions = FILEOP_FLAGS.FOFX_NOSKIPJUNCTIONS,
+
 			/// <summary>If possible, create a hard link rather than a new instance of the file in the destination.</summary>
 			PreferHardLink = FILEOP_FLAGS.FOFX_PREFERHARDLINK,
-			/// <summary>If an operation requires elevated rights and the FOF_NOERRORUI flag is set to disable error UI, display a UAC UI prompt nonetheless.</summary>
-			ShowElevationPrompt = FILEOP_FLAGS.FOFX_SHOWELEVATIONPROMPT,
+
 			/// <summary>
-			/// If FOFX_EARLYFAILURE is set together with FOF_NOERRORUI, the entire set of operations is stopped upon encountering any error in any operation.
-			/// This flag is valid only when FOF_NOERRORUI is set.
+			/// If an operation requires elevated rights and the FOF_NOERRORUI flag is set to disable error UI, display a UAC UI prompt nonetheless.
+			/// </summary>
+			ShowElevationPrompt = FILEOP_FLAGS.FOFX_SHOWELEVATIONPROMPT,
+
+			/// <summary>
+			/// Introduced in Windows 8. When a file is deleted, send it to the Recycle Bin rather than permanently deleting it.
+			/// </summary>
+			RecycleOnDelete = FILEOP_FLAGS.FOFX_RECYCLEONDELETE,
+
+			/// <summary>
+			/// If FOFX_EARLYFAILURE is set together with FOF_NOERRORUI, the entire set of operations is stopped upon encountering any error
+			/// in any operation. This flag is valid only when FOF_NOERRORUI is set.
 			/// </summary>
 			EarlyFailure = FILEOP_FLAGS.FOFX_EARLYFAILURE,
+
 			/// <summary>
-			/// Rename collisions in such a way as to preserve file name extensions. This flag is valid only when FOF_RENAMEONCOLLISION is also set.
+			/// Rename collisions in such a way as to preserve file name extensions. This flag is valid only when FOF_RENAMEONCOLLISION is
+			/// also set.
 			/// </summary>
 			PreserveFileExtensions = FILEOP_FLAGS.FOFX_PRESERVEFILEEXTENSIONS,
+
 			/// <summary>
-			/// Keep the newer file or folder, based on the Date Modified property, if a collision occurs. This is done automatically with no prompt UI presented
-			/// to the user.
+			/// Keep the newer file or folder, based on the Date Modified property, if a collision occurs. This is done automatically with
+			/// no prompt UI presented to the user.
 			/// </summary>
 			KeepNewerFile = FILEOP_FLAGS.FOFX_KEEPNEWERFILE,
+
 			/// <summary>Do not use copy hooks.</summary>
 			NoCopyHooks = FILEOP_FLAGS.FOFX_NOCOPYHOOKS,
+
 			/// <summary>Do not allow the progress dialog to be minimized.</summary>
 			NoMinimizeBox = FILEOP_FLAGS.FOFX_NOMINIMIZEBOX,
+
 			/// <summary>
-			/// Copy the security attributes of the source item to the destination item when performing a cross-volume move operation. Without this flag, the
-			/// destination item receives the security attributes of its new folder.
+			/// Copy the security attributes of the source item to the destination item when performing a cross-volume move operation.
+			/// Without this flag, the destination item receives the security attributes of its new folder.
 			/// </summary>
 			MoveACLsAcrossVolumes = FILEOP_FLAGS.FOFX_MOVEACLSACROSSVOLUMES,
+
 			/// <summary>Do not display the path of the source item in the progress dialog.</summary>
 			DontDisplaySourcePath = FILEOP_FLAGS.FOFX_DONTDISPLAYSOURCEPATH,
+
 			/// <summary>Do not display the path of the destination item in the progress dialog.</summary>
 			DontDisplayDestPath = FILEOP_FLAGS.FOFX_DONTDISPLAYDESTPATH,
+
 			/// <summary>
-			/// Introduced in Windows Vista SP1. The user expects a requirement for rights elevation, so do not display a dialog box asking for a confirmation of
-			/// the elevation.
+			/// Introduced in Windows Vista SP1. The user expects a requirement for rights elevation, so do not display a dialog box asking
+			/// for a confirmation of the elevation.
 			/// </summary>
 			RequireElevation = FILEOP_FLAGS.FOFX_REQUIREELEVATION,
-			/// <summary>Introduced in Windows 8. The file operation was user-invoked and should be placed on the undo stack. This flag is preferred to FOF_ALLOWUNDO.</summary>
+
+			/// <summary>
+			/// Introduced in Windows 8. The file operation was user-invoked and should be placed on the undo stack. This flag is preferred
+			/// to FOF_ALLOWUNDO.
+			/// </summary>
 			AddUndoRecord = FILEOP_FLAGS.FOFX_ADDUNDORECORD,
+
 			/// <summary>Introduced in Windows 7. Display a Downloading instead of Copying message in the progress dialog.</summary>
 			CopyAsDownload = FILEOP_FLAGS.FOFX_COPYASDOWNLOAD,
+
 			/// <summary>Introduced in Windows 7. Do not display the location line in the progress dialog.</summary>
 			DontDisplayLocations = FILEOP_FLAGS.FOFX_DONTDISPLAYLOCATIONS,
 		}
@@ -184,32 +230,46 @@ namespace Vanara.Windows.Shell
 		{
 			/// <summary>Fail if the destination already exists, unless TSF_OVERWRITE_EXIST is specified. This is a default behavior.</summary>
 			Normal = TRANSFER_SOURCE_FLAGS.TSF_NORMAL,
+
 			/// <summary>Fail if the destination already exists, unless TSF_OVERWRITE_EXIST is specified. This is a default behavior</summary>
 			FailExist = TRANSFER_SOURCE_FLAGS.TSF_FAIL_EXIST,
+
 			/// <summary>Rename with auto-name generation if the destination already exists.</summary>
 			RenameExist = TRANSFER_SOURCE_FLAGS.TSF_RENAME_EXIST,
+
 			/// <summary>Overwrite or merge with the destination.</summary>
 			OverwriteExist = TRANSFER_SOURCE_FLAGS.TSF_OVERWRITE_EXIST,
+
 			/// <summary>Allow creation of a decrypted destination.</summary>
 			AllowDecryption = TRANSFER_SOURCE_FLAGS.TSF_ALLOW_DECRYPTION,
+
 			/// <summary>No discretionary access control list (DACL), system access control list (SACL), or owner.</summary>
 			NoSecurity = TRANSFER_SOURCE_FLAGS.TSF_NO_SECURITY,
+
 			/// <summary>
-			/// Copy the creation time as part of the copy. This can be useful for a move operation that is being used as a copy and delete operation (TSF_MOVE_AS_COPY_DELETE).
+			/// Copy the creation time as part of the copy. This can be useful for a move operation that is being used as a copy and delete
+			/// operation (TSF_MOVE_AS_COPY_DELETE).
 			/// </summary>
 			CopyCreationTime = TRANSFER_SOURCE_FLAGS.TSF_COPY_CREATION_TIME,
+
 			/// <summary>Copy the last write time as part of the copy.</summary>
 			CopyWriteTime = TRANSFER_SOURCE_FLAGS.TSF_COPY_WRITE_TIME,
+
 			/// <summary>Assign write, read, and delete permissions as share mode.</summary>
 			UseFullAccess = TRANSFER_SOURCE_FLAGS.TSF_USE_FULL_ACCESS,
+
 			/// <summary>Recycle on file delete, if possible.</summary>
 			DeleteRecycleIfPossible = TRANSFER_SOURCE_FLAGS.TSF_DELETE_RECYCLE_IF_POSSIBLE,
+
 			/// <summary>Hard link to the desired source (not required). This avoids a normal copy operation.</summary>
 			CopyHardLink = TRANSFER_SOURCE_FLAGS.TSF_COPY_HARD_LINK,
+
 			/// <summary>Copy the localized name.</summary>
 			CopyLocalizedName = TRANSFER_SOURCE_FLAGS.TSF_COPY_LOCALIZED_NAME,
+
 			/// <summary>Move as a copy and delete operation.</summary>
 			MoveAsCopyDelete = TRANSFER_SOURCE_FLAGS.TSF_MOVE_AS_COPY_DELETE,
+
 			/// <summary>Suspend Shell events.</summary>
 			SuspendShellEvents = TRANSFER_SOURCE_FLAGS.TSF_SUSPEND_SHELLEVENTS,
 		}
@@ -245,8 +305,8 @@ namespace Vanara.Windows.Shell
 		/// <param name="source">A <see cref="ShellItem"/> that specifies the source item.</param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the copy of the item.</param>
 		/// <param name="newName">
-		/// An optional new name for the item after it has been copied. This can be <see langword="null"/>. If <see langword="null"/>, the name of the
-		/// destination item is the same as the source.
+		/// An optional new name for the item after it has been copied. This can be <see langword="null"/>. If <see langword="null"/>, the
+		/// name of the destination item is the same as the source.
 		/// </param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Copy(ShellItem source, ShellFolder dest, string newName = null, OperationFlags options = defaultOptions)
@@ -270,7 +330,9 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Copies a set of items to a specified destination using the Shell to provide progress and error dialogs.</summary>
-		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances that represent the group of items to be copied.</param>
+		/// <param name="sourceItems">
+		/// An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances that represent the group of items to be copied.
+		/// </param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the copy of the items.</param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Copy(IEnumerable<ShellItem> sourceItems, ShellFolder dest, OperationFlags options = defaultOptions)
@@ -326,7 +388,9 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Deletes a set of items using the Shell to provide progress and error dialogs.</summary>
-		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be deleted.</param>
+		/// <param name="sourceItems">
+		/// An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be deleted.
+		/// </param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Delete(IEnumerable<ShellItem> sourceItems, OperationFlags options = defaultOptions)
 		{
@@ -352,8 +416,8 @@ namespace Vanara.Windows.Shell
 		/// <param name="source">A string that specifies the source item's full file path.</param>
 		/// <param name="dest">A string that specifies the full path of the destination folder to contain the copy of the item.</param>
 		/// <param name="newName">
-		/// An optional new name for the item in its new location. This can be <see langword="null"/>. If <see langword="null"/>, the name of the destination
-		/// item is the same as the source.
+		/// An optional new name for the item in its new location. This can be <see langword="null"/>. If <see langword="null"/>, the name
+		/// of the destination item is the same as the source.
 		/// </param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Move(string source, string dest, string newName = null, OperationFlags options = defaultOptions)
@@ -367,8 +431,8 @@ namespace Vanara.Windows.Shell
 		/// <param name="source">A <see cref="ShellItem"/> that specifies the source item.</param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the moved item.</param>
 		/// <param name="newName">
-		/// An optional new name for the item in its new location. This can be <see langword="null"/>. If <see langword="null"/>, the name of the destination
-		/// item is the same as the source.
+		/// An optional new name for the item in its new location. This can be <see langword="null"/>. If <see langword="null"/>, the name
+		/// of the destination item is the same as the source.
 		/// </param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Move(ShellItem source, ShellFolder dest, string newName = null, OperationFlags options = defaultOptions)
@@ -391,7 +455,9 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Moves a set of items to a specified destination using the Shell to provide progress and error dialogs.</summary>
-		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be moved.</param>
+		/// <param name="sourceItems">
+		/// An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be moved.
+		/// </param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the moved items.</param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Move(IEnumerable<ShellItem> sourceItems, ShellFolder dest, OperationFlags options = defaultOptions)
@@ -421,13 +487,19 @@ namespace Vanara.Windows.Shell
 		/// <param name="template">
 		/// The name of the template file (for example Excel9.xls) that the new item is based on, stored in one of the following locations:
 		/// <list type="bullet">
-		/// <item><description>CSIDL_COMMON_TEMPLATES. The default path for this folder is %ALLUSERSPROFILE%\Templates.</description></item>
-		/// <item><description>CSIDL_TEMPLATES. The default path for this folder is %USERPROFILE%\Templates.</description></item>
-		/// <item><description>%SystemRoot%\shellnew</description></item>
+		/// <item>
+		/// <description>CSIDL_COMMON_TEMPLATES. The default path for this folder is %ALLUSERSPROFILE%\Templates.</description>
+		/// </item>
+		/// <item>
+		/// <description>CSIDL_TEMPLATES. The default path for this folder is %USERPROFILE%\Templates.</description>
+		/// </item>
+		/// <item>
+		/// <description>%SystemRoot%\shellnew</description>
+		/// </item>
 		/// </list>
 		/// <para>
-		/// This is a string used to specify an existing file of the same type as the new file, containing the minimal content that an application wants to
-		/// include in any new file.
+		/// This is a string used to specify an existing file of the same type as the new file, containing the minimal content that an
+		/// application wants to include in any new file.
 		/// </para>
 		/// <para>This parameter is normally <see langword="null"/> to specify a new, blank file.</para>
 		/// </param>
@@ -477,9 +549,12 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>
-		/// Renames a set of items that are to be given a new display name using the Shell to provide progress and error dialogs. All items are given the same name.
+		/// Renames a set of items that are to be given a new display name using the Shell to provide progress and error dialogs. All items
+		/// are given the same name.
 		/// </summary>
-		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be renamed.</param>
+		/// <param name="sourceItems">
+		/// An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be renamed.
+		/// </param>
 		/// <param name="newName">The new display name of the items.</param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Rename(IEnumerable<ShellItem> sourceItems, string newName, OperationFlags options = defaultOptions)
@@ -511,9 +586,9 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Executes all selected operations.</summary>
 		/// <remarks>
-		/// This method is called last to execute those actions that have been specified earlier by calling their individual methods. For instance,
-		/// <see cref="QueueRenameOperation(ShellItem, string)"/> does not rename the item, it simply sets the parameters. The actual renaming is done when you
-		/// call PerformOperations.
+		/// This method is called last to execute those actions that have been specified earlier by calling their individual methods. For
+		/// instance, <see cref="QueueRenameOperation(ShellItem, string)"/> does not rename the item, it simply sets the parameters. The
+		/// actual renaming is done when you call PerformOperations.
 		/// </remarks>
 		public void PerformOperations()
 		{
@@ -524,7 +599,8 @@ namespace Vanara.Windows.Shell
 		/// <summary>Declares a set of properties and values to be set on an item.</summary>
 		/// <param name="item">The item to receive the new property values.</param>
 		/// <param name="props">
-		/// An <see cref="ShellItemPropertyUpdates"/>, which contains a dictionary of objects that specify the properties to be set and their new values.
+		/// An <see cref="ShellItemPropertyUpdates"/>, which contains a dictionary of objects that specify the properties to be set and
+		/// their new values.
 		/// </param>
 		public void QueueApplyPropertiesOperation(ShellItem item, ShellItemPropertyUpdates props)
 		{
@@ -538,7 +614,8 @@ namespace Vanara.Windows.Shell
 		/// An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances that represent the group of items to which to apply the properties.
 		/// </param>
 		/// <param name="props">
-		/// An <see cref="ShellItemPropertyUpdates"/>, which contains a dictionary of objects that specify the properties to be set and their new values.
+		/// An <see cref="ShellItemPropertyUpdates"/>, which contains a dictionary of objects that specify the properties to be set and
+		/// their new values.
 		/// </param>
 		public void QueueApplyPropertiesOperation(IEnumerable<ShellItem> items, ShellItemPropertyUpdates props)
 		{
@@ -551,8 +628,8 @@ namespace Vanara.Windows.Shell
 		/// <param name="source">A <see cref="ShellItem"/> that specifies the source item.</param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the copy of the item.</param>
 		/// <param name="newName">
-		/// An optional new name for the item after it has been copied. This can be <see langword="null"/>. If <see langword="null"/>, the name of the
-		/// destination item is the same as the source.
+		/// An optional new name for the item after it has been copied. This can be <see langword="null"/>. If <see langword="null"/>, the
+		/// name of the destination item is the same as the source.
 		/// </param>
 		public void QueueCopyOperation(ShellItem source, ShellFolder dest, string newName = null)
 		{
@@ -561,7 +638,9 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Declares a set of items that are to be copied to a specified destination.</summary>
-		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances that represent the group of items to be copied.</param>
+		/// <param name="sourceItems">
+		/// An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances that represent the group of items to be copied.
+		/// </param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the copy of the items.</param>
 		public void QueueCopyOperation(IEnumerable<ShellItem> sourceItems, ShellFolder dest)
 		{
@@ -578,7 +657,9 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Declares a set of items that are to be deleted.</summary>
-		/// <param name="items">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be deleted.</param>
+		/// <param name="items">
+		/// An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be deleted.
+		/// </param>
 		public void QueueDeleteOperation(IEnumerable<ShellItem> items)
 		{
 			op.DeleteItems(new ShellItemArray(items).IShellItemArray);
@@ -589,8 +670,8 @@ namespace Vanara.Windows.Shell
 		/// <param name="source">A <see cref="ShellItem"/> that specifies the source item.</param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the moved item.</param>
 		/// <param name="newName">
-		/// An optional new name for the item in its new location. This can be <see langword="null"/>. If <see langword="null"/>, the name of the destination
-		/// item is the same as the source.
+		/// An optional new name for the item in its new location. This can be <see langword="null"/>. If <see langword="null"/>, the name
+		/// of the destination item is the same as the source.
 		/// </param>
 		public void QueueMoveOperation(ShellItem source, ShellFolder dest, string newName = null)
 		{
@@ -599,7 +680,9 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Declares a set of items that are to be moved to a specified destination.</summary>
-		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be moved.</param>
+		/// <param name="sourceItems">
+		/// An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be moved.
+		/// </param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the moved items.</param>
 		public void QueueMoveOperation(IEnumerable<ShellItem> sourceItems, ShellFolder dest)
 		{
@@ -614,13 +697,19 @@ namespace Vanara.Windows.Shell
 		/// <param name="template">
 		/// The name of the template file (for example Excel9.xls) that the new item is based on, stored in one of the following locations:
 		/// <list type="bullet">
-		/// <item><description>CSIDL_COMMON_TEMPLATES. The default path for this folder is %ALLUSERSPROFILE%\Templates.</description></item>
-		/// <item><description>CSIDL_TEMPLATES. The default path for this folder is %USERPROFILE%\Templates.</description></item>
-		/// <item><description>%SystemRoot%\shellnew</description></item>
+		/// <item>
+		/// <description>CSIDL_COMMON_TEMPLATES. The default path for this folder is %ALLUSERSPROFILE%\Templates.</description>
+		/// </item>
+		/// <item>
+		/// <description>CSIDL_TEMPLATES. The default path for this folder is %USERPROFILE%\Templates.</description>
+		/// </item>
+		/// <item>
+		/// <description>%SystemRoot%\shellnew</description>
+		/// </item>
 		/// </list>
 		/// <para>
-		/// This is a string used to specify an existing file of the same type as the new file, containing the minimal content that an application wants to
-		/// include in any new file.
+		/// This is a string used to specify an existing file of the same type as the new file, containing the minimal content that an
+		/// application wants to include in any new file.
 		/// </para>
 		/// <para>This parameter is normally <see langword="null"/> to specify a new, blank file.</para>
 		/// </param>
@@ -640,7 +729,9 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Declares a set of items that are to be given a new display name. All items are given the same name.</summary>
-		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be renamed.</param>
+		/// <param name="sourceItems">
+		/// An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be renamed.
+		/// </param>
 		/// <param name="newName">The new display name of the items.</param>
 		public void QueueRenameOperation(IEnumerable<ShellItem> sourceItems, string newName)
 		{
@@ -649,7 +740,9 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
-		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+		/// <param name="disposing">
+		/// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
+		/// </param>
 		protected virtual void Dispose(bool disposing)
 		{
 			if (!disposedValue)
@@ -683,12 +776,15 @@ namespace Vanara.Windows.Shell
 			/// <summary>Gets the name of the template.</summary>
 			/// <value>The name of the template.</value>
 			public string TemplateName { get; protected set; }
+
 			/// <summary>Gets the file attributes.</summary>
 			/// <value>The file attributes.</value>
 			public System.IO.FileAttributes FileAttributes { get; protected set; }
 		}
 
-		/// <summary>Arguments supplied to events from <see cref="ShellFileOperations"/>. Depending on the event, some properties may not be set.</summary>
+		/// <summary>
+		/// Arguments supplied to events from <see cref="ShellFileOperations"/>. Depending on the event, some properties may not be set.
+		/// </summary>
 		/// <seealso cref="System.EventArgs"/>
 		public class ShellFileOpEventArgs : EventArgs
 		{
@@ -705,18 +801,23 @@ namespace Vanara.Windows.Shell
 			/// <summary>Gets the destination folder.</summary>
 			/// <value>The destination folder.</value>
 			public ShellItem DestFolder { get; protected set; }
+
 			/// <summary>Gets the destination item.</summary>
 			/// <value>The destination item.</value>
 			public ShellItem DestItem { get; protected set; }
+
 			/// <summary>Gets the tranfer flag values.</summary>
 			/// <value>The flags.</value>
 			public TransferFlags Flags { get; protected set; }
+
 			/// <summary>Gets the name of the item.</summary>
 			/// <value>The item name.</value>
 			public string Name { get; protected set; }
+
 			/// <summary>Gets the result of the operation.</summary>
 			/// <value>The result.</value>
 			public HRESULT Result { get; protected set; }
+
 			/// <summary>Gets the source item.</summary>
 			/// <value>The source item.</value>
 			public ShellItem SourceItem { get; protected set; }
@@ -730,11 +831,16 @@ namespace Vanara.Windows.Shell
 		{
 			private readonly ShellFileOperations parent;
 
-			public OpSink(ShellFileOperations ops) { parent = ops; }
+			public OpSink(ShellFileOperations ops)
+			{
+				parent = ops;
+			}
 
 			public void FinishOperations(HRESULT hrResult) => parent.FinishOperations?.Invoke(parent, new ShellFileOpEventArgs(0, null, null, null, null, hrResult));
 
-			public void PauseTimer() { }
+			public void PauseTimer()
+			{
+			}
 
 			public void PostCopyItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, HRESULT hrCopy, IShellItem psiNewlyCreated) =>
 				parent.PostCopyItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, psiDestinationFolder, psiNewlyCreated, pszNewName, hrCopy));
@@ -765,9 +871,13 @@ namespace Vanara.Windows.Shell
 
 			public void PreRenameItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName) => parent.PreRenameItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, null, null, pszNewName));
 
-			public void ResetTimer() { }
+			public void ResetTimer()
+			{
+			}
 
-			public void ResumeTimer() { }
+			public void ResumeTimer()
+			{
+			}
 
 			public void StartOperations() => parent.StartOperations?.Invoke(parent, EventArgs.Empty);
 
@@ -776,9 +886,9 @@ namespace Vanara.Windows.Shell
 	}
 
 	/// <summary>
-	/// A dictionary of properties that can be used to set or update property values on Shell items via the
-	/// <see cref="ShellFileOperations.QueueApplyPropertiesOperation(ShellItem, ShellItemPropertyUpdates)"/> method. This class wraps the
-	/// <see cref="IPropertyChangeArray"/> COM interface.
+	/// A dictionary of properties that can be used to set or update property values on Shell items via the <see
+	/// cref="ShellFileOperations.QueueApplyPropertiesOperation(ShellItem, ShellItemPropertyUpdates)"/> method. This class wraps the <see
+	/// cref="IPropertyChangeArray"/> COM interface.
 	/// </summary>
 	/// <seealso cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>
 	/// <seealso cref="IDisposable"/>
@@ -799,7 +909,10 @@ namespace Vanara.Windows.Shell
 		/// <value>The <see cref="IPropertyChangeArray"/> value.</value>
 		public IPropertyChangeArray IPropertyChangeArray => changes;
 
-		/// <summary>Gets an <see cref="System.Collections.Generic.ICollection{T}"/> containing the keys of the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</summary>
+		/// <summary>
+		/// Gets an <see cref="System.Collections.Generic.ICollection{T}"/> containing the keys of the <see
+		/// cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.
+		/// </summary>
 		public ICollection<PROPERTYKEY> Keys
 		{
 			get
@@ -814,7 +927,10 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		/// <summary>Gets an <see cref="System.Collections.Generic.ICollection{T}"/> containing the values in the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</summary>
+		/// <summary>
+		/// Gets an <see cref="System.Collections.Generic.ICollection{T}"/> containing the values in the <see
+		/// cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.
+		/// </summary>
 		public ICollection<object> Values
 		{
 			get
@@ -849,6 +965,7 @@ namespace Vanara.Windows.Shell
 				return new KeyValuePair<PROPERTYKEY, object>(p.Item.GetPropertyKey(), pv.Value);
 			}
 		}
+
 		/// <summary>Adds an element with the provided key and value to the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</summary>
 		/// <param name="key">The object to use as the key of the element to add.</param>
 		/// <param name="value">The object to use as the value of the element to add.</param>
@@ -864,9 +981,13 @@ namespace Vanara.Windows.Shell
 				changes.RemoveAt(i);
 		}
 
-		/// <summary>Determines whether the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with the specified key.</summary>
+		/// <summary>
+		/// Determines whether the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with the specified key.
+		/// </summary>
 		/// <param name="key">The key to locate in the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</param>
-		/// <returns>true if the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with the key; otherwise, false.</returns>
+		/// <returns>
+		/// true if the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with the key; otherwise, false.
+		/// </returns>
 		public bool ContainsKey(PROPERTYKEY key) => changes.IsKeyInArray(key).Succeeded;
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
@@ -877,7 +998,8 @@ namespace Vanara.Windows.Shell
 		/// <summary>Removes the element with the specified key from the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</summary>
 		/// <param name="key">The key of the element to remove.</param>
 		/// <returns>
-		/// true if the element is successfully removed; otherwise, false. This method also returns false if <paramref name="key"/> was not found in the original <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.
+		/// true if the element is successfully removed; otherwise, false. This method also returns false if <paramref name="key"/> was not
+		/// found in the original <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.
 		/// </returns>
 		public bool Remove(PROPERTYKEY key)
 		{
@@ -889,11 +1011,12 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the value associated with the specified key.</summary>
 		/// <param name="key">The key whose value to get.</param>
 		/// <param name="value">
-		/// When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the
-		/// <paramref name="value"/> parameter. This parameter is passed uninitialized.
+		/// When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the
+		/// type of the <paramref name="value"/> parameter. This parameter is passed uninitialized.
 		/// </param>
 		/// <returns>
-		/// true if the object that implements <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with the specified key; otherwise, false.
+		/// true if the object that implements <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with
+		/// the specified key; otherwise, false.
 		/// </returns>
 		public bool TryGetValue(PROPERTYKEY key, out object value)
 		{

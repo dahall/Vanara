@@ -60,24 +60,15 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="path">The file system path of the item.</param>
-		public ShellFolder(string path) : base(path)
-		{
-			iShellFolder = GetInstance();
-		}
+		public ShellFolder(string path) : base(path) => iShellFolder = GetInstance();
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="knownFolder">A known folder value.</param>
-		public ShellFolder(KNOWNFOLDERID knownFolder) : base(knownFolder)
-		{
-			iShellFolder = GetInstance();
-		}
+		public ShellFolder(KNOWNFOLDERID knownFolder) : base(knownFolder) => iShellFolder = GetInstance();
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="idList">The ID list.</param>
-		public ShellFolder(PIDL idList) : base(idList)
-		{
-			iShellFolder = GetInstance();
-		}
+		public ShellFolder(PIDL idList) : base(idList) => iShellFolder = GetInstance();
 
 		/// <summary>Initializes a new instance of the <see cref="ShellFolder"/> class.</summary>
 		/// <param name="shellItem">A ShellItem instance whose IsFolder property is <c>true</c>.</param>
@@ -86,10 +77,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="ShellFolder"/> class.</summary>
-		internal ShellFolder(IShellItem iShellItem) : base(iShellItem)
-		{
-			iShellFolder = GetInstance();
-		}
+		internal ShellFolder(IShellItem iShellItem) : base(iShellItem) => iShellFolder = GetInstance();
 
 		/// <summary>Initializes a new instance of the <see cref="ShellFolder"/> class.</summary>
 		protected ShellFolder()
@@ -98,7 +86,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets a reference to the primary Desktop.</summary>
 		/// <value>The desktop instance.</value>
-		public static ShellFolder Desktop => desktop ?? (desktop = new ShellFolder(KNOWNFOLDERID.FOLDERID_Desktop));
+		public static ShellFolder Desktop => desktop ??= new ShellFolder(KNOWNFOLDERID.FOLDERID_Desktop);
 
 		/// <summary>Gets the <see cref="ShellItem"/> with the specified child name.</summary>
 		/// <value>The <see cref="ShellItem"/> instance matching <paramref name="childName"/>.</value>
@@ -225,8 +213,8 @@ namespace Vanara.Windows.Shell
 		/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		internal static HWND IWin2Ptr(System.Windows.Forms.IWin32Window wnd, bool desktopIfNull = true) => wnd?.Handle ?? User32.FindWindow("Progman", null);
+		internal static HWND IWin2Ptr(System.Windows.Forms.IWin32Window wnd, bool desktopIfNull = true) => wnd?.Handle ?? (desktopIfNull ? User32.FindWindow("Progman", null) : default);
 
-		private IShellFolder GetInstance() => (IShellFolder)iShellItem.BindToHandler(null, BHID.BHID_SFObject.Guid(), typeof(IShellFolder).GUID);
+		private IShellFolder GetInstance() => iShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());
 	}
 }

@@ -669,14 +669,67 @@ namespace Vanara.PInvoke
 
 			/// <summary>Requests an object that can be used to obtain information from or interact with a folder object.</summary>
 			/// <param name="hwndOwner">
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>
 			/// A handle to the owner window. If you have implemented a custom folder view object, your folder view window should be created
 			/// as a child of hwndOwner.
+			/// </para>
 			/// </param>
-			/// <param name="riid">A reference to the IID of the interface to retrieve through ppv, typically IID_IShellView.</param>
+			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>A reference to the IID of the interface to retrieve through ppv, typically IID_IShellView.</para>
+			/// </param>
 			/// <returns>
+			/// <para>Type: <c>void**</c></para>
+			/// <para>
 			/// When this method returns successfully, contains the interface pointer requested in riid. This is typically IShellView. See
 			/// the Remarks section for more details.
+			/// </para>
 			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// To support this request, create an object that exposes the interface indicated by riid and return a pointer to that interface.
+			/// </para>
+			/// <para>
+			/// The primary purpose of this method is to provide Windows Explorer with the folder object's folder view object. Windows
+			/// Explorer requests a folder view object by setting riid to IID_IShellView. The folder view object displays the contents of
+			/// the folder in the Windows Explorer folder view. The folder view object must be independent of the Shell folder object,
+			/// because Windows Explorer may call this method more than once to create multiple folder view objects. A new view object must
+			/// be created each time this method is called. Your folder object can respond in one of two ways to this request. It can:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>Create a custom folder view object and return a pointer to its IShellView interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>Create a system folder view object and return a pointer to its IShellView interface.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// This method is also used to request objects that expose one of several optional interfaces, including IContextMenu or
+			/// IExtractIcon. In this context, <c>CreateViewObject</c> is similar in usage to IShellFolder::GetUIObjectOf. However, you call
+			/// <c>IShellFolder::GetUIObjectOf</c> to request an object for one of the items contained by a folder. Call
+			/// <c>IShellFolder::CreateViewObject</c> to request an object for the folder itself. The most commonly requested interfaces are:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>IQueryInfo</term>
+			/// </item>
+			/// <item>
+			/// <term>IShellDetails</term>
+			/// </item>
+			/// <item>
+			/// <term>IDropTarget</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// We recommend that you use the <c>IID_PPV_ARGS</c> macro, defined in Objbase.h, to package the riid and ppv parameters. This
+			/// macro provides the correct IID based on the interface pointed to by the value in ppv, which eliminates the possibility of a
+			/// coding error in riid that could lead to unexpected results.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-createviewobject
+			// HRESULT CreateViewObject( HWND hwndOwner, REFIID riid, void **ppv );
 			[return: MarshalAs(UnmanagedType.Interface)]
 			object CreateViewObject(HWND hwndOwner, in Guid riid);
 
@@ -953,14 +1006,65 @@ namespace Vanara.PInvoke
 
 			/// <summary>Requests an object that can be used to obtain information from or interact with a folder object.</summary>
 			/// <param name="hwndOwner">
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>
 			/// A handle to the owner window. If you have implemented a custom folder view object, your folder view window should be created
 			/// as a child of hwndOwner.
+			/// </para>
 			/// </param>
-			/// <param name="riid">A reference to the IID of the interface to retrieve through ppv, typically IID_IShellView.</param>
+			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>A reference to the IID of the interface to retrieve through ppv, typically IID_IShellView.</para>
+			/// </param>
 			/// <returns>
+			/// <para>Type: <c>void**</c></para>
+			/// <para>
 			/// When this method returns successfully, contains the interface pointer requested in riid. This is typically IShellView. See
 			/// the Remarks section for more details.
+			/// </para>
 			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// To support this request, create an object that exposes the interface indicated by riid and return a pointer to that interface.
+			/// </para>
+			/// <para>
+			/// The primary purpose of this method is to provide Windows Explorer with the folder object's folder view object. Windows
+			/// Explorer requests a folder view object by setting riid to IID_IShellView. The folder view object displays the contents of
+			/// the folder in the Windows Explorer folder view. The folder view object must be independent of the Shell folder object,
+			/// because Windows Explorer may call this method more than once to create multiple folder view objects. A new view object must
+			/// be created each time this method is called. Your folder object can respond in one of two ways to this request. It can:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>Create a custom folder view object and return a pointer to its IShellView interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>Create a system folder view object and return a pointer to its IShellView interface.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// This method is also used to request objects that expose one of several optional interfaces, including IContextMenu or
+			/// IExtractIcon. In this context, <c>CreateViewObject</c> is similar in usage to IShellFolder::GetUIObjectOf. However, you call
+			/// <c>IShellFolder::GetUIObjectOf</c> to request an object for one of the items contained by a folder. Call
+			/// <c>IShellFolder::CreateViewObject</c> to request an object for the folder itself. The most commonly requested interfaces are:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>IQueryInfo</term>
+			/// </item>
+			/// <item>
+			/// <term>IShellDetails</term>
+			/// </item>
+			/// <item>
+			/// <term>IDropTarget</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// We recommend that you use the <c>IID_PPV_ARGS</c> macro, defined in Objbase.h, to package the riid and ppv parameters. This
+			/// macro provides the correct IID based on the interface pointed to by the value in ppv, which eliminates the possibility of a
+			/// coding error in riid that could lead to unexpected results.
+			/// </para>
+			/// </remarks>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			new object CreateViewObject(HWND hwndOwner, in Guid riid);
 
@@ -1070,7 +1174,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>Requests a pointer to an interface that allows a client to enumerate the available search objects.</summary>
 			/// <returns>The address of a pointer to an enumerator object's IEnumExtraSearch interface.</returns>
-			[return: MarshalAs(UnmanagedType.IUnknown)]
 			IEnumExtraSearch EnumSearches();
 
 			/// <summary>Gets the default sorting and display columns.</summary>
@@ -1078,7 +1181,7 @@ namespace Vanara.PInvoke
 			/// <param name="pSort">A pointer to a value that receives the index of the default sorted column.</param>
 			/// <param name="pDisplay">A pointer to a value that receives the index of the default display column.</param>
 			[PreserveSig]
-			void GetDefaultColumn(uint dwRes, out uint pSort, out uint pDisplay);
+			void GetDefaultColumn([Optional] uint dwRes, out uint pSort, out uint pDisplay);
 
 			/// <summary>Gets the default state for a specified column.</summary>
 			/// <param name="iColumn">An integer that specifies the column number.</param>
@@ -1232,13 +1335,49 @@ namespace Vanara.PInvoke
 		public static T BindToStorage<T>(this IShellFolder sf, [In] PIDL pidl, [In, Optional] IBindCtx pbc) where T : class => (T)sf.BindToStorage(pidl, pbc, typeof(T).GUID);
 
 		/// <summary>Extension method to simplify using the <see cref="IShellFolder.CreateViewObject"/> method.</summary>
-		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <typeparam name="T">
+		/// <para>This is typically IShellView.</para>
+		/// <para>
+		/// This method is also used to request objects that expose one of several optional interfaces, including IContextMenu or
+		/// IExtractIcon. In this context, <c>CreateViewObject</c> is similar in usage to IShellFolder::GetUIObjectOf. However, you call
+		/// <c>IShellFolder::GetUIObjectOf</c> to request an object for one of the items contained by a folder. Call
+		/// <c>IShellFolder::CreateViewObject</c> to request an object for the folder itself. The most commonly requested interfaces are:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>IQueryInfo</term>
+		/// </item>
+		/// <item>
+		/// <term>IShellDetails</term>
+		/// </item>
+		/// <item>
+		/// <term>IDropTarget</term>
+		/// </item>
+		/// </list>
+		/// </typeparam>
 		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
 		/// <param name="hwndOwner">
 		/// A handle to the owner window. If you have implemented a custom folder view object, your folder view window should be created as
 		/// a child of hwndOwner.
 		/// </param>
-		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		/// <remarks>
+		/// <para>To support this request, create an object that exposes the interface indicated by riid and return a pointer to that interface.</para>
+		/// <para>
+		/// The primary purpose of this method is to provide Windows Explorer with the folder object's folder view object. Windows Explorer
+		/// requests a folder view object by setting riid to IID_IShellView. The folder view object displays the contents of the folder in
+		/// the Windows Explorer folder view. The folder view object must be independent of the Shell folder object, because Windows
+		/// Explorer may call this method more than once to create multiple folder view objects. A new view object must be created each time
+		/// this method is called. Your folder object can respond in one of two ways to this request. It can:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Create a custom folder view object and return a pointer to its IShellView interface.</term>
+		/// </item>
+		/// <item>
+		/// <term>Create a system folder view object and return a pointer to its IShellView interface.</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
 		public static T CreateViewObject<T>(this IShellFolder sf, HWND hwndOwner) where T : class => (T)sf.CreateViewObject(hwndOwner, typeof(T).GUID);
 
 		/// <summary>
@@ -1393,5 +1532,50 @@ namespace Vanara.PInvoke
 		[PInvokeData("shobjidl_core.h")]
 		[ComImport, Guid("F3364BA0-65B9-11CE-A9BA-00AA004AE837"), ClassInterface(ClassInterfaceType.None)]
 		public class ShellFSFolder { }
+
+		/// <summary>CLSID_NetworkDomain</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("46e06680-4bf0-11d1-83ee-00a0c90dc849"), ClassInterface(ClassInterfaceType.None)]
+		public class NetworkDomain { }
+
+		/// <summary>CLSID_NetworkServer</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("c0542a90-4bf0-11d1-83ee-00a0c90dc849"), ClassInterface(ClassInterfaceType.None)]
+		public class NetworkServer { }
+
+		/// <summary>CLSID_NetworkShare</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("54a754c0-4bf1-11d1-83ee-00a0c90dc849"), ClassInterface(ClassInterfaceType.None)]
+		public class NetworkShare { }
+
+		/// <summary>CLSID_MyComputer</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("20D04FE0-3AEA-1069-A2D8-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
+		public class MyComputer { }
+
+		/// <summary>CLSID_Internet</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("871C5380-42A0-1069-A2EA-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
+		public class Internet { }
+
+		/// <summary>CLSID_RecycleBin</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("645FF040-5081-101B-9F08-00AA002F954E"), ClassInterface(ClassInterfaceType.None)]
+		public class RecycleBin { }
+
+		/// <summary>CLSID_ControlPanel</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("21EC2020-3AEA-1069-A2DD-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
+		public class ControlPanel { }
+
+		/// <summary>CLSID_Printers</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("2227A280-3AEA-1069-A2DE-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
+		public class Printers { }
+
+		/// <summary>CLSID_MyDocuments</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("450D8FBA-AD25-11D0-98A8-0800361B1103"), ClassInterface(ClassInterfaceType.None)]
+		public class MyDocuments { }
 	}
 }

@@ -47,6 +47,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RecycleBinTests.cs" />
     <Compile Include="WallpaperTests.cs" />
     <Compile Include="ShellLinkTests.cs" />
     <Compile Include="ShellSearchTests.cs" />
