@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.PInvoke
@@ -24,10 +25,20 @@ namespace Vanara.PInvoke
 			return path;
 		}
 
-		/// <summary>Retrieves the IShellItem associated with a <see cref="KNOWNFOLDERID"/>.</summary>
+		/// <summary>Retrieves the IKnownFolder associated with a <see cref="KNOWNFOLDERID"/>.</summary>
 		/// <param name="id">The known folder.</param>
-		/// <returns>The <see cref="IShellItem"/> instance.</returns>
+		/// <returns>The <see cref="IKnownFolder"/> instance.</returns>
 		public static IKnownFolder GetIKnownFolder(this KNOWNFOLDERID id) => new IKnownFolderManager().GetFolder(id.Guid());
+
+		/// <summary>Retrieves the IShellFolder associated with a <see cref="KNOWNFOLDERID"/>.</summary>
+		/// <param name="id">The known folder.</param>
+		/// <returns>The <see cref="IShellFolder"/> instance.</returns>
+		public static IShellFolder GetIShellFolder(this KNOWNFOLDERID id)
+		{
+			using var desktop = ComReleaserFactory.Create(new ShellDesktop() as IShellFolder);
+			using var pidl = id.PIDL();
+			return desktop.Item.BindToObject<IShellFolder>(pidl);
+		}
 
 		/// <summary>Retrieves the IShellItem associated with a <see cref="KNOWNFOLDERID"/>.</summary>
 		/// <param name="id">The known folder.</param>
