@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -107,7 +108,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>
 		/// The items are non-enumerated items and should be hidden. They are not returned through an enumerator such as that created by
-		/// theIShellFolder::EnumObjects method.
+		/// the IShellFolder::EnumObjects method.
 		/// </summary>
 		NonEnumerated = 0x00100000,
 
@@ -688,23 +689,44 @@ namespace Vanara.Windows.Shell
 			if (bhidLookup == null)
 				bhidLookup = new Dictionary<Type, BHID>
 				{
-					//{ typeof(IShellFolder??, IStream??), BHID.BHID_SFObject },
+					{ typeof(IIdentityName), BHID.BHID_SFObject },
+					{ typeof(IShellFolder), BHID.BHID_SFObject },
+
 					{ typeof(IShellLinkW), BHID.BHID_SFUIObject },
-					//{ typeof(Others??), BHID.BHID_SFUIObject },
-					//{ typeof(IShellItemResources??, IShellView??), BHID.BHID_SFViewObject },
+					{ typeof(IContextMenu), BHID.BHID_SFUIObject },
+					{ typeof(IContextMenu2), BHID.BHID_SFUIObject },
+					{ typeof(IDropTarget), BHID.BHID_SFUIObject },
+					{ typeof(IExtractIcon), BHID.BHID_SFUIObject },
+					{ typeof(IQueryInfo), BHID.BHID_SFUIObject },
+
+					{ typeof(IShellItemResources), BHID.BHID_SFViewObject },
+					{ typeof(IShellFolder2), BHID.BHID_SFViewObject },
+
 					{ typeof(IStorage), BHID.BHID_Storage },
+
 					{ typeof(IStream), BHID.BHID_Stream },
-					//{ typeof(IShellItem??), BHID.BHID_LinkTargetItem },
+
+					{ typeof(IShellItem), BHID.BHID_LinkTargetItem },
+
 					//{ typeof(IEnumShellItems), BHID.BHID_StorageEnum }, // Can't have multiple keys
-					// TODO: { typeof(ITransferSource), BHID.BHID_Transfer },
-					// TODO: { typeof(ITransferDestination), BHID.BHID_Transfer },
+
+					{ typeof(ITransferSource), BHID.BHID_Transfer },
+
+					{ typeof(ITransferDestination), BHID.BHID_Transfer },
+
 					{ typeof(IPropertyStore), BHID.BHID_PropertyStore },
+
 					{ typeof(IPropertyStoreFactory), BHID.BHID_PropertyStore },
-					{ typeof(IExtractImage), BHID.BHID_ThumbnailHandler },
+
 					{ typeof(IThumbnailProvider), BHID.BHID_ThumbnailHandler },
+					{ typeof(IExtractImage), BHID.BHID_ThumbnailHandler },
+
 					{ typeof(IEnumShellItems), BHID.BHID_EnumItems },
+
 					{ typeof(IDataObject), BHID.BHID_DataObject },
+
 					{ typeof(IQueryAssociations), BHID.BHID_AssociationArray },
+
 					// IGNORE: Not supported { typeof(IFilter), BHID.BHID_Filter },
 					{ typeof(IEnumAssocHandlers), BHID.BHID_EnumAssocHandlers },
 					// TODO: Win8+ { typeof(IRandomAccessStream), BHID.BHID_RandomAccessStream },
