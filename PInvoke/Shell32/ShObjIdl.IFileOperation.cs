@@ -101,6 +101,11 @@ namespace Vanara.PInvoke
 			FOFX_SHOWELEVATIONPROMPT = 0x00040000,
 
 			/// <summary>
+			/// Introduced in Windows 8. When a file is deleted, send it to the Recycle Bin rather than permanently deleting it.
+			/// </summary>
+			FOFX_RECYCLEONDELETE = 0x00080000,
+
+			/// <summary>
 			/// If FOFX_EARLYFAILURE is set together with FOF_NOERRORUI, the entire set of operations is stopped upon encountering any error
 			/// in any operation. This flag is valid only when FOF_NOERRORUI is set.
 			/// </summary>
