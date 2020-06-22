@@ -296,6 +296,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>A value representing the query options.</summary>
 		[PInvokeData("windns.h")]
+		[Flags]
 		public enum DNS_QUERY_OPTIONS : ulong
 		{
 			/// <summary/>
@@ -345,6 +346,9 @@ namespace Vanara.PInvoke
 
 			/// <summary/>
 			DNS_QUERY_DUAL_ADDR = 0x00004000,
+
+			/// <summary>Undocumented flag used by ipconfig to display DNS cache.</summary>
+			DNS_QUERY_LOCAL = 0x00008000,
 
 			/// <summary/>
 			DNS_QUERY_DONT_RESET_TTL_VALUES = 0x00100000,
