@@ -1812,7 +1812,7 @@ namespace Vanara.PInvoke
 		// DNS_NSEC3_DATA NSEC3; DNS_NSEC3_DATA Nsec3; DNS_NSEC3PARAM_DATA NSEC3PARAM; DNS_NSEC3PARAM_DATA Nsec3Param; DNS_TLSA_DATA TLSA;
 		// DNS_TLSA_DATA Tlsa; DNS_UNKNOWN_DATA UNKNOWN; DNS_UNKNOWN_DATA Unknown; PBYTE pDataPtr; } Data; } DNS_RECORDA, *PDNS_RECORDA;
 		[PInvokeData("windns.h", MSDNShortId = "ab7b96a5-346f-4e01-bb2a-885f44764590")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Size = 88)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
 		public struct DNS_RECORD
 		{
 			/// <summary>A pointer to the next <c>DNS_RECORD</c> structure.</summary>
@@ -1846,8 +1846,14 @@ namespace Vanara.PInvoke
 			/// <summary>Reserved. Do not use.</summary>
 			public uint dwReserved;
 
-			/// <summary>The DNS RR data type is determined by <c>wType</c> and is one of the following members:</summary>
+			// The next entries are contrived so that the structure works on either 32 or 64 systems. The total size of the variable is 40 bytes on X86 and 56 on X64.
 			private IntPtr _Data;
+			private IntPtr _fillPtr1;
+			private IntPtr _fillPtr2;
+			private IntPtr _fillPtr3;
+			private ulong _fill8byte0;
+			private ulong _fill8byte1;
+			private ulong _fill8byte2;
 
 			/// <summary>Gets the data value based on the value of <see cref="wType"/>.</summary>
 			/// <returns>The value of <see cref="Data"/>.</returns>
@@ -1862,23 +1868,37 @@ namespace Vanara.PInvoke
 				}
 				set
 				{
-					DataPtr.Write(value);
-					wDataLength = (ushort)Marshal.SizeOf(value);
+					wDataLength = (ushort)DataPtr.Write(value, 0, Marshal.SizeOf(typeof(DNS_RECORD)) - 16 - (IntPtr.Size * 2));
 				}
 			}
 
-			private IntPtr DataPtr
+			/// <summary>Gets the pointer to the 'Data' union.</summary>
+			/// <value>The 'Data' union pointer.</value>
+			public IntPtr DataPtr
 			{
 				get
 				{
 					unsafe
 					{
-						fixed (void* p = &pNext)
+						fixed (void* p = &_Data)
 						{
-							return (IntPtr)((byte*)p + 32);
+							return (IntPtr)p;
 						}
 					}
 				}
+			}
+
+			/// <summary>Gets the data as a strongly-typed structure.</summary>
+			/// <typeparam name="T">The type of the structure to extract.</typeparam>
+			/// <returns>The resulting type.</returns>
+			/// <exception cref="System.ArgumentException">The current record does not support retrieving the supplied type param.</exception>
+			public T GetDataAsType<T>() where T : struct
+			{
+				if (wType == 0 || wDataLength == 0) return default;
+				if (!CorrespondingTypeAttribute.CanGet<DNS_TYPE>(typeof(T), out var tType) || tType != wType)
+					throw new ArgumentException("The current record does not support retrieving the supplied type param.");
+				var ptr = DataPtr;
+				return ptr.Convert<T>(wDataLength, CharSet.Unicode);
 			}
 
 			/*
