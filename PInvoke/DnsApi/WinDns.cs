@@ -1849,6 +1849,9 @@ namespace Vanara.PInvoke
 			/// <summary>The DNS RR data type is determined by <c>wType</c> and is one of the following members:</summary>
 			private IntPtr _Data;
 
+			/// <summary>Raw data access.</summary>
+			private IntPtr RawData => _Data;
+
 			/// <summary>Gets the data value based on the value of <see cref="wType"/>.</summary>
 			/// <returns>The value of <see cref="Data"/>.</returns>
 			public object Data
