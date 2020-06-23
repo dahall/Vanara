@@ -937,7 +937,7 @@ namespace Vanara.PInvoke
 			public IntPtr pNext;
 
 			/// <summary>DNS Record Name.</summary>
-		    public StrPtrUni pszName;
+			public StrPtrUni pszName;
 
 			/// <summary>DNS Record Type.</summary>
 			public DNS_TYPE wType;
@@ -1873,9 +1873,9 @@ namespace Vanara.PInvoke
 				{
 					unsafe
 					{
-						fixed (void* p = &pNext)
+						fixed (void* p = &_Data)
 						{
-							return (IntPtr)((byte*)p + 32);
+							return (IntPtr)p;
 						}
 					}
 				}

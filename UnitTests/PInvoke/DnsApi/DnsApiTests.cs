@@ -2,6 +2,8 @@ using Microsoft.Win32.SafeHandles;
 using NUnit.Framework;
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Vanara.Extensions;
@@ -247,6 +249,39 @@ namespace Vanara.PInvoke.Tests
 			buf.WriteValues();
 			if (sz <= mem.Size)
 				TestContext.Write(string.Join(":", mem.ToArray<byte>((int)sz - 12, 12)));
+		}
+
+		[Test]
+		public void DnsCacheDataTable()
+		{
+			DnsGetCacheDataTable(out var dnsCacheDataTable);
+			foreach (var dnsCacheEntry in dnsCacheDataTable)
+			{
+				DnsQuery(
+					dnsCacheEntry.pszName,
+					dnsCacheEntry.wType,
+					DNS_QUERY_OPTIONS.DNS_QUERY_NO_WIRE_QUERY | DNS_QUERY_OPTIONS.DNS_QUERY_LOCAL,
+					IntPtr.Zero,
+					out var dnsRecords,
+					IntPtr.Zero);
+
+				foreach (var dnsRecord in dnsRecords)
+				{
+					switch (dnsRecord.wType)
+					{
+						case DNS_TYPE.DNS_TYPE_A:
+							var ipv4 = new IPAddress(((DNS_A_DATA)dnsRecord.Data).IpAddress.S_un_b);
+							Assert.That(ipv4.AddressFamily, Is.EqualTo(AddressFamily.InterNetwork));
+							Assert.That(ipv4.ToString(), Does.Not.EndWith("0.0"));
+							break;
+						case DNS_TYPE.DNS_TYPE_AAAA:
+							var ipv6 = new IPAddress(((DNS_AAAA_DATA)dnsRecord.Data).Ip6Address.bytes);
+							Assert.That(ipv6.AddressFamily, Is.EqualTo(AddressFamily.InterNetworkV6));
+							Assert.That(ipv6.ToString(), Does.Not.EndWith("0.0"));
+							break;
+					}
+				}
+			}
 		}
 	}
 }
