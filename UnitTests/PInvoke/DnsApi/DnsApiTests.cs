@@ -1,8 +1,11 @@
 using Microsoft.Win32.SafeHandles;
 using NUnit.Framework;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Vanara.Extensions;
@@ -253,28 +256,94 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void DnsCacheDataTable()
 		{
-			Assert.That(DnsGetCacheDataTable(out var dnsCacheDataTable), ResultIs.Successful);
-			foreach (var dnsCacheEntry in dnsCacheDataTable)
-			{
-				if (DnsQuery(dnsCacheEntry.pszName, dnsCacheEntry.wType, DNS_QUERY_OPTIONS.DNS_QUERY_NO_WIRE_QUERY | DNS_QUERY_OPTIONS.DNS_QUERY_LOCAL, default, out var dnsRecords).Failed)
-					continue;
+			// Iterate using DNS_RECORD structure
+			var cacheUsingStruct = DnsIterateDnsCache(dnsRecords => dnsRecords);
 
-				foreach (var dnsRecord in dnsRecords.GetRecordPointers().Select(p => p.ToStructure<DNS_RECORD>()))
+			// Iterate using pointer
+			var cacheUsingPointer = DnsIterateDnsCache(dnsRecords =>
+				dnsRecords.GetRecordPointers().Select(dnsRecordPtr => dnsRecordPtr.ToStructure<DNS_RECORD>()));
+
+			// Iterate using raw DNS_RECORD structure
+			var cacheUsingRawStruct = DnsIterateDnsCache(DnsIterateRecords);
+
+			Assert.That(cacheUsingStruct, Is.EquivalentTo(cacheUsingPointer));
+			Assert.That(cacheUsingPointer, Is.EquivalentTo(cacheUsingRawStruct));
+		}
+
+		private static List<IPAddress> DnsIterateDnsCache(Func<SafeDnsRecordList, IEnumerable<DNS_RECORD>> iterateRecords)
+		{
+			var ret = new List<IPAddress>();
+
+			DnsGetCacheDataTable(out var dnsCacheDataTable);
+			foreach (DNS_CACHE_ENTRY dnsCacheEntry in dnsCacheDataTable)
+			{
+				DnsQuery(
+					dnsCacheEntry.pszName,
+					dnsCacheEntry.wType,
+					DNS_QUERY_OPTIONS.DNS_QUERY_NO_WIRE_QUERY | DNS_QUERY_OPTIONS.DNS_QUERY_LOCAL,
+					IntPtr.Zero,
+					out var dnsRecords,
+					IntPtr.Zero);
+
+				foreach (var dnsRecord in iterateRecords(dnsRecords))
 				{
 					switch (dnsRecord.wType)
 					{
 						case DNS_TYPE.DNS_TYPE_A:
-							var ipv4 = new IPAddress(((DNS_A_DATA)dnsRecord.Data).IpAddress.S_un_b);
-							Assert.That(ipv4.AddressFamily, Is.EqualTo(System.Net.Sockets.AddressFamily.InterNetwork));
-							Assert.That(ipv4.ToString(), Does.Not.EndWith("0.0"));
+							ret.Add(new IPAddress(((DNS_A_DATA)dnsRecord.Data).IpAddress.S_un_b));
 							break;
 						case DNS_TYPE.DNS_TYPE_AAAA:
-							var ipv6 = new IPAddress(((DNS_AAAA_DATA)dnsRecord.Data).Ip6Address.bytes);
-							Assert.That(ipv6.AddressFamily, Is.EqualTo(System.Net.Sockets.AddressFamily.InterNetworkV6));
-							Assert.That(ipv6.ToString(), Does.Not.EndWith("0.0"));
+							ret.Add(new IPAddress(((DNS_AAAA_DATA)dnsRecord.Data).Ip6Address.bytes));
 							break;
 					}
 				}
+			}
+
+			return ret;
+		}
+
+		private static unsafe List<DNS_RECORD> DnsIterateRecords(SafeDnsRecordList dnsRecords)
+		{
+			var ret = new List<DNS_RECORD>();
+
+			for (var dnsRecordPtr = (RAW_DNS_RECORD*) dnsRecords.DangerousGetHandle().ToPointer();
+				dnsRecordPtr != null;
+				dnsRecordPtr = (RAW_DNS_RECORD*) dnsRecordPtr->pNext)
+			{
+				ret.Add(new DNS_RECORD
+				{
+					pNext = dnsRecordPtr->pNext,
+					pName = Marshal.PtrToStringUni(dnsRecordPtr->pName),
+					wType = dnsRecordPtr->wType,
+					wDataLength = dnsRecordPtr->wDataLength,
+					Flags = dnsRecordPtr->Flags,
+					dwTtl = dnsRecordPtr->dwTtl,
+					dwReserved = dnsRecordPtr->dwReserved,
+					Data = dnsRecordPtr->Address
+				});
+			}
+
+			return ret;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		private struct RAW_DNS_RECORD
+		{
+			public IntPtr pNext;
+			public IntPtr pName;
+			public DNS_TYPE wType;
+			public ushort wDataLength;
+			public DNS_RECORD_FLAGS Flags;
+			public uint dwTtl;
+			public uint dwReserved;
+			public AddressData Address;
+
+			[StructLayout(LayoutKind.Sequential, Pack = 1)]
+			public struct AddressData
+			{
+				public uint Part1;
+				public uint Part2;
+				public ushort Part3;
 			}
 		}
 	}

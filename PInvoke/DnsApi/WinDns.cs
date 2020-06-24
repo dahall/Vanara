@@ -297,7 +297,7 @@ namespace Vanara.PInvoke
 		/// <summary>A value representing the query options.</summary>
 		[PInvokeData("windns.h")]
 		[Flags]
-		public enum DNS_QUERY_OPTIONS : ulong
+		public enum DNS_QUERY_OPTIONS : uint
 		{
 			/// <summary/>
 			DNS_QUERY_STANDARD = 0x00000000,
@@ -937,7 +937,7 @@ namespace Vanara.PInvoke
 			public IntPtr pNext;
 
 			/// <summary>DNS Record Name.</summary>
-		    public StrPtrUni pszName;
+			public StrPtrUni pszName;
 
 			/// <summary>DNS Record Type.</summary>
 			public DNS_TYPE wType;
@@ -1868,9 +1868,11 @@ namespace Vanara.PInvoke
 				}
 				set
 				{
-					wDataLength = (ushort)DataPtr.Write(value, 0, Marshal.SizeOf(typeof(DNS_RECORD)) - 16 - (IntPtr.Size * 2));
+					wDataLength = (ushort)DataPtr.Write(value, 0, DataSize);
 				}
 			}
+
+			private static readonly int DataSize = Marshal.SizeOf(typeof(DNS_RECORD)) - 16 - (IntPtr.Size * 2);
 
 			/// <summary>Gets the pointer to the 'Data' union.</summary>
 			/// <value>The 'Data' union pointer.</value>
