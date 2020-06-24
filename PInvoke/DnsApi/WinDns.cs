@@ -297,7 +297,7 @@ namespace Vanara.PInvoke
 		/// <summary>A value representing the query options.</summary>
 		[PInvokeData("windns.h")]
 		[Flags]
-		public enum DNS_QUERY_OPTIONS : uint
+		public enum DNS_QUERY_OPTIONS : ulong
 		{
 			/// <summary/>
 			DNS_QUERY_STANDARD = 0x00000000,
