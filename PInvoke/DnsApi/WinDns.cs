@@ -829,6 +829,11 @@ namespace Vanara.PInvoke
 			/// <summary>Reserved. Must be 0.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
 			public uint[] DnsAddrUserDword;
+
+			/// <summary>Performs an explicit conversion from <see cref="DNS_ADDR"/> to <see cref="System.Net.IPAddress"/>.</summary>
+			/// <param name="dnsAddr">The DNS address.</param>
+			/// <returns>The resulting <see cref="System.Net.IPAddress"/> instance from the conversion.</returns>
+			public static explicit operator System.Net.IPAddress(DNS_ADDR dnsAddr) => new System.Net.IPAddress(dnsAddr.MaxSa);
 		}
 
 		/// <summary>The <c>DNS_ADDR_ARRAY</c> structure stores an array of IPv4 or IPv6 addresses.</summary>
