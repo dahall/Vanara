@@ -256,25 +256,11 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void DnsCacheDataTable()
 		{
-			// Iterate using DNS_RECORD structure
-			var cacheUsingStruct = DnsIterateDnsCache(dnsRecords => dnsRecords);
-
-			// Iterate using pointer
-			var cacheUsingPointer = DnsIterateDnsCache(dnsRecords =>
-				dnsRecords.GetRecordPointers().Select(dnsRecordPtr => dnsRecordPtr.ToStructure<DNS_RECORD>()));
-
-			// Iterate using raw DNS_RECORD structure
-			var cacheUsingRawStruct = DnsIterateDnsCache(DnsIterateRecords);
-
-			Assert.That(cacheUsingStruct, Is.EquivalentTo(cacheUsingPointer));
-			Assert.That(cacheUsingPointer, Is.EquivalentTo(cacheUsingRawStruct));
-		}
-
-		private static List<IPAddress> DnsIterateDnsCache(Func<SafeDnsRecordList, IEnumerable<DNS_RECORD>> iterateRecords)
-		{
-			var ret = new List<IPAddress>();
-
+			// Ensure RAW_DNS_RECORD is the same size as defined in WinAPI
+			Assert.That(Marshal.SizeOf<RAW_DNS_RECORD>(), Is.EqualTo(Environment.Is64BitProcess ? 48 : 40));
+			
 			DnsGetCacheDataTable(out var dnsCacheDataTable);
+
 			foreach (DNS_CACHE_ENTRY dnsCacheEntry in dnsCacheDataTable)
 			{
 				DnsQuery(
@@ -285,21 +271,35 @@ namespace Vanara.PInvoke.Tests
 					out var dnsRecords,
 					IntPtr.Zero);
 
-				foreach (var dnsRecord in iterateRecords(dnsRecords))
+				// Iterate using DNS_RECORD structure
+				var cacheUsingStruct = DnsIterateDnsCache(dnsRecords).ToList();
+
+				// Iterate using pointer
+				var cacheUsingPointer = DnsIterateDnsCache(
+					dnsRecords.GetRecordPointers().Select(dnsRecordPtr => dnsRecordPtr.ToStructure<DNS_RECORD>())).ToList();
+
+				// Iterate using raw DNS_RECORD structure
+				var cacheUsingRawStruct = DnsIterateDnsCache(DnsIterateRecords(dnsRecords)).ToList();
+
+				Assert.That(cacheUsingStruct, Is.EquivalentTo(cacheUsingPointer));
+				Assert.That(cacheUsingPointer, Is.EquivalentTo(cacheUsingRawStruct));
+			}
+		}
+
+		private static IEnumerable<IPAddress> DnsIterateDnsCache(IEnumerable<DNS_RECORD> dnsRecords)
+		{
+			foreach (var dnsRecord in dnsRecords)
+			{
+				switch (dnsRecord.wType)
 				{
-					switch (dnsRecord.wType)
-					{
-						case DNS_TYPE.DNS_TYPE_A:
-							ret.Add(new IPAddress(((DNS_A_DATA)dnsRecord.Data).IpAddress.S_un_b));
-							break;
-						case DNS_TYPE.DNS_TYPE_AAAA:
-							ret.Add(new IPAddress(((DNS_AAAA_DATA)dnsRecord.Data).Ip6Address.bytes));
-							break;
-					}
+					case DNS_TYPE.DNS_TYPE_A:
+						yield return new IPAddress(((DNS_A_DATA)dnsRecord.Data).IpAddress.S_un_b);
+						break;
+					case DNS_TYPE.DNS_TYPE_AAAA:
+						yield return new IPAddress(((DNS_AAAA_DATA)dnsRecord.Data).Ip6Address.bytes);
+						break;
 				}
 			}
-
-			return ret;
 		}
 
 		private static unsafe List<DNS_RECORD> DnsIterateRecords(SafeDnsRecordList dnsRecords)
@@ -343,7 +343,7 @@ namespace Vanara.PInvoke.Tests
 			{
 				public uint Part1;
 				public uint Part2;
-				public ushort Part3;
+				public ulong Part3;
 			}
 		}
 	}

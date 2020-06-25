@@ -297,7 +297,7 @@ namespace Vanara.PInvoke
 		/// <summary>A value representing the query options.</summary>
 		[PInvokeData("windns.h")]
 		[Flags]
-		public enum DNS_QUERY_OPTIONS : ulong
+		public enum DNS_QUERY_OPTIONS : uint
 		{
 			/// <summary/>
 			DNS_QUERY_STANDARD = 0x00000000,
@@ -1722,6 +1722,9 @@ namespace Vanara.PInvoke
 			/// override <c>DNS_QUERY_STANDARD</c>
 			/// </summary>
 			public DNS_QUERY_OPTIONS QueryOptions;
+			
+			/// <summary>Query options padding.</summary>
+			public uint QueryOptionsHigh;
 
 			/// <summary>A pointer to a DNS_ADDR_ARRAY structure that contains a list of DNS servers to use in the query.</summary>
 			public IntPtr pDnsServerList;
@@ -3051,6 +3054,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>A value representing the query options. <c>DNS_QUERY_STANDARD</c> is the only supported value.</summary>
 			public DNS_QUERY_OPTIONS QueryOptions;
+			
+			/// <summary>Query options padding.</summary>
+			public uint QueryOptionsHigh;			
 
 			/// <summary>
 			/// A value that contains the interface index over which the service is to be advertised. If is 0, then all interfaces will be considered.
