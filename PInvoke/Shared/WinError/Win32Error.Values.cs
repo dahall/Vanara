@@ -8031,7 +8031,7 @@ namespace Vanara.PInvoke
 		public const uint ERROR_EVT_MAX_INSERTS_REACHED = 0x00003AB7;
 
 		/// <summary>The event definition could not be found for the event ID (%1).</summary>
-		public const uint ERROR_EVT_EVENT_DEFINITION_NOT_OUND = 0x00003AB8;
+		public const uint ERROR_EVT_EVENT_DEFINITION_NOT_FOUND = 0x00003AB8;
 
 		/// <summary>The locale-specific resource for the desired message is not present.</summary>
 		public const uint ERROR_EVT_MESSAGE_LOCALE_NOT_FOUND = 0x00003AB9;
