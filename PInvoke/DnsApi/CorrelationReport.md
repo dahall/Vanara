@@ -1,10 +1,9 @@
 ## Correlation report for dnsapi.dll  
-### Methods (97% complete, 34 of 35 functions)  
+### Methods (100% complete, 34 of 34 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DnsAcquireContextHandle_](https://www.google.com/search?num=5&q=DnsAcquireContextHandle_A+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsAcquireContextHandle](https://github.com/dahall/Vanara/search?l=C%23&q=DnsAcquireContextHandle)  
 [DnsCancelQuery](https://www.google.com/search?num=5&q=DnsCancelQuery+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsCancelQuery](https://github.com/dahall/Vanara/search?l=C%23&q=DnsCancelQuery)  
-[DnsCleanupTcpConnections](https://www.google.com/search?num=5&q=DnsCleanupTcpConnections+site%3Adocs.microsoft.com) |  |   
 [DnsExtractRecordsFromMessage_W](https://www.google.com/search?num=5&q=DnsExtractRecordsFromMessage_W+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsExtractRecordsFromMessage](https://github.com/dahall/Vanara/search?l=C%23&q=DnsExtractRecordsFromMessage)  
 [DnsFree](https://www.google.com/search?num=5&q=DnsFree+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsFree](https://github.com/dahall/Vanara/search?l=C%23&q=DnsFree)  
 [DnsFreeProxyName](https://www.google.com/search?num=5&q=DnsFreeProxyName+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsFreeProxyName](https://github.com/dahall/Vanara/search?l=C%23&q=DnsFreeProxyName)  

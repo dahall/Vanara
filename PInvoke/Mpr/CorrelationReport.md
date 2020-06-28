@@ -1,12 +1,11 @@
 ## Correlation report for mpr.dll  
-### Methods (91% complete, 22 of 24 functions)  
+### Methods (100% complete, 22 of 22 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [MultinetGetConnectionPerformance](https://www.google.com/search?num=5&q=MultinetGetConnectionPerformanceA+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.MultinetGetConnectionPerformance](https://github.com/dahall/Vanara/search?l=C%23&q=MultinetGetConnectionPerformance)  
 [WNetAddConnection](https://www.google.com/search?num=5&q=WNetAddConnectionA+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.WNetAddConnection](https://github.com/dahall/Vanara/search?l=C%23&q=WNetAddConnection)  
 [WNetAddConnection2](https://www.google.com/search?num=5&q=WNetAddConnection2A+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.WNetAddConnection2](https://github.com/dahall/Vanara/search?l=C%23&q=WNetAddConnection2)  
 [WNetAddConnection3](https://www.google.com/search?num=5&q=WNetAddConnection3A+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.WNetAddConnection3](https://github.com/dahall/Vanara/search?l=C%23&q=WNetAddConnection3)  
-[WNetAddConnection4](https://www.google.com/search?num=5&q=WNetAddConnection4A+site%3Adocs.microsoft.com) |  |   
 [WNetCancelConnection2](https://www.google.com/search?num=5&q=WNetCancelConnection2A+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.WNetCancelConnection2](https://github.com/dahall/Vanara/search?l=C%23&q=WNetCancelConnection2)  
 [WNetCloseEnum](https://www.google.com/search?num=5&q=WNetCloseEnum+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.WNetCloseEnum](https://github.com/dahall/Vanara/search?l=C%23&q=WNetCloseEnum)  
 [WNetConnectionDialog](https://www.google.com/search?num=5&q=WNetConnectionDialog+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.WNetConnectionDialog](https://github.com/dahall/Vanara/search?l=C%23&q=WNetConnectionDialog)  
@@ -25,7 +24,6 @@ Native Method | Header | Managed Method
 [WNetOpenEnum](https://www.google.com/search?num=5&q=WNetOpenEnumA+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.WNetOpenEnum](https://github.com/dahall/Vanara/search?l=C%23&q=WNetOpenEnum)  
 [WNetSetLastError](https://www.google.com/search?num=5&q=WNetSetLastErrorA+site%3Adocs.microsoft.com) | npapi.h | [Vanara.PInvoke.Mpr.WNetSetLastError](https://github.com/dahall/Vanara/search?l=C%23&q=WNetSetLastError)  
 [WNetUseConnection](https://www.google.com/search?num=5&q=WNetUseConnectionA+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.WNetUseConnection](https://github.com/dahall/Vanara/search?l=C%23&q=WNetUseConnection)  
-[WNetUseConnection4](https://www.google.com/search?num=5&q=WNetUseConnection4A+site%3Adocs.microsoft.com) |  |   
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

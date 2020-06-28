@@ -1,5 +1,5 @@
 ## Correlation report for shell32.dll, url.dll  
-### Methods (100% complete, 194 of 194 functions)  
+### Methods (100% complete, 195 of 195 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AssocCreateForClasses](https://www.google.com/search?num=5&q=AssocCreateForClasses+site%3Adocs.microsoft.com) | shell32.dll | shellapi.h | [Vanara.PInvoke.Shell32.AssocCreateForClasses](https://github.com/dahall/Vanara/search?l=C%23&q=AssocCreateForClasses)  
@@ -188,6 +188,7 @@ Native Method | Native DLL | Header | Managed Method
 [SHSimpleIDListFromPath](https://www.google.com/search?num=5&q=SHSimpleIDListFromPath+site%3Adocs.microsoft.com) | shell32.dll | shobjidl_core.h | [Vanara.PInvoke.Shell32.SHSimpleIDListFromPath](https://github.com/dahall/Vanara/search?l=C%23&q=SHSimpleIDListFromPath)  
 [SHTestTokenMembership](https://www.google.com/search?num=5&q=SHTestTokenMembership+site%3Adocs.microsoft.com) | shell32.dll | shellapi.h | [Vanara.PInvoke.Shell32.SHTestTokenMembership](https://github.com/dahall/Vanara/search?l=C%23&q=SHTestTokenMembership)  
 [SHUpdateImage](https://www.google.com/search?num=5&q=SHUpdateImageA+site%3Adocs.microsoft.com) | shell32.dll | shlobj_core.h | [Vanara.PInvoke.Shell32.SHUpdateImage](https://github.com/dahall/Vanara/search?l=C%23&q=SHUpdateImage)  
+[SHUpdateRecycleBinIcon](https://www.google.com/search?num=5&q=SHUpdateRecycleBinIcon+site%3Adocs.microsoft.com) | shell32.dll |  | [Vanara.PInvoke.Shell32.SHUpdateRecycleBinIcon](https://github.com/dahall/Vanara/search?l=C%23&q=SHUpdateRecycleBinIcon)  
 [SHValidateUNC](https://www.google.com/search?num=5&q=SHValidateUNC+site%3Adocs.microsoft.com) | shell32.dll | shlobj_core.h | [Vanara.PInvoke.Shell32.SHValidateUNC](https://github.com/dahall/Vanara/search?l=C%23&q=SHValidateUNC)  
 [SignalFileOpen](https://www.google.com/search?num=5&q=SignalFileOpen+site%3Adocs.microsoft.com) | shell32.dll | shlobj_core.h | [Vanara.PInvoke.Shell32.SignalFileOpen](https://github.com/dahall/Vanara/search?l=C%23&q=SignalFileOpen)  
 [StgMakeUniqueName](https://www.google.com/search?num=5&q=StgMakeUniqueName+site%3Adocs.microsoft.com) | shell32.dll | shlobj_core.h | [Vanara.PInvoke.Shell32.StgMakeUniqueName](https://github.com/dahall/Vanara/search?l=C%23&q=StgMakeUniqueName)  

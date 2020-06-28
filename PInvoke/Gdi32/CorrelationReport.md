@@ -1,5 +1,5 @@
 ## Correlation report for gdi32.dll  
-### Methods (97% complete, 306 of 315 functions)  
+### Methods (100% complete, 306 of 306 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AbortDoc](https://www.google.com/search?num=5&q=AbortDoc+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.AbortDoc](https://github.com/dahall/Vanara/search?l=C%23&q=AbortDoc)  
@@ -59,12 +59,6 @@ Native Method | Header | Managed Method
 [CreateRoundRectRgn](https://www.google.com/search?num=5&q=CreateRoundRectRgn+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateRoundRectRgn](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRoundRectRgn)  
 [CreateScalableFontResource](https://www.google.com/search?num=5&q=CreateScalableFontResourceA+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateScalableFontResource](https://github.com/dahall/Vanara/search?l=C%23&q=CreateScalableFontResource)  
 [CreateSolidBrush](https://www.google.com/search?num=5&q=CreateSolidBrush+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateSolidBrush](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSolidBrush)  
-[D3DKMTDisplayPortOperation](https://www.google.com/search?num=5&q=D3DKMTDisplayPortOperation+site%3Adocs.microsoft.com) |  |   
-[D3DKMTDuplicateHandle](https://www.google.com/search?num=5&q=D3DKMTDuplicateHandle+site%3Adocs.microsoft.com) |  |   
-[D3DKMTEnumAdapters3](https://www.google.com/search?num=5&q=D3DKMTEnumAdapters3+site%3Adocs.microsoft.com) |  |   
-[D3DKMTPinResources](https://www.google.com/search?num=5&q=D3DKMTPinResources+site%3Adocs.microsoft.com) |  |   
-[D3DKMTResetTrackedWorkloadStatistics](https://www.google.com/search?num=5&q=D3DKMTResetTrackedWorkloadStatistics+site%3Adocs.microsoft.com) |  |   
-[D3DKMTUnpinResources](https://www.google.com/search?num=5&q=D3DKMTUnpinResources+site%3Adocs.microsoft.com) |  |   
 [DeleteColorSpace](https://www.google.com/search?num=5&q=DeleteColorSpace+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.DeleteColorSpace](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteColorSpace)  
 [DeleteDC](https://www.google.com/search?num=5&q=DeleteDC+site%3Adocs.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.DeleteDC](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteDC)  
 [DeleteEnhMetaFile](https://www.google.com/search?num=5&q=DeleteEnhMetaFile+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.DeleteEnhMetaFile](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteEnhMetaFile)  
@@ -207,15 +201,12 @@ Native Method | Header | Managed Method
 [GetWinMetaFileBits](https://www.google.com/search?num=5&q=GetWinMetaFileBits+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetWinMetaFileBits](https://github.com/dahall/Vanara/search?l=C%23&q=GetWinMetaFileBits)  
 [GetWorldTransform](https://www.google.com/search?num=5&q=GetWorldTransform+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetWorldTransform](https://github.com/dahall/Vanara/search?l=C%23&q=GetWorldTransform)  
 [GradientFillA](https://www.google.com/search?num=5&q=GradientFillA+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GradientFill](https://github.com/dahall/Vanara/search?l=C%23&q=GradientFill)  
-[InternalDeleteObject](https://www.google.com/search?num=5&q=InternalDeleteObject+site%3Adocs.microsoft.com) |  |   
 [IntersectClipRect](https://www.google.com/search?num=5&q=IntersectClipRect+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.IntersectClipRect](https://github.com/dahall/Vanara/search?l=C%23&q=IntersectClipRect)  
 [InvertRgn](https://www.google.com/search?num=5&q=InvertRgn+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.InvertRgn](https://github.com/dahall/Vanara/search?l=C%23&q=InvertRgn)  
 [LineDDA](https://www.google.com/search?num=5&q=LineDDA+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.LineDDA](https://github.com/dahall/Vanara/search?l=C%23&q=LineDDA)  
 [LineTo](https://www.google.com/search?num=5&q=LineTo+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.LineTo](https://github.com/dahall/Vanara/search?l=C%23&q=LineTo)  
 [LPtoDP](https://www.google.com/search?num=5&q=LPtoDP+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.LPtoDP](https://github.com/dahall/Vanara/search?l=C%23&q=LPtoDP)  
 [MaskBlt](https://www.google.com/search?num=5&q=MaskBlt+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.MaskBlt](https://github.com/dahall/Vanara/search?l=C%23&q=MaskBlt)  
-[ModerncoreCreateICW](https://www.google.com/search?num=5&q=ModerncoreCreateICW+site%3Adocs.microsoft.com) |  |   
-[ModerncoreDeleteDC](https://www.google.com/search?num=5&q=ModerncoreDeleteDC+site%3Adocs.microsoft.com) |  |   
 [ModifyWorldTransform](https://www.google.com/search?num=5&q=ModifyWorldTransform+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.ModifyWorldTransform](https://github.com/dahall/Vanara/search?l=C%23&q=ModifyWorldTransform)  
 [MoveToEx](https://www.google.com/search?num=5&q=MoveToEx+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.MoveToEx](https://github.com/dahall/Vanara/search?l=C%23&q=MoveToEx)  
 [OffsetClipRgn](https://www.google.com/search?num=5&q=OffsetClipRgn+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.OffsetClipRgn](https://github.com/dahall/Vanara/search?l=C%23&q=OffsetClipRgn)  

@@ -1,5 +1,5 @@
 ## Correlation report for dwmapi.dll  
-### Methods (96% complete, 26 of 27 functions)  
+### Methods (100% complete, 26 of 26 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DwmDefWindowProc](https://www.google.com/search?num=5&q=DwmDefWindowProc+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DwmDefWindowProc](https://github.com/dahall/Vanara/search?l=C%23&q=DwmDefWindowProc)  
@@ -17,7 +17,6 @@ Native Method | Header | Managed Method
 [DwmIsCompositionEnabled](https://www.google.com/search?num=5&q=DwmIsCompositionEnabled+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DwmIsCompositionEnabled](https://github.com/dahall/Vanara/search?l=C%23&q=DwmIsCompositionEnabled)  
 [DwmpGetColorizationParameters](https://www.google.com/search?num=5&q=DwmpGetColorizationParameters+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DwmpGetColorizationParameters](https://github.com/dahall/Vanara/search?l=C%23&q=DwmpGetColorizationParameters)  
 [DwmpSetColorizationParameters](https://www.google.com/search?num=5&q=DwmpSetColorizationParameters+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DwmpSetColorizationParameters](https://github.com/dahall/Vanara/search?l=C%23&q=DwmpSetColorizationParameters)  
-[DwmpUpdateProxyWindowForCapture](https://www.google.com/search?num=5&q=DwmpUpdateProxyWindowForCapture+site%3Adocs.microsoft.com) |  |   
 [DwmQueryThumbnailSourceSize](https://www.google.com/search?num=5&q=DwmQueryThumbnailSourceSize+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DwmQueryThumbnailSourceSize](https://github.com/dahall/Vanara/search?l=C%23&q=DwmQueryThumbnailSourceSize)  
 [DwmRegisterThumbnail](https://www.google.com/search?num=5&q=DwmRegisterThumbnail+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DwmRegisterThumbnail](https://github.com/dahall/Vanara/search?l=C%23&q=DwmRegisterThumbnail)  
 [DwmRenderGesture](https://www.google.com/search?num=5&q=DwmRenderGesture+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DwmRenderGesture](https://github.com/dahall/Vanara/search?l=C%23&q=DwmRenderGesture)  

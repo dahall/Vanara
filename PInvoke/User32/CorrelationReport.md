@@ -1,5 +1,5 @@
 ## Correlation report for user32.dll  
-### Methods (99% complete, 559 of 563 functions)  
+### Methods (100% complete, 559 of 559 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ActivateKeyboardLayout](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateKeyboardLayout)  
@@ -232,7 +232,6 @@ Native Method | Header | Managed Method
 [GetPointerCursorId](https://www.google.com/search?num=5&q=GetPointerCursorId+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerCursorId](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerCursorId)  
 [GetPointerDevice](https://www.google.com/search?num=5&q=GetPointerDevice+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerDevice](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerDevice)  
 [GetPointerDeviceCursors](https://www.google.com/search?num=5&q=GetPointerDeviceCursors+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerDeviceCursors](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerDeviceCursors)  
-[GetPointerDeviceInputSpace](https://www.google.com/search?num=5&q=GetPointerDeviceInputSpace+site%3Adocs.microsoft.com) |  |   
 [GetPointerDeviceProperties](https://www.google.com/search?num=5&q=GetPointerDeviceProperties+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerDeviceProperties](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerDeviceProperties)  
 [GetPointerDeviceRects](https://www.google.com/search?num=5&q=GetPointerDeviceRects+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerDeviceRects](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerDeviceRects)  
 [GetPointerDevices](https://www.google.com/search?num=5&q=GetPointerDevices+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerDevices](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerDevices)  
@@ -313,7 +312,6 @@ Native Method | Header | Managed Method
 [InitializeTouchInjection](https://www.google.com/search?num=5&q=InitializeTouchInjection+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.InitializeTouchInjection](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeTouchInjection)  
 [InjectSyntheticPointerInput](https://www.google.com/search?num=5&q=InjectSyntheticPointerInput+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.InjectSyntheticPointerInput](https://github.com/dahall/Vanara/search?l=C%23&q=InjectSyntheticPointerInput)  
 [InjectTouchInput](https://www.google.com/search?num=5&q=InjectTouchInput+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.InjectTouchInput](https://github.com/dahall/Vanara/search?l=C%23&q=InjectTouchInput)  
-[InputSpaceRegionFromPoint](https://www.google.com/search?num=5&q=InputSpaceRegionFromPoint+site%3Adocs.microsoft.com) |  |   
 [InSendMessage](https://www.google.com/search?num=5&q=InSendMessage+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.InSendMessage](https://github.com/dahall/Vanara/search?l=C%23&q=InSendMessage)  
 [InSendMessageEx](https://www.google.com/search?num=5&q=InSendMessageEx+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.InSendMessageEx](https://github.com/dahall/Vanara/search?l=C%23&q=InSendMessageEx)  
 [InsertMenu](https://www.google.com/search?num=5&q=InsertMenuA+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.InsertMenu](https://github.com/dahall/Vanara/search?l=C%23&q=InsertMenu)  
@@ -431,7 +429,6 @@ Native Method | Header | Managed Method
 [RemoveProp](https://www.google.com/search?num=5&q=RemovePropA+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.RemoveProp](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveProp)  
 [ReplyMessage](https://www.google.com/search?num=5&q=ReplyMessage+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ReplyMessage](https://github.com/dahall/Vanara/search?l=C%23&q=ReplyMessage)  
 [ReuseDDElParam](https://www.google.com/search?num=5&q=ReuseDDElParam+site%3Adocs.microsoft.com) | dde.h | [Vanara.PInvoke.User32.ReuseDDElParam](https://github.com/dahall/Vanara/search?l=C%23&q=ReuseDDElParam)  
-[RIMQueryDevicePath](https://www.google.com/search?num=5&q=RIMQueryDevicePath+site%3Adocs.microsoft.com) |  |   
 [ScreenToClient](https://www.google.com/search?num=5&q=ScreenToClient+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.User32.ScreenToClient](https://github.com/dahall/Vanara/search?l=C%23&q=ScreenToClient)  
 [ScrollDC](https://www.google.com/search?num=5&q=ScrollDC+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ScrollDC](https://github.com/dahall/Vanara/search?l=C%23&q=ScrollDC)  
 [ScrollWindow](https://www.google.com/search?num=5&q=ScrollWindow+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ScrollWindow](https://github.com/dahall/Vanara/search?l=C%23&q=ScrollWindow)  
@@ -464,7 +461,6 @@ Native Method | Header | Managed Method
 [SetDoubleClickTime](https://www.google.com/search?num=5&q=SetDoubleClickTime+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetDoubleClickTime](https://github.com/dahall/Vanara/search?l=C%23&q=SetDoubleClickTime)  
 [SetFocus](https://www.google.com/search?num=5&q=SetFocus+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetFocus](https://github.com/dahall/Vanara/search?l=C%23&q=SetFocus)  
 [SetForegroundWindow](https://www.google.com/search?num=5&q=SetForegroundWindow+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetForegroundWindow](https://github.com/dahall/Vanara/search?l=C%23&q=SetForegroundWindow)  
-[SetFullscreenMagnifierOffsetsDWMUpdated](https://www.google.com/search?num=5&q=SetFullscreenMagnifierOffsetsDWMUpdated+site%3Adocs.microsoft.com) |  |   
 [SetGestureConfig](https://www.google.com/search?num=5&q=SetGestureConfig+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetGestureConfig](https://github.com/dahall/Vanara/search?l=C%23&q=SetGestureConfig)  
 [SetKeyboardState](https://www.google.com/search?num=5&q=SetKeyboardState+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetKeyboardState](https://github.com/dahall/Vanara/search?l=C%23&q=SetKeyboardState)  
 [SetLastErrorEx](https://www.google.com/search?num=5&q=SetLastErrorEx+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetLastErrorEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetLastErrorEx)  

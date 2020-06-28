@@ -1,5 +1,5 @@
 ## Correlation report for crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptui.dll, cryptnet.dll, cryptdlg.dll  
-### Methods (98% complete, 369 of 373 functions)  
+### Methods (100% complete, 369 of 369 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BCryptAddContextFunction](https://www.google.com/search?num=5&q=BCryptAddContextFunction+site%3Adocs.microsoft.com) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptAddContextFunction](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptAddContextFunction)  
@@ -341,13 +341,9 @@ Native Method | Native DLL | Header | Managed Method
 [SslCreateHandshakeHash](https://www.google.com/search?num=5&q=SslCreateHandshakeHash+site%3Adocs.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslCreateHandshakeHash](https://github.com/dahall/Vanara/search?l=C%23&q=SslCreateHandshakeHash)  
 [SslDecrementProviderReferenceCount](https://www.google.com/search?num=5&q=SslDecrementProviderReferenceCount+site%3Adocs.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslDecrementProviderReferenceCount](https://github.com/dahall/Vanara/search?l=C%23&q=SslDecrementProviderReferenceCount)  
 [SslDecryptPacket](https://www.google.com/search?num=5&q=SslDecryptPacket+site%3Adocs.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslDecryptPacket](https://github.com/dahall/Vanara/search?l=C%23&q=SslDecryptPacket)  
-[SslDuplicateTranscriptHash](https://www.google.com/search?num=5&q=SslDuplicateTranscriptHash+site%3Adocs.microsoft.com) | ncrypt.dll |  |   
 [SslEncryptPacket](https://www.google.com/search?num=5&q=SslEncryptPacket+site%3Adocs.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslEncryptPacket](https://github.com/dahall/Vanara/search?l=C%23&q=SslEncryptPacket)  
 [SslEnumCipherSuites](https://www.google.com/search?num=5&q=SslEnumCipherSuites+site%3Adocs.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslEnumCipherSuites](https://github.com/dahall/Vanara/search?l=C%23&q=SslEnumCipherSuites)  
 [SslEnumProtocolProviders](https://www.google.com/search?num=5&q=SslEnumProtocolProviders+site%3Adocs.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslEnumProtocolProviders](https://github.com/dahall/Vanara/search?l=C%23&q=SslEnumProtocolProviders)  
-[SslExpandBinderKey](https://www.google.com/search?num=5&q=SslExpandBinderKey+site%3Adocs.microsoft.com) | ncrypt.dll |  |   
-[SslExpandPreSharedKey](https://www.google.com/search?num=5&q=SslExpandPreSharedKey+site%3Adocs.microsoft.com) | ncrypt.dll |  |   
-[SslExpandResumptionMasterKey](https://www.google.com/search?num=5&q=SslExpandResumptionMasterKey+site%3Adocs.microsoft.com) | ncrypt.dll |  |   
 [SslExportKey](https://www.google.com/search?num=5&q=SslExportKey+site%3Adocs.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslExportKey](https://github.com/dahall/Vanara/search?l=C%23&q=SslExportKey)  
 [SslExportKeyingMaterial](https://www.google.com/search?num=5&q=SslExportKeyingMaterial+site%3Adocs.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslExportKeyingMaterial](https://github.com/dahall/Vanara/search?l=C%23&q=SslExportKeyingMaterial)  
 [SslFreeBuffer](https://www.google.com/search?num=5&q=SslFreeBuffer+site%3Adocs.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslFreeBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=SslFreeBuffer)  

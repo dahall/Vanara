@@ -1,12 +1,9 @@
 ## Correlation report for wer.dll  
-### Methods (83% complete, 15 of 18 functions)  
+### Methods (100% complete, 15 of 15 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [WerAddExcludedApplication](https://www.google.com/search?num=5&q=WerAddExcludedApplication+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerAddExcludedApplication](https://github.com/dahall/Vanara/search?l=C%23&q=WerAddExcludedApplication)  
 [WerFreeString](https://www.google.com/search?num=5&q=WerFreeString+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerFreeString](https://github.com/dahall/Vanara/search?l=C%23&q=WerFreeString)  
-[WerpGetAADDeviceToken](https://www.google.com/search?num=5&q=WerpGetAADDeviceToken+site%3Adocs.microsoft.com) |  |   
-[WerpReportSetMaxProcessHoldMilliseconds](https://www.google.com/search?num=5&q=WerpReportSetMaxProcessHoldMilliseconds+site%3Adocs.microsoft.com) |  |   
-[WerpSetAADDeviceToken](https://www.google.com/search?num=5&q=WerpSetAADDeviceToken+site%3Adocs.microsoft.com) |  |   
 [WerRemoveExcludedApplication](https://www.google.com/search?num=5&q=WerRemoveExcludedApplication+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerRemoveExcludedApplication](https://github.com/dahall/Vanara/search?l=C%23&q=WerRemoveExcludedApplication)  
 [WerReportAddDump](https://www.google.com/search?num=5&q=WerReportAddDump+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerReportAddDump](https://github.com/dahall/Vanara/search?l=C%23&q=WerReportAddDump)  
 [WerReportAddFile](https://www.google.com/search?num=5&q=WerReportAddFile+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerReportAddFile](https://github.com/dahall/Vanara/search?l=C%23&q=WerReportAddFile)  

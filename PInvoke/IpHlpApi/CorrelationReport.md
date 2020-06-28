@@ -1,5 +1,5 @@
 ## Correlation report for iphlpapi.dll  
-### Methods (98% complete, 155 of 158 functions)  
+### Methods (100% complete, 158 of 158 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AddIPAddress](https://www.google.com/search?num=5&q=AddIPAddress+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.AddIPAddress](https://github.com/dahall/Vanara/search?l=C%23&q=AddIPAddress)  
@@ -84,8 +84,8 @@ Native Method | Header | Managed Method
 [GetIpStatisticsEx](https://www.google.com/search?num=5&q=GetIpStatisticsEx+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetIpStatisticsEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetIpStatisticsEx)  
 [GetMulticastIpAddressEntry](https://www.google.com/search?num=5&q=GetMulticastIpAddressEntry+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.GetMulticastIpAddressEntry](https://github.com/dahall/Vanara/search?l=C%23&q=GetMulticastIpAddressEntry)  
 [GetMulticastIpAddressTable](https://www.google.com/search?num=5&q=GetMulticastIpAddressTable+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.GetMulticastIpAddressTable](https://github.com/dahall/Vanara/search?l=C%23&q=GetMulticastIpAddressTable)  
-[GetNetworkConnectivityHint](https://www.google.com/search?num=5&q=GetNetworkConnectivityHint+site%3Adocs.microsoft.com) |  |   
-[GetNetworkConnectivityHintForInterface](https://www.google.com/search?num=5&q=GetNetworkConnectivityHintForInterface+site%3Adocs.microsoft.com) |  |   
+[GetNetworkConnectivityHint](https://www.google.com/search?num=5&q=GetNetworkConnectivityHint+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.GetNetworkConnectivityHint](https://github.com/dahall/Vanara/search?l=C%23&q=GetNetworkConnectivityHint)  
+[GetNetworkConnectivityHintForInterface](https://www.google.com/search?num=5&q=GetNetworkConnectivityHintForInterface+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.GetNetworkConnectivityHintForInterface](https://github.com/dahall/Vanara/search?l=C%23&q=GetNetworkConnectivityHintForInterface)  
 [GetNetworkParams](https://www.google.com/search?num=5&q=GetNetworkParams+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetNetworkParams](https://github.com/dahall/Vanara/search?l=C%23&q=GetNetworkParams)  
 [GetNumberOfInterfaces](https://www.google.com/search?num=5&q=GetNumberOfInterfaces+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetNumberOfInterfaces](https://github.com/dahall/Vanara/search?l=C%23&q=GetNumberOfInterfaces)  
 [GetOwnerModuleFromPidAndInfo](https://www.google.com/search?num=5&q=GetOwnerModuleFromPidAndInfo+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetOwnerModuleFromPidAndInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetOwnerModuleFromPidAndInfo)  
@@ -133,7 +133,7 @@ Native Method | Header | Managed Method
 [LookupPersistentUdpPortReservation](https://www.google.com/search?num=5&q=LookupPersistentUdpPortReservation+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.LookupPersistentUdpPortReservation](https://github.com/dahall/Vanara/search?l=C%23&q=LookupPersistentUdpPortReservation)  
 [NotifyAddrChange](https://www.google.com/search?num=5&q=NotifyAddrChange+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.NotifyAddrChange](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyAddrChange)  
 [NotifyIpInterfaceChange](https://www.google.com/search?num=5&q=NotifyIpInterfaceChange+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.NotifyIpInterfaceChange](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyIpInterfaceChange)  
-[NotifyNetworkConnectivityHintChange](https://www.google.com/search?num=5&q=NotifyNetworkConnectivityHintChange+site%3Adocs.microsoft.com) |  |   
+[NotifyNetworkConnectivityHintChange](https://www.google.com/search?num=5&q=NotifyNetworkConnectivityHintChange+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.NotifyNetworkConnectivityHintChange](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyNetworkConnectivityHintChange)  
 [NotifyRouteChange](https://www.google.com/search?num=5&q=NotifyRouteChange+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.NotifyRouteChange](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyRouteChange)  
 [NotifyRouteChange2](https://www.google.com/search?num=5&q=NotifyRouteChange2+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.NotifyRouteChange2](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyRouteChange2)  
 [NotifyStableUnicastIpAddressTable](https://www.google.com/search?num=5&q=NotifyStableUnicastIpAddressTable+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.NotifyStableUnicastIpAddressTable](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyStableUnicastIpAddressTable)  
@@ -232,6 +232,7 @@ Native Structure | Header | Managed Structure
 [NET_PHYSICAL_LOCATION](https://www.google.com/search?num=5&q=NET_PHYSICAL_LOCATION+site%3Adocs.microsoft.com) | Ifdef.h | [Vanara.PInvoke.IpHlpApi.NET_PHYSICAL_LOCATION](https://github.com/dahall/Vanara/search?l=C%23&q=NET_PHYSICAL_LOCATION)  
 [NL_BANDWIDTH_INFORMATION](https://www.google.com/search?num=5&q=NL_BANDWIDTH_INFORMATION+site%3Adocs.microsoft.com) | nldef.h | [Vanara.PInvoke.IpHlpApi.NL_BANDWIDTH_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=NL_BANDWIDTH_INFORMATION)  
 [NL_INTERFACE_OFFLOAD_ROD](https://www.google.com/search?num=5&q=NL_INTERFACE_OFFLOAD_ROD+site%3Adocs.microsoft.com) | nldef.h | [Vanara.PInvoke.IpHlpApi.NL_INTERFACE_OFFLOAD_ROD](https://github.com/dahall/Vanara/search?l=C%23&q=NL_INTERFACE_OFFLOAD_ROD)  
+[NL_NETWORK_CONNECTIVITY_HINT](https://www.google.com/search?num=5&q=NL_NETWORK_CONNECTIVITY_HINT+site%3Adocs.microsoft.com) | nldef.h | [Vanara.PInvoke.IpHlpApi.NL_NETWORK_CONNECTIVITY_HINT](https://github.com/dahall/Vanara/search?l=C%23&q=NL_NETWORK_CONNECTIVITY_HINT)  
 [TCP_ESTATS_BANDWIDTH_ROD_v0](https://www.google.com/search?num=5&q=TCP_ESTATS_BANDWIDTH_ROD_v0+site%3Adocs.microsoft.com) | tcpestats.h | [Vanara.PInvoke.IpHlpApi.TCP_ESTATS_BANDWIDTH_ROD_v0](https://github.com/dahall/Vanara/search?l=C%23&q=TCP_ESTATS_BANDWIDTH_ROD_v0)  
 [TCP_ESTATS_BANDWIDTH_RW_v0](https://www.google.com/search?num=5&q=TCP_ESTATS_BANDWIDTH_RW_v0+site%3Adocs.microsoft.com) | tcpestats.h | [Vanara.PInvoke.IpHlpApi.TCP_ESTATS_BANDWIDTH_RW_v0](https://github.com/dahall/Vanara/search?l=C%23&q=TCP_ESTATS_BANDWIDTH_RW_v0)  
 [TCP_ESTATS_DATA_ROD_v0](https://www.google.com/search?num=5&q=TCP_ESTATS_DATA_ROD_v0+site%3Adocs.microsoft.com) | tcpestats.h | [Vanara.PInvoke.IpHlpApi.TCP_ESTATS_DATA_ROD_v0](https://github.com/dahall/Vanara/search?l=C%23&q=TCP_ESTATS_DATA_ROD_v0)  
