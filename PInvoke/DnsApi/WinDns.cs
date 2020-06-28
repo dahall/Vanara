@@ -129,12 +129,15 @@ namespace Vanara.PInvoke
 			DnsConfigPrimaryDomainName_UTF8,
 
 			/// <summary>Not currently available.</summary>
+			// Unimplemented 
 			DnsConfigAdapterDomainName_W,
 
 			/// <summary>Not currently available.</summary>
+			// Unimplemented 
 			DnsConfigAdapterDomainName_A,
 
 			/// <summary>Not currently available.</summary>
+			// Unimplemented 
 			DnsConfigAdapterDomainName_UTF8,
 
 			/// <summary>For configuring a DNS Server list on Windows 2000.</summary>
@@ -142,21 +145,23 @@ namespace Vanara.PInvoke
 			DnsConfigDnsServerList,
 
 			/// <summary>Not currently available.</summary>
+			// Unimplemented 
 			DnsConfigSearchList,
 
 			/// <summary>Not currently available.</summary>
+			// Unimplemented 
 			DnsConfigAdapterInfo,
 
 			/// <summary>Specifies that primary host name registration is enabled on Windows 2000.</summary>
-			[CorrespondingType(typeof(uint))]
+			// Unimplemented [CorrespondingType(typeof(uint))]
 			DnsConfigPrimaryHostNameRegistrationEnabled,
 
 			/// <summary>Specifies that adapter host name registration is enabled on Windows 2000.</summary>
-			[CorrespondingType(typeof(uint))]
+			// Unimplemented [CorrespondingType(typeof(uint))]
 			DnsConfigAdapterHostNameRegistrationEnabled,
 
 			/// <summary>Specifies configuration of the maximum number of address registrations on Windows 2000.</summary>
-			[CorrespondingType(typeof(uint))]
+			// Unimplemented [CorrespondingType(typeof(uint))]
 			DnsConfigAddressRegistrationMaxCount,
 
 			/// <summary>
@@ -299,61 +304,105 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum DNS_QUERY_OPTIONS : uint
 		{
-			/// <summary/>
+			/// <summary>Standard query.</summary>
 			DNS_QUERY_STANDARD = 0x00000000,
 
-			/// <summary/>
+			/// <summary>Returns truncated results. Does not retry under TCP.</summary>
 			DNS_QUERY_ACCEPT_TRUNCATED_RESPONSE = 0x00000001,
 
-			/// <summary/>
+			/// <summary>Uses TCP only for the query.</summary>
 			DNS_QUERY_USE_TCP_ONLY = 0x00000002,
 
-			/// <summary/>
+			/// <summary>
+			/// Directs the DNS server to perform an iterative query (specifically directs the DNS server not to perform recursive
+			/// resolution to resolve the query).
+			/// </summary>
 			DNS_QUERY_NO_RECURSION = 0x00000004,
 
-			/// <summary/>
+			/// <summary>Bypasses the resolver cache on the lookup.</summary>
 			DNS_QUERY_BYPASS_CACHE = 0x00000008,
 
-			/// <summary/>
+			/// <summary>
+			/// Directs DNS to perform a query on the local cache only.Windows 2000 Server and Windows 2000 Professional: This value is not
+			/// supported. For similar functionality, use DNS_QUERY_CACHE_ONLY.
+			/// </summary>
 			DNS_QUERY_NO_WIRE_QUERY = 0x00000010,
 
-			/// <summary/>
+			/// <summary>Directs DNS to ignore the local name.Windows 2000 Server and Windows 2000 Professional: This value is not supported.</summary>
 			DNS_QUERY_NO_LOCAL_NAME = 0x00000020,
 
-			/// <summary/>
+			/// <summary>
+			/// Prevents the DNS query from consulting the HOSTS file.Windows 2000 Server and Windows 2000 Professional: This value is not supported.
+			/// </summary>
 			DNS_QUERY_NO_HOSTS_FILE = 0x00000040,
 
-			/// <summary/>
+			/// <summary>
+			/// Prevents the DNS query from using NetBT for resolution.Windows 2000 Server and Windows 2000 Professional: This value is not supported.
+			/// </summary>
 			DNS_QUERY_NO_NETBT = 0x00000080,
 
-			/// <summary/>
+			/// <summary>
+			/// Directs DNS to perform a query using the network only, bypassing local information.Windows 2000 Server and Windows 2000
+			/// Professional: This value is not supported.
+			/// </summary>
 			DNS_QUERY_WIRE_ONLY = 0x00000100,
 
-			/// <summary/>
+			/// <summary>
+			/// Directs DNS to return the entire DNS response message.Windows 2000 Server and Windows 2000 Professional: This value is not supported.
+			/// </summary>
 			DNS_QUERY_RETURN_MESSAGE = 0x00000200,
 
-			/// <summary/>
+			/// <summary>
+			/// Prevents the query from using DNS and uses only Local Link Multicast Name Resolution (LLMNR).Windows Vista and Windows
+			/// Server 2008 or later.: This value is supported.
+			/// </summary>
 			DNS_QUERY_MULTICAST_ONLY = 0x00000400,
 
 			/// <summary/>
 			DNS_QUERY_NO_MULTICAST = 0x00000800,
 
-			/// <summary/>
+			/// <summary>Prevents the DNS response from attaching suffixes to the submitted name in a name resolution process.</summary>
 			DNS_QUERY_TREAT_AS_FQDN = 0x00001000,
 
-			/// <summary/>
+			/// <summary>
+			/// Windows 7 only: Do not send A type queries if IPv4 addresses are not available on an interface and do not send AAAA type
+			/// queries if IPv6 addresses are not available.
+			/// </summary>
 			DNS_QUERY_ADDRCONFIG = 0x00002000,
 
-			/// <summary/>
+			/// <summary>
+			/// Windows 7 only: Query both AAAA and A type records and return results for each. Results for A type records are mapped into
+			/// AAAA type.
+			/// </summary>
 			DNS_QUERY_DUAL_ADDR = 0x00004000,
 
 			/// <summary>Undocumented flag used by ipconfig to display DNS cache.</summary>
 			DNS_QUERY_LOCAL = 0x00008000,
 
-			/// <summary/>
+			/// <summary>
+			/// Waits for a full timeout to collect all the responses from the Local Link. If not set, the default behavior is to return
+			/// with the first response.Windows Vista and Windows Server 2008 or later.: This value is supported.
+			/// </summary>
+			DNS_QUERY_MULTICAST_WAIT = 0x00020000,
+
+			/// <summary>
+			/// Directs a test using the local machine hostname to verify name uniqueness on the same Local Link.Collects all responses even
+			/// if normal LLMNR Sender behavior is not enabled.Windows Vista and Windows Server 2008 or later.: This value is supported.
+			/// </summary>
+			DNS_QUERY_MULTICAST_VERIFY = 0x00040000,
+
+			/// <summary>
+			/// If set, and if the response contains multiple records, records are stored with the TTL corresponding to the minimum value
+			/// TTL from among all records. When this option is set, "Do not change the TTL of individual records" in the returned record
+			/// set is not modified.
+			/// </summary>
 			DNS_QUERY_DONT_RESET_TTL_VALUES = 0x00100000,
 
-			/// <summary/>
+			/// <summary>
+			/// Disables International Domain Name (IDN) encoding support in the DnsQuery, DnsQueryEx, DnsModifyRecordsInSet, and
+			/// DnsReplaceRecordSet APIs. All punycode names are treated as ASCII and will be ASCII encoded on the wire. All non-ASCII names
+			/// are encoded in UTF8 on the wire. Windows 8 or later.: This value is supported.
+			/// </summary>
 			DNS_QUERY_DISABLE_IDN_ENCODING = 0x00200000,
 
 			/// <summary/>
@@ -365,7 +414,7 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			DNS_QUERY_DNSSEC_CHECKING_DISABLED = 0x02000000,
 
-			/// <summary/>
+			/// <summary>Reserved.</summary>
 			DNS_QUERY_RESERVED = 0xf0000000,
 		}
 
@@ -704,37 +753,42 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum DNS_UPDATE : uint
 		{
-			/// <summary/>
+			/// <summary>Uses the default behavior, which is specified in the registry, for secure dynamic DNS updates.</summary>
 			DNS_UPDATE_SECURITY_USE_DEFAULT = 0x00000000,
 
-			/// <summary/>
+			/// <summary>Does not attempt secure dynamic updates.</summary>
 			DNS_UPDATE_SECURITY_OFF = 0x00000010,
 
-			/// <summary/>
+			/// <summary>Attempts non-secure dynamic update; if refused, attempts secure dynamic update.</summary>
 			DNS_UPDATE_SECURITY_ON = 0x00000020,
 
-			/// <summary/>
+			/// <summary>Attempts secure dynamic updates only.</summary>
 			DNS_UPDATE_SECURITY_ONLY = 0x00000100,
 
-			/// <summary/>
+			/// <summary>Caches the security context for use in future transactions.</summary>
 			DNS_UPDATE_CACHE_SECURITY_CONTEXT = 0x00000200,
 
-			/// <summary/>
+			/// <summary>Uses credentials of the local computer account.</summary>
 			DNS_UPDATE_TEST_USE_LOCAL_SYS_ACCT = 0x00000400,
 
-			/// <summary/>
+			/// <summary>Does not use cached security context.</summary>
 			DNS_UPDATE_FORCE_SECURITY_NEGO = 0x00000800,
 
-			/// <summary/>
+			/// <summary>Sends DNS updates to all multi-master DNS servers.</summary>
 			DNS_UPDATE_TRY_ALL_MASTER_SERVERS = 0x00001000,
 
-			/// <summary/>
+			/// <summary>
+			/// Do not update adapters where dynamic DNS updates are disabled. Windows 2000 Server with SP2 or later.: This value is supported.
+			/// </summary>
 			DNS_UPDATE_SKIP_NO_UPDATE_ADAPTERS = 0x00002000,
 
-			/// <summary/>
+			/// <summary>
+			/// Register CNAME records on a remote server in addition to the local DNS server.Windows 2000 Server with SP2 or later.: This
+			/// value is supported.
+			/// </summary>
 			DNS_UPDATE_REMOTE_SERVER = 0x00004000,
 
-			/// <summary/>
+			/// <summary>Reserved for future use.</summary>
 			DNS_UPDATE_RESERVED = 0xffff0000,
 		}
 
@@ -1717,12 +1771,15 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public DNS_TYPE QueryType;
 
+			// Hack to make this the right size even though the enum is a UInt32.
+			private ulong _QueryOptions;
+
 			/// <summary>
 			/// A value that contains a bitmap of DNS Query Options to use in the DNS query. Options can be combined and all options
 			/// override <c>DNS_QUERY_STANDARD</c>
 			/// </summary>
-			public DNS_QUERY_OPTIONS QueryOptions;
-			
+			public DNS_QUERY_OPTIONS QueryOptions { get => (DNS_QUERY_OPTIONS)_QueryOptions; set => _QueryOptions = (ulong)value; }
+
 			/// <summary>Query options padding.</summary>
 			public uint QueryOptionsHigh;
 
@@ -1854,8 +1911,10 @@ namespace Vanara.PInvoke
 			/// <summary>Reserved. Do not use.</summary>
 			public uint dwReserved;
 
-			// The next entries are contrived so that the structure works on either 32 or 64 systems. The total size of the variable is 40 bytes on X86 and 56 on X64.
+			// The next entries are contrived so that the structure works on either 32 or 64 systems. The total size of the variable is 40
+			// bytes on X86 and 56 on X64.
 			private IntPtr _Data;
+
 			private IntPtr _fillPtr1;
 			private IntPtr _fillPtr2;
 			private IntPtr _fillPtr3;
@@ -3052,11 +3111,11 @@ namespace Vanara.PInvoke
 			/// <summary>A value representing the type of the records to be queried. See DNS_RECORD_TYPE for possible values.</summary>
 			public DNS_TYPE QueryType;
 
+			// Hack to make this the right size even though the enum is a UInt32.
+			private ulong _QueryOptions;
+
 			/// <summary>A value representing the query options. <c>DNS_QUERY_STANDARD</c> is the only supported value.</summary>
-			public DNS_QUERY_OPTIONS QueryOptions;
-			
-			/// <summary>Query options padding.</summary>
-			public uint QueryOptionsHigh;			
+			public DNS_QUERY_OPTIONS QueryOptions { get => (DNS_QUERY_OPTIONS)_QueryOptions; set => _QueryOptions = (ulong)value; }
 
 			/// <summary>
 			/// A value that contains the interface index over which the service is to be advertised. If is 0, then all interfaces will be considered.
@@ -3159,16 +3218,11 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		internal class PDNS_MESSAGE_BUFFER : SafeAnysizeStructBase<DNS_MESSAGE_BUFFER>
-		{
-			public PDNS_MESSAGE_BUFFER(IntPtr allocatedMemory, SizeT size) : base(allocatedMemory, size, false) { }
-
-			protected override int GetArrayLength(in DNS_MESSAGE_BUFFER local) => Size - 12;
-		}
-
 		internal class DNS_MESSAGE_BUFFER_Marshaler : IVanaraMarshaler
 		{
-			public DNS_MESSAGE_BUFFER_Marshaler() { }
+			public DNS_MESSAGE_BUFFER_Marshaler()
+			{
+			}
 
 			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(DNS_MESSAGE_BUFFER));
 
@@ -3180,6 +3234,15 @@ namespace Vanara.PInvoke
 				using var s = new PDNS_MESSAGE_BUFFER(pNativeData, allocatedBytes);
 				return s.Value;
 			}
+		}
+
+		internal class PDNS_MESSAGE_BUFFER : SafeAnysizeStructBase<DNS_MESSAGE_BUFFER>
+		{
+			public PDNS_MESSAGE_BUFFER(IntPtr allocatedMemory, SizeT size) : base(allocatedMemory, size, false)
+			{
+			}
+
+			protected override int GetArrayLength(in DNS_MESSAGE_BUFFER local) => Size - 12;
 		}
 
 		internal class SafeDNS_NSEC3_DATA : SafeAnysizeStructBase<DNS_NSEC3_DATA>

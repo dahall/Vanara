@@ -74,7 +74,9 @@ namespace Vanara.PInvoke.Tests
 		{
 			var type = CorrespondingTypeAttribute.GetCorrespondingTypes(ctype, CorrespondingAction.GetSet).FirstOrDefault();
 			if (type is null || type == typeof(StrPtrAnsi)) Assert.Pass($"{ctype} Ignored");
-			var sz = 1024U;
+			var sz = 0U;
+			var err = DnsQueryConfig(ctype, 0, null, default, default, ref sz);
+			Assert.That(sz, Is.GreaterThan(0U));
 			using var mem = new SafeCoTaskMemHandle(sz);
 			Assert.That(DnsQueryConfig(ctype, 0, null, default, mem, ref sz), ResultIs.Successful);
 			mem.DangerousGetHandle().Convert(sz, type, CharSet.Unicode).WriteValues();
@@ -84,23 +86,30 @@ namespace Vanara.PInvoke.Tests
 		public void DnsQueryExTest()
 		{
 			using var evt = new System.Threading.AutoResetEvent(false);
+			var cancel = new DNS_QUERY_CANCEL();
 			var req = new DNS_QUERY_REQUEST
 			{
 				Version = DNS_QUERY_REQUEST_VERSION1,
 				QueryName = dnsSvr,
-				QueryOptions = DNS_QUERY_OPTIONS.DNS_QUERY_STANDARD,
+				QueryOptions = DNS_QUERY_OPTIONS.DNS_QUERY_WIRE_ONLY | DNS_QUERY_OPTIONS.DNS_QUERY_BYPASS_CACHE,
 				QueryType = DNS_TYPE.DNS_TYPE_ALL,
 				pQueryCompletionCallback = Callback
 			};
 			var res = new DNS_QUERY_RESULT { Version = DNS_QUERY_REQUEST_VERSION1 };
-			Assert.That(DnsQueryEx(req, ref res, out var cancel), ResultIs.Value(Win32Error.DNS_REQUEST_PENDING));
-			if (!evt.WaitOne(20000))
+			var err = DnsQueryEx(req, ref res, ref cancel);
+			if (err == Win32Error.DNS_REQUEST_PENDING && !evt.WaitOne(20000))
 			{
-				Assert.That(DnsCancelQuery(cancel), ResultIs.Successful);
+				Assert.That(DnsCancelQuery(ref cancel), ResultIs.Successful);
 				Assert.Fail("Completion callback not called.");
 			}
+			else if (err.Failed)
+				Assert.Fail(err.ToString());
 			if (res.pQueryRecords != default)
-				DnsRecordListFree(res.pQueryRecords);
+			{
+				using var rlist = new SafeDnsRecordList(res.pQueryRecords);
+				foreach (var r in rlist)
+					r.WriteValues();
+			}
 
 			void Callback(IntPtr pQueryContext, ref DNS_QUERY_RESULT pQueryResults)
 			{
@@ -154,7 +163,7 @@ namespace Vanara.PInvoke.Tests
 				Version = DNS_QUERY_REQUEST_VERSION1,
 				Query = "_windns-example._udp.local",
 				QueryType = DNS_TYPE.DNS_TYPE_PTR,
-				QueryOptions = DNS_QUERY_OPTIONS.DNS_QUERY_STANDARD,
+				QueryOptions = (ulong)DNS_QUERY_OPTIONS.DNS_QUERY_STANDARD,
 				pQueryCallback = QueryCallback,
 				pQueryContext = (IntPtr)evt
 			};

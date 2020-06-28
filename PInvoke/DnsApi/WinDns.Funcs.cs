@@ -149,7 +149,7 @@ namespace Vanara.PInvoke
 		// pCancelHandle );
 		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("windns.h", MSDNShortId = "E5F422AA-D4E6-4F9F-A57C-608CE9317658")]
-		public static extern DNS_STATUS DnsCancelQuery(in DNS_QUERY_CANCEL pCancelHandle);
+		public static extern DNS_STATUS DnsCancelQuery(ref DNS_QUERY_CANCEL pCancelHandle);
 
 		/// <summary>
 		/// The <c>DnsExtractRecordsFromMessage</c> function type extracts resource records (RR) from a DNS message, and stores those
@@ -687,7 +687,7 @@ namespace Vanara.PInvoke
 		// pQueryRequest, PDNS_QUERY_RESULT pQueryResults, PDNS_QUERY_CANCEL pCancelHandle );
 		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("windns.h", MSDNShortId = "22664B9A-5010-42E7-880B-8D5B16A9F2DC")]
-		public static extern DNS_STATUS DnsQueryEx(in DNS_QUERY_REQUEST pQueryRequest, ref DNS_QUERY_RESULT pQueryResults, out DNS_QUERY_CANCEL pCancelHandle);
+		public static extern DNS_STATUS DnsQueryEx(in DNS_QUERY_REQUEST pQueryRequest, ref DNS_QUERY_RESULT pQueryResults, ref DNS_QUERY_CANCEL pCancelHandle);
 
 		/// <summary>The <c>DnsRecordCompare</c> function compares two DNS resource records (RR).</summary>
 		/// <param name="pRecord1">A pointer to a DNS_RECORD structure that contains the first DNS RR of the comparison pair.</param>
