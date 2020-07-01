@@ -148,7 +148,7 @@ namespace Vanara.Windows.Forms
 	[ToolboxItem(true), ToolboxBitmap(typeof(ShellNamespaceTreeControl), "ShellNamespaceTreeControl.bmp")]
 	[Description("A Shell object that displays a tree of shell items.")]
 	[ComVisible(true), Guid("0639efb8-7701-472e-863d-d6fbc543d736")]
-	public class ShellNamespaceTreeControl : Control, PInvoke.Shell32.IServiceProvider, INameSpaceTreeControlEvents
+	public class ShellNamespaceTreeControl : Control, PInvoke.Shell32.IServiceProvider, INameSpaceTreeControlEvents, INameSpaceTreeControlDropHandler //, INameSpaceTreeAccessible
 	{
 		private const NSTCSTYLE defaultStyle = NSTCSTYLE.NSTCS_HASEXPANDOS | NSTCSTYLE.NSTCS_ROOTHASEXPANDO | NSTCSTYLE.NSTCS_FADEINOUTEXPANDOS |
 			NSTCSTYLE.NSTCS_NOINFOTIP | NSTCSTYLE.NSTCS_ALLOWJUNCTIONS | NSTCSTYLE.NSTCS_SHOWSELECTIONALWAYS | NSTCSTYLE.NSTCS_FULLROWSELECT |
@@ -862,6 +862,58 @@ namespace Vanara.Windows.Forms
 
 			NSTCITEMSTATE GetState(IShellItem shi) => pCtrl.GetItemState(shi, NSTCITEMSTATE_ALL, out var state).Succeeded ? state : 0;
 		}
+
+		HRESULT INameSpaceTreeControlDropHandler.OnDragEnter(IShellItem psiOver, IShellItemArray psiaData, bool fOutsideSource, uint grfKeyState, ref uint pdwEffect)
+		{
+			var ido = new DataObject();
+			ido.SetFileDropList(GetStringCollection(psiaData));
+			var dragEvent = new DragEventArgs(ido, (int)grfKeyState, MousePosition.X, MousePosition.Y, DragDropEffects.All, (DragDropEffects)pdwEffect);
+			base.OnDragEnter(dragEvent);
+			pdwEffect = (uint)dragEvent.Effect;
+			return HRESULT.S_OK;
+		}
+
+		private static System.Collections.Specialized.StringCollection GetStringCollection(IShellItemArray psiaData)
+		{
+			using var shiArray = new ShellItemArray(psiaData);
+			var fileList = new System.Collections.Specialized.StringCollection();
+			fileList.AddRange(shiArray.Select(shi => shi.ParsingName).ToArray());
+			return fileList;
+		}
+
+		HRESULT INameSpaceTreeControlDropHandler.OnDragOver(IShellItem psiOver, IShellItemArray psiaData, uint grfKeyState, ref uint pdwEffect)
+		{
+			var ido = new DataObject();
+			ido.SetFileDropList(GetStringCollection(psiaData));
+			var dragEvent = new DragEventArgs(ido, (int)grfKeyState, MousePosition.X, MousePosition.Y, DragDropEffects.All, (DragDropEffects)pdwEffect);
+			base.OnDragOver(dragEvent);
+			pdwEffect = (uint)dragEvent.Effect;
+			return HRESULT.S_OK;
+		}
+
+		HRESULT INameSpaceTreeControlDropHandler.OnDragPosition(IShellItem psiOver, IShellItemArray psiaData, int iNewPosition, int iOldPosition) => HRESULT.E_FAIL;
+
+		HRESULT INameSpaceTreeControlDropHandler.OnDrop(IShellItem psiOver, IShellItemArray psiaData, int iPosition, uint grfKeyState, ref uint pdwEffect)
+		{
+			var ido = new DataObject();
+			ido.SetFileDropList(GetStringCollection(psiaData));
+			var dragEvent = new DragEventArgs(ido, (int)grfKeyState, MousePosition.X, MousePosition.Y, DragDropEffects.All, (DragDropEffects)pdwEffect);
+			base.OnDragDrop(dragEvent);
+			pdwEffect = (uint)dragEvent.Effect;
+			return HRESULT.S_OK;
+		}
+
+		HRESULT INameSpaceTreeControlDropHandler.OnDropPosition(IShellItem psiOver, IShellItemArray psiaData, int iNewPosition, int iOldPosition) => HRESULT.E_FAIL;
+
+		HRESULT INameSpaceTreeControlDropHandler.OnDragLeave(IShellItem psiOver)
+		{
+			base.OnDragLeave(EventArgs.Empty);
+			return HRESULT.S_OK;
+		}
+
+		//HRESULT INameSpaceTreeAccessible.OnGetDefaultAccessibilityAction(IShellItem psi, out string pbstrDefaultAction) => throw new NotImplementedException();
+		//HRESULT INameSpaceTreeAccessible.OnDoDefaultAccessibilityAction(IShellItem psi) => throw new NotImplementedException();
+		//HRESULT INameSpaceTreeAccessible.OnGetAccessibilityRole(IShellItem psi, out object pvarRole) => throw new NotImplementedException();
 	}
 
 	/// <summary>Event arguments for actions against <see cref="ShellNamespaceTreeControl"/>.</summary>
