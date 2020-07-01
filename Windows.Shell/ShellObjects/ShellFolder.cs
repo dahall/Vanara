@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 
@@ -50,8 +51,6 @@ namespace Vanara.Windows.Shell
 		IncludeSuperHidden = 0x10000
 	}
 
-	// TODO: BindToObject
-	// TODO: BindToStorage
 	/// <summary>A folder or container of <see cref="T:Vanara.Windows.Shell.ShellItem" /> instances.</summary>
 	public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	{
@@ -128,6 +127,39 @@ namespace Vanara.Windows.Shell
 				return Open((IShellItem)ppv);
 			}
 		}
+
+		/// <summary>
+		/// Retrieves a handler, typically the Shell folder object that implements IShellFolder for a particular item. Optional parameters
+		/// that control the construction of the handler are passed in the bind context.
+		/// </summary>
+		/// <typeparam name="T">Type of the interface to get, usually IShellFolder or IStream.</typeparam>
+		/// <param name="relativePidl">
+		/// A relative PIDL that identifies the subfolder. This value can refer to an item at any level below the parent folder in the
+		/// namespace hierarchy.
+		/// </param>
+		/// <param name="bindCtx">
+		/// A pointer to an IBindCtx interface on a bind context object that can be used to pass parameters to the construction of the
+		/// handler. If this parameter is not used, set it to <see langword="null"/>. Because support for this parameter is optional for
+		/// folder object implementations, some folders may not support the use of bind contexts.
+		/// <para>
+		/// Information that can be provided in the bind context includes a BIND_OPTS structure that includes a grfMode member that
+		/// indicates the access mode when binding to a stream handler. Other parameters can be set and discovered using
+		/// IBindCtx::RegisterObjectParam and IBindCtx::GetObjectParam.
+		/// </para>
+		/// </param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public T BindToObject<T>(PIDL relativePidl, IBindCtx bindCtx = null) where T : class => iShellFolder.BindToObject<T>(relativePidl, bindCtx);
+
+		/// <summary>Requests a pointer to an object's storage interface.</summary>
+		/// <typeparam name="T">Type of the interface to get, usuall IStream, IStorage, or IPropertySetStorage.</typeparam>
+		/// <param name="relativePidl">The PIDL that identifies the subfolder relative to its parent folder.</param>
+		/// <param name="bindCtx">
+		/// The optional address of an IBindCtx interface on a bind context object to be used during this operation. If this parameter is
+		/// not used, set it to <see langword="null"/>. Because support for pbc is optional for folder object implementations, some folders
+		/// may not support the use of bind contexts.
+		/// </param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public T BindToStorage<T>(PIDL relativePidl, IBindCtx bindCtx = null) where T : class => iShellFolder.BindToStorage<T>(relativePidl, bindCtx);
 
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -210,7 +242,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
-		/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
+		/// <returns>An <see cref="System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		internal static HWND IWin2Ptr(System.Windows.Forms.IWin32Window wnd, bool desktopIfNull = true) => wnd?.Handle ?? (desktopIfNull ? User32.FindWindow("Progman", null) : default);
