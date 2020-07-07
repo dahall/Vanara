@@ -3365,6 +3365,14 @@ namespace Vanara.PInvoke
 		[PInvokeData("netioapi.h", MSDNShortId = "6c45d735-9a07-41ca-8d8a-919f32c98a3c")]
 		public static extern Win32Error GetIpNetTable2(ADDRESS_FAMILY Family, out MIB_IPNET_TABLE2 Table);
 
+		/// <inheritdoc cref="GetIpNetTable2"/>
+		/// <remarks>Unlike <see cref="GetIpNetTable2"/> this returns structure with zero copy.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/netioapi/nf-netioapi-getipnettable2 _NETIOAPI_SUCCESS_ NETIOAPI_API
+		// GetIpNetTable2( ADDRESS_FAMILY Family, PMIB_IPNET_TABLE2 *Table );
+		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true, EntryPoint = "GetIpNetTable2")]
+		[PInvokeData("netioapi.h", MSDNShortId = "6c45d735-9a07-41ca-8d8a-919f32c98a3c")]
+		public static extern Win32Error GetIpNetTable2_Unmanaged(ADDRESS_FAMILY Family, out MIB_IPNET_TABLE2_Unmanaged Table);
+
 		/// <summary>
 		/// <para>
 		/// The <c>GetIpNetworkConnectionBandwidthEstimates</c> function retrieves historical bandwidth estimates for a network connection on
@@ -6975,6 +6983,203 @@ namespace Vanara.PInvoke
 			public override string ToString() => $"{Address}; MAC:{PhysicalAddressToString(PhysicalAddress)}; If:{(InterfaceIndex != 0 ? InterfaceIndex.ToString() : InterfaceLuid.ToString())}";
 		}
 
+		/// <inheritdoc cref="MIB_IPNET_ROW2"/>
+		/// <remarks>Unlike <see cref="MIB_IPNET_ROW2"/> this structure is zero copy</remarks>
+		[PInvokeData("netioapi.h", MSDNShortId = "164dbd93-4464-40f9-989a-17597102b1d8")]
+		[StructLayout(LayoutKind.Sequential, Pack = 2)]
+		public unsafe struct MIB_IPNET_ROW2_Unmanaged
+		{
+			/// <summary>
+			/// <para>Type: <c>SOCKADDR_INET</c></para>
+			/// <para>The neighbor IP address. This member can be an IPv6 address or an IPv4 address.</para>
+			/// </summary>
+			public SOCKADDR_INET Address;
+
+			/// <summary>
+			/// <para>Type: <c>NET_IFINDEX</c></para>
+			/// <para>
+			/// The local index value for the network interface associated with this IP address. This index value may change when a network
+			/// adapter is disabled and then enabled, or under other circumstances, and should not be considered persistent.
+			/// </para>
+			/// </summary>
+			public uint InterfaceIndex;
+
+			/// <summary>
+			/// <para>Type: <c>NET_LUID</c></para>
+			/// <para>The locally unique identifier (LUID) for the network interface associated with this IP address.</para>
+			/// </summary>
+			public NET_LUID InterfaceLuid;
+
+			/// <summary>
+			/// <para>Type: <c>UCHAR[IF_MAX_PHYS_ADDRESS_LENGTH]</c></para>
+			/// <para>The physical hardware address of the adapter for the network interface associated with this IP address.</para>
+			/// </summary>
+			public fixed byte PhysicalAddress[IF_MAX_PHYS_ADDRESS_LENGTH];
+
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>
+			/// The length, in bytes, of the physical hardware address specified by the <c>PhysicalAddress</c> member. The maximum value
+			/// supported is 32 bytes.
+			/// </para>
+			/// </summary>
+			public uint PhysicalAddressLength;
+
+			/// <summary>
+			/// <para>Type: <c>NL_NEIGHBOR_STATE</c></para>
+			/// <para>
+			/// The state of a network neighbor IP address as defined in RFC 2461, section 7.3.2. For more information, see
+			/// http://www.ietf.org/rfc/rfc2461.txt. This member can be one of the values from the <c>NL_NEIGHBOR_STATE</c> enumeration type
+			/// defined in the Nldef.h header file.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>NlnsUnreachable</term>
+			/// <term>The IP address is unreachable.</term>
+			/// </item>
+			/// <item>
+			/// <term>NlnsIncomplete</term>
+			/// <term>
+			/// Address resolution is in progress and the link-layer address of the neighbor has not yet been determined. Specifically for
+			/// IPv6, a Neighbor Solicitation has been sent to the solicited-node multicast IP address of the target, but the corresponding
+			/// neighbor advertisement has not yet been received.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>NlnsProbe</term>
+			/// <term>
+			/// The neighbor is no longer known to be reachable, and probes are being sent to verify reachability. For IPv6, a reachability
+			/// confirmation is actively being sought by retransmitting unicast Neighbor Solicitation probes at regular intervals until a
+			/// reachability confirmation is received.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>NlnsDelay</term>
+			/// <term>
+			/// The neighbor is no longer known to be reachable, and traffic has recently been sent to the neighbor. Rather than probe the
+			/// neighbor immediately, however, delay sending probes for a short while in order to give upper layer protocols a chance to
+			/// provide reachability confirmation. For IPv6, more time has elapsed than is specified in the ReachabilityTime.ReachableTime
+			/// member since the last positive confirmation was received that the forward path was functioning properly and a packet was
+			/// sent. If no reachability confirmation is received within a period of time (used to delay the first probe) of entering the
+			/// NlnsDelay state, then a neighbor solicitation is sent and the State member is changed to NlnsProbe.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>NlnsStale</term>
+			/// <term>
+			/// The neighbor is no longer known to be reachable but until traffic is sent to the neighbor, no attempt should be made to
+			/// verify its reachability. For IPv6, more time has elapsed than is specified in the ReachabilityTime.ReachableTime member since
+			/// the last positive confirmation was received that the forward path was functioning properly. While the State is NlnsStale, no
+			/// action takes place until a packet is sent. The NlnsStale state is entered upon receiving an unsolicited neighbor discovery
+			/// message that updates the cached IP address. Receipt of such a message does not confirm reachability, and entering the
+			/// NlnsStale state insures reachability is verified quickly if the entry is actually being used. However, reachability is not
+			/// actually verified until the entry is actually used.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>NlnsReachable</term>
+			/// <term>
+			/// The neighbor is known to have been reachable recently (within tens of seconds ago). For IPv6, a positive confirmation was
+			/// received within the time specified in the ReachabilityTime.ReachableTime member that the forward path to the neighbor was
+			/// functioning properly. While the State is NlnsReachable, no special action takes place as packets are sent.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>NlnsPermanent</term>
+			/// <term>The IP address is a permanent address.</term>
+			/// </item>
+			/// <item>
+			/// <term>NlnsMaximum</term>
+			/// <term>The maximum possible value for the NL_NEIGHBOR_STATE enumeration type. This is not a legal value for the State member.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public NL_NEIGHBOR_STATE State;
+
+			/// <summary>Undocumented.</summary>
+			public MIB_IPNET_ROW2_FLAGS Flags;
+
+			/// <summary>
+			/// <para>
+			/// <c>Type: <c>ULONG</c></c> The time, in milliseconds, that a node assumes a neighbor is reachable after having received a
+			/// reachability confirmation or is unreachable after not having received a reachability confirmation.
+			/// </para>
+			/// </summary>
+			public uint ReachabilityTime;
+
+
+			/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2"/> struct.</summary>
+			/// <param name="ipV4">The neighbor IP address.</param>
+			/// <param name="ifLuid">The locally unique identifier (LUID) for the network interface associated with this IP address.</param>
+			/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
+			public MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN ipV4, NET_LUID ifLuid, byte[] macAddr = null) : this(ipV4, macAddr) => InterfaceLuid = ifLuid;
+
+			/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2_Unmanaged"/> struct.</summary>
+			/// <param name="ipV4">The neighbor IP address.</param>
+			/// <param name="ifIdx">
+			/// The local index value for the network interface associated with this IP address. This index value may change when a network
+			/// adapter is disabled and then enabled, or under other circumstances, and should not be considered persistent.
+			/// </param>
+			/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
+			public MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN ipV4, uint ifIdx, byte[] macAddr = null) : this(ipV4, macAddr) => InterfaceIndex = ifIdx;
+
+			/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2_Unmanaged"/> struct.</summary>
+			/// <param name="ipV6">The neighbor IP address.</param>
+			/// <param name="ifLuid">The locally unique identifier (LUID) for the network interface associated with this IP address.</param>
+			/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
+			public MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN6 ipV6, NET_LUID ifLuid, byte[] macAddr = null) : this(ipV6, macAddr) => InterfaceLuid = ifLuid;
+
+			/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2_Unmanaged"/> struct.</summary>
+			/// <param name="ipV6">The neighbor IP address.</param>
+			/// <param name="ifIdx">
+			/// The local index value for the network interface associated with this IP address. This index value may change when a network
+			/// adapter is disabled and then enabled, or under other circumstances, and should not be considered persistent.
+			/// </param>
+			/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
+			public MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN6 ipV6, uint ifIdx, byte[] macAddr = null) : this(ipV6, macAddr) => InterfaceIndex = ifIdx;
+
+			private MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN ipV4, byte[] macAddr) : this()
+			{
+				Address.Ipv4 = ipV4;
+				SetMac(macAddr);
+			}
+
+			private MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN6 ipV6, byte[] macAddr) : this()
+			{
+				Address.Ipv6 = ipV6;
+				SetMac(macAddr);
+			}
+
+			private void SetMac(byte[] macAddr)
+			{
+				if (macAddr == null)
+				{
+					return;
+				}
+
+				PhysicalAddressLength = IF_MAX_PHYS_ADDRESS_LENGTH;
+
+				fixed (byte* physicalAddress = PhysicalAddress)
+				{
+					Marshal.Copy(macAddr, 0, (IntPtr)physicalAddress, 6);
+				}
+			}
+
+			/// <inheritdoc/>
+			public override string ToString()
+			{
+				fixed (byte* physicalAddress = PhysicalAddress)
+				{
+					return
+						$"{Address}; MAC:{PhysicalAddressToString(physicalAddress)}; If:{(InterfaceIndex != 0 ? InterfaceIndex.ToString() : InterfaceLuid.ToString())}";
+				}
+			}
+		}
+
 		/// <summary>
 		/// <para>The <c>MIB_IPPATH_ROW</c> structure stores information about an IP path entry.</para>
 		/// </summary>
@@ -7536,6 +7741,18 @@ namespace Vanara.PInvoke
 		{
 		}
 
+		/// <inheritdoc cref="MIB_IPNET_TABLE2"/>
+		/// <remarks>Unlike <see cref="MIB_IPNET_TABLE2"/> this provides is zero copy</remarks>///
+		[PInvokeData("Netioapi.h", MSDNShortId = "ff559267")]
+#if ALLOWSPAN
+		[CorrespondingType(typeof(MIB_IPNET_ROW2_Unmanaged)), DefaultProperty(nameof(TableAsSpan))]
+#else
+		[CorrespondingType(typeof(MIB_IPNET_ROW2_Unmanaged))]
+#endif
+		public class MIB_IPNET_TABLE2_Unmanaged : SafeUnmanagedMibEntryBase<MIB_IPNET_ROW2_Unmanaged>
+		{
+		}
+
 		/// <summary>The MIB_IPPATH_TABLE structure contains a table of IP path entries.</summary>
 		// typedef struct _MIB_IPPATH_TABLE { ULONG NumEntries; MIB_IPPATH_ROW Table[ANY_SIZE];} MIB_IPPATH_TABLE, *PMIB_IPPATH_TABLE; https://msdn.microsoft.com/en-us/library/windows/hardware/ff559273(v=vs.85).aspx
 		[PInvokeData("Netioapi.h", MSDNShortId = "ff559273")]
@@ -7621,6 +7838,28 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the enumerator.</summary>
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		}
+
+		/// <summary>Base class for all structures that support a variable length array of structures with a count in the first field.</summary>
+		/// <typeparam name="T">Type of the structure array.</typeparam>
+		public abstract class SafeUnmanagedMibEntryBase<T> : SafeMibTableHandle where T : unmanaged
+		{
+			/// <summary>Gets the number of interface entries in the array.</summary>
+			public virtual uint NumEntries => IsInvalid ? 0 : handle.ToStructure<uint>();
+
+			/// <summary>Exposes the pointer to the array of structures.</summary>
+			public unsafe T* AsUnmanagedArrayPointer() => IsInvalid ? null : handle.AsUnmanagedArrayPointer<T>((int)NumEntries, Marshal.SizeOf(typeof(ulong)));
+
+#if !ALLOWSPAN
+			/// <summary>Gets the enumerator.</summary>
+			public unsafe RefEnumerator<T> GetEnumerator() => new RefEnumerator<T>(AsUnmanagedArrayPointer(), (int)NumEntries);
+#else
+			/// <summary>Gets the enumerator.</summary>
+			public Span<T>.Enumerator GetEnumerator() => TableAsSpan.GetEnumerator();
+
+			/// <summary>Gets the <see cref="Span{T}"/> containing interface entries.</summary>
+			public virtual Span<T> TableAsSpan => AsSpan<T>((int)NumEntries, Marshal.SizeOf(typeof(ulong)));
+#endif
 		}
 
 		/// <summary>SafeHandle for all objects that must be freed with FreeMibTable.</summary>

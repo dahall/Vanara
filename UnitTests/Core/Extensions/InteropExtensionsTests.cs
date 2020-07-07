@@ -376,5 +376,19 @@ namespace Vanara.Extensions.Tests
 				Assert.That(ss, Is.Null);
 			}
 		}
+
+		[Test]
+		public unsafe void AsUnmanagedArrayPointerTest()
+		{
+			var h = new SafeHGlobalHandle(Marshal.SizeOf(typeof(RECT)) * 2 + i);
+			var rs = new[] { new RECT(), new RECT(10, 11, 12, 13) };
+			((IntPtr)h).Write(rs, i, h.Size);
+
+			RECT* r = h.DangerousGetHandle().AsUnmanagedArrayPointer<RECT>(Marshal.SizeOf<RECT>(), i);
+			Assert.That(r->left, Is.EqualTo(10));
+			Assert.That(r->top, Is.EqualTo(11));
+			Assert.That(r->right, Is.EqualTo(12));
+			Assert.That(r->bottom, Is.EqualTo(13));
+		}
 	}
 }
