@@ -554,8 +554,7 @@ namespace Vanara.PInvoke
 			/// employed. The Shell uses this alternative when the user chooses a menu command.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPStr)]
-			public string lpVerb;
+			public ResourceId lpVerb;
 
 			/// <summary>Optional parameters. This member is always NULL for menu items inserted by a Shell extension.</summary>
 			[MarshalAs(UnmanagedType.LPStr)]
