@@ -70,6 +70,7 @@ namespace Vanara.PInvoke.Collections
 				throw new ArgumentOutOfRangeException(nameof(length));
 			if (type is null)
 				throw new ArgumentNullException(nameof(type));
+			this.type = type;
 			this.ptr = ptr;
 			count = length;
 			prefix = prefixBytes;
