@@ -205,7 +205,7 @@ namespace Vanara.Extensions.Tests
 			Assert.That(v, Is.EqualTo(14));
 
 			Assert.That(((IntPtr)h).ToIEnum<int>(0, i), Is.Empty);
-			Assert.That(IntPtr.Zero.ToIEnum<int>(3, i), Is.Empty);
+			Assert.That(IntPtr.Zero.ToIEnum<int>(0, i), Is.Empty);
 		}
 
 		[Test()]
