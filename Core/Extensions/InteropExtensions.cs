@@ -412,10 +412,9 @@ namespace Vanara.Extensions
 		/// <param name="iid">The interface identifier (IID) of the requested interface.</param>
 		/// <param name="ppv">When this method returns, contains a reference to the returned interface.</param>
 		/// <returns>An HRESULT that indicates the success or failure of the call.</returns>
-		public static int QueryInterface(object iUnk, in Guid iid, out object ppv)
+		public static int QueryInterface(object iUnk, Guid iid, out object ppv)
 		{
-			var tmp = iid;
-			var hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref tmp, out var ippv);
+			var hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref iid, out var ippv);
 			ppv = hr == 0 ? Marshal.GetObjectForIUnknown(ippv) : null;
 			return hr;
 		}
