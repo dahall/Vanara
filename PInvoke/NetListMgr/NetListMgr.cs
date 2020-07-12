@@ -183,7 +183,7 @@ namespace Vanara.PInvoke.NetListMgr
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
 		/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		[DispId(-4)]
-#if (NET20 || NET35 || NET40 || NET45)
+#if NETFRAMEWORK
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "", MarshalTypeRef = typeof(System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler), MarshalCookie = "")]
 		new IEnumerator GetEnumerator();
 #else
@@ -195,7 +195,7 @@ namespace Vanara.PInvoke.NetListMgr
 		/// <param name="rgelt">Pointer to a list of pointers returned by INetworkConnection.</param>
 		/// <param name="pceltFetched">Pointer to the number of elements supplied. May be NULL if celt is one.</param>
 		[DispId(1), PreserveSig]
-		HRESULT Next(uint celt, [MarshalAs(UnmanagedType.Interface)] out INetworkConnection rgelt, out uint pceltFetched);
+		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] INetworkConnection[] rgelt, out uint pceltFetched);
 
 		/// <summary>The Skip method skips over the next specified number of elements in the enumeration sequence.</summary>
 		/// <param name="celt">Number of elements to skip over in the enumeration.</param>
@@ -222,7 +222,7 @@ namespace Vanara.PInvoke.NetListMgr
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
 		/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		[DispId(-4)]
-#if (NET20 || NET35 || NET40 || NET45)
+#if NETFRAMEWORK
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "", MarshalTypeRef = typeof(System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler), MarshalCookie = "")]
 		new IEnumerator GetEnumerator();
 #else
@@ -234,7 +234,7 @@ namespace Vanara.PInvoke.NetListMgr
 		/// <param name="rgelt">Pointer to a list of pointers returned by INetworkConnection.</param>
 		/// <param name="pceltFetched">Pointer to the number of elements supplied. May be NULL if celt is one.</param>
 		[DispId(1), PreserveSig]
-		HRESULT Next(uint celt, [MarshalAs(UnmanagedType.Interface)] out INetwork rgelt, out uint pceltFetched);
+		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] INetwork[] rgelt, out uint pceltFetched);
 
 		/// <summary>The Skip method skips over the next specified number of elements in the enumeration sequence.</summary>
 		/// <param name="celt">Number of elements to skip over in the enumeration.</param>

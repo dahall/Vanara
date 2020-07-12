@@ -4,6 +4,8 @@ using System.Linq;
 using Vanara.Extensions;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 using Vanara.PInvoke.NetListMgr;
+using Vanara.InteropServices;
+using System.Runtime.InteropServices;
 
 //using NETWORKLIST;
 
@@ -37,11 +39,13 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetNetworksTest1()
 		{
-			var ns = mgr.GetNetworks(NLM_ENUM_NETWORK.NLM_ENUM_NETWORK_CONNECTED);
-			Assert.That(ns, Is.Not.Null);
-			ns.Next(1, out INetwork connections, out uint fetched);
-			Assert.That(fetched, Is.EqualTo(1));
-			Assert.That(connections, Is.Not.Null);
+			using var ns = ComReleaserFactory.Create(mgr.GetNetworks(NLM_ENUM_NETWORK.NLM_ENUM_NETWORK_CONNECTED));
+			Assert.That(ns.Item, Is.Not.Null);
+			var connections = new INetwork[5];
+			ns.Item.Next((uint)connections.Length, connections, out uint fetched);
+			Assert.That(fetched, Is.LessThanOrEqualTo(connections.Length));
+			for (int i = 0; i < fetched; i++)
+				Marshal.ReleaseComObject(connections[i]);
 		}
 
 		[Test]
@@ -56,11 +60,13 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetNetworkConnectionsTest1()
 		{
-			var ns = mgr.GetNetworkConnections();
-			Assert.That(ns, Is.Not.Null);
-			ns.Next(1, out INetworkConnection connections, out uint fetched);
-			Assert.That(fetched, Is.EqualTo(1));
-			Assert.That(connections, Is.Not.Null);
+			var ns = ComReleaserFactory.Create(mgr.GetNetworkConnections());
+			Assert.That(ns.Item, Is.Not.Null);
+			var connections = new INetworkConnection[5];
+			ns.Item.Next((uint)connections.Length, connections, out uint fetched);
+			Assert.That(fetched, Is.LessThanOrEqualTo(connections.Length));
+			for (int i = 0; i < fetched; i++)
+				Marshal.ReleaseComObject(connections[i]);
 		}
 
 		[Test]
