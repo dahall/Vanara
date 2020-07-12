@@ -568,7 +568,7 @@ namespace Vanara.PInvoke
 			// ISearchRoot **rgelt, ULONG *pceltFetched );
 			[PInvokeData("searchapi.h")]
 			[PreserveSig]
-			HRESULT Next([In] uint celt, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] ISearchRoot[] rgelt, out uint pceltFetched);
+			HRESULT Next([In] uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] ISearchRoot[] rgelt, out uint pceltFetched);
 
 			/// <summary>Skips the specified number of elements.</summary>
 			/// <param name="celt">
@@ -648,7 +648,7 @@ namespace Vanara.PInvoke
 			// celt, ISearchScopeRule **pprgelt, ULONG *pceltFetched );
 			[PInvokeData("searchapi.h")]
 			[PreserveSig]
-			HRESULT Next([In] uint celt, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] ISearchScopeRule[] pprgelt, ref uint pceltFetched);
+			HRESULT Next([In] uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] ISearchScopeRule[] pprgelt, ref uint pceltFetched);
 
 			/// <summary>Skips the specified number of elements.</summary>
 			/// <remarks>

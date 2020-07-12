@@ -1047,7 +1047,7 @@ namespace Vanara.PInvoke
 			/// value will be 0 if there are no more items to retrieve.
 			/// </returns>
 			[PreserveSig]
-			HRESULT Next(uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray)] IntPtr[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] rgelt, out uint pceltFetched);
 
 			/// <summary>Skips the specified number of elements in the enumeration sequence.</summary>
 			/// <param name="celt">The number of item identifiers to skip.</param>
@@ -1108,7 +1108,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ienumfullidlist-next HRESULT Next( ULONG
 			// celt, PIDLIST_ABSOLUTE *rgelt, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] rgelt, out uint pceltFetched);
 
 			/// <summary>Skips a specified number of IDLIST_ABSOLUTE items.</summary>
 			/// <param name="celt">

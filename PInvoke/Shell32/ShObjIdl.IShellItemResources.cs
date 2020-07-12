@@ -34,7 +34,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/fr-fr/windows/win32/api/shobjidl_core/nf-shobjidl_core-ienumresources-next HRESULT Next( ULONG
 			// celt, SHELL_ITEM_RESOURCE *psir, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] SHELL_ITEM_RESOURCE[] psir, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] SHELL_ITEM_RESOURCE[] psir, out uint pceltFetched);
 
 			/// <summary>Skips a specified number of resources.</summary>
 			/// <param name="celt">

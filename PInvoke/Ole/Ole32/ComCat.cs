@@ -220,7 +220,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/comcat/nf-comcat-ienumcategoryinfo-next HRESULT Next( ULONG celt,
 			// CATEGORYINFO *rgelt, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CATEGORYINFO[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] CATEGORYINFO[] rgelt, out uint pceltFetched);
 
 			/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
 			/// <param name="celt">The number of items to be skipped.</param>
@@ -277,7 +277,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/comcat/nf-comcat-ienumguid-next HRESULT Next( ULONG celt, GUID *rgelt,
 			// ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Guid[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] rgelt, out uint pceltFetched);
 
 			/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
 			/// <param name="celt">The number of items to be skipped.</param>

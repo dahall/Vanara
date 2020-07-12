@@ -112,7 +112,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ienumexplorercommand-next HRESULT Next(
 			// ULONG celt, IExplorerCommand **pUICommand, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next([In] uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IExplorerCommand[] pUICommand, out uint pceltFetched);
+			HRESULT Next([In] uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IExplorerCommand[] pUICommand, out uint pceltFetched);
 
 			/// <summary>Not currently implemented.</summary>
 			/// <param name="celt">

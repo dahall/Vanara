@@ -443,7 +443,7 @@ namespace Vanara.PInvoke
 			/// <returns>Returns S_OK if successful, or a COM-defined error code otherwise.</returns>
 			[PreserveSig]
 			HRESULT Next([In] uint celt,
-				[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] EXTRASEARCH[] rgelt,
+				[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] EXTRASEARCH[] rgelt,
 				out uint pceltFetched);
 
 			/// <summary>Skip a specified number of objects.</summary>

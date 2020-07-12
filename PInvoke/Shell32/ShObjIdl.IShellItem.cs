@@ -387,7 +387,7 @@ namespace Vanara.PInvoke
 			/// value will be 0 if there are no more items to retrieve.
 			/// </returns>
 			[PreserveSig]
-			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IShellItem[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IShellItem[] rgelt, out uint pceltFetched);
 
 			/// <summary>Skips the specified number of elements in the enumeration sequence.</summary>
 			/// <param name="celt">The number of IShellItem interfaces to skip.</param>

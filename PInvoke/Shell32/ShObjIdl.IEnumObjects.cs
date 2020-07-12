@@ -42,7 +42,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ienumobjects-next HRESULT Next( ULONG celt,
 			// REFIID riid, void **rgelt, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, in Guid riid, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 3)] object[] rgelt, out uint pceltFetched);
+			HRESULT Next(uint celt, in Guid riid, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 0)] object[] rgelt, out uint pceltFetched);
 
 			/// <summary>Skips a specified number of objects.</summary>
 			/// <param name="celt">

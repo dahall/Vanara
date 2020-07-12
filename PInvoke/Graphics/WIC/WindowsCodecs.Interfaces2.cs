@@ -142,7 +142,9 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicenummetadataitem-next HRESULT Next( ULONG celt,
 			// PROPVARIANT *rgeltSchema, PROPVARIANT *rgeltId, PROPVARIANT *rgeltValue, ULONG *pceltFetched );
 			[PreserveSig]
-			HRESULT Next(uint celt, [In, Out, Optional] PROPVARIANT_IMMUTABLE[] rgeltSchema, [In, Out] PROPVARIANT_IMMUTABLE[] rgeltId, [In, Out, Optional] PROPVARIANT_IMMUTABLE[] rgeltValue, out uint pceltFetched);
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), Optional] PROPVARIANT_IMMUTABLE[] rgeltSchema,
+				[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT_IMMUTABLE[] rgeltId,
+				[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), Optional] PROPVARIANT_IMMUTABLE[] rgeltValue, out uint pceltFetched);
 
 			/// <summary>Skips to given number of objects.</summary>
 			/// <param name="celt">
