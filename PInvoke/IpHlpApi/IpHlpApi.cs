@@ -7801,6 +7801,9 @@ namespace Vanara.PInvoke
 		/// <returns>Dashed hex value string representation of a Physical Address (MAC).</returns>
 		public static string PhysicalAddressToString(byte[] physAddr) => $"{physAddr[0]:X}-{physAddr[1]:X}-{physAddr[2]:X}-{physAddr[3]:X}-{physAddr[4]:X}-{physAddr[5]:X}";
 
+		/// <inheritdoc cref="PhysicalAddressToString(byte[])"/>
+		public static unsafe string PhysicalAddressToString(byte* physAddr) => $"{physAddr[0]:X}-{physAddr[1]:X}-{physAddr[2]:X}-{physAddr[3]:X}-{physAddr[4]:X}-{physAddr[5]:X}";
+
 		/// <summary>
 		/// The <c>RestoreMediaSense</c> function restores the media sensing capability of the TCP/IP stack on a local computer on which the
 		/// DisableMediaSense function was previously called.

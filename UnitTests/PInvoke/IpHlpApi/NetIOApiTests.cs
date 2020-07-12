@@ -118,6 +118,90 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public unsafe void CreateSetDeleteIpNetEntry2UnmanagedPointerTest()
+		{
+			var target = new IN_ADDR(192, 168, 0, 202);
+			Assert.That(GetBestRoute(target, 0, out var fwdRow), ResultIs.Successful);
+			var mibrow = new MIB_IPNET_ROW2(new SOCKADDR_IN(target), fwdRow.dwForwardIfIndex, SendARP(target));
+			Assert.That(GetIpNetTable2_Unmanaged(ADDRESS_FAMILY.AF_INET, out var t1), ResultIs.Successful);
+			if (HasVal(t1.AsUnmanagedArrayPointer(), mibrow, t1.NumEntries))
+				Assert.That(DeleteIpNetEntry2(ref mibrow), ResultIs.Successful);
+
+			Assert.That(CreateIpNetEntry2(ref mibrow), ResultIs.Successful);
+			GetIpNetTable2_Unmanaged(ADDRESS_FAMILY.AF_INET, out var t2);
+			Assert.That(HasVal(t2.AsUnmanagedArrayPointer(), mibrow, t1.NumEntries), Is.True);
+
+			Assert.That(DeleteIpNetEntry2(ref mibrow), ResultIs.Successful);
+			GetIpNetTable2_Unmanaged(ADDRESS_FAMILY.AF_INET, out var t3);
+			Assert.That(HasVal(t3.AsUnmanagedArrayPointer(), mibrow, t1.NumEntries), Is.False);
+
+			static bool HasVal(MIB_IPNET_ROW2_Unmanaged* tr, MIB_IPNET_ROW2 r, uint numEntries)
+			{
+				for (uint i = 0; i < numEntries; i++, tr++)
+				{
+					if (tr->Address.Ipv4.sin_addr == r.Address.Ipv4.sin_addr &&
+						tr->InterfaceIndex == r.InterfaceIndex &&
+						CompareArrays(tr->PhysicalAddress, r.PhysicalAddress))
+					{
+						return true;
+					}
+				}
+
+				return false;
+			}
+
+			static bool CompareArrays(byte* left, byte[] right)
+			{
+				return !right.Where((t, i) => left[i] != t).Any();
+			}
+		}
+
+		[Test]
+		public void CreateSetDeleteIpNetEntry2UnmanagedSpanTest()
+		{
+			var target = new IN_ADDR(192, 168, 0, 202);
+			Assert.That(GetBestRoute(target, 0, out var fwdRow), ResultIs.Successful);
+			var mibrow = new MIB_IPNET_ROW2(new SOCKADDR_IN(target), fwdRow.dwForwardIfIndex, SendARP(target));
+			Assert.That(GetIpNetTable2_Unmanaged(ADDRESS_FAMILY.AF_INET, out var t1), ResultIs.Successful);
+			if (HasVal(ref t1, mibrow))
+				Assert.That(DeleteIpNetEntry2(ref mibrow), ResultIs.Successful);
+
+			Assert.That(CreateIpNetEntry2(ref mibrow), ResultIs.Successful);
+			GetIpNetTable2_Unmanaged(ADDRESS_FAMILY.AF_INET, out var t2);
+			Assert.That(HasVal(ref t2, mibrow), Is.True);
+
+			Assert.That(DeleteIpNetEntry2(ref mibrow), ResultIs.Successful);
+			GetIpNetTable2_Unmanaged(ADDRESS_FAMILY.AF_INET, out var t3);
+			Assert.That(HasVal(ref t3, mibrow), Is.False);
+
+			static bool HasVal(ref MIB_IPNET_TABLE2_Unmanaged t, MIB_IPNET_ROW2 r)
+			{
+				foreach (ref MIB_IPNET_ROW2_Unmanaged tr in t)
+				{
+					unsafe
+					{
+						fixed (byte* physicalAddress = tr.PhysicalAddress)
+						{
+							if (tr.Address.Ipv4.sin_addr == r.Address.Ipv4.sin_addr &&
+								tr.InterfaceIndex == r.InterfaceIndex &&
+								CompareArrays(physicalAddress, r.PhysicalAddress))
+							{
+								return true;
+							}
+						}
+					}
+				}
+
+				return false;
+			}
+
+			static unsafe bool CompareArrays(byte* left, byte[] right)
+			{
+				return !right.Where((t, i) => left[i] != t).Any();
+			}
+		}
+
+		[Test]
 		public void CreateSetGetDeleteUnicastIpAddressEntryTest()
 		{
 			Assert.That(GetUnicastIpAddressTable(ADDRESS_FAMILY.AF_INET6, out var t1), ResultIs.Successful);
