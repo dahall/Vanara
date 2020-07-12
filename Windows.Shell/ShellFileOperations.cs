@@ -620,7 +620,7 @@ namespace Vanara.Windows.Shell
 		public void QueueApplyPropertiesOperation(IEnumerable<ShellItem> items, ShellItemPropertyUpdates props)
 		{
 			op.SetProperties(props.IPropertyChangeArray);
-			op.ApplyPropertiesToItems(new ShellItemArray(items).IShellItemArray);
+			op.ApplyPropertiesToItems(GetSHArray(items));
 			QueuedOperations++;
 		}
 
@@ -644,7 +644,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the copy of the items.</param>
 		public void QueueCopyOperation(IEnumerable<ShellItem> sourceItems, ShellFolder dest)
 		{
-			op.CopyItems(new ShellItemArray(sourceItems).IShellItemArray, dest.IShellItem);
+			op.CopyItems(GetSHArray(sourceItems), dest.IShellItem);
 			QueuedOperations++;
 		}
 
@@ -662,7 +662,7 @@ namespace Vanara.Windows.Shell
 		/// </param>
 		public void QueueDeleteOperation(IEnumerable<ShellItem> items)
 		{
-			op.DeleteItems(new ShellItemArray(items).IShellItemArray);
+			op.DeleteItems(GetSHArray(items));
 			QueuedOperations++;
 		}
 
@@ -686,7 +686,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the moved items.</param>
 		public void QueueMoveOperation(IEnumerable<ShellItem> sourceItems, ShellFolder dest)
 		{
-			op.MoveItems(new ShellItemArray(sourceItems).IShellItemArray, dest.IShellItem);
+			op.MoveItems(GetSHArray(sourceItems), dest.IShellItem);
 			QueuedOperations++;
 		}
 
@@ -735,7 +735,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="newName">The new display name of the items.</param>
 		public void QueueRenameOperation(IEnumerable<ShellItem> sourceItems, string newName)
 		{
-			op.RenameItems(new ShellItemArray(sourceItems).IShellItemArray, newName);
+			op.RenameItems(GetSHArray(sourceItems), newName);
 			QueuedOperations++;
 		}
 
@@ -761,6 +761,8 @@ namespace Vanara.Windows.Shell
 				disposedValue = true;
 			}
 		}
+
+		private IShellItemArray GetSHArray(IEnumerable<ShellItem> items) => items is ShellItemArray a ? a.IShellItemArray : GetSHArray(items);
 
 		/// <summary>Arguments supplied to the <see cref="PostNewItem"/> event.</summary>
 		/// <seealso cref="Vanara.Windows.Shell.ShellFileOperations.ShellFileOpEventArgs"/>
@@ -881,7 +883,7 @@ namespace Vanara.Windows.Shell
 
 			public void StartOperations() => parent.StartOperations?.Invoke(parent, EventArgs.Empty);
 
-			public void UpdateProgress(uint iWorkTotal, uint iWorkSoFar) => parent.UpdateProgress?.Invoke(parent, new System.ComponentModel.ProgressChangedEventArgs((int)(iWorkSoFar * 100 / iWorkTotal), null));
+			public void UpdateProgress(uint iWorkTotal, uint iWorkSoFar) => parent.UpdateProgress?.Invoke(parent, new System.ComponentModel.ProgressChangedEventArgs(iWorkTotal == 0 ? 0 : (int)(iWorkSoFar * 100 / iWorkTotal), null));
 		}
 	}
 

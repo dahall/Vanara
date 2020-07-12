@@ -1,7 +1,9 @@
 using NUnit.Framework;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
 using Vanara.Windows.Shell;
 using static Vanara.PInvoke.Ole32;
@@ -14,22 +16,49 @@ namespace Vanara.Windows.Shell.Tests
 	{
 		[Test]
 		public void CopyItemTest()
-		{
-			ShellFileOperations.Copy(new ShellItem(@"C:\Users\dahall\Downloads\lubuntu-16.04.2-desktop-amd64.iso"), ShellFolder.Desktop);
-			Assert.That(File.Exists(@"C:\Users\dahall\Desktop\lubuntu-16.04.2-desktop-amd64.iso"), Is.True);
-			File.Delete(@"C:\Users\dahall\Desktop\lubuntu-16.04.2-desktop-amd64.iso");
+		{			
+			ShellFileOperations.Copy(new ShellItem(TestCaseSources.LargeFile), ShellFolder.Desktop);
+			var dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Path.GetFileName(TestCaseSources.LargeFile));
+			Assert.That(File.Exists(dest), Is.True);
+			File.Delete(dest);
 		}
 
 		[Test]
 		public void CopyItemsTest()
 		{
-			var l = Directory.EnumerateFiles(@"C:\Users\dahall\Downloads", "h*.zip").Select(s => new ShellItem(s)).ToList();
+			var l = Directory.EnumerateFiles(KNOWNFOLDERID.FOLDERID_Downloads.FullPath(), "h*.zip").Select(s => new ShellItem(s)).ToList();
 			ShellFileOperations.Copy(l, ShellFolder.Desktop);
 			foreach (var i in l)
 			{
-				var fn = Path.Combine(@"C:\Users\dahall\Desktop", i.Name);
+				var fn = Path.Combine(ShellFolder.Desktop.FileSystemPath, i.Name);
 				Assert.That(File.Exists(fn), Is.True);
 				File.Delete(fn);
+			}
+		}
+
+		[Test]
+		public void CopyWithProgressTest()
+		{
+			// Setup hidden copy op with progress handler
+			bool progressShown = false;
+			using var op = new ShellFileOperations();
+			op.Options = ShellFileOperations.OperationFlags.AddUndoRecord | ShellFileOperations.OperationFlags.NoConfirmMkDir | ShellFileOperations.OperationFlags.Silent;
+			op.UpdateProgress += Op_UpdateProgress;
+
+			// Run the operation
+			using var shi = new ShellItem(TestCaseSources.LargeFile);
+			op.QueueCopyOperation(shi, ShellFolder.Desktop);
+			op.PerformOperations();
+
+			// Asert and clean
+			Assert.IsTrue(progressShown);
+			var dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Path.GetFileName(TestCaseSources.LargeFile));
+			File.Delete(dest);
+
+			void Op_UpdateProgress(object sender, System.ComponentModel.ProgressChangedEventArgs args)
+			{
+				Debug.WriteLine($"{args.UserState}: {args.ProgressPercentage}%");
+				progressShown = true;
 			}
 		}
 
@@ -54,25 +83,29 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void MultOpsTest()
 		{
+			const string newLargeFile = "MuchLongerNameForTheFile.bin";
 			using (var op = new ShellFileOperations())
 			{
 				op.Options |= ShellFileOperations.OperationFlags.NoMinimizeBox;
-				var shi = new ShellItem(@"C:\Users\dahall\Downloads\lubuntu-16.04.2-desktop-amd64.iso");
+				var shi = new ShellItem(TestCaseSources.LargeFile);
 				op.PostCopyItem += HandleEvent;
 				op.QueueCopyOperation(shi, ShellFolder.Desktop);
-				shi = new ShellItem(@"C:\Users\dahall\Desktop\lubuntu-16.04.2-desktop-amd64.iso");
+				var dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Path.GetFileName(TestCaseSources.LargeFile));
+				shi = new ShellItem(dest);
 				op.QueueMoveOperation(shi, new ShellFolder(KNOWNFOLDERID.FOLDERID_Documents));
 				op.PostMoveItem += HandleEvent;
-				shi = new ShellItem(@"C:\Users\dahall\Documents\lubuntu-16.04.2-desktop-amd64.iso");
-				op.QueueRenameOperation(shi, "MuchLongerNameForTheFile.iso");
+				dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.GetFileName(TestCaseSources.LargeFile));
+				shi = new ShellItem(dest);
+				op.QueueRenameOperation(shi, newLargeFile);
 				op.PostRenameItem += HandleEvent;
-				shi = new ShellItem(@"C:\Users\dahall\Documents\MuchLongerNameForTheFile.iso");
+				dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), newLargeFile);
+				shi = new ShellItem(dest);
 				op.QueueDeleteOperation(shi);
 				op.PostDeleteItem += HandleEvent;
 				op.PerformOperations();
 			}
 
-			void HandleEvent(object sender, ShellFileOperations.ShellFileOpEventArgs args)
+			static void HandleEvent(object sender, ShellFileOperations.ShellFileOpEventArgs args)
 			{
 				Debug.WriteLine(args);
 				Assert.That(args.Result.Succeeded, Is.True);
@@ -92,12 +125,12 @@ namespace Vanara.Windows.Shell.Tests
 			}
 			foreach (var file in files)
 			{
-				var fn = Path.Combine(@"C:\Users\dahall\Desktop", file);
+				var fn = Path.Combine(ShellFolder.Desktop.FileSystemPath, file);
 				Assert.That(File.Exists(fn), Is.True);
 				File.Delete(fn);
 			}
 
-			void HandleEvent(object sender, ShellFileOperations.ShellFileOpEventArgs args)
+			static void HandleEvent(object sender, ShellFileOperations.ShellFileOpEventArgs args)
 			{
 				Debug.WriteLine(args);
 				Assert.That(args.Result.Succeeded, Is.True);
@@ -114,14 +147,14 @@ namespace Vanara.Windows.Shell.Tests
 			using (var op = new ShellFileOperations())
 			{
 				op.PostNewItem += HandleEvent;
-				op.QueueNewItemOperation(ShellFolder.Desktop, fn, template: @"C:\Users\dahall\Documents\Custom Office Templates\blank.dotx");
+				op.QueueNewItemOperation(ShellFolder.Desktop, fn, template: Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Custom Office Templates\blank.dotx"));
 				op.QueueApplyPropertiesOperation(new ShellItem(fp), p);
 				op.PerformOperations();
 			}
 			Assert.That(new ShellItem(fp).Properties[PROPERTYKEY.System.Author], Is.EquivalentTo(authors));
 			File.Delete(fp);
 
-			void HandleEvent(object sender, ShellFileOperations.ShellFileOpEventArgs args)
+			static void HandleEvent(object sender, ShellFileOperations.ShellFileOpEventArgs args)
 			{
 				Debug.WriteLine(args);
 				Assert.That(args.Result.Succeeded, Is.True);
