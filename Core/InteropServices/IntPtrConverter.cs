@@ -70,7 +70,7 @@ namespace Vanara.InteropServices
 					}
 					catch (ArgumentOutOfRangeException e)
 					{
-						throw e;
+						throw;
 					}
 					catch { }
 					throw new NotSupportedException("Unsupported type parameter.");
