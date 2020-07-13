@@ -113,7 +113,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void EnumServicesStatusExTest()
 		{
-			var l = EnumServicesStatusEx(hSvcMgr, ServiceTypes.SERVICE_DRIVER, SERVICE_STATE.SERVICE_ACTIVE);
+			var l = EnumServicesStatusEx(hSvcMgr); //, ServiceTypes.SERVICE_DRIVER, SERVICE_STATE.SERVICE_ACTIVE);
 			TestContext.WriteLine(string.Join("; ", l.Select(i => i.lpDisplayName)));
 			Assert.That(l, Is.Not.Empty);
 		}

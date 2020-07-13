@@ -3012,7 +3012,7 @@ namespace Vanara.PInvoke
 			var mem = new SafeHGlobalHandle((int)sz);
 			if (!EnumDependentServices(hService, dwServiceState, (IntPtr)mem, (uint)mem.Size, out sz, out cnt))
 				Win32Error.ThrowLastError();
-			return mem.ToEnumerable<ENUM_SERVICE_STATUS>((int)cnt);
+			return mem.ToArray<ENUM_SERVICE_STATUS>((int)cnt);
 		}
 
 		/// <summary>
@@ -3128,7 +3128,7 @@ namespace Vanara.PInvoke
 					res = EnumServicesStatus(hSCManager, dwServiceType, dwServiceState, (IntPtr)mem, sz, out sz, out var cnt, ref hRes);
 					if (!res && (lastErr = Win32Error.GetLastError()) != Win32Error.ERROR_MORE_DATA)
 						lastErr.ThrowIfFailed();
-					foreach (var i in mem.ToEnumerable<ENUM_SERVICE_STATUS>((int)cnt))
+					foreach (var i in mem.ToArray<ENUM_SERVICE_STATUS>((int)cnt))
 						yield return i;
 				} while (!res);
 			}
@@ -3270,7 +3270,7 @@ namespace Vanara.PInvoke
 					res = EnumServicesStatusEx(hSCManager, 0, dwServiceType, dwServiceState, (IntPtr)mem, sz, out sz, out var cnt, ref hRes, pszGroupName);
 					if (!res && (lastErr = Win32Error.GetLastError()) != Win32Error.ERROR_MORE_DATA)
 						lastErr.ThrowIfFailed();
-					foreach (var i in mem.ToEnumerable<ENUM_SERVICE_STATUS_PROCESS>((int)cnt))
+					foreach (var i in mem.ToArray<ENUM_SERVICE_STATUS_PROCESS>((int)cnt))
 						yield return i;
 				} while (!res);
 			}
