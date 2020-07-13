@@ -1,5 +1,5 @@
 ## Correlation report for projectedfslib.dll  
-### Methods (89% complete, 17 of 19 functions)  
+### Methods (100% complete, 19 of 19 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [PrjAllocateAlignedBuffer](https://www.google.com/search?num=5&q=PrjAllocateAlignedBuffer+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjAllocateAlignedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=PrjAllocateAlignedBuffer)  
@@ -10,7 +10,7 @@ Native Method | Header | Managed Method
 [PrjFileNameCompare](https://www.google.com/search?num=5&q=PrjFileNameCompare+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjFileNameCompare](https://github.com/dahall/Vanara/search?l=C%23&q=PrjFileNameCompare)  
 [PrjFileNameMatch](https://www.google.com/search?num=5&q=PrjFileNameMatch+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjFileNameMatch](https://github.com/dahall/Vanara/search?l=C%23&q=PrjFileNameMatch)  
 [PrjFillDirEntryBuffer](https://www.google.com/search?num=5&q=PrjFillDirEntryBuffer+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjFillDirEntryBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=PrjFillDirEntryBuffer)  
-[PrjFillDirEntryBuffer2](https://www.google.com/search?num=5&q=PrjFillDirEntryBuffer2+site%3Adocs.microsoft.com) |  |   
+[PrjFillDirEntryBuffer2](https://www.google.com/search?num=5&q=PrjFillDirEntryBuffer2+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjFillDirEntryBuffer2](https://github.com/dahall/Vanara/search?l=C%23&q=PrjFillDirEntryBuffer2)  
 [PrjFreeAlignedBuffer](https://www.google.com/search?num=5&q=PrjFreeAlignedBuffer+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjFreeAlignedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=PrjFreeAlignedBuffer)  
 [PrjGetOnDiskFileState](https://www.google.com/search?num=5&q=PrjGetOnDiskFileState+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjGetOnDiskFileState](https://github.com/dahall/Vanara/search?l=C%23&q=PrjGetOnDiskFileState)  
 [PrjGetVirtualizationInstanceInfo](https://www.google.com/search?num=5&q=PrjGetVirtualizationInstanceInfo+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjGetVirtualizationInstanceInfo](https://github.com/dahall/Vanara/search?l=C%23&q=PrjGetVirtualizationInstanceInfo)  
@@ -20,7 +20,7 @@ Native Method | Header | Managed Method
 [PrjUpdateFileIfNeeded](https://www.google.com/search?num=5&q=PrjUpdateFileIfNeeded+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjUpdateFileIfNeeded](https://github.com/dahall/Vanara/search?l=C%23&q=PrjUpdateFileIfNeeded)  
 [PrjWriteFileData](https://www.google.com/search?num=5&q=PrjWriteFileData+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjWriteFileData](https://github.com/dahall/Vanara/search?l=C%23&q=PrjWriteFileData)  
 [PrjWritePlaceholderInfo](https://www.google.com/search?num=5&q=PrjWritePlaceholderInfo+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjWritePlaceholderInfo](https://github.com/dahall/Vanara/search?l=C%23&q=PrjWritePlaceholderInfo)  
-[PrjWritePlaceholderInfo2](https://www.google.com/search?num=5&q=PrjWritePlaceholderInfo2+site%3Adocs.microsoft.com) |  |   
+[PrjWritePlaceholderInfo2](https://www.google.com/search?num=5&q=PrjWritePlaceholderInfo2+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjWritePlaceholderInfo2](https://github.com/dahall/Vanara/search?l=C%23&q=PrjWritePlaceholderInfo2)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
@@ -29,6 +29,7 @@ Native Structure | Header | Managed Structure
 [PRJ_CALLBACKS](https://www.google.com/search?num=5&q=PRJ_CALLBACKS+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_CALLBACKS](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_CALLBACKS)  
 [PRJ_COMPLETE_COMMAND_EXTENDED_PARAMETERS](https://www.google.com/search?num=5&q=PRJ_COMPLETE_COMMAND_EXTENDED_PARAMETERS+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_COMPLETE_COMMAND_EXTENDED_PARAMETERS](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_COMPLETE_COMMAND_EXTENDED_PARAMETERS)  
 [PRJ_DIR_ENTRY_BUFFER_HANDLE](https://www.google.com/search?num=5&q=PRJ_DIR_ENTRY_BUFFER_HANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ProjectedFSLib.PRJ_DIR_ENTRY_BUFFER_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_DIR_ENTRY_BUFFER_HANDLE)  
+[PRJ_EXTENDED_INFO](https://www.google.com/search?num=5&q=PRJ_EXTENDED_INFO+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_EXTENDED_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_EXTENDED_INFO)  
 [PRJ_FILE_BASIC_INFO](https://www.google.com/search?num=5&q=PRJ_FILE_BASIC_INFO+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_FILE_BASIC_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_FILE_BASIC_INFO)  
 [PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT](https://www.google.com/search?num=5&q=PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ProjectedFSLib.PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT)  
 [PRJ_NOTIFICATION_MAPPING](https://www.google.com/search?num=5&q=PRJ_NOTIFICATION_MAPPING+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_NOTIFICATION_MAPPING](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_NOTIFICATION_MAPPING)  
@@ -39,3 +40,4 @@ Native Structure | Header | Managed Structure
 [PRJ_VIRTUALIZATION_INSTANCE_INFO](https://www.google.com/search?num=5&q=PRJ_VIRTUALIZATION_INSTANCE_INFO+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_VIRTUALIZATION_INSTANCE_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_VIRTUALIZATION_INSTANCE_INFO)  
 [SECURITYINFORMATION](https://www.google.com/search?num=5&q=SECURITYINFORMATION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ProjectedFSLib.PRJ_PLACEHOLDER_INFO.SECURITYINFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SECURITYINFORMATION)  
 [STREAMSINFORMATION](https://www.google.com/search?num=5&q=STREAMSINFORMATION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ProjectedFSLib.PRJ_PLACEHOLDER_INFO.STREAMSINFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=STREAMSINFORMATION)  
+[SYMLINK](https://www.google.com/search?num=5&q=SYMLINK+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ProjectedFSLib.PRJ_EXTENDED_INFO.SYMLINK](https://github.com/dahall/Vanara/search?l=C%23&q=SYMLINK)  

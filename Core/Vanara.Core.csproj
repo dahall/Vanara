@@ -19,7 +19,7 @@ Classes
 IMemoryMethods, ISafeMemoryHandle, ISimpleMemoryMethods, IVanaraMarshaler, AlignedMemory&lt;T&gt;, BitHelper, ByteSizeFormatter, ComConnectionPoint, ComReleaser&lt;T&gt;, ComReleaserFactory, ComStream, ComTypeExtensions, CorrespondingTypeAttribute, CoTaskMemoryMethods, EnumerableEqualityComparer&lt;T&gt;, EnumExtensions, EventedList&lt;T&gt;, FileTimeExtensions, Formatter, FormatterComposer, GenericSafeHandle, GenericVirtualReadOnlyDictionary&lt;T&gt;, HexDempHelpers, HGlobalMemoryMethods, InteropExtensions, IntPtrConverter, IOExtensions, ListChangedEventArgs&lt;T&gt;, MarshalingStream, MemoryMethodsFromSimple&lt;T&gt;, NativeMemoryEnumerator&lt;T&gt;, NativeMemoryStream, PinnedObject, ReflectionExtensions, ReflectionExtensions, SafeAllocatedMemoryHandle, SafeByteArray, SafeCoTaskMemHandle, SafeCoTaskMemString, SafeCoTaskMemStruct&lt;T&gt;, SafeGuidPtr, SafeHGlobalHandle, SafeHGlobalStruct&lt;T&gt;, SafeMemoryHandle&lt;T&gt;, SafeMemoryHandleExt&lt;T&gt;, SafeMemString&lt;T&gt;, SafeMemStruct&lt;T&gt;, SparseArray&lt;T&gt;, StringHelper, TryGetValueDelegate, UntypedNativeMemoryEnumerator, VanaraCustomMarshaler&lt;T&gt;, VanaraMarshaler, VanaraMarshalerAttribute, VirtualDictionary&lt;T&gt;, VirtualReadOnlyDictionary&lt;T&gt;
 
 Structures
-BOOL, BOOLEAN, EnumFlagIndexer&lt;T&gt;, GuidPtr, SizeT, StrPtrAnsi, StrPtrAuto, StrPtrUni
+BOOL, BOOLEAN, EnumFlagIndexer&lt;T&gt;, GuidPtr, RefEnumerator&lt;T&gt;, SizeT, StrPtrAnsi, StrPtrAuto, StrPtrUni
 
 Enumerations
 CorrespondingAction, StringListPackMethod

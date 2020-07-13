@@ -2,28 +2,28 @@
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----
-[Vanara.Security.AccessControl.SystemSecurity.AccountLogonRights](https://github.com/dahall/Vanara/search?l=C%23&q=AccountLogonRights) | Account rights determine the type of logon that a user account can perform. An administrator assigns account rights to user and group accounts. Each user's account rights include those granted to the user and to the groups to which the user belongs. | InteractiveLogon, NetworkLogon, BatchLogon, ServiceLogon, DenyInteractiveLogon, DenyNetworkLogon, DenyBatchLogon, DenyServiceLogon, RemoteInteractiveLogon, DenyRemoteInteractiveLogon
-[Vanara.Security.AccessControl.SystemSecurity.DesiredAccess](https://github.com/dahall/Vanara/search?l=C%23&q=DesiredAccess) | Access rights for a local security policy. | ViewLocalInformation, ViewAuditInformation, GetPrivateInformation, TrustAdmin, CreateAccount, CreateSecret, SetDefaultQuotaLimits, SetAuditRequirements, AuditLogAdmin, ServerAdmin, LookupNames, AllAccess
-[Vanara.Security.AccessControl.SystemPrivilege](https://github.com/dahall/Vanara/search?l=C%23&q=SystemPrivilege) | Privilege determining the type of system operations that can be performed. | InteractiveLogon, NetworkLogon, BatchLogon, ServiceLogon, DenyInteractiveLogon, DenyNetworkLogon, DenyBatchLogon, DenyServiceLogon, RemoteInteractiveLogon, DenyRemoteInteractiveLogon, AssignPrimaryToken, Audit, Backup, ChangeNotify, CreateGlobal, CreatePageFile, CreatePermanent, CreateSymbolicLink, CreateToken, Debug, DelegateSessionUserImpersonate, EnableDelegation, Impersonate, IncreaseBasePriority, IncreaseQuota, IncreaseWorkingSet, LoadDriver, LockMemory, MachineAccount, ManageVolume, ProfileSingleProcess, Relabel, RemoteShutdown, Restore, Security, Shutdown, SyncAgent, SystemEnvironment, SystemProfile, SystemTime, TakeOwnership, TrustedComputerBase, TimeZone, TrustedCredentialManagerAccess, Undock, UnsolicitedInput
+[Vanara.Security.AccessControl.SystemSecurity.AccountLogonRights](https://github.com/dahall/Vanara/search?l=C%23&q=AccountLogonRights) |  | InteractiveLogon, NetworkLogon, BatchLogon, ServiceLogon, DenyInteractiveLogon, DenyNetworkLogon, DenyBatchLogon, DenyServiceLogon, RemoteInteractiveLogon, DenyRemoteInteractiveLogon
+[Vanara.Security.AccessControl.SystemSecurity.DesiredAccess](https://github.com/dahall/Vanara/search?l=C%23&q=DesiredAccess) |  | ViewLocalInformation, ViewAuditInformation, GetPrivateInformation, TrustAdmin, CreateAccount, CreateSecret, SetDefaultQuotaLimits, SetAuditRequirements, AuditLogAdmin, ServerAdmin, LookupNames, AllAccess
+[Vanara.Security.AccessControl.SystemPrivilege](https://github.com/dahall/Vanara/search?l=C%23&q=SystemPrivilege) |  | InteractiveLogon, NetworkLogon, BatchLogon, ServiceLogon, DenyInteractiveLogon, DenyNetworkLogon, DenyBatchLogon, DenyServiceLogon, RemoteInteractiveLogon, DenyRemoteInteractiveLogon, AssignPrimaryToken, Audit, Backup, ChangeNotify, CreateGlobal, CreatePageFile, CreatePermanent, CreateSymbolicLink, CreateToken, Debug, DelegateSessionUserImpersonate, EnableDelegation, Impersonate, IncreaseBasePriority, IncreaseQuota, IncreaseWorkingSet, LoadDriver, LockMemory, MachineAccount, ManageVolume, ProfileSingleProcess, Relabel, RemoteShutdown, Restore, Security, Shutdown, SyncAgent, SystemEnvironment, SystemProfile, SystemTime, TakeOwnership, TrustedComputerBase, TimeZone, TrustedCredentialManagerAccess, Undock, UnsolicitedInput
 ### Classes
 Class | Description
 ---- | ----
-[Vanara.Security.AccessControl.AccessControlHelper](https://github.com/dahall/Vanara/search?l=C%23&q=AccessControlHelper) | Helper methods for working with Access Control structures.
-[Vanara.Extensions.AccessExtension](https://github.com/dahall/Vanara/search?l=C%23&q=AccessExtension) | Extension methods for native and .NET access control objects.
-[Vanara.Security.AccessControl.SystemSecurity.AccountPrivileges](https://github.com/dahall/Vanara/search?l=C%23&q=AccountPrivileges) | Allows for the privileges of a user to be retrieved, enumerated and set.
-[Vanara.Security.AccountUtils](https://github.com/dahall/Vanara/search?l=C%23&q=AccountUtils) | Helper methods for working with `System.Security.Principal.WindowsIdentity` and user names.
-[Vanara.Extensions.ActiveDirectoryExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ActiveDirectoryExtension) | Extensions for AD objects (e.g. DomainController).
-[Microsoft.Samples.DynamicAccessControl.BadValueException](https://github.com/dahall/Vanara/search?l=C%23&q=BadValueException) | Exception raised when value(s) of a claim value type is invalid.
-[Microsoft.Samples.DynamicAccessControl.ClaimValue](https://github.com/dahall/Vanara/search?l=C%23&q=ClaimValue) | Class to represent the type of claims values held, the value(s) and obtain native (unmanaged) pointers to the value as they are stored in the union members of AUTHZ_SECURITY_ATTRIBUTE_V1 structure's 'Values' field.
-[Vanara.Security.AccessControl.SystemSecurity.LogonRights](https://github.com/dahall/Vanara/search?l=C%23&q=LogonRights) | Allows for the privileges of a user to be retrieved, enumerated and set.
-[Vanara.Security.AccessControl.PinnedAcl](https://github.com/dahall/Vanara/search?l=C%23&q=PinnedAcl) | Enables access to managed `System.Security.AccessControl.RawAcl` as unmanaged `byte[]`.
-[Vanara.Security.AccessControl.PinnedSecurityDescriptor](https://github.com/dahall/Vanara/search?l=C%23&q=PinnedSecurityDescriptor) | Enables access to managed `System.Security.AccessControl.ObjectSecurity` as unmanaged `byte[]`.
-[Vanara.Security.AccessControl.PinnedSid](https://github.com/dahall/Vanara/search?l=C%23&q=PinnedSid) | Enables access to managed `System.Security.Principal.SecurityIdentifier` as unmanaged `Vanara.Security.AccessControl.PinnedSid.PSID`.
-[Vanara.Security.AccessControl.PrivilegeAndAttributes](https://github.com/dahall/Vanara/search?l=C%23&q=PrivilegeAndAttributes) | Class to hold associated `Vanara.Security.AccessControl.SystemPrivilege` and `Vanara.PInvoke.AdvApi32.PrivilegeAttributes` pairs.
-[Vanara.Security.AccessControl.PrivilegedCodeBlock](https://github.com/dahall/Vanara/search?l=C%23&q=PrivilegedCodeBlock) | Elevate user privileges for a code block similar to a <c>lock</c> or <c>using</c> statement.
-[Vanara.Security.AccessControl.PrivilegeExtension](https://github.com/dahall/Vanara/search?l=C%23&q=PrivilegeExtension) | Extension methods for `Vanara.PInvoke.AdvApi32.SafeHTOKEN` for working with privileges.
-[Vanara.Security.AccessControl.SystemSecurity.SystemAccountInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SystemAccountInfo) | Contains a corresponding result for each name provided to the `Vanara.Security.AccessControl.SystemSecurity.GetAccountInfo(System.Boolean,System.String[])` method.
-[Vanara.Security.AccessControl.SystemSecurity](https://github.com/dahall/Vanara/search?l=C%23&q=SystemSecurity) | Provides access to the local security authority on a given server.
-[Vanara.Security.UAC](https://github.com/dahall/Vanara/search?l=C%23&q=UAC) | Provides information about the state of User Access Control for the system.
-[Vanara.Security.Principal.WindowsImpersonatedIdentity](https://github.com/dahall/Vanara/search?l=C%23&q=WindowsImpersonatedIdentity) | Impersonation of a user. Allows to execute code under another user context. Please note that the account that instantiates this class needs to have the 'Act as part of operating system' privilege set.
-[Vanara.Security.Principal.WindowsLoggedInIdentity](https://github.com/dahall/Vanara/search?l=C%23&q=WindowsLoggedInIdentity) | Impersonation of a user. Allows to execute code under another user context. Please note that the account that instantiates this class needs to have the 'Act as part of operating system' privilege set.
+[Vanara.Security.AccessControl.AccessControlHelper](https://github.com/dahall/Vanara/search?l=C%23&q=AccessControlHelper) | 
+[Vanara.Extensions.AccessExtension](https://github.com/dahall/Vanara/search?l=C%23&q=AccessExtension) | 
+[Vanara.Security.AccessControl.SystemSecurity.AccountPrivileges](https://github.com/dahall/Vanara/search?l=C%23&q=AccountPrivileges) | 
+[Vanara.Security.AccountUtils](https://github.com/dahall/Vanara/search?l=C%23&q=AccountUtils) | 
+[Vanara.Extensions.ActiveDirectoryExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ActiveDirectoryExtension) | 
+[Microsoft.Samples.DynamicAccessControl.BadValueException](https://github.com/dahall/Vanara/search?l=C%23&q=BadValueException) | 
+[Microsoft.Samples.DynamicAccessControl.ClaimValue](https://github.com/dahall/Vanara/search?l=C%23&q=ClaimValue) | 
+[Vanara.Security.AccessControl.SystemSecurity.LogonRights](https://github.com/dahall/Vanara/search?l=C%23&q=LogonRights) | 
+[Vanara.Security.AccessControl.PinnedAcl](https://github.com/dahall/Vanara/search?l=C%23&q=PinnedAcl) | 
+[Vanara.Security.AccessControl.PinnedSecurityDescriptor](https://github.com/dahall/Vanara/search?l=C%23&q=PinnedSecurityDescriptor) | 
+[Vanara.Security.AccessControl.PinnedSid](https://github.com/dahall/Vanara/search?l=C%23&q=PinnedSid) | 
+[Vanara.Security.AccessControl.PrivilegeAndAttributes](https://github.com/dahall/Vanara/search?l=C%23&q=PrivilegeAndAttributes) | 
+[Vanara.Security.AccessControl.PrivilegedCodeBlock](https://github.com/dahall/Vanara/search?l=C%23&q=PrivilegedCodeBlock) | 
+[Vanara.Security.AccessControl.PrivilegeExtension](https://github.com/dahall/Vanara/search?l=C%23&q=PrivilegeExtension) | 
+[Vanara.Security.AccessControl.SystemSecurity.SystemAccountInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SystemAccountInfo) | 
+[Vanara.Security.AccessControl.SystemSecurity](https://github.com/dahall/Vanara/search?l=C%23&q=SystemSecurity) | 
+[Vanara.Security.UAC](https://github.com/dahall/Vanara/search?l=C%23&q=UAC) | 
+[Vanara.Security.Principal.WindowsImpersonatedIdentity](https://github.com/dahall/Vanara/search?l=C%23&q=WindowsImpersonatedIdentity) | 
+[Vanara.Security.Principal.WindowsLoggedInIdentity](https://github.com/dahall/Vanara/search?l=C%23&q=WindowsLoggedInIdentity) | 

@@ -163,6 +163,7 @@ Native Method | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[<PhysicalAddress>e__FixedBuffer](https://www.google.com/search?num=5&q=<PhysicalAddress>e__FixedBuffer+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.MIB_IPNET_ROW2_Unmanaged.<PhysicalAddress>e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=<PhysicalAddress>e__FixedBuffer)  
 [FIXED_INFO](https://www.google.com/search?num=5&q=FIXED_INFO+site%3Adocs.microsoft.com) | iptypes.h | [Vanara.PInvoke.IpHlpApi.FIXED_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FIXED_INFO)  
 [IF_COUNTED_STRING](https://www.google.com/search?num=5&q=IF_COUNTED_STRING+site%3Adocs.microsoft.com) | ifdef.h | [Vanara.PInvoke.IpHlpApi.IF_COUNTED_STRING](https://github.com/dahall/Vanara/search?l=C%23&q=IF_COUNTED_STRING)  
 [IF_PHYSICAL_ADDRESS](https://www.google.com/search?num=5&q=IF_PHYSICAL_ADDRESS+site%3Adocs.microsoft.com) | ifdef.h | [Vanara.PInvoke.IpHlpApi.IF_PHYSICAL_ADDRESS](https://github.com/dahall/Vanara/search?l=C%23&q=IF_PHYSICAL_ADDRESS)  
@@ -197,6 +198,7 @@ Native Structure | Header | Managed Structure
 [MIB_IPFORWARDROW](https://www.google.com/search?num=5&q=MIB_IPFORWARDROW+site%3Adocs.microsoft.com) | ipmib.h | [Vanara.PInvoke.IpHlpApi.MIB_IPFORWARDROW](https://github.com/dahall/Vanara/search?l=C%23&q=MIB_IPFORWARDROW)  
 [MIB_IPINTERFACE_ROW](https://www.google.com/search?num=5&q=MIB_IPINTERFACE_ROW+site%3Adocs.microsoft.com) | Netioapi.h | [Vanara.PInvoke.IpHlpApi.MIB_IPINTERFACE_ROW](https://github.com/dahall/Vanara/search?l=C%23&q=MIB_IPINTERFACE_ROW)  
 [MIB_IPNET_ROW2](https://www.google.com/search?num=5&q=MIB_IPNET_ROW2+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.MIB_IPNET_ROW2](https://github.com/dahall/Vanara/search?l=C%23&q=MIB_IPNET_ROW2)  
+[MIB_IPNET_ROW2_Unmanaged](https://www.google.com/search?num=5&q=MIB_IPNET_ROW2_Unmanaged+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.MIB_IPNET_ROW2_Unmanaged](https://github.com/dahall/Vanara/search?l=C%23&q=MIB_IPNET_ROW2_Unmanaged)  
 [MIB_IPNETROW](https://www.google.com/search?num=5&q=MIB_IPNETROW+site%3Adocs.microsoft.com) | ipmib.h | [Vanara.PInvoke.IpHlpApi.MIB_IPNETROW](https://github.com/dahall/Vanara/search?l=C%23&q=MIB_IPNETROW)  
 [MIB_IPPATH_ROW](https://www.google.com/search?num=5&q=MIB_IPPATH_ROW+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.MIB_IPPATH_ROW](https://github.com/dahall/Vanara/search?l=C%23&q=MIB_IPPATH_ROW)  
 [MIB_IPSTATS](https://www.google.com/search?num=5&q=MIB_IPSTATS+site%3Adocs.microsoft.com) | ipmib.h | [Vanara.PInvoke.IpHlpApi.MIB_IPSTATS](https://github.com/dahall/Vanara/search?l=C%23&q=MIB_IPSTATS)  
