@@ -1,4 +1,6 @@
 ## Correlation report for powrprof.dll  
+PInvoke API (methods, structures and constants) imported from Windows PowrProf.dll.
+
 ### Methods (100% complete, 80 of 80 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

@@ -1,4 +1,6 @@
 ## Correlation report for wintrust.dll  
+PInvoke API (methods, structures and constants) imported from Windows WinTrust.dll.
+
 ### Methods (100% complete, 59 of 59 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

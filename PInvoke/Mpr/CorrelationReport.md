@@ -1,4 +1,6 @@
 ## Correlation report for mpr.dll  
+PInvoke API (methods, structures and constants) imported from Windows Mpr.dll.
+
 ### Methods (100% complete, 22 of 22 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

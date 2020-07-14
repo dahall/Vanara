@@ -1,4 +1,6 @@
 ## Correlation report for kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
+    PInvoke API (methods, structures and constants) imported from Windows Kernel32.dll.
+
 ### Methods (99% complete, 1107 of 1110 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

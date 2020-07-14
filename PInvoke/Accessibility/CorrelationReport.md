@@ -1,4 +1,6 @@
 ## Correlation report for oleacc.dll  
+PInvoke API (methods, structures and constants) for Windows Accessibility Features.
+
 ### Methods (100% complete, 15 of 15 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

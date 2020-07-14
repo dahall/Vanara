@@ -1,4 +1,5 @@
 ## Assembly report for Vanara.SystemServices.dll
+Classes for system related items derived from the Vanara PInvoke libraries. Includes extensions for Process (privileges and elavation), FileInfo (compression info), and ServiceController (SetStartType) that pull extended information through native API calls.
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

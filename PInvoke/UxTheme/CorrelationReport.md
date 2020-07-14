@@ -1,4 +1,6 @@
 ## Correlation report for uxtheme.dll  
+PInvoke API (methods, structures and constants) imported from Windows UxTheme.dll.
+
 ### Methods (100% complete, 77 of 77 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

@@ -1,4 +1,6 @@
 ## Correlation report for iphlpapi.dll  
+PInvoke API (methods, structures and constants) imported from Windows IpHlpApi.dll.
+
 ### Methods (100% complete, 158 of 158 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

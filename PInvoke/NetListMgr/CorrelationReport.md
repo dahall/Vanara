@@ -1,4 +1,6 @@
 ## Correlation report for netprofm.dll  
+PInvoke API (interfaces, structures and constants) for Windows NetListMgr COM object.
+
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

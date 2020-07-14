@@ -1,4 +1,6 @@
 ## Correlation report for wcmapi.dll  
+PInvoke API (methods, structures and constants imported from Windows WcmApi.dll.
+
 ### Methods (100% complete, 5 of 5 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

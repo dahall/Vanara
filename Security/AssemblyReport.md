@@ -1,4 +1,5 @@
 ## Assembly report for Vanara.Security.dll
+Classes for security related items derived from the Vanara PInvoke libraries. Includes extension methods for Active Directory and access control classes, methods for working with accounts, UAC, privileges, system access, impersonation and SIDs, and a full LSA wrapper.
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

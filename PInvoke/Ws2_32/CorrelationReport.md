@@ -1,4 +1,6 @@
 ## Correlation report for ws2_32.dll  
+PInvoke API (methods, structures and constants) imported from Windows Ws2_32.dll.
+
 ### Methods (100% complete, 132 of 132 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

@@ -1,4 +1,6 @@
 ## Correlation report for dnsapi.dll  
+PInvoke API (methods, structures and constants imported from Windows DnsApi.dll.
+
 ### Methods (100% complete, 34 of 34 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

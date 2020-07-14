@@ -1,4 +1,6 @@
 ## Correlation report for Vanara.PInvoke.SearchApi.dll  
+PInvoke API (methods, structures and constants imported from Windows Search.
+
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

@@ -1,4 +1,6 @@
 ## Correlation report for cabinet.dll  
+PInvoke API (methods, structures and constants) imported from Windows Cabinet.dll.
+
 ### Methods (100% complete, 22 of 22 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

@@ -1,4 +1,6 @@
 ## Correlation report for advapi32.dll, secur32.dll, authz.dll, sspicli.dll, schannel.dll  
+PInvoke API (methods, structures and constants) imported from Windows AdvApi32.dll, Authz.dll and Secur32.dll.
+
 ### Methods (100% complete, 558 of 558 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

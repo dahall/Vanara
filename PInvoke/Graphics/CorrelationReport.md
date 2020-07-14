@@ -1,4 +1,6 @@
 ## Correlation report for d2d1.dll, dxgi.dll, dwrite.dll, windowscodecs.dll  
+PInvoke API (methods, interfaces, structures and constants) imported from Windows Graphics APIs. Currently supports Windows Imaging Component (WIC), DirectWrite (full), Direct2D (partial), and Direct3D (DXGI only).
+
 ### Methods (100% complete, 25 of 25 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

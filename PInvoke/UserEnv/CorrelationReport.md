@@ -1,4 +1,6 @@
 ## Correlation report for userenv.dll  
+PInvoke API (methods, structures and constants) imported from UserEnv.dll.
+
 ### Methods (100% complete, 29 of 29 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

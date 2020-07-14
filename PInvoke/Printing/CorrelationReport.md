@@ -1,4 +1,6 @@
 ## Correlation report for winspool.drv, prntvpt.dll  
+PInvoke API (methods, structures and constants) imported from Windows winspool.drv and prntvpt.dll.
+
 ### Methods (100% complete, 108 of 108 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

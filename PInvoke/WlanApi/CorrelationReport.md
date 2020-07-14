@@ -1,4 +1,6 @@
 ## Correlation report for wlanapi.dll, wlanui.dll  
+PInvoke API (methods, structures and constants imported from Windows WlanApi.dll.
+
 ### Methods (100% complete, 58 of 58 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

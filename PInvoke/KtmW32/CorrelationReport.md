@@ -1,4 +1,6 @@
 ## Correlation report for ktmw32.dll  
+PInvoke API (methods, structures and constants imported from Windows KtmW32.dll.
+
 ### Methods (100% complete, 39 of 39 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

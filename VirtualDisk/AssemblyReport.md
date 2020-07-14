@@ -1,4 +1,5 @@
 ## Assembly report for Vanara.VirtualDisk.dll
+.NET classes to manage Windows Virtual Storage (VHD and VHDX) using P/Invoke functions from VirtDisk.dll.
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

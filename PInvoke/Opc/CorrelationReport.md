@@ -1,4 +1,6 @@
 ## Correlation report for opcservices.dll  
+PInvoke API (methods, structures and constants) imported from opcservices.dll.
+
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  

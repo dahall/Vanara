@@ -1,4 +1,6 @@
 ## Correlation report for shell32.dll, url.dll  
+PInvoke API (methods, structures and constants) imported from Windows Shell32.dll.
+
 ### Methods (100% complete, 195 of 195 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

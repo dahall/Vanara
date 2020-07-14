@@ -1,4 +1,6 @@
 ## Correlation report for gdi32.dll  
+PInvoke API (methods, structures and constants) imported from Windows Gdi32.dll
+
 ### Methods (100% complete, 306 of 306 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

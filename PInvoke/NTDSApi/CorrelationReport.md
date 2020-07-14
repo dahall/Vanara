@@ -1,4 +1,6 @@
 ## Correlation report for ntdsapi.dll  
+PInvoke API (methods, structures and constants) imported from Windows NTDSApi.dll.
+
 ### Methods (100% complete, 52 of 52 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

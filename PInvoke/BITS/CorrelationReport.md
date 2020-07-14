@@ -1,4 +1,6 @@
 ## Correlation report for qmgr.dll  
+PInvoke API (interfaces, structures and constants) imported for Windows BITS (Background Intelligent Transfer Service).
+
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

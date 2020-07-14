@@ -1,4 +1,6 @@
 ## Correlation report for shlwapi.dll  
+PInvoke API (methods, structures and constants) imported from Windows ShlwApi.dll.
+
 ### Methods (100% complete, 211 of 211 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

@@ -1,4 +1,6 @@
 ## Correlation report for crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptui.dll, cryptnet.dll, cryptdlg.dll  
+PInvoke API (methods, structures and constants) imported from Windows crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptnet.dll, cryptdlg.dll and cryptui.dll.
+
 ### Methods (100% complete, 369 of 369 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

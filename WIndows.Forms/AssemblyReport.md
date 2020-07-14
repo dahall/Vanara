@@ -1,4 +1,5 @@
 ## Assembly report for Vanara.Windows.Forms.dll
+Classes for user interface related items derived from the Vanara PInvoke libraries. Includes extensions for almost all common controls to give post Vista capabilities, WinForms controls (panel, commandlink, enhanced combo boxes, IPAddress, split button, trackbar and themed controls), shutdown/restart/lock control, buffered painting, resource files, access control editor, simplifed designer framework for Windows.Forms.
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

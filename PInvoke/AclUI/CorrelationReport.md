@@ -1,4 +1,6 @@
 ## Correlation report for aclui.dll  
+PInvoke API (methods, structures and constants) imported from Windows AclUI.dll.
+
 ### Methods (100% complete, 3 of 3 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

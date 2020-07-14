@@ -1,4 +1,6 @@
 ## Correlation report for virtdisk.dll  
+PInvoke API (methods, structures and constants) imported from Windows VirtDisk.dll.
+
 ### Methods (100% complete, 27 of 27 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

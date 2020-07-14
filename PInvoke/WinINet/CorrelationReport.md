@@ -1,4 +1,6 @@
 ## Correlation report for wininet.dll  
+PInvoke API (methods, structures and constants) imported from Windows WinINet.dll.
+
 ### Methods (100% complete, 108 of 108 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

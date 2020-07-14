@@ -1,4 +1,12 @@
 ## Assembly report for Vanara.PInvoke.Shared.dll
+Shared methods, structures and constants for use throughout the Vanara.PInvoke assemblies. Includes:
+* IEnumerable helpers for COM enumerations
+* Custom marshaler for CoTaskMem pointers
+* Enhanced error results classes for HRESULT, Win32Error and NTStatus
+* Standard windows.h macros (e.g. HIWORD, MAKELONG, etc.)
+* Overlapped method wrapper
+* Resource ID holder
+* Shared structures and enums (see release notes)
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

@@ -1,4 +1,6 @@
 ## Correlation report for wer.dll  
+PInvoke API (methods, structures and constants imported from Windows Wer.dll.
+
 ### Methods (100% complete, 15 of 15 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

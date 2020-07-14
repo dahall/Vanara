@@ -1,4 +1,6 @@
 ## Correlation report for urlmon.dll  
+PInvoke API (methods, structures and constants imported from UrlMon.dll.
+
 ### Methods (100% complete, 49 of 49 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

@@ -1,4 +1,6 @@
 ## Correlation report for credui.dll  
+PInvoke API (methods, structures and constants) imported from Windows CredUI.dll.
+
 ### Methods (100% complete, 14 of 14 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

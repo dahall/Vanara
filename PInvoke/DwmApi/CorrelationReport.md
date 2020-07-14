@@ -1,4 +1,6 @@
 ## Correlation report for dwmapi.dll  
+PInvoke API (methods, structures and constants) imported from Windows DwmApi.dll.
+
 ### Methods (100% complete, 26 of 26 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

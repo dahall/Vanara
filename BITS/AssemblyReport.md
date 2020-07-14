@@ -1,4 +1,5 @@
 ## Assembly report for Vanara.BITS.dll
+.NET classes to access Background Intelligent Transfer Service (BITS) functionality. Intelligently uses most recent library functions and gracefully fails when new features are not available on older OS versions.
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

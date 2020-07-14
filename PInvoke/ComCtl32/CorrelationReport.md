@@ -1,4 +1,6 @@
 ## Correlation report for comctl32.dll  
+PInvoke API (methods, structures and constants) imported from Windows ComCtl32.dll.
+
 ### Methods (100% complete, 69 of 69 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

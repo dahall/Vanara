@@ -1,4 +1,6 @@
 ## Correlation report for ole32.dll, oleaut32.dll, propsys.dll  
+PInvoke API (methods, structures and constants) imported from Windows Ole32.dll, OleAut32 and PropSys.dll.
+
 ### Methods (82% complete, 576 of 699 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

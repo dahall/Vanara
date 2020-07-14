@@ -1,4 +1,6 @@
 ## Correlation report for ntdll.dll  
+PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
+
 ### Methods (4% complete, 24 of 517 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

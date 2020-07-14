@@ -1,4 +1,10 @@
 ## Assembly report for Vanara.Core.dll
+This library includes shared methods, structures and constants for use throughout the Vanara assemblies. Think of it as windows.h with some useful extensions. It includes:
+* Extension methods for working with enumerated types (enum), FILETIME, and method and property extractions via reflection
+* Extension and helper methods to marshaling structures arrays and strings
+* SafeHandle based classes for working with memory allocated via CoTaskMem, HGlobal, or Local calls that handles packing and extracting arrays, structures and raw memory
+* Safe pinning of objects in memory
+* Memory stream based on marshaled memory
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

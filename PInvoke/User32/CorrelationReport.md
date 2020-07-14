@@ -1,4 +1,6 @@
 ## Correlation report for user32.dll  
+PInvoke API (methods, structures and constants) imported from Windows User32.dll.
+
 ### Methods (100% complete, 559 of 559 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

@@ -1,4 +1,6 @@
 ## Correlation report for netapi32.dll  
+PInvoke API (methods, structures and constants) imported from Windows NetApi32.dll.
+
 ### Methods (100% complete, 156 of 156 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

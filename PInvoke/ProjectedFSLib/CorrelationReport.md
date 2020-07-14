@@ -1,4 +1,6 @@
 ## Correlation report for projectedfslib.dll  
+PInvoke API (methods, structures and constants) imported from Windows ProjectedFSLib.dll.
+
 ### Methods (100% complete, 19 of 19 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

@@ -1,4 +1,6 @@
 ## Correlation report for taskschd.dll, mstask.dll  
+PInvoke API (methods, structures and constants) imported for Windows Task Scheduler 1.0 and 2.0 COM objects.
+
 ### Methods (100% complete, 2 of 2 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
