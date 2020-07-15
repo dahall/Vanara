@@ -619,7 +619,7 @@ namespace Vanara.PInvoke
 		// HANDLE hInput, _In_ HANDLE hOutput, _In_ DWORD dwFlags, _Out_ HPCON* phPC );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ConsoleApi.h")]
-		public static extern HRESULT CreatePseudoConsole([In] COORD size, [In] HANDLE hInput, [In] HANDLE hOutput, [In] PSEUDOCONSOLE dwFlags, out SafeHPCON phPC);
+		public static extern HRESULT CreatePseudoConsole([In] COORD size, [In] HFILE hInput, [In] HFILE hOutput, [In] PSEUDOCONSOLE dwFlags, out SafeHPCON phPC);
 
 		/// <summary>
 		/// Sets the character attributes for a specified number of character cells, beginning at the specified coordinates in a screen buffer.
