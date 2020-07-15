@@ -27,8 +27,10 @@ namespace Vanara.PInvoke
 		public delegate bool HandlerRoutine(CTRL_EVENT CtrlType);
 
 		/// <summary>
-		/// Character attributes can be divided into two classes: color and DBCS. The following attributes are defined in the Wincon.h header file.
+		/// Character attributes can be divided into two classes: color and DBCS. The following attributes are defined in the Wincon.h
+		/// header file.
 		/// </summary>
+		[PInvokeData("wincon.h")]
 		[Flags]
 		public enum CHARACTER_ATTRIBUTE : ushort
 		{
@@ -79,6 +81,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Used by <see cref="GetConsoleMode(HFILE, out CONSOLE_INPUT_MODE)"/> and <see cref="SetConsoleMode(HFILE, CONSOLE_INPUT_MODE)"/>.</summary>
+		[PInvokeData("ConsoleApi.h", MSDNShortId = "49adf618-196d-4490-93ca-cd177807f58e")]
 		[Flags]
 		public enum CONSOLE_INPUT_MODE : uint
 		{
@@ -146,6 +149,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Used by <see cref="GetConsoleMode(HFILE, out CONSOLE_OUTPUT_MODE)"/> and <see cref="SetConsoleMode(HFILE, CONSOLE_OUTPUT_MODE)"/>.</summary>
+		[PInvokeData("ConsoleApi.h", MSDNShortId = "49adf618-196d-4490-93ca-cd177807f58e")]
 		[Flags]
 		public enum CONSOLE_OUTPUT_MODE : uint
 		{
@@ -157,11 +161,11 @@ namespace Vanara.PInvoke
 			ENABLE_PROCESSED_OUTPUT = 0x0001,
 
 			/// <summary>
-			/// When writing with WriteFile or WriteConsole or echoing with ReadFile or ReadConsole, the cursor moves to the beginning of the
-			/// next row when it reaches the end of the current row. This causes the rows displayed in the console window to scroll up
+			/// When writing with WriteFile or WriteConsole or echoing with ReadFile or ReadConsole, the cursor moves to the beginning of
+			/// the next row when it reaches the end of the current row. This causes the rows displayed in the console window to scroll up
 			/// automatically when the cursor advances beyond the last row in the window. It also causes the contents of the console screen
-			/// buffer to scroll up (discarding the top row of the console screen buffer) when the cursor advances beyond the last row in the
-			/// console screen buffer. If this mode is disabled, the last character in the row is overwritten with any subsequent characters.
+			/// buffer to scroll up (discarding the top row of the console screen buffer) when the cursor advances beyond the last row in
+			/// the console screen buffer. If this mode is disabled, the last character in the row is overwritten with any subsequent characters.
 			/// </summary>
 			ENABLE_WRAP_AT_EOL_OUTPUT = 0x0002,
 
@@ -177,16 +181,16 @@ namespace Vanara.PInvoke
 			/// move and buffer scroll operations.
 			/// <para>
 			/// Normally when ENABLE_WRAP_AT_EOL_OUTPUT is set and text reaches the end of the line, the cursor will immediately move to the
-			/// next line and the contents of the buffer will scroll up by one line. In contrast with this flag set, the scroll operation and
-			/// cursor move is delayed until the next character arrives. The written character will be printed in the final position on the
-			/// line and the cursor will remain above this character as if ENABLE_WRAP_AT_EOL_OUTPUT was off, but the next printable
+			/// next line and the contents of the buffer will scroll up by one line. In contrast with this flag set, the scroll operation
+			/// and cursor move is delayed until the next character arrives. The written character will be printed in the final position on
+			/// the line and the cursor will remain above this character as if ENABLE_WRAP_AT_EOL_OUTPUT was off, but the next printable
 			/// character will be printed as if ENABLE_WRAP_AT_EOL_OUTPUT is on. No overwrite will occur. Specifically, the cursor quickly
 			/// advances down to the following line, a scroll is performed if necessary, the character is printed, and the cursor advances
 			/// one more position.
 			/// </para>
 			/// <para>
-			/// The typical usage of this flag is intended in conjunction with setting ENABLE_VIRTUAL_TERMINAL_PROCESSING to better emulate a
-			/// terminal emulator where writing the final character on the screen (in the bottom right corner) without triggering an
+			/// The typical usage of this flag is intended in conjunction with setting ENABLE_VIRTUAL_TERMINAL_PROCESSING to better emulate
+			/// a terminal emulator where writing the final character on the screen (in the bottom right corner) without triggering an
 			/// immediate scroll is the desired behavior.
 			/// </para>
 			/// </summary>
@@ -217,6 +221,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The console selection indicator for <see cref="CONSOLE_SELECTION_INFO.dwFlags"/>.</summary>
+		[PInvokeData("ConsoleApi3.h")]
 		[Flags]
 		public enum CONSOLE_SELECTION
 		{
@@ -237,6 +242,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The type of console screen buffer to create.</summary>
+		[PInvokeData("Wincon.h")]
 		public enum CONSOLE_TEXTMODE
 		{
 			/// <summary>The console textmode buffer.</summary>
@@ -244,6 +250,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The state of the control keys.</summary>
+		[PInvokeData("Wincon.h")]
 		[Flags]
 		public enum CONTROL_KEY_STATE
 		{
@@ -279,6 +286,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The type of signal to be generated.</summary>
+		[PInvokeData("Wincon.h")]
 		public enum CTRL_EVENT
 		{
 			/// <summary>
@@ -316,6 +324,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The type of input event.</summary>
+		[PInvokeData("Wincon.h")]
 		[Flags]
 		public enum EVENT_TYPE : ushort
 		{
@@ -340,6 +349,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The display mode of the console.</summary>
+		[PInvokeData("Wincon.h")]
 		public enum GET_CONSOLE_DISPLAY_MODE
 		{
 			/// <summary>
@@ -356,6 +366,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The status of the mouse buttons.</summary>
+		[PInvokeData("Wincon.h")]
 		[Flags]
 		public enum MOUSE_BUTTON_STATE
 		{
@@ -379,6 +390,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The type of mouse event.</summary>
+		[PInvokeData("Wincon.h")]
 		[Flags]
 		public enum MOUSE_EVENT_FLAG
 		{
@@ -406,7 +418,19 @@ namespace Vanara.PInvoke
 			MOUSE_WHEELED = 0x0004,
 		}
 
+		/// <summary>Flags for <see cref="CreatePseudoConsole"/>.</summary>
+		[PInvokeData("ConsoleApi.h")]
+		public enum PSEUDOCONSOLE
+		{
+			/// <summary>Perform a standard pseudoconsole creation.</summary>
+			PSEUDOCONSOLE_STANDARD = 0,
+
+			/// <summary>The created pseudoconsole session will attempt to inherit the cursor position of the parent console.</summary>
+			PSEUDOCONSOLE_INHERIT_CURSOR = 1,
+		}
+
 		/// <summary>The display mode of the console.</summary>
+		[PInvokeData("Wincon.h")]
 		public enum SET_CONSOLE_DISPLAY_MODE
 		{
 			/// <summary>Text is displayed in full-screen mode.</summary>
@@ -471,6 +495,23 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool AttachConsole(uint dwProcessId);
 
+		/// <summary>Closes a pseudoconsole from the given handle.</summary>
+		/// <param name="hPC">[in] A handle to an active psuedoconsole as opened by CreatePseudoConsole.</param>
+		/// <returns>none</returns>
+		/// <remarks>
+		/// <para>Upon closing a pseudoconsole, client applications attached to the session will be terminated as well.</para>
+		/// <para>A final painted frame may arrive on
+		/// <code>hOutput</code>
+		/// from the pseudoconsole when this API is called. It is expected that the caller will drain this information from the
+		/// communication channel buffer and either present it or discard it. Failure to drain the buffer may cause the Close call to wait
+		/// indefinitely until it is drained or the communication channels are broken another way.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/console/closepseudoconsole void WINAPI ClosePseudoConsole( _In_ HPCON hPC );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ConsoleApi.h")]
+		public static extern void ClosePseudoConsole([In] HPCON hPC);
+
 		/// <summary>Creates a console screen buffer.</summary>
 		/// <param name="dwDesiredAccess">
 		/// The access to the console screen buffer. For a list of access rights, see Console Buffer Security and Access Rights.
@@ -513,6 +554,72 @@ namespace Vanara.PInvoke
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		public static extern SafeHFILE CreateConsoleScreenBuffer(ACCESS_MASK dwDesiredAccess, FileShare dwShareMode,
 			SECURITY_ATTRIBUTES lpSecurityAttributes = null, CONSOLE_TEXTMODE dwFlags = CONSOLE_TEXTMODE.CONSOLE_TEXTMODE_BUFFER, IntPtr lpScreenBufferData = default);
+
+		/// <summary>Creates a new pseudoconsole object for the calling process.</summary>
+		/// <param name="size">
+		/// [in] The dimensions of the window/buffer in count of characters that will be used on initial creation of the pseudoconsole. This
+		/// can be adjusted later with ResizePseudoConsole.
+		/// </param>
+		/// <param name="hInput">
+		/// [in] An open handle to a stream of data that represents user input to the device. This is currently restricted to synchronous I/O.
+		/// </param>
+		/// <param name="hOutput">
+		/// [in] An open handle to a stream of data that represents application output from the device. This is currently restricted to
+		/// synchronous I/O.
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>[in] The value can be one of the following:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>Perform a standard pseudoconsole creation.</term>
+		/// </item>
+		/// <item>
+		/// <term>PSEUDOCONSOLE_INHERIT_CURSOR (DWORD)1</term>
+		/// <term>The created pseudoconsole session will attempt to inherit the cursor position of the parent console.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="phPC">[out] Pointer to a location that will receive a handle to the new pseudoconsole device.</param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function is primarily used by applications attempting to be a terminal window for a command-line user interface (CUI)
+		/// application. The callers become responsible for presentation of the information on the output stream and for collecting user
+		/// input and serializing it into the input stream.
+		/// </para>
+		/// <para>The input and output streams encoded as UTF-8 contain plain text interleaved with Virtual Terminal Sequences.</para>
+		/// <para>
+		/// On the output stream, the virtual terminal sequences can be decoded by the calling application to layout and present the plain
+		/// text in a display window.
+		/// </para>
+		/// <para>
+		/// On the input stream, plain text represents standard keyboard keys input by a user. More complicated operations are represented
+		/// by encoding control keys and mouse movements as virtual terminal sequences embedded in this stream.
+		/// </para>
+		/// <para>The handle created by this function must be closed with ClosePseudoConsole when operations are complete.</para>
+		/// <para>If using
+		/// <code>PSEUDOCONSOLE_INHERIT_CURSOR</code>
+		/// , the calling application should be prepared to respond to the request for the cursor state in an asynchronous fashion on a
+		/// background thread by forwarding or interpreting the request for cursor information that will be received on
+		/// <code>hOutput</code>
+		/// and replying on
+		/// <code>hInput</code>
+		/// . Failure to do so may cause the calling application to hang while making another request of the pseudoconsole system.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/console/createpseudoconsole HRESULT WINAPI CreatePseudoConsole( _In_ COORD size, _In_
+		// HANDLE hInput, _In_ HANDLE hOutput, _In_ DWORD dwFlags, _Out_ HPCON* phPC );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ConsoleApi.h")]
+		public static extern HRESULT CreatePseudoConsole([In] COORD size, [In] HANDLE hInput, [In] HANDLE hOutput, [In] PSEUDOCONSOLE dwFlags, out SafeHPCON phPC);
 
 		/// <summary>
 		/// Sets the character attributes for a specified number of character cells, beginning at the specified coordinates in a screen buffer.
@@ -604,8 +711,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CTRL_C_EVENT 0</term>
 		/// <term>
-		/// Generates a CTRL+C signal. This signal cannot be generated for process groups. If dwProcessGroupId is nonzero, this function will
-		/// succeed, but the CTRL+C signal will not be received by processes within the specified process group.
+		/// Generates a CTRL+C signal. This signal cannot be generated for process groups. If dwProcessGroupId is nonzero, this function
+		/// will succeed, but the CTRL+C signal will not be received by processes within the specified process group.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -689,8 +796,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>To determine the required size for the lpExeName buffer, use the <c>GetConsoleAliasesLength</c> function.</para>
 		/// <para>
-		/// To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0501 or later. For more information, see Using
-		/// the Windows Headers.
+		/// To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0501 or later. For more information, see
+		/// Using the Windows Headers.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/console/getconsolealiases DWORD WINAPI GetConsoleAliases( _Out_ LPTSTR lpAliasBuffer,
@@ -717,8 +824,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>To determine the required size for the lpExeName buffer, use the <c>GetConsoleAliasesLength</c> function.</para>
 		/// <para>
-		/// To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0501 or later. For more information, see Using
-		/// the Windows Headers.
+		/// To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0501 or later. For more information, see
+		/// Using the Windows Headers.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/console/getconsolealiases DWORD WINAPI GetConsoleAliases( _Out_ LPTSTR lpAliasBuffer,
@@ -845,8 +952,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CONSOLE_FULLSCREEN 1</term>
 		/// <term>
-		/// Full-screen console. The console is in this mode as soon as the window is maximized. At this point, the transition to full-screen
-		/// mode can still fail.
+		/// Full-screen console. The console is in this mode as soon as the window is maximized. At this point, the transition to
+		/// full-screen mode can still fail.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -884,8 +991,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If the function fails, the width and the height are zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// <para>
-		/// To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0500 or later. For more information, see Using
-		/// the Windows Headers.
+		/// To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0500 or later. For more information, see
+		/// Using the Windows Headers.
 		/// </para>
 		/// </returns>
 		// COORD WINAPI GetConsoleFontSize( _In_ HANDLE hConsoleOutput, _In_ DWORD nFont );
@@ -947,8 +1054,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ENABLE_MOUSE_INPUT 0x0010</term>
 		/// <term>
-		/// If the mouse pointer is within the borders of the console window and the window has the keyboard focus, mouse events generated by
-		/// mouse movement and button presses are placed in the input buffer. These events are discarded by ReadFile or ReadConsole, even
+		/// If the mouse pointer is within the borders of the console window and the window has the keyboard focus, mouse events generated
+		/// by mouse movement and button presses are placed in the input buffer. These events are discarded by ReadFile or ReadConsole, even
 		/// when this mode is enabled.
 		/// </term>
 		/// </item>
@@ -970,8 +1077,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ENABLE_WINDOW_INPUT 0x0008</term>
 		/// <term>
-		/// User interactions that change the size of the console screen buffer are reported in the console's input buffer. Information about
-		/// these events can be read from the input buffer by applications using the ReadConsoleInput function, but not by those using
+		/// User interactions that change the size of the console screen buffer are reported in the console's input buffer. Information
+		/// about these events can be read from the input buffer by applications using the ReadConsoleInput function, but not by those using
 		/// ReadFile or ReadConsole.
 		/// </term>
 		/// </item>
@@ -979,9 +1086,9 @@ namespace Vanara.PInvoke
 		/// <term>ENABLE_VIRTUAL_TERMINAL_INPUT 0x0200</term>
 		/// <term>
 		/// Setting this flag directs the Virtual Terminal processing engine to convert user input received by the console window into
-		/// Console Virtual Terminal Sequences that can be retrieved by a supporting application through WriteFile or WriteConsole functions.
-		/// The typical usage of this flag is intended in conjunction with ENABLE_VIRTUAL_TERMINAL_PROCESSING on the output handle to connect
-		/// to an application that communicates exclusively via virtual terminal sequences.
+		/// Console Virtual Terminal Sequences that can be retrieved by a supporting application through WriteFile or WriteConsole
+		/// functions. The typical usage of this flag is intended in conjunction with ENABLE_VIRTUAL_TERMINAL_PROCESSING on the output
+		/// handle to connect to an application that communicates exclusively via virtual terminal sequences.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -998,7 +1105,8 @@ namespace Vanara.PInvoke
 		/// <term>ENABLE_PROCESSED_OUTPUT 0x0001</term>
 		/// <term>
 		/// Characters written by the WriteFile or WriteConsole function or echoed by the ReadFile or ReadConsole function are parsed for
-		/// ASCII control sequences, and the correct action is performed. Backspace, tab, bell, carriage return, and line feed characters are processed.
+		/// ASCII control sequences, and the correct action is performed. Backspace, tab, bell, carriage return, and line feed characters
+		/// are processed.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1014,22 +1122,22 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004</term>
 		/// <term>
-		/// When writing with WriteFile or WriteConsole, characters are parsed for VT100 and similar control character sequences that control
-		/// cursor movement, color/font mode, and other operations that can also be performed via the existing Console APIs. For more
-		/// information, see Console Virtual Terminal Sequences.
+		/// When writing with WriteFile or WriteConsole, characters are parsed for VT100 and similar control character sequences that
+		/// control cursor movement, color/font mode, and other operations that can also be performed via the existing Console APIs. For
+		/// more information, see Console Virtual Terminal Sequences.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>DISABLE_NEWLINE_AUTO_RETURN 0x0008</term>
 		/// <term>
-		/// When writing with WriteFile or WriteConsole, this adds an additional state to end-of-line wrapping that can delay the cursor move
-		/// and buffer scroll operations. Normally when ENABLE_WRAP_AT_EOL_OUTPUT is set and text reaches the end of the line, the cursor
-		/// will immediately move to the next line and the contents of the buffer will scroll up by one line. In contrast with this flag set,
-		/// the scroll operation and cursor move is delayed until the next character arrives. The written character will be printed in the
-		/// final position on the line and the cursor will remain above this character as if ENABLE_WRAP_AT_EOL_OUTPUT was off, but the next
-		/// printable character will be printed as if ENABLE_WRAP_AT_EOL_OUTPUT is on. No overwrite will occur. Specifically, the cursor
-		/// quickly advances down to the following line, a scroll is performed if necessary, the character is printed, and the cursor
-		/// advances one more position. The typical usage of this flag is intended in conjunction with setting
+		/// When writing with WriteFile or WriteConsole, this adds an additional state to end-of-line wrapping that can delay the cursor
+		/// move and buffer scroll operations. Normally when ENABLE_WRAP_AT_EOL_OUTPUT is set and text reaches the end of the line, the
+		/// cursor will immediately move to the next line and the contents of the buffer will scroll up by one line. In contrast with this
+		/// flag set, the scroll operation and cursor move is delayed until the next character arrives. The written character will be
+		/// printed in the final position on the line and the cursor will remain above this character as if ENABLE_WRAP_AT_EOL_OUTPUT was
+		/// off, but the next printable character will be printed as if ENABLE_WRAP_AT_EOL_OUTPUT is on. No overwrite will occur.
+		/// Specifically, the cursor quickly advances down to the following line, a scroll is performed if necessary, the character is
+		/// printed, and the cursor advances one more position. The typical usage of this flag is intended in conjunction with setting
 		/// ENABLE_VIRTUAL_TERMINAL_PROCESSING to better emulate a terminal emulator where writing the final character on the screen (in the
 		/// bottom right corner) without triggering an immediate scroll is the desired behavior.
 		/// </term>
@@ -1067,8 +1175,8 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// The <c>ENABLE_LINE_INPUT</c> and <c>ENABLE_ECHO_INPUT</c> modes only affect processes that use <c>ReadFile</c> or
 		/// <c>ReadConsole</c> to read from the console's input buffer. Similarly, the <c>ENABLE_PROCESSED_INPUT</c> mode primarily affects
-		/// <c>ReadFile</c> and <c>ReadConsole</c> users, except that it also determines whether CTRL+C input is reported in the input buffer
-		/// (to be read by the <c>ReadConsoleInput</c> function) or is passed to a function defined by the application.
+		/// <c>ReadFile</c> and <c>ReadConsole</c> users, except that it also determines whether CTRL+C input is reported in the input
+		/// buffer (to be read by the <c>ReadConsoleInput</c> function) or is passed to a function defined by the application.
 		/// </para>
 		/// <para>
 		/// The <c>ENABLE_WINDOW_INPUT</c> and <c>ENABLE_MOUSE_INPUT</c> modes determine whether user interactions involving window resizing
@@ -1127,8 +1235,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ENABLE_MOUSE_INPUT 0x0010</term>
 		/// <term>
-		/// If the mouse pointer is within the borders of the console window and the window has the keyboard focus, mouse events generated by
-		/// mouse movement and button presses are placed in the input buffer. These events are discarded by ReadFile or ReadConsole, even
+		/// If the mouse pointer is within the borders of the console window and the window has the keyboard focus, mouse events generated
+		/// by mouse movement and button presses are placed in the input buffer. These events are discarded by ReadFile or ReadConsole, even
 		/// when this mode is enabled.
 		/// </term>
 		/// </item>
@@ -1150,8 +1258,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ENABLE_WINDOW_INPUT 0x0008</term>
 		/// <term>
-		/// User interactions that change the size of the console screen buffer are reported in the console's input buffer. Information about
-		/// these events can be read from the input buffer by applications using the ReadConsoleInput function, but not by those using
+		/// User interactions that change the size of the console screen buffer are reported in the console's input buffer. Information
+		/// about these events can be read from the input buffer by applications using the ReadConsoleInput function, but not by those using
 		/// ReadFile or ReadConsole.
 		/// </term>
 		/// </item>
@@ -1159,9 +1267,9 @@ namespace Vanara.PInvoke
 		/// <term>ENABLE_VIRTUAL_TERMINAL_INPUT 0x0200</term>
 		/// <term>
 		/// Setting this flag directs the Virtual Terminal processing engine to convert user input received by the console window into
-		/// Console Virtual Terminal Sequences that can be retrieved by a supporting application through WriteFile or WriteConsole functions.
-		/// The typical usage of this flag is intended in conjunction with ENABLE_VIRTUAL_TERMINAL_PROCESSING on the output handle to connect
-		/// to an application that communicates exclusively via virtual terminal sequences.
+		/// Console Virtual Terminal Sequences that can be retrieved by a supporting application through WriteFile or WriteConsole
+		/// functions. The typical usage of this flag is intended in conjunction with ENABLE_VIRTUAL_TERMINAL_PROCESSING on the output
+		/// handle to connect to an application that communicates exclusively via virtual terminal sequences.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -1178,7 +1286,8 @@ namespace Vanara.PInvoke
 		/// <term>ENABLE_PROCESSED_OUTPUT 0x0001</term>
 		/// <term>
 		/// Characters written by the WriteFile or WriteConsole function or echoed by the ReadFile or ReadConsole function are parsed for
-		/// ASCII control sequences, and the correct action is performed. Backspace, tab, bell, carriage return, and line feed characters are processed.
+		/// ASCII control sequences, and the correct action is performed. Backspace, tab, bell, carriage return, and line feed characters
+		/// are processed.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1194,22 +1303,22 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004</term>
 		/// <term>
-		/// When writing with WriteFile or WriteConsole, characters are parsed for VT100 and similar control character sequences that control
-		/// cursor movement, color/font mode, and other operations that can also be performed via the existing Console APIs. For more
-		/// information, see Console Virtual Terminal Sequences.
+		/// When writing with WriteFile or WriteConsole, characters are parsed for VT100 and similar control character sequences that
+		/// control cursor movement, color/font mode, and other operations that can also be performed via the existing Console APIs. For
+		/// more information, see Console Virtual Terminal Sequences.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>DISABLE_NEWLINE_AUTO_RETURN 0x0008</term>
 		/// <term>
-		/// When writing with WriteFile or WriteConsole, this adds an additional state to end-of-line wrapping that can delay the cursor move
-		/// and buffer scroll operations. Normally when ENABLE_WRAP_AT_EOL_OUTPUT is set and text reaches the end of the line, the cursor
-		/// will immediately move to the next line and the contents of the buffer will scroll up by one line. In contrast with this flag set,
-		/// the scroll operation and cursor move is delayed until the next character arrives. The written character will be printed in the
-		/// final position on the line and the cursor will remain above this character as if ENABLE_WRAP_AT_EOL_OUTPUT was off, but the next
-		/// printable character will be printed as if ENABLE_WRAP_AT_EOL_OUTPUT is on. No overwrite will occur. Specifically, the cursor
-		/// quickly advances down to the following line, a scroll is performed if necessary, the character is printed, and the cursor
-		/// advances one more position. The typical usage of this flag is intended in conjunction with setting
+		/// When writing with WriteFile or WriteConsole, this adds an additional state to end-of-line wrapping that can delay the cursor
+		/// move and buffer scroll operations. Normally when ENABLE_WRAP_AT_EOL_OUTPUT is set and text reaches the end of the line, the
+		/// cursor will immediately move to the next line and the contents of the buffer will scroll up by one line. In contrast with this
+		/// flag set, the scroll operation and cursor move is delayed until the next character arrives. The written character will be
+		/// printed in the final position on the line and the cursor will remain above this character as if ENABLE_WRAP_AT_EOL_OUTPUT was
+		/// off, but the next printable character will be printed as if ENABLE_WRAP_AT_EOL_OUTPUT is on. No overwrite will occur.
+		/// Specifically, the cursor quickly advances down to the following line, a scroll is performed if necessary, the character is
+		/// printed, and the cursor advances one more position. The typical usage of this flag is intended in conjunction with setting
 		/// ENABLE_VIRTUAL_TERMINAL_PROCESSING to better emulate a terminal emulator where writing the final character on the screen (in the
 		/// bottom right corner) without triggering an immediate scroll is the desired behavior.
 		/// </term>
@@ -1247,8 +1356,8 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// The <c>ENABLE_LINE_INPUT</c> and <c>ENABLE_ECHO_INPUT</c> modes only affect processes that use <c>ReadFile</c> or
 		/// <c>ReadConsole</c> to read from the console's input buffer. Similarly, the <c>ENABLE_PROCESSED_INPUT</c> mode primarily affects
-		/// <c>ReadFile</c> and <c>ReadConsole</c> users, except that it also determines whether CTRL+C input is reported in the input buffer
-		/// (to be read by the <c>ReadConsoleInput</c> function) or is passed to a function defined by the application.
+		/// <c>ReadFile</c> and <c>ReadConsole</c> users, except that it also determines whether CTRL+C input is reported in the input
+		/// buffer (to be read by the <c>ReadConsoleInput</c> function) or is passed to a function defined by the application.
 		/// </para>
 		/// <para>
 		/// The <c>ENABLE_WINDOW_INPUT</c> and <c>ENABLE_MOUSE_INPUT</c> modes determine whether user interactions involving window resizing
@@ -1271,8 +1380,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpConsoleTitle">
 		/// <para>A pointer to a buffer that receives a null-terminated string containing the original title.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nSize">The size of the lpConsoleTitle buffer, in characters.</param>
@@ -1290,8 +1399,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpConsoleTitle">
 		/// <para>A pointer to a buffer that receives a null-terminated string containing the original title.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nSize">The size of the lpConsoleTitle buffer, in characters.</param>
@@ -1319,8 +1428,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpdwProcessList">
 		/// <para>A pointer to a buffer that receives an array of process identifiers upon success.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="dwProcessCount">The maximum number of process identifiers that can be stored in the lpdwProcessList buffer.</param>
@@ -1412,12 +1521,12 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the title for the current console window.</summary>
 		/// <param name="lpConsoleTitle">
 		/// <para>
-		/// A pointer to a buffer that receives a null-terminated string containing the title. If the buffer is too small to store the title,
-		/// the function stores as many characters of the title as will fit in the buffer, ending with a null terminator.
+		/// A pointer to a buffer that receives a null-terminated string containing the title. If the buffer is too small to store the
+		/// title, the function stores as many characters of the title as will fit in the buffer, ending with a null terminator.
 		/// </para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nSize">The size of the buffer pointed to by the lpConsoleTitle parameter, in characters.</param>
@@ -1433,12 +1542,12 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the title for the current console window.</summary>
 		/// <param name="lpConsoleTitle">
 		/// <para>
-		/// A pointer to a buffer that receives a null-terminated string containing the title. If the buffer is too small to store the title,
-		/// the function stores as many characters of the title as will fit in the buffer, ending with a null terminator.
+		/// A pointer to a buffer that receives a null-terminated string containing the title. If the buffer is too small to store the
+		/// title, the function stores as many characters of the title as will fit in the buffer, ending with a null terminator.
 		/// </para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nSize">The size of the buffer pointed to by the lpConsoleTitle parameter, in characters.</param>
@@ -1559,8 +1668,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpBuffer">
 		/// <para>A pointer to an array of <c>INPUT_RECORD</c> structures that receives the input buffer data.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nLength">The size of the array pointed to by the lpBuffer parameter, in array elements.</param>
@@ -1584,8 +1693,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpBuffer">
 		/// <para>A pointer to a buffer that receives the data read from the console input buffer.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nNumberOfCharsToRead">
@@ -1618,8 +1727,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpBuffer">
 		/// <para>A pointer to a buffer that receives the data read from the console input buffer.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nNumberOfCharsToRead">
@@ -1652,8 +1761,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpBuffer">
 		/// <para>A pointer to a buffer that receives the data read from the console input buffer.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nNumberOfCharsToRead">
@@ -1686,8 +1795,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpBuffer">
 		/// <para>A pointer to a buffer that receives the data read from the console input buffer.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nNumberOfCharsToRead">
@@ -1720,8 +1829,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpBuffer">
 		/// <para>A pointer to an array of <c>INPUT_RECORD</c> structures that receives the input buffer data.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nLength">The size of the array pointed to by the lpBuffer parameter, in array elements.</param>
@@ -1738,8 +1847,8 @@ namespace Vanara.PInvoke
 		public static extern bool ReadConsoleInput(HFILE hConsoleInput, [Out] INPUT_RECORD[] lpBuffer, uint nLength, out uint lpNumberOfEventsRead);
 
 		/// <summary>
-		/// Reads character and color attribute data from a rectangular block of character cells in a console screen buffer, and the function
-		/// writes the data to a rectangular block at a specified location in the destination buffer.
+		/// Reads character and color attribute data from a rectangular block of character cells in a console screen buffer, and the
+		/// function writes the data to a rectangular block at a specified location in the destination buffer.
 		/// </summary>
 		/// <param name="hConsoleOutput">
 		/// A handle to the console screen buffer. The handle must have the <c>GENERIC_READ</c> access right. For more information, see
@@ -1751,8 +1860,8 @@ namespace Vanara.PInvoke
 		/// origin of a two-dimensional array of <c>CHAR_INFO</c> structures whose size is specified by the dwBufferSize parameter.
 		/// </para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="dwBufferSize">
@@ -1764,8 +1873,8 @@ namespace Vanara.PInvoke
 		/// <c>X</c> member of the <c>COORD</c> structure is the column, and the <c>Y</c> member is the row.
 		/// </param>
 		/// <param name="lpReadRegion">
-		/// A pointer to a <c>SMALL_RECT</c> structure. On input, the structure members specify the upper-left and lower-right coordinates of
-		/// the console screen buffer rectangle from which the function is to read. On output, the structure members specify the actual
+		/// A pointer to a <c>SMALL_RECT</c> structure. On input, the structure members specify the upper-left and lower-right coordinates
+		/// of the console screen buffer rectangle from which the function is to read. On output, the structure members specify the actual
 		/// rectangle that was used.
 		/// </param>
 		/// <returns>
@@ -1789,8 +1898,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpAttribute">
 		/// <para>A pointer to a buffer that receives the attributes being used by the console screen buffer.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// <para>For more information, see Character Attributes.</para>
 		/// </param>
@@ -1878,6 +1987,26 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ReadConsoleOutputCharacter(HFILE hConsoleOutput, IntPtr lpCharacter, uint nLength, COORD dwReadCoord, out uint lpNumberOfCharsRead);
 
+		/// <summary>Resizes the internal buffers for a pseudoconsole to the given size.</summary>
+		/// <param name="hPC">[in] A handle to an active psuedoconsole as opened by CreatePseudoConsole.</param>
+		/// <param name="size">
+		/// [in] The dimensions of the window/buffer in count of characters that will be used for the internal buffer of this pseudoconsole.
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// This function can resize the internal buffers in the pseudoconsole session to match the window/buffer size being used for
+		/// display on the terminal end. This ensures that attached Command-Line Interface (CUI) applications using the Console Functions to
+		/// communicate will have the correct dimensions returned in their calls.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/console/resizepseudoconsole HRESULT WINAPI ResizePseudoConsole( _In_ HPCON hPC , _In_
+		// COORD size );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ConsoleApi.h")]
+		public static extern HRESULT ResizePseudoConsole([In] HPCON hPC, [In] COORD size);
+
 		/// <summary>
 		/// Moves a block of data in a screen buffer. The effects of the move can be limited by specifying a clipping rectangle, so the
 		/// contents of the console screen buffer outside the clipping rectangle are unchanged.
@@ -1887,12 +2016,12 @@ namespace Vanara.PInvoke
 		/// Console Buffer Security and Access Rights.
 		/// </param>
 		/// <param name="lpScrollRectangle">
-		/// A pointer to a <c>SMALL_RECT</c> structure whose members specify the upper-left and lower-right coordinates of the console screen
-		/// buffer rectangle to be moved.
+		/// A pointer to a <c>SMALL_RECT</c> structure whose members specify the upper-left and lower-right coordinates of the console
+		/// screen buffer rectangle to be moved.
 		/// </param>
 		/// <param name="lpClipRectangle">
-		/// A pointer to a <c>SMALL_RECT</c> structure whose members specify the upper-left and lower-right coordinates of the console screen
-		/// buffer rectangle that is affected by the scrolling. This pointer can be <c>NULL</c>.
+		/// A pointer to a <c>SMALL_RECT</c> structure whose members specify the upper-left and lower-right coordinates of the console
+		/// screen buffer rectangle that is affected by the scrolling. This pointer can be <c>NULL</c>.
 		/// </param>
 		/// <param name="dwDestinationOrigin">
 		/// A <c>COORD</c> structure that specifies the upper-left corner of the new location of the lpScrollRectangle contents, in characters.
@@ -1921,12 +2050,12 @@ namespace Vanara.PInvoke
 		/// Console Buffer Security and Access Rights.
 		/// </param>
 		/// <param name="lpScrollRectangle">
-		/// A pointer to a <c>SMALL_RECT</c> structure whose members specify the upper-left and lower-right coordinates of the console screen
-		/// buffer rectangle to be moved.
+		/// A pointer to a <c>SMALL_RECT</c> structure whose members specify the upper-left and lower-right coordinates of the console
+		/// screen buffer rectangle to be moved.
 		/// </param>
 		/// <param name="lpClipRectangle">
-		/// A pointer to a <c>SMALL_RECT</c> structure whose members specify the upper-left and lower-right coordinates of the console screen
-		/// buffer rectangle that is affected by the scrolling. This pointer can be <c>NULL</c>.
+		/// A pointer to a <c>SMALL_RECT</c> structure whose members specify the upper-left and lower-right coordinates of the console
+		/// screen buffer rectangle that is affected by the scrolling. This pointer can be <c>NULL</c>.
 		/// </param>
 		/// <param name="dwDestinationOrigin">
 		/// A <c>COORD</c> structure that specifies the upper-left corner of the new location of the lpScrollRectangle contents, in characters.
@@ -1959,8 +2088,8 @@ namespace Vanara.PInvoke
 		public static extern bool SetConsoleActiveScreenBuffer(HFILE hConsoleOutput);
 
 		/// <summary>
-		/// Sets the input code page used by the console associated with the calling process. A console uses its input code page to translate
-		/// keyboard input into the corresponding character value.
+		/// Sets the input code page used by the console associated with the calling process. A console uses its input code page to
+		/// translate keyboard input into the corresponding character value.
 		/// </summary>
 		/// <param name="wCodePageID">The identifier of the code page to be set. For more information, see Remarks.</param>
 		/// <returns>
@@ -2042,8 +2171,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// The cursor position determines where characters written by the <c>WriteFile</c> or <c>WriteConsole</c> function, or echoed by the
-		/// <c>ReadFile</c> or <c>ReadConsole</c> function, are displayed. To determine the current position of the cursor, use the
+		/// The cursor position determines where characters written by the <c>WriteFile</c> or <c>WriteConsole</c> function, or echoed by
+		/// the <c>ReadFile</c> or <c>ReadConsole</c> function, are displayed. To determine the current position of the cursor, use the
 		/// <c>GetConsoleScreenBufferInfo</c> function.
 		/// </para>
 		/// <para>
@@ -2151,8 +2280,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ENABLE_MOUSE_INPUT 0x0010</term>
 		/// <term>
-		/// If the mouse pointer is within the borders of the console window and the window has the keyboard focus, mouse events generated by
-		/// mouse movement and button presses are placed in the input buffer. These events are discarded by ReadFile or ReadConsole, even
+		/// If the mouse pointer is within the borders of the console window and the window has the keyboard focus, mouse events generated
+		/// by mouse movement and button presses are placed in the input buffer. These events are discarded by ReadFile or ReadConsole, even
 		/// when this mode is enabled.
 		/// </term>
 		/// </item>
@@ -2174,8 +2303,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ENABLE_WINDOW_INPUT 0x0008</term>
 		/// <term>
-		/// User interactions that change the size of the console screen buffer are reported in the console's input buffer. Information about
-		/// these events can be read from the input buffer by applications using the ReadConsoleInput function, but not by those using
+		/// User interactions that change the size of the console screen buffer are reported in the console's input buffer. Information
+		/// about these events can be read from the input buffer by applications using the ReadConsoleInput function, but not by those using
 		/// ReadFile or ReadConsole.
 		/// </term>
 		/// </item>
@@ -2184,8 +2313,8 @@ namespace Vanara.PInvoke
 		/// <term>
 		/// Setting this flag directs the Virtual Terminal processing engine to convert user input received by the console window into
 		/// Console Virtual Terminal Sequences that can be retrieved by a supporting application through ReadFile or ReadConsole functions.
-		/// The typical usage of this flag is intended in conjunction with ENABLE_VIRTUAL_TERMINAL_PROCESSING on the output handle to connect
-		/// to an application that communicates exclusively via virtual terminal sequences.
+		/// The typical usage of this flag is intended in conjunction with ENABLE_VIRTUAL_TERMINAL_PROCESSING on the output handle to
+		/// connect to an application that communicates exclusively via virtual terminal sequences.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -2221,22 +2350,22 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004</term>
 		/// <term>
-		/// When writing with WriteFile or WriteConsole, characters are parsed for VT100 and similar control character sequences that control
-		/// cursor movement, color/font mode, and other operations that can also be performed via the existing Console APIs. For more
-		/// information, see Console Virtual Terminal Sequences.
+		/// When writing with WriteFile or WriteConsole, characters are parsed for VT100 and similar control character sequences that
+		/// control cursor movement, color/font mode, and other operations that can also be performed via the existing Console APIs. For
+		/// more information, see Console Virtual Terminal Sequences.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>DISABLE_NEWLINE_AUTO_RETURN 0x0008</term>
 		/// <term>
-		/// When writing with WriteFile or WriteConsole, this adds an additional state to end-of-line wrapping that can delay the cursor move
-		/// and buffer scroll operations. Normally when ENABLE_WRAP_AT_EOL_OUTPUT is set and text reaches the end of the line, the cursor
-		/// will immediately move to the next line and the contents of the buffer will scroll up by one line. In contrast with this flag set,
-		/// the scroll operation and cursor move is delayed until the next character arrives. The written character will be printed in the
-		/// final position on the line and the cursor will remain above this character as if ENABLE_WRAP_AT_EOL_OUTPUT was off, but the next
-		/// printable character will be printed as if ENABLE_WRAP_AT_EOL_OUTPUT is on. No overwrite will occur. Specifically, the cursor
-		/// quickly advances down to the following line, a scroll is performed if necessary, the character is printed, and the cursor
-		/// advances one more position. The typical usage of this flag is intended in conjunction with setting
+		/// When writing with WriteFile or WriteConsole, this adds an additional state to end-of-line wrapping that can delay the cursor
+		/// move and buffer scroll operations. Normally when ENABLE_WRAP_AT_EOL_OUTPUT is set and text reaches the end of the line, the
+		/// cursor will immediately move to the next line and the contents of the buffer will scroll up by one line. In contrast with this
+		/// flag set, the scroll operation and cursor move is delayed until the next character arrives. The written character will be
+		/// printed in the final position on the line and the cursor will remain above this character as if ENABLE_WRAP_AT_EOL_OUTPUT was
+		/// off, but the next printable character will be printed as if ENABLE_WRAP_AT_EOL_OUTPUT is on. No overwrite will occur.
+		/// Specifically, the cursor quickly advances down to the following line, a scroll is performed if necessary, the character is
+		/// printed, and the cursor advances one more position. The typical usage of this flag is intended in conjunction with setting
 		/// ENABLE_VIRTUAL_TERMINAL_PROCESSING to better emulate a terminal emulator where writing the final character on the screen (in the
 		/// bottom right corner) without triggering an immediate scroll is the desired behavior.
 		/// </term>
@@ -2316,8 +2445,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ENABLE_MOUSE_INPUT 0x0010</term>
 		/// <term>
-		/// If the mouse pointer is within the borders of the console window and the window has the keyboard focus, mouse events generated by
-		/// mouse movement and button presses are placed in the input buffer. These events are discarded by ReadFile or ReadConsole, even
+		/// If the mouse pointer is within the borders of the console window and the window has the keyboard focus, mouse events generated
+		/// by mouse movement and button presses are placed in the input buffer. These events are discarded by ReadFile or ReadConsole, even
 		/// when this mode is enabled.
 		/// </term>
 		/// </item>
@@ -2339,8 +2468,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ENABLE_WINDOW_INPUT 0x0008</term>
 		/// <term>
-		/// User interactions that change the size of the console screen buffer are reported in the console's input buffer. Information about
-		/// these events can be read from the input buffer by applications using the ReadConsoleInput function, but not by those using
+		/// User interactions that change the size of the console screen buffer are reported in the console's input buffer. Information
+		/// about these events can be read from the input buffer by applications using the ReadConsoleInput function, but not by those using
 		/// ReadFile or ReadConsole.
 		/// </term>
 		/// </item>
@@ -2349,8 +2478,8 @@ namespace Vanara.PInvoke
 		/// <term>
 		/// Setting this flag directs the Virtual Terminal processing engine to convert user input received by the console window into
 		/// Console Virtual Terminal Sequences that can be retrieved by a supporting application through ReadFile or ReadConsole functions.
-		/// The typical usage of this flag is intended in conjunction with ENABLE_VIRTUAL_TERMINAL_PROCESSING on the output handle to connect
-		/// to an application that communicates exclusively via virtual terminal sequences.
+		/// The typical usage of this flag is intended in conjunction with ENABLE_VIRTUAL_TERMINAL_PROCESSING on the output handle to
+		/// connect to an application that communicates exclusively via virtual terminal sequences.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -2386,22 +2515,22 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004</term>
 		/// <term>
-		/// When writing with WriteFile or WriteConsole, characters are parsed for VT100 and similar control character sequences that control
-		/// cursor movement, color/font mode, and other operations that can also be performed via the existing Console APIs. For more
-		/// information, see Console Virtual Terminal Sequences.
+		/// When writing with WriteFile or WriteConsole, characters are parsed for VT100 and similar control character sequences that
+		/// control cursor movement, color/font mode, and other operations that can also be performed via the existing Console APIs. For
+		/// more information, see Console Virtual Terminal Sequences.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>DISABLE_NEWLINE_AUTO_RETURN 0x0008</term>
 		/// <term>
-		/// When writing with WriteFile or WriteConsole, this adds an additional state to end-of-line wrapping that can delay the cursor move
-		/// and buffer scroll operations. Normally when ENABLE_WRAP_AT_EOL_OUTPUT is set and text reaches the end of the line, the cursor
-		/// will immediately move to the next line and the contents of the buffer will scroll up by one line. In contrast with this flag set,
-		/// the scroll operation and cursor move is delayed until the next character arrives. The written character will be printed in the
-		/// final position on the line and the cursor will remain above this character as if ENABLE_WRAP_AT_EOL_OUTPUT was off, but the next
-		/// printable character will be printed as if ENABLE_WRAP_AT_EOL_OUTPUT is on. No overwrite will occur. Specifically, the cursor
-		/// quickly advances down to the following line, a scroll is performed if necessary, the character is printed, and the cursor
-		/// advances one more position. The typical usage of this flag is intended in conjunction with setting
+		/// When writing with WriteFile or WriteConsole, this adds an additional state to end-of-line wrapping that can delay the cursor
+		/// move and buffer scroll operations. Normally when ENABLE_WRAP_AT_EOL_OUTPUT is set and text reaches the end of the line, the
+		/// cursor will immediately move to the next line and the contents of the buffer will scroll up by one line. In contrast with this
+		/// flag set, the scroll operation and cursor move is delayed until the next character arrives. The written character will be
+		/// printed in the final position on the line and the cursor will remain above this character as if ENABLE_WRAP_AT_EOL_OUTPUT was
+		/// off, but the next printable character will be printed as if ENABLE_WRAP_AT_EOL_OUTPUT is on. No overwrite will occur.
+		/// Specifically, the cursor quickly advances down to the following line, a scroll is performed if necessary, the character is
+		/// printed, and the cursor advances one more position. The typical usage of this flag is intended in conjunction with setting
 		/// ENABLE_VIRTUAL_TERMINAL_PROCESSING to better emulate a terminal emulator where writing the final character on the screen (in the
 		/// bottom right corner) without triggering an immediate scroll is the desired behavior.
 		/// </term>
@@ -2581,8 +2710,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpBuffer">
 		/// <para>A pointer to a buffer that contains characters to be written to the console screen buffer.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nNumberOfCharsToWrite">
@@ -2610,8 +2739,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpBuffer">
 		/// <para>A pointer to a buffer that contains characters to be written to the console screen buffer.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nNumberOfCharsToWrite">
@@ -2639,8 +2768,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpBuffer">
 		/// <para>A pointer to an array of <c>INPUT_RECORD</c> structures that contain data to be written to the input buffer.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nLength">The number of input records to be written.</param>
@@ -2670,8 +2799,8 @@ namespace Vanara.PInvoke
 		/// <c>CHAR_INFO</c> structures whose size is specified by the dwBufferSize parameter.
 		/// </para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="dwBufferSize">
@@ -2683,8 +2812,8 @@ namespace Vanara.PInvoke
 		/// <c>COORD</c> structure is the column, and the <c>Y</c> member is the row.
 		/// </param>
 		/// <param name="lpWriteRegion">
-		/// A pointer to a <c>SMALL_RECT</c> structure. On input, the structure members specify the upper-left and lower-right coordinates of
-		/// the console screen buffer rectangle to write to. On output, the structure members specify the actual rectangle that was used.
+		/// A pointer to a <c>SMALL_RECT</c> structure. On input, the structure members specify the upper-left and lower-right coordinates
+		/// of the console screen buffer rectangle to write to. On output, the structure members specify the actual rectangle that was used.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -2710,8 +2839,8 @@ namespace Vanara.PInvoke
 		/// <param name="nLength">
 		/// <para>The number of screen buffer character cells to which the attributes will be copied.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="dwWriteCoord">
@@ -2740,8 +2869,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpCharacter">
 		/// <para>The characters to be written to the console screen buffer.</para>
 		/// <para>
-		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
-		/// will depend on heap usage.
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
 		/// </para>
 		/// </param>
 		/// <param name="nLength">The number of characters to be written.</param>
@@ -2762,8 +2891,8 @@ namespace Vanara.PInvoke
 		public static extern bool WriteConsoleOutputCharacter(HFILE hConsoleOutput, string lpCharacter, uint nLength, COORD dwWriteCoord, out uint lpNumberOfCharsWritten);
 
 		/// <summary>
-		/// Specifies a Unicode or ANSI character and its attributes. This structure is used by console functions to read from and write to a
-		/// console screen buffer.
+		/// Specifies a Unicode or ANSI character and its attributes. This structure is used by console functions to read from and write to
+		/// a console screen buffer.
 		/// </summary>
 		// typedef struct _CHAR_INFO { union { WCHAR UnicodeChar; CHAR AsciiChar; } Char; WORD Attributes; } CHAR_INFO, *PCHAR_INFO;
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
@@ -2915,8 +3044,8 @@ namespace Vanara.PInvoke
 			public uint FontFamily;
 
 			/// <summary>
-			/// The font weight. The weight can range from 100 to 1000, in multiples of 100. For example, the normal weight is 400, while 700
-			/// is bold.
+			/// The font weight. The weight can range from 100 to 1000, in multiples of 100. For example, the normal weight is 400, while
+			/// 700 is bold.
 			/// </summary>
 			public uint FontWeight;
 
@@ -3060,8 +3189,9 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains information for a console selection.</summary>
+		// https://docs.microsoft.com/en-us/windows/console/console-selection-info-str
 		// typedef struct _CONSOLE_SELECTION_INFO { DWORD dwFlags; COORD dwSelectionAnchor; SMALL_RECT srSelection; } CONSOLE_SELECTION_INFO, *PCONSOLE_SELECTION_INFO;
-		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[PInvokeData("ConsoleApi3.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CONSOLE_SELECTION_INFO
 		{
@@ -3150,9 +3280,58 @@ namespace Vanara.PInvoke
 			public bool bSetFocus;
 		}
 
+		/// <summary>Provides a handle to a psuedo console.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HPCON : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HPCON"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HPCON(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HPCON"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HPCON NULL => new HPCON(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HPCON"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HPCON h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPCON"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPCON(IntPtr h) => new HPCON(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HPCON h1, HPCON h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HPCON h1, HPCON h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HPCON h && handle == h.handle;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
 		/// <summary>
 		/// Describes an input event in the console input buffer. These records can be read from the input buffer by using the
-		/// <c>ReadConsoleInput</c> or <c>PeekConsoleInput</c> function, or written to the input buffer by using the <c>WriteConsoleInput</c> function.
+		/// <c>ReadConsoleInput</c> or <c>PeekConsoleInput</c> function, or written to the input buffer by using the
+		/// <c>WriteConsoleInput</c> function.
 		/// </summary>
 		// typedef struct _INPUT_RECORD { WORD EventType; union { KEY_EVENT_RECORD KeyEvent; MOUSE_EVENT_RECORD MouseEvent;
 		// WINDOW_BUFFER_SIZE_RECORD WindowBufferSizeEvent; MENU_EVENT_RECORD MenuEvent; FOCUS_EVENT_RECORD FocusEvent; } Event; } INPUT_RECORD;
@@ -3240,9 +3419,22 @@ namespace Vanara.PInvoke
 			/// <returns>A <see cref="INPUT_RECORD"/> value.</returns>
 			public static INPUT_RECORD CreateKeyEventRecord(bool keyDown, ushort virtualKeyCode, ushort virtualScanCode, char unicodeChar,
 				CONTROL_KEY_STATE ctrlKeys = CONTROL_KEY_STATE.NONE, ushort repeatCount = 1) =>
-				new INPUT_RECORD { EventType = EVENT_TYPE.KEY_EVENT, Event = new INPUT_RECORD_EVENT { KeyEvent = new KEY_EVENT_RECORD
-				{ bKeyDown = keyDown, wRepeatCount = repeatCount, wVirtualKeyCode = virtualKeyCode, wVirtualScanCode = virtualScanCode,
-					uChar = unicodeChar, dwControlKeyState = ctrlKeys } } };
+				new INPUT_RECORD
+				{
+					EventType = EVENT_TYPE.KEY_EVENT,
+					Event = new INPUT_RECORD_EVENT
+					{
+						KeyEvent = new KEY_EVENT_RECORD
+						{
+							bKeyDown = keyDown,
+							wRepeatCount = repeatCount,
+							wVirtualKeyCode = virtualKeyCode,
+							wVirtualScanCode = virtualScanCode,
+							uChar = unicodeChar,
+							dwControlKeyState = ctrlKeys
+						}
+					}
+				};
 		}
 
 		/// <summary>Describes a keyboard input event in a console <c>INPUT_RECORD</c> structure.</summary>
@@ -3355,8 +3547,8 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>
 			/// The status of the mouse buttons. The least significant bit corresponds to the leftmost mouse button. The next least
-			/// significant bit corresponds to the rightmost mouse button. The next bit indicates the next-to-leftmost mouse button. The bits
-			/// then correspond left to right to the mouse buttons. A bit is 1 if the button was pressed.
+			/// significant bit corresponds to the rightmost mouse button. The next bit indicates the next-to-leftmost mouse button. The
+			/// bits then correspond left to right to the mouse buttons. A bit is 1 if the button was pressed.
 			/// </para>
 			/// <para>The following constants are defined for the first five mouse buttons.</para>
 			/// <para>
@@ -3441,8 +3633,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>
-			/// The type of mouse event. If this value is zero, it indicates a mouse button being pressed or released. Otherwise, this member
-			/// is one of the following values.
+			/// The type of mouse event. If this value is zero, it indicates a mouse button being pressed or released. Otherwise, this
+			/// member is one of the following values.
 			/// </para>
 			/// <para>
 			/// <list type="table">
@@ -3526,6 +3718,28 @@ namespace Vanara.PInvoke
 			/// A <c>COORD</c> structure that contains the size of the console screen buffer, in character cell columns and rows.
 			/// </summary>
 			public COORD dwSize;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPCON"/> that is disposed using <see cref="ClosePseudoConsole"/>.</summary>
+		public class SafeHPCON : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHPCON"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHPCON(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHPCON"/> class.</summary>
+			private SafeHPCON() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPCON"/> to <see cref="HPCON"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPCON(SafeHPCON h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { ClosePseudoConsole(handle); return true; }
 		}
 	}
 }
