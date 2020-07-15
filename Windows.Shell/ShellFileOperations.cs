@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Vanara.Collections;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -12,19 +13,20 @@ using static Vanara.PInvoke.Shell32;
 namespace Vanara.Windows.Shell
 {
 	/// <summary>Queued and static file operations using the Shell.</summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	public class ShellFileOperations : IDisposable
 	{
 		private const OperationFlags defaultOptions = OperationFlags.AllowUndo | OperationFlags.NoConfirmMkDir;
 		private bool disposedValue = false;
 		private IFileOperation op;
 		private OperationFlags opFlags = defaultOptions;
+		private IWin32Window owner;
 		private IFileOperationProgressSink sink;
 		private uint sinkCookie;
 
 		/// <summary>Initializes a new instance of the <see cref="ShellFileOperations"/> class.</summary>
 		/// <param name="owner">The window that owns the modal dialog. This value can be <see langword="null"/>.</param>
-		public ShellFileOperations(System.Windows.Forms.IWin32Window owner = null)
+		public ShellFileOperations(IWin32Window owner = null)
 		{
 			op = new IFileOperation();
 			if (owner != null) op.SetOwnerWindow(owner.Handle);
@@ -74,7 +76,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs caller-implemented actions before any specific file operations are performed.</summary>
 		public event EventHandler StartOperations;
 
-		/// <summary>Updates the progress.</summary>
+		/// <summary>Occurs when a progress update is received.</summary>
 		public event System.ComponentModel.ProgressChangedEventHandler UpdateProgress;
 
 		/// <summary>Flags that control the file operation.</summary>
@@ -274,11 +276,26 @@ namespace Vanara.Windows.Shell
 			SuspendShellEvents = TRANSFER_SOURCE_FLAGS.TSF_SUSPEND_SHELLEVENTS,
 		}
 
+		/// <summary>
+		/// Gets a value that states whether any file operations initiated by a call to <see cref="PerformOperations"/> were stopped before
+		/// they were complete. The operations could be stopped either by user action or silently by the system.
+		/// </summary>
+		/// <value><see langword="true"/> if any file operations were aborted before they were complete; otherwise, <see langword="false"/>.</value>
+		public bool AnyOperationsAborted => op.GetAnyOperationsAborted();
+
 		/// <summary>Gets or sets options that control file operations.</summary>
 		public OperationFlags Options
 		{
 			get => opFlags;
-			set { if (value == opFlags) return; op.SetOperationFlags((FILEOP_FLAGS)value); opFlags = value; }
+			set { if (value == opFlags) return; op.SetOperationFlags((FILEOP_FLAGS)(opFlags = value)); }
+		}
+
+		/// <summary>Gets or sets the parent or owner window for progress and dialog windows.</summary>
+		/// <value>The owner window of the operation. This window will receive error messages.</value>
+		public IWin32Window OwnerWindow
+		{
+			get => owner;
+			set => op.SetOwnerWindow((owner = value)?.Handle ?? default);
 		}
 
 		/// <summary>Gets the number of queued operations.</summary>
@@ -765,7 +782,7 @@ namespace Vanara.Windows.Shell
 		private IShellItemArray GetSHArray(IEnumerable<ShellItem> items) => items is ShellItemArray a ? a.IShellItemArray : GetSHArray(items);
 
 		/// <summary>Arguments supplied to the <see cref="PostNewItem"/> event.</summary>
-		/// <seealso cref="Vanara.Windows.Shell.ShellFileOperations.ShellFileOpEventArgs"/>
+		/// <seealso cref="ShellFileOpEventArgs"/>
 		public class ShellFileNewOpEventArgs : ShellFileOpEventArgs
 		{
 			internal ShellFileNewOpEventArgs(TRANSFER_SOURCE_FLAGS flags, IShellItem source, IShellItem folder, IShellItem dest, string name, HRESULT hr, string templ, uint attr) :
@@ -787,7 +804,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>
 		/// Arguments supplied to events from <see cref="ShellFileOperations"/>. Depending on the event, some properties may not be set.
 		/// </summary>
-		/// <seealso cref="System.EventArgs"/>
+		/// <seealso cref="EventArgs"/>
 		public class ShellFileOpEventArgs : EventArgs
 		{
 			internal ShellFileOpEventArgs(TRANSFER_SOURCE_FLAGS flags, IShellItem source, IShellItem folder = null, IShellItem dest = null, string name = null, HRESULT hr = default)
@@ -892,7 +909,7 @@ namespace Vanara.Windows.Shell
 	/// cref="ShellFileOperations.QueueApplyPropertiesOperation(ShellItem, ShellItemPropertyUpdates)"/> method. This class wraps the <see
 	/// cref="IPropertyChangeArray"/> COM interface.
 	/// </summary>
-	/// <seealso cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>
+	/// <seealso cref="IDictionary{TKey, TValue}"/>
 	/// <seealso cref="IDisposable"/>
 	public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object>, IDisposable
 	{
@@ -904,17 +921,14 @@ namespace Vanara.Windows.Shell
 			PSCreatePropertyChangeArray(null, null, null, 0, typeof(IPropertyChangeArray).GUID, out changes).ThrowIfFailed();
 		}
 
-		/// <summary>Gets the number of elements contained in the <see cref="System.Collections.Generic.ICollection{T}"/>.</summary>
+		/// <summary>Gets the number of elements contained in the <see cref="ICollection{T}"/>.</summary>
 		public int Count => (int)changes.GetCount();
 
 		/// <summary>Gets the COM interface for <see cref="IPropertyChangeArray"/>.</summary>
 		/// <value>The <see cref="IPropertyChangeArray"/> value.</value>
 		public IPropertyChangeArray IPropertyChangeArray => changes;
 
-		/// <summary>
-		/// Gets an <see cref="System.Collections.Generic.ICollection{T}"/> containing the keys of the <see
-		/// cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.
-		/// </summary>
+		/// <summary>Gets an <see cref="ICollection{T}"/> containing the keys of the <see cref="IDictionary{TKey, TValue}"/>.</summary>
 		public ICollection<PROPERTYKEY> Keys
 		{
 			get
@@ -929,10 +943,7 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		/// <summary>
-		/// Gets an <see cref="System.Collections.Generic.ICollection{T}"/> containing the values in the <see
-		/// cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.
-		/// </summary>
+		/// <summary>Gets an <see cref="ICollection{T}"/> containing the values in the <see cref="IDictionary{TKey, TValue}"/>.</summary>
 		public ICollection<object> Values
 		{
 			get
@@ -944,7 +955,7 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		/// <summary>Gets a value indicating whether the <see cref="System.Collections.Generic.ICollection{T}"/> is read-only.</summary>
+		/// <summary>Gets a value indicating whether the <see cref="ICollection{T}"/> is read-only.</summary>
 		bool ICollection<KeyValuePair<PROPERTYKEY, object>>.IsReadOnly => false;
 
 		/// <summary>Gets or sets the <see cref="System.Object"/> with the specified key.</summary>
@@ -968,7 +979,7 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		/// <summary>Adds an element with the provided key and value to the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</summary>
+		/// <summary>Adds an element with the provided key and value to the <see cref="IDictionary{TKey, TValue}"/>.</summary>
 		/// <param name="key">The object to use as the key of the element to add.</param>
 		/// <param name="value">The object to use as the value of the element to add.</param>
 		public void Add(PROPERTYKEY key, object value)
@@ -976,32 +987,28 @@ namespace Vanara.Windows.Shell
 			changes.Append(ToPC(key, value));
 		}
 
-		/// <summary>Removes all items from the <see cref="System.Collections.Generic.ICollection{T}"/>.</summary>
+		/// <summary>Removes all items from the <see cref="ICollection{T}"/>.</summary>
 		public void Clear()
 		{
 			for (uint i = (uint)Count - 1; i >= 0; i--)
 				changes.RemoveAt(i);
 		}
 
-		/// <summary>
-		/// Determines whether the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with the specified key.
-		/// </summary>
-		/// <param name="key">The key to locate in the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</param>
-		/// <returns>
-		/// true if the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with the key; otherwise, false.
-		/// </returns>
+		/// <summary>Determines whether the <see cref="IDictionary{TKey, TValue}"/> contains an element with the specified key.</summary>
+		/// <param name="key">The key to locate in the <see cref="IDictionary{TKey, TValue}"/>.</param>
+		/// <returns>true if the <see cref="IDictionary{TKey, TValue}"/> contains an element with the key; otherwise, false.</returns>
 		public bool ContainsKey(PROPERTYKEY key) => changes.IsKeyInArray(key).Succeeded;
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
-		/// <returns>A <see cref="System.Collections.Generic.IEnumerator{T}"/> that can be used to iterate through the collection.</returns>
+		/// <returns>A <see cref="IEnumerator{T}"/> that can be used to iterate through the collection.</returns>
 		public IEnumerator<KeyValuePair<PROPERTYKEY, object>> GetEnumerator() =>
 			new IEnumFromIndexer<KeyValuePair<PROPERTYKEY, object>>(changes.GetCount, i => this[(int)i]).GetEnumerator();
 
-		/// <summary>Removes the element with the specified key from the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</summary>
+		/// <summary>Removes the element with the specified key from the <see cref="IDictionary{TKey, TValue}"/>.</summary>
 		/// <param name="key">The key of the element to remove.</param>
 		/// <returns>
 		/// true if the element is successfully removed; otherwise, false. This method also returns false if <paramref name="key"/> was not
-		/// found in the original <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.
+		/// found in the original <see cref="IDictionary{TKey, TValue}"/>.
 		/// </returns>
 		public bool Remove(PROPERTYKEY key)
 		{
@@ -1017,8 +1024,8 @@ namespace Vanara.Windows.Shell
 		/// type of the <paramref name="value"/> parameter. This parameter is passed uninitialized.
 		/// </param>
 		/// <returns>
-		/// true if the object that implements <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with
-		/// the specified key; otherwise, false.
+		/// true if the object that implements <see cref="IDictionary{TKey, TValue}"/> contains an element with the specified key;
+		/// otherwise, false.
 		/// </returns>
 		public bool TryGetValue(PROPERTYKEY key, out object value)
 		{
