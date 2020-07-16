@@ -8989,6 +8989,37 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>
+		/// <para>
+		/// The <c>BCRYPT_KEY_LENGTHS_STRUCT</c> structure defines the range of key sizes that are supported by the provider. This structure
+		/// is used with the <c>BCRYPT_KEY_LENGTHS</c> property.
+		/// </para>
+		/// <para>
+		/// This structure is also used with the <c>BCRYPT_AUTH_TAG_LENGTH</c> property to contain the minimum, maximum, and increment size
+		/// of an authentication tag.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// The key sizes are given in a range that is inclusive of the minimum and maximum values and are separated by the increment. For
+		/// example, if the minimum key size is 8 bits, the maximum key size is 16 bits, and the increment is 2 bits, the provider would
+		/// support key sizes of 8, 10, 12, 14, and 16 bits.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_key_lengths_struct
+		// typedef struct __BCRYPT_KEY_LENGTHS_STRUCT { ULONG dwMinLength; ULONG dwMaxLength; ULONG dwIncrement; } BCRYPT_KEY_LENGTHS_STRUCT;
+		[PInvokeData("bcrypt.h", MSDNShortId = "NS:bcrypt.__BCRYPT_KEY_LENGTHS_STRUCT")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct BCRYPT_KEY_LENGTHS_STRUCT
+		{
+			/// <summary>The minimum length, in bits, of a key.</summary>
+			public uint dwMinLength;
+
+			/// <summary>The maximum length, in bits, of a key.</summary>
+			public uint dwMaxLength;
+
+			/// <summary>The number of bits that the key size can be incremented between <c>dwMinLength</c> and <c>dwMaxLength</c>.</summary>
+			public uint dwIncrement;
+		}
+
 		/// <summary>A <c>BCRYPT_MULTI_HASH_OPERATION</c> structure defines a single operation in a multi-hash operation.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_bcrypt_multi_hash_operation typedef struct
 		// _BCRYPT_MULTI_HASH_OPERATION { ULONG iHash; BCRYPT_HASH_OPERATION_TYPE hashOperation; PUCHAR pbBuffer; ULONG cbBuffer; } BCRYPT_MULTI_HASH_OPERATION;
@@ -9025,6 +9056,28 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// The <c>BCRYPT_MULTI_OBJECT_LENGTH_STRUCT</c> structure contains information to determine the size of the pbHashObject buffer for
+		/// the BCryptCreateMultiHash function.
+		/// </summary>
+		/// <remarks>
+		/// The size of the pbHashObject buffer for the BCryptCreateMultiHash function is the following:
+		/// <code>cbPerObject + (number of hash states) * cbPerElement</code>
+		/// .
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_multi_object_length_struct
+		// typedef struct _BCRYPT_MULTI_OBJECT_LENGTH_STRUCT { ULONG cbPerObject; ULONG cbPerElement; } BCRYPT_MULTI_OBJECT_LENGTH_STRUCT;
+		[PInvokeData("bcrypt.h", MSDNShortId = "NS:bcrypt._BCRYPT_MULTI_OBJECT_LENGTH_STRUCT")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct BCRYPT_MULTI_OBJECT_LENGTH_STRUCT
+		{
+			/// <summary>The number of bytes needed for the object overhead.</summary>
+			public uint cbPerObject;
+
+			/// <summary>The number of bytes needed for each element of the object.</summary>
+			public uint cbPerElement;
+		}
+
+		/// <summary>
 		/// The <c>BCRYPT_OAEP_PADDING_INFO</c> structure is used to provide options for the Optimal Asymmetric Encryption Padding (OAEP) scheme.
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_bcrypt_oaep_padding_info typedef struct
@@ -9047,6 +9100,57 @@ namespace Vanara.PInvoke
 
 			/// <summary>Contains the number of bytes in the <c>pbLabel</c> buffer to use to create the padding.</summary>
 			public uint cbLabel;
+		}
+
+		/// <summary>
+		/// The <c>BCRYPT_OID_LIST</c> structure is used to contain a collection of BCRYPT_OID structures. Use this structure with the
+		/// BCRYPT_HASH_OID_LIST property to retrieve the list of hashing object identifiers (OIDs) that have been encoded by using
+		/// Distinguished Encoding Rules (DER) encoding.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The first OID in the <c>pOIDs</c> array is used to identify any hashes or signatures created by this algorithm provider. When
+		/// verifying a hash or signature, all the OIDs in the array are treated as valid.
+		/// </para>
+		/// <para>
+		/// In the Microsoft Primitive Provider implementation, <c>dwOIDCount</c> is 2, so that the <c>pOIDs</c> array contains two members:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term><c>pOIDs[0]</c> contains a DER-encoded <c>AlgorithmIdentifier</c> with a <c>NULL</c> parameter.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>pOIDs[1]</c> contains the DER-encoded <c>AlgorithmIdentifier</c> without a <c>NULL</c> parameter.</term>
+		/// </item>
+		/// </list>
+		/// <para>For example, the SHA-1 encoding would be:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term><c>pOIDs[0]</c> --&gt; 06 05 2b 0e 03 02 1a 05 00</term>
+		/// </item>
+		/// <item>
+		/// <term><c>pOIDs[1]</c> --&gt; 06 05 2b 0e 03 02 1a</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The following snippet describes an <c>AlgorithmIdentifier</c> in Abstract Syntax Notation One (ASN.1) notation. <c>SEQUENCE</c>,
+		/// <c>OBJECT IDENTIFIER</c>, and <c>ANY</c> are DER encoded. The <c>ANY</c> BLOB is <c>NULL</c>.
+		/// </para>
+		/// <para>
+		/// <code>AlgorithmIdentifier ::= SEQUENCE { algorithm OBJECT IDENTIFIER, algorithmParams ANY }</code>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_oid_list
+		// typedef struct _BCRYPT_OID_LIST { ULONG dwOIDCount; BCRYPT_OID *pOIDs; } BCRYPT_OID_LIST;
+		[PInvokeData("bcrypt.h", MSDNShortId = "NS:bcrypt._BCRYPT_OID_LIST")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct BCRYPT_OID_LIST
+		{
+			/// <summary>The number of elements in the <c>pOIDs</c> array.</summary>
+			public uint dwOIDCount;
+
+			/// <summary>The address of an array of BCRYPT_OID structures that contains OIDs.</summary>
+			public IntPtr pOIDs;
 		}
 
 		/// <summary>The <c>BCRYPT_PKCS1_PADDING_INFO</c> structure is used to provide options for the PKCS #1 padding scheme.</summary>
@@ -9582,7 +9686,7 @@ namespace Vanara.PInvoke
 			/// The list of DER-encoded hashing object identifiers (OIDs). This property is a BCRYPT_OID_LIST structure. This property can
 			/// only be read.
 			/// </summary>
-			// TODO [CorrespondingType(typeof(BCRYPT_OID_LIST))]
+			[CorrespondingType(typeof(BCRYPT_OID_LIST))]
 			public const string BCRYPT_HASH_OID_LIST = "HashOIDList";
 
 			/// <summary>Contains the initialization vector (IV) for a key. This property only applies to keys.</summary>
@@ -9605,7 +9709,7 @@ namespace Vanara.PInvoke
 			/// The key lengths that are supported by the algorithm. This property is a BCRYPT_KEY_LENGTHS_STRUCT structure. This property
 			/// only applies to algorithms.
 			/// </summary>
-			// TODO [CorrespondingType(typeof(BCRYPT_KEY_LENGTHS_STRUCT))]
+			[CorrespondingType(typeof(BCRYPT_KEY_LENGTHS_STRUCT))]
 			public const string BCRYPT_KEY_LENGTHS = "KeyLengths";
 
 			/// <summary>This property is not used. The BCRYPT_OBJECT_LENGTH property is used to obtain this information.</summary>
@@ -9627,7 +9731,7 @@ namespace Vanara.PInvoke
 			/// This property returns a BCRYPT_MULTI_OBJECT_LENGTH_STRUCT, which contains information necessary to calculate the size of an
 			/// object buffer.This property is only supported on operating system versions that support the BCryptCreateMultiHash function.
 			/// </summary>
-			// TODO [CorrespondingType(typeof(BCRYPT_MULTI_OBJECT_LENGTH_STRUCT))]
+			[CorrespondingType(typeof(BCRYPT_MULTI_OBJECT_LENGTH_STRUCT))]
 			public const string BCRYPT_MULTI_OBJECT_LENGTH = "MultiObjectLength";
 
 			/// <summary>
