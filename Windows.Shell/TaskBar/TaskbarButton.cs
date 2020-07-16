@@ -221,8 +221,6 @@ namespace Vanara.Windows.Shell
 		/// <param name="propName">Name of the changed property.</param>
 		protected virtual void OnProperyChanged(Form form, string propName) => PropertyChanged?.Invoke(form, new PropertyChangedEventArgs(propName));
 
-		private static string GetUniqueProcessID() => System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name ?? null;
-
 		private void ApplySetting(Form form, object value, [CallerMemberName] string propName = "")
 		{
 			if (propName.StartsWith("Set"))
@@ -288,6 +286,7 @@ namespace Vanara.Windows.Shell
 				th.Toolbar.Buttons[buttonId].InvokeClick();
 		}
 
+#pragma warning disable IDE0051 // Remove unused private members
 		private void ResetJumpList(Form form) => propHash[form].Remove("JumpList");
 
 		private void ResetTaskbarButtonThumbnails(Form form) => propHash[form].Remove("TaskbarButtonThumbnails");
@@ -295,6 +294,7 @@ namespace Vanara.Windows.Shell
 		private bool ShouldSerializeJumpList(Form form) => GetJumpList(form).Count > 0;
 
 		private bool ShouldSerializeTaskbarButtonThumbnails(Form form) => GetTaskbarButtonThumbnails(form).Count > 0;
+#pragma warning restore IDE0051 // Remove unused private members
 
 		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		private class ThumbButtonMessageFilter : IMessageFilter
@@ -311,7 +311,5 @@ namespace Vanara.Windows.Shell
 				return false;
 			}
 		}
-
-		// TODO: ??: SetActiveAlt, MarkFullscreenWindow
 	}
 }

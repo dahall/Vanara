@@ -576,7 +576,7 @@ namespace Vanara.Windows.Shell
 			{
 				if (disposing)
 				{
-					// TODO: dispose managed state (managed objects).
+					// Dispose managed state (managed objects).
 				}
 
 				if (sink != null) op.Unadvise(sinkCookie);
