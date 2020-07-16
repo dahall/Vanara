@@ -280,13 +280,8 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>ULONGLONG</c></para>
 			/// <para>Specifies total items, used for showing progress in items.</para>
 			/// </param>
-			void UpdateProgress(
-			   [In] ulong ullPointsCurrent,
-			   [In] ulong ullPointsTotal,
-			   [In] ulong ullSizeCurrent,
-			   [In] ulong ullSizeTotal,
-			   [In] ulong ullItemsCurrent,
-			   [In] ulong ullItemsTotal);
+			void UpdateProgress(ulong ullPointsCurrent, ulong ullPointsTotal, ulong ullSizeCurrent, ulong ullSizeTotal, ulong ullItemsCurrent,
+				ulong ullItemsTotal);
 
 			/// <summary>
 			/// <para>Called to specify the text elements stating the source and target in the current progress dialog.</para>
@@ -306,10 +301,7 @@ namespace Vanara.PInvoke
 			/// only used in Windows 7 and later. In earlier versions, this parameter should be <c>NULL</c>.
 			/// </para>
 			/// </param>
-			void UpdateLocations(
-				[In] IShellItem psiSource,
-				[In] IShellItem psiTarget,
-				[In, Optional] IShellItem psiItem);
+			void UpdateLocations([In] IShellItem psiSource, [In] IShellItem psiTarget, [In, Optional] IShellItem psiItem);
 
 			/// <summary>
 			/// <para>Resets progress dialog timer to 0.</para>
@@ -326,9 +318,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			void ResumeTimer();
 
-			/// <summary>
-			/// <para>Gets elapsed and remaining time for progress dialog.</para>
-			/// </summary>
+			/// <summary>Gets elapsed and remaining time for progress dialog.</summary>
 			/// <param name="pullElapsed">
 			/// <para>Type: <c>ULONGLONG*</c></para>
 			/// <para>A pointer to the elapsed time in milliseconds.</para>
