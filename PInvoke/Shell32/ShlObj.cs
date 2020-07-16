@@ -2059,9 +2059,11 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(WIN32_FIND_DATA), CorrespondingAction.Get)]
 			SHGDFIL_FINDDATA = 1,
 
-			/// <summary>Format used for network resources. The pv parameter is the address of a NETRESOURCE structure.</summary>
-			// TODO: Define NETRESOURCE (https://msdn.microsoft.com/en-us/library/windows/desktop/aa385353(v=vs.85).aspx)
-			//[CorrespondingType(typeof(NETRESOURCE), CorrepsondingAction.Get)]
+			/// <summary>
+			/// Format used for network resources. The pv parameter is the address of a NETRESOURCE structure. The NETRESOURCE structure is
+			/// defined in the <c>Vanara.PInvoke.Mpr</c> library.
+			/// </summary>
+			// [CorrespondingType(typeof(Vanara.PInvoke.Mpr.NETRESOURCE), CorrepsondingAction.Get)] -- Chose not to link Mpr library just for this.
 			SHGDFIL_NETRESOURCE = 2,
 
 			/// <summary>Version 4.71. Format used for network resources. The pv parameter is the address of an SHDESCRIPTIONID structure.</summary>
