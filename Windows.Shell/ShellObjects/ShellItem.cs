@@ -326,8 +326,6 @@ namespace Vanara.Windows.Shell
 		SingleLine = 0x00000010,
 	}
 
-	// TODO: object GetPropertyStoreForKeys(IntPtr rgKeys, uint cKeys, GPS flags, in Guid riid);
-	// TODO: object GetPropertyStoreWithCreateObject(GPS flags, object punkCreateObject, in Guid riid);
 	/// <summary>Encapsulates an item in the Windows Shell.</summary>
 	/// <seealso cref="System.IComparable{ShellItem}"/>
 	/// <seealso cref="System.IDisposable"/>
