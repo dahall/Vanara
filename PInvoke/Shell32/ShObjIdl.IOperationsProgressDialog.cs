@@ -210,10 +210,11 @@ namespace Vanara.PInvoke
 			/// Progress messages on the same thread as the file operation might not be sent at all.
 			/// </para>
 			/// <para>
-			/// Once <c>IOperationsProgressDialog::StartProgressDialog</c> is called, that instance of the <c>CLSID_ProgressDialog</c> object
-			/// cannot be accessed by IProgressDialog, IActionProgressDialog, or IActionProgress. Although QueryInterface can be used to
-			/// access these interfaces, most of their methods cannot be invoked. IOperationsProgressDialog is the interface used to display
-			/// the new progress dialog for the Windows Vista and later operations engine.
+			/// Once <c>IOperationsProgressDialog::StartProgressDialog</c> is called, that instance of the <c>CLSID_ProgressDialog</c>
+			/// object cannot be accessed by <see cref="IProgressDialog"/>, <see cref="IActionProgressDialog"/>, or
+			/// <see cref="IActionProgress"/>. Although QueryInterface can be used to access these interfaces, most of their methods cannot be
+			/// invoked. IOperationsProgressDialog is the interface used to display the new progress dialog for the Windows Vista and later
+			/// operations engine.
 			/// </para>
 			/// </remarks>
 			void StartProgressDialog([In] HWND hwndOwner, [In] OPPROGDLGF flags);
