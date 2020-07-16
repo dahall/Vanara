@@ -17,6 +17,7 @@ namespace Vanara.Windows.Shell
 	public partial class ShellFileOperations : IDisposable
 	{
 		private const OperationFlags defaultOptions = OperationFlags.AllowUndo | OperationFlags.NoConfirmMkDir;
+		private ShellFileOperationDialog customProgressDialog;
 		private bool disposedValue = false;
 		private IFileOperation op;
 		private OperationFlags opFlags = defaultOptions;
@@ -86,6 +87,14 @@ namespace Vanara.Windows.Shell
 		/// <value><see langword="true"/> if any file operations were aborted before they were complete; otherwise, <see langword="false"/>.</value>
 		public bool AnyOperationsAborted => op.GetAnyOperationsAborted();
 
+		/// <summary>Specifies a dialog box used to display the progress of the operation.</summary>
+		/// <value>A ShellFileOperationDialog object that represents the dialog box.</value>
+		public ShellFileOperationDialog CustomProgressDialog
+		{
+			get => customProgressDialog;
+			set => op.SetProgressDialog((customProgressDialog = value)?.iProgressDialog);
+		}
+
 		/// <summary>Gets or sets options that control file operations.</summary>
 		public OperationFlags Options
 		{
@@ -103,8 +112,6 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the number of queued operations.</summary>
 		public int QueuedOperations { get; protected set; }
-
-		// TODO: public Form CustomProgressDialog { get; set; }
 
 		/// <summary>Copies a single item to a specified destination using the Shell to provide progress and error dialogs.</summary>
 		/// <param name="source">A string that specifies the source item's full file path.</param>

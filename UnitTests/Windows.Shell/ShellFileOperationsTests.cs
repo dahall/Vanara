@@ -3,6 +3,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
 using Vanara.Windows.Shell;
@@ -159,6 +161,30 @@ namespace Vanara.Windows.Shell.Tests
 				Debug.WriteLine(args);
 				Assert.That(args.Result.Succeeded, Is.True);
 			}
+		}
+
+		[Test]
+		public void OpDialogTest()
+		{
+			var dlg = new ShellFileOperationDialog();
+			dlg.AllowUndo = true;
+			dlg.CurrentItem = new ShellItem(TestCaseSources.LargeFile);
+			dlg.Destination = new ShellFolder(KNOWNFOLDERID.FOLDERID_Desktop);
+			dlg.Mode = ShellFileOperationDialog.OperationMode.Indeterminate;
+			dlg.Operation = ShellFileOperationDialog.OperationType.CopyMoving;
+			dlg.ShowPauseButton = true;
+			dlg.Source = new ShellFolder(Path.GetDirectoryName(TestCaseSources.LargeFile));
+			dlg.Start(null);
+			dlg.ProgressDialogSizeMaxValue = new FileInfo(TestCaseSources.LargeFile).Length;
+			dlg.ProgressDialogItemsMaxValue = 1;
+			for (var i = 0; i < 100; i += 5)
+			{
+				dlg.ProgressBarValue = i;
+				dlg.ProgressDialogSizeValue = dlg.ProgressDialogSizeMaxValue * i / 100;
+				TestContext.WriteLine($"El:{dlg.ElapsedTime}, Rem:{dlg.RemainingTime}");
+				Thread.Sleep(500);
+			}
+			dlg.Stop();
 		}
 	}
 }
