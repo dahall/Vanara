@@ -9,7 +9,7 @@ using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell.Tests
 {
-	[TestFixture]
+	[TestFixture, SingleThreaded]
 	public class ShellItemTests
 	{
 		internal const string badTestDoc = @"C:\Temp\BadTest.doc";
@@ -188,6 +188,13 @@ namespace Vanara.Windows.Shell.Tests
 					Debug.WriteLine($"{e}={s}");
 				}, Throws.Nothing);
 			}
+		}
+
+		[Test]
+		public void InvokeVerbTest()
+		{
+			using var i = new ShellItem(testDoc);
+			Assert.That(() => i.InvokeVerb("ViewProtected"), Throws.Nothing);
 		}
 
 		[Test]

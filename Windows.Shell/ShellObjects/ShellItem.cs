@@ -16,6 +16,7 @@ using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.Windows.Shell
 {
@@ -645,6 +646,35 @@ namespace Vanara.Windows.Shell
 			if (qi == null) return "";
 			qi.GetInfoTip((QITIP)options, out var ret);
 			return ret ?? "";
+		}
+
+		/// <summary>Invokes the item's command verb.</summary>
+		/// <param name="verb">The language-independent name of the command to carry out.</param>
+		/// <param name="args">The optional parameters.</param>
+		/// <param name="hideUI">
+		/// If <see langword="true"/>, the system is prevented from displaying user interface elements (for example, error messages) while
+		/// carrying out the command.
+		/// </param>
+		public void InvokeVerb(string verb, string args = null, bool hideUI = false)
+		{
+			OleInitialize(default); // Not sure why necessary, but it fails without
+
+			// Get parent and relative child PIDL
+			((IParentAndItem)iShellItem).GetParentAndItem(out _, out var iFolder, out var idChild).ThrowIfFailed();
+			using var pParent = new ComReleaser<IShellFolder>(iFolder);
+
+			// Get IContext menu for item and load via query
+			using var pMenu = ComReleaserFactory.Create(pParent.Item.GetUIObjectOf<IContextMenu>(default, new[] { idChild }));
+			using var hMenu = CreateMenu();
+			pMenu.Item.QueryContextMenu(hMenu, 0, 0, 0x7FF, CMF.CMF_EXPLORE).ThrowIfFailed();
+
+			// Setup structure and invoke command
+			using var pVerb = new SafeResourceId(verb, CharSet.Ansi);
+			var ici = new CMINVOKECOMMANDINFOEX { cbSize = (uint)Marshal.SizeOf(typeof(CMINVOKECOMMANDINFOEX)),
+				lpVerb = pVerb, nShow = ShowWindowCommand.SW_NORMAL, lpParameters = args };
+			if (hideUI)
+				ici.fMask |= CMIC.CMIC_MASK_FLAG_NO_UI;
+			pMenu.Item.InvokeCommand(ici);
 		}
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
