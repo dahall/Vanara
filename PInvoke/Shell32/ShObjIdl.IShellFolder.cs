@@ -1454,7 +1454,20 @@ namespace Vanara.PInvoke
 		/// parent folder. Each item identifier list must contain exactly one SHITEMID structure followed by a terminating zero.
 		/// </param>
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-		public static T GetUIObjectOf<T>(this IShellFolder sf, HWND hwndOwner, PIDL[] apidl) where T : class => (T)sf.GetUIObjectOf(hwndOwner, (uint)apidl.Length, Array.ConvertAll(apidl, p => p.DangerousGetHandle()), typeof(T).GUID);
+		public static T GetUIObjectOf<T>(this IShellFolder sf, HWND hwndOwner, PIDL[] apidl) where T : class => GetUIObjectOf<T>(sf, hwndOwner, Array.ConvertAll(apidl, p => p.DangerousGetHandle()));
+
+		/// <summary>Extension method to simplify using the <see cref="IShellFolder.GetUIObjectOf"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
+		/// <param name="hwndOwner">
+		/// A handle to the owner window that the client should specify if it displays a dialog box or message box.
+		/// </param>
+		/// <param name="apidl">
+		/// An array of pointers to ITEMIDLIST structures, each of which uniquely identifies a file object or subfolder relative to the
+		/// parent folder. Each item identifier list must contain exactly one SHITEMID structure followed by a terminating zero.
+		/// </param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T GetUIObjectOf<T>(this IShellFolder sf, HWND hwndOwner, IntPtr[] apidl) where T : class => (T)sf.GetUIObjectOf(hwndOwner, (uint)apidl.Length, apidl, typeof(T).GUID);
 
 		/// <summary>Specifies methods for sorting category data.</summary>
 		/// <summary>
