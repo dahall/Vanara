@@ -279,14 +279,21 @@ namespace Vanara.Extensions
 		/// </param>
 		/// <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc"/> method.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+		/// <param name="memLock">
+		/// The function used to lock memory before assignment. If <see langword="null"/>, the result from <paramref name="memAlloc"/> will
+		/// be used.
+		/// </param>
+		/// <param name="memUnlock">The optional function to unlock memory after assignment.</param>
 		/// <returns>A pointer to the memory allocated by <paramref name="memAlloc"/>.</returns>
-		public static IntPtr MarshalToPtr<T>(this T value, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0)
+		public static IntPtr MarshalToPtr<T>(this T value, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Action<IntPtr> memUnlock = null)
 		{
+			memLock ??= Passthrough;
 			if (VanaraMarshaler.CanMarshal(typeof(T), out var marshaler))
 			{
 				using var mem = marshaler.MarshalManagedToNative(value);
 				var ret = memAlloc(bytesAllocated = mem.Size + prefixBytes);
-				mem.DangerousGetHandle().CopyTo(ret.Offset(prefixBytes), mem.Size);
+				mem.DangerousGetHandle().CopyTo(memLock(ret).Offset(prefixBytes), mem.Size);
+				memUnlock?.Invoke(ret);
 				return ret;
 			}
 			else
@@ -294,10 +301,13 @@ namespace Vanara.Extensions
 				var newVal = TrueValue(value, out bytesAllocated);
 				bytesAllocated += prefixBytes;
 				var ret = memAlloc(bytesAllocated);
-				Write(ret, newVal, prefixBytes, bytesAllocated);
+				Write(memLock(ret), newVal, prefixBytes, bytesAllocated);
+				memUnlock?.Invoke(ret);
 				return ret;
 			}
 		}
+
+		private static IntPtr Passthrough(IntPtr p) => p;
 
 		/// <summary>
 		/// Marshals data from a managed list of specified type to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.
@@ -312,12 +322,18 @@ namespace Vanara.Extensions
 		/// </param>
 		/// <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc"/> method.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+		/// <param name="memLock">
+		/// The function used to lock memory before assignment. If <see langword="null"/>, the result from <paramref name="memAlloc"/> will
+		/// be used.
+		/// </param>
+		/// <param name="memUnlock">The optional function to unlock memory after assignment.</param>
 		/// <returns>Pointer to the allocated native (unmanaged) array of items stored.</returns>
 		/// <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
-		public static IntPtr MarshalToPtr<T>(this IEnumerable<T> items, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0)
+		public static IntPtr MarshalToPtr<T>(this IEnumerable<T> items, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Action<IntPtr> memUnlock = null)
 		{
 			if (!typeof(T).IsMarshalable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 
+			memLock ??= Passthrough;
 			bytesAllocated = prefixBytes;
 			var count = items?.Count() ?? 0;
 			if (count == 0) return memAlloc(bytesAllocated);
@@ -325,7 +341,9 @@ namespace Vanara.Extensions
 			var sz = Marshal.SizeOf(typeof(T));
 			bytesAllocated += sz * count;
 			var result = memAlloc(bytesAllocated);
-			result.Write(items, prefixBytes, bytesAllocated);
+			memLock(result).Write(items, prefixBytes, bytesAllocated);
+			memUnlock?.Invoke(result);
+
 			return result;
 		}
 
@@ -341,10 +359,15 @@ namespace Vanara.Extensions
 		/// </param>
 		/// <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc"/> method.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+		/// <param name="memLock">
+		/// The function used to lock memory before assignment. If <see langword="null"/>, the result from <paramref name="memAlloc"/> will
+		/// be used.
+		/// </param>
+		/// <param name="memUnlock">The optional function to unlock memory after assignment.</param>
 		/// <returns>Pointer to the allocated native (unmanaged) array of items stored.</returns>
 		/// <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
-		public static IntPtr MarshalToPtr<T>(this T[] items, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0) =>
-			MarshalToPtr(items.Cast<T>(), memAlloc, out bytesAllocated, prefixBytes);
+		public static IntPtr MarshalToPtr<T>(this T[] items, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Action<IntPtr> memUnlock = null) =>
+			MarshalToPtr(items.Cast<T>(), memAlloc, out bytesAllocated, prefixBytes, memLock, memUnlock);
 
 		/// <summary>
 		/// Marshals data from a managed list of strings to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.
@@ -357,18 +380,26 @@ namespace Vanara.Extensions
 		/// <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc"/> method.</param>
 		/// <param name="charSet">The character set to use for the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+		/// <param name="memLock">
+		/// The function used to lock memory before assignment. If <see langword="null"/>, the result from <paramref name="memAlloc"/> will
+		/// be used.
+		/// </param>
+		/// <param name="memUnlock">The optional function to unlock memory after assignment.</param>
 		/// <returns>
 		/// Pointer to the allocated native (unmanaged) array of strings stored using the <paramref name="packing"/> model and the character
 		/// set defined by <paramref name="charSet"/>.
 		/// </returns>
-		public static IntPtr MarshalToPtr(this IEnumerable<string> values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
+		public static IntPtr MarshalToPtr(this IEnumerable<string> values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Action<IntPtr> memUnlock = null)
 		{
+			memLock ??= Passthrough;
+
 			// Bail early if empty
 			if (values is null || !values.Any())
 			{
 				bytesAllocated = prefixBytes + (packing == StringListPackMethod.Concatenated ? StringHelper.GetCharSize(charSet) : IntPtr.Size);
 				var ret = memAlloc(bytesAllocated);
-				ret.FillMemory(0, bytesAllocated);
+				memLock(ret).FillMemory(0, bytesAllocated);
+				memUnlock?.Invoke(ret);
 				return ret;
 			}
 
@@ -396,7 +427,8 @@ namespace Vanara.Extensions
 				// Copy to newly allocated memory using memAlloc
 				bytesAllocated = (int)ms.Length;
 				var ret = memAlloc(bytesAllocated);
-				ms.Pointer.CopyTo(ret, bytesAllocated);
+				ms.Pointer.CopyTo(memLock(ret), bytesAllocated);
+				memUnlock?.Invoke(ret);
 				return ret;
 			}
 		}
@@ -412,12 +444,17 @@ namespace Vanara.Extensions
 		/// <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc"/> method.</param>
 		/// <param name="charSet">The character set to use for the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+		/// <param name="memLock">
+		/// The function used to lock memory before assignment. If <see langword="null"/>, the result from <paramref name="memAlloc"/> will
+		/// be used.
+		/// </param>
+		/// <param name="memUnlock">The optional function to unlock memory after assignment.</param>
 		/// <returns>
 		/// Pointer to the allocated native (unmanaged) array of strings stored using the <paramref name="packing"/> model and the character
 		/// set defined by <paramref name="charSet"/>.
 		/// </returns>
-		public static IntPtr MarshalToPtr(this string[] values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
-			MarshalToPtr((IEnumerable<string>)values, packing, memAlloc, out bytesAllocated, charSet, prefixBytes);
+		public static IntPtr MarshalToPtr(this string[] values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Action<IntPtr> memUnlock = null) =>
+			MarshalToPtr((IEnumerable<string>)values, packing, memAlloc, out bytesAllocated, charSet, prefixBytes, memLock, memUnlock);
 
 		/// <summary>Adds an offset to the value of a pointer.</summary>
 		/// <param name="pointer">The pointer to add the offset to.</param>
