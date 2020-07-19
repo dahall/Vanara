@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Vanara.Collections;
@@ -600,52 +601,62 @@ namespace Vanara.Windows.Shell
 				parent = ops;
 			}
 
-			public void FinishOperations(HRESULT hrResult) => parent.FinishOperations?.Invoke(parent, new ShellFileOpEventArgs(0, null, null, null, null, hrResult));
+			public HRESULT FinishOperations(HRESULT hrResult) => CallChkErr(() => parent.FinishOperations?.Invoke(parent, new ShellFileOpEventArgs(0, null, null, null, null, hrResult)));
 
-			public void PauseTimer()
+			public HRESULT PauseTimer() => HRESULT.E_NOTIMPL;
+
+			public HRESULT PostCopyItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, HRESULT hrCopy, IShellItem psiNewlyCreated) =>
+				CallChkErr(() => parent.PostCopyItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, psiDestinationFolder, psiNewlyCreated, pszNewName, hrCopy)));
+
+			public HRESULT PostDeleteItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, HRESULT hrDelete, IShellItem psiNewlyCreated) =>
+				CallChkErr(() => parent.PostDeleteItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, null, psiNewlyCreated, null, hrDelete)));
+
+			public HRESULT PostMoveItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, HRESULT hrMove, IShellItem psiNewlyCreated) =>
+				CallChkErr(() => parent.PostMoveItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, psiDestinationFolder, psiNewlyCreated, pszNewName, hrMove)));
+
+			public HRESULT PostNewItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, [MarshalAs(UnmanagedType.LPWStr)] string pszTemplateName, uint dwFileAttributes, HRESULT hrNew, IShellItem psiNewItem) =>
+				CallChkErr(() => parent.PostNewItem?.Invoke(parent, new ShellFileNewOpEventArgs(dwFlags, null, psiDestinationFolder, psiNewItem, pszNewName, hrNew, pszTemplateName, dwFileAttributes)));
+
+			public HRESULT PostRenameItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, HRESULT hrRename, IShellItem psiNewlyCreated) =>
+				CallChkErr(() => parent.PostRenameItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, null, psiNewlyCreated, pszNewName, hrRename)));
+
+			public HRESULT PreCopyItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName) =>
+				CallChkErr(() => parent.PreCopyItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, psiDestinationFolder, null, pszNewName)));
+
+			public HRESULT PreDeleteItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem) =>
+				CallChkErr(() => parent.PreDeleteItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem)));
+
+			public HRESULT PreMoveItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName) =>
+				CallChkErr(() => parent.PreMoveItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, psiDestinationFolder, null, pszNewName)));
+
+			public HRESULT PreNewItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName) =>
+				CallChkErr(() => parent.PreNewItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, null, psiDestinationFolder, null, pszNewName)));
+
+			public HRESULT PreRenameItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName) => CallChkErr(() => parent.PreRenameItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, null, null, pszNewName)));
+
+			public HRESULT ResetTimer() => HRESULT.E_NOTIMPL;
+
+			public HRESULT ResumeTimer() => HRESULT.E_NOTIMPL;
+
+			public HRESULT StartOperations() => CallChkErr(() => parent.StartOperations?.Invoke(parent, EventArgs.Empty));
+
+			public HRESULT UpdateProgress(uint iWorkTotal, uint iWorkSoFar) => CallChkErr(() => parent.UpdateProgress?.Invoke(parent, new System.ComponentModel.ProgressChangedEventArgs(iWorkTotal == 0 ? 0 : (int)(iWorkSoFar * 100 / iWorkTotal), null)));
+
+			private HRESULT CallChkErr(Action action)
 			{
+				try { action(); }
+				catch (COMException comex) { return comex.ErrorCode; }
+				catch (Win32Exception w32ex) { return new Win32Error(unchecked((uint)w32ex.NativeErrorCode)).ToHRESULT(); }
+				catch (Exception e)
+				{
+#if !(NET20 || NET35 || NET40)
+					return e.HResult;
+#else
+					throw e;
+#endif
+				}
+				return HRESULT.S_OK;
 			}
-
-			public void PostCopyItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, HRESULT hrCopy, IShellItem psiNewlyCreated) =>
-				parent.PostCopyItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, psiDestinationFolder, psiNewlyCreated, pszNewName, hrCopy));
-
-			public void PostDeleteItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, HRESULT hrDelete, IShellItem psiNewlyCreated) =>
-				parent.PostDeleteItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, null, psiNewlyCreated, null, hrDelete));
-
-			public void PostMoveItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, HRESULT hrMove, IShellItem psiNewlyCreated) =>
-				parent.PostMoveItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, psiDestinationFolder, psiNewlyCreated, pszNewName, hrMove));
-
-			public void PostNewItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, [MarshalAs(UnmanagedType.LPWStr)] string pszTemplateName, uint dwFileAttributes, HRESULT hrNew, IShellItem psiNewItem) =>
-				parent.PostNewItem?.Invoke(parent, new ShellFileNewOpEventArgs(dwFlags, null, psiDestinationFolder, psiNewItem, pszNewName, hrNew, pszTemplateName, dwFileAttributes));
-
-			public void PostRenameItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, HRESULT hrRename, IShellItem psiNewlyCreated) =>
-				parent.PostRenameItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, null, psiNewlyCreated, pszNewName, hrRename));
-
-			public void PreCopyItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName) =>
-				parent.PreCopyItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, psiDestinationFolder, null, pszNewName));
-
-			public void PreDeleteItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem) =>
-				parent.PreDeleteItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem));
-
-			public void PreMoveItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName) =>
-				parent.PreMoveItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, psiDestinationFolder, null, pszNewName));
-
-			public void PreNewItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName) =>
-				parent.PreNewItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, null, psiDestinationFolder, null, pszNewName));
-
-			public void PreRenameItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName) => parent.PreRenameItem?.Invoke(parent, new ShellFileOpEventArgs(dwFlags, psiItem, null, null, pszNewName));
-
-			public void ResetTimer()
-			{
-			}
-
-			public void ResumeTimer()
-			{
-			}
-
-			public void StartOperations() => parent.StartOperations?.Invoke(parent, EventArgs.Empty);
-
-			public void UpdateProgress(uint iWorkTotal, uint iWorkSoFar) => parent.UpdateProgress?.Invoke(parent, new System.ComponentModel.ProgressChangedEventArgs(iWorkTotal == 0 ? 0 : (int)(iWorkSoFar * 100 / iWorkTotal), null));
 		}
 	}
 }
