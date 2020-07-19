@@ -972,14 +972,16 @@ namespace Vanara.PInvoke
 		public interface IFileOperationProgressSink
 		{
 			/// <summary>Performs caller-implemented actions before any specific file operations are performed.</summary>
-			void StartOperations();
+			[PreserveSig]
+			HRESULT StartOperations();
 
 			/// <summary>Performs caller-implemented actions after the last operation performed by the call to IFileOperation is complete.</summary>
 			/// <param name="hrResult">
 			/// The return value of the final operation. Note that this is not the HRESULT returned by one of the IFileOperation methods,
 			/// which simply queue the operations. Instead, this is the result of the actual operation, such as copy, delete, or move.
 			/// </param>
-			void FinishOperations(HRESULT hrResult);
+			[PreserveSig]
+			HRESULT FinishOperations(HRESULT hrResult);
 
 			/// <summary>Performs caller-implemented actions before the rename process for each item begins.</summary>
 			/// <param name="dwFlags">
@@ -987,7 +989,8 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="psiItem">Pointer to an IShellItem that specifies the item to be renamed.</param>
 			/// <param name="pszNewName">Pointer to the new display name of the item. This is a null-terminated, Unicode string.</param>
-			void PreRenameItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName);
+			[PreserveSig]
+			HRESULT PreRenameItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName);
 
 			/// <summary>Performs caller-implemented actions after the rename process for each item is complete.</summary>
 			/// <param name="dwFlags">
@@ -1004,7 +1007,8 @@ namespace Vanara.PInvoke
 			/// rename operation. Instead, this is the result of the actual rename operation.
 			/// </param>
 			/// <param name="psiNewlyCreated">Pointer to an IShellItem that represents the item with its new name.</param>
-			void PostRenameItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, HRESULT hrRename, IShellItem psiNewlyCreated);
+			[PreserveSig]
+			HRESULT PostRenameItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, HRESULT hrRename, IShellItem psiNewlyCreated);
 
 			/// <summary>Performs caller-implemented actions before the move process for each item begins.</summary>
 			/// <param name="dwFlags">
@@ -1018,7 +1022,8 @@ namespace Vanara.PInvoke
 			/// Pointer to a new name for the item in its new location. This is a null-terminated Unicode string and can be NULL. If NULL,
 			/// the name of the destination item is the same as the source.
 			/// </param>
-			void PreMoveItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName);
+			[PreserveSig]
+			HRESULT PreMoveItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName);
 
 			/// <summary>Performs caller-implemented actions after the move process for each item is complete.</summary>
 			/// <param name="dwFlags">
@@ -1038,7 +1043,8 @@ namespace Vanara.PInvoke
 			/// operation. Instead, this is the result of the actual move.
 			/// </param>
 			/// <param name="psiNewlyCreated">Pointer to an IShellItem that represents the moved item in its new location.</param>
-			void PostMoveItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, HRESULT hrMove, IShellItem psiNewlyCreated);
+			[PreserveSig]
+			HRESULT PostMoveItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, HRESULT hrMove, IShellItem psiNewlyCreated);
 
 			/// <summary>Performs caller-implemented actions before the copy process for each item begins.</summary>
 			/// <param name="dwFlags">
@@ -1052,7 +1058,8 @@ namespace Vanara.PInvoke
 			/// Pointer to a new name for the item after it has been copied. This is a null-terminated Unicode string and can be NULL. If
 			/// NULL, the name of the destination item is the same as the source.
 			/// </param>
-			void PreCopyItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName);
+			[PreserveSig]
+			HRESULT PreCopyItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName);
 
 			/// <summary>Performs caller-implemented actions after the copy process for each item is complete.</summary>
 			/// <param name="dwFlags">
@@ -1072,7 +1079,8 @@ namespace Vanara.PInvoke
 			/// operation. Instead, this is the result of the actual copy.
 			/// </param>
 			/// <param name="psiNewlyCreated">Pointer to an IShellItem that represents the new copy of the item.</param>
-			void PostCopyItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName,
+			[PreserveSig]
+			HRESULT PostCopyItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName,
 				HRESULT hrCopy, IShellItem psiNewlyCreated);
 
 			/// <summary>Performs caller-implemented actions before the delete process for each item begins.</summary>
@@ -1080,7 +1088,8 @@ namespace Vanara.PInvoke
 			/// bitwise value that contains flags that control the operation. See TRANSFER_SOURCE_FLAGS for flag descriptions.
 			/// </param>
 			/// <param name="psiItem">Pointer to an IShellItem that specifies the item to be deleted.</param>
-			void PreDeleteItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem);
+			[PreserveSig]
+			HRESULT PreDeleteItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem);
 
 			/// <summary>Performs caller-implemented actions after the delete process for each item is complete.</summary>
 			/// <param name="dwFlags">
@@ -1096,7 +1105,8 @@ namespace Vanara.PInvoke
 			/// A pointer to an IShellItem that specifies the deleted item, now in the Recycle Bin. If the item was fully deleted, this
 			/// value is NULL.
 			/// </param>
-			void PostDeleteItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, HRESULT hrDelete, IShellItem psiNewlyCreated);
+			[PreserveSig]
+			HRESULT PostDeleteItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, HRESULT hrDelete, IShellItem psiNewlyCreated);
 
 			/// <summary>Performs caller-implemented actions before the process to create a new item begins.</summary>
 			/// <param name="dwFlags">
@@ -1108,7 +1118,8 @@ namespace Vanara.PInvoke
 			/// <param name="pszNewName">
 			/// Pointer to the file name of the new item, for instance Newfile.txt. This is a null-terminated, Unicode string.
 			/// </param>
-			void PreNewItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName);
+			[PreserveSig]
+			HRESULT PreNewItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName);
 
 			/// <summary>Performs caller-implemented actions after the new item is created.</summary>
 			/// <param name="dwFlags">
@@ -1147,25 +1158,30 @@ namespace Vanara.PInvoke
 			/// creation operation. Instead, this is the result of the actual creation.
 			/// </param>
 			/// <param name="psiNewItem">Pointer to an IShellItem that represents the new item.</param>
-			void PostNewItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName,
+			[PreserveSig]
+			HRESULT PostNewItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName,
 				[MarshalAs(UnmanagedType.LPWStr)] string pszTemplateName, uint dwFileAttributes, HRESULT hrNew, IShellItem psiNewItem);
 
 			/// <summary>Updates the progress.</summary>
 			/// <param name="iWorkTotal">The i work total.</param>
 			/// <param name="iWorkSoFar">The i work so far.</param>
-			void UpdateProgress(uint iWorkTotal, uint iWorkSoFar);
+			[PreserveSig]
+			HRESULT UpdateProgress(uint iWorkTotal, uint iWorkSoFar);
 
 			/// <summary>Resets the timer.</summary>
 			[Obsolete("This method is not supported.")]
-			void ResetTimer();
+			[PreserveSig]
+			HRESULT ResetTimer();
 
 			/// <summary>Pauses the timer.</summary>
 			[Obsolete("This method is not supported.")]
-			void PauseTimer();
+			[PreserveSig]
+			HRESULT PauseTimer();
 
 			/// <summary>Resumes the timer.</summary>
 			[Obsolete("This method is not supported.")]
-			void ResumeTimer();
+			[PreserveSig]
+			HRESULT ResumeTimer();
 		}
 
 		/// <summary>
