@@ -464,6 +464,21 @@ namespace Vanara.PInvoke
 		/// </summary>
 		public static class ShellClipboardFormat
 		{
+			/// <summary>HTML Format</summary>
+			public const string CF_HTML = "HTML Format";
+
+			/// <summary>Rich Text Format</summary>
+			public const string CF_RTF = "Rich Text Format";
+
+			/// <summary>Rich Text Format Without Objects</summary>
+			public const string CF_RTFNOOBJS = "Rich Text Format Without Objects";
+
+			/// <summary>RichEdit Text and Objects</summary>
+			public const string CF_RETEXTOBJ = "RichEdit Text and Objects";
+
+			/// <summary>Comma Separated Value</summary>
+			public const string CF_CSV = "Csv";
+
 			/// <summary>Undocumented.</summary>
 			public const string CFSTR_AUTOPLAY_SHELLIDLISTS = "Autoplay Enumerated IDList Array";
 
