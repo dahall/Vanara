@@ -134,10 +134,10 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static string ConvertSecurityDescriptorToStringSecurityDescriptor(PSECURITY_DESCRIPTOR SecurityDescriptor, SECURITY_INFORMATION SecurityInformation)
 		{
-			if (!ConvertSecurityDescriptorToStringSecurityDescriptor(SecurityDescriptor, SDDL_REVISION.SDDL_REVISION_1, SecurityInformation, out var sd, out _))
+			if (!ConvertSecurityDescriptorToStringSecurityDescriptor(SecurityDescriptor, SDDL_REVISION.SDDL_REVISION_1, SecurityInformation, out var sd, out var len))
 				throw new Win32Exception();
 			using (sd)
-				return sd.ToString(-1);
+				return sd.ToString(-1, CharSet.Auto);
 		}
 
 		/// <summary>
@@ -165,7 +165,7 @@ namespace Vanara.PInvoke
 			if (!ConvertSidToStringSid(Sid, out var str))
 				throw new Win32Exception();
 			using (str)
-				return str.ToString(-1);
+				return str.ToString(-1, CharSet.Auto);
 		}
 
 		/// <summary>

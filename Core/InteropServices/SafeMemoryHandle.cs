@@ -535,8 +535,8 @@ namespace Vanara.InteropServices
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public string ToString(int len, int prefixBytes, CharSet charSet = CharSet.Unicode)
 		{
-			var str = StringHelper.GetString(handle.Offset(prefixBytes), charSet, sz - prefixBytes);
-			return len == -1 ? str : str.Substring(0, len);
+			var str = StringHelper.GetString(handle.Offset(prefixBytes), charSet, sz == 0 ? long.MaxValue : sz - prefixBytes);
+			return len == -1 ? str : str.Substring(0, Math.Min(len, str.Length));
 		}
 
 		/// <summary>

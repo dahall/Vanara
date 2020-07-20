@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke.Tests
@@ -17,6 +18,7 @@ namespace Vanara.PInvoke.Tests
 				using (sd)
 				{
 					Assert.That(sd_sddl = ConvertSecurityDescriptorToStringSecurityDescriptor(sd, si), Is.Not.Empty);
+					TestContext.WriteLine(sd_sddl);
 				}
 				SafePSECURITY_DESCRIPTOR sd2;
 				Assert.That(sd2 = ConvertStringSecurityDescriptorToSecurityDescriptor(sd_sddl), ResultIs.ValidHandle);
@@ -31,6 +33,7 @@ namespace Vanara.PInvoke.Tests
 			{
 				string sid_sddl;
 				Assert.That(sid_sddl = ConvertSidToStringSid(psid), Is.Not.Empty);
+				TestContext.WriteLine(sid_sddl);
 
 				SafePSID psid2;
 				Assert.That(psid2 = ConvertStringSidToSid(sid_sddl), ResultIs.ValidHandle);
