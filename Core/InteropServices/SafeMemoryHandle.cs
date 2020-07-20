@@ -28,25 +28,38 @@ namespace Vanara.InteropServices
 	public interface IMemoryMethods : ISimpleMemoryMethods
 	{
 		/// <summary>Gets the Ansi <see cref="SecureString"/> allocation method.</summary>
-		Func<SecureString, IntPtr> AllocSecureStringAnsi { get; }
+		/// <param name="secureString">The secure string.</param>
+		/// <returns>A memory handle.</returns>
+		IntPtr AllocSecureStringAnsi(SecureString secureString);
 
 		/// <summary>Gets the Unicode <see cref="SecureString"/> allocation method.</summary>
-		Func<SecureString, IntPtr> AllocSecureStringUni { get; }
+		/// <param name="secureString">The secure string.</param>
+		/// <returns>A memory handle.</returns>
+		IntPtr AllocSecureStringUni(SecureString secureString);
 
 		/// <summary>Gets the Ansi string allocation method.</summary>
-		Func<string, IntPtr> AllocStringAnsi { get; }
+		/// <param name="value">The value.</param>
+		/// <returns>A memory handle.</returns>
+		IntPtr AllocStringAnsi(string value);
 
 		/// <summary>Gets the Unicode string allocation method.</summary>
-		Func<string, IntPtr> AllocStringUni { get; }
+		/// <param name="value">The value.</param>
+		/// <returns>A memory handle.</returns>
+		IntPtr AllocStringUni(string value);
 
 		/// <summary>Gets the Ansi <see cref="SecureString"/> free method.</summary>
-		Action<IntPtr> FreeSecureStringAnsi { get; }
+		/// <param name="hMem">A memory handle.</param>
+		void FreeSecureStringAnsi(IntPtr hMem);
 
 		/// <summary>Gets the Unicode <see cref="SecureString"/> free method.</summary>
-		Action<IntPtr> FreeSecureStringUni { get; }
+		/// <param name="hMem">A memory handle.</param>
+		void FreeSecureStringUni(IntPtr hMem);
 
 		/// <summary>Gets the reallocation method.</summary>
-		Func<IntPtr, int, IntPtr> ReAllocMem { get; }
+		/// <param name="hMem">A memory handle.</param>
+		/// <param name="size">The size, in bytes, of memory to allocate.</param>
+		/// <returns>A memory handle.</returns>
+		IntPtr ReAllocMem(IntPtr hMem, int size);
 	}
 
 	/// <summary>Interface for classes that support safe memory pointers.</summary>
@@ -135,48 +148,91 @@ namespace Vanara.InteropServices
 	/// <summary>Interface to capture unmanaged simple (alloc/free) memory methods.</summary>
 	public interface ISimpleMemoryMethods
 	{
-		/// <summary>Gets the allocation method.</summary>
-		Func<int, IntPtr> AllocMem { get; }
+		/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
+		/// <param name="size">The size, in bytes, of memory to allocate.</param>
+		/// <returns>A memory handle.</returns>
+		IntPtr AllocMem(int size);
 
-		/// <summary>Gets the free method.</summary>
-		Action<IntPtr> FreeMem { get; }
+		/// <summary>Frees the memory associated with a handle.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		void FreeMem(IntPtr hMem);
+
+		/// <summary>Locks the memory of a specified handle and gets a pointer to it.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		/// <returns>A pointer to the locked memory.</returns>
+		IntPtr LockMem(IntPtr hMem);
+
+		/// <summary>Unlocks the memory of a specified handle.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		void UnlockMem(IntPtr hMem);
 	}
 
 	/// <summary>Implementation of <see cref="IMemoryMethods"/> using just the methods from <see cref="ISimpleMemoryMethods"/>.</summary>
-	/// <typeparam name="TSimple">The type of the simple.</typeparam>
 	/// <seealso cref="Vanara.InteropServices.IMemoryMethods"/>
-	public class MemoryMethodsFromSimple<TSimple> : IMemoryMethods where TSimple : ISimpleMemoryMethods, new()
+	public abstract class MemoryMethodsBase : IMemoryMethods
 	{
-		/// <summary>A static instance of TSimple.</summary>
-		public static TSimple SimpleInstance = new TSimple();
+		/// <summary>
+		/// Gets a handle to a memory allocation of the specified size.
+		/// </summary>
+		/// <param name="size">The size, in bytes, of memory to allocate.</param>
+		/// <returns>
+		/// A memory handle.
+		/// </returns>
+		/// <exception cref="NotImplementedException"></exception>
+		public abstract IntPtr AllocMem(int size);
 
 		/// <summary>Gets the Ansi <see cref="SecureString"/> allocation method.</summary>
-		public Func<SecureString, IntPtr> AllocSecureStringAnsi => s => StringHelper.AllocSecureString(s, CharSet.Ansi, AllocMem);
+		/// <param name="secureString">The secure string.</param>
+		/// <returns>A memory handle.</returns>
+		public virtual IntPtr AllocSecureStringAnsi(SecureString secureString) => StringHelper.AllocSecureString(secureString, CharSet.Ansi, AllocMem);
 
 		/// <summary>Gets the Unicode <see cref="SecureString"/> allocation method.</summary>
-		public Func<SecureString, IntPtr> AllocSecureStringUni => s => StringHelper.AllocSecureString(s, CharSet.Unicode, AllocMem);
+		/// <param name="secureString">The secure string.</param>
+		/// <returns>A memory handle.</returns>
+		public virtual IntPtr AllocSecureStringUni(SecureString secureString) => StringHelper.AllocSecureString(secureString, CharSet.Unicode, AllocMem);
 
 		/// <summary>Gets the Ansi string allocation method.</summary>
-		public Func<string, IntPtr> AllocStringAnsi => s => StringHelper.AllocString(s, CharSet.Ansi, AllocMem);
+		/// <param name="value">The value.</param>
+		/// <returns>A memory handle.</returns>
+		public virtual IntPtr AllocStringAnsi(string value) => StringHelper.AllocString(value, CharSet.Ansi, AllocMem);
 
 		/// <summary>Gets the Unicode string allocation method.</summary>
-		public Func<string, IntPtr> AllocStringUni => s => StringHelper.AllocString(s, CharSet.Unicode, AllocMem);
+		/// <param name="value">The value.</param>
+		/// <returns>A memory handle.</returns>
+		public virtual IntPtr AllocStringUni(string value) => StringHelper.AllocString(value, CharSet.Unicode, AllocMem);
+
+		/// <summary>Frees the memory associated with a handle.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		public abstract void FreeMem(IntPtr hMem);
 
 		/// <summary>Gets the Ansi <see cref="SecureString"/> free method.</summary>
-		public Action<IntPtr> FreeSecureStringAnsi => FreeMem;
+		/// <param name="hMem">A memory handle.</param>
+		public virtual void FreeSecureStringAnsi(IntPtr hMem) => FreeMem(hMem);
 
 		/// <summary>Gets the Unicode <see cref="SecureString"/> free method.</summary>
-		public Action<IntPtr> FreeSecureStringUni => FreeMem;
+		/// <param name="hMem">A memory handle.</param>
+		public virtual void FreeSecureStringUni(IntPtr hMem) => FreeMem(hMem);
+
+		/// <summary>Locks the memory of a specified handle and gets a pointer to it.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		/// <returns>A pointer to the locked memory.</returns>
+		public virtual IntPtr LockMem(IntPtr hMem) => hMem;
 
 		/// <summary>Gets the reallocation method.</summary>
-		/// <exception cref="System.NotImplementedException"></exception>
-		public Func<IntPtr, int, IntPtr> ReAllocMem => throw new NotImplementedException();
+		/// <param name="hMem">A memory handle.</param>
+		/// <param name="size">The size, in bytes, of memory to allocate.</param>
+		/// <returns>A memory handle.</returns>
+		public virtual IntPtr ReAllocMem(IntPtr hMem, int size)
+		{
+			var hNew = AllocMem(size);
+			hMem.CopyTo(hNew, size);
+			FreeMem(hMem);
+			return hNew;
+		}
 
-		/// <summary>Gets the allocation method.</summary>
-		public Func<int, IntPtr> AllocMem => SimpleInstance.AllocMem;
-
-		/// <summary>Gets the free method.</summary>
-		public Action<IntPtr> FreeMem => SimpleInstance.FreeMem;
+		/// <summary>Unlocks the memory of a specified handle.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		public virtual void UnlockMem(IntPtr hMem) { }
 	}
 
 	/// <summary>Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.</summary>

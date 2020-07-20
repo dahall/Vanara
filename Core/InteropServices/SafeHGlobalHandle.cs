@@ -12,27 +12,60 @@ namespace Vanara.InteropServices
 	/// <seealso cref="IMemoryMethods"/>
 	public sealed class HGlobalMemoryMethods : IMemoryMethods
 	{
-		/// <summary>Gets the allocation method.</summary>
-		public Func<int, IntPtr> AllocMem => Marshal.AllocHGlobal;
-		/// <summary>Gets the reallocation method.</summary>
-		public Func<IntPtr, int, IntPtr> ReAllocMem => (p, i) => Marshal.ReAllocHGlobal(p, (IntPtr)i);
-		/// <summary>Gets the free method.</summary>
-		public Action<IntPtr> FreeMem => Marshal.FreeHGlobal;
-		/// <summary>Gets the Unicode string allocation method.</summary>
-		public Func<string, IntPtr> AllocStringUni => Marshal.StringToHGlobalUni;
-		/// <summary>Gets the Ansi string allocation method.</summary>
-		public Func<string, IntPtr> AllocStringAnsi => Marshal.StringToHGlobalAnsi;
-		/// <summary>Gets the Unicode <see cref="SecureString"/> allocation method.</summary>
-		public Func<SecureString, IntPtr> AllocSecureStringUni => Marshal.SecureStringToGlobalAllocUnicode;
-		/// <summary>Gets the Ansi <see cref="SecureString"/> allocation method.</summary>
-		public Func<SecureString, IntPtr> AllocSecureStringAnsi => Marshal.SecureStringToGlobalAllocAnsi;
-		/// <summary>Gets the Unicode <see cref="SecureString"/> free method.</summary>
-		public Action<IntPtr> FreeSecureStringUni => Marshal.ZeroFreeGlobalAllocUnicode;
-		/// <summary>Gets the Ansi <see cref="SecureString"/> free method.</summary>
-		public Action<IntPtr> FreeSecureStringAnsi => Marshal.ZeroFreeGlobalAllocAnsi;
-
 		/// <summary>Static instance to methods.</summary>
 		public static IMemoryMethods Instance { get; } = new HGlobalMemoryMethods();
+
+		/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
+		/// <param name="size">The size, in bytes, of memory to allocate.</param>
+		/// <returns>A memory handle.</returns>
+		public IntPtr AllocMem(int size) => Marshal.AllocHGlobal(size);
+
+		/// <summary>Gets the Ansi <see cref="SecureString"/> allocation method.</summary>
+		/// <param name="secureString">The secure string.</param>
+		/// <returns>A memory handle.</returns>
+		public IntPtr AllocSecureStringAnsi(SecureString secureString) => Marshal.SecureStringToGlobalAllocAnsi(secureString);
+
+		/// <summary>Gets the Unicode <see cref="SecureString"/> allocation method.</summary>
+		/// <param name="secureString">The secure string.</param>
+		/// <returns>A memory handle.</returns>
+		public IntPtr AllocSecureStringUni(SecureString secureString) => Marshal.SecureStringToGlobalAllocUnicode(secureString);
+
+		/// <summary>Gets the Ansi string allocation method.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>A memory handle.</returns>
+		public IntPtr AllocStringAnsi(string value) => Marshal.StringToHGlobalAnsi(value);
+
+		/// <summary>Gets the Unicode string allocation method.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>A memory handle.</returns>
+		public IntPtr AllocStringUni(string value) => Marshal.StringToHGlobalUni(value);
+
+		/// <summary>Frees the memory associated with a handle.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		public void FreeMem(IntPtr hMem) => Marshal.FreeHGlobal(hMem);
+
+		/// <summary>Gets the Ansi <see cref="SecureString"/> free method.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		public void FreeSecureStringAnsi(IntPtr hMem) => Marshal.ZeroFreeGlobalAllocAnsi(hMem);
+
+		/// <summary>Gets the Unicode <see cref="SecureString"/> free method.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		public void FreeSecureStringUni(IntPtr hMem) => Marshal.ZeroFreeGlobalAllocUnicode(hMem);
+
+		/// <summary>Locks the memory of a specified handle and gets a pointer to it.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		/// <returns>A pointer to the locked memory.</returns>
+		public IntPtr LockMem(IntPtr hMem) => hMem;
+
+		/// <summary>Gets the reallocation method.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		/// <param name="size">The size, in bytes, of memory to allocate.</param>
+		/// <returns>A memory handle.</returns>
+		public IntPtr ReAllocMem(IntPtr hMem, int size) => Marshal.ReAllocHGlobal(hMem, (IntPtr)size);
+
+		/// <summary>Unlocks the memory of a specified handle.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		public void UnlockMem(IntPtr hMem) { }
 	}
 
 	/// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>

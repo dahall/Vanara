@@ -5845,41 +5845,27 @@ namespace Vanara.PInvoke
 
 		/// <summary>Standard crypto memory allocation methods.</summary>
 		/// <seealso cref="Vanara.InteropServices.IMemoryMethods"/>
-		public class CryptMemMethods : IMemoryMethods
+		public class CryptMemMethods : MemoryMethodsBase
 		{
 			/// <summary>Gets a static instance of this class.</summary>
 			public static readonly CryptMemMethods Instance = new CryptMemMethods();
 
-			/// <summary>Gets the allocation method.</summary>
-			public Func<int, IntPtr> AllocMem => i => CryptMemAlloc((uint)i);
-
-			/// <summary>Gets the Ansi <see cref="T:System.Security.SecureString"/> allocation method.</summary>
+			/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
+			/// <param name="size">The size, in bytes, of memory to allocate.</param>
+			/// <returns>A memory handle.</returns>
 			/// <exception cref="NotImplementedException"></exception>
-			public Func<SecureString, IntPtr> AllocSecureStringAnsi => throw new NotImplementedException();
+			public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull(CryptMemAlloc((uint)size));
 
-			/// <summary>Gets the Unicode <see cref="T:System.Security.SecureString"/> allocation method.</summary>
+			/// <summary>Frees the memory associated with a handle.</summary>
+			/// <param name="hMem">A memory handle.</param>
 			/// <exception cref="NotImplementedException"></exception>
-			public Func<SecureString, IntPtr> AllocSecureStringUni => throw new NotImplementedException();
-
-			/// <summary>Gets the Ansi string allocation method.</summary>
-			public Func<string, IntPtr> AllocStringAnsi => s => StringHelper.AllocString(s, CharSet.Ansi, AllocMem);
-
-			/// <summary>Gets the Unicode string allocation method.</summary>
-			public Func<string, IntPtr> AllocStringUni => s => StringHelper.AllocString(s, CharSet.Unicode, AllocMem);
-
-			/// <summary>Gets the free method.</summary>
-			public Action<IntPtr> FreeMem => CryptMemFree;
-
-			/// <summary>Gets the Ansi <see cref="T:System.Security.SecureString"/> free method.</summary>
-			/// <exception cref="NotImplementedException"></exception>
-			public Action<IntPtr> FreeSecureStringAnsi => throw new NotImplementedException();
-
-			/// <summary>Gets the Unicode <see cref="T:System.Security.SecureString"/> free method.</summary>
-			/// <exception cref="NotImplementedException"></exception>
-			public Action<IntPtr> FreeSecureStringUni => throw new NotImplementedException();
+			public override void FreeMem(IntPtr hMem) => CryptMemFree(hMem);
 
 			/// <summary>Gets the reallocation method.</summary>
-			public Func<IntPtr, int, IntPtr> ReAllocMem => (p, i) => CryptMemRealloc(p, (uint)i);
+			/// <param name="hMem">A memory handle.</param>
+			/// <param name="size">The size, in bytes, of memory to allocate.</param>
+			/// <returns>A memory handle.</returns>
+			public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull(CryptMemRealloc(hMem, (uint)size));
 		}
 
 		/// <summary>Safe handle for crypto memory.</summary>

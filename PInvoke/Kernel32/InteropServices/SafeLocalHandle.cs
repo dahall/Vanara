@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using System.Security;
 using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
@@ -11,37 +10,25 @@ namespace Vanara.InteropServices
 {
 	/// <summary>Unmanaged memory methods for local heap.</summary>
 	/// <seealso cref="IMemoryMethods"/>
-	public sealed class LocalMemoryMethods : IMemoryMethods
+	public sealed class LocalMemoryMethods : MemoryMethodsBase
 	{
-		/// <summary>Gets the allocation method.</summary>
-		public Func<int, IntPtr> AllocMem => i => { var o = LocalAlloc(LMEM.LPTR, i); return !o.IsNull ? (IntPtr)o : throw Win32Error.GetLastError().GetException(); };
-
-		/// <summary>Gets the Ansi <see cref="SecureString"/> allocation method.</summary>
-		public Func<SecureString, IntPtr> AllocSecureStringAnsi => s => StringHelper.AllocSecureString(s, CharSet.Ansi, AllocMem);
-
-		/// <summary>Gets the Unicode <see cref="SecureString"/> allocation method.</summary>
-		public Func<SecureString, IntPtr> AllocSecureStringUni => s => StringHelper.AllocSecureString(s, CharSet.Unicode, AllocMem);
-
-		/// <summary>Gets the Ansi string allocation method.</summary>
-		public Func<string, IntPtr> AllocStringAnsi => s => StringHelper.AllocString(s, CharSet.Ansi, AllocMem);
-
-		/// <summary>Gets the Unicode string allocation method.</summary>
-		public Func<string, IntPtr> AllocStringUni => s => StringHelper.AllocString(s, CharSet.Unicode, AllocMem);
-
-		/// <summary>Gets the free method.</summary>
-		public Action<IntPtr> FreeMem => p => LocalFree(p);
-
-		/// <summary>Gets the Ansi <see cref="SecureString"/> free method.</summary>
-		public Action<IntPtr> FreeSecureStringAnsi => p => StringHelper.FreeSecureString(p, LocalSize(p), FreeMem);
-
-		/// <summary>Gets the Unicode <see cref="SecureString"/> free method.</summary>
-		public Action<IntPtr> FreeSecureStringUni => p => StringHelper.FreeSecureString(p, LocalSize(p), FreeMem);
-
-		/// <summary>Gets the reallocation method.</summary>
-		public Func<IntPtr, int, IntPtr> ReAllocMem => (p, i) => { var o = LocalReAlloc(p, i, LMEM.LMEM_MOVEABLE); return !o.IsNull ? (IntPtr)o : throw Win32Error.GetLastError().GetException(); };
-
 		/// <summary>Gets a static instance of these methods.</summary>
 		public static readonly IMemoryMethods Instance = new LocalMemoryMethods();
+
+		/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
+		/// <param name="size">The size, in bytes, of memory to allocate.</param>
+		/// <returns>A memory handle.</returns>
+		public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)LocalAlloc(LMEM.LPTR, size));
+
+		/// <summary>Frees the memory associated with a handle.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		public override void FreeMem(IntPtr hMem) => LocalFree(hMem);
+
+		/// <summary>Gets the reallocation method.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		/// <param name="size">The size, in bytes, of memory to allocate.</param>
+		/// <returns>A memory handle.</returns>
+		public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)LocalReAlloc(hMem, size, LMEM.LMEM_FIXED | LMEM.LMEM_ZEROINIT));
 	}
 
 	/// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>

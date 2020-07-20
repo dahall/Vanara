@@ -1445,8 +1445,24 @@ namespace Vanara.PInvoke
 		internal class DnsProxyStringMem : ISimpleMemoryMethods
 		{
 			private bool self = false;
-			public Func<int, IntPtr> AllocMem => s => { self = true; return Marshal.AllocCoTaskMem(s); };
-			public Action<IntPtr> FreeMem => p => { if (self) Marshal.FreeCoTaskMem(p); else DnsFreeProxyName(p); };
+
+			/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
+			/// <param name="size">The size, in bytes, of memory to allocate.</param>
+			/// <returns>A memory handle.</returns>
+			public IntPtr AllocMem(int size) { self = true; return Marshal.AllocCoTaskMem(size); }
+
+			/// <summary>Frees the memory associated with a handle.</summary>
+			/// <param name="hMem">A memory handle.</param>
+			public void FreeMem(IntPtr hMem) { if (self) Marshal.FreeCoTaskMem(hMem); else DnsFreeProxyName(hMem); }
+
+			/// <summary>Locks the memory of a specified handle and gets a pointer to it.</summary>
+			/// <param name="hMem">A memory handle.</param>
+			/// <returns>A pointer to the locked memory.</returns>
+			public IntPtr LockMem(IntPtr hMem) => hMem;
+
+			/// <summary>Unlocks the memory of a specified handle.</summary>
+			/// <param name="hMem">A memory handle.</param>
+			public void UnlockMem(IntPtr hMem) { }
 		}
 	}
 }

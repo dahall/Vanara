@@ -100,6 +100,21 @@ namespace Vanara.PInvoke
 		[System.Diagnostics.DebuggerStepThrough]
 		public static void ThrowLastError(string message = null) => GetLastError().ThrowIfFailed(message);
 
+		/// <summary>Throws the last error if the function returns <see langword="false"/>.</summary>
+		/// <param name="value">The value to check.</param>
+		/// <param name="message">The message.</param>
+		public static bool ThrowLastErrorIfFalse(bool value, string message = null) => CheckPredicateOrThrow(value, v => !v, message);
+
+		/// <summary>Throws the last error if the value is an invalid handle.</summary>
+		/// <param name="value">The SafeHandle to check.</param>
+		/// <param name="message">The message.</param>
+		public static SafeHandle ThrowLastErrorIfInvalid(SafeHandle value, string message = null) => CheckPredicateOrThrow(value, v => v.IsInvalid, message);
+
+		/// <summary>Throws the last error if the value is a NULL pointer (IntPtr.Zero).</summary>
+		/// <param name="value">The pointer to check.</param>
+		/// <param name="message">The message.</param>
+		public static IntPtr ThrowLastErrorIfNull(IntPtr value, string message = null) => CheckPredicateOrThrow(value, v => v == IntPtr.Zero, message);
+
 		/// <summary>Throws if the last error failed, unless the error is the specified value.</summary>
 		/// <param name="exception">The failure code to ignore.</param>
 		/// <param name="message">The message to associate with the exception.</param>
@@ -225,6 +240,13 @@ namespace Vanara.PInvoke
 		uint IConvertible.ToUInt32(IFormatProvider provider) => ((IConvertible)value).ToUInt32(provider);
 
 		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)value).ToUInt64(provider);
+
+		private static T CheckPredicateOrThrow<T>(T value, Func<T, bool> failure, string message)
+		{
+			if (failure(value))
+				GetLastError().ThrowIfFailed(message);
+			return value;
+		}
 
 		private static uint? ValueFromObj(object obj)
 		{

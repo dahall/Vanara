@@ -1380,40 +1380,28 @@ namespace Vanara.PInvoke
 
 		/// <summary>Unmanaged memory methods for a heap.</summary>
 		/// <seealso cref="IMemoryMethods"/>
-		public sealed class HeapMemoryMethods : IMemoryMethods
+		public sealed class HeapMemoryMethods : MemoryMethodsBase
 		{
 			/// <summary>Gets a static instance of this class.</summary>
 			/// <value>The instance.</value>
 			public static IMemoryMethods Instance { get; } = new HeapMemoryMethods();
 
-			/// <summary>Gets the allocation method.</summary>
-			public Func<int, IntPtr> AllocMem => i => { var o = HeapAllocInternal(HeapHandle, 0, i); return o != IntPtr.Zero ? o : throw Win32Error.GetLastError().GetException(); };
+			internal HHEAP HeapHandle { get; set; } = GetProcessHeap();
 
-			/// <summary>Gets the Ansi <see cref="SecureString"/> allocation method.</summary>
-			public Func<SecureString, IntPtr> AllocSecureStringAnsi => s => StringHelper.AllocSecureString(s, CharSet.Ansi, AllocMem);
+			/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
+			/// <param name="size">The size, in bytes, of memory to allocate.</param>
+			/// <returns>A memory handle.</returns>
+			public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)HeapAllocInternal(HeapHandle, 0, size));
 
-			/// <summary>Gets the Unicode <see cref="SecureString"/> allocation method.</summary>
-			public Func<SecureString, IntPtr> AllocSecureStringUni => s => StringHelper.AllocSecureString(s, CharSet.Unicode, AllocMem);
-
-			/// <summary>Gets the Ansi string allocation method.</summary>
-			public Func<string, IntPtr> AllocStringAnsi => s => StringHelper.AllocString(s, CharSet.Ansi, AllocMem);
-
-			/// <summary>Gets the Unicode string allocation method.</summary>
-			public Func<string, IntPtr> AllocStringUni => s => StringHelper.AllocString(s, CharSet.Unicode, AllocMem);
-
-			/// <summary>Gets the free method.</summary>
-			public Action<IntPtr> FreeMem => p => HeapFree(HeapHandle, 0, p);
-
-			/// <summary>Gets the Ansi <see cref="SecureString"/> free method.</summary>
-			public Action<IntPtr> FreeSecureStringAnsi => p => StringHelper.FreeSecureString(p, GetSize(p), FreeMem);
-
-			/// <summary>Gets the Unicode <see cref="SecureString"/> free method.</summary>
-			public Action<IntPtr> FreeSecureStringUni => p => StringHelper.FreeSecureString(p, GetSize(p), FreeMem);
+			/// <summary>Frees the memory associated with a handle.</summary>
+			/// <param name="hMem">A memory handle.</param>
+			public override void FreeMem(IntPtr hMem) => HeapFree(HeapHandle, 0, hMem);
 
 			/// <summary>Gets the reallocation method.</summary>
-			public Func<IntPtr, int, IntPtr> ReAllocMem => (p, i) => { var o = HeapReAllocInternal(HeapHandle, 0, p, i); return o != IntPtr.Zero ? o : throw Win32Error.GetLastError().GetException(); };
-
-			internal HHEAP HeapHandle { get; set; } = GetProcessHeap();
+			/// <param name="hMem">A memory handle.</param>
+			/// <param name="size">The size, in bytes, of memory to allocate.</param>
+			/// <returns>A memory handle.</returns>
+			public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)HeapReAllocInternal(HeapHandle, 0, hMem, size));
 
 			private int GetSize(IntPtr ptr) => (int)HeapSize(HeapHandle, 0, ptr).Value;
 		}
