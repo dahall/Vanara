@@ -328,6 +328,17 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
 			public string cFileName;
+
+			/// <summary>The file size, in bytes.</summary>
+			public ulong nFileSIze
+			{
+				get => Macros.MAKELONG64(nFileSizeLow, nFileSizeHigh);
+				set
+				{
+					nFileSizeHigh = (uint)(value >> 32);
+					nFileSizeLow = (uint)(value & 0xFFFFFFFF);
+				}
+			}
 		}
 
 		/// <summary>Defines the CF_FILEGROUPDESCRIPTOR clipboard format.</summary>
