@@ -1284,7 +1284,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ifilllockbytes-fillappend HRESULT FillAppend( const void
 			// *pv, ULONG cb, ULONG *pcbWritten );
 			[PInvokeData("objidl.h", MSDNShortId = "3f25c48f-85a4-4778-b262-ad0c52cb1ac9")]
-			void FillAppend(IntPtr pv, uint cb, out uint pcbWritten);
+			void FillAppend([In] IntPtr pv, uint cb, out uint pcbWritten);
 
 			/// <summary>The <c>FillAt</c> method writes a new block of data to a specified location in the byte array.</summary>
 			/// <param name="ulOffset">The offset, expressed in number of bytes, from the first element of the byte array.</param>
@@ -1303,7 +1303,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ifilllockbytes-fillat HRESULT FillAt( ULARGE_INTEGER
 			// ulOffset, const void *pv, ULONG cb, ULONG *pcbWritten );
 			[PInvokeData("objidl.h", MSDNShortId = "d378d87b-e081-4950-b87b-9b1ad6dfb29d")]
-			void FillAt(ulong ulOffset, IntPtr pv, uint cb, out uint pcbWritten);
+			void FillAt(ulong ulOffset, [In] IntPtr pv, uint cb, out uint pcbWritten);
 
 			/// <summary>The <c>SetFillSize</c> method sets the expected size of the byte array.</summary>
 			/// <param name="ulSize">Size in bytes of the byte array object that is to be filled in subsequent calls to IFillLockBytes::FillAppend.</param>
@@ -1424,7 +1424,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilayoutstorage-layoutscript HRESULT LayoutScript(
 			// StorageLayout *pStorageLayout, DWORD nEntries, DWORD glfInterleavedFlag );
 			[PInvokeData("objidl.h", MSDNShortId = "22ae3485-15d9-47e4-988e-fb760e67595b")]
-			void LayoutScript([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] StorageLayout[] pStorageLayout, uint nEntries, uint glfInterleavedFlag = 0);
+			void LayoutScript([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] StorageLayout[] pStorageLayout, uint nEntries, uint glfInterleavedFlag = 0);
 
 			/// <summary>
 			/// The <c>BeginMonitor</c> method is used to begin monitoring when a loading operation is started. When the operation is
@@ -1486,7 +1486,7 @@ namespace Vanara.PInvoke
 			// ReLayoutDocfileOnILockBytes( ILockBytes *pILockBytes );
 			[PInvokeData("objidl.h", MSDNShortId = "4d62ea35-d9cb-4ec6-ad71-7b32096953f1")]
 			[Obsolete("Not implemented.")]
-			void ReLayoutDocfileOnILockBytes(ILockBytes pILockBytes);
+			void ReLayoutDocfileOnILockBytes([In] ILockBytes pILockBytes);
 		}
 
 		/// <summary>
@@ -1525,7 +1525,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilockbytes-readat HRESULT ReadAt( ULARGE_INTEGER
 			// ulOffset, void *pv, ULONG cb, ULONG *pcbRead );
 			[PInvokeData("objidl.h", MSDNShortId = "0478d6f0-65c4-445b-946a-692f2373e8f1")]
-			void ReadAt(ulong ulOffset, IntPtr pv, uint cb, out uint pcbRead);
+			void ReadAt(ulong ulOffset, [Out] IntPtr pv, uint cb, out uint pcbRead);
 
 			/// <summary>
 			/// The <c>WriteAt</c> method writes the specified number of bytes starting at a specified offset from the beginning of the byte array.
@@ -1552,7 +1552,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ilockbytes-writeat HRESULT WriteAt( ULARGE_INTEGER
 			// ulOffset, const void *pv, ULONG cb, ULONG *pcbWritten );
 			[PInvokeData("objidl.h", MSDNShortId = "a27af4e1-293d-438a-8068-87275a51fd48")]
-			void WriteAt(ulong ulOffset, IntPtr pv, uint cb, out uint pcbWritten);
+			void WriteAt(ulong ulOffset, [In] IntPtr pv, uint cb, out uint pcbWritten);
 
 			/// <summary>
 			/// The <c>Flush</c> method ensures that any internal buffers maintained by the ILockBytes implementation are written out to the
@@ -3703,8 +3703,8 @@ namespace Vanara.PInvoke
 			/// calling its IStorage::Revert method.
 			/// </param>
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void CopyTo([In] uint ciidExclude,
-				[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] rgiidExclude,
+			void CopyTo([In, Optional] uint ciidExclude,
+				[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] rgiidExclude,
 				[In] SNB snbExclude,
 				[In, MarshalAs(UnmanagedType.Interface)] IStorage pstgDest);
 
