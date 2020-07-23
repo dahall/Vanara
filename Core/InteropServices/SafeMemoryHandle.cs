@@ -314,7 +314,7 @@ namespace Vanara.InteropServices
 		/// <param name="startIndex">The start index.</param>
 		/// <param name="count">The number of bytes to retrieve.</param>
 		/// <returns>A byte array with the copied bytes.</returns>
-		protected byte[] GetBytes(int startIndex, int count)
+		public byte[] GetBytes(int startIndex, int count)
 		{
 			if (startIndex < 0 || startIndex + count > Size) throw new ArgumentOutOfRangeException();
 			var ret = new byte[count];
