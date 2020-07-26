@@ -20,7 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="RecycleBinTests.cs" />
     <Compile Include="BindContextTests.cs" />
+    <Compile Include="ClipboardTests.cs" />
     <Compile Include="WallpaperTests.cs" />
     <Compile Include="ShellLinkTests.cs" />
     <Compile Include="ShellSearchTests.cs" />
@@ -87,6 +88,10 @@
     <ProjectReference Include="..\..\PInvoke\ShlwApi\Vanara.PInvoke.ShlwApi.csproj">
       <Project>{30fd6779-6549-449e-880a-695815eb89b0}</Project>
       <Name>Vanara.PInvoke.ShlwApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PInvoke\User32\Vanara.PInvoke.User32.csproj">
+      <Project>{a6771907-addc-49fc-8444-a97aa65e77e2}</Project>
+      <Name>Vanara.PInvoke.User32</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Windows.Shell\Vanara.Windows.Shell.csproj">
       <Project>{43685be2-a65e-4b01-be16-479526940f23}</Project>
