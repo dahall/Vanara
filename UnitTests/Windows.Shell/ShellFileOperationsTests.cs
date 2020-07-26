@@ -83,6 +83,35 @@ namespace Vanara.Windows.Shell.Tests
 		}
 
 		[Test]
+		public void MoveItemTest2()
+		{
+			var tmp = new TempFile();
+			var winDir = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+
+			using ShellFileOperations Operation = new ShellFileOperations
+			{
+				Options = ShellFileOperations.OperationFlags.AddUndoRecord | ShellFileOperations.OperationFlags.NoConfirmMkDir | ShellFileOperations.OperationFlags.Silent
+			};
+			Operation.UpdateProgress += Operation_UpdateProgress;
+			Operation.PostMoveItem += Operation_PostMoveItem;
+
+			using (var fld = new ShellFolder(winDir))
+			using (var item = new ShellItem(tmp.FullName))
+				Assert.That(() => Operation.QueueMoveOperation(item, fld), Throws.Nothing);
+			Assert.That(() => Operation.PerformOperations(), Throws.Nothing);
+
+			var destFile = Path.Combine(winDir, Path.GetFileName(tmp.FullName));
+			Assert.IsTrue(File.Exists(destFile));
+			File.Delete(destFile);
+
+			Operation.PostMoveItem -= Operation_PostMoveItem;
+			Operation.UpdateProgress -= Operation_UpdateProgress;
+
+			static void Operation_PostMoveItem(object sender, ShellFileOperations.ShellFileOpEventArgs e) => Debug.WriteLine($"Post move ({e.DestItem?.Name})...");
+			static void Operation_UpdateProgress(object sender, System.ComponentModel.ProgressChangedEventArgs e) => Debug.WriteLine($"Progress: {e.ProgressPercentage}% of {e.UserState}");
+		}
+
+		[Test]
 		public void MultOpsTest()
 		{
 			const string newLargeFile = "MuchLongerNameForTheFile.bin";
