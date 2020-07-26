@@ -380,12 +380,12 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Gets the currently selected item, or <see langword="null"/> if nothing is selected.</summary>
 		/// <value>The selected item, or <see langword="null"/> if nothing is selected.</value>
-		[Browsable(false)]
+		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ShellItem SelectedItem
 		{
 			get
 			{
-				if (pCtrl.GetSelectedItems(out var items).Succeeded)
+				if (pCtrl != null && pCtrl.GetSelectedItems(out var items).Succeeded)
 				{
 					try { return ShellItem.Open(items.GetItemAt(0)); }
 					finally { Marshal.ReleaseComObject(items); }
