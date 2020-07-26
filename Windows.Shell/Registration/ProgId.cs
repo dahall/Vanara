@@ -292,8 +292,10 @@ namespace Vanara.Windows.Shell
 			using var root = ShellRegistrar.GetRoot(systemWide, false);
 			foreach (var ext in root.GetSubKeyNames().Where(ext => ext.StartsWith(".")))
 			{
-				using var openWithKey = root.OpenSubKey(Path.Combine(ext, OpenWithProgIds));
-				if (openWithKey?.HasValue(progId) == true)
+				var hasValue = false;
+				using (var openWithKey = root.OpenSubKey(Path.Combine(ext, OpenWithProgIds)))
+					hasValue = openWithKey?.HasValue(progId) ?? false;
+				if (hasValue)
 					yield return ext;
 			}
 		}
@@ -332,7 +334,8 @@ namespace Vanara.Windows.Shell
 		public void Add(string ext)
 		{
 			EnsureWritable();
-			FileTypeAssociation.Register(ext, IsSystemWide).OpenWithProgIds.Add(progId);
+			using var assoc = FileTypeAssociation.Register(ext, IsSystemWide);
+			assoc.OpenWithProgIds.Add(progId);
 		}
 
 		/// <summary>Clears this instance.</summary>

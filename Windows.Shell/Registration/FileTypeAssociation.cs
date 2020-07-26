@@ -11,7 +11,8 @@ namespace Vanara.Windows.Shell.Registration
 		internal FileTypeAssociation(string ext, RegistryKey key, bool readOnly) : base(key, readOnly)
 		{
 			Extension = ext;
-			OpenWithProgIds = new RegBasedKeyCollection(key.OpenSubKey("OpenWithProgIds", !readOnly), readOnly);
+			var owpi = readOnly ? key.OpenSubKey("OpenWithProgIds", false) : key.CreateSubKey("OpenWithProgIds", RegistryKeyPermissionCheck.ReadWriteSubTree);
+			OpenWithProgIds = new RegBasedKeyCollection(owpi, readOnly);
 		}
 
 		/// <summary>Gets or sets the Content Type value to the file type's MIME content type.</summary>
@@ -120,8 +121,8 @@ namespace Vanara.Windows.Shell.Registration
 		{
 			if (extension is null) throw new ArgumentNullException(nameof(extension));
 			if (!extension.StartsWith(".")) throw new ArgumentException("The value must be in the format \".ext\"", nameof(extension));
-			using var sk = ShellRegistrar.GetRoot(systemWide, true);
-			try { sk.DeleteSubKeyTree(extension); } catch { sk.DeleteSubKey(extension, false); }
+			using (var sk = ShellRegistrar.GetRoot(systemWide, true))
+				try { sk.DeleteSubKeyTree(extension); } catch { sk.DeleteSubKey(extension, false); }
 			ShellRegistrar.NotifyShell();
 		}
 
