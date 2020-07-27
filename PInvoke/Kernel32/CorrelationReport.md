@@ -1,7 +1,7 @@
 ## Correlation report for kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
     PInvoke API (methods, structures and constants) imported from Windows Kernel32.dll.
 
-### Methods (99% complete, 1107 of 1110 functions)  
+### Methods (100% complete, 1110 of 1110 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  
@@ -56,7 +56,7 @@ Native Method | Native DLL | Header | Managed Method
 [CloseHandle](https://www.google.com/search?num=5&q=CloseHandle+site%3Adocs.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.CloseHandle](https://github.com/dahall/Vanara/search?l=C%23&q=CloseHandle)  
 [ClosePackageInfo](https://www.google.com/search?num=5&q=ClosePackageInfo+site%3Adocs.microsoft.com) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.ClosePackageInfo](https://github.com/dahall/Vanara/search?l=C%23&q=ClosePackageInfo)  
 [ClosePrivateNamespace](https://www.google.com/search?num=5&q=ClosePrivateNamespace+site%3Adocs.microsoft.com) | kernel32.dll | namespaceapi.h | [Vanara.PInvoke.Kernel32.ClosePrivateNamespace](https://github.com/dahall/Vanara/search?l=C%23&q=ClosePrivateNamespace)  
-[ClosePseudoConsole](https://www.google.com/search?num=5&q=ClosePseudoConsole+site%3Adocs.microsoft.com) | kernelbase.dll |  |   
+[ClosePseudoConsole](https://www.google.com/search?num=5&q=ClosePseudoConsole+site%3Adocs.microsoft.com) | kernelbase.dll | ConsoleApi.h | [Vanara.PInvoke.Kernel32.ClosePseudoConsole](https://github.com/dahall/Vanara/search?l=C%23&q=ClosePseudoConsole)  
 [CloseThreadpool](https://www.google.com/search?num=5&q=CloseThreadpool+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CloseThreadpool](https://github.com/dahall/Vanara/search?l=C%23&q=CloseThreadpool)  
 [CloseThreadpoolCleanupGroup](https://www.google.com/search?num=5&q=CloseThreadpoolCleanupGroup+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CloseThreadpoolCleanupGroup](https://github.com/dahall/Vanara/search?l=C%23&q=CloseThreadpoolCleanupGroup)  
 [CloseThreadpoolCleanupGroupMembers](https://www.google.com/search?num=5&q=CloseThreadpoolCleanupGroupMembers+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CloseThreadpoolCleanupGroupMembers](https://github.com/dahall/Vanara/search?l=C%23&q=CloseThreadpoolCleanupGroupMembers)  
@@ -114,7 +114,7 @@ Native Method | Native DLL | Header | Managed Method
 [CreatePipe](https://www.google.com/search?num=5&q=CreatePipe+site%3Adocs.microsoft.com) | kernel32.dll | namedpipeapi.h | [Vanara.PInvoke.Kernel32.CreatePipe](https://github.com/dahall/Vanara/search?l=C%23&q=CreatePipe)  
 [CreatePrivateNamespace](https://www.google.com/search?num=5&q=CreatePrivateNamespaceA+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreatePrivateNamespace](https://github.com/dahall/Vanara/search?l=C%23&q=CreatePrivateNamespace)  
 [CreateProcess](https://www.google.com/search?num=5&q=CreateProcessA+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateProcess](https://github.com/dahall/Vanara/search?l=C%23&q=CreateProcess)  
-[CreatePseudoConsole](https://www.google.com/search?num=5&q=CreatePseudoConsole+site%3Adocs.microsoft.com) | kernelbase.dll |  |   
+[CreatePseudoConsole](https://www.google.com/search?num=5&q=CreatePseudoConsole+site%3Adocs.microsoft.com) | kernelbase.dll | ConsoleApi.h | [Vanara.PInvoke.Kernel32.CreatePseudoConsole](https://github.com/dahall/Vanara/search?l=C%23&q=CreatePseudoConsole)  
 [CreateRemoteThread](https://www.google.com/search?num=5&q=CreateRemoteThread+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateRemoteThread](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRemoteThread)  
 [CreateRemoteThreadEx](https://www.google.com/search?num=5&q=CreateRemoteThreadEx+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateRemoteThreadEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRemoteThreadEx)  
 [CreateSemaphore](https://www.google.com/search?num=5&q=CreateSemaphoreA+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateSemaphore](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSemaphore)  
@@ -850,7 +850,7 @@ Native Method | Native DLL | Header | Managed Method
 [RequestWakeupLatency](https://www.google.com/search?num=5&q=RequestWakeupLatency+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.RequestWakeupLatency](https://github.com/dahall/Vanara/search?l=C%23&q=RequestWakeupLatency)  
 [ResetEvent](https://www.google.com/search?num=5&q=ResetEvent+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ResetEvent](https://github.com/dahall/Vanara/search?l=C%23&q=ResetEvent)  
 [ResetWriteWatch](https://www.google.com/search?num=5&q=ResetWriteWatch+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ResetWriteWatch](https://github.com/dahall/Vanara/search?l=C%23&q=ResetWriteWatch)  
-[ResizePseudoConsole](https://www.google.com/search?num=5&q=ResizePseudoConsole+site%3Adocs.microsoft.com) | kernelbase.dll |  |   
+[ResizePseudoConsole](https://www.google.com/search?num=5&q=ResizePseudoConsole+site%3Adocs.microsoft.com) | kernelbase.dll | ConsoleApi.h | [Vanara.PInvoke.Kernel32.ResizePseudoConsole](https://github.com/dahall/Vanara/search?l=C%23&q=ResizePseudoConsole)  
 [ResolveLocaleName](https://www.google.com/search?num=5&q=ResolveLocaleName+site%3Adocs.microsoft.com) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.ResolveLocaleName](https://github.com/dahall/Vanara/search?l=C%23&q=ResolveLocaleName)  
 [RestoreLastError](https://www.google.com/search?num=5&q=RestoreLastError+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.RestoreLastError](https://github.com/dahall/Vanara/search?l=C%23&q=RestoreLastError)  
 [ResumeThread](https://www.google.com/search?num=5&q=ResumeThread+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ResumeThread](https://github.com/dahall/Vanara/search?l=C%23&q=ResumeThread)  
@@ -1160,7 +1160,7 @@ Native Structure | Header | Managed Structure
 [CONSOLE_READCONSOLE_CONTROL](https://www.google.com/search?num=5&q=CONSOLE_READCONSOLE_CONTROL+site%3Adocs.microsoft.com) | ConsoleApi.h | [Vanara.PInvoke.Kernel32.CONSOLE_READCONSOLE_CONTROL](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_READCONSOLE_CONTROL)  
 [CONSOLE_SCREEN_BUFFER_INFO](https://www.google.com/search?num=5&q=CONSOLE_SCREEN_BUFFER_INFO+site%3Adocs.microsoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.CONSOLE_SCREEN_BUFFER_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_SCREEN_BUFFER_INFO)  
 [CONSOLE_SCREEN_BUFFER_INFOEX](https://www.google.com/search?num=5&q=CONSOLE_SCREEN_BUFFER_INFOEX+site%3Adocs.microsoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.CONSOLE_SCREEN_BUFFER_INFOEX](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_SCREEN_BUFFER_INFOEX)  
-[CONSOLE_SELECTION_INFO](https://www.google.com/search?num=5&q=CONSOLE_SELECTION_INFO+site%3Adocs.microsoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.CONSOLE_SELECTION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_SELECTION_INFO)  
+[CONSOLE_SELECTION_INFO](https://www.google.com/search?num=5&q=CONSOLE_SELECTION_INFO+site%3Adocs.microsoft.com) | ConsoleApi3.h | [Vanara.PInvoke.Kernel32.CONSOLE_SELECTION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CONSOLE_SELECTION_INFO)  
 [CONTEXT](https://www.google.com/search?num=5&q=CONTEXT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Kernel32.CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=CONTEXT)  
 [CONTEXT64](https://www.google.com/search?num=5&q=CONTEXT64+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Kernel32.CONTEXT64](https://github.com/dahall/Vanara/search?l=C%23&q=CONTEXT64)  
 [COORD](https://www.google.com/search?num=5&q=COORD+site%3Adocs.microsoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.COORD](https://github.com/dahall/Vanara/search?l=C%23&q=COORD)  
@@ -1259,6 +1259,7 @@ Native Structure | Header | Managed Structure
 [HHEAP](https://www.google.com/search?num=5&q=HHEAP+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Kernel32.HHEAP](https://github.com/dahall/Vanara/search?l=C%23&q=HHEAP)  
 [HJOB](https://www.google.com/search?num=5&q=HJOB+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Kernel32.HJOB](https://github.com/dahall/Vanara/search?l=C%23&q=HJOB)  
 [HLOCAL](https://www.google.com/search?num=5&q=HLOCAL+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Kernel32.HLOCAL](https://github.com/dahall/Vanara/search?l=C%23&q=HLOCAL)  
+[HPCON](https://www.google.com/search?num=5&q=HPCON+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Kernel32.HPCON](https://github.com/dahall/Vanara/search?l=C%23&q=HPCON)  
 [HPIPE](https://www.google.com/search?num=5&q=HPIPE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Kernel32.HPIPE](https://github.com/dahall/Vanara/search?l=C%23&q=HPIPE)  
 [HPSS](https://www.google.com/search?num=5&q=HPSS+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Kernel32.HPSS](https://github.com/dahall/Vanara/search?l=C%23&q=HPSS)  
 [HPSSWALK](https://www.google.com/search?num=5&q=HPSSWALK+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Kernel32.HPSSWALK](https://github.com/dahall/Vanara/search?l=C%23&q=HPSSWALK)  

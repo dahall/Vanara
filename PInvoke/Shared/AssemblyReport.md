@@ -153,6 +153,7 @@ Interface | Description
 Class | Description
 ---- | ----
 [Vanara.PInvoke.AssociateAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=AssociateAttribute) | Associates a Guid with an element.
+[Vanara.PInvoke.AssociateStringAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=AssociateStringAttribute) | Associates a string with an element.
 [Vanara.Collections.IEnumFromCom<T>.ComTryGetNext](https://github.com/dahall/Vanara/search?l=C%23&q=ComTryGetNext) | Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
 [Vanara.InteropServices.CoTaskMemStringMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=CoTaskMemStringMarshaler) | Marshals strings that are allocated by native code and must be freed using CoTaskMemFree after use.
 [Vanara.PInvoke.FunctionHelper](https://github.com/dahall/Vanara/search?l=C%23&q=FunctionHelper) | Generic functions to help with standard function patterns like getting a string from a method.
