@@ -151,7 +151,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
 			/// <para>A SYSTEMTIME structure that indicates when the context bind operation that created this endpoint occurred.</para>
 			/// </summary>
-			public FILETIME liCreateTimestamp;
+			public SYSTEMTIME liCreateTimestamp;
 
 			/// <summary/>
 			public int SpecificPortBind;
@@ -367,7 +367,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
 			/// <para>A SYSTEMTIME structure that indicates when the call to the bind function for the UDP endpoint occurred.</para>
 			/// </summary>
-			public FILETIME liCreateTimestamp;
+			public SYSTEMTIME liCreateTimestamp;
 
 			/// <summary>Undocumented.</summary>
 			public int SpecificPortBind;

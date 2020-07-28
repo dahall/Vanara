@@ -453,7 +453,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
 			/// <para>A SYSTEMTIME structure that indicates when the context bind operation that created this TCP connection occurred.</para>
 			/// </summary>
-			public FILETIME liCreateTimestamp;
+			public SYSTEMTIME liCreateTimestamp;
 
 			/// <summary>
 			/// <para>Type: <c>ULONGLONG[TCPIP_OWNING_MODULE_SIZE]</c></para>
@@ -1142,7 +1142,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
 			/// <para>A SYSTEMTIME structure that indicates when the context bind operation that created this TCP link occurred.</para>
 			/// </summary>
-			public FILETIME liCreateTimestamp;
+			public SYSTEMTIME liCreateTimestamp;
 
 			/// <summary>
 			/// <para>Type: <c>ULONGLONG[TCPIP_OWNING_MODULE_SIZE]</c></para>
