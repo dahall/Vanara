@@ -612,7 +612,7 @@ namespace Vanara.PInvoke
 		// LPCSTR lpCursorName );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "loadcursor")]
-		public static extern SafeHCURSOR LoadCursor(HINSTANCE hInstance, ResourceId lpCursorName);
+		public static extern SafeHCURSOR LoadCursor([Optional] HINSTANCE hInstance, ResourceId lpCursorName);
 
 		/// <summary>
 		/// <para>Creates a cursor based on data contained in a file.</para>
@@ -950,6 +950,67 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => DestroyCursor(this);
+		}
+
+		/// <summary>Predefined cursors for <see cref="LoadCursor(HINSTANCE, ResourceId)"/>.</summary>
+		[PInvokeData("winuser.h", MSDNShortId = "loadcursor")]
+		public static class StandardCursor
+		{
+			/// <summary>Standard arrow</summary>
+			public static readonly ResourceId IDC_ARROW = 32512;
+
+			/// <summary>I-beam</summary>
+			public static readonly ResourceId IDC_IBEAM = 32513;
+
+			/// <summary>Hourglass</summary>
+			public static readonly ResourceId IDC_WAIT = 32514;
+
+			/// <summary>Crosshair</summary>
+			public static readonly ResourceId IDC_CROSS = 32515;
+
+			/// <summary>Vertical arrow</summary>
+			public static readonly ResourceId IDC_UPARROW = 32516;
+
+			/// <summary>Obsolete for applications marked version 4.0 or later. Use IDC_SIZEALL.</summary>
+			[Obsolete("Use IDC_SIZEALL")]
+			public static readonly ResourceId IDC_SIZE = 32640;  /* OBSOLETE: use IDC_SIZEALL */
+
+			/// <summary>Obsolete for applications marked version 4.0 or later.</summary>
+			[Obsolete("Use IDC_ARROW")]
+			public static readonly ResourceId IDC_ICON = 32641;  /* OBSOLETE: use IDC_ARROW */
+
+			/// <summary>Double-pointed arrow pointing northwest and southeast</summary>
+			public static readonly ResourceId IDC_SIZENWSE = 32642;
+
+			/// <summary>Double-pointed arrow pointing northeast and southwest</summary>
+			public static readonly ResourceId IDC_SIZENESW = 32643;
+
+			/// <summary>Double-pointed arrow pointing west and east</summary>
+			public static readonly ResourceId IDC_SIZEWE = 32644;
+
+			/// <summary>Double-pointed arrow pointing north and south</summary>
+			public static readonly ResourceId IDC_SIZENS = 32645;
+
+			/// <summary>Four-pointed arrow pointing north, south, east, and west</summary>
+			public static readonly ResourceId IDC_SIZEALL = 32646;
+
+			/// <summary>Slashed circle</summary>
+			public static readonly ResourceId IDC_NO = 32648; /*not in win3.1 */
+
+			/// <summary>Hand</summary>
+			public static readonly ResourceId IDC_HAND = 32649;
+
+			/// <summary>Standard arrow and small hourglass</summary>
+			public static readonly ResourceId IDC_APPSTARTING = 32650; /*not in win3.1 */
+
+			/// <summary>Arrow and question mark</summary>
+			public static readonly ResourceId IDC_HELP = 32651;
+
+			/// <summary>Undocumented</summary>
+			public static readonly ResourceId IDC_PIN = 32671;
+
+			/// <summary>Undocumented</summary>
+			public static readonly ResourceId IDC_PERSON = 32672;
 		}
 	}
 }
