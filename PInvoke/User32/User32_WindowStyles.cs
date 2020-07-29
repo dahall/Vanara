@@ -90,7 +90,7 @@ namespace Vanara.PInvoke
 			WS_POPUPWINDOW = WS_POPUP | WS_BORDER | WS_SYSMENU,
 
 			/// <summary>The window has a sizing border.</summary>
-			WS_SIZEFRAME = 0x40000,
+			WS_THICKFRAME = 0x40000,
 
 			/// <summary>The window has a window menu on its title bar. The WS_CAPTION style must also be specified.</summary>
 			WS_SYSMENU = 0x80000,
@@ -109,7 +109,24 @@ namespace Vanara.PInvoke
 			WS_VISIBLE = 0x10000000,
 
 			/// <summary>The window has a vertical scroll bar.</summary>
-			WS_VSCROLL = 0x200000
+			WS_VSCROLL = 0x200000,
+
+			/// <summary>
+			/// The window is an overlapped window. An overlapped window has a title bar and a border. Same as the WS_OVERLAPPED style.
+			/// </summary>
+			WS_TILED = WS_OVERLAPPED,
+
+			/// <summary>The window is initially minimized. Same as the WS_MINIMIZE style.</summary>
+			WS_ICONIC = WS_MINIMIZE,
+
+			/// <summary>The window has a sizing border. Same as the WS_THICKFRAME style.</summary>
+			WS_SIZEBOX = WS_THICKFRAME,
+
+			/// <summary>The window is an overlapped window. Same as the WS_OVERLAPPEDWINDOW style.</summary>
+			WS_TILEDWINDOW = WS_OVERLAPPEDWINDOW,
+
+			/// <summary>Same as the WS_CHILD style.</summary>
+			WS_CHILDWINDOW = WS_CHILD,
 		}
 
 		/// <summary>Extended window styles.</summary>
