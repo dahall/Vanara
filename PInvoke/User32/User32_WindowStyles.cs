@@ -79,7 +79,7 @@ namespace Vanara.PInvoke
 			WS_OVERLAPPED = 0x0,
 
 			/// <summary>The window is an overlapped window.</summary>
-			WS_OVERLAPPEDWINDOW = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_SIZEFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX,
+			WS_OVERLAPPEDWINDOW = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX,
 
 			/// <summary>The window is a pop-up window. This style cannot be used with the WS_CHILD style.</summary>
 			WS_POPUP = 0x80000000u,
