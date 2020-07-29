@@ -11,7 +11,15 @@
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;magnification</PackageTags>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+MagGetColorEffect, MagGetFullscreenColorEffect, MagGetFullscreenTransform, MagGetImageScalingCallback, MagGetInputTransform, MagGetWindowFilterList, MagGetWindowSource, MagGetWindowTransform, MagInitialize, MagSetColorEffect, MagSetFullscreenColorEffect, MagSetFullscreenTransform, MagSetImageScalingCallback, MagSetInputTransform, MagSetWindowFilterList, MagSetWindowSource, MagSetWindowTransform, MagShowSystemCursor, MagUninitialize
+
+Structures
+MAGCOLOREFFECT, MAGIMAGEHEADER, MAGTRANSFORM
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

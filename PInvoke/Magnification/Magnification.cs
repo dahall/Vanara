@@ -9,10 +9,10 @@ namespace Vanara.PInvoke
 	/// </remarks>
 	public static partial class Magnification
 	{
-		private const string Lib_Magnification = "magnification.dll";
-
 		/// <summary>The magnifier class window name.</summary>
-		public const string WC_MAGNIFIER = "Magniier";
+		public const string WC_MAGNIFIER = "Magnifier";
+
+		private const string Lib_Magnification = "magnification.dll";
 
 		/// <summary>
 		/// <para>
@@ -89,6 +89,27 @@ namespace Vanara.PInvoke
 		[PInvokeData("magnification.h", MSDNShortId = "NC:magnification.MagImageScalingCallback")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public delegate bool MagImageScalingCallback(HWND hwnd, IntPtr srcdata, MAGIMAGEHEADER srcheader, IntPtr destdata, MAGIMAGEHEADER destheader, RECT unclipped, RECT clipped, HRGN dirty);
+
+		/// <summary>
+		/// This topic describes the styles used with the magnifier control. To create a magnifier control, use the <c>CreateWindowEx</c>
+		/// function and specify the WC_MAGNIFIER window class, along with a combination of the following magnifier styles.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/winauto/magapi/magapi-magnifier-styles
+		[PInvokeData("magnification.h")]
+		public enum MagnifierStyles
+		{
+			/// <term>Displays the magnified system cursor along with the magnified screen content.</term>
+			MS_SHOWMAGNIFIEDCURSOR = 0x0001,
+
+			/// <term>
+			/// Clips the area of the magnifier window that surrounds the system cursor. This style enables the user to see screen content
+			/// that is behind the magnifier window.
+			/// </term>
+			MS_CLIPAROUNDCURSOR = 0x0002,
+
+			/// <term>Displays the magnified screen content using inverted colors.</term>
+			MS_INVERTCOLORS = 0x0004,
+		}
 
 		/// <summary>The magnification filter mode.</summary>
 		[PInvokeData("magnification.h", MSDNShortId = "NF:magnification.MagSetWindowFilterList")]
@@ -961,6 +982,12 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="MAGTRANSFORM"/> struct with initial values.</summary>
 			/// <param name="values">The values.</param>
 			public MAGTRANSFORM(float[,] values) : this() => transform = values;
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="MAGTRANSFORM"/> struct with the magnification value set into the transformation matrix.
+			/// </summary>
+			/// <param name="magnification">The magnification value.</param>
+			public MAGTRANSFORM(float magnification) : this() { transform00 = transform11 = magnification; transform22 = 1f; }
 
 			/// <summary>
 			/// <para>Type: <c>float[3,3]</c></para>
