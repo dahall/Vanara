@@ -822,9 +822,15 @@ namespace Vanara.PInvoke
 					if (value is null) throw new ArgumentNullException();
 					if (value.Rank != 2 && value.GetLength(0) != dimLen && value.GetLength(1) != dimLen)
 						throw new ArgumentOutOfRangeException();
-					for (int x = 0; x < dimLen; x++)
-						for (int y = 0; y < dimLen; y++)
-							this[x, y] = value[x, y];
+					unsafe
+					{
+						fixed (float* f = &transform00)
+						{
+							for (int x = 0; x < dimLen; x++)
+								for (int y = 0; y < dimLen; y++)
+									f[x * dimLen + y] = value[x, y];
+						}
+					}
 				}
 			}
 
@@ -867,6 +873,50 @@ namespace Vanara.PInvoke
 					}
 				}
 			}
+
+			/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+			/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+			/// <returns>
+			/// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <see langword="false"/>.
+			/// </returns>
+			public override bool Equals(object obj) => obj is MAGCOLOREFFECT m && Equals(m);
+
+			/// <summary>Determines whether the specified <see cref="MAGCOLOREFFECT"/>, is equal to this instance.</summary>
+			/// <param name="effect">The <see cref="MAGCOLOREFFECT"/> to compare with this instance.</param>
+			/// <returns>
+			/// <see langword="true"/> if the specified <see cref="MAGCOLOREFFECT"/> is equal to this instance; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(MAGCOLOREFFECT effect)
+			{
+				unsafe
+				{
+					fixed (float* f1 = &transform00)
+					{
+						float* f2 = &effect.transform00;
+						for (int x = 0; x < dimLen; x++)
+							for (int y = 0; y < dimLen; y++)
+								if (f1[x * dimLen + y] != f2[x * dimLen + y])
+									return false;
+						return true;
+					}
+				}
+			}
+
+			/// <summary>Returns a hash code for this instance.</summary>
+			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+			public override int GetHashCode() => transform.GetHashCode();
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="lhs">The left-hand side argument.</param>
+			/// <param name="rhs">The right-hand side argument.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(MAGCOLOREFFECT lhs, MAGCOLOREFFECT rhs) => lhs.Equals(rhs);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="lhs">The left-hand side argument.</param>
+			/// <param name="rhs">The right-hand side argument.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(MAGCOLOREFFECT lhs, MAGCOLOREFFECT rhs) => !(lhs == rhs);
 
 			/// <summary>An Identity Matrix for MAGCOLOREFFECT.</summary>
 			public static readonly MAGCOLOREFFECT Identity = new MAGCOLOREFFECT { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
@@ -965,7 +1015,7 @@ namespace Vanara.PInvoke
 		// float v[3][3]; } MAGTRANSFORM, *PMAGTRANSFORM;
 		[PInvokeData("magnification.h", MSDNShortId = "NS:magnification.tagMAGTRANSFORM")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct MAGTRANSFORM
+		public struct MAGTRANSFORM : IEquatable<MAGTRANSFORM>
 		{
 			private const int dimLen = 3;
 
@@ -1035,9 +1085,15 @@ namespace Vanara.PInvoke
 					if (value is null) throw new ArgumentNullException();
 					if (value.Rank != 2 && value.GetLength(0) != dimLen && value.GetLength(1) != dimLen)
 						throw new ArgumentOutOfRangeException();
-					for (int x = 0; x < dimLen; x++)
-						for (int y = 0; y < dimLen; y++)
-							this[x, y] = value[x, y];
+					unsafe
+					{
+						fixed (float* f = &transform00)
+						{
+							for (int x = 0; x < dimLen; x++)
+								for (int y = 0; y < dimLen; y++)
+									f[x * dimLen + y] = value[x, y];
+						}
+					}
 				}
 			}
 
@@ -1080,6 +1136,50 @@ namespace Vanara.PInvoke
 					}
 				}
 			}
+
+			/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+			/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+			/// <returns>
+			/// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <see langword="false"/>.
+			/// </returns>
+			public override bool Equals(object obj) => obj is MAGTRANSFORM m && Equals(m);
+
+			/// <summary>Determines whether the specified <see cref="MAGTRANSFORM"/>, is equal to this instance.</summary>
+			/// <param name="effect">The <see cref="MAGTRANSFORM"/> to compare with this instance.</param>
+			/// <returns>
+			/// <see langword="true"/> if the specified <see cref="MAGTRANSFORM"/> is equal to this instance; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(MAGTRANSFORM effect)
+			{
+				unsafe
+				{
+					fixed (float* f1 = &transform00)
+					{
+						float* f2 = &effect.transform00;
+						for (int x = 0; x < dimLen; x++)
+							for (int y = 0; y < dimLen; y++)
+								if (f1[x * dimLen + y] != f2[x * dimLen + y])
+									return false;
+						return true;
+					}
+				}
+			}
+
+			/// <summary>Returns a hash code for this instance.</summary>
+			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+			public override int GetHashCode() => transform.GetHashCode();
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="lhs">The left-hand side argument.</param>
+			/// <param name="rhs">The right-hand side argument.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(MAGTRANSFORM lhs, MAGTRANSFORM rhs) => lhs.Equals(rhs);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="lhs">The left-hand side argument.</param>
+			/// <param name="rhs">The right-hand side argument.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(MAGTRANSFORM lhs, MAGTRANSFORM rhs) => !(lhs == rhs);
 
 			/// <summary>An Identity Matrix for MAGTRANSFORM.</summary>
 			public static readonly MAGTRANSFORM Identity = new MAGTRANSFORM { transform00 = 1, transform11 = 1, transform22 = 1 };
