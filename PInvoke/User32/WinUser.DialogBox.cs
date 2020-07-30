@@ -409,6 +409,59 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
+		/// Creates a modal dialog box from a dialog box template resource. <c>DialogBox</c> does not return control until the specified
+		/// callback function terminates the modal dialog box by calling the EndDialog function.
+		/// </para>
+		/// <para><c>DialogBox</c> is implemented as a call to the DialogBoxParam function.</para>
+		/// </summary>
+		/// <param name="hInstance">
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>
+		/// A handle to the module which contains the dialog box template. If this parameter is NULL, then the current executable is used.
+		/// </para>
+		/// </param>
+		/// <param name="lpTemplate">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// The dialog box template. This parameter is either the pointer to a null-terminated character string that specifies the name of
+		/// the dialog box template or an integer value that specifies the resource identifier of the dialog box template. If the parameter
+		/// specifies a resource identifier, its high-order word must be zero and its low-order word must contain the identifier. You can
+		/// use the MAKEINTRESOURCE macro to create this value.
+		/// </para>
+		/// </param>
+		/// <param name="hWndParent">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window that owns the dialog box.</para>
+		/// </param>
+		/// <param name="lpDialogFunc">
+		/// <para>Type: <c>DLGPROC</c></para>
+		/// <para>A pointer to the dialog box procedure. For more information about the dialog box procedure, see DialogProc.</para>
+		/// </param>
+		/// <returns>
+		/// <para>None</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>DialogBox</c> macro uses the CreateWindowEx function to create the dialog box. <c>DialogBox</c> then sends a
+		/// WM_INITDIALOG message (and a WM_SETFONT message if the template specifies the DS_SETFONT or DS_SHELLFONT style) to the dialog
+		/// box procedure. The function displays the dialog box (regardless of whether the template specifies the <c>WS_VISIBLE</c> style),
+		/// disables the owner window, and starts its own message loop to retrieve and dispatch messages for the dialog box.
+		/// </para>
+		/// <para>
+		/// When the dialog box procedure calls the EndDialog function, <c>DialogBox</c> destroys the dialog box, ends the message loop,
+		/// enables the owner window (if previously enabled), and returns the nResult parameter specified by the dialog box procedure when
+		/// it called <c>EndDialog</c>.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Creating a Modal Dialog Box.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxa void DialogBoxA( hInstance, lpTemplate,
+		// hWndParent, lpDialogFunc );
+		[PInvokeData("winuser.h", MSDNShortId = "dialogbox")]
+		public static IntPtr DialogBox(HINSTANCE hInstance, ResourceId lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+
+		/// <summary>
+		/// <para>
 		/// Creates a modal dialog box from a dialog box template in memory. <c>DialogBoxIndirect</c> does not return control until the
 		/// specified callback function terminates the modal dialog box by calling the EndDialog function.
 		/// </para>
@@ -626,6 +679,71 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "dialogboxparam")]
 		public static extern IntPtr DialogBoxParam(HINSTANCE hInstance, string lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+
+		/// <summary>
+		/// <para>
+		/// Creates a modal dialog box from a dialog box template resource. Before displaying the dialog box, the function passes an
+		/// application-defined value to the dialog box procedure as the lParam parameter of the WM_INITDIALOG message. An application can
+		/// use this value to initialize dialog box controls.
+		/// </para>
+		/// </summary>
+		/// <param name="hInstance">
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>
+		/// A handle to the module which contains the dialog box template. If this parameter is NULL, then the current executable is used.
+		/// </para>
+		/// </param>
+		/// <param name="lpTemplateName">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// The dialog box template. This parameter is either the pointer to a null-terminated character string that specifies the name of
+		/// the dialog box template or an integer value that specifies the resource identifier of the dialog box template. If the parameter
+		/// specifies a resource identifier, its high-order word must be zero and its low-order word must contain the identifier. You can use
+		/// the MAKEINTRESOURCE macro to create this value.
+		/// </para>
+		/// </param>
+		/// <param name="hWndParent">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window that owns the dialog box.</para>
+		/// </param>
+		/// <param name="lpDialogFunc">
+		/// <para>Type: <c>DLGPROC</c></para>
+		/// <para>A pointer to the dialog box procedure. For more information about the dialog box procedure, see DialogProc.</para>
+		/// </param>
+		/// <param name="dwInitParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>The value to pass to the dialog box in the lParam parameter of the WM_INITDIALOG message.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>INT_PTR</c></para>
+		/// <para>
+		/// If the function succeeds, the return value is the value of the nResult parameter specified in the call to the EndDialog function
+		/// used to terminate the dialog box.
+		/// </para>
+		/// <para>
+		/// If the function fails because the hWndParent parameter is invalid, the return value is zero. The function returns zero in this
+		/// case for compatibility with previous versions of Windows. If the function fails for any other reason, the return value is –1. To
+		/// get extended error information, call GetLastError.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>DialogBoxParam</c> function uses the CreateWindowEx function to create the dialog box. <c>DialogBoxParam</c> then sends a
+		/// WM_INITDIALOG message (and a WM_SETFONT message if the template specifies the DS_SETFONT or DS_SHELLFONT style) to the dialog box
+		/// procedure. The function displays the dialog box (regardless of whether the template specifies the <c>WS_VISIBLE</c> style),
+		/// disables the owner window, and starts its own message loop to retrieve and dispatch messages for the dialog box.
+		/// </para>
+		/// <para>
+		/// When the dialog box procedure calls the EndDialog function, <c>DialogBoxParam</c> destroys the dialog box, ends the message loop,
+		/// enables the owner window (if previously enabled), and returns the nResult parameter specified by the dialog box procedure when it
+		/// called <c>EndDialog</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxparama INT_PTR DialogBoxParamA( HINSTANCE
+		// hInstance, LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "dialogboxparam")]
+		public static extern IntPtr DialogBoxParam(HINSTANCE hInstance, ResourceId lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 		/// <summary>
 		/// Retrieves the current selection from a combo box filled by using the DlgDirListComboBox function. The selection is interpreted as
