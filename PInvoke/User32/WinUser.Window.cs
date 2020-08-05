@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -2996,11 +2997,9 @@ namespace Vanara.PInvoke
 		public static extern bool EndTask(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShutDown, [MarshalAs(UnmanagedType.Bool)] bool fForce);
 
 		/// <summary>
-		/// <para>
 		/// Enumerates the child windows that belong to the specified parent window by passing the handle to each child window, in turn, to
 		/// an application-defined callback function. <c>EnumChildWindows</c> continues until the last child window is enumerated or the
 		/// callback function returns <c>FALSE</c>.
-		/// </para>
 		/// </summary>
 		/// <param name="hWndParent">
 		/// <para>Type: <c>HWND</c></para>
@@ -3034,6 +3033,28 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "enumchildwindows")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool EnumChildWindows(HWND hWndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+		/// <summary>
+		/// Enumerates the child windows that belong to the specified parent window by passing the handle to each child window, in turn, to
+		/// an application-defined callback function. <c>EnumChildWindows</c> continues until the last child window is enumerated or the
+		/// callback function returns <c>FALSE</c>.
+		/// </summary>
+		/// <param name="hWndParent">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>
+		/// A handle to the parent window whose child windows are to be enumerated. If this parameter is <see cref="HWND.NULL"/>, this
+		/// function is equivalent to EnumWindows.
+		/// </para>
+		/// </param>
+		/// <returns>An ordered sequence of child window handles.</returns>
+		public static IList<HWND> EnumChildWindows(this HWND hWndParent)
+		{
+			var children = new List<HWND>();
+			Win32Error.ThrowLastErrorIfFalse(EnumChildWindows(hWndParent, EnumProc, default));
+			return children;
+
+			bool EnumProc(HWND hwnd, IntPtr lParam) { children.Add(hwnd); return true; }
+		}
 
 		/// <summary>
 		/// <para>
@@ -3401,6 +3422,17 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "")]
 		public static extern HWND GetCapture();
+
+		/// <summary>
+		/// Retrieves the child window at the top of the Z order, if the specified window is a parent window; otherwise, the retrieved
+		/// handle is NULL. The function examines only child windows of the specified window. It does not examine descendant windows.
+		/// </summary>
+		/// <param name="hWnd">A handle to a window.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is a window handle. If no window exists with the specified relationship to the
+		/// specified window, the return value is NULL. To get extended error information, call GetLastError.
+		/// </returns>
+		public static HWND GetChildWindow(this HWND hWnd) => GetWindow(hWnd, GetWindowCmd.GW_CHILD);
 
 		/// <summary>
 		/// <para>Retrieves information about a window class.</para>
