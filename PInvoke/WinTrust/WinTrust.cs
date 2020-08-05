@@ -2136,7 +2136,7 @@ namespace Vanara.PInvoke
 			/// <para>An array of certificates.</para>
 			/// <para>The format of this member depends on the value of wCertificateType.</para>
 			/// </summary>
-			public IntPtr bCertificate;
+			public byte bCertificate;
 		}
 
 		/// <summary>
