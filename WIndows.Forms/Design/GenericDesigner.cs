@@ -132,7 +132,7 @@ namespace Vanara.Windows.Forms.Design
 				this.RedirectRegisteredProperties(properties, redirectedProps);
 
 			if (PropertiesToRemove != null)
-				this.RemoveProperties(properties, PropertiesToRemove);
+				this.RemoveItems(properties, PropertiesToRemove);
 		}
 	}
 
@@ -230,6 +230,7 @@ namespace Vanara.Windows.Forms.Design
 	/// <seealso cref="System.Windows.Forms.Design.ControlDesigner"/>
 	public abstract class AttributedControlDesigner<TControl> : ControlDesigner where TControl : Control
 	{
+		private IDictionary<string, List<Attribute>> redirectedEvents;
 		private IDictionary<string, List<Attribute>> redirectedProps;
 		private DesignerVerbCollection verbs;
 
@@ -254,9 +255,26 @@ namespace Vanara.Windows.Forms.Design
 		/// <value>The actions.</value>
 		protected virtual AttributedDesignerActionList Actions => null;
 
+		/// <summary>Gets the events to remove.</summary>
+		/// <value>The events to remove.</value>
+		protected virtual IEnumerable<string> EventsToRemove => null;
+
 		/// <summary>Gets the properties to remove.</summary>
 		/// <value>The properties to remove.</value>
 		protected virtual IEnumerable<string> PropertiesToRemove => null;
+
+		/// <summary>Allows a designer to add to the set of events that it exposes through a <see cref="T:System.ComponentModel.TypeDescriptor"/>.</summary>
+		/// <param name="events">The events for the class of the component.</param>
+		protected override void PreFilterEvents(IDictionary events)
+		{
+			base.PreFilterEvents(events);
+
+			if (redirectedEvents != null)
+				this.RedirectRegisteredEvents(events, redirectedEvents);
+
+			if (EventsToRemove != null)
+				this.RemoveItems(events, EventsToRemove);
+		}
 
 		/// <summary>Adjusts the set of properties the component exposes through a <see cref="T:System.ComponentModel.TypeDescriptor"/>.</summary>
 		/// <param name="properties">An <see cref="T:System.Collections.IDictionary"/> containing the properties for the class of the component.</param>
@@ -268,7 +286,7 @@ namespace Vanara.Windows.Forms.Design
 				this.RedirectRegisteredProperties(properties, redirectedProps);
 
 			if (PropertiesToRemove != null)
-				this.RemoveProperties(properties, PropertiesToRemove);
+				this.RemoveItems(properties, PropertiesToRemove);
 		}
 	}
 
@@ -463,7 +481,7 @@ namespace Vanara.Windows.Forms.Design
 				this.RedirectRegisteredProperties(properties, redirectedProps);
 
 			if (PropertiesToRemove != null)
-				this.RemoveProperties(properties, PropertiesToRemove);
+				this.RemoveItems(properties, PropertiesToRemove);
 		}
 	}
 
@@ -790,16 +808,16 @@ namespace Vanara.Windows.Forms.Design
 		}
 	}
 
-	/// <summary>Attribute placed on properties that indicate they support a designer redirected property.</summary>
+	/// <summary>Attribute placed on class items that indicate they support a designer redirected item.</summary>
 	/// <seealso cref="System.Attribute"/>
-	[AttributeUsage(AttributeTargets.Property)]
-	public sealed class RedirectedDesignerPropertyAttribute : Attribute
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Event | AttributeTargets.Method)]
+	public sealed class RedirectedDesignerItemAttribute : Attribute
 	{
-		/// <summary>Initializes a new instance of the <see cref="RedirectedDesignerPropertyAttribute"/> class.</summary>
-		public RedirectedDesignerPropertyAttribute() { ApplyOtherAttributes = true; }
+		/// <summary>Initializes a new instance of the <see cref="RedirectedDesignerItemAttribute"/> class.</summary>
+		public RedirectedDesignerItemAttribute() { ApplyOtherAttributes = true; }
 
-		/// <summary>Gets or sets a value indicating whether [apply other attributes].</summary>
-		/// <value><see langword="true"/> if [apply other attributes]; otherwise, <see langword="false"/>.</value>
+		/// <summary>Gets or sets a value indicating whether to apply other attributes.</summary>
+		/// <value><see langword="true"/> if this should apply other attributes; otherwise, <see langword="false"/>.</value>
 		public bool ApplyOtherAttributes { get; set; }
 	}
 
@@ -965,21 +983,45 @@ namespace Vanara.Windows.Forms.Design
 			}
 		}
 
+		public static IDictionary<string, List<Attribute>> GetRedirectedEvents(this ComponentDesigner d)
+		{
+			var ret = new Dictionary<string, List<Attribute>>();
+			foreach (var evt in d.GetType().GetEvents(allInstBind))
+			{
+				foreach (var attr in evt.GetCustomAttributes<RedirectedDesignerItemAttribute>(false))
+				{
+					var attributes = attr.ApplyOtherAttributes
+						? evt.GetCustomAttributes<Attribute>().Where(a => !(a is RedirectedDesignerItemAttribute)).ToList()
+						: new List<Attribute>();
+					ret.Add(evt.Name, attributes);
+				}
+			}
+			return ret.Count > 0 ? ret : null;
+		}
+
+		public static void RedirectRegisteredEvents(this ComponentDesigner d, IDictionary properties, IDictionary<string, List<Attribute>> redirectedProps)
+		{
+			foreach (var propName in redirectedProps.Keys)
+			{
+				var oldPropertyDescriptor = (PropertyDescriptor)properties[propName];
+				if (oldPropertyDescriptor != null)
+				{
+					var attributes = redirectedProps[propName];
+					properties[propName] = TypeDescriptor.CreateProperty(d.GetType(), oldPropertyDescriptor, attributes.ToArray());
+				}
+			}
+		}
+
 		public static IDictionary<string, List<Attribute>> GetRedirectedProperties(this ComponentDesigner d)
 		{
 			var ret = new Dictionary<string, List<Attribute>>();
 			foreach (var prop in d.GetType().GetProperties(allInstBind))
 			{
-				foreach (RedirectedDesignerPropertyAttribute attr in prop.GetCustomAttributes(typeof(RedirectedDesignerPropertyAttribute), false))
+				foreach (var attr in prop.GetCustomAttributes<RedirectedDesignerItemAttribute>(false))
 				{
-					List<Attribute> attributes;
-					if (attr.ApplyOtherAttributes)
-					{
-						attributes = prop.GetCustomAttributes<Attribute>().ToList();
-						attributes.RemoveAll(a => a is RedirectedDesignerPropertyAttribute);
-					}
-					else
-						attributes = new List<Attribute>();
+					var attributes = attr.ApplyOtherAttributes
+						? prop.GetCustomAttributes<Attribute>().Where(a => !(a is RedirectedDesignerItemAttribute)).ToList()
+						: new List<Attribute>();
 					ret.Add(prop.Name, attributes);
 				}
 			}
@@ -999,11 +1041,11 @@ namespace Vanara.Windows.Forms.Design
 			}
 		}
 
-		public static void RemoveProperties(this ComponentDesigner d, IDictionary properties, IEnumerable<string> propertiesToRemove)
+		public static void RemoveItems(this ComponentDesigner d, IDictionary values, IEnumerable<string> keysToRemove)
 		{
-			foreach (var p in propertiesToRemove)
-				if (properties.Contains(p))
-					properties.Remove(p);
+			foreach (var p in keysToRemove)
+				if (values.Contains(p))
+					values.Remove(p);
 		}
 	}
 
