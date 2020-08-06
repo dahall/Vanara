@@ -533,6 +533,35 @@ namespace Vanara.PInvoke
 		public static extern bool GetMonitorInfo(HMONITOR hMonitor, ref MONITORINFO lpmi);
 
 		/// <summary>
+		/// <para>The <c>GetMonitorInfo</c> function retrieves information about a display monitor.</para>
+		/// </summary>
+		/// <param name="hMonitor">
+		/// <para>A handle to the display monitor of interest.</para>
+		/// </param>
+		/// <param name="lpmi">
+		/// <para>A pointer to a MONITORINFO or MONITORINFOEX structure that receives information about the specified display monitor.</para>
+		/// <para>
+		/// You must set the <c>cbSize</c> member of the structure to sizeof(MONITORINFO) or sizeof(MONITORINFOEX) before calling the
+		/// <c>GetMonitorInfo</c> function. Doing so lets the function determine the type of structure you are passing to it.
+		/// </para>
+		/// <para>
+		/// The MONITORINFOEX structure is a superset of the MONITORINFO structure. It has one additional member: a string that contains a
+		/// name for the display monitor. Most applications have no use for a display monitor name, and so can save some bytes by using a
+		/// <c>MONITORINFO</c> structure.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getmonitorinfoa BOOL GetMonitorInfoA( HMONITOR hMonitor,
+		// LPMONITORINFO lpmi );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "025a89c2-4bbd-4c8b-8367-3735fb5b872a")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetMonitorInfo(HMONITOR hMonitor, ref MONITORINFOEX lpmi);
+
+		/// <summary>
 		/// <para>The <c>MonitorFromPoint</c> function retrieves a handle to the display monitor that contains a specified point.</para>
 		/// </summary>
 		/// <param name="pt">
