@@ -128,6 +128,10 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
+		/// <summary>Gets the underlying <see cref="IShellFolder"/> instance.</summary>
+		/// <value>The underlying <see cref="IShellFolder"/> instance.</value>
+		public IShellFolder IShellFolder => iShellFolder;
+
 		/// <summary>
 		/// Retrieves a handler, typically the Shell folder object that implements IShellFolder for a particular item. Optional parameters
 		/// that control the construction of the handler are passed in the bind context.
