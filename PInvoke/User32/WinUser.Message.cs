@@ -2199,7 +2199,28 @@ namespace Vanara.PInvoke
 			where TEnum : struct, IConvertible where TWP : struct, IConvertible where TLP : class
 		{
 			using var lp = new PinnedObject(lParam);
-			return SendMessage(hWnd, Convert.ToUInt32(msg), new IntPtr(Convert.ToInt64(wParam)), (IntPtr)lp);
+			return SendMessage(hWnd, Convert.ToUInt32(msg), new IntPtr(Convert.ToInt64(wParam)), lp);
+		}
+
+		/// <summary>
+		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
+		/// and does not return until the window procedure has processed the message.
+		/// </summary>
+		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
+		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
+		/// <param name="hWnd">
+		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
+		/// message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and
+		/// pop-up windows; but the message is not sent to child windows.
+		/// </param>
+		/// <param name="msg">The message to be sent.</param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		public static IntPtr SendMessage<TEnum, TWP>(HWND hWnd, TEnum msg, TWP wParam, IntPtr lParam = default)
+			where TEnum : struct, IConvertible where TWP : struct, IConvertible
+		{
+			return SendMessage(hWnd, Convert.ToUInt32(msg), new IntPtr(Convert.ToInt64(wParam)), lParam);
 		}
 
 		/// <summary>
