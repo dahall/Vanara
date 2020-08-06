@@ -1476,7 +1476,7 @@ namespace Vanara.Windows.Forms
 
 		// *** The implementation in Shell32 uses MSG which has proven to be slow. This passes the Message structure directly. ***
 		[ComImport, Guid("68284fAA-6A48-11D0-8c78-00C04fd918b4"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		private interface IInputObject_WinForms
+		internal interface IInputObject_WinForms
 		{
 			[PreserveSig]
 			HRESULT UIActivateIO([In, MarshalAs(UnmanagedType.Bool)] bool fActivate, in Message pMsg);

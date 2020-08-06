@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -11,6 +12,7 @@ using Vanara.Extensions;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 using static Vanara.PInvoke.Shell32;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.Windows.Forms
 {
@@ -148,8 +150,10 @@ namespace Vanara.Windows.Forms
 	[ToolboxItem(true), ToolboxBitmap(typeof(ShellNamespaceTreeControl), "ShellNamespaceTreeControl.bmp")]
 	[Description("A Shell object that displays a tree of shell items.")]
 	[ComVisible(true), Guid("0639efb8-7701-472e-863d-d6fbc543d736")]
-	public class ShellNamespaceTreeControl : Control, PInvoke.Shell32.IServiceProvider, INameSpaceTreeControlEvents, INameSpaceTreeControlDropHandler //, INameSpaceTreeAccessible
+	public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INameSpaceTreeControlEvents, INameSpaceTreeControlDropHandler, IMessageFilter //, INameSpaceTreeAccessible
 	{
+		internal INameSpaceTreeControl pCtrl;
+
 		private const NSTCSTYLE defaultStyle = NSTCSTYLE.NSTCS_HASEXPANDOS | NSTCSTYLE.NSTCS_ROOTHASEXPANDO | NSTCSTYLE.NSTCS_FADEINOUTEXPANDOS |
 			NSTCSTYLE.NSTCS_NOINFOTIP | NSTCSTYLE.NSTCS_ALLOWJUNCTIONS | NSTCSTYLE.NSTCS_SHOWSELECTIONALWAYS | NSTCSTYLE.NSTCS_FULLROWSELECT |
 			NSTCSTYLE.NSTCS_TABSTOP;
@@ -172,10 +176,10 @@ namespace Vanara.Windows.Forms
 			NSTCSTYLE2.NSTCS2_DISPLAYPADDING | NSTCSTYLE2.NSTCS2_DISPLAYPINNEDONLY | NSTCSTYLE2.NTSCS2_NOSINGLETONAUTOEXPAND |
 			NSTCSTYLE2.NTSCS2_NEVERINSERTNONENUMERATED;
 
-		internal INameSpaceTreeControl pCtrl;
-
 		private uint adviseCookie = uint.MaxValue;
 		private BorderStyle borderStyle = BorderStyle.None;
+		private HWND hWndNsTreeCtrl, hWndTreeView;
+		private bool oleUninit = false;
 		private INameSpaceTreeControl2 pCtrl2;
 		private EnumFlagIndexer<NSTCSTYLE> style = defaultStyle;
 		private EnumFlagIndexer<NSTCSTYLE2> style2 = defaultStyle2;
@@ -186,31 +190,36 @@ namespace Vanara.Windows.Forms
 		{
 			RootItems = new ShellNamespaceTreeRootList(this);
 			BackColor = SystemColors.Window;
+			oleUninit = Ole32.OleInitialize().Succeeded;
 		}
 
 		/// <summary>Called after an item is expanded.</summary>
 		[Category("Behavior"), Description("Occurs when an item has been expanded.")]
 		public event EventHandler<ShellNamespaceTreeControlEventArgs> AfterExpand;
 
-		/// <summary>Called after the item leaves edit mode.</summary>
-		[Category("Behavior"), Description("Occurs when the text of an item has been edited by the user.")]
-		public event EventHandler<ShellNamespaceTreeControlItemLabelEditEventArgs> AfterLabelEdit;
-
-		/// <summary>Called before an item is expanded.</summary>
-		[Category("Behavior"), Description("Occurs when an item it about to be expanded.")]
-		public event EventHandler<ShellNamespaceTreeControlEventArgs> BeforeExpand;
-
-		/// <summary>Called before an item and all of its children are deleted.</summary>
-		[Category("Behavior"), Description("Occurs when an item is about to be deleted.")]
-		public event EventHandler<ShellNamespaceTreeControlEventArgs> BeforeItemDelete;
+		/// <summary>Called after an item has been added.</summary>
+		[Category("Behavior"), Description("Occurs when an item has been added.")]
+		public event EventHandler<ShellNamespaceTreeControlEventArgs> AfterItemAdd;
 
 		/// <summary>Called after an item and all of its children are deleted.</summary>
 		[Category("Behavior"), Description("Occurs when an item has been deleted.")]
 		public event EventHandler<ShellNamespaceTreeControlEventArgs> AfterItemDelete;
 
-		/// <summary>Called after an item has been added.</summary>
-		[Category("Behavior"), Description("Occurs when an item has been added.")]
-		public event EventHandler<ShellNamespaceTreeControlEventArgs> AfterItemAdd;
+		/// <summary>Called after the item leaves edit mode.</summary>
+		[Category("Behavior"), Description("Occurs when the text of an item has been edited by the user.")]
+		public event EventHandler<ShellNamespaceTreeControlItemLabelEditEventArgs> AfterLabelEdit;
+
+		/// <summary>Occurs when the selection changes.</summary>
+		[Category("Behavior"), Description("Occurs when an item has been selected.")]
+		public event EventHandler AfterSelect;
+
+		/// <summary>Called before an item is expanded.</summary>
+		[Category("Behavior"), Description("Occurs when an item it about to be expanded.")]
+		public event EventHandler<ShellNamespaceTreeControlCancelEventArgs> BeforeExpand;
+
+		/// <summary>Called before an item and all of its children are deleted.</summary>
+		[Category("Behavior"), Description("Occurs when an item is about to be deleted.")]
+		public event EventHandler<ShellNamespaceTreeControlCancelEventArgs> BeforeItemDelete;
 
 		/// <summary>Called before the item goes into edit mode.</summary>
 		[Category("Behavior"), Description("Occurs when the text of an item is about to be edited by the user.")]
@@ -223,10 +232,6 @@ namespace Vanara.Windows.Forms
 		/// <summary>Called when the user double-clicks a button on the mouse.</summary>
 		[Category("Behavior"), Description("Occurs when an item is double-clicked with the mouse.")]
 		public event EventHandler<ShellNamespaceTreeControlItemMouseClickEventArgs> ItemMouseDoubleClick;
-
-		/// <summary>Occurs when the selection changes.</summary>
-		[Category("Behavior"), Description("Occurs when an item has been selected.")]
-		public event EventHandler AfterSelect;
 
 		/// <summary>Indicates whether to insert spacing (padding) between top-level nodes.</summary>
 		[DefaultValue(false), Category("Appearance"), Description("Indicates whether to insert spacing (padding) between top-level nodes.")]
@@ -257,7 +262,7 @@ namespace Vanara.Windows.Forms
 		public BorderStyle BorderStyle
 		{
 			get => borderStyle;
-			set { if (borderStyle != value) { borderStyle = value; InitializeControl(); } }
+			set { if (borderStyle != value) { borderStyle = value; /*InitializeControl();*/ } }
 		}
 
 		/// <summary>
@@ -431,20 +436,25 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
+		/// <summary>Indicates whether to display infotips when the mouse cursor is over an item.</summary>
+		[DefaultValue(false), Category("Behavior"), Description("Indicates whether ToolTips will be displayed on the items.")]
+		public bool ShowItemToolTips
+		{
+			get => !HasTreeStyle(NSTCSTYLE.NSTCS_NOINFOTIP);
+			set
+			{
+				SetTreeStyle(NSTCSTYLE.NSTCS_NOINFOTIP, !value);
+				if (value)
+					SetTreeStyle(NSTCSTYLE.NSTCS_RICHTOOLTIP, false);
+			}
+		}
+
 		/// <summary>Indicates whether the control draws lines to the left of the tree items that lead to their individual parent items.</summary>
 		[DefaultValue(false), Category("Appearance"), Description("Indicates whether lines are displayed between sibling items and between parent and child items.")]
 		public bool ShowLines
 		{
 			get => HasTreeStyle(NSTCSTYLE.NSTCS_HASLINES);
 			set => SetTreeStyle(NSTCSTYLE.NSTCS_HASLINES, value);
-		}
-
-		/// <summary>Indicates whether to display infotips when the mouse cursor is over an item.</summary>
-		[DefaultValue(false), Category("Behavior"), Description("Indicates whether ToolTips will be displayed on the items.")]
-		public bool ShowItemToolTips
-		{
-			get => !HasTreeStyle(NSTCSTYLE.NSTCS_NOINFOTIP);
-			set => SetTreeStyle(NSTCSTYLE.NSTCS_NOINFOTIP, !value);
 		}
 
 		/// <summary>
@@ -533,6 +543,22 @@ namespace Vanara.Windows.Forms
 			set => SetTreeStyle(value ? NSTCSTYLE.NSTCS_RICHTOOLTIP | NSTCSTYLE.NSTCS_NOINFOTIP : NSTCSTYLE.NSTCS_RICHTOOLTIP, value);
 		}
 
+		/// <summary>
+		/// Gets the required creation parameters when the control handle is created.
+		/// </summary>
+		protected override CreateParams CreateParams
+		{
+			get
+			{
+				var cp = base.CreateParams;
+				if (!this.IsDesignMode())
+				{
+					cp.Style &= ~(int)WindowStyles.WS_VISIBLE;
+				}
+				return cp;
+			}
+		}
+
 		/// <summary>Collapses all of the items in the tree.</summary>
 		public void CollapseAll() => pCtrl.CollapseAll();
 
@@ -548,7 +574,7 @@ namespace Vanara.Windows.Forms
 		/// <summary>Retrieves the item that a given point is in, if any.</summary>
 		/// <param name="pt">The point to be tested.</param>
 		/// <returns>The item in which the point exists, or <see langword="null"/> if the point does not exist in an item.</returns>
-		public ShellItem HitTest(System.Drawing.Point pt)
+		public ShellItem HitTest(Point pt)
 		{
 			pCtrl.HitTest(pt, out var psi);
 			return psi is null ? null : ShellItem.Open(psi);
@@ -571,19 +597,31 @@ namespace Vanara.Windows.Forms
 		/// </remarks>
 		public void SetItemState(ShellItem item, ShellTreeItemState stateMask, ShellTreeItemState state) => pCtrl.SetItemState(item?.IShellItem, (NSTCITEMSTATE)stateMask, (NSTCITEMSTATE)state);
 
+		bool IMessageFilter.PreFilterMessage(ref Message m)
+		{
+			if (m.Msg == (int)WindowMessage.WM_KEYDOWN || m.Msg == (int)WindowMessage.WM_KEYUP)
+				Debug.WriteLine($"PreFileter msg: {(WindowMessage)m.Msg}, {(Keys)unchecked((int)(long)m.WParam)}");
+			return (pCtrl as ExplorerBrowser.IInputObject_WinForms)?.TranslateAcceleratorIO(m) == HRESULT.S_OK;
+		}
+
 		HRESULT INameSpaceTreeControlEvents.OnAfterContextMenu(IShellItem psi, IContextMenu pcmIn, in Guid riid, out object ppv)
 		{
 			if (riid == typeof(IContextMenu).GUID)
 			{
-				// TODO: Call event to modify pcmIn
+				// TODO: Figure out how to host ContextMenuStrip
+				//if (ContextMenuStrip != null)
+				//{
+				//	var ictxmenu = new IContextMenu();
+				//	ppv = ContextMenuStrip.; /* get IContextMenu from ContextMenuStrip */
+				//	return HRESULT.S_OK;
+				//}
 				ppv = pcmIn;
-				return HRESULT.E_NOTIMPL; // Change if menu provided by event
 			}
 			else
 			{
 				ppv = default;
-				return HRESULT.E_NOTIMPL;
 			}
+			return HRESULT.E_NOTIMPL;
 		}
 
 		HRESULT INameSpaceTreeControlEvents.OnAfterExpand(IShellItem psi)
@@ -608,14 +646,16 @@ namespace Vanara.Windows.Forms
 
 		HRESULT INameSpaceTreeControlEvents.OnBeforeExpand(IShellItem psi)
 		{
-			BeforeExpand?.Invoke(this, new ShellNamespaceTreeControlEventArgs(psi, ShellNamespaceTreeControlAction.Expand));
-			return HRESULT.S_OK;
+			var args = new ShellNamespaceTreeControlCancelEventArgs(psi, false, ShellNamespaceTreeControlAction.Expand);
+			try { BeforeExpand?.Invoke(this, args); } catch (Exception ex) { return HRESULT.FromException(ex); }
+			return args.Cancel ? HRESULT.S_FALSE : HRESULT.S_OK;
 		}
 
 		HRESULT INameSpaceTreeControlEvents.OnBeforeItemDelete(IShellItem psi)
 		{
-			BeforeItemDelete?.Invoke(this, new ShellNamespaceTreeControlEventArgs(psi, ShellNamespaceTreeControlAction.BeforeDelete));
-			return HRESULT.S_FALSE;
+			var args = new ShellNamespaceTreeControlCancelEventArgs(psi, false, ShellNamespaceTreeControlAction.BeforeDelete);
+			BeforeItemDelete?.Invoke(this, args);
+			return args.Cancel ? HRESULT.S_FALSE : HRESULT.S_OK;
 		}
 
 		HRESULT INameSpaceTreeControlEvents.OnBeforeStateImageChange(IShellItem psi) => HRESULT.S_OK;
@@ -623,13 +663,53 @@ namespace Vanara.Windows.Forms
 		HRESULT INameSpaceTreeControlEvents.OnBeginLabelEdit(IShellItem psi)
 		{
 			BeforeLabelEdit?.Invoke(this, new ShellNamespaceTreeControlItemLabelEditEventArgs(psi));
-			return HRESULT.S_FALSE;
+			return HRESULT.S_OK;
 		}
+
+		HRESULT INameSpaceTreeControlDropHandler.OnDragEnter(IShellItem psiOver, IShellItemArray psiaData, bool fOutsideSource, uint grfKeyState, ref uint pdwEffect)
+		{
+			var ido = new DataObject();
+			ido.SetFileDropList(GetStringCollection(psiaData));
+			var dragEvent = new DragEventArgs(ido, (int)grfKeyState, MousePosition.X, MousePosition.Y, DragDropEffects.All, (DragDropEffects)pdwEffect);
+			base.OnDragEnter(dragEvent);
+			pdwEffect = (uint)dragEvent.Effect;
+			return HRESULT.S_OK;
+		}
+
+		HRESULT INameSpaceTreeControlDropHandler.OnDragLeave(IShellItem psiOver)
+		{
+			base.OnDragLeave(EventArgs.Empty);
+			return HRESULT.S_OK;
+		}
+
+		HRESULT INameSpaceTreeControlDropHandler.OnDragOver(IShellItem psiOver, IShellItemArray psiaData, uint grfKeyState, ref uint pdwEffect)
+		{
+			var ido = new DataObject();
+			ido.SetFileDropList(GetStringCollection(psiaData));
+			var dragEvent = new DragEventArgs(ido, (int)grfKeyState, MousePosition.X, MousePosition.Y, DragDropEffects.All, (DragDropEffects)pdwEffect);
+			base.OnDragOver(dragEvent);
+			pdwEffect = (uint)dragEvent.Effect;
+			return HRESULT.S_OK;
+		}
+
+		HRESULT INameSpaceTreeControlDropHandler.OnDragPosition(IShellItem psiOver, IShellItemArray psiaData, int iNewPosition, int iOldPosition) => HRESULT.E_FAIL;
+
+		HRESULT INameSpaceTreeControlDropHandler.OnDrop(IShellItem psiOver, IShellItemArray psiaData, int iPosition, uint grfKeyState, ref uint pdwEffect)
+		{
+			var ido = new DataObject();
+			ido.SetFileDropList(GetStringCollection(psiaData));
+			var dragEvent = new DragEventArgs(ido, (int)grfKeyState, MousePosition.X, MousePosition.Y, DragDropEffects.All, (DragDropEffects)pdwEffect);
+			base.OnDragDrop(dragEvent);
+			pdwEffect = (uint)dragEvent.Effect;
+			return HRESULT.S_OK;
+		}
+
+		HRESULT INameSpaceTreeControlDropHandler.OnDropPosition(IShellItem psiOver, IShellItemArray psiaData, int iNewPosition, int iOldPosition) => HRESULT.E_FAIL;
 
 		HRESULT INameSpaceTreeControlEvents.OnEndLabelEdit(IShellItem psi)
 		{
 			AfterLabelEdit?.Invoke(this, new ShellNamespaceTreeControlItemLabelEditEventArgs(psi));
-			return HRESULT.S_FALSE;
+			return HRESULT.S_OK;
 		}
 
 		HRESULT INameSpaceTreeControlEvents.OnGetDefaultIconIndex(IShellItem psi, out int piDefaultIcon, out int piOpenIcon)
@@ -643,7 +723,8 @@ namespace Vanara.Windows.Forms
 		HRESULT INameSpaceTreeControlEvents.OnItemAdded(IShellItem psi, bool fIsRoot)
 		{
 			AfterItemAdd?.Invoke(this, new ShellNamespaceTreeControlEventArgs(psi, ShellNamespaceTreeControlAction.AfterAdd));
-			return HRESULT.S_FALSE;
+			return HRESULT.E_NOTIMPL;
+			//return HRESULT.S_OK;
 		}
 
 		HRESULT INameSpaceTreeControlEvents.OnItemClick(IShellItem psi, NSTCEHITTEST nstceHitTest, NSTCECLICKTYPE nstceClickType)
@@ -668,13 +749,14 @@ namespace Vanara.Windows.Forms
 				ItemMouseDoubleClick?.Invoke(this, args);
 			else
 				ItemMouseClick?.Invoke(this, args);
-			return HRESULT.S_FALSE;
+			return args.Handled ? HRESULT.S_OK : HRESULT.S_FALSE;
 		}
 
 		HRESULT INameSpaceTreeControlEvents.OnItemDeleted(IShellItem psi, bool fIsRoot)
 		{
 			AfterItemDelete?.Invoke(this, new ShellNamespaceTreeControlEventArgs(psi, ShellNamespaceTreeControlAction.AfterDelete));
-			return HRESULT.S_FALSE;
+			return HRESULT.E_NOTIMPL;
+			//return HRESULT.S_OK;
 		}
 
 		HRESULT INameSpaceTreeControlEvents.OnItemStateChanged(IShellItem psi, NSTCITEMSTATE nstcisMask, NSTCITEMSTATE nstcisState) => HRESULT.S_OK;
@@ -683,10 +765,69 @@ namespace Vanara.Windows.Forms
 
 		HRESULT INameSpaceTreeControlEvents.OnKeyboardInput(uint uMsg, IntPtr wParam, IntPtr lParam)
 		{
-			System.Diagnostics.Debug.WriteLine($"Kbd msg: {(User32.WindowMessage)uMsg}");
-			if (uMsg == (uint)User32.WindowMessage.WM_KEYUP)
-				base.OnKeyUp(new KeyEventArgs((Keys)wParam.ToInt32()));
-			return HRESULT.S_OK;
+			System.Diagnostics.Debug.WriteLine($"Kbd msg: {(WindowMessage)uMsg}, {(Keys)unchecked((int)(long)wParam)}");
+			//var args = new KeyEventArgs((Keys)unchecked((int)(long)wParam) | ModifierKeys);
+			var hSel = SendMessage(hWndTreeView, ComCtl32.TreeViewMessage.TVM_GETNEXTITEM, ComCtl32.TreeViewActionFlag.TVGN_CARET);
+			if (hSel != default && uMsg == (uint)WindowMessage.WM_KEYUP)
+			{
+				switch ((Keys)unchecked((int)(long)wParam))
+				{
+					case Keys.Down:
+						//Move(IsExpanded(hSel) ? ComCtl32.TreeViewActionFlag.TVGN_CHILD : ComCtl32.TreeViewActionFlag.TVGN_NEXT);
+						Move(ComCtl32.TreeViewActionFlag.TVGN_NEXTVISIBLE);
+						break;
+					case Keys.Up:
+						//var hPrev = SendMessage(hWndTreeView, ComCtl32.TreeViewMessage.TVM_GETNEXTITEM, ComCtl32.TreeViewActionFlag.TVGN_PREVIOUS, hSel);
+						//if (hPrev != default)
+						//{
+						//	if (IsExpanded(hPrev))
+						//		Move(ComCtl32.TreeViewActionFlag.TVGN_PREVIOUSVISIBLE);
+						//	else
+						//		SelItem(hPrev);
+						//}
+						Move(ComCtl32.TreeViewActionFlag.TVGN_PREVIOUSVISIBLE);
+						break;
+					case Keys.Right:
+						if (IsExpanded(hSel))
+							Move(ComCtl32.TreeViewActionFlag.TVGN_CHILD);
+						else
+							SendMessage(hWndTreeView, ComCtl32.TreeViewMessage.TVM_EXPAND, ComCtl32.TreeViewExpandFlags.TVE_EXPAND, hSel);
+						break;
+					case Keys.Left:
+						if (IsExpanded(hSel))
+							SendMessage(hWndTreeView, ComCtl32.TreeViewMessage.TVM_EXPAND, ComCtl32.TreeViewExpandFlags.TVE_COLLAPSE, hSel);
+						else
+							Move(ComCtl32.TreeViewActionFlag.TVGN_PARENT);
+						break;
+					case Keys.Home:
+						Move(ComCtl32.TreeViewActionFlag.TVGN_ROOT);
+						break;
+					case Keys.End:
+						Move(ComCtl32.TreeViewActionFlag.TVGN_LASTVISIBLE);
+						break;
+					case Keys.Enter:
+						break;
+					case Keys.Space:
+						break;
+				}
+			}
+			//if (uMsg == (uint)WindowMessage.WM_KEYUP)
+			//	OnKeyUp(args);
+			//return args.Handled ? HRESULT.S_FALSE : HRESULT.S_OK;
+			return HRESULT.S_FALSE;
+
+			bool IsExpanded(IntPtr item) => SendMessage(hWndTreeView, (uint)ComCtl32.TreeViewMessage.TVM_GETITEMSTATE, item, (IntPtr)(int)ComCtl32.TreeViewItemStates.TVIS_EXPANDED) == (IntPtr)(int)ComCtl32.TreeViewItemStates.TVIS_EXPANDED;
+
+			void Move(ComCtl32.TreeViewActionFlag dir)
+			{
+				SelItem(SendMessage(hWndTreeView, ComCtl32.TreeViewMessage.TVM_GETNEXTITEM, dir, hSel));
+			}
+
+			void SelItem(IntPtr hNext)
+			{
+				if (hNext != default)
+					SendMessage(hWndTreeView, ComCtl32.TreeViewMessage.TVM_SELECTITEM, ComCtl32.TreeViewActionFlag.TVGN_CARET, hNext);
+			}
 		}
 
 		HRESULT INameSpaceTreeControlEvents.OnPropertyItemCommit(IShellItem psi) => HRESULT.S_FALSE;
@@ -699,6 +840,11 @@ namespace Vanara.Windows.Forms
 
 		HRESULT Shell32.IServiceProvider.QueryService(in Guid guidService, in Guid riid, out object ppvObject)
 		{
+			if (riid == typeof(INameSpaceTreeControlDropHandler).GUID || riid == typeof(INameSpaceTreeControlEvents).GUID)
+			{
+				ppvObject = this;
+				return HRESULT.S_OK;
+			}
 			ppvObject = default;
 			return HRESULT.E_NOINTERFACE;
 		}
@@ -707,24 +853,65 @@ namespace Vanara.Windows.Forms
 		/// <param name="disposing">
 		/// <see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.
 		/// </param>
-		protected override void Dispose(bool disposing) => base.Dispose(disposing);
+		protected override void Dispose(bool disposing)
+		{
+			base.Dispose(disposing);
+			if (oleUninit) Ole32.OleUninitialize();
+		}
 
-		/// <summary>Called when [create control].</summary>
+		/// <summary>Raises the <see cref="AfterSelect"/> event.</summary>
+		protected virtual void OnAfterSelect() => AfterSelect?.Invoke(this, EventArgs.Empty);
+
+		/// <summary>Raises the <see cref="M:System.Windows.Forms.Control.CreateControl"/> method.</summary>
 		protected override void OnCreateControl()
 		{
 			base.OnCreateControl();
 			if (this.IsDesignMode()) return;
 
+			// Grab interfaces
 			pCtrl = new INameSpaceTreeControl();
 			pCtrl2 = pCtrl as INameSpaceTreeControl2;
 
-			pCtrl.TreeAdvise(this, out adviseCookie);
-			SetSite(this);
+			// Initialize and capture child window handles
+			var rect = BorderStyle == BorderStyle.None ? Bounds : Rectangle.Inflate(Bounds, -1, -1);
+			pCtrl.Initialize(Parent.Handle, rect, style).ThrowIfFailed();
+			var sb = new StringBuilder(512);
+			var srect = (RECT)RectangleToScreen(rect);
+			hWndNsTreeCtrl = User32.EnumChildWindows(Parent.Handle).First(h => IsClass(h, "NamespaceTreeControl"));
+			hWndTreeView = hWndNsTreeCtrl.EnumChildWindows().First(h => IsClass(h, "SysTreeView32"));
 
-			InitializeControl();
+			// Remove default roots and update style
+			pCtrl.RemoveAllRoots();
 			UpdateStyle();
 
-			pCtrl.RemoveAllRoots();
+			// Setup event handler and sink
+			pCtrl.TreeAdvise(this, out adviseCookie).ThrowIfFailed();
+			SetSite(this);
+			Application.AddMessageFilter(this);
+
+			bool IsClass(HWND hWnd, string className) =>
+				GetClassName(hWnd, sb, sb.Capacity) > 0 && sb.ToString() == className && GetWindowRect(hWnd, out var r) && r == srect;
+		}
+
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.GotFocus"/> event.</summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+		protected override void OnGotFocus(EventArgs e)
+		{
+			base.OnGotFocus(e);
+			if (!hWndTreeView.IsNull)
+				SetFocus(hWndTreeView);
+		}
+
+		protected override void OnKeyDown(KeyEventArgs e)
+		{
+			System.Diagnostics.Debug.WriteLine($"Base KeyDown: {e.KeyCode}");
+			base.OnKeyDown(e);
+		}
+
+		protected override void OnKeyUp(KeyEventArgs e)
+		{
+			System.Diagnostics.Debug.WriteLine($"Base KeyUp: {e.KeyCode}");
+			base.OnKeyUp(e);
 		}
 
 		/// <summary>Raises the <see cref="E:HandleDestroyed"/> event.</summary>
@@ -733,8 +920,9 @@ namespace Vanara.Windows.Forms
 		{
 			if (pCtrl != null)
 			{
+				if (adviseCookie > 0)
+					pCtrl.TreeUnadvise(adviseCookie);
 				SetSite(null);
-				pCtrl.TreeUnadvise(adviseCookie);
 				Marshal.ReleaseComObject(pCtrl);
 				pCtrl = null;
 			}
@@ -747,11 +935,8 @@ namespace Vanara.Windows.Forms
 			base.OnHandleDestroyed(e);
 		}
 
-		/// <summary>Raises the <see cref="AfterSelect"/> event.</summary>
-		protected virtual void OnAfterSelect() => AfterSelect?.Invoke(this, EventArgs.Empty);
-
-		/// <summary>Raises the <see cref="E:Paint" /> event.</summary>
-		/// <param name="e">The <see cref="System.Windows.Forms.PaintEventArgs" /> instance containing the event data.</param>
+		/// <summary>Raises the <see cref="E:Paint"/> event.</summary>
+		/// <param name="e">The <see cref="PaintEventArgs"/> instance containing the event data.</param>
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
@@ -764,7 +949,7 @@ namespace Vanara.Windows.Forms
 		protected override void OnSizeChanged(EventArgs e)
 		{
 			base.OnSizeChanged(e);
-			InitializeControl();
+			SetWindowPos(hWndNsTreeCtrl, HWND.NULL, Left, Top, Width, Height, SetWindowPosFlags.SWP_NOACTIVATE | SetWindowPosFlags.SWP_NOOWNERZORDER | SetWindowPosFlags.SWP_NOZORDER);
 		}
 
 		/// <summary>Enables a container to pass an object a pointer to the interface for its site.</summary>
@@ -772,7 +957,15 @@ namespace Vanara.Windows.Forms
 		/// A pointer to the <c>IServiceProvider</c> interface pointer of the site managing this object. If <see langword="null"/>, the
 		/// object should call Release on any existing site at which point the object no longer knows its site.
 		/// </param>
-		protected virtual void SetSite(PInvoke.Shell32.IServiceProvider sp) => (pCtrl as IObjectWithSite)?.SetSite(sp);
+		protected virtual void SetSite(Shell32.IServiceProvider sp) => (pCtrl as IObjectWithSite)?.SetSite(sp);
+
+		private static System.Collections.Specialized.StringCollection GetStringCollection(IShellItemArray psiaData)
+		{
+			using var shiArray = new ShellItemArray(psiaData);
+			var fileList = new System.Collections.Specialized.StringCollection();
+			fileList.AddRange(shiArray.Select(shi => shi.ParsingName).ToArray());
+			return fileList;
+		}
 
 		private IEnumerable<IShellItem> EnumChildren(IShellItem psi)
 		{
@@ -808,13 +1001,6 @@ namespace Vanara.Windows.Forms
 
 		private bool HasTreeStyle(NSTCSTYLE2 style) => style2[style];
 
-		private void InitializeControl()
-		{
-			if (pCtrl is null) return;
-			var wh = BorderStyle == BorderStyle.None ? 0 : -1;
-			pCtrl.Initialize(Handle, Rectangle.Inflate(Bounds, wh, wh), style);
-		}
-
 		private bool SetTreeStyle(NSTCSTYLE style, bool value)
 		{
 			if (HasTreeStyle(style) == value) return false;
@@ -839,17 +1025,15 @@ namespace Vanara.Windows.Forms
 			pCtrl2?.SetControlStyle2(NSTCSTYLE2_ALL, style2);
 
 			// Get the current root items and states of visible items
-			using var iArray = RootItems.GetItemArray();
-			var roots = new List<(ShellItem, NSTCITEMSTATE, int, bool)>(iArray.Select(i => (i, GetState(i.IShellItem), pCtrl.GetItemCustomState(i.IShellItem, out var num).Succeeded ? num : 0, RootItems.onlyShowChildren[i])));
 			var states = EnumVisibleItems().Select(i => (i, GetState(i))).Where(t => t.Item2 != NSTCITEMSTATE.NSTCIS_NONE).ToList();
 
 			// Reset the list (required to refresh)
-			RootItems.Clear();
+			RootItems.SyncWithParent();
 
 			// Add back all roots and their states
-			foreach (var (i, state, num, childOnly) in roots)
+			foreach (var (i, state, num, childOnly) in RootItems.Select(i => (i, GetState(i.IShellItem), pCtrl.GetItemCustomState(i.IShellItem, out var num).Succeeded ? num : 0, RootItems.onlyShowChildren[i])))
 			{
-				RootItems.Add(i, childOnly, state.IsFlagSet(NSTCITEMSTATE.NSTCIS_EXPANDED));
+				//RootItems.Add(i, childOnly, state.IsFlagSet(NSTCITEMSTATE.NSTCIS_EXPANDED));
 				if (state != NSTCITEMSTATE.NSTCIS_NONE)
 					pCtrl.SetItemState(i.IShellItem, NSTCITEMSTATE_ALL, state);
 				if (num != 0)
@@ -863,61 +1047,39 @@ namespace Vanara.Windows.Forms
 			NSTCITEMSTATE GetState(IShellItem shi) => pCtrl.GetItemState(shi, NSTCITEMSTATE_ALL, out var state).Succeeded ? state : 0;
 		}
 
-		HRESULT INameSpaceTreeControlDropHandler.OnDragEnter(IShellItem psiOver, IShellItemArray psiaData, bool fOutsideSource, uint grfKeyState, ref uint pdwEffect)
-		{
-			var ido = new DataObject();
-			ido.SetFileDropList(GetStringCollection(psiaData));
-			var dragEvent = new DragEventArgs(ido, (int)grfKeyState, MousePosition.X, MousePosition.Y, DragDropEffects.All, (DragDropEffects)pdwEffect);
-			base.OnDragEnter(dragEvent);
-			pdwEffect = (uint)dragEvent.Effect;
-			return HRESULT.S_OK;
-		}
-
-		private static System.Collections.Specialized.StringCollection GetStringCollection(IShellItemArray psiaData)
-		{
-			using var shiArray = new ShellItemArray(psiaData);
-			var fileList = new System.Collections.Specialized.StringCollection();
-			fileList.AddRange(shiArray.Select(shi => shi.ParsingName).ToArray());
-			return fileList;
-		}
-
-		HRESULT INameSpaceTreeControlDropHandler.OnDragOver(IShellItem psiOver, IShellItemArray psiaData, uint grfKeyState, ref uint pdwEffect)
-		{
-			var ido = new DataObject();
-			ido.SetFileDropList(GetStringCollection(psiaData));
-			var dragEvent = new DragEventArgs(ido, (int)grfKeyState, MousePosition.X, MousePosition.Y, DragDropEffects.All, (DragDropEffects)pdwEffect);
-			base.OnDragOver(dragEvent);
-			pdwEffect = (uint)dragEvent.Effect;
-			return HRESULT.S_OK;
-		}
-
-		HRESULT INameSpaceTreeControlDropHandler.OnDragPosition(IShellItem psiOver, IShellItemArray psiaData, int iNewPosition, int iOldPosition) => HRESULT.E_FAIL;
-
-		HRESULT INameSpaceTreeControlDropHandler.OnDrop(IShellItem psiOver, IShellItemArray psiaData, int iPosition, uint grfKeyState, ref uint pdwEffect)
-		{
-			var ido = new DataObject();
-			ido.SetFileDropList(GetStringCollection(psiaData));
-			var dragEvent = new DragEventArgs(ido, (int)grfKeyState, MousePosition.X, MousePosition.Y, DragDropEffects.All, (DragDropEffects)pdwEffect);
-			base.OnDragDrop(dragEvent);
-			pdwEffect = (uint)dragEvent.Effect;
-			return HRESULT.S_OK;
-		}
-
-		HRESULT INameSpaceTreeControlDropHandler.OnDropPosition(IShellItem psiOver, IShellItemArray psiaData, int iNewPosition, int iOldPosition) => HRESULT.E_FAIL;
-
-		HRESULT INameSpaceTreeControlDropHandler.OnDragLeave(IShellItem psiOver)
-		{
-			base.OnDragLeave(EventArgs.Empty);
-			return HRESULT.S_OK;
-		}
-
 		//HRESULT INameSpaceTreeAccessible.OnGetDefaultAccessibilityAction(IShellItem psi, out string pbstrDefaultAction) => throw new NotImplementedException();
 		//HRESULT INameSpaceTreeAccessible.OnDoDefaultAccessibilityAction(IShellItem psi) => throw new NotImplementedException();
 		//HRESULT INameSpaceTreeAccessible.OnGetAccessibilityRole(IShellItem psi, out object pvarRole) => throw new NotImplementedException();
 	}
 
+	/// <summary>Provides data for the BeforeExpand, and BeforeSelect events of a <see cref="ShellNamespaceTreeControl"/> control.</summary>
+	/// <seealso cref="CancelEventArgs"/>
+	public class ShellNamespaceTreeControlCancelEventArgs : CancelEventArgs
+	{
+		/// <summary>Initializes a new instance of the <see cref="ShellNamespaceTreeControlEventArgs"/> class.</summary>
+		/// <param name="shellItem">The shell item instance.</param>
+		/// <param name="cancel"><see langword="true"/> to cancel the event; otherwise, <see langword="false"/>.</param>
+		/// <param name="action">The action performed.</param>
+		public ShellNamespaceTreeControlCancelEventArgs(ShellItem shellItem, bool cancel, ShellNamespaceTreeControlAction action) : base(cancel)
+		{
+			Item = shellItem;
+			Action = action;
+		}
+
+		internal ShellNamespaceTreeControlCancelEventArgs(IShellItem psi, bool cancel, ShellNamespaceTreeControlAction action) :
+			this(psi is null ? null : ShellItem.Open(psi), cancel, action)
+		{
+		}
+
+		/// <summary>The action associated with this event.</summary>
+		public ShellNamespaceTreeControlAction Action { get; }
+
+		/// <summary>The shell item associated with this event.</summary>
+		public ShellItem Item { get; }
+	}
+
 	/// <summary>Event arguments for actions against <see cref="ShellNamespaceTreeControl"/>.</summary>
-	/// <seealso cref="System.EventArgs"/>
+	/// <seealso cref="EventArgs"/>
 	public class ShellNamespaceTreeControlEventArgs : EventArgs
 	{
 		/// <summary>Initializes a new instance of the <see cref="ShellNamespaceTreeControlEventArgs"/> class.</summary>
@@ -943,7 +1105,7 @@ namespace Vanara.Windows.Forms
 	}
 
 	/// <summary>Arguments for item label edit events in a <see cref="ShellNamespaceTreeControl"/>.</summary>
-	/// <seealso cref="System.EventArgs"/>
+	/// <seealso cref="EventArgs"/>
 	public class ShellNamespaceTreeControlItemLabelEditEventArgs : EventArgs
 	{
 		/// <summary>Initializes a new instance of the <see cref="ShellNamespaceTreeControlItemLabelEditEventArgs"/> class.</summary>
@@ -963,7 +1125,7 @@ namespace Vanara.Windows.Forms
 	}
 
 	/// <summary>Arguments for mouse click events in a <see cref="ShellNamespaceTreeControl"/>.</summary>
-	public class ShellNamespaceTreeControlItemMouseClickEventArgs : MouseEventArgs
+	public class ShellNamespaceTreeControlItemMouseClickEventArgs : HandledMouseEventArgs
 	{
 		internal ShellNamespaceTreeControlItemMouseClickEventArgs(IShellItem item, MouseButtons button, NSTCEHITTEST ht)
 			: base(button, 1, 0, 0, 0)
@@ -987,7 +1149,7 @@ namespace Vanara.Windows.Forms
 		internal ShellNamespaceTreeRootList(ShellNamespaceTreeControl parent) => Parent = parent;
 
 		/// <summary>Gets the number of elements contained in the <see cref="ICollection{ShellItem}"/>.</summary>
-		public int Count => GetItemArray().Count;
+		public int Count => onlyShowChildren.Count;
 
 		/// <summary>Gets a value indicating whether this instance is read only.</summary>
 		/// <value><see langword="true"/> if this instance is read only; otherwise, <see langword="false"/>.</value>
@@ -1041,16 +1203,16 @@ namespace Vanara.Windows.Forms
 		/// cref="ICollection{ShellItem}"/>. The <see cref="Array"/> must have zero-based indexing.
 		/// </param>
 		/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
-		public void CopyTo(ShellItem[] array, int arrayIndex) => GetItemArray().CopyTo(array, arrayIndex);
+		public void CopyTo(ShellItem[] array, int arrayIndex) => onlyShowChildren.Keys.CopyTo(array, arrayIndex);
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="IEnumerator{ShellItem}"/> that can be used to iterate through the collection.</returns>
-		public IEnumerator<ShellItem> GetEnumerator() => GetItemArray().GetEnumerator();
+		public IEnumerator<ShellItem> GetEnumerator() => onlyShowChildren.Keys.GetEnumerator();
 
 		/// <summary>Searches for the specified object and returns the zero-based index of the first occurrence within the entire list.</summary>
 		/// <param name="item">The object to locate in the list. The value can be <see langword="null"/> for reference types.</param>
 		/// <returns>The zero-based index of the first occurrence of item within the entire list, if found; otherwise, -1.</returns>
-		public int IndexOf(ShellItem item) => GetItemArray().ToList().FindIndex(i => i.Equals(item));
+		public int IndexOf(ShellItem item) => onlyShowChildren.Keys.ToList().FindIndex(i => i.Equals(item));
 
 		/// <summary>Inserts a Shell item to the list of roots in a tree.</summary>
 		/// <param name="index">The index at which to insert the root.</param>
@@ -1076,6 +1238,17 @@ namespace Vanara.Windows.Forms
 			return Parent.pCtrl.RemoveRoot(item.IShellItem).Succeeded;
 		}
 
+		internal void SyncWithParent()
+		{
+			if (Parent.pCtrl is null) return;
+			Parent.pCtrl.RemoveAllRoots();
+			foreach (var kv in onlyShowChildren)
+			{
+				Parent.pCtrl.AppendRoot(kv.Key.IShellItem, kv.Key.IsFolder ? SHCONTF.SHCONTF_FOLDERS : SHCONTF.SHCONTF_NONFOLDERS,
+					kv.Value ? NSTCROOTSTYLE.NSTCRS_HIDDEN : NSTCROOTSTYLE.NSTCRS_VISIBLE);
+			}
+		}
+
 		/// <summary>Adds an object to the end of the list.</summary>
 		/// <param name="item">The object to be added to the end of the list. The value can be <see langword="null"/> for reference types.</param>
 		void ICollection<ShellItem>.Add(ShellItem item) => Add(item, false, false);
@@ -1083,7 +1256,7 @@ namespace Vanara.Windows.Forms
 		/// <summary>Determines whether an element is in the list.</summary>
 		/// <param name="item">The object to locate in the list. The value can be <see langword="null"/> for reference types.</param>
 		/// <returns><see langword="true"/> if item is found in the list; otherwise, <see langword="false"/>.</returns>
-		bool ICollection<ShellItem>.Contains(ShellItem item) => GetItemArray().Contains(item);
+		bool ICollection<ShellItem>.Contains(ShellItem item) => onlyShowChildren.ContainsKey(item);
 
 		/// <summary>Returns an enumerator that iterates through the list.</summary>
 		/// <returns>An <see cref="IEnumerator"/> for the list.</returns>
@@ -1098,8 +1271,7 @@ namespace Vanara.Windows.Forms
 		/// <param name="index">The zero-based index of the element to remove.</param>
 		void IList<ShellItem>.RemoveAt(int index)
 		{
-			using var a = GetItemArray();
-			Remove(a[index]);
+			Remove(this[index]);
 		}
 
 		internal ShellItemArray GetItemArray() => Parent.pCtrl.GetRootItems(out var pItems).Succeeded ? new ShellItemArray(pItems) : new ShellItemArray();

@@ -14,7 +14,13 @@ namespace Vanara.Windows.Forms.Design
 
 		public override SelectionRules SelectionRules => SelectionRules.Visible | SelectionRules.AllSizeable | SelectionRules.Moveable;
 
-		protected override IEnumerable<string> PropertiesToRemove { get; } = new[] { nameof(ShellNamespaceTreeControl.BackColor),
+		protected override IEnumerable<string> EventsToRemove => new[] { nameof(ShellNamespaceTreeControl.BackColorChanged),
+			nameof(ShellNamespaceTreeControl.BackgroundImageChanged), nameof(ShellNamespaceTreeControl.BackgroundImageLayoutChanged),
+			nameof(ShellNamespaceTreeControl.CausesValidationChanged), nameof(ShellNamespaceTreeControl.ContextMenuStripChanged),
+			nameof(ShellNamespaceTreeControl.CursorChanged), nameof(ShellNamespaceTreeControl.FontChanged), nameof(ShellNamespaceTreeControl.ForeColorChanged),
+			nameof(ShellNamespaceTreeControl.PaddingChanged), nameof(ShellNamespaceTreeControl.RightToLeftChanged), nameof(ShellNamespaceTreeControl.TextChanged) };
+
+		protected override IEnumerable<string> PropertiesToRemove => new[] { nameof(ShellNamespaceTreeControl.BackColor),
 			nameof(ShellNamespaceTreeControl.BackgroundImage), nameof(ShellNamespaceTreeControl.BackgroundImageLayout),
 			nameof(ShellNamespaceTreeControl.CausesValidation), nameof(ShellNamespaceTreeControl.ContextMenuStrip),
 			nameof(ShellNamespaceTreeControl.Cursor), nameof(ShellNamespaceTreeControl.Font), nameof(ShellNamespaceTreeControl.ForeColor),

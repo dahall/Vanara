@@ -47,8 +47,8 @@
 			this.shellNamespaceTreeControl1.TabIndex = 0;
 			this.shellNamespaceTreeControl1.AfterExpand += new System.EventHandler<Vanara.Windows.Forms.ShellNamespaceTreeControlEventArgs>(this.shellNamespaceTreeControl1_AfterExpand);
 			this.shellNamespaceTreeControl1.AfterLabelEdit += new System.EventHandler<Vanara.Windows.Forms.ShellNamespaceTreeControlItemLabelEditEventArgs>(this.shellNamespaceTreeControl1_AfterLabelEdit);
-			this.shellNamespaceTreeControl1.BeforeExpand += new System.EventHandler<Vanara.Windows.Forms.ShellNamespaceTreeControlEventArgs>(this.shellNamespaceTreeControl1_BeforeExpand);
-			this.shellNamespaceTreeControl1.BeforeItemDelete += new System.EventHandler<Vanara.Windows.Forms.ShellNamespaceTreeControlEventArgs>(this.shellNamespaceTreeControl1_BeforeItemDelete);
+			this.shellNamespaceTreeControl1.BeforeExpand += new System.EventHandler<Vanara.Windows.Forms.ShellNamespaceTreeControlCancelEventArgs>(this.shellNamespaceTreeControl1_BeforeExpand);
+			this.shellNamespaceTreeControl1.BeforeItemDelete += new System.EventHandler<Vanara.Windows.Forms.ShellNamespaceTreeControlCancelEventArgs>(this.shellNamespaceTreeControl1_BeforeItemDelete);
 			this.shellNamespaceTreeControl1.BeforeLabelEdit += new System.EventHandler<Vanara.Windows.Forms.ShellNamespaceTreeControlItemLabelEditEventArgs>(this.shellNamespaceTreeControl1_BeforeLabelEdit);
 			this.shellNamespaceTreeControl1.ItemMouseClick += new System.EventHandler<Vanara.Windows.Forms.ShellNamespaceTreeControlItemMouseClickEventArgs>(this.shellNamespaceTreeControl1_ItemMouseClick);
 			this.shellNamespaceTreeControl1.ItemMouseDoubleClick += new System.EventHandler<Vanara.Windows.Forms.ShellNamespaceTreeControlItemMouseClickEventArgs>(this.shellNamespaceTreeControl1_ItemMouseDoubleClick);

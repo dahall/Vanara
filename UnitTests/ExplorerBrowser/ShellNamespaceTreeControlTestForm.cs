@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Vanara.Windows.Shell;
+using static Vanara.PInvoke.Shell32;
 
 namespace ExplorerBrowser
 {
@@ -20,6 +21,8 @@ namespace ExplorerBrowser
 
 		private void ShellNamespaceTreeControlTestForm_Load(object sender, EventArgs e)
 		{
+			using var qaPidl = new PIDL("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
+			shellNamespaceTreeControl1.RootItems.Add(new ShellFolder(qaPidl), false, true);
 			shellNamespaceTreeControl1.RootItems.Add(ShellFolder.Desktop, true, true);
 			propertyGrid1.SelectedObject = shellNamespaceTreeControl1;
 		}
@@ -39,19 +42,21 @@ namespace ExplorerBrowser
 			log.AppendText($"After label edit: {e.Item.Name}, {e.Label}" + Environment.NewLine);
 		}
 
-		private void shellNamespaceTreeControl1_BeforeExpand(object sender, Vanara.Windows.Forms.ShellNamespaceTreeControlEventArgs e)
+		private void shellNamespaceTreeControl1_BeforeExpand(object sender, Vanara.Windows.Forms.ShellNamespaceTreeControlCancelEventArgs e)
 		{
 			log.AppendText($"Before expand: {e.Item.Name}, {e.Action}" + Environment.NewLine);
 		}
 
-		private void shellNamespaceTreeControl1_BeforeItemDelete(object sender, Vanara.Windows.Forms.ShellNamespaceTreeControlEventArgs e)
+		private void shellNamespaceTreeControl1_BeforeItemDelete(object sender, Vanara.Windows.Forms.ShellNamespaceTreeControlCancelEventArgs e)
 		{
 			log.AppendText($"Before delete: {e.Item.Name}, {e.Action}" + Environment.NewLine);
+			e.Cancel = MessageBox.Show(this, "Delete?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No;
 		}
 
 		private void shellNamespaceTreeControl1_BeforeLabelEdit(object sender, Vanara.Windows.Forms.ShellNamespaceTreeControlItemLabelEditEventArgs e)
 		{
 			log.AppendText($"Before label edit: {e.Item.Name}, {e.Label}" + Environment.NewLine);
+			e.CancelEdit = true;
 		}
 
 		private void shellNamespaceTreeControl1_ItemMouseClick(object sender, Vanara.Windows.Forms.ShellNamespaceTreeControlItemMouseClickEventArgs e)
