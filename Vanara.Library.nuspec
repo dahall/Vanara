@@ -26,6 +26,7 @@
       <dependency id="Vanara.PInvoke.ComCtl32" version="3.2.14" />
       <dependency id="Vanara.PInvoke.CredUI" version="3.2.14" />
       <dependency id="Vanara.PInvoke.Cryptography" version="3.2.14" />
+      <dependency id="Vanara.PInvoke.DbgHelp" version="3.2.14" />
       <dependency id="Vanara.PInvoke.DnsApi" version="3.2.14" />
       <dependency id="Vanara.PInvoke.DwmApi" version="3.2.14" />
       <dependency id="Vanara.PInvoke.Gdi32" version="3.2.14" />

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+	<SupportedDlls>DbgHelp.dll;ImageHlp.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+	<Description>PInvoke API (methods, structures and constants) imported from Windows DbgHelp.dll.</Description>
+	<AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+	<TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+	<AssemblyName>Vanara.PInvoke.DbgHelp</AssemblyName>
+	<PackageId>$(AssemblyName)</PackageId>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<PackageTags>pinvoke;vanara;net-extensions;interop;DbgHelp</PackageTags>
+	<PackageReleaseNotes />
+  </PropertyGroup>
+  <ItemGroup>
+	  <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+	  <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+	  <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>
