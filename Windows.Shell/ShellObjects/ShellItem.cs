@@ -492,14 +492,20 @@ namespace Vanara.Windows.Shell
 			var isFolder = iItem.GetAttributes(SFGAO.SFGAO_FOLDER) != 0;
 
 			// Try to get specialized folder type from property
-			return itemType switch
+			try
 			{
-				".lnk" => new ShellLink(iItem),
-				".library-ms" => new ShellLibrary(iItem),
+				if (itemType == ".lnk")
+					return new ShellLink(iItem);
+				if (itemType == ".library-ms")
+					return new ShellLibrary(iItem);
 				// TODO: ".searchconnector-ms" => Return a search connector
 				// TODO: ".search-ms" => Return a saved search connection
-				_ => isFolder ? new ShellFolder(iItem) : new ShellItem(iItem),
-			};
+			}
+			catch
+			{
+				// If there was an exception, just return the wrapper.
+			}
+			return isFolder ? new ShellFolder(iItem) : new ShellItem(iItem);
 		}
 
 		/// <summary>Implements the operator !=.</summary>

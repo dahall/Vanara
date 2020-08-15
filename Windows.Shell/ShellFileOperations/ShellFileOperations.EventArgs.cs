@@ -35,9 +35,9 @@ namespace Vanara.Windows.Shell
 			internal ShellFileOpEventArgs(TRANSFER_SOURCE_FLAGS flags, IShellItem source, IShellItem folder = null, IShellItem dest = null, string name = null, HRESULT hr = default)
 			{
 				Flags = (TransferFlags)flags;
-				if (source != null) SourceItem = ShellItem.Open(source);
-				if (folder != null) DestFolder = ShellItem.Open(folder);
-				if (dest != null) DestItem = ShellItem.Open(dest);
+				if (source != null) try { SourceItem = ShellItem.Open(source); } catch {}
+				if (folder != null) try { DestFolder = ShellItem.Open(folder); } catch {}
+				if (dest != null) try { DestItem = ShellItem.Open(dest); } catch {}
 				Name = name;
 				Result = hr;
 			}
