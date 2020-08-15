@@ -2,6 +2,7 @@
 using NUnit.Framework.Internal;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
@@ -23,6 +24,39 @@ namespace Vanara.PInvoke.Tests
 		[OneTimeTearDown]
 		public void _TearDown()
 		{
+		}
+
+		[Test]
+		public void EnumDirTreeTest()
+		{
+			var output = EnumDirTree(HPROCESS.NULL, Environment.GetFolderPath(Environment.SpecialFolder.Windows), imgName);
+			Assert.That(output, Is.Not.Empty);
+			TestContext.WriteLine($"Count: {output.Count}");
+			output.WriteValues();
+		}
+
+		[Test]
+		public void EnumerateLoadedModulesTest()
+		{
+			var output = EnumerateLoadedModules(Process.GetCurrentProcess().Handle);
+			Assert.That(output, Is.Not.Empty);
+			TestContext.WriteLine($"Count: {output.Count}");
+			output.WriteValues();
+		}
+
+		[Test]
+		public void EnumerateLoadedModulesExTest()
+		{
+			var output = EnumerateLoadedModulesEx(Process.GetCurrentProcess().Handle);
+			Assert.That(output, Is.Not.Empty);
+			TestContext.WriteLine($"Count: {output.Count}");
+			output.WriteValues();
+		}
+
+		[Test]
+		public void FindExecutableImageExTest()
+		{
+			Assert.That(FindExecutableImageEx(imgName, new[] { Environment.GetFolderPath(Environment.SpecialFolder.System), TestCaseSources.TempDir }), ResultIs.Not.Value(null));
 		}
 
 		[Test]

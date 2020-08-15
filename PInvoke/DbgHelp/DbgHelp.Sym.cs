@@ -1,0 +1,102 @@
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+using static Vanara.PInvoke.Kernel32;
+
+namespace Vanara.PInvoke
+{
+	/// <summary>Items from the DbgHelp.dll</summary>
+	public static partial class DbgHelp
+	{
+		/*
+						SymEnumerateSymbols64
+SymEnumerateSymbolsProc64
+SymEnumLines
+SymEnumLinesProc
+SymEnumProcesses
+SymEnumProcessesProc
+SymEnumSourceFiles
+SymEnumSourceFilesProc
+SymEnumSourceFileTokens
+PENUMSOURCEFILETOKENSCALLBACK
+SymEnumSourceLines
+SymEnumSymbols
+SymEnumSymbolsEx
+SymEnumSymbolsForAddr
+SymEnumSymbolsProc
+SymEnumTypes
+SymEnumTypesByName
+SymFindDebugInfoFile
+SymFindExecutableImage
+SymFindFileInPath
+SymFindFileInPathProc
+SymFromAddr
+SymFromIndex
+SymFromInlineContext
+SymFromName
+SymFromToken
+SymFunctionTableAccess64
+SymFunctionTableAccess64AccessRoutines
+SymGetExtendedOption
+SymGetFileLineOffsets64
+SymGetHomeDirectory
+SymGetLineFromAddr64
+SymGetLineFromInlineContext
+SymGetLineFromName64
+SymGetLineNext64
+SymGetLinePrev64
+SymGetModuleBase64
+SymGetModuleInfo64
+SymGetOmaps
+SymGetOptions
+SymGetScope
+SymGetSearchPath
+SymGetSourceFile
+SymGetSourceFileChecksum
+SymGetSourceFileFromToken
+SymGetSourceFileToken
+SymGetSourceVarFromToken
+SymGetSymbolFile
+SymGetSymFromAddr64
+SymGetSymFromName64
+SymGetSymNext64
+SymGetSymPrev64
+SymGetTypeFromName
+SymGetTypeInfo
+SymGetTypeInfoEx
+SymInitialize
+SymLoadModule64
+SymLoadModuleEx
+SymMatchFileName
+SymMatchString
+SymNext
+SymPrev
+SymQueryInlineTrace
+SymRefreshModuleList
+SymRegisterCallback64
+SymRegisterCallbackProc64
+SymRegisterFunctionEntryCallback64
+SymRegisterFunctionEntryCallbackProc64
+SymSearch
+SymSetContext
+SymSetExtendedOption
+SymSetHomeDirectory
+SymSetOptions
+SymSetParentWindow
+SymSetScopeFromAddr
+SymSetScopeFromIndex
+SymSetScopeFromInlineContext
+SymSetSearchPath
+SymSrvDeltaName
+SymSrvGetFileIndexes
+SymSrvGetFileIndexInfo
+SymSrvGetFileIndexString
+SymSrvGetSupplement
+SymSrvIsStore
+SymSrvStoreFile
+SymSrvStoreSupplement
+SymUnDName64
+SymUnloadModule64
+		*/
+	}
+}
