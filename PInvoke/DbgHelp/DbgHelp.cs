@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Vanara.Extensions;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
@@ -1960,7 +1961,7 @@ namespace Vanara.PInvoke
 		/// <para>Retrieves the version information of the DbgHelp library installed on the system.</para>
 		/// <para>To indicate the version of the library with which the application was built, use the ImagehlpApiVersionEx function.</para>
 		/// </summary>
-		/// <returns>The return value is a pointer to an API_VERSION structure.</returns>
+		/// <returns>The return value is an API_VERSION structure.</returns>
 		/// <remarks>
 		/// <para>
 		/// Use the information in the API_VERSION structure to determine whether the version of the library installed on the system is
@@ -1974,13 +1975,15 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-imagehlpapiversion LPAPI_VERSION IMAGEAPI ImagehlpApiVersion();
-		[DllImport(Lib_DbgHelp, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.ImagehlpApiVersion")]
-		public static extern IntPtr ImagehlpApiVersion();
+		public static API_VERSION ImagehlpApiVersion() => ImagehlpApiVersionInternal().ToStructure<API_VERSION>();
+
+		[DllImport(Lib_DbgHelp, SetLastError = false, EntryPoint = "ImagehlpApiVersion")]
+		private static extern IntPtr ImagehlpApiVersionInternal();
 
 		/// <summary>Modifies the version information of the library used by the application.</summary>
 		/// <param name="AppVersion">A pointer to an API_VERSION structure that contains valid version information for your application.</param>
-		/// <returns>The return value is a pointer to an API_VERSION structure.</returns>
+		/// <returns>The return value is an API_VERSION structure.</returns>
 		/// <remarks>
 		/// <para>
 		/// Use the <c>ImagehlpApiVersionEx</c> function to indicate the version of the library with which the application was built. The
@@ -1997,14 +2000,16 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-imagehlpapiversionex LPAPI_VERSION IMAGEAPI
 		// ImagehlpApiVersionEx( LPAPI_VERSION AppVersion );
-		[DllImport(Lib_DbgHelp, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.ImagehlpApiVersionEx")]
-		public static extern IntPtr ImagehlpApiVersionEx(in API_VERSION AppVersion);
+		public static API_VERSION ImagehlpApiVersionEx(in API_VERSION AppVersion) => ImagehlpApiVersionExInternal(AppVersion).ToStructure<API_VERSION>();
 
-		/// <summary>Locates the IMAGE_NT_HEADERS structure in a PE image and returns a pointer to the data.</summary>
+		[DllImport(Lib_DbgHelp, SetLastError = false, EntryPoint = "ImagehlpApiVersionEx")]
+		private static extern IntPtr ImagehlpApiVersionExInternal(in API_VERSION AppVersion);
+
+		/// <summary>Locates the <see cref="IMAGE_NT_HEADERS"/> structure in a PE image and returns a pointer to the data.</summary>
 		/// <param name="Base">The base address of an image that is mapped into memory by a call to the MapViewOfFile function.</param>
 		/// <returns>
-		/// <para>If the function succeeds, the return value is a pointer to an IMAGE_NT_HEADERS structure.</para>
+		/// <para>If the function succeeds, the return value is a pointer to an <see cref="IMAGE_NT_HEADERS"/> structure.</para>
 		/// <para>If the function fails, the return value is <c>NULL</c>. To retrieve extended error information, call GetLastError.</para>
 		/// </returns>
 		/// <remarks>
@@ -2016,7 +2021,7 @@ namespace Vanara.PInvoke
 		// PVOID Base );
 		[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.ImageNtHeader")]
-		public static extern IntPtr ImageNtHeader(IntPtr Base);
+		public static unsafe extern IMAGE_NT_HEADERS* ImageNtHeader(IntPtr Base);
 
 		/// <summary>
 		/// Locates a relative virtual address (RVA) within the image header of a file that is mapped as a file and returns a pointer to the
@@ -2492,311 +2497,6 @@ namespace Vanara.PInvoke
 		public static extern bool StackWalkEx(IMAGE_FILE_MACHINE MachineType, HPROCESS hProcess, HTHREAD hThread, ref STACKFRAME_EX StackFrame, [In, Out] IntPtr ContextRecord,
 			[Optional] PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine, [Optional] PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine,
 			[Optional] PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine, [Optional] PTRANSLATE_ADDRESS_ROUTINE64 TranslateAddress, SYM_STKWALK Flags);
-
-		/// <summary>Indicates whether the specified address is within an inline frame.</summary>
-		/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>
-		/// <param name="Address">The address.</param>
-		/// <returns>Returns zero if the address is not within an inline frame.</returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symaddrincludeinlinetrace DWORD IMAGEAPI
-		// SymAddrIncludeInlineTrace( HANDLE hProcess, DWORD64 Address );
-		[DllImport(Lib_DbgHelp, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymAddrIncludeInlineTrace")]
-		public static extern uint SymAddrIncludeInlineTrace(HPROCESS hProcess, ulong Address);
-
-		/// <summary>Adds the stream to the specified module for use by the Source Server.</summary>
-		/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>
-		/// <param name="Base">The base address of the module.</param>
-		/// <param name="StreamFile">
-		/// A null-terminated string that contains the absolute or relative path to a file that contains the source indexing stream. Can be
-		/// <c>NULL</c> if Buffer is not <c>NULL</c>.
-		/// </param>
-		/// <param name="Buffer">A buffer that contains the source indexing stream. Can be <c>NULL</c> if StreamFile is not <c>NULL</c>.</param>
-		/// <param name="Size">Size, in bytes, of the Buffer buffer.</param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
-		/// <para>If the function fails, the return value is <c>FALSE</c>. To retrieve extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// <c>SymAddSourceStream</c> adds a stream of data formatted for use by the source Server to a designated module. The caller can
-		/// pass the stream either as a buffer in the Buffer parameter or a file in the StreamFile parameter. If both parameters are filled,
-		/// then the function uses the Buffer parameter. If both parameters are <c>NULL</c>, then the function returns <c>FALSE</c> and the
-		/// last-error code is set to <c>ERROR_INVALID_PARAMETER</c>.
-		/// </para>
-		/// <para>
-		/// It is important to note that <c>SymAddSourceStream</c> does not add the stream to any corresponding PDB in order to persist the
-		/// data. This function is used by those programmatically implementing their own debuggers in scenarios in which a PDB is not available.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symaddsourcestream BOOL IMAGEAPI SymAddSourceStream( HANDLE
-		// hProcess, ULONG64 Base, PCSTR StreamFile, PBYTE Buffer, size_t Size );
-		[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymAddSourceStream")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SymAddSourceStream(HPROCESS hProcess, ulong Base, [Optional, MarshalAs(UnmanagedType.LPTStr)] string StreamFile, [In] IntPtr Buffer, SizeT Size);
-
-		/// <summary>Adds a virtual symbol to the specified module.</summary>
-		/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>
-		/// <param name="BaseOfDll">The base address of the module.</param>
-		/// <param name="Name">The name of the symbol. The maximum size of a symbol name is MAX_SYM_NAME characters.</param>
-		/// <param name="Address">The address of the symbol. This address must be within the address range of the specified module.</param>
-		/// <param name="Size">The size of the symbol, in bytes. This parameter is optional.</param>
-		/// <param name="Flags">This parameter is unused.</param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
-		/// <para>If the function fails, the return value is <c>FALSE</c>. To retrieve extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// All DbgHelp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will
-		/// likely result in unexpected behavior or memory corruption. To avoid this, you must synchronize all concurrent calls from more
-		/// than one thread to this function.
-		/// </para>
-		/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symaddsymbol BOOL IMAGEAPI SymAddSymbol( HANDLE hProcess,
-		// ULONG64 BaseOfDll, PCSTR Name, DWORD64 Address, DWORD Size, DWORD Flags );
-		[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymAddSymbol")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SymAddSymbol(HPROCESS hProcess, ulong BaseOfDll, [MarshalAs(UnmanagedType.LPTStr)] string Name, ulong Address, uint Size, uint Flags = 0);
-
-		/// <summary>Deallocates all resources associated with the process handle.</summary>
-		/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
-		/// <para>If the function fails, the return value is <c>FALSE</c>. To retrieve extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// This function frees all resources associated with the process handle. Failure to call this function causes memory and resource
-		/// leaks in the calling application
-		/// </para>
-		/// <para>
-		/// All DbgHelp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will
-		/// likely result in unexpected behavior or memory corruption. To avoid this, call SymInitialize only when your process starts and
-		/// <c>SymCleanup</c> only when your process ends. It is not necessary for each thread in the process to call these functions.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>For an example, see Terminating the Symbol Handler.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symcleanup BOOL IMAGEAPI SymCleanup( HANDLE hProcess );
-		[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymCleanup")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SymCleanup(HPROCESS hProcess);
-
-		/// <summary>Compares two inline traces.</summary>
-		/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>
-		/// <param name="Address1">The first address to be compared.</param>
-		/// <param name="InlineContext1">The inline context for the first trace to be compared.</param>
-		/// <param name="RetAddress1">The return address of the first trace to be compared.</param>
-		/// <param name="Address2">The second address to be compared.</param>
-		/// <param name="RetAddress2">The return address of the second trace to be compared.</param>
-		/// <returns>
-		/// <para>Indicates the result of the comparison.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code/value</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>SYM_INLINE_COMP_ERROR 0</term>
-		/// <term>An error occurred.</term>
-		/// </item>
-		/// <item>
-		/// <term>SYM_INLINE_COMP_IDENTICAL 1</term>
-		/// <term>The inline contexts are identical.</term>
-		/// </item>
-		/// <item>
-		/// <term>SYM_INLINE_COMP_STEPIN 2</term>
-		/// <term>The inline trace is a step-in of an inline function.</term>
-		/// </item>
-		/// <item>
-		/// <term>SYM_INLINE_COMP_STEPOUT 3</term>
-		/// <term>The inline trace is a step-out of an inline function.</term>
-		/// </item>
-		/// <item>
-		/// <term>SYM_INLINE_COMP_STEPOVER 4</term>
-		/// <term>The inline trace is a step-over of an inline function.</term>
-		/// </item>
-		/// <item>
-		/// <term>SYM_INLINE_COMP_DIFFERENT 5</term>
-		/// <term>The inline contexts are different.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symcompareinlinetrace DWORD IMAGEAPI SymCompareInlineTrace(
-		// HANDLE hProcess, DWORD64 Address1, DWORD InlineContext1, DWORD64 RetAddress1, DWORD64 Address2, DWORD64 RetAddress2 );
-		[DllImport(Lib_DbgHelp, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymCompareInlineTrace")]
-		public static extern SYM_INLINE_COMP SymCompareInlineTrace(HPROCESS hProcess, ulong Address1, uint InlineContext1, ulong RetAddress1, ulong Address2, ulong RetAddress2);
-
-		/// <summary>Deletes a virtual symbol from the specified module.</summary>
-		/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>
-		/// <param name="BaseOfDll">The base address of the module.</param>
-		/// <param name="Name">The name of the symbol.</param>
-		/// <param name="Address">The address of the symbol. This address must be within the address range of the specified module.</param>
-		/// <param name="Flags">This parameter is unused.</param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
-		/// <para>If the function fails, the return value is <c>FALSE</c>. To retrieve extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// All DbgHelp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will
-		/// likely result in unexpected behavior or memory corruption. To avoid this, you must synchronize all concurrent calls from more
-		/// than one thread to this function.
-		/// </para>
-		/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symdeletesymbol BOOL IMAGEAPI SymDeleteSymbol( HANDLE
-		// hProcess, ULONG64 BaseOfDll, PCSTR Name, DWORD64 Address, DWORD Flags );
-		[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymDeleteSymbol")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SymDeleteSymbol(HPROCESS hProcess, ulong BaseOfDll, [MarshalAs(UnmanagedType.LPTStr)] string Name, ulong Address, uint Flags = 0);
-
-		/// <summary>Enumerates all modules that have been loaded for the process by the SymLoadModule64 or SymLoadModuleEx function.</summary>
-		/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
-		/// <param name="EnumModulesCallback">
-		/// The enumeration callback function. This function is called once per module. For more information, see SymEnumerateModulesProc64.
-		/// </param>
-		/// <param name="UserContext">
-		/// A user-defined value or <c>NULL</c>. This value is simply passed to the callback function. Normally, this parameter is used by
-		/// an application to pass a pointer to a data structure that lets the callback function establish some type of context.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
-		/// <para>If the function fails, the return value is <c>FALSE</c>. To retrieve extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The <c>SymEnumerateModules64</c> function enumerates all modules that have been loaded for the process by SymLoadModule64, even
-		/// if the symbol loading is deferred. The enumeration callback function is called once for each module and is passed the module information.
-		/// </para>
-		/// <para>
-		/// All DbgHelp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will
-		/// likely result in unexpected behavior or memory corruption. To avoid this, you must synchronize all concurrent calls from more
-		/// than one thread to this function.
-		/// </para>
-		/// <para>
-		/// To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR. <c>SymEnumerateModulesW64</c> is defined as
-		/// follows in Dbghelp.h.
-		/// </para>
-		/// <para>
-		/// <code> BOOL IMAGEAPI SymEnumerateModulesW64( __in HANDLE hProcess, __in PSYM_ENUMMODULES_CALLBACKW64 EnumModulesCallback, __in_opt PVOID UserContext ); #ifdef DBGHELP_TRANSLATE_TCHAR #define SymEnumerateModules64 SymEnumerateModulesW64 #endif</code>
-		/// </para>
-		/// <para>
-		/// This function supersedes the <c>SymEnumerateModules</c> function. For more information, see Updated Platform Support.
-		/// <c>SymEnumerateModules</c> is defined as follows in Dbghelp.h.
-		/// </para>
-		/// <para>
-		/// <code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define SymEnumerateModules SymEnumerateModules64 #else BOOL IMAGEAPI SymEnumerateModules( __in HANDLE hProcess, __in PSYM_ENUMMODULES_CALLBACK EnumModulesCallback, __in_opt PVOID UserContext ); #endif</code>
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>For an example, see Enumerating Symbol Modules.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symenumeratemodules BOOL IMAGEAPI SymEnumerateModules(
-		// HANDLE hProcess, PSYM_ENUMMODULES_CALLBACK EnumModulesCallback, PVOID UserContext );
-		[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
-		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymEnumerateModules")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SymEnumerateModules(HPROCESS hProcess, PSYM_ENUMMODULES_CALLBACK EnumModulesCallback, [In, Optional] IntPtr UserContext);
-
-		/// <summary>Enumerates all modules that have been loaded for the process by the SymLoadModule64 or SymLoadModuleEx function.</summary>
-		/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
-		/// <param name="EnumModulesCallback">
-		/// The enumeration callback function. This function is called once per module. For more information, see SymEnumerateModulesProc64.
-		/// </param>
-		/// <param name="UserContext">
-		/// A user-defined value or <c>NULL</c>. This value is simply passed to the callback function. Normally, this parameter is used by
-		/// an application to pass a pointer to a data structure that lets the callback function establish some type of context.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
-		/// <para>If the function fails, the return value is <c>FALSE</c>. To retrieve extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The <c>SymEnumerateModules64</c> function enumerates all modules that have been loaded for the process by SymLoadModule64, even
-		/// if the symbol loading is deferred. The enumeration callback function is called once for each module and is passed the module information.
-		/// </para>
-		/// <para>
-		/// All DbgHelp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will
-		/// likely result in unexpected behavior or memory corruption. To avoid this, you must synchronize all concurrent calls from more
-		/// than one thread to this function.
-		/// </para>
-		/// <para>
-		/// To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR. <c>SymEnumerateModulesW64</c> is defined as
-		/// follows in Dbghelp.h.
-		/// </para>
-		/// <para>
-		/// <code> BOOL IMAGEAPI SymEnumerateModulesW64( __in HANDLE hProcess, __in PSYM_ENUMMODULES_CALLBACKW64 EnumModulesCallback, __in_opt PVOID UserContext ); #ifdef DBGHELP_TRANSLATE_TCHAR #define SymEnumerateModules64 SymEnumerateModulesW64 #endif</code>
-		/// </para>
-		/// <para>
-		/// This function supersedes the <c>SymEnumerateModules</c> function. For more information, see Updated Platform Support.
-		/// <c>SymEnumerateModules</c> is defined as follows in Dbghelp.h.
-		/// </para>
-		/// <para>
-		/// <code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define SymEnumerateModules SymEnumerateModules64 #else BOOL IMAGEAPI SymEnumerateModules( __in HANDLE hProcess, __in PSYM_ENUMMODULES_CALLBACK EnumModulesCallback, __in_opt PVOID UserContext ); #endif</code>
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>For an example, see Enumerating Symbol Modules.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symenumeratemodules64 BOOL IMAGEAPI SymEnumerateModules64(
-		// HANDLE hProcess, PSYM_ENUMMODULES_CALLBACK64 EnumModulesCallback, PVOID UserContext );
-		[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true)]
-		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymEnumerateModules64")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SymEnumerateModules64(HANDLE hProcess, PSYM_ENUMMODULES_CALLBACK64 EnumModulesCallback, [In, Optional] IntPtr UserContext);
-
-		/// <summary>Enumerates all modules that have been loaded for the process by the SymLoadModule64 or SymLoadModuleEx function.</summary>
-		/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
-		/// <param name="EnumModulesCallback">
-		/// The enumeration callback function. This function is called once per module. For more information, see SymEnumerateModulesProc64.
-		/// </param>
-		/// <param name="UserContext">
-		/// A user-defined value or <c>NULL</c>. This value is simply passed to the callback function. Normally, this parameter is used by
-		/// an application to pass a pointer to a data structure that lets the callback function establish some type of context.
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
-		/// <para>If the function fails, the return value is <c>FALSE</c>. To retrieve extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The <c>SymEnumerateModules64</c> function enumerates all modules that have been loaded for the process by SymLoadModule64, even
-		/// if the symbol loading is deferred. The enumeration callback function is called once for each module and is passed the module information.
-		/// </para>
-		/// <para>
-		/// All DbgHelp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will
-		/// likely result in unexpected behavior or memory corruption. To avoid this, you must synchronize all concurrent calls from more
-		/// than one thread to this function.
-		/// </para>
-		/// <para>
-		/// To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR. <c>SymEnumerateModulesW64</c> is defined as
-		/// follows in Dbghelp.h.
-		/// </para>
-		/// <para>
-		/// <code> BOOL IMAGEAPI SymEnumerateModulesW64( __in HANDLE hProcess, __in PSYM_ENUMMODULES_CALLBACKW64 EnumModulesCallback, __in_opt PVOID UserContext ); #ifdef DBGHELP_TRANSLATE_TCHAR #define SymEnumerateModules64 SymEnumerateModulesW64 #endif</code>
-		/// </para>
-		/// <para>
-		/// This function supersedes the <c>SymEnumerateModules</c> function. For more information, see Updated Platform Support.
-		/// <c>SymEnumerateModules</c> is defined as follows in Dbghelp.h.
-		/// </para>
-		/// <para>
-		/// <code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define SymEnumerateModules SymEnumerateModules64 #else BOOL IMAGEAPI SymEnumerateModules( __in HANDLE hProcess, __in PSYM_ENUMMODULES_CALLBACK EnumModulesCallback, __in_opt PVOID UserContext ); #endif</code>
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>For an example, see Enumerating Symbol Modules.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symenumeratemodulesw64 BOOL IMAGEAPI
-		// SymEnumerateModulesW64( HANDLE hProcess, PSYM_ENUMMODULES_CALLBACKW64 EnumModulesCallback, PVOID UserContext );
-		[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
-		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymEnumerateModulesW64")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SymEnumerateModulesW64(HANDLE hProcess, PSYM_ENUMMODULES_CALLBACK64 EnumModulesCallback, [In, Optional] IntPtr UserContext);
 
 		/// <summary>Undecorates the specified decorated C++ symbol name.</summary>
 		/// <param name="name">

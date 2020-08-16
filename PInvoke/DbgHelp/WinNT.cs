@@ -271,6 +271,7 @@ namespace Vanara.PInvoke
 			public ushort cdwParams;
 			private ushort flags;
 
+#pragma warning disable IDE1006 // Naming Styles
 			/// <summary>The number of bytes in the function prolog code.</summary>
 			public ushort cbProlog
 			{
@@ -335,6 +336,7 @@ namespace Vanara.PInvoke
 				get => (FRAME)BitHelper.GetBits(flags, 14, 2);
 				set => BitHelper.SetBits(ref flags, 14, 2, (ushort)value);
 			}
+#pragma warning restore IDE1006 // Naming Styles
 		}
 
 		/// <summary>Represents an entry in the function table on 64-bit Windows.</summary>
@@ -836,10 +838,12 @@ namespace Vanara.PInvoke
 			public uint PointerToRawData;
 		}
 
+		/// <summary>Undocumented.</summary>
 		[PInvokeData("winnt.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct IMAGE_EXPORT_DIRECTORY
 		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 			public uint Characteristics;
 			public uint TimeDateStamp;
 			public ushort MajorVersion;
@@ -851,6 +855,7 @@ namespace Vanara.PInvoke
 			public uint AddressOfFunctions; // RVA from base of image
 			public uint AddressOfNames; // RVA from base of image
 			public uint AddressOfNameOrdinals; // RVA from base of image
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
 		/// <summary>Represents the COFF header format.</summary>
@@ -1424,7 +1429,7 @@ namespace Vanara.PInvoke
 		// DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES]; } IMAGE_OPTIONAL_HEADER32, *PIMAGE_OPTIONAL_HEADER32;
 		[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_OPTIONAL_HEADER")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct IMAGE_OPTIONAL_HEADER
+		public unsafe struct IMAGE_OPTIONAL_HEADER
 		{
 			/// <summary>
 			/// <para>The state of the image file. This member can be one of the following values.</para>
@@ -1722,6 +1727,9 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint NumberOfRvaAndSizes;
 
+			//[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16 /*IMAGE_NUMBEROF_DIRECTORY_ENTRIES*/)]
+			private fixed ulong _DataDirectory[16];
+
 			/// <summary>
 			/// <para>A pointer to the first IMAGE_DATA_DIRECTORY structure in the data directory.</para>
 			/// <para>The index number of the desired directory entry. This parameter can be one of the following values.</para>
@@ -1792,8 +1800,32 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16 /*IMAGE_NUMBEROF_DIRECTORY_ENTRIES*/)]
-			public IMAGE_DATA_DIRECTORY[] DataDirectory;
+			public IMAGE_DATA_DIRECTORY[] DataDirectory
+			{
+				get
+				{
+					unsafe
+					{
+						fixed (void* dd = _DataDirectory)
+						{
+							return ((IntPtr)dd).ToArray<IMAGE_DATA_DIRECTORY>(16);
+						}
+					}
+				}
+				set
+				{
+					if (value is null || value.Length != 16)
+						throw new ArgumentOutOfRangeException(nameof(DataDirectory), "Must be an array with 16 elements.");
+					unsafe
+					{
+						fixed (IMAGE_DATA_DIRECTORY* v = value)
+						fixed (void* dd = _DataDirectory)
+						{
+							((IntPtr)v).CopyTo((IntPtr)dd, sizeof(ulong) * 16);
+						}
+					}
+				}
+			}
 		}
 
 		/// <summary>Represents the image section header format.</summary>

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using static Vanara.PInvoke.DbgHelp;
@@ -60,6 +61,12 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void ImagehlpApiVersionTest()
+		{
+			Assert.That(ImagehlpApiVersion().MajorVersion, Is.GreaterThan((ushort)0));
+		}
+
+		[Test]
 		public void GetImageConfigInformationTest()
 		{
 			Assert.That(MapAndLoad(imgName, null, out var LoadedImage, true, true), ResultIs.Successful);
@@ -81,6 +88,32 @@ namespace Vanara.PInvoke.Tests
 			{
 				UnMapAndLoad(ref LoadedImage);
 			}
+		}
+
+		[Test]
+		public void SymEnumerateModulesTest()
+		{
+			using var hProc = new ProcessSymbolHandler(Process.GetCurrentProcess().Handle, null, true);
+			var output = SymEnumerateModules(hProc);
+			TestContext.WriteLine($"Count: {output.Count}");
+			output.WriteValues();
+		}
+
+		[Test]
+		public void SymEnumLinesTest()
+		{
+			using var hProc = new ProcessSymbolHandler(Process.GetCurrentProcess().Handle, null, true);
+			var (ModuleName, BaseOfDll) = SymEnumerateModules(hProc).Where(t => t.ModuleName == "KERNEL32").First();
+			var output = SymEnumLines(hProc, unchecked((ulong)BaseOfDll.ToInt64()));
+			TestContext.WriteLine($"Count: {output.Count}");
+			output.WriteValues();
+		}
+
+		[Test]
+		public void SymEnumProcessesTest()
+		{
+			using var hProc = new ProcessSymbolHandler(Process.GetCurrentProcess().Handle);
+			Assert.That(SymEnumProcesses(), Is.Not.Empty);
 		}
 	}
 }
